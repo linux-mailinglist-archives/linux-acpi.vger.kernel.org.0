@@ -2,119 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2C2A72E753
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jun 2023 17:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A58472E7F0
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jun 2023 18:13:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240883AbjFMPhW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Jun 2023 11:37:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52748 "EHLO
+        id S240694AbjFMQMm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Jun 2023 12:12:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240171AbjFMPhV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Jun 2023 11:37:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B615C1FE1
-        for <linux-acpi@vger.kernel.org>; Tue, 13 Jun 2023 08:35:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686670554;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XrhOZVeec/db2uALYpez63xq92Ih/dtdSBOBzIwOjR8=;
-        b=Cjlu0zeQzJ5wOLQc4kjj+8sL3Dd0sbPOvuHRKuPSrjMRLv4FG1AIXsC/DwIIiymX/3CNHU
-        h9omAodMzpgptE/NgDrM8M7pLphp9mnVxu7c7U9xvJVxK7WIFtd+G/v2WJ0WFqUGeMebYV
-        FBSl2Lj8Y8GsPWfsVe+visX5wRIG0NM=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-OwPSh3rqOjyKFxX4whzA2Q-1; Tue, 13 Jun 2023 11:35:51 -0400
-X-MC-Unique: OwPSh3rqOjyKFxX4whzA2Q-1
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5187335aa4fso948806a12.3
-        for <linux-acpi@vger.kernel.org>; Tue, 13 Jun 2023 08:35:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686670546; x=1689262546;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XrhOZVeec/db2uALYpez63xq92Ih/dtdSBOBzIwOjR8=;
-        b=Q5ZlxXqyXjAVkS1RlcmlK38TrY7ub1oDbODLcOl+Ya9deBjYs1TDdHlvt8d+ARzL5Y
-         RYbOvQKiRdV/OBxklM6H+tmiTyjLfSBJ1rDsMr1xP3EfntAsOV6kTVk2qbkwnByQZFEf
-         cTTVeRiYuCci4imb6ZAR1Ewx0lcq5DDfig/FCnKsffDyajxoZ2A3LsYicXjFWIUKlPbi
-         DMzvNjAw5huj4di1XwD/wYDo9y7xuf58AL/A9rjdjVXGbwZFTnXLAtXnCH33kUuGi9qj
-         7HOD0knQZifKxSyJJ9bwVRBm2zPZ9KqmQlVproXZgmEASb4D5GxfUtXvIzcXnP+jVlRv
-         WBJA==
-X-Gm-Message-State: AC+VfDw2qZlnmBs1PPJmHa0NLUOkVapAstah+J6KOfbNvQWKQFFzyhhy
-        opSUpDaZWWGQoMoUL4u8L15O57RtJ7A0VtFvjMnZLIIzTLPO45+gzCP1b3wD3iHT9/nIbL81heO
-        jeX8wpwjRmnmcCRkWMHdepQ==
-X-Received: by 2002:aa7:d49a:0:b0:50b:fd52:2f4b with SMTP id b26-20020aa7d49a000000b0050bfd522f4bmr8767190edr.24.1686670546061;
-        Tue, 13 Jun 2023 08:35:46 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7BMFmVyFJ4lCGDdWS54ulpZZa9F099khds3bj+FjvKlYT50eyMdDe0p3lFuCQ0U4uRG/Fslw==
-X-Received: by 2002:aa7:d49a:0:b0:50b:fd52:2f4b with SMTP id b26-20020aa7d49a000000b0050bfd522f4bmr8767175edr.24.1686670545829;
-        Tue, 13 Jun 2023 08:35:45 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? ([2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id j25-20020aa7c0d9000000b005148f0e8568sm6626969edp.39.2023.06.13.08.35.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jun 2023 08:35:45 -0700 (PDT)
-Message-ID: <5a6e0086-027b-cf6b-6c89-32aba244c1dd@redhat.com>
-Date:   Tue, 13 Jun 2023 17:35:42 +0200
+        with ESMTP id S235917AbjFMQMl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Jun 2023 12:12:41 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39DFB92;
+        Tue, 13 Jun 2023 09:12:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686672760; x=1718208760;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=WHV4FEfJfq9HVHNXBICHwzIvVJlAjf9wds6NoOlHzQE=;
+  b=TTvk/I+iVa1XyyjiI8kri7qizPs/Kj5SCg3J04k/65yhgEjCTWwFd7r2
+   0tpsHm9FMBf5oMeb8tDGidyqmTe9aF7B7LIvLPIUES/sK0GyabxsHuaTS
+   oq0fGReomNrEOH+pJMvPiT6sWklgWEwatG29PgrWc5aVt95dSk+ub2rtu
+   Dic7vVskpvSJINWanxkhctQ0JWZYtfTN5XqJkygaYIjcFA8CxVXvkarrT
+   qmWmkQvrNn7inv+NxHWkyahCvL9ECbrYpe22w5gqQMwJMmsqPaMc4Fyw0
+   caVj7Aa5V6xnocs5B1scj99PTJIHGr0570YPJCxi69Ps4CsZTgf3PMlrx
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="348038772"
+X-IronPort-AV: E=Sophos;i="6.00,240,1681196400"; 
+   d="scan'208";a="348038772"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 09:10:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="714863422"
+X-IronPort-AV: E=Sophos;i="6.00,240,1681196400"; 
+   d="scan'208";a="714863422"
+Received: from powerlab.fi.intel.com ([10.237.71.25])
+  by fmsmga007.fm.intel.com with ESMTP; 13 Jun 2023 09:10:48 -0700
+From:   Michal Wilczynski <michal.wilczynski@intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     rafael@kernel.org, andriy.shevchenko@intel.com,
+        artem.bityutskiy@linux.intel.com, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, hpa@zytor.com, lenb@kernel.org,
+        jgross@suse.com, linux-kernel@vger.kernel.org, x86@kernel.org
+Subject: [PATCH v3 0/5] Prefer using _OSC method over deprecated _PDC
+Date:   Tue, 13 Jun 2023 19:10:29 +0300
+Message-Id: <20230613161034.3496047-1-michal.wilczynski@intel.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2] platform/x86/dell/dell-rbtn: Fix resources leaking on
- error path
-To:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Michal Wilczynski <michal.wilczynski@intel.com>
-Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
-        ilpo.jarvinen@linux.intel.com, pali@kernel.org,
-        markgross@kernel.org, fengguang.wu@intel.com,
-        dvhart@linux.intel.com, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230613084310.2775896-1-michal.wilczynski@intel.com>
- <ZIiHaEn7nW7yAFK8@smile.fi.intel.com>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <ZIiHaEn7nW7yAFK8@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+ACPI 3.0 introduced a new Operating System Capabilities _OSC control
+method. This method is similar to _PDC, which was marked as deprecated
+in ACPI 3.0.
 
-On 6/13/23 17:12, Andy Shevchenko wrote:
-> On Tue, Jun 13, 2023 at 11:43:10AM +0300, Michal Wilczynski wrote:
->> Currently rbtn_add() in case of failure is leaking resources. Fix this
->> by adding a proper rollback. Move devm_kzalloc() before rbtn_acquire(),
->> so it doesn't require rollback in case of failure. While at it, remove
->> unnecessary assignment of NULL to device->driver_data and unnecessary
->> whitespace, plus add a break for the default case in a switch.
-> 
->> Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> 
-> Isn't also suggested by Pali?
-> 
->> Fixes: 817a5cdb40c8 ("dell-rbtn: Dell Airplane Mode Switch driver")
->> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
->> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->> Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-> 
-> ...
-> 
-> Hans, can it (an additional tag) be folded into applied change?
+Prefer using _OSC method over deprecated _PDC in the acpi_bus_init(). In
+case of the failure of the _OSC, try using _PDC as a fallback.
 
-Done and pushed to review-hans.
+Testing done:
+Tested on physical server with BIOS implementing _OSC methods. In this
+case acpi_processor_osc() was executed for each CPU core. acpi_run_osc()
+returned success indicating that _OSC method succeeded.
 
-Regards,
+Tested on qemu VM to check whether the code would work on a SeaBios (the
+default for qemu, doesn't support _OSC methods, or _PDC). This way I was
+able to see how code behaves in case BIOS doesn't implement _OSC. In
+that case the function
+acpi_run_osc() returned failure, which propagated all the way up to
+acpi_early_processor_osc(). The logic responsible for triggering _PDC
+execution was triggered correctly.
 
-Hans
+Tested this using debug messages with printk.
 
+v3:
+ - split into more commits to make review easier
+ - changed "_UID" to METHOD_NAME_UID
+ - changed hard-coded constant to ACPI_PDC_COLLAB_PROC_PERF
+ - added Suggested-by tags
+ - fixed style issues
+ - fixed whitespaces
+ - refactored code
+v2:
+ - fixed compilation issues on ia64 and arm
 
+Michal Wilczynski (5):
+  acpi: Move logic responsible for conveying processor OSPM capabilities
+  acpi: Refactor arch_acpi_set_pdc_bits()
+  acpi: Introduce new function callback for _OSC
+  acpi: Use _OSC method to convey processor OSPM capabilities
+  acpi: Remove acpi_hwp_native_thermal_lvt_osc()
 
+ arch/ia64/include/asm/acpi.h  |   4 +-
+ arch/x86/include/asm/acpi.h   |  13 +--
+ drivers/acpi/acpi_processor.c | 151 +++++++++++++++++++++++++++-------
+ drivers/acpi/bus.c            |  13 ++-
+ drivers/acpi/internal.h       |  10 +--
+ drivers/acpi/processor_pdc.c  |  82 +-----------------
+ include/acpi/pdc_intel.h      |   1 +
+ include/acpi/processor.h      |   2 +-
+ 8 files changed, 148 insertions(+), 128 deletions(-)
+
+-- 
+2.41.0
 
