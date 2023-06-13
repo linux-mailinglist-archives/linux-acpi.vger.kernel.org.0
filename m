@@ -2,139 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25C5D72E71F
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jun 2023 17:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2C2A72E753
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jun 2023 17:37:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240767AbjFMPZY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Jun 2023 11:25:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
+        id S240883AbjFMPhW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Jun 2023 11:37:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243089AbjFMPZL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Jun 2023 11:25:11 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1177419B9;
-        Tue, 13 Jun 2023 08:25:09 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id d693ed22b0d7d60d; Tue, 13 Jun 2023 17:25:07 +0200
-Received: from kreacher.localnet (unknown [195.136.19.94])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 609006E2F7A;
-        Tue, 13 Jun 2023 17:25:07 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>,
-        Saket Dumbre <saket.dumbre@intel.com>,
-        Xiaoming Ni <nixiaoming@huawei.com>
-Subject: [PATCH v1] ACPI: sleep: Avoid breaking S3 wakeup due to might_sleep()
-Date:   Tue, 13 Jun 2023 17:25:07 +0200
-Message-ID: <12237421.O9o76ZdvQC@kreacher>
+        with ESMTP id S240171AbjFMPhV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Jun 2023 11:37:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B615C1FE1
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Jun 2023 08:35:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686670554;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XrhOZVeec/db2uALYpez63xq92Ih/dtdSBOBzIwOjR8=;
+        b=Cjlu0zeQzJ5wOLQc4kjj+8sL3Dd0sbPOvuHRKuPSrjMRLv4FG1AIXsC/DwIIiymX/3CNHU
+        h9omAodMzpgptE/NgDrM8M7pLphp9mnVxu7c7U9xvJVxK7WIFtd+G/v2WJ0WFqUGeMebYV
+        FBSl2Lj8Y8GsPWfsVe+visX5wRIG0NM=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-591-OwPSh3rqOjyKFxX4whzA2Q-1; Tue, 13 Jun 2023 11:35:51 -0400
+X-MC-Unique: OwPSh3rqOjyKFxX4whzA2Q-1
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5187335aa4fso948806a12.3
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Jun 2023 08:35:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686670546; x=1689262546;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XrhOZVeec/db2uALYpez63xq92Ih/dtdSBOBzIwOjR8=;
+        b=Q5ZlxXqyXjAVkS1RlcmlK38TrY7ub1oDbODLcOl+Ya9deBjYs1TDdHlvt8d+ARzL5Y
+         RYbOvQKiRdV/OBxklM6H+tmiTyjLfSBJ1rDsMr1xP3EfntAsOV6kTVk2qbkwnByQZFEf
+         cTTVeRiYuCci4imb6ZAR1Ewx0lcq5DDfig/FCnKsffDyajxoZ2A3LsYicXjFWIUKlPbi
+         DMzvNjAw5huj4di1XwD/wYDo9y7xuf58AL/A9rjdjVXGbwZFTnXLAtXnCH33kUuGi9qj
+         7HOD0knQZifKxSyJJ9bwVRBm2zPZ9KqmQlVproXZgmEASb4D5GxfUtXvIzcXnP+jVlRv
+         WBJA==
+X-Gm-Message-State: AC+VfDw2qZlnmBs1PPJmHa0NLUOkVapAstah+J6KOfbNvQWKQFFzyhhy
+        opSUpDaZWWGQoMoUL4u8L15O57RtJ7A0VtFvjMnZLIIzTLPO45+gzCP1b3wD3iHT9/nIbL81heO
+        jeX8wpwjRmnmcCRkWMHdepQ==
+X-Received: by 2002:aa7:d49a:0:b0:50b:fd52:2f4b with SMTP id b26-20020aa7d49a000000b0050bfd522f4bmr8767190edr.24.1686670546061;
+        Tue, 13 Jun 2023 08:35:46 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7BMFmVyFJ4lCGDdWS54ulpZZa9F099khds3bj+FjvKlYT50eyMdDe0p3lFuCQ0U4uRG/Fslw==
+X-Received: by 2002:aa7:d49a:0:b0:50b:fd52:2f4b with SMTP id b26-20020aa7d49a000000b0050bfd522f4bmr8767175edr.24.1686670545829;
+        Tue, 13 Jun 2023 08:35:45 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? ([2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id j25-20020aa7c0d9000000b005148f0e8568sm6626969edp.39.2023.06.13.08.35.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Jun 2023 08:35:45 -0700 (PDT)
+Message-ID: <5a6e0086-027b-cf6b-6c89-32aba244c1dd@redhat.com>
+Date:   Tue, 13 Jun 2023 17:35:42 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrgedujedgkeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepkedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghl
- rdgtohhmpdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=8 Fuz1=8 Fuz2=8
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2] platform/x86/dell/dell-rbtn: Fix resources leaking on
+ error path
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Michal Wilczynski <michal.wilczynski@intel.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
+        ilpo.jarvinen@linux.intel.com, pali@kernel.org,
+        markgross@kernel.org, fengguang.wu@intel.com,
+        dvhart@linux.intel.com, platform-driver-x86@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230613084310.2775896-1-michal.wilczynski@intel.com>
+ <ZIiHaEn7nW7yAFK8@smile.fi.intel.com>
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <ZIiHaEn7nW7yAFK8@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi,
 
-The addition of might_sleep() to down_timeout() caused the latter to
-enable interrupts unconditionally in some cases, which in turn broke
-the ACPI S3 wakeup path in acpi_suspend_enter(), where down_timeout()
-is called by acpi_disable_all_gpes() via acpi_ut_acquire_mutex().
+On 6/13/23 17:12, Andy Shevchenko wrote:
+> On Tue, Jun 13, 2023 at 11:43:10AM +0300, Michal Wilczynski wrote:
+>> Currently rbtn_add() in case of failure is leaking resources. Fix this
+>> by adding a proper rollback. Move devm_kzalloc() before rbtn_acquire(),
+>> so it doesn't require rollback in case of failure. While at it, remove
+>> unnecessary assignment of NULL to device->driver_data and unnecessary
+>> whitespace, plus add a break for the default case in a switch.
+> 
+>> Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> 
+> Isn't also suggested by Pali?
+> 
+>> Fixes: 817a5cdb40c8 ("dell-rbtn: Dell Airplane Mode Switch driver")
+>> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+>> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>> Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+> 
+> ...
+> 
+> Hans, can it (an additional tag) be folded into applied change?
 
-Namely, if CONFIG_DEBUG_ATOMIC_SLEEP is set, might_sleep() causes
-might_resched() to be used and if CONFIG_PREEMPT_VOLUNTARY is set,
-this triggers __cond_resched() which may call preempt_schedule_common(),
-so __schedule() gets invoked and it ends up with enabled interrupts (in
-the prev == next case).
+Done and pushed to review-hans.
 
-Now, enabling interrupts early in the S3 wakeup path causes the kernel
-to crash.
+Regards,
 
-Address this by modifying acpi_suspend_enter() to disable GPEs without
-attempting to acquire the sleeping lock which is not needed in that code
-path anyway.
+Hans
 
-Fixes: 99409b935c9a locking/semaphore: Add might_sleep() to down_*() family
-Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/acpica/achware.h |    2 --
- drivers/acpi/sleep.c          |   16 ++++++++++++----
- include/acpi/acpixf.h         |    1 +
- 3 files changed, 13 insertions(+), 6 deletions(-)
-
-Index: linux-pm/drivers/acpi/acpica/achware.h
-===================================================================
---- linux-pm.orig/drivers/acpi/acpica/achware.h
-+++ linux-pm/drivers/acpi/acpica/achware.h
-@@ -101,8 +101,6 @@ acpi_status
- acpi_hw_get_gpe_status(struct acpi_gpe_event_info *gpe_event_info,
- 		       acpi_event_status *event_status);
- 
--acpi_status acpi_hw_disable_all_gpes(void);
--
- acpi_status acpi_hw_enable_all_runtime_gpes(void);
- 
- acpi_status acpi_hw_enable_all_wakeup_gpes(void);
-Index: linux-pm/include/acpi/acpixf.h
-===================================================================
---- linux-pm.orig/include/acpi/acpixf.h
-+++ linux-pm/include/acpi/acpixf.h
-@@ -761,6 +761,7 @@ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_sta
- 						     acpi_event_status
- 						     *event_status))
- ACPI_HW_DEPENDENT_RETURN_UINT32(u32 acpi_dispatch_gpe(acpi_handle gpe_device, u32 gpe_number))
-+ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_hw_disable_all_gpes(void))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_disable_all_gpes(void))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_enable_all_runtime_gpes(void))
- ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_enable_all_wakeup_gpes(void))
-Index: linux-pm/drivers/acpi/sleep.c
-===================================================================
---- linux-pm.orig/drivers/acpi/sleep.c
-+++ linux-pm/drivers/acpi/sleep.c
-@@ -636,11 +636,19 @@ static int acpi_suspend_enter(suspend_st
- 	}
- 
- 	/*
--	 * Disable and clear GPE status before interrupt is enabled. Some GPEs
--	 * (like wakeup GPE) haven't handler, this can avoid such GPE misfire.
--	 * acpi_leave_sleep_state will reenable specific GPEs later
-+	 * Disable all GPE and clear their status bits before interrupts are
-+	 * enabled. Some GPEs (like wakeup GPEs) have no handlers and this can
-+	 * prevent them from producing spurious interrups.
-+	 *
-+	 * acpi_leave_sleep_state() will reenable specific GPEs later.
-+	 *
-+	 * Because this code runs on one CPU with disabled interrupts (all of
-+	 * the other CPUs are offline at that time), it need not acquire any
-+	 * sleeping locks which maybe harmful due to instrumentation even if
-+	 * those locks are not contended, so avoid doing that by using a low-
-+	 * level library routine here.
- 	 */
--	acpi_disable_all_gpes();
-+	acpi_hw_disable_all_gpes();
- 	/* Allow EC transactions to happen. */
- 	acpi_ec_unblock_transactions();
- 
 
 
 
