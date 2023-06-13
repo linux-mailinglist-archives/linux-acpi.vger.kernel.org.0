@@ -2,114 +2,176 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F90872DF39
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jun 2023 12:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92AA272DFED
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jun 2023 12:42:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234660AbjFMKXB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Jun 2023 06:23:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51858 "EHLO
+        id S240739AbjFMKmo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Jun 2023 06:42:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241682AbjFMKWk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Jun 2023 06:22:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F1E1FCB;
-        Tue, 13 Jun 2023 03:22:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3DC060CA5;
-        Tue, 13 Jun 2023 10:22:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DC1C433D2;
-        Tue, 13 Jun 2023 10:22:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686651728;
-        bh=pelskQAIf0QXMoPlaEmAMxMPm+r2Wg28oItNo0pusac=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Tnk4gb9cVZdUkGo5tfNoNWA8VBC1XjEm8bEKOCHKqLCcYJcPFv4xIMCmOYVLG9g5B
-         wU+GjLmg1cmwxV9e4fhSUnvGc2q47IVvIJi8pRIY1bevbSGv416t6T/qektEu0MkWF
-         9fmqou012AsozmmXKE43gdV9yV182l4gyyJkUxZQ=
-Date:   Tue, 13 Jun 2023 12:22:05 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Alexey Kardashevskiy <aik@amd.com>
-Cc:     Avadhut Naik <Avadhut.Naik@amd.com>, rafael@kernel.org,
-        lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, avadnaik@amd.com,
-        yazen.ghannam@amd.com, alexey.kardashevskiy@amd.com,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v3 2/3] fs: debugfs: Add write functionality to
- debugfs blobs
-Message-ID: <2023061329-splinter-rundown-a61a@gregkh>
-References: <20230612215139.5132-1-Avadhut.Naik@amd.com>
- <20230612215139.5132-3-Avadhut.Naik@amd.com>
- <2023061334-surplus-eclair-197a@gregkh>
- <1d55a83a-b36a-4319-16bc-c1aa72e361b5@amd.com>
+        with ESMTP id S241379AbjFMKmm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Jun 2023 06:42:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 329071AD
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Jun 2023 03:41:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686652918;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=irXa5/MVUXutU2yje0SPChb0/2Blm8SZbdJ2XPx6hj8=;
+        b=JHv9tUaceiuqMGU73jj9SIK+B2+VwKQbAS/yktTD0zHo22Gy/13L40ns2j967ZPLpKI9Tx
+        nrmc9F8KlgG9xVjOu7NeEZCPrJg6vDYuDbz1+zgt+C6Y5v1bJoX0HvKWa44SnoQP2+9Uj6
+        lXDY68VmJ62+3LmYqhz/kxOmoLeqjrE=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-207-s6VU4u2NOkq3wD1nR65rlg-1; Tue, 13 Jun 2023 06:41:56 -0400
+X-MC-Unique: s6VU4u2NOkq3wD1nR65rlg-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-9745c72d99cso611401666b.1
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Jun 2023 03:41:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686652915; x=1689244915;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=irXa5/MVUXutU2yje0SPChb0/2Blm8SZbdJ2XPx6hj8=;
+        b=h4rQI6bRgDN0zaDB6cnww/eYGspQgjxbNulUH6Md1AS/mlhJljloefmmkUlFbajXzd
+         RtawpcD0kRvlk8oaFSOTzoCVk5AehPkjFbp68ozYz9FdNvXqpzrxerYHYqGwM+FSVGOy
+         frDqCpp3DrZq/cIfXckTZdOroJi9W24KZeA3MTUF5pM1/0APpEznQOMPvyve7pAFIGUw
+         mMHVCyuXSISFQWgpZQzIEtevGuvGi8DwbE65fr0fv/Xwdn+GEmakY6YNY+WYNVWAJGRv
+         j0kDT+04/ydq8OHayyQSJe8ZUvXjg87GxH4hM+HS08tCei7kQZ2hg89U1i61oLMsAL/v
+         JjRg==
+X-Gm-Message-State: AC+VfDyo61QtcijbgQZ5r5lu6xVs2knio7BUm84823OT8/aWL+At8qJD
+        Y+dRz48FKTBfVLzLwmB2Mz693nvyQNfISARZKXjcApvNNWqKONEFoo74AG8bngAAPH4m6wwFLn0
+        HnNir1sEBlnS55TCiJrISFg==
+X-Received: by 2002:a17:907:25cc:b0:94f:6218:191d with SMTP id ae12-20020a17090725cc00b0094f6218191dmr11871318ejc.32.1686652915836;
+        Tue, 13 Jun 2023 03:41:55 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ649gXkCgdxRxAB5x48am3xL6yj+0ReYQgIhb6mbtLS6zRHULE7BFRMjEl/xK8VH+IPs/zLgg==
+X-Received: by 2002:a17:907:25cc:b0:94f:6218:191d with SMTP id ae12-20020a17090725cc00b0094f6218191dmr11871305ejc.32.1686652915511;
+        Tue, 13 Jun 2023 03:41:55 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id ce23-20020a170906b25700b0097887b68c17sm6490324ejb.98.2023.06.13.03.41.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Jun 2023 03:41:54 -0700 (PDT)
+Message-ID: <066c16a1-265f-e3f9-a8c9-25115aad9451@redhat.com>
+Date:   Tue, 13 Jun 2023 12:41:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1d55a83a-b36a-4319-16bc-c1aa72e361b5@amd.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2] platform/x86/dell/dell-rbtn: Fix resources leaking on
+ error path
+Content-Language: en-US, nl
+To:     Michal Wilczynski <michal.wilczynski@intel.com>,
+        linux-acpi@vger.kernel.org
+Cc:     rafael@kernel.org, andriy.shevchenko@intel.com,
+        ilpo.jarvinen@linux.intel.com, pali@kernel.org,
+        markgross@kernel.org, fengguang.wu@intel.com,
+        dvhart@linux.intel.com, platform-driver-x86@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+References: <20230613084310.2775896-1-michal.wilczynski@intel.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20230613084310.2775896-1-michal.wilczynski@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 13, 2023 at 08:05:41PM +1000, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 13/6/23 17:59, Greg KH wrote:
-> > On Mon, Jun 12, 2023 at 09:51:38PM +0000, Avadhut Naik wrote:
-> > >   /**
-> > > - * debugfs_create_blob - create a debugfs file that is used to read a binary blob
-> > > + * debugfs_create_blob - create a debugfs file that is used to read and write
-> > > + * a binary blob
-> > >    * @name: a pointer to a string containing the name of the file to create.
-> > > - * @mode: the read permission that the file should have (other permissions are
-> > > - *	  masked out)
-> > > + * @mode: the permission that the file should have
-> > >    * @parent: a pointer to the parent dentry for this file.  This should be a
-> > >    *          directory dentry if set.  If this parameter is %NULL, then the
-> > >    *          file will be created in the root of the debugfs filesystem.
-> > > @@ -992,7 +1010,7 @@ static const struct file_operations fops_blob = {
-> > >    *
-> > >    * This function creates a file in debugfs with the given name that exports
-> > >    * @blob->data as a binary blob. If the @mode variable is so set it can be
-> > > - * read from. Writing is not supported.
-> > > + * read from and written to.
-> > >    *
-> > >    * This function will return a pointer to a dentry if it succeeds.  This
-> > >    * pointer must be passed to the debugfs_remove() function when the file is
-> > > @@ -1007,7 +1025,7 @@ struct dentry *debugfs_create_blob(const char *name, umode_t mode,
-> > >   				   struct dentry *parent,
-> > >   				   struct debugfs_blob_wrapper *blob)
-> > >   {
-> > > -	return debugfs_create_file_unsafe(name, mode & 0444, parent, blob, &fops_blob);
-> > > +	return debugfs_create_file_unsafe(name, mode, parent, blob, &fops_blob);
-> > 
-> > Have you audited all calls to this function to verify that you haven't
-> > just turned on write access to some debugfs files?
-> 
-> I just did, it is one of S_IRUGO/S_IRUSR/0444/0400/(S_IFREG | 0444). So we
-> are quite safe here. Except (S_IFREG | 0444) in
-> drivers/platform/chrome/cros_ec_debugfs.c which seems wrong as debugfs files
-> are not regular files.
-> 
-> > Why not rename this to debugfs_create_blob_wo() and then make a new
-> > debugfs_create_blob_rw() call to ensure that it all is ok?
-> 
-> It is already taking the mode for this purpose. imho just
-> cros_ec_create_panicinfo()'s debugfs_create_blob("panicinfo", S_IFREG |
-> 0444,...) needs fixing.
+Hi,
 
-Yes, well it's taking the mode, but silently modifying it :)
+On 6/13/23 10:43, Michal Wilczynski wrote:
+> Currently rbtn_add() in case of failure is leaking resources. Fix this
+> by adding a proper rollback. Move devm_kzalloc() before rbtn_acquire(),
+> so it doesn't require rollback in case of failure. While at it, remove
+> unnecessary assignment of NULL to device->driver_data and unnecessary
+> whitespace, plus add a break for the default case in a switch.
+> 
+> Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Fixes: 817a5cdb40c8 ("dell-rbtn: Dell Airplane Mode Switch driver")
+> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+> ---
+> v2:
+>  - move devm_kzalloc before rbtn_acquire as suggested
 
-Ok, thanks for the audit, respin this with that fix and then I don't
-have a problem with it (other than binary debugfs files fill me with
-dread, what could go wrong...)
 
-thanks,
+Thank you for your patch, I've applied this patch to my review-hans 
+branch:
+https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
 
-greg k-h
+Note it will show up in my review-hans branch once I've pushed my
+local branch there, which might take a while.
+
+Once I've run some tests on this branch the patches there will be
+added to the platform-drivers-x86/for-next branch and eventually
+will be included in the pdx86 pull-request to Linus for the next
+merge-window.
+
+Regards,
+
+Hans
+
+
+
+
+>  drivers/platform/x86/dell/dell-rbtn.c | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/platform/x86/dell/dell-rbtn.c b/drivers/platform/x86/dell/dell-rbtn.c
+> index aa0e6c907494..c8fcb537fd65 100644
+> --- a/drivers/platform/x86/dell/dell-rbtn.c
+> +++ b/drivers/platform/x86/dell/dell-rbtn.c
+> @@ -395,16 +395,16 @@ static int rbtn_add(struct acpi_device *device)
+>  		return -EINVAL;
+>  	}
+>  
+> +	rbtn_data = devm_kzalloc(&device->dev, sizeof(*rbtn_data), GFP_KERNEL);
+> +	if (!rbtn_data)
+> +		return -ENOMEM;
+> +
+>  	ret = rbtn_acquire(device, true);
+>  	if (ret < 0) {
+>  		dev_err(&device->dev, "Cannot enable device\n");
+>  		return ret;
+>  	}
+>  
+> -	rbtn_data = devm_kzalloc(&device->dev, sizeof(*rbtn_data), GFP_KERNEL);
+> -	if (!rbtn_data)
+> -		return -ENOMEM;
+> -
+>  	rbtn_data->type = type;
+>  	device->driver_data = rbtn_data;
+>  
+> @@ -420,10 +420,12 @@ static int rbtn_add(struct acpi_device *device)
+>  		break;
+>  	default:
+>  		ret = -EINVAL;
+> +		break;
+>  	}
+> +	if (ret)
+> +		rbtn_acquire(device, false);
+>  
+>  	return ret;
+> -
+>  }
+>  
+>  static void rbtn_remove(struct acpi_device *device)
+> @@ -442,7 +444,6 @@ static void rbtn_remove(struct acpi_device *device)
+>  	}
+>  
+>  	rbtn_acquire(device, false);
+> -	device->driver_data = NULL;
+>  }
+>  
+>  static void rbtn_notify(struct acpi_device *device, u32 event)
+
