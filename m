@@ -2,75 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2F697308DE
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jun 2023 21:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92E247309F8
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jun 2023 23:48:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235268AbjFNT52 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Jun 2023 15:57:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41348 "EHLO
+        id S235268AbjFNVsC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Jun 2023 17:48:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233730AbjFNT50 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jun 2023 15:57:26 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D82562101;
-        Wed, 14 Jun 2023 12:57:24 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-51640b9ed95so11989846a12.2;
-        Wed, 14 Jun 2023 12:57:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686772643; x=1689364643;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XLPwTDo5gV4mqPvwKixQb840PKI9upvdKNQ9cbYW6Q8=;
-        b=W2ov78I2fLzdyXFyjae1BbXmaJ7z/RMkaXP6zaB5hIFrlBcHlW7BTNBSt0QXWBZeA+
-         FvjbNDAiNe8OJ3AdGVfCE83tlA3oQNReMQuYRr2V7TpYf6KPAIZcbf3ArQt0Qf0/tr1l
-         amIBTKFg2Oi0uwX4lGLakw97Lprl8rBVx6iDuoSJoPAKgi7Ego/T91c5XUYZjPbowZlb
-         L0pjIH3s9iCc0ol2fEzUAkFW6zM6AtKS7TbEEhOqCbzWyqxyujC09hyFgTgcTCAdT+jv
-         VZ6lvf86Hyx0YhVji+W0UvoxYEK5QqXxP0SREU2e31HkPc75jS+vrpdYWTku1SVy/rFG
-         IXZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686772643; x=1689364643;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XLPwTDo5gV4mqPvwKixQb840PKI9upvdKNQ9cbYW6Q8=;
-        b=iekvgzvVEcuCi8D9UAi8C/JsE27e02OXPKrNPRfhoTo5b3RXN5Uc9xNWxrCan50Oei
-         Qsna1HJK0YvY6JYFEC8EfwsznKJLHYGmhsFvedlpxQjAIkiyyudG3vqAHYvcN4omCh1A
-         k+KD9dKO2eZmmrkFnBZDdvmSArzZa++NI+hvdeQIq26j4Thxvy+RlgQwvkn5GTsZsHGc
-         Ypu0GlecJ8bj6Qem3xBSjfzLZIFXGFgPBtUP2kRDxwujHd+F3T5EePOEEYlkSHDJ320t
-         8LRZgiFM3k6CecMSQ7Z365+bCIafgdyZLDnDwsY95ip06kE1DKEvXseLRkwE6Ky1uA3Q
-         DNcA==
-X-Gm-Message-State: AC+VfDzLO9VGC4mRrBr5w54AVWevFeecIGXIpFxDG7nLHLfCp4UGyARs
-        GhohKGvE6QGF63ueToONufR1tCZola84KC5irrk=
-X-Google-Smtp-Source: ACHHUZ4oTxUd1zwcNKSxEXWe/7DXGacs3lHbk1VkUT+4f2hzAvNapDLX1fEpElzJYAchKAT6G391OLBoYz2yHVDnOho=
-X-Received: by 2002:a05:6402:34c:b0:50d:1e11:eb9 with SMTP id
- r12-20020a056402034c00b0050d1e110eb9mr10572574edw.1.1686772643127; Wed, 14
- Jun 2023 12:57:23 -0700 (PDT)
+        with ESMTP id S231721AbjFNVsB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jun 2023 17:48:01 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D0FF268A;
+        Wed, 14 Jun 2023 14:48:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686779280; x=1718315280;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LQIF5inCfu28gaIYSQc4ijEDRuUeulTBce7NaMHlXvA=;
+  b=jERJ+EWPyv54kUxPUMGMBZuZOlvo4R6tVlCkpip2Jbk/77RBvYbZXMCQ
+   P6dEL31dlGMjN11ALYewG/f2Dq0cpq2/aQE7TS3NWBypGb3ztQO2XVfa+
+   xQl/7urJi7fgkg9/RYA1whs8MKB6b8fB1+Yen3nfn+jacGLWsVeXmp3LG
+   CuIs8x3Dx05rOve6EDhuf7uX+kG+CSwr06P/d4f+MbmTlZNc2j2xGNbQW
+   6TnpG/stE+3BHvmWk2DZ+j/fjAKaZWgMN+xlwm5oZ26lQZWUuOlA5XDqi
+   f/v3KVoHwQxCAv+S0A7jqOVLpZtX+mleOEgaCyljT/sP02Y8dtUJiEfdb
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="358741577"
+X-IronPort-AV: E=Sophos;i="6.00,243,1681196400"; 
+   d="scan'208";a="358741577"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 14:47:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="802091001"
+X-IronPort-AV: E=Sophos;i="6.00,243,1681196400"; 
+   d="scan'208";a="802091001"
+Received: from djiang5-mobl3.amr.corp.intel.com (HELO [192.168.1.177]) ([10.212.110.39])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 14:47:59 -0700
+Subject: [PATCH v4 0/4] acpi: Add CDAT parsing support to ACPI tables code
+From:   Dave Jiang <dave.jiang@intel.com>
+To:     linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Len Brown <lenb@kernel.org>, rafael@kernel.org,
+        lenb@kernel.org, dan.j.williams@intel.com, ira.weiny@intel.com,
+        vishal.l.verma@intel.com, alison.schofield@intel.com,
+        lukas@wunner.de, Jonathan.Cameron@huawei.com, guohanjun@huawei.com
+Date:   Wed, 14 Jun 2023 14:47:58 -0700
+Message-ID: <168677921156.2787985.6927511816148622557.stgit@djiang5-mobl3>
+User-Agent: StGit/1.5
 MIME-Version: 1.0
-References: <20221121102113.41893-1-roger.pau@citrix.com> <20221121102113.41893-3-roger.pau@citrix.com>
- <bac0ed0f-6772-450b-663c-fc0614efa100@suse.com> <Y3uTTAWxe/676t3q@Air-de-Roger>
-In-Reply-To: <Y3uTTAWxe/676t3q@Air-de-Roger>
-From:   Jason Andryuk <jandryuk@gmail.com>
-Date:   Wed, 14 Jun 2023 15:57:11 -0400
-Message-ID: <CAKf6xptcWkdqELORESF1V9eeb-DFHS0UMumQbLYL1-Fgg0LhXg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] acpi/processor: sanitize _PDC buffer bits when
- running as Xen dom0
-To:     =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
-Cc:     Jan Beulich <jbeulich@suse.com>, xen-devel@lists.xenproject.org,
-        jgross@suse.com, stable@vger.kernel.org,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,78 +64,55 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Roger,
+v4:
+- Add file entries in MAINTAINERS. (Hanjun)
+- Fixed couple 0-day issues.
+v3:
+- Move common code to lib/fw_table.c
+v2:
+- Split out with CONFIG_ACPI_TABLES_LIB to be independent
+- Fixed 0-day issues
+- Change CDAT releveant names to prefix with cdat/CDAT instead of
+  acpi/ACPI. (Jonathan)
+- Make table_header a union with cdat table header instead of
+  'acpi_table_header'. (Jonathan)
+- Removed ACPI_SIG_CDAT, already defined.
 
-On Mon, Nov 21, 2022 at 10:04=E2=80=AFAM Roger Pau Monn=C3=A9 <roger.pau@ci=
-trix.com> wrote:
->
-> On Mon, Nov 21, 2022 at 03:10:36PM +0100, Jan Beulich wrote:
-> > On 21.11.2022 11:21, Roger Pau Monne wrote:
-> > > --- a/drivers/acpi/processor_pdc.c
-> > > +++ b/drivers/acpi/processor_pdc.c
-> > > @@ -137,6 +137,14 @@ acpi_processor_eval_pdc(acpi_handle handle, stru=
-ct acpi_object_list *pdc_in)
-> > >             buffer[2] &=3D ~(ACPI_PDC_C_C2C3_FFH | ACPI_PDC_C_C1_FFH)=
-;
-> > >
-> > >     }
-> > > +   if (xen_initial_domain())
-> > > +           /*
-> > > +            * When Linux is running as Xen dom0 it's the hypervisor =
-the
-> > > +            * entity in charge of the processor power management, an=
-d so
-> > > +            * Xen needs to check the OS capabilities reported in the=
- _PDC
-> > > +            * buffer matches what the hypervisor driver supports.
-> > > +            */
-> > > +           xen_sanitize_pdc((uint32_t *)pdc_in->pointer->buffer.poin=
-ter);
-> > >     status =3D acpi_evaluate_object(handle, "_PDC", pdc_in, NULL);
-> >
-> > Again looking at our old XenoLinux forward port we had this inside the
-> > earlier if(), as an _alternative_ to the &=3D (I don't think it's valid
-> > to apply both the kernel's and Xen's adjustments). That would also let
-> > you use "buffer" rather than re-calculating it via yet another (risky
-> > from an abstract pov) cast.
->
-> Hm, I've wondered this and decided it wasn't worth to short-circuit
-> the boot_option_idle_override conditional because ACPI_PDC_C_C2C3_FFH
-> and ACPI_PDC_C_C1_FFH will be set anyway by Xen in
-> arch_acpi_set_pdc_bits() as part of ACPI_PDC_C_CAPABILITY_SMP.
->
-> I could re-use some of the code in there, but didn't want to make it
-> more difficult to read just for the benefit of reusing buffer.
->
-> > It was the very nature of requiring Xen-specific conditionals which I
-> > understand was the reason why so far no attempt was made to get this
-> > (incl the corresponding logic for patch 1) into any upstream kernel.
->
-> Yes, well, it's all kind of ugly.  Hence my suggestion to simply avoid
-> doing any ACPI Processor object handling in Linux with the native code
-> and handle it all in a Xen specific driver.  That requires the Xen
-> driver being able to fetch more data itself form the ACPI Processor
-> methods, but also unties it from the dependency on the data being
-> filled by the generic code, and the 'tricks' is plays into fooling
-> generic code to think certain processors are online.
+Hi Dan,
+Rafael has ack'd the series. Please consider pulling them.
 
-Are you working on this patch anymore?  My Xen HWP patches need a
-Linux patch like this one to set bit 12 in the PDC.  I had an affected
-user test with this patch and it worked, serving as an equivalent of
-Linux commit a21211672c9a ("ACPI / processor: Request native thermal
-interrupt handling via _OSC").
+1/4: Split out the common code from drivers/acpi/tables.c to lib/fw_table.c
+2/4: Add CDAT support
+3,4/4: These two are minor patches that has ACPICA impact. Has been merged into
+       the ACPICA git repo [3].
 
-Another idea is to use Linux's arch_acpi_set_pdc_bits() to make the
-hypercall to Xen.  It occurs earlier:
-acpi_processor_set_pdc()
-    acpi_processor_alloc_pdc()
-        acpi_set_pdc_bits()
-            arch_acpi_set_pdc_bits()
-    acpi_processor_eval_pdc()
+The whole series is at [2] for convenience.
 
-So the IDLE_NOMWAIT masking in acpi_processor_eval_pdc() would still
-apply.  arch_acpi_set_pdc_bits() is provided the buffer, so it's a
-little cleaner in that respect.
+[1]: https://lore.kernel.org/linux-cxl/168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3/T/#t
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/djiang/linux.git/log/?h=cxl-qtg
+[3]: https://github.com/acpica/acpica/pull/874
 
-Thanks,
-Jason
+---
+
+Dave Jiang (4):
+      acpi: Move common tables helper functions to common lib
+      lib/firmware_table: tables: Add CDAT table parsing support
+      acpi: fix misnamed define for CDAT DSMAS
+      acpi: Add defines for CDAT SSLBIS
+
+
+ MAINTAINERS              |   2 +
+ drivers/acpi/Kconfig     |   1 +
+ drivers/acpi/tables.c    | 178 +----------------------------
+ include/acpi/actbl1.h    |   5 +-
+ include/linux/acpi.h     |  42 ++-----
+ include/linux/fw_table.h |  52 +++++++++
+ lib/Kconfig              |   3 +
+ lib/Makefile             |   2 +
+ lib/fw_table.c           | 237 +++++++++++++++++++++++++++++++++++++++
+ 9 files changed, 315 insertions(+), 207 deletions(-)
+ create mode 100644 include/linux/fw_table.h
+ create mode 100644 lib/fw_table.c
+
+--
+
