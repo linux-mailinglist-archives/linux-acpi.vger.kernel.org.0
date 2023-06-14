@@ -2,47 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 765097304A0
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jun 2023 18:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D56417304C7
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jun 2023 18:19:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231384AbjFNQMZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Jun 2023 12:12:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60916 "EHLO
+        id S231599AbjFNQS6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Jun 2023 12:18:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231429AbjFNQMX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jun 2023 12:12:23 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7821F1FE5;
-        Wed, 14 Jun 2023 09:12:22 -0700 (PDT)
+        with ESMTP id S233041AbjFNQSl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jun 2023 12:18:41 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84953E43;
+        Wed, 14 Jun 2023 09:18:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686759142; x=1718295142;
+  t=1686759519; x=1718295519;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fn79wtGk84t697GEvQm3SSYhtO2iiDoAWw2Q8A4P0zw=;
-  b=I+1Sqd1XUUsqkdg03ANHY585Gmx8TGM8e8S4HCzZ88EFpryG/WkWyz+R
-   3/05sSNj2O566mXuRCTnGMt2qNryakTeWZ1TOzChoy1LQ3P/Xb3QJKj7S
-   ytCzXYgtyoatha/AO/4d/Rh8Gyvc2rEHprriUV4iYazi9yrNt+BoK59A2
-   m9sZdFlcK/5EcWcsOoiBhB+GqMdiRmtwHj2kadBazm9awyErQZ3CQ2XMl
-   aeJN+kuff5hhVMM69m+2+j1lqOHOSQzmq8SoqKLnzDYQPQcM4fy1BmDfi
-   xFVzhmTKHdDBYPXG5pzcBw5PCsT/Ovp6sJ4iKAEqEYRl7/OhJ+Cd5Om0b
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=IssY0UkBJsN+vwkFfyARVIK95wmR4sN/a0XQGURwmHE=;
+  b=Lq/Ch6s9mTyM06nzWJWz8WSUtmvfZS8c/m56mKlY8lbWbwFFDQDJ7UaR
+   BTSr9xh6o0j9YmeJdKKvzD63mK+/wBU3Trt0i4JsBCHtFIZdvzNXcrCvC
+   o4MfG2XIYwJi5sHiSeRLnLYiBJOa00CFFhEZ5EaF80ycAB6eOOwGeqj9a
+   d1C+iY8gxB5bniuvV/EE8MbvXn/01UQwW7owK+sS+fGgm+rYtcpD01naz
+   F6mqLRSpjFZtQwG5iORaqAZ1r+YISDHgJcBXP7TVKCObzK85BLGpDvg5x
+   QmVF74cKLRYPNzsC2C9o4iL5pNfTVKSw2eMHTenPkh7HLpoFUYA3r/Gv6
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="361135194"
+X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="424547881"
 X-IronPort-AV: E=Sophos;i="6.00,243,1681196400"; 
-   d="scan'208";a="361135194"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 09:09:29 -0700
+   d="scan'208";a="424547881"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 09:17:39 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="958843848"
+X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="824873760"
 X-IronPort-AV: E=Sophos;i="6.00,243,1681196400"; 
-   d="scan'208";a="958843848"
+   d="scan'208";a="824873760"
 Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.212.193.191])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 09:09:27 -0700
-Date:   Wed, 14 Jun 2023 09:09:25 -0700
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 09:17:36 -0700
+Date:   Wed, 14 Jun 2023 09:17:36 -0700
 From:   Alison Schofield <alison.schofield@intel.com>
-To:     Dan Williams <dan.j.williams@intel.com>
+To:     "Wilczynski, Michal" <michal.wilczynski@intel.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
@@ -57,43 +58,45 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         linux-kernel@vger.kernel.org,
         Derick Marks <derick.w.marks@intel.com>
 Subject: Re: [PATCH v2 1/2] x86/numa: Introduce numa_fill_memblks()
-Message-ID: <ZInmNaUM4HYnCCya@aschofie-mobl2>
+Message-ID: <ZInoILTLfop6P8wt@aschofie-mobl2>
 References: <cover.1686712819.git.alison.schofield@intel.com>
  <9fcc548a6b4727cb2538e5227d7bad2e94e6adaf.1686712819.git.alison.schofield@intel.com>
- <6489b6234a03e_142af829454@dwillia2-xfh.jf.intel.com.notmuch>
+ <03945e1f-caf6-3e5c-babc-d30e4e02b65e@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <6489b6234a03e_142af829454@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <03945e1f-caf6-3e5c-babc-d30e4e02b65e@intel.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 14, 2023 at 05:44:19AM -0700, Dan Williams wrote:
-> alison.schofield@ wrote:
+On Wed, Jun 14, 2023 at 09:35:22AM +0200, Wilczynski, Michal wrote:
+> 
+> 
+> On 6/14/2023 6:35 AM, alison.schofield@intel.com wrote:
 > > From: Alison Schofield <alison.schofield@intel.com>
-> > 
+> >
 > > numa_fill_memblks() fills in the gaps in numa_meminfo memblks
 > > over an HPA address range.
-> > 
+> >
 > > The ACPI driver will use numa_fill_memblks() to implement a new Linux
 > > policy that prescribes extending proximity domains in a portion of a
 > > CFMWS window to the entire window.
-> > 
+> >
 > > Dan Williams offered this explanation of the policy:
 > > A CFWMS is an ACPI data structure that indicates *potential* locations
 > > where CXL memory can be placed. It is the playground where the CXL
 > > driver has free reign to establish regions. That space can be populated
 > > by BIOS created regions, or driver created regions, after hotplug or
 > > other reconfiguration.
-> > 
+> >
 > > When BIOS creates a region in a CXL Window it additionally describes
 > > that subset of the Window range in the other typical ACPI tables SRAT,
 > > SLIT, and HMAT. The rationale for BIOS not pre-describing the entire
@@ -102,7 +105,7 @@ On Wed, Jun 14, 2023 at 05:44:19AM -0700, Dan Williams wrote:
 > > devices being placed in the same Window. Compare that to ACPI memory
 > > hotplug that just onlines additional capacity in the proximity domain
 > > with little freedom for dynamic performance differentiation.
-> > 
+> >
 > > That leaves the OS with a choice, should unpopulated window capacity
 > > match the proximity domain of an existing region, or should it allocate
 > > a new one? This patch takes the simple position of minimizing proximity
@@ -113,17 +116,42 @@ On Wed, Jun 14, 2023 at 05:44:19AM -0700, Dan Williams wrote:
 > > Think of CXL as the end of ACPI needing to describe memory attributes,
 > > CXL offers a standard discovery model for performance attributes, but
 > > Linux still needs to interoperate with the old regime.
-> > 
+> >
 > > Reported-by: Derick Marks <derick.w.marks@intel.com>
 > > Suggested-by: Dan Williams <dan.j.williams@intel.com>
 > > Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 > > Tested-by: Derick Marks <derick.w.marks@intel.com>
-> [..]
+> > ---
+> >  arch/x86/include/asm/sparsemem.h |  2 +
+> >  arch/x86/mm/numa.c               | 87 ++++++++++++++++++++++++++++++++
+> >  include/linux/numa.h             |  7 +++
+> >  3 files changed, 96 insertions(+)
+> >
+> > diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
+> > index 64df897c0ee3..1be13b2dfe8b 100644
+> > --- a/arch/x86/include/asm/sparsemem.h
+> > +++ b/arch/x86/include/asm/sparsemem.h
+> > @@ -37,6 +37,8 @@ extern int phys_to_target_node(phys_addr_t start);
+> >  #define phys_to_target_node phys_to_target_node
+> >  extern int memory_add_physaddr_to_nid(u64 start);
+> >  #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
+> > +extern int numa_fill_memblks(u64 start, u64 end);
+> > +#define numa_fill_memblks numa_fill_memblks
+> >  #endif
+> >  #endif /* __ASSEMBLY__ */
+> >  
 > > diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
 > > index 2aadb2019b4f..fa82141d1a04 100644
 > > --- a/arch/x86/mm/numa.c
 > > +++ b/arch/x86/mm/numa.c
-> [..]
+> > @@ -11,6 +11,7 @@
+> >  #include <linux/nodemask.h>
+> >  #include <linux/sched.h>
+> >  #include <linux/topology.h>
+> > +#include <linux/sort.h>
+> >  
+> >  #include <asm/e820/api.h>
+> >  #include <asm/proto.h>
 > > @@ -961,4 +962,90 @@ int memory_add_physaddr_to_nid(u64 start)
 > >  	return nid;
 > >  }
@@ -133,26 +161,22 @@ On Wed, Jun 14, 2023 at 05:44:19AM -0700, Dan Williams wrote:
 > > +{
 > > +	const struct numa_memblk *ma = *(const struct numa_memblk **)a;
 > > +	const struct numa_memblk *mb = *(const struct numa_memblk **)b;
+> 
+> Is this casting necessary  ?
+
+Thanks for the review Michael,
+
+I found the cast to be necessary.
+Sort passes pointers to the array elements to compare, even if they
+are already pointers, so cmp_ gets a double pointer. 
+
+> 
 > > +
 > > +	if (ma->start != mb->start)
 > > +		return (ma->start < mb->start) ? -1 : 1;
 > > +
 > > +	/* Caller handles duplicate start addresses */
 > > +	return 0;
-> 
-> This can be simplified to:
-> 
-> static int __init cmp_memblk(const void *a, const void *b)
-> {
-> 	const struct numa_memblk *ma = *(const struct numa_memblk **)a;
-> 	const struct numa_memblk *mb = *(const struct numa_memblk **)b;
-> 
-> 	return ma->start - mb->start;
-> }
-
-Got it.
-
-> 
 > > +}
 > > +
 > > +static struct numa_memblk *numa_memblk_list[NR_NODE_MEMBLKS] __initdata;
@@ -188,9 +212,6 @@ Got it.
 > > +	 * This list of pointers is used to make in-place changes
 > > +	 * that fill out the numa_meminfo memblks.
 > > +	 */
-> 
-> Thanks for this comment, looks good.
-> 
 > > +	for (int i = 0; i < mi->nr_blks; i++) {
 > > +		struct numa_memblk *bi = &mi->blk[i];
 > > +
@@ -214,18 +235,6 @@ Got it.
 > > +	 * prev_end, and backfilling to it if needed. Avoid filling
 > > +	 * overlapping memblks by making prev_end monotonically non-
 > > +	 * decreasing.
-> 
-> I am not immediately understanding the use of the term monotonically
-> non-decreasing here? I think the first sentence of this comment is
-> enough, or am I missing a nuance?
-
-Not sure it's a nuance, but if we advanced prev_end to be curr_end
-at each iteration, gaps get needlessly filled, when curr is wholly
-contained in prev. So the 'monotonically non-decreasing' comment is
-emphasizing that prev-end will either stay the same or increase
-at each iteration.
-
-> 
 > > +	 */
 > > +	prev_end = blk[0]->end;
 > > +	for (int i = 1; i < count; i++) {
@@ -242,14 +251,49 @@ at each iteration.
 > > +	return 0;
 > > +}
 > > +EXPORT_SYMBOL_GPL(numa_fill_memblks);
+> > +
+> >  #endif
+> > diff --git a/include/linux/numa.h b/include/linux/numa.h
+> > index 59df211d051f..0f512c0aba54 100644
+> > --- a/include/linux/numa.h
+> > +++ b/include/linux/numa.h
+> > @@ -12,6 +12,7 @@
+> >  #define MAX_NUMNODES    (1 << NODES_SHIFT)
+> >  
+> >  #define	NUMA_NO_NODE	(-1)
+> > +#define	NUMA_NO_MEMBLK	(-1)
 > 
-> This export is not needed. The only caller of this is
-> drivers/acpi/numa/srat.c which is only ever built-in, not a module.
+> Same error code as NUMA_NO_NODE ?
+> 
 
-Got it.
-Thanks for the review Dan and for helping address other reviewer
-comments.
+Yes. It's a define for convenience/clarity, rather than just using
+(-1).  I could have just used NUMA_NO_NODE, since no memblk also
+means no node, but in a function whose job is to fill memblks, that
+seemed wrong.
 
-Alison
+> >  
+> >  /* optionally keep NUMA memory info available post init */
+> >  #ifdef CONFIG_NUMA_KEEP_MEMINFO
+> > @@ -43,6 +44,12 @@ static inline int phys_to_target_node(u64 start)
+> >  	return 0;
+> >  }
+> >  #endif
+> > +#ifndef numa_fill_memblks
+> 
+> Why not just #ifndef CONFIG_NUMA_KEEP_MEMINFO ?
 
+Dan responded to this, nothing to add to that:
+This is due to the fact that multiple archs use
+CONFIG_NUMA_KEEP_MEMINFO (x86, ARM64, LOONGARCH), but only one supplies
+a numa_fill_memblks() implementation (x86).
 
+> 
+> > +static inline int __init numa_fill_memblks(u64 start, u64 end)
+> > +{
+> > +	return NUMA_NO_MEMBLK;
+> > +}
+> > +#endif
+> >  #else /* !CONFIG_NUMA */
+> >  static inline int numa_map_to_online_node(int node)
+> >  {
+> 
