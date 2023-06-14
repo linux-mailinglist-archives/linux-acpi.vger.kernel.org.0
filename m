@@ -2,138 +2,184 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC0E272F39A
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jun 2023 06:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6456772F3A2
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jun 2023 06:38:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242532AbjFNEgA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Jun 2023 00:36:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35262 "EHLO
+        id S242654AbjFNEiV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Jun 2023 00:38:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242523AbjFNEf5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jun 2023 00:35:57 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A24231BD4;
-        Tue, 13 Jun 2023 21:35:55 -0700 (PDT)
+        with ESMTP id S242611AbjFNEhr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jun 2023 00:37:47 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24BA41BE9;
+        Tue, 13 Jun 2023 21:37:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686717355; x=1718253355;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=pExp2WMXGyNpxCyGDYOXewD2SNqta6zQBIAwkyT6MEY=;
-  b=MBBAxp/iwb5IyinxAVKMqxiEJT09Z7M9iVRaoRNqvWvcF/+GCdzScyYX
-   jv15em1L6PK6Pl+xQJvzfirrJwbl51yq+3MULo2j3Yh9qVsgL94B4Wo4Z
-   ByFfKfT5zsUvgbGwsCvUu8Pd74dWwUPrb4u3F7MfJYz7cr4d1/K8STeGK
-   8WynePFqffh4SCm5iVddZGzVJklqlwIIzwMSfG2KxFWOK7u7tLFFPg33i
-   +kx93a4FEc4+ekLS5sknDSR+bufHWBMq3GBAKW84fIim57qqTXLqtphOU
-   SwokxY3phf/HMUxeGthXChFZll7Uv8aFp+KfR/FQKqOH1br1osoUYefdA
+  t=1686717466; x=1718253466;
+  h=date:from:to:cc:subject:message-id;
+  bh=Dc5J6vgoUund0/bZhi4iHo9o4Nlh+HFU0g9W1sCUV08=;
+  b=LD7INkka5Jd2XQkJv+cF5ThU63oThVpAtn/2YQZ4dqLnQmzs87s1PKZp
+   e3tPPXN6TYBCBw/c2UCZhBkvkhSVDNkRg11oB4I+Daw6gTSIxLtBWxr8z
+   GTDdK5w+NR6qfEZw0XmX6DUcfCxHKJUcN0hZwjQ6EmCDRsFRCqfzVq2Mx
+   LuG+MFNNpd9yfZwtqomtrzUDiUpeXG8op8dgcP6Iz0fcPbU8LbOo1kjIy
+   9AJ6dBd7hVmuSGDgyrbWcjta/bMFzHHeSUGjprZB+65DLKGEBza2bepVv
+   Sh056Ifek15/Q6v9TheJ4wgGuGeK11iCvINAZKRpaxhDyJvkV2Trpp1XF
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="360998751"
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="361889859"
 X-IronPort-AV: E=Sophos;i="6.00,241,1681196400"; 
-   d="scan'208";a="360998751"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 21:35:31 -0700
+   d="scan'208";a="361889859"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 21:37:45 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="662251423"
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="741696660"
 X-IronPort-AV: E=Sophos;i="6.00,241,1681196400"; 
-   d="scan'208";a="662251423"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO localhost) ([10.212.233.239])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 21:35:30 -0700
-From:   alison.schofield@intel.com
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Mike Rapoport <rppt@kernel.org>
-Cc:     Alison Schofield <alison.schofield@intel.com>, x86@kernel.org,
-        linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Derick Marks <derick.w.marks@intel.com>
-Subject: [PATCH v2 2/2] ACPI: NUMA: Apply SRAT proximity domain to entire CFMWS window
-Date:   Tue, 13 Jun 2023 21:35:25 -0700
-Message-Id: <2871681bbe6aeac8a5d8f197d6f21749da9d75d7.1686712819.git.alison.schofield@intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1686712819.git.alison.schofield@intel.com>
-References: <cover.1686712819.git.alison.schofield@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+   d="scan'208";a="741696660"
+Received: from lkp-server02.sh.intel.com (HELO d59cacf64e9e) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 13 Jun 2023 21:37:43 -0700
+Received: from kbuild by d59cacf64e9e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q9IGN-0000BF-0L;
+        Wed, 14 Jun 2023 04:37:43 +0000
+Date:   Wed, 14 Jun 2023 12:36:09 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 569f57f6b2dcc8be30eb8714be89b1692e84ece6
+Message-ID: <202306141206.1Cb4emmM-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Alison Schofield <alison.schofield@intel.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 569f57f6b2dcc8be30eb8714be89b1692e84ece6  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
 
-Commit fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each
-CFMWS not in SRAT") did not account for the case where the BIOS
-only partially describes a CFMWS Window in the SRAT. That means
-the omitted address ranges, of a partially described CFMWS Window,
-do not get assigned to a NUMA node.
+elapsed time: 727m
 
-Replace the call to phys_to_target_node() with numa_add_memblks().
-Numa_add_memblks() searches an HPA range for existing memblk(s)
-and extends those memblk(s) to fill the entire CFMWS Window.
+configs tested: 107
+configs skipped: 5
 
-Extending the existing memblks is a simple strategy that reuses
-SRAT defined proximity domains from part of a window to fill out
-the entire window, based on the knowledge* that all of a CFMWS
-window is of a similar performance class.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-*Note that this heuristic will evolve when CFMWS Windows present
-a wider range of characteristics. The extension of the proximity
-domain, implemented here, is likely a step in developing a more
-sophisticated performance profile in the future.
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r025-20230612   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r012-20230612   gcc  
+arc                  randconfig-r043-20230612   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r005-20230612   gcc  
+arm                  randconfig-r026-20230612   clang
+arm                  randconfig-r046-20230612   clang
+arm64                            alldefconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64        buildonly-randconfig-r001-20230612   clang
+arm64                               defconfig   gcc  
+arm64                randconfig-r002-20230612   clang
+arm64                randconfig-r011-20230612   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r003-20230612   gcc  
+csky                 randconfig-r015-20230612   gcc  
+hexagon              randconfig-r041-20230612   clang
+hexagon              randconfig-r045-20230612   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230612   clang
+i386                 randconfig-i002-20230612   clang
+i386                 randconfig-i003-20230612   clang
+i386                 randconfig-i004-20230612   clang
+i386                 randconfig-i005-20230612   clang
+i386                 randconfig-i006-20230612   clang
+i386                 randconfig-i011-20230612   gcc  
+i386                 randconfig-i012-20230612   gcc  
+i386                 randconfig-i013-20230612   gcc  
+i386                 randconfig-i014-20230612   gcc  
+i386                 randconfig-i015-20230612   gcc  
+i386                 randconfig-i016-20230612   gcc  
+i386                 randconfig-r036-20230612   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips         buildonly-randconfig-r002-20230612   gcc  
+mips                 randconfig-r024-20230612   clang
+mips                          rm200_defconfig   clang
+nios2                               defconfig   gcc  
+openrisc                  or1klitex_defconfig   gcc  
+openrisc             randconfig-r001-20230612   gcc  
+openrisc             randconfig-r006-20230612   gcc  
+openrisc             randconfig-r014-20230612   gcc  
+openrisc             randconfig-r035-20230612   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc      buildonly-randconfig-r005-20230612   gcc  
+powerpc                         wii_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv        buildonly-randconfig-r006-20230612   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r042-20230612   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r021-20230612   gcc  
+s390                 randconfig-r044-20230612   gcc  
+sh                               allmodconfig   gcc  
+sh                           se7724_defconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc        buildonly-randconfig-r004-20230612   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r022-20230612   gcc  
+sparc                randconfig-r023-20230612   gcc  
+sparc64              randconfig-r004-20230612   gcc  
+sparc64              randconfig-r033-20230612   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   clang
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230612   clang
+x86_64               randconfig-a002-20230612   clang
+x86_64               randconfig-a003-20230612   clang
+x86_64               randconfig-a004-20230612   clang
+x86_64               randconfig-a005-20230612   clang
+x86_64               randconfig-a006-20230612   clang
+x86_64               randconfig-a011-20230612   gcc  
+x86_64               randconfig-a012-20230612   gcc  
+x86_64               randconfig-a013-20230612   gcc  
+x86_64               randconfig-a014-20230612   gcc  
+x86_64               randconfig-a015-20230612   gcc  
+x86_64               randconfig-a016-20230612   gcc  
+x86_64               randconfig-r032-20230612   clang
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r013-20230612   gcc  
+xtensa               randconfig-r031-20230612   gcc  
 
-There is no change in behavior when the SRAT does not describe
-the CFMWS Window at all. In that case, a new NUMA node with a
-single memblk covering the entire CFMWS Window is created.
-
-Fixes: fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT")
-Reported-by: Derick Marks <derick.w.marks@intel.com>
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Tested-by: Derick Marks <derick.w.marks@intel.com>
----
- drivers/acpi/numa/srat.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 1f4fc5f8a819..12f330b0eac0 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -310,11 +310,16 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
- 	start = cfmws->base_hpa;
- 	end = cfmws->base_hpa + cfmws->window_size;
- 
--	/* Skip if the SRAT already described the NUMA details for this HPA */
--	node = phys_to_target_node(start);
--	if (node != NUMA_NO_NODE)
-+	/*
-+	 * The SRAT may have already described NUMA details for all,
-+	 * or a portion of, this CFMWS HPA range. Extend the memblks
-+	 * found for any portion of the window to cover the entire
-+	 * window.
-+	 */
-+	if (!numa_fill_memblks(start, end))
- 		return 0;
- 
-+	/* No SRAT description. Create a new node. */
- 	node = acpi_map_pxm_to_node(*fake_pxm);
- 
- 	if (node == NUMA_NO_NODE) {
 -- 
-2.37.3
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
