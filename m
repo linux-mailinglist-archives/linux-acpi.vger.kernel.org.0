@@ -2,89 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A754172F86E
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jun 2023 10:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7762C72F8B9
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jun 2023 11:10:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243323AbjFNIyB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Jun 2023 04:54:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44136 "EHLO
+        id S243902AbjFNJK6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Jun 2023 05:10:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243779AbjFNIx5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jun 2023 04:53:57 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BB8F2688;
-        Wed, 14 Jun 2023 01:53:37 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1q9MFz-0003eN-0R; Wed, 14 Jun 2023 10:53:35 +0200
-Message-ID: <9d0ebb3a-3385-bfc3-13ce-41d54aaec4b4@leemhuis.info>
-Date:   Wed, 14 Jun 2023 10:53:34 +0200
+        with ESMTP id S243726AbjFNJK5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jun 2023 05:10:57 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A435810D5;
+        Wed, 14 Jun 2023 02:10:55 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Qh04g3LXWz6H7tc;
+        Wed, 14 Jun 2023 17:10:11 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 14 Jun
+ 2023 10:10:52 +0100
+Date:   Wed, 14 Jun 2023 10:10:51 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+CC:     <alison.schofield@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Len Brown" <lenb@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Borislav Petkov" <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Mike Rapoport" <rppt@kernel.org>, <x86@kernel.org>,
+        <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 0/2] CXL: Apply SRAT defined PXM to entire CFMWS
+ window
+Message-ID: <20230614101051.00006602@Huawei.com>
+In-Reply-To: <20230614083240.GC1639749@hirez.programming.kicks-ass.net>
+References: <cover.1686712819.git.alison.schofield@intel.com>
+        <20230614083240.GC1639749@hirez.programming.kicks-ass.net>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
- onward)
-Content-Language: en-US, de-DE
-To:     Bjorn Helgaas <helgaas@kernel.org>, Acid Bong <acidbong@tilde.cafe>
-Cc:     bagasdotme@gmail.com, linux-acpi@vger.kernel.org,
-        rafael@kernel.org, regressions@lists.linux.dev,
-        stable@vger.kernel.org
-References: <20230609165505.GA1251392@bhelgaas>
-From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <20230609165505.GA1251392@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1686732817;fcb67973;
-X-HE-SMSGID: 1q9MFz-0003eN-0R
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 09.06.23 18:55, Bjorn Helgaas wrote:
-> On Fri, Jun 09, 2023 at 02:09:17PM +0300, Acid Bong wrote:
->> Hi there, hello.
->>
->> About a week ago I returned to using Gajim, which, as I remember from
->> earlier, also seemed to be responsible for these hangings, and they got
->> more frequent (I haven't updated any software for the last 2 months). I
->> decided to move to the kernel version 6.1.1, which I earlier marked as
->> "good", and my laptop hung last evening during the shutdown. As always,
->> nothing in the logs.
->>
->> I tried to compile some versions from 5.15.y branch, but either I had a
->> bad luck, or the commits weren't properly compatible with GCC 12 yet,
->> but they (.48 and .78) emitted warnings, so I never used them (or I
->> broke the repo, who knows).
->>
->> Due to the fact that software does have impact on this behaviour, and
->> due to my health issues and potential conscription (cuz our army doesn't
->> care about health), which will cut me from my laptop for a long-long
->> time, I give up on bisecting. I'll just update all my software (there's
->> also a GCC upgrade in the repos) and hope for the best.
->>
->> Sorry for inconvenience and have a great day. Thank you very much.
+On Wed, 14 Jun 2023 10:32:40 +0200
+Peter Zijlstra <peterz@infradead.org> wrote:
+
+> On Tue, Jun 13, 2023 at 09:35:23PM -0700, alison.schofield@intel.com wrote:
+> > The CXL subsystem requires the creation of NUMA nodes for CFMWS  
 > 
-> No inconvenience on our side; your help is invaluable, especially for
-> intermittent problems like this one.  They are really hard to find and
-> debug, and I'm sorry that we didn't get this one resolved.
+> The thing is CXL some persistent memory thing, right? But what is this
+> CFMWS thing? I don't think I've ever seen that particular combination of
+> letters together.
+> 
+Hi Peter,
 
-+1
+To save time before the US based folk wake up.
 
-Then let me remove this from the regression tracking, too.
+Both persistent and volatile memory found on CXL devices (mostly volatile on
+early devices).
 
-#regzbot inconclusive: ignored, reporter for various real life reasons
-unfortunately will be unable to bisect/debug
-#regzbot ignore-activity
+CXL Fixed Memory Window (structure) (CFMWS - defined in 9.17.1.3 of CXL r3.0
+- via an ACPI table (CEDT).  CFMWS, as a term, is sometimes abused in the kernel
+(and here) for the window rather than the structure describing the window
+(the S on the end).
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+CFMWS - A region of Host Physical Address (HPA) Space which routes accesses to CXL Host
+bridges. A CFMWS describes interleaving as well (so multiple target host bridges).
+If multiple interleave setups are available, then you'll see multiple CFMWS entries
+- so different statically regions of HPA can route to same host bridges with different
+interleave setups (decoding via the configurable part to hit different actual memory
+on the downstream devices). 
+Where accesses are routed after that depends on the configurable parts
+of the CXL topology (Host-Managed Device Memory (HDM) decoders in host bridges,
+switches etc).  Note that a CFMWS address may route to nowhere if downstream
+devices aren't available / configured yet.
+
+CFMWS is the CXL specification avoiding defining interfaces for controlling
+the host address space to CXL host bridge mapping as those vary so much across
+host implementations + not always configurable at runtime anyway. Also includes
+a bunch of other details about the region (too many details perhaps!)
+
+Who does the configuration (BIOS / kernel) varies across implementations
+and we have OS managed hotplug so the OS always has to do some of it
+(personally I prefer the kernel doing everything :)
+It's made messier by CXL 1.1 hosts where a lot less was discoverable so
+generally the BIOS has to do the heavy lifting. For CXL 2.0 onwards the OS
+'might' do everything except whatever is needed on the host to configure
+the CXL Fixed Memory Windows it is advertising.
+
+Note there is no requirement that the access characteristics of memory mapped
+into a given CFMWS should be remotely consistent across the whole window
+ - some of the window may route through switches, and to directly connected
+   devices.
+That's a simplifying assumption made today as we don't yet know the full
+scope of what people are building.
+
+Hope that helps (rather than causing confusion!)
+
+Jonathan
