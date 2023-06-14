@@ -2,165 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F3572F837
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jun 2023 10:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A754172F86E
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jun 2023 10:54:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238639AbjFNIr6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Jun 2023 04:47:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39198 "EHLO
+        id S243323AbjFNIyB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Jun 2023 04:54:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235409AbjFNIr6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jun 2023 04:47:58 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA8961BF8;
-        Wed, 14 Jun 2023 01:47:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=zU7vTHGNGOkFDGHT4utTtg1onpxsh5x6oq5BFtksvGo=; b=O0pXasE2Kn5wmYU9m1T6l6fMbG
-        at0qHfdy6UyepxXSgdmc1iFnPI/I4JVNrRgFni2pfrE/a7UB1xczcKCixSbQT/xVNE+z3NXpctRqZ
-        H3gC9deJspth+OusfcDLWCrRQ+8ZOpnswLxjpOQCNXV7x9Mmks926o6PidaW+m8VouJmS03FUQ6FB
-        /jf6nI581bwIIyZkgn0dO6SHZJZjhZt7Hv8qu3Dj/89vO5zYJ6cuNtUQa5t4e/SUBiwbZ0ZpGPyxU
-        9Qu/OqNVoXuo7LLRIRrr2dpLrjE6gjx6YGZyhgJqnBAyvQ0U6uiEtF3jR5WWn16N3wH5eePpLKQ+h
-        pHdhXRMA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1q9MAB-005zdY-RS; Wed, 14 Jun 2023 08:47:36 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 137F73002F1;
-        Wed, 14 Jun 2023 10:47:34 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 2337327F86A50; Wed, 14 Jun 2023 10:47:34 +0200 (CEST)
-Date:   Wed, 14 Jun 2023 10:47:34 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Will Deacon <will@kernel.org>,
-        Saket Dumbre <saket.dumbre@intel.com>,
-        Xiaoming Ni <nixiaoming@huawei.com>
-Subject: Re: [PATCH v1] ACPI: sleep: Avoid breaking S3 wakeup due to
- might_sleep()
-Message-ID: <20230614084734.GD1639749@hirez.programming.kicks-ass.net>
-References: <12237421.O9o76ZdvQC@kreacher>
+        with ESMTP id S243779AbjFNIx5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jun 2023 04:53:57 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BB8F2688;
+        Wed, 14 Jun 2023 01:53:37 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1q9MFz-0003eN-0R; Wed, 14 Jun 2023 10:53:35 +0200
+Message-ID: <9d0ebb3a-3385-bfc3-13ce-41d54aaec4b4@leemhuis.info>
+Date:   Wed, 14 Jun 2023 10:53:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <12237421.O9o76ZdvQC@kreacher>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
+ onward)
+Content-Language: en-US, de-DE
+To:     Bjorn Helgaas <helgaas@kernel.org>, Acid Bong <acidbong@tilde.cafe>
+Cc:     bagasdotme@gmail.com, linux-acpi@vger.kernel.org,
+        rafael@kernel.org, regressions@lists.linux.dev,
+        stable@vger.kernel.org
+References: <20230609165505.GA1251392@bhelgaas>
+From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <20230609165505.GA1251392@bhelgaas>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1686732817;fcb67973;
+X-HE-SMSGID: 1q9MFz-0003eN-0R
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 13, 2023 at 05:25:07PM +0200, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 09.06.23 18:55, Bjorn Helgaas wrote:
+> On Fri, Jun 09, 2023 at 02:09:17PM +0300, Acid Bong wrote:
+>> Hi there, hello.
+>>
+>> About a week ago I returned to using Gajim, which, as I remember from
+>> earlier, also seemed to be responsible for these hangings, and they got
+>> more frequent (I haven't updated any software for the last 2 months). I
+>> decided to move to the kernel version 6.1.1, which I earlier marked as
+>> "good", and my laptop hung last evening during the shutdown. As always,
+>> nothing in the logs.
+>>
+>> I tried to compile some versions from 5.15.y branch, but either I had a
+>> bad luck, or the commits weren't properly compatible with GCC 12 yet,
+>> but they (.48 and .78) emitted warnings, so I never used them (or I
+>> broke the repo, who knows).
+>>
+>> Due to the fact that software does have impact on this behaviour, and
+>> due to my health issues and potential conscription (cuz our army doesn't
+>> care about health), which will cut me from my laptop for a long-long
+>> time, I give up on bisecting. I'll just update all my software (there's
+>> also a GCC upgrade in the repos) and hope for the best.
+>>
+>> Sorry for inconvenience and have a great day. Thank you very much.
 > 
-> The addition of might_sleep() to down_timeout() caused the latter to
-> enable interrupts unconditionally in some cases, which in turn broke
-> the ACPI S3 wakeup path in acpi_suspend_enter(), where down_timeout()
-> is called by acpi_disable_all_gpes() via acpi_ut_acquire_mutex().
-> 
-> Namely, if CONFIG_DEBUG_ATOMIC_SLEEP is set, might_sleep() causes
-> might_resched() to be used and if CONFIG_PREEMPT_VOLUNTARY is set,
-> this triggers __cond_resched() which may call preempt_schedule_common(),
-> so __schedule() gets invoked and it ends up with enabled interrupts (in
-> the prev == next case).
+> No inconvenience on our side; your help is invaluable, especially for
+> intermittent problems like this one.  They are really hard to find and
+> debug, and I'm sorry that we didn't get this one resolved.
 
-Urgh, so that code was relying on the lack of contention to not trigger
-the schedule path -- with the added might_sleep() it triggers a
-preemption point.
++1
 
-> Now, enabling interrupts early in the S3 wakeup path causes the kernel
-> to crash.
-> 
-> Address this by modifying acpi_suspend_enter() to disable GPEs without
-> attempting to acquire the sleeping lock which is not needed in that code
-> path anyway.
-> 
-> Fixes: 99409b935c9a locking/semaphore: Add might_sleep() to down_*() family
+Then let me remove this from the regression tracking, too.
 
-$ git show -s --pretty='format:%h ("%s")' 99409b935c9a
-99409b935c9a ("locking/semaphore: Add might_sleep() to down_*() family")
+#regzbot inconclusive: ignored, reporter for various real life reasons
+unfortunately will be unable to bisect/debug
+#regzbot ignore-activity
 
-> Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-
-> ---
->  drivers/acpi/acpica/achware.h |    2 --
->  drivers/acpi/sleep.c          |   16 ++++++++++++----
->  include/acpi/acpixf.h         |    1 +
->  3 files changed, 13 insertions(+), 6 deletions(-)
-> 
-> Index: linux-pm/drivers/acpi/acpica/achware.h
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/acpica/achware.h
-> +++ linux-pm/drivers/acpi/acpica/achware.h
-> @@ -101,8 +101,6 @@ acpi_status
->  acpi_hw_get_gpe_status(struct acpi_gpe_event_info *gpe_event_info,
->  		       acpi_event_status *event_status);
->  
-> -acpi_status acpi_hw_disable_all_gpes(void);
-> -
->  acpi_status acpi_hw_enable_all_runtime_gpes(void);
->  
->  acpi_status acpi_hw_enable_all_wakeup_gpes(void);
-> Index: linux-pm/include/acpi/acpixf.h
-> ===================================================================
-> --- linux-pm.orig/include/acpi/acpixf.h
-> +++ linux-pm/include/acpi/acpixf.h
-> @@ -761,6 +761,7 @@ ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_sta
->  						     acpi_event_status
->  						     *event_status))
->  ACPI_HW_DEPENDENT_RETURN_UINT32(u32 acpi_dispatch_gpe(acpi_handle gpe_device, u32 gpe_number))
-> +ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_hw_disable_all_gpes(void))
->  ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_disable_all_gpes(void))
->  ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_enable_all_runtime_gpes(void))
->  ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status acpi_enable_all_wakeup_gpes(void))
-> Index: linux-pm/drivers/acpi/sleep.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/sleep.c
-> +++ linux-pm/drivers/acpi/sleep.c
-> @@ -636,11 +636,19 @@ static int acpi_suspend_enter(suspend_st
->  	}
->  
->  	/*
-> -	 * Disable and clear GPE status before interrupt is enabled. Some GPEs
-> -	 * (like wakeup GPE) haven't handler, this can avoid such GPE misfire.
-> -	 * acpi_leave_sleep_state will reenable specific GPEs later
-> +	 * Disable all GPE and clear their status bits before interrupts are
-> +	 * enabled. Some GPEs (like wakeup GPEs) have no handlers and this can
-> +	 * prevent them from producing spurious interrups.
-> +	 *
-> +	 * acpi_leave_sleep_state() will reenable specific GPEs later.
-> +	 *
-> +	 * Because this code runs on one CPU with disabled interrupts (all of
-> +	 * the other CPUs are offline at that time), it need not acquire any
-> +	 * sleeping locks which maybe harmful due to instrumentation even if
-> +	 * those locks are not contended, so avoid doing that by using a low-
-> +	 * level library routine here.
-
-I'm not sure I'd call the implicit preemption point 'instrumentation'
-but yeah, fair enough I suppose.
-
->  	 */
-> -	acpi_disable_all_gpes();
-> +	acpi_hw_disable_all_gpes();
->  	/* Allow EC transactions to happen. */
->  	acpi_ec_unblock_transactions();
->  
-> 
-> 
-> 
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
