@@ -2,79 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C944E731248
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jun 2023 10:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AF10731678
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jun 2023 13:25:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234950AbjFOIfP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Jun 2023 04:35:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56780 "EHLO
+        id S238910AbjFOLYr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Jun 2023 07:24:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244853AbjFOIem (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Jun 2023 04:34:42 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD98D26AF;
-        Thu, 15 Jun 2023 01:34:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=bVcKqJ8llmIBsnTL5TFYde4i77dWQ9xnvttHh1T6GJI=; b=jYFA0P4cRoxLOoCPB1dL/LEp3l
-        6Ugo37vDJT7p4VyRIs7JZ6aF5w8mEWMeLELzs2w6FZezS+L5HcQggzvg6RzxWrW3rUrWlid2rjqPp
-        VW1PqOEAU3QR7mDuM+4U2ICawAQv1EIN/e8we1Z7f1lEmzlLZm4giuKxw3fs+yVFYxszKSqnhiWNl
-        xna2IDS8c8js6obpZ9+Hv8/nJWqE+K7MP7dGGeybSu5+vH5ILlusTVUJN6NEjl17bxXZnROASvttl
-        FJp5dHo+REQoI6IP+l/Il5lx9fTpAYAGeMEcxNVm8HgNBhNymAuPkyxyw1jxSFexx473UGtC5usp/
-        oivSOQ8w==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1q9iQj-007O0b-8P; Thu, 15 Jun 2023 08:34:09 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        with ESMTP id S236141AbjFOLYq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Jun 2023 07:24:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A3982695;
+        Thu, 15 Jun 2023 04:24:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 060DC3002A9;
-        Thu, 15 Jun 2023 10:34:07 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id D1EC02456F421; Thu, 15 Jun 2023 10:34:07 +0200 (CEST)
-Date:   Thu, 15 Jun 2023 10:34:07 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     alison.schofield@intel.com
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Mike Rapoport <rppt@kernel.org>, x86@kernel.org,
-        linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Derick Marks <derick.w.marks@intel.com>
-Subject: Re: [PATCH v2 1/2] x86/numa: Introduce numa_fill_memblks()
-Message-ID: <20230615083407.GB1683497@hirez.programming.kicks-ass.net>
-References: <cover.1686712819.git.alison.schofield@intel.com>
- <9fcc548a6b4727cb2538e5227d7bad2e94e6adaf.1686712819.git.alison.schofield@intel.com>
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DCDB622B5;
+        Thu, 15 Jun 2023 11:24:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A3AC433C0;
+        Thu, 15 Jun 2023 11:24:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1686828284;
+        bh=PmOSshALTtpzFoSkBJCRXqWkU0jVVespwvFelGEXXuA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=zbspOMrKa7NW/fRHDWJohcs5Hb8lHjF7SOkt4GQA9ChKo64ZSr83ayCQBVTGstHur
+         JmUPgfnHX8aBDD0PJIc0oZ6epOeyZBiZSQlZgwi5okLzBvLcCwZygtPBx1rPoi2maj
+         5G59+oMlrtJJ2x3xxs8KHPawzzfhlPbOnhzqEzdU=
+Date:   Thu, 15 Jun 2023 13:24:41 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Dave Jiang <dave.jiang@intel.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-cxl@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+        rafael@kernel.org, jonathan.cameron@huawei.com
+Subject: Re: [PATCH v2] base/node / acpi: Change 'node_hmem_attrs' to
+ 'access_coordinates'
+Message-ID: <2023061533-paralyze-tinker-3d32@gregkh>
+References: <168660916231.1965241.248859226126456131.stgit@djiang5-mobl3>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9fcc548a6b4727cb2538e5227d7bad2e94e6adaf.1686712819.git.alison.schofield@intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <168660916231.1965241.248859226126456131.stgit@djiang5-mobl3>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 13, 2023 at 09:35:24PM -0700, alison.schofield@intel.com wrote:
-> From: Alison Schofield <alison.schofield@intel.com>
+On Mon, Jun 12, 2023 at 03:32:42PM -0700, Dave Jiang wrote:
+> Dan Williams suggested changing the struct 'node_hmem_attrs' to
+> 'access_coordinates' [1]. The struct is a container of r/w-latency and
+> r/w-bandwidth numbers. Moving forward, this container will also be used by
+> CXL to store the performance characteristics of each link hop in
+> the PCIE/CXL topology. So, where node_hmem_attrs is just the access
+> parameters of a memory-node, access_coordinates applies more broadly
+> to hardware topology characteristics. The observation is that seemed like
+> an excercise in having the application identify "where" it falls on a
+> spectrum of bandwidth and latency needs. For the tuple of read/write-latency
+> and read/write-bandwidth, "coordinates" is not a perfect fit. Sometimes it
+> is just conveying values in isolation and not a "location" relative to
+> other performance points, but in the end this data is used to identify the
+> performance operation point of a given memory-node. [2]
 > 
-> numa_fill_memblks() fills in the gaps in numa_meminfo memblks
-> over an HPA address range.
+> Link: http://lore.kernel.org/r/64471313421f7_1b66294d5@dwillia2-xfh.jf.intel.com.notmuch/
+> Link: https://lore.kernel.org/linux-cxl/645e6215ee0de_1e6f2945e@dwillia2-xfh.jf.intel.com.notmuch/
+> Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> 
+> ---
+> 
+> Hi Greg and Rafael,
+> please consider ACK this patch and Dan can take it through the
+> CXL upstream tree. The remaining ACPI [1] and CXL [2] patches for enabling
+> CXL QoS class data have dependency on this patch. Thank you!
+> 
+> [1]: https://lore.kernel.org/linux-cxl/168333141100.2290593.16294670316057617744.stgit@djiang5-mobl3/T/#t
+> [2]: https://lore.kernel.org/linux-cxl/168451588868.3470703.3527256859632103687.stgit@djiang5-mobl3/T/#t
 
-What's with the Host part, should that not simply be PA ?
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
