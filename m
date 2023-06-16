@@ -2,67 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91365732933
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jun 2023 09:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35983732955
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jun 2023 09:55:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230420AbjFPHsp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 16 Jun 2023 03:48:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41998 "EHLO
+        id S233175AbjFPHzX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 16 Jun 2023 03:55:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234035AbjFPHso (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jun 2023 03:48:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA8B2977
-        for <linux-acpi@vger.kernel.org>; Fri, 16 Jun 2023 00:47:53 -0700 (PDT)
+        with ESMTP id S245517AbjFPHzQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jun 2023 03:55:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11FF8294E
+        for <linux-acpi@vger.kernel.org>; Fri, 16 Jun 2023 00:54:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686901673;
+        s=mimecast20190719; t=1686902068;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=oXBh3WfPI9MVT50Pe8Afg210FLgWLd3bSOuVVKJkhWo=;
-        b=UGPei8DowklpkW0rEwBrlg9Po+xWVuXtlof1+CUHtmnQ0c3WwsqhurY0tcK/DP6dDxGFPb
-        iDOECzGAKKLWXg5SLgVdl/cPGvL+wx/VgStY0z8IZUTtjiOcZkwA9dSvH33wec0C0HtjkB
-        izk3pGFXJeWUZSnASKnlrHd1tZJlKds=
+        bh=LCwXsPaPd7Dj5AMUAfbDa6LnAHzyeLCA6sw8/b3X0Ho=;
+        b=h8FWd4ZWoLbKP3a0FFusPZdqiw1rPe46zHP7CFBmwPKefJPR9/ilnBvzQLiwFwMn2GRjT0
+        vqvIwSjHBuB4KP8bnlIFtTtJaG7ZhfzJqXTfnROj3Mdzt/CH1VF4lgnFEH3wkBTxYOhSif
+        KdLSpdOwsypn1rIsydeHSGHoE2f4oXQ=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-Hq4j1Hp2PhGyEUKqf3J6ww-1; Fri, 16 Jun 2023 03:47:50 -0400
-X-MC-Unique: Hq4j1Hp2PhGyEUKqf3J6ww-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-3f81dda24d3so6451755e9.1
-        for <linux-acpi@vger.kernel.org>; Fri, 16 Jun 2023 00:47:50 -0700 (PDT)
+ us-mta-650-dH0rlAWZMwe7wS-zyGTukw-1; Fri, 16 Jun 2023 03:54:25 -0400
+X-MC-Unique: dH0rlAWZMwe7wS-zyGTukw-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-3f8d0308a0cso1293795e9.1
+        for <linux-acpi@vger.kernel.org>; Fri, 16 Jun 2023 00:54:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686901669; x=1689493669;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
+        d=1e100.net; s=20221208; t=1686902064; x=1689494064;
+        h=content-transfer-encoding:in-reply-to:subject:organization:from
+         :references:cc:to:content-language:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oXBh3WfPI9MVT50Pe8Afg210FLgWLd3bSOuVVKJkhWo=;
-        b=gWw9UDFlag0fNcc4poj2SeL2qc6DXcomSJk2kxXdSuR74cIw4nCYkiHgBeDoJDUc+0
-         13feUCK8Rhq50GcoDZ9izT3ZQEZnDkz/NHV/9IVCe0FuIh5P/zbqjXVonr/OpaFHXFZ+
-         F7M/G4citCg49FJOMuBkoo6JDCboA+T8yz58TrSlx/l+w/a4Xmyo7K3F2PL+sS88UPHo
-         W8AzqHrAdtdOPiWzHAnxmOlFUR81xG+TIIcdPXue/WwXNm6Rqt7X3hHtkrHXAQVVdVsS
-         A4B47LmXgwCm/XRvsAdhLrWGfLPej6SknxbHwrEH43gdY783wzFMq3Wc7ZzJbcuDSGjx
-         im+A==
-X-Gm-Message-State: AC+VfDxOUs0exan9DyxMEUQIMDUaLOs8vwU7m85mkrjd+6kM4rNpDiY3
-        nI4bv6C7Pj+p5AtU+I3+tasqdqKfYt/K5WKmOBbv1KxKCA1Ex0yPt/YD1LQquUq5FZPAkHN5kFe
-        HMv/Pc7WGF2EPK9RWJOMoBQ==
-X-Received: by 2002:a1c:4b0d:0:b0:3f7:f544:4993 with SMTP id y13-20020a1c4b0d000000b003f7f5444993mr1141174wma.20.1686901669251;
-        Fri, 16 Jun 2023 00:47:49 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ55p+WG27rh5UmhzCo3TJhy6HQkGnC87778glLxQLQ6ZCU8vj9Eo1KqLOUz62TTGAYz/uhrHA==
-X-Received: by 2002:a1c:4b0d:0:b0:3f7:f544:4993 with SMTP id y13-20020a1c4b0d000000b003f7f5444993mr1141163wma.20.1686901669008;
-        Fri, 16 Jun 2023 00:47:49 -0700 (PDT)
+        bh=LCwXsPaPd7Dj5AMUAfbDa6LnAHzyeLCA6sw8/b3X0Ho=;
+        b=JDDxeczpIJ9pFEN/OnIs38Nz3h20p4ckr4MZjx2uHhWn5LYCeicA7GJxjgrSclGu15
+         YghEDLtH3ZDUF5DP7yTg432+9P8bq/nn1xb7i3yMAO/7aMoFcCYlWfjND2rj8XO9jqnK
+         fYH4/UOqp3SuyD/4FzaFWPZ0UKnBoDlmZmrxj3VjzLN44YFOtqpQivAfZal/yb2sSOsv
+         CoSJ4+BIK8JDHagJy7HUU1AFn7437xw9VKZ+Zne/RNPIQn72trWg9nEHKpA2709xY4ow
+         X9ZkvJKm6d7Q95Ip490CSxifxUI0M2Jljt//gnta43pvx2Gpi1NcNMSH74rQhjRXKFHB
+         3aGg==
+X-Gm-Message-State: AC+VfDzh/rB4ylQiTF0j6qjMYykhb7uOI6QFdzpk3U6573Z3j0xsU4Y6
+        9sNDMPjpgLrv9exXil7gupRhn3EmWub9ckGI4stmfZfaawErdUMMzwL5PX9P+BPiOm9inhlwQqG
+        RDMV4kAklA3LnpGlei6YokQ==
+X-Received: by 2002:a7b:ce85:0:b0:3f8:c5a6:7a8d with SMTP id q5-20020a7bce85000000b003f8c5a67a8dmr1006462wmj.12.1686902064528;
+        Fri, 16 Jun 2023 00:54:24 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ57hUFJkB9ARA1uPg7u8sBxFriDIGC6XvjqrvDb1WUHap8aii1g0Wt8HyS0VoMZ5iYl6OcUQw==
+X-Received: by 2002:a7b:ce85:0:b0:3f8:c5a6:7a8d with SMTP id q5-20020a7bce85000000b003f8c5a67a8dmr1006449wmj.12.1686902064164;
+        Fri, 16 Jun 2023 00:54:24 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c707:9800:59ba:1006:9052:fb40? (p200300cbc707980059ba10069052fb40.dip0.t-ipconnect.de. [2003:cb:c707:9800:59ba:1006:9052:fb40])
-        by smtp.gmail.com with ESMTPSA id f13-20020a7bcd0d000000b003f7ba52eeccsm1427266wmj.7.2023.06.16.00.47.47
+        by smtp.gmail.com with ESMTPSA id o8-20020a05600c378800b003f195d540d9sm1431039wmr.14.2023.06.16.00.54.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Jun 2023 00:47:48 -0700 (PDT)
-Message-ID: <a40fe0a5-589f-0c65-ba57-9eb18cf54730@redhat.com>
-Date:   Fri, 16 Jun 2023 09:47:47 +0200
+        Fri, 16 Jun 2023 00:54:23 -0700 (PDT)
+Message-ID: <aadbedeb-424d-a146-392d-d56680263691@redhat.com>
+Date:   Fri, 16 Jun 2023 09:54:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 2/3] mm/memory_hotplug: Export symbol
- mhp_supports_memmap_on_memory()
 Content-Language: en-US
 To:     Vishal Verma <vishal.l.verma@intel.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -76,16 +74,19 @@ Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-cxl@vger.kernel.org, Huang Ying <ying.huang@intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>
 References: <20230613-vv-kmem_memmap-v1-0-f6de9c6af2c6@intel.com>
- <20230613-vv-kmem_memmap-v1-2-f6de9c6af2c6@intel.com>
+ <20230613-vv-kmem_memmap-v1-3-f6de9c6af2c6@intel.com>
 From:   David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <20230613-vv-kmem_memmap-v1-2-f6de9c6af2c6@intel.com>
+Subject: Re: [PATCH 3/3] dax/kmem: Always enroll hotplugged memory for
+ memmap_on_memory
+In-Reply-To: <20230613-vv-kmem_memmap-v1-3-f6de9c6af2c6@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -93,8 +94,17 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 On 16.06.23 00:00, Vishal Verma wrote:
-> In preparation for the dax/kmem driver, which can be built as a module,
-> to use this interface, export it with EXPORT_SYMBOL_GPL().
+> With DAX memory regions originating from CXL memory expanders or
+> NVDIMMs, the kmem driver may be hot-adding huge amounts of system memory
+> on a system without enough 'regular' main memory to support the memmap
+> for it. To avoid this, ensure that all kmem managed hotplugged memory is
+> added with the MHP_MEMMAP_ON_MEMORY flag to place the memmap on the
+> new memory region being hot added.
+> 
+> To do this, call add_memory() in chunks of memory_block_size_bytes() as
+> that is a requirement for memmap_on_memory. Additionally, Use the
+> mhp_flag to force the memmap_on_memory checks regardless of the
+> respective module parameter setting.
 > 
 > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
 > Cc: Len Brown <lenb@kernel.org>
@@ -107,24 +117,116 @@ On 16.06.23 00:00, Vishal Verma wrote:
 > Cc: Huang Ying <ying.huang@intel.com>
 > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 > ---
->   mm/memory_hotplug.c | 1 +
->   1 file changed, 1 insertion(+)
+>   drivers/dax/kmem.c | 49 ++++++++++++++++++++++++++++++++++++-------------
+>   1 file changed, 36 insertions(+), 13 deletions(-)
 > 
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index bb3845830922..92922080d3fa 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1328,6 +1328,7 @@ bool mhp_supports_memmap_on_memory(unsigned long size, mhp_t mhp_flags)
->   		       IS_ALIGNED(remaining_size, (pageblock_nr_pages << PAGE_SHIFT));
->   	return false;
->   }
-> +EXPORT_SYMBOL_GPL(mhp_supports_memmap_on_memory);
+> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+> index 7b36db6f1cbd..0751346193ef 100644
+> --- a/drivers/dax/kmem.c
+> +++ b/drivers/dax/kmem.c
+> @@ -12,6 +12,7 @@
+>   #include <linux/mm.h>
+>   #include <linux/mman.h>
+>   #include <linux/memory-tiers.h>
+> +#include <linux/memory_hotplug.h>
+>   #include "dax-private.h"
+>   #include "bus.h"
 >   
->   /*
->    * NOTE: The caller must call lock_device_hotplug() to serialize hotplug
+> @@ -105,6 +106,7 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+>   	data->mgid = rc;
+>   
+>   	for (i = 0; i < dev_dax->nr_range; i++) {
+> +		u64 cur_start, cur_len, remaining;
+>   		struct resource *res;
+>   		struct range range;
+>   
+> @@ -137,21 +139,42 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+>   		res->flags = IORESOURCE_SYSTEM_RAM;
+>   
+>   		/*
+> -		 * Ensure that future kexec'd kernels will not treat
+> -		 * this as RAM automatically.
+> +		 * Add memory in chunks of memory_block_size_bytes() so that
+> +		 * it is considered for MHP_MEMMAP_ON_MEMORY
+> +		 * @range has already been aligned to memory_block_size_bytes(),
+> +		 * so the following loop will always break it down cleanly.
+>   		 */
+> -		rc = add_memory_driver_managed(data->mgid, range.start,
+> -				range_len(&range), kmem_name, MHP_NID_IS_MGID);
+> +		cur_start = range.start;
+> +		cur_len = memory_block_size_bytes();
+> +		remaining = range_len(&range);
+> +		while (remaining) {
+> +			mhp_t mhp_flags = MHP_NID_IS_MGID;
+>   
+> -		if (rc) {
+> -			dev_warn(dev, "mapping%d: %#llx-%#llx memory add failed\n",
+> -					i, range.start, range.end);
+> -			remove_resource(res);
+> -			kfree(res);
+> -			data->res[i] = NULL;
+> -			if (mapped)
+> -				continue;
+> -			goto err_request_mem;
+> +			if (mhp_supports_memmap_on_memory(cur_len,
+> +							  MHP_MEMMAP_ON_MEMORY))
+> +				mhp_flags |= MHP_MEMMAP_ON_MEMORY;
+> +			/*
+> +			 * Ensure that future kexec'd kernels will not treat
+> +			 * this as RAM automatically.
+> +			 */
+> +			rc = add_memory_driver_managed(data->mgid, cur_start,
+> +						       cur_len, kmem_name,
+> +						       mhp_flags);
+> +
+> +			if (rc) {
+> +				dev_warn(dev,
+> +					 "mapping%d: %#llx-%#llx memory add failed\n",
+> +					 i, cur_start, cur_start + cur_len - 1);
+> +				remove_resource(res);
+> +				kfree(res);
+> +				data->res[i] = NULL;
+> +				if (mapped)
+> +					continue;
+> +				goto err_request_mem;
+> +			}
+> +
+> +			cur_start += cur_len;
+> +			remaining -= cur_len;
+>   		}
+>   		mapped++;
+>   	}
 > 
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Maybe the better alternative is teach 
+add_memory_resource()/try_remove_memory() to do that internally.
+
+In the add_memory_resource() case, it might be a loop around that 
+memmap_on_memory + arch_add_memory code path (well, and the error path 
+also needs adjustment):
+
+	/*
+	 * Self hosted memmap array
+	 */
+	if (mhp_flags & MHP_MEMMAP_ON_MEMORY) {
+		if (!mhp_supports_memmap_on_memory(size)) {
+			ret = -EINVAL;
+			goto error;
+		}
+		mhp_altmap.free = PHYS_PFN(size);
+		mhp_altmap.base_pfn = PHYS_PFN(start);
+		params.altmap = &mhp_altmap;
+	}
+
+	/* call arch's memory hotadd */
+	ret = arch_add_memory(nid, start, size, &params);
+	if (ret < 0)
+		goto error;
+
+
+Note that we want to handle that on a per memory-block basis, because we 
+don't want the vmemmap of memory block #2 to end up on memory block #1. 
+It all gets messy with memory onlining/offlining etc otherwise ...
 
 -- 
 Cheers,
