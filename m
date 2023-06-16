@@ -2,157 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C93D67336B6
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jun 2023 18:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 235C97337B2
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jun 2023 19:55:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345863AbjFPQxf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 16 Jun 2023 12:53:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37658 "EHLO
+        id S1344566AbjFPRza convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 16 Jun 2023 13:55:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345802AbjFPQwz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jun 2023 12:52:55 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93D54231;
-        Fri, 16 Jun 2023 09:51:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686934296; x=1718470296;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=9XCZnNDXGa3ES/phAjH28aJuSFl5AKJDTx3eRMC0J9A=;
-  b=czmHyVPPzCyZT2fbvXgLyitYYg40lDQuiC86g2VbYprDUHtxgay/SIvI
-   aQLpoM/pO8u4AdNJHtOXUsquVmhsssSjnE0YblDvsbJyOD5/NY3885bcj
-   j4LZqgdcfyJXObXTULz/whyqgz+DGTIDdR+6LLh8zhMNDT2ftFckQAs4f
-   IPWorE26CFEZuivAfaEcK5+dLv37ECt0ZyRC9RMQI4fs0EqKrzAExKQ7M
-   Jvuc+7ELVJ5jeMH38S0/lZLPkGB3eE7qPV1FS4uPN8jWnxQcrWn6ltzL3
-   UEw2H5Vi43bIfdqYBcmV/JInuIoVr/k1QVrP3YNtO6Bm7kWedqfbYLd97
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10743"; a="422913114"
-X-IronPort-AV: E=Sophos;i="6.00,248,1681196400"; 
-   d="scan'208";a="422913114"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2023 09:51:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10743"; a="707154256"
-X-IronPort-AV: E=Sophos;i="6.00,248,1681196400"; 
-   d="scan'208";a="707154256"
-Received: from powerlab.fi.intel.com ([10.237.71.25])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2023 09:51:28 -0700
-From:   Michal Wilczynski <michal.wilczynski@intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     rafael@kernel.org, dan.j.williams@intel.com,
-        vishal.l.verma@intel.com, lenb@kernel.org, dave.jiang@intel.com,
-        ira.weiny@intel.com, rui.zhang@intel.com,
-        linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-        Michal Wilczynski <michal.wilczynski@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH v5 10/10] acpi/thermal: Move handler installing logic to driver
-Date:   Fri, 16 Jun 2023 19:50:34 +0300
-Message-ID: <20230616165034.3630141-11-michal.wilczynski@intel.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230616165034.3630141-1-michal.wilczynski@intel.com>
-References: <20230616165034.3630141-1-michal.wilczynski@intel.com>
+        with ESMTP id S1344957AbjFPRzZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jun 2023 13:55:25 -0400
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF65C3A89;
+        Fri, 16 Jun 2023 10:55:19 -0700 (PDT)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-94ea38c90ccso28993966b.1;
+        Fri, 16 Jun 2023 10:55:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686938118; x=1689530118;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PmdUcFmDIHlF7HNhb9E+Wkb+wdo7Gt9DP5LMS8GUDQ8=;
+        b=cUfQu6dyYyQBOLVYERgd2yelS3heFp8ekktfScc4ItP/JXuaD1ELkWnPu+Ati3lefl
+         mb2GxwlWXowaihCn9No1R9QhnGol8ryxhRbTimLeBwXI1iUedvQPWAOSCmq0MO/8nVxi
+         DHZC2Hu1TJLy+7jGDgb7AtyKdSGI/O+EEwBccwBluV47oiA00V5l++9f6+tZk/T30kNo
+         bTbc0RnYriHqCPrjlkQpXNkfigjnd8NSFrZiAWVXv1Enr6eQn/zQvajfsiar1euKeau1
+         JQDmXG4U4Ittajc+hzSpSadz/PGAl+3+Cy4jgRsOtJyOCgmQm9fZKUeqRJYxGuF4Ep4y
+         rR8w==
+X-Gm-Message-State: AC+VfDwuY8BXPNkbUc68KQdK5/fCbywrkjcPASkjmCff8a22oZgw4WPf
+        IjJVpDZuSwIqBoRSL33PNygFpaq6oGmfk+3sf9AS3VM+
+X-Google-Smtp-Source: ACHHUZ6mZRWVEeHl7/kUKp1yAMVlNmsMXikDXdemoqUgcPXO7I1uW8lktQz9b924tyX9E9JBp8X7v17xDGxTuIOhyNQ=
+X-Received: by 2002:a17:906:7292:b0:982:a4ac:f79a with SMTP id
+ b18-20020a170906729200b00982a4acf79amr1964777ejl.7.1686938118240; Fri, 16 Jun
+ 2023 10:55:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230612161011.86871-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230612161011.86871-1-andriy.shevchenko@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 16 Jun 2023 19:55:07 +0200
+Message-ID: <CAJZ5v0hgNMWNtkAF7YY24cFvsnGYYYHMW1c4NekaNmyqYf=0tA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/3] device property: Introduce device_is_compatible()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently logic for installing notifications from ACPI devices is
-implemented using notify callback in struct acpi_driver. Preparations
-are being made to replace acpi_driver with more generic struct
-platform_driver, which doesn't contain notify callback. Furthermore
-as of now handlers are being called indirectly through
-acpi_notify_device(), which decreases performance.
+On Mon, Jun 12, 2023 at 6:12 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> Introduce a new helper to tell if device (node) is compatible to the
+> given string value. This will help some drivers to get rid of unneeded
+> OF APIs/etc and in may help others to be agnostic to OF/ACPI.
+>
+> While doing it, I have noticed that ACPI_DEVICE_CLASS() macro seems
+> defined in unsuitable location. Move it to the better one.
+>
+> Last patch is an example of what the first two are doing.
+>
+> The entire series can go, I believe, via ACPI (linux-pm) tree in case
+> the last patch gets tag from the respective maintainer.
+>
+> In v3:
+> - added tag to patch 1 (Rafael), patches 2&3 (Sakari)
+> - made commit message text wider in patch 3 (Sakari)
+>
+> In v2:
+> - updated commit message and added kernel doc for a new API (Greg)
+> - also replaced acpi_device_get_match_data() with the agnostic API
+> - tried to keep header inclusions ordered (to some extent)
+>
+> Andy Shevchenko (3):
+>   ACPI: Move ACPI_DEVICE_CLASS() to mod_devicetable.h
+>   device property: Implement device_is_compatible()
+>   ata: ahci_platform: Make code agnostic to OF/ACPI
+>
+>  drivers/ata/ahci_platform.c     |  8 ++++----
+>  include/linux/acpi.h            | 14 --------------
+>  include/linux/mod_devicetable.h | 13 +++++++++++++
+>  include/linux/property.h        | 12 ++++++++++++
+>  4 files changed, 29 insertions(+), 18 deletions(-)
+>
+> --
 
-Call acpi_dev_install_notify_handler() at the end of .add() callback.
-Call acpi_dev_remove_notify_handler() at the beginning of .remove()
-callback. Change arguments passed to the notify function to match with
-what's required by acpi_install_notify_handler(). Remove .notify
-callback initialization in acpi_driver.
-
-While at it, fix whitespaces in .remove() callback and move tz
-assignment upwards.
-
-Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
----
- drivers/acpi/thermal.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index f9f6ebb08fdb..84716e4b967c 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -825,9 +825,12 @@ static void acpi_queue_thermal_check(struct acpi_thermal *tz)
- 		queue_work(acpi_thermal_pm_queue, &tz->thermal_check_work);
- }
- 
--static void acpi_thermal_notify(struct acpi_device *device, u32 event)
-+static void acpi_thermal_notify(acpi_handle handle, u32 event, void *data)
- {
--	struct acpi_thermal *tz = acpi_driver_data(device);
-+	struct acpi_device *device = data;
-+	struct acpi_thermal *tz;
-+
-+	tz = acpi_driver_data(device);
- 
- 	if (!tz)
- 		return;
-@@ -997,11 +1000,20 @@ static int acpi_thermal_add(struct acpi_device *device)
- 
- 	pr_info("%s [%s] (%ld C)\n", acpi_device_name(device),
- 		acpi_device_bid(device), deci_kelvin_to_celsius(tz->temperature));
--	goto end;
- 
-+	result = acpi_dev_install_notify_handler(device,
-+						 ACPI_DEVICE_NOTIFY,
-+						 acpi_thermal_notify);
-+	if (result)
-+		goto flush_wq_and_unregister;
-+
-+	return 0;
-+
-+flush_wq_and_unregister:
-+	flush_workqueue(acpi_thermal_pm_queue);
-+	acpi_thermal_unregister_thermal_zone(tz);
- free_memory:
- 	kfree(tz);
--end:
- 	return result;
- }
- 
-@@ -1012,10 +1024,15 @@ static void acpi_thermal_remove(struct acpi_device *device)
- 	if (!device || !acpi_driver_data(device))
- 		return;
- 
--	flush_workqueue(acpi_thermal_pm_queue);
- 	tz = acpi_driver_data(device);
- 
-+	acpi_dev_remove_notify_handler(device,
-+				       ACPI_DEVICE_NOTIFY,
-+				       acpi_thermal_notify);
-+
-+	flush_workqueue(acpi_thermal_pm_queue);
- 	acpi_thermal_unregister_thermal_zone(tz);
-+
- 	kfree(tz);
- }
- 
-@@ -1078,7 +1095,6 @@ static struct acpi_driver acpi_thermal_driver = {
- 	.ops = {
- 		.add = acpi_thermal_add,
- 		.remove = acpi_thermal_remove,
--		.notify = acpi_thermal_notify,
- 		},
- 	.drv.pm = &acpi_thermal_pm,
- };
--- 
-2.41.0
-
+All applied as 6.5 material, thanks!
