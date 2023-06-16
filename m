@@ -2,56 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 235C97337B2
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jun 2023 19:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D6D27337CA
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jun 2023 19:58:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344566AbjFPRza convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 16 Jun 2023 13:55:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39816 "EHLO
+        id S229953AbjFPR60 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 16 Jun 2023 13:58:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344957AbjFPRzZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jun 2023 13:55:25 -0400
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF65C3A89;
-        Fri, 16 Jun 2023 10:55:19 -0700 (PDT)
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-94ea38c90ccso28993966b.1;
-        Fri, 16 Jun 2023 10:55:19 -0700 (PDT)
+        with ESMTP id S231772AbjFPR6Z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jun 2023 13:58:25 -0400
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00F712D50;
+        Fri, 16 Jun 2023 10:58:23 -0700 (PDT)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-31125a0a7daso137792f8f.1;
+        Fri, 16 Jun 2023 10:58:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686938118; x=1689530118;
+        d=1e100.net; s=20221208; t=1686938302; x=1689530302;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PmdUcFmDIHlF7HNhb9E+Wkb+wdo7Gt9DP5LMS8GUDQ8=;
-        b=cUfQu6dyYyQBOLVYERgd2yelS3heFp8ekktfScc4ItP/JXuaD1ELkWnPu+Ati3lefl
-         mb2GxwlWXowaihCn9No1R9QhnGol8ryxhRbTimLeBwXI1iUedvQPWAOSCmq0MO/8nVxi
-         DHZC2Hu1TJLy+7jGDgb7AtyKdSGI/O+EEwBccwBluV47oiA00V5l++9f6+tZk/T30kNo
-         bTbc0RnYriHqCPrjlkQpXNkfigjnd8NSFrZiAWVXv1Enr6eQn/zQvajfsiar1euKeau1
-         JQDmXG4U4Ittajc+hzSpSadz/PGAl+3+Cy4jgRsOtJyOCgmQm9fZKUeqRJYxGuF4Ep4y
-         rR8w==
-X-Gm-Message-State: AC+VfDwuY8BXPNkbUc68KQdK5/fCbywrkjcPASkjmCff8a22oZgw4WPf
-        IjJVpDZuSwIqBoRSL33PNygFpaq6oGmfk+3sf9AS3VM+
-X-Google-Smtp-Source: ACHHUZ6mZRWVEeHl7/kUKp1yAMVlNmsMXikDXdemoqUgcPXO7I1uW8lktQz9b924tyX9E9JBp8X7v17xDGxTuIOhyNQ=
-X-Received: by 2002:a17:906:7292:b0:982:a4ac:f79a with SMTP id
- b18-20020a170906729200b00982a4acf79amr1964777ejl.7.1686938118240; Fri, 16 Jun
- 2023 10:55:18 -0700 (PDT)
+        bh=nYPyIyhdF5I4EchW0F0yJFWG0aRH9eXy2KPSWUbZywM=;
+        b=f1f+Qx0LjG3Z4FqfFw0AO8jvj7JnAk4INIrWejcly5d//oiOkxH6kS1rnp+D7wbrhq
+         We+matXjCggE15EBFMjfXFCA0sXgSigXJ4/ZQD0MO7BBcD/47lCdTuymgMtj6NchmHVl
+         CnWHMYrm01k9Z9LCBW8+0S1AnX3PQm0Nf9IFxR344V8sHaTS/9hfaLYVmwyapp1A8J/p
+         +4mZFG1cbk0LUOjHLTjg7+zHBWp/0OUryGD+454YOUPg+y4m47Rbi/LA9mZhR0+wmLc6
+         vSMWlLW21zrRvurC3x6fEoCmECis+CLGeNyLqs5dxevPJqWTOw2adPy6YV0mYQPLOJHE
+         khjg==
+X-Gm-Message-State: AC+VfDxqFYRszGwLoW/Hv7iP9j3rmQxold8GLYwTjKxOnhBg1mL2b1f3
+        YcyKVFYZkvKBXxsPfe13/FKpMM1uU+hrz8n0vnPKiknT
+X-Google-Smtp-Source: ACHHUZ4k+oO7OxsNsM6kqMmHh1IyXjRB5UPtkVQDIsnQNrkTw97cmgJDjCRQrVHk80mVB56YXiGnFo7mvC0S8e29Uj4=
+X-Received: by 2002:adf:ed83:0:b0:311:1a93:71ad with SMTP id
+ c3-20020adfed83000000b003111a9371admr1864035wro.3.1686938302321; Fri, 16 Jun
+ 2023 10:58:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230612161011.86871-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230612161011.86871-1-andriy.shevchenko@linux.intel.com>
+References: <168686408822.2950427.16242077816997472103.stgit@djiang5-mobl3>
+In-Reply-To: <168686408822.2950427.16242077816997472103.stgit@djiang5-mobl3>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 16 Jun 2023 19:55:07 +0200
-Message-ID: <CAJZ5v0hgNMWNtkAF7YY24cFvsnGYYYHMW1c4NekaNmyqYf=0tA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] device property: Introduce device_is_compatible()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
+Date:   Fri, 16 Jun 2023 19:58:11 +0200
+Message-ID: <CAJZ5v0h_HMAoAj3v0MLEt3pK2Kz8VQOKuc2hweUAyLheyqUQ1Q@mail.gmail.com>
+Subject: Re: [PATCH v3 0/6] acpi: numa: add target support for generic port to
+ HMAT parsing
+To:     Dave Jiang <dave.jiang@intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
+        ira.weiny@intel.com, vishal.l.verma@intel.com,
+        alison.schofield@intel.com, lukas@wunner.de
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -64,41 +60,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 6:12 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Thu, Jun 15, 2023 at 11:23 PM Dave Jiang <dave.jiang@intel.com> wrote:
 >
-> Introduce a new helper to tell if device (node) is compatible to the
-> given string value. This will help some drivers to get rid of unneeded
-> OF APIs/etc and in may help others to be agnostic to OF/ACPI.
+> v3:
+> - Break out ACPI_SRAT_DEVICE_HANDLE_SIZE define. Merged into ACPICA repo.
+> - Break out code in hmat_parse_locality() to improve readability. (Jonathan)
+> - Drop continue after setting gen target access data. (Jonathan)
+> v2:
+> - Add check for memory type for setting GENPORT access data. (Jonathan)
+> - NODE_ACCESS_CLASS_GENPORT to NODE_ACCESS_CLASS_GENPORT_SINK
+> - Change strncmp() to memcmp() for device handle compare
 >
-> While doing it, I have noticed that ACPI_DEVICE_CLASS() macro seems
-> defined in unsuitable location. Move it to the better one.
+> Hi Rafael,
+> Please consider acking this series.
+
+Sure.
+
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+> Dan will take it through his CXL tree.
+
+Works for me!
+
+> This is the second set of ACPI changes that's part of the "cxl: Add support for
+> QTG ID retrieval for CXL subsystem" [1]. It has dependency on the patch [2]
+> that was sent to you and GregKH and Greg has ack'd. But it's independent of the
+> first set of ACPI changes [3]. The series adds support to store the device handle
+> from the SRAT Generic Port Affinity Structure in correlation with a proximity
+> domain. And later on the HMAT is parsed and the performance data is stored
+> associated with the proximity domain. A helper function is added to allow the CXL
+> driver to retrieve the performance data that matches with the device handle later
+> on. The full series of CXL code is at this git repo [4] for usage reference.
 >
-> Last patch is an example of what the first two are doing.
 >
-> The entire series can go, I believe, via ACPI (linux-pm) tree in case
-> the last patch gets tag from the respective maintainer.
+> [1]: https://lore.kernel.org/linux-cxl/168193556660.1178687.15477509915255912089.stgit@djiang5-mobl3/T/#t
+> [2]: https://lore.kernel.org/lkml/168332248685.2190392.1983307884583782116.stgit@djiang5-mobl3/
+> [3]: https://lore.kernel.org/linux-acpi/168330787964.2042604.17648905811002211147.stgit@djiang5-mobl3/T/#t
+> [4]: https://git.kernel.org/pub/scm/linux/kernel/git/djiang/linux.git/log/?h=cxl-qtg
 >
-> In v3:
-> - added tag to patch 1 (Rafael), patches 2&3 (Sakari)
-> - made commit message text wider in patch 3 (Sakari)
+> ---
 >
-> In v2:
-> - updated commit message and added kernel doc for a new API (Greg)
-> - also replaced acpi_device_get_match_data() with the agnostic API
-> - tried to keep header inclusions ordered (to some extent)
+> Dave Jiang (6):
+>       acpi: numa: Create enum for memory_target access coordinates indexing
+>       ACPICA: Add a define for size of acpi_srat_generic_affinity DeviceHandle
+>       acpi: numa: Add genport target allocation to the HMAT parsing
+>       acpi: Break out nesting for hmat_parse_locality()
+>       acpi: numa: Add setting of generic port system locality attributes
+>       acpi: numa: Add helper function to retrieve the performance attributes
 >
-> Andy Shevchenko (3):
->   ACPI: Move ACPI_DEVICE_CLASS() to mod_devicetable.h
->   device property: Implement device_is_compatible()
->   ata: ahci_platform: Make code agnostic to OF/ACPI
 >
->  drivers/ata/ahci_platform.c     |  8 ++++----
->  include/linux/acpi.h            | 14 --------------
->  include/linux/mod_devicetable.h | 13 +++++++++++++
->  include/linux/property.h        | 12 ++++++++++++
->  4 files changed, 29 insertions(+), 18 deletions(-)
+>  drivers/acpi/numa/hmat.c | 151 +++++++++++++++++++++++++++++++++------
+>  include/acpi/actbl3.h    |   4 +-
+>  include/linux/acpi.h     |  12 ++++
+>  3 files changed, 144 insertions(+), 23 deletions(-)
 >
 > --
-
-All applied as 6.5 material, thanks!
+>
