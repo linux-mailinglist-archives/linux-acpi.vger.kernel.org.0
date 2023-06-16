@@ -2,110 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22387732893
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jun 2023 09:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B9E4732923
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jun 2023 09:46:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240654AbjFPHQG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 16 Jun 2023 03:16:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55900 "EHLO
+        id S245465AbjFPHpz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 16 Jun 2023 03:45:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231920AbjFPHQF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jun 2023 03:16:05 -0400
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3BBE171F;
-        Fri, 16 Jun 2023 00:16:03 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R931e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0VlEyKMk_1686899756;
-Received: from 30.240.112.107(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VlEyKMk_1686899756)
-          by smtp.aliyun-inc.com;
-          Fri, 16 Jun 2023 15:15:58 +0800
-Message-ID: <a2b16cca-5449-1d16-f49c-7b83fb45771c@linux.alibaba.com>
-Date:   Fri, 16 Jun 2023 15:15:54 +0800
+        with ESMTP id S245342AbjFPHpr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jun 2023 03:45:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF0142947
+        for <linux-acpi@vger.kernel.org>; Fri, 16 Jun 2023 00:45:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686901501;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=wHh80tHevfpfGpsYLMJr0xWQFhLc1pRS6PbFj4Uk1xM=;
+        b=hSlF18pZx70udS9rSRLrnBWkDg3YUU8L5mUR3Q8ODr78q7mMfloGaBHNE5IhgA8MjjESvg
+        TQ0pKSG0lQIA5CXKiKK+3+GWz7gD/dIVfk0IZrrUH4UUekMztzJ3KPCEDzFp9dVBDKXR1G
+        seWMy6CfpU7Ltkoe7JlprgAYqS4eSa8=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-599-VOIu_VQbN0u-6Es4DbXO4g-1; Fri, 16 Jun 2023 03:44:54 -0400
+X-MC-Unique: VOIu_VQbN0u-6Es4DbXO4g-1
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-4ec790b902bso302203e87.1
+        for <linux-acpi@vger.kernel.org>; Fri, 16 Jun 2023 00:44:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686901493; x=1689493493;
+        h=content-transfer-encoding:in-reply-to:subject:organization:from
+         :content-language:references:cc:to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wHh80tHevfpfGpsYLMJr0xWQFhLc1pRS6PbFj4Uk1xM=;
+        b=EVjdqIbXayda+IhEb26Ud7nUiIIx845oy+7Oarw5SXrIHbxrVECYD4RD8VPAg4Y3+C
+         ttBo31NhW1IH3y2ssoQOqD7AsMJWMCg1WOOI557s5n82V0FvflB1VCzLH8R+ZObei0XM
+         0HDXuVFrTMWvSbSlTZFJlNMZKyw4p4IgZKJpUgYX0OKvezaSJblhDoXYlbKBPLNGJ31k
+         zAE+SfwyhHqOLpGPlkgc4D5CpCSd+1pP0imWWSfagGGkCuh9EnGd+gwJF2BKKfWwgQIa
+         xMKQdOeKPQ0QdSLar+Gb0beC66ZfcpNNcS2u2oqt9GTbsLTvezWU/Fty8YuUV/zanggv
+         6GBg==
+X-Gm-Message-State: AC+VfDywFx6Ic+9dZVxJjjT/XJ0P2ClVWLGuBtstQbYOSyBhSgqBeOlE
+        lOQ3HLZWf8in1OytMAFa6/tgjqp4FEH4UVb76hZUXXKB42ZbewVKUYMzlVHCg+NpVoeUVyI74iV
+        eeAxjbCgj2eE0phxorKY+Ww==
+X-Received: by 2002:ac2:4d93:0:b0:4f8:4961:7610 with SMTP id g19-20020ac24d93000000b004f849617610mr755644lfe.43.1686901492815;
+        Fri, 16 Jun 2023 00:44:52 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4V2KwN13A0iu+AAg7e0iRwh6yMnxJrHrSMfwNZ/+rksVbEc+zvz9ZHK23cYpe/zyiH2IoeHg==
+X-Received: by 2002:ac2:4d93:0:b0:4f8:4961:7610 with SMTP id g19-20020ac24d93000000b004f849617610mr755629lfe.43.1686901492450;
+        Fri, 16 Jun 2023 00:44:52 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c707:9800:59ba:1006:9052:fb40? (p200300cbc707980059ba10069052fb40.dip0.t-ipconnect.de. [2003:cb:c707:9800:59ba:1006:9052:fb40])
+        by smtp.gmail.com with ESMTPSA id q3-20020adff503000000b002ca864b807csm22936582wro.0.2023.06.16.00.44.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Jun 2023 00:44:52 -0700 (PDT)
+Message-ID: <29c9b998-f453-59f2-5084-9b4482b489cf@redhat.com>
+Date:   Fri, 16 Jun 2023 09:44:50 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.1
-Subject: Re: [RESEND PATCH v7 0/2] ACPI: APEI: handle synchronous exceptions
- with proper si_code
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+To:     Vishal Verma <vishal.l.verma@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, nvdimm@lists.linux.dev,
+        linux-cxl@vger.kernel.org, Huang Ying <ying.huang@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+References: <20230613-vv-kmem_memmap-v1-0-f6de9c6af2c6@intel.com>
 Content-Language: en-US
-To:     rafael@kernel.org, wangkefeng.wang@huawei.com,
-        tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
-        naoya.horiguchi@nec.com
-Cc:     linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, justin.he@arm.com,
-        akpm@linux-foundation.org, ardb@kernel.org, ashish.kalra@amd.com,
-        baolin.wang@linux.alibaba.com, bp@alien8.de,
-        cuibixuan@linux.alibaba.com, dave.hansen@linux.intel.com,
-        james.morse@arm.com, jarkko@kernel.org, lenb@kernel.org,
-        linmiaohe@huawei.com, lvying6@huawei.com, xiexiuqi@huawei.com,
-        zhuo.song@linux.alibaba.com
-References: <20230606074238.97166-1-xueshuai@linux.alibaba.com>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20230606074238.97166-1-xueshuai@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH 0/3] mm: use memmap_on_memory semantics for dax/kmem
+In-Reply-To: <20230613-vv-kmem_memmap-v1-0-f6de9c6af2c6@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-10.0 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On 16.06.23 00:00, Vishal Verma wrote:
+> The dax/kmem driver can potentially hot-add large amounts of memory
+> originating from CXL memory expanders, or NVDIMMs, or other 'device
+> memories'. There is a chance there isn't enough regular system memory
+> available to fit ythe memmap for this new memory. It's therefore
+> desirable, if all other conditions are met, for the kmem managed memory
+> to place its memmap on the newly added memory itself.
+> 
+> Arrange for this by first allowing for a module parameter override for
+> the mhp_supports_memmap_on_memory() test using a flag, adjusting the
+> only other caller of this interface in dirvers/acpi/acpi_memoryhotplug.c,
+> exporting the symbol so it can be called by kmem.c, and finally changing
+> the kmem driver to add_memory() in chunks of memory_block_size_bytes().
+
+1) Why is the override a requirement here? Just let the admin configure 
+it then then add conditional support for kmem.
+
+2) I recall that there are cases where we don't want the memmap to land 
+on slow memory (which online_movable would achieve). Just imagine the 
+slow PMEM case. So this might need another configuration knob on the 
+kmem side.
 
 
-On 2023/6/6 15:42, Shuai Xue wrote:
-> changes since v6:
-> - add more explicty error message suggested by Xiaofei
-> - pick up reviewed-by tag from Xiaofei
-> - pick up internal reviewed-by tag from Baolin
-> 
-> changes since v5 by addressing comments from Kefeng:
-> - document return value of memory_failure()
-> - drop redundant comments in call site of memory_failure() 
-> - make ghes_do_proc void and handle abnormal case within it
-> - pick up reviewed-by tag from Kefeng Wang 
-> 
-> changes since v4 by addressing comments from Xiaofei:
-> - do a force kill only for abnormal sync errors
-> 
-> changes since v3 by addressing comments from Xiaofei:
-> - do a force kill for abnormal memory failure error such as invalid PA,
-> unexpected severity, OOM, etc
-> - pcik up tested-by tag from Ma Wupeng
-> 
-> changes since v2 by addressing comments from Naoya:
-> - rename mce_task_work to sync_task_work
-> - drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
-> - add steps to reproduce this problem in cover letter
-> 
-> changes since v1:
-> - synchronous events by notify type
-> - Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
-> 
-> 
-> Shuai Xue (2):
->   ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on
->     synchronous events
->   ACPI: APEI: handle synchronous exceptions in task work
-> 
->  arch/x86/kernel/cpu/mce/core.c |   9 +--
->  drivers/acpi/apei/ghes.c       | 113 ++++++++++++++++++++++-----------
->  include/acpi/ghes.h            |   3 -
->  mm/memory-failure.c            |  17 +----
->  4 files changed, 79 insertions(+), 63 deletions(-)
-> 
+I recall some discussions on doing that chunk handling internally (so 
+kmem can just perform one add_memory() and we'd split that up internally).
 
+-- 
+Cheers,
 
-Hi, Rafael,
+David / dhildenb
 
-Gentle ping.
-
-Are you happy to queue this patch set or anything I can do to improve it?
-As @Kefeng said, this issue is met in Alibaba and Huawei products, we hope it
-could be fixed ASAP.
-
-Thank you.
-
-Best Regards,
-Shuai
