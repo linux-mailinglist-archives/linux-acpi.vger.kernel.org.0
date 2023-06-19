@@ -2,163 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8329373569F
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jun 2023 14:22:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C751B735A1C
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jun 2023 16:55:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230434AbjFSMW3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Jun 2023 08:22:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44828 "EHLO
+        id S229992AbjFSOzF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Jun 2023 10:55:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230399AbjFSMW2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Jun 2023 08:22:28 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1EBDDB;
-        Mon, 19 Jun 2023 05:22:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687177346; x=1718713346;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=N8Yr++W29UwgRGHD/oN38Pu/9f0vsFvP7BJICiyRhTc=;
-  b=LIUBsUSR7E2lNkLR7BS+vRPiB2p4Tza2azJXR1gr4sFcgux2PtmnWIxy
-   hi7q2sq9vC0gJSi1JRfVS/Cwz2+1KPI4WMTWNQqjrJCsY/aLBUTbP1FfP
-   jPkCVbV2ws6TUn4IOOTTIp23cm1SO6regaBLMX+cGEVTQGFj1/gWbUgxH
-   fsSgBfaI49DL/n7xa07Cy84zAwNXMRWx7CBNsO1NOxwCL14Fc8W667S6q
-   xTSFceZALiE5N53ice2rRpFdSoc/elWksehWdnUvKREEA8VQ4Kiw08zNj
-   9b6DnlsDaz7Yqvm6CVgamSTReAse33HQWSc6na7RKgxrf8+draU/ld9pJ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10745"; a="423280376"
-X-IronPort-AV: E=Sophos;i="6.00,254,1681196400"; 
-   d="scan'208";a="423280376"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2023 05:22:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10745"; a="713653818"
-X-IronPort-AV: E=Sophos;i="6.00,254,1681196400"; 
-   d="scan'208";a="713653818"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orsmga002.jf.intel.com with ESMTP; 19 Jun 2023 05:22:23 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 19 Jun 2023 05:22:23 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Mon, 19 Jun 2023 05:22:23 -0700
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.49) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Mon, 19 Jun 2023 05:22:22 -0700
+        with ESMTP id S229844AbjFSOzC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Jun 2023 10:55:02 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2054.outbound.protection.outlook.com [40.107.237.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2637C1;
+        Mon, 19 Jun 2023 07:54:59 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E4/kh1TzIlGjj1T/kk88wdNHVUzOAwHOLOx92YSAT2B6GW64egsRwemgLlOO4LPKRPScg28Te5xShWWypAolESykRNeEpEjuuQWNSrEjYqjedb1Gra9z0kBUUsW0AJVgWUTazsm1icUJozNIZlj0KFXvey5+GMG+07TYQEBhOUkkAzhzHZDz8qjKw+lkAIyTqzjuZih+X3IfcmZrx3slkb9wTegRALvuqh8CGGYmaiwlOlEaUj0GWOH+Gpt0+nL3KSpMAH1Jnotq+JlEsArOhuLaYOenQH4g0ZHM74QV7jD9WI27OQSkM9we9JbLtZSoT+8aziiA0+x+QYK3EjhzpQ==
+ b=Hcbfl58M6VjP3bdqY4ArxgpHD0GDNnsLICM5rs07SVz4xMiqxgMHpd8EJH5uEP0pbiTNwGehKCsjju3gBj7m7UTbAr5XFXW7qgiiPirIzcK2fhnF/DYyxfE8jKQg4DSBdV0/HMaAtJWBw24fCHesNy72Nzsjhe4BEgJhARhGiFm7mACVwACnaVUg2SS+gMBssaLwXCLOVnAd83wmk2kxVyKZbO0pHi4RKtOopaRlBD8wqotVg//N3u7MRnkZpF8jfGxfADP3kyr3T3A/7vPsUNvqwGrOaaioqEuhOnPv5CoCQzRbTDAZ8J5KeXmpjrZIgmw7EljKxYKe6x47zS7DSw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=as7OBjlpKUa/9aels74zYCrs6t9dYnq0bDTAX/nqmfM=;
- b=G4HZpdkwuVZEbXfPvNuIBiSXFpq10PVNsaJO4VE5038tiqO7qbSALovBd0oAxasuSL3D7J+WSQfbTbCoq7gyBiaihDlEQGj0sXGwp0XSjfKejXKs9gkM8vSrzDTTuyMOdl4YOL8kiQAjhhPEbfuYaMQZLjBPf5c05uFjlekhdk9fUlvKyEk0Xw5g1V8Xr722KCP9m+3A6f1oy+pjzLsEiBmTsHcQ9JMCrHMN9kH7d5RwC2Vmn/gqYW1+VDc8zqk035wtXg+xqs6pc/iLsnrFX3kHpXzqrz7A4adPA3kzbZpi1CAflKYkauxDYzOzysigpcsRBce0dPUHgpJI/VlbPw==
+ bh=zPBD2llVH/EbEBZI0qmTcpGcoiFlS0bxaqI9ZNW3D8I=;
+ b=YwqwkEdQqUS6n/GkRSwr6IekUtVcBLt8V65++/0jly+80kNERUa1uxwDkEuo/kdmA45f7nGIK0CNS77Vq/6W9gF+byO+nJu2STYfAFYTMHmSG6VXSxZw57LVvY2sNC2VB1l1DmbR/x5QUD0wPPj3J6ZdtcLlS5XDdFIJW1LZq0wOaskccujA+l2OU6QJT4VUIeOcVkgJ4XxwmqAJTP1F3p02V72qCFo9QsBkOPrXsxQ6ULYk2DEsB54wOB1po9wb4Jb9JxXRbQhmP1wbALC/Cui9oA8/sTtMltPUrake1raTlkdYmimjYitx6jAGmOdI9xT+sBUjW5tEqGqU1WjdcQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zPBD2llVH/EbEBZI0qmTcpGcoiFlS0bxaqI9ZNW3D8I=;
+ b=lYjRSeqxyxylq3GRqJwW0soN53NCox7XlxzEuE7hlojpyRTDr1PeT/mTE+CAUCXXPQ0L3D/HEtZm3FNQ+sCWvVAFyXEyU5eDWtt+C5BGftvQm20w4EaHTkKsL799iWARpjVOiDfUUq76qFs6Whfb7ANzp7pmmsuZez5VwEQqr24=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO6PR11MB5603.namprd11.prod.outlook.com (2603:10b6:5:35c::12)
- by DM4PR11MB6287.namprd11.prod.outlook.com (2603:10b6:8:a6::17) with
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB4621.namprd12.prod.outlook.com (2603:10b6:805:e4::10)
+ by DS0PR12MB8245.namprd12.prod.outlook.com (2603:10b6:8:f2::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.35; Mon, 19 Jun
- 2023 12:22:18 +0000
-Received: from CO6PR11MB5603.namprd11.prod.outlook.com
- ([fe80::4287:6d31:8c78:de92]) by CO6PR11MB5603.namprd11.prod.outlook.com
- ([fe80::4287:6d31:8c78:de92%6]) with mapi id 15.20.6500.036; Mon, 19 Jun 2023
- 12:22:18 +0000
-Message-ID: <c05323a8-5cda-5355-b701-e4acdae99f53@intel.com>
-Date:   Mon, 19 Jun 2023 14:22:10 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/3 v2] Documentation/arm64: Update ARM and arch reference
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.36; Mon, 19 Jun
+ 2023 14:54:57 +0000
+Received: from SN6PR12MB4621.namprd12.prod.outlook.com
+ ([fe80::6098:990c:cfda:435c]) by SN6PR12MB4621.namprd12.prod.outlook.com
+ ([fe80::6098:990c:cfda:435c%3]) with mapi id 15.20.6500.031; Mon, 19 Jun 2023
+ 14:54:57 +0000
+Message-ID: <40b65777-c3a3-3739-aab0-1109a94dcc8f@amd.com>
+Date:   Mon, 19 Jun 2023 20:24:39 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [PATCH V3 4/7] drm/amd/pm: setup the framework to support Wifi
+ RFI mitigation feature
 Content-Language: en-US
-To:     Jose Marinho <jose.marinho@arm.com>
-CC:     Catalin Marinas <catalin.marinas@arm.com>,
-        Jeremy Linton <Jeremy.Linton@arm.com>,
-        James Morse <James.Morse@arm.com>,
-        Rob Herring <Rob.Herring@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-doc@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>
-References: <20230606093528.1494344-1-jose.marinho@arm.com>
- <20230606093528.1494344-2-jose.marinho@arm.com>
-From:   "Wilczynski, Michal" <michal.wilczynski@intel.com>
-In-Reply-To: <20230606093528.1494344-2-jose.marinho@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+To:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
+        Alexander.Deucher@amd.com, Christian.Koenig@amd.com,
+        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
+        kvalo@kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+        ryder.lee@mediatek.com, shayne.chen@mediatek.com,
+        sean.wang@mediatek.com, matthias.bgg@gmail.com,
+        angelogioacchino.delregno@collabora.com, Mario.Limonciello@amd.com
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-wireless@vger.kernel.org
+References: <20230616065757.1054422-1-evan.quan@amd.com>
+ <20230616065757.1054422-5-evan.quan@amd.com>
+From:   "Lazar, Lijo" <lijo.lazar@amd.com>
+In-Reply-To: <20230616065757.1054422-5-evan.quan@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR2P281CA0104.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9c::11) To CO6PR11MB5603.namprd11.prod.outlook.com
- (2603:10b6:5:35c::12)
+X-ClientProxiedBy: PN2PR01CA0034.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:22::9) To SN6PR12MB4621.namprd12.prod.outlook.com
+ (2603:10b6:805:e4::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO6PR11MB5603:EE_|DM4PR11MB6287:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7bc4af48-2201-4f79-696e-08db70bfd303
+X-MS-TrafficTypeDiagnostic: SN6PR12MB4621:EE_|DS0PR12MB8245:EE_
+X-MS-Office365-Filtering-Correlation-Id: 62b88c3a-3800-4c72-59df-08db70d525b3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: K3HsBK85Fq3wj9nR5P97qIhLkn50FC70jiDilHeufPGurszVdB/evdXSt1Twm/7x5UxJhtoSQBIzpJTMIBtoJ9YRpegA5FvSq39D7Gs3U54BZy7s7VlLdbV7C57tF2r2roJQ7x4Y3wNlQ3tfkOnbfghvclF0XKyT/jl80dyEWxUsKZTYp+6Klqf/eCIRNx5ODLhUEcbAB/nyjwOAt4w12/2nA1a/gICfhFvMoAOeuGrMxOxHqa4gEa6Ym8pLBrq1XgMuSbutfhd+wUHbIkoHg1zdDl3A1cNKZM9xySUfYsUDqKxtgZjmNABRhMeoYgh0qiVZ6PGz2t6ULMmGkuRgeNcoYGfhNgEAU5Osifnm+X35BczQP7WPX1k+NSWLgo9Esxc/Lx7WOvL/sLKOYgYv8ETpuV/BesiAuavP75JRJPDsjSYzL1mbBXiE0CuJbEFzPmTBySm9D2HPOR//Ls8bZTWIlgMWQB0H0jOhAp5xo76idOjpEjfuYoS24sWPJwAQuAJwogjPDdL9PUuZiZdy6E4yQh91QpR/WEqUpddUrvbAkijHZAfHNrCRxX6R/rYU28xx4qoyV7fyXf5IgP5sFXRpvrn/Gs4+1PYisi/YCitVAn6lgeZTSBVJonDRP5QZZZf7/VTUITRTUZWE5TwrRqKWfO63BeowaBoo5rH5p48ZzohWflvM85HHF309bAlj
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(366004)(346002)(396003)(39860400002)(136003)(451199021)(478600001)(31696002)(2906002)(966005)(54906003)(6666004)(6486002)(2616005)(86362001)(36756003)(26005)(186003)(6506007)(6512007)(53546011)(8936002)(8676002)(66476007)(66556008)(7416002)(66946007)(5660300002)(38100700002)(316002)(6916009)(4326008)(83380400001)(31686004)(82960400001)(41300700001)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: rFvMW/nj0m7RuGdKIQvKrlPFsxwHbV4FJ0I0CbEsrCnVVFmnsn9V5MIiL0MDjdhoy/LhwMnK93NlLjlIYCTudgssF5p5MbBdCEs0QVSCsWRFyJVwtHfZo8M4gCT+sm/7t29kxdLUiYZJkhpjADPY1tJi2ezQ620hknmEi8X2SNUztBQLvgMih8282xvP6gTm5lT8KL2pCjciS3nSOKtSn6ctORnyMA6fHkKqPs5vyMLUJyAeSQ5cZ3fDDWiy72bq/LDmt/8cqwpIKyhYK1TzAGGbnSFqmNA/fNCuhaxcN02h4PEpJTNCIZ7EQ5UUFPIynK9ixzdMIBC8d3YHB0ev51dxARleN1FyH1pmOb8LSXXgEOF9kMNrJILHyevuZUuM++Afs1rMANN4yVO3j2bwGnkcPerE2y47XuMWI1WImJ2DXwX2qm9X03AWIJNhHf3VF6xjsYBfGElvI3zt5sSaBIE1trH8BY96Huz2cJk9VchgdFavMYCJo6W2j8KsdDKSqy2S2YI1x6UuGAK5oQEzSSjVJDoeed5QinrsOA0V6uJ89JvMA3Ukbs7nGokft61FQFWA0K11zz5G1I9dxVZ2d0rvm+Q2xHrL8h00jN1r1jFQPlv7mK5I93Y0Ok+4cjqkZuI7Oq3+4wIkeMUV7MihvMcFBYD6OP0dtH8fnKPG8c0RoKZZVF49np5qLfcD7gxh
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB4621.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(396003)(39860400002)(346002)(136003)(366004)(451199021)(478600001)(31686004)(66946007)(66556008)(66476007)(8676002)(36756003)(4326008)(6636002)(41300700001)(2616005)(921005)(83380400001)(38100700002)(31696002)(6486002)(86362001)(5660300002)(6666004)(2906002)(316002)(8936002)(30864003)(7416002)(6506007)(53546011)(6512007)(26005)(186003)(45980500001)(43740500002)(309714004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a0F5SlBTVFN6Q1pWd3Q1TnhRRVlCUUdnTm9MK2t5NE9UOUx2ZHBoOThQczc5?=
- =?utf-8?B?Yll3M1Y0VEU0ZlV0UERPVlkrN0Z0ekNjU0Q3MW5YSkt3L01TcDI1cmVBcDRO?=
- =?utf-8?B?TDFIc0ZpdTdta0cyQjBnd1k1TnRUTDBwYXhZRVM1dTQvR0EwNXFTZzhnTTEy?=
- =?utf-8?B?dkducWFNY3VoREZRRTFtZEpFSnBGQVdUOTRqcndUZHcyZzh4eGE4by9pZzA2?=
- =?utf-8?B?RHp1QUJxL0pkQlo1U0szczZOa3I5WUw5UFdYcE9JU2pVRERUUko1VkNZNEZa?=
- =?utf-8?B?cTBRT1NTeTdTYTdnN0h4WUdnOThxUzh5STN2c3gzOFlPK2lJbldlb2FDTnVZ?=
- =?utf-8?B?cEdhVzVxb2hsaFNGRUM5R0pwVFQwSkNMYk92bXdPdXVJckxHY0NCYUI2N09L?=
- =?utf-8?B?bDh2UkFZVU5Od1g4Rng5VThyZlBWYTV3bUg0WU9oOG1sOVEwOFc2b01TN0Fs?=
- =?utf-8?B?b2lURFBrSHpLdTZSRmlXOHJxRGphQ1dDc3VyWkFuV3lLZTUxcEloZU9YTDY3?=
- =?utf-8?B?WXR2eURLLzdBNTZUbW10V3RUYTlJWDNnZ1dDNWxDa1h0Ylo4R00wQ25uN2hG?=
- =?utf-8?B?QWU3STR3Ujd1TEVMTk1hcWtqYnB0cDllbUVHencybGxnTkd0ZG5ySUpUaTdI?=
- =?utf-8?B?aUxDWlRmbXM0UnAvVWt1WVlhTkJlNU9NTVRJeWgwREttQVN2ejQwZktXTEs0?=
- =?utf-8?B?VUxVM2Z0TzRIeFM2dzEyR3NPYzdaNHc2Mjg5RE1pSHg5bVJUcmFPZ2hPS3dB?=
- =?utf-8?B?cDBYcG1YbXF2OUFLMWd1QUpHK1FMWGJKeCs4aUR5VUtvNEIzbnd1Mk9CTDRW?=
- =?utf-8?B?MytCd2pQaDlxSkFFUFVBQVk4bFpnTFlEWXh0c0c0elplWFRmb0lIdDdQSjRC?=
- =?utf-8?B?UFArRmsrV3RoekxkUGh0aVEvenpnYk10YWt5WmJ2T2Z3aWxjTEgvTEpEL2FC?=
- =?utf-8?B?bi9QSEYzSDVrdkF0Q1NzVjZqcUdIRjZETXhIaUFibnVodEQ1OTNvSHkwU3c0?=
- =?utf-8?B?ZzRaMkRIeWdkcmR3SE5vZlBzdXk0dk83TlExc3NDWWRDbk1Qc2sxNUZmc09N?=
- =?utf-8?B?Vjk0RGVmbm9oc3NWODUva1RGNHI0RUZTNURCVDUrY092dVYxc1pRYmdYTCtk?=
- =?utf-8?B?d0xNRU02Y1lBVkhzelE4N2dZdEJmNTl0cEpDTmQ5eVBOdFVQRUluRkgwTU1u?=
- =?utf-8?B?cXZIY0JvbTR2WjkxNi9XRDAvMzN3TXJGMFNpeTM5WjJyYU01ZmU1cThweU13?=
- =?utf-8?B?dXVHeXplKzdLbGFiZGRxTHRCckl1ZHJJamlWbkZUNG02T3Q4REhEMXdSSlho?=
- =?utf-8?B?NE1Sdm55ZmpZdnlIRTd3MlhUM2VlVzIxU2JFamt0NklVeWtNN0pPN2p2bisx?=
- =?utf-8?B?dEFyeVVDR0sxT3krbGZ6dTh2RUlud0YxUjlQdTBNMmpWRjVVVGFLbDZkLysr?=
- =?utf-8?B?M081TWlsTXp0VUhkdm1jbnFFY2tBaW9Va29pbUdqMStUWkZqanNYQ3FsdWFv?=
- =?utf-8?B?ZVFOUzJJa25lWWJUYklnaUJqQ1hDcTFhSzU1ZzdySEVtOEI0SXpJb2NBWW9o?=
- =?utf-8?B?MFpERzlhazFPUEdxMkxQcklOcDI2VjlXSmtXOGVaSnBqRW5oYUVNdGQ3M2hW?=
- =?utf-8?B?Lzc3L2xNQjBBdUp3ZGhNNE9mRGwwYzJIclJZK2xVMWxHNm9zWm56MGd6R2Zm?=
- =?utf-8?B?QU5wSmlLOGhRMC9NaUIrMS9iU04rZ0luM0J5bVJOR096dE9FSGFvazcrM3dX?=
- =?utf-8?B?UHVtdFBFSVc0NFNwOWp1QU9mWnRNZjVsNnR5RDMxazdtazFOTi9tQ2M0VGhU?=
- =?utf-8?B?dnU3cHQzVnM5OTNhUEZSN3NxbGJtL2lsUUtWNE90S1FnRDJMTk5oT2I0NEgz?=
- =?utf-8?B?SW5wSzZuczllSGZNNUs3andZdCt6M3ZQMWhsaURsdlc2b1dnVE9iWVIyd21h?=
- =?utf-8?B?dFp2Z2tXblk0bHU5UjdnQlhKbXRUL09mN0FSMGZIY0JHT2NyNmhNalRVRWl0?=
- =?utf-8?B?NTFjUHF4Q2FKbGxQTU1icFBLbFRlb0ptbmlGZFBKZUVSTFF4RExDa2RWbE54?=
- =?utf-8?B?SG9WbVcybkhIYXZFZFUvZ1BvZW1ucHlZaThSYkVUOFJWVlduMGRTVmNWWkha?=
- =?utf-8?B?VXBlWlQ3MXdNK0lHdkFvUndic1EwU1hKWjlENldaZzc5U2VIU1hFQ0NwcWxH?=
- =?utf-8?B?MHc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7bc4af48-2201-4f79-696e-08db70bfd303
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR11MB5603.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WDJtUTNwZTh0ZHQxS2hOUWpkVVlUL1FONUdVZlEvQS9qbytITzgyWHI5Y2hh?=
+ =?utf-8?B?Y3lmVTkrR05taXAraVVrUmdteldJQVZKeGI3TW5udjVFVkhWK1YyYUJEQWV6?=
+ =?utf-8?B?a1hUREU4b28zUHIxRXNRL0ZIcnBTcmxkTVdsYVk2QWJ6VkpBcFF5UERkam9y?=
+ =?utf-8?B?eUJ6ZDlaZCtBSjV1OFI1bkdGYzJqODZzZXMvTjVZS2dnQUVmcFBkZE1DMElN?=
+ =?utf-8?B?aW5zZ1FGMDA5dkRibzVsZEIwVnkyMjNUQlkxZkF2MkpITzE1OFBaUkhMOEFQ?=
+ =?utf-8?B?WndvSzRSYXU0aHVsT0xKSkZlSUdvaWs1TE9Jcm9hNlhkUU5OeEhzeXp5dWRn?=
+ =?utf-8?B?QjIwa2FBb2xyOEJvTGtWUVZsUzNvSDAyZHVyV2Z0TkJ6QlRUYXRMOHJUaG5Y?=
+ =?utf-8?B?NUNseUhIQ0ZpTVlpR0ppZWtqbDBuNWcwSk9iSi9rbU9iVzM2VkhDQXNaSURZ?=
+ =?utf-8?B?Q1A5cS8rTmhlR2F0OVloMXpYaEZlSXJPUXBlOU9LYXlJbkNuVW1HZ3g3ek5G?=
+ =?utf-8?B?QTJWMTBKKzF6WUc2Mjc3YkdFWjNOS2pGdzRBaGZvRXV0NGFpaXlBNmRkY1ZQ?=
+ =?utf-8?B?TzRlK0dHYXlZa1o2YXVtajB2YUc5L2Y1a2RQUG1PMHVSSko3enJuTjdvUHpF?=
+ =?utf-8?B?dGk1M2ZIbFFwVUhISFh5ZVdOS1hpUHF3UTBneUVGQ0p0VU4zWWxwNWlLY0Ez?=
+ =?utf-8?B?ZDFCMkRjZllFZ0RSb1FKd3VjZHdNRnFJTG9iNkpSZE10OWE2cUNtSk1tK09Z?=
+ =?utf-8?B?aU5RUzlSSGs3dTQ3ZmgwejY1RG83dnZieHZHbHNYdVlUelZkRGlrdHRMREVU?=
+ =?utf-8?B?WGlFM2FEU1NVbXFWU2szNDhTUHNpUUZ6NTQrcU1JMjNFNjlFcmpVWkVmcDlL?=
+ =?utf-8?B?R0lCNXhuQlZTYy9HcVliekFqNTdPQmNOL1k3T3hkK05Xb1ZKMkxpdGIydDB2?=
+ =?utf-8?B?QXozUVdBMjRKV3pGQnIvWTh4N0I3OFFEV0xRUUVyWEtzeW0yalFMemxnNUEr?=
+ =?utf-8?B?cm03OU00UmhTZmh0VEVwaEpNMFN4MlczKzBxTFR4aXkzRXZ2aHd1UlRMc2E5?=
+ =?utf-8?B?YlZNbXBQWVYwMTdIU24vUjV5VkZMOS82RWIwOWtaUFh4VEtxV2RlYkhkYU1k?=
+ =?utf-8?B?Ym1Jd0ZPS1p5Rm52V1YrMXo0OGc4bmFZVmtlYmFsdmNWQlhUYno1U004MjR0?=
+ =?utf-8?B?M2svUUxaMWdvL1haM0pwVVp4aEhtMVBYVjMzaitycTBYOFlhNTZ2a3JWekNk?=
+ =?utf-8?B?aWlEOWFqNkdnczIwdTFCUjgzamhkRWUvaXFZNGVHYVNxNTBGZGxjSmVsMG1n?=
+ =?utf-8?B?dmVsakFYZ1h2amdLb1pmMENqRGYweVdSUUtPNFBpMDRicnVNTFA2VTNXbzFk?=
+ =?utf-8?B?T1R3cmMrWXFTUytFNmFnKzdaT2ZEVHcwajJHVUpGaHJJc0N4NVdsMGN0Q1VO?=
+ =?utf-8?B?cmVIbitwNDZJQUdjZFZSNkFMVWY2czU0cGlDYk9XbXhiV2ZUblR2U1c3TjBo?=
+ =?utf-8?B?dE4vb2RoT2ViNDBrenM5ZEJVRTV2MWNhTWNmWEgxWmpWc05NTFRiRUp4Zm0r?=
+ =?utf-8?B?dzMvS2wveDRtM2dNRFJ3YWFUR1Bxek0vd29RLzNYKy92VGtucHo5SnVGai9n?=
+ =?utf-8?B?NFVRQk5IT2FLSUErM21JNzBoRzRzbFhqdUgwRElrYlV6VmJWeEhsNUJ3cnZB?=
+ =?utf-8?B?ZFpzN3dweWVkdzMrWi9BcEpvcHpXeGs2ZEs3Q2k0Z2c5T2RPVVNEdTFXVjFa?=
+ =?utf-8?B?V0ZNZ05oaDRBVkdWSnNYaXFQcHNvY2JNTGRab2lEVnRJWVg1RklsVjBVMVJG?=
+ =?utf-8?B?SGt6S1lzQ3VJb2k3ZDUzMUlFOXdrU2ttOVRrM0N0ZkhXN3FKUFBDM095b3VV?=
+ =?utf-8?B?ekVEeHVUSWpkV25MeG8zRmd0VDJsR21QNFBGNmx3OVJFdUpuYVZ2QTJsdmx4?=
+ =?utf-8?B?ZlBTbHdMRWd6OFVDdXcwWHFuNmpuK0IxYzV0bzl5TnByNVhmb3c0VTRLRHAy?=
+ =?utf-8?B?OGpZWG93aHpIY0pWK2dJYVVJYzhpaUdwcG9DZko4bHp6RDc5U1BGeVN1VEl4?=
+ =?utf-8?B?OGpoc3g3TThhU1J2R1NrSlh2YnN3RXR0S1craVVjOUl5dkZpaUs0VHBtZUEx?=
+ =?utf-8?Q?ep7oR8xp04vmnPWIbwrrjs9mn?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62b88c3a-3800-4c72-59df-08db70d525b3
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB4621.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2023 12:22:18.7012
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2023 14:54:57.0721
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5NiOuhGZw80TKwk3Jaq/dukysp05Bk/3F/HYo90unsndtF42PJdh8Vk7thWwkh3pc/DGuXJj9qXcyMED8LR4Cjxdt7HSrPLu9TJ5xkhD1kY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6287
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: ruqnR0mVCLHd5aWPt3em13My4o7PgQI/H1QScauINHUNTmKiEP+VVqsRbHqEq1+e
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8245
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -167,154 +134,483 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 
 
-On 6/6/2023 11:35 AM, Jose Marinho wrote:
-> This patch clarifies that both Armv8 and v9 are in scope, not
-> just Armv8 systems.
-> Also, ARM is re-written as Arm.
->
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Jeremy Linton <Jeremy.Linton@arm.com>
-> Cc: James Morse <James.Morse@arm.com>
-> Cc: Rob Herring <Rob.Herring@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Hanjun Guo <guohanjun@huawei.com>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-acpi@vger.kernel.org
->
-> Signed-off-by: Jose Marinho <jose.marinho@arm.com>
-> Reviewed-by: Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>
+On 6/16/2023 12:27 PM, Evan Quan wrote:
+> With WBRF feature supported, as a driver responding to the frequencies,
+> amdgpu driver is able to do shadow pstate switching to mitigate possible
+> interference(between its (G-)DDR memory clocks and local radio module
+> frequency bands used by Wifi 6/6e/7).
+> 
+> To make WBRF feature functional, the kernel needs to be configured with
+> CONFIG_ACPI_WBRF and the platform is equipped with necessary ACPI based
+> mechanism to get amdgpu driver notified.
+> 
+> Signed-off-by: Evan Quan <evan.quan@amd.com>
 > ---
->  Documentation/arm64/arm-acpi.rst | 41 ++++++++++++++++----------------
->  1 file changed, 21 insertions(+), 20 deletions(-)
->
-> diff --git a/Documentation/arm64/arm-acpi.rst b/Documentation/arm64/arm-acpi.rst
-> index 47ecb9930dde..1cafe38fc7f9 100644
-> --- a/Documentation/arm64/arm-acpi.rst
-> +++ b/Documentation/arm64/arm-acpi.rst
-> @@ -1,40 +1,41 @@
-> -=====================
-> -ACPI on ARMv8 Servers
-> -=====================
-> +===================
-> +ACPI on Arm systems
-> +===================
->  
-> -ACPI can be used for ARMv8 general purpose servers designed to follow
-> -the ARM SBSA (Server Base System Architecture) [0] and SBBR (Server
-> +ACPI can be used for Armv8 and Armv9 systems designed to follow
-> +the Arm SBSA (Server Base System Architecture) [0] and SBBR (Server
->  Base Boot Requirements) [1] specifications.  Please note that the SBBR
->  can be retrieved simply by visiting [1], but the SBSA is currently only
->  available to those with an ARM login due to ARM IP licensing concerns.
->  
-> -The ARMv8 kernel implements the reduced hardware model of ACPI version
+>   drivers/gpu/drm/amd/amdgpu/amdgpu.h           |  26 +++
+>   drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c      |  63 ++++++
+>   drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c       |  19 ++
+>   drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c     | 184 ++++++++++++++++++
+>   drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h |  20 ++
+>   drivers/gpu/drm/amd/pm/swsmu/smu_internal.h   |   3 +
+>   6 files changed, 315 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+> index 02b827785e39..2f2ec64ed1b2 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+> @@ -50,6 +50,7 @@
+>   #include <linux/hashtable.h>
+>   #include <linux/dma-fence.h>
+>   #include <linux/pci.h>
+> +#include <linux/wbrf.h>
+>   
+>   #include <drm/ttm/ttm_bo.h>
+>   #include <drm/ttm/ttm_placement.h>
+> @@ -241,6 +242,7 @@ extern int amdgpu_num_kcq;
+>   #define AMDGPU_VCNFW_LOG_SIZE (32 * 1024)
+>   extern int amdgpu_vcnfw_log;
+>   extern int amdgpu_sg_display;
+> +extern int amdgpu_wbrf;
+>   
+>   #define AMDGPU_VM_MAX_NUM_CTX			4096
+>   #define AMDGPU_SG_THRESHOLD			(256*1024*1024)
+> @@ -741,6 +743,9 @@ struct amdgpu_reset_domain;
+>    */
+>   #define AMDGPU_HAS_VRAM(_adev) ((_adev)->gmc.real_vram_size)
+>   
+> +typedef
+> +void (*wbrf_notify_handler) (struct amdgpu_device *adev);
 > +
-> +The Arm kernel implements the reduced hardware model of ACPI version
->  5.1 or later.  Links to the specification and all external documents
->  it refers to are managed by the UEFI Forum.  The specification is
->  available at http://www.uefi.org/specifications and documents referenced
->  by the specification can be found via http://www.uefi.org/acpi.
->  
-> -If an ARMv8 system does not meet the requirements of the SBSA and SBBR,
-> +If an Arm system does not meet the requirements of the BSA and BBR,
->  or cannot be described using the mechanisms defined in the required ACPI
->  specifications, then ACPI may not be a good fit for the hardware.
->  
->  While the documents mentioned above set out the requirements for building
-> -industry-standard ARMv8 servers, they also apply to more than one operating
-> +industry-standard Arm systems, they also apply to more than one operating
->  system.  The purpose of this document is to describe the interaction between
-> -ACPI and Linux only, on an ARMv8 system -- that is, what Linux expects of
-> +ACPI and Linux only, on an Arm system -- that is, what Linux expects of
->  ACPI and what ACPI can expect of Linux.
->  
->  
-> -Why ACPI on ARM?
-> +Why ACPI on Arm?
->  ----------------
->  Before examining the details of the interface between ACPI and Linux, it is
->  useful to understand why ACPI is being used.  Several technologies already
->  exist in Linux for describing non-enumerable hardware, after all.  In this
->  section we summarize a blog post [2] from Grant Likely that outlines the
-> -reasoning behind ACPI on ARMv8 servers.  Actually, we snitch a good portion
-> +reasoning behind ACPI on Arm systems.  Actually, we snitch a good portion
->  of the summary text almost directly, to be honest.
->  
-> -The short form of the rationale for ACPI on ARM is:
-> +The short form of the rationale for ACPI on Arm is:
->  
->  -  ACPI’s byte code (AML) allows the platform to encode hardware behavior,
->     while DT explicitly does not support this.  For hardware vendors, being
-> @@ -47,7 +48,7 @@ The short form of the rationale for ACPI on ARM is:
->  
->  -  In the enterprise server environment, ACPI has established bindings (such
->     as for RAS) which are currently used in production systems.  DT does not.
-> -   Such bindings could be defined in DT at some point, but doing so means ARM
-> +   Such bindings could be defined in DT at some point, but doing so means Arm
->     and x86 would end up using completely different code paths in both firmware
->     and the kernel.
->  
-> @@ -108,7 +109,7 @@ recent version of the kernel.
->  
->  Relationship with Device Tree
->  -----------------------------
-> -ACPI support in drivers and subsystems for ARMv8 should never be mutually
-> +ACPI support in drivers and subsystems for Arm should never be mutually
->  exclusive with DT support at compile time.
->  
->  At boot time the kernel will only use one description method depending on
-> @@ -121,11 +122,11 @@ time).
->  
->  Booting using ACPI tables
->  -------------------------
-> -The only defined method for passing ACPI tables to the kernel on ARMv8
-> +The only defined method for passing ACPI tables to the kernel on Arm
->  is via the UEFI system configuration table.  Just so it is explicit, this
->  means that ACPI is only supported on platforms that boot via UEFI.
->  
-> -When an ARMv8 system boots, it can either have DT information, ACPI tables,
-> +When an Arm system boots, it can either have DT information, ACPI tables,
->  or in some very unusual cases, both.  If no command line parameters are used,
->  the kernel will try to use DT for device enumeration; if there is no DT
->  present, the kernel will try to use ACPI tables, but only if they are present.
-> @@ -448,7 +449,7 @@ ASWG
->  ----
->  The ACPI specification changes regularly.  During the year 2014, for instance,
->  version 5.1 was released and version 6.0 substantially completed, with most of
-> -the changes being driven by ARM-specific requirements.  Proposed changes are
-> +the changes being driven by Arm-specific requirements.  Proposed changes are
->  presented and discussed in the ASWG (ACPI Specification Working Group) which
->  is a part of the UEFI Forum.  The current version of the ACPI specification
->  is 6.1 release in January 2016.
-> @@ -456,7 +457,7 @@ is 6.1 release in January 2016.
->  Participation in this group is open to all UEFI members.  Please see
->  http://www.uefi.org/workinggroup for details on group membership.
+>   struct amdgpu_device {
+>   	struct device			*dev;
+>   	struct pci_dev			*pdev;
+> @@ -1050,6 +1055,8 @@ struct amdgpu_device {
+>   
+>   	bool                            job_hang;
+>   	bool                            dc_enabled;
+> +
+> +	wbrf_notify_handler		wbrf_event_handler;
+>   };
+>   
+>   static inline struct amdgpu_device *drm_to_adev(struct drm_device *ddev)
+> @@ -1381,6 +1388,25 @@ static inline int amdgpu_acpi_smart_shift_update(struct drm_device *dev,
+>   						 enum amdgpu_ss ss_state) { return 0; }
+>   #endif
+>   
+> +#if defined(CONFIG_ACPI_WBRF)
+> +bool amdgpu_acpi_is_wbrf_supported(struct amdgpu_device *adev);
+> +int amdgpu_acpi_wbrf_retrieve_exclusions(struct amdgpu_device *adev,
+> +					 struct wbrf_ranges_out *exclusions_out);
+> +int amdgpu_acpi_register_wbrf_notify_handler(struct amdgpu_device *adev,
+> +					     wbrf_notify_handler handler);
+> +int amdgpu_acpi_unregister_wbrf_notify_handler(struct amdgpu_device *adev);
+> +#else
+> +static inline bool amdgpu_acpi_is_wbrf_supported(struct amdgpu_device *adev) { return false; }
+> +static inline
+> +int amdgpu_acpi_wbrf_retrieve_exclusions(struct amdgpu_device *adev,
+> +					 struct wbrf_ranges_out *exclusions_out) { return 0; }
+> +static inline
+> +int amdgpu_acpi_register_wbrf_notify_handler(struct amdgpu_device *adev,
+> +					     wbrf_notify_handler handler) { return 0; }
+> +static inline
+> +int amdgpu_acpi_unregister_wbrf_notify_handler(struct amdgpu_device *adev) { return 0; }
+> +#endif
+> +
+>   #if defined(CONFIG_ACPI) && defined(CONFIG_SUSPEND)
+>   bool amdgpu_acpi_is_s3_active(struct amdgpu_device *adev);
+>   bool amdgpu_acpi_is_s0ix_active(struct amdgpu_device *adev);
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+> index aeeec211861c..efbe6dd91d1a 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+> @@ -1105,3 +1105,66 @@ bool amdgpu_acpi_is_s0ix_active(struct amdgpu_device *adev)
+>   }
+>   
+>   #endif /* CONFIG_SUSPEND */
+> +
+> +#ifdef CONFIG_ACPI_WBRF
+> +bool amdgpu_acpi_is_wbrf_supported(struct amdgpu_device *adev)
+> +{
+> +	struct acpi_device *acpi_dev = ACPI_COMPANION(adev->dev);
+> +
+> +	if (!acpi_dev)
+> +		return false;
+> +
+> +	return wbrf_supported_consumer(acpi_dev);
+> +}
+> +
+> +int amdgpu_acpi_wbrf_retrieve_exclusions(struct amdgpu_device *adev,
+> +					 struct wbrf_ranges_out *exclusions_out)
+> +{
+> +	struct acpi_device *acpi_dev = ACPI_COMPANION(adev->dev);
+> +
+> +	if (!acpi_dev)
+> +		return -ENODEV;
+> +
+> +	return wbrf_retrieve_exclusions(acpi_dev, exclusions_out);
+> +}
+> +
+> +#define CPM_GPU_NOTIFY_COMMAND		0x55
+> +static void amdgpu_acpi_wbrf_event(acpi_handle handle, u32 event, void *data)
+> +{
+> +	struct amdgpu_device *adev = (struct amdgpu_device *)data;
+> +
+> +	if (event == CPM_GPU_NOTIFY_COMMAND &&
+> +	    adev->wbrf_event_handler)
+> +		adev->wbrf_event_handler(adev); > +}
+> +
+> +int amdgpu_acpi_register_wbrf_notify_handler(struct amdgpu_device *adev,
+> +					     wbrf_notify_handler handler)
+> +{
+> +	struct acpi_handle *acpi_hdler = ACPI_HANDLE(adev->dev);
+> +
+> +	if (!acpi_hdler)
+> +		return -ENODEV;
+> +
+> +	adev->wbrf_event_handler = handler;
+> +
+> +	return acpi_install_notify_handler(acpi_hdler,
+> +					   ACPI_ALL_NOTIFY,
+> +					   amdgpu_acpi_wbrf_event,
+> +					   adev);
+> +}
+> +
+> +int amdgpu_acpi_unregister_wbrf_notify_handler(struct amdgpu_device *adev)
+> +{
+> +	struct acpi_handle *acpi_hdler = ACPI_HANDLE(adev->dev);
+> +
+> +	if (!acpi_hdler)
+> +		return -ENODEV;
+> +
+> +	adev->wbrf_event_handler = NULL;
+> +
+> +	return acpi_remove_notify_handler(acpi_hdler,
+> +					  ACPI_ALL_NOTIFY,
+> +					  amdgpu_acpi_wbrf_event);
+> +}
+> +#endif
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+> index b1ca1ab6d6ad..bf82cc192153 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+> @@ -191,6 +191,7 @@ int amdgpu_smartshift_bias;
+>   int amdgpu_use_xgmi_p2p = 1;
+>   int amdgpu_vcnfw_log;
+>   int amdgpu_sg_display = -1; /* auto */
+> +int amdgpu_wbrf = -1;
+>   
+>   static void amdgpu_drv_delayed_reset_work_handler(struct work_struct *work);
+>   
+> @@ -948,6 +949,24 @@ MODULE_PARM_DESC(smu_pptable_id,
+>   	"specify pptable id to be used (-1 = auto(default) value, 0 = use pptable from vbios, > 0 = soft pptable id)");
+>   module_param_named(smu_pptable_id, amdgpu_smu_pptable_id, int, 0444);
+>   
+> +#ifdef CONFIG_ACPI_WBRF
+> +/**
+> + * DOC: wbrf (int)
+> + * Enable Wifi RFI interference mitigation feature.
+> + * Due to electrical and mechanical constraints there may be likely interference of
+> + * relatively high-powered harmonics of the (G-)DDR memory clocks with local radio
+> + * module frequency bands used by Wifi 6/6e/7. To mitigate the possible RFI interference,
+> + * with this feature enabled, PMFW will use either “shadowed P-State” or “P-State” based
+> + * on active list of frequencies in-use (to be avoided) as part of initial setting or
+> + * P-state transition. However, there may be potential performance impact with this
+> + * feature enabled.
+> + * (0 = disabled, 1 = enabled, -1 = auto (default setting, will be enabled if supported))
+> + */
+> +MODULE_PARM_DESC(wbrf,
+> +	"Enable Wifi RFI interference mitigation (0 = disabled, 1 = enabled, -1 = auto(default)");
+> +module_param_named(wbrf, amdgpu_wbrf, int, 0444);
+> +#endif
+> +
+>   /* These devices are not supported by amdgpu.
+>    * They are supported by the mach64, r128, radeon drivers
+>    */
+> diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+> index 2ddf5198e5c4..89f876cc60e6 100644
+> --- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+> +++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+> @@ -1188,6 +1188,163 @@ static int smu_get_thermal_temperature_range(struct smu_context *smu)
+>   	return ret;
+>   }
+>   
+> +/**
+> + * smu_wbrf_handle_exclusion_ranges - consume the wbrf exclusion ranges
+> + *
+> + * @smu: smu_context pointer
+> + *
+> + * Retrieve the wbrf exclusion ranges and send them to PMFW for proper handling.
+> + * Returns 0 on success, error on failure.
+> + */
+> +static int smu_wbrf_handle_exclusion_ranges(struct smu_context *smu)
+> +{
+> +	struct wbrf_ranges_out wbrf_exclusion = {0};
+> +	struct exclusion_range *wifi_bands = wbrf_exclusion.band_list;
+> +	struct amdgpu_device *adev = smu->adev;
+> +	uint64_t start, end;
+> +	int ret, i, j;
+> +
+> +	ret = amdgpu_acpi_wbrf_retrieve_exclusions(adev, &wbrf_exclusion);
+> +	if (ret) {
+> +		dev_err(adev->dev, "Failed to retrieve exclusion ranges!\n");
+> +		return ret;
+> +	}
+> +
+> +	/*
+> +	 * The exclusion ranges array we got might be filled with holes and duplicate
+> +	 * entries. For example:
+> +	 * {(2400, 2500), (0, 0), (6882, 6962), (2400, 2500), (0, 0), (6117, 6189), (0, 0)...}
+> +	 * We need to do some sortups to eliminate those holes and duplicate entries.
+> +	 * Expected output: {(2400, 2500), (6117, 6189), (6882, 6962), (0, 0)...}
+> +	 */
+> +	for (i = 0; i < MAX_NUM_OF_WBRF_RANGES; i++) {
+> +		start = wifi_bands[i].start;
+> +		end = wifi_bands[i].end;
+> +
+> +		/* get the last valid entry to fill the intermediate hole */
+> +		if (!start && !end) {
+> +			for (j = MAX_NUM_OF_WBRF_RANGES - 1; j > i; j--)
+> +				if (wifi_bands[j].start &&
+> +				    wifi_bands[j].end)
+> +					break;
+> +
+> +			if (j > i) {
+> +				wifi_bands[i].start = wifi_bands[j].start;
+> +				wifi_bands[i].end = wifi_bands[j].end;
+> +				wifi_bands[j].start = 0;
+> +				wifi_bands[j].end = 0;
+> +			}
+> +
+> +			continue;
+> +		}
+> +
+> +		/* eliminate duplicate entries */
+> +		for (j = i + 1; j < MAX_NUM_OF_WBRF_RANGES; j++) {
+> +			if ((wifi_bands[j].start == start) &&
+> +			     (wifi_bands[j].end == end)) {
+> +				wifi_bands[j].start = 0;
+> +				wifi_bands[j].end = 0;
+> +				continue;
+> +			}
+> +		}
+> +	}
+> +
+> +	/* Send the sorted wifi_bands to PMFW */
+> +	ret = smu_set_wbrf_exclusion_ranges(smu, wifi_bands);
 
-Not part of this patch, but while at it maybe fix the  http://www.uefi.org/workinggroup
-that doesn't work - it returns 404.
+Do we need to make sure to wake up the device (say if it's in BOCO) 
+before calling this? Or, is it expected that the device gets active when 
+these notifications come?
 
+> +	/* Give it another chance */
+> +	if (unlikely(ret == -EBUSY)) {
+> +		mdelay(5);
+> +		ret = smu_set_wbrf_exclusion_ranges(smu, wifi_bands);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * smu_wbrf_event_handler - handle notify events
+> + *
+> + * @adev: struct amdgpu_device pointer
+> + *
+> + * Calls relevant amdgpu function in response to wbrf event
+> + * notification from BIOS.
+> + */
+> +static void smu_wbrf_event_handler(struct amdgpu_device *adev)
+> +{
+> +	struct smu_context *smu = adev->powerplay.pp_handle;
+> +
+> +	smu_wbrf_handle_exclusion_ranges(smu);
+> +}
+> +
+> +/**
+> + * smu_wbrf_support_check - check wbrf support
+> + *
+> + * @smu: smu_context pointer
+> + *
+> + * Verifies the ACPI interface whether wbrf is supported.
+> + */
+> +static void smu_wbrf_support_check(struct smu_context *smu)
+> +{
+> +	struct amdgpu_device *adev = smu->adev;
+> +
+> +	smu->wbrf_supported = smu_is_asic_wbrf_supported(smu) &&
+> +			      !!amdgpu_wbrf &&
+> +			      amdgpu_acpi_is_wbrf_supported(adev);
+> +
+> +	if (smu->wbrf_supported)
+> +		dev_info(adev->dev, "Enabled RF interference mitigations\n");
 
->  
-> -It is the intent of the ARMv8 ACPI kernel code to follow the ACPI specification
-> +It is the intent of the Arm ACPI kernel code to follow the ACPI specification
->  as closely as possible, and to only implement functionality that complies with
->  the released standards from UEFI ASWG.  As a practical matter, there will be
->  vendors that provide bad ACPI tables or violate the standards in some way.
-> @@ -470,12 +471,12 @@ likely be willing to assist in submitting ECRs.
->  
->  Linux Code
->  ----------
-> -Individual items specific to Linux on ARM, contained in the Linux
-> +Individual items specific to Linux on Arm, contained in the Linux
->  source code, are in the list that follows:
->  
->  ACPI_OS_NAME
->                         This macro defines the string to be returned when
-> -                       an ACPI method invokes the _OS method.  On ARM64
-> +                       an ACPI method invokes the _OS method.  On Arm64
->                         systems, this macro will be "Linux" by default.
->                         The command line parameter acpi_os=<string>
->                         can be used to set it to some other value.  The
+Minor comment - at this point nothing is enabled, it only detected 
+hardware support. I guess, once FW is instructed to use shadow pstates 
+only then mitigation steps are enabled.
 
+Thanks,
+Lijo
+
+> +}
+> +
+> +/**
+> + * smu_wbrf_init - init driver wbrf support
+> + *
+> + * @smu: smu_context pointer
+> + *
+> + * Verifies the AMD ACPI interfaces and registers with the wbrf
+> + * notifier chain if wbrf feature is supported.
+> + * Returns 0 on success, error on failure.
+> + */
+> +static int smu_wbrf_init(struct smu_context *smu)
+> +{
+> +	struct amdgpu_device *adev = smu->adev;
+> +	int ret;
+> +
+> +	if (!smu->wbrf_supported)
+> +		return 0;
+> +
+> +	ret = amdgpu_acpi_register_wbrf_notify_handler(adev,
+> +						       smu_wbrf_event_handler);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/*
+> +	 * Some wifiband exclusion ranges may be already there
+> +	 * before our driver loaded. To make sure our driver
+> +	 * is awared of those exclusion ranges.
+> +	 */
+> +	ret = smu_wbrf_handle_exclusion_ranges(smu);
+> +	if (ret)
+> +		dev_err(adev->dev, "Failed to handle wbrf exclusion ranges\n");
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * smu_wbrf_fini - tear down driver wbrf support
+> + *
+> + * @smu: smu_context pointer
+> + *
+> + * Unregisters with the wbrf notifier chain.
+> + */
+> +static void smu_wbrf_fini(struct smu_context *smu)
+> +{
+> +	struct amdgpu_device *adev = smu->adev;
+> +
+> +	if (!smu->wbrf_supported)
+> +		return;
+> +
+> +	amdgpu_acpi_unregister_wbrf_notify_handler(adev);
+> +}
+> +
+>   static int smu_smc_hw_setup(struct smu_context *smu)
+>   {
+>   	struct smu_feature *feature = &smu->smu_feature;
+> @@ -1280,6 +1437,15 @@ static int smu_smc_hw_setup(struct smu_context *smu)
+>   	if (ret)
+>   		return ret;
+>   
+> +	/* Enable UclkShadow on wbrf supported */
+> +	if (smu->wbrf_supported) {
+> +		ret = smu_enable_uclk_shadow(smu, true);
+> +		if (ret) {
+> +			dev_err(adev->dev, "Failed to enable UclkShadow feature to support wbrf!\n");
+> +			return ret;
+> +		}
+> +	}
+> +
+>   	/*
+>   	 * With SCPM enabled, these actions(and relevant messages) are
+>   	 * not needed and permitted.
+> @@ -1376,6 +1542,15 @@ static int smu_smc_hw_setup(struct smu_context *smu)
+>   	 */
+>   	ret = smu_set_min_dcef_deep_sleep(smu,
+>   					  smu->smu_table.boot_values.dcefclk / 100);
+> +	if (ret) {
+> +		dev_err(adev->dev, "Error setting min deepsleep dcefclk\n");
+> +		return ret;
+> +	}
+> +
+> +	/* Init wbrf support. Properly setup the notifier */
+> +	ret = smu_wbrf_init(smu);
+> +	if (ret)
+> +		dev_err(adev->dev, "Error during wbrf init call\n");
+>   
+>   	return ret;
+>   }
+> @@ -1431,6 +1606,13 @@ static int smu_hw_init(void *handle)
+>   		return ret;
+>   	}
+>   
+> +	/*
+> +	 * Check whether wbrf is supported. This needs to be done
+> +	 * before SMU setup starts since part of SMU configuration
+> +	 * relies on this.
+> +	 */
+> +	smu_wbrf_support_check(smu);
+> +
+>   	if (smu->is_apu) {
+>   		ret = smu_set_gfx_imu_enable(smu);
+>   		if (ret)
+> @@ -1583,6 +1765,8 @@ static int smu_smc_hw_cleanup(struct smu_context *smu)
+>   	struct amdgpu_device *adev = smu->adev;
+>   	int ret = 0;
+>   
+> +	smu_wbrf_fini(smu);
+> +
+>   	cancel_work_sync(&smu->throttling_logging_work);
+>   	cancel_work_sync(&smu->interrupt_work);
+>   
+> diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+> index 09469c750a96..ff0af3da0be2 100644
+> --- a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+> +++ b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+> @@ -573,6 +573,9 @@ struct smu_context
+>   	u32 debug_param_reg;
+>   	u32 debug_msg_reg;
+>   	u32 debug_resp_reg;
+> +
+> +	/* data structures for wbrf feature support */
+> +	bool				wbrf_supported;
+>   };
+>   
+>   struct i2c_adapter;
+> @@ -1354,6 +1357,23 @@ struct pptable_funcs {
+>   	 * @init_pptable_microcode: Prepare the pptable microcode to upload via PSP
+>   	 */
+>   	int (*init_pptable_microcode)(struct smu_context *smu);
+> +
+> +	/**
+> +	 * @is_asic_wbrf_supported: check whether PMFW supports the wbrf feature
+> +	 */
+> +	bool (*is_asic_wbrf_supported)(struct smu_context *smu);
+> +
+> +	/**
+> +	 * @enable_uclk_shadow: Enable the uclk shadow feature on wbrf supported
+> +	 */
+> +	int (*enable_uclk_shadow)(struct smu_context *smu,
+> +				  bool enablement);
+> +
+> +	/**
+> +	 * @set_wbrf_exclusion_ranges: notify SMU the wifi bands occupied
+> +	 */
+> +	int (*set_wbrf_exclusion_ranges)(struct smu_context *smu,
+> +					 struct exclusion_range *exclusion_ranges);
+>   };
+>   
+>   typedef enum {
+> diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu_internal.h b/drivers/gpu/drm/amd/pm/swsmu/smu_internal.h
+> index ceb13c838067..67d7495ab49e 100644
+> --- a/drivers/gpu/drm/amd/pm/swsmu/smu_internal.h
+> +++ b/drivers/gpu/drm/amd/pm/swsmu/smu_internal.h
+> @@ -97,6 +97,9 @@
+>   #define smu_get_default_config_table_settings(smu, config_table)	smu_ppt_funcs(get_default_config_table_settings, -EOPNOTSUPP, smu, config_table)
+>   #define smu_set_config_table(smu, config_table)				smu_ppt_funcs(set_config_table, -EOPNOTSUPP, smu, config_table)
+>   #define smu_init_pptable_microcode(smu)					smu_ppt_funcs(init_pptable_microcode, 0, smu)
+> +#define smu_is_asic_wbrf_supported(smu)					smu_ppt_funcs(is_asic_wbrf_supported, false, smu)
+> +#define smu_enable_uclk_shadow(smu, enablement)				smu_ppt_funcs(enable_uclk_shadow, 0, smu, enablement)
+> +#define smu_set_wbrf_exclusion_ranges(smu, exclusion_ranges)		smu_ppt_funcs(set_wbrf_exclusion_ranges, -EOPNOTSUPP, smu, exclusion_ranges)
+>   
+>   #endif
+>   #endif
