@@ -2,124 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66EEC7371D8
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jun 2023 18:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 819657372CA
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jun 2023 19:27:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232174AbjFTQgS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 20 Jun 2023 12:36:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33276 "EHLO
+        id S229827AbjFTR1i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 20 Jun 2023 13:27:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232079AbjFTQgH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Jun 2023 12:36:07 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7BE32106;
-        Tue, 20 Jun 2023 09:35:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687278944; x=1718814944;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=MU6h0bQC0vAge5es6R0v/1fr1IoAPMvkrNIAnaSKRwM=;
-  b=OWDeK3t688m5Vu25OHOVjthdpTd0X3o0WHWZ791OfI1mwaedOXOWuBJI
-   ac7LW/rNlK3nkUzyt5/IF6mX2cN0z9okQ2nZPuBAEfr7Zcf2mld0az3jS
-   AyoRvh8vgEsr7CwBhT9QWUFh6cGyi7HnhpqyU9Jk5Wapehz3OUq0/9GXs
-   G2C0fScAA5DnlXtrZWIdOOz8KOjrXwMNs6nFaYe6XURh0yJo7UCi1mPfK
-   0L5xafC1bFpX5ZLU9lqTmRP0qNGntKVdR0pjxyB1yRwhLTTL/h1gJwLok
-   +ZEWKu5Pt5LpLL5P6iBQI5UnIDRZNP07QZ43cnEYbZn/pC5liOVtQ/91S
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="423575845"
-X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; 
-   d="scan'208";a="423575845"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 09:35:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="838268291"
-X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; 
-   d="scan'208";a="838268291"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga004.jf.intel.com with ESMTP; 20 Jun 2023 09:35:39 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 4ED3E690; Tue, 20 Jun 2023 19:35:50 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Wolfram Sang <wsa@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        acpica-devel@lists.linuxfoundation.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Robert Moore <robert.moore@intel.com>
-Subject: [PATCH v1 2/2] ACPI: platform: Move SMB0001 HID to the header and reuse
-Date:   Tue, 20 Jun 2023 19:35:34 +0300
-Message-Id: <20230620163534.1042-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20230620163534.1042-1-andriy.shevchenko@linux.intel.com>
-References: <20230620163534.1042-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229520AbjFTR1h (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Jun 2023 13:27:37 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2053.outbound.protection.outlook.com [40.107.220.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A343E95;
+        Tue, 20 Jun 2023 10:27:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RhhoD+/e/e9ClEIe07LovFKzgRtSGxtB3CPetWDk7fXu3eHToMFeAaeDule/KcEjC/a9xKf6r5PYr1EwBFK0mmlktHUVXGNnm+hM+CQPwZ0APDMDxiZ30JFFbCH1i28tHuoT6WjSvwXr1SeUclVrawWvdQoCbuE1XFVEHq3Ou9QdhrHqxRDiCOl4PHN2WLngfksmCI+hMnhMJnfoh/KSZS2MkNBkM7XGQ39Z1RyNuB4Sb3fO5Wi72ntA1qSU8QIKJQMTIy1RyxLUM3mKhz/YsZNlgFZcPIO4JTr2df5ANZAYkXAmC9n9OK4KJFlDVKgg1qc8j+gQNrJ9mXlLhPDViQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YK4Ya++DT9fnoXc3qwOg07w/mkbtsOo8oaM+F7D5Yx4=;
+ b=bRKVo31cwbh6tlc3ZSfu/Rgywnqa0ie41ppKrC7+jW0a0W+RTHOfHwHZ8zqBR7FIwvFlzcqzb4Z90tL2bv2EBxT5wLydjseWBSJlzpoBezqdEn7YRFJ+sR0/80WmSBYQ+qQ+lYxdD8Vr21Zee+7N8CsY4MPToLnk0VDuZin4AjrfLOsQEd1sD+e8z5CEp3rymUK7IEJ8rRhii1moShqI1V/rRbZPKGGNYrHssqLwF1kdV8ttkHfxa01zs8UkVOeLa4ddMp6U9YMJZEXIHfuUgUeL4JHbFqHMqdHEIQIER6+e/QWRMTlRxmWyv1Cdw7QJGasBB1oUSlwNNm1061zS2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YK4Ya++DT9fnoXc3qwOg07w/mkbtsOo8oaM+F7D5Yx4=;
+ b=lYYWW7cTzl0ST91vhmR3qQ3H4/rF0GXoFi8HikHRDigrf46rzR3M7AYV6ZQnAH4qYEOK9SBp36XNQax9NKo6N1u4JA8EMlrTBQn06kv8GF+ykFYjx/zYY+WQUP82ODtK5w4ENccNup2+TDbUJsgD4kjK5ybJ4NSDaC5zrwTVpQY=
+Received: from PH8PR02CA0024.namprd02.prod.outlook.com (2603:10b6:510:2d0::16)
+ by IA0PR12MB7529.namprd12.prod.outlook.com (2603:10b6:208:441::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37; Tue, 20 Jun
+ 2023 17:27:34 +0000
+Received: from SA2PEPF000015C6.namprd03.prod.outlook.com
+ (2603:10b6:510:2d0:cafe::a) by PH8PR02CA0024.outlook.office365.com
+ (2603:10b6:510:2d0::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.21 via Frontend
+ Transport; Tue, 20 Jun 2023 17:27:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SA2PEPF000015C6.mail.protection.outlook.com (10.167.241.196) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6521.19 via Frontend Transport; Tue, 20 Jun 2023 17:27:33 +0000
+Received: from SITE-L-T34-2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 20 Jun
+ 2023 12:27:32 -0500
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+CC:     Len Brown <lenb@kernel.org>, Huang Rui <ray.huang@amd.com>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>,
+        Gautham Ranjal Shenoy <gautham.shenoy@amd.com>,
+        Wyes Karny <Wyes.Karny@amd.com>,
+        Perry Yuan <perry.yuan@amd.com>,
+        "Mario Limonciello" <mario.limonciello@amd.com>
+Subject: [PATCH v3 0/3] Enable amd-pstate active mode by default
+Date:   Tue, 20 Jun 2023 12:24:30 -0500
+Message-ID: <20230620172433.21325-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015C6:EE_|IA0PR12MB7529:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6fbcae36-4e6b-4ca8-7858-08db71b3a241
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: +pAhJzRUBB9rkG2n89+nS31iWSnsW93NsY1gCUWN1IwCBaQ4tGCbxulbRAdj13FyDDDqEmyoqmjTQL6uim+u3/sFy9yf703BNHnClGBvuorEXxNjLDEkiVdwyBadAY9uAbOSHcnyet/QIXGBUjuwZH9rhrEUZlqdevIIdMDzQn1XfJ66AY+e1Ml9RosRTD9Fs9phKDmAhr3qqe83eFM5yb+AXp7os3G1N9AyNH1O/ixgersrA9ojrrm6rbmBbOoMhY5lYmfxuWMpUxd/BMGrmYzd0uoCq+NnhKn41yXDq2aEezhqHeh1tDAoT20dhF4ub7ZvYYCUo91dS0h7OmzqaOQAlNQBquOvQGT7o8WDIZj2EBUA5c16LucIvOU/5N2/WMz4LTZ9bDEmNYe43iYdvTbRDPOS7awFQQtDjHt+jC3ILZqew26BT6sOW5ex0Z55U+WcXL8A7V5OC8W8WAvh1RAoxT1O65c10hjzKSmFzCle9YgAfWUxqKk6OI69TJ+HAHkWzx8vf4jl2ftXmsfbX2OE3nc1MZgJndxiLUVfN5csM8BpolzcU1YnMokAnEWN9p4GETONnmbFMUzKAKTsKaa8PzTorrslzj5Q8jmDkGlWSVAbnvgRnIxY9RaQmsFaXYfxtcZRKM24CaPSxxH6kKNwNeBWahe/FC8mq1hpVNS+nOkvStqcYIs7HvUCPEvk/2nVBXNtxAZ/FYgW/eugEotD+YXFQeWRTzKXe8X8+gyNKWQMQKUev2TpHBvPdt4WIFRhaSRZxHXh1bhDia2dZQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(396003)(136003)(39860400002)(451199021)(40470700004)(46966006)(36840700001)(8676002)(8936002)(478600001)(40480700001)(41300700001)(5660300002)(4744005)(2906002)(44832011)(316002)(70206006)(4326008)(6916009)(70586007)(40460700003)(186003)(1076003)(26005)(16526019)(36756003)(54906003)(36860700001)(86362001)(82740400003)(2616005)(336012)(356005)(7696005)(426003)(83380400001)(81166007)(82310400005)(47076005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2023 17:27:33.7560
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fbcae36-4e6b-4ca8-7858-08db71b3a241
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF000015C6.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7529
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There are at least two places in the kernel that are using
-the SMB0001 HID. Make it to be available via acpi_drivers.h
-header file. While at it, replace hard coded one with a
-definition.
+Active mode for amd-pstate has shown enough success now that it makes sense
+to enable it by default on client systems.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/acpi_platform.c  | 2 +-
- drivers/i2c/busses/i2c-scmi.c | 3 ---
- include/acpi/acpi_drivers.h   | 2 ++
- 3 files changed, 3 insertions(+), 4 deletions(-)
+This series introduces a new kernel configuration option to set the default
+policy for amd-pstate modes for a kernel.
 
-diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-index 089a98bd18bf..e86f76ee3473 100644
---- a/drivers/acpi/acpi_platform.c
-+++ b/drivers/acpi/acpi_platform.c
-@@ -20,7 +20,7 @@
- #include "internal.h"
- 
- static const struct acpi_device_id forbidden_id_with_resourses[] = {
--	{"SMB0001",  0},	/* ACPI SMBUS virtual device */
-+	{ACPI_SMBUS_MS_HID,  0},	/* ACPI SMBUS virtual device */
- 	{ }
- };
- 
-diff --git a/drivers/i2c/busses/i2c-scmi.c b/drivers/i2c/busses/i2c-scmi.c
-index 104570292241..421735acfa14 100644
---- a/drivers/i2c/busses/i2c-scmi.c
-+++ b/drivers/i2c/busses/i2c-scmi.c
-@@ -13,9 +13,6 @@
- #include <linux/i2c.h>
- #include <linux/acpi.h>
- 
--/* SMBUS HID definition as supported by Microsoft Windows */
--#define ACPI_SMBUS_MS_HID		"SMB0001"
--
- struct smbus_methods_t {
- 	char *mt_info;
- 	char *mt_sbr;
-diff --git a/include/acpi/acpi_drivers.h b/include/acpi/acpi_drivers.h
-index 8372b0e7fd15..b14d165632e7 100644
---- a/include/acpi/acpi_drivers.h
-+++ b/include/acpi/acpi_drivers.h
-@@ -27,6 +27,8 @@
- #define ACPI_BAY_HID			"LNXIOBAY"
- #define ACPI_DOCK_HID			"LNXDOCK"
- #define ACPI_ECDT_HID			"LNXEC"
-+/* SMBUS HID definition as supported by Microsoft Windows */
-+#define ACPI_SMBUS_MS_HID		"SMB0001"
- /* Quirk for broken IBM BIOSes */
- #define ACPI_SMBUS_IBM_HID		"SMBUSIBM"
- 
+Server systems will by identified by the PM preferred profile and still be
+set as disabled by default for now.
+
+v2->v3:
+ * Drop patch 4; Intel intentionally doesn't want intel-pstate on SOHO
+   server
+ * Move symbols from patch 1 into patch 2
+ * Add tags
+Mario Limonciello (3):
+  ACPI: CPPC: Add definition for undefined FADT preferred PM profile
+    value
+  cpufreq: amd-pstate: Set a fallback policy based on preferred_profile
+  cpufreq: amd-pstate: Add a kernel config option to set default mode
+
+ drivers/cpufreq/Kconfig.x86  |  17 ++++++
+ drivers/cpufreq/amd-pstate.c | 101 +++++++++++++++++++++++++----------
+ include/acpi/actbl.h         |   3 +-
+ include/linux/amd-pstate.h   |   4 +-
+ 4 files changed, 96 insertions(+), 29 deletions(-)
+
 -- 
-2.40.0.1.gaa8946217a0b
+2.34.1
 
