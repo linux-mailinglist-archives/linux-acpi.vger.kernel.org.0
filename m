@@ -2,90 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CC78737136
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jun 2023 18:13:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC9987371D4
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Jun 2023 18:36:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbjFTQNS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 20 Jun 2023 12:13:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47702 "EHLO
+        id S230091AbjFTQgR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 20 Jun 2023 12:36:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232181AbjFTQNR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Jun 2023 12:13:17 -0400
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85C61F4;
-        Tue, 20 Jun 2023 09:13:12 -0700 (PDT)
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-4f8f86fd7b9so273991e87.1;
-        Tue, 20 Jun 2023 09:13:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687277588; x=1689869588;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nCgTqghRbrJhuh+9RX224RAvBbp1ljjN9HxHevt6TQ0=;
-        b=LMkMzQsdMImdQt04xu+mHIWWGQcvlWu4UcMqoFvf9KhXQR9RREM0TUNzO/VovnowgN
-         0W0ADL12wWdwdBdI0pxxLIz/ubO+A4LGJAaggT/LoRWEh8qCAjDnzf4LAXTXtTV/2psg
-         RQVNtMVC0UHMic7M1yynB/wzlB6ny3oKK7uLa9Xs0gZXJkgqPSk5y13gQnuG5iEbgNie
-         WLQpSUMh703nAkCL5vfuOHl+54K2oJjek7mqwc8FBTACMW+bfrf9xvzEDjCUZJCoXtpD
-         8bGVf+95PIOxWTJOQiNUmCdNMBW9ao/Lp29a5AZL7g3CwVVKyo50v/aDmvaC/zY7A7Vy
-         WN4Q==
-X-Gm-Message-State: AC+VfDxXZ2zu6GDKG9D7EXdcbvHO4zK57y9oR1DZJwLYBJQyQ9qgQLPa
-        avAQBsaO/KkrtyYTjOw7nhEE+UOFxXySfMfSU2oSI+MdF14=
-X-Google-Smtp-Source: ACHHUZ7O1AfL37JSNK2T8KUbAInOwTabX5mGBA5NL6112kp2MYUJxLIIL9AuMsH6Dultmz6nrmz1Gw7MGcXyrRPnE8k=
-X-Received: by 2002:a2e:b54a:0:b0:2b4:6cd3:43be with SMTP id
- a10-20020a2eb54a000000b002b46cd343bemr4155549ljn.3.1687277588396; Tue, 20 Jun
- 2023 09:13:08 -0700 (PDT)
+        with ESMTP id S230145AbjFTQgG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Jun 2023 12:36:06 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082CF1FFC;
+        Tue, 20 Jun 2023 09:35:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687278942; x=1718814942;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=JK3tVYgPO813k37yyUcq4KAbO6r53M5gA1CD/W9gXN8=;
+  b=C1AncA6hwg3dXQMAeiRzYT+mJSLy/lPRbX/r5EUi9819GG6Np7ludt8R
+   K4+QvOh3uD0T49+KXeFKR+PgUi0SN1dCovidctMwuCyHmVoZMlgy9cDyi
+   c8BR1ZAkVeXa+l4Z8j+eysGOjhcuV8poNTohH/eNrjKunUq3jFTratDy5
+   2wscgl6P8BaoB1xYbb2qkV6p0i5ZwQR6uS2TmKvC8OHF493x6vbVLPWSU
+   sOx9qg0VfP+6hnYGLyXg9DiHdWXW+0MuSq2RSHffv3WeoEUiseegrOlw1
+   3B0c/6hvc1ckX9s/EiupWG8Wlv6kqRQnXOKnM4PTrX4yC2nvWXq2MoX9y
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="363334026"
+X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; 
+   d="scan'208";a="363334026"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 09:35:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="827062742"
+X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; 
+   d="scan'208";a="827062742"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga002.fm.intel.com with ESMTP; 20 Jun 2023 09:35:36 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id E770C413; Tue, 20 Jun 2023 19:35:46 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Wolfram Sang <wsa@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        acpica-devel@lists.linuxfoundation.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Michael Brunner <michael.brunner@kontron.com>
+Subject: [PATCH v1 1/2] ACPI: platform: Ignore SMB0001 only when it has resources
+Date:   Tue, 20 Jun 2023 19:35:33 +0300
+Message-Id: <20230620163534.1042-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 20 Jun 2023 18:12:57 +0200
-Message-ID: <CAJZ5v0h7dfsyHq14pYkgWAq=chG6WWWEjU1fwe_7OCbyjKKVqA@mail.gmail.com>
-Subject: [GIT PULL] ACPI fix for v6.4-rc8
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+After switchind i2c-scmi driver to be a plaform one it stopped
+being enumerated on number of Kontron platformsm, because it's
+listed in the forbidden_id_list.
 
-Please pull from the tag
+To resolve the situation, split the list to generic one and
+another that holds devices that has to be skiped if and only if
+they have bogus resources attached (_CRS method returns some).
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.4-rc8
+Fixes: 03d4287add6e ("i2c: scmi: Convert to be a platform driver")
+Closes: https://lore.kernel.org/r/60c1756765b9a3f1eab0dcbd84f59f00fe1caf48.camel@kontron.com
+Reported-by: Michael Brunner <michael.brunner@kontron.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/acpi_platform.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-with top-most commit 22db06337f590d01d79f60f181d8dfe5a9ef9085
+diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+index fe00a5783f53..089a98bd18bf 100644
+--- a/drivers/acpi/acpi_platform.c
++++ b/drivers/acpi/acpi_platform.c
+@@ -19,13 +19,17 @@
+ 
+ #include "internal.h"
+ 
++static const struct acpi_device_id forbidden_id_with_resourses[] = {
++	{"SMB0001",  0},	/* ACPI SMBUS virtual device */
++	{ }
++};
++
+ static const struct acpi_device_id forbidden_id_list[] = {
+ 	{"ACPI0009", 0},	/* IOxAPIC */
+ 	{"ACPI000A", 0},	/* IOAPIC */
+ 	{"PNP0000",  0},	/* PIC */
+ 	{"PNP0100",  0},	/* Timer */
+ 	{"PNP0200",  0},	/* AT DMA Controller */
+-	{"SMB0001",  0},	/* ACPI SMBUS virtual device */
+ 	{ }
+ };
+ 
+@@ -83,6 +87,15 @@ static void acpi_platform_fill_resource(struct acpi_device *adev,
+ 		dest->parent = pci_find_resource(to_pci_dev(parent), dest);
+ }
+ 
++static int acpi_platform_resource_count(struct acpi_resource *ares, void *data)
++{
++	int *count = data;
++
++	*count = *count + 1;
++
++	return 1;
++}
++
+ /**
+  * acpi_create_platform_device - Create platform device for ACPI device node
+  * @adev: ACPI device node to create a platform device for.
+@@ -103,7 +116,8 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+ 	struct resource_entry *rentry;
+ 	struct list_head resource_list;
+ 	struct resource *resources = NULL;
+-	int count;
++	int count = 0;
++	int ret;
+ 
+ 	/* If the ACPI node already has a physical device attached, skip it. */
+ 	if (adev->physical_node_count)
+@@ -113,6 +127,15 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	INIT_LIST_HEAD(&resource_list);
++	ret = acpi_dev_get_resources(adev, &resource_list, acpi_platform_resource_count, &count);
++	if (ret < 0)
++		return ERR_PTR(ret);
++
++	acpi_dev_free_resource_list(&resource_list);
++
++	if (count > 0 && !acpi_match_device_ids(adev, forbidden_id_with_resourses))
++		return ERR_PTR(-EINVAL);
++
+ 	count = acpi_dev_get_resources(adev, &resource_list, NULL, NULL);
+ 	if (count < 0)
+ 		return NULL;
+-- 
+2.40.0.1.gaa8946217a0b
 
- ACPI: sleep: Avoid breaking S3 wakeup due to might_sleep()
-
-on top of commit 858fd168a95c5b9669aac8db6c14a9aeab446375
-
- Linux 6.4-rc6
-
-to receive an ACPI fix for 6.4-rc8.
-
-This fixes a kernel crash during early resume from ACPI S3 that has
-been present since the 5.15 cycle when might_sleep() was added to
-down_timeout(), which in some configurations of the kernel caused an
-implicit preemption point to trigger at a wrong time.
-
-Thanks!
-
-
----------------
-
-Rafael J. Wysocki (1):
-      ACPI: sleep: Avoid breaking S3 wakeup due to might_sleep()
-
----------------
-
- drivers/acpi/acpica/achware.h |  2 --
- drivers/acpi/sleep.c          | 16 ++++++++++++----
- include/acpi/acpixf.h         |  1 +
- 3 files changed, 13 insertions(+), 6 deletions(-)
