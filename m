@@ -2,56 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BE2B738A9C
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 18:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 411C4738AF2
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 18:23:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229504AbjFUQPQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Jun 2023 12:15:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42888 "EHLO
+        id S230360AbjFUQXn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Jun 2023 12:23:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232666AbjFUQPJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 12:15:09 -0400
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2053.outbound.protection.outlook.com [40.107.223.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C1BF186;
-        Wed, 21 Jun 2023 09:15:08 -0700 (PDT)
+        with ESMTP id S232157AbjFUQXd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 12:23:33 -0400
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2065.outbound.protection.outlook.com [40.107.95.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21C4E1FCA;
+        Wed, 21 Jun 2023 09:23:21 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E1xmLpc+1ef5weZFgu6kVmIkGRPu/NsuOH9Ttd8AAVy5ZFHULy7Ctr2SXqBn0hJhaY8Z9sQiVspGd6duGWDqtEvVvtQOpw2Jiq7RgqfJcrCVzKRGAHGnfJByw3tsm3HHJKx/G4pO47OGegOfHRbUKCGGXH8nxWFXzzNjJy8b7VITEyINiTe1tizQMaNLXfXf1dJcMqB1g+PjZJOhntRSvnjuA51221buVpX8aBZQTCI+IfvBkLiXBvi4rKF8VHCTEElE8cuD9OAcAIYssNRz943Y9ZtkRdQ3CiE8y4Q5OCJZtp7xBWwxCxmFDnRDHk/B0wS4aHK14MBJ11FEN4lYmA==
+ b=S+ow/TwN8XwpsWGVk4ZQ+dzozzq01gleJd9ZNfU7ewqHSIz5++GBaRgOWNramiCdQRkHrIrVCPjJ7k+ojrw2PVs3QS1N5IpkovtCJigfiurIecfKyw32zszvZ77RxDmL+WwiTRV5VMEtk3BuhFHrT/dE/glfV6Af8GN9ugO2gqK3mxtoUG/TfvAkZDilz5OXt62ljNwjOJbF1qo9+mjHc1dz7/Pc78h3je9KU2uw2sqRIsyOOU78HlE9XoTAjIgFT+FTv28nd4xXd9TI5dYW3+9o/1iImz7TSv7YWCF8V/ZZRxjObjGZczL0nfWSk1nenIrpyMmDCRYrx+qz6pkrGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2XuIkuVB09s2z0EXoibkagIFTtxAv4WP2pPDyyxrThI=;
- b=WoRnwhqT2Esd8RNktcLsIpNARcs/Jm23ypTAMlfqGRJ5pmKK+cna8MzCm+muOYQ/NqYPvdg0x2J40mc+eJKR6fqc2MiT+B2z2e26BtKpOIGq9DwGGgqL+fS/SnYlWUZl4gRUgd5mBrgfGgICw7rrFpuvov2zkoq8RUWQ3+z4QPLnl79LEMZ6qBV4XPjP1V04Q0Ep3/d9ZxYcpypwKpEDWq9Nr7rHUEkvwvE09p7iJnr//MjS5GyhM+EZh10qW3OqTX32UfVb9CN36zBPZUjENXwHVXStDok93l0EFsDNfbPC0+ZF25P7JnvmeZ8RqSWY9z1bphjtdOCI3W78YCZj4A==
+ bh=K3a5xOi3G+vEGom6/mlC/alCWP8iJq4Ln7/GSF7VQHs=;
+ b=NcGQsoc6sDXU/xWyncyHQwYNz8Yq1uoazCuuhwCffiD1oJzibJ1jE5hUPwfpv1LL1UCBbu9fMdZt8ymRduEaqxBbHOrGFxe8h8cXaaRnJaihZv4sqGW7k+2gWd3BklHA0B7Ew+5GLQ6ZLNNLXE3d/QHfLrAsufW9cWD7GZrf2F/rzuqIUkY+UA6GsGZoCeyspLwdzrSQhL1D/KT/4uV7mLXg0tbih208RbJvnlD1ll39PV1CGLfsupGU92PXalpiwL960ayfLc8UZrj/bAdtXnw6/zqvsM0Z0SnIGuQCeXysNk7E6yLm3OaR3xtVoAoCiUr8Z8lNJlAkca2gS1Tmqw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2XuIkuVB09s2z0EXoibkagIFTtxAv4WP2pPDyyxrThI=;
- b=wSwpo+F0gqG87cDBUm4gI5LwnqC2UYoCbiq+XapIEpYXslzegdcBThn/OVeYMXEBBSiv9VgrmNEArJgC9CYgfRqjUk/TzQDU4nOX/+of/y/YVdvTCiHA8C+cPhL4HjcoF1GEADgAkochIqP7WBBViPxhauRl30PSq9OaNhaU6jU=
+ bh=K3a5xOi3G+vEGom6/mlC/alCWP8iJq4Ln7/GSF7VQHs=;
+ b=ydtnyn6MPWptlxDCCVbWmxao018a4NHzQlp4JXLDtHFKAomhrCtCKqj24oKN2stuB9iJXw4/v6uxVHE0FRODWsIzzoa6YPjw6rW7qplFFz99Zabk9fiS8ymFgK0EgFwofK59qfFYOLTiEAfQrGdkhoU16tTvBnTYWt645or6g8k=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by MW4PR12MB5602.namprd12.prod.outlook.com (2603:10b6:303:169::20) with
+ by SJ2PR12MB9162.namprd12.prod.outlook.com (2603:10b6:a03:555::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Wed, 21 Jun
- 2023 16:15:05 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.39; Wed, 21 Jun
+ 2023 16:23:18 +0000
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::dfcf:f53c:c778:6f70]) by MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::dfcf:f53c:c778:6f70%5]) with mapi id 15.20.6521.020; Wed, 21 Jun 2023
- 16:15:05 +0000
-Message-ID: <b1abec47-04df-4481-d680-43c5ff3cbb48@amd.com>
-Date:   Wed, 21 Jun 2023 11:15:00 -0500
+ 16:23:18 +0000
+Message-ID: <98c858e6-fb18-d50f-6eea-eddc63ba136f@amd.com>
+Date:   Wed, 21 Jun 2023 11:23:13 -0500
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.2
 Subject: Re: [PATCH V4 1/8] drivers/acpi: Add support for Wifi band RF
  mitigations
 Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Andrew Lunn <andrew@lunn.ch>, Evan Quan <evan.quan@amd.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, alexander.deucher@amd.com,
-        christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
-        daniel@ffwll.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, mdaenzer@redhat.com,
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
+        alexander.deucher@amd.com, christian.koenig@amd.com,
+        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, mdaenzer@redhat.com,
         maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
         hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
         jim.cromie@gmail.com, bellosilicio@gmail.com,
@@ -64,70 +65,71 @@ References: <20230621054603.1262299-1-evan.quan@amd.com>
  <20230621054603.1262299-2-evan.quan@amd.com>
  <3a7c8ffa-de43-4795-ae76-5cd9b00c52b5@lunn.ch>
  <216f3c5aa1299100a0009ddf4e95b019855a32be.camel@sipsolutions.net>
+ <d2dba04d-36bf-4d07-bf2b-dd06671c45c6@lunn.ch>
 From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <216f3c5aa1299100a0009ddf4e95b019855a32be.camel@sipsolutions.net>
+In-Reply-To: <d2dba04d-36bf-4d07-bf2b-dd06671c45c6@lunn.ch>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA0PR11CA0193.namprd11.prod.outlook.com
- (2603:10b6:806:1bc::18) To MN0PR12MB6101.namprd12.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7PR04CA0018.namprd04.prod.outlook.com
+ (2603:10b6:806:f2::23) To MN0PR12MB6101.namprd12.prod.outlook.com
  (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|MW4PR12MB5602:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c70935e-48eb-4e8f-026f-08db7272ac8d
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SJ2PR12MB9162:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1abf2f19-a929-4efe-deae-08db7273d2bf
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: kNj8/xhpnNQTd3MFZcv99BwPIF296qlnDlLXS5NC+GIqnb0HE9pjgTc1jBVIh+gUvCSIHsiuDMYuZKSmXmE/P+XGJBzk6rHKIVigotKDAcd7yQWi/Tw5YuvLbhmuMcWCpsqwB02x0PKuNAd9zZoqeAyjGhqwZYESvSyO6gbHSF1EfqO15JF6BqMVzb2vpHfvXPCYhUz8lgb7qtH1YHIxCmwRqrUBMTr1Vl2VKNt1cuMuS4+vfSmT1kqOrJ8MVPYVLJcyEeRQR+4llXHmiECTdu2d598YZcXM0me6Xk433xUqCL+A/mwTXwvCsk1sYwIgQpqaLsiDjPL/LR4w6rsax15r1ubbP4DCEotqO6XW9akaIJ55BJxs/d7mgZbBvxTOMK/3UXxO+ll+7KL/ReyDiOqZkSl/VpzNU9SUJK/8oJZx4BxymzHWoUqRFi/Ao5CEbmsKXXpRjSgrVHkqtO8OHgJfwt1uulPL9QR0dVnmjn4zTPRLcdsOMDHrSBL+/qrXyBTSo7ILk6aTZ/xOdlpUWh2i+UPZQzLJUjaHwV9VuAkMFDmKSxcaUMNBhulclbeu8DOdh73Eul6ihJSFxkWvhfA5iKyYmdYHuYDFnebx8bvud28A4ogmfqzlhTzmzK47hmzdqwz2xovv3Ke060aU+A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(346002)(136003)(39860400002)(396003)(376002)(451199021)(38100700002)(5660300002)(53546011)(26005)(6512007)(6506007)(83380400001)(186003)(2616005)(7416002)(41300700001)(2906002)(8676002)(8936002)(36756003)(6666004)(478600001)(6486002)(4326008)(6636002)(66476007)(66556008)(66946007)(316002)(31696002)(86362001)(110136005)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: CtWJRCiaOVSNFWFeX4W0f2cSGNbTHgQUyzlMISbUYYMpS9iqfyrqyFLRi0yqVuELenI8qoxjAAX3pWgPVRNpGth9m7+M8QIUJ9Xtz0dugjEMme/xuoEXOr5vJnKv5KcsS9DsrOJsF3czCCgHD1YBdHBDhBbVyK0hTDYYd2KZKerEnkai74/2QPG8D5SNagdc2wMGQ/u7Jj52pPz7SuEwhTRfyrRIoh1pLkGnK7bUhJ00JgmOq/uN/zHo3nFTd6RKafstP2jGgAXvwYfrRDxUDUDxAusS8+G2J/MsvA1riCR9ztP3NDBn0wRHY0OR7nV+jsJKsOp9viW+Ez8BBZoOqmZ+OoIp6pFwhZQQiryl/RlzUmuI7tvMVYoXasYNN63z/16Gm42sy7vcrpIEikXSBhFePMCl9f6ofexV4mWERp7lolUiJQSU9JN5si5zfqClgYaqvhcon7k8WR7DtrGL0/WuagZO8RNpW578Rxo4q3mgomzp/gG7CGN/8jdX0bfwnZmmyFS2JEWlDjkApwmWPctLYCbeLSlcseHriNSkm1varl9GZGw8cYLh7jd67YwzLruZDh4Ijc5IHLRh4cuxVlhDzSEydjmr541W3SGBN73FC00/DDsrisHUl2/LFu9cS4GgjgNRzVRz5lByZmYx2w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(346002)(376002)(39860400002)(396003)(136003)(451199021)(6486002)(8676002)(8936002)(7416002)(83380400001)(6666004)(2616005)(5660300002)(66946007)(4326008)(66476007)(66556008)(478600001)(110136005)(316002)(36756003)(38100700002)(41300700001)(26005)(6506007)(31696002)(31686004)(186003)(6512007)(2906002)(86362001)(53546011)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y2plNGpaeUxlRmNrOGFVcFVKYWNoeWJyZHJGay83eVYxNXNQaFV0aVRhd05K?=
- =?utf-8?B?ak9jY2preXg4Vm9UMVUxSWVtUkdtbFV2d29DVm01cTlJZnVoREdWY3pjSUVT?=
- =?utf-8?B?c0Z4dmRacnkyQnIzcHVLc2I5K1V1US8xb1NXK3czZUxtSUx3bk55eStadmN5?=
- =?utf-8?B?Nnlub3NlK1NDTkp0L1o5cHIyU3lvQUFHU1Q5dEEyeWFxNXJ5ZnMwbDBtUjFh?=
- =?utf-8?B?Z1Y3UUNwRU1FUnRFYWtZdWJHVTZjVHlsQURydG5GQjgreCtobS8xMmpBd2Rw?=
- =?utf-8?B?KzRJNjF5d1hvZDJjWVpRTnVqRnN6VFJ2SThXNmhHaHJwL1J5elBwRktnTDhN?=
- =?utf-8?B?KytjK0s2QnA1bGQ4MjNIaytYdTZuUHB5MjQvL3QxbmtPSldRbFhnRW5sdzN5?=
- =?utf-8?B?VDJmU284NHh5SGVCdEdGTVd4MDdFZDF5L2d4UWx5eldXVmRLd2p1QWZnNWUr?=
- =?utf-8?B?dXJ1OWpMRWc4OW5TTkxRQ04zc01XVzhkOWRHaWJHdzJacTB1WVBYeXp5Qkxa?=
- =?utf-8?B?NTZuUlR0b0tjNzkzY1lIMWUrMU12MzNrcVcvSDRLcGg5RTJyVFRRUjBNNkY1?=
- =?utf-8?B?MXlkL3NpMURzWERHUjJIZkViazQzTlRCZ01wRnE4NCs5d2ZsdUFiUEhjWlZm?=
- =?utf-8?B?ZUxXdmZvYnZ6K2xjVmVQYjZENGdLdFFmQWwyVjdjZzcybzZSOW1kV0Q2Z0Rt?=
- =?utf-8?B?eDRqcmlPbUNibCtlVU1OVUtDa1RaTDFZTFdhYklQamw0dWVXWWxHbDZtWisz?=
- =?utf-8?B?c2pHOTFFT1E5YmdtdHZKbTRkclJpQUhiblEyL2hYWTd4cEhiWTJWYjlaQW1Y?=
- =?utf-8?B?NUJEV1ArMnBIQ0QrWG5yV0o3aTNHS3AyL25GMThrMVR5UE9nN2tGcEEwM3Vo?=
- =?utf-8?B?SXl0MHYxZldCWFdBR1RSbTFoZWc0dEdidXU2dy9JSGNXUWcrSEZDZ21XRCtt?=
- =?utf-8?B?bDJCN2RnNnYzc21MMk8wN05ZUnZoU0JCempLTWVpZThjZlRxRmthaXl2MG9F?=
- =?utf-8?B?YWtSUExlUDlLVG5pOW8vZVRLTExjbXhhOGZEekV6UytZczlmeXAvU2o3YnYr?=
- =?utf-8?B?aS9JTjRrT2xJT2VVRUhFdmgya0EzMGJoeVdtdlNVSVZjalFGS25zZUp5bmhh?=
- =?utf-8?B?bW1xUGQvZ3BpaFVVWk55eVVzNkVRcktBTzhuVGdNSnUyZWFkYjkyVTR2YUJG?=
- =?utf-8?B?MGhuZzNLTjlFUmpJQlU5bkc2UG1lT0tScVArRGE3N2gwSjFwMjcwVXNwRk5D?=
- =?utf-8?B?R21XT0JsWG9sQkJ2T2xxUWh1cTAya2RDejVjbzFGL21EREpiamd0bzZ4OU5D?=
- =?utf-8?B?andyNmNTeEw5cTQvQkRuZ0t2ZTc3STVLS0xxc1pnZnFnRHhOL2lsN29BWllZ?=
- =?utf-8?B?QjBHQ0NCcWpLVUp0WGpPOTE0LzdDdi9DZk05WFZmUUpIN1JNS3ZjOU9CeWJm?=
- =?utf-8?B?ZXVOM2g2YXJtK3ZweWdFYlQwY1NvUWtnS1BQZm5yREttcnU1c2VPSWo5T0Np?=
- =?utf-8?B?bEhWK0hocGlSdEtJbTJUdGs3M2dqRGN2VTg1aTMyd0Z5UEVRNHpwUkFvRzls?=
- =?utf-8?B?NGNBRmJYUS9iM1Y5THlia0pKKzZqclEyUU5aNTRBOFl6dmthWnR3emxZSTcy?=
- =?utf-8?B?THg4ZzhYSms3MFp1dExCWEJRZGdlbU1vZXV0Y2U0SFEzV1pQaE92L2U3cU8z?=
- =?utf-8?B?WHJyUHU5UzFPNjVEcmNkeTFrZ05pRFVYNVlvWGo0MnR3KzRiZk1XVXNicWVB?=
- =?utf-8?B?UnRleEZNdDE1TnU2dy8xSXZQTmxFU0RyRTRXc2NzTFBXYkNjbFMyT0crU1Vp?=
- =?utf-8?B?RVpwV1NROXJUcXpMaVdGaTN4eWNPb3J0MHpRSHVsZWhHTDhPRUZMOU9FeGVD?=
- =?utf-8?B?dEhLWSsrTXh0U1JPMnZkY3VscmZrRzY3MmFqMnMyc1ZWaVRCT2tNOHRIVzBp?=
- =?utf-8?B?cHFLT3ArTi9IMUhHTGpUY0hnajBZc3VGMEZvbWtiY3p6WkFWT2Jla1RpSERZ?=
- =?utf-8?B?MG1QMDJpSk9sbkxPNG83S21RQk1neStFZTNnY014TlhBWjQzVzQrSFNuVWhH?=
- =?utf-8?B?cDNyNUhOOVZHTzJBV0ZsN3loL2MzTmNUNUhMWDBBU0h4T0w5VlJNSytrTnJr?=
- =?utf-8?Q?3k+8C/2FQKzWb5hwJlMrWKC/q?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NUxuZ1lpVm9rVWhxV2VDZGJxdnpYN0hnZ1N0L25CSlFTVHRmUFFBRUtTWmRW?=
+ =?utf-8?B?Zld6OU9YOE9hYVY4RFFuRmU5UkZTSWZQWFhXdXlySkp2U0RZUmtZMVVLSWt5?=
+ =?utf-8?B?UnJ4NG5CQVhCUTAzN2dINWJYbkY4OGk1K0RodG1rY2xoc2VLNHJZNDNYYzRt?=
+ =?utf-8?B?M2pVY2U1WVlEbzI0YnYzZXBNNk5IcHNnTUV1ZXBKSkczU2h2MFBWcHN2Z2FO?=
+ =?utf-8?B?SnlIYkFwUlB5dlhXdWg5NXZrM2pJSkR5TWt1SlNiVVNtYnRGaTBzSzNwTmFm?=
+ =?utf-8?B?Ym0xZk82NldQOTRFbWlNRHBra1hEWTVOeWozeDJXbzdJQ3NOSmViaXJoc3JH?=
+ =?utf-8?B?aDNFVWdncVF5dVB5eGxSeEV3RXRRMHhxUFFHQXh5akxtaURmazZzTnhRUHNr?=
+ =?utf-8?B?RDk1QXRaZ291c09UejJDSkQyV1JXSXMvcVBPRDJ0N0dZQW9jSzdZdWQvYkpF?=
+ =?utf-8?B?Uk5sNGxpdFJOdHY0cmZuYnNGN1IvUkJzNW56cS9oY0FxellkY3ZzMFRDZkpY?=
+ =?utf-8?B?d2xlNGE0Z1hxQmNHMnd2RUZZQnV1QkpsQjYzaHRUR2o4RzQxem1ScVhNRjYv?=
+ =?utf-8?B?cXMreGVjTGhiNEV0ZHZBTGthdSt6b1M3YmxiSjBIcVlMQVdoVzVQZTFqQlJ0?=
+ =?utf-8?B?Q28rNXlIY2hEenRtTUluVFduSTNOOHBsVUF1VTNwYklwOTdDSnNuTlRJNUNi?=
+ =?utf-8?B?c2VhTWlKUE8xN2xjbnRueGo0bTZscEVMQVJQM3VWbHg1WmtVY2JBcklxcDZz?=
+ =?utf-8?B?cUtIS3NqMklmRHphSmpIQ09UM3p1MTk4Ty9HczRtQzJHYWJIRmJkTWgvb0xh?=
+ =?utf-8?B?UTdIcDlWQmhTNk5OYTZNVjc4QWkzUm5BSGxyQU1uQ0JnYU13MURaVXpTaHhl?=
+ =?utf-8?B?Sk9iTDNVVytKNnVoUjVVdzRjMWpHQzZPamRSZldWN2dUZ2pBQlBjT0ZtZ2Nz?=
+ =?utf-8?B?dlJMelVrQ0VSUTVsQ3pyRE9sUlpMUE5mam1zTE9xdFN1aVA5M2FoR1FTQko2?=
+ =?utf-8?B?aTh5QlVqbnBnV3ZpSnlMU3ZYRjFvNVIwdlA2NGlyM2xjYk0xblhjamZuZC9B?=
+ =?utf-8?B?dm5FNVFIVE5rMm0ySzZoSXdYUFIxNE50VExEMGpyTXlnZFJHSFlaWk1mT0Mr?=
+ =?utf-8?B?dkI2NmlnZWJIcUJLbDNIRmZqL1JUMk1MVUVUZnpvNUNJYTFDOFRDcytlcGV6?=
+ =?utf-8?B?Z01mQk9PRTFvaW5HVURmM2ZHTjVsUUZwM2xvNGZJdEhzQUoxei9yV1g4UHlE?=
+ =?utf-8?B?YnNNYytPaWY5azlrUHAxUi90WHU4dk9ob2VXa3duMU91bGxTY2NaYndmVGt5?=
+ =?utf-8?B?aTZWVmVjRUFEYlAzbW5FSjFxRDBsOWRMcUpINmNIQVkxUjFWSXNzMHk1L0pQ?=
+ =?utf-8?B?eC9wb0M1MWpQR0ZMNlhMN09uN251TXlHQXJUakdEWE1rZFhiYmZUN0VhN3Vk?=
+ =?utf-8?B?eDdTSDZqN3pzUEprSFVZNk0vNUJ3bWZ3Y1dFN1lUZVMxaXBoeHIwdnNKNEh3?=
+ =?utf-8?B?c1R2QU85eWtiUU9heFRZNHVKSE1rSGRuakgvL1lWcDVHZ2NUbkM5QzFqeWV6?=
+ =?utf-8?B?ZnVFUzUvajU1TGk1L2FUc0tHTjdhUHpTYTROSjl3QXNNRnhocEcxM3lqODc3?=
+ =?utf-8?B?MlRsdmkzaGpXVFVya0ZOU0lvWlJVYTJMcFVtMFpiNnRESlNjdjg5K0dQelp2?=
+ =?utf-8?B?MFBJQ2pRQitGK3gxRFB6am05TnVPNnVzSXpadVEzNWR3R2tSNmtqTmJMdTc2?=
+ =?utf-8?B?dTU5d3p6N0VtZmdxM2x6bjNDRzFteS9zckN6bGFMckVzemJmNXcybzdnU1V2?=
+ =?utf-8?B?bFpCUlhXdFgyTnRtQ3ZyVkdwamV5UjU0VmFVWHhzd1d1ZU1NU0N5Z1QvMS8w?=
+ =?utf-8?B?cE5CbDhIcjBiK1MvZXlmT0dpeWRZeVBaTzlqMWo3ZmVoRG83ZUI4WXZQNzlh?=
+ =?utf-8?B?R3Y3eXVQMGMxUWpyVXJmcnBMeS9EWnJ2aUpack9CZng0MmtaU3lQUUN2U1NQ?=
+ =?utf-8?B?K3BlVHFZeUtKanQ4TUZQUXQwR1hoa21LTXJuUUs4Z2g0ZVlDSys3Zy9vVzU0?=
+ =?utf-8?B?TXNraEZrMFJCcXhuUWdibjJlb0I3VzdPZUhMbzMwVlVFVGpTNk9PTHV0ZEVV?=
+ =?utf-8?Q?5Ldg+gyj2xxeXO1kuPKwK869A?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c70935e-48eb-4e8f-026f-08db7272ac8d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1abf2f19-a929-4efe-deae-08db7273d2bf
 X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2023 16:15:05.1658
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2023 16:23:18.7235
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aCcOnNKscodZcJZ3WJUzqWYGQI1IEtArbgmYSfl+Uf0qqlHf1iyRsMTcNs4PSfXqWv6fCVGaH9RcZhE4WeZbDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5602
+X-MS-Exchange-CrossTenant-UserPrincipalName: nLSJKGWkpJknsbN8tQRioPWmonVgCFP+Mckzn+0Z6/3PwdHPQy2HAa8oUiOxvrPar59F9hXvYPvrtuZDA7/MXA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9162
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
@@ -140,80 +142,52 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
-On 6/21/2023 10:39 AM, Johannes Berg wrote:
-> On Wed, 2023-06-21 at 17:36 +0200, Andrew Lunn wrote:
->> On Wed, Jun 21, 2023 at 01:45:56PM +0800, Evan Quan wrote:
->>> From: Mario Limonciello <mario.limonciello@amd.com>
+On 6/21/2023 11:14 AM, Andrew Lunn wrote:
+>>> Do only ACPI based systems have:
 >>>
->>> Due to electrical and mechanical constraints in certain platform designs
->>> there may be likely interference of relatively high-powered harmonics of
->>> the (G-)DDR memory clocks with local radio module frequency bands used
->>> by Wifi 6/6e/7.
+>>>     interference of relatively high-powered harmonics of the (G-)DDR
+>>>     memory clocks with local radio module frequency bands used by
+>>>     Wifi 6/6e/7."
 >>>
->>> To mitigate this, AMD has introduced an ACPI based mechanism that
->>> devices can use to notify active use of particular frequencies so
->>> that devices can make relative internal adjustments as necessary
->>> to avoid this resonance.
->> Do only ACPI based systems have:
->>
->>     interference of relatively high-powered harmonics of the (G-)DDR
->>     memory clocks with local radio module frequency bands used by
->>     Wifi 6/6e/7."
->>
->> Could Device Tree based systems not experience this problem?
-> They could, of course, but they'd need some other driver to change
-> _something_ in the system? I don't even know what this is doing
-> precisely under the hood in the ACPI BIOS, perhaps it adjusts the DDR
-> memory clock frequency in response to WiFi using a frequency that will
-> cause interference with harmonics.
-
-The way that WBRF has been architected, it's intended to be able
-to scale to any type of device pair that has harmonic issues.
-
-In the first use (Wifi 6e + specific AMD dGPUs) that matches this
-series BIOS has the following purposes:
-
-1) The existence of _DSM indicates that the system may not have
-adequate shielding and should be using these mitigations.
-
-2) Notification mechanism of frequency use.
-
-For the first problematic devices we *could* have done notifications
-entirely in native Linux kernel code with notifier chains.
-However that still means you need a hint from the platform that the
-functionality is needed like a _DSD bit.
-
-It's also done this way so that AML could do some of the notifications
-directly to applicable devices in the future without needing "consumer"
-driver participation.
-
->>> +/**
->>> + * APIs needed by drivers/subsystems for contributing frequencies:
->>> + * During probe, check `wbrf_supported_producer` to see if WBRF is supported.
->>> + * If adding frequencies, then call `wbrf_add_exclusion` with the
->>> + * start and end points specified for the frequency ranges added.
->>> + * If removing frequencies, then call `wbrf_remove_exclusion` with
->>> + * start and end points specified for the frequency ranges added.
->>> + */
->>> +bool wbrf_supported_producer(struct acpi_device *adev);
->>> +int wbrf_add_exclusion(struct acpi_device *adev,
->>> +		       struct wbrf_ranges_in *in);
->>> +int wbrf_remove_exclusion(struct acpi_device *adev,
->>> +			  struct wbrf_ranges_in *in);
->> Could struct device be used here, to make the API agnostic to where
->> the information is coming from? That would then allow somebody in the
->> future to implement a device tree based information provider.
-> That does make sense, and it wouldn't even be that much harder if we
-> assume in a given platform there's only one provider - but once you go
-> beyond that these would need to call function pointers I guess? Though
-> that could be left for "future improvement" too.
+>>> Could Device Tree based systems not experience this problem?
+>> They could, of course, but they'd need some other driver to change
+>> _something_ in the system? I don't even know what this is doing
+>> precisely under the hood in the ACPI BIOS
+> If you don't know what it is actually doing, it suggests the API is
+> not very well defined. Is there even enough details that ARM64 ACPI
+> BIOS could implement this?
+I think there is enough details for this to happen. It's done
+so that either the AML can natively behave as a consumer or a
+driver can behave as a consumer.
+>>>> +/**
+>>>> + * APIs needed by drivers/subsystems for contributing frequencies:
+>>>> + * During probe, check `wbrf_supported_producer` to see if WBRF is supported.
+>>>> + * If adding frequencies, then call `wbrf_add_exclusion` with the
+>>>> + * start and end points specified for the frequency ranges added.
+>>>> + * If removing frequencies, then call `wbrf_remove_exclusion` with
+>>>> + * start and end points specified for the frequency ranges added.
+>>>> + */
+>>>> +bool wbrf_supported_producer(struct acpi_device *adev);
+>>>> +int wbrf_add_exclusion(struct acpi_device *adev,
+>>>> +		       struct wbrf_ranges_in *in);
+>>>> +int wbrf_remove_exclusion(struct acpi_device *adev,
+>>>> +			  struct wbrf_ranges_in *in);
+>>> Could struct device be used here, to make the API agnostic to where
+>>> the information is coming from? That would then allow somebody in the
+>>> future to implement a device tree based information provider.
+>> That does make sense, and it wouldn't even be that much harder if we
+>> assume in a given platform there's only one provider
+> That seems like a very reasonable assumption. It is theoretically
+> possible to build an ACPI + DT hybrid, but i've never seen it actually
+> done.
 >
-> johannes
+> If an ARM64 ACPI BIOS could implement this, then i would guess the low
+> level bits would be solved, i guess jumping into the EL1
+> firmware. Putting DT on top instead should not be too hard.
+>
+> 	Andrew
 
-There's more to it than just sending in the frequency that is
-added or removed.  The notification path comes from ACPI as well.
-
-This first implementation only has one provider and consumer
-but yes, we envision that there could be multiple of each party
-and that AML may be the mechanism for some consumers to react.
+To make life easier I'll ask whether we can include snippets of
+the matching ASL for this first implementation as part of the
+public ACPI spec that matches this code when we release it.
 
