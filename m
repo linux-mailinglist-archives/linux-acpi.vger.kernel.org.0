@@ -2,94 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03F107379F7
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 05:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 718A2737A15
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 06:23:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230228AbjFUDxJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 20 Jun 2023 23:53:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44228 "EHLO
+        id S229650AbjFUEXv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Jun 2023 00:23:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229913AbjFUDwk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 20 Jun 2023 23:52:40 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2079.outbound.protection.outlook.com [40.107.244.79])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3D5D19C;
-        Tue, 20 Jun 2023 20:52:38 -0700 (PDT)
+        with ESMTP id S229448AbjFUEXt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 00:23:49 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2058.outbound.protection.outlook.com [40.107.94.58])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F13E1712;
+        Tue, 20 Jun 2023 21:23:48 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kUp+BIPzzfmMaS/U+jzqnDDY12GzXNsIi57BkIr4t+uINDH0UWHfqX8w4rGYAZTyHDFOvG4Ls3UjmNQrhMUwElJlvhnN791YPUPT2MYGwC/0rKmgoUwyWaGnqOGCKXXSkHItyc+xKFJoJjOeVoJHa5hU6t3NiY/nr3c/33qZD7PPDuuC6FndQMtYrpTqJpoENBjTg7ibhXugKo8enO2ClacDXZbJ0ulLeSTYNw09rWgd5afIekoeBYsVlAGckVHQlUoGr1jnKcQqeMvo/GLc95GEo9BusthcQei4GNWwPSIG5pgwtiPrId+nia4QfcCD+VdoTb+T5bEwvVWbZqIFCQ==
+ b=ONOaETFpAOlyZh8L6ENonLwH6Dt3/I4+IV5bCxLbOBD9nWacfludKATiZUVx+1UciO4JfXyBjcoVgpXxofuPIeUGr/rVy43PcWWo/VvmyvJq3TNxGJrNhvZU+gWdMucEUhqNPHtGLeJYkpbWyMOeXu4QRmXlcNvgJ+EzEmeEds2kMXInhLXUBJhMnTwT/79KCzaZyf7dc5jvgPjtgDl/RYGWQjkbre/MgpKRlperW/jCkfSpGNfJlo2FmLL3B7apmr1fuFLXsx4bv4/0Vdpx49ufX5+ezEw/OHMUP2J9aGBnA70z1S9N6N3fHJYupbkCP/cfujhwgDhjWvBXd6sBsg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B4W6Bg0HaS2Dows5MPE7yWaN1Bd89L+tiBlnI0Q6rPI=;
- b=GckO464xn8Rh6DilpKOILeU0Xs6mb9kY+rtLTedex99kN8q7sm7/zFzLa8JAppS4KDcQcIVRniXORk8xSQ0b3BeD7p45eHvOkClDb/fkmfn4VZWal0m0Zu7Y4rfh/dVzwvj9KwBKnLbNAmvjVc2JKyRvMTxTHl4CXGKWzVDN0jz/ZW2Nmvoq/8LghxXJfvb+EHDomtFQOjNeW6jWlbtqKg2qjkCvyph4mUsDo5WvB8Qgtbe+yA1zEyzccMxIEXNFE856qsllM7FJZ+Z7yD1F+EyJ2Bl4Ej0zlBKDGbj93XxWb8Ed0pd5qYAq5R4q0PKXTAQ1f4uJ94IXSP3MVdH9Sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
+ bh=SeRGk0iQyzfDgwupM09sAO+q7ArW/vvNz1cPkJU5hbE=;
+ b=holnrVPNf/mV9Lj2M/4Lt75TMBNenTzXAutrx8sEcGuyUk1/uNb0wTcUKx9D1NEsHRwR/9uXYAqliMOriZf0lIeqMAbKGAdKL4LKS8IlxvTcZ+S8RdAsPTug2Hp7xHZ47fmPU9N4/6F9MmocpPvKiLiYtFUtJVeqgy4cZLPnahW1edjcQDyQTDzPKnfeBRsTMV6EwvJs+N+0UsAkvzfPFEgqfYfbZ5I/AK78J7O2SVKzXXZHDBYPZWlCYev4lH0f6EJ3bcET8TU1QLNCZgaMZDiEPW8wURjVLBvOukUroTAPUyPyHJbTM/kRX2FFWM3XrTKKwDjvLPtoDGRRZdCvFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B4W6Bg0HaS2Dows5MPE7yWaN1Bd89L+tiBlnI0Q6rPI=;
- b=QkpDS0mpvbvG4Rw05bFR0G9Sw47qQxlMXUSS0Nkjn4oktpAFqUdMKOgVXGIgqgQfzVk8XQVcdsjxk9BVgLIe0pgwbhFd4ItjDkZ6wjq1A4WSMwJ86UjHpQnfBbqEw1f3wpfm6DaRqrNUxu4xsLgmvD6wMp4lbPKJSF6GflU6XQQ=
-Received: from CY5PR10CA0021.namprd10.prod.outlook.com (2603:10b6:930:1c::25)
- by PH8PR12MB6865.namprd12.prod.outlook.com (2603:10b6:510:1c8::15) with
+ bh=SeRGk0iQyzfDgwupM09sAO+q7ArW/vvNz1cPkJU5hbE=;
+ b=Ebozf2Zv4n1pi/tyT0mALG2ejlmbD3+bfroXm1xWvgyFWSIpeAiDx2QZJtJeCHdRGPJ2C2chbAu2VEIe7dCIQGauPQZd5CRuQwO5YRdZ3XpFQ/GTOcBR2MtpEyIJgpslPGsS0JHZqzx9I88bCr2SCzqUNu2lW2bnXlttWFq2ovw=
+Received: from CYYPR12MB8655.namprd12.prod.outlook.com (2603:10b6:930:c4::19)
+ by IA0PR12MB7530.namprd12.prod.outlook.com (2603:10b6:208:440::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.36; Wed, 21 Jun
- 2023 03:52:34 +0000
-Received: from CY4PEPF0000EE33.namprd05.prod.outlook.com
- (2603:10b6:930:1c:cafe::8a) by CY5PR10CA0021.outlook.office365.com
- (2603:10b6:930:1c::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23 via Frontend
- Transport; Wed, 21 Jun 2023 03:52:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EE33.mail.protection.outlook.com (10.167.242.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6521.17 via Frontend Transport; Wed, 21 Jun 2023 03:52:34 +0000
-Received: from onyx-7400host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 20 Jun
- 2023 22:52:32 -0500
-From:   Avadhut Naik <avadhut.naik@amd.com>
-To:     <rafael@kernel.org>, <gregkh@linuxfoundation.org>,
-        <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-fsdevel@vger.kernel.org>
-CC:     <yazen.ghannam@amd.com>, <alexey.kardashevskiy@amd.com>,
-        <linux-kernel@vger.kernel.org>, <avadnaik@amd.com>
-Subject: [PATCH v4 4/4] ACPI: APEI: EINJ: Add support for vendor defined error types
-Date:   Wed, 21 Jun 2023 03:51:02 +0000
-Message-ID: <20230621035102.13463-5-avadhut.naik@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230621035102.13463-1-avadhut.naik@amd.com>
-References: <20230621035102.13463-1-avadhut.naik@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37; Wed, 21 Jun
+ 2023 04:23:45 +0000
+Received: from CYYPR12MB8655.namprd12.prod.outlook.com
+ ([fe80::8d99:5e7c:3ab:a882]) by CYYPR12MB8655.namprd12.prod.outlook.com
+ ([fe80::8d99:5e7c:3ab:a882%7]) with mapi id 15.20.6500.036; Wed, 21 Jun 2023
+ 04:23:45 +0000
+From:   "Yuan, Perry" <Perry.Yuan@amd.com>
+To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>
+CC:     Len Brown <lenb@kernel.org>, "Huang, Ray" <Ray.Huang@amd.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "Shenoy, Gautham Ranjal" <gautham.shenoy@amd.com>,
+        "Karny, Wyes" <Wyes.Karny@amd.com>,
+        "Yuan, Perry" <Perry.Yuan@amd.com>
+Subject: RE: [PATCH v3 1/3] ACPI: CPPC: Add definition for undefined FADT
+ preferred PM profile value
+Thread-Topic: [PATCH v3 1/3] ACPI: CPPC: Add definition for undefined FADT
+ preferred PM profile value
+Thread-Index: AQHZo5yBPFval+X6jUycxVppZosNdq+Up1WA
+Date:   Wed, 21 Jun 2023 04:23:45 +0000
+Message-ID: <CYYPR12MB865516C72B97B871E15467E79C5DA@CYYPR12MB8655.namprd12.prod.outlook.com>
+References: <20230620172433.21325-1-mario.limonciello@amd.com>
+ <20230620172433.21325-2-mario.limonciello@amd.com>
+In-Reply-To: <20230620172433.21325-2-mario.limonciello@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=01887500-cdf0-4149-85e1-0c5b66714bfe;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=0;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2023-06-21T04:17:22Z;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CYYPR12MB8655:EE_|IA0PR12MB7530:EE_
+x-ms-office365-filtering-correlation-id: 391ab2f3-851b-45a3-84ec-08db720f4d93
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 2XW+qXXov1ja0akMHUlEoKdSkJAXtxZX3YpBqoCja+2i/ASlwk6QGzDW4PTQG/s6M5S6JUVaz8Gv/oxWkdB+yMI41l+/HOf5Z4i/MM7jcAGzZcrdhth7kJSoLnYhmVJHb1N5NF35fxKiH0OV+vf2e6mdJV2CWgjMTA71XN4Wl7hBxzA7jxQ6la6OR/8pKSl3HHq8HqiYvy4l+u6Oc6Nm9laU4Ddan35F6ag16nxkJfUYLp4jRbeXBeblkUIxBYzXpnfo7yltF6xiRL2V3r7zUu1WSSPd6IiYeIjqvSTPhlfnirOBJlny4DNo5z2oLHTmfF0vAyY65MOq23Ltb+ZleF3gJrYK3E1Reqn/QxJbN7FMnOz3jghHkTWG5CKwZoytN59d8WVxMewoVYsaYsA9etr+ZvZce/c3gGxXXH/bcM76CIgrVfjI8cOxWLFZjg3l+99r/PF7YxdG0ZOL5fHMU4vFtK6a1esMjksckUKkYbRIybEuQbjK4eT+pIBjU1F/+wW2QgKnnoJZaGRk5uQsJqROevDpswvVi7IgNg4jPXIHUmWtuieh2kkiQVyrOLwP3k3Nj7+V4VPuQWVslK93nXkHsv2Voftn5ToHg0A+ftA=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR12MB8655.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(366004)(39860400002)(396003)(136003)(346002)(451199021)(71200400001)(7696005)(4326008)(478600001)(110136005)(54906003)(76116006)(26005)(6506007)(53546011)(9686003)(186003)(966005)(55016003)(2906002)(8936002)(8676002)(41300700001)(38070700005)(66946007)(64756008)(66556008)(66476007)(66446008)(316002)(5660300002)(83380400001)(122000001)(86362001)(33656002)(38100700002)(52536014);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?CNS0HCizqI6nnNLaAu7C//P521Zz0et3SCZ6N1n/MoexB69VZ2JMV7/8dKhm?=
+ =?us-ascii?Q?JiemBZZaxCBsIIl/yx35D5/+2xZTsy04r0EOwSekKHLQuHUqKj46Z31LKknN?=
+ =?us-ascii?Q?JL1HfNSxDNEPb+izMI2GVy8Ap0AlcKbwuytOEJmUesyVfGLxzhUL+p3vrNJj?=
+ =?us-ascii?Q?KczX10Fi6DLAYgMWvn0U0MiW5QpGiH71UfF+X5hT7poQsZMTY1xs9PHlmco+?=
+ =?us-ascii?Q?WV/V/enawHQr64hej0TSD5u63jmik+isuSzKjsQgDrKYx3QnRhMk+JTCaC8Y?=
+ =?us-ascii?Q?bOy3NCVW7Cht9tcmAaRD/tc2f39xG3Kf+Svzi1yvg28xEdtzbgzEhxz+gew0?=
+ =?us-ascii?Q?fNc/4XGR2UXq2+JU+nEKFl59IUujhVuBpnKu7QUBqBSqgKpUls0sfNqnM0cm?=
+ =?us-ascii?Q?wCQx0RPbEB2G8hPYS0Z76LFjq3ai+a3QsgqNGt6iup5va0UrN2YszlXnSwKP?=
+ =?us-ascii?Q?zaoBqi6tUwN6D38iisVGJ1r4L2/NW7cnztsjzGYruyRfAL0vlGqfco58bo97?=
+ =?us-ascii?Q?ok9V14ZQJvaRpDOyzxMeYKdurtcAI60zW57vspFjb8Gvjw0mxip2+Ehw9BOA?=
+ =?us-ascii?Q?C/HkuIb0LSUb1J3wcYKR4Xly7X8wZPR3M4DRIqmpRgLPGngGCic+jqhuQqss?=
+ =?us-ascii?Q?kvmV07h9NG1A8JHron71zdivsX7OiFSTooq4+bdkcW1lK9UNpo7POiGDqQBk?=
+ =?us-ascii?Q?jvFrnA8eNKN0y1hdD2cROYCK2KbSxqjde/l1Edrqgqo7ZQ1zbHNSUCu+aW3V?=
+ =?us-ascii?Q?dBYwHn6kbxcLZ4gB1uhH04SOBezABzejIJI5w0KPwCVjH+ar3oN3XLmFALs5?=
+ =?us-ascii?Q?Kc1eAvMx29WxeSM+wPYEZW3xurDbET2ylmLJEx5LvcDz73/rklYEPJ3Ca185?=
+ =?us-ascii?Q?8FiCOcpITX7Pee2rKyi3+GPenU+WDlxG4zNCP6u/cblZ7RZwtqs7M/MWXf25?=
+ =?us-ascii?Q?pV/9SoVvouYDTvju7ivkv/LglM8n/GzjBTflZnFqz72zgHvhNxnjulqP7A1Z?=
+ =?us-ascii?Q?kNnF6IKXWI6cOGaRngG70gm/RY4H2c0A0KxiVG8I0GkCl92HeVC3CrlfpXuu?=
+ =?us-ascii?Q?wz9bvhQTkcbnYKT2AuUrRv58VUxXVmXm+gduIZNV/RN/S3dzIl5emXSkzb4E?=
+ =?us-ascii?Q?C4HYueQhdVpBc5IIjCeGSHU7G78YtLZHCNnXrfMrS+9dBmVt3+h1q4pB0oOS?=
+ =?us-ascii?Q?FSGBA+UV+CtMyGrigPLsDzag2ALKKnsW8EAuSmglncckMPgXUUNwZt1rF9cf?=
+ =?us-ascii?Q?IDGtQYMO1wQjtRhO+FHJthcqwL4z2pGq6ywd+u20QfO2Pbxzk2MlMavRpVFh?=
+ =?us-ascii?Q?RUvqOfP/d2Vt2NF8jSkCK/PcNJNIGDX5Fl+z82REo0TbXQRoxo4BGWWb/4YW?=
+ =?us-ascii?Q?x4F7UFZmbYyMq2x2k6HDUn5+pqt6YuUx879CfQlcCD1kmvSr8q1EwWPFQAcg?=
+ =?us-ascii?Q?5MjhoaIT2JR57taqYkmgPH72ccJcx64aFTT5D/lIjCdogW4/H9PYJ7lRgjqL?=
+ =?us-ascii?Q?/DQgKY31p4IsD/1sVUi00wjh0Ci2HMHZSgDZe+kFdI1lectfRjHw8NP6wHYk?=
+ =?us-ascii?Q?8NwAALqMTbaAbt1vMgk=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE33:EE_|PH8PR12MB6865:EE_
-X-MS-Office365-Filtering-Correlation-Id: b94abac9-9686-4b8f-777c-08db720af298
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Z7wAuJlhex+fQ33TE2ZAUbSWnfUFJ5/4+igp2i2e4teRR4lO2GhpgLTa/XDeiVS+eOhft3V+7/lcl5Se690IVrVBG41JpxsSGp6/VqQwakukbr9OlaFLR3BwpoyUMT0kAolr8rJQhQQAUOn3Dd3wdTU0SF3w/AydKZ6ioNfkXcgNY8d1atVojjmieY8AkGkRpEyQCsNLIAKeRf5vRxp2E3YUbQyWc+Uck0qc253ZeAHdG15NR7rQhdwccVZGamvsgeRKlsQSRzwGQnO73Dp8qTOg2oGiQWbUAISD3fIAxLi9faQby1pibp2fo4Y1MLe/O2EMRMrIIRPLCey++oJaJy9hJJpnI31o80w3INfgsm3SbQZ95m9uqNYnvge5Oia3yExxIrTg6B3vSbWm8RpwGpMBBJzpzrDvz21tSg+xWt0TsA1vLzUMKzdTcW3J65RNdqW76iL/I/ZMOse84iuP/Q1eJgFYQhGkpTr/VU43q+2YPWOTsExb9WE0FbLpqB7AICSdppKhOS4MURGV3QmntLvzSlbx3NuBapxnkrWcoZqQRjnRkcO7qOl5rqTePIjebKECFoQhiBgWxoNyfPjdVTRuRMDMAgKiXsThXGUL4eBBDqlpxlzsh5PxelhVe3Wq1GVHD4w3NR7Ipj+1K+fXj0vIdUNtYoVUr3GLrYAY0jjYh64RDjlldoateBWCbMcJpUzguLLABb7By2m9f7tE7zEI8uxBwoWu2B93PLVcGy0/6puH3P302tML3nu5MyU+UgF0Cq5c1LjT96SihCtBCXd5scO3T6qvGbZ4/40RcSI=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(396003)(346002)(136003)(39860400002)(451199021)(46966006)(40470700004)(36840700001)(82310400005)(40480700001)(356005)(81166007)(82740400003)(40460700003)(36756003)(86362001)(16526019)(6666004)(7696005)(186003)(26005)(8936002)(8676002)(5660300002)(44832011)(478600001)(110136005)(54906003)(316002)(4326008)(41300700001)(70586007)(70206006)(2906002)(1076003)(36860700001)(2616005)(336012)(426003)(47076005)(2101003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2023 03:52:34.7281
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CYYPR12MB8655.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 391ab2f3-851b-45a3-84ec-08db720f4d93
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jun 2023 04:23:45.4506
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b94abac9-9686-4b8f-777c-08db720af298
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE33.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6865
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UGxfq7V3FFsgfYsGE9XtvsenDcbn+aGfK/PG9pM18dP1TFTCZ7M7hU8xfCrR86rIr3dlTFzQhOXBFSrRtDJuDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7530
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
@@ -101,112 +125,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Avadhut Naik <Avadhut.Naik@amd.com>
+[AMD Official Use Only - General]
 
-Vendor-Defined Error types are supported by the platform apart from
-standard error types if bit 31 is set in the output of GET_ERROR_TYPE
-Error Injection Action.[1] While the errors themselves and the length
-of their associated "OEM Defined data structure" might vary between
-vendors, the physical address of this structure can be computed through
-vendor_extension and length fields of "SET_ERROR_TYPE_WITH_ADDRESS" and
-"Vendor Error Type Extension" Structures respectively.[2][3]
+> -----Original Message-----
+> From: Limonciello, Mario <Mario.Limonciello@amd.com>
+> Sent: Wednesday, June 21, 2023 1:25 AM
+> To: Rafael J . Wysocki <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>; Huang, Ray <Ray.Huang@amd.com>;
+> linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
+> pm@vger.kernel.org; Shenoy, Gautham Ranjal
+> <gautham.shenoy@amd.com>; Karny, Wyes <Wyes.Karny@amd.com>;
+> Yuan, Perry <Perry.Yuan@amd.com>; Limonciello, Mario
+> <Mario.Limonciello@amd.com>
+> Subject: [PATCH v3 1/3] ACPI: CPPC: Add definition for undefined FADT
+> preferred PM profile value
+>
+> In the event a new preferred PM profile value is introduced it's best for=
+ code
+> to be able to defensively guard against it so that the wrong settings don=
+'t get
+> applied on a new system that uses this profile but ancient kernels.
+>
+> Acked-by: Huang Rui <ray.huang@amd.com>
+> Suggested-by: Gautham Ranjal Shenoy <gautham.shenoy@amd.com>
+> Link:
+> https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/05_ACPI_Software_Progr
+> amming_Model/ACPI_Software_Programming_Model.html#fixed-acpi-
+> description-table-fadt
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v2->v3:
+>  * Drop new symbols (they fold into patch 2)
+>  * Update commit message
+>  * Add Ray's tag
+> ---
+>  include/acpi/actbl.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/acpi/actbl.h b/include/acpi/actbl.h index
+> e5dfb6f4de52..451f6276da49 100644
+> --- a/include/acpi/actbl.h
+> +++ b/include/acpi/actbl.h
+> @@ -307,7 +307,8 @@ enum acpi_preferred_pm_profiles {
+>       PM_SOHO_SERVER =3D 5,
+>       PM_APPLIANCE_PC =3D 6,
+>       PM_PERFORMANCE_SERVER =3D 7,
+> -     PM_TABLET =3D 8
+> +     PM_TABLET =3D 8,
+> +     NR_PM_PROFILES =3D 9
+>  };
+>
+>  /* Values for sleep_status and sleep_control registers (V5+ FADT) */
+> --
+> 2.34.1
 
-Currently, however, the einj module only computes the physical address of
-Vendor Error Type Extension Structure. Neither does it compute the physical
-address of OEM Defined structure nor does it establish the memory mapping
-required for injecting Vendor-defined errors. Consequently, userspace
-tools have to establish the very mapping through /dev/mem, nopat kernel
-parameter and system calls like mmap/munmap initially before injecting
-Vendor-defined errors.
-
-Circumvent the issue by computing the physical address of OEM Defined data
-structure and establishing the required mapping with the structure. Create
-a new file "oem_error", if the system supports Vendor-defined errors, to
-export this mapping, through debugfs_create_blob(). Userspace tools can
-then populate their respective OEM Defined structure instances and just
-write to the file as part of injecting Vendor-defined Errors.
-
-[1] ACPI specification 6.5, section 18.6.4
-[2] ACPI specification 6.5, Table 18.31
-[3] ACPI specification 6.5, Table 18.32
-
-Suggested-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Avadhut Naik <Avadhut.Naik@amd.com>
-Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
----
- drivers/acpi/apei/einj.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
-index ee360fcb1618..0ae2cd325da0 100644
---- a/drivers/acpi/apei/einj.c
-+++ b/drivers/acpi/apei/einj.c
-@@ -73,6 +73,7 @@ static u32 notrigger;
- 
- static u32 vendor_flags;
- static struct debugfs_blob_wrapper vendor_blob;
-+static struct debugfs_blob_wrapper vendor_errors;
- static char vendor_dev[64];
- 
- /*
-@@ -182,6 +183,21 @@ static int einj_timedout(u64 *t)
- 	return 0;
- }
- 
-+static void get_oem_vendor_struct(u64 paddr, int offset,
-+				  struct vendor_error_type_extension *v)
-+{
-+	unsigned long vendor_size;
-+	u64 target_pa = paddr + offset + sizeof(struct vendor_error_type_extension);
-+
-+	vendor_size = v->length - sizeof(struct vendor_error_type_extension);
-+
-+	if (vendor_size)
-+		vendor_errors.data = acpi_os_map_memory(target_pa, vendor_size);
-+
-+	if (vendor_errors.data)
-+		vendor_errors.size = vendor_size;
-+}
-+
- static void check_vendor_extension(u64 paddr,
- 				   struct set_error_type_with_address *v5param)
- {
-@@ -194,6 +210,7 @@ static void check_vendor_extension(u64 paddr,
- 	v = acpi_os_map_iomem(paddr + offset, sizeof(*v));
- 	if (!v)
- 		return;
-+	get_oem_vendor_struct(paddr, offset, v);
- 	sbdf = v->pcie_sbdf;
- 	sprintf(vendor_dev, "%x:%x:%x.%x vendor_id=%x device_id=%x rev_id=%x\n",
- 		sbdf >> 24, (sbdf >> 16) & 0xff,
-@@ -596,6 +613,7 @@ static struct { u32 mask; const char *str; } const einj_error_type_string[] = {
- 	{BIT(15), "CXL.mem Protocol Correctable"},
- 	{BIT(16), "CXL.mem Protocol Uncorrectable non-fatal"},
- 	{BIT(17), "CXL.mem Protocol Uncorrectable fatal"},
-+	{BIT(31), "Vendor Defined Error Types"},
- };
- 
- static int available_error_type_show(struct seq_file *m, void *v)
-@@ -768,6 +786,10 @@ static int __init einj_init(void)
- 				   einj_debug_dir, &vendor_flags);
- 	}
- 
-+	if (vendor_errors.size)
-+		debugfs_create_blob("oem_error", 0200, einj_debug_dir,
-+				    &vendor_errors);
-+
- 	pr_info("Error INJection is initialized.\n");
- 
- 	return 0;
-@@ -793,6 +815,8 @@ static void __exit einj_exit(void)
- 			sizeof(struct einj_parameter);
- 
- 		acpi_os_unmap_iomem(einj_param, size);
-+		if (vendor_errors.size)
-+			acpi_os_unmap_memory(vendor_errors.data, vendor_errors.size);
- 	}
- 	einj_exec_ctx_init(&ctx);
- 	apei_exec_post_unmap_gars(&ctx);
--- 
-2.34.1
-
+LGTM,
+Reviewed-by: Perry Yuan <Perry.Yuan@amd.com>
