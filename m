@@ -2,173 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4572E738DDE
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 19:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9008738ED3
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 20:31:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231688AbjFUR4a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Jun 2023 13:56:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57774 "EHLO
+        id S229653AbjFUSa7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Jun 2023 14:30:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231710AbjFUR4K (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 13:56:10 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3778A26B7;
-        Wed, 21 Jun 2023 10:55:25 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3040E1063;
-        Wed, 21 Jun 2023 10:55:17 -0700 (PDT)
-Received: from [10.57.27.43] (unknown [10.57.27.43])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A8F7E3F663;
-        Wed, 21 Jun 2023 10:54:30 -0700 (PDT)
-Message-ID: <0327c5b6-9b6b-460a-dc7e-3a891485a9bd@arm.com>
-Date:   Wed, 21 Jun 2023 18:54:29 +0100
+        with ESMTP id S229472AbjFUSa6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 14:30:58 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0D55198;
+        Wed, 21 Jun 2023 11:30:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=wbqS0dqLdsnGgfOnL91hu55tI6N00q9JeL9Dt8+bbtk=; b=y9Y5o9ZOPVdyNd0f/8z8mo1CWF
+        XkhXM+i69HTv3SFPqxk6v7EmMBdE5flxZ9WQanyW/HrM7W28qVJ66H0vtH7C9pz49swW5KNMWcCL+
+        3Zwgc4Ge14YT7QZNlatyjc9AHoer54a6qwK7h7cC0GTMQO2OPRl1KgAcCIRDo5mjB+uc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qC2az-00HB0y-DN; Wed, 21 Jun 2023 20:30:21 +0200
+Date:   Wed, 21 Jun 2023 20:30:21 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Evan Quan <evan.quan@amd.com>, rafael@kernel.org,
+        lenb@kernel.org, alexander.deucher@amd.com,
+        christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+        daniel@ffwll.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, mdaenzer@redhat.com,
+        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+        hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
+        jim.cromie@gmail.com, bellosilicio@gmail.com,
+        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
+        arnd@arndb.de, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH V4 1/8] drivers/acpi: Add support for Wifi band RF
+ mitigations
+Message-ID: <8d3340de-34f6-47ad-8024-f6f5ecd9c4bb@lunn.ch>
+References: <20230621054603.1262299-1-evan.quan@amd.com>
+ <20230621054603.1262299-2-evan.quan@amd.com>
+ <3a7c8ffa-de43-4795-ae76-5cd9b00c52b5@lunn.ch>
+ <216f3c5aa1299100a0009ddf4e95b019855a32be.camel@sipsolutions.net>
+ <b1abec47-04df-4481-d680-43c5ff3cbb48@amd.com>
+ <36902dda-9e51-41b3-b5fc-c641edf6f1fb@lunn.ch>
+ <33d80292-e639-91d0-4d0f-3ed973f89e14@amd.com>
+ <9159c3a5-390f-4403-854d-9b5e87b58d8c@lunn.ch>
+ <a80c215a-c1d9-4c76-d4a8-9b5fd320a2b1@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH V5 6/6] coresight: etm4x: Add ACPI support in platform
- driver
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, rafael.j.wysocki@intel.com
-Cc:     scclevenger@os.amperecomputing.com,
-        Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "anshuman.khandual@arm.com" <anshuman.khandual@arm.com>
-References: <20230529062511.52016-1-anshuman.khandual@arm.com>
- <20230529062511.52016-7-anshuman.khandual@arm.com>
- <4c3572f8-9710-0955-72c6-a9907ce6ce8b@arm.com>
- <49c9e20a-f020-0dc5-8601-06b5f0ab8c5c@arm.com>
- <394d0129-e3a5-5b16-6e18-b4a3102aa50c@arm.com>
-In-Reply-To: <394d0129-e3a5-5b16-6e18-b4a3102aa50c@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a80c215a-c1d9-4c76-d4a8-9b5fd320a2b1@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 14/06/2023 14:52, Suzuki K Poulose wrote:
-> On 06/06/2023 10:36, Suzuki K Poulose wrote:
->> Hi Rafael,
->>
->> Gentle ping.
-> 
-> Gentle ping..
-> 
+> And consumer would need to call it, but only if CONFIG_WBRF_ACPI isn't set.
 
-Gentle reminder, Rafael.
+Why? How is ACPI special that it does not need notifiers?
 
-Suzuki
+> I don't see why it couldn't be a DT/ACPI hybrid solution for ARM64.
 
->>
->> On 30/05/2023 10:57, Suzuki K Poulose wrote:
->>> Hi Rafael
->>>
->>> On 29/05/2023 07:25, Anshuman Khandual wrote:
->>>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>
->>>> Drop ETM4X ACPI ID from the AMBA ACPI device list, and instead just 
->>>> move it
->>>> inside the new ACPI devices list detected and used via platform driver.
->>>>
->>>> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
->>>> Cc: Len Brown <lenb@kernel.org>
->>>> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
->>>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>> Cc: Mike Leach <mike.leach@linaro.org>
->>>> Cc: Leo Yan <leo.yan@linaro.org>
->>>> Cc: Sudeep Holla <sudeep.holla@arm.com>
->>>> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
->>>> Cc: linux-acpi@vger.kernel.org
->>>> Cc: coresight@lists.linaro.org
->>>> Cc: linux-arm-kernel@lists.infradead.org
->>>> Cc: linux-kernel@vger.kernel.org
->>>> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com> (for ACPI specific 
->>>> changes)
->>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->>>> ---
->>>>   drivers/acpi/acpi_amba.c                           |  1 -
->>>
->>> We would like to push this via the coresight tree. Please could you 
->>> Ack this change if you are happy with the proposal and the change ?
->>>
->>
->>
->> Suzuki
->>
-> 
-> Suzuki
-> 
-> 
->>
->>> Suzuki
->>>
->>>
->>>>   drivers/hwtracing/coresight/coresight-etm4x-core.c | 10 ++++++++++
->>>>   2 files changed, 10 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/acpi/acpi_amba.c b/drivers/acpi/acpi_amba.c
->>>> index f5b443ab01c2..099966cbac5a 100644
->>>> --- a/drivers/acpi/acpi_amba.c
->>>> +++ b/drivers/acpi/acpi_amba.c
->>>> @@ -22,7 +22,6 @@
->>>>   static const struct acpi_device_id amba_id_list[] = {
->>>>       {"ARMH0061", 0}, /* PL061 GPIO Device */
->>>>       {"ARMH0330", 0}, /* ARM DMA Controller DMA-330 */
->>>> -    {"ARMHC500", 0}, /* ARM CoreSight ETM4x */
->>>>       {"ARMHC501", 0}, /* ARM CoreSight ETR */
->>>>       {"ARMHC502", 0}, /* ARM CoreSight STM */
->>>>       {"ARMHC503", 0}, /* ARM CoreSight Debug */
->>>> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c 
->>>> b/drivers/hwtracing/coresight/coresight-etm4x-core.c
->>>> index e10f6676dd9b..fd6f9dff5881 100644
->>>> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
->>>> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
->>>> @@ -3,6 +3,7 @@
->>>>    * Copyright (c) 2014, The Linux Foundation. All rights reserved.
->>>>    */
->>>> +#include <linux/acpi.h>
->>>>   #include <linux/bitops.h>
->>>>   #include <linux/kernel.h>
->>>>   #include <linux/moduleparam.h>
->>>> @@ -2344,12 +2345,21 @@ static const struct of_device_id 
->>>> etm4_sysreg_match[] = {
->>>>       {}
->>>>   };
->>>> +#ifdef CONFIG_ACPI
->>>> +static const struct acpi_device_id etm4x_acpi_ids[] = {
->>>> +    {"ARMHC500", 0}, /* ARM CoreSight ETM4x */
->>>> +    {}
->>>> +};
->>>> +MODULE_DEVICE_TABLE(acpi, etm4x_acpi_ids);
->>>> +#endif
->>>> +
->>>>   static struct platform_driver etm4_platform_driver = {
->>>>       .probe        = etm4_probe_platform_dev,
->>>>       .remove        = etm4_remove_platform_dev,
->>>>       .driver            = {
->>>>           .name            = "coresight-etm4x",
->>>>           .of_match_table        = etm4_sysreg_match,
->>>> +        .acpi_match_table    = ACPI_PTR(etm4x_acpi_ids),
->>>>           .suppress_bind_attrs    = true,
->>>>           .pm            = &etm4_dev_pm_ops,
->>>>       },
->>>
->>
-> 
+As said somewhere else, nobody does hybrid. In fact, turn it
+around. Why not implement all this in DT, and make X86 hybrid? That
+will make arm, powerpc, risc-v and mips much simpler :-)
 
+	Andrew
