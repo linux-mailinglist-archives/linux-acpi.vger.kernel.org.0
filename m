@@ -2,65 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DF76738D0A
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 19:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBCB1738D44
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 19:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbjFUR0f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Jun 2023 13:26:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34486 "EHLO
+        id S230289AbjFURiR convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 21 Jun 2023 13:38:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjFUR0e (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 13:26:34 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EA65E2;
-        Wed, 21 Jun 2023 10:26:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-        Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-        In-Reply-To:References; bh=NF4zBEcDJi5tK0sppmgQglo0yCtgkMekDJXsqP9rEWE=; b=Bj
-        wtzUPDYzEuK/cPE63zmLaBg+84ZmbmNgB6BNQFl+zDi7yR3PBotkqT5cO0Rw4Zs01JumJhGvsda8M
-        hfsFwp2aUhIyOyM/tKJcRB1AH20PAn3ZFxI0O58LMFr0UKnetCw5PNAO7I7RWUWS48DtfqURQaQji
-        ngzUFUlEIePNV/o=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qC1ar-00HAax-FK; Wed, 21 Jun 2023 19:26:09 +0200
-Date:   Wed, 21 Jun 2023 19:26:09 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Evan Quan <evan.quan@amd.com>, rafael@kernel.org,
-        lenb@kernel.org, alexander.deucher@amd.com,
-        christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
-        daniel@ffwll.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, mdaenzer@redhat.com,
-        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
-        hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
-        jim.cromie@gmail.com, bellosilicio@gmail.com,
-        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
-        arnd@arndb.de, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH V4 1/8] drivers/acpi: Add support for Wifi band RF
- mitigations
-Message-ID: <9159c3a5-390f-4403-854d-9b5e87b58d8c@lunn.ch>
-References: <20230621054603.1262299-1-evan.quan@amd.com>
- <20230621054603.1262299-2-evan.quan@amd.com>
- <3a7c8ffa-de43-4795-ae76-5cd9b00c52b5@lunn.ch>
- <216f3c5aa1299100a0009ddf4e95b019855a32be.camel@sipsolutions.net>
- <b1abec47-04df-4481-d680-43c5ff3cbb48@amd.com>
- <36902dda-9e51-41b3-b5fc-c641edf6f1fb@lunn.ch>
- <33d80292-e639-91d0-4d0f-3ed973f89e14@amd.com>
+        with ESMTP id S229657AbjFURiQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 13:38:16 -0400
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DAC2F1;
+        Wed, 21 Jun 2023 10:38:15 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-94ea38c90ccso180573366b.1;
+        Wed, 21 Jun 2023 10:38:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687369094; x=1689961094;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=17zx2MlePPMg0vLEZ3N7mfSj+vherVFzEhZFZJa0v8I=;
+        b=TOyaRRYjE1A37slgt+fSZ39QAttnMka4QXqxi3ZMNwE7gKHqMky592GHGwqshN2jC/
+         GhpOQ2L/nCPbrvl8rgZrpTxqzLd7NaO34EHpYPDcgcLi3E91bN/Ihb3Md8yLIVZklG7L
+         AdhVeCE1xqHc8rHMvyvsLrJTW+9k3Q+RsL8MMFxzRCMXrHd9hr+fC6hITaNyNxDLKgpQ
+         xV4sW2Rkz5uZPUZNlQu1XscdIOf6WHHdPM6ykwcSjtwKWK4H7SlNYFqR1jSq+s8f1xdf
+         yWXW4s6FMfK1r/QVlRrqo7iRSekwZ4OPj2geJF6UKnMR0uf8g/B7TlQS2YTmDRbZMOqn
+         YCTA==
+X-Gm-Message-State: AC+VfDwdt+LEPnrkm40/FUpCaOGsvQgy2tWzZglk721Y3OO8Y8c1DwS5
+        pQ+kEZ5MACA0Pk6PQ+9Zt2MZ7vluRpSMdtBZpEqQchqJ
+X-Google-Smtp-Source: ACHHUZ6Bm6hG15S7LTyOeV56HCdJoMkz9bMDRv5pgE+Nr4oKuN9NHhATCUA2In3XJopHhRtwt6YTahQA689kMhA+jU0=
+X-Received: by 2002:a17:906:64cc:b0:987:115d:ba06 with SMTP id
+ p12-20020a17090664cc00b00987115dba06mr11378234ejn.4.1687369093768; Wed, 21
+ Jun 2023 10:38:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <33d80292-e639-91d0-4d0f-3ed973f89e14@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+References: <20230620172433.21325-1-mario.limonciello@amd.com>
+In-Reply-To: <20230620172433.21325-1-mario.limonciello@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 21 Jun 2023 19:38:02 +0200
+Message-ID: <CAJZ5v0hjrKS7Cb+wJu9cP8VV9DggUR+2iZ4DheFOSd0bRx-=jw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/3] Enable amd-pstate active mode by default
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Huang Rui <ray.huang@amd.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org,
+        Gautham Ranjal Shenoy <gautham.shenoy@amd.com>,
+        Wyes Karny <Wyes.Karny@amd.com>,
+        Perry Yuan <perry.yuan@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,59 +62,35 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> I think what you're asking for is another layer of indirection
-> like CONFIG_WBRF in addition to CONFIG_ACPI_WBRF.
-> 
-> Producers would call functions like wbrf_supported_producer()
-> where the source file is not guarded behind CONFIG_ACPI_WBRF,
-> but instead by CONFIG_WBRF and locally use CONFIG_ACPI_WBRF within
-> it.  So a producer could look like this:
-> 
-> bool wbrf_supported_producer(struct device *dev)
-> {
-> #ifdef CONFIG_ACPI_WBRF
->     struct acpi_device *adev = ACPI_COMPANION(dev);
-> 
->     if (adev)
->         return check_acpi_wbrf(adev->handle,
->                        WBRF_REVISION,
->                        1ULL << WBRF_RECORD);
-> #endif
->     return -ENODEV;
-> 
-> }
-> EXPORT_SYMBOL_GPL(wbrf_supported_producer);
-> 
-> And then adding/removing could look something like this
-> 
-> int wbrf_add_exclusion(struct device *dev,
->                struct wbrf_ranges_in *in)
-> {
-> #ifdef CONFIG_ACPI_WBRF
->     struct acpi_device *adev = ACPI_COMPANION(dev);
-> 
->     if (adev)
->         return wbrf_record(adev, WBRF_RECORD_ADD, in);
-> #endif
->     return -ENODEV;
-> }
-> EXPORT_SYMBOL_GPL(wbrf_add_exclusion);
-> 
-> int wbrf_remove_exclusion(struct device *dev,
->                struct wbrf_ranges_in *in)
-> {
-> #ifdef CONFIG_ACPI_WBRF
->     struct acpi_device *adev = ACPI_COMPANION(dev);
-> 
->     if (adev)
->         return wbrf_record(adev, WBRF_RECORD_REMOVE, in);
-> #endif
->     return -ENODEV;
-> }
-> EXPORT_SYMBOL_GPL(wbrf_remove_exclusion);
+On Tue, Jun 20, 2023 at 7:27â€¯PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> Active mode for amd-pstate has shown enough success now that it makes sense
+> to enable it by default on client systems.
+>
+> This series introduces a new kernel configuration option to set the default
+> policy for amd-pstate modes for a kernel.
+>
+> Server systems will by identified by the PM preferred profile and still be
+> set as disabled by default for now.
+>
+> v2->v3:
+>  * Drop patch 4; Intel intentionally doesn't want intel-pstate on SOHO
+>    server
+>  * Move symbols from patch 1 into patch 2
+>  * Add tags
+> Mario Limonciello (3):
+>   ACPI: CPPC: Add definition for undefined FADT preferred PM profile
+>     value
+>   cpufreq: amd-pstate: Set a fallback policy based on preferred_profile
+>   cpufreq: amd-pstate: Add a kernel config option to set default mode
+>
+>  drivers/cpufreq/Kconfig.x86  |  17 ++++++
+>  drivers/cpufreq/amd-pstate.c | 101 +++++++++++++++++++++++++----------
+>  include/acpi/actbl.h         |   3 +-
+>  include/linux/amd-pstate.h   |   4 +-
+>  4 files changed, 96 insertions(+), 29 deletions(-)
+>
+> --
 
-Yes, this looks a lot better.
-
-But what about notifications?
-
-    Andrew
+All applied as 6.5 material, thanks!
