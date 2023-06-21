@@ -2,38 +2,43 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B52C7738B54
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 18:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B1F5738B93
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 18:38:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232688AbjFUQc5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Jun 2023 12:32:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55824 "EHLO
+        id S230134AbjFUQit (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Jun 2023 12:38:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232446AbjFUQcr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 12:32:47 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC90719AC;
-        Wed, 21 Jun 2023 09:32:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=5dBxOnSqaP3QLEUj6Sd6hECMtB3+CNTVZ5h451XFYfA=; b=mL1RtX6Vd70D+UhrlC6/uRbPqV
-        nt/7qe4B7Y10bRL5lxVeYQTGDr+wBCm+40cCVy6RFNrxk1KRRMEXzE1Eew42L0zBNv6Hchyluk12e
-        R0KdVeO5Zb8bZKZRR/CK+3VfbY3f7MsCYNrBriSlwJipifTOZ5skrp77J3JSthSZtkFQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qC0jY-00HAET-Fg; Wed, 21 Jun 2023 18:31:04 +0200
-Date:   Wed, 21 Jun 2023 18:31:04 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Evan Quan <evan.quan@amd.com>, rafael@kernel.org,
-        lenb@kernel.org, alexander.deucher@amd.com,
-        christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
-        daniel@ffwll.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, mdaenzer@redhat.com,
+        with ESMTP id S230046AbjFUQif (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 12:38:35 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 732721BD0;
+        Wed, 21 Jun 2023 09:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=OdFzun0L0/e6r02A+DrKv3kwszx3coOMwNXnVWRuYqM=;
+        t=1687365488; x=1688575088; b=m9p8LdGGk7MFyOmWI+LHZkM2E7doe5Xb/ok4iwGgsLroHFp
+        3JdDqhm9aA5ijUA8EM+AJkyHRFvPxBxeD7+0EZ6nMifeVeK97GlCFZX33Rq+IBdR7OS77Hjo/+Meo
+        OPoKxA/wCkmtOAk8AZ4wPsd2HNUECr55nSCrUuGH9g0jWBUUHrP6+xy+WT4hL43hehPMUzM60ZUcc
+        kf0XGBPIuQpijgY2nlj6zOI3rw/PLukL+FOtnvOq7XhAaTVyOM/0l3YWNgV2cG32uZLsP8EtxCex1
+        Y6dsPJCz5OaPYzyeoRNh/Z0PnRdxkSFEApfF2RXCvns+gyoBe4oSI76w3TuVxdCA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qC0pt-00Dltw-2s;
+        Wed, 21 Jun 2023 18:37:38 +0200
+Message-ID: <aca10d753183508672739e8b6668d41ce2cdaf80.camel@sipsolutions.net>
+Subject: Re: [PATCH V4 1/8] drivers/acpi: Add support for Wifi band RF
+ mitigations
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
+        alexander.deucher@amd.com, christian.koenig@amd.com,
+        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, mario.limonciello@amd.com, mdaenzer@redhat.com,
         maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
         hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
         jim.cromie@gmail.com, bellosilicio@gmail.com,
@@ -42,19 +47,18 @@ Cc:     Johannes Berg <johannes@sipsolutions.net>,
         linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
         dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: Re: [PATCH V4 1/8] drivers/acpi: Add support for Wifi band RF
- mitigations
-Message-ID: <9435a928-04c4-442f-89f2-e76713c908a5@lunn.ch>
+Date:   Wed, 21 Jun 2023 18:37:36 +0200
+In-Reply-To: <d2dba04d-36bf-4d07-bf2b-dd06671c45c6@lunn.ch>
 References: <20230621054603.1262299-1-evan.quan@amd.com>
- <20230621054603.1262299-2-evan.quan@amd.com>
- <3a7c8ffa-de43-4795-ae76-5cd9b00c52b5@lunn.ch>
- <216f3c5aa1299100a0009ddf4e95b019855a32be.camel@sipsolutions.net>
- <d2dba04d-36bf-4d07-bf2b-dd06671c45c6@lunn.ch>
- <98c858e6-fb18-d50f-6eea-eddc63ba136f@amd.com>
+         <20230621054603.1262299-2-evan.quan@amd.com>
+         <3a7c8ffa-de43-4795-ae76-5cd9b00c52b5@lunn.ch>
+         <216f3c5aa1299100a0009ddf4e95b019855a32be.camel@sipsolutions.net>
+         <d2dba04d-36bf-4d07-bf2b-dd06671c45c6@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <98c858e6-fb18-d50f-6eea-eddc63ba136f@amd.com>
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -65,45 +69,67 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> I think there is enough details for this to happen. It's done
-> so that either the AML can natively behave as a consumer or a
-> driver can behave as a consumer.
+On Wed, 2023-06-21 at 18:14 +0200, Andrew Lunn wrote:
+> > > Do only ACPI based systems have:
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0interference of relatively high-powered harmonics o=
+f the (G-)DDR
+> > > =C2=A0=C2=A0=C2=A0memory clocks with local radio module frequency ban=
+ds used by
+> > > =C2=A0=C2=A0=C2=A0Wifi 6/6e/7."
+> > >=20
+> > > Could Device Tree based systems not experience this problem?
+> >=20
+> > They could, of course, but they'd need some other driver to change
+> > _something_ in the system? I don't even know what this is doing
+> > precisely under the hood in the ACPI BIOS
+>=20
+> If you don't know what it is actually doing, it suggests the API is
+> not very well defined.
 
-> > > > > +/**
-> > > > > + * APIs needed by drivers/subsystems for contributing frequencies:
-> > > > > + * During probe, check `wbrf_supported_producer` to see if WBRF is supported.
-> > > > > + * If adding frequencies, then call `wbrf_add_exclusion` with the
-> > > > > + * start and end points specified for the frequency ranges added.
-> > > > > + * If removing frequencies, then call `wbrf_remove_exclusion` with
-> > > > > + * start and end points specified for the frequency ranges added.
-> > > > > + */
-> > > > > +bool wbrf_supported_producer(struct acpi_device *adev);
-> > > > > +int wbrf_add_exclusion(struct acpi_device *adev,
-> > > > > +		       struct wbrf_ranges_in *in);
-> > > > > +int wbrf_remove_exclusion(struct acpi_device *adev,
-> > > > > +			  struct wbrf_ranges_in *in);
-> > > > Could struct device be used here, to make the API agnostic to where
-> > > > the information is coming from? That would then allow somebody in the
-> > > > future to implement a device tree based information provider.
-> > > That does make sense, and it wouldn't even be that much harder if we
-> > > assume in a given platform there's only one provider
-> > That seems like a very reasonable assumption. It is theoretically
-> > possible to build an ACPI + DT hybrid, but i've never seen it actually
-> > done.
-> > 
-> > If an ARM64 ACPI BIOS could implement this, then i would guess the low
-> > level bits would be solved, i guess jumping into the EL1
-> > firmware. Putting DT on top instead should not be too hard.
-> > 
-> > 	Andrew
-> 
-> To make life easier I'll ask whether we can include snippets of
-> the matching ASL for this first implementation as part of the
-> public ACPI spec that matches this code when we release it.
+I wouldn't say that. At the level it's defined now, the API is very
+clear: the wifi subsystem tells the other side what channels it's
+operating on right now.
 
-So it sounds like you are pretty open about this, there should be
-enough information for independent implementations. So please do make
-the APIs between the providers and the consumers abstract, struct
-device, not an ACPI object.
+> Is there even enough details that ARM64 ACPI
+> BIOS could implement this?=20
 
-	Andrew
+This, in itself? No. You'd have to know about the physical
+characteristics of the system, what is actually causing interference and
+at what frequencies and of course what you can actually do to mitigate
+(such as adjusting clock frequencies.)
+
+But as an API? I'd think yes, since WiFi can't really move off a
+frequency, other than disconnect, anyway.
+
+
+> > > > +bool wbrf_supported_producer(struct acpi_device *adev);
+> > > > +int wbrf_add_exclusion(struct acpi_device *adev,
+> > > > +		       struct wbrf_ranges_in *in);
+> > > > +int wbrf_remove_exclusion(struct acpi_device *adev,
+> > > > +			  struct wbrf_ranges_in *in);
+> > >=20
+> > > Could struct device be used here, to make the API agnostic to where
+> > > the information is coming from? That would then allow somebody in the
+> > > future to implement a device tree based information provider.
+> >=20
+> > That does make sense, and it wouldn't even be that much harder if we
+> > assume in a given platform there's only one provider
+>=20
+> That seems like a very reasonable assumption. It is theoretically
+> possible to build an ACPI + DT hybrid, but i've never seen it actually
+> done.
+
+OK.
+
+> If an ARM64 ACPI BIOS could implement this, then i would guess the low
+> level bits would be solved, i guess jumping into the EL1
+> firmware. Putting DT on top instead should not be too hard.
+
+Right.
+
+
+Maybe then this really shouldn't be called "wbrf", but maybe naming
+doesn't matter that much :)
+
+johannes
