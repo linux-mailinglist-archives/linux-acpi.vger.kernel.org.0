@@ -2,125 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D24517388B1
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 17:20:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9480E7389CB
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 17:39:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231216AbjFUPUK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Jun 2023 11:20:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56290 "EHLO
+        id S233490AbjFUPjY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Jun 2023 11:39:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233381AbjFUPTx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 11:19:53 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D832ED2;
-        Wed, 21 Jun 2023 08:16:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687360610; x=1718896610;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BZCM5lLaApqKK/yTbVaJKND0T8mjA20qNjOsA8/s5nU=;
-  b=bfMDzeCKjGK6H4FHShn/5ZdLutzkHVU11a33O9iqmeqxrfBZJt9ZBljw
-   rSF/InNEnMxd7QULv5c7U0DXmoQdykfDSwJB7tzQO3Z4ARh8o7kJfN+Hi
-   zISSaxlRaMmD9ucQsXB6pauKiGSHaZgDaffPtYEWAPh5umNzHJ5EYMTsX
-   1jGCQOjCYLIhb1/sj+T5+HqK00ggbpqYokCVIO7DXS/Qw74zVtMBVoNhx
-   8lJZxg58k9eHqYsrmEclLp4c8i5OuMDQIp+kyFXrtTz9Y/ALITd6Hp8Aa
-   DpM967FR8z6EpgbMbPN3uq9qzoxMtYjKMHelf6FAxI6DUVdgwlsSWzuRM
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="446584496"
-X-IronPort-AV: E=Sophos;i="6.00,260,1681196400"; 
-   d="scan'208";a="446584496"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 08:16:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="664702536"
-X-IronPort-AV: E=Sophos;i="6.00,260,1681196400"; 
-   d="scan'208";a="664702536"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 21 Jun 2023 08:16:45 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 8D4D0241; Wed, 21 Jun 2023 18:16:56 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, acpica-devel@lists.linuxfoundation.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Robert Moore <robert.moore@intel.com>
-Subject: [PATCH v2 2/2] ACPI: platform: Move SMB0001 HID to the header and reuse
-Date:   Wed, 21 Jun 2023 18:16:52 +0300
-Message-Id: <20230621151652.79579-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20230621151652.79579-1-andriy.shevchenko@linux.intel.com>
-References: <20230621151652.79579-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S233545AbjFUPiz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 11:38:55 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08D731BC6;
+        Wed, 21 Jun 2023 08:38:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=UNTcJ7CGT1Lez3ibsb1q0hENK9CgDCucVIYKxGl3TOA=; b=kX5Xr6VI87reS7/GA49etmzzJa
+        8UkZZawMQsboaJaBH0eNpIzk1bR3EcbBbU0KF6jAsbQhofPO8pHw+ovgkoxLGGJjfHxE1vVFC+buE
+        dyHRIxHy1ZMVaryyek2UvdEHqUuLiwmWXnN8UhABnjwmxx9ilAZZaPSduE0A55vaKMZ8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qBzsX-00H9mp-GK; Wed, 21 Jun 2023 17:36:17 +0200
+Date:   Wed, 21 Jun 2023 17:36:17 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Evan Quan <evan.quan@amd.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, alexander.deucher@amd.com,
+        christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+        daniel@ffwll.ch, johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        mario.limonciello@amd.com, mdaenzer@redhat.com,
+        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+        hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
+        jim.cromie@gmail.com, bellosilicio@gmail.com,
+        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
+        arnd@arndb.de, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH V4 1/8] drivers/acpi: Add support for Wifi band RF
+ mitigations
+Message-ID: <3a7c8ffa-de43-4795-ae76-5cd9b00c52b5@lunn.ch>
+References: <20230621054603.1262299-1-evan.quan@amd.com>
+ <20230621054603.1262299-2-evan.quan@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230621054603.1262299-2-evan.quan@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There are at least two places in the kernel that are using
-the SMB0001 HID. Make it to be available via acpi_drivers.h
-header file. While at it, replace hard coded one with a
-definition.
+On Wed, Jun 21, 2023 at 01:45:56PM +0800, Evan Quan wrote:
+> From: Mario Limonciello <mario.limonciello@amd.com>
+> 
+> Due to electrical and mechanical constraints in certain platform designs
+> there may be likely interference of relatively high-powered harmonics of
+> the (G-)DDR memory clocks with local radio module frequency bands used
+> by Wifi 6/6e/7.
+> 
+> To mitigate this, AMD has introduced an ACPI based mechanism that
+> devices can use to notify active use of particular frequencies so
+> that devices can make relative internal adjustments as necessary
+> to avoid this resonance.
 
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20230620163534.1042-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-v2: added tag (Andi)
- drivers/acpi/acpi_platform.c  | 2 +-
- drivers/i2c/busses/i2c-scmi.c | 3 ---
- include/acpi/acpi_drivers.h   | 2 ++
- 3 files changed, 3 insertions(+), 4 deletions(-)
+Do only ACPI based systems have:
 
-diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-index 089a98bd18bf..e86f76ee3473 100644
---- a/drivers/acpi/acpi_platform.c
-+++ b/drivers/acpi/acpi_platform.c
-@@ -20,7 +20,7 @@
- #include "internal.h"
- 
- static const struct acpi_device_id forbidden_id_with_resourses[] = {
--	{"SMB0001",  0},	/* ACPI SMBUS virtual device */
-+	{ACPI_SMBUS_MS_HID,  0},	/* ACPI SMBUS virtual device */
- 	{ }
- };
- 
-diff --git a/drivers/i2c/busses/i2c-scmi.c b/drivers/i2c/busses/i2c-scmi.c
-index 104570292241..421735acfa14 100644
---- a/drivers/i2c/busses/i2c-scmi.c
-+++ b/drivers/i2c/busses/i2c-scmi.c
-@@ -13,9 +13,6 @@
- #include <linux/i2c.h>
- #include <linux/acpi.h>
- 
--/* SMBUS HID definition as supported by Microsoft Windows */
--#define ACPI_SMBUS_MS_HID		"SMB0001"
--
- struct smbus_methods_t {
- 	char *mt_info;
- 	char *mt_sbr;
-diff --git a/include/acpi/acpi_drivers.h b/include/acpi/acpi_drivers.h
-index 8372b0e7fd15..b14d165632e7 100644
---- a/include/acpi/acpi_drivers.h
-+++ b/include/acpi/acpi_drivers.h
-@@ -27,6 +27,8 @@
- #define ACPI_BAY_HID			"LNXIOBAY"
- #define ACPI_DOCK_HID			"LNXDOCK"
- #define ACPI_ECDT_HID			"LNXEC"
-+/* SMBUS HID definition as supported by Microsoft Windows */
-+#define ACPI_SMBUS_MS_HID		"SMB0001"
- /* Quirk for broken IBM BIOSes */
- #define ACPI_SMBUS_IBM_HID		"SMBUSIBM"
- 
--- 
-2.40.0.1.gaa8946217a0b
+   interference of relatively high-powered harmonics of the (G-)DDR
+   memory clocks with local radio module frequency bands used by
+   Wifi 6/6e/7."
 
+Could Device Tree based systems not experience this problem?
+
+> +/**
+> + * APIs needed by drivers/subsystems for contributing frequencies:
+> + * During probe, check `wbrf_supported_producer` to see if WBRF is supported.
+> + * If adding frequencies, then call `wbrf_add_exclusion` with the
+> + * start and end points specified for the frequency ranges added.
+> + * If removing frequencies, then call `wbrf_remove_exclusion` with
+> + * start and end points specified for the frequency ranges added.
+> + */
+> +bool wbrf_supported_producer(struct acpi_device *adev);
+> +int wbrf_add_exclusion(struct acpi_device *adev,
+> +		       struct wbrf_ranges_in *in);
+> +int wbrf_remove_exclusion(struct acpi_device *adev,
+> +			  struct wbrf_ranges_in *in);
+
+Could struct device be used here, to make the API agnostic to where
+the information is coming from? That would then allow somebody in the
+future to implement a device tree based information provider.
+
+       Andrew
