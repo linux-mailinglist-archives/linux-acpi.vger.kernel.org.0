@@ -2,175 +2,240 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E2147384FD
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 15:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D408B738680
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 16:13:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232575AbjFUN24 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Jun 2023 09:28:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56414 "EHLO
+        id S232897AbjFUONz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Jun 2023 10:13:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232569AbjFUN2v (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 09:28:51 -0400
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2138.outbound.protection.outlook.com [40.107.21.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE3521998;
-        Wed, 21 Jun 2023 06:28:50 -0700 (PDT)
+        with ESMTP id S232795AbjFUON2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 10:13:28 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2077.outbound.protection.outlook.com [40.107.237.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1F4F10F0;
+        Wed, 21 Jun 2023 07:12:45 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QoLSqocOrwvzrYVBi2HQ51l8Tx+mAN0XFuSMYl6/M42PTBr3kUt2tqyGVA4hWDmjsD1qI33rM48Ep6j0EQ5ma/ZjctS3O8oLCO5U+pLX2EwIMX+xoUuoaszGfT1vSSx9C2ExZlAsOY5etkOOnPMzjw/iEXE2O7rRt7cImiMZlUIGqaAI8gQvsXFBBi7qJhVi786QR6NX1cRoRwuAb7KJEsZKrD1E8zA8zAd+GDpx3yMjVUqn5bdime/6i+UAxwEeqJEUVcgxn1razRVSHmIkbfapIXRwZtolJu0eN1WJ2mi7U8NK4s5m2F0hu6gcsAbFsgdZKxwifqBaHwSZ5LiJOg==
+ b=aSZa/nXsPdPvUpc9oxPYAySLR0e1f8KN13P7lg5ZzwzvXixa20DD6RxQoxNDvD63Whtf2czUXgrSzqw/p5W7PLwAROxRB2sV7wuW3Zcnx0NzwzQoihbE+8qp1xOP6tOGHtY/vb2p5RQYfiuWrMrefpKmacnjIe0vU7YeJt32MtF8Bj5m2Gh1obHtOeSZObMDQTovi9q26XpiyXa9HGclwtmsFdBccuCidEYOuTLjoioBO8GO4a+rKyUFTxQaVYVNo4QRhT/xuKb5CKvJcYx4l5yymJNdtd3oD52DeZwWDAcI2Dup84OPbtovncDOeGI9nAXoI6aOXpAtR/8bqdmbuw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gWIHgjsj2Su0hQLjtNlAFWaXlhkWN8rxSwfV9gyv09M=;
- b=Lqr0MMGxmbFN8Bozyxr9tG2V0idruQY7kXlVo3wfYX/jrAgb9HZ/8IutwWi93C7s1DzSzhCmBMSrovkg1GUADrV1Mx2oNeu7IcBqAWq9ZpTB3lssaPplnwAfcD2YyxAEW4Ut18MEF9xSh725cNWWPBqxesdCKjtFd95NMGuC5LaEg8P1C9/w6WPSD8fpp8dJQRiCzfWD0cvj3OIECAGEj+wYJcuy7c6l8142tDTNfuv2/pZc9y3iTUVF1dYwiECZmU5236nTCCL8Nqyxi7gGF8tgUXYfeyc/cRmbr0P23+ayLgrPN/WECZQBSDsQaLN+aFkslE/3A5rrrmSuGl7y2Q==
+ bh=kTWVUHCi1wlt7wRWmFoQ2AXEzeI+kSrBxX6mHMne/rA=;
+ b=Mk5DgrIs7SxF11NfvsMtWbYl/yum9VE3gdhqohp/PAhwko7U5PaardUwRQWqkpghd+LcOzI/nNDp7uzjPOeS0pN0g3HlCAwsLDLdAlPctBfSMFalld5JF7Dh85iWRpvTr8VRvUtmX6ceXlTsrrqGqsfUktdqUdQcWMN6uoXtpF5eXYhzcfHb6XErtjrQhPt66DabdxxDfRh9DV/DWw8dhfeqwfRurccZNRsKgVFsTd6tgtIAVwIH2DE8smlE6qIl7Y5/GxauuPJRF2dvWqSpBGBKSrLcqEMINByLIaTF3F4VOaKHzUsoypwuge9riIuV5iKwLLy768jaMr85XIXq3A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kontron.com; dmarc=pass action=none header.from=kontron.com;
- dkim=pass header.d=kontron.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mysnt.onmicrosoft.com;
- s=selector2-mysnt-onmicrosoft-com;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gWIHgjsj2Su0hQLjtNlAFWaXlhkWN8rxSwfV9gyv09M=;
- b=CtaVX1ZMuIkJ0otRDJvst97bz0uB2pQsF1Rmj27SGiA/6MbRvqLsErq0ORQhQ50kjqy3ZxUt3gfXbxjsVgdBoti750rhJFqyG3RnlQMqUVE8ANedoVLdRaN1lCp8/Mrs0Y4fGwdlrfUbp3TL4ZVwF+UtYlRP32dhHfJRIn8yOWo=
-Received: from AS2PR10MB7551.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:591::19)
- by AS4PR10MB5394.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:4bc::22) with
+ bh=kTWVUHCi1wlt7wRWmFoQ2AXEzeI+kSrBxX6mHMne/rA=;
+ b=KzYYFAOb8iO3oBVtpC0vqUkkODTXn/EnzBCWnspcuJtwbHG03lYkIVeDtGeFii3gEiYVM7jwpxgMpWhfzsMOXW4Y3EGCq/c85n0Td8iXkFgBrb2mgDOlwt9lsnSmzW/Y3qlZlZLxbpHZ+VZMeSXdN5+uq1vnk/cOF6ZVJc07a98=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by DS0PR12MB7557.namprd12.prod.outlook.com (2603:10b6:8:130::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Wed, 21 Jun
- 2023 13:28:48 +0000
-Received: from AS2PR10MB7551.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a069:8f48:135c:3f5f]) by AS2PR10MB7551.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a069:8f48:135c:3f5f%4]) with mapi id 15.20.6500.036; Wed, 21 Jun 2023
- 13:28:48 +0000
-From:   Michael Brunner <michael.brunner@kontron.com>
-To:     "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "andi.shyti@kernel.org" <andi.shyti@kernel.org>
-CC:     "wsa@kernel.org" <wsa@kernel.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "acpica-devel@lists.linuxfoundation.org" 
-        <acpica-devel@lists.linuxfoundation.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "robert.moore@intel.com" <robert.moore@intel.com>
-Subject: Re: [PATCH v1 1/2] ACPI: platform: Ignore SMB0001 only when it has
- resources
-Thread-Topic: [PATCH v1 1/2] ACPI: platform: Ignore SMB0001 only when it has
- resources
-Thread-Index: AQHZo5VI7IrE3xvC7kWrbR8c4raVtK+U4d6AgAAdIACAAD/9gIAAAneA
-Date:   Wed, 21 Jun 2023 13:28:48 +0000
-Message-ID: <fcee65cded553de501a4b22380e49c1914f63799.camel@kontron.com>
-References: <20230620163534.1042-1-andriy.shevchenko@linux.intel.com>
-         <b9af5a068cc0b5e785c8e2ddfc70d811fd5929cd.camel@kontron.com>
-         <20230621093056.5qfa3kn7ldgwsyeg@intel.intel>
-         <ZJL4/X1Z9gCdESxp@smile.fi.intel.com>
-In-Reply-To: <ZJL4/X1Z9gCdESxp@smile.fi.intel.com>
-Accept-Language: de-DE, en-US
+ 2023 14:12:43 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::dfcf:f53c:c778:6f70]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::dfcf:f53c:c778:6f70%5]) with mapi id 15.20.6521.020; Wed, 21 Jun 2023
+ 14:12:43 +0000
+Message-ID: <9fdcd5a6-5315-b4d8-1662-30bfc6cb67d8@amd.com>
+Date:   Wed, 21 Jun 2023 09:12:38 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH V4 3/8] wifi: mac80211: Add support for ACPI WBRF
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.5-0ubuntu1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kontron.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS2PR10MB7551:EE_|AS4PR10MB5394:EE_
-x-ms-office365-filtering-correlation-id: 61b7b68f-88e2-4417-cd5d-08db725b71df
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: j7RLDliJ7wezAn2TS9V83OVpIWrzKnuiEAZc+yxdIqajC070IJ+gBM1x3o67SwhVji1z71Y77lLnwus4TZTGp/iyiHWSCy3VPIvpi3LnmA5d8MfrnW9etW97K9GhLZi/tUiUNPGXvKaJYPju+9ZJsB8RSAB+r0EAoQ0fdREjz/jqaQaf0KvBmzmQ+uOnxlaVvXDxCNvLKP4YU6qiR8GO75Zjm/y20plMwgPEo1wlg3AB4+vS+AKsEQpuDQvloBd7+SPzxZizYw4YT9n8f2Y14+OalNMyHEndEYcPImERpCDxgfTM/Y7agS7e+0jMq6GlHrZFQQmE65yoI2kBgS+jDvzRM9WsqNu5heyE5unsFYMHlKGNSJR3kv+BPiwFanD1Uum+u0TUNvLREvFtlUDhbLVGfLCtH9E9xATBLxG18TMaRfy7Y2eEh5tNLHEjukSMdvxSucRRbmGubVzVJj0DU+1veczy8JbbOLwQbkHuz7O5bqH6LvhTvwsn2t2ulw8o3NcOQLa9byMjbY8UfDr1YNWF6BJ6SHrz10SLrGEal71eX4yVeKHkUV2ZRnwavaEioIPGoFg+l4DCet9hSZyVHZQSxsyXFTd4fhrZQngoauo=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS2PR10MB7551.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(346002)(39860400002)(376002)(396003)(136003)(451199021)(76116006)(91956017)(71200400001)(64756008)(66946007)(66476007)(66556008)(66446008)(4326008)(122000001)(186003)(2616005)(38100700002)(86362001)(6512007)(38070700005)(26005)(6506007)(83380400001)(478600001)(45080400002)(36756003)(966005)(6486002)(110136005)(54906003)(44832011)(8676002)(8936002)(5660300002)(2906002)(7416002)(316002)(41300700001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-15?Q?9ltTrb6GMAAMvBB0ofYKPGn7uLug6acFVzQPO/u0o6Mke+W/36qKlHPym?=
- =?iso-8859-15?Q?bOAqENpswPxFiWNNW7N+fsNsx8y8aA6F2Tw6RCo9wgiUQqAo1gL0j6Umm?=
- =?iso-8859-15?Q?fstyMcKj9Lno9o52M4JmkQ/MGUy13vxAFM6mmvPjDXwnhy5VKC5Xdp1lA?=
- =?iso-8859-15?Q?fLrIelr7HP61B27lfbr4uJcHLMlik9/N9r2piUJlphkIpqrOLeM8AHPog?=
- =?iso-8859-15?Q?PJowUZdU68d2Td+In5GGCMBlX6za20CeaOwzVxde0PxPlWw/Knk8Xz8+N?=
- =?iso-8859-15?Q?/eHXBDL+vnFPY/Bk/tZRLFUGwAJtooDQuE1uV7ecuDERGFP667lUx/g6L?=
- =?iso-8859-15?Q?mJqvXIUaii1YgUNZc7BUdI1/CHIiwkniSK0QfwPj9iWzmqRfHQABBV6+s?=
- =?iso-8859-15?Q?saXHPAf0vGH6KEndr8JJGugm35mz9f2iMHSORFyGDEDudaVwLhD3JfMWu?=
- =?iso-8859-15?Q?KfoMG7GRnsHIwtizWYZW4lFvaMfb8q6wVbacFNfjHlmTC6daN2KGBpSGx?=
- =?iso-8859-15?Q?6RHp1mAYF8pY7Y7E/bWy+rgREs0r4dvyHQ/sc9OfTBjcCeDIuETOW4p+t?=
- =?iso-8859-15?Q?7WF9uinGfaXghg8lt2YT50r6hQI9nZ6GeEifOk9t/HUCfmPbwWgJgCaZO?=
- =?iso-8859-15?Q?HnU3twf0tS0xYO1n2S7+T4pi10M8VLYECorOxdz+OoE4126UDoJlINIPa?=
- =?iso-8859-15?Q?jINMDbmdr/8kP9IA1W3Gd4QkyxfUS4pq4yjaicyxgq/epBQF+p8ti272L?=
- =?iso-8859-15?Q?oxtPDCKDFZZ4GOOwJzLJnupezsJ/XCwthzcEbJakHHzub6rlOdVFFSjmI?=
- =?iso-8859-15?Q?QM8MYod3Jtk5IpF7FTA5ZfLGh2324yY1JKsos+9XvaMfb/HWMW9H+otpg?=
- =?iso-8859-15?Q?q5jnhpKIWF4qc4xjfvkKw/idkdo4dhz+cbs0gQ64qtDyXI35Sy4NNWNkS?=
- =?iso-8859-15?Q?9GdqFQOt/gaZrDWVgCSyYDcR92TnDI/PLDrJmDD+3dqY2xjAnnJyq62o5?=
- =?iso-8859-15?Q?WSF538t8KDbwZ6QITbyHiQWb7Cc4aIlMyW3LWGgluHMr63OPIoI0IAKU5?=
- =?iso-8859-15?Q?qJyj50rjCEmAHmW11XYwtbxSs+dHfpGMqqjiNHDw8siYS4oZVycJMz2Oy?=
- =?iso-8859-15?Q?R1TEwIfTRIhH6RUEvMXoH2T+B/wGzJW0UtP9OumvzRlsBvshLIpM91Cry?=
- =?iso-8859-15?Q?f+n3Bvr7+b4pBGCAC7cwmHrvIRTrdJYhrHj40nXDrE4L+9GjLE0UQZrzS?=
- =?iso-8859-15?Q?b2/QbP6eJqUJE1ZK3Gwy6Scgj1ccYMwNxldbxlTVI13iIfFpiyw3XtTqH?=
- =?iso-8859-15?Q?dAfY2tGIaNyAMc6R3J13Gmz76QZ96ssw6R0ruDONY2B1ela/5Uzxl2rI1?=
- =?iso-8859-15?Q?wqyjvbueneJlIy/23Z59wtbQWTqb4W4U4EDOWZp0NN/tR1+MnMWd+vgsa?=
- =?iso-8859-15?Q?6j1f/l8TEc39EUHFOKGZC+zoeX8b4NSLgaugTtcpyC7GMBzX/tUc4Qmwn?=
- =?iso-8859-15?Q?2HFpa5DcawDntpqEoypNKd1BHbbOD0isZ2JGWNhLY+5ikf/IG9KJjeZ/M?=
- =?iso-8859-15?Q?k4rnFG4LXVo0R7PAAySZZSh2W1YsvHBiUR9f335zrQlc7jdB+lYFboXKu?=
- =?iso-8859-15?Q?ZvKgUpNkHwA4g3Q13hEE2iA3H/nMpBbbvj4CTtiwSdCMUXTWYgW6VnaqC?=
- =?iso-8859-15?Q?E9C1g8G01Kl+1yMnOQzBUDFMcPnIp8FXjBtbgxa1gDfPvjA=3D?=
-Content-Type: text/plain; charset="iso-8859-15"
-Content-ID: <FA38881922A2C74B9499C211422F61AB@EURPRD10.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: quoted-printable
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Evan Quan <evan.quan@amd.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        lenb@kernel.org, alexander.deucher@amd.com,
+        christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+        daniel@ffwll.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, mdaenzer@redhat.com,
+        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+        hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
+        jim.cromie@gmail.com, bellosilicio@gmail.com,
+        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
+        arnd@arndb.de
+References: <20230621054603.1262299-1-evan.quan@amd.com>
+ <20230621054603.1262299-4-evan.quan@amd.com>
+ <3eb2c16cb0692c8d6b03bd57cb049b1fb3457e92.camel@sipsolutions.net>
+From:   "Limonciello, Mario" <mario.limonciello@amd.com>
+In-Reply-To: <3eb2c16cb0692c8d6b03bd57cb049b1fb3457e92.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN6PR04CA0079.namprd04.prod.outlook.com
+ (2603:10b6:805:f2::20) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
-X-OriginatorOrg: kontron.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DS0PR12MB7557:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd6b3cbb-dbd7-4a82-05d3-08db7261948f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: PB0ibkcTfSk7lkhUCX2kWkSbSB+XrB2+rwGBULGOC28Ba/v8G+Jokx3khEGBJMpk0/LfMpLpYujj8YTI/1n0X5ujSzUng0bWok9QN9bSgU7JymtlpYXRhgs/FAPpVqwwexe0mmWpkRbqZ24jVmT48FkBGgjAPuYdf3HrtYiKiE5vrI0ZW6a7/TBBeF9WC7ZPK2Kctu3VViNBk+QG80hM07Mi6WC4GbTdEUe/s3CCMBq9LyGgmW7f2ei8GG9mj90ohrU4OOdwl4XQqY1ISXd3bPZvMyZ5VpOma7vjpU+8irfXfwYfwadkRa4hzxqiJc06l4gBMFXqEioKn3AeFW6rqtmcL3KXU1RW927MW9LNCzzmjQySGeeqBUxryNBgir/+n44b67qF70DKueEDjxVZrDr1TnyAwN0LNlUg72uS6c6+NxKZqLlKmP6GkC1Aqsse273cmqbyHFtZXYxYkZaOmYJTfc8kt9VjBXjTBBVvlwIW4cmo3ko56hFw1oJZMWOWPsDLjT6z1p8jBauf96I8QZUCVxAFXy4g6daUuMMOW64SjMBf/a/qPyMeZ3QDwkGzEr9tNNJMl1QuQohRlHiqCPFQTZdJBy38rXQ7LOWkzKMb3PHiYlirecEkRIsYLXDnEJBwqVIhFoeu99AtFpBKqQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(396003)(346002)(366004)(136003)(39860400002)(451199021)(4326008)(2906002)(478600001)(110136005)(86362001)(31696002)(6486002)(38100700002)(6666004)(41300700001)(83380400001)(316002)(36756003)(66946007)(66556008)(66476007)(2616005)(6512007)(6506007)(8676002)(8936002)(7416002)(26005)(186003)(5660300002)(53546011)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Vk82Mnh0UWhSRk5hVkcwZGFDcDRJK1p6SzVzTGNJemtvMTQ3Ri9obnlDTzM0?=
+ =?utf-8?B?UHVxUTdwUzl0RkpLYnJwYWFlMC96NmxVUmRVVEMwcGZaN0kvU0Y3VEJPdDE2?=
+ =?utf-8?B?M2RNWU92N1pVcHZNdnNGMDIzTzluY2NOdExpNkdEWk55cm1PQW5Db2xNMVNC?=
+ =?utf-8?B?NWY3M2ZKVUh0TW1Mc09adnM1MSt5V0pHQjR4ckpxNGNtMWdkUk42UmxPSTYy?=
+ =?utf-8?B?dWkwOW1RS2lVUmhicmZ4NkRLQXIrNXZiTVhIMmJORFBtM0hBcEI5eS9PbjNK?=
+ =?utf-8?B?UFZ0bnFzb2NwT0JMcERQSFVGUkhsZytISlB6OGdzVGt5S1ZuZ0VON0pLRmli?=
+ =?utf-8?B?ZG4wdlBwaXVQRWRIWmRuR2VCaCszUFhJRHVJZHpUbDQvNk1tVnV6QmE0bVhQ?=
+ =?utf-8?B?NERZNmdvZ2NXVVJPK2pHWE9IZzlLci9vTzNSMUtKZjluUE9RNDlJbjZMK2po?=
+ =?utf-8?B?bzMvYk9menhTU2R3SVA1b2lnakV4SlpOcDFQT3ZucHNhcDZCTmVUTmlQbjNo?=
+ =?utf-8?B?eEpQUFBxNzE3R2o5VjVRak4xYjlMSFRZRlNhVTBBZUQzZGVCQksreVlHS25U?=
+ =?utf-8?B?aE55UTN5K3g0aVFIb0RpWXBydE51QXI5dHZ5Y0gweUplNWJkekErZmRaZU5V?=
+ =?utf-8?B?NVZXWVpzSHNSWVZLMEFlWnR5V0VzZmc2YjlRZDIwN0ZnbUtxWDNIMC9MZFlK?=
+ =?utf-8?B?UlJwZGs4b3puZzhucHZXYWxmbTVNZFduZThRV2g4UE9ady84dTBRdU1mQjJx?=
+ =?utf-8?B?bU1CRnpZQzdlL2MrdlB6UldNMDQ5YWl4anlRdGRRVndmNFFqZlNlQTJsUXFm?=
+ =?utf-8?B?WkNyU2RSbU9oYjJZaWNJZ2NPMk5xVTIrSHNnRzVnYXpEMlEzK1hQQ010b054?=
+ =?utf-8?B?V3pNd054cDVzVGtDMFdqTEE2bGdVSGZ4MDl5ZWFOK2ZVZVJHTCtMaTZ0cWp3?=
+ =?utf-8?B?ZitYbXdqMGVqenJJbkg3cnQyVXhxUG02OTBrbHhCbHZTQUtVei9xODFhRTJi?=
+ =?utf-8?B?KzNYMklLcEE1Wm51NExRV1NnczN6WVdiM2xXaGp0a25LbFhnWlBQKzE5VG9x?=
+ =?utf-8?B?R1dKcFJPcUtybGdXM0JBRzZvdEtRM0YrNHF4SndyQjg4bm5mYlhrQjR3RkRI?=
+ =?utf-8?B?WGhONG5KaTBqYnlnS2dsbGFrQkZzK3ZLQ2hjU2NiWHIwZkRkVzJ2NlRtTjhy?=
+ =?utf-8?B?UjVxUW12RTk3WHlMamJkdHJsa1BOVTl0TFdYUmx5NlY0enZIUXRhZzNucHlz?=
+ =?utf-8?B?NVl4MGlnQUNzTlhLcGpvL2hQMDVwcW1RUi82OU9HUGZYYWlVcHJZNndGaE5F?=
+ =?utf-8?B?K3kxZTV3eTlnOHBaaS94L1hwY0tKc1pPNnNEM1U5YURsOGdSMERtMVhVQURO?=
+ =?utf-8?B?WWFPREpObEtuMkNPd0pmeVJRNFJRODJBS3h4Z0pmUEVsN0llc2Y2cUFmU0tu?=
+ =?utf-8?B?WS9ERktsbUliOGpEdXJGRk5jNlhjZ0tmVS94RGZIWVVsRWplWjgxanMreDBL?=
+ =?utf-8?B?My9LenByaU1iQld5cHovdTB0VjhXUGJPMmpOSXlCRHR0Rnp5QzB0b1ZENW9i?=
+ =?utf-8?B?SUo2K21SZGpub2FFUml3aFFxL0lROTkwNWs4Wjl5OFprYU1OUkUrVnVWZFV6?=
+ =?utf-8?B?ZTNYZUZXUnN2ZWVjU1U3Vzl4aUgzTDVqREhDV3hKZnpVNGdhdXZxYjJJVG1o?=
+ =?utf-8?B?eWJ6eGpKbGhrSGtaRGZEeCtLcXN5a2h3Vktab3c2Ym1FQkcwdkZyZGVDWlJ1?=
+ =?utf-8?B?cFNBRng2MkJuVy9jTjBXOUtHeEFaMTJSQS9iYVdjNUsva3VtRmJOQUhXdHVF?=
+ =?utf-8?B?SmRPS3M4ZkkvM2RGcVZtK1p0MDlWZzFva0JsNkh4T1UrdEtDS0hNSDgrWVdi?=
+ =?utf-8?B?Tk13RkRaY0ZiVnpZN05HakxSY3drSUt3dnpyc09DdXNXR20yQkYyTnhoVklQ?=
+ =?utf-8?B?UE1BNDRhYVAwWXYxSW9UN0FLM1FnbTQ0eTBOVmZzcisvQXVTbTE2dElCM1Bj?=
+ =?utf-8?B?WG1WRjJBTnNzL0Uwc0Q5UDlQZGJ1OUg5WjBWdElPRFg1Y0hCRHp4Y1lpd1cz?=
+ =?utf-8?B?YnFHczNDV3FIUFVCd1BINGdseWU4Zy9WdE43b1ZlVGxvalVsRmJheStpdkJk?=
+ =?utf-8?Q?IY6pkMQSWRUxbBCRKUcjroL+e?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd6b3cbb-dbd7-4a82-05d3-08db7261948f
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS2PR10MB7551.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61b7b68f-88e2-4417-cd5d-08db725b71df
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jun 2023 13:28:48.0915
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2023 14:12:43.4863
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mVRUkKcjuF2VvXJ20suLitRpdz5EYB0+LB5HV/0bB2YFKWPwaOvUj+2vAHG3+1jqq6EjvWjypB/FBLRjmLnLvPubBFeJ53+JOSmj9oMlADg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR10MB5394
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FORGED_SPF_HELO,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lExDAf+poZ/P30ERDkC2wJmO14Bm6aSiH8MjRITjpUoCkeLb5/cneyyPWXbgQRIZVqrO34RfoK8oow6qpy8abA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7557
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 2023-06-21 at 16:19 +0300, andriy.shevchenko@linux.intel.com
-wrote:
-> On Wed, Jun 21, 2023 at 11:30:56AM +0200, Andi Shyti wrote:
-> > On Wed, Jun 21, 2023 at 07:46:42AM +0000, Michael Brunner wrote:
-> > > On Tue, 2023-06-20 at 19:35 +0300, Andy Shevchenko wrote:
-> > > > After switchind i2c-scmi driver to be a plaform one it stopped
-> > > > being enumerated on number of Kontron platformsm, because it's
-> > > > listed in the forbidden_id_list.
-> > > >
-> > > > To resolve the situation, split the list to generic one and
-> > > > another that holds devices that has to be skiped if and only if
-> > > > they have bogus resources attached (_CRS method returns some).
-> > > >
-> > > > Fixes: 03d4287add6e ("i2c: scmi: Convert to be a platform
-> > > > driver")
-> > > > Closes:
-> > > > https://lore.kernel.org/r/60c1756765b9a3f1eab0dcbd84f59f00fe1caf48.=
-camel@kontron.com
-> > > > Reported-by: Michael Brunner <michael.brunner@kontron.com>
-> > > > Signed-off-by: Andy Shevchenko <
-> > > > andriy.shevchenko@linux.intel.com>
-> > >
-> > > Works as expected - the SMB0001 device shows up as platform
-> > > device and
-> > > the i2c-scmi driver is enumerated again on the affected boards.
-> > > Thanks a lot!
-> >
-> > is this a "Tested-by: Michael Brunner <michael.brunner@kontron.com>
-> > " :)
+
+On 6/21/2023 5:22 AM, Johannes Berg wrote:
+> On Wed, 2023-06-21 at 13:45 +0800, Evan Quan wrote:
+>> To support AMD's WBRF interference mitigation mechanism, Wifi adapters
+>> utilized in the system must register the frequencies in use(or unregister
+>> those frequencies no longer used) via the dedicated APCI calls. So that,
+>> other drivers responding to the frequencies can take proper actions to
+>> mitigate possible interference.
+>>
+>> To make WBRF feature functional, the kernel needs to be configured with
+>> CONFIG_ACPI_WBRF and the platform is equipped with WBRF support(from
+>> BIOS and drivers).
+>>
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> Co-developed-by: Evan Quan <evan.quan@amd.com>
+>> Signed-off-by: Evan Quan <evan.quan@amd.com>
+> I was going to say this looks good ... but still have a few nits, sorry.
 >
-> Michael, indeed, it would be nice to have a formal tag.
-> After that I will send a v2 with tags and fixed typos
-> as Andi noticed (thank you, Andi!).
+> But then the next question anyway is how we merge this? The wifi parts
+> sort of depend on the first patch, although technically I guess I could
+> merge them since it's all hidden behind the CONFIG_ symbol, assuming you
+> get that in via some other tree it can combine upstream.
+>
+> I'd also say you can merge those parts elsewhere but I'm planning to
+> also land some locking rework that I've been working on, so it will
+> probably conflict somewhere.
+Since it's all gated by CONFIG_ACPI_WBRF for each subsystem that it touches,
+my take is that we should merge like this:
 
-No problem:
+1) Get A-b/R-b on patch 1 (ACPI patch) from Rafael.
+2) Merge mac80211 bits through WLAN trees
+3) Merge AMDGPU bits *and* ACPI bits through amd-staging-drm-next 
+followed by drm tree
 
-Tested-by: Michael Brunner <michael.brunner@kontron.com>
+Since WLAN and AMDGPU bits are using the exported ACPI functions from
+patch 1, we need to make sure that it is accepted and won't change
+interface before merging other bits.
 
-Best regards,
-  Michael
+Everything can come together in the upstream tree and the bots
+will be able to test linux-next as well this way.
+
+By bringing ACPI bits through amd-staging-drm-next we can also enable 
+the new Kconfig
+option in AMD's CI system to make sure that all the amdgpu bits are 
+going through CI
+testing too earlier before it even hits linux-next.
+
+
+>> +++ b/net/mac80211/chan.c
+>> @@ -506,11 +506,16 @@ static void _ieee80211_change_chanctx(struct ieee80211_local *local,
+>>   
+>>   	WARN_ON(!cfg80211_chandef_compatible(&ctx->conf.def, chandef));
+>>   
+>> +	ieee80211_remove_wbrf(local, &ctx->conf.def);
+>> +
+>>   	ctx->conf.def = *chandef;
+>>   
+>>   	/* check if min chanctx also changed */
+>>   	changed = IEEE80211_CHANCTX_CHANGE_WIDTH |
+>>   		  _ieee80211_recalc_chanctx_min_def(local, ctx, rsvd_for);
+>> +
+>> +	ieee80211_add_wbrf(local, &ctx->conf.def);
+> You ignore the return value here.
+>
+>
+>> @@ -668,6 +673,10 @@ static int ieee80211_add_chanctx(struct ieee80211_local *local,
+>>   	lockdep_assert_held(&local->mtx);
+>>   	lockdep_assert_held(&local->chanctx_mtx);
+>>   
+>> +	err = ieee80211_add_wbrf(local, &ctx->conf.def);
+>> +	if (err)
+>> +		return err;
+> But not here.
+>
+> In the code, there are basically two error paths:
+>
+>> +int ieee80211_add_wbrf(struct ieee80211_local *local,
+>> +		       struct cfg80211_chan_def *chandef)
+>> +{
+>> +	struct device *dev = local->hw.wiphy->dev.parent;
+>> +	struct wbrf_ranges_in ranges_in = {0};
+>> +	int ret;
+>> +
+>> +	if (!local->wbrf_supported)
+>> +		return 0;
+>> +
+>> +	ret = wbrf_get_ranges_from_chandef(chandef, &ranges_in);
+>> +	if (ret)
+>> +		return ret;
+> This really won't fail, just if the bandwidth calculation was bad, but
+> that's an internal error that WARNs anyway and we can ignore it.
+>
+>> +	return wbrf_add_exclusion(ACPI_COMPANION(dev), &ranges_in);
+> This I find a bit confusing, why do we even propagate the error? If the
+> platform has some issue with it, should we really fail the connection?
+>
+>
+> I think it seems better to me to just make this void, and have it be
+> only a notification interface?
+>
+> johannes
