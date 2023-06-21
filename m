@@ -2,153 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 829C2737CB7
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 10:07:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17F4D737CD2
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Jun 2023 10:07:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230143AbjFUHqr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Jun 2023 03:46:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38456 "EHLO
+        id S231357AbjFUIEb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Jun 2023 04:04:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231547AbjFUHqp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 03:46:45 -0400
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2098.outbound.protection.outlook.com [40.107.22.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C030F11D;
-        Wed, 21 Jun 2023 00:46:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jzZsF91oVRqK+MO0/eiISDbpwH7sIGpCEZVpt+7kMYxBvE35Mfkuw4RGouPjIbhAbqt6CVVtqVqDW+HWc2e1d3ng3tDjbsEaoQEkgea37vqGJwvxq/SVgyCWTziTXz3fLb9THCFTrF4ReTFOznqrn5mcaFFZhBbAOlB1u6bJ9IqT3Qv141pwYeAo0q0FTVvCEPHdFOyE4EOa1uKApobJ8UnXFiQNq3IrvHeny0dyODh19509Kye6qu5xpj5sxtd6mZXsDhSlIImQvVX4xvHQAK8Md73hQFo0LyeQYXWlhUQfeM/wO/XXc+FkNfSzIYEzs8Gh90zLWZQhqOo5Jsngxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4+gK5lxHggi6XM8QH7wGYCeRVtdvdEw/0UFE067mnhc=;
- b=ZZ9p+TpJ9QWZXE6V8Pz1N0cabaILdf/Sgj8iuWtwTnFKzsrVxHfGSzreXGjsvZS1mXv3VklokhgEkKZLsn2S/vCedhu//JvHYSU6F89+VwauddDCMaddOINhYHYclgbdrfmgChwACm27+K9UJKApo+f3hWl7hQFeYMEcD1inIwEuYhVK4d8r8hyk1noon8/Dijj4ajjyUU1xRj41MzxixsRS6tAgb3wsGhMWjWMTfrR1SQRFtMZPQvPWfZMMHvWQJzlG9IqwFAKGvfuDGjiGCsYgPU50vn3teI8J3yDe8ynp9HZ12dKXoFwSnXpwPq8f17PrJ/HHS7SQCKG/oaNBvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kontron.com; dmarc=pass action=none header.from=kontron.com;
- dkim=pass header.d=kontron.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mysnt.onmicrosoft.com;
- s=selector2-mysnt-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4+gK5lxHggi6XM8QH7wGYCeRVtdvdEw/0UFE067mnhc=;
- b=bDGoYRentvxRc1kNjUA4GXwrZnm7/Tnxt3hoH4Q3rB1tjY16CbNOXTfiKi3LhVRcOhxFPNWyg9MzW/er0oEfVE/DoRFMIKO5lxc8h1LOo+ij6DF8yI2as1QaL/UtPczGePF7D3QMnUVHj0eIMjbuX2ig1se7gTkpa7hxcZqpAG8=
-Received: from AS2PR10MB7551.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:591::19)
- by DU0PR10MB5922.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:3b6::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Wed, 21 Jun
- 2023 07:46:42 +0000
-Received: from AS2PR10MB7551.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a069:8f48:135c:3f5f]) by AS2PR10MB7551.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::a069:8f48:135c:3f5f%4]) with mapi id 15.20.6500.036; Wed, 21 Jun 2023
- 07:46:42 +0000
-From:   Michael Brunner <michael.brunner@kontron.com>
-To:     "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "acpica-devel@lists.linuxfoundation.org" 
-        <acpica-devel@lists.linuxfoundation.org>,
-        "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "wsa@kernel.org" <wsa@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-CC:     "robert.moore@intel.com" <robert.moore@intel.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "andi.shyti@kernel.org" <andi.shyti@kernel.org>
-Subject: Re: [PATCH v1 1/2] ACPI: platform: Ignore SMB0001 only when it has
- resources
-Thread-Topic: [PATCH v1 1/2] ACPI: platform: Ignore SMB0001 only when it has
- resources
-Thread-Index: AQHZo5VI7IrE3xvC7kWrbR8c4raVtK+U4d6A
-Date:   Wed, 21 Jun 2023 07:46:42 +0000
-Message-ID: <b9af5a068cc0b5e785c8e2ddfc70d811fd5929cd.camel@kontron.com>
-References: <20230620163534.1042-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230620163534.1042-1-andriy.shevchenko@linux.intel.com>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.5-0ubuntu1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kontron.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS2PR10MB7551:EE_|DU0PR10MB5922:EE_
-x-ms-office365-filtering-correlation-id: 8dad6d83-cf08-4d30-8e6f-08db722ba76d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 40FMflFlKdhOSfQX5ULPYz4bz9lXnvgrrIxN+Noq53t9MthZHG14IERvaZoq9g/cx2uR5ENpB/LYwyDcGkvbcBbZWevXhmW1re9M3ED5XgEMY/bg60yW9SNXZkQVz2Pi4jfq41ciLONdioD7f2o/MqSyzpyWU2mwxNkfdG9dYcf9g/LGBmoe+3gQhPULPxzE2SreDxQUp/Cay2ISS90uNimpH/Sw+Ww6WfFJskcr87iNevl0XwM5sdPL0JRrs09JJwIwssBsUYXzqT4m1XedIpt25EzLNKVYUau8SzPLOvAAXNYIer1cNerGZP0CMCv0h3zJg3pithuhkhKaSWMUZzTTcOMeTxZhSjqE1DViHYEtFV81I4Bo0qmjHyK0IO2U0ZfDDUge+8F9bt/rPef9etmHgt3FC9xDYSGJBH1lkmgFkIK6WgKAFXzAdZXJRgE81LcQOLVi6sm0jNIzH9GJZeKdt5hmskKMOwj3o4UerJ6i/SzADEBuIZiKifwy1Xg1zDtJqIhZughCxyqGmArEBC2nYPw1DAbXoFz3RUxp9aLgeSRsVZPbeE4PnIYzgRfkTIVPnSuidvqQKKFUwET96IGb1Z/qc1c24P2o7FxVIbo=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS2PR10MB7551.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(376002)(396003)(366004)(39860400002)(451199021)(91956017)(66946007)(76116006)(66476007)(66556008)(66446008)(64756008)(186003)(6512007)(122000001)(2616005)(38100700002)(966005)(38070700005)(6506007)(26005)(83380400001)(4326008)(86362001)(54906003)(478600001)(110136005)(6486002)(36756003)(71200400001)(4744005)(2906002)(44832011)(7416002)(8676002)(8936002)(5660300002)(316002)(41300700001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-15?Q?yVJdUanNfXaYdMGSSlHkY9cu7h3W+2nWqaZG32elZi0I3QaWzc8pAoQKm?=
- =?iso-8859-15?Q?6qNMiZuDjG9u4Gcw6YIut3jiKwKM9Y27LlA0zz4QebazYOEK8wuoaL7qj?=
- =?iso-8859-15?Q?qvGgAIRk0tI07DWuv0QgMgqiL6aO+MlOaU3Zk6XzVcr2n9f5WptUCWchX?=
- =?iso-8859-15?Q?fdqarc8kiNdWPPBTkhZSdP4EE1CuWrhL+gXhjpidvuI1Np5FPe3Z8muXA?=
- =?iso-8859-15?Q?dIuIgtCbVN3r/NWZqVcug/VlFo03OlQ+JRwOJdwFhTHsfuQOFZ1rvcSH6?=
- =?iso-8859-15?Q?ZMtiPv65ONu+e/S/pROWNNbt7z1F3+2ZZqyHuC0+2Hh1W7eYF8kjOUPWG?=
- =?iso-8859-15?Q?Zklh50A+S3OHkyrimFP/clAmJIa9VO9QAjnZFxi4MQJnMwmDGBogc0FgH?=
- =?iso-8859-15?Q?2WaFAnPd7JP8+8ma9vFDaN2C+DblXkYqTBw5HqMn+Dq+R9sCe8sY/mhYB?=
- =?iso-8859-15?Q?uuGypE6QxgdHTqfXznPGSPihhcFH1oDJ+na7vKx0MeIvQUIQzeITmyKZr?=
- =?iso-8859-15?Q?d9aACdTAi/nHY70P7yvwnl2XubQoSwgJ/6V/ix/osTuHHHGPzq9kzRV1m?=
- =?iso-8859-15?Q?/23DcLMzLSUf8dawtxKcxoTGAv4fGqEi33XUz83zhLYekc2BX9adWdQ3G?=
- =?iso-8859-15?Q?9q/3X2hyEZuOLQ6KQzrhn72nLSweJMZ3mkRNf2jfSb0xhAkVl+jaDXhhq?=
- =?iso-8859-15?Q?PAiXG7Bjw98llhWIthf9hC18S30mGX0SPz8Mokk+w410bCiG9je1yPRyq?=
- =?iso-8859-15?Q?sB5fGV4yv3w3YbMARQKH9FjLl7B1cQUPUvz/ZznUlJUsKoxbCSDs1YhjU?=
- =?iso-8859-15?Q?Y7TfBFqm6oJEjIuz6qvEUPLsNVe54hxuhGjJ96nzuP2tbXwbhGBDqjzPD?=
- =?iso-8859-15?Q?IwkCa5rz+W5jswchAXIAVwnFWlENjHGl5wXN9IJqTAkWHBfdMwF7Eo9SK?=
- =?iso-8859-15?Q?9dmzivUtueOFYOz6iM9ATFV7iTjzWeYJe3Wn/U+71otnTJ1hC0CGCufyP?=
- =?iso-8859-15?Q?pPmrRevS6HmGD23xzK+DosrSB8x4fOf8ZsfljIXDvE+dBSvKRdt5A2QVq?=
- =?iso-8859-15?Q?NmGx4uwVsLflep6Pme35/ZZE3RhrvC5Q7b1ONevrDV2nzPOp0kmqOS6vQ?=
- =?iso-8859-15?Q?8PoPOqJh+eT7fDKUEBbcaxzBiMDEkChKj1XukfSy3KmjPPo5i+8dHcAER?=
- =?iso-8859-15?Q?o3RgN4rfg3rTQPw+ednFAuS2fZC26Q6cb+QdMZlyQq5J7dT8ayYO106zQ?=
- =?iso-8859-15?Q?s7tRpmeJj9799/A5A8yyOMhbBxWKjiVXHtkD3XpBcMObevA7ZajMKKgEK?=
- =?iso-8859-15?Q?XsQpgQUd6hZjOGhHcX4Ie83NlF5RFd+78bgZ77P9N5EJXQZ25/XC43q/8?=
- =?iso-8859-15?Q?cZGotQ58O2W/HyKtHJpKDtHfHBz44IzHt4FVHc817qomQjAQvg7o86hJ+?=
- =?iso-8859-15?Q?ras7mixVXIaX8ns4lPJixYon9/sOw3z56fVzf1UfqKxiZ1j79Itkj7dBS?=
- =?iso-8859-15?Q?BjOtDQQgDSYeeVm2Vo0Vg3XBEcUSupWS8K0Wq5bEjc0B82B8JAQQ8jDyf?=
- =?iso-8859-15?Q?A/0HaWdJgvSFPOMBTVZVi0V92ARlrIvYKBaockyFCaSQ4yp6ZXWz7nlk6?=
- =?iso-8859-15?Q?SpeCgc4L5K6cjPZdYIvwtLctbLAzpcgWvCJdkt+MBZXvoac7wKy1W51Mn?=
- =?iso-8859-15?Q?OdTyNqNfCevhocub/+4iMzjXWUri9HFFAGJcYQzebAOn/wI=3D?=
-Content-Type: text/plain; charset="iso-8859-15"
-Content-ID: <9998B04AC020E84CAE51280A9DA4449A@EURPRD10.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S229990AbjFUIEa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 04:04:30 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BC06170C
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Jun 2023 01:04:29 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3f9bece8e19so4826425e9.1
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Jun 2023 01:04:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1687334667; x=1689926667;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bdr99ZnsFuaWd7+2tODjIdBaqRk40Wcx2mkyWMKgAl8=;
+        b=lFls4G02TYGejcUGf7F2yKuKiyQwm27IZuxaz7ZicOiWbynZJ6m8AknpkLLU8fsxVN
+         UFw6M408EmOALQQy3AxLMbgC5k695jz6oQz43eDNvkqg7v+wHHF7ZJyMrPC26sFbVV3i
+         zv2gAmHagzux42h5Nhh/OYbvsQr3BNOI/eVgE/44pMs5ZWM3fnDUoUjrmWVEBeOuWVLE
+         7JOlsXCv7JWgaBTeGNmukewQHRsVfkX1AOuu7MNeDx2uMOi+S33HLzsYpGN5dgxuYNVC
+         or6qB9a2VI+sLmCxPycuQgSmE/i2/qMrOa7ilqnBYYWrcJlUqBajh18WU8fTmJbGu68s
+         4iig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687334667; x=1689926667;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Bdr99ZnsFuaWd7+2tODjIdBaqRk40Wcx2mkyWMKgAl8=;
+        b=cesj1M22r7E1Pax4ghiUQRpWzqoX+fHle3Mmph4wRgb+al6yqGQxVL9MbnMkJ2vE72
+         o0W2YA4kkJX+oWJ3bZHaBszzKiiZBVpaEoA12RULxAQmSaE4WtZYU43dEvdVnswVZ58Z
+         netM64PUjLxglYAK9vfdqtw782s/3OUNtxmtfVhXD6+7ACq/Tj85+3FtWntEV8r7Cm4J
+         +DMzOND+WNpWbft9Ho2UiSiF7P6+QKnr1REb2Kqum0t8TeR8AOSmuEIqA8Lc2oR3vFwl
+         48N4xVDlkfx4OY3Bqit4HDJw/LCsnjTLdGoZZYxb6OihB875Vx39k4LwU/TVbFI7VxWw
+         m6jA==
+X-Gm-Message-State: AC+VfDxz8fUVGfey167Au5xtv2yNGkZrFiFKpHApFfkGpiSuOrjFap02
+        mCsO1Wy1k4JsbNDkR4VGC/GqOClVsX/0aYlwowvEFg==
+X-Google-Smtp-Source: ACHHUZ44Io9K//QUtZqsJ0miupjsyJM4Vmg0fqFUuIr/d5lcyjwwOt9RCqOVmeYyxELVEltNdPnj/LtaG/39Zo3R434=
+X-Received: by 2002:a7b:ca4e:0:b0:3f9:c00:51d3 with SMTP id
+ m14-20020a7bca4e000000b003f90c0051d3mr9855397wml.13.1687334667559; Wed, 21
+ Jun 2023 01:04:27 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: kontron.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS2PR10MB7551.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8dad6d83-cf08-4d30-8e6f-08db722ba76d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jun 2023 07:46:42.0726
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: T5r7Gpn0cq532gtc2Hs82GvASNF4w/z2f5jnZIO3FC5PpyM1N5YoPBgDu94xdNA4NyWGv6+Z567E+1gg9OFfOMSuYPYaz671DU7K6cvdP24=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB5922
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FORGED_SPF_HELO,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
+ <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
+ <ZEj33QLZqEeL+/y4@FVFF77S0Q05N> <CAEEQ3wmDBJkfOeKCQfcnuE+1=1K0D2pzu+Sn+zPEWk+RHs0NFQ@mail.gmail.com>
+ <CAP6exY+ydbzh1EkWTFejzwaW+PA-ySVO2Qj+CVJ1XbSMce2S9Q@mail.gmail.com> <CAP6exY+tqAU0j1TVEMTzTb18M6_mPH5bWWiAS=94gyDGTY3hyQ@mail.gmail.com>
+In-Reply-To: <CAP6exY+tqAU0j1TVEMTzTb18M6_mPH5bWWiAS=94gyDGTY3hyQ@mail.gmail.com>
+From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
+Date:   Wed, 21 Jun 2023 16:04:15 +0800
+Message-ID: <CAEEQ3w=wBdpZWnUd2WWVBC3BtFiUp-PQtNAtdXE4cO4n0XT-fg@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH] firmware: added a firmware information
+ passing method FFI
+To:     ron minnich <rminnich@gmail.com>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>, rafael@kernel.org,
+        lenb@kernel.org, jdelvare@suse.com, yc.hung@mediatek.com,
+        angelogioacchino.delregno@collabora.com,
+        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
+        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, geshijian@bytedance.com,
+        weidong.wd@bytedance.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 2023-06-20 at 19:35 +0300, Andy Shevchenko wrote:
-> After switchind i2c-scmi driver to be a plaform one it stopped
-> being enumerated on number of Kontron platformsm, because it's
-> listed in the forbidden_id_list.
->=20
-> To resolve the situation, split the list to generic one and
-> another that holds devices that has to be skiped if and only if
-> they have bogus resources attached (_CRS method returns some).
->=20
-> Fixes: 03d4287add6e ("i2c: scmi: Convert to be a platform driver")
-> Closes: https://lore.kernel.org/r/60c1756765b9a3f1eab0dcbd84f59f00fe1caf4=
-8.camel@kontron.com
-> Reported-by: Michael Brunner <michael.brunner@kontron.com>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Thanks for Ron's suggestions.
 
-Works as expected - the SMB0001 device shows up as platform device and
-the i2c-scmi driver is enumerated again on the affected boards.
-Thanks a lot!
+Hi Ard,  Mark,
+>
+> Is there some feeling here that it would be ok to restrict this discussion to risc-v, and not bring in ARM considerations.  WDYT?
+>
 
-Best regards,
-  Michael Brunner
+Hi Ard,  Mark,
+
+Now the coreboot we are using does not support EFI and only supports
+one interface DTB. It seems that we have to pass the firmware
+information through DTB.
+
+From another point of view, ACPI and SMBIOS are common modules of the
+kernel, not only EFI, but also other interfaces can also be connected
+to this module, such as 0xF0000 for SMBIOS,
+CONFIG_ACPI_LEGACY_TABLES_LOOKUP for ACPI,  this patch is also.
+
+We just use the DTB channel to add a few nodes to complete the
+transfer of firmware information, which does not interfere with DTS
+itself.
+
+We think it is unnecessary to add an ACPI-supporting framework under
+the fdt framework we discussed before. We only need one set of ACPI
+framework, but one more set will cause unnecessary trouble.
+
+So, let's move on to this patch, shall we?
+
+
+
+Thanks,
+Yunhui
