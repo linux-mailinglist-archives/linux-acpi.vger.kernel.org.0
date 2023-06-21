@@ -2,116 +2,359 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19573739267
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jun 2023 00:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B71F0739281
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jun 2023 00:29:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229710AbjFUWUF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Jun 2023 18:20:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36860 "EHLO
+        id S229682AbjFUW3F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 21 Jun 2023 18:29:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229657AbjFUWUE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 18:20:04 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D14FD1733;
-        Wed, 21 Jun 2023 15:20:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=cP+HR2GmRZPnSeQ8lcOfEZ7k5nuBFTrLSVTHUrZopt8=;
-        t=1687386003; x=1688595603; b=BadH4QmJO0jxGMFzOXm+RhV89LkXMjHB0hoOxRuGYgfUbzG
-        av+OdABdyK0I8912nMNYGlYwCqnM5nK3D7OnE2Qn0pqjI8TbUYgx9TtG/GJLmdFtPmKjqECxvno7T
-        NNETC/vZErGTR5zfyAJx7alhIxudK0fjArwjPUTUhT3sPZcWuuSVSpFf4oGsHU4SjN5pz59oK9Ufp
-        NQv9gDn72dULGVVJ6Olmr3YDQDGHgNE7aFtmrQ6RG4NeguZ8GQVcbHmfcUNfLe+LZLSx//XTFJd4C
-        3f7V/Eyjmbj7EzROJn1nZWV+LGNP1O90ZLURxRQzYrp1OqAQcN3uSLVY7E/tzxzQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qC6AD-00Duer-15;
-        Thu, 22 Jun 2023 00:18:58 +0200
-Message-ID: <3e337dc0482e16e2aaa4090b613dc8dea7803fa8.camel@sipsolutions.net>
-Subject: Re: [PATCH V4 1/8] drivers/acpi: Add support for Wifi band RF
- mitigations
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Andrew Lunn <andrew@lunn.ch>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
-        alexander.deucher@amd.com, christian.koenig@amd.com,
-        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, mdaenzer@redhat.com,
-        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
-        hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
-        jim.cromie@gmail.com, bellosilicio@gmail.com,
-        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
-        arnd@arndb.de, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Date:   Thu, 22 Jun 2023 00:18:53 +0200
-In-Reply-To: <08dd8d17-6825-4e53-8441-85c709326f48@lunn.ch>
-References: <20230621054603.1262299-2-evan.quan@amd.com>
-         <3a7c8ffa-de43-4795-ae76-5cd9b00c52b5@lunn.ch>
-         <216f3c5aa1299100a0009ddf4e95b019855a32be.camel@sipsolutions.net>
-         <b1abec47-04df-4481-d680-43c5ff3cbb48@amd.com>
-         <36902dda-9e51-41b3-b5fc-c641edf6f1fb@lunn.ch>
-         <33d80292-e639-91d0-4d0f-3ed973f89e14@amd.com>
-         <9159c3a5-390f-4403-854d-9b5e87b58d8c@lunn.ch>
-         <a80c215a-c1d9-4c76-d4a8-9b5fd320a2b1@amd.com>
-         <8d3340de-34f6-47ad-8024-f6f5ecd9c4bb@lunn.ch>
-         <07ad6860-8ffb-cc6c-a8e5-e8dc4db4e87a@amd.com>
-         <08dd8d17-6825-4e53-8441-85c709326f48@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+        with ESMTP id S229637AbjFUW3D (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 18:29:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 751AA1738;
+        Wed, 21 Jun 2023 15:29:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8297616FB;
+        Wed, 21 Jun 2023 22:29:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B21C433C0;
+        Wed, 21 Jun 2023 22:28:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687386540;
+        bh=HGjabCeT43jLvc1k3yVHAmOljzcopoeRcmpwRfbnVmE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=gJLTlRDtj9s/skU9rpEj2Hdw1EPLNnsTxBYia/bNMAAZ6s6S+n16Qc246vASgYX08
+         yKDa9cs0ApTNkMd2Dp/88gGGJwCasQyr4Wm3wf6yAlbyk7VcDA2eECFvY4Ige5Tbys
+         Da1N7b3cTCf/PDG7vDM0hIv5GouuG+Ccpr9BqaChHjfi+wkAVegRT8wPmLnDpp/b6m
+         D/aGeS3//YuOK4DQbZ4xOaszL7csnYBVxldYawk6953dzVnM4d72gVwUSSGVbUKur6
+         R+2DfQoDZ9HfUliqOwqlZjq6VtCWxHqJ/mUxmS2kuYWA6V5MO0e9S8O8y2MxqFhs7g
+         A9Bv8NDyp0D1w==
+Date:   Wed, 21 Jun 2023 17:28:57 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4] PCI: Call _REG when transitioning D-states
+Message-ID: <20230621222857.GA122930@bhelgaas>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230620140451.21007-1-mario.limonciello@amd.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 2023-06-21 at 21:25 +0200, Andrew Lunn wrote:
-> > ACPI core does has notifiers that are used, but they don't work the sam=
-e.
-> > If you look at patch 4, you'll see amdgpu registers and unregisters usi=
-ng
-> > both
-> >=20
-> > acpi_install_notify_handler()
-> > and
-> > acpi_remove_notify_handler()
-> >=20
-> > If we supported both ACPI notifications and non-ACPI notifications
-> > all consumers would have to have support to register and use both types=
-.
->=20
-> Why would you want to support ACPI notifications and non-ACPI
-> notifications? All you need is wbrf notification.
->=20
-> The new wbrf.c should implement wbrf_install_notify_handler() and
-> wbrf_remove_notify_handler().
->=20
-> As to where to put wbrf.c? I guess either drivers/base/ or
-> drivers/wbrf/. Maybe ask GregKH?
+On Tue, Jun 20, 2023 at 09:04:51AM -0500, Mario Limonciello wrote:
+> Section 6.5.4 of the ACPI 6.4 spec describes how AML is unable to access
+> an OperationRegion unless `_REG` has been called.
+> 
+> "The OS runs _REG control methods to inform AML code of a change in the
+> availability of an operation region. When an operation region handler
+> is unavailable, AML cannot access data fields in that region.
+> (Operation region writes will be ignored and reads will return
+> indeterminate data.)"
+> 
+> The PCI core does not call `_REG` at anytime, leading to the undefined
+> behavior mentioned in the spec.
 
-Not sure it should even be called WBRF at that point, but hey :)
+I got lost in the maze of users of ACPI_ADR_SPACE_PCI_CONFIG, but is
+it really true that we never call _REG for PCI config space at all
+today?
 
-Honestly I'm not sure though we need this complexity right now? I mean,
-it'd be really easy to replace the calls in mac80211 with some other
-more generalised calls in the future?
+If so, I guess AML that uses ACPI_ADR_SPACE_PCI_CONFIG won't work
+until after we set the relevant device to D0?
 
-You need some really deep platform/hardware level knowledge and
-involvement to do this, so I don't think it's something that someone
-will come up with very easily for a DT-based platform...
+Do we explicitly set devices to D0 during enumeration, e.g., somewhere
+in the pci_scan_device() path?  If not, should we?
 
-If we do something with a notifier chain in the future, we can just
-install one in the ACPI code too, and react indirectly rather than
-calling from wifi to the ACPI directly.
+If we don't set things to D0 during enumeration, it seems like this
+AML won't work until we suspend and resume the device.
 
-johannes
+Separately, I propose a minor restructuring to avoid the need for
+mentioning PCI_POWER_ERROR and PCI_UNKNOWN.  Checking for those means
+we need to look at the definitions to be sure we cover all cases, and
+it also doesn't solve the problem that a caller can pass undefined
+pci_power_t values that would index outside the state_conv[].
+
+Possible rework attached below.  I also like the fact that it makes
+the _REG patch very simple and specific to _REG.
+
+> The spec explains that _REG should be executed to indicate whether a
+> given region can be accessed.
+> 
+> "Once _REG has been executed for a particular operation region, indicating
+> that the operation region handler is ready, a control method can
+> access fields in the operation region. Conversely, control methods
+> must not access fields in operation regions when _REG method execution
+> has not indicated that the operation region handler is ready."
+> 
+> An example included in the spec demonstrates calling _REG when devices are
+> turned off: "when the host controller or bridge controller is turned off
+> or disabled, PCI Config Space Operation Regions for child devices are
+> no longer available. As such, ETH0’s _REG method will be run when it
+> is turned off and will again be run when PCI1 is turned off.".
+> 
+> It is reported that ASMedia PCIe GPIO controllers fail functional tests
+> after the system has returning from suspend (S3 or s2idle). This is
+> because the BIOS checks whether the OSPM has called the `_REG` method
+> to determine whether it can interact with the OperationRegion assigned
+> to the device as part of the other AML called for the device.
+> 
+> To fix this issue, call acpi_evaluate_reg() when devices are
+> transitioning to D3cold or D0.
+> 
+> Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/06_Device_Configuration/Device_Configuration.html#reg-region
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index 052a611081ec..182cac535250 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -1043,6 +1043,16 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
+>  	return false;
+>  }
+>  
+> +static void acpi_pci_config_space_access(struct pci_dev *dev, bool enable)
+> +{
+> +	int val = enable ? ACPI_REG_CONNECT : ACPI_REG_DISCONNECT;
+> +	int ret = acpi_evaluate_reg(ACPI_HANDLE(&dev->dev),
+> +				    ACPI_ADR_SPACE_PCI_CONFIG, val);
+> +	if (ret)
+> +		pci_dbg(dev, "ACPI _REG %s evaluation failed (%d)\n",
+> +			enable ? "connect" : "disconnect", ret);
+> +}
+> +
+>  int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+>  {
+>  	struct acpi_device *adev = ACPI_COMPANION(&dev->dev);
+> @@ -1053,32 +1063,36 @@ int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+>  		[PCI_D3hot] = ACPI_STATE_D3_HOT,
+>  		[PCI_D3cold] = ACPI_STATE_D3_COLD,
+>  	};
+> -	int error = -EINVAL;
+> +	int ret;
+>  
+>  	/* If the ACPI device has _EJ0, ignore the device */
+>  	if (!adev || acpi_has_method(adev->handle, "_EJ0"))
+>  		return -ENODEV;
+>  
+>  	switch (state) {
+> +	case PCI_POWER_ERROR:
+> +	case PCI_UNKNOWN:
+> +		return -EINVAL;
+>  	case PCI_D3cold:
+>  		if (dev_pm_qos_flags(&dev->dev, PM_QOS_FLAG_NO_POWER_OFF) ==
+> -				PM_QOS_FLAGS_ALL) {
+> -			error = -EBUSY;
+> -			break;
+> -		}
+> -		fallthrough;
+> -	case PCI_D0:
+> -	case PCI_D1:
+> -	case PCI_D2:
+> -	case PCI_D3hot:
+> -		error = acpi_device_set_power(adev, state_conv[state]);
+> +				     PM_QOS_FLAGS_ALL)
+> +			return -EBUSY;
+> +		/* Notify AML lack of PCI config space availability */
+> +		acpi_pci_config_space_access(dev, false);
+> +		break;
+>  	}
+>  
+> -	if (!error)
+> -		pci_dbg(dev, "power state changed by ACPI to %s\n",
+> -		        acpi_power_state_string(adev->power.state));
+> +	ret = acpi_device_set_power(adev, state_conv[state]);
+> +	if (ret)
+> +		return ret;
+> +	pci_dbg(dev, "power state changed by ACPI to %s\n",
+> +		acpi_power_state_string(adev->power.state));
+>  
+> -	return error;
+> +	/* Notify AML of PCI config space availability */
+> +	if (state == PCI_D0)
+> +		acpi_pci_config_space_access(dev, true);
+> +
+> +	return 0;
+>  }
+>  
+>  pci_power_t acpi_pci_get_power_state(struct pci_dev *dev)
+
+
+commit 79d4fdf58711 ("PCI/PM: Validate acpi_pci_set_power_state() parameter")
+Author: Bjorn Helgaas <bhelgaas@google.com>
+Date:   Wed Jun 21 16:36:12 2023 -0500
+
+    PCI/PM: Validate acpi_pci_set_power_state() parameter
+    
+    Previously acpi_pci_set_power_state() assumed the requested power state was
+    valid (PCI_D0 ... PCI_D3cold).  If a caller supplied something else, we
+    could index outside the state_conv[] array and pass junk to
+    acpi_device_set_power().
+    
+    Validate the pci_power_t parameter and return -EINVAL if it's invalid.
+    
+    Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+
+
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index 052a611081ec..bf545f719182 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -1053,32 +1053,37 @@ int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+ 		[PCI_D3hot] = ACPI_STATE_D3_HOT,
+ 		[PCI_D3cold] = ACPI_STATE_D3_COLD,
+ 	};
+-	int error = -EINVAL;
++	int error;
+ 
+ 	/* If the ACPI device has _EJ0, ignore the device */
+ 	if (!adev || acpi_has_method(adev->handle, "_EJ0"))
+ 		return -ENODEV;
+ 
+ 	switch (state) {
+-	case PCI_D3cold:
+-		if (dev_pm_qos_flags(&dev->dev, PM_QOS_FLAG_NO_POWER_OFF) ==
+-				PM_QOS_FLAGS_ALL) {
+-			error = -EBUSY;
+-			break;
+-		}
+-		fallthrough;
+ 	case PCI_D0:
+ 	case PCI_D1:
+ 	case PCI_D2:
+ 	case PCI_D3hot:
+-		error = acpi_device_set_power(adev, state_conv[state]);
++	case PCI_D3cold:
++		break;
++	default:
++		return -EINVAL;
+ 	}
+ 
+-	if (!error)
+-		pci_dbg(dev, "power state changed by ACPI to %s\n",
+-		        acpi_power_state_string(adev->power.state));
++	if (state == PCI_D3cold) {
++		if (dev_pm_qos_flags(&dev->dev, PM_QOS_FLAG_NO_POWER_OFF) ==
++				PM_QOS_FLAGS_ALL)
++			return -EBUSY;
++	}
+ 
+-	return error;
++	error = acpi_device_set_power(adev, state_conv[state]);
++	if (error)
++		return error;
++
++	pci_dbg(dev, "power state changed by ACPI to %s\n",
++	        acpi_power_state_string(adev->power.state));
++
++	return 0;
+ }
+ 
+ pci_power_t acpi_pci_get_power_state(struct pci_dev *dev)
+commit 746652bd0376 ("PCI/PM: Call _REG when transitioning D-states")
+Author: Mario Limonciello <mario.limonciello@amd.com>
+Date:   Tue Jun 20 09:04:51 2023 -0500
+
+    PCI/PM: Call _REG when transitioning D-states
+    
+    ACPI r6.5, sec 6.5.4, describes how AML is unable to access an
+    OperationRegion unless _REG has been called to connect a handler:
+    
+      The OS runs _REG control methods to inform AML code of a change in the
+      availability of an operation region. When an operation region handler is
+      unavailable, AML cannot access data fields in that region.  (Operation
+      region writes will be ignored and reads will return indeterminate data.)
+    
+    The PCI core does not call _REG at any time, leading to the undefined
+    behavior mentioned in the spec.
+    
+    The spec explains that _REG should be executed to indicate whether a
+    given region can be accessed:
+    
+      Once _REG has been executed for a particular operation region, indicating
+      that the operation region handler is ready, a control method can access
+      fields in the operation region. Conversely, control methods must not
+      access fields in operation regions when _REG method execution has not
+      indicated that the operation region handler is ready.
+    
+    An example included in the spec demonstrates calling _REG when devices are
+    turned off: "when the host controller or bridge controller is turned off
+    or disabled, PCI Config Space Operation Regions for child devices are
+    no longer available. As such, ETH0’s _REG method will be run when it
+    is turned off and will again be run when PCI1 is turned off."
+    
+    It is reported that ASMedia PCIe GPIO controllers fail functional tests
+    after the system has returning from suspend (S3 or s2idle). This is because
+    the BIOS checks whether the OSPM has called the _REG method to determine
+    whether it can interact with the OperationRegion assigned to the device as
+    part of the other AML called for the device.
+    
+    To fix this issue, call acpi_evaluate_reg() when devices are transitioning
+    to D3cold or D0.
+    
+    Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/06_Device_Configuration/Device_Configuration.html#reg-region
+    Link: https://lore.kernel.org/r/20230620140451.21007-1-mario.limonciello@amd.com
+    Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+    Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+    Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+
+
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index bf545f719182..a05350a4e49c 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -1043,6 +1043,16 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
+ 	return false;
+ }
+ 
++static void acpi_pci_config_space_access(struct pci_dev *dev, bool enable)
++{
++	int val = enable ? ACPI_REG_CONNECT : ACPI_REG_DISCONNECT;
++	int ret = acpi_evaluate_reg(ACPI_HANDLE(&dev->dev),
++				    ACPI_ADR_SPACE_PCI_CONFIG, val);
++	if (ret)
++		pci_dbg(dev, "ACPI _REG %s evaluation failed (%d)\n",
++			enable ? "connect" : "disconnect", ret);
++}
++
+ int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+ {
+ 	struct acpi_device *adev = ACPI_COMPANION(&dev->dev);
+@@ -1074,6 +1084,9 @@ int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+ 		if (dev_pm_qos_flags(&dev->dev, PM_QOS_FLAG_NO_POWER_OFF) ==
+ 				PM_QOS_FLAGS_ALL)
+ 			return -EBUSY;
++
++		/* Notify AML lack of PCI config space availability */
++		acpi_pci_config_space_access(dev, false);
+ 	}
+ 
+ 	error = acpi_device_set_power(adev, state_conv[state]);
+@@ -1083,6 +1096,15 @@ int acpi_pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+ 	pci_dbg(dev, "power state changed by ACPI to %s\n",
+ 	        acpi_power_state_string(adev->power.state));
+ 
++	/*
++	 * Notify AML of PCI config space availability.  Config space is
++	 * accessible in all states except D3cold; the only transitions
++	 * that change availability are transitions to D3cold and from
++	 * D3cold to D0.
++	 */
++	if (state == PCI_D0)
++		acpi_pci_config_space_access(dev, true);
++
+ 	return 0;
+ }
+ 
