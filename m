@@ -2,65 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15F967394FF
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jun 2023 03:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10B1273A1F7
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jun 2023 15:38:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229796AbjFVB4T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 21 Jun 2023 21:56:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59702 "EHLO
+        id S230229AbjFVNh6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Jun 2023 09:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229645AbjFVB4R (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 21 Jun 2023 21:56:17 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CAF6198B;
-        Wed, 21 Jun 2023 18:56:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=jud17jsE6/Ga7sy3GJjdnGlQV0t2HqzZZz3k4YHmE2g=; b=ayqSlR67thHwZ0kw7SsHI3F6g7
-        EcxdtI+VOuNJ0gTuuJdzuu+TpJgXdYK7F5emB9hEEHX6C/vRoAAYwx+HCRSpRyCSg0XNczaXUsqvw
-        599/kdU8oZtE9n1qgXxmG8P60EugjCXR48EDDHODdOzcl3S5HhJkjJnwq13+lR9n2S08=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qC9Xh-00HDK4-HB; Thu, 22 Jun 2023 03:55:25 +0200
-Date:   Thu, 22 Jun 2023 03:55:25 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Evan Quan <evan.quan@amd.com>, rafael@kernel.org,
-        lenb@kernel.org, alexander.deucher@amd.com,
-        christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
-        daniel@ffwll.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, mdaenzer@redhat.com,
-        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
-        hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
-        jim.cromie@gmail.com, bellosilicio@gmail.com,
-        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
-        arnd@arndb.de, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH V4 1/8] drivers/acpi: Add support for Wifi band RF
- mitigations
-Message-ID: <ef7dc1ab-c6d0-4761-8d0a-8949bfd3da80@lunn.ch>
-References: <216f3c5aa1299100a0009ddf4e95b019855a32be.camel@sipsolutions.net>
- <b1abec47-04df-4481-d680-43c5ff3cbb48@amd.com>
- <36902dda-9e51-41b3-b5fc-c641edf6f1fb@lunn.ch>
- <33d80292-e639-91d0-4d0f-3ed973f89e14@amd.com>
- <9159c3a5-390f-4403-854d-9b5e87b58d8c@lunn.ch>
- <a80c215a-c1d9-4c76-d4a8-9b5fd320a2b1@amd.com>
- <8d3340de-34f6-47ad-8024-f6f5ecd9c4bb@lunn.ch>
- <07ad6860-8ffb-cc6c-a8e5-e8dc4db4e87a@amd.com>
- <08dd8d17-6825-4e53-8441-85c709326f48@lunn.ch>
- <3e337dc0482e16e2aaa4090b613dc8dea7803fa8.camel@sipsolutions.net>
+        with ESMTP id S230151AbjFVNh5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Jun 2023 09:37:57 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D769719BE;
+        Thu, 22 Jun 2023 06:37:56 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Qn1Zp5kQNz67ZCK;
+        Thu, 22 Jun 2023 21:35:14 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 22 Jun
+ 2023 14:37:54 +0100
+Date:   Thu, 22 Jun 2023 14:37:53 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     David Hildenbrand <david@redhat.com>
+CC:     Vishal Verma <vishal.l.verma@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        "Dan Williams" <dan.j.williams@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mm@kvack.org>, <nvdimm@lists.linux.dev>,
+        <linux-cxl@vger.kernel.org>, Huang Ying <ying.huang@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH 1/3] mm/memory_hotplug: Allow an override for the
+ memmap_on_memory param
+Message-ID: <20230622143753.00000282@Huawei.com>
+In-Reply-To: <0ea4728a-8601-bf75-1921-bcde0818aac3@redhat.com>
+References: <20230613-vv-kmem_memmap-v1-0-f6de9c6af2c6@intel.com>
+        <20230613-vv-kmem_memmap-v1-1-f6de9c6af2c6@intel.com>
+        <0ea4728a-8601-bf75-1921-bcde0818aac3@redhat.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3e337dc0482e16e2aaa4090b613dc8dea7803fa8.camel@sipsolutions.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,45 +60,30 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> Honestly I'm not sure though we need this complexity right now? I mean,
-> it'd be really easy to replace the calls in mac80211 with some other
-> more generalised calls in the future?
+On Fri, 16 Jun 2023 09:46:59 +0200
+David Hildenbrand <david@redhat.com> wrote:
+
+> On 16.06.23 00:00, Vishal Verma wrote:
+> > For memory hotplug to consider MHP_MEMMAP_ON_MEMORY behavior, the
+> > 'memmap_on_memory' module parameter was a hard requirement.
+> > 
+> > In preparation for the dax/kmem driver to use memmap_on_memory
+> > semantics, arrange for the module parameter check to be bypassed via the
+> > appropriate mhp_flag.
+> > 
+> > Recall that the kmem driver could contribute huge amounts of hotplugged
+> > memory originating from special purposes devices such as CXL memory
+> > expanders. In some cases memmap_on_memory may be the /only/ way this new
+> > memory can be hotplugged. Hence it makes sense for kmem to have a way to
+> > force memmap_on_memory without depending on a module param, if all the
+> > other conditions for it are met.  
 > 
-> You need some really deep platform/hardware level knowledge and
-> involvement to do this, so I don't think it's something that someone
-> will come up with very easily for a DT-based platform...
+> Just let the admin configure it. After all, an admin is involved in 
+> configuring the dax/kmem device to begin with. If add_memory() fails you 
+> could give a useful hint to the admin.
+> 
 
-What is this API about?
+Agreed. If it were just the default then fine, but making it the only option
+limits admin choices.
 
-It is a struct device says, i'm badly designed and make a mess of the
-following frequency bands. Optionally, if you ask me nicely, i might
-be able to tweak what i'm doing to avoid interfering with you.
-
-And it is about a struct device say, i'm using this particular
-frequency. If you can reduce the noise you make, i would be thankful.
-
-The one generating the noise could be anything. The PWM driving my
-laptop display back light?, What is being interfered with?  The 3.5mm
-audio jack?
-
-How much deep system knowledge is needed to call pwm_set_state() to
-move the base frequency up above 20Khz so only my dog will hear it?
-But at the cost of a loss of efficiency and my battery going flatter
-faster?
-
-Is the DDR memory really the only badly designed component, when you
-think of the range of systems Linux is used on from PHC to tiny
-embedded systems?
-
-Ideally we want any sort of receiver with a low noise amplifier to
-just unconditionally use this API to let rest of the system know about
-it. And ideally we want anything which is a source of noise to declare
-itself. What happens after that should be up to the struct device
-causing the interference.
-
-Mario did say:
-
-  The way that WBRF has been architected, it's intended to be able to
-  scale to any type of device pair that has harmonic issues.
-
-Andrew
+Jonathan
