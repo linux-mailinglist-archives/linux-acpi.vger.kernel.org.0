@@ -2,46 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10B1273A1F7
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jun 2023 15:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A02B273A207
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jun 2023 15:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230229AbjFVNh6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Jun 2023 09:37:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42782 "EHLO
+        id S230195AbjFVNka (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Jun 2023 09:40:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230151AbjFVNh5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Jun 2023 09:37:57 -0400
+        with ESMTP id S229765AbjFVNka (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Jun 2023 09:40:30 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D769719BE;
-        Thu, 22 Jun 2023 06:37:56 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Qn1Zp5kQNz67ZCK;
-        Thu, 22 Jun 2023 21:35:14 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3C611997;
+        Thu, 22 Jun 2023 06:40:26 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Qn1dh5x4Pz67GBK;
+        Thu, 22 Jun 2023 21:37:44 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 22 Jun
- 2023 14:37:54 +0100
-Date:   Thu, 22 Jun 2023 14:37:53 +0100
+ 2023 14:40:24 +0100
+Date:   Thu, 22 Jun 2023 14:40:23 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     David Hildenbrand <david@redhat.com>
-CC:     Vishal Verma <vishal.l.verma@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        "Dan Williams" <dan.j.williams@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mm@kvack.org>, <nvdimm@lists.linux.dev>,
-        <linux-cxl@vger.kernel.org>, Huang Ying <ying.huang@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH 1/3] mm/memory_hotplug: Allow an override for the
- memmap_on_memory param
-Message-ID: <20230622143753.00000282@Huawei.com>
-In-Reply-To: <0ea4728a-8601-bf75-1921-bcde0818aac3@redhat.com>
-References: <20230613-vv-kmem_memmap-v1-0-f6de9c6af2c6@intel.com>
-        <20230613-vv-kmem_memmap-v1-1-f6de9c6af2c6@intel.com>
-        <0ea4728a-8601-bf75-1921-bcde0818aac3@redhat.com>
+To:     Dave Jiang <dave.jiang@intel.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        <rafael@kernel.org>, <lenb@kernel.org>, <dan.j.williams@intel.com>,
+        <ira.weiny@intel.com>, <vishal.l.verma@intel.com>,
+        <alison.schofield@intel.com>, <lukas@wunner.de>
+Subject: Re: [PATCH v3 4/6] acpi: Break out nesting for
+ hmat_parse_locality()
+Message-ID: <20230622144023.000053f8@Huawei.com>
+In-Reply-To: <168686424781.2950427.15323220900348586144.stgit@djiang5-mobl3>
+References: <168686408822.2950427.16242077816997472103.stgit@djiang5-mobl3>
+        <168686424781.2950427.15323220900348586144.stgit@djiang5-mobl3>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -60,30 +52,76 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 16 Jun 2023 09:46:59 +0200
-David Hildenbrand <david@redhat.com> wrote:
+On Thu, 15 Jun 2023 14:24:07 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
 
-> On 16.06.23 00:00, Vishal Verma wrote:
-> > For memory hotplug to consider MHP_MEMMAP_ON_MEMORY behavior, the
-> > 'memmap_on_memory' module parameter was a hard requirement.
-> > 
-> > In preparation for the dax/kmem driver to use memmap_on_memory
-> > semantics, arrange for the module parameter check to be bypassed via the
-> > appropriate mhp_flag.
-> > 
-> > Recall that the kmem driver could contribute huge amounts of hotplugged
-> > memory originating from special purposes devices such as CXL memory
-> > expanders. In some cases memmap_on_memory may be the /only/ way this new
-> > memory can be hotplugged. Hence it makes sense for kmem to have a way to
-> > force memmap_on_memory without depending on a module param, if all the
-> > other conditions for it are met.  
+> Refactor hmat_parse_locality() to break up the deep nesting of the
+> function.
 > 
-> Just let the admin configure it. After all, an admin is involved in 
-> configuring the dax/kmem device to begin with. If add_memory() fails you 
-> could give a useful hint to the admin.
+> Suggested-by: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+> ---
+>  drivers/acpi/numa/hmat.c |   32 ++++++++++++++++++++------------
+>  1 file changed, 20 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> index e2ab1cce0add..cb240f5233fe 100644
+> --- a/drivers/acpi/numa/hmat.c
+> +++ b/drivers/acpi/numa/hmat.c
+> @@ -320,11 +320,28 @@ static __init void hmat_add_locality(struct acpi_hmat_locality *hmat_loc)
+>  	}
+>  }
+>  
+> +static __init void hmat_update_target(unsigned int tgt_pxm, unsigned int init_pxm,
+> +				      u8 mem_hier, u8 type, u32 value)
+> +{
+> +	struct memory_target *target = find_mem_target(tgt_pxm);
+> +
+> +	if (mem_hier != ACPI_HMAT_MEMORY)
+> +		return;
+> +
+> +	if (target && target->processor_pxm == init_pxm) {
+> +		hmat_update_target_access(target, type, value,
+> +					  NODE_ACCESS_CLASS_0);
+> +		/* If the node has a CPU, update access 1 */
+> +		if (node_state(pxm_to_node(init_pxm), N_CPU))
+> +			hmat_update_target_access(target, type, value,
+> +						  NODE_ACCESS_CLASS_1);
+> +	}
+> +}
+> +
+>  static __init int hmat_parse_locality(union acpi_subtable_headers *header,
+>  				      const unsigned long end)
+>  {
+>  	struct acpi_hmat_locality *hmat_loc = (void *)header;
+> -	struct memory_target *target;
+>  	unsigned int init, targ, total_size, ipds, tpds;
+>  	u32 *inits, *targs, value;
+>  	u16 *entries;
+> @@ -365,17 +382,8 @@ static __init int hmat_parse_locality(union acpi_subtable_headers *header,
+>  				inits[init], targs[targ], value,
+>  				hmat_data_type_suffix(type));
+>  
+> -			if (mem_hier == ACPI_HMAT_MEMORY) {
+> -				target = find_mem_target(targs[targ]);
+> -				if (target && target->processor_pxm == inits[init]) {
+> -					hmat_update_target_access(target, type, value,
+> -								  NODE_ACCESS_CLASS_0);
+> -					/* If the node has a CPU, update access 1 */
+> -					if (node_state(pxm_to_node(inits[init]), N_CPU))
+> -						hmat_update_target_access(target, type, value,
+> -									  NODE_ACCESS_CLASS_1);
+> -				}
+> -			}
+> +			hmat_update_target(targs[targ], inits[init],
+> +					   mem_hier, type, value);
+>  		}
+>  	}
+>  
+> 
+> 
 > 
 
-Agreed. If it were just the default then fine, but making it the only option
-limits admin choices.
-
-Jonathan
