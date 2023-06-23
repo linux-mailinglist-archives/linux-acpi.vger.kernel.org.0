@@ -2,51 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D95873AC5F
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jun 2023 00:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86EE973B06C
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jun 2023 07:55:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230294AbjFVWKc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Jun 2023 18:10:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47952 "EHLO
+        id S231892AbjFWFzO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 23 Jun 2023 01:55:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbjFVWKb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 22 Jun 2023 18:10:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEE9A1FF5;
-        Thu, 22 Jun 2023 15:10:30 -0700 (PDT)
+        with ESMTP id S231696AbjFWFyv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Jun 2023 01:54:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17308118;
+        Thu, 22 Jun 2023 22:54:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 74A77618C4;
-        Thu, 22 Jun 2023 22:10:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903F5C433C8;
-        Thu, 22 Jun 2023 22:10:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A0CB36198B;
+        Fri, 23 Jun 2023 05:54:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E69C433C8;
+        Fri, 23 Jun 2023 05:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687471829;
-        bh=Ke/TK6For1fPBUENdncOwbByNc7GJYM1Ix6ru4BSrcA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=r/zgV1WnCYrMoedTMcuJEVB4haogeQSZK2ir4Y71ITbROdx+6RrAus63venoBPG5G
-         aVmPYa/O7N0H4VwivYHptCkg6uuakE3eK+xjYZwVuj7TcTyXoWgcp/6ONuJJNhLKdy
-         XxdwUc6QerH+nmlocQMfZXIFWACEbX/3LeTa6Szsal6ocNdk0rRCch7q4hyMoEg6+a
-         A9ZPhorPeaqhJhmixicxtB3ywA1osWmbhdAORjS74wszSXm7aG+gnVhAwwcAcPFETT
-         mXtln1D01q+C4lNPOppR/FevOLWf8CnHEd/PpSEPj/GkND9AYqkaL5wiQM3hkd1gWy
-         nA81a8VEpCfHA==
-Date:   Thu, 22 Jun 2023 17:10:28 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4] PCI: Call _REG when transitioning D-states
-Message-ID: <20230622221028.GA138247@bhelgaas>
+        s=k20201202; t=1687499688;
+        bh=4x5m2NOkm1ONDQeEAk8U0GRj1u+DD6HZrCVOefa7O8M=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GN/DoF3jS29lcU/sishaTObRTVn/oy4Ud/smQzbtCGRZwcnCjteGPVGPnxvpTbn0J
+         4z/HcpHAgbR+ywgupRY1BTSdUMvAUztIxwyuKqoDP+w1J3OCdm2IiSEo1SEakOtqpQ
+         nqqPl+9UiDFv16Z4o9XmeBADIf0RY9gJvRZERIe/dUzPXe8h0LpiZkVJ7PeSM9ShzG
+         y1AzNBUn6bb4fWf/9pKfeyqAYkwYQRGgaEboQhQdK90KKt8+BaSKTj/4qNKQEnHf2d
+         yyTnRmfG0KL+NjMbofhke/5iaeDfaef2yvW/Ih3H1XJy62oAZOEusqw+mU21ANENpn
+         4fFJTkgJ5x5YQ==
+Date:   Fri, 23 Jun 2023 07:54:44 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Robert Moore <robert.moore@intel.com>
+Subject: Re: [PATCH v2 2/2] ACPI: platform: Move SMB0001 HID to the header
+ and reuse
+Message-ID: <ZJUzpKZhxbMQGxIs@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+        Robert Moore <robert.moore@intel.com>
+References: <20230621151652.79579-1-andriy.shevchenko@linux.intel.com>
+ <20230621151652.79579-2-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="gSCcacDj0iRH67vA"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <03e5d343-848c-02c7-2deb-917d1b93ce8c@amd.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <20230621151652.79579-2-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,63 +68,44 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 21, 2023 at 05:52:52PM -0500, Limonciello, Mario wrote:
-> 
-> On 6/21/2023 5:28 PM, Bjorn Helgaas wrote:
-> > On Tue, Jun 20, 2023 at 09:04:51AM -0500, Mario Limonciello wrote:
-> > > Section 6.5.4 of the ACPI 6.4 spec describes how AML is unable to access
-> > > an OperationRegion unless `_REG` has been called.
-> > > 
-> > > "The OS runs _REG control methods to inform AML code of a change in the
-> > > availability of an operation region. When an operation region handler
-> > > is unavailable, AML cannot access data fields in that region.
-> > > (Operation region writes will be ignored and reads will return
-> > > indeterminate data.)"
-> > > 
-> > > The PCI core does not call `_REG` at anytime, leading to the undefined
-> > > behavior mentioned in the spec.
 
-> I double checked a BIOS debug log which shows ACPI calls
-> to confirm and didn't see a single _REG call for any device
-> before this patch across a boot/suspend/resume cycle.
+--gSCcacDj0iRH67vA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-OK, thanks, I didn't see one either, which surprised me.
+On Wed, Jun 21, 2023 at 06:16:52PM +0300, Andy Shevchenko wrote:
+> There are at least two places in the kernel that are using
+> the SMB0001 HID. Make it to be available via acpi_drivers.h
+> header file. While at it, replace hard coded one with a
+> definition.
+>=20
+> Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+> Link: https://lore.kernel.org/r/20230620163534.1042-2-andriy.shevchenko@l=
+inux.intel.com
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Based on the weird exception in sec 6.5.4:
+Acked-by: Wolfram Sang <wsa@kernel.org> # for I2C
 
-  Since the [PCI_Config operation region on a PCI root bus containing
-  a _BBN object] is permanently available, no _REG methods are
-  required, nor will OSPM evaluate any _REG methods that appear in the
-  same scope as the operation region declaration(s) of this type.
 
-it seems like when we add a PCI host bridge, we should evaluate any
-_REG in the host bridge scope if it does not include _BBN.
+--gSCcacDj0iRH67vA
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The example:
+-----BEGIN PGP SIGNATURE-----
 
-  It should be noted that PCI Config Space Operation Regions are ready
-  as soon the host controller or bridge controller has been programmed
-  with a bus number. PCI1’s _REG method would not be run until the
-  PCI-PCI bridge has been properly configured.
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmSVM6QACgkQFA3kzBSg
+KbZMaBAAj1LX4jZ3OETdw1s8CLGCo5c/TWL6kqnV3KBLSvLK56w707AqjY2AmUP8
+3aCHS0EQWr/xsgr/CRsbxS8fV7Bo9O8f3MwI0TvL0TXNZ+e0aYZsMzd8X5cldcSc
+g/4pVzFb6sMX1hK9q2u+i5Cvkv1e9LO5znvFaUzfkbq4qVpOjNMaTHC+SPyXNNh+
+Qcl4wTLzZ4SoQUfujrK73P2mlXu66AH5z4E05l6lsQvsERkb2WTYf3tDDfwg6arT
+cwaLNxg85B4k0u5md117Or4mXa5+yprYk/Im2JYLNUs8+KsjVUzGYdjgLCNJmuf6
+Pno+kFehoxJ3h5g3+Vtsv/vG6pMBn5/2G3CXoufy5zSvWEZND+DO0s+zazAqBok9
+hkeFkwVxnlQuDoEFtM/RtnfJMEs3+h43sgALO0tsSvfuyMbKJnVswvkTFqn7wqBD
+5OMlclP+WPfvz7nKTvVupWkN9Fuiss70EzTllDLZfldL2567JIWa3ODrdcLc4Y2S
+GZc55h1UeB5oPAyAI+KJgtQe91VeGgKhKoqnXAUb9vUtZtk1DriYkCZXjP8zfcpB
+ct5Qdl6QvYpijEg9L74+OYklgUJM9TwsPuMzviR741b7/bfTVPfon16pizt+VwAB
+5GUcXDp1Ur9hv+QZROq02qzNg+YwZNwlF7KaYlR87U1RUbDg6cA=
+=+g1q
+-----END PGP SIGNATURE-----
 
-suggests that when we set a PCI-PCI bridge's secondary bus number, we
-should evaluate any _REG in its scope.
-
-  At the same time, the OS will also run ETH0’s _REG method since its
-  PCI Config Space would be also available. The OS will again run
-  ETH0’s _REG method when the ETH0 device is started.
-
-So evidently we should evaluate ETH0._REG once after setting PCI1's
-secondary bus number, and again when "ETH0 is started."  I have no
-idea what "started" means.
-
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> For the new patch.
-
-Thanks for taking a look at it!
-
-I think we're missing some other _REG stuff, but it seems like what
-this patch adds does match the per-endpoint power management requires,
-so I applied these to pci/pm for v6.5.
-
-Bjorn
+--gSCcacDj0iRH67vA--
