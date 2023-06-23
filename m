@@ -2,54 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB43A73BA87
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jun 2023 16:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0E5173BACB
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jun 2023 16:53:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232270AbjFWOp2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 23 Jun 2023 10:45:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40680 "EHLO
+        id S231789AbjFWOxp convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 23 Jun 2023 10:53:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231393AbjFWOow (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Jun 2023 10:44:52 -0400
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58E231997;
-        Fri, 23 Jun 2023 07:44:10 -0700 (PDT)
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2b46d945510so1899441fa.1;
-        Fri, 23 Jun 2023 07:44:10 -0700 (PDT)
+        with ESMTP id S232039AbjFWOxg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 23 Jun 2023 10:53:36 -0400
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A15B4269A;
+        Fri, 23 Jun 2023 07:53:14 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-98273ae42d0so17806266b.0;
+        Fri, 23 Jun 2023 07:53:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687531448; x=1690123448;
+        d=1e100.net; s=20221208; t=1687531988; x=1690123988;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZiwtYNSOh0NeHU7WEn4N3VuCjNo0G26bDf11cTSsZno=;
-        b=ZIVtQEvIiRiIG17zavSMNhQAXGJLlM9rcfAd/qXy/9YbTEVoF86N27i9OX6GJo9Hl/
-         MjooJIHnpIT80SIwXj5xrKIK27lvrNvWcsHWi2FOxiJC5STYDCCSrOYWck2WQhFl1rrt
-         3JkmT+Z4pC4K/YlLUnRF3V1C9CJja5Vq1FoNDaiZCectWFBz23LmwHlMAxL9D20Wy249
-         hHSlYTHBb0V9wpYvc/8/LzZoVURGhof69QpmRBlDH5XloIW172xDsVQ/kkcuqUgb7sLM
-         bnvfp9heR2rVGCZVM+N3kRrNNlA1R3/kMMDKFPisw3cm2IUGKTsjCv+kFeSDd+TToxAT
-         tDkQ==
-X-Gm-Message-State: AC+VfDxQWmKB2BBHxZo3Z8aBFnaPt/We2FaGi7RYPr+yjZYApWrTCAWB
-        7c3ymC1swUZuE0ubGAG7svdjLK53BCnOXRce65JNs8kFYWY=
-X-Google-Smtp-Source: ACHHUZ52+16LL+CRSPIyup7hQg+18EmiT6Qex68UctPZrXoSH36kbOkm0FDBp/YJbsHR5yt+iCZJXHVn4LPr42y4djQ=
-X-Received: by 2002:a2e:b804:0:b0:2b4:5bc8:3f1a with SMTP id
- u4-20020a2eb804000000b002b45bc83f1amr12642496ljo.2.1687531448363; Fri, 23 Jun
- 2023 07:44:08 -0700 (PDT)
+        bh=T1qSDE3rPwykp1shfj1zuf+dGomt2YGKeLvj9O4itJ0=;
+        b=NjpNjwuMY2ILaBcnCrcpK4gypMotclWRTuOTmi553v0REcZ62LUaIUHa4jIgqx+Ln0
+         os1dbsdy00W6QY25hwxhPe20iYbc3ZUbruqJHGCMk5GqlpMa/iZq97usT38eN4jrA3ft
+         fBacGqeB1h/tfifG8iU/gb9o557XgidiwtdfaYfoi0Gv1iaWX6iv951f3bbmxy39VuHq
+         4hiVYUDjkhHvU4ahP1yvChV0ajaeWXPrlPqp1F7hmHVvKRLH19b/DUyK0NQgxiPzBBxA
+         uH/5SxXKfNQJqmVW2+7Q2RQoXMCLCNoyTGgyH9nTg8z8LMdd4qkyqBZTQslw/MTfjFC7
+         A0AA==
+X-Gm-Message-State: AC+VfDxsA7wL0dVOghcMdrxRG833D2sL8mnphEvpfMtijX0f/lL3weTW
+        Oag3LT1/v/AjFdWdF7JUviwOkJOb88fyK8sTtGhQGWNc
+X-Google-Smtp-Source: ACHHUZ5lKngbPAW+7VngRAiWWJe0ho7IRCDTsQ/Y4uI+dieZpeESY0wwLG08AmNxxZUVhw6DGESa4zSWiOgClczXE2E=
+X-Received: by 2002:a17:906:64cc:b0:987:115d:ba05 with SMTP id
+ p12-20020a17090664cc00b00987115dba05mr17611355ejn.3.1687531988417; Fri, 23
+ Jun 2023 07:53:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230621151652.79579-1-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0jt8XCzUxQaBXLz0zXezih1Urq=dt-K9PWVY1JpN=Go6Q@mail.gmail.com> <ZJSQf07cO6qmNyCn@smile.fi.intel.com>
-In-Reply-To: <ZJSQf07cO6qmNyCn@smile.fi.intel.com>
+References: <20230621054603.1262299-1-evan.quan@amd.com> <20230621054603.1262299-2-evan.quan@amd.com>
+In-Reply-To: <20230621054603.1262299-2-evan.quan@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 23 Jun 2023 16:43:55 +0200
-Message-ID: <CAJZ5v0iKLtQpUnhMqB6zgwbURXGFZkje5rNORS9MLqYN=13nWg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ACPI: platform: Ignore SMB0001 only when it has resources
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
-        Len Brown <lenb@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Michael Brunner <michael.brunner@kontron.com>
+Date:   Fri, 23 Jun 2023 16:52:55 +0200
+Message-ID: <CAJZ5v0iqy0yMJP5H7ub67R8R6i42=TcS_6+VF-+fWrM-9tYFQA@mail.gmail.com>
+Subject: Re: [PATCH V4 1/8] drivers/acpi: Add support for Wifi band RF mitigations
+To:     Evan Quan <evan.quan@amd.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, alexander.deucher@amd.com,
+        christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+        daniel@ffwll.ch, johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        mario.limonciello@amd.com, mdaenzer@redhat.com,
+        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+        hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
+        jim.cromie@gmail.com, bellosilicio@gmail.com,
+        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
+        arnd@arndb.de, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -62,65 +67,29 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 22, 2023 at 8:19 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Wed, Jun 21, 2023 at 7:47 AM Evan Quan <evan.quan@amd.com> wrote:
 >
-> On Thu, Jun 22, 2023 at 05:53:13PM +0200, Rafael J. Wysocki wrote:
-> > On Wed, Jun 21, 2023 at 5:16 PM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > >
-> > > After switching i2c-scmi driver to be a plaform one, it stopped
-> >
-> > "platform"
-> >
-> > > being enumerated on number of Kontron platforms, because it's
-> > > listed in the forbidden_id_list.
-> > >
-> > > To resolve the situation, split the list to generic one and
-> > > another that holds devices that has to be skipped if and only
-> >
-> > "have"
-> >
-> > > if they have bogus resources attached (_CRS method returns some).
+> From: Mario Limonciello <mario.limonciello@amd.com>
 >
-> Thanks for the typo fixes!
+> Due to electrical and mechanical constraints in certain platform designs
+> there may be likely interference of relatively high-powered harmonics of
+> the (G-)DDR memory clocks with local radio module frequency bands used
+> by Wifi 6/6e/7.
 >
-> ...
+> To mitigate this, AMD has introduced an ACPI based mechanism that
+> devices can use to notify active use of particular frequencies so
+> that devices can make relative internal adjustments as necessary
+> to avoid this resonance.
 >
-> > > +static const struct acpi_device_id forbidden_id_with_resourses[] = {
-> >
-> > I don't quite like this name and the driver_data field could be used
-> > to indicate the need to check the resources.
+> In order for a device to support this, the expected flow for device
+> driver or subsystems:
 >
-> Okay, something like
+> Drivers/subsystems contributing frequencies:
 >
-> /* Check if the device has resources provided by _CRS method */
-> #define ACPI_PLATFORM_CHECK_RES         BIT(0)
->
-> ?
+> 1) During probe, check `wbrf_supported_producer` to see if WBRF supported
 
-Could be, but this is specific to forbidden_ids_list[].  Maybe
-ACPI_ALLOW_WO_RESOURCES or similar.
+The prefix should be acpi_wbrf_ or acpi_amd_wbrf_ even, so it is clear
+that this uses ACPI and is AMD-specific.
 
-> > > +       {"SMB0001",  0},        /* ACPI SMBUS virtual device */
-> > > +       { }
-> > > +};
->
-> ...
->
-> > > +static int acpi_platform_resource_count(struct acpi_resource *ares, void *data)
-> > > +{
-> > > +       int *count = data;
-> > > +
-> > > +       *count = *count + 1;
-> >
-> > Why not (*count)++?
->
-> Can be that way, I just copied'n'pasted from the existing code.
->
-> > > +       return 1;
-> > > +}
-
-BTW, this doesn't need to increment the count even.  It could just
-terminate the walk on the first valid resource found and tell the
-caller to return true in that case.
+Whether or not there needs to be an intermediate library wrapped
+around this is a different matter.
