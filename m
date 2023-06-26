@@ -2,44 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1A3073D7DD
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jun 2023 08:43:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14A6E73D91B
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jun 2023 10:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229470AbjFZGnN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Jun 2023 02:43:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46332 "EHLO
+        id S229763AbjFZIFi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Jun 2023 04:05:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjFZGnM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 02:43:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 681A61A7;
-        Sun, 25 Jun 2023 23:43:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EEE6960C98;
-        Mon, 26 Jun 2023 06:43:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52347C433D9;
-        Mon, 26 Jun 2023 06:43:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687761790;
-        bh=PCjX38sWy+8o+giL2BsPMNvdOxlsGH1hEh8od7hNbBM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=B/6ylKyrSjxVvwkGsDuP4dv8adwxtzNLvoWzhF6hEYfAJO2/faxHKtHDLXheCp99X
-         gUUsJQKbdxA63sJGNMbccqm5qe2Cf8Nu6Hna8WSSDbRvGdX8raz+K/8cVwHiW5gsJH
-         Tb688+3+cYoFzhr8Kis54cB8thbfCRzJiSsfsSXRV9m9Zmuzy++pDjEfhMy3LZjOxz
-         rRY3C/kuTwzz2Pvw21ItwRk4g7g+6AnyeBk3dxP85Vrw1r7SuXzP06fjrnzzUFc5ft
-         xoLeY8vHUlkLMPNGiFXUcXHIXFkRFvtRCtkKXtAfVNHFy07JrdnvOebIh1IdvBIcgV
-         PjV9YW1nGyQfA==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-4fb73ba3b5dso910129e87.1;
-        Sun, 25 Jun 2023 23:43:10 -0700 (PDT)
-X-Gm-Message-State: AC+VfDx5ki4TBeLHyLk0pNu3o1AdU/Kmzn1ZbxAttd02CvY6ap3h/CgV
-        CQ1eyrE4d1J8bYRNPMFC9C3gi1g6Cjp3UaXbCsw=
-X-Google-Smtp-Source: ACHHUZ6MxPt5pZZvHaDzsv696tPD1MHF4iteIzTclmq04bj17d2JjJdizMQkwqR3S531TyJf0xXV4jvIelO4SPbodnM=
-X-Received: by 2002:a19:6403:0:b0:4f9:567a:7a62 with SMTP id
- y3-20020a196403000000b004f9567a7a62mr8584473lfb.21.1687761788301; Sun, 25 Jun
- 2023 23:43:08 -0700 (PDT)
+        with ESMTP id S229599AbjFZIFh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 04:05:37 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 192C8126
+        for <linux-acpi@vger.kernel.org>; Mon, 26 Jun 2023 01:05:17 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-31272fcedf6so2570842f8f.2
+        for <linux-acpi@vger.kernel.org>; Mon, 26 Jun 2023 01:05:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1687766715; x=1690358715;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mRzmdoMOtwkf0T97YbD2JaDd570KRK5k9OjuvNurjw8=;
+        b=XeB3HoE8oMKBsezzW5LgcB9DcBXwyNp3TCTl63jec1OkUmWQoPRDnM8T8j5tk2EODK
+         eAIftr0uWaFzQ5LZWXCpMPe2pmJ8E6VRQHvEofQScu9rtyUSmhSurvndmJ3Gn0/ULHA9
+         1540fICw2DmnEMWkdl5jZe/h8lya1AZF4IxTd+gajLlzIe8MHlPevohJ72v3MqB3Su/Y
+         C8GSzDfLFPwPMp06mlq71dM9h/K72L5Mem1dOeZ2Los3FRw3+cRM2ALCs3JY8IYChqmC
+         HhHrHc1z0jTNj8PBMXLYdNldipHV7Yr2L/0CJvbIysheBhr3NoaAzsKC0UbW2+VANiJa
+         qMOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687766715; x=1690358715;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mRzmdoMOtwkf0T97YbD2JaDd570KRK5k9OjuvNurjw8=;
+        b=VVDO9P3JyYkGl5UVHCkNAPtoiMlp3tXjbxXYRk7TyA1tha5nxs4r2FYdCsezhJhttE
+         5q6FXAKEqdRnNgnnG7DpbotBqioxwf2JnVvfscLr8wllVSR50QldDFGqIxPU3yBxj0of
+         JL9rZTQqlzMUseZEAtiRKleOUigAgVhDfM95wLQ4vQoBrfvbJ3KLnC5Si7STSuiGAdmP
+         hYb6UU87mbBK0NSA18L/iYO23BikVxZ7wRXTTR19NvaROxl1jedjH+gDmh9wt7HqM28d
+         edHTUfzJQHJ0FR+9LfblVLGNWG+cifSLU9k350O14gag1/oKyV2DlYDbEExXz2AVI+F8
+         PdWg==
+X-Gm-Message-State: AC+VfDwYY35gkkKz/F1rs4JP9HXRPCcbvzE5lcgYPM3O+kuASNjpIFdl
+        a9C3FclS9niOJEXDdeABo17PxV/C73Wv26lQVTl1Ag==
+X-Google-Smtp-Source: ACHHUZ6srR5n1hfE/ujkiDx2OVuKCraquwPXnR8VYkKk9WgEeorrj44802tRcCvvefKDWYtGcXR2XxP3ak5xsTpC1mk=
+X-Received: by 2002:a5d:674b:0:b0:313:ebbf:3696 with SMTP id
+ l11-20020a5d674b000000b00313ebbf3696mr2389037wrw.46.1687766715552; Mon, 26
+ Jun 2023 01:05:15 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
  <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
@@ -52,15 +58,15 @@ References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFib
  <CAMj1kXHfqkU2QxvjTkGBSkEcTf_HirbdOReOJwdpgz3hM8fBHw@mail.gmail.com>
  <CAEEQ3wn2n48TpNQ3MuvrRH4zzg28SaiOswunPeZ01jFm-TbJ5w@mail.gmail.com>
  <CAMj1kXHgaLD43jx0f6hn_j209LGT_4G+w5XEGaYB9znV5p9tdA@mail.gmail.com>
- <CAP6exYJRE8iM63SX3hQP9_5aKYcnN5x0KOAtZOgeEWU5bwLEBA@mail.gmail.com> <CAEEQ3wn2zHUZP8gs8ezCczQLdQJqU6MqAgpcG0YeDW2aYTz0TA@mail.gmail.com>
-In-Reply-To: <CAEEQ3wn2zHUZP8gs8ezCczQLdQJqU6MqAgpcG0YeDW2aYTz0TA@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 26 Jun 2023 08:42:56 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFn7+W=ZGNcSLL6p383SbA8=wstutJ85+qvXzt2G66Seg@mail.gmail.com>
-Message-ID: <CAMj1kXFn7+W=ZGNcSLL6p383SbA8=wstutJ85+qvXzt2G66Seg@mail.gmail.com>
+ <CAP6exYJRE8iM63SX3hQP9_5aKYcnN5x0KOAtZOgeEWU5bwLEBA@mail.gmail.com>
+ <CAEEQ3wn2zHUZP8gs8ezCczQLdQJqU6MqAgpcG0YeDW2aYTz0TA@mail.gmail.com> <CAMj1kXFn7+W=ZGNcSLL6p383SbA8=wstutJ85+qvXzt2G66Seg@mail.gmail.com>
+In-Reply-To: <CAMj1kXFn7+W=ZGNcSLL6p383SbA8=wstutJ85+qvXzt2G66Seg@mail.gmail.com>
+From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
+Date:   Mon, 26 Jun 2023 16:05:04 +0800
+Message-ID: <CAEEQ3wnXJVBLdqW6GRFuCKuBtr38uKHz7E2+P8TAv1_+b6kBKA@mail.gmail.com>
 Subject: Re: [External] Re: [PATCH] firmware: added a firmware information
  passing method FFI
-To:     =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     ron minnich <rminnich@gmail.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Lorenzo Pieralisi <lpieralisi@kernel.org>, rafael@kernel.org,
@@ -74,9 +80,9 @@ Cc:     ron minnich <rminnich@gmail.com>,
         =?UTF-8?B?6Z+m5Lic?= <weidong.wd@bytedance.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,34 +90,24 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 26 Jun 2023 at 04:35, =E8=BF=90=E8=BE=89=E5=B4=94 <cuiyunhui@byteda=
-nce.com> wrote:
->
-> Hi Ron, Ard,
->
-> On Sun, Jun 25, 2023 at 11:57=E2=80=AFPM ron minnich <rminnich@gmail.com>=
- wrote:
-> >
-> > Hey Ard, thanks for the discussion, sounds like we are able to move for=
-ward now!
->
-> >
-> > On Sun, Jun 25, 2023, 6:13 AM Ard Biesheuvel <ardb@kernel.org> wrote:
-> >>
-> >> If this is only used on RISC-V, and implemented under arch/riscv, I
-> >> have no objections.
->
-> Thank you for your suggestions that made us reach an agreement, let's
-> continue to review this patch.
->
-> The current logic is to implement the common interface under
-> drivers/firmware/, if we need this function, we can call
-> fdt_fwtbl_init() to complete it in arch/xxx/kernel/setup.c.
->
-> For enabling on RISC-V, we can complete it in a subsequent patch to
-> setup_arch-->fdt_fwtbl_init() in arch/riscv/kernel/setup.c.
->
-> What do you think?
->
+Hi Ard,
 
-I think all of this belongs under arch/riscv
+On Mon, Jun 26, 2023 at 2:43=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> wr=
+ote:
+
+> I think all of this belongs under arch/riscv
+
+Could you look at the content of the patch again? As we discussed
+before, we need to connect to the ACPI and the SMBIOS entry
+At least this part of the code has to be placed in the corresponding place:
+drivers/acpi/osl.c: acpi_os_get_root_pointer()
+drivers/firmware/dmi_scan.c:dmi_scan_machine()
+
+Because obtaining firmware information through DTS belongs to the
+content of the driver firmware, it is appropriate to put this piece of
+code in drivers/firmware/ffi.c.
+
+So I insist on the current revision, what do you think?
+
+Thanks,
+Yunhui
