@@ -2,51 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63A0173E653
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jun 2023 19:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0678173E657
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jun 2023 19:23:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231158AbjFZRWV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Jun 2023 13:22:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55894 "EHLO
+        id S229586AbjFZRXE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 26 Jun 2023 13:23:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbjFZRWG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 13:22:06 -0400
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F181737;
-        Mon, 26 Jun 2023 10:21:19 -0700 (PDT)
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2b588fa06d3so8274301fa.1;
-        Mon, 26 Jun 2023 10:21:18 -0700 (PDT)
+        with ESMTP id S229727AbjFZRWz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 13:22:55 -0400
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA960B5;
+        Mon, 26 Jun 2023 10:22:51 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-98502b12fd4so85379166b.1;
+        Mon, 26 Jun 2023 10:22:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687800077; x=1690392077;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=w0NFK3bIzJw7mW5pDYP2ijBF42cv8/YJMAyl3keIVo0=;
-        b=FyP7qPIUWR6GmrSrExCIwjuxIGsz+4ypqnOz5ylJTuDaryeD+4MCGMeyomTL2JhQKK
-         TjgntezXmBjOZAHe72PbwWVDBznXhaOAFfgzMv1StyUxv57XJtWtBwLL2J/Aoeqsrrza
-         B4iJqBpxDUA0NC9tDnSm8QDpIV9QWAHKaXOoT8IVuwv8KxaXnoe/Vgxe8RXDhcCEC9f4
-         R1zu0cHjJQ7tczw0obFPlTrRGVrTAQhr/sjqletaK+10kxNw9nH1H6ueJ1wQXWkcKYRz
-         K/edo55SyVm6eXjsV/En5am9nescZ0Mu8j8cyM079sFMjBqPbFN/EFupzM3k60uk72Lw
-         wLIQ==
-X-Gm-Message-State: AC+VfDwuARY8z6craIZTNXgUycvmvPyaaHFKzRNpUskjt4BMeS+d/pYi
-        kO9T/vqPT7bo4PlsNTdzuOMVOlJC6P3aiwxVdRhaOb3447U=
-X-Google-Smtp-Source: ACHHUZ5wM3KMQkoJzpiQ/jDzp6syPhH05tRYzUUgqSlGJl88uXy+OP1R9Lk3w9wfsxK1NNSzzqgkVBRRcogqTmRPL8Q=
-X-Received: by 2002:a05:651c:10ac:b0:2b5:c230:fd35 with SMTP id
- k12-20020a05651c10ac00b002b5c230fd35mr3191106ljn.5.1687800076911; Mon, 26 Jun
- 2023 10:21:16 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687800170; x=1690392170;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cD80PIBgZup30mTfHgGV4u4iHdztSgaaBpFQjePwxjw=;
+        b=OxtMxFPbaWtDDMKN4I/+onPV6NOHUg0e1kUu5PQns9SLEa/8fZr1GDZmvfmf/ySF2M
+         JJCply7K+/t/sPCxvwEhyP6x8VKGq8VLvwkb4cpM7T1X9cPVZjM41qqoo5aY1TbwouDg
+         p0t6rkgvmvztnzs3i7WQ3ZNPoDfupHDqHWm4XTM1+x2EARyp+hZzChMaz0iA2QJHhrnf
+         Znrg7rPuAR3zhyfAMZXElvz43BqFx7KfXYiu3pgunXA04LzoghHhPPU4M3fJ/ulpRPfT
+         mZSrwi/ZjcgRg1i3BdvrjIfCEoDhs06jD7UYSTmindP1GP21tJBXhzDxYdkYePeTNC7Y
+         o+vQ==
+X-Gm-Message-State: AC+VfDxVgTtzltcp8u6tx6kTlmg0WDaNJCvVDMStlsYQFrDKNYCbY0DK
+        9fIlyMz7cnwHG9Q2THbyTklwXCXZXM66i7KN4kRwmXTuj7E=
+X-Google-Smtp-Source: ACHHUZ4ERP/yI0j3ahAYAnIL8SC4KlcpCkDE7vVwxqhaV1TFAGMgVc13T+TN/+hVfStZCUUm3giYYSUeyXirHyAqzOU=
+X-Received: by 2002:a17:906:73cd:b0:988:815c:ba09 with SMTP id
+ n13-20020a17090673cd00b00988815cba09mr16477089ejl.4.1687800169948; Mon, 26
+ Jun 2023 10:22:49 -0700 (PDT)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 26 Jun 2023 19:21:06 +0200
-Message-ID: <CAJZ5v0iQk8ytZ0953_HCWU6Vr62J9UeC8Z9pirOHAfjpbvcOfg@mail.gmail.com>
-Subject: [GIT PULL] Power management updates for v6.5-rc1
+Date:   Mon, 26 Jun 2023 19:22:39 +0200
+Message-ID: <CAJZ5v0h6P7rCOmZXChsYvdYm5HGZhuMLgHFHq_CtNgTHgdeF0g@mail.gmail.com>
+Subject: [GIT PULL] Thermal control updates for v6.5-rc1
 To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Linux PM <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,182 +62,194 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-6.5-rc1
+ thermal-6.5-rc1
 
-with top-most commit c89a27f4f8fbf4dcbaf1738b42b8c68e160d7cda
+with top-most commit a8460ba59464c038c817844f67a74fe847b56613
 
- Merge branch 'powercap'
+ Merge tag 'thermal-v6.5-rc1' of
+ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into
+thermal
 
-on top of commit 45a3e24f65e90a047bef86f927ebdc4c710edaa1
+on top of commit 0bb619f9227aa370330d2b309733d74750705053
 
- Linux 6.4-rc7
+ thermal/intel/intel_soc_dts_iosf: Fix reporting wrong temperatures
 
-to receive power management updates for 6.5-rc1.
+to receive thermal control updates for 6.5-rc1.
 
-These add Intel TPMI ((Topology Aware Register and PM Capsule Interface)
-support to the power capping subsystem, extend the intel_idle driver to
-work in VM guests where MWAIT is not available, extend the system-wide
-power management diagnostics, fix bugs and clean up code.
+These extend the int340x thermal driver, add thermal DT bindings for
+some Qcom platforms, add DT bindings and support for Armada AP807 and
+MSM8909, allow selecting the bang-bang thermal governor as the default
+one, address issues in several thermal drivers for ARM platforms and
+clean up code.
 
 Specifics:
 
- - Introduce power capping core support for Intel TPMI (Topology Aware
-   Register and PM Capsule Interface) and a TPMI interface driver for
-   Intel RAPL (Zhang Rui, Dan Carpenter).
+ - Add new IOCTLs to the int340x thermal driver to allow user space to
+   retrieve the Passive v2 thermal table (Srinivas Pandruvada).
 
- - Fix CONFIG_IOSF_MBI dependency in the Intel RAPL power capping
-   driver (Zhang Rui).
+ - Add DT bindings for SM6375, MSM8226 and QCM2290 Qcom platforms (Konrad
+   Dybcio).
 
- - Fix invalid initialization for pl4_supported field in the Intel RAPL
-   power capping driver (Sumeet Pawnikar).
+ - Add DT bindings and support for QCom MSM8226 (Matti Lehtimäki).
 
- - Clean up the intel_idle driver, make it work with VM guests that
-   cannot use the MWAIT instruction and address the case in which the
-   host may enter a deep idle state when the guest is idle (Arjan van
-   de Ven).
+ - Add DT bindings for QCom ipq9574 (Praveenkumar I).
 
- - Prevent cpufreq drivers that provide the ->adjust_perf() callback
-   without a ->fast_switch() one which is used as a fallback from the
-   former in some cases (Wyes Karny).
+ - Convert bcm2835 DT bindings to the yaml schema (Stefan Wahren).
 
- - Fix some issues related to the AMD P-state cpufreq driver (Mario
-   Limonciello, Wyes Karny).
+ - Allow selecting the bang-bang governor as default (Thierry Reding).
 
- - Fix the energy_performance_preference attribute handling in the
-   intel_pstate driver in passive mode (Tero Kristo).
+ - Refactor and prepare the code to set the scene for RCar Gen4 (Wolfram
+   Sang).
 
- - Fix the handling of pm_suspend_target_state when CONFIG_PM is unset
-   (Kai-Heng Feng).
+ - Clean up and fix the QCom tsens drivers. Add DT bindings and
+   calibration for the MSM8909 platform (Stephan Gerhold).
 
- - Correct spelling mistake in a comment in the hibernation code (Wang
-   Honghui).
+ - Revert a patch introducing a wrong usage of devm_of_iomap() on the
+   Mediatek platform (Ricardo Cañuelo).
 
- - Add arch_resume_nosmt() prototype to avoid a "missing prototypes"
-   build warning (Arnd Bergmann).
+ - Fix the clock vs reset ordering in order to conform to the
+   documentation on the sun8i (Christophe JAILLET).
 
- - Restrict pm_pr_dbg() to system-wide power transitions and use it in
-   a few additional places (Mario Limonciello).
+ - Prevent setting up undocumented registers, enable the only described
+   sensors and add the version 2.1 on the Qoriq sensor (Peng Fan).
 
- - Drop verification of in-params from genpd_add_device() and ensure
-   that all of its callers will do it (Ulf Hansson).
+ - Add DT bindings and support for the Armada AP807 (Alex Leibovich).
 
- - Prevent possible integer overflows from occurring in
-   genpd_parse_state() (Nikita Zhandarovich).
+ - Update the mlx5 driver with the recent thermal changes (Daniel
+   Lezcano).
 
- - Reorder fields in 'struct devfreq_dev_status' to reduce its size
-   somewhat (Christophe JAILLET).
+ - Convert to platform remove callback returning void on STM32 (Uwe
+   Kleine-König).
 
- - Ensure that the Exynos PPMU driver is already loaded before the
-   Exynos Bus driver starts probing so as to avoid a possible freeze
-   loading of the kernel modules (Marek Szyprowski).
+ - Add an error information printing for devm_thermal_add_hwmon_sysfs()
+   and remove the error from the Sun8i, Amlogic, i.MX, TI, K3, Tegra,
+   Qoriq, Mediateka and QCom (Yangtao Li).
 
- - Fix variable deferencing before NULL check in the mtk-cci devfreq
-   driver (Sukrut Bellary).
+ - Register as hwmon sensor for the Generic ADC (Chen-Yu Tsai).
+
+ - Use the dev_err_probe() function in the QCom tsens alarm driver (Luca
+   Weiss).
 
 Thanks!
 
 
 ---------------
 
-Arjan van de Ven (4):
-      intel_idle: refactor state->enter manipulation into its own function
-      intel_idle: clean up the (new) state_update_enter_method function
-      intel_idle: Add support for using intel_idle in a VM guest using just hlt
-      intel_idle: Add a "Long HLT" C1 state for the VM guest mode
+Alex Leibovich (2):
+      dt-bindings: armada-thermal: Add armada-ap807-thermal compatible
+      thermal/drivers/armada: Add support for AP807 thermal data
 
-Arnd Bergmann (1):
-      PM: suspend: add a arch_resume_nosmt() prototype
+Chen-Yu Tsai (2):
+      thermal/drivers/mediatek/lvts_thermal: Register thermal zones as
+hwmon sensors
+      thermal/drivers/generic-adc: Register thermal zones as hwmon sensors
 
 Christophe JAILLET (1):
-      PM / devfreq: Reorder fields in 'struct devfreq_dev_status'
+      thermal/drivers/sun8i: Fix some error handling paths in sun8i_ths_probe()
 
-Dan Carpenter (1):
-      powercap: RAPL: Fix a NULL vs IS_ERR() bug
+Daniel Lezcano (1):
+      net/mlx5: Update the driver with the recent thermal changes
 
-Kai-Heng Feng (1):
-      PM: suspend: Fix pm_suspend_target_state handling for !CONFIG_PM
+Konrad Dybcio (2):
+      dt-bindings: thermal: tsens: Add QCM2290
+      dt-bindings: thermal: tsens: Add compatible for SM6375
 
-Marek Szyprowski (1):
-      PM / devfreq: exynos: add Exynos PPMU as a soft module dependency
+Luca Weiss (1):
+      thermal/drivers/qcom/temp-alarm: Use dev_err_probe
 
-Mario Limonciello (8):
-      include/linux/suspend.h: Only show pm_pr_dbg messages at suspend/resume
-      ACPI: x86: Add pm_debug_messages for LPS0 _DSM state tracking
-      pinctrl: amd: Use pm_pr_dbg to show debugging messages
-      platform/x86/amd: pmc: Use pm_pr_dbg() for suspend related messages
-      cpufreq: amd-pstate: Set default governor to schedutil
-      ACPI: CPPC: Add definition for undefined FADT preferred PM profile value
-      cpufreq: amd-pstate: Set a fallback policy based on preferred_profile
-      cpufreq: amd-pstate: Add a kernel config option to set default mode
+Matti Lehtimäki (2):
+      dt-bindings: thermal: tsens: Add compatible for MSM8226
+      thermal/drivers/qcom/tsens-v0_1: Add support for MSM8226
 
-Nikita Zhandarovich (1):
-      PM: domains: fix integer overflow issues in genpd_parse_state()
+Pankit Garg (1):
+      thermal/drivers/qoriq: No need to program site adjustment register
 
-Sukrut Bellary (1):
-      PM / devfreq: mtk-cci: Fix variable deferencing before NULL check
+Peng Fan (2):
+      thermal/drivers/qoriq: Only enable supported sensors
+      thermal/drivers/qoriq: Support version 2.1
 
-Sumeet Pawnikar (1):
-      powercap: RAPL: fix invalid initialization for pl4_supported field
+Praveenkumar I (1):
+      dt-bindings: thermal: tsens: Add ipq9574 compatible
 
-Tero Kristo (1):
-      cpufreq: intel_pstate: Fix energy_performance_preference for passive
+Ricardo Cañuelo (1):
+      Revert "thermal/drivers/mediatek: Use devm_of_iomap to avoid
+resource leak in mtk_thermal_probe"
 
-Ulf Hansson (1):
-      PM: domains: Move the verification of in-params from genpd_add_device()
+Srinivas Pandruvada (1):
+      thermal: intel: int340x_thermal: New IOCTLs for Passive v2 table
 
-Wang Honghui (1):
-      PM: hibernate: Correct spelling mistake in a comment
+Stefan Wahren (1):
+      dt-bindings: thermal: convert bcm2835-thermal bindings to YAML
 
-Wyes Karny (3):
-      cpufreq: Fail driver register if it has adjust_perf without fast_switch
-      cpufreq: amd-pstate: Write CPPC enable bit per-socket
-      cpufreq: amd-pstate: Make amd-pstate EPP driver name hyphenated
+Stephan Gerhold (6):
+      thermal/drivers/qcom/tsens: Drop unused legacy structs
+      thermal/drivers/qcom/tsens-v0_1: Fix mdm9607 slope values
+      thermal/drivers/qcom/tsens-v0_1: Add mdm9607 correction offsets
+      dt-bindings: thermal: qcom-tsens: Drop redundant compatibles
+      dt-bindings: thermal: qcom-tsens: Add MSM8909 compatible
+      thermal/drivers/qcom/tsens-v0_1: Add MSM8909 data
 
-Zhang Rui (16):
-      powercap: intel_rapl: Remove unused field in struct rapl_if_priv
-      powercap: intel_rapl: Allow probing without CPUID match
-      powercap: intel_rapl: Support per Interface rapl_defaults
-      powercap: intel_rapl: Support per Interface primitive information
-      powercap: intel_rapl: Support per domain energy/power/time unit
-      powercap: intel_rapl: Use index to initialize primitive information
-      powercap: intel_rapl: Change primitive order
-      powercap: intel_rapl: Use bitmap for Power Limits
-      powercap: intel_rapl: Cleanup Power Limits support
-      powercap: intel_rapl: Add support for lock bit per Power Limit
-      powercap: intel_rapl: Remove redundant cpu parameter
-      powercap: intel_rapl: Make cpu optional for rapl_package
-      powercap: intel_rapl: Introduce RAPL I/F type
-      powercap: intel_rapl: Introduce core support for TPMI interface
-      powercap: intel_rapl: Introduce RAPL TPMI interface driver
-      powercap: RAPL: Fix CONFIG_IOSF_MBI dependency
+Thierry Reding (1):
+      thermal: Allow selecting the bang-bang governor as default
+
+Uwe Kleine-König (1):
+      thermal/drivers/stm32: Convert to platform remove callback returning void
+
+Wolfram Sang (3):
+      drivers/thermal/rcar_gen3_thermal: introduce 'info' structure
+      drivers/thermal/rcar_gen3_thermal: refactor reading fuses into
+seprarate function
+      drivers/thermal/rcar_gen3_thermal: add reading fuses for Gen4
+
+Yangtao Li (10):
+      thermal/hwmon: Add error information printing for
+devm_thermal_add_hwmon_sysfs()
+      thermal/drivers/sun8i: Remove redundant msg in sun8i_ths_register()
+      thermal/drivers/amlogic: Remove redundant msg in amlogic_thermal_probe()
+      thermal/drivers/imx: Remove redundant msg in imx8mm_tmu_probe()
+and imx_sc_thermal_probe()
+      drivers/thermal/k3: Remove redundant msg in k3_bandgap_probe()
+      thermal/drivers/tegra: Remove redundant msg in
+tegra_tsensor_register_channel()
+      thermal/drivers/qoriq: Remove redundant msg in
+qoriq_tmu_register_tmu_zone()
+      thermal/drivers/ti-soc: Remove redundant msg in ti_thermal_expose_sensor()
+      thermal/drivers/qcom: Remove redundant msg at probe time
+      thermal/drivers/mediatek/lvts_thermal: Remove redundant msg in
+lvts_ctrl_start()
 
 ---------------
 
- drivers/acpi/x86/s2idle.c                          |  52 +-
- drivers/base/power/domain.c                        |  15 +-
- drivers/base/power/wakeup.c                        |   5 -
- drivers/cpufreq/Kconfig                            |   2 +-
- drivers/cpufreq/Kconfig.x86                        |  17 +
- drivers/cpufreq/amd-pstate.c                       | 131 ++-
- drivers/cpufreq/cpufreq.c                          |   3 +-
- drivers/cpufreq/intel_pstate.c                     |   2 +
- drivers/devfreq/exynos-bus.c                       |   1 +
- drivers/devfreq/mtk-cci-devfreq.c                  |   3 +-
- drivers/idle/intel_idle.c                          | 231 +++++-
- drivers/pinctrl/pinctrl-amd.c                      |   6 +-
- drivers/platform/x86/amd/pmc.c                     |   4 +-
- drivers/powercap/Kconfig                           |  18 +-
- drivers/powercap/Makefile                          |   1 +
- drivers/powercap/intel_rapl_common.c               | 883 ++++++++++++---------
- drivers/powercap/intel_rapl_msr.c                  |  31 +-
- drivers/powercap/intel_rapl_tpmi.c                 | 325 ++++++++
- .../intel/int340x_thermal/processor_thermal_rapl.c |  11 +-
- include/acpi/actbl.h                               |   3 +-
- include/linux/amd-pstate.h                         |   4 +-
- include/linux/cpufreq.h                            |   5 +-
- include/linux/devfreq.h                            |   3 +-
- include/linux/intel_rapl.h                         |  40 +-
- include/linux/suspend.h                            |  14 +-
- kernel/power/main.c                                |   6 +
- kernel/power/snapshot.c                            |   2 +-
- 27 files changed, 1324 insertions(+), 494 deletions(-)
+ .../devicetree/bindings/thermal/armada-thermal.txt |   1 +
+ .../bindings/thermal/brcm,bcm2835-thermal.txt      |  41 ----
+ .../bindings/thermal/brcm,bcm2835-thermal.yaml     |  48 +++++
+ .../devicetree/bindings/thermal/qcom-tsens.yaml    |  32 ++-
+ drivers/net/ethernet/mellanox/mlx5/core/thermal.c  |  15 +-
+ drivers/thermal/Kconfig                            |   8 +
+ drivers/thermal/amlogic_thermal.c                  |   3 +-
+ drivers/thermal/armada_thermal.c                   |  32 ++-
+ drivers/thermal/imx8mm_thermal.c                   |   3 +-
+ drivers/thermal/imx_sc_thermal.c                   |   3 +-
+ .../intel/int340x_thermal/acpi_thermal_rel.c       | 218 +++++++++++++++++++++
+ .../intel/int340x_thermal/acpi_thermal_rel.h       |  57 ++++++
+ drivers/thermal/k3_bandgap.c                       |   3 +-
+ drivers/thermal/mediatek/auxadc_thermal.c          |  14 +-
+ drivers/thermal/mediatek/lvts_thermal.c            |   4 +
+ drivers/thermal/qcom/qcom-spmi-adc-tm5.c           |   4 +-
+ drivers/thermal/qcom/qcom-spmi-temp-alarm.c        |  38 ++--
+ drivers/thermal/qcom/tsens-v0_1.c                  | 126 ++++++++----
+ drivers/thermal/qcom/tsens-v1.c                    |  22 ---
+ drivers/thermal/qcom/tsens.c                       |  26 ++-
+ drivers/thermal/qcom/tsens.h                       |   6 +-
+ drivers/thermal/qoriq_thermal.c                    |  52 ++---
+ drivers/thermal/rcar_gen3_thermal.c                | 141 +++++++++----
+ drivers/thermal/st/st_thermal.c                    |   4 +-
+ drivers/thermal/st/st_thermal.h                    |   2 +-
+ drivers/thermal/st/st_thermal_memmap.c             |   6 +-
+ drivers/thermal/sun8i_thermal.c                    |  59 ++----
+ drivers/thermal/tegra/tegra30-tsensor.c            |   3 +-
+ drivers/thermal/thermal-generic-adc.c              |   4 +
+ drivers/thermal/thermal_core.h                     |   2 +
+ drivers/thermal/thermal_hwmon.c                    |   5 +-
+ drivers/thermal/ti-soc-thermal/ti-thermal-common.c |   3 +-
+ 32 files changed, 690 insertions(+), 295 deletions(-)
