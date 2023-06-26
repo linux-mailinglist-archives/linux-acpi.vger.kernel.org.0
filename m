@@ -2,254 +2,155 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0678173E657
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jun 2023 19:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9D3A73EE73
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jun 2023 00:10:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbjFZRXE convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 26 Jun 2023 13:23:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56094 "EHLO
+        id S230232AbjFZWKB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Jun 2023 18:10:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229727AbjFZRWz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 13:22:55 -0400
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA960B5;
-        Mon, 26 Jun 2023 10:22:51 -0700 (PDT)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-98502b12fd4so85379166b.1;
-        Mon, 26 Jun 2023 10:22:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687800170; x=1690392170;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cD80PIBgZup30mTfHgGV4u4iHdztSgaaBpFQjePwxjw=;
-        b=OxtMxFPbaWtDDMKN4I/+onPV6NOHUg0e1kUu5PQns9SLEa/8fZr1GDZmvfmf/ySF2M
-         JJCply7K+/t/sPCxvwEhyP6x8VKGq8VLvwkb4cpM7T1X9cPVZjM41qqoo5aY1TbwouDg
-         p0t6rkgvmvztnzs3i7WQ3ZNPoDfupHDqHWm4XTM1+x2EARyp+hZzChMaz0iA2QJHhrnf
-         Znrg7rPuAR3zhyfAMZXElvz43BqFx7KfXYiu3pgunXA04LzoghHhPPU4M3fJ/ulpRPfT
-         mZSrwi/ZjcgRg1i3BdvrjIfCEoDhs06jD7UYSTmindP1GP21tJBXhzDxYdkYePeTNC7Y
-         o+vQ==
-X-Gm-Message-State: AC+VfDxVgTtzltcp8u6tx6kTlmg0WDaNJCvVDMStlsYQFrDKNYCbY0DK
-        9fIlyMz7cnwHG9Q2THbyTklwXCXZXM66i7KN4kRwmXTuj7E=
-X-Google-Smtp-Source: ACHHUZ4ERP/yI0j3ahAYAnIL8SC4KlcpCkDE7vVwxqhaV1TFAGMgVc13T+TN/+hVfStZCUUm3giYYSUeyXirHyAqzOU=
-X-Received: by 2002:a17:906:73cd:b0:988:815c:ba09 with SMTP id
- n13-20020a17090673cd00b00988815cba09mr16477089ejl.4.1687800169948; Mon, 26
- Jun 2023 10:22:49 -0700 (PDT)
+        with ESMTP id S232034AbjFZWJq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 18:09:46 -0400
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2068.outbound.protection.outlook.com [40.107.102.68])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D0C430E7;
+        Mon, 26 Jun 2023 15:06:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=oO5bQoeQja6RQmSJOGv4K9mortSVrXj+TC8MZX7Xxt27Wgis94JC5RiBgDmT1fCEGMOsWRxUBp2PDAdRFggUQMMU8nDe9g52zYSxm7iJWaHB8HM9Tg5y+LW1VZmG8CzjtlPDLgpYQRwrWT4/AYrM2SajHj94MH7xES+d1nTDm0T186v/Qvw3rwHMelqY47pDeF+chFJM97C70kSYu5GPGDdDriEHnLSgudTb4Hkl9MAMmh205eUyRfNgvqM00OqjYq7gkabA7cJ9scl4rQRm5EY9w7/QSsnYDNDMf2P9Bqf49mkgyJcWrwvFmDSES8X3lRxcAOsorJOei/ASlfIxCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i6AWKgJErSzUvCvVsgpQC7nwntbSSNupISuzTh2hUAY=;
+ b=lITyVNwpx2zsws5R2xfVk+FGLJsE9NLOtoJ54Bm4MtMo93jzcl66wor06Jr1YXU035/DYZiULkksEq8imLxya+zbyjIPCOW5kxNNCWWGTSnI5nOKV5Gx2ZrwVgqg2Y34wxAu7Ugw0C1SxdNWF071nFsdkqbKPbfp7Z54u6mErN255EyUBQ6giTnX6G66IelYEjXCA1LmSpJ/GQuP8DlFUbqBtWrFsPs122XHWy6A3/0izanOCO+1LXz7HhInk1oPLwh2kQK1VW7DTPbuQrY88HLRTtzBosMocWbecnp6nTFdNX/XLgs5jb3wyeHBaDwZoxa2JwYeOlFmkID20ffyhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i6AWKgJErSzUvCvVsgpQC7nwntbSSNupISuzTh2hUAY=;
+ b=iStM06J20o0mYKopV+a6q3lDL5uRzpfDdsRZQrniFD6s+tV1qCCVgUrOAibF+4Qe5znEqNhzlmPxhB1ga6uOqiEsJxs04aEIFOb5PrcQfBVT3SoyswpxV0Fx+OtwL0OKTpwGVqEHlJCC3CcrsRHr49ocbm1nC6HyRa5Hqoye2A/rT87KxqJb80lUXUbYL2Qczg3lX+4Tt5tLeHQ/o1GGgjy6NGf45kKg+g/6NiCbWyw+imQ5UmfWug7rdoCBk5ljz/6Q3ri5MIxjfKscn4hPIrObtkOO8NAynD2eJeFhaaGdHnzm5OX5KFYrSReRLsFAih7u30DerG0kMQkM4wuxaw==
+Received: from BN9PR03CA0405.namprd03.prod.outlook.com (2603:10b6:408:111::20)
+ by DS0PR12MB8271.namprd12.prod.outlook.com (2603:10b6:8:fb::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6521.21; Mon, 26 Jun 2023 22:06:13 +0000
+Received: from BN8NAM11FT021.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:111:cafe::80) by BN9PR03CA0405.outlook.office365.com
+ (2603:10b6:408:111::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.33 via Frontend
+ Transport; Mon, 26 Jun 2023 22:06:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN8NAM11FT021.mail.protection.outlook.com (10.13.177.114) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6500.47 via Frontend Transport; Mon, 26 Jun 2023 22:06:12 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Mon, 26 Jun 2023
+ 15:05:59 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Mon, 26 Jun
+ 2023 15:05:59 -0700
+Received: from build-abmainkar-20230620T092408093.nvidia.com (10.127.8.11) by
+ mail.nvidia.com (10.129.68.7) with Microsoft SMTP Server id 15.2.986.37 via
+ Frontend Transport; Mon, 26 Jun 2023 15:05:59 -0700
+From:   Abhishek Mainkar <abmainkar@nvidia.com>
+To:     <robert.moore@intel.com>, <rafael.j.wysocki@intel.com>,
+        <lenb@kernel.org>
+CC:     <linux-acpi@vger.kernel.org>,
+        <acpica-devel@lists.linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>, <abmainkar@nvidia.com>
+Subject: [Patch] acpica: Add AML_NO_OPERAND_RESOLVE flag to Timer
+Date:   Mon, 26 Jun 2023 22:05:25 +0000
+Message-ID: <20230626220525.1654780-1-abmainkar@nvidia.com>
+X-Mailer: git-send-email 2.17.1
+X-NVConfidentiality: public
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 26 Jun 2023 19:22:39 +0200
-Message-ID: <CAJZ5v0h6P7rCOmZXChsYvdYm5HGZhuMLgHFHq_CtNgTHgdeF0g@mail.gmail.com>
-Subject: [GIT PULL] Thermal control updates for v6.5-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT021:EE_|DS0PR12MB8271:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed561602-4811-48e4-f2f5-08db76918e0c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /xyddirrkkYf/KEk/PizZ40lHTZuM0XNthljnOeXmhLPV0+Agc3UnBh/XwwMy+4Xx49EmF6PjbYC3q8ilY0hZmjzoMojGSYRyZnsac04aqv2uV5gLCHfmufus7jEHMbw2DeU/IJumGaan1VbX4iFkPFM+Z9tYK3l8AFuizqKv2imGf3cbtyC4DmYjboJ2EZonp7Kz1c8+v8xt9a3uQyZSypDP+yx74AhjGXpU4YWpBj12htOLXT3RwFSrqy4IiJBabWC5AGKSZSKGnA0LV1GwG+CGVUu7M0bTvUP4BSFMbG3d12bAqTjsMDIa03gX1BCsGm8Y8gQlXPyjmhzpSHXE3eOnVcJ26Wkyu1755Frq5S/Yse3OYN0vSkSxkz/y+Srb2/8LEggT4CWx51MsMCTr6iAwlml2v5WxLyytYRrhxiuxIHqj4MnTg2XTcnKrz85dTnkz4SD7ZaVWNiFlQi5InioAumlqGyz+FMxMv5GFlU7ibDIBGMqeM0TNiq/d8UyEdErmIeooDhUruA0DX4wmm0jMIEbiBRK2yjr7pfMFiuCUnv2GxkknnFMFOCqoVXDNBsHk1G7KlbOKpRkKAmEg4PnmAsFqJbu6vj/2Ygw38ok2kPf6U7HoxJHk4amEVQoDSCRL0mlsDejZgjuDalRW337IREbgHQ/NKaLEZPO1fHh9++7H/pqPtFoBMh/m7EvriL+/FfqyrNAad1rw4URRxc47RWbz+DlveuzulWXWAfFeMByMC+Pe2NINa9wdXA4
+X-Forefront-Antispam-Report: CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230028)(4636009)(396003)(346002)(39860400002)(376002)(136003)(451199021)(40470700004)(36840700001)(46966006)(5660300002)(4326008)(478600001)(36756003)(316002)(70206006)(70586007)(8676002)(8936002)(2906002)(40460700003)(40480700001)(36860700001)(110136005)(54906003)(86362001)(41300700001)(7696005)(186003)(82310400005)(336012)(426003)(1076003)(26005)(47076005)(356005)(2616005)(107886003)(83380400001)(7636003)(6666004)(82740400003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2023 22:06:12.6574
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed561602-4811-48e4-f2f5-08db76918e0c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT021.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8271
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+According to the ACPI specification 19.6.134, no argument is
+required to be passed for ASL Timer instruction. For taking
+care of no argument, AML_NO_OPERAND_RESOLVE flag is added to
+ASL Timer instruction opcode.
 
-Please pull from the tag
+When ASL timer instruction interpreted by ACPI interpreter,
+getting error. After adding AML_NO_OPERAND_RESOLVE flag to
+ASL Timer instruction opcode, issue is not observed.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- thermal-6.5-rc1
+=============================================================
+UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12
+index -1 is out of range for type 'acpi_operand_object *[9]'
+CPU: 37 PID: 1678 Comm: cat Not tainted
+6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
+HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
+ dump_backtrace+0xe0/0x130
+ show_stack+0x20/0x60
+ dump_stack_lvl+0x68/0x84
+ dump_stack+0x18/0x34
+ ubsan_epilogue+0x10/0x50
+ __ubsan_handle_out_of_bounds+0x80/0x90
+ acpi_ds_exec_end_op+0x1bc/0x6d8
+ acpi_ps_parse_loop+0x57c/0x618
+ acpi_ps_parse_aml+0x1e0/0x4b4
+ acpi_ps_execute_method+0x24c/0x2b8
+ acpi_ns_evaluate+0x3a8/0x4bc
+ acpi_evaluate_object+0x15c/0x37c
+ acpi_evaluate_integer+0x54/0x15c
+ show_power+0x8c/0x12c [acpi_power_meter]
 
-with top-most commit a8460ba59464c038c817844f67a74fe847b56613
+Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
+---
+ drivers/acpi/acpica/psopcode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- Merge tag 'thermal-v6.5-rc1' of
-ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into
-thermal
+diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
+index bef69e87a0a2..8c34c0ffb1d9 100644
+--- a/drivers/acpi/acpica/psopcode.c
++++ b/drivers/acpi/acpica/psopcode.c
+@@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
+ 
+ /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
+ 			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
+-			 AML_FLAGS_EXEC_0A_0T_1R),
++			 AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
+ 
+ /* ACPI 5.0 opcodes */
+ 
+-- 
+2.17.1
 
-on top of commit 0bb619f9227aa370330d2b309733d74750705053
-
- thermal/intel/intel_soc_dts_iosf: Fix reporting wrong temperatures
-
-to receive thermal control updates for 6.5-rc1.
-
-These extend the int340x thermal driver, add thermal DT bindings for
-some Qcom platforms, add DT bindings and support for Armada AP807 and
-MSM8909, allow selecting the bang-bang thermal governor as the default
-one, address issues in several thermal drivers for ARM platforms and
-clean up code.
-
-Specifics:
-
- - Add new IOCTLs to the int340x thermal driver to allow user space to
-   retrieve the Passive v2 thermal table (Srinivas Pandruvada).
-
- - Add DT bindings for SM6375, MSM8226 and QCM2290 Qcom platforms (Konrad
-   Dybcio).
-
- - Add DT bindings and support for QCom MSM8226 (Matti Lehtimäki).
-
- - Add DT bindings for QCom ipq9574 (Praveenkumar I).
-
- - Convert bcm2835 DT bindings to the yaml schema (Stefan Wahren).
-
- - Allow selecting the bang-bang governor as default (Thierry Reding).
-
- - Refactor and prepare the code to set the scene for RCar Gen4 (Wolfram
-   Sang).
-
- - Clean up and fix the QCom tsens drivers. Add DT bindings and
-   calibration for the MSM8909 platform (Stephan Gerhold).
-
- - Revert a patch introducing a wrong usage of devm_of_iomap() on the
-   Mediatek platform (Ricardo Cañuelo).
-
- - Fix the clock vs reset ordering in order to conform to the
-   documentation on the sun8i (Christophe JAILLET).
-
- - Prevent setting up undocumented registers, enable the only described
-   sensors and add the version 2.1 on the Qoriq sensor (Peng Fan).
-
- - Add DT bindings and support for the Armada AP807 (Alex Leibovich).
-
- - Update the mlx5 driver with the recent thermal changes (Daniel
-   Lezcano).
-
- - Convert to platform remove callback returning void on STM32 (Uwe
-   Kleine-König).
-
- - Add an error information printing for devm_thermal_add_hwmon_sysfs()
-   and remove the error from the Sun8i, Amlogic, i.MX, TI, K3, Tegra,
-   Qoriq, Mediateka and QCom (Yangtao Li).
-
- - Register as hwmon sensor for the Generic ADC (Chen-Yu Tsai).
-
- - Use the dev_err_probe() function in the QCom tsens alarm driver (Luca
-   Weiss).
-
-Thanks!
-
-
----------------
-
-Alex Leibovich (2):
-      dt-bindings: armada-thermal: Add armada-ap807-thermal compatible
-      thermal/drivers/armada: Add support for AP807 thermal data
-
-Chen-Yu Tsai (2):
-      thermal/drivers/mediatek/lvts_thermal: Register thermal zones as
-hwmon sensors
-      thermal/drivers/generic-adc: Register thermal zones as hwmon sensors
-
-Christophe JAILLET (1):
-      thermal/drivers/sun8i: Fix some error handling paths in sun8i_ths_probe()
-
-Daniel Lezcano (1):
-      net/mlx5: Update the driver with the recent thermal changes
-
-Konrad Dybcio (2):
-      dt-bindings: thermal: tsens: Add QCM2290
-      dt-bindings: thermal: tsens: Add compatible for SM6375
-
-Luca Weiss (1):
-      thermal/drivers/qcom/temp-alarm: Use dev_err_probe
-
-Matti Lehtimäki (2):
-      dt-bindings: thermal: tsens: Add compatible for MSM8226
-      thermal/drivers/qcom/tsens-v0_1: Add support for MSM8226
-
-Pankit Garg (1):
-      thermal/drivers/qoriq: No need to program site adjustment register
-
-Peng Fan (2):
-      thermal/drivers/qoriq: Only enable supported sensors
-      thermal/drivers/qoriq: Support version 2.1
-
-Praveenkumar I (1):
-      dt-bindings: thermal: tsens: Add ipq9574 compatible
-
-Ricardo Cañuelo (1):
-      Revert "thermal/drivers/mediatek: Use devm_of_iomap to avoid
-resource leak in mtk_thermal_probe"
-
-Srinivas Pandruvada (1):
-      thermal: intel: int340x_thermal: New IOCTLs for Passive v2 table
-
-Stefan Wahren (1):
-      dt-bindings: thermal: convert bcm2835-thermal bindings to YAML
-
-Stephan Gerhold (6):
-      thermal/drivers/qcom/tsens: Drop unused legacy structs
-      thermal/drivers/qcom/tsens-v0_1: Fix mdm9607 slope values
-      thermal/drivers/qcom/tsens-v0_1: Add mdm9607 correction offsets
-      dt-bindings: thermal: qcom-tsens: Drop redundant compatibles
-      dt-bindings: thermal: qcom-tsens: Add MSM8909 compatible
-      thermal/drivers/qcom/tsens-v0_1: Add MSM8909 data
-
-Thierry Reding (1):
-      thermal: Allow selecting the bang-bang governor as default
-
-Uwe Kleine-König (1):
-      thermal/drivers/stm32: Convert to platform remove callback returning void
-
-Wolfram Sang (3):
-      drivers/thermal/rcar_gen3_thermal: introduce 'info' structure
-      drivers/thermal/rcar_gen3_thermal: refactor reading fuses into
-seprarate function
-      drivers/thermal/rcar_gen3_thermal: add reading fuses for Gen4
-
-Yangtao Li (10):
-      thermal/hwmon: Add error information printing for
-devm_thermal_add_hwmon_sysfs()
-      thermal/drivers/sun8i: Remove redundant msg in sun8i_ths_register()
-      thermal/drivers/amlogic: Remove redundant msg in amlogic_thermal_probe()
-      thermal/drivers/imx: Remove redundant msg in imx8mm_tmu_probe()
-and imx_sc_thermal_probe()
-      drivers/thermal/k3: Remove redundant msg in k3_bandgap_probe()
-      thermal/drivers/tegra: Remove redundant msg in
-tegra_tsensor_register_channel()
-      thermal/drivers/qoriq: Remove redundant msg in
-qoriq_tmu_register_tmu_zone()
-      thermal/drivers/ti-soc: Remove redundant msg in ti_thermal_expose_sensor()
-      thermal/drivers/qcom: Remove redundant msg at probe time
-      thermal/drivers/mediatek/lvts_thermal: Remove redundant msg in
-lvts_ctrl_start()
-
----------------
-
- .../devicetree/bindings/thermal/armada-thermal.txt |   1 +
- .../bindings/thermal/brcm,bcm2835-thermal.txt      |  41 ----
- .../bindings/thermal/brcm,bcm2835-thermal.yaml     |  48 +++++
- .../devicetree/bindings/thermal/qcom-tsens.yaml    |  32 ++-
- drivers/net/ethernet/mellanox/mlx5/core/thermal.c  |  15 +-
- drivers/thermal/Kconfig                            |   8 +
- drivers/thermal/amlogic_thermal.c                  |   3 +-
- drivers/thermal/armada_thermal.c                   |  32 ++-
- drivers/thermal/imx8mm_thermal.c                   |   3 +-
- drivers/thermal/imx_sc_thermal.c                   |   3 +-
- .../intel/int340x_thermal/acpi_thermal_rel.c       | 218 +++++++++++++++++++++
- .../intel/int340x_thermal/acpi_thermal_rel.h       |  57 ++++++
- drivers/thermal/k3_bandgap.c                       |   3 +-
- drivers/thermal/mediatek/auxadc_thermal.c          |  14 +-
- drivers/thermal/mediatek/lvts_thermal.c            |   4 +
- drivers/thermal/qcom/qcom-spmi-adc-tm5.c           |   4 +-
- drivers/thermal/qcom/qcom-spmi-temp-alarm.c        |  38 ++--
- drivers/thermal/qcom/tsens-v0_1.c                  | 126 ++++++++----
- drivers/thermal/qcom/tsens-v1.c                    |  22 ---
- drivers/thermal/qcom/tsens.c                       |  26 ++-
- drivers/thermal/qcom/tsens.h                       |   6 +-
- drivers/thermal/qoriq_thermal.c                    |  52 ++---
- drivers/thermal/rcar_gen3_thermal.c                | 141 +++++++++----
- drivers/thermal/st/st_thermal.c                    |   4 +-
- drivers/thermal/st/st_thermal.h                    |   2 +-
- drivers/thermal/st/st_thermal_memmap.c             |   6 +-
- drivers/thermal/sun8i_thermal.c                    |  59 ++----
- drivers/thermal/tegra/tegra30-tsensor.c            |   3 +-
- drivers/thermal/thermal-generic-adc.c              |   4 +
- drivers/thermal/thermal_core.h                     |   2 +
- drivers/thermal/thermal_hwmon.c                    |   5 +-
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c |   3 +-
- 32 files changed, 690 insertions(+), 295 deletions(-)
