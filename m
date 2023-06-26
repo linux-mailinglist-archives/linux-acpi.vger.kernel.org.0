@@ -2,231 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97C4773DE81
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jun 2023 14:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8877673DE89
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jun 2023 14:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229501AbjFZMKJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Jun 2023 08:10:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46710 "EHLO
+        id S229910AbjFZML3 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 26 Jun 2023 08:11:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229631AbjFZMKI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 08:10:08 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44F40E4E;
-        Mon, 26 Jun 2023 05:10:06 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qDl2c-00038b-IR; Mon, 26 Jun 2023 14:09:58 +0200
-Message-ID: <ed5f982e-c12c-b3a2-1108-62fba50bf9db@leemhuis.info>
-Date:   Mon, 26 Jun 2023 14:09:57 +0200
+        with ESMTP id S229932AbjFZML3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 08:11:29 -0400
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EECC1B7;
+        Mon, 26 Jun 2023 05:11:28 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-98502b12fd4so77250866b.1;
+        Mon, 26 Jun 2023 05:11:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687781486; x=1690373486;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dZhXM3abO/TWseJ+v7a10dpSoRYmrv1y4DXO0h+pT1k=;
+        b=XCUu0fMOZMj3ruHVxzY9UIHq7zkjvv/PQhu+6XMB0zb3aE4S1YTBZh++BtTLoXDYXC
+         ILqvEoTEzExHmq38Ovrxz0DMPAuNtmhwF3C/+pZ0A8n6DOQJ+W0wVWYKuHLipG3o1DPi
+         oJA8XB1aExCe0+ZNlf+OE/jS8P+AJzV3HbiOGVYJwcvBEEVmLGptvYqYivgOMYSiO58r
+         u1mMcUJg9xn+yHVYu+OZDbFFYQ0xcnq4OS7cmrI9k4dZCPm2AqE3Pg75qExslB2CDibO
+         QboLgW8YimH3kNZmQ8bzo4fV1xgUzmxq/zLlwlG5CneR2hyUh9WH4PMSgMI+q8eykFK3
+         B/Xw==
+X-Gm-Message-State: AC+VfDypNn+vWEZV5lGuN7qgBEhg12m2CCT7hrgXP2QQHmXaERRj6GOW
+        CEH0QedpQdHdFJDjERmwrAoVQwJ2BmHBi3xzuyklClH1
+X-Google-Smtp-Source: ACHHUZ6H6DoeG3UB/LQA/p9j7IRcCxorV6gO+ljSvS4+XcuK+CQNaWjZalZHmrp9JrD0ECM5lGn31laiEMF0WfqLBEs=
+X-Received: by 2002:a17:906:100a:b0:987:81d:9d49 with SMTP id
+ 10-20020a170906100a00b00987081d9d49mr20762464ejm.7.1687781486213; Mon, 26 Jun
+ 2023 05:11:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI string"?
- (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of system)
-Content-Language: en-US, de-DE
-To:     Nick Hastings <nicholaschastings@gmail.com>,
-        Karol Herbst <kherbst@redhat.com>
-Cc:     Lyude Paul <lyude@redhat.com>, Lukas Wunner <lukas@wunner.de>,
-        Salvatore Bonaccorso <carnil@debian.org>,
-        "1036530@bugs.debian.org" <1036530@bugs.debian.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+References: <20230621151652.79579-1-andriy.shevchenko@linux.intel.com>
+ <CAJZ5v0jt8XCzUxQaBXLz0zXezih1Urq=dt-K9PWVY1JpN=Go6Q@mail.gmail.com>
+ <ZJSQf07cO6qmNyCn@smile.fi.intel.com> <CAJZ5v0iKLtQpUnhMqB6zgwbURXGFZkje5rNORS9MLqYN=13nWg@mail.gmail.com>
+ <ZJlJFtsXoC6JyLxY@smile.fi.intel.com> <ZJlsEggaJZc9u15T@smile.fi.intel.com>
+In-Reply-To: <ZJlsEggaJZc9u15T@smile.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 26 Jun 2023 14:11:10 +0200
+Message-ID: <CAJZ5v0iU5LXcjG8j+S1VZbBmTWGdOdM2W4Yf8HMou2=HQW0-nA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] ACPI: platform: Ignore SMB0001 only when it has resources
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
         Len Brown <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        "Limonciello, Mario" <Mario.Limonciello@amd.com>
-References: <ZHUt9xQKCwCflvVC@xps>
- <8537d965-ddf4-7f45-6459-d5acf520376e@amd.com> <ZHWfMBeAONerAJmd@xps>
- <ZHfa/wQlaVCeUC22@xps> <fe0ab1fa-6ed6-dc64-8165-8fc70669317b@amd.com>
- <CACO55tsuO1kQUFfPdPFUHm4WEQseCR2tQSDhFRzR+8wOECZCyA@mail.gmail.com>
- <MN0PR12MB61017541F5AC55485A490BCDE2499@MN0PR12MB6101.namprd12.prod.outlook.com>
- <CACO55tudULtvt_Hcdg+uqXeYkSAR_NZ1oD=R_KhuE_THSRe88g@mail.gmail.com>
- <MN0PR12MB6101DE067CF85E59AF187763E2499@MN0PR12MB6101.namprd12.prod.outlook.com>
- <CACO55tuqAH5Zt+X9pjLFZ-RcFgxpgjpqmrAHPvm4=fb_DMBHyw@mail.gmail.com>
- <ZHkxYo/a+/uInkLG@xps>
- <MN0PR12MB610181D29933EE4787DE9BC8E24EA@MN0PR12MB6101.namprd12.prod.outlook.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <MN0PR12MB610181D29933EE4787DE9BC8E24EA@MN0PR12MB6101.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1687781406;44574813;
-X-HE-SMSGID: 1qDl2c-00038b-IR
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Andi Shyti <andi.shyti@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Michael Brunner <michael.brunner@kontron.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
-for once, to make this easily accessible to everyone.
+On Mon, Jun 26, 2023 at 12:44 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Mon, Jun 26, 2023 at 11:15:19AM +0300, Andy Shevchenko wrote:
+> > On Fri, Jun 23, 2023 at 04:43:55PM +0200, Rafael J. Wysocki wrote:
+> > > On Thu, Jun 22, 2023 at 8:19 PM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > > On Thu, Jun 22, 2023 at 05:53:13PM +0200, Rafael J. Wysocki wrote:
+> > > > > On Wed, Jun 21, 2023 at 5:16 PM Andy Shevchenko
+> > > > > <andriy.shevchenko@linux.intel.com> wrote:
+>
+> ...
+>
+> > > BTW, this doesn't need to increment the count even.  It could just
+> > > terminate the walk on the first valid resource found and tell the
+> > > caller to return true in that case.
+> >
+> > Indeed, thank you for the hint!
+>
+> Actually it's doesn't matter if we count them or not, we still must use the
+> context of the call to set up a flag or whatever.
 
-Nick, what's the status/was there any progress? Did you do what Mario
-suggested and file a nouveau bug?
+No, it is sufficient to pass a pointer to a bool variable.
 
-I ask, as I still have this on my list of regressions and it seems there
-was no progress in three+ weeks now.
+> With the current code in mind I prefer to count resources and compare that
+> to be non-zero. This will help to read and understand code better.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
-
-#regzbot backburner: slow progress, likely just affects one machine
-#regzbot poke
-
-
-On 02.06.23 02:57, Limonciello, Mario wrote:
-> [AMD Official Use Only - General]
-> 
->> -----Original Message-----
->> From: Nick Hastings <nicholaschastings@gmail.com>
->> Sent: Thursday, June 1, 2023 7:02 PM
->> To: Karol Herbst <kherbst@redhat.com>
->> Cc: Limonciello, Mario <Mario.Limonciello@amd.com>; Lyude Paul
->> <lyude@redhat.com>; Lukas Wunner <lukas@wunner.de>; Salvatore
->> Bonaccorso <carnil@debian.org>; 1036530@bugs.debian.org; Rafael J.
->> Wysocki <rafael@kernel.org>; Len Brown <lenb@kernel.org>; linux-
->> acpi@vger.kernel.org; linux-kernel@vger.kernel.org;
->> regressions@lists.linux.dev
->> Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI
->> string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of system)
->>
->> Hi,
->>
->> * Karol Herbst <kherbst@redhat.com> [230602 03:10]:
->>> On Thu, Jun 1, 2023 at 7:21 PM Limonciello, Mario
->>> <Mario.Limonciello@amd.com> wrote:
->>>>> -----Original Message-----
->>>>> From: Karol Herbst <kherbst@redhat.com>
->>>>> Sent: Thursday, June 1, 2023 12:19 PM
->>>>> To: Limonciello, Mario <Mario.Limonciello@amd.com>
->>>>> Cc: Nick Hastings <nicholaschastings@gmail.com>; Lyude Paul
->>>>> <lyude@redhat.com>; Lukas Wunner <lukas@wunner.de>; Salvatore
->>>>> Bonaccorso <carnil@debian.org>; 1036530@bugs.debian.org; Rafael J.
->>>>> Wysocki <rafael@kernel.org>; Len Brown <lenb@kernel.org>; linux-
->>>>> acpi@vger.kernel.org; linux-kernel@vger.kernel.org;
->>>>> regressions@lists.linux.dev
->>>>> Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI
->>>>> string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of
->> system)
->>>>>
->>>>> On Thu, Jun 1, 2023 at 6:54 PM Limonciello, Mario
->>>>> <Mario.Limonciello@amd.com> wrote:
->>>>>>
->>>>>> [AMD Official Use Only - General]
->>>>>>
->>>>>>> -----Original Message-----
->>>>>>> From: Karol Herbst <kherbst@redhat.com>
->>>>>>> Sent: Thursday, June 1, 2023 11:33 AM
->>>>>>> To: Limonciello, Mario <Mario.Limonciello@amd.com>
->>>>>>> Cc: Nick Hastings <nicholaschastings@gmail.com>; Lyude Paul
->>>>>>> <lyude@redhat.com>; Lukas Wunner <lukas@wunner.de>; Salvatore
->>>>>>> Bonaccorso <carnil@debian.org>; 1036530@bugs.debian.org; Rafael
->> J.
->>>>>>> Wysocki <rafael@kernel.org>; Len Brown <lenb@kernel.org>; linux-
->>>>>>> acpi@vger.kernel.org; linux-kernel@vger.kernel.org;
->>>>>>> regressions@lists.linux.dev
->>>>>>> Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video
->> _OSI
->>>>>>> string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of
->>>>> system)
->>>>>>>
->>>>>>> On Thu, Jun 1, 2023 at 6:18 PM Limonciello, Mario
->>>>>>>>
->>>>>>>> Lyude, Lukas, Karol
->>>>>>>>
->>>>>>>> This thread is in relation to this commit:
->>>>>>>>
->>>>>>>> 24867516f06d ("ACPI: OSI: Remove Linux-Dell-Video _OSI string")
->>>>>>>>
->>>>>>>> Nick has found that runtime PM is *not* working for nouveau.
->>>>>>>>
->>>>>>>
->>>>>>> keep in mind we have a list of PCIe controllers where we apply a
->>>>>>> workaround:
->>>>>>>
->>>>>
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers
->>>>>>> /gpu/drm/nouveau/nouveau_drm.c?h=v6.4-rc4#n682
->>>>>>>
->>>>>>> And I suspect there might be one or two more IDs we'll have to add
->>>>>>> there. Do we have any logs?
->>>>>>
->>>>>> There's some archived onto the distro bug.  Search this page for
->>>>> "journalctl.log.gz"
->>>>>> https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1036530
->>>>>>
->>>>>
->>>>> interesting.. It seems to be the same controller used here. I wonder
->>>>> if the pci topology is different or if the workaround is applied at
->>>>> all.
->>>>
->>>> I didn't see the message in the log about the workaround being applied
->>>> in that log, so I guess PCI topology difference is a likely suspect.
->>>>
->>>
->>> yeah, but I also couldn't see a log with the usual nouveau messages,
->>> so it's kinda weird.
->>>
->>> Anyway, the output of `lspci -tvnn` would help
->>
->> % lspci -tvnn
->> -[0000:00]-+-00.0  Intel Corporation Device [8086:3e20]
->>            +-01.0-[01]----00.0  NVIDIA Corporation TU117M [GeForce GTX 1650
->> Mobile / Max-Q] [10de:1f91]
-> 
-> So the bridge it's connected to is the same that the quirk *should have been* triggering.
-> 
-> May 29 15:02:42 xps kernel: pci 0000:00:01.0: [8086:1901] type 01 class 0x060400
-> 
-> Since the quirk isn't working and this is still a problem in 6.4-rc4 I suggest opening a
-> Nouveau drm bug to figure out why.
-> 
->>            +-02.0  Intel Corporation CoffeeLake-H GT2 [UHD Graphics 630]
->> [8086:3e9b]
->>            +-04.0  Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core
->> Processor Thermal Subsystem [8086:1903]
->>            +-08.0  Intel Corporation Xeon E3-1200 v5/v6 / E3-1500 v5 /
->> 6th/7th/8th Gen Core Processor Gaussian Mixture Model [8086:1911]
->>            +-12.0  Intel Corporation Cannon Lake PCH Thermal Controller
->> [8086:a379]
->>            +-14.0  Intel Corporation Cannon Lake PCH USB 3.1 xHCI Host Controller
->> [8086:a36d]
->>            +-14.2  Intel Corporation Cannon Lake PCH Shared SRAM [8086:a36f]
->>            +-15.0  Intel Corporation Cannon Lake PCH Serial IO I2C Controller #0
->> [8086:a368]
->>            +-15.1  Intel Corporation Cannon Lake PCH Serial IO I2C Controller #1
->> [8086:a369]
->>            +-16.0  Intel Corporation Cannon Lake PCH HECI Controller [8086:a360]
->>            +-17.0  Intel Corporation Cannon Lake Mobile PCH SATA AHCI Controller
->> [8086:a353]
->>            +-1b.0-[02-3a]----00.0-[03-3a]--+-00.0-[04]----00.0  Intel Corporation
->> JHL6340 Thunderbolt 3 NHI (C step) [Alpine Ridge 2C 2016] [8086:15d9]
->>            |                               +-01.0-[05-39]--
->>            |                               \-02.0-[3a]----00.0  Intel Corporation JHL6340
->> Thunderbolt 3 USB 3.1 Controller (C step) [Alpine Ridge 2C 2016]
->> [8086:15db]
->>            +-1c.0-[3b]----00.0  Intel Corporation Wi-Fi 6 AX200 [8086:2723]
->>            +-1c.4-[3c]----00.0  Realtek Semiconductor Co., Ltd. RTS525A PCI
->> Express Card Reader [10ec:525a]
->>            +-1d.0-[3d]----00.0  Samsung Electronics Co Ltd NVMe SSD Controller
->> SM981/PM981/PM983 [144d:a808]
->>            +-1f.0  Intel Corporation Cannon Lake LPC Controller [8086:a30e]
->>            +-1f.3  Intel Corporation Cannon Lake PCH cAVS [8086:a348]
->>            +-1f.4  Intel Corporation Cannon Lake PCH SMBus Controller
->> [8086:a323]
->>            \-1f.5  Intel Corporation Cannon Lake PCH SPI Controller
->>            [8086:a324]
->>
->>
->> Regards,
->>
->> Nick.
-> 
+I'm not sure.  The condition is "if there is at least one valid
+resource, skip the device".  Counting them all will make casual
+readers wonder why IMO.
