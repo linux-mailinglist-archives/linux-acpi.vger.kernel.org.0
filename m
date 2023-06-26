@@ -2,155 +2,272 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9D3A73EE73
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jun 2023 00:10:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC5BA73EEAD
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jun 2023 00:34:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbjFZWKB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Jun 2023 18:10:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58718 "EHLO
+        id S229638AbjFZWeH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Jun 2023 18:34:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232034AbjFZWJq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 18:09:46 -0400
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2068.outbound.protection.outlook.com [40.107.102.68])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D0C430E7;
-        Mon, 26 Jun 2023 15:06:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oO5bQoeQja6RQmSJOGv4K9mortSVrXj+TC8MZX7Xxt27Wgis94JC5RiBgDmT1fCEGMOsWRxUBp2PDAdRFggUQMMU8nDe9g52zYSxm7iJWaHB8HM9Tg5y+LW1VZmG8CzjtlPDLgpYQRwrWT4/AYrM2SajHj94MH7xES+d1nTDm0T186v/Qvw3rwHMelqY47pDeF+chFJM97C70kSYu5GPGDdDriEHnLSgudTb4Hkl9MAMmh205eUyRfNgvqM00OqjYq7gkabA7cJ9scl4rQRm5EY9w7/QSsnYDNDMf2P9Bqf49mkgyJcWrwvFmDSES8X3lRxcAOsorJOei/ASlfIxCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i6AWKgJErSzUvCvVsgpQC7nwntbSSNupISuzTh2hUAY=;
- b=lITyVNwpx2zsws5R2xfVk+FGLJsE9NLOtoJ54Bm4MtMo93jzcl66wor06Jr1YXU035/DYZiULkksEq8imLxya+zbyjIPCOW5kxNNCWWGTSnI5nOKV5Gx2ZrwVgqg2Y34wxAu7Ugw0C1SxdNWF071nFsdkqbKPbfp7Z54u6mErN255EyUBQ6giTnX6G66IelYEjXCA1LmSpJ/GQuP8DlFUbqBtWrFsPs122XHWy6A3/0izanOCO+1LXz7HhInk1oPLwh2kQK1VW7DTPbuQrY88HLRTtzBosMocWbecnp6nTFdNX/XLgs5jb3wyeHBaDwZoxa2JwYeOlFmkID20ffyhA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i6AWKgJErSzUvCvVsgpQC7nwntbSSNupISuzTh2hUAY=;
- b=iStM06J20o0mYKopV+a6q3lDL5uRzpfDdsRZQrniFD6s+tV1qCCVgUrOAibF+4Qe5znEqNhzlmPxhB1ga6uOqiEsJxs04aEIFOb5PrcQfBVT3SoyswpxV0Fx+OtwL0OKTpwGVqEHlJCC3CcrsRHr49ocbm1nC6HyRa5Hqoye2A/rT87KxqJb80lUXUbYL2Qczg3lX+4Tt5tLeHQ/o1GGgjy6NGf45kKg+g/6NiCbWyw+imQ5UmfWug7rdoCBk5ljz/6Q3ri5MIxjfKscn4hPIrObtkOO8NAynD2eJeFhaaGdHnzm5OX5KFYrSReRLsFAih7u30DerG0kMQkM4wuxaw==
-Received: from BN9PR03CA0405.namprd03.prod.outlook.com (2603:10b6:408:111::20)
- by DS0PR12MB8271.namprd12.prod.outlook.com (2603:10b6:8:fb::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6521.21; Mon, 26 Jun 2023 22:06:13 +0000
-Received: from BN8NAM11FT021.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:111:cafe::80) by BN9PR03CA0405.outlook.office365.com
- (2603:10b6:408:111::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.33 via Frontend
- Transport; Mon, 26 Jun 2023 22:06:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN8NAM11FT021.mail.protection.outlook.com (10.13.177.114) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6500.47 via Frontend Transport; Mon, 26 Jun 2023 22:06:12 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Mon, 26 Jun 2023
- 15:05:59 -0700
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Mon, 26 Jun
- 2023 15:05:59 -0700
-Received: from build-abmainkar-20230620T092408093.nvidia.com (10.127.8.11) by
- mail.nvidia.com (10.129.68.7) with Microsoft SMTP Server id 15.2.986.37 via
- Frontend Transport; Mon, 26 Jun 2023 15:05:59 -0700
-From:   Abhishek Mainkar <abmainkar@nvidia.com>
-To:     <robert.moore@intel.com>, <rafael.j.wysocki@intel.com>,
-        <lenb@kernel.org>
-CC:     <linux-acpi@vger.kernel.org>,
-        <acpica-devel@lists.linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <abmainkar@nvidia.com>
-Subject: [Patch] acpica: Add AML_NO_OPERAND_RESOLVE flag to Timer
-Date:   Mon, 26 Jun 2023 22:05:25 +0000
-Message-ID: <20230626220525.1654780-1-abmainkar@nvidia.com>
-X-Mailer: git-send-email 2.17.1
-X-NVConfidentiality: public
+        with ESMTP id S229456AbjFZWeH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 18:34:07 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 982C2E53;
+        Mon, 26 Jun 2023 15:34:05 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-668711086f4so2503776b3a.1;
+        Mon, 26 Jun 2023 15:34:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687818845; x=1690410845;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=JEICAU15slllX+Lkh6ej3nIM4496nJAdw6QRd6tNHGo=;
+        b=l/RLDoqfu4S8Rt97BtNa3P1/8vd58dc0IlfXF/ilJ5s1SBukM/ChUGtUPnGSMg5fKk
+         q9/n2SjQ1h+aAQVfJlSsSlXDAM9W4k+qr7UXi306JWt+l+owTqZXSsLZfc+kaqX1WHow
+         3UNbDmmvai8HCIDNNWMuZJ+1+5xw6fj4+RKHD6GkRWR4TxQgrXe4bA00uVGpkvhvieEe
+         vNt9q6VHOvAhX/hIS94gYA0+e7KdNuV+5Aj+uu9SnkcwTA5od1lWBoaFGX2i9IObtPJW
+         9o242GxvGYn5zvuh735hrlYRzAfGSBjHCgIYJPHD7Qvv5OTfADziq4vgKH3GSslTRSdj
+         U2hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687818845; x=1690410845;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JEICAU15slllX+Lkh6ej3nIM4496nJAdw6QRd6tNHGo=;
+        b=gBskz29atYXHzC1f81dpc5u5i3ZNdozz4iamq6Cm1/Qa/ld5lTdFJsnlvjuhovGnkd
+         oEftIQ5y94qYnTVJ0t8w5/cy2zY+zCzjwtVf/lY0laflY6IPs/8lpcrKcHzl7R5o9ic/
+         n4PZRxn93KWy7oHHQF/nKup5fS3Q+Tt2vHSqPOprN8hO1dtzoH2Xwpt+pVcmJ5fXCWBe
+         nZZrrnm4KBWFrFJB8CpOGvlpbyA59FXqkmAwZlStIg19kQVoBwiVRoPVZ+fm+u+xhGb1
+         HD7bT5pIUzXwkomvOmFX8y2ObI+MuxZlaKkoJ8faqsyY+UY333Us9/aRCshidX49/GJe
+         Lw7A==
+X-Gm-Message-State: AC+VfDzYMo3SUhfwxguR+6ynIDZwVDwQ0q3Bky8BT4TgSCJ/QERLU1Uw
+        roTvBxhx+jbk9OnW4yjQrbYhm91myk5wmoZM
+X-Google-Smtp-Source: ACHHUZ5wTCBCt3YlwbiIZnNvzwAYCQGBX/Fj3D6gZWBjMfMyGlH9MxvgVI4ceYhSzkErIi0OCvTcKQ==
+X-Received: by 2002:a05:6a20:a121:b0:126:23d:cd10 with SMTP id q33-20020a056a20a12100b00126023dcd10mr13607964pzk.21.1687818844824;
+        Mon, 26 Jun 2023 15:34:04 -0700 (PDT)
+Received: from localhost ([2405:6581:d4e0:1600:59cc:f1fc:e0e2:7431])
+        by smtp.gmail.com with ESMTPSA id bm2-20020a056a00320200b0063b675f01a5sm4451607pfb.11.2023.06.26.15.34.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jun 2023 15:34:04 -0700 (PDT)
+Date:   Tue, 27 Jun 2023 07:34:01 +0900
+From:   Nick Hastings <nicholaschastings@gmail.com>
+To:     Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Salvatore Bonaccorso <carnil@debian.org>,
+        "1036530@bugs.debian.org" <1036530@bugs.debian.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Limonciello, Mario" <Mario.Limonciello@amd.com>
+Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI
+ string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of system)
+Message-ID: <ZJoSWftrHO65wmxz@xps>
+References: <ZHfa/wQlaVCeUC22@xps>
+ <fe0ab1fa-6ed6-dc64-8165-8fc70669317b@amd.com>
+ <CACO55tsuO1kQUFfPdPFUHm4WEQseCR2tQSDhFRzR+8wOECZCyA@mail.gmail.com>
+ <MN0PR12MB61017541F5AC55485A490BCDE2499@MN0PR12MB6101.namprd12.prod.outlook.com>
+ <CACO55tudULtvt_Hcdg+uqXeYkSAR_NZ1oD=R_KhuE_THSRe88g@mail.gmail.com>
+ <MN0PR12MB6101DE067CF85E59AF187763E2499@MN0PR12MB6101.namprd12.prod.outlook.com>
+ <CACO55tuqAH5Zt+X9pjLFZ-RcFgxpgjpqmrAHPvm4=fb_DMBHyw@mail.gmail.com>
+ <ZHkxYo/a+/uInkLG@xps>
+ <MN0PR12MB610181D29933EE4787DE9BC8E24EA@MN0PR12MB6101.namprd12.prod.outlook.com>
+ <ed5f982e-c12c-b3a2-1108-62fba50bf9db@leemhuis.info>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT021:EE_|DS0PR12MB8271:EE_
-X-MS-Office365-Filtering-Correlation-Id: ed561602-4811-48e4-f2f5-08db76918e0c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /xyddirrkkYf/KEk/PizZ40lHTZuM0XNthljnOeXmhLPV0+Agc3UnBh/XwwMy+4Xx49EmF6PjbYC3q8ilY0hZmjzoMojGSYRyZnsac04aqv2uV5gLCHfmufus7jEHMbw2DeU/IJumGaan1VbX4iFkPFM+Z9tYK3l8AFuizqKv2imGf3cbtyC4DmYjboJ2EZonp7Kz1c8+v8xt9a3uQyZSypDP+yx74AhjGXpU4YWpBj12htOLXT3RwFSrqy4IiJBabWC5AGKSZSKGnA0LV1GwG+CGVUu7M0bTvUP4BSFMbG3d12bAqTjsMDIa03gX1BCsGm8Y8gQlXPyjmhzpSHXE3eOnVcJ26Wkyu1755Frq5S/Yse3OYN0vSkSxkz/y+Srb2/8LEggT4CWx51MsMCTr6iAwlml2v5WxLyytYRrhxiuxIHqj4MnTg2XTcnKrz85dTnkz4SD7ZaVWNiFlQi5InioAumlqGyz+FMxMv5GFlU7ibDIBGMqeM0TNiq/d8UyEdErmIeooDhUruA0DX4wmm0jMIEbiBRK2yjr7pfMFiuCUnv2GxkknnFMFOCqoVXDNBsHk1G7KlbOKpRkKAmEg4PnmAsFqJbu6vj/2Ygw38ok2kPf6U7HoxJHk4amEVQoDSCRL0mlsDejZgjuDalRW337IREbgHQ/NKaLEZPO1fHh9++7H/pqPtFoBMh/m7EvriL+/FfqyrNAad1rw4URRxc47RWbz+DlveuzulWXWAfFeMByMC+Pe2NINa9wdXA4
-X-Forefront-Antispam-Report: CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230028)(4636009)(396003)(346002)(39860400002)(376002)(136003)(451199021)(40470700004)(36840700001)(46966006)(5660300002)(4326008)(478600001)(36756003)(316002)(70206006)(70586007)(8676002)(8936002)(2906002)(40460700003)(40480700001)(36860700001)(110136005)(54906003)(86362001)(41300700001)(7696005)(186003)(82310400005)(336012)(426003)(1076003)(26005)(47076005)(356005)(2616005)(107886003)(83380400001)(7636003)(6666004)(82740400003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2023 22:06:12.6574
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed561602-4811-48e4-f2f5-08db76918e0c
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT021.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8271
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ed5f982e-c12c-b3a2-1108-62fba50bf9db@leemhuis.info>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-According to the ACPI specification 19.6.134, no argument is
-required to be passed for ASL Timer instruction. For taking
-care of no argument, AML_NO_OPERAND_RESOLVE flag is added to
-ASL Timer instruction opcode.
+Hi Thorsten,
 
-When ASL timer instruction interpreted by ACPI interpreter,
-getting error. After adding AML_NO_OPERAND_RESOLVE flag to
-ASL Timer instruction opcode, issue is not observed.
+* Linux regression tracking (Thorsten Leemhuis) <regressions@leemhuis.info> [230626 21:09]:
+> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+> for once, to make this easily accessible to everyone.
+> 
+> Nick, what's the status/was there any progress? Did you do what Mario
+> suggested and file a nouveau bug?
 
-=============================================================
-UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12
-index -1 is out of range for type 'acpi_operand_object *[9]'
-CPU: 37 PID: 1678 Comm: cat Not tainted
-6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
-HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
- dump_backtrace+0xe0/0x130
- show_stack+0x20/0x60
- dump_stack_lvl+0x68/0x84
- dump_stack+0x18/0x34
- ubsan_epilogue+0x10/0x50
- __ubsan_handle_out_of_bounds+0x80/0x90
- acpi_ds_exec_end_op+0x1bc/0x6d8
- acpi_ps_parse_loop+0x57c/0x618
- acpi_ps_parse_aml+0x1e0/0x4b4
- acpi_ps_execute_method+0x24c/0x2b8
- acpi_ns_evaluate+0x3a8/0x4bc
- acpi_evaluate_object+0x15c/0x37c
- acpi_evaluate_integer+0x54/0x15c
- show_power+0x8c/0x12c [acpi_power_meter]
+It was not apparent that the suggestion to open "a Nouveau drm bug" was
+addressed to me.
 
-Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
----
- drivers/acpi/acpica/psopcode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> I ask, as I still have this on my list of regressions and it seems there
+> was no progress in three+ weeks now.
 
-diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
-index bef69e87a0a2..8c34c0ffb1d9 100644
---- a/drivers/acpi/acpica/psopcode.c
-+++ b/drivers/acpi/acpica/psopcode.c
-@@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
- 
- /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
- 			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
--			 AML_FLAGS_EXEC_0A_0T_1R),
-+			 AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
- 
- /* ACPI 5.0 opcodes */
- 
--- 
-2.17.1
+I have not pursued this further since as far as I could tell I already
+provided all requested information and I don't actually use nouveau, so
+I blacklisted it.
+
+Regards,
+
+Nick.
+
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
+> 
+> #regzbot backburner: slow progress, likely just affects one machine
+> #regzbot poke
+> 
+> 
+> On 02.06.23 02:57, Limonciello, Mario wrote:
+> > [AMD Official Use Only - General]
+> > 
+> >> -----Original Message-----
+> >> From: Nick Hastings <nicholaschastings@gmail.com>
+> >> Sent: Thursday, June 1, 2023 7:02 PM
+> >> To: Karol Herbst <kherbst@redhat.com>
+> >> Cc: Limonciello, Mario <Mario.Limonciello@amd.com>; Lyude Paul
+> >> <lyude@redhat.com>; Lukas Wunner <lukas@wunner.de>; Salvatore
+> >> Bonaccorso <carnil@debian.org>; 1036530@bugs.debian.org; Rafael J.
+> >> Wysocki <rafael@kernel.org>; Len Brown <lenb@kernel.org>; linux-
+> >> acpi@vger.kernel.org; linux-kernel@vger.kernel.org;
+> >> regressions@lists.linux.dev
+> >> Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI
+> >> string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of system)
+> >>
+> >> Hi,
+> >>
+> >> * Karol Herbst <kherbst@redhat.com> [230602 03:10]:
+> >>> On Thu, Jun 1, 2023 at 7:21 PM Limonciello, Mario
+> >>> <Mario.Limonciello@amd.com> wrote:
+> >>>>> -----Original Message-----
+> >>>>> From: Karol Herbst <kherbst@redhat.com>
+> >>>>> Sent: Thursday, June 1, 2023 12:19 PM
+> >>>>> To: Limonciello, Mario <Mario.Limonciello@amd.com>
+> >>>>> Cc: Nick Hastings <nicholaschastings@gmail.com>; Lyude Paul
+> >>>>> <lyude@redhat.com>; Lukas Wunner <lukas@wunner.de>; Salvatore
+> >>>>> Bonaccorso <carnil@debian.org>; 1036530@bugs.debian.org; Rafael J.
+> >>>>> Wysocki <rafael@kernel.org>; Len Brown <lenb@kernel.org>; linux-
+> >>>>> acpi@vger.kernel.org; linux-kernel@vger.kernel.org;
+> >>>>> regressions@lists.linux.dev
+> >>>>> Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI
+> >>>>> string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of
+> >> system)
+> >>>>>
+> >>>>> On Thu, Jun 1, 2023 at 6:54 PM Limonciello, Mario
+> >>>>> <Mario.Limonciello@amd.com> wrote:
+> >>>>>>
+> >>>>>> [AMD Official Use Only - General]
+> >>>>>>
+> >>>>>>> -----Original Message-----
+> >>>>>>> From: Karol Herbst <kherbst@redhat.com>
+> >>>>>>> Sent: Thursday, June 1, 2023 11:33 AM
+> >>>>>>> To: Limonciello, Mario <Mario.Limonciello@amd.com>
+> >>>>>>> Cc: Nick Hastings <nicholaschastings@gmail.com>; Lyude Paul
+> >>>>>>> <lyude@redhat.com>; Lukas Wunner <lukas@wunner.de>; Salvatore
+> >>>>>>> Bonaccorso <carnil@debian.org>; 1036530@bugs.debian.org; Rafael
+> >> J.
+> >>>>>>> Wysocki <rafael@kernel.org>; Len Brown <lenb@kernel.org>; linux-
+> >>>>>>> acpi@vger.kernel.org; linux-kernel@vger.kernel.org;
+> >>>>>>> regressions@lists.linux.dev
+> >>>>>>> Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video
+> >> _OSI
+> >>>>>>> string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of
+> >>>>> system)
+> >>>>>>>
+> >>>>>>> On Thu, Jun 1, 2023 at 6:18 PM Limonciello, Mario
+> >>>>>>>>
+> >>>>>>>> Lyude, Lukas, Karol
+> >>>>>>>>
+> >>>>>>>> This thread is in relation to this commit:
+> >>>>>>>>
+> >>>>>>>> 24867516f06d ("ACPI: OSI: Remove Linux-Dell-Video _OSI string")
+> >>>>>>>>
+> >>>>>>>> Nick has found that runtime PM is *not* working for nouveau.
+> >>>>>>>>
+> >>>>>>>
+> >>>>>>> keep in mind we have a list of PCIe controllers where we apply a
+> >>>>>>> workaround:
+> >>>>>>>
+> >>>>>
+> >> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers
+> >>>>>>> /gpu/drm/nouveau/nouveau_drm.c?h=v6.4-rc4#n682
+> >>>>>>>
+> >>>>>>> And I suspect there might be one or two more IDs we'll have to add
+> >>>>>>> there. Do we have any logs?
+> >>>>>>
+> >>>>>> There's some archived onto the distro bug.  Search this page for
+> >>>>> "journalctl.log.gz"
+> >>>>>> https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1036530
+> >>>>>>
+> >>>>>
+> >>>>> interesting.. It seems to be the same controller used here. I wonder
+> >>>>> if the pci topology is different or if the workaround is applied at
+> >>>>> all.
+> >>>>
+> >>>> I didn't see the message in the log about the workaround being applied
+> >>>> in that log, so I guess PCI topology difference is a likely suspect.
+> >>>>
+> >>>
+> >>> yeah, but I also couldn't see a log with the usual nouveau messages,
+> >>> so it's kinda weird.
+> >>>
+> >>> Anyway, the output of `lspci -tvnn` would help
+> >>
+> >> % lspci -tvnn
+> >> -[0000:00]-+-00.0  Intel Corporation Device [8086:3e20]
+> >>            +-01.0-[01]----00.0  NVIDIA Corporation TU117M [GeForce GTX 1650
+> >> Mobile / Max-Q] [10de:1f91]
+> > 
+> > So the bridge it's connected to is the same that the quirk *should have been* triggering.
+> > 
+> > May 29 15:02:42 xps kernel: pci 0000:00:01.0: [8086:1901] type 01 class 0x060400
+> > 
+> > Since the quirk isn't working and this is still a problem in 6.4-rc4 I suggest opening a
+> > Nouveau drm bug to figure out why.
+> > 
+> >>            +-02.0  Intel Corporation CoffeeLake-H GT2 [UHD Graphics 630]
+> >> [8086:3e9b]
+> >>            +-04.0  Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core
+> >> Processor Thermal Subsystem [8086:1903]
+> >>            +-08.0  Intel Corporation Xeon E3-1200 v5/v6 / E3-1500 v5 /
+> >> 6th/7th/8th Gen Core Processor Gaussian Mixture Model [8086:1911]
+> >>            +-12.0  Intel Corporation Cannon Lake PCH Thermal Controller
+> >> [8086:a379]
+> >>            +-14.0  Intel Corporation Cannon Lake PCH USB 3.1 xHCI Host Controller
+> >> [8086:a36d]
+> >>            +-14.2  Intel Corporation Cannon Lake PCH Shared SRAM [8086:a36f]
+> >>            +-15.0  Intel Corporation Cannon Lake PCH Serial IO I2C Controller #0
+> >> [8086:a368]
+> >>            +-15.1  Intel Corporation Cannon Lake PCH Serial IO I2C Controller #1
+> >> [8086:a369]
+> >>            +-16.0  Intel Corporation Cannon Lake PCH HECI Controller [8086:a360]
+> >>            +-17.0  Intel Corporation Cannon Lake Mobile PCH SATA AHCI Controller
+> >> [8086:a353]
+> >>            +-1b.0-[02-3a]----00.0-[03-3a]--+-00.0-[04]----00.0  Intel Corporation
+> >> JHL6340 Thunderbolt 3 NHI (C step) [Alpine Ridge 2C 2016] [8086:15d9]
+> >>            |                               +-01.0-[05-39]--
+> >>            |                               \-02.0-[3a]----00.0  Intel Corporation JHL6340
+> >> Thunderbolt 3 USB 3.1 Controller (C step) [Alpine Ridge 2C 2016]
+> >> [8086:15db]
+> >>            +-1c.0-[3b]----00.0  Intel Corporation Wi-Fi 6 AX200 [8086:2723]
+> >>            +-1c.4-[3c]----00.0  Realtek Semiconductor Co., Ltd. RTS525A PCI
+> >> Express Card Reader [10ec:525a]
+> >>            +-1d.0-[3d]----00.0  Samsung Electronics Co Ltd NVMe SSD Controller
+> >> SM981/PM981/PM983 [144d:a808]
+> >>            +-1f.0  Intel Corporation Cannon Lake LPC Controller [8086:a30e]
+> >>            +-1f.3  Intel Corporation Cannon Lake PCH cAVS [8086:a348]
+> >>            +-1f.4  Intel Corporation Cannon Lake PCH SMBus Controller
+> >> [8086:a323]
+> >>            \-1f.5  Intel Corporation Cannon Lake PCH SPI Controller
+> >>            [8086:a324]
+> >>
+> >>
+> >> Regards,
+> >>
+> >> Nick.
+> > 
 
