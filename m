@@ -2,112 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14A6E73D91B
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jun 2023 10:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B53D73D95B
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Jun 2023 10:15:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229763AbjFZIFi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Jun 2023 04:05:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47878 "EHLO
+        id S229501AbjFZIP2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Jun 2023 04:15:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229599AbjFZIFh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 04:05:37 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 192C8126
-        for <linux-acpi@vger.kernel.org>; Mon, 26 Jun 2023 01:05:17 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-31272fcedf6so2570842f8f.2
-        for <linux-acpi@vger.kernel.org>; Mon, 26 Jun 2023 01:05:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1687766715; x=1690358715;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mRzmdoMOtwkf0T97YbD2JaDd570KRK5k9OjuvNurjw8=;
-        b=XeB3HoE8oMKBsezzW5LgcB9DcBXwyNp3TCTl63jec1OkUmWQoPRDnM8T8j5tk2EODK
-         eAIftr0uWaFzQ5LZWXCpMPe2pmJ8E6VRQHvEofQScu9rtyUSmhSurvndmJ3Gn0/ULHA9
-         1540fICw2DmnEMWkdl5jZe/h8lya1AZF4IxTd+gajLlzIe8MHlPevohJ72v3MqB3Su/Y
-         C8GSzDfLFPwPMp06mlq71dM9h/K72L5Mem1dOeZ2Los3FRw3+cRM2ALCs3JY8IYChqmC
-         HhHrHc1z0jTNj8PBMXLYdNldipHV7Yr2L/0CJvbIysheBhr3NoaAzsKC0UbW2+VANiJa
-         qMOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687766715; x=1690358715;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mRzmdoMOtwkf0T97YbD2JaDd570KRK5k9OjuvNurjw8=;
-        b=VVDO9P3JyYkGl5UVHCkNAPtoiMlp3tXjbxXYRk7TyA1tha5nxs4r2FYdCsezhJhttE
-         5q6FXAKEqdRnNgnnG7DpbotBqioxwf2JnVvfscLr8wllVSR50QldDFGqIxPU3yBxj0of
-         JL9rZTQqlzMUseZEAtiRKleOUigAgVhDfM95wLQ4vQoBrfvbJ3KLnC5Si7STSuiGAdmP
-         hYb6UU87mbBK0NSA18L/iYO23BikVxZ7wRXTTR19NvaROxl1jedjH+gDmh9wt7HqM28d
-         edHTUfzJQHJ0FR+9LfblVLGNWG+cifSLU9k350O14gag1/oKyV2DlYDbEExXz2AVI+F8
-         PdWg==
-X-Gm-Message-State: AC+VfDwYY35gkkKz/F1rs4JP9HXRPCcbvzE5lcgYPM3O+kuASNjpIFdl
-        a9C3FclS9niOJEXDdeABo17PxV/C73Wv26lQVTl1Ag==
-X-Google-Smtp-Source: ACHHUZ6srR5n1hfE/ujkiDx2OVuKCraquwPXnR8VYkKk9WgEeorrj44802tRcCvvefKDWYtGcXR2XxP3ak5xsTpC1mk=
-X-Received: by 2002:a5d:674b:0:b0:313:ebbf:3696 with SMTP id
- l11-20020a5d674b000000b00313ebbf3696mr2389037wrw.46.1687766715552; Mon, 26
- Jun 2023 01:05:15 -0700 (PDT)
+        with ESMTP id S229488AbjFZIP1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 04:15:27 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8485C83;
+        Mon, 26 Jun 2023 01:15:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687767326; x=1719303326;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=idVIrM6nyAePhdkzWQmk/OgLjJRW7dN8sqMUgjM5mCI=;
+  b=mYS2/aengGAQM6vtddsM89ph6r2zI1AHmaJE5rXG0t7ObD3p9PxH5GrL
+   t5ODnTr4rJyZ7D9/Tqqou4anZ+wdBhJBjwSDi5ICInxhjoklEYiB7wKQp
+   oz4g7dLETgwWx1J3gBlRvf91hm/hqytJL6w3fqKPA8IkhYMhGsyosSK2x
+   99z0hzD0TIB+412WIWGBfchT4pBov4+R9Gg074+ejd34SjIqnl60PTS7i
+   eK7rcqrZCr62OkCJhsjkQHXNCMCAXzqIIhfbjDWWuXZ7GdKK4c/zZE7qs
+   5HvB6wIfQpa/G9effpxxOOsINXn+A1uky/9QzW0d1RbBXQ7pCThsAIt9D
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10752"; a="360073798"
+X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
+   d="scan'208";a="360073798"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2023 01:15:26 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10752"; a="786058375"
+X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
+   d="scan'208";a="786058375"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004.fm.intel.com with ESMTP; 26 Jun 2023 01:15:23 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qDhNX-006eMM-0H;
+        Mon, 26 Jun 2023 11:15:19 +0300
+Date:   Mon, 26 Jun 2023 11:15:18 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+        Len Brown <lenb@kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Michael Brunner <michael.brunner@kontron.com>
+Subject: Re: [PATCH v2 1/2] ACPI: platform: Ignore SMB0001 only when it has
+ resources
+Message-ID: <ZJlJFtsXoC6JyLxY@smile.fi.intel.com>
+References: <20230621151652.79579-1-andriy.shevchenko@linux.intel.com>
+ <CAJZ5v0jt8XCzUxQaBXLz0zXezih1Urq=dt-K9PWVY1JpN=Go6Q@mail.gmail.com>
+ <ZJSQf07cO6qmNyCn@smile.fi.intel.com>
+ <CAJZ5v0iKLtQpUnhMqB6zgwbURXGFZkje5rNORS9MLqYN=13nWg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
- <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
- <ZEj33QLZqEeL+/y4@FVFF77S0Q05N> <CAEEQ3wmDBJkfOeKCQfcnuE+1=1K0D2pzu+Sn+zPEWk+RHs0NFQ@mail.gmail.com>
- <CAP6exY+ydbzh1EkWTFejzwaW+PA-ySVO2Qj+CVJ1XbSMce2S9Q@mail.gmail.com>
- <CAP6exY+tqAU0j1TVEMTzTb18M6_mPH5bWWiAS=94gyDGTY3hyQ@mail.gmail.com>
- <CAEEQ3w=wBdpZWnUd2WWVBC3BtFiUp-PQtNAtdXE4cO4n0XT-fg@mail.gmail.com>
- <CAMj1kXFGpXEPtYpy1+bs13F2P_LLZf9rTMfYMU=6jzgd3=SEcw@mail.gmail.com>
- <CAEEQ3wnbXE0vJnQRLo5MhfDc-Q4PbNWBoWS-oMn71CcJU51JdA@mail.gmail.com>
- <CAMj1kXHfqkU2QxvjTkGBSkEcTf_HirbdOReOJwdpgz3hM8fBHw@mail.gmail.com>
- <CAEEQ3wn2n48TpNQ3MuvrRH4zzg28SaiOswunPeZ01jFm-TbJ5w@mail.gmail.com>
- <CAMj1kXHgaLD43jx0f6hn_j209LGT_4G+w5XEGaYB9znV5p9tdA@mail.gmail.com>
- <CAP6exYJRE8iM63SX3hQP9_5aKYcnN5x0KOAtZOgeEWU5bwLEBA@mail.gmail.com>
- <CAEEQ3wn2zHUZP8gs8ezCczQLdQJqU6MqAgpcG0YeDW2aYTz0TA@mail.gmail.com> <CAMj1kXFn7+W=ZGNcSLL6p383SbA8=wstutJ85+qvXzt2G66Seg@mail.gmail.com>
-In-Reply-To: <CAMj1kXFn7+W=ZGNcSLL6p383SbA8=wstutJ85+qvXzt2G66Seg@mail.gmail.com>
-From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-Date:   Mon, 26 Jun 2023 16:05:04 +0800
-Message-ID: <CAEEQ3wnXJVBLdqW6GRFuCKuBtr38uKHz7E2+P8TAv1_+b6kBKA@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH] firmware: added a firmware information
- passing method FFI
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     ron minnich <rminnich@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>, rafael@kernel.org,
-        lenb@kernel.org, jdelvare@suse.com, yc.hung@mediatek.com,
-        angelogioacchino.delregno@collabora.com,
-        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
-        tinghan.shen@mediatek.com,
-        lkml - Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-acpi@vger.kernel.org,
-        =?UTF-8?B?6JGb5aOr5bu6?= <geshijian@bytedance.com>,
-        =?UTF-8?B?6Z+m5Lic?= <weidong.wd@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0iKLtQpUnhMqB6zgwbURXGFZkje5rNORS9MLqYN=13nWg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Ard,
+On Fri, Jun 23, 2023 at 04:43:55PM +0200, Rafael J. Wysocki wrote:
+> On Thu, Jun 22, 2023 at 8:19 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Thu, Jun 22, 2023 at 05:53:13PM +0200, Rafael J. Wysocki wrote:
+> > > On Wed, Jun 21, 2023 at 5:16 PM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
 
-On Mon, Jun 26, 2023 at 2:43=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> wr=
-ote:
+...
 
-> I think all of this belongs under arch/riscv
+> > /* Check if the device has resources provided by _CRS method */
+> > #define ACPI_PLATFORM_CHECK_RES         BIT(0)
+> >
+> > ?
+> 
+> Could be, but this is specific to forbidden_ids_list[].  Maybe
+> ACPI_ALLOW_WO_RESOURCES or similar.
 
-Could you look at the content of the patch again? As we discussed
-before, we need to connect to the ACPI and the SMBIOS entry
-At least this part of the code has to be placed in the corresponding place:
-drivers/acpi/osl.c: acpi_os_get_root_pointer()
-drivers/firmware/dmi_scan.c:dmi_scan_machine()
+Got it, will do this way.
 
-Because obtaining firmware information through DTS belongs to the
-content of the driver firmware, it is appropriate to put this piece of
-code in drivers/firmware/ffi.c.
+...
 
-So I insist on the current revision, what do you think?
+> BTW, this doesn't need to increment the count even.  It could just
+> terminate the walk on the first valid resource found and tell the
+> caller to return true in that case.
 
-Thanks,
-Yunhui
+Indeed, thank you for the hint!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
