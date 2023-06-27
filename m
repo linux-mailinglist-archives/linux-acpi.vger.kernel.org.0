@@ -2,157 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0814E73FC19
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jun 2023 14:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D52973FDF2
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jun 2023 16:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230104AbjF0Mke (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Jun 2023 08:40:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45464 "EHLO
+        id S231476AbjF0OgH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Jun 2023 10:36:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229884AbjF0Mkd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Jun 2023 08:40:33 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B369DD
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Jun 2023 05:40:05 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-307d58b3efbso3960271f8f.0
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Jun 2023 05:40:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1687869604; x=1690461604;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QsX4SXg32pBoD8x6wheSWux3YvW6+LLlu5lLGvU4A08=;
-        b=NYX4MwTDi6LDbWSS2P+1hTN3MClyVGAhhslCEAPQIKnmlnbe25HJjHhRIRBb+f//w3
-         nsQztM7eoHxIWyjwPGDxcj6LrpYH6y4eQomxbFNJf9Js/a58EDwYlrfg+o5z3iFSd59z
-         dlHxlGieOEHIow0lzEbjmyEzYo562R+2dcbl60VsU06s8+uF75/daPwM4dSCJ/8TGI5d
-         4Xj9xEPxkZFJ08TX/yQTOxg61XdHXSYPYr3HIGlX7E4m9i80/RaucMWtOvk/blq/dF7D
-         iK8Gt0LCi6jYQiD60h50H6vu70SuJ+dwOA/RJkux6e0a+jfnzIRp+Rt02YyRzNh+0Qi+
-         PWCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687869604; x=1690461604;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QsX4SXg32pBoD8x6wheSWux3YvW6+LLlu5lLGvU4A08=;
-        b=DEJmuHn1d+iL6AxTao34qCE/7ANNEVewNjh9SnS8FP+g1p1T2EapsB8cGF7XSfnuwJ
-         zBCYsjtVUndpLIkU0XU9jGmQq+hOY6/6bU318xg75EkSUrKJAXyqEJQ4/gWb1LmWwAao
-         yF5PI7muYO0zaNDxTywlCFKzCQLT94hkyqjOLANozL18kZqh+B4H+u8BJfSBqwOOQ3h+
-         cpSrLVq2yJJmnFqsCglmldymKyCmeHXr/1WVrp0MgzqZBVyxq64rJ0KwAEcXPGooHvZB
-         XxQyW++EV/lBpLRjnpaUengleCatuYfFkHDEuptOfPnTNFgfNB2ftLkVZOs912qoBaOc
-         BZLg==
-X-Gm-Message-State: AC+VfDw6D2JQ5BTkzOpa1ONVHkNZV/pLGc48gu4pM33VVVXFS12L9OdZ
-        xtN/Nq8nDy5bXUob4ZHrIyj+BUyFoPOV85AnLj75Ng==
-X-Google-Smtp-Source: ACHHUZ78ealNaCFybT1aaDdFLU+JvYWx1kK5RakJszJjSRojkVh7ReDH9O/FAivG5fdaAExlu+rmt39S8z/PbXhiVIw=
-X-Received: by 2002:adf:ee51:0:b0:311:1dfb:2907 with SMTP id
- w17-20020adfee51000000b003111dfb2907mr21187428wro.68.1687869604088; Tue, 27
- Jun 2023 05:40:04 -0700 (PDT)
+        with ESMTP id S231504AbjF0OgD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Jun 2023 10:36:03 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47DB330F1;
+        Tue, 27 Jun 2023 07:35:55 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
+ id 5fa6a326169e7c8a; Tue, 27 Jun 2023 16:35:52 +0200
+Received: from kreacher.localnet (unknown [195.136.19.94])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 6236F660365;
+        Tue, 27 Jun 2023 16:35:52 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Jeremy Compostella <jeremy.compostella@intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: [PATCH v1] ACPI: EC: Fix acpi_ec_dispatch_gpe()
+Date:   Tue, 27 Jun 2023 16:35:52 +0200
+Message-ID: <12234124.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
- <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
- <ZEj33QLZqEeL+/y4@FVFF77S0Q05N> <CAEEQ3wmDBJkfOeKCQfcnuE+1=1K0D2pzu+Sn+zPEWk+RHs0NFQ@mail.gmail.com>
- <CAP6exY+ydbzh1EkWTFejzwaW+PA-ySVO2Qj+CVJ1XbSMce2S9Q@mail.gmail.com>
- <CAP6exY+tqAU0j1TVEMTzTb18M6_mPH5bWWiAS=94gyDGTY3hyQ@mail.gmail.com>
- <CAEEQ3w=wBdpZWnUd2WWVBC3BtFiUp-PQtNAtdXE4cO4n0XT-fg@mail.gmail.com>
- <CAMj1kXFGpXEPtYpy1+bs13F2P_LLZf9rTMfYMU=6jzgd3=SEcw@mail.gmail.com>
- <CAEEQ3wnbXE0vJnQRLo5MhfDc-Q4PbNWBoWS-oMn71CcJU51JdA@mail.gmail.com>
- <CAMj1kXHfqkU2QxvjTkGBSkEcTf_HirbdOReOJwdpgz3hM8fBHw@mail.gmail.com>
- <CAEEQ3wn2n48TpNQ3MuvrRH4zzg28SaiOswunPeZ01jFm-TbJ5w@mail.gmail.com>
- <CAMj1kXHgaLD43jx0f6hn_j209LGT_4G+w5XEGaYB9znV5p9tdA@mail.gmail.com>
- <CAP6exYJRE8iM63SX3hQP9_5aKYcnN5x0KOAtZOgeEWU5bwLEBA@mail.gmail.com>
- <CAEEQ3wn2zHUZP8gs8ezCczQLdQJqU6MqAgpcG0YeDW2aYTz0TA@mail.gmail.com>
- <CAMj1kXFn7+W=ZGNcSLL6p383SbA8=wstutJ85+qvXzt2G66Seg@mail.gmail.com>
- <CAEEQ3wnXJVBLdqW6GRFuCKuBtr38uKHz7E2+P8TAv1_+b6kBKA@mail.gmail.com>
- <CAMj1kXFAsG0nH+2OcG3CBZYqKg=hCRHp8wAmVBFy9vNx6rWgOQ@mail.gmail.com>
- <CAEEQ3wkT_2GbdsjfA_VA+LeyCzdeQ+Bh+admyVjz7rE3cSWSxA@mail.gmail.com> <CAMj1kXGT04HeMqmr7BWYaNQM6jYzYFLGEJY7TNtig-t48n7CLg@mail.gmail.com>
-In-Reply-To: <CAMj1kXGT04HeMqmr7BWYaNQM6jYzYFLGEJY7TNtig-t48n7CLg@mail.gmail.com>
-From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-Date:   Tue, 27 Jun 2023 20:39:52 +0800
-Message-ID: <CAEEQ3wmd4XayKV8BCk+1CZVDXdtCa3vvbhfJyhfkkBccE3fo6w@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH] firmware: added a firmware information
- passing method FFI
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        ron minnich <rminnich@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>, rafael@kernel.org,
-        lenb@kernel.org, jdelvare@suse.com, yc.hung@mediatek.com,
-        angelogioacchino.delregno@collabora.com,
-        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
-        tinghan.shen@mediatek.com,
-        lkml - Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-acpi@vger.kernel.org,
-        =?UTF-8?B?6JGb5aOr5bu6?= <geshijian@bytedance.com>,
-        =?UTF-8?B?6Z+m5Lic?= <weidong.wd@bytedance.com>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrtddtgdefhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffffffkefgheehffelteeiveeffeevhfelteejvddvieejjeelvdeiheeuveeuffenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeehpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgvrhgvmhihrdgtohhmphhoshhtvghllhgrsehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
+ thhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrgh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Ard,
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
->
-> I will defer to Mark or other DT experts to help decide on the naming
-> and general shape of these.
+Commit 896e97bf99ec ("ACPI: EC: Clear GPE on interrupt handling only")
+broke suspend-to-idle at least on Dell XPS13 9360 and 9380.
 
-Okay, thanks.
+The problem is that acpi_ec_dispatch_gpe() must clear the EC GPE,
+because the EC GPE handler never runs when the system is in the
+suspend-to-idle state and if the EC GPE is not cleared by the suspend-
+to-idle loop, it is never cleared at all which leads to a GPE storm.
+This causes suspend-to-idle to burn energy instead of saving it which
+is potentially dangerous (the affected machines heat up rather badly
+when that happens).
+
+Addess this by making acpi_ec_dispatch_gpe() clear the EC GPE as it did
+before.
+
+Fixes: 896e97bf99ec ("ACPI: EC: Clear GPE on interrupt handling only")
+Tested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/ec.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+Index: linux-pm/drivers/acpi/ec.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/ec.c
++++ linux-pm/drivers/acpi/ec.c
+@@ -1267,12 +1267,8 @@ static void acpi_ec_event_handler(struct
+ 	spin_unlock_irq(&ec->lock);
+ }
+ 
+-static void acpi_ec_handle_interrupt(struct acpi_ec *ec)
++static void clear_gpe_and_advance_transaction(struct acpi_ec *ec, bool interrupt)
+ {
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&ec->lock, flags);
+-
+ 	/*
+ 	 * Clear GPE_STS upfront to allow subsequent hardware GPE_STS 0->1
+ 	 * changes to always trigger a GPE interrupt.
+@@ -1289,6 +1285,16 @@ static void acpi_ec_handle_interrupt(str
+ 		acpi_clear_gpe(NULL, ec->gpe);
+ 
+ 	advance_transaction(ec, true);
++}
++
++static void acpi_ec_handle_interrupt(struct acpi_ec *ec)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&ec->lock, flags);
++
++	clear_gpe_and_advance_transaction(ec, true);
++
+ 	spin_unlock_irqrestore(&ec->lock, flags);
+ }
+ 
+@@ -2083,7 +2089,7 @@ bool acpi_ec_dispatch_gpe(void)
+ 	if (acpi_ec_gpe_status_set(first_ec)) {
+ 		pm_pr_dbg("ACPI EC GPE status set\n");
+ 
+-		advance_transaction(first_ec, false);
++		clear_gpe_and_advance_transaction(first_ec, false);
+ 		work_in_progress = acpi_ec_work_in_progress(first_ec);
+ 	}
+ 
 
 
-> However, as I have indicated twice now, it would be better to describe
-> the SMBIOS structured data directly, instead of passing the physical
-> address of one of the existing entry points. This avoids the need for
-> mapping and reserving additional pages that don't carry any relevant
-> information.
->
-> So the node in question should have at least (base, size) and the
-> major, minor and docrev version fields.
 
-Other platforms also need related memory to store this table, don't they?
-Coreboot also completes the construction of this table according to
-its existing code, rather than creating a new description method.
-
-Furthermore, As we discussed before, SMBIOS-related code should be
-placed in the general code, and an entry address is required to
-connect to dmi_scan_machine().
-according to what you said (base, size, region) how can it be
-connected to dmi_scan with an entry address?
-
-So, For SMBIOS, only keep the smbios part in drivers/firmware/ffi.c in
-this patch? If yes in terms of code structure, I will update it in v2.
-
-
-> SMBIOS is a separate set of firmware tables that have little
-> significance to the kernel itself, and describing it via DT makes
-> sense.
->
-> ACPI serves a similar purpose as DT, and so having both at the same
-> time results in a maintenance burden, where the arch code is forced to
-> reason about whether they are consistent with each other, and if not,
-> which description has precedence.
->
-
-Well... I don=E2=80=99t want to discuss too much, according to your
-suggestion, To implement acpi_arch_get_root_pointer() under
-arch/riscv.
-I'll update it on v2.
-
-> If the firmware uses DT as a conduit to deliver the ACPI system
-> description to the OS, it is probably better to pass this via the
-> /chosen node as a special boot argument.
->
-
-This is not the focus of our discussion this time, and we will discuss
-it when we discuss node naming with DTS experts.
-
-
-Thanks,
-Yunhui
