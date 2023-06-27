@@ -2,44 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0024D73F90D
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jun 2023 11:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0814E73FC19
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jun 2023 14:40:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231542AbjF0Juv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Jun 2023 05:50:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51224 "EHLO
+        id S230104AbjF0Mke (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Jun 2023 08:40:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231597AbjF0Juo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Jun 2023 05:50:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C88242720;
-        Tue, 27 Jun 2023 02:50:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C701E61090;
-        Tue, 27 Jun 2023 09:50:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F74C4339A;
-        Tue, 27 Jun 2023 09:50:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687859436;
-        bh=GFjEtbcDTN8Gj6F61Z5J4CnRI2yWhEjnhaExEl2QQt4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mpvKAggZdcKqUinySEXJb2l8o87xhQH5+AEjcZKuMLX/Ew7ozKVZH8a6z7RIEu9qm
-         OPiVma+XkbALTG59O5dnXT6NxK2ZDyZEavDo3gF0BQllRf29b5SAVUxbq1C84wLjHg
-         hR7ov2m3WfClJNalzdUL38GPeeXiKBTI1ePxJ/+LfJnaUYYUHIJE0PW5w2sQG6raP2
-         9m61CDYZrE1tKADK5cLGy5gaFPFBjnsaD3XhbLCTzgplVZ6+cAfZTqinLn+q5CCwLq
-         Y+NbAfhFLxKEkQV+1Uf5DisI3HM/Ae4qoemlnt0kx15MOvgRRJehZW9t6D0sV/cGRD
-         xX+t4bUT3DHsg==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-4f86dbce369so5760003e87.0;
-        Tue, 27 Jun 2023 02:50:36 -0700 (PDT)
-X-Gm-Message-State: AC+VfDytn76aUI2L2uyFfy8NdAOCKN+l/bJrQzgFFkPokgD+Tj0w6JhF
-        ASp6dx9ICRxeLcU0jty+ivOa6gpjgohD8MPv0Us=
-X-Google-Smtp-Source: ACHHUZ7HHGQJGU4j426QvpbyJvV5wc5YtrVrrBnwcEfMU/9RDmdooc9pB9TdUeU2Mf+9InL4PWDiJbIGNVh0G5MvEFM=
-X-Received: by 2002:a05:6512:6cc:b0:4fb:7675:1ff9 with SMTP id
- u12-20020a05651206cc00b004fb76751ff9mr3473299lff.9.1687859434057; Tue, 27 Jun
- 2023 02:50:34 -0700 (PDT)
+        with ESMTP id S229884AbjF0Mkd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Jun 2023 08:40:33 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B369DD
+        for <linux-acpi@vger.kernel.org>; Tue, 27 Jun 2023 05:40:05 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-307d58b3efbso3960271f8f.0
+        for <linux-acpi@vger.kernel.org>; Tue, 27 Jun 2023 05:40:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1687869604; x=1690461604;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QsX4SXg32pBoD8x6wheSWux3YvW6+LLlu5lLGvU4A08=;
+        b=NYX4MwTDi6LDbWSS2P+1hTN3MClyVGAhhslCEAPQIKnmlnbe25HJjHhRIRBb+f//w3
+         nsQztM7eoHxIWyjwPGDxcj6LrpYH6y4eQomxbFNJf9Js/a58EDwYlrfg+o5z3iFSd59z
+         dlHxlGieOEHIow0lzEbjmyEzYo562R+2dcbl60VsU06s8+uF75/daPwM4dSCJ/8TGI5d
+         4Xj9xEPxkZFJ08TX/yQTOxg61XdHXSYPYr3HIGlX7E4m9i80/RaucMWtOvk/blq/dF7D
+         iK8Gt0LCi6jYQiD60h50H6vu70SuJ+dwOA/RJkux6e0a+jfnzIRp+Rt02YyRzNh+0Qi+
+         PWCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687869604; x=1690461604;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QsX4SXg32pBoD8x6wheSWux3YvW6+LLlu5lLGvU4A08=;
+        b=DEJmuHn1d+iL6AxTao34qCE/7ANNEVewNjh9SnS8FP+g1p1T2EapsB8cGF7XSfnuwJ
+         zBCYsjtVUndpLIkU0XU9jGmQq+hOY6/6bU318xg75EkSUrKJAXyqEJQ4/gWb1LmWwAao
+         yF5PI7muYO0zaNDxTywlCFKzCQLT94hkyqjOLANozL18kZqh+B4H+u8BJfSBqwOOQ3h+
+         cpSrLVq2yJJmnFqsCglmldymKyCmeHXr/1WVrp0MgzqZBVyxq64rJ0KwAEcXPGooHvZB
+         XxQyW++EV/lBpLRjnpaUengleCatuYfFkHDEuptOfPnTNFgfNB2ftLkVZOs912qoBaOc
+         BZLg==
+X-Gm-Message-State: AC+VfDw6D2JQ5BTkzOpa1ONVHkNZV/pLGc48gu4pM33VVVXFS12L9OdZ
+        xtN/Nq8nDy5bXUob4ZHrIyj+BUyFoPOV85AnLj75Ng==
+X-Google-Smtp-Source: ACHHUZ78ealNaCFybT1aaDdFLU+JvYWx1kK5RakJszJjSRojkVh7ReDH9O/FAivG5fdaAExlu+rmt39S8z/PbXhiVIw=
+X-Received: by 2002:adf:ee51:0:b0:311:1dfb:2907 with SMTP id
+ w17-20020adfee51000000b003111dfb2907mr21187428wro.68.1687869604088; Tue, 27
+ Jun 2023 05:40:04 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFibJMYfMbG7vm-cLN2vVQM5eDsYK84NzQ@mail.gmail.com>
  <CAEEQ3wkJB5CKm33mHXUOPX5makYOHF8By6FYGnNzRkM-Mo72OQ@mail.gmail.com>
@@ -56,20 +62,20 @@ References: <20230426034001.16-1-cuiyunhui@bytedance.com> <CAMj1kXEKh9O-ndk3QFib
  <CAEEQ3wn2zHUZP8gs8ezCczQLdQJqU6MqAgpcG0YeDW2aYTz0TA@mail.gmail.com>
  <CAMj1kXFn7+W=ZGNcSLL6p383SbA8=wstutJ85+qvXzt2G66Seg@mail.gmail.com>
  <CAEEQ3wnXJVBLdqW6GRFuCKuBtr38uKHz7E2+P8TAv1_+b6kBKA@mail.gmail.com>
- <CAMj1kXFAsG0nH+2OcG3CBZYqKg=hCRHp8wAmVBFy9vNx6rWgOQ@mail.gmail.com> <CAEEQ3wkT_2GbdsjfA_VA+LeyCzdeQ+Bh+admyVjz7rE3cSWSxA@mail.gmail.com>
-In-Reply-To: <CAEEQ3wkT_2GbdsjfA_VA+LeyCzdeQ+Bh+admyVjz7rE3cSWSxA@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 27 Jun 2023 11:50:22 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGT04HeMqmr7BWYaNQM6jYzYFLGEJY7TNtig-t48n7CLg@mail.gmail.com>
-Message-ID: <CAMj1kXGT04HeMqmr7BWYaNQM6jYzYFLGEJY7TNtig-t48n7CLg@mail.gmail.com>
+ <CAMj1kXFAsG0nH+2OcG3CBZYqKg=hCRHp8wAmVBFy9vNx6rWgOQ@mail.gmail.com>
+ <CAEEQ3wkT_2GbdsjfA_VA+LeyCzdeQ+Bh+admyVjz7rE3cSWSxA@mail.gmail.com> <CAMj1kXGT04HeMqmr7BWYaNQM6jYzYFLGEJY7TNtig-t48n7CLg@mail.gmail.com>
+In-Reply-To: <CAMj1kXGT04HeMqmr7BWYaNQM6jYzYFLGEJY7TNtig-t48n7CLg@mail.gmail.com>
+From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
+Date:   Tue, 27 Jun 2023 20:39:52 +0800
+Message-ID: <CAEEQ3wmd4XayKV8BCk+1CZVDXdtCa3vvbhfJyhfkkBccE3fo6w@mail.gmail.com>
 Subject: Re: [External] Re: [PATCH] firmware: added a firmware information
  passing method FFI
-To:     =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
         Paul Walmsley <paul.walmsley@sifive.com>,
         Albert Ou <aou@eecs.berkeley.edu>,
-        linux-riscv <linux-riscv@lists.infradead.org>
-Cc:     ron minnich <rminnich@gmail.com>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        ron minnich <rminnich@gmail.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Lorenzo Pieralisi <lpieralisi@kernel.org>, rafael@kernel.org,
         lenb@kernel.org, jdelvare@suse.com, yc.hung@mediatek.com,
@@ -82,102 +88,71 @@ Cc:     ron minnich <rminnich@gmail.com>,
         =?UTF-8?B?6Z+m5Lic?= <weidong.wd@bytedance.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-(cc RISC-V maintainers and mailing list)
-
-On Mon, 26 Jun 2023 at 12:20, =E8=BF=90=E8=BE=89=E5=B4=94 <cuiyunhui@byteda=
-nce.com> wrote:
->
-> Hi Ard, Mark,
->
-> On Mon, Jun 26, 2023 at 4:23=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> =
-wrote:
->
-> > DT support for SMBIOS can live in generic code, but the binding has to
-> > be sane. As I suggested before, it probably makes sense to supplant
-> > the entrypoint rather than just carry its address - this means a 'reg'
-> > property with base and size to describe the physical region, and at
-> > least major/minor/docrev fields to describe the version.
->
-> Regarding dts node binding, our current definition is as follows:
-> /dts
-> {
-> ...
-> cfgtables {
-> acpi_phy_ptr =3D 0000000000000000; //u64
-> smbios_phy_ptr =3D 0000000000000000; //u64
-> ...
-> }
-> ...
-> }
->
-> x86 only gave a root_pointer entry address
-> u64 x86_default_get_root_pointer(void)
-> {
->        return boot_params.acpi_rsdp_addr;
-> }
->
-> Regarding the naming of the binding above, Mark,  do you have any suggest=
-ions?
->
-
-I will defer to Mark or other DT experts to help decide on the naming
-and general shape of these.
-
-However, as I have indicated twice now, it would be better to describe
-the SMBIOS structured data directly, instead of passing the physical
-address of one of the existing entry points. This avoids the need for
-mapping and reserving additional pages that don't carry any relevant
-information.
-
-So the node in question should have at least (base, size) and the
-major, minor and docrev version fields.
+Hi Ard,
 
 >
-> > For the ACPI side, you should just implement
-> > acpi_arch_get_root_pointer() under arch/riscv, and wire it up in
-> > whichever way you want. But please check with the RISC-V maintainers
-> > if they are up for this, and whether they want to see this mechanism
-> > contributed to one of the pertinent specifications.
+> I will defer to Mark or other DT experts to help decide on the naming
+> and general shape of these.
+
+Okay, thanks.
+
+
+> However, as I have indicated twice now, it would be better to describe
+> the SMBIOS structured data directly, instead of passing the physical
+> address of one of the existing entry points. This avoids the need for
+> mapping and reserving additional pages that don't carry any relevant
+> information.
 >
-> You suggest putting SMBIOS in general code instead of ACPI, why?
+> So the node in question should have at least (base, size) and the
+> major, minor and docrev version fields.
 
-SMBIOS is a separate set of firmware tables that have little
-significance to the kernel itself, and describing it via DT makes
-sense.
+Other platforms also need related memory to store this table, don't they?
+Coreboot also completes the construction of this table according to
+its existing code, rather than creating a new description method.
 
-ACPI serves a similar purpose as DT, and so having both at the same
-time results in a maintenance burden, where the arch code is forced to
-reason about whether they are consistent with each other, and if not,
-which description has precedence.
+Furthermore, As we discussed before, SMBIOS-related code should be
+placed in the general code, and an entry address is required to
+connect to dmi_scan_machine().
+according to what you said (base, size, region) how can it be
+connected to dmi_scan with an entry address?
 
-> From the perspective of firmware information passing, they are a class.
+So, For SMBIOS, only keep the smbios part in drivers/firmware/ffi.c in
+this patch? If yes in terms of code structure, I will update it in v2.
+
+
+> SMBIOS is a separate set of firmware tables that have little
+> significance to the kernel itself, and describing it via DT makes
+> sense.
 >
-> SMBIOS and ACPI are not related to ARCH, nor is DTS to obtain firmware
-> information,
->
-> Why do you have to put part of the ACPI code under arch/risc-v/?
-
-Yes. And I don't think it should be using this FFI scheme either.
-
-If the firmware uses DT as a conduit to deliver the ACPI system
-description to the OS, it is probably better to pass this via the
-/chosen node as a special boot argument.
-
-> The scope of the previous discussion was limited to RISC-V because of
-> historical reasons such as the binding with EFI on ARM64. We will only
-> enable this function on RISC-V in subsequent patches.
->
-> The realization of the FFI scheme itself is irrelevant to the arch.
+> ACPI serves a similar purpose as DT, and so having both at the same
+> time results in a maintenance burden, where the arch code is forced to
+> reason about whether they are consistent with each other, and if not,
+> which description has precedence.
 >
 
-I don't think we need a FFI scheme or framework for this.
+Well... I don=E2=80=99t want to discuss too much, according to your
+suggestion, To implement acpi_arch_get_root_pointer() under
+arch/riscv.
+I'll update it on v2.
+
+> If the firmware uses DT as a conduit to deliver the ACPI system
+> description to the OS, it is probably better to pass this via the
+> /chosen node as a special boot argument.
+>
+
+This is not the focus of our discussion this time, and we will discuss
+it when we discuss node naming with DTS experts.
+
+
+Thanks,
+Yunhui
