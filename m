@@ -2,193 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 714D473F026
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jun 2023 03:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1629173F0FD
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jun 2023 04:56:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbjF0BKm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Jun 2023 21:10:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32884 "EHLO
+        id S230058AbjF0C4Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 26 Jun 2023 22:56:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229738AbjF0BKh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 21:10:37 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DBD8E6F;
-        Mon, 26 Jun 2023 18:10:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687828237; x=1719364237;
-  h=date:from:to:cc:subject:message-id;
-  bh=zJzN69H7wlsQYPgjvep7qdcFhgaHsK24J5NNS2JYGc8=;
-  b=cVKOx9f7t1KdfBbc0tLpW/2iFVkbroP/r/9IA0ctBWJkFtL9+swgsN4A
-   p+2QRasGuIVLz0EF8GAI5HTQO7mIDkyGrv1sSErLBXjgjVLpU971YRaAv
-   A5eq0OTq/ZUb9SsOAMdIYxkP0Jxi8PF7VIVFQAzSW68FqCxkOY1PKHKZ2
-   Mma2sZrdhKdCVWPQcJkP6NFiky00T9q7P/jIPgs5zpzL31x2bEukGYkOg
-   rDT2fIMHFB4vMCG5dr3ifRTg2n9CnOmsxiY+kLL/676ze6+QBxXNq847w
-   Z5vFPVx/LlF1ACMuJPOADBg2UPeSmS8EBDWk5lWGzGV01LBVnxDDcfDm0
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="447820876"
-X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; 
-   d="scan'208";a="447820876"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2023 18:10:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="840490391"
-X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; 
-   d="scan'208";a="840490391"
-Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 26 Jun 2023 18:10:33 -0700
-Received: from kbuild by 783282924a45 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qDxE0-000B95-14;
-        Tue, 27 Jun 2023 01:10:32 +0000
-Date:   Tue, 27 Jun 2023 09:09:32 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- dac8e1ee51b8fec4b037a575db976ee1ba34d616
-Message-ID: <202306270930.5jCmnPKC-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230482AbjF0C4U (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 26 Jun 2023 22:56:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8311119AC;
+        Mon, 26 Jun 2023 19:56:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 63BA260FE7;
+        Tue, 27 Jun 2023 02:56:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C4EF1C433C8;
+        Tue, 27 Jun 2023 02:56:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687834576;
+        bh=QzGAndb5ala/OezbZU5QtRA6XqWtb+YoTMGRoQ9TcWw=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=GQyeWbGcS5vbQvJzXl6jOAqUBxAiwngpJTHfMdiyfzcRqy6KXnA+bWBjRwcDg/kRO
+         sE6558yC0HQT8ure8vz6uRywNiLVV0Q4OhwcWz/yO+9xs0QnOjvCHmMja4aJNpQD4H
+         1qa884Vjg/SY4ccjE4ePwgaxEzJo/2n54cIqzBNBQArvEPHyTfjaBe074UI7q65ZUf
+         uMJZDyQHkuGkzEQM9CGVhN1Qiu/acwQOcElLQyZrWQ8eLYwPejflOGB6sKvBTNzX2L
+         ueE/UslrcHdAgKFap/sEZ1vkCn84bRwjnkQFubsddKCUuUSOYGnH+4WzvYGypJzsz0
+         dyZwLxHdvPmpg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A9EF7C43170;
+        Tue, 27 Jun 2023 02:56:16 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI updates for v6.5-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0h88c==8MP7H98oJo1tzY-i1isuru-axwLpSQ0ouG_COA@mail.gmail.com>
+References: <CAJZ5v0h88c==8MP7H98oJo1tzY-i1isuru-axwLpSQ0ouG_COA@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0h88c==8MP7H98oJo1tzY-i1isuru-axwLpSQ0ouG_COA@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.5-rc1
+X-PR-Tracked-Commit-Id: 01fee479846bb13139d339b11e04bf327200cac9
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: bb6950556d4b1dd1226c1f09e84b53cb37e5340f
+Message-Id: <168783457668.6991.18423126585588916709.pr-tracker-bot@kernel.org>
+Date:   Tue, 27 Jun 2023 02:56:16 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: dac8e1ee51b8fec4b037a575db976ee1ba34d616  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
+The pull request you sent on Mon, 26 Jun 2023 19:18:50 +0200:
 
-elapsed time: 4725m
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.5-rc1
 
-configs tested: 116
-configs skipped: 3
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/bb6950556d4b1dd1226c1f09e84b53cb37e5340f
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r032-20230622   gcc  
-arc                  randconfig-r043-20230622   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                       imx_v4_v5_defconfig   clang
-arm                      integrator_defconfig   gcc  
-arm                            mmp2_defconfig   clang
-arm                        multi_v7_defconfig   gcc  
-arm                  randconfig-r004-20230622   gcc  
-arm                  randconfig-r006-20230622   gcc  
-arm                  randconfig-r046-20230622   clang
-arm                         s5pv210_defconfig   clang
-arm                           sama5_defconfig   gcc  
-arm                        vexpress_defconfig   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r011-20230621   clang
-arm64                randconfig-r035-20230622   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r031-20230622   gcc  
-hexagon              randconfig-r005-20230622   clang
-hexagon              randconfig-r041-20230622   clang
-hexagon              randconfig-r045-20230622   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230622   clang
-i386         buildonly-randconfig-r005-20230622   clang
-i386         buildonly-randconfig-r006-20230622   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230622   clang
-i386                 randconfig-i002-20230622   clang
-i386                 randconfig-i003-20230622   clang
-i386                 randconfig-i004-20230622   clang
-i386                 randconfig-i005-20230622   clang
-i386                 randconfig-i006-20230622   clang
-i386                 randconfig-i011-20230623   clang
-i386                 randconfig-i012-20230623   clang
-i386                 randconfig-i013-20230623   clang
-i386                 randconfig-i014-20230623   clang
-i386                 randconfig-i015-20230623   clang
-i386                 randconfig-i016-20230623   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r014-20230621   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r021-20230622   gcc  
-microblaze           randconfig-r003-20230622   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                           ip22_defconfig   clang
-mips                           ip28_defconfig   clang
-mips                        qi_lb60_defconfig   clang
-mips                 randconfig-r025-20230622   clang
-mips                 randconfig-r034-20230622   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r015-20230621   gcc  
-nios2                randconfig-r016-20230621   gcc  
-openrisc             randconfig-r036-20230622   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r002-20230622   gcc  
-parisc64                            defconfig   gcc  
-powerpc                    adder875_defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                      cm5200_defconfig   gcc  
-powerpc                 mpc8315_rdb_defconfig   clang
-powerpc               mpc834x_itxgp_defconfig   clang
-powerpc                  mpc885_ads_defconfig   clang
-powerpc              randconfig-r022-20230622   gcc  
-powerpc                     sequoia_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                    nommu_virt_defconfig   clang
-riscv                randconfig-r026-20230622   gcc  
-riscv                randconfig-r042-20230622   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r024-20230622   gcc  
-s390                 randconfig-r044-20230622   gcc  
-sh                               allmodconfig   gcc  
-sh                         ecovec24_defconfig   gcc  
-sh                   randconfig-r001-20230622   gcc  
-sh                   randconfig-r033-20230622   gcc  
-sh                          rsk7203_defconfig   gcc  
-sh                           se7619_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r013-20230621   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230622   clang
-x86_64       buildonly-randconfig-r002-20230622   clang
-x86_64       buildonly-randconfig-r003-20230622   clang
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r023-20230622   gcc  
+Thank you!
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
