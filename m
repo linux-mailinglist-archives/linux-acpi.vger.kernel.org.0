@@ -2,86 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE67C742365
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jun 2023 11:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DE45742433
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jun 2023 12:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231631AbjF2Jnu convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 29 Jun 2023 05:43:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43420 "EHLO
+        id S231783AbjF2KtG convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 29 Jun 2023 06:49:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229739AbjF2Jno (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Jun 2023 05:43:44 -0400
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 920E11727;
-        Thu, 29 Jun 2023 02:43:43 -0700 (PDT)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-98e1fc9d130so13603466b.0;
-        Thu, 29 Jun 2023 02:43:43 -0700 (PDT)
+        with ESMTP id S231204AbjF2Ksw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Jun 2023 06:48:52 -0400
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40011E6C;
+        Thu, 29 Jun 2023 03:48:51 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-98de322d11fso15068166b.1;
+        Thu, 29 Jun 2023 03:48:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688031822; x=1690623822;
+        d=1e100.net; s=20221208; t=1688035730; x=1690627730;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8BOa2cA+os6Sirozpo+vKmIp/ZPBpwZIKMHVNEkdkAo=;
-        b=FXLair9F1rsWjrg/DCklv5Ruhl/qoU3p6Kz8+S8C8VxPwKmJsvvMZXJxJPvcs2u+DA
-         BVeIbRw58YsIk1MWwnDn84dp58CvTtZMFbcdIg6qNyGG5xtL8hMyI7u2qBUKmpdGAkzI
-         Ui6bmkN0KlBvDphUJviuOW6vTrNzmhnZqwgOGRSp84SQOtFT5eDb4EuJ68aewHjxGopH
-         hM/OPRyxagX9TKQWe/8JR2LPvUimGUt33QpUHUWo5sKp7cRFB4g8uStZJ63UZUcUn+er
-         EyHkavW9diWHErllHJHymQpO/yKcJuBTdrGl6t+GdfdqL3Ia9YgDrh5B4dQVobCUhj54
-         aiLg==
-X-Gm-Message-State: AC+VfDxPrqKaZSBNXFyfhFqTkhmzQlmkncKJ7PZPiHSssqLbkea47u+U
-        84hDL90rJ1TTECWtkJfb2PxtOFnSL52WtueNe+s=
-X-Google-Smtp-Source: ACHHUZ7G91aFKoB+8LU9G+96kOiiq1furXLbqPGGVuciGs3Uxa/vAfBN7Q6yvT2GQPwiQM3yZ8MI5YaXyKqNY6RF5fc=
-X-Received: by 2002:a17:906:73cc:b0:98d:b10f:f3cd with SMTP id
- n12-20020a17090673cc00b0098db10ff3cdmr10261241ejl.7.1688031821981; Thu, 29
- Jun 2023 02:43:41 -0700 (PDT)
+        bh=w8zOdiEV6AM9voeBO+/JtBD2h7O8pc56trtKT86vorg=;
+        b=LZBm3E5yEgUbY/SHvULv0xs5twqiFYk7xBTBdPRWz5fgB/dNZxEhwRy7IzEgyFLO6L
+         Eshd6pdxz5Y15I2PCzrPThTJUqtJmDqIXaFO1wVE60HnRw4tpr89pmCF8mQnFUkg6vyz
+         aGPNkBKQkMlKpFoEH24pqpQ/jkDmLS0L6TYo0HnZA8pQvswbLnoHYF6U7AYyLqXO3y1P
+         Y8P/SpYVRpg7jxTxg15DsH3O1ZT0Lw3t+2O3KPtvhnYC4+s91t37AjjPi/VCDQvw4zZr
+         DsrcdyG7Sgj6lDAtK1F49FiAO+k4X5VeXwhsCv+u+1I8HSKRc4jn1E5arJrv6QV3BV7E
+         hRGw==
+X-Gm-Message-State: AC+VfDwFe2lTSqRF0Yr0wpJKqJJMWggtGAe2c9poHc3QfsyoNR4dAHkH
+        vtI9soG0d0Q0alfeQJBuX8+t2CnOvSBNbVBw8ng=
+X-Google-Smtp-Source: ACHHUZ4VO+Eftv5Do3pkmbGF2NR+7KFwPE4oGz9V9boImW03fmvNEUzFwmhnW7touMA42vqT1KCmYearmdPLBGMG1Js=
+X-Received: by 2002:a17:906:74da:b0:976:50a4:ac40 with SMTP id
+ z26-20020a17090674da00b0097650a4ac40mr30824496ejl.0.1688035729518; Thu, 29
+ Jun 2023 03:48:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230626110026.65825-1-andriy.shevchenko@linux.intel.com>
- <20230626110026.65825-2-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0jqP0N3=TB3w+HMwGMzctpRCjKa3a5iHKePP113T3CK-g@mail.gmail.com> <ZJ1KHJW6Jhma/rHc@smile.fi.intel.com>
-In-Reply-To: <ZJ1KHJW6Jhma/rHc@smile.fi.intel.com>
+References: <20230613161034.3496047-1-michal.wilczynski@intel.com> <20230613161034.3496047-3-michal.wilczynski@intel.com>
+In-Reply-To: <20230613161034.3496047-3-michal.wilczynski@intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 29 Jun 2023 11:43:30 +0200
-Message-ID: <CAJZ5v0hf49hneyE7a-qjcdUBBhtvPUhkM6XorecaOrSjn=PbAQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] ACPI: bus: Constify acpi_companion_match()
- returned value
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
-        Len Brown <lenb@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Michael Walle <michael@walle.cc>
+Date:   Thu, 29 Jun 2023 12:48:38 +0200
+Message-ID: <CAJZ5v0gfvkhw1+QJkvaURn609oNYc_2c=CKk+fEvfjZvu4zN=A@mail.gmail.com>
+Subject: Re: [PATCH v3 2/5] acpi: Refactor arch_acpi_set_pdc_bits()
+To:     Michal Wilczynski <michal.wilczynski@intel.com>, x86@kernel.org
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
+        andriy.shevchenko@intel.com, artem.bityutskiy@linux.intel.com,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        hpa@zytor.com, lenb@kernel.org, jgross@suse.com,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 29, 2023 at 11:08 AM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Tue, Jun 13, 2023 at 6:12 PM Michal Wilczynski
+<michal.wilczynski@intel.com> wrote:
 >
-> On Thu, Jun 29, 2023 at 10:49:17AM +0200, Rafael J. Wysocki wrote:
-> > On Mon, Jun 26, 2023 at 1:00 PM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > >
-> > > acpi_companion_match() doesn't alter the contents of the passed
-> > > parameter, so we don't expect that returned value can be altered
-> > > either. So constify it.
-> > >
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> >
-> > This makes sense even without the rest of the series, so I can queue
-> > it up right away if you want me to do that.
+> Capabilities buffer modified by the arch_acpi_set_pdc_bits() is not
+> _PDC specific, as it is used by _OSC method as well. Change function
+> name to better reflect it's independence from PDC. Change function
+> expected argument to pass capability buffer directly without any
+> offset, as the offset differ among _OSC and _PDC methods.
 >
-> Please, go ahead and thank you!
+> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Done, thanks!
+Any objections to this from the x86 arch side?  if not, I will route
+it via ACPI along with the rest of the series.
+
+> ---
+>  arch/ia64/include/asm/acpi.h |  4 ++--
+>  arch/x86/include/asm/acpi.h  | 10 +++++-----
+>  drivers/acpi/processor_pdc.c |  2 +-
+>  3 files changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/ia64/include/asm/acpi.h b/arch/ia64/include/asm/acpi.h
+> index 87927eb824cc..43797cb44383 100644
+> --- a/arch/ia64/include/asm/acpi.h
+> +++ b/arch/ia64/include/asm/acpi.h
+> @@ -69,9 +69,9 @@ extern int __initdata nid_to_pxm_map[MAX_NUMNODES];
+>  #endif
+>
+>  static inline bool arch_has_acpi_pdc(void) { return true; }
+> -static inline void arch_acpi_set_pdc_bits(u32 *buf)
+> +static inline void arch_acpi_set_proc_cap_bits(u32 *cap)
+>  {
+> -       buf[2] |= ACPI_PDC_EST_CAPABILITY_SMP;
+> +       *cap |= ACPI_PDC_EST_CAPABILITY_SMP;
+>  }
+>
+>  #ifdef CONFIG_ACPI_NUMA
+> diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+> index 8eb74cf386db..6a498d1781e7 100644
+> --- a/arch/x86/include/asm/acpi.h
+> +++ b/arch/x86/include/asm/acpi.h
+> @@ -100,23 +100,23 @@ static inline bool arch_has_acpi_pdc(void)
+>                 c->x86_vendor == X86_VENDOR_CENTAUR);
+>  }
+>
+> -static inline void arch_acpi_set_pdc_bits(u32 *buf)
+> +static inline void arch_acpi_set_proc_cap_bits(u32 *cap)
+>  {
+>         struct cpuinfo_x86 *c = &cpu_data(0);
+>
+> -       buf[2] |= ACPI_PDC_C_CAPABILITY_SMP;
+> +       *cap |= ACPI_PDC_C_CAPABILITY_SMP;
+>
+>         if (cpu_has(c, X86_FEATURE_EST))
+> -               buf[2] |= ACPI_PDC_EST_CAPABILITY_SWSMP;
+> +               *cap |= ACPI_PDC_EST_CAPABILITY_SWSMP;
+>
+>         if (cpu_has(c, X86_FEATURE_ACPI))
+> -               buf[2] |= ACPI_PDC_T_FFH;
+> +               *cap |= ACPI_PDC_T_FFH;
+>
+>         /*
+>          * If mwait/monitor is unsupported, C2/C3_FFH will be disabled
+>          */
+>         if (!cpu_has(c, X86_FEATURE_MWAIT))
+> -               buf[2] &= ~(ACPI_PDC_C_C2C3_FFH);
+> +               *cap &= ~(ACPI_PDC_C_C2C3_FFH);
+>  }
+>
+>  static inline bool acpi_has_cpu_in_madt(void)
+> diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
+> index 5596862e6fea..ce3acd86dd12 100644
+> --- a/drivers/acpi/processor_pdc.c
+> +++ b/drivers/acpi/processor_pdc.c
+> @@ -24,7 +24,7 @@ static void acpi_set_pdc_bits(u32 *buf)
+>         buf[2] = ACPI_PDC_SMP_T_SWCOORD;
+>
+>         /* Twiddle arch-specific bits needed for _PDC */
+> -       arch_acpi_set_pdc_bits(buf);
+> +       arch_acpi_set_proc_cap_bits(&buf[2]);
+>  }
+>
+>  static struct acpi_object_list *acpi_processor_alloc_pdc(void)
+> --
+> 2.41.0
+>
