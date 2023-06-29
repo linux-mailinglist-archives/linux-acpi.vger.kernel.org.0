@@ -2,150 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 412AB742F1A
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jun 2023 22:55:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6368742FBB
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jun 2023 23:52:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231953AbjF2Uzc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Jun 2023 16:55:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46628 "EHLO
+        id S232103AbjF2VwO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Jun 2023 17:52:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232470AbjF2UzL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Jun 2023 16:55:11 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9377444BA;
-        Thu, 29 Jun 2023 13:54:35 -0700 (PDT)
+        with ESMTP id S231981AbjF2VwN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Jun 2023 17:52:13 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA8A30C4;
+        Thu, 29 Jun 2023 14:52:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688072075; x=1719608075;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=tj0LD+iElOjuI+ahLd3ebVr9wrrkmzYV7BTA6vBBCjw=;
-  b=CDCXI874kEHGcq1Gqnzz4i4hIyi68uU4j9sWK8nPsqST45DRYkqVvo5V
-   TlOtIZ8AFyAdGRJZDX06EtxfpXzy64QW/JIBxYXxR36wmRj6NLcRspDuK
-   PeyVQHM9+y0Jgw/r7R++0zQcza9h9bcEW4nvKnMXLNW1ZF5e1PiH8n9iD
-   zQJrhTpAklNi8ivIjLeKiw2iEJZ+wMfHhjgEhrrENgyJGsatEN9n+8Y2W
-   0q4Xn+i4OqECR+3xiIxnoG9Yo2G2cMxVqOf+68vjz1FM4lNHTWecm52zE
-   UmoFWbuJfA3Y0z1I/wLU1vOUnsFrrvCdCseJyyU3bybkr3G9uA1NBJCEz
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="428266953"
+  t=1688075532; x=1719611532;
+  h=date:from:to:cc:subject:message-id;
+  bh=DklM5qmVcQPcrDXSjN3k7QLlotTnln0BiiMc8Z3Le68=;
+  b=AinfRoQGG/7BY2NkWm4JHpcR/Xxk5TFQ5dOrQfIHnB336RN7GBFLPoLm
+   bIaVtILBRwSHw7bPHyWSRX/boPzFb+xaAy6o1xSApFCmJtfvl2QuAMF6g
+   MWGlJNdJVkDJel4fca4d8JJ47KPLgfLSrbuoTClFrc4acOTgbl/SGeW3p
+   uHrC0Q5SkXkaJBP+BIP93jP1lFS8j840N7koBUu6SfT51+w5okvPGEDoa
+   kGmVJtDrAhybUFPaN2kGuwI370rNzU96ZVhiI5LgcaxEqQi5xtnj41nb+
+   WVFeLkRh6Mb1aB17gL420TwNJuMtjuZyCBDfa24IzxEWWsXasde3m+KNj
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="359717531"
 X-IronPort-AV: E=Sophos;i="6.01,169,1684825200"; 
-   d="scan'208";a="428266953"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2023 13:54:35 -0700
+   d="scan'208";a="359717531"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2023 14:52:03 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="1047963575"
+X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="830696074"
 X-IronPort-AV: E=Sophos;i="6.01,169,1684825200"; 
-   d="scan'208";a="1047963575"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by fmsmga005.fm.intel.com with ESMTP; 29 Jun 2023 13:54:34 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 29 Jun 2023 13:54:33 -0700
-Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 29 Jun 2023 13:54:33 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Thu, 29 Jun 2023 13:54:33 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Thu, 29 Jun 2023 13:54:32 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bWv/e16GV/iTa563PVBE5BGfTHf2rquVOu3CWcjdB9V/XxpvJz+ruC+MQzvGWxIbuse+JM17vkHmD87h3gwDlrBLfeme8IEv2spxp1mumdnTDVXmf+0kSVnNXNZycMRRHhAGewQDYqlteT0WTZJk5R35j08B/EJ9zLV3sQFw/aMgVh37pKiim0+aSu1x/UXMw7nnH8wsLbi+VFq98PxjEvyAhZeqYWRFWrSZvU24ZVtrE0yTSvKi186WhNzN7Ayjv6HpqSKXetUWfPHnTS0RbW/yGaQPZMqIjdKj4siFpshz8DXethK8TVMML5tWcFvoFgcc3xOk9ksaoR+y6iDZ9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GhwGazaHb/I+hBMoxozK/fwZe37V1HP8VnWsfp1BtNs=;
- b=AGka/MSakM297Uu8quQW+xkoCzmX8gEu83atcuGw5g7RqXwEUKn4dq+N/KDaLGtEBTyHJTRap3f9FQTIEUkD96r16EHiyicw8gY4f7xMpN47X+t3eAwcrb7E7j8r3ApNPYDW9GJ07eS4qPK4UmgHSUow9NVociyKScIrIx3JwubmVeyyVpXG0yStgsjEd3hhAqVCDFH0Z9FsfuVBoYaZAV+x5/+zODNrXGfP++p/S8kB5BuR/3iKU+8hi2jVPWjzJHH+HeCWtRyUBDinE7pYYrwZZQJ1VtqXyb596OqDLj5BmS1A1HPN0NMe788z42nXy+Q5WZrNdJ6uA57zoHwKrQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by CY8PR11MB6842.namprd11.prod.outlook.com (2603:10b6:930:61::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37; Thu, 29 Jun
- 2023 20:54:30 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::aeb:12b5:6ac9:fab0]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::aeb:12b5:6ac9:fab0%7]) with mapi id 15.20.6500.029; Thu, 29 Jun 2023
- 20:54:30 +0000
-Date:   Thu, 29 Jun 2023 13:54:27 -0700
-From:   Dan Williams <dan.j.williams@intel.com>
-To:     Michal Wilczynski <michal.wilczynski@intel.com>,
-        <linux-acpi@vger.kernel.org>
-CC:     <rafael@kernel.org>, <dan.j.williams@intel.com>,
-        <vishal.l.verma@intel.com>, <lenb@kernel.org>,
-        <dave.jiang@intel.com>, <ira.weiny@intel.com>,
-        <rui.zhang@intel.com>, <linux-kernel@vger.kernel.org>,
-        <nvdimm@lists.linux.dev>,
-        Michal Wilczynski <michal.wilczynski@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: RE: [PATCH v5 09/10] acpi/nfit: Move handler installing logic to
- driver
-Message-ID: <649def832ce1f_11e68529491@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20230616165034.3630141-1-michal.wilczynski@intel.com>
- <20230616165034.3630141-10-michal.wilczynski@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230616165034.3630141-10-michal.wilczynski@intel.com>
-X-ClientProxiedBy: MW4PR03CA0048.namprd03.prod.outlook.com
- (2603:10b6:303:8e::23) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|CY8PR11MB6842:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6ad76c26-2564-4419-37b6-08db78e3088d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: K9sfaZCUTPJtTBiXSfYWIPZyNt9CquBsZEjgNEZcA8hGuEpyt+DbZDhaTlZ8HZzX7LxXe6pcw3vSgvac+Q3rUvWmGXRYMSb/b/wlkvVWL8sQSyxu9dwIN3KZA2kWqwvfohEa5fN4aBup7Bo8tCQOt4J2fPzLIykVC43fSDPwC8S9081wIwiza9MPWs14xhZVkvRdnwGnQ/c2bg8zL/Uw+Bj6lUuinPWbODcr3evlH55bDSlb0plQc/t4n8gC8IoEcAithlsKBa/T40VGw1OO0Rm3UeauaF1nNvNmiXkRvz6pWJfTMJiwrB1BX/I8rND+zn4dgs6L/y6C8PxaUzGjwGk2M6mF5BNqbIGRpljwj5O5riT/HSIAV5EsD/JoDBBMFssEDj3CFMTnH/vC4C+3wwMwu7Wm9EeBcRmJQyIGrjD4UAy9v88xrmLzL9MYnaWKfBOLDupUbRjV0YQ+Ff8Vx0NH7vZWDCTqs0DULPjLMqZJz3bz+W1p3WNPaVZat8VYbegWbCycT17Mk2PujrNgQzlwmc52rhlwE/j+4uIF5O4bWtW8A992qOtrfS4vHcdU
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(396003)(376002)(136003)(39860400002)(366004)(451199021)(83380400001)(2906002)(5660300002)(8676002)(8936002)(86362001)(316002)(4326008)(41300700001)(26005)(186003)(66556008)(66476007)(66946007)(6506007)(6512007)(9686003)(107886003)(54906003)(6486002)(6666004)(478600001)(38100700002)(82960400001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9JafkKq/wrQgisCfwNMN6AOfqYoS1sTCFckxgdosKC1I/NZqQAZOPP+Qd6z9?=
- =?us-ascii?Q?UEi6Fgsk/EXGCeVjeWOVSnnV302ybvuA90nSmmWXF5AA7eygsPzccOVgM0ma?=
- =?us-ascii?Q?ghMcVMMTxVOuIE0gNN300LteVywMSiP0kIMbxYzKetBjA1hKJs8kJFGYPcVJ?=
- =?us-ascii?Q?DZrqVs4NOwrmLvbABrXLs5aFc+U0NBJxl2EomNX1qW1tGvyLAEZckM5ot9DF?=
- =?us-ascii?Q?8frre4vU1mKZICvxbgXJ9xvAq5y36LzQcJUO55paAT1dTpm6LVE7sNqsD6oe?=
- =?us-ascii?Q?FPpqF/Db4aMdGOv6lBbtyNzgd8ei7aM4AVF2EM2CNQ3mla09oTQVlcHaF+z9?=
- =?us-ascii?Q?DYC3RS/OFYsTtD852ZGWoV0ILrg8jjhVbxoztklLQlfsbbncA6QSbZAf3EMa?=
- =?us-ascii?Q?iNmrp0jXUAN8HGOtUSSKtPvg4UJnbmDI3cAfuXXlH/yNPgBG565DoaExvdtz?=
- =?us-ascii?Q?ioZD4DXxWQdEzELxEOL4Xw+m3IFGj09jkcc2dGjaLtSATT0UmoUI8YHUmzXX?=
- =?us-ascii?Q?8ZQOCA6HqdNm2DHBnFotpdu1RGAmz8R+DzsUUmqn3MM528b2+oHBRog4UMJn?=
- =?us-ascii?Q?UwLnEJ7aJFk/dF0X738mJn3J8jnHv9YSoKfL1CT9hze5jrqwsPRTJyK2IdJP?=
- =?us-ascii?Q?EeI2IazerYQQuH7TdQjdM5OQvSScqSqW4DINuXX0P7iEsB7uKe+sgOETmno2?=
- =?us-ascii?Q?aPo1XxYnSgJJyEULU7+VSQeori92Ww9YgMJuutytY3acCZLaTXlrkNN+KP2N?=
- =?us-ascii?Q?m4LppIcz/SFt1SxnHJUK5ff7SmuOA1F/pRtFvTLnnqrfle0bdAQsmVP4gpvH?=
- =?us-ascii?Q?GWp/LIiIScUPGo0LDfz2TC+poByk/0wYojUBpVIYzZK1JYF5EtSuEnmURA1x?=
- =?us-ascii?Q?Tquy3/6WjOeDFZsx630Jp9mvVvceq2NFVAAycnXf8Tsi/U5BRf+w7igqjahF?=
- =?us-ascii?Q?yxALom5KNKghBcC1O7xHPRSGenxeoInjI4B9yGnM4htsS/5ga1bJq4cI9zh6?=
- =?us-ascii?Q?2VFTiBq1SWNaE6zQVNYn989xF7/GBu2CmKfNlhR79JKBUilXDs+V7+Zwj34B?=
- =?us-ascii?Q?8oDyMCLiZG6+aBIvQVSbauKzed6W83m0rQO3eAi+LOYTBG8tS1PTpitK5PFI?=
- =?us-ascii?Q?+eJYXXJFy3hpsI5k0nQcV9j1Roy9u3pLto8Gb38emtKYSUkOsq50ObJu0Het?=
- =?us-ascii?Q?CNHO4kcnxtKi0kelBLcO0YhY5hdACrCaAzhcIjc6+PNgvpKmsNd+o/6Mg7nL?=
- =?us-ascii?Q?2PJHOaJkwZE2Vh7QLmWvBjQeNo7lcNSMuOHPifDEW8oVJqs+jnqib4CAwVmf?=
- =?us-ascii?Q?y4S0sMpwlq3qVLf/FVtzu+EITN0/YdXPwCRvtYZLYQ5SPMEJTEk6WgvXf45a?=
- =?us-ascii?Q?X2JYAT2ypeiZBHmEJ/sgfVpRsonlbK2Z4KTReN/P63WWf5BIOHt9GSoa7lob?=
- =?us-ascii?Q?5XwjmZKZ3xtYsEtPqxrTIovqTzhXLScd1mBhHjCFenDl4mB7mQt3WAyaxwoe?=
- =?us-ascii?Q?4FIulKXKWLGgmoJBPtgUFq1cHiMtrisluH2klKvBTieme62qw342/U96hHoW?=
- =?us-ascii?Q?S7NEESMtkmUACYioz/hzAKn5o1VyIZnA2OkStiuU+1cWu4YPbz9FK06heLub?=
- =?us-ascii?Q?Xw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ad76c26-2564-4419-37b6-08db78e3088d
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 20:54:30.2598
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ge2JaPNfUEHQgfi7yQiBkn3gRCZFZhNCVyhgao8t/l38Q49NpUXBX75MqtvtFxMcR8v5yTYUzY/Ft1DxhGQNbahXSbednNjCrrlWIglamTI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6842
-X-OriginatorOrg: intel.com
+   d="scan'208";a="830696074"
+Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 29 Jun 2023 14:51:59 -0700
+Received: from kbuild by 783282924a45 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qEzYV-000EQg-0D;
+        Thu, 29 Jun 2023 21:51:59 +0000
+Date:   Fri, 30 Jun 2023 05:51:37 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ e48016b194ff7511565aa1510900d6324957620d
+Message-ID: <202306300534.of2isgVR-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -156,74 +60,125 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Michal Wilczynski wrote:
-> Currently logic for installing notifications from ACPI devices is
-> implemented using notify callback in struct acpi_driver. Preparations
-> are being made to replace acpi_driver with more generic struct
-> platform_driver, which doesn't contain notify callback. Furthermore
-> as of now handlers are being called indirectly through
-> acpi_notify_device(), which decreases performance.
-> 
-> Call acpi_dev_install_notify_handler() at the end of .add() callback.
-> Call acpi_dev_remove_notify_handler() at the beginning of .remove()
-> callback. Change arguments passed to the notify function to match with
-> what's required by acpi_install_notify_handler(). Remove .notify
-> callback initialization in acpi_driver.
-> 
-> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
-> ---
->  drivers/acpi/nfit/core.c | 24 ++++++++++++++++++------
->  1 file changed, 18 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> index 95930e9d776c..a281bdfee8a0 100644
-> --- a/drivers/acpi/nfit/core.c
-> +++ b/drivers/acpi/nfit/core.c
-> @@ -3312,11 +3312,13 @@ void acpi_nfit_shutdown(void *data)
->  }
->  EXPORT_SYMBOL_GPL(acpi_nfit_shutdown);
->  
-> -static void acpi_nfit_notify(struct acpi_device *adev, u32 event)
-> +static void acpi_nfit_notify(acpi_handle handle, u32 event, void *data)
->  {
-> -	device_lock(&adev->dev);
-> -	__acpi_nfit_notify(&adev->dev, adev->handle, event);
-> -	device_unlock(&adev->dev);
-> +	struct acpi_device *device = data;
-> +
-> +	device_lock(&device->dev);
-> +	__acpi_nfit_notify(&device->dev, handle, event);
-> +	device_unlock(&device->dev);
->  }
->  
->  static int acpi_nfit_add(struct acpi_device *adev)
-> @@ -3375,12 +3377,23 @@ static int acpi_nfit_add(struct acpi_device *adev)
->  
->  	if (rc)
->  		return rc;
-> -	return devm_add_action_or_reset(dev, acpi_nfit_shutdown, acpi_desc);
-> +
-> +	rc = devm_add_action_or_reset(dev, acpi_nfit_shutdown, acpi_desc);
-> +	if (rc)
-> +		return rc;
-> +
-> +	return acpi_dev_install_notify_handler(adev,
-> +					       ACPI_DEVICE_NOTIFY,
-> +					       acpi_nfit_notify);
->  }
->  
->  static void acpi_nfit_remove(struct acpi_device *adev)
->  {
->  	/* see acpi_nfit_unregister */
-> +
-> +	acpi_dev_remove_notify_handler(adev,
-> +				       ACPI_DEVICE_NOTIFY,
-> +				       acpi_nfit_notify);
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: e48016b194ff7511565aa1510900d6324957620d  Merge branch 'acpi-bus' into bleeding-edge
 
-Please use devm to trigger this release rather than making
-acpi_nfit_remove() contain any logic.
+elapsed time: 725m
 
-An additional cleanup opportunity with the ->add() path fully devm
-instrumented would be to just delete acpi_nfit_remove() since it is
-optional and serves no purpose.
+configs tested: 106
+configs skipped: 5
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r021-20230629   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r043-20230629   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r046-20230629   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r034-20230629   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r013-20230629   gcc  
+csky                 randconfig-r014-20230629   gcc  
+csky                 randconfig-r031-20230629   gcc  
+hexagon              randconfig-r041-20230629   clang
+hexagon              randconfig-r045-20230629   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230629   gcc  
+i386         buildonly-randconfig-r005-20230629   gcc  
+i386         buildonly-randconfig-r006-20230629   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230629   gcc  
+i386                 randconfig-i002-20230629   gcc  
+i386                 randconfig-i003-20230629   gcc  
+i386                 randconfig-i004-20230629   gcc  
+i386                 randconfig-i005-20230629   gcc  
+i386                 randconfig-i006-20230629   gcc  
+i386                 randconfig-i011-20230629   clang
+i386                 randconfig-i012-20230629   clang
+i386                 randconfig-i013-20230629   clang
+i386                 randconfig-i014-20230629   clang
+i386                 randconfig-i015-20230629   clang
+i386                 randconfig-i016-20230629   clang
+i386                 randconfig-r022-20230629   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r025-20230629   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze           randconfig-r005-20230629   gcc  
+microblaze           randconfig-r032-20230629   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r012-20230629   gcc  
+mips                 randconfig-r036-20230629   clang
+nios2                               defconfig   gcc  
+openrisc             randconfig-r004-20230629   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r015-20230629   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc              randconfig-r016-20230629   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r042-20230629   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r006-20230629   gcc  
+s390                 randconfig-r044-20230629   clang
+sh                               allmodconfig   gcc  
+sh                   randconfig-r011-20230629   gcc  
+sh                   randconfig-r035-20230629   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r003-20230629   gcc  
+sparc64              randconfig-r033-20230629   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230629   gcc  
+x86_64       buildonly-randconfig-r002-20230629   gcc  
+x86_64       buildonly-randconfig-r003-20230629   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-x001-20230629   clang
+x86_64               randconfig-x002-20230629   clang
+x86_64               randconfig-x003-20230629   clang
+x86_64               randconfig-x004-20230629   clang
+x86_64               randconfig-x005-20230629   clang
+x86_64               randconfig-x006-20230629   clang
+x86_64               randconfig-x011-20230629   gcc  
+x86_64               randconfig-x012-20230629   gcc  
+x86_64               randconfig-x013-20230629   gcc  
+x86_64               randconfig-x014-20230629   gcc  
+x86_64               randconfig-x015-20230629   gcc  
+x86_64               randconfig-x016-20230629   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r023-20230629   gcc  
+xtensa               randconfig-r024-20230629   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
