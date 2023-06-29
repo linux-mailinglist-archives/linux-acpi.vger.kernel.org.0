@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0940742A3E
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jun 2023 18:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99893742A68
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jun 2023 18:15:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229910AbjF2QHH convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 29 Jun 2023 12:07:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36122 "EHLO
+        id S232255AbjF2QPI convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 29 Jun 2023 12:15:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjF2QHG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Jun 2023 12:07:06 -0400
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8ADB9E;
-        Thu, 29 Jun 2023 09:07:05 -0700 (PDT)
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-98502b12fd4so21919866b.1;
-        Thu, 29 Jun 2023 09:07:05 -0700 (PDT)
+        with ESMTP id S232568AbjF2QPH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Jun 2023 12:15:07 -0400
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98E3E10E5;
+        Thu, 29 Jun 2023 09:15:06 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-98e1fc9d130so24105666b.0;
+        Thu, 29 Jun 2023 09:15:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688054824; x=1690646824;
+        d=1e100.net; s=20221208; t=1688055305; x=1690647305;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9xfZ/TTJf1ZjgTOZZ4dAslTfGuQT8e+I59Ry3r/mWbg=;
-        b=DHC0ItaunOYyYiLiXT9d+ZU2Bsumj+biUGQnF5bHbxubDZhcqlztNcXp3iuPbIUSlm
-         2zVnfK+r7YeFjg9rXqFNLHNE5XS1BNrpjUsDCbGelQiiW+zPb+CEfDhVmdWEP8BnK+Bv
-         XzXwJfIKxCMlxLlrMIKBS8BnfDnfnIfBfOxAaHP+x8hRoge1DXXxo6dBNB+Go8xFPLNb
-         ZbU80++txJxNr1INtpeuYvWIkGUZbVAydWdZWh0HCvJ3bun53OOOyQKp9q2eqaXIc5mO
-         +Phnurq3S+z6Fp3y1HoQs97nA/E158WwYNVk8WfHqc/Ea6/oISRCE1raahZYvfEdJPx0
-         fUgA==
-X-Gm-Message-State: AC+VfDyx/MwxYpoyvlh20HKu/jUx0vpKaiDTqSDsRCC7DtvoUSe4avG2
-        YLprZruo5pldZ65WJ2rOOa3xreH6H/g/pJFSyY4Os61q
-X-Google-Smtp-Source: ACHHUZ7cgRYS8YYVr3hCgsEpgcP5bbQZjvy53V/YLYKMqwUMwZxw17sb6Umt8V35dOqpNIQVa2PqIZJi+LLWZLBY/tI=
-X-Received: by 2002:a17:906:7a45:b0:988:8e7a:d953 with SMTP id
- i5-20020a1709067a4500b009888e7ad953mr2397442ejo.1.1688054824132; Thu, 29 Jun
- 2023 09:07:04 -0700 (PDT)
+        bh=2asz2ubuH2qetgbcysClqW7znNeW2vYR8Y5n9yx7dNQ=;
+        b=eu+XOq+FfQIO4gi1Qc8YdAEKGgZ6QaHJIZixs10PcPnzBF70b3h80B10tILnGlIzBX
+         sq81ANntAvJ4C9zzyGgPkWbRdYwRZshtoerkEcxVgH9hSRl0qT/RJZy5kKil9qcYi9r6
+         2k6Wc0JfEUUInKjxo6kWz1EVxpPu9YYtVi2khe51ZdMWp2c2AZ6CNqRA5dQmt0csyKt0
+         DS9Rnzm+L6tzgGwDg5d8uPO+GjSWwFyDsd0kBgKtR4qywAKegDKMkSts0oE7+0WpRBYg
+         QGhGigjS92A/F+XBAGyTIJKzSWD4v2hVwXAyR0qoTVCtbhq3JhoVc/hXlUUCclLD/2ok
+         L45w==
+X-Gm-Message-State: AC+VfDzAlzH09oGjawDwHx0xG/OmncATvEFOqhou0RcM6cazaql2Zz0i
+        cV3zHfZfCYlvSyYmhddahOB6W7dUyttEahBzcwDF8wbW
+X-Google-Smtp-Source: ACHHUZ5/QdCY5R7J3odu7HQae4qVM960Ldl0f0ONcSdWCpVyCWdGZEis60/MfjC11Ncx1onHXrhUbkrTUeasMlq2sJM=
+X-Received: by 2002:a17:906:518f:b0:974:ae1d:ad0b with SMTP id
+ y15-20020a170906518f00b00974ae1dad0bmr13460817ejk.3.1688055304918; Thu, 29
+ Jun 2023 09:15:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230616165034.3630141-1-michal.wilczynski@intel.com> <20230616165034.3630141-8-michal.wilczynski@intel.com>
-In-Reply-To: <20230616165034.3630141-8-michal.wilczynski@intel.com>
+References: <20230616165034.3630141-1-michal.wilczynski@intel.com> <20230616165034.3630141-9-michal.wilczynski@intel.com>
+In-Reply-To: <20230616165034.3630141-9-michal.wilczynski@intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 29 Jun 2023 18:06:53 +0200
-Message-ID: <CAJZ5v0jjwk+jVsULD8nyguc7p00Sn3Hyxq7=PLNzpj-Fz6H6sg@mail.gmail.com>
-Subject: Re: [PATCH v5 07/10] acpi/nfit: Move acpi_nfit_notify() before acpi_nfit_add()
+Date:   Thu, 29 Jun 2023 18:14:53 +0200
+Message-ID: <CAJZ5v0hPY=nermvRKiyqGg4R+jLW13B-MUr0exEuEnw33VUj7g@mail.gmail.com>
+Subject: Re: [PATCH v5 08/10] acpi/nfit: Improve terminator line in acpi_nfit_ids
 To:     Michal Wilczynski <michal.wilczynski@intel.com>
 Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
         dan.j.williams@intel.com, vishal.l.verma@intel.com,
@@ -51,8 +51,9 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -62,48 +63,37 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Fri, Jun 16, 2023 at 6:51 PM Michal Wilczynski
 <michal.wilczynski@intel.com> wrote:
 >
-> To use new style of installing event handlers acpi_nfit_notify() needs
-> to be known inside acpi_nfit_add(). Move acpi_nfit_notify() upwards in
-> the file, so it can be used inside acpi_nfit_add().
->
+> Currently terminator line contains redunant characters.
+
+Well, they are terminating the list properly AFAICS, so they aren't
+redundant and the size of it before and after the change is actually
+the same, isn't it?
+
+> Remove them and also remove a comma at the end.
+
+I suppose that this change is made for consistency with the other ACPI
+code, so this would be the motivation to give in the changelog.
+
+In any case, it doesn't seem to be related to the rest of the series.
+
 > Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 > ---
->  drivers/acpi/nfit/core.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+>  drivers/acpi/nfit/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> index 07204d482968..aff79cbc2190 100644
+> index aff79cbc2190..95930e9d776c 100644
 > --- a/drivers/acpi/nfit/core.c
 > +++ b/drivers/acpi/nfit/core.c
-> @@ -3312,6 +3312,13 @@ void acpi_nfit_shutdown(void *data)
->  }
->  EXPORT_SYMBOL_GPL(acpi_nfit_shutdown);
+> @@ -3455,7 +3455,7 @@ EXPORT_SYMBOL_GPL(__acpi_nfit_notify);
 >
-> +static void acpi_nfit_notify(struct acpi_device *adev, u32 event)
-> +{
-> +       device_lock(&adev->dev);
-> +       __acpi_nfit_notify(&adev->dev, adev->handle, event);
-> +       device_unlock(&adev->dev);
-> +}
-> +
->  static int acpi_nfit_add(struct acpi_device *adev)
->  {
->         struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER, NULL };
-> @@ -3446,13 +3453,6 @@ void __acpi_nfit_notify(struct device *dev, acpi_handle handle, u32 event)
->  }
->  EXPORT_SYMBOL_GPL(__acpi_nfit_notify);
->
-> -static void acpi_nfit_notify(struct acpi_device *adev, u32 event)
-> -{
-> -       device_lock(&adev->dev);
-> -       __acpi_nfit_notify(&adev->dev, adev->handle, event);
-> -       device_unlock(&adev->dev);
-> -}
-> -
 >  static const struct acpi_device_id acpi_nfit_ids[] = {
 >         { "ACPI0012", 0 },
->         { "", 0 },
+> -       { "", 0 },
+> +       {}
+>  };
+>  MODULE_DEVICE_TABLE(acpi, acpi_nfit_ids);
+>
 > --
-
-Please fold this patch into the next one.  By itself, it is an
-artificial change IMV.
+> 2.41.0
+>
