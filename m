@@ -2,205 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EF8F742078
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jun 2023 08:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEE3174221B
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jun 2023 10:26:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231557AbjF2Gib (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Jun 2023 02:38:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41722 "EHLO
+        id S231285AbjF2I05 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 29 Jun 2023 04:26:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230353AbjF2GiV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Jun 2023 02:38:21 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17A132D60;
-        Wed, 28 Jun 2023 23:38:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688020700; x=1719556700;
-  h=date:from:to:cc:subject:message-id;
-  bh=buuQ0RXqokD5mzPNOSRnxPRVCM1qRESl8ZxW9HDM0jY=;
-  b=a+4WAJqf34zB+zsDSeUgByn/6yMbYYhnF81EDIkMWMRVV9Vtj5E/+MtF
-   gU8B6Jn7uNuM6L3BRyn67KcoB0UjCutY56NnAh6G2ZxAGNAFUg5iisz3/
-   efxi6bowGJlTBpTxRvCx2jwSxb1U/kzI6uKALxQ4p7OOCOHNemF1aESS3
-   UkHORm42uMmezguAedydSbvzdJcGASZczjeD6U5wFBWnde1HeX5eSjWgb
-   SgtFN1gHYDfTq/qD9Qyj4UJLI11mDgsXKCS8Hbr/He1Knv8s6jr+gClg0
-   8rTvXGgwWvVhPDbsc0QB6bAFiIud4tArbxdZrvmpgnxdZAjOnCQhyi/lq
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="341618567"
-X-IronPort-AV: E=Sophos;i="6.01,167,1684825200"; 
-   d="scan'208";a="341618567"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2023 23:38:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="782583356"
-X-IronPort-AV: E=Sophos;i="6.01,167,1684825200"; 
-   d="scan'208";a="782583356"
-Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 28 Jun 2023 23:38:13 -0700
-Received: from kbuild by 783282924a45 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qElID-000DuX-0a;
-        Thu, 29 Jun 2023 06:38:13 +0000
-Date:   Thu, 29 Jun 2023 14:38:03 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 9d05d0562d7a9d54117e68c262431378caae5b8e
-Message-ID: <202306291401.kTLwM2YG-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S232131AbjF2I0U (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Jun 2023 04:26:20 -0400
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7EE0297B;
+        Thu, 29 Jun 2023 01:26:13 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-991f9148334so12140366b.1;
+        Thu, 29 Jun 2023 01:26:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688027172; x=1690619172;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mcoeEMptu8D0NAxYrvJpfZG4mBLFHI5XmeFegUh6FYE=;
+        b=CC8+rYb0uYVafBn83zDBSVUkusGMjpwoF2PrpwBETV5LNbH6oGz+yaT7sZb7icBSGk
+         zb0xGL/MtkZX7bsbz8NRe4LR3x3b979TZmNfenc6aAkDLumn6Ha57/QDtCObbRI1czvR
+         J6kp8Frj9fj6Nk7K3ZgWS99n+hdzlRjhzL8c8LJbmNGCloVnQeEZNXynFMFeuIE2UARm
+         bNWITDUyQHtYGbEg2Wh++6K64kUc4RnKnhFf5Wp2SORqCgDqvo4n5VFHwVWhtLvSNkVH
+         Ca5CepIutG/yKa/94M8BUg94Ox1RfOzxB/m3QtqO6q/wRoGmJmsQjLyTXjqBhO2b6pzQ
+         /bSQ==
+X-Gm-Message-State: AC+VfDxxEpqCkQHa/e4tA503T60blDlHwbfJMxsiw3d7SlZkCoJTTKrL
+        usZIPDc7sW/QfZtvBATfZ62InhbG909Mw/qt+3Q=
+X-Google-Smtp-Source: ACHHUZ5I1YUITTiwuNaGJRhEAVUxvdz45PNbS+KgIsVW0LO/GbPa8OHkL/ixpQy58lXWNknd7Fzke4lYgKnwJTVvR1E=
+X-Received: by 2002:a17:906:73dd:b0:989:1ed3:d00b with SMTP id
+ n29-20020a17090673dd00b009891ed3d00bmr20500149ejl.4.1688027171871; Thu, 29
+ Jun 2023 01:26:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230626220525.1654780-1-abmainkar@nvidia.com>
+In-Reply-To: <20230626220525.1654780-1-abmainkar@nvidia.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 29 Jun 2023 10:26:00 +0200
+Message-ID: <CAJZ5v0iE4MtjnBWwq0dS7x8B8AsZS0sJFfO6fRwtLJOfUhbEUg@mail.gmail.com>
+Subject: Re: [Patch] acpica: Add AML_NO_OPERAND_RESOLVE flag to Timer
+To:     Abhishek Mainkar <abmainkar@nvidia.com>
+Cc:     robert.moore@intel.com, rafael.j.wysocki@intel.com,
+        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        acpica-devel@lists.linuxfoundation.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 9d05d0562d7a9d54117e68c262431378caae5b8e  Merge branch 'pm-cpuidle' into linux-next
+On Tue, Jun 27, 2023 at 12:10 AM Abhishek Mainkar <abmainkar@nvidia.com> wrote:
+>
+> According to the ACPI specification 19.6.134, no argument is
+> required to be passed for ASL Timer instruction. For taking
+> care of no argument, AML_NO_OPERAND_RESOLVE flag is added to
+> ASL Timer instruction opcode.
+>
+> When ASL timer instruction interpreted by ACPI interpreter,
+> getting error. After adding AML_NO_OPERAND_RESOLVE flag to
+> ASL Timer instruction opcode, issue is not observed.
+>
+> =============================================================
+> UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12
+> index -1 is out of range for type 'acpi_operand_object *[9]'
+> CPU: 37 PID: 1678 Comm: cat Not tainted
+> 6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
+> HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
+>  dump_backtrace+0xe0/0x130
+>  show_stack+0x20/0x60
+>  dump_stack_lvl+0x68/0x84
+>  dump_stack+0x18/0x34
+>  ubsan_epilogue+0x10/0x50
+>  __ubsan_handle_out_of_bounds+0x80/0x90
+>  acpi_ds_exec_end_op+0x1bc/0x6d8
+>  acpi_ps_parse_loop+0x57c/0x618
+>  acpi_ps_parse_aml+0x1e0/0x4b4
+>  acpi_ps_execute_method+0x24c/0x2b8
+>  acpi_ns_evaluate+0x3a8/0x4bc
+>  acpi_evaluate_object+0x15c/0x37c
+>  acpi_evaluate_integer+0x54/0x15c
+>  show_power+0x8c/0x12c [acpi_power_meter]
+>
+> Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
 
-elapsed time: 721m
+ACPICA changes need to be submitted as pull requests to the upstream
+ACPICA project on GitHub.
 
-configs tested: 128
-configs skipped: 9
+Once you have submitted an ACPICA pull request, please resend the
+corresponding Linux patch with a Link: tag pointing to that pull
+request.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Thanks!
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r004-20230628   gcc  
-alpha                randconfig-r021-20230628   gcc  
-alpha                randconfig-r031-20230628   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     haps_hs_smp_defconfig   gcc  
-arc                  randconfig-r006-20230628   gcc  
-arc                  randconfig-r043-20230628   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                          ixp4xx_defconfig   clang
-arm                          pxa168_defconfig   clang
-arm                  randconfig-r002-20230628   gcc  
-arm                  randconfig-r032-20230628   gcc  
-arm                  randconfig-r035-20230628   gcc  
-arm                  randconfig-r046-20230628   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r005-20230628   clang
-arm64                randconfig-r036-20230628   clang
-csky                                defconfig   gcc  
-hexagon              randconfig-r022-20230628   clang
-hexagon              randconfig-r041-20230628   clang
-hexagon              randconfig-r045-20230628   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230628   clang
-i386         buildonly-randconfig-r005-20230628   clang
-i386         buildonly-randconfig-r006-20230628   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230628   clang
-i386                 randconfig-i002-20230628   clang
-i386                 randconfig-i003-20230628   clang
-i386                 randconfig-i004-20230628   clang
-i386                 randconfig-i005-20230628   clang
-i386                 randconfig-i006-20230628   clang
-i386                 randconfig-i011-20230628   gcc  
-i386                 randconfig-i012-20230628   gcc  
-i386                 randconfig-i013-20230628   gcc  
-i386                 randconfig-i014-20230628   gcc  
-i386                 randconfig-i015-20230628   gcc  
-i386                 randconfig-i016-20230628   gcc  
-i386                 randconfig-r005-20230628   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r025-20230628   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r031-20230628   gcc  
-m68k                 randconfig-r032-20230628   gcc  
-microblaze           randconfig-r034-20230628   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r002-20230628   gcc  
-openrisc             randconfig-r004-20230628   gcc  
-openrisc             randconfig-r021-20230628   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r003-20230628   gcc  
-parisc               randconfig-r011-20230628   gcc  
-parisc               randconfig-r012-20230628   gcc  
-parisc               randconfig-r016-20230628   gcc  
-parisc               randconfig-r022-20230628   gcc  
-parisc               randconfig-r023-20230628   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc              randconfig-r015-20230628   gcc  
-powerpc              randconfig-r026-20230628   gcc  
-powerpc              randconfig-r034-20230628   clang
-powerpc                     skiroot_defconfig   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230628   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r012-20230628   gcc  
-s390                 randconfig-r015-20230628   gcc  
-s390                 randconfig-r036-20230628   clang
-s390                 randconfig-r044-20230628   gcc  
-sh                               allmodconfig   gcc  
-sh                   randconfig-r003-20230628   gcc  
-sh                   randconfig-r024-20230628   gcc  
-sh                           se7705_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r013-20230628   gcc  
-sparc64              randconfig-r006-20230628   gcc  
-sparc64              randconfig-r025-20230628   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r014-20230628   clang
-um                   randconfig-r023-20230628   clang
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230628   clang
-x86_64       buildonly-randconfig-r002-20230628   clang
-x86_64       buildonly-randconfig-r003-20230628   clang
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r001-20230628   clang
-x86_64               randconfig-x001-20230628   gcc  
-x86_64               randconfig-x002-20230628   gcc  
-x86_64               randconfig-x003-20230628   gcc  
-x86_64               randconfig-x004-20230628   gcc  
-x86_64               randconfig-x005-20230628   gcc  
-x86_64               randconfig-x006-20230628   gcc  
-x86_64               randconfig-x011-20230628   clang
-x86_64               randconfig-x012-20230628   clang
-x86_64               randconfig-x013-20230628   clang
-x86_64               randconfig-x014-20230628   clang
-x86_64               randconfig-x015-20230628   clang
-x86_64               randconfig-x016-20230628   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> ---
+>  drivers/acpi/acpica/psopcode.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
+> index bef69e87a0a2..8c34c0ffb1d9 100644
+> --- a/drivers/acpi/acpica/psopcode.c
+> +++ b/drivers/acpi/acpica/psopcode.c
+> @@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
+>
+>  /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
+>                          AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
+> -                        AML_FLAGS_EXEC_0A_0T_1R),
+> +                        AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
+>
+>  /* ACPI 5.0 opcodes */
+>
+> --
+> 2.17.1
+>
