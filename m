@@ -2,158 +2,311 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA97574337F
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Jun 2023 06:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D980D7437B3
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Jun 2023 10:47:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231269AbjF3EZG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Jun 2023 00:25:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51976 "EHLO
+        id S230235AbjF3Iq6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Jun 2023 04:46:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229945AbjF3EY4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Jun 2023 00:24:56 -0400
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2072.outbound.protection.outlook.com [40.107.220.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 092AF1FE4;
-        Thu, 29 Jun 2023 21:24:48 -0700 (PDT)
+        with ESMTP id S229787AbjF3Iq4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Jun 2023 04:46:56 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A101D194;
+        Fri, 30 Jun 2023 01:46:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688114815; x=1719650815;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=dzcAwYid69uXqzOzvxMH+vMvvDeC6Apd999OrKd5sUo=;
+  b=nQyfCB0oPy5TfTQxa99XHLnawbaw0dBgthq7yjosiAKMf2/VoDNaVdjo
+   jUdMdk0OazVummbqE177ulZcJ8jqgD3W30LKB2uqRodX6cdr2+2FUkw7c
+   RcRJmR9k12g3VZ2TNdKpmBxs9h/NHuTinHcdneLSlSdlsZr2qslAkKtG/
+   0xvEndLlJr11mC3Wd1CAD42iYOQsNGjpDfaW7jN2i+7/80tDPR0BGUwUF
+   jnDYutIu59ya+ZEwjnUMq6aQQ/G7B4KrmGi62lwYEROhNTUQjQl65Utu8
+   xDpINZBSkRvjMQ/yDeEF2W+zQCSz96hsRuk54i/6F0unpXrAXXhHx3GhN
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="448726324"
+X-IronPort-AV: E=Sophos;i="6.01,170,1684825200"; 
+   d="scan'208";a="448726324"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2023 01:46:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="841785723"
+X-IronPort-AV: E=Sophos;i="6.01,170,1684825200"; 
+   d="scan'208";a="841785723"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orsmga004.jf.intel.com with ESMTP; 30 Jun 2023 01:46:54 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Fri, 30 Jun 2023 01:46:54 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Fri, 30 Jun 2023 01:46:53 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Fri, 30 Jun 2023 01:46:53 -0700
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.42) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Fri, 30 Jun 2023 01:46:53 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mnLIvOwFWHNjaSh7VP+2h7ANh3S9i578rUeF9peeOyPZAjfZUAw5SpSFr8k79Et5/zzGN3ELcoqZMKODWmp1XfZA2d+mDpZZsoIFv2rq/jIRr3d2dt7iaHFhqVHqfZDhDy7xV2oO7MBEhXFLGMTV+vGDpDTLauQyoa1zSic8xAJYqN0EINyHd8U/900YZ6cIti0ZIPa2hJ2D6I4jjEhiN7aPGiTIyNBMNeJHU+XNhCel7Vvmi609+WIxrVq3JM7UypGdbNqg81xKxs23MArKP1JyddV62BGClJpiawX27nFUsTGwQNNOETKfEabJcmfkLQtr1AIxelElleCwz7jbmQ==
+ b=B0H/PKNis4Vc7zwUp49wD61uoKmQHGhQozGGPIIuTR6GR8IfnWJ/YiyXI+NbTMe0FJ3whWwfaSY5oGn6N3I1TGv8dvHL992kJki4m6hv26als1XBV/gyRkzpDIMPrEQBVYH+2H7Pz7NBjDXl/gJkWxZLx1QD+PByzI7VBUj7mGuUzQ6nznNWtNwzBLVulyxfcmixm0witqFWEBJ9QWSGOhX1vbixceGNMS+CrXxs9FO0a4oLJsUJaJXnMTQcMy4BZofSVvUKDM0tbAQ6EphLYykuazzFZavrtum5og1UgPEK8iH9fwrIZ5mdPmwvv/H++kAzc7iqwJ25olEyjwjQiQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J2VdafCqgjlIjfQcPApAq7OBBT127Sy+bPj65GIDT+4=;
- b=icOrdWKj1PllwVpJx/0yiDn6SV3UIiFxL0dmFGLTzUit/nTYyHz/ZpUsxUvLi+VBBEf1GVHUZASiWvn3vDPKdSb1Bm5L+qDU3A/70mY+GNC2K7Z9JjoRn/mAWHOOIo4DFcrdf4TED9hPfWrRe3mSTpgdJfLZoqvS5h0WiYPkiLoAmlITpfOHfQeLo/jk/z3WAYMFGdvIWtacWN36oqC99bKQ/xOgwZZeY9Q2mCnDoRMmSi9rYX/zhTtU3M6x4+ZmSFGLBeIJETrShTIHIU3CuEbKorS1eKYMVh7ARqRVUOPNvTumV03U10GDJn9O/kTUG88e76OVplF7/EkZtUqsFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J2VdafCqgjlIjfQcPApAq7OBBT127Sy+bPj65GIDT+4=;
- b=edZyEJJu9EHemWh2Jv9fhvdyOaO3ASDgKTlqL4xfpK1mhIHxgAQ8F9Nf+Djofze4PqVV6xUS36uOutjW7fZRdQ3abkwz2Kw5vUWqO5Yi1wXgmCmYo/54VnN76cGHJU7QSAxWVvbnGhyhWe7tSHFKe08GqdsR759+0NkdcGZVagZ+i4q0txbfHugaVBjfGV31qE+eE294Et9+lKY45MHOyI3opJ1BnOM/u79YtGNwzbpFTKwlPl2U5bbmX8JrFHO1CEujWloaS6Yaatw4k8mnOIC/45iO4rVvva1VewNcO18W4kOrBq+4pzjTUrUMnsQGag2tyaDNGe+h06poVKaVdA==
-Received: from MW4PR03CA0120.namprd03.prod.outlook.com (2603:10b6:303:b7::35)
- by IA1PR12MB7757.namprd12.prod.outlook.com (2603:10b6:208:422::17) with
+ bh=ERP7t46yUT2pxtaSbeoFZSzyFpmfW6K4AfFW9Hnk6wg=;
+ b=k/PreqM1SEt7GxdN4tBQbeqapLXMCNWlKoqOQ2zj9oXq46kuZSKN5g7OklDtr5q1p5vWMkevMKxO18tOiAcfI5A6sr0R4UB2PeDsbeybNKFeBb2moFFIcXQ2W7hXKw3zXD4vdglP/JYWYYoyYpY4uahe4zlZY+v2YQ1E2EvQHJjuARCvQSIZPtkokE3o9JI2pk0l6wnszJ1lXuII+WGanDhbIfGwbxXEAZpqWMVRBp9unvIWksND+H8c5VxaczM03AbeaoAFKyjzvWfbdD5/pAcFiHh7Tdd/9JM4kW8AswH5hZtNS3Pi1jkqp5299IGir+AOQAufTKNO+Svzq/2QMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO6PR11MB5603.namprd11.prod.outlook.com (2603:10b6:5:35c::12)
+ by SJ0PR11MB5039.namprd11.prod.outlook.com (2603:10b6:a03:2da::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Fri, 30 Jun
- 2023 04:24:45 +0000
-Received: from CO1NAM11FT050.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:b7:cafe::6) by MW4PR03CA0120.outlook.office365.com
- (2603:10b6:303:b7::35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.22 via Frontend
- Transport; Fri, 30 Jun 2023 04:24:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- CO1NAM11FT050.mail.protection.outlook.com (10.13.174.79) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6500.49 via Frontend Transport; Fri, 30 Jun 2023 04:24:45 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Thu, 29 Jun 2023
- 21:24:26 -0700
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.37; Thu, 29 Jun 2023 21:24:26 -0700
-Received: from build-abmainkar-20230620T092408093.nvidia.com (10.127.8.11) by
- mail.nvidia.com (10.126.190.182) with Microsoft SMTP Server id 15.2.986.37
- via Frontend Transport; Thu, 29 Jun 2023 21:24:26 -0700
-From:   Abhishek Mainkar <abmainkar@nvidia.com>
-To:     <robert.moore@intel.com>, <rafael.j.wysocki@intel.com>,
-        <lenb@kernel.org>
-CC:     <linux-acpi@vger.kernel.org>,
-        <acpica-devel@lists.linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <abmainkar@nvidia.com>
-Subject: [PATCH] acpica: Add AML_NO_OPERAND_RESOLVE flag to Timer
-Date:   Fri, 30 Jun 2023 04:24:19 +0000
-Message-ID: <20230630042419.1947389-1-abmainkar@nvidia.com>
-X-Mailer: git-send-email 2.17.1
-X-NVConfidentiality: public
+ 2023 08:46:45 +0000
+Received: from CO6PR11MB5603.namprd11.prod.outlook.com
+ ([fe80::4287:6d31:8c78:de92]) by CO6PR11MB5603.namprd11.prod.outlook.com
+ ([fe80::4287:6d31:8c78:de92%6]) with mapi id 15.20.6544.019; Fri, 30 Jun 2023
+ 08:46:45 +0000
+Message-ID: <72ed8f32-8bfd-2d25-a377-9adbacdc8c61@intel.com>
+Date:   Fri, 30 Jun 2023 10:46:37 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 3/5] acpi: Introduce new function callback for _OSC
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     <linux-acpi@vger.kernel.org>, <andriy.shevchenko@intel.com>,
+        <artem.bityutskiy@linux.intel.com>, <mingo@redhat.com>,
+        <bp@alien8.de>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
+        <lenb@kernel.org>, <jgross@suse.com>,
+        <linux-kernel@vger.kernel.org>, <x86@kernel.org>
+References: <20230613161034.3496047-1-michal.wilczynski@intel.com>
+ <20230613161034.3496047-4-michal.wilczynski@intel.com>
+ <CAJZ5v0j+Wz7366kLT3ez5TNoGWXvsa53hBYYeS=aHgbTJUqvKg@mail.gmail.com>
+From:   "Wilczynski, Michal" <michal.wilczynski@intel.com>
+In-Reply-To: <CAJZ5v0j+Wz7366kLT3ez5TNoGWXvsa53hBYYeS=aHgbTJUqvKg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR0P281CA0156.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b3::10) To CO6PR11MB5603.namprd11.prod.outlook.com
+ (2603:10b6:5:35c::12)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT050:EE_|IA1PR12MB7757:EE_
-X-MS-Office365-Filtering-Correlation-Id: 07cd3b28-20df-4f6d-b01b-08db7921ef24
+X-MS-TrafficTypeDiagnostic: CO6PR11MB5603:EE_|SJ0PR11MB5039:EE_
+X-MS-Office365-Filtering-Correlation-Id: d313f9a4-4bd7-43f0-b5f2-08db79468891
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: oIrMOAeHGw11N+FnH4kssbP6tGDfvo+ptldhCBx8Hp45gzylzQEcQ6pJzpmOTq5Oda196x8NG8VDhghHiOidhZXoU5V7VHF86ikcUD2lf5HIWkRUm2p2Se+btt1GzQVHzRvzcrDtFXIlQNwhcMDi2nQKPaTxtxvhKESj6tdAC/tCXkmXHf84I9xJjnPTcCbCtI50wV3eDgFOh2OQN1tbgacJCVQo1z7Tm1RIV58d4MpUgeQFqBrqEiACZWtOJBeERunbo40x8i9uHkHicGJpDX0Ghu1klFvhCT5NvsrKrWQJFoPGX66nekBraislS3qsevMfsIK2+ffzMM+VfONaaXN1NffWvrddCx39yQtZAFGMfhV42lpBvlfnaV1bzpAE5hZa4dCGUfk76dI05lxFCVs9oNCpkcB0TEHHaaq9kiZlmod3zntBYZA+PoHctcZ/lVNWVqGyHBF9ya3Tbi6qCEC+8atBkzf7hJ2rbUb15xDzJXpppKvucjyeZaEODFyZ2Qzf+chYn6tPZgi8bFOMHyLzhjCGlsw1b/zI9wTp0sginDKLXr3+/fy8IjydZgyfKlHLewtK12hKvG/EmpuvebWTvCjvE3UXpa4drAeYnPu4PrTuLPhR17PU0j/olg2/MUb1XU75dGwoZ4tWFjYcUpk1ceq+aMJD3ZS0C+q0fsWnvyhL/xeCW4/VI25G8hXU7K1maxisp9X+d97ZPo8Zb6XBH8dHrd+5NTi01XtH5uJ55dqHg1Wha1o16Hvy9knhLrT37xd2sp6Ga+V6E06QhvheYDm9Jh11NWKMZTNcalc=
-X-Forefront-Antispam-Report: CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(136003)(396003)(39860400002)(451199021)(46966006)(36840700001)(40470700004)(6666004)(2906002)(186003)(7696005)(82310400005)(40480700001)(86362001)(107886003)(82740400003)(83380400001)(7636003)(2616005)(426003)(336012)(47076005)(356005)(1076003)(36860700001)(40460700003)(966005)(110136005)(41300700001)(54906003)(26005)(478600001)(70206006)(316002)(36756003)(4326008)(70586007)(5660300002)(8676002)(8936002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2023 04:24:45.1879
+X-Microsoft-Antispam-Message-Info: 5xI9AM0H0uY5uQFNZ+kZM+L+IkQQX7dqRj/A66A4DnMMWepIr0hKQ9sOtX82Auy3xRLB9NZWfRnaFK1dCLkmPMsQPJ88MULVU+2l+RvbxUKbr0LapcZQNsZqO/io5xHW1OGuT182/ZXImsnSuRqRaEWYmPjvxBJ6WqJ87pIQHDRQ4YfNQg14b6Vg8tszADtQJtBRg0znFpkvn6I8o9O0o4MbOi31qJQcvZRc5KVMdLEsgI1BVDXuaiNhHGnUVnHbNkTtpp/TTGvSFkXGQaEPtz1jbkaF9Y8fi5LaBRVk/6LQj7XuVz4wkvzmJ+9jskel4Kq5BaRSpdOy49XAkwCHwgX62Oa/v40UTqG0LtSig/1EKQOWNBvCjrSQ+1XxTQTJwmBRvg0UBsOHjHa6KU81miXMTXaPxqwmtQiACin85WWUuSHCBFYoUSWjthtLYeSwsQN2w45HjYcmMmmCMLlSOFndAH9GXY+pDU0MQvDw6L/mq55daQcVb7+pjyWnMMYZMCIWt5QOCXCmGkgQCco8c4FDNBWg5r5k7oDZj6/u9o/DTh74zxnoSZQte+sHdsZYZmzqnl/aGa9BbJzOtkh7xmGdlG+1t7/XodF5J5hgXktd3wjd3/VHMPHfPMPgKRNouVN30XASYcJYSLfqs6d1vA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(376002)(366004)(136003)(39860400002)(346002)(451199021)(83380400001)(6666004)(478600001)(6486002)(66946007)(2906002)(186003)(26005)(66476007)(66556008)(6512007)(53546011)(6506007)(316002)(41300700001)(38100700002)(7416002)(5660300002)(8676002)(6916009)(8936002)(36756003)(4326008)(86362001)(31696002)(2616005)(82960400001)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RlEwckk4UkUvQ3FxNFdsOE53YzB2TlVuZjNBY0s0R1RVbklPbGFIR1ZGNjcr?=
+ =?utf-8?B?Mm54cW1CUFRjM05udmE2bi9LWUpDbG9tbGlvSlpHM1hHQmYwR3Q2RDdJMVEv?=
+ =?utf-8?B?Y3JFenhGNW53NjVObXo0WmxZdmFsNGFyY1Ivc2NoeERManNERWlJYXBUOE1q?=
+ =?utf-8?B?eUtmby9lNlFBUkxlQjhYMTdES05LaTBuL296M2ZJbDhWbXgvYUtmUGJTTGpa?=
+ =?utf-8?B?V2NQd2tZSlJIZUFWbjhsaW0yVFRDYU5XVFN4SUJRaDFqeTU0ZDY5K2p0M3Bl?=
+ =?utf-8?B?NXlwWk51WktTOVJNcUpsTzdWWDU2Q2VITitScUQ2dW9zUk41bWxHRmIrVWlH?=
+ =?utf-8?B?RUwzMFE2VXdFVXlrYys3WXRjdHhLSlN3TU5TNEFMQlovck9rekNtMnZlWUFF?=
+ =?utf-8?B?L0JFYlZ1NThuUGJ6VFNPU0k1ZTVKT20xV0MyeGJSVnpqbEk2MDVOempDbWlH?=
+ =?utf-8?B?eGM3VkFuQVN1Q2ZnRnhsZEcwa0RpY2IrMXNTZ25WZ1NYSk5OSC94bnUxZHFY?=
+ =?utf-8?B?TVBZL2g2NU1BdHhEK3luZzluSWdoc25OTENqRFNmTjdXc2pmM01oNUZGd2pS?=
+ =?utf-8?B?dkJsRkVUVDBjRExJVnZ0SUxnQ2hlNlQvc1lHbGZTbFJKdDJicG95bTY3WlVQ?=
+ =?utf-8?B?ZDNwbDRwUjZCY01xU01LVW1BQ3JwMkY2N25tb2xqMmJwMTZzb1pvWG9wbFpE?=
+ =?utf-8?B?MzJKQmlvM2lUYm9wZ3lyNjJGbU9ONXRFWTloYlhQWWJnN2lQMGp6bC9UeTVL?=
+ =?utf-8?B?anN0blpsc2J4SkxScE92ay9aRTlrQS9rWTMrUzM2RW9CcjhLRXpwa2FYUFN1?=
+ =?utf-8?B?QmhWNUJkTEJHZTc2T1l4bUtPRG5rZ1ovaC9xYWdQRFRtTnFBZ0Y3bG5iemlw?=
+ =?utf-8?B?dXVESmhyU0VzM1ora2hDNFVvbUVjaWcvMEMvM0hoT2lYcnAwKzhBY3RCaC9i?=
+ =?utf-8?B?YWVBSFM5VmVhSmJJekszcGovNzlVcDhLK3E1a1NLMVgzMGVuSFVJL1krWWtp?=
+ =?utf-8?B?TXJaa09ZTFp6bFpiMHNCc0FvVGlJUlRqbVJPWEFpOVdPaWNLcHVPNzQxUSsy?=
+ =?utf-8?B?R2VhT1hDUlZ3L3RRcStodVdNQkc3cEppV3ZqMkR0SWZGcVRjelVtRkl4OFNm?=
+ =?utf-8?B?WExrT0c2R1JoSytza0xMRnhhM0ZBb3k4K1lPaHIzZnZCdzQxTnUremwzTi9Z?=
+ =?utf-8?B?WElzUXhnai90c3VFUHArSThqTEFzZ2drTklSQmdFWWtDb1g0RHVKb0FZREEr?=
+ =?utf-8?B?SW1SZ09nQTQvY2dxZDZwOXZpVWpvWXJDa2xlL2UwN0swM1lVSFJJNWRPWFhC?=
+ =?utf-8?B?bGZ6R3pNa3BiWFplUWxiNjl4eFE2VUFwSjZCcTdMV1B4NEcyV0hIK25uV1BR?=
+ =?utf-8?B?WjM1eFprc2lJeDZkWlRmSXhMTFhsNXZhblBaVTRHbm8yNWx1aTRhWkl1QWlW?=
+ =?utf-8?B?NUZlUFNyV2Q1L28ycUpTTlh5cHlueFg3RExhWlBkRjJyd3ZXbGJ0ZmZyYmM3?=
+ =?utf-8?B?dTZ1SFl4ZkNDdjdVSS9UMkZGZ2pLUlR3KzdzWE9LeUxwaU43ZXRtVERUQ1pn?=
+ =?utf-8?B?VUgwQTlHYXMyWnZWeEFwcGZWTkVXTHRndm93ZWVlRzFWOEVDVkNxZ0duc0Vz?=
+ =?utf-8?B?c2F6cU9DazNVYmE0Ty9lRVNGMDZRZDA4WkFOR3JXNlN1TXlaWm05UDNXbVVx?=
+ =?utf-8?B?aTdEaUZtOFN4WmZnVDVjV2wrakdOWjVaYTlNVmhkeUlEN0lNcFZCcXRBU1dV?=
+ =?utf-8?B?UThjMHV5b2Rtd2RMc2ZIckE0WCtTQVBHTm01eGxLL0JxTzYwS2dJMXZaRXpX?=
+ =?utf-8?B?dHJHUVM3WGoyYWlDS21yVW5BMDFkeG5COEdMeDhJcDNpcUVZT1MraVk4dzJ1?=
+ =?utf-8?B?UXErUVd6Z1NiVXZFanVKdTl5Lzcxei9XQ3N3SzE2WWJVVTN1MFNDM2NNTHlq?=
+ =?utf-8?B?Z3lGSEMvbkhHWWJyOHJaUURZMmhLdm9oNXFNem14VG9jMTluclZpZm5hKzBG?=
+ =?utf-8?B?VmF3WG8yM1JaU0NmV2Vvcm05OFZ6Z0NYdmNZQXFnZGNRZURDSHZCbzREUnNZ?=
+ =?utf-8?B?ZUs3YjlSMG9Rc2E1ZG9YcDZtbkZjTlJvamQrRmZ5U3JUbUxpRE1zajI3T1FJ?=
+ =?utf-8?B?cW1MSGdFemttbVRPb2RHU3A0WlFFa1RCR1ZiSlRtcG9qcHVHVGNkUHNTaVRt?=
+ =?utf-8?B?Mnc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d313f9a4-4bd7-43f0-b5f2-08db79468891
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR11MB5603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2023 08:46:45.1304
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07cd3b28-20df-4f6d-b01b-08db7921ef24
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT050.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7757
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nEj9gA+74tkhDqnFZi+JzcX+v4CNsfCi6OO7tseEBuyYX1NOLl6AGvT2CVmus4sblBDFYf01goBM/xoRnriR86AWJkUnMLE9O69kBUhSuuc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5039
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-According to the ACPI specification 19.6.134, no argument is
-required to be passed for ASL Timer instruction. For taking
-care of no argument, AML_NO_OPERAND_RESOLVE flag is added to
-ASL Timer instruction opcode.
 
-When ASL timer instruction interpreted by ACPI interpreter,
-getting error. After adding AML_NO_OPERAND_RESOLVE flag to
-ASL Timer instruction opcode, issue is not observed.
+Hi,
+Thanks for the review !
 
-=============================================================
-UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12
-index -1 is out of range for type 'acpi_operand_object *[9]'
-CPU: 37 PID: 1678 Comm: cat Not tainted
-6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
-HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
- dump_backtrace+0xe0/0x130
- show_stack+0x20/0x60
- dump_stack_lvl+0x68/0x84
- dump_stack+0x18/0x34
- ubsan_epilogue+0x10/0x50
- __ubsan_handle_out_of_bounds+0x80/0x90
- acpi_ds_exec_end_op+0x1bc/0x6d8
- acpi_ps_parse_loop+0x57c/0x618
- acpi_ps_parse_aml+0x1e0/0x4b4
- acpi_ps_execute_method+0x24c/0x2b8
- acpi_ns_evaluate+0x3a8/0x4bc
- acpi_evaluate_object+0x15c/0x37c
- acpi_evaluate_integer+0x54/0x15c
- show_power+0x8c/0x12c [acpi_power_meter]
+On 6/29/2023 1:04 PM, Rafael J. Wysocki wrote:
+> I would just say "Introduce acpi_processor_osc()" in the subject and
+> then explain its role in the changelog.
 
-Link: https://github.com/acpica/acpica/commit/90310989
-Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
----
- drivers/acpi/acpica/psopcode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sure,
 
-diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
-index bef69e87a0a2..8c34c0ffb1d9 100644
---- a/drivers/acpi/acpica/psopcode.c
-+++ b/drivers/acpi/acpica/psopcode.c
-@@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
- 
- /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
- 			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
--			 AML_FLAGS_EXEC_0A_0T_1R),
-+			 AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
- 
- /* ACPI 5.0 opcodes */
- 
--- 
-2.17.1
+>
+> On Tue, Jun 13, 2023 at 6:12 PM Michal Wilczynski
+> <michal.wilczynski@intel.com> wrote:
+>> Currently in ACPI code _OSC method is already used for workaround
+>> introduced in commit a21211672c9a ("ACPI / processor: Request native
+>> thermal interrupt handling via _OSC"). Create new function, similar to
+>> already existing acpi_hwp_native_thermal_lvt_osc(). Call new function
+>> acpi_processor_osc(). Make this function fulfill the purpose previously
+>> fulfilled by the workaround plus convey OSPM processor capabilities
+>> with it by setting correct processor capability bits.
+>>
+>> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+>> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>> ---
+>>  arch/x86/include/asm/acpi.h   |  3 +++
+>>  drivers/acpi/acpi_processor.c | 43 ++++++++++++++++++++++++++++++++++-
+>>  include/acpi/pdc_intel.h      |  1 +
+>>  3 files changed, 46 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+>> index 6a498d1781e7..6c25ce2dad18 100644
+>> --- a/arch/x86/include/asm/acpi.h
+>> +++ b/arch/x86/include/asm/acpi.h
+>> @@ -112,6 +112,9 @@ static inline void arch_acpi_set_proc_cap_bits(u32 *cap)
+>>         if (cpu_has(c, X86_FEATURE_ACPI))
+>>                 *cap |= ACPI_PDC_T_FFH;
+>>
+>> +       if (cpu_has(c, X86_FEATURE_HWP))
+>> +               *cap |= ACPI_PDC_COLLAB_PROC_PERF;
+>> +
+>>         /*
+>>          * If mwait/monitor is unsupported, C2/C3_FFH will be disabled
+>>          */
+>> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+>> index 8c5d0295a042..0de0b05b6f53 100644
+>> --- a/drivers/acpi/acpi_processor.c
+>> +++ b/drivers/acpi/acpi_processor.c
+>> @@ -591,13 +591,54 @@ void __init processor_dmi_check(void)
+>>         dmi_check_system(processor_idle_dmi_table);
+>>  }
+>>
+>> +/* vendor specific UUID indicating an Intel platform */
+>> +static u8 sb_uuid_str[] = "4077A616-290C-47BE-9EBD-D87058713953";
+>>  static bool acpi_hwp_native_thermal_lvt_set;
+>> +static acpi_status __init acpi_processor_osc(acpi_handle handle, u32 lvl,
+>> +                                            void *context, void **rv)
+>> +{
+>> +       u32 capbuf[2] = {};
+>> +       acpi_status status;
+>> +       struct acpi_osc_context osc_context = {
+>> +               .uuid_str = sb_uuid_str,
+>> +               .rev = 1,
+>> +               .cap.length = 8,
+>> +               .cap.pointer = capbuf,
+>> +       };
+>> +
+>> +       if (processor_physically_present(handle) == false)
+> if (!processor_physically_present(handle))
+
+Sure,
+
+>
+>> +               return AE_OK;
+>> +
+>> +       arch_acpi_set_proc_cap_bits(&capbuf[OSC_SUPPORT_DWORD]);
+>> +
+>> +       if (boot_option_idle_override == IDLE_NOMWAIT)
+>> +               capbuf[OSC_SUPPORT_DWORD] &=
+>> +                       ~(ACPI_PDC_C_C2C3_FFH | ACPI_PDC_C_C1_FFH);
+>> +
+>> +       status = acpi_run_osc(handle, &osc_context);
+>> +       if (ACPI_FAILURE(status))
+>> +               return status;
+>> +
+>> +       if (osc_context.ret.pointer && osc_context.ret.length > 1) {
+>> +               u32 *capbuf_ret = osc_context.ret.pointer;
+>> +
+>> +               if (!acpi_hwp_native_thermal_lvt_set &&
+>> +                   capbuf_ret[1] & ACPI_PDC_COLLAB_PROC_PERF) {
+> Checking it in capbuf_ret[] if it was not set in capbuf[] is sort of
+> questionable.
+> Note that acpi_hwp_native_thermal_lvt_osc() sets it in capbuf[] before
+> calling acpi_run_osc().
+
+We can add condition before checking capbuf_ret i.e
+
+if (capbuf[OSC_SUPPORT_DWORD] & ACPI_PDC_COLLAB_PROC_PERF &&
+    osc_context.ret.pointer && osc_context.ret.length > 1)
+ 
+
+>
+>> +                       acpi_handle_info(handle,
+>> +                                        "_OSC native thermal LVT Acked\n");
+>> +                       acpi_hwp_native_thermal_lvt_set = true;
+>> +               }
+>> +       }
+>> +       kfree(osc_context.ret.pointer);
+>> +
+>> +       return AE_OK;
+>> +}
+>> +
+>>  static acpi_status __init acpi_hwp_native_thermal_lvt_osc(acpi_handle handle,
+>>                                                           u32 lvl,
+>>                                                           void *context,
+>>                                                           void **rv)
+>>  {
+>> -       u8 sb_uuid_str[] = "4077A616-290C-47BE-9EBD-D87058713953";
+>>         u32 capbuf[2];
+>>         struct acpi_osc_context osc_context = {
+>>                 .uuid_str = sb_uuid_str,
+>> diff --git a/include/acpi/pdc_intel.h b/include/acpi/pdc_intel.h
+>> index 967c552d1cd3..9427f639287f 100644
+>> --- a/include/acpi/pdc_intel.h
+>> +++ b/include/acpi/pdc_intel.h
+>> @@ -16,6 +16,7 @@
+>>  #define ACPI_PDC_C_C1_FFH              (0x0100)
+>>  #define ACPI_PDC_C_C2C3_FFH            (0x0200)
+>>  #define ACPI_PDC_SMP_P_HWCOORD         (0x0800)
+>> +#define ACPI_PDC_COLLAB_PROC_PERF      (0x1000)
+> I would call this ACPI_OSC_COLLAB_PROC_PERF to avoid confusion.
+>
+> It may also be a good idea to introduce ACPI_OSC_ symbols to replace
+> the existing ACPI_PDC_ ones (with the same values, respectively) and
+> get rid of the latter later.
+
+Sure I can do that, most likely in a separate commit preceeding this one, so
+it's easier to explain and review,
+
+>
+>>  #define ACPI_PDC_EST_CAPABILITY_SMP    (ACPI_PDC_SMP_C1PT | \
+>>                                          ACPI_PDC_C_C1_HALT | \
+>> --
 
