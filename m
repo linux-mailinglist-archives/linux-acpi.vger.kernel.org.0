@@ -2,111 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33C5F74448F
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Jul 2023 00:13:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E96C874457F
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Jul 2023 02:20:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230013AbjF3WNK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Jun 2023 18:13:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48812 "EHLO
+        id S229552AbjGAAUn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Jun 2023 20:20:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231448AbjF3WNC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Jun 2023 18:13:02 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3AC03C24;
-        Fri, 30 Jun 2023 15:12:59 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1b80ba9326bso17416165ad.1;
-        Fri, 30 Jun 2023 15:12:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688163179; x=1690755179;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=thoT2jC0QZieB1tqlGcvhahvmZEljvo2S9CLE9NXiwk=;
-        b=bfn4PAMp/IiOCOx4AkyL59KnGpDp5CSKIgoZyWHUmB7fzTS8K5iygNy/7Arj5CVY4C
-         DX5t5jLXmXwHVc7gUkT1tLZilPbyYQ8QGcO8YyFmnL7vdt+tLODVpIXVJtjSebTtTpTx
-         qPm+nQutsUTCCSPRcVLl4/hVtfPedF54QYcnTRdeq/YXwYf0EVuUYR4foaoI1mGWyf6W
-         HuXPY3xXVEnr0rWMpDjgOIAljAw1GFY/vU7cURa/WsUSfcPC5rWSreUWfjqXkvpYvv+f
-         wfeyZ6dDasj6NU04fPa0adicbtZ7KfvAcuVBm5jF6UbGQdft4KFx2i+bSpILHovDn7xy
-         s2Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688163179; x=1690755179;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=thoT2jC0QZieB1tqlGcvhahvmZEljvo2S9CLE9NXiwk=;
-        b=DMWxr9EtmUhA4rkd4PhQdAURUcdSHwvSB2xlxKAc+RKcm0BxNZcJ33zd7cJS+O0o76
-         2o/KftP8J0EOFvLJ8GspzAH/ynYlvRRpPOh7rHUC3Wc4/7hP/m1PGXTHLhKSKlY+gz3L
-         2Vb8WE71FttQKWpXfX1lU49NjE3GFixzOKTnE3yzOiwJ5s6twMDizEePCWLUxmFtclTm
-         iUvliC0SUCY+22HF57uobeFLypH+j8IvM+wO8YJBUDnSjHhqsgp6ATaI6MhoajsgVMQC
-         tHdKktUIky8QHe8tNDUVGpCs4rgyrCRd8UblrZVTGpQy/iYzBOF3fIoviR6KZ0uD/SA/
-         j8dA==
-X-Gm-Message-State: ABy/qLb0cSf78w5q6F38jYW/BEDr7akGjo9NeV5/k2utrhdD+aFw7MCT
-        M+hP6eOyFz4p070JMaFEcKJKWjYQLBqcTDXP
-X-Google-Smtp-Source: APBJJlFyldWzSp9PhFA7Agya7H/yUCrkXjkCzYAe0fV4ZlQpjDD4Y0yeYHlSjwVa7BRhU62OzHc1Kw==
-X-Received: by 2002:a17:902:7081:b0:1b8:3e15:40e8 with SMTP id z1-20020a170902708100b001b83e1540e8mr2824804plk.56.1688163178998;
-        Fri, 30 Jun 2023 15:12:58 -0700 (PDT)
-Received: from localhost ([2405:6581:d4e0:1600:c494:2aca:bc01:6f7b])
-        by smtp.gmail.com with ESMTPSA id 21-20020a170902e9d500b001b8649e52f8sm2496453plk.254.2023.06.30.15.12.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jun 2023 15:12:58 -0700 (PDT)
-Date:   Sat, 1 Jul 2023 07:12:56 +0900
-From:   Nick Hastings <nicholaschastings@gmail.com>
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        Karol Herbst <kherbst@redhat.com>,
-        Lyude Paul <lyude@redhat.com>, Lukas Wunner <lukas@wunner.de>,
-        Salvatore Bonaccorso <carnil@debian.org>,
-        "1036530@bugs.debian.org" <1036530@bugs.debian.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: Regression from "ACPI: OSI: Remove Linux-Dell-Video _OSI
- string"? (was: Re: Bug#1036530: linux-signed-amd64: Hard lock up of system)
-Message-ID: <ZJ9TaCiYMiRAXm81@xps>
-References: <CACO55tudULtvt_Hcdg+uqXeYkSAR_NZ1oD=R_KhuE_THSRe88g@mail.gmail.com>
- <MN0PR12MB6101DE067CF85E59AF187763E2499@MN0PR12MB6101.namprd12.prod.outlook.com>
- <CACO55tuqAH5Zt+X9pjLFZ-RcFgxpgjpqmrAHPvm4=fb_DMBHyw@mail.gmail.com>
- <ZHkxYo/a+/uInkLG@xps>
- <MN0PR12MB610181D29933EE4787DE9BC8E24EA@MN0PR12MB6101.namprd12.prod.outlook.com>
- <ed5f982e-c12c-b3a2-1108-62fba50bf9db@leemhuis.info>
- <ZJoSWftrHO65wmxz@xps>
- <35e9ae66-76d0-5a17-31e6-7aa8de5bfadd@leemhuis.info>
- <ZJ9LPZcgkDLscww+@xps>
- <0bdbb7a3-b8fa-1afa-23cf-afde1cec3d25@amd.com>
+        with ESMTP id S229563AbjGAAUm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Jun 2023 20:20:42 -0400
+Received: from vps0.lunn.ch (unknown [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 124083A9B;
+        Fri, 30 Jun 2023 17:20:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=RSoC/5hYUUQ3sGJr52lBB+aV7IzoV8b72rkry2pxCQg=; b=yAyplwTga+cJQhNVxS4WCa0avC
+        XATcUdMc7wgQTO46g7k9dcH2lTxfJGRCofunObU6mN+84w113eNMP2VoKVQEFW1R1wTRQT0i64hLW
+        KT9C9WzHFOqZAlNELVDobW+4G2P/rybEr2j3erhGyjDcrRq59amX2UprnR8BcrFLmzDQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qFOKp-000LM8-66; Sat, 01 Jul 2023 02:19:31 +0200
+Date:   Sat, 1 Jul 2023 02:19:31 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Evan Quan <evan.quan@amd.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, Alexander.Deucher@amd.com,
+        Christian.Koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+        daniel@ffwll.ch, johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        Mario.Limonciello@amd.com, mdaenzer@redhat.com,
+        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+        hdegoede@redhat.com, jingyuwang_vip@163.com, Lijo.Lazar@amd.com,
+        jim.cromie@gmail.com, bellosilicio@gmail.com,
+        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
+        arnd@arndb.de, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH V5 1/9] drivers core: Add support for Wifi band RF
+ mitigations
+Message-ID: <7e7db6eb-4f46-407a-8d1f-16688554ad80@lunn.ch>
+References: <20230630103240.1557100-1-evan.quan@amd.com>
+ <20230630103240.1557100-2-evan.quan@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0bdbb7a3-b8fa-1afa-23cf-afde1cec3d25@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230630103240.1557100-2-evan.quan@amd.com>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-* Limonciello, Mario <mario.limonciello@amd.com> [230701 06:40]:
+> Drivers/subsystems contributing frequencies:
 > 
-> > > Nevertheless: thx for your report your help through this thread.
-> > 
-> > No problem. I am willing to try to do more, but right now I don't know
-> > how to do what has been suggested.
-> > 
-> 
-> Here is where to report Nouveau bugs:
-> 
-> https://gitlab.freedesktop.org/drm/nouveau/-/issues/
+> 1) During probe, check `wbrf_supported_producer` to see if WBRF supported
+>    for the device.
 
-Thanks.
+What is the purpose of this stage? Why would it not be supported for
+this device?
 
-Done: https://gitlab.freedesktop.org/drm/nouveau/-/issues/241
+> +#ifdef CONFIG_WBRF
+> +bool wbrf_supported_producer(struct device *dev);
+> +int wbrf_add_exclusion(struct device *adev,
+> +		       struct wbrf_ranges_in *in);
+> +int wbrf_remove_exclusion(struct device *dev,
+> +			  struct wbrf_ranges_in *in);
+> +int wbrf_retrieve_exclusions(struct device *dev,
+> +			     struct wbrf_ranges_out *out);
+> +bool wbrf_supported_consumer(struct device *dev);
+> +
+> +int wbrf_register_notifier(struct notifier_block *nb);
+> +int wbrf_unregister_notifier(struct notifier_block *nb);
+> +#else
+> +static inline bool wbrf_supported_producer(struct device *dev) { return false; }
+> +static inline int wbrf_add_exclusion(struct device *adev,
+> +				     struct wbrf_ranges_in *in) { return -ENODEV; }
+> +static inline int wbrf_remove_exclusion(struct device *dev,
+> +					struct wbrf_ranges_in *in) { return -ENODEV; }
 
-Cheers,
+The normal aim of stubs is that so long as it is not expected to be
+fatal if the functionality is missing, the caller should not care if
+it is missing. So i would expect these to return 0, indicating
+everything worked as expected.
 
-Nick.
+> +static inline int wbrf_retrieve_exclusions(struct device *dev,
+> +					   struct wbrf_ranges_out *out) { return -ENODEV; }
 
+This is more complex. Ideally you want to return an empty set, so
+there is nothing to do. So i think the stub probably wants to do a
+memset and then return 0.
+
+> +static inline bool wbrf_supported_consumer(struct device *dev) { return false; }
+> +static inline int wbrf_register_notifier(struct notifier_block *nb) { return -ENODEV; }
+> +static inline int wbrf_unregister_notifier(struct notifier_block *nb) { return -ENODEV; }
+
+And these can just return 0.
+
+    Andrew
