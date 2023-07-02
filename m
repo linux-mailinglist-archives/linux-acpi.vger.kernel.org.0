@@ -2,109 +2,149 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E97D2744D22
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jul 2023 11:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36DFD744D7B
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jul 2023 13:57:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229922AbjGBJ6j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jul 2023 05:58:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45242 "EHLO
+        id S229728AbjGBL5Y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jul 2023 07:57:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229941AbjGBJ6e (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 05:58:34 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0354810CE
-        for <linux-acpi@vger.kernel.org>; Sun,  2 Jul 2023 02:58:10 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-666eef03ebdso1692246b3a.1
-        for <linux-acpi@vger.kernel.org>; Sun, 02 Jul 2023 02:58:10 -0700 (PDT)
+        with ESMTP id S229704AbjGBL5X (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 07:57:23 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59E67E73;
+        Sun,  2 Jul 2023 04:57:22 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1b82bf265b2so15577465ad.0;
+        Sun, 02 Jul 2023 04:57:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1688291890; x=1690883890;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kkAY8od4kopgBrvcbw1hFpjzgJzWLikggNI5ytXC3Uk=;
-        b=loY2CFs4lCMCrbHrZ0yHjXW0d09bE4yUX16zdqny9IfQYSrLVevitIgjVjuraQ1Gi1
-         WAmfNin9IKUl2GQp00jw/CWIWhYqGbAHp8jvoeWHdW2tcmtEKvfGCCrVB8hx6Q4Sjqqf
-         HIaVcB+YtGA+M3GO+XfmBpZplhMaqD7hiiyflwP4RFdvBAZ38PNOqc3mzDurTK86p+je
-         M1nxappZcfZ3mae9G8be5IBvNUlyRsR6sVYEV+W25NJWKZ4q+aoamrJnQ3X1ZRNQGXL6
-         Qmj/bbGQGyhVgTzIthLGGC/bHbI5sBzTGrTmwXacCHk2kbdGKz+PNnTZBecgIiHh5zI9
-         UFTg==
+        d=gmail.com; s=20221208; t=1688299042; x=1690891042;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7qagKLZGa10wVvAq9nJ5ZILI98Y2jy96AWT9f4TfrO8=;
+        b=Lp2sEjNT5bKhVCBgHl3nADK0T6dCzbAGMULQ8a01f0WSYh5V+VyzpqN6nRviRXY14l
+         TuGij9y1QDbB5weNaxnndCHewGgNzjQctmmwA9p10EraO6jqGyd4Y9mSs3iXpc0eMQ0f
+         mhqA80KUShZ6yE+rTLGzQcrp5XD3ZyYA/5W3IASKWR5MxWvgZJCWILuEPI/wtdBUpq7h
+         jS3zBfTPXVGAyWplOa3qj8l5StQhaGEi+dRHM+o80rS8CQdAgMFAIqrr2/dwywj7cf3N
+         /Pwv97UPtiwTZdTWV2IxxVSbbaPt1rPPOzN2PbXcrZd3x7dJK8bFOsbp+3tDdGPiN0XA
+         KVeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688291890; x=1690883890;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kkAY8od4kopgBrvcbw1hFpjzgJzWLikggNI5ytXC3Uk=;
-        b=DmC2m/kQGz0e27Ww7C+kccdvmiLX9DbFYAcA05NfzNgKGm46VpVfeAXJuNGNeOVETD
-         5rBst9Rb3wo83DXVL1hZ9vjvEbWb2rbDBFp9n2TlS5EAuhMqJV3moBIv7egMEbmgjw59
-         Q0Mat3PSUhrE4poXL62UDq6ELYguM+cU3+wnYAIhOaLA+g/w5rkJt80/ZvuA9V9Q5Lh3
-         WUXDnk8d24wki1ZZU8zOmfP8v9o5o5Chq0HDUBab7k+yk8UYiR7SEX/XrkNb6B0LCUQG
-         3sCbYZflDz/5llMef3z5owgZsZK1sTs7s5HclWf64hOOmV0zZXP01bTb6IYI0TuFtc1+
-         l98w==
-X-Gm-Message-State: ABy/qLZjxTZB+ZC3PULMVBSBJF4sdXJN95lqEDKb6d47Qa0OAKal7TOU
-        5SOIvg4Lej26ol6RQxUPHwH7NQ==
-X-Google-Smtp-Source: APBJJlEXSgBPi382cT8u7InSOCN1bAAjdhLBtHtZTpazMFigPk1oiVbNh/c+TMlLCxgtWsKVe0Y3jA==
-X-Received: by 2002:a05:6a00:2d87:b0:682:4de1:adcc with SMTP id fb7-20020a056a002d8700b006824de1adccmr7473435pfb.12.1688291890230;
-        Sun, 02 Jul 2023 02:58:10 -0700 (PDT)
-Received: from PF2E59YH-BKX.inc.bytedance.com ([139.177.225.251])
-        by smtp.gmail.com with ESMTPSA id u26-20020a62ed1a000000b006827d86ca0csm1605095pfh.55.2023.07.02.02.58.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Jul 2023 02:58:09 -0700 (PDT)
-From:   Yunhui Cui <cuiyunhui@bytedance.com>
-To:     ardb@kernel.org, palmer@dabbelt.com, paul.walmsley@sifive.com,
-        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
-        rminnich@gmail.com, mark.rutland@arm.com, lpieralisi@kernel.org,
-        rafael@kernel.org, lenb@kernel.org, jdelvare@suse.com,
-        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
-        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
-        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, geshijian@bytedance.com,
-        weidong.wd@bytedance.com, cuiyunhui@bytedance.com
-Subject: [PATCH v2 3/3] riscv: obtain SMBIOS entry from FFI.
-Date:   Sun,  2 Jul 2023 17:57:34 +0800
-Message-Id: <20230702095735.860-3-cuiyunhui@bytedance.com>
-X-Mailer: git-send-email 2.37.3.windows.1
-In-Reply-To: <20230702095735.860-1-cuiyunhui@bytedance.com>
-References: <20230702095735.860-1-cuiyunhui@bytedance.com>
+        d=1e100.net; s=20221208; t=1688299042; x=1690891042;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7qagKLZGa10wVvAq9nJ5ZILI98Y2jy96AWT9f4TfrO8=;
+        b=N8wJOHLbU+84Ilz5ELGGORJJm4YF0Le2m86kGI0rj+JRF585sN95tsgX7N8bSF/HaB
+         zJmW83RKd4QIYaE8KtbuS5oL76Iig35iMHaj/EvXjMZUOmzd0g0ysheX4zx6nSSjboIc
+         FDYsKbpjdHqUNw8yw6XKm7AzHzXxe6o4lVlRnEmenoYQ85PpzbzTAIBTR3WjXjDPTOvf
+         GnZ58OoWTDUNpchRtMG0af8bRoODwLwO4l2T5CoXifTuEbAGaLAKxaFdgh3jYB5WfGZU
+         cIGXR9etvjW2jpBNvMIH/LR5NzwpTPKsb+l2lBdj/PGdzdWgDnhcS+wEGJcMW69LyQzK
+         r4rA==
+X-Gm-Message-State: ABy/qLblAd4Dbsmd+5ALIpkV/8vp2oAlHl5pJy71VHNZjFZFLL+0yLYR
+        Daj1vBq0alfYzPPqMfAdXaA=
+X-Google-Smtp-Source: APBJJlE4CbVvUaMvQBQttUFOCXJMSfMnxOJ3T5YMiAeUk7XAACrdXab8dfLsDFAcYWm09mkvHX3dOQ==
+X-Received: by 2002:a17:902:d4c4:b0:1b8:2c6f:3247 with SMTP id o4-20020a170902d4c400b001b82c6f3247mr6252238plg.4.1688299041674;
+        Sun, 02 Jul 2023 04:57:21 -0700 (PDT)
+Received: from [192.168.0.103] ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id y13-20020a170902ed4d00b001b8932d77d7sm490425plb.279.2023.07.02.04.57.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Jul 2023 04:57:21 -0700 (PDT)
+Message-ID: <79196679-fb65-e5ad-e836-2c43447cfacd@gmail.com>
+Date:   Sun, 2 Jul 2023 18:57:05 +0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: Fwd: RCU stalls with wireguard over bonding over igb on Linux
+ 6.3.0+
+Content-Language: en-US
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Eric DeVolder <eric.devolder@oracle.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        David R <david@unsolicited.net>,
+        Boris Ostrovsky <boris.ovstrosky@oracle.com>,
+        Miguel Luis <miguel.luis@oracle.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Jay Vosburgh <j.vosburgh@gmail.com>,
+        Andy Gospodarek <andy@greyhouse.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Thorsten Leemhuis <regressions@leemhuis.info>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux RCU <rcu@vger.kernel.org>,
+        Wireguard Mailing List <wireguard@lists.zx2c4.com>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Manuel 'satmd' Leiner <manuel.leiner@gmx.de>
+References: <e5b76a4f-81ae-5b09-535f-114149be5069@gmail.com>
+In-Reply-To: <e5b76a4f-81ae-5b09-535f-114149be5069@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When we bringup with coreboot on riscv, we need to obtain
-the entry address of SMBIOS through the FFI scheme.
+[also Cc: original reporter]
 
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
----
- arch/riscv/kernel/ffi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+On 7/2/23 10:31, Bagas Sanjaya wrote:
+> Hi,
+> 
+> I notice a regression report on Bugzilla [1]. Quoting from it:
+> 
+>> I've spent the last week on debugging a problem with my attempt to upgrade my kernel from 6.2.8 to 6.3.8 (now also with 6.4.0 too).
+>>
+>> The lenghty and detailed bug reports with all aspects of git bisect are at
+>> https://bugs.gentoo.org/909066
+>>
+>> A summary:
+>> - if I do not configure wg0, the kernel does not hang
+>> - if I use a kernel older than commit fed8d8773b8ea68ad99d9eee8c8343bef9da2c2c, it does not hang
+>>
+>> The commit refers to code that seems unrelated to the problem for my naiive eye.
+>>
+>> The hardware is a Dell PowerEdge R620 running Gentoo ~amd64.
+>>
+>> I have so far excluded:
+>> - dracut for generating the initramfs is the same version over all kernels
+>> - linux-firmware has been the same
+>> - CPU microcode has been the same
+>>
+>> It's been a long time since I seriously involved with software development and I have been even less involved with kernel development.
+>>
+>> Gentoo maintainers recommended me to open a bug with upstream, so here I am.
+>>
+>> I currently have no idea how to make progress, but I'm willing to try things.
+> 
+> See Bugzilla for the full thread.
+> 
+> Anyway, I'm adding it to regzbot to make sure it doesn't fall through cracks
+> unnoticed:
+> 
+> #regzbot introduced: fed8d8773b8ea6 https://bugzilla.kernel.org/show_bug.cgi?id=217620
+> #regzbot title: correcting acpi_is_processor_usable() check causes RCU stalls with wireguard over bonding+igb
+> #regzbot link: https://bugs.gentoo.org/909066
+> 
 
-diff --git a/arch/riscv/kernel/ffi.c b/arch/riscv/kernel/ffi.c
-index c5ac2b5d9148..c44f943a1cb5 100644
---- a/arch/riscv/kernel/ffi.c
-+++ b/arch/riscv/kernel/ffi.c
-@@ -8,6 +8,7 @@
- #include <linux/of.h>
- #include <linux/of_fdt.h>
- #include <linux/libfdt.h>
-+#include <linux/ffi.h>
- 
- u64 acpi_rsdp;
- 
-@@ -34,4 +35,7 @@ void __init ffi_acpi_root_pointer(void)
- void __init ffi_init(void)
- {
- 	ffi_acpi_root_pointer();
-+#if CONFIG_FDT_FW_INTERFACE
-+	ffi_smbios_root_pointer();
-+#endif
- }
+satmd: Can you repeat bisection to confirm that fed8d8773b8ea6 is
+really the culprit?
+
+Thorsten: It seems like the reporter concluded bisection to the
+(possibly) incorrect culprit. What can I do in this case besides
+asking to repeat bisection?
+
 -- 
-2.20.1
+An old man doll... just what I always wanted! - Clara
 
