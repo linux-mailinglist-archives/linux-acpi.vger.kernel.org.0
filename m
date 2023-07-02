@@ -2,53 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CE8E7451E1
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jul 2023 21:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23D3A7451AD
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jul 2023 21:56:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232623AbjGBT67 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jul 2023 15:58:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44190 "EHLO
+        id S229738AbjGBT4x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jul 2023 15:56:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233260AbjGBT6A (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 15:58:00 -0400
+        with ESMTP id S232664AbjGBT4Z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 15:56:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E6351FE8;
-        Sun,  2 Jul 2023 12:55:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7CC73A87;
+        Sun,  2 Jul 2023 12:54:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D477D60CF6;
-        Sun,  2 Jul 2023 19:51:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CF9C433C9;
-        Sun,  2 Jul 2023 19:51:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4781260CD4;
+        Sun,  2 Jul 2023 19:52:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942E0C433C7;
+        Sun,  2 Jul 2023 19:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688327515;
-        bh=1Y5JUZC0hk2+VhStkGcp8Komml8YDXrr6ysKpN0AVgY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=awkc8FuOpZLSfki8FqTcf40cUJRBzx4/fXyKjtTbvY9LEQ6XkpSKvEKpFBlmBaIja
-         vOdnQ37IS+a+Aso0BqGlOVo6pJ5JJ9bZ/C03xlO03BjexM3hsLb+cIwRB8FHAUgiBt
-         zCtEKuUJ7vXsRxjQEhxMlRknsfEQwIayf37+/DgCgBR0VgrIJ7dC23hbmHoitmQ16t
-         b+J9aC/Dc24awj1RyknBgMZ1rIM/847PsLa8FhEvZyC08qcSX0oKTa6esj1Lsn+MTc
-         wR8YhULT8Oq/yLfO1ONBZ68AzEqr1wnXOZZOdt7ypFERUBv5Lo8yHBMuncUnHwiPC+
-         S6PeNJac2olwg==
+        s=k20201202; t=1688327523;
+        bh=69V9Ig/HA5N66PRbyZIkRjsDTHBKFg/+k5b9bW4I/b4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mrR8GS2jQ1CNBQXA7/vBTPQfR0g+bf3gSFfKONJXzwEzUTSnlACs2T0n6YnoQXnpd
+         Pfn/RaMMA6AjoWbtqNBGdBjHaW/ibP7oumvdUHmbkU3pX2ZP+OAcIdbiWaM7IGh3lY
+         9O1FDcOervM000OSbsxCghoNOSNKqvhNqm/9rgQ2bEivURgEHHXFnWwHRJZP148nH9
+         LKdgxPwGVg28yFPTYItTwCz6ShhskmdIQ1FtiqkJLkC0Lyww87cSolDUj69gijDPYR
+         /q0TnOK6v+SriF1W6OpjcNxNodM6IFacPpMXNG4pJA4TVstZ5b4J1Hc6OxaRxlNE0Y
+         Djgegvs1X6FdA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
-        raycekarneal <raycekarneal@gmail.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.3 11/11] ACPI: video: Add backlight=native DMI quirk for Dell Studio 1569
-Date:   Sun,  2 Jul 2023 15:51:27 -0400
-Message-Id: <20230702195127.1787911-11-sashal@kernel.org>
+        mario.limonciello@amd.com, andriy.shevchenko@linux.intel.com,
+        mail@mariushoch.de, linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 1/9] ACPI: x86: Add skip i2c clients quirk for Nextbook Ares 8A
+Date:   Sun,  2 Jul 2023 15:51:48 -0400
+Message-Id: <20230702195159.1788402-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230702195127.1787911-1-sashal@kernel.org>
-References: <20230702195127.1787911-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.3.11
+X-stable-base: Linux 6.1.37
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -62,42 +60,72 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 23d28cc0444be3f694eb986cd653b6888b78431d ]
+[ Upstream commit 69d6b37695c1f2320cfa330e1e1636d50dd5040a ]
 
-The Dell Studio 1569 predates Windows 8, so it defaults to using
-acpi_video# for backlight control, but this is non functional on
-this model.
+The Nextbook Ares 8A is a x86 ACPI tablet which ships with Android x86
+as factory OS. Its DSDT contains a bunch of I2C devices which are not
+actually there (the Android x86 kernel fork ignores I2C devices described
+in the DSDT).
 
-Add a DMI quirk to use the native intel_backlight interface which
-does work properly.
+On this specific model this just not cause resource conflicts, one of
+the probe() calls for the non existing i2c_clients actually ends up
+toggling a GPIO or executing a _PS3 after a failed probe which turns
+the tablet off.
 
-Reported-by: raycekarneal <raycekarneal@gmail.com>
+Add a ACPI_QUIRK_SKIP_I2C_CLIENTS for the Nextbook Ares 8 to the
+acpi_quirk_skip_dmi_ids table to avoid the bogus i2c_clients and
+to fix the tablet turning off during boot because of this.
+
+Also add the "10EC5651" HID for the RealTek ALC5651 codec used
+in this tablet to the list of HIDs for which not to skipi2c_client
+instantiation, since the Intel SST sound driver relies on
+the codec being instantiated through ACPI.
+
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/acpi/x86/utils.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index b87783c5872dd..e7d04ab864a16 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -528,6 +528,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7510"),
- 		},
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index e45285d4e62a4..0b65c0d3f5a80 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -330,7 +330,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+ 	},
+ 	{
+-		/* Nextbook Ares 8 */
++		/* Nextbook Ares 8 (BYT version)*/
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "M890BAP"),
+@@ -338,6 +338,16 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
  	},
 +	{
-+	 .callback = video_detect_force_native,
-+	 /* Dell Studio 1569 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "Studio 1569"),
++		/* Nextbook Ares 8A (CHT version)*/
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "CherryTrail"),
++			DMI_MATCH(DMI_BIOS_VERSION, "M882"),
 +		},
++		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
 +	},
  	{
- 	 .callback = video_detect_force_native,
- 	 /* Acer Aspire 3830TG */
+ 		/* Whitelabel (sold as various brands) TM800A550L */
+ 		.matches = {
+@@ -356,6 +366,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
+ static const struct acpi_device_id i2c_acpi_known_good_ids[] = {
+ 	{ "10EC5640", 0 }, /* RealTek ALC5640 audio codec */
++	{ "10EC5651", 0 }, /* RealTek ALC5651 audio codec */
+ 	{ "INT33F4", 0 },  /* X-Powers AXP288 PMIC */
+ 	{ "INT33FD", 0 },  /* Intel Crystal Cove PMIC */
+ 	{ "INT34D3", 0 },  /* Intel Whiskey Cove PMIC */
 -- 
 2.39.2
 
