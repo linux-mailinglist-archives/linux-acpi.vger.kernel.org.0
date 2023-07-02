@@ -2,201 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 722FD744E99
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jul 2023 18:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3FF1745188
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jul 2023 21:54:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229828AbjGBQ2T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jul 2023 12:28:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60024 "EHLO
+        id S232808AbjGBTyp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jul 2023 15:54:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229644AbjGBQ2T (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 12:28:19 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B406E60;
-        Sun,  2 Jul 2023 09:28:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688315298; x=1719851298;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=gE63mQxX2uqiJxp4/cma47DCCu39/6Y8JQQErQ+uM4g=;
-  b=J/o9vRDxJuUzAtZC5eajg/NJ9T38/gjZ09luWFvMDyDwp9N+uRrq8jPf
-   iF562pP1bPPnJomEgEGcu7RWmtrbboB4yfgXnZgQ2a07xTvDJoJSqePww
-   dDAUArijX92wR/Q6JEszfBbqQ/n6c7qGhPuzWsYoHoFN/XpFrLNaAq5LU
-   A4MwOEYPKHyzagVXW6Yl08uFesyKiTI3jZX16uehoXz8bCrVadd1uIJos
-   NVDPgjwwwTxKTHp3n2a1ft9WzuK53KNL8NxOOaQ+0Nilu0AfGa0tKS9HT
-   eFK9emxekfqqk0o9LpLu5NjTv2Ikw4455z47NqPzZeZjHK+ktsxAZyIul
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="347494892"
-X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; 
-   d="scan'208";a="347494892"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2023 09:28:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="892310312"
-X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; 
-   d="scan'208";a="892310312"
-Received: from zhaoqion-mobl.ccr.corp.intel.com (HELO rzhang1-mobl7.ccr.corp.intel.com) ([10.254.209.232])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2023 09:28:14 -0700
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     tglx@linutronix.de, peterz@infradead.org, bp@alien8.de,
-        rafael.j.wysocki@intel.com
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        x86@kernel.org, feng.tang@intel.com
-Subject: [RFC PATCH] x86/acpi: Ignore invalid x2APIC entries
-Date:   Mon,  3 Jul 2023 00:28:02 +0800
-Message-Id: <20230702162802.344176-1-rui.zhang@intel.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S230371AbjGBTyd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 15:54:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F277C199A;
+        Sun,  2 Jul 2023 12:52:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0BE360C75;
+        Sun,  2 Jul 2023 19:51:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7C2C433C7;
+        Sun,  2 Jul 2023 19:51:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688327463;
+        bh=RPVf79G9Z6bC8QuV2X6vCZINAtB/lji81jjylWCwAWU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=h/kQhDwccPuBuwFuPnqE1x6xPt8Yc5FZxrC18BBJ8pMMc/7WE1AAJ/e4IOwnqZ/DE
+         pJJR3AHScHNEhCrljRNpIAo8Og2nAriddICxyGEDwNlr5ANcvAleS21xVKWyYlFoCl
+         Z+fsTZY9Xb84XaHY4qa6bBIiB0dpn55/M4A5x+YSash3be2onCWL7nxTT8sUsNMEP+
+         07ucHR1ZLiVcyCudJ9f5RbgER2PyiokCHlXeK9D4E+K2FfzoQJ0MaD+FY8S+ULKMFW
+         i3rpX3NwbcpJIq2gFa7a7pucHRS2FUNcGas2pjBGUW5F31ybQ3EHi+/PEMuXRjQRs/
+         fWcskAw9qMxzQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        mario.limonciello@amd.com, andriy.shevchenko@linux.intel.com,
+        mail@mariushoch.de, linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.4 02/12] ACPI: x86: Add skip i2c clients quirk for Nextbook Ares 8A
+Date:   Sun,  2 Jul 2023 15:50:47 -0400
+Message-Id: <20230702195057.1787686-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230702195057.1787686-1-sashal@kernel.org>
+References: <20230702195057.1787686-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.4.1
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently, kernel enumerates the possible CPUs by parsing both ACPI MADT
-Local APIC entries and x2APIC entries. So CPUs with "valid" APIC IDs,
-even if they have duplicated APIC IDs in Local APIC and x2APIC, are
-always enumerated.
+From: Hans de Goede <hdegoede@redhat.com>
 
-Below is what ACPI MADT Local APIC and x2APIC describes on an
-Ivebridge-EP system,
+[ Upstream commit 69d6b37695c1f2320cfa330e1e1636d50dd5040a ]
 
-[02Ch 0044   1]                Subtable Type : 00 [Processor Local APIC]
-[02Fh 0047   1]                Local Apic ID : 00
-...
-[164h 0356   1]                Subtable Type : 00 [Processor Local APIC]
-[167h 0359   1]                Local Apic ID : 39
-[16Ch 0364   1]                Subtable Type : 00 [Processor Local APIC]
-[16Fh 0367   1]                Local Apic ID : FF
-...
-[3ECh 1004   1]                Subtable Type : 09 [Processor Local x2APIC]
-[3F0h 1008   4]                Processor x2Apic ID : 00000000
-...
-[B5Ch 2908   1]                Subtable Type : 09 [Processor Local x2APIC]
-[B60h 2912   4]                Processor x2Apic ID : 00000077
+The Nextbook Ares 8A is a x86 ACPI tablet which ships with Android x86
+as factory OS. Its DSDT contains a bunch of I2C devices which are not
+actually there (the Android x86 kernel fork ignores I2C devices described
+in the DSDT).
 
-As a result, kernel shows "smpboot: Allowing 168 CPUs, 120 hotplug CPUs".
-And this wastes significant amount of memory for the per-cpu data.
-Plus this also breaks https://lore.kernel.org/all/87edm36qqb.ffs@tglx/,
-because __max_logical_packages is over-estimated by the APIC IDs in
-the x2APIC entries.
+On this specific model this just not cause resource conflicts, one of
+the probe() calls for the non existing i2c_clients actually ends up
+toggling a GPIO or executing a _PS3 after a failed probe which turns
+the tablet off.
 
-According to https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#processor-local-x2apic-structure,
-"[Compatibility note] On some legacy OSes, Logical processors with APIC
-ID values less than 255 (whether in XAPIC or X2APIC mode) must use the
-Processor Local APIC structure to convey their APIC information to OSPM,
-and those processors must be declared in the DSDT using the Processor()
-keyword. Logical processors with APIC ID values 255 and greater must use
-the Processor Local x2APIC structure and be declared using the Device()
-keyword.".
+Add a ACPI_QUIRK_SKIP_I2C_CLIENTS for the Nextbook Ares 8 to the
+acpi_quirk_skip_dmi_ids table to avoid the bogus i2c_clients and
+to fix the tablet turning off during boot because of this.
 
-Enumerate CPUs from x2APIC enties with APIC ID values 255 or greater,
-when valid CPU from Local APIC is already detected.
+Also add the "10EC5651" HID for the RealTek ALC5651 codec used
+in this tablet to the list of HIDs for which not to skipi2c_client
+instantiation, since the Intel SST sound driver relies on
+the codec being instantiated through ACPI.
 
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-I didn't find any clear statement in the ACPI spec about if a mixture of
-Local APIC and x2APIC entries is allowed or not. So it would be great if
-this can be clarified.
+ drivers/acpi/x86/utils.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-And FYI, I have auditted a series of Intel servers, and one IVB-EP in
-LKP lab and one IVB-EP from PeterZ are the only ones with a mixture of
-Local APIC entries + x2APIC entries.
-
-Plat    Status
-IVB-EP  valid LAPIC + invalid LAPIC (APIC ID 0xFF) + unknown x2APIC entries (valid APIC ID + Enable bit cleared)
-IVB-EP  valid LAPIC + invalid LAPIC (APIC ID 0xFF) + unknown x2APIC entries (valid APIC ID + Enable bit cleared)
-CLX     valid LAPIC + invalid LAPIC (APIC ID 0xFF) + invalid x2APIC entries (APIC ID 0xFFFFFFFF)
-CLX     valid LAPIC + invalid LAPIC (APIC ID 0xFF) + invalid x2APIC entries (APIC ID 0xFFFFFFFF)
-ICX     valid LAPIC only
-SPR     valid LAPIC only
-SPR     valid x2APIC only
----
- arch/x86/kernel/acpi/boot.c | 35 ++++++++++++++++++-----------------
- 1 file changed, 18 insertions(+), 17 deletions(-)
-
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 21b542a6866c..a41124d58e29 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -204,6 +204,8 @@ static bool __init acpi_is_processor_usable(u32 lapic_flags)
- 	return false;
- }
- 
-+static bool has_lapic_cpus;
-+
- static int __init
- acpi_parse_x2apic(union acpi_subtable_headers *header, const unsigned long end)
- {
-@@ -232,6 +234,14 @@ acpi_parse_x2apic(union acpi_subtable_headers *header, const unsigned long end)
- 	if (!acpi_is_processor_usable(processor->lapic_flags))
- 		return 0;
- 
-+	/*
-+	 * According to https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#processor-local-x2apic-structure
-+	 * when MADT provides both valid LAPIC and x2APIC entries, the APIC ID
-+	 * in x2APIC must be equal or greater than 0xff.
-+	 */
-+	if (has_lapic_cpus && apic_id < 0xff)
-+		return 0;
-+
- 	/*
- 	 * We need to register disabled CPU as well to permit
- 	 * counting disabled CPUs. This allows us to size
-@@ -257,6 +267,7 @@ static int __init
- acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned long end)
- {
- 	struct acpi_madt_local_apic *processor = NULL;
-+	int cpu;
- 
- 	processor = (struct acpi_madt_local_apic *)header;
- 
-@@ -280,10 +291,11 @@ acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned long end)
- 	 * to not preallocating memory for all NR_CPUS
- 	 * when we use CPU hotplug.
- 	 */
--	acpi_register_lapic(processor->id,	/* APIC ID */
-+	cpu = acpi_register_lapic(processor->id,	/* APIC ID */
- 			    processor->processor_id, /* ACPI ID */
- 			    processor->lapic_flags & ACPI_MADT_ENABLED);
--
-+	if (cpu >= 0)
-+		has_lapic_cpus = true;
- 	return 0;
- }
- 
-@@ -1123,21 +1135,10 @@ static int __init acpi_parse_madt_lapic_entries(void)
- 				      acpi_parse_sapic, MAX_LOCAL_APIC);
- 
- 	if (!count) {
--		memset(madt_proc, 0, sizeof(madt_proc));
--		madt_proc[0].id = ACPI_MADT_TYPE_LOCAL_APIC;
--		madt_proc[0].handler = acpi_parse_lapic;
--		madt_proc[1].id = ACPI_MADT_TYPE_LOCAL_X2APIC;
--		madt_proc[1].handler = acpi_parse_x2apic;
--		ret = acpi_table_parse_entries_array(ACPI_SIG_MADT,
--				sizeof(struct acpi_table_madt),
--				madt_proc, ARRAY_SIZE(madt_proc), MAX_LOCAL_APIC);
--		if (ret < 0) {
--			pr_err("Error parsing LAPIC/X2APIC entries\n");
--			return ret;
--		}
--
--		count = madt_proc[0].count;
--		x2count = madt_proc[1].count;
-+		count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_APIC,
-+					acpi_parse_lapic, MAX_LOCAL_APIC);
-+		x2count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_X2APIC,
-+					acpi_parse_x2apic, MAX_LOCAL_APIC);
- 	}
- 	if (!count && !x2count) {
- 		pr_err("No LAPIC entries present\n");
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 9c2d6f35f88a0..4cfee2da06756 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -365,7 +365,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+ 	},
+ 	{
+-		/* Nextbook Ares 8 */
++		/* Nextbook Ares 8 (BYT version)*/
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "M890BAP"),
+@@ -374,6 +374,16 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
+ 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+ 	},
++	{
++		/* Nextbook Ares 8A (CHT version)*/
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "CherryTrail"),
++			DMI_MATCH(DMI_BIOS_VERSION, "M882"),
++		},
++		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
++	},
+ 	{
+ 		/* Whitelabel (sold as various brands) TM800A550L */
+ 		.matches = {
+@@ -392,6 +402,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
+ static const struct acpi_device_id i2c_acpi_known_good_ids[] = {
+ 	{ "10EC5640", 0 }, /* RealTek ALC5640 audio codec */
++	{ "10EC5651", 0 }, /* RealTek ALC5651 audio codec */
+ 	{ "INT33F4", 0 },  /* X-Powers AXP288 PMIC */
+ 	{ "INT33FD", 0 },  /* Intel Crystal Cove PMIC */
+ 	{ "INT34D3", 0 },  /* Intel Whiskey Cove PMIC */
 -- 
-2.34.1
+2.39.2
 
