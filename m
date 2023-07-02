@@ -2,136 +2,256 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9815F744C1B
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jul 2023 05:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6489B744D1E
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jul 2023 11:58:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbjGBDcK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 1 Jul 2023 23:32:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50564 "EHLO
+        id S229743AbjGBJ6W (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jul 2023 05:58:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjGBDcJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 1 Jul 2023 23:32:09 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C4DC1703;
-        Sat,  1 Jul 2023 20:32:08 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-262e81f6154so1566132a91.2;
-        Sat, 01 Jul 2023 20:32:08 -0700 (PDT)
+        with ESMTP id S229943AbjGBJ6V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 05:58:21 -0400
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C119C12A
+        for <linux-acpi@vger.kernel.org>; Sun,  2 Jul 2023 02:57:55 -0700 (PDT)
+Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-55ac628e3cfso1781256a12.3
+        for <linux-acpi@vger.kernel.org>; Sun, 02 Jul 2023 02:57:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688268728; x=1690860728;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZhN94lMUNnHFPAhVfo+rHKI0yY7VxURxglHWp96Srwg=;
-        b=H1lg1nuWSIDnWqY4UVAXcXDJAvhU1YHPpPrusiQohNNE5GvwsK4w5d69Q7qkFYlCoQ
-         84Fxd+lbFB7/3yFhjBHEutcwet2ZEWFcyPyx9Aiuz2AvTnO0DuUHAzVoq6G1FspI2tte
-         n9rLvN+0COGioC0U1u981OUG9XFc6lhXnN8I/qBfkElWhYTtUu6u3S2CF4dAMVi4KAnv
-         LtzVHkclYvagZB1hY7ZPMEONvED3cxV5uNqWv41hLLykZAZsPnIFRZfMy+hSSgBmAHwi
-         gi3FnH1A2+JRvnqN3YD4PpzxbfUlw6fwQtvaX5GDyVPDSLN608urxpB41kGVdFjezpSy
-         yjZA==
+        d=bytedance.com; s=google; t=1688291875; x=1690883875;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XF2+x8StAqIQZEEXXA77vQxRC4bKZrb2UmGw9jTVMxg=;
+        b=C8mJIVmo9Gt8KrJx133l1TXUl96CjQQdawYTJqjV0B/dmrVnXbEotILm4dSXCEO+LE
+         9Ej+UK5HJQrDCB7aDdtABsSPT1gpEHjUABBtbOKkrTOnXS+OtygyvUJnmMUti2fldsuk
+         LYuM+dNsVpvyn4VRdWlnqWoLRubroBSgNcRzK3Loq3wizKTdyajAHSbzjtTG5BPh00Ys
+         njN7jgXWvlJfMrw1ZFIIR4kvKAqQ5TCf94B/vkUVxpiDCWmI5J515CPvcj5cOBDrNX7x
+         20EwZMgumErRPjsjQPjjzOdyrCNEI6qDtDdu0oda8rhwk1EFVuDeKFlL8tHtqbgJrxlX
+         tV2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688268728; x=1690860728;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZhN94lMUNnHFPAhVfo+rHKI0yY7VxURxglHWp96Srwg=;
-        b=cJDrCuXmL64fXmOU+uKy6y50G5CVpsMbwclaBAS5i/OZfDaWtwKepCcMVfpch5urOx
-         B2eXxyGT6/LSYJ45x083w2/iI7iT/MA5Sj7t5jD3QzBJBf/ZhWhllIS9MW5PL5ms5iFQ
-         na+cbVmg93EsZbc/HPyKD+NADzssswWnSADJfBWpbxX18E4LPvEJQ2ygsQOQrzdNQCj6
-         Iqc3eA2es1zCkfYcAWXC0cGaXcOO8CbIL5LBV7+EBrhpzuy0ukDWuSo947H5+G/+cedm
-         MugHzalTbGk9QUDDrrY+2Wm6zD+Jf8TgzkQ1drtwYSAtvKECYQh0Yo1W287m2ISItO8e
-         DcqQ==
-X-Gm-Message-State: ABy/qLY/uF1GPib/ILMUC6ccpZnWsNtegwa+oemEKVoDtWAnhAVUQuO3
-        3IejLWXHJ4y2FaLuVN29aRI=
-X-Google-Smtp-Source: APBJJlHZiamPWt4nUWriHFvnZ613G5ox0ZTDJ3hV30nK4Q6VIh6/Ew5xaB6xL5oCJQI9wAnlyBBErA==
-X-Received: by 2002:a17:903:244a:b0:1b7:cee1:60c4 with SMTP id l10-20020a170903244a00b001b7cee160c4mr5800588pls.59.1688268727745;
-        Sat, 01 Jul 2023 20:32:07 -0700 (PDT)
-Received: from [192.168.0.103] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id w10-20020a1709029a8a00b001b567bb970esm12931622plp.84.2023.07.01.20.32.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Jul 2023 20:32:07 -0700 (PDT)
-Message-ID: <e5b76a4f-81ae-5b09-535f-114149be5069@gmail.com>
-Date:   Sun, 2 Jul 2023 10:31:56 +0700
+        d=1e100.net; s=20221208; t=1688291875; x=1690883875;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XF2+x8StAqIQZEEXXA77vQxRC4bKZrb2UmGw9jTVMxg=;
+        b=MdD8e65CrZ0uZTs3O3bAtY/6uKay0QOo7X4r2G+tT59eSmipBePGckPwaXmgsXehlS
+         M8LAfE9xj3zyI9FvlCchordOX90LXhmBRqnQP7BquXfQIuXDt3LmbRJ3AWaG0zL1pS+k
+         C4Zf1zgG0Ew1FEMrr+bopxhkQWoCI+GL2pnVEILYPTGlgbZLoxnVWiAL+wphECDYpJVG
+         lf2hTfVenKlV9a/qUgBl3Aa5vCgK8JEhktY4aBpDpmptVajAa1dTTwafh8nKX59w8CQ6
+         5xLb9uSMzSFzUn0gROt7gCXvqUeb+i8D/3ggDVeUfBBbJW3WhRW6eaqV7y/+GQ9K76Mv
+         knZQ==
+X-Gm-Message-State: ABy/qLZVPMjx58ZbfZxG7DtORHTR5fI6s/4fGqhGqZxm78HYWPwa5P+E
+        yVxBaD7R+3F5emuI0T6mZP8ZyA==
+X-Google-Smtp-Source: APBJJlF4yLaj8jr7OTR8FcXH/r/O+yqMJrHgHcjvBx+h67R5YAj78AaIxs+XMdOOaBezarVJelvXvA==
+X-Received: by 2002:a05:6a20:3257:b0:12c:1193:a563 with SMTP id hm23-20020a056a20325700b0012c1193a563mr5325675pzc.58.1688291875230;
+        Sun, 02 Jul 2023 02:57:55 -0700 (PDT)
+Received: from PF2E59YH-BKX.inc.bytedance.com ([139.177.225.251])
+        by smtp.gmail.com with ESMTPSA id u26-20020a62ed1a000000b006827d86ca0csm1605095pfh.55.2023.07.02.02.57.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Jul 2023 02:57:54 -0700 (PDT)
+From:   Yunhui Cui <cuiyunhui@bytedance.com>
+To:     ardb@kernel.org, palmer@dabbelt.com, paul.walmsley@sifive.com,
+        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
+        rminnich@gmail.com, mark.rutland@arm.com, lpieralisi@kernel.org,
+        rafael@kernel.org, lenb@kernel.org, jdelvare@suse.com,
+        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
+        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
+        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, geshijian@bytedance.com,
+        weidong.wd@bytedance.com, cuiyunhui@bytedance.com
+Subject: [PATCH v2 1/3] riscv: obtain ACPI RSDP from FFI.
+Date:   Sun,  2 Jul 2023 17:57:32 +0800
+Message-Id: <20230702095735.860-1-cuiyunhui@bytedance.com>
+X-Mailer: git-send-email 2.37.3.windows.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Content-Language: en-US
-To:     Eric DeVolder <eric.devolder@oracle.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        David R <david@unsolicited.net>,
-        Boris Ostrovsky <boris.ovstrosky@oracle.com>,
-        Miguel Luis <miguel.luis@oracle.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Jay Vosburgh <j.vosburgh@gmail.com>,
-        Andy Gospodarek <andy@greyhouse.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux RCU <rcu@vger.kernel.org>,
-        Wireguard Mailing List <wireguard@lists.zx2c4.com>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Fwd: RCU stalls with wireguard over bonding over igb on Linux 6.3.0+
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+1. We need to enable the ACPI function on RISC-V. When booting with
+Coreboot, we encounter two problems:
+a. Coreboot does not support EFI
+b. On RISC-V, only the DTS channel can be used.
 
-I notice a regression report on Bugzilla [1]. Quoting from it:
+2. Based on this, we have added an interface for obtaining firmware
+information transfer through FDT, named FFI.
 
-> I've spent the last week on debugging a problem with my attempt to upgrade my kernel from 6.2.8 to 6.3.8 (now also with 6.4.0 too).
-> 
-> The lenghty and detailed bug reports with all aspects of git bisect are at
-> https://bugs.gentoo.org/909066
-> 
-> A summary:
-> - if I do not configure wg0, the kernel does not hang
-> - if I use a kernel older than commit fed8d8773b8ea68ad99d9eee8c8343bef9da2c2c, it does not hang
-> 
-> The commit refers to code that seems unrelated to the problem for my naiive eye.
-> 
-> The hardware is a Dell PowerEdge R620 running Gentoo ~amd64.
-> 
-> I have so far excluded:
-> - dracut for generating the initramfs is the same version over all kernels
-> - linux-firmware has been the same
-> - CPU microcode has been the same
-> 
-> It's been a long time since I seriously involved with software development and I have been even less involved with kernel development.
-> 
-> Gentoo maintainers recommended me to open a bug with upstream, so here I am.
-> 
-> I currently have no idea how to make progress, but I'm willing to try things.
+3. We not only use FFI to pass ACPI RSDP, but also pass other
+firmware information as an extension.
 
-See Bugzilla for the full thread.
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+---
+ MAINTAINERS                   |  6 ++++++
+ arch/riscv/Kconfig            | 10 ++++++++++
+ arch/riscv/include/asm/acpi.h |  9 +++++++++
+ arch/riscv/include/asm/ffi.h  |  9 +++++++++
+ arch/riscv/kernel/Makefile    |  1 +
+ arch/riscv/kernel/ffi.c       | 37 +++++++++++++++++++++++++++++++++++
+ arch/riscv/kernel/setup.c     |  2 ++
+ 7 files changed, 74 insertions(+)
+ create mode 100644 arch/riscv/include/asm/ffi.h
+ create mode 100644 arch/riscv/kernel/ffi.c
 
-Anyway, I'm adding it to regzbot to make sure it doesn't fall through cracks
-unnoticed:
-
-#regzbot introduced: fed8d8773b8ea6 https://bugzilla.kernel.org/show_bug.cgi?id=217620
-#regzbot title: correcting acpi_is_processor_usable() check causes RCU stalls with wireguard over bonding+igb
-#regzbot link: https://bugs.gentoo.org/909066
-
-Thanks.
-
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217620
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cd5388a33410..e592f489e757 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18363,6 +18363,12 @@ F:	arch/riscv/boot/dts/
+ X:	arch/riscv/boot/dts/allwinner/
+ X:	arch/riscv/boot/dts/renesas/
+ 
++RISC-V FDT FIRMWARE INTERFACE (FFI) SUPPORT
++M:	Yunhui Cui cuiyunhui@bytedance.com
++S:	Maintained
++F:	arch/riscv/include/asm/ffi.h
++F:	arch/riscv/kernel/ffi.c
++
+ RISC-V PMU DRIVERS
+ M:	Atish Patra <atishp@atishpatra.org>
+ R:	Anup Patel <anup@brainfault.org>
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index b49793cf34eb..2e1c40fb2300 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -785,6 +785,16 @@ config EFI
+ 	  allow the kernel to be booted as an EFI application. This
+ 	  is only useful on systems that have UEFI firmware.
+ 
++config FFI
++	bool "Fdt firmware interface"
++	depends on OF
++	default y
++	help
++	  Added an interface to obtain firmware information transfer
++	  through FDT, named FFI. Some bootloaders do not support EFI,
++	  such as coreboot.
++	  We can pass firmware information through FFI, such as ACPI.
++
+ config CC_HAVE_STACKPROTECTOR_TLS
+ 	def_bool $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=tp -mstack-protector-guard-offset=0)
+ 
+diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
+index f71ce21ff684..f9d1625dd159 100644
+--- a/arch/riscv/include/asm/acpi.h
++++ b/arch/riscv/include/asm/acpi.h
+@@ -15,6 +15,8 @@
+ /* Basic configuration for ACPI */
+ #ifdef CONFIG_ACPI
+ 
++#include <asm/ffi.h>
++
+ typedef u64 phys_cpuid_t;
+ #define PHYS_CPUID_INVALID INVALID_HARTID
+ 
+@@ -66,6 +68,13 @@ int acpi_get_riscv_isa(struct acpi_table_header *table,
+ 		       unsigned int cpu, const char **isa);
+ 
+ static inline int acpi_numa_get_nid(unsigned int cpu) { return NUMA_NO_NODE; }
++
++#define ACPI_HAVE_ARCH_GET_ROOT_POINTER
++static inline u64 acpi_arch_get_root_pointer(void)
++{
++	return acpi_rsdp;
++}
++
+ #else
+ static inline void acpi_init_rintc_map(void) { }
+ static inline struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu)
+diff --git a/arch/riscv/include/asm/ffi.h b/arch/riscv/include/asm/ffi.h
+new file mode 100644
+index 000000000000..847af02abd87
+--- /dev/null
++++ b/arch/riscv/include/asm/ffi.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef _ASM_FFI_H
++#define _ASM_FFI_H
++
++extern u64 acpi_rsdp;
++extern void ffi_init(void);
++
++#endif /* _ASM_FFI_H */
+diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+index 506cc4a9a45a..274e06f4da33 100644
+--- a/arch/riscv/kernel/Makefile
++++ b/arch/riscv/kernel/Makefile
+@@ -92,6 +92,7 @@ obj-$(CONFIG_CRASH_CORE)	+= crash_core.o
+ obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
+ 
+ obj-$(CONFIG_EFI)		+= efi.o
++obj-$(CONFIG_FFI)              += ffi.o
+ obj-$(CONFIG_COMPAT)		+= compat_syscall_table.o
+ obj-$(CONFIG_COMPAT)		+= compat_signal.o
+ obj-$(CONFIG_COMPAT)		+= compat_vdso/
+diff --git a/arch/riscv/kernel/ffi.c b/arch/riscv/kernel/ffi.c
+new file mode 100644
+index 000000000000..c5ac2b5d9148
+--- /dev/null
++++ b/arch/riscv/kernel/ffi.c
+@@ -0,0 +1,37 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * ffi.c - FDT FIRMWARE INTERFACE
++ */
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/of.h>
++#include <linux/of_fdt.h>
++#include <linux/libfdt.h>
++
++u64 acpi_rsdp;
++
++void __init ffi_acpi_root_pointer(void)
++{
++	int cfgtbl, len;
++	fdt64_t *prop;
++
++	cfgtbl = fdt_path_offset(initial_boot_params, "/cfgtables");
++	if (cfgtbl < 0) {
++		pr_info("firmware table not found.\n");
++		return;
++	}
++
++	prop = fdt_getprop_w(initial_boot_params, cfgtbl, "acpi_phy_ptr", &len);
++	if (!prop || len != sizeof(u64))
++		pr_info("acpi_rsdp not found.\n");
++	else
++		acpi_rsdp = fdt64_to_cpu(*prop);
++
++	pr_debug("acpi rsdp: %llx\n", acpi_rsdp);
++}
++
++void __init ffi_init(void)
++{
++	ffi_acpi_root_pointer();
++}
+diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+index 971fe776e2f8..5a933d6b6acb 100644
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -36,6 +36,7 @@
+ #include <asm/thread_info.h>
+ #include <asm/kasan.h>
+ #include <asm/efi.h>
++#include <asm/ffi.h>
+ 
+ #include "head.h"
+ 
+@@ -279,6 +280,7 @@ void __init setup_arch(char **cmdline_p)
+ 	parse_early_param();
+ 
+ 	efi_init();
++	ffi_init();
+ 	paging_init();
+ 
+ 	/* Parse the ACPI tables for possible boot-time configuration */
 -- 
-An old man doll... just what I always wanted! - Clara
+2.20.1
+
