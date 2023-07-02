@@ -2,127 +2,291 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0380B744D9A
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jul 2023 14:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D76744D9E
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jul 2023 14:41:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229800AbjGBMhc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jul 2023 08:37:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34452 "EHLO
+        id S229681AbjGBMlp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jul 2023 08:41:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjGBMhb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 08:37:31 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 940A312A;
-        Sun,  2 Jul 2023 05:37:30 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qFwKN-0000ey-Ek; Sun, 02 Jul 2023 14:37:19 +0200
-Message-ID: <10f2a5ee-91e2-1241-9e3b-932c493e61b6@leemhuis.info>
-Date:   Sun, 2 Jul 2023 14:37:18 +0200
+        with ESMTP id S229460AbjGBMlo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 08:41:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A41B12A;
+        Sun,  2 Jul 2023 05:41:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0EB6C60B45;
+        Sun,  2 Jul 2023 12:41:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8435AC433C8;
+        Sun,  2 Jul 2023 12:41:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688301702;
+        bh=MzFfhuAG+VymhJO6OuEtkAVuc0UL6+wBGYNRcyIrtUo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UQ+inEyIjXKsQfARv+xnZNIhFtV6huj6XOuKM/mthYK5yObf6PFBN0mKybkK542lt
+         o7GNGzHthSPzMlyQQCsRycgN1K+V3iuE5dp0vqhnbHxmPv7vkFrEH2EV6yJkNd3vjl
+         FPyuXypccjWcqgzFJ2rIdQJABX+jJcZ5ImLpfW5nxdgwPdwwH/w09rb0KBSxwxX82g
+         wK4WTtSkTsuKF4Xln6RPfu6njojjhxeLc9amLiUSO9kSUCcBv7eEt7CT/khLiVsMxL
+         WEzKpndRYmZ71n6kdRRjXE561VcCnCklHV6gJfT2nLc+DlVm3n18/vGdEAm4rnFAjq
+         eyl7Bxh2hcEmg==
+Date:   Sun, 2 Jul 2023 13:41:36 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Yunhui Cui <cuiyunhui@bytedance.com>
+Cc:     ardb@kernel.org, palmer@dabbelt.com, paul.walmsley@sifive.com,
+        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
+        rminnich@gmail.com, mark.rutland@arm.com, lpieralisi@kernel.org,
+        rafael@kernel.org, lenb@kernel.org, jdelvare@suse.com,
+        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
+        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
+        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, geshijian@bytedance.com,
+        weidong.wd@bytedance.com
+Subject: Re: [PATCH v2 2/3] firmware: introduce FFI for SMBIOS entry.
+Message-ID: <20230702-collide-rumor-f0d915a4f1b2@spud>
+References: <20230702095735.860-1-cuiyunhui@bytedance.com>
+ <20230702095735.860-2-cuiyunhui@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: Fwd: RCU stalls with wireguard over bonding over igb on Linux
- 6.3.0+
-Content-Language: en-US, de-DE
-To:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Eric DeVolder <eric.devolder@oracle.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        David R <david@unsolicited.net>,
-        Boris Ostrovsky <boris.ovstrosky@oracle.com>,
-        Miguel Luis <miguel.luis@oracle.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Jay Vosburgh <j.vosburgh@gmail.com>,
-        Andy Gospodarek <andy@greyhouse.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux RCU <rcu@vger.kernel.org>,
-        Wireguard Mailing List <wireguard@lists.zx2c4.com>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Manuel 'satmd' Leiner <manuel.leiner@gmx.de>
-References: <e5b76a4f-81ae-5b09-535f-114149be5069@gmail.com>
- <79196679-fb65-e5ad-e836-2c43447cfacd@gmail.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <79196679-fb65-e5ad-e836-2c43447cfacd@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1688301450;33a91d3a;
-X-HE-SMSGID: 1qFwKN-0000ey-Ek
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="3b97CWPMBjIqlO+K"
+Content-Disposition: inline
+In-Reply-To: <20230702095735.860-2-cuiyunhui@bytedance.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 02.07.23 13:57, Bagas Sanjaya wrote:
-> [also Cc: original reporter]
 
-BTW: I think you CCed too many developers here. There are situations
-where this can makes sense, but it's rare. And if you do this too often
-people might start to not really look into your mails or might even
-ignore them completely.
+--3b97CWPMBjIqlO+K
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Normally it's enough to write the mail to (1) the people in the
-signed-off-by-chain, (2) the maintainers of the subsystem that merged a
-commit, and (3) the lists for all affected subsystems; leave it up to
-developers from the first two groups to CC the maintainers of the third
-group.
+Hey,
 
-> On 7/2/23 10:31, Bagas Sanjaya wrote:
->> I notice a regression report on Bugzilla [1]. Quoting from it:
->>
->>> I've spent the last week on debugging a problem with my attempt to upgrade my kernel from 6.2.8 to 6.3.8 (now also with 
-> [...]
->> See Bugzilla for the full thread.
->>
->> Anyway, I'm adding it to regzbot to make sure it doesn't fall through cracks
->> unnoticed:
->>
->> #regzbot introduced: fed8d8773b8ea6 https://bugzilla.kernel.org/show_bug.cgi?id=217620
->> #regzbot title: correcting acpi_is_processor_usable() check causes RCU stalls with wireguard over bonding+igb
->> #regzbot link: https://bugs.gentoo.org/909066
+On Sun, Jul 02, 2023 at 05:57:33PM +0800, Yunhui Cui wrote:
+> 1. Some bootloaders do not support EFI, and the transfer of
+> firmware information can only be done through DTS,
+> such as Coreboot.
+>=20
+> 2. Some arches do not have a reserved address segment that
+> can be used to pass firmware parameters like x86.
+>=20
+> 3. Based on this, we have added an interface to obtain firmware
+> information through FDT, named FFI.
+>=20
+> 4. We not only use FFI to pass SMBIOS entry,
+> but also pass other firmware information as an extension.
 
-> satmd: Can you repeat bisection to confirm that fed8d8773b8ea6 is
-> really the culprit?
+nit: please don't write your commit messages as bullet lists
 
-I'd be careful to ask people that, as that might mean a lot of work for
-them. Best to leave things like that to developers, unless it's pretty
-obvious that something went sideways.
+> +FDT FIRMWARE INTERFACE (FFI)
+> +M:	Yunhui Cui cuiyunhui@bytedance.com
+> +S:	Maintained
+> +F:	drivers/firmware/ffi.c
+> +F:	include/linux/ffi.h
 
-> Thorsten: It seems like the reporter concluded bisection to the
-> (possibly) incorrect culprit.
+Are you going to apply patches for this, or is someone else?
 
-What makes your think so? I just looked at bugzilla and it (for now)
-seems reverting fed8d8773b8ea6 ontop of 6.4 fixed things for the
-reporter, which is a pretty strong indicator that this change really
-causes the trouble somehow.
+>  EXTERNAL CONNECTOR SUBSYSTEM (EXTCON)
+>  M:	MyungJoo Ham <myungjoo.ham@samsung.com>
+>  M:	Chanwoo Choi <cw00.choi@samsung.com>
+> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+> index b59e3041fd62..ea0149fb4683 100644
+> --- a/drivers/firmware/Kconfig
+> +++ b/drivers/firmware/Kconfig
+> @@ -303,6 +303,17 @@ config TURRIS_MOX_RWTM
+>  	  other manufacturing data and also utilize the Entropy Bit Generator
+>  	  for hardware random number generation.
+> =20
+> +config FDT_FW_INTERFACE
+> +       bool "An interface for passing firmware info through FDT"
+> +       depends on OF && OF_FLATTREE
+> +       default n
+> +       help
+> +         When some bootloaders do not support EFI, and the arch does not
+> +         support SMBIOS_ENTRY_POINT_SCAN_START, then you can enable this=
+ option
+> +         to support the transfer of firmware information, such as smbios=
+ tables.
 
-/me really wonders what's he's missing
+Could you express this dependency on !SMBIOS_ENTRY_POINT_SCAN_START in
+Kconfig & then simply the text to:
+"Enable this option to support the transfer of firmware information,
+such as smbios tables, for bootloaders that do not support EFI."
+since it would not even appear if the arch supports scanning for the
+entry point?
+If I was was a punter trying to configure my kernel in menuconfig or
+whatever, I should be able to decide based on the help text if I need
+this, not going grepping for #defines in headers.
 
-> What can I do in this case besides
-> asking to repeat bisection?
+>  static void __init dmi_scan_machine(void)
+> @@ -660,58 +686,22 @@ static void __init dmi_scan_machine(void)
+>  	char __iomem *p, *q;
+>  	char buf[32];
+> =20
+> +#ifdef CONFIG_FDT_FW_INTERFACE
+> +	if (dmi_sacn_smbios(ffi.smbios3, ffi.smbios))
 
-Not much apart from updating regzbot state (e.g. something like "regzbot
-introduced v6.3..v6.4") and a reply to your initial report (ideally with
-a quick apology) to let everyone know it was a false alarm.
+"dmi_sacn_smbios"
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+> +		goto error;
+> +#endif
+
+Does this not mean that if FDT_FW_INTERFACE is enabled, but the platform
+wants to use EFI, it won't be able to? The `goto error;` makes this look
+mutually exclusive to my efi-unaware eyes.
+
+>  	if (efi_enabled(EFI_CONFIG_TABLES)) {
+> -		/*
+> -		 * According to the DMTF SMBIOS reference spec v3.0.0, it is
+> -		 * allowed to define both the 64-bit entry point (smbios3) and
+> -		 * the 32-bit entry point (smbios), in which case they should
+> -		 * either both point to the same SMBIOS structure table, or the
+> -		 * table pointed to by the 64-bit entry point should contain a
+> -		 * superset of the table contents pointed to by the 32-bit entry
+> -		 * point (section 5.2)
+> -		 * This implies that the 64-bit entry point should have
+> -		 * precedence if it is defined and supported by the OS. If we
+> -		 * have the 64-bit entry point, but fail to decode it, fall
+> -		 * back to the legacy one (if available)
+> -		 */
+> -		if (efi.smbios3 !=3D EFI_INVALID_TABLE_ADDR) {
+> -			p =3D dmi_early_remap(efi.smbios3, 32);
+> -			if (p =3D=3D NULL)
+> -				goto error;
+> -			memcpy_fromio(buf, p, 32);
+> -			dmi_early_unmap(p, 32);
+> -
+> -			if (!dmi_smbios3_present(buf)) {
+> -				dmi_available =3D 1;
+> -				return;
+> -			}
+> -		}
+> -		if (efi.smbios =3D=3D EFI_INVALID_TABLE_ADDR)
+> +		if (dmi_sacn_smbios(efi.smbios3, efi.smbios))
+>  			goto error;
+> -
+> -		/* This is called as a core_initcall() because it isn't
+> -		 * needed during early boot.  This also means we can
+> -		 * iounmap the space when we're done with it.
+> -		 */
+> -		p =3D dmi_early_remap(efi.smbios, 32);
+> -		if (p =3D=3D NULL)
+> -			goto error;
+> -		memcpy_fromio(buf, p, 32);
+> -		dmi_early_unmap(p, 32);
+> -
+> -		if (!dmi_present(buf)) {
+> -			dmi_available =3D 1;
+> -			return;
+> -		}
+> diff --git a/drivers/firmware/ffi.c b/drivers/firmware/ffi.c
+> new file mode 100644
+> index 000000000000..169802b4a7a8
+> --- /dev/null
+> +++ b/drivers/firmware/ffi.c
+> @@ -0,0 +1,36 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> +
+> +#include <linux/of.h>
+> +#include <linux/of_fdt.h>
+> +#include <linux/libfdt.h>
+> +#include <linux/ffi.h>
+> +
+> +#define FFI_INVALID_TABLE_ADDR	(~0UL)
+> +
+> +struct ffi __read_mostly ffi =3D {
+> +	.smbios	=3D FFI_INVALID_TABLE_ADDR,
+> +	.smbios3 =3D FFI_INVALID_TABLE_ADDR,
+> +};
+
+> +EXPORT_SYMBOL(ffi);
+
+> +// SPDX-License-Identifier: GPL-2.0-only
+
+Why not EXPORT_SYMBOL_GPL? But also, who is the user of this export?
+
+> +
+> +void __init ffi_smbios_root_pointer(void)
+> +{
+> +	int cfgtbl, len;
+> +	fdt64_t *prop;
+> +
+> +	cfgtbl =3D fdt_path_offset(initial_boot_params, "/cfgtables");
+
+These DT properties need to be documented in a binding.
+
+> +	if (cfgtbl < 0) {
+> +		pr_info("firmware table not found.\n");
+
+Isn't it perfectly valid for a DT not to contain this table? This print
+should be, at the very least, a pr_debug().
+
+> +		return;
+> +	}
+> +	prop =3D fdt_getprop_w(initial_boot_params, cfgtbl, "smbios_phy_ptr", &=
+len);
+
+Again, undocumented DT property. Please document them in a binding.
+
+> +	if (!prop || len !=3D sizeof(u64))
+> +		pr_info("smbios entry point not found.\n");
+> +	else
+> +		ffi.smbios =3D fdt64_to_cpu(*prop);
+> +
+> +	pr_info("smbios root pointer: %lx\n", ffi.smbios);
+
+ffi.smbios is not set if (!prop || len !=3D sizeof(u64)), looks like your
+"if" should return and the contents of the else become unconditional?
+Otherwise, this print seems wrong.
+
+> +}
+> +
+> diff --git a/include/linux/ffi.h b/include/linux/ffi.h
+> new file mode 100644
+> index 000000000000..95298a805222
+> --- /dev/null
+> +++ b/include/linux/ffi.h
+> @@ -0,0 +1,15 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +#ifndef _LINUX_FFI_H
+> +#define _LINUX_FFI_H
+> +
+> +extern struct ffi {
+> +	unsigned long smbios;  /* SMBIOS table (32 bit entry point) */
+> +	unsigned long smbios3;  /* SMBIOS table (64 bit entry point) */
+> +	unsigned long flags;
+> +
+> +} ffi;
+> +
+> +void ffi_smbios_root_pointer(void);
+
+Please provide a stub for !FDT_FW_INTERFACE so that we don't need
+ifdeffery at callsites.
+
+Cheers,
+Conor.
+
+--3b97CWPMBjIqlO+K
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZKFwfAAKCRB4tDGHoIJi
+0gUUAP9qKjbw3OZeSzh3tzcTkqzGw6y5vGWZi/uJAGBWK49o/QD8Dv62DEZ39txs
+Awm1rhzZxUbEDSpYIQO81oRVur1dUQQ=
+=MAej
+-----END PGP SIGNATURE-----
+
+--3b97CWPMBjIqlO+K--
