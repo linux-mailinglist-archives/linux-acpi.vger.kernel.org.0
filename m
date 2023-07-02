@@ -2,172 +2,201 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16C33744E09
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jul 2023 16:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 722FD744E99
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jul 2023 18:28:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229726AbjGBOIx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jul 2023 10:08:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45014 "EHLO
+        id S229828AbjGBQ2T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jul 2023 12:28:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjGBOIw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 10:08:52 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E5B5E55;
-        Sun,  2 Jul 2023 07:08:51 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1b88e84bfb8so5296385ad.2;
-        Sun, 02 Jul 2023 07:08:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688306931; x=1690898931;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+2w54nxVPO6o+8J39UnS81CRAIwBFUFMqVaCHwISr5M=;
-        b=NhA8IRXhuz+9cb9k7oJEZMFJB+zk8luptjHKRD33C9XVCRx/tJj0F9BwxZBPDFAH5c
-         pkp5zQHJirG3UYoDwjjQo4ECLz0PpXTvxNsny8j414NguTK4EYbQmKcy0pe+75oz5ilT
-         PvLRuqQ4Av8ajdzLMUeVFBOVFN5pGXLPQtQhoCYVfBGxxqJezE0C0LtWloErnPi5iC6H
-         GDK0LFeZbMkbojtMzDaSzvlZHAm0CIH2I64MkYNCHV46VDmPN2uFw+oRK37xsAZynyu2
-         YFFEScNGDXF+qtPk3dhaK2elIJwMhQxwh/RhKkGuiSglNPaNNfJvaQ8lzdAyvx3ij4sb
-         iduQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688306931; x=1690898931;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+2w54nxVPO6o+8J39UnS81CRAIwBFUFMqVaCHwISr5M=;
-        b=WD2IVBIrvoTpqvJv5uzWxRItxn/jdyJvwBnp13zImOIJHYumnMKMKxf1VFvs/fhCB7
-         ynfKgucn6fJjNke3BWCq20Omrj3NGOnU4sXniDlwPT95Qpi2WzoHgUpJW9VOZ0symy+k
-         iGvchRcsxER1b3nQFPc2MmSUExx/Upc25xuH28trNp5h5p2gTZ46EdTHVDEJuT0wFAt2
-         41myRs3Docxy+ZK3Wz4WlDaU7nMUzNJztL0/ItBN0CqQ4GShcjDQaYCdOJ+fTrL8uLRN
-         yqBEbLHsMZeSj8om9+ZXEa1frOQS1/qPGKtD8L4u+3FvGgInO7gyvur1TKfn6hydUm6U
-         RyzQ==
-X-Gm-Message-State: ABy/qLaJSQOJC5bDgZkny9UTWzbbqCcendhQHR2JluxTTS+14RoSCKcb
-        8UPjl7qE7F5ZxDiTirefIEk=
-X-Google-Smtp-Source: APBJJlFa2PZ9jIdWwi9dWb1g0KHD9JH5PBgSre+nm+nmMS7SXICBfS5NfytLiK5hr6npw22hSdVnsQ==
-X-Received: by 2002:a17:902:d703:b0:1b8:9046:4bfb with SMTP id w3-20020a170902d70300b001b890464bfbmr2062798ply.9.1688306930794;
-        Sun, 02 Jul 2023 07:08:50 -0700 (PDT)
-Received: from [192.168.0.103] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id a3-20020a170902b58300b001ab2b415bdbsm13635200pls.45.2023.07.02.07.08.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Jul 2023 07:08:50 -0700 (PDT)
-Message-ID: <644f4551-32e8-11f9-0d4a-ad1045fdae77@gmail.com>
-Date:   Sun, 2 Jul 2023 21:08:27 +0700
+        with ESMTP id S229644AbjGBQ2T (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 12:28:19 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B406E60;
+        Sun,  2 Jul 2023 09:28:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688315298; x=1719851298;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=gE63mQxX2uqiJxp4/cma47DCCu39/6Y8JQQErQ+uM4g=;
+  b=J/o9vRDxJuUzAtZC5eajg/NJ9T38/gjZ09luWFvMDyDwp9N+uRrq8jPf
+   iF562pP1bPPnJomEgEGcu7RWmtrbboB4yfgXnZgQ2a07xTvDJoJSqePww
+   dDAUArijX92wR/Q6JEszfBbqQ/n6c7qGhPuzWsYoHoFN/XpFrLNaAq5LU
+   A4MwOEYPKHyzagVXW6Yl08uFesyKiTI3jZX16uehoXz8bCrVadd1uIJos
+   NVDPgjwwwTxKTHp3n2a1ft9WzuK53KNL8NxOOaQ+0Nilu0AfGa0tKS9HT
+   eFK9emxekfqqk0o9LpLu5NjTv2Ikw4455z47NqPzZeZjHK+ktsxAZyIul
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="347494892"
+X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; 
+   d="scan'208";a="347494892"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2023 09:28:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="892310312"
+X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; 
+   d="scan'208";a="892310312"
+Received: from zhaoqion-mobl.ccr.corp.intel.com (HELO rzhang1-mobl7.ccr.corp.intel.com) ([10.254.209.232])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2023 09:28:14 -0700
+From:   Zhang Rui <rui.zhang@intel.com>
+To:     tglx@linutronix.de, peterz@infradead.org, bp@alien8.de,
+        rafael.j.wysocki@intel.com
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        x86@kernel.org, feng.tang@intel.com
+Subject: [RFC PATCH] x86/acpi: Ignore invalid x2APIC entries
+Date:   Mon,  3 Jul 2023 00:28:02 +0800
+Message-Id: <20230702162802.344176-1-rui.zhang@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: Fwd: RCU stalls with wireguard over bonding over igb on Linux
- 6.3.0+
-Content-Language: en-US
-To:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        Eric DeVolder <eric.devolder@oracle.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        David R <david@unsolicited.net>,
-        Boris Ostrovsky <boris.ovstrosky@oracle.com>,
-        Miguel Luis <miguel.luis@oracle.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Jay Vosburgh <j.vosburgh@gmail.com>,
-        Andy Gospodarek <andy@greyhouse.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux RCU <rcu@vger.kernel.org>,
-        Wireguard Mailing List <wireguard@lists.zx2c4.com>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Manuel 'satmd' Leiner <manuel.leiner@gmx.de>
-References: <e5b76a4f-81ae-5b09-535f-114149be5069@gmail.com>
- <79196679-fb65-e5ad-e836-2c43447cfacd@gmail.com>
- <10f2a5ee-91e2-1241-9e3b-932c493e61b6@leemhuis.info>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-In-Reply-To: <10f2a5ee-91e2-1241-9e3b-932c493e61b6@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 7/2/23 19:37, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 02.07.23 13:57, Bagas Sanjaya wrote:
->> [also Cc: original reporter]
-> 
-> BTW: I think you CCed too many developers here. There are situations
-> where this can makes sense, but it's rare. And if you do this too often
-> people might start to not really look into your mails or might even
-> ignore them completely.
-> 
-> Normally it's enough to write the mail to (1) the people in the
-> signed-off-by-chain, (2) the maintainers of the subsystem that merged a
-> commit, and (3) the lists for all affected subsystems; leave it up to
-> developers from the first two groups to CC the maintainers of the third
-> group.
-> 
+Currently, kernel enumerates the possible CPUs by parsing both ACPI MADT
+Local APIC entries and x2APIC entries. So CPUs with "valid" APIC IDs,
+even if they have duplicated APIC IDs in Local APIC and x2APIC, are
+always enumerated.
 
-Hi,
+Below is what ACPI MADT Local APIC and x2APIC describes on an
+Ivebridge-EP system,
 
-In this case I had to also Cc: wireguard, bonding, RCU, and x86 people,
-since this issue spans these subsystems (I naively thought). Anyway,
-thanks for detailed tip (honestly /me wonder if I forgot this later, as
-is often the case).
+[02Ch 0044   1]                Subtable Type : 00 [Processor Local APIC]
+[02Fh 0047   1]                Local Apic ID : 00
+...
+[164h 0356   1]                Subtable Type : 00 [Processor Local APIC]
+[167h 0359   1]                Local Apic ID : 39
+[16Ch 0364   1]                Subtable Type : 00 [Processor Local APIC]
+[16Fh 0367   1]                Local Apic ID : FF
+...
+[3ECh 1004   1]                Subtable Type : 09 [Processor Local x2APIC]
+[3F0h 1008   4]                Processor x2Apic ID : 00000000
+...
+[B5Ch 2908   1]                Subtable Type : 09 [Processor Local x2APIC]
+[B60h 2912   4]                Processor x2Apic ID : 00000077
 
->> On 7/2/23 10:31, Bagas Sanjaya wrote:
->>> I notice a regression report on Bugzilla [1]. Quoting from it:
->>>
->>>> I've spent the last week on debugging a problem with my attempt to upgrade my kernel from 6.2.8 to 6.3.8 (now also with 
->> [...]
->>> See Bugzilla for the full thread.
->>>
->>> Anyway, I'm adding it to regzbot to make sure it doesn't fall through cracks
->>> unnoticed:
->>>
->>> #regzbot introduced: fed8d8773b8ea6 https://bugzilla.kernel.org/show_bug.cgi?id=217620
->>> #regzbot title: correcting acpi_is_processor_usable() check causes RCU stalls with wireguard over bonding+igb
->>> #regzbot link: https://bugs.gentoo.org/909066
-> 
->> satmd: Can you repeat bisection to confirm that fed8d8773b8ea6 is
->> really the culprit?
-> 
-> I'd be careful to ask people that, as that might mean a lot of work for
-> them. Best to leave things like that to developers, unless it's pretty
-> obvious that something went sideways.
-> 
+As a result, kernel shows "smpboot: Allowing 168 CPUs, 120 hotplug CPUs".
+And this wastes significant amount of memory for the per-cpu data.
+Plus this also breaks https://lore.kernel.org/all/87edm36qqb.ffs@tglx/,
+because __max_logical_packages is over-estimated by the APIC IDs in
+the x2APIC entries.
 
-OK.
+According to https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#processor-local-x2apic-structure,
+"[Compatibility note] On some legacy OSes, Logical processors with APIC
+ID values less than 255 (whether in XAPIC or X2APIC mode) must use the
+Processor Local APIC structure to convey their APIC information to OSPM,
+and those processors must be declared in the DSDT using the Processor()
+keyword. Logical processors with APIC ID values 255 and greater must use
+the Processor Local x2APIC structure and be declared using the Device()
+keyword.".
 
->> Thorsten: It seems like the reporter concluded bisection to the
->> (possibly) incorrect culprit.
-> 
-> What makes your think so? I just looked at bugzilla and it (for now)
-> seems reverting fed8d8773b8ea6 ontop of 6.4 fixed things for the
-> reporter, which is a pretty strong indicator that this change really
-> causes the trouble somehow.
-> 
+Enumerate CPUs from x2APIC enties with APIC ID values 255 or greater,
+when valid CPU from Local APIC is already detected.
 
-OK too.
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+---
+I didn't find any clear statement in the ACPI spec about if a mixture of
+Local APIC and x2APIC entries is allowed or not. So it would be great if
+this can be clarified.
 
-> /me really wonders what's he's missing
-> 
->> What can I do in this case besides
->> asking to repeat bisection?
-> 
-> Not much apart from updating regzbot state (e.g. something like "regzbot
-> introduced v6.3..v6.4") and a reply to your initial report (ideally with
-> a quick apology) to let everyone know it was a false alarm.
-> 
+And FYI, I have auditted a series of Intel servers, and one IVB-EP in
+LKP lab and one IVB-EP from PeterZ are the only ones with a mixture of
+Local APIC entries + x2APIC entries.
 
-OK.
+Plat    Status
+IVB-EP  valid LAPIC + invalid LAPIC (APIC ID 0xFF) + unknown x2APIC entries (valid APIC ID + Enable bit cleared)
+IVB-EP  valid LAPIC + invalid LAPIC (APIC ID 0xFF) + unknown x2APIC entries (valid APIC ID + Enable bit cleared)
+CLX     valid LAPIC + invalid LAPIC (APIC ID 0xFF) + invalid x2APIC entries (APIC ID 0xFFFFFFFF)
+CLX     valid LAPIC + invalid LAPIC (APIC ID 0xFF) + invalid x2APIC entries (APIC ID 0xFFFFFFFF)
+ICX     valid LAPIC only
+SPR     valid LAPIC only
+SPR     valid x2APIC only
+---
+ arch/x86/kernel/acpi/boot.c | 35 ++++++++++++++++++-----------------
+ 1 file changed, 18 insertions(+), 17 deletions(-)
 
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 21b542a6866c..a41124d58e29 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -204,6 +204,8 @@ static bool __init acpi_is_processor_usable(u32 lapic_flags)
+ 	return false;
+ }
+ 
++static bool has_lapic_cpus;
++
+ static int __init
+ acpi_parse_x2apic(union acpi_subtable_headers *header, const unsigned long end)
+ {
+@@ -232,6 +234,14 @@ acpi_parse_x2apic(union acpi_subtable_headers *header, const unsigned long end)
+ 	if (!acpi_is_processor_usable(processor->lapic_flags))
+ 		return 0;
+ 
++	/*
++	 * According to https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#processor-local-x2apic-structure
++	 * when MADT provides both valid LAPIC and x2APIC entries, the APIC ID
++	 * in x2APIC must be equal or greater than 0xff.
++	 */
++	if (has_lapic_cpus && apic_id < 0xff)
++		return 0;
++
+ 	/*
+ 	 * We need to register disabled CPU as well to permit
+ 	 * counting disabled CPUs. This allows us to size
+@@ -257,6 +267,7 @@ static int __init
+ acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned long end)
+ {
+ 	struct acpi_madt_local_apic *processor = NULL;
++	int cpu;
+ 
+ 	processor = (struct acpi_madt_local_apic *)header;
+ 
+@@ -280,10 +291,11 @@ acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned long end)
+ 	 * to not preallocating memory for all NR_CPUS
+ 	 * when we use CPU hotplug.
+ 	 */
+-	acpi_register_lapic(processor->id,	/* APIC ID */
++	cpu = acpi_register_lapic(processor->id,	/* APIC ID */
+ 			    processor->processor_id, /* ACPI ID */
+ 			    processor->lapic_flags & ACPI_MADT_ENABLED);
+-
++	if (cpu >= 0)
++		has_lapic_cpus = true;
+ 	return 0;
+ }
+ 
+@@ -1123,21 +1135,10 @@ static int __init acpi_parse_madt_lapic_entries(void)
+ 				      acpi_parse_sapic, MAX_LOCAL_APIC);
+ 
+ 	if (!count) {
+-		memset(madt_proc, 0, sizeof(madt_proc));
+-		madt_proc[0].id = ACPI_MADT_TYPE_LOCAL_APIC;
+-		madt_proc[0].handler = acpi_parse_lapic;
+-		madt_proc[1].id = ACPI_MADT_TYPE_LOCAL_X2APIC;
+-		madt_proc[1].handler = acpi_parse_x2apic;
+-		ret = acpi_table_parse_entries_array(ACPI_SIG_MADT,
+-				sizeof(struct acpi_table_madt),
+-				madt_proc, ARRAY_SIZE(madt_proc), MAX_LOCAL_APIC);
+-		if (ret < 0) {
+-			pr_err("Error parsing LAPIC/X2APIC entries\n");
+-			return ret;
+-		}
+-
+-		count = madt_proc[0].count;
+-		x2count = madt_proc[1].count;
++		count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_APIC,
++					acpi_parse_lapic, MAX_LOCAL_APIC);
++		x2count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_X2APIC,
++					acpi_parse_x2apic, MAX_LOCAL_APIC);
+ 	}
+ 	if (!count && !x2count) {
+ 		pr_err("No LAPIC entries present\n");
 -- 
-An old man doll... just what I always wanted! - Clara
+2.34.1
 
