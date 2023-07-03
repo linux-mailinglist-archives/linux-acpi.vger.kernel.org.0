@@ -2,446 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A75FC7459F2
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jul 2023 12:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5890A745BE7
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jul 2023 14:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229791AbjGCKQX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Jul 2023 06:16:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42390 "EHLO
+        id S229914AbjGCMOO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Jul 2023 08:14:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229597AbjGCKQW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jul 2023 06:16:22 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED7229B
-        for <linux-acpi@vger.kernel.org>; Mon,  3 Jul 2023 03:16:19 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-3142a9ff6d8so2424879f8f.3
-        for <linux-acpi@vger.kernel.org>; Mon, 03 Jul 2023 03:16:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1688379378; x=1690971378;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KHna20O5nuwmYMQaQmDisbtnuP0SS9Nya9vSK5lPsIM=;
-        b=D51JaqYyHlucBw7NXpCblfBlLZtkeRJxiAkudc6DBT/DtQEDrb1FYnMMibCzrI8sk1
-         H/x/VwgSSbWnJwtbWC8lJqvxt9b7A3UmUuUfhOLCyQyJTWCN4Mv1v8xfMgW/xlbkWdZI
-         yDj0Q+VahUAxGkQFoUlnGeuLBcP9mA0tUgVAXo8QHQjlnn3BPdTzbCWbgNRT5/UGS3Re
-         /28ME7WC6JEVV7WtL2QEJOi/AvMqij1E+ak6798ICJ/Y8cY8AUKzQtt1+on7GKr3ZVHk
-         ic7heDchy2bwzeczoMHnAV6OH95ba8TlEvMf1OjzowxZtvNvVfvBcoQyzY3Uhq0gBndb
-         gxDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688379378; x=1690971378;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KHna20O5nuwmYMQaQmDisbtnuP0SS9Nya9vSK5lPsIM=;
-        b=mGBroI3BrWSMUfcU5OZvfAzncrMTUZd6JffvcWDpvc2paobITehmXAwnkCGTqYXV2D
-         VRiTqo0/TqYZpN7uQhmgTzCMLsEW+tbPjT/74mI7jqoWRDHALMNmvmwimY8JWHaPD/DD
-         LHYYutMqLIFwpfHg7Rp00A7e1GZ3NFrBp2L5GvZ19TfuUQEMlLU/e9+FQPseGJnoaCWQ
-         67SD0dgJbYpevsQOwZ4tARm4Iy+DzQQSzgFL+VFTJ9hWKkBksUu1cqbk3+apSbmFgejg
-         0Ob6ucXdL7z61NnqTPKSHa+1XyxlckQ9sr0iOouXWfgwROSi8FTScbWsZ9G74o5GlQwK
-         DTCg==
-X-Gm-Message-State: ABy/qLZmvxig564TiALpaTKpD5JNWcHMR0wx507cVduFY8ySgldN0CjT
-        JI6c9sHV+iv22/o2BmOGY9c9J37HLth5IHPhR8dmEw==
-X-Google-Smtp-Source: APBJJlEyPHaw9RDOWtWuuNTrLxiqJdK1Y9rx8u7ncpQxqzZArAv5IjOfEjZY7gyHfQ9l2BG3z28vd3wfUHh72kONM4Y=
-X-Received: by 2002:adf:fe8f:0:b0:314:ca7:f30b with SMTP id
- l15-20020adffe8f000000b003140ca7f30bmr8267188wrr.54.1688379378380; Mon, 03
- Jul 2023 03:16:18 -0700 (PDT)
+        with ESMTP id S229728AbjGCMOO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jul 2023 08:14:14 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E4A1109;
+        Mon,  3 Jul 2023 05:14:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688386453; x=1719922453;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=B+0o99RwmPnmItgZGhKKF+qA0QI/Xs8dXHq+Uwdmz44=;
+  b=YDq+87bh7Hn4iSR5aWLx3cT7sktDxusqJegRlcgNHE4hpPPzM8pwwass
+   eSqAAkE1kuAlfzLLfQL3FwA1wQbeMPNXj7jyncNlmJkuhpQFlr8MvOeIY
+   umDcCid1x4uKAjj6QdQ6oS5bDNjJMSZa2z8RM83BhcZHB8DlFtpX6xTP3
+   R7CW7ooDKGAchiQe6c7ZtDZ4b11yVxjqV5L7yWiJTzkaOFHhJQH86KV/v
+   2zUGVZSwS+i7fIXwa+ZmUELq5p2rjThPbbIBnc3RuztPsLgMGNnM3a+4k
+   sfBXE3i49uCOUq63Thr/79vPn/RdZ06qide1AecI0BJeqRLoiWsuBZF0c
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="361726060"
+X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; 
+   d="scan'208";a="361726060"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2023 05:14:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="788508190"
+X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; 
+   d="scan'208";a="788508190"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga004.fm.intel.com with ESMTP; 03 Jul 2023 05:14:10 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id E199C170; Mon,  3 Jul 2023 15:14:12 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        acpica-devel@lists.linuxfoundation.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Michael Walle <michael@walle.cc>
+Subject: [PATCH v4 0/5] ACPI: platform: Fix SMB0001 enumeration on Kontron devices
+Date:   Mon,  3 Jul 2023 15:14:06 +0300
+Message-Id: <20230703121411.69606-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
 MIME-Version: 1.0
-References: <20230702095735.860-1-cuiyunhui@bytedance.com> <20230702-headway-dreamlike-d7ba39ac4910@spud>
- <CAEEQ3wnzf=iDDHJATo2vdVz-SDNYRGBEEb7sXUyGojgP4ZAgaA@mail.gmail.com> <20230703-glorified-headless-16e998608eaa@wendy>
-In-Reply-To: <20230703-glorified-headless-16e998608eaa@wendy>
-From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-Date:   Mon, 3 Jul 2023 18:16:07 +0800
-Message-ID: <CAEEQ3wnjYK+Jj9Ce_yEHPL_z3eYn4OKP85YLXnVeaPd+SA3DJw@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v2 1/3] riscv: obtain ACPI RSDP from FFI.
-To:     Conor Dooley <conor.dooley@microchip.com>
-Cc:     Conor Dooley <conor@kernel.org>, ardb@kernel.org,
-        palmer@dabbelt.com, paul.walmsley@sifive.com,
-        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
-        rminnich@gmail.com, mark.rutland@arm.com, lpieralisi@kernel.org,
-        rafael@kernel.org, lenb@kernel.org, jdelvare@suse.com,
-        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
-        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
-        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, geshijian@bytedance.com,
-        weidong.wd@bytedance.com, alexghiti@rivosinc.com,
-        sunilvl@ventanamicro.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Conor,
+After switching i2c-scmi driver to be a plaform one, it stopped
+being enumerated on number of Kontron platforms, because it's
+listed in the forbidden_id_list.
 
-On Mon, Jul 3, 2023 at 4:13=E2=80=AFPM Conor Dooley <conor.dooley@microchip=
-.com> wrote:
->
-> Hey,
->
-> On Mon, Jul 03, 2023 at 03:19:01PM +0800, =E8=BF=90=E8=BE=89=E5=B4=94 wro=
-te:
-> > On Sun, Jul 2, 2023 at 9:48=E2=80=AFPM Conor Dooley <conor@kernel.org> =
-wrote:
-> > >
-> > > %subject: riscv: obtain ACPI RSDP from FFI.
-> > >
-> > > This subject is a bit unhelpful because FFI would commonly mean "fore=
-ign
-> > > function interface" & you have not yet introduced it. It seems like i=
-t
-> > > would be better to do s/FFI/devicetree/ or similar.
-> >
-> > FFI: FDT FIRMWARE INTERFACE.
-> >
-> > You are right, s/FFI/devicetree/ is of course possible=EF=BC=8C but I a=
-ctually
-> > want to use FFI as a general solution, put all relevant codes under
-> > driver/firmware/, and use RISC-V arch to call general codes.
->
-> Yes, I read the patchset. It's still unhelpful to someone reading
-> $subject because nobody knows what your version of FFI is IMO.
->
-> > In this case, only one Kconfig CONFIG_FDT_FW_INTERFACE is enough=EF=BC=
-=8C and
-> > The FFI code will be placed first in the patchset.
-> >
-> > But Ard's suggestion is to put the part of SMBIOS in the generic code,
-> > and put the FFI for ACPI in the RISCV arch.
-> >
-> > Please see  the v1:
-> > https://patches.linaro.org/project/linux-acpi/patch/20230426034001.16-1=
--cuiyunhui@bytedance.com/
->
-> I read this too, I was following along with the discussion on the v1.
+To resolve the situation, add a flag and check if there are resources
+privided for the forbiden device. If it is the case, the device must
+be skipped.
 
-Okay,  I will take your suggestion=EF=BC=8C to do s/FFI/devicetree/.
-This needs to be confirmed with you:
-Continue to follow the current code structure, patch 1/3 is placed in
-arch/riscv/, and 2/3 is placed under driver/firmware?
+Changelog v4:
+- dropped applied patch
+- added kernel doc for new helper (Rafael)
+- rewritten the commit message for the reason of a new helper (Rafael)
+- added a couple of patches for ACPI scan.c that can be applied later on
 
->
-> > Put the following to /driver/firmware/ffi.c , What do you think?
-> > void __init ffi_acpi_root_pointer(void)
-> > {
-> >     ...
-> > }
->
-> Usually the NOP versions just go in the headers.
->
-> > > Please also drop the full stop from the commit messages ;)
-> > Okay, thanks.
-> >
-> > >
-> > > Please use a cover letter for multi-patch series & include changelogs=
-.
-> > OK, On v3 I would use.
-> >
-> > >
-> > > +CC Sunil, Alex:
-> > >
-> > > Can you guys please take a look at this & see if it is something that=
- we
-> > > want to do (ACPI without EFI)?
-> > >
-> > > On Sun, Jul 02, 2023 at 05:57:32PM +0800, Yunhui Cui wrote:
-> > > > 1. We need to enable the ACPI function on RISC-V.
-> > >
-> > > RISC-V already supports ACPI, the "we" in this commit message is
-> > > confusing. Who is "we"? Bytedance?
->
-> Who is the "we"?
+Changelog v3:
+- provided completely rewritten solution (Rafael)
+- due to above, added two new patches
+- due to above, dropped tags from patch 3
 
-"We" are people who need to use ACPI on RISC-V systems, including
-ByteDance of course.
+Andy Shevchenko (5):
+  ACPI: bus: Introduce acpi_match_acpi_device() helper
+  ACPI: platform: Ignore SMB0001 only when it has resources
+  ACPI: platform: Move SMB0001 HID to the header and reuse
+  ACPI: scan: Use the acpi_match_acpi_device() helper
+  ACPI: scan: Provide symbol declarations
 
->
-> > > > When booting with
-> > > > Coreboot, we encounter two problems:
-> > > > a. Coreboot does not support EFI
-> > >
-> > >
-> > > > b. On RISC-V, only the DTS channel can be used.
-> > >
-> > > We support ACPI, so this seems inaccurate. Could you explain it bette=
-r
-> > > please?
-> >
-> > Yes, Sunil already supports ACPI, But it is based on EDK2 boot which
-> > supports EFI.
-> > In fact, We use Coreboot which has the features of a and b above.
->
-> My point is that the commit message has gaps in it.
-> This point b & point 1 make it seem like this patch adds ACPI support to
-> an architecture that only supports devicetree. "DTS channel" needs to be
-> explained further, to be frank I have no idea what that means. Does it
-> mean that coreboot on RISC-V only supports DT, or that the RISC-V linux
-> kernel requires a mini-DT when booting with EFI?
+ drivers/acpi/acpi_platform.c  | 30 +++++++++++++++++++++++++++---
+ drivers/acpi/bus.c            | 25 +++++++++++++++++++++----
+ drivers/acpi/scan.c           | 22 +++++++++++++---------
+ drivers/i2c/busses/i2c-scmi.c |  3 ---
+ include/acpi/acpi_drivers.h   |  2 ++
+ include/linux/acpi.h          |  9 +++++++++
+ 6 files changed, 72 insertions(+), 19 deletions(-)
 
-Yeah=EF=BC=8C Coreboot only supports DT, do not support EFI.
-The first half sentence has already said "When booting with Coreboot,
-we encounter two problems:"
+-- 
+2.40.0.1.gaa8946217a0b
 
-How about changing the commit log to the following?
-
-riscv: obtain ACPI RSDP from devicetree.
-
-On RISC-V, when using Coreboot to start, since Coreboot only supports
-DTS but not EFI, and
-RISC-V does not have a reserved address segment.
-When the system enables ACPI, ACPI RSDP needs to be passed through DTS
-
->
-> > > > 2. Based on this, we have added an interface for obtaining firmware
-> > > > information transfer through FDT, named FFI.
-> > >
-> > > Please use the long form of "FFI" before using the short form, since =
-you
-> > > are inventing this & noone knows what it means yet.
-> > >
-> > > > 3. We not only use FFI to pass ACPI RSDP, but also pass other
-> > > > firmware information as an extension.
-> > >
-> > > This patch doesn't do that though?
-> >
-> > Similar problems may be encountered on other arches, which is also the
-> > purpose of this sentence.
->
-> Right, but that has nothing to do with this patch? This patch only
-> implements the ACPI side of things for RISC-V, it doesn't do the SMBIOS
-> stuff. Leave that for the patch that actually does that please.
-
-Okay, Modify it to the above commit log and there will be no such problem.
-
-> > > > +RISC-V FDT FIRMWARE INTERFACE (FFI) SUPPORT
-> > > > +M:     Yunhui Cui cuiyunhui@bytedance.com
-> > > > +S:     Maintained
-> > > > +F:     arch/riscv/include/asm/ffi.h
-> > > > +F:     arch/riscv/kernel/ffi.c
-> > >
-> > > Please add this in alphabetical order, these entries have recently be=
-en
-> > > resorted. That said, maintainers entry for a trivial file in arch cod=
-e
-> > > seems a wee bit odd, seems like it would be better suited rolled up i=
-nto
-> > > your other entry for the interface, like how Ard's one looks for EFI?
-> > >
-> > > > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> > > > index b49793cf34eb..2e1c40fb2300 100644
-> > > > --- a/arch/riscv/Kconfig
-> > > > +++ b/arch/riscv/Kconfig
-> > > > @@ -785,6 +785,16 @@ config EFI
-> > > >         allow the kernel to be booted as an EFI application. This
-> > > >         is only useful on systems that have UEFI firmware.
-> > > >
-> > > > +config FFI
-> > > > +     bool "Fdt firmware interface"
-> > > > +     depends on OF
-> > > > +     default y
-> > > > +     help
-> > > > +       Added an interface to obtain firmware information transfer
-> > > > +       through FDT, named FFI. Some bootloaders do not support EFI=
-,
-> > > > +       such as coreboot.
-> > > > +       We can pass firmware information through FFI, such as ACPI.
-> > >
-> > > I don't understand your Kconfig setup. Why don't you just have one
-> > > option (the one from patch 2/3), instead of adding 2 different but
-> > > similarly named options?
-> > OK, let me try it=EF=BC=8C and use the Kconfig CONFIG_FDT_FW_INTERFACE.=
-  EFI
-> > seems to use two...
->
-> It doesn't use two different options, AFAIR. There's an EFI option in
-> the arch Kconfigs and then a menu in drivers/firmware/efi/Kconfig that
-> allows enabling sub-components. You've got two entries that appear
-> unrelated, despite parsing the same DT bits.
-
-OKay, I'll update it on v3.
-
->
-> >
-> > > >  config CC_HAVE_STACKPROTECTOR_TLS
-> > > >       def_bool $(cc-option,-mstack-protector-guard=3Dtls -mstack-pr=
-otector-guard-reg=3Dtp -mstack-protector-guard-offset=3D0)
-> > > >
-> > > > diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm=
-/acpi.h
-> > > > index f71ce21ff684..f9d1625dd159 100644
-> > > > --- a/arch/riscv/include/asm/acpi.h
-> > > > +++ b/arch/riscv/include/asm/acpi.h
-> > > > @@ -15,6 +15,8 @@
-> > > >  /* Basic configuration for ACPI */
-> > > >  #ifdef CONFIG_ACPI
-> > > >
-> > > > +#include <asm/ffi.h>
-> > > > +
-> > > >  typedef u64 phys_cpuid_t;
-> > > >  #define PHYS_CPUID_INVALID INVALID_HARTID
-> > > >
-> > > > @@ -66,6 +68,13 @@ int acpi_get_riscv_isa(struct acpi_table_header =
-*table,
-> > > >                      unsigned int cpu, const char **isa);
-> > > >
-> > > >  static inline int acpi_numa_get_nid(unsigned int cpu) { return NUM=
-A_NO_NODE; }
-> > > > +
-> > > > +#define ACPI_HAVE_ARCH_GET_ROOT_POINTER
-> > >
-> > > How come this is not set in Kconfig like HAVE_FOO options usually are=
-?
->
-> > This is modeled after x86 historical code.
-> > See arch/x86/include/asm/acpi.h
->
-> Is that a good reason for propagating the pattern? Is there a benefit to
-> this, other than "x86 did this"?
-
-I smiled when I read this sentence=EF=BC=8CI haven't thought of a better wa=
-y yet =EF=BC=9A-=EF=BC=89
-
-
->
-> > > > +static inline u64 acpi_arch_get_root_pointer(void)
-> > > > +{
-> > > > +     return acpi_rsdp;
-> > > > +}
-> > > > +
-> > > >  #else
-> > > >  static inline void acpi_init_rintc_map(void) { }
-> > > >  static inline struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int =
-cpu)
-> > > > diff --git a/arch/riscv/include/asm/ffi.h b/arch/riscv/include/asm/=
-ffi.h
-> > > > new file mode 100644
-> > > > index 000000000000..847af02abd87
-> > > > --- /dev/null
-> > > > +++ b/arch/riscv/include/asm/ffi.h
-> > > > @@ -0,0 +1,9 @@
-> > > > +/* SPDX-License-Identifier: GPL-2.0 */
-> > > > +
-> > > > +#ifndef _ASM_FFI_H
-> > > > +#define _ASM_FFI_H
-> > > > +
-> > > > +extern u64 acpi_rsdp;
-> > >
-> > > /stuff/linux/drivers/acpi/osl.c:178:22: error: redefinition of 'acpi_=
-rsdp' with a different type: 'unsigned long' vs 'u64' (aka 'unsigned long l=
-ong')
-> > >
-> > > Fails to build when Kexec is enabled.
-> >
-> > Rename my acpi_rsdp to arch_acpi_rsdp? WDYT?
->
-> You could do s/arch/riscv/ either, that'd match what we prefix a lot of
-> stuff with.
-
- Sorry, I don't quite understand what you mean. Could you tell me in detail=
-?
-
->
-> > > > diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefil=
-e
-> > > > index 506cc4a9a45a..274e06f4da33 100644
-> > > > --- a/arch/riscv/kernel/Makefile
-> > > > +++ b/arch/riscv/kernel/Makefile
-> > > > @@ -92,6 +92,7 @@ obj-$(CONFIG_CRASH_CORE)    +=3D crash_core.o
-> > > >  obj-$(CONFIG_JUMP_LABEL)     +=3D jump_label.o
-> > > >
-> > > >  obj-$(CONFIG_EFI)            +=3D efi.o
-> > > > +obj-$(CONFIG_FFI)              +=3D ffi.o
-> > >
-> > > This file uses tabs for alignment, not spaces.
-> > Okay, got it.
-> >
-> > >
-> > > >  obj-$(CONFIG_COMPAT)         +=3D compat_syscall_table.o
-> > > >  obj-$(CONFIG_COMPAT)         +=3D compat_signal.o
-> > > >  obj-$(CONFIG_COMPAT)         +=3D compat_vdso/
-> > > > diff --git a/arch/riscv/kernel/ffi.c b/arch/riscv/kernel/ffi.c
-> > > > new file mode 100644
-> > > > index 000000000000..c5ac2b5d9148
-> > > > --- /dev/null
-> > > > +++ b/arch/riscv/kernel/ffi.c
->
-> > > > +void __init ffi_init(void)
-> > > > +{
-> > > > +     ffi_acpi_root_pointer();
-> > >
-> > > What happens if, on a system with "normal" ACPI support, ffi_init() i=
-s
-> > > called & ffi_acpi_root_pointer() calls things like fdt_path_offset()?
-> >
-> > According to the current logic, get it from FFI is enabled, if can
-> > not,  continue to use =E2=80=9Cnormal=E2=80=9D ACPI.
->
-> I find it hard to understand what you mean here. Do you mean something
-> like "The calls to fdt_path_offset() will use the mini EFI DT and are
-> harmless. If the config table is not present, it will continue to use
-> \"normal\" ACPI."?
-
-acpi_os_get_root_pointer()
-{
-        pa =3D acpi_arch_get_root_pointer();
-        if (pa)
-                return pa;
-
-        ...//efi logic
-}
-
-Even if acpi_arch_get_root_pointer returns 0, it does not affect the
-next efi logic.
-
->
-> > > > +}
-> > > > diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-> > > > index 971fe776e2f8..5a933d6b6acb 100644
-> > > > --- a/arch/riscv/kernel/setup.c
-> > > > +++ b/arch/riscv/kernel/setup.c
-> > > > @@ -36,6 +36,7 @@
-> > > >  #include <asm/thread_info.h>
-> > > >  #include <asm/kasan.h>
-> > > >  #include <asm/efi.h>
-> > > > +#include <asm/ffi.h>
-> > > >
-> > > >  #include "head.h"
-> > > >
-> > > > @@ -279,6 +280,7 @@ void __init setup_arch(char **cmdline_p)
-> > > >       parse_early_param();
-> > > >
-> > > >       efi_init();
-> > > > +     ffi_init();
-> > >
-> > > What provides ffi_init() if CONFIG_FFI is disabled?
->
-> > Ok=EF=BC=8C Modified on v3,  put it with the CONFIG_FFI
->
-> Sorry, what does this mean?
-
-I mean thanks for the idea, I'll update it in v3.
-#ifdef CONFIG_FDT_FW_INTERFACE
-    ffi_init();
-#endif
-
-
->
-> >
-> > >
-> > > >       paging_init();
-> > > >
-> > > >       /* Parse the ACPI tables for possible boot-time configuration=
- */
->
-> Cheers,
-> Conor.
-
-
-Thanks,
-Yunhui
