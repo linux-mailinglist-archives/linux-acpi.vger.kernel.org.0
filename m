@@ -2,73 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D76D1745744
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jul 2023 10:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34C0474576F
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jul 2023 10:36:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbjGCIYJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Jul 2023 04:24:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34330 "EHLO
+        id S230105AbjGCIgH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Jul 2023 04:36:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229593AbjGCIYI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jul 2023 04:24:08 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB3DCB2
-        for <linux-acpi@vger.kernel.org>; Mon,  3 Jul 2023 01:24:06 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-3142a9ff6d8so2312677f8f.3
-        for <linux-acpi@vger.kernel.org>; Mon, 03 Jul 2023 01:24:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1688372645; x=1690964645;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VK9YJK54N6X6KANLQAKaW0JERmC99/mkew38T4D7Txw=;
-        b=lCArJJna5LLyOPkgI58sEAU27L0ZiP4Ne872I/FQMplFNqtbW0R8UUGlyOt+Hb+pUn
-         zI3WBAPsFMf318AzUzG17RX5zgxwKu/Pp3NgS3zikmLMia/whGzAKLIlOLkbW79G2LEa
-         WXcdQxuV+biiJ0O7FVwNbQFPQJgRo9iioM5KrWvOy25xzLW4h3NclGEi5hYtRnEJp+GI
-         8O0cspqvGI6GW59oD8b3Siu65v9ACpJ/NncLq88kl1G82AUPgVn3onR0JJc+miY4rhmC
-         eQPLC+pXuTzx8bmSJrJrVC9lj2AWVlKwPmuaDp6iFtSZoeF4E4ByzDYvHV9eE9fKW8E6
-         trfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688372645; x=1690964645;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VK9YJK54N6X6KANLQAKaW0JERmC99/mkew38T4D7Txw=;
-        b=Gj1Q1PHP9nuJJNA8ezYLWMQqSbf46SfdZFs5EAUSR757MjI3uPNFVQNxcAHxq7WyIZ
-         Sk3jIPNg8BwFIxeTOA9KsA37FUlH/1oqsxTcND/szjCfYY2AJcD/Qc0WefjqIGW6u5Ja
-         8Jp4j84snKNVykn5UsaF1yxq7wsgTMZkTq8Bb6PoYnc4VxuFZTV8vzYC3FfWRVk0/8kq
-         R6KwKEiAvz5RqIKx+PtRdAkZk40m3QyEm9OJRb2qeZoMQvMDKHbQQ4ZErJsQ5xCILnVm
-         jWPnVt9mu2LhtHYMW1yWQV+aB6/W6utNx9unZ2OnPfGHDZU90pHuSreLqu6bjQJvAJ7k
-         uL4Q==
-X-Gm-Message-State: ABy/qLZTG8cb8zWG3lDL0KuJ/LWhjQW4+zITCxExmMX7eJ1xkuWMN6wA
-        dwCs2FFQ+/iKdW08+t37TmEYCdF92m5HqaPmWR+59A==
-X-Google-Smtp-Source: APBJJlF9ZTAYs0T0KFZt84N7iRTPRiRVEXyVf9NJt5DrHvQiO/09D955cqr5PIWdRYhIKMVO7VldzYBOhpO7/9ZSUdA=
-X-Received: by 2002:adf:e747:0:b0:314:2f5b:2ce with SMTP id
- c7-20020adfe747000000b003142f5b02cemr4203439wrn.12.1688372645184; Mon, 03 Jul
- 2023 01:24:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230702095735.860-1-cuiyunhui@bytedance.com> <20230702095735.860-2-cuiyunhui@bytedance.com>
+        with ESMTP id S230113AbjGCIfh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jul 2023 04:35:37 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC6471BC;
+        Mon,  3 Jul 2023 01:35:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1688373337; x=1719909337;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0/VuNN8vAbwtoIAOscoPME46U2tJgXgmlj69V2xtFA4=;
+  b=RyZ7HNR6bMhH0ZiNirsKaePdk/R7aFfPF09X40XE0DsC/YNmiozVZVMI
+   u6yQXk69OrSaLBYhnQrLljk9uy2yGyB7/+tqbKZ3Kapul+cfSQJUnNLEe
+   Iw2vc7BOO7ym13ZbTrcyyNW4yhHjuv+A+gLmfbBxxwHc0hJ1XRtYO2rQh
+   9YqHBhN+BZ0/ChEKBl5sahQxA30xFvFvony7JpB2Env1fwrbmQgxkAfaT
+   JCtU0er3nTO6Crw4++JcpLVARc0jfRV4RfV05LlU3cXD12wkjxAX/2OBc
+   +Um9srdP/12RfqzbM0OzqaOuuvRh3603rZHL6pKE+U8CxtKztUGHBFHie
+   g==;
+X-IronPort-AV: E=Sophos;i="6.01,177,1684825200"; 
+   d="asc'?scan'208";a="218667141"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 03 Jul 2023 01:35:36 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Mon, 3 Jul 2023 01:35:27 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Mon, 3 Jul 2023 01:35:24 -0700
+Date:   Mon, 3 Jul 2023 09:34:54 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     =?utf-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
+CC:     Conor Dooley <conor@kernel.org>, <ardb@kernel.org>,
+        <palmer@dabbelt.com>, <paul.walmsley@sifive.com>,
+        <aou@eecs.berkeley.edu>, <linux-riscv@lists.infradead.org>,
+        <rminnich@gmail.com>, <mark.rutland@arm.com>,
+        <lpieralisi@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
+        <jdelvare@suse.com>, <yc.hung@mediatek.com>,
+        <angelogioacchino.delregno@collabora.com>,
+        <allen-kh.cheng@mediatek.com>,
+        <pierre-louis.bossart@linux.intel.com>,
+        <tinghan.shen@mediatek.com>, <linux-kernel@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, <geshijian@bytedance.com>,
+        <weidong.wd@bytedance.com>
+Subject: Re: [External] Re: [PATCH v2 2/3] firmware: introduce FFI for SMBIOS
+ entry.
+Message-ID: <20230703-rebuff-smashing-6b2c6f80ba05@wendy>
+References: <20230702095735.860-1-cuiyunhui@bytedance.com>
+ <20230702095735.860-2-cuiyunhui@bytedance.com>
  <20230702-collide-rumor-f0d915a4f1b2@spud>
-In-Reply-To: <20230702-collide-rumor-f0d915a4f1b2@spud>
-From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-Date:   Mon, 3 Jul 2023 16:23:53 +0800
-Message-ID: <CAEEQ3w=CMSMnYmfprYS4ydsA=EBJtLhQQHWky754EC-iifcYtg@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v2 2/3] firmware: introduce FFI for SMBIOS entry.
-To:     Conor Dooley <conor@kernel.org>
-Cc:     ardb@kernel.org, palmer@dabbelt.com, paul.walmsley@sifive.com,
-        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
-        rminnich@gmail.com, mark.rutland@arm.com, lpieralisi@kernel.org,
-        rafael@kernel.org, lenb@kernel.org, jdelvare@suse.com,
-        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
-        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
-        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, geshijian@bytedance.com,
-        weidong.wd@bytedance.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+ <CAEEQ3w=CMSMnYmfprYS4ydsA=EBJtLhQQHWky754EC-iifcYtg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="mgEY+RpkWKJjg9BW"
+Content-Disposition: inline
+In-Reply-To: <CAEEQ3w=CMSMnYmfprYS4ydsA=EBJtLhQQHWky754EC-iifcYtg@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,239 +78,243 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Conor,
+--mgEY+RpkWKJjg9BW
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hey,
 
-> nit: please don't write your commit messages as bullet lists
-Okay, thanks for your suggestion.
-
-> > +FDT FIRMWARE INTERFACE (FFI)
-> > +M:   Yunhui Cui cuiyunhui@bytedance.com
-> > +S:   Maintained
-> > +F:   drivers/firmware/ffi.c
-> > +F:   include/linux/ffi.h
->
-> Are you going to apply patches for this, or is someone else?
-Yes,  it will be used by patch 3/3.
-
->
-> >  EXTERNAL CONNECTOR SUBSYSTEM (EXTCON)
-> >  M:   MyungJoo Ham <myungjoo.ham@samsung.com>
-> >  M:   Chanwoo Choi <cw00.choi@samsung.com>
-> > diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-> > index b59e3041fd62..ea0149fb4683 100644
-> > --- a/drivers/firmware/Kconfig
-> > +++ b/drivers/firmware/Kconfig
-> > @@ -303,6 +303,17 @@ config TURRIS_MOX_RWTM
-> >         other manufacturing data and also utilize the Entropy Bit Gener=
-ator
-> >         for hardware random number generation.
+On Mon, Jul 03, 2023 at 04:23:53PM +0800, =E8=BF=90=E8=BE=89=E5=B4=94 wrote:
+>=20
+> > nit: please don't write your commit messages as bullet lists
+> Okay, thanks for your suggestion.
+>=20
+> > > +FDT FIRMWARE INTERFACE (FFI)
+> > > +M:   Yunhui Cui cuiyunhui@bytedance.com
+> > > +S:   Maintained
+> > > +F:   drivers/firmware/ffi.c
+> > > +F:   include/linux/ffi.h
 > >
-> > +config FDT_FW_INTERFACE
-> > +       bool "An interface for passing firmware info through FDT"
-> > +       depends on OF && OF_FLATTREE
-> > +       default n
-> > +       help
-> > +         When some bootloaders do not support EFI, and the arch does n=
-ot
-> > +         support SMBIOS_ENTRY_POINT_SCAN_START, then you can enable th=
-is option
-> > +         to support the transfer of firmware information, such as smbi=
-os tables.
->
-> Could you express this dependency on !SMBIOS_ENTRY_POINT_SCAN_START in
-> Kconfig & then simply the text to:
-> "Enable this option to support the transfer of firmware information,
-> such as smbios tables, for bootloaders that do not support EFI."
-> since it would not even appear if the arch supports scanning for the
-> entry point?
-> If I was was a punter trying to configure my kernel in menuconfig or
-> whatever, I should be able to decide based on the help text if I need
-> this, not going grepping for #defines in headers.
-Okay=EF=BC=8C I'll update on v3.
+> > Are you going to apply patches for this, or is someone else?
+> Yes,  it will be used by patch 3/3.
 
+That's not what I asked :(
 
->
-> >  static void __init dmi_scan_machine(void)
-> > @@ -660,58 +686,22 @@ static void __init dmi_scan_machine(void)
-> >       char __iomem *p, *q;
-> >       char buf[32];
+> > >  EXTERNAL CONNECTOR SUBSYSTEM (EXTCON)
+> > >  M:   MyungJoo Ham <myungjoo.ham@samsung.com>
+> > >  M:   Chanwoo Choi <cw00.choi@samsung.com>
+> > > diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+> > > index b59e3041fd62..ea0149fb4683 100644
+> > > --- a/drivers/firmware/Kconfig
+> > > +++ b/drivers/firmware/Kconfig
+> > > @@ -303,6 +303,17 @@ config TURRIS_MOX_RWTM
+> > >         other manufacturing data and also utilize the Entropy Bit Gen=
+erator
+> > >         for hardware random number generation.
+> > >
+> > > +config FDT_FW_INTERFACE
+> > > +       bool "An interface for passing firmware info through FDT"
+> > > +       depends on OF && OF_FLATTREE
+> > > +       default n
+> > > +       help
+> > > +         When some bootloaders do not support EFI, and the arch does=
+ not
+> > > +         support SMBIOS_ENTRY_POINT_SCAN_START, then you can enable =
+this option
+> > > +         to support the transfer of firmware information, such as sm=
+bios tables.
 > >
-> > +#ifdef CONFIG_FDT_FW_INTERFACE
-> > +     if (dmi_sacn_smbios(ffi.smbios3, ffi.smbios))
->
-> "dmi_sacn_smbios"
->
-> > +             goto error;
-> > +#endif
->
-> Does this not mean that if FDT_FW_INTERFACE is enabled, but the platform
-> wants to use EFI, it won't be able to? The `goto error;` makes this look
-> mutually exclusive to my efi-unaware eyes.
+> > Could you express this dependency on !SMBIOS_ENTRY_POINT_SCAN_START in
+> > Kconfig & then simply the text to:
+> > "Enable this option to support the transfer of firmware information,
+> > such as smbios tables, for bootloaders that do not support EFI."
+> > since it would not even appear if the arch supports scanning for the
+> > entry point?
+> > If I was was a punter trying to configure my kernel in menuconfig or
+> > whatever, I should be able to decide based on the help text if I need
+> > this, not going grepping for #defines in headers.
+> Okay=EF=BC=8C I'll update on v3.
+>=20
+>=20
+> >
+> > >  static void __init dmi_scan_machine(void)
+> > > @@ -660,58 +686,22 @@ static void __init dmi_scan_machine(void)
+> > >       char __iomem *p, *q;
+> > >       char buf[32];
+> > >
+> > > +#ifdef CONFIG_FDT_FW_INTERFACE
+> > > +     if (dmi_sacn_smbios(ffi.smbios3, ffi.smbios))
+> >
+> > "dmi_sacn_smbios"
+> >
+> > > +             goto error;
+> > > +#endif
+> >
+> > Does this not mean that if FDT_FW_INTERFACE is enabled, but the platform
+> > wants to use EFI, it won't be able to? The `goto error;` makes this look
+> > mutually exclusive to my efi-unaware eyes.
+>=20
+> If you have enabled FFI, then if something goes wrong, you should goto er=
+ror.
+> Just like the origin code:
+>         if (efi_enabled(EFI_CONFIG_TABLES)) {
+>                 if (dmi_sacn_smbios(efi.smbios3, efi.smbios))
+>                         goto error;
+>         } else if (IS_ENABLED(CONFIG_DMI_SCAN_MACHINE_NON_EFI_FALLBACK)) {
+>                 p =3D dmi_early_remap(SMBIOS_ENTRY_POINT_SCAN_START, 0x10=
+000);
+>                 if (p =3D=3D NULL)
+>                         goto error;
 
-If you have enabled FFI, then if something goes wrong, you should goto erro=
-r.
-Just like the origin code:
-        if (efi_enabled(EFI_CONFIG_TABLES)) {
-                if (dmi_sacn_smbios(efi.smbios3, efi.smbios))
-                        goto error;
-        } else if (IS_ENABLED(CONFIG_DMI_SCAN_MACHINE_NON_EFI_FALLBACK)) {
-                p =3D dmi_early_remap(SMBIOS_ENTRY_POINT_SCAN_START, 0x1000=
-0);
-                if (p =3D=3D NULL)
-                        goto error;
-....
-}
+Does this not make FFI and EFI mutually exclusive Kconfig options?
+Suppose you are on a system that does not implement FFI, but does
+implement EFI - what's going to happen then?
+AFAICT, dmi_sacn_smbios(ffi.smbios3, ffi.smbios) will fail & you'll do a
+`goto error` & skip the EFI code. What am I missing?
 
->
-> >       if (efi_enabled(EFI_CONFIG_TABLES)) {
-> > -             /*
-> > -              * According to the DMTF SMBIOS reference spec v3.0.0, it=
- is
-> > -              * allowed to define both the 64-bit entry point (smbios3=
-) and
-> > -              * the 32-bit entry point (smbios), in which case they sh=
-ould
-> > -              * either both point to the same SMBIOS structure table, =
-or the
-> > -              * table pointed to by the 64-bit entry point should cont=
-ain a
-> > -              * superset of the table contents pointed to by the 32-bi=
-t entry
-> > -              * point (section 5.2)
-> > -              * This implies that the 64-bit entry point should have
-> > -              * precedence if it is defined and supported by the OS. I=
-f we
-> > -              * have the 64-bit entry point, but fail to decode it, fa=
-ll
-> > -              * back to the legacy one (if available)
-> > -              */
-> > -             if (efi.smbios3 !=3D EFI_INVALID_TABLE_ADDR) {
-> > -                     p =3D dmi_early_remap(efi.smbios3, 32);
-> > -                     if (p =3D=3D NULL)
-> > -                             goto error;
-> > -                     memcpy_fromio(buf, p, 32);
-> > -                     dmi_early_unmap(p, 32);
-> > -
-> > -                     if (!dmi_smbios3_present(buf)) {
-> > -                             dmi_available =3D 1;
-> > -                             return;
-> > -                     }
-> > -             }
-> > -             if (efi.smbios =3D=3D EFI_INVALID_TABLE_ADDR)
-> > +             if (dmi_sacn_smbios(efi.smbios3, efi.smbios))
-> >                       goto error;
-> > -
-> > -             /* This is called as a core_initcall() because it isn't
-> > -              * needed during early boot.  This also means we can
-> > -              * iounmap the space when we're done with it.
-> > -              */
-> > -             p =3D dmi_early_remap(efi.smbios, 32);
-> > -             if (p =3D=3D NULL)
-> > -                     goto error;
-> > -             memcpy_fromio(buf, p, 32);
-> > -             dmi_early_unmap(p, 32);
-> > -
-> > -             if (!dmi_present(buf)) {
-> > -                     dmi_available =3D 1;
-> > -                     return;
-> > -             }
-> > diff --git a/drivers/firmware/ffi.c b/drivers/firmware/ffi.c
-> > new file mode 100644
-> > index 000000000000..169802b4a7a8
-> > --- /dev/null
-> > +++ b/drivers/firmware/ffi.c
-> > @@ -0,0 +1,36 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +
-> > +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> > +
-> > +#include <linux/of.h>
-> > +#include <linux/of_fdt.h>
-> > +#include <linux/libfdt.h>
-> > +#include <linux/ffi.h>
-> > +
-> > +#define FFI_INVALID_TABLE_ADDR       (~0UL)
-> > +
-> > +struct ffi __read_mostly ffi =3D {
-> > +     .smbios =3D FFI_INVALID_TABLE_ADDR,
-> > +     .smbios3 =3D FFI_INVALID_TABLE_ADDR,
-> > +};
->
-> > +EXPORT_SYMBOL(ffi);
->
-> > +// SPDX-License-Identifier: GPL-2.0-only
->
-> Why not EXPORT_SYMBOL_GPL? But also, who is the user of this export?
-Just like efi.
+> > >       if (efi_enabled(EFI_CONFIG_TABLES)) {
+> > > -             /*
+> > > -              * According to the DMTF SMBIOS reference spec v3.0.0, =
+it is
+> > > -              * allowed to define both the 64-bit entry point (smbio=
+s3) and
+> > > -              * the 32-bit entry point (smbios), in which case they =
+should
+> > > -              * either both point to the same SMBIOS structure table=
+, or the
+> > > -              * table pointed to by the 64-bit entry point should co=
+ntain a
+> > > -              * superset of the table contents pointed to by the 32-=
+bit entry
+> > > -              * point (section 5.2)
+> > > -              * This implies that the 64-bit entry point should have
+> > > -              * precedence if it is defined and supported by the OS.=
+ If we
+> > > -              * have the 64-bit entry point, but fail to decode it, =
+fall
+> > > -              * back to the legacy one (if available)
+> > > -              */
+> > > -             if (efi.smbios3 !=3D EFI_INVALID_TABLE_ADDR) {
+> > > -                     p =3D dmi_early_remap(efi.smbios3, 32);
+> > > -                     if (p =3D=3D NULL)
+> > > -                             goto error;
+> > > -                     memcpy_fromio(buf, p, 32);
+> > > -                     dmi_early_unmap(p, 32);
+> > > -
+> > > -                     if (!dmi_smbios3_present(buf)) {
+> > > -                             dmi_available =3D 1;
+> > > -                             return;
+> > > -                     }
+> > > -             }
+> > > -             if (efi.smbios =3D=3D EFI_INVALID_TABLE_ADDR)
+> > > +             if (dmi_sacn_smbios(efi.smbios3, efi.smbios))
+> > >                       goto error;
+> > > -
+> > > -             /* This is called as a core_initcall() because it isn't
+> > > -              * needed during early boot.  This also means we can
+> > > -              * iounmap the space when we're done with it.
+> > > -              */
+> > > -             p =3D dmi_early_remap(efi.smbios, 32);
+> > > -             if (p =3D=3D NULL)
+> > > -                     goto error;
+> > > -             memcpy_fromio(buf, p, 32);
+> > > -             dmi_early_unmap(p, 32);
+> > > -
+> > > -             if (!dmi_present(buf)) {
+> > > -                     dmi_available =3D 1;
+> > > -                     return;
+> > > -             }
+> > > diff --git a/drivers/firmware/ffi.c b/drivers/firmware/ffi.c
+> > > new file mode 100644
+> > > index 000000000000..169802b4a7a8
+> > > --- /dev/null
+> > > +++ b/drivers/firmware/ffi.c
+> > > @@ -0,0 +1,36 @@
+> > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > +
+> > > +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> > > +
+> > > +#include <linux/of.h>
+> > > +#include <linux/of_fdt.h>
+> > > +#include <linux/libfdt.h>
+> > > +#include <linux/ffi.h>
+> > > +
+> > > +#define FFI_INVALID_TABLE_ADDR       (~0UL)
+> > > +
+> > > +struct ffi __read_mostly ffi =3D {
+> > > +     .smbios =3D FFI_INVALID_TABLE_ADDR,
+> > > +     .smbios3 =3D FFI_INVALID_TABLE_ADDR,
+> > > +};
+> >
+> > > +EXPORT_SYMBOL(ffi);
+> >
+> > > +// SPDX-License-Identifier: GPL-2.0-only
+> >
+> > Why not EXPORT_SYMBOL_GPL? But also, who is the user of this export?
+> Just like efi.
 
->
-> > +
-> > +void __init ffi_smbios_root_pointer(void)
-> > +{
-> > +     int cfgtbl, len;
-> > +     fdt64_t *prop;
-> > +
-> > +     cfgtbl =3D fdt_path_offset(initial_boot_params, "/cfgtables");
->
-> These DT properties need to be documented in a binding.
->
-> > +     if (cfgtbl < 0) {
-> > +             pr_info("firmware table not found.\n");
->
-> Isn't it perfectly valid for a DT not to contain this table? This print
-> should be, at the very least, a pr_debug().
->
-> > +             return;
-> > +     }
-> > +     prop =3D fdt_getprop_w(initial_boot_params, cfgtbl, "smbios_phy_p=
-tr", &len);
->
-> Again, undocumented DT property. Please document them in a binding.
-Okay, I'll add them into binding.
+I don't really understand how that is an answer to the questions.
 
+> > > +
+> > > +void __init ffi_smbios_root_pointer(void)
+> > > +{
+> > > +     int cfgtbl, len;
+> > > +     fdt64_t *prop;
+> > > +
+> > > +     cfgtbl =3D fdt_path_offset(initial_boot_params, "/cfgtables");
+> >
+> > These DT properties need to be documented in a binding.
+> >
+> > > +     if (cfgtbl < 0) {
+> > > +             pr_info("firmware table not found.\n");
+> >
+> > Isn't it perfectly valid for a DT not to contain this table? This print
+> > should be, at the very least, a pr_debug().
+> >
+> > > +             return;
+> > > +     }
+> > > +     prop =3D fdt_getprop_w(initial_boot_params, cfgtbl, "smbios_phy=
+_ptr", &len);
+> >
+> > Again, undocumented DT property. Please document them in a binding.
+> Okay, I'll add them into binding.
+>=20
+>=20
+> >
+> > > +     if (!prop || len !=3D sizeof(u64))
+> > > +             pr_info("smbios entry point not found.\n");
+> > > +     else
+> > > +             ffi.smbios =3D fdt64_to_cpu(*prop);
+> > > +
+> > > +     pr_info("smbios root pointer: %lx\n", ffi.smbios);
+> >
+> > ffi.smbios is not set if (!prop || len !=3D sizeof(u64)), looks like yo=
+ur
+> > "if" should return and the contents of the else become unconditional?
+> > Otherwise, this print seems wrong.
 
->
-> > +     if (!prop || len !=3D sizeof(u64))
-> > +             pr_info("smbios entry point not found.\n");
-> > +     else
-> > +             ffi.smbios =3D fdt64_to_cpu(*prop);
-> > +
-> > +     pr_info("smbios root pointer: %lx\n", ffi.smbios);
->
-> ffi.smbios is not set if (!prop || len !=3D sizeof(u64)), looks like your
-> "if" should return and the contents of the else become unconditional?
-> Otherwise, this print seems wrong.
-OK, I will optimize this logic and print.
+> OK, I will optimize this logic and print.
 
->
-> > +}
-> > +
-> > diff --git a/include/linux/ffi.h b/include/linux/ffi.h
-> > new file mode 100644
-> > index 000000000000..95298a805222
-> > --- /dev/null
-> > +++ b/include/linux/ffi.h
-> > @@ -0,0 +1,15 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +
-> > +#ifndef _LINUX_FFI_H
-> > +#define _LINUX_FFI_H
-> > +
-> > +extern struct ffi {
-> > +     unsigned long smbios;  /* SMBIOS table (32 bit entry point) */
-> > +     unsigned long smbios3;  /* SMBIOS table (64 bit entry point) */
-> > +     unsigned long flags;
-> > +
-> > +} ffi;
-> > +
-> > +void ffi_smbios_root_pointer(void);
->
-> Please provide a stub for !FDT_FW_INTERFACE so that we don't need
-> ifdeffery at callsites.
-OK, update it on v3.
-
-
+It's not an optimisation. If the if branch of your code is taken, it
+currently will do
+	pr_info("smbios entry point not found.\n");
+	pr_info("smbios root pointer: %lx\n", ffi.smbios);
+which makes no sense...
 
 Thanks,
-Yunhui
+Conor.
+
+
+--mgEY+RpkWKJjg9BW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZKKILgAKCRB4tDGHoIJi
+0sHCAP9oR6Zc2RsczALqIEh4yefVd02+y2p1qwmzjU1PUXkz+AD+OWkhwMcOhFzn
+0UxULbuvEFFad2H/cRSU/EQJI0LbcAo=
+=2KIj
+-----END PGP SIGNATURE-----
+
+--mgEY+RpkWKJjg9BW--
