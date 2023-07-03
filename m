@@ -2,44 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E83274538E
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jul 2023 03:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4921A745396
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jul 2023 03:34:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229958AbjGCB3k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jul 2023 21:29:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42568 "EHLO
+        id S229569AbjGCBeJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jul 2023 21:34:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229777AbjGCB3k (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 21:29:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30C1518F;
-        Sun,  2 Jul 2023 18:29:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C367E60C02;
-        Mon,  3 Jul 2023 01:29:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCB0C433C8;
-        Mon,  3 Jul 2023 01:29:36 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Y4+QzqLU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1688347774;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=4674ZbOxpPHoz+ti6WsYFPiu0IyaOts3jCS8wRMfDSY=;
-        b=Y4+QzqLUTiJeMalgj+I7Qo91Ha+PS4e9rDKO2uucMD4artd8I2tsWvB0NNZQlRu/PVMC3e
-        8bh5NrRfWN1PxNylMDVYDZKT0yy6nTDxUEcOS9jQf/7Fg95TyqIvSC5Ve2NEoo1Yh4RqmH
-        ddaBAhi+C2W0eJ4EbPsNpnPz/DqAS5c=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 5120d0e1 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Mon, 3 Jul 2023 01:29:34 +0000 (UTC)
-Date:   Mon, 3 Jul 2023 03:29:30 +0200
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Eric DeVolder <eric.devolder@oracle.com>,
+        with ESMTP id S229554AbjGCBeJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jul 2023 21:34:09 -0400
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5220E134;
+        Sun,  2 Jul 2023 18:34:08 -0700 (PDT)
+Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-7659cb9c42aso334976285a.3;
+        Sun, 02 Jul 2023 18:34:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688348047; x=1690940047;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=j+DQp1aToFjJn6ibYm/4PN8jG7y+qtLc+dd9jn1u2OI=;
+        b=E247jHIts6Coz6hmPu1O7nST/fEOvOmX8+WSIt8dvPOLEXWrHnbxR8/wZMD7eWOQfA
+         VWuEOxQiDxZX2TGM1v1cJTzENETOZ1RTwXjXhPbfHKBlDZERMQ0MzLWQBG2sf45cWvf5
+         TKh5cRMAl5Q29jZMz0JhPRozzhHoZodIsIBQ91yhE+QLdGmpjzDzt89AC7M/S72qzn2a
+         AVlnBgqkZNvWnvJSs9VW+FNOJHBQusF4u/9r8z7R5++3JVQb0cb5EZNZXAolt3W62II7
+         yhCabHg/iIHSZWmXZ+U6AnsKqOzUSbouWdcIm+VutWFROc2Cc1OuWBmxckNnX9zLZA1S
+         rJGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688348047; x=1690940047;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j+DQp1aToFjJn6ibYm/4PN8jG7y+qtLc+dd9jn1u2OI=;
+        b=geLdkrHdwTIN7W8hXXmwtxRkGhCtXn7O/4Am0Up1USE2b/v4QWtNr5OVj35eTRC4yP
+         jCAvSJbaMG4ARUPPsMs4SwHwQyiKu5pgf9LMW1cP0S0rc7Gc5lkAVcMv/oobE5/UoAHr
+         Eg0DuAcG5KwNoph7Y1mp88RaoTO8H+a3LjkCtku8zGAYZzn8anYJGysBwxIFfNtN8Pdd
+         wj36dmHQYFe/JPGWm7VOJx4RcsqmbmBRwIrBPx2bBXM1EhyoQsqIM77mNwhStoUrUssq
+         +2fsZ7mRVwG3oheu/NyS5NBlDvc0cyrn5bZdgvyNo/9YuOvYbr+dSqiTv6iqy/UMFvN3
+         gq3Q==
+X-Gm-Message-State: ABy/qLbk62z94zjKN/ATUGAeZrU/FzR81GBxdSc9+l0j3BVk3M4nJUUc
+        YaUW469rHABg3hupwPfRuAg=
+X-Google-Smtp-Source: APBJJlH92Kk5anUzz/btdHsFS1h2wIq4UMijxUHmrjYT7HeyyIRo0qQnTuby7k7tSS0XXQYnB3Oa/Q==
+X-Received: by 2002:a05:620a:2547:b0:763:9f31:1588 with SMTP id s7-20020a05620a254700b007639f311588mr10579466qko.70.1688348047293;
+        Sun, 02 Jul 2023 18:34:07 -0700 (PDT)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id c184-20020a621cc1000000b0066875f17266sm3492941pfc.135.2023.07.02.18.34.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Jul 2023 18:34:06 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 73EA181BD580; Mon,  3 Jul 2023 08:34:02 +0700 (WIB)
+Date:   Mon, 3 Jul 2023 08:34:01 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     Eric DeVolder <eric.devolder@oracle.com>,
         "Borislav Petkov (AMD)" <bp@alien8.de>,
         David R <david@unsolicited.net>,
         Boris Ostrovsky <boris.ovstrosky@oracle.com>,
@@ -63,18 +78,19 @@ Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
         Manuel 'satmd' Leiner <manuel.leiner@gmx.de>
 Subject: Re: Fwd: RCU stalls with wireguard over bonding over igb on Linux
  6.3.0+
-Message-ID: <ZKIkevSrMJISHDig@zx2c4.com>
+Message-ID: <ZKIlibX5wCgWlonq@debian.me>
 References: <e5b76a4f-81ae-5b09-535f-114149be5069@gmail.com>
  <79196679-fb65-e5ad-e836-2c43447cfacd@gmail.com>
  <10f2a5ee-91e2-1241-9e3b-932c493e61b6@leemhuis.info>
  <CAHmME9onMWdJVUerf86V0kpmNKByt+VC=SUfys+GFryGq1ziHQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="iSZj5c+AXivxuOj4"
 Content-Disposition: inline
 In-Reply-To: <CAHmME9onMWdJVUerf86V0kpmNKByt+VC=SUfys+GFryGq1ziHQ@mail.gmail.com>
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,18 +98,42 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+
+--iSZj5c+AXivxuOj4
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
 On Sun, Jul 02, 2023 at 03:46:38PM +0200, Jason A. Donenfeld wrote:
 > I've got an overdue patch that I still need to submit to netdev, which
 > I suspect might actually fix this.
-> 
+>=20
 > Can you let me know if
-> https://git.zx2c4.com/wireguard-linux/patch/?id=54d5e4329efe0d1dba8b4a58720d29493926bed0
+> https://git.zx2c4.com/wireguard-linux/patch/?id=3D54d5e4329efe0d1dba8b4a5=
+8720d29493926bed0
 > solves the problem?
 
-satmd, the original reporter, confirmed over on the Gentoo bug report -
-https://bugs.gentoo.org/909066 - that this patch fixes the issue.
+The reporter on Bugzilla [1] said it fixed the regression, so telling
+regzbot:
 
-This patch has been sent into netdev and will presumably hit the various
-trees and stable in due time.
+#regzbot fix: 54d5e4329efe0d
 
-Jason
+Thanks.
+
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=3D217620#c6
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--iSZj5c+AXivxuOj4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZKIlfgAKCRD2uYlJVVFO
+o4VvAQC1HOL3pBDT4GLVcFv6vo9unyPwADyfbTt7FItp8GNDGwD/S1k8ndaOLk2I
+CQNHucPSMLNR09jmYdkOaFrGjSpluAQ=
+=tRvy
+-----END PGP SIGNATURE-----
+
+--iSZj5c+AXivxuOj4--
