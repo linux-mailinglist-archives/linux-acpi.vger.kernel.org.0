@@ -2,77 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEAE4745CC3
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jul 2023 15:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B7C8745CD2
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jul 2023 15:05:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230101AbjGCNDG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Jul 2023 09:03:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37152 "EHLO
+        id S229644AbjGCNFR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Jul 2023 09:05:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbjGCNDF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jul 2023 09:03:05 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78062CA;
-        Mon,  3 Jul 2023 06:03:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1688389384; x=1719925384;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JKDOENosKmEiL2k4tBZQmuXWBUtv1K4FuCfUPDPb270=;
-  b=RBVMA+7/YD5TQF2fmMiOeeUCNouhjysPpTbtwl6+FH8D7XrcgZgHQQeg
-   XrEXlrTE3YEC9SZ5SYQL0PUfnYgSyzarmZ8ihsX4w9rF5PCfYBtyIoMXP
-   ULLzM/+vY0KZsPnR8d0JUcxHllrlPoO8uKCY9zBILnhCZJ5Wr1JxFicX6
-   7Q6bnTCrPy5y/5sBci5m2odpFw7go/sUY5HMibPBiCQjiIbnHsyFFL6Oo
-   d2nWiayBQO3sqEqkAsNF9cHrv8mLEuMAhvrwwopKu9mMNZgYbYHFiKM3Z
-   glm4ZVs5w6oICr339Bbu4O4OoFRbX1ytS5QSIrzO0DzspixQ/ScNrIkVD
-   w==;
-X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; 
-   d="asc'?scan'208";a="221065931"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 03 Jul 2023 06:02:48 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Mon, 3 Jul 2023 06:02:48 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Mon, 3 Jul 2023 06:02:45 -0700
-Date:   Mon, 3 Jul 2023 14:02:15 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     =?utf-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-CC:     Conor Dooley <conor@kernel.org>, <ardb@kernel.org>,
-        <palmer@dabbelt.com>, <paul.walmsley@sifive.com>,
-        <aou@eecs.berkeley.edu>, <linux-riscv@lists.infradead.org>,
-        <rminnich@gmail.com>, <mark.rutland@arm.com>,
-        <lpieralisi@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
-        <jdelvare@suse.com>, <yc.hung@mediatek.com>,
-        <angelogioacchino.delregno@collabora.com>,
-        <allen-kh.cheng@mediatek.com>,
-        <pierre-louis.bossart@linux.intel.com>,
-        <tinghan.shen@mediatek.com>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <geshijian@bytedance.com>,
-        <weidong.wd@bytedance.com>
-Subject: Re: [External] Re: [PATCH v2 2/3] firmware: introduce FFI for SMBIOS
- entry.
-Message-ID: <20230703-patrol-paced-76cd5e24db6b@wendy>
-References: <20230702095735.860-1-cuiyunhui@bytedance.com>
- <20230702095735.860-2-cuiyunhui@bytedance.com>
- <20230702-collide-rumor-f0d915a4f1b2@spud>
- <CAEEQ3w=CMSMnYmfprYS4ydsA=EBJtLhQQHWky754EC-iifcYtg@mail.gmail.com>
- <20230703-rebuff-smashing-6b2c6f80ba05@wendy>
- <CAEEQ3w=-1Zns_pZRSeM0+Wv46y6RttcT5jFy_ENnq--RptYp2g@mail.gmail.com>
+        with ESMTP id S230374AbjGCNFR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jul 2023 09:05:17 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762CDE60
+        for <linux-acpi@vger.kernel.org>; Mon,  3 Jul 2023 06:04:53 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3fbc77e76abso39744685e9.1
+        for <linux-acpi@vger.kernel.org>; Mon, 03 Jul 2023 06:04:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1688389492; x=1690981492;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3d6ih/kmwpjX+tH1Xu9YvN1lziwh3aCHo89EB9XkjqU=;
+        b=RN6y0gy31NmpuKelrbC/HzNL00R0snetDTfDwY1NkrB1uDrkwdBiyYeFBGnwwNtRZp
+         dtucuAkLDSvD/PdAfaeDTuT42i3tPpXFwJe0u+mD8f3E5mBbasbh3FFi3J1DkgmrzYzY
+         UwV5lbmTyFELEuoYeVjuZzxJajX2wCwmjr76jeody1tPpDT/pfUvL0o2tlAflzBqniSA
+         +gLa0Tx9s4FBhu0c/UrbUtEP5/G7KqW8oCdCgTkF1s7MrxhJYlzf+nVqu1lPBEqoLm/e
+         AlIDv85bhTaTOyEs608kDyFGxGcqL/h5/X07iOm4XT2Tc1zWr0x5FqkUJFe/T03WQfj+
+         M+FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688389492; x=1690981492;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3d6ih/kmwpjX+tH1Xu9YvN1lziwh3aCHo89EB9XkjqU=;
+        b=be6SmCsaf82c1wJFLKlag5fkbAO4pe0tPy+9XMnJTfseI3XW5ILqW87ICE2iVeAJx7
+         5GDOatcLW2DAGMoZM4TY5zu8UD9P5BuvSMdoRYCsh4pOtHDePwQI3scqZ3VkEMVDlzcN
+         pTs7vG9MOY60EpZu8ZXfiKexcEEXwqD6AhwBYw5h14q0pz3eew7UiuCX0Qd8Eb6r4K72
+         fR0mq1sWkG8c2uT/dhv/pIu/p+eV5fid5aUByXJTkp2rzr9ClrEzJTgifnKEFmXPKhRP
+         hluqRRBAwPdVxfkdDKqlq4+7myloClyqrDZwKecx+3JH0mU2nFsEX1eBxABygGxRAMVB
+         yWOg==
+X-Gm-Message-State: AC+VfDyS2HzMv6S3lnecCf1OxbK9vx+R/7YvtWjpzPQfIlRkGJCqNclT
+        jVUj5ZtDgaSYCbGZoD9ESdqe+hnu+Nd3NijNxfHBDw==
+X-Google-Smtp-Source: ACHHUZ6t2qo8tIjShnZO9/FXBBpcQJeQTs/al+vYFLGivJfJj8gprGTPoGGfvUDO7fZ5igBLzHW1X8xoFUJPhsmtHAk=
+X-Received: by 2002:a05:600c:3792:b0:3fb:c417:5e6 with SMTP id
+ o18-20020a05600c379200b003fbc41705e6mr7953949wmr.23.1688389491911; Mon, 03
+ Jul 2023 06:04:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Uht1cacpbtCJeEos"
-Content-Disposition: inline
-In-Reply-To: <CAEEQ3w=-1Zns_pZRSeM0+Wv46y6RttcT5jFy_ENnq--RptYp2g@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20230702095735.860-1-cuiyunhui@bytedance.com> <20230702-headway-dreamlike-d7ba39ac4910@spud>
+ <CAEEQ3wnzf=iDDHJATo2vdVz-SDNYRGBEEb7sXUyGojgP4ZAgaA@mail.gmail.com>
+ <20230703-glorified-headless-16e998608eaa@wendy> <CAEEQ3wnjYK+Jj9Ce_yEHPL_z3eYn4OKP85YLXnVeaPd+SA3DJw@mail.gmail.com>
+ <20230703-handstand-prototype-733d702c946c@wendy>
+In-Reply-To: <20230703-handstand-prototype-733d702c946c@wendy>
+From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
+Date:   Mon, 3 Jul 2023 21:04:40 +0800
+Message-ID: <CAEEQ3wkmX6N2b8fftixJ2Ev-DOc_VfbxQM9g66OpVLuL8mVZbA@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v2 1/3] riscv: obtain ACPI RSDP from FFI.
+To:     Conor Dooley <conor.dooley@microchip.com>
+Cc:     Conor Dooley <conor@kernel.org>, ardb@kernel.org,
+        palmer@dabbelt.com, paul.walmsley@sifive.com,
+        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
+        rminnich@gmail.com, mark.rutland@arm.com, lpieralisi@kernel.org,
+        rafael@kernel.org, lenb@kernel.org, jdelvare@suse.com,
+        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
+        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
+        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, geshijian@bytedance.com,
+        weidong.wd@bytedance.com, alexghiti@rivosinc.com,
+        sunilvl@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,102 +80,74 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---Uht1cacpbtCJeEos
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Conor,
 
-On Mon, Jul 03, 2023 at 08:41:30PM +0800, =E8=BF=90=E8=BE=89=E5=B4=94 wrote:
-> On Mon, Jul 3, 2023 at 4:36=E2=80=AFPM Conor Dooley <conor.dooley@microch=
-ip.com> wrote:
-> > On Mon, Jul 03, 2023 at 04:23:53PM +0800, =E8=BF=90=E8=BE=89=E5=B4=94 w=
-rote:
+On Mon, Jul 3, 2023 at 8:20=E2=80=AFPM Conor Dooley <conor.dooley@microchip=
+.com> wrote:
+>
+> On Mon, Jul 03, 2023 at 06:16:07PM +0800, =E8=BF=90=E8=BE=89=E5=B4=94 wro=
+te:
+> > Hi Conor,
+>
+> > This needs to be confirmed with you:
+>
+> > Continue to follow the current code structure, patch 1/3 is placed in
+> > arch/riscv/, and 2/3 is placed under driver/firmware?
+>
+> You do want the SMBIOS stuff to be cross architecture, right?
+> If so, keeping the code as-is seems to make the most sense to me.
 
-> > > > > +FDT FIRMWARE INTERFACE (FFI)
-> > > > > +M:   Yunhui Cui cuiyunhui@bytedance.com
-> > > > > +S:   Maintained
-> > > > > +F:   drivers/firmware/ffi.c
-> > > > > +F:   include/linux/ffi.h
-> > > >
-> > > > Are you going to apply patches for this, or is someone else?
-> > > Yes,  it will be used by patch 3/3.
+Okay, other arches may use FFI in the future. Keep the code as-is seems.
+
+> > How about changing the commit log to the following?
 > >
-> > That's not what I asked :(
->=20
-> Sorry,  ok,  what do you want to ask?
+> > riscv: obtain ACPI RSDP from devicetree.
+> >
+> > On RISC-V, when using Coreboot to start, since Coreboot only supports
+> > DTS but not EFI, and
+> > RISC-V does not have a reserved address segment.
+> > When the system enables ACPI, ACPI RSDP needs to be passed through DTS
+>
+> I would probably write something like:
+>         On RISC-V, Coreboot does not support booting using EFI, only devi=
+cetree
+>         nor does RISC-V have a reserved address segment.
+>         To allow using Coreboot on platforms that require ACPI, the ACPI =
+RSDP
+>         needs to be passed to supervisor mode software using devicetree.
+>         Add support for parsing the "configtbls" devicetree node to find =
+the
+>         ACPI entry point and use wire up acpi_arch_get_root_pointer().
+>         This feature is known as FDT Firmware Interface (FFI).
 
-Who is going to apply patches for drivers/firmware/ffi*?
+Great,  I have to learn from it.
 
-> > > > >  static void __init dmi_scan_machine(void)
-> > > > > @@ -660,58 +686,22 @@ static void __init dmi_scan_machine(void)
-> > > > >       char __iomem *p, *q;
-> > > > >       char buf[32];
+> > > > > > +extern u64 acpi_rsdp;
 > > > > >
-> > > > > +#ifdef CONFIG_FDT_FW_INTERFACE
-> > > > > +     if (dmi_sacn_smbios(ffi.smbios3, ffi.smbios))
+> > > > > /stuff/linux/drivers/acpi/osl.c:178:22: error: redefinition of 'a=
+cpi_rsdp' with a different type: 'unsigned long' vs 'u64' (aka 'unsigned lo=
+ng long')
+> > > > >
+> > > > > Fails to build when Kexec is enabled.
 > > > >
-> > > > "dmi_sacn_smbios"
-> > > >
-> > > > > +             goto error;
-> > > > > +#endif
-> > > >
-> > > > Does this not mean that if FDT_FW_INTERFACE is enabled, but the pla=
-tform
-> > > > wants to use EFI, it won't be able to? The `goto error;` makes this=
- look
-> > > > mutually exclusive to my efi-unaware eyes.
+> > > > Rename my acpi_rsdp to arch_acpi_rsdp? WDYT?
 > > >
-> > > If you have enabled FFI, then if something goes wrong, you should got=
-o error.
-> > > Just like the origin code:
-> > >         if (efi_enabled(EFI_CONFIG_TABLES)) {
-> > >                 if (dmi_sacn_smbios(efi.smbios3, efi.smbios))
-> > >                         goto error;
-> > >         } else if (IS_ENABLED(CONFIG_DMI_SCAN_MACHINE_NON_EFI_FALLBAC=
-K)) {
-> > >                 p =3D dmi_early_remap(SMBIOS_ENTRY_POINT_SCAN_START, =
-0x10000);
-> > >                 if (p =3D=3D NULL)
-> > >                         goto error;
+> > > You could do s/arch/riscv/ either, that'd match what we prefix a lot =
+of
+> > > stuff with.
 > >
-> > Does this not make FFI and EFI mutually exclusive Kconfig options?
-> > Suppose you are on a system that does not implement FFI, but does
-> > implement EFI - what's going to happen then?
-> > AFAICT, dmi_sacn_smbios(ffi.smbios3, ffi.smbios) will fail & you'll do a
-> > `goto error` & skip the EFI code. What am I missing?
->=20
-> Code is not intended to be mutually exclusive, get the correct value and =
-return,
-> The code is going to be changed to this:
->=20
-> #ifdef CONFIG_FDT_FW_INTERFACE
+> >  Sorry, I don't quite understand what you mean. Could you tell me in de=
+tail?
+>
+> What I meant is that variables & functions in /arch/riscv are often
+> prefixed with riscv_. I was saying that you could change "arch_acpi_rsdp"
+> to "riscv_acpi_rsdp".
 
-Ideally, these would be IS_ENABLED() instead of #ifdef - but if you copy
-what EFI does, then you don't need either, as there will always be an
-ffi_enabled() defined.
+Oh, that's what it means, okay, I'll update it on v3.
 
->         if (ffi_enabled(FFI_CONFIG_TABLES)) {
-
-I don't know what this function is, but this code seems like a step in
-the right direction.
-
->                 if (!dmi_sacn_smbios(ffi.smbios3, ffi.smbios))
->                         return;
->         }
-> #endif
+>
+> Thanks,
+> Conor.
 
 Thanks,
-Conor.
-
---Uht1cacpbtCJeEos
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZKLG1wAKCRB4tDGHoIJi
-0p4CAP9UFrVTshkvkiDgNgv0fkaJeO/6lTdr5tKFaGdb9LpN5gD9HCH4Z3GCfUq8
-vJfacU093Un2qeuoIdVM+04hLm4hnQ0=
-=/UOt
------END PGP SIGNATURE-----
-
---Uht1cacpbtCJeEos--
+Yunhui
