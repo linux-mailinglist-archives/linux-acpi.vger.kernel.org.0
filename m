@@ -2,128 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF3B6746320
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jul 2023 20:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FAAF7464E5
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jul 2023 23:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231159AbjGCS6b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Jul 2023 14:58:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40190 "EHLO
+        id S230421AbjGCVdK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Jul 2023 17:33:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231459AbjGCS62 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jul 2023 14:58:28 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F99790;
-        Mon,  3 Jul 2023 11:58:16 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-c581c758ad8so944585276.1;
-        Mon, 03 Jul 2023 11:58:16 -0700 (PDT)
+        with ESMTP id S230118AbjGCVdJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jul 2023 17:33:09 -0400
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B733F188
+        for <linux-acpi@vger.kernel.org>; Mon,  3 Jul 2023 14:33:06 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-31438512cafso1415027f8f.2
+        for <linux-acpi@vger.kernel.org>; Mon, 03 Jul 2023 14:33:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688410696; x=1691002696;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=jrtc27.com; s=gmail.jrtc27.user; t=1688419985; x=1691011985;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SdI/aR6tDnny9jl70GO2VaZWhjHcoPI5SvZ3goGqWe0=;
-        b=QnHxICIrzDP76D9hf4nrvbTsxoz1OcQQIUlQgEs6FCOrdQio9sHxHfdcZHUuaqYKY5
-         KencCpjDBUlgIDBiYvtW88dWsN9sOPduo0cUhLFWR3LyhyGsqkW2+f3GjFbDq9m12UAZ
-         Isb+Gx4LWLtikSyJ8SjvovAFD1ZLBUWrHU4gJ7OqWCyOIQ5Gik34njEg7pAYGKqunfWq
-         tdY4MFzXobsGG+SBfSmtqe5DFQTAfVo1SDSka0bTTF0/+4bjGMvr5AcpuMUuVWC8S5vf
-         uwsfq2us2K3oAMj2Nq0/Qp9EHU9IG/taxq6tew4BcUMTiaLEMrObheFdiGxsxbLeHIsr
-         51tQ==
+        bh=TASmMtwbIxli+7tWQRTe5fwYmq+zTlIZOGDtWB8DCS0=;
+        b=l1wXjViWZSqHEh9r5oKxB8DvxzfYszlgbDyL13NyKKF90rVqdiYyFreFicbzkDYKGW
+         XhtvIUToeUwUaaEeLHC/KqKUeJLGPIL6yDER4bgrR+D1lpZf0RQPozyyP1MDsBRWMFud
+         h9cEkO2gnI90QEOenTMHOjFIOcFO2gqIcvLNJt1u/BPkI6ad/0BioBVWsX2MIk973y2X
+         8Gdm57L23aOj6o6Ki1X/9hE/oQC5vC8nCiUQbL0moBuNPGxvqxiz8MYPOiVmK+3y8n1M
+         Qu6ueixORiydHkAlks+roRcKtFpUfE0ePcKGX5Wrk9u9flpU5eoroKrg7uuiJdGzSWR1
+         YCXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688410696; x=1691002696;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1688419985; x=1691011985;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SdI/aR6tDnny9jl70GO2VaZWhjHcoPI5SvZ3goGqWe0=;
-        b=Ts/n3CGnsi/mRNdjO6AjP6g0ghy0Tr/w1bQRafUGuXci4E0dgs4hWweIAUXR8MmwYA
-         l6gMnTldfAHdDNv6sWm60jd9qtdHuh/mk6Xhryk0PjlwNYqq8SG8SqeJMveIfSyFwpU9
-         bnb/zURAcw+Fj4DVtCKc6v3fWn3jQxYa9nVKqK6uFtSLgG9OezJg+ulRGCa5IOu613pj
-         aTtp6LNbxo7NOrRfcjNyJnI+R/KUPUg8jaNfQHnF6Ky4m6UNV/CKlZWQ6UlKzM8KlJkz
-         vGJA0K0bEDOCqYfC7Y8WutyeCorRT0/2WLj6rQIGvhym11ShBFaTueURSVOh8via6rJc
-         Ha1Q==
-X-Gm-Message-State: ABy/qLYA6M8QsfFg17fNaTfGwpOJpAFlA01i3vU05rm+WV+lLIqIlS/o
-        ONnItgAykzdlWXVYu6nL4MkNfleZRcDvPAxxu0M=
-X-Google-Smtp-Source: APBJJlGX+HQAUgcwh5aUbevyBV7Auco1dx/c0vI2lwouiMuJpkFdnAyw13cNFf+KlvG50Qc45KCcJyggHhnzFoKfJPU=
-X-Received: by 2002:a25:320c:0:b0:c2b:cc71:d870 with SMTP id
- y12-20020a25320c000000b00c2bcc71d870mr9565258yby.57.1688410695987; Mon, 03
- Jul 2023 11:58:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230702095735.860-1-cuiyunhui@bytedance.com> <20230703-71f67eb66a037f5c0fb825c6@orel>
- <CAEEQ3w=7tBHyG=CvuktPN5cvfpY6ayamnbry6eOYxMDrPN+oZg@mail.gmail.com>
-In-Reply-To: <CAEEQ3w=7tBHyG=CvuktPN5cvfpY6ayamnbry6eOYxMDrPN+oZg@mail.gmail.com>
-From:   Emil Renner Berthing <emil.renner.berthing@gmail.com>
-Date:   Mon, 3 Jul 2023 20:58:04 +0200
-Message-ID: <CANBLGcwcvK55dZ1__wvWCtcw=XoKt=qki8g6C_QYo+TBqqJ=TA@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v2 1/3] riscv: obtain ACPI RSDP from FFI.
-To:     =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-Cc:     Andrew Jones <ajones@ventanamicro.com>, ardb@kernel.org,
-        palmer@dabbelt.com, paul.walmsley@sifive.com,
-        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
-        rminnich@gmail.com, mark.rutland@arm.com, lpieralisi@kernel.org,
-        rafael@kernel.org, lenb@kernel.org, jdelvare@suse.com,
+        bh=TASmMtwbIxli+7tWQRTe5fwYmq+zTlIZOGDtWB8DCS0=;
+        b=TouNyBLvBodOTzgC8qPTqmcJ7GqhShYbfXJmv+apSafWVdGPIYi0QVLsk6hyZ8sd3J
+         ZMS7A7WV7ejv7q0mEv6kpDaqGyYLYdldpripjG0VaeG5GYTzNkpszPlLxV7cD1Ie9wiA
+         bZ8yTn4VBS7WKqerqQytAS+8xYcKKbEygcptJ1u7PoiO/esOtkTq8DQyhJMDFDBKCgJO
+         1Qhhj+nsp2a3fJGGHTBvCdjDsvzLnXEg7NXhd4W0A+E/fliuMjMCPPvbewnqG0M+HI2T
+         YzZIqnVVGGw9s+r0VNl+R+7r/N90PpoMYthtOLB8xwIeiDOe8dL7Vgnq38DY2HL0ObfR
+         lr3w==
+X-Gm-Message-State: ABy/qLbVQAQDi4cvANYrW9YjUK8pt1ElNWOBSAnB8/vmVgpFRFWdSs8C
+        KzUVAsnOtgre5ra23/ZjKWMrDw==
+X-Google-Smtp-Source: APBJJlGQauzJhuAE1TkruIBNvoTDpKBOgqo8SJRBTE/8BSHJTNS8sEowarihoPnaeK4kc7cjkMZiyw==
+X-Received: by 2002:adf:e747:0:b0:314:2f5b:2ce with SMTP id c7-20020adfe747000000b003142f5b02cemr5724980wrn.12.1688419985132;
+        Mon, 03 Jul 2023 14:33:05 -0700 (PDT)
+Received: from smtpclient.apple ([131.111.5.246])
+        by smtp.gmail.com with ESMTPSA id y9-20020a7bcd89000000b003fbb5506e54sm14610785wmj.29.2023.07.03.14.33.03
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 03 Jul 2023 14:33:04 -0700 (PDT)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
+Subject: Re: [External] [PATCH v2 1/3] riscv: obtain ACPI RSDP from FFI.
+From:   Jessica Clarke <jrtc27@jrtc27.com>
+In-Reply-To: <CANBLGcwcvK55dZ1__wvWCtcw=XoKt=qki8g6C_QYo+TBqqJ=TA@mail.gmail.com>
+Date:   Mon, 3 Jul 2023 22:32:53 +0100
+Cc:     =?utf-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        rminnich@gmail.com, Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, jdelvare@suse.com,
         yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
         allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
-        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
+        tinghan.shen@mediatek.com,
+        linux-kernel <linux-kernel@vger.kernel.org>,
         linux-acpi@vger.kernel.org, geshijian@bytedance.com,
         weidong.wd@bytedance.com
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <50F3BD62-78F1-456E-A44A-0C7D9A2D4113@jrtc27.com>
+References: <20230702095735.860-1-cuiyunhui@bytedance.com>
+ <20230703-71f67eb66a037f5c0fb825c6@orel>
+ <CAEEQ3w=7tBHyG=CvuktPN5cvfpY6ayamnbry6eOYxMDrPN+oZg@mail.gmail.com>
+ <CANBLGcwcvK55dZ1__wvWCtcw=XoKt=qki8g6C_QYo+TBqqJ=TA@mail.gmail.com>
+To:     Emil Renner Berthing <emil.renner.berthing@gmail.com>
+X-Mailer: Apple Mail (2.3731.600.7)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 3 Jul 2023 at 15:33, =E8=BF=90=E8=BE=89=E5=B4=94 <cuiyunhui@bytedan=
-ce.com> wrote:
->
-> Hi drew,
->
-> On Mon, Jul 3, 2023 at 9:01=E2=80=AFPM Andrew Jones <ajones@ventanamicro.=
-com> wrote:
-> >
-> >
-> > (This is a reply to a non-existent cover letter.)
->
-> This has been discussed many times with Ard, Please refer to :
-> https://patches.linaro.org/project/linux-acpi/patch/20230426034001.16-1-c=
-uiyunhui@bytedance.com/
+On 3 Jul 2023, at 19:58, Emil Renner Berthing =
+<emil.renner.berthing@gmail.com> wrote:
+>=20
+> On Mon, 3 Jul 2023 at 15:33, =E8=BF=90=E8=BE=89=E5=B4=94 =
+<cuiyunhui@bytedance.com> wrote:
+>>=20
+>> Hi drew,
+>>=20
+>> On Mon, Jul 3, 2023 at 9:01=E2=80=AFPM Andrew Jones =
+<ajones@ventanamicro.com> wrote:
+>>>=20
+>>>=20
+>>> (This is a reply to a non-existent cover letter.)
+>>=20
+>> This has been discussed many times with Ard, Please refer to :
+>> =
+https://patches.linaro.org/project/linux-acpi/patch/20230426034001.16-1-cu=
+iyunhui@bytedance.com/
+>=20
+> Hi Yunhui,
+>=20
+> =46rom that discussion it was mentioned that that arm supports 3 =
+methods
+> of booting:
+>  direct + devicetree
+>  EFI + devicetree
+>  EFI + ACPI
+> ..but not
+>  direct + ACPI
+>=20
+> To me it isn't obvious from that or this thread, and since arm seems
+> to be doing fine without the 4th option I'm curious why that's
+> necessary on riscv?
 
-Hi Yunhui,
+If anything we should be removing option 1, because that=E2=80=99s not a
+cross-OS standard (though RISC-V=E2=80=99s SBI direct booting is at =
+least not
+tied to the OS). Any application-class platform spec is going to
+mandate EFI, because, whatever your thoughts of EFI are, that is *the*
+standard. And if you=E2=80=99re willing to pick up all the complexity of =
+ACPI,
+what=E2=80=99s a bit of EFI (especially if you only go for a minimal one =
+a la
+U-Boot)?
 
-From that discussion it was mentioned that that arm supports 3 methods
-of booting:
-  direct + devicetree
-  EFI + devicetree
-  EFI + ACPI
-..but not
-  direct + ACPI
+Jess
 
-To me it isn't obvious from that or this thread, and since arm seems
-to be doing fine without the 4th option I'm curious why that's
-necessary on riscv?
-
-> > I'm not a big fan of adding yet another interface. Have you considered
-> > doing something like [1]?
-> >
-> > [1] https://github.com/tianocore/tianocore.github.io/wiki/UefiPayloadPk=
-g
-
-Also you didn't answer this question, which I'd also like to hear a reply t=
-o.
-
-/Emil
-
-> > Thanks,
-> > drew
->
-> Thanks,
-> Yunhui
->
+>>> I'm not a big fan of adding yet another interface. Have you =
+considered
+>>> doing something like [1]?
+>>>=20
+>>> [1] =
+https://github.com/tianocore/tianocore.github.io/wiki/UefiPayloadPkg
+>=20
+> Also you didn't answer this question, which I'd also like to hear a =
+reply to.
+>=20
+> /Emil
+>=20
+>>> Thanks,
+>>> drew
+>>=20
+>> Thanks,
+>> Yunhui
+>>=20
+>> _______________________________________________
+>> linux-riscv mailing list
+>> linux-riscv@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/linux-riscv
+>=20
 > _______________________________________________
 > linux-riscv mailing list
 > linux-riscv@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/linux-riscv
+
