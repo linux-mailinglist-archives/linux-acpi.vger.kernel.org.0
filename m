@@ -2,85 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C92D746CED
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jul 2023 11:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3208B74705E
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jul 2023 14:05:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230414AbjGDJL4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Jul 2023 05:11:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41312 "EHLO
+        id S230427AbjGDMFK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Jul 2023 08:05:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230519AbjGDJLy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jul 2023 05:11:54 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F7D4B3
-        for <linux-acpi@vger.kernel.org>; Tue,  4 Jul 2023 02:11:53 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-c4dfe2a95fbso3117570276.3
-        for <linux-acpi@vger.kernel.org>; Tue, 04 Jul 2023 02:11:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688461912; x=1691053912;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r37X64MkxE2953+nhgmVZSnQSf+m5XeSlLa0brc2dAY=;
-        b=Hx/g88ElX/Kct0Oy36/KaEGVCIotyUj5L99gcUNRYKqofPwIM/ZB3QyqfIedV8lmTN
-         9VIMiYDxyl3wItImuVqVYe50uvNifb3GFAhHQVxLRzhhCuF4piMZcOf+Cl4yNPtbgvH5
-         fd14FkfdxvtboKKfxvb847yLg7XVjEgDxQkXtUKEDILN6C0h6m/IE3+YW5Ay2RNOSGPS
-         W88L0EcYBrbztf6U4cnYynpha8DrFW9NAJ3IwOXyNCSwu7evkKx7p4cr4ou88xeZ0+OD
-         pme3S+xJ8B7l7ZXZG4j5hWZaVF4Go1xTiKv456+GGbefInmn5U1gVgcXBNIJrYMLUqOq
-         ZDdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688461912; x=1691053912;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r37X64MkxE2953+nhgmVZSnQSf+m5XeSlLa0brc2dAY=;
-        b=Gv72wQ5PPOIRfbr+yPFNjSeFnUBWPqmNHwhJcQhRIOGv+ViggFCcQS8AkdOspP2AnT
-         JxQ3Vh8pMhAnsGMbn/zArIFHHAKRCIgdRNtIfSjol9emXPMqQ1try0mmdo7PQDqtkO1/
-         1hzdzRPvde44/e674j10UxZ/7Fq+GhryySozyib5eHP4JE4AIZWUTmn5IHTek/6HM7Ql
-         Jj5uUW4yBZOyMu58TbTXtyHNaYYVueEb9cIhopMOP7/41VuS6ZtMvRO8bPfkx7thUuTQ
-         f4A2RYHidkncQgKxppVycv5pj7XyJa8+yUsNaexkM0MsJKOEBvukxy3qIToghW0WarGT
-         mDuQ==
-X-Gm-Message-State: ABy/qLa6aWxql9xObJFFa/zJ9eLdM+NYN38H1nkne7K7Tgo6PHGYRILi
-        gnO348rzrmAlWUEnRdGqr/PXrUkHdhQvuTuFjwuuxg==
-X-Google-Smtp-Source: APBJJlHcnv/nKMQJPCeCeIg0yBEb03QMd6LqU0leNGr8Zuxowp+WgPrAEmz1kAOu4naw9cbKn17JcmpvnO2n2/NJGxU=
-X-Received: by 2002:a25:fc15:0:b0:ba8:2e05:3e9c with SMTP id
- v21-20020a25fc15000000b00ba82e053e9cmr11654496ybd.24.1688461912722; Tue, 04
- Jul 2023 02:11:52 -0700 (PDT)
+        with ESMTP id S230486AbjGDMFI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jul 2023 08:05:08 -0400
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7715B10DD
+        for <linux-acpi@vger.kernel.org>; Tue,  4 Jul 2023 05:05:05 -0700 (PDT)
+X-ASG-Debug-ID: 1688472295-086e23149814910001-I98ny2
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx1.zhaoxin.com with ESMTP id Qixcqczxx7gpNvsY (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Tue, 04 Jul 2023 20:04:55 +0800 (CST)
+X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Tue, 4 Jul
+ 2023 20:04:55 +0800
+Received: from xin.lan (10.32.64.1) by ZXBJMBX03.zhaoxin.com (10.29.252.7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Tue, 4 Jul
+ 2023 20:04:53 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+From:   LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.7
+To:     <lenb@kernel.org>, <james.morse@arm.com>, <tony.luck@intel.com>,
+        <bp@alien8.de>, <bhelgaas@google.com>, <robert.moore@intel.com>,
+        <leoliu-oc@zhaoxin.com>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <acpica-devel@lists.linuxfoundation.org>
+Subject: [PATCH v3 0/5] Parse the PCIe AER and set to relevant registers
+Date:   Tue, 4 Jul 2023 20:04:53 +0800
+X-ASG-Orig-Subj: [PATCH v3 0/5] Parse the PCIe AER and set to relevant registers
+Message-ID: <20230704120453.1322069-1-LeoLiu-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230703142308.5772-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230703142308.5772-1-andriy.shevchenko@linux.intel.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 4 Jul 2023 11:11:41 +0200
-Message-ID: <CACRpkdat-z3K4GxGXYMYtv1NAWbGY2K3DvutY+y1V5Bkyy7=UA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] gpiolib: Avoid modifying GPIO chip fwnode
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.32.64.1]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ ZXBJMBX03.zhaoxin.com (10.29.252.7)
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1688472295
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 3854
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.110906
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------------------------
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 3, 2023 at 4:23=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+From: leoliu-oc <leoliu-oc@zhaoxin.com>
 
-> Ideally the GPIO chip data structure has to be constant.
-> In real life it's not true, but we can make it closer to
-> that. Hence the series.
+According to the sec 18.3.2.4, 18.3.2.5 and 18.3.2.6 in ACPI r6.5, the
+register values form HEST PCI Express AER Structure should be written to
+relevant PCIe Device's AER Capabilities. So the purpose of the patch set
+is to extract register values from HEST PCI Express AER structures and
+program them into AER Capabilities.
+Refer to the ACPI Spec r6.5 for a more detailed description.
+Considering that HEST AER patch is an effective supplement to _HPP/_HPX
+method when the Firmware does not support the _HPP/_HPX method and can be
+specially configured for the AER register of a specific device.
+The question about whether OS has control of AER to write the information
+in the HEST AER structure to the AER register of the corresponding device
+is similar to the question about _HPX/_HPP method to write the AER
+information to the AER register of the corresponding device.I looked in
+ACPI Spec for a description of the relationship between writing to the AER
+register through the _HPP/_HPX method and whether the OS requires AER
+control:
+1.OSPM uses the information returned by _HPX to determine how to
+configure PCI Functions that are hot- plugged into the system, to
+configure Functions not configured by the platform firmware during initial
+system boot, and to configure Functions any time they lose configuration
+space settings (e.g. OSPM issues a Secondary Bus Reset/Function Level
+Reset or Downstream Port Containment is triggered).
 
-The series looks completely reasonable to me:
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+2._HPX may return multiple types or Record Settings (each setting in a
+single sub-package.) OSPM is responsible for detecting the type of
+Function and for applying the appropriate settings. OSPM is also
+responsible for detecting the device / port type of the PCI Express
+Function and applying the appropriate settings provided.
+For example, the Secondary Uncorrectable Error Severity and Secondary
+Uncorrectable Error Mask settings of Type 2 record are only applicable to
+PCI Express to PCI-X/PCI Bridge whose device / port type is 1000b.
+Similarly, AER settings are only applicable to hot plug PCI Express
+devices that support the optional AER capability.
 
-Yours,
-Linus Walleij
+3.Note: OSPM may override the settings provided by the _HPX object's Type2
+record (PCI Express Settings) or Type3 record (PCI Express Descriptor
+Settings) when OSPM has assumed native control of the corresponding
+feature. For example, if OSPM has assumed ownership of AER (via _OSC),
+OSPM may override AER related settings returned by _HPX. This means that
+writing the AER register value by _HPX does not require the OS to gain
+control of the AER. Also from the usage description of _HPX, I think
+ownership of AER means who decides the configuration value of the AER
+register rather than who can write the configuration value. Even though
+the OS does not have control or ownership of the AER, it should still
+write the configuration values determined by the firmware to the AER
+register at the request of the firmware. 
+Therefore, the ownership of AER is not considered in this patch.
+
+v1->v2:
+Correct some terminology.
+
+v2->v3:
+Refined code comments, add commit information.
+
+leoliu-oc (5):
+  ACPI/APEI: Add apei_hest_parse_aer()
+  ACPI/APEI: Remove static from apei_hest_parse()
+  PCI: Add PCIe to PCI/PCI-X Bridge AER fields
+  ACPI/PCI: Add pci_acpi_program_hest_aer_params()
+  PCI: Config PCIe devices's AER register
+
+ drivers/acpi/apei/hest.c      | 116 +++++++++++++++++++++++++++++++++-
+ drivers/pci/pci-acpi.c        |  92 +++++++++++++++++++++++++++
+ drivers/pci/pci.h             |   5 ++
+ drivers/pci/probe.c           |   1 +
+ include/acpi/actbl1.h         |  69 ++++++++++++++++++++
+ include/acpi/apei.h           |  12 ++++
+ include/uapi/linux/pci_regs.h |   3 +
+ 7 files changed, 296 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
+
