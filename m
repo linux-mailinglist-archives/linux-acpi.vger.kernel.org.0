@@ -2,47 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FF3474772D
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jul 2023 18:50:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93F61747758
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jul 2023 18:59:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231213AbjGDQuM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 4 Jul 2023 12:50:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50628 "EHLO
+        id S229793AbjGDQ7I convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 4 Jul 2023 12:59:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230385AbjGDQuL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jul 2023 12:50:11 -0400
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 604301AC;
-        Tue,  4 Jul 2023 09:50:10 -0700 (PDT)
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-98502b12fd4so159176666b.1;
-        Tue, 04 Jul 2023 09:50:10 -0700 (PDT)
+        with ESMTP id S231463AbjGDQ7H (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jul 2023 12:59:07 -0400
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7EA2E7A;
+        Tue,  4 Jul 2023 09:59:05 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-98273ae42d0so172555066b.0;
+        Tue, 04 Jul 2023 09:59:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688489409; x=1691081409;
+        d=1e100.net; s=20221208; t=1688489944; x=1691081944;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=a5cBryZiaNRPz8kx7gh4MVw5Ah9onbshYDFqDwi4BYc=;
-        b=QuKfXXg85bxnGeWmtXXVrxF7M7c3mSLSQF5JDDR95gTJEF/eIj5YzBpiGln/sHjq4x
-         TJO2Ei2E2+yMkCWqiI3HE0TaDMEV26PrG5kKjM+xloRKlwdjPpuoSoIQWX4LzIIw5a+2
-         g+93WCLV/Drsk08H0tLEJ1ArfVyv4hHeXzXKQDz9srfCmviyL5C0qFr1gALEY2vRpu03
-         m6L9Kz9QDfr4DQhgWZUFQiOaFOH59FeDGZ+isxg68Sb/8E9Mf+NFlWdRjAZfkoEXkIJ9
-         NXYoO16ZwD4EVyXGweOJTpMdoERzQDUhd0N/URm8fjEKJxldzOB+r1tHQ39G6ev6qPV+
-         4SqQ==
-X-Gm-Message-State: ABy/qLYsOJbNe8gtYLFEvXqsdczEUdvZmxhDExA07Gf8H8z9b9Ikl7qJ
-        Jcs8BdWTsF9ijWmwEDtP19lwSk3g637ukaUSG+PzlqZ2Y7c=
-X-Google-Smtp-Source: APBJJlF3Lx1P9ewy7I9YMWK02Z5rHswNClZAnOm01hQRnHM1SXbhAKIx8pk40Yyomcs6A1FAabp/EnDsb3ULxve6lhM=
-X-Received: by 2002:a17:907:101d:b0:974:5480:6270 with SMTP id
- ox29-20020a170907101d00b0097454806270mr9790447ejb.0.1688489408530; Tue, 04
- Jul 2023 09:50:08 -0700 (PDT)
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OAlSSxBehGH6lUwuQMai6c7y1ew80Y5pcnFyOnaXcsM=;
+        b=ILyd5PFbo7345lbPiobk+RvEk53V9ETVPH8Nt2YCkAet6VsS3Xl53LbYj9ye6Trswk
+         A51tEj7gYkWngixh4h3bPYgJNB84Yn7ga88DIL1jxx4ItpyVdx4HabCPHY0Z3rZajCbk
+         4x/0pSt2QQioNVOwRwK63xtR4NxjWnW3N7+hmmNsivjwsETEkgj2AyZpsX+O7vcxUih1
+         3bem1Q6azcPxGlKXTFz5RU0eFh1sq1o9CNUmaLjaAKAylKRoJCpob0zzhE4fAFIEtFc4
+         aZZsl2EoXc1KmAFwLN2XK7EFnPEWgQ41KNxuY761udumzD2h//JwLzQKHaMJR6DX+HQW
+         Fv7Q==
+X-Gm-Message-State: ABy/qLavIGB+OZycVDHK/OjZvsrpzcLPBPxcfEAy96anvUuui7mER8nk
+        4yzyh2bxWxbtI8eU72At49UsDHeAjJL8LuJ/IH3T9IvZ
+X-Google-Smtp-Source: APBJJlE8/xMyNdRtuI1jlQtIf6BWl4dUxua12L5DUFMQxeCsWS1oh8+0+LOear6ys+nGi6Wr8ydtc5szpYFhf3KPBYo=
+X-Received: by 2002:a17:906:35d5:b0:98d:eaa8:8c27 with SMTP id
+ p21-20020a17090635d500b0098deaa88c27mr10842186ejb.1.1688489944072; Tue, 04
+ Jul 2023 09:59:04 -0700 (PDT)
 MIME-Version: 1.0
+References: <20230704074506.2304939-1-kai.heng.feng@canonical.com>
+In-Reply-To: <20230704074506.2304939-1-kai.heng.feng@canonical.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 4 Jul 2023 18:49:57 +0200
-Message-ID: <CAJZ5v0gDV_rDDs0ur=Ct6=4CcCsFQLoO0yGz9-UrnyO0AKLCjw@mail.gmail.com>
-Subject: [GIT PULL] More power management updates for v6.5-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Date:   Tue, 4 Jul 2023 18:58:53 +0200
+Message-ID: <CAJZ5v0jwO1NJ_x2t3RV-kYDmVY9UtyexznCSZMAmQ-gK4dWCmA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: video: Invoke _PS0 at boot for ACPI video
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -56,145 +58,64 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+On Tue, Jul 4, 2023 at 9:46 AM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
+>
+> Screen brightness can only be changed once on some HP laptops.
+>
+> Vendor identified the root cause as Linux doesn't invoke _PS0 at boot
+> for all ACPI devices:
 
-Please pull from the tag
+This part of the changelog is confusing, because the evaluation of
+_PS0 is not a separate operation.  _PS0 gets evaluated when devices
+undergo transitions from low-power states to D0.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-6.5-rc1-2
+>     Scope (\_SB.PC00.GFX0)
+>     {
+>         Scope (DD1F)
+>         {
+>             Method (_PS0, 0, Serialized)  // _PS0: Power State 0
+>             {
+>                 If (CondRefOf (\_SB.PC00.LPCB.EC0.SSBC))
+>                 {
+>                     \_SB.PC00.LPCB.EC0.SSBC ()
+>                 }
+>             }
+>             ...
+>         }
+>         ...
+>     }
+>
+> _PS0 doesn't get invoked for all ACPI devices because of commit
+> 7cd8407d53ef ("ACPI / PM: Do not execute _PS0 for devices without _PSC
+> during initialization").
 
-with top-most commit 40c565a429d706951f18fe07ccd9f6fded23a4dc
+And yes, Linux doesn't put all of the ACPI devices into D0 during
+initialization, but the above commit has a little to do with that.
 
- Merge branches 'pm-cpufreq' and 'pm-cpuidle'
+> For now explicitly call _PS0 for ACPI video to workaround the issue.
 
-on top of commit 40e8e98f512fc76891ae2328a63e2e4ffdbe3010
+This is not what the patch is doing.
 
- Merge tag 'pm-6.5-rc1' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> ---
+>  drivers/acpi/acpi_video.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+> index 62f4364e4460..793259bd18c8 100644
+> --- a/drivers/acpi/acpi_video.c
+> +++ b/drivers/acpi/acpi_video.c
+> @@ -2027,6 +2027,8 @@ static int acpi_video_bus_add(struct acpi_device *device)
+>         if (error)
+>                 goto err_put_video;
+>
+> +       acpi_device_fix_up_power_extended(device);
+> +
 
-to receive more power management updates for 6.5-rc1.
+I would like to know what Hans thinks about this.
 
-These add support for new hardware (ap807 and AM62A7), fix several issues
-in cpufreq drivers and in the operating performance points (OPP) framework,
-fix up intel_idle after recent changes and add documentation.
-
-Specifics:
-
- - Add missing __init annotation to one function in the intel_idle
-   driver (Rafael Wysocki).
-
- - Make intel_pstate use a correct scaling factor when mapping HWP
-   performance levels to frequency values on hybrid-capable systems
-   with disabled E-cores (Srinivas Pandruvada).
-
- - Fix Kconfig dependencies of the cpufreq-dt-platform driver (Viresh
-   Kumar).
-
- - Add support to build cpufreq-dt-platdev as a module (Zhipeng Wang).
-
- - Don't allocate Sparc's cpufreq_driver dynamically (Viresh Kumar).
-
- - Add support for TI's AM62A7 platform (Vibhore Vardhan).
-
- - Add support for Armada's ap807 platform (Russell King (Oracle)).
-
- - Add support for StarFive JH7110 SoC (Mason Huo).
-
- - Fix voltage selection for Mediatek Socs (Daniel Golle).
-
- - Fix error handling in Tegra's cpufreq driver (Christophe JAILLET).
-
- - Document Qualcomm's IPQ8074 in DT bindings (Robert Marko).
-
- - Don't warn for disabling a non-existing frequency for imx6q cpufreq
-   driver (Christoph Niedermaier).
-
- - Use dev_err_probe() in Qualcomm's cpufreq driver (Andrew Halaney).
-
- - Simplify performance state related logic in the OPP core (Viresh
-   Kumar).
-
- - Fix use-after-free and improve locking around lazy_opp_tables (Viresh
-   Kumar, Stephan Gerhold).
-
- - Minor cleanups - using dev_err_probe() and rate-limiting debug
-   messages (Andrew Halaney, Adrián Larumbe).
-
-Thanks!
-
-
----------------
-
-Adrián Larumbe (1):
-      OPP: rate-limit debug messages when no change in OPP is required
-
-Andrew Halaney (3):
-      cpufreq: qcom-cpufreq-hw: Use dev_err_probe() when failing to
-get icc paths
-      OPP: Use dev_err_probe() when failing to get icc_path
-      OPP: Properly propagate error along when failing to get icc_path
-
-Christoph Niedermaier (1):
-      cpufreq: imx6q: don't warn for disabling a non-existing frequency
-
-Christophe JAILLET (1):
-      cpufreq: tegra194: Fix an error handling path in tegra194_cpufreq_probe()
-
-Daniel Golle (1):
-      cpufreq: mediatek: correct voltages for MT7622 and MT7623
-
-Mason Huo (1):
-      cpufreq: dt-platdev: Add JH7110 SOC to the allowlist
-
-Rafael J. Wysocki (1):
-      intel_idle: Add __init annotation to matchup_vm_state_with_baremetal()
-
-Robert Marko (1):
-      dt-bindings: cpufreq: qcom-cpufreq-nvmem: document IPQ8074
-
-Russell King (Oracle) (1):
-      cpufreq: armada-8k: add ap807 support
-
-Srinivas Pandruvada (1):
-      cpufreq: intel_pstate: Fix scaling for hybrid-capable systems
-with disabled E-cores
-
-Stephan Gerhold (1):
-      opp: Fix use-after-free in lazy_opp_tables after probe deferral
-
-Vibhore Vardhan (2):
-      cpufreq: ti-cpufreq: Add support for AM62A7
-      cpufreq: dt-platdev: Blacklist ti,am62a7 SoC
-
-Viresh Kumar (7):
-      cpufreq: sparc: Don't allocate cpufreq_driver dynamically
-      OPP: Staticize `lazy_opp_tables` in of.c
-      OPP: Protect `lazy_opp_tables` list with `opp_table_lock`
-      OPP: don't drop performance constraint on OPP table removal
-      OPP: pstate is only valid for genpd OPP tables
-      OPP: Simplify the over-designed pstate <-> level dance
-      cpufreq: Make CONFIG_CPUFREQ_DT_PLATDEV depend on OF
-
-Zhipeng Wang (1):
-      cpufreq: dt-platdev: Support building as module
-
----------------
-
- .../bindings/cpufreq/qcom-cpufreq-nvmem.yaml       |  1 +
- drivers/cpufreq/Kconfig                            |  3 +-
- drivers/cpufreq/armada-8k-cpufreq.c                | 16 +++---
- drivers/cpufreq/cpufreq-dt-platdev.c               |  5 ++
- drivers/cpufreq/imx6q-cpufreq.c                    | 30 +++++------
- drivers/cpufreq/intel_pstate.c                     | 58 ++++++++++++++++++----
- drivers/cpufreq/mediatek-cpufreq.c                 | 13 +++--
- drivers/cpufreq/qcom-cpufreq-hw.c                  |  2 +-
- drivers/cpufreq/sparc-us2e-cpufreq.c               | 58 +++++++---------------
- drivers/cpufreq/sparc-us3-cpufreq.c                | 58 +++++++---------------
- drivers/cpufreq/tegra194-cpufreq.c                 |  6 ++-
- drivers/cpufreq/ti-cpufreq.c                       |  1 +
- drivers/idle/intel_idle.c                          |  2 +-
- drivers/opp/core.c                                 | 44 +++++++++-------
- drivers/opp/debugfs.c                              |  1 -
- drivers/opp/of.c                                   | 40 ++++++++-------
- drivers/opp/opp.h                                  |  6 +--
- 17 files changed, 180 insertions(+), 164 deletions(-)
+>         pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
+>                ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
+>                video->flags.multihead ? "yes" : "no",
+> --
