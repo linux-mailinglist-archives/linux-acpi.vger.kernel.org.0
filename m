@@ -2,95 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A5F3747071
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jul 2023 14:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC02A747242
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jul 2023 15:08:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbjGDMGo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Jul 2023 08:06:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57684 "EHLO
+        id S229662AbjGDNIJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Jul 2023 09:08:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231359AbjGDMGn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jul 2023 08:06:43 -0400
-Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D7AF1723
-        for <linux-acpi@vger.kernel.org>; Tue,  4 Jul 2023 05:06:24 -0700 (PDT)
-X-ASG-Debug-ID: 1688472381-086e23149914920001-I98ny2
-Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx1.zhaoxin.com with ESMTP id 55EaRqoPMr21gjIz (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Tue, 04 Jul 2023 20:06:21 +0800 (CST)
-X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX1.zhaoxin.com
- (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Tue, 4 Jul
- 2023 20:06:20 +0800
-Received: from xin.lan (10.32.64.1) by ZXBJMBX03.zhaoxin.com (10.29.252.7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Tue, 4 Jul
- 2023 20:06:19 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-From:   LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.7
-To:     <lenb@kernel.org>, <james.morse@arm.com>, <tony.luck@intel.com>,
-        <bp@alien8.de>, <bhelgaas@google.com>, <robert.moore@intel.com>,
-        <leoliu-oc@zhaoxin.com>, <linux-acpi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <acpica-devel@lists.linuxfoundation.org>
-Subject: [PATCH v3 5/5] PCI: Config PCIe devices's AER register
-Date:   Tue, 4 Jul 2023 20:06:18 +0800
-X-ASG-Orig-Subj: [PATCH v3 5/5] PCI: Config PCIe devices's AER register
-Message-ID: <20230704120618.1322425-1-LeoLiu-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229645AbjGDNIJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jul 2023 09:08:09 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06711B4;
+        Tue,  4 Jul 2023 06:08:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=p2IeYQpGstyHc2o1uZoj5LpWskpFkCurknri7FAU7Sc=; b=doFCJ3+M2ZbnwCnNdylf69dbn7
+        dEt8U5JRYhixIcAX4/NUmMkQDZ4Yv1Hh/NkwBjC5ObE9o8vEoAfQPYw7wCHQQI5Yuja91bxFm+NbL
+        Blb/HMHvkbYn5Xo+/+e/pq8EDf7c9kn3U8xCg61HatQrAw8Kz3JHzRXB1XKbecqxHB30=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qGfkR-000Ydd-1w; Tue, 04 Jul 2023 15:07:15 +0200
+Date:   Tue, 4 Jul 2023 15:07:15 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     "Quan, Evan" <Evan.Quan@amd.com>
+Cc:     "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        "airlied@gmail.com" <airlied@gmail.com>,
+        "daniel@ffwll.ch" <daniel@ffwll.ch>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        "mdaenzer@redhat.com" <mdaenzer@redhat.com>,
+        "maarten.lankhorst@linux.intel.com" 
+        <maarten.lankhorst@linux.intel.com>,
+        "tzimmermann@suse.de" <tzimmermann@suse.de>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        "jingyuwang_vip@163.com" <jingyuwang_vip@163.com>,
+        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
+        "jim.cromie@gmail.com" <jim.cromie@gmail.com>,
+        "bellosilicio@gmail.com" <bellosilicio@gmail.com>,
+        "andrealmeid@igalia.com" <andrealmeid@igalia.com>,
+        "trix@redhat.com" <trix@redhat.com>,
+        "jsg@jsg.id.au" <jsg@jsg.id.au>, "arnd@arndb.de" <arnd@arndb.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH V5 1/9] drivers core: Add support for Wifi band RF
+ mitigations
+Message-ID: <18dfe989-2610-4234-ade2-ffbc2f233c19@lunn.ch>
+References: <20230630103240.1557100-1-evan.quan@amd.com>
+ <20230630103240.1557100-2-evan.quan@amd.com>
+ <7e7db6eb-4f46-407a-8d1f-16688554ad80@lunn.ch>
+ <DM6PR12MB2619591A7706A30362E11DC5E42EA@DM6PR12MB2619.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.32.64.1]
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- ZXBJMBX03.zhaoxin.com (10.29.252.7)
-X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
-X-Barracuda-Start-Time: 1688472381
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 793
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.110906
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------------------------
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM6PR12MB2619591A7706A30362E11DC5E42EA@DM6PR12MB2619.namprd12.prod.outlook.com>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,SPF_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: leoliu-oc <leoliu-oc@zhaoxin.com>
+> > What is the purpose of this stage? Why would it not be supported for this
+> > device?
+> This is needed for wbrf support via ACPI mechanism. If BIOS(AML code) does not support the wbrf adding/removing for some device,
+> it should speak that out so that the device can be aware of that.
 
-Call the func pci_acpi_program_hest_aer_params() for every PCIe device.
-Extracting register values from HEST PCIe AER structures and programming
-them into AER Capabilities are implemented in this function.
+How much overhead is this adding? How deep do you need to go to find
+the BIOS does not support it? And how often is this called?
 
-Signed-off-by: leoliu-oc <leoliu-oc@zhaoxin.com>
----
- drivers/pci/probe.c | 1 +
- 1 file changed, 1 insertion(+)
+Where do we want to add complexity? In the generic API? Or maybe a
+little deeper in the ACPI specific code?
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 8bac3ce02609c..8946d35fcc416 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2274,6 +2274,7 @@ static void pci_configure_device(struct pci_dev *dev)
- 	pci_configure_serr(dev);
- 
- 	pci_acpi_program_hp_params(dev);
-+	pci_acpi_program_hest_aer_params(dev);
- }
- 
- static void pci_release_capabilities(struct pci_dev *dev)
--- 
-2.34.1
+       Andrew
 
