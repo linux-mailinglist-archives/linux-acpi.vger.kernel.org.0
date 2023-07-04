@@ -2,167 +2,202 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FAAF7464E5
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jul 2023 23:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A2037467CB
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jul 2023 05:12:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230421AbjGCVdK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Jul 2023 17:33:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53128 "EHLO
+        id S229621AbjGDDMi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Jul 2023 23:12:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230118AbjGCVdJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jul 2023 17:33:09 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B733F188
-        for <linux-acpi@vger.kernel.org>; Mon,  3 Jul 2023 14:33:06 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-31438512cafso1415027f8f.2
-        for <linux-acpi@vger.kernel.org>; Mon, 03 Jul 2023 14:33:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jrtc27.com; s=gmail.jrtc27.user; t=1688419985; x=1691011985;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TASmMtwbIxli+7tWQRTe5fwYmq+zTlIZOGDtWB8DCS0=;
-        b=l1wXjViWZSqHEh9r5oKxB8DvxzfYszlgbDyL13NyKKF90rVqdiYyFreFicbzkDYKGW
-         XhtvIUToeUwUaaEeLHC/KqKUeJLGPIL6yDER4bgrR+D1lpZf0RQPozyyP1MDsBRWMFud
-         h9cEkO2gnI90QEOenTMHOjFIOcFO2gqIcvLNJt1u/BPkI6ad/0BioBVWsX2MIk973y2X
-         8Gdm57L23aOj6o6Ki1X/9hE/oQC5vC8nCiUQbL0moBuNPGxvqxiz8MYPOiVmK+3y8n1M
-         Qu6ueixORiydHkAlks+roRcKtFpUfE0ePcKGX5Wrk9u9flpU5eoroKrg7uuiJdGzSWR1
-         YCXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688419985; x=1691011985;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TASmMtwbIxli+7tWQRTe5fwYmq+zTlIZOGDtWB8DCS0=;
-        b=TouNyBLvBodOTzgC8qPTqmcJ7GqhShYbfXJmv+apSafWVdGPIYi0QVLsk6hyZ8sd3J
-         ZMS7A7WV7ejv7q0mEv6kpDaqGyYLYdldpripjG0VaeG5GYTzNkpszPlLxV7cD1Ie9wiA
-         bZ8yTn4VBS7WKqerqQytAS+8xYcKKbEygcptJ1u7PoiO/esOtkTq8DQyhJMDFDBKCgJO
-         1Qhhj+nsp2a3fJGGHTBvCdjDsvzLnXEg7NXhd4W0A+E/fliuMjMCPPvbewnqG0M+HI2T
-         YzZIqnVVGGw9s+r0VNl+R+7r/N90PpoMYthtOLB8xwIeiDOe8dL7Vgnq38DY2HL0ObfR
-         lr3w==
-X-Gm-Message-State: ABy/qLbVQAQDi4cvANYrW9YjUK8pt1ElNWOBSAnB8/vmVgpFRFWdSs8C
-        KzUVAsnOtgre5ra23/ZjKWMrDw==
-X-Google-Smtp-Source: APBJJlGQauzJhuAE1TkruIBNvoTDpKBOgqo8SJRBTE/8BSHJTNS8sEowarihoPnaeK4kc7cjkMZiyw==
-X-Received: by 2002:adf:e747:0:b0:314:2f5b:2ce with SMTP id c7-20020adfe747000000b003142f5b02cemr5724980wrn.12.1688419985132;
-        Mon, 03 Jul 2023 14:33:05 -0700 (PDT)
-Received: from smtpclient.apple ([131.111.5.246])
-        by smtp.gmail.com with ESMTPSA id y9-20020a7bcd89000000b003fbb5506e54sm14610785wmj.29.2023.07.03.14.33.03
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 03 Jul 2023 14:33:04 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
-Subject: Re: [External] [PATCH v2 1/3] riscv: obtain ACPI RSDP from FFI.
-From:   Jessica Clarke <jrtc27@jrtc27.com>
-In-Reply-To: <CANBLGcwcvK55dZ1__wvWCtcw=XoKt=qki8g6C_QYo+TBqqJ=TA@mail.gmail.com>
-Date:   Mon, 3 Jul 2023 22:32:53 +0100
-Cc:     =?utf-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        rminnich@gmail.com, Mark Rutland <mark.rutland@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, jdelvare@suse.com,
-        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
-        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
-        tinghan.shen@mediatek.com,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-acpi@vger.kernel.org, geshijian@bytedance.com,
-        weidong.wd@bytedance.com
+        with ESMTP id S229504AbjGDDMh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jul 2023 23:12:37 -0400
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2043.outbound.protection.outlook.com [40.107.244.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF85130;
+        Mon,  3 Jul 2023 20:12:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WpwqnlO6yIf1LW8C98Ez/TPHf6kkktUsc466/7Xdpm6o6GfvJ9vWH4ob6ZbvstLvDuyjHbeYYA+rUDOJKuUGO2mOd3LcQo7CoPpiJDRHh26V45lsGNQ1vHmT4Rzeb8I7SoY0SmtWsXZbVhxX7vxWwISEIi0uZeH1SzpM3wDvQ5x71Ejf1sQukAflYT2Js0H2HzCFlJ6POO538mgDg7BpAXJYYm1+JIUWPAP8Gj+sQaCBYaVGr6mKUAjufycXyj8zrzAv0G3ztm9VZ7Of4xjCf1ur6BBAppeNOzNyOkr/2XzY+djudrVaOKjojQWYhPssn+kaXquhKVLNHm3vELORXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/I0YjmFORRcWScKU4dS+PZSXG2mwmEtb153yDfaDfEI=;
+ b=D/w9qjoN4pGs+5Vft3Vse1jl3XnUUWu10xOLySM/N/PaDqGjvZqWZvHAXI7aq9oZ4XxPud8wW4TijAIu3NrwSCQPWS84KGlBEK8NYoynqb0sASHOJST3m0PG5QLHatsGvKZurEzQ89cE6PN1g4FR2R7SRzVpPCEgmoTz4CFTAPufpPfkvAufEgxPK3yoK4xlgAKfJOLZxsqDtPeupPhsDq4i3OFJSd+DtNV0IUC0cq7ThCOauD7a+u8bCXNPJfT3Ucq7HXic9dGWtQ8fjm+x9ARob78uZImrgjCBuzzK6Z7jv0Y+zwOM1HA81m/nuJ70PDMlBWh2TRc9mU2saLv+fQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/I0YjmFORRcWScKU4dS+PZSXG2mwmEtb153yDfaDfEI=;
+ b=eyOTZ3eoSyhyOuC6fC/lzvRwayeO3fuL7iha3d19oiJ61KCxT/vQmrWB8kXqbjC4SQg/F5SqE+7g9AaKcmmuBaRY/WT0pXY17twaF/SR1A5OZ+6Xc1T4d49ufsY5TGQV7S5L4wmjz868+iOsCW2/zdxBl3D5dfuQsGiEJc8p9eQ=
+Received: from DM6PR12MB2619.namprd12.prod.outlook.com (2603:10b6:5:45::18) by
+ DM4PR12MB7695.namprd12.prod.outlook.com (2603:10b6:8:101::11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6544.24; Tue, 4 Jul 2023 03:12:33 +0000
+Received: from DM6PR12MB2619.namprd12.prod.outlook.com
+ ([fe80::3bef:2463:a3e0:e51c]) by DM6PR12MB2619.namprd12.prod.outlook.com
+ ([fe80::3bef:2463:a3e0:e51c%4]) with mapi id 15.20.6544.024; Tue, 4 Jul 2023
+ 03:12:32 +0000
+From:   "Quan, Evan" <Evan.Quan@amd.com>
+To:     Andrew Lunn <andrew@lunn.ch>
+CC:     "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        "airlied@gmail.com" <airlied@gmail.com>,
+        "daniel@ffwll.ch" <daniel@ffwll.ch>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        "mdaenzer@redhat.com" <mdaenzer@redhat.com>,
+        "maarten.lankhorst@linux.intel.com" 
+        <maarten.lankhorst@linux.intel.com>,
+        "tzimmermann@suse.de" <tzimmermann@suse.de>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        "jingyuwang_vip@163.com" <jingyuwang_vip@163.com>,
+        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
+        "jim.cromie@gmail.com" <jim.cromie@gmail.com>,
+        "bellosilicio@gmail.com" <bellosilicio@gmail.com>,
+        "andrealmeid@igalia.com" <andrealmeid@igalia.com>,
+        "trix@redhat.com" <trix@redhat.com>,
+        "jsg@jsg.id.au" <jsg@jsg.id.au>, "arnd@arndb.de" <arnd@arndb.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: [PATCH V5 4/9] wifi: mac80211: Add support for ACPI WBRF
+Thread-Topic: [PATCH V5 4/9] wifi: mac80211: Add support for ACPI WBRF
+Thread-Index: AQHZqz58lOnIu4ubzUSpiLI9KxUZ9K+kGN0AgATX3UA=
+Date:   Tue, 4 Jul 2023 03:12:32 +0000
+Message-ID: <DM6PR12MB26193E8CC8B770D3569A5DEDE42EA@DM6PR12MB2619.namprd12.prod.outlook.com>
+References: <20230630103240.1557100-1-evan.quan@amd.com>
+ <20230630103240.1557100-5-evan.quan@amd.com>
+ <3868dbae-79e5-470d-a144-0884659206d9@lunn.ch>
+In-Reply-To: <3868dbae-79e5-470d-a144-0884659206d9@lunn.ch>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=6bbaeb71-92de-408d-9f4d-0c4ae63ccfa3;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=0;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2023-07-04T02:59:54Z;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM6PR12MB2619:EE_|DM4PR12MB7695:EE_
+x-ms-office365-filtering-correlation-id: e62f6059-917b-464c-68a3-08db7c3c81da
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: WEuVbxJXWU0wiV0HXWTNirMS0rPBHI+3+bAxG5CpU12dbApGqqxF7ESU3bW+ALdaCz+yXiH373oh5Jf5XX52DN9yL+fqkjblESo2vDIt5Tx4VrAUeKtWCBPuiJOO6J4kHxpJ1vDrCq7pj54iRz8dPscydZwaZhUoReNMzSOlpxw7NYB9H9vW8yg//YHeBG7eg0rFnmkZ9KEs7+2MvHO4eXpw3pzFcjnMFmiWoioO3Yv/Tvikj+dZPTGRxr39i5qIlqL3HRd669qoSs7FObEl1hXClDSaIPa5AMxxPFEun7N12WZIpgmTWoqnuxeu+3kihoCZfTe0NGzBcAh48GCQPZL3i5M4+umkmaSZa0qlux3ytXN2g3HT+f5j/P2dp5KFLhEQYtKcD4LmwBX1NkrSqN+VIAotESHrHkHBy7+mCbBEdup3JTtY8kfWTk7fwT2hvsHO4pbTnIUYRbVt8kEvSWeMucWDZaprrX15n6lNiw7bGoDlzVq/PSPXVoqObcFth/bJKoabLXs4mDXZbf0yAmWJHjvKE00F0ox876WUta261uUSPpCnlwSxRcC9PzqtJaKkUX44IdgHH4sKQ3dGFtveSn8i8cThnp9bAN42FvG/0vnGtzGx3mMEl3wr+o+h
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2619.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(396003)(39860400002)(376002)(136003)(366004)(451199021)(33656002)(186003)(71200400001)(7696005)(478600001)(7416002)(9686003)(26005)(5660300002)(52536014)(2906002)(86362001)(83380400001)(4326008)(76116006)(66946007)(316002)(8936002)(6916009)(54906003)(66556008)(66476007)(64756008)(66446008)(41300700001)(8676002)(38070700005)(53546011)(55016003)(6506007)(122000001)(38100700002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?3lIcMnQtjBpeRQ68A18Y7UitT09VIPkNKZKs7DM2lZ43x6nkugkvIRqq17V8?=
+ =?us-ascii?Q?1YFq3WrV07cv1qiVbfBpZxPcToJmIoHKJY9tBv4EP/j8TomRvjCX77r3K7B6?=
+ =?us-ascii?Q?oUsOEvR+qgSCHfSRe3cmCqVEZmxciw+ttBfbIvwsXDH06A0Mz1Ihzwl28wEX?=
+ =?us-ascii?Q?TqDDKDWWafFDEsP/4rXRxhKpSOfUBLv9eAhm8bpGVFfxrzhSNODGNb85huES?=
+ =?us-ascii?Q?LLu3vZZ96Z92schaFBFYqHSIqYBwJrbBbEh+7iEbxzwKKuto/6pSaPsndb2/?=
+ =?us-ascii?Q?I4VwHTG6qd4lN+ukFyT5YhX/vzG783I1mnzwzPdUCHajAmcG+7WwUkZRMW06?=
+ =?us-ascii?Q?i86eJB6WHpovz5tMACAyh4zOiTaeQDCJBbw9C428zTH+/vFBZbQMIykcRfFW?=
+ =?us-ascii?Q?YWDofkO/ozeiY6HscSP5rAxHDRHnnOUEN37cXX+Zt3+Tn9iRQCG7OwzAYe3C?=
+ =?us-ascii?Q?8KB7UlJq8jr8q4o5EVnh8JeedCOIU9+zj+SKe7OLxFZtnJSrrGKhMcpWv6LG?=
+ =?us-ascii?Q?+WNaF8VHWIAe6mCrk3ZbIIgCqoUw9ZpS553ht/Zb70iBIjlgxrWs/vT5Inwx?=
+ =?us-ascii?Q?ozbnxDLMG2ei+CV2nBtt/pWv4GwlCzUEMghS0QTrAqTZddeLSe75837qcVHz?=
+ =?us-ascii?Q?2VbnDCxVB78Tt8VNqTPZqG7GjfNoS+T0moGDDpNr9S6BlJ7O9d/NGw3j2hgu?=
+ =?us-ascii?Q?pQmD8/+I3aWskfp3AOrofTs2cJPgQMFv1JMq9zUYmU+Na0tMpEY+ZJqSNvAU?=
+ =?us-ascii?Q?b4hxYOj4n3O8LrNHRYPPYQvZIHEJfMpT7V0uy3D4wrgw/aSe8k5WpDPFvKz/?=
+ =?us-ascii?Q?IRghwY5ikBVOIrBWLZfMI3MZp1x+kUkIQ2FFmFBWb9lM1aoO0719aq3CNvpe?=
+ =?us-ascii?Q?lR3egoUcfdPrDIW5LgFTlEHmOhLfqCvaqsl1E6eUGLgR2e8+lPdTnhBwp1Qt?=
+ =?us-ascii?Q?Bfd7ypFyYjz6VGmdyuSZKNk9VmdMDE5xh4flgeK7YxNWYSUg+FM8gGXkeYGI?=
+ =?us-ascii?Q?KC0NDiHdmH0SFEBCz7FbvXl7ES0j1vrIsgkNiA3lSFDgJI68fql7XKoWYvOK?=
+ =?us-ascii?Q?n8Qzua+1rdZuvYktGUbpMoQbKwrcwUKbMOWs+apYQfcQIiV83bK8SID+qg2J?=
+ =?us-ascii?Q?67i7VfGN66Irca1YHvyBiD8hlUlPdKh6ET/kUE7kX/JQNycl7OLE3hO9c2JM?=
+ =?us-ascii?Q?KuGvBB5cxObB3UxWRWT/tUZ2pocNRIO6vBfRLjAopS8pzBQX2+21hFzzy8Td?=
+ =?us-ascii?Q?azYzVaEIuDYZsVC6CSnOONCdML4tzSyeaCkaQUr6LrK+rV8b6Atc/4BxmPet?=
+ =?us-ascii?Q?0eXG7oqkTwNVa3afFwsFyVMN6en6pIwuX4kYJQKLE7tU4TC1z7GMr1NpOXr5?=
+ =?us-ascii?Q?JQ2oCXBIZTWtASrl+8Abn7x14nY4iUW8K5EK5Um7TIKB2/yQyU1KLe0qebsK?=
+ =?us-ascii?Q?UyxvSsdaRAox3VpfnubC4ZWqv1uw+6pU/IGqF84ByNxbkDnjqVthP0LUrW5F?=
+ =?us-ascii?Q?/iLyI+RED9KplP1+QGftvr81eJ7q0l4v2uMPQnRwDrNcj6uLn8bQ0qoptAtE?=
+ =?us-ascii?Q?nBKWg/r+LA1BsemQfJU=3D?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <50F3BD62-78F1-456E-A44A-0C7D9A2D4113@jrtc27.com>
-References: <20230702095735.860-1-cuiyunhui@bytedance.com>
- <20230703-71f67eb66a037f5c0fb825c6@orel>
- <CAEEQ3w=7tBHyG=CvuktPN5cvfpY6ayamnbry6eOYxMDrPN+oZg@mail.gmail.com>
- <CANBLGcwcvK55dZ1__wvWCtcw=XoKt=qki8g6C_QYo+TBqqJ=TA@mail.gmail.com>
-To:     Emil Renner Berthing <emil.renner.berthing@gmail.com>
-X-Mailer: Apple Mail (2.3731.600.7)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2619.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e62f6059-917b-464c-68a3-08db7c3c81da
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jul 2023 03:12:32.1306
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: N1TmYv/czGjIv+p2qxbVRJ3qadvXWBT9CnqXiFyTnpO93THfpNwsLZKqfSw+ZIi9
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7695
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 3 Jul 2023, at 19:58, Emil Renner Berthing =
-<emil.renner.berthing@gmail.com> wrote:
->=20
-> On Mon, 3 Jul 2023 at 15:33, =E8=BF=90=E8=BE=89=E5=B4=94 =
-<cuiyunhui@bytedance.com> wrote:
->>=20
->> Hi drew,
->>=20
->> On Mon, Jul 3, 2023 at 9:01=E2=80=AFPM Andrew Jones =
-<ajones@ventanamicro.com> wrote:
->>>=20
->>>=20
->>> (This is a reply to a non-existent cover letter.)
->>=20
->> This has been discussed many times with Ard, Please refer to :
->> =
-https://patches.linaro.org/project/linux-acpi/patch/20230426034001.16-1-cu=
-iyunhui@bytedance.com/
->=20
-> Hi Yunhui,
->=20
-> =46rom that discussion it was mentioned that that arm supports 3 =
-methods
-> of booting:
->  direct + devicetree
->  EFI + devicetree
->  EFI + ACPI
-> ..but not
->  direct + ACPI
->=20
-> To me it isn't obvious from that or this thread, and since arm seems
-> to be doing fine without the 4th option I'm curious why that's
-> necessary on riscv?
+[AMD Official Use Only - General]
 
-If anything we should be removing option 1, because that=E2=80=99s not a
-cross-OS standard (though RISC-V=E2=80=99s SBI direct booting is at =
-least not
-tied to the OS). Any application-class platform spec is going to
-mandate EFI, because, whatever your thoughts of EFI are, that is *the*
-standard. And if you=E2=80=99re willing to pick up all the complexity of =
-ACPI,
-what=E2=80=99s a bit of EFI (especially if you only go for a minimal one =
-a la
-U-Boot)?
+Hi Andrew,
 
-Jess
+> -----Original Message-----
+> From: Andrew Lunn <andrew@lunn.ch>
+> Sent: Saturday, July 1, 2023 9:02 AM
+> To: Quan, Evan <Evan.Quan@amd.com>
+> Cc: rafael@kernel.org; lenb@kernel.org; Deucher, Alexander
+> <Alexander.Deucher@amd.com>; Koenig, Christian
+> <Christian.Koenig@amd.com>; Pan, Xinhui <Xinhui.Pan@amd.com>;
+> airlied@gmail.com; daniel@ffwll.ch; johannes@sipsolutions.net;
+> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> pabeni@redhat.com; Limonciello, Mario <Mario.Limonciello@amd.com>;
+> mdaenzer@redhat.com; maarten.lankhorst@linux.intel.com;
+> tzimmermann@suse.de; hdegoede@redhat.com; jingyuwang_vip@163.com;
+> Lazar, Lijo <Lijo.Lazar@amd.com>; jim.cromie@gmail.com;
+> bellosilicio@gmail.com; andrealmeid@igalia.com; trix@redhat.com;
+> jsg@jsg.id.au; arnd@arndb.de; linux-kernel@vger.kernel.org; linux-
+> acpi@vger.kernel.org; amd-gfx@lists.freedesktop.org; dri-
+> devel@lists.freedesktop.org; linux-wireless@vger.kernel.org;
+> netdev@vger.kernel.org
+> Subject: Re: [PATCH V5 4/9] wifi: mac80211: Add support for ACPI WBRF
+>
+> > +static void get_chan_freq_boundary(u32 center_freq,
+> > +                              u32 bandwidth,
+> > +                              u64 *start,
+> > +                              u64 *end)
+> > +{
+> > +   bandwidth =3D MHZ_TO_KHZ(bandwidth);
+> > +   center_freq =3D MHZ_TO_KHZ(center_freq);
+> > +
+> > +   *start =3D center_freq - bandwidth / 2;
+> > +   *end =3D center_freq + bandwidth / 2;
+> > +
+> > +   /* Frequency in HZ is expected */
+> > +   *start =3D KHZ_TO_HZ(*start);
+> > +   *end =3D KHZ_TO_HZ(*end);
+> > +}
+>
+> This seems pretty generic, so maybe it should be moved into the shared co=
+de?
+> It can then become a NOP when the functionality if disabled.
+The shared code you mean is some place around mac80211?
+Actually, there are two similar variants existed already: cfg80211_get_star=
+t_freq and cfg80211_get_end_freq.
+The outputs of them are really what most mac80211 logics care.
+The new API here is unlikely to be shared by other mac80211 part.
+So, I suppose placing it here(only in wbrf.c) seems proper.
+How do you think?
 
->>> I'm not a big fan of adding yet another interface. Have you =
-considered
->>> doing something like [1]?
->>>=20
->>> [1] =
-https://github.com/tianocore/tianocore.github.io/wiki/UefiPayloadPkg
->=20
-> Also you didn't answer this question, which I'd also like to hear a =
-reply to.
->=20
-> /Emil
->=20
->>> Thanks,
->>> drew
->>=20
->> Thanks,
->> Yunhui
->>=20
->> _______________________________________________
->> linux-riscv mailing list
->> linux-riscv@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/linux-riscv
->=20
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+Evan
+>
+>       Andrew
 
