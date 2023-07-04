@@ -2,172 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DA8F7477D3
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jul 2023 19:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E99974785C
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jul 2023 20:38:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231784AbjGDRdF convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 4 Jul 2023 13:33:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41470 "EHLO
+        id S231604AbjGDSit (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Jul 2023 14:38:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229645AbjGDRdA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jul 2023 13:33:00 -0400
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4709CDA;
-        Tue,  4 Jul 2023 10:32:56 -0700 (PDT)
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-98e2865e2f2so160154466b.0;
-        Tue, 04 Jul 2023 10:32:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688491975; x=1691083975;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lW4LJlumzva12+IQ3BLk1PuvUZFdkFvStFm2FTeBlDo=;
-        b=JoNfASlzzObF5scHE8HLjRklUuAs94F3cVBKJXgbRWZmOveZ+2S6gErN/vmdIvNA14
-         6U1SkDy56Hafr/dBYyyzsXcSXr5nVuJx5sa6E0SxLJUoKlX9k2NlPfl2MCUJWV/I86uS
-         p7YdDIQQUNftSr3jozH6ouk/W2oEoycNz9IpkoZotDBJss+l1RXWkXuzP4TW3f3Oe6/G
-         K8pPIIc+B5lsqOMhJ98Mg+tGawu4WNUUPEqoGj1v8ggAU99Wn+PFkcOu61ZBoqh6QJkJ
-         Iz5u4MlA8SEsVpbgFrzSmoYWi7fVbSTTiZ1zg1LjgjD+l7SzJbfXPf3aTTw9BEUwQHoj
-         oarA==
-X-Gm-Message-State: ABy/qLbesWnHZ0Re+53njriMlJU3B4WfGFkMzoM1XLMr3WaU2AD7tKGE
-        SxrkEMjNJ5wcSN4hjXyrMp27qgm8x2jZHVyFRS8=
-X-Google-Smtp-Source: APBJJlFJ3yLzRjSaZ5TGIc7GshSZ92NCejwA2m9LUyC4vBOSDqHjrz/cvK5NFXGX9h1VI6PkKTZDyyC8vkBxV1WGVHM=
-X-Received: by 2002:a17:906:d112:b0:992:387:44d1 with SMTP id
- b18-20020a170906d11200b00992038744d1mr7765098ejz.7.1688491974696; Tue, 04 Jul
- 2023 10:32:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230703121411.69606-1-andriy.shevchenko@linux.intel.com> <20230703121411.69606-3-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230703121411.69606-3-andriy.shevchenko@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 4 Jul 2023 19:32:43 +0200
-Message-ID: <CAJZ5v0iZzvdkxe3NjHbiZzDjea=CoK-pGw3hjSoa9u8f87TLtg@mail.gmail.com>
-Subject: Re: [PATCH v4 2/5] ACPI: platform: Ignore SMB0001 only when it has resources
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        acpica-devel@lists.linuxfoundation.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Michael Walle <michael@walle.cc>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        with ESMTP id S231486AbjGDSis (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jul 2023 14:38:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF32710D5;
+        Tue,  4 Jul 2023 11:38:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73B636134C;
+        Tue,  4 Jul 2023 18:38:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D801DC433C7;
+        Tue,  4 Jul 2023 18:38:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688495922;
+        bh=41unfr46RsAv//K5vaCd++GitPKGWoJWJ0WNHdvQOZk=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=mdLoWuz+B/5+Esgg2Zg8kdr65LW4DgelT6H1XPXlB4mtusWdI1Em2oETTAsKil7hS
+         wLEuHYSrzq6VRjQEwS0R4/xhk9byHljNEjYycIxilKx2mQOpE5P5HZ93RlqrKzy/tw
+         IuMS6HnBryjabhko3+nlNSq6DxnvqCvrLsT1+zB3A3XfK4SKSWZMrJClcuWl4M+y+L
+         bopEjSbeemRuxpHlB1OhL2Y1dfYJQX3rybqnC+sKTj/KOI6BvS/+u7HNSI1M2p2Zdn
+         uZh/729PSdRCmTi1eWwOhCfs2FTNSEJLnLPx1SIF8ektGDPOpBuoVqfg2Zy8jqfT6X
+         XCDPLa0xwtFrQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C4F56E5381B;
+        Tue,  4 Jul 2023 18:38:42 +0000 (UTC)
+Subject: Re: [GIT PULL] More power management updates for v6.5-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0gDV_rDDs0ur=Ct6=4CcCsFQLoO0yGz9-UrnyO0AKLCjw@mail.gmail.com>
+References: <CAJZ5v0gDV_rDDs0ur=Ct6=4CcCsFQLoO0yGz9-UrnyO0AKLCjw@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0gDV_rDDs0ur=Ct6=4CcCsFQLoO0yGz9-UrnyO0AKLCjw@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-6.5-rc1-2
+X-PR-Tracked-Commit-Id: 40c565a429d706951f18fe07ccd9f6fded23a4dc
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: ccf46d85318327e5aebaae53f1fe33cc31ed1fd1
+Message-Id: <168849592280.22559.6463310430420506291.pr-tracker-bot@kernel.org>
+Date:   Tue, 04 Jul 2023 18:38:42 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 3, 2023 at 2:14 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> After switching i2c-scmi driver to be a platform one, it stopped
-> being enumerated on number of Kontron platforms, because it's
-> listed in the forbidden_id_list.
->
-> To resolve the situation, add a flag to driver data to allow devices
-> with no resources in _CRS to be enumerated via platform bus.
->
-> Fixes: 03d4287add6e ("i2c: scmi: Convert to be a platform driver")
-> Closes: https://lore.kernel.org/r/60c1756765b9a3f1eab0dcbd84f59f00fe1caf48.camel@kontron.com
-> Link: https://lore.kernel.org/r/20230621151652.79579-1-andriy.shevchenko@linux.intel.com
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-> ---
->  drivers/acpi/acpi_platform.c | 30 +++++++++++++++++++++++++++---
->  1 file changed, 27 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-> index fe00a5783f53..c2ce558bd032 100644
-> --- a/drivers/acpi/acpi_platform.c
-> +++ b/drivers/acpi/acpi_platform.c
-> @@ -9,6 +9,7 @@
->   */
->
->  #include <linux/acpi.h>
-> +#include <linux/bits.h>
->  #include <linux/device.h>
->  #include <linux/err.h>
->  #include <linux/kernel.h>
-> @@ -19,13 +20,16 @@
->
->  #include "internal.h"
->
-> +/* Exclude devices that have no _CRS resources provided */
-> +#define ACPI_ALLOW_WO_RESOURCES                BIT(0)
-> +
->  static const struct acpi_device_id forbidden_id_list[] = {
->         {"ACPI0009", 0},        /* IOxAPIC */
->         {"ACPI000A", 0},        /* IOAPIC */
->         {"PNP0000",  0},        /* PIC */
->         {"PNP0100",  0},        /* Timer */
->         {"PNP0200",  0},        /* AT DMA Controller */
-> -       {"SMB0001",  0},        /* ACPI SMBUS virtual device */
-> +       {"SMB0001",  ACPI_ALLOW_WO_RESOURCES},  /* ACPI SMBUS virtual device */
->         { }
->  };
->
-> @@ -83,6 +87,15 @@ static void acpi_platform_fill_resource(struct acpi_device *adev,
->                 dest->parent = pci_find_resource(to_pci_dev(parent), dest);
->  }
->
-> +static unsigned int acpi_platform_resource_count(struct acpi_resource *ares, void *data)
-> +{
-> +       bool *has_resources = data;
-> +
-> +       *has_resources = true;
-> +
-> +       return AE_CTRL_TERMINATE;
-> +}
-> +
->  /**
->   * acpi_create_platform_device - Create platform device for ACPI device node
->   * @adev: ACPI device node to create a platform device for.
-> @@ -100,17 +113,28 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
->         struct acpi_device *parent = acpi_dev_parent(adev);
->         struct platform_device *pdev = NULL;
->         struct platform_device_info pdevinfo;
-> +       const struct acpi_device_id *match;
->         struct resource_entry *rentry;
->         struct list_head resource_list;
->         struct resource *resources = NULL;
-> +       bool has_resources;
->         int count;
->
->         /* If the ACPI node already has a physical device attached, skip it. */
->         if (adev->physical_node_count)
->                 return NULL;
->
-> -       if (!acpi_match_device_ids(adev, forbidden_id_list))
-> -               return ERR_PTR(-EINVAL);
-> +       match = acpi_match_acpi_device(forbidden_id_list, adev);
-> +       if (match) {
-> +               if (match->driver_data & ACPI_ALLOW_WO_RESOURCES) {
-> +                       acpi_walk_resources(adev->handle, METHOD_NAME__CRS,
-> +                                           acpi_platform_resource_count, &has_resources);
-> +                       if (has_resources)
-> +                               return ERR_PTR(-EINVAL);
-> +               } else {
-> +                       return ERR_PTR(-EINVAL);
-> +               }
-> +       }
->
->         INIT_LIST_HEAD(&resource_list);
->         count = acpi_dev_get_resources(adev, &resource_list, NULL, NULL);
-> --
+The pull request you sent on Tue, 4 Jul 2023 18:49:57 +0200:
 
-Applied as 6.5-rc material along with the rest of the series (except
-for the last patch that has been superseded), but I moved the
-has_resources definition to the block where it is used and added a
-'false' initial value to it. as the code might not work as expected
-without initializing it.
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-6.5-rc1-2
 
-Please double check the bleeding-edge branch of linux-pm.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/ccf46d85318327e5aebaae53f1fe33cc31ed1fd1
 
-Thanks!
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
