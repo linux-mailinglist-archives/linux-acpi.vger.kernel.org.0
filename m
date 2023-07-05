@@ -2,58 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11010747C80
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jul 2023 07:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EFF0748237
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jul 2023 12:33:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229801AbjGEFiB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Jul 2023 01:38:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55300 "EHLO
+        id S231488AbjGEKd5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Jul 2023 06:33:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231349AbjGEFh7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Jul 2023 01:37:59 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F55F1705;
-        Tue,  4 Jul 2023 22:37:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688535478; x=1720071478;
-  h=date:from:to:cc:subject:message-id;
-  bh=KQamy0D3QLjCRbrHlSo7yqXvSDhs6+RZhVaLjOufMic=;
-  b=K2/vavQ6TS98puMUd/QwcTtKu+SATahNqn9CWOWZwg49257+WP4d1Me9
-   enDCVHv76axlnJrhutDEfJizJ9maa2octQekYdAq4kQvcW7f6RCGcUVpp
-   vx42w3nMfwKM/Gi/11RBxz4fAYIwxp9Pd4VhibLhLGsXPDMq0fBwej/7i
-   bwasfh/1t93P43hzbIc6TgaDHd4N2sgmPQCcdnqxPJkVrtX2eF7Phyt/D
-   6BtKyp+gXHTMZrSweHU6di8QzBKhnyM85QhCOQTwK85CXwdUOGYgO6r8H
-   DFTZJj0sik1eyC14F56YhVHv5OBKk/PSlM1Qt0Pm6fbsjmqWpDMx7Dwng
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="353083847"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
-   d="scan'208";a="353083847"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2023 22:37:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="784405882"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
-   d="scan'208";a="784405882"
-Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 04 Jul 2023 22:37:49 -0700
-Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qGvD2-0000Od-2W;
-        Wed, 05 Jul 2023 05:37:48 +0000
-Date:   Wed, 05 Jul 2023 13:37:20 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- bf244610b488082b381bca2cc9247b70d13c0367
-Message-ID: <202307051319.WUmun1vl-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        with ESMTP id S229635AbjGEKd4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Jul 2023 06:33:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47B8CDD
+        for <linux-acpi@vger.kernel.org>; Wed,  5 Jul 2023 03:33:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1688553192;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0pedzrxF76VGYnCdMLq3tBfEt7kLCHpedkXjqiqZXI8=;
+        b=cL2myEl6tYvYyMqAMt+aEtyJh6Td0irSWWaZsxtp2qbo8f0Vtf6EHYZFJVKjp0nMB9IedJ
+        lYNsy2+oZTG7+XQnfltjRQCC/4pbUv2UK+K0oN/+/KOW7s5jFysA0RZIAwNfoWM11cGnK8
+        9Cw7jBZZLq9etJ91yPVTTUM4b4jCB7g=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-500-94L1e6tkMQSvFQF2ao1AsA-1; Wed, 05 Jul 2023 06:33:11 -0400
+X-MC-Unique: 94L1e6tkMQSvFQF2ao1AsA-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-9874fbf5c95so75802766b.1
+        for <linux-acpi@vger.kernel.org>; Wed, 05 Jul 2023 03:33:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688553190; x=1691145190;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0pedzrxF76VGYnCdMLq3tBfEt7kLCHpedkXjqiqZXI8=;
+        b=Z6ysHVKoF6RDT2eFe1lDQwzZVu8QV5uoLG4Zwb+yEegaKvz4oV7LP53Ch/8l6OhUNh
+         W6T0thtbGvc94PdQkngtbhDf/NUAFyuCa3EWwpHlXfZNU9LQ2p4EAOmwkEpCxf8bpxZ+
+         PBklgFLvk+wUgMyv8g3X+ML1ZG/hMgDLpNnn6O4YaZDR78JbTf9CZ4lLkEBRm1XeNvYR
+         6u5Yv/WpNcC3MoN0tTvRoPjCalopRkr9wPTu+dawk7AqFekpKatIuNLuOM1eINGg7H8w
+         XM8PKShT8kcMantGiTyt5vUbpMD8rzZxVpz6pFmhPDP7H5fGKbso4Wu0yC3Qd3JrvQwr
+         PKfw==
+X-Gm-Message-State: ABy/qLZ0FvG/EVgzkElJwVNhoB2eJXYDTkY/ftHTGodwByrqZYnsemto
+        FAghTQiEZa6Qi2LvDEioez+IZGuSvQMVGQyzjdTfvlFai0l4fNuA/a9Qx7Qo8nyv2maM1ed+TgH
+        zcF3zGTNdSRQWA59NewQwkl830s6L1A==
+X-Received: by 2002:a17:907:2d93:b0:986:38ab:ef99 with SMTP id gt19-20020a1709072d9300b0098638abef99mr1967401ejc.9.1688553189925;
+        Wed, 05 Jul 2023 03:33:09 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGhXqePR6/QEYX86GFSnxBLHxWyQyo9uA2HI7qOIKMEJ/tQuS5Enp3k+Ifdbo8yVpukIpwMvw==
+X-Received: by 2002:a17:907:2d93:b0:986:38ab:ef99 with SMTP id gt19-20020a1709072d9300b0098638abef99mr1967382ejc.9.1688553189676;
+        Wed, 05 Jul 2023 03:33:09 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id z2-20020a50eb42000000b0051bf17d7710sm12908012edp.57.2023.07.05.03.33.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Jul 2023 03:33:09 -0700 (PDT)
+Message-ID: <f5a4f802-d6a1-050e-ec70-701048ab1a2f@redhat.com>
+Date:   Wed, 5 Jul 2023 12:33:08 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] ACPI: video: Invoke _PS0 at boot for ACPI video
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230704074506.2304939-1-kai.heng.feng@canonical.com>
+ <CAJZ5v0jwO1NJ_x2t3RV-kYDmVY9UtyexznCSZMAmQ-gK4dWCmA@mail.gmail.com>
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAJZ5v0jwO1NJ_x2t3RV-kYDmVY9UtyexznCSZMAmQ-gK4dWCmA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,137 +83,90 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: bf244610b488082b381bca2cc9247b70d13c0367  Merge branch 'acpi-scan' into bleeding-edge
+Hi,
 
-elapsed time: 722m
+On 7/4/23 18:58, Rafael J. Wysocki wrote:
+> On Tue, Jul 4, 2023 at 9:46 AM Kai-Heng Feng
+> <kai.heng.feng@canonical.com> wrote:
+>>
+>> Screen brightness can only be changed once on some HP laptops.
+>>
+>> Vendor identified the root cause as Linux doesn't invoke _PS0 at boot
+>> for all ACPI devices:
+> 
+> This part of the changelog is confusing, because the evaluation of
+> _PS0 is not a separate operation.  _PS0 gets evaluated when devices
+> undergo transitions from low-power states to D0.
+> 
+>>     Scope (\_SB.PC00.GFX0)
+>>     {
+>>         Scope (DD1F)
+>>         {
+>>             Method (_PS0, 0, Serialized)  // _PS0: Power State 0
+>>             {
+>>                 If (CondRefOf (\_SB.PC00.LPCB.EC0.SSBC))
+>>                 {
+>>                     \_SB.PC00.LPCB.EC0.SSBC ()
+>>                 }
+>>             }
+>>             ...
+>>         }
+>>         ...
+>>     }
+>>
+>> _PS0 doesn't get invoked for all ACPI devices because of commit
+>> 7cd8407d53ef ("ACPI / PM: Do not execute _PS0 for devices without _PSC
+>> during initialization").
 
-configs tested: 118
-configs skipped: 5
+So this _PS0 which seems to be the one which needs to run here,
+is not the _PS0 for the GFX0 ACPI device, but rather for a child ACPI device-node which describes the connector (assumed based on the small part of quoted DSDT, the actual definition of the DD1F device-node is missing).
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Having a _PS0 method on a connector object is really weird IMHO. But if we need to invoke such a _PS0 method then IMHO that really should be done in the drm/kms driver. E.g. at least the i915 code already contains code to map the ACPI connector objects to the drm_connector objects, so it should be relatively easily to make that try and do a power-transition to D0 when enabling the connector.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r032-20230704   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r043-20230703   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                          pxa910_defconfig   gcc  
-arm                  randconfig-r046-20230703   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r003-20230704   clang
-arm64                randconfig-r024-20230704   gcc  
-arm64                randconfig-r035-20230704   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r006-20230704   gcc  
-csky                 randconfig-r026-20230704   gcc  
-hexagon              randconfig-r001-20230704   clang
-hexagon              randconfig-r041-20230703   clang
-hexagon              randconfig-r045-20230703   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230703   gcc  
-i386         buildonly-randconfig-r005-20230703   gcc  
-i386         buildonly-randconfig-r006-20230703   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230704   clang
-i386                 randconfig-i002-20230704   clang
-i386                 randconfig-i003-20230704   clang
-i386                 randconfig-i004-20230704   clang
-i386                 randconfig-i005-20230704   clang
-i386                 randconfig-i006-20230704   clang
-i386                 randconfig-i011-20230703   clang
-i386                 randconfig-i012-20230703   clang
-i386                 randconfig-i013-20230703   clang
-i386                 randconfig-i014-20230703   clang
-i386                 randconfig-i015-20230703   clang
-i386                 randconfig-i016-20230703   clang
-loongarch                        alldefconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch                 loongson3_defconfig   gcc  
-loongarch            randconfig-r034-20230704   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r025-20230704   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                      maltaaprp_defconfig   clang
-mips                       rbtx49xx_defconfig   clang
-nios2                               defconfig   gcc  
-openrisc                 simple_smp_defconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                    ge_imp3a_defconfig   clang
-powerpc                 mpc832x_rdb_defconfig   clang
-powerpc              randconfig-r021-20230704   gcc  
-powerpc                     taishan_defconfig   gcc  
-powerpc                     tqm8541_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r033-20230704   clang
-riscv                randconfig-r042-20230703   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r005-20230704   clang
-s390                 randconfig-r015-20230704   gcc  
-s390                 randconfig-r044-20230703   clang
-sh                               allmodconfig   gcc  
-sh                           se7343_defconfig   gcc  
-sh                           se7750_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r011-20230704   gcc  
-sparc                randconfig-r012-20230704   gcc  
-sparc                randconfig-r014-20230704   gcc  
-sparc                randconfig-r016-20230704   gcc  
-sparc                randconfig-r023-20230704   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r013-20230704   clang
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230703   gcc  
-x86_64       buildonly-randconfig-r002-20230703   gcc  
-x86_64       buildonly-randconfig-r003-20230703   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r002-20230704   clang
-x86_64               randconfig-r022-20230704   gcc  
-x86_64               randconfig-x001-20230703   clang
-x86_64               randconfig-x002-20230703   clang
-x86_64               randconfig-x003-20230703   clang
-x86_64               randconfig-x004-20230703   clang
-x86_64               randconfig-x005-20230703   clang
-x86_64               randconfig-x006-20230703   clang
-x86_64               randconfig-x011-20230704   clang
-x86_64               randconfig-x012-20230704   clang
-x86_64               randconfig-x013-20230704   clang
-x86_64               randconfig-x014-20230704   clang
-x86_64               randconfig-x015-20230704   clang
-x86_64               randconfig-x016-20230704   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
+Also can you provide some more info on the hw on which this is being seen:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+1. What GPU(s) is/are being used
+2. If there is a mux for hybrid gfx in which mode is the mux set ?
+3. Wjich method is used to control the brightness (which backlight-class-devices show up under /sys/class/backlight) ?
+
+And can you add this info to the commit msg for the next version of the patch ?
+
+Regards,
+
+Hans
+
+
+
+
+> 
+> And yes, Linux doesn't put all of the ACPI devices into D0 during
+> initialization, but the above commit has a little to do with that.
+> 
+>> For now explicitly call _PS0 for ACPI video to workaround the issue.
+> 
+> This is not what the patch is doing.
+> 
+>> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+>> ---
+>>  drivers/acpi/acpi_video.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+>> index 62f4364e4460..793259bd18c8 100644
+>> --- a/drivers/acpi/acpi_video.c
+>> +++ b/drivers/acpi/acpi_video.c
+>> @@ -2027,6 +2027,8 @@ static int acpi_video_bus_add(struct acpi_device *device)
+>>         if (error)
+>>                 goto err_put_video;
+>>
+>> +       acpi_device_fix_up_power_extended(device);
+>> +
+> 
+> I would like to know what Hans thinks about this.
+> 
+>>         pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
+>>                ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
+>>                video->flags.multihead ? "yes" : "no",
+>> --
+> 
+
