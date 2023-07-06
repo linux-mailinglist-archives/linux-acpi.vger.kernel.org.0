@@ -2,261 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F39D8749CBD
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 14:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B276E749CCD
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 14:56:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230036AbjGFMyD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jul 2023 08:54:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56946 "EHLO
+        id S229490AbjGFM4m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jul 2023 08:56:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229672AbjGFMyC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 08:54:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D15721BFD
-        for <linux-acpi@vger.kernel.org>; Thu,  6 Jul 2023 05:52:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688647977;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Stj7FQrpVBUftZWDZ0rKUdbUHaomK6wWUSiG76kO7Oc=;
-        b=RF7kCKEpvmkCd6cRRaXEkLqbNKyR9E/GY166dW40jY+rs81CuHzDtIATs9eWQvTgHxDL71
-        3jwowZceAQF0U4zHpPta4FmXTFXY8z+JCm40JoemsrueC7BgBJpSFP/SwFIrZzvpPiyq9y
-        R5b1XiAUqIlyzxkz47CCQ+QGT24WtAc=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-508-f8pai4TpMy6eZv4kQU8iYA-1; Thu, 06 Jul 2023 08:52:56 -0400
-X-MC-Unique: f8pai4TpMy6eZv4kQU8iYA-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-9879d2fc970so51703566b.0
-        for <linux-acpi@vger.kernel.org>; Thu, 06 Jul 2023 05:52:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688647974; x=1691239974;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Stj7FQrpVBUftZWDZ0rKUdbUHaomK6wWUSiG76kO7Oc=;
-        b=KUXrgI/2Uq1MHuRyQ9Qg0I5ltitPGEyl9HgAvDr9sSC176pi6ZcM7Xv+2EYvjOYceh
-         nPh9S50ZhB1GkjiRgZhGr+cJzRoj5SqaDMbcY7qPS2V3hY+IT/9KcDmqD1szjwoKMlzJ
-         bzZC/iErkMkW4x1OdI5mtvpQoXsTbQlgUCAILuL9cR6r10Km7en8hlJExiL5QzA1+0z/
-         AaRnSkwKwCiNplwIhtJr+52YKMbPEtDyBBbaTqqqXKNvw+tswD7yMpblrcGc2lJ2o9q8
-         eInkvIbJpAwbLZM5c1sLqwu3jkYQn3a8Us5+ja1/VR3cl/itI6pXHEIcJiDx04uWyDoK
-         K6xw==
-X-Gm-Message-State: ABy/qLaAO25RXV7+kmgjQML7PgrzVQ/Ep7HzDtt++t3M7vUnAK9gy29L
-        jR08s0mY1fkKXZ/4YsSiBwFkD1ASn9sKHPAcswyTW8kI026qbNEZ0AF1UEHvhRiYVYnJa6Qzg94
-        gb3U7jscUKFVi6u80tICjYRpxbMXH7Q==
-X-Received: by 2002:a17:906:1ecf:b0:982:30e3:ddcb with SMTP id m15-20020a1709061ecf00b0098230e3ddcbmr1247591ejj.65.1688647974256;
-        Thu, 06 Jul 2023 05:52:54 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHxAVYbA5dZO6NakTAwlCM1U0hn4EHwpOY2SImLtYyYHOGww3ELQ8ZjL8SXO8BM2ctQBNa4kw==
-X-Received: by 2002:a17:906:1ecf:b0:982:30e3:ddcb with SMTP id m15-20020a1709061ecf00b0098230e3ddcbmr1247582ejj.65.1688647973955;
-        Thu, 06 Jul 2023 05:52:53 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id s24-20020a170906169800b0096f7500502csm771897ejd.199.2023.07.06.05.52.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Jul 2023 05:52:53 -0700 (PDT)
-Message-ID: <59e819bf-6b8f-6a26-97a1-b494ea5655d0@redhat.com>
-Date:   Thu, 6 Jul 2023 14:52:52 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v3 14/18] media: i2c: Add driver for DW9719 VCM
-Content-Language: en-US, nl
-To:     Dave Stevenson <dave.stevenson@raspberrypi.com>
+        with ESMTP id S229522AbjGFM4m (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 08:56:42 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A34B171A;
+        Thu,  6 Jul 2023 05:56:41 -0700 (PDT)
+X-IronPort-AV: E=McAfee;i="6600,9927,10763"; a="366170832"
+X-IronPort-AV: E=Sophos;i="6.01,185,1684825200"; 
+   d="scan'208";a="366170832"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2023 05:56:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10763"; a="843680497"
+X-IronPort-AV: E=Sophos;i="6.01,185,1684825200"; 
+   d="scan'208";a="843680497"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga004.jf.intel.com with ESMTP; 06 Jul 2023 05:56:37 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andy@kernel.org>)
+        id 1qHOXE-000Wfw-0g;
+        Thu, 06 Jul 2023 15:56:36 +0300
+Date:   Thu, 6 Jul 2023 15:56:35 +0300
+From:   Andy Shevchenko <andy@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Daniel Scally <dan.scally@ideasonboard.com>,
         linux-acpi@vger.kernel.org,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>, Kate Hsuan <hpa@redhat.com>,
-        Hao Yao <hao.yao@intel.com>, Bingbu Cao <bingbu.cao@intel.com>,
-        linux-media@vger.kernel.org, Daniel Scally <djrscally@gmail.com>
+        Kate Hsuan <hpa@redhat.com>, Hao Yao <hao.yao@intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>, linux-media@vger.kernel.org
+Subject: Re: [PATCH v3 18/18] media: atomisp: csi2-bridge: Add support for
+ VCM I2C-client instantiation
+Message-ID: <ZKa6A1Ex0GRk4aqg@smile.fi.intel.com>
 References: <20230705213010.390849-1-hdegoede@redhat.com>
- <20230705213010.390849-15-hdegoede@redhat.com>
- <CAPY8ntBsWqibbnxPszHE74wVo7dtwG2wk-JtR3258WArJ+U8PQ@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAPY8ntBsWqibbnxPszHE74wVo7dtwG2wk-JtR3258WArJ+U8PQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+ <20230705213010.390849-19-hdegoede@redhat.com>
+ <ZKaUWAAf586ZIRMF@smile.fi.intel.com>
+ <500c0f9a-7b81-3c13-6da8-39245282fe46@redhat.com>
+ <ZKa2qnreaCfb2Lgc@smile.fi.intel.com>
+ <b098d5e6-5aeb-a9e1-5f4c-6eed4b78b3fd@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b098d5e6-5aeb-a9e1-5f4c-6eed4b78b3fd@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Dave,
-
-On 7/6/23 13:18, Dave Stevenson wrote:
-> Hi Hans
+On Thu, Jul 06, 2023 at 02:47:36PM +0200, Hans de Goede wrote:
+> On 7/6/23 14:42, Andy Shevchenko wrote:
+> > On Thu, Jul 06, 2023 at 02:31:14PM +0200, Hans de Goede wrote:
+> >> On 7/6/23 12:15, Andy Shevchenko wrote:
+> >>> On Wed, Jul 05, 2023 at 11:30:10PM +0200, Hans de Goede wrote:
+> > 
+> >>>> +	vcm_type = kstrdup(obj->string.pointer, GFP_KERNEL);
+> >>>
+> >>> Where is the counterpart kfree()?
+> >>
+> >> The vcm-type is stored in one of the generated sw-nodes and the ipu-bridge
+> >> code only creates those once and them leaves them in memory, even on
+> >> a rmmod. So this is deliberately leaked just like that the ipu_bridge
+> >> struct which contains all the swnode-s is deliberately leaked by
+> >> ipu-bridge.c
+> > 
+> > Should we worry about those leakages?
 > 
-> On Wed, 5 Jul 2023 at 22:33, Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> From: Daniel Scally <djrscally@gmail.com>
->>
->> Add a driver for the DW9719 VCM. The driver creates a v4l2 subdevice
->> and registers a control to set the desired focus.
->>
->> Signed-off-by: Daniel Scally <djrscally@gmail.com>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->> Changes in v3 (Hans de Goede)
->> - New patch in v3 of this series based on Dan Scally's initial
->>   DW9719 upstream submission:
->>   https://lore.kernel.org/all/20211128232115.38833-1-djrscally@gmail.com/
->> - Drop hack to enable "vsio" regulator, this is no longer necessary
->>   now that there is a device-link making the VCM a runtime-pm consumer
->>   of the sensor
->> - Add checking of device-properties for sac-mode and vcm-freq,
->>   as requested by Sakari, this is done similar to the dw9768:
->>   Documentation/devicetree/bindings/media/i2c/dongwoon,dw9768.yaml
->>   Note no devicetree binding doc is added since currently only
->>   i2c_device_id enumeration (instantiated by IPU bridge) is
->>   supported
->> ---
->>  MAINTAINERS                |   7 +
->>  drivers/media/i2c/Kconfig  |  11 +
->>  drivers/media/i2c/Makefile |   1 +
->>  drivers/media/i2c/dw9719.c | 427 +++++++++++++++++++++++++++++++++++++
->>  4 files changed, 446 insertions(+)
->>  create mode 100644 drivers/media/i2c/dw9719.c
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 494682dd437f..cf8e799f6ea2 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -6266,6 +6266,13 @@ T:       git git://linuxtv.org/media_tree.git
->>  F:     Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
->>  F:     drivers/media/i2c/dw9714.c
->>
->> +DONGWOON DW9719 LENS VOICE COIL DRIVER
->> +M:     Daniel Scally <djrscally@gmail.com>
->> +L:     linux-media@vger.kernel.org
->> +S:     Maintained
->> +T:     git git://linuxtv.org/media_tree.git
->> +F:     drivers/media/i2c/dw9719.c
->> +
->>  DONGWOON DW9768 LENS VOICE COIL DRIVER
->>  L:     linux-media@vger.kernel.org
->>  S:     Orphan
->> diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
->> index 26dc365365d8..4864f1df3c7a 100644
->> --- a/drivers/media/i2c/Kconfig
->> +++ b/drivers/media/i2c/Kconfig
->> @@ -875,6 +875,17 @@ config VIDEO_DW9714
->>           capability. This is designed for linear control of
->>           voice coil motors, controlled via I2C serial interface.
->>
->> +config VIDEO_DW9719
->> +       tristate "DW9719 lens voice coil support"
->> +       depends on I2C && VIDEO_DEV
->> +       select MEDIA_CONTROLLER
->> +       select VIDEO_V4L2_SUBDEV_API
->> +       select V4L2_ASYNC
->> +       help
->> +         This is a driver for the DW9719 camera lens voice coil.
->> +         This is designed for linear control of voice coil motors,
->> +         controlled via I2C serial interface.
->> +
->>  config VIDEO_DW9768
->>         tristate "DW9768 lens voice coil support"
->>         depends on I2C && VIDEO_DEV
->> diff --git a/drivers/media/i2c/Makefile b/drivers/media/i2c/Makefile
->> index d175a2e2fb19..745f8d07e649 100644
->> --- a/drivers/media/i2c/Makefile
->> +++ b/drivers/media/i2c/Makefile
->> @@ -32,6 +32,7 @@ obj-$(CONFIG_VIDEO_DS90UB913) += ds90ub913.o
->>  obj-$(CONFIG_VIDEO_DS90UB953) += ds90ub953.o
->>  obj-$(CONFIG_VIDEO_DS90UB960) += ds90ub960.o
->>  obj-$(CONFIG_VIDEO_DW9714) += dw9714.o
->> +obj-$(CONFIG_VIDEO_DW9719) += dw9719.o
->>  obj-$(CONFIG_VIDEO_DW9768) += dw9768.o
->>  obj-$(CONFIG_VIDEO_DW9807_VCM) += dw9807-vcm.o
->>  obj-$(CONFIG_VIDEO_ET8EK8) += et8ek8/
->> diff --git a/drivers/media/i2c/dw9719.c b/drivers/media/i2c/dw9719.c
->> new file mode 100644
->> index 000000000000..7b83ae102131
->> --- /dev/null
->> +++ b/drivers/media/i2c/dw9719.c
->> @@ -0,0 +1,427 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +// Copyright (c) 2012 Intel Corporation
->> +
->> +/*
->> + * Based on linux/modules/camera/drivers/media/i2c/imx/dw9719.c in this repo:
->> + * https://github.com/ZenfoneArea/android_kernel_asus_zenfone5
->> + */
->> +
->> +#include <asm/unaligned.h>
->> +
->> +#include <linux/delay.h>
->> +#include <linux/i2c.h>
->> +#include <linux/pm_runtime.h>
->> +#include <linux/regulator/consumer.h>
->> +#include <linux/types.h>
->> +
->> +#include <media/v4l2-common.h>
->> +#include <media/v4l2-ctrls.h>
->> +#include <media/v4l2-subdev.h>
->> +
->> +#define DW9719_MAX_FOCUS_POS   1023
->> +#define DW9719_CTRL_STEPS      16
->> +#define DW9719_CTRL_DELAY_US   1000
->> +#define DELAY_MAX_PER_STEP_NS  (1000000 * 1023)
->> +
->> +#define DW9719_INFO                    0
->> +#define DW9719_ID                      0xF1
->> +#define DW9719_CONTROL                 2
->> +#define DW9719_VCM_CURRENT             3
->> +
->> +#define DW9719_MODE                    6
->> +#define DW9719_VCM_FREQ                        7
->> +
->> +#define DW9719_MODE_SAC_SHIFT          4
->> +#define DW9719_MODE_SAC3               4
->> +
->> +#define DW9719_DEFAULT_VCM_FREQ                0x60
->> +
->> +#define DW9719_ENABLE_RINGING          0x02
+> No this is by design because removing the swnodes while e.g. a sensor
+> driver might still be bound to the i2c-client is trouble-some and
+> the callers of ipu_bridge_init check if it has already run and then
+> skip calling it.
 > 
-> This register setup and the ramping up/down code is nearly identical
-> to the existing dw9807-vcm driver[1]. Admittedly that doesn't expose
-> SAC (Smart Actuator Control) for damping the movement, but dw9807 does
-> support it.
-> 
-> The only really quirky bit here is the "Jiggle SCL pin to wake up
-> device", but I can't find a datasheet to know anything more about
-> that. The other apparent distinction would be whether DW9719 has the
-> VBUSY bit in the status register that dw9807 is abiding by, whilst
-> this driver doesn't.
-> 
-> Should this be a new driver, or a variant of dw9807-vcm?
+> So after a rmmod + modprobe of the atomisp / ipu3-cio2 driver
+> ipu_bridge_init() will not get called a second time. Instead
+> the old swnodes (1) which are already set as secondary fwnodes for
+> the sensor and bridge devices are re-used.
 
-So I did a quick check and there are some interesting differences,
-like the dw9719 code writing 1 to the CTRL register on resume /
-powerup while as the dw9807 code writes 0 on resume / powerup.
+But this will be actual leak if we hot unplug/plug back the device, right?
+(I think we can do that in some [debug?] cases).
 
-And I have been unable to find a datasheet for either model.
+Whatever, it's out of scope of this series...
 
-This means that both drivers have some black-box aspects,
-like the powerup differences, to them (both come from Android source
-dumps I think).
+> 1) + the properties they contain
 
-This + the small size of these drivers, makes me think that it
-would be best to just keep this as a separate driver.
-
-So for the next standalone (not as part of this series)
-submission I plan to stick with having a separate driver
-and I'll try to address all the other review remarks.
-
-Regards,
-
-Hans
-
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
