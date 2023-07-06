@@ -2,60 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AC2774946D
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 05:44:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68A3974952B
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 08:01:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232330AbjGFDoK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Jul 2023 23:44:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60400 "EHLO
+        id S233109AbjGFGBG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jul 2023 02:01:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230383AbjGFDoK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Jul 2023 23:44:10 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71C6E1BCB
-        for <linux-acpi@vger.kernel.org>; Wed,  5 Jul 2023 20:44:08 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-3142970df44so121998f8f.3
-        for <linux-acpi@vger.kernel.org>; Wed, 05 Jul 2023 20:44:08 -0700 (PDT)
+        with ESMTP id S231218AbjGFGBF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 02:01:05 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C1B4199D
+        for <linux-acpi@vger.kernel.org>; Wed,  5 Jul 2023 23:01:02 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-5149aafef44so461982a12.0
+        for <linux-acpi@vger.kernel.org>; Wed, 05 Jul 2023 23:01:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1688615047; x=1691207047;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jpdCKCp+dEsXjUfnxgC7qSAJV2eBz4qj2jsssqk1txs=;
-        b=iXDH/ghPLGc9raD3qKetKj/KUpmZePX4PNAORCoaQYBdMqKXKCtW+TZPJcAOk1rTdP
-         IMbnwpoopc+i6RQjurWxU6VrAHS5NHNETEIVvcpDgwgx6haEvQm3f0TippJsoFEqHGDJ
-         U0IZLzlFg0hsymvDvlzb7UPmM4EnnN/bBfCOVyWncse42TgvyXSe75LL0DKn2bB+0WXa
-         Bt1mRQJ4UVbaCZpyIQx+FNpuSXh9xFFQmjEPoUzQIjzZR50g+r1hTHedz/ejAr4Znn4U
-         8z9HU/kunrrK0MZ+synCMg9CKp0+SMKz5l29beFS2JK6ifjnmeVpDw24dWb7pP++BTdG
-         nwzQ==
+        d=linaro.org; s=google; t=1688623261; x=1691215261;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7IAKmZHpstgstqx8FAeUwkTSQ0YmTIrDH6WIMSRhwcY=;
+        b=I+M6QmPKGCRnEMfzENftg1TPHKCy0ZddPOOkuPSprjcIYMG32ZPZwdNQmIDaz39CqC
+         PUuZFYNca1tM8oMzE5yGQ8riLsfiR2GR7weI4pkImN7TkMMOt6Kj/VVloFJosJjRqxWz
+         vx+Tanp3cJhgfzpc/VGl3eDl6zuGThgTEwVVAc0/8/VC7hZGdaQEFwMY2KdWmdqPoRoS
+         4Z0+W8za3G6mAHq0HbYjaCod6eE4FFVc7SZjnGhnNSc2Rr3P0fENVP72xM8imSj3zBiA
+         hidsH7MsPEZy/nSXa7FKuqUQcKb4UiGgeR+/3K1ITTql1bF4nHma57iBD3S4yLvbqNIu
+         Voeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688615047; x=1691207047;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jpdCKCp+dEsXjUfnxgC7qSAJV2eBz4qj2jsssqk1txs=;
-        b=OixYEbqA/9gDjzBELC1pyo+AtVpi8evoC8YwMVgzoKfBnMLpWWqZYmI/51r3t0gXAn
-         sYcvqV3krMetd17ZF3NiV2ULcDw4NhnEB97gMmdo0KuC6wJIZYtiS1aG/trBosZX0mlV
-         4Ty04eF4HYXMRLAZ+3GV1Dv3HLXlfmpk5LBcEr8eXsyK4YwGq7B7EFX6LWKMd/ZY0tcu
-         72xaqON1MHx6C4LSFhg1TIWP7zaj1ncQsqboktHPTs3F4b2yyIuRNE4XLs46Tg1UM95b
-         2LQJ2K8RzsHEjKM0VIuMzrjB8K83WGkQToVVNWwFN9TR2arWlC8pEwCXVNL+jbpMAerR
-         Bzig==
-X-Gm-Message-State: ABy/qLafHf1g+JLmt/QvXQ3dM3N7uVe+5hKx7L10CM+MYEuxUtYLF5oV
-        BYg0GGTR0epqBnnCA/NRqE15nFaDRdnJJisE5heXhg==
-X-Google-Smtp-Source: APBJJlG8oJJ/0Lw6qO1wtxj2L3BYTTBuF2LIPDKZd3AA7ZMseFgpU0K2z+5nLIryFaJlkLROHdg8KF/EMX8q/u/r47c=
-X-Received: by 2002:adf:e34c:0:b0:314:3b17:d7c5 with SMTP id
- n12-20020adfe34c000000b003143b17d7c5mr382795wrj.43.1688615046885; Wed, 05 Jul
- 2023 20:44:06 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1688623261; x=1691215261;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7IAKmZHpstgstqx8FAeUwkTSQ0YmTIrDH6WIMSRhwcY=;
+        b=dfM77WTdiwP3nNpoJxATgJHY32IKfC1VWvrV4RDLNXfWAEgI7NvmJEnOPzRmSP5NXN
+         q3Zo3rnB/Cxw49IVhoRp7atDq6lxk1rzqk4ZVgFLTx9uiISiO4QVxEgB7Hi1oZ7fJsB7
+         AQh2mkDzDVq6Rviiy7UqA3AESXZgwkI3Abdn5H81V4c+sLBD+4Th9Qwxcm29CXIx9gkG
+         H7iGjhvNQwHoIRtO5o3IVS3APKot6P/0xNCC7HGhSmegI8uyK1ScwoY7t28FyDGIzUl6
+         pzpSSXIrShFSgp9pyW26OzRZfoj1zULoay446BxLxVdZhTnBFf13BGYhHFwWdQTRvk+/
+         o2JA==
+X-Gm-Message-State: ABy/qLYdlVlQGdVNHmUiRlELdW4vbArKBAt7wc/zxyga83lyoQrQXn+Z
+        4u7Ma93ogUpPr71hWVi4GybBnQ==
+X-Google-Smtp-Source: APBJJlGxMHI90Bj2KGx+EfXktGS5VOrAEQgqjBzOj+qrgtBRqIHvMlZpEqUF1J65EJCW7Rgcnxk+4A==
+X-Received: by 2002:aa7:d70f:0:b0:51e:10d8:e011 with SMTP id t15-20020aa7d70f000000b0051e10d8e011mr815168edq.24.1688623260799;
+        Wed, 05 Jul 2023 23:01:00 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.26])
+        by smtp.gmail.com with ESMTPSA id m18-20020aa7d352000000b0051e27ebb1b3sm343191edr.34.2023.07.05.23.00.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Jul 2023 23:01:00 -0700 (PDT)
+Message-ID: <07f88065-b9ca-5233-4048-5e61e1cdbe0c@linaro.org>
+Date:   Thu, 6 Jul 2023 08:00:55 +0200
 MIME-Version: 1.0
-References: <20230705114251.661-1-cuiyunhui@bytedance.com> <20230705114251.661-5-cuiyunhui@bytedance.com>
- <20230705-oblivious-unstuffed-8e028a5b243c@spud>
-In-Reply-To: <20230705-oblivious-unstuffed-8e028a5b243c@spud>
-From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-Date:   Thu, 6 Jul 2023 11:43:55 +0800
-Message-ID: <CAEEQ3wmG1OiE3GFqQp9SP+oKUbTfuTPx=rNGd-sjKsW7vv3bew@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
 Subject: Re: [External] Re: [PATCH v3 4/4] dt-bindings: firmware: Document
  ffitbl binding
-To:     Conor Dooley <conor@kernel.org>, robh+dt@kernel.org,
+To:     =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>,
+        Conor Dooley <conor@kernel.org>, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
         devicetree@vger.kernel.org
 Cc:     sunilvl@ventanamicro.com, ardb@kernel.org, palmer@dabbelt.com,
@@ -68,10 +70,17 @@ Cc:     sunilvl@ventanamicro.com, ardb@kernel.org, palmer@dabbelt.com,
         tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org, geshijian@bytedance.com,
         weidong.wd@bytedance.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+References: <20230705114251.661-1-cuiyunhui@bytedance.com>
+ <20230705114251.661-5-cuiyunhui@bytedance.com>
+ <20230705-oblivious-unstuffed-8e028a5b243c@spud>
+ <CAEEQ3wmG1OiE3GFqQp9SP+oKUbTfuTPx=rNGd-sjKsW7vv3bew@mail.gmail.com>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <CAEEQ3wmG1OiE3GFqQp9SP+oKUbTfuTPx=rNGd-sjKsW7vv3bew@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,109 +89,58 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Conor,
+On 06/07/2023 05:43, 运辉崔 wrote:
+> Hi Conor,
+> 
+> Added dts Maintainers,
+> 
+> On Wed, Jul 5, 2023 at 11:07 PM Conor Dooley <conor@kernel.org> wrote:
+>>
+>> Hey,
+>>
+>> On Wed, Jul 05, 2023 at 07:42:51PM +0800, Yunhui Cui wrote:
+>>> Add the description for ffitbl subnode.
+>>>
+>>> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+>>> ---
+>>>  .../devicetree/bindings/firmware/ffitbl.txt   | 27 +++++++++++++++++++
+>>>  MAINTAINERS                                   |  1 +
+>>>  2 files changed, 28 insertions(+)
+>>>  create mode 100644 Documentation/devicetree/bindings/firmware/ffitbl.txt
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/firmware/ffitbl.txt b/Documentation/devicetree/bindings/firmware/ffitbl.txt
+>>> new file mode 100644
+>>> index 000000000000..c42368626199
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/firmware/ffitbl.txt
+>>
+>> Firstly, new dt-bindings need to be done in yaml, not in text form.
+>> Secondly, you didn't re-run get_maintainer.pl after adding this binding,
+>> so you have not CCed any of the other dt-binding maintainers nor the
+>> devicetree mailing list.
+> 
+> Re-run get_maintainer.pl and added maintainers into the maillist.
 
-Added dts Maintainers,
 
-On Wed, Jul 5, 2023 at 11:07=E2=80=AFPM Conor Dooley <conor@kernel.org> wro=
-te:
->
-> Hey,
->
-> On Wed, Jul 05, 2023 at 07:42:51PM +0800, Yunhui Cui wrote:
-> > Add the description for ffitbl subnode.
-> >
-> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> > ---
-> >  .../devicetree/bindings/firmware/ffitbl.txt   | 27 +++++++++++++++++++
-> >  MAINTAINERS                                   |  1 +
-> >  2 files changed, 28 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/firmware/ffitbl.t=
-xt
-> >
-> > diff --git a/Documentation/devicetree/bindings/firmware/ffitbl.txt b/Do=
-cumentation/devicetree/bindings/firmware/ffitbl.txt
-> > new file mode 100644
-> > index 000000000000..c42368626199
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/firmware/ffitbl.txt
->
-> Firstly, new dt-bindings need to be done in yaml, not in text form.
-> Secondly, you didn't re-run get_maintainer.pl after adding this binding,
-> so you have not CCed any of the other dt-binding maintainers nor the
-> devicetree mailing list.
+This does not work like this.
 
-Re-run get_maintainer.pl and added maintainers into the maillist.
-emm.. There is some *txt in
-Documentation/devicetree/bindings/firmware/, isn't it?
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC.  It might happen, that command when run on an older
+kernel, gives you outdated entries.  Therefore please be sure you base
+your patches on recent Linux kernel.
 
->
-> > @@ -0,0 +1,27 @@
->
-> > +FFI(FDT FIRMWARE INTERFACE) driver
-> > +
-> > +Required properties:
-> > + - entry             : acpi or smbios root pointer, u64
-> > + - reg                       : acpi or smbios version, u32
->
-> Please go look at any other dt-binding (or the example schema) as to how
-> these properties should be used. A "reg" certainly should not be being
-> used to store the revision...
+You missed at least DT list (maybe more), so this won't be tested by our
+tools. Performing review on untested code might be a waste of time, thus
+I will skip this patch entirely till you follow the process allowing the
+patch to be tested.
 
-Okay, If so=EF=BC=8CI'll add a property "version" into the dts instead of
-"reg", just like, WDYT?
-ffitbl {
-    smbios {
-        entry =3D "";
-        version =3D < 0x02 >;
-    }
-   acpi {
-         entry =3D "";
-         version =3D < 0x06 >;
-  }
-}
+Please kindly resend and include all necessary To/Cc entries.
 
->
-> Cheers,
-> Conor.
->
-> > +
-> > +Some bootloaders, such as Coreboot do not support EFI,
-> > +only devicetree and some arches do not have a reserved
-> > +address segment. Add "ffitbl" subnode to obtain ACPI RSDP
-> > +and SMBIOS entry.
-> > +This feature is known as FDT Firmware Interface (FFI).
-> > +
-> > +Example:
-> > +     ffitbl {
-> > +
-> > +             smbios {
-> > +                             entry =3D "";
-> > +                             reg =3D < 0x03 >;
-> > +
-> > +             }
-> > +             acpi {
-> > +                             entry =3D "";
-> > +                             reg =3D < 0x06 >;
-> > +
-> > +             }
-> > +     }
-> > +
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 9b886ef36587..008257e55062 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -7874,6 +7874,7 @@ F:      include/linux/efi*.h
-> >  FDT FIRMWARE INTERFACE (FFI)
-> >  M:   Yunhui Cui cuiyunhui@bytedance.com
-> >  S:   Maintained
-> > +F:   Documentation/devicetree/bindings/firmware/ffitbl.txt
-> >  F:   drivers/firmware/ffi.c
-> >  F:   include/linux/ffi.h
-> >
-> > --
-> > 2.20.1
-> >
+> emm.. There is some *txt in
+> Documentation/devicetree/bindings/firmware/, isn't it?
 
-Thanks,
-Yunhui
+And what about it? Do you claim they were added recently?
+
+Best regards,
+Krzysztof
+
