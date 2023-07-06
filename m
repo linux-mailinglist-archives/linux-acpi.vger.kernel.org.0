@@ -2,77 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93A487495DD
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 08:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B5917495F3
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 08:55:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230087AbjGFGpb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jul 2023 02:45:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58800 "EHLO
+        id S230022AbjGFGzy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jul 2023 02:55:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbjGFGpb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 02:45:31 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1957B19B;
-        Wed,  5 Jul 2023 23:45:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1688625927; x=1720161927;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YI3foU5MblPQyUbd2sUSOe4Ngn7M7sWkAvN3y52gY9Y=;
-  b=T1jftbJBn64zlkLFks64NHNSeWJTdCmyCU9nEKysMRcUWpuZWN4LN/Vz
-   3szOQn1QlNksiXPgYDPqEcwBIocU9MfOlrB2x8ZFlPkaAHBZ4MlDDjzrf
-   PGH+r02nNsXSqTOeXLKxtZIDNg0OlpTf6FXKCVD6GZ/GA4MgdOkMLXyoq
-   NPeOoZwXxtV2bh7sPJ9MMFX5tjS4R6W/0FP7MsXU6d+Mh0GwN8iUGdTDg
-   hSi8Ew+DSYs71BSngc0CYJ5k5kXLSrJdeCKG8O9idqWuD5tvAnRKa5P7/
-   rouv52p/E/WVj0AyKArK5T4ZoB+HLbRs7WD9W2ep7GfYJFlKDDoko1su7
-   w==;
-X-IronPort-AV: E=Sophos;i="6.01,185,1684825200"; 
-   d="asc'?scan'208";a="219119976"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 05 Jul 2023 23:45:24 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Wed, 5 Jul 2023 23:45:16 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Wed, 5 Jul 2023 23:45:12 -0700
-Date:   Thu, 6 Jul 2023 07:44:42 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     =?utf-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-CC:     Conor Dooley <conor@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <devicetree@vger.kernel.org>, <sunilvl@ventanamicro.com>,
-        <ardb@kernel.org>, <palmer@dabbelt.com>,
-        <paul.walmsley@sifive.com>, <aou@eecs.berkeley.edu>,
-        <linux-riscv@lists.infradead.org>, <rminnich@gmail.com>,
-        <mark.rutland@arm.com>, <lpieralisi@kernel.org>,
-        <rafael@kernel.org>, <lenb@kernel.org>, <jdelvare@suse.com>,
-        <yc.hung@mediatek.com>, <angelogioacchino.delregno@collabora.com>,
-        <allen-kh.cheng@mediatek.com>,
-        <pierre-louis.bossart@linux.intel.com>,
-        <tinghan.shen@mediatek.com>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <geshijian@bytedance.com>,
-        <weidong.wd@bytedance.com>
+        with ESMTP id S229718AbjGFGzx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 02:55:53 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 096F9E54
+        for <linux-acpi@vger.kernel.org>; Wed,  5 Jul 2023 23:55:27 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4fb9fd28025so347105e87.2
+        for <linux-acpi@vger.kernel.org>; Wed, 05 Jul 2023 23:55:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1688626525; x=1691218525;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qIWuZ4QjmJeFmnk76baX9ZdxXV9vrusq9Mf9jFE8ve0=;
+        b=aHYGgcWXcjnUyBoSgqcUlmMYoz6SVQE+Zc2KoE5+MR8W87NF2VYIRITvNq0nXK8Zw5
+         IHre5XvZi6OeQT5Zk/aUVx75x2M/ViPm6MEz7BZ34h3Rwu/hiz5ziJBXHQdD0XGXEo/K
+         LcSwWb5k5AA1ggnyZm/RDdE0sZBHKIR9y/pLt+72wWl84x/RAXTY6B7zKoO7eFaL+XaE
+         f6GARDNNCN4JRti2n5Byl1EcJEETKRrnoa/0ul7SDO00jjCMChHyhHCXGVNwJBKwqIci
+         bPMOszxdkVdpt8bmZWktV+vQCdueiYGr1jtAeeY+wPialubWoXssS7qaFSoE3k23Np6R
+         qxDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688626525; x=1691218525;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qIWuZ4QjmJeFmnk76baX9ZdxXV9vrusq9Mf9jFE8ve0=;
+        b=XYWlVWoCWBzkNqniqUHIja4AS9Rd+R4z6XxlcfVTfSixh6zSkY+kR25gwgwfD3/gxD
+         0uv2fhtBz33n/okn77TZb59N3QjB98UWVmiQrfkSmbFeKsAVmsONroSH0LmhDNyt9vM7
+         2/gwWu5GCCXk05rPmjxaH2nOdBxqB0Xpetx9rNWionv8qrr+uukvMD8mhma8dRKFjn+e
+         3OTZ1MztoElAVzV8uFz8/rh8h/EeCuJ2n39f4nRF3Pa7AG/Nd0ts0yfJaFxI6Y7kG2QV
+         SadiNUbKpdi+5xD04DoOrmV7BwD07ozD4XKIoYT4Qr0+JMR57c/O0jL1AhWVbA5N+3gr
+         fdfw==
+X-Gm-Message-State: ABy/qLYSjSssyBrmChdqE6RX0M7tWkzxBrzyiXhjlQL9lvYjMiybgM9p
+        gBpuHZKhkwYuF/DG1nrCbUgi55SQBuexLeC4C6IiCQ==
+X-Google-Smtp-Source: APBJJlGJYnknpmC9Qq3WbZ7UUCJ6LFuD0JCKZFeaAAuo/1MAE66QYPEZ54lv3/+/BUGQMF/UQxBgzxELpSIcGO6IS7Q=
+X-Received: by 2002:a05:6512:2098:b0:4f9:5711:2eb6 with SMTP id
+ t24-20020a056512209800b004f957112eb6mr693785lfr.28.1688626525145; Wed, 05 Jul
+ 2023 23:55:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230705114251.661-1-cuiyunhui@bytedance.com> <20230705114251.661-5-cuiyunhui@bytedance.com>
+ <20230705-oblivious-unstuffed-8e028a5b243c@spud> <CAEEQ3wmG1OiE3GFqQp9SP+oKUbTfuTPx=rNGd-sjKsW7vv3bew@mail.gmail.com>
+ <07f88065-b9ca-5233-4048-5e61e1cdbe0c@linaro.org> <CAEEQ3wmY3YrdBEZ_V0+rC-3zbMLRgnL3xt-RtwzPxev5P2h48g@mail.gmail.com>
+ <df87a707-ed17-0629-308a-d9435ebd3227@linaro.org>
+In-Reply-To: <df87a707-ed17-0629-308a-d9435ebd3227@linaro.org>
+From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
+Date:   Thu, 6 Jul 2023 14:55:14 +0800
+Message-ID: <CAEEQ3wnbKHkoTUcd4n9mKF4c4bxqU23uMTexeSTY9d=owLgtEQ@mail.gmail.com>
 Subject: Re: [External] Re: [PATCH v3 4/4] dt-bindings: firmware: Document
  ffitbl binding
-Message-ID: <20230706-syndrome-wise-c1097518f2c6@wendy>
-References: <20230705114251.661-1-cuiyunhui@bytedance.com>
- <20230705114251.661-5-cuiyunhui@bytedance.com>
- <20230705-oblivious-unstuffed-8e028a5b243c@spud>
- <CAEEQ3wmG1OiE3GFqQp9SP+oKUbTfuTPx=rNGd-sjKsW7vv3bew@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="UxRv2D6dZld+dL4w"
-Content-Disposition: inline
-In-Reply-To: <CAEEQ3wmG1OiE3GFqQp9SP+oKUbTfuTPx=rNGd-sjKsW7vv3bew@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Conor Dooley <conor@kernel.org>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        devicetree@vger.kernel.org, sunilvl@ventanamicro.com,
+        ardb@kernel.org, palmer@dabbelt.com, paul.walmsley@sifive.com,
+        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
+        rminnich@gmail.com, mark.rutland@arm.com, lpieralisi@kernel.org,
+        rafael@kernel.org, lenb@kernel.org, jdelvare@suse.com,
+        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
+        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
+        tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, geshijian@bytedance.com,
+        weidong.wd@bytedance.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,92 +82,106 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---UxRv2D6dZld+dL4w
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Krzysztof,
 
-On Thu, Jul 06, 2023 at 11:43:55AM +0800, =E8=BF=90=E8=BE=89=E5=B4=94 wrote:
-> On Wed, Jul 5, 2023 at 11:07=E2=80=AFPM Conor Dooley <conor@kernel.org> w=
-rote:
-> > On Wed, Jul 05, 2023 at 07:42:51PM +0800, Yunhui Cui wrote:
-> > > Add the description for ffitbl subnode.
-> > >
-> > > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> > > ---
-> > >  .../devicetree/bindings/firmware/ffitbl.txt   | 27 +++++++++++++++++=
-++
-> > >  MAINTAINERS                                   |  1 +
-> > >  2 files changed, 28 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/firmware/ffitbl=
-=2Etxt
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/firmware/ffitbl.txt b/=
-Documentation/devicetree/bindings/firmware/ffitbl.txt
-> > > new file mode 100644
-> > > index 000000000000..c42368626199
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/firmware/ffitbl.txt
+
+On Thu, Jul 6, 2023 at 2:41=E2=80=AFPM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> On 06/07/2023 08:24, =E8=BF=90=E8=BE=89=E5=B4=94 wrote:
+> > Hi Krzysztof,
 > >
-> > Firstly, new dt-bindings need to be done in yaml, not in text form.
-> > Secondly, you didn't re-run get_maintainer.pl after adding this binding,
-> > so you have not CCed any of the other dt-binding maintainers nor the
-> > devicetree mailing list.
->=20
-> Re-run get_maintainer.pl and added maintainers into the maillist.
-> emm.. There is some *txt in
-> Documentation/devicetree/bindings/firmware/, isn't it?
-
-There might be, but that's not an excuse for adding _new_ ones, sorry.
-
-> > > +FFI(FDT FIRMWARE INTERFACE) driver
-> > > +
-> > > +Required properties:
-> > > + - entry             : acpi or smbios root pointer, u64
-> > > + - reg                       : acpi or smbios version, u32
+> > On Thu, Jul 6, 2023 at 2:01=E2=80=AFPM Krzysztof Kozlowski
+> > <krzysztof.kozlowski@linaro.org> wrote:
+> >>
+> >> On 06/07/2023 05:43, =E8=BF=90=E8=BE=89=E5=B4=94 wrote:
+> >>> Hi Conor,
+> >>>
+> >>> Added dts Maintainers,
+> >>>
+> >>> On Wed, Jul 5, 2023 at 11:07=E2=80=AFPM Conor Dooley <conor@kernel.or=
+g> wrote:
+> >>>>
+> >>>> Hey,
+> >>>>
+> >>>> On Wed, Jul 05, 2023 at 07:42:51PM +0800, Yunhui Cui wrote:
+> >>>>> Add the description for ffitbl subnode.
+> >>>>>
+> >>>>> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> >>>>> ---
+> >>>>>  .../devicetree/bindings/firmware/ffitbl.txt   | 27 +++++++++++++++=
+++++
+> >>>>>  MAINTAINERS                                   |  1 +
+> >>>>>  2 files changed, 28 insertions(+)
+> >>>>>  create mode 100644 Documentation/devicetree/bindings/firmware/ffit=
+bl.txt
+> >>>>>
+> >>>>> diff --git a/Documentation/devicetree/bindings/firmware/ffitbl.txt =
+b/Documentation/devicetree/bindings/firmware/ffitbl.txt
+> >>>>> new file mode 100644
+> >>>>> index 000000000000..c42368626199
+> >>>>> --- /dev/null
+> >>>>> +++ b/Documentation/devicetree/bindings/firmware/ffitbl.txt
+> >>>>
+> >>>> Firstly, new dt-bindings need to be done in yaml, not in text form.
+> >>>> Secondly, you didn't re-run get_maintainer.pl after adding this bind=
+ing,
+> >>>> so you have not CCed any of the other dt-binding maintainers nor the
+> >>>> devicetree mailing list.
+> >>>
+> >>> Re-run get_maintainer.pl and added maintainers into the maillist.
+> >>
+> >>
+> >> This does not work like this.
+> >>
+> >> Please use scripts/get_maintainers.pl to get a list of necessary peopl=
+e
+> >> and lists to CC.  It might happen, that command when run on an older
+> >> kernel, gives you outdated entries.  Therefore please be sure you base
+> >> your patches on recent Linux kernel.
+> >>
+> >> You missed at least DT list (maybe more), so this won't be tested by o=
+ur
+> >> tools. Performing review on untested code might be a waste of time, th=
+us
+> >> I will skip this patch entirely till you follow the process allowing t=
+he
+> >> patch to be tested.
+> >>
+> >> Please kindly resend and include all necessary To/Cc entries.
 > >
-> > Please go look at any other dt-binding (or the example schema) as to how
-> > these properties should be used. A "reg" certainly should not be being
-> > used to store the revision...
->=20
-> Okay, If so=EF=BC=8CI'll add a property "version" into the dts instead of
-> "reg", just like, WDYT?
-> ffitbl {
+> > This set of patches is applied on the tag next-20230706, and to
+> > generate the mail list by scripts/get_maintainers.pl on the tag
+> >
+> > ./scripts/get_maintainer.pl
+> > ../riscv/linux/v3-0004-dt-bindings-firmware-Document-ffitbl-binding.pat=
+ch
+> > Yunhui Cui cuiyunhui@bytedance.com (maintainer:FDT FIRMWARE INTERFACE (=
+FFI))
+> > Rob Herring <robh+dt@kernel.org> (maintainer:OPEN FIRMWARE AND
+> > FLATTENED DEVICE TREE BINDINGS)
+> > Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> > (maintainer:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
+> > Conor Dooley <conor+dt@kernel.org> (maintainer:OPEN FIRMWARE AND
+> > FLATTENED DEVICE TREE BINDINGS)
+> > devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
+> > DEVICE TREE BINDINGS)
+> > linux-kernel@vger.kernel.org (open list)
+> >
+> > What am I missing ?
+>
+> I did not receive the original patch. Neither did Patchwork. You cannot
+> just reply to some comment and hope it will fix something. We don't have
+> this patch simply.
 
-Firstly, I'd much rather you spelt this out, like "ffi-table".
+Oh, I see, you only received the middle mail, and did not receive the patch=
+.
+Okay, I'll post it after the next version is updated.
 
->     smbios {
->         entry =3D "";
-
-I still don't understand why "entry", which is an address, is being
-represented by an empty string.
-I also don't really get why you have not used "reg" to describe its
-start address and size.
-
->         version =3D < 0x02 >;
-
-Probably missing a vendor prefix, and the spaces are unusual, but better
-than it was, yes.
-
->     }
->    acpi {
->          entry =3D "";
->          version =3D < 0x06 >;
->   }
-> }
+>
+> Best regards,
+> Krzysztof
+>
 
 Thanks,
-Conor.
-
---UxRv2D6dZld+dL4w
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZKZi1gAKCRB4tDGHoIJi
-0kPBAQC+/8gAglhv+DsGHS+G2SMUClIIP7J58SEWQ7XovHEq5AEA011nqKPb8Sr9
-/KtHr/6v6qHXYUtkKGNwJwxU8cRl8A0=
-=cxHv
------END PGP SIGNATURE-----
-
---UxRv2D6dZld+dL4w--
+Yunhui
