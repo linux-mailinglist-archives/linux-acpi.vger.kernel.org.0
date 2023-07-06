@@ -2,70 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A039474975E
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 10:20:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B238F7497B6
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 10:52:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231466AbjGFIUh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jul 2023 04:20:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43830 "EHLO
+        id S229489AbjGFIwU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jul 2023 04:52:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229793AbjGFIUh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 04:20:37 -0400
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0D6E171A
-        for <linux-acpi@vger.kernel.org>; Thu,  6 Jul 2023 01:20:35 -0700 (PDT)
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+        with ESMTP id S230207AbjGFIwT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 04:52:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2EEF1BC2;
+        Thu,  6 Jul 2023 01:52:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 2CD923F04D
-        for <linux-acpi@vger.kernel.org>; Thu,  6 Jul 2023 08:20:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1688631634;
-        bh=Mc09Q0aiju92Qfy7nDEKyfEwnxyYr4WtsvBD4qdO1Co=;
-        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-         To:Cc:Content-Type;
-        b=LeYr0lzf7x7mThhbdwOquSkkYXCruFYUVTGXcxHknkZxyyIZqhnh3Cniytr8gC1LS
-         UkltCErlsGulmCV78qQaVJYuNM1xBCjhbRwabRd5XrwWaXva5hrHKsBXF6YbeCKymi
-         q9RvAS4igXxRv/HA9uo8271S2HGzSY7j6BlGJ2Z0ljz5pA48vSCSnc+rzD0Zjmshc7
-         Rh9U5en+M5revteuRmemgKI2UyYsYtylgcasQ6n45399lo+voFrD1YQ+PzLPJioQCJ
-         PeYuNest/FXA5BHi0LZhptvDyvR0iw6qsWmAWORcmLQ0FGj758Gf/ZmEElpqSPpshW
-         /1CQbU8rYvPDA==
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-6686e4499b1so569223b3a.1
-        for <linux-acpi@vger.kernel.org>; Thu, 06 Jul 2023 01:20:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688631632; x=1691223632;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mc09Q0aiju92Qfy7nDEKyfEwnxyYr4WtsvBD4qdO1Co=;
-        b=ajq3O4kT6+wwdDfodlZywwif/OaNxLU5e/D/kdW1FeH5f5jtMi8b0pWs9XDVFDm4lv
-         vIAiMPoGhwXIC0N9CceBuGxsI+33HfuHseFVjcrv1OK+CzSCHUmgA42utSgMFnUnSkia
-         QQRO8u6iVq9dpez9I2q8xrmCSpfLHU4B6ElUS7yB7lsjvkd1BBWrs/hv+OeBNaDPTmjj
-         m3oP9HMysxc4B56T9dWHVgpWKunUsOLsiv3iOY1MJqQ7518IWDBc8z9LcRyscQ4b8XO/
-         vecNkoCVisGpwpF0X98V0gKgdnPysSG/vqIyt2kWNR7dTjbFNmRxJQQlRAFPnzGelEMr
-         BFAA==
-X-Gm-Message-State: ABy/qLa6V1PHTaGalxQAgPQLbtI3em6ucbDlLrG+2fsv84pePu8fr/sU
-        1k05oa0Gb0wc9YmrmZaImUwMSjI+XQ1Ba8eVirEVchsReuJwEntmrY7fE60dvhhBY7Z65LYK+WE
-        CMA/QnR9oCNAmlM7r7us6WFBfwfO9yeG4yrAbr562TDkgmEY89HKjFE3AQ59opkH5iw==
-X-Received: by 2002:a05:6a00:24d5:b0:682:bd6e:b16a with SMTP id d21-20020a056a0024d500b00682bd6eb16amr873303pfv.14.1688631632423;
-        Thu, 06 Jul 2023 01:20:32 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGv0aUJCc57ozulJCmVrpQYfmvxqvUTQCxXCLBL62lCOHE93OKdkeac5ePyoPreCQ+QjXP98radX5YgY5RmrGQ=
-X-Received: by 2002:a05:6a00:24d5:b0:682:bd6e:b16a with SMTP id
- d21-20020a056a0024d500b00682bd6eb16amr873296pfv.14.1688631632050; Thu, 06 Jul
- 2023 01:20:32 -0700 (PDT)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FB8F61866;
+        Thu,  6 Jul 2023 08:52:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F287C433C7;
+        Thu,  6 Jul 2023 08:52:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688633536;
+        bh=ggVTIl5Ohn7qil0HaYjyKOkRlN5j1S5LhF5oA/HxgDs=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=nAAQ8I4u0oL9hHLlo/IXbbKw8j0UTDg3vzzcYaZRFuADEI3gURbH0O9DKjt8D1aKN
+         kDmwv0Qr/cVFXAmFfR2dLyGi7A3EAi9ho2+uYSOLchmnNI+VfPy8UoyBkwrhMknQzM
+         ZIdPoltZ082Zr/hs44C3Z3fGsQsv56AAbwypk7mR3iwPnR36pb5NhtacSgPio1lrB0
+         2yckYj+tMSfftDmbv8vlu3lPqihTDgTLHqJuPJ/KmvPVg3PjFpU+tHvdyTNqU+yLZL
+         zbZ/Up0WYMimXJlNVEnnTSHAn9qv/eXnMpfjE6145ztLWg+JxbLtMpwOv4iboeVApW
+         OB7BTLbhow/Qg==
+From:   =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To:     =?utf-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
+Cc:     Jessica Clarke <jrtc27@jrtc27.com>,
+        Emil Renner Berthing <emil.renner.berthing@gmail.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        rminnich@gmail.com, Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, jdelvare@suse.com,
+        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
+        allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
+        tinghan.shen@mediatek.com,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-acpi@vger.kernel.org, geshijian@bytedance.com,
+        weidong.wd@bytedance.com, graf@amazon.de
+Subject: Re: [External] [PATCH v2 1/3] riscv: obtain ACPI RSDP from FFI.
+In-Reply-To: <CAEEQ3wnaaMvJ3=7udvAjiP3q36nvqAwb8sh34f+nO8Ua_83yFw@mail.gmail.com>
+References: <20230702095735.860-1-cuiyunhui@bytedance.com>
+ <20230703-71f67eb66a037f5c0fb825c6@orel>
+ <CAEEQ3w=7tBHyG=CvuktPN5cvfpY6ayamnbry6eOYxMDrPN+oZg@mail.gmail.com>
+ <CANBLGcwcvK55dZ1__wvWCtcw=XoKt=qki8g6C_QYo+TBqqJ=TA@mail.gmail.com>
+ <50F3BD62-78F1-456E-A44A-0C7D9A2D4113@jrtc27.com>
+ <87bkgql8rq.fsf@all.your.base.are.belong.to.us>
+ <CAEEQ3wnaaMvJ3=7udvAjiP3q36nvqAwb8sh34f+nO8Ua_83yFw@mail.gmail.com>
+Date:   Thu, 06 Jul 2023 10:52:14 +0200
+Message-ID: <87sfa1toap.fsf@all.your.base.are.belong.to.us>
 MIME-Version: 1.0
-References: <20230704074506.2304939-1-kai.heng.feng@canonical.com>
- <CAJZ5v0jwO1NJ_x2t3RV-kYDmVY9UtyexznCSZMAmQ-gK4dWCmA@mail.gmail.com> <f5a4f802-d6a1-050e-ec70-701048ab1a2f@redhat.com>
-In-Reply-To: <f5a4f802-d6a1-050e-ec70-701048ab1a2f@redhat.com>
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date:   Thu, 6 Jul 2023 16:20:21 +0800
-Message-ID: <CAAd53p5nkE+QdxJwF_mEsNiEHvRwg+4D7yP77H6CDrMWPOX_zQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: video: Invoke _PS0 at boot for ACPI video
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -77,130 +76,87 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 5, 2023 at 6:33=E2=80=AFPM Hans de Goede <hdegoede@redhat.com> =
-wrote:
->
-> Hi,
->
-> On 7/4/23 18:58, Rafael J. Wysocki wrote:
-> > On Tue, Jul 4, 2023 at 9:46=E2=80=AFAM Kai-Heng Feng
-> > <kai.heng.feng@canonical.com> wrote:
-> >>
-> >> Screen brightness can only be changed once on some HP laptops.
-> >>
-> >> Vendor identified the root cause as Linux doesn't invoke _PS0 at boot
-> >> for all ACPI devices:
-> >
-> > This part of the changelog is confusing, because the evaluation of
-> > _PS0 is not a separate operation.  _PS0 gets evaluated when devices
-> > undergo transitions from low-power states to D0.
-> >
-> >>     Scope (\_SB.PC00.GFX0)
-> >>     {
-> >>         Scope (DD1F)
-> >>         {
-> >>             Method (_PS0, 0, Serialized)  // _PS0: Power State 0
-> >>             {
-> >>                 If (CondRefOf (\_SB.PC00.LPCB.EC0.SSBC))
-> >>                 {
-> >>                     \_SB.PC00.LPCB.EC0.SSBC ()
-> >>                 }
-> >>             }
-> >>             ...
-> >>         }
-> >>         ...
-> >>     }
-> >>
-> >> _PS0 doesn't get invoked for all ACPI devices because of commit
-> >> 7cd8407d53ef ("ACPI / PM: Do not execute _PS0 for devices without _PSC
-> >> during initialization").
->
-> So this _PS0 which seems to be the one which needs to run here,
-> is not the _PS0 for the GFX0 ACPI device, but rather for a child ACPI dev=
-ice-node which describes the connector (assumed based on the small part of =
-quoted DSDT, the actual definition of the DD1F device-node is missing).
+=E8=BF=90=E8=BE=89=E5=B4=94 <cuiyunhui@bytedance.com> writes:
 
-I'll file a bugzilla and attach a full acpidump there.
-
+> Hi Bj=C3=B6rn,
 >
-> Having a _PS0 method on a connector object is really weird IMHO. But if w=
-e need to invoke such a _PS0 method then IMHO that really should be done in=
- the drm/kms driver. E.g. at least the i915 code already contains code to m=
-ap the ACPI connector objects to the drm_connector objects, so it should be=
- relatively easily to make that try and do a power-transition to D0 when en=
-abling the connector.
-
-Or put all ACPI devices to D0 at boot?
-According to the BIOS folks that's what Windows does.
-This way we can drop acpi_device_fix_up_power* helpers altogether.
-
+> On Wed, Jul 5, 2023 at 10:43=E2=80=AFPM Bj=C3=B6rn T=C3=B6pel <bjorn@kern=
+el.org> wrote:
+>>
+>> Jessica Clarke <jrtc27@jrtc27.com> writes:
+>>
+>> > On 3 Jul 2023, at 19:58, Emil Renner Berthing <emil.renner.berthing@gm=
+ail.com> wrote:
+>> >>
+>> >> On Mon, 3 Jul 2023 at 15:33, =E8=BF=90=E8=BE=89=E5=B4=94 <cuiyunhui@b=
+ytedance.com> wrote:
+>> >>>
+>> >>> Hi drew,
+>> >>>
+>> >>> On Mon, Jul 3, 2023 at 9:01=E2=80=AFPM Andrew Jones <ajones@ventanam=
+icro.com> wrote:
+>> >>>>
+>> >>>>
+>> >>>> (This is a reply to a non-existent cover letter.)
+>> >>>
+>> >>> This has been discussed many times with Ard, Please refer to :
+>> >>> https://patches.linaro.org/project/linux-acpi/patch/20230426034001.1=
+6-1-cuiyunhui@bytedance.com/
+>> >>
+>> >> Hi Yunhui,
+>> >>
+>> >> From that discussion it was mentioned that that arm supports 3 methods
+>> >> of booting:
+>> >>  direct + devicetree
+>> >>  EFI + devicetree
+>> >>  EFI + ACPI
+>> >> ..but not
+>> >>  direct + ACPI
+>> >>
+>> >> To me it isn't obvious from that or this thread, and since arm seems
+>> >> to be doing fine without the 4th option I'm curious why that's
+>> >> necessary on riscv?
+>> >
+>> > If anything we should be removing option 1, because that=E2=80=99s not=
+ a
+>> > cross-OS standard (though RISC-V=E2=80=99s SBI direct booting is at le=
+ast not
+>> > tied to the OS). Any application-class platform spec is going to
+>> > mandate EFI, because, whatever your thoughts of EFI are, that is *the*
+>> > standard. And if you=E2=80=99re willing to pick up all the complexity =
+of ACPI,
+>> > what=E2=80=99s a bit of EFI (especially if you only go for a minimal o=
+ne a la
+>> > U-Boot)?
+>>
+>> Well said!
+>>
+>> Yunhui, why not simply add a minimal UEFI stub to Coreboot (like Jess
+>> points out above)?
 >
-> Also can you provide some more info on the hw on which this is being seen=
-:
->
-> 1. What GPU(s) is/are being used
+> In fact, in the v1 email, Coreboot's maintainer Ron has made it clear
+> that Coreboot does not support EFI, and it is necessary to transmit
+> firmware information through DTS on RISC-V.
 
-Intel GFX.
+It clear that Coreboot doesn't support UEFI today. We're "arguing" that
+it's less work/verification adding the neccesary minimal UEFI plumbing
+for Coreboot, than jumping through hoops in the kernel to work around
+it.
 
-AFAIK AMD based laptops also require this fixup too.
+I'm getting some UEFI FUD vibes here. I also think that parts of UEFI is
+kind of ugly, but it's, as Jess says, *the* spec and honestly, a bit
+what's expected (Hi CXL).
 
-> 2. If there is a mux for hybrid gfx in which mode is the mux set ?
+UEFI is a specification, and implementing the minimal requirements for
+UEFI is not that of a big deal. Look at Alex Graf's (et al) work on
+u-boot UEFI. U-boot is small/lean/open *and* manage to support enough
+UEFI for ACPI.
 
-No. This happens to mux-less and dGPU-less laptops.
+The whole "Oh, UEFI is so bad, bloated, and closed" hand-wavery is a bit
+tiring. :-(
 
-> 3. Wjich method is used to control the brightness (which backlight-class-=
-devices show up under /sys/class/backlight) ?
+...these last four sections is more of a beer discussion. I'll take my
+"my FW is better than yours" rants elsewhere. ;-)
 
-intel_backlight.
 
->
-> And can you add this info to the commit msg for the next version of the p=
-atch ?
-
-Sure.
-Can putting all devices to D0 be considered too? It's a better
-solution for the long wrong.
-
-Kai-Heng
-
->
-> Regards,
->
-> Hans
->
->
->
->
-> >
-> > And yes, Linux doesn't put all of the ACPI devices into D0 during
-> > initialization, but the above commit has a little to do with that.
-> >
-> >> For now explicitly call _PS0 for ACPI video to workaround the issue.
-> >
-> > This is not what the patch is doing.
-> >
-> >> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> >> ---
-> >>  drivers/acpi/acpi_video.c | 2 ++
-> >>  1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> >> index 62f4364e4460..793259bd18c8 100644
-> >> --- a/drivers/acpi/acpi_video.c
-> >> +++ b/drivers/acpi/acpi_video.c
-> >> @@ -2027,6 +2027,8 @@ static int acpi_video_bus_add(struct acpi_device=
- *device)
-> >>         if (error)
-> >>                 goto err_put_video;
-> >>
-> >> +       acpi_device_fix_up_power_extended(device);
-> >> +
-> >
-> > I would like to know what Hans thinks about this.
-> >
-> >>         pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
-> >>                ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
-> >>                video->flags.multihead ? "yes" : "no",
-> >> --
-> >
->
+Bj=C3=B6rn
