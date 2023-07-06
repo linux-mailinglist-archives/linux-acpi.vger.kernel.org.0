@@ -2,72 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91CFD7497BF
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 10:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE3E67497E2
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 11:03:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231616AbjGFIyE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jul 2023 04:54:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53094 "EHLO
+        id S231792AbjGFJDg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jul 2023 05:03:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231600AbjGFIyD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 04:54:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CBED1BC2;
-        Thu,  6 Jul 2023 01:54:02 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 05C38618DB;
-        Thu,  6 Jul 2023 08:54:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3B1C43391;
-        Thu,  6 Jul 2023 08:54:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688633641;
-        bh=BPOKAtKEZsLQYqxQEn58ctnADIlq6pN2eFukwAbEnx8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=beK9deYduBKqS6YLBFt6ppsVe0yRoy/MxMQzFsFYHino2LJojmD4O3AJ+B4Yl1RJF
-         dGnh4V4Li31VNs2Y+7nQDfDpk4PKlJ45B/KlZBcAIEbvxynjot5ZboGePcVNC3Lv40
-         vwGChjUciBKXxb2/pu0O03gJHrVskzYXp63FM4OkTSjnDrveESvJ5Eeg56aT2PxM91
-         wOfX5CmosO+5xSay9JkfVR2wD8g8pyMpGofqcf28kCTlluWqsgYvy3pyNB7gQxlWuc
-         pWeBK8yvPd1gJfEfkT86DPTi+kgxGFI9V339Z3FdwzoVwsFuyrViC8VKupLbMgk7Tk
-         BDNw7C5cGMNqQ==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2b6c5ede714so20427091fa.1;
-        Thu, 06 Jul 2023 01:54:01 -0700 (PDT)
-X-Gm-Message-State: ABy/qLakTVrCb2SU3UfV6YMmmadsLYesUzKTZL+TbUet/ukcnqhhAZGj
-        zyVos7hfJB4egkspuFp/yL7Uow/yZFXioUQJnnY=
-X-Google-Smtp-Source: APBJJlG9hlQ+baCj1Ocfd/bosbNpQBdbn4u1x8CKtqovKY5A5awNf90avWLlllSXL8AumOkcJPtGKWz5NpOAyzGZjfc=
-X-Received: by 2002:a2e:95d4:0:b0:2b6:da61:d5b9 with SMTP id
- y20-20020a2e95d4000000b002b6da61d5b9mr543533ljh.14.1688633639271; Thu, 06 Jul
- 2023 01:53:59 -0700 (PDT)
+        with ESMTP id S231616AbjGFJDf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 05:03:35 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4C491BD2
+        for <linux-acpi@vger.kernel.org>; Thu,  6 Jul 2023 02:03:09 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-31427ddd3fbso378165f8f.0
+        for <linux-acpi@vger.kernel.org>; Thu, 06 Jul 2023 02:03:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1688634188; x=1691226188;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ybQ/CZNAG22pD3nH7OaccSop7ti/KICGWdaCbCpWb14=;
+        b=SPRuhrsU4TSIm81nyIGiQJOxNSGVrgc2ZnWi4srtTkZ0wWkAx3AXtw/nFgSNPwXheH
+         UBhUkZjxKYkzswW+UnUCuciCyPkB2pKklhz0ldSLRLlZL29npRWKBX/tZeOCgkfkan8I
+         NyaM7QtBrB3wVE4d1I+p6eri/YCF1nSQkXixTTKRW7OHMLF5DGPAUwfmIp+a9kQFi+QZ
+         dwrZuwue0Nsv/nLw6+5+pnn+yLGBJvolGR5UH6bhotiRs7gsW3XV7zLLa6rU26uSG3NA
+         PaP4+xsD8moXD9ofLXVV5AnVmq43PoQuefdVLnuLRA2O7E2LgY9jYwFMyX1q0lBIwmUW
+         dO4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688634188; x=1691226188;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ybQ/CZNAG22pD3nH7OaccSop7ti/KICGWdaCbCpWb14=;
+        b=IeYKOxRbkGME96Y6s3jxwItvZoKOnaGRRcnts1GAo9lj8CfZWxd+7G2k3z8Iu4o1LW
+         SR2Ig3dyEEN5++GYSnpT3EIEVNHuHkCxPyTUnWSu6iM2ObqL3gLiiP9sDEKpjTJIfvad
+         EQoj3qO/IMiriVPmJRQIZtJHAD+Hh4NbCnWnqwSupBwvU8l8W8oXnP220ERdWz3T7vlB
+         g8tVrECWY6aCNrNtN2mgr4HRbqx34n3pxMEnPm+bhoKZEVKUF3NlR5p4wGfv/Wz75MCX
+         Gfj26NXxB/yRtcocD3zCm1ZJOzP5uJxiv4fk4WwlC5Zj+/rC1Zgh9bjlsXEKlTVQWNPf
+         hdxA==
+X-Gm-Message-State: ABy/qLZWU11Ay+rIXHzyaY0gSBIBOddMKn34vih+A9qjS4bn2R0SMX2x
+        sx85F/bkPG2AGr9dV7cmIhldyHQm8TLuODUV+/v5Ew==
+X-Google-Smtp-Source: APBJJlF97KD9nLAou+VLQkV6g+z36j8hSfywgVoYBVe0e6ASGIqI6D+7x6tZL67ba1/M8KAZyS4Nqzkvo9nQIHhhqzA=
+X-Received: by 2002:a5d:6047:0:b0:313:e8f9:803 with SMTP id
+ j7-20020a5d6047000000b00313e8f90803mr891587wrt.3.1688634187925; Thu, 06 Jul
+ 2023 02:03:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230705114251.661-1-cuiyunhui@bytedance.com> <mhng-48837062-b9f6-4968-be9e-9d3b352be117@palmer-ri-x1c9>
- <CAEEQ3wmRZGHNMB+CyfmAAGmapvFeQMVsgtQJh5nE01KG_3UBiw@mail.gmail.com>
-In-Reply-To: <CAEEQ3wmRZGHNMB+CyfmAAGmapvFeQMVsgtQJh5nE01KG_3UBiw@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 6 Jul 2023 10:53:47 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFZren0Q19DimwQaETCLz64D4bZQC5B2N=i3SAWHygkTQ@mail.gmail.com>
-Message-ID: <CAMj1kXFZren0Q19DimwQaETCLz64D4bZQC5B2N=i3SAWHygkTQ@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v3 0/4] Obtain SMBIOS and ACPI entry from FFI
-To:     =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>,
-        Jessica Clarke <jrtc27@jrtc27.com>,
-        Emil Renner Berthing <kernel@esmil.dk>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Conor Dooley <conor@kernel.org>, sunilvl@ventanamicro.com,
-        Paul Walmsley <paul.walmsley@sifive.com>,
+References: <20230705114251.661-1-cuiyunhui@bytedance.com> <20230705114251.661-5-cuiyunhui@bytedance.com>
+ <20230705-oblivious-unstuffed-8e028a5b243c@spud> <CAEEQ3wmG1OiE3GFqQp9SP+oKUbTfuTPx=rNGd-sjKsW7vv3bew@mail.gmail.com>
+ <20230706-syndrome-wise-c1097518f2c6@wendy>
+In-Reply-To: <20230706-syndrome-wise-c1097518f2c6@wendy>
+From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
+Date:   Thu, 6 Jul 2023 17:02:56 +0800
+Message-ID: <CAEEQ3wk5AnesBhgHVkCqQbjC=ALShzJnRnppmFQfSeAxZ-51pw@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v3 4/4] dt-bindings: firmware: Document
+ ffitbl binding
+To:     Conor Dooley <conor.dooley@microchip.com>
+Cc:     Conor Dooley <conor@kernel.org>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        devicetree@vger.kernel.org, sunilvl@ventanamicro.com,
+        ardb@kernel.org, palmer@dabbelt.com, paul.walmsley@sifive.com,
         aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
-        rminnich@gmail.com, Mark Rutland <mark.rutland@arm.com>,
-        lpieralisi@kernel.org, rafael@kernel.org, lenb@kernel.org,
-        jdelvare@suse.com, yc.hung@mediatek.com,
-        angelogioacchino.delregno@collabora.com,
+        rminnich@gmail.com, mark.rutland@arm.com, lpieralisi@kernel.org,
+        rafael@kernel.org, lenb@kernel.org, jdelvare@suse.com,
+        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
         allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
         tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org, geshijian@bytedance.com,
         weidong.wd@bytedance.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -76,119 +81,119 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 6 Jul 2023 at 04:04, =E8=BF=90=E8=BE=89=E5=B4=94 <cuiyunhui@bytedan=
-ce.com> wrote:
+Hi Conor,
+
+On Thu, Jul 6, 2023 at 2:45=E2=80=AFPM Conor Dooley <conor.dooley@microchip=
+.com> wrote:
 >
-> Hi Palmer,
->
-> On Wed, Jul 5, 2023 at 10:17=E2=80=AFPM Palmer Dabbelt <palmer@dabbelt.co=
-m> wrote:
-> >
-> > On Wed, 05 Jul 2023 04:42:47 PDT (-0700), cuiyunhui@bytedance.com wrote=
-:
-> > > Here's version 3 of patch series.
+> On Thu, Jul 06, 2023 at 11:43:55AM +0800, =E8=BF=90=E8=BE=89=E5=B4=94 wro=
+te:
+> > On Wed, Jul 5, 2023 at 11:07=E2=80=AFPM Conor Dooley <conor@kernel.org>=
+ wrote:
+> > > On Wed, Jul 05, 2023 at 07:42:51PM +0800, Yunhui Cui wrote:
+> > > > Add the description for ffitbl subnode.
+> > > >
+> > > > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> > > > ---
+> > > >  .../devicetree/bindings/firmware/ffitbl.txt   | 27 +++++++++++++++=
+++++
+> > > >  MAINTAINERS                                   |  1 +
+> > > >  2 files changed, 28 insertions(+)
+> > > >  create mode 100644 Documentation/devicetree/bindings/firmware/ffit=
+bl.txt
+> > > >
+> > > > diff --git a/Documentation/devicetree/bindings/firmware/ffitbl.txt =
+b/Documentation/devicetree/bindings/firmware/ffitbl.txt
+> > > > new file mode 100644
+> > > > index 000000000000..c42368626199
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/firmware/ffitbl.txt
 > > >
-> > > V1: The FFI (FDT FIRMWARE INTERFACE) scheme has reached a
-> > > consensus with the Maintainers.
-> > > Please refer to:
-> > > https://patches.linaro.org/project/linux-acpi/patch/20230426034001.16=
--1-cuiyunhui@bytedance.com/
+> > > Firstly, new dt-bindings need to be done in yaml, not in text form.
+> > > Secondly, you didn't re-run get_maintainer.pl after adding this bindi=
+ng,
+> > > so you have not CCed any of the other dt-binding maintainers nor the
+> > > devicetree mailing list.
 > >
-> > From looking at that thread it seems that the consensus is this is a ba=
-d
-> > idea?  Sorry if I'm just missing something...
+> > Re-run get_maintainer.pl and added maintainers into the maillist.
+> > emm.. There is some *txt in
+> > Documentation/devicetree/bindings/firmware/, isn't it?
+>
+> There might be, but that's not an excuse for adding _new_ ones, sorry.
+
+Okay, I'll update it on v4.
+
+
+> > > > +FFI(FDT FIRMWARE INTERFACE) driver
+> > > > +
+> > > > +Required properties:
+> > > > + - entry             : acpi or smbios root pointer, u64
+> > > > + - reg                       : acpi or smbios version, u32
+> > >
+> > > Please go look at any other dt-binding (or the example schema) as to =
+how
+> > > these properties should be used. A "reg" certainly should not be bein=
+g
+> > > used to store the revision...
 > >
+> > Okay, If so=EF=BC=8CI'll add a property "version" into the dts instead =
+of
+> > "reg", just like, WDYT?
+> > ffitbl {
 >
-> First of all, Coreboot does not support EFI, Ron has expressed, as follow=
-s:
-> "I am wondering if we can focus on risc-v here, and not drag in ARM,
-> b/c the ARM ACPI+UEFI ship has sailed. I had that discussion in 2013
-> ;-) and it's clear we don't want to redo it.
-> In general, in my world, because of the many problems that come with
-> UEFI (security, code quality, performance), we'd like to avoid
-> requiring a dependency on UEFI just to get ACPI on RISC-V. It also
-> seems, from other discussions I'm having, that there is some belief
-> that ACPI will be wanted on RISC-V. It would be nice to separate those
-> pieces on RISC-V; certainly they were separate for a very long time in
-> the x86 world (we had ACPI+SMM on coreboot laptops without UEFI for
-> example)."
+> Firstly, I'd much rather you spelt this out, like "ffi-table".
 >
-
-There appears to be a bit of cargo cult going on here.
-
-I agree that the traditional BIOS vendors did a terrible job pivoting
-to (U)EFI when it became a requirement for booting Windows on x86 PCs,
-and coreboot did an excellent job providing a retrofit alternative
-that was more secure and robust.
-
-However, it makes sense to distinguish between
-a) the UEFI specification
-b) the UEFI reference implementation (edk2)
-c) commercial implementations created by BIOS vendors for x86 PC OEMs
-that do not perform any testing beyond booting Windows.
-
-coreboot decided not to implement EFI at all, which on x86 means
-booting in a mode that is similar to BIOS boot. Given how the ACPI and
-DMTF (for SMBIOS) specifications were already under development when
-UEFI was being rolled out on x86, those specs contain provisions
-defining how to obtain the ACPI and SMBIOS tables by scanning regions
-of memory and looking for magic strings. But this is only defined for
-x86, and only works on x86 because all x86 machines are essentially
-PCs with a highly uniform system topology.
-
-The ARM case is very different, and while I am no expect on RISC-V,
-the following probably applies to it as well:
-- there is no need to work around buggy proprietary firmware that can
-boot Windows but not Linux
-- there is no 'prior art' when it comes to pre-EFI boot interfaces
-except for embedded style bare metal boot where all initialization is
-done by the kernel (e.g., PCI enumeration and resource assignment
-etc), and this is fundamentally arch specific
-- ACPI is a rich firmware interface, and the ACPI specification layers
-it on top of UEFI so the OS can make certain assumptions about the
-extent to which the platform has been initialized by the time it hands
-over.
-
-This is why the maintainers of the arm64 and RISC-V ports appear to
-agree that ACPI will only be supported when booting from firmware that
-implements the EFI specification. Note that this does not impose any
-requirement at all regarding which EFI implementation is going to be
-used: suggestions have been made on the thread to use a) a coreboot
-specific minimal EFI shim that describes the firmware tables and the
-EFI memory map, b) the UPL payload for coreboot, and c) U-Boot's EFI
-implementation.
-
-I will also note that booting according to the EFI spec is not
-fundamentally  more secure or faster: I have done some experiments on
-arm64 comparing bare metal boot with EFI boot using a minimal
-implementation in Rust, for booting virtual machines under KVM. Due to
-cache maintenance overhead and execution with the MMU disabled, bare
-metal boot is actually slightly slower. And due to the fact that the
-minimal EFI firmware enables the MMU and caches straight out of reset,
-it is also arguably more secure, given that all memory permission
-based protections and other page table based hardening measures (e.g.,
-BTI) are always enabled.
-
-In summary, I think it may be time to stop extrapolating from bad
-experiences with buggy proprietary x86 PC firmware created by
-traditional BIOS vendors for booting Windows (and nothing else) 15+
-years ago. The situation is very different for non-x86 Linux
-architectures, where we are trying hard to beat some sense into the
-fragmented embedded ecosystem, where every SoC vendor used to have its
-own fork of u-boot that booted in a slightly different manner,
-requiring a lot of effort on the part of the distros to track all
-those moving targets.
-
-
-> Then, a consensus was reached with Ard, that FFI can be applied to RISC-V=
-.
+> >     smbios {
+> >         entry =3D "";
 >
+> I still don't understand why "entry", which is an address, is being
+> represented by an empty string.
+> I also don't really get why you have not used "reg" to describe its
+> start address and size.
+>
+> >         version =3D < 0x02 >;
+>
+> Probably missing a vendor prefix, and the spaces are unusual, but better
+> than it was, yes.
 
-For the record, I would not characterize this as consensus. What I said was
-- SMBIOS has very little significance to the kernel itself or impact
-on its internal operation, and so it can be exposed via DT in a
-generic manner;
-- ACPI without UEFI on non-x86 is a) a bad idea, and b) fundamentally
-broken on arm64. So b) is out of the question, but it is not up to me
-to decide whether or not the RISC-V maintainers should entertain bad
-ideas.
+Based on your review, I plan to modify it as follows:
+
+ffi-table {
+#address-cells =3D <2>;
+#size-cells =3D <0>;
+        smbios@entry1 {
+                compatible =3D "smbios";
+                reg =3D <entry1>;
+                version =3D <2>;
+        };
+        smbios@entry2 {
+                compatible =3D "smbios";
+                reg =3D <entry2>;
+                version =3D <3>;
+        };
+        acpi@entry {
+                compatible =3D "acpi";
+                reg =3D <entry>;
+                version =3D <6>;
+        };
+}
+
+The reason why #size-cells is 0 is because only one item is needed,
+#address-cells =3D <2>; because two u32 are needed to express the 64-bit
+address.
+The memory for the SMBIOS table itself will be preserved in "reserved
+memory" , so we don't have to worry about this piece of memory getting
+corrupted. ACPI as well. WDYT?
+
+> >     }
+> >    acpi {
+> >          entry =3D "";
+> >          version =3D < 0x06 >;
+> >   }
+> > }
+>
+> Thanks,
+> Conor.
+
+Thanks,
+Yunhui
