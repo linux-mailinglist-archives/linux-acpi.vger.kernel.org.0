@@ -2,34 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4B267498B6
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 11:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65B667498FA
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 12:06:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230321AbjGFJuP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jul 2023 05:50:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48564 "EHLO
+        id S229518AbjGFKGP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jul 2023 06:06:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjGFJuO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 05:50:14 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B9301727;
-        Thu,  6 Jul 2023 02:50:13 -0700 (PDT)
-X-IronPort-AV: E=McAfee;i="6600,9927,10762"; a="363591223"
+        with ESMTP id S229508AbjGFKGO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 06:06:14 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38CCDD;
+        Thu,  6 Jul 2023 03:06:13 -0700 (PDT)
+X-IronPort-AV: E=McAfee;i="6600,9927,10762"; a="427242249"
 X-IronPort-AV: E=Sophos;i="6.01,185,1684825200"; 
-   d="scan'208";a="363591223"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2023 02:50:12 -0700
+   d="scan'208";a="427242249"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2023 03:06:13 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10762"; a="669697854"
+X-IronPort-AV: E=McAfee;i="6600,9927,10762"; a="809585957"
 X-IronPort-AV: E=Sophos;i="6.01,185,1684825200"; 
-   d="scan'208";a="669697854"
+   d="scan'208";a="809585957"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003.jf.intel.com with ESMTP; 06 Jul 2023 02:50:09 -0700
+  by FMSMGA003.fm.intel.com with ESMTP; 06 Jul 2023 03:06:10 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andy@kernel.org>)
-        id 1qHLcl-000UE1-2Y;
-        Thu, 06 Jul 2023 12:50:07 +0300
-Date:   Thu, 6 Jul 2023 12:50:07 +0300
+        id 1qHLsG-000UPD-0R;
+        Thu, 06 Jul 2023 13:06:08 +0300
+Date:   Thu, 6 Jul 2023 13:06:07 +0300
 From:   Andy Shevchenko <andy@kernel.org>
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -39,16 +39,16 @@ Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         linux-acpi@vger.kernel.org,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Kate Hsuan <hpa@redhat.com>, Hao Yao <hao.yao@intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>, linux-media@vger.kernel.org
-Subject: Re: [PATCH v3 10/18] media: ipu-bridge: Add a parse_sensor_fwnode
- callback to ipu_bridge_init()
-Message-ID: <ZKaOT0CpE8xVSBFo@smile.fi.intel.com>
+        Bingbu Cao <bingbu.cao@intel.com>, linux-media@vger.kernel.org,
+        Daniel Scally <djrscally@gmail.com>
+Subject: Re: [PATCH v3 14/18] media: i2c: Add driver for DW9719 VCM
+Message-ID: <ZKaSD0CHRBd+zu/T@smile.fi.intel.com>
 References: <20230705213010.390849-1-hdegoede@redhat.com>
- <20230705213010.390849-11-hdegoede@redhat.com>
+ <20230705213010.390849-15-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230705213010.390849-11-hdegoede@redhat.com>
+In-Reply-To: <20230705213010.390849-15-hdegoede@redhat.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -59,123 +59,229 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 05, 2023 at 11:30:02PM +0200, Hans de Goede wrote:
-> Add a parse_sensor_fwnode() callback to ipu_bridge_init(), so that
-> ipu_bridge_init() can be used with other sensor fwnode parse functions
-> then just ipu_bridge_parse_ssdb().
+On Wed, Jul 05, 2023 at 11:30:06PM +0200, Hans de Goede wrote:
+> From: Daniel Scally <djrscally@gmail.com>
 > 
-> This will allow the ipu3-bridge code to also be used by the atomisp
-> driver.
+> Add a driver for the DW9719 VCM. The driver creates a v4l2 subdevice
+> and registers a control to set the desired focus.
 
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+...
 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
-> Changes in v3:
-> - Add ipu_parse_sensor_fwnode_t type for the callback function
-> ---
->  drivers/media/pci/intel/ipu-bridge.c     | 10 ++++++----
->  drivers/media/pci/intel/ipu-bridge.h     | 11 +++++++++--
->  drivers/media/pci/intel/ipu3/ipu3-cio2.c |  2 +-
->  3 files changed, 16 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/media/pci/intel/ipu-bridge.c b/drivers/media/pci/intel/ipu-bridge.c
-> index 1f01f2c8b8a6..db67a75ae1b7 100644
-> --- a/drivers/media/pci/intel/ipu-bridge.c
-> +++ b/drivers/media/pci/intel/ipu-bridge.c
-> @@ -148,8 +148,7 @@ static enum v4l2_fwnode_orientation ipu_bridge_parse_orientation(struct acpi_dev
->  	return orientation;
->  }
->  
-> -static int ipu_bridge_parse_ssdb(struct acpi_device *adev,
-> -				 struct ipu_sensor *sensor)
-> +int ipu_bridge_parse_ssdb(struct acpi_device *adev, struct ipu_sensor *sensor)
->  {
->  	struct ipu_sensor_ssdb ssdb = {};
->  	int ret;
-> @@ -179,6 +178,7 @@ static int ipu_bridge_parse_ssdb(struct acpi_device *adev,
->  
->  	return 0;
->  }
-> +EXPORT_SYMBOL_NS_GPL(ipu_bridge_parse_ssdb, INTEL_IPU_BRIDGE);
->  
->  static void ipu_bridge_create_fwnode_properties(
->  	struct ipu_sensor *sensor,
-> @@ -343,7 +343,7 @@ static int ipu_bridge_connect_sensor(const struct ipu_sensor_config *cfg,
->  
->  		sensor = &bridge->sensors[bridge->n_sensors];
->  
-> -		ret = ipu_bridge_parse_ssdb(adev, sensor);
-> +		ret = bridge->parse_sensor_fwnode(adev, sensor);
->  		if (ret)
->  			goto err_put_adev;
->  
-> @@ -441,7 +441,8 @@ static int ipu_bridge_sensors_are_ready(void)
->  	return ready;
->  }
->  
-> -int ipu_bridge_init(struct device *dev)
-> +int ipu_bridge_init(struct device *dev,
-> +		    ipu_parse_sensor_fwnode_t parse_sensor_fwnode)
->  {
->  	struct fwnode_handle *fwnode;
->  	struct ipu_bridge *bridge;
-> @@ -459,6 +460,7 @@ int ipu_bridge_init(struct device *dev)
->  		sizeof(bridge->ipu_node_name));
->  	bridge->ipu_hid_node.name = bridge->ipu_node_name;
->  	bridge->dev = dev;
-> +	bridge->parse_sensor_fwnode = parse_sensor_fwnode;
->  
->  	ret = software_node_register(&bridge->ipu_hid_node);
->  	if (ret < 0) {
-> diff --git a/drivers/media/pci/intel/ipu-bridge.h b/drivers/media/pci/intel/ipu-bridge.h
-> index a8b89c4b95bc..7d84b22b2111 100644
-> --- a/drivers/media/pci/intel/ipu-bridge.h
-> +++ b/drivers/media/pci/intel/ipu-bridge.h
-> @@ -140,8 +140,12 @@ struct ipu_sensor {
->  	struct software_node_ref_args vcm_ref[1];
->  };
->  
-> +typedef int (*ipu_parse_sensor_fwnode_t)(struct acpi_device *adev,
-> +					 struct ipu_sensor *sensor);
+> +/*
+> + * Based on linux/modules/camera/drivers/media/i2c/imx/dw9719.c in this repo:
+
+Sakari, also long line? :-)
+
+> + * https://github.com/ZenfoneArea/android_kernel_asus_zenfone5
+> + */
+
+...
+
+> +#include <asm/unaligned.h>
+
+Usually we include headers from generic to particular / private,
+hence asm/* usually goes after linux/*.
+
+> +#include <linux/delay.h>
+> +#include <linux/i2c.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/types.h>
+
+...
+
+> +#define DW9719_CTRL_DELAY_US	1000
+
+USEC_PER_MSEC ?
+
+...
+
+> +#define DELAY_MAX_PER_STEP_NS	(1000000 * 1023)
+
+NSEC_PER_MSEC ?
+
+...
+
+> +#define DW9719_DEFAULT_VCM_FREQ		0x60
+
+Any comment what this value means in Hz?
+
+...
+
+> +#define to_dw9719_device(x) container_of(x, struct dw9719_device, sd)
+
+You can make this no-op at compile time by...
+
+...
+
+> +struct dw9719_device {
+> +	struct device *dev;
+> +	struct i2c_client *client;
+> +	struct regulator *regulator;
+
+> +	struct v4l2_subdev sd;
+
+...having this to be the first member in the structure.
+
+However bloat-o-meter can show grow of the code in case the dev is used more
+often. The rule of thumb is to combine two aspects:
+- frequency of usage (hence pointer arithmetics);
+- hot path vs. slow path (hence importance of the lesser code).
+
+> +	u32 sac_mode;
+> +	u32 vcm_freq;
 > +
->  struct ipu_bridge {
->  	struct device *dev;
-> +	ipu_parse_sensor_fwnode_t parse_sensor_fwnode;
->  	char ipu_node_name[ACPI_ID_LEN];
->  	struct software_node ipu_hid_node;
->  	u32 data_lanes[4];
-> @@ -150,9 +154,12 @@ struct ipu_bridge {
->  };
->  
->  #if IS_ENABLED(CONFIG_IPU_BRIDGE)
-> -int ipu_bridge_init(struct device *dev);
-> +int ipu_bridge_init(struct device *dev,
-> +		    ipu_parse_sensor_fwnode_t parse_sensor_fwnode);
-> +int ipu_bridge_parse_ssdb(struct acpi_device *adev, struct ipu_sensor *sensor);
->  #else
-> -static inline int ipu_bridge_init(struct device *dev) { return 0; }
-> +/* Use a define to avoid the @parse_sensor_fwnode argument getting evaluated */
-> +#define ipu_bridge_init(dev, parse_sensor_fwnode)	(0)
->  #endif
->  
->  #endif
-> diff --git a/drivers/media/pci/intel/ipu3/ipu3-cio2.c b/drivers/media/pci/intel/ipu3/ipu3-cio2.c
-> index 4068fa0a5ecf..26c4c1375990 100644
-> --- a/drivers/media/pci/intel/ipu3/ipu3-cio2.c
-> +++ b/drivers/media/pci/intel/ipu3/ipu3-cio2.c
-> @@ -1725,7 +1725,7 @@ static int cio2_pci_probe(struct pci_dev *pci_dev,
->  			return -EINVAL;
->  		}
->  
-> -		r = ipu_bridge_init(dev);
-> +		r = ipu_bridge_init(dev, ipu_bridge_parse_ssdb);
->  		if (r)
->  			return r;
->  	}
-> -- 
-> 2.41.0
-> 
+> +	struct dw9719_v4l2_ctrls {
+> +		struct v4l2_ctrl_handler handler;
+> +		struct v4l2_ctrl *focus;
+> +	} ctrls;
+> +};
+
+...
+
+> +static int dw9719_i2c_rd8(struct i2c_client *client, u8 reg, u8 *val)
+> +{
+> +	struct i2c_msg msg[2];
+> +	u8 buf[2] = { reg };
+> +	int ret;
+> +
+> +	msg[0].addr = client->addr;
+> +	msg[0].flags = 0;
+
+> +	msg[0].len = 1;
+> +	msg[0].buf = buf;
+
+	sizeof(buf[0])
+	&buf[0]
+
+looks more explicit.
+
+> +	msg[1].addr = client->addr;
+> +	msg[1].flags = I2C_M_RD;
+> +	msg[1].len = 1;
+> +	msg[1].buf = &buf[1];
+
+Ditto.
+
+> +	*val = 0;
+> +
+> +	ret = i2c_transfer(client->adapter, msg, 2);
+
+ARRAY_SIZE()
+
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	*val = buf[1];
+> +
+> +	return 0;
+> +}
+
+But as Sakari said this perhaps could go into CCI library.
+
+...
+
+> +	ret = dw9719_i2c_rd8(dw9719->client, DW9719_INFO, &val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (val != DW9719_ID) {
+> +		dev_err(dw9719->dev, "Failed to detect correct id\n");
+> +		ret = -ENXIO;
+
+		return -ENXIO;
+
+> +	}
+> +
+> +	return 0;
+
+...
+
+> +	/* Need 100us to transit from SHUTDOWN to STANDBY*/
+
+Missing space.
+
+> +	usleep_range(100, 1000);
+
+Perhaps fsleep() would be better, but I'm fine with either here.
+
+...
+
+> +static int dw9719_t_focus_abs(struct dw9719_device *dw9719, s32 value)
+> +{
+> +	int ret;
+
+Redundant?
+
+> +	value = clamp(value, 0, DW9719_MAX_FOCUS_POS);
+
+> +	ret = dw9719_i2c_wr16(dw9719->client, DW9719_VCM_CURRENT, value);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return 0;
+
+	return _wr16(...);
+
+or can it return positive values?
+
+> +}
+
+...
+
+> +static int __maybe_unused dw9719_suspend(struct device *dev)
+
+Can we use new PM macros instead of __maybe_unused?
+
+> +{
+> +	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+> +	struct dw9719_device *dw9719 = to_dw9719_device(sd);
+> +	int ret;
+> +	int val;
+> +
+> +	for (val = dw9719->ctrls.focus->val; val >= 0;
+> +	     val -= DW9719_CTRL_STEPS) {
+> +		ret = dw9719_t_focus_abs(dw9719, val);
+> +		if (ret)
+> +			return ret;
+
+> +		usleep_range(DW9719_CTRL_DELAY_US, DW9719_CTRL_DELAY_US + 10);
+
+fsleep() ?
+
+> +	}
+> +
+> +	return dw9719_power_down(dw9719);
+> +}
+
+> +static int __maybe_unused dw9719_resume(struct device *dev)
+> +{
+
+As per above function.
+
+...
+
+> +err_power_down:
+
+In one functions you use err_ in another fail_, be consistent.
+
+> +	dw9719_power_down(dw9719);
+> +	return ret;
+> +}
+
+...
+
+> +	dw9719->regulator = devm_regulator_get(&client->dev, "vdd");
+> +	if (IS_ERR(dw9719->regulator))
+> +		return dev_err_probe(&client->dev, PTR_ERR(dw9719->regulator),
+
+With
+
+	struct device *dev = &client->dev;
+
+code may look neater.
+
+> +				     "getting regulator\n");
 
 -- 
 With Best Regards,
