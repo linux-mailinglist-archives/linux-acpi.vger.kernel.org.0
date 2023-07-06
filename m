@@ -2,67 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1126E74972A
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 10:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A039474975E
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jul 2023 10:20:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230054AbjGFION (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jul 2023 04:14:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39348 "EHLO
+        id S231466AbjGFIUh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jul 2023 04:20:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229607AbjGFION (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 04:14:13 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32CC01726
-        for <linux-acpi@vger.kernel.org>; Thu,  6 Jul 2023 01:14:11 -0700 (PDT)
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+        with ESMTP id S229793AbjGFIUh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jul 2023 04:20:37 -0400
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0D6E171A
+        for <linux-acpi@vger.kernel.org>; Thu,  6 Jul 2023 01:20:35 -0700 (PDT)
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 5F8193F189
-        for <linux-acpi@vger.kernel.org>; Thu,  6 Jul 2023 08:14:08 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 2CD923F04D
+        for <linux-acpi@vger.kernel.org>; Thu,  6 Jul 2023 08:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1688631248;
-        bh=7HSYp1icG+guqeU+FJYsU4fa4qwz2KYF1jp5j0Ry53A=;
+        s=20210705; t=1688631634;
+        bh=Mc09Q0aiju92Qfy7nDEKyfEwnxyYr4WtsvBD4qdO1Co=;
         h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
          To:Cc:Content-Type;
-        b=ugAHKkGVza55YQSIromYzK/jDa6tYo96wMw/8i7/TPzXk6jqZ0Iu6xBoocheYWOqg
-         7873ac0pz4H3uTv08F1RK7COcD9FFRKYB5Y34NRCeNB4dC0m9lqII/Nl/lwY/bf7kR
-         YP8/ZbuLJPsYcMH9vORx7ejNp5ImTMMTiN7TiZp6tsW28QAGudYwi2++XALEuzvc0z
-         b2fIACBAQhMESk3F6RpCTBPcA+l9fTnUGzRm2t8LfZ16gUzJ5gx5T9aDjgzbp7BqsF
-         6vl/V86zgkOt9FW5eaAbsoZr2b329AsGhPGemzrbZFQiF4kwx3tqcOFkaGLwsnCLQb
-         dXWhx60eMfiGw==
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-666e3dad70aso826757b3a.0
-        for <linux-acpi@vger.kernel.org>; Thu, 06 Jul 2023 01:14:08 -0700 (PDT)
+        b=LeYr0lzf7x7mThhbdwOquSkkYXCruFYUVTGXcxHknkZxyyIZqhnh3Cniytr8gC1LS
+         UkltCErlsGulmCV78qQaVJYuNM1xBCjhbRwabRd5XrwWaXva5hrHKsBXF6YbeCKymi
+         q9RvAS4igXxRv/HA9uo8271S2HGzSY7j6BlGJ2Z0ljz5pA48vSCSnc+rzD0Zjmshc7
+         Rh9U5en+M5revteuRmemgKI2UyYsYtylgcasQ6n45399lo+voFrD1YQ+PzLPJioQCJ
+         PeYuNest/FXA5BHi0LZhptvDyvR0iw6qsWmAWORcmLQ0FGj758Gf/ZmEElpqSPpshW
+         /1CQbU8rYvPDA==
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-6686e4499b1so569223b3a.1
+        for <linux-acpi@vger.kernel.org>; Thu, 06 Jul 2023 01:20:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688631247; x=1691223247;
+        d=1e100.net; s=20221208; t=1688631632; x=1691223632;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7HSYp1icG+guqeU+FJYsU4fa4qwz2KYF1jp5j0Ry53A=;
-        b=cpIVLO4w6ZRBUyHy9jO0P24Dljua+w2TYeEakhWyoW6kUKjqGe9rhwbVAugFPDTOYx
-         INR8MT294wAOI/FpZEywApIm6QP0DdK5iafbf9OEW/+KLqCMiadYx60urZLPABGLKMfJ
-         I1hxE3+bbsxtQbhmOaBXGl5UUmah6jKCLEbv/vu5VkaenH0bLeYzG1xk87vjHErGo4ol
-         /Gu8yx+g+pwyzWwPAgvMt7/YRvz4LV57fcfGivGyJknyJWmV4ES3ku7GwsPEQXKcj7eV
-         2K+StIr4AXFmvAfOhU+7m0ZI9/7CU3JujeltDbWoGqS4E3Y/lyhS2r60+qJzX4PQbSMM
-         QZcA==
-X-Gm-Message-State: ABy/qLajbmXGoK6xENxnYBUgyTbAnyigneAieiL8P301apqeDZg1z1kD
-        +OFgaPSogzxs0SqS9/Ty9Z4ZxeESr9RbXRdkdQg5Q7C2Hw4jIJ8HIJeISbj9nupTbmZqWBRtX5F
-        IvbisLLl3q7a2R3OfZTbi5hePSdOkgARrpYE5DNQQYrCfxyrYV0t9LyI=
-X-Received: by 2002:a05:6a20:7484:b0:11f:33da:56ec with SMTP id p4-20020a056a20748400b0011f33da56ecmr1160250pzd.27.1688631247023;
-        Thu, 06 Jul 2023 01:14:07 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlF95ylLuO9tMs5+hripSwj2rqR9msxTCudrpIm4KNPOB7It6fu0srnyBvU7aXSE34l+pb0V6g1vX6qIhO02+bY=
-X-Received: by 2002:a05:6a20:7484:b0:11f:33da:56ec with SMTP id
- p4-20020a056a20748400b0011f33da56ecmr1160236pzd.27.1688631246691; Thu, 06 Jul
- 2023 01:14:06 -0700 (PDT)
+        bh=Mc09Q0aiju92Qfy7nDEKyfEwnxyYr4WtsvBD4qdO1Co=;
+        b=ajq3O4kT6+wwdDfodlZywwif/OaNxLU5e/D/kdW1FeH5f5jtMi8b0pWs9XDVFDm4lv
+         vIAiMPoGhwXIC0N9CceBuGxsI+33HfuHseFVjcrv1OK+CzSCHUmgA42utSgMFnUnSkia
+         QQRO8u6iVq9dpez9I2q8xrmCSpfLHU4B6ElUS7yB7lsjvkd1BBWrs/hv+OeBNaDPTmjj
+         m3oP9HMysxc4B56T9dWHVgpWKunUsOLsiv3iOY1MJqQ7518IWDBc8z9LcRyscQ4b8XO/
+         vecNkoCVisGpwpF0X98V0gKgdnPysSG/vqIyt2kWNR7dTjbFNmRxJQQlRAFPnzGelEMr
+         BFAA==
+X-Gm-Message-State: ABy/qLa6V1PHTaGalxQAgPQLbtI3em6ucbDlLrG+2fsv84pePu8fr/sU
+        1k05oa0Gb0wc9YmrmZaImUwMSjI+XQ1Ba8eVirEVchsReuJwEntmrY7fE60dvhhBY7Z65LYK+WE
+        CMA/QnR9oCNAmlM7r7us6WFBfwfO9yeG4yrAbr562TDkgmEY89HKjFE3AQ59opkH5iw==
+X-Received: by 2002:a05:6a00:24d5:b0:682:bd6e:b16a with SMTP id d21-20020a056a0024d500b00682bd6eb16amr873303pfv.14.1688631632423;
+        Thu, 06 Jul 2023 01:20:32 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGv0aUJCc57ozulJCmVrpQYfmvxqvUTQCxXCLBL62lCOHE93OKdkeac5ePyoPreCQ+QjXP98radX5YgY5RmrGQ=
+X-Received: by 2002:a05:6a00:24d5:b0:682:bd6e:b16a with SMTP id
+ d21-20020a056a0024d500b00682bd6eb16amr873296pfv.14.1688631632050; Thu, 06 Jul
+ 2023 01:20:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230704074506.2304939-1-kai.heng.feng@canonical.com> <CAJZ5v0jwO1NJ_x2t3RV-kYDmVY9UtyexznCSZMAmQ-gK4dWCmA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0jwO1NJ_x2t3RV-kYDmVY9UtyexznCSZMAmQ-gK4dWCmA@mail.gmail.com>
+References: <20230704074506.2304939-1-kai.heng.feng@canonical.com>
+ <CAJZ5v0jwO1NJ_x2t3RV-kYDmVY9UtyexznCSZMAmQ-gK4dWCmA@mail.gmail.com> <f5a4f802-d6a1-050e-ec70-701048ab1a2f@redhat.com>
+In-Reply-To: <f5a4f802-d6a1-050e-ec70-701048ab1a2f@redhat.com>
 From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date:   Thu, 6 Jul 2023 16:13:55 +0800
-Message-ID: <CAAd53p4vUkmvgAa8JgxzSNS1F0EVWYQxTBPOoRS+bQscDEc_nA@mail.gmail.com>
+Date:   Thu, 6 Jul 2023 16:20:21 +0800
+Message-ID: <CAAd53p5nkE+QdxJwF_mEsNiEHvRwg+4D7yP77H6CDrMWPOX_zQ@mail.gmail.com>
 Subject: Re: [PATCH] ACPI: video: Invoke _PS0 at boot for ACPI video
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, lenb@kernel.org,
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -76,80 +77,130 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 5, 2023 at 12:59=E2=80=AFAM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
+On Wed, Jul 5, 2023 at 6:33=E2=80=AFPM Hans de Goede <hdegoede@redhat.com> =
+wrote:
 >
-> On Tue, Jul 4, 2023 at 9:46=E2=80=AFAM Kai-Heng Feng
-> <kai.heng.feng@canonical.com> wrote:
+> Hi,
+>
+> On 7/4/23 18:58, Rafael J. Wysocki wrote:
+> > On Tue, Jul 4, 2023 at 9:46=E2=80=AFAM Kai-Heng Feng
+> > <kai.heng.feng@canonical.com> wrote:
+> >>
+> >> Screen brightness can only be changed once on some HP laptops.
+> >>
+> >> Vendor identified the root cause as Linux doesn't invoke _PS0 at boot
+> >> for all ACPI devices:
 > >
-> > Screen brightness can only be changed once on some HP laptops.
+> > This part of the changelog is confusing, because the evaluation of
+> > _PS0 is not a separate operation.  _PS0 gets evaluated when devices
+> > undergo transitions from low-power states to D0.
 > >
-> > Vendor identified the root cause as Linux doesn't invoke _PS0 at boot
-> > for all ACPI devices:
+> >>     Scope (\_SB.PC00.GFX0)
+> >>     {
+> >>         Scope (DD1F)
+> >>         {
+> >>             Method (_PS0, 0, Serialized)  // _PS0: Power State 0
+> >>             {
+> >>                 If (CondRefOf (\_SB.PC00.LPCB.EC0.SSBC))
+> >>                 {
+> >>                     \_SB.PC00.LPCB.EC0.SSBC ()
+> >>                 }
+> >>             }
+> >>             ...
+> >>         }
+> >>         ...
+> >>     }
+> >>
+> >> _PS0 doesn't get invoked for all ACPI devices because of commit
+> >> 7cd8407d53ef ("ACPI / PM: Do not execute _PS0 for devices without _PSC
+> >> during initialization").
 >
-> This part of the changelog is confusing, because the evaluation of
-> _PS0 is not a separate operation.  _PS0 gets evaluated when devices
-> undergo transitions from low-power states to D0.
+> So this _PS0 which seems to be the one which needs to run here,
+> is not the _PS0 for the GFX0 ACPI device, but rather for a child ACPI dev=
+ice-node which describes the connector (assumed based on the small part of =
+quoted DSDT, the actual definition of the DD1F device-node is missing).
 
-But not at boot.
-
->
-> >     Scope (\_SB.PC00.GFX0)
-> >     {
-> >         Scope (DD1F)
-> >         {
-> >             Method (_PS0, 0, Serialized)  // _PS0: Power State 0
-> >             {
-> >                 If (CondRefOf (\_SB.PC00.LPCB.EC0.SSBC))
-> >                 {
-> >                     \_SB.PC00.LPCB.EC0.SSBC ()
-> >                 }
-> >             }
-> >             ...
-> >         }
-> >         ...
-> >     }
-> >
-> > _PS0 doesn't get invoked for all ACPI devices because of commit
-> > 7cd8407d53ef ("ACPI / PM: Do not execute _PS0 for devices without _PSC
-> > during initialization").
->
-> And yes, Linux doesn't put all of the ACPI devices into D0 during
-> initialization, but the above commit has a little to do with that.
-
-Devices without _PSC now doesn't have _PS0 evaluated at boot time. I
-don't quite understand why it's not related to this commit?
+I'll file a bugzilla and attach a full acpidump there.
 
 >
-> > For now explicitly call _PS0 for ACPI video to workaround the issue.
->
-> This is not what the patch is doing.
+> Having a _PS0 method on a connector object is really weird IMHO. But if w=
+e need to invoke such a _PS0 method then IMHO that really should be done in=
+ the drm/kms driver. E.g. at least the i915 code already contains code to m=
+ap the ACPI connector objects to the drm_connector objects, so it should be=
+ relatively easily to make that try and do a power-transition to D0 when en=
+abling the connector.
 
-To be specific, it's for the child device nodes under ACPI GFX.
+Or put all ACPI devices to D0 at boot?
+According to the BIOS folks that's what Windows does.
+This way we can drop acpi_device_fix_up_power* helpers altogether.
+
+>
+> Also can you provide some more info on the hw on which this is being seen=
+:
+>
+> 1. What GPU(s) is/are being used
+
+Intel GFX.
+
+AFAIK AMD based laptops also require this fixup too.
+
+> 2. If there is a mux for hybrid gfx in which mode is the mux set ?
+
+No. This happens to mux-less and dGPU-less laptops.
+
+> 3. Wjich method is used to control the brightness (which backlight-class-=
+devices show up under /sys/class/backlight) ?
+
+intel_backlight.
+
+>
+> And can you add this info to the commit msg for the next version of the p=
+atch ?
+
+Sure.
+Can putting all devices to D0 be considered too? It's a better
+solution for the long wrong.
 
 Kai-Heng
 
 >
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > ---
-> >  drivers/acpi/acpi_video.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> > index 62f4364e4460..793259bd18c8 100644
-> > --- a/drivers/acpi/acpi_video.c
-> > +++ b/drivers/acpi/acpi_video.c
-> > @@ -2027,6 +2027,8 @@ static int acpi_video_bus_add(struct acpi_device =
-*device)
-> >         if (error)
-> >                 goto err_put_video;
-> >
-> > +       acpi_device_fix_up_power_extended(device);
-> > +
+> Regards,
 >
-> I would like to know what Hans thinks about this.
+> Hans
 >
-> >         pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
-> >                ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
-> >                video->flags.multihead ? "yes" : "no",
-> > --
+>
+>
+>
+> >
+> > And yes, Linux doesn't put all of the ACPI devices into D0 during
+> > initialization, but the above commit has a little to do with that.
+> >
+> >> For now explicitly call _PS0 for ACPI video to workaround the issue.
+> >
+> > This is not what the patch is doing.
+> >
+> >> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> >> ---
+> >>  drivers/acpi/acpi_video.c | 2 ++
+> >>  1 file changed, 2 insertions(+)
+> >>
+> >> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+> >> index 62f4364e4460..793259bd18c8 100644
+> >> --- a/drivers/acpi/acpi_video.c
+> >> +++ b/drivers/acpi/acpi_video.c
+> >> @@ -2027,6 +2027,8 @@ static int acpi_video_bus_add(struct acpi_device=
+ *device)
+> >>         if (error)
+> >>                 goto err_put_video;
+> >>
+> >> +       acpi_device_fix_up_power_extended(device);
+> >> +
+> >
+> > I would like to know what Hans thinks about this.
+> >
+> >>         pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
+> >>                ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
+> >>                video->flags.multihead ? "yes" : "no",
+> >> --
+> >
+>
