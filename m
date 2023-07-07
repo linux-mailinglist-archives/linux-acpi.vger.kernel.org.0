@@ -2,149 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51ED774B502
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jul 2023 18:16:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A75D74B50A
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jul 2023 18:19:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229625AbjGGQQd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 Jul 2023 12:16:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48824 "EHLO
+        id S230166AbjGGQTS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 Jul 2023 12:19:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232203AbjGGQQb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Jul 2023 12:16:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2B191FC6;
-        Fri,  7 Jul 2023 09:16:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B5A7619F7;
-        Fri,  7 Jul 2023 16:16:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710E5C433C7;
-        Fri,  7 Jul 2023 16:16:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688746589;
-        bh=pbnXRhVySf14G9UUJhkd+L9NaIu5G90Mbtsz7TnLfrI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=iA3khxCeCcZuXExNsjQj7UM6c3HCUDupcSUkpt2D2twVnz4wDXkMnQ+Y0++FfWZjh
-         GWRR5FNYbcAvnU+3kEwiOPl0AREYmsoCMaM+N0zjbQ7KSrcr5e5guLS221wxBEb1AQ
-         +zQmq+JVyPx/j29K4OEWY94RtVxNE6v9Qs8B7dPd7Z3EH8eDJZt/+IIkd+HItnMbdW
-         68QsH1vusOFYYhLEJbD2uyxsAJ+oBrBhBaEEOmqkisbp43qKwqt3sLDQIXPDXRGgi9
-         FAOoXXjOxVzMOOuJrhXsMzDWC6fZhtIpUUgC9cRMwtsizhclTj4ePX/92fC+Boae+r
-         j2joOl0sQkGag==
-Date:   Fri, 7 Jul 2023 17:16:23 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Yunhui Cui <cuiyunhui@bytedance.com>
-Cc:     sunilvl@ventanamicro.com, ardb@kernel.org, palmer@dabbelt.com,
-        paul.walmsley@sifive.com, aou@eecs.berkeley.edu,
-        linux-riscv@lists.infradead.org, rminnich@gmail.com,
-        mark.rutland@arm.com, lpieralisi@kernel.org, rafael@kernel.org,
-        lenb@kernel.org, jdelvare@suse.com, yc.hung@mediatek.com,
-        angelogioacchino.delregno@collabora.com,
+        with ESMTP id S229642AbjGGQTS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Jul 2023 12:19:18 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C38F21FC6
+        for <linux-acpi@vger.kernel.org>; Fri,  7 Jul 2023 09:18:51 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-51e29913c35so2846814a12.0
+        for <linux-acpi@vger.kernel.org>; Fri, 07 Jul 2023 09:18:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1688746730; x=1691338730;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BwphiLKBiEsc7end01Y8mmEBaeTtS1uM+mpDszrjNwU=;
+        b=kLJvIcllBwq3yuN7T4W5b/a9y5XRFLkSDvzTLkaIXA5rjr3sDKw+zwZB9eXr3Wo+Rm
+         CnegdWjDjTi1vU7Au9bDR1xfGmtpynB4ocTa4raBPAmzXOetWr/X8lWdxQEUZ30Y5cqg
+         nssvL/k0HrWueSeLqFJ7k7URhQNdosToSXpYGj3BWNjVkw9VB+HD3G2EyCu8/51Q55Lg
+         wfa4k2NL4mxqjsu/BvDlFJ9se/xU3aCf69Iw0DSBAC7Wjhd2me8Tcuq/eOhRa0qXio2u
+         bZpQRprslU43SNWWy8AmwP3J/bKbj9CPy0WMnUgwoK2m+Lqm+YuPKzhJ2ejG7pixXfIK
+         yF3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688746730; x=1691338730;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BwphiLKBiEsc7end01Y8mmEBaeTtS1uM+mpDszrjNwU=;
+        b=WuQ4YPbZUsuZd1fiBQWiRUKk8MGyB5lypNavGT1e4A65ibSheDMbx4D6Ki5X+SfY3D
+         dF94WqBcCq9vXzsroKr5En1iOjVS0Zx+idirA37oGm7rsioGVr5ebCLNeYlREAN6vmoe
+         z/vwP+p7u5vZx7gGcMScOW5A15NEgzFNVKcWB3ePBRrA21XCLelYR0M9gDja1spxCauC
+         McGoPsxP1qt4m3oaeogViluvHfiB1ayzt40EaY/mogC9TQVAhYDwQ6P6FeCtiFvDsb9O
+         09igG5iYz6buw5djBllCsN1SzRKHcN9XLo1muwMHQJdAnT6WN/d11wKsVl2FMwZuiEx/
+         Ndrw==
+X-Gm-Message-State: ABy/qLYYGGkwjRtZLTJcom8TYEE5HIXgjXRp/LwZofW2w3Wn4tE7VHE/
+        6Om4UAVcEZYKQgai7HZxOZi4KuwtiV8o7rYEGYYuXg==
+X-Google-Smtp-Source: APBJJlGNXWN5iR0lxERw28DBQHWKhrGGYB0EGkwrVdX0DNT38+8FUlx2ZocVTPj1M0RsuZ0At5riiFSUnWNrWNAhazs=
+X-Received: by 2002:aa7:cf96:0:b0:51d:7fa6:62ca with SMTP id
+ z22-20020aa7cf96000000b0051d7fa662camr4182986edx.14.1688746730201; Fri, 07
+ Jul 2023 09:18:50 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAMj1kXFZren0Q19DimwQaETCLz64D4bZQC5B2N=i3SAWHygkTQ@mail.gmail.com>
+ <mhng-b66b085a-eb15-4c9b-b2aa-93ddf16ec7aa@palmer-ri-x1c9a>
+ <CAP6exYKwZG=_47r0jAUFYNL5-P-SS==k6vWdKiMJ9nB0upH5Zw@mail.gmail.com>
+ <20230707-attach-conjuror-306d967347ce@wendy> <ZKfsSsdiso0W8mW6@sunil-laptop>
+ <CAN3iYbMhQU5Ng4r6_rQDnLmit1GCmheC5T49rsUP5NgHFEXsHA@mail.gmail.com>
+ <ZKgLKvBoWKSxzm6r@sunil-laptop> <CAN3iYbOe+i4jVhz0sSQwVQ2PMB7UvaTPyN_sLtZj0uiOD2emDA@mail.gmail.com>
+ <20230707-gargle-enjoyable-f9f7f87fc7ea@spud>
+In-Reply-To: <20230707-gargle-enjoyable-f9f7f87fc7ea@spud>
+From:   =?UTF-8?B?6JGb5aOr5bu6?= <geshijian@bytedance.com>
+Date:   Sat, 8 Jul 2023 00:18:39 +0800
+Message-ID: <CAN3iYbObSC_g=+oN6mxCp_OAzLVcw7nnt_iud1-p_XBdYQ9hjQ@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v3 0/4] Obtain SMBIOS and ACPI entry from FFI
+To:     Conor Dooley <conor@kernel.org>
+Cc:     Sunil V L <sunilvl@ventanamicro.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        ron minnich <rminnich@gmail.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Ard Biesheuvel <ardb@kernel.org>, cuiyunhui@bytedance.com,
+        jrtc27@jrtc27.com, kernel@esmil.dk,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org,
+        Mark Rutland <mark.rutland@arm.com>, lpieralisi@kernel.org,
+        rafael@kernel.org, lenb@kernel.org, jdelvare@suse.com,
+        yc.hung@mediatek.com, angelogioacchino.delregno@collabora.com,
         allen-kh.cheng@mediatek.com, pierre-louis.bossart@linux.intel.com,
         tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, geshijian@bytedance.com,
-        weidong.wd@bytedance.com
-Subject: Re: [PATCH v3 4/4] dt-bindings: firmware: Document ffitbl binding
-Message-ID: <20230707-brigade-myth-86ee252b2e4a@spud>
-References: <20230705114251.661-1-cuiyunhui@bytedance.com>
- <20230705114251.661-5-cuiyunhui@bytedance.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="MexQSwawafA3M9FW"
-Content-Disposition: inline
-In-Reply-To: <20230705114251.661-5-cuiyunhui@bytedance.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        linux-acpi@vger.kernel.org, weidong.wd@bytedance.com,
+        Dong Wei <Dong.Wei@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Sat, Jul 8, 2023 at 12:07=E2=80=AFAM Conor Dooley <conor@kernel.org> wro=
+te:
+>
+> Hey,
+>
+> On Fri, Jul 07, 2023 at 11:56:48PM +0800, =E8=91=9B=E5=A3=AB=E5=BB=BA wro=
+te:
+> > On Fri, Jul 7, 2023 at 8:55=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.=
+com> wrote:
+> >
+> > > On Fri, Jul 07, 2023 at 08:05:48PM +0800, =E8=91=9B=E5=A3=AB=E5=BB=BA=
+ wrote:
+> > > > Hi Sunil,
+> > > >
+> > > > From Sunil:
+> > > > IMO, if the question is generic like "Is UEFI mandatory for RISC-V?=
+",
+> > > > the answer will be solid "no" because we can use DT without UEFI. B=
+ut if
+> > > > you ask whether UEFI is mandatory for ACPI support on RISC-V, then =
+the
+> > > > answer will be "yes".
+> > > > ---- Why UEFI is mandatory for ACPI support on RISC-V?  As we know,=
+ on X86,
+> > > > ACPI works well without UEFI. Is there any limitation on RISC-V
+> > > > architecture?
+> > > Yes, the limitation is RISC-V can not use IA-PC BIOS. Please see
+> > > section 5.2.5 and 15 in ACPI spec.
+> > >
+> > > I don't have much to add to Ard's reasons.
+> > >
+> > > https://lore.kernel.org/linux-riscv/CAMj1kXFZren0Q19DimwQaETCLz64D4bZ=
+QC5B2N=3Di3SAWHygkTQ@mail.gmail.com/
+> > >
+>
+> > I don't think that's the limitation on RISC-V. BTW, how does OSPM find =
+the
+> > RSDP on ARM systems? Does it meet 5.2.5?
+> >
+> > Here are
+> > 1. Purpose: purpose is to provide another option on Firmware Solution; =
+Our
+> > purpose is NOT to ban UEFI.
+> > 2. Both ARM and RISC-V starts from UBOOT solution, and that's close to
+> > coreboot, so we would like to enable flexible and rich ecosystem.
+> > 3. We don't like to push coreboot and UEFI together, so we don't plan t=
+o
+> > enable UEFI in coreboot(maybe from Uboot); because that makes the solut=
+ion
+> > complex.
+> > 4. I think we should fix the request and problem, banning or protecting
+> > something is NOT the goal of us.
+> >
+> > I think the solution is for both RISC-V and ARM, and also it works on X=
+86
+> > if it's done.
+> > Let me know what the problem and impact is, please.
+>
+> If you are going to keep arguing this, please stop sending top-posted
+> HTML to the mailing list. It makes it impossible for those not in the CC
+> list to follow along.
 
---MexQSwawafA3M9FW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks Conor, I will follow the rules.
 
-Hey,
-
-On Wed, Jul 05, 2023 at 07:42:51PM +0800, Yunhui Cui wrote:
-> Add the description for ffitbl subnode.
->=20
-> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> ---
->  .../devicetree/bindings/firmware/ffitbl.txt   | 27 +++++++++++++++++++
->  MAINTAINERS                                   |  1 +
->  2 files changed, 28 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/firmware/ffitbl.txt
->=20
-> diff --git a/Documentation/devicetree/bindings/firmware/ffitbl.txt b/Docu=
-mentation/devicetree/bindings/firmware/ffitbl.txt
-> new file mode 100644
-> index 000000000000..c42368626199
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/firmware/ffitbl.txt
-> @@ -0,0 +1,27 @@
-> +FFI(FDT FIRMWARE INTERFACE) driver
-> +
-> +Required properties:
-> + - entry		: acpi or smbios root pointer, u64
-> + - reg			: acpi or smbios version, u32
-> +
-> +Some bootloaders, such as Coreboot do not support EFI,
-> +only devicetree and some arches do not have a reserved
-> +address segment. Add "ffitbl" subnode to obtain ACPI RSDP
-> +and SMBIOS entry.
-
-Since the conversation on this stuff all seems to be going absolutely
-nowhere, the ACPI portion of this is intended for use on RISC-V in
-violation of the RISC-V ACPI specs. It also goes against the
-requirements of the platform spec. Quoting from [1]:
-
-| > Just so we're all on the same page, I just now asked Mark Himelstein
-| > of RISC-V International if there is anything in RISC-V standards that
-| > requires UEFI, and the answer is a solid "no."
-|=20
-| Huh? Firstly, running off to invoke RVI is not productive - they don't
-| maintain the various operating system kernels etc.
-| Secondly, that does not seem to be true. The platform spec mandates UEFI
-| for the OS-A server platform, alongside ACPI:
-| https://github.com/riscv/riscv-platform-specs/blob/main/riscv-platform-sp=
-ec.adoc#32-boot-process
-| and the OS-A embedded platform needs to comply with EBBR & use DT:
-| https://github.com/riscv/riscv-platform-specs/blob/main/riscv-platform-sp=
-ec.adoc#32-boot-process
-|=20
-| EBBR does say that systems must not provide both ACPI and DT to the OS
-| loader, but I am far from an expert on these kind of things & am not
-| sure where something like this where the DT "contains" ACPI would stand.
-|=20
-| The RISC-V ACPI spec also says "UEFI firmware is mandatory to support
-| ACPI":
-| https://github.com/riscv-non-isa/riscv-acpi/blob/master/riscv-acpi-guidan=
-ce.adoc
-
-NAKed-by: Conor Dooley <conor.dooley@microchip.com>
-
-Cheers,
-Conor.
-
-[1] - https://lore.kernel.org/linux-riscv/20230707-attach-conjuror-306d9673=
-47ce@wendy/
-
---MexQSwawafA3M9FW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZKg6VwAKCRB4tDGHoIJi
-0tsPAP0bKjMWR0EO3MkRO8EwPjH447Grmd24cJV3uLKXhycVGQEAxlcHMYpTj38j
-JvMPxFtO7OquXt3BnCppGSpNCHKakgQ=
-=/Xfw
------END PGP SIGNATURE-----
-
---MexQSwawafA3M9FW--
+>
+>
+> Thanks,
+> Conor.
