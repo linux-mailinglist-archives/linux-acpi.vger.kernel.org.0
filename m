@@ -2,72 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDCBA74BD17
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 Jul 2023 11:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DAC674BD67
+	for <lists+linux-acpi@lfdr.de>; Sat,  8 Jul 2023 14:03:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229773AbjGHJ0H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 8 Jul 2023 05:26:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48234 "EHLO
+        id S229834AbjGHMDO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 8 Jul 2023 08:03:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbjGHJ0G (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 8 Jul 2023 05:26:06 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0A7C1BF5
-        for <linux-acpi@vger.kernel.org>; Sat,  8 Jul 2023 02:25:40 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4fafe87c6fbso4235936e87.3
-        for <linux-acpi@vger.kernel.org>; Sat, 08 Jul 2023 02:25:40 -0700 (PDT)
+        with ESMTP id S229496AbjGHMDN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 8 Jul 2023 08:03:13 -0400
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E728B8
+        for <linux-acpi@vger.kernel.org>; Sat,  8 Jul 2023 05:03:12 -0700 (PDT)
+Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-52cb8e5e9f5so1855509a12.0
+        for <linux-acpi@vger.kernel.org>; Sat, 08 Jul 2023 05:03:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1688808339; x=1691400339;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GCpw0lHr+AbvSxnzg9XtiBC/ZvwrmfnPkPx+Fvg8o70=;
-        b=Sci15XqiYLbNecBF/GuJ1mM8D+s4WOJZXJfxW8Z52ck4SGtgemoHvh4I7FzZLDFoOV
-         TdULymacrA5sseAvwHHjKEaYwt/TbHiVTGqpSUoH2xneze0cyTZ4ZLySNI/Ju3khNO5h
-         GNwfl37PL6lEHeU3ZU3fzAzRVyMJKgNtXJKcRKz315onxSOllkJRxOh7uyQhH+g/EqWW
-         Y/WIb/tQ/64Lz7i8ClXlta4eLq3cd08TJTKe/MRB89kB1NlhMbm+n1e4toD8fU9DrveR
-         XAC4U5V1f6+4wxr5Lo20Bq0Bi+EA3ieGMQ7BUtvmKDhifyoEN8WOvXrHc9QXQk+4/0ce
-         XJ8A==
+        d=ventanamicro.com; s=google; t=1688817792; x=1691409792;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=pmW+hS9M/nuHr1o+UJdiTC8iEB1m1jPftzrxBZrYbqo=;
+        b=Cgx32CzVjbgsu10mxr5sIU/3c+N6ldXoy6BzzWOBMTIGC9t2Mg4tZtwqFYZ2z7JZpL
+         EeGF6w355DMuzE85qokbs18VK9Gvqqm2Qorj24pqu8E84cO2bG2p11UShZMr3wpsCF0k
+         1WR8q8vC68MrUMmUOdtnQh2Hsi+dYU7MJIOLJA8DgGA4JjGPMFVCeKsBkySaQKPLKwsL
+         MKzDPTuDc5dgc4qLxIxAm89ois4f+C3c+M5Qb4NoYh29nDvjF0Dn8AOBYIUSm07sxQ/j
+         RESBR25MqbVD+tva7z63hUlEXq0GZAoFS8HgWibdOnNJp2FYh6N2Fqlk4HC+8qaTcGw5
+         nByg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688808339; x=1691400339;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GCpw0lHr+AbvSxnzg9XtiBC/ZvwrmfnPkPx+Fvg8o70=;
-        b=IHiIFreNlzjYJvxbKCV5aJ6uOMR+cmJ/9pzmgCnApxuvU4ihiytVg/6fILxgHe+lnX
-         Ljp81jDMWk/TOFwYIjRY4vEmfhLmamwRSNVLI+wOntEzMmKvLWmWJXeXRKFPp/FPJOfr
-         haRNe2sucV1d0/dCk/Kez1S66PzvtNM/RoXohLXPx1EvwPVNbnMzlSxLiTcYicIXdChB
-         1H3MJJWa1rf1dB1Wg76rSy/SXvHuew+2tg1+/nI944gGzoMtzdFxnMIwphCglnt4OIdw
-         rpCNqJ4VNaOlHn6gbs+77NO7O3p/6l0dOfyttuWUS/OEJw2wojThl2qRiQdx1qjg6NYG
-         LNvQ==
-X-Gm-Message-State: ABy/qLb+yIzIL4vMA0QuocgCh5fdySEcQ+lQyhEVmGneRjr8192XavNt
-        6ZgJSHyi9JIHk5G32cFwvBx5E+UqykphMbUADI72Lw==
-X-Google-Smtp-Source: APBJJlHpHpNEOzljGNGhzdKqzZd0Exi6/n/y9u220POKtKz5wP6CjZdUf4rogMBsc3/lnCmEcMP/2G7SNboW104YScI=
-X-Received: by 2002:a05:6512:3112:b0:4f9:5519:78b8 with SMTP id
- n18-20020a056512311200b004f9551978b8mr5030415lfb.63.1688808339073; Sat, 08
- Jul 2023 02:25:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAMj1kXFZren0Q19DimwQaETCLz64D4bZQC5B2N=i3SAWHygkTQ@mail.gmail.com>
- <mhng-b66b085a-eb15-4c9b-b2aa-93ddf16ec7aa@palmer-ri-x1c9a>
- <CAP6exYKwZG=_47r0jAUFYNL5-P-SS==k6vWdKiMJ9nB0upH5Zw@mail.gmail.com>
- <20230707-attach-conjuror-306d967347ce@wendy> <ZKfsSsdiso0W8mW6@sunil-laptop>
- <CAN3iYbMhQU5Ng4r6_rQDnLmit1GCmheC5T49rsUP5NgHFEXsHA@mail.gmail.com>
- <ZKgLKvBoWKSxzm6r@sunil-laptop> <CAN3iYbOe+i4jVhz0sSQwVQ2PMB7UvaTPyN_sLtZj0uiOD2emDA@mail.gmail.com>
- <20230707-gargle-enjoyable-f9f7f87fc7ea@spud> <DBAPR08MB57836AE63A1F5D3902B95BFE9C2DA@DBAPR08MB5783.eurprd08.prod.outlook.com>
- <CAEEQ3wnhCRnDsa2Un=J_VOo2JZqf0nMXX11okqpyhMbLAWsKJQ@mail.gmail.com> <9F6A932E-6FFE-4CF1-BF20-D5D80AC26F37@jrtc27.com>
-In-Reply-To: <9F6A932E-6FFE-4CF1-BF20-D5D80AC26F37@jrtc27.com>
-From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-Date:   Sat, 8 Jul 2023 17:25:27 +0800
-Message-ID: <CAEEQ3wkJ4GkrzwasesjqKmEns3HpQrTYOxe=o3Mw0Qe2nb=mVA@mail.gmail.com>
-Subject: Re: [External] [PATCH v3 0/4] Obtain SMBIOS and ACPI entry from FFI
-To:     Jessica Clarke <jrtc27@jrtc27.com>
+        d=1e100.net; s=20221208; t=1688817792; x=1691409792;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pmW+hS9M/nuHr1o+UJdiTC8iEB1m1jPftzrxBZrYbqo=;
+        b=hpmU4aGh+IOpq31eIsg+Yx0J2+UjBNC9xaFLXG4NpUCkFvD1YJWepod58X6Tb6MNnG
+         GeMZ47lCXNfSsQX5qIRe6kJjhM/NTec2yAHcGXfj390eE8WCkvue3xPZlOIT0sCC5o4d
+         7DyfXAcRg9gVVbEff0o3fC4iV8He6K6OOGi2T+2Qk+X0NLnGmA/x1zZzjxr4HjENbd6s
+         yBukfHvoz7G81Ewr6ZjUwnTHaXjWtrKRWIQxo2vd+vAxIoDMJQEyunFrXkhlXyhGB0Me
+         ku0CBYT+dFcafJEOI/UId7XVAuozQvOivocshlVDRvGCDAR+5Ky4/qChWTJWSewi/0vr
+         emTA==
+X-Gm-Message-State: ABy/qLYPgI7cv2IKxpI7KgM7LEn6ZcaMo02A1mI4Io9540ia4Af79wFm
+        is6ptKJ0WkObyTA69/xzL3ekhQ==
+X-Google-Smtp-Source: APBJJlFRc9kwODiRcw6uSg+iVQe/4Kk5wsuH2F52nIAIw5ZGfOzMcKcldwdMs7dd4MdwFE3W7lBf7w==
+X-Received: by 2002:a17:90b:357:b0:262:ec04:4ff7 with SMTP id fh23-20020a17090b035700b00262ec044ff7mr16375949pjb.16.1688817791704;
+        Sat, 08 Jul 2023 05:03:11 -0700 (PDT)
+Received: from sunil-laptop ([106.51.184.72])
+        by smtp.gmail.com with ESMTPSA id v2-20020a17090a960200b00262e9fbd5fbsm2932101pjo.32.2023.07.08.05.03.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Jul 2023 05:03:11 -0700 (PDT)
+Date:   Sat, 8 Jul 2023 17:33:01 +0530
+From:   Sunil V L <sunilvl@ventanamicro.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Dong Wei <Dong.Wei@arm.com>, Conor Dooley <conor@kernel.org>,
-        =?UTF-8?B?6JGb5aOr5bu6?= <geshijian@bytedance.com>,
-        Sunil V L <sunilvl@ventanamicro.com>,
+        =?utf-8?B?6JGb5aOr5bu6?= <geshijian@bytedance.com>,
         Conor Dooley <conor.dooley@microchip.com>,
         ron minnich <rminnich@gmail.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
+        "cuiyunhui@bytedance.com" <cuiyunhui@bytedance.com>,
+        "jrtc27@jrtc27.com" <jrtc27@jrtc27.com>,
         "kernel@esmil.dk" <kernel@esmil.dk>,
         Paul Walmsley <paul.walmsley@sifive.com>,
         "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
@@ -87,11 +78,27 @@ Cc:     Dong Wei <Dong.Wei@arm.com>, Conor Dooley <conor@kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         "weidong.wd@bytedance.com" <weidong.wd@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [External] Re: [PATCH v3 0/4] Obtain SMBIOS and ACPI entry from
+ FFI
+Message-ID: <ZKlQdXnPVTrYIUzb@sunil-laptop>
+References: <mhng-b66b085a-eb15-4c9b-b2aa-93ddf16ec7aa@palmer-ri-x1c9a>
+ <CAP6exYKwZG=_47r0jAUFYNL5-P-SS==k6vWdKiMJ9nB0upH5Zw@mail.gmail.com>
+ <20230707-attach-conjuror-306d967347ce@wendy>
+ <ZKfsSsdiso0W8mW6@sunil-laptop>
+ <CAN3iYbMhQU5Ng4r6_rQDnLmit1GCmheC5T49rsUP5NgHFEXsHA@mail.gmail.com>
+ <ZKgLKvBoWKSxzm6r@sunil-laptop>
+ <CAN3iYbOe+i4jVhz0sSQwVQ2PMB7UvaTPyN_sLtZj0uiOD2emDA@mail.gmail.com>
+ <20230707-gargle-enjoyable-f9f7f87fc7ea@spud>
+ <DBAPR08MB5783AED8329E38D840B7015D9C2DA@DBAPR08MB5783.eurprd08.prod.outlook.com>
+ <CAMj1kXEkL0gF8uGcy2AjJvD-yZHmyLX9jiVVDtR+uBAYf+BfUg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMj1kXEkL0gF8uGcy2AjJvD-yZHmyLX9jiVVDtR+uBAYf+BfUg@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -99,100 +106,53 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jessica,
-
-On Sat, Jul 8, 2023 at 11:59=E2=80=AFAM Jessica Clarke <jrtc27@jrtc27.com> =
-wrote:
->
-> On 8 Jul 2023, at 04:22, =E8=BF=90=E8=BE=89=E5=B4=94 <cuiyunhui@bytedance=
-.com> wrote:
+On Sat, Jul 08, 2023 at 10:45:27AM +0200, Ard Biesheuvel wrote:
+> On Fri, 7 Jul 2023 at 18:21, Dong Wei <Dong.Wei@arm.com> wrote:
 > >
-> > Hey,
+> > On Arm systems today, the ACPI RSDP is found using the UEFI Configuration Table. This is true for all Arm SystemReady compliant systems: 1) SystemReady LS: LBBRv1 is using a minimal UEFI FW to load LinuxBoot, that minimal UEFI FW is producing the UEFI Configuration Table. We are working on LBBRv2. LBBRv2 is based on Coreboot loading LinuxBoot. But we do not have a way today to get CoreBoot to produce this pointer to ACPI RSDP. Arm does not support x86 E820 BIOS interface. 2) SystemReady IR: this solution uses DT rather than ACPI. 3) SystemReady ES: this solution can use UBoot or EDK2, and it requires ACPI. Since both UBoot and EDK2 support UEFI now, so ACPI RSDP can be found using the UEFI Configuration Table. 4) SystemReady SR: this solution typically uses EDK2 and requires ACPI, so no issue finding RSDP via UEFI Configuration Table.
 > >
-> > On Sat, Jul 8, 2023 at 12:39=E2=80=AFAM Dong Wei <Dong.Wei@arm.com> wro=
-te:
-> >>
-> >>
-> >>
-> >>> I don't think that's the limitation on RISC-V. BTW, how does OSPM fin=
-d the
-> >>
-> >>> RSDP on ARM systems? Does it meet 5.2.5?
-> >>
-> >>>
-> >>
-> >>
-> >>
-> >> On Arm systems today, the ACPI RSDP is found using the UEFI Configurat=
-ion Table. This is true for all Arm SystemReady compliant systems: 1) Syste=
-mReady LS: LBBRv1 is using a minimal UEFI FW to load LinuxBoot, that minima=
-l UEFI FW is producing the UEFI Configuration Table. We are working on LBBR=
-v2. LBBRv2 is based on Coreboot loading LinuxBoot. But we do not have a way=
- today to get CoreBoot to produce this pointer to ACPI RSDP. Arm does not s=
-upport x86 E820 BIOS interface. 2) SystemReady IR: this solution uses DT ra=
-ther than ACPI. 3) SystemReady ES: this solution can use UBoot or EDK2, and=
- it requires ACPI. Since both UBoot and EDK2 support UEFI now, so ACPI RSDP=
- can be found using the UEFI Configuration Table. 4) SystemReady SR: this s=
-olution typically uses EDK2 and requires ACPI, so no issue finding RSDP via=
- UEFI Configuration Table.
 > >
-> > Looks like ARM has a similar problem,
->
-> If by =E2=80=9Cproblem=E2=80=9D you mean =E2=80=9Cthere=E2=80=99s only on=
-e standard that I=E2=80=99m choosing
-> to not follow=E2=80=9D.
->
-> > Indeed, as Ron said, many companies may encounter this issue. More
-> > developers are embracing Coreboot. When the platform guided by
-> > Coreboot requires ACPI support, they are faced with how to pass ACPI
-> > RSDP to Linux.
->
-> It=E2=80=99s called UEFI. EBBR=E2=80=99s requirements are pretty minimal.
->
-> Please just follow the one standard. Having one standard is good for
-> compatibility; there needs to be a very good reason beyond =E2=80=9CI don=
-=E2=80=99t
-> like the standard=E2=80=9D to introduce a competing one and the fragmenta=
-tion
-> that results from it that becomes shared pain for the ecosystem.
->
-
-Which specification stipulates that all Bootloaders must implement (U)EFI?
-
-We approve ACPI's hardware-related description specifications.
-In the FFI scheme, Coreboot also follows the ACPI specification and
-realizes the construction of the table.
-We do not follow (U)EFI and ACPI bindings.
-
-Of course, it is best to have specifications, and it is also what we
-all expect together.
-According to the actual situation, if the specification is
-unreasonable, should we optimize it?
-
-Please tell me some specific problems brought about by FFI?
-
-> Jess
->
-> >> So the ACPI RSDP issue only exist if we want to remove the minimum UEF=
-I FW and go to CoreBoot completely to load LinuxBoot. We are currently expl=
-oring how to solve that issue=E2=80=A6
-> >>
-> >>
-> >>
-> >> -DW
-> >>
-> >>
-> >>
-> >> IMPORTANT NOTICE: The contents of this email and any attachments are c=
-onfidential and may also be privileged. If you are not the intended recipie=
-nt, please notify the sender immediately and do not disclose the contents t=
-o any other person, use it for any purpose, or store or copy the informatio=
-n in any medium. Thank you.
 > >
-> > Thanks,
-> > Yunhui
->
->
+> > So the ACPI RSDP issue only exist if we want to remove the minimum UEFI FW and go to CoreBoot completely to load LinuxBoot. We are currently exploring how to solve that issue…
+> >
+> 
+> Hello Dong,
+> 
+> This fixes the RSDP issue perhaps, but that is not the only problem. I
+> have mentioned this many times already, but let me mention it again
+> for completeness:
+> 
+> ACPI does not have a memory map, and ARM is much more finicky about
+> mapping memory regions with the right attributes, given that uncached
+> accesses don't snoop the caches like they do on x86. This means it is
+> essential that memory mappings constructed from AML code (which
+> doesn't provide any context pertaining to the memory type either) are
+> created with the right memory type.
+> 
+> Currently, the Linux/arm64 glue code for the ACPI core
+> cross-references every memory mapping created from a SystemMemory
+> OpRegion by AML code against the EFI memory map, and uses the EFI
+> memory type and attributes to infer the memory type to program into
+> the page tables. So simply providing the RSDP is *not* sufficient: on
+> arm64, more work is needed and currently, booting ACPI without a EFI
+> memory map results in SystemMemory OpRegions not working at all.
+> 
+> Of course, we might be able to work around that by providing a
+> 'coreboot' memory map for doing ACPI on arm64, but that results in
+> more fragmentation and an inflated validation matrix, which puts the
+> burden on the Linux subsystem maintainers to make sure that all these
+> different combinations remain supported.
+> 
+> AIUI, this memory type issue does not exist for RISC-V today, but I'd
+> suggest to the RISC-V maintainers to take a careful look at arm64's
+> acpi_os_ioremap() implementation and decide whether or not RISC-V
+> needs similar logic.
 
-Thanks,
-Yunhui
+Currently, basic ACPI support is merged for RISC-V. Still many features
+including external interrupt controller support are WIP. Enhancing the
+acpi_os_ioremap() similar to arm64 version is in plan for next series.
+Bjorn had also provided this feedback.
+https://lore.kernel.org/lkml/87leidtvn9.fsf@all.your.base.are.belong.to.us/
+
+So, the issue will be applicable to RISC-V also even if the
+implementation may differ slightly.
