@@ -2,72 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C613A74BB8F
-	for <lists+linux-acpi@lfdr.de>; Sat,  8 Jul 2023 05:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09FE374BBA2
+	for <lists+linux-acpi@lfdr.de>; Sat,  8 Jul 2023 05:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229568AbjGHDXl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 Jul 2023 23:23:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55764 "EHLO
+        id S229569AbjGHD7F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 Jul 2023 23:59:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232079AbjGHDXj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Jul 2023 23:23:39 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0123E1FEA
-        for <linux-acpi@vger.kernel.org>; Fri,  7 Jul 2023 20:23:10 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-3094910b150so2709389f8f.0
-        for <linux-acpi@vger.kernel.org>; Fri, 07 Jul 2023 20:23:10 -0700 (PDT)
+        with ESMTP id S229458AbjGHD7E (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Jul 2023 23:59:04 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495051FEA
+        for <linux-acpi@vger.kernel.org>; Fri,  7 Jul 2023 20:59:03 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fbc6ab5ff5so28160325e9.1
+        for <linux-acpi@vger.kernel.org>; Fri, 07 Jul 2023 20:59:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1688786589; x=1691378589;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=jrtc27.com; s=gmail.jrtc27.user; t=1688788742; x=1691380742;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jVcl5w2h3dWfxQlDZL0LIXyDZOTXizZNDdgurU3+buU=;
-        b=YgLpkhZDqmuma2NsCUCmSNhnrdRc5oCcYqmI6DQU9CbkpN846OoU+pxyfx2ahevaNL
-         0aMcsIxAQ6DkKB6UwJjNqZVoffATZ5iGkd5OoSwbjszPcepXweZ8cvitXITqVqgFX0y8
-         CETCMF9b6MxaFALpCfumKoEXp9r21GUIg6nARQFSk76wQgdPNIYFeyp5Nm9UN6e7ZP/w
-         jpHC3kSDsPH2EW8cSwM8TELKrZKPFoZpMUN+ioB3S12ldy0rHevr9mn9Hhc+kUFeW/X7
-         vaB3QGWCnwM9fTLrrBZGSvgzqBYgitTPUq5fAJarWifVqHPN09ICbi7CpBnZNFdgdmus
-         cz5Q==
+        bh=BjvUtkQ3iSWBoIXII2O90sxep5PUoLyeZZs21ibyqjE=;
+        b=OiGMrex+gulqtkoETcR+WaKt21x/HEwIkx++ZMV9YncQp8qrx4JouSq84CndRxpw/O
+         II0c24xYjWbAfJB7VODNtppQjhuoqL/xuHUAWtHaZVxEdm5/NGk9Uwx1qmorxSIJAzhk
+         3d3qK6KzbiG0JIAWjal42kX9AYZVEsa+MkvD4H2OGIVUf9xF10lB+K8H6TNoSmJs2UeM
+         EKbAxMx8yKJ1W6SNzv030t1zNfY4Txg4JxnE4RiAnCWnTuZc9mEoeAtmsFuc/6iD+6o0
+         2pP4ctBkEX3CQBOAW+7+9fgZ+p5eLMJgvIlxVsdUJ3Lw6J+uYQBax+WSl3c00B0bdSKi
+         o2Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688786589; x=1691378589;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1688788742; x=1691380742;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jVcl5w2h3dWfxQlDZL0LIXyDZOTXizZNDdgurU3+buU=;
-        b=JhIO2oHVe1bZ82is6bQ6gZgHIcaf1Izo3XHkG4PCI3MnlTQJyAasm8XuPAcCYaMt5+
-         q+mYfok68uGnd59SiQH3ead3VU8ZIeImwKlQ48pDAjrIR8+gehFymR5yeei1nxi5fYbB
-         mlgAMp8RXYjoyyN22t0NtQ+NfBxB5yEawitoNBmEtw5d93eCgPHeW59q5ghxTwEiS8Pw
-         kDqooMsMUdNxsxe3tQew9XX7PtSpIA87qWPBnRz8sEzvtwIRsHIxENFK/ZNoZom0AE6i
-         ejUu38AnDCWqQN0n7RapcJqAOMH6aEC01OtXG/Js+0a8q+Z9Fk0bhBNoBNq8RBufcDLp
-         emng==
-X-Gm-Message-State: ABy/qLYKVKSwlnh/I/Wy+Ypsvt/pjkR5v0uHmV5u2PTpbbadsnYeNSap
-        OMJCTMjtMMdLEx8i9uTYeWNn1ytpdL0Kk/GxRzCp8Q==
-X-Google-Smtp-Source: APBJJlGvIQje+MQfTdFy2c7xy0g+6AgrWcXwe3yPeDBQ2jC//QkTktkFaCqeFPUoo3C5dfpD7qkn48ITWlg/4nqSMgA=
-X-Received: by 2002:a5d:4d8e:0:b0:314:3e77:f210 with SMTP id
- b14-20020a5d4d8e000000b003143e77f210mr5218578wru.59.1688786589423; Fri, 07
- Jul 2023 20:23:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAMj1kXFZren0Q19DimwQaETCLz64D4bZQC5B2N=i3SAWHygkTQ@mail.gmail.com>
- <mhng-b66b085a-eb15-4c9b-b2aa-93ddf16ec7aa@palmer-ri-x1c9a>
- <CAP6exYKwZG=_47r0jAUFYNL5-P-SS==k6vWdKiMJ9nB0upH5Zw@mail.gmail.com>
- <20230707-attach-conjuror-306d967347ce@wendy> <ZKfsSsdiso0W8mW6@sunil-laptop>
- <CAN3iYbMhQU5Ng4r6_rQDnLmit1GCmheC5T49rsUP5NgHFEXsHA@mail.gmail.com>
- <ZKgLKvBoWKSxzm6r@sunil-laptop> <CAN3iYbOe+i4jVhz0sSQwVQ2PMB7UvaTPyN_sLtZj0uiOD2emDA@mail.gmail.com>
- <20230707-gargle-enjoyable-f9f7f87fc7ea@spud> <DBAPR08MB57836AE63A1F5D3902B95BFE9C2DA@DBAPR08MB5783.eurprd08.prod.outlook.com>
-In-Reply-To: <DBAPR08MB57836AE63A1F5D3902B95BFE9C2DA@DBAPR08MB5783.eurprd08.prod.outlook.com>
-From:   =?UTF-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
-Date:   Sat, 8 Jul 2023 11:22:58 +0800
-Message-ID: <CAEEQ3wnhCRnDsa2Un=J_VOo2JZqf0nMXX11okqpyhMbLAWsKJQ@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v3 0/4] Obtain SMBIOS and ACPI entry from FFI
-To:     Dong Wei <Dong.Wei@arm.com>
-Cc:     Conor Dooley <conor@kernel.org>,
-        =?UTF-8?B?6JGb5aOr5bu6?= <geshijian@bytedance.com>,
+        bh=BjvUtkQ3iSWBoIXII2O90sxep5PUoLyeZZs21ibyqjE=;
+        b=Hcp2Q8vXmOOjm9Alx6+g350RB37aTj3L9Cw087WvMfUxQRYE7UL+O4s7RG6nDsOwBc
+         zEUMQPNnwyfAcegURaTuZho84qpwGTuoFMh9Er+DmfgpkWw6vwPG7e53LTzyf9Fwk7OF
+         Wa1wOTSmHHwaQck38yKDLXsewwIYbmAw1VaiHp5UY8sxjQhki4HvNGu8FqLx1kLm+jmN
+         gvNtQe6CrfYSlC7BjP0Of6gDcZsYTiRv8PKaQ/mco2zvFSN1uE0Q0Ho/ehZLJsiI+7dA
+         JdKmQAwLsU7rVikzwivECGlwVNePUbe4dhd7G0tJSLEhz1aO2yyBgZ3ls2wxF6JCjUnb
+         H2dw==
+X-Gm-Message-State: ABy/qLYCxoLmYq1LQj0tDOwi/mYjtmDX2psaIBBeuLbz97GDwKvBwWgY
+        6Q27wE096MP6/ClFWhCijQRSDQ==
+X-Google-Smtp-Source: APBJJlHjSZhzcSxXjiOPVSwvNw3AfG2kOjO024Ri9E7Ji/WRfODTBuXMu9V/vShqT5QR7KrOwOjXvg==
+X-Received: by 2002:adf:dd92:0:b0:314:53a4:42a5 with SMTP id x18-20020adfdd92000000b0031453a442a5mr5247095wrl.51.1688788741411;
+        Fri, 07 Jul 2023 20:59:01 -0700 (PDT)
+Received: from smtpclient.apple ([131.111.5.246])
+        by smtp.gmail.com with ESMTPSA id i4-20020adfefc4000000b003143be36d99sm5915882wrp.58.2023.07.07.20.58.59
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 07 Jul 2023 20:59:00 -0700 (PDT)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
+Subject: Re: [External] [PATCH v3 0/4] Obtain SMBIOS and ACPI entry from FFI
+From:   Jessica Clarke <jrtc27@jrtc27.com>
+In-Reply-To: <CAEEQ3wnhCRnDsa2Un=J_VOo2JZqf0nMXX11okqpyhMbLAWsKJQ@mail.gmail.com>
+Date:   Sat, 8 Jul 2023 04:58:49 +0100
+Cc:     Dong Wei <Dong.Wei@arm.com>, Conor Dooley <conor@kernel.org>,
+        =?utf-8?B?6JGb5aOr5bu6?= <geshijian@bytedance.com>,
         Sunil V L <sunilvl@ventanamicro.com>,
         Conor Dooley <conor.dooley@microchip.com>,
         ron minnich <rminnich@gmail.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        "jrtc27@jrtc27.com" <jrtc27@jrtc27.com>,
         "kernel@esmil.dk" <kernel@esmil.dk>,
         Paul Walmsley <paul.walmsley@sifive.com>,
         "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
@@ -87,69 +82,103 @@ Cc:     Conor Dooley <conor@kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         "weidong.wd@bytedance.com" <weidong.wd@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <9F6A932E-6FFE-4CF1-BF20-D5D80AC26F37@jrtc27.com>
+References: <CAMj1kXFZren0Q19DimwQaETCLz64D4bZQC5B2N=i3SAWHygkTQ@mail.gmail.com>
+ <mhng-b66b085a-eb15-4c9b-b2aa-93ddf16ec7aa@palmer-ri-x1c9a>
+ <CAP6exYKwZG=_47r0jAUFYNL5-P-SS==k6vWdKiMJ9nB0upH5Zw@mail.gmail.com>
+ <20230707-attach-conjuror-306d967347ce@wendy> <ZKfsSsdiso0W8mW6@sunil-laptop>
+ <CAN3iYbMhQU5Ng4r6_rQDnLmit1GCmheC5T49rsUP5NgHFEXsHA@mail.gmail.com>
+ <ZKgLKvBoWKSxzm6r@sunil-laptop>
+ <CAN3iYbOe+i4jVhz0sSQwVQ2PMB7UvaTPyN_sLtZj0uiOD2emDA@mail.gmail.com>
+ <20230707-gargle-enjoyable-f9f7f87fc7ea@spud>
+ <DBAPR08MB57836AE63A1F5D3902B95BFE9C2DA@DBAPR08MB5783.eurprd08.prod.outlook.com>
+ <CAEEQ3wnhCRnDsa2Un=J_VOo2JZqf0nMXX11okqpyhMbLAWsKJQ@mail.gmail.com>
+To:     =?utf-8?B?6L+Q6L6J5bSU?= <cuiyunhui@bytedance.com>
+X-Mailer: Apple Mail (2.3731.600.7)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hey,
+On 8 Jul 2023, at 04:22, =E8=BF=90=E8=BE=89=E5=B4=94 =
+<cuiyunhui@bytedance.com> wrote:
+>=20
+> Hey,
+>=20
+> On Sat, Jul 8, 2023 at 12:39=E2=80=AFAM Dong Wei <Dong.Wei@arm.com> =
+wrote:
+>>=20
+>>=20
+>>=20
+>>> I don't think that's the limitation on RISC-V. BTW, how does OSPM =
+find the
+>>=20
+>>> RSDP on ARM systems? Does it meet 5.2.5?
+>>=20
+>>>=20
+>>=20
+>>=20
+>>=20
+>> On Arm systems today, the ACPI RSDP is found using the UEFI =
+Configuration Table. This is true for all Arm SystemReady compliant =
+systems: 1) SystemReady LS: LBBRv1 is using a minimal UEFI FW to load =
+LinuxBoot, that minimal UEFI FW is producing the UEFI Configuration =
+Table. We are working on LBBRv2. LBBRv2 is based on Coreboot loading =
+LinuxBoot. But we do not have a way today to get CoreBoot to produce =
+this pointer to ACPI RSDP. Arm does not support x86 E820 BIOS interface. =
+2) SystemReady IR: this solution uses DT rather than ACPI. 3) =
+SystemReady ES: this solution can use UBoot or EDK2, and it requires =
+ACPI. Since both UBoot and EDK2 support UEFI now, so ACPI RSDP can be =
+found using the UEFI Configuration Table. 4) SystemReady SR: this =
+solution typically uses EDK2 and requires ACPI, so no issue finding RSDP =
+via UEFI Configuration Table.
+>=20
+> Looks like ARM has a similar problem,
 
-On Sat, Jul 8, 2023 at 12:39=E2=80=AFAM Dong Wei <Dong.Wei@arm.com> wrote:
->
->
->
-> > I don't think that's the limitation on RISC-V. BTW, how does OSPM find =
-the
->
-> > RSDP on ARM systems? Does it meet 5.2.5?
->
-> >
->
->
->
-> On Arm systems today, the ACPI RSDP is found using the UEFI Configuration=
- Table. This is true for all Arm SystemReady compliant systems: 1) SystemRe=
-ady LS: LBBRv1 is using a minimal UEFI FW to load LinuxBoot, that minimal U=
-EFI FW is producing the UEFI Configuration Table. We are working on LBBRv2.=
- LBBRv2 is based on Coreboot loading LinuxBoot. But we do not have a way to=
-day to get CoreBoot to produce this pointer to ACPI RSDP. Arm does not supp=
-ort x86 E820 BIOS interface. 2) SystemReady IR: this solution uses DT rathe=
-r than ACPI. 3) SystemReady ES: this solution can use UBoot or EDK2, and it=
- requires ACPI. Since both UBoot and EDK2 support UEFI now, so ACPI RSDP ca=
-n be found using the UEFI Configuration Table. 4) SystemReady SR: this solu=
-tion typically uses EDK2 and requires ACPI, so no issue finding RSDP via UE=
-FI Configuration Table.
+If by =E2=80=9Cproblem=E2=80=9D you mean =E2=80=9Cthere=E2=80=99s only =
+one standard that I=E2=80=99m choosing
+to not follow=E2=80=9D.
 
-Looks like ARM has a similar problem,
-Indeed, as Ron said, many companies may encounter this issue. More
-developers are embracing Coreboot. When the platform guided by
-Coreboot requires ACPI support, they are faced with how to pass ACPI
-RSDP to Linux.
+> Indeed, as Ron said, many companies may encounter this issue. More
+> developers are embracing Coreboot. When the platform guided by
+> Coreboot requires ACPI support, they are faced with how to pass ACPI
+> RSDP to Linux.
 
->
->
-> So the ACPI RSDP issue only exist if we want to remove the minimum UEFI F=
-W and go to CoreBoot completely to load LinuxBoot. We are currently explori=
-ng how to solve that issue=E2=80=A6
->
->
->
-> -DW
->
->
->
-> IMPORTANT NOTICE: The contents of this email and any attachments are conf=
-idential and may also be privileged. If you are not the intended recipient,=
- please notify the sender immediately and do not disclose the contents to a=
-ny other person, use it for any purpose, or store or copy the information i=
-n any medium. Thank you.
+It=E2=80=99s called UEFI. EBBR=E2=80=99s requirements are pretty =
+minimal.
 
-Thanks,
-Yunhui
+Please just follow the one standard. Having one standard is good for
+compatibility; there needs to be a very good reason beyond =E2=80=9CI =
+don=E2=80=99t
+like the standard=E2=80=9D to introduce a competing one and the =
+fragmentation
+that results from it that becomes shared pain for the ecosystem.
+
+Jess
+
+>> So the ACPI RSDP issue only exist if we want to remove the minimum =
+UEFI FW and go to CoreBoot completely to load LinuxBoot. We are =
+currently exploring how to solve that issue=E2=80=A6
+>>=20
+>>=20
+>>=20
+>> -DW
+>>=20
+>>=20
+>>=20
+>> IMPORTANT NOTICE: The contents of this email and any attachments are =
+confidential and may also be privileged. If you are not the intended =
+recipient, please notify the sender immediately and do not disclose the =
+contents to any other person, use it for any purpose, or store or copy =
+the information in any medium. Thank you.
+>=20
+> Thanks,
+> Yunhui
+
+
