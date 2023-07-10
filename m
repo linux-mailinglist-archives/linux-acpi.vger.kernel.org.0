@@ -2,71 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F97A74DEB7
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 22:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EF0874DF5A
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 22:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231646AbjGJUDP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jul 2023 16:03:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56310 "EHLO
+        id S230040AbjGJUdZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jul 2023 16:33:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230344AbjGJUDF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 16:03:05 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 840E4133;
-        Mon, 10 Jul 2023 13:03:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689019384; x=1720555384;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=pExp2WMXGyNpxCyGDYOXewD2SNqta6zQBIAwkyT6MEY=;
-  b=iEGdRBBBKct/8vbUN5DV9bIQlxrdxPbbFuQmu5al7PtEgtpaWaD4zKza
-   NzsDzCY/56m20Ws7yc22sFtUnHWKgbdtxdZRJ7gb8rqVDIezhfIKAnHxN
-   r7hYa2NBGzEkluOMfSaWscJgoKeKg+ikCVER4TTbyAu2OwH51ZIkVnsmh
-   K0RG0XkDBiVTjr7B9SZq/AujnNFKD5WhxZsFaBBVYoRGaTWFThczaPwc3
-   3APuWymlFaqcTUZFJeCMSrZz2StvABVHtzfEymnWieUCKp9VLdWB7wuS8
-   JHH/INNi7a4kYehWJuujwkSc2BAnTw9PBfTQKiaw7jGPondCFgzR6w2mh
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="344764078"
-X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; 
-   d="scan'208";a="344764078"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 13:03:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="714903601"
-X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; 
-   d="scan'208";a="714903601"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO localhost) ([10.209.93.201])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 13:03:02 -0700
-From:   alison.schofield@intel.com
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Mike Rapoport <rppt@kernel.org>
-Cc:     Alison Schofield <alison.schofield@intel.com>, x86@kernel.org,
-        linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Derick Marks <derick.w.marks@intel.com>
-Subject: [PATCH v4 2/2] ACPI: NUMA: Apply SRAT proximity domain to entire CFMWS window
-Date:   Mon, 10 Jul 2023 13:02:59 -0700
-Message-Id: <eaa0b7cffb0951a126223eef3cbe7b55b8300ad9.1689018477.git.alison.schofield@intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1689018477.git.alison.schofield@intel.com>
-References: <cover.1689018477.git.alison.schofield@intel.com>
+        with ESMTP id S230155AbjGJUdY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 16:33:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4341198;
+        Mon, 10 Jul 2023 13:33:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 666C2611DC;
+        Mon, 10 Jul 2023 20:33:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCE8C433C8;
+        Mon, 10 Jul 2023 20:33:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689021201;
+        bh=gGXXrojuoIWNAw/sxFKlgIo61HCLR9eouOaOtd2kFFI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=WxQ3lhE4kDYn/Xwd0L0OWRfY5888FCT8p5MyQuEjhey5NBcmhBXk0BbpwlkXWvJq0
+         8L+0DqBfTkOZagZByJmL/tWmzd3Ub0dzdocQZ/HWHaX6TclyE1JOdFnDMQp106iW09
+         vVIqQ0AmKWBst5DuP7Szk+3om36A+qxe3ew2ol8myPwawn0aF01U2r9ytdzMs2YrsT
+         B5zXq3O0QwKG1fMVJ4NIVXdFwnytxh68kBaA7IZ4JQe06lqTUZJ256kwKa1tMENn2D
+         Z++ivouPlmekYMu9UMF7Puw5kX6N8gLOG11566uoLezcZbFedh2QJGiVP3fsDOboIL
+         VYRUCOHonuV5Q==
+Date:   Mon, 10 Jul 2023 15:33:19 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        stable@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH v6 1/1] PCI: Avoid putting some root ports into D3 on
+ some Ryzen chips
+Message-ID: <20230710203319.GA220162@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2f052692-9406-3812-0c53-7edf8360115d@amd.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,65 +57,140 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Alison Schofield <alison.schofield@intel.com>
+[+cc Mika, author of 9d26d3a8f1b0]
 
-Commit fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each
-CFMWS not in SRAT") did not account for the case where the BIOS
-only partially describes a CFMWS Window in the SRAT. That means
-the omitted address ranges, of a partially described CFMWS Window,
-do not get assigned to a NUMA node.
+On Mon, Jul 10, 2023 at 02:44:23PM -0500, Limonciello, Mario wrote:
+> On 7/10/2023 14:32, Bjorn Helgaas wrote:
+> > On Sat, Jul 08, 2023 at 04:44:57PM -0500, Mario Limonciello wrote:
+> > > commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> > > sets the policy that all PCIe ports are allowed to use D3.  When
+> > > the system is suspended if the port is not power manageable by the
+> > > platform and won't be used for wakeup via a PME this sets up the
+> > > policy for these ports to go into D3hot.
+> > > 
+> > > This policy generally makes sense from an OSPM perspective but it leads
+> > > to problems with wakeup from suspend on laptops with AMD chips:
+> > > 
+> > > - On family 19h model 44h (PCI 0x14b9) this manifests as a missing wakeup
+> > >    interrupt.
+> > > - On family 19h model 74h (PCI 0x14eb) this manifests as a system hang.
+> > > 
+> > > Add a quirk for the PCI device ID used by the problematic root port on
+> > > both chips to ensure that these root ports are not put into D3hot at
+> > > suspend.
+> > 
+> > What is problematic about these root ports?  Is this a hardware
+> > erratum?
+> 
+> I mentioned some of this in earlier versions; but the problem is deeper
+> in the platform firmware and only happens when the root ports are in D3hot
+> across an s2idle cycle.
+> 
+> When looked at independently they can be moved in and out of D3hot no
+> problem.
+> 
+> From the perspective of hardware designers they say this is a software bug
+> that Linux puts PCI RP into D3hot over Modern Standby when they don't
+> specify for this to be done.  I don't expect any erratum for it.
 
-Replace the call to phys_to_target_node() with numa_add_memblks().
-Numa_add_memblks() searches an HPA range for existing memblk(s)
-and extends those memblk(s) to fill the entire CFMWS Window.
+It sounds like there's someplace the hardware designers specify how
+this should work?  Where is that?  "Modern Standby" doesn't mean
+anything to me, but maybe there's some spec that covers it?
 
-Extending the existing memblks is a simple strategy that reuses
-SRAT defined proximity domains from part of a window to fill out
-the entire window, based on the knowledge* that all of a CFMWS
-window is of a similar performance class.
+> > Some corner of the ACPI spec that allows undefined behavior?
+> 
+> These root ports are not reported as power manageable by ACPI.
+> 
+> As I mentioned in the cover letter how the OSPM handles this case is outside
+> of any spec AFAICT.
 
-*Note that this heuristic will evolve when CFMWS Windows present
-a wider range of characteristics. The extension of the proximity
-domain, implemented here, is likely a step in developing a more
-sophisticated performance profile in the future.
+If it's truly outside the spec, then I don't think Linux should use D3
+until we have some standardized way to tell whether it's safe.
 
-There is no change in behavior when the SRAT does not describe
-the CFMWS Window at all. In that case, a new NUMA node with a
-single memblk covering the entire CFMWS Window is created.
+> > Does AMD have any guidance about generic ways to use D3, or does AMD
+> > expect to add quirks piecemeal as problems are discovered?  How does
+> > Windows handle all this?
+> 
+> Windows doesn't put root ports into D3hot over suspend unless they are power
+> managed by ACPI (as described in section 7.3 of the ACPI spec).
+> 
+> https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/07_Power_and_Performance_Mgmt/device-power-management-objects.html
+> 
+> So on Windows these ports are all in D0 and none of the issues happen.
 
-Fixes: fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT")
-Reported-by: Derick Marks <derick.w.marks@intel.com>
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Tested-by: Derick Marks <derick.w.marks@intel.com>
----
- drivers/acpi/numa/srat.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+Maybe this is the clue we need.  My eyes glaze over when reading that
+section, but if we can come up with a commit log that starts with a
+sentence from that section and connects the dots all the way to the
+platform_pci_power_manageable() implementation, that might be a good
+argument that 9d26d3a8f1b0 was a little too aggressive.
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 1f4fc5f8a819..12f330b0eac0 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -310,11 +310,16 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
- 	start = cfmws->base_hpa;
- 	end = cfmws->base_hpa + cfmws->window_size;
- 
--	/* Skip if the SRAT already described the NUMA details for this HPA */
--	node = phys_to_target_node(start);
--	if (node != NUMA_NO_NODE)
-+	/*
-+	 * The SRAT may have already described NUMA details for all,
-+	 * or a portion of, this CFMWS HPA range. Extend the memblks
-+	 * found for any portion of the window to cover the entire
-+	 * window.
-+	 */
-+	if (!numa_fill_memblks(start, end))
- 		return 0;
- 
-+	/* No SRAT description. Create a new node. */
- 	node = acpi_map_pxm_to_node(*fake_pxm);
- 
- 	if (node == NUMA_NO_NODE) {
--- 
-2.37.3
+> Linux if PCI devices aren't power managed by ACPI will either follow deepest
+> state it can wake from PME or fall back to D3hot.
+> 
+> > Adding quirks as we discover random devices that don't behave
+> > correctly for reasons unknown is not very sustainable.
+> 
+> I don't disagree but in v5 I tried to align this to the Windows behavior and
+> it wasn't accepted.
 
+I like the fact that v5 ([1] for anybody following along at home) is
+very generic:
+
+  @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
+  ...
+  +       if (pci_pcie_type(bridge) == PCI_EXP_TYPE_ROOT_PORT &&
+  +           !platform_pci_power_manageable(bridge))
+  +               return false;
+
+My objection was that we didn't have a clear connection to any specs,
+so even though the code is perfectly generic, the commit log mentioned
+specific cases (USB keyboard/mouse on xHCI device connected to USB-C
+on AMD USB4 router).
+
+But maybe we *could* make a convincing generic commit log.  I guess
+we'd also have to explain the PCI_EXP_TYPE_ROOT_PORT part of the
+patch.
+
+Bjorn
+
+[1] https://lore.kernel.org/r/20230530163947.230418-2-mario.limonciello@amd.com
+
+> > > Cc: stable@vger.kernel.org # 6.1+
+> > > Reported-by: Iain Lane <iain@orangesquash.org.uk>
+> > > Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
+> > > Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> > > ---
+> > >   drivers/pci/quirks.c | 16 ++++++++++++++++
+> > >   1 file changed, 16 insertions(+)
+> > > 
+> > > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> > > index 321156ca273d5..e0346073e5855 100644
+> > > --- a/drivers/pci/quirks.c
+> > > +++ b/drivers/pci/quirks.c
+> > > @@ -3867,6 +3867,22 @@ static void quirk_apple_poweroff_thunderbolt(struct pci_dev *dev)
+> > >   DECLARE_PCI_FIXUP_SUSPEND_LATE(PCI_VENDOR_ID_INTEL,
+> > >   			       PCI_DEVICE_ID_INTEL_CACTUS_RIDGE_4C,
+> > >   			       quirk_apple_poweroff_thunderbolt);
+> > > +
+> > > +/*
+> > > + * Putting PCIe root ports on Ryzen SoCs with USB4 controllers into D3hot
+> > > + * may cause problems when the system attempts wake up from s2idle.
+> > > + *
+> > > + * On family 19h model 44h (PCI 0x14b9) this manifests as a missing wakeup
+> > > + * interrupt.
+> > > + * On family 19h model 74h (PCI 0x14eb) this manifests as a system hang.
+> > > + */
+> > > +static void quirk_ryzen_rp_d3(struct pci_dev *pdev)
+> > > +{
+> > > +	if (!acpi_pci_power_manageable(pdev))
+> > > +		pdev->dev_flags |= PCI_DEV_FLAGS_NO_D3;
+> > > +}
+> > > +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x14b9, quirk_ryzen_rp_d3);
+> > > +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x14eb, quirk_ryzen_rp_d3);
+> > >   #endif
+> > >   /*
+> > > -- 
+> > > 2.34.1
+> > > 
+> 
