@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD86674DC4A
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 19:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 322ED74DC4B
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 19:23:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232530AbjGJRXk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jul 2023 13:23:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43490 "EHLO
+        id S232570AbjGJRXj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jul 2023 13:23:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232506AbjGJRXi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 13:23:38 -0400
+        with ESMTP id S232429AbjGJRXh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 13:23:37 -0400
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60D72CA;
-        Mon, 10 Jul 2023 10:23:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD4C2C7;
+        Mon, 10 Jul 2023 10:23:36 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id a154a8c1b0581b89; Mon, 10 Jul 2023 19:23:35 +0200
+ id d7984a7ab631e1fc; Mon, 10 Jul 2023 19:23:35 +0200
 Received: from kreacher.localnet (unknown [195.136.19.94])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 79890660DCF;
-        Mon, 10 Jul 2023 19:23:35 +0200 (CEST)
+        by v370.home.net.pl (Postfix) with ESMTPSA id C8903660DCF;
+        Mon, 10 Jul 2023 19:23:34 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Bob Moore <robert.moore@intel.com>,
         Saket Dumbre <saket.dumbre@intel.com>
-Subject: [PATCH 09/14] ACPICA: Slightly simplify an error message in acpi_ds_result_push()
-Date:   Mon, 10 Jul 2023 19:18:12 +0200
-Message-ID: <3756828.kQq0lBPeGt@kreacher>
+Subject: [PATCH 10/14] ACPICA: Add a define for size of struct acpi_srat_generic_affinity device_handle
+Date:   Mon, 10 Jul 2023 19:20:14 +0200
+Message-ID: <9141577.CDJkKcVGEf@kreacher>
 In-Reply-To: <5698695.DvuYhMxLoT@kreacher>
 References: <5698695.DvuYhMxLoT@kreacher>
 MIME-Version: 1.0
@@ -51,36 +51,41 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Dave Jiang <dave.jiang@intel.com>
 
-ACPICA commit 3a9dbc5cb1573b87a16b50918977ab9e53e24408
+ACPICA commit be56820b03d8aeabfa6709c4d99bf1711afe7ef1
 
-'object' is known to be NULL at this point. There is little value to log
-it twice in the error message.
+Replace magic number with a define. Linux kernel code will utilize this
+define.
 
-Link: https://github.com/acpica/acpica/commit/3a9dbc5c
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://github.com/acpica/acpica/commit/be56820b
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/acpica/dswstate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/acpi/actbl3.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/dswstate.c b/drivers/acpi/acpica/dswstate.c
-index d3841ded3a81..75338a13c802 100644
---- a/drivers/acpi/acpica/dswstate.c
-+++ b/drivers/acpi/acpica/dswstate.c
-@@ -146,8 +146,8 @@ acpi_ds_result_push(union acpi_operand_object *object,
+diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
+index 000764ab3985..c080d579a546 100644
+--- a/include/acpi/actbl3.h
++++ b/include/acpi/actbl3.h
+@@ -279,12 +279,14 @@ struct acpi_srat_gic_its_affinity {
+  * 6: ACPI_SRAT_TYPE_GENERIC_PORT_AFFINITY
+  */
  
- 	if (!object) {
- 		ACPI_ERROR((AE_INFO,
--			    "Null Object! Obj=%p State=%p Num=%u",
--			    object, walk_state, walk_state->result_count));
-+			    "Null Object! State=%p Num=%u",
-+			    walk_state, walk_state->result_count));
- 		return (AE_BAD_PARAMETER);
- 	}
- 
++#define ACPI_SRAT_DEVICE_HANDLE_SIZE	16
++
+ struct acpi_srat_generic_affinity {
+ 	struct acpi_subtable_header header;
+ 	u8 reserved;
+ 	u8 device_handle_type;
+ 	u32 proximity_domain;
+-	u8 device_handle[16];
++	u8 device_handle[ACPI_SRAT_DEVICE_HANDLE_SIZE];
+ 	u32 flags;
+ 	u32 reserved1;
+ };
 -- 
 2.35.3
 
