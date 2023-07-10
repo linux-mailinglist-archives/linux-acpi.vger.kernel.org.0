@@ -2,224 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C6CC74D60B
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 14:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9F9C74D877
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 16:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231294AbjGJMzB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jul 2023 08:55:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45698 "EHLO
+        id S229843AbjGJOGQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jul 2023 10:06:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231144AbjGJMzA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 08:55:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF483E5
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Jul 2023 05:54:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688993657;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bXqzw2uf5AumAr49qSdVm0C2PXPLiwvwsSvgFfTxD70=;
-        b=YsPxRqz3n+OC84PcUEI3FhpNrAdGdKmSBFNeDeiRrWmjIzWsness1VGnc4IGFNNiQt4xAl
-        sf3khq6TlglauhspQ5cueyaV0tL555BucCPMACJ30pBgmdrNaHhp8FiVOrzai2fpHWW1yD
-        fzGEucZwx2ZjzWDnFEO0Mwefv0md2xg=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-286--mdNJnKgO6KK5QfEeArdeg-1; Mon, 10 Jul 2023 08:54:13 -0400
-X-MC-Unique: -mdNJnKgO6KK5QfEeArdeg-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-993c2d9e4a0so270971466b.2
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Jul 2023 05:54:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688993651; x=1691585651;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bXqzw2uf5AumAr49qSdVm0C2PXPLiwvwsSvgFfTxD70=;
-        b=VQBu8q8jyjXUxGvg9Yf9isXyAWnFPzchjPK63sgr/3O7k7XjyXPP3Ja/HfHQq4hnMt
-         HqysyRHk01/4VLapVrV283lX0rPAid6qgU1FXl9rBrkeM/+X2KwoN8EwvlKX94rLwKKN
-         GstAc7nRZqs77GPoXZsf/9KjS+s9hw53xoXuJOdC8eMb7zOJcMdhfjsPL+fcu/mRrQEH
-         wB4JKmRe8DM1h826eyHBVi3Kchm0i14GlyAk1JqMNu2hjePIjNUSRbdJkyQPgI4de60L
-         KOLri01gaJFRQ43B6otqIShIsVe9Igj2BfY98OsO5tEBcpHpDmGrGwt87zbXgHiwUTPf
-         up0A==
-X-Gm-Message-State: ABy/qLb99iN3fbL0ufGcDsPvxLLOootMUiDOQ/3WrPacWlEn36ZDyvfY
-        7NF0V966dLBZsosdVKLh6OlVur7uoqaVmmkuC11Hq1inszTV4naJoF9AUHNnZij068+yO6EocIh
-        +iVMMGfh5LwN63OuNt8K6rA==
-X-Received: by 2002:aa7:dbd2:0:b0:51d:a94b:f8f2 with SMTP id v18-20020aa7dbd2000000b0051da94bf8f2mr12134537edt.2.1688993651021;
-        Mon, 10 Jul 2023 05:54:11 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHkgc+0Cw/yf/AT2wYUXBD6BHtYyVoOSXaFFynE/PInbuhzPD81Dud4NXd2cH/D9+hBdsoV3w==
-X-Received: by 2002:aa7:dbd2:0:b0:51d:a94b:f8f2 with SMTP id v18-20020aa7dbd2000000b0051da94bf8f2mr12134519edt.2.1688993650696;
-        Mon, 10 Jul 2023 05:54:10 -0700 (PDT)
-Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id e15-20020a056402148f00b0051e2cde9e3esm5715989edv.75.2023.07.10.05.54.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jul 2023 05:54:10 -0700 (PDT)
-Message-ID: <615d1d62-514b-0cf4-9725-b899b06ecbc3@redhat.com>
-Date:   Mon, 10 Jul 2023 14:54:09 +0200
+        with ESMTP id S232051AbjGJOF7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 10:05:59 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6266A100;
+        Mon, 10 Jul 2023 07:05:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688997958; x=1720533958;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=yboxrH3I2y7YMdBC0O230I9M/DTQeHYDM4SkahotP7o=;
+  b=J5edntkKHTOdbn9Qgea9ZafZgYIv8mFygV+PhO89Ou0tqyqzB8VILP7f
+   T2BhVB+KgFWTjtC+6Kj9Am9oKT+9qZkaAskby092W27Ewr1PJSJ+lddbV
+   2cEl+H6Hy3WCNU8szesqR32Rx/zQvyVxPyqbz6YRf+xZ/BBqSWtZCFfM8
+   gMQsjSv1cnoWFCtirR1bTfnjKywDRifQJ+WG2j3DBXqCPKBeLpKU1zBJt
+   ufk7mUbnAWpPe3ABIlrFi83bDqIz257MIW4v+iOBZ1ssd1iA/L54cDz1z
+   ketCP2UygKUstybZ4tJ0tTuErb6Ah0gPgF4p5NOtLT5k5ajT9fF3bphvv
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="361814831"
+X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
+   d="scan'208";a="361814831"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 07:05:11 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="714822497"
+X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
+   d="scan'208";a="714822497"
+Received: from powerlab.fi.intel.com ([10.237.71.25])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 07:05:05 -0700
+From:   Michal Wilczynski <michal.wilczynski@intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     rafael@kernel.org, andriy.shevchenko@intel.com,
+        artem.bityutskiy@linux.intel.com, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, hpa@zytor.com, lenb@kernel.org,
+        jgross@suse.com, linux-kernel@vger.kernel.org, x86@kernel.org,
+        Michal Wilczynski <michal.wilczynski@intel.com>
+Subject: [PATCH v4 0/9] Prefer using _OSC method over deprecated _PDC
+Date:   Mon, 10 Jul 2023 17:03:28 +0300
+Message-ID: <20230710140337.1434060-1-michal.wilczynski@intel.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] ACPI: video: Invoke _PS0 at boot for ACPI video
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230704074506.2304939-1-kai.heng.feng@canonical.com>
- <CAJZ5v0jwO1NJ_x2t3RV-kYDmVY9UtyexznCSZMAmQ-gK4dWCmA@mail.gmail.com>
- <f5a4f802-d6a1-050e-ec70-701048ab1a2f@redhat.com>
- <CAAd53p5nkE+QdxJwF_mEsNiEHvRwg+4D7yP77H6CDrMWPOX_zQ@mail.gmail.com>
-Content-Language: en-US
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAAd53p5nkE+QdxJwF_mEsNiEHvRwg+4D7yP77H6CDrMWPOX_zQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+ACPI 3.0 introduced a new Operating System Capabilities _OSC control
+method. This method is similar to _PDC, which was marked as deprecated
+in ACPI 3.0.
 
-On 7/6/23 10:20, Kai-Heng Feng wrote:
-> On Wed, Jul 5, 2023 at 6:33 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi,
->>
->> On 7/4/23 18:58, Rafael J. Wysocki wrote:
->>> On Tue, Jul 4, 2023 at 9:46 AM Kai-Heng Feng
->>> <kai.heng.feng@canonical.com> wrote:
->>>>
->>>> Screen brightness can only be changed once on some HP laptops.
->>>>
->>>> Vendor identified the root cause as Linux doesn't invoke _PS0 at boot
->>>> for all ACPI devices:
->>>
->>> This part of the changelog is confusing, because the evaluation of
->>> _PS0 is not a separate operation.  _PS0 gets evaluated when devices
->>> undergo transitions from low-power states to D0.
->>>
->>>>     Scope (\_SB.PC00.GFX0)
->>>>     {
->>>>         Scope (DD1F)
->>>>         {
->>>>             Method (_PS0, 0, Serialized)  // _PS0: Power State 0
->>>>             {
->>>>                 If (CondRefOf (\_SB.PC00.LPCB.EC0.SSBC))
->>>>                 {
->>>>                     \_SB.PC00.LPCB.EC0.SSBC ()
->>>>                 }
->>>>             }
->>>>             ...
->>>>         }
->>>>         ...
->>>>     }
->>>>
->>>> _PS0 doesn't get invoked for all ACPI devices because of commit
->>>> 7cd8407d53ef ("ACPI / PM: Do not execute _PS0 for devices without _PSC
->>>> during initialization").
->>
->> So this _PS0 which seems to be the one which needs to run here,
->> is not the _PS0 for the GFX0 ACPI device, but rather for a child ACPI device-node which describes the connector (assumed based on the small part of quoted DSDT, the actual definition of the DD1F device-node is missing).
-> 
-> I'll file a bugzilla and attach a full acpidump there.
-> 
->>
->> Having a _PS0 method on a connector object is really weird IMHO. But if we need to invoke such a _PS0 method then IMHO that really should be done in the drm/kms driver. E.g. at least the i915 code already contains code to map the ACPI connector objects to the drm_connector objects, so it should be relatively easily to make that try and do a power-transition to D0 when enabling the connector.
-> 
-> Or put all ACPI devices to D0 at boot?
-> According to the BIOS folks that's what Windows does.
-> This way we can drop acpi_device_fix_up_power* helpers altogether.
+Prefer using _OSC method over deprecated _PDC in the acpi_bus_init(). In
+case of the failure of the _OSC, try using _PDC as a fallback.
 
-Doing that will leave any devices for which we lack a driver at D0 for ever,
-so that IMHO is not a good idea.
+Testing done:
+Tested on physical server with BIOS implementing _OSC methods. In this
+case acpi_processor_osc() was executed for each CPU core. acpi_run_osc()
+returned success indicating that _OSC method succeeded.
 
-I guess calling acpi_device_fix_up_power_extended(device) from the
-ACPI-video code, so that the connector sub-objects are put in D0 is
-somewhat ok. Although I would prefer to see you first try to do
-the same thing from the i915 driver instead.
+Tested on qemu VM to check whether the code would work on a SeaBios (the
+default for qemu, doesn't support _OSC methods, or _PDC). This way I was
+able to see how code behaves in case BIOS doesn't implement _OSC. In
+that case the function
+acpi_run_osc() returned failure, which propagated all the way up to
+acpi_early_processor_osc(). The logic responsible for triggering _PDC
+execution was triggered correctly.
 
-If we do end up doing this from the acpi-video code please add
-a comment above the call why this is done; and as Rafael mentioned
-the commit msg needs to better explain things too.
+Tested this using debug messages with printk.
 
-Regards,
+v4:
+ - move setting processor capabilities bits into arch code
+ - move workaround for mwait to acpi/x86 directory
+ - rename ACPI_PDC* constants to more generic ACPI_PROC_CAP*
+ - introduce new function acpi_early_processor_control_setup()
 
-Hans
+v3:
+ - split into more commits to make review easier
+ - changed "_UID" to METHOD_NAME_UID
+ - changed hard-coded constant to ACPI_PDC_COLLAB_PROC_PERF
+ - added Suggested-by tags
+ - fixed style issues
+ - fixed whitespaces
+ - refactored code
+v2:
+ - fixed compilation issues on ia64 and arm
 
+Michal Wilczynski (9):
+  acpi: Move mwait quirk out of acpi_processor.c
+  acpi: Move processor_physically_present() to acpi_processor.c
+  acpi: Refactor arch_acpi_set_pdc_bits()
+  acpi: Rename ACPI_PDC constants
+  acpi: Clear C_C2C3_FFH and C_C1_FFH in arch_acpi_set_proc_cap_bits()
+  acpi: Move setting CAP_SMP_T_SWCOORD to arch_acpi_set_proc_cap_bits()
+  acpi: Introduce acpi_processor_osc()
+  acpi: Use _OSC method to convey processor OSPM capabilities
+  acpi: Remove acpi_hwp_native_thermal_lvt_osc()
 
+ arch/ia64/include/asm/acpi.h  |   6 +-
+ arch/x86/include/asm/acpi.h   |  24 ++++---
+ arch/x86/xen/enlighten_pv.c   |   8 +--
+ drivers/acpi/acpi_processor.c | 121 +++++++++++++++++++++++++---------
+ drivers/acpi/bus.c            |   5 +-
+ drivers/acpi/internal.h       |  10 ++-
+ drivers/acpi/processor_pdc.c  |  97 +--------------------------
+ drivers/acpi/x86/utils.c      |  35 ++++++++++
+ include/acpi/pdc_intel.h      |  36 ----------
+ include/acpi/proc_cap_intel.h |  40 +++++++++++
+ 10 files changed, 194 insertions(+), 188 deletions(-)
+ delete mode 100644 include/acpi/pdc_intel.h
+ create mode 100644 include/acpi/proc_cap_intel.h
 
-> 
->>
->> Also can you provide some more info on the hw on which this is being seen:
->>
->> 1. What GPU(s) is/are being used
-> 
-> Intel GFX.
-> 
-> AFAIK AMD based laptops also require this fixup too.
-> 
->> 2. If there is a mux for hybrid gfx in which mode is the mux set ?
-> 
-> No. This happens to mux-less and dGPU-less laptops.
-> 
->> 3. Wjich method is used to control the brightness (which backlight-class-devices show up under /sys/class/backlight) ?
-> 
-> intel_backlight.
-> 
->>
->> And can you add this info to the commit msg for the next version of the patch ?
-> 
-> Sure.
-> Can putting all devices to D0 be considered too? It's a better
-> solution for the long wrong.
-> 
-> Kai-Heng
-> 
->>
->> Regards,
->>
->> Hans
->>
->>
->>
->>
->>>
->>> And yes, Linux doesn't put all of the ACPI devices into D0 during
->>> initialization, but the above commit has a little to do with that.
->>>
->>>> For now explicitly call _PS0 for ACPI video to workaround the issue.
->>>
->>> This is not what the patch is doing.
->>>
->>>> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
->>>> ---
->>>>  drivers/acpi/acpi_video.c | 2 ++
->>>>  1 file changed, 2 insertions(+)
->>>>
->>>> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
->>>> index 62f4364e4460..793259bd18c8 100644
->>>> --- a/drivers/acpi/acpi_video.c
->>>> +++ b/drivers/acpi/acpi_video.c
->>>> @@ -2027,6 +2027,8 @@ static int acpi_video_bus_add(struct acpi_device *device)
->>>>         if (error)
->>>>                 goto err_put_video;
->>>>
->>>> +       acpi_device_fix_up_power_extended(device);
->>>> +
->>>
->>> I would like to know what Hans thinks about this.
->>>
->>>>         pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
->>>>                ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
->>>>                video->flags.multihead ? "yes" : "no",
->>>> --
->>>
->>
-> 
+-- 
+2.41.0
 
