@@ -2,167 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A3FF74DAB4
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 18:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED59C74DB42
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 18:40:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233434AbjGJQEK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jul 2023 12:04:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58354 "EHLO
+        id S230167AbjGJQkH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jul 2023 12:40:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230364AbjGJQEI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 12:04:08 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EE101B9
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Jul 2023 09:03:38 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-51de9c2bc77so5586980a12.3
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Jul 2023 09:03:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1689005017; x=1691597017;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lbgr4cPVME1zyRcKyuyARahjBVKm6KiDwdVRCmA9Q64=;
-        b=g5R3+f20/+qL7dipQIKkz5rxzLAR7Se9KH86BMP7iHZl/KmR6+RpSQ1K1ZNgqDOkfG
-         X0gTMclAN8InrtMW3MctYvD2sbzkPpUq9rbw1n7uY+YRa5CInone/DIXMsBue8QkxfeU
-         i/LrPBKRr3LW2eTswG6zPiVwfmm0WGQtILXhKU67oZU2vcZVR0quPs35oIU56N+Df9Nu
-         WFKRsZP0Y37hIsmRGvcjv3BNmbiPry9RGbQUcL6gLdLTlfJ634TNkzLYg7oppQ/DmeyO
-         jzEnP2uRwtbBhtxropinfJ/lj4bQQAh6PraO/Wny5HCKh++zqiXkNVohLbyyocgI0Wi1
-         pfIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689005017; x=1691597017;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Lbgr4cPVME1zyRcKyuyARahjBVKm6KiDwdVRCmA9Q64=;
-        b=c6RS7TzWTozElGRbXh7VesK+w5HO3q7mUAlSRB1uJMUihiKfR/R7A7l6zWzKhCkpO7
-         N2Xwx1TaPoKsYKHbYNQcasWS5WyuxYdPOCQnd2vZ/u1YIw9ajrVRG9okBzmVjPqpFHZw
-         wd5bgXjH/gFJhc/9e8H9KIt3STGh9uuIOm1fiGxm1lbHj/jzSvxn0KWbAqPTe8bxAkAc
-         zRApW/y/8ycvKRvQVO2jQEwPXg1lXjzY8nL9k9xiDmlAV+hhvBznQP1FxuIDHMhXlwsV
-         L5jwQJ3z8mznPgjje+LnkZ/wR7NHOdX/Di18eUW4T3kZkwULharveQg5UPDOwQu89B7T
-         SdQQ==
-X-Gm-Message-State: ABy/qLadZow4vyAJ+rWUxCTbhoLQdrzRw8pMQeMcOVRcZQXnaaS27hYX
-        Nkva1doZPB2QFHNaTh7uxvFGP0UNwCOr11Xbp52+hQ==
-X-Google-Smtp-Source: APBJJlHoSKwoAYk9F+jStZaCU4tNJMEhp8d7NJP+u129T3kFtPxkskN1kPYs/YQCe1K98e0aaAgdStgdSWgKlBd1k90=
-X-Received: by 2002:a05:6402:d3:b0:51d:9195:400f with SMTP id
- i19-20020a05640200d300b0051d9195400fmr12646823edu.17.1689005016719; Mon, 10
- Jul 2023 09:03:36 -0700 (PDT)
+        with ESMTP id S229450AbjGJQkH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 12:40:07 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 966F793;
+        Mon, 10 Jul 2023 09:40:04 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 578312B;
+        Mon, 10 Jul 2023 09:40:46 -0700 (PDT)
+Received: from [10.57.36.32] (unknown [10.57.36.32])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ADC5E3F740;
+        Mon, 10 Jul 2023 09:40:01 -0700 (PDT)
+Message-ID: <38f0c8f3-5fb3-a18a-456d-867da2998786@arm.com>
+Date:   Mon, 10 Jul 2023 17:40:00 +0100
 MIME-Version: 1.0
-References: <CAMj1kXFZren0Q19DimwQaETCLz64D4bZQC5B2N=i3SAWHygkTQ@mail.gmail.com>
- <mhng-b66b085a-eb15-4c9b-b2aa-93ddf16ec7aa@palmer-ri-x1c9a>
- <CAP6exYKwZG=_47r0jAUFYNL5-P-SS==k6vWdKiMJ9nB0upH5Zw@mail.gmail.com>
- <20230707-attach-conjuror-306d967347ce@wendy> <ZKfsSsdiso0W8mW6@sunil-laptop>
- <CAN3iYbMhQU5Ng4r6_rQDnLmit1GCmheC5T49rsUP5NgHFEXsHA@mail.gmail.com>
- <ZKgLKvBoWKSxzm6r@sunil-laptop> <CAN3iYbOe+i4jVhz0sSQwVQ2PMB7UvaTPyN_sLtZj0uiOD2emDA@mail.gmail.com>
- <20230707-gargle-enjoyable-f9f7f87fc7ea@spud> <DBAPR08MB5783AED8329E38D840B7015D9C2DA@DBAPR08MB5783.eurprd08.prod.outlook.com>
- <CAMj1kXEkL0gF8uGcy2AjJvD-yZHmyLX9jiVVDtR+uBAYf+BfUg@mail.gmail.com>
-In-Reply-To: <CAMj1kXEkL0gF8uGcy2AjJvD-yZHmyLX9jiVVDtR+uBAYf+BfUg@mail.gmail.com>
-From:   =?UTF-8?B?6JGb5aOr5bu6?= <geshijian@bytedance.com>
-Date:   Tue, 11 Jul 2023 00:03:25 +0800
-Message-ID: <CAN3iYbMsUNMH27kdtwPwLeBSUfH0gTvyqjZ8ExZaoGcuv8CBdA@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v3 0/4] Obtain SMBIOS and ACPI entry from FFI
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Dong Wei <Dong.Wei@arm.com>, Conor Dooley <conor@kernel.org>,
-        Sunil V L <sunilvl@ventanamicro.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        ron minnich <rminnich@gmail.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        "cuiyunhui@bytedance.com" <cuiyunhui@bytedance.com>,
-        "jrtc27@jrtc27.com" <jrtc27@jrtc27.com>,
-        "kernel@esmil.dk" <kernel@esmil.dk>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        Mark Rutland <Mark.Rutland@arm.com>,
-        "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "jdelvare@suse.com" <jdelvare@suse.com>,
-        "yc.hung@mediatek.com" <yc.hung@mediatek.com>,
-        "angelogioacchino.delregno@collabora.com" 
-        <angelogioacchino.delregno@collabora.com>,
-        "allen-kh.cheng@mediatek.com" <allen-kh.cheng@mediatek.com>,
-        "pierre-louis.bossart@linux.intel.com" 
-        <pierre-louis.bossart@linux.intel.com>,
-        "tinghan.shen@mediatek.com" <tinghan.shen@mediatek.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "weidong.wd@bytedance.com" <weidong.wd@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH V6 6/6] coresight: etm4x: Add ACPI support in platform
+ driver
+To:     rafael@kernel.org, Len Brown <lenb@kernel.org>
+Cc:     Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+        Steve Clevenger <scclevenger@os.amperecomputing.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
+        gregkh@linuxfoundation.org
+References: <20230710062500.45147-1-anshuman.khandual@arm.com>
+ <20230710062500.45147-7-anshuman.khandual@arm.com>
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20230710062500.45147-7-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jul 8, 2023 at 4:45=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> wro=
-te:
->
-> On Fri, 7 Jul 2023 at 18:21, Dong Wei <Dong.Wei@arm.com> wrote:
-> >
-> > On Arm systems today, the ACPI RSDP is found using the UEFI Configurati=
-on Table. This is true for all Arm SystemReady compliant systems: 1) System=
-Ready LS: LBBRv1 is using a minimal UEFI FW to load LinuxBoot, that minimal=
- UEFI FW is producing the UEFI Configuration Table. We are working on LBBRv=
-2. LBBRv2 is based on Coreboot loading LinuxBoot. But we do not have a way =
-today to get CoreBoot to produce this pointer to ACPI RSDP. Arm does not su=
-pport x86 E820 BIOS interface. 2) SystemReady IR: this solution uses DT rat=
-her than ACPI. 3) SystemReady ES: this solution can use UBoot or EDK2, and =
-it requires ACPI. Since both UBoot and EDK2 support UEFI now, so ACPI RSDP =
-can be found using the UEFI Configuration Table. 4) SystemReady SR: this so=
-lution typically uses EDK2 and requires ACPI, so no issue finding RSDP via =
-UEFI Configuration Table.
-> >
-> >
-> >
-> > So the ACPI RSDP issue only exist if we want to remove the minimum UEFI=
- FW and go to CoreBoot completely to load LinuxBoot. We are currently explo=
-ring how to solve that issue=E2=80=A6
-> >
->
-> Hello Dong,
->
-> This fixes the RSDP issue perhaps, but that is not the only problem. I
-> have mentioned this many times already, but let me mention it again
-> for completeness:
->
-> ACPI does not have a memory map, and ARM is much more finicky about
-> mapping memory regions with the right attributes, given that uncached
-> accesses don't snoop the caches like they do on x86. This means it is
-> essential that memory mappings constructed from AML code (which
-> doesn't provide any context pertaining to the memory type either) are
-> created with the right memory type.
->
-> Currently, the Linux/arm64 glue code for the ACPI core
-> cross-references every memory mapping created from a SystemMemory
-> OpRegion by AML code against the EFI memory map, and uses the EFI
-> memory type and attributes to infer the memory type to program into
-> the page tables. So simply providing the RSDP is *not* sufficient: on
-> arm64, more work is needed and currently, booting ACPI without a EFI
-> memory map results in SystemMemory OpRegions not working at all.
->
-> Of course, we might be able to work around that by providing a
-> 'coreboot' memory map for doing ACPI on arm64, but that results in
-> more fragmentation and an inflated validation matrix, which puts the
-> burden on the Linux subsystem maintainers to make sure that all these
-> different combinations remain supported.
->
-> AIUI, this memory type issue does not exist for RISC-V today, but I'd
-> suggest to the RISC-V maintainers to take a careful look at arm64's
-> acpi_os_ioremap() implementation and decide whether or not RISC-V
-> needs similar logic.
+Rafael, Len
 
-Thanks Ard and Sunil,
+On 10/07/2023 07:25, Anshuman Khandual wrote:
+> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> Drop ETM4X ACPI ID from the AMBA ACPI device list, and instead just move it
+> inside the new ACPI devices list detected and used via platform driver.
+> 
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Cc: Mike Leach <mike.leach@linaro.org>
+> Cc: Leo Yan <leo.yan@linaro.org>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: coresight@lists.linaro.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com> (for ACPI specific changes)
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-You are right, we need to work out a coreboot memory map for doing
-ACPI on ARM64.
-BTW, I don't suggest binding ACPI and UEFI together. On RISC-V,  the
-current solution works well based on our experience, anyway, we will
-study memory with DTS and update later.
+We would like to queue this via coresight tree. The acpi_amba bits have
+been reviewed by Sudeep. Please could you give us an Ack, if you are
+happy with the proposal ?
 
-Thanks,
--Nill
+Kind regards
+Suzuki
+
+
+> ---
+>   drivers/acpi/acpi_amba.c                           |  1 -
+>   drivers/hwtracing/coresight/coresight-etm4x-core.c | 10 ++++++++++
+>   2 files changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/acpi_amba.c b/drivers/acpi/acpi_amba.c
+> index f5b443ab01c2..099966cbac5a 100644
+> --- a/drivers/acpi/acpi_amba.c
+> +++ b/drivers/acpi/acpi_amba.c
+> @@ -22,7 +22,6 @@
+>   static const struct acpi_device_id amba_id_list[] = {
+>   	{"ARMH0061", 0}, /* PL061 GPIO Device */
+>   	{"ARMH0330", 0}, /* ARM DMA Controller DMA-330 */
+> -	{"ARMHC500", 0}, /* ARM CoreSight ETM4x */
+>   	{"ARMHC501", 0}, /* ARM CoreSight ETR */
+>   	{"ARMHC502", 0}, /* ARM CoreSight STM */
+>   	{"ARMHC503", 0}, /* ARM CoreSight Debug */
+> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> index 43f583987250..703b6fcbb6a5 100644
+> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> @@ -3,6 +3,7 @@
+>    * Copyright (c) 2014, The Linux Foundation. All rights reserved.
+>    */
+>   
+> +#include <linux/acpi.h>
+>   #include <linux/bitops.h>
+>   #include <linux/kernel.h>
+>   #include <linux/moduleparam.h>
+> @@ -2347,12 +2348,21 @@ static const struct of_device_id etm4_sysreg_match[] = {
+>   	{}
+>   };
+>   
+> +#ifdef CONFIG_ACPI
+> +static const struct acpi_device_id etm4x_acpi_ids[] = {
+> +	{"ARMHC500", 0}, /* ARM CoreSight ETM4x */
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(acpi, etm4x_acpi_ids);
+> +#endif
+> +
+>   static struct platform_driver etm4_platform_driver = {
+>   	.probe		= etm4_probe_platform_dev,
+>   	.remove		= etm4_remove_platform_dev,
+>   	.driver			= {
+>   		.name			= "coresight-etm4x",
+>   		.of_match_table		= etm4_sysreg_match,
+> +		.acpi_match_table	= ACPI_PTR(etm4x_acpi_ids),
+>   		.suppress_bind_attrs	= true,
+>   		.pm			= &etm4_dev_pm_ops,
+>   	},
+
