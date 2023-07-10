@@ -2,59 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5265A74D889
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 16:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E0AD74D8D6
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 16:20:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232278AbjGJOHW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jul 2023 10:07:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59650 "EHLO
+        id S230420AbjGJOUW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jul 2023 10:20:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233137AbjGJOHI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 10:07:08 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17425FA;
-        Mon, 10 Jul 2023 07:06:38 -0700 (PDT)
+        with ESMTP id S230322AbjGJOUV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 10:20:21 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F18FE90;
+        Mon, 10 Jul 2023 07:20:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688997998; x=1720533998;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=jQEetOzC4Z2Ba5ffUz25ea7vrZ/NFCzVXTrNcSKbBBw=;
-  b=bN/ezJybdl1NBm5aDj5uJ8hsFXks67MPlD4KMdamLTprbdhhsWa3oUgS
-   MP+Fz/V841D1CV+MRlP03a4GitLlfwr/djmFdC+/3SHM9H0c81Gjpb22P
-   qxj+j8pHH1I7yj2/bn0vC+uT0xD1+N2+X5MXBKlGd5uPunkfH0Dq/VpIT
-   LMftR6BzGIyTGERrvHg7dBPnBU8l5hFG6ZEHAAnNn08DN93un8uB7YZgL
-   EMoyul/+4mvpt1diDf2o6NY2s1svuEnXig+nIuSpcv3WQdvUViO+oJcl9
-   3Zuwg8DC77V532excj3EiXUocwo4lTxOvPZkHyZ7vnwlIbAti4rl/JaqU
+  t=1688998821; x=1720534821;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=T+ipmIGBmanZ1HNwwnrLFkQbzQzWcUpCwirt14pJwto=;
+  b=LWqRyIVvtnDlGZrQ+B52sahWuiXr60lNkANZhGio/rNaVWz99mgzKQ2b
+   1FoXSUGFffyiYioiDncCxwKT65Q4GpOM6BUayaLihLGft4rxZwYMal09E
+   H5+XEcuFRB5/PR1/weZKMCln2xz3XiAFNmELBW4ULnuVytowutAmKOUui
+   3t+zDJP6p0dbkDncfxYZYGXJppREGWVi4rixokeOg4TAT3j8oaiw7llfy
+   ZPCHC8Jpz/CSCK1cOUtSJ51B4gScREiq6MHfZOA7UUtKqCMfiO53CwRf0
+   4OoIWDNXRr65ss4HdNPxxYZ88qYJUnNVRhyRPElVrlqu9jAa5g0KalNnp
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="361815128"
+X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="430431159"
 X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="scan'208";a="361815128"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 07:05:48 -0700
+   d="scan'208";a="430431159"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 07:20:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="714823062"
+X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="698003669"
 X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="scan'208";a="714823062"
-Received: from powerlab.fi.intel.com ([10.237.71.25])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 07:05:43 -0700
-From:   Michal Wilczynski <michal.wilczynski@intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     rafael@kernel.org, andriy.shevchenko@intel.com,
+   d="scan'208";a="698003669"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006.jf.intel.com with ESMTP; 10 Jul 2023 07:20:17 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1qIrkN-001ZjY-1i;
+        Mon, 10 Jul 2023 17:20:15 +0300
+Date:   Mon, 10 Jul 2023 17:20:15 +0300
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Michal Wilczynski <michal.wilczynski@intel.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
         artem.bityutskiy@linux.intel.com, mingo@redhat.com, bp@alien8.de,
         dave.hansen@linux.intel.com, hpa@zytor.com, lenb@kernel.org,
         jgross@suse.com, linux-kernel@vger.kernel.org, x86@kernel.org,
-        Michal Wilczynski <michal.wilczynski@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v4 9/9] acpi: Remove acpi_hwp_native_thermal_lvt_osc()
-Date:   Mon, 10 Jul 2023 17:03:37 +0300
-Message-ID: <20230710140337.1434060-10-michal.wilczynski@intel.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230710140337.1434060-1-michal.wilczynski@intel.com>
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH v4 4/9] acpi: Rename ACPI_PDC constants
+Message-ID: <ZKwTn/cLwAM7uSUA@smile.fi.intel.com>
 References: <20230710140337.1434060-1-michal.wilczynski@intel.com>
+ <20230710140337.1434060-5-michal.wilczynski@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230710140337.1434060-5-michal.wilczynski@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
@@ -65,71 +69,31 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Workaround for buggy skylake BIOS is implemented in acpi_processor_osc()
-and acpi_hwp_native_thermal_lvt_osc() function is not called anywhere.
-Remove it.
+On Mon, Jul 10, 2023 at 05:03:32PM +0300, Michal Wilczynski wrote:
+> ACPI_PDC constants prefix suggest that those constants are only relevant
+> in the context of the _PDC method. This is not true, as they can also be
+> used in _OSC context. Change prefix to more generic ACPI_PROC_CAP, that
+> better describe the purpose of those constants as they describe bits in
+> processor capabilities buffer. Rename pdc_intel.h to proc_cap_intel.h to
+> reflect the change in the prefix.
 
-Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/acpi_processor.c | 36 -----------------------------------
- 1 file changed, 36 deletions(-)
+...
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 50c456dbecea..a1815155543a 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -561,7 +561,6 @@ bool __init processor_physically_present(acpi_handle handle)
- 
- /* vendor specific UUID indicating an Intel platform */
- static u8 sb_uuid_str[] = "4077A616-290C-47BE-9EBD-D87058713953";
--static bool acpi_hwp_native_thermal_lvt_set;
- static acpi_status __init acpi_processor_osc(acpi_handle handle, u32 lvl,
- 					     void *context, void **rv)
- {
-@@ -588,41 +587,6 @@ static acpi_status __init acpi_processor_osc(acpi_handle handle, u32 lvl,
- 	return AE_OK;
- }
- 
--static acpi_status __init acpi_hwp_native_thermal_lvt_osc(acpi_handle handle,
--							  u32 lvl,
--							  void *context,
--							  void **rv)
--{
--	u32 capbuf[2];
--	struct acpi_osc_context osc_context = {
--		.uuid_str = sb_uuid_str,
--		.rev = 1,
--		.cap.length = 8,
--		.cap.pointer = capbuf,
--	};
--
--	if (acpi_hwp_native_thermal_lvt_set)
--		return AE_CTRL_TERMINATE;
--
--	capbuf[0] = 0x0000;
--	capbuf[1] = 0x1000; /* set bit 12 */
--
--	if (ACPI_SUCCESS(acpi_run_osc(handle, &osc_context))) {
--		if (osc_context.ret.pointer && osc_context.ret.length > 1) {
--			u32 *capbuf_ret = osc_context.ret.pointer;
--
--			if (capbuf_ret[1] & 0x1000) {
--				acpi_handle_info(handle,
--					"_OSC native thermal LVT Acked\n");
--				acpi_hwp_native_thermal_lvt_set = true;
--			}
--		}
--		kfree(osc_context.ret.pointer);
--	}
--
--	return AE_OK;
--}
--
- acpi_status __init acpi_early_processor_osc(void)
- {
- 	acpi_status status;
+> -	/* Ask the Hypervisor whether to clear ACPI_PDC_C_C2C3_FFH. If so,
+> +	/* Ask the Hypervisor whether to clear ACPI_PROC_CAP_C_C2C3_FFH. If so,
+>  	 * don't expose MWAIT_LEAF and let ACPI pick the IOPORT version of C3.
+>  	 */
+
+/*
+ * While at it, you can fix multi-line
+ * comment style. It supposed to be
+ * like in this example.
+ */
+
+I don't know if resend is required, I would wait for Rafael to comment on this.
+
 -- 
-2.41.0
+With Best Regards,
+Andy Shevchenko
+
 
