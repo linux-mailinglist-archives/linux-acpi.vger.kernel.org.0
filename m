@@ -2,50 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 934A874CA46
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 05:15:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86F0074CCC2
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 08:25:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229619AbjGJDPs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 9 Jul 2023 23:15:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54026 "EHLO
+        id S229760AbjGJGZS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jul 2023 02:25:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229587AbjGJDPq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 9 Jul 2023 23:15:46 -0400
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DF9AEC;
-        Sun,  9 Jul 2023 20:15:42 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R551e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0VmxC.uy_1688958934;
-Received: from 30.240.113.134(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VmxC.uy_1688958934)
-          by smtp.aliyun-inc.com;
-          Mon, 10 Jul 2023 11:15:37 +0800
-Message-ID: <1fe4f86e-63ce-3702-4e08-4bc0e7bb391b@linux.alibaba.com>
-Date:   Mon, 10 Jul 2023 11:15:31 +0800
+        with ESMTP id S229517AbjGJGZS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 02:25:18 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 638BD115;
+        Sun,  9 Jul 2023 23:25:16 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 12E221FB;
+        Sun,  9 Jul 2023 23:25:58 -0700 (PDT)
+Received: from a077893.blr.arm.com (a077893.blr.arm.com [10.162.40.20])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D36E83F67D;
+        Sun,  9 Jul 2023 23:25:09 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
+        suzuki.poulose@arm.com, gregkh@linuxfoundation.org,
+        rafael@kernel.org
+Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+        Steve Clevenger <scclevenger@os.amperecomputing.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Len Brown <lenb@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH V6 0/6] coresight: etm4x: Migrate ACPI AMBA devices to platform driver
+Date:   Mon, 10 Jul 2023 11:54:54 +0530
+Message-Id: <20230710062500.45147-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [RESEND PATCH v7 0/2] ACPI: APEI: handle synchronous exceptions
- with proper si_code
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     rafael@kernel.org, wangkefeng.wang@huawei.com,
-        tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
-        naoya.horiguchi@nec.com
-Cc:     linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, justin.he@arm.com,
-        akpm@linux-foundation.org, ardb@kernel.org, ashish.kalra@amd.com,
-        baolin.wang@linux.alibaba.com, bp@alien8.de,
-        cuibixuan@linux.alibaba.com, dave.hansen@linux.intel.com,
-        james.morse@arm.com, jarkko@kernel.org, lenb@kernel.org,
-        linmiaohe@huawei.com, lvying6@huawei.com, xiexiuqi@huawei.com,
-        zhuo.song@linux.alibaba.com
-References: <20230606074238.97166-1-xueshuai@linux.alibaba.com>
- <a2b16cca-5449-1d16-f49c-7b83fb45771c@linux.alibaba.com>
-Content-Language: en-US
-In-Reply-To: <a2b16cca-5449-1d16-f49c-7b83fb45771c@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-10.0 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,75 +52,125 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+CoreSight ETM4x devices could be accessed either via MMIO (handled via
+amba_driver) or CPU system instructions (handled via platform driver). But
+this has the following issues :
 
+  - Each new CPU comes up with its own PID and thus we need to keep on
+    adding the "known" PIDs to get it working with AMBA driver. While
+    the ETM4 architecture (and CoreSight architecture) defines way to
+    identify a device as ETM4. Thus older kernels  won't be able to
+    "discover" a newer CPU, unless we add the PIDs.
 
-On 2023/6/16 15:15, Shuai Xue wrote:
-> 
-> 
-> On 2023/6/6 15:42, Shuai Xue wrote:
->> changes since v6:
->> - add more explicty error message suggested by Xiaofei
->> - pick up reviewed-by tag from Xiaofei
->> - pick up internal reviewed-by tag from Baolin
->>
->> changes since v5 by addressing comments from Kefeng:
->> - document return value of memory_failure()
->> - drop redundant comments in call site of memory_failure() 
->> - make ghes_do_proc void and handle abnormal case within it
->> - pick up reviewed-by tag from Kefeng Wang 
->>
->> changes since v4 by addressing comments from Xiaofei:
->> - do a force kill only for abnormal sync errors
->>
->> changes since v3 by addressing comments from Xiaofei:
->> - do a force kill for abnormal memory failure error such as invalid PA,
->> unexpected severity, OOM, etc
->> - pcik up tested-by tag from Ma Wupeng
->>
->> changes since v2 by addressing comments from Naoya:
->> - rename mce_task_work to sync_task_work
->> - drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
->> - add steps to reproduce this problem in cover letter
->>
->> changes since v1:
->> - synchronous events by notify type
->> - Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
->>
->>
->> Shuai Xue (2):
->>   ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on
->>     synchronous events
->>   ACPI: APEI: handle synchronous exceptions in task work
->>
->>  arch/x86/kernel/cpu/mce/core.c |   9 +--
->>  drivers/acpi/apei/ghes.c       | 113 ++++++++++++++++++++++-----------
->>  include/acpi/ghes.h            |   3 -
->>  mm/memory-failure.c            |  17 +----
->>  4 files changed, 79 insertions(+), 63 deletions(-)
->>
-> 
-> 
-> Hi, Rafael,
-> 
-> Gentle ping.
-> 
-> Are you happy to queue this patch set or anything I can do to improve it?
-> As @Kefeng said, this issue is met in Alibaba and Huawei products, we hope it
-> could be fixed ASAP.
+  - With ACPI, the ETM4x devices have the same HID to identify the device
+    irrespective of the mode of access. This creates a problem where two
+    different drivers (both AMBA based driver and platform driver) would
+    hook into the "HID" and could conflict. e.g., if AMBA driver gets
+    hold of a non-MMIO device, the probe fails. If we have single driver
+    hooked into the given "HID", we could handle them seamlessly,
+    irrespective of the mode of access.
 
-Hi Rafael, Tony, and Naoya,
+  - CoreSight is heavily dependent on the runtime power management. With
+    ACPI, amba_driver doesn't get us anywhere with handling the power
+    and thus one need to always turn the power ON to use them. Moving to
+    platform driver gives us the power management for free.
 
-Gentle ping. I am sorry to see that we have missed v6.3 and v6.4 merge window
-since three Reviewed-by tags and one Tested-by tag.
+Due to all of the above, we are moving ACPI MMIO based etm4x devices to be
+supported via tha platform driver. The series makes the existing platform
+driver generic to handle both type of the access modes. Although existing
+AMBA driver would still continue to support DT based etm4x MMIO devices.
+Although some problems still remain, such as manually adding PIDs for all
+new AMBA DT based devices.
 
-Do we still need any designated APEI reviewers Reviewed-by? Could you give me your
-Reviewed-by @Tony, and @Naoya if you are happy with the change.
+The series applies on 6.5-rc1.
 
-Or Please could you Ack this change if you are happy with the proposal and the
-change? @Rafael
+Changes in V6:
 
-> 
-> Thank you.
-> 
-> Best Regards,
-> Shuai
+- Rebased on 6.5-rc1
+
+Changes in V5:
+
+https://lore.kernel.org/all/20230529062511.52016-1-anshuman.khandual@arm.com/
+
+- Updated the comment for apb clock in drvdata structure
+- Updated conditional check in etm4_runtime_suspend/resume()
+- Asserted that the APB clock is present and also enabled
+
+Changes in V4:
+
+https://lore.kernel.org/all/20230523044553.1525048-1-anshuman.khandual@arm.com/
+
+- Changed in-code comment in etm4_check_arch_features()
+- Re-ordered pm_runtime_disable() in etm4_remove_platform_dev()
+- Renamed back etm4_match as etm4_sysreg_match
+- Moved back [PATCH 6/6] as [PATCH 5/6]
+
+Changes in V3:
+
+https://lore.kernel.org/all/20230519052149.1367814-1-anshuman.khandual@arm.com/
+
+- Returned from etm4_check_arch_features() for non iomem devices 
+- Renamed ETM_DEVTYPE_ETMv4x_ARCH as CS_DEVTYPE_PE_TRACE
+- Renamed is_etm4x_devtype() as is_devtype_cpu_trace()
+- Added a patch to ignore the absence of graph connections
+
+Changes in V2:
+
+https://lore.kernel.org/all/20230327050537.30861-1-anshuman.khandual@arm.com/
+
+- Enables ACPI etm4x device support in the existing platform driver
+- Dropped last two patches from the series
+- Dropped redundant 'devarch' checking from is_etm4x_device()
+- Renamed updated is_etm4x_device() as is_etm4x_devtype()
+- Fixed arguments in fallback stub for etm4_check_arch_features()
+- Tagged etm4_dev_pm_ops with etm4_platform_driver
+- Updated the comment for coresight_get_enable_apb_pclk() helper
+- Updated the comment for new 'pclk' element in struct etm4_drvdata
+- Dropped the clock when devm_ioremap_resource() fails
+- Convert IS_ERR() into a direct pointer check in etm4_remove_platform_dev()
+- Dropped "arm,coresight-etm4x" compatible property from etm4_match[]
+
+Changes in V1:
+
+https://lore.kernel.org/all/20230317030501.1811905-1-anshuman.khandual@arm.com/
+
+Cc: Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>
+Cc: Steve Clevenger <scclevenger@os.amperecomputing.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: Russell King (Oracle) <linux@armlinux.org.uk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: devicetree@vger.kernel.org
+Cc: linux-acpi@vger.kernel.org
+Cc: coresight@lists.linaro.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (4):
+  coresight: etm4x: Allocate and device assign 'struct etmv4_drvdata' earlier
+  coresight: etm4x: Drop iomem 'base' argument from etm4_probe()
+  coresight: etm4x: Drop pid argument from etm4_probe()
+  coresight: etm4x: Change etm4_platform_driver driver for MMIO devices
+
+Suzuki K Poulose (2):
+  coresight: platform: acpi: Ignore the absence of graph
+  coresight: etm4x: Add ACPI support in platform driver
+
+ drivers/acpi/acpi_amba.c                      |   1 -
+ .../coresight/coresight-etm4x-core.c          | 118 ++++++++++++++----
+ drivers/hwtracing/coresight/coresight-etm4x.h |   4 +
+ .../hwtracing/coresight/coresight-platform.c  |   6 +-
+ include/linux/coresight.h                     |  59 +++++++++
+ 5 files changed, 164 insertions(+), 24 deletions(-)
+
+-- 
+2.25.1
+
