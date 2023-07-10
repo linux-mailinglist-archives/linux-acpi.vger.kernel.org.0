@@ -2,84 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D39674DC45
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 19:23:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32B1774DE3E
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jul 2023 21:33:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231894AbjGJRXg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jul 2023 13:23:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43464 "EHLO
+        id S232018AbjGJTdG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jul 2023 15:33:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230247AbjGJRXf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 13:23:35 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81834C7;
-        Mon, 10 Jul 2023 10:23:34 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id f579f02970a6a1fc; Mon, 10 Jul 2023 19:23:32 +0200
-Received: from kreacher.localnet (unknown [195.136.19.94])
+        with ESMTP id S230310AbjGJTcy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jul 2023 15:32:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0E201B1;
+        Mon, 10 Jul 2023 12:32:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 40B6E660DCF;
-        Mon, 10 Jul 2023 19:23:32 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Bob Moore <robert.moore@intel.com>,
-        Saket Dumbre <saket.dumbre@intel.com>
-Subject: [PATCH 14/14] ACPICA: Update version to 20230628
-Date:   Mon, 10 Jul 2023 19:23:23 +0200
-Message-ID: <23148916.6Emhk5qWAg@kreacher>
-In-Reply-To: <5698695.DvuYhMxLoT@kreacher>
-References: <5698695.DvuYhMxLoT@kreacher>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54799611C0;
+        Mon, 10 Jul 2023 19:32:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C36C433C8;
+        Mon, 10 Jul 2023 19:32:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689017569;
+        bh=VO939+UHAARObDvVdftwDAAwyOD9ujQLDJhFUZ6alak=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=c6iRjdZfW5RwF8Ejv599j9TjVkZEqLIm9tpq6ajwWtLhko9+fB4WUIks0zTOr6t9X
+         7pF59S+7gk3oUTleeOvgVfrxgzGfvApH4ESv0AH1B/aQjfCDR+OcWIBz8OXeG7MHLN
+         g+gX+TpHXhyq/A0KxFBFkB33yBppE3X0PtkFJT3PjtJz7rCKoxsFxrwMvZwURav2+l
+         agraie9m/K/LIt9uLu/L09bqJS7vjNcIJVYicajvDK2VLXnslD82bCGELP6S36KwvE
+         kIFaELsw0CzU+iZ4NJ3V5iRGst4DeOUeoBeMPgIegsHUx8U5KziSEewKvdPMezuOTB
+         LO87S2WT3h20Q==
+Date:   Mon, 10 Jul 2023 14:32:47 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        stable@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>
+Subject: Re: [PATCH v6 1/1] PCI: Avoid putting some root ports into D3 on
+ some Ryzen chips
+Message-ID: <20230710193247.GA218021@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrvdekgddutdefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepledtieekkeekveeikeetgffgteeuteefjeevjeegudelvdduheeiuedvieehieevnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeegpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhrtghpthhtohepshgrkhgvthdrughumhgsrhgv
- sehinhhtvghlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230708214457.1229-2-mario.limonciello@amd.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Bob Moore <robert.moore@intel.com>
+On Sat, Jul 08, 2023 at 04:44:57PM -0500, Mario Limonciello wrote:
+> commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> sets the policy that all PCIe ports are allowed to use D3.  When
+> the system is suspended if the port is not power manageable by the
+> platform and won't be used for wakeup via a PME this sets up the
+> policy for these ports to go into D3hot.
+> 
+> This policy generally makes sense from an OSPM perspective but it leads
+> to problems with wakeup from suspend on laptops with AMD chips:
+> 
+> - On family 19h model 44h (PCI 0x14b9) this manifests as a missing wakeup
+>   interrupt.
+> - On family 19h model 74h (PCI 0x14eb) this manifests as a system hang.
+> 
+> Add a quirk for the PCI device ID used by the problematic root port on
+> both chips to ensure that these root ports are not put into D3hot at
+> suspend.
 
-ACPICA commit f16a0b4d0f0edd7b78a332fcf507be2187fac21e
+What is problematic about these root ports?  Is this a hardware
+erratum?  Some corner of the ACPI spec that allows undefined behavior?
 
-Version 20230628.
+Does AMD have any guidance about generic ways to use D3, or does AMD
+expect to add quirks piecemeal as problems are discovered?  How does
+Windows handle all this?
 
-Link: https://github.com/acpica/acpica/commit/f16a0b4d
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- include/acpi/acpixf.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Adding quirks as we discover random devices that don't behave
+correctly for reasons unknown is not very sustainable.
 
-diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
-index 9ffdc0425bc2..0c1b69ad95d0 100644
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -12,7 +12,7 @@
- 
- /* Current ACPICA subsystem version in YYYYMMDD format */
- 
--#define ACPI_CA_VERSION                 0x20230331
-+#define ACPI_CA_VERSION                 0x20230628
- 
- #include <acpi/acconfig.h>
- #include <acpi/actypes.h>
--- 
-2.35.3
+Bjorn
 
-
-
-
+> Cc: stable@vger.kernel.org # 6.1+
+> Reported-by: Iain Lane <iain@orangesquash.org.uk>
+> Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
+> Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  drivers/pci/quirks.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index 321156ca273d5..e0346073e5855 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -3867,6 +3867,22 @@ static void quirk_apple_poweroff_thunderbolt(struct pci_dev *dev)
+>  DECLARE_PCI_FIXUP_SUSPEND_LATE(PCI_VENDOR_ID_INTEL,
+>  			       PCI_DEVICE_ID_INTEL_CACTUS_RIDGE_4C,
+>  			       quirk_apple_poweroff_thunderbolt);
+> +
+> +/*
+> + * Putting PCIe root ports on Ryzen SoCs with USB4 controllers into D3hot
+> + * may cause problems when the system attempts wake up from s2idle.
+> + *
+> + * On family 19h model 44h (PCI 0x14b9) this manifests as a missing wakeup
+> + * interrupt.
+> + * On family 19h model 74h (PCI 0x14eb) this manifests as a system hang.
+> + */
+> +static void quirk_ryzen_rp_d3(struct pci_dev *pdev)
+> +{
+> +	if (!acpi_pci_power_manageable(pdev))
+> +		pdev->dev_flags |= PCI_DEV_FLAGS_NO_D3;
+> +}
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x14b9, quirk_ryzen_rp_d3);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x14eb, quirk_ryzen_rp_d3);
+>  #endif
+>  
+>  /*
+> -- 
+> 2.34.1
+> 
