@@ -2,275 +2,193 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAEF774F33E
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jul 2023 17:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0323B74F369
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jul 2023 17:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229928AbjGKPXo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Jul 2023 11:23:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40730 "EHLO
+        id S230155AbjGKP2j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Jul 2023 11:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229890AbjGKPXn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Jul 2023 11:23:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EF56120
-        for <linux-acpi@vger.kernel.org>; Tue, 11 Jul 2023 08:22:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1689088978;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=hR8o5w/Hx4dMIcWhqSVmnIxH5BFRWJkuE4F/mZRv5R0=;
-        b=Bu5+vqDeTbPPcZgy/jefEUhb4JSCRtMC2CpOqIecWq0v0MRfn/Hwt428a/cWasPuWDVzrk
-        /Qo49ei1pRPtpD9+Eklk4vrKyAMCPP5GkY5i0gaXC+wcZtEpfnYews/idtyKrwHrR9JBdu
-        844UWCRgIrq5OG3fcZHrcJeeF1Rrgh4=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-GXHy-1HeNSuXTjVmIq79_g-1; Tue, 11 Jul 2023 11:21:14 -0400
-X-MC-Unique: GXHy-1HeNSuXTjVmIq79_g-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3f42bcef2acso35075855e9.2
-        for <linux-acpi@vger.kernel.org>; Tue, 11 Jul 2023 08:21:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689088864; x=1691680864;
-        h=content-transfer-encoding:in-reply-to:subject:organization:from
-         :references:cc:to:content-language:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hR8o5w/Hx4dMIcWhqSVmnIxH5BFRWJkuE4F/mZRv5R0=;
-        b=k/UudUC5ocXHMCHSgU4t2FZBeV0PtozDYfguDBW1vBZdLXPTA0+7wNTzdBdIPAX5Nz
-         02uXYnnvOY6xxo4l1fFLxK1rlAvgJTWTX5sjavwmQqgcefbBMMlvQ3IB5HTqAJGRvpdh
-         vEHBteJWTtYVbsmt6YyqiKxEc/BKMgsXaLdMta7zF++n8BkikKpiFuFfE/k2mUgGwTH0
-         siP0dbH12OP7pBlNTdPWipM7l7zJcJow5XIDtuic8vBGQTbGAUmgfUTbYcqtdSEDy0RH
-         nry0KZQN/SvaCZ17Ycvfb2yBqX9pW7ntYLZrdoHv4PoVxP2XsGNdnGr3GIogqqVcCpok
-         XiMg==
-X-Gm-Message-State: ABy/qLayXx5I1el+SLyluvJCytyKbVRZMwPaGQnjGH734XAu/psNK1gB
-        S/fbVJo2ikxjTwkJfoiivTRH2bU+1ALqW9g4wZEYvxvWAbFTpi8XIJQzzODcl40nimueMu9Q441
-        mYBZrED4E/nygLc8dQOBw4g==
-X-Received: by 2002:a05:600c:3659:b0:3fb:ffca:b6b8 with SMTP id y25-20020a05600c365900b003fbffcab6b8mr10769696wmq.41.1689088864171;
-        Tue, 11 Jul 2023 08:21:04 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFa8FePMOcFtsaR5lyUM9Zkhx4gUcfLsSekgoJaLPVs+fd3+XRakBj3NxEJhRdLG4yh8Eojkw==
-X-Received: by 2002:a05:600c:3659:b0:3fb:ffca:b6b8 with SMTP id y25-20020a05600c365900b003fbffcab6b8mr10769677wmq.41.1689088863833;
-        Tue, 11 Jul 2023 08:21:03 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c745:4000:13ad:ed64:37e6:115d? (p200300cbc745400013aded6437e6115d.dip0.t-ipconnect.de. [2003:cb:c745:4000:13ad:ed64:37e6:115d])
-        by smtp.gmail.com with ESMTPSA id k24-20020a05600c0b5800b003fc01189b0dsm2774139wmr.42.2023.07.11.08.21.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Jul 2023 08:21:03 -0700 (PDT)
-Message-ID: <1df12885-9ae4-6aef-1a31-91ecd5a18d24@redhat.com>
-Date:   Tue, 11 Jul 2023 17:21:02 +0200
-MIME-Version: 1.0
+        with ESMTP id S232254AbjGKP2f (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Jul 2023 11:28:35 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F68170F;
+        Tue, 11 Jul 2023 08:28:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689089308; x=1720625308;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=BS2BcBsZ+cVYzT9qZED52WeCZjVtABRtASYJvgS1p4w=;
+  b=gjeGy7vWAfijiN6EvY15OYQ3KSb8BTTp2pVUFGP08bUw1yQt0Pm4WduN
+   759mV0wpmf2vBfdLTv/dNk9E8m+eoVfhauT4bHVfZTfZI3veRB91lGfIP
+   tzWao7dYwroraj29RX/3+d6D2tT6/1WqZrHY8W5vNhggXVu/wuWDllfvk
+   GBHxsoX87f2pC8BbxjUnQw2bUq7jiCp4JCWVQSLGmFgmNWi85ghRI/1zz
+   nRhY+3A/ijamg/7FIyzw7kaBuaxaxXdFprXX4F69MhVLDk/3PpDdbiJer
+   VyCK7QGGqX08/OyM2H83cMc4Rz1hpLzOMS0YTaWJfgdJjECwPxfRitley
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="367228987"
+X-IronPort-AV: E=Sophos;i="6.01,196,1684825200"; 
+   d="scan'208";a="367228987"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2023 08:28:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="750794350"
+X-IronPort-AV: E=Sophos;i="6.01,196,1684825200"; 
+   d="scan'208";a="750794350"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orsmga008.jf.intel.com with ESMTP; 11 Jul 2023 08:28:26 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 11 Jul 2023 08:28:26 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 11 Jul 2023 08:28:26 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Tue, 11 Jul 2023 08:28:26 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.45) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Tue, 11 Jul 2023 08:28:20 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AyPruAOIJRu1EVwdeQgDHTRCdDThul0yLmswrBwDaeSUklA4K6JAIJBr4JboMfK+X10zS+HheL7MoOrUJIGbjJTuCPQ7SUVx497m0EDNniRO4BbgUbzDv6z08fUbR5LH0BBZtEz5HD+4zCJvamsoINzY8SGjR4H0Tk5FhZCP6Ah1z9T1tJE9Eehq4qCzxVSUruH7f3nxKfbVRZsFv7cnrYr+nCXgQ0AUTTT3/FKnGPA4Yd/anDgmgwq88DHJ38wFGu7c2QPgweP9x6Fl434VXyZ2ZQ30cmfIjIH7gvpfaIZAPQXJ2dkctT2512awwYRY52h7QDP2E25seZBWbTj17w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7fhRc+0MTz4cGsXSVjVJESGqLGPBk9t1VsK8PN25bLc=;
+ b=MwTSlgtVPdkQA0j9KtnNh93+m4Dv1y/5ZqiWnvY8wz6kTaOmTju+mRXZbnOqGvxco27JWzAeFty26TsnGtW3Snayb71Y2zbqbXuQGCJFhxZ8Mju7UY8B+PVyMPV65Lpjt+vOb6mf0OOpcyIKTlLZ0vtEmOpED9Szttc2wuKypBS0EZ5hWaCEjctcK9vpF5AzjxE8WjUhyf/CvOXny8NgwXBRm8APaYzvJYNM+d3eZoXJoptf9BdqeUdQrZtjzBwOhm0pzT8lx6lN4Tj12tsbTwHl7aLM0R/GdjtJSo8S995UfDRdOyxpblzsBufaKgNBh+1cRF0b4JITgQfVVf1a2g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB5984.namprd11.prod.outlook.com (2603:10b6:510:1e3::15)
+ by CY8PR11MB6963.namprd11.prod.outlook.com (2603:10b6:930:58::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.31; Tue, 11 Jul
+ 2023 15:28:17 +0000
+Received: from PH7PR11MB5984.namprd11.prod.outlook.com
+ ([fe80::ef38:9181:fb78:b528]) by PH7PR11MB5984.namprd11.prod.outlook.com
+ ([fe80::ef38:9181:fb78:b528%7]) with mapi id 15.20.6588.017; Tue, 11 Jul 2023
+ 15:28:16 +0000
+Message-ID: <b17104fe-a743-e933-288b-9245887b3a2c@intel.com>
+Date:   Tue, 11 Jul 2023 08:28:13 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
+ Betterbird/102.12.0
+Subject: Re: [PATCH v2] ACPI: NFIT: limit string attribute write
+To:     Ben Dooks <ben.dooks@codethink.co.uk>, <nvdimm@lists.linux.dev>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <lenb@kernel.org>
+References: <20230711093708.23692-1-ben.dooks@codethink.co.uk>
 Content-Language: en-US
-To:     "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, nvdimm@lists.linux.dev,
-        linux-cxl@vger.kernel.org, Huang Ying <ying.huang@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-References: <20230613-vv-kmem_memmap-v1-0-f6de9c6af2c6@intel.com>
- <20230613-vv-kmem_memmap-v1-3-f6de9c6af2c6@intel.com>
- <aadbedeb-424d-a146-392d-d56680263691@redhat.com>
- <87edleplkn.fsf@linux.ibm.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH 3/3] dax/kmem: Always enroll hotplugged memory for
- memmap_on_memory
-In-Reply-To: <87edleplkn.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From:   Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20230711093708.23692-1-ben.dooks@codethink.co.uk>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0248.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a0::13) To PH7PR11MB5984.namprd11.prod.outlook.com
+ (2603:10b6:510:1e3::15)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB5984:EE_|CY8PR11MB6963:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27eabd39-36fb-4329-a0d6-08db822372c6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: DPb2qVxwiSEZB7tzxXiJzgLaWKGceuD7HOZWJJGGGNZhENO7+hYzATbWRSAXnVAWy8IR1O8mwXw3fyHtX8XsHGqKnP8A9N0c9qbRVP8tC9s3WvQRbX8WlfpE05J/x3hkL9MAJA4BKyqxArHkuLkUqwiAQ9qmJoFiWNPfwsAaizguLXdB2WoW1TDEX+KfFPcUYWmVGtsSXYylJwpD51J31MUCsd6V+esB0Lmp5MmhNS/Rbxwkzf0BDeEJhua5j0d4vkxziPElKEQTpuP0zisBjW4A58nevIj6RpB6YQqAF84Nh1jSrwFFucC9OliPveFp+JY4W2AqPZzDGChsspUGhiKhv/UrAGXMTPbMA8oDLlBBYwJ1oTgeJFvWxOZFvZ5LMHMai+fKbYbGnk/KBTi3EWnpRZDdhJa+JjUu5XNFh84UL5tRaVZ6/bwr9+I8ZIbgXidikdoDqBujx4/VT/eo2gTLkS10dbw6cR1h4aVUf8kVF+UhSbqRaPzlPpX56dlTJsPt3A/3ZJDoyDpe5Hl7JpksGkAe3i2VM7KXBhHh4npn9G9JLVq1W65V+4lucly1t5W3GjuU7GhdiPi3tuQ46gQg01azXVE64XMoligqaxR64GywvWGAqMV+1M4qIthRX7S1M1HiZwO11CFwOE8XAA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB5984.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(39860400002)(366004)(376002)(346002)(136003)(451199021)(31686004)(478600001)(4326008)(6486002)(6666004)(66476007)(36756003)(66556008)(41300700001)(66946007)(316002)(86362001)(6506007)(31696002)(26005)(53546011)(83380400001)(2616005)(186003)(82960400001)(6512007)(38100700002)(2906002)(4744005)(8676002)(5660300002)(8936002)(44832011)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MkhFbUs4YTc5L2Jyd0Y2azIzU1RkZ0tXQ2x5aGRTVzNFcXFqTUxvOVdyNU1q?=
+ =?utf-8?B?cForNi9GSW1YUzY1OGpJN05aTndyQnRMejNsZzRIbTBTaDMvZnNVZ3cvYWtw?=
+ =?utf-8?B?Q1BDOHRxaEJZYmE5SWFoRDR6ajh5bk5CWUhVYTlSUXp0eXMvb2swNEcyQXBC?=
+ =?utf-8?B?SzBPQnVsTzhsaGFaNFJxMEx2USswSnJmdjkxSFRzZXlZN3dKREZRUGRzeEk0?=
+ =?utf-8?B?cDhvYUtuMmM4Z2xUTkR3Q3NRdTZtVlVwSURZYVVwOEExZXFKQ0F6OHBsVE10?=
+ =?utf-8?B?bmR5WFhSTHAxTmNsMzBKSkt3ajhYTG5vS013SHoya2RJQloyWERaeGdmVncv?=
+ =?utf-8?B?eGZOMnRLVVVMbmMvTWhYOTI2b1QrcU9lYUFhaXllbnNUa1FJV3BSZGVkWGFS?=
+ =?utf-8?B?WjRFTEVMcTNFN1VIblVQUjNMd0dQc2JCNTBPa0JPRnRZSDZqMEdEM1hPZmxV?=
+ =?utf-8?B?bjBMVmU1OXBOM3JDVHk4TDJjSGhqSGRYc2I2ZU5JWk1WTEJMcks4QUhEeTJW?=
+ =?utf-8?B?L3ZEaFBHekVFcXhaQ05qV25HRW9zRjJiR0M3cHRGWlphUDdGMkU4Qk8yaVNa?=
+ =?utf-8?B?WWQ3MENvMmpiYUFzTG5CbVB6clh4QWFoUW94T3k2TmZ6Q2NjYWJKYTVKbmJN?=
+ =?utf-8?B?cmNYTS9lNXQ0M3hmRkJKdEdzNVlLQlFVM1VZMU92dWRZNzBUY0ZJQS9qaEtD?=
+ =?utf-8?B?QUJNU0hITkpWeStCS2VDbjl1dW5JcVpmMlhXdGZCZVJYYStyZzFNMUREelMw?=
+ =?utf-8?B?UWlEd29TTFFzc2tYNFpNaDNUMUNlbEFENExITHBzR2RPcGFML1Q2S2RUQXFT?=
+ =?utf-8?B?NU1HV3l5UTJrMW1NM1RYRFRrWVdvUGEzNnJoU2hWdUljRWF0ZFVOK2V1YzJH?=
+ =?utf-8?B?cEJaK0FtRUdEcVpmcmREek5YUkFOTGtybHgvcGczZmZvSUFqYVdoTmZqUU1j?=
+ =?utf-8?B?MENJRDNTU2k4dnJBTXdBcDhxMFFEU2NBV3h6d1pCSSs0NFM4bUtxd0RVdTRh?=
+ =?utf-8?B?aERFVi9DUGwzNTdqUE5SYmlaY1pjNCtSRDdpc1NmL3o1VUZMQTFCNEJDc0I2?=
+ =?utf-8?B?TUc3TVlwZEozRWoyV0JaMGhuZzVxN09HSXRrMDI1YzJ5WDJmcmY3aHVHMmU1?=
+ =?utf-8?B?b1cvUG84dllVZmk1Z1NDclpiV1l2bEZGTExDVDBMSGp6T0NJaGo1UkhaWDNY?=
+ =?utf-8?B?TUFGckxHeWlWV3Nud1BsTDkyL1ZJM2plenlmUFEzeWx5VVZlbjAzT3IvSkVj?=
+ =?utf-8?B?c0VzL29uNHlVa2N3dDRvdDRxbUdldjBPcG1McldiMTJqVlpIaGlaZ1NnZ0FY?=
+ =?utf-8?B?VVlCNGJCZlZVRkdTRXpWQStXNllENnB4ay9KQVZuc2xWUmMwZWpjd3FRZWE0?=
+ =?utf-8?B?bzNZMUhJRGFiWGNYaklYOVEyTG9wVG9xWGswa1BZNjhIakJWb29YYVp6TFFB?=
+ =?utf-8?B?SVpJek1aUXJ0dFd5bkY0OEprVlRmVlcxeU1ZZDh4UGlWMU4wR1pXdE9EVitz?=
+ =?utf-8?B?ZHNmbUdTTzlzb2R3ZDhxRWZ4U1Rhc2VISHFoazIwczFZMmt0NzFoNnhFa3FU?=
+ =?utf-8?B?RTR5RlZuU3VYK0JmL0JNbEdhQlMwakVGK3JSaHNVSHFHejZHR0d3QmRYd3dP?=
+ =?utf-8?B?cFNGRmhGMHI3M1NiRUNGZ1RTcHd5TVo4MXZxbHVZdGpZdWRmemdRSUlmYmdC?=
+ =?utf-8?B?dE1XaFdna2RBVzhrSGpRbjFpY3RueW5mUnpwd3g1TXFaWjRzcXRZVnVCWXBN?=
+ =?utf-8?B?djJFZDBZbDZpSXlLaHZlNmpyM2tJVnRWdktLTjRBYzdGMVR6Z0Y5a3hVTUNB?=
+ =?utf-8?B?NWFxaytSV0NDWkRiMTZTUCtoZ0Ird2FkMW9SSlFUTzBNVVZvTkpHcDRGZ0JT?=
+ =?utf-8?B?d2V2TDZ5Nm1pYkZMTHJ4R1J0Ynlsd2lnZENYS0ZtR1R1NmVuWFVkQXFjUThh?=
+ =?utf-8?B?R1lKZGxoemhQcHRyN3hjbTdWQWRxcHNIcmZPZGpnbjRkaXJ1NTYxL0xaN25Z?=
+ =?utf-8?B?akpZRDNldys4Q1Vid0JUekZISm9nMHdVdVcrU0pCZm9aWXJhaWMzKzAvUGdH?=
+ =?utf-8?B?OXM3YWp5ZDV0ZEVRWE9OM1hucWYzclZuSjVsSjhKZFYrRTg3VTI5d3JJWDZo?=
+ =?utf-8?Q?4z+hDf1NTpmdkyWjCC1NAWBcb?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27eabd39-36fb-4329-a0d6-08db822372c6
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB5984.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2023 15:28:16.7166
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hUAWmpRDf+68cuAmaiW44RpVUnzZtjm50yhyTi8Uxqb5WwmX/e9P+oM7wGlRU+GQftM15LjJtMf1ys9qMCI/rA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6963
+X-OriginatorOrg: intel.com
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 11.07.23 16:30, Aneesh Kumar K.V wrote:
-> David Hildenbrand <david@redhat.com> writes:
+
+
+On 7/11/23 02:37, Ben Dooks wrote:
+> If we're writing what could be an arbitrary sized string into an attribute
+> we should probably use sysfs_emit() just to be safe. Most of the other
+> attriubtes are some sort of integer so unlikely to be an issue so not
+> altered at this time.
 > 
->> On 16.06.23 00:00, Vishal Verma wrote:
->>> With DAX memory regions originating from CXL memory expanders or
->>> NVDIMMs, the kmem driver may be hot-adding huge amounts of system memory
->>> on a system without enough 'regular' main memory to support the memmap
->>> for it. To avoid this, ensure that all kmem managed hotplugged memory is
->>> added with the MHP_MEMMAP_ON_MEMORY flag to place the memmap on the
->>> new memory region being hot added.
->>>
->>> To do this, call add_memory() in chunks of memory_block_size_bytes() as
->>> that is a requirement for memmap_on_memory. Additionally, Use the
->>> mhp_flag to force the memmap_on_memory checks regardless of the
->>> respective module parameter setting.
->>>
->>> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
->>> Cc: Len Brown <lenb@kernel.org>
->>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>> Cc: David Hildenbrand <david@redhat.com>
->>> Cc: Oscar Salvador <osalvador@suse.de>
->>> Cc: Dan Williams <dan.j.williams@intel.com>
->>> Cc: Dave Jiang <dave.jiang@intel.com>
->>> Cc: Dave Hansen <dave.hansen@linux.intel.com>
->>> Cc: Huang Ying <ying.huang@intel.com>
->>> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
->>> ---
->>>    drivers/dax/kmem.c | 49 ++++++++++++++++++++++++++++++++++++-------------
->>>    1 file changed, 36 insertions(+), 13 deletions(-)
->>>
->>> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
->>> index 7b36db6f1cbd..0751346193ef 100644
->>> --- a/drivers/dax/kmem.c
->>> +++ b/drivers/dax/kmem.c
->>> @@ -12,6 +12,7 @@
->>>    #include <linux/mm.h>
->>>    #include <linux/mman.h>
->>>    #include <linux/memory-tiers.h>
->>> +#include <linux/memory_hotplug.h>
->>>    #include "dax-private.h"
->>>    #include "bus.h"
->>>
->>> @@ -105,6 +106,7 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->>>    	data->mgid = rc;
->>>
->>>    	for (i = 0; i < dev_dax->nr_range; i++) {
->>> +		u64 cur_start, cur_len, remaining;
->>>    		struct resource *res;
->>>    		struct range range;
->>>
->>> @@ -137,21 +139,42 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->>>    		res->flags = IORESOURCE_SYSTEM_RAM;
->>>
->>>    		/*
->>> -		 * Ensure that future kexec'd kernels will not treat
->>> -		 * this as RAM automatically.
->>> +		 * Add memory in chunks of memory_block_size_bytes() so that
->>> +		 * it is considered for MHP_MEMMAP_ON_MEMORY
->>> +		 * @range has already been aligned to memory_block_size_bytes(),
->>> +		 * so the following loop will always break it down cleanly.
->>>    		 */
->>> -		rc = add_memory_driver_managed(data->mgid, range.start,
->>> -				range_len(&range), kmem_name, MHP_NID_IS_MGID);
->>> +		cur_start = range.start;
->>> +		cur_len = memory_block_size_bytes();
->>> +		remaining = range_len(&range);
->>> +		while (remaining) {
->>> +			mhp_t mhp_flags = MHP_NID_IS_MGID;
->>>
->>> -		if (rc) {
->>> -			dev_warn(dev, "mapping%d: %#llx-%#llx memory add failed\n",
->>> -					i, range.start, range.end);
->>> -			remove_resource(res);
->>> -			kfree(res);
->>> -			data->res[i] = NULL;
->>> -			if (mapped)
->>> -				continue;
->>> -			goto err_request_mem;
->>> +			if (mhp_supports_memmap_on_memory(cur_len,
->>> +							  MHP_MEMMAP_ON_MEMORY))
->>> +				mhp_flags |= MHP_MEMMAP_ON_MEMORY;
->>> +			/*
->>> +			 * Ensure that future kexec'd kernels will not treat
->>> +			 * this as RAM automatically.
->>> +			 */
->>> +			rc = add_memory_driver_managed(data->mgid, cur_start,
->>> +						       cur_len, kmem_name,
->>> +						       mhp_flags);
->>> +
->>> +			if (rc) {
->>> +				dev_warn(dev,
->>> +					 "mapping%d: %#llx-%#llx memory add failed\n",
->>> +					 i, cur_start, cur_start + cur_len - 1);
->>> +				remove_resource(res);
->>> +				kfree(res);
->>> +				data->res[i] = NULL;
->>> +				if (mapped)
->>> +					continue;
->>> +				goto err_request_mem;
->>> +			}
->>> +
->>> +			cur_start += cur_len;
->>> +			remaining -= cur_len;
->>>    		}
->>>    		mapped++;
->>>    	}
->>>
->>
->> Maybe the better alternative is teach
->> add_memory_resource()/try_remove_memory() to do that internally.
->>
->> In the add_memory_resource() case, it might be a loop around that
->> memmap_on_memory + arch_add_memory code path (well, and the error path
->> also needs adjustment):
->>
->> 	/*
->> 	 * Self hosted memmap array
->> 	 */
->> 	if (mhp_flags & MHP_MEMMAP_ON_MEMORY) {
->> 		if (!mhp_supports_memmap_on_memory(size)) {
->> 			ret = -EINVAL;
->> 			goto error;
->> 		}
->> 		mhp_altmap.free = PHYS_PFN(size);
->> 		mhp_altmap.base_pfn = PHYS_PFN(start);
->> 		params.altmap = &mhp_altmap;
->> 	}
->>
->> 	/* call arch's memory hotadd */
->> 	ret = arch_add_memory(nid, start, size, &params);
->> 	if (ret < 0)
->> 		goto error;
->>
->>
->> Note that we want to handle that on a per memory-block basis, because we
->> don't want the vmemmap of memory block #2 to end up on memory block #1.
->> It all gets messy with memory onlining/offlining etc otherwise ...
->>
+> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+> ---
+> v2:
+>    - use sysfs_emit() instead of snprintf.
+> ---
+>   drivers/acpi/nfit/core.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> I tried to implement this inside add_memory_driver_managed() and also
-> within dax/kmem. IMHO doing the error handling inside dax/kmem is
-> better. Here is how it looks:
-> 
-> 1. If any blocks got added before (mapped > 0) we loop through all successful request_mem_regions
-> 2. For each succesful request_mem_regions if any blocks got added, we
-> keep the resource. If none got added, we will kfree the resource
-> 
+> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> index 9213b426b125..d7e9d9cd16d2 100644
+> --- a/drivers/acpi/nfit/core.c
+> +++ b/drivers/acpi/nfit/core.c
+> @@ -1579,7 +1579,7 @@ static ssize_t id_show(struct device *dev,
+>   {
+>   	struct nfit_mem *nfit_mem = to_nfit_mem(dev);
+>   
+> -	return sprintf(buf, "%s\n", nfit_mem->id);
+> +	return snprintf(buf, PAGE_SIZE, "%s\n", nfit_mem->id);
 
-Doing this unconditional splitting outside of 
-add_memory_driver_managed() is undesirable for at least two reasons
+Doesn't look like you updated your patch with your new changes....
 
-1) You end up always creating individual entries in the resource tree
-    (/proc/iomem) even if MHP_MEMMAP_ON_MEMORY is not effective.
-2) As we call arch_add_memory() in memory block granularity (e.g., 128
-    MiB on x86), we might not make use of large PUDs (e.g., 1 GiB) in the
-    identify mapping -- even if MHP_MEMMAP_ON_MEMORY is not effective.
-
-While you could sense for support and do the split based on that, it 
-will be beneficial for other users (especially DIMMs) if we do that 
-internally -- where we already know if MHP_MEMMAP_ON_MEMORY can be 
-effective or not.
-
-In general, we avoid placing important kernel data-structures on slow 
-memory. That's one of the reasons why PMEM decided to mostly always use 
-ZONE_MOVABLE such that exactly what this patch does would not happen. So 
-I'm wondering if there would be demand for an additional toggle.
-
-Because even with memmap_on_memory enabled in general, you might not 
-want to do that for dax/kmem.
-
-IMHO, this patch should be dropped from your ppc64 series, as it's an 
-independent change that might be valuable for other architectures as well.
-
--- 
-Cheers,
-
-David / dhildenb
-
+>   }
+>   static DEVICE_ATTR_RO(id);
+>   
