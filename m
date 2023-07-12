@@ -2,42 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 330DA750214
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jul 2023 10:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 584AC750213
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jul 2023 10:53:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231694AbjGLIxv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S232757AbjGLIxv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Wed, 12 Jul 2023 04:53:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45758 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbjGLIxt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 04:53:49 -0400
+        with ESMTP id S231853AbjGLIxs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 04:53:48 -0400
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD0A110C4
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F0A1FB
         for <linux-acpi@vger.kernel.org>; Wed, 12 Jul 2023 01:53:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1689152022; x=1720688022;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=qtiLhsf1muF68bUesmkIPwplSyQK7i0TnEuGTR4VegA=;
-  b=YNwnqJVaWf9533jb4tSIH8HsnfEm/qriKJQwk+5RKLpnlUbYMNrmVB+Z
-   cEckaHQrjyn/+dl5OniQx12j0G/7IBJxOl9RlfsRFIL1WUeySq7f58jLX
-   +oQDtDepAXztwTqrqArZ3Z6Mb039oZCb27ZNq4DDRRKbLlFw7rJUNsn9R
-   yYx3K5SIvwZtfmv93/vzBVGZhHxU+uvdJrf4kaimZVcgvqpu9YZg7pBMH
-   A9kNXqXXoFBLZ3DsMViCyuYSFykt+EH52Q6fLyFIE8jVlB6RzVRRZfsDf
-   NjTuDbMJgZgYDq1+dre0I8ef9/XgNHdE/aI33G+JiAvsRLbltF5QWm+n5
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="363704581"
+  bh=m1PZkm+J+sfu8/dx/yiU3qLbX3DK0bRFHAEtw3Th7Q4=;
+  b=F+qeRGF9AlBx/fslyJtYQSLQL+yW10oCdaBqOEE0x4xbWXDOWGIuAt2Q
+   3YvVlvjKXF0VwGLRZcyMUkf5ddU+KrdQcsCaSAl7+UAITBogZCYCXzVBd
+   3XRVqJwzF6qLte8wgaah4pXJdSLjZF966G9PyqMXJznv1LnxLGER5RkE8
+   PgFrSoguJsqvwnRLi9TS8/RjNGCE4xk1Z8UBaSmibiFNB0VKBCaFh/kOB
+   yKlhRjN8O4gr7Ovuv/CIP/w3OpMhQmvEm7X6rooFOJECctH/+zKhcMZGD
+   2j2Y2GeNVc6zk0p4sH9cgI/NQmx1UqQqGh7ombnDsDn4k9tEq+Aa4J/MG
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="363704588"
 X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; 
-   d="scan'208";a="363704581"
+   d="scan'208";a="363704588"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2023 01:53:25 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2023 01:53:27 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="724798339"
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="724798344"
 X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; 
-   d="scan'208";a="724798339"
+   d="scan'208";a="724798344"
 Received: from crojewsk-ctrl.igk.intel.com ([10.102.9.28])
-  by fmsmga007.fm.intel.com with ESMTP; 12 Jul 2023 01:53:22 -0700
+  by fmsmga007.fm.intel.com with ESMTP; 12 Jul 2023 01:53:25 -0700
 From:   Cezary Rojewski <cezary.rojewski@intel.com>
 To:     rafael@kernel.org, linux-acpi@vger.kernel.org
 Cc:     robert.moore@intel.com, erik.kaneda@intel.com,
@@ -45,9 +45,9 @@ Cc:     robert.moore@intel.com, erik.kaneda@intel.com,
         amadeuszx.slawinski@linux.intel.com, andriy.shevchenko@intel.com,
         lenb@kernel.org, Cezary Rojewski <cezary.rojewski@intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 1/4] ACPI: NHLT: Device configuration access interface
-Date:   Wed, 12 Jul 2023 11:10:45 +0200
-Message-Id: <20230712091048.2545319-2-cezary.rojewski@intel.com>
+Subject: [PATCH 2/4] ACPI: NHLT: Introduce acpi_gbl_NHLT
+Date:   Wed, 12 Jul 2023 11:10:46 +0200
+Message-Id: <20230712091048.2545319-3-cezary.rojewski@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230712091048.2545319-1-cezary.rojewski@intel.com>
 References: <20230712091048.2545319-1-cezary.rojewski@intel.com>
@@ -63,138 +63,97 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Device configuration structures are plenty so declare a struct for each
-known variant. As neither of them shall be accessed without verifying
-the memory block first, introduce macros to make it easy to do so.
+While there is no strict limit to amount of NHLT tables present, usually
+just the first one is utilized. To simplify implementation of sound
+drivers, provide publicly accessible pointer. Accessing it after calling
+acpi_nhlt_get_gbl_table() yields the first NHLT table met during the
+scan.
 
-Link: https://github.com/acpica/acpica/pull/881
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
 ---
- include/acpi/actbl2.h | 28 ++++++++++++++++++
- include/acpi/nhlt.h   | 66 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 94 insertions(+)
- create mode 100644 include/acpi/nhlt.h
+ drivers/acpi/Kconfig  |  3 +++
+ drivers/acpi/Makefile |  1 +
+ drivers/acpi/nhlt.c   | 13 +++++++++++++
+ include/acpi/nhlt.h   | 18 ++++++++++++++++++
+ 4 files changed, 35 insertions(+)
+ create mode 100644 drivers/acpi/nhlt.c
 
-diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-index 0029336775a9..c4c9a3a89ba6 100644
---- a/include/acpi/actbl2.h
-+++ b/include/acpi/actbl2.h
-@@ -2014,6 +2014,25 @@ struct acpi_nhlt_vendor_mic_count {
- 	u8 microphone_count;
- };
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index ccbeab9500ec..01ce5d3533db 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -594,6 +594,9 @@ config ACPI_PRMT
+ 	  substantially increase computational overhead related to the
+ 	  initialization of some server systems.
  
-+/* The only guaranteed configuration space header. Any other requires validation. */
-+struct acpi_nhlt_cfg {
-+	u32 capabilities_size;
-+	u8 capabilities[];
-+};
++config ACPI_NHLT
++	bool
 +
-+struct acpi_nhlt_devcfg {
-+	u32 capabilities_size;
-+	u8 virtual_slot;
-+	u8 config_type;
-+};
-+
-+struct acpi_nhlt_mic_devcfg {
-+	u32 capabilities_size;
-+	u8 virtual_slot;
-+	u8 config_type;
-+	u8 array_type;
-+};
-+
- struct acpi_nhlt_vendor_mic_config {
- 	u8 type;
- 	u8 panel;
-@@ -2030,6 +2049,15 @@ struct acpi_nhlt_vendor_mic_config {
- 	u16 work_horizontal_angle_end;	/* -180 - + 180 with 2 deg step */
- };
+ endif	# ACPI
  
-+struct acpi_nhlt_vendor_mic_devcfg {
-+	u32 capabilities_size;
-+	u8 virtual_slot;
-+	u8 config_type;
-+	u8 array_type;
-+	u8 num_mics;
-+	struct acpi_nhlt_vendor_mic_config mics[];
-+};
-+
- /* Values for Type field above */
- 
- #define ACPI_NHLT_MIC_OMNIDIRECTIONAL       0
-diff --git a/include/acpi/nhlt.h b/include/acpi/nhlt.h
+ config X86_PM_TIMER
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index feb36c0b9446..8de34970e7db 100644
+--- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -93,6 +93,7 @@ obj-$(CONFIG_ACPI)		+= container.o
+ obj-$(CONFIG_ACPI_THERMAL)	+= thermal.o
+ obj-$(CONFIG_ACPI_PLATFORM_PROFILE) 	+= platform_profile.o
+ obj-$(CONFIG_ACPI_NFIT)		+= nfit/
++obj-$(CONFIG_ACPI_NHLT)		+= nhlt.o
+ obj-$(CONFIG_ACPI_NUMA)		+= numa/
+ obj-$(CONFIG_ACPI)		+= acpi_memhotplug.o
+ obj-$(CONFIG_ACPI_HOTPLUG_IOAPIC) += ioapic.o
+diff --git a/drivers/acpi/nhlt.c b/drivers/acpi/nhlt.c
 new file mode 100644
-index 000000000000..af3ec45ba4f9
+index 000000000000..90d74d0d803e
 --- /dev/null
++++ b/drivers/acpi/nhlt.c
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: GPL-2.0-only
++//
++// Copyright(c) 2023 Intel Corporation. All rights reserved.
++//
++// Authors: Cezary Rojewski <cezary.rojewski@intel.com>
++//          Amadeusz Slawinski <amadeuszx.slawinski@linux.intel.com>
++//
++
++#include <linux/export.h>
++#include <acpi/nhlt.h>
++
++struct acpi_table_nhlt *acpi_gbl_NHLT;
++EXPORT_SYMBOL_GPL(acpi_gbl_NHLT);
+diff --git a/include/acpi/nhlt.h b/include/acpi/nhlt.h
+index af3ec45ba4f9..a2b93b08218f 100644
+--- a/include/acpi/nhlt.h
 +++ b/include/acpi/nhlt.h
-@@ -0,0 +1,66 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright(c) 2023 Intel Corporation. All rights reserved.
-+ *
-+ * Authors: Cezary Rojewski <cezary.rojewski@intel.com>
-+ *          Amadeusz Slawinski <amadeuszx.slawinski@linux.intel.com>
-+ */
-+
-+#ifndef __ACPI_NHLT_H__
-+#define __ACPI_NHLT_H__
-+
-+#include <linux/acpi.h>
-+#include <linux/overflow.h>
-+#include <linux/types.h>
-+
-+#define __acpi_nhlt_endpoint_cfg(ep)	((void *)((ep) + 1))
+@@ -13,6 +13,24 @@
+ #include <linux/overflow.h>
+ #include <linux/types.h>
+ 
++/* System-wide pointer to the first NHLT table. */
++extern struct acpi_table_nhlt *acpi_gbl_NHLT;
 +
 +/*
-+ * As device configuration spaces present in NHLT tables around the world are
-+ * not following single pattern, first check if 'capabilities_size' is correct
-+ * in respect to size of the specified space type before returning the pointer.
++ * A sound driver may utilize the two below on its initialization and removal
++ * respectively to avoid excessive mapping and unmapping of the memory
++ * occupied by the table between streaming operations.
 + */
-+#define __acpi_nhlt_endpoint_devcfg(ep, type) ({				\
-+	struct acpi_nhlt_cfg *__cfg = __acpi_nhlt_endpoint_cfg(ep);		\
-+	__cfg->capabilities_size >= sizeof(type) ?				\
-+		((type *)__cfg) : NULL; })
++static inline acpi_status acpi_nhlt_get_gbl_table(void)
++{
++	return acpi_get_table(ACPI_SIG_NHLT, 0, (struct acpi_table_header **)(&acpi_gbl_NHLT));
++}
 +
-+/*
-+ * acpi_nhlt_endpoint_devcfg - Test and access device configuration.
-+ * @ep:		endpoint for which to retrieve device configuration.
-+ *
-+ * Return: A pointer to device configuration space or NULL if the space's
-+ * 'capabilities_size' is insufficient to cover the nested structure.
-+ */
-+#define acpi_nhlt_endpoint_devcfg(ep) \
-+	__acpi_nhlt_endpoint_devcfg(ep, struct acpi_nhlt_devcfg)
++static inline void acpi_nhlt_put_gbl_table(void)
++{
++	acpi_put_table((struct acpi_table_header *)acpi_gbl_NHLT);
++}
 +
-+/*
-+ * acpi_nhlt_endpoint_mic_devcfg - Test and access device configuration.
-+ * @ep:		endpoint for which to retrieve device configuration.
-+ *
-+ * Return: A pointer to device configuration space or NULL if the space's
-+ * 'capabilities_size' is insufficient to cover the nested structure.
-+ */
-+#define acpi_nhlt_endpoint_mic_devcfg(ep) \
-+	__acpi_nhlt_endpoint_devcfg(ep, struct acpi_nhlt_mic_devcfg)
-+
-+/*
-+ * acpi_nhlt_endpoint_vendor_mic_devcfg - Test and access device configuration.
-+ * @ep:		endpoint for which to retrieve device configuration.
-+ * @ptr:	pointer to a device configuration structure.
-+ *
-+ * This is the same as acpi_nhlt_endpoint_devcfg(), except that it verifies
-+ * if size of the flexible array following the structure header is also
-+ * reflected in 'capabilities_size'.
-+ *
-+ * Return: A pointer to device configuration space or NULL if the space's
-+ * 'capabilities_size' is insufficient to cover the nested structure.
-+ */
-+#define acpi_nhlt_endpoint_vendor_mic_devcfg(ep) ({					\
-+	struct acpi_nhlt_vendor_mic_devcfg *__cfg = __acpi_nhlt_endpoint_cfg(ep);	\
-+	__cfg->capabilities_size >= sizeof(*__cfg) &&					\
-+	__cfg->capabilities_size == struct_size(__cfg, mics, __cfg->num_mics) ?		\
-+		__cfg : NULL; })
-+
-+#endif /* __ACPI_NHLT_H__ */
+ #define __acpi_nhlt_endpoint_cfg(ep)	((void *)((ep) + 1))
+ 
+ /*
 -- 
 2.25.1
 
