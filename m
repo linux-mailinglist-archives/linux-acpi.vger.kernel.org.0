@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD0AB750215
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jul 2023 10:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB2E9750216
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jul 2023 10:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232118AbjGLIyC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jul 2023 04:54:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45842 "EHLO
+        id S229742AbjGLIyD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jul 2023 04:54:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231791AbjGLIxy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 04:53:54 -0400
+        with ESMTP id S232163AbjGLIxz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 04:53:55 -0400
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB844BE
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Jul 2023 01:53:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BE33CF
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Jul 2023 01:53:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689152028; x=1720688028;
+  t=1689152029; x=1720688029;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=QLJLLarSnNDpw44tioEvbf2Y47RvKBWuaObIn4/hPXU=;
-  b=BVvEbkSMlIju81eH5M9doRaOCLmvS7SNYssEn+bVKTCGnMvEXjJzxfST
-   Hd5SyRCvEK0bhHUN8iI1ZQjxmEDvjKow5JZmcM65i5Sd2/azZcGWZw6uq
-   COQHXtHzMn7M0798Vc6ISMR/FJJMyeYXAJRHMoHzkhb1QG7VbnU6c2VAp
-   rxuPd9tt0Q9MblXLEEqnbIjHnsgcndIJhqN9OyuA451FJ+RIY1NZ4W5gl
-   sRvPjIkgZr9B6LWCnq+rXS3kwEtiBRtfn3rsWi992vMzHtwF/7ZJr2jf8
-   CSE6p7IYdbCBoE2erI6m0FzVbuLb/8GraU08s47oq9fxgfVBasXeTYS8p
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="363704594"
+  bh=URqVmWAvvgTCU8Un0/XjKRSF4qY08iOa8PSt1kj4elo=;
+  b=CPjFVKsGjNi8NRjpM9L7LUSQIOW3/M6PCej+7aQCGchjqzPMGXKWl2ip
+   okkBEgg7Xqt++jwqfTeYGU1Q+Pp2VBFb56z8NMhdVeK09DBZd0AQ5MT9v
+   V5HcupjVMxfapcNvq/RQMMdisi7ndpmeU2N7Jdfduv+sfDEraSUYPn/ZO
+   zf8XQ4CoejzSrcny/Jn1fYnAUfA75B+JrJCs9ZRy4kavrcUp9px5+9dJ7
+   gFb0X/kAUi6epbgP4swY/HgjJ6wBQvR70501BqFi6++Q3dScEoa0lu2A8
+   nwqa0EWbMB1120MQS5OLOmHQXQxKO3w0AnSh7KuN+i9S7r9UVHq7yBVN/
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="363704602"
 X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; 
-   d="scan'208";a="363704594"
+   d="scan'208";a="363704602"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2023 01:53:29 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2023 01:53:31 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="724798350"
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="724798356"
 X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; 
-   d="scan'208";a="724798350"
+   d="scan'208";a="724798356"
 Received: from crojewsk-ctrl.igk.intel.com ([10.102.9.28])
-  by fmsmga007.fm.intel.com with ESMTP; 12 Jul 2023 01:53:27 -0700
+  by fmsmga007.fm.intel.com with ESMTP; 12 Jul 2023 01:53:29 -0700
 From:   Cezary Rojewski <cezary.rojewski@intel.com>
 To:     rafael@kernel.org, linux-acpi@vger.kernel.org
 Cc:     robert.moore@intel.com, erik.kaneda@intel.com,
         pierre-louis.bossart@linux.intel.com,
         amadeuszx.slawinski@linux.intel.com, andriy.shevchenko@intel.com,
         lenb@kernel.org, Cezary Rojewski <cezary.rojewski@intel.com>
-Subject: [PATCH 3/4] ACPI: NHLT: Table manipulation helpers
-Date:   Wed, 12 Jul 2023 11:10:47 +0200
-Message-Id: <20230712091048.2545319-4-cezary.rojewski@intel.com>
+Subject: [PATCH 4/4] ACPI: NHLT: Add query functions
+Date:   Wed, 12 Jul 2023 11:10:48 +0200
+Message-Id: <20230712091048.2545319-5-cezary.rojewski@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230712091048.2545319-1-cezary.rojewski@intel.com>
 References: <20230712091048.2545319-1-cezary.rojewski@intel.com>
@@ -62,92 +62,279 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The table is composed of a range of endpoints with each describing
-audio formats they support. Thus most of the operations involve
-iterating over elements of the table. Simplify the process by
-implementing range of getters.
+With iteration helpers added there is a room for more complex query
+tasks which are commonly performed by sound drivers. Implement them in
+common API so that a unified mechanism is available for all of them.
+
+While the acpi_nhlt_endpoint_dmic_count() stands out a bit, it is a
+critical component for any AudioDSP driver to know how many digital
+microphones it is dealing with. There is no one perfect method, but the
+best one available is provided.
 
 Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
 ---
- include/acpi/nhlt.h | 68 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+ drivers/acpi/nhlt.c | 183 ++++++++++++++++++++++++++++++++++++++++++++
+ include/acpi/nhlt.h |  54 +++++++++++++
+ 2 files changed, 237 insertions(+)
 
+diff --git a/drivers/acpi/nhlt.c b/drivers/acpi/nhlt.c
+index 90d74d0d803e..c61cdfd78b74 100644
+--- a/drivers/acpi/nhlt.c
++++ b/drivers/acpi/nhlt.c
+@@ -6,8 +6,191 @@
+ //          Amadeusz Slawinski <amadeuszx.slawinski@linux.intel.com>
+ //
+ 
++#define pr_fmt(fmt) "ACPI: NHLT: " fmt
++
+ #include <linux/export.h>
+ #include <acpi/nhlt.h>
+ 
+ struct acpi_table_nhlt *acpi_gbl_NHLT;
+ EXPORT_SYMBOL_GPL(acpi_gbl_NHLT);
++
++/**
++ * acpi_nhlt_endpoint_match - Verify if an endpoint matches criteria.
++ * @ep:			the endpoint to check.
++ * @link_type:		the hardware link type, e.g.: PDM or SSP.
++ * @dev_type:		the device type.
++ * @dir:		stream direction.
++ * @bus_id:		the ID of virtual bus hosting the endpoint.
++ *
++ * Either of @link_type, @dev_type, @dir or @bus_id may be set to a negative
++ * value to ignore the parameter when matching.
++ *
++ * Return: %true if endpoint matches specified criteria or %false otherwise.
++ */
++bool acpi_nhlt_endpoint_match(const struct acpi_nhlt_endpoint *ep,
++			      int link_type, int dev_type, int dir, int bus_id)
++{
++	return ep &&
++	       (link_type < 0 || ep->link_type == link_type) &&
++	       (dev_type < 0 || ep->device_type == dev_type) &&
++	       (dir < 0 || ep->direction == dir) &&
++	       (bus_id < 0 || ep->virtual_bus_id == bus_id);
++}
++EXPORT_SYMBOL_GPL(acpi_nhlt_endpoint_match);
++
++/**
++ * acpi_nhlt_find_endpoint - Search a NHLT table for an endpoint.
++ * @tb:			the table to search.
++ * @link_type:		the hardware link type, e.g.: PDM or SSP.
++ * @dev_type:		the device type.
++ * @dir:		stream direction.
++ * @bus_id:		the ID of virtual bus hosting the endpoint.
++ *
++ * Either of @link_type, @dev_type, @dir or @bus_id may be set to a negative
++ * value to ignore the parameter during the search.
++ *
++ * Return: A pointer to endpoint matching the criteria, %NULL if not found or
++ * an ERR_PTR() otherwise.
++ */
++struct acpi_nhlt_endpoint *
++acpi_nhlt_find_endpoint(const struct acpi_table_nhlt *tb,
++			int link_type, int dev_type, int dir, int bus_id)
++{
++	struct acpi_nhlt_endpoint *ep;
++
++	if (!tb)
++		return ERR_PTR(-EINVAL);
++
++	for_each_nhlt_endpoint(tb, ep)
++		if (acpi_nhlt_endpoint_match(ep, link_type, dev_type, dir, bus_id))
++			return ep;
++	return NULL;
++}
++EXPORT_SYMBOL_GPL(acpi_nhlt_find_endpoint);
++
++/**
++ * acpi_nhlt_endpoint_find_fmtcfg - Search endpoint's formats configuration space
++ *                                  for a specific format.
++ * @ep:			the endpoint to search.
++ * @ch:			number of channels.
++ * @rate:		samples per second.
++ * @vbps:		valid bits per sample.
++ * @bps:		bits per sample.
++ *
++ * Return: A pointer to format matching the criteria, %NULL if not found or
++ * an ERR_PTR() otherwise.
++ */
++struct acpi_nhlt_format_config *
++acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt_endpoint *ep,
++			       u16 ch, u32 rate, u16 vbps, u16 bps)
++{
++	struct acpi_nhlt_wave_extensible *wav;
++	struct acpi_nhlt_format_config *fmt;
++
++	if (!ep)
++		return ERR_PTR(-EINVAL);
++
++	for_each_nhlt_endpoint_fmtcfg(ep, fmt) {
++		wav = &fmt->format;
++
++		if (wav->channel_count == ch &&
++		    wav->valid_bits_per_sample == vbps &&
++		    wav->bits_per_sample == bps &&
++		    wav->samples_per_sec == rate)
++			return fmt;
++	}
++
++	return NULL;
++}
++EXPORT_SYMBOL_GPL(acpi_nhlt_endpoint_find_fmtcfg);
++
++/**
++ * acpi_nhlt_find_fmtcfg - Search a NHLT table for a specific format.
++ * @tb:			the table to search.
++ * @link_type:		the hardware link type, e.g.: PDM or SSP.
++ * @dev_type:		the device type.
++ * @dir:		stream direction.
++ * @bus_id:		the ID of virtual bus hosting the endpoint.
++ *
++ * @ch:			number of channels.
++ * @rate:		samples per second.
++ * @vbps:		valid bits per sample.
++ * @bps:		bits per sample.
++ *
++ * Either of @link_type, @dev_type, @dir or @bus_id may be set to a negative
++ * value to ignore the parameter during the search.
++ *
++ * Return: A pointer to format matching the criteria, %NULL if not found or
++ * an ERR_PTR() otherwise.
++ */
++struct acpi_nhlt_format_config *
++acpi_nhlt_find_fmtcfg(const struct acpi_table_nhlt *tb,
++		      int link_type, int dev_type, int dir, int bus_id,
++		      u16 ch, u32 rate, u16 vbps, u16 bps)
++{
++	struct acpi_nhlt_format_config *fmt;
++	struct acpi_nhlt_endpoint *ep;
++
++	if (!tb)
++		return ERR_PTR(-EINVAL);
++
++	for_each_nhlt_endpoint(tb, ep) {
++		if (!acpi_nhlt_endpoint_match(ep, link_type, dev_type, dir, bus_id))
++			continue;
++
++		fmt = acpi_nhlt_endpoint_find_fmtcfg(ep, ch, rate, vbps, bps);
++		if (fmt)
++			return fmt;
++	}
++
++	return NULL;
++}
++EXPORT_SYMBOL_GPL(acpi_nhlt_find_fmtcfg);
++
++/**
++ * acpi_nhlt_endpoint_dmic_count - Retrieve number of digital microphones for a PDM endpoint.
++ * @ep:			the endpoint to return microphones count for.
++ *
++ * Return: A number of microphones or an error code if an invalid endpoint is provided.
++ */
++int acpi_nhlt_endpoint_dmic_count(const struct acpi_nhlt_endpoint *ep)
++{
++	struct acpi_nhlt_vendor_mic_devcfg *vendor_cfg;
++	struct acpi_nhlt_format_config *fmt;
++	struct acpi_nhlt_mic_devcfg *devcfg;
++	u16 max_ch = 0;
++
++	if (!ep || ep->link_type != ACPI_NHLT_PDM)
++		return -EINVAL;
++
++	/* Find max number of channels based on formats configuration. */
++	for_each_nhlt_endpoint_fmtcfg(ep, fmt)
++		max_ch = max(fmt->format.channel_count, max_ch);
++
++	/* If @ep not a mic array, fallback to channels count. */
++	devcfg = acpi_nhlt_endpoint_mic_devcfg(ep);
++	if (!devcfg || devcfg->config_type != ACPI_NHLT_CONFIG_TYPE_MIC_ARRAY)
++		return max_ch;
++
++	switch (devcfg->array_type) {
++	case ACPI_NHLT_SMALL_LINEAR_2ELEMENT:
++	case ACPI_NHLT_BIG_LINEAR_2ELEMENT:
++		return 2;
++
++	case ACPI_NHLT_FIRST_GEOMETRY_LINEAR_4ELEMENT:
++	case ACPI_NHLT_PLANAR_LSHAPED_4ELEMENT:
++	case ACPI_NHLT_SECOND_GEOMETRY_LINEAR_4ELEMENT:
++		return 4;
++
++	case ACPI_NHLT_VENDOR_DEFINED:
++		vendor_cfg = acpi_nhlt_endpoint_vendor_mic_devcfg(ep);
++		if (!vendor_cfg)
++			return -EINVAL;
++		return vendor_cfg->num_mics;
++
++	default:
++		pr_warn("undefined mic array type: %#x\n", devcfg->array_type);
++		return max_ch;
++	}
++}
++EXPORT_SYMBOL_GPL(acpi_nhlt_endpoint_dmic_count);
 diff --git a/include/acpi/nhlt.h b/include/acpi/nhlt.h
-index a2b93b08218f..076aac41a74e 100644
+index 076aac41a74e..ba093fe871d5 100644
 --- a/include/acpi/nhlt.h
 +++ b/include/acpi/nhlt.h
-@@ -81,4 +81,72 @@ static inline void acpi_nhlt_put_gbl_table(void)
- 	__cfg->capabilities_size == struct_size(__cfg, mics, __cfg->num_mics) ?		\
- 		__cfg : NULL; })
+@@ -149,4 +149,58 @@ acpi_nhlt_endpoint_fmtscfg(const struct acpi_nhlt_endpoint *ep)
+ #define for_each_nhlt_endpoint_fmtcfg(ep, fmt) \
+ 	for_each_nhlt_fmtcfg(acpi_nhlt_endpoint_fmtscfg(ep), fmt)
  
-+/**
-+ * acpi_nhlt_endpoint_fmtscfg - Get the formats configuration space.
-+ * @ep:		the endpoint to retrieve the space for.
-+ *
-+ * Return: A pointer to the formats configuration space.
-+ */
-+static inline struct acpi_nhlt_formats_config *
-+acpi_nhlt_endpoint_fmtscfg(const struct acpi_nhlt_endpoint *ep)
-+{
-+	struct acpi_nhlt_cfg *cfg = __acpi_nhlt_endpoint_cfg(ep);
++#if IS_ENABLED(CONFIG_ACPI_NHLT)
 +
-+	return (struct acpi_nhlt_formats_config *)((u8 *)(cfg + 1) + cfg->capabilities_size);
++bool acpi_nhlt_endpoint_match(const struct acpi_nhlt_endpoint *ep,
++			      int link_type, int dev_type, int dir, int bus_id);
++struct acpi_nhlt_endpoint *
++acpi_nhlt_find_endpoint(const struct acpi_table_nhlt *tb,
++			int link_type, int dev_type, int dir, int bus_id);
++struct acpi_nhlt_format_config *
++acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt_endpoint *ep,
++			       u16 ch, u32 rate, u16 vbps, u16 bps);
++struct acpi_nhlt_format_config *
++acpi_nhlt_find_fmtcfg(const struct acpi_table_nhlt *tb,
++		      int link_type, int dev_type, int dir, int bus_id,
++		      u16 ch, u32 rate, u16 vpbs, u16 bps);
++int acpi_nhlt_endpoint_dmic_count(const struct acpi_nhlt_endpoint *ep);
++
++#else /* !CONFIG_ACPI_NHLT */
++
++static bool
++acpi_nhlt_endpoint_match(const struct acpi_nhlt_endpoint *ep,
++			 int link_type, int dev_type, int dir, int bus_id)
++{
++	return false;
 +}
 +
-+#define __acpi_nhlt_first_endpoint(tb) \
-+	((void *)(tb + 1))
++static inline struct acpi_nhlt_endpoint *
++acpi_nhlt_find_endpoint(const struct acpi_table_nhlt *tb,
++			int link_type, int dev_type, int dir, int bus_id)
++{
++	return NULL;
++}
 +
-+#define __acpi_nhlt_next_endpoint(ep) \
-+	((void *)((u8 *)(ep) + (ep)->descriptor_length))
++static inline struct acpi_nhlt_format_config *
++acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt_endpoint *ep,
++			       u16 ch, u32 rate, u16 vbps, u16 bps)
++{
++	return NULL;
++}
 +
-+#define __acpi_nhlt_get_endpoint(tb, ep, i) \
-+	((i) ? __acpi_nhlt_next_endpoint(ep) : __acpi_nhlt_first_endpoint(tb))
++static inline struct acpi_nhlt_format_config *
++acpi_nhlt_find_fmtcfg(const struct acpi_table_nhlt *tb,
++		      int link_type, int dev_type, int dir, int bus_id,
++		      u16 ch, u32 rate, u16 vpbs, u16 bps);
++{
++	return NULL;
++}
 +
-+#define __acpi_nhlt_first_fmtcfg(fmts) \
-+	((void *)(fmts + 1))
++static inline int acpi_nhlt_endpoint_dmic_count(const struct acpi_nhlt_endpoint *ep)
++{
++	return 0;
++}
 +
-+#define __acpi_nhlt_next_fmtcfg(fmt) \
-+	((void *)((u8 *)((fmt) + 1) + (fmt)->capability_size))
-+
-+#define __acpi_nhlt_get_fmtcfg(fmts, fmt, i) \
-+	((i) ? __acpi_nhlt_next_fmtcfg(fmt) : __acpi_nhlt_first_fmtcfg(fmts))
-+
-+/*
-+ * The for_each_nhlt_xxx() macros rely on an iterator to deal with the
-+ * variable length of each endpoint structure and the possible presence
-+ * of an OED-Config used by Windows only.
-+ */
-+
-+/**
-+ * for_each_nhlt_endpoint - Iterate over endpoints in a NHLT table.
-+ * @tb:		the pointer to a NHLT table.
-+ * @ep:		the pointer to endpoint to use as loop cursor.
-+ */
-+#define for_each_nhlt_endpoint(tb, ep)					\
-+	for (unsigned int __i = 0;					\
-+	     __i < (tb)->endpoint_count &&				\
-+		((ep) = __acpi_nhlt_get_endpoint(tb, ep, __i));		\
-+	     __i++)
-+
-+/**
-+ * for_each_nhlt_fmtcfg - Iterate over format configurations.
-+ * @fmts:	the pointer to formats configuration space.
-+ * @fmt:	the pointer to format to use as loop cursor.
-+ */
-+#define for_each_nhlt_fmtcfg(fmts, fmt)					\
-+	for (unsigned int __i = 0;					\
-+	     __i < (fmts)->formats_count &&				\
-+		((fmt) = __acpi_nhlt_get_fmtcfg(fmts, fmt, __i));	\
-+	     __i++)
-+
-+/**
-+ * for_each_nhlt_endpoint_fmtcfg - Iterate over format configurations in an endpoint.
-+ * @ep:		the pointer to an endpoint.
-+ * @fmt:	the pointer to format to use as loop cursor.
-+ */
-+#define for_each_nhlt_endpoint_fmtcfg(ep, fmt) \
-+	for_each_nhlt_fmtcfg(acpi_nhlt_endpoint_fmtscfg(ep), fmt)
++#endif /* !CONFIG_ACPI_NHLT */
 +
  #endif /* __ACPI_NHLT_H__ */
 -- 
