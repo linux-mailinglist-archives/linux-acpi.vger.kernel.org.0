@@ -2,117 +2,187 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6322D74FF90
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jul 2023 08:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE45674FFC5
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jul 2023 08:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232073AbjGLGnq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jul 2023 02:43:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40048 "EHLO
+        id S230229AbjGLG4L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jul 2023 02:56:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232083AbjGLGnR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 02:43:17 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC9082682
-        for <linux-acpi@vger.kernel.org>; Tue, 11 Jul 2023 23:42:48 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-3460815fde5so33127205ab.2
-        for <linux-acpi@vger.kernel.org>; Tue, 11 Jul 2023 23:42:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1689144167; x=1691736167;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dWfOSMrv6do4PAbxZtLX2gDNrKPpyct3TAi/IYd4WYM=;
-        b=Hw3Ob/+Yca4KTN3qdRPzFpwgrFDjP8sfy07Z33AABHGClFhVX6UYE1MammcWVscMir
-         8n4Nliv5JgZZHfjaxFTBijG/ZAVgEWmafu1isleFjWACqIeDDFhT7w5w8mHN87RzVUCZ
-         yVoTRkyXLTHCc7Yc8bFXeWlv5XnnrERq42SrN7DpU6CUOzOCH2SYtuKAhAKJBMsVSRiw
-         5RgriE8ZfTyHNr2wnm0e2s47CS0l38xItxBOdR7FGpuvKq2jN+mpaTnOg+zBP6FMLL/c
-         AeoWkmE1YQZM0RdZGy0M/d9uCLyLJNNLeiPslnXfDcaBUeenAnevW54WtoYOxiU1UfEr
-         hoHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689144167; x=1691736167;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dWfOSMrv6do4PAbxZtLX2gDNrKPpyct3TAi/IYd4WYM=;
-        b=DBuDXhnv9fnWSPbUjsYIu3YxUDyXMEHi+dHnpcdB7Wr0xNWGzf9jZuAMHrNVZPWfIC
-         8tVVk3jYQ5X8K6B7jpGiYzZTyzbKvhnZsdyz0KgOVcswZcTVpZohNxe5SIhg9nB6DwzL
-         vZ5XGL6PXJbk0cYhwENtyU0yElEAIKYGKl/eFmcRCLBAFuMBwn2F7hc9Nb8eACnxN+Fg
-         riI29+7LqBuCo6yiwdlO9uAJ1mDRiZpsv9Y7CITA86i0H7VVjBVlflGfMYn27Nw2cirS
-         QnztbislMiqAT8EGdsKhiXZ1kuGjK0xZcLM3L8ldVrojb+yM7lUP3yT0zi72GN7tLL/S
-         Huqg==
-X-Gm-Message-State: ABy/qLaigxi6yq7VjXYZ8zjZuv5jaGUEwzA83/7bgw6K99Tm5v0YEvV6
-        HSqaULIYEYFVIbGfOb8WI/K1Kw==
-X-Google-Smtp-Source: APBJJlGEvuxhL5L8C2Zwfrw9CRqcNzRA6M8IHu9gQ0y7YWiEP67ewnRtBRT1y1ssYvl/ZpHqbrdUKQ==
-X-Received: by 2002:a5d:950e:0:b0:783:72d4:8c38 with SMTP id d14-20020a5d950e000000b0078372d48c38mr18434142iom.13.1689144167545;
-        Tue, 11 Jul 2023 23:42:47 -0700 (PDT)
-Received: from sunil-laptop ([106.51.83.242])
-        by smtp.gmail.com with ESMTPSA id h22-20020a02c736000000b0042b48d372aasm1038592jao.100.2023.07.11.23.42.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jul 2023 23:42:47 -0700 (PDT)
-Date:   Wed, 12 Jul 2023 12:12:41 +0530
-From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Palmer Dabbelt <palmer@rivosinc.com>
-Cc:     linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] RISC-V: Don't include Zicsr or Zifencei in I from ACPI
-Message-ID: <ZK5LYcQ0ZTmkiP4y@sunil-laptop>
-References: <20230711224600.10879-1-palmer@rivosinc.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230711224600.10879-1-palmer@rivosinc.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229566AbjGLG4L (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 02:56:11 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCFEFDC;
+        Tue, 11 Jul 2023 23:56:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689144970; x=1720680970;
+  h=date:from:to:cc:subject:message-id;
+  bh=Aix+sebAr5d/cP/q9zYQR6XWltGXQhXYRkYcR4Ttjio=;
+  b=Q7pWQIHmqIChPSPebqE6a7zXTlzFnod+T3yrNqIEGjbVEp4bU49N2Ar4
+   Hi1z06nDFSD5RxO2WvlEQWw/ypuJxlgfX5fgL5SuWphQiUMU1MI6rXEbE
+   1ghZTlAbROZKj0UMlALnYgIb/4y29ysmE4IIMED8761OkSLPkSLgL1a3D
+   YLuUgU+3aSqtAg07m6N2QKm9kJsBRrm6fzgTWnSZPJ+sXWA2Dv/Y1tpyB
+   7+LeRfMYtm+OtPkUB6OFUh7LU7CswqMo4dog9aplUReXjElNlPrufhjWj
+   7oz5XsOgt92Gv56Q14AfIUTSHDTgzS3J10VWZh9Mg0eZujzn0GXU9hylG
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="367437022"
+X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; 
+   d="scan'208";a="367437022"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2023 23:55:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="715446531"
+X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; 
+   d="scan'208";a="715446531"
+Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 11 Jul 2023 23:55:44 -0700
+Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qJTlH-0005Tv-1e;
+        Wed, 12 Jul 2023 06:55:43 +0000
+Date:   Wed, 12 Jul 2023 14:54:43 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ d26e5b690e4be2f96d55bdcf5d80bb42c2d55cc6
+Message-ID: <202307121441.LZ9vpvNt-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jul 11, 2023 at 03:46:00PM -0700, Palmer Dabbelt wrote:
-> ACPI ISA strings are based on a specification after Zicsr and Zifencei
-> were split out of I, so we shouldn't be treating them as part of I.  We
-> haven't release an ACPI-based kernel yet, so we don't need to worry
-> about compatibility with the old ISA strings.
-> 
-> Fixes: 396c018332a1 ("RISC-V: cpufeature: Add ACPI support in riscv_fill_hwcap()")
-> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-> ---
-LGTM. I agree with Conor that Fixes tag should point to 07edc32779e3.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: d26e5b690e4be2f96d55bdcf5d80bb42c2d55cc6  Merge branch 'powercap' into bleeding-edge
 
-Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+elapsed time: 726m
 
-Thanks,
-Sunil
->  arch/riscv/kernel/cpufeature.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-> index bdcf460ea53d..a8f66c015229 100644
-> --- a/arch/riscv/kernel/cpufeature.c
-> +++ b/arch/riscv/kernel/cpufeature.c
-> @@ -317,19 +317,14 @@ void __init riscv_fill_hwcap(void)
->  #undef SET_ISA_EXT_MAP
->  		}
->  
-> -		/*
-> -		 * Linux requires the following extensions, so we may as well
-> -		 * always set them.
-> -		 */
-> -		set_bit(RISCV_ISA_EXT_ZICSR, isainfo->isa);
-> -		set_bit(RISCV_ISA_EXT_ZIFENCEI, isainfo->isa);
-> -
->  		/*
->  		 * These ones were as they were part of the base ISA when the
->  		 * port & dt-bindings were upstreamed, and so can be set
->  		 * unconditionally where `i` is in riscv,isa on DT systems.
->  		 */
->  		if (acpi_disabled) {
-> +			set_bit(RISCV_ISA_EXT_ZICSR, isainfo->isa);
-> +			set_bit(RISCV_ISA_EXT_ZIFENCEI, isainfo->isa);
->  			set_bit(RISCV_ISA_EXT_ZICNTR, isainfo->isa);
->  			set_bit(RISCV_ISA_EXT_ZIHPM, isainfo->isa);
->  		}
-> -- 
-> 2.40.1
-> 
+configs tested: 109
+configs skipped: 7
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r003-20230712   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                     haps_hs_smp_defconfig   gcc  
+arc                  randconfig-r024-20230710   gcc  
+arc                  randconfig-r043-20230710   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                     am200epdkit_defconfig   clang
+arm                     davinci_all_defconfig   clang
+arm                                 defconfig   gcc  
+arm                  randconfig-r046-20230710   gcc  
+arm                       spear13xx_defconfig   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r025-20230710   clang
+csky                                defconfig   gcc  
+hexagon              randconfig-r041-20230710   clang
+hexagon              randconfig-r045-20230710   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230711   clang
+i386         buildonly-randconfig-r005-20230711   clang
+i386         buildonly-randconfig-r006-20230711   clang
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230711   clang
+i386                 randconfig-i002-20230711   clang
+i386                 randconfig-i003-20230711   clang
+i386                 randconfig-i004-20230711   clang
+i386                 randconfig-i005-20230711   clang
+i386                 randconfig-i006-20230711   clang
+i386                 randconfig-i011-20230711   gcc  
+i386                 randconfig-i012-20230711   gcc  
+i386                 randconfig-i013-20230711   gcc  
+i386                 randconfig-i014-20230711   gcc  
+i386                 randconfig-i015-20230711   gcc  
+i386                 randconfig-i016-20230711   gcc  
+i386                 randconfig-r013-20230712   clang
+i386                 randconfig-r032-20230711   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r022-20230710   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r026-20230710   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r001-20230712   gcc  
+nios2                randconfig-r023-20230710   gcc  
+openrisc             randconfig-r021-20230710   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r011-20230712   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r033-20230711   clang
+riscv                randconfig-r042-20230710   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r034-20230711   clang
+s390                 randconfig-r044-20230710   clang
+sh                               allmodconfig   gcc  
+sh                   randconfig-r035-20230711   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r014-20230712   gcc  
+sparc64              randconfig-r036-20230711   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r031-20230711   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230711   clang
+x86_64       buildonly-randconfig-r002-20230711   clang
+x86_64       buildonly-randconfig-r003-20230711   clang
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-r015-20230712   clang
+x86_64               randconfig-r016-20230712   clang
+x86_64               randconfig-x001-20230711   gcc  
+x86_64               randconfig-x002-20230711   gcc  
+x86_64               randconfig-x003-20230711   gcc  
+x86_64               randconfig-x004-20230711   gcc  
+x86_64               randconfig-x005-20230711   gcc  
+x86_64               randconfig-x006-20230711   gcc  
+x86_64               randconfig-x011-20230711   clang
+x86_64               randconfig-x012-20230711   clang
+x86_64               randconfig-x013-20230711   clang
+x86_64               randconfig-x014-20230711   clang
+x86_64               randconfig-x015-20230711   clang
+x86_64               randconfig-x016-20230711   clang
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r006-20230712   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
