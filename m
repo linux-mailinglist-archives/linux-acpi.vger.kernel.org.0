@@ -2,101 +2,180 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4585750C59
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jul 2023 17:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 053C5750CA7
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jul 2023 17:36:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233694AbjGLPXV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jul 2023 11:23:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42450 "EHLO
+        id S232428AbjGLPgl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jul 2023 11:36:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232935AbjGLPXT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 11:23:19 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0295411B;
-        Wed, 12 Jul 2023 08:23:18 -0700 (PDT)
+        with ESMTP id S231545AbjGLPgl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 11:36:41 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CEDDC2
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Jul 2023 08:36:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689175399; x=1720711399;
+  t=1689176200; x=1720712200;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=dE7w3MuTua6J4lzSeULL0VUOQdinRgx4JKozShjUPmw=;
-  b=Vn8EZek8h4l2d2CKPCkKkxv48VMJXv6DD8gkCSSqlV3z6e5+H65y6ozz
-   XZ5UPEtZm2tM06HH9lnO9M8ptG06dmz8M7fYyeLa1GsZyFQvzKbF6U5GH
-   hHst5BycKD+DKHPZk1z6E6nVLOiS6yY50YpgBXn9C7mCU1+PQUvdPs1RJ
-   yl+rtKN8+6DgDVhYxcfUtZlew/fYnxYf87e7rAxA2kE0N62Puuc+dMdtH
-   is9vW16KQlssbW+K42/RZxmzlrR+22In1qvGY4vxpju3A1qtIv5I7WoKJ
-   Q6grLPxSMgEpBK8RSrYQ8PKPTe3PISB06UvRwFgdaP/+wwrbETxmSnquG
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10769"; a="344518526"
+   mime-version:in-reply-to;
+  bh=MKhmtzRJRuSK0bXL+0Vhxg+8EKYxbADEu8Gg0ad5iiw=;
+  b=Sbu66RH5Z8O3l+rELl2YlVdtgfsnhxfnTijL0UcsHfqLhw6Ng2r4hn21
+   9Mai5Hrqjc4nXGC4N3CXEDtRqEM0SSDBX8/XAJ1yYHZm5vtC1xgHIIgmB
+   +R6bZ0uX6KMjNJ3npJD4LQ6NTJGWv4o/VNiS9xBHdI+M9KHIGAFh5eU97
+   Vuc+RW9fLfXMw2P4lPZSLO8V9maQVRbYbgWw+cvIww8mfJV+QagYlwm0X
+   RhWaq9G+Wnil8I2gO3asvMuP5Y9C+eDWHKQeQj6VSV7WXSQy/WBIwmXYN
+   pHcHWNCvZ9xppema/DRaqx7H+N0SKLqhst9N0sAYOEvv6n5g1CtjK7NL0
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10769"; a="367542755"
 X-IronPort-AV: E=Sophos;i="6.01,200,1684825200"; 
-   d="scan'208";a="344518526"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2023 08:23:18 -0700
+   d="scan'208";a="367542755"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2023 08:36:39 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10769"; a="791661462"
+X-IronPort-AV: E=McAfee;i="6600,9927,10769"; a="1052245701"
 X-IronPort-AV: E=Sophos;i="6.01,200,1684825200"; 
-   d="scan'208";a="791661462"
+   d="scan'208";a="1052245701"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004.fm.intel.com with ESMTP; 12 Jul 2023 08:23:10 -0700
+  by fmsmga005.fm.intel.com with ESMTP; 12 Jul 2023 08:36:36 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qJbgK-002A8V-2t;
-        Wed, 12 Jul 2023 18:23:08 +0300
-Date:   Wed, 12 Jul 2023 18:23:08 +0300
+        id 1qJbtL-002ANR-1t;
+        Wed, 12 Jul 2023 18:36:35 +0300
+Date:   Wed, 12 Jul 2023 18:36:35 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        Iain Lane <iain@orangesquash.org.uk>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v7 2/2] PCI: Don't put non-power manageable PCIe root
- ports into D3
-Message-ID: <ZK7FXIA+7GTDYK+Z@smile.fi.intel.com>
-References: <20230711005325.1499-3-mario.limonciello@amd.com>
- <20230711221427.GA250962@bhelgaas>
- <CAJZ5v0hmDVkUz8QbE3Jx0kLqDfB6hEuQjhd_u8Kjj2hyZYpZGA@mail.gmail.com>
+To:     Cezary Rojewski <cezary.rojewski@intel.com>
+Cc:     rafael@kernel.org, linux-acpi@vger.kernel.org,
+        robert.moore@intel.com, erik.kaneda@intel.com,
+        pierre-louis.bossart@linux.intel.com,
+        amadeuszx.slawinski@linux.intel.com, lenb@kernel.org
+Subject: Re: [PATCH 3/4] ACPI: NHLT: Table manipulation helpers
+Message-ID: <ZK7Ig6TPhnnKs3Yi@smile.fi.intel.com>
+References: <20230712091048.2545319-1-cezary.rojewski@intel.com>
+ <20230712091048.2545319-4-cezary.rojewski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0hmDVkUz8QbE3Jx0kLqDfB6hEuQjhd_u8Kjj2hyZYpZGA@mail.gmail.com>
+In-Reply-To: <20230712091048.2545319-4-cezary.rojewski@intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 12, 2023 at 01:48:11PM +0200, Rafael J. Wysocki wrote:
-> On Wed, Jul 12, 2023 at 12:14 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Mon, Jul 10, 2023 at 07:53:25PM -0500, Mario Limonciello wrote:
+On Wed, Jul 12, 2023 at 11:10:47AM +0200, Cezary Rojewski wrote:
+> The table is composed of a range of endpoints with each describing
+> audio formats they support. Thus most of the operations involve
+> iterating over elements of the table. Simplify the process by
+> implementing range of getters.
 
-...
+A few nit-picks below.
+In general, LGTM,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> > Tangent unrelated to *this* patch: I don't know how to think about the
-> > pci_use_mid_pm() in platform_pci_power_manageable() because I haven't
-> > seen a MID spec.  pci_use_mid_pm() isn't dependent on "dev", so we
-> > claim *all* PCI devices, even external ones, are power manageable by
-> > the platform, which doesn't seem right.
+(Please, use my @linux.intel.com address for LKML and related)
+
+> Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+> ---
+>  include/acpi/nhlt.h | 68 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 68 insertions(+)
 > 
-> No, we don't.
-> 
-> This only means that PCI devices may be power manageable by the
-> platform and so the platform code should be invoked to check that.
-> AFAICS, intel_mid_pwr_get_lss_id(() will return an error for a device
-> without platform PM support.
+> diff --git a/include/acpi/nhlt.h b/include/acpi/nhlt.h
+> index a2b93b08218f..076aac41a74e 100644
+> --- a/include/acpi/nhlt.h
+> +++ b/include/acpi/nhlt.h
+> @@ -81,4 +81,72 @@ static inline void acpi_nhlt_put_gbl_table(void)
+>  	__cfg->capabilities_size == struct_size(__cfg, mics, __cfg->num_mics) ?		\
+>  		__cfg : NULL; })
+>  
+> +/**
+> + * acpi_nhlt_endpoint_fmtscfg - Get the formats configuration space.
+> + * @ep:		the endpoint to retrieve the space for.
+> + *
+> + * Return: A pointer to the formats configuration space.
+> + */
+> +static inline struct acpi_nhlt_formats_config *
+> +acpi_nhlt_endpoint_fmtscfg(const struct acpi_nhlt_endpoint *ep)
+> +{
+> +	struct acpi_nhlt_cfg *cfg = __acpi_nhlt_endpoint_cfg(ep);
+> +
+> +	return (struct acpi_nhlt_formats_config *)((u8 *)(cfg + 1) + cfg->capabilities_size);
+> +}
+> +
+> +#define __acpi_nhlt_first_endpoint(tb) \
+> +	((void *)(tb + 1))
+> +
+> +#define __acpi_nhlt_next_endpoint(ep) \
+> +	((void *)((u8 *)(ep) + (ep)->descriptor_length))
+> +
+> +#define __acpi_nhlt_get_endpoint(tb, ep, i) \
+> +	((i) ? __acpi_nhlt_next_endpoint(ep) : __acpi_nhlt_first_endpoint(tb))
+> +
+> +#define __acpi_nhlt_first_fmtcfg(fmts) \
+> +	((void *)(fmts + 1))
+> +
+> +#define __acpi_nhlt_next_fmtcfg(fmt) \
+> +	((void *)((u8 *)((fmt) + 1) + (fmt)->capability_size))
+> +
+> +#define __acpi_nhlt_get_fmtcfg(fmts, fmt, i) \
+> +	((i) ? __acpi_nhlt_next_fmtcfg(fmt) : __acpi_nhlt_first_fmtcfg(fmts))
+> +
+> +/*
+> + * The for_each_nhlt_xxx() macros rely on an iterator to deal with the
 
-If it's a problem somewhere, we may even harden that by checking
-the bus nr to be 0. The devices outside bus 0 for sure have not to
-be affected by this code.
+I would do s/xxx/*/
+
+> + * variable length of each endpoint structure and the possible presence
+> + * of an OED-Config used by Windows only.
+> + */
+> +
+> +/**
+> + * for_each_nhlt_endpoint - Iterate over endpoints in a NHLT table.
+> + * @tb:		the pointer to a NHLT table.
+> + * @ep:		the pointer to endpoint to use as loop cursor.
+> + */
+> +#define for_each_nhlt_endpoint(tb, ep)					\
+> +	for (unsigned int __i = 0;					\
+> +	     __i < (tb)->endpoint_count &&				\
+> +		((ep) = __acpi_nhlt_get_endpoint(tb, ep, __i));		\
+
+Do you really need ep to be in parentheses?
+
+> +	     __i++)
+> +
+> +/**
+> + * for_each_nhlt_fmtcfg - Iterate over format configurations.
+> + * @fmts:	the pointer to formats configuration space.
+> + * @fmt:	the pointer to format to use as loop cursor.
+> + */
+> +#define for_each_nhlt_fmtcfg(fmts, fmt)					\
+> +	for (unsigned int __i = 0;					\
+> +	     __i < (fmts)->formats_count &&				\
+> +		((fmt) = __acpi_nhlt_get_fmtcfg(fmts, fmt, __i));	\
+
+Similar for fmt.
+
+> +	     __i++)
+> +
+> +/**
+> + * for_each_nhlt_endpoint_fmtcfg - Iterate over format configurations in an endpoint.
+> + * @ep:		the pointer to an endpoint.
+> + * @fmt:	the pointer to format to use as loop cursor.
+> + */
+> +#define for_each_nhlt_endpoint_fmtcfg(ep, fmt) \
+> +	for_each_nhlt_fmtcfg(acpi_nhlt_endpoint_fmtscfg(ep), fmt)
+> +
+>  #endif /* __ACPI_NHLT_H__ */
+> -- 
+> 2.25.1
+> 
 
 -- 
 With Best Regards,
