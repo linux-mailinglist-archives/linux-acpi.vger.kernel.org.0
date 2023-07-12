@@ -2,138 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0B45750F3C
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jul 2023 19:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E371750F62
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jul 2023 19:13:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229693AbjGLRFn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jul 2023 13:05:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58164 "EHLO
+        id S231592AbjGLRNo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jul 2023 13:13:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbjGLRFm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 13:05:42 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 201F119A7
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Jul 2023 10:05:41 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-666ecf9a081so6417179b3a.2
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Jul 2023 10:05:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1689181540; x=1691773540;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=21TFtO47lX1gePbfGONsWzXilAI2kPVFSsUHWiu16KY=;
-        b=s4bOORzC8HM4m19JGZSCJhSSPeRSR7TDt//M5UaL5GAPJQG/PqQ7OjG7zBPuM21pl6
-         mHv1OcECZhWBz0dZq2SLi/hF3HLi6X9cpkpdTjg07LcCvtUnOkU+w0Tub7UQ0ht9bDb8
-         TyqzPSwNYOcP+B0O0B5BKjuCfcBe/ZxQXsgtT+vPwccgTbGVYJ/zhODCvVLwweYjJ1z0
-         1/MC7XNFCjDSTiW+bihgNyVX+jOZd+FyXdx9j/d8pP0v2FfWC4Q+OddrHtitjjgIIGXj
-         WLwrEJ8cfWBT0p0NyrXD2bJ8P+SHezP06DukuDwyRohenvEIBQa5NnAS+zKjH2KXmlWT
-         Lk9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689181540; x=1691773540;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=21TFtO47lX1gePbfGONsWzXilAI2kPVFSsUHWiu16KY=;
-        b=WXs974bhML3Fg2bLR6yKRZHSTNjNgzNarXeUYrbWGV2hgdm1BRWH4/Lk947bTkzqeE
-         N7vXTtW5V2AQCeJoqYi5o5BDZ29c+gq+Vc2gvk9AvayzAc8ZyGrvx310t6BgOoWLPW23
-         E85f6kN8ycTXZJOSc2SdDcOGYZslDr+ogaL+fGYsajtqorjnSUOlIXc4gGw9rvH1stuu
-         X2M6W98na2Oup6wevbGEGzJt5/Xkx/JPHQMWygwUmCfc0l/Qt61gZ+mbRdHTDWWyII81
-         laclSRA29eBwY98UKma0jK2D+kUpnAJbgGkLR/MyFnoOFjaxpft2B84pM69gjNniFe+8
-         /weA==
-X-Gm-Message-State: ABy/qLbPzNrM52ndqOo12xfdffpkNrlTO4YtjNVUoQp4uMz1xT7XbB0T
-        a5jRCF3XKgWS7wUCxchGguoQHA==
-X-Google-Smtp-Source: APBJJlF/hYh+SvwXGm3heNKVtObAeBTQ3BflHoRR5j7nTnXOsc0C3K7htOdn7DIq4aIheE43bQNblg==
-X-Received: by 2002:a05:6a20:938a:b0:132:bdba:5518 with SMTP id x10-20020a056a20938a00b00132bdba5518mr3757873pzh.54.1689181540368;
-        Wed, 12 Jul 2023 10:05:40 -0700 (PDT)
-Received: from localhost ([50.38.6.230])
-        by smtp.gmail.com with ESMTPSA id o17-20020a637e51000000b0055b30275adasm3832634pgn.37.2023.07.12.10.05.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jul 2023 10:05:39 -0700 (PDT)
-Date:   Wed, 12 Jul 2023 10:05:39 -0700 (PDT)
-X-Google-Original-Date: Wed, 12 Jul 2023 10:04:35 PDT (-0700)
-Subject:     Re: [PATCH] RISC-V: Don't include Zicsr or Zifencei in I from ACPI
-In-Reply-To: <20230711-slideshow-plaza-4ceaa37f6c00@spud>
-CC:     Sunil V L <sunilvl@ventanamicro.com>,
+        with ESMTP id S229540AbjGLRNn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 13:13:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A423910B
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Jul 2023 10:13:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3483A6184B
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Jul 2023 17:13:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D86C433C9;
+        Wed, 12 Jul 2023 17:13:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689182021;
+        bh=jdP2IW8lJtw9pFwYHyPzszyKj7YicGSFexthA8eVI8c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iCq+gW6Rf3HdNJxWgfdMtsN3rxUI9M9Vk8AuUjKM+UM75LMo9wpSk6dQ3sCYsSxTi
+         rLybzzo05eWfSQyzKpOhYoda7zL6Kp81MeAzCjTEfvaN8kHK3ekr/F2bw2t4FsQm5h
+         ZVkIv7x/4WJ+KdemhUwtzspamNZkSojiYxOb+zSm8p8OaLzAXOk4B6PkWqLpVRovrg
+         bGGwpz0oLi/EUoCTvwrhcrGu1HRhVo5u0DNdP+ilomkPVZVpY/QxLPgDi774QAQNtX
+         dR+eaENmtJxKC5f5ZvtTYvDgEzFllZYugtOBYzsGgcE5Vh6nJieDVdgE7l7alMJEtk
+         wSl79/g/puY3Q==
+Date:   Wed, 12 Jul 2023 18:13:38 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Palmer Dabbelt <palmer@rivosinc.com>
+Cc:     Sunil V L <sunilvl@ventanamicro.com>,
         linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org
-From:   Palmer Dabbelt <palmer@rivosinc.com>
-To:     Conor Dooley <conor@kernel.org>
-Message-ID: <mhng-c30cb4e2-0574-4051-b220-01601d9579de@palmer-ri-x1c9a>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Subject: Re: [PATCH] RISC-V: Don't include Zicsr or Zifencei in I from ACPI
+Message-ID: <20230712-quickness-viscosity-ca1a15ccdfcb@spud>
+References: <20230711-slideshow-plaza-4ceaa37f6c00@spud>
+ <mhng-c30cb4e2-0574-4051-b220-01601d9579de@palmer-ri-x1c9a>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="w8fytWipbkP9+/r7"
+Content-Disposition: inline
+In-Reply-To: <mhng-c30cb4e2-0574-4051-b220-01601d9579de@palmer-ri-x1c9a>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 11 Jul 2023 15:52:56 PDT (-0700), Conor Dooley wrote:
-> On Tue, Jul 11, 2023 at 03:46:00PM -0700, Palmer Dabbelt wrote:
->> ACPI ISA strings are based on a specification after Zicsr and Zifencei
->> were split out of I, so we shouldn't be treating them as part of I.  We
->> haven't release an ACPI-based kernel yet, so we don't need to worry
->> about compatibility with the old ISA strings.
->> 
->> Fixes: 396c018332a1 ("RISC-V: cpufeature: Add ACPI support in riscv_fill_hwcap()")
->
-> I think, if anything, this is actually:
-> Fixes: 07edc32779e3 ("RISC-V: always report presence of extensions formerly part of the base ISA")
->
-> Although my rationale was that if we get as far as here, then Zicsr and
-> Zifencei are going to be enabled anyway so there is no harm in setting
-> it for both. I probably should have been less of a cute hoor though.
-> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-I think there's no way to get here without the extensions, not 100% sure 
-though.  I'm mainly trying to avoid going down the same rabbit hole of 
-ISA string compatibility hacks in ACPI that we have for DT, though -- 
-I'm sure we'll end up with a mess as soon as we release, but might as 
-well catch as much as we can.
+--w8fytWipbkP9+/r7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
-> Cheers,
-> Conor.
->
->> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
->> ---
->>  arch/riscv/kernel/cpufeature.c | 9 ++-------
->>  1 file changed, 2 insertions(+), 7 deletions(-)
->> 
->> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
->> index bdcf460ea53d..a8f66c015229 100644
->> --- a/arch/riscv/kernel/cpufeature.c
->> +++ b/arch/riscv/kernel/cpufeature.c
->> @@ -317,19 +317,14 @@ void __init riscv_fill_hwcap(void)
->>  #undef SET_ISA_EXT_MAP
->>  		}
->>  
->> -		/*
->> -		 * Linux requires the following extensions, so we may as well
->> -		 * always set them.
->> -		 */
->> -		set_bit(RISCV_ISA_EXT_ZICSR, isainfo->isa);
->> -		set_bit(RISCV_ISA_EXT_ZIFENCEI, isainfo->isa);
->> -
->>  		/*
->>  		 * These ones were as they were part of the base ISA when the
->>  		 * port & dt-bindings were upstreamed, and so can be set
->>  		 * unconditionally where `i` is in riscv,isa on DT systems.
->>  		 */
->>  		if (acpi_disabled) {
->> +			set_bit(RISCV_ISA_EXT_ZICSR, isainfo->isa);
->> +			set_bit(RISCV_ISA_EXT_ZIFENCEI, isainfo->isa);
->>  			set_bit(RISCV_ISA_EXT_ZICNTR, isainfo->isa);
->>  			set_bit(RISCV_ISA_EXT_ZIHPM, isainfo->isa);
->>  		}
->> -- 
->> 2.40.1
->> 
->> 
->> _______________________________________________
->> linux-riscv mailing list
->> linux-riscv@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/linux-riscv
+On Wed, Jul 12, 2023 at 10:05:39AM -0700, Palmer Dabbelt wrote:
+> On Tue, 11 Jul 2023 15:52:56 PDT (-0700), Conor Dooley wrote:
+
+> > Although my rationale was that if we get as far as here, then Zicsr and
+> > Zifencei are going to be enabled anyway so there is no harm in setting
+> > it for both. I probably should have been less of a cute hoor though.
+> > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+>=20
+> I think there's no way to get here without the extensions, not 100% sure
+> though.  I'm mainly trying to avoid going down the same rabbit hole of ISA
+> string compatibility hacks in ACPI that we have for DT, though -- I'm sure
+> we'll end up with a mess as soon as we release, but might as well catch as
+> much as we can.
+
+Seems reasonable to me chief :+1:
+
+--w8fytWipbkP9+/r7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZK7fQgAKCRB4tDGHoIJi
+0s0ZAP4xI2LN1e5OQkEZILOkLMwdHq9XT+3WOm+81MvzQvJ3ggEAzjr1AF8+HLQ+
+h3R+mbaDOxbl3KYOdnNuUx5B6rG+tAU=
+=2zmV
+-----END PGP SIGNATURE-----
+
+--w8fytWipbkP9+/r7--
