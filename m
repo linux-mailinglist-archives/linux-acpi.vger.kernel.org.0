@@ -2,187 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE45674FFC5
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jul 2023 08:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 039AC750212
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jul 2023 10:53:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230229AbjGLG4L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jul 2023 02:56:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47256 "EHLO
+        id S231613AbjGLIxm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jul 2023 04:53:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjGLG4L (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 02:56:11 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCFEFDC;
-        Tue, 11 Jul 2023 23:56:09 -0700 (PDT)
+        with ESMTP id S229610AbjGLIxm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 04:53:42 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21889B7
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Jul 2023 01:53:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689144970; x=1720680970;
-  h=date:from:to:cc:subject:message-id;
-  bh=Aix+sebAr5d/cP/q9zYQR6XWltGXQhXYRkYcR4Ttjio=;
-  b=Q7pWQIHmqIChPSPebqE6a7zXTlzFnod+T3yrNqIEGjbVEp4bU49N2Ar4
-   Hi1z06nDFSD5RxO2WvlEQWw/ypuJxlgfX5fgL5SuWphQiUMU1MI6rXEbE
-   1ghZTlAbROZKj0UMlALnYgIb/4y29ysmE4IIMED8761OkSLPkSLgL1a3D
-   YLuUgU+3aSqtAg07m6N2QKm9kJsBRrm6fzgTWnSZPJ+sXWA2Dv/Y1tpyB
-   7+LeRfMYtm+OtPkUB6OFUh7LU7CswqMo4dog9aplUReXjElNlPrufhjWj
-   7oz5XsOgt92Gv56Q14AfIUTSHDTgzS3J10VWZh9Mg0eZujzn0GXU9hylG
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="367437022"
+  t=1689152020; x=1720688020;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=C7wAYeWvdZRckHeCTkoQUE5acWOVq3h+KTYQtY/tMAU=;
+  b=e6kTcoJJCY07aMdKq2i3ieT1kQDG0Pka6E4Ox+nJIRdm6gr3R5w7+jRV
+   AWPwjox35pAZATHWLcxMBhRE1pEFIX0hjlBgzsqfbn5SPUUa9hUnAsr52
+   ckPRGccc1B8Nq8XSxuZYSQ9Qm/XKfLTfoVo/HjitNWIHr1RCWYyvcyucQ
+   n9CntZ2h4laZfU5nn+z57fZY+BpU2x1RHnMEIISeIVYXH1ou3UqA3Wrjg
+   oV3mC70aVqLgb5QURTIzkOS2N/pv6HnqTeRsqkeS3gb2iNjIFIiUb5n2h
+   L4EXZJ4JoPTKwp26xCOTFv3cdvAiSBc4jc+KfWzYeKRDDmzJ7ih0SY2Fj
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="363704574"
 X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; 
-   d="scan'208";a="367437022"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2023 23:55:45 -0700
+   d="scan'208";a="363704574"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2023 01:53:22 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="715446531"
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="724798334"
 X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; 
-   d="scan'208";a="715446531"
-Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 11 Jul 2023 23:55:44 -0700
-Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qJTlH-0005Tv-1e;
-        Wed, 12 Jul 2023 06:55:43 +0000
-Date:   Wed, 12 Jul 2023 14:54:43 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- d26e5b690e4be2f96d55bdcf5d80bb42c2d55cc6
-Message-ID: <202307121441.LZ9vpvNt-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+   d="scan'208";a="724798334"
+Received: from crojewsk-ctrl.igk.intel.com ([10.102.9.28])
+  by fmsmga007.fm.intel.com with ESMTP; 12 Jul 2023 01:53:20 -0700
+From:   Cezary Rojewski <cezary.rojewski@intel.com>
+To:     rafael@kernel.org, linux-acpi@vger.kernel.org
+Cc:     robert.moore@intel.com, erik.kaneda@intel.com,
+        pierre-louis.bossart@linux.intel.com,
+        amadeuszx.slawinski@linux.intel.com, andriy.shevchenko@intel.com,
+        lenb@kernel.org, Cezary Rojewski <cezary.rojewski@intel.com>
+Subject: [PATCH 0/4] ACPI: NHLT: Access and query helpers
+Date:   Wed, 12 Jul 2023 11:10:44 +0200
+Message-Id: <20230712091048.2545319-1-cezary.rojewski@intel.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: d26e5b690e4be2f96d55bdcf5d80bb42c2d55cc6  Merge branch 'powercap' into bleeding-edge
+The goal of this patchset is to enhance existing interface of
+NonHDAudioLinkTable (NHLT), that is, accessing device and format
+configuration spaces as well as adding query functions for finding
+specific endpoints and format configurations. Once that is done,
+existing sound-drivers can move from utilizing sound/hda/intel-nhlt.c
+to this very code and ultimately the former file can be removed.
 
-elapsed time: 726m
+It's important to highlight that currently presented implementation is
+not final and intention is to first transfer sound-driver to new API and
+then provide incremental updates to internal code in drivers/acpi/nhlt.c
+to improve reliability and safety.
 
-configs tested: 109
-configs skipped: 7
+Series starts with addition of devcfg-access helpers. The main reasoning
+for adding access function is inability for a user to predict whether
+given space (device config) is valid or not. While inheritance in the
+specification is allowed, e.g.: mic_devcfg being inherited by
+mic_vendor_devcfg, until size is verified, one shall not be accessing
+fields which are not guaranteed by the spec. The only field guaranteed
+is "capabilities_size".
+The xxx_devcfg structs added here kind of duplicate few existing ones
+in actbl2.h. This is mainly motivated by usage improvements -
+simplicity, shorten wording. Intention is to have them replacing
+existing actbl2.h members in the future.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Follow up is the declaration of acpi_gbl_NHLT. Motivation is to make
+sound-drivers life easier i.e.: release them from storing pointer to the
+first NHLT in the system internally. Such drivers may utilize
+acpi_gbl_NHLT when querying endpoints and formats instead.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r003-20230712   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     haps_hs_smp_defconfig   gcc  
-arc                  randconfig-r024-20230710   gcc  
-arc                  randconfig-r043-20230710   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                     am200epdkit_defconfig   clang
-arm                     davinci_all_defconfig   clang
-arm                                 defconfig   gcc  
-arm                  randconfig-r046-20230710   gcc  
-arm                       spear13xx_defconfig   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r025-20230710   clang
-csky                                defconfig   gcc  
-hexagon              randconfig-r041-20230710   clang
-hexagon              randconfig-r045-20230710   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230711   clang
-i386         buildonly-randconfig-r005-20230711   clang
-i386         buildonly-randconfig-r006-20230711   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230711   clang
-i386                 randconfig-i002-20230711   clang
-i386                 randconfig-i003-20230711   clang
-i386                 randconfig-i004-20230711   clang
-i386                 randconfig-i005-20230711   clang
-i386                 randconfig-i006-20230711   clang
-i386                 randconfig-i011-20230711   gcc  
-i386                 randconfig-i012-20230711   gcc  
-i386                 randconfig-i013-20230711   gcc  
-i386                 randconfig-i014-20230711   gcc  
-i386                 randconfig-i015-20230711   gcc  
-i386                 randconfig-i016-20230711   gcc  
-i386                 randconfig-r013-20230712   clang
-i386                 randconfig-r032-20230711   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r022-20230710   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r026-20230710   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r001-20230712   gcc  
-nios2                randconfig-r023-20230710   gcc  
-openrisc             randconfig-r021-20230710   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r011-20230712   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r033-20230711   clang
-riscv                randconfig-r042-20230710   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r034-20230711   clang
-s390                 randconfig-r044-20230710   clang
-sh                               allmodconfig   gcc  
-sh                   randconfig-r035-20230711   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64              randconfig-r014-20230712   gcc  
-sparc64              randconfig-r036-20230711   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r031-20230711   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230711   clang
-x86_64       buildonly-randconfig-r002-20230711   clang
-x86_64       buildonly-randconfig-r003-20230711   clang
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r015-20230712   clang
-x86_64               randconfig-r016-20230712   clang
-x86_64               randconfig-x001-20230711   gcc  
-x86_64               randconfig-x002-20230711   gcc  
-x86_64               randconfig-x003-20230711   gcc  
-x86_64               randconfig-x004-20230711   gcc  
-x86_64               randconfig-x005-20230711   gcc  
-x86_64               randconfig-x006-20230711   gcc  
-x86_64               randconfig-x011-20230711   clang
-x86_64               randconfig-x012-20230711   clang
-x86_64               randconfig-x013-20230711   clang
-x86_64               randconfig-x014-20230711   clang
-x86_64               randconfig-x015-20230711   clang
-x86_64               randconfig-x016-20230711   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r006-20230712   gcc  
+Table manipulation functions and macros serve as a base for the
+follow-up query functions. So called query functions represent standard
+operations performed by user (a sound driver) when attempting to open an
+audio stream. These more or less mimic what's present in
+sound/hda/intel-nhlt.c.
+
+Cezary Rojewski (4):
+  ACPI: NHLT: Device configuration access interface
+  ACPI: NHLT: Introduce acpi_gbl_NHLT
+  ACPI: NHLT: Table manipulation helpers
+  ACPI: NHLT: Add query functions
+
+ drivers/acpi/Kconfig  |   3 +
+ drivers/acpi/Makefile |   1 +
+ drivers/acpi/nhlt.c   | 196 ++++++++++++++++++++++++++++++++++++++++
+ include/acpi/actbl2.h |  28 ++++++
+ include/acpi/nhlt.h   | 206 ++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 434 insertions(+)
+ create mode 100644 drivers/acpi/nhlt.c
+ create mode 100644 include/acpi/nhlt.h
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.25.1
+
