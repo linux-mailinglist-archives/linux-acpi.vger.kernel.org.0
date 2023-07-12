@@ -2,139 +2,187 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDB9B75143F
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jul 2023 01:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEABF75145E
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jul 2023 01:18:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233005AbjGLXN6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jul 2023 19:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33350 "EHLO
+        id S231238AbjGLXSO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jul 2023 19:18:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231435AbjGLXNt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 19:13:49 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F14C5270B;
-        Wed, 12 Jul 2023 16:13:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=Y5SzVlzKIJDGUT9EANNyQG9MJsCdwH/wBupzje6OdiM=; b=qhP8b1q/52VMiBvnIqhcAYbjNx
-        zbmKTamtufBzg+FG6s1+PVEzoqOJ204eV2UElZ37KrbQLYVyDSiK3GxXP0qars3wTrekPxYD75yqo
-        /kzmMYfzIweYsm5sAkfnZyOWVOglsadzHxqCcH5EKZlU5o7VwRpv0YvWNw5bim8GYR/E=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qJj08-001BOI-Go; Thu, 13 Jul 2023 01:12:04 +0200
-Date:   Thu, 13 Jul 2023 01:12:04 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Evan Quan <evan.quan@amd.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, Alexander.Deucher@amd.com,
-        Christian.Koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
-        daniel@ffwll.ch, johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        Mario.Limonciello@amd.com, mdaenzer@redhat.com,
-        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
-        hdegoede@redhat.com, jingyuwang_vip@163.com, Lijo.Lazar@amd.com,
-        jim.cromie@gmail.com, bellosilicio@gmail.com,
-        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
-        arnd@arndb.de, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH V6 1/9] drivers core: Add support for Wifi band RF
- mitigations
-Message-ID: <5439dd61-7b5f-4fc9-8ccd-f7df43a791dd@lunn.ch>
-References: <20230710083641.2132264-1-evan.quan@amd.com>
- <20230710083641.2132264-2-evan.quan@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230710083641.2132264-2-evan.quan@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S233505AbjGLXSL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jul 2023 19:18:11 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0918110D4;
+        Wed, 12 Jul 2023 16:18:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689203891; x=1720739891;
+  h=date:from:to:cc:subject:message-id;
+  bh=2Ounp3OzKIAfcKRbE0X+fVZZzuJIsvfMNvBBRuKxW5U=;
+  b=da9HLBTWGcp+tfo3KwW7SKVJwJRZlYTlGtAFR+dswaF3YCywr+BW8XH6
+   Nv4m7b9LJv4hxC9fPMeO2JzF4t1lqvqJDw9c4pBeJonHM5h8M9X/dvuW4
+   AFPnPyoi7x04TM7PAl2f+fxZoiYRn46kPlq91BYRij6CPMJUdsK/YdU4T
+   KvUIBbGs203YQh7ERk7xG/2R5yKKeUpC3DbSAFidTF+VF7gbXfKzPtBDh
+   4lyX6k35Ws0kCCajy5sGAYtyOvBsHU5zM9hlQnlttxWZ5u1PqGaWy2z9q
+   v+Nd7p7G6n3pyw0e5ikMVd7HzguJ3NkDO10BBCsGBJDFEPDv9WkqvHQ8c
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10769"; a="354944272"
+X-IronPort-AV: E=Sophos;i="6.01,200,1684825200"; 
+   d="scan'208";a="354944272"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2023 16:18:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10769"; a="725061987"
+X-IronPort-AV: E=Sophos;i="6.01,200,1684825200"; 
+   d="scan'208";a="725061987"
+Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 12 Jul 2023 16:18:08 -0700
+Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qJj60-00062G-15;
+        Wed, 12 Jul 2023 23:18:08 +0000
+Date:   Thu, 13 Jul 2023 07:17:55 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ f56f47fd8f54ce29b240450f15d09bc13c76171a
+Message-ID: <202307130753.V77k5rl2-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> +/**
-> + * wbrf_supported_producer - Determine if the device can report frequencies
-> + *
-> + * @dev: device pointer
-> + *
-> + * WBRF is used to mitigate devices that cause harmonic interference.
-> + * This function will determine if this device needs to report such frequencies.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: f56f47fd8f54ce29b240450f15d09bc13c76171a  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
 
-How is the WBRF core supposed to answer this question? That it knows
-there is at least one device which has registered with WBRF saying it
-can change its behaviour to avoid causing interference?
+elapsed time: 722m
 
-Rather than "Determine if the device can report frequencies" should it be
-"Determine if the device should report frequencies"
+configs tested: 108
+configs skipped: 9
 
-A WiFi device can always report frequencies, since it knows what
-frequency is it currently using. However, it is pointless making such
-reports if there is no device which can actually make use of the
-information. 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> +bool wbrf_supported_producer(struct device *dev)
-> +{
-> +	return true;
-> +}
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r013-20230712   gcc  
+arc                  randconfig-r036-20230712   gcc  
+arc                  randconfig-r043-20230712   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                                 defconfig   gcc  
+arm                           h3600_defconfig   gcc  
+arm                       imx_v6_v7_defconfig   gcc  
+arm                  randconfig-r003-20230712   clang
+arm                  randconfig-r046-20230712   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r002-20230712   gcc  
+arm64                randconfig-r005-20230712   gcc  
+arm64                randconfig-r015-20230712   clang
+csky                                defconfig   gcc  
+hexagon              randconfig-r041-20230712   clang
+hexagon              randconfig-r045-20230712   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230712   gcc  
+i386         buildonly-randconfig-r005-20230712   gcc  
+i386         buildonly-randconfig-r006-20230712   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230712   gcc  
+i386                 randconfig-i002-20230712   gcc  
+i386                 randconfig-i003-20230712   gcc  
+i386                 randconfig-i004-20230712   gcc  
+i386                 randconfig-i005-20230712   gcc  
+i386                 randconfig-i006-20230712   gcc  
+i386                 randconfig-i011-20230712   clang
+i386                 randconfig-i012-20230712   clang
+i386                 randconfig-i013-20230712   clang
+i386                 randconfig-i014-20230712   clang
+i386                 randconfig-i015-20230712   clang
+i386                 randconfig-i016-20230712   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r022-20230712   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                         bigsur_defconfig   gcc  
+mips                 randconfig-r034-20230712   clang
+nios2                               defconfig   gcc  
+nios2                randconfig-r012-20230712   gcc  
+openrisc             randconfig-r024-20230712   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r035-20230712   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                      ppc6xx_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r011-20230712   clang
+riscv                randconfig-r042-20230712   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r023-20230712   clang
+s390                 randconfig-r044-20230712   clang
+sh                               allmodconfig   gcc  
+sh                          rsk7201_defconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r033-20230712   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r025-20230712   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230712   gcc  
+x86_64       buildonly-randconfig-r002-20230712   gcc  
+x86_64       buildonly-randconfig-r003-20230712   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-r006-20230712   gcc  
+x86_64               randconfig-r031-20230712   gcc  
+x86_64               randconfig-x001-20230712   clang
+x86_64               randconfig-x002-20230712   clang
+x86_64               randconfig-x003-20230712   clang
+x86_64               randconfig-x004-20230712   clang
+x86_64               randconfig-x005-20230712   clang
+x86_64               randconfig-x006-20230712   clang
+x86_64               randconfig-x011-20230712   gcc  
+x86_64               randconfig-x012-20230712   gcc  
+x86_64               randconfig-x013-20230712   gcc  
+x86_64               randconfig-x014-20230712   gcc  
+x86_64               randconfig-x015-20230712   gcc  
+x86_64               randconfig-x016-20230712   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r001-20230712   gcc  
 
-I found the default implementation of true being odd. It makes me
-wounder, what is the point of this call. I would expect this to see if
-a linked list is empty or not.
-
-> +/**
-> + * wbrf_supported_consumer - Determine if the device can react to frequencies
-
-This again seems odd. A device should know if it can react to
-frequencies or not. WBRF core should not need to tell it. What makes
-more sense to me is that this call is about a device telling the WBRF
-core it is able to react to frequencies. The WBRF core then can give a
-good answer to wbrf_supported_producer(), yes, i know of some other
-device who might be able to do something to avoid causing interference
-to you, so please do tell me about frequencies you want to use.
-
-What is missing here in this API is policy information. The WBRF core
-knows it has zero or more devices which can report what frequencies
-they are using, and it has zero or more devices which maybe can do
-something. But then you need policy to say this particular board needs
-any registered devices to actually do something because of poor
-shielding. Should this policy be as simple as a bool, or should it
-actually say the board has shielding issues for a list of frequencies?
-I think the answer to what will depend on the cost of taking action
-when no action is actually required.
-
-> + * wbrf_register_notifier - Register for notifications of frequency changes
-> + *
-> + * @nb: driver notifier block
-> + *
-> + * WBRF is used to mitigate devices that cause harmonic interference.
-> + * This function will allow consumers to register for frequency notifications.
-> + */
-> +int wbrf_register_notifier(struct notifier_block *nb)
-> +{
-> +	return blocking_notifier_chain_register(&wbrf_chain_head, nb);
-> +}
-
-What are the timing requirements for the handler? Should the handler
-block until the device has finished doing what it needs to do and the
-frequency response has settled? We don't want the WiFi device doing a
-SNR measurement until we know local noise is at a minimum. I think it
-would be good to document things like this here.
-
-> +struct wbrf_ranges_out {
-> +	u32			num_of_ranges;
-> +	struct exclusion_range	band_list[MAX_NUM_OF_WBRF_RANGES];
-> +} __packed;
-
-Seems odd using packed here. It is the only structure which is
-packed. I would also move the u32 after the struct so it is naturally
-aligned on 64 bit systems.
-
-	Andrew
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
