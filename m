@@ -2,55 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF4C77526FB
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jul 2023 17:30:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F8C1752727
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jul 2023 17:32:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230372AbjGMP3q convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 13 Jul 2023 11:29:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60240 "EHLO
+        id S232853AbjGMPct convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 13 Jul 2023 11:32:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235038AbjGMP3M (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jul 2023 11:29:12 -0400
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DE9830EF;
-        Thu, 13 Jul 2023 08:28:49 -0700 (PDT)
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2b838dbb3d0so31791fa.0;
-        Thu, 13 Jul 2023 08:28:49 -0700 (PDT)
+        with ESMTP id S232834AbjGMPcf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jul 2023 11:32:35 -0400
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2765930F5;
+        Thu, 13 Jul 2023 08:32:15 -0700 (PDT)
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2b6e2eb71c2so3053281fa.0;
+        Thu, 13 Jul 2023 08:32:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689262127; x=1691854127;
+        d=1e100.net; s=20221208; t=1689262287; x=1691854287;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=n7LJojRLRLATowLcMM86EnUJ055nNQbp52MryneqIq0=;
-        b=jPF6ts9Fwn7LJVxk+yFm4RK/nydoMpDu3/hJpp9J+EfhvThRNe5+lr7WRTMrTHLyJ1
-         4mYPaWnTS9MIJ4FifPTw4KrpdrglxaLEA1LSeiEIVYQjbxhRSsBK5qr9JaWNDgrxdVsp
-         x9miOuNYR4XOW1F3EYENCFwbwFQ77B3YU/YP7sd0S6gGPOhCOGKNQIp9cZTU6h6LmbaM
-         1UHOWi65lq6Uj0pu6Kgl/a09QAbUWh3ooE2IDIV5p9rGpnxaNi8pWYbTE04gyTYfGxw8
-         uFy177ZUa1G0K30N1wZwB3er2z5Tl9M/2NOz/Fd0DTae/cTZoAz5Ovmq1HYKBTgVRHul
-         aKmA==
-X-Gm-Message-State: ABy/qLYWBAifTPGXv4da4kJ5W416h/31D/5LlJlt8lCQemEfd0pJWoFU
-        318sBthCWtDh1+FEIj6/Tjx4hoy7AmXzxO9DWEx0ikS+oLI=
-X-Google-Smtp-Source: APBJJlEMGDUVjcFAVDO9KEsO9uXaPtxei9or7qSbCTezqjjcv62UHPaAY3UTK/adigW/Dw3D1nxl67NeiLGjeOJAi2o=
-X-Received: by 2002:a05:651c:2104:b0:2b6:b9ee:a7b1 with SMTP id
- a4-20020a05651c210400b002b6b9eea7b1mr1906847ljq.5.1689262127320; Thu, 13 Jul
- 2023 08:28:47 -0700 (PDT)
+        bh=rEgyv0cci576WGyNwcqpYH0DIUtSj32VEpSp0sob1x0=;
+        b=SdduFklWkFLg9fzqbUSR9ERoebu0nLYW26A17cPHbWeHFKPNgvRY4CLKya8fcjWhjj
+         wix6QGyuIDBPS3aRqbVZufJbi2oqvSJQeHCvvuhPW2LERLgyndCanVJGqQ0skHtVXse3
+         cOxALwVrgIVZS1e1owsOvzccxNqlKlZiNLkq785OvLAuwBRyIuE+pOh3HKhg4fw/P+1E
+         mMWHVbp4mkvPzy7gigmt7vj/OEnAj3+GTwyTFAuohkX2NFYrtN7GvaV9Gtp6IQVcDcUA
+         gQwl4xvoB7UYU7mYTlqEitCoInfHe8qHwKdH1O2dfNu/2afsUMsps/u5RHSgvkkZvWfL
+         eGsg==
+X-Gm-Message-State: ABy/qLZqjEkS4uxXcfC4RT+C95MDu8bmO/2J7a6eqHHC7MlU0o7vPZ0c
+        rsM8lfcc/vfcEk+x2xttlNOCisnSgNWTYVLejRg=
+X-Google-Smtp-Source: APBJJlEGN3mNfwXC0sE4w/L4+BmaoxzzZtLJMqiLhNNMHvhfRQ4zywUSnqrxaZLo/LCt7DSNgjrLuJowHeXKPazohes=
+X-Received: by 2002:a2e:be10:0:b0:2b7:2ca0:989a with SMTP id
+ z16-20020a2ebe10000000b002b72ca0989amr1823257ljq.5.1689262287093; Thu, 13 Jul
+ 2023 08:31:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230710063340.1716007-1-maobibo@loongson.cn>
-In-Reply-To: <20230710063340.1716007-1-maobibo@loongson.cn>
+References: <20230712172459.20275-1-mario.limonciello@amd.com>
+In-Reply-To: <20230712172459.20275-1-mario.limonciello@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 13 Jul 2023 17:28:35 +0200
-Message-ID: <CAJZ5v0h8Bw9kS0tq8S1KJKZ+TW1xBSn=YhZXXjQuso2ydJjm_A@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: processor_core: LoongArch: Get physical id from
- MADT table
-To:     Bibo Mao <maobibo@loongson.cn>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Date:   Thu, 13 Jul 2023 17:31:16 +0200
+Message-ID: <CAJZ5v0jDpMNsWztgPDfLG3eGw3YOxK_ygWRLgHmbZUoMh97tbw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: thermal: Drop nocrt parameter
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,71 +56,63 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 8:33 AM Bibo Mao <maobibo@loongson.cn> wrote:
+On Wed, Jul 12, 2023 at 7:25 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
 >
-> With ACPI Spec 6.5 physical id can be parsed from MADT table for
-> LoongArch system, also it can be used in MAT table for cpu hotplug
-> stage. This patch adds physical id parsing for LoongArch system.
+> The `nocrt` module parameter has no code associated with it and does
+> nothing.  As `crt=-1` has same functionality as what nocrt should be
+> doing drop `nocrt` and associated documentation.
 >
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> This should fix a quirk for Gigabyte GA-7ZX that used `nocrt` and
+> thus didn't function properly.
+>
+> Fixes: 8c99fdce3078 ("ACPI: thermal: set "thermal.nocrt" via DMI on Gigabyte GA-7ZX")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+
+Stable material I suppose?
+
 > ---
->  drivers/acpi/processor_core.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+>  Documentation/admin-guide/kernel-parameters.txt | 4 ----
+>  drivers/acpi/thermal.c                          | 6 +-----
+>  2 files changed, 1 insertion(+), 9 deletions(-)
 >
-> diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
-> index d6606a9f2da6..51239cd2a485 100644
-> --- a/drivers/acpi/processor_core.c
-> +++ b/drivers/acpi/processor_core.c
-> @@ -132,6 +132,26 @@ static int map_rintc_hartid(struct acpi_subtable_header *entry,
->         return -EINVAL;
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index a1457995fd41c..2de235d52faca 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -6243,10 +6243,6 @@
+>                         -1: disable all critical trip points in all thermal zones
+>                         <degrees C>: override all critical trip points
+>
+> -       thermal.nocrt=  [HW,ACPI]
+> -                       Set to disable actions on ACPI thermal zone
+> -                       critical and hot trip points.
+> -
+>         thermal.off=    [HW,ACPI]
+>                         1: disable ACPI thermal control
+>
+> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+> index f9f6ebb08fdb7..3163a40f02e30 100644
+> --- a/drivers/acpi/thermal.c
+> +++ b/drivers/acpi/thermal.c
+> @@ -82,10 +82,6 @@ static int tzp;
+>  module_param(tzp, int, 0444);
+>  MODULE_PARM_DESC(tzp, "Thermal zone polling frequency, in 1/10 seconds.");
+>
+> -static int nocrt;
+> -module_param(nocrt, int, 0);
+> -MODULE_PARM_DESC(nocrt, "Set to take no action upon ACPI thermal zone critical trips points.");
+> -
+>  static int off;
+>  module_param(off, int, 0);
+>  MODULE_PARM_DESC(off, "Set to disable ACPI thermal support.");
+> @@ -1094,7 +1090,7 @@ static int thermal_act(const struct dmi_system_id *d) {
+>  static int thermal_nocrt(const struct dmi_system_id *d) {
+>         pr_notice("%s detected: disabling all critical thermal trip point actions.\n",
+>                   d->ident);
+> -       nocrt = 1;
+> +       crt = -1;
+>         return 0;
 >  }
->
-> +/*
-> + * Retrieve LoongArch CPU physical id
-> + */
-> +static int map_core_pic_id(struct acpi_subtable_header *entry,
-> +               int device_declaration, u32 acpi_id, phys_cpuid_t *apic_id)
-> +{
-> +       struct acpi_madt_core_pic *core_pic =
-> +               container_of(entry, struct acpi_madt_core_pic, header);
-> +
-> +       if (!(core_pic->flags & ACPI_MADT_ENABLED))
-> +               return -ENODEV;
-> +
-> +       if (device_declaration && (core_pic->processor_id == acpi_id)) {
-> +               *apic_id = core_pic->core_id;
-> +               return 0;
-> +       }
-> +
-> +       return -EINVAL;
-> +}
-> +
->  static phys_cpuid_t map_madt_entry(struct acpi_table_madt *madt,
->                                    int type, u32 acpi_id)
->  {
-> @@ -165,6 +185,9 @@ static phys_cpuid_t map_madt_entry(struct acpi_table_madt *madt,
->                 } else if (header->type == ACPI_MADT_TYPE_RINTC) {
->                         if (!map_rintc_hartid(header, type, acpi_id, &phys_id))
->                                 break;
-> +               } else if (header->type == ACPI_MADT_TYPE_CORE_PIC) {
-> +                       if (!map_core_pic_id(header, type, acpi_id, &phys_id))
-
-Is ACPI_MADT_TYPE_CORE_PIC specific to LoongArch?  The changelog
-should mention it if that's the case.
-
-> +                               break;
->                 }
->                 entry += header->length;
->         }
-> @@ -216,6 +239,8 @@ static phys_cpuid_t map_mat_entry(acpi_handle handle, int type, u32 acpi_id)
->                 map_x2apic_id(header, type, acpi_id, &phys_id);
->         else if (header->type == ACPI_MADT_TYPE_GENERIC_INTERRUPT)
->                 map_gicc_mpidr(header, type, acpi_id, &phys_id);
-> +       else if (header->type == ACPI_MADT_TYPE_CORE_PIC)
-> +               map_core_pic_id(header, type, acpi_id, &phys_id);
->
->  exit:
->         kfree(buffer.pointer);
+>  static int thermal_tzp(const struct dmi_system_id *d) {
 > --
-> 2.27.0
->
