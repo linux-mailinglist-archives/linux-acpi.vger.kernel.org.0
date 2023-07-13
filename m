@@ -2,102 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A567C752798
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jul 2023 17:44:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 101C3752ABC
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jul 2023 21:07:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231905AbjGMPoL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jul 2023 11:44:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45548 "EHLO
+        id S232799AbjGMTHI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jul 2023 15:07:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232405AbjGMPoJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jul 2023 11:44:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8323D2736
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Jul 2023 08:43:29 -0700 (PDT)
+        with ESMTP id S232845AbjGMTHH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jul 2023 15:07:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DA3B2713
+        for <linux-acpi@vger.kernel.org>; Thu, 13 Jul 2023 12:06:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1689263008;
+        s=mimecast20190719; t=1689275179;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VLikHNWVNU/FNpgKCSfkRGEY/lyXivfIFOAmn8fr+kQ=;
-        b=RnRJ9f2hV9KFiM7Xk5Ut3MOs/qpRGiSwWpoy0hme7Itvu49LgZiVbcXGHs4jOPgmH/jItQ
-        aj3E5HLoL2tJ70y3YGtGtdF6tcQo4Txj/FQ5UbUKQAQAIziQbrnuZWh4mcMa4mZQL9FqCP
-        aCvK8yNOpBllCvoi0aKecccHDj7AYEc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-377-vyuDjFyyPLCTi3PeGl0p1g-1; Thu, 13 Jul 2023 11:43:26 -0400
-X-MC-Unique: vyuDjFyyPLCTi3PeGl0p1g-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-31273e0507dso614418f8f.3
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Jul 2023 08:43:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689263005; x=1691855005;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VLikHNWVNU/FNpgKCSfkRGEY/lyXivfIFOAmn8fr+kQ=;
-        b=ikdVoJQDbSc6GvLxDu17O3kpFH6YrSTRGXvIlRimkfrlMJYx7kN8ldS2ABTqnoQAZX
-         fjqdQJcRKNOF8eM+TKNOX7n86X+6oYhIKura8cVnHB/PJnOm4qYZwL5uu/q8D5e1v9o6
-         ztFKTbYjwMrWs6FZO/nD6dHn/8v785Z43ERMU6/Mcl6dcro/hsP5OyrmwTu0DW1S+JRS
-         nhb8w8c6cJ3kQvoZ/kc0lwBhVFZ1Gs84pvsjvwJebjtiYkV9zbqsgMRCGqTDuU+aQyPE
-         NAtoK0fTwITUCRBQKcB06TBaKMAWp2mIIfpYIvVfwWI9VTvMNG6/uF0NK+bIkcfPsVuy
-         sXSg==
-X-Gm-Message-State: ABy/qLZpk0yVCm9ZC1CF/q+sz2C9wBuKOAcnRKqRyQ0Amo2DG/R1UHtu
-        Ow5Jp8Hato8F34gejX8qwtHjpK+eEns7RWqKjFMvusDW/ggE++Zooks3DbaoVAcwi4+VHFlZdu3
-        qRzEjAzqYgrNX4LE6tgvjHw==
-X-Received: by 2002:adf:e681:0:b0:313:f4e2:901d with SMTP id r1-20020adfe681000000b00313f4e2901dmr2049836wrm.22.1689263004840;
-        Thu, 13 Jul 2023 08:43:24 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlF1/YUAbO+tUpcHHd06mVmoTHYbiWHrgz1Hqa9kz78W45sfnOZ2occ1rxo5df7lIzOiCn/o3Q==
-X-Received: by 2002:adf:e681:0:b0:313:f4e2:901d with SMTP id r1-20020adfe681000000b00313f4e2901dmr2049814wrm.22.1689263004497;
-        Thu, 13 Jul 2023 08:43:24 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c717:6100:2da7:427e:49a5:e07? (p200300cbc71761002da7427e49a50e07.dip0.t-ipconnect.de. [2003:cb:c717:6100:2da7:427e:49a5:e07])
-        by smtp.gmail.com with ESMTPSA id o7-20020a5d6707000000b002c70ce264bfsm8285044wru.76.2023.07.13.08.43.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Jul 2023 08:43:24 -0700 (PDT)
-Message-ID: <de39c555-e092-8e57-43a4-7a2c56d1e66c@redhat.com>
-Date:   Thu, 13 Jul 2023 17:43:22 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 3/3] dax/kmem: Always enroll hotplugged memory for
- memmap_on_memory
-Content-Language: en-US
-To:     "Verma, Vishal L" <vishal.l.verma@intel.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "osalvador@suse.de" <osalvador@suse.de>,
-        "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>,
-        "Williams, Dan J" <dan.j.williams@intel.com>,
-        "Jiang, Dave" <dave.jiang@intel.com>,
-        "lenb@kernel.org" <lenb@kernel.org>
-Cc:     "Huang, Ying" <ying.huang@intel.com>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-        "nvdimm@lists.linux.dev" <nvdimm@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
+        bh=mV8Nsc8QqObfioHox/0m6vCcDaS/dZuwe57a5YlQQl8=;
+        b=APrp/DFEtu8F8h6ur5zzO7NAdfugsntf+kcebk6HbK2t4d83Hw663m0aK+pf0ozw4fgcm4
+        PToUdTBvCfszuzrwn+hPHELxxCNwkvo0wfLix8OI+9Zt+E/bBgBLpTEAgSHkoS4vUYlnN2
+        0r61cQ+5+Sk/ig5Wsw3xQLj8blwdaaE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-634-iCmcfC-GOe-C3oZCLVi3ig-1; Thu, 13 Jul 2023 15:06:15 -0400
+X-MC-Unique: iCmcfC-GOe-C3oZCLVi3ig-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EFC588D1683;
+        Thu, 13 Jul 2023 19:06:13 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 6F0BB111E3E9;
+        Thu, 13 Jul 2023 19:06:13 +0000 (UTC)
+From:   Jeff Moyer <jmoyer@redhat.com>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Vishal Verma <vishal.l.verma@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
+        Huang Ying <ying.huang@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH 0/3] mm: use memmap_on_memory semantics for dax/kmem
 References: <20230613-vv-kmem_memmap-v1-0-f6de9c6af2c6@intel.com>
- <20230613-vv-kmem_memmap-v1-3-f6de9c6af2c6@intel.com>
- <aadbedeb-424d-a146-392d-d56680263691@redhat.com>
- <87edleplkn.fsf@linux.ibm.com>
- <1df12885-9ae4-6aef-1a31-91ecd5a18d24@redhat.com>
- <5a8e9b1b6c8d6d9e5405ca35abb9be3ed09761c3.camel@intel.com>
- <ee0c84ff-6d97-3b7c-88a8-dd00797c2999@redhat.com>
- <6cb5624ebf3039b18f5180262fc6383b402d26ea.camel@intel.com>
- <80c8654e-21fb-b187-3475-9a1410a53a4e@redhat.com>
- <b62572356db07ae0c3305ed03916b0ff40b14426.camel@intel.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <b62572356db07ae0c3305ed03916b0ff40b14426.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        <29c9b998-f453-59f2-5084-9b4482b489cf@redhat.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date:   Thu, 13 Jul 2023 15:12:02 -0400
+In-Reply-To: <29c9b998-f453-59f2-5084-9b4482b489cf@redhat.com> (David
+        Hildenbrand's message of "Fri, 16 Jun 2023 09:44:50 +0200")
+Message-ID: <x49fs5r7hj1.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -105,74 +73,34 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 13.07.23 17:40, Verma, Vishal L wrote:
-> On Thu, 2023-07-13 at 17:23 +0200, David Hildenbrand wrote:
->> On 13.07.23 17:15, Verma, Vishal L wrote:
->>> On Thu, 2023-07-13 at 09:23 +0200, David Hildenbrand wrote:
->>>> On 13.07.23 08:45, Verma, Vishal L wrote:
->>>>>
->>>>> I'm taking a shot at implementing the splitting internally in
->>>>> memory_hotplug.c. The caller (kmem) side does become trivial with this
->>>>> approach, but there's a slight complication if I don't have the module
->>>>> param override (patch 1 of this series).
->>>>>
->>>>> The kmem diff now looks like:
->>>>>
->>>>>       diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
->>>>>       index 898ca9505754..8be932f63f90 100644
->>>>>       --- a/drivers/dax/kmem.c
->>>>>       +++ b/drivers/dax/kmem.c
->>>>>       @@ -105,6 +105,8 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->>>>>               data->mgid = rc;
->>>>>        
->>>>>               for (i = 0; i < dev_dax->nr_range; i++) {
->>>>>       +               mhp_t mhp_flags = MHP_NID_IS_MGID | MHP_MEMMAP_ON_MEMORY |
->>>>>       +                                 MHP_SPLIT_MEMBLOCKS;
->>>>>                       struct resource *res;
->>>>>                       struct range range;
->>>>>        
->>>>>       @@ -141,7 +143,7 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->>>>>                        * this as RAM automatically.
->>>>>                        */
->>>>>                       rc = add_memory_driver_managed(data->mgid, range.start,
->>>>>       -                               range_len(&range), kmem_name, MHP_NID_IS_MGID);
->>>>>       +                               range_len(&range), kmem_name, mhp_flags);
->>>>>        
->>>>>                       if (rc) {
->>>>>                               dev_warn(dev, "mapping%d: %#llx-%#llx memory add failed\n",
->>>>>       
->>>>>
->>>>
->>>> Why do we need the MHP_SPLIT_MEMBLOCKS?
->>>
->>> I thought we still wanted either an opt-in or opt-out for the kmem
->>> driver to be able to do memmap_on_memory, in case there were
->>> performance implications or the lack of 1GiB PUDs. I haven't
->>> implemented that yet, but I was thinking along the lines of a sysfs
->>> knob exposed by kmem, that controls setting of this new
->>> MHP_SPLIT_MEMBLOCKS flag.
+David Hildenbrand <david@redhat.com> writes:
+
+> On 16.06.23 00:00, Vishal Verma wrote:
+>> The dax/kmem driver can potentially hot-add large amounts of memory
+>> originating from CXL memory expanders, or NVDIMMs, or other 'device
+>> memories'. There is a chance there isn't enough regular system memory
+>> available to fit ythe memmap for this new memory. It's therefore
+>> desirable, if all other conditions are met, for the kmem managed memory
+>> to place its memmap on the newly added memory itself.
 >>
->> Why is MHP_MEMMAP_ON_MEMORY not sufficient for that?
->>
->>
-> Ah I see what you mean now - knob just controls MHP_MEMMAP_ON_MEMORY,
-> and memory_hotplug is free to split to memblocks if it needs to to
-> satisfy that.
+>> Arrange for this by first allowing for a module parameter override for
+>> the mhp_supports_memmap_on_memory() test using a flag, adjusting the
+>> only other caller of this interface in dirvers/acpi/acpi_memoryhotplug.c,
+>> exporting the symbol so it can be called by kmem.c, and finally changing
+>> the kmem driver to add_memory() in chunks of memory_block_size_bytes().
+>
+> 1) Why is the override a requirement here? Just let the admin
+> configure it then then add conditional support for kmem.
+>
+> 2) I recall that there are cases where we don't want the memmap to
+> land on slow memory (which online_movable would achieve). Just imagine
+> the slow PMEM case. So this might need another configuration knob on
+> the kmem side.
 
-And if you don't want memmap holes in a larger area you're adding (for 
-example to runtime-allocate 1 GiB pages), simply check the size your 
-adding, and if it's, say, less than 1 G, don't set the flag.
+From my memory, the case where you don't want the memmap to land on
+*persistent memory* is when the device is small (such as NVDIMM-N), and
+you want to reserve as much space as possible for the application data.
+This has nothing to do with the speed of access.
 
-But that's probably a corner case use case not worth considering for now.
-
-> 
-> That sounds reasonable. Let me give this a try and see if I run into
-> anything else. Thanks David!
-
-Sure!
-
--- 
-Cheers,
-
-David / dhildenb
+-Jeff
 
