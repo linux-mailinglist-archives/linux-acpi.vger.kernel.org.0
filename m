@@ -2,105 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 101C3752ABC
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jul 2023 21:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A76E5752BBB
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jul 2023 22:35:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232799AbjGMTHI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jul 2023 15:07:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54508 "EHLO
+        id S233422AbjGMUf5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jul 2023 16:35:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232845AbjGMTHH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jul 2023 15:07:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DA3B2713
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Jul 2023 12:06:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1689275179;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=mV8Nsc8QqObfioHox/0m6vCcDaS/dZuwe57a5YlQQl8=;
-        b=APrp/DFEtu8F8h6ur5zzO7NAdfugsntf+kcebk6HbK2t4d83Hw663m0aK+pf0ozw4fgcm4
-        PToUdTBvCfszuzrwn+hPHELxxCNwkvo0wfLix8OI+9Zt+E/bBgBLpTEAgSHkoS4vUYlnN2
-        0r61cQ+5+Sk/ig5Wsw3xQLj8blwdaaE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-634-iCmcfC-GOe-C3oZCLVi3ig-1; Thu, 13 Jul 2023 15:06:15 -0400
-X-MC-Unique: iCmcfC-GOe-C3oZCLVi3ig-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EFC588D1683;
-        Thu, 13 Jul 2023 19:06:13 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 6F0BB111E3E9;
-        Thu, 13 Jul 2023 19:06:13 +0000 (UTC)
-From:   Jeff Moyer <jmoyer@redhat.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Vishal Verma <vishal.l.verma@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
-        Huang Ying <ying.huang@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH 0/3] mm: use memmap_on_memory semantics for dax/kmem
-References: <20230613-vv-kmem_memmap-v1-0-f6de9c6af2c6@intel.com>
-        <29c9b998-f453-59f2-5084-9b4482b489cf@redhat.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date:   Thu, 13 Jul 2023 15:12:02 -0400
-In-Reply-To: <29c9b998-f453-59f2-5084-9b4482b489cf@redhat.com> (David
-        Hildenbrand's message of "Fri, 16 Jun 2023 09:44:50 +0200")
-Message-ID: <x49fs5r7hj1.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        with ESMTP id S233426AbjGMUfz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jul 2023 16:35:55 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFC152127
+        for <linux-acpi@vger.kernel.org>; Thu, 13 Jul 2023 13:35:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689280554; x=1720816554;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=AK8EGyXuC8LhczGSHhQ5MxyAISKNC7yNcGgKWvZ4M0c=;
+  b=XZDcLHuCyVOJZopfCcliKaB57B93liS/QqXN8O4e4Czy6eXrQAFL8aEz
+   b4gs5y00R7Bc8BaBEWjzmQ5/ujWjl2ExR9kVcuwR1zs58Hjohbfu+5qLA
+   P4eVAyiV5uN9/9fczJ881DVTI86xLxt50iRZDfAcxTxL9CZDEO8bOhxz6
+   tDInM5D65SonTwPLLdED4btGZqhFjVMmzvbosjYiO0fnpVa2zFof20GrV
+   13UcpAGg+S7xlckQuYyyzewdPl7p9Fl+LGxCQhUdZTnt4dPTfNTbfqXP3
+   i1YR/2FCxfdNjPmITpacZJCKX1W5RtUdvwtc/fxAr5VIDvY7o2qpLGUph
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="362773218"
+X-IronPort-AV: E=Sophos;i="6.01,203,1684825200"; 
+   d="scan'208";a="362773218"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2023 13:35:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="725438653"
+X-IronPort-AV: E=Sophos;i="6.01,203,1684825200"; 
+   d="scan'208";a="725438653"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.212.243.201])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2023 13:35:53 -0700
+Date:   Thu, 13 Jul 2023 13:35:51 -0700
+From:   Alison Schofield <alison.schofield@intel.com>
+To:     Ben Dooks <ben.dooks@codethink.co.uk>
+Cc:     nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2] ACPI: NFIT: add helper to_nfit_mem() to take device
+ to nfit_mem
+Message-ID: <ZLBgJ07vFre9VymJ@aschofie-mobl2>
+References: <20230712120810.21282-1-ben.dooks@codethink.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230712120810.21282-1-ben.dooks@codethink.co.uk>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-David Hildenbrand <david@redhat.com> writes:
+On Wed, Jul 12, 2023 at 01:08:10PM +0100, Ben Dooks wrote:
+> Add a quick helper to just do struct device to the struct nfit_mem
+> field it should be referencing. This reduces the number of code
+> lines in some of the following code as it removes the intermediate
+> struct nvdimm.
+> 
+> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
 
-> On 16.06.23 00:00, Vishal Verma wrote:
->> The dax/kmem driver can potentially hot-add large amounts of memory
->> originating from CXL memory expanders, or NVDIMMs, or other 'device
->> memories'. There is a chance there isn't enough regular system memory
->> available to fit ythe memmap for this new memory. It's therefore
->> desirable, if all other conditions are met, for the kmem managed memory
->> to place its memmap on the newly added memory itself.
->>
->> Arrange for this by first allowing for a module parameter override for
->> the mhp_supports_memmap_on_memory() test using a flag, adjusting the
->> only other caller of this interface in dirvers/acpi/acpi_memoryhotplug.c,
->> exporting the symbol so it can be called by kmem.c, and finally changing
->> the kmem driver to add_memory() in chunks of memory_block_size_bytes().
->
-> 1) Why is the override a requirement here? Just let the admin
-> configure it then then add conditional support for kmem.
->
-> 2) I recall that there are cases where we don't want the memmap to
-> land on slow memory (which online_movable would achieve). Just imagine
-> the slow PMEM case. So this might need another configuration knob on
-> the kmem side.
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
 
-From my memory, the case where you don't want the memmap to land on
-*persistent memory* is when the device is small (such as NVDIMM-N), and
-you want to reserve as much space as possible for the application data.
-This has nothing to do with the speed of access.
-
--Jeff
-
+> ---
+> v2:
+>   - fix typo of follwoing
+>   - add blank line in to_nfit_mem()
+> ---
+>  drivers/acpi/nfit/core.c | 28 ++++++++++++++--------------
+>  1 file changed, 14 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> index 0fcc247fdfac..b04c8a41380a 100644
+> --- a/drivers/acpi/nfit/core.c
+> +++ b/drivers/acpi/nfit/core.c
+> @@ -1361,18 +1361,23 @@ static const struct attribute_group *acpi_nfit_attribute_groups[] = {
+>  	NULL,
+>  };
+>  
+> -static struct acpi_nfit_memory_map *to_nfit_memdev(struct device *dev)
+> +static struct nfit_mem *to_nfit_mem(struct device *dev)
+>  {
+>  	struct nvdimm *nvdimm = to_nvdimm(dev);
+> -	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+> +
+> +	return nvdimm_provider_data(nvdimm);
+> +}
+> +
+> +static struct acpi_nfit_memory_map *to_nfit_memdev(struct device *dev)
+> +{
+> +	struct nfit_mem *nfit_mem = to_nfit_mem(dev);
+>  
+>  	return __to_nfit_memdev(nfit_mem);
+>  }
+>  
+>  static struct acpi_nfit_control_region *to_nfit_dcr(struct device *dev)
+>  {
+> -	struct nvdimm *nvdimm = to_nvdimm(dev);
+> -	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+> +	struct nfit_mem *nfit_mem = to_nfit_mem(dev);
+>  
+>  	return nfit_mem->dcr;
+>  }
+> @@ -1531,8 +1536,7 @@ static DEVICE_ATTR_RO(serial);
+>  static ssize_t family_show(struct device *dev,
+>  		struct device_attribute *attr, char *buf)
+>  {
+> -	struct nvdimm *nvdimm = to_nvdimm(dev);
+> -	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+> +	struct nfit_mem *nfit_mem = to_nfit_mem(dev);
+>  
+>  	if (nfit_mem->family < 0)
+>  		return -ENXIO;
+> @@ -1543,8 +1547,7 @@ static DEVICE_ATTR_RO(family);
+>  static ssize_t dsm_mask_show(struct device *dev,
+>  		struct device_attribute *attr, char *buf)
+>  {
+> -	struct nvdimm *nvdimm = to_nvdimm(dev);
+> -	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+> +	struct nfit_mem *nfit_mem = to_nfit_mem(dev);
+>  
+>  	if (nfit_mem->family < 0)
+>  		return -ENXIO;
+> @@ -1555,8 +1558,7 @@ static DEVICE_ATTR_RO(dsm_mask);
+>  static ssize_t flags_show(struct device *dev,
+>  		struct device_attribute *attr, char *buf)
+>  {
+> -	struct nvdimm *nvdimm = to_nvdimm(dev);
+> -	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+> +	struct nfit_mem *nfit_mem = to_nfit_mem(dev);
+>  	u16 flags = __to_nfit_memdev(nfit_mem)->flags;
+>  
+>  	if (test_bit(NFIT_MEM_DIRTY, &nfit_mem->flags))
+> @@ -1576,8 +1578,7 @@ static DEVICE_ATTR_RO(flags);
+>  static ssize_t id_show(struct device *dev,
+>  		struct device_attribute *attr, char *buf)
+>  {
+> -	struct nvdimm *nvdimm = to_nvdimm(dev);
+> -	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+> +	struct nfit_mem *nfit_mem = to_nfit_mem(dev);
+>  
+>  	return sprintf(buf, "%s\n", nfit_mem->id);
+>  }
+> @@ -1586,8 +1587,7 @@ static DEVICE_ATTR_RO(id);
+>  static ssize_t dirty_shutdown_show(struct device *dev,
+>  		struct device_attribute *attr, char *buf)
+>  {
+> -	struct nvdimm *nvdimm = to_nvdimm(dev);
+> -	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+> +	struct nfit_mem *nfit_mem = to_nfit_mem(dev);
+>  
+>  	return sprintf(buf, "%d\n", nfit_mem->dirty_shutdown);
+>  }
+> -- 
+> 2.40.1
+> 
+> 
