@@ -2,182 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 236AD752775
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jul 2023 17:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A567C752798
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jul 2023 17:44:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231597AbjGMPke (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jul 2023 11:40:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43180 "EHLO
+        id S231905AbjGMPoL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jul 2023 11:44:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232844AbjGMPkb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jul 2023 11:40:31 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2072.outbound.protection.outlook.com [40.107.243.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C5D26AE;
-        Thu, 13 Jul 2023 08:40:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IsT4Y5u+H9qGuCuwMhVKKBPJbbAPnAn2ly/pt9km4yKdOO6KVz9j6k4oR3R0fLRDbndUZTvntT5U0CT0IeiRWV7Ox5o1+OeOKa+x2BzawBVkEJMHjeCxzyDoMsae8x7g+qFAeWlcAQtJUjTs0LCSRSP6JuXymmocplrkXJv6ckDP5VooaT9qGfI/QsghOhSAlwZPL7x7+k5fPBDXhU9U8tb66j7jglmARYTMNP6vbdmdZBpRtrTxybKi1BLPLAQCpXlD7FinCkQV+giKm5qkPQKISUi61Kr1TEXPn/UFpRi6pGfQf5+wm26Z/Z0LT2caiYS3y/DzMUYfPJAbFBJU7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9Vhs2zlGK0baWFWAZMffZaa5Xs3kGUgCVxXMU5cXaEU=;
- b=Ir6lavY4Piqmfz1gKjPBQmKt1VVbeqwDYKNQBN+FYjKGCnGpZ27f0oT87+ZTtuhYfoCq6nMlEDDJy3ZXK+EX1Y/aRcamDRFVQzlgm51yq7yFHMb/zKNdkcdQQEKN8z2lNH7R4kFQVOHraj1HupZYMfRiy1Kz/Arcrt3tMMjK6+ocv1Qp4vO/QZTOqkwaUac3d5wgFM2hqcLJElJ7y+Dv3pkpN0Q16rJ0wD2DlPIKgVZ5RXR+54J6I5kdRXGQuMOJLrVAiXxpepsnocgLFcxBVMsFRqmAd06mx9cc7ybH4ESSoArE0L4SYypBp4t/vwBWOFUA1iz7JMJixI4hS4sddQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9Vhs2zlGK0baWFWAZMffZaa5Xs3kGUgCVxXMU5cXaEU=;
- b=J9Y8EJDrVyrnL3ErWb1UTK+V19molpgSYe7FX5+uktdQhf0zSMZ8uWi1nViMn9xlXMGAsggY7AmJpJTjvNnzhm46E5kDdWkHwHBxPnxlMqvU2ydzyY8w6///cQaPSMjsC7rKjFJbFwpFXXhH8bRt139OXoEyAmrmADv5DlY+KWE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by DM4PR12MB6423.namprd12.prod.outlook.com (2603:10b6:8:bd::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6588.24; Thu, 13 Jul 2023 15:40:27 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::bce4:716a:8303:efcf]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::bce4:716a:8303:efcf%4]) with mapi id 15.20.6588.017; Thu, 13 Jul 2023
- 15:40:27 +0000
-Message-ID: <0a8351e9-a9f1-bec4-1542-2a456ca76d93@amd.com>
-Date:   Thu, 13 Jul 2023 10:40:25 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: thermal: Drop nocrt parameter
+        with ESMTP id S232405AbjGMPoJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jul 2023 11:44:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8323D2736
+        for <linux-acpi@vger.kernel.org>; Thu, 13 Jul 2023 08:43:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1689263008;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=VLikHNWVNU/FNpgKCSfkRGEY/lyXivfIFOAmn8fr+kQ=;
+        b=RnRJ9f2hV9KFiM7Xk5Ut3MOs/qpRGiSwWpoy0hme7Itvu49LgZiVbcXGHs4jOPgmH/jItQ
+        aj3E5HLoL2tJ70y3YGtGtdF6tcQo4Txj/FQ5UbUKQAQAIziQbrnuZWh4mcMa4mZQL9FqCP
+        aCvK8yNOpBllCvoi0aKecccHDj7AYEc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-377-vyuDjFyyPLCTi3PeGl0p1g-1; Thu, 13 Jul 2023 11:43:26 -0400
+X-MC-Unique: vyuDjFyyPLCTi3PeGl0p1g-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-31273e0507dso614418f8f.3
+        for <linux-acpi@vger.kernel.org>; Thu, 13 Jul 2023 08:43:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689263005; x=1691855005;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VLikHNWVNU/FNpgKCSfkRGEY/lyXivfIFOAmn8fr+kQ=;
+        b=ikdVoJQDbSc6GvLxDu17O3kpFH6YrSTRGXvIlRimkfrlMJYx7kN8ldS2ABTqnoQAZX
+         fjqdQJcRKNOF8eM+TKNOX7n86X+6oYhIKura8cVnHB/PJnOm4qYZwL5uu/q8D5e1v9o6
+         ztFKTbYjwMrWs6FZO/nD6dHn/8v785Z43ERMU6/Mcl6dcro/hsP5OyrmwTu0DW1S+JRS
+         nhb8w8c6cJ3kQvoZ/kc0lwBhVFZ1Gs84pvsjvwJebjtiYkV9zbqsgMRCGqTDuU+aQyPE
+         NAtoK0fTwITUCRBQKcB06TBaKMAWp2mIIfpYIvVfwWI9VTvMNG6/uF0NK+bIkcfPsVuy
+         sXSg==
+X-Gm-Message-State: ABy/qLZpk0yVCm9ZC1CF/q+sz2C9wBuKOAcnRKqRyQ0Amo2DG/R1UHtu
+        Ow5Jp8Hato8F34gejX8qwtHjpK+eEns7RWqKjFMvusDW/ggE++Zooks3DbaoVAcwi4+VHFlZdu3
+        qRzEjAzqYgrNX4LE6tgvjHw==
+X-Received: by 2002:adf:e681:0:b0:313:f4e2:901d with SMTP id r1-20020adfe681000000b00313f4e2901dmr2049836wrm.22.1689263004840;
+        Thu, 13 Jul 2023 08:43:24 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlF1/YUAbO+tUpcHHd06mVmoTHYbiWHrgz1Hqa9kz78W45sfnOZ2occ1rxo5df7lIzOiCn/o3Q==
+X-Received: by 2002:adf:e681:0:b0:313:f4e2:901d with SMTP id r1-20020adfe681000000b00313f4e2901dmr2049814wrm.22.1689263004497;
+        Thu, 13 Jul 2023 08:43:24 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c717:6100:2da7:427e:49a5:e07? (p200300cbc71761002da7427e49a50e07.dip0.t-ipconnect.de. [2003:cb:c717:6100:2da7:427e:49a5:e07])
+        by smtp.gmail.com with ESMTPSA id o7-20020a5d6707000000b002c70ce264bfsm8285044wru.76.2023.07.13.08.43.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Jul 2023 08:43:24 -0700 (PDT)
+Message-ID: <de39c555-e092-8e57-43a4-7a2c56d1e66c@redhat.com>
+Date:   Thu, 13 Jul 2023 17:43:22 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 3/3] dax/kmem: Always enroll hotplugged memory for
+ memmap_on_memory
 Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <20230712172459.20275-1-mario.limonciello@amd.com>
- <CAJZ5v0jDpMNsWztgPDfLG3eGw3YOxK_ygWRLgHmbZUoMh97tbw@mail.gmail.com>
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <CAJZ5v0jDpMNsWztgPDfLG3eGw3YOxK_ygWRLgHmbZUoMh97tbw@mail.gmail.com>
+To:     "Verma, Vishal L" <vishal.l.verma@intel.com>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "osalvador@suse.de" <osalvador@suse.de>,
+        "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "Jiang, Dave" <dave.jiang@intel.com>,
+        "lenb@kernel.org" <lenb@kernel.org>
+Cc:     "Huang, Ying" <ying.huang@intel.com>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+        "nvdimm@lists.linux.dev" <nvdimm@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
+References: <20230613-vv-kmem_memmap-v1-0-f6de9c6af2c6@intel.com>
+ <20230613-vv-kmem_memmap-v1-3-f6de9c6af2c6@intel.com>
+ <aadbedeb-424d-a146-392d-d56680263691@redhat.com>
+ <87edleplkn.fsf@linux.ibm.com>
+ <1df12885-9ae4-6aef-1a31-91ecd5a18d24@redhat.com>
+ <5a8e9b1b6c8d6d9e5405ca35abb9be3ed09761c3.camel@intel.com>
+ <ee0c84ff-6d97-3b7c-88a8-dd00797c2999@redhat.com>
+ <6cb5624ebf3039b18f5180262fc6383b402d26ea.camel@intel.com>
+ <80c8654e-21fb-b187-3475-9a1410a53a4e@redhat.com>
+ <b62572356db07ae0c3305ed03916b0ff40b14426.camel@intel.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <b62572356db07ae0c3305ed03916b0ff40b14426.camel@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: DM6PR06CA0017.namprd06.prod.outlook.com
- (2603:10b6:5:120::30) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DM4PR12MB6423:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c9fe811-53cd-4ecd-e71c-08db83b77b73
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TFmMCmQX5C49zmjwN9QL+qL6xVWhd/gOf12gpxp3iQ5OOCAmSYaahxn6b8WdlOhaSVTxrpVKZSJAo95rpKh7kfJL/oE9/TGvWTiG5acN1zbzSDVnZuo7c34Cm20TJ9KVPePez2liSPvXFpdny+Z8TuQZgQ66p9FMTEJ0Bjr/sh3lEPZKwhmI29pZkAmCaB5IqUppefpuUG3vK6/SDyQyVSIKZo1Tnto4BJWjJHgczOUe5SdG2aWJKp7dICX9YE8gvxfySUcqsLFZCXAMF5vsVUvl2hKn6Kcp8niVxofRTf8g0CtBk+/PzXOnvhGPbUUcDnk9Y1D51me5siQtLLKWc/fAuXBE109eV06t+Bka9ykPAI86ShyWQYN/ecIuN1IA4c87WWLXl3jd9SFcl39AvZapOW5/6yhQinxwupTOCdny3LAwj7FiDJ4DM5IdDRyE1uOi3od/fZC5r+pS/I4caL0kRgC41OVdGKwgsCzHKQsIrtEHt8zB+fpay3t811KJiJZu8DyzQYydmyIRRXae8EQbs7p/Y8LS7FNeSMfEJr1ahKQ9yudypChiZLBf0L3xDswBwgqcgtziLxLXk+NWL9oG9lN5we4K1Qxv9jdzwOpxn4WWz703HC/qjC0f6nTrlQ3Gz4jlmpanPReHbFtdNw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(396003)(366004)(136003)(39860400002)(346002)(451199021)(38100700002)(86362001)(31696002)(36756003)(31686004)(26005)(5660300002)(6506007)(53546011)(8676002)(41300700001)(8936002)(186003)(2906002)(2616005)(83380400001)(316002)(6512007)(6916009)(66946007)(478600001)(4326008)(66556008)(6486002)(66476007)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q3NwbFNnWm9IcmRUbWJCeGVXUVd1Uy9PdUpRckhsQitsZnZTcW1nM1BHSjN6?=
- =?utf-8?B?UUdGa3ZIOEQzYlI2dWhwSzVKcjM3M0tuRDh5VTRFTUV2N2hKRnFoT01ZZUZt?=
- =?utf-8?B?ZkhpS3k2ZUllQnFuek5mT08xaGZScEtQdnhhVWt5T2QxcHRJWXpNMlV2ZGdH?=
- =?utf-8?B?WWhVUXZMTHlYelk1ZkVxcDlIcjhNUncvbmxuWFhhSDA3UDQ0WWdLa0VxZzZk?=
- =?utf-8?B?UVRRUEtTcXI0TVBkdDUzVHVHNy9rZldGUVFyR0FXOGtEQlVJWXBwNlMyYXpO?=
- =?utf-8?B?SmtnMFV5c25iSkhJZUdwU0VoekFNenYvanFBc0lXVUJQeHRLRXlRVU9ueTN3?=
- =?utf-8?B?dHdjbWpBYUtGdnVhOEZ0bGpRZ3FTaERzb0g2REJsRHdoQ1pMa08vUldXalBk?=
- =?utf-8?B?V3I1QWdFSCs2Tm1DcTd2U1JmUjR4L1RjNFVTMkFWbkZWZG9XVEh3Z0pPaE1J?=
- =?utf-8?B?VEJVYzZ6bVNRQkhJWUVrM2dNM1BqWk9LNFZmM28zK2VQaDVSK0lEWG5KT3Yz?=
- =?utf-8?B?a1FySWVRSGl0c0swS3pOS21CRkRVa2lCNHhPU2xiVWd6UGNXY3NOQmt5OGw2?=
- =?utf-8?B?d2xhTS9oc3lSOW4wV3YrY0oybmtranhVa2dOdjFyL3hmUUZORHdHZ1lrUThJ?=
- =?utf-8?B?REpselMyTUI3Ui9IVlVoSnBLSjBUL0t0cWVUZVl2UGFhM2dzTnpSbEp5a2pL?=
- =?utf-8?B?VGRGY1lEdFJSdFNPd3VLWTVXNXp4bnRjbk10emtkN0VoYm5TUTNUYkR3dG1L?=
- =?utf-8?B?Sm9IT0FzdzNhT0QzcWE1T3RxUGdib3dYTHVvc0Q1RzRBSVh5a2JvVlBsM0N0?=
- =?utf-8?B?VnpheHk1VnFUSi95cThZd1hKbU80T0tXaWpqSXFkTnNZSDBkYkJVbGpNaERX?=
- =?utf-8?B?M2c0TVBvaWhFcnVFaGR3Rmd5aVJqUXlFTTg0N05FOGo0N0NOalBlK2M2UFVV?=
- =?utf-8?B?QnJQTG9tY2hoMWg4QnJHZGNwQ3ZVN2tKNHk2b1VyWDdEVVNlYUk4ZlFCdmY2?=
- =?utf-8?B?N1d5bzZDdkhwcE4rbkUwWVkzNncxZCsyV3hMRHpoQjJaQTk1c1QzcHA3c2FK?=
- =?utf-8?B?MDNSQzV6dDJzczk3T1NOYnc0STBvZldWaWZ2dXZZdGZ6d0dZbFNxRVBwRUpF?=
- =?utf-8?B?NG5yRmtwSVNyWkxoM3VVOWNvbG40WWttOTh3TjhZVkh3VHZxL09kUWlIbzNu?=
- =?utf-8?B?cmg2Z0lkWW9kY09Va20rV0R2azJzYWt5ODUrcFlVQ3lNa0M3YSsrNlduemlZ?=
- =?utf-8?B?eTdCcnhFY2I2T3ZHbVNNcnl3Q1lFTWo2VXEwSzVTOTd2YnduYjhadENIU0FU?=
- =?utf-8?B?UExMelFyaXY5Zit4U280VGhOcUluQmJSYlE3SkVuMTBMdnFQYTltMFMwQ25W?=
- =?utf-8?B?UXh0NDc2OWI5RG5vcXBUMzRkUTRyTGN5MEV4dHp5S1NwVEhuamJPYnlQYW4x?=
- =?utf-8?B?Rk5mUko0c2hRa0N3SFRQUm5XWG41aVZhd3J5WkxxVXBRVVJINXUrSWlVSE8w?=
- =?utf-8?B?cHNlekdacXFEVytMeFF2bXJFTW8yTENCUjR3ODcwYU4xSzFVaTg4d3lva3ZK?=
- =?utf-8?B?VldBczVJYndzRzFYZlhXRVM2Vkx6ejZid1hXSjNVWFNsNmZaTkpIV2tNWDJp?=
- =?utf-8?B?NlkxVitEaW5Vcmk3dFhVVnhzbDNKNWxpbGhWRUlPS3A0MksyMENuRTRsbDZP?=
- =?utf-8?B?Qzd1cGR5clpaTVZmVW44c2N6RTZRQlVvOHJUbEppalgyVld3VVRVejhPa2Jr?=
- =?utf-8?B?cFd0cEdlbzV0cWZJNVI2Q2FYVWJWMGM4WllMM3lPUVJva2grZ2FYQjlrckdy?=
- =?utf-8?B?dFNiTTlYTENwdjZzbnprZVFNT0g2NTQ2ODJHZjN2YXFJRU5UVm56R2lBVnpt?=
- =?utf-8?B?ZUVXN01lNTJEYTQvc1pNODF2K1lBTWVEdFlFSnRscnVza2VheitUVnZiQWY3?=
- =?utf-8?B?cHBrSzFMZWZiVzFXdSsxeERMSjVmSWpZZnh6cDdZQ3BLdkpZRitIZ3hoeFNw?=
- =?utf-8?B?ZG16dytYb2tnazJoN0gvQTBHcGFIUEYza2JTcGxOTEVCUUlJUmZ0YU9PTjV1?=
- =?utf-8?B?dzV2WGI1RU0vTGJSa3V2ZkJlMGRKa2JIRER4b1hsbHI4RE5DMERaS0FCK3pU?=
- =?utf-8?Q?FbKBIeNOlxfKAuOTAFXHx2DUn?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c9fe811-53cd-4ecd-e71c-08db83b77b73
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2023 15:40:27.8183
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QvFEUY4ytwvWdQESrfgogPU52xgDHYw4iVEzK80cn94MDPMtqeDPQ9+06hpC8gcM74o+gz4zDt9bh+lwP40wlQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6423
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On 13.07.23 17:40, Verma, Vishal L wrote:
+> On Thu, 2023-07-13 at 17:23 +0200, David Hildenbrand wrote:
+>> On 13.07.23 17:15, Verma, Vishal L wrote:
+>>> On Thu, 2023-07-13 at 09:23 +0200, David Hildenbrand wrote:
+>>>> On 13.07.23 08:45, Verma, Vishal L wrote:
+>>>>>
+>>>>> I'm taking a shot at implementing the splitting internally in
+>>>>> memory_hotplug.c. The caller (kmem) side does become trivial with this
+>>>>> approach, but there's a slight complication if I don't have the module
+>>>>> param override (patch 1 of this series).
+>>>>>
+>>>>> The kmem diff now looks like:
+>>>>>
+>>>>>       diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+>>>>>       index 898ca9505754..8be932f63f90 100644
+>>>>>       --- a/drivers/dax/kmem.c
+>>>>>       +++ b/drivers/dax/kmem.c
+>>>>>       @@ -105,6 +105,8 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+>>>>>               data->mgid = rc;
+>>>>>        
+>>>>>               for (i = 0; i < dev_dax->nr_range; i++) {
+>>>>>       +               mhp_t mhp_flags = MHP_NID_IS_MGID | MHP_MEMMAP_ON_MEMORY |
+>>>>>       +                                 MHP_SPLIT_MEMBLOCKS;
+>>>>>                       struct resource *res;
+>>>>>                       struct range range;
+>>>>>        
+>>>>>       @@ -141,7 +143,7 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+>>>>>                        * this as RAM automatically.
+>>>>>                        */
+>>>>>                       rc = add_memory_driver_managed(data->mgid, range.start,
+>>>>>       -                               range_len(&range), kmem_name, MHP_NID_IS_MGID);
+>>>>>       +                               range_len(&range), kmem_name, mhp_flags);
+>>>>>        
+>>>>>                       if (rc) {
+>>>>>                               dev_warn(dev, "mapping%d: %#llx-%#llx memory add failed\n",
+>>>>>       
+>>>>>
+>>>>
+>>>> Why do we need the MHP_SPLIT_MEMBLOCKS?
+>>>
+>>> I thought we still wanted either an opt-in or opt-out for the kmem
+>>> driver to be able to do memmap_on_memory, in case there were
+>>> performance implications or the lack of 1GiB PUDs. I haven't
+>>> implemented that yet, but I was thinking along the lines of a sysfs
+>>> knob exposed by kmem, that controls setting of this new
+>>> MHP_SPLIT_MEMBLOCKS flag.
+>>
+>> Why is MHP_MEMMAP_ON_MEMORY not sufficient for that?
+>>
+>>
+> Ah I see what you mean now - knob just controls MHP_MEMMAP_ON_MEMORY,
+> and memory_hotplug is free to split to memblocks if it needs to to
+> satisfy that.
 
-On 7/13/2023 10:31 AM, Rafael J. Wysocki wrote:
-> On Wed, Jul 12, 2023 at 7:25 PM Mario Limonciello
-> <mario.limonciello@amd.com> wrote:
->> The `nocrt` module parameter has no code associated with it and does
->> nothing.  As `crt=-1` has same functionality as what nocrt should be
->> doing drop `nocrt` and associated documentation.
->>
->> This should fix a quirk for Gigabyte GA-7ZX that used `nocrt` and
->> thus didn't function properly.
->>
->> Fixes: 8c99fdce3078 ("ACPI: thermal: set "thermal.nocrt" via DMI on Gigabyte GA-7ZX")
->> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> Stable material I suppose?
-Yeah I think so.
->> ---
->>   Documentation/admin-guide/kernel-parameters.txt | 4 ----
->>   drivers/acpi/thermal.c                          | 6 +-----
->>   2 files changed, 1 insertion(+), 9 deletions(-)
->>
->> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
->> index a1457995fd41c..2de235d52faca 100644
->> --- a/Documentation/admin-guide/kernel-parameters.txt
->> +++ b/Documentation/admin-guide/kernel-parameters.txt
->> @@ -6243,10 +6243,6 @@
->>                          -1: disable all critical trip points in all thermal zones
->>                          <degrees C>: override all critical trip points
->>
->> -       thermal.nocrt=  [HW,ACPI]
->> -                       Set to disable actions on ACPI thermal zone
->> -                       critical and hot trip points.
->> -
->>          thermal.off=    [HW,ACPI]
->>                          1: disable ACPI thermal control
->>
->> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
->> index f9f6ebb08fdb7..3163a40f02e30 100644
->> --- a/drivers/acpi/thermal.c
->> +++ b/drivers/acpi/thermal.c
->> @@ -82,10 +82,6 @@ static int tzp;
->>   module_param(tzp, int, 0444);
->>   MODULE_PARM_DESC(tzp, "Thermal zone polling frequency, in 1/10 seconds.");
->>
->> -static int nocrt;
->> -module_param(nocrt, int, 0);
->> -MODULE_PARM_DESC(nocrt, "Set to take no action upon ACPI thermal zone critical trips points.");
->> -
->>   static int off;
->>   module_param(off, int, 0);
->>   MODULE_PARM_DESC(off, "Set to disable ACPI thermal support.");
->> @@ -1094,7 +1090,7 @@ static int thermal_act(const struct dmi_system_id *d) {
->>   static int thermal_nocrt(const struct dmi_system_id *d) {
->>          pr_notice("%s detected: disabling all critical thermal trip point actions.\n",
->>                    d->ident);
->> -       nocrt = 1;
->> +       crt = -1;
->>          return 0;
->>   }
->>   static int thermal_tzp(const struct dmi_system_id *d) {
->> --
+And if you don't want memmap holes in a larger area you're adding (for 
+example to runtime-allocate 1 GiB pages), simply check the size your 
+adding, and if it's, say, less than 1 G, don't set the flag.
+
+But that's probably a corner case use case not worth considering for now.
+
+> 
+> That sounds reasonable. Let me give this a try and see if I run into
+> anything else. Thanks David!
+
+Sure!
+
+-- 
+Cheers,
+
+David / dhildenb
+
