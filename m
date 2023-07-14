@@ -2,51 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A71C75401E
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jul 2023 19:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A569A75432A
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jul 2023 21:18:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235788AbjGNRDb convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 14 Jul 2023 13:03:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37692 "EHLO
+        id S236052AbjGNTSJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 14 Jul 2023 15:18:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235470AbjGNRDa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Jul 2023 13:03:30 -0400
+        with ESMTP id S235220AbjGNTSI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Jul 2023 15:18:08 -0400
 Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5093510EA;
-        Fri, 14 Jul 2023 10:03:29 -0700 (PDT)
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-94ea38c90ccso58901166b.1;
-        Fri, 14 Jul 2023 10:03:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8182735B1;
+        Fri, 14 Jul 2023 12:18:06 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-98273ae42d0so66948666b.0;
+        Fri, 14 Jul 2023 12:18:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689354208; x=1691946208;
+        d=1e100.net; s=20221208; t=1689362285; x=1691954285;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+w920JXIkybPetWi046ZRPSw5JR8m5DRlgdvfm2InwE=;
-        b=H0zynSgGU/bMGzV/Rh8XzKo/pCD/njfFU4id4Eb3kgjs5kPjYLzHYU9Iei7aAY9/2H
-         nICoekjfUzlHTDG/vBvVb9EH5KbkfLlrd+/Y34FBPyMvONRcbekOBNvrKNRAEczw0jwv
-         Lv0Rxijb8+uH/TizRt7BIg5aEnGD+ClnI8ivRbaCLtZvhGqJU+pVud7nMA7LBNsbP8LH
-         yTv54FeYi/S8aEf9p+rcKc7nENAVumAyMMCLpi8nou9Pcl3J6K54ZuyZbjiIX29uAdE3
-         W/onUSlOn6kjwMPLrxtoFt6izSgB/J6KoQqwshGF3mHwIdMAN+uNXKNxYCipLFil2tNY
-         gsaw==
-X-Gm-Message-State: ABy/qLZwrx1h3CJ0qH0VnAEK0buKI9Mhbn6XE3H7MCGucFX8wEuzGy3v
-        wkOuGrN26fKN1inkGWAWPgwtOvQEkG14+F8z1pL2qjYG
-X-Google-Smtp-Source: APBJJlFWCHKgeuKLMNl7eaHbz8gcf8jN858tJqH96sfgN3uW24NsbLp55ZfNoLGMu2IWNlOHM84r5nnzzB7FaGfF4vI=
-X-Received: by 2002:a17:906:de:b0:993:d5e7:80f8 with SMTP id
- 30-20020a17090600de00b00993d5e780f8mr4216969eji.7.1689354207604; Fri, 14 Jul
- 2023 10:03:27 -0700 (PDT)
+        bh=RCXsMqYR9s3PYFNU6diJhKk3oI06Lndg+rpXvM6sCxU=;
+        b=LmDEH9I10xUggZklBU+MTSDXVnJBcQLU1/y67a2gk0J5wczF+Jn91CDemjACbe/piu
+         BWPe5ymT/RWdbLdaS+Duv/gIAWTQfx7ff23TC/fth2+nfPASHFR6kjhVbaJB0oViLsU/
+         /22Z87BRKK/NwbSCECSeOeWzBF4RlaLOmBzbSt/qPpUxpd/i9lYdx/Cb4XEtbQCiYadF
+         BQb14ldD/R6gUuqyV25pIZP/RI+gucSXGRrID5gc9/s7XxCi5YuDQN1Osv9toV4RDq/T
+         Gj9Imi16vBKEzwBx5VqUTcUhTOY1r3X/mF/X63w7b5Pbs4nYEkbzFf1LVY/YD7oa7Lxv
+         2dKg==
+X-Gm-Message-State: ABy/qLYNeGQfIJNzkgcvwilXMm70qu+e3Lx7pNbKWwJnY0ULJn8WSTNt
+        KKmSTpTObCTbZkmQB3L4bfqqGZ2P0wS/Zzt+w5g7dNa8
+X-Google-Smtp-Source: APBJJlFVCm/aKdLWObD0Z4IqX8VLM6YjQNvFOBuZmroCJeQzEghYt5BYZSc6eyZm+vtTvzIpO9EWFIySkBOxLmU37FA=
+X-Received: by 2002:a17:906:220b:b0:993:d54b:3e4b with SMTP id
+ s11-20020a170906220b00b00993d54b3e4bmr141681ejs.0.1689362284621; Fri, 14 Jul
+ 2023 12:18:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230703080252.2899090-1-michal.wilczynski@intel.com>
-In-Reply-To: <20230703080252.2899090-1-michal.wilczynski@intel.com>
+References: <20230711221427.GA250962@bhelgaas> <b82a50eb-8182-84ca-5b24-dbe8870fa871@amd.com>
+ <CAJZ5v0i6PviqW7u3i8hmvSCvR_VHqP-mWRy3Da8Ev_1vi9qBQA@mail.gmail.com> <a309e3fe-b1f9-e269-cb97-8af87c8d483b@amd.com>
+In-Reply-To: <a309e3fe-b1f9-e269-cb97-8af87c8d483b@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 14 Jul 2023 19:03:16 +0200
-Message-ID: <CAJZ5v0gGoMOwWbEzMTkX3ShQU2_iq8fn6OwQ2GJu+YJ2Q=u9uw@mail.gmail.com>
-Subject: Re: [PATCH v7 0/9] Remove .notify callback in acpi_device_ops
-To:     Michal Wilczynski <michal.wilczynski@intel.com>
-Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
-        dan.j.williams@intel.com, vishal.l.verma@intel.com,
-        lenb@kernel.org, dave.jiang@intel.com, ira.weiny@intel.com,
-        rui.zhang@intel.com, linux-kernel@vger.kernel.org,
-        nvdimm@lists.linux.dev
+Date:   Fri, 14 Jul 2023 21:17:53 +0200
+Message-ID: <CAJZ5v0jvxrDMR6YHFpYZ4yYpp82-3TtrH==SMRFtUMJsv7=i=g@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] PCI: Don't put non-power manageable PCIe root
+ ports into D3
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -59,72 +64,103 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 3, 2023 at 10:03 AM Michal Wilczynski
-<michal.wilczynski@intel.com> wrote:
+On Wed, Jul 12, 2023 at 6:09 PM Limonciello, Mario
+<mario.limonciello@amd.com> wrote:
 >
-> *** IMPORTANT ***
-> This is part 1 - only drivers in acpi directory to ease up review
-> process. Rest of the drivers will be handled in separate patchsets.
+> On 7/12/2023 07:13, Rafael J. Wysocki wrote:
+> > On Wed, Jul 12, 2023 at 12:54 AM Mario Limonciello
+> > <mario.limonciello@amd.com> wrote:
+> >>
+> >> On 7/11/23 17:14, Bjorn Helgaas wrote:
+> >>> [+cc Andy, Intel MID stuff]
+> >>>
+> >>> On Mon, Jul 10, 2023 at 07:53:25PM -0500, Mario Limonciello wrote:
+> >>>> Since commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> >>>> PCIe ports from modern machines (>2015) are allowed to be put into D3 by
+> >>>> storing a flag in the `struct pci_dev` structure.
+> >>>
+> >>> It looks like >= 2015 (not >2015).  I think "a flag" refers to
+> >>> "bridge_d3".
+> >>
+> >> Yeah.
+> >>
+> >>>
+> >>>> pci_power_manageable() uses this flag to indicate a PCIe port can enter D3.
+> >>>> pci_pm_suspend_noirq() uses the return from pci_power_manageable() to
+> >>>> decide whether to try to put a device into its target state for a sleep
+> >>>> cycle via pci_prepare_to_sleep().
+> >>>>
+> >>>> For devices that support D3, the target state is selected by this policy:
+> >>>> 1. If platform_pci_power_manageable():
+> >>>>      Use platform_pci_choose_state()
+> >>>> 2. If the device is armed for wakeup:
+> >>>>      Select the deepest D-state that supports a PME.
+> >>>> 3. Else:
+> >>>>      Use D3hot.
+> >>>>
+> >>>> Devices are considered power manageable by the platform when they have
+> >>>> one or more objects described in the table in section 7.3 of the ACPI 6.4
+> >>>> specification.
+> >>>
+> >>> No point in citing an old version, so please cite ACPI r6.5, sec 7.3.
+> >>>
+> >>> The spec claims we only need one object from the table for a device to
+> >>> be "power-managed", but in reality, it looks like the only things that
+> >>> actually *control* power are _PRx (the _ON/_OFF methods of Power
+> >>> Resources) and _PSx (ironically only mentioned parenthically).
+> >>>
+> >>
+> >> Your point has me actually wondering if I've got this entirely wrong.
+> >>
+> >> Should we perhaps be looking specifically for the presence of _SxW to
+> >> decide if a given PCIe port can go below D0?
+> >
+> > There are two things, _SxW and _SxD, and they shouldn't be confused.
+> >
+> > _SxW tells you what the deepest power state from which wakeup can be
+> > signaled by the device (in the given Sx state of the system) is.
+> >
+> > _SxD tells you what the deepest power state supported by the device
+> > (in the given Sx state of the system) is.
+> >
+> > And note that _SxW is applicable to the device itself, not the
+> > subordinate devices, so I'm not sure how meaningful it is for ports.
+> >
+> > pci_target_state() uses both _SxW and _SxD to determine the deepest
+> > state the device can go into and so long as it is used properly, it
+> > shouldn't return a power state that is too deep, so I'm not really
+> > sure why you want this special "should the bridge be allowed to go
+> > into D3hot/cold" routine to double check this.
 >
-> Currently drivers support ACPI event handlers by defining .notify
-> callback in acpi_device_ops. This solution is suboptimal as event
-> handler installer installs intermediary function acpi_notify_device as a
-> handler in every driver. Also this approach requires extra variable
-> 'flags' for specifying event types that the driver want to subscribe to.
-> Additionally this is a pre-work required to align acpi_driver with
-> platform_driver and eventually replace acpi_driver with platform_driver.
->
-> Remove .notify callback from the acpi_device_ops. Replace it with each
-> driver installing and removing it's event handlers.
->
-> This is part 1 - only drivers in acpi directory to ease up review
-> process.
->
-> v7:
->  - fix warning by declaring acpi_nfit_remove_notify_handler() as static
->
-> v6:
->  - fixed unnecessary RCT in all drivers, as it's not a purpose of
->    this patch series
->  - changed error label names to simplify them
->  - dropped commit that remove a comma
->  - squashed commit moving code for nfit
->  - improved nfit driver to use devm instead of .remove()
->  - re-based as Rafael changes [1] are merged already
->
-> v5:
->  - rebased on top of Rafael changes [1], they're not merged yet
->  - fixed rollback in multiple drivers so they don't leak resources on
->    failure
->  - made this part 1, meaning only drivers in acpi directory, rest of
->    the drivers will be handled in separate patchsets to ease up review
->
-> v4:
->  - added one commit for previously missed driver sony-laptop,
->    refactored return statements, added NULL check for event installer
-> v3:
->  - lkp still reported some failures for eeepc, fujitsu and
->    toshiba_bluetooth, fix those
-> v2:
->  - fix compilation errors for drivers
->
-> [1]: https://lore.kernel.org/linux-acpi/1847933.atdPhlSkOF@kreacher/
->
-> Michal Wilczynski (9):
->   acpi/bus: Introduce wrappers for ACPICA event handler install/remove
->   acpi/bus: Set driver_data to NULL every time .add() fails
->   acpi/ac: Move handler installing logic to driver
->   acpi/video: Move handler installing logic to driver
->   acpi/battery: Move handler installing logic to driver
->   acpi/hed: Move handler installing logic to driver
->   acpi/nfit: Move handler installing logic to driver
->   acpi/nfit: Remove unnecessary .remove callback
->   acpi/thermal: Move handler installing logic to driver
+> Because pci_target_state only looks at _SxW and _SxD "if" the PCI device
+> is power manageable by ACPI.  That's why this change is injecting that
+> extra check in.
 
-Dan hasn't spoken up yet, but I went ahead and queued up the patches
-(with some modifications) for 6.6.
+I see.  We seem to be getting to the bottom of the problem.
 
-I've edited the subjects and rewritten the changelogs and I've
-adjusted some white space around function calls (nothing major).
+[cut]
 
-Thanks!
+> >
+> > Generally speaking, pci_bridge_d3_possible() is there to prevent
+> > bridges (and PCIe ports in particular) from being put into D3hot/cold
+> > if there are reasons to believe that it may not work.
+> > acpi_pci_bridge_d3() is part of that.
+> >
+> > Even if it returns 'true', the _SxD/_SxW check should still be applied
+> > via pci_target_state() to determine whether or not the firmware allows
+> > this particular bridge to go into D3hot/cold.  So arguably, the _SxW
+> > check in acpi_pci_bridge_d3() should not be necessary and if it makes
+> > any functional difference, there is a bug somewhere else.
+>
+> But only if it was power manageable would the _SxD/_SxW check be
+> applied.  This issue is around the branch of pci_target_state() where
+> it's not power manageable and so it uses PME or it falls back to D3hot.
+
+Well, this looks like a spec interpretation difference.
+
+We thought that _SxD/_SxW would only be relevant for devices with ACPI
+PM support, but the firmware people seem to think that those objects
+are also relevant for PCI devices that don't have ACPI PM support
+(because those devices are still power-manageable via PMCSR).  If
+Windows agrees with that viewpoint, we'll need to adjust, but not
+through adding _SxW checks in random places.
