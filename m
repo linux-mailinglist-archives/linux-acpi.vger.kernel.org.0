@@ -2,222 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6AED753C06
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jul 2023 15:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA3CF753D27
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jul 2023 16:22:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232113AbjGNNs6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Jul 2023 09:48:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45872 "EHLO
+        id S235254AbjGNOV7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Jul 2023 10:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235100AbjGNNs5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Jul 2023 09:48:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8698271F
-        for <linux-acpi@vger.kernel.org>; Fri, 14 Jul 2023 06:48:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1689342497;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=xinDoQRdcE5sxZPT6WiHl1eOgAOzV50L/CpzwNIn2nE=;
-        b=F+062NFpQ8JV9QQl7Xw2Tvlbqv3oSLlKFH55XOEeBnc4wZpdrlWzADResF36eJA+UiSiiN
-        OuMUOdU3CqcckCUW/zLB47NKUWKiUMgdlrbJDRWd4gOROQGRU8JazMr9UmemuQ/ogAfB5e
-        y3UMH9JDnaNs86E6jlabC5k6zmSF8G0=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-279-JvoMrE8ZMvyfp9R_BeIRTQ-1; Fri, 14 Jul 2023 09:48:13 -0400
-X-MC-Unique: JvoMrE8ZMvyfp9R_BeIRTQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S235460AbjGNOV7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Jul 2023 10:21:59 -0400
+X-Greylist: delayed 421 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 14 Jul 2023 07:21:57 PDT
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F29AF9B
+        for <linux-acpi@vger.kernel.org>; Fri, 14 Jul 2023 07:21:57 -0700 (PDT)
+Received: from 8bytes.org (p200300f6af03f600fd690381fa83412b.dip0.t-ipconnect.de [IPv6:2003:f6:af03:f600:fd69:381:fa83:412b])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C0E221C0419A;
-        Fri, 14 Jul 2023 13:48:12 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 312B41454142;
-        Fri, 14 Jul 2023 13:48:12 +0000 (UTC)
-From:   Jeff Moyer <jmoyer@redhat.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
+        by mail.8bytes.org (Postfix) with ESMTPSA id 4810D28012A;
+        Fri, 14 Jul 2023 16:14:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+        s=default; t=1689344095;
+        bh=F/D7IwlzeRTbVVFVQRrvrHtSo5B6tCQYfdQKsjjGZxw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Jp3PihVqiKnlzmHVqFa9YWANdQakKslbqTfMqagAPFsJZPLtl8G315CluEVsz1IKN
+         ie9DKXxujsgeG6yc3N5EUKv4hmowrAcybCnSqVcPGXSf6f1UbKKapLpgV6UcIP/EqU
+         bH2afUqVj//RSfYXnQtMLpFW4OB5YeQRWWq7qiSO3OcoxmqSWH5fplE2XuwD4JeqIq
+         iSa9eGZFb+o6eR5kPvjU/SSOmAIQS5idSGf993PJZmeMdjPKUelStLuGttAQbN9hbD
+         0PVZeMlsu2K0v7/3/kMWl1qvEE3THgi6VcQFrwqzRM1aN2IQKU5IOfu0oIVL54+UUZ
+         wIto+NKQ9GfIA==
+Date:   Fri, 14 Jul 2023 16:14:54 +0200
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Jason Gunthorpe <jgg@nvidia.com>
+Cc:     David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Dave Jiang <dave.jiang@intel.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
-        Huang Ying <ying.huang@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH 0/3] mm: use memmap_on_memory semantics for dax/kmem
-References: <20230613-vv-kmem_memmap-v1-0-f6de9c6af2c6@intel.com>
-        <29c9b998-f453-59f2-5084-9b4482b489cf@redhat.com>
-        <x49fs5r7hj1.fsf@segfault.boston.devel.redhat.com>
-        <cfeecd92-3aa4-a07d-b71a-793531785692@redhat.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date:   Fri, 14 Jul 2023 09:54:02 -0400
-In-Reply-To: <cfeecd92-3aa4-a07d-b71a-793531785692@redhat.com> (David
-        Hildenbrand's message of "Fri, 14 Jul 2023 10:35:47 +0200")
-Message-ID: <x491qha7g5h.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Nicolin Chen <nicolinc@nvidia.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH v3 00/10] Consolidate the probe_device path
+Message-ID: <ZLFYXlSBZrlxFpHM@8bytes.org>
+References: <0-v3-328044aa278c+45e49-iommu_probe_jgg@nvidia.com>
+ <ZJCmmOfR7Cl+OtOc@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZJCmmOfR7Cl+OtOc@nvidia.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-David Hildenbrand <david@redhat.com> writes:
+On Mon, Jun 19, 2023 at 04:03:52PM -0300, Jason Gunthorpe wrote:
+> Joerg? I think we are good on this one now, it has been quite for two weeks
 
-> On 13.07.23 21:12, Jeff Moyer wrote:
->> David Hildenbrand <david@redhat.com> writes:
->>
->>> On 16.06.23 00:00, Vishal Verma wrote:
->>>> The dax/kmem driver can potentially hot-add large amounts of memory
->>>> originating from CXL memory expanders, or NVDIMMs, or other 'device
->>>> memories'. There is a chance there isn't enough regular system memory
->>>> available to fit ythe memmap for this new memory. It's therefore
->>>> desirable, if all other conditions are met, for the kmem managed memory
->>>> to place its memmap on the newly added memory itself.
->>>>
->>>> Arrange for this by first allowing for a module parameter override for
->>>> the mhp_supports_memmap_on_memory() test using a flag, adjusting the
->>>> only other caller of this interface in dirvers/acpi/acpi_memoryhotplug=
-.c,
->>>> exporting the symbol so it can be called by kmem.c, and finally changi=
-ng
->>>> the kmem driver to add_memory() in chunks of memory_block_size_bytes().
->>>
->>> 1) Why is the override a requirement here? Just let the admin
->>> configure it then then add conditional support for kmem.
->>>
->>> 2) I recall that there are cases where we don't want the memmap to
->>> land on slow memory (which online_movable would achieve). Just imagine
->>> the slow PMEM case. So this might need another configuration knob on
->>> the kmem side.
->>
->>  From my memory, the case where you don't want the memmap to land on
->> *persistent memory* is when the device is small (such as NVDIMM-N), and
->> you want to reserve as much space as possible for the application data.
->> This has nothing to do with the speed of access.
->
-> Now that you mention it, I also do remember the origin of the altmap --
-> to achieve exactly that: place the memmap on the device.
->
-> commit 4b94ffdc4163bae1ec73b6e977ffb7a7da3d06d3
-> Author: Dan Williams <dan.j.williams@intel.com>
-> Date:   Fri Jan 15 16:56:22 2016 -0800
->
->     x86, mm: introduce vmem_altmap to augment vmemmap_populate()
->       In support of providing struct page for large persistent memory
->     capacities, use struct vmem_altmap to change the default policy for
->     allocating memory for the memmap array.  The default vmemmap_populate=
-()
->     allocates page table storage area from the page allocator.  Given
->     persistent memory capacities relative to DRAM it may not be feasible =
-to
->     store the memmap in 'System Memory'.  Instead vmem_altmap represents
->     pre-allocated "device pages" to satisfy vmemmap_alloc_block_buf()
->     requests.
->
-> In PFN_MODE_PMEM (and only then), we use the altmap (don't see a way to
-> configure it).
-
-Configuration is done at pmem namespace creation time.  The metadata for
-the namespace indicates where the memmap resides.  See the
-ndctl-create-namespace man page:
-
-       -M, --map=3D
-           A pmem namespace in "fsdax" or "devdax" mode requires allocation=
- of
-           per-page metadata. The allocation can be drawn from either:
-
-           =C2=B7   "mem": typical system memory
-
-           =C2=B7   "dev": persistent memory reserved from the namespace
-
-                   Given relative capacities of "Persistent Memory" to "Sys=
-tem
-                   RAM" the allocation defaults to reserving space out of t=
-he
-                   namespace directly ("--map=3Ddev"). The overhead is 64-b=
-ytes per
-                   4K (16GB per 1TB) on x86.
-
-> BUT that case is completely different from the "System RAM" mode. The mem=
-map
-> of an NVDIMM in pmem mode is barely used by core-mm (i.e., not the buddy).
-
-Right.  (btw, I don't think system ram mode existed back then.)
-
-> In comparison, if the buddy and everybody else works on the memmap in
-> "System RAM", it's much more significant if that resides on slow memory.
-
-Agreed.
-
-> Looking at
->
-> commit 9b6e63cbf85b89b2dbffa4955dbf2df8250e5375
-> Author: Michal Hocko <mhocko@suse.com>
-> Date:   Tue Oct 3 16:16:19 2017 -0700
->
->     mm, page_alloc: add scheduling point to memmap_init_zone
->       memmap_init_zone gets a pfn range to initialize and it can be
-> really
->     large resulting in a soft lockup on non-preemptible kernels
->         NMI watchdog: BUG: soft lockup - CPU#31 stuck for 23s!
-> [kworker/u642:5:1720]
->       [...]
->       task: ffff88ecd7e902c0 ti: ffff88eca4e50000 task.ti: ffff88eca4e500=
-00
->       RIP: move_pfn_range_to_zone+0x185/0x1d0
->       [...]
->       Call Trace:
->         devm_memremap_pages+0x2c7/0x430
->         pmem_attach_disk+0x2fd/0x3f0 [nd_pmem]
->         nvdimm_bus_probe+0x64/0x110 [libnvdimm]
->
->
-> It's hard to tell if that was only required due to the memmap for these d=
-evices
-> being that large, or also partially because the access to the memmap is s=
-lower
-> that it makes a real difference.
-
-I believe the main driver was the size.  At the time, Intel was
-advertising 3TiB/socket for pmem.  I can't remember the exact DRAM
-configuration sizes from the time.
-
-> I recall that we're also often using ZONE_MOVABLE on such slow memory
-> to not end up placing other kernel data structures on there: especially,
-> user space page tables as I've been told.
-
-Part of the issue was preserving the media.  The page structure gets
-lots of updates, and that could cause premature wear.
-
-> @Dan, any insight on the performance aspects when placing the memmap on
-> (slow) memory and having that memory be consumed by the buddy where we fr=
-equently
-> operate on the memmap?
-
-I'm glad you're asking these questions.  We definitely want to make sure
-we don't conflate requirements based on some particular
-technology/implementation.  Also, I wouldn't make any assumptions about
-the performance of CXL devices.  As I understand it, there could be a
-broad spectrum of performance profiles.
-
-And now Dan can correct anything I got wrong.  ;-)
-
-Cheers,
-Jeff
-
+Applied now, thanks Jason.
