@@ -2,66 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA3CF753D27
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jul 2023 16:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E07753FAA
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jul 2023 18:13:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235254AbjGNOV7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Jul 2023 10:21:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38918 "EHLO
+        id S234954AbjGNQNf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 14 Jul 2023 12:13:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235460AbjGNOV7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Jul 2023 10:21:59 -0400
-X-Greylist: delayed 421 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 14 Jul 2023 07:21:57 PDT
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F29AF9B
-        for <linux-acpi@vger.kernel.org>; Fri, 14 Jul 2023 07:21:57 -0700 (PDT)
-Received: from 8bytes.org (p200300f6af03f600fd690381fa83412b.dip0.t-ipconnect.de [IPv6:2003:f6:af03:f600:fd69:381:fa83:412b])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.8bytes.org (Postfix) with ESMTPSA id 4810D28012A;
-        Fri, 14 Jul 2023 16:14:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-        s=default; t=1689344095;
-        bh=F/D7IwlzeRTbVVFVQRrvrHtSo5B6tCQYfdQKsjjGZxw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Jp3PihVqiKnlzmHVqFa9YWANdQakKslbqTfMqagAPFsJZPLtl8G315CluEVsz1IKN
-         ie9DKXxujsgeG6yc3N5EUKv4hmowrAcybCnSqVcPGXSf6f1UbKKapLpgV6UcIP/EqU
-         bH2afUqVj//RSfYXnQtMLpFW4OB5YeQRWWq7qiSO3OcoxmqSWH5fplE2XuwD4JeqIq
-         iSa9eGZFb+o6eR5kPvjU/SSOmAIQS5idSGf993PJZmeMdjPKUelStLuGttAQbN9hbD
-         0PVZeMlsu2K0v7/3/kMWl1qvEE3THgi6VcQFrwqzRM1aN2IQKU5IOfu0oIVL54+UUZ
-         wIto+NKQ9GfIA==
-Date:   Fri, 14 Jul 2023 16:14:54 +0200
-From:   Joerg Roedel <joro@8bytes.org>
-To:     Jason Gunthorpe <jgg@nvidia.com>
-Cc:     David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Nicolin Chen <nicolinc@nvidia.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH v3 00/10] Consolidate the probe_device path
-Message-ID: <ZLFYXlSBZrlxFpHM@8bytes.org>
-References: <0-v3-328044aa278c+45e49-iommu_probe_jgg@nvidia.com>
- <ZJCmmOfR7Cl+OtOc@nvidia.com>
+        with ESMTP id S235274AbjGNQNV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Jul 2023 12:13:21 -0400
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5856F3C3B;
+        Fri, 14 Jul 2023 09:13:03 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-94ea38c90ccso57670766b.1;
+        Fri, 14 Jul 2023 09:13:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689351182; x=1691943182;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1n7SFN/ZrkwTRk+lgceZM38JBM9Mc+IqCkgdfg3+FQw=;
+        b=WrHMd1H6UsYO9Cxvhjo5V3ohKtQz8cEZW4g8xd8H2tvFEFy2rRrrJuqqts4/UYeyES
+         RRSD6wBbMcmx/QKOBzn69wyCRmGCPJjTZqmbWF98NoXvxRa1WLsoWQ4vbBMiaQVAy8iv
+         evfjW3EFUOrOqJ7g+mYU3A9Ckt0zOoggXQKEzrgDkWqqahisPVk126XG1qA/LNUhNKiV
+         jD9e6yTl7sD/GV2mH9MyA0cToJzpc31RNJ9Sfz4AWibh1fPU2drCBhLYhYSe487gyNx2
+         ibHmyDTdHqu7GbIY4/Srhnto1GsHt+YJftYgbjrLt/cnJV1JBQAVL5Fo65f9HAMp5jqh
+         tr7A==
+X-Gm-Message-State: ABy/qLbIpQ837qqV/5j4RIqe7Osd+t8uZjYw1yOiUEKzdTH5T/FlWOzp
+        +DTqJl8CHVh5G89Cq6wN0quH+nN1YgiyjhVMfdffCLx2RY8=
+X-Google-Smtp-Source: APBJJlHMjcbGxm04SzeLPZkZCBouTjny73Xfr/5XFL6oFh2Ha37n60cTMaJw/yWwh6/ggoAZ9iBMAe7/pEEuD2BToTI=
+X-Received: by 2002:a17:906:738c:b0:993:eed1:8f0 with SMTP id
+ f12-20020a170906738c00b00993eed108f0mr3908293ejl.3.1689351181615; Fri, 14 Jul
+ 2023 09:13:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZJCmmOfR7Cl+OtOc@nvidia.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230710140337.1434060-1-michal.wilczynski@intel.com>
+In-Reply-To: <20230710140337.1434060-1-michal.wilczynski@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 14 Jul 2023 18:12:50 +0200
+Message-ID: <CAJZ5v0iZbX+pV7y=ioYA+OCN=09Ujmjri-JEhYdvUd9VB1BWgg@mail.gmail.com>
+Subject: Re: [PATCH v4 0/9] Prefer using _OSC method over deprecated _PDC
+To:     Michal Wilczynski <michal.wilczynski@intel.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
+        andriy.shevchenko@intel.com, artem.bityutskiy@linux.intel.com,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        hpa@zytor.com, lenb@kernel.org, jgross@suse.com,
+        linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 19, 2023 at 04:03:52PM -0300, Jason Gunthorpe wrote:
-> Joerg? I think we are good on this one now, it has been quite for two weeks
+On Mon, Jul 10, 2023 at 4:06 PM Michal Wilczynski
+<michal.wilczynski@intel.com> wrote:
+>
+> ACPI 3.0 introduced a new Operating System Capabilities _OSC control
+> method. This method is similar to _PDC, which was marked as deprecated
+> in ACPI 3.0.
+>
+> Prefer using _OSC method over deprecated _PDC in the acpi_bus_init(). In
+> case of the failure of the _OSC, try using _PDC as a fallback.
+>
+> Testing done:
+> Tested on physical server with BIOS implementing _OSC methods. In this
+> case acpi_processor_osc() was executed for each CPU core. acpi_run_osc()
+> returned success indicating that _OSC method succeeded.
+>
+> Tested on qemu VM to check whether the code would work on a SeaBios (the
+> default for qemu, doesn't support _OSC methods, or _PDC). This way I was
+> able to see how code behaves in case BIOS doesn't implement _OSC. In
+> that case the function
+> acpi_run_osc() returned failure, which propagated all the way up to
+> acpi_early_processor_osc(). The logic responsible for triggering _PDC
+> execution was triggered correctly.
+>
+> Tested this using debug messages with printk.
+>
+> v4:
+>  - move setting processor capabilities bits into arch code
+>  - move workaround for mwait to acpi/x86 directory
+>  - rename ACPI_PDC* constants to more generic ACPI_PROC_CAP*
+>  - introduce new function acpi_early_processor_control_setup()
+>
+> v3:
+>  - split into more commits to make review easier
+>  - changed "_UID" to METHOD_NAME_UID
+>  - changed hard-coded constant to ACPI_PDC_COLLAB_PROC_PERF
+>  - added Suggested-by tags
+>  - fixed style issues
+>  - fixed whitespaces
+>  - refactored code
+> v2:
+>  - fixed compilation issues on ia64 and arm
+>
+> Michal Wilczynski (9):
+>   acpi: Move mwait quirk out of acpi_processor.c
+>   acpi: Move processor_physically_present() to acpi_processor.c
+>   acpi: Refactor arch_acpi_set_pdc_bits()
+>   acpi: Rename ACPI_PDC constants
+>   acpi: Clear C_C2C3_FFH and C_C1_FFH in arch_acpi_set_proc_cap_bits()
+>   acpi: Move setting CAP_SMP_T_SWCOORD to arch_acpi_set_proc_cap_bits()
+>   acpi: Introduce acpi_processor_osc()
+>   acpi: Use _OSC method to convey processor OSPM capabilities
+>   acpi: Remove acpi_hwp_native_thermal_lvt_osc()
 
-Applied now, thanks Jason.
+I have made a number of changes to the patches (edited subjects,
+rewrote changelogs, fixed up whitespace in a few places, changed the
+return value of acpi_early_processor_osc() to bool and made it static
+etc.) and tentatively queued them up for 6.6.  Please see the
+bleeding-edge branch of linux-pm.git.
+
+I have made sure that the series will still compile at least on
+x86-64, but testing it again would be appreciated.
+
+Thanks!
