@@ -2,175 +2,256 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F07E7545AA
-	for <lists+linux-acpi@lfdr.de>; Sat, 15 Jul 2023 02:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7544E754745
+	for <lists+linux-acpi@lfdr.de>; Sat, 15 Jul 2023 09:44:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229632AbjGOAqn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Jul 2023 20:46:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58464 "EHLO
+        id S229866AbjGOHoL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 15 Jul 2023 03:44:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjGOAqn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Jul 2023 20:46:43 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2065.outbound.protection.outlook.com [40.107.237.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E32682D51;
-        Fri, 14 Jul 2023 17:46:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CstvVxjatYTDi8ewkDDld2MtACgxu1IJVpfv8WkREgbMsyYvUaS/oJVnvYh1X9FdEl7gKWvPUu6EFqezM3LIlORVSQXHt9Bplh92EHV0As9q88QgCJv/09kMXuj6f6jxxmPt03ocqJb0XidwS7qC7b93zYl3d/9LloZZw3sa0plscWcC7OQaEcQCpNM03+wzl0N0Zv651NZ67HL8JZnZxqxG1iy0KkOLCzSfTphzeJdZMnsjN8ZVpkONE1X0KGM3zRiItsUk9VHJ3gAKOKa8FFN+p75PkquDZ1IMmWsfkD2929N9rj5NlYZKWi/sLXXXWYp/5hxHa3BynFqv1a9B+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MNKZmNHWS117SpTRpYMD89dPlN9DL+w5ILiePP2niW8=;
- b=j79M2GYh9BIcm+iNiLX1scJme4Y660I6aHAxF8avPs5nfcpcL0g7L/Zv8+gWl5e44Dg/uDYAIMUUQYDY2oOVOBd5/gry1DLdZ5WXLNkkx6U4R5wLe8+UO+mPYUWd8FQDeLOotaDZ+w8IRd1WI9h1CgMTnMpTpNsPSJBmoIWkCyeKVOgmzHUz2DHyhOjVL2pgCKoULi82MS6Wr+xbV5G+9HAnvATlUL02YpW9RTiyIcS8OsNELGCyIf2tfKlVcmQ736gIQnr6QZU807sIMUjDRN+1uXzOKrYz+bKfjBRvosXmh2sYo+exVX1dD5cKNik1QbxRCaTrCJqwkpTDj5SfyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MNKZmNHWS117SpTRpYMD89dPlN9DL+w5ILiePP2niW8=;
- b=Biz5CCkVyGK8yx+DE0LdNOavYUw70mJjdXcmAS4wvJK7nhZU2OSuWwzf5yTV5R/GWCZsfYo3kCMviRpITwRVfOJDHC5ldjmbmQHIosZl/4DngmPB0rhyz3HwVDVlWl/t0Jq4bvS4vZ/KNX6waIdnbkW1ClqUFdj+hXLu+1grKCs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by DS0PR12MB7702.namprd12.prod.outlook.com (2603:10b6:8:130::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.27; Sat, 15 Jul
- 2023 00:46:37 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::bce4:716a:8303:efcf]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::bce4:716a:8303:efcf%4]) with mapi id 15.20.6588.028; Sat, 15 Jul 2023
- 00:46:37 +0000
-Message-ID: <37b005d5-68fb-f8dd-67e2-c953d677fca2@amd.com>
-Date:   Fri, 14 Jul 2023 19:46:34 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/2] PCI: Don't put non-power manageable PCIe root
- ports into D3
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-References: <20230711221427.GA250962@bhelgaas>
- <b82a50eb-8182-84ca-5b24-dbe8870fa871@amd.com>
- <CAJZ5v0i6PviqW7u3i8hmvSCvR_VHqP-mWRy3Da8Ev_1vi9qBQA@mail.gmail.com>
- <a309e3fe-b1f9-e269-cb97-8af87c8d483b@amd.com>
- <CAJZ5v0jvxrDMR6YHFpYZ4yYpp82-3TtrH==SMRFtUMJsv7=i=g@mail.gmail.com>
-Content-Language: en-US
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <CAJZ5v0jvxrDMR6YHFpYZ4yYpp82-3TtrH==SMRFtUMJsv7=i=g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA0PR11CA0183.namprd11.prod.outlook.com
- (2603:10b6:806:1bc::8) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DS0PR12MB7702:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6b35f79d-9431-45cb-54f4-08db84ccf188
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EROSiJP0Es5oKGHrWYARrnfyLFsAuV5SaArDM+QmcxlG6/Ag55pZEnZ4k2XEd0T0bnEADkQ8LoDdgG4WNoabxN2ynfRM/TM1HG3QtYViCKQuaU/OnDmBCej2Rr9N41v9U7z7pgN3WqsJdiHr+5JMl9WrQeRETRB6z64zWm1A04vkC53Im1W4spen1Z5KUv589fEOIGDO7nMy3S4ejuL4N5qcZ1urEly9I7Uzul83c5nYnjYjsjG5vAAgPLOoxsmre90Xk0ETgy9g9MbJoHK6GbVSogzRavBCs3J/vnUvFH991vZntgk4fpbB4PxauxEfyCYUGJJ8e0BECTKxGygfCwn0SdzFrxB8/WWeHB5IhCAVCI7/Ws1B4lOEghKDkVzK77zwWBxYB3oeLasTgIQf2jAHjlknka4PorvsseX/laItA8j+qxPg4tht2R4+Gv4F3AIzXmvwl4CONvM8pnfsGQ66S/XEutBAjIJpPV2Frr+UKIeIM4XVPu61LquK+vu6SjC7TWKR2jp7V6sEytoOcUlQIPkcBXlyGvhYb8sQFVH3HZvBTYrrI/1X229sMn3Fq7hJ9kkNsKWBgeS/4cw3H3GgwCVykRoKp3w9GknrFJColdt+ZLn5G9I1C04kaQegGLUdO7KmNHxuh0tr1PqWpQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(366004)(136003)(346002)(396003)(376002)(451199021)(6512007)(6486002)(6666004)(83380400001)(186003)(2616005)(38100700002)(36756003)(31696002)(86362001)(6506007)(26005)(53546011)(66556008)(66476007)(4326008)(66946007)(7416002)(54906003)(41300700001)(6916009)(31686004)(5660300002)(316002)(8936002)(8676002)(2906002)(478600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SDJpL0VlaVgyWmRSVFcyeUJaMGNZbDNDemtXeC9tRVlEZlRZU0Z6ZmFjZlhX?=
- =?utf-8?B?d0IrWEhxV3ovazBKYTl1KzdQUDh4TzZZOVhNVTF2d04zY3Z2WUJyZlo0RFYr?=
- =?utf-8?B?Y0VqcXYzVWNQWGl4ZVkxV1Z1cy9IREY4b0JCcXNJUmpHZFBwNC9tamcvRHJx?=
- =?utf-8?B?ZGVVOTJrRjIydSt5MzVjczZmY2ZyeEdQbWZzVFBJWGR1eVAvZkRjdkxrOHVs?=
- =?utf-8?B?R3FlUGRCN0d1eWtNUExsK2xPd2dCdlkrVlRFb25RRE1FaXJvSEQ3eHFTWk8v?=
- =?utf-8?B?cWVkZzJnYlNHWmlLNklmR2hLY0huZnpzcVd0aEtyK1FPck03cTdQbXQ4Yk9q?=
- =?utf-8?B?U2JOV2tsNUxGdUxHcnlTUzhuNjNuTHNBR3hlZ3VJR04xdVV0bUdmcUs2anZk?=
- =?utf-8?B?cVRpSFN5U3cvQjVQSEkwWFJWNEFPMXZmcTR4VkVaQTgvaFlrd0tEUUhYRlc5?=
- =?utf-8?B?QXBMU1lmbFp4WUMxQzhXaDZGdkVWdWRwZ1pmTklWTTRJS0xnVWVtNk00M3Ro?=
- =?utf-8?B?cmRLSWV5YUp1TjRUbXZZcWRkM0xmMXI4NEZpS3ZrbzBDa0o2dTlmelRHQ1VM?=
- =?utf-8?B?cy85eG92VkRKM3lpMjBZTjUrQ3pSaFIvNFk5dlhUNXBzbXI1dVZ6Umd0cWYv?=
- =?utf-8?B?ekZJUXJKQnc1dnJFL29VVHUrU2NpT1VSTkZneUV1d3ZyTkl5dCtsRmgzOFhV?=
- =?utf-8?B?OFcxQUoxazk1MlhPcktPRk9JS00yNDZHTjUrUkt0REdDVVIyRTN6TndVbHlr?=
- =?utf-8?B?bnYvUzlhMGE0QXJCQVQxYUtsdDV4MFZzZU80WGxsYWFzekliaGFraVJTeW5M?=
- =?utf-8?B?dEE0VlF3ZDdoUlVNaW90ZDBzU1NOV05Xejg5ZUxhM2NybndxRGJzZ1UzeTZm?=
- =?utf-8?B?ZkNPZDd0RGZ2V2lrNlphbnRlQkVrV09YejBNc2NYRnQrUTFBUnRaK1h2WndN?=
- =?utf-8?B?RlJQVGlsVkp3dVVQZTJkb3FxRnhOTUdTKytUcG55TlpsYU5sOUpjQk4xSU45?=
- =?utf-8?B?QXBVRDRVZUErZlZpbE5udDMyc3hGa2hEYVd0QXNiaERrcXZTUkNjUkFnaGNv?=
- =?utf-8?B?dlJOWFZDZ3FLOVR2NGFMaEV2V2J6RjlsblFGb0dpcndRdzBDMU5ra3BPWU9j?=
- =?utf-8?B?OHJSS3JrM3VXSUd5RUFPenVpL0hQakVBZDR1U01DKytLYjN6YnNJSUlCWFlT?=
- =?utf-8?B?QndwNUF0QlVoVDJCUVNxT2pueW90WWdndFhMNDhhUFBRUEMvdUFia0dCQm4x?=
- =?utf-8?B?V0FDaUU3c3NDVW9MVnAxOWJnVndVZ2twRmtMNURpRCtZMHd0a09mKzdUa1lJ?=
- =?utf-8?B?bWNBTnFKcHJmakljaHI0SzNhR0Y4b051VStZM1hlZXROUzJoUnFWbDBEWVZq?=
- =?utf-8?B?U2JBcmFORDRJZmxCaVl4cnpETVhGQjlTZmgzL2lwU05jdFh3S0dKUmQ3YUh5?=
- =?utf-8?B?OEhzYXhTcklwR0tmcjVNYkI4SFNnd0tRSUdJN2ZaaFhDaURxSHhVY0hIQy9k?=
- =?utf-8?B?bzBBTytIaHFhbVhRM09UeW96MS9MaDlwK3dVUURja1pUeTIrM2tpaVd0NVhp?=
- =?utf-8?B?ZXIxWWUxLzh3UklaaVZ2eldPNUVVWEVBOUJPZW9hTld3MlA2SzhscHlSTXdR?=
- =?utf-8?B?UE04ZGcxaUxDQ1B1MitWV0QrZ3RwR3hlRTFMaDNRVWl4VE43citJVUx0YVlR?=
- =?utf-8?B?emFTbGpoTElWOVpWNktHYVJZY2cxV3JVUWdnNVBtTk1WeWY5MUZYY21rN1ZJ?=
- =?utf-8?B?L0EyUFg4M1M4UkpTbDZCd3ZoQlZvYXJoZytlbWZkazFtYTQ2V1pvTWVvQUFt?=
- =?utf-8?B?TWQ1UEE1bmhTaUIwemtmYVNsWUVnUHZDcEo1OEpya2RvSllTNzJ3elA2ZTh0?=
- =?utf-8?B?OVNiZzkycHluOVFwMFh4d1kxY0lPdnlDMC9sWURQcTQ0enlWT2lJbWZWNHlm?=
- =?utf-8?B?bnlCbXBzVlNVczc1andGL1hSYlVUcTZXNklWUUtjd0h6UjBIOHp3QzlraktX?=
- =?utf-8?B?ei9YeHNXT25YeTVIZk5LNW5wMVE1OU5BTlZuK2ZQdzMzcGhhVnRxOEVEUDlG?=
- =?utf-8?B?blJHdWE2d3lnK241aVZPWkl1VXkxWEYxUmEzYUlmNm5Ma0tWaHl6UE45TkJF?=
- =?utf-8?Q?MlBDScfSDdmxWkzMTzT5O0NDa?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b35f79d-9431-45cb-54f4-08db84ccf188
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2023 00:46:36.6662
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eLf5HiBTljc1+p1UJoPvjbtaYUVMRT3flMAzkSoh0ON3CvwMWL7e2kFKO73RJicPvVwPGHkH4x3zfEbVjz9s0Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7702
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229482AbjGOHoL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 15 Jul 2023 03:44:11 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 841B035B3;
+        Sat, 15 Jul 2023 00:44:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689407049; x=1720943049;
+  h=date:from:to:cc:subject:message-id;
+  bh=ehtHmDNW5Iv8jFhAIarNgyBP4yo1wFV2cS32VFlX8mI=;
+  b=TRVNAfO9Q9fpNrtV6p8RsEfSXxTnh96t6K9wi97SeNOxMQmLVajGhXao
+   8INaU6LU1U3I0+7WeEJ1EdPz732JivPyJwJs6DBPKgwNoOaZTSNLDnn8q
+   3g9fIgKGehKSqXFZW0BjiDMONRPKlo/2/x8FQmADyj5jy3rV+GmjSTHwL
+   vrkWzQ2QCR2xvOrBrz8nY6XHSi5MH2MaOIWzQox0lVJk12OL45yp4Xodw
+   Fo8yhB3+SW8ZApw6NoirqnFjA+sCG5IL+jgDFMs7CE3QLgp3dmRmcBqQ2
+   iX1i25a7moo9nYTNUEd10YKoftTappGCAyXm3TvS4CfcvfOisxzkWMvtd
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10771"; a="396456696"
+X-IronPort-AV: E=Sophos;i="6.01,207,1684825200"; 
+   d="scan'208";a="396456696"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2023 00:44:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10771"; a="699945390"
+X-IronPort-AV: E=Sophos;i="6.01,207,1684825200"; 
+   d="scan'208";a="699945390"
+Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 15 Jul 2023 00:43:53 -0700
+Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qKZwX-00080r-01;
+        Sat, 15 Jul 2023 07:43:53 +0000
+Date:   Sat, 15 Jul 2023 15:43:45 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD REGRESSION
+ 4f9dd7927c1cdbaffb20fcdbcc2bdc6caa0b4736
+Message-ID: <202307151541.rZTx7h5Q-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 4f9dd7927c1cdbaffb20fcdbcc2bdc6caa0b4736  Merge branch 'pm-cpuidle' into bleeding-edge
 
-On 7/14/2023 2:17 PM, Rafael J. Wysocki wrote:
->>> Generally speaking, pci_bridge_d3_possible() is there to prevent
->>> bridges (and PCIe ports in particular) from being put into D3hot/cold
->>> if there are reasons to believe that it may not work.
->>> acpi_pci_bridge_d3() is part of that.
->>>
->>> Even if it returns 'true', the _SxD/_SxW check should still be applied
->>> via pci_target_state() to determine whether or not the firmware allows
->>> this particular bridge to go into D3hot/cold.  So arguably, the _SxW
->>> check in acpi_pci_bridge_d3() should not be necessary and if it makes
->>> any functional difference, there is a bug somewhere else.
->> But only if it was power manageable would the _SxD/_SxW check be
->> applied.  This issue is around the branch of pci_target_state() where
->> it's not power manageable and so it uses PME or it falls back to D3hot.
-> Well, this looks like a spec interpretation difference.
->
-> We thought that _SxD/_SxW would only be relevant for devices with ACPI
-> PM support, but the firmware people seem to think that those objects
-> are also relevant for PCI devices that don't have ACPI PM support
-> (because those devices are still power-manageable via PMCSR).  If
-> Windows agrees with that viewpoint, we'll need to adjust, but not
-> through adding _SxW checks in random places.
-I think that depends upon how you want to handle the lack of _S0W.
+Error/Warning reports:
 
-On these problematic devices there is no _S0W under the PCIe
-root port.  As I said; Windows puts them into D0 in this case though.
+https://lore.kernel.org/oe-kbuild-all/202307150306.FvaBEkzg-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202307150527.HDJ9XJMo-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202307150552.aLyOhzH2-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202307150637.CGq9exEE-lkp@intel.com
 
-So acpi_dev_power_state_for_wake should return ACPI_STATE_UNKNOWN.
+Error/Warning: (recently discovered and may have been fixed)
 
-Can you suggest where you think adding a acpi_dev_power_state_for_wake() 
-does make sense?
+drivers/acpi/dptf/../internal.h:161:6: warning: no previous prototype for 'acpi_early_processor_control_setup' [-Wmissing-prototypes]
+drivers/acpi/dptf/../internal.h:161:6: warning: no previous prototype for function 'acpi_early_processor_control_setup' [-Wmissing-prototypes]
+drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
+drivers/acpi/internal.h:161:6: warning: no previous prototype for 'acpi_early_processor_control_setup' [-Wmissing-prototypes]
+drivers/acpi/internal.h:161:6: warning: no previous prototype for function 'acpi_early_processor_control_setup' [-Wmissing-prototypes]
+ld.lld: error: duplicate symbol: acpi_early_processor_control_setup
+osi.c:(.text+0x134): multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:tables.c:(.text+0x0): first defined here
+osi.c:(.text+0x168): multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:tables.c:(.text+0x0): first defined here
+osi.c:(.text+0x408): multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:tables.c:(.text+0x948): first defined here
+osi.c:(.text.acpi_early_processor_control_setup+0x0): multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:tables.c:(.text.acpi_early_processor_control_setup+0x0): first defined here
 
-Two areas that I think would work would be in: pci_pm_suspend_noirq() 
-(to avoid calling pci_prepare_to_sleep)
+Error/Warning ids grouped by kconfigs:
 
-or
+gcc_recent_errors
+|-- arm64-allyesconfig
+|   |-- drivers-acpi-dptf-..-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+|   |-- drivers-acpi-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+|   `-- multiple-definition-of-acpi_early_processor_control_setup-drivers-acpi-tables.o:tables.c:(.text):first-defined-here
+|-- arm64-defconfig
+|   |-- drivers-acpi-dptf-..-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+|   |-- drivers-acpi-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+|   `-- multiple-definition-of-acpi_early_processor_control_setup-drivers-acpi-tables.o:drivers-acpi-internal.h:first-defined-here
+|-- loongarch-allmodconfig
+|   |-- drivers-acpi-dptf-..-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+|   `-- drivers-acpi-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+|-- loongarch-allnoconfig
+|   `-- multiple-definition-of-acpi_early_processor_control_setup-drivers-acpi-tables.o:tables.c:(.text):first-defined-here
+|-- loongarch-allyesconfig
+|   |-- drivers-acpi-dptf-..-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+|   `-- drivers-acpi-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+|-- riscv-allmodconfig
+|   |-- drivers-acpi-dptf-..-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+|   |-- drivers-acpi-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+|   `-- multiple-definition-of-acpi_early_processor_control_setup-drivers-acpi-tables.o:tables.c:(.text.acpi_early_processor_control_setup):first-defined-here
+|-- riscv-allyesconfig
+|   |-- drivers-acpi-dptf-..-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+|   `-- drivers-acpi-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+`-- riscv-defconfig
+    |-- drivers-acpi-dptf-..-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+    |-- drivers-acpi-internal.h:warning:no-previous-prototype-for-acpi_early_processor_control_setup
+    `-- multiple-definition-of-acpi_early_processor_control_setup-drivers-acpi-tables.o:tables.c:(.text):first-defined-here
+clang_recent_errors
+`-- arm64-randconfig-r021-20230714
+    |-- drivers-acpi-dptf-..-internal.h:warning:no-previous-prototype-for-function-acpi_early_processor_control_setup
+    |-- drivers-acpi-internal.h:warning:no-previous-prototype-for-function-acpi_early_processor_control_setup
+    `-- ld.lld:error:duplicate-symbol:acpi_early_processor_control_setup
 
-directly in pci_prepare_to_sleep() to check that value in lieu of 
-pci_target_state().
+elapsed time: 723m
 
+configs tested: 125
+configs skipped: 4
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r035-20230714   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                        nsimosci_defconfig   gcc  
+arc                     nsimosci_hs_defconfig   gcc  
+arc                  randconfig-r021-20230715   gcc  
+arc                  randconfig-r043-20230714   gcc  
+arc                    vdk_hs38_smp_defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                        keystone_defconfig   gcc  
+arm                            mps2_defconfig   gcc  
+arm                         mv78xx0_defconfig   clang
+arm                        mvebu_v5_defconfig   clang
+arm                         nhk8815_defconfig   gcc  
+arm                          pxa168_defconfig   clang
+arm                  randconfig-r003-20230714   clang
+arm                  randconfig-r046-20230714   gcc  
+arm                          sp7021_defconfig   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                                defconfig   gcc  
+hexagon              randconfig-r001-20230714   clang
+hexagon              randconfig-r041-20230714   clang
+hexagon              randconfig-r045-20230714   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230714   gcc  
+i386         buildonly-randconfig-r005-20230714   gcc  
+i386         buildonly-randconfig-r006-20230714   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230714   gcc  
+i386                 randconfig-i002-20230714   gcc  
+i386                 randconfig-i003-20230714   gcc  
+i386                 randconfig-i004-20230714   gcc  
+i386                 randconfig-i005-20230714   gcc  
+i386                 randconfig-i006-20230714   gcc  
+i386                 randconfig-i011-20230714   clang
+i386                 randconfig-i012-20230714   clang
+i386                 randconfig-i013-20230714   clang
+i386                 randconfig-i014-20230714   clang
+i386                 randconfig-i015-20230714   clang
+i386                 randconfig-i016-20230714   clang
+i386                 randconfig-r024-20230715   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r005-20230714   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                         apollo_defconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                        mvme16x_defconfig   gcc  
+m68k                 randconfig-r031-20230714   gcc  
+microblaze           randconfig-r015-20230714   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                      loongson3_defconfig   gcc  
+mips                malta_qemu_32r6_defconfig   clang
+nios2                               defconfig   gcc  
+nios2                randconfig-r012-20230714   gcc  
+nios2                randconfig-r014-20230714   gcc  
+nios2                randconfig-r022-20230715   gcc  
+openrisc             randconfig-r023-20230715   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r013-20230714   gcc  
+parisc               randconfig-r026-20230715   gcc  
+parisc               randconfig-r032-20230714   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                   lite5200b_defconfig   clang
+powerpc                         wii_defconfig   gcc  
+riscv                            alldefconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r042-20230714   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r044-20230714   clang
+sh                               alldefconfig   gcc  
+sh                               allmodconfig   gcc  
+sh                   randconfig-r004-20230714   gcc  
+sh                        sh7785lcr_defconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r002-20230714   gcc  
+sparc64              randconfig-r025-20230715   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r011-20230714   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230714   gcc  
+x86_64       buildonly-randconfig-r002-20230714   gcc  
+x86_64       buildonly-randconfig-r003-20230714   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-x001-20230714   clang
+x86_64               randconfig-x002-20230714   clang
+x86_64               randconfig-x003-20230714   clang
+x86_64               randconfig-x005-20230714   clang
+x86_64               randconfig-x006-20230714   clang
+x86_64               randconfig-x011-20230714   gcc  
+x86_64               randconfig-x012-20230714   gcc  
+x86_64               randconfig-x013-20230714   gcc  
+x86_64               randconfig-x014-20230714   gcc  
+x86_64               randconfig-x015-20230714   gcc  
+x86_64               randconfig-x016-20230714   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r006-20230714   gcc  
+xtensa               randconfig-r033-20230714   gcc  
+xtensa               randconfig-r036-20230714   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
