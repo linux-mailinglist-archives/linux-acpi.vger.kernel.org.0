@@ -2,127 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3BE97564EF
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jul 2023 15:27:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E86D756702
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jul 2023 17:01:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231817AbjGQN1t convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 17 Jul 2023 09:27:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37216 "EHLO
+        id S229541AbjGQPBB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Jul 2023 11:01:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231855AbjGQN1K (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jul 2023 09:27:10 -0400
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBD0B2680;
-        Mon, 17 Jul 2023 06:26:51 -0700 (PDT)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-991f9148334so93197566b.1;
-        Mon, 17 Jul 2023 06:26:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689600387; x=1690205187;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ohB61xyllzPXwj/8LtXeAWQLPmy/KSKb5tmX/Q+HtlQ=;
-        b=lEdlQh/pE7JCc0C67Xc8P/k8MJMgxOFChdQo2j+4nw3IEGFsSJdEieUUbZPDBLduqz
-         QYQdcXSm+f4EiUEZ8WYfP8+HSxd9AMNfUevpgONhHdXjIFyjTLZ9tjes6cLKTCb432W6
-         2X/44LglRkrM8BUn2qmbJ/K6wSu0luVivQw3x7S/28GJXPQoe+MyQLINSDa+2hWlZb8l
-         etmASTOFyuEMMHj+4wOESMRg5hoV2/XXUdzg9tgrRCfvjg6LG9wvKCVY+s22WsZuWNLU
-         JjQ0MBFQtjHVlV2CEgc/4VnTFjoU+EM0QySq12JqdyZYXFDSqoBktwPJJHneg36CkB8F
-         b9jg==
-X-Gm-Message-State: ABy/qLa8js09tP+bxO66GGkzJt0XHZpboNHvGQsdUl0aPYTWzUr/337T
-        /F48pcFmhLBSviGf5V0lfyngWLWRWq38Pk94YlEr8vfJ
-X-Google-Smtp-Source: APBJJlHI4V+c4oSRC4S5KV43u0itswzv6czVwqEfYTPwDnNuBlXf5NyejrvLbj6h29jwBsTHRD5sqdPI4WhYVy3qrEA=
-X-Received: by 2002:a17:906:2205:b0:988:73e4:b781 with SMTP id
- s5-20020a170906220500b0098873e4b781mr8878889ejs.2.1689600386979; Mon, 17 Jul
- 2023 06:26:26 -0700 (PDT)
+        with ESMTP id S230050AbjGQPBB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jul 2023 11:01:01 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20286E5E
+        for <linux-acpi@vger.kernel.org>; Mon, 17 Jul 2023 08:00:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689606060; x=1721142060;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tEeEnmMMWGmmPyYf2uYTzj8y3MR48t2NpiLeDD+QUmI=;
+  b=nQeW/+OcrgQt7qxw9EtpNscsZTrQo1lY0hPPiG94TZwxjL8na0rEyU/X
+   coeGcRJfHkhib5Ef9eEr5uWre7BNLmo/2JLRjcUyLNhHWuFi5Vl8EUZlr
+   p6DLbKzEJRbnnIiPzxsZ2AsiLA7Dvx2TpNmtAtwMY8ZO2dyIjiOrOqKA6
+   7bmRnyqdM9XuuvIJMrs4K67TvxdOs7U19qzczTksTadwUU52Ir/ntW4vY
+   Zkc+al4kThiA817xh2A6zSeyzAo/wqj0KcwJISxe5ps+/lHobXrJg2Ixm
+   A1TiR2Z7ljCXF6+yVbU3cDO7taDZy4TspkLdqApD0A4BwP59B043hHzui
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10774"; a="345541868"
+X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; 
+   d="scan'208";a="345541868"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2023 08:00:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10774"; a="726567322"
+X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; 
+   d="scan'208";a="726567322"
+Received: from crojewsk-ctrl.igk.intel.com ([10.102.9.28])
+  by fmsmga007.fm.intel.com with ESMTP; 17 Jul 2023 08:00:53 -0700
+From:   Cezary Rojewski <cezary.rojewski@intel.com>
+To:     rafael@kernel.org, linux-acpi@vger.kernel.org
+Cc:     robert.moore@intel.com, pierre-louis.bossart@linux.intel.com,
+        amadeuszx.slawinski@linux.intel.com,
+        andriy.shevchenko@linux.intel.com,
+        Cezary Rojewski <cezary.rojewski@intel.com>
+Subject: [PATCH v2 0/4] ACPI: NHLT: Access and query helpers
+Date:   Mon, 17 Jul 2023 17:00:43 +0200
+Message-Id: <20230717150047.15196-1-cezary.rojewski@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230712172459.20275-1-mario.limonciello@amd.com>
- <CAJZ5v0jDpMNsWztgPDfLG3eGw3YOxK_ygWRLgHmbZUoMh97tbw@mail.gmail.com> <0a8351e9-a9f1-bec4-1542-2a456ca76d93@amd.com>
-In-Reply-To: <0a8351e9-a9f1-bec4-1542-2a456ca76d93@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 17 Jul 2023 15:26:11 +0200
-Message-ID: <CAJZ5v0iqu-Dpyw-u64e+S=mQY1tCJkoU1NZmfbs0nUQy9MyxQg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: thermal: Drop nocrt parameter
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 13, 2023 at 5:40 PM Limonciello, Mario
-<mario.limonciello@amd.com> wrote:
->
->
-> On 7/13/2023 10:31 AM, Rafael J. Wysocki wrote:
-> > On Wed, Jul 12, 2023 at 7:25 PM Mario Limonciello
-> > <mario.limonciello@amd.com> wrote:
-> >> The `nocrt` module parameter has no code associated with it and does
-> >> nothing.  As `crt=-1` has same functionality as what nocrt should be
-> >> doing drop `nocrt` and associated documentation.
-> >>
-> >> This should fix a quirk for Gigabyte GA-7ZX that used `nocrt` and
-> >> thus didn't function properly.
-> >>
-> >> Fixes: 8c99fdce3078 ("ACPI: thermal: set "thermal.nocrt" via DMI on Gigabyte GA-7ZX")
-> >> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > Stable material I suppose?
-> Yeah I think so.
+The goal of this patchset is to enhance existing interface of
+NonHDAudioLinkTable (NHLT), that is, accessing device and format
+configuration spaces as well as adding query functions for finding
+specific endpoints and format configurations. Once that is done,
+existing sound-drivers can move from utilizing sound/hda/intel-nhlt.c
+to this very code and ultimately the former file can be removed.
 
-OK
+It's important to highlight that currently presented implementation is
+not final and intention is to first transfer sound-driver to new API and
+then provide incremental updates to internal code in drivers/acpi/nhlt.c
+to improve reliability and safety.
 
-> >> ---
-> >>   Documentation/admin-guide/kernel-parameters.txt | 4 ----
-> >>   drivers/acpi/thermal.c                          | 6 +-----
-> >>   2 files changed, 1 insertion(+), 9 deletions(-)
-> >>
-> >> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> >> index a1457995fd41c..2de235d52faca 100644
-> >> --- a/Documentation/admin-guide/kernel-parameters.txt
-> >> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> >> @@ -6243,10 +6243,6 @@
-> >>                          -1: disable all critical trip points in all thermal zones
-> >>                          <degrees C>: override all critical trip points
-> >>
-> >> -       thermal.nocrt=  [HW,ACPI]
-> >> -                       Set to disable actions on ACPI thermal zone
-> >> -                       critical and hot trip points.
-> >> -
-> >>          thermal.off=    [HW,ACPI]
-> >>                          1: disable ACPI thermal control
-> >>
-> >> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-> >> index f9f6ebb08fdb7..3163a40f02e30 100644
-> >> --- a/drivers/acpi/thermal.c
-> >> +++ b/drivers/acpi/thermal.c
-> >> @@ -82,10 +82,6 @@ static int tzp;
-> >>   module_param(tzp, int, 0444);
-> >>   MODULE_PARM_DESC(tzp, "Thermal zone polling frequency, in 1/10 seconds.");
-> >>
-> >> -static int nocrt;
-> >> -module_param(nocrt, int, 0);
-> >> -MODULE_PARM_DESC(nocrt, "Set to take no action upon ACPI thermal zone critical trips points.");
-> >> -
-> >>   static int off;
-> >>   module_param(off, int, 0);
-> >>   MODULE_PARM_DESC(off, "Set to disable ACPI thermal support.");
-> >> @@ -1094,7 +1090,7 @@ static int thermal_act(const struct dmi_system_id *d) {
-> >>   static int thermal_nocrt(const struct dmi_system_id *d) {
-> >>          pr_notice("%s detected: disabling all critical thermal trip point actions.\n",
-> >>                    d->ident);
-> >> -       nocrt = 1;
-> >> +       crt = -1;
-> >>          return 0;
-> >>   }
-> >>   static int thermal_tzp(const struct dmi_system_id *d) {
-> >> --
+Series starts with addition of devcfg-access helpers. The main reasoning
+for adding access function is inability for a user to predict whether
+given space (device config) is valid or not. While inheritance in the
+specification is allowed, e.g.: mic_devcfg being inherited by
+mic_vendor_devcfg, until size is verified, one shall not be accessing
+fields which are not guaranteed by the spec. The only field guaranteed
+is "capabilities_size".
+The xxx_devcfg structs added here kind of duplicate few existing ones
+in actbl2.h. This is mainly motivated by usage improvements -
+simplicity, shorten wording. Intention is to have them replacing
+existing actbl2.h members in the future.
 
-Applied as 6.6 material, thanks!
+Follow up is the declaration of acpi_gbl_NHLT. Motivation is to make
+sound-drivers life easier i.e.: release them from storing pointer to the
+first NHLT in the system internally. Such drivers may utilize
+acpi_gbl_NHLT when querying endpoints and formats instead.
+
+Table manipulation functions and macros serve as a base for the
+follow-up query functions. So called query functions represent standard
+operations performed by user (a sound driver) when attempting to open an
+audio stream. These more or less mimic what's present in
+sound/hda/intel-nhlt.c.
+
+Changes in v2:
+- minor wording improvements in kernel-doc for patch 3/4
+- dropped parentheses around loop cursors in for_each_nhlt_*() macros
+- readability improvements in compound if-statements within query
+  functions
+- dropped NULL-checks in query functions
+
+Cezary Rojewski (4):
+  ACPI: NHLT: Device configuration access interface
+  ACPI: NHLT: Introduce acpi_gbl_NHLT
+  ACPI: NHLT: Table manipulation helpers
+  ACPI: NHLT: Add query functions
+
+ drivers/acpi/Kconfig  |   3 +
+ drivers/acpi/Makefile |   1 +
+ drivers/acpi/nhlt.c   | 187 ++++++++++++++++++++++++++++++++++++++
+ include/acpi/actbl2.h |  28 ++++++
+ include/acpi/nhlt.h   | 206 ++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 425 insertions(+)
+ create mode 100644 drivers/acpi/nhlt.c
+ create mode 100644 include/acpi/nhlt.h
+
+-- 
+2.25.1
+
