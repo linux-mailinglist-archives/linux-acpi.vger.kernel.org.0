@@ -2,161 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5458756356
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jul 2023 14:54:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3BE97564EF
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jul 2023 15:27:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229590AbjGQMyv convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 17 Jul 2023 08:54:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35982 "EHLO
+        id S231817AbjGQN1t convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 17 Jul 2023 09:27:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjGQMyu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jul 2023 08:54:50 -0400
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C51F41B0;
-        Mon, 17 Jul 2023 05:54:48 -0700 (PDT)
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5216095a698so1091812a12.0;
-        Mon, 17 Jul 2023 05:54:48 -0700 (PDT)
+        with ESMTP id S231855AbjGQN1K (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jul 2023 09:27:10 -0400
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBD0B2680;
+        Mon, 17 Jul 2023 06:26:51 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-991f9148334so93197566b.1;
+        Mon, 17 Jul 2023 06:26:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689598487; x=1690203287;
+        d=1e100.net; s=20221208; t=1689600387; x=1690205187;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=S2uSSqoDKdw1xON6ZQFvPCT+NY31p6OTOAF8u4sw0ok=;
-        b=L5CcZyTa3jS/crsxovWsMkcNHabVn5eLj8CKeIH9Nz0pVluFIJuCV9uVpksS3NCRjG
-         hgOXYmoqbYdow6tWkoGItNkGzyVt20fNaYBg902FvQ5cBHLHnfnjIRGgCZZNEgUGVPZi
-         CgOGh2FgUxqJAabZmKNo0gQkH0JugKgpKbj1xmwGTZJnCAqOjuLp7f2PxBlrgCxMoWD3
-         PEx3+e9S0bYE3D12n2L/kT9WAyr02wuBPHVmsZqt5ySIo4UqGs1VkBGcDfAp27vDKIlr
-         8qrFHsJaPdGAN6EM+LLWchcj7dOYKjGPEVVtGP8oquIB7UU1nB5freUMAcXS2eTXLmp4
-         qUvg==
-X-Gm-Message-State: ABy/qLbrqBux8mL+CqqHmJztLUsQ3Tp7j/lfHzUJsHXQNmTlBH8b/vPL
-        Hh9vwDFporesYSJ09pY1wT66X8sVhMGb99b/TzWL3ACF
-X-Google-Smtp-Source: APBJJlG/RFN+alXBMoZub7ZXDrvQKawf7/X52T+PEZuEfvnaSfe0Xzt9b0VQh9l5v/sXc1F2JO/i0QHiWOIqqbfG0Yg=
-X-Received: by 2002:a17:906:74dc:b0:994:1808:176b with SMTP id
- z28-20020a17090674dc00b009941808176bmr8581743ejl.6.1689598486971; Mon, 17 Jul
- 2023 05:54:46 -0700 (PDT)
+        bh=ohB61xyllzPXwj/8LtXeAWQLPmy/KSKb5tmX/Q+HtlQ=;
+        b=lEdlQh/pE7JCc0C67Xc8P/k8MJMgxOFChdQo2j+4nw3IEGFsSJdEieUUbZPDBLduqz
+         QYQdcXSm+f4EiUEZ8WYfP8+HSxd9AMNfUevpgONhHdXjIFyjTLZ9tjes6cLKTCb432W6
+         2X/44LglRkrM8BUn2qmbJ/K6wSu0luVivQw3x7S/28GJXPQoe+MyQLINSDa+2hWlZb8l
+         etmASTOFyuEMMHj+4wOESMRg5hoV2/XXUdzg9tgrRCfvjg6LG9wvKCVY+s22WsZuWNLU
+         JjQ0MBFQtjHVlV2CEgc/4VnTFjoU+EM0QySq12JqdyZYXFDSqoBktwPJJHneg36CkB8F
+         b9jg==
+X-Gm-Message-State: ABy/qLa8js09tP+bxO66GGkzJt0XHZpboNHvGQsdUl0aPYTWzUr/337T
+        /F48pcFmhLBSviGf5V0lfyngWLWRWq38Pk94YlEr8vfJ
+X-Google-Smtp-Source: APBJJlHI4V+c4oSRC4S5KV43u0itswzv6czVwqEfYTPwDnNuBlXf5NyejrvLbj6h29jwBsTHRD5sqdPI4WhYVy3qrEA=
+X-Received: by 2002:a17:906:2205:b0:988:73e4:b781 with SMTP id
+ s5-20020a170906220500b0098873e4b781mr8878889ejs.2.1689600386979; Mon, 17 Jul
+ 2023 06:26:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <202307150637.CGq9exEE-lkp@intel.com> <6f8d0187-0a90-1fa2-61e9-0a7b9a44106e@intel.com>
-In-Reply-To: <6f8d0187-0a90-1fa2-61e9-0a7b9a44106e@intel.com>
+References: <20230712172459.20275-1-mario.limonciello@amd.com>
+ <CAJZ5v0jDpMNsWztgPDfLG3eGw3YOxK_ygWRLgHmbZUoMh97tbw@mail.gmail.com> <0a8351e9-a9f1-bec4-1542-2a456ca76d93@amd.com>
+In-Reply-To: <0a8351e9-a9f1-bec4-1542-2a456ca76d93@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 17 Jul 2023 14:54:31 +0200
-Message-ID: <CAJZ5v0gP9oGSdsH9KcMamGbc=ca7rZtSVSOSvz=GuLuMiTvt1w@mail.gmail.com>
-Subject: Re: [rafael-pm:bleeding-edge 22/40] drivers/acpi/internal.h:161:
- multiple definition of `acpi_early_processor_control_setup';
- drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-To:     "Wilczynski, Michal" <michal.wilczynski@intel.com>
-Cc:     kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date:   Mon, 17 Jul 2023 15:26:11 +0200
+Message-ID: <CAJZ5v0iqu-Dpyw-u64e+S=mQY1tCJkoU1NZmfbs0nUQy9MyxQg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: thermal: Drop nocrt parameter
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 17, 2023 at 12:48 PM Wilczynski, Michal
-<michal.wilczynski@intel.com> wrote:
+On Thu, Jul 13, 2023 at 5:40 PM Limonciello, Mario
+<mario.limonciello@amd.com> wrote:
 >
-> Hi,
 >
-> On 7/15/2023 12:47 AM, kernel test robot wrote:
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-> > head:   4f9dd7927c1cdbaffb20fcdbcc2bdc6caa0b4736
-> > commit: ca805e0f04a5f9a773875ad6de914e54e41d43c7 [22/40] ACPI: processor: Use _OSC to convey OSPM processor support information
-> > config: arm64-defconfig (https://download.01.org/0day-ci/archive/20230715/202307150637.CGq9exEE-lkp@intel.com/config)
-> > compiler: aarch64-linux-gcc (GCC) 12.3.0
-> > reproduce: (https://download.01.org/0day-ci/archive/20230715/202307150637.CGq9exEE-lkp@intel.com/reproduce)
-> >
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202307150637.CGq9exEE-lkp@intel.com/
-> >
-> > All errors (new ones prefixed by >>):
-> >
-> >    aarch64-linux-ld: drivers/acpi/osi.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/osl.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/utils.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/nvs.o: in function `acpi_early_processor_control_setup':
-> >    drivers/acpi/nvs.c:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/wakeup.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/device_sysfs.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/device_pm.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/bus.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/glue.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/scan.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/acpi_processor.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/ec.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/pci_root.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/pci_link.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/acpi_lpss.o: in function `acpi_early_processor_control_setup':
-> >    drivers/acpi/acpi_lpss.c:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/acpi_apd.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/acpi_platform.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/acpi_pnp.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/acpi_amba.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/power.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/event.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/sysfs.o: in function `acpi_early_processor_control_setup':
-> >>> drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/property.o: in function `acpi_early_processor_control_setup':
-> >    drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/debugfs.o: in function `acpi_early_processor_control_setup':
-> >    drivers/acpi/debugfs.c:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/processor_driver.o: in function `acpi_early_processor_control_setup':
-> >    drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/container.o: in function `acpi_early_processor_control_setup':
-> >    drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/acpi_memhotplug.o: in function `acpi_early_processor_control_setup':
-> >    drivers/acpi/internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >    aarch64-linux-ld: drivers/acpi/dptf/int340x_thermal.o: in function `acpi_early_processor_control_setup':
-> >    drivers/acpi/dptf/../internal.h:161: multiple definition of `acpi_early_processor_control_setup'; drivers/acpi/tables.o:drivers/acpi/internal.h:161: first defined here
-> >
-> >
-> > vim +161 drivers/acpi/internal.h
-> >
-> >    157
-> >    158        void acpi_proc_quirk_mwait_check(void);
-> >    159        bool processor_physically_present(acpi_handle handle);
-> >    160        #else
-> >  > 161        void acpi_early_processor_control_setup(void) {}
->
-> I think this should be
-> static inline void acpi_early_processor_control_setup(void) {}
+> On 7/13/2023 10:31 AM, Rafael J. Wysocki wrote:
+> > On Wed, Jul 12, 2023 at 7:25 PM Mario Limonciello
+> > <mario.limonciello@amd.com> wrote:
+> >> The `nocrt` module parameter has no code associated with it and does
+> >> nothing.  As `crt=-1` has same functionality as what nocrt should be
+> >> doing drop `nocrt` and associated documentation.
+> >>
+> >> This should fix a quirk for Gigabyte GA-7ZX that used `nocrt` and
+> >> thus didn't function properly.
+> >>
+> >> Fixes: 8c99fdce3078 ("ACPI: thermal: set "thermal.nocrt" via DMI on Gigabyte GA-7ZX")
+> >> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> > Stable material I suppose?
+> Yeah I think so.
 
-I think so.
+OK
 
-> Hopefully you could amend this commit ?
+> >> ---
+> >>   Documentation/admin-guide/kernel-parameters.txt | 4 ----
+> >>   drivers/acpi/thermal.c                          | 6 +-----
+> >>   2 files changed, 1 insertion(+), 9 deletions(-)
+> >>
+> >> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> >> index a1457995fd41c..2de235d52faca 100644
+> >> --- a/Documentation/admin-guide/kernel-parameters.txt
+> >> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> >> @@ -6243,10 +6243,6 @@
+> >>                          -1: disable all critical trip points in all thermal zones
+> >>                          <degrees C>: override all critical trip points
+> >>
+> >> -       thermal.nocrt=  [HW,ACPI]
+> >> -                       Set to disable actions on ACPI thermal zone
+> >> -                       critical and hot trip points.
+> >> -
+> >>          thermal.off=    [HW,ACPI]
+> >>                          1: disable ACPI thermal control
+> >>
+> >> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+> >> index f9f6ebb08fdb7..3163a40f02e30 100644
+> >> --- a/drivers/acpi/thermal.c
+> >> +++ b/drivers/acpi/thermal.c
+> >> @@ -82,10 +82,6 @@ static int tzp;
+> >>   module_param(tzp, int, 0444);
+> >>   MODULE_PARM_DESC(tzp, "Thermal zone polling frequency, in 1/10 seconds.");
+> >>
+> >> -static int nocrt;
+> >> -module_param(nocrt, int, 0);
+> >> -MODULE_PARM_DESC(nocrt, "Set to take no action upon ACPI thermal zone critical trips points.");
+> >> -
+> >>   static int off;
+> >>   module_param(off, int, 0);
+> >>   MODULE_PARM_DESC(off, "Set to disable ACPI thermal support.");
+> >> @@ -1094,7 +1090,7 @@ static int thermal_act(const struct dmi_system_id *d) {
+> >>   static int thermal_nocrt(const struct dmi_system_id *d) {
+> >>          pr_notice("%s detected: disabling all critical thermal trip point actions.\n",
+> >>                    d->ident);
+> >> -       nocrt = 1;
+> >> +       crt = -1;
+> >>          return 0;
+> >>   }
+> >>   static int thermal_tzp(const struct dmi_system_id *d) {
+> >> --
 
-Done.
-
-> Not sure why 0-day haven't caught it sooner.
-
-Probably due to lighter coverage of individual patches.
-
-Thanks!
+Applied as 6.6 material, thanks!
