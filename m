@@ -2,54 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33C85755979
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jul 2023 04:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D669D755DED
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jul 2023 10:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230440AbjGQCXF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 16 Jul 2023 22:23:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50282 "EHLO
+        id S229608AbjGQIJo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Jul 2023 04:09:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjGQCXE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 16 Jul 2023 22:23:04 -0400
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6FFEB1A7;
-        Sun, 16 Jul 2023 19:23:02 -0700 (PDT)
-Received: from loongson.cn (unknown [10.2.9.158])
-        by gateway (Coremail) with SMTP id _____8DxPOsDprRkc8EFAA--.10055S3;
-        Mon, 17 Jul 2023 10:23:00 +0800 (CST)
-Received: from kvm-1-158.loongson.cn (unknown [10.2.9.158])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8CxF8wCprRk9gYxAA--.30213S2;
-        Mon, 17 Jul 2023 10:22:58 +0800 (CST)
-From:   Bibo Mao <maobibo@loongson.cn>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ACPI: processor_core: LoongArch: Get physical id from MADT table
-Date:   Mon, 17 Jul 2023 10:22:58 +0800
-Message-Id: <20230717022258.2579631-1-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.27.0
+        with ESMTP id S230308AbjGQIJm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jul 2023 04:09:42 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 754D11737
+        for <linux-acpi@vger.kernel.org>; Mon, 17 Jul 2023 01:09:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689581359; x=1721117359;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=oYw/KNBBlFvOsV4iJB5sy01KVXGMGVg7naWiyJcK/7Q=;
+  b=GJrlZPs6EfoE7nX9o+eawcpcwW35Ff2tGSsWgJ3U59S+uGhBiY1O4DDQ
+   YzN9tStDnhVXLrX1BijQ7IQcmm6uxsXJxGVhPTYqKDcjgKEwcGqZi0YXV
+   MhGPqJtiSl3oWv1SwP6Y1aORFHuk215Vx4ESTzXkNXXTzzf3x2K/7v1cX
+   ratNVOL5HnKkjHMGcmd2O69dKlTteK8tiopx+Dsqy3KEhEKM8RPVjlDOD
+   As6CZi4R9PBDtsBB7gjtsgpjxrmnQuNbLsmkJMxbg+/6jTIUyFtGy3Qg2
+   B8yzQv6nx1le9AeB2w4bBxMXqTWllAs1xEGdW/A0bEY1NBMcsP8lIctZ4
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10773"; a="432042520"
+X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; 
+   d="scan'208";a="432042520"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2023 01:09:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10773"; a="726465392"
+X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; 
+   d="scan'208";a="726465392"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmsmga007.fm.intel.com with ESMTP; 17 Jul 2023 01:09:01 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 17 Jul 2023 01:09:01 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Mon, 17 Jul 2023 01:09:01 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.107)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Mon, 17 Jul 2023 01:09:01 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LYURVToEkVjVU5HKR3E10M62lKS1IM6wKTDhda8o7nsgQQlyyCHEROQl0h69zrikjflyCXkG3nd1FUkkePBB2ATd9WGTbefTM+uUgTt9ZsvuXrn+BPzngnzKLt1e/M47qEsdOkXhdsPlXvmyM/6XHNjFvQvlkNow/YRFCJFnoapVvgtLHBXodtKeEPKATvDrg0srkvJsNwghJJ6gQnB29taxKnXTo17Ph6j7MWxpKabi8FAa+BIjwyvSh2qDsAgFHhNizpfeFQPO4iMxDywiWL5fgbZ77vc8bDSo/YaRqiJQrX4SU+3Pjp72WPIVWxeOoFaXm++oZxhOp2uGS5Gn9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gXCe4wgyfuZcr1kRrNuR5VleWMvxBI24O/434m+volw=;
+ b=m1l40cFrBrKayxlnnCabS1d8j/ba3FGHNiNVWvxm0eAxjoWV2YUr7OByWjtbhKtCp5NV8JxC6JPfBh005Az+Y94gEKFr7p/JDw2F409/UUjXjBdIOL2euJoWfXpFg1AQK9G10jd88eW6rF3W9fC2lvwahyGKzFnQF/c+HolE1MmAmPf5O7TyQYu5PTemh/JSs6jogJHwvYndmP85NS7cchJzfvabZZX28JBAqlUe7ujpdhMFNSSpLuLIpuutXV3jcQ+tsyR6v+Z2ax9SMK5lhvqxnpoB4ILjDWYUHzLuPBFMKNhfOAPTaViBSiOmtMRmeH7hueg0gnquPf0ImH0alQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB6375.namprd11.prod.outlook.com (2603:10b6:8:c9::21) by
+ PH7PR11MB6978.namprd11.prod.outlook.com (2603:10b6:510:206::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.32; Mon, 17 Jul
+ 2023 08:08:59 +0000
+Received: from DS0PR11MB6375.namprd11.prod.outlook.com
+ ([fe80::3a96:9177:fd4f:c649]) by DS0PR11MB6375.namprd11.prod.outlook.com
+ ([fe80::3a96:9177:fd4f:c649%6]) with mapi id 15.20.6588.028; Mon, 17 Jul 2023
+ 08:08:58 +0000
+Message-ID: <e248bcbf-06b0-a312-2f35-5e8c148cd218@intel.com>
+Date:   Mon, 17 Jul 2023 10:08:50 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 3/4] ACPI: NHLT: Table manipulation helpers
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     <rafael@kernel.org>, <linux-acpi@vger.kernel.org>,
+        <robert.moore@intel.com>, <pierre-louis.bossart@linux.intel.com>,
+        <amadeuszx.slawinski@linux.intel.com>
+References: <20230712091048.2545319-1-cezary.rojewski@intel.com>
+ <20230712091048.2545319-4-cezary.rojewski@intel.com>
+ <ZK7Ig6TPhnnKs3Yi@smile.fi.intel.com>
+From:   Cezary Rojewski <cezary.rojewski@intel.com>
+In-Reply-To: <ZK7Ig6TPhnnKs3Yi@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0076.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1e::6) To DS0PR11MB6375.namprd11.prod.outlook.com
+ (2603:10b6:8:c9::21)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxF8wCprRk9gYxAA--.30213S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxWr4ftFWUCFWkZw13Wr13WrX_yoW5XryrpF
-        yUK3s8K3W5WFsFqw1fJayrWFWYq3y8ua4SgFZ7G343K3W8GryFqFWfJryagFyDAF4Fk3y2
-        vr48tFy8WFW8ZFbCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
-        sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-        0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-        IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-        e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-        0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-        Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
-        8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AK
-        xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64
-        vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-        jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2I
-        x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK
-        8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-        0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UWHqcUUUUU=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB6375:EE_|PH7PR11MB6978:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21ffd9fe-0c6a-4221-0fd7-08db869d1264
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: sJn/XrN/s+CC9aMskOxJtbqptLOalJNcNfZyPYXl5JgHUFChuS8M6BKCrkN8fHHhG2wSQjc4sYDtVoljaVN9JlZzwkAfpHt2sIPThhPTtpC9Z6/HnGuyjmO2CSUH1x4VN+l/4O94QCqmsmoD37MJ3pIUcaG4iPE6ArEadjKJQQl0hfwLQCtEI68frq90JjotKOA6XOx0eyAIyRHH/IaQRwHqRIPK3J8l871okOR6bau/GqA5fjrHLrm8OyfOcAqDOx/q18+oe+DNfN5ZQAD0IHYGT1ecjRvb2+/8xXF1rqSGqaoEXtSMbpmrt1pRtpmxnEdFipid6aVhNNh9cWAv47u7/jlP1p3gUzCzXRI2zuj77AuWjYFS06qxXXH6/vYMVWnICpNlcQpE4FRXAHOr8vTG7oB+oQU/r/OPZgpewNJFWRTxoBigFri2lWfcrsrAZt79e2oynDu+epI0ZRXqc5b+JAEHFcENl1tOncmlZju4pJjCRgPjg/oFwLSg46ThYKBacuHbR3t3fUoFDh4+pqB07ykfq1ekpmULxNRU8ykSeg3v6R6bFiCauZ1EWEjYb0knEGwpxKLbaDAgj26HbY3F4EADae+ybVsltZByfWOFKYxJ41A4UtGmqeK0bH6HIulHFd+KvQyEbwMw13JBLHwRCEQRmtA7bMP9j3vj0Jw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB6375.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(396003)(136003)(366004)(376002)(39860400002)(451199021)(82960400001)(38100700002)(6486002)(6666004)(478600001)(41300700001)(5660300002)(8936002)(8676002)(66946007)(66556008)(66476007)(6916009)(316002)(4326008)(2616005)(186003)(6512007)(53546011)(6506007)(26005)(86362001)(31696002)(36756003)(44832011)(2906002)(31686004)(66899021)(21314003)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NmIxVEltNkVMejY4YjZCU0x1NmtFa0FQMDM1WUNqWFRnWHhRdWZydUlxdzhZ?=
+ =?utf-8?B?WmlGWEdFaTl5R2dqM2ZYN1A4V3ZBcHNTYnF6RVNvcnVoMEtzLy9WMW8xMmI4?=
+ =?utf-8?B?WDFDUEo2bUNxSVBEWEc1OXdjSERONnUya05RRFY0RElnTjUrb2FpWmhhWUVU?=
+ =?utf-8?B?ZVUwNnQ3VUJMdlU4WW5Zc0QwdWM5NEFScDNOdU1pa01nUWZPU1V3OUcvZDdG?=
+ =?utf-8?B?WTJtdmFhV0xsUlFGTkhlRVNJM2swUE0zaUZYVW5qZUlhK1dPZVVXb1ppMWVM?=
+ =?utf-8?B?NlZHVGlRVzJRSzM2V1NjS0x3elhUSkpaTTFRZDVFOFRmN2puTTNpdlR5ZENh?=
+ =?utf-8?B?MkcxMHFrbkJrQ0tURVFIeGVPMGdPVTJaSUN5Nkc3YTFwNzN3OWdPT0JMWFor?=
+ =?utf-8?B?ZVZJWHgvSjQyVXVuU2wxWDVUeXBpVHB4UDNNdXMyQmJtVWpwK3JLbU95bEk0?=
+ =?utf-8?B?Nlcwa2FGZ3h0MUFnOGFPSHcrdkE4WURkVEJlUDhFZW9nNUVQVE0zNkRxRERX?=
+ =?utf-8?B?d0Q5NGdMblhMLzdNWEJlVWYzZ1pDaTZOYzM4OTB4Rm4zWFNUSjZXM3M1WTlW?=
+ =?utf-8?B?RHNFcW91MFZCRlZMVStXTlBJTU5MeVNhZEFtMVo2MENFWjdDeG5aRGJUYlcv?=
+ =?utf-8?B?bVdEOXorUW1RL0U3QkRnU1dKNXR3N3dRN2tmci9ZMm50ZjdWaEJGc0E0RVJv?=
+ =?utf-8?B?NFZYL1NON1Y5dnBxbFR2cENOMElNVXMwS2s1RlhFM0tTNlBQWXZyTUZpK0wy?=
+ =?utf-8?B?RE8yTHJkanBOZTVzR2d1Y0NUY05JK3F0WHpnM2dtVjY0NjZnMWxrMTI3VlJn?=
+ =?utf-8?B?aEhqcWJUSVNhcGNJWmxadXFVSjlvZytwRVppQkZGUnpKSmcxOTJCQjRXWmlE?=
+ =?utf-8?B?SmhIOFJldXVVQlBYM1dFMFB1VnB0bjJXWEMwNmQyL1paUjk3VFJZMVhsUTJC?=
+ =?utf-8?B?MHBVMFArZVdDRE13YXZIOUduVWVxdmRJZUR0ZEJFSjhRbUdoNjhvNm9mNGVH?=
+ =?utf-8?B?ZW4vMnJWS21CSHQvNy9UdytCS2FMMWtJMG55UWp0REtMWkRTcSsxem0rK1Ja?=
+ =?utf-8?B?azB3OWtvYWJVVG5vUlVqSVpWNXBtUUVueUo4ampDUGNURDEvTUU1RkVNc0dI?=
+ =?utf-8?B?U3RiVlVlWUxlaEM4Q0wvL01BcVlFcERjRFF2cGN1eWUxMEJlZytKYS9vbmlu?=
+ =?utf-8?B?OWFzSGpIRGFZMmhCNHB2d09KOWRBSlVuK0srVFA3WTVobmFacFFFdlYyZHFE?=
+ =?utf-8?B?ejFrdHo0eURiTUY0Wjh0TmdwbnBiVDdGYXdHcnZoYmJBZ2R1NVhDRUhiRk1K?=
+ =?utf-8?B?VkVibTlCOHd1dkVFWC9leTFBcHNMTGg2RzVseTFzUW9jcE9SOWtNcktBNk9L?=
+ =?utf-8?B?c0U0NllZdFdwRTlEOGVEUmZrNzQ0enN2N0NzK2hEdHBhcjNRdXdoRS82ZXhN?=
+ =?utf-8?B?aFZnT0N2UDBvS0FSaDcza29jNGlEZEE2UTJmYmpLTTlZMi8zMUN4T3pmcEZ4?=
+ =?utf-8?B?WFp4TWhqWkVmaSs5bHRGOG5HVXlOSXpzZzVmbFh5VFZXd1U2VElwSFVBSlJw?=
+ =?utf-8?B?YVM2UjdrZ1JSbFF4Smd3cXhIcXEzSE1YTkdqSmQ3dlUxWkpWaHFyVk1NMWU3?=
+ =?utf-8?B?N0ptNTIzT0J3czFGZUlRUFdkUTJBc0t2MVl5YVZtWVB6d3dKVmUxSGsvaFZv?=
+ =?utf-8?B?RGtmOU1lRDlGcmlRZ1NhQ0VjSi9xZlVmSEVpWC9saVduN3VFcUVnTzc4WXBs?=
+ =?utf-8?B?Yk5QN1lSak1ZZTRwY1hTSFVHNkZYRmtEZnVSQURIWkFySDlhTkFjVnJ5WUNH?=
+ =?utf-8?B?cVBYcmNjN2svZlRueDZwWXBndk1sOFJVQ2dISVp3Ym9pVVlWQmNEWmtlbFRk?=
+ =?utf-8?B?V3FjYkFBcjNhd0hURlFQK2JpcUgreE91dTFxSXJiQ2xBcmZ4SlJPVnNqZWRr?=
+ =?utf-8?B?UFU0WGxMVE5QZUFJRDMvRWh1cWpqLzdyTEg2Si95d25MZ0ZvV2c0bkgyVit1?=
+ =?utf-8?B?OElFSUlkSkpWcVN5SHZkM2lkSlRZN29tV3N1UUpsd2NSQWl3aXRCNVRVN3Ra?=
+ =?utf-8?B?SUhVZGhnbzN0SkhRdnk1dUhYZ2tidWlueGxPWTUzRkQ5SzYybVhaSzdqQWFE?=
+ =?utf-8?B?TDdpRHlMblVVZ3FUbU8zVGNHbjlvS2UwVWhhU0MzbEpNTjJPdEZsVjdUTXd2?=
+ =?utf-8?B?b2c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21ffd9fe-0c6a-4221-0fd7-08db869d1264
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB6375.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2023 08:08:58.2702
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zAgwqym1vfuHq8HngOKYuiUMmGRAklcYMq0zJjVAM2yDDmYEfi8DI+6YuLGNYITwnMaWPmfWwKKdCDFYkQIMFdAI4mNDF1evhFiFBsska6s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6978
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,80 +159,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-With ACPI Spec 6.5 chapter 5.2.12.20, each processor in LoongArch
-system has a Core Programmable Interrupt Controller in MADT table,
-value of its type is 0x11 in the spec and defined as enum variable
-ACPI_MADT_TYPE_CORE_PIC in Linux kernel. Physical id can be parsed
-from MADT table for LoongArch system, also it can be parsed from
-MAT table for hotplug cpu. This patch adds physical id parsing for
-LoongArch system.
+On 2023-07-12 5:36 PM, Andy Shevchenko wrote:
+> On Wed, Jul 12, 2023 at 11:10:47AM +0200, Cezary Rojewski wrote:
+>> The table is composed of a range of endpoints with each describing
+>> audio formats they support. Thus most of the operations involve
+>> iterating over elements of the table. Simplify the process by
+>> implementing range of getters.
+> 
+> A few nit-picks below.
+> In general, LGTM,
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> (Please, use my @linux.intel.com address for LKML and related)
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
-Changes in v2:
- Refresh the changelog and add detailed description of acpi spec
- about MADT table for LoongArch system.
+...
 
- Add comments in function map_core_pic_id.
- 
----
- drivers/acpi/processor_core.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+>> +/*
+>> + * The for_each_nhlt_xxx() macros rely on an iterator to deal with the
+> 
+> I would do s/xxx/*/
 
-diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
-index d6606a9f2da6..7dd6dbaa98c3 100644
---- a/drivers/acpi/processor_core.c
-+++ b/drivers/acpi/processor_core.c
-@@ -132,6 +132,30 @@ static int map_rintc_hartid(struct acpi_subtable_header *entry,
- 	return -EINVAL;
- }
- 
-+/*
-+ * Retrieve LoongArch CPU physical id
-+ */
-+static int map_core_pic_id(struct acpi_subtable_header *entry,
-+		int device_declaration, u32 acpi_id, phys_cpuid_t *phys_id)
-+{
-+	struct acpi_madt_core_pic *core_pic =
-+		container_of(entry, struct acpi_madt_core_pic, header);
-+
-+	if (!(core_pic->flags & ACPI_MADT_ENABLED))
-+		return -ENODEV;
-+
-+	/* device_declaration means Device object in DSDT, in LoongArch
-+	 * system, logical processor acpi_id is required in _UID property
-+	 * of DSDT table, so we should check device_declaration here
-+	 */
-+	if (device_declaration && (core_pic->processor_id == acpi_id)) {
-+		*phys_id = core_pic->core_id;
-+		return 0;
-+	}
-+
-+	return -EINVAL;
-+}
-+
- static phys_cpuid_t map_madt_entry(struct acpi_table_madt *madt,
- 				   int type, u32 acpi_id)
- {
-@@ -165,6 +189,9 @@ static phys_cpuid_t map_madt_entry(struct acpi_table_madt *madt,
- 		} else if (header->type == ACPI_MADT_TYPE_RINTC) {
- 			if (!map_rintc_hartid(header, type, acpi_id, &phys_id))
- 				break;
-+		} else if (header->type == ACPI_MADT_TYPE_CORE_PIC) {
-+			if (!map_core_pic_id(header, type, acpi_id, &phys_id))
-+				break;
- 		}
- 		entry += header->length;
- 	}
-@@ -216,6 +243,8 @@ static phys_cpuid_t map_mat_entry(acpi_handle handle, int type, u32 acpi_id)
- 		map_x2apic_id(header, type, acpi_id, &phys_id);
- 	else if (header->type == ACPI_MADT_TYPE_GENERIC_INTERRUPT)
- 		map_gicc_mpidr(header, type, acpi_id, &phys_id);
-+	else if (header->type == ACPI_MADT_TYPE_CORE_PIC)
-+		map_core_pic_id(header, type, acpi_id, &phys_id);
- 
- exit:
- 	kfree(buffer.pointer);
--- 
-2.27.0
+Ack.
 
+>> + * variable length of each endpoint structure and the possible presence
+>> + * of an OED-Config used by Windows only.
+>> + */
+>> +
+>> +/**
+>> + * for_each_nhlt_endpoint - Iterate over endpoints in a NHLT table.
+>> + * @tb:		the pointer to a NHLT table.
+>> + * @ep:		the pointer to endpoint to use as loop cursor.
+>> + */
+>> +#define for_each_nhlt_endpoint(tb, ep)					\
+>> +	for (unsigned int __i = 0;					\
+>> +	     __i < (tb)->endpoint_count &&				\
+>> +		((ep) = __acpi_nhlt_get_endpoint(tb, ep, __i));		\
+> 
+> Do you really need ep to be in parentheses?
+
+Agree. Also, checked how include/linux/list.h looks like and it aligns 
+with your proposal.
+
+>> +	     __i++)
+>> +
+>> +/**
+>> + * for_each_nhlt_fmtcfg - Iterate over format configurations.
+>> + * @fmts:	the pointer to formats configuration space.
+>> + * @fmt:	the pointer to format to use as loop cursor.
+>> + */
+>> +#define for_each_nhlt_fmtcfg(fmts, fmt)					\
+>> +	for (unsigned int __i = 0;					\
+>> +	     __i < (fmts)->formats_count &&				\
+>> +		((fmt) = __acpi_nhlt_get_fmtcfg(fmts, fmt, __i));	\
+> 
+> Similar for fmt.
+
+Ditto.
+
+>> +	     __i++)
