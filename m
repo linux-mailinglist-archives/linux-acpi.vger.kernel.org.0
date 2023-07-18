@@ -2,26 +2,26 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 063C3758498
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jul 2023 20:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDE46758492
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jul 2023 20:21:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229761AbjGRSVh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Jul 2023 14:21:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55028 "EHLO
+        id S229709AbjGRSVe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Jul 2023 14:21:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229707AbjGRSVe (ORCPT
+        with ESMTP id S229678AbjGRSVe (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Jul 2023 14:21:34 -0400
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1DB4196;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B905197;
         Tue, 18 Jul 2023 11:21:26 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id 3d43d9bec74791c9; Tue, 18 Jul 2023 20:21:25 +0200
+ id a6acf452a24c91d8; Tue, 18 Jul 2023 20:21:24 +0200
 Received: from kreacher.localnet (unknown [195.136.19.94])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id E303C6614F7;
+        by v370.home.net.pl (Postfix) with ESMTPSA id 3CF626614F7;
         Tue, 18 Jul 2023 20:21:24 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
@@ -31,9 +31,9 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Zhang Rui <rui.zhang@intel.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH v1 5/7] ACPI: thermal: Use trip point table to register thermal zones
-Date:   Tue, 18 Jul 2023 20:06:57 +0200
-Message-ID: <3760707.kQq0lBPeGt@kreacher>
+Subject: [PATCH v1 6/7] ACPI: thermal: Rework thermal_get_trend()
+Date:   Tue, 18 Jul 2023 20:07:49 +0200
+Message-ID: <9147669.CDJkKcVGEf@kreacher>
 In-Reply-To: <13318886.uLZWGnKmhe@kreacher>
 References: <13318886.uLZWGnKmhe@kreacher>
 MIME-Version: 1.0
@@ -42,7 +42,7 @@ Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 195.136.19.94
 X-CLIENT-HOSTNAME: 195.136.19.94
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrgeeggdduvddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepjedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihgthhgrlhdrfihilhgtiiihnhhskhhisehinhhtvghlrdgtohhmpdhr
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrgeeggdduudelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepjedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihgthhgrlhdrfihilhgtiiihnhhskhhisehinhhtvghlrdgtohhmpdhr
  tghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhm
 X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
@@ -56,197 +56,147 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Make the ACPI thermal driver use thermal_zone_device_register_with_trips()
-to register its thermal zones.
-
-For this purpose, make it create a trip point table and pass it to
-thermal_zone_device_register_with_trips() as an argument and use the
-struct thermal_trip_ref introduced previously to connect the generic
-thermal trip structures to the internal data structures representing
-trip points in the driver.
+Rework the ACPI thermal driver's .get_trend() callback function,
+thermal_get_trend(), to use trip point data stored in the generic
+trip structures instead of calling thermal_get_trip_type() and
+thermal_get_trip_temp() and make it hold thermal_check_lock to
+protect against possible races against trip point updates.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/thermal.c |  100 +++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 96 insertions(+), 4 deletions(-)
+ drivers/acpi/thermal.c |  107 +++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 78 insertions(+), 29 deletions(-)
 
 Index: linux-pm/drivers/acpi/thermal.c
 ===================================================================
 --- linux-pm.orig/drivers/acpi/thermal.c
 +++ linux-pm/drivers/acpi/thermal.c
-@@ -93,16 +93,19 @@ MODULE_PARM_DESC(psv, "Disable or overri
- static struct workqueue_struct *acpi_thermal_pm_queue;
- 
- struct acpi_thermal_critical {
-+	struct thermal_trip_ref trip_ref;
- 	unsigned long temperature;
- 	bool valid;
- };
- 
- struct acpi_thermal_hot {
-+	struct thermal_trip_ref trip_ref;
- 	unsigned long temperature;
- 	bool valid;
- };
- 
- struct acpi_thermal_passive {
-+	struct thermal_trip_ref trip_ref;
- 	struct acpi_handle_list devices;
- 	unsigned long temperature;
- 	unsigned long tc1;
-@@ -112,6 +115,7 @@ struct acpi_thermal_passive {
- };
- 
- struct acpi_thermal_active {
-+	struct thermal_trip_ref trip_ref;
- 	struct acpi_handle_list devices;
- 	unsigned long temperature;
- 	bool valid;
-@@ -133,6 +137,7 @@ struct acpi_thermal {
- 	unsigned long polling_frequency;
- 	volatile u8 zombie;
- 	struct acpi_thermal_trips trips;
-+	struct thermal_trip *trip_table;
- 	struct acpi_handle_list devices;
- 	struct thermal_zone_device *thermal_zone;
- 	int kelvin_offset;	/* in millidegrees */
-@@ -186,6 +191,18 @@ static int acpi_thermal_get_polling_freq
- 	return 0;
+@@ -572,47 +572,96 @@ static int thermal_get_crit_temp(struct
+ 	return -EINVAL;
  }
  
-+static void acpi_thermal_trip_set_temp(struct acpi_thermal *tz,
-+				       struct thermal_trip *trip,
-+				       long temperature)
++static struct thermal_trip *acpi_thermal_get_trip(struct acpi_thermal *tz,
++					   int trip_index)
 +{
-+	/* Ignore unititialized trips */
-+	if (!trip)
-+		return;
-+
-+	trip->temperature = deci_kelvin_to_millicelsius_with_offset(temperature,
-+								    tz->kelvin_offset);
-+}
-+
- static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
- {
- 	acpi_status status;
-@@ -745,6 +762,7 @@ static void acpi_thermal_zone_sysfs_remo
- 
- static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- {
 +	struct thermal_trip *trip;
- 	int passive_delay = 0;
- 	int trip_count = 0;
- 	int result;
-@@ -765,10 +783,52 @@ static int acpi_thermal_register_thermal
- 	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].valid; i++)
- 		trip_count++;
- 
--	tz->thermal_zone = thermal_zone_device_register("acpitz", trip_count, 0,
--							tz, &acpi_thermal_zone_ops,
--							NULL, passive_delay,
--							tz->polling_frequency * 100);
-+	tz->trip_table = kcalloc(trip_count, sizeof(*tz->trip_table), GFP_KERNEL);
-+	if (!tz->trip_table)
-+		return -ENOMEM;
-+
-+	trip = tz->trip_table;
-+
-+	if (tz->trips.critical.valid) {
-+		trip->type = THERMAL_TRIP_CRITICAL;
-+		acpi_thermal_trip_set_temp(tz, trip,
-+					   tz->trips.critical.temperature);
-+		trip->driver_ref = &tz->trips.critical.trip_ref;
-+		trip++;
-+	}
-+
-+	if (tz->trips.hot.valid) {
-+		trip->type = THERMAL_TRIP_HOT;
-+		acpi_thermal_trip_set_temp(tz, trip,
-+					   tz->trips.hot.temperature);
-+		trip->driver_ref = &tz->trips.hot.trip_ref;
-+		trip++;
-+	}
-+
-+	if (tz->trips.passive.valid) {
-+		trip->type = THERMAL_TRIP_PASSIVE;
-+		acpi_thermal_trip_set_temp(tz, trip,
-+					   tz->trips.passive.temperature);
-+		trip->driver_ref = &tz->trips.passive.trip_ref;
-+		trip++;
-+	}
-+
-+	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].valid; i++) {
-+		trip->type = THERMAL_TRIP_ACTIVE;
-+		acpi_thermal_trip_set_temp(tz, trip,
-+					   tz->trips.active[i].temperature);
-+		trip->driver_ref = &tz->trips.active[i].trip_ref;
-+		trip++;
-+	}
-+
-+	tz->thermal_zone = thermal_zone_device_register_with_trips("acpitz",
-+								   tz->trip_table,
-+								   trip_count,
-+								   0, tz,
-+								   &acpi_thermal_zone_ops,
-+								   NULL,
-+								   passive_delay,
-+								   tz->polling_frequency * 100);
- 	if (IS_ERR(tz->thermal_zone))
- 		return -ENODEV;
- 
-@@ -806,6 +866,7 @@ static void acpi_thermal_unregister_ther
- {
- 	acpi_thermal_zone_sysfs_remove(tz);
- 	thermal_zone_device_unregister(tz->thermal_zone);
-+	kfree(tz->trip_table);
- 	tz->thermal_zone = NULL;
- 	acpi_bus_detach_private_data(tz->device->handle);
- }
-@@ -939,6 +1000,9 @@ static void acpi_thermal_check_fn(struct
- {
- 	struct acpi_thermal *tz = container_of(work, struct acpi_thermal,
- 					       thermal_check_work);
-+	struct thermal_trip *trip;
-+	long temperature;
 +	int i;
- 
- 	/*
- 	 * In general, it is not sufficient to check the pending bit, because
-@@ -953,6 +1017,34 @@ static void acpi_thermal_check_fn(struct
- 
- 	mutex_lock(&tz->thermal_check_lock);
- 
++
++	if (!tz || trip_index < 0)
++		return NULL;
++
++	trip = tz->trips.critical.trip_ref.trip;
++	if (trip) {
++		if (!trip_index)
++			return trip;
++
++		trip_index--;
++	}
++
++	trip = tz->trips.hot.trip_ref.trip;
++	if (trip) {
++		if (!trip_index)
++			return trip;
++
++		trip_index--;
++	}
++
 +	trip = tz->trips.passive.trip_ref.trip;
 +	if (trip) {
-+		/*
-+		 * This means that the passive trip was valid initially, so
-+		 * update its temperature in case it has changed or the trip
-+		 * has become invalid.
-+		 */
-+		temperature = tz->trips.passive.valid ?
-+				tz->trips.passive.temperature :
-+				THERMAL_TEMP_INVALID;
-+		acpi_thermal_trip_set_temp(tz, trip, temperature);
++		if (!trip_index)
++			return trip;
++
++		trip_index--;
 +	}
 +
 +	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
 +		trip = tz->trips.active[i].trip_ref.trip;
 +		if (trip) {
-+			/*
-+			 * This means that the active trip #i was valid
-+			 * initially, so update its temperature in case it has
-+			 * changed or the trip has become invalid.
-+			 */
-+			temperature = tz->trips.active[i].valid ?
-+					tz->trips.active[i].temperature :
-+					THERMAL_TEMP_INVALID;
-+			acpi_thermal_trip_set_temp(tz, trip, temperature);
++			if (!trip_index)
++				return trip;
++
++			trip_index--;
 +		}
 +	}
 +
- 	thermal_zone_device_update(tz->thermal_zone, THERMAL_EVENT_UNSPECIFIED);
++	return NULL;
++}
++
+ static int thermal_get_trend(struct thermal_zone_device *thermal,
+-			     int trip, enum thermal_trend *trend)
++			     int trip_index, enum thermal_trend *trend)
+ {
+ 	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
+-	enum thermal_trip_type type;
+-	int i;
++	struct thermal_trip *trip;
++	int ret = 0;
  
- 	refcount_inc(&tz->thermal_check_count);
+-	if (thermal_get_trip_type(thermal, trip, &type))
+-		return -EINVAL;
++	mutex_lock(&tz->thermal_check_lock);
+ 
+-	if (type == THERMAL_TRIP_ACTIVE) {
+-		int trip_temp;
++	trip = acpi_thermal_get_trip(tz, trip_index);
++	if (!trip) {
++		ret = -EINVAL;
++		goto out;
++	}
++	if (trip->type == THERMAL_TRIP_ACTIVE) {
+ 		int temp = deci_kelvin_to_millicelsius_with_offset(
+ 					tz->temperature, tz->kelvin_offset);
+-		if (thermal_get_trip_temp(thermal, trip, &trip_temp))
+-			return -EINVAL;
+ 
+-		if (temp > trip_temp) {
++		if (temp > trip->temperature)
+ 			*trend = THERMAL_TREND_RAISING;
+-			return 0;
+-		} else {
+-			/* Fall back on default trend */
+-			return -EINVAL;
+-		}
++		else /* Fall back on default trend */
++			ret = -EINVAL;
++	} else {
++		/*
++		 * tz->temperature has already been updated by generic thermal
++		 * layer, before this callback being invoked.
++		 */
++		int i = tz->trips.passive.tc1 * (tz->temperature -
++				tz->last_temperature) +
++			tz->trips.passive.tc2 * (tz->temperature -
++				tz->trips.passive.temperature);
++
++		if (i > 0)
++			*trend = THERMAL_TREND_RAISING;
++		else if (i < 0)
++			*trend = THERMAL_TREND_DROPPING;
++		else
++			*trend = THERMAL_TREND_STABLE;
+ 	}
+ 
+-	/*
+-	 * tz->temperature has already been updated by generic thermal layer,
+-	 * before this callback being invoked
+-	 */
+-	i = tz->trips.passive.tc1 * (tz->temperature - tz->last_temperature) +
+-	    tz->trips.passive.tc2 * (tz->temperature - tz->trips.passive.temperature);
+-
+-	if (i > 0)
+-		*trend = THERMAL_TREND_RAISING;
+-	else if (i < 0)
+-		*trend = THERMAL_TREND_DROPPING;
+-	else
+-		*trend = THERMAL_TREND_STABLE;
++out:
++	mutex_unlock(&tz->thermal_check_lock);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static void acpi_thermal_zone_device_hot(struct thermal_zone_device *thermal)
 
 
 
