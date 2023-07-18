@@ -2,162 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAD73757DAA
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jul 2023 15:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4039757F3B
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jul 2023 16:17:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231361AbjGRNcJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Jul 2023 09:32:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36624 "EHLO
+        id S230243AbjGRORG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Jul 2023 10:17:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231193AbjGRNcG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Jul 2023 09:32:06 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7480397;
-        Tue, 18 Jul 2023 06:32:05 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AA7432F4;
-        Tue, 18 Jul 2023 06:32:48 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B62063F6C4;
-        Tue, 18 Jul 2023 06:32:03 -0700 (PDT)
-Date:   Tue, 18 Jul 2023 14:32:01 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Oza Pawandeep <quic_poza@quicinc.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, jiles@qti.qualcomm.com
-Subject: Re: [PATCH] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast
- timer
-Message-ID: <20230718133201.qsulwupte6l6bmdm@bogus>
-References: <20230712172458.2507434-1-quic_poza@quicinc.com>
+        with ESMTP id S232446AbjGRORE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Jul 2023 10:17:04 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E58188;
+        Tue, 18 Jul 2023 07:17:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=foGX3qPz8g1mE0AjGZ0RURTetuvRz0ZaIIFsjuTQ33o=; b=JBWA+Dva8h/kZCHzxx0beMUCVO
+        DBM9NutUs8keY3cK4qSE6pjYwC5UbxQ9p8BI2hjbn36sLUsJjXa4y569DibqyziXWk0dXdIQ/ymwt
+        OrHeqJt0QmXf5YAkADGAfUAJ3xrX0I1mXokQ96A+GrImP/aazfRTj/U6IF8GcT4CGHYo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qLlUl-001dCP-Ng; Tue, 18 Jul 2023 16:16:07 +0200
+Date:   Tue, 18 Jul 2023 16:16:07 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     "Quan, Evan" <Evan.Quan@amd.com>
+Cc:     "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        "airlied@gmail.com" <airlied@gmail.com>,
+        "daniel@ffwll.ch" <daniel@ffwll.ch>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        "mdaenzer@redhat.com" <mdaenzer@redhat.com>,
+        "maarten.lankhorst@linux.intel.com" 
+        <maarten.lankhorst@linux.intel.com>,
+        "tzimmermann@suse.de" <tzimmermann@suse.de>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        "jingyuwang_vip@163.com" <jingyuwang_vip@163.com>,
+        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
+        "jim.cromie@gmail.com" <jim.cromie@gmail.com>,
+        "bellosilicio@gmail.com" <bellosilicio@gmail.com>,
+        "andrealmeid@igalia.com" <andrealmeid@igalia.com>,
+        "trix@redhat.com" <trix@redhat.com>,
+        "jsg@jsg.id.au" <jsg@jsg.id.au>, "arnd@arndb.de" <arnd@arndb.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH V6 1/9] drivers core: Add support for Wifi band RF
+ mitigations
+Message-ID: <642e3f4d-976b-4ee1-8f63-844b9568462e@lunn.ch>
+References: <20230710083641.2132264-1-evan.quan@amd.com>
+ <20230710083641.2132264-2-evan.quan@amd.com>
+ <5439dd61-7b5f-4fc9-8ccd-f7df43a791dd@lunn.ch>
+ <DM6PR12MB2619CF4D4601864FF251A1FAE438A@DM6PR12MB2619.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230712172458.2507434-1-quic_poza@quicinc.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <DM6PR12MB2619CF4D4601864FF251A1FAE438A@DM6PR12MB2619.namprd12.prod.outlook.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 12, 2023 at 10:24:58AM -0700, Oza Pawandeep wrote:
-> Arm® Functional Fixed Hardware Specification defines LPI states,
-> which provides an architectural context loss flags field
-> that can be used to describe the context that might be lost
-> when an LPI state is entered.
-> 
-> - Core context Lost
-> 	- General purpose registers.
-> 	- Floating point and SIMD registers.
-> 	- System registers, include the System register based
-> 	- generic timer for the core.
-> 	- Debug register in the core power domain.
-> 	- PMU registers in the core power domain.
-> 	- Trace register in the core power domain.
-> - Trace context loss
-> - GICR
-> - GICD
-> 
-> Qualcomm's custom CPUs preserves the architectural state,
-> including keeping the power domain for local timers active.
-> when core is power gated, the local timers are sufficient to
-> wake the core up without needing broadcast timer.
-> 
-> The patch fixes the evaluation of cpuidle arch_flags,
-> and moves only to broadcast timer if core context lost
-> is defined in ACPI LPI.
-> 
-> Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
-> 
-> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-> index bd68e1b7f29f..9c335968316c 100644
-> --- a/arch/arm64/include/asm/acpi.h
-> +++ b/arch/arm64/include/asm/acpi.h
-> @@ -42,6 +42,24 @@
->  #define ACPI_MADT_GICC_SPE  (offsetof(struct acpi_madt_generic_interrupt, \
->  	spe_interrupt) + sizeof(u16))
->  
-> +/*
-> + * Arm® Functional Fixed Hardware Specification Version 1.2.
-> + * Table 2: Arm Architecture context loss flags
-> + */
-> +#define CPUIDLE_CORE_CTXT		BIT(0) /* Core context Lost */
-> +
-> +#ifndef arch_acpi_lpi_timer_stopped
-> +static __always_inline bool arch_acpi_lpi_timer_stopped(u32 arch_flags)
+> The wbrf_supported_producer and wbrf_supported_consumer APIs seem
+> unnecessary for the generic implementation.
 
-As mentioned by you above, the core context is not just timer context, so
-calling this function so is misleading.
+I'm happy with these, once the description is corrected. As i said in
+another comment, 'can' should be replaced with 'should'. The device
+itself knows if it can, only the core knows if it should, based on the
+policy of if actions need to be taken, and there are both providers
+and consumers registered with the core.
 
-> +{
-> +  return arch_flags & CPUIDLE_CORE_CTXT;
-> +}
-> +#define arch_acpi_lpi_timer_stopped arch_acpi_lpi_timer_stopped
-> +#endif
-> +
-> +#define CPUIDLE_TRACE_CTXT		BIT(1) /* Trace context loss */
-> +#define CPUIDLE_GICR_CTXT		BIT(2) /* GICR */
-> +#define CPUIDLE_GICD_CTXT		BIT(3) /* GICD */
-> +
-
-Do we really need to define these unused bitfields ? DO you have plans to
-use them ?
-
->  /* Basic configuration for ACPI */
->  #ifdef	CONFIG_ACPI
->  pgprot_t __acpi_get_mem_attribute(phys_addr_t addr);
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index 9718d07cc2a2..8ea1f2b3bf96 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -1221,7 +1221,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
->  		strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
->  		state->exit_latency = lpi->wake_latency;
->  		state->target_residency = lpi->min_residency;
-> -		if (lpi->arch_flags)
-> +		if (arch_acpi_lpi_timer_stopped(lpi->arch_flags))
-
-While setting CPUIDLE_FLAG_TIMER_STOP if any flags set is already
-questionable, checking for arch specific flag in the generic code is even
-more questionable now. I wonder if it makes more sense to have a arch
-specific helper to update the state->flags based on how arch specific
-interpretation of lpi->arch_flags ?
-
->  			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
->  		if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
->  			state->flags |= CPUIDLE_FLAG_RCU_IDLE;
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index d584f94409e1..b24f1cd1cebb 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1471,6 +1471,14 @@ static inline int lpit_read_residency_count_address(u64 *address)
->  }
->  #endif
->  
-> +#ifndef arch_acpi_lpi_timer_stopped
-> +static __always_inline bool arch_acpi_lpi_timer_stopped(u32 arch_flags)
-> +{
-> +  return (arch_flags != 0);
-> +}
-> +#define arch_acpi_lpi_timer_stopped arch_acpi_lpi_timer_stopped
-> +#endif
-> +
-
-This looks ugly and main reason for my above comment. I am thinking of
-arch_update_idle_state_flags(lpi->arch_flags, &state->flags) and make
-it do nothing on non arm platforms. I don't think we will be breaking
-anything(i.e. no need to check arch_flags != 0. It is incorrect strictly
-speaking but there are no non-arm users ATM, but that doesn't mean we can
-trickle the arch specific LPI FFH details into the generic code.
-
--- 
-Regards,
-Sudeep
+   Andrew
