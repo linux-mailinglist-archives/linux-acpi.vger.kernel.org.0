@@ -2,123 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41E13759149
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jul 2023 11:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7318175926D
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jul 2023 12:11:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230291AbjGSJNQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jul 2023 05:13:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59536 "EHLO
+        id S230220AbjGSKLi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Jul 2023 06:11:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229823AbjGSJNQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jul 2023 05:13:16 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC0F10B;
-        Wed, 19 Jul 2023 02:13:14 -0700 (PDT)
-Received: from dggpemm500002.china.huawei.com (unknown [172.30.72.53])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4R5VT71yWZzrRr5;
-        Wed, 19 Jul 2023 17:12:27 +0800 (CST)
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Wed, 19 Jul 2023 17:13:11 +0800
-Subject: Re: [PATCH v3] ACPI/IORT: Remove erroneous id_count check in
- iort_node_get_rmr_info()
-To:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Guanghui Feng <guanghuifeng@linux.alibaba.com>
-CC:     "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-        "alikernel-developer@linux.alibaba.com" 
-        <alikernel-developer@linux.alibaba.com>,
-        "will@kernel.org" <will@kernel.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>
-References: <1689593625-45213-1-git-send-email-guanghuifeng@linux.alibaba.com>
- <ZLZEq0QBBW4rcxJM@lpieralisi> <597f481b0e5149dabe4821ca618af6b3@huawei.com>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <613da2c3-d515-b49c-4ff3-cf94836b2acf@huawei.com>
-Date:   Wed, 19 Jul 2023 17:13:10 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        with ESMTP id S229458AbjGSKLh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jul 2023 06:11:37 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7B417E69;
+        Wed, 19 Jul 2023 03:11:36 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F8432F4;
+        Wed, 19 Jul 2023 03:12:19 -0700 (PDT)
+Received: from [10.57.33.122] (unknown [10.57.33.122])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 730643F67D;
+        Wed, 19 Jul 2023 03:11:33 -0700 (PDT)
+Message-ID: <ac77142d-964b-691d-ea15-105a523d9738@arm.com>
+Date:   Wed, 19 Jul 2023 11:11:31 +0100
 MIME-Version: 1.0
-In-Reply-To: <597f481b0e5149dabe4821ca618af6b3@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.247]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500002.china.huawei.com (7.185.36.229)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH V6 6/6] coresight: etm4x: Add ACPI support in platform
+ driver
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+To:     rafael@kernel.org, Len Brown <lenb@kernel.org>
+Cc:     Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+        Steve Clevenger <scclevenger@os.amperecomputing.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
+        gregkh@linuxfoundation.org
+References: <20230710062500.45147-1-anshuman.khandual@arm.com>
+ <20230710062500.45147-7-anshuman.khandual@arm.com>
+ <38f0c8f3-5fb3-a18a-456d-867da2998786@arm.com>
+In-Reply-To: <38f0c8f3-5fb3-a18a-456d-867da2998786@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2023/7/18 16:56, Shameerali Kolothum Thodi wrote:
->> [+Catalin, Will, Shameer]
->>
->> On Mon, Jul 17, 2023 at 07:33:45PM +0800, Guanghui Feng wrote:
->>> According to the ARM IORT specifications DEN 0049 issue E,
->>> the "Number of IDs" field in the ID mapping format reports
->>> the number of IDs in the mapping range minus one.
->>>
->>> In iort_node_get_rmr_info(), we erroneously skip ID mappings
->>> whose "Number of IDs" equal to 0, resulting in valid mapping
->>> nodes with a single ID to map being skipped, which is wrong.
->>>
->>> Fix iort_node_get_rmr_info() by removing the bogus id_count
->>> check.
->>>
->>> Fixes: 491cf4a6735a ("ACPI/IORT: Add support to retrieve IORT RMR
->> reserved regions")
->>> Signed-off-by: Guanghui Feng<guanghuifeng@linux.alibaba.com>
->>> ---
->>>   drivers/acpi/arm64/iort.c | 3 ---
->>>   1 file changed, 3 deletions(-)
->>>
->>> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
->>> index 3631230..56d8873 100644
->>> --- a/drivers/acpi/arm64/iort.c
->>> +++ b/drivers/acpi/arm64/iort.c
->>> @@ -1007,9 +1007,6 @@ static void iort_node_get_rmr_info(struct
->> acpi_iort_node *node,
->>>   	for (i = 0; i < node->mapping_count; i++, map++) {
->>>   		struct acpi_iort_node *parent;
->>>
->>> -		if (!map->id_count)
->>> -			continue;
->>> -
->>>   		parent = ACPI_ADD_PTR(struct acpi_iort_node, iort_table,
->>>   				      map->output_reference);
->>>   		if (parent != iommu)
->> Shameer, I know this may look like overkill since the hunk we are
->> removing is buggy but can you please test this patch on platforms
->> with RMR to make sure we are not triggering regressions by removing
->> it (by the specs that's what should be done but current firmware
->> is always something to reckon with) ?
-> Yes, that is a valid fix. Unlikely it will be a problem. Anyway, I have requested
-> Hanjun to help with the testing as I don't have a test setup with me now.
+Rafael, Len
 
-Valid fix for me as well, we had a firmware bug which reported the
-numbers of ID as 1 when we only have one ID mapping, so remove the
-check is fine for the old firmware, but to make it sure, we need some
-test before give it a pass.
+Ping (packets 6, lost 100%).
 
+
+On 10/07/2023 17:40, Suzuki K Poulose wrote:
+> Rafael, Len
 > 
-> Hanjun, please help.
+> On 10/07/2023 07:25, Anshuman Khandual wrote:
+>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>
+>> Drop ETM4X ACPI ID from the AMBA ACPI device list, and instead just 
+>> move it
+>> inside the new ACPI devices list detected and used via platform driver.
+>>
+>> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+>> Cc: Len Brown <lenb@kernel.org>
+>> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Cc: Mike Leach <mike.leach@linaro.org>
+>> Cc: Leo Yan <leo.yan@linaro.org>
+>> Cc: Sudeep Holla <sudeep.holla@arm.com>
+>> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+>> Cc: linux-acpi@vger.kernel.org
+>> Cc: coresight@lists.linaro.org
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com> (for ACPI specific 
+>> changes)
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> 
+> We would like to queue this via coresight tree. The acpi_amba bits have
+> been reviewed by Sudeep. Please could you give us an Ack, if you are
+> happy with the proposal ?
+> 
 
-I need some time to get it properly tested on two versions of firmware,
-and get the test machine properly setup, please allow me give the
-feedback next week.
+Kind regards
+Suzuki
 
-Thanks
-Hanjun
+> Kind regards
+> Suzuki
+> 
+> 
+>> ---
+>>   drivers/acpi/acpi_amba.c                           |  1 -
+>>   drivers/hwtracing/coresight/coresight-etm4x-core.c | 10 ++++++++++
+>>   2 files changed, 10 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/acpi/acpi_amba.c b/drivers/acpi/acpi_amba.c
+>> index f5b443ab01c2..099966cbac5a 100644
+>> --- a/drivers/acpi/acpi_amba.c
+>> +++ b/drivers/acpi/acpi_amba.c
+>> @@ -22,7 +22,6 @@
+>>   static const struct acpi_device_id amba_id_list[] = {
+>>       {"ARMH0061", 0}, /* PL061 GPIO Device */
+>>       {"ARMH0330", 0}, /* ARM DMA Controller DMA-330 */
+>> -    {"ARMHC500", 0}, /* ARM CoreSight ETM4x */
+>>       {"ARMHC501", 0}, /* ARM CoreSight ETR */
+>>       {"ARMHC502", 0}, /* ARM CoreSight STM */
+>>       {"ARMHC503", 0}, /* ARM CoreSight Debug */
+>> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c 
+>> b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+>> index 43f583987250..703b6fcbb6a5 100644
+>> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
+>> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+>> @@ -3,6 +3,7 @@
+>>    * Copyright (c) 2014, The Linux Foundation. All rights reserved.
+>>    */
+>> +#include <linux/acpi.h>
+>>   #include <linux/bitops.h>
+>>   #include <linux/kernel.h>
+>>   #include <linux/moduleparam.h>
+>> @@ -2347,12 +2348,21 @@ static const struct of_device_id 
+>> etm4_sysreg_match[] = {
+>>       {}
+>>   };
+>> +#ifdef CONFIG_ACPI
+>> +static const struct acpi_device_id etm4x_acpi_ids[] = {
+>> +    {"ARMHC500", 0}, /* ARM CoreSight ETM4x */
+>> +    {}
+>> +};
+>> +MODULE_DEVICE_TABLE(acpi, etm4x_acpi_ids);
+>> +#endif
+>> +
+>>   static struct platform_driver etm4_platform_driver = {
+>>       .probe        = etm4_probe_platform_dev,
+>>       .remove        = etm4_remove_platform_dev,
+>>       .driver            = {
+>>           .name            = "coresight-etm4x",
+>>           .of_match_table        = etm4_sysreg_match,
+>> +        .acpi_match_table    = ACPI_PTR(etm4x_acpi_ids),
+>>           .suppress_bind_attrs    = true,
+>>           .pm            = &etm4_dev_pm_ops,
+>>       },
+> 
+
