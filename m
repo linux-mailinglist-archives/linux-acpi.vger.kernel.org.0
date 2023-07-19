@@ -2,200 +2,266 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BBDC759A9A
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jul 2023 18:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8A39759DC7
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jul 2023 20:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbjGSQTK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jul 2023 12:19:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43162 "EHLO
+        id S230180AbjGSSqf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 19 Jul 2023 14:46:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229819AbjGSQTI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jul 2023 12:19:08 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 441C71FDD;
-        Wed, 19 Jul 2023 09:18:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689783538; x=1721319538;
-  h=date:from:to:cc:subject:message-id;
-  bh=FnSFa8Rkjl4aFjO4cevissSWvBgngK0pqbDCz5oes/c=;
-  b=h1bPkaxnXOO5rgsTy5thIe2f3SOi6KAX82/NUTXTyvoTNdXQbrgMtFGD
-   CoLP27iobSYJFK8ZwTJABLkEKJhEhgmvcbza+gtYYW9K0TaUHjx9OYrAi
-   VoVtnwdegpb+Tw4Uz3VyK1u+1GtPYB/9ESgP1lMWC1hi9nzsKG7xTdPYK
-   SNig+tHW6IWWwLzfEtbCDNc+biY2eQBCdSlsyPE6Kmy3lxgpjaSSMsxg/
-   Xc/2yygfD4Lti4FfcAQGXYWEe/OfCRzFDQ7IEv1piEbmFe36TV43zJ7AW
-   Ixv5Tx5kKw0EjwhnowOC6yiEJUCJLqJ0EZDVctpDBymoHufYh2JswOjrL
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10776"; a="430279916"
-X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
-   d="scan'208";a="430279916"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2023 09:18:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="867535887"
-Received: from lkp-server02.sh.intel.com (HELO 36946fcf73d7) ([10.239.97.151])
-  by fmsmga001.fm.intel.com with ESMTP; 19 Jul 2023 09:18:49 -0700
-Received: from kbuild by 36946fcf73d7 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qM9t2-00056r-0v;
-        Wed, 19 Jul 2023 16:18:48 +0000
-Date:   Thu, 20 Jul 2023 00:18:30 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 9089e4adf19900d5a9da76c4371fda6863c6d65f
-Message-ID: <202307200028.11cBWFq9-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229638AbjGSSqe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jul 2023 14:46:34 -0400
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37F231BF6;
+        Wed, 19 Jul 2023 11:46:33 -0700 (PDT)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3145fcecef6so1764216f8f.0;
+        Wed, 19 Jul 2023 11:46:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689792391; x=1690397191;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9ByvbQMuYrnzmBQu7LqbeEUJHEjEfKu2/AoamfTxq6E=;
+        b=DhNnjhODwlZDvPHwxHCEHmD2wVKNZM0IrpKE2dqON1piryqvak4Qpd80xguaYElnec
+         PVu75vCiJ52BQ8mBO4jbTbjlpU63aHNHnqurCmEGE1y2DztLNZUdlhHSG1r4VlEILm0k
+         Ckw4Is8ETRxa5/2Kpz8luQanG+tgL5brXm/4WKdunTINf6CyXwNRCpC/iuMBMQ9LB4z9
+         Am4wGTar6o4mED0f1oVAdVEwg/Tw448r6X3HzXziDNMMxt2P+QV4z7+eSNcS0de51Y2+
+         +kx9JjY06+XPNTf+vOpqyeBH6w8w9FqUm604lf9EHorjPXm+CViQ2JTxN2/j0SZfFAJQ
+         4Ovw==
+X-Gm-Message-State: ABy/qLbvyLfwp+ZUoiWjD26uu58h3AbFQ+hDFhlwfa78febwUf2KG0va
+        kErZoy+WveSC4bYqQ18PzvZgRlwWoaXg6BagyETddiF1
+X-Google-Smtp-Source: APBJJlGIe6HC12q1fgC+FWQlqMdQg8rAOB93G8hsFO73c7PoLDgp+aFvhRb10bzo537cBWmvUwlJzVKyC0S3VpHKMk4=
+X-Received: by 2002:adf:e3c6:0:b0:317:943:8e1a with SMTP id
+ k6-20020adfe3c6000000b0031709438e1amr541699wrm.1.1689792391238; Wed, 19 Jul
+ 2023 11:46:31 -0700 (PDT)
+MIME-Version: 1.0
+References: <13318886.uLZWGnKmhe@kreacher> <3760707.kQq0lBPeGt@kreacher>
+In-Reply-To: <3760707.kQq0lBPeGt@kreacher>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 19 Jul 2023 20:46:20 +0200
+Message-ID: <CAJZ5v0gEhR6q=O-qCyX-H+uMqDUKJ1YeAo6hZcAS4bhZ9StOXA@mail.gmail.com>
+Subject: Re: [PATCH v1 5/7] ACPI: thermal: Use trip point table to register
+ thermal zones
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Michal Wilczynski <michal.wilczynski@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 9089e4adf19900d5a9da76c4371fda6863c6d65f  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
+On Tue, Jul 18, 2023 at 8:21 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> Make the ACPI thermal driver use thermal_zone_device_register_with_trips()
+> to register its thermal zones.
+>
+> For this purpose, make it create a trip point table and pass it to
+> thermal_zone_device_register_with_trips() as an argument and use the
+> struct thermal_trip_ref introduced previously to connect the generic
+> thermal trip structures to the internal data structures representing
+> trip points in the driver.
+>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>  drivers/acpi/thermal.c |  100 +++++++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 96 insertions(+), 4 deletions(-)
+>
+> Index: linux-pm/drivers/acpi/thermal.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/thermal.c
+> +++ linux-pm/drivers/acpi/thermal.c
+> @@ -93,16 +93,19 @@ MODULE_PARM_DESC(psv, "Disable or overri
+>  static struct workqueue_struct *acpi_thermal_pm_queue;
+>
+>  struct acpi_thermal_critical {
+> +       struct thermal_trip_ref trip_ref;
+>         unsigned long temperature;
+>         bool valid;
+>  };
+>
+>  struct acpi_thermal_hot {
+> +       struct thermal_trip_ref trip_ref;
+>         unsigned long temperature;
+>         bool valid;
+>  };
+>
+>  struct acpi_thermal_passive {
+> +       struct thermal_trip_ref trip_ref;
+>         struct acpi_handle_list devices;
+>         unsigned long temperature;
+>         unsigned long tc1;
+> @@ -112,6 +115,7 @@ struct acpi_thermal_passive {
+>  };
+>
+>  struct acpi_thermal_active {
+> +       struct thermal_trip_ref trip_ref;
+>         struct acpi_handle_list devices;
+>         unsigned long temperature;
+>         bool valid;
+> @@ -133,6 +137,7 @@ struct acpi_thermal {
+>         unsigned long polling_frequency;
+>         volatile u8 zombie;
+>         struct acpi_thermal_trips trips;
+> +       struct thermal_trip *trip_table;
+>         struct acpi_handle_list devices;
+>         struct thermal_zone_device *thermal_zone;
+>         int kelvin_offset;      /* in millidegrees */
+> @@ -186,6 +191,18 @@ static int acpi_thermal_get_polling_freq
+>         return 0;
+>  }
+>
+> +static void acpi_thermal_trip_set_temp(struct acpi_thermal *tz,
+> +                                      struct thermal_trip *trip,
+> +                                      long temperature)
+> +{
+> +       /* Ignore unititialized trips */
+> +       if (!trip)
+> +               return;
 
-elapsed time: 1259m
+This check is actually redundant, because the function never receives
+a NULL trip argument.
 
-configs tested: 124
-configs skipped: 3
+I'll drop it.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r015-20230718   gcc  
-alpha                randconfig-r035-20230718   gcc  
-arc                              allyesconfig   gcc  
-arc                          axs101_defconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r034-20230718   gcc  
-arc                  randconfig-r043-20230718   gcc  
-arc                    vdk_hs38_smp_defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                     am200epdkit_defconfig   clang
-arm                                 defconfig   gcc  
-arm                            hisi_defconfig   gcc  
-arm                           omap1_defconfig   clang
-arm                          pxa3xx_defconfig   gcc  
-arm                  randconfig-r013-20230718   gcc  
-arm                  randconfig-r046-20230718   gcc  
-arm                           sama7_defconfig   clang
-arm                        shmobile_defconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                                defconfig   gcc  
-hexagon              randconfig-r022-20230718   clang
-hexagon              randconfig-r025-20230718   clang
-hexagon              randconfig-r031-20230718   clang
-hexagon              randconfig-r041-20230718   clang
-hexagon              randconfig-r045-20230718   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230718   gcc  
-i386         buildonly-randconfig-r005-20230718   gcc  
-i386         buildonly-randconfig-r006-20230718   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230718   gcc  
-i386                 randconfig-i002-20230718   gcc  
-i386                 randconfig-i003-20230718   gcc  
-i386                 randconfig-i004-20230718   gcc  
-i386                 randconfig-i005-20230718   gcc  
-i386                 randconfig-i006-20230718   gcc  
-i386                 randconfig-i011-20230718   clang
-i386                 randconfig-i012-20230718   clang
-i386                 randconfig-i013-20230718   clang
-i386                 randconfig-i014-20230718   clang
-i386                 randconfig-i015-20230718   clang
-i386                 randconfig-i016-20230718   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                       bvme6000_defconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r011-20230718   gcc  
-m68k                 randconfig-r021-20230718   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                           jazz_defconfig   gcc  
-mips                 randconfig-r002-20230718   clang
-mips                 randconfig-r033-20230718   clang
-mips                 randconfig-r036-20230718   clang
-mips                          rb532_defconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r016-20230718   gcc  
-openrisc             randconfig-r023-20230718   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r026-20230718   gcc  
-parisc               randconfig-r032-20230718   gcc  
-parisc64                            defconfig   gcc  
-powerpc                     akebono_defconfig   clang
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          g5_defconfig   clang
-powerpc                     tqm8540_defconfig   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r006-20230718   gcc  
-riscv                randconfig-r042-20230718   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r044-20230718   clang
-sh                               allmodconfig   gcc  
-sh                          rsk7201_defconfig   gcc  
-sh                          urquell_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64              randconfig-r024-20230718   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r005-20230718   clang
-um                   randconfig-r012-20230718   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230718   gcc  
-x86_64       buildonly-randconfig-r002-20230718   gcc  
-x86_64       buildonly-randconfig-r003-20230718   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r003-20230718   gcc  
-x86_64               randconfig-x001-20230718   clang
-x86_64               randconfig-x002-20230718   clang
-x86_64               randconfig-x003-20230718   clang
-x86_64               randconfig-x004-20230718   clang
-x86_64               randconfig-x005-20230718   clang
-x86_64               randconfig-x006-20230718   clang
-x86_64               randconfig-x011-20230718   gcc  
-x86_64               randconfig-x012-20230718   gcc  
-x86_64               randconfig-x013-20230718   gcc  
-x86_64               randconfig-x014-20230718   gcc  
-x86_64               randconfig-x015-20230718   gcc  
-x86_64               randconfig-x016-20230718   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r001-20230718   gcc  
-xtensa               randconfig-r004-20230718   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> +
+> +       trip->temperature = deci_kelvin_to_millicelsius_with_offset(temperature,
+> +                                                                   tz->kelvin_offset);
+> +}
+> +
+>  static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+>  {
+>         acpi_status status;
+> @@ -745,6 +762,7 @@ static void acpi_thermal_zone_sysfs_remo
+>
+>  static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+>  {
+> +       struct thermal_trip *trip;
+>         int passive_delay = 0;
+>         int trip_count = 0;
+>         int result;
+> @@ -765,10 +783,52 @@ static int acpi_thermal_register_thermal
+>         for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].valid; i++)
+>                 trip_count++;
+>
+> -       tz->thermal_zone = thermal_zone_device_register("acpitz", trip_count, 0,
+> -                                                       tz, &acpi_thermal_zone_ops,
+> -                                                       NULL, passive_delay,
+> -                                                       tz->polling_frequency * 100);
+> +       tz->trip_table = kcalloc(trip_count, sizeof(*tz->trip_table), GFP_KERNEL);
+> +       if (!tz->trip_table)
+> +               return -ENOMEM;
+> +
+> +       trip = tz->trip_table;
+> +
+> +       if (tz->trips.critical.valid) {
+> +               trip->type = THERMAL_TRIP_CRITICAL;
+> +               acpi_thermal_trip_set_temp(tz, trip,
+> +                                          tz->trips.critical.temperature);
+> +               trip->driver_ref = &tz->trips.critical.trip_ref;
+> +               trip++;
+> +       }
+> +
+> +       if (tz->trips.hot.valid) {
+> +               trip->type = THERMAL_TRIP_HOT;
+> +               acpi_thermal_trip_set_temp(tz, trip,
+> +                                          tz->trips.hot.temperature);
+> +               trip->driver_ref = &tz->trips.hot.trip_ref;
+> +               trip++;
+> +       }
+> +
+> +       if (tz->trips.passive.valid) {
+> +               trip->type = THERMAL_TRIP_PASSIVE;
+> +               acpi_thermal_trip_set_temp(tz, trip,
+> +                                          tz->trips.passive.temperature);
+> +               trip->driver_ref = &tz->trips.passive.trip_ref;
+> +               trip++;
+> +       }
+> +
+> +       for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].valid; i++) {
+> +               trip->type = THERMAL_TRIP_ACTIVE;
+> +               acpi_thermal_trip_set_temp(tz, trip,
+> +                                          tz->trips.active[i].temperature);
+> +               trip->driver_ref = &tz->trips.active[i].trip_ref;
+> +               trip++;
+> +       }
+> +
+> +       tz->thermal_zone = thermal_zone_device_register_with_trips("acpitz",
+> +                                                                  tz->trip_table,
+> +                                                                  trip_count,
+> +                                                                  0, tz,
+> +                                                                  &acpi_thermal_zone_ops,
+> +                                                                  NULL,
+> +                                                                  passive_delay,
+> +                                                                  tz->polling_frequency * 100);
+>         if (IS_ERR(tz->thermal_zone))
+>                 return -ENODEV;
+>
+> @@ -806,6 +866,7 @@ static void acpi_thermal_unregister_ther
+>  {
+>         acpi_thermal_zone_sysfs_remove(tz);
+>         thermal_zone_device_unregister(tz->thermal_zone);
+> +       kfree(tz->trip_table);
+>         tz->thermal_zone = NULL;
+>         acpi_bus_detach_private_data(tz->device->handle);
+>  }
+> @@ -939,6 +1000,9 @@ static void acpi_thermal_check_fn(struct
+>  {
+>         struct acpi_thermal *tz = container_of(work, struct acpi_thermal,
+>                                                thermal_check_work);
+> +       struct thermal_trip *trip;
+> +       long temperature;
+> +       int i;
+>
+>         /*
+>          * In general, it is not sufficient to check the pending bit, because
+> @@ -953,6 +1017,34 @@ static void acpi_thermal_check_fn(struct
+>
+>         mutex_lock(&tz->thermal_check_lock);
+>
+> +       trip = tz->trips.passive.trip_ref.trip;
+> +       if (trip) {
+> +               /*
+> +                * This means that the passive trip was valid initially, so
+> +                * update its temperature in case it has changed or the trip
+> +                * has become invalid.
+> +                */
+> +               temperature = tz->trips.passive.valid ?
+> +                               tz->trips.passive.temperature :
+> +                               THERMAL_TEMP_INVALID;
+> +               acpi_thermal_trip_set_temp(tz, trip, temperature);
+> +       }
+> +
+> +       for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
+> +               trip = tz->trips.active[i].trip_ref.trip;
+> +               if (trip) {
+> +                       /*
+> +                        * This means that the active trip #i was valid
+> +                        * initially, so update its temperature in case it has
+> +                        * changed or the trip has become invalid.
+> +                        */
+> +                       temperature = tz->trips.active[i].valid ?
+> +                                       tz->trips.active[i].temperature :
+> +                                       THERMAL_TEMP_INVALID;
+> +                       acpi_thermal_trip_set_temp(tz, trip, temperature);
+> +               }
+> +       }
+> +
+>         thermal_zone_device_update(tz->thermal_zone, THERMAL_EVENT_UNSPECIFIED);
+>
+>         refcount_inc(&tz->thermal_check_count);
+>
+>
+>
