@@ -2,93 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEF1B75C4F8
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 12:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 499B075C714
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 14:47:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229836AbjGUKsn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Jul 2023 06:48:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44902 "EHLO
+        id S230503AbjGUMrD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Jul 2023 08:47:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229861AbjGUKsj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jul 2023 06:48:39 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE731710
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Jul 2023 03:48:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689936518; x=1721472518;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PPKQcDVhLLTeC60IQNJOoLbReyavUTfuP4zZdRc3Nzo=;
-  b=DeOgxzfsuzqTSYeppkqo8f+k4L/sbhohAnONKsARHIMoMJqgw+7PZ2/f
-   tNUxYA8nMVwQoCmjxrl+ftFf8dawMqpICL/yW1yf+2rRdlHsRkBrhLmE9
-   Ydq4ZbLCw0FQ+Kc86NIvjgg61V+zkNZQrc/ybadFdZ+D+DY4u8Tyml3W4
-   Sz0NErq5AmhHyrjhv7yvVcOtq1kXrkGVYhpM+y++J6WmIuNKt0suEUZ9+
-   SQFmxDdixPfR0bI5Z2gxmzhvKkujEtcn+2B+YsV6UNKuDwpPRbk7aEJHj
-   jGJ3akizou5VCYReg1Cjjm2WryD2pCmuZx/dv1kErwUeb3T+vsXgBOlGw
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="370595468"
-X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="370595468"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 03:48:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="759913744"
-X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="759913744"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001.jf.intel.com with ESMTP; 21 Jul 2023 03:48:36 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qMngY-000kCa-2O;
-        Fri, 21 Jul 2023 13:48:34 +0300
-Date:   Fri, 21 Jul 2023 13:48:34 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Cezary Rojewski <cezary.rojewski@intel.com>
-Cc:     rafael@kernel.org, robert.moore@intel.com,
-        linux-acpi@vger.kernel.org, amadeuszx.slawinski@linux.intel.com,
-        pierre-louis.bossart@linux.intel.com
-Subject: Re: [PATCH v3 2/4] ACPI: NHLT: Introduce acpi_gbl_nhlt
-Message-ID: <ZLpigtZ0ptwhhWEi@smile.fi.intel.com>
-References: <20230721094722.300586-1-cezary.rojewski@intel.com>
- <20230721094722.300586-3-cezary.rojewski@intel.com>
+        with ESMTP id S230436AbjGUMrA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jul 2023 08:47:00 -0400
+X-Greylist: delayed 127754 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 21 Jul 2023 05:46:56 PDT
+Received: from mailsenadoer.gob.ar (mailsenadoer.gob.ar [190.183.215.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B406A2D56;
+        Fri, 21 Jul 2023 05:46:56 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by mailsenadoer.gob.ar (Postfix) with ESMTP id 8607613E70F2;
+        Wed, 19 Jul 2023 20:22:23 -0300 (-03)
+Received: from mailsenadoer.gob.ar ([127.0.0.1])
+        by localhost (mailsenadoer.gob.ar [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id yEZnGTSqF8zs; Wed, 19 Jul 2023 20:22:23 -0300 (-03)
+Received: from localhost (localhost [127.0.0.1])
+        by mailsenadoer.gob.ar (Postfix) with ESMTP id 6657D13E71AA;
+        Wed, 19 Jul 2023 20:20:22 -0300 (-03)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mailsenadoer.gob.ar 6657D13E71AA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailsenadoer.gob.ar;
+        s=dkimmailsenadoer; t=1689808822;
+        bh=Aor/WLwl4h5zbhGzya8ajVmHiT+79UPpoXAPFDddDh4=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=Y+H7bn1uKPFHClAzE6Rt3a9iEGfFIglZ3gKlxUR530Vk+kqkhRCCzKDtTXf9LNwh3
+         hvb/0+LNPFxb7aqfN7tODIwuw8KQLnxoelzZtNX36OmHOGk4L4Hbp7yQn+FcicXdC8
+         yTnd7Hp6+V3kXSO4X/O9MxU/X/QnVOlpxo83p1NIMul+PvP8kqSDAfJYNSGo0aG2C3
+         ooZZNxmODlzrhHp0mNc96bOSQHVGZ2SmtWPx86Kkt6a4/uFo1Ci/cvvOx837ZhklWh
+         bE5T2l3Q6b3oxektzZiEXp22W3rxoBL6VaLugIjxbXGB//hhF0jUBmtuXJuulk+OBH
+         wX6zoaDDBIiKg==
+X-Virus-Scanned: amavisd-new at mailsenadoer.gob.ar
+Received: from mailsenadoer.gob.ar ([127.0.0.1])
+        by localhost (mailsenadoer.gob.ar [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id U_25FNL1zjpd; Wed, 19 Jul 2023 20:20:22 -0300 (-03)
+Received: from [192.168.0.37] (unknown [41.216.203.66])
+        by mailsenadoer.gob.ar (Postfix) with ESMTPSA id 2FB2113E6E6C;
+        Wed, 19 Jul 2023 20:18:13 -0300 (-03)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230721094722.300586-3-cezary.rojewski@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?b?RHVsZcW+aXTDoSB6cHLDoXZhOyDigqwgMiwwMDAsMDAwJzAwIEVVUg==?=
+To:     Recipients <santacruz@mailsenadoer.gob.ar>
+From:   "Pan Richard Wahl" <santacruz@mailsenadoer.gob.ar>
+Date:   Wed, 19 Jul 2023 16:18:04 -0700
+Reply-To: info@wahlfoundation.org
+Message-Id: <20230719231814.2FB2113E6E6C@mailsenadoer.gob.ar>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_BL,
+        RCVD_IN_MSPIKE_L5,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 11:47:20AM +0200, Cezary Rojewski wrote:
-> While there is no strict limit to amount of NHLT tables present, usually
-> just the first one is utilized. To simplify implementation of sound
-> drivers, provide publicly accessible pointer. Accessing it after calling
-> acpi_nhlt_get_gbl_table() yields the first NHLT table met during the
-> scan.
+Drah=C3=BD pr=C3=ADteli,
 
-...
+Jsem pan Richard Wahl, mega v=C3=ADtez 533 milionu $ v jackpotu Mega Millio=
+ns. Daruji 5 n=C3=A1hodne vybran=C3=BDm lidem. Pokud obdr=C5=BE=C3=ADte ten=
+to e-mail, byl v=C3=A1=C5=A1 e-mail vybr=C3=A1n po roztocen=C3=AD koule. Ve=
+t=C5=A1inu sv=C3=A9ho majetku jsem rozdal rade charitativn=C3=ADch organiza=
+c=C3=AD a organizac=C3=AD. Dobrovolne jsem se rozhodl venovat v=C3=A1m c=C3=
+=A1stku =E2=82=AC 2,000,000'00 EUR jako jednomu z 5 vybran=C3=BDch, abych s=
+i overil sv=C3=A9 v=C3=BDhry prostrednictv=C3=ADm n=C3=AD=C5=BEe uveden=C3=
+=A9 str=C3=A1nky YouTube.
 
-> @@ -594,6 +594,9 @@ config ACPI_PRMT
+VID=C3=8DTE ME ZDE https://www.youtube.com/watch?v=3Dtne02ExNDrw
 
-> +config ACPI_NHLT
+TOTO JE V=C3=81=C5=A0 DAROVAC=C3=8D K=C3=93D: [DFDW43034RW2023]
 
-Wouldn't be better to squeeze it to the most ordered piece of the file, so
-the list of the table support code files will be kinda ordered?
+Odpovezte na tento e-mail a uvedte k=C3=B3d daru: info@wahlfoundation.org
 
+Douf=C3=A1m, =C5=BEe v=C3=A1m a va=C5=A1=C3=AD rodine udel=C3=A1m radost.
 
-Otherwise looks good to me, FWIW,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Pozdravy,
+Pan Richard Wahl
