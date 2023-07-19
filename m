@@ -2,120 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8239E7599E9
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jul 2023 17:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D7DD759A52
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jul 2023 17:59:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230109AbjGSPhD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jul 2023 11:37:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43674 "EHLO
+        id S229801AbjGSP7U convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 19 Jul 2023 11:59:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230136AbjGSPhC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jul 2023 11:37:02 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89151C1
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jul 2023 08:37:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689781021; x=1721317021;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=w5oZ3yTWCtw/BC1LENiUVpDCssX4Anb1DbShgHLXQA8=;
-  b=Lb0LxPGFz2qiaL8zgwqsKwUEnrL8ZntQ5J3XjC2PrlpzRw2Z/WfEtaI+
-   Ajwjl/IOTcc1Efio+iu2BRO0uDP34a40bUt/Tyqn3IRbGJd4/O4Q3L7IR
-   LHD0ecDQF+Q9PFiwiv1ooAITtWNtaIc2yQjBnXl6WYlpeU3gVM+ygE9af
-   S10lbfy/ocbDP/IJ8The7LOFjHsK6cLztmqS0cT+tvXnua/8pIVj+DBXh
-   r9m59mvW2Qr7T6Cj8uHrV3ADR0l8XGBtVtKTAK5qe9GHsC6W8K5TgX89D
-   WucrhQW1k/m0ZSiVjW8RMUujWKuAVK5GdaM8dKpD7bB8hpfHs4H2Lrksx
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10776"; a="452873863"
-X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
-   d="scan'208";a="452873863"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2023 08:36:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10776"; a="718020924"
-X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
-   d="scan'208";a="718020924"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP; 19 Jul 2023 08:36:46 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qM9EK-00GTqo-30;
-        Wed, 19 Jul 2023 18:36:44 +0300
-Date:   Wed, 19 Jul 2023 18:36:44 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Cezary Rojewski <cezary.rojewski@intel.com>
-Cc:     rafael@kernel.org, linux-acpi@vger.kernel.org,
-        robert.moore@intel.com, pierre-louis.bossart@linux.intel.com,
-        amadeuszx.slawinski@linux.intel.com
-Subject: Re: [PATCH v2 2/4] ACPI: NHLT: Introduce acpi_gbl_NHLT
-Message-ID: <ZLgDDB7vH/4FaI06@smile.fi.intel.com>
-References: <20230717150047.15196-1-cezary.rojewski@intel.com>
- <20230717150047.15196-3-cezary.rojewski@intel.com>
- <4af468ff-6b87-962d-8629-52bb7d9ee340@intel.com>
+        with ESMTP id S229752AbjGSP7U (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jul 2023 11:59:20 -0400
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89FC6113
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Jul 2023 08:59:19 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-98502b12fd4so156346566b.1
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Jul 2023 08:59:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689782358; x=1690387158;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O8pvRGqRkNJMTBEOxWWjJMX8BsB3gGHz6eZzcM2M8u4=;
+        b=FgcCMXHPLhLxa43uGNVa4le6xGmWkqDHj+CHX5qYJtdxeAOb/6SdKU0xmW9mSoh63m
+         atCDS6wd3omAesqKKuY2I4h4tLNclApcZBXjEL8/ERbCYnjTkg/5U05Lhtb1Wte36JJw
+         zaJ9g2UAp6FkvHDeb3LH+Pp3MejSUyEa82m+LMjBszib0B/TwSbK1Xd0p2eHG87kyaWb
+         YgtKtRW0TZCLxgOyoB3FB4mwNINwDPfR+Wi/Tg+H+Qwkyi5lAsEO0Gj53FCbiGFQo9D6
+         IbyuW+R/Gg/vwV0NSWqxNaWIO7uP5Ym9eRXSz/D8+zWgNoL8V06s7uhzr2wjjCbIXt+A
+         yc0Q==
+X-Gm-Message-State: ABy/qLbClzM0543sZzxyMBGMrjYXWRMJlQGLXwf5n5rn/E1nVC8GhIto
+        14H1lU0LQ23gYG+CtCv928PZx6k2Seve3zGDXTs=
+X-Google-Smtp-Source: APBJJlFFIgKwoFETsyz/pxizCBCJArUyLlCRWAIT2G+DT3QPwhD9Q3UDRMdAnBv36BwxFiwdcVjJzvtn7INZdxGIHAk=
+X-Received: by 2002:a17:906:2086:b0:992:387:44d1 with SMTP id
+ 6-20020a170906208600b00992038744d1mr7943792ejq.7.1689782357841; Wed, 19 Jul
+ 2023 08:59:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4af468ff-6b87-962d-8629-52bb7d9ee340@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <20230717150047.15196-1-cezary.rojewski@intel.com> <199bdc7f-a549-fe70-5a2a-6d0e7d3417aa@intel.com>
+In-Reply-To: <199bdc7f-a549-fe70-5a2a-6d0e7d3417aa@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 19 Jul 2023 17:59:06 +0200
+Message-ID: <CAJZ5v0hSMu22RF2Q=i66azRe67J+tiN2qD-aMOHRsvqMv4nvtQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] ACPI: NHLT: Access and query helpers
+To:     Cezary Rojewski <cezary.rojewski@intel.com>
+Cc:     rafael@kernel.org, robert.moore@intel.com,
+        pierre-louis.bossart@linux.intel.com,
+        amadeuszx.slawinski@linux.intel.com,
+        andriy.shevchenko@linux.intel.com, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 19, 2023 at 04:47:31PM +0200, Cezary Rojewski wrote:
+On Wed, Jul 19, 2023 at 4:56 PM Cezary Rojewski
+<cezary.rojewski@intel.com> wrote:
+>
 > On 2023-07-17 5:00 PM, Cezary Rojewski wrote:
+> > The goal of this patchset is to enhance existing interface of
+> > NonHDAudioLinkTable (NHLT), that is, accessing device and format
+> > configuration spaces as well as adding query functions for finding
+> > specific endpoints and format configurations. Once that is done,
+> > existing sound-drivers can move from utilizing sound/hda/intel-nhlt.c
+> > to this very code and ultimately the former file can be removed.
+>
+> Hello Rafael and Robert,
+>
+> Given recent question from Pierre regarding licensing, I've scanned
+> acpi/ tree for SPDXes used and must admit that I'm lost. There is a mix
+> of GPL-2.0, GPL-2.0-or-later and dual BSD-3.0-and-GPL-2.0. The preferred
+> kernel license is GPL-2.0 but given what's out there I have my doubts
+> about acpi tree.
+>
+> Could you provide your insight on the subject?
 
-...
-
-> > +++ b/drivers/acpi/nhlt.c
-> > @@ -0,0 +1,13 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +//
-> > +// Copyright(c) 2023 Intel Corporation. All rights reserved.
-> > +//
-> > +// Authors: Cezary Rojewski <cezary.rojewski@intel.com>
-> > +//          Amadeusz Slawinski <amadeuszx.slawinski@linux.intel.com>
-> > +//
-> > +
-> > +#include <linux/export.h>
-> > +#include <acpi/nhlt.h>
-> > +
-> > +struct acpi_table_nhlt *acpi_gbl_NHLT;
-> > +EXPORT_SYMBOL_GPL(acpi_gbl_NHLT);
-> 
-> This approach generates a problem with undefined symbol "acpi_gbl_NHLT" when
-> ACPI_NHLT is disabled. As nhlt.c is not built when said kconfig is disabled,
-> symbol is never defined.
-> 
-> Proposed solution - modify drivers/acpi/tables.c with:
-> 
-> +#include <acpi/nhlt.h>
-> +
-> +struct acpi_table_nhlt *acpi_gbl_NHLT;
-> +EXPORT_SYMBOL_GPL(acpi_gbl_NHLT);
-> 
-> as tables.c is always built the symbol is always there.
-> The only other option I see is:
-> 
-> -obj-$(CONFIG_ACPI_NHLT)	+= nhlt.o
-> +obj-y				+= nhlt.o
-> 
-> and modifying nhlt.c so it's essentially split in half with:
-> #if IS_ENABLED(CONFIG_ACPI_NHLT)
-> 
-> but such solutions stinks. I prefer the first approach.
-> What to you find guys?
-
-I leave this to Rafael as it's his territory.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+All ACPICA is dual BSD-3-Clause or GPL-2.0 and everything outside it
+in the kernel should be GPL-2.0 (especially new code), unless you
+specifically want to make it dual-license for some reason.
