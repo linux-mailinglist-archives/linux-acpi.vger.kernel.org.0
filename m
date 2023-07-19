@@ -2,156 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7318175926D
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jul 2023 12:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A588D7596EF
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jul 2023 15:34:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230220AbjGSKLi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jul 2023 06:11:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36430 "EHLO
+        id S231250AbjGSNeF convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 19 Jul 2023 09:34:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjGSKLh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jul 2023 06:11:37 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7B417E69;
-        Wed, 19 Jul 2023 03:11:36 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F8432F4;
-        Wed, 19 Jul 2023 03:12:19 -0700 (PDT)
-Received: from [10.57.33.122] (unknown [10.57.33.122])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 730643F67D;
-        Wed, 19 Jul 2023 03:11:33 -0700 (PDT)
-Message-ID: <ac77142d-964b-691d-ea15-105a523d9738@arm.com>
-Date:   Wed, 19 Jul 2023 11:11:31 +0100
+        with ESMTP id S230131AbjGSNeF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jul 2023 09:34:05 -0400
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45083113;
+        Wed, 19 Jul 2023 06:34:04 -0700 (PDT)
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2b951a1a03bso6194601fa.0;
+        Wed, 19 Jul 2023 06:34:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689773642; x=1692365642;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ch5QBOhh4FZKc92//FFcj4rG6CE12dmRlZdD1fLxA40=;
+        b=L07nUKD+/ml8+7b5I0twxAypEacuMgj7lNsOwNq6nXY1SBnxmtbK0tJ/NDlE2TVC28
+         eiGfF1PA+XmnJCwdru6XdpH5NiColQVwhNICjtgO8+LoO0grbSzZrdneD4y06IqfAbpW
+         UJFcLRgcz9T5k0+kqi5N4N9OFI4qrVL7fyZ3mXyHmF8TlXy5GD5RpI7+PrRDSmQMGd71
+         IRgbNfTj6hRrYlFX0CJ9COhRvBWTnIl1+23dWtZkK5oPDR6IDMNCuBgR4DJjm5vlf+Y7
+         qaJuLAna59b/rv2YPMR/c6oM5aljchdJymfZdGoJYuaAZQU2Wx28PWjhfijTw3OvQZwX
+         N3Fg==
+X-Gm-Message-State: ABy/qLaTx6LKhC0t11kAAUvtkn4q2pLGM8p/YSpkyMGe6K+VFlkchyAn
+        DnYw0i1GYnfHJjJqGpzVYxQpAPS8enNluDUKvLey3ZwX
+X-Google-Smtp-Source: APBJJlEVZcLjenwjTLNBPdv1a9AnoryDrpjTyoR3PbXJbY0i44z3kMPeXQEUrIF64jlEoHPGcZlMtK95X3C3x1VdX3E=
+X-Received: by 2002:a2e:1655:0:b0:2b9:4bc3:c367 with SMTP id
+ 21-20020a2e1655000000b002b94bc3c367mr1416178ljw.5.1689773642193; Wed, 19 Jul
+ 2023 06:34:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH V6 6/6] coresight: etm4x: Add ACPI support in platform
- driver
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-To:     rafael@kernel.org, Len Brown <lenb@kernel.org>
-Cc:     Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-        Steve Clevenger <scclevenger@os.amperecomputing.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        linux-arm-kernel@lists.infradead.org, coresight@lists.linaro.org,
-        gregkh@linuxfoundation.org
-References: <20230710062500.45147-1-anshuman.khandual@arm.com>
- <20230710062500.45147-7-anshuman.khandual@arm.com>
- <38f0c8f3-5fb3-a18a-456d-867da2998786@arm.com>
-In-Reply-To: <38f0c8f3-5fb3-a18a-456d-867da2998786@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <13318886.uLZWGnKmhe@kreacher> <8b89f009-bcfe-3a90-f19e-0b5894a5ebd1@linaro.org>
+In-Reply-To: <8b89f009-bcfe-3a90-f19e-0b5894a5ebd1@linaro.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 19 Jul 2023 15:33:50 +0200
+Message-ID: <CAJZ5v0j1gF15vXKw7EdLLh629wisNr8niXQ8eYPY56rvzyNSKw@mail.gmail.com>
+Subject: Re: [PATCH v1 0/7] ACPI: thermal: Use trip point table to register
+ thermal zones
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Michal Wilczynski <michal.wilczynski@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Rafael, Len
+On Wed, Jul 19, 2023 at 12:46 AM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+>
+>
+> Hi Rafael,
+>
+> On 18/07/2023 20:01, Rafael J. Wysocki wrote:
+> > Hi Everyone,
+> >
+> > This patch series makes the ACPI thermal driver register thermal zones
+> > with the help of thermal_zone_device_register_with_trips(), so it
+> > doesn't need to use the thermal zone callbacks related to trip points
+> > any more (and they are dropped in the last patch).
+>
+> Yay!
+>
+> > The approach presented here is quite radically different from the
+> > previous attempts, as it doesn't really rearrange the driver's
+> > internal data structures, but adds the trip table support on top of
+> > them.  For this purpose, it uses an additional field in struct thermal_trip
+> > introduced in the first patch.
+> >
+> > I have run it on my test-bed systems, but this is not too representative,
+> > because they each have only one ACPI thermal zone with only one (critical)
+> > trip point in it.
+>
+> Rui created some ACPI fake tables I was able to run them in a KVM
+> machine with fake thermal zones.
+>
+> I can share the setup if you are interested in
 
-Ping (packets 6, lost 100%).
-
-
-On 10/07/2023 17:40, Suzuki K Poulose wrote:
-> Rafael, Len
-> 
-> On 10/07/2023 07:25, Anshuman Khandual wrote:
->> From: Suzuki K Poulose <suzuki.poulose@arm.com>
->>
->> Drop ETM4X ACPI ID from the AMBA ACPI device list, and instead just 
->> move it
->> inside the new ACPI devices list detected and used via platform driver.
->>
->> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
->> Cc: Len Brown <lenb@kernel.org>
->> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
->> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Cc: Mike Leach <mike.leach@linaro.org>
->> Cc: Leo Yan <leo.yan@linaro.org>
->> Cc: Sudeep Holla <sudeep.holla@arm.com>
->> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
->> Cc: linux-acpi@vger.kernel.org
->> Cc: coresight@lists.linaro.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com> (for ACPI specific 
->> changes)
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> 
-> We would like to queue this via coresight tree. The acpi_amba bits have
-> been reviewed by Sudeep. Please could you give us an Ack, if you are
-> happy with the proposal ?
-> 
-
-Kind regards
-Suzuki
-
-> Kind regards
-> Suzuki
-> 
-> 
->> ---
->>   drivers/acpi/acpi_amba.c                           |  1 -
->>   drivers/hwtracing/coresight/coresight-etm4x-core.c | 10 ++++++++++
->>   2 files changed, 10 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/acpi/acpi_amba.c b/drivers/acpi/acpi_amba.c
->> index f5b443ab01c2..099966cbac5a 100644
->> --- a/drivers/acpi/acpi_amba.c
->> +++ b/drivers/acpi/acpi_amba.c
->> @@ -22,7 +22,6 @@
->>   static const struct acpi_device_id amba_id_list[] = {
->>       {"ARMH0061", 0}, /* PL061 GPIO Device */
->>       {"ARMH0330", 0}, /* ARM DMA Controller DMA-330 */
->> -    {"ARMHC500", 0}, /* ARM CoreSight ETM4x */
->>       {"ARMHC501", 0}, /* ARM CoreSight ETR */
->>       {"ARMHC502", 0}, /* ARM CoreSight STM */
->>       {"ARMHC503", 0}, /* ARM CoreSight Debug */
->> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c 
->> b/drivers/hwtracing/coresight/coresight-etm4x-core.c
->> index 43f583987250..703b6fcbb6a5 100644
->> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
->> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
->> @@ -3,6 +3,7 @@
->>    * Copyright (c) 2014, The Linux Foundation. All rights reserved.
->>    */
->> +#include <linux/acpi.h>
->>   #include <linux/bitops.h>
->>   #include <linux/kernel.h>
->>   #include <linux/moduleparam.h>
->> @@ -2347,12 +2348,21 @@ static const struct of_device_id 
->> etm4_sysreg_match[] = {
->>       {}
->>   };
->> +#ifdef CONFIG_ACPI
->> +static const struct acpi_device_id etm4x_acpi_ids[] = {
->> +    {"ARMHC500", 0}, /* ARM CoreSight ETM4x */
->> +    {}
->> +};
->> +MODULE_DEVICE_TABLE(acpi, etm4x_acpi_ids);
->> +#endif
->> +
->>   static struct platform_driver etm4_platform_driver = {
->>       .probe        = etm4_probe_platform_dev,
->>       .remove        = etm4_remove_platform_dev,
->>       .driver            = {
->>           .name            = "coresight-etm4x",
->>           .of_match_table        = etm4_sysreg_match,
->> +        .acpi_match_table    = ACPI_PTR(etm4x_acpi_ids),
->>           .suppress_bind_attrs    = true,
->>           .pm            = &etm4_dev_pm_ops,
->>       },
-> 
-
+Yes, please!
