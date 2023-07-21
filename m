@@ -2,140 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98C6E75C118
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 10:16:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F15175C381
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 11:48:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230497AbjGUIQd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Jul 2023 04:16:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59448 "EHLO
+        id S231796AbjGUJsq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Jul 2023 05:48:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbjGUIQc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jul 2023 04:16:32 -0400
-Received: from mail.208.org (unknown [183.242.55.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3040D2709
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Jul 2023 01:16:31 -0700 (PDT)
-Received: from mail.208.org (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTP id 4R6j7b69C1zBRRLD
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Jul 2023 16:16:27 +0800 (CST)
-Authentication-Results: mail.208.org (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)" header.d=208.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
-        content-transfer-encoding:content-type:message-id:user-agent
-        :references:in-reply-to:subject:to:from:date:mime-version; s=
-        dkim; t=1689927387; x=1692519388; bh=3kX8ehbe2xlWt10B+oMBvKX9tRH
-        gA1MMC1mFKxCLQTU=; b=nHEPFvxd7OmcH1hmcgYRFhsxwmOZqhybUJwqaW9pkHk
-        iusQwS6bSgSJmQyzwx+xlGrz1MhrPvDeyg88n8V2ycuJaeCMUv35zIZcwp9TzTXU
-        W3mWlhaLQ9c8nHLAVuSEjflPepKwysSdJl7ndl+HhhX1WVXL7PP6scf9EgHjMdN7
-        Mo6V6gqcxT8Y1k6oTg7NStt0SXVdjO9bTOpqaCq/f5nPQRpcrylfOWbBH3ecNhIi
-        lEs6HEt3hPV9rqMlpiYctqFVQs9iigeTYnEQYdY7dBPm0r4gzFr9nmjHp8I4BsSE
-        Jx0U62sEcsu5J8By2f8ZhfaFpZNzf6/cWoL3HHk2JRQ==
-X-Virus-Scanned: amavisd-new at mail.208.org
-Received: from mail.208.org ([127.0.0.1])
-        by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id NcTyNRCZd2_M for <linux-acpi@vger.kernel.org>;
-        Fri, 21 Jul 2023 16:16:27 +0800 (CST)
-Received: from localhost (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTPSA id 4R6j7b1wZczBJk55;
-        Fri, 21 Jul 2023 16:16:27 +0800 (CST)
+        with ESMTP id S231825AbjGUJsW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jul 2023 05:48:22 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F19E130DD
+        for <linux-acpi@vger.kernel.org>; Fri, 21 Jul 2023 02:47:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689932865; x=1721468865;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Z+qMhSXihx3+AvTmY3Xg6lH1noCHVwK9rSIcEO2Lt/0=;
+  b=J7E/l2krWWOqcv01JLfIIsq2kt76lD+cfOeQ7jrnkxVvNGi44gepJtZE
+   WaMH+XwyQZ5mc9JpYa8LzZu5UOJyUZZ/V25EEfetZ67rE61KQ6h9JhEa0
+   spp0EI8yjsbED32rcHv/M26XsMwr3tuWrITa/btdByZgLycKP58uv3KF0
+   nUMKZgsTZlY9L5T5Mw4WWcxRlCKhBhdMmUg8mghuUnYY+8usC7ywRZHTd
+   dnWbppVacpLyD4a2KjnsZhOAp64Syu7SOB+K2ql+zXeA2b00wCA+z77iy
+   SnwU45CcUsNlyoMOB2h3aFghyqmQzoIq5SkJZAFSYJs5HdDFNNVaLToS/
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="367022164"
+X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
+   d="scan'208";a="367022164"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 02:47:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="1055508021"
+X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
+   d="scan'208";a="1055508021"
+Received: from crojewsk-ctrl.igk.intel.com ([10.102.9.28])
+  by fmsmga005.fm.intel.com with ESMTP; 21 Jul 2023 02:47:29 -0700
+From:   Cezary Rojewski <cezary.rojewski@intel.com>
+To:     rafael@kernel.org, robert.moore@intel.com
+Cc:     linux-acpi@vger.kernel.org, amadeuszx.slawinski@linux.intel.com,
+        andriy.shevchenko@linux.intel.com,
+        pierre-louis.bossart@linux.intel.com,
+        Cezary Rojewski <cezary.rojewski@intel.com>
+Subject: [PATCH v3 0/4] ACPI: NHLT: Access and query helpers
+Date:   Fri, 21 Jul 2023 11:47:18 +0200
+Message-Id: <20230721094722.300586-1-cezary.rojewski@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Date:   Fri, 21 Jul 2023 08:16:27 +0000
-From:   sunran001@208suo.com
-To:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] x86/acpi/boot: "foo * bar" should be "foo *bar"
-In-Reply-To: <20230721081515.5836-1-xujianghui@cdjrlc.com>
-References: <20230721081515.5836-1-xujianghui@cdjrlc.com>
-User-Agent: Roundcube Webmail
-Message-ID: <687638423c7d6f729c26b6dceca4520e@208suo.com>
-X-Sender: sunran001@208suo.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RDNS_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ERROR: "foo * bar" should be "foo *bar"
+The goal of this patchset is to enhance existing interface of
+NonHDAudioLinkTable (NHLT), that is, accessing device and format
+configuration spaces as well as adding query functions for finding
+specific endpoints and format configurations. Once that is done,
+existing sound-drivers can move from utilizing sound/hda/intel-nhlt.c
+to this very code and ultimately the former file can be removed.
 
-Signed-off-by: Ran Sun <sunran001@208suo.com>
----
-  arch/x86/kernel/acpi/boot.c | 12 ++++++------
-  1 file changed, 6 insertions(+), 6 deletions(-)
+It's important to highlight that currently presented implementation is
+not final and intention is to first transfer sound-driver to new API and
+then provide incremental updates to internal code in drivers/acpi/nhlt.c
+to improve reliability and safety.
 
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 21b542a6866c..457f1f6622d0 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -254,7 +254,7 @@ acpi_parse_x2apic(union acpi_subtable_headers 
-*header, const unsigned long end)
-  }
+Series starts with addition of devcfg-access helpers. The main reasoning
+for adding access function is inability for a user to predict whether
+given space (device config) is valid or not. While inheritance in the
+specification is allowed, e.g.: mic_devcfg being inherited by
+mic_vendor_devcfg, until size is verified, one shall not be accessing
+fields which are not guaranteed by the spec. The only field guaranteed
+is "capabilities_size".
+The xxx_devcfg structs added here kind of duplicate few existing ones
+in actbl2.h. This is mainly motivated by usage improvements -
+simplicity, shorten wording. Intention is to have them replacing
+existing actbl2.h members in the future.
 
-  static int __init
--acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned 
-long end)
-+acpi_parse_lapic(union acpi_subtable_headers *header, const unsigned 
-long end)
-  {
-  	struct acpi_madt_local_apic *processor = NULL;
+Follow up is the declaration of acpi_gbl_NHLT. Motivation is to make
+sound-drivers life easier i.e.: release them from storing pointer to the
+first NHLT in the system internally. Such drivers may utilize
+acpi_gbl_NHLT when querying endpoints and formats instead.
 
-@@ -307,7 +307,7 @@ acpi_parse_sapic(union acpi_subtable_headers 
-*header, const unsigned long end)
-  }
+Table manipulation functions and macros serve as a base for the
+follow-up query functions. So called query functions represent standard
+operations performed by user (a sound driver) when attempting to open an
+audio stream. These more or less mimic what's present in
+sound/hda/intel-nhlt.c.
 
-  static int __init
--acpi_parse_lapic_addr_ovr(union acpi_subtable_headers * header,
-+acpi_parse_lapic_addr_ovr(union acpi_subtable_headers *header,
-  			  const unsigned long end)
-  {
-  	struct acpi_madt_local_apic_override *lapic_addr_ovr = NULL;
-@@ -344,7 +344,7 @@ acpi_parse_x2apic_nmi(union acpi_subtable_headers 
-*header,
-  }
+Changes in v3:
+- uncapitalized acpi_gbl_NHLT
+- fixed compilation problems when CONFIG_ACPI_NHLT is disabled
+- dropped Reviewed-by tags in the 2/4 patch due to above, those were not
+  one-line changes
 
-  static int __init
--acpi_parse_lapic_nmi(union acpi_subtable_headers * header, const 
-unsigned long end)
-+acpi_parse_lapic_nmi(union acpi_subtable_headers *header, const 
-unsigned long end)
-  {
-  	struct acpi_madt_local_apic_nmi *lapic_nmi = NULL;
+Changes in v2:
+- minor wording improvements in kernel-doc for patch 3/4
+- dropped parentheses around loop cursors in for_each_nhlt_*() macros
+- readability improvements in compound if-statements within query
+  functions
+- dropped NULL-checks in query functions
 
-@@ -517,7 +517,7 @@ static int __init mp_register_ioapic_irq(u8 bus_irq, 
-u8 polarity,
-  }
+Cezary Rojewski (4):
+  ACPI: NHLT: Device configuration access interface
+  ACPI: NHLT: Introduce acpi_gbl_nhlt
+  ACPI: NHLT: Table manipulation helpers
+  ACPI: NHLT: Add query functions
 
-  static int __init
--acpi_parse_ioapic(union acpi_subtable_headers * header, const unsigned 
-long end)
-+acpi_parse_ioapic(union acpi_subtable_headers *header, const unsigned 
-long end)
-  {
-  	struct acpi_madt_io_apic *ioapic = NULL;
-  	struct ioapic_domain_cfg cfg = {
-@@ -576,7 +576,7 @@ static void __init acpi_sci_ioapic_setup(u8 bus_irq, 
-u16 polarity, u16 trigger,
-  }
+ drivers/acpi/Kconfig  |   3 +
+ drivers/acpi/Makefile |   1 +
+ drivers/acpi/nhlt.c   | 221 ++++++++++++++++++++++++++++++++++++++++++
+ include/acpi/actbl2.h |  28 ++++++
+ include/acpi/nhlt.h   | 212 ++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 465 insertions(+)
+ create mode 100644 drivers/acpi/nhlt.c
+ create mode 100644 include/acpi/nhlt.h
 
-  static int __init
--acpi_parse_int_src_ovr(union acpi_subtable_headers * header,
-+acpi_parse_int_src_ovr(union acpi_subtable_headers *header,
-  		       const unsigned long end)
-  {
-  	struct acpi_madt_interrupt_override *intsrc = NULL;
-@@ -618,7 +618,7 @@ acpi_parse_int_src_ovr(union acpi_subtable_headers * 
-header,
-  }
+-- 
+2.25.1
 
-  static int __init
--acpi_parse_nmi_src(union acpi_subtable_headers * header, const unsigned 
-long end)
-+acpi_parse_nmi_src(union acpi_subtable_headers *header, const unsigned 
-long end)
-  {
-  	struct acpi_madt_nmi_source *nmi_src = NULL;
