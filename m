@@ -2,134 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27A3E75CC51
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 17:46:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 272A875CC67
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 17:48:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232213AbjGUPqJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 21 Jul 2023 11:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46956 "EHLO
+        id S229746AbjGUPsx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Jul 2023 11:48:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232203AbjGUPqI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jul 2023 11:46:08 -0400
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 980F719A1;
-        Fri, 21 Jul 2023 08:46:06 -0700 (PDT)
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-99b76201110so502266b.1;
-        Fri, 21 Jul 2023 08:46:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689954365; x=1690559165;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pGvIa/xbSavlOQUbfsNYc+o6CuZLv/AsmDlHcyaG6tw=;
-        b=Gvq6IP9GOoJYRGHk3sOKVCakNsxMyHcp7XCRi0EVA3T7Dsus9MMDuTotAWNRd9jsuv
-         XC5ZhiFwe7MRdtNJwQkanZg03sXYkLoMWR1a6vG5Ru+exb+cdJGjmb9x6ZSEB1tXLICO
-         i+SpjgorYyy98OiutSqUEuBIt9Wnje1fA1Q0mu5jrRRndYNgbHgEztg+FytXW3OlSqnF
-         Zen8GxjfDguPNZmBsjadIJYL32FKykIM/uC3vwPLw6LbcHLnuXGOIvMm9EnDG7JPGS48
-         ev4JyhBJND/RBwL6gt4XDVhJcG0M2nuUywj4tbw+2SjPI24dN//ZjFJTNoc/PxrEi6Bq
-         kwKw==
-X-Gm-Message-State: ABy/qLYVktjbDNEcX3/czt0Nko2UTdCY2+uqbBznyFzFzRiWifwlKZqm
-        FA7KjCUZdBW3DreXvMoXeFVWSEp3lY6eePum31w=
-X-Google-Smtp-Source: APBJJlHA7wRpEujJotjk7wbsJSyzNtc5iS9PhfO2eienfXnd1i5ITFRJeWo2qI/yIye/Zs4LgU98cLvGh5eW6ejlzos=
-X-Received: by 2002:a17:906:518e:b0:974:5480:6270 with SMTP id
- y14-20020a170906518e00b0097454806270mr1724059ejk.0.1689954364736; Fri, 21 Jul
- 2023 08:46:04 -0700 (PDT)
+        with ESMTP id S232251AbjGUPsv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jul 2023 11:48:51 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBFBE2D50
+        for <linux-acpi@vger.kernel.org>; Fri, 21 Jul 2023 08:48:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689954529; x=1721490529;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=FOpNTECWJXlTFURxFCaKzG4EeqCkcPi0OxWX6AcnE7c=;
+  b=hWE7GDNKns7NmpgWgpImk9moRHdpcOoS+B8B1dS4ya445LUCdhhFNIIh
+   RpWZi37lBmAaI5RLfGlGef6jEPDedsNLn4T6eDGEgv8cX+jCcmm3ZUQRY
+   e+YMaZ37C77LC8W+Uo5Ld9ih7Y2LbncLrrOshyFr02QtEGCV18NjnHnjO
+   s3Cr7SEKCWdjnTNvML7gtYnx88sPglbo076DAMt69WK2SRsbywoCBtwkW
+   IMaDQ0LwiHsh1PWB2l09hCCR47rhWAc56RAwTWdKKMZrxmLTv3ITSe96s
+   ffeMlI8gQEdgRy0gdoHfzKLW0Vp0ZIjcEcH4LXWJXfj6/4TSyGI7v2Kwt
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10778"; a="357043520"
+X-IronPort-AV: E=Sophos;i="6.01,222,1684825200"; 
+   d="scan'208";a="357043520"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 08:48:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
+   d="scan'208";a="868275320"
+Received: from crojewsk-ctrl.igk.intel.com ([10.102.9.28])
+  by fmsmga001.fm.intel.com with ESMTP; 21 Jul 2023 08:48:48 -0700
+From:   Cezary Rojewski <cezary.rojewski@intel.com>
+To:     rafael@kernel.org
+Cc:     linux-acpi@vger.kernel.org, robert.moore@intel.com,
+        amadeuszx.slawinski@linux.intel.com,
+        andriy.shevchenko@linux.intel.com,
+        pierre-louis.bossart@linux.intel.com,
+        Cezary Rojewski <cezary.rojewski@intel.com>
+Subject: [PATCH v4 0/4] ACPI: NHLT: Access and query helpers
+Date:   Fri, 21 Jul 2023 17:48:09 +0200
+Message-Id: <20230721154813.310996-1-cezary.rojewski@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230721152143.3108017-1-kai.heng.feng@canonical.com>
-In-Reply-To: <20230721152143.3108017-1-kai.heng.feng@canonical.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 21 Jul 2023 17:45:53 +0200
-Message-ID: <CAJZ5v0j=ohJ_oUpCY-F_joty9qq3Mz2Bigqa3dHaFaWP2k6ONQ@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI: video: Put ACPI video and its child devices to
- D0 at boot
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>, hdegoede@redhat.com
-Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Thanks for the update!
+The goal of this patchset is to enhance existing interface of
+NonHDAudioLinkTable (NHLT), that is, accessing device and format
+configuration spaces as well as adding query functions for finding
+specific endpoints and format configurations. Once that is done,
+existing sound-drivers can move from utilizing sound/hda/intel-nhlt.c
+to this very code and ultimately the former file can be removed.
 
-On Fri, Jul 21, 2023 at 5:22 PM Kai-Heng Feng
-<kai.heng.feng@canonical.com> wrote:
->
-> Screen brightness can only be changed once on HP ZBook Fury 16 G10.
->
-> Vendor identified the root cause as Linux doesn't invoke _PS0 at boot
-> for all ACPI devices:
->
->     Scope (\_SB.PC00.GFX0)
->     {
->         Scope (DD1F)
->         {
->             Method (_PS0, 0, Serialized)  // _PS0: Power State 0
->             {
->                 If (CondRefOf (\_SB.PC00.LPCB.EC0.SSBC))
->                 {
->                     \_SB.PC00.LPCB.EC0.SSBC ()
->                 }
->             }
->             ...
->         }
->         ...
->     }
->
-> The \_SB.PC00.GFX0.DD1F is the panel device, and its _PS0 needs to be
-> executed to make the brightness control work properly.
->
-> _PS0 doesn't get invoked for this device because _PSC is missing,
-> which violates ACPI spec 6.3, section 7.3.6. Commit 7cd8407d53ef
-> ("ACPI / PM: Do not execute _PS0 for devices without _PSC during
-> initialization") tried to workaround missing _PSC on defective
-> firmwares, but got reverted because of regression.
->
-> So the safest approach is to use acpi_device_fix_up_power_extended() to
-> put ACPI video and its child devices to D0 to workaround the issue.
->
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217683
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+It's important to highlight that currently presented implementation is
+not final and intention is to first transfer sound-driver to new API and
+then provide incremental updates to internal code in drivers/acpi/nhlt.c
+to improve reliability and safety.
 
-Hans, what do you think?
+Series starts with addition of devcfg-access helpers. The main reasoning
+for adding access function is inability for a user to predict whether
+given space (device config) is valid or not. While inheritance in the
+specification is allowed, e.g.: mic_devcfg being inherited by
+mic_vendor_devcfg, until size is verified, one shall not be accessing
+fields which are not guaranteed by the spec. The only field guaranteed
+is "capabilities_size".
+The xxx_devcfg structs added here kind of duplicate few existing ones
+in actbl2.h. This is mainly motivated by usage improvements -
+simplicity, shorten wording. Intention is to have them replacing
+existing actbl2.h members in the future.
 
-> ---
-> v3:
->  - Wording change to make it clear it's a firmware issue.
->  - Specify the device name in comment.
->
-> v2:
->  - Wording
->  - Bugzilla
->  - Add comment
->
->  drivers/acpi/acpi_video.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> index 62f4364e4460..1732780a672b 100644
-> --- a/drivers/acpi/acpi_video.c
-> +++ b/drivers/acpi/acpi_video.c
-> @@ -2027,6 +2027,12 @@ static int acpi_video_bus_add(struct acpi_device *device)
->         if (error)
->                 goto err_put_video;
->
-> +       /*
-> +        * HP ZBook Fury 16 G10 requires ACPI video's child devices have _PS0
-> +        * evaluated to have functional panel brightness control.
-> +        */
-> +       acpi_device_fix_up_power_extended(device);
-> +
->         pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
->                ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
->                video->flags.multihead ? "yes" : "no",
-> --
-> 2.34.1
->
+Follow up is the declaration of acpi_gbl_NHLT. Motivation is to make
+sound-drivers life easier i.e.: release them from storing pointer to the
+first NHLT in the system internally. Such drivers may utilize
+acpi_gbl_NHLT when querying endpoints and formats instead.
+
+Table manipulation functions and macros serve as a base for the
+follow-up query functions. So called query functions represent standard
+operations performed by user (a sound driver) when attempting to open an
+audio stream. These more or less mimic what's present in
+sound/hda/intel-nhlt.c.
+
+Changes in v4:
+- relocated ACPI_NHLT kconfig in the drivers/acpi/Kconfig to more
+  relevant area within the file
+
+Changes in v3:
+- uncapitalized acpi_gbl_NHLT
+- fixed compilation problems when CONFIG_ACPI_NHLT is disabled
+- dropped Reviewed-by tags in the 2/4 patch due to above, those were not
+  one-line changes
+
+Changes in v2:
+- minor wording improvements in kernel-doc for patch 3/4
+- dropped parentheses around loop cursors in for_each_nhlt_*() macros
+- readability improvements in compound if-statements within query
+  functions
+- dropped NULL-checks in query functions
+
+Cezary Rojewski (4):
+  ACPI: NHLT: Device configuration access interface
+  ACPI: NHLT: Introduce acpi_gbl_nhlt
+  ACPI: NHLT: Table manipulation helpers
+  ACPI: NHLT: Add query functions
+
+ drivers/acpi/Kconfig  |   3 +
+ drivers/acpi/Makefile |   1 +
+ drivers/acpi/nhlt.c   | 221 ++++++++++++++++++++++++++++++++++++++++++
+ include/acpi/actbl2.h |  28 ++++++
+ include/acpi/nhlt.h   | 212 ++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 465 insertions(+)
+ create mode 100644 drivers/acpi/nhlt.c
+ create mode 100644 include/acpi/nhlt.h
+
+-- 
+2.25.1
+
