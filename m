@@ -2,119 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DF8F75CB96
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 17:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27A3E75CC51
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 17:46:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230024AbjGUPXo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Jul 2023 11:23:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58398 "EHLO
+        id S232213AbjGUPqJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 21 Jul 2023 11:46:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231843AbjGUPXZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jul 2023 11:23:25 -0400
-Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 360F83AB6;
-        Fri, 21 Jul 2023 08:23:02 -0700 (PDT)
-Received: from localhost.localdomain (unknown [10.101.196.174])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 7EB9E3F30D;
-        Fri, 21 Jul 2023 15:22:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1689952954;
-        bh=Ce8ROm7GD4JAsILKV21vfET07MwWq4GnXXI4EwwUbYs=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=KPdeNJq0nBYQ2rVgU5ZOqtJLRnsBt9JCbPDbYwzm1DtsFYrAlU2SsHiWJVsOnn8Cx
-         5+ql8zLYXESOoi7blIJSYAUeeAQ85UbmlB5QHPNMvIPDVnsmqb+vNYeCzWGB+vGEQv
-         npbbAaYsuzPc+u/9ECXc6V22ww6XYp9kkzHfOj6It7jYuSpuqhgGU7ahBx1rKaR6Eb
-         cdVDX0ZAXBEq1eZ2SIK73bD86ER77kNfD7A3fCN9KZ692+h2h49O349LsgamOEUGzs
-         1Ez6bNubQAku0R969HEfxy1rl2JTAm3C0+k+64ARwY+VmD84KPCpkkFc/BuTaZG8Og
-         PXDTvSvWwbp7Q==
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     rafael@kernel.org, lenb@kernel.org, hdegoede@redhat.com
-Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3] ACPI: video: Put ACPI video and its child devices to D0 at boot
-Date:   Fri, 21 Jul 2023 23:21:43 +0800
-Message-Id: <20230721152143.3108017-1-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S232203AbjGUPqI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jul 2023 11:46:08 -0400
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 980F719A1;
+        Fri, 21 Jul 2023 08:46:06 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-99b76201110so502266b.1;
+        Fri, 21 Jul 2023 08:46:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689954365; x=1690559165;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pGvIa/xbSavlOQUbfsNYc+o6CuZLv/AsmDlHcyaG6tw=;
+        b=Gvq6IP9GOoJYRGHk3sOKVCakNsxMyHcp7XCRi0EVA3T7Dsus9MMDuTotAWNRd9jsuv
+         XC5ZhiFwe7MRdtNJwQkanZg03sXYkLoMWR1a6vG5Ru+exb+cdJGjmb9x6ZSEB1tXLICO
+         i+SpjgorYyy98OiutSqUEuBIt9Wnje1fA1Q0mu5jrRRndYNgbHgEztg+FytXW3OlSqnF
+         Zen8GxjfDguPNZmBsjadIJYL32FKykIM/uC3vwPLw6LbcHLnuXGOIvMm9EnDG7JPGS48
+         ev4JyhBJND/RBwL6gt4XDVhJcG0M2nuUywj4tbw+2SjPI24dN//ZjFJTNoc/PxrEi6Bq
+         kwKw==
+X-Gm-Message-State: ABy/qLYVktjbDNEcX3/czt0Nko2UTdCY2+uqbBznyFzFzRiWifwlKZqm
+        FA7KjCUZdBW3DreXvMoXeFVWSEp3lY6eePum31w=
+X-Google-Smtp-Source: APBJJlHA7wRpEujJotjk7wbsJSyzNtc5iS9PhfO2eienfXnd1i5ITFRJeWo2qI/yIye/Zs4LgU98cLvGh5eW6ejlzos=
+X-Received: by 2002:a17:906:518e:b0:974:5480:6270 with SMTP id
+ y14-20020a170906518e00b0097454806270mr1724059ejk.0.1689954364736; Fri, 21 Jul
+ 2023 08:46:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <20230721152143.3108017-1-kai.heng.feng@canonical.com>
+In-Reply-To: <20230721152143.3108017-1-kai.heng.feng@canonical.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 21 Jul 2023 17:45:53 +0200
+Message-ID: <CAJZ5v0j=ohJ_oUpCY-F_joty9qq3Mz2Bigqa3dHaFaWP2k6ONQ@mail.gmail.com>
+Subject: Re: [PATCH v3] ACPI: video: Put ACPI video and its child devices to
+ D0 at boot
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>, hdegoede@redhat.com
+Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Screen brightness can only be changed once on HP ZBook Fury 16 G10.
+Thanks for the update!
 
-Vendor identified the root cause as Linux doesn't invoke _PS0 at boot
-for all ACPI devices:
+On Fri, Jul 21, 2023 at 5:22 PM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
+>
+> Screen brightness can only be changed once on HP ZBook Fury 16 G10.
+>
+> Vendor identified the root cause as Linux doesn't invoke _PS0 at boot
+> for all ACPI devices:
+>
+>     Scope (\_SB.PC00.GFX0)
+>     {
+>         Scope (DD1F)
+>         {
+>             Method (_PS0, 0, Serialized)  // _PS0: Power State 0
+>             {
+>                 If (CondRefOf (\_SB.PC00.LPCB.EC0.SSBC))
+>                 {
+>                     \_SB.PC00.LPCB.EC0.SSBC ()
+>                 }
+>             }
+>             ...
+>         }
+>         ...
+>     }
+>
+> The \_SB.PC00.GFX0.DD1F is the panel device, and its _PS0 needs to be
+> executed to make the brightness control work properly.
+>
+> _PS0 doesn't get invoked for this device because _PSC is missing,
+> which violates ACPI spec 6.3, section 7.3.6. Commit 7cd8407d53ef
+> ("ACPI / PM: Do not execute _PS0 for devices without _PSC during
+> initialization") tried to workaround missing _PSC on defective
+> firmwares, but got reverted because of regression.
+>
+> So the safest approach is to use acpi_device_fix_up_power_extended() to
+> put ACPI video and its child devices to D0 to workaround the issue.
+>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217683
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-    Scope (\_SB.PC00.GFX0)
-    {
-        Scope (DD1F)
-        {
-            Method (_PS0, 0, Serialized)  // _PS0: Power State 0
-            {
-                If (CondRefOf (\_SB.PC00.LPCB.EC0.SSBC))
-                {
-                    \_SB.PC00.LPCB.EC0.SSBC ()
-                }
-            }
-	    ...
-	}
-	...
-    }
+Hans, what do you think?
 
-The \_SB.PC00.GFX0.DD1F is the panel device, and its _PS0 needs to be
-executed to make the brightness control work properly.
-
-_PS0 doesn't get invoked for this device because _PSC is missing,
-which violates ACPI spec 6.3, section 7.3.6. Commit 7cd8407d53ef
-("ACPI / PM: Do not execute _PS0 for devices without _PSC during
-initialization") tried to workaround missing _PSC on defective
-firmwares, but got reverted because of regression.
-
-So the safest approach is to use acpi_device_fix_up_power_extended() to
-put ACPI video and its child devices to D0 to workaround the issue.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217683
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
-v3:
- - Wording change to make it clear it's a firmware issue.
- - Specify the device name in comment.
-
-v2:
- - Wording
- - Bugzilla
- - Add comment
-
- drivers/acpi/acpi_video.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 62f4364e4460..1732780a672b 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -2027,6 +2027,12 @@ static int acpi_video_bus_add(struct acpi_device *device)
- 	if (error)
- 		goto err_put_video;
- 
-+	/*
-+	 * HP ZBook Fury 16 G10 requires ACPI video's child devices have _PS0
-+	 * evaluated to have functional panel brightness control.
-+	 */
-+	acpi_device_fix_up_power_extended(device);
-+
- 	pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
- 	       ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
- 	       video->flags.multihead ? "yes" : "no",
--- 
-2.34.1
-
+> ---
+> v3:
+>  - Wording change to make it clear it's a firmware issue.
+>  - Specify the device name in comment.
+>
+> v2:
+>  - Wording
+>  - Bugzilla
+>  - Add comment
+>
+>  drivers/acpi/acpi_video.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+> index 62f4364e4460..1732780a672b 100644
+> --- a/drivers/acpi/acpi_video.c
+> +++ b/drivers/acpi/acpi_video.c
+> @@ -2027,6 +2027,12 @@ static int acpi_video_bus_add(struct acpi_device *device)
+>         if (error)
+>                 goto err_put_video;
+>
+> +       /*
+> +        * HP ZBook Fury 16 G10 requires ACPI video's child devices have _PS0
+> +        * evaluated to have functional panel brightness control.
+> +        */
+> +       acpi_device_fix_up_power_extended(device);
+> +
+>         pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
+>                ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
+>                video->flags.multihead ? "yes" : "no",
+> --
+> 2.34.1
+>
