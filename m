@@ -2,84 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 499B075C714
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 14:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1611D75C6E8
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 14:31:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230503AbjGUMrD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Jul 2023 08:47:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
+        id S229601AbjGUMbS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Jul 2023 08:31:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230436AbjGUMrA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jul 2023 08:47:00 -0400
-X-Greylist: delayed 127754 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 21 Jul 2023 05:46:56 PDT
-Received: from mailsenadoer.gob.ar (mailsenadoer.gob.ar [190.183.215.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B406A2D56;
-        Fri, 21 Jul 2023 05:46:56 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by mailsenadoer.gob.ar (Postfix) with ESMTP id 8607613E70F2;
-        Wed, 19 Jul 2023 20:22:23 -0300 (-03)
-Received: from mailsenadoer.gob.ar ([127.0.0.1])
-        by localhost (mailsenadoer.gob.ar [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id yEZnGTSqF8zs; Wed, 19 Jul 2023 20:22:23 -0300 (-03)
-Received: from localhost (localhost [127.0.0.1])
-        by mailsenadoer.gob.ar (Postfix) with ESMTP id 6657D13E71AA;
-        Wed, 19 Jul 2023 20:20:22 -0300 (-03)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mailsenadoer.gob.ar 6657D13E71AA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailsenadoer.gob.ar;
-        s=dkimmailsenadoer; t=1689808822;
-        bh=Aor/WLwl4h5zbhGzya8ajVmHiT+79UPpoXAPFDddDh4=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=Y+H7bn1uKPFHClAzE6Rt3a9iEGfFIglZ3gKlxUR530Vk+kqkhRCCzKDtTXf9LNwh3
-         hvb/0+LNPFxb7aqfN7tODIwuw8KQLnxoelzZtNX36OmHOGk4L4Hbp7yQn+FcicXdC8
-         yTnd7Hp6+V3kXSO4X/O9MxU/X/QnVOlpxo83p1NIMul+PvP8kqSDAfJYNSGo0aG2C3
-         ooZZNxmODlzrhHp0mNc96bOSQHVGZ2SmtWPx86Kkt6a4/uFo1Ci/cvvOx837ZhklWh
-         bE5T2l3Q6b3oxektzZiEXp22W3rxoBL6VaLugIjxbXGB//hhF0jUBmtuXJuulk+OBH
-         wX6zoaDDBIiKg==
-X-Virus-Scanned: amavisd-new at mailsenadoer.gob.ar
-Received: from mailsenadoer.gob.ar ([127.0.0.1])
-        by localhost (mailsenadoer.gob.ar [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id U_25FNL1zjpd; Wed, 19 Jul 2023 20:20:22 -0300 (-03)
-Received: from [192.168.0.37] (unknown [41.216.203.66])
-        by mailsenadoer.gob.ar (Postfix) with ESMTPSA id 2FB2113E6E6C;
-        Wed, 19 Jul 2023 20:18:13 -0300 (-03)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229684AbjGUMbR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jul 2023 08:31:17 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97C0719B0;
+        Fri, 21 Jul 2023 05:31:16 -0700 (PDT)
+Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.53])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4R6pmd38mNz18Lfm;
+        Fri, 21 Jul 2023 20:30:25 +0800 (CST)
+Received: from [10.67.103.231] (10.67.103.231) by
+ kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Fri, 21 Jul 2023 20:31:11 +0800
+Message-ID: <0bb5ca67-304e-c40c-c423-947c682d1b88@huawei.com>
+Date:   Fri, 21 Jul 2023 20:31:10 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?b?RHVsZcW+aXTDoSB6cHLDoXZhOyDigqwgMiwwMDAsMDAwJzAwIEVVUg==?=
-To:     Recipients <santacruz@mailsenadoer.gob.ar>
-From:   "Pan Richard Wahl" <santacruz@mailsenadoer.gob.ar>
-Date:   Wed, 19 Jul 2023 16:18:04 -0700
-Reply-To: info@wahlfoundation.org
-Message-Id: <20230719231814.2FB2113E6E6C@mailsenadoer.gob.ar>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_BL,
-        RCVD_IN_MSPIKE_L5,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v4 0/2] mailbox: pcc: Support platform notification for
+ type4 and shared interrupt
+To:     <rafael.j.wysocki@intel.com>, <rafael@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Robbie King <robbiek@xsightlabs.com>
+CC:     <robbiek@xsightlabs.com>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <wanghuiqiang@huawei.com>,
+        <zhangzekun11@huawei.com>, <wangxiongfeng2@huawei.com>,
+        <tanxiaofei@huawei.com>, <guohanjun@huawei.com>,
+        <wangkefeng.wang@huawei.com>, <huangdaode@huawei.com>,
+        <lihuisong@huawei.com>
+References: <20221016034043.52227-1-lihuisong@huawei.com>
+ <20230613125728.31279-1-lihuisong@huawei.com>
+ <20230614155842.7j3d6hdx7mmnhghd@bogus>
+ <f9ce7a98-5742-59cf-9844-03b0ac9bb526@huawei.com>
+From:   "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <f9ce7a98-5742-59cf-9844-03b0ac9bb526@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.103.231]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Drah=C3=BD pr=C3=ADteli,
+Kindly ping.
 
-Jsem pan Richard Wahl, mega v=C3=ADtez 533 milionu $ v jackpotu Mega Millio=
-ns. Daruji 5 n=C3=A1hodne vybran=C3=BDm lidem. Pokud obdr=C5=BE=C3=ADte ten=
-to e-mail, byl v=C3=A1=C5=A1 e-mail vybr=C3=A1n po roztocen=C3=AD koule. Ve=
-t=C5=A1inu sv=C3=A9ho majetku jsem rozdal rade charitativn=C3=ADch organiza=
-c=C3=AD a organizac=C3=AD. Dobrovolne jsem se rozhodl venovat v=C3=A1m c=C3=
-=A1stku =E2=82=AC 2,000,000'00 EUR jako jednomu z 5 vybran=C3=BDch, abych s=
-i overil sv=C3=A9 v=C3=BDhry prostrednictv=C3=ADm n=C3=AD=C5=BEe uveden=C3=
-=A9 str=C3=A1nky YouTube.
-
-VID=C3=8DTE ME ZDE https://www.youtube.com/watch?v=3Dtne02ExNDrw
-
-TOTO JE V=C3=81=C5=A0 DAROVAC=C3=8D K=C3=93D: [DFDW43034RW2023]
-
-Odpovezte na tento e-mail a uvedte k=C3=B3d daru: info@wahlfoundation.org
-
-Douf=C3=A1m, =C5=BEe v=C3=A1m a va=C5=A1=C3=AD rodine udel=C3=A1m radost.
-
-Pozdravy,
-Pan Richard Wahl
+在 2023/7/14 14:39, lihuisong (C) 写道:
+> Hi Rafael,
+>
+> Can you merge this series if it is ok for you.
+> They've already missed two merge windows.😁
+>
+> Regards,
+> Huisong
+>
+>
+> 在 2023/6/14 23:58, Sudeep Holla 写道:
+>> Hi Rafael,
+>>
+>> On Tue, Jun 13, 2023 at 08:57:26PM +0800, Huisong Li wrote:
+>>> PCC supports processing platform notification for slave subspaces and
+>>> shared interrupt for multiple subspaces.
+>>>
+>> Can you pick up these patches please ?
+>> It missed last merge window narrowly as I didn't want to push it that 
+>> late.
+>> So it would be good to get this in this time around.
+>>
+> .
