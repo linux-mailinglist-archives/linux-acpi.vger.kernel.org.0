@@ -2,145 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E23075B5AB
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jul 2023 19:33:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE33575BBEC
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 03:45:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbjGTRdA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 20 Jul 2023 13:33:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35178 "EHLO
+        id S229476AbjGUBpG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jul 2023 21:45:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231846AbjGTRc4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jul 2023 13:32:56 -0400
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C475D10FC;
-        Thu, 20 Jul 2023 10:32:52 -0700 (PDT)
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-99b49e51f62so33697766b.1;
-        Thu, 20 Jul 2023 10:32:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689874371; x=1690479171;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=N7T5HNwRHzExJ+6WQXE/C5RIMl/1/7UGFVhFvWScmu0=;
-        b=GKKzGoxOQ6q0uv5x9XhPmylXczJVmMfW8BFJevyxRjOMjkcnoVHnJKBXbgVwZk1eQX
-         IZ6O7UQpCDuG95cqkHKiR+WHYdiQRhAupQrQ4Wx39eK/TUAdNeqLtRFVAWL64nwIdbOy
-         R1R7z0I1t2XqqBt4uwOwQ9PLDaF5J0pZFj9/fpczVaRBvNdZ4jRCSpUMdEk0XvLc6ubi
-         UfBeZeVWTjqMav4pEJwsDoi8Whmm2VqK6U1y7Cn/Ve5AQ7KuhXLaDWFZ7lvfkIfTppNR
-         5Thm3lIft537fUbwj0p2HQfil5NGyHs4ep4Aa+uNjh5RXYAUbNxSHQjr14RPSvd2MBIV
-         +1Lg==
-X-Gm-Message-State: ABy/qLb3Ct6o6rxgbGtoDpucQBXySXwIRMS49y2L7ByBi+IWj9FpVzEt
-        3GbRy/koVqALxCthboV3QzsiayGTX3GH/dg9wbsj/ESDt6w=
-X-Google-Smtp-Source: APBJJlHJ/EvszG8Kf1nCTMWu349JzgjYjlWJlJd+pdOh6jdOjPA7P6uWCuq3aKuBusyZmoNV+11qiQTjUxna6ie3SJU=
-X-Received: by 2002:a17:906:535b:b0:997:d069:a880 with SMTP id
- j27-20020a170906535b00b00997d069a880mr2479278ejo.1.1689874371008; Thu, 20 Jul
- 2023 10:32:51 -0700 (PDT)
+        with ESMTP id S229450AbjGUBpF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jul 2023 21:45:05 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2995F186;
+        Thu, 20 Jul 2023 18:45:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689903905; x=1721439905;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4myecPwu5Ccazp290GdECvXjfGsVAVkoX8NsXNv5t8M=;
+  b=FKGMW/N22cBrAlIUhPKXOVk6LOeicg5kiJpBNH6ixnGsZJz76QPw0z0e
+   58LNGEeiFcog5NDpcB9G/Ar9rR4xrdWL9QucdiYrBvlI/7OQg0xskfoOR
+   KSoXJc6wn29lvLKDE31clL9W6diFOUNxZ7AGmP8vs9ahNF8vCuaVPpPaU
+   3V1CrOw6Rl5cRPOEEvhysLm6aFhE8x+1gpxERR+el8/fcwLcjkVuaLY3h
+   eqmsXNxsVuTPOPb7qIiOAiMJvPxDKXkekLzZPWVn4iCSWPKqTB0mGkFEM
+   pbUyKu4kLBn27uZ2mBf4k9TcGiopVk0OZj3vKcK257J/CciNOph1FIhaC
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="347214116"
+X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
+   d="scan'208";a="347214116"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 18:45:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="724670858"
+X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
+   d="scan'208";a="724670858"
+Received: from yanfeng1-mobl.ccr.corp.intel.com (HELO yhuang6-mobl2.ccr.corp.intel.com) ([10.255.29.24])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 18:44:59 -0700
+From:   Huang Ying <ying.huang@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
+        linux-acpi@vger.kernel.org, Huang Ying <ying.huang@intel.com>,
+        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+        Wei Xu <weixugc@google.com>,
+        Alistair Popple <apopple@nvidia.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Michal Hocko <mhocko@kernel.org>,
+        Yang Shi <shy828301@gmail.com>,
+        Rafael J Wysocki <rafael.j.wysocki@intel.com>
+Subject: [PATCH RESEND 0/4] memory tiering: calculate abstract distance based on ACPI HMAT
+Date:   Fri, 21 Jul 2023 09:29:28 +0800
+Message-Id: <20230721012932.190742-1-ying.huang@intel.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230719023223.2971481-1-kai.heng.feng@canonical.com>
-In-Reply-To: <20230719023223.2971481-1-kai.heng.feng@canonical.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 20 Jul 2023 19:32:39 +0200
-Message-ID: <CAJZ5v0g4ngM4Z_nvzMfdgsMjjjc2QXkr-ZGxZBzDufbrqO6Kvw@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: video: Put ACPI video and its child devices to
- D0 at boot
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, hdegoede@redhat.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 19, 2023 at 4:33 AM Kai-Heng Feng
-<kai.heng.feng@canonical.com> wrote:
->
-> Screen brightness can only be changed once on some HP laptops.
->
-> Vendor identified the root cause as Linux doesn't invoke _PS0 at boot
-> for all ACPI devices:
+We have the explicit memory tiers framework to manage systems with
+multiple types of memory, e.g., DRAM in DIMM slots and CXL memory
+devices.  Where, same kind of memory devices will be grouped into
+memory types, then put into memory tiers.  To describe the performance
+of a memory type, abstract distance is defined.  Which is in direct
+proportion to the memory latency and inversely proportional to the
+memory bandwidth.  To keep the code as simple as possible, fixed
+abstract distance is used in dax/kmem to describe slow memory such as
+Optane DCPMM.
 
-No, it doesn't and it won't.  For the reason why please see the
-comment in acpi_bus_init_power().
+To support more memory types, in this series, we added the abstract
+distance calculation algorithm management mechanism, provided a
+algorithm implementation based on ACPI HMAT, and used the general
+abstract distance calculation interface in dax/kmem driver.  So,
+dax/kmem can support HBM (high bandwidth memory) in addition to the
+original Optane DCPMM.
 
-BTW, missing _PSC for a device that has _PS0 violates Section 7.3.6.
-_PSC (Power State Current) of the ACPI specification, so this is a
-platform firmware problem.
+Changelog:
 
->     Scope (\_SB.PC00.GFX0)
->     {
->         Scope (DD1F)
->         {
->             Method (_PS0, 0, Serialized)  // _PS0: Power State 0
->             {
->                 If (CondRefOf (\_SB.PC00.LPCB.EC0.SSBC))
->                 {
->                     \_SB.PC00.LPCB.EC0.SSBC ()
->                 }
->             }
->             ...
->         }
->         ...
->     }
->
-> The \_SB.PC00.GFX0.DD1F is the panel device, and its _PS0 needs to be
-> executed to make the brightness control work properly.
->
-> _PS0 doesn't get invoked for all ACPI devices because of commit
-> 7cd8407d53ef ("ACPI / PM: Do not execute _PS0 for devices without _PSC
-> during initialization"). For now use acpi_device_fix_up_power_extended()
-> to put ACPI video and its child devices to D0 to workaround the issue.
+V1 (from RFC):
 
-The above paragraph is misleading the reader into thinking that the
-issue was introduced by a kernel change while the issue really is
-there in the platform firmware and it is the missing _PSC.
+- Added some comments per Aneesh's comments, Thanks!
 
-Blaming kernel changes for platform firmware defects is not really productive.
-
-So this really is a workaround for defective platform firmware on the
-affected systems and it should be documented as such.
-
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217683
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> ---
-> v2:
->  - Wording
->  - Bugzilla
->  - Add comment
->
->  drivers/acpi/acpi_video.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> index 62f4364e4460..bac614e9fe56 100644
-> --- a/drivers/acpi/acpi_video.c
-> +++ b/drivers/acpi/acpi_video.c
-> @@ -2027,6 +2027,13 @@ static int acpi_video_bus_add(struct acpi_device *device)
->         if (error)
->                 goto err_put_video;
->
-> +
-> +       /*
-> +        * Some HP laptops require ACPI video's child devices have _PS0
-> +        * evaluated to have functional panel brightness control.
-
-So the comment should mention the platform firmware defect and it
-shouldn't say "some" but explicitly identify the defective platforms.
-
-> +        */
-> +       acpi_device_fix_up_power_extended(device);
-> +
-
-And the code change itself is simple enough, so it can be made as long
-as it is fine with Hans.
-
->         pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
->                ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
->                video->flags.multihead ? "yes" : "no",
-> --
+Best Regards,
+Huang, Ying
