@@ -2,74 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AE6475CAE5
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 17:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6B2475CB4E
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jul 2023 17:18:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231650AbjGUPGO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Jul 2023 11:06:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42772 "EHLO
+        id S231693AbjGUPSQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Jul 2023 11:18:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231303AbjGUPGM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jul 2023 11:06:12 -0400
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D8FF30EA
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Jul 2023 08:06:06 -0700 (PDT)
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+        with ESMTP id S230041AbjGUPSP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jul 2023 11:18:15 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F35930DD;
+        Fri, 21 Jul 2023 08:18:13 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
+ id 0a38bb1b8a5a6388; Fri, 21 Jul 2023 17:18:11 +0200
+Received: from kreacher.localnet (unknown [195.136.19.94])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id A3DA83F18F
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Jul 2023 15:06:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1689951964;
-        bh=kl/e4UOsgyTgpZR041CkgQMtj/G2F+aKue0ZM+n3D1I=;
-        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-         To:Cc:Content-Type;
-        b=JeCRC6XHDs/rMWvYfoM+siY6Di/fTK+g7xk0hjMauEAWkA0brkcjzwOeZaRxIKmO0
-         jLITM/2fh1hBbWZ8Qd4GcYFSHmDuxuA2xXGV8snw0CtxnJnH6ejs0fnArndpCFWcGo
-         pSwteitFjkPIoQDbCXEVeD7ZVWX5NKARWLRbnyikIwOej4jhT25LnyLm4oQHXvQfl8
-         h68p/uaWrx4zl2OdPre8trtaOype8HJg+fVDmRshdegoILuHlOXvvFXBzoPwOQrU7I
-         0sQhaZZYxCgoLP2qKctI83JyhCE7/W4lFcUFRdn6bmQ/bu6WsAEWM3G8BASVKj4A3T
-         vwacG+roqPNLg==
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-26337f5d2daso1521252a91.0
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Jul 2023 08:06:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689951963; x=1690556763;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kl/e4UOsgyTgpZR041CkgQMtj/G2F+aKue0ZM+n3D1I=;
-        b=BWDS7I+NBMIUVzBBBol9osiPg9EaC1mkoJ/Y0/kNabyiD5YYjOomjr2pxfhHvnRBMq
-         dCk1t0Dq8mrLcI+0rJ1OM6z5FJUb7aF69u5gvlNRXLYgzDP4cJcnmWeJZlzWAQ1+LQIX
-         JacKmB1kgRHCaLa0SAoM6qy6TgoT/t6tT1hLHvROiPK/m4Ti0FHqkMd89LrS54kjmc09
-         O1KG58W+UaX2ovNFDBdvQY3Qbgbc4CNzRTMtUAH+CDhFgaUtKHJ/ZvctODBHmz2DGAW1
-         Hft0jCAhzBUSYyPcKn7HyJOXa3nqwtP7sqYYwXS98+ptgw27M2zeS/yubtLaF8pm7cXr
-         eQgw==
-X-Gm-Message-State: ABy/qLaD0NEj28brQCcIqGm1V64fZCOVSibYITLl027TgQ8DRYHS+top
-        Mg3x6Q0pt3lBmGDzLwS3JpZS7umrLVLyBe3k9XwMS7yAwgSWN06jFUAI1ZxgnXop1P2bnDGafJc
-        ToagQndyIT1JT9VXoCuM9SMZzPHi4EhM/3iPUOKgFxxJUCeTUBfQI7/o=
-X-Received: by 2002:a17:90b:3852:b0:263:41d2:4e2 with SMTP id nl18-20020a17090b385200b0026341d204e2mr1985849pjb.32.1689951963235;
-        Fri, 21 Jul 2023 08:06:03 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGQG+8sAZFcshpgpSEmzvsz19YGr20QEN6gLymdh7VMikSISNxL1N3LszadWnJqVhvZ1lNIBLfj/PJsI0BVVTQ=
-X-Received: by 2002:a17:90b:3852:b0:263:41d2:4e2 with SMTP id
- nl18-20020a17090b385200b0026341d204e2mr1985815pjb.32.1689951962778; Fri, 21
- Jul 2023 08:06:02 -0700 (PDT)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 32225661901;
+        Fri, 21 Jul 2023 17:18:11 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Michal Wilczynski <michal.wilczynski@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH v2 7/8] ACPI: thermal: Rework thermal_get_trend()
+Date:   Fri, 21 Jul 2023 17:08:48 +0200
+Message-ID: <1849104.atdPhlSkOF@kreacher>
+In-Reply-To: <5710197.DvuYhMxLoT@kreacher>
+References: <13318886.uLZWGnKmhe@kreacher> <5710197.DvuYhMxLoT@kreacher>
 MIME-Version: 1.0
-References: <20230719023223.2971481-1-kai.heng.feng@canonical.com> <CAJZ5v0g4ngM4Z_nvzMfdgsMjjjc2QXkr-ZGxZBzDufbrqO6Kvw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0g4ngM4Z_nvzMfdgsMjjjc2QXkr-ZGxZBzDufbrqO6Kvw@mail.gmail.com>
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date:   Fri, 21 Jul 2023 23:05:51 +0800
-Message-ID: <CAAd53p5+3GOu9cCob2FiYEtSVCHEsJQi72PDkotK7FniwVpETg@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: video: Put ACPI video and its child devices to
- D0 at boot
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     lenb@kernel.org, hdegoede@redhat.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrhedvgdekvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeejpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhitghhrghlrdifihhltgiihihnshhkihesihhnthgvlhdrtghomhdprhgt
+ phhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,117 +54,159 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 1:32=E2=80=AFAM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
->
-> On Wed, Jul 19, 2023 at 4:33=E2=80=AFAM Kai-Heng Feng
-> <kai.heng.feng@canonical.com> wrote:
-> >
-> > Screen brightness can only be changed once on some HP laptops.
-> >
-> > Vendor identified the root cause as Linux doesn't invoke _PS0 at boot
-> > for all ACPI devices:
->
-> No, it doesn't and it won't.  For the reason why please see the
-> comment in acpi_bus_init_power().
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Understood.
+Rework the ACPI thermal driver's .get_trend() callback function,
+thermal_get_trend(), to use trip point data stored in the generic
+trip structures instead of calling thermal_get_trip_type() and
+thermal_get_trip_temp().
 
->
-> BTW, missing _PSC for a device that has _PS0 violates Section 7.3.6.
-> _PSC (Power State Current) of the ACPI specification, so this is a
-> platform firmware problem.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
 
-This means most if not all platforms have this problem.
+v1 -> v2:
+   * Do not acquire thermal_check_lock in thermal_get_trend() (lockdep
+     would complain about this, because it is hold around thermal zone
+     locking and .get_trend() runs under the thermal zone lock).  The
+     thermal zone locking added in the previous patches is sufficient
+     to protect this code.
+   * Check trips against invalid temperature values.
+   * Return an error for trips other than passive and active.
 
->
-> >     Scope (\_SB.PC00.GFX0)
-> >     {
-> >         Scope (DD1F)
-> >         {
-> >             Method (_PS0, 0, Serialized)  // _PS0: Power State 0
-> >             {
-> >                 If (CondRefOf (\_SB.PC00.LPCB.EC0.SSBC))
-> >                 {
-> >                     \_SB.PC00.LPCB.EC0.SSBC ()
-> >                 }
-> >             }
-> >             ...
-> >         }
-> >         ...
-> >     }
-> >
-> > The \_SB.PC00.GFX0.DD1F is the panel device, and its _PS0 needs to be
-> > executed to make the brightness control work properly.
-> >
-> > _PS0 doesn't get invoked for all ACPI devices because of commit
-> > 7cd8407d53ef ("ACPI / PM: Do not execute _PS0 for devices without _PSC
-> > during initialization"). For now use acpi_device_fix_up_power_extended(=
-)
-> > to put ACPI video and its child devices to D0 to workaround the issue.
->
-> The above paragraph is misleading the reader into thinking that the
-> issue was introduced by a kernel change while the issue really is
-> there in the platform firmware and it is the missing _PSC.
->
-> Blaming kernel changes for platform firmware defects is not really produc=
-tive.
+---
+ drivers/acpi/thermal.c |  106 ++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 78 insertions(+), 28 deletions(-)
 
-Right, I'll reword the message and make it clear that it's firmware's issue=
-.
+Index: linux-pm/drivers/acpi/thermal.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/thermal.c
++++ linux-pm/drivers/acpi/thermal.c
+@@ -577,47 +577,97 @@ static int thermal_get_crit_temp(struct
+ 	return -EINVAL;
+ }
+ 
+-static int thermal_get_trend(struct thermal_zone_device *thermal,
+-			     int trip, enum thermal_trend *trend)
++static struct thermal_trip *acpi_thermal_get_trip(struct acpi_thermal *tz,
++						  int trip_index)
+ {
+-	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
+-	enum thermal_trip_type type;
++	struct thermal_trip *trip;
+ 	int i;
+ 
+-	if (thermal_get_trip_type(thermal, trip, &type))
+-		return -EINVAL;
++	if (!tz || trip_index < 0)
++		return NULL;
+ 
+-	if (type == THERMAL_TRIP_ACTIVE) {
+-		int trip_temp;
+-		int temp = deci_kelvin_to_millicelsius_with_offset(
+-					tz->temperature, tz->kelvin_offset);
+-		if (thermal_get_trip_temp(thermal, trip, &trip_temp))
+-			return -EINVAL;
++	trip = tz->trips.critical.trip_ref.trip;
++	if (trip) {
++		if (!trip_index)
++			return trip;
+ 
+-		if (temp > trip_temp) {
+-			*trend = THERMAL_TREND_RAISING;
+-			return 0;
+-		} else {
+-			/* Fall back on default trend */
+-			return -EINVAL;
++		trip_index--;
++	}
++
++	trip = tz->trips.hot.trip_ref.trip;
++	if (trip) {
++		if (!trip_index)
++			return trip;
++
++		trip_index--;
++	}
++
++	trip = tz->trips.passive.trip_ref.trip;
++	if (trip) {
++		if (!trip_index)
++			return trip;
++
++		trip_index--;
++	}
++
++	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
++		trip = tz->trips.active[i].trip_ref.trip;
++		if (trip) {
++			if (!trip_index)
++				return trip;
++
++			trip_index--;
+ 		}
+ 	}
+ 
++	return NULL;
++}
++
++static int thermal_get_trend(struct thermal_zone_device *thermal,
++			     int trip_index, enum thermal_trend *trend)
++{
++	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
++	struct thermal_trip *trip;
++	long t;
++
++	trip = acpi_thermal_get_trip(tz, trip_index);
++	if (!trip || trip->temperature == THERMAL_TEMP_INVALID)
++		return -EINVAL;
++
+ 	/*
+ 	 * tz->temperature has already been updated by generic thermal layer,
+-	 * before this callback being invoked
++	 * before this callback being invoked.
+ 	 */
+-	i = tz->trips.passive.tc1 * (tz->temperature - tz->last_temperature) +
+-	    tz->trips.passive.tc2 * (tz->temperature - tz->trips.passive.temperature);
++	switch (trip->type) {
++	case THERMAL_TRIP_PASSIVE:
++		t = tz->trips.passive.tc1 * (tz->temperature -
++						tz->last_temperature) +
++			tz->trips.passive.tc2 * (tz->temperature -
++						tz->trips.passive.temperature);
++		if (t > 0)
++			*trend = THERMAL_TREND_RAISING;
++		else if (t < 0)
++			*trend = THERMAL_TREND_DROPPING;
++		else
++			*trend = THERMAL_TREND_STABLE;
++
++		return 0;
++
++	case THERMAL_TRIP_ACTIVE:
++		t = deci_kelvin_to_millicelsius_with_offset(tz->temperature,
++							    tz->kelvin_offset);
++		if (t > trip->temperature) {
++			*trend = THERMAL_TREND_RAISING;
++			return 0;
++		}
+ 
+-	if (i > 0)
+-		*trend = THERMAL_TREND_RAISING;
+-	else if (i < 0)
+-		*trend = THERMAL_TREND_DROPPING;
+-	else
+-		*trend = THERMAL_TREND_STABLE;
++		fallthrough;
+ 
+-	return 0;
++	default:
++		break;
++	}
++
++	return -EINVAL;
+ }
+ 
+ static void acpi_thermal_zone_device_hot(struct thermal_zone_device *thermal)
 
->
-> So this really is a workaround for defective platform firmware on the
-> affected systems and it should be documented as such.
-
-Sure.
-
->
-> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217683
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > ---
-> > v2:
-> >  - Wording
-> >  - Bugzilla
-> >  - Add comment
-> >
-> >  drivers/acpi/acpi_video.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
-> > diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> > index 62f4364e4460..bac614e9fe56 100644
-> > --- a/drivers/acpi/acpi_video.c
-> > +++ b/drivers/acpi/acpi_video.c
-> > @@ -2027,6 +2027,13 @@ static int acpi_video_bus_add(struct acpi_device=
- *device)
-> >         if (error)
-> >                 goto err_put_video;
-> >
-> > +
-> > +       /*
-> > +        * Some HP laptops require ACPI video's child devices have _PS0
-> > +        * evaluated to have functional panel brightness control.
->
-> So the comment should mention the platform firmware defect and it
-> shouldn't say "some" but explicitly identify the defective platforms.
-
-OK.
-
->
-> > +        */
-> > +       acpi_device_fix_up_power_extended(device);
-> > +
->
-> And the code change itself is simple enough, so it can be made as long
-> as it is fine with Hans.
-
-OK.
 
 
-Kai-Heng
-
->
-> >         pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
-> >                ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
-> >                video->flags.multihead ? "yes" : "no",
-> > --
