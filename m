@@ -2,77 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62BDD75ECF9
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jul 2023 10:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC54C75EF09
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jul 2023 11:23:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229904AbjGXIAB convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 24 Jul 2023 04:00:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42486 "EHLO
+        id S229889AbjGXJXi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Jul 2023 05:23:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229778AbjGXIAA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Jul 2023 04:00:00 -0400
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50BE5B3;
-        Mon, 24 Jul 2023 00:59:59 -0700 (PDT)
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-522205646fdso311113a12.0;
-        Mon, 24 Jul 2023 00:59:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690185598; x=1690790398;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q/5/ZrAR5ynowHVv8V89+f8F5Dt7dmAy2TN6zfb4m1Q=;
-        b=FlyvR4GYAaipC0P1j74Hy2qEyqlxubQ77Vmk5DONYeGIXHzcN1y8aIf6X3flF0QXkp
-         yFORFFlU0Xy8Qa/1ybw7a1i9bncnuFcnJU7GlPX1eyh3VQz7E50r8X3xrI9oVCyfcS5l
-         rYF92nH9aqvTotwqqLQ9yWRBldi/7mpM7NM6r5JpP1q/KN2spNX9mrNjuhcPzsOfwC+g
-         E9xnMwkuSzkB0VoRfncp/Zt49NIfI968dQ5juAYToSamB7eHp8WlRHbA6MkliiEA8RY3
-         IVbMiI5ZHbG6ErNmK3NNsza0JloCufo1+u1uahYvlY500dP4bj+j5LN/rNs0KGil6zJ0
-         KnxQ==
-X-Gm-Message-State: ABy/qLaBV+aIugAQ3KiPU+SITWxpbl1r+Ui5MnsFFvI1Ohrr4zn356IF
-        1KIUD1ZkJgyvcEnY0jbAtvvFNZr3pLZr20bn1DY=
-X-Google-Smtp-Source: APBJJlGa3VLXPg293738Z5+iJqulgnrYSxN/fR8YIjxFGtrS9m9EWmlMmEkUJ8F7Dy4Ld0TOt+V4itWL/NZAtf2BSYY=
-X-Received: by 2002:a17:906:74d4:b0:992:387:44d1 with SMTP id
- z20-20020a17090674d400b00992038744d1mr7537528ejl.7.1690185597476; Mon, 24 Jul
- 2023 00:59:57 -0700 (PDT)
+        with ESMTP id S230153AbjGXJXh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Jul 2023 05:23:37 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 079D8FD;
+        Mon, 24 Jul 2023 02:23:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=nHwERRNohuUhZsb3fsbGJZNV/wqpb0sJjOXJGxj/gFU=; b=0eTCGmkFvYRanCjqIruUc+gFHD
+        eb0YjlozDEULA37j7v5qY4zn7oNzSJHyKS6Mu3lubDRF2RaMczkF4f0lJh//Gw6lfNr0hipZSgCGS
+        JIWlEQVkw7RyvqjD3Uxd4RuJG7sAceLde0p86r2jFr/kdLPlkftX1hnSBOxxVBlLMicc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qNrmC-0026m1-D4; Mon, 24 Jul 2023 11:22:48 +0200
+Date:   Mon, 24 Jul 2023 11:22:48 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Evan Quan <evan.quan@amd.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, Alexander.Deucher@amd.com,
+        Christian.Koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+        daniel@ffwll.ch, johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        Mario.Limonciello@amd.com, mdaenzer@redhat.com,
+        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+        hdegoede@redhat.com, jingyuwang_vip@163.com, Lijo.Lazar@amd.com,
+        jim.cromie@gmail.com, bellosilicio@gmail.com,
+        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
+        arnd@arndb.de, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH V7 4/9] wifi: mac80211: Add support for ACPI WBRF
+Message-ID: <9b1f45f9-02a3-4c03-b9d5-cc3b9ab3a058@lunn.ch>
+References: <20230719090020.2716892-1-evan.quan@amd.com>
+ <20230719090020.2716892-5-evan.quan@amd.com>
 MIME-Version: 1.0
-References: <13318886.uLZWGnKmhe@kreacher> <5710197.DvuYhMxLoT@kreacher> <2e0bf65f-0452-c859-d287-a9762bd965ef@linaro.org>
-In-Reply-To: <2e0bf65f-0452-c859-d287-a9762bd965ef@linaro.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 24 Jul 2023 09:59:43 +0200
-Message-ID: <CAJZ5v0iQ207Xr3SXBedMkTeqcSN0cfkxicD+wZ6ETOq9E5vC3g@mail.gmail.com>
-Subject: Re: [PATCH v2 0/8] ACPI: thermal: Use trip point table to register
- thermal zones
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Michal Wilczynski <michal.wilczynski@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230719090020.2716892-5-evan.quan@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Daniel,
+> @@ -1395,6 +1395,8 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+>  	debugfs_hw_add(local);
+>  	rate_control_add_debugfs(local);
+>  
+> +	ieee80211_check_wbrf_support(local);
+> +
+>  	rtnl_lock();
+>  	wiphy_lock(hw->wiphy);
+>  
 
-On Sun, Jul 23, 2023 at 12:19 PM Daniel Lezcano
-<daniel.lezcano@linaro.org> wrote:
->
->
-> Hi Rafael,
->
-> could you wait before applying I would like to review the series but I'm
-> OoO ATM, coming back next week?
+> +void ieee80211_check_wbrf_support(struct ieee80211_local *local)
+> +{
+> +	struct wiphy *wiphy = local->hw.wiphy;
+> +	struct device *dev;
+> +
+> +	if (!wiphy)
+> +		return;
+> +
+> +	dev = wiphy->dev.parent;
+> +	if (!dev)
+> +		return;
+> +
+> +	local->wbrf_supported = wbrf_supported_producer(dev);
+> +	dev_dbg(dev, "WBRF is %s supported\n",
+> +		local->wbrf_supported ? "" : "not");
+> +}
 
-Yes, I can wait.
+This seems wrong. wbrf_supported_producer() is about "Should this
+device report the frequencies it is using?" The answer to that depends
+on a combination of: Are there consumers registered with the core, and
+is the policy set so WBRF should take actions.
 
-Thanks!
+The problem here is, you have no idea of the probe order. It could be
+this device probes before others, so wbrf_supported_producer() reports
+false, but a few second later would report true, once other devices
+have probed.
+
+It should be an inexpensive call into the core, so can be made every
+time the channel changes. All the core needs to do is check if the
+list of consumers is empty, and if not, check a Boolean policy value.
+
+     Andrew
