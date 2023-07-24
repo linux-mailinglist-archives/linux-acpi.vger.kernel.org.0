@@ -2,152 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E29875FC53
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jul 2023 18:38:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1C1E75FEA5
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jul 2023 19:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231472AbjGXQiz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Jul 2023 12:38:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34818 "EHLO
+        id S231931AbjGXR7K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Jul 2023 13:59:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231405AbjGXQiy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Jul 2023 12:38:54 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AE43E4F;
-        Mon, 24 Jul 2023 09:38:53 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6689430d803so2665846b3a.0;
-        Mon, 24 Jul 2023 09:38:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690216732; x=1690821532;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=V+JfSQRVxp5hBkPI67OByVISWadfjZ/gRo2caZ6QEXQ=;
-        b=J0SIDsaBqhOqChaQ67sGyvXCw6wuB9D70BUPePoRqPBHzVABFhup3ZHYXe/SPLDyyp
-         9/ZKbm15730MXx32osKl+2CMdJPZ8SsFsfozMhaByvH1NQgWElYdrssXlTtZ4gtshqyT
-         3L6kvgvgfgdGpurk0A7WlEOtZBVi1lcM2t27vF3bL3YHNcZ5CnDiwMrEN5CD/PEFOk9S
-         GjhujVbNueto7dTUoLwf+AJ8TZ8JiRF3EXzims3/cuKgmFP+7fYzAp4+gGiSEIoBvkPC
-         gSKftNJ1d/h6iXs+kdqKiHc25umN+6MR1gGNvDa6B6n6CCDcrNCmGcheSANsj5zk5GXO
-         PL/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690216732; x=1690821532;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V+JfSQRVxp5hBkPI67OByVISWadfjZ/gRo2caZ6QEXQ=;
-        b=dtGmsTUVajQzD4yXRVl32ZnOz5PyAfu+sJ0nQJTCBwcJmfLlvUa745z2eYHOPrNick
-         rbJzDFzKDC8vXHZwKUmGhxEhl2Sco4hDXbG/rjpSVZN9RqzZBneW26jNPPXC4Jq5KSGw
-         E+a9656YmfzNgLPCB1TUXq9usAs+Xs8yarieRbEJGCjVjxX07NVdxt4i+39Sunb0anKP
-         DgzBey3UDjaCn7Z3Hz5pYArJjAXXeCWdZ7hthKKDpm66dOHhuxxpF99Hx+sNTCpNfXTN
-         auGygPH1MDSuTFHRZZKPw+178GrM90hQv1ZD+l+Okfi26mckVR3uc74w255glLb86F9S
-         9uxw==
-X-Gm-Message-State: ABy/qLbjwMjIxMcjgxAeYjZbT3GE+D+rP3Gj7+bbUQEfEwzR9Sy7Nizx
-        gu47+pdDR8VVtAjj70Vx504=
-X-Google-Smtp-Source: APBJJlHwkoplxjfTudrcTmCgYQje4SlToJXd/PplWbbrxvDRkCzwmUomoG9bb/7nJz8xzrTc/eq/sw==
-X-Received: by 2002:a05:6a00:2492:b0:673:5d1e:6654 with SMTP id c18-20020a056a00249200b006735d1e6654mr10098128pfv.33.1690216732389;
-        Mon, 24 Jul 2023 09:38:52 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:b8db:3c3:1ff4:2ae3])
-        by smtp.gmail.com with ESMTPSA id m26-20020a056a00165a00b00682b2fbd20fsm7996939pfc.31.2023.07.24.09.38.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jul 2023 09:38:52 -0700 (PDT)
-Date:   Mon, 24 Jul 2023 09:38:49 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH RFC 1/2] drivers: fwnode: Extend device_get_match_data()
- to struct bus_type
-Message-ID: <ZL6pGRNvOfdYhhAs@google.com>
-References: <20230723083721.35384-1-biju.das.jz@bp.renesas.com>
- <20230723083721.35384-2-biju.das.jz@bp.renesas.com>
- <ZL5bH10uJWDe2SPY@smile.fi.intel.com>
- <OS0PR01MB592287A0B91E353663FE12A68602A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <ZL51/dXKyDkcoDVJ@smile.fi.intel.com>
- <OS0PR01MB592289F163F05A61DFD019DF8602A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <ZL6BsM0NGhn2mc+6@smile.fi.intel.com>
- <TYCPR01MB5933A2EC98D3BF251C74A7AF8602A@TYCPR01MB5933.jpnprd01.prod.outlook.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <TYCPR01MB5933A2EC98D3BF251C74A7AF8602A@TYCPR01MB5933.jpnprd01.prod.outlook.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230337AbjGXR65 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Jul 2023 13:58:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54DE0199C;
+        Mon, 24 Jul 2023 10:58:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E10F661357;
+        Mon, 24 Jul 2023 17:58:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8E4C433C8;
+        Mon, 24 Jul 2023 17:58:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1690221500;
+        bh=u9D54zq4EdgBWh/eN7pPZ8Dj/7qWB0LLjRe/rMAT3ho=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=cKcJFTHDevuSI0ZlnIWdCBK0O9NxDuj0WLboJT6+Zk0IyAg5JNx/x1ak2bOLT0Yjy
+         N/wiH824oULVzq+bSZPdotHXs1+XAYTcfybPV3Hd7k05viyvSDI54vGuE5Uj7OPwif
+         L/PmpnN8mGDvJZvy8hrWZdPxATu88KRrwWVVtkMU=
+Date:   Mon, 24 Jul 2023 10:58:18 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Alistair Popple <apopple@nvidia.com>
+Cc:     Huang Ying <ying.huang@intel.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+        nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org,
+        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+        Wei Xu <weixugc@google.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Michal Hocko <mhocko@kernel.org>,
+        Yang Shi <shy828301@gmail.com>,
+        Rafael J Wysocki <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH RESEND 0/4] memory tiering: calculate abstract distance
+ based on ACPI HMAT
+Message-Id: <20230724105818.6f7b10fc8c318ea5aae9e188@linux-foundation.org>
+In-Reply-To: <875y6dj3ok.fsf@nvdebian.thelocal>
+References: <20230721012932.190742-1-ying.huang@intel.com>
+        <875y6dj3ok.fsf@nvdebian.thelocal>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 24, 2023 at 01:58:55PM +0000, Biju Das wrote:
-> Hi Andy,
-> 
-> Thanks for the feedback.
-> 
-> > Subject: Re: [PATCH RFC 1/2] drivers: fwnode: Extend
-> > device_get_match_data() to struct bus_type
-> > 
-> > On Mon, Jul 24, 2023 at 01:19:02PM +0000, Biju Das wrote:
-> > > > Subject: Re: [PATCH RFC 1/2] drivers: fwnode: Extend
-> > > > device_get_match_data() to struct bus_type On Mon, Jul 24, 2023 at
-> > > > 12:02:27PM +0000, Biju Das wrote:
-> > > > > > Subject: Re: [PATCH RFC 1/2] drivers: fwnode: Extend
-> > > > > > device_get_match_data() to struct bus_type On Sun, Jul 23, 2023
-> > > > > > at 09:37:20AM +0100, Biju Das wrote:
-> > 
-> > ...
-> > 
-> > > > > > > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > > > > >
-> > > > > > You can't just throw one's SoB tag without clear understanding
-> > > > > > what's going on here (either wrong authorship or missing
-> > > > > > Co-developed-by or...?).
-> > > > >
-> > > > > Dmitry feels instead of having separate bus based match_data()
-> > > > > like i2c_get_match_data[2] and spi_get_device_match_data[3], it is
-> > > > > better to have a generic approach like a single API
-> > > > > device_get_match_data() for getting match_data for OF/ACPI/I2C/SPI
-> > tables.
-> > > > >
-> > > > > So, he came with a proposal and shared some code here[1].
-> > > >
-> > > > Yes, I'm pretty much following the discussion.
-> > > >
-> > > > > Since,I have send this patch, I put my signed -off.
-> > > >
-> > > > I'm not talking about this. There is no evidence that Dmitry gives
-> > > > you any approval to use or clear SoB tag. Again, you may not do like
-> > this.
-> > >
-> > > Here Dmitry is acknowledging, he is ok with the patch I posted.
-> > >
-> > 
-> > No, you just misinterpreted his message.
-> > 
-> 
-> Dmitry,
-> 
-> As you are the author of code, either you post a patch or provide your SoB as per the guideline mentioned here to avoid confusion.
-> 
->  https://www.kernel.org/doc/html/latest/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
+On Fri, 21 Jul 2023 14:15:31 +1000 Alistair Popple <apopple@nvidia.com> wrote:
 
-It was not really proper patch, consider it as an email with parts
-written in unified diff, as sometimes it is easier than to explain in
-words, and I do not want to take much credit for it.
+> Thanks for this Huang, I had been hoping to take a look at it this week
+> but have run out of time. I'm keen to do some testing with it as well.
 
-If you wish you can put "Suggested-by" for me, or just drop my name off
-the patch description altogether.
+Thanks.  I'll queue this in mm-unstable for some testing.  Detailed
+review and testing would be appreciated.
 
-Thanks.
-
--- 
-Dmitry
+I made some adjustments to handle the renaming of destroy_memory_type()
+to put_memory_type()
+(https://lkml.kernel.org/r/20230706063905.543800-1-linmiaohe@huawei.com)
