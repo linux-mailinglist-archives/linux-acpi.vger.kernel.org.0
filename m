@@ -2,191 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E32C475F8B4
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jul 2023 15:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF02175F8F1
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jul 2023 15:53:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229746AbjGXNoj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Jul 2023 09:44:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42804 "EHLO
+        id S231252AbjGXNxk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Jul 2023 09:53:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232333AbjGXNno (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Jul 2023 09:43:44 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on20615.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe5a::615])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 406FB19A1;
-        Mon, 24 Jul 2023 06:41:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VlncVbPTUH5dAnc3UCpmyu/OacANLCQNR23qjGr3WvhEXM0BuunTmRGP4uBE8bRPLukSCYQxdZHLchnt/mkmqp0bM0SSJM297ONErgyGRp7FhEYWT1BpJCcw+whN62Qy2r70tPIZoSL15ngtV0QvTyIYkoWr1Z4p0ixYyZU/SVPfIemdZhJEPFIunC47P9ebOgoG12mlnKkObThNucJO3xP5vcia4Qtta1ARsNKAzNWvGTnx82t9b/qFq2ObBdvrwj2T+S86UeiyCSwwg0xhzE71mQZPBhs+Ej/xvICra+jwSmTmrSGH6g3le/vjrdlZ6R+9n02Ag0ZKNP5QSTSKWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7JH2N+MZ4Yew6D8lRMINgoPINuXIJ+oLnl1vxRiDcug=;
- b=MiBuAgp9iTFwKrdzDkp6DZPMPpP11pdxahVnAt2Fnmt74iaf+TdiWp4/C3g94Y8lEBuk5w4aO3UTqBvXOqLENJ71ogHgwXemXGGhVV6WHv3RvFxHCIxMZq60QWnIAQTpKw+zijZCrqbKRVyabuey2DKiR6go7XhgeCLBmzchtuxBdfpeu7DjLTfEgpkTBEkNVjwKFTuHNrtkC/eW9aWu4LvmA0qQxbd2stFVFL8qVrK5aDebKRzLJt4H5nFKmw/HM9o2uEfkp21DnCQJsS13dFdeB6PDiNuay/pjtsrxlOOiQxARTZ4xxO2IlGU7froHigz9ZQN09cfpqei3PAMzZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7JH2N+MZ4Yew6D8lRMINgoPINuXIJ+oLnl1vxRiDcug=;
- b=Ol/r5rijg6JclY5Z+jppK8yHaYnXiS2ck+GdynX1T3UKQYjn3Yg0IfEb7AwsNFkUbbcOK78QQ+XuUAfCm4BTknKHyFo4ndlaNK0oSkCTZ89Yrlt9MzsUD08ARwmXluFCZdAVzOzDw18X7AGHeDFR39qnz8UDPIcX4Zb7CGpoYxk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by CY8PR12MB7684.namprd12.prod.outlook.com (2603:10b6:930:87::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.32; Mon, 24 Jul
- 2023 13:40:37 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6609.031; Mon, 24 Jul 2023
- 13:40:37 +0000
-Message-ID: <7d059aed-fac0-cdcd-63d5-58185bb345db@amd.com>
-Date:   Mon, 24 Jul 2023 08:40:33 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH V7 4/9] wifi: mac80211: Add support for ACPI WBRF
-To:     Andrew Lunn <andrew@lunn.ch>, Evan Quan <evan.quan@amd.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, Alexander.Deucher@amd.com,
-        Christian.Koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
-        daniel@ffwll.ch, johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        mdaenzer@redhat.com, maarten.lankhorst@linux.intel.com,
-        tzimmermann@suse.de, hdegoede@redhat.com, jingyuwang_vip@163.com,
-        Lijo.Lazar@amd.com, jim.cromie@gmail.com, bellosilicio@gmail.com,
-        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
-        arnd@arndb.de, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-References: <20230719090020.2716892-1-evan.quan@amd.com>
- <20230719090020.2716892-5-evan.quan@amd.com>
- <9b1f45f9-02a3-4c03-b9d5-cc3b9ab3a058@lunn.ch>
-Content-Language: en-US
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <9b1f45f9-02a3-4c03-b9d5-cc3b9ab3a058@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN7PR04CA0101.namprd04.prod.outlook.com
- (2603:10b6:806:122::16) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        with ESMTP id S232076AbjGXNxZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Jul 2023 09:53:25 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A10104C24;
+        Mon, 24 Jul 2023 06:50:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690206655; x=1721742655;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7n/QkvSk3dkk01I6xtQBDZXyK+JGZB1UntpO5/EXJkk=;
+  b=BuuFTVKhW7ZWOp8U4edkeof3QFndFAyzzkSk3P6f/GTlwB2pv0vGybF2
+   5tbXeyRntjhYRoHaP8+Q/drY9gP/Bvj8sYHNEholIzLzIyjJtTI6HyepZ
+   Mcu447ySsw+hi3rgUEjG1sYcWqLvu5r1jzp3OoxCR3lxbWcTtJql28fWt
+   8+CpLhzjmGGPLURgXYgAncdvLSJpVnLxxXWA4OxRHDiErGg5BDl8hQT53
+   TGpACJvszQUfdNJ7Akwq+pOvAy601/9P7YuSd0xKC3jBv9heIwEIlUHw5
+   wJvmZeZsBY4faG2meimi4nOaIW2zn21PTGOjmU6k6UAY91JJIRxFtJekl
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10781"; a="366336598"
+X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
+   d="scan'208";a="366336598"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 06:50:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10781"; a="675827551"
+X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
+   d="scan'208";a="675827551"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003.jf.intel.com with ESMTP; 24 Jul 2023 06:50:42 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qNvxQ-00Fe1G-24;
+        Mon, 24 Jul 2023 16:50:40 +0300
+Date:   Mon, 24 Jul 2023 16:50:40 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH RFC 1/2] drivers: fwnode: Extend device_get_match_data()
+ to struct bus_type
+Message-ID: <ZL6BsM0NGhn2mc+6@smile.fi.intel.com>
+References: <20230723083721.35384-1-biju.das.jz@bp.renesas.com>
+ <20230723083721.35384-2-biju.das.jz@bp.renesas.com>
+ <ZL5bH10uJWDe2SPY@smile.fi.intel.com>
+ <OS0PR01MB592287A0B91E353663FE12A68602A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <ZL51/dXKyDkcoDVJ@smile.fi.intel.com>
+ <OS0PR01MB592289F163F05A61DFD019DF8602A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CY8PR12MB7684:EE_
-X-MS-Office365-Filtering-Correlation-Id: 46ef888e-9e45-440c-f24d-08db8c4b903d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1clvL9l3lWYE9hEIrdcf2Dtu/xIfWqROz7J30rMAUT3fGeCOmwBeS4MCEMokD0DDd69kygMyM00BNwGbztVY52NarfjT0BaIr3DbTzPCdNjwMqs8lc+qf0zYdpBrfdhcWJfX4+SlQSD3kzUk0qqKOvbaAlZCt52xVOU7JwZjQyxr1xu3Z27c/SBn1x7vCxUc3q63i8GVuzBk6/mSO8xP182b5qsGAy3tcfsLgShwVH6fBdfZ45FxC/ofuGdXVorOFMFwcoM2hmRLbn9aQeReLQHUghlNrV19V4DJj7NdsRTwbSuUBR42kLFWFY/oexHF1CLT1xrJDGgT92+YUPuefQT3O1M4S5KCzh+jyZrScqpH+gNhyJB+BCm86nBzE7e0/nPksgJeSP1DChU7pkg/KZUzeoThZ0GOqDfIf0vP28wp0G34kHGgF/Y7xQ2vXIkAfR1BCwlY6xd+Gq2JtuvHCMlG0eRuAy1LIIL5qSQF8ix8MM4nMGCUZia9BM2EchU3/n5RXNhm+wpHDZoFg/7Zr2iWpOPCjs73LbZcirxlXpqkgvScKaAs0jYc6Ql2y25oAgAbcteiiBSHIWa9W6oF/W141TQOB6TRiVXpd8lSazCg5CXlJ4kg3xSzxnRp2uy5R79Ws2PrtxX5U5FZHMNL5Q==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(346002)(39860400002)(376002)(366004)(451199021)(186003)(26005)(53546011)(6506007)(31696002)(5660300002)(36756003)(8936002)(8676002)(7416002)(2906002)(2616005)(86362001)(38100700002)(83380400001)(6486002)(6666004)(6512007)(316002)(66556008)(4326008)(6636002)(66946007)(66476007)(478600001)(31686004)(110136005)(41300700001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T2sxSWd3ZnNRSlNzSWxqUFZRbW5TVEFkcnBoZkRZTTdDbjY0MlUyQ2hFTzN0?=
- =?utf-8?B?MXB6NHNEaFFZUHJ5SlBpTTljd3cyaWFoZ3UxdXVoalhzWFNGSGJuMGlpMzJ3?=
- =?utf-8?B?WlU4a0NMaXNUK3M1U3JwdDZ5Y3NNQndIMGJpWEdIOU5XRnNHUEdIM2NhQ29x?=
- =?utf-8?B?NzQyQTNNWk9xUEZJcmVyUnF5bnhFaFZ4R24wKzdlVUNPNC9NR2ppUTcrQUo0?=
- =?utf-8?B?Zzd2clJoRXpCN2lheFlhTzhYNzAzT3pscTFsN0ZXYnVvZGhsU0VqVDh2eVdw?=
- =?utf-8?B?OEkrdVVqUmtSUERqeXlYY09hSWRnNnY3MTlaYmI0ZWVsYUcwdTZYQkNyMnRh?=
- =?utf-8?B?NkpJKzFvcGdRRWZjaERLalgwbzkwdjdDYjJIdUdQaDJlN0pGNXlQOHBEME13?=
- =?utf-8?B?b0NNNWpmZ3JrWC94UHZhVjQ5ZUIvaDByYjlTMFh1anBkbnFzUjRUeG9CT0VF?=
- =?utf-8?B?TERCNDNmQ3R2MVU2NEZZNFh1aS9JNXprZ2N6dkpPWlZMelhMbWNiTjJsaGcy?=
- =?utf-8?B?WDd1ZFQyTGNMVnhGb0ErWndiT0ZUOU4vbi9Oak91VGRFbzd2SXUxa29QdGxo?=
- =?utf-8?B?MllNNXlaS2xpVW1XNERJU3Z4Wmc3UERRQ1Uxc2VuSksyUXNrRmY3RkRLMDc4?=
- =?utf-8?B?dmJON3hkNHljZm1oQnZCWEg5ZURMREtyWjZtaFg2djJiT3FGZnRtTndtQlBR?=
- =?utf-8?B?c0tEM2V1WTl0ejNWTGFRZzJNQ1MrSitTc0RLK240ODN6bkNyZkc4VHpMeFBv?=
- =?utf-8?B?TlppdHJpZjNFaWJFSzhUdmRvbng5ajY1S3Y2eGJkTmw1YzlVU1h2dGlsNkQr?=
- =?utf-8?B?YThLZVBYdXRTczlpS2N2TjBJdk84TDR3YmROd1ZWRFcrblpnS2FMWmhaK3ZE?=
- =?utf-8?B?bEt0VXBMM2QyUDJDelBZRC9MZURxVXluU1VZdnhSNlhVQkx6WGc2ZGZGOGd3?=
- =?utf-8?B?a3BndmFORGxFVDZyaGg2aUVNd2Z6cXBITWpDYnRPa1g2MnJwT1NKcjYrQXF4?=
- =?utf-8?B?VXdaWTU0ZVBUcmI3dlM1RVpib09MajJNakxnbFk2SmtTMVJTY0wvMjJRSkZw?=
- =?utf-8?B?Q2w1RjFFUlNMbWhhcmxsdnZPWDdOZGRrUjFNM0M1R21wTFFTVDdUQnkxVWJ0?=
- =?utf-8?B?Y1Q3cmcxbU1oNk5jRndpeGRJUWNqS25wSkNBS1NYNGFpR2Y0NTd6clg4MC9j?=
- =?utf-8?B?d09saTFqUktjcE4wbXY0SVBJUk1zLzhJa0JwTzRGVVlySG52Q05PY01FUU9I?=
- =?utf-8?B?WVNGa3BoYUFDNU1obWw3R1Yzc1dBN3dIbUdNZ0dDdTRrTzc4eTV5M1NxSjJ6?=
- =?utf-8?B?RVFBZkhjMnUzdGw1Qk1YdXcyRXBZeWRGdkFjU0FIaDRscFRYNHVPb1RuNHhZ?=
- =?utf-8?B?TlNoNTJrY3Z6RHFhYlF1S2J4aGJhWGhxVlorcDVWZVdlQlNzTWhmQS81QnRT?=
- =?utf-8?B?L00rSitBR28zMCsxZGo0dTZVUG9CZ2RSY3FBNzdyUHVQNXFkRlBEWGVWSFpv?=
- =?utf-8?B?ZkUzOHc4Y0M4SHppb3dtV0VuQVBXMXBMWEFMZjM4SlA2NVNWUTNDNkZHWFlY?=
- =?utf-8?B?QmJUc29uOE93RHI5VU9jckx3Y3JnaUVlcFhwaDJzMmRSaExmdkRpcnJmUUl1?=
- =?utf-8?B?NklQbDJkSXRQbTVNclBYNnM4UGJ1cGs0ck43d3NoT0hUejRYNDl0aVhnenFw?=
- =?utf-8?B?a09vKytBSUtUMmoveTd2YzZDNmFzSU43V3pFS0MyN0Z2MUFrd1crZmVmcTA1?=
- =?utf-8?B?aWhYMmd6SG9vRXU0VWd4RnAzTWlNbXdLcHJGaXVXb0FZNmNiNWJ6ZkpJNEhZ?=
- =?utf-8?B?ODltQ2ZVQXQxMVd3OGhOSVVTcDkwYVV3dmNMamtaa0JKaFFTeU1raXZpeThP?=
- =?utf-8?B?TFpGZVp0bnd0djVKQWhNWjlMSXB5REtNd2JKd0JIUUZxZ01IVHlqY0NKc2Zv?=
- =?utf-8?B?ckpZaXgydUNYRnhUUkNNZktnYmlJUDNmUzlXYmhXa1BTZXRwS3RUOFVXL3hh?=
- =?utf-8?B?VS9XTXhuOEVUSWZPajNLYVl1cktyTzlMZGw1UWJIYjVkZDczL0lGZThaNDBF?=
- =?utf-8?B?VEdGbUFyTmt6MVdGTjBwQ0hka2pPajV4Ty9wcmdDUzhINzNmRENac3pPbDFS?=
- =?utf-8?Q?xnKVfmZv/rWeB7Bpua4KsJL1K?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 46ef888e-9e45-440c-f24d-08db8c4b903d
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2023 13:40:37.6890
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: h1sKb9G7leKWVRP1St/LYYzp82fnZQ/SGhX1eWFj4JSlvRIjfA6zAeoeY196V8FuVaTPhuLIvJLPUVieh0DZxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7684
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <OS0PR01MB592289F163F05A61DFD019DF8602A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 7/24/2023 04:22, Andrew Lunn wrote:
->> @@ -1395,6 +1395,8 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
->>   	debugfs_hw_add(local);
->>   	rate_control_add_debugfs(local);
->>   
->> +	ieee80211_check_wbrf_support(local);
->> +
->>   	rtnl_lock();
->>   	wiphy_lock(hw->wiphy);
->>   
-> 
->> +void ieee80211_check_wbrf_support(struct ieee80211_local *local)
->> +{
->> +	struct wiphy *wiphy = local->hw.wiphy;
->> +	struct device *dev;
->> +
->> +	if (!wiphy)
->> +		return;
->> +
->> +	dev = wiphy->dev.parent;
->> +	if (!dev)
->> +		return;
->> +
->> +	local->wbrf_supported = wbrf_supported_producer(dev);
->> +	dev_dbg(dev, "WBRF is %s supported\n",
->> +		local->wbrf_supported ? "" : "not");
->> +}
-> 
-> This seems wrong. wbrf_supported_producer() is about "Should this
-> device report the frequencies it is using?" The answer to that depends
-> on a combination of: Are there consumers registered with the core, and
-> is the policy set so WBRF should take actions. >
-> The problem here is, you have no idea of the probe order. It could be
-> this device probes before others, so wbrf_supported_producer() reports
-> false, but a few second later would report true, once other devices
-> have probed.
-> 
-> It should be an inexpensive call into the core, so can be made every
-> time the channel changes. All the core needs to do is check if the
-> list of consumers is empty, and if not, check a Boolean policy value.
-> 
->       Andrew
+On Mon, Jul 24, 2023 at 01:19:02PM +0000, Biju Das wrote:
+> > Subject: Re: [PATCH RFC 1/2] drivers: fwnode: Extend
+> > device_get_match_data() to struct bus_type
+> > On Mon, Jul 24, 2023 at 12:02:27PM +0000, Biju Das wrote:
+> > > > Subject: Re: [PATCH RFC 1/2] drivers: fwnode: Extend
+> > > > device_get_match_data() to struct bus_type On Sun, Jul 23, 2023 at
+> > > > 09:37:20AM +0100, Biju Das wrote:
 
-No, it's not a combination of whether consumers are registered with the 
-core.  If a consumer probes later it needs to know the current in use 
-frequencies too.
+...
 
-The reason is because of this sequence of events:
-1) Producer probes.
-2) Producer selects a frequency.
-3) Consumer probes.
-4) Producer stays at same frequency.
+> > > > > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> > > >
+> > > > You can't just throw one's SoB tag without clear understanding
+> > > > what's going on here (either wrong authorship or missing
+> > > > Co-developed-by or...?).
+> > >
+> > > Dmitry feels instead of having separate bus based match_data() like
+> > > i2c_get_match_data[2] and spi_get_device_match_data[3], it is better
+> > > to have a generic approach like a single API device_get_match_data()
+> > > for getting match_data for OF/ACPI/I2C/SPI tables.
+> > >
+> > > So, he came with a proposal and shared some code here[1].
+> > 
+> > Yes, I'm pretty much following the discussion.
+> > 
+> > > Since,I have send this patch, I put my signed -off.
+> > 
+> > I'm not talking about this. There is no evidence that Dmitry gives you
+> > any approval to use or clear SoB tag. Again, you may not do like this.
+> 
+> Here Dmitry is acknowledging, he is ok with the patch I posted.
+> 
+> https://patchwork.kernel.org/project/linux-renesas-soc/patch/20230717131756.240645-2-biju.das.jz@bp.renesas.com/#25437032
 
-If the producer doesn't notify the frequency because a consumer isn't 
-yet loaded then the consumer won't be able to get the current frequency.
+No, you just misinterpreted his message.
+
+See https://www.kernel.org/doc/html/latest/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
+for the explanation. The SoB has to be explicitly given. Dmitry had _not_
+put it like this.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
