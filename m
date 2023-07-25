@@ -2,51 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B47A762110
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jul 2023 20:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE3407621E3
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jul 2023 20:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230328AbjGYSMJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Jul 2023 14:12:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59780 "EHLO
+        id S231355AbjGYS6r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Jul 2023 14:58:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229746AbjGYSMI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jul 2023 14:12:08 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E60C1FDD;
-        Tue, 25 Jul 2023 11:12:06 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id 65bcc88fa94f1179; Tue, 25 Jul 2023 20:12:05 +0200
-Received: from kreacher.localnet (unknown [195.136.19.94])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 861AB661BBA;
-        Tue, 25 Jul 2023 20:12:04 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Michal Wilczynski <michal.wilczynski@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH v3.1 6/8] ACPI: thermal: Use trip point table to register thermal zones
-Date:   Tue, 25 Jul 2023 20:12:04 +0200
-Message-ID: <4504417.LvFx2qVVIh@kreacher>
-In-Reply-To: <3177785.5fSG56mABF@kreacher>
-References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher> <3177785.5fSG56mABF@kreacher>
+        with ESMTP id S230521AbjGYS6n (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jul 2023 14:58:43 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D352681;
+        Tue, 25 Jul 2023 11:58:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=X0R22BGbmRjXXZscNgSBbP4wiQyyIcB9qX3GclN3VKQ=; b=pMHzyljz3zocsCU3tG8KLgimld
+        AHsticsdDT5NHdPPBL5+fpo+9omp3YmofR8Zwa317kF/DgNvm/9XPvQuXDpOdnfCslAtEAoLt1+zT
+        AURHv8Doe0j2pA0GGUU5hmZWOkOB8hY8lebFHPL7ZVR8qayQsM1yxoXjSN2ClZWLW/J4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qONEL-002IX2-IB; Tue, 25 Jul 2023 20:57:57 +0200
+Date:   Tue, 25 Jul 2023 20:57:57 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     "Quan, Evan" <Evan.Quan@amd.com>
+Cc:     "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        "airlied@gmail.com" <airlied@gmail.com>,
+        "daniel@ffwll.ch" <daniel@ffwll.ch>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "mdaenzer@redhat.com" <mdaenzer@redhat.com>,
+        "maarten.lankhorst@linux.intel.com" 
+        <maarten.lankhorst@linux.intel.com>,
+        "tzimmermann@suse.de" <tzimmermann@suse.de>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        "jingyuwang_vip@163.com" <jingyuwang_vip@163.com>,
+        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
+        "jim.cromie@gmail.com" <jim.cromie@gmail.com>,
+        "bellosilicio@gmail.com" <bellosilicio@gmail.com>,
+        "andrealmeid@igalia.com" <andrealmeid@igalia.com>,
+        "trix@redhat.com" <trix@redhat.com>,
+        "jsg@jsg.id.au" <jsg@jsg.id.au>, "arnd@arndb.de" <arnd@arndb.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH V7 4/9] wifi: mac80211: Add support for ACPI WBRF
+Message-ID: <d4cfbbae-9cd0-4767-8c80-ec09d1dbaf9c@lunn.ch>
+References: <20230719090020.2716892-1-evan.quan@amd.com>
+ <20230719090020.2716892-5-evan.quan@amd.com>
+ <9b1f45f9-02a3-4c03-b9d5-cc3b9ab3a058@lunn.ch>
+ <7d059aed-fac0-cdcd-63d5-58185bb345db@amd.com>
+ <DM6PR12MB26196A993B3BA93392AA0FEDE403A@DM6PR12MB2619.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedriedtgdduudelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepjedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihgthhgrlhdrfihilhgtiiihnhhskhhisehinhhtvghlrdgtohhmpdhr
- tghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM6PR12MB26196A993B3BA93392AA0FEDE403A@DM6PR12MB2619.namprd12.prod.outlook.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,251 +80,77 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > >> @@ -1395,6 +1395,8 @@ int ieee80211_register_hw(struct
+> > ieee80211_hw *hw)
+> > >>    debugfs_hw_add(local);
+> > >>    rate_control_add_debugfs(local);
+> > >>
+> > >> +  ieee80211_check_wbrf_support(local);
+> > >> +
+> > >>    rtnl_lock();
+> > >>    wiphy_lock(hw->wiphy);
+> > >>
+> > >
+> > >> +void ieee80211_check_wbrf_support(struct ieee80211_local *local) {
+> > >> +  struct wiphy *wiphy = local->hw.wiphy;
+> > >> +  struct device *dev;
+> > >> +
+> > >> +  if (!wiphy)
+> > >> +          return;
+> > >> +
+> > >> +  dev = wiphy->dev.parent;
+> > >> +  if (!dev)
+> > >> +          return;
+> > >> +
+> > >> +  local->wbrf_supported = wbrf_supported_producer(dev);
+> > >> +  dev_dbg(dev, "WBRF is %s supported\n",
+> > >> +          local->wbrf_supported ? "" : "not"); }
+> > >
+> > > This seems wrong. wbrf_supported_producer() is about "Should this
+> > > device report the frequencies it is using?" The answer to that depends
+> > > on a combination of: Are there consumers registered with the core, and
+> > > is the policy set so WBRF should take actions. > The problem here is,
+> > > you have no idea of the probe order. It could be this device probes
+> > > before others, so wbrf_supported_producer() reports false, but a few
+> > > second later would report true, once other devices have probed.
+> > >
+> > > It should be an inexpensive call into the core, so can be made every
+> > > time the channel changes. All the core needs to do is check if the
+> > > list of consumers is empty, and if not, check a Boolean policy value.
+> > >
+> > >       Andrew
+> >
+> > No, it's not a combination of whether consumers are registered with the core.
+> > If a consumer probes later it needs to know the current in use frequencies too.
+> >
+> > The reason is because of this sequence of events:
+> > 1) Producer probes.
+> > 2) Producer selects a frequency.
+> > 3) Consumer probes.
+> > 4) Producer stays at same frequency.
+> >
+> > If the producer doesn't notify the frequency because a consumer isn't yet
+> > loaded then the consumer won't be able to get the current frequency.
+> Yes, exactly.
 
-Make the ACPI thermal driver use thermal_zone_device_register_with_trips()
-to register its thermal zones.
+So now we are back to, what is the point of wbrf_supported_producer()?
 
-For this purpose, make it create a trip point table and pass it to
-thermal_zone_device_register_with_trips() as an argument and use the
-struct thermal_trip_ref introduced previously to connect the generic
-thermal trip structures to the internal data structures representing
-trip points in the driver.
+I'm talking general case here, not your ACPI implementation. All i'm
+really interested in is the generic API, which is what an Intel CPU,
+combined with a Radieon GPU and a Qualcomm WiFi device will use. Or an
+AMD CPU combined with an nvidia GPU and a Mediatek Wifi, etc. The wbrf
+core should support an combination of produces and consumers in a
+generic way.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
+If you assume devices can probe in any order, and come and go, it
+seems like the producers need to always report what frequencies they
+are using. Otherwise when a noise generator pops into existence, as
+you say, it has no idea what frequencies the producers are using.
 
-This is a bug-fix update that doesn't affect any other patches in the series,
-so sending it separately as v3.1.
+The exception is when policy says there is no need to actually do
+anything. If we can assume the policy is fixed, then
+wbrf_supported_producer() could just report the policy which the wbrf
+core should know about.
 
-v3 -> v3.1:
-   * Do not pass THERMAL_TEMP_INVALID to acpi_thermal_trip_update_temp()
-     in acpi_thermal_check_fn().
-
-v2 -> v3:
-   * Fix error code path memory leak in acpi_thermal_register_thermal_zone().
-   * Notice that the critical and hot trips never change after initialization,
-     so don't add struct thermal_trip_ref to any of them.
-
-v1 -> v2:
-   * Use thermal_zone_device_lock()/thermal_zone_device_unlock() in
-     acpi_thermal_check_fn() explicitly and call __thermal_zone_device_update()
-     from there without unlocking the thermal zone.
-   * Export __thermal_zone_device_update() to modules (so it can be called by
-     the ACPI thermal code).
-
----
- drivers/acpi/thermal.c         |  107 ++++++++++++++++++++++++++++++++++++++---
- drivers/thermal/thermal_core.c |    1 
- include/linux/thermal.h        |    2 
- 3 files changed, 103 insertions(+), 7 deletions(-)
-
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -107,6 +107,7 @@ struct acpi_thermal_hot {
- };
- 
- struct acpi_thermal_passive {
-+	struct thermal_trip_ref trip_ref;
- 	struct acpi_handle_list devices;
- 	unsigned long temperature;
- 	unsigned long tc1;
-@@ -116,6 +117,7 @@ struct acpi_thermal_passive {
- };
- 
- struct acpi_thermal_active {
-+	struct thermal_trip_ref trip_ref;
- 	struct acpi_handle_list devices;
- 	unsigned long temperature;
- 	bool valid;
-@@ -137,6 +139,7 @@ struct acpi_thermal {
- 	unsigned long polling_frequency;
- 	volatile u8 zombie;
- 	struct acpi_thermal_trips trips;
-+	struct thermal_trip *trip_table;
- 	struct acpi_handle_list devices;
- 	struct thermal_zone_device *thermal_zone;
- 	int kelvin_offset;	/* in millidegrees */
-@@ -190,6 +193,14 @@ static int acpi_thermal_get_polling_freq
- 	return 0;
- }
- 
-+static void acpi_thermal_trip_update_temp(struct acpi_thermal *tz,
-+					  struct thermal_trip *trip,
-+					  long temperature)
-+{
-+	trip->temperature = deci_kelvin_to_millicelsius_with_offset(temperature,
-+								    tz->kelvin_offset);
-+}
-+
- static void __acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
- {
- 	acpi_status status;
-@@ -756,6 +767,7 @@ static void acpi_thermal_zone_sysfs_remo
- 
- static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
- {
-+	struct thermal_trip *trip;
- 	int passive_delay = 0;
- 	int trip_count = 0;
- 	int result;
-@@ -776,12 +788,54 @@ static int acpi_thermal_register_thermal
- 	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].valid; i++)
- 		trip_count++;
- 
--	tz->thermal_zone = thermal_zone_device_register("acpitz", trip_count, 0,
--							tz, &acpi_thermal_zone_ops,
--							NULL, passive_delay,
--							tz->polling_frequency * 100);
--	if (IS_ERR(tz->thermal_zone))
--		return -ENODEV;
-+	trip = kcalloc(trip_count, sizeof(*trip), GFP_KERNEL);
-+	if (!trip)
-+		return -ENOMEM;
-+
-+	tz->trip_table = trip;
-+
-+	if (tz->trips.critical.valid) {
-+		trip->type = THERMAL_TRIP_CRITICAL;
-+		acpi_thermal_trip_update_temp(tz, trip,
-+					      tz->trips.critical.temperature);
-+		trip++;
-+	}
-+
-+	if (tz->trips.hot.valid) {
-+		trip->type = THERMAL_TRIP_HOT;
-+		acpi_thermal_trip_update_temp(tz, trip,
-+					      tz->trips.hot.temperature);
-+		trip++;
-+	}
-+
-+	if (tz->trips.passive.valid) {
-+		trip->type = THERMAL_TRIP_PASSIVE;
-+		acpi_thermal_trip_update_temp(tz, trip,
-+					      tz->trips.passive.temperature);
-+		trip->driver_ref = &tz->trips.passive.trip_ref;
-+		trip++;
-+	}
-+
-+	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].valid; i++) {
-+		trip->type = THERMAL_TRIP_ACTIVE;
-+		acpi_thermal_trip_update_temp(tz, trip,
-+					      tz->trips.active[i].temperature);
-+		trip->driver_ref = &tz->trips.active[i].trip_ref;
-+		trip++;
-+	}
-+
-+	tz->thermal_zone = thermal_zone_device_register_with_trips("acpitz",
-+								   tz->trip_table,
-+								   trip_count,
-+								   0, tz,
-+								   &acpi_thermal_zone_ops,
-+								   NULL,
-+								   passive_delay,
-+								   tz->polling_frequency * 100);
-+	if (IS_ERR(tz->thermal_zone)) {
-+		result = PTR_ERR(tz->thermal_zone);
-+		goto free_trip_table;
-+	}
- 
- 	result = acpi_thermal_zone_sysfs_add(tz);
- 	if (result)
-@@ -809,6 +863,8 @@ remove_links:
- 	acpi_thermal_zone_sysfs_remove(tz);
- unregister_tzd:
- 	thermal_zone_device_unregister(tz->thermal_zone);
-+free_trip_table:
-+	kfree(tz->trip_table);
- 
- 	return result;
- }
-@@ -817,6 +873,7 @@ static void acpi_thermal_unregister_ther
- {
- 	acpi_thermal_zone_sysfs_remove(tz);
- 	thermal_zone_device_unregister(tz->thermal_zone);
-+	kfree(tz->trip_table);
- 	tz->thermal_zone = NULL;
- 	acpi_bus_detach_private_data(tz->device->handle);
- }
-@@ -950,6 +1007,8 @@ static void acpi_thermal_check_fn(struct
- {
- 	struct acpi_thermal *tz = container_of(work, struct acpi_thermal,
- 					       thermal_check_work);
-+	struct thermal_trip *trip;
-+	int i;
- 
- 	/*
- 	 * In general, it is not sufficient to check the pending bit, because
-@@ -964,7 +1023,41 @@ static void acpi_thermal_check_fn(struct
- 
- 	mutex_lock(&tz->thermal_check_lock);
- 
--	thermal_zone_device_update(tz->thermal_zone, THERMAL_EVENT_UNSPECIFIED);
-+	thermal_zone_device_lock(tz->thermal_zone);
-+
-+	trip = tz->trips.passive.trip_ref.trip;
-+	if (trip) {
-+		/*
-+		 * This means that the passive trip was valid initially, so
-+		 * update its temperature in case it has changed or the trip
-+		 * has become invalid.
-+		 */
-+		if (tz->trips.passive.valid)
-+			acpi_thermal_trip_update_temp(tz, trip,
-+						      tz->trips.passive.temperature);
-+		else
-+			trip->temperature = THERMAL_TEMP_INVALID;
-+	}
-+
-+	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
-+		trip = tz->trips.active[i].trip_ref.trip;
-+		if (trip) {
-+			/*
-+			 * This means that the active trip #i was valid
-+			 * initially, so update its temperature in case it has
-+			 * changed or the trip has become invalid.
-+			 */
-+			if (tz->trips.active[i].valid)
-+				acpi_thermal_trip_update_temp(tz, trip,
-+							      tz->trips.active[i].temperature);
-+			else
-+				trip->temperature = THERMAL_TEMP_INVALID;
-+		}
-+	}
-+
-+	__thermal_zone_device_update(tz->thermal_zone, THERMAL_EVENT_UNSPECIFIED);
-+
-+	thermal_zone_device_unlock(tz->thermal_zone);
- 
- 	refcount_inc(&tz->thermal_check_count);
- 
-Index: linux-pm/drivers/thermal/thermal_core.c
-===================================================================
---- linux-pm.orig/drivers/thermal/thermal_core.c
-+++ linux-pm/drivers/thermal/thermal_core.c
-@@ -429,6 +429,7 @@ void __thermal_zone_device_update(struct
- 
- 	monitor_thermal_zone(tz);
- }
-+EXPORT_SYMBOL_GPL(__thermal_zone_device_update);
- 
- static int thermal_zone_device_set_mode(struct thermal_zone_device *tz,
- 					enum thermal_device_mode mode)
-Index: linux-pm/include/linux/thermal.h
-===================================================================
---- linux-pm.orig/include/linux/thermal.h
-+++ linux-pm/include/linux/thermal.h
-@@ -334,6 +334,8 @@ int thermal_zone_bind_cooling_device(str
- 				     unsigned int);
- int thermal_zone_unbind_cooling_device(struct thermal_zone_device *, int,
- 				       struct thermal_cooling_device *);
-+void __thermal_zone_device_update(struct thermal_zone_device *,
-+				  enum thermal_notify_event);
- void thermal_zone_device_update(struct thermal_zone_device *,
- 				enum thermal_notify_event);
- void thermal_zone_device_lock(struct thermal_zone_device *tz);
-
-
+    Andrew
 
