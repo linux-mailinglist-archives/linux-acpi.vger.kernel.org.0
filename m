@@ -2,26 +2,26 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A79B761841
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jul 2023 14:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A299876183E
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jul 2023 14:25:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233555AbjGYMZj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Jul 2023 08:25:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48676 "EHLO
+        id S233543AbjGYMZi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Jul 2023 08:25:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230424AbjGYMZe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jul 2023 08:25:34 -0400
+        with ESMTP id S233485AbjGYMZd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jul 2023 08:25:33 -0400
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C181E7E;
-        Tue, 25 Jul 2023 05:25:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F46A7;
+        Tue, 25 Jul 2023 05:25:31 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id a9f50b1ffa9a852c; Tue, 25 Jul 2023 14:25:31 +0200
+ id 7b78a6bf7a2a48f1; Tue, 25 Jul 2023 14:25:30 +0200
 Received: from kreacher.localnet (unknown [195.136.19.94])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id BD62E661B0F;
+        by v370.home.net.pl (Postfix) with ESMTPSA id 0E3B6661B0F;
         Tue, 25 Jul 2023 14:25:30 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
@@ -31,9 +31,9 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Zhang Rui <rui.zhang@intel.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH v3 3/8] thermal: core: Add routines for locking and unlocking thermal zones
-Date:   Tue, 25 Jul 2023 14:08:02 +0200
-Message-ID: <2154273.irdbgypaU6@kreacher>
+Subject: [PATCH v3 4/8] ACPI: thermal: Clean up acpi_thermal_register_thermal_zone()
+Date:   Tue, 25 Jul 2023 14:09:16 +0200
+Message-ID: <2895893.e9J7NaK4W3@kreacher>
 In-Reply-To: <12254967.O9o76ZdvQC@kreacher>
 References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
@@ -56,60 +56,80 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Add thermal_zone_device_lock() and thermal_zone_device_unlock() for
-acquiring and releasing the thermal zone lock, respectively.
+Rename the trips variable in acpi_thermal_register_thermal_zone() to
+trip_count so its name better reflects the purpose, rearrange white
+space in the loop over active trips for clarity and reduce code
+duplication related to calling thermal_zone_device_register() by
+using an extra local variable to store the passive delay value.
 
-They will be used by the ACPI thermal driver to protect trip point
-temperature updates against races with accesses from elsewhere.
+No intentional functional impact.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
 
 v2 -> v3: No changes.
 
-v1 -> v2: New patch.
+v1 -> v2: No changes.
 
 ---
- drivers/thermal/thermal_core.c |   13 +++++++++++++
- include/linux/thermal.h        |    2 ++
- 2 files changed, 15 insertions(+)
+ drivers/acpi/thermal.c |   36 ++++++++++++++++--------------------
+ 1 file changed, 16 insertions(+), 20 deletions(-)
 
-Index: linux-pm/drivers/thermal/thermal_core.c
+Index: linux-pm/drivers/acpi/thermal.c
 ===================================================================
---- linux-pm.orig/drivers/thermal/thermal_core.c
-+++ linux-pm/drivers/thermal/thermal_core.c
-@@ -497,6 +498,18 @@ void thermal_zone_device_update(struct t
- }
- EXPORT_SYMBOL_GPL(thermal_zone_device_update);
+--- linux-pm.orig/drivers/acpi/thermal.c
++++ linux-pm/drivers/acpi/thermal.c
+@@ -745,34 +745,30 @@ static void acpi_thermal_zone_sysfs_remo
  
-+void thermal_zone_device_lock(struct thermal_zone_device *tz)
-+{
-+	mutex_lock(&tz->lock);
-+}
-+EXPORT_SYMBOL_GPL(thermal_zone_device_lock);
-+
-+void thermal_zone_device_unlock(struct thermal_zone_device *tz)
-+{
-+	mutex_unlock(&tz->lock);
-+}
-+EXPORT_SYMBOL_GPL(thermal_zone_device_unlock);
-+
- static void thermal_zone_device_check(struct work_struct *work)
+ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
  {
- 	struct thermal_zone_device *tz = container_of(work, struct
-Index: linux-pm/include/linux/thermal.h
-===================================================================
---- linux-pm.orig/include/linux/thermal.h
-+++ linux-pm/include/linux/thermal.h
-@@ -336,6 +336,8 @@ int thermal_zone_unbind_cooling_device(s
- 				       struct thermal_cooling_device *);
- void thermal_zone_device_update(struct thermal_zone_device *,
- 				enum thermal_notify_event);
-+void thermal_zone_device_lock(struct thermal_zone_device *tz);
-+void thermal_zone_device_unlock(struct thermal_zone_device *tz);
+-	int trips = 0;
++	int passive_delay = 0;
++	int trip_count = 0;
+ 	int result;
+ 	acpi_status status;
+ 	int i;
  
- struct thermal_cooling_device *thermal_cooling_device_register(const char *,
- 		void *, const struct thermal_cooling_device_ops *);
+ 	if (tz->trips.critical.valid)
+-		trips++;
++		trip_count++;
+ 
+ 	if (tz->trips.hot.valid)
+-		trips++;
+-
+-	if (tz->trips.passive.valid)
+-		trips++;
+-
+-	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].valid;
+-	     i++, trips++);
+-
+-	if (tz->trips.passive.valid)
+-		tz->thermal_zone = thermal_zone_device_register("acpitz", trips, 0, tz,
+-								&acpi_thermal_zone_ops, NULL,
+-								tz->trips.passive.tsp * 100,
+-								tz->polling_frequency * 100);
+-	else
+-		tz->thermal_zone =
+-			thermal_zone_device_register("acpitz", trips, 0, tz,
+-						     &acpi_thermal_zone_ops, NULL,
+-						     0, tz->polling_frequency * 100);
++		trip_count++;
+ 
++	if (tz->trips.passive.valid) {
++		trip_count++;
++		passive_delay = tz->trips.passive.tsp * 100;
++	}
++
++	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].valid; i++)
++		trip_count++;
++
++	tz->thermal_zone = thermal_zone_device_register("acpitz", trip_count, 0,
++							tz, &acpi_thermal_zone_ops,
++							NULL, passive_delay,
++							tz->polling_frequency * 100);
+ 	if (IS_ERR(tz->thermal_zone))
+ 		return -ENODEV;
+ 
 
 
 
