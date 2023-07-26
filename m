@@ -2,165 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C1AF7638F9
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jul 2023 16:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3ED2763932
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jul 2023 16:33:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234275AbjGZOYw convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 26 Jul 2023 10:24:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50054 "EHLO
+        id S232746AbjGZOdk convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 26 Jul 2023 10:33:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234364AbjGZOYv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Jul 2023 10:24:51 -0400
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B079E47;
-        Wed, 26 Jul 2023 07:24:49 -0700 (PDT)
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-1bb701d39ddso515836fac.0;
-        Wed, 26 Jul 2023 07:24:49 -0700 (PDT)
+        with ESMTP id S232474AbjGZOdj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Jul 2023 10:33:39 -0400
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 991E3196;
+        Wed, 26 Jul 2023 07:33:38 -0700 (PDT)
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-1bb701d39ddso517751fac.0;
+        Wed, 26 Jul 2023 07:33:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690381488; x=1690986288;
+        d=1e100.net; s=20221208; t=1690382018; x=1690986818;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pEgmDiAe0tWX9GxWyAoDrChI5qTftMQ2f732dcdFKW0=;
-        b=eKFkvDp9HXTvzkykCCwC5tVwDmQEQDpsYDeLrzonnuhJfpf0yTRTaaSbRjU03H8ZEK
-         VcTHXRZ4YOP3Q2TsyeKlso/piZXNeM+8EXBazZ1vOXjC+oc3bvGyE8F7K2j8UGN2db49
-         NtxjNtFOiHnXW37vD9kbtDeeES4rS/fbdZxzd8zVvgAwm/WKHAFC/t1SaWaZEKcuqp0k
-         pAbdphrhqSl53WzQc24bVhbbnhS25NRKML3vh3X36fy9G8tf+YDEeguZNMcMc/yJB9YL
-         yWi52dx7txRpyIbAOINrfxgfdZmDJVQxvA0eaCukpXxeMerO8/ZAChfHjNUTCXOtlihc
-         1LNA==
-X-Gm-Message-State: ABy/qLYHVg+xG///0NSMuCRFjgeR/wDyV/UkD7aVEl/6yWR6fNmu2hza
-        jYxAAEQ95imD4xlMJAURqTb8AZbLp0LYzCH2vB4=
-X-Google-Smtp-Source: APBJJlHkrIccG4pncj994mgxhB/i/B+Kb8dr6cxjFPYMBiEgv54qUWOwC26ILRls/bH0WPEsKCuZGQjq6CWipXzNPIQ=
-X-Received: by 2002:a4a:d6d1:0:b0:569:a08a:d9c5 with SMTP id
- j17-20020a4ad6d1000000b00569a08ad9c5mr1761805oot.0.1690381488408; Wed, 26 Jul
- 2023 07:24:48 -0700 (PDT)
+        bh=Updrikr1bw98x36EK4C9daMQvPB+rcMs3qVutcNNDGw=;
+        b=EJf3qEdYeuJGq2W/QKDoJ1ndON9Xz6zUY+rdz4gZ8qz7zcKrYeZo8Qh2gUKdhGeoqq
+         mtto56LbU3c7L4CabJNpfm/ux7GaYxJECFkkPuZ68r+Hs7o/GcbcZpsSxbi0aT7Q4nM9
+         UkcAc3ZflFEu79SIQoRlffxiLFN2/3nO+jixNpmVdn41LYvEGUZyQB3cEyAcMP/pQi3D
+         txzcooD8CKo9VeqPTMcsT3ICAC4y4jCR8iUqW8FPEMLbjiuvlfE7xUiDC3cK3TJZnpjl
+         FvUewicOWJPVdAD6XzFWYWhFLW2fFcX7MQQgihUuGycuM6sH+htaEIrusTioIjCi/ddq
+         +Idg==
+X-Gm-Message-State: ABy/qLZRDodPUPtJl17zKWqRbUJmLJ544lziY4UmNwEYymKUfaDSq0YQ
+        FnmZQFlSMzJhblfSQDbu5H5aMAQlbJi4JdHiYKc=
+X-Google-Smtp-Source: APBJJlGL7alqSLyJJMLIJRTAZiW23Xy5V5TqymN7uiXU59nGkFA6ViiFrYqec8vKpUHT6TD3aKfI9ZtM9W8xeZ+sucA=
+X-Received: by 2002:a05:6870:eca3:b0:1b3:8cfd:fecf with SMTP id
+ eo35-20020a056870eca300b001b38cfdfecfmr2327521oab.0.1690382017821; Wed, 26
+ Jul 2023 07:33:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230726123518.2361181-1-imammedo@redhat.com> <20230726123518.2361181-2-imammedo@redhat.com>
-In-Reply-To: <20230726123518.2361181-2-imammedo@redhat.com>
+References: <20230710062500.45147-1-anshuman.khandual@arm.com>
+ <20230710062500.45147-7-anshuman.khandual@arm.com> <38f0c8f3-5fb3-a18a-456d-867da2998786@arm.com>
+ <ac77142d-964b-691d-ea15-105a523d9738@arm.com> <46a3d6d3-f14e-efde-83eb-5952f313f909@arm.com>
+ <abbcf3c8-fbd9-727e-780b-74aaf5ae8ec1@os.amperecomputing.com>
+In-Reply-To: <abbcf3c8-fbd9-727e-780b-74aaf5ae8ec1@os.amperecomputing.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 26 Jul 2023 16:24:36 +0200
-Message-ID: <CAJZ5v0jM25BBLgapgUz=VWr6wzv9DME=OQN51ja11THSgW-+YA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] PCI: acpiphp:: use pci_assign_unassigned_bridge_resources()
- only if bus->self not NULL
-To:     Igor Mammedov <imammedo@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, terraluna977@gmail.com,
-        bhelgaas@google.com, linux-pci@vger.kernel.org, mst@redhat.com,
-        rafael@kernel.org, linux-acpi@vger.kernel.org
+Date:   Wed, 26 Jul 2023 16:33:26 +0200
+Message-ID: <CAJZ5v0iy9QfSRuy_kNNZarJZyO35GN25Td39GGN=kNbr0-fuBA@mail.gmail.com>
+Subject: Re: acpi: Remove ETM from AMBA scan list (was Re: [PATCH V6 6/6]
+ coresight: etm4x: Add ACPI support in platform driver)
+To:     Steve Clevenger OS <scclevenger@os.amperecomputing.com>
+Cc:     Suzuki K Poulose <suzuki.poulose@arm.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Ganapatrao Kulkarni OS <gankulkarni@os.amperecomputing.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "coresight@lists.linaro.org" <coresight@lists.linaro.org>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 26, 2023 at 2:35 PM Igor Mammedov <imammedo@redhat.com> wrote:
+On Tue, Jul 25, 2023 at 10:18 PM Steve Clevenger OS
+<scclevenger@os.amperecomputing.com> wrote:
 >
-> Commit [1] switched acpiphp hotplug to use
->    pci_assign_unassigned_bridge_resources()
-> which depends on bridge being available, however in some cases
-> when acpiphp is in use, enable_slot() can get a slot without
-> bridge associated.
->   1. legitimate case of hotplug on root bus
->       (likely not exiting on real hw, but widely used in virt world)
->   2. broken firmware, that sends 'Bus check' events to non
->      existing root ports (Dell Inspiron 7352/0W6WV0), which somehow
->      endup at acpiphp:enable_slot(..., bridge = 0) and with bus
->      without bridge assigned to it.
 >
-> Issue is easy to reproduce with QEMU's 'pc' machine provides
-> PCI hotplug on hostbridge slots. to reproduce boot kernel at
-> commit [1] in VM started with followin CLI and hotplug a device:
+> Hi Rafael, Len,
 >
-> once guest OS is fully booted at qemu prompt:
+> On 7/24/2023 9:25 AM, Suzuki K Poulose wrote:
+> > Hi Rafael/Len
+> >
+> > On 19/07/2023 11:11, Suzuki K Poulose wrote:
+> >> Rafael, Len
+> >>
+> >> Ping (packets 6, lost 100%).
+> >>
+> >>
+> >> On 10/07/2023 17:40, Suzuki K Poulose wrote:
+> >>> Rafael, Len
+> >>>
+> >>> On 10/07/2023 07:25, Anshuman Khandual wrote:
+> >>>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+> >>>>
+> >>>> Drop ETM4X ACPI ID from the AMBA ACPI device list, and instead just
+> >>>> move it
+> >>>> inside the new ACPI devices list detected and used via platform driver.
+> >>>>
+> >>>> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> >>>> Cc: Len Brown <lenb@kernel.org>
+> >>>> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+> >>>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> >>>> Cc: Mike Leach <mike.leach@linaro.org>
+> >>>> Cc: Leo Yan <leo.yan@linaro.org>
+> >>>> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> >>>> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> >>>> Cc: linux-acpi@vger.kernel.org
+> >>>> Cc: coresight@lists.linaro.org
+> >>>> Cc: linux-arm-kernel@lists.infradead.org
+> >>>> Cc: linux-kernel@vger.kernel.org
+> >>>> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com> (for ACPI specific
+> >>>> changes)
+> >>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> >>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> >>>
+> >>> We would like to queue this via coresight tree. The acpi_amba bits have
+> >>> been reviewed by Sudeep. Please could you give us an Ack, if you are
+> >>> happy with the proposal ?
+> >>>
+> >
+> > Please could one of you respond to this patch ? We are blocked on your
+> > Ack for queuing this. There are machines out there, which rely on this
+> > patch to use Arm self-hosted tracing based on CoreSight.
+> >
+> > Kind regards
+> > Suzuki
 >
-> (qemu) device_add e1000
+> Ampere Computing AmpereOne machines rely on this patch series to enable
+> System Register Access to the ETMv4. Ampere removed the ETM MMIO
+> descriptions from our CoreSight ACPI to use this.
 >
-> it will cause NULL pointer dereference at
->
->     void pci_assign_unassigned_bridge_resources(struct pci_dev *bridge)
->     {
->         struct pci_bus *parent = bridge->subordinate;
->
-> [  612.277651] BUG: kernel NULL pointer dereference, address: 0000000000000018
-> [...]
-> [  612.277798]  ? pci_assign_unassigned_bridge_resources+0x1f/0x260
-> [  612.277804]  ? pcibios_allocate_dev_resources+0x3c/0x2a0
-> [  612.277809]  enable_slot+0x21f/0x3e0
-> [  612.277816]  acpiphp_hotplug_notify+0x13d/0x260
-> [  612.277822]  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
-> [  612.277827]  acpi_device_hotplug+0xbc/0x540
-> [  612.277834]  acpi_hotplug_work_fn+0x15/0x20
-> [  612.277839]  process_one_work+0x1f7/0x370
-> [  612.277845]  worker_thread+0x45/0x3b0
-> [  612.277850]  ? __pfx_worker_thread+0x10/0x10
-> [  612.277854]  kthread+0xdc/0x110
-> [  612.277860]  ? __pfx_kthread+0x10/0x10
-> [  612.277866]  ret_from_fork+0x28/0x40
-> [  612.277871]  ? __pfx_kthread+0x10/0x10
-> [  612.277876]  ret_from_fork_asm+0x1b/0x30
->
-> The issue was discovered on Dell Inspiron 7352/0W6WV0 laptop with
-> following sequence:
->    1. suspend to RAM
->    2. wake up with the same backtrace being observed:
->    3. 2nd suspend to RAM attempt makes laptop freeze
->
-> Fix it by using __pci_bus_assign_resources() instead of
-> pci_assign_unassigned_bridge_resources()as we used to do
-> but only in case when bus doesn't have a bridge associated
-> with it.
->
-> That let us keep hotplug on root bus working like it used to be
-> but at the same time keeps resource reassignment usable on
-> root ports (and other 1st level bridges) that was fixed by [1].
->
-> 1)
-> Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
-> Link: https://lore.kernel.org/r/11fc981c-af49-ce64-6b43-3e282728bd1a@gmail.com
-> Reported-by: Woody Suwalski <terraluna977@gmail.com>
-> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> Suzuki's e-mail requests for review/Ack of this patch thread date back
+> to May 30.
 
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+I've just talked to Suzuki about this:
 
-> ---
->  drivers/pci/hotplug/acpiphp_glue.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-> index 328d1e416014..3bc4e1f3efee 100644
-> --- a/drivers/pci/hotplug/acpiphp_glue.c
-> +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> @@ -498,6 +498,7 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
->                                 acpiphp_native_scan_bridge(dev);
->                 }
->         } else {
-> +               LIST_HEAD(add_list);
->                 int max, pass;
->
->                 acpiphp_rescan_slot(slot);
-> @@ -511,10 +512,15 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
->                                 if (pass && dev->subordinate) {
->                                         check_hotplug_bridge(slot, dev);
->                                         pcibios_resource_survey_bus(dev->subordinate);
-> +                                       if (!bus->self)
-> +                                               __pci_bus_size_bridges(dev->subordinate, &add_list);
->                                 }
->                         }
->                 }
-> -               pci_assign_unassigned_bridge_resources(bus->self);
-> +               if (bus->self)
-> +                       pci_assign_unassigned_bridge_resources(bus->self);
-> +               else
-> +                       __pci_bus_assign_resources(bus, &add_list, NULL);
->         }
->
->         acpiphp_sanitize_bus(bus);
-> --
-> 2.39.3
->
+https://lore.kernel.org/linux-acpi/20230726140515.368981-1-suzuki.poulose@arm.com
+
+This patch has received a Reviewed-by from Sudeep which for all
+purposes should be sufficient for any ARM-related ACPI material that
+doesn't affect any other architectures.  An ACK from me (or Len for
+that matter) would not make any real difference from the technical
+perspective.
+
+I would appreciate assigning an official ARM maintainer to acpi_amba.c
+so as to avoid such unnecessary delays in the future.
