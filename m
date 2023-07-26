@@ -2,152 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A49776416E
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jul 2023 23:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A6C5764251
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jul 2023 00:59:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229870AbjGZVvG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Jul 2023 17:51:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50444 "EHLO
+        id S229914AbjGZW7N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Jul 2023 18:59:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229844AbjGZVvF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Jul 2023 17:51:05 -0400
-Received: from mail.valinux.co.jp (mail.valinux.co.jp [210.128.90.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A836FA;
-        Wed, 26 Jul 2023 14:51:04 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.valinux.co.jp (Postfix) with ESMTP id D5FA6A9284;
-        Thu, 27 Jul 2023 06:51:02 +0900 (JST)
-X-Virus-Scanned: Debian amavisd-new at valinux.co.jp
-Received: from mail.valinux.co.jp ([127.0.0.1])
-        by localhost (mail.valinux.co.jp [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id h08FdhZsu1iL; Thu, 27 Jul 2023 06:51:02 +0900 (JST)
-Received: from [172.16.3.34] (vagw.valinux.co.jp [210.128.90.14])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.valinux.co.jp (Postfix) with ESMTPSA id B08C2A8FCF;
-        Thu, 27 Jul 2023 06:51:02 +0900 (JST)
-Message-ID: <f2db2739-a11f-2b83-6859-584e279a8a52@valinux.co.jp>
-Date:   Thu, 27 Jul 2023 06:51:02 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] ACPI: tables: Fix NULL dereference by
- acpi_os_map_memory()
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <9445401f-7cfb-bbb5-e25c-28f578efa212@valinux.co.jp>
- <CAJZ5v0jSyE5chyVFFCaqOtE-huf8YH0mD6_udj2w4oA8KoN9qw@mail.gmail.com>
-Content-Language: en-US
-From:   Kiwamu Okabe <okabe@valinux.co.jp>
-In-Reply-To: <CAJZ5v0jSyE5chyVFFCaqOtE-huf8YH0mD6_udj2w4oA8KoN9qw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_SORBS_DUL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229651AbjGZW7M (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Jul 2023 18:59:12 -0400
+X-Greylist: delayed 302 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 26 Jul 2023 15:59:11 PDT
+Received: from abi149hd125.arn1.oracleemaildelivery.com (abi149hd125.arn1.oracleemaildelivery.com [129.149.84.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C83C42720
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Jul 2023 15:59:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
+ d=augustwikerfors.se;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=P5XOpKDXF2I6R3nLKrm49oZh2FlsW7OS7CKRX6CPNiQ=;
+ b=moHN+0yB5775OaTCkulEdw/A3GeYahNG1NiLULevqihOeasZ+stZJh3Hf41RcNGWRQyY8ywfk8Hi
+   YvNLXf+XTPLEbrtn70UZphcmvq07+nG/7UzWbPHyk87N/Z4HPVJDHJrJRIlC3SA/wTRuLz8bo4T9
+   tGKBR2nI2yQ467s+B9GvXQP9B2qe9STSIrke07PnZxjyy7nOU76C4SKjwpRTGS+p1RlpDGl8lRdk
+   DDZzib4PDJluL/W48vOYez1cm2vUvjNUMpnjOBoB8uhe2gAQJcN6mdLU7CzNE0yNjzcDb4uYUPYX
+   pfT5iVVi5p4o8KJHEnjh6G95j2VUgZ56hbQZXQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
+ d=arn1.rp.oracleemaildelivery.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=P5XOpKDXF2I6R3nLKrm49oZh2FlsW7OS7CKRX6CPNiQ=;
+ b=XfYf2OgHATJ5LFxRpvQhyMP7wWriesITIvVNzqmqP8EF8muwEpA0sV6lI6a1RUYmlmyHWlrDerED
+   vlhwBcq5yXvFuzWeLUdH/KDCrn3qe7f4MKQVKZgmyrV9tVgPRkeHUzZx13ty9pnwRPq/8snig6kV
+   vPTXDace4Wf17+0RCmAD1MY+lp9LyO8zm4eXtHswyR3kiyIv0kbPNPrPG8wBLhuPACHowmAF1/NK
+   43a/CgmVP/q3mwOdDKov8iF1PteHllX1UTCVCZizWNEasibweohDCLuB5T0yRAmimzwDluz3rmEF
+   JDQec5kS9DC9e6LKddPa8pOU/xew7SFne2PX0Q==
+Received: by omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
+ (Oracle Communications Messaging Server 8.1.0.1.20230629 64bit (built Jun 29
+ 2023))
+ with ESMTPS id <0RYF00GIKEA606A0@omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
+ for linux-acpi@vger.kernel.org; Wed, 26 Jul 2023 22:54:06 +0000 (GMT)
+Message-id: <596b9c4a-fb83-a8ab-3a44-6052d83fa546@augustwikerfors.se>
+Date:   Thu, 27 Jul 2023 00:54:03 +0200
+MIME-version: 1.0
+From:   August Wikerfors <git@augustwikerfors.se>
+Subject: [REGRESSION] IRQ override revert breaks keyboard on Lenovo Yoga 7
+ 14ARB7
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        regressions@lists.linux.dev
+Content-language: en-US
+Content-type: text/plain; charset=UTF-8; format=flowed
+Content-transfer-encoding: 7bit
+Reporting-Meta: AAGnM6W8OrXL2D+FP6EMe5jLrw6d5HFTLzCAq4llZKfL8+RGXIV+2M5ejmHh35jV
+ XcXIenFX1c2j/twuJhfQogW02hiG3OymSz/knlnthmeGSaFiwvwd2rz4aF8ZWp9z
+ uPWa15a6/qkzpq0ZLtDcfKWyewqvKWBN1oLeVSE6mELjDHpwYMPT255ls1yvCSqA
+ U7xgPNQPxO9xfWwdfogI/QCqiJhTKv4N51g1LplUPLPVhpKsuDtdtwnzOY8TYgvl
+ zR1VhMP0vQ8C1QIP6WkbjhbPHWebduZS5xr+Z6zSxy4lEpUarF05A3bTScJ12A27
+ /k8cQaaH/CY0CwX/BFJEUj+tjT8O8mA9aE8TELfBfaDmcNQHuNCmSdknfopiWidf
+ CziRSad/9ytncOOwpL9+KEYoyWKtMhX8CtX/7qiDNwvzJScqox8kPVsCvS89w/iR uuHKWps=
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dear Rafael,
+Hi,
 
-On 7/26/23 23:35, Rafael J. Wysocki wrote:
-> On Wed, Jul 26, 2023 at 6:53 AM Kiwamu Okabe <okabe@valinux.co.jp> wrote:
->>
->> The Infer static analyzer https://fbinfer.com/ reports following
->> NULL poinster dereference by the acpi_os_map_memory() function.
->> I believe this patch does fix the issue without any panic.
-> 
-> Please demonstrate to me that the NULL pointer dereference can
-> actually happen in this code.
+Since v6.5-rc1 the keyboard on this laptop no longer works. This problem
+also existed before v6.0-rc1 commit 9946e39fe8d0 ("ACPI: resource: skip
+IRQ override on AMD Zen platforms"), so I suspected the cause to be
+a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
+which reverted that commit. Reverting a9c4a912b7dc confirmed this theory.
 
-The `acpi_table_initrd_override()` function potentially occurs NULL pointer
-dereference on `table->length`,
+#regzbot introduced: a9c4a912b7dc
 
-```
-	while (table_offset + ACPI_HEADER_SIZE <= all_tables_size) {
-		table = acpi_os_map_memory(acpi_tables_addr + table_offset,
-					   ACPI_HEADER_SIZE);
-		if (table_offset + table->length > all_tables_size) {
-			acpi_os_unmap_memory(table, ACPI_HEADER_SIZE);
-			WARN_ON(1);
-			return AE_OK;
-		}
-```
+My specs are:
+Laptop model: Lenovo Yoga 7 14ARB7
+BIOS: K5CN40WWT66 (latest beta from [1])
+CPU: AMD Ryzen 5 6600U
+Kernel config: [2]
+Distribution: Arch Linux
 
-because the acpi_os_map_memory() function potentially returns NULL,
+The issue has been confirmed by at least one other user with this
+laptop: [3]
 
-```
-void __iomem __ref
-*acpi_os_map_iomem(acpi_physical_address phys, acpi_size size)
-{
---snip--
-	map = kzalloc(sizeof(*map), GFP_KERNEL);
-	if (!map) {
-		mutex_unlock(&acpi_ioremap_lock);
-		return NULL;
-	}
---snip--
+[1] https://forums.lenovo.com/t5/Lenovo-Yoga-Series-Laptops/Yoga-7-14ARB7-keyboard-lag-when-on-certain-websites-or-when-Vantage-is-opened/m-p/5174991?page=28#5974742
+[2] https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/raw/d4a56a1e994201b6c607199922aa22e4337b56c9/config
+[3] https://github.com/tomsom/yoga-linux/issues/47
 
-void *__ref acpi_os_map_memory(acpi_physical_address phys, acpi_size size)
-{
-	return (void *)acpi_os_map_iomem(phys, size);
-}
-```
-
-because the `kzalloc()` potentially returns NULL.
-
-And also, the other code have NULL check to call `acpi_os_map_memory()` as
-following.
-
-```
-	subtable_header = acpi_os_map_memory(address, sizeof(*subtable_header));
-	if (!subtable_header)
-		return -ENOMEM;
---snip--
-	rsdp = acpi_os_map_memory(rsdp_address, sizeof(struct acpi_table_rsdp));
-	if (!rsdp) {
-		return_ACPI_STATUS(AE_NO_MEMORY);
-	}
-```
-
->> Signed-off-by: Kiwamu Okabe <okabe@valinux.co.jp>
->> ---
->>  drivers/acpi/tables.c | 6 ++++++
->>  1 file changed, 6 insertions(+)
->>
->> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
->> index 8ab0a82b4da4..ae7b7343bacf 100644
->> --- a/drivers/acpi/tables.c
->> +++ b/drivers/acpi/tables.c
->> @@ -717,6 +717,9 @@ acpi_table_initrd_override(struct acpi_table_header *existing_table,
->>         while (table_offset + ACPI_HEADER_SIZE <= all_tables_size) {
->>                 table = acpi_os_map_memory(acpi_tables_addr + table_offset,
->>                                            ACPI_HEADER_SIZE);
->> +               if (WARN_ON(!table)) {
->> +                       return AE_OK;
->> +               }
->>                 if (table_offset + table->length > all_tables_size) {
->>                         acpi_os_unmap_memory(table, ACPI_HEADER_SIZE);
->>                         WARN_ON(1);
->> @@ -772,6 +775,9 @@ static void __init acpi_table_initrd_scan(void)
->>         while (table_offset + ACPI_HEADER_SIZE <= all_tables_size) {
->>                 table = acpi_os_map_memory(acpi_tables_addr + table_offset,
->>                                            ACPI_HEADER_SIZE);
->> +               if (WARN_ON(!table)) {
->> +                       return;
->> +               }
->>                 if (table_offset + table->length > all_tables_size) {
->>                         acpi_os_unmap_memory(table, ACPI_HEADER_SIZE);
->>                         WARN_ON(1);
->> --
->> 2.39.2
->>
-> 
-
-Best Regards,
--- 
-Kiwamu Okabe at VAJ
+Regards,
+August Wikerfors
