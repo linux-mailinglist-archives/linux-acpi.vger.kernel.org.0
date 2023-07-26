@@ -2,102 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E76B7763949
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jul 2023 16:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60A517639BF
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jul 2023 16:59:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232862AbjGZOfu convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 26 Jul 2023 10:35:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57442 "EHLO
+        id S234310AbjGZO71 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Jul 2023 10:59:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232791AbjGZOft (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Jul 2023 10:35:49 -0400
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35A2F10A;
-        Wed, 26 Jul 2023 07:35:48 -0700 (PDT)
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-563393b63dbso729676eaf.1;
-        Wed, 26 Jul 2023 07:35:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690382147; x=1690986947;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kKHJCtI3GVQZ0a3o8Avbpjli9anhsZiCWTWJxzGkOmk=;
-        b=ArbcksFi0RAwut7jhBoiSQWQ0Lkp4gOEnbFuBRJTUbdy3HDzmYCit/hXM6kejBC1nM
-         wa83CJ/j305ilCr58cciUikaG2ny7YCV3bPpL6EoeDBW+nJuayd3reiFBHrNKyJ6EToE
-         5tqL7gPW5ss0TWtmGI0pqA1Ufr+DLi9T06j2EkJqTAKPglSs97lZc3JGMTD3zKYQKA8V
-         q31UKs3RiBiYfKJpTklpQcFZwsf4HqC9MAbW4Fve0xFHED65wj43JQbVn3SBBf70WOmV
-         ahCcTWRreV1K3F3N15fx5yzUVZFJhjek3ZA80DqwtS3F+JBYYlf2fa93SxdkoQNPNfcO
-         U6KQ==
-X-Gm-Message-State: ABy/qLYT57s5rebeGta82AnK0IOx+SRkjsJ6f6F2NF3CA++EBoTMAnFS
-        AfMni7Qm8i5MmDPRUiRbOIiLJ+iZJn7XuxwAGp8=
-X-Google-Smtp-Source: APBJJlHYx0kwDJKxKCewX+CzY5nG5XWqTlWNb5y8DTNu9Kt7oq9XJ0X7Ba2KALOn15JUiLX9JUiEzMonlBMRDW5YR1E=
-X-Received: by 2002:a4a:d806:0:b0:569:a35b:1bd3 with SMTP id
- f6-20020a4ad806000000b00569a35b1bd3mr1708830oov.1.1690382147068; Wed, 26 Jul
- 2023 07:35:47 -0700 (PDT)
+        with ESMTP id S230194AbjGZO7V (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Jul 2023 10:59:21 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9EEF9CE;
+        Wed, 26 Jul 2023 07:59:20 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3618C168F;
+        Wed, 26 Jul 2023 08:00:03 -0700 (PDT)
+Received: from bogus (unknown [10.57.96.101])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 88EB43F67D;
+        Wed, 26 Jul 2023 07:59:18 -0700 (PDT)
+Date:   Wed, 26 Jul 2023 15:58:43 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Suzuki K Poulose <suzuki.poulose@arm.com>, rafael@kernel.org
+Cc:     gregkh@linuxfoundation.org, Sudeep Holla <sudeep.holla@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        coresight@lists.linaro.org, scclevenger@os.amperecomputing.com,
+        leo.yan@linaro.org, linux-acpi@vger.kernel.org,
+        mike.leach@linaro.org
+Subject: Re: drivers/pnp/pnpacpi/core.c:253:17: warning: 'strncpy' specified
+ bound 50 equals destination size
+Message-ID: <20230726145843.jlubnrcjaejfduky@bogus>
+References: <20230710062500.45147-7-anshuman.khandual@arm.com>
+ <20230726140515.368981-1-suzuki.poulose@arm.com>
 MIME-Version: 1.0
-References: <9445401f-7cfb-bbb5-e25c-28f578efa212@valinux.co.jp>
-In-Reply-To: <9445401f-7cfb-bbb5-e25c-28f578efa212@valinux.co.jp>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 26 Jul 2023 16:35:35 +0200
-Message-ID: <CAJZ5v0jSyE5chyVFFCaqOtE-huf8YH0mD6_udj2w4oA8KoN9qw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: tables: Fix NULL dereference by acpi_os_map_memory()
-To:     Kiwamu Okabe <okabe@valinux.co.jp>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230726140515.368981-1-suzuki.poulose@arm.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 26, 2023 at 6:53 AM Kiwamu Okabe <okabe@valinux.co.jp> wrote:
->
-> The Infer static analyzer https://fbinfer.com/ reports following
-> NULL poinster dereference by the acpi_os_map_memory() function.
-> I believe this patch does fix the issue without any panic.
+On Wed, Jul 26, 2023 at 03:05:15PM +0100, Suzuki K Poulose wrote:
+> On 25/07/2023 15:30, Rafael J. Wysocki wrote:
+> > On Tue, Jul 25, 2023 at 4:040x202FPM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+> >>
+> >> On 25/07/2023 15:00, Rafael J. Wysocki wrote:
+> >>> On Tue, Jul 25, 2023 at 3:270x202FPM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+> >>>>
+> >>>> On 25/07/2023 13:28, Rafael J. Wysocki wrote:
+> >>>>> On Tue, Jul 25, 2023 at 12:350x202FPM Suzuki K Poulose
+> >>>>> <suzuki.poulose@arm.com> wrote:
+> >>>>>>
+> >>>>>> Hi Rafael
+> >>>>>>
+> >>>>>> Apologies for hijacking this thread, but please please could
+> >>>>>> you respond to the following patch ?
+> >>>>>>
+> >>>>>> We have been waiting for your Ack since last two months.
+> >>>>>>
+> >>>>>> https://lkml.kernel.org/r/46a3d6d3-f14e-efde-83eb-5952f313f909@arm.com
+> >>>>>
+> >>>>> Sorry about that, but I'm not sure why you need an ACK from me for
+> >>>>> this.0x00A0 AMBA is an ARM thing and I'm not even familiar with the driver
+> >>>>> in question.
+> >>>>>
+> >>>>
+> >>>> I understand, but there is a change to the drivers/acpi/acpi_amba.c ,
+> >>>> which is technically under your maintenance. The change is removing
+> >>>> the custom hook for the ETMv4 ID from the AMBA list and moving it
+> >>>> directly under the ETMv4 driver. Greg would like an Ack from you
+> >>>> before that can be queued. It missed the merged window last time
+> >>>> due to that and didn't want to miss it again this time.
+> >>>
+> >>> OK, so please feel free to add an ACK from me to that patch.
+> >>>
+> >>
+> >> Thanks.
+> >>
+> >>> It also would be good to find an ARM maintainer for acpi_amba.c, so
+> >>> people don't have to wait for my ACK on every change in that file.
+> >>
+> >> Sudeep Holla (our resident ACPI expert) has reviewed the patch, but
+> >> I guess he is in the Reviewer ranks.
+> >
+> > Well, next time you get a Reviewed-by from Sudeep on ARM-related ACPI
+> > material, it is far more meaningful than my ACK.0x00A0 You probably don't
+> > need the latter if you have the former.
 
-Please demonstrate to me that the NULL pointer dereference can
-actually happen in this code.
+Thanks Rafael and this aligns with my understanding. I had mentioned to
+Suzuki informally. Since I wasn't sure why this was not covered under
+Arm ACPI maintainership for whatever historical reasons, I didn't make
+it formally on the list. I think it would be better if we move that file
+under it to be explicit and avoid any confusion in the future. I will
+send the update soon.
 
-Thanks!
-
-> Signed-off-by: Kiwamu Okabe <okabe@valinux.co.jp>
-> ---
->  drivers/acpi/tables.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-> index 8ab0a82b4da4..ae7b7343bacf 100644
-> --- a/drivers/acpi/tables.c
-> +++ b/drivers/acpi/tables.c
-> @@ -717,6 +717,9 @@ acpi_table_initrd_override(struct acpi_table_header *existing_table,
->         while (table_offset + ACPI_HEADER_SIZE <= all_tables_size) {
->                 table = acpi_os_map_memory(acpi_tables_addr + table_offset,
->                                            ACPI_HEADER_SIZE);
-> +               if (WARN_ON(!table)) {
-> +                       return AE_OK;
-> +               }
->                 if (table_offset + table->length > all_tables_size) {
->                         acpi_os_unmap_memory(table, ACPI_HEADER_SIZE);
->                         WARN_ON(1);
-> @@ -772,6 +775,9 @@ static void __init acpi_table_initrd_scan(void)
->         while (table_offset + ACPI_HEADER_SIZE <= all_tables_size) {
->                 table = acpi_os_map_memory(acpi_tables_addr + table_offset,
->                                            ACPI_HEADER_SIZE);
-> +               if (WARN_ON(!table)) {
-> +                       return;
-> +               }
->                 if (table_offset + table->length > all_tables_size) {
->                         acpi_os_unmap_memory(table, ACPI_HEADER_SIZE);
->                         WARN_ON(1);
-> --
-> 2.39.2
->
+-- 
+Regards,
+Sudeep
