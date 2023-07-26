@@ -2,72 +2,139 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E2587625B7
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jul 2023 00:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BDEC762907
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jul 2023 05:06:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231839AbjGYWLV convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 25 Jul 2023 18:11:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54676 "EHLO
+        id S230312AbjGZDGF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Jul 2023 23:06:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230148AbjGYWLH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jul 2023 18:11:07 -0400
-X-Greylist: delayed 28269 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 25 Jul 2023 15:10:28 PDT
-Received: from 06d01.mspz3.gob.ec (182.60.46.186.static.anycast.cnt-grms.ec [186.46.60.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2E2D626A6
-        for <linux-acpi@vger.kernel.org>; Tue, 25 Jul 2023 15:10:28 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by 06d01.mspz3.gob.ec (Postfix) with ESMTP id D5B00298E99D;
-        Mon, 24 Jul 2023 16:19:09 -0500 (ECT)
-Received: from 06d01.mspz3.gob.ec ([127.0.0.1])
-        by localhost (06d01.mspz3.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id yY5b9cdjALgR; Mon, 24 Jul 2023 16:19:09 -0500 (ECT)
-Received: from localhost (localhost [127.0.0.1])
-        by 06d01.mspz3.gob.ec (Postfix) with ESMTP id B678129A1E7C;
-        Mon, 24 Jul 2023 04:01:47 -0500 (ECT)
-X-Virus-Scanned: amavisd-new at 06d01.mspz3.gob.ec
-Received: from 06d01.mspz3.gob.ec ([127.0.0.1])
-        by localhost (06d01.mspz3.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 9qdFqhr5SBDe; Mon, 24 Jul 2023 04:01:47 -0500 (ECT)
-Received: from [141.98.6.221] (unknown [141.98.6.221])
-        by 06d01.mspz3.gob.ec (Postfix) with ESMTPSA id 748602949A82;
-        Mon, 24 Jul 2023 00:21:01 -0500 (ECT)
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S231225AbjGZDF4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jul 2023 23:05:56 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9067D1BCD
+        for <linux-acpi@vger.kernel.org>; Tue, 25 Jul 2023 20:05:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690340751; x=1721876751;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=Ac3M1GbzlRT5++1b4pL8NIEyZ2PXTx/3eagbNYXhSno=;
+  b=EatkN+vw3npZvGwEnXkUXFwaMTtpYiRABK5+p0RbX0/mGPeIFG1/mGJj
+   P6e61sWM5o8+eVnyxZDL0hu705Gihivcm2ITqeGvLLwiifwcau/1/X+4S
+   61BOSPq94NsEDOHDzy+8kAhakIe3qPR3I7zd2ndXKBhfi1RR1sPXkY/PF
+   n9Z251ogTIgIMbaq8b1Y19MvTr5oDeZhRXSKuqKB7IoFwDaCQzTlbK9NC
+   I9zoG2R1B4tF6QhhbU46ZNCexza/RkgqnlrrNt1Qb0YXhWxAB+yaYTucz
+   RjOf7glnv0ufjLLlOBHxHrx4Gf2M74SEUKE6MoFtMJDviNkIKjqd8A4Sr
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="431702945"
+X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
+   d="scan'208";a="431702945"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 20:05:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="850270711"
+X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
+   d="scan'208";a="850270711"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.251.14.85])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 20:05:50 -0700
+Date:   Tue, 25 Jul 2023 20:05:49 -0700
+From:   Alison Schofield <alison.schofield@intel.com>
+To:     Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Cc:     dan.j.williams@intel.com, vishal.l.verma@intel.com,
+        nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org, lenb@kernel.org
+Subject: Re: [PATCH] nfit: remove redundant list_for_each_entry
+Message-ID: <ZMCNja5S3tnNBm79@aschofie-mobl2>
+References: <20230719080526.2436951-1-ruansy.fnst@fujitsu.com>
+ <ZL7/mctQSQ7rtK3X@aschofie-mobl2>
+ <32cb262a-8ae6-60ba-2032-f02973f44a1e@fujitsu.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Re: Investment & Project Funding
-To:     Recipients <alexandra.neira@06d01.mspz3.gob.ec>
-From:   "Principal Consultant" <alexandra.neira@06d01.mspz3.gob.ec>
-Date:   Sun, 23 Jul 2023 21:31:45 -0700
-Reply-To: joeybestman683@gmail.com
-Message-Id: <20230724052103.748602949A82@06d01.mspz3.gob.ec>
-X-Spam-Status: Yes, score=6.6 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_SBL,
-        RCVD_IN_SBL_CSS,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [141.98.6.221 listed in zen.spamhaus.org]
-        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [joeybestman683[at]gmail.com]
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: ******
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <32cb262a-8ae6-60ba-2032-f02973f44a1e@fujitsu.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello,
+On Tue, Jul 25, 2023 at 01:33:18PM +0800, Shiyang Ruan wrote:
+> 
+> 
+> 在 2023/7/25 6:47, Alison Schofield 写道:
+> > On Wed, Jul 19, 2023 at 04:05:26PM +0800, Shiyang Ruan wrote:
+> > > The first for_each only do acpi_nfit_init_ars() for NFIT_SPA_VOLATILE
+> > > and NFIT_SPA_PM, which can be moved to next one.
+> > 
+> > Can the result of nfit_spa_type(nfit_spa->spa) change as a result of
+> > the first switch statement? That would be a reason why they are separate.
+> 
+> nfit_spa_type() just gets the type of *spa by querying a type-uuid table.
+> Also, according to the code shown below, we can find that it doesn't change
+> anything.
+> 
+> int nfit_spa_type(struct acpi_nfit_system_address *spa)
+> {
+> 	guid_t guid;
+> 	int i;
+> 
+> 	import_guid(&guid, spa->range_guid);
+> 	for (i = 0; i < NFIT_UUID_MAX; i++)
+> 		if (guid_equal(to_nfit_uuid(i), &guid))
+> 			return i;
+> 	return -1;
+> }
+>
 
-I'm Joey Bestman, My Company can bridge funds for your New or Ongoing Business. You can reach me using this email address: joeybestman683@gmail.com
+Hi Ruan,
 
-Regards,
-Joey Bestman
-Principal Consultant
+I see that. I was questioning if the type change as a *result* of the
+first switch statement, which does that acpi_nfi_init_ars().
+
+I don't think it does. I'm only asking if you proved the correctness
+of the change because I'm guessing this change is tested by inspection
+only. Maybe not.
+
+Thanks,
+Alison
+
+> --
+> Thanks,
+> Ruan.
+> 
+> > 
+> > Alison
+> > 
+> > > 
+> > > Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+> > > ---
+> > >   drivers/acpi/nfit/core.c | 8 --------
+> > >   1 file changed, 8 deletions(-)
+> > > 
+> > > diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> > > index 07204d482968..4090a0a0505c 100644
+> > > --- a/drivers/acpi/nfit/core.c
+> > > +++ b/drivers/acpi/nfit/core.c
+> > > @@ -2971,14 +2971,6 @@ static int acpi_nfit_register_regions(struct acpi_nfit_desc *acpi_desc)
+> > >   		case NFIT_SPA_VOLATILE:
+> > >   		case NFIT_SPA_PM:
+> > >   			acpi_nfit_init_ars(acpi_desc, nfit_spa);
+> > > -			break;
+> > > -		}
+> > > -	}
+> > > -
+> > > -	list_for_each_entry(nfit_spa, &acpi_desc->spas, list) {
+> > > -		switch (nfit_spa_type(nfit_spa->spa)) {
+> > > -		case NFIT_SPA_VOLATILE:
+> > > -		case NFIT_SPA_PM:
+> > >   			/* register regions and kick off initial ARS run */
+> > >   			rc = ars_register(acpi_desc, nfit_spa);
+> > >   			if (rc)
+> > > -- 
+> > > 2.41.0
+> > > 
