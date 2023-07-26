@@ -2,150 +2,456 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83552763E95
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jul 2023 20:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6706E764074
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jul 2023 22:24:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231390AbjGZSe0 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 26 Jul 2023 14:34:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36012 "EHLO
+        id S229692AbjGZUYG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Jul 2023 16:24:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230474AbjGZSe0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Jul 2023 14:34:26 -0400
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0389C26A6;
-        Wed, 26 Jul 2023 11:34:25 -0700 (PDT)
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5671db01ee0so17558eaf.1;
-        Wed, 26 Jul 2023 11:34:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690396464; x=1691001264;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lOnTsM7a3cFSdlS6WfiIYIlbUyN4/ClgkUHf/cbi78E=;
-        b=hVNOPiI7iUrVKopaNgkVA3Vml2uqqGiEFenwE67ttrclS6af8Uh0uyfwgzrIdmw66c
-         XYnnipEiJTBTyRVwf7CoBmSplOsDam+REGPoYChk2efYKL6yrY89R7G3UDro+hno05T2
-         cZhrqAR1BeWdIAF7PKLNLxOjUtNScRlQa8xuVFvatoeatea8g9JCHEMS24ds8WOrNDFL
-         20vU/+H28IonYxjHhbiIRwtuVvPoA32pPq7jW9h5LJUOPeTvMAnR/zLydaDzhFL4UUB3
-         bq4QQ3iCr9hiavTTF9vGiFeqTBKIPc30Jl8p/0Nsl7Z4LaLbzZJ5UDJiCTcTdi2rluEW
-         N8NQ==
-X-Gm-Message-State: ABy/qLbEyzQsRKaarlwGir5NFc5CAi9YNt0szEEHnjmeBb5g/7avmCdh
-        XuzL8Olo5qFR94Z6HLzKAWrspJ+4dgaZMqaAwGyEqY0N
-X-Google-Smtp-Source: APBJJlGGZgwVpKDbvbnPzNymJ/4cNCne6LH/SypiHat8HrSUEP+a6BG4CcR3gSbrf83Ff+ioYKqIPpkL+by2yLgyjs8=
-X-Received: by 2002:a4a:c449:0:b0:566:951e:140c with SMTP id
- h9-20020a4ac449000000b00566951e140cmr2181640ooq.1.1690396464243; Wed, 26 Jul
- 2023 11:34:24 -0700 (PDT)
+        with ESMTP id S229541AbjGZUYF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Jul 2023 16:24:05 -0400
+X-Greylist: delayed 400 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 26 Jul 2023 13:24:03 PDT
+Received: from endrift.com (endrift.com [173.255.198.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCCDEC0
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Jul 2023 13:24:03 -0700 (PDT)
+Received: from [192.168.0.22] (unknown [50.47.218.115])
+        by endrift.com (Postfix) with ESMTPSA id 6DC03A248;
+        Wed, 26 Jul 2023 13:17:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=endrift.com; s=2020;
+        t=1690402642; bh=eKU+b+GTRZYOaGCipZ2PMsmGSqcWOyQyZxlJwCCV0BE=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=eMkwRqBn5dUYnBmsjCW1UpVR2MSRYwNpw2/QcZyJ73/q42AuBMrczQ2wfp4gyRIdP
+         Z1TZ3QTyI79/ljJCbiqr/phhqG+S6askRaB7gbG3ejRKoQEoz0uLbGjCU/Lt6LEztp
+         pthV0q+uspBfz7uorZauFJsm/sh48wiS6kXNM1DhaQr41vWafyePjDrwgHkMKfT9bA
+         hEzel47hkzGQGGqIsfy5MLV2XI+ulEBK3VJQ30xVRAVOc8hpiIk8EQvmOk09tQR0ss
+         mVFISZa3CFeGBycTw2JwFWmDY2rUa+XbOVe6m68vCKHhDtA4K5QbXORvlighw/sw5e
+         3w5ZUzdruO8+A==
+Message-ID: <f8989816-a49b-23b2-5a15-952109174102@endrift.com>
+Date:   Wed, 26 Jul 2023 13:17:21 -0700
 MIME-Version: 1.0
-References: <20230726112759.18814-1-rf@opensource.cirrus.com> <33cdbf63-8fe4-da7e-5d36-6e63fe303b24@redhat.com>
-In-Reply-To: <33cdbf63-8fe4-da7e-5d36-6e63fe303b24@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 26 Jul 2023 20:34:13 +0200
-Message-ID: <CAJZ5v0hGSqOvnLMhpiC42Rx4YBrs0OKDhh9iRTNnR4BX0JDmDQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: scan: Create platform device for CS35L56
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Richard Fitzgerald <rf@opensource.cirrus.com>, rafael@kernel.org,
-        lenb@kernel.org, markgross@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        Simon Trimmer <simont@opensource.cirrus.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] ACPI: utils: Make acpi_handle_list dynamically allocated
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>
+References: <20230330030446.2469338-1-vi@endrift.com>
+ <CAJZ5v0gk_qByM6uNiBtjgj3fxuXawurBB9zJ_e6Lo7b9srJ21w@mail.gmail.com>
+From:   Vicki Pfau <vi@endrift.com>
+In-Reply-To: <CAJZ5v0gk_qByM6uNiBtjgj3fxuXawurBB9zJ_e6Lo7b9srJ21w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 26, 2023 at 4:13 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi Richard,
->
-> On 7/26/23 13:27, Richard Fitzgerald wrote:
-> > From: Simon Trimmer <simont@opensource.cirrus.com>
-> >
-> > The ACPI device CSC3556 is a Cirrus Logic CS35L56 mono amplifier which
-> > is used in multiples, and can be connected either to I2C or SPI.
-> >
-> > There will be multiple instances under the same Device() node. Add it
-> > to ignore_serial_bus_ids and handle it in the serial-multi-instantiate
-> > driver.
-> >
-> > Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-> > Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
->
-> Thanks, patch looks good to me:
->
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
->
-> I have 1 other serial-multi-instantiate.c patches in my fixes branch (see below) and since this just adds new hw-ids I think this can go upstream through my fixes branch too.
->
-> Rafael, do you agree with me taking this upstream as a 6.5 fix? And if yes may I have your ack for that ?
+Hello,
 
-Sure.
+Not sure how I missed this reply. Sorry for the delay.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 4/20/23 08:46, Rafael J. Wysocki wrote:
+> On Thu, Mar 30, 2023 at 5:13 AM Vicki Pfau <vi@endrift.com> wrote:
+>>
+>> This fixes a long-standing "TBD" comment in the ACPI headers regarding making
+>> the acpi_handle_list struct's size dynamic. The number 10, which along with the
+>> comment dates back to 2.4.23, seems like it may have been arbitrarily chosen,
+>> and isn't sufficient in all cases. This patch finally makes the size dynamic
+>> and updates its users to handle the modified API.
+>>
+>> Signed-off-by: Vicki Pfau <vi@endrift.com>
+>> ---
+>>  drivers/acpi/acpi_lpss.c                      |  9 ++--
+>>  drivers/acpi/scan.c                           |  9 ++--
+>>  drivers/acpi/thermal.c                        | 54 +++++++++++--------
+>>  drivers/acpi/utils.c                          | 14 ++---
+>>  .../platform/surface/surface_acpi_notify.c    |  9 ++--
+>>  include/acpi/acpi_bus.h                       | 18 +++++--
+>>  6 files changed, 71 insertions(+), 42 deletions(-)
+>>
+>> diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+>> index f08ffa75f4a7..5aebd338943f 100644
+>> --- a/drivers/acpi/acpi_lpss.c
+>> +++ b/drivers/acpi/acpi_lpss.c
+>> @@ -561,7 +561,7 @@ static struct device *acpi_lpss_find_device(const char *hid, const char *uid)
+>>
+>>  static bool acpi_lpss_dep(struct acpi_device *adev, acpi_handle handle)
+>>  {
+>> -       struct acpi_handle_list dep_devices;
+>> +       struct acpi_handle_list *dep_devices;
+>>         acpi_status status;
+>>         int i;
+>>
+>> @@ -575,11 +575,14 @@ static bool acpi_lpss_dep(struct acpi_device *adev, acpi_handle handle)
+>>                 return false;
+>>         }
+>>
+>> -       for (i = 0; i < dep_devices.count; i++) {
+>> -               if (dep_devices.handles[i] == handle)
+>> +       for (i = 0; i < dep_devices->count; i++) {
+>> +               if (dep_devices->handles[i] == handle) {
+>> +                       kfree(dep_devices);
+>>                         return true;
+>> +               }
+>>         }
+>>
+>> +       kfree(dep_devices);
+>>         return false;
+>>  }
+>>
+>> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+>> index 0c6f06abe3f4..167423b68f83 100644
+>> --- a/drivers/acpi/scan.c
+>> +++ b/drivers/acpi/scan.c
+>> @@ -1972,7 +1972,7 @@ static void acpi_scan_init_hotplug(struct acpi_device *adev)
+>>
+>>  static u32 acpi_scan_check_dep(acpi_handle handle, bool check_dep)
+>>  {
+>> -       struct acpi_handle_list dep_devices;
+>> +       struct acpi_handle_list *dep_devices;
+>>         acpi_status status;
+>>         u32 count;
+>>         int i;
+>> @@ -1993,12 +1993,12 @@ static u32 acpi_scan_check_dep(acpi_handle handle, bool check_dep)
+>>                 return 0;
+>>         }
+>>
+>> -       for (count = 0, i = 0; i < dep_devices.count; i++) {
+>> +       for (count = 0, i = 0; i < dep_devices->count; i++) {
+>>                 struct acpi_device_info *info;
+>>                 struct acpi_dep_data *dep;
+>>                 bool skip, honor_dep;
+>>
+>> -               status = acpi_get_object_info(dep_devices.handles[i], &info);
+>> +               status = acpi_get_object_info(dep_devices->handles[i], &info);
+>>                 if (ACPI_FAILURE(status)) {
+>>                         acpi_handle_debug(handle, "Error reading _DEP device info\n");
+>>                         continue;
+>> @@ -2017,7 +2017,7 @@ static u32 acpi_scan_check_dep(acpi_handle handle, bool check_dep)
+>>
+>>                 count++;
+>>
+>> -               dep->supplier = dep_devices.handles[i];
+>> +               dep->supplier = dep_devices->handles[i];
+>>                 dep->consumer = handle;
+>>                 dep->honor_dep = honor_dep;
+>>
+>> @@ -2026,6 +2026,7 @@ static u32 acpi_scan_check_dep(acpi_handle handle, bool check_dep)
+>>                 mutex_unlock(&acpi_dep_list_lock);
+>>         }
+>>
+>> +       kfree(dep_devices);
+>>         return count;
+>>  }
+>>
+>> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+>> index 0b4b844f9d4c..132b206cd4e6 100644
+>> --- a/drivers/acpi/thermal.c
+>> +++ b/drivers/acpi/thermal.c
+>> @@ -135,13 +135,13 @@ struct acpi_thermal_passive {
+>>         unsigned long tc1;
+>>         unsigned long tc2;
+>>         unsigned long tsp;
+>> -       struct acpi_handle_list devices;
+>> +       struct acpi_handle_list *devices;
+>>  };
+>>
+>>  struct acpi_thermal_active {
+>>         struct acpi_thermal_state_flags flags;
+>>         unsigned long temperature;
+>> -       struct acpi_handle_list devices;
+>> +       struct acpi_handle_list *devices;
+>>  };
+>>
+>>  struct acpi_thermal_trips {
+>> @@ -167,7 +167,7 @@ struct acpi_thermal {
+>>         struct acpi_thermal_flags flags;
+>>         struct acpi_thermal_state state;
+>>         struct acpi_thermal_trips trips;
+>> -       struct acpi_handle_list devices;
+>> +       struct acpi_handle_list *devices;
+>>         struct thermal_zone_device *thermal_zone;
+>>         int kelvin_offset;      /* in millidegrees */
+>>         struct work_struct thermal_check_work;
+>> @@ -264,7 +264,7 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+>>  {
+>>         acpi_status status;
+>>         unsigned long long tmp;
+>> -       struct acpi_handle_list devices;
+>> +       struct acpi_handle_list *devices;
+>>         int valid = 0;
+>>         int i;
+>>
+>> @@ -368,7 +368,7 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+>>                 }
+>>         }
+>>         if ((flag & ACPI_TRIPS_DEVICES) && tz->trips.passive.flags.valid) {
+>> -               memset(&devices, 0, sizeof(struct acpi_handle_list));
+>> +               devices = NULL;
+>>                 status = acpi_evaluate_reference(tz->device->handle, "_PSL",
+>>                                                  NULL, &devices);
+>>                 if (ACPI_FAILURE(status)) {
+>> @@ -379,11 +379,12 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+>>                         tz->trips.passive.flags.valid = 1;
+>>                 }
+>>
+>> -               if (memcmp(&tz->trips.passive.devices, &devices,
+>> -                          sizeof(struct acpi_handle_list))) {
+>> -                       memcpy(&tz->trips.passive.devices, &devices,
+>> -                              sizeof(struct acpi_handle_list));
+>> +               if (!acpi_handle_list_equal(tz->trips.passive.devices, devices)) {
+>> +                       kfree(tz->trips.passive.devices);
+>> +                       tz->trips.passive.devices = devices;
+>>                         ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
+>> +               } else if (devices) {
+>> +                       kfree(devices);
+>>                 }
+>>         }
+>>         if ((flag & ACPI_TRIPS_PASSIVE) || (flag & ACPI_TRIPS_DEVICES)) {
+>> @@ -433,7 +434,7 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+>>
+>>                 name[2] = 'L';
+>>                 if ((flag & ACPI_TRIPS_DEVICES) && tz->trips.active[i].flags.valid) {
+>> -                       memset(&devices, 0, sizeof(struct acpi_handle_list));
+>> +                       devices = NULL;
+>>                         status = acpi_evaluate_reference(tz->device->handle,
+>>                                                          name, NULL, &devices);
+>>                         if (ACPI_FAILURE(status)) {
+>> @@ -444,11 +445,12 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+>>                                 tz->trips.active[i].flags.valid = 1;
+>>                         }
+>>
+>> -                       if (memcmp(&tz->trips.active[i].devices, &devices,
+>> -                                  sizeof(struct acpi_handle_list))) {
+>> -                               memcpy(&tz->trips.active[i].devices, &devices,
+>> -                                      sizeof(struct acpi_handle_list));
+>> +                       if (!acpi_handle_list_equal(tz->trips.active[i].devices, devices)) {
+>> +                               kfree(tz->trips.active[i].devices);
+>> +                               tz->trips.active[i].devices = devices;
+>>                                 ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
+>> +                       } else if (devices) {
+>> +                               kfree(devices);
+>>                         }
+>>                 }
+>>                 if ((flag & ACPI_TRIPS_ACTIVE) || (flag & ACPI_TRIPS_DEVICES))
+>> @@ -460,13 +462,16 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+>>         }
+>>
+>>         if (flag & ACPI_TRIPS_DEVICES) {
+>> -               memset(&devices, 0, sizeof(devices));
+>> +               devices = NULL;
+>>                 status = acpi_evaluate_reference(tz->device->handle, "_TZD",
+>>                                                  NULL, &devices);
+>>                 if (ACPI_SUCCESS(status) &&
+>> -                   memcmp(&tz->devices, &devices, sizeof(devices))) {
+>> +                   !acpi_handle_list_equal(tz->devices, devices)) {
+>> +                       kfree(tz->devices);
+>>                         tz->devices = devices;
+>>                         ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
+>> +               } else if (devices) {
+>> +                       kfree(devices);
+>>                 }
+>>         }
+>>
+>> @@ -709,8 +714,8 @@ static int acpi_thermal_cooling_device_cb(struct thermal_zone_device *thermal,
+>>
+>>         if (tz->trips.passive.flags.valid) {
+>>                 trip++;
+>> -               for (i = 0; i < tz->trips.passive.devices.count; i++) {
+>> -                       handle = tz->trips.passive.devices.handles[i];
+>> +               for (i = 0; i < tz->trips.passive.devices->count; i++) {
+>> +                       handle = tz->trips.passive.devices->handles[i];
+>>                         dev = acpi_fetch_acpi_dev(handle);
+>>                         if (dev != device)
+>>                                 continue;
+>> @@ -736,8 +741,8 @@ static int acpi_thermal_cooling_device_cb(struct thermal_zone_device *thermal,
+>>                         break;
+>>
+>>                 trip++;
+>> -               for (j = 0; j < tz->trips.active[i].devices.count; j++) {
+>> -                       handle = tz->trips.active[i].devices.handles[j];
+>> +               for (j = 0; j < tz->trips.active[i].devices->count; j++) {
+>> +                       handle = tz->trips.active[i].devices->handles[j];
+>>                         dev = acpi_fetch_acpi_dev(handle);
+>>                         if (dev != device)
+>>                                 continue;
+>> @@ -1062,6 +1067,7 @@ static int acpi_thermal_add(struct acpi_device *device)
+>>  static void acpi_thermal_remove(struct acpi_device *device)
+>>  {
+>>         struct acpi_thermal *tz;
+>> +       int i;
+>>
+>>         if (!device || !acpi_driver_data(device))
+>>                 return;
+>> @@ -1070,6 +1076,10 @@ static void acpi_thermal_remove(struct acpi_device *device)
+>>         tz = acpi_driver_data(device);
+>>
+>>         acpi_thermal_unregister_thermal_zone(tz);
+>> +       kfree(tz->trips.passive.devices);
+>> +       for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++)
+>> +               kfree(tz->trips.active[i].devices);
+>> +       kfree(tz->devices);
+>>         kfree(tz);
+>>  }
+>>
+>> @@ -1098,9 +1108,9 @@ static int acpi_thermal_resume(struct device *dev)
+>>                         break;
+>>
+>>                 tz->trips.active[i].flags.enabled = 1;
+>> -               for (j = 0; j < tz->trips.active[i].devices.count; j++) {
+>> +               for (j = 0; j < tz->trips.active[i].devices->count; j++) {
+>>                         result = acpi_bus_update_power(
+>> -                                       tz->trips.active[i].devices.handles[j],
+>> +                                       tz->trips.active[i].devices->handles[j],
+>>                                         &power_state);
+>>                         if (result || (power_state != ACPI_STATE_D0)) {
+>>                                 tz->trips.active[i].flags.enabled = 0;
+>> diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+>> index 2ea14648a661..dd76389ede96 100644
+>> --- a/drivers/acpi/utils.c
+>> +++ b/drivers/acpi/utils.c
+>> @@ -333,16 +333,17 @@ acpi_status
+>>  acpi_evaluate_reference(acpi_handle handle,
+>>                         acpi_string pathname,
+>>                         struct acpi_object_list *arguments,
+>> -                       struct acpi_handle_list *list)
+>> +                       struct acpi_handle_list **out)
+>>  {
+>>         acpi_status status = AE_OK;
+>> +       struct acpi_handle_list *list = NULL;
+>>         union acpi_object *package = NULL;
+>>         union acpi_object *element = NULL;
+>>         struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+>>         u32 i = 0;
+>>
+>>
+>> -       if (!list) {
+>> +       if (!out) {
+>>                 return AE_BAD_PARAMETER;
+>>         }
+>>
+>> @@ -370,7 +371,8 @@ acpi_evaluate_reference(acpi_handle handle,
+>>                 goto end;
+>>         }
+>>
+>> -       if (package->package.count > ACPI_MAX_HANDLES) {
+>> +       list = kmalloc(package->package.count * sizeof(list->handles[0]) + sizeof(*list), GFP_KERNEL);
+>> +       if (!list) {
+>>                 kfree(package);
+>>                 return AE_NO_MEMORY;
+>>         }
+>> @@ -400,12 +402,12 @@ acpi_evaluate_reference(acpi_handle handle,
+>>         }
+>>
+>>        end:
+>> -       if (ACPI_FAILURE(status)) {
+>> -               list->count = 0;
+>> -               //kfree(list->handles);
+>> +       if (ACPI_FAILURE(status) && list) {
+>> +               kfree(list);
+>>         }
+>>
+>>         kfree(buffer.pointer);
+>> +       *out = list;
+>>
+>>         return status;
+>>  }
+>> diff --git a/drivers/platform/surface/surface_acpi_notify.c b/drivers/platform/surface/surface_acpi_notify.c
+>> index 897cdd9c3aae..c6ead68cefc9 100644
+>> --- a/drivers/platform/surface/surface_acpi_notify.c
+>> +++ b/drivers/platform/surface/surface_acpi_notify.c
+>> @@ -738,7 +738,7 @@ do {                                                                                \
+>>
+>>  static bool is_san_consumer(struct platform_device *pdev, acpi_handle handle)
+>>  {
+>> -       struct acpi_handle_list dep_devices;
+>> +       struct acpi_handle_list *dep_devices;
+>>         acpi_handle supplier = ACPI_HANDLE(&pdev->dev);
+>>         acpi_status status;
+>>         int i;
+>> @@ -752,11 +752,14 @@ static bool is_san_consumer(struct platform_device *pdev, acpi_handle handle)
+>>                 return false;
+>>         }
+>>
+>> -       for (i = 0; i < dep_devices.count; i++) {
+>> -               if (dep_devices.handles[i] == supplier)
+>> +       for (i = 0; i < dep_devices->count; i++) {
+>> +               if (dep_devices->handles[i] == supplier) {
+>> +                       kfree(dep_devices);
+>>                         return true;
+>> +               }
+>>         }
+>>
+>> +       kfree(dep_devices);
+>>         return false;
+>>  }
+>>
+>> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+>> index 57acb895c038..8684efcf0e17 100644
+>> --- a/include/acpi/acpi_bus.h
+>> +++ b/include/acpi/acpi_bus.h
+>> @@ -12,11 +12,9 @@
+>>  #include <linux/device.h>
+>>  #include <linux/property.h>
+>>
+>> -/* TBD: Make dynamic */
+>> -#define ACPI_MAX_HANDLES       10
+>>  struct acpi_handle_list {
+>>         u32 count;
+>> -       acpi_handle handles[ACPI_MAX_HANDLES];
+>> +       acpi_handle handles[];
+> 
+> Can you just use
+> 
+> acpi_handle *handles;
+> 
+> here, in which case you won't need to change all of the struct
+> acpi_handle_list variables into pointers?
+> 
 
-> About that 1 patch, that adds a new IRQ type: IRQ_RESOURCE_AUTO and I wonder if this patch should not use that same new type right from the start:
->
-> https://git.kernel.org/pub/scm/linux/kernel/agit/pdx86/platform-drivers-x86.git/commit/?h=fixes&id=676b7c5ecab36274442887ceadd6dee8248a244f
->
-> This makes me realize that I should probably have pinged you and ask for feedback on that patch since it was send by a community member rather then by Cirrus. Note this is currently in Linus' master tree, so any fixes to it need to be submitted on top (not that I expect any issues since it still behaves as before on acpi_dev_gpio_irq_get() success and only adds an platform_get_irq() fallback when that fails).
->
-> Regards,
->
-> Hans
->
->
->
-> > ---
-> >  drivers/acpi/scan.c                             |  1 +
-> >  drivers/platform/x86/serial-multi-instantiate.c | 12 ++++++++++++
-> >  2 files changed, 13 insertions(+)
-> >
-> > diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> > index 5b145f1aaa1b..87e385542576 100644
-> > --- a/drivers/acpi/scan.c
-> > +++ b/drivers/acpi/scan.c
-> > @@ -1714,6 +1714,7 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
-> >               {"BSG1160", },
-> >               {"BSG2150", },
-> >               {"CSC3551", },
-> > +             {"CSC3556", },
-> >               {"INT33FE", },
-> >               {"INT3515", },
-> >               /* Non-conforming _HID for Cirrus Logic already released */
-> > diff --git a/drivers/platform/x86/serial-multi-instantiate.c b/drivers/platform/x86/serial-multi-instantiate.c
-> > index f3dcbdd72fec..dcf2914b97c9 100644
-> > --- a/drivers/platform/x86/serial-multi-instantiate.c
-> > +++ b/drivers/platform/x86/serial-multi-instantiate.c
-> > @@ -316,6 +316,17 @@ static const struct smi_node cs35l41_hda = {
-> >       .bus_type = SMI_AUTO_DETECT,
-> >  };
-> >
-> > +static const struct smi_node cs35l56_hda = {
-> > +     .instances = {
-> > +             { "cs35l56-hda", IRQ_RESOURCE_GPIO, 0 },
-> > +             { "cs35l56-hda", IRQ_RESOURCE_GPIO, 0 },
-> > +             { "cs35l56-hda", IRQ_RESOURCE_GPIO, 0 },
-> > +             { "cs35l56-hda", IRQ_RESOURCE_GPIO, 0 },
-> > +             {}
-> > +     },
-> > +     .bus_type = SMI_AUTO_DETECT,
-> > +};
-> > +
-> >  /*
-> >   * Note new device-ids must also be added to ignore_serial_bus_ids in
-> >   * drivers/acpi/scan.c: acpi_device_enumeration_by_parent().
-> > @@ -324,6 +335,7 @@ static const struct acpi_device_id smi_acpi_ids[] = {
-> >       { "BSG1160", (unsigned long)&bsg1160_data },
-> >       { "BSG2150", (unsigned long)&bsg2150_data },
-> >       { "CSC3551", (unsigned long)&cs35l41_hda },
-> > +     { "CSC3556", (unsigned long)&cs35l56_hda },
-> >       { "INT3515", (unsigned long)&int3515_data },
-> >       /* Non-conforming _HID for Cirrus Logic already released */
-> >       { "CLSA0100", (unsigned long)&cs35l41_hda },
->
+My original version of this patch that was used internally did this, but it was pointed out during review that this made the API slightly messier due to the fact you needed to free a specific member of the handle list instead of being able to just free the whole struct, as well as making comparison of two structs much more verbose.
+
+Overall, this version is cleaner than the original version, but it does require changing types in places. I can go back to the old version and resubmit if desired though.
+
+>>  };
+>>
+>>  /* acpi_utils.h */
+>> @@ -31,7 +29,7 @@ acpi_status
+>>  acpi_evaluate_reference(acpi_handle handle,
+>>                         acpi_string pathname,
+>>                         struct acpi_object_list *arguments,
+>> -                       struct acpi_handle_list *list);
+>> +                       struct acpi_handle_list **list);
+>>  acpi_status
+>>  acpi_evaluate_ost(acpi_handle handle, u32 source_event, u32 status_code,
+>>                   struct acpi_buffer *status_buf);
+>> @@ -69,6 +67,18 @@ acpi_evaluate_dsm_typed(acpi_handle handle, const guid_t *guid, u64 rev,
+>>         return obj;
+>>  }
+>>
+>> +static inline bool
+>> +acpi_handle_list_equal(struct acpi_handle_list *a, struct acpi_handle_list *b)
+>> +{
+>> +       if (!a || !b)
+>> +               return false;
+>> +
+>> +       if (a->count != b->count)
+>> +               return false;
+>> +
+>> +       return !memcmp(a->handles, b->handles, a->count * sizeof(acpi_handle));
+>> +}
+>> +
+>>  #define        ACPI_INIT_DSM_ARGV4(cnt, eles)                  \
+>>         {                                               \
+>>           .package.type = ACPI_TYPE_PACKAGE,            \
+>> --
+>> 2.40.0
+>>
+
+Vicki
