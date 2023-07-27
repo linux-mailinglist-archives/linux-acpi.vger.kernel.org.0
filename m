@@ -2,85 +2,170 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B29E7658E6
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jul 2023 18:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F086765A9B
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jul 2023 19:41:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231817AbjG0QjN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Jul 2023 12:39:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50746 "EHLO
+        id S229547AbjG0RlH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Jul 2023 13:41:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231406AbjG0QjN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jul 2023 12:39:13 -0400
-Received: from abi149hd127.arn1.oracleemaildelivery.com (abi149hd127.arn1.oracleemaildelivery.com [129.149.84.127])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77F672D4F
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Jul 2023 09:39:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
- d=augustwikerfors.se;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
- bh=TUR8Bp9AvDdz7mF4b5ZMncRJ7atKCHvCkxwXqShE5b0=;
- b=c/MRb5/z40lzFSg1LT2XsFo0z1oN7p6bTdXRLP6mwQdT5zY3hazwFa4dGcC8X8qsZ/qkSCHIPf3a
-   X7UVoh5LKZ3Fy7G/zw3kFa29fBPrS3XV8QcmVxyszr4nvdPZ1/6XxYm1J4NbpwhHRCweS1o3af82
-   E0Sj+yasUOiQug9p32BrrBhMda9n+NjW7iUyKgrEj9ORQ62IkzfbPi25XbURzsrZ3p6AuCo0qrZ+
-   +oRrsod/nmiZ6AYXjZWu+8I9W8E/yBcmRpnnCHf9vi7wRz5XejHqJILXJgH9ZZuJvzOGYp3EF6PG
-   VpCiDm8vgLu1li4l5Nf9U/pxr+UIRT8x31Rafw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
- d=arn1.rp.oracleemaildelivery.com;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
- bh=TUR8Bp9AvDdz7mF4b5ZMncRJ7atKCHvCkxwXqShE5b0=;
- b=WWVLg7uniBO4YJRL4OnT/2QOSJ4y0NoM2bs7qsENSY/9VwGUg3IdKQKzW+pM6fz0F7qBY5oz08kF
-   Ud9DF2O58qfPgFWYRNTtsd84eV5rpL1c0ZmbWMQwBbnJShkvVEgPZNUB2TzW81VXy3TuTCVOw6qq
-   dDcI1jVRqfooRIl/+7L0Oi+RcR0qFauWHQDNie7Wk9AL64S9F7h5SEuA+RELVVxKDcNxeKw7otk4
-   ZL3MgUcrXmrk3xrU3AFiXLbVG8X1mt11wxR9rk/R3xTR8kI7orr5oQhI0FIfUwRAcv2vxMDuPSRk
-   dtSQRnJpLi3f6Unlu62SOT0S7/a9Fs9shkflPQ==
-Received: by omta-ad1-fd2-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
- (Oracle Communications Messaging Server 8.1.0.1.20230629 64bit (built Jun 29
- 2023))
- with ESMTPS id <0RYG006JZRL64P80@omta-ad1-fd2-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
- for linux-acpi@vger.kernel.org; Thu, 27 Jul 2023 16:39:07 +0000 (GMT)
-Message-id: <838377ff-4df5-6b5d-e127-615e7e4dce4e@augustwikerfors.se>
-Date:   Thu, 27 Jul 2023 18:39:03 +0200
-MIME-version: 1.0
-From:   August Wikerfors <git@augustwikerfors.se>
-Subject: Re: [REGRESSION] IRQ override revert breaks keyboard on Lenovo Yoga 7
- 14ARB7
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        regressions@lists.linux.dev
-References: <596b9c4a-fb83-a8ab-3a44-6052d83fa546@augustwikerfors.se>
- <d3179d08-d513-a7e4-9ddb-416e50578957@amd.com>
-Content-language: en-US
-In-reply-to: <d3179d08-d513-a7e4-9ddb-416e50578957@amd.com>
-Content-type: text/plain; charset=UTF-8; format=flowed
-Content-transfer-encoding: 8bit
-Reporting-Meta: AAEmfh3AQNA2NlNOpFxqcaDLKO5WwzqH005cigcB7ucbTA9rDG1WbIVPpXsWcScT
- KYdQNzGmTT8E1DtL1mf3ADYa+DJRhvHpbFkvkZusQMwF9Cv/sz7iO4b0Zr7bETo0
- GYeknTtyMHQn1UtFmEG46wRBBAsQnhiXotFyJ3hQtN18ulu36dQyrP8jsb3LlOKI
- Ju7t0pALPxCyKiAOwyDZWsOEjcJnBiZzGGj2O62bsE4qmDAjayZtanfBh+7y9JaG
- hMRAOhHAE51WZ2rcla7jhgtOPAGMEEri1jNFcHIv3tIrc7H54oZOCtArCogSmZ0u
- vivwdmlF311Ge43lsB8CUNc2B3sszcosQRCOItCA6wGbe/9ojoEBV17UiVey/uXx
- gsHeNY93oWmQYRNozYlk8zQCL3yO93AZV79H4KERCBGzd9o8d73xkGTkqXyj9kth HqIue2M=
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229450AbjG0RlG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jul 2023 13:41:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD5E819A1;
+        Thu, 27 Jul 2023 10:41:05 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 550E361F05;
+        Thu, 27 Jul 2023 17:41:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E66CC433C8;
+        Thu, 27 Jul 2023 17:41:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690479664;
+        bh=sV0KNtt9fE1XUeUe/XyptVCWCQE2T1DYtSUkvu0/uQU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=ondc/h+uRtAb3vSjtI9OfaFusUo1AEMl/lad0+0r0QabAkdTx82Su7M/1SqBtnUd9
+         s9YDdOZRZfwkmnI+1KtH22smACKUWz89aWVk5vlsD7jVO43mIeMnz4eHowqeKWFqdk
+         GNW9C3P/fAf1zTbFW323WYurlTP0AEQa5h37iqsszvBXKN4DHJ9ax/vZ7WjDAH5U7i
+         MwoUjgFtWIOARzvvCYm6rg0vxCD7zXixWk/4i9oiyUW1GZf+AzSsehHJIizwHApcmb
+         s347weqxZxhTMjndpp/Ntwbu+KjjVl2uAGp71y89KtWJNzUPbv98MaTRpg9ffX8Qz8
+         LwL+SAWCqJnMQ==
+Date:   Thu, 27 Jul 2023 12:41:02 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Igor Mammedov <imammedo@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, terraluna977@gmail.com,
+        bhelgaas@google.com, linux-pci@vger.kernel.org, mst@redhat.com,
+        rafael@kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 1/1] PCI: acpiphp:: use
+ pci_assign_unassigned_bridge_resources() only if bus->self not NULL
+Message-ID: <20230727174102.GA689794@bhelgaas>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230726123518.2361181-2-imammedo@redhat.com>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2023-07-27 04:56, Mario Limonciello wrote:
-> This is unfortunate.  Before we go adding more quirks for your system, 
-> can you please check for a BIOS upgrade for your system?  If it's 
-> happening with the latest BIOS, then can you please open a kernel 
-> bugzilla with an acpidump and dmidecode included?
+Thank you to both you and Woody for chasing this down!
 
-The latest released BIOS is K5CN40WW, I'm using K5CN40WWT66 which is a 
-later beta that partially mitigates a Windows BSOD issue. I've opened a 
-Bugzilla report with the dmidecode here: 
-https://bugzilla.kernel.org/show_bug.cgi?id=217718
+On Wed, Jul 26, 2023 at 02:35:18PM +0200, Igor Mammedov wrote:
+> Commit [1] switched acpiphp hotplug to use
+>    pci_assign_unassigned_bridge_resources()
+> which depends on bridge being available, however in some cases
+> when acpiphp is in use, enable_slot() can get a slot without
+> bridge associated.
+>   1. legitimate case of hotplug on root bus
+>       (likely not exiting on real hw, but widely used in virt world)
+>   2. broken firmware, that sends 'Bus check' events to non
+>      existing root ports (Dell Inspiron 7352/0W6WV0), which somehow
+>      endup at acpiphp:enable_slot(..., bridge = 0) and with bus
+>      without bridge assigned to it.
 
-For the acpidump I'm not sure what parts could be sensitive so I will 
-e-mail it directly to you.
+Do we have evidence about the details of this non-existent root port?
+If we do, I think it would be interesting to include a URL to them in
+case there's some hole in the way we handle Bus Check events.
+
+> Issue is easy to reproduce with QEMU's 'pc' machine provides
+> PCI hotplug on hostbridge slots. to reproduce boot kernel at
+> commit [1] in VM started with followin CLI and hotplug a device:
+
+You mention CLI; did you mean to include a qemu command line here?
+Maybe it's the same thing mentioned in the 40613da52b13 commit log?
+I tried briefly to reproduce this using the 40613da52b13 command line
+but haven't quite got it going yet.  I think it would be very useful
+to either include it here again or point to the 40613da52b13 commit
+log.
+
+> once guest OS is fully booted at qemu prompt:
+> 
+> (qemu) device_add e1000
+> 
+> it will cause NULL pointer dereference at
+> 
+>     void pci_assign_unassigned_bridge_resources(struct pci_dev *bridge)
+>     {
+>         struct pci_bus *parent = bridge->subordinate;
+> 
+> [  612.277651] BUG: kernel NULL pointer dereference, address: 0000000000000018
+> [...]
+> [  612.277798]  ? pci_assign_unassigned_bridge_resources+0x1f/0x260
+> [  612.277804]  ? pcibios_allocate_dev_resources+0x3c/0x2a0
+> [  612.277809]  enable_slot+0x21f/0x3e0
+> [  612.277816]  acpiphp_hotplug_notify+0x13d/0x260
+> [  612.277822]  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
+> [  612.277827]  acpi_device_hotplug+0xbc/0x540
+> [  612.277834]  acpi_hotplug_work_fn+0x15/0x20
+> [  612.277839]  process_one_work+0x1f7/0x370
+> [  612.277845]  worker_thread+0x45/0x3b0
+> [  612.277850]  ? __pfx_worker_thread+0x10/0x10
+> [  612.277854]  kthread+0xdc/0x110
+> [  612.277860]  ? __pfx_kthread+0x10/0x10
+> [  612.277866]  ret_from_fork+0x28/0x40
+> [  612.277871]  ? __pfx_kthread+0x10/0x10
+> [  612.277876]  ret_from_fork_asm+0x1b/0x30
+> 
+> The issue was discovered on Dell Inspiron 7352/0W6WV0 laptop with
+> following sequence:
+>    1. suspend to RAM
+>    2. wake up with the same backtrace being observed:
+>    3. 2nd suspend to RAM attempt makes laptop freeze
+> 
+> Fix it by using __pci_bus_assign_resources() instead of
+> pci_assign_unassigned_bridge_resources()as we used to do
+> but only in case when bus doesn't have a bridge associated
+> with it.
+> 
+> That let us keep hotplug on root bus working like it used to be
+> but at the same time keeps resource reassignment usable on
+> root ports (and other 1st level bridges) that was fixed by [1].
+> 
+> 1)
+> Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
+> Link: https://lore.kernel.org/r/11fc981c-af49-ce64-6b43-3e282728bd1a@gmail.com
+> Reported-by: Woody Suwalski <terraluna977@gmail.com>
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> ---
+>  drivers/pci/hotplug/acpiphp_glue.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+> index 328d1e416014..3bc4e1f3efee 100644
+> --- a/drivers/pci/hotplug/acpiphp_glue.c
+> +++ b/drivers/pci/hotplug/acpiphp_glue.c
+> @@ -498,6 +498,7 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+>  				acpiphp_native_scan_bridge(dev);
+>  		}
+>  	} else {
+> +		LIST_HEAD(add_list);
+>  		int max, pass;
+>  
+>  		acpiphp_rescan_slot(slot);
+> @@ -511,10 +512,15 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+>  				if (pass && dev->subordinate) {
+>  					check_hotplug_bridge(slot, dev);
+>  					pcibios_resource_survey_bus(dev->subordinate);
+> +					if (!bus->self)
+> +						__pci_bus_size_bridges(dev->subordinate, &add_list);
+>  				}
+>  			}
+>  		}
+> -		pci_assign_unassigned_bridge_resources(bus->self);
+> +		if (bus->self)
+> +			pci_assign_unassigned_bridge_resources(bus->self);
+> +		else
+> +			__pci_bus_assign_resources(bus, &add_list, NULL);
+>  	}
+>  
+>  	acpiphp_sanitize_bus(bus);
+> -- 
+> 2.39.3
+> 
