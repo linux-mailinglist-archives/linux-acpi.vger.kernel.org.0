@@ -2,109 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D02B765701
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jul 2023 17:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B29E7658E6
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jul 2023 18:39:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234409AbjG0PIy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Jul 2023 11:08:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54604 "EHLO
+        id S231817AbjG0QjN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Jul 2023 12:39:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234447AbjG0PIp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jul 2023 11:08:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48B493A9B;
-        Thu, 27 Jul 2023 08:08:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8253161EB4;
-        Thu, 27 Jul 2023 15:08:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1BBC433C9;
-        Thu, 27 Jul 2023 15:08:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690470505;
-        bh=K2GcWqcSjYTfOkV2WI65gqtpuyMcHLeQlsbh9kooW5k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GApGL/agaLDFgR3uFnVPlCEXmWpSvHrtRRYgCyM7lVTpP4wRhNJGcaSSPecd+F7fs
-         XxtxC8rXhPnnx1Hj5FPXFK6JbvipJ3HgQcyzQNMuSVceeOUTi8XvX372mnXTMvzpXe
-         6V8Ev1CeOQCovfCPFaVY5cGIWqpV99vPOS6q2uqxrERm9GivzYil6zH03Mw0bvCsJC
-         Xta4Q+UCGy7sYnICUBpsSIScwPrwfJSn5ZveEugRxmWqh17KXPFvdYkZpuufSaMwqK
-         3oJ0ds1NEuVMr3xDs+AsXHCpQqZGlqVx9D6f7dygPuWKOKfXuKdiGTf7lK3RgXdcQN
-         xrTk5q2dMp7Aw==
-Date:   Thu, 27 Jul 2023 17:08:20 +0200
-From:   Lorenzo Pieralisi <lpieralisi@kernel.org>
-To:     Will Deacon <will@kernel.org>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Guanghui Feng <guanghuifeng@linux.alibaba.com>,
-        guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, baolin.wang@linux.alibaba.com,
-        alikernel-developer@linux.alibaba.com
-Subject: Re: [PATCH v3] ACPI/IORT: Remove erroneous id_count check in
- iort_node_get_rmr_info()
-Message-ID: <ZMKIZMfmBMHG0IOz@lpieralisi>
-References: <1689593625-45213-1-git-send-email-guanghuifeng@linux.alibaba.com>
- <ZMJzj2oe0B2Qp8vp@lpieralisi>
- <ZMJ4JnlVlqkO3E0P@arm.com>
- <ZMJ8jeLs69env0pL@lpieralisi>
- <20230727150042.GC19940@willie-the-truck>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230727150042.GC19940@willie-the-truck>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231406AbjG0QjN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jul 2023 12:39:13 -0400
+Received: from abi149hd127.arn1.oracleemaildelivery.com (abi149hd127.arn1.oracleemaildelivery.com [129.149.84.127])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77F672D4F
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Jul 2023 09:39:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
+ d=augustwikerfors.se;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=TUR8Bp9AvDdz7mF4b5ZMncRJ7atKCHvCkxwXqShE5b0=;
+ b=c/MRb5/z40lzFSg1LT2XsFo0z1oN7p6bTdXRLP6mwQdT5zY3hazwFa4dGcC8X8qsZ/qkSCHIPf3a
+   X7UVoh5LKZ3Fy7G/zw3kFa29fBPrS3XV8QcmVxyszr4nvdPZ1/6XxYm1J4NbpwhHRCweS1o3af82
+   E0Sj+yasUOiQug9p32BrrBhMda9n+NjW7iUyKgrEj9ORQ62IkzfbPi25XbURzsrZ3p6AuCo0qrZ+
+   +oRrsod/nmiZ6AYXjZWu+8I9W8E/yBcmRpnnCHf9vi7wRz5XejHqJILXJgH9ZZuJvzOGYp3EF6PG
+   VpCiDm8vgLu1li4l5Nf9U/pxr+UIRT8x31Rafw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
+ d=arn1.rp.oracleemaildelivery.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=TUR8Bp9AvDdz7mF4b5ZMncRJ7atKCHvCkxwXqShE5b0=;
+ b=WWVLg7uniBO4YJRL4OnT/2QOSJ4y0NoM2bs7qsENSY/9VwGUg3IdKQKzW+pM6fz0F7qBY5oz08kF
+   Ud9DF2O58qfPgFWYRNTtsd84eV5rpL1c0ZmbWMQwBbnJShkvVEgPZNUB2TzW81VXy3TuTCVOw6qq
+   dDcI1jVRqfooRIl/+7L0Oi+RcR0qFauWHQDNie7Wk9AL64S9F7h5SEuA+RELVVxKDcNxeKw7otk4
+   ZL3MgUcrXmrk3xrU3AFiXLbVG8X1mt11wxR9rk/R3xTR8kI7orr5oQhI0FIfUwRAcv2vxMDuPSRk
+   dtSQRnJpLi3f6Unlu62SOT0S7/a9Fs9shkflPQ==
+Received: by omta-ad1-fd2-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
+ (Oracle Communications Messaging Server 8.1.0.1.20230629 64bit (built Jun 29
+ 2023))
+ with ESMTPS id <0RYG006JZRL64P80@omta-ad1-fd2-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
+ for linux-acpi@vger.kernel.org; Thu, 27 Jul 2023 16:39:07 +0000 (GMT)
+Message-id: <838377ff-4df5-6b5d-e127-615e7e4dce4e@augustwikerfors.se>
+Date:   Thu, 27 Jul 2023 18:39:03 +0200
+MIME-version: 1.0
+From:   August Wikerfors <git@augustwikerfors.se>
+Subject: Re: [REGRESSION] IRQ override revert breaks keyboard on Lenovo Yoga 7
+ 14ARB7
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        regressions@lists.linux.dev
+References: <596b9c4a-fb83-a8ab-3a44-6052d83fa546@augustwikerfors.se>
+ <d3179d08-d513-a7e4-9ddb-416e50578957@amd.com>
+Content-language: en-US
+In-reply-to: <d3179d08-d513-a7e4-9ddb-416e50578957@amd.com>
+Content-type: text/plain; charset=UTF-8; format=flowed
+Content-transfer-encoding: 8bit
+Reporting-Meta: AAEmfh3AQNA2NlNOpFxqcaDLKO5WwzqH005cigcB7ucbTA9rDG1WbIVPpXsWcScT
+ KYdQNzGmTT8E1DtL1mf3ADYa+DJRhvHpbFkvkZusQMwF9Cv/sz7iO4b0Zr7bETo0
+ GYeknTtyMHQn1UtFmEG46wRBBAsQnhiXotFyJ3hQtN18ulu36dQyrP8jsb3LlOKI
+ Ju7t0pALPxCyKiAOwyDZWsOEjcJnBiZzGGj2O62bsE4qmDAjayZtanfBh+7y9JaG
+ hMRAOhHAE51WZ2rcla7jhgtOPAGMEEri1jNFcHIv3tIrc7H54oZOCtArCogSmZ0u
+ vivwdmlF311Ge43lsB8CUNc2B3sszcosQRCOItCA6wGbe/9ojoEBV17UiVey/uXx
+ gsHeNY93oWmQYRNozYlk8zQCL3yO93AZV79H4KERCBGzd9o8d73xkGTkqXyj9kth HqIue2M=
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 27, 2023 at 04:00:43PM +0100, Will Deacon wrote:
-> On Thu, Jul 27, 2023 at 04:17:49PM +0200, Lorenzo Pieralisi wrote:
-> > On Thu, Jul 27, 2023 at 02:59:02PM +0100, Catalin Marinas wrote:
-> > > On Thu, Jul 27, 2023 at 03:39:27PM +0200, Lorenzo Pieralisi wrote:
-> > > > On Mon, Jul 17, 2023 at 07:33:45PM +0800, Guanghui Feng wrote:
-> > > > > According to the ARM IORT specifications DEN 0049 issue E,
-> > > > > the "Number of IDs" field in the ID mapping format reports
-> > > > > the number of IDs in the mapping range minus one.
-> > > > > 
-> > > > > In iort_node_get_rmr_info(), we erroneously skip ID mappings
-> > > > > whose "Number of IDs" equal to 0, resulting in valid mapping
-> > > > > nodes with a single ID to map being skipped, which is wrong.
-> > > > > 
-> > > > > Fix iort_node_get_rmr_info() by removing the bogus id_count
-> > > > > check.
-> > > > > 
-> > > > > Fixes: 491cf4a6735a ("ACPI/IORT: Add support to retrieve IORT RMR reserved regions")
-> > > > > Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-> > > > > ---
-> > > > >  drivers/acpi/arm64/iort.c | 3 ---
-> > > > >  1 file changed, 3 deletions(-)
-> > > > 
-> > > > Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> > > > 
-> > > > Catalin/Will,
-> > > > 
-> > > > can you pick this up please ?
-> > > 
-> > > Would you like it merged in 6.5 or 6.6 is fine?
-> > 
-> > It is definitely a fix - I don't think that's super urgent
-> > though, bug has been there since v6.0 so the fix can probably
-> > wait to trickle back from v6.6.
-> 
-> On the flip side, it's a fix, Hanjun has tested it and we have a few
-> weeks in case we need to revert it.
-> 
-> So I'd be inclined to say Catalin should pick it up for 6.5, unless
-> there's a good reason to wait?
+On 2023-07-27 04:56, Mario Limonciello wrote:
+> This is unfortunate.  Before we go adding more quirks for your system, 
+> can you please check for a BIOS upgrade for your system?  If it's 
+> happening with the latest BIOS, then can you please open a kernel 
+> bugzilla with an acpidump and dmidecode included?
 
-No reason to wait - I just wanted to make clear it is not urgent,
-if it is possible it makes sense for it to get into v6.5.
+The latest released BIOS is K5CN40WW, I'm using K5CN40WWT66 which is a 
+later beta that partially mitigates a Windows BSOD issue. I've opened a 
+Bugzilla report with the dmidecode here: 
+https://bugzilla.kernel.org/show_bug.cgi?id=217718
 
-Thanks,
-Lorenzo
+For the acpidump I'm not sure what parts could be sensitive so I will 
+e-mail it directly to you.
