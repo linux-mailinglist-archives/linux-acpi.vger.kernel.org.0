@@ -2,152 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57EC77645FE
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jul 2023 07:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 247D7764667
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jul 2023 08:05:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232469AbjG0Fqm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Jul 2023 01:46:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35004 "EHLO
+        id S231838AbjG0GFe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Jul 2023 02:05:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232220AbjG0FqY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jul 2023 01:46:24 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 815EE3A98;
-        Wed, 26 Jul 2023 22:45:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690436744; x=1721972744;
-  h=from:to:cc:subject:references:date:in-reply-to:
-   message-id:mime-version;
-  bh=CZIXORpK/pKO7gqM7gZSvX2ogA1eMyUczHdXGcg8arI=;
-  b=iGB2h2HoC7QTwTrkr85LTSaLWD01CG7AAB+FMMEsRvouvahuIIdS0hy3
-   VzzD/UndxWbs8cnQOUvl6U20DSVtQFXHc/bJINHdFron3aKYlL3AKdnzL
-   4e/I1fQZ/dF+8Vj9JvjhBWK707NrzDYzygbbXlfwXj9Gzv0vzDG8pQOEk
-   Y9hjhX+iWBVbiiutvcJTUFsWV8tM4tMjs0onB19popSweJSSjKAgcUy8o
-   iN0AW8jhC6tRiWU2zq+WR9gK++S6MAW0ipooR6oL7LgdbY45GkIsWgXEq
-   GSsHajGZVMjbJdiuca8ej8rl56XZuqWCGGNzCrPDU36llnakkNBZ342Qw
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="371821339"
-X-IronPort-AV: E=Sophos;i="6.01,234,1684825200"; 
-   d="scan'208";a="371821339"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2023 22:43:04 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="756522804"
-X-IronPort-AV: E=Sophos;i="6.01,234,1684825200"; 
-   d="scan'208";a="756522804"
-Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2023 22:43:00 -0700
-From:   "Huang, Ying" <ying.huang@intel.com>
-To:     Alistair Popple <apopple@nvidia.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-        <nvdimm@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-        Wei Xu <weixugc@google.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Davidlohr Bueso" <dave@stgolabs.net>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        Yang Shi <shy828301@gmail.com>,
-        Rafael J Wysocki <rafael.j.wysocki@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>
-Subject: Re: [PATCH RESEND 1/4] memory tiering: add abstract distance
- calculation algorithms management
-References: <20230721012932.190742-1-ying.huang@intel.com>
-        <20230721012932.190742-2-ying.huang@intel.com>
-        <87r0owzqdc.fsf@nvdebian.thelocal>
-        <87r0owy95t.fsf@yhuang6-desk2.ccr.corp.intel.com>
-        <87sf9cxupz.fsf@nvdebian.thelocal>
-        <878rb3xh2x.fsf@yhuang6-desk2.ccr.corp.intel.com>
-        <87351axbk6.fsf@nvdebian.thelocal>
-        <87edkuvw6m.fsf@yhuang6-desk2.ccr.corp.intel.com>
-        <87y1j2vvqw.fsf@nvdebian.thelocal>
-Date:   Thu, 27 Jul 2023 13:41:23 +0800
-In-Reply-To: <87y1j2vvqw.fsf@nvdebian.thelocal> (Alistair Popple's message of
-        "Thu, 27 Jul 2023 14:07:31 +1000")
-Message-ID: <87a5vhx664.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        with ESMTP id S231840AbjG0GFb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jul 2023 02:05:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC26E4D
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Jul 2023 23:04:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690437884;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=RjqFsykusZBk0irxqYuX45lc3A+grLdwpUfifzNNrTU=;
+        b=H7KRTWumsBKwApM7PZ3p2ahJ31GKUhyrcXBUePVFU0dqAjJq+9rV+OcFaYj3xcMsUW3vuz
+        EaWnsVTtqe49+/flOMt9fx5j0+BsKmywCrNXu32NUsS6XtiKYVOFxmCVY+/dXAmIK3yd6y
+        AeCj/Y9jTZa9gdJ1UL1x6FLhGKMGwOg=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-614-gb6Ds5yzN9-y4OfiOV2m0Q-1; Thu, 27 Jul 2023 02:04:42 -0400
+X-MC-Unique: gb6Ds5yzN9-y4OfiOV2m0Q-1
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-4fb87c48aceso495061e87.3
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Jul 2023 23:04:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690437881; x=1691042681;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RjqFsykusZBk0irxqYuX45lc3A+grLdwpUfifzNNrTU=;
+        b=NzSpDWFtBYhslqYVdIUvvvoulGYBeCPd/P8Uh3xBpxI3kLGaAjRT/+3OYo7GNvHVna
+         +WrKtHi+tomPB0UxQSAsb9QH2D9DDOB8ssHx9rGyS52PVfm4Iatk/Zwyha8eVehrKQje
+         TLV5qceazMpAHLaShnGBApYmVwXYdo8tLr5zVGNzbcTgiWGYMWH0/94x9O7FJDJRUGVC
+         Pr5mRxsJ9KpDEUzu+KBZWV49GiZjg9obyDK3K0OQzbjcparr0AbVk9og8cePpq1wWAC+
+         8xd7s40uL7AY2Tg1PeQPa8YrzSMb4OwZW238WvritrRuGFRADITYRfpNENAbFmA5Amq3
+         4XtA==
+X-Gm-Message-State: ABy/qLa5aFsfKSb8oELc6W1Ap33RDKgNQORAWKLfTR7aQE702ADho2Oz
+        RnKyda4x75gjtUzjSD+lGpvi2hL4wnPA5JyJKKkstQieMeRuIqA0wUPJ0GDPDkAoqmJtW2wpGGD
+        4QRFicmdIToRnmoggDsVVQg==
+X-Received: by 2002:a19:4f59:0:b0:4f8:6ac1:15a9 with SMTP id a25-20020a194f59000000b004f86ac115a9mr867981lfk.31.1690437880923;
+        Wed, 26 Jul 2023 23:04:40 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHqTWW0NBCeTk19kzr6r4pQQEsRKy6mH0LfjGXgP+xKLZ9QIngSgcfAEEU+HJgujArDP7nyJA==
+X-Received: by 2002:a19:4f59:0:b0:4f8:6ac1:15a9 with SMTP id a25-20020a194f59000000b004f86ac115a9mr867965lfk.31.1690437880541;
+        Wed, 26 Jul 2023 23:04:40 -0700 (PDT)
+Received: from redhat.com ([31.187.78.131])
+        by smtp.gmail.com with ESMTPSA id x1-20020a5d54c1000000b003176f2d9ce5sm939675wrv.71.2023.07.26.23.04.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Jul 2023 23:04:39 -0700 (PDT)
+Date:   Thu, 27 Jul 2023 02:04:35 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Igor Mammedov <imammedo@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, terraluna977@gmail.com,
+        bhelgaas@google.com, linux-pci@vger.kernel.org, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 1/1] PCI: acpiphp:: use
+ pci_assign_unassigned_bridge_resources() only if bus->self not NULL
+Message-ID: <20230727020416-mutt-send-email-mst@kernel.org>
+References: <20230726123518.2361181-1-imammedo@redhat.com>
+ <20230726123518.2361181-2-imammedo@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230726123518.2361181-2-imammedo@redhat.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Alistair Popple <apopple@nvidia.com> writes:
+On Wed, Jul 26, 2023 at 02:35:18PM +0200, Igor Mammedov wrote:
+> Commit [1] switched acpiphp hotplug to use
+>    pci_assign_unassigned_bridge_resources()
+> which depends on bridge being available, however in some cases
+> when acpiphp is in use, enable_slot() can get a slot without
+> bridge associated.
+>   1. legitimate case of hotplug on root bus
+>       (likely not exiting on real hw, but widely used in virt world)
+>   2. broken firmware, that sends 'Bus check' events to non
+>      existing root ports (Dell Inspiron 7352/0W6WV0), which somehow
+>      endup at acpiphp:enable_slot(..., bridge = 0) and with bus
+>      without bridge assigned to it.
+> 
+> Issue is easy to reproduce with QEMU's 'pc' machine provides
+> PCI hotplug on hostbridge slots. to reproduce boot kernel at
+> commit [1] in VM started with followin CLI and hotplug a device:
+> 
+> once guest OS is fully booted at qemu prompt:
+> 
+> (qemu) device_add e1000
+> 
+> it will cause NULL pointer dereference at
+> 
+>     void pci_assign_unassigned_bridge_resources(struct pci_dev *bridge)
+>     {
+>         struct pci_bus *parent = bridge->subordinate;
+> 
+> [  612.277651] BUG: kernel NULL pointer dereference, address: 0000000000000018
+> [...]
+> [  612.277798]  ? pci_assign_unassigned_bridge_resources+0x1f/0x260
+> [  612.277804]  ? pcibios_allocate_dev_resources+0x3c/0x2a0
+> [  612.277809]  enable_slot+0x21f/0x3e0
+> [  612.277816]  acpiphp_hotplug_notify+0x13d/0x260
+> [  612.277822]  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
+> [  612.277827]  acpi_device_hotplug+0xbc/0x540
+> [  612.277834]  acpi_hotplug_work_fn+0x15/0x20
+> [  612.277839]  process_one_work+0x1f7/0x370
+> [  612.277845]  worker_thread+0x45/0x3b0
+> [  612.277850]  ? __pfx_worker_thread+0x10/0x10
+> [  612.277854]  kthread+0xdc/0x110
+> [  612.277860]  ? __pfx_kthread+0x10/0x10
+> [  612.277866]  ret_from_fork+0x28/0x40
+> [  612.277871]  ? __pfx_kthread+0x10/0x10
+> [  612.277876]  ret_from_fork_asm+0x1b/0x30
+> 
+> The issue was discovered on Dell Inspiron 7352/0W6WV0 laptop with
+> following sequence:
+>    1. suspend to RAM
+>    2. wake up with the same backtrace being observed:
+>    3. 2nd suspend to RAM attempt makes laptop freeze
+> 
+> Fix it by using __pci_bus_assign_resources() instead of
+> pci_assign_unassigned_bridge_resources()as we used to do
+> but only in case when bus doesn't have a bridge associated
+> with it.
+> 
+> That let us keep hotplug on root bus working like it used to be
+> but at the same time keeps resource reassignment usable on
+> root ports (and other 1st level bridges) that was fixed by [1].
+> 
+> 1)
+> Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
+> Link: https://lore.kernel.org/r/11fc981c-af49-ce64-6b43-3e282728bd1a@gmail.com
+> Reported-by: Woody Suwalski <terraluna977@gmail.com>
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 
-> "Huang, Ying" <ying.huang@intel.com> writes:
->
->> Alistair Popple <apopple@nvidia.com> writes:
->>
->>> "Huang, Ying" <ying.huang@intel.com> writes:
->>>
->>>>>> And, I don't think that we are forced to use the general notifier
->>>>>> chain interface in all memory device drivers.  If the memory device
->>>>>> driver has better understanding of the memory device, it can use other
->>>>>> way to determine abstract distance.  For example, a CXL memory device
->>>>>> driver can identify abstract distance by itself.  While other memory
->>>>>> device drivers can use the general notifier chain interface at the
->>>>>> same time.
->>>>>
->>>>> Whilst I think personally I would find that flexibility useful I am
->>>>> concerned it means every driver will just end up divining it's own
->>>>> distance rather than ensuring data in HMAT/CDAT/etc. is correct. That
->>>>> would kind of defeat the purpose of it all then.
->>>>
->>>> But we have no way to enforce that too.
->>>
->>> Enforce that HMAT/CDAT/etc. is correct? Agree we can't enforce it, but
->>> we can influence it. If drivers can easily ignore the notifier chain and
->>> do their own thing that's what will happen.
->>
->> IMHO, both enforce HMAT/CDAT/etc is correct and enforce drivers to use
->> general interface we provided.  Anyway, we should try to make HMAT/CDAT
->> works well, so drivers want to use them :-)
->
-> Exactly :-)
->
->>>>>> While other memory device drivers can use the general notifier chain
->>>>>> interface at the same time.
->>>
->>> How would that work in practice though? The abstract distance as far as
->>> I can tell doesn't have any meaning other than establishing preferences
->>> for memory demotion order. Therefore all calculations are relative to
->>> the rest of the calculations on the system. So if a driver does it's own
->>> thing how does it choose a sensible distance? IHMO the value here is in
->>> coordinating all that through a standard interface, whether that is HMAT
->>> or something else.
->>
->> Only if different algorithms follow the same basic principle.  For
->> example, the abstract distance of default DRAM nodes are fixed
->> (MEMTIER_ADISTANCE_DRAM).  The abstract distance of the memory device is
->> in linear direct proportion to the memory latency and inversely
->> proportional to the memory bandwidth.  Use the memory latency and
->> bandwidth of default DRAM nodes as base.
->>
->> HMAT and CDAT report the raw memory latency and bandwidth.  If there are
->> some other methods to report the raw memory latency and bandwidth, we
->> can use them too.
->
-> Argh! So we could address my concerns by having drivers feed
-> latency/bandwidth numbers into a standard calculation algorithm right?
-> Ie. Rather than having drivers calculate abstract distance themselves we
-> have the notifier chains return the raw performance data from which the
-> abstract distance is derived.
 
-Now, memory device drivers only need a general interface to get the
-abstract distance from the NUMA node ID.  In the future, if they need
-more interfaces, we can add them.  For example, the interface you
-suggested above.
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
---
-Best Regards,
-Huang, Ying
+
+
+> ---
+>  drivers/pci/hotplug/acpiphp_glue.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+> index 328d1e416014..3bc4e1f3efee 100644
+> --- a/drivers/pci/hotplug/acpiphp_glue.c
+> +++ b/drivers/pci/hotplug/acpiphp_glue.c
+> @@ -498,6 +498,7 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+>  				acpiphp_native_scan_bridge(dev);
+>  		}
+>  	} else {
+> +		LIST_HEAD(add_list);
+>  		int max, pass;
+>  
+>  		acpiphp_rescan_slot(slot);
+> @@ -511,10 +512,15 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+>  				if (pass && dev->subordinate) {
+>  					check_hotplug_bridge(slot, dev);
+>  					pcibios_resource_survey_bus(dev->subordinate);
+> +					if (!bus->self)
+> +						__pci_bus_size_bridges(dev->subordinate, &add_list);
+>  				}
+>  			}
+>  		}
+> -		pci_assign_unassigned_bridge_resources(bus->self);
+> +		if (bus->self)
+> +			pci_assign_unassigned_bridge_resources(bus->self);
+> +		else
+> +			__pci_bus_assign_resources(bus, &add_list, NULL);
+>  	}
+>  
+>  	acpiphp_sanitize_bus(bus);
+> -- 
+> 2.39.3
+
