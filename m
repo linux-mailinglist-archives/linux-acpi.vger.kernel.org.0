@@ -2,251 +2,236 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D0BD7665B7
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jul 2023 09:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38DDE7668E9
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jul 2023 11:33:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233281AbjG1HtT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Jul 2023 03:49:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37378 "EHLO
+        id S235338AbjG1Jdi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Jul 2023 05:33:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234445AbjG1HtR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jul 2023 03:49:17 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A42730E1
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Jul 2023 00:49:15 -0700 (PDT)
-Received: from [192.168.100.7] (unknown [59.103.217.95])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: usama.anjum)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id E8AC1660704F;
-        Fri, 28 Jul 2023 08:49:11 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1690530554;
-        bh=x+ZVFYHISVVTNFGY6AZTUai8wAtahwS6/rrN1BnS790=;
-        h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-        b=a0YfvL0C4XJA1b7vP83Jvl/QgVn2+bS24rvvkb11PSes31h6dvrbGvLiJ9wm92SS0
-         zMmjjjTI8NE6R2/V+VqnZE4AteFtZ1+ebDbfrU7hRRNstABGw+49lOHGEAQKGcxt7L
-         9D/gStRF3nXmieuIcWvirG5wfPsCg8zdDtyDLQ2n/sbhPGbNjo04rU+6MLFtNoZaf9
-         MsTMuM0FFm80YS7+nbadxMcnBA2w3cW0SvRp3zY6FDpv4qLJNqROo5UdlD7GCG1au5
-         c/KwZPWAZSofuO8Kgv+1al0SjAWN4oSt4vd0hmHjwyk2ipD3gfJBXmUT8BdNtOHbTn
-         6GtX+iYVGr6ZA==
-Message-ID: <2b36d93d-16d5-9780-d292-a7d06b6c8e55@collabora.com>
-Date:   Fri, 28 Jul 2023 12:49:07 +0500
+        with ESMTP id S233284AbjG1Jd3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jul 2023 05:33:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 859464208
+        for <linux-acpi@vger.kernel.org>; Fri, 28 Jul 2023 02:32:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690536740;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=PUpytj5yUNrs3kxSkN6zpJqxqa3HoC6l1C2y3i10Sbc=;
+        b=N2h+kbOQ/aT4dmn2rcpwv66Z7ZqDQzN5SyGcebICWbpl4cyQOg1IzhYegImdMRodIlExL+
+        c3qvjL1GaSxor3NzVRIfySC0tBV9kCNg5GLDIdMYpIUSQZNRkUmwrQs211p1KIkY76MMWZ
+        xlONjaycCD3HmwoNj5mQWk8eSynlnLg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-544-WBcwF7q0NOiFVsUOjCZnBg-1; Fri, 28 Jul 2023 05:32:19 -0400
+X-MC-Unique: WBcwF7q0NOiFVsUOjCZnBg-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-3fc0855dcc5so10770005e9.2
+        for <linux-acpi@vger.kernel.org>; Fri, 28 Jul 2023 02:32:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690536738; x=1691141538;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PUpytj5yUNrs3kxSkN6zpJqxqa3HoC6l1C2y3i10Sbc=;
+        b=a6dYOOp46PTnh2IwMv19Q7MsGlEUIhrnnBWWApF2B0lxjZogTJX2OVNjDc+1TvO8Cj
+         mIDQU0ZTQrGHafzJVulzSBovYtc2RXUuVzJBAhs2zRm4x6WWavVuXPCRbzR0Yp92jGe3
+         OWtyzeLwLO6bE7ErrFShaeAukgtiU1EH/N3U3qHvy8xPgE3mQHNuEY4yLNT4upIz4pvf
+         NBe56pYO5yhpMSo/zRWKBc7gWaXxhcxGn5Zm5Y8cAdYvKLyWtPMf1hA06AQDP26/rFDV
+         fxUdHrN4V528eIDrzdI3+S1wTc/XD7sQ/aCFH+C7csl0bn9DlJ9BYBfzlUI2v5RoXPuL
+         H6Ww==
+X-Gm-Message-State: ABy/qLZSZHydT4q0qduTW20gsVvhpbWKjhKA/R1meCl4JmSTv0hWqt0V
+        r5lGoeh2g9/iuxjCtPI3uYq3/yEYryeLzplcQGLvnT8Ld3kKty/xwEr/qPiptsd/kaLmgRBpCPv
+        yURNsP4JZEAJuv4BTAw+NvQ==
+X-Received: by 2002:a1c:ed0e:0:b0:3fc:5a3:367c with SMTP id l14-20020a1ced0e000000b003fc05a3367cmr1397479wmh.32.1690536738012;
+        Fri, 28 Jul 2023 02:32:18 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGJ0ZJIOZj9cnw9EBMK5YcoiQG18GglmeHsszodanL4lUHj6bphDDU+iSErcJ6q6IMB3uTENw==
+X-Received: by 2002:a1c:ed0e:0:b0:3fc:5a3:367c with SMTP id l14-20020a1ced0e000000b003fc05a3367cmr1397462wmh.32.1690536737627;
+        Fri, 28 Jul 2023 02:32:17 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id d12-20020a1c730c000000b003fa999cefc0sm3670492wmb.36.2023.07.28.02.32.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Jul 2023 02:32:16 -0700 (PDT)
+Date:   Fri, 28 Jul 2023 11:32:16 +0200
+From:   Igor Mammedov <imammedo@redhat.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, terraluna977@gmail.com,
+        bhelgaas@google.com, linux-pci@vger.kernel.org, mst@redhat.com,
+        rafael@kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 1/1] PCI: acpiphp:: use
+ pci_assign_unassigned_bridge_resources() only if bus->self not NULL
+Message-ID: <20230728113216.3140577c@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230727174102.GA689794@bhelgaas>
+References: <20230726123518.2361181-2-imammedo@redhat.com>
+        <20230727174102.GA689794@bhelgaas>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        chrome-platform@lists.linux.dev, linux-acpi@vger.kernel.org,
-        guillaume.tucker@collabora.com, denys.f@collabora.com,
-        ricardo.canuelo@collabora.com
-Subject: Re: [PATCH v2] platform/chrome: chromeos_acpi: support official HID
- GOOG0016
-Content-Language: en-US
-To:     Tzung-Bi Shih <tzungbi@kernel.org>, rafael@kernel.org,
-        lenb@kernel.org, bleung@chromium.org, groeck@chromium.org
-References: <20230728065438.4026629-1-tzungbi@kernel.org>
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <20230728065438.4026629-1-tzungbi@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 7/28/23 11:54 AM, Tzung-Bi Shih wrote:
-> Support official HID GOOG0016 for ChromeOS ACPI (see [1]).
-> 
-> [1]: https://crrev.com/c/2266713
-> 
-> Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Looks good other than the documentation.
+On Thu, 27 Jul 2023 12:41:02 -0500
+Bjorn Helgaas <helgaas@kernel.org> wrote:
 
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-
-> ---
-> Changes from v1[2]:
-> - Preserve the PNP ID GGL0001 for backward compatible to older firmwares.
-> - Modify commit title and message accordingly.
+> Thank you to both you and Woody for chasing this down!
 > 
-> [2]: https://patchwork.kernel.org/project/chrome-platform/patch/20230728014256.3836298-1-tzungbi@kernel.org/
+> On Wed, Jul 26, 2023 at 02:35:18PM +0200, Igor Mammedov wrote:
+> > Commit [1] switched acpiphp hotplug to use
+> >    pci_assign_unassigned_bridge_resources()
+> > which depends on bridge being available, however in some cases
+> > when acpiphp is in use, enable_slot() can get a slot without
+> > bridge associated.
+> >   1. legitimate case of hotplug on root bus
+> >       (likely not exiting on real hw, but widely used in virt world)
+> >   2. broken firmware, that sends 'Bus check' events to non
+> >      existing root ports (Dell Inspiron 7352/0W6WV0), which somehow
+> >      endup at acpiphp:enable_slot(..., bridge = 0) and with bus
+> >      without bridge assigned to it.  
 > 
->  .../ABI/testing/sysfs-driver-chromeos-acpi    | 30 +++++++++----------
->  .../acpi/chromeos-acpi-device.rst             |  5 ++--
->  drivers/platform/chrome/chromeos_acpi.c       |  2 +-
->  3 files changed, 18 insertions(+), 19 deletions(-)
+> Do we have evidence about the details of this non-existent root port?
+> If we do, I think it would be interesting to include a URL to them in
+> case there's some hole in the way we handle Bus Check events.
+
+it's scattered over logs Woody has provided, here are links to
+emails with
+  1: lspci output
+      https://lore.kernel.org/r/92150d8d-8a3a-d600-a996-f60a8e4c876c@gmail.com/
+
+according to lscpi and dmesg there is only one root-port at 1c.0
+which is occupied by wifi card
+
+while DSTD table has more ports described, which is fine as long as
+missing/disabled are not reported as present.
+
+  2: last round of logs with debug patch /before 40613da5, with 40613da5, and after/
+      https://lore.kernel.org/r/46437825-3bd0-2f8a-12d8-98a2b54d7c22@gmail.com/
+
+here dmesg shows 1st correct port
+ ACPI: \_SB_.PCI0.RP03: acpiphp_glue: Bus check in hotplug_event(): bridge: 000000000dad0b34
+and then later on
+ ACPI: \_SB_.PCI0.RP07: acpiphp_glue: Bus check in hotplug_event(): bridge: 0000000000000000
+ ACPI: \_SB_.PCI0.RP08: acpiphp_glue: Bus check in hotplug_event(): bridge: 0000000000000000
+which aren't recognized as bridge
+
+I don't know ACPICA code enough to guesstimate where we might miss
+a check that device is actually exists to do further debug
+over mail list within reasonable timeframe.
+
+> > Issue is easy to reproduce with QEMU's 'pc' machine provides
+> > PCI hotplug on hostbridge slots. to reproduce boot kernel at
+> > commit [1] in VM started with followin CLI and hotplug a device:  
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-driver-chromeos-acpi b/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
-> index c308926e1568..8e8a5d6610b8 100644
-> --- a/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
-> +++ b/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
-> @@ -1,4 +1,4 @@
-> -What:		/sys/bus/platform/devices/GGL0001:*/BINF.2
-> +What:		/sys/bus/platform/devices/GOOG0016:*/BINF.2
-Probably just replace the GGL0001:* with G* here and define the G* can be
-GGL0001:* or GOOG0016:*.
+> You mention CLI; did you mean to include a qemu command line here?
+> Maybe it's the same thing mentioned in the 40613da52b13 commit log?
+> I tried briefly to reproduce this using the 40613da52b13 command line
+> but haven't quite got it going yet.  I think it would be very useful
+> to either include it here again or point to the 40613da52b13 commit
+> log.
 
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
-> @@ -9,7 +9,7 @@ Description:
->  		1  Rewritable firmware.
->  		== ===============================
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/BINF.3
-> +What:		/sys/bus/platform/devices/GOOG0016:*/BINF.3
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
-> @@ -22,7 +22,7 @@ Description:
->  		3  Netboot (factory installation only).
->  		== =====================================
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/CHSW
-> +What:		/sys/bus/platform/devices/GOOG0016:*/CHSW
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
-> @@ -37,28 +37,28 @@ Description:
->  		512  Firmware write protection was disabled.
->  		==== ===========================================
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/FMAP
-> +What:		/sys/bus/platform/devices/GOOG0016:*/FMAP
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
->  		Returns physical memory address of the start of the main
->  		processor firmware flashmap.
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/FRID
-> +What:		/sys/bus/platform/devices/GOOG0016:*/FRID
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
->  		Returns firmware version for the read-only portion of the
->  		main processor firmware.
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/FWID
-> +What:		/sys/bus/platform/devices/GOOG0016:*/FWID
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
->  		Returns firmware version for the rewritable portion of the
->  		main processor firmware.
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/GPIO.X/GPIO.0
-> +What:		/sys/bus/platform/devices/GOOG0016:*/GPIO.X/GPIO.0
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
-> @@ -72,7 +72,7 @@ Description:
->  		256 to 511  Debug header GPIO 0 to GPIO 255.
->  		=========== ==================================
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/GPIO.X/GPIO.1
-> +What:		/sys/bus/platform/devices/GOOG0016:*/GPIO.X/GPIO.1
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
-> @@ -83,26 +83,26 @@ Description:
->  		1  Signal is active high.
->  		== =======================
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/GPIO.X/GPIO.2
-> +What:		/sys/bus/platform/devices/GOOG0016:*/GPIO.X/GPIO.2
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
->  		Returns the GPIO number on the specified GPIO
->  		controller.
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/GPIO.X/GPIO.3
-> +What:		/sys/bus/platform/devices/GOOG0016:*/GPIO.X/GPIO.3
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
->  		Returns name of the GPIO controller.
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/HWID
-> +What:		/sys/bus/platform/devices/GOOG0016:*/HWID
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
->  		Returns hardware ID for the Chromebook.
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/MECK
-> +What:		/sys/bus/platform/devices/GOOG0016:*/MECK
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
-> @@ -112,7 +112,7 @@ Description:
->  		Engine firmware has not changed. If Management Engine is not
->  		present, or if the firmware was unable to read the extended registers, this buffer size can be zero.
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/VBNV.0
-> +What:		/sys/bus/platform/devices/GOOG0016:*/VBNV.0
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
-> @@ -121,14 +121,14 @@ Description:
->  		(that is, 'offset = 0' is the byte following the 14 bytes of
->  		clock data).
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/VBNV.1
-> +What:		/sys/bus/platform/devices/GOOG0016:*/VBNV.1
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
->  		Return the size in bytes of the verified boot non-volatile
->  		storage block.
->  
-> -What:		/sys/bus/platform/devices/GGL0001:*/VDAT
-> +What:		/sys/bus/platform/devices/GOOG0016:*/VDAT
->  Date:		May 2022
->  KernelVersion:	5.19
->  Description:
-> diff --git a/Documentation/firmware-guide/acpi/chromeos-acpi-device.rst b/Documentation/firmware-guide/acpi/chromeos-acpi-device.rst
-> index f37fc90ce340..89419e116413 100644
-> --- a/Documentation/firmware-guide/acpi/chromeos-acpi-device.rst
-> +++ b/Documentation/firmware-guide/acpi/chromeos-acpi-device.rst
-> @@ -5,9 +5,8 @@ Chrome OS ACPI Device
->  =====================
->  
->  Hardware functionality specific to Chrome OS is exposed through a Chrome OS ACPI device.
-> -The plug and play ID of a Chrome OS ACPI device is GGL0001. GGL is a valid PNP ID of Google.
-> -PNP ID can be used with the ACPI devices according to the guidelines. The following ACPI
-> -objects are supported:
-> +The plug and play ID of a Chrome OS ACPI device is GGL0001 and the hardware ID is
-> +GOOG0016.  The following ACPI objects are supported:
-Looks good. Probably GOOG0016 is HID which has higher preference over
-GGL0001 which is CID if both are defined in firmware?
+my bad, I didn't realize that saying 'pc' machine is not sufficient.
 
->  
->  .. flat-table:: Supported ACPI Objects
->     :widths: 1 2
-> diff --git a/drivers/platform/chrome/chromeos_acpi.c b/drivers/platform/chrome/chromeos_acpi.c
-> index 50d8a4d4352d..1cc01d893ada 100644
-> --- a/drivers/platform/chrome/chromeos_acpi.c
-> +++ b/drivers/platform/chrome/chromeos_acpi.c
-> @@ -235,9 +235,9 @@ static int chromeos_acpi_device_probe(struct platform_device *pdev)
->  	return 0;
->  }
->  
-> -/* GGL is valid PNP ID of Google. PNP ID can be used with the ACPI devices. */
->  static const struct acpi_device_id chromeos_device_ids[] = {
->  	{ "GGL0001", 0 },
-> +	{ "GOOG0016", 0 },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(acpi, chromeos_device_ids);
+minimal CLI can be (important part '-M pc -monitor stdio',
+the rest is for making guest boot and run at tolerable speed):
 
--- 
-BR,
-Muhammad Usama Anjum
+$QEMU -M pc -m 4G -monitor stdio -cpu host --enable-kvm vm_disk_image 
+
+Will you amend commit message or shall I repost with changes/Acks?
+
+> > once guest OS is fully booted at qemu prompt:
+> > 
+> > (qemu) device_add e1000
+> > 
+> > it will cause NULL pointer dereference at
+> > 
+> >     void pci_assign_unassigned_bridge_resources(struct pci_dev *bridge)
+> >     {
+> >         struct pci_bus *parent = bridge->subordinate;
+> > 
+> > [  612.277651] BUG: kernel NULL pointer dereference, address: 0000000000000018
+> > [...]
+> > [  612.277798]  ? pci_assign_unassigned_bridge_resources+0x1f/0x260
+> > [  612.277804]  ? pcibios_allocate_dev_resources+0x3c/0x2a0
+> > [  612.277809]  enable_slot+0x21f/0x3e0
+> > [  612.277816]  acpiphp_hotplug_notify+0x13d/0x260
+> > [  612.277822]  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
+> > [  612.277827]  acpi_device_hotplug+0xbc/0x540
+> > [  612.277834]  acpi_hotplug_work_fn+0x15/0x20
+> > [  612.277839]  process_one_work+0x1f7/0x370
+> > [  612.277845]  worker_thread+0x45/0x3b0
+> > [  612.277850]  ? __pfx_worker_thread+0x10/0x10
+> > [  612.277854]  kthread+0xdc/0x110
+> > [  612.277860]  ? __pfx_kthread+0x10/0x10
+> > [  612.277866]  ret_from_fork+0x28/0x40
+> > [  612.277871]  ? __pfx_kthread+0x10/0x10
+> > [  612.277876]  ret_from_fork_asm+0x1b/0x30
+> > 
+> > The issue was discovered on Dell Inspiron 7352/0W6WV0 laptop with
+> > following sequence:
+> >    1. suspend to RAM
+> >    2. wake up with the same backtrace being observed:
+> >    3. 2nd suspend to RAM attempt makes laptop freeze
+> > 
+> > Fix it by using __pci_bus_assign_resources() instead of
+> > pci_assign_unassigned_bridge_resources()as we used to do
+> > but only in case when bus doesn't have a bridge associated
+> > with it.
+> > 
+> > That let us keep hotplug on root bus working like it used to be
+> > but at the same time keeps resource reassignment usable on
+> > root ports (and other 1st level bridges) that was fixed by [1].
+> > 
+> > 1)
+> > Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
+> > Link: https://lore.kernel.org/r/11fc981c-af49-ce64-6b43-3e282728bd1a@gmail.com
+> > Reported-by: Woody Suwalski <terraluna977@gmail.com>
+> > Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> > ---
+> >  drivers/pci/hotplug/acpiphp_glue.c | 8 +++++++-
+> >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+> > index 328d1e416014..3bc4e1f3efee 100644
+> > --- a/drivers/pci/hotplug/acpiphp_glue.c
+> > +++ b/drivers/pci/hotplug/acpiphp_glue.c
+> > @@ -498,6 +498,7 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+> >  				acpiphp_native_scan_bridge(dev);
+> >  		}
+> >  	} else {
+> > +		LIST_HEAD(add_list);
+> >  		int max, pass;
+> >  
+> >  		acpiphp_rescan_slot(slot);
+> > @@ -511,10 +512,15 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+> >  				if (pass && dev->subordinate) {
+> >  					check_hotplug_bridge(slot, dev);
+> >  					pcibios_resource_survey_bus(dev->subordinate);
+> > +					if (!bus->self)
+> > +						__pci_bus_size_bridges(dev->subordinate, &add_list);
+> >  				}
+> >  			}
+> >  		}
+> > -		pci_assign_unassigned_bridge_resources(bus->self);
+> > +		if (bus->self)
+> > +			pci_assign_unassigned_bridge_resources(bus->self);
+> > +		else
+> > +			__pci_bus_assign_resources(bus, &add_list, NULL);
+> >  	}
+> >  
+> >  	acpiphp_sanitize_bus(bus);
+> > -- 
+> > 2.39.3
+> >   
+> 
+
