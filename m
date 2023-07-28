@@ -2,109 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A55D7767016
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jul 2023 17:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 037AF76708F
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jul 2023 17:31:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235747AbjG1PEG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Jul 2023 11:04:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42440 "EHLO
+        id S236731AbjG1PbV convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 28 Jul 2023 11:31:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233791AbjG1PEG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jul 2023 11:04:06 -0400
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DB432115
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Jul 2023 08:04:05 -0700 (PDT)
-Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-40631c5b9e9so278641cf.1
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Jul 2023 08:04:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690556644; x=1691161444;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P6/HfDaubTIMIFxeuAV36Gi20Ylyo7B3ON5TN39P2I4=;
-        b=qBKfwSV+ZwQ6sEr259d4qUrgPzVfaTjCDprP1cGD9z1tWEiC/JSM47CJmsKWX7BmTx
-         fiy812NI3OsnG5TAIKOTGxDcPfp8aDU+PYQoCiN1BlxL5+irXAfDCBFZz5HsuIQxp6Iw
-         hgMN7FuAwHOQI3s4OhUVjz7PVURGp0XcBgRmTJ6Aub+8UEiHW2q/jyLOmviz60HAl0zC
-         uLBxm7sg8JDlv1IwAjbOxYHIKmIThJmYnV/0xpqgYyi30l6fb+d/kHvq0Bfp7yMVUocu
-         1JM9s/v49FQGXYHi32FJMlwWX0SNNiZ/Z2mINyxMI3h4EbhLEZIPGipHG4fqdnPySPmF
-         OXjg==
+        with ESMTP id S229734AbjG1PbV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jul 2023 11:31:21 -0400
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4824335A8;
+        Fri, 28 Jul 2023 08:31:20 -0700 (PDT)
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-565e64ed9f7so264656eaf.1;
+        Fri, 28 Jul 2023 08:31:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690556644; x=1691161444;
+        d=1e100.net; s=20221208; t=1690558279; x=1691163079;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=P6/HfDaubTIMIFxeuAV36Gi20Ylyo7B3ON5TN39P2I4=;
-        b=JfKLIMD8hmmOSjG8xkOEiN/ocUEviBFpgvk7lc+uWi/IxkOyAHtNMCnW3ssMQzukgR
-         TwJt3HcCplk9pA5MqJuNG0tXZOmumu7MGN+n7KpTE2o0p1nwma1PZXgPjYWNFkEDEThQ
-         Lz3G2uYEitoBHWU75QCKARrvVzaJPG5oImClI3ixqJAFV8pkBtruty2vsS1kG/0X4q4Z
-         //FjmaG4rGH9HhMttZceCuBbIOd01TwurAyScOpRRTP4aEt2FmUAUBSTc1bEeYuzOeZe
-         0UW4YVKghdGL+tcGRbpmz4afQIUmictnxZUgUNf08tmG3yh8PvGvm/Bw3TSHt+o5d0w2
-         pAtg==
-X-Gm-Message-State: ABy/qLbgwYjFNCw0TQC1umH98EvdL7bEEnj2KkaLvjvX+CHK4kq+oWWj
-        j4Cp7NXSAU1ld0OE2MZcNoyU93sbtIwBhAHATPJ8cQmfgMbyO+HARhE=
-X-Google-Smtp-Source: APBJJlHOs1cmIsvJup/NilltNKlcu9VKvvx28/8sGufxTG2GPnKmqYLl2df29lTIbwyOLT/wrpHOLFWvk817KYREl5M=
-X-Received: by 2002:ac8:4e4f:0:b0:3f4:f0fd:fe7e with SMTP id
- e15-20020ac84e4f000000b003f4f0fdfe7emr244256qtw.3.1690556644425; Fri, 28 Jul
- 2023 08:04:04 -0700 (PDT)
+        bh=1hVzfuNh9MUjr8i57XR6qph+tGTTd2zJJ4as7llKbWk=;
+        b=G9x1/sbAZWydm0xql2fwrZLwlPPnm7/njtnQSP9E+R0URaixOtfvH6akrRfNDU2VRm
+         7dqTcb6lHNqj99IuLYHMxi7trI9/fyFmX2vKIcPShmzKpMCmpcvL7r1RnT4IcbIaFuQ3
+         VeKFxYrwjzjcvQaagXBwofcMe5qEBOeOAOuiUY4VPofB8CNlkjDFDUBfye0DpnCtOPEg
+         dnBkYF0ko0jPRylEiAWqSVyyNDhWMiG9QVb+BJnE7NwucfZvd5OUWLXgoUKwCz4bx2HA
+         el/yDkPwsHcZkVnaMa5S1F8UCKGdqjTa4r1rkY3CvmlrBKdz/HP4Us86S16JhcYXZVgx
+         uuEg==
+X-Gm-Message-State: ABy/qLYTScKE0uZiVxD7ff+djjL+R4RWA987UJPpGBnrXSwoU92uWtfg
+        M6hEtrPaZzKgl3+FBS1h9EQ5lI2fhXR1XN5PIrZo8f3p
+X-Google-Smtp-Source: APBJJlE74kpzfh4LxDdn446uwEZun6DOOyt8oYsPPadxJeNcZQXVmQ9WTlDD6R9Dw93N1faGjY8q7HYCKy1rsJoGAII=
+X-Received: by 2002:a4a:ba07:0:b0:56c:5e21:c730 with SMTP id
+ b7-20020a4aba07000000b0056c5e21c730mr2383772oop.1.1690558279483; Fri, 28 Jul
+ 2023 08:31:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230728065438.4026629-1-tzungbi@kernel.org>
-In-Reply-To: <20230728065438.4026629-1-tzungbi@kernel.org>
-From:   Guenter Roeck <groeck@google.com>
-Date:   Fri, 28 Jul 2023 08:03:50 -0700
-Message-ID: <CABXOdTca9hmjWXNATeSkhZAV1PXh1ppt6ENEV23xUpO86ogu_w@mail.gmail.com>
-Subject: Re: [PATCH v2] platform/chrome: chromeos_acpi: support official HID GOOG0016
-To:     Tzung-Bi Shih <tzungbi@kernel.org>
-Cc:     rafael@kernel.org, lenb@kernel.org, bleung@chromium.org,
-        groeck@chromium.org, chrome-platform@lists.linux.dev,
-        linux-acpi@vger.kernel.org, guillaume.tucker@collabora.com,
-        denys.f@collabora.com, ricardo.canuelo@collabora.com,
-        usama.anjum@collabora.com
+References: <20230728111345.7224-1-rf@opensource.cirrus.com>
+In-Reply-To: <20230728111345.7224-1-rf@opensource.cirrus.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 28 Jul 2023 17:31:08 +0200
+Message-ID: <CAJZ5v0ii8AR9fXQJo_DXd60yFrui4Wiw=9C6xPqrKPie8rBSVQ@mail.gmail.com>
+Subject: Re: [PATCH v3] ACPI: scan: Create platform device for CS35L56
+To:     Richard Fitzgerald <rf@opensource.cirrus.com>
+Cc:     rafael@kernel.org, hdegoede@redhat.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        Simon Trimmer <simont@opensource.cirrus.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 27, 2023 at 11:55=E2=80=AFPM Tzung-Bi Shih <tzungbi@kernel.org>=
- wrote:
+On Fri, Jul 28, 2023 at 1:13 PM Richard Fitzgerald
+<rf@opensource.cirrus.com> wrote:
 >
-> Support official HID GOOG0016 for ChromeOS ACPI (see [1]).
+> From: Simon Trimmer <simont@opensource.cirrus.com>
 >
-> [1]: https://crrev.com/c/2266713
+> The ACPI device CSC3556 is a Cirrus Logic CS35L56 mono amplifier which
+> is used in multiples, and can be connected either to I2C or SPI.
 >
-> Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+> There will be multiple instances under the same Device() node. Add it
+> to ignore_serial_bus_ids and handle it in the serial-multi-instantiate
+> driver.
+>
+> There can be a 5th I2cSerialBusV2, but this is an alias address and doesn't
+> represent a real device. Ignore this by having a dummy 5th entry in the
+> serial-multi-instantiate instance list with the name of a non-existent
+> driver, on the same pattern as done for bsg2150.
+>
+> Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+> Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+
+Still ACKed.
+
 > ---
-> Changes from v1[2]:
-> - Preserve the PNP ID GGL0001 for backward compatible to older firmwares.
-> - Modify commit title and message accordingly.
+>  drivers/acpi/scan.c                             |  1 +
+>  drivers/platform/x86/serial-multi-instantiate.c | 14 ++++++++++++++
+>  2 files changed, 15 insertions(+)
 >
-> [2]: https://patchwork.kernel.org/project/chrome-platform/patch/202307280=
-14256.3836298-1-tzungbi@kernel.org/
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index 5b145f1aaa1b..87e385542576 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -1714,6 +1714,7 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
+>                 {"BSG1160", },
+>                 {"BSG2150", },
+>                 {"CSC3551", },
+> +               {"CSC3556", },
+>                 {"INT33FE", },
+>                 {"INT3515", },
+>                 /* Non-conforming _HID for Cirrus Logic already released */
+> diff --git a/drivers/platform/x86/serial-multi-instantiate.c b/drivers/platform/x86/serial-multi-instantiate.c
+> index 2c2abf69f049..8158e3cf5d6d 100644
+> --- a/drivers/platform/x86/serial-multi-instantiate.c
+> +++ b/drivers/platform/x86/serial-multi-instantiate.c
+> @@ -329,6 +329,19 @@ static const struct smi_node cs35l41_hda = {
+>         .bus_type = SMI_AUTO_DETECT,
+>  };
 >
->  .../ABI/testing/sysfs-driver-chromeos-acpi    | 30 +++++++++----------
->  .../acpi/chromeos-acpi-device.rst             |  5 ++--
->  drivers/platform/chrome/chromeos_acpi.c       |  2 +-
->  3 files changed, 18 insertions(+), 19 deletions(-)
+> +static const struct smi_node cs35l56_hda = {
+> +       .instances = {
+> +               { "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
+> +               { "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
+> +               { "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
+> +               { "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
+> +               /* a 5th entry is an alias address, not a real device */
+> +               { "cs35l56-hda_dummy_dev" },
+> +               {}
+> +       },
+> +       .bus_type = SMI_AUTO_DETECT,
+> +};
+> +
+>  /*
+>   * Note new device-ids must also be added to ignore_serial_bus_ids in
+>   * drivers/acpi/scan.c: acpi_device_enumeration_by_parent().
+> @@ -337,6 +350,7 @@ static const struct acpi_device_id smi_acpi_ids[] = {
+>         { "BSG1160", (unsigned long)&bsg1160_data },
+>         { "BSG2150", (unsigned long)&bsg2150_data },
+>         { "CSC3551", (unsigned long)&cs35l41_hda },
+> +       { "CSC3556", (unsigned long)&cs35l56_hda },
+>         { "INT3515", (unsigned long)&int3515_data },
+>         /* Non-conforming _HID for Cirrus Logic already released */
+>         { "CLSA0100", (unsigned long)&cs35l41_hda },
+> --
+> 2.30.2
 >
-> diff --git a/Documentation/ABI/testing/sysfs-driver-chromeos-acpi b/Docum=
-entation/ABI/testing/sysfs-driver-chromeos-acpi
-> index c308926e1568..8e8a5d6610b8 100644
-> --- a/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
-> +++ b/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
-> @@ -1,4 +1,4 @@
-> -What:          /sys/bus/platform/devices/GGL0001:*/BINF.2
-> +What:          /sys/bus/platform/devices/GOOG0016:*/BINF.2
-
-Doesn't the description mean that both sysfs directories might be seen
-in the field ?
-If so, replacing one with the other would be wrong.
-
-Thanks,
-Guenter
