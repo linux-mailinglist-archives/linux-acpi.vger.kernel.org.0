@@ -2,42 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84D75767EDC
-	for <lists+linux-acpi@lfdr.de>; Sat, 29 Jul 2023 13:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73C59767EDE
+	for <lists+linux-acpi@lfdr.de>; Sat, 29 Jul 2023 13:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229755AbjG2LxT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 29 Jul 2023 07:53:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47112 "EHLO
+        id S231196AbjG2Lx0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 29 Jul 2023 07:53:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjG2LxS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 29 Jul 2023 07:53:18 -0400
+        with ESMTP id S229448AbjG2LxZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 29 Jul 2023 07:53:25 -0400
 Received: from mgamail.intel.com (unknown [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86B6A10E9;
-        Sat, 29 Jul 2023 04:53:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D050F1FC8;
+        Sat, 29 Jul 2023 04:53:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690631596; x=1722167596;
+  t=1690631601; x=1722167601;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references;
-  bh=M/I9Hwp0Tvtq7jl0jM2pHlzsGFZyyhYFi9fe6KeJryQ=;
-  b=dQU0W/tsqUpxAGuHJQ4oQPRCJxrl9ppMzKp6pEE7YeI4cIPLYTW8kJHZ
-   iLH2vhbnCA57CYmFs6Z7X9Wzal6cDHPo+MVJpu1K9egiMlXmpF8NRm8Tb
-   MHtrIugdGU0QcCWNG00tzhFH66Dukmvalnj0a3uo8YbRVc2LNhx7HvqLI
-   9a8NdzBCAkOskX/hoWYSgQZ/fbc55GYT/5LKugB2MJx6vz+F7K3se6Jvq
-   /hgbQ0j53E3o6inmqZWLHhWrh85Xd9SwBZCyDQdv+Sv4OETJtTdmvO2Zk
-   lKDT03DDbjBB8zBA8Tvr/kSq+b0A8fgj1PWS/S7SgWHS+nQXOxCI4tO2i
+  bh=Qo9I2qd0qfbW5s4OC1WUDOmQ8Rj6S3X2KvJgX3OnQ7c=;
+  b=ZLs9a5YPLkiy9zfb5mV8JVJnnzG4eGsWQ2vF+VYePvuSldxg5oHr3Rya
+   bQ5qPOlqd+QraAeXJ9EMFPfghBGCwA4BXL1cyD4lOHfModFQGsfoQVnpb
+   2zzXqhcHuqEWPB++aqAKBBsrl+pKpknMVU9KnTnpmGIy8LAtx1pEyaWXc
+   VILtJC1N74S5vSL70QRj8QodxhbNJOsXQ9GRpQBGKBSicNPF2KZcA0DUe
+   gwbIiO9ooOBf0XJhXLeuH1w36Zf5lt7quCCDydkFNSXCV0+IF2IYSz4eZ
+   F1aCQQm7sfymVOCeWa+7AmqS0gJ8Zbw+qIh0+0aTu1nkIUyJ+1obtV427
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10785"; a="455116343"
+X-IronPort-AV: E=McAfee;i="6600,9927,10785"; a="455116349"
 X-IronPort-AV: E=Sophos;i="6.01,240,1684825200"; 
-   d="scan'208";a="455116343"
+   d="scan'208";a="455116349"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2023 04:53:16 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2023 04:53:21 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10785"; a="762848859"
+X-IronPort-AV: E=McAfee;i="6600,9927,10785"; a="762848868"
 X-IronPort-AV: E=Sophos;i="6.01,240,1684825200"; 
-   d="scan'208";a="762848859"
+   d="scan'208";a="762848868"
 Received: from shsensorbuild2.sh.intel.com ([10.239.134.197])
-  by orsmga001.jf.intel.com with ESMTP; 29 Jul 2023 04:53:12 -0700
+  by orsmga001.jf.intel.com with ESMTP; 29 Jul 2023 04:53:18 -0700
 From:   Wentong Wu <wentong.wu@intel.com>
 To:     sakari.ailus@linux.intel.com, hdegoede@redhat.com,
         djrscally@gmail.com, laurent.pinchart@ideasonboard.com,
@@ -46,9 +46,9 @@ To:     sakari.ailus@linux.intel.com, hdegoede@redhat.com,
 Cc:     bingbu.cao@linux.intel.com, zhifeng.wang@intel.com,
         xiang.ye@intel.com, tian.shu.qiu@intel.com,
         Wentong Wu <wentong.wu@intel.com>
-Subject: [PATCH v10 1/3] media: pci: intel: ivsc: Add CSI submodule
-Date:   Sat, 29 Jul 2023 19:52:53 +0800
-Message-Id: <1690631575-15124-2-git-send-email-wentong.wu@intel.com>
+Subject: [PATCH v10 2/3] media: pci: intel: ivsc: Add ACE submodule
+Date:   Sat, 29 Jul 2023 19:52:54 +0800
+Message-Id: <1690631575-15124-3-git-send-email-wentong.wu@intel.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1690631575-15124-1-git-send-email-wentong.wu@intel.com>
 References: <1690631575-15124-1-git-send-email-wentong.wu@intel.com>
@@ -62,274 +62,294 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-CSI is a submodule of IVSC which can route camera sensor data
-to the outbound MIPI CSI-2 interface.
+ACE is a submodule of IVSC which controls camera sensor's
+ownership, belonging to host or IVSC. When IVSC owns camera
+sensor, it is for algorithm computing. When host wants to
+control camera sensor, ACE module needs to be informed of
+ownership with defined interface.
 
-The interface communicating with firmware is via MEI. There is
-a separate MEI UUID, which this driver uses to enumerate.
+The interface is via MEI. There is a separate MEI UUID, which
+this driver uses to enumerate.
 
-To route camera sensor data to host, the information of link
-frequency and number of data lanes is sent to firmware by
-sending MEI command when starting stream.
+To switch ownership of camera sensor between IVSC and host,
+the caller specifies the defined ownership information which
+will be sent to firmware by sending MEI command.
 
-CSI also provides a privacy mode. When privacy mode is turned
-on, camera sensor can't be used. This means that both IVSC and
-host Image Processing Unit(IPU) can't get image data. And when
-this mode is turned on, user is notified via v4l2 control
-callback.
+Device link(device_link_add) is used to set the right camera
+sensor ownership before accessing the sensor via I2C. With
+DL_FLAG_PM_RUNTIME and DL_FLAG_RPM_ACTIVE, the supplier device
+will be PM runtime resumed before the consumer(camera sensor).
+So use runtime PM callbacks to transfer the ownership between
+host and IVSC.
 
 Signed-off-by: Wentong Wu <wentong.wu@intel.com>
 ---
- drivers/media/pci/Kconfig              |   1 +
- drivers/media/pci/intel/Makefile       |   2 +
- drivers/media/pci/intel/ivsc/Kconfig   |  12 +
- drivers/media/pci/intel/ivsc/Makefile  |   6 +
- drivers/media/pci/intel/ivsc/mei_csi.c | 825 +++++++++++++++++++++++++++++++++
- 5 files changed, 846 insertions(+)
- create mode 100644 drivers/media/pci/intel/ivsc/Kconfig
- create mode 100644 drivers/media/pci/intel/ivsc/Makefile
- create mode 100644 drivers/media/pci/intel/ivsc/mei_csi.c
+ drivers/media/pci/intel/ivsc/Makefile  |   3 +
+ drivers/media/pci/intel/ivsc/mei_ace.c | 579 +++++++++++++++++++++++++++++++++
+ 2 files changed, 582 insertions(+)
+ create mode 100644 drivers/media/pci/intel/ivsc/mei_ace.c
 
-diff --git a/drivers/media/pci/Kconfig b/drivers/media/pci/Kconfig
-index dff0b45..c157f7c 100644
---- a/drivers/media/pci/Kconfig
-+++ b/drivers/media/pci/Kconfig
-@@ -72,6 +72,7 @@ config VIDEO_PCI_SKELETON
- 	  when developing new drivers.
- 
- source "drivers/media/pci/intel/ipu3/Kconfig"
-+source "drivers/media/pci/intel/ivsc/Kconfig"
- 
- endif #MEDIA_PCI_SUPPORT
- endif #PCI
-diff --git a/drivers/media/pci/intel/Makefile b/drivers/media/pci/intel/Makefile
-index 0b4236c..d27ca63 100644
---- a/drivers/media/pci/intel/Makefile
-+++ b/drivers/media/pci/intel/Makefile
-@@ -4,3 +4,5 @@
- #
- 
- obj-y	+= ipu3/
-+
-+obj-$(CONFIG_INTEL_VSC) += ivsc/
-diff --git a/drivers/media/pci/intel/ivsc/Kconfig b/drivers/media/pci/intel/ivsc/Kconfig
-new file mode 100644
-index 0000000..9535ac1
---- /dev/null
-+++ b/drivers/media/pci/intel/ivsc/Kconfig
-@@ -0,0 +1,12 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+# Copyright (C) 2023, Intel Corporation. All rights reserved.
-+
-+config INTEL_VSC
-+	tristate "Intel Visual Sensing Controller"
-+	depends on INTEL_MEI
-+	help
-+	  This adds support for Intel Visual Sensing Controller (IVSC).
-+
-+	  Enables the IVSC firmware services required for controlling
-+	  camera sensor ownership and CSI-2 link through Image Processing
-+	  Unit(IPU) driver of Intel.
 diff --git a/drivers/media/pci/intel/ivsc/Makefile b/drivers/media/pci/intel/ivsc/Makefile
-new file mode 100644
-index 0000000..cbd194a
---- /dev/null
+index cbd194a..00fad29 100644
+--- a/drivers/media/pci/intel/ivsc/Makefile
 +++ b/drivers/media/pci/intel/ivsc/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Copyright (C) 2023, Intel Corporation. All rights reserved.
+@@ -4,3 +4,6 @@
+ 
+ obj-$(CONFIG_INTEL_VSC) += ivsc-csi.o
+ ivsc-csi-y += mei_csi.o
 +
-+obj-$(CONFIG_INTEL_VSC) += ivsc-csi.o
-+ivsc-csi-y += mei_csi.o
-diff --git a/drivers/media/pci/intel/ivsc/mei_csi.c b/drivers/media/pci/intel/ivsc/mei_csi.c
++obj-$(CONFIG_INTEL_VSC) += ivsc-ace.o
++ivsc-ace-y += mei_ace.o
+diff --git a/drivers/media/pci/intel/ivsc/mei_ace.c b/drivers/media/pci/intel/ivsc/mei_ace.c
 new file mode 100644
-index 0000000..264b85b
+index 0000000..bc37f6d
 --- /dev/null
-+++ b/drivers/media/pci/intel/ivsc/mei_csi.c
-@@ -0,0 +1,825 @@
++++ b/drivers/media/pci/intel/ivsc/mei_ace.c
+@@ -0,0 +1,579 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright (C) 2023 Intel Corporation. All rights reserved.
-+ * Intel Visual Sensing Controller CSI Linux driver
++ * Intel Visual Sensing Controller ACE Linux driver
 + */
 +
 +/*
-+ * To set ownership of CSI-2 link and to configure CSI-2 link, there
-+ * are specific commands, which are sent via MEI protocol. The send
-+ * command function uses "completion" as a synchronization mechanism.
-+ * The response for command is received via a mei callback which wakes
-+ * up the caller. There can be only one outstanding command at a time.
++ * To set ownership of camera sensor, there is specific command, which
++ * is sent via MEI protocol. That's a two-step scheme where the firmware
++ * first acks receipt of the command and later responses the command was
++ * executed. The command sending function uses "completion" as the
++ * synchronization mechanism. The notification for command is received
++ * via a mei callback which wakes up the caller. There can be only one
++ * outstanding command at a time.
++ *
++ * The power line of camera sensor is directly connected to IVSC instead
++ * of host, when camera sensor ownership is switched to host, sensor is
++ * already powered up by firmware.
 + */
 +
++#include <linux/acpi.h>
 +#include <linux/completion.h>
 +#include <linux/delay.h>
 +#include <linux/kernel.h>
-+#include <linux/math64.h>
 +#include <linux/mei_cl_bus.h>
 +#include <linux/module.h>
 +#include <linux/mutex.h>
 +#include <linux/pm_runtime.h>
 +#include <linux/slab.h>
-+#include <linux/units.h>
 +#include <linux/uuid.h>
 +#include <linux/workqueue.h>
 +
-+#include <media/v4l2-async.h>
-+#include <media/v4l2-ctrls.h>
-+#include <media/v4l2-fwnode.h>
-+#include <media/v4l2-subdev.h>
++#define	MEI_ACE_DRIVER_NAME	"ivsc_ace"
 +
-+#define MEI_CSI_DRIVER_NAME "ivsc_csi"
-+#define MEI_CSI_ENTITY_NAME "Intel IVSC CSI"
++/* indicating driver message */
++#define	ACE_DRV_MSG		1
++/* indicating set command */
++#define	ACE_CMD_SET		4
++/* command timeout determined experimentally */
++#define	ACE_CMD_TIMEOUT		(5 * HZ)
++/* indicating the first command block */
++#define	ACE_CMD_INIT_BLOCK	1
++/* indicating the last command block */
++#define	ACE_CMD_FINAL_BLOCK	1
++/* size of camera status notification content */
++#define	ACE_CAMERA_STATUS_SIZE	5
 +
-+#define MEI_CSI_LINK_FREQ_400MHZ 400000000ULL
++/* UUID used to get firmware id */
++#define ACE_GET_FW_ID_UUID UUID_LE(0x6167DCFB, 0x72F1, 0x4584, 0xBF, \
++				   0xE3, 0x84, 0x17, 0x71, 0xAA, 0x79, 0x0B)
 +
-+/* the 5s used here is based on experiment */
-+#define CSI_CMD_TIMEOUT (5 * HZ)
-+/* to setup CSI-2 link an extra delay needed and determined experimentally */
-+#define CSI_FW_READY_DELAY_MS 100
-+/* link frequency unit is 100kHz */
-+#define CSI_LINK_FREQ(x) ((u32)(div_u64(x, 100 * HZ_PER_KHZ)))
++/* UUID used to get csi device */
++#define MEI_CSI_UUID UUID_LE(0x92335FCF, 0x3203, 0x4472, \
++			     0xAF, 0x93, 0x7b, 0x44, 0x53, 0xAC, 0x29, 0xDA)
 +
-+/*
-+ * identify the command id supported by firmware
-+ * IPC, as well as the privacy notification id
-+ * used when processing privacy event.
-+ */
-+enum csi_cmd_id {
-+	/* used to set csi ownership */
-+	CSI_SET_OWNER = 0,
-+
-+	/* used to configure CSI-2 link */
-+	CSI_SET_CONF = 2,
-+
-+	/* privacy notification id used when privacy state changes */
-+	CSI_PRIVACY_NOTIF = 6,
-+};
-+
-+/* CSI-2 link ownership definition */
-+enum csi_link_owner {
-+	CSI_LINK_IVSC,
-+	CSI_LINK_HOST,
-+};
-+
-+/* privacy status definition */
-+enum ivsc_privacy_status {
-+	CSI_PRIVACY_OFF,
-+	CSI_PRIVACY_ON,
-+	CSI_PRIVACY_MAX,
-+};
-+
-+enum csi_pads {
-+	CSI_PAD_SOURCE,
-+	CSI_PAD_SINK,
-+	CSI_NUM_PADS
-+};
-+
-+/* configuration of the CSI-2 link between host and IVSC */
-+struct csi_link_cfg {
-+	/* number of data lanes used on the CSI-2 link */
-+	u32 nr_of_lanes;
-+
-+	/* frequency of the CSI-2 link */
-+	u32 link_freq;
-+
-+	/* for future use */
-+	u32 rsvd[2];
-+} __packed;
-+
-+/* CSI command structure */
-+struct csi_cmd {
-+	u32 cmd_id;
-+	union _cmd_param {
-+		u32 param;
-+		struct csi_link_cfg conf;
-+	} param;
-+} __packed;
-+
-+/* CSI notification structure */
-+struct csi_notif {
-+	u32 cmd_id;
-+	int status;
-+	union _resp_cont {
-+		u32 cont;
-+		struct csi_link_cfg conf;
-+	} cont;
-+} __packed;
-+
-+struct mei_csi {
-+	struct mei_cl_device *cldev;
++/* identify firmware event type */
++enum ace_event_type {
++	/* firmware ready */
++	ACE_FW_READY = 0x8,
 +
 +	/* command response */
-+	struct csi_notif cmd_response;
-+	/* used to wait for command response from firmware */
++	ACE_CMD_RESPONSE = 0x10,
++};
++
++/* identify camera sensor ownership */
++enum ace_camera_owner {
++	ACE_CAMERA_IVSC,
++	ACE_CAMERA_HOST,
++};
++
++/* identify the command id supported by firmware IPC */
++enum ace_cmd_id {
++	/* used to switch camera sensor to host */
++	ACE_SWITCH_CAMERA_TO_HOST = 0x13,
++
++	/* used to switch camera sensor to IVSC */
++	ACE_SWITCH_CAMERA_TO_IVSC = 0x14,
++
++	/* used to get firmware id */
++	ACE_GET_FW_ID = 0x1A,
++};
++
++/* ACE command header structure */
++struct ace_cmd_hdr {
++	u32 firmware_id : 16;
++	u32 instance_id : 8;
++	u32 type : 5;
++	u32 rsp : 1;
++	u32 msg_tgt : 1;
++	u32 _hw_rsvd_1 : 1;
++	u32 param_size : 20;
++	u32 cmd_id : 8;
++	u32 final_block : 1;
++	u32 init_block : 1;
++	u32 _hw_rsvd_2 : 2;
++} __packed;
++
++/* ACE command parameter structure */
++union ace_cmd_param {
++	uuid_le uuid;
++	u32 param;
++};
++
++/* ACE command structure */
++struct ace_cmd {
++	struct ace_cmd_hdr hdr;
++	union ace_cmd_param param;
++} __packed;
++
++/* ACE notification header */
++union ace_notif_hdr {
++	struct _confirm {
++		u32 status : 24;
++		u32 type : 5;
++		u32 rsp : 1;
++		u32 msg_tgt : 1;
++		u32 _hw_rsvd_1 : 1;
++		u32 param_size : 20;
++		u32 cmd_id : 8;
++		u32 final_block : 1;
++		u32 init_block : 1;
++		u32 _hw_rsvd_2 : 2;
++	} __packed ack;
++
++	struct _event {
++		u32 rsvd1 : 16;
++		u32 event_type : 8;
++		u32 type : 5;
++		u32 ack : 1;
++		u32 msg_tgt : 1;
++		u32 _hw_rsvd_1 : 1;
++		u32 rsvd2 : 30;
++		u32 _hw_rsvd_2 : 2;
++	} __packed event;
++
++	struct _response {
++		u32 event_id : 16;
++		u32 notif_type : 8;
++		u32 type : 5;
++		u32 rsp : 1;
++		u32 msg_tgt : 1;
++		u32 _hw_rsvd_1 : 1;
++		u32 event_data_size : 16;
++		u32 request_target : 1;
++		u32 request_type : 5;
++		u32 cmd_id : 8;
++		u32 _hw_rsvd_2 : 2;
++	} __packed response;
++};
++
++/* ACE notification content */
++union ace_notif_cont {
++	u16 firmware_id;
++	u8 state_notif;
++	u8 camera_status[ACE_CAMERA_STATUS_SIZE];
++};
++
++/* ACE notification structure */
++struct ace_notif {
++	union ace_notif_hdr hdr;
++	union ace_notif_cont cont;
++} __packed;
++
++struct mei_ace {
++	struct mei_cl_device *cldev;
++
++	/* command ack */
++	struct ace_notif cmd_ack;
++	/* command response */
++	struct ace_notif cmd_response;
++	/* used to wait for command ack and response */
 +	struct completion cmd_completion;
-+	/* protect command download */
++	/* lock used to prevent multiple call to send command */
 +	struct mutex lock;
 +
-+	struct v4l2_subdev subdev;
-+	struct v4l2_subdev *remote;
-+	struct v4l2_async_notifier notifier;
-+	struct v4l2_ctrl_handler ctrl_handler;
-+	struct v4l2_ctrl *freq_ctrl;
-+	struct v4l2_ctrl *privacy_ctrl;
-+	unsigned int remote_pad;
-+	/* start streaming or not */
-+	int streaming;
++	/* used to construct command */
++	u16 firmware_id;
 +
-+	struct media_pad pads[CSI_NUM_PADS];
-+	struct v4l2_mbus_framefmt format_mbus[CSI_NUM_PADS];
++	struct device *csi_dev;
 +
-+	/* number of data lanes used on the CSI-2 link */
-+	u32 nr_of_lanes;
-+	/* frequency of the CSI-2 link */
-+	u64 link_freq;
++	/* runtime PM link from ace to csi */
++	struct device_link *csi_link;
 +
-+	/* privacy status */
-+	enum ivsc_privacy_status status;
++	struct work_struct work;
 +};
 +
-+static const struct v4l2_mbus_framefmt mei_csi_format_mbus_default = {
-+	.width = 1,
-+	.height = 1,
-+	.code = MEDIA_BUS_FMT_Y8_1X8,
-+	.field = V4L2_FIELD_NONE,
-+};
-+
-+static s64 link_freq_menu_items[] = {
-+	MEI_CSI_LINK_FREQ_400MHZ
-+};
-+
-+static inline struct mei_csi *notifier_to_csi(struct v4l2_async_notifier *n)
++static inline void init_cmd_hdr(struct ace_cmd_hdr *hdr)
 +{
-+	return container_of(n, struct mei_csi, notifier);
++	memset(hdr, 0, sizeof(struct ace_cmd_hdr));
++
++	hdr->type = ACE_CMD_SET;
++	hdr->msg_tgt = ACE_DRV_MSG;
++	hdr->init_block = ACE_CMD_INIT_BLOCK;
++	hdr->final_block = ACE_CMD_FINAL_BLOCK;
 +}
 +
-+static inline struct mei_csi *sd_to_csi(struct v4l2_subdev *sd)
++static int construct_command(struct mei_ace *ace, struct ace_cmd *cmd,
++			     enum ace_cmd_id cmd_id)
 +{
-+	return container_of(sd, struct mei_csi, subdev);
++	union ace_cmd_param *param = &cmd->param;
++	struct ace_cmd_hdr *hdr = &cmd->hdr;
++
++	init_cmd_hdr(hdr);
++
++	hdr->cmd_id = cmd_id;
++	switch (cmd_id) {
++	case ACE_GET_FW_ID:
++		param->uuid = ACE_GET_FW_ID_UUID;
++		hdr->param_size = sizeof(param->uuid);
++		break;
++	case ACE_SWITCH_CAMERA_TO_IVSC:
++		param->param = 0;
++		hdr->firmware_id = ace->firmware_id;
++		hdr->param_size = sizeof(param->param);
++		break;
++	case ACE_SWITCH_CAMERA_TO_HOST:
++		hdr->firmware_id = ace->firmware_id;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return hdr->param_size + sizeof(cmd->hdr);
 +}
 +
-+static inline struct mei_csi *ctrl_to_csi(struct v4l2_ctrl *ctrl)
++/* send command to firmware */
++static int mei_ace_send(struct mei_ace *ace, struct ace_cmd *cmd,
++			size_t len, bool only_ack)
 +{
-+	return container_of(ctrl->handler, struct mei_csi, ctrl_handler);
-+}
-+
-+/* send a command to firmware and mutex must be held by caller */
-+static int mei_csi_send(struct mei_csi *csi, u8 *buf, size_t len)
-+{
-+	struct csi_cmd *cmd = (struct csi_cmd *)buf;
++	union ace_notif_hdr *resp_hdr = &ace->cmd_response.hdr;
++	union ace_notif_hdr *ack_hdr = &ace->cmd_ack.hdr;
++	struct ace_cmd_hdr *cmd_hdr = &cmd->hdr;
 +	int ret;
 +
-+	reinit_completion(&csi->cmd_completion);
++	mutex_lock(&ace->lock);
 +
-+	ret = mei_cldev_send(csi->cldev, buf, len);
++	reinit_completion(&ace->cmd_completion);
++
++	ret = mei_cldev_send(ace->cldev, (u8 *)cmd, len);
 +	if (ret < 0)
 +		goto out;
 +
-+	ret = wait_for_completion_killable_timeout(&csi->cmd_completion,
-+						   CSI_CMD_TIMEOUT);
++	ret = wait_for_completion_killable_timeout(&ace->cmd_completion,
++						   ACE_CMD_TIMEOUT);
 +	if (ret < 0) {
 +		goto out;
 +	} else if (!ret) {
@@ -337,529 +357,228 @@ index 0000000..264b85b
 +		goto out;
 +	}
 +
-+	/* command response status */
-+	ret = csi->cmd_response.status;
-+	if (ret) {
++	if (ack_hdr->ack.cmd_id != cmd_hdr->cmd_id) {
 +		ret = -EINVAL;
 +		goto out;
 +	}
 +
-+	if (csi->cmd_response.cmd_id != cmd->cmd_id)
++	/* command ack status */
++	ret = ack_hdr->ack.status;
++	if (ret) {
++		ret = -EIO;
++		goto out;
++	}
++
++	if (only_ack)
++		goto out;
++
++	ret = wait_for_completion_killable_timeout(&ace->cmd_completion,
++						   ACE_CMD_TIMEOUT);
++	if (ret < 0) {
++		goto out;
++	} else if (!ret) {
++		ret = -ETIMEDOUT;
++		goto out;
++	} else {
++		ret = 0;
++	}
++
++	if (resp_hdr->response.cmd_id != cmd_hdr->cmd_id)
 +		ret = -EINVAL;
 +
 +out:
-+	return ret;
-+}
-+
-+/* set CSI-2 link ownership */
-+static int csi_set_link_owner(struct mei_csi *csi, enum csi_link_owner owner)
-+{
-+	struct csi_cmd cmd = { 0 };
-+	size_t cmd_size;
-+	int ret;
-+
-+	cmd.cmd_id = CSI_SET_OWNER;
-+	cmd.param.param = owner;
-+	cmd_size = sizeof(cmd.cmd_id) + sizeof(cmd.param.param);
-+
-+	mutex_lock(&csi->lock);
-+
-+	ret = mei_csi_send(csi, (u8 *)&cmd, cmd_size);
-+
-+	mutex_unlock(&csi->lock);
++	mutex_unlock(&ace->lock);
 +
 +	return ret;
 +}
 +
-+/* configure CSI-2 link between host and IVSC */
-+static int csi_set_link_cfg(struct mei_csi *csi)
++static int ace_set_camera_owner(struct mei_ace *ace,
++				enum ace_camera_owner owner)
 +{
-+	struct csi_cmd cmd = { 0 };
-+	size_t cmd_size;
++	enum ace_cmd_id cmd_id;
++	struct ace_cmd cmd;
++	int cmd_size;
 +	int ret;
 +
-+	cmd.cmd_id = CSI_SET_CONF;
-+	cmd.param.conf.nr_of_lanes = csi->nr_of_lanes;
-+	cmd.param.conf.link_freq = CSI_LINK_FREQ(csi->link_freq);
-+	cmd_size = sizeof(cmd.cmd_id) + sizeof(cmd.param.conf);
++	if (owner == ACE_CAMERA_IVSC)
++		cmd_id = ACE_SWITCH_CAMERA_TO_IVSC;
++	else
++		cmd_id = ACE_SWITCH_CAMERA_TO_HOST;
 +
-+	mutex_lock(&csi->lock);
-+
-+	ret = mei_csi_send(csi, (u8 *)&cmd, cmd_size);
-+	/*
-+	 * wait configuration ready if download success. placing
-+	 * delay under mutex is to make sure current command flow
-+	 * completed before starting a possible new one.
-+	 */
-+	if (!ret)
-+		msleep(CSI_FW_READY_DELAY_MS);
-+
-+	mutex_unlock(&csi->lock);
++	cmd_size = construct_command(ace, &cmd, cmd_id);
++	if (cmd_size >= 0)
++		ret = mei_ace_send(ace, &cmd, cmd_size, false);
++	else
++		ret = cmd_size;
 +
 +	return ret;
++}
++
++/* the first command downloaded to firmware */
++static inline int ace_get_firmware_id(struct mei_ace *ace)
++{
++	struct ace_cmd cmd;
++	int cmd_size;
++	int ret;
++
++	cmd_size = construct_command(ace, &cmd, ACE_GET_FW_ID);
++	if (cmd_size >= 0)
++		ret = mei_ace_send(ace, &cmd, cmd_size, true);
++	else
++		ret = cmd_size;
++
++	return ret;
++}
++
++static void handle_command_response(struct mei_ace *ace,
++				    struct ace_notif *resp, int len)
++{
++	union ace_notif_hdr *hdr = &resp->hdr;
++
++	switch (hdr->response.cmd_id) {
++	case ACE_SWITCH_CAMERA_TO_IVSC:
++	case ACE_SWITCH_CAMERA_TO_HOST:
++		memcpy(&ace->cmd_response, resp, len);
++		complete(&ace->cmd_completion);
++		break;
++	case ACE_GET_FW_ID:
++		break;
++	default:
++		break;
++	}
++}
++
++static void handle_command_ack(struct mei_ace *ace,
++			       struct ace_notif *ack, int len)
++{
++	union ace_notif_hdr *hdr = &ack->hdr;
++
++	switch (hdr->ack.cmd_id) {
++	case ACE_GET_FW_ID:
++		ace->firmware_id = ack->cont.firmware_id;
++		fallthrough;
++	case ACE_SWITCH_CAMERA_TO_IVSC:
++	case ACE_SWITCH_CAMERA_TO_HOST:
++		memcpy(&ace->cmd_ack, ack, len);
++		complete(&ace->cmd_completion);
++		break;
++	default:
++		break;
++	}
 +}
 +
 +/* callback for receive */
-+static void mei_csi_rx(struct mei_cl_device *cldev)
++static void mei_ace_rx(struct mei_cl_device *cldev)
 +{
-+	struct mei_csi *csi = mei_cldev_get_drvdata(cldev);
-+	struct csi_notif notif = { 0 };
++	struct mei_ace *ace = mei_cldev_get_drvdata(cldev);
++	struct ace_notif event;
++	union ace_notif_hdr *hdr = &event.hdr;
 +	int ret;
 +
-+	ret = mei_cldev_recv(cldev, (u8 *)&notif, sizeof(notif));
++	ret = mei_cldev_recv(cldev, (u8 *)&event, sizeof(event));
 +	if (ret < 0) {
 +		dev_err(&cldev->dev, "recv error: %d\n", ret);
 +		return;
 +	}
 +
-+	switch (notif.cmd_id) {
-+	case CSI_PRIVACY_NOTIF:
-+		if (notif.cont.cont < CSI_PRIVACY_MAX) {
-+			csi->status = notif.cont.cont;
-+			v4l2_ctrl_s_ctrl(csi->privacy_ctrl, csi->status);
-+		}
-+		break;
-+	case CSI_SET_OWNER:
-+	case CSI_SET_CONF:
-+		memcpy(&csi->cmd_response, &notif, ret);
++	if (hdr->event.ack) {
++		handle_command_ack(ace, &event, ret);
++		return;
++	}
 +
-+		complete(&csi->cmd_completion);
++	switch (hdr->event.event_type) {
++	case ACE_CMD_RESPONSE:
++		handle_command_response(ace, &event, ret);
++		break;
++	case ACE_FW_READY:
++		/*
++		 * firmware ready notification sent to driver
++		 * after HECI client connected with firmware.
++		 */
++		dev_dbg(&cldev->dev, "firmware ready\n");
 +		break;
 +	default:
 +		break;
 +	}
 +}
 +
-+static int mei_csi_set_stream(struct v4l2_subdev *sd, int enable)
++static int mei_ace_setup_dev_link(struct mei_ace *ace)
 +{
-+	struct mei_csi *csi = sd_to_csi(sd);
-+	s64 freq;
++	struct device *dev = &ace->cldev->dev;
++	uuid_le uuid = MEI_CSI_UUID;
++	struct device *csi_dev;
++	char name[64];
 +	int ret;
 +
-+	if (enable && csi->streaming == 0) {
-+		freq = v4l2_get_link_freq(csi->remote->ctrl_handler, 0, 0);
-+		if (freq < 0) {
-+			dev_err(&csi->cldev->dev,
-+				"error %lld, invalid link_freq\n", freq);
-+			ret = freq;
-+			goto err;
-+		}
-+		csi->link_freq = freq;
++	snprintf(name, sizeof(name), "%s-%pUl", dev_name(dev->parent), &uuid);
 +
-+		/* switch CSI-2 link to host */
-+		ret = csi_set_link_owner(csi, CSI_LINK_HOST);
-+		if (ret < 0)
-+			goto err;
-+
-+		/* configure CSI-2 link */
-+		ret = csi_set_link_cfg(csi);
-+		if (ret < 0)
-+			goto err_switch;
-+
-+		ret = v4l2_subdev_call(csi->remote, video, s_stream, 1);
-+		if (ret)
-+			goto err_switch;
-+	} else if (!enable && csi->streaming == 1) {
-+		v4l2_subdev_call(csi->remote, video, s_stream, 0);
-+
-+		/* switch CSI-2 link to IVSC */
-+		ret = csi_set_link_owner(csi, CSI_LINK_IVSC);
-+		if (ret < 0)
-+			dev_warn(&csi->cldev->dev,
-+				 "failed to switch CSI2 link: %d\n", ret);
++	csi_dev = device_find_child_by_name(dev->parent, name);
++	if (!csi_dev) {
++		ret = -EPROBE_DEFER;
++		goto err;
 +	}
 +
-+	csi->streaming = enable;
++	/* setup link between mei_ace and mei_csi */
++	ace->csi_link = device_link_add(csi_dev, dev, DL_FLAG_PM_RUNTIME |
++					DL_FLAG_RPM_ACTIVE | DL_FLAG_STATELESS);
++	if (!ace->csi_link) {
++		ret = -EINVAL;
++		dev_err(dev, "failed to link to %s\n", dev_name(csi_dev));
++		goto err_put;
++	}
++
++	ace->csi_dev = csi_dev;
 +
 +	return 0;
 +
-+err_switch:
-+	csi_set_link_owner(csi, CSI_LINK_IVSC);
++err_put:
++	put_device(csi_dev);
 +
 +err:
 +	return ret;
 +}
 +
-+static struct v4l2_mbus_framefmt *
-+mei_csi_get_pad_format(struct v4l2_subdev *sd,
-+		       struct v4l2_subdev_state *sd_state,
-+		       unsigned int pad, u32 which)
++/* switch camera to host before probe sensor device */
++static void mei_ace_post_probe_work(struct work_struct *work)
 +{
-+	struct mei_csi *csi = sd_to_csi(sd);
-+
-+	switch (which) {
-+	case V4L2_SUBDEV_FORMAT_TRY:
-+		return v4l2_subdev_get_try_format(sd, sd_state, pad);
-+	case V4L2_SUBDEV_FORMAT_ACTIVE:
-+		return &csi->format_mbus[pad];
-+	default:
-+		return NULL;
-+	}
-+}
-+
-+static int mei_csi_init_cfg(struct v4l2_subdev *sd,
-+			    struct v4l2_subdev_state *sd_state)
-+{
-+	struct v4l2_mbus_framefmt *mbusformat;
-+	struct mei_csi *csi = sd_to_csi(sd);
-+	unsigned int i;
-+
-+	mutex_lock(&csi->lock);
-+
-+	for (i = 0; i < sd->entity.num_pads; i++) {
-+		mbusformat = v4l2_subdev_get_try_format(sd, sd_state, i);
-+		*mbusformat = mei_csi_format_mbus_default;
-+	}
-+
-+	mutex_unlock(&csi->lock);
-+
-+	return 0;
-+}
-+
-+static int mei_csi_get_fmt(struct v4l2_subdev *sd,
-+			   struct v4l2_subdev_state *sd_state,
-+			   struct v4l2_subdev_format *format)
-+{
-+	struct v4l2_mbus_framefmt *mbusformat;
-+	struct mei_csi *csi = sd_to_csi(sd);
-+
-+	mutex_lock(&csi->lock);
-+
-+	mbusformat = mei_csi_get_pad_format(sd, sd_state, format->pad,
-+					    format->which);
-+	if (mbusformat)
-+		format->format = *mbusformat;
-+
-+	mutex_unlock(&csi->lock);
-+
-+	return 0;
-+}
-+
-+static int mei_csi_set_fmt(struct v4l2_subdev *sd,
-+			   struct v4l2_subdev_state *sd_state,
-+			   struct v4l2_subdev_format *format)
-+{
-+	struct v4l2_mbus_framefmt *source_mbusformat;
-+	struct v4l2_mbus_framefmt *mbusformat;
-+	struct mei_csi *csi = sd_to_csi(sd);
-+	struct media_pad *pad;
-+
-+	mbusformat = mei_csi_get_pad_format(sd, sd_state, format->pad,
-+					    format->which);
-+	if (!mbusformat)
-+		return -EINVAL;
-+
-+	source_mbusformat = mei_csi_get_pad_format(sd, sd_state, CSI_PAD_SOURCE,
-+						   format->which);
-+	if (!source_mbusformat)
-+		return -EINVAL;
-+
-+	v4l_bound_align_image(&format->format.width, 1, 65536, 0,
-+			      &format->format.height, 1, 65536, 0, 0);
-+
-+	switch (format->format.code) {
-+	case MEDIA_BUS_FMT_RGB444_1X12:
-+	case MEDIA_BUS_FMT_RGB444_2X8_PADHI_BE:
-+	case MEDIA_BUS_FMT_RGB444_2X8_PADHI_LE:
-+	case MEDIA_BUS_FMT_RGB555_2X8_PADHI_BE:
-+	case MEDIA_BUS_FMT_RGB555_2X8_PADHI_LE:
-+	case MEDIA_BUS_FMT_RGB565_1X16:
-+	case MEDIA_BUS_FMT_BGR565_2X8_BE:
-+	case MEDIA_BUS_FMT_BGR565_2X8_LE:
-+	case MEDIA_BUS_FMT_RGB565_2X8_BE:
-+	case MEDIA_BUS_FMT_RGB565_2X8_LE:
-+	case MEDIA_BUS_FMT_RGB666_1X18:
-+	case MEDIA_BUS_FMT_RBG888_1X24:
-+	case MEDIA_BUS_FMT_RGB666_1X24_CPADHI:
-+	case MEDIA_BUS_FMT_BGR888_1X24:
-+	case MEDIA_BUS_FMT_GBR888_1X24:
-+	case MEDIA_BUS_FMT_RGB888_1X24:
-+	case MEDIA_BUS_FMT_RGB888_2X12_BE:
-+	case MEDIA_BUS_FMT_RGB888_2X12_LE:
-+	case MEDIA_BUS_FMT_ARGB8888_1X32:
-+	case MEDIA_BUS_FMT_RGB888_1X32_PADHI:
-+	case MEDIA_BUS_FMT_RGB101010_1X30:
-+	case MEDIA_BUS_FMT_RGB121212_1X36:
-+	case MEDIA_BUS_FMT_RGB161616_1X48:
-+	case MEDIA_BUS_FMT_Y8_1X8:
-+	case MEDIA_BUS_FMT_UV8_1X8:
-+	case MEDIA_BUS_FMT_UYVY8_1_5X8:
-+	case MEDIA_BUS_FMT_VYUY8_1_5X8:
-+	case MEDIA_BUS_FMT_YUYV8_1_5X8:
-+	case MEDIA_BUS_FMT_YVYU8_1_5X8:
-+	case MEDIA_BUS_FMT_UYVY8_2X8:
-+	case MEDIA_BUS_FMT_VYUY8_2X8:
-+	case MEDIA_BUS_FMT_YUYV8_2X8:
-+	case MEDIA_BUS_FMT_YVYU8_2X8:
-+	case MEDIA_BUS_FMT_Y10_1X10:
-+	case MEDIA_BUS_FMT_UYVY10_2X10:
-+	case MEDIA_BUS_FMT_VYUY10_2X10:
-+	case MEDIA_BUS_FMT_YUYV10_2X10:
-+	case MEDIA_BUS_FMT_YVYU10_2X10:
-+	case MEDIA_BUS_FMT_Y12_1X12:
-+	case MEDIA_BUS_FMT_UYVY12_2X12:
-+	case MEDIA_BUS_FMT_VYUY12_2X12:
-+	case MEDIA_BUS_FMT_YUYV12_2X12:
-+	case MEDIA_BUS_FMT_YVYU12_2X12:
-+	case MEDIA_BUS_FMT_UYVY8_1X16:
-+	case MEDIA_BUS_FMT_VYUY8_1X16:
-+	case MEDIA_BUS_FMT_YUYV8_1X16:
-+	case MEDIA_BUS_FMT_YVYU8_1X16:
-+	case MEDIA_BUS_FMT_YDYUYDYV8_1X16:
-+	case MEDIA_BUS_FMT_UYVY10_1X20:
-+	case MEDIA_BUS_FMT_VYUY10_1X20:
-+	case MEDIA_BUS_FMT_YUYV10_1X20:
-+	case MEDIA_BUS_FMT_YVYU10_1X20:
-+	case MEDIA_BUS_FMT_VUY8_1X24:
-+	case MEDIA_BUS_FMT_YUV8_1X24:
-+	case MEDIA_BUS_FMT_UYYVYY8_0_5X24:
-+	case MEDIA_BUS_FMT_UYVY12_1X24:
-+	case MEDIA_BUS_FMT_VYUY12_1X24:
-+	case MEDIA_BUS_FMT_YUYV12_1X24:
-+	case MEDIA_BUS_FMT_YVYU12_1X24:
-+	case MEDIA_BUS_FMT_YUV10_1X30:
-+	case MEDIA_BUS_FMT_UYYVYY10_0_5X30:
-+	case MEDIA_BUS_FMT_AYUV8_1X32:
-+	case MEDIA_BUS_FMT_UYYVYY12_0_5X36:
-+	case MEDIA_BUS_FMT_YUV12_1X36:
-+	case MEDIA_BUS_FMT_YUV16_1X48:
-+	case MEDIA_BUS_FMT_UYYVYY16_0_5X48:
-+	case MEDIA_BUS_FMT_JPEG_1X8:
-+	case MEDIA_BUS_FMT_AHSV8888_1X32:
-+	case MEDIA_BUS_FMT_SBGGR8_1X8:
-+	case MEDIA_BUS_FMT_SGBRG8_1X8:
-+	case MEDIA_BUS_FMT_SGRBG8_1X8:
-+	case MEDIA_BUS_FMT_SRGGB8_1X8:
-+	case MEDIA_BUS_FMT_SBGGR10_1X10:
-+	case MEDIA_BUS_FMT_SGBRG10_1X10:
-+	case MEDIA_BUS_FMT_SGRBG10_1X10:
-+	case MEDIA_BUS_FMT_SRGGB10_1X10:
-+	case MEDIA_BUS_FMT_SBGGR12_1X12:
-+	case MEDIA_BUS_FMT_SGBRG12_1X12:
-+	case MEDIA_BUS_FMT_SGRBG12_1X12:
-+	case MEDIA_BUS_FMT_SRGGB12_1X12:
-+	case MEDIA_BUS_FMT_SBGGR14_1X14:
-+	case MEDIA_BUS_FMT_SGBRG14_1X14:
-+	case MEDIA_BUS_FMT_SGRBG14_1X14:
-+	case MEDIA_BUS_FMT_SRGGB14_1X14:
-+	case MEDIA_BUS_FMT_SBGGR16_1X16:
-+	case MEDIA_BUS_FMT_SGBRG16_1X16:
-+	case MEDIA_BUS_FMT_SGRBG16_1X16:
-+	case MEDIA_BUS_FMT_SRGGB16_1X16:
-+		break;
-+	default:
-+		format->format.code = MEDIA_BUS_FMT_Y8_1X8;
-+		break;
-+	}
-+
-+	if (format->format.field == V4L2_FIELD_ANY)
-+		format->format.field = V4L2_FIELD_NONE;
-+
-+	mutex_lock(&csi->lock);
-+
-+	pad = &csi->pads[format->pad];
-+	if (pad->flags & MEDIA_PAD_FL_SOURCE)
-+		format->format = csi->format_mbus[CSI_PAD_SINK];
-+
-+	*mbusformat = format->format;
-+
-+	if (pad->flags & MEDIA_PAD_FL_SINK)
-+		*source_mbusformat = format->format;
-+
-+	mutex_unlock(&csi->lock);
-+
-+	return 0;
-+}
-+
-+static int mei_csi_g_volatile_ctrl(struct v4l2_ctrl *ctrl)
-+{
-+	struct mei_csi *csi = ctrl_to_csi(ctrl);
-+	s64 freq;
-+
-+	if (ctrl->id == V4L2_CID_LINK_FREQ) {
-+		if (!csi->remote)
-+			return -EINVAL;
-+
-+		freq = v4l2_get_link_freq(csi->remote->ctrl_handler, 0, 0);
-+		if (freq < 0) {
-+			dev_err(&csi->cldev->dev,
-+				"error %lld, invalid link_freq\n", freq);
-+			return -EINVAL;
-+		}
-+
-+		link_freq_menu_items[0] = freq;
-+		ctrl->val = 0;
-+
-+		return 0;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static const struct v4l2_ctrl_ops mei_csi_ctrl_ops = {
-+	.g_volatile_ctrl = mei_csi_g_volatile_ctrl,
-+};
-+
-+static const struct v4l2_subdev_video_ops mei_csi_video_ops = {
-+	.s_stream = mei_csi_set_stream,
-+};
-+
-+static const struct v4l2_subdev_pad_ops mei_csi_pad_ops = {
-+	.init_cfg = mei_csi_init_cfg,
-+	.get_fmt = mei_csi_get_fmt,
-+	.set_fmt = mei_csi_set_fmt,
-+};
-+
-+static const struct v4l2_subdev_ops mei_csi_subdev_ops = {
-+	.video = &mei_csi_video_ops,
-+	.pad = &mei_csi_pad_ops,
-+};
-+
-+static const struct media_entity_operations mei_csi_entity_ops = {
-+	.link_validate = v4l2_subdev_link_validate,
-+};
-+
-+static int mei_csi_notify_bound(struct v4l2_async_notifier *notifier,
-+				struct v4l2_subdev *subdev,
-+				struct v4l2_async_subdev *asd)
-+{
-+	struct mei_csi *csi = notifier_to_csi(notifier);
-+	int pad;
-+
-+	pad = media_entity_get_fwnode_pad(&subdev->entity, asd->match.fwnode,
-+					  MEDIA_PAD_FL_SOURCE);
-+	if (pad < 0)
-+		return pad;
-+
-+	csi->remote = subdev;
-+	csi->remote_pad = pad;
-+
-+	return media_create_pad_link(&subdev->entity, pad,
-+				     &csi->subdev.entity, 1,
-+				     MEDIA_LNK_FL_ENABLED |
-+				     MEDIA_LNK_FL_IMMUTABLE);
-+}
-+
-+static void mei_csi_notify_unbind(struct v4l2_async_notifier *notifier,
-+				  struct v4l2_subdev *subdev,
-+				  struct v4l2_async_subdev *asd)
-+{
-+	struct mei_csi *csi = notifier_to_csi(notifier);
-+
-+	csi->remote = NULL;
-+}
-+
-+static const struct v4l2_async_notifier_operations mei_csi_notify_ops = {
-+	.bound = mei_csi_notify_bound,
-+	.unbind = mei_csi_notify_unbind,
-+};
-+
-+static int mei_csi_init_controls(struct mei_csi *csi)
-+{
-+	u32 max;
++	struct acpi_device *adev;
++	struct mei_ace *ace;
++	struct device *dev;
 +	int ret;
 +
-+	ret = v4l2_ctrl_handler_init(&csi->ctrl_handler, 2);
-+	if (ret)
-+		return ret;
++	ace = container_of(work, struct mei_ace, work);
++	dev = &ace->cldev->dev;
 +
-+	csi->ctrl_handler.lock = &csi->lock;
-+
-+	max = ARRAY_SIZE(link_freq_menu_items) - 1;
-+	csi->freq_ctrl = v4l2_ctrl_new_int_menu(&csi->ctrl_handler,
-+						&mei_csi_ctrl_ops,
-+						V4L2_CID_LINK_FREQ,
-+						max,
-+						0,
-+						link_freq_menu_items);
-+	if (csi->freq_ctrl)
-+		csi->freq_ctrl->flags |= V4L2_CTRL_FLAG_READ_ONLY |
-+					 V4L2_CTRL_FLAG_VOLATILE;
-+
-+	csi->privacy_ctrl = v4l2_ctrl_new_std(&csi->ctrl_handler, NULL,
-+					      V4L2_CID_PRIVACY, 0, 1, 1, 0);
-+	if (csi->privacy_ctrl)
-+		csi->privacy_ctrl->flags |= V4L2_CTRL_FLAG_READ_ONLY;
-+
-+	if (csi->ctrl_handler.error)
-+		return csi->ctrl_handler.error;
-+
-+	csi->subdev.ctrl_handler = &csi->ctrl_handler;
-+
-+	return 0;
-+}
-+
-+static int mei_csi_parse_firmware(struct mei_csi *csi)
-+{
-+	struct v4l2_fwnode_endpoint v4l2_ep = {
-+		.bus_type = V4L2_MBUS_CSI2_DPHY,
-+	};
-+	struct device *dev = &csi->cldev->dev;
-+	struct v4l2_async_subdev *asd;
-+	struct fwnode_handle *fwnode;
-+	struct fwnode_handle *ep;
-+	int ret;
-+
-+	ep = fwnode_graph_get_endpoint_by_id(dev_fwnode(dev), 0, 0, 0);
-+	if (!ep) {
-+		dev_err(dev, "not connected to subdevice\n");
-+		return -EINVAL;
-+	}
-+
-+	ret = v4l2_fwnode_endpoint_parse(ep, &v4l2_ep);
++	ret = ace_set_camera_owner(ace, ACE_SWITCH_CAMERA_TO_HOST);
 +	if (ret) {
-+		dev_err(dev, "could not parse v4l2 endpoint\n");
-+		fwnode_handle_put(ep);
-+		return -EINVAL;
++		dev_err(dev, "switch camera to host failed: %d\n", ret);
++		return;
 +	}
 +
-+	fwnode = fwnode_graph_get_remote_endpoint(ep);
-+	fwnode_handle_put(ep);
++	adev = ACPI_COMPANION(dev->parent);
++	if (!adev)
++		return;
 +
-+	v4l2_async_nf_init(&csi->notifier);
-+	csi->notifier.ops = &mei_csi_notify_ops;
-+
-+	asd = v4l2_async_nf_add_fwnode(&csi->notifier, fwnode,
-+				       struct v4l2_async_subdev);
-+	if (IS_ERR(asd)) {
-+		fwnode_handle_put(fwnode);
-+		return PTR_ERR(asd);
-+	}
-+
-+	ret = v4l2_fwnode_endpoint_alloc_parse(fwnode, &v4l2_ep);
-+	fwnode_handle_put(fwnode);
-+	if (ret)
-+		return ret;
-+	csi->nr_of_lanes = v4l2_ep.bus.mipi_csi2.num_data_lanes;
-+
-+	ret = v4l2_async_subdev_nf_register(&csi->subdev, &csi->notifier);
-+	if (ret)
-+		v4l2_async_nf_cleanup(&csi->notifier);
-+
-+	v4l2_fwnode_endpoint_free(&v4l2_ep);
-+
-+	return ret;
++	acpi_dev_clear_dependencies(adev);
 +}
 +
-+static int mei_csi_probe(struct mei_cl_device *cldev,
++static int mei_ace_probe(struct mei_cl_device *cldev,
 +			 const struct mei_cl_device_id *id)
 +{
 +	struct device *dev = &cldev->dev;
-+	struct mei_csi *csi;
++	struct mei_ace *ace;
 +	int ret;
 +
-+	if (!dev_fwnode(dev))
-+		return -EPROBE_DEFER;
-+
-+	csi = devm_kzalloc(dev, sizeof(struct mei_csi), GFP_KERNEL);
-+	if (!csi)
++	ace = devm_kzalloc(dev, sizeof(struct mei_ace), GFP_KERNEL);
++	if (!ace)
 +		return -ENOMEM;
 +
-+	csi->cldev = cldev;
-+	mutex_init(&csi->lock);
-+	init_completion(&csi->cmd_completion);
++	ace->cldev = cldev;
++	mutex_init(&ace->lock);
++	init_completion(&ace->cmd_completion);
++	INIT_WORK(&ace->work, mei_ace_post_probe_work);
 +
-+	mei_cldev_set_drvdata(cldev, csi);
++	mei_cldev_set_drvdata(cldev, ace);
 +
 +	ret = mei_cldev_enable(cldev);
 +	if (ret < 0) {
@@ -867,111 +586,104 @@ index 0000000..264b85b
 +		goto destroy_mutex;
 +	}
 +
-+	ret = mei_cldev_register_rx_cb(cldev, mei_csi_rx);
++	ret = mei_cldev_register_rx_cb(cldev, mei_ace_rx);
 +	if (ret) {
 +		dev_err(dev, "event cb registration failed: %d\n", ret);
 +		goto err_disable;
 +	}
 +
-+	ret = mei_csi_parse_firmware(csi);
-+	if (ret)
++	ret = ace_get_firmware_id(ace);
++	if (ret) {
++		dev_err(dev, "get firmware id failed: %d\n", ret);
 +		goto err_disable;
++	}
 +
-+	csi->subdev.dev = &cldev->dev;
-+	v4l2_subdev_init(&csi->subdev, &mei_csi_subdev_ops);
-+	v4l2_set_subdevdata(&csi->subdev, csi);
-+	csi->subdev.flags = V4L2_SUBDEV_FL_HAS_DEVNODE |
-+			    V4L2_SUBDEV_FL_HAS_EVENTS;
-+	csi->subdev.entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
-+	csi->subdev.entity.ops = &mei_csi_entity_ops;
++	pm_runtime_set_active(dev);
++	pm_runtime_enable(dev);
 +
-+	snprintf(csi->subdev.name, sizeof(csi->subdev.name),
-+		 MEI_CSI_ENTITY_NAME);
-+
-+	ret = mei_csi_init_controls(csi);
++	ret = mei_ace_setup_dev_link(ace);
 +	if (ret)
-+		goto err_ctrl_handler;
++		goto disable_pm;
 +
-+	csi->format_mbus[CSI_PAD_SOURCE] = mei_csi_format_mbus_default;
-+	csi->format_mbus[CSI_PAD_SINK] = mei_csi_format_mbus_default;
-+
-+	csi->pads[CSI_PAD_SOURCE].flags = MEDIA_PAD_FL_SOURCE;
-+	csi->pads[CSI_PAD_SINK].flags = MEDIA_PAD_FL_SINK;
-+	ret = media_entity_pads_init(&csi->subdev.entity, CSI_NUM_PADS,
-+				     csi->pads);
-+	if (ret)
-+		goto err_ctrl_handler;
-+
-+	ret = v4l2_subdev_init_finalize(&csi->subdev);
-+	if (ret < 0)
-+		goto err_entity;
-+
-+	ret = v4l2_async_register_subdev(&csi->subdev);
-+	if (ret < 0)
-+		goto err_subdev;
-+
-+	pm_runtime_enable(&cldev->dev);
++	schedule_work(&ace->work);
 +
 +	return 0;
 +
-+err_subdev:
-+	v4l2_subdev_cleanup(&csi->subdev);
-+
-+err_entity:
-+	media_entity_cleanup(&csi->subdev.entity);
-+
-+err_ctrl_handler:
-+	v4l2_ctrl_handler_free(&csi->ctrl_handler);
-+	v4l2_async_nf_unregister(&csi->notifier);
-+	v4l2_async_nf_cleanup(&csi->notifier);
++disable_pm:
++	pm_runtime_disable(dev);
++	pm_runtime_set_suspended(dev);
 +
 +err_disable:
 +	mei_cldev_disable(cldev);
 +
 +destroy_mutex:
-+	mutex_destroy(&csi->lock);
++	mutex_destroy(&ace->lock);
 +
 +	return ret;
 +}
 +
-+static void mei_csi_remove(struct mei_cl_device *cldev)
++static void mei_ace_remove(struct mei_cl_device *cldev)
 +{
-+	struct mei_csi *csi = mei_cldev_get_drvdata(cldev);
++	struct mei_ace *ace = mei_cldev_get_drvdata(cldev);
 +
-+	v4l2_async_nf_unregister(&csi->notifier);
-+	v4l2_async_nf_cleanup(&csi->notifier);
-+	v4l2_ctrl_handler_free(&csi->ctrl_handler);
-+	v4l2_async_unregister_subdev(&csi->subdev);
-+	v4l2_subdev_cleanup(&csi->subdev);
-+	media_entity_cleanup(&csi->subdev.entity);
++	cancel_work_sync(&ace->work);
++
++	device_link_del(ace->csi_link);
++	put_device(ace->csi_dev);
 +
 +	pm_runtime_disable(&cldev->dev);
++	pm_runtime_set_suspended(&cldev->dev);
 +
-+	mutex_destroy(&csi->lock);
++	ace_set_camera_owner(ace, ACE_SWITCH_CAMERA_TO_IVSC);
++
++	mutex_destroy(&ace->lock);
 +}
 +
-+#define MEI_CSI_UUID UUID_LE(0x92335FCF, 0x3203, 0x4472, \
-+			     0xAF, 0x93, 0x7b, 0x44, 0x53, 0xAC, 0x29, 0xDA)
++static int __maybe_unused mei_ace_runtime_suspend(struct device *dev)
++{
++	struct mei_ace *ace = dev_get_drvdata(dev);
 +
-+static const struct mei_cl_device_id mei_csi_tbl[] = {
-+	{ MEI_CSI_DRIVER_NAME, MEI_CSI_UUID, MEI_CL_VERSION_ANY },
++	return ace_set_camera_owner(ace, ACE_SWITCH_CAMERA_TO_IVSC);
++}
++
++static int __maybe_unused mei_ace_runtime_resume(struct device *dev)
++{
++	struct mei_ace *ace = dev_get_drvdata(dev);
++
++	return ace_set_camera_owner(ace, ACE_SWITCH_CAMERA_TO_HOST);
++}
++
++static const struct dev_pm_ops mei_ace_pm_ops = {
++	SET_RUNTIME_PM_OPS(mei_ace_runtime_suspend,
++			   mei_ace_runtime_resume, NULL)
++};
++
++#define MEI_ACE_UUID UUID_LE(0x5DB76CF6, 0x0A68, 0x4ED6, \
++			     0x9B, 0x78, 0x03, 0x61, 0x63, 0x5E, 0x24, 0x47)
++
++static const struct mei_cl_device_id mei_ace_tbl[] = {
++	{ MEI_ACE_DRIVER_NAME, MEI_ACE_UUID, MEI_CL_VERSION_ANY },
 +	{ /* sentinel */ }
 +};
-+MODULE_DEVICE_TABLE(mei, mei_csi_tbl);
++MODULE_DEVICE_TABLE(mei, mei_ace_tbl);
 +
-+static struct mei_cl_driver mei_csi_driver = {
-+	.id_table = mei_csi_tbl,
-+	.name = MEI_CSI_DRIVER_NAME,
++static struct mei_cl_driver mei_ace_driver = {
++	.id_table = mei_ace_tbl,
++	.name = MEI_ACE_DRIVER_NAME,
 +
-+	.probe = mei_csi_probe,
-+	.remove = mei_csi_remove,
++	.probe = mei_ace_probe,
++	.remove = mei_ace_remove,
++
++	.driver = {
++		.pm = &mei_ace_pm_ops,
++	},
 +};
 +
-+module_mei_cl_driver(mei_csi_driver);
++module_mei_cl_driver(mei_ace_driver);
 +
 +MODULE_AUTHOR("Wentong Wu <wentong.wu@intel.com>");
 +MODULE_AUTHOR("Zhifeng Wang <zhifeng.wang@intel.com>");
-+MODULE_DESCRIPTION("Device driver for IVSC CSI");
++MODULE_DESCRIPTION("Device driver for IVSC ACE");
 +MODULE_LICENSE("GPL");
 -- 
 2.7.4
