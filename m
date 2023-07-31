@@ -2,69 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D311768689
-	for <lists+linux-acpi@lfdr.de>; Sun, 30 Jul 2023 18:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 404657689FD
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jul 2023 04:28:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229469AbjG3Qxr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 30 Jul 2023 12:53:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39002 "EHLO
+        id S229542AbjGaC2S (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 30 Jul 2023 22:28:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjG3Qxr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 30 Jul 2023 12:53:47 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5504110C2;
-        Sun, 30 Jul 2023 09:53:43 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qQ9fp-0006lv-Tx; Sun, 30 Jul 2023 18:53:41 +0200
-Message-ID: <73310d78-914b-7200-0fb7-073b52324aaf@leemhuis.info>
-Date:   Sun, 30 Jul 2023 18:53:41 +0200
+        with ESMTP id S229468AbjGaC2R (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 30 Jul 2023 22:28:17 -0400
+X-Greylist: delayed 316 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 30 Jul 2023 19:28:16 PDT
+Received: from out-110.mta0.migadu.com (out-110.mta0.migadu.com [91.218.175.110])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2307EB
+        for <linux-acpi@vger.kernel.org>; Sun, 30 Jul 2023 19:28:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] IRQ override revert breaks keyboard on Lenovo Yoga 7
- 14ARB7
-Content-Language: en-US, de-DE
-To:     regressions@lists.linux.dev
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <596b9c4a-fb83-a8ab-3a44-6052d83fa546@augustwikerfors.se>
-From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <596b9c4a-fb83-a8ab-3a44-6052d83fa546@augustwikerfors.se>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bcheng.me; s=key1;
+        t=1690770178;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:  in-reply-to:in-reply-to;
+        bh=vPdtbQm8V9rffwx3H/n5X0xB5XkYDYWRBPxYwhIjFQg=;
+        b=Ga2lLIX8txBBTAhb6Vh9WsLKy8gRdcayGbTIR1oOmEkMjeg9cN0aiR9rYHBzMeBkH0WQBQ
+        thUlBvoInIT3yF5fHdiKvBSF/119c5VscmewD77XgXOQto9ou7VAsPx+Q+Cc8l03a0ivc+
+        z9kywYIjqmSjfwPBcL+l4R3+EV7hTsb9LAcEC9ofq04MSSGIj6OeCCvf7J7aA3CrcGbiST
+        /X2WZ5M/0t4HBjqH4e0WU/o9POJWTpBDqJpjIgYrwrA2QjjFiGVXCoQnCnE80L3te0zsDh
+        tfXhITxicxpahrtVYqMrp8OiEHqgCpqhxBephjSPZfE7/pn1ShoXWMkBq49CvA==
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1690736023;a1486924;
-X-HE-SMSGID: 1qQ9fp-0006lv-Tx
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        T_SPF_HELO_TEMPERROR autolearn=ham autolearn_force=no version=3.4.6
+Date:   Sun, 30 Jul 2023 22:22:55 -0400
+Subject: Re: [PATCH v2] ACPI: resource: Add a quirk for Lenovo Yoga 7 14ARB7
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   "Benjamin Cheng" <ben@bcheng.me>
+To:     <mario.limonciello@amd.com>
+Cc:     <git@augustwikerfors.se>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <rafael@kernel.org>,
+        <regressions@lists.linux.dev>
+Message-Id: <CUFZQ0PV3664.3HDBJ1V15F1E8@gold>
+In-Reply-To: <20230728191408.18141-1-mario.limonciello@amd.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 27.07.23 00:54, August Wikerfors wrote:
-> 
-> Since v6.5-rc1 the keyboard on this laptop no longer works. This problem
-> also existed before v6.0-rc1 commit 9946e39fe8d0 ("ACPI: resource: skip
-> IRQ override on AMD Zen platforms"), so I suspected the cause to be
-> a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
-> which reverted that commit. Reverting a9c4a912b7dc confirmed this theory.
-> 
-> #regzbot introduced: a9c4a912b7dc
+Would it be possible to include a similar quirk for the Lenovo ThinkBook
+13s G4 ARB?
 
-Point regzbot to the fix:
+a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
+doesn't break the keyboard on this model, but makes it very sluggish and
+unresponsive.
 
-#regzbot monitor:
-https://lore.kernel.org/linux-acpi/20230728183921.17230-1-mario.limonciello@amd.com/
-#regzbot fix: ACPI: resource: Add a quirk for Lenovo Yoga 7 14ARB7
-#regzbot ignore-activity
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
-
-
+Adding the following entry fixes the issue for me:
+static const struct dmi_system_id lenovo_laptop[] =3D {
+	{
+		.ident =3D "Lenovo Yoga 7 14ARB7",
+		.matches =3D {
+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+			DMI_MATCH(DMI_PRODUCT_NAME, "82QF"),
+		},
+	},
+			DMI_MATCH(DMI_PRODUCT_NAME, "82QF"),
+		},
+	},
++	{
++		.ident =3D "Lenovo ThinkBook 13s G4 ARB",
++		.matches =3D {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21AS"),
++		},
++	},
+	{ }
+};
