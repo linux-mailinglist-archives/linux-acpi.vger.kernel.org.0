@@ -2,221 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1000976A95B
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Aug 2023 08:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6791576AD35
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Aug 2023 11:27:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231828AbjHAGmH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Aug 2023 02:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51924 "EHLO
+        id S232866AbjHAJ1X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Aug 2023 05:27:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230284AbjHAGmD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Aug 2023 02:42:03 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09745198D;
-        Mon, 31 Jul 2023 23:42:00 -0700 (PDT)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.55])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RFQRY2xHfzNmh5;
-        Tue,  1 Aug 2023 14:38:33 +0800 (CST)
-Received: from localhost.localdomain (10.28.79.22) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 1 Aug 2023 14:41:58 +0800
-From:   Huisong Li <lihuisong@huawei.com>
-To:     <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
-        <robbiek@xsightlabs.com>, <sudeep.holla@arm.com>,
-        <guohanjun@huawei.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <wanghuiqiang@huawei.com>, <zhangzekun11@huawei.com>,
-        <wangxiongfeng2@huawei.com>, <tanxiaofei@huawei.com>,
-        <wangkefeng.wang@huawei.com>, <liuyonglong@huawei.com>,
-        <lihuisong@huawei.com>
-Subject: [PATCH RESEND v4 2/2] mailbox: pcc: Support shared interrupt for multiple subspaces
-Date:   Tue, 1 Aug 2023 14:38:27 +0800
-Message-ID: <20230801063827.25336-3-lihuisong@huawei.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20230801063827.25336-1-lihuisong@huawei.com>
-References: <20221016034043.52227-1-lihuisong@huawei.com>
- <20230801063827.25336-1-lihuisong@huawei.com>
+        with ESMTP id S232868AbjHAJ06 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Aug 2023 05:26:58 -0400
+X-Greylist: delayed 86702 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 01 Aug 2023 02:25:56 PDT
+Received: from mail.cothiafon.pl (mail.cothiafon.pl [217.61.106.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8BF41735
+        for <linux-acpi@vger.kernel.org>; Tue,  1 Aug 2023 02:25:56 -0700 (PDT)
+Received: by mail.cothiafon.pl (Postfix, from userid 1002)
+        id D08B083717; Mon, 31 Jul 2023 10:36:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cothiafon.pl; s=mail;
+        t=1690792627; bh=dwoca0X6C9VXklO/zRgFQCPapTk5LFz4tKaENdvy6Po=;
+        h=Date:From:To:Subject:From;
+        b=ogeyWQRSzeIukeM2vbs6ziTA+l4uV3wl9isN3vPprnXwyYBNN6queLjaeN1kw2pBW
+         CJmuzM+osY2qBvvM1amVrV/UfnBa1UzvfCJGCUUhwI2Ky79l70tCU5slkHVaatBjc7
+         2sQZ8wHHWQ4l2cjnoeupf601gLcYdy9rMWwyESWuiYxjBycUssM2U7fZ09wGMe1tCB
+         5m8B3wmlVqLb4fjjOcLVQqqcBlgherBY/yLcNbF7pYRuPghhJ7n0C8814PMsDlFv9D
+         EoJwHRUFamDaHizy0TsKA6z5ktHZ3ncbemEfPLEApKyJp8npHC3PLz0gkKdQNu/cB7
+         CWS/ia0hCt2Zg==
+Received: by mail.cothiafon.pl for <linux-acpi@vger.kernel.org>; Mon, 31 Jul 2023 08:35:48 GMT
+Message-ID: <20230731095940-0.1.28.ong3.0.1o9r6fqhff@cothiafon.pl>
+Date:   Mon, 31 Jul 2023 08:35:48 GMT
+From:   =?UTF-8?Q? "Rados=C5=82aw_Grabowski" ?= 
+        <radoslaw.grabowski@cothiafon.pl>
+To:     <linux-acpi@vger.kernel.org>
+Subject: W sprawie samochodu
+X-Mailer: mail.cothiafon.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.28.79.22]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-If the platform acknowledge interrupt is level triggered, then it can
-be shared by multiple subspaces provided each one has a unique platform
-interrupt ack preserve and ack set masks.
+Dzie=C5=84 dobry,
 
-If it can be shared, then we can request the irq with IRQF_SHARED and
-IRQF_ONESHOT flags. The first one indicating it can be shared and the
-latter one to keep the interrupt disabled until the hardirq handler
-finished.
+chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
+, je=C5=9Bli chodzi o system monitoringu GPS.
 
-Further, since there is no way to detect if the interrupt is for a given
-channel as the interrupt ack preserve and ack set masks are for clearing
-the interrupt and not for reading the status(in case Irq Ack register
-may be write-only on some platforms), we need a way to identify if the
-given channel is in use and expecting the interrupt.
+Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
+e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
+a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
 
-PCC type0, type1 and type5 do not support shared level triggered interrupt.
-The methods of determining whether a given channel for remaining types
-should respond to an interrupt are as follows:
- - type2: Whether the interrupt belongs to a given channel is only
-          determined by the status field in Generic Communications Channel
-          Shared Memory Region, which is done in rx_callback of PCC client.
- - type3: This channel checks chan_in_use flag first and then checks the
-          command complete bit(value '1' indicates that the command has
-          been completed).
- - type4: Platform ensure that the default value of the command complete
-          bit corresponding to the type4 channel is '1'. This command
-          complete bit is '0' when receive a platform notification.
+Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
+dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
+szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
+mne znaczenie.
 
-The new field, 'chan_in_use' is used by the type only support the
-communication from OSPM to Platform (like type3) and should be completely
-ignored by other types so as to avoid too many type unnecessary checks in
-IRQ handler.
+Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
+b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
 
-Signed-off-by: Huisong Li <lihuisong@huawei.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
----
- drivers/mailbox/pcc.c | 43 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 40 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 80310b48bfb6..94885e411085 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -92,6 +92,13 @@ struct pcc_chan_reg {
-  * @error: PCC register bundle for the error status register
-  * @plat_irq: platform interrupt
-  * @type: PCC subspace type
-+ * @plat_irq_flags: platform interrupt flags
-+ * @chan_in_use: this flag is used just to check if the interrupt needs
-+ *		handling when it is shared. Since only one transfer can occur
-+ *		at a time and mailbox takes care of locking, this flag can be
-+ *		accessed without a lock. Note: the type only support the
-+ *		communication from OSPM to Platform, like type3, use it, and
-+ *		other types completely ignore it.
-  */
- struct pcc_chan_info {
- 	struct pcc_mbox_chan chan;
-@@ -102,6 +109,8 @@ struct pcc_chan_info {
- 	struct pcc_chan_reg error;
- 	int plat_irq;
- 	u8 type;
-+	unsigned int plat_irq_flags;
-+	bool chan_in_use;
- };
- 
- #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
-@@ -225,6 +234,12 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
- 	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
- }
- 
-+static bool pcc_chan_plat_irq_can_be_shared(struct pcc_chan_info *pchan)
-+{
-+	return (pchan->plat_irq_flags & ACPI_PCCT_INTERRUPT_MODE) ==
-+		ACPI_LEVEL_SENSITIVE;
-+}
-+
- static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
- {
- 	u64 val;
-@@ -242,6 +257,7 @@ static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
- 	 * command complete.
- 	 */
- 	val &= pchan->cmd_complete.status_mask;
-+
- 	/*
- 	 * If this is PCC slave subspace channel, and the command complete
- 	 * bit 0 indicates that Platform is sending a notification and OSPM
-@@ -268,6 +284,10 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 	int ret;
- 
- 	pchan = chan->con_priv;
-+	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
-+	    !pchan->chan_in_use)
-+		return IRQ_NONE;
-+
- 	if (!pcc_mbox_cmd_complete_check(pchan))
- 		return IRQ_NONE;
- 
-@@ -289,9 +309,12 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 	/*
- 	 * The PCC slave subspace channel needs to set the command complete bit
- 	 * and ring doorbell after processing message.
-+	 *
-+	 * The PCC master subspace channel clears chan_in_use to free channel.
- 	 */
- 	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
- 		pcc_send_data(chan, NULL);
-+	pchan->chan_in_use = false;
- 
- 	return IRQ_HANDLED;
- }
-@@ -371,7 +394,11 @@ static int pcc_send_data(struct mbox_chan *chan, void *data)
- 	if (ret)
- 		return ret;
- 
--	return pcc_chan_reg_read_modify_write(&pchan->db);
-+	ret = pcc_chan_reg_read_modify_write(&pchan->db);
-+	if (!ret && pchan->plat_irq > 0)
-+		pchan->chan_in_use = true;
-+
-+	return ret;
- }
- 
- /**
-@@ -384,11 +411,14 @@ static int pcc_send_data(struct mbox_chan *chan, void *data)
- static int pcc_startup(struct mbox_chan *chan)
- {
- 	struct pcc_chan_info *pchan = chan->con_priv;
-+	unsigned long irqflags;
- 	int rc;
- 
- 	if (pchan->plat_irq > 0) {
--		rc = devm_request_irq(chan->mbox->dev, pchan->plat_irq, pcc_mbox_irq, 0,
--				      MBOX_IRQ_NAME, chan);
-+		irqflags = pcc_chan_plat_irq_can_be_shared(pchan) ?
-+						IRQF_SHARED | IRQF_ONESHOT : 0;
-+		rc = devm_request_irq(chan->mbox->dev, pchan->plat_irq, pcc_mbox_irq,
-+				      irqflags, MBOX_IRQ_NAME, chan);
- 		if (unlikely(rc)) {
- 			dev_err(chan->mbox->dev, "failed to register PCC interrupt %d\n",
- 				pchan->plat_irq);
-@@ -494,6 +524,7 @@ static int pcc_parse_subspace_irq(struct pcc_chan_info *pchan,
- 		       pcct_ss->platform_interrupt);
- 		return -EINVAL;
- 	}
-+	pchan->plat_irq_flags = pcct_ss->flags;
- 
- 	if (pcct_ss->header.type == ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2) {
- 		struct acpi_pcct_hw_reduced_type2 *pcct2_ss = (void *)pcct_ss;
-@@ -515,6 +546,12 @@ static int pcc_parse_subspace_irq(struct pcc_chan_info *pchan,
- 					"PLAT IRQ ACK");
- 	}
- 
-+	if (pcc_chan_plat_irq_can_be_shared(pchan) &&
-+	    !pchan->plat_irq_ack.gas) {
-+		pr_err("PCC subspace has level IRQ with no ACK register\n");
-+		return -EINVAL;
-+	}
-+
- 	return ret;
- }
- 
--- 
-2.22.0
-
+Pozdrawiam
+Rados=C5=82aw Grabowski
