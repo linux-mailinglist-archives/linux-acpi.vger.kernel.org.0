@@ -2,162 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66577769728
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jul 2023 15:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A28EB76990F
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jul 2023 16:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232212AbjGaNGw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Jul 2023 09:06:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47384 "EHLO
+        id S229488AbjGaOKN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Jul 2023 10:10:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232712AbjGaNFz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jul 2023 09:05:55 -0400
-Received: from mgamail.intel.com (unknown [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C19D32110;
-        Mon, 31 Jul 2023 06:05:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690808715; x=1722344715;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=q2EScVu5xQwFbpZhtg4XSkxNFRub1ScVSfbZWkXhYOA=;
-  b=Jx/nSFEOF3esOcZLGbll9SW4JlDZ+IQFAvqNDhK43pGOYhxjN4p0cXkL
-   oy1ujJzkdQ+tXbBLyACyhUi+rRSZUSoF0JI2bKu2OOWtK34eDn5AUD2su
-   kUQSePWiML1xi8a51VSE8OQSpK1vPxCLdXluUZt91doM2zpnhNKh5l+6K
-   rK0Ckp7wLEurhEjizwKXyeaU+CSN2yASOfb36xBrfmVeGcpZocvI6sZAz
-   Ykq6eSgE3o/AMV2JY4luDQ+H6O1Lmt+SuJR+m1p1tNSg8LJbhOvdIcqGW
-   hJzhX4ZO6G8js9/F6m90aQhhog1dniWmqZFSaJpAqnAXJIlAmoJghYYUl
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="432828945"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; 
-   d="scan'208";a="432828945"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2023 06:04:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="902126234"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; 
-   d="scan'208";a="902126234"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orsmga005.jf.intel.com with ESMTP; 31 Jul 2023 06:04:03 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 31 Jul 2023 06:04:02 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Mon, 31 Jul 2023 06:04:02 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.107)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Mon, 31 Jul 2023 06:04:02 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RwgSs63WXaToL6vdXIDXTQwcaMaGTPWLkhMcMVaswP0Sfb1ej6dSnP77wUe9UCZ/7iFNc7w2UDds2qvoccB6q5Bfi+jyBjI6v63nIAHQtQT+Ty75l31NJFIwHoRu+nielp1Y+vt7LoM7sxZaRSQ4vF/ZmpZmp9GFE8a/717Gje1IzifXQCCBl+a7KreXAPBhi5QkQlt9ZInCt1G6BxsT2M8++FYgbwbhUZ1AggD4bGOXjQNIiymmC8ejJy1x5oYxKd5xGqz1QNRQR50GsGjGTqPlDtkz0Af5kpN4Pluc4rKB7KovQsDL1R6shWnZ/kN3iD2Bgxka7Z/GnchvqV6zDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q2EScVu5xQwFbpZhtg4XSkxNFRub1ScVSfbZWkXhYOA=;
- b=VI3ZeEq9d4C54UHh5KTyU7uGVjp1ePTyW2Aqkuvr87OMHSOqfys0xV01BtoYH15fDQceTUVZqAm3hWJfskchmN0ylaQdMxClrtyP33FSf4FnbgtLBmXqjtz1ZjNN1BSfyOUCPQ6OiJV7ADaYRlwKC+1OPFuv89bNvOFC/zfb7QlF7Rs4UwwEEh4ypvKwC7bS+LCXM0yZ5FSNPqMiqsiVbQXJLqcJtID1dzZx7QhEdbk0RNxq3vmJ+3DFlsAFBQmI835e3Bv0d8ChvhM6WE4Fddf1ALVLRjrRC3W8vDMh8zTvy9U3XrhQHb6XMU9fOu2a+3m8DiWM3yiS5AGiYLf2Rg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6622.namprd11.prod.outlook.com (2603:10b6:a03:478::6)
- by CO6PR11MB5585.namprd11.prod.outlook.com (2603:10b6:5:356::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.43; Mon, 31 Jul
- 2023 13:04:01 +0000
-Received: from SJ0PR11MB6622.namprd11.prod.outlook.com
- ([fe80::75c5:4a90:a6c3:9d8d]) by SJ0PR11MB6622.namprd11.prod.outlook.com
- ([fe80::75c5:4a90:a6c3:9d8d%7]) with mapi id 15.20.6631.026; Mon, 31 Jul 2023
- 13:04:00 +0000
-From:   "Zhang, Rui" <rui.zhang@intel.com>
-To:     "tglx@linutronix.de" <tglx@linutronix.de>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        "bp@alien8.de" <bp@alien8.de>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Tang, Feng" <feng.tang@intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [RFC PATCH] x86/acpi: Ignore invalid x2APIC entries
-Thread-Topic: [RFC PATCH] x86/acpi: Ignore invalid x2APIC entries
-Thread-Index: AQHZrQJTJL9E7mymmECwrZIZTwsK5K/PSoYAgABB5ACAAPBKAIADiDiA
-Date:   Mon, 31 Jul 2023 13:04:00 +0000
-Message-ID: <613df280116378115585d0c483f7e186cffaeb58.camel@intel.com>
-References: <20230702162802.344176-1-rui.zhang@intel.com>
-         <87jzukqjvf.ffs@tglx>
-         <84216c743c6368691bc3fae924c6cbd33805ca9b.camel@intel.com>
-         <87pm4bp54z.ffs@tglx>
-In-Reply-To: <87pm4bp54z.ffs@tglx>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.44.4-0ubuntu1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6622:EE_|CO6PR11MB5585:EE_
-x-ms-office365-filtering-correlation-id: bda69d29-ed56-4cf6-7745-08db91c69bd5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: xVERKIXu7O970uwaeN7gnk9PZbj9UHho4lLXNQOnH2tAaeOiK7qnwcDZomlGi0CUIac7QeOSxSNSoewKMLRpzZU+qeSCoIjx+pMSRqAayXwlQCTPOIDZu/wBuv7x1VFfH2Pypr9zIKEOamsCIih2cbWRjIf85X5HrXpnbGducNPEWO+wDcPQXdwj2eyO5FCVz6enGiLqyOih+1+XG00PU84YHT+cqJ8GKUiVdO7jRtl5Lr3dfnEYJkS8REJHY48/PfnUaZitBaVvfIxdNqvszqBSlLpc9NDAnUgx0Jg9XTd+CaIMODL39PY1jl8MJJwcYKY581mCGJUrF2IhbvyOYmpiYMjQENc/USEBLKyeGdGqAtQJcfZRcI1zlhwZsxysXKQTat8ov54GX7Qmk4f+qfK8fDj3h6r0/0Fq0ajIb03UUUeRE366EKwr9SEUjwX7jS86WQmCAvFxPUVcJnOzW7TInK0NmkqBUfEx7yOozKOMX7kXzvoTCYL6xdh17hGeD2knvKVuFLwI8hrFGqXvj1eofmdAcOUgm3yvBXOxWUa1BHAnVGPnfVLOBeUhqJ/zaUNaCJF17nPCkxDqxPtJJTQB5OzFaUgnG4F+5U9XJPc=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB6622.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(39860400002)(366004)(396003)(136003)(346002)(451199021)(38100700002)(82960400001)(122000001)(86362001)(38070700005)(36756003)(6512007)(966005)(71200400001)(478600001)(6486002)(2616005)(186003)(26005)(8936002)(6506007)(8676002)(5660300002)(66556008)(76116006)(91956017)(66476007)(66946007)(54906003)(110136005)(64756008)(2906002)(66446008)(41300700001)(4326008)(316002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?YkVSWXo3cXBnN1lMazlmazRYQ2VVd1dya3A2M1h2dlg3anVuNHkwZXROWHhm?=
- =?utf-8?B?RmhOZUF5YjlFUXlsQkNveExNeGlJbWxmditLZnNXaXhUL3ZucGZLK1RaSG5y?=
- =?utf-8?B?RjJKY0F2TXIzbVM1UDl3RGx6UmJQWE1ZTWVPdWFsbjRPQ2ZlY0lTSHZrbU1o?=
- =?utf-8?B?eVlRNHpIT1pjTlAva1pJR2l2WkRqTjZPa3dLbnAwVnFsYloxUFFRNUVvTGlh?=
- =?utf-8?B?OHhROGM1cWY3VHIwYjM1QWJBQmZxSEtmemErMi9UU3JCdzFIR0JmZFRtMWRu?=
- =?utf-8?B?SkNTNjVLbVhYN0QxYlh5WTdNbm9qcVZUbVovRGR3ZS9icUtMbHV5NjVrU2hn?=
- =?utf-8?B?dUJnaGZia3hmbzZWVmF4L1BBZ1ZVcDBXUmNQRDFMbjIyMWJscVo3R241bTNp?=
- =?utf-8?B?TThyWGNxRW9IMTRnaGlsVlhaNUQwYlhWLzA2eTNDTDZVbXdNcCtCMUJLaUVU?=
- =?utf-8?B?czAwZDF2UTBsOG1KR1pRS1hKckkxUUVodHk4ZTBWZDhrWUkvclk5bkg0cUFs?=
- =?utf-8?B?MW9JTm5xMDQ5YWdUanUyRFJOUVd5SG43bU82Umx0VGY0c2tEV2Y0V2lrWFNx?=
- =?utf-8?B?SDR4cmZpZ2t5QlA5L3oyMEplUUhWRVcwWk9UTklSeWViRExhTmI1N3lSY1Z0?=
- =?utf-8?B?dk1DZzRBODBqR09uQkNtYmh2NTRPVzRrczBTZndBQWFTck9vMWZJL1VEU0pI?=
- =?utf-8?B?U2hVbTVSUklkeDJib0dQVHU4bkVYbDRXZ01jeEJwMENqVys5KzlDV3V4c0NH?=
- =?utf-8?B?MFZtVVFZTXpJZnAvL3dNWWp6UVhpQjV5Qk9yT2E4bFJhcG5XY3BhRVFpM0Vp?=
- =?utf-8?B?eThFREMxRmw2R3lDc0NROVdpNTVhUVZsSFVQZXBodFpYTS96RkRHZndGTkF6?=
- =?utf-8?B?Y2NzWXpHSUR3VmJtbVBHZFFHT0JuR21OM0o0MGVnRGxjYzd0aVFka1ZsRkNR?=
- =?utf-8?B?N1ZrWGFJeG1HMmMxZGxpVnhKODRoditQTFVoY2JiejAxVHZ4aUFvMi9WVjFj?=
- =?utf-8?B?T2xiNDFUbTVjb3dPU2p1a0ljWTNyNzc1c1BSNnpINVlzN29hRUVaRUswRTNX?=
- =?utf-8?B?eUZ5TUtDdzY5ZTVKbDZyRXdVck54ODR1a0hsMlFtVlZCRTFuNnRFZUdTV2xU?=
- =?utf-8?B?R1owOFlVdDZ4MVo2NXNHQlY2Y1ZWZmhlMlpMMEo5MGM5UXNnajdyQS95UXdQ?=
- =?utf-8?B?MWRqU2k0c2twcUhjWGtMcHd1cnBxaHZkTDU0bWJvdWRYOG5Bam1TdndnSGlQ?=
- =?utf-8?B?ZU1OSFFmVXN4M1lGdVlEcnhLUW5nTE82Q2pxK2dYL3l6NU9JK1VaUFVoaVo0?=
- =?utf-8?B?RjVrNWpsS3pLQ3JLWCtSNTFJUmRIL0s5UnhGTmxkekFpZEI0SHRDVmVvczlt?=
- =?utf-8?B?UTFKbmE1MXpRM2ErT2NqTjBweHliTHhVa2FKRTViRndXY0l4cjFQWUYzZnBM?=
- =?utf-8?B?Ym9QREZpRmNnL2IrVythajhGVCtwT3kvVGhqRmQxellvaUxWRDZKMm96SnVG?=
- =?utf-8?B?SHlkV2tCNXBMaGZVcGZQK2FjeVdXdVJxV0UvU01hM0lMRDY3N0hoKzZyWWhD?=
- =?utf-8?B?azZiTVVIdjhrcFdmYmxwUVdXaGlxU0xaOXhxdWdKSWtNYUU5YU5xenVVNW9i?=
- =?utf-8?B?QXNCWTcxWXdLWWlGd0J4ZmVVd1NROTJ3T1ZNcmI2S3ZIRGtJM1pJVDFZd0Q0?=
- =?utf-8?B?bEtEdU9JamtLaVU2UmJvVHkweDdYSzgvMEM1UkVLOW1nT0lnK2pFeXIxZC9n?=
- =?utf-8?B?eFJvTHZjMDU3NW43b1BQMEpPMkx3ZTNGUjM1emg4ZWsrb1k3ZEtDZDMva1F5?=
- =?utf-8?B?TmYvZEhlOXVzdnNLUjRONHJpWS80Yjc3d0JWMDNFRkkvczI4MjBPaFVWdW1Q?=
- =?utf-8?B?SDJFRWNwRGlCUDBQeVhta1gzV21JNk5nN1FEdEtCMHErdnJWQVZTME1tcEt1?=
- =?utf-8?B?NlpxN2IrTy9BSmRsNnJBSTRJKzVIRG9TcUNIK3p6MGc4MXVQQ05VUVZ0b0VM?=
- =?utf-8?B?bVNKM0tJb1FaTzdEdllsTm9oNnU5dm4yNS8yS203aGlkL1dPRkdlVkhsbGta?=
- =?utf-8?B?cGtBNVBQSVNPaTB3RVNoTGVuMlJ3SXM5b0EzdkZkUjRpMDYzV1dBWHhTT3ZR?=
- =?utf-8?Q?usUQVbgSh6gCWPDSaC5V7JWQR?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <12FA0D2C7B23C6468B74E30388D441D3@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        with ESMTP id S229833AbjGaOKM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jul 2023 10:10:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 449C6E5
+        for <linux-acpi@vger.kernel.org>; Mon, 31 Jul 2023 07:09:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690812568;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=WD2g6uj+bczangBD0M6t4+N3tf+625pl7skoKavki5M=;
+        b=Y84A6mWPWtvvUcZ2pGjEdrM7DMoJB5bX57excPX1Nkirrx7SOBWBnbKAym3/nRg0z7ByrR
+        Nr6kWKuoROJOI48oaEmVYjVPlCRC9Y8iEyIN2zOeq+2+PpZ0luhvBtY7pGNRnALJ0Rl6Ci
+        /n1z3AmBR1JjvxH3TamiO5SFbH/+DQA=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-361-6K6NjqgPNw2G5QTcR1yfDw-1; Mon, 31 Jul 2023 10:09:26 -0400
+X-MC-Unique: 6K6NjqgPNw2G5QTcR1yfDw-1
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2b934194964so40857211fa.1
+        for <linux-acpi@vger.kernel.org>; Mon, 31 Jul 2023 07:09:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690812565; x=1691417365;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WD2g6uj+bczangBD0M6t4+N3tf+625pl7skoKavki5M=;
+        b=if1vIWdxahGpJ/+k3X91s/ybCcMWmzWZ8dYfrn6AilAV6Kb6SGOE6aZVR8VyLlmgrQ
+         xQEVP/szbzdnSWWuB0eUyJdulASVBPGvACuRjY5sfl0lNa4MhNDzemARazK2E6NA9aob
+         QcMdlId0ODL6dpL6wuPIZmugbHrB6XoBVQuQEa02Ln+545bgzUfI8hGCFR/w6imX9wSW
+         G3OXqVKvhiiV4nx7QoyShqLidx+sRIUwCn4SzTbL/OcImUKV8uo4fOE5c3pz2ACgdGkC
+         hmckzAEgpUNB9zb0qhRE9WsTtQvUMaTELPtViuv0Z462kpCoIiSPf6JZ+vvJKr6B3qZH
+         d4yA==
+X-Gm-Message-State: ABy/qLZDSUnWmdRPAH/TjiPIItqdOssuu9wrYlBKirogbJn842LeWY7X
+        +E9tsKO2v1zJ5ju+XUbGQ2F8HDdOtzAAzC55JLYOZooNluzGXSwP+YknWqWWyNC9DfKTRpRtcT+
+        E65SeMrC3Zej7CTx2enHgHg==
+X-Received: by 2002:a2e:3e07:0:b0:2b9:dd5d:5d0c with SMTP id l7-20020a2e3e07000000b002b9dd5d5d0cmr35017lja.52.1690812565534;
+        Mon, 31 Jul 2023 07:09:25 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlF97yOz7HL49mkqe4euZC2DWJ1w3zEkXD2P098ai/agoHgCZ9grdbaWYw8ZmQ8KTF5KXSvw7A==
+X-Received: by 2002:a2e:3e07:0:b0:2b9:dd5d:5d0c with SMTP id l7-20020a2e3e07000000b002b9dd5d5d0cmr35001lja.52.1690812565150;
+        Mon, 31 Jul 2023 07:09:25 -0700 (PDT)
+Received: from [10.40.98.142] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id m17-20020a170906849100b00992d70f8078sm6206032ejx.106.2023.07.31.07.09.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Jul 2023 07:09:23 -0700 (PDT)
+Message-ID: <f4497997-83eb-3739-f3b9-e674aec97e08@redhat.com>
+Date:   Mon, 31 Jul 2023 16:09:22 +0200
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6622.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bda69d29-ed56-4cf6-7745-08db91c69bd5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jul 2023 13:04:00.6702
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: kRvPWS+VD6XFp66yuqayyF/8Luou7ElDfabXhYLCGIThDA8cQJ8HU66578AjOuKcuSb0PENvHWMbLjoUczJI9w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR11MB5585
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3] ACPI: scan: Create platform device for CS35L56
+Content-Language: en-US
+To:     Richard Fitzgerald <rf@opensource.cirrus.com>, rafael@kernel.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com,
+        Simon Trimmer <simont@opensource.cirrus.com>
+References: <20230728111345.7224-1-rf@opensource.cirrus.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20230728111345.7224-1-rf@opensource.cirrus.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -166,47 +82,90 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-T24gU2F0LCAyMDIzLTA3LTI5IGF0IDA5OjA3ICswMjAwLCBUaG9tYXMgR2xlaXhuZXIgd3JvdGU6
-Cj4gT24gRnJpLCBKdWwgMjggMjAyMyBhdCAxNjo0NywgUnVpIFpoYW5nIHdyb3RlOgo+ID4gT24g
-RnJpLCAyMDIzLTA3LTI4IGF0IDE0OjUxICswMjAwLCBUaG9tYXMgR2xlaXhuZXIgd3JvdGU6Cj4g
-PiA+IEFzIHRoZSBjYWxsIHNpdGVzIGR1cmluZyBNQURUIHBhcnNpbmcgaWdub3JlIHRoZSByZXR1
-cm4gdmFsdWUKPiA+ID4gYW55d2F5LAo+ID4gPiB0aGVyZSBpcyBubyBoYXJtIGFuZCB0aGlzIGlz
-IGEgcHJvcGVyIGRlZmVuc2UgYWdhaW5zdCBicm9rZW4KPiA+ID4gdGFibGVzCj4gPiA+IHdoaWNo
-IGVudW1lcmF0ZSBhbiBBUElDIHR3aWNlLgo+ID4gCj4gPiBZZWFoLCB0aGlzIGNhbiBmaXggdGhl
-IGR1cGxpY2F0ZSBBUElDIElEIGlzc3VlLgo+IAo+IFdlIHdhbnQgaXQgaW5kZXBlbmRlbnQgb2Yg
-dGhlIGJlbG93Lgo+IAo+ID4gQnV0IGZvciB4MkFQSUMgQ1BVcyB3aXRoIHVuaXF1ZSBBUElDIElE
-LCBidXQgc21hbGxlciB0aGFuIDI1NSwKPiA+IHNob3VsZAo+ID4gd2Ugc3RpbGwgZW51bWVyYXRl
-IHRoZW0gd2hlbiB3ZSBhbHJlYWR5IGhhdmUgdmFsaWQgTEFQSUMgZW50cmllcz8KPiA+IAo+ID4g
-Rm9yIHRoZSBJdmVicmlkZ2UtRVAgMi1zb2NrZXQgc3lzdGVtLAo+ID4gCj4gPiBMQVBJQzogQVBJ
-QyBJRCBmcm9tIDB4MCAtIDB4QiwgMHgxMCAtIDB4MUIsIDB4MjAgLSAweDJCLCAweDMwIC0KPiA+
-IDB4M0IKPiA+IHgyQVBJQzogQVBJQyBJRCBmcm9tIDB4MCAtIDB4NzcKPiA+IAo+ID4gIyBjcHVp
-ZCAtMSAtbCAweGIgLXMgMQo+ID4gQ1BVOgo+ID4gwqDCoMKgwqDCoCAtLS0gbGV2ZWwgMSAoY29y
-ZSkgLS0tCj4gPiDCoMKgwqDCoMKgIGJpdHMgdG8gc2hpZnQgQVBJQyBJRCB0byBnZXQgbmV4dCA9
-IDB4NSAoNSkKPiA+IMKgwqDCoMKgwqAgbG9naWNhbCBwcm9jZXNzb3JzIGF0IHRoaXMgbGV2ZWzC
-oCA9IDB4MTggKDI0KQo+ID4gwqDCoMKgwqDCoCBsZXZlbCBudW1iZXLCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgPSAweDEgKDEpCj4gPiDCoMKgwqDCoMKgIGxldmVs
-IHR5cGXCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgID0gY29y
-ZSAoMikKPiA+IMKgwqDCoMKgwqAgZXh0ZW5kZWQgQVBJQyBJRMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAgPSAwCj4gPiAKPiA+IElmIHdlIHN0aWxsIGVudW1lcmF0ZXMgYWxsIHRo
-ZSB4MkFQSUMgZW50cmllcywKPiA+IDEuIHdlIGdvdCA3MiBleHRyYSBwb3NzaWJsZSBDUFVzIGZy
-b20geDJBUElDCj4gPiAyLsKgd2l0aCB0aGUgcGF0Y2ggYXQKPiA+IGh0dHBzOi8vbG9yZS5rZXJu
-ZWwub3JnL2FsbC84N2VkbTM2cXFiLmZmc0B0Z2x4L8KgLAo+ID4gX21heF9sb2dpY2FsX3BhY2th
-Z2VzIGlzIHNldCB0byA0IGluc3RlYWQgb2YgMi4KPiA+IAo+ID4gdGhpcyBpcyBzdGlsbCBhIHBy
-b2JsZW0sIHJpZ2h0Pwo+IAo+IFllcywgeW91IGFyZSByaWdodC4KPiAKPiBCdXQgSSBzdGlsbCBk
-b24ndCBsaWtlIHRoZSBpbmRpcmVjdGlvbiBvZiB0aGUgcmV0dXJuZWQgQ1BVIG51bWJlci4KPiBJ
-dCdzCj4gYW4gQUNQSSBzZWxmY29udGFpbmVkIGlzc3VlLCBubz8KPiAKPiBTbyBzb21ldGhpbmcg
-bGlrZSB0aGlzIHNob3VsZCBkbyB0aGUgdHJpY2s6Cj4gCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoGNvdW50ID0KPiBhY3BpX3RhYmxlX3BhcnNlX21hZHQoQUNQSV9NQURUX1RZUEVf
-TE9DQUxfQVBJQywKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYWNwaV9wYXJzZV9sYXBpYywKPiBN
-QVhfTE9DQUxfQVBJQyk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChjb3Vu
-dCkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGhhc19s
-YXBpY19jcHVzID0gdHJ1ZTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgeDJjb3Vu
-dCA9Cj4gYWNwaV90YWJsZV9wYXJzZV9tYWR0KEFDUElfTUFEVF9UWVBFX0xPQ0FMX1gyQVBJQywK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYWNwaV9wYXJzZV94MmFwaWMsCj4gTUFYX0xPQ0FMX0FQ
-SUMpOwo+IMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqDCoMKgwqDCoMKgwqDCoGlmICghY291bnQgJiYg
-IXgyY291bnQpIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByX2VycigiTm8g
-TEFQSUMgZW50cmllcyBwcmVzZW50XG4iKTsKCkFncmVlZCwgdGhhbmtzIGZvciB0aGUgYWR2aWNl
-LgpMZXQgbWUgdHJ5IHRvIGRvIHRoaXMgaW4gdjIgcGF0Y2ggc2VyaWVzLgoKdGhhbmtzLApydWkK
-Cg==
+Hi,
+
+On 7/28/23 13:13, Richard Fitzgerald wrote:
+> From: Simon Trimmer <simont@opensource.cirrus.com>
+> 
+> The ACPI device CSC3556 is a Cirrus Logic CS35L56 mono amplifier which
+> is used in multiples, and can be connected either to I2C or SPI.
+> 
+> There will be multiple instances under the same Device() node. Add it
+> to ignore_serial_bus_ids and handle it in the serial-multi-instantiate
+> driver.
+> 
+> There can be a 5th I2cSerialBusV2, but this is an alias address and doesn't
+> represent a real device. Ignore this by having a dummy 5th entry in the
+> serial-multi-instantiate instance list with the name of a non-existent
+> driver, on the same pattern as done for bsg2150.
+> 
+> Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+> Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+
+Thank you for your patch, I've applied this patch to my fixes
+branch:
+https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=fixes
+
+Note it will show up in my fixes branch once I've pushed my
+local branch there, which might take a while.
+
+I will include this patch in my next fixes pull-req to Linus
+for the current kernel development cycle.
+
+Regards,
+
+Hans
+
+
+
+
+> ---
+>  drivers/acpi/scan.c                             |  1 +
+>  drivers/platform/x86/serial-multi-instantiate.c | 14 ++++++++++++++
+>  2 files changed, 15 insertions(+)
+> 
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index 5b145f1aaa1b..87e385542576 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -1714,6 +1714,7 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
+>  		{"BSG1160", },
+>  		{"BSG2150", },
+>  		{"CSC3551", },
+> +		{"CSC3556", },
+>  		{"INT33FE", },
+>  		{"INT3515", },
+>  		/* Non-conforming _HID for Cirrus Logic already released */
+> diff --git a/drivers/platform/x86/serial-multi-instantiate.c b/drivers/platform/x86/serial-multi-instantiate.c
+> index 2c2abf69f049..8158e3cf5d6d 100644
+> --- a/drivers/platform/x86/serial-multi-instantiate.c
+> +++ b/drivers/platform/x86/serial-multi-instantiate.c
+> @@ -329,6 +329,19 @@ static const struct smi_node cs35l41_hda = {
+>  	.bus_type = SMI_AUTO_DETECT,
+>  };
+>  
+> +static const struct smi_node cs35l56_hda = {
+> +	.instances = {
+> +		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
+> +		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
+> +		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
+> +		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
+> +		/* a 5th entry is an alias address, not a real device */
+> +		{ "cs35l56-hda_dummy_dev" },
+> +		{}
+> +	},
+> +	.bus_type = SMI_AUTO_DETECT,
+> +};
+> +
+>  /*
+>   * Note new device-ids must also be added to ignore_serial_bus_ids in
+>   * drivers/acpi/scan.c: acpi_device_enumeration_by_parent().
+> @@ -337,6 +350,7 @@ static const struct acpi_device_id smi_acpi_ids[] = {
+>  	{ "BSG1160", (unsigned long)&bsg1160_data },
+>  	{ "BSG2150", (unsigned long)&bsg2150_data },
+>  	{ "CSC3551", (unsigned long)&cs35l41_hda },
+> +	{ "CSC3556", (unsigned long)&cs35l56_hda },
+>  	{ "INT3515", (unsigned long)&int3515_data },
+>  	/* Non-conforming _HID for Cirrus Logic already released */
+>  	{ "CLSA0100", (unsigned long)&cs35l41_hda },
+
