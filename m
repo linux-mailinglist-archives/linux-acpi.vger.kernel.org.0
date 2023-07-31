@@ -2,79 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B65F76969C
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jul 2023 14:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66577769728
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jul 2023 15:06:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230225AbjGaMpO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Jul 2023 08:45:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33550 "EHLO
+        id S232212AbjGaNGw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Jul 2023 09:06:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229721AbjGaMpM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jul 2023 08:45:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C37510E3
-        for <linux-acpi@vger.kernel.org>; Mon, 31 Jul 2023 05:44:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690807463;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=xTxcUfYOjPrGC1oXg0uj7mlFOUQx7W6Anvy/kcXHhKk=;
-        b=eDL/d3erMm9xV2wW/x5m+xba8zl9c+zvcPsQ5+HM3ee/IZKf67tD8W46Qw13MXHZMHP+Vr
-        7VgeGj9FLpg9yQZRZacJebCF2lDyHOwC6LkdC5tx4CgA5owraZll+3xq7BvnRDxhBs1ioY
-        Ei8oE+Nka67JEPxAy8r70JmIcFqjtN8=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-261-g6CkE2XBNa-DtoWPUgj_hw-1; Mon, 31 Jul 2023 08:44:21 -0400
-X-MC-Unique: g6CkE2XBNa-DtoWPUgj_hw-1
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-51a5296eb8eso3077996a12.2
-        for <linux-acpi@vger.kernel.org>; Mon, 31 Jul 2023 05:44:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690807460; x=1691412260;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xTxcUfYOjPrGC1oXg0uj7mlFOUQx7W6Anvy/kcXHhKk=;
-        b=BJ2Ozqr1Tq6KJ95LdkImTPsb/y6aAeZDRSLC1/jUr54l4BqGWKTRNoDwdUI+UWr9CM
-         FD8qeqPuN9/5Li5KE04e4oLSAN8mbC7CbpNaOXQUCZaNiwOrtZRQlpxed/3IeSOr9zp5
-         GmudZ8A6rg8oA0PDu65gzjqoUyXvRK3j9UvZs4UgpCsNtijLZGbZ1ydQVf+WWq527EX5
-         ZK2XvXVnpnFeEgW0aemcollgwCBO3ziglmJ9Yx6b/1iPePL7Fw2oMo6pAG/QH4+vid7R
-         Gf/3vMifCjRxJvsCT9LVNfdkGCXTDjjvT/0jmSSBcW6yYl4eeNFDtD7bPZD4zCKb7Vbn
-         POqw==
-X-Gm-Message-State: ABy/qLYFD9E7fAO4ZmSOzdT4Ew0GqIWG52M8ClyNTXkNHKKDU1tAY29b
-        Py7lkWhyvTWQlvCTLe+a7C3jLddIva7WSwePJuxaCmHC9yxE+Keu6qUTJtzlpocq0wqjm0gBd71
-        nJWNvN4KGbBL+LUmOj8DEgA==
-X-Received: by 2002:a05:6402:7c6:b0:522:3ad4:9c9c with SMTP id u6-20020a05640207c600b005223ad49c9cmr8397397edy.31.1690807460381;
-        Mon, 31 Jul 2023 05:44:20 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEQMaCfOYRlxGYzSDAQWyUJ3rwJ51wtH1qjUWwEHuAFx6lYlF9JXjrn6WBMqxfLNA76HmNucA==
-X-Received: by 2002:a05:6402:7c6:b0:522:3ad4:9c9c with SMTP id u6-20020a05640207c600b005223ad49c9cmr8397371edy.31.1690807459937;
-        Mon, 31 Jul 2023 05:44:19 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id b8-20020aa7c908000000b0052255cbad8dsm5403210edt.94.2023.07.31.05.44.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jul 2023 05:44:19 -0700 (PDT)
-Date:   Mon, 31 Jul 2023 14:44:18 +0200
-From:   Igor Mammedov <imammedo@redhat.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, terraluna977@gmail.com,
-        bhelgaas@google.com, linux-pci@vger.kernel.org, mst@redhat.com,
-        rafael@kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 1/1] PCI: acpiphp:: use
- pci_assign_unassigned_bridge_resources() only if bus->self not NULL
-Message-ID: <20230731144418.1d9c2baf@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230729215009.GA820749@bhelgaas>
-References: <20230728113216.3140577c@imammedo.users.ipa.redhat.com>
-        <20230729215009.GA820749@bhelgaas>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+        with ESMTP id S232712AbjGaNFz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jul 2023 09:05:55 -0400
+Received: from mgamail.intel.com (unknown [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C19D32110;
+        Mon, 31 Jul 2023 06:05:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690808715; x=1722344715;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=q2EScVu5xQwFbpZhtg4XSkxNFRub1ScVSfbZWkXhYOA=;
+  b=Jx/nSFEOF3esOcZLGbll9SW4JlDZ+IQFAvqNDhK43pGOYhxjN4p0cXkL
+   oy1ujJzkdQ+tXbBLyACyhUi+rRSZUSoF0JI2bKu2OOWtK34eDn5AUD2su
+   kUQSePWiML1xi8a51VSE8OQSpK1vPxCLdXluUZt91doM2zpnhNKh5l+6K
+   rK0Ckp7wLEurhEjizwKXyeaU+CSN2yASOfb36xBrfmVeGcpZocvI6sZAz
+   Ykq6eSgE3o/AMV2JY4luDQ+H6O1Lmt+SuJR+m1p1tNSg8LJbhOvdIcqGW
+   hJzhX4ZO6G8js9/F6m90aQhhog1dniWmqZFSaJpAqnAXJIlAmoJghYYUl
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="432828945"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; 
+   d="scan'208";a="432828945"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2023 06:04:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="902126234"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; 
+   d="scan'208";a="902126234"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orsmga005.jf.intel.com with ESMTP; 31 Jul 2023 06:04:03 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 31 Jul 2023 06:04:02 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Mon, 31 Jul 2023 06:04:02 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.107)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Mon, 31 Jul 2023 06:04:02 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RwgSs63WXaToL6vdXIDXTQwcaMaGTPWLkhMcMVaswP0Sfb1ej6dSnP77wUe9UCZ/7iFNc7w2UDds2qvoccB6q5Bfi+jyBjI6v63nIAHQtQT+Ty75l31NJFIwHoRu+nielp1Y+vt7LoM7sxZaRSQ4vF/ZmpZmp9GFE8a/717Gje1IzifXQCCBl+a7KreXAPBhi5QkQlt9ZInCt1G6BxsT2M8++FYgbwbhUZ1AggD4bGOXjQNIiymmC8ejJy1x5oYxKd5xGqz1QNRQR50GsGjGTqPlDtkz0Af5kpN4Pluc4rKB7KovQsDL1R6shWnZ/kN3iD2Bgxka7Z/GnchvqV6zDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q2EScVu5xQwFbpZhtg4XSkxNFRub1ScVSfbZWkXhYOA=;
+ b=VI3ZeEq9d4C54UHh5KTyU7uGVjp1ePTyW2Aqkuvr87OMHSOqfys0xV01BtoYH15fDQceTUVZqAm3hWJfskchmN0ylaQdMxClrtyP33FSf4FnbgtLBmXqjtz1ZjNN1BSfyOUCPQ6OiJV7ADaYRlwKC+1OPFuv89bNvOFC/zfb7QlF7Rs4UwwEEh4ypvKwC7bS+LCXM0yZ5FSNPqMiqsiVbQXJLqcJtID1dzZx7QhEdbk0RNxq3vmJ+3DFlsAFBQmI835e3Bv0d8ChvhM6WE4Fddf1ALVLRjrRC3W8vDMh8zTvy9U3XrhQHb6XMU9fOu2a+3m8DiWM3yiS5AGiYLf2Rg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6622.namprd11.prod.outlook.com (2603:10b6:a03:478::6)
+ by CO6PR11MB5585.namprd11.prod.outlook.com (2603:10b6:5:356::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.43; Mon, 31 Jul
+ 2023 13:04:01 +0000
+Received: from SJ0PR11MB6622.namprd11.prod.outlook.com
+ ([fe80::75c5:4a90:a6c3:9d8d]) by SJ0PR11MB6622.namprd11.prod.outlook.com
+ ([fe80::75c5:4a90:a6c3:9d8d%7]) with mapi id 15.20.6631.026; Mon, 31 Jul 2023
+ 13:04:00 +0000
+From:   "Zhang, Rui" <rui.zhang@intel.com>
+To:     "tglx@linutronix.de" <tglx@linutronix.de>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        "bp@alien8.de" <bp@alien8.de>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Tang, Feng" <feng.tang@intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [RFC PATCH] x86/acpi: Ignore invalid x2APIC entries
+Thread-Topic: [RFC PATCH] x86/acpi: Ignore invalid x2APIC entries
+Thread-Index: AQHZrQJTJL9E7mymmECwrZIZTwsK5K/PSoYAgABB5ACAAPBKAIADiDiA
+Date:   Mon, 31 Jul 2023 13:04:00 +0000
+Message-ID: <613df280116378115585d0c483f7e186cffaeb58.camel@intel.com>
+References: <20230702162802.344176-1-rui.zhang@intel.com>
+         <87jzukqjvf.ffs@tglx>
+         <84216c743c6368691bc3fae924c6cbd33805ca9b.camel@intel.com>
+         <87pm4bp54z.ffs@tglx>
+In-Reply-To: <87pm4bp54z.ffs@tglx>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.44.4-0ubuntu1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6622:EE_|CO6PR11MB5585:EE_
+x-ms-office365-filtering-correlation-id: bda69d29-ed56-4cf6-7745-08db91c69bd5
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: xVERKIXu7O970uwaeN7gnk9PZbj9UHho4lLXNQOnH2tAaeOiK7qnwcDZomlGi0CUIac7QeOSxSNSoewKMLRpzZU+qeSCoIjx+pMSRqAayXwlQCTPOIDZu/wBuv7x1VFfH2Pypr9zIKEOamsCIih2cbWRjIf85X5HrXpnbGducNPEWO+wDcPQXdwj2eyO5FCVz6enGiLqyOih+1+XG00PU84YHT+cqJ8GKUiVdO7jRtl5Lr3dfnEYJkS8REJHY48/PfnUaZitBaVvfIxdNqvszqBSlLpc9NDAnUgx0Jg9XTd+CaIMODL39PY1jl8MJJwcYKY581mCGJUrF2IhbvyOYmpiYMjQENc/USEBLKyeGdGqAtQJcfZRcI1zlhwZsxysXKQTat8ov54GX7Qmk4f+qfK8fDj3h6r0/0Fq0ajIb03UUUeRE366EKwr9SEUjwX7jS86WQmCAvFxPUVcJnOzW7TInK0NmkqBUfEx7yOozKOMX7kXzvoTCYL6xdh17hGeD2knvKVuFLwI8hrFGqXvj1eofmdAcOUgm3yvBXOxWUa1BHAnVGPnfVLOBeUhqJ/zaUNaCJF17nPCkxDqxPtJJTQB5OzFaUgnG4F+5U9XJPc=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB6622.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(39860400002)(366004)(396003)(136003)(346002)(451199021)(38100700002)(82960400001)(122000001)(86362001)(38070700005)(36756003)(6512007)(966005)(71200400001)(478600001)(6486002)(2616005)(186003)(26005)(8936002)(6506007)(8676002)(5660300002)(66556008)(76116006)(91956017)(66476007)(66946007)(54906003)(110136005)(64756008)(2906002)(66446008)(41300700001)(4326008)(316002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?YkVSWXo3cXBnN1lMazlmazRYQ2VVd1dya3A2M1h2dlg3anVuNHkwZXROWHhm?=
+ =?utf-8?B?RmhOZUF5YjlFUXlsQkNveExNeGlJbWxmditLZnNXaXhUL3ZucGZLK1RaSG5y?=
+ =?utf-8?B?RjJKY0F2TXIzbVM1UDl3RGx6UmJQWE1ZTWVPdWFsbjRPQ2ZlY0lTSHZrbU1o?=
+ =?utf-8?B?eVlRNHpIT1pjTlAva1pJR2l2WkRqTjZPa3dLbnAwVnFsYloxUFFRNUVvTGlh?=
+ =?utf-8?B?OHhROGM1cWY3VHIwYjM1QWJBQmZxSEtmemErMi9UU3JCdzFIR0JmZFRtMWRu?=
+ =?utf-8?B?SkNTNjVLbVhYN0QxYlh5WTdNbm9qcVZUbVovRGR3ZS9icUtMbHV5NjVrU2hn?=
+ =?utf-8?B?dUJnaGZia3hmbzZWVmF4L1BBZ1ZVcDBXUmNQRDFMbjIyMWJscVo3R241bTNp?=
+ =?utf-8?B?TThyWGNxRW9IMTRnaGlsVlhaNUQwYlhWLzA2eTNDTDZVbXdNcCtCMUJLaUVU?=
+ =?utf-8?B?czAwZDF2UTBsOG1KR1pRS1hKckkxUUVodHk4ZTBWZDhrWUkvclk5bkg0cUFs?=
+ =?utf-8?B?MW9JTm5xMDQ5YWdUanUyRFJOUVd5SG43bU82Umx0VGY0c2tEV2Y0V2lrWFNx?=
+ =?utf-8?B?SDR4cmZpZ2t5QlA5L3oyMEplUUhWRVcwWk9UTklSeWViRExhTmI1N3lSY1Z0?=
+ =?utf-8?B?dk1DZzRBODBqR09uQkNtYmh2NTRPVzRrczBTZndBQWFTck9vMWZJL1VEU0pI?=
+ =?utf-8?B?U2hVbTVSUklkeDJib0dQVHU4bkVYbDRXZ01jeEJwMENqVys5KzlDV3V4c0NH?=
+ =?utf-8?B?MFZtVVFZTXpJZnAvL3dNWWp6UVhpQjV5Qk9yT2E4bFJhcG5XY3BhRVFpM0Vp?=
+ =?utf-8?B?eThFREMxRmw2R3lDc0NROVdpNTVhUVZsSFVQZXBodFpYTS96RkRHZndGTkF6?=
+ =?utf-8?B?Y2NzWXpHSUR3VmJtbVBHZFFHT0JuR21OM0o0MGVnRGxjYzd0aVFka1ZsRkNR?=
+ =?utf-8?B?N1ZrWGFJeG1HMmMxZGxpVnhKODRoditQTFVoY2JiejAxVHZ4aUFvMi9WVjFj?=
+ =?utf-8?B?T2xiNDFUbTVjb3dPU2p1a0ljWTNyNzc1c1BSNnpINVlzN29hRUVaRUswRTNX?=
+ =?utf-8?B?eUZ5TUtDdzY5ZTVKbDZyRXdVck54ODR1a0hsMlFtVlZCRTFuNnRFZUdTV2xU?=
+ =?utf-8?B?R1owOFlVdDZ4MVo2NXNHQlY2Y1ZWZmhlMlpMMEo5MGM5UXNnajdyQS95UXdQ?=
+ =?utf-8?B?MWRqU2k0c2twcUhjWGtMcHd1cnBxaHZkTDU0bWJvdWRYOG5Bam1TdndnSGlQ?=
+ =?utf-8?B?ZU1OSFFmVXN4M1lGdVlEcnhLUW5nTE82Q2pxK2dYL3l6NU9JK1VaUFVoaVo0?=
+ =?utf-8?B?RjVrNWpsS3pLQ3JLWCtSNTFJUmRIL0s5UnhGTmxkekFpZEI0SHRDVmVvczlt?=
+ =?utf-8?B?UTFKbmE1MXpRM2ErT2NqTjBweHliTHhVa2FKRTViRndXY0l4cjFQWUYzZnBM?=
+ =?utf-8?B?Ym9QREZpRmNnL2IrVythajhGVCtwT3kvVGhqRmQxellvaUxWRDZKMm96SnVG?=
+ =?utf-8?B?SHlkV2tCNXBMaGZVcGZQK2FjeVdXdVJxV0UvU01hM0lMRDY3N0hoKzZyWWhD?=
+ =?utf-8?B?azZiTVVIdjhrcFdmYmxwUVdXaGlxU0xaOXhxdWdKSWtNYUU5YU5xenVVNW9i?=
+ =?utf-8?B?QXNCWTcxWXdLWWlGd0J4ZmVVd1NROTJ3T1ZNcmI2S3ZIRGtJM1pJVDFZd0Q0?=
+ =?utf-8?B?bEtEdU9JamtLaVU2UmJvVHkweDdYSzgvMEM1UkVLOW1nT0lnK2pFeXIxZC9n?=
+ =?utf-8?B?eFJvTHZjMDU3NW43b1BQMEpPMkx3ZTNGUjM1emg4ZWsrb1k3ZEtDZDMva1F5?=
+ =?utf-8?B?TmYvZEhlOXVzdnNLUjRONHJpWS80Yjc3d0JWMDNFRkkvczI4MjBPaFVWdW1Q?=
+ =?utf-8?B?SDJFRWNwRGlCUDBQeVhta1gzV21JNk5nN1FEdEtCMHErdnJWQVZTME1tcEt1?=
+ =?utf-8?B?NlpxN2IrTy9BSmRsNnJBSTRJKzVIRG9TcUNIK3p6MGc4MXVQQ05VUVZ0b0VM?=
+ =?utf-8?B?bVNKM0tJb1FaTzdEdllsTm9oNnU5dm4yNS8yS203aGlkL1dPRkdlVkhsbGta?=
+ =?utf-8?B?cGtBNVBQSVNPaTB3RVNoTGVuMlJ3SXM5b0EzdkZkUjRpMDYzV1dBWHhTT3ZR?=
+ =?utf-8?Q?usUQVbgSh6gCWPDSaC5V7JWQR?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <12FA0D2C7B23C6468B74E30388D441D3@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6622.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bda69d29-ed56-4cf6-7745-08db91c69bd5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jul 2023 13:04:00.6702
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kRvPWS+VD6XFp66yuqayyF/8Luou7ElDfabXhYLCGIThDA8cQJ8HU66578AjOuKcuSb0PENvHWMbLjoUczJI9w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR11MB5585
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,327 +166,47 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 29 Jul 2023 16:50:09 -0500
-Bjorn Helgaas <helgaas@kernel.org> wrote:
-
-> On Fri, Jul 28, 2023 at 11:32:16AM +0200, Igor Mammedov wrote:
-> > On Thu, 27 Jul 2023 12:41:02 -0500 Bjorn Helgaas <helgaas@kernel.org> wrote:  
-> > > On Wed, Jul 26, 2023 at 02:35:18PM +0200, Igor Mammedov wrote:  
-> > > > Commit [1] switched acpiphp hotplug to use
-> > > >    pci_assign_unassigned_bridge_resources()
-> > > > which depends on bridge being available, however in some cases
-> > > > when acpiphp is in use, enable_slot() can get a slot without
-> > > > bridge associated.
-> > > >   1. legitimate case of hotplug on root bus
-> > > >       (likely not exiting on real hw, but widely used in virt world)
-> > > >   2. broken firmware, that sends 'Bus check' events to non
-> > > >      existing root ports (Dell Inspiron 7352/0W6WV0), which somehow
-> > > >      endup at acpiphp:enable_slot(..., bridge = 0) and with bus
-> > > >      without bridge assigned to it.    
-> > > 
-> > > Do we have evidence about the details of this non-existent root port?
-> > > If we do, I think it would be interesting to include a URL to them in
-> > > case there's some hole in the way we handle Bus Check events.  
-> > 
-> > it's scattered over logs Woody has provided, here are links to
-> > emails with
-> >   1: lspci output
-> >       https://lore.kernel.org/r/92150d8d-8a3a-d600-a996-f60a8e4c876c@gmail.com/
-> > 
-> > according to lscpi and dmesg there is only one root-port at 1c.0
-> > which is occupied by wifi card
-> > 
-> > while DSTD table has more ports described, which is fine as long as
-> > missing/disabled are not reported as present.
-> > 
-> >   2: last round of logs with debug patch /before 40613da5, with 40613da5, and after/
-> >       https://lore.kernel.org/r/46437825-3bd0-2f8a-12d8-98a2b54d7c22@gmail.com/
-> > 
-> > here dmesg shows 1st correct port
-> >  ACPI: \_SB_.PCI0.RP03: acpiphp_glue: Bus check in hotplug_event(): bridge: 000000000dad0b34
-> > and then later on
-> >  ACPI: \_SB_.PCI0.RP07: acpiphp_glue: Bus check in hotplug_event(): bridge: 0000000000000000
-> >  ACPI: \_SB_.PCI0.RP08: acpiphp_glue: Bus check in hotplug_event(): bridge: 0000000000000000
-> > which aren't recognized as bridge  
-> 
-> Thanks, that does seem a little suspect.  ACPI r6.5 sec 5.6.6 says
-> that when OSPM handles a Bus Check, it should "perform a Plug and Play
-> re-enumeration operation on the device tree starting from the point
-> where it has been notified."
-> 
-> PCI devices are enumerated by doing PCI config reads.  It would make
-> sense to re-enumerate a PCI hierarchy starting with a PCI device
-> that's already known to the OS, e.g., by scanning the secondary bus of
-> a PCI-to-PCI bridge.
-> 
-> I think there are two problems here:
-> 
->   1) The platform shouldn't send a Bus Check notification to a PCI
->      device that doesn't exist.  How could the OS re-enumerate
->      starting there?
-
-in case of reported laptop, DSDT provides Device Descriptors
-for not existing root-ports.
-
-OSPM can't do anything with it but to pass Notify event to
-PCI bus-specific enumeration mechanism, and it's upto PCI subsystem
-to discard/ignore Notify() on this ACPI node.
-
-I think I can mock this case by hacking QEMU, that should help
-with finding a proper place to fix it.
-
-(here it is:
-https://gitlab.com/imammedo/qemu/-/commits/acpiphp_buscheck_on_missing_device?ref_type=heads
-I'll post hack patch as a reply to this email for posterity)
-
->   2) Linux runs acpiphp_hotplug_notify() for Bus Checks to
->      non-existent PCI devices when it ignore them; reasoning below.
-> 
-> We call acpiphp_enumerate_slots() in this path, which happens before
-> any of the PCI devices on the root bus have been enumerated:
-> 
->   pci_register_host_bridge
->     pcibios_add_bus(root bus)
->       acpi_pci_add_bus
->         acpiphp_enumerate_slots(pci_bus *bus)
->           acpi_walk_namespace(acpiphp_add_context)
->             acpiphp_add_context(struct acpiphp_bridge *)
->               acpi_evaluate_integer("_ADR")
->               acpiphp_init_context
->                 context->hp.notify = acpiphp_hotplug_notify
-> 
-> So now we've already looked at RP03, RP07, and RP08, and set up the
-> .notify() handler for all of them.  Since we haven't scanned the bus
-> yet, we don't know that RP03 exists and RP07 and RP08 do not.
-
-While ACPI doesn't forbid firmware to describe non-existing RP,
-the PCIe hostbridge can't hotplug extra root ports. (and QEMU
-follows PCIe design in this respect on 'q35' machine).
-
-However when it comes to hotplug on QEMU's 'pc' machine
-(hotplug on root bus), each slot has "Augmented Device
-Descriptors", that includes un-populated slots leading to
-the presence of .notify() handler on such slots.
-
-Then later on when device is hotplugged, a Notify(,1/*DeviceCheck*/)
-is sent to previously empty slot and from there on PCI subsystem
-re-enumerates either a single device or a bridge hierarchy
-(from the parent context).
-
-So I'd assume that we need to have .notify() handler for all slots
-that are described in DSDT (present and non present).
- 
-> Per ACPI r6.5, sec 6, all these Device objects are "Augmented Device
-> Descriptors":
-> 
->   An Agumented [sic] Device Descriptor, which contains additional
->   device information that is not provided from the Device itself, yet
->   is needed by the Device or Bus driver in order to properly configure
->   and use the device. This type of device is enumerated by a
->   bus-specific enumeration mechanism, and OSPM uses the Address (_ADR)
->   to match the ACPI Device object in the Namespace to the device
->   discovered through bus enumeration.
-> 
-> I think that means OSPM should discover a PCI device using the PCI
-> bus-specific enumeration mechanism (i.e., config reads) before it even
-> looks for a corresponding ACPI Device object, and it should only set
-> up .notify() for PCI devices that actually exist, so the Bus Checks on
-> RP07 and RP08 would be ignored and we wouldn't even get into the path
-> that causes the NULL pointer dereference:
-> 
->   acpi_device_hotplug
->     acpiphp_hotplug_notify              # from hp.notify
->       hotplug_event
->         bridge = context->bridge
->         case BUS_CHECK:
->           if (bridge)
->             acpiphp_check_bridge
->           else if (!SLOT_IS_GOING_AWAY)
->             enable_slot
->               bus = slot->bus           # "bus" is a root bus
->               pci_assign_unassigned_bridge_resources(bus->self)
->                 bridge = bus->self      # "bridge" is NULL since
->                                         # bus->self is NULL for root buses
->                 struct pci_bus *parent = bridge->subordinate
->                                         # NULL pointer dereference
-> 
-> Obviously none of this helps solve the current regression.  Changing
-> the .notify() setup would be a big change, it would be risky because
-> it might affect dock support, and it still wouldn't fix your case 1 of
-> hotplug on the root bus in a virtualized environment.
-> 
-> > > > Issue is easy to reproduce with QEMU's 'pc' machine provides
-> > > > PCI hotplug on hostbridge slots. to reproduce boot kernel at
-> > > > commit [1] in VM started with followin CLI and hotplug a device:    
-> > > 
-> > > You mention CLI; did you mean to include a qemu command line here?
-> > > Maybe it's the same thing mentioned in the 40613da52b13 commit log?
-> > > I tried briefly to reproduce this using the 40613da52b13 command line
-> > > but haven't quite got it going yet.  I think it would be very useful
-> > > to either include it here again or point to the 40613da52b13 commit
-> > > log.  
-> > 
-> > my bad, I didn't realize that saying 'pc' machine is not sufficient.
-> > 
-> > minimal CLI can be (important part '-M pc -monitor stdio',
-> > the rest is for making guest boot and run at tolerable speed):
-> > 
-> > $QEMU -M pc -m 4G -monitor stdio -cpu host --enable-kvm vm_disk_image 
-> > 
-> > Will you amend commit message or shall I repost with changes/Acks?  
-> 
-> I'll give it a shot and post it for your comments.
-> 
-> > > > once guest OS is fully booted at qemu prompt:
-> > > > 
-> > > > (qemu) device_add e1000
-> > > > 
-> > > > it will cause NULL pointer dereference at
-> > > > 
-> > > >     void pci_assign_unassigned_bridge_resources(struct pci_dev *bridge)
-> > > >     {
-> > > >         struct pci_bus *parent = bridge->subordinate;  
-> 
-> This worked for me (after setting CONFIG_HOTPLUG_PCI_ACPI=y :)):
-> 
->   $ qemu-system-x86_64 -M pc -m 512M -monitor stdio -cpu host --enable-kvm -kernel arch/x86/boot/bzImage -drive format=raw,file=ubuntu.img -append "root=/dev/sda1"
->   (qemu) device_add e1000
-> 
-> (For posterity, replacing "-monitor stdio" with "-nographic -monitor
-> telnet:localhost:7001,server,nowait,nodelay" and adding
-> "console=ttyS0,115200n8" to the -append made it easier to see the
-> crash details.)
-
-I've not put extra arguments, because there is a lot of ways
-one can configure/use monitor/serial options.
-
-But specifying full command line like yours will be useful
-for anyone who doesn't have any experience with QEMU CLI.
-
-> > > > [  612.277651] BUG: kernel NULL pointer dereference, address: 0000000000000018
-> > > > [...]
-> > > > [  612.277798]  ? pci_assign_unassigned_bridge_resources+0x1f/0x260
-> > > > [  612.277804]  ? pcibios_allocate_dev_resources+0x3c/0x2a0
-> > > > [  612.277809]  enable_slot+0x21f/0x3e0
-> > > > [  612.277816]  acpiphp_hotplug_notify+0x13d/0x260
-> > > > [  612.277822]  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
-> > > > [  612.277827]  acpi_device_hotplug+0xbc/0x540
-> > > > [  612.277834]  acpi_hotplug_work_fn+0x15/0x20
-> > > > [  612.277839]  process_one_work+0x1f7/0x370
-> > > > [  612.277845]  worker_thread+0x45/0x3b0
-> > > > [  612.277850]  ? __pfx_worker_thread+0x10/0x10
-> > > > [  612.277854]  kthread+0xdc/0x110
-> > > > [  612.277860]  ? __pfx_kthread+0x10/0x10
-> > > > [  612.277866]  ret_from_fork+0x28/0x40
-> > > > [  612.277871]  ? __pfx_kthread+0x10/0x10
-> > > > [  612.277876]  ret_from_fork_asm+0x1b/0x30
-> > > > 
-> > > > The issue was discovered on Dell Inspiron 7352/0W6WV0 laptop with
-> > > > following sequence:
-> > > >    1. suspend to RAM
-> > > >    2. wake up with the same backtrace being observed:
-> > > >    3. 2nd suspend to RAM attempt makes laptop freeze
-> > > > 
-> > > > Fix it by using __pci_bus_assign_resources() instead of
-> > > > pci_assign_unassigned_bridge_resources()as we used to do
-> > > > but only in case when bus doesn't have a bridge associated
-> > > > with it.
-> > > > 
-> > > > That let us keep hotplug on root bus working like it used to be
-> > > > but at the same time keeps resource reassignment usable on
-> > > > root ports (and other 1st level bridges) that was fixed by [1].
-> > > > 
-> > > > 1)
-> > > > Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
-> > > > Link: https://lore.kernel.org/r/11fc981c-af49-ce64-6b43-3e282728bd1a@gmail.com
-> > > > Reported-by: Woody Suwalski <terraluna977@gmail.com>
-> > > > Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> > > > ---
-> > > >  drivers/pci/hotplug/acpiphp_glue.c | 8 +++++++-
-> > > >  1 file changed, 7 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-> > > > index 328d1e416014..3bc4e1f3efee 100644
-> > > > --- a/drivers/pci/hotplug/acpiphp_glue.c
-> > > > +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> > > > @@ -498,6 +498,7 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
-> > > >  				acpiphp_native_scan_bridge(dev);
-> > > >  		}
-> > > >  	} else {
-> > > > +		LIST_HEAD(add_list);
-> > > >  		int max, pass;
-> > > >  
-> > > >  		acpiphp_rescan_slot(slot);
-> > > > @@ -511,10 +512,15 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
-> > > >  				if (pass && dev->subordinate) {
-> > > >  					check_hotplug_bridge(slot, dev);
-> > > >  					pcibios_resource_survey_bus(dev->subordinate);
-> > > > +					if (!bus->self)
-> > > > +						__pci_bus_size_bridges(dev->subordinate, &add_list);
-> > > >  				}
-> > > >  			}
-> > > >  		}
-> > > > -		pci_assign_unassigned_bridge_resources(bus->self);
-> > > > +		if (bus->self)
-> > > > +			pci_assign_unassigned_bridge_resources(bus->self);
-> > > > +		else
-> > > > +			__pci_bus_assign_resources(bus, &add_list, NULL);  
-> 
-> I really wish we didn't have such different resource assignment paths
-> depending on whether the device is on a root bus or deeper in the
-> hierarchy.  But we can't fix that now, so this seems like the right
-> thing.
-
-I've looked at possibility of making 
-  pci_assign_unassigned_bridge_resources()
-work without bridge pointer, but it looks not viable as it's
-a bridge dedicated function which on top of rearranging
-resources, also disables/reprograms/enables bridge.
-
-If there are ideas how to make it better,
-I can pick it up and try to implement.
-
-Testing shows that pci_assign_unassigned_bridge_resources()
-isn't ideal since it releases all resources before reassigning
-and then if the later fails bridge stays in mis-configured
-state (attempt to recover results in failing BAR assignment
-to children devices).
-It's not issue in case of
-  root-port -> 1 child device hotplug
-since root port hadn't any working device[s] behind it.
-But in case of hotplug into PCI bridge, that leaves
-pre-existing devices behind the bridge broken (SHPC and acpiphp case).
-
-> But would you be OK with this minor mod?
-> 
->       if (pci_is_root_bus(bus))
->         __pci_bus_size_bridges(dev->subordinate, &add_list);
-> 
->   ...
-> 
->   if (pci_is_root_bus(bus))
->     __pci_bus_assign_resources(bus, &add_list, NULL);
->   else
->     pci_assign_unassigned_bridge_resources(bus->self);
-> 
-> For two reasons: (1) test the same condition both places, and (2) be a
-> little more explicit about the scenario (and "bus->self == NULL" also
-> happens for the virtual buses added for SR-IOV).
-
-works for me, tested with:
-  1: hotplug on root bus with QEMU's 'pc' machine,
-  2: (q35 machine) igb emulation, and adding VFs once guest is booted
-  3: BusCheck on missing PCI device (aka simulated env of reporter)
-  4: (q35 machine) resource re-allocation still works on root ports when
-     a device with large BARs is hotplugged
-
-> > > >  	}
-> > > >  
-> > > >  	acpiphp_sanitize_bus(bus);
-> > > > -- 
-> > > > 2.39.3
-> > > >     
-> > >   
-> >   
-> 
-
+T24gU2F0LCAyMDIzLTA3LTI5IGF0IDA5OjA3ICswMjAwLCBUaG9tYXMgR2xlaXhuZXIgd3JvdGU6
+Cj4gT24gRnJpLCBKdWwgMjggMjAyMyBhdCAxNjo0NywgUnVpIFpoYW5nIHdyb3RlOgo+ID4gT24g
+RnJpLCAyMDIzLTA3LTI4IGF0IDE0OjUxICswMjAwLCBUaG9tYXMgR2xlaXhuZXIgd3JvdGU6Cj4g
+PiA+IEFzIHRoZSBjYWxsIHNpdGVzIGR1cmluZyBNQURUIHBhcnNpbmcgaWdub3JlIHRoZSByZXR1
+cm4gdmFsdWUKPiA+ID4gYW55d2F5LAo+ID4gPiB0aGVyZSBpcyBubyBoYXJtIGFuZCB0aGlzIGlz
+IGEgcHJvcGVyIGRlZmVuc2UgYWdhaW5zdCBicm9rZW4KPiA+ID4gdGFibGVzCj4gPiA+IHdoaWNo
+IGVudW1lcmF0ZSBhbiBBUElDIHR3aWNlLgo+ID4gCj4gPiBZZWFoLCB0aGlzIGNhbiBmaXggdGhl
+IGR1cGxpY2F0ZSBBUElDIElEIGlzc3VlLgo+IAo+IFdlIHdhbnQgaXQgaW5kZXBlbmRlbnQgb2Yg
+dGhlIGJlbG93Lgo+IAo+ID4gQnV0IGZvciB4MkFQSUMgQ1BVcyB3aXRoIHVuaXF1ZSBBUElDIElE
+LCBidXQgc21hbGxlciB0aGFuIDI1NSwKPiA+IHNob3VsZAo+ID4gd2Ugc3RpbGwgZW51bWVyYXRl
+IHRoZW0gd2hlbiB3ZSBhbHJlYWR5IGhhdmUgdmFsaWQgTEFQSUMgZW50cmllcz8KPiA+IAo+ID4g
+Rm9yIHRoZSBJdmVicmlkZ2UtRVAgMi1zb2NrZXQgc3lzdGVtLAo+ID4gCj4gPiBMQVBJQzogQVBJ
+QyBJRCBmcm9tIDB4MCAtIDB4QiwgMHgxMCAtIDB4MUIsIDB4MjAgLSAweDJCLCAweDMwIC0KPiA+
+IDB4M0IKPiA+IHgyQVBJQzogQVBJQyBJRCBmcm9tIDB4MCAtIDB4NzcKPiA+IAo+ID4gIyBjcHVp
+ZCAtMSAtbCAweGIgLXMgMQo+ID4gQ1BVOgo+ID4gwqDCoMKgwqDCoCAtLS0gbGV2ZWwgMSAoY29y
+ZSkgLS0tCj4gPiDCoMKgwqDCoMKgIGJpdHMgdG8gc2hpZnQgQVBJQyBJRCB0byBnZXQgbmV4dCA9
+IDB4NSAoNSkKPiA+IMKgwqDCoMKgwqAgbG9naWNhbCBwcm9jZXNzb3JzIGF0IHRoaXMgbGV2ZWzC
+oCA9IDB4MTggKDI0KQo+ID4gwqDCoMKgwqDCoCBsZXZlbCBudW1iZXLCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgPSAweDEgKDEpCj4gPiDCoMKgwqDCoMKgIGxldmVs
+IHR5cGXCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgID0gY29y
+ZSAoMikKPiA+IMKgwqDCoMKgwqAgZXh0ZW5kZWQgQVBJQyBJRMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgPSAwCj4gPiAKPiA+IElmIHdlIHN0aWxsIGVudW1lcmF0ZXMgYWxsIHRo
+ZSB4MkFQSUMgZW50cmllcywKPiA+IDEuIHdlIGdvdCA3MiBleHRyYSBwb3NzaWJsZSBDUFVzIGZy
+b20geDJBUElDCj4gPiAyLsKgd2l0aCB0aGUgcGF0Y2ggYXQKPiA+IGh0dHBzOi8vbG9yZS5rZXJu
+ZWwub3JnL2FsbC84N2VkbTM2cXFiLmZmc0B0Z2x4L8KgLAo+ID4gX21heF9sb2dpY2FsX3BhY2th
+Z2VzIGlzIHNldCB0byA0IGluc3RlYWQgb2YgMi4KPiA+IAo+ID4gdGhpcyBpcyBzdGlsbCBhIHBy
+b2JsZW0sIHJpZ2h0Pwo+IAo+IFllcywgeW91IGFyZSByaWdodC4KPiAKPiBCdXQgSSBzdGlsbCBk
+b24ndCBsaWtlIHRoZSBpbmRpcmVjdGlvbiBvZiB0aGUgcmV0dXJuZWQgQ1BVIG51bWJlci4KPiBJ
+dCdzCj4gYW4gQUNQSSBzZWxmY29udGFpbmVkIGlzc3VlLCBubz8KPiAKPiBTbyBzb21ldGhpbmcg
+bGlrZSB0aGlzIHNob3VsZCBkbyB0aGUgdHJpY2s6Cj4gCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoGNvdW50ID0KPiBhY3BpX3RhYmxlX3BhcnNlX21hZHQoQUNQSV9NQURUX1RZUEVf
+TE9DQUxfQVBJQywKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYWNwaV9wYXJzZV9sYXBpYywKPiBN
+QVhfTE9DQUxfQVBJQyk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChjb3Vu
+dCkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGhhc19s
+YXBpY19jcHVzID0gdHJ1ZTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgeDJjb3Vu
+dCA9Cj4gYWNwaV90YWJsZV9wYXJzZV9tYWR0KEFDUElfTUFEVF9UWVBFX0xPQ0FMX1gyQVBJQywK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYWNwaV9wYXJzZV94MmFwaWMsCj4gTUFYX0xPQ0FMX0FQ
+SUMpOwo+IMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqDCoMKgwqDCoMKgwqDCoGlmICghY291bnQgJiYg
+IXgyY291bnQpIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByX2VycigiTm8g
+TEFQSUMgZW50cmllcyBwcmVzZW50XG4iKTsKCkFncmVlZCwgdGhhbmtzIGZvciB0aGUgYWR2aWNl
+LgpMZXQgbWUgdHJ5IHRvIGRvIHRoaXMgaW4gdjIgcGF0Y2ggc2VyaWVzLgoKdGhhbmtzLApydWkK
+Cg==
