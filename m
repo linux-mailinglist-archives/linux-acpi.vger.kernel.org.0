@@ -2,60 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD3DE76BC6A
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Aug 2023 20:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9685B76BC7D
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Aug 2023 20:29:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229550AbjHAS1R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Aug 2023 14:27:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43040 "EHLO
+        id S229863AbjHAS33 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Aug 2023 14:29:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjHAS1Q (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Aug 2023 14:27:16 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00F6F2695
-        for <linux-acpi@vger.kernel.org>; Tue,  1 Aug 2023 11:26:42 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3fbc5d5742bso64481675e9.2
-        for <linux-acpi@vger.kernel.org>; Tue, 01 Aug 2023 11:26:42 -0700 (PDT)
+        with ESMTP id S230024AbjHAS30 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Aug 2023 14:29:26 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D15432722
+        for <linux-acpi@vger.kernel.org>; Tue,  1 Aug 2023 11:29:15 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-3fe167d4a18so37199185e9.0
+        for <linux-acpi@vger.kernel.org>; Tue, 01 Aug 2023 11:29:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690914399; x=1691519199;
+        d=linaro.org; s=google; t=1690914554; x=1691519354;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tkkS6sKTbNQ3LRfOUF34YGw1W/C6AI1LuWBgt5ptbqM=;
-        b=PAUJTPJSwDHYar5prflFDgLr9WYuNLGRiVytqbObYxBz4NiwC765P4ZeWpHq1GaA1B
-         UyHP57z67sPDOLogMayFmInhBM3WS8mSR+X8fEaihsNYM3QziuBcbgQneBxaStUePMO9
-         PnAZu2SktmCAr27UdcSLjkkqaYuTihJ6t70wYfejY5l+70/48O82rkrR7D2U6vuj+jzH
-         N/V72sC/3zCbCGRifTxDdXiNjSTcLFSy/5gDDRsxWWAw8A3c8ZyV4ovb3fu8tp0wPgy/
-         5n20lqUuKqBG2Vos1vN9H5YrdSOrdJCMdy9tBr8alTpsHUS55fCitYvReCukNw/BvfhH
-         q7gw==
+        bh=H+B3GhLUuo6j85dPd0XORC2K/eb836TEWIRsdzlNEcs=;
+        b=q49iGdf073NKi9K2cVOsDH+KrOfN8IyffLIghqBklMryjLZ9/sCNioTukl5CoPqLoA
+         FErUbS2nyD4MAAa22vi8oRHOUtKS02pbQOu3Y222hLL1OxDAaHx7EklpeQ66cVqjFHu9
+         G6QL9GA6pYNLwt8jcpkYD/mA2GrbWJLIN8VzP0BMfBvM5akf/8M34rQUtT7MSX6PSw+8
+         4f4cd0DSMAtuCVrpQ2mZZKW5T+bVdIJ/PYrpAOooZ7p8tYeEwheaZdHuKg0A3YBCWzCg
+         fWC1K5MLPp9Ztc4wS1MBrz4yUPmjsRPiAQDHBzMZPgwu6InFNoBgB2TdKq/utugkbx3u
+         RHOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690914399; x=1691519199;
+        d=1e100.net; s=20221208; t=1690914554; x=1691519354;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tkkS6sKTbNQ3LRfOUF34YGw1W/C6AI1LuWBgt5ptbqM=;
-        b=biECXK+YyOzpsUFNIn6hDqAkvn7FSAcTK4+StbiJ4ksLctY25mQetVcriVaa2xlfrw
-         fYb5WNIjbydb2noJ9dqTI6T/RuK4aDqrhuN7qdrSfa21iEGzWIDPDWSiWW8GtsyMg8I6
-         iZJAdwkcXwpWJNKqqN43ACk39eRERQKLp3I5njNIkc9wa594rbBhy/Kn0Jf0AhwSOb1L
-         Ft02vhiy78lMRfVsWaRSUeDTuyjb+G1Wve7CJSNwYyeARPOXmhKSi42tbJUN5Yk2QOr8
-         r/LJEkyrFIe4bU94SFr0y/NXru4YqMzTnmLXJZq4fPd+r3FdVk4J9+a+9ZN9RPfca7g2
-         ek4w==
-X-Gm-Message-State: ABy/qLbA/a44NE23Vi42I+yoWUDgmRizKTK1HbqecdIBZ2iHOb53cJbi
-        uYaOg0e8i6HPRSHVxNHG4AmhBAezc7NjV+d/RL0=
-X-Google-Smtp-Source: APBJJlEvl0U1CkOCk4yo2BP4YgAaX+oApkF7ouGt3yLZCdapsYEkGjbOpcv+6UOfUkCRSIjzL0c9Tw==
-X-Received: by 2002:a05:600c:220a:b0:3fe:2b76:3d7 with SMTP id z10-20020a05600c220a00b003fe2b7603d7mr1622998wml.10.1690914398970;
-        Tue, 01 Aug 2023 11:26:38 -0700 (PDT)
+        bh=H+B3GhLUuo6j85dPd0XORC2K/eb836TEWIRsdzlNEcs=;
+        b=c0d8+3kcAgpOzmWXQ7EQ1so/yjHfOz+dCUDaYXl61tu5L1m6QeqGuMBL2Dy/rEVV1g
+         oY0nv0N0PEjEphs9NcYEFEx4RXtdhaZRlAQxgkmaC0IQiFIVvmhN6b14GkPpgz5Rf7Xq
+         f8NFM5NifbPeU5yzKpuiRV6Xf8MvWwuLRMsiKj1oj/7OJ98I96M+qIjGZvaZsKa8qkLC
+         n8V0nOs+cfuBIjZCk/M8Y+4YyF19dAKzjGMOKdfSaxpj+gc2Wl8tp4mU2BG+NxBIKEvr
+         h970aPxmac+shELMV06LTP94FUu5YGhMWNFlCr0i5KwE8k82jw1p+CYGQeKUq+XHLivq
+         6lxA==
+X-Gm-Message-State: ABy/qLZe8DeUejCPSnyJr+0FgB+yfKg8a1SL8/Rn/IPyOEMSavmhcdTV
+        Jqjf1KQRtNtlLZ/F6u2n36z28A==
+X-Google-Smtp-Source: APBJJlFn9nJJXAZeF6cMEas372GlH2Ac34hYmzz2ylUqvJlq9ebyhR5j2PvQlPfTvO8am7WFNSz6EA==
+X-Received: by 2002:adf:e105:0:b0:314:11f3:ca94 with SMTP id t5-20020adfe105000000b0031411f3ca94mr3085119wrz.41.1690914553757;
+        Tue, 01 Aug 2023 11:29:13 -0700 (PDT)
 Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id n19-20020a7bc5d3000000b003fbc30825fbsm14480448wmk.39.2023.08.01.11.26.38
+        by smtp.googlemail.com with ESMTPSA id f11-20020adff58b000000b003143aa0ca8asm16679857wro.13.2023.08.01.11.29.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Aug 2023 11:26:38 -0700 (PDT)
-Message-ID: <728e22ab-f68c-a891-f4d0-3d66cd03e9ec@linaro.org>
-Date:   Tue, 1 Aug 2023 20:26:37 +0200
+        Tue, 01 Aug 2023 11:29:13 -0700 (PDT)
+Message-ID: <2d0315d4-35b4-84db-4dcb-c9528abad825@linaro.org>
+Date:   Tue, 1 Aug 2023 20:29:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v3 0/8] ACPI: thermal: Use trip point table to register
- thermal zones
+Subject: Re: [PATCH v3 1/8] thermal: core: Add mechanism for connecting trips
+ with driver data
 Content-Language: en-US
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux ACPI <linux-acpi@vger.kernel.org>
@@ -65,63 +65,163 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Zhang Rui <rui.zhang@intel.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
+ <4501957.LvFx2qVVIh@kreacher>
 From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <12254967.O9o76ZdvQC@kreacher>
+In-Reply-To: <4501957.LvFx2qVVIh@kreacher>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-Hi Rafael,
-
-On 25/07/2023 14:02, Rafael J. Wysocki wrote:
-> Hi Everyone,
+On 25/07/2023 14:04, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> This is the second iteration of the $subject patch series and its original
-> description below is still applicable
+> Some drivers need to update trip point data (temperature and/or
+> hysteresis) upon notifications from the platform firmware or they
+> may need to reprogram hardware when trip point parameters are changed
+> via sysfs.  For those purposes, they need to connect struct thermal_trip
+> to a private data set associated with the trip or the other way around
+> and using a trip point index for that may not always work, because the
+> core may need to reorder the trips during thermal zone registration (in
+> particular, they may need to be sorted).
 > 
-> On Tuesday, July 18, 2023 8:01:20 PM CEST Rafael J. Wysocki wrote:
->>
->> This patch series makes the ACPI thermal driver register thermal zones
->> with the help of thermal_zone_device_register_with_trips(), so it
->> doesn't need to use the thermal zone callbacks related to trip points
->> any more (and they are dropped in the last patch).
->>
->> The approach presented here is quite radically different from the
->> previous attempts, as it doesn't really rearrange the driver's
->> internal data structures, but adds the trip table support on top of
->> them.  For this purpose, it uses an additional field in struct thermal_trip
->> introduced in the first patch.
+> To allow that to be done without using a trip point index, introduce
+> a new field in struct thermal_trip that can be pointed by the driver
+> to its own data structure containing a trip pointer to be initialized
+> by the core during thermal zone registration.  That pointer will then
+> have to be updated by the core every time the location of the given
+> trip point object in memory changes.
 > 
-> This update is mostly related to the observation that the critical and hot trip
-> points never change after initialization, so they don't really need to be
-> connected back to the corresponding thermal_trip structures.  It also fixes
-> an error code path memory leak in patch [5/8].
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+> 
+> v2 -> v3: No changes.
+> 
+> v1 -> v2: No changes.
+> 
+> ---
+>   drivers/thermal/thermal_core.c |   20 +++++++++++++++++---
+>   include/linux/thermal.h        |   13 +++++++++++++
+>   2 files changed, 30 insertions(+), 3 deletions(-)
+> 
+> Index: linux-pm/include/linux/thermal.h
+> ===================================================================
+> --- linux-pm.orig/include/linux/thermal.h
+> +++ linux-pm/include/linux/thermal.h
+> @@ -76,16 +76,29 @@ struct thermal_zone_device_ops {
+>   	void (*critical)(struct thermal_zone_device *);
+>   };
+>   
+> +struct thermal_trip_ref {
+> +	struct thermal_trip *trip;
+> +};
 
-I've been through the series. It is really cool that we can get rid of 
-the ops usage at the end of the series.
+That introduces a circular dependency. That should be avoided.
 
-However, the series introduces a wrapper to the thermal zone lock and 
-exports that in the public header. That goes in the opposite direction 
-of the recent cleanups and obviously will give the opportunity to 
-drivers to do silly things [again].
+>   /**
+>    * struct thermal_trip - representation of a point in temperature domain
+>    * @temperature: temperature value in miliCelsius
+>    * @hysteresis: relative hysteresis in miliCelsius
+>    * @type: trip point type
+> + * @driver_ref: driver's reference to this trip point
+> + *
+> + * If @driver_ref is not NULL, the trip pointer in the object pointed to by it
+> + * will be initialized by the core during thermal zone registration and updated
+> + * whenever the location of the given trip object changes.  This allows the
+> + * driver to access the trip point data without knowing the relative ordering
+> + * of trips within the trip table used by the core and, given a trip pointer,
+> + * to get back to its private data associated with the given trip.
+>    */
+>   struct thermal_trip {
+>   	int temperature;
+>   	int hysteresis;
+>   	enum thermal_trip_type type;
+> +	struct thermal_trip_ref *driver_ref;
+>   };
 
-On the other side, the structure thermal_trip introduces a circular 
-reference, which is usually something to avoid.
+Why not use void *priv ?
 
-Apart those two points, the ACPI changes look ok.
+AFAICT, the ACPI driver is the only one where when we reorder the trip 
+points, the trip id is no longer matching the definition provided by the 
+ACPI description.
 
-Comments in the different patches will follow
+It is possible to have the driver *specific* code to define its own 
+structure with the id and use it instead of the trip_id.
 
-Thanks
+So we end up with the ACPI driver registering the trip points with a 
+data structure containing a private trip id.
+
+The thermal framework is not supposed to have to deal with this kind of 
+driver issues and from a higher perspective, any driver specific thing 
+must stay in the driver.
+
+eg.
+
+struct acpi_thermal_trip_data {
+	int id;
+	... other info
+};
+
+struct acpi_thermal_trip_data attd[NRTRIPS] = { .id = 0 }, { .id = 1 }, ...
+
+struct thermal_trip trips[NRTRIPS];
+
+trips[i].priv = &attd[i];
+
+
+The drivers with another kind of specific trip data can use this field.
+
+
+>   struct thermal_cooling_device_ops {
+> Index: linux-pm/drivers/thermal/thermal_core.c
+> ===================================================================
+> --- linux-pm.orig/drivers/thermal/thermal_core.c
+> +++ linux-pm/drivers/thermal/thermal_core.c
+> @@ -1306,14 +1306,28 @@ thermal_zone_device_register_with_trips(
+>   	if (result)
+>   		goto release_device;
+>   
+> +	mutex_lock(&tz->lock);
+> +
+>   	for (count = 0; count < num_trips; count++) {
+> -		struct thermal_trip trip;
+> +		int temperature = 0;
+> +
+> +		if (trips) {
+> +			temperature = trips[count].temperature;
+> +			if (trips[count].driver_ref)
+> +				trips[count].driver_ref->trip = &trips[count];
+> +		} else {
+> +			struct thermal_trip trip;
+
+As mentioned above, that should not appear in the thermal core code.
+
+
+> -		result = thermal_zone_get_trip(tz, count, &trip);
+> -		if (result || !trip.temperature)
+> +			result = __thermal_zone_get_trip(tz, count, &trip);
+> +			if (!result)
+> +				temperature = trip.temperature;
+> +		}
+> +		if (!temperature)
+>   			set_bit(count, &tz->trips_disabled);
+>   	}
+>   
+> +	mutex_unlock(&tz->lock);
+> +
+>   	/* Update 'this' zone's governor information */
+>   	mutex_lock(&thermal_governor_lock);
+>   
+> 
+> 
+> 
 
 -- 
 <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
