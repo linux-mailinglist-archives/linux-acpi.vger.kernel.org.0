@@ -2,48 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2BC076BD6B
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Aug 2023 21:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF80D76BDCF
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Aug 2023 21:31:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231236AbjHATMD convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 1 Aug 2023 15:12:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46360 "EHLO
+        id S232438AbjHATb1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Aug 2023 15:31:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231812AbjHATMB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Aug 2023 15:12:01 -0400
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41B7C1BF0;
-        Tue,  1 Aug 2023 12:12:00 -0700 (PDT)
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-56ca74ee539so415448eaf.1;
-        Tue, 01 Aug 2023 12:12:00 -0700 (PDT)
+        with ESMTP id S231236AbjHATb0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Aug 2023 15:31:26 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5673103
+        for <linux-acpi@vger.kernel.org>; Tue,  1 Aug 2023 12:31:24 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-317744867a6so5397544f8f.1
+        for <linux-acpi@vger.kernel.org>; Tue, 01 Aug 2023 12:31:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690918283; x=1691523083;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0k+A7StIulck13gMjusdP0c4WO4z/7CXgwSPJxPhFXI=;
+        b=iqH+UtYxa2Bx6csoyd8hX7eSZhs/7wmRJrH4rpMtDV8IZ77AW5ns5Tg1cQ+gCFJUvX
+         IddH1VHNrZSZ8B9Bibvyhtmz6yz69G1GT7pNfuBn0p0NqwWO+WjZR0OrjVqtHUyv2drF
+         +c3tDsTPL0KBukADyIK3aVWIdrdcb+E0qWOpwuaVCy6B/kR6x+lN/e0P8mHZpt+OHO6C
+         VcDfFRAfYC8Q1ZgnUHlKKCZp9ZCVulL/c2BbqH2++irfiJEOWVHMkwdrhHKgSndehv+Z
+         /SptB6NBE5cZNUbNfuP6NPQzuT0pvAWnXDdTRBsG2CIQPg+aRQlkGY1VcrG1jJz3Wr6e
+         19hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690917119; x=1691521919;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KWz8bsi29e5gL7t0ui+qKj7hihevBZdVWgd9oh+EkNg=;
-        b=ek65mPDjMkcS5GApwn7+CfS6WUn8phgbObOEL/F7iH8kirj+u9DmOTmsQrj9mok02/
-         MXUBZ6LJgkpvQTlfns66uM3ntzH6hM04PZrf2D43jstG9yUExYqTxwD962SJIiOTTOv1
-         sLFjEMWu7DnkZdEw4AZ1FrmAToB7h3oUqszy5sz+i2gnouF2aKKe7LP5/qpvVpLn4s7i
-         RUJOIJnybhKZwEh782+QyduBlhxa7U+n3LVEid5xeyuumHjW9Sv7Xm9GowwRt7RED+J+
-         +TknQA+b2dQSCsWwp+z7OTxiP3dRCGmrMSbJfWQ3qIBxw+5G3h1Bf6y12E2LttLNZXOf
-         wOYQ==
-X-Gm-Message-State: ABy/qLZDUeK+MZlhVz3oyo8wyWXWzp1dOG95c4CkESqgn3D0aoNXuvPN
-        PQVnMe/YMahjbHr1H4B4kTN+5kfXSHqDICg6UoFKWv5R
-X-Google-Smtp-Source: APBJJlH2FuOTJREKF1NQYafwrdZN/2+4S2VimJtj7Ddlca9DhFN8hB84Pk+ARfkStnXpWAVoTm/f+Seeh6aVNF7XiCU=
-X-Received: by 2002:a05:6820:2201:b0:560:b01a:653d with SMTP id
- cj1-20020a056820220100b00560b01a653dmr10050480oob.0.1690917119453; Tue, 01
- Aug 2023 12:11:59 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690918283; x=1691523083;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0k+A7StIulck13gMjusdP0c4WO4z/7CXgwSPJxPhFXI=;
+        b=bnRChQd4iBXShbTuKwlfBq5y1QpDODQ0FgyiG1cGi5jWbieM+AEUllYnZ3JQTg31vi
+         ZOd1GFrqUJdztrAott16RWGWiqhxBVgJrxn0Bq3SJOSVXgxIxv1+H4cTJoG7C+T8A/kN
+         nbd6ZZp9ogHqc0AFJTmGTXkSvVF88GjlBPxvmlPqrXUq5Qlkw5yJPsToB/aw2XZKqiaL
+         TetPiJrJqgWbgutKcXGeAxFv6z7wfCzM4hDSfSLH1pU0eKtXHlagWGHNsx+en5XKLeGa
+         /8+85xkrCy6u/1umbm/T/FiTbm6w1BOgvZBQaqmzC6lFiFnJV9DLdAvBnvaDh6Gg5Gns
+         bILA==
+X-Gm-Message-State: ABy/qLbrgOi4a6VVNVN5CB6fX11vmL2qLi3HAIU4OlTfz4obE1Woo5G+
+        3XDkw9nNlpnbE2Kt0pl/NLUUNg==
+X-Google-Smtp-Source: APBJJlE9HZSC0EqXM+vfXMamPRaWnK8SkKJyHJM4eHV+Z4B93Eu9cUKbjxpQ2z2SI/JuIcmqgimLbA==
+X-Received: by 2002:a5d:698d:0:b0:317:5e55:f06f with SMTP id g13-20020a5d698d000000b003175e55f06fmr3061086wru.10.1690918283295;
+        Tue, 01 Aug 2023 12:31:23 -0700 (PDT)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id w12-20020a5d404c000000b0031411b7087dsm16937425wrp.20.2023.08.01.12.31.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Aug 2023 12:31:22 -0700 (PDT)
+Message-ID: <7a204bfe-51b8-80eb-01f3-261a5dfece7d@linaro.org>
+Date:   Tue, 1 Aug 2023 21:31:22 +0200
 MIME-Version: 1.0
-References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
- <2154273.irdbgypaU6@kreacher> <fee918ad-792c-f4e7-935d-1af9540b7274@linaro.org>
-In-Reply-To: <fee918ad-792c-f4e7-935d-1af9540b7274@linaro.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 1 Aug 2023 21:11:48 +0200
-Message-ID: <CAJZ5v0iQpjLpcSZrnLv=0A9duR4Kf9_cB3kBZxJorfuPZzrGmA@mail.gmail.com>
-Subject: Re: [PATCH v3 3/8] thermal: core: Add routines for locking and
- unlocking thermal zones
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3 2/8] thermal: core: Do not handle trip points with
+ invalid temperature
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
@@ -51,100 +65,78 @@ Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Michal Wilczynski <michal.wilczynski@intel.com>,
         Zhang Rui <rui.zhang@intel.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
+ <4822145.GXAFRqVoOG@kreacher>
+ <8ea6d9b1-f8a5-a899-ea30-7ec5d40a0c26@linaro.org>
+ <CAJZ5v0inZBtyVrAvgQ1LaVxZkKZHQJJ7A86ysaMmSKKQ2vmGTw@mail.gmail.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <CAJZ5v0inZBtyVrAvgQ1LaVxZkKZHQJJ7A86ysaMmSKKQ2vmGTw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 1, 2023 at 8:30 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
->
->
-> Hi Rafael,
->
->
-> On 25/07/2023 14:08, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Add thermal_zone_device_lock() and thermal_zone_device_unlock() for
-> > acquiring and releasing the thermal zone lock, respectively.
-> >
-> > They will be used by the ACPI thermal driver to protect trip point
-> > temperature updates against races with accesses from elsewhere.
->
-> This change goes to the opposite direction of the previous thermal zone
-> cleanup and encapsulation we have done recently.
->
-> Here we give the possibility to a driver to act on the thermal core
-> internals.
->
-> Ideally, we should see tz->lock only in thermal_core.c
+On 01/08/2023 21:05, Rafael J. Wysocki wrote:
+> On Tue, Aug 1, 2023 at 8:29 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+>>
+>> On 25/07/2023 14:06, Rafael J. Wysocki wrote:
+>>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>
+>>> Trip points with temperature set to THERMAL_TEMP_INVALID are as good as
+>>> disabled, so make handle_thermal_trip() ignore them.
+>>>
+>>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>> ---
+>>>
+>>> v2 -> v3: No changes.
+>>>
+>>> v1 -> v2: No changes.
+>>>
+>>> ---
+>>>    drivers/thermal/thermal_core.c |    3 ++-
+>>>    1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> Index: linux-pm/drivers/thermal/thermal_core.c
+>>> ===================================================================
+>>> --- linux-pm.orig/drivers/thermal/thermal_core.c
+>>> +++ linux-pm/drivers/thermal/thermal_core.c
+>>> @@ -348,7 +348,8 @@ static void handle_thermal_trip(struct t
+>>>        struct thermal_trip trip;
+>>>
+>>>        /* Ignore disabled trip points */
+>>> -     if (test_bit(trip_id, &tz->trips_disabled))
+>>> +     if (test_bit(trip_id, &tz->trips_disabled) ||
+>>> +         trip.temperature == THERMAL_TEMP_INVALID)
+>>>                return;
+>>
+>> This will set the temperature to THERMAL_TEMP_INVALID at each thermal
+>> zone update.
+> 
+> What do you mean?
+> 
+> It doesn't set anything.
 
-There needs to be a way to lock the thing if it needs to be locked.
+Oh never mind, I read '=' not '=='
 
-The thermal zone has been registered by the driver after all, and if
-it needs to be updated, the driver needs to be able to do that safely.
+>> It would make more sense to set it when setting the disabled bit at init
+>> time, no?
+>>
+>> But is that something we really want to do ? The trip point will be
+>> reordered due to the temperature change (-273°C)
+> 
+> Again, I'm not sure what you mean.
 
-I'm guessing that the suggested way is to disable the thermal zone for
-the time of the update, but I'm kind of unsure if this is going to
-work.
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
->
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >
-> > v2 -> v3: No changes.
-> >
-> > v1 -> v2: New patch.
-> >
-> > ---
-> >   drivers/thermal/thermal_core.c |   13 +++++++++++++
-> >   include/linux/thermal.h        |    2 ++
-> >   2 files changed, 15 insertions(+)
-> >
-> > Index: linux-pm/drivers/thermal/thermal_core.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/thermal/thermal_core.c
-> > +++ linux-pm/drivers/thermal/thermal_core.c
-> > @@ -497,6 +498,18 @@ void thermal_zone_device_update(struct t
-> >   }
-> >   EXPORT_SYMBOL_GPL(thermal_zone_device_update);
-> >
-> > +void thermal_zone_device_lock(struct thermal_zone_device *tz)
-> > +{
-> > +     mutex_lock(&tz->lock);
-> > +}
-> > +EXPORT_SYMBOL_GPL(thermal_zone_device_lock);
-> > +
-> > +void thermal_zone_device_unlock(struct thermal_zone_device *tz)
-> > +{
-> > +     mutex_unlock(&tz->lock);
-> > +}
-> > +EXPORT_SYMBOL_GPL(thermal_zone_device_unlock);
-> > +
-> >   static void thermal_zone_device_check(struct work_struct *work)
-> >   {
-> >       struct thermal_zone_device *tz = container_of(work, struct
-> > Index: linux-pm/include/linux/thermal.h
-> > ===================================================================
-> > --- linux-pm.orig/include/linux/thermal.h
-> > +++ linux-pm/include/linux/thermal.h
-> > @@ -336,6 +336,8 @@ int thermal_zone_unbind_cooling_device(s
-> >                                      struct thermal_cooling_device *);
-> >   void thermal_zone_device_update(struct thermal_zone_device *,
-> >                               enum thermal_notify_event);
-> > +void thermal_zone_device_lock(struct thermal_zone_device *tz);
-> > +void thermal_zone_device_unlock(struct thermal_zone_device *tz);
-> >
-> >   struct thermal_cooling_device *thermal_cooling_device_register(const char *,
-> >               void *, const struct thermal_cooling_device_ops *);
-> >
-> >
-> >
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
