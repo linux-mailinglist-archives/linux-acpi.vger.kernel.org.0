@@ -2,235 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF96776BD31
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Aug 2023 21:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C99E76BD45
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Aug 2023 21:05:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229801AbjHATCm convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 1 Aug 2023 15:02:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40028 "EHLO
+        id S231851AbjHATFs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Aug 2023 15:05:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbjHATCm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Aug 2023 15:02:42 -0400
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7FB5DF;
-        Tue,  1 Aug 2023 12:02:40 -0700 (PDT)
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-56475c1b930so872924eaf.0;
-        Tue, 01 Aug 2023 12:02:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690916560; x=1691521360;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LrPqP6zfM7TPHzxFi2iNHZ0PPSaifL2OoBOSqdJmnOQ=;
-        b=H05Y7e3HpKBGqhfs5nx9NAN2Re2dsNULkp6jHMFlZ4imcVKQHASKPefVMoEOKKmhxR
-         ZENUmRXreSvtrJiFZV+9mvA+Bz8GJfdxtp42Wy1GAA8qadORr2CSEHDxujfadDt6DFoi
-         troWsD5nDnIQjQH1kTvMcjfzwUB3UrEjViEJwXgp6o/ZeLkGGEpIl5W99Uo6UsY1k7Sb
-         ajYbAJCTZKteFytf5rFaxvsh34wBjiCgawSrn/27MvSX41EbfvXDtoWoL25MH8qHJc41
-         JjoCApS+SRyaUa9ZM55V/sThJBDorD0RkCBYTEUt6yx2RxvLaoIwlggtNRWrYAny/vLA
-         zA7A==
-X-Gm-Message-State: ABy/qLb+SxmKmLwpW1sRE7/gKN7DHpo6Vur9h5mWA7yVFAj2ayg9cLcp
-        YWrJ6howkd+cuoHFE9qz68T9UN0SqbqRK3DMmEA=
-X-Google-Smtp-Source: APBJJlGWxRmGHi0NEdg0sK/BKR0K/xMaDnqaNkFy4KIoHyl1Rdl1KQQSMb69o4USwZFN96eKA9CSoasBidg3B7CKc8E=
-X-Received: by 2002:a4a:e251:0:b0:566:951e:140c with SMTP id
- c17-20020a4ae251000000b00566951e140cmr7162902oot.1.1690916560093; Tue, 01 Aug
- 2023 12:02:40 -0700 (PDT)
+        with ESMTP id S232130AbjHATFo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Aug 2023 15:05:44 -0400
+Received: from mgamail.intel.com (unknown [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F8C426AA;
+        Tue,  1 Aug 2023 12:05:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690916742; x=1722452742;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=bmmv7g91iuvGMRkGYqWBD/4SO1ZP67D/MvMKTH62ssk=;
+  b=fcV0wRgYFKoMAzgfwI23V3SFExISunjVgZC2BGp4Tpmo/ybW2NXm7mRe
+   W6+7XA+s28c46EIe+oxNrtcQNEhbACg0AGBafQ0bND/wccSdCKtcow7dW
+   fKxF8hxA3eXfOLpLEUsgfPD1/+FS/GcEwYgWa1r64fIapqvgYw1djnqxK
+   7Cvy+VVolpiGedoYTTz3xd7pZNnetR9OEMJIZcvw/+MlO8Xrtq89B6yJp
+   qo/Skd4FMfltgjwYZM+QVCw3l1m7L2iK8hoSqXML9jHzv3joW6u2OvROn
+   GjgAa75hcPBGkMR2BHAocAZaaiUo6Abrw8iABI4xxxmWBET87AtG3l50c
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10789"; a="372120141"
+X-IronPort-AV: E=Sophos;i="6.01,248,1684825200"; 
+   d="scan'208";a="372120141"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2023 12:05:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10789"; a="818905991"
+X-IronPort-AV: E=Sophos;i="6.01,248,1684825200"; 
+   d="scan'208";a="818905991"
+Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 01 Aug 2023 12:05:39 -0700
+Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qQugd-0000XX-0P;
+        Tue, 01 Aug 2023 19:05:39 +0000
+Date:   Wed, 2 Aug 2023 03:05:01 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+        devel@acpica.org, linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge 72/86] drivers/acpi/thermal.c:1028:32:
+ warning: variable 'result' set but not used
+Message-ID: <202308020253.WHEHp60K-lkp@intel.com>
 MIME-Version: 1.0
-References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
- <4501957.LvFx2qVVIh@kreacher> <2d0315d4-35b4-84db-4dcb-c9528abad825@linaro.org>
-In-Reply-To: <2d0315d4-35b4-84db-4dcb-c9528abad825@linaro.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 1 Aug 2023 21:02:28 +0200
-Message-ID: <CAJZ5v0iQDOsTOqWFvbf5nom-b3-pbHPRzJQC-1DM9eoh=0AKjg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/8] thermal: core: Add mechanism for connecting trips
- with driver data
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Michal Wilczynski <michal.wilczynski@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 1, 2023 at 8:29 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
->
-> On 25/07/2023 14:04, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Some drivers need to update trip point data (temperature and/or
-> > hysteresis) upon notifications from the platform firmware or they
-> > may need to reprogram hardware when trip point parameters are changed
-> > via sysfs.  For those purposes, they need to connect struct thermal_trip
-> > to a private data set associated with the trip or the other way around
-> > and using a trip point index for that may not always work, because the
-> > core may need to reorder the trips during thermal zone registration (in
-> > particular, they may need to be sorted).
-> >
-> > To allow that to be done without using a trip point index, introduce
-> > a new field in struct thermal_trip that can be pointed by the driver
-> > to its own data structure containing a trip pointer to be initialized
-> > by the core during thermal zone registration.  That pointer will then
-> > have to be updated by the core every time the location of the given
-> > trip point object in memory changes.
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >
-> > v2 -> v3: No changes.
-> >
-> > v1 -> v2: No changes.
-> >
-> > ---
-> >   drivers/thermal/thermal_core.c |   20 +++++++++++++++++---
-> >   include/linux/thermal.h        |   13 +++++++++++++
-> >   2 files changed, 30 insertions(+), 3 deletions(-)
-> >
-> > Index: linux-pm/include/linux/thermal.h
-> > ===================================================================
-> > --- linux-pm.orig/include/linux/thermal.h
-> > +++ linux-pm/include/linux/thermal.h
-> > @@ -76,16 +76,29 @@ struct thermal_zone_device_ops {
-> >       void (*critical)(struct thermal_zone_device *);
-> >   };
-> >
-> > +struct thermal_trip_ref {
-> > +     struct thermal_trip *trip;
-> > +};
->
-> That introduces a circular dependency. That should be avoided.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   57fb4aeb308cdc2169b440c112bcbbbbdc7b6cc5
+commit: dabc621a311007d78bfcf60f8125c5e8c33ded7b [72/86] ACPI: thermal: Drop enabled flag from struct acpi_thermal_active
+config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20230802/202308020253.WHEHp60K-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20230802/202308020253.WHEHp60K-lkp@intel.com/reproduce)
 
-Sorry, but this is an empty statement without any substance.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202308020253.WHEHp60K-lkp@intel.com/
 
-> >   /**
-> >    * struct thermal_trip - representation of a point in temperature domain
-> >    * @temperature: temperature value in miliCelsius
-> >    * @hysteresis: relative hysteresis in miliCelsius
-> >    * @type: trip point type
-> > + * @driver_ref: driver's reference to this trip point
-> > + *
-> > + * If @driver_ref is not NULL, the trip pointer in the object pointed to by it
-> > + * will be initialized by the core during thermal zone registration and updated
-> > + * whenever the location of the given trip object changes.  This allows the
-> > + * driver to access the trip point data without knowing the relative ordering
-> > + * of trips within the trip table used by the core and, given a trip pointer,
-> > + * to get back to its private data associated with the given trip.
-> >    */
-> >   struct thermal_trip {
-> >       int temperature;
-> >       int hysteresis;
-> >       enum thermal_trip_type type;
-> > +     struct thermal_trip_ref *driver_ref;
-> >   };
->
-> Why not use void *priv ?
+All warnings (new ones prefixed by >>):
 
-Because it wouldn't work.
+   drivers/acpi/thermal.c: In function 'acpi_thermal_resume':
+>> drivers/acpi/thermal.c:1028:32: warning: variable 'result' set but not used [-Wunused-but-set-variable]
+    1028 |         int i, j, power_state, result;
+         |                                ^~~~~~
 
-> AFAICT, the ACPI driver is the only one where when we reorder the trip
-> points, the trip id is no longer matching the definition provided by the
-> ACPI description.
 
-No, it is not the only one.  Every driver that needs to handle trip
-point update notifications from the platform firmware will have this
-problem.
+vim +/result +1028 drivers/acpi/thermal.c
 
-> It is possible to have the driver *specific* code to define its own
-> structure with the id and use it instead of the trip_id.
+a59ffb2062df3a Aaron Lu            2014-03-04  1024  
+167cffb646aa4a Rafael J. Wysocki   2012-06-27  1025  static int acpi_thermal_resume(struct device *dev)
+74ce1468128e29 Konstantin Karasyov 2006-05-08  1026  {
+167cffb646aa4a Rafael J. Wysocki   2012-06-27  1027  	struct acpi_thermal *tz;
+b1028c545ced13 Konstantin Karasyov 2007-02-16 @1028  	int i, j, power_state, result;
+b1028c545ced13 Konstantin Karasyov 2007-02-16  1029  
+167cffb646aa4a Rafael J. Wysocki   2012-06-27  1030  	if (!dev)
+d550d98d331737 Patrick Mochel      2006-06-27  1031  		return -EINVAL;
+74ce1468128e29 Konstantin Karasyov 2006-05-08  1032  
+167cffb646aa4a Rafael J. Wysocki   2012-06-27  1033  	tz = acpi_driver_data(to_acpi_device(dev));
+167cffb646aa4a Rafael J. Wysocki   2012-06-27  1034  	if (!tz)
+167cffb646aa4a Rafael J. Wysocki   2012-06-27  1035  		return -EINVAL;
+74ce1468128e29 Konstantin Karasyov 2006-05-08  1036  
+bed936f7eab946 Konstantin Karasyov 2006-07-10  1037  	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
+7266c88cbaa3de Rafael J. Wysocki   2023-06-04  1038  		if (!tz->trips.active[i].valid)
+b1028c545ced13 Konstantin Karasyov 2007-02-16  1039  			break;
+52ce50498c6f43 Rafael J. Wysocki   2022-10-04  1040  
+b1028c545ced13 Konstantin Karasyov 2007-02-16  1041  		for (j = 0; j < tz->trips.active[i].devices.count; j++) {
+488a76c5260619 Rafael J. Wysocki   2010-11-25  1042  			result = acpi_bus_update_power(
+488a76c5260619 Rafael J. Wysocki   2010-11-25  1043  					tz->trips.active[i].devices.handles[j],
+488a76c5260619 Rafael J. Wysocki   2010-11-25  1044  					&power_state);
+bed936f7eab946 Konstantin Karasyov 2006-07-10  1045  		}
+bed936f7eab946 Konstantin Karasyov 2006-07-10  1046  	}
+bed936f7eab946 Konstantin Karasyov 2006-07-10  1047  
+81b704d3e4674e Rafael J. Wysocki   2021-01-14  1048  	acpi_queue_thermal_check(tz);
+74ce1468128e29 Konstantin Karasyov 2006-05-08  1049  
+74ce1468128e29 Konstantin Karasyov 2006-05-08  1050  	return AE_OK;
+74ce1468128e29 Konstantin Karasyov 2006-05-08  1051  }
+607d265fc1ab06 Rafael J. Wysocki   2023-06-04  1052  #else
+607d265fc1ab06 Rafael J. Wysocki   2023-06-04  1053  #define acpi_thermal_suspend	NULL
+607d265fc1ab06 Rafael J. Wysocki   2023-06-04  1054  #define acpi_thermal_resume	NULL
+9069240480e24a Rafael J. Wysocki   2012-08-09  1055  #endif
+607d265fc1ab06 Rafael J. Wysocki   2023-06-04  1056  static SIMPLE_DEV_PM_OPS(acpi_thermal_pm, acpi_thermal_suspend, acpi_thermal_resume);
+607d265fc1ab06 Rafael J. Wysocki   2023-06-04  1057  
 
-Then it would need to walk the trips[] table in the thermal zone, if I
-understand the suggestion correctly, which goes kind of against your
-previous changes.
+:::::: The code at line 1028 was first introduced by commit
+:::::: b1028c545ced13590dd9a9a8086543aef26c7187 ACPI: fix fan after resume from S3
 
-> So we end up with the ACPI driver registering the trip points with a
-> data structure containing a private trip id.
->
-> The thermal framework is not supposed to have to deal with this kind of
-> driver issues and from a higher perspective, any driver specific thing
-> must stay in the driver.
->
-> eg.
->
-> struct acpi_thermal_trip_data {
->         int id;
->         ... other info
-> };
->
-> struct acpi_thermal_trip_data attd[NRTRIPS] = { .id = 0 }, { .id = 1 }, ...
->
-> struct thermal_trip trips[NRTRIPS];
->
-> trips[i].priv = &attd[i];
+:::::: TO: Konstantin Karasyov <konstantin.a.karasyov@intel.com>
+:::::: CC: Len Brown <len.brown@intel.com>
 
-But the driver needs to get from priv to trips[i], not the other way around.
-
-> The drivers with another kind of specific trip data can use this field.
-
-They could if the trips did not get reordered.  Otherwise they would
-need to walk trips[] every time and have a way to match each trip
-against its private counterpart.
-
-I guess they could use the address of the private part as a tag in
-this, but is walking trips[] by drivers something that you really
-want?
-
->
->
-> >   struct thermal_cooling_device_ops {
-> > Index: linux-pm/drivers/thermal/thermal_core.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/thermal/thermal_core.c
-> > +++ linux-pm/drivers/thermal/thermal_core.c
-> > @@ -1306,14 +1306,28 @@ thermal_zone_device_register_with_trips(
-> >       if (result)
-> >               goto release_device;
-> >
-> > +     mutex_lock(&tz->lock);
-> > +
-> >       for (count = 0; count < num_trips; count++) {
-> > -             struct thermal_trip trip;
-> > +             int temperature = 0;
-> > +
-> > +             if (trips) {
-> > +                     temperature = trips[count].temperature;
-> > +                     if (trips[count].driver_ref)
-> > +                             trips[count].driver_ref->trip = &trips[count];
-> > +             } else {
-> > +                     struct thermal_trip trip;
->
-> As mentioned above, that should not appear in the thermal core code.
-
-Well, this is a matter of opinion to me.  Clearly, I disagree with it.
-
-Anyway, I want to be productive, so here's the thing: either something
-like this is done, or drivers need to be allowed to walk the trips
-table.
-
-Which one is better?
-
->
-> > -             result = thermal_zone_get_trip(tz, count, &trip);
-> > -             if (result || !trip.temperature)
-> > +                     result = __thermal_zone_get_trip(tz, count, &trip);
-> > +                     if (!result)
-> > +                             temperature = trip.temperature;
-> > +             }
-> > +             if (!temperature)
-> >                       set_bit(count, &tz->trips_disabled);
-> >       }
-> >
-> > +     mutex_unlock(&tz->lock);
-> > +
-> >       /* Update 'this' zone's governor information */
-> >       mutex_lock(&thermal_governor_lock);
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
