@@ -2,123 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A93976C4D5
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Aug 2023 07:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00C8D76C6FE
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Aug 2023 09:35:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229941AbjHBFZ4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Aug 2023 01:25:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46064 "EHLO
+        id S231909AbjHBHf4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Aug 2023 03:35:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbjHBFZy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Aug 2023 01:25:54 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05EF8EE;
-        Tue,  1 Aug 2023 22:25:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690953954; x=1722489954;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SUYyiEFaOXroKQDsrvyWD1ilNyTYr4fVpzmSKVWFGCo=;
-  b=iWz30P3aHgJ+eISBJX5FEIjlH4N+wXjVR0TOAk5ZRNLf5rwnquVXiSrF
-   KuwTJuTpiIWo2Q2h9WeNRF4iqAbMEEl6KxIwgniPjz3a7uTfr0qpi9e5y
-   9d6+9q+ipksxV62N50Pc9T1juj7r/G0V11kvXODLI+qb8f1F8PCjEGbb0
-   4NxktdDuk03vqNMu8o2D8Pnf9KahjpteZ7aRKxE8xomx8KUx4WVsUnNQE
-   OygD13h9CMMr+gn/20qxvsSJuII8vTlB8f1c+tuilXqmb3PQm9jrKm4ww
-   wMm0VDMlSQo4CYzYe7NEUCE/ZlL9Ki/Exa0kyo/o0ecFaTMFyFXF4CWVP
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10789"; a="372215666"
-X-IronPort-AV: E=Sophos;i="6.01,248,1684825200"; 
-   d="scan'208";a="372215666"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2023 22:25:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10789"; a="758611562"
-X-IronPort-AV: E=Sophos;i="6.01,248,1684825200"; 
-   d="scan'208";a="758611562"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga008.jf.intel.com with ESMTP; 01 Aug 2023 22:25:51 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 7132213F; Wed,  2 Aug 2023 08:26:01 +0300 (EEST)
-Date:   Wed, 2 Aug 2023 08:26:01 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v7 2/2] PCI: Don't put non-power manageable PCIe root
- ports into D3
-Message-ID: <20230802052601.GM14638@black.fi.intel.com>
-References: <20230711221427.GA250962@bhelgaas>
- <b82a50eb-8182-84ca-5b24-dbe8870fa871@amd.com>
- <CAJZ5v0i6PviqW7u3i8hmvSCvR_VHqP-mWRy3Da8Ev_1vi9qBQA@mail.gmail.com>
- <a309e3fe-b1f9-e269-cb97-8af87c8d483b@amd.com>
- <CAJZ5v0jvxrDMR6YHFpYZ4yYpp82-3TtrH==SMRFtUMJsv7=i=g@mail.gmail.com>
- <37b005d5-68fb-f8dd-67e2-c953d677fca2@amd.com>
- <8298c01c-abec-914b-0542-459f38c635fe@amd.com>
- <CAJZ5v0i3g0JujMwikB8niRZ93hXJZqWtjrCjbaDmkMLUbMmwMA@mail.gmail.com>
- <d1b2cf1b-de5f-6c2e-c8dc-fdf60cd0882d@amd.com>
+        with ESMTP id S232883AbjHBHfy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Aug 2023 03:35:54 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAC6D1702
+        for <linux-acpi@vger.kernel.org>; Wed,  2 Aug 2023 00:35:26 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-5222bc91838so9534925a12.0
+        for <linux-acpi@vger.kernel.org>; Wed, 02 Aug 2023 00:35:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690961725; x=1691566525;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=whzrFiFDXsxlOAugWLGBbpaxuv1pZIzaI72w9ONk2co=;
+        b=VMhdersl41V5+LiCY+XaKEQoOPKdsRq+ydlrbXdNAfX456uEGheeaRnwU+DhDcQh4f
+         wz9ZIcRGQuuixANTzeVLt2GJ3t278GRAIEn9KM2RZHR/6OKF5a8dYkV1BnUOmEsABmrO
+         rH9GHhUhncwgGoB8cV9bFd2dKxNjXuiUu1Ch/vAbg9tFcknJrGek4/JYq4CwPHgnXeNK
+         UZny4EJXlaDgq2UkzOcN7Wp3nLQuNYze7/gLeR8ggzf/ZPCJvUjIVyCkVPwyufKsdT9N
+         lyh9t1+k/qZk/RymxTMKD9Lhrw/kwRZdjofA5SvuTKlj+GGMk+Fb/nbdYw/3q5eZqNqB
+         eKnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690961725; x=1691566525;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=whzrFiFDXsxlOAugWLGBbpaxuv1pZIzaI72w9ONk2co=;
+        b=JvGAT2T9qz9Q23Jx60Ln2WtgmrWliYVw3AHUl+zgD9Nnij9bKnmlMQMxsAxwSDdh8F
+         YbAtQ2TavZdgSj5/m3K2fwwBNdCvO0NuElL9b4jR39Ha9tzAJ0uLIgijTRy3+hcXiVhg
+         PT1WWjrk6HDCUItsy9qPI8oi1JVk1vMoD6i3G1T/WiWXpRc0cukcS5nC+5BtAHqm/0T+
+         fuuAr9krn8SW8eH0ssvoTFg/8i5DBcc3LlofG7oLwJRl1RnmqJOV7inyreyAJJSWHJSo
+         9xpcyImn9nulwc9AvoWJk/yNfxOKGUFiPRhqHVSQoMPJ5g9RB46kffYPvTHpunmBhL61
+         Aq+A==
+X-Gm-Message-State: ABy/qLZpxo+RUfPmIXHPNP3aCCPmPAeFvXTkco47RgzyN+BN6TC/lpV4
+        wCw6A6Z83HJ2jRpX1YMzKPeDjw==
+X-Google-Smtp-Source: APBJJlFxv46Yn6HfI393SWv6JgHv2CwW0FKGrKUDqw1nyEfyyadbYoswq2hAmTFP/jO87HYyAsmDuQ==
+X-Received: by 2002:a17:907:b0c:b0:997:d627:263a with SMTP id h12-20020a1709070b0c00b00997d627263amr4022193ejl.67.1690961725300;
+        Wed, 02 Aug 2023 00:35:25 -0700 (PDT)
+Received: from localhost (h3221.n1.ips.mtn.co.ug. [41.210.178.33])
+        by smtp.gmail.com with ESMTPSA id gl13-20020a170906e0cd00b00982d0563b11sm8615511ejb.197.2023.08.02.00.35.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Aug 2023 00:35:24 -0700 (PDT)
+Date:   Tue, 1 Aug 2023 10:45:20 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     linux-acpi@vger.kernel.org
+Subject: [bug report] PNP: convert resource options to single linked list
+Message-ID: <63ae790c-ca93-456f-bb15-6fd330f1d6ca@moroto.mountain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d1b2cf1b-de5f-6c2e-c8dc-fdf60cd0882d@amd.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mario,
+[ This is obviously ancient code, but maybe you could still take a
+  look? -dan ]
 
-On Tue, Aug 01, 2023 at 10:17:11PM -0500, Mario Limonciello wrote:
-> > Consequently, platform_pci_bridge_d3() will return false and the only
-> > thing that may allow the port to go into D0 is the dmi_get_bios_year()
-> > check at the end of pci_bridge_d3_possible().
-> > 
-> > However, that was added, because there are Intel platforms on which
-> > Root Ports need to be programmed into D3hot on suspend (which allows
-> > the whole platform to reduce power significantly) and there are no
-> > ACPI device power management objects associated with them (Mika should
-> > know the gory details related to this).  It looks like under Windows
-> > the additional power reduction would not be possible on those systems,
-> > but that would be a problem, wouldn't it?
-> > 
-> 
-> I've been thinking on this today, and I at least have a hypothesis about
-> this behavior.  Perhaps Windows is actually utilizing enabled PEP
-> constraints to enforce what state device should be put into over Modern
-> Standby cycles in the absence of ACPI objects.
-> 
-> In the case of one of my problematic system the PEP constraints for the root
-> port are:
-> 
-> Package (0x04)
-> {
-> 	0x00,
-> 	"\\_SB.PCI0.GP17",
-> 	0x00,
-> 	0x00
-> },
-> 
-> That first 0x00 means the constraint isn't actually enabled for the root
-> port.
-> 
-> Mika,
-> 
-> Could you get an acpidump from one of these problematic Intel systems so we
-> can check the PEP constraints to see if this theory works? Or maybe you have
-> some other ideas why this is different?
+Hello Bjorn Helgaas,
 
-The patch adding this was merged in 2016 and unfortunately I don't have
-any of the ACPI dumps from them available anymore (and do not recall the
-details either). I think these were Apollo Lake-P based systems with the
-initial runtime D3cold and S0ix support at the time.
+The patch 1f32ca31e740: "PNP: convert resource options to single
+linked list" from Jun 27, 2008 (linux-next), leads to the following
+Smatch static checker warning:
+
+	drivers/pnp/quirks.c:193 quirk_add_irq_optional_dependent_sets()
+	warn: list_entry() does not return NULL 'new_option'
+
+drivers/pnp/quirks.c
+    180 static void quirk_add_irq_optional_dependent_sets(struct pnp_dev *dev)
+    181 {
+    182         struct pnp_option *new_option;
+    183         unsigned int num_sets, i, set;
+    184         struct pnp_irq *irq;
+    185 
+    186         num_sets = dev->num_dependent_sets;
+    187         for (i = 0; i < num_sets; i++) {
+    188                 new_option = pnp_clone_dependent_set(dev, i);
+    189                 if (!new_option)
+    190                         return;
+    191 
+    192                 set = pnp_option_set(new_option);
+--> 193                 while (new_option && pnp_option_set(new_option) == set) {
+
+The new_option part of this condition is always non-NULL.  I think
+eventually we will call list_entry() on the list head so we end up
+reading from invalid memory.
+
+    194                         if (new_option->type == IORESOURCE_IRQ) {
+    195                                 irq = &new_option->u.irq;
+    196                                 irq->flags |= IORESOURCE_IRQ_OPTIONAL;
+    197                         }
+    198                         dbg_pnp_show_option(dev, new_option);
+    199                         new_option = list_entry(new_option->list.next,
+    200                                                 struct pnp_option, list);
+    201                 }
+    202 
+    203                 dev_info(&dev->dev, "added dependent option set %d (same as "
+    204                          "set %d except IRQ optional)\n", set, i);
+    205         }
+    206 }
+
+regards,
+dan carpenter
