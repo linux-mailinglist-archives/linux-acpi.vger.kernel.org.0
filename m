@@ -2,46 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F20076BCA6
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Aug 2023 20:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FE5B76BCFA
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Aug 2023 20:52:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230356AbjHASkf convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 1 Aug 2023 14:40:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51622 "EHLO
+        id S231220AbjHASwT convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 1 Aug 2023 14:52:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229814AbjHASke (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Aug 2023 14:40:34 -0400
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56B77268E;
-        Tue,  1 Aug 2023 11:40:09 -0700 (PDT)
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-56c9f7830c2so333245eaf.0;
-        Tue, 01 Aug 2023 11:40:09 -0700 (PDT)
+        with ESMTP id S230274AbjHASwS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Aug 2023 14:52:18 -0400
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A64126A1;
+        Tue,  1 Aug 2023 11:52:11 -0700 (PDT)
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-56d0deeca09so32945eaf.0;
+        Tue, 01 Aug 2023 11:52:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690915188; x=1691519988;
+        d=1e100.net; s=20221208; t=1690915930; x=1691520730;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bJ1fhbjpQoUWJT3y2RKGjKyUCNoTdwOyxERwVOCkTxo=;
-        b=N6gu8jE5JuuhvFAYbXXxxUstouZk5wB6+Gf+kpZPpN+U2jHKlKMnTgRghK0FxzvSBT
-         tbsXzIE+j5m9FAQ23GPFhGrmER6VsTXuGhCMccTbZsD81vJukJQWe3a+G6ShqWGkX2G3
-         99hXVO61woFfn1tofZnUvwa9rwrYgNGvnMe6XB+mBgWbKB4cy0PB4G4HxwGBulgHX+Qy
-         7V8elqI5AENWpJX1b1/yaUxwGnGqeOKYsUv2vVDYrtN50OkXsuCnSxggJ6h8KD9tfLdL
-         Gf0DqPJ5nnU+Oy2wZHpXTEFWEBKugtY+3/ahH5ceNBbCgltvZiYdrUz0AyGwXZ7gf8mx
-         Y1NA==
-X-Gm-Message-State: ABy/qLaHZqak5cP4DYixqgmafeSjx5tPHaOfRHv4dHSx0gSpNxRPkg0Y
-        5bFPU5llSiR95sDQkIxJQbSSBdk4gbJl1Fadpro=
-X-Google-Smtp-Source: APBJJlEYNeQWwYNjM3S5UGIXL9wfbs//d2C8oFPBCLE8r61i/VBaBggtYASvgmQe9RctlGfL9l57JU8piJoIGVsllbg=
-X-Received: by 2002:a05:6820:1686:b0:56c:5e21:c730 with SMTP id
- bc6-20020a056820168600b0056c5e21c730mr9457475oob.1.1690915187929; Tue, 01 Aug
- 2023 11:39:47 -0700 (PDT)
+        bh=oDF+MyCYxqY1Suy31l3VNJ8qreWErHQzhBqOCnxacPo=;
+        b=GnRNdVeGxggrfPV1lIMsZoJd+xTxbj1fYGN6uugm7cDw+PMnBEIjwqQgiVB/SHh4U6
+         uTZ0SrRrGGgeuxUGnceFSMRe7ZI1AoRkD/Hv89j4Sh9+eO99Msx8796dm9t1cv/1jvlk
+         4qBzsq821urpo4tQqHigyv+xfk9S9uAiERiXT7VSI5LrV4YUAeXFGMUi25hCdNqmIjY6
+         /b/213kJ//7EA0UvXj2aEnEmpqVquzhKecBWMClUscwCf7CIn1bYzxzD5dELl3G64RPo
+         W5RwZTmaJVOxY/PzyEAAsdaHUoaSNhDYL2/adNKv/gzN0tEkzWonOKEt5OQl2xUlJxyv
+         UfDg==
+X-Gm-Message-State: ABy/qLZ1valhqZUNmf3NN4Wa1BJcYDm7c+Hwu5huO5J2CgA/Qt0cbI1C
+        HjpkuYdpkyE9TYXKOQfCqUtytCUYk+5slRbdItdfjS8bI3o=
+X-Google-Smtp-Source: APBJJlGB8BiGH7rdxWxxWgn6VIpoLYNe/FN/bIb8KJ20VqCaACeW/krItvO4XX+Q8DrZOaOQ+S3zBV9rFejyKb/lDqE=
+X-Received: by 2002:a4a:cf14:0:b0:569:a08a:d9c5 with SMTP id
+ l20-20020a4acf14000000b00569a08ad9c5mr7986887oos.0.1690915930146; Tue, 01 Aug
+ 2023 11:52:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher> <728e22ab-f68c-a891-f4d0-3d66cd03e9ec@linaro.org>
-In-Reply-To: <728e22ab-f68c-a891-f4d0-3d66cd03e9ec@linaro.org>
+References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
+ <7552439.EvYhyI6sBW@kreacher> <cc972aec-dd21-e025-8984-e48b7c1df4bc@linaro.org>
+In-Reply-To: <cc972aec-dd21-e025-8984-e48b7c1df4bc@linaro.org>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 1 Aug 2023 20:39:36 +0200
-Message-ID: <CAJZ5v0hdFFnx2kUuVN+Quytw+tz2qsNtQstOOreoFKQ3aMv3Gw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/8] ACPI: thermal: Use trip point table to register
- thermal zones
+Date:   Tue, 1 Aug 2023 20:51:58 +0200
+Message-ID: <CAJZ5v0iizOkgX6YbMXpOrKBTp+EFV-hZJmJxPkWsBM0GtuK9VA@mail.gmail.com>
+Subject: Re: [PATCH v3 5/8] ACPI: thermal: Hold thermal zone lock around trip updates
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
@@ -63,56 +63,57 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 1, 2023 at 8:27 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+On Tue, Aug 1, 2023 at 8:39 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
 >
 >
 > Hi Rafael,
 >
-> On 25/07/2023 14:02, Rafael J. Wysocki wrote:
-> > Hi Everyone,
+> On 25/07/2023 14:16, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > >
-> > This is the second iteration of the $subject patch series and its original
-> > description below is still applicable
+> > There is a race condition between acpi_thermal_trips_update() and
+> > acpi_thermal_check_fn(), because the trip points may get updated while
+> > the latter is running which in theory may lead to inconsistent results.
+> > For example, if two trips are updated together, using the temperature
+> > value of one of them from before the update and the temperature value
+> > of the other one from after the update may not lead to the expected
+> > outcome.
 > >
-> > On Tuesday, July 18, 2023 8:01:20 PM CEST Rafael J. Wysocki wrote:
-> >>
-> >> This patch series makes the ACPI thermal driver register thermal zones
-> >> with the help of thermal_zone_device_register_with_trips(), so it
-> >> doesn't need to use the thermal zone callbacks related to trip points
-> >> any more (and they are dropped in the last patch).
-> >>
-> >> The approach presented here is quite radically different from the
-> >> previous attempts, as it doesn't really rearrange the driver's
-> >> internal data structures, but adds the trip table support on top of
-> >> them.  For this purpose, it uses an additional field in struct thermal_trip
-> >> introduced in the first patch.
-> >
-> > This update is mostly related to the observation that the critical and hot trip
-> > points never change after initialization, so they don't really need to be
-> > connected back to the corresponding thermal_trip structures.  It also fixes
-> > an error code path memory leak in patch [5/8].
+> > To address this, make acpi_thermal_trips_update() hold the thermal zone
+> > lock across the entire update of trip points.
 >
-> I've been through the series. It is really cool that we can get rid of
-> the ops usage at the end of the series.
+> As commented in patch 3/8, having a driver locking a thermal core
+> structure is not right and goes to the opposite direction of the recent
+> cleanups.
+
+It already happens though, because thermal_zone_device_update() locks
+the zone and it is called by the driver.
+
+> Don't we have 2 race conditions:
 >
-> However, the series introduces a wrapper to the thermal zone lock and
-> exports that in the public header. That goes in the opposite direction
-> of the recent cleanups and obviously will give the opportunity to
-> drivers to do silly things [again].
-
-Because it is necessary to update the trip points in the table under
-the zone lock, the driver needs to somehow make that happen.
-
-I suppose I can pass a callback to thermal_zone_device_update() or
-similar, but I'm not sure if that's better.
-
-> On the other side, the structure thermal_trip introduces a circular
-> reference, which is usually something to avoid.
-
-What do you mean by "a circular reference"?
-
-> Apart those two points, the ACPI changes look ok.
+> acpi_thermal_trips_update() + thermal_zone_device_check()
 >
-> Comments in the different patches will follow
+> acpi_thermal_trips_update() + acpi_thermal_trips_update()
 
-Thanks!
+I'm not sure what you mean.
+
+First off, acpi_thermal_check_fn() needs to be locked against anything
+using the trips in the zone's trips[] table, in particular
+thermal_get_trend().
+
+However, thermal_get_trend() also uses the driver's private trips
+information, so it needs to be locked against
+acpi_thermal_trips_update().
+
+And obviously the latter needs to be locked against acpi_thermal_check_fn().
+
+> For the former, we can disable the thermal zone, update and then enable
+
+Disabling the thermal zone is an idea, but it would be necessary to do
+that in both acpi_thermal_check_fn() and acpi_thermal_trips_update().
+Also I'm not sure how different that would be from holding the zone
+lock across the updates.
+
+Moreover, acpi_thermal_trips_update() would then need to hold the
+local lock around the thermal zone disable/enable which would be way
+uglier than just using the zone lock directly in it.
