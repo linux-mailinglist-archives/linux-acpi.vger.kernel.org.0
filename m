@@ -2,186 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67A5D76D40A
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Aug 2023 18:49:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD33B76D865
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Aug 2023 22:10:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbjHBQsv convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 2 Aug 2023 12:48:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47390 "EHLO
+        id S231899AbjHBUKp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Aug 2023 16:10:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230175AbjHBQsa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Aug 2023 12:48:30 -0400
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C9711AC;
-        Wed,  2 Aug 2023 09:48:29 -0700 (PDT)
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-56475c1b930so1027903eaf.0;
-        Wed, 02 Aug 2023 09:48:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690994908; x=1691599708;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x4DJQJkC9NXulAsskXsBVfJzo4vhzZPcLEYBWos2xhk=;
-        b=LGX99bfLc3V1UPzQU4NAqOpkEjEr3BF4Ac9BmD/k4HVaKQp3fmaiKwEaQYSquewhiN
-         bU9Dfo3CyOxCYkuHddprqFjGsMm/2rkAjloqV1IryYSB5Joxf+hQiOZJbg/ZYP4u3dOr
-         KWuTYepa2ZMJUfFTYVH4zmMHT53GqCQhXdHzJt4vKCz4QMRxz86CkUxUUde+uVgjdw47
-         U5pAInc4ui9CaKMf2RZky4eM/KFP4Jxg1yg8LEdTbaox6X1e5eZtmIiVXMwyUvUtfVLS
-         48oMYkbbBw7IIlKVDYIHeVXFNztSIzGmQSUt4MVVWLYHwgXZDPg22JS6eHhPZqY7YrIj
-         NVog==
-X-Gm-Message-State: ABy/qLZ22+Y5OfnSg+U0rYmUohKb18yf9+06OwNknRAWocMRbn0TlsFP
-        duSdnU1fTae251vFgON0azV4psbP06IREK9pkOk=
-X-Google-Smtp-Source: APBJJlHSECy5jKPCEQN5IlcgxAHfjF5aalctkrWz+1/ATuL6Ow+piNoQF2SC+imfMegE01xDjGTvGCOxhAYg0CG8zt4=
-X-Received: by 2002:a05:6820:2201:b0:560:b01a:653d with SMTP id
- cj1-20020a056820220100b00560b01a653dmr12607199oob.0.1690994908588; Wed, 02
- Aug 2023 09:48:28 -0700 (PDT)
+        with ESMTP id S229930AbjHBUKn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Aug 2023 16:10:43 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2052.outbound.protection.outlook.com [40.107.220.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E372101;
+        Wed,  2 Aug 2023 13:10:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Na/1d7IOh9kLwNrSR2bUgqEk2/lepJ5VuiCMxYa8fNSOc7nUYb/hM98Ix4pBjpHHpmEFbWHdn2XDCxbHzJK62V43VTfPFA4JT+paoPqzE/iJL7T2UmPC7o67QuvlJ/uJUjIqFU6fMam1XYKUQChchCUbpPEXQOmES9eDDusOW5d3sw6H7zyoiyAupIDPMeXfLQSzVC92i0jOVzynbCM49A03D49XPR0vb+cynkHDuLCkJ1Fe8+B4fNSPGGY1g6mK4JURVLNJLHfmr35KcGg+2V+ln46vPs+T5gte8swV8patWNxyjfu7hg7v0dOZTIbDSp6taXsVKVFa6sutvRfm2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=caaw98/m+uJ5RsbWMg9ZWfTPOc3/v8+ZU4JT58RbSqQ=;
+ b=jtlkmKve3fvUv/A5pTwk7/GdGKXegEdT+OjnmRSOdO9qyw+FHUIR9fd/g8J2rFFqGqVBO86DLtySRabQx9DfPlch+HE5mqldb2ixXKOdBjzIJCNyVqDR+P2FqJl/hd1zwKFIeY8JC3AcxMMSMeDt8NxLf6JIND+mfTO3GjajCDwjjMXVJOP1BI+ene1BCUXbUrMZSIm/meEymb7kLdNyFLOx12J4XKzmTMn9fiBfX3l64TpAjmVRYMP59ir697jSFb0kJaw0K2j30lAdeDjUtezVslhiX0IBQcGOBYP6Ze/IMnKJE/ZXHrYUBkDO3/EGvIZHIhitC0pNZP/1OdiV9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=caaw98/m+uJ5RsbWMg9ZWfTPOc3/v8+ZU4JT58RbSqQ=;
+ b=XVr9eY92Y1+u3mLg9dBohdckRV4UH3lya21geRA7XoBVVpJU4+CP+w8xoHmswMtcaDQ7h77qV9Os5VwXN5xEHw5zgmSMyEnOelhxY4TRPkOJTz/9j8maqOv1lwBJHZ7YRoa23UBgpuwa0eAdAou6DqORIizOFp9Y75MKOuZOaXk=
+Received: from DS7PR03CA0193.namprd03.prod.outlook.com (2603:10b6:5:3b6::18)
+ by MW4PR12MB6754.namprd12.prod.outlook.com (2603:10b6:303:1eb::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.47; Wed, 2 Aug
+ 2023 20:10:39 +0000
+Received: from CO1PEPF000044FB.namprd21.prod.outlook.com
+ (2603:10b6:5:3b6:cafe::83) by DS7PR03CA0193.outlook.office365.com
+ (2603:10b6:5:3b6::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.19 via Frontend
+ Transport; Wed, 2 Aug 2023 20:10:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000044FB.mail.protection.outlook.com (10.167.241.201) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6652.19 via Frontend Transport; Wed, 2 Aug 2023 20:10:38 +0000
+Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 2 Aug
+ 2023 15:10:35 -0500
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>
+CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, Iain Lane <iain@orangesquash.org.uk>,
+        "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH v8 0/2] Fix wakeup problems on some AMD platforms
+Date:   Wed, 2 Aug 2023 15:10:11 -0500
+Message-ID: <20230802201013.910-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
- <4501957.LvFx2qVVIh@kreacher> <2d0315d4-35b4-84db-4dcb-c9528abad825@linaro.org>
- <CAJZ5v0iQDOsTOqWFvbf5nom-b3-pbHPRzJQC-1DM9eoh=0AKjg@mail.gmail.com>
- <eb279cf1-0605-3b87-5cb6-241a91977455@linaro.org> <CAJZ5v0i48=oawDJHoaHhiZRaO_CJokKsOHyNvu2v4PUbS6CH_Q@mail.gmail.com>
- <f8029547-6851-7e0c-00e6-4963ccbc2702@linaro.org>
-In-Reply-To: <f8029547-6851-7e0c-00e6-4963ccbc2702@linaro.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 2 Aug 2023 18:48:17 +0200
-Message-ID: <CAJZ5v0gDQMNSeEU1J7ooJk4Ec=Hw_JuZAtL5k215v7Lf67iTgg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/8] thermal: core: Add mechanism for connecting trips
- with driver data
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Michal Wilczynski <michal.wilczynski@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044FB:EE_|MW4PR12MB6754:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4f89c171-141a-4d9a-3858-08db93948a2b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Rd1WLCSn/5/VUpdjwLEgpcRR8c5xwkcCcS511B6SDLWmOid4TBtrl/vlOaEW8AGGPdbyI99iv3EFuaRh1i/TrmROjK62bDgLeO6tUm4ql0DAz0mx0McyxQDtRZKzzSapQXGQIpoXyYy32nM1cllI1DbKM7fDcsrowNLXAsmLt/M7flSZKrnecaOJhhIPJdi5fFNGezeCriSJ3FM++ocGN1TqUVuyrWJHeGECGoDlie4tVaF8vxm0/xjD4yIea5srQIQS6XKg9Ef3P922bBfu0SugwlsRnlA5VxdaucpSwkl1qE46TsMB9ihs0y4JITskM40dO6EfrJcZK6Gk0ZEKYLrw+fTFZ5w/YXI9mFqzcocJow7mmnKt3woXYIovwDoMADnEPQ82jo1EErxWCf/5dKobHXRLGZkUuQh4uYc8kEXDuN5Cak9VFPoSetlqGaC0xN+4sBDTrZg6pgCna/yvtHvIBO4QlATvp1RkEBEXPOrTrYoBX/fsY+d+E0JJ3AUMWD10h1VJ5k/I+xbkl4im3ZBoAoiXiaMtc14tK1hA5+CBD/gtP79d3gtFCypT8/oC/Z4evXJSkd1W22fo4WnobMKzXE4r42o0CeA+4OxIVARwFQzt3oXsLvf6mqpcdxnutz2Sjd/WZ6shgm3UOZKhxZAzk0RnCo5yKWIl9uXrjaxjTPZVDB4TW0wiq88uTgTmmSk6bYp1uuV2xUxUe2GjhhBCZHazh5gSeQBntJBYTBjFycQXbqzdgEHz+xtee29ZTApZ+hLsRa89YFejo1ff5Q==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(136003)(39860400002)(396003)(346002)(376002)(82310400008)(451199021)(36840700001)(40470700004)(46966006)(40480700001)(44832011)(5660300002)(8936002)(8676002)(40460700003)(41300700001)(70206006)(70586007)(4326008)(316002)(2906002)(36860700001)(47076005)(7696005)(110136005)(54906003)(6666004)(478600001)(356005)(81166007)(82740400003)(336012)(86362001)(16526019)(83380400001)(426003)(2616005)(26005)(1076003)(36756003)(186003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2023 20:10:38.3713
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f89c171-141a-4d9a-3858-08db93948a2b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044FB.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6754
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 2, 2023 at 5:50 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
->
-> On 02/08/2023 15:03, Rafael J. Wysocki wrote:
->
-> [ ... ]
->
-> >>>>> +struct thermal_trip_ref {
-> >>>>> +     struct thermal_trip *trip;
-> >>>>> +};
-> >>>>
-> >>>> That introduces a circular dependency. That should be avoided.
-> >>>
-> >>> Sorry, but this is an empty statement without any substance.
-> >>
-> >> I'm just pointing that we have a struct A pointing to struct B and
-> >> struct B pointing to struct A.
-> >
-> > Why is this a problem in general?
->
-> Cyclic dependencies are often a sign of a design problem.
->
-> > There are cases in which struct A needs to be found given struct B
-> > (like in the ACPI thermal case, when the driver needs to get to
-> > trips[i] from its local data) and there are cases in which struct B
-> > needs to be found given struct A (like when a driver's callback is
-> > invoked and passed a trip pointer, so the driver needs to get to its
-> > local data from it - arguably this is not the case right now, but I
-> > suppose it will be the case in the future).
-> >
-> >> [ ... ]
-> >>
-> >>>>>     struct thermal_cooling_device_ops {
-> >>>>> Index: linux-pm/drivers/thermal/thermal_core.c
-> >>>>> ===================================================================
-> >>>>> --- linux-pm.orig/drivers/thermal/thermal_core.c
-> >>>>> +++ linux-pm/drivers/thermal/thermal_core.c
-> >>>>> @@ -1306,14 +1306,28 @@ thermal_zone_device_register_with_trips(
-> >>>>>         if (result)
-> >>>>>                 goto release_device;
-> >>>>>
-> >>>>> +     mutex_lock(&tz->lock);
-> >>>>> +
-> >>>>>         for (count = 0; count < num_trips; count++) {
-> >>>>> -             struct thermal_trip trip;
-> >>>>> +             int temperature = 0;
-> >>>>> +
-> >>>>> +             if (trips) {
-> >>>>> +                     temperature = trips[count].temperature;
-> >>>>> +                     if (trips[count].driver_ref)
-> >>>>> +                             trips[count].driver_ref->trip = &trips[count];
-> >>>>> +             } else {
-> >>>>> +                     struct thermal_trip trip;
-> >>>>
-> >>>> As mentioned above, that should not appear in the thermal core code.
-> >>>
-> >>> Well, this is a matter of opinion to me.  Clearly, I disagree with it.
-> >>
-> >> Why? It is not an opinion.
-> >
-> > So what's wrong with it, technically?  What's broken by it?  Why does
-> > it make the code more difficult to maintain?
->
->
->
-> >> The thermal core code has been very very tied
-> >> with the ACPI implementation (which is logical given the history of the
-> >> changes). All the efforts have been made to cut these frictions and make
-> >> the thermal core code driver agnostic.
-> >>
-> >> The changes put in place a mechanism for the ACPI driver.
-> >
-> > Not really, for all drivers that have local trip data and need to get
-> > to trips[i] from there and/or the other way around.
-> >
-> >> The thermal zone lock wrapper is put in place for the ACPI driver.
-> >
-> > Yes, it is, because that's the most straightforward way to address the
-> > use case at hand IMV.
-> >
-> >>> Anyway, I want to be productive, so here's the thing: either something
-> >>> like this is done, or drivers need to be allowed to walk the trips
-> >>> table.
-> >>>
-> >>> Which one is better?
-> >>
-> >> None of them. I think we can find a third solution where the changes are
-> >> self contained in the ACPI driver. What do you think?
-> >
-> > The ACPI thermal driver needs to update trip point temperatures at
-> > times.  For this purpose, it needs to get from its local trip data to
-> > trip[i] somehow.
-> >
-> > Creating a new trips[] array and handing it over to the core is not an
-> > option, because it potentially breaks the thermal device binding to
-> > the zone (in which trip indices are used, mind you).
-> >
-> > So how exactly do you want the driver to do the above?
-> >
-> > It could save a pointer to each trips[i] in its local data structures
-> > before registering the zone, but then if the core reordered the trips,
-> > those pointers would become stale.
-> >
-> > So how?
->
-> Let me check if I can do something on top of your series to move it in
-> the ACPI driver.
+Problems have been reported on AMD laptops with suspend/resume
+where particular root ports are put into D3 and then the system is unable
+to resume properly.
 
-It doesn't need to be on top of my series, so if you have an idea,
-please just let me know what it is.
+The issue boils down to the currently selected kernel policy for root port
+behavior at suspend time:
+0) If the machine is from 2015 or later
+1) If a PCIe root port is power manageable by the platform then platform
+   will be used to determine the power state of the root port at suspend.
+2) If the PCIe root is not power manageable by the platform then the kernel
+   will check if it was configured to wakeup.
+3) If it was, then it will be put into the deepest state that supports
+   wakeup from PME.
+4) If it wasn't, then it will be put into D3hot.
 
-It can't be entirely in the ACPI driver AFAICS, though, because
-trips[i] need to be modified on updates and they belong to the core.
-Hence, the driver needs some help from the core to get to them.  It
-can be something like "this is my trip tag and please give me the
-address of the trip matching it" or similar, but it is needed, because
-the driver has to assume that the trip indices used by it initially
-may change.
+This patch adjusts it so that device constraints for low power idle are
+considered instead of a time based policy.
+
+Mario Limonciello (2):
+  ACPI: Add comments to clarify some #ifdef statements
+  PCI/ACPI: Use device constraints instead of dates to opt devices into
+    D3
+
+ drivers/acpi/x86/s2idle.c | 28 ++++++++++++++++++++++++++--
+ drivers/pci/pci-acpi.c    | 19 +++++++++++++++++++
+ drivers/pci/pci.c         | 15 ++++++++++-----
+ drivers/pci/pci.h         |  5 +++++
+ include/linux/acpi.h      | 10 ++++++++--
+ 5 files changed, 68 insertions(+), 9 deletions(-)
+
+-- 
+2.34.1
+
