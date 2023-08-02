@@ -2,198 +2,199 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB82A76D0D6
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Aug 2023 17:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CAD776D2FB
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Aug 2023 17:52:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234900AbjHBPBM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Aug 2023 11:01:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53438 "EHLO
+        id S235288AbjHBPwY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Aug 2023 11:52:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234721AbjHBPAu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Aug 2023 11:00:50 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 584C32690;
-        Wed,  2 Aug 2023 08:00:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690988449; x=1722524449;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Nm7xh9afr3+itg6U0oA7NAvWHcM1bQ1T0gO+IUBX07I=;
-  b=DDe3nC+sswx/52P1X+Og1rB/mXr+2hJv1kecU0pMuB0oswyKnExHzbrC
-   yJ7c1qIIm5jhAFS4Dp6hFvXXJmP7W48ORFcRLw5tw/DLkw78RCKd8RJBN
-   Z6u6UbX83dhNpCCBpRHNDofy/ZjjZj2KFxb6cptfWGqr0QeunMn2W7nTs
-   COaBXkTlvmm4Ywl5uMRyZVi22rw17/QeKKwV1iY+ha7ufMhOCPeRmMR5n
-   nDLRZKkp17mSUOOci3O6UGV5XXLsYEwpy9GLGJhPX9AGcxioEF4/LSyEF
-   2nfDkD7wWtrF4kvb+IpWMx+YNfLYgnW3MP02Q+dyOoVcwFds3wactrPc9
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="435931710"
-X-IronPort-AV: E=Sophos;i="6.01,249,1684825200"; 
-   d="scan'208";a="435931710"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2023 08:00:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="1059864191"
-X-IronPort-AV: E=Sophos;i="6.01,249,1684825200"; 
-   d="scan'208";a="1059864191"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 02 Aug 2023 08:00:33 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 3979713F; Wed,  2 Aug 2023 18:00:40 +0300 (EEST)
-Date:   Wed, 2 Aug 2023 18:00:40 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v7 2/2] PCI: Don't put non-power manageable PCIe root
- ports into D3
-Message-ID: <20230802150040.GU14638@black.fi.intel.com>
-References: <a309e3fe-b1f9-e269-cb97-8af87c8d483b@amd.com>
- <CAJZ5v0jvxrDMR6YHFpYZ4yYpp82-3TtrH==SMRFtUMJsv7=i=g@mail.gmail.com>
- <37b005d5-68fb-f8dd-67e2-c953d677fca2@amd.com>
- <8298c01c-abec-914b-0542-459f38c635fe@amd.com>
- <CAJZ5v0i3g0JujMwikB8niRZ93hXJZqWtjrCjbaDmkMLUbMmwMA@mail.gmail.com>
- <d1b2cf1b-de5f-6c2e-c8dc-fdf60cd0882d@amd.com>
- <20230802052601.GM14638@black.fi.intel.com>
- <e82ec662-22d9-b331-0880-886bd28624eb@amd.com>
- <20230802143142.GS14638@black.fi.intel.com>
- <0fa90fa4-af41-52c1-0e6f-3ce6a84fa461@amd.com>
+        with ESMTP id S235455AbjHBPvx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Aug 2023 11:51:53 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 517734229
+        for <linux-acpi@vger.kernel.org>; Wed,  2 Aug 2023 08:50:53 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fbea14700bso66057645e9.3
+        for <linux-acpi@vger.kernel.org>; Wed, 02 Aug 2023 08:50:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690991449; x=1691596249;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+Ss3r+QCu4BZnzw3b/YfsbbL8/OQIEjREb8HjMtg3ug=;
+        b=z50j76Y9e/MdwtFR3s6pty1bP2KztmrSyEziF9Q4jMbM02yt65YmZf0Cytxyvd6Qe8
+         KbNgyp/s51Mb9DBd50WvqnsEQtGA1p9unhpRArpA+0h/v4AFPkPlSZXdUr33JTqc+Zvu
+         1OVVAsBDH9MbG+F/gDz+XBnoOynoLXml+p6dr7VMRB66xY5fRgvd4Mi6IP+hkfbEHNNa
+         J0CRLr9PEpNT0d2TqdtAf6b8o85UU/KmKomgFPzXmvbEbpRNmk8IVB9d6fM5G5ea7uR8
+         q2BpEWRg5NKmqqjyVOspVF2lYpewWXh2wfq2qDQGa0HA/1+489h2sE4PbDAUvixu9oB+
+         2gYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690991449; x=1691596249;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+Ss3r+QCu4BZnzw3b/YfsbbL8/OQIEjREb8HjMtg3ug=;
+        b=TVSUZxGDhmjcgj2PjE2OJWjdx0P07LnLOsm+H36Xt7OTU0cRWbm+e/8cyi7JMWHQX9
+         vYn/FsZP1oD58DbH6bhQU7mRAwer13qd3r3IxshJhmFWJWuVqV04MK7LdL7l+izAcRxm
+         /HhRijyRCUopgoHkPyN0e1viLl2IQ6+DU45OZBrgQ+186amwKCGhLD5lWkoBXSFnXlqQ
+         a81w+QeEvlPityzJ7VvCQwvtiBVu2lNWuVvehrvp4N8c2NSgWJPCHmmhyJnMVvLDFmd+
+         94wXfBZuOVcNVSFfRQZcwt5Ty8sahDPRQDM+Cbx059YEXVHsH0OsixvqHWHmH9Oe3g1K
+         PLsw==
+X-Gm-Message-State: ABy/qLagGPVecJlQJbSJVcnc0ODJTjOGnvom/pDVRiqSySrlK0HYrjXh
+        +kHOMS+fC47b9YmIi64DVmVidQ==
+X-Google-Smtp-Source: APBJJlGxc7HGOnzT6qieeEtV6ahPu4r0HdboWAtc/x8nTAAVKuX50KCo0SnMyTTzXzqahCt8tmPOpg==
+X-Received: by 2002:a05:600c:2a54:b0:3fa:934c:8350 with SMTP id x20-20020a05600c2a5400b003fa934c8350mr5150734wme.27.1690991449039;
+        Wed, 02 Aug 2023 08:50:49 -0700 (PDT)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id l9-20020a05600012c900b003143801f8d8sm19369842wrx.103.2023.08.02.08.50.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Aug 2023 08:50:48 -0700 (PDT)
+Message-ID: <f8029547-6851-7e0c-00e6-4963ccbc2702@linaro.org>
+Date:   Wed, 2 Aug 2023 17:50:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <0fa90fa4-af41-52c1-0e6f-3ce6a84fa461@amd.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3 1/8] thermal: core: Add mechanism for connecting trips
+ with driver data
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Michal Wilczynski <michal.wilczynski@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
+ <4501957.LvFx2qVVIh@kreacher>
+ <2d0315d4-35b4-84db-4dcb-c9528abad825@linaro.org>
+ <CAJZ5v0iQDOsTOqWFvbf5nom-b3-pbHPRzJQC-1DM9eoh=0AKjg@mail.gmail.com>
+ <eb279cf1-0605-3b87-5cb6-241a91977455@linaro.org>
+ <CAJZ5v0i48=oawDJHoaHhiZRaO_CJokKsOHyNvu2v4PUbS6CH_Q@mail.gmail.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <CAJZ5v0i48=oawDJHoaHhiZRaO_CJokKsOHyNvu2v4PUbS6CH_Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 02, 2023 at 09:35:35AM -0500, Mario Limonciello wrote:
-> 
-> 
-> On 8/2/23 09:31, Mika Westerberg wrote:
-> > Hi,
-> > 
-> > On Wed, Aug 02, 2023 at 09:10:38AM -0500, Mario Limonciello wrote:
-> > > 
-> > > 
-> > > On 8/2/23 00:26, Mika Westerberg wrote:
-> > > > Hi Mario,
-> > > > 
-> > > > On Tue, Aug 01, 2023 at 10:17:11PM -0500, Mario Limonciello wrote:
-> > > > > > Consequently, platform_pci_bridge_d3() will return false and the only
-> > > > > > thing that may allow the port to go into D0 is the dmi_get_bios_year()
-> > > > > > check at the end of pci_bridge_d3_possible().
-> > > > > > 
-> > > > > > However, that was added, because there are Intel platforms on which
-> > > > > > Root Ports need to be programmed into D3hot on suspend (which allows
-> > > > > > the whole platform to reduce power significantly) and there are no
-> > > > > > ACPI device power management objects associated with them (Mika should
-> > > > > > know the gory details related to this).  It looks like under Windows
-> > > > > > the additional power reduction would not be possible on those systems,
-> > > > > > but that would be a problem, wouldn't it?
-> > > > > > 
-> > > > > 
-> > > > > I've been thinking on this today, and I at least have a hypothesis about
-> > > > > this behavior.  Perhaps Windows is actually utilizing enabled PEP
-> > > > > constraints to enforce what state device should be put into over Modern
-> > > > > Standby cycles in the absence of ACPI objects.
-> > > > > 
-> > > > > In the case of one of my problematic system the PEP constraints for the root
-> > > > > port are:
-> > > > > 
-> > > > > Package (0x04)
-> > > > > {
-> > > > > 	0x00,
-> > > > > 	"\\_SB.PCI0.GP17",
-> > > > > 	0x00,
-> > > > > 	0x00
-> > > > > },
-> > > > > 
-> > > > > That first 0x00 means the constraint isn't actually enabled for the root
-> > > > > port.
-> > > > > 
-> > > > > Mika,
-> > > > > 
-> > > > > Could you get an acpidump from one of these problematic Intel systems so we
-> > > > > can check the PEP constraints to see if this theory works? Or maybe you have
-> > > > > some other ideas why this is different?
-> > > > 
-> > > > The patch adding this was merged in 2016 and unfortunately I don't have
-> > > > any of the ACPI dumps from them available anymore (and do not recall the
-> > > > details either). I think these were Apollo Lake-P based systems with the
-> > > > initial runtime D3cold and S0ix support at the time.
-> > > 
-> > > 
-> > > I scoured the web looking for acpidumps a bit an Apollo Lake system and came
-> > > across this random bug report:
-> > > 
-> > > https://bugzilla.redhat.com/show_bug.cgi?id=1591307
-> > > 
-> > > "Intel(R) Celeron(R) CPU N3450 @ 1.10GHz (family: 0x6, model: 0x5c,
-> > > stepping: 0x9)"
-> > > 
-> > > I looked at the acpidump, and I notice:
-> > > 
-> > > Low Power S0 Idle (V5) : 0
-> > > 
-> > > That means that Windows wouldn't actually be putting it into Modern Standby
-> > > at suspend but would rather use S3.
-> > 
-> > Same goes for Linux AFAICT. The ones needed this actually used S0ix so
-> > the bit should definitely be set.
-> 
-> OK.
-> 
-> > 
-> > > Considering that result, could we perhaps adjust the check to:
-> > > 
-> > > if ((c->x86_vendor == X86_VENDOR_INTEL) && !(acpi_gbl_FADT.flags &
-> > > ACPI_FADT_LOW_POWER_S0))
-> > > 
-> > > Or could we quirk the PCI root ports from Apollo Lake to opt into D3?
-> > 
-> > It is not just Apollo Lake, but all "modern" systems as well (sorry if
-> > this was unclear). Apollo Lake just was the first one that needed this.
-> > We also have the Low Power S0 Idle bit set in recent systems too.
-> 
-> Ah got it; I misunderstood it as Apollo Lake was the only one that needed
-> it.
-> 
-> So modern systems that set the bit in the FADT, do they also lack _S0W and
-> _S0D on the root ports?
+On 02/08/2023 15:03, Rafael J. Wysocki wrote:
 
-That's a good question. I would think they have those but I cannot be
-sure for all the existing ones. I checked the RPL system I have here and
-it does have _S0W and the HotPlugSupportInD3 at least.
+[ ... ]
 
-> Does my PEP constraints theory hold steam at all?
+>>>>> +struct thermal_trip_ref {
+>>>>> +     struct thermal_trip *trip;
+>>>>> +};
+>>>>
+>>>> That introduces a circular dependency. That should be avoided.
+>>>
+>>> Sorry, but this is an empty statement without any substance.
+>>
+>> I'm just pointing that we have a struct A pointing to struct B and
+>> struct B pointing to struct A.
+> 
+> Why is this a problem in general?
 
-I think it might be worthile to dig into it futher. Not sure if this
-helps at all but the matching PEP constraint for the one of the root
-ports mentioned above looks like this:
+Cyclic dependencies are often a sign of a design problem.
 
-               Package (0x03)
-               {
-                    "\\_SB.PC00.RP09",
-                    Zero,
-                    Package (0x02)
-                    {
-                        Zero, 
-                        Package (0x02)
-                        {
-                            0xFF, 
-                            0x03
-                        }
-                    } 
-                }, 
+> There are cases in which struct A needs to be found given struct B
+> (like in the ACPI thermal case, when the driver needs to get to
+> trips[i] from its local data) and there are cases in which struct B
+> needs to be found given struct A (like when a driver's callback is
+> invoked and passed a trip pointer, so the driver needs to get to its
+> local data from it - arguably this is not the case right now, but I
+> suppose it will be the case in the future).
+>
+>> [ ... ]
+>>
+>>>>>     struct thermal_cooling_device_ops {
+>>>>> Index: linux-pm/drivers/thermal/thermal_core.c
+>>>>> ===================================================================
+>>>>> --- linux-pm.orig/drivers/thermal/thermal_core.c
+>>>>> +++ linux-pm/drivers/thermal/thermal_core.c
+>>>>> @@ -1306,14 +1306,28 @@ thermal_zone_device_register_with_trips(
+>>>>>         if (result)
+>>>>>                 goto release_device;
+>>>>>
+>>>>> +     mutex_lock(&tz->lock);
+>>>>> +
+>>>>>         for (count = 0; count < num_trips; count++) {
+>>>>> -             struct thermal_trip trip;
+>>>>> +             int temperature = 0;
+>>>>> +
+>>>>> +             if (trips) {
+>>>>> +                     temperature = trips[count].temperature;
+>>>>> +                     if (trips[count].driver_ref)
+>>>>> +                             trips[count].driver_ref->trip = &trips[count];
+>>>>> +             } else {
+>>>>> +                     struct thermal_trip trip;
+>>>>
+>>>> As mentioned above, that should not appear in the thermal core code.
+>>>
+>>> Well, this is a matter of opinion to me.  Clearly, I disagree with it.
+>>
+>> Why? It is not an opinion.
+> 
+> So what's wrong with it, technically?  What's broken by it?  Why does
+> it make the code more difficult to maintain?
+
+
+
+>> The thermal core code has been very very tied
+>> with the ACPI implementation (which is logical given the history of the
+>> changes). All the efforts have been made to cut these frictions and make
+>> the thermal core code driver agnostic.
+>>
+>> The changes put in place a mechanism for the ACPI driver.
+> 
+> Not really, for all drivers that have local trip data and need to get
+> to trips[i] from there and/or the other way around.
+> 
+>> The thermal zone lock wrapper is put in place for the ACPI driver.
+> 
+> Yes, it is, because that's the most straightforward way to address the
+> use case at hand IMV.
+> 
+>>> Anyway, I want to be productive, so here's the thing: either something
+>>> like this is done, or drivers need to be allowed to walk the trips
+>>> table.
+>>>
+>>> Which one is better?
+>>
+>> None of them. I think we can find a third solution where the changes are
+>> self contained in the ACPI driver. What do you think?
+> 
+> The ACPI thermal driver needs to update trip point temperatures at
+> times.  For this purpose, it needs to get from its local trip data to
+> trip[i] somehow.
+> 
+> Creating a new trips[] array and handing it over to the core is not an
+> option, because it potentially breaks the thermal device binding to
+> the zone (in which trip indices are used, mind you).
+> 
+> So how exactly do you want the driver to do the above?
+> 
+> It could save a pointer to each trips[i] in its local data structures
+> before registering the zone, but then if the core reordered the trips,
+> those pointers would become stale.
+> 
+> So how?
+
+Let me check if I can do something on top of your series to move it in 
+the ACPI driver.
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
