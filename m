@@ -2,230 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A38F76C556
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Aug 2023 08:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9321376C97C
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Aug 2023 11:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231726AbjHBGfT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Aug 2023 02:35:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33906 "EHLO
+        id S233270AbjHBJaT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Aug 2023 05:30:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229607AbjHBGfS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Aug 2023 02:35:18 -0400
-Received: from mgamail.intel.com (unknown [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51BA7122;
-        Tue,  1 Aug 2023 23:35:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690958117; x=1722494117;
-  h=date:from:to:cc:subject:message-id;
-  bh=fgPiCcpWtj+FzHdRH1YAzGX4QGkFNfGElMeEaxYtb00=;
-  b=diygFtU2Kp2yrVgKe71CBCP3r16ECNqAu4J8FyRgTTbs5whUnz6SXB6T
-   fzFYuVtqjAIoA4kHdsx389IfIBxROdKOtTghbaRfYo4mEUVoHl0N5R8TK
-   KrEWleMi4zaed/86lS9yoLg5q3kUsUplszFiAR6b89xQIbEVvrBedtGZ1
-   Ec0GtxML5JSDkynUxFaSCJIEciIREf8Hfcw0OATVvrJvJyo8+yVXNknMS
-   IItau5Fje2HUuaBCCuuN3ANrO/3xzyruj3h2sGa8kntl2iR6XLtYOweMQ
-   zzMooQrF6GGUKeO9pc8f1yKOhvslYjqbwGj/CLOK6i+sg6joBSQesZ+7x
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10789"; a="369491831"
-X-IronPort-AV: E=Sophos;i="6.01,248,1684825200"; 
-   d="scan'208";a="369491831"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2023 23:35:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10789"; a="678934692"
-X-IronPort-AV: E=Sophos;i="6.01,248,1684825200"; 
-   d="scan'208";a="678934692"
-Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 01 Aug 2023 23:35:15 -0700
-Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qR5Ry-0000wp-1o;
-        Wed, 02 Aug 2023 06:35:14 +0000
-Date:   Wed, 02 Aug 2023 14:35:10 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS WITH WARNING
- 57fb4aeb308cdc2169b440c112bcbbbbdc7b6cc5
-Message-ID: <202308021405.25Vb9jo2-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231765AbjHBJaT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Aug 2023 05:30:19 -0400
+X-Greylist: delayed 63 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 02 Aug 2023 02:30:15 PDT
+Received: from esa11.hc1455-7.c3s2.iphmx.com (esa11.hc1455-7.c3s2.iphmx.com [207.54.90.137])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0120BE7
+        for <linux-acpi@vger.kernel.org>; Wed,  2 Aug 2023 02:30:15 -0700 (PDT)
+X-IronPort-AV: E=McAfee;i="6600,9927,10789"; a="106087032"
+X-IronPort-AV: E=Sophos;i="6.01,248,1684767600"; 
+   d="scan'208";a="106087032"
+Received: from unknown (HELO yto-r2.gw.nic.fujitsu.com) ([218.44.52.218])
+  by esa11.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2023 18:29:10 +0900
+Received: from yto-m2.gw.nic.fujitsu.com (yto-nat-yto-m2.gw.nic.fujitsu.com [192.168.83.65])
+        by yto-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id 68E8CC68E2;
+        Wed,  2 Aug 2023 18:29:07 +0900 (JST)
+Received: from aks-ab1.gw.nic.fujitsu.com (aks-ab1.gw.nic.fujitsu.com [192.51.207.11])
+        by yto-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id A9A88D5EA9;
+        Wed,  2 Aug 2023 18:29:06 +0900 (JST)
+Received: from localhost.localdomain (unknown [10.167.234.230])
+        by aks-ab1.gw.nic.fujitsu.com (Postfix) with ESMTP id ED4DB2FC7B4E;
+        Wed,  2 Aug 2023 18:29:04 +0900 (JST)
+From:   Li Zhijian <lizhijian@cn.fujitsu.com>
+To:     akpm@linux-foundation.org, linux-acpi@vger.kernel.org,
+        linux-mm@kvack.org
+Cc:     rafael@kernel.org, lenb@kernel.org, linux-kernel@vger.kernel.org,
+        ying.huang@intel.com, aneesh.kumar@linux.ibm.com,
+        Li Zhijian <lizhijian@cn.fujitsu.com>
+Subject: [PATCH] acpi,mm: fix typo sibiling -> sibling
+Date:   Wed,  2 Aug 2023 17:28:56 +0800
+Message-Id: <20230802092856.819328-1-lizhijian@cn.fujitsu.com>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-TM-AS-Product-Ver: IMSS-9.1.0.1408-9.0.0.1002-27788.006
+X-TM-AS-User-Approved-Sender: Yes
+X-TMASE-Version: IMSS-9.1.0.1408-9.0.1002-27788.006
+X-TMASE-Result: 10--4.362300-10.000000
+X-TMASE-MatchedRID: WwTQ5WpbqUAUnpTkX3DbLirLqyE6Ur/jGfZImb3fqAQ6FHRWx2FGsL8F
+        Hrw7frluf146W0iUu2t7Dk+VAslsnY3oygjMeK7eBO00Q/2PQs++F//Mn3a2wwPHqiqIXxKG+03
+        a+MQ8RE2BKmEhSw0fOvlc5/v2Z+iZlwV2iaAfSWcURSScn+QSXt0H8LFZNFG76sBnwpOylLPJ1d
+        yRsn38oPRpGUAneS024pirfueCpzaIU5/Hig73GZ0wLQO1SUhFqQX4Tk3p4TByE6+JCoh/s5Sfx
+        imG/4PbSy9102KxznIhyadlGFXHKsTgfCdKUS4cicSkmYsAV+kLUU1zqiphVX7cGd19dSFd
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 57fb4aeb308cdc2169b440c112bcbbbbdc7b6cc5  Merge branch 'pm-cpuidle' into bleeding-edge
+First found this typo as reviewing memory tier code. Fix it by sed like:
+$ sed -i 's/sibiling/sibling/g' $(git grep -l sibiling)
 
-Warning reports:
+so the acpi one will be corrected as well.
 
-https://lore.kernel.org/oe-kbuild-all/202308020253.WHEHp60K-lkp@intel.com
+Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
+---
+ drivers/acpi/acpi_pad.c      |  2 +-
+ include/linux/memory-tiers.h |  2 +-
+ mm/memory-tiers.c            | 10 +++++-----
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-Warning: (recently discovered and may have been fixed)
-
-drivers/acpi/thermal.c:1028:32: warning: variable 'result' set but not used [-Wunused-but-set-variable]
-drivers/acpi/thermal.c:1184:32: warning: variable 'result' set but not used [-Wunused-but-set-variable]
-
-Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- arm64-allyesconfig
-|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
-|-- arm64-defconfig
-|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
-|-- i386-randconfig-i052-20230730
-|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
-|-- i386-randconfig-i053-20230730
-|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
-|-- i386-randconfig-i062-20230730
-|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
-|-- i386-randconfig-m021-20230730
-|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
-|-- loongarch-allyesconfig
-|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
-|-- x86_64-defconfig
-|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
-|-- x86_64-randconfig-x051-20230730
-|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
-`-- x86_64-randconfig-x052-20230730
-    `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
-
-elapsed time: 859m
-
-configs tested: 122
-configs skipped: 8
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r036-20230801   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                 nsimosci_hs_smp_defconfig   gcc  
-arc                  randconfig-r005-20230731   gcc  
-arc                  randconfig-r023-20230731   gcc  
-arc                  randconfig-r043-20230801   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                                 defconfig   gcc  
-arm                           imxrt_defconfig   gcc  
-arm                  randconfig-r046-20230801   gcc  
-arm                         socfpga_defconfig   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                                defconfig   gcc  
-hexagon              randconfig-r041-20230801   clang
-hexagon              randconfig-r045-20230801   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230731   gcc  
-i386         buildonly-randconfig-r005-20230731   gcc  
-i386         buildonly-randconfig-r006-20230731   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230731   gcc  
-i386                 randconfig-i002-20230731   gcc  
-i386                 randconfig-i003-20230731   gcc  
-i386                 randconfig-i004-20230731   gcc  
-i386                 randconfig-i005-20230731   gcc  
-i386                 randconfig-i006-20230731   gcc  
-i386                 randconfig-i011-20230731   clang
-i386                 randconfig-i012-20230731   clang
-i386                 randconfig-i013-20230731   clang
-i386                 randconfig-i014-20230731   clang
-i386                 randconfig-i015-20230731   clang
-i386                 randconfig-i016-20230731   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r004-20230731   gcc  
-loongarch            randconfig-r012-20230731   gcc  
-loongarch            randconfig-r014-20230731   gcc  
-loongarch            randconfig-r026-20230731   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        mvme147_defconfig   gcc  
-m68k                           sun3_defconfig   gcc  
-microblaze           randconfig-r021-20230731   gcc  
-microblaze           randconfig-r022-20230731   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                           ci20_defconfig   gcc  
-mips                     loongson1b_defconfig   gcc  
-mips                          malta_defconfig   clang
-mips                 randconfig-r002-20230731   clang
-nios2                               defconfig   gcc  
-openrisc             randconfig-r024-20230731   gcc  
-openrisc             randconfig-r034-20230801   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r013-20230731   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                    amigaone_defconfig   gcc  
-powerpc                     ep8248e_defconfig   gcc  
-powerpc                      mgcoge_defconfig   gcc  
-powerpc                      obs600_defconfig   clang
-powerpc                    sam440ep_defconfig   gcc  
-powerpc                     tqm8555_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230801   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r044-20230801   clang
-sh                               allmodconfig   gcc  
-sh                         apsh4a3a_defconfig   gcc  
-sh                               j2_defconfig   gcc  
-sh                   randconfig-r001-20230731   gcc  
-sh                   randconfig-r006-20230731   gcc  
-sh                           se7722_defconfig   gcc  
-sh                           se7751_defconfig   gcc  
-sh                     sh7710voipgw_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r033-20230801   gcc  
-sparc64              randconfig-r031-20230801   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r003-20230731   clang
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230731   gcc  
-x86_64       buildonly-randconfig-r002-20230731   gcc  
-x86_64       buildonly-randconfig-r003-20230731   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-x001-20230731   clang
-x86_64               randconfig-x002-20230731   clang
-x86_64               randconfig-x003-20230731   clang
-x86_64               randconfig-x004-20230731   clang
-x86_64               randconfig-x005-20230731   clang
-x86_64               randconfig-x006-20230731   clang
-x86_64               randconfig-x011-20230731   gcc  
-x86_64               randconfig-x012-20230731   gcc  
-x86_64               randconfig-x013-20230731   gcc  
-x86_64               randconfig-x014-20230731   gcc  
-x86_64               randconfig-x015-20230731   gcc  
-x86_64               randconfig-x016-20230731   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-
+diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
+index 7a453c5ff303..7f073ca64f0e 100644
+--- a/drivers/acpi/acpi_pad.c
++++ b/drivers/acpi/acpi_pad.c
+@@ -100,7 +100,7 @@ static void round_robin_cpu(unsigned int tsk_index)
+ 	for_each_cpu(cpu, pad_busy_cpus)
+ 		cpumask_or(tmp, tmp, topology_sibling_cpumask(cpu));
+ 	cpumask_andnot(tmp, cpu_online_mask, tmp);
+-	/* avoid HT sibilings if possible */
++	/* avoid HT siblings if possible */
+ 	if (cpumask_empty(tmp))
+ 		cpumask_andnot(tmp, cpu_online_mask, pad_busy_cpus);
+ 	if (cpumask_empty(tmp)) {
+diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
+index fc9647b1b4f9..1e6c8ddcaa92 100644
+--- a/include/linux/memory-tiers.h
++++ b/include/linux/memory-tiers.h
+@@ -22,7 +22,7 @@
+ struct memory_tier;
+ struct memory_dev_type {
+ 	/* list of memory types that are part of same tier as this type */
+-	struct list_head tier_sibiling;
++	struct list_head tier_sibling;
+ 	/* abstract distance for this specific memory type */
+ 	int adistance;
+ 	/* Nodes of same abstract distance */
+diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+index a516e303e304..56c22470c96d 100644
+--- a/mm/memory-tiers.c
++++ b/mm/memory-tiers.c
+@@ -115,7 +115,7 @@ static __always_inline nodemask_t get_memtier_nodemask(struct memory_tier *memti
+ 	nodemask_t nodes = NODE_MASK_NONE;
+ 	struct memory_dev_type *memtype;
+ 
+-	list_for_each_entry(memtype, &memtier->memory_types, tier_sibiling)
++	list_for_each_entry(memtype, &memtier->memory_types, tier_sibling)
+ 		nodes_or(nodes, nodes, memtype->nodes);
+ 
+ 	return nodes;
+@@ -174,7 +174,7 @@ static struct memory_tier *find_create_memory_tier(struct memory_dev_type *memty
+ 	 * If the memtype is already part of a memory tier,
+ 	 * just return that.
+ 	 */
+-	if (!list_empty(&memtype->tier_sibiling)) {
++	if (!list_empty(&memtype->tier_sibling)) {
+ 		list_for_each_entry(memtier, &memory_tiers, list) {
+ 			if (adistance == memtier->adistance_start)
+ 				return memtier;
+@@ -218,7 +218,7 @@ static struct memory_tier *find_create_memory_tier(struct memory_dev_type *memty
+ 	memtier = new_memtier;
+ 
+ link_memtype:
+-	list_add(&memtype->tier_sibiling, &memtier->memory_types);
++	list_add(&memtype->tier_sibling, &memtier->memory_types);
+ 	return memtier;
+ }
+ 
+@@ -527,7 +527,7 @@ static bool clear_node_memory_tier(int node)
+ 		memtype = node_memory_types[node].memtype;
+ 		node_clear(node, memtype->nodes);
+ 		if (nodes_empty(memtype->nodes)) {
+-			list_del_init(&memtype->tier_sibiling);
++			list_del_init(&memtype->tier_sibling);
+ 			if (list_empty(&memtier->memory_types))
+ 				destroy_memory_tier(memtier);
+ 		}
+@@ -553,7 +553,7 @@ struct memory_dev_type *alloc_memory_type(int adistance)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	memtype->adistance = adistance;
+-	INIT_LIST_HEAD(&memtype->tier_sibiling);
++	INIT_LIST_HEAD(&memtype->tier_sibling);
+ 	memtype->nodes  = NODE_MASK_NONE;
+ 	kref_init(&memtype->kref);
+ 	return memtype;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.31.1
+
