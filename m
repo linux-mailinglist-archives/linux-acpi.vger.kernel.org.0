@@ -2,52 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA58176F0E3
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Aug 2023 19:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 302F576F104
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Aug 2023 19:59:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233660AbjHCRwQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Aug 2023 13:52:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55262 "EHLO
+        id S235222AbjHCR7i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Aug 2023 13:59:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229759AbjHCRwP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Aug 2023 13:52:15 -0400
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 659052698
-        for <linux-acpi@vger.kernel.org>; Thu,  3 Aug 2023 10:52:14 -0700 (PDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6873a30d02eso858707b3a.3
-        for <linux-acpi@vger.kernel.org>; Thu, 03 Aug 2023 10:52:14 -0700 (PDT)
+        with ESMTP id S235210AbjHCR7h (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Aug 2023 13:59:37 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 277341704
+        for <linux-acpi@vger.kernel.org>; Thu,  3 Aug 2023 10:59:35 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-686bea20652so1128024b3a.1
+        for <linux-acpi@vger.kernel.org>; Thu, 03 Aug 2023 10:59:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1691085134; x=1691689934;
+        d=ventanamicro.com; s=google; t=1691085574; x=1691690374;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AaI7fI3M5YP9w6pz8mvrFaji+j10/oJLgbr5Sgiyug8=;
-        b=e9tSk2Lz0f+uk2NwCCZSrPkOJwVQN+srfiSADOX8z6U8s0voJ/9V2syfmKv+xT0nTA
-         CFMYsmvyoN5Ek5L5nmyycpkdNsYQsyRsZyRzC2tre7ewYkPpJUCPUy9jMrunYpMk9/4Z
-         BGMfKUg3rjhemUeKS85ff4NkRy5YwNs05TJASd2Ki5eux1sbpKsdyqk6a/gztlxNnqsF
-         yMERiPl6rzZH5OFYJOxIwcw/nALMtmZE/mDNN/4DdfyBlykrY4tZD83KawFWzgH69R0H
-         n3tZM7W/jpRK/OBm1gz0ijUuTEfxtXcApljDwqgjMXQDeTixMtMpp9Sf0NGTy3xa0KDL
-         uTAw==
+        bh=2Wq1z7BeI+UFrw1hZHq1hsdT3ctozS/71fNVXggUyOc=;
+        b=TKbVzXiidYr6S5VYtdtf1RzdOXZlF7YlZGAMz5JBa3hQCChWKfcMl06Tm33RUMM2AT
+         HJc+DhFBmwL3k/o/kj3hAK2jwOBpEOGlbr63abNLrTyaHg/Tx613qEQ2sIGIokBFEKy7
+         Q7pSXU90KcKI0UZou6S7o898dbu4yYtAjvjesZlKV+tw21+58qB8DHwqlFlZZwF3J4tW
+         +fhM21Zek4vYUxDqvDmwUsMhSfI0z5X0OZZSxk6N6kacC+/t6jBe0dUAiJ0ITdhIawrA
+         IYvPPOVt5EitUe3UmJGfXaVeDMYYV9aeRa3RBCj3uM8jO94WL6Z9GAZ/GkCsvh5d1yrf
+         xZWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691085134; x=1691689934;
+        d=1e100.net; s=20221208; t=1691085574; x=1691690374;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=AaI7fI3M5YP9w6pz8mvrFaji+j10/oJLgbr5Sgiyug8=;
-        b=h2xXcVelS8rl3L2Xv4+U3xSUKb8J/0EqLZkOCdr8QBmQFMuNHU9NMglAiSeFYRIq8j
-         38kBA8jwxHpue4OZzGP8qUTVzUaGXBd+aXyMMzoe7pqerYi67BHh230pJZ+AgegF7jZ6
-         c60KLZCTyiAXLPeS0ZIrt+c5keFdhNpVpA6K3UFrocQpAjcVINa05JiYdAYKq94z6lxJ
-         0JaX0BMHEiFcsXNFARNAim67FeYeB44bCceT5Jbjjy4YyR9ocityR9EWUkkU+h22C4h3
-         GPl0w2U0xKYOKw7du3krusLIiEB+EhXSGxR/k0BivxQWMzzmvFd9g+9A3gy908gOue7I
-         DObw==
-X-Gm-Message-State: ABy/qLYXB+vKPHjfnOTamjmMbfivbGIlc2KF7AsCdZrdWJJTR4eVpLaL
-        yn5b4ZXnzTBjmuecE7VOp6BRgw==
-X-Google-Smtp-Source: APBJJlH/TxrbX63ED89L3m57EPRl5UCCCRrK2WDITT468OXcUgoqJeG95n4wPLeVLccJHACSpDQ36w==
-X-Received: by 2002:a05:6a20:3d03:b0:13f:3d25:d83 with SMTP id y3-20020a056a203d0300b0013f3d250d83mr4614678pzi.19.1691085133387;
-        Thu, 03 Aug 2023 10:52:13 -0700 (PDT)
+        bh=2Wq1z7BeI+UFrw1hZHq1hsdT3ctozS/71fNVXggUyOc=;
+        b=eoc+Kb7XXiLzfE4b3/H4GMtp9fnXG2mROINbdZ2Pba0xK7kCRyO6vl54F4Hp8BZzzO
+         sD74haeH+412PIafgK7hkOFdQoaC93+1ITzgESLXg7m7Ord1qZ0oexfjprCHAydq8O00
+         TiA5XeiMI1omee04Oyu63f/B59xNwlVTJw2envWEmzovVCXiTBDyLaIAeBQeCKhGmL35
+         fcrA0IYIVKSlcfjnwuYIMdksjlRwwWxXDV+gMWaU02bIjbSiLBde+iZpW1HJTDGZS+L8
+         uEHCjiuiOmIXSHlCbRaNQ7h2APAtfCVFrMeLANtAMxA8Xff/TQeYLOWAo/ruzWE5W+Ig
+         4jRA==
+X-Gm-Message-State: ABy/qLbGQfAvFuhcdt1LGSvaDa1JMdX0KJwvSyaSAEIg6s+avKeMZtTc
+        k0xmsdZkpagK5+jaSBFQCfI2OQ==
+X-Google-Smtp-Source: APBJJlEa2k0rKCkuiAJ14ufMYRdoRsdE+VQDeZqRmHp7niCeuF87Hv6jsPcdECJx49MZ98jIdtCMHA==
+X-Received: by 2002:a05:6a20:3953:b0:134:1ef9:8c17 with SMTP id r19-20020a056a20395300b001341ef98c17mr24642870pzg.20.1691085574172;
+        Thu, 03 Aug 2023 10:59:34 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.190.143])
-        by smtp.gmail.com with ESMTPSA id m6-20020aa78a06000000b006871bea2eeesm145153pfa.34.2023.08.03.10.52.06
+        by smtp.gmail.com with ESMTPSA id s8-20020aa78d48000000b0065a1b05193asm134952pfe.185.2023.08.03.10.59.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Aug 2023 10:52:13 -0700 (PDT)
+        Thu, 03 Aug 2023 10:59:33 -0700 (PDT)
 From:   Sunil V L <sunilvl@ventanamicro.com>
 To:     linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -76,15 +76,15 @@ Cc:     Jonathan Corbet <corbet@lwn.net>,
         Conor Dooley <conor.dooley@microchip.com>,
         Atish Kumar Patra <atishp@rivosinc.com>,
         Sunil V L <sunilvl@ventanamicro.com>
-Subject: [RFC PATCH v1 00/21] Add external interrupt controller support
-Date:   Thu,  3 Aug 2023 23:21:41 +0530
-Message-Id: <20230803175202.3173957-1-sunilvl@ventanamicro.com>
+Subject: [RFC PATCH v1 00/21] RISC-V: ACPI: Add external interrupt controller support 
+Date:   Thu,  3 Aug 2023 23:28:55 +0530
+Message-Id: <20230803175916.3174453-1-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -146,6 +146,7 @@ https://github.com/vlsunil/linux.git
 
 Based-on: 20230802150018.327079-1-apatel@ventanamicro.com
 (https://lore.kernel.org/lkml/20230802150018.327079-1-apatel@ventanamicro.com/)
+
 
 Anup Patel (1):
   swnode: Add support to create early during boot
