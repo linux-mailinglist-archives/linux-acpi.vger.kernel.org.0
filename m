@@ -2,84 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 566AD76F332
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Aug 2023 21:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CFF676F3BB
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Aug 2023 21:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231636AbjHCTD4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Aug 2023 15:03:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47138 "EHLO
+        id S231592AbjHCT6q convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 3 Aug 2023 15:58:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231748AbjHCTDe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Aug 2023 15:03:34 -0400
-Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F56D49EC
-        for <linux-acpi@vger.kernel.org>; Thu,  3 Aug 2023 12:02:58 -0700 (PDT)
-Received: by mail-oo1-xc32.google.com with SMTP id 006d021491bc7-56c7eb17945so800872eaf.2
-        for <linux-acpi@vger.kernel.org>; Thu, 03 Aug 2023 12:02:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691089369; x=1691694169;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BXRGuT4L4X+oTs7GXIYcKWLxlE2JhDJKiOKZhG15lII=;
-        b=h1FZRxKRrypv9CcK6L0QAcnGr/F9OMt4LGQhiW3Yi+ZRURdne/aauBdn5IyfbeOUzl
-         CjHdV0KIX0R/36gH4PVt4ueCi1+OInAAWBw3MOHGOl9Zh3l1b5p4eWf7VqS4BkbKNcnc
-         OGJJq/IwKDcU7WhUvdaGDsGhWScEateBzdItaKqdxC6eQoUHAvT5f0Wuu/ZeUQ4fGUYh
-         +S7DXOhZhSmyTCQ/LipPC4jDYwWdEXQ9cKNeo3cch7n6IF5oFJF5zuF7LkFYtTNDNH8z
-         rBPDORkHRULTX3EodXXSQYumH3OQ7DWSCmZKg6uHUsaEC3ztIEjuRnUe/v5KDAuDYNOY
-         OVwA==
+        with ESMTP id S231547AbjHCT6p (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Aug 2023 15:58:45 -0400
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69C30420F;
+        Thu,  3 Aug 2023 12:58:44 -0700 (PDT)
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-56d0deeca09so188419eaf.0;
+        Thu, 03 Aug 2023 12:58:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691089369; x=1691694169;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BXRGuT4L4X+oTs7GXIYcKWLxlE2JhDJKiOKZhG15lII=;
-        b=TlMl/oiCQ25B7hoaXVuj2kaF05KXxm5O4i8CMoohmL5E+Sq/hMw889SVdEIJLG5Pwo
-         +v+AfEQlhdxvf8oVf0Cd4SLMD1DWVkALs2Z3dORbbY1C5Y/pwM2gONhXPIR55QTJxnZf
-         QavUx215PDqtnL5dLbpymlbSySVN3MhFupE297QFXmcklEQN9tC5KE8cyDxyi0laooij
-         rXWVc/ROKpOCmf6i9bja1nAC/UZVtyuYbLbXl3nL8fVkQbhb16XrrxU4D6C4C+x5Flu8
-         CTw3Sl9K3bV5aTp40s635mHNUZSOchdhHRD4a+3P0M08NsIOei2HdJtIvBHm4sP4jgMS
-         uPGg==
-X-Gm-Message-State: ABy/qLY6OcJ/VDGbmXFnqc6NioJhLTXvdLM0Jb44RnaLbIb3D2+IPoyP
-        w5Dtl5sxeVCfl/U6EEVW/MevH+Ud01B1Z/lZksvZFF5bx9Q=
-X-Google-Smtp-Source: APBJJlE5dapLQ2KEtZ6Hg/CGCoWJeN+4rNx5htYM9KNzarBTyK25Tp3MSK90jNFK02+bjQ3X3BzZXO0K9NaJRDq2HuU=
-X-Received: by 2002:a4a:854f:0:b0:56c:cefc:55d with SMTP id
- l15-20020a4a854f000000b0056ccefc055dmr10716785ooh.4.1691089369173; Thu, 03
- Aug 2023 12:02:49 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691092723; x=1691697523;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L5lbrYku02MGucWZlgqTufTYfZYAYDVopF3bhZtB7NU=;
+        b=O7d0mAiecBwrknl1PYdSGAQhBY1tQfHHfrAqRoFoUWtWr8hcdwWQlVrWPKjiHMYE0Q
+         qGTZfR+TO7bZ6ux4mzmXB1NGeMXx9dgkux+Yo+5kNOsIXd8X5amTKkMqeRdRQjLjWNR+
+         LD74JRd6hqvYa9hw8XAY5k2QoGYHdCVJxfVATHXrAZVDVQ+GfgllqItv0Kyf1Ojo1WKj
+         gVH4HKSev1ypWGXqR8rI2QB+53RGVHXg22e/De1z6hjzRxCFET2ML4+YwYbo2Gi6IjO2
+         dW7mV6eZyXm92Oj16L7yXA/3vNDFAuVu7wNoO6QI3BnqKkPsbe5Zlrv36RKISrsJts+c
+         Uhkg==
+X-Gm-Message-State: ABy/qLbbH/5HdGQYq+TePwh9v7BT2EuWQWYNaN1ztC8gHKhj8mHXyidC
+        E1q4R+rJd1kJYcX4se+tEicRXYtEjCYTmS5M7ew=
+X-Google-Smtp-Source: APBJJlEFaRUb1D3ofaPFX3gImb+a7isGHR4BOwxQBVGLYqbi8AM4d3+S/zxJiGipzTHQfvRm3JYUepQqqwuz7wcgo3s=
+X-Received: by 2002:a4a:a585:0:b0:56c:484a:923d with SMTP id
+ d5-20020a4aa585000000b0056c484a923dmr13794384oom.1.1691092723574; Thu, 03 Aug
+ 2023 12:58:43 -0700 (PDT)
 MIME-Version: 1.0
-From:   Neal Sidhwaney <nealsid@gmail.com>
-Date:   Thu, 3 Aug 2023 15:02:12 -0400
-Message-ID: <CAJ4cxaQAxgnhHavgMLdR8u0VAm4now8z=3sMvTiXCkNOx=+iZQ@mail.gmail.com>
-Subject: ACPI & PCI suspend/wake errors on MacBook Pro 14,1
-To:     linux-acpi@vger.kernel.org
+References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
+ <4501957.LvFx2qVVIh@kreacher> <2d0315d4-35b4-84db-4dcb-c9528abad825@linaro.org>
+ <CAJZ5v0iQDOsTOqWFvbf5nom-b3-pbHPRzJQC-1DM9eoh=0AKjg@mail.gmail.com>
+ <eb279cf1-0605-3b87-5cb6-241a91977455@linaro.org> <CAJZ5v0i48=oawDJHoaHhiZRaO_CJokKsOHyNvu2v4PUbS6CH_Q@mail.gmail.com>
+ <f8029547-6851-7e0c-00e6-4963ccbc2702@linaro.org> <CAJZ5v0gDQMNSeEU1J7ooJk4Ec=Hw_JuZAtL5k215v7Lf67iTgg@mail.gmail.com>
+ <5c93d78d-835e-c740-280b-9d76456aaeda@linaro.org> <CAJZ5v0gtkZTwt-qP0uwvTJNx8cpO1o1esmW9BfVxB67X3Yt++w@mail.gmail.com>
+ <b4e474f9-79e8-534b-509e-12eb5995fa0c@linaro.org>
+In-Reply-To: <b4e474f9-79e8-534b-509e-12eb5995fa0c@linaro.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 3 Aug 2023 21:58:32 +0200
+Message-ID: <CAJZ5v0iH+qf6eBuZASPKyA6rT8O6FiA7516MiYYUx6Uc+wR4Ow@mail.gmail.com>
+Subject: Re: [PATCH v3 1/8] thermal: core: Add mechanism for connecting trips
+ with driver data
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Michal Wilczynski <michal.wilczynski@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-I'm running Arch Linux with kernel 6.5-rc3 (although this behavior has
-been since I installed Linux starting with kernel 6.3 a few months
-ago, and I don't think it's a regression) on my Macbook Pro 14,1 and
-am running into issues with suspend/resume.  In particular, my network
-card (BCM 4350) sometimes does not operate correctly after resume, or
-also sometimes after a warm reboot, and I have also noticed errors &
-stack traces related to Thunderbolt in dmesg output (I do not have any
-external peripherals so I don't use Thunderbolt devices at all).
-Since it's power management related, and there are a bunch of ACPI
-error messages at bootup (in dmesg), I figured ACPI might be a good
-place to start if it's causing both problems, and was hoping some
-debugging tips could be suggested.
+On Thu, Aug 3, 2023 at 6:20 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+>
+> On 03/08/2023 16:15, Rafael J. Wysocki wrote:
+> > On Thu, Aug 3, 2023 at 3:06 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+> >>
+> >> On 02/08/2023 18:48, Rafael J. Wysocki wrote:
+> >>
+> >> [ ... ]
+> >>
+> >>>> Let me check if I can do something on top of your series to move it in
+> >>>> the ACPI driver.
+> >>>
+> >>> It doesn't need to be on top of my series, so if you have an idea,
+> >>> please just let me know what it is.
+> >>>
+> >>> It can't be entirely in the ACPI driver AFAICS, though, because
+> >>> trips[i] need to be modified on updates and they belong to the core.
+> >>> Hence, the driver needs some help from the core to get to them.  It
+> >>> can be something like "this is my trip tag and please give me the
+> >>> address of the trip matching it" or similar, but it is needed, because
+> >>> the driver has to assume that the trip indices used by it initially
+> >>> may change.
+> >>
+> >> May be I'm missing something but driver_ref does not seems to be used
+> >> except when assigning it, no?
+> >
+> > It is used on the other side.  That is, the value assigned to the trip
+> > field in it is accessed via trip_ref in the driver.
+> >
+> > The idea is that the driver puts a pointer to its local struct
+> > thermal_trip_ref into a struct thermal_trip and the core stores the
+> > address of that struct thermal_trip in there, which allows the driver
+> > to access the struct thermal_trip via its local struct
+> > thermal_trip_ref going forward.
+> >
+> > Admittedly, this is somewhat convoluted.
+> >
+> > I have an alternative approach in the works, just for illustration
+> > purposes if nothing else, but I have encountered a problem that I
+> > would like to ask you about.
+> >
+> > Namely, zone disabling is not particularly useful for preventing the
+> > zone from being used while the trips are updated, because it has side
+> > effects.  First, it triggers __thermal_zone_device_update() and a
+> > netlink message every time the mode changes, which can be kind of
+> > overcome.
+>
+> Right
+>
+> > But second, if the mode is "disabled", it does not actually
+> > prevent things like __thermal_zone_get_trip() from running and the
+> > zone lock is the only thing that can be used for that AFAICS.
+>  >
+> > So by "disabling" a thermal zone, did you mean changing its mode to
+> > "disabled" or something else?
+>
+> Yes, that is what I meant.
+>
+> May be the initial proposal by updating the thermal trips pointer can
+> solve that [1]
 
-I have gists of dmesg after "boot, suspend, resume", as well as lspci
--vvv before suspend and after suspend (however, unfortunately, the
-issue with my network card did not reproduce, but it fails here:
-https://github.com/torvalds/linux/blob/4b954598a47ba07034aab9af8ddd485bdc3d5b16/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c#L985)
-here: https://gist.github.com/nealsid/bcaeb2d346128b6b2034944612c23dbc.
+No, it can't.  An existing trips[] table cannot be replaced with a new
+one with different trip indices, because those indices are already in
+use.  And if the indices are the same, there's no reason to replace
+trips.
 
-Thank you,
+> IMO we can assume the trip point changes are very rare (if any), so
+> rebuilding a new trip array and update the thermal zone with the pointer
+> may solve the situation.
+>
+> The routine does a copy of the trips array, so it can reorder it without
+> impacting the array passed as a parameter. And it can take the lock.
 
-Neal
+The driver can take a lock as well.  Forbidding drivers to use the
+zone lock is an artificial limitation without technical merit IMV.
+
+> We just have to constraint the update function to invalidate arrays with
+> a number of trip points different from the one initially passed when
+> creating the thermal zone.
+>
+> Alternatively, we can be smarter in the ACPI driver and update the
+> corresponding temperature+hysteresis trip point by using the
+> thermal_zone_set_trip() function.
+
+I don't see why this would make any difference.
+
+> [1]
+> https://lore.kernel.org/all/20230525140135.3589917-5-daniel.lezcano@linaro.org/
