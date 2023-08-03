@@ -2,175 +2,204 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 180D676EF46
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Aug 2023 18:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA58176F0E3
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Aug 2023 19:52:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234990AbjHCQUS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Aug 2023 12:20:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56934 "EHLO
+        id S233660AbjHCRwQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Aug 2023 13:52:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234996AbjHCQUQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Aug 2023 12:20:16 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EADE830C7
-        for <linux-acpi@vger.kernel.org>; Thu,  3 Aug 2023 09:20:08 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fb4146e8deso12110945e9.0
-        for <linux-acpi@vger.kernel.org>; Thu, 03 Aug 2023 09:20:08 -0700 (PDT)
+        with ESMTP id S229759AbjHCRwP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Aug 2023 13:52:15 -0400
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 659052698
+        for <linux-acpi@vger.kernel.org>; Thu,  3 Aug 2023 10:52:14 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6873a30d02eso858707b3a.3
+        for <linux-acpi@vger.kernel.org>; Thu, 03 Aug 2023 10:52:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691079607; x=1691684407;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CRKQYTjj0CFOrgdAwpq3qfe246RqaR7qimHx7YtH0AI=;
-        b=rfU25oyJ5QoiyIrcdinKTQcvapOerJX5BqnFjnQpVQHbkp3MM4MocxKjaFxAxHzI2N
-         qZZ/RixXllNlks7AaOLxXBdezK0/7du/QVkuaOsWnh0FtMl1tip5G912x8oPSt3kpxSk
-         HKypbYZDeVjvCX8RAAsQzuBG/LdLK62Kkil+PhiL9DiZBdHhXbYGlIb+d2eZBjKUsmSJ
-         Z6WeeTGLI+Ggd3E/EL/fDv7tcBz7bS/ELiZOS+XrAAQK8IRUFV6/finvC69IKtZME/2n
-         QHB82cSDsv9ywMtOZddwOJU/5NNn32bB1wIk45FyjeNKRjPu4VSsnaohe9bL3Q51pzHZ
-         m6jg==
+        d=ventanamicro.com; s=google; t=1691085134; x=1691689934;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AaI7fI3M5YP9w6pz8mvrFaji+j10/oJLgbr5Sgiyug8=;
+        b=e9tSk2Lz0f+uk2NwCCZSrPkOJwVQN+srfiSADOX8z6U8s0voJ/9V2syfmKv+xT0nTA
+         CFMYsmvyoN5Ek5L5nmyycpkdNsYQsyRsZyRzC2tre7ewYkPpJUCPUy9jMrunYpMk9/4Z
+         BGMfKUg3rjhemUeKS85ff4NkRy5YwNs05TJASd2Ki5eux1sbpKsdyqk6a/gztlxNnqsF
+         yMERiPl6rzZH5OFYJOxIwcw/nALMtmZE/mDNN/4DdfyBlykrY4tZD83KawFWzgH69R0H
+         n3tZM7W/jpRK/OBm1gz0ijUuTEfxtXcApljDwqgjMXQDeTixMtMpp9Sf0NGTy3xa0KDL
+         uTAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691079607; x=1691684407;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CRKQYTjj0CFOrgdAwpq3qfe246RqaR7qimHx7YtH0AI=;
-        b=gdubeD0TQ8cbWFiZ1C+mYEAJnh8B0ozszqWqgdws2plLdiOpb2mfgZwRbBA4qwgEVw
-         7qoJeoCP2xlq8yYPx7At26DErhZI37S9vqTVGoauKNotpCm8zxWMZQ8C4ZGB1j65RZOX
-         G1ENfTF++aHSqQEpMWq/8L9L+O4DEFryeXc9UUgOnKUETYKK/mkRf0J93McNl5sOjwtQ
-         EFxWzrpkqp5y/HH+Ge3IMkises5DC7FwF2gS5y8++UBuJ+5t/R5DXi8D5QyCkficcxF3
-         kC6A/QBFfDlCi11egCXwJjgBFqyMGeI1cdqTSc9z4S7bgXN5frptpekyRGhnVeysH+zE
-         8mdg==
-X-Gm-Message-State: ABy/qLZyBHrRJ8IGFKbBZaTofdQPD3/WWy7jrStA/QYej4TWjHJihNHK
-        SDByKB73Lm4x9+Y8XTTOvCKmsdppqpk6YFSx6UU=
-X-Google-Smtp-Source: APBJJlFuSIMsUxPfUpP2Xh3pzAoQZtkbLuQoXlzV0OaC7q2hZAp49HqZGKoHQA2B8Jnvwc6gANb07w==
-X-Received: by 2002:a5d:457c:0:b0:314:385d:6099 with SMTP id a28-20020a5d457c000000b00314385d6099mr8174596wrc.35.1691079607325;
-        Thu, 03 Aug 2023 09:20:07 -0700 (PDT)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id w14-20020adfec4e000000b003141e629cb6sm214343wrn.101.2023.08.03.09.20.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Aug 2023 09:20:06 -0700 (PDT)
-Message-ID: <b4e474f9-79e8-534b-509e-12eb5995fa0c@linaro.org>
-Date:   Thu, 3 Aug 2023 18:20:06 +0200
+        d=1e100.net; s=20221208; t=1691085134; x=1691689934;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AaI7fI3M5YP9w6pz8mvrFaji+j10/oJLgbr5Sgiyug8=;
+        b=h2xXcVelS8rl3L2Xv4+U3xSUKb8J/0EqLZkOCdr8QBmQFMuNHU9NMglAiSeFYRIq8j
+         38kBA8jwxHpue4OZzGP8qUTVzUaGXBd+aXyMMzoe7pqerYi67BHh230pJZ+AgegF7jZ6
+         c60KLZCTyiAXLPeS0ZIrt+c5keFdhNpVpA6K3UFrocQpAjcVINa05JiYdAYKq94z6lxJ
+         0JaX0BMHEiFcsXNFARNAim67FeYeB44bCceT5Jbjjy4YyR9ocityR9EWUkkU+h22C4h3
+         GPl0w2U0xKYOKw7du3krusLIiEB+EhXSGxR/k0BivxQWMzzmvFd9g+9A3gy908gOue7I
+         DObw==
+X-Gm-Message-State: ABy/qLYXB+vKPHjfnOTamjmMbfivbGIlc2KF7AsCdZrdWJJTR4eVpLaL
+        yn5b4ZXnzTBjmuecE7VOp6BRgw==
+X-Google-Smtp-Source: APBJJlH/TxrbX63ED89L3m57EPRl5UCCCRrK2WDITT468OXcUgoqJeG95n4wPLeVLccJHACSpDQ36w==
+X-Received: by 2002:a05:6a20:3d03:b0:13f:3d25:d83 with SMTP id y3-20020a056a203d0300b0013f3d250d83mr4614678pzi.19.1691085133387;
+        Thu, 03 Aug 2023 10:52:13 -0700 (PDT)
+Received: from sunil-pc.Dlink ([106.51.190.143])
+        by smtp.gmail.com with ESMTPSA id m6-20020aa78a06000000b006871bea2eeesm145153pfa.34.2023.08.03.10.52.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Aug 2023 10:52:13 -0700 (PDT)
+From:   Sunil V L <sunilvl@ventanamicro.com>
+To:     linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Anup Patel <anup@brainfault.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Haibo Xu <haibo1.xu@intel.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Atish Kumar Patra <atishp@rivosinc.com>,
+        Sunil V L <sunilvl@ventanamicro.com>
+Subject: [RFC PATCH v1 00/21] Add external interrupt controller support
+Date:   Thu,  3 Aug 2023 23:21:41 +0530
+Message-Id: <20230803175202.3173957-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3 1/8] thermal: core: Add mechanism for connecting trips
- with driver data
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Michal Wilczynski <michal.wilczynski@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
- <4501957.LvFx2qVVIh@kreacher>
- <2d0315d4-35b4-84db-4dcb-c9528abad825@linaro.org>
- <CAJZ5v0iQDOsTOqWFvbf5nom-b3-pbHPRzJQC-1DM9eoh=0AKjg@mail.gmail.com>
- <eb279cf1-0605-3b87-5cb6-241a91977455@linaro.org>
- <CAJZ5v0i48=oawDJHoaHhiZRaO_CJokKsOHyNvu2v4PUbS6CH_Q@mail.gmail.com>
- <f8029547-6851-7e0c-00e6-4963ccbc2702@linaro.org>
- <CAJZ5v0gDQMNSeEU1J7ooJk4Ec=Hw_JuZAtL5k215v7Lf67iTgg@mail.gmail.com>
- <5c93d78d-835e-c740-280b-9d76456aaeda@linaro.org>
- <CAJZ5v0gtkZTwt-qP0uwvTJNx8cpO1o1esmW9BfVxB67X3Yt++w@mail.gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <CAJZ5v0gtkZTwt-qP0uwvTJNx8cpO1o1esmW9BfVxB67X3Yt++w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 03/08/2023 16:15, Rafael J. Wysocki wrote:
-> On Thu, Aug 3, 2023 at 3:06 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
->>
->> On 02/08/2023 18:48, Rafael J. Wysocki wrote:
->>
->> [ ... ]
->>
->>>> Let me check if I can do something on top of your series to move it in
->>>> the ACPI driver.
->>>
->>> It doesn't need to be on top of my series, so if you have an idea,
->>> please just let me know what it is.
->>>
->>> It can't be entirely in the ACPI driver AFAICS, though, because
->>> trips[i] need to be modified on updates and they belong to the core.
->>> Hence, the driver needs some help from the core to get to them.  It
->>> can be something like "this is my trip tag and please give me the
->>> address of the trip matching it" or similar, but it is needed, because
->>> the driver has to assume that the trip indices used by it initially
->>> may change.
->>
->> May be I'm missing something but driver_ref does not seems to be used
->> except when assigning it, no?
-> 
-> It is used on the other side.  That is, the value assigned to the trip
-> field in it is accessed via trip_ref in the driver.
-> 
-> The idea is that the driver puts a pointer to its local struct
-> thermal_trip_ref into a struct thermal_trip and the core stores the
-> address of that struct thermal_trip in there, which allows the driver
-> to access the struct thermal_trip via its local struct
-> thermal_trip_ref going forward.
-> 
-> Admittedly, this is somewhat convoluted.
-> 
-> I have an alternative approach in the works, just for illustration
-> purposes if nothing else, but I have encountered a problem that I
-> would like to ask you about.
-> 
-> Namely, zone disabling is not particularly useful for preventing the
-> zone from being used while the trips are updated, because it has side
-> effects.  First, it triggers __thermal_zone_device_update() and a
-> netlink message every time the mode changes, which can be kind of
-> overcome. 
+This series adds support for the below ECRs approved by ASWG recently.
+1) MADT - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view?usp=sharing
+2) RHCT - https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view?usp=sharing
 
-Right
+The series primarily adds below features.
 
-> But second, if the mode is "disabled", it does not actually
-> prevent things like __thermal_zone_get_trip() from running and the
-> zone lock is the only thing that can be used for that AFAICS.
- >
-> So by "disabling" a thermal zone, did you mean changing its mode to
-> "disabled" or something else?
+1) ACPI support for external interrupt controller drivers (IMSIC, APLIC and PLIC).
+2) Get CBO block sizes from RHCT.
+3) Set timer_can_not_wakeup in timer driver based on the flag in RHCT.
 
-Yes, that is what I meant.
+PCI ACPI related functions are migrated from arm64 to common file
+so that we don't need to duplicate them for RISC-V.
 
-May be the initial proposal by updating the thermal trips pointer can 
-solve that [1]
+It uses software node framework to create the fwnode for the interrupt
+controllers. This helps in keeping the actual drivers code mostly common
+for DT and ACPI.
 
-IMO we can assume the trip point changes are very rare (if any), so 
-rebuilding a new trip array and update the thermal zone with the pointer 
-may solve the situation.
+This series is based on Anup's AIA v7 series. The first 2 ACPICA
+patches in this series will be merged via ACPICA release process. PATCH3 is a
+fix patch. These patches are included in this series only to enable build.
 
-The routine does a copy of the trips array, so it can reorder it without 
-impacting the array passed as a parameter. And it can take the lock.
+To test the series,
 
-We just have to constraint the update function to invalidate arrays with 
-a number of trip points different from the one initially passed when 
-creating the thermal zone.
+1) Qemu should be built using the riscv_acpi_b2_v1_plic branch at
+https://github.com/vlsunil/qemu.git
 
-Alternatively, we can be smarter in the ACPI driver and update the 
-corresponding temperature+hysteresis trip point by using the 
-thermal_zone_set_trip() function.
+2) EDK2 should be built using the instructions at:
+https://github.com/tianocore/edk2/blob/master/OvmfPkg/RiscVVirt/README.md
 
-[1] 
-https://lore.kernel.org/all/20230525140135.3589917-5-daniel.lezcano@linaro.org/
+3) Build Linux using this series on top of Anup's AIA v7 series.
 
+Run Qemu:
+qemu-system-riscv64 \
+ -M virt,pflash0=pflash0,pflash1=pflash1,aia=aplic-imsic \
+ -m 2G -smp 8 \
+ -serial mon:stdio \
+ -device virtio-gpu-pci -full-screen \
+ -device qemu-xhci \
+ -device usb-kbd \
+ -blockdev node-name=pflash0,driver=file,read-only=on,filename=RISCV_VIRT_CODE.fd \
+ -blockdev node-name=pflash1,driver=file,filename=RISCV_VIRT_VARS.fd \
+ -netdev user,id=net0 -device virtio-net-pci,netdev=net0 \
+ -kernel arch/riscv/boot/Image \
+ -initrd rootfs.cpio \
+ -append "root=/dev/ram ro console=ttyS0 rootwait earlycon=uart8250,mmio,0x10000000"
+
+To boot with APLIC only, use aia=aplic.
+To boot with PLIC, remove aia= option.
+
+This series is also available in riscv_acpi_b2_v1 brach at
+https://github.com/vlsunil/linux.git
+
+Based-on: 20230802150018.327079-1-apatel@ventanamicro.com
+(https://lore.kernel.org/lkml/20230802150018.327079-1-apatel@ventanamicro.com/)
+
+Anup Patel (1):
+  swnode: Add support to create early during boot
+
+Sunil V L (20):
+  ACPICA: MADT: Add RISC-V external interrupt controllers
+  ACPICA: RHCT: Add flags, CMO and MMU nodes
+  RISC-V: ACPI: Fix acpi_os_ioremap to return iomem address
+  RISC-V: ACPI: Enhance acpi_os_ioremap with MMIO remapping
+  arm64: PCI: Migrate ACPI related functions to pci-acpi.c
+  RISC-V: ACPI: Implement PCI related functionality
+  RISC-V: Kconfig: Select ECAM and MCFG
+  RISC-V: ACPI: RHCT: Add function to get CBO block sizes
+  RISC-V: cacheflush: Initialize CBO variables on ACPI systems
+  clocksource/timer-riscv: ACPI: Add timer_cannot_wakeup_cpu
+  irqchip/riscv-intc: Use swnode framework to create fwnode
+  irqchip/riscv-imsic-early: Add ACPI support
+  ACPI: bus: Add acpi_riscv_init function
+  ACPI: RISC-V: Create IMSIC platform device
+  ACPI: Add APLIC IRQ model for RISC-V
+  ACPI: RISC-V: Create APLIC platform device
+  irqchip/irq-riscv-aplic-msi: Add ACPI support
+  ACPI: bus: Add PLIC IRQ model
+  RISC-V: ACPI: Create PLIC platform device
+  irqchip/sifive-plic: Add GSI conversion support
+
+ Documentation/riscv/acpi.rst            |  33 ++
+ arch/arm64/kernel/pci.c                 | 193 ---------
+ arch/riscv/Kconfig                      |   3 +
+ arch/riscv/include/asm/acpi.h           |  21 +-
+ arch/riscv/kernel/acpi.c                | 120 +++++-
+ arch/riscv/mm/cacheflush.c              |  37 +-
+ drivers/acpi/bus.c                      |   7 +
+ drivers/acpi/riscv/Makefile             |   2 +-
+ drivers/acpi/riscv/init.c               |  16 +
+ drivers/acpi/riscv/init.h               |   6 +
+ drivers/acpi/riscv/irqchip.c            | 507 ++++++++++++++++++++++++
+ drivers/acpi/riscv/rhct.c               |  61 +++
+ drivers/base/swnode.c                   | 117 +++++-
+ drivers/clocksource/timer-riscv.c       |   4 +
+ drivers/irqchip/irq-riscv-aplic-msi.c   |  14 +-
+ drivers/irqchip/irq-riscv-imsic-early.c |  28 ++
+ drivers/irqchip/irq-riscv-imsic-state.c |  33 +-
+ drivers/irqchip/irq-riscv-intc.c        |  12 +-
+ drivers/irqchip/irq-sifive-plic.c       |  16 +
+ drivers/pci/pci-acpi.c                  | 182 +++++++++
+ include/acpi/actbl2.h                   |  76 +++-
+ include/linux/acpi.h                    |   8 +
+ include/linux/property.h                |   3 +
+ 23 files changed, 1248 insertions(+), 251 deletions(-)
+ create mode 100644 drivers/acpi/riscv/init.c
+ create mode 100644 drivers/acpi/riscv/init.h
+ create mode 100644 drivers/acpi/riscv/irqchip.c
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+2.39.2
 
