@@ -2,158 +2,172 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4746076FD5A
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Aug 2023 11:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77DA476FF47
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Aug 2023 13:14:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230462AbjHDJdr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Aug 2023 05:33:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43046 "EHLO
+        id S230024AbjHDLOc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 4 Aug 2023 07:14:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230353AbjHDJdo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Aug 2023 05:33:44 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43BEE49CC
-        for <linux-acpi@vger.kernel.org>; Fri,  4 Aug 2023 02:33:41 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-686f090310dso1797039b3a.0
-        for <linux-acpi@vger.kernel.org>; Fri, 04 Aug 2023 02:33:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1691141621; x=1691746421;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E6pJFE+LbN3t9KX562ET/U8O9x6jKkVFfcHxU4OoKLU=;
-        b=GaIVrBlWNau1bDYf593GlJiU6Af7nAeBxxB4u4JryuWCHG8sEeuZrKeXi0Jkc5ydvg
-         f5XIIJXgZ6tFqSs1y6JJluCYxHah8cYi2iM/peqn9wrByAlUjT+T5EwQdGIKOSObiBdh
-         vXZrFjRXul+2bYCK0XU0x719gMWrepNiI/ld1MZjlcvoWzgIWyqD4vQWEGTYvdAlr4vl
-         yOuYWt4cBHch29OVlaSlUWs+NHFRivXWHfPcmPSAIcRaXJrYop/kZMlqspmCLYJAq1TM
-         RzOhjzIV+E8WdLg0Scjri0wwQ7hnaraeQULqXHImH4YHHGDqMS4OttacG9d3If/bcmxc
-         an/A==
+        with ESMTP id S229643AbjHDLOa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Aug 2023 07:14:30 -0400
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3291128;
+        Fri,  4 Aug 2023 04:14:27 -0700 (PDT)
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-56c9237e0ffso328094eaf.0;
+        Fri, 04 Aug 2023 04:14:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691141621; x=1691746421;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E6pJFE+LbN3t9KX562ET/U8O9x6jKkVFfcHxU4OoKLU=;
-        b=QINeMVLC/rNm26xVYdL48Fq92dEwI7V69gPUA8tpkmIZoQjKYKIL4iDUBFZjPSHlMl
-         5BnQPYYfYw930PNwkL6FCv2Ds49u/qC92VBnSFD8R7K3P3G5/eyPRb6jlNQzI7fRxkhK
-         +k/mflctA4gtXVUBsypHI7araP07Xp1J1QyvZzLjUryiKSJOKWZn15jQujuMhTsZKSUd
-         nKjjO0kdD9F9CQLVnFzw9WOzOh5WnEmIRM/PG29XP1YYHIFnL8sel+0ATIwaR5fLbazy
-         xlY7J8oXOpE7SxB/W/Yd/bW7HAo2QW8oJwp5HdfXzpqelM7C5+hjspe6rhR8VQN3tcOR
-         MwWw==
-X-Gm-Message-State: AOJu0YzcfN14C5w/FnbIFdAnPLt+85XXuthJswcIJt6BDd32oacTLjky
-        xGFOT/9911OFjDP15GycDAbuZQ==
-X-Google-Smtp-Source: AGHT+IE9uAGKFQAVKKVyBKP+6lj+Wv4xxWX0reh7x6nnrpB1UJCiBCXbpcTB9CxHE+g7R/t5zY0Rzw==
-X-Received: by 2002:a05:6a00:21d5:b0:687:7d09:c0f with SMTP id t21-20020a056a0021d500b006877d090c0fmr1517925pfj.12.1691141620733;
-        Fri, 04 Aug 2023 02:33:40 -0700 (PDT)
-Received: from sunil-laptop ([106.51.190.143])
-        by smtp.gmail.com with ESMTPSA id v13-20020a62a50d000000b00686ee7ba3easm1180143pfm.216.2023.08.04.02.33.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Aug 2023 02:33:40 -0700 (PDT)
-Date:   Fri, 4 Aug 2023 15:03:29 +0530
-From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Anup Patel <anup@brainfault.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Haibo Xu <haibo1.xu@intel.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Atish Kumar Patra <atishp@rivosinc.com>
-Subject: Re: [RFC PATCH v1 08/21] RISC-V: ACPI: RHCT: Add function to get CBO
- block sizes
-Message-ID: <ZMzF6e8jjGY2YNjm@sunil-laptop>
-References: <20230803175916.3174453-1-sunilvl@ventanamicro.com>
- <20230803175916.3174453-9-sunilvl@ventanamicro.com>
- <ZMyUDZE0SxoOC696@smile.fi.intel.com>
+        d=1e100.net; s=20221208; t=1691147666; x=1691752466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2FtZw5JD0Id14VDUR651hXWOBYEpEEnj1729H5cCCn8=;
+        b=Nu8+eB+FFHJ2TCwF4llePROgNYd9gNlzZczzmPpYxt0bwJZH8BIg65JBsyaRl+WYh5
+         jIYnYClLppIcjTiLTHABFi+cWSwrgTuAraS5BfSB66LTcBp8KFfWNp1lO0+rFYFJDH5e
+         I2kkBT8yFlVAxclYmjFJmjDFSTygeajepMKNksniGA7dENF3oSOW8oFxh/zNvxxmZrcm
+         8UJ2z+oHuwybLmZSRYaiz4Pxk25tQTw9iPjF9PqJnZ3kkF+7kS34LBnWSpRsZhDvDQmj
+         +g+0rKBmEh+wT3vpE644hQpVPVC36juZYMZtH9tXdDr2BhXZOdmvRSetpoMrgRn/JXTV
+         63Zg==
+X-Gm-Message-State: ABy/qLaZhOrzR6J4Nzzpb5mzCgAh0oUO5X6AZP3rVXQNDl/SDnBZMJ3D
+        8qr5B6oh242NSCtsMNPt0Vd0soXfgt/YxJpPfRE=
+X-Google-Smtp-Source: APBJJlEARgqCNvSy/FCvSyr6voUjpqqIE393Ojf6di9EGjFZFmV36adcfRjip4L4fyZ9t2OS7a3IlHsiL6x07n07ZsY=
+X-Received: by 2002:a05:6820:2108:b0:56c:5e21:c72d with SMTP id
+ cd8-20020a056820210800b0056c5e21c72dmr16406902oob.1.1691147665667; Fri, 04
+ Aug 2023 04:14:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZMyUDZE0SxoOC696@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
+ <4501957.LvFx2qVVIh@kreacher> <2d0315d4-35b4-84db-4dcb-c9528abad825@linaro.org>
+ <CAJZ5v0iQDOsTOqWFvbf5nom-b3-pbHPRzJQC-1DM9eoh=0AKjg@mail.gmail.com>
+ <eb279cf1-0605-3b87-5cb6-241a91977455@linaro.org> <CAJZ5v0i48=oawDJHoaHhiZRaO_CJokKsOHyNvu2v4PUbS6CH_Q@mail.gmail.com>
+ <f8029547-6851-7e0c-00e6-4963ccbc2702@linaro.org> <CAJZ5v0gDQMNSeEU1J7ooJk4Ec=Hw_JuZAtL5k215v7Lf67iTgg@mail.gmail.com>
+ <5c93d78d-835e-c740-280b-9d76456aaeda@linaro.org> <CAJZ5v0gtkZTwt-qP0uwvTJNx8cpO1o1esmW9BfVxB67X3Yt++w@mail.gmail.com>
+ <b4e474f9-79e8-534b-509e-12eb5995fa0c@linaro.org> <CAJZ5v0iH+qf6eBuZASPKyA6rT8O6FiA7516MiYYUx6Uc+wR4Ow@mail.gmail.com>
+ <03643466-2f5c-2d68-424d-19836dcceb78@linaro.org>
+In-Reply-To: <03643466-2f5c-2d68-424d-19836dcceb78@linaro.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 4 Aug 2023 13:14:14 +0200
+Message-ID: <CAJZ5v0iaUxL7W6Dj1HCz=vU5t4CAUOx0LJ6zGJ0S+Lw07nS62A@mail.gmail.com>
+Subject: Re: [PATCH v3 1/8] thermal: core: Add mechanism for connecting trips
+ with driver data
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Michal Wilczynski <michal.wilczynski@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 04, 2023 at 09:00:45AM +0300, Andy Shevchenko wrote:
-> On Thu, Aug 03, 2023 at 11:29:03PM +0530, Sunil V L wrote:
-> > CBO related block size in ACPI is provided by RHCT. Add
-> > support to read the CMO node in RHCT to get this information.
-> 
-> ...
-> 
-> > +	if (!table) {
-> 
-> Why not positive conditional?
-> 
-Sure.
-
-> > +		rhct = (struct acpi_table_rhct *)acpi_get_rhct();
-> > +		if (!rhct)
-> > +			return -ENOENT;
-> > +	} else {
-> > +		rhct = (struct acpi_table_rhct *)table;
-> > +	}
-> 
-> ...
-> 
-> > +	end = ACPI_ADD_PTR(struct acpi_rhct_node_header, rhct, rhct->header.length);
-> 
-> > +
-> 
-> Blank line here is not needed.
-> 
-Okay.
-
-> > +	for (node = ACPI_ADD_PTR(struct acpi_rhct_node_header, rhct, rhct->node_offset);
-> > +	     node < end;
-> > +	     node = ACPI_ADD_PTR(struct acpi_rhct_node_header, node, node->length)) {
-> 
-> > +			for (int i = 0; i < hart_info->num_offsets; i++) {
-> > +				ref_node = ACPI_ADD_PTR(struct acpi_rhct_node_header,
-> > +							rhct, hart_info_node_offset[i]);
-> > +				if (ref_node->type == ACPI_RHCT_NODE_TYPE_CMO) {
-> > +					cmo_node = ACPI_ADD_PTR(struct acpi_rhct_cmo_node,
-> > +								ref_node, size_hdr);
-> > +					if (cbom_size)
-> > +						*cbom_size = 1 << cmo_node->cbom_size;
-> > +
-> > +					if (cboz_size)
-> > +						*cboz_size = 1 << cmo_node->cboz_size;
-> > +
-> > +					if (cbop_size)
-> > +						*cbop_size = 1 << cmo_node->cbop_size;
-> 
-> BIT() in all three cases?
+On Fri, Aug 4, 2023 at 10:17 AM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
 >
-Sure.
- 
-> But how you guarantee it will not overflow? I mean who prevents cboX_size to be
-> bigger than 30 (note also that 31 in your case is Undefined Behaviour in
-> accordance with the C standard).
-> 
-Good catch!. Let me add a check that the value is not more than 30.
+> On 03/08/2023 21:58, Rafael J. Wysocki wrote:
+> > On Thu, Aug 3, 2023 at 6:20 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+> >>
+> >> On 03/08/2023 16:15, Rafael J. Wysocki wrote:
+> >>> On Thu, Aug 3, 2023 at 3:06 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+> >>>>
+> >>>> On 02/08/2023 18:48, Rafael J. Wysocki wrote:
+> >>>>
+> >>>> [ ... ]
+> >>>>
+> >>>>>> Let me check if I can do something on top of your series to move it in
+> >>>>>> the ACPI driver.
+> >>>>>
+> >>>>> It doesn't need to be on top of my series, so if you have an idea,
+> >>>>> please just let me know what it is.
+> >>>>>
+> >>>>> It can't be entirely in the ACPI driver AFAICS, though, because
+> >>>>> trips[i] need to be modified on updates and they belong to the core.
+> >>>>> Hence, the driver needs some help from the core to get to them.  It
+> >>>>> can be something like "this is my trip tag and please give me the
+> >>>>> address of the trip matching it" or similar, but it is needed, because
+> >>>>> the driver has to assume that the trip indices used by it initially
+> >>>>> may change.
+> >>>>
+> >>>> May be I'm missing something but driver_ref does not seems to be used
+> >>>> except when assigning it, no?
+> >>>
+> >>> It is used on the other side.  That is, the value assigned to the trip
+> >>> field in it is accessed via trip_ref in the driver.
+> >>>
+> >>> The idea is that the driver puts a pointer to its local struct
+> >>> thermal_trip_ref into a struct thermal_trip and the core stores the
+> >>> address of that struct thermal_trip in there, which allows the driver
+> >>> to access the struct thermal_trip via its local struct
+> >>> thermal_trip_ref going forward.
+> >>>
+> >>> Admittedly, this is somewhat convoluted.
+> >>>
+> >>> I have an alternative approach in the works, just for illustration
+> >>> purposes if nothing else, but I have encountered a problem that I
+> >>> would like to ask you about.
+> >>>
+> >>> Namely, zone disabling is not particularly useful for preventing the
+> >>> zone from being used while the trips are updated, because it has side
+> >>> effects.  First, it triggers __thermal_zone_device_update() and a
+> >>> netlink message every time the mode changes, which can be kind of
+> >>> overcome.
+> >>
+> >> Right
+> >>
+> >>> But second, if the mode is "disabled", it does not actually
+> >>> prevent things like __thermal_zone_get_trip() from running and the
+> >>> zone lock is the only thing that can be used for that AFAICS.
+> >>   >
+> >>> So by "disabling" a thermal zone, did you mean changing its mode to
+> >>> "disabled" or something else?
+> >>
+> >> Yes, that is what I meant.
+> >>
+> >> May be the initial proposal by updating the thermal trips pointer can
+> >> solve that [1]
+> >
+> > No, it can't.  An existing trips[] table cannot be replaced with a new
+> > one with different trip indices, because those indices are already in
+> > use.  And if the indices are the same, there's no reason to replace
+> > trips.
+> >
+> >> IMO we can assume the trip point changes are very rare (if any), so
+> >> rebuilding a new trip array and update the thermal zone with the pointer
+> >> may solve the situation.
+> >>
+> >> The routine does a copy of the trips array, so it can reorder it without
+> >> impacting the array passed as a parameter. And it can take the lock.
+> >
+> > The driver can take a lock as well.  Forbidding drivers to use the
+> > zone lock is an artificial limitation without technical merit IMV.
+>
+> Yes, it is technically possible to take a lock from a driver. However,
+> from a higher perspective, we have a core framework which is
+> self-contained and we have a back-end which forces us to export this lock.
+>
+> Even if it is possible, it is not desirable because we break the
+> self-containment and thus that will make future changes in the core
+> framework complicated because of the interactions with back-end drivers.
 
-Thanks!
-Sunil
+So the counter argument here is that using the zone lock directly in
+the driver is the most straightforward way of addressing the use case
+at hand, which is the need to update trip points in a non-racy way.
+Everything else is more complex and the reasons for adding the extra
+complexity can be questioned.
+
+Self-containment is nice, but in some cases it is just not worth
+enforcing it all the way through at the cost of increased code
+complexity.
+
+Anyway, I'm going to post a new version of this patch series later
+today which uses a somewhat different approach. It is a bit more
+complex, but maybe this is fine.
