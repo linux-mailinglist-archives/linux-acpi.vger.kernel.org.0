@@ -2,141 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EECC770670
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Aug 2023 18:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B60D9770ADC
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Aug 2023 23:26:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231282AbjHDQ4j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Aug 2023 12:56:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33504 "EHLO
+        id S231277AbjHDV0X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Aug 2023 17:26:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229675AbjHDQ4i (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Aug 2023 12:56:38 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C4A31994;
-        Fri,  4 Aug 2023 09:56:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691168197; x=1722704197;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gpDidnsvALbETLwYUDIaqkBOrRmLDkWhHtFiUIEPsrc=;
-  b=nVAj6Ki+r/HOcAoZl0tVkX9yVOmFL5BwoY+SdflYbP2ebK9ZRyGrXPZh
-   RfbKMEZq/ugTq+c0ZNTRmaUxXtqX1UKQEUdcV32RgNgC8Yf83AaP1GL8j
-   AysF0YJXaxTD5IL+bLG+cv8YSXOXz5z9QDKTJgCUV6zae6V3fbDEeD8n3
-   AUsrfCG9K5ziIqYePqtB8fiCLqul/dBUPxiEWasTqcdDcoGayXVm4T/Zn
-   rJtUHHEfX+ZlWR783UV+MoDwcAnWo+7yXzJfxjQCe9wgL1rQRNQy7h37P
-   zZBDRqk+nspXIDyCzN7ndZh+OlYrRaqRasaUysLRwsyzVPHG5IUnkbjCD
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10792"; a="401156666"
-X-IronPort-AV: E=Sophos;i="6.01,255,1684825200"; 
-   d="scan'208";a="401156666"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2023 09:56:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10792"; a="723705867"
-X-IronPort-AV: E=Sophos;i="6.01,255,1684825200"; 
-   d="scan'208";a="723705867"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP; 04 Aug 2023 09:56:29 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qRy6E-00HEmR-1a;
-        Fri, 04 Aug 2023 19:56:26 +0300
-Date:   Fri, 4 Aug 2023 19:56:26 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     Sunil V L <sunilvl@ventanamicro.com>, linux-doc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Anup Patel <anup@brainfault.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Haibo Xu <haibo1.xu@intel.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Atish Kumar Patra <atishp@rivosinc.com>
-Subject: Re: [RFC PATCH v1 09/21] RISC-V: cacheflush: Initialize CBO
- variables on ACPI systems
-Message-ID: <ZM0tuv5mdgHLdrsr@smile.fi.intel.com>
-References: <20230803175916.3174453-1-sunilvl@ventanamicro.com>
- <20230803175916.3174453-10-sunilvl@ventanamicro.com>
- <ZMyTDcffqXYT29JX@smile.fi.intel.com>
- <ZMzC4nHOJOfp0vaa@sunil-laptop>
- <ZM0SZwL9SXrEuFMT@smile.fi.intel.com>
- <20230804-dreamy-unharmed-a502d02af35a@spud>
- <ZM0s6GrfXqx4fu+l@smile.fi.intel.com>
+        with ESMTP id S231191AbjHDV0Q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Aug 2023 17:26:16 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6A2F4C3F;
+        Fri,  4 Aug 2023 14:26:13 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
+ id 35bc2ffd483e1cec; Fri, 4 Aug 2023 23:26:12 +0200
+Authentication-Results: v370.home.net.pl; spf=softfail (domain owner 
+   discourages use of this host) smtp.mailfrom=rjwysocki.net 
+   (client-ip=195.136.19.94; helo=[195.136.19.94]; 
+   envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
+Received: from kreacher.localnet (unknown [195.136.19.94])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 741006624B7;
+        Fri,  4 Aug 2023 23:26:11 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Michal Wilczynski <michal.wilczynski@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH v4 00/10] ACPI: thermal: Use trip point table to register thermal zones
+Date:   Fri, 04 Aug 2023 22:58:04 +0200
+Message-ID: <4878513.31r3eYUQgx@kreacher>
+In-Reply-To: <13318886.uLZWGnKmhe@kreacher>
+References: <13318886.uLZWGnKmhe@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZM0s6GrfXqx4fu+l@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrkeeggdduheekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepjedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
+ thhtohepmhhitghhrghlrdifihhltgiihihnshhkihesihhnthgvlhdrtghomhdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 04, 2023 at 07:52:56PM +0300, Andy Shevchenko wrote:
-> On Fri, Aug 04, 2023 at 04:19:27PM +0100, Conor Dooley wrote:
-> > On Fri, Aug 04, 2023 at 05:59:51PM +0300, Andy Shevchenko wrote:
-> > > On Fri, Aug 04, 2023 at 02:50:34PM +0530, Sunil V L wrote:
-> > > > On Fri, Aug 04, 2023 at 08:56:29AM +0300, Andy Shevchenko wrote:
-> > > > > On Thu, Aug 03, 2023 at 11:29:04PM +0530, Sunil V L wrote:
+Hi Everyone,
 
-...
+This is the 4th iteration of the $subject patch series and its original
+description below is still applicable
 
-> > > > > > +#include <asm/acpi.h>
-> > > > > 
-> > > > > What do you need this for?
-> > > > > 
-> > > > > >  #include <asm/cacheflush.h>
-> > > > > 
-> > > > When CONFIG_ACPI is disabled, this include is required to get
-> > > > acpi_get_cbo_block_size().
-> > > 
-> > > How is it useful without ACPI being enabled?
-> > 
-> > It is not, as evidenced by the `return -EINVAL;`.
-> > 
-> > > If it's indeed
-> > > (in which I do not believe), better to make sure you have it
-> > > avaiable independently on CONFIG_ACPI. Otherwise, just put
-> > > #ifdef CONFIG_ACPI around the call.
-> > 
-> > Let's not litter the code with ifdeffery please where it can be easily
-> > avoided.
-> 
-> Including asm/acpi.h looks to me as a "let's avoid it with a hack that it
-> is uglier than ifdeffery". Sorry, but ifdeffery for ACPI, with all my full
-> agreement with the statement that it's not good, is the correct way to fix
-> this.
+On Tuesday, July 18, 2023 8:01:20 PM CEST Rafael J. Wysocki wrote:
+>
+> This patch series makes the ACPI thermal driver register thermal zones
+> with the help of thermal_zone_device_register_with_trips(), so it
+> doesn't need to use the thermal zone callbacks related to trip points
+> any more (and they are dropped in the last patch).
+>
+> The approach presented here is quite radically different from the
+> previous attempts, as it doesn't really rearrange the driver's
+> internal data structures, but adds the trip table support on top of
+> them.  For this purpose, it uses an additional field in struct thermal_trip
 
-On the other hand this is an arch code and I see precedents of using the
-headers together, alas, it seems not better to me that ugly ifdeffery.
+This update uses a different approach to mutual exclusion between trip point
+updates in the ACPI thermal driver and the thermal core (roughly speaking, it
+adds a "thermal zone update" callback and a helper to invoke that callback
+under the zone lock) and a different mechanism to get from the local trip
+point representation in the driver to the corresponding trips[i] in the
+thermal zone structure.
 
-So, I leave it to the respective maintainers to decide.
+As a result, some have been dropped, some new patches have been added and
+the majority of patches in the series have been reworked from scratch.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Thanks!
+
 
 
