@@ -2,215 +2,205 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A17B476FBB7
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Aug 2023 10:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0842376FBC9
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Aug 2023 10:17:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233956AbjHDILU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Aug 2023 04:11:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51724 "EHLO
+        id S234491AbjHDIRf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Aug 2023 04:17:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231128AbjHDILT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Aug 2023 04:11:19 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 845284683
-        for <linux-acpi@vger.kernel.org>; Fri,  4 Aug 2023 01:11:18 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-686bc261111so1348303b3a.3
-        for <linux-acpi@vger.kernel.org>; Fri, 04 Aug 2023 01:11:18 -0700 (PDT)
+        with ESMTP id S234483AbjHDIRd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Aug 2023 04:17:33 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CC8E4698
+        for <linux-acpi@vger.kernel.org>; Fri,  4 Aug 2023 01:17:31 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-3090d3e9c92so1609578f8f.2
+        for <linux-acpi@vger.kernel.org>; Fri, 04 Aug 2023 01:17:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1691136678; x=1691741478;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1E1XKpqY2cyPNIrSdD2Uj7Nc4s99E7VJhmNzctJ9yC0=;
-        b=c0O39fOZTU05YfaE+/NuL/0+WcEvgeF+SRbGWw691gy7cFmVocxF2etSH7t09iQ51u
-         3UEbdkuaKyJUzhPPqN45Zqo0unNWsOT42D144N/2zpSlHvlalss+jzFtFLVtt9xhwsV0
-         2jUbfUF2kfYTbw9RIEVXY4rz7V6sB+WFFCVxDzOw2KsBpsUwDTH79BMkjXsvsUVb3P5X
-         LzpSCirLqW7Wk0TiB1u1kZIxH9nUi1kBoWjxGKHCdEfn5NeYClqikNfwpL6oioZmAswK
-         XT2zIoJpYPoswZJ6ZZCRE7L/qGA2OZ0LAW0uXnY2oGgsZ5rGl9ZxxHpvIpkMo6GeQdj+
-         gRaA==
+        d=linaro.org; s=google; t=1691137049; x=1691741849;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BtpPWtmTMtrxIoIHR4Tp9VLaeBaBImgFjEFb4F44FV8=;
+        b=OuGXWl9mN/2k8BpWiNjcnO2kR/5nOmkrTRFk1rN7pwJ9wE2IgfWd9FMoehMZqN4MOL
+         zHd4UnZofLCYqRgquW77v+Ix2miH2/oojPTw9NA08XlMbkKD1pe7Ndrfk4IJyfxL+8WG
+         VGSFhhGWGSNn/zY3JL9tdwcv+zDLLZHK7GTJTHmOAbaYLP6oWVwxnKg41cc1TdRBD9/+
+         iHilPYZIXSzn9QZ8dHeDvwDxMOO4Jm1cevvYPGjpMIDkVhwSEEZOSkqR/PVNBOeKF8G5
+         KNSM7RLHNhXHeiCjRssEhMkxsQFtb74ROlIcI5cscuJ2q8SWvdgsfs2Bbb/j+C467vXQ
+         siOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691136678; x=1691741478;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1E1XKpqY2cyPNIrSdD2Uj7Nc4s99E7VJhmNzctJ9yC0=;
-        b=Dq1sfxDuEHlDofcm6H/FuBPpCSPAzQCsUCptH6fubUfA4fW+OrWwNhPnpF+9EEju9Z
-         W8UXGoMhgV5rqZ0bewJDiDBloOPYVzNpkOStrN1adocGElZK8jrh5C0oG4MgqGHlXRXV
-         gUQEBmUx+ZfIurCXmCY+q9w9SfeZrZJpjXT5IM2Ro7gKYcTm6nR/ynANRkNjUp62y5tt
-         5kmLFbEuV7mMATaZzig8k6bQvHmBt/CQtjAKaYT636HZEZwpmDbXD1JRaWAEx3Nu1Lbv
-         z+p0XsAvYXiZeYBCUdFHU0wujLGVDhmTVrKYRpSrWwhkO9ZCMl+lTQ4ahudLutyWKsqs
-         ODTA==
-X-Gm-Message-State: AOJu0YzRdw7Vq/W4b3BEt22jNx1p3rOocYwDu/1mA3E4hz8b1pGxtX3K
-        4rvq2kRyMuTUyYlF/9JdPssbbw==
-X-Google-Smtp-Source: AGHT+IHnx2zb6m6wrA5NnPdzIk8blklkqhpKJsWmU8/Y9MzhjmQ6IK1Rw1+MeaiexbKDwa3wkDs7Mw==
-X-Received: by 2002:a05:6a00:3984:b0:682:f529:6d69 with SMTP id fi4-20020a056a00398400b00682f5296d69mr1255507pfb.7.1691136677933;
-        Fri, 04 Aug 2023 01:11:17 -0700 (PDT)
-Received: from sunil-laptop ([106.51.190.143])
-        by smtp.gmail.com with ESMTPSA id c21-20020a62e815000000b005d22639b577sm1032647pfi.165.2023.08.04.01.11.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Aug 2023 01:11:17 -0700 (PDT)
-Date:   Fri, 4 Aug 2023 13:41:05 +0530
-From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Anup Patel <anup@brainfault.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Haibo Xu <haibo1.xu@intel.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Atish Kumar Patra <atishp@rivosinc.com>,
-        Anup Patel <apatel@ventanamicro.com>
-Subject: Re: [RFC PATCH v1 11/21] swnode: Add support to create early during
- boot
-Message-ID: <ZMyymUdV63g4eGaT@sunil-laptop>
-References: <20230803175916.3174453-1-sunilvl@ventanamicro.com>
- <20230803175916.3174453-12-sunilvl@ventanamicro.com>
- <ZMyWDDD6Lw8REd1r@smile.fi.intel.com>
+        d=1e100.net; s=20221208; t=1691137049; x=1691741849;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BtpPWtmTMtrxIoIHR4Tp9VLaeBaBImgFjEFb4F44FV8=;
+        b=ht8Zd0+mtm4jN6q7E4BpGy8/PEvqYR/2I5P1BlSQtLJcMUZeluD3kZh07X72DBBIFy
+         ifzlYcrtBly4i7quY610z2O83v3527Ty0I4QYvf0lxHTl7flrerWB6+ykLhSZMSdGgcl
+         DIIQ1s8aOZGhgxfQBsQK1sycNV4C1tmxTwSfAPtWO/S4xOLsLPzzD/bCyqakaeAQjfBI
+         PkH6g6Rms9RlMVZZvto/VaNUJH+SqvCRP83mwRWBf3jG4DHOMBAKZtGUGS2COjdr6bQx
+         tqAO7YoV8io9J42xsH3R+hCms0Z4CDXXFQZVDESGDXyLhWFzKT+VQbHFYK29EQWLjqnd
+         YRqw==
+X-Gm-Message-State: AOJu0YyiFxYLlshNPPo2fCasZ53JjcgBbQ9VC8juaFLXnASfVGnukUhG
+        DSlhbwpS69M2tdwWmqGwfGDRhQ==
+X-Google-Smtp-Source: AGHT+IGgX/IfuWOTGmQUfDoIrgeXHHPS9RMUliwMNOygIkLHwq4te6gwJtnUBoUHbvEvzc44DFDCbQ==
+X-Received: by 2002:adf:fd12:0:b0:313:dfa3:4f7b with SMTP id e18-20020adffd12000000b00313dfa34f7bmr735709wrr.20.1691137049217;
+        Fri, 04 Aug 2023 01:17:29 -0700 (PDT)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id u10-20020adfed4a000000b003144b95e1ecsm1866611wro.93.2023.08.04.01.17.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Aug 2023 01:17:28 -0700 (PDT)
+Message-ID: <03643466-2f5c-2d68-424d-19836dcceb78@linaro.org>
+Date:   Fri, 4 Aug 2023 10:17:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZMyWDDD6Lw8REd1r@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3 1/8] thermal: core: Add mechanism for connecting trips
+ with driver data
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Michal Wilczynski <michal.wilczynski@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
+ <4501957.LvFx2qVVIh@kreacher>
+ <2d0315d4-35b4-84db-4dcb-c9528abad825@linaro.org>
+ <CAJZ5v0iQDOsTOqWFvbf5nom-b3-pbHPRzJQC-1DM9eoh=0AKjg@mail.gmail.com>
+ <eb279cf1-0605-3b87-5cb6-241a91977455@linaro.org>
+ <CAJZ5v0i48=oawDJHoaHhiZRaO_CJokKsOHyNvu2v4PUbS6CH_Q@mail.gmail.com>
+ <f8029547-6851-7e0c-00e6-4963ccbc2702@linaro.org>
+ <CAJZ5v0gDQMNSeEU1J7ooJk4Ec=Hw_JuZAtL5k215v7Lf67iTgg@mail.gmail.com>
+ <5c93d78d-835e-c740-280b-9d76456aaeda@linaro.org>
+ <CAJZ5v0gtkZTwt-qP0uwvTJNx8cpO1o1esmW9BfVxB67X3Yt++w@mail.gmail.com>
+ <b4e474f9-79e8-534b-509e-12eb5995fa0c@linaro.org>
+ <CAJZ5v0iH+qf6eBuZASPKyA6rT8O6FiA7516MiYYUx6Uc+wR4Ow@mail.gmail.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <CAJZ5v0iH+qf6eBuZASPKyA6rT8O6FiA7516MiYYUx6Uc+wR4Ow@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+On 03/08/2023 21:58, Rafael J. Wysocki wrote:
+> On Thu, Aug 3, 2023 at 6:20 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+>>
+>> On 03/08/2023 16:15, Rafael J. Wysocki wrote:
+>>> On Thu, Aug 3, 2023 at 3:06 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+>>>>
+>>>> On 02/08/2023 18:48, Rafael J. Wysocki wrote:
+>>>>
+>>>> [ ... ]
+>>>>
+>>>>>> Let me check if I can do something on top of your series to move it in
+>>>>>> the ACPI driver.
+>>>>>
+>>>>> It doesn't need to be on top of my series, so if you have an idea,
+>>>>> please just let me know what it is.
+>>>>>
+>>>>> It can't be entirely in the ACPI driver AFAICS, though, because
+>>>>> trips[i] need to be modified on updates and they belong to the core.
+>>>>> Hence, the driver needs some help from the core to get to them.  It
+>>>>> can be something like "this is my trip tag and please give me the
+>>>>> address of the trip matching it" or similar, but it is needed, because
+>>>>> the driver has to assume that the trip indices used by it initially
+>>>>> may change.
+>>>>
+>>>> May be I'm missing something but driver_ref does not seems to be used
+>>>> except when assigning it, no?
+>>>
+>>> It is used on the other side.  That is, the value assigned to the trip
+>>> field in it is accessed via trip_ref in the driver.
+>>>
+>>> The idea is that the driver puts a pointer to its local struct
+>>> thermal_trip_ref into a struct thermal_trip and the core stores the
+>>> address of that struct thermal_trip in there, which allows the driver
+>>> to access the struct thermal_trip via its local struct
+>>> thermal_trip_ref going forward.
+>>>
+>>> Admittedly, this is somewhat convoluted.
+>>>
+>>> I have an alternative approach in the works, just for illustration
+>>> purposes if nothing else, but I have encountered a problem that I
+>>> would like to ask you about.
+>>>
+>>> Namely, zone disabling is not particularly useful for preventing the
+>>> zone from being used while the trips are updated, because it has side
+>>> effects.  First, it triggers __thermal_zone_device_update() and a
+>>> netlink message every time the mode changes, which can be kind of
+>>> overcome.
+>>
+>> Right
+>>
+>>> But second, if the mode is "disabled", it does not actually
+>>> prevent things like __thermal_zone_get_trip() from running and the
+>>> zone lock is the only thing that can be used for that AFAICS.
+>>   >
+>>> So by "disabling" a thermal zone, did you mean changing its mode to
+>>> "disabled" or something else?
+>>
+>> Yes, that is what I meant.
+>>
+>> May be the initial proposal by updating the thermal trips pointer can
+>> solve that [1]
+> 
+> No, it can't.  An existing trips[] table cannot be replaced with a new
+> one with different trip indices, because those indices are already in
+> use.  And if the indices are the same, there's no reason to replace
+> trips.
+> 
+>> IMO we can assume the trip point changes are very rare (if any), so
+>> rebuilding a new trip array and update the thermal zone with the pointer
+>> may solve the situation.
+>>
+>> The routine does a copy of the trips array, so it can reorder it without
+>> impacting the array passed as a parameter. And it can take the lock.
+> 
+> The driver can take a lock as well.  Forbidding drivers to use the
+> zone lock is an artificial limitation without technical merit IMV.
 
-On Fri, Aug 04, 2023 at 09:09:16AM +0300, Andy Shevchenko wrote:
-> On Thu, Aug 03, 2023 at 11:29:06PM +0530, Sunil V L wrote:
-> > From: Anup Patel <apatel@ventanamicro.com>
-> > 
-> > swnode framework can be used to create fwnode for interrupt
-> > controllers.
-> 
-> Why? What is this for?
-> Can you elaborate? This commit message is poorly written...
-> 
-> And why firmware node is not enough for ACPI case?
-> I assume the fwnode in DT case is already provided by OF.
-> 
-Thanks a lot for the review!.
+Yes, it is technically possible to take a lock from a driver. However, 
+from a higher perspective, we have a core framework which is 
+self-contained and we have a back-end which forces us to export this lock.
 
-You are right, OF provides the fwnode for irqchip drivers. However, for
-ACPI case, it is typically created using irq_domain_alloc_named_fwnode
-or irq_domain_alloc_fwnode since these are not ACPI devices in the
-namespace but from MADT. The fwnode created using
-irq_domain_alloc_fwnode() is a simple one which doesn't support properties
-similar to the one created by OF framework or software node framework.
-Hence, lot of data from the MADT structures need to be cached as
-separate structures in the drivers and also would need several ifdefs to
-check for ACPI and some amount of code duplication is also required due
-to the way DT driver gets the information vs ACPI.
+Even if it is possible, it is not desirable because we break the 
+self-containment and thus that will make future changes in the core 
+framework complicated because of the interactions with back-end drivers.
 
-The beauty of software node framework is, it supports adding properties
-and also is a supported fwnode type in __irq_domain_create(). So, if we
-can create the fwnode for these irqchip using software node, we can
-attach the same properties and the actual irqchip driver which uses the
-fwnode doesn't need to have any ACPI vs DT checks. Same driver will work
-seamlessly on both DT and ACPI platforms.  But the challenge is,
-currently swnode expects to be created with sysfs which won't be
-available during early boot when irqchip drivers need to be probed. So,
-adding support to create without dependency on sysfs help us to reuse
-the same framework for irqchip use case also.
+I'm not putting in question your changes in general but just want to 
+keep the direction of having the core framework and the drivers 
+interacting with the ops and a few high level functions where the core 
+framework handle the logic.
 
-Apologies for not descriptive in the commit message. Please let us know
-your feedback on this approach.
+The clocksource/clockevent drivers are an example on how the time 
+framework and the drivers are clearly separated.
 
-> > This helps in keeping the drivers same for both
-> > DT and ACPI. To enable this, enhance the swnode framework so
-> > that it can be created early during boot without dependency
-> > on sysfs.
+>> We just have to constraint the update function to invalidate arrays with
+>> a number of trip points different from the one initially passed when
+>> creating the thermal zone.
+>>
+>> Alternatively, we can be smarter in the ACPI driver and update the
+>> corresponding temperature+hysteresis trip point by using the
+>> thermal_zone_set_trip() function.
 > 
-> ...
-> 
-> > -	swnode->kobj.kset = swnode_kset;
-> > +	swnode->kobj.kset = (!early) ? swnode_kset : NULL;
-> 
-> Too many unneeded characters. Why parentheses? Why negative check?
-> 
-Sure, will update in next version.
+> I don't see why this would make any difference.
 
-> ...
-> 
-> > +	if (early) {
-> > +		ret = 0;
-> > +		kobject_init(&swnode->kobj, &software_node_type_early);
-> > +		swnode->kobj.parent = parent ? &parent->kobj : NULL;
-> > +		if (node->name)
-> > +			ret = kobject_set_name(&swnode->kobj,
-> > +					       "%s", node->name);
-> > +		else
-> > +			ret = kobject_set_name(&swnode->kobj,
-> > +					       "node%d", swnode->id);
-> > +		if (!ret) {
-> > +			spin_lock(&swnode_early_lock);
-> > +			list_add_tail(&swnode->early, &swnode_early_list);
-> > +			spin_unlock(&swnode_early_lock);
-> > +		}
-> > +	} else {
-> > +		if (node->name)
-> > +			ret = kobject_init_and_add(&swnode->kobj, &software_node_type,
-> > +						   parent ? &parent->kobj : NULL,
-> 
-> This looks like have a duplication.
-> 
-> > +						   "%s", node->name);
-> > +		else
-> > +			ret = kobject_init_and_add(&swnode->kobj, &software_node_type,
-> > +						   parent ? &parent->kobj : NULL,
-> > +						   "node%d", swnode->id);
-> > +	}
-> 
-> Maybe it's possible to refactor this piece to be more compact?
-> 
-The issue is, kobject_init_and_add() expects sysfs. Let me try to
-compact this in next version. Thanks!
-> ...
-> 
-> > -	return PTR_ERR_OR_ZERO(swnode_register(node, parent, 0));
-> > +	return PTR_ERR_OR_ZERO(swnode_register(node, parent, 0, 0));
-> 
-> In one case you use boolean, here is unsigned int for early flag, why is the
-> inconsistency added?
-> 
-Yeah, it should be bool. Let me fix it in next version.
+The function thermal_zone_set_trip() takes the lock.
 
-> ...
-> 
-> > -struct fwnode_handle *
-> > -fwnode_create_software_node(const struct property_entry *properties,
-> > -			    const struct fwnode_handle *parent)
-> > +static struct fwnode_handle *
-> > +fwnode_create_software_node_common(const struct property_entry *properties,
-> > +				   const struct fwnode_handle *parent,
-> > +				   bool early)
-> 
-> Why would you need this API in early stages?
-> 
-Hope I answered the question above. 
 
-Thanks!
-Sunil
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
