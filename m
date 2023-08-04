@@ -2,205 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0842376FBC9
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Aug 2023 10:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7563976FBD3
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Aug 2023 10:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234491AbjHDIRf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Aug 2023 04:17:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54540 "EHLO
+        id S234497AbjHDITl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Aug 2023 04:19:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234483AbjHDIRd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Aug 2023 04:17:33 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CC8E4698
-        for <linux-acpi@vger.kernel.org>; Fri,  4 Aug 2023 01:17:31 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-3090d3e9c92so1609578f8f.2
-        for <linux-acpi@vger.kernel.org>; Fri, 04 Aug 2023 01:17:30 -0700 (PDT)
+        with ESMTP id S233866AbjHDITk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Aug 2023 04:19:40 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DEE4E43
+        for <linux-acpi@vger.kernel.org>; Fri,  4 Aug 2023 01:19:38 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-68706b39c4cso1288912b3a.2
+        for <linux-acpi@vger.kernel.org>; Fri, 04 Aug 2023 01:19:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691137049; x=1691741849;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BtpPWtmTMtrxIoIHR4Tp9VLaeBaBImgFjEFb4F44FV8=;
-        b=OuGXWl9mN/2k8BpWiNjcnO2kR/5nOmkrTRFk1rN7pwJ9wE2IgfWd9FMoehMZqN4MOL
-         zHd4UnZofLCYqRgquW77v+Ix2miH2/oojPTw9NA08XlMbkKD1pe7Ndrfk4IJyfxL+8WG
-         VGSFhhGWGSNn/zY3JL9tdwcv+zDLLZHK7GTJTHmOAbaYLP6oWVwxnKg41cc1TdRBD9/+
-         iHilPYZIXSzn9QZ8dHeDvwDxMOO4Jm1cevvYPGjpMIDkVhwSEEZOSkqR/PVNBOeKF8G5
-         KNSM7RLHNhXHeiCjRssEhMkxsQFtb74ROlIcI5cscuJ2q8SWvdgsfs2Bbb/j+C467vXQ
-         siOw==
+        d=ventanamicro.com; s=google; t=1691137178; x=1691741978;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+6p8ZmyjWt9EkIhx2x7mQdHkPI32JR/rPIgt/KaUyrM=;
+        b=Xy7UXj5rKhL+uu8tkHk9ALkF9uUbocA2LUGuUDTCT+UGGvvTrismPG1zBkJkoUphar
+         GFIBh9B6MWwxSsxdU7gxlE57mN66vXeN52obzKwYx5CxoHQybxqezGy7NIg+855c764S
+         XNF/oYMsJJ5Rt/2MYOeT2lTd6jXCIw8p1xhmuAbrL+ZL+sCs0RmmNBE1mk+AOBq6Eq9W
+         F4pwgeCm+zv78ejFX6n1IKU186BdKmiIkBCc3ojk6wDZAKKAN2w8IQf6CZtDJd5Pa6Dq
+         /f/CXnPRCEHLAkvvcZXchDfjlnHhtZnzkRvEjbeedsy/ciaI5ykfwG3vd5RKwNUEGKzl
+         UCZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691137049; x=1691741849;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BtpPWtmTMtrxIoIHR4Tp9VLaeBaBImgFjEFb4F44FV8=;
-        b=ht8Zd0+mtm4jN6q7E4BpGy8/PEvqYR/2I5P1BlSQtLJcMUZeluD3kZh07X72DBBIFy
-         ifzlYcrtBly4i7quY610z2O83v3527Ty0I4QYvf0lxHTl7flrerWB6+ykLhSZMSdGgcl
-         DIIQ1s8aOZGhgxfQBsQK1sycNV4C1tmxTwSfAPtWO/S4xOLsLPzzD/bCyqakaeAQjfBI
-         PkH6g6Rms9RlMVZZvto/VaNUJH+SqvCRP83mwRWBf3jG4DHOMBAKZtGUGS2COjdr6bQx
-         tqAO7YoV8io9J42xsH3R+hCms0Z4CDXXFQZVDESGDXyLhWFzKT+VQbHFYK29EQWLjqnd
-         YRqw==
-X-Gm-Message-State: AOJu0YyiFxYLlshNPPo2fCasZ53JjcgBbQ9VC8juaFLXnASfVGnukUhG
-        DSlhbwpS69M2tdwWmqGwfGDRhQ==
-X-Google-Smtp-Source: AGHT+IGgX/IfuWOTGmQUfDoIrgeXHHPS9RMUliwMNOygIkLHwq4te6gwJtnUBoUHbvEvzc44DFDCbQ==
-X-Received: by 2002:adf:fd12:0:b0:313:dfa3:4f7b with SMTP id e18-20020adffd12000000b00313dfa34f7bmr735709wrr.20.1691137049217;
-        Fri, 04 Aug 2023 01:17:29 -0700 (PDT)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id u10-20020adfed4a000000b003144b95e1ecsm1866611wro.93.2023.08.04.01.17.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Aug 2023 01:17:28 -0700 (PDT)
-Message-ID: <03643466-2f5c-2d68-424d-19836dcceb78@linaro.org>
-Date:   Fri, 4 Aug 2023 10:17:28 +0200
+        d=1e100.net; s=20221208; t=1691137178; x=1691741978;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+6p8ZmyjWt9EkIhx2x7mQdHkPI32JR/rPIgt/KaUyrM=;
+        b=CsWSyKwH6gY2YoT8IJF9JphOKep4PAFQNOLZQ+giVkAABjguu6C9liLfYe/MzuCHym
+         +xRvrudOFhE193O2vFC8JRUXWMoSxn0pIQ/Few5fH0E/4q31OtXHc66s0yyZmVGAoB0M
+         buZvBCb1CmqUFhDWLRSmoor/kzlpwO7ET2NV4EY6Fo64jHNQoEPRWYYATdpNFMoQ786O
+         PVL703E1hXJ4o1F/007wzxyFhO/ZEMPN2st9gn9J9S4mkp02/+8bNMMqRLu1HQsPrSsM
+         V3Hdee5CPxQ6Yk2+nF0mrUUw6IeauQ/inbu/kqOSL4/a9XPiycxQoqa7RytrlHt+8flK
+         vABg==
+X-Gm-Message-State: AOJu0YwozbVwRSInV5ddgqkgG4rEY0Hpt4AZeLjbEIiXg7T4VjD/A9Y0
+        2FB4d12OC6y4qKP/7K0uRS0mTQ==
+X-Google-Smtp-Source: AGHT+IFmU2okWiufqxbBgTJlqhXztctK8e0s9XMhsjLRvyxOqapi7NDJcuaofoqHVSzZkHv7M/zO9Q==
+X-Received: by 2002:a05:6a20:938a:b0:13e:8ce5:cacd with SMTP id x10-20020a056a20938a00b0013e8ce5cacdmr944703pzh.26.1691137177799;
+        Fri, 04 Aug 2023 01:19:37 -0700 (PDT)
+Received: from sunil-laptop ([106.51.190.143])
+        by smtp.gmail.com with ESMTPSA id e18-20020aa78c52000000b0068620bee456sm1046915pfd.209.2023.08.04.01.19.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Aug 2023 01:19:37 -0700 (PDT)
+Date:   Fri, 4 Aug 2023 13:49:24 +0530
+From:   Sunil V L <sunilvl@ventanamicro.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Anup Patel <anup@brainfault.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Haibo Xu <haibo1.xu@intel.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Atish Kumar Patra <atishp@rivosinc.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: Re: [RFC PATCH v1 04/21] RISC-V: ACPI: Enhance acpi_os_ioremap with
+ MMIO remapping
+Message-ID: <ZMy0jC55N0+nKEye@sunil-laptop>
+References: <20230803175916.3174453-1-sunilvl@ventanamicro.com>
+ <20230803175916.3174453-5-sunilvl@ventanamicro.com>
+ <ZMyRCRRkTnR/sK0u@smile.fi.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3 1/8] thermal: core: Add mechanism for connecting trips
- with driver data
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Michal Wilczynski <michal.wilczynski@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-References: <13318886.uLZWGnKmhe@kreacher> <12254967.O9o76ZdvQC@kreacher>
- <4501957.LvFx2qVVIh@kreacher>
- <2d0315d4-35b4-84db-4dcb-c9528abad825@linaro.org>
- <CAJZ5v0iQDOsTOqWFvbf5nom-b3-pbHPRzJQC-1DM9eoh=0AKjg@mail.gmail.com>
- <eb279cf1-0605-3b87-5cb6-241a91977455@linaro.org>
- <CAJZ5v0i48=oawDJHoaHhiZRaO_CJokKsOHyNvu2v4PUbS6CH_Q@mail.gmail.com>
- <f8029547-6851-7e0c-00e6-4963ccbc2702@linaro.org>
- <CAJZ5v0gDQMNSeEU1J7ooJk4Ec=Hw_JuZAtL5k215v7Lf67iTgg@mail.gmail.com>
- <5c93d78d-835e-c740-280b-9d76456aaeda@linaro.org>
- <CAJZ5v0gtkZTwt-qP0uwvTJNx8cpO1o1esmW9BfVxB67X3Yt++w@mail.gmail.com>
- <b4e474f9-79e8-534b-509e-12eb5995fa0c@linaro.org>
- <CAJZ5v0iH+qf6eBuZASPKyA6rT8O6FiA7516MiYYUx6Uc+wR4Ow@mail.gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <CAJZ5v0iH+qf6eBuZASPKyA6rT8O6FiA7516MiYYUx6Uc+wR4Ow@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZMyRCRRkTnR/sK0u@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 03/08/2023 21:58, Rafael J. Wysocki wrote:
-> On Thu, Aug 3, 2023 at 6:20 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
->>
->> On 03/08/2023 16:15, Rafael J. Wysocki wrote:
->>> On Thu, Aug 3, 2023 at 3:06 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
->>>>
->>>> On 02/08/2023 18:48, Rafael J. Wysocki wrote:
->>>>
->>>> [ ... ]
->>>>
->>>>>> Let me check if I can do something on top of your series to move it in
->>>>>> the ACPI driver.
->>>>>
->>>>> It doesn't need to be on top of my series, so if you have an idea,
->>>>> please just let me know what it is.
->>>>>
->>>>> It can't be entirely in the ACPI driver AFAICS, though, because
->>>>> trips[i] need to be modified on updates and they belong to the core.
->>>>> Hence, the driver needs some help from the core to get to them.  It
->>>>> can be something like "this is my trip tag and please give me the
->>>>> address of the trip matching it" or similar, but it is needed, because
->>>>> the driver has to assume that the trip indices used by it initially
->>>>> may change.
->>>>
->>>> May be I'm missing something but driver_ref does not seems to be used
->>>> except when assigning it, no?
->>>
->>> It is used on the other side.  That is, the value assigned to the trip
->>> field in it is accessed via trip_ref in the driver.
->>>
->>> The idea is that the driver puts a pointer to its local struct
->>> thermal_trip_ref into a struct thermal_trip and the core stores the
->>> address of that struct thermal_trip in there, which allows the driver
->>> to access the struct thermal_trip via its local struct
->>> thermal_trip_ref going forward.
->>>
->>> Admittedly, this is somewhat convoluted.
->>>
->>> I have an alternative approach in the works, just for illustration
->>> purposes if nothing else, but I have encountered a problem that I
->>> would like to ask you about.
->>>
->>> Namely, zone disabling is not particularly useful for preventing the
->>> zone from being used while the trips are updated, because it has side
->>> effects.  First, it triggers __thermal_zone_device_update() and a
->>> netlink message every time the mode changes, which can be kind of
->>> overcome.
->>
->> Right
->>
->>> But second, if the mode is "disabled", it does not actually
->>> prevent things like __thermal_zone_get_trip() from running and the
->>> zone lock is the only thing that can be used for that AFAICS.
->>   >
->>> So by "disabling" a thermal zone, did you mean changing its mode to
->>> "disabled" or something else?
->>
->> Yes, that is what I meant.
->>
->> May be the initial proposal by updating the thermal trips pointer can
->> solve that [1]
+On Fri, Aug 04, 2023 at 08:47:53AM +0300, Andy Shevchenko wrote:
+> On Thu, Aug 03, 2023 at 11:28:59PM +0530, Sunil V L wrote:
+> > Enhance the acpi_os_ioremap() to support opregions in MMIO
+> > space. Also, have strict checks using EFI memory map
+> > to allow remapping the RAM similar to arm64.
+> > 
+> > Cc: Ard Biesheuvel <ardb@kernel.org>
+> > Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
 > 
-> No, it can't.  An existing trips[] table cannot be replaced with a new
-> one with different trip indices, because those indices are already in
-> use.  And if the indices are the same, there's no reason to replace
-> trips.
+> You may use --cc to the command line when forming patches.
 > 
->> IMO we can assume the trip point changes are very rare (if any), so
->> rebuilding a new trip array and update the thermal zone with the pointer
->> may solve the situation.
->>
->> The routine does a copy of the trips array, so it can reorder it without
->> impacting the array passed as a parameter. And it can take the lock.
+> Also we usually consider Cc: as a part of the tag block, meaning no blank line
+> should be here.
 > 
-> The driver can take a lock as well.  Forbidding drivers to use the
-> zone lock is an artificial limitation without technical merit IMV.
+Thanks!, Andy. I specifically wanted Ard and Alex to look at this patch
+and hence added Cc. I was not aware that no blank line should be there.
+Thanks for letting me know.
 
-Yes, it is technically possible to take a lock from a driver. However, 
-from a higher perspective, we have a core framework which is 
-self-contained and we have a back-end which forces us to export this lock.
-
-Even if it is possible, it is not desirable because we break the 
-self-containment and thus that will make future changes in the core 
-framework complicated because of the interactions with back-end drivers.
-
-I'm not putting in question your changes in general but just want to 
-keep the direction of having the core framework and the drivers 
-interacting with the ops and a few high level functions where the core 
-framework handle the logic.
-
-The clocksource/clockevent drivers are an example on how the time 
-framework and the drivers are clearly separated.
-
->> We just have to constraint the update function to invalidate arrays with
->> a number of trip points different from the one initially passed when
->> creating the thermal zone.
->>
->> Alternatively, we can be smarter in the ACPI driver and update the
->> corresponding temperature+hysteresis trip point by using the
->> thermal_zone_set_trip() function.
+> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > 
-> I don't see why this would make any difference.
+> ...
+> 
+> >  #include <linux/io.h>
+> >  #include <linux/pci.h>
+> >  #include <linux/efi.h>
+> > +#include <linux/memblock.h>
+> 
+> Can you squeeze it to have some order, like to be after io.h (taking into
+> account given context)?
+> 
+Yeah, sure. Let me update in next version.
 
-The function thermal_zone_set_trip() takes the lock.
+> ...
+> 
+> > +			if (memblock_is_map_memory(phys) ||
+> > +			    !memblock_is_region_memory(phys, size)) {
+> > +				pr_warn(FW_BUG "requested region covers kernel memory @ %p\n",
+> > +					&phys);
+> 
+> How %p can be useful here (it's mangled), but also wouldn't this give a hint to
+> an attacker about the kernel memory location and diminish the KASLR protection?
+> (IIRC after boot we always have the same salt for the mangling the pointers when
+>  printing, so at least theoretically it might be possible to bruteforce the
+>  printing algo to give a clue about the kernel address.)
+> 
+Okay. This is copied from arm64 version. But I think this is a good
+point. Let me just print the warning message without address in the next
+version.
 
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+Thanks!
+Sunil
