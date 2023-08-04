@@ -2,121 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DE0E770554
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Aug 2023 17:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D03F2770560
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Aug 2023 17:56:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232221AbjHDPzL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Aug 2023 11:55:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50184 "EHLO
+        id S230416AbjHDP4r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Aug 2023 11:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229528AbjHDPzK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Aug 2023 11:55:10 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2059.outbound.protection.outlook.com [40.107.244.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9833F170F;
-        Fri,  4 Aug 2023 08:55:09 -0700 (PDT)
+        with ESMTP id S229646AbjHDP4p (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Aug 2023 11:56:45 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B671149F3;
+        Fri,  4 Aug 2023 08:56:37 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=n9lEK7bs24lQZf7EHSWJfrWFfozvGGxZR+1n2n4Wr7WKOEFdeLUakJy0ATKjqSRuJanW1ItkI/MNErMpbChUmSVBM2tCnPmL4fIupDn6D6FhGQWeCszAB5/eOidqhpnl4IRNkIrk3bGxHjVbqAFetCMhf70Hj0lWwG/wRrNBD5tw/GuKnJykn68bZWLP+/WPaB0TQS2stv/+F2Lf3UrbcvAK4xi0mb5aEbH8JEdFk9NjiNS+UZSXZ7BmSrbr9nek9TrorCglIJ9ZNcqtxqvJSrxSr9ID6o7sO60++CDGnl01+6jRBae4z+paHWxw5EaWEhONH+gSYDbIaKrXTYvuLQ==
+ b=AMe5FK9k+YG3a7Gwq7j4mcPUgkN+RYQ+UzlY1RsfcuQcpRue6Z/CMxFKqLRc6aODivWKu++ssjJtvzVx5V2DOW8Fr1RpOLrGS9v2H70kR6XgxBTC5GAD9UCwSr3b1BCWxR05qjMPQA9XPuzX5JTP00BwDF4ubH2xipgiddlvpSjKDjp1mD7Gm5e5omLYOaMmn/mNA5ntkRAt67Oa4TQVKcQWAXp31erhb8cxyCR++IP3OHy4P9TsQvAabyhQmm4Q4QR36GwYbSnTaKtF3ahii2JHaXmdiXuSG8VK7PVWxu1WwJTymT+pxcovtxnhWBxjZGoReK2ALlMuyuLsyzQ2Tg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UIDjbRCA4FLCPboIWW35UmCFg28dx1thcEMxDD5rXdU=;
- b=lPIfYy/3o7nlchoRVM0olsRD6ZKJg7qy0xHmvJ/34pAGwrhiJ2UUQtGSTeeRSmgFZhZPoEukvEBFfqkh5URk4PNUheu8XM5Skli5FwrjFiRZVslPAFgZEBW1XxY1R9kcYVegDQu4S1J21HxiigGYoycZzInIRqH9hk4IWGr0MkPTr9nv1c0F9Nz6WZoyyzdb1KCk6F6EIyoiqq9TlB7ua8SvkcHAE0VX1zq/MU4aAdHhh3IZT4+riq97ELjB0GeE8P7j/ef76JIfBnAhsslnHaolPG1VO16cdTssIfLSIgQUOtlaQXiTSK6VApudKZeNO6ETWyLdM4hJQN3B4g5tDw==
+ bh=iGyHlrY26NOtW8Q+AU7012pNh9a6dTzGtY385euVTe8=;
+ b=MhG5xjXXTdCJlIrNA4iYUOlyoA55PjhkYtV3lsW9DN8Mh5ftWyGmis2Dg9jV/jcKCKilTdlMXtGI9IA4TX0KLWMQ7zONG5psOi/TwZmfWPE1R8AqSH2Pyw5Jmags/I0IN39mPoq2wx0c26FV173R5RYvH/pTZ0Z3YnbV5SgamAJcT6q9W3YNAFOKMU0x4mmRz2p1SvRWdomz4J3GnhbWitAeoup91igUungluMK3/sWCZafvXiC/9ink85veC/px0PQjd1Q8T6S21uureeUHW4iF3VT05SBfZxoSprDTYLY6WvK8d9K3LCIs1oBnqxNDXrq7QYqEAn41lPHR0tULtw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UIDjbRCA4FLCPboIWW35UmCFg28dx1thcEMxDD5rXdU=;
- b=P+/KEHRrdB6cC6KS+RO3mGpsFWHJqmnOlE83XSEHOxQKEgP/BF8WD7rw9+ie1Yqxejl+N/zA/OtyG01tpw8ANmW/BeuQ0pWBat0oc7ajEhqMBKSxHNilJ44TaxqS21L1H4pcti6/goBWwBVFegDDaiGSnvMncSQcQofaqIEAgbh2TsEfqOG89aOAVcMBgmWV0ZORyHlT1FfddGdnNjnG62ERyLqsPOGf5qsDrbwzrh2Qq2k8HWYaPPTm+QY+WaurUbdBQyvWXEYFZudvRjRFEBI0tNjy+k1nUbQvlHacgklrRX0iTJrUCkVkbCc1Q07PIvxwaAAHbBrI327J6P6GFg==
-Received: from DM6PR12MB3371.namprd12.prod.outlook.com (2603:10b6:5:116::27)
- by MW6PR12MB7070.namprd12.prod.outlook.com (2603:10b6:303:238::7) with
+ bh=iGyHlrY26NOtW8Q+AU7012pNh9a6dTzGtY385euVTe8=;
+ b=iF2hLsopvRGWV4G8zlsF71OOaM8Rod2d0TsiEpYjGP+Sr5BFjX5K9E7KwdNZCsyHmbF7ATsHtzT+m7zsotE092sQp8J3eC0hM6H69t/6U9ncQBounmI42mm0njIKXfZwTOisccA4IcTXKDRH9QrbpDfcpkZNKVmozByuxb6hj4g=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by BL1PR12MB5143.namprd12.prod.outlook.com (2603:10b6:208:31b::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.21; Fri, 4 Aug
- 2023 15:55:07 +0000
-Received: from DM6PR12MB3371.namprd12.prod.outlook.com
- ([fe80::ed2:99a4:2e77:89bc]) by DM6PR12MB3371.namprd12.prod.outlook.com
- ([fe80::ed2:99a4:2e77:89bc%5]) with mapi id 15.20.6631.046; Fri, 4 Aug 2023
- 15:55:07 +0000
-From:   Jeshua Smith <jeshuas@nvidia.com>
-To:     "keescook@chromium.org" <keescook@chromium.org>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "gpiccoli@igalia.com" <gpiccoli@igalia.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "bp@alien8.de" <bp@alien8.de>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        Thierry Reding <treding@nvidia.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>
-Subject: RE: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
-Thread-Topic: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
-Thread-Index: AQHZtREytrmSwIEvT06Ibqr95x6guq/abXNg
-Date:   Fri, 4 Aug 2023 15:55:07 +0000
-Message-ID: <DM6PR12MB3371BA50E3B76D2266273901DB09A@DM6PR12MB3371.namprd12.prod.outlook.com>
-References: <20230712223448.145079-1-jeshuas@nvidia.com>
-In-Reply-To: <20230712223448.145079-1-jeshuas@nvidia.com>
-Accept-Language: en-US
+ 2023 15:56:35 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6631.046; Fri, 4 Aug 2023
+ 15:56:35 +0000
+Message-ID: <36dfd3cf-37c6-a630-7ef6-376a339a8f8d@amd.com>
+Date:   Fri, 4 Aug 2023 10:56:32 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 3/3] PCI/ACPI: Use device constraints to decide PCI
+ target state fallback policy
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR12MB3371:EE_|MW6PR12MB7070:EE_
-x-ms-office365-filtering-correlation-id: 4c7722b3-d84e-42b6-ece4-08db95032ce5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: xXV8IanphENRpTPNOzOl/xnNo8W0245Q7pXT7ZS35rc17y7V5l4AD2vy6jY3j+jrnw9xOGSrydNTtcI8RjUzbgNdV73CvnaKMJe4JIHw0z0Y+avGi9dg3N+wQakLYzy9j3poU55oeusHCBundlaPX/ZsKe/QOniU6Op9daIpy8DPg+xfgj2Q7tCi5RFModuv0bDvrUzeJlhuAIhS6OowGuWgf1aDARK9LPKTY8nqUxZBsTnVLaJ5ERgQeKGGTlnsS60xStb530au9o9QRZ3nmubQ2i+ns1+QT+W2AJjWsgau70FgrIhl2W/9ewm74KjI47iQNylgD//8J6wHWp2nrTSH0zDkUNE4+aAG60MrxDpFCtXyyF9NJzKPwBgKjyU6O6pUHHYONzI34FlQXqCpY803PLE5l/FVDqpKlMylZSfvGWoxvZlFaf6Hlgyyh2wMnQyte+ndEpfgcvzJxl0mvy1HVcafMFadeUKjlcjcaljxWSJMBZW6cHJRp0/r56TupiDW4t0sW56WNtBTBHJ06kC08PhT6uyOk/xfr4uBQC3fxzjiubooX6eqHZrHLckaHglDudlT+ijw7yF3Lb34MyCE5C5bJq0oaXHtUrpGpaLzTQcYOY7sdWU0vOGqvuRl
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3371.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(376002)(136003)(366004)(396003)(39860400002)(186006)(451199021)(1800799003)(52536014)(66476007)(66946007)(66446008)(66556008)(64756008)(4326008)(76116006)(2906002)(122000001)(38100700002)(38070700005)(53546011)(6506007)(7416002)(83380400001)(54906003)(110136005)(55016003)(86362001)(9686003)(26005)(107886003)(478600001)(7696005)(33656002)(71200400001)(8936002)(8676002)(5660300002)(41300700001)(316002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?s7CgU3IFc7DVj3pnqqOxAQWMT1UcOOgaYARxd9q1vTrvK+C73+WGfRvGss8g?=
- =?us-ascii?Q?LHWGHGghtRiffDX0jxHpuR/huVpIbaFhHNMMIFB+eAkN+3KNbY0tFfuNvFaG?=
- =?us-ascii?Q?liRQwLb6g+Rh4UNfUhA4MbTDw7Py3rKY7/QA8Qrj66bM6o0qdDyCltIo2vgi?=
- =?us-ascii?Q?BOU95TcuQGx3oT0xlATakXzcbrGKLcpU2rpGjHTvbFJkBTyNBM8mBck8UmPf?=
- =?us-ascii?Q?0rJBFrly+GDlQ5tlR2ohzL1c/X6T+RJ57T2LbIduls+hUueoGIkoMCM+iIux?=
- =?us-ascii?Q?gUEN+Oe/R50eygvLSHrBXscbDbKboXFk49UgXA7KsTnkUHV5jK2E257xrUCi?=
- =?us-ascii?Q?v/YukBcAkMKSdknyVZ7S18RWEDfHJMl7571dOZz5NAVOC5oMYp44B9BL25n+?=
- =?us-ascii?Q?cStou0EV4qKcBglC/exT+iMCogc2USvwjPDC0+Tc/YflDroWKBivgFnWSWJm?=
- =?us-ascii?Q?6pVXiB5zA0/WquPsI69EF5pKcwfppgUUw444DQfSDQ4oSD+aT6+uL31gFxT2?=
- =?us-ascii?Q?ZHiBTmAo4owJ3dScuqKXx6x6ewtqgtH768PlyPDw2bdiZ9ZZOAsvSZu/jwvd?=
- =?us-ascii?Q?dsAZUf9kXXHgxnUuc4fPavLVRHIoq0ITrfSGLo7vKMj9xlVSOkj1scOIE/L1?=
- =?us-ascii?Q?9R9F9TmysleNzQR+XpIETBazpKJX8d7sM4ycWr4tDb2gocTU1o+Bu+s+5NAW?=
- =?us-ascii?Q?EBrUEB5LiRCBImoWCIKTJhiumVTjABGSyNQX6rp/p/KlxZmrnDWymZYF+A4X?=
- =?us-ascii?Q?F9XZjfhTbM/IfAnQQaAHyd6A2fHTzMZ+eL5nD4xoiqpMKba9TpSiUtEKf0yT?=
- =?us-ascii?Q?X6nqnCgklBtvjuxEh7MMPBxIif7OnV2B0zuX3Mlriw/DT3cmJLmFrNuHmD5K?=
- =?us-ascii?Q?U4UPKXaW5QQMqF7L9huFHgD1GMo11nWSE9lh7d+5IemTCBflehJdRTouMPuY?=
- =?us-ascii?Q?hu+g+PH/K2+tC8pLZ6Xqtog/pqKM/8re/JF1B/7N78f+M/aDt7Ct1TaWy1i7?=
- =?us-ascii?Q?iT0HRZKMAqbb5epMALbwt1Hncncm0+g/bg9BX2oOuoh/rIwut08bImompRh6?=
- =?us-ascii?Q?JZGIK69kdD4SUVnigM5sEfFUqgtD/oMWGWkBBirESt5j1Qq5aU5fUlpSslGn?=
- =?us-ascii?Q?khxmJe8WWT8aw+uoTyJpZxn8Rt1FAieFWs08YKJT4sAkhoGZz/TnguUtEpKy?=
- =?us-ascii?Q?RB6lG1o486h7uA2FpcvgKtUTLsAghY10ymXIMh4ahgdAMwpIW5iqh2ghstSZ?=
- =?us-ascii?Q?kj6tby7m4sgKRX1+trYO8Iegegzbi13JGgOSM5wweKC7R3Qmn4xgEnZe+5k8?=
- =?us-ascii?Q?6cqo57pB8f1oc2nzsW1AGnC8qeUYpyU8xiKXrEYyh3Gv2BXPDI/FNhStXUjE?=
- =?us-ascii?Q?4p5xP5OjFNFBrTdBHv9Qy1KiKyjgaggz1e5uYcwxfwwIa0ueABfQDshwmEON?=
- =?us-ascii?Q?umj8KVzdDPuYDa3UnZCfT3K8B+mwTFPNoFTK1POd5mr/8jF3kIc9ztXvKwT/?=
- =?us-ascii?Q?Lqa5DqixnRS0AZTybrcW1uA9QmwJZPjt/N82Eq85w0dv75PZIT12KuaS7vNF?=
- =?us-ascii?Q?7r6z6Pqsaab8QLE0teG/DR50lQ1kgtdQQCXOGJ/J?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Iain Lane <iain@orangesquash.org.uk>,
+        Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
+References: <20230804010229.3664-1-mario.limonciello@amd.com>
+ <20230804010229.3664-4-mario.limonciello@amd.com>
+ <20230804131703.GB14638@black.fi.intel.com>
+From:   "Limonciello, Mario" <mario.limonciello@amd.com>
+In-Reply-To: <20230804131703.GB14638@black.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DS7PR03CA0167.namprd03.prod.outlook.com
+ (2603:10b6:5:3b2::22) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|BL1PR12MB5143:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0f6c386e-6c96-4d47-f853-08db9503612c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: YUd47bnHpehCW8hUZ9Qy2JjeD07Ba/Coj8Qq7AXG0xnfKKSCyU2F8j1g0XQd9HptHBz272e9HVLiaVJyV//P+4FVBlLnG2Qf0u/jrhyajsDgW5qqHritYzNjuJkSMvyLxVgHstOze9N00hZXzLlKIR3XNKYlZ09zRToYTPisLoGvjeKW8wemVVY1uS9xaOekKu1+pOaigjlSyCNNa8n7fDVnoSWepEuk+DM+nPxd5nALq2oQq0jQlaQ/NhTILa9MugGZMzFJHwNupVCsW4fUxbJbx7Iqkesw2y9jkX5rJ4xHEIZoDwrHFlvSYFEmjIsxwXxc5St8WzF+g6OYoJWVGh1tH9jDsx33BWq/HkKYIsnLePABjB9DcoGqkbWeGxGohNM+i1MyaA/lcegXYQ54ftdO0S4ic9ErXwoDkVoAttEtp9PxkonRtzfcwMvcqIBLsvilessvmS5mj9kiAHWKSv4qiMXj4Rt1lwcUYpvV6wZj6fbc1ukslVOSAZYhohl6oNs1IK2fRtljTVD8EfB15tQ6gonjufLx/7Ju5MOdZc0jGQyh38IEaJMNF/YM8IZYUpkgkBtrwWisImmHPa+JuTejiI/YIk7h6roaC1s4ZxUG1RjwJlApkvh/k1bymL3sLuYx0r1vHT3cfCvJ7mkI6w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(39860400002)(136003)(396003)(366004)(451199021)(1800799003)(186006)(5660300002)(4326008)(6916009)(66946007)(2906002)(66476007)(66556008)(316002)(54906003)(8676002)(8936002)(41300700001)(31686004)(478600001)(31696002)(86362001)(6666004)(6486002)(6512007)(38100700002)(6506007)(26005)(2616005)(36756003)(83380400001)(53546011)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MTFXQ3FkanZCRHJrUFlIYVhhOHpJNkxjQmtSTTBjcHA2TzBmdmp1SHRlUzlm?=
+ =?utf-8?B?OWlha1dnVG1OVTB2dC9VMCtXOGpsanhkQllQRThsTUx6QTdVdEdCVEJiRk9j?=
+ =?utf-8?B?bWVmNjVlajFNTWFDcmRHM29YaEczZlpCQjdaclI5c1BSeVlhdTFIdWhZM0t6?=
+ =?utf-8?B?VWxwayswYlRNc0Z0UzFIRWU2a0l0ZE5oTXNYNGtJUGRPdXVXWFhMemwrL3pn?=
+ =?utf-8?B?eDNTbDV5SWtlU1paanFTd0o4TkhSN2RsY3BaYzM2akJRTmtRTmQ5Q3JCR2NY?=
+ =?utf-8?B?M1FodkNwelZrQm0wTC9ZcXRvU29qYXZ1dW1PdEhxd29ZUGI0WXZIUTVxc2tI?=
+ =?utf-8?B?ZFU2UUZQeEdKZm1WWXRVN0F2VURCS01XRE1nNENIN24vZEhYd2wyYlN2UlpG?=
+ =?utf-8?B?Q05QelNLL20vVGRzdXplcmcyWFJQbk5QL1F2S3VxcDNyYk1WV3pmNi9XSHNo?=
+ =?utf-8?B?SCt5ek1WcjR0c0ZUZ1kvV1lLaXd0NVdYUVBtLzZVSEZqSUl6U0I1Qkx0ckhI?=
+ =?utf-8?B?QXVyaTJ5dWl3TG9nUmdObWVOSTVmcllKdWJGRkI1QVY2cEJoSU10TWJwTXQ0?=
+ =?utf-8?B?MHg3TklIT3dveEw4aHVzTUErckFFVGtwY28veHFma1JsWTYvNkRiV09VYmU2?=
+ =?utf-8?B?dXlBT0dxeG44Zy8rc2dPVk5rcmRiSTIvOERSMnFYOGVLVkt3dFdQYkFxWlpw?=
+ =?utf-8?B?NWFUZlRZTlJlNGt2Q2kzWkRjdGdUa09EN2hZODRBemNiL1FYWHhYR1pmM1VT?=
+ =?utf-8?B?ajdHb0pucEJCMG9GdkFaalJYS01xRHZCaHdlNFVmRjN1aVVreGVNTnpRdStn?=
+ =?utf-8?B?RVRtOHZrYmg4Ni9aZXVpSEE3ekxLZzRDZmhTZzczOXFQNk5SWmhKMXU0dHc0?=
+ =?utf-8?B?M0IreFgxL2s4OHFMQ0Z4Y21jbXVYeWYyZHgvVXdiOVhOZUEzVkpPL0c0aWgw?=
+ =?utf-8?B?WlJyWmJDaWpaM1NMbVpOMmxqc01oWTRHNW5RcnZReEh1Y0t1ZXU4OHlMTzg4?=
+ =?utf-8?B?WGRwZ3JLdllFWWZ2V2xaRTJvTE03RGhseFVLMjl0SUV5QWFSMjNIQ2laNi9X?=
+ =?utf-8?B?UndYckhyc0hDNGVhOXZIZnRnNmtjUEIwMnplbFNBMlhnRWxkKzBWS0k4QXVX?=
+ =?utf-8?B?SDZIeFFYU1M0V25RQSthSFJWSTIrSUtVRTZqNDJObUhRSEtKUENwVlplYlV4?=
+ =?utf-8?B?cEVBUXNqMmZNM3c3OGhrb0kzNzZmcFhPUWg3SlpiUllhVnRXOTYwcnpqZXI0?=
+ =?utf-8?B?RTllRXpLVVkrRnFrL0REM0lHOVFGaVRLcUswT0dqVHlzSCtyZzJEZzhRU3pq?=
+ =?utf-8?B?ejNrTE1lUThQL0hzOC9JUFdnL3J5WlhPR3hiLzVJWmEvSGlERXRqOHMvQWdo?=
+ =?utf-8?B?Qmh4cDV6bFMxQjYybE9zN3pQd2Nabko5MHFUN2hRRGMwcllUTmRBVHhaMnps?=
+ =?utf-8?B?Ykxmb3JZT2tUNkdkaTZoN3ZzWWpvWWYvcExQVjFlZEUrVitzVE00QzM2TTBu?=
+ =?utf-8?B?eFF2VElHWGdBWXo3dzhCeXFmSnJkSE5kTHpKQnVEbldRL01QSituVGpKMTN4?=
+ =?utf-8?B?eVpXMENmeXRZL3dPWStudDkrbU8xRGdXeVlSbzBZU2lVL0ozNExWWnM3QzJm?=
+ =?utf-8?B?b2YyM3ZHY3VIaTJQUXhkQnhoc2hhQjcxWCtjR1Q3Ung5T1Y4dmlNamQ1ZVJR?=
+ =?utf-8?B?T3p3Y3YvYzZzcmxVMVVISko5ejZPSWJ3R1h5VjB1bVBodkhUdnBtSEtMTnJm?=
+ =?utf-8?B?aGswMmpnRlE1Vm90TGxJaWNkT2s1TEVJUDdFS0xrRitSYUF0TXM0UUcvcnVV?=
+ =?utf-8?B?by8wRWNCY3lJZEMvOXk4bnJxazEwVzh1cUtMQ1NJbUFESjJWTDBCMkdnb0Nw?=
+ =?utf-8?B?SlBJVXV3VWpNdi9uRUFaTjdjNE9XZEF5UndLalRhRW5GclNwWFBZdGQ1aUNk?=
+ =?utf-8?B?d29sZEM3ZUlveFpDOE5jWWx5QmVLdVRjdkNMZXV3SzJvNEo3VHdFckJ5Q0tS?=
+ =?utf-8?B?cXFJNE1UNU5JS25kYzYvZVFreDg1TDZBTCs3R0VLSWlhZFY5K1hqK3ZlVkY5?=
+ =?utf-8?B?QllUVVk5bmNkYzlUaXJlbmNVeHMxWVlxYVI5MXdiN0NWNjNGWGxmQVRKU2JS?=
+ =?utf-8?Q?cAO4LTOl3BjjBtU0v/4ZYWytL?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0f6c386e-6c96-4d47-f853-08db9503612c
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3371.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c7722b3-d84e-42b6-ece4-08db95032ce5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Aug 2023 15:55:07.3473
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2023 15:56:35.2481
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: giQzM9foSVaqRUkpSRyZv2j4bvKFxZCiqiFJyCa26WrIjL9LfSSaABa6DHo1UiXGSEtFgOVsGBKBut6lkTVMCQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB7070
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2wIZ+/H4I7e13xXa1lkQ0r9usTFspEqWjcF7Usrz/3/pVxHqr4iT2qOQ4RMa6ce26waDPZyxWrX2GQ49eapjFg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5143
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
         URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -125,142 +132,60 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Can the maintainers please respond to my patch?
 
------Original Message-----
-From: Jeshua Smith <jeshuas@nvidia.com>=20
-Sent: Wednesday, July 12, 2023 4:35 PM
-To: keescook@chromium.org; tony.luck@intel.com; gpiccoli@igalia.com; rafael=
-@kernel.org; lenb@kernel.org; james.morse@arm.com; bp@alien8.de
-Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org; linux-hardeni=
-ng@vger.kernel.org; linux-tegra@vger.kernel.org; Thierry Reding <treding@nv=
-idia.com>; Jonathan Hunter <jonathanh@nvidia.com>; Jeshua Smith <jeshuas@nv=
-idia.com>
-Subject: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
 
-Slow devices such as flash may not meet the default 1ms timeout value, so u=
-se the ERST max execution time value that they provide as the timeout if it=
- is larger.
+On 8/4/2023 8:17 AM, Mika Westerberg wrote:
+> On Thu, Aug 03, 2023 at 08:02:29PM -0500, Mario Limonciello wrote:
+>> +/**
+>> + * acpi_pci_device_constraint - determine if the platform has a contraint for the device
+>> + * @dev: PCI device to check
+>> + * @result (out): the constraint specified by the platform
+>> + *
+>> + * If the platform has specified a constraint for a device, this function will
+>> + * return 0 and set @result to the constraint.
+>> + * Otherwise, it will return an error code.
+>> + */
+>> +int acpi_pci_device_constraint(struct pci_dev *dev, int *result)
+>> +{
+>> +	int constraint;
+>> +
+>> +	constraint = acpi_get_lps0_constraint(&dev->dev);
+>> +	pci_dbg(dev, "ACPI device constraint: %d\n", constraint);
+>> +	if (constraint < 0)
+>> +		return constraint;
+>> +	*result = constraint;
+> 
+> Is there something preventing to return the constraint directly instead
+> of storing it into "result"?
 
-Signed-off-by: Jeshua Smith <jeshuas@nvidia.com>
----
-v2:
-* no longer add copyright.
-* no longer add unused ERST_EXEC_TIMING_TYPICAL defines.
-* set timings to 0 if the ACPI_ERST_EXECUTE_TIMINGS operation isn't support=
-ed,
-  which will result in the default timeout being used.
+My aim was to make the caller use it a pass/fail function.
 
- drivers/acpi/apei/erst.c | 41 ++++++++++++++++++++++++++++++++++++----
- 1 file changed, 37 insertions(+), 4 deletions(-)
+I'll adjust it so that the caller would look for >= 0 instead.
 
-diff --git a/drivers/acpi/apei/erst.c b/drivers/acpi/apei/erst.c index 2479=
-89060e29..bf65e3461531 100644
---- a/drivers/acpi/apei/erst.c
-+++ b/drivers/acpi/apei/erst.c
-@@ -59,6 +59,10 @@ static struct acpi_table_erst *erst_tab;
- #define ERST_RANGE_NVRAM	0x0002
- #define ERST_RANGE_SLOW		0x0004
-=20
-+/* ERST Exec max timings */
-+#define ERST_EXEC_TIMING_MAX_MASK      0xFFFFFFFF00000000
-+#define ERST_EXEC_TIMING_MAX_SHIFT     32
-+
- /*
-  * ERST Error Log Address Range, used as buffer for reading/writing
-  * error records.
-@@ -68,6 +72,7 @@ static struct erst_erange {
- 	u64 size;
- 	void __iomem *vaddr;
- 	u32 attr;
-+	u64 timings;
- } erst_erange;
-=20
- /*
-@@ -97,6 +102,19 @@ static inline int erst_errno(int command_status)
- 	}
- }
-=20
-+static inline u64 erst_get_timeout(void) {
-+	u64 timeout =3D FIRMWARE_TIMEOUT;
-+
-+	if (erst_erange.attr & ERST_RANGE_SLOW) {
-+		timeout =3D ((erst_erange.timings & ERST_EXEC_TIMING_MAX_MASK) >>
-+			ERST_EXEC_TIMING_MAX_SHIFT) * NSEC_PER_MSEC;
-+		if (timeout < FIRMWARE_TIMEOUT)
-+			timeout =3D FIRMWARE_TIMEOUT;
-+	}
-+	return timeout;
-+}
-+
- static int erst_timedout(u64 *t, u64 spin_unit)  {
- 	if ((s64)*t < spin_unit) {
-@@ -191,9 +209,11 @@ static int erst_exec_stall_while_true(struct apei_exec=
-_context *ctx,  {
- 	int rc;
- 	u64 val;
--	u64 timeout =3D FIRMWARE_TIMEOUT;
-+	u64 timeout;
- 	u64 stall_time;
-=20
-+	timeout =3D erst_get_timeout();
-+
- 	if (ctx->var1 > FIRMWARE_MAX_STALL) {
- 		if (!in_nmi())
- 			pr_warn(FW_WARN
-@@ -389,6 +409,13 @@ static int erst_get_erange(struct erst_erange *range)
- 	if (rc)
- 		return rc;
- 	range->attr =3D apei_exec_ctx_get_output(&ctx);
-+	rc =3D apei_exec_run(&ctx, ACPI_ERST_EXECUTE_TIMINGS);
-+	if (rc =3D=3D 0)
-+		range->timings =3D apei_exec_ctx_get_output(&ctx);
-+	else if (rc =3D=3D -ENOENT)
-+		range->timings =3D 0;
-+	else
-+		return rc;
-=20
- 	return 0;
- }
-@@ -621,10 +648,12 @@ EXPORT_SYMBOL_GPL(erst_get_record_id_end);
- static int __erst_write_to_storage(u64 offset)  {
- 	struct apei_exec_context ctx;
--	u64 timeout =3D FIRMWARE_TIMEOUT;
-+	u64 timeout;
- 	u64 val;
- 	int rc;
-=20
-+	timeout =3D erst_get_timeout();
-+
- 	erst_exec_ctx_init(&ctx);
- 	rc =3D apei_exec_run_optional(&ctx, ACPI_ERST_BEGIN_WRITE);
- 	if (rc)
-@@ -660,10 +689,12 @@ static int __erst_write_to_storage(u64 offset)  stati=
-c int __erst_read_from_storage(u64 record_id, u64 offset)  {
- 	struct apei_exec_context ctx;
--	u64 timeout =3D FIRMWARE_TIMEOUT;
-+	u64 timeout;
- 	u64 val;
- 	int rc;
-=20
-+	timeout =3D erst_get_timeout();
-+
- 	erst_exec_ctx_init(&ctx);
- 	rc =3D apei_exec_run_optional(&ctx, ACPI_ERST_BEGIN_READ);
- 	if (rc)
-@@ -703,10 +734,12 @@ static int __erst_read_from_storage(u64 record_id, u6=
-4 offset)  static int __erst_clear_from_storage(u64 record_id)  {
- 	struct apei_exec_context ctx;
--	u64 timeout =3D FIRMWARE_TIMEOUT;
-+	u64 timeout;
- 	u64 val;
- 	int rc;
-=20
-+	timeout =3D erst_get_timeout();
-+
- 	erst_exec_ctx_init(&ctx);
- 	rc =3D apei_exec_run_optional(&ctx, ACPI_ERST_BEGIN_CLEAR);
- 	if (rc)
---
-2.25.1
-
+> 
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>   static void acpi_pci_config_space_access(struct pci_dev *dev, bool enable)
+>>   {
+>>   	int val = enable ? ACPI_REG_CONNECT : ACPI_REG_DISCONNECT;
+>> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+>> index 60230da957e0c..6c70f921467c6 100644
+>> --- a/drivers/pci/pci.c
+>> +++ b/drivers/pci/pci.c
+>> @@ -1082,6 +1082,14 @@ static inline bool platform_pci_bridge_d3(struct pci_dev *dev)
+>>   	return acpi_pci_bridge_d3(dev);
+>>   }
+>>   
+>> +static inline int platform_get_constraint(struct pci_dev *dev, int *result)
+> 
+> Ditto here.
+> 
+>> +{
+>> +	if (pci_use_mid_pm())
+>> +		return -ENODEV;
+>> +
+>> +	return acpi_pci_device_constraint(dev, result);
+>> +}
+>> +
