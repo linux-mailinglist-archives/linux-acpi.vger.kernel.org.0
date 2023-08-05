@@ -2,113 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 098F6770C62
-	for <lists+linux-acpi@lfdr.de>; Sat,  5 Aug 2023 01:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE9E7770CD7
+	for <lists+linux-acpi@lfdr.de>; Sat,  5 Aug 2023 03:04:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbjHDX1O (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Aug 2023 19:27:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56296 "EHLO
+        id S229936AbjHEBEr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Aug 2023 21:04:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbjHDX1N (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Aug 2023 19:27:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 350294C2D;
-        Fri,  4 Aug 2023 16:27:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C663462167;
-        Fri,  4 Aug 2023 23:27:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E327BC433C8;
-        Fri,  4 Aug 2023 23:27:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691191631;
-        bh=n1r9Y8+Yls3v8nPSMXq1wOXW0oILhgXDtk7CLiJAPZs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=MVIIIfyoucpTMzoS0sassQDxYp6tCi+bP8twJ5f0+dX55aUSF7i5By597i51n8pka
-         ARF6B8XtQfqcAa7bmb048o8xks3v9JRZ9tmDejNodzvx6Ln4/4wiH5qiXuxsItrV36
-         tDCrM8wxtuH9/2BgnLQDJdIjOKUMyxBpH9tfHTB1dyOEJKDVGBX1sg5jHc1xMb49KW
-         C2AUA6Q2fa2iQlSCgcMBQB12PIFrw/AsUxAkkVNuN3QQVmjZxr9eb5o+8ZwUf5Q+v2
-         7mYxeCrmrYRAbwdrTrDveNxWRnx/L3jWosxij6pbgoPfqaPDQWVrY5EBQcBsLi/1zo
-         OZpFH2TAy3XPA==
-Date:   Fri, 4 Aug 2023 18:27:09 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Igor Mammedov <imammedo@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, terraluna977@gmail.com,
-        bhelgaas@google.com, linux-pci@vger.kernel.org, mst@redhat.com,
-        rafael@kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 1/1] PCI: acpiphp:: use
- pci_assign_unassigned_bridge_resources() only if bus->self not NULL
-Message-ID: <20230804232709.GA174043@bhelgaas>
+        with ESMTP id S229884AbjHEBEq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Aug 2023 21:04:46 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2048.outbound.protection.outlook.com [40.107.92.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A4104EDE;
+        Fri,  4 Aug 2023 18:04:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=X/y/n/8U4wHMOeAMM59bTyu32ImdlIyYJcwfP0PJEj/8TI9p2jnjbfztohZ81Baoptu0RXsqNCtqTT5kITPsbQXBillGKNEM4VZY0PSV3XTu+Td5oH6qENhaphzI8vuhLuO4fsbQMQwD2EcgC0uYT/1NibijnRidDT/EkWXTrSLVu4gzyo9z/rmzLZNTrGcefT5QvE9YnJv2Sunpm0HTowP+TI7sphspmZLYwRfHK5822QEueVs0xCzaxHvGjBrsX/utmjlgxHbumKSR+ssedJIKkOmhx4/wtu9cM+kZR+1IZaCkQiQ+tkKe+JS49CTZkl4h0iVHgPKIXqhtqzgsNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oITSiRv6yTDoqQIiF3an6Ub/yQfRifEsqhnPZjoqEVU=;
+ b=QqzU0Y+NPmb3aNX5pFV8mwLqL/yuyKkLMVREhSfRK5zR3ULLz70FWoLnxaLcMVg5pZQuZtVviLmkRgn4ScbtxrL7qLiJYn/jE3A1wV1+RbtEEr9Xr/rlezSIzcKjsb7RHUs6apmmbjlWecyNgnT+DX9nBhMk/d5qnQWpDDKhyE9KkZYch2233ef8o/vHpiH/94pw5xh4es5i4MlpTXL0QFnBiiReCYXFgZLOxhgD0Ti78NVFRnhDAPPJ9OAyQKWoh3cZINYrRAe/TcaIEARDQdDxnEUNJWlsigK9/SzW1Rk5kzBGuyyQPHcZN1TB3DBh6fd6rfYdhQE5NF6HKTSB8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oITSiRv6yTDoqQIiF3an6Ub/yQfRifEsqhnPZjoqEVU=;
+ b=kjnyY20nqjngz9dlyJ8O1D1/CHlccfTPwqXX9tmnImzqO3IBII4R2G1hOrZNNZh3vwNu/aRkIHrbPTnHmfNk/sA2JHsZ2L9waFf8HkRR3ihUJ2GgHaq6UOKOAVQHK5YM7OF6aFqTGIYPhgYyZANg+q/zRHG4jrcLocdnlaj4JvdgL1rXF+W7COJX6hTyXRKZMExFF2Byr9xJbqnbDCcqH87lsUSEtTo58mv+MkIZFQEeFNJYswXPRd3WOP6ZMGbNh/kqsTRNbxbLG7Wo0zRAP/Wt5y6lGNjmqE8VOep2knEKpaWr55iyFEpKeeIcAvFzsKHJy8VJzH6JfT2x8WefuQ==
+Received: from DM6PR12MB3371.namprd12.prod.outlook.com (2603:10b6:5:116::27)
+ by LV3PR12MB9354.namprd12.prod.outlook.com (2603:10b6:408:211::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.47; Sat, 5 Aug
+ 2023 01:04:42 +0000
+Received: from DM6PR12MB3371.namprd12.prod.outlook.com
+ ([fe80::ed2:99a4:2e77:89bc]) by DM6PR12MB3371.namprd12.prod.outlook.com
+ ([fe80::ed2:99a4:2e77:89bc%5]) with mapi id 15.20.6631.046; Sat, 5 Aug 2023
+ 01:04:41 +0000
+From:   Jeshua Smith <jeshuas@nvidia.com>
+To:     "Luck, Tony" <tony.luck@intel.com>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "gpiccoli@igalia.com" <gpiccoli@igalia.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "bp@alien8.de" <bp@alien8.de>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        Thierry Reding <treding@nvidia.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>
+Subject: RE: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
+Thread-Topic: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
+Thread-Index: AQHZtREytrmSwIEvT06Ibqr95x6guq/abXNggAAKnoCAAI5FkA==
+Date:   Sat, 5 Aug 2023 01:04:41 +0000
+Message-ID: <DM6PR12MB3371D86F80417641B8479B28DB0EA@DM6PR12MB3371.namprd12.prod.outlook.com>
+References: <20230712223448.145079-1-jeshuas@nvidia.com>
+ <DM6PR12MB3371BA50E3B76D2266273901DB09A@DM6PR12MB3371.namprd12.prod.outlook.com>
+ <SJ1PR11MB6083426D3C663F47E707CF1AFC09A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+In-Reply-To: <SJ1PR11MB6083426D3C663F47E707CF1AFC09A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM6PR12MB3371:EE_|LV3PR12MB9354:EE_
+x-ms-office365-filtering-correlation-id: 3356d9d9-dc8a-447b-7a8b-08db954ff2f6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: UH8VbNEL7KpKOSwleZGA9fOoaTgGUJmmDL0RKJbTcMAakcG4yr8c2hZ2+1yptmEs1E3Pi98w0ZtErfv4DV3bUHbhO1rwZSdaI6x3IQojbjdecrjTwu9KXjTIo/kafuYWwnInAbX4qSPT+uVj9b0u+JtBtfgmcz7YAXQZWIHoGz3CpUHQ9mExRqrpS8kEYAIdk/wSx8MC5es3WMwBGXLFSLPBxljwRUNmV83GnyLqZDOJCyCi76s0os0N5l+RQgosw1qmYNZ/njgmsK+j3qhXwhSb0zPkn12gVW7yfz+ahekLbiuNMpqD+2v8FA55fMxzSLwrUclkCido6HJRNphEuT/rCnJNYqtQhBSSereGBN1sjhC9hMrXV5xcNrbJmnCfwe2XVwwsG9SiWHuZznm+ju41Er+8dOSlR9QlO6c/4AMXDbPfLqgennLE2t6G8oODUXdhZGF2XzaxMj2wAgRXUraaOc4srVfGvl0REfKdrv7b6wgm0RKBVndVF2uzW1P1rGd4lUD7JBZuAKHqsPhPdon4mNKJL6ohLrCDeAHSPnjrG6XfJ/BZDr00L6g/05mgV6oStQ5nXhRwNuJ5x+N7kbDJuos+hNUIuxOMNthsc1A6rdMTzJG4OPhRsgqMFJBhPFLGksP9Zm7mfM9YnPxQdmLv9HotQTJCb0fVD0K9YdM=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3371.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(366004)(396003)(136003)(39860400002)(346002)(451199021)(1800799003)(186006)(83380400001)(107886003)(6506007)(26005)(8676002)(53546011)(66476007)(2906002)(4326008)(76116006)(316002)(66946007)(64756008)(5660300002)(66446008)(66556008)(41300700001)(7416002)(8936002)(966005)(52536014)(9686003)(71200400001)(7696005)(478600001)(110136005)(55016003)(54906003)(38100700002)(122000001)(33656002)(86362001)(38070700005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?9+5P557dH/8WkDtKSyhNqoNx9rrKQptZ9gnVbyp2g503Xe8pqpuvIDdejqmg?=
+ =?us-ascii?Q?ujkzt56OvOYyeJ0a49aIMqt3t37eDWqTQftENhqBKpbDQwb0TD78ybKB5rwe?=
+ =?us-ascii?Q?R8lvlorVSCglICgj5qbABnCY3tE2OVZWMOERldphlaY6/obJFjH7YIrZ1hWH?=
+ =?us-ascii?Q?eKFAH0ktQdCP/Zo65HVzxB/UmLCCK0fOezp7g+BDtJIKrbnIgNRsX/IyX/Yr?=
+ =?us-ascii?Q?lsSiNRdd8xrMXN10pgJPFdVaqglZJiAZlQ9vkzlp09+0mDSiaBVxPqHTtk3L?=
+ =?us-ascii?Q?29TAYdl6aReVjfBu+i/qD8UTfk4nyDfoYdBG2qt2AF5LcmLComzPG6EX/GKI?=
+ =?us-ascii?Q?JIV5gSyvw2teBwwwTquxZ/jhUnnDLw9Ue6ilOmBhRiVZ/njycHgp65GqzJdN?=
+ =?us-ascii?Q?A/Hyhj2Q8aoFykXTF6NS9dpK4DYob//5K/X94nl+c5fuHCC/powr8+2UJ+WU?=
+ =?us-ascii?Q?qcSaSPgEZcYgqLoMoxkE+uj8YBPgmxVDJxWBVZ6CCXlVW+gUWr1kwXGqLngM?=
+ =?us-ascii?Q?zEyltQREBlEKkfCFalTWwT3Iad6r3s3eR/w3Vx0uf0T4cWf383Rse/HawwLn?=
+ =?us-ascii?Q?ldeKk3N7uLlS/lqAxmr/hzzLh8URDcPL/RLj1hePaPosn4me31HCsRQ//8/m?=
+ =?us-ascii?Q?3eE/Nlnh9M5ZwkAOA1Uk5DFzh8tXYFcx0nsc3wjciWZRvmRhibRj9KTg+dBk?=
+ =?us-ascii?Q?R3TQXf8ekP5jYE5UY8Jobjh6o9pWX96xSMz5qjAYkhPAqSrrGcU8P9zxU7IP?=
+ =?us-ascii?Q?KOpt5icgxM1L+SwtIIT/sRaVDhl6Q2xuEYlkrWnIyB5jGyruub5OyFLbWwSt?=
+ =?us-ascii?Q?pv0TBNHOWCHeuHKu4cYByBeTUTGrzpKO2eftFgrU/BZ4K+jAmydf2k94ScE+?=
+ =?us-ascii?Q?WmG/YMjqoBtEn3c9uswsFlJ1JlzfCaeuSGOUOJlN858w63k+xdHxQJIIhJOg?=
+ =?us-ascii?Q?/85oR6pC0BjUyK+AkVAf/c2iZqwEZbgdz8UhgxXQgLCN2kDFyug/dWx8D2v5?=
+ =?us-ascii?Q?A70uSoOZsK9xo/W6O/GVDtZQ3L8N5kmEaTKIeN1L1kVlfI6Ty7yK1CIDsWcB?=
+ =?us-ascii?Q?aGWH2DTiA82CbY93tylRN2povt/Ek71DhaXTjREfO1Ota5U1ulqmIo0YOa3f?=
+ =?us-ascii?Q?Eav58EP1pRlZdaR57DO+BgKe2+BriW96N++AfNEW36wY63b+w/YAFCytDArB?=
+ =?us-ascii?Q?ObAoUdExhXB5DXtuW9fHFz87SIvFS9jfFITf/Ut2q7+Uk6tGsPUE6PqeYb7E?=
+ =?us-ascii?Q?alxap/WnoMiyt/mA7thNL7xaJ7TVZjFHFN4EZB1nImFvELz4TAIQGqnnYVAt?=
+ =?us-ascii?Q?jjYqdD/yeZNhDN/ue2ncygD7TUfd71VH4R9CtL2P1t2VrS2bKRCSwdvJLuYF?=
+ =?us-ascii?Q?XfLGBjrxfm35zt1QPxhLvJDmQkhbHUvReLmyP0SA3RVC5xB4FlHH8I5Gcz7E?=
+ =?us-ascii?Q?u6GQY3JCDNwJTyBG620cbWpAbqqnLQTipCf6UqTEnqcHrMv6TcQdq3WHhDUv?=
+ =?us-ascii?Q?ZWAAl6D5X9PRMJq37nLPlSyl2ul/Nwo1jhwVVC2pJCkFuJf/RjjbdSwhpDCH?=
+ =?us-ascii?Q?M2GqVMBDExvJOP/WAzdJnxFNbxMHpKyuFATKCSAy?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230726123518.2361181-2-imammedo@redhat.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3371.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3356d9d9-dc8a-447b-7a8b-08db954ff2f6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2023 01:04:41.4102
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: dZWVjBfS0QedWnqYjshnfNMSQyWO87Og2f+nCoxpm2DE2VyHCQuQHNOT97YmLsqY6fmCnN/5nh0CRylojNBxtQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9354
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 26, 2023 at 02:35:18PM +0200, Igor Mammedov wrote:
-> Commit [1] switched acpiphp hotplug to use
->    pci_assign_unassigned_bridge_resources()
-> which depends on bridge being available, however in some cases
-> when acpiphp is in use, enable_slot() can get a slot without
-> bridge associated.
+Thanks for the reply.
 
-acpiphp is *always* in use if we get to enable_slot(), so that doesn't
-really add information here.
+It's not very easy to see. It's just a bit down from the link you sent. It'=
+s the last possible action in the Serialization Actions table:
+https://uefi.org/specs/ACPI/6.5/18_Platform_Error_Interfaces.html#serializa=
+tion-actions
 
->   1. legitimate case of hotplug on root bus
->       (likely not exiting on real hw, but widely used in virt world)
->   2. broken firmware, that sends 'Bus check' events to non
->      existing root ports (Dell Inspiron 7352/0W6WV0), which somehow
->      endup at acpiphp:enable_slot(..., bridge = 0) and with bus
->      without bridge assigned to it.
+18.5.1.1. Serialization Actions
 
-IIUC, the Inspiron problem happens when:
+GET_EXECUTE-_OPERATION_TIMINGS
 
-  - acpiphp_context->bridge is NULL, so hotplug_event() calls
-    enable_slot() instead of acpiphp_check_bridge(), AND
+Returns an encoded QWORD:
+[63:32] value in microseconds that the platform expects would be the maximu=
+m amount of time it will take to process and complete an EXECUTE_OPERATION.
+[31:0] value in microseconds that the platform expects would be the nominal=
+ amount of time it will take to process and complete an EXECUTE_OPERATION.
 
-  - acpiphp_slot->bus->self is also NULL, because enable_slot() calls
-    pci_assign_unassigned_bridge_resources() with that NULL pointer,
-    which dereferences "bridge->subordinate"
+-----Original Message-----
+From: Luck, Tony <tony.luck@intel.com>=20
+Sent: Friday, August 4, 2023 10:31 AM
+To: Jeshua Smith <jeshuas@nvidia.com>; keescook@chromium.org; gpiccoli@igal=
+ia.com; rafael@kernel.org; lenb@kernel.org; james.morse@arm.com; bp@alien8.=
+de
+Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org; linux-hardeni=
+ng@vger.kernel.org; linux-tegra@vger.kernel.org; Thierry Reding <treding@nv=
+idia.com>; Jonathan Hunter <jonathanh@nvidia.com>
+Subject: RE: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
 
-But I can't figure out why acpiphp_context->bridge is NULL for RP07
-and RP08 (which don't exist), but not for RP03 (which does).
+External email: Use caution opening links or attachments
 
-I guess all the acpiphp_contexts (RP03, RP07, RP08) must be allocated in
-acpiphp_add_context() by acpiphp_init_context().
 
-Woody's lspci from [1] shows only one Root Port:
+> Can the maintainers please respond to my patch?
 
-  00:1c.0 Wildcat Point-LP PCI Express Root Port #3
+Can you give a reference to the ACPI spec where this timing information is =
+documented? I'm looking at ACPI 6.5 and don't see anything about this.
 
-The DSDT.DSL includes:
+https://uefi.org/specs/ACPI/6.5/18_Platform_Error_Interfaces.html#error-ser=
+ialization
 
-  Device (RP01) _ADR 0x001C0000		# 1c.0
-  Device (RP02) _ADR 0x001C0001		# 1c.1
-  Device (RP03) _ADR 0x001C0002		# 1c.2
-  Device (RP04) _ADR 0x001C0003		# 1c.3
-  Device (RP05) _ADR 0x001C0004		# 1c.4
-  Device (RP06) _ADR 0x001C0005		# 1c.5
-  Device (RP07) _ADR 0x001C0006		# 1c.6
-  Device (RP08) _ADR 0x001C0007		# 1c.7
-
-I can see why we might need a Bus Check after resume to see if
-something got added while we were suspended.  But I don't see why we
-handle RP03 differently from RP07 and RP08.
-
-Can you help me out?  I'm lost in a maze of twisty passages, all
-alike.
-
-Bjorn
-
-[1] https://lore.kernel.org/r/92150d8d-8a3a-d600-a996-f60a8e4c876c@gmail.com
+-Tony
