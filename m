@@ -2,157 +2,179 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F059877297C
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Aug 2023 17:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2746D7729C0
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Aug 2023 17:48:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230179AbjHGPky convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 7 Aug 2023 11:40:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33072 "EHLO
+        id S229728AbjHGPs4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Aug 2023 11:48:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230504AbjHGPkx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Aug 2023 11:40:53 -0400
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 020A910E0;
-        Mon,  7 Aug 2023 08:40:48 -0700 (PDT)
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-56d0deeca09so720923eaf.0;
-        Mon, 07 Aug 2023 08:40:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691422847; x=1692027647;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eW5ByB1kCbWvE4LvHZxA6DmVsnS3SGc4dZRlcaVebhA=;
-        b=h8Toi/fXYwLqeg9ioVQ0qkDqA9uLBEH831CW6xRz99r3791bRiumXWFM20c13JSfZP
-         X1BkL/13sOTbcN5AkBcZaG2qFwV6CiF7KiuCiR/OvYhSkYvxHh1Nc1FvUsQ+AlhoIgrZ
-         xApZKl2dlRlha/WozzqlPeRAouuxnVC02pnWzcVqFoqOQZKo00jSI90WghBJBn3W37dr
-         h474GmLXaUIWR2SPPO/muncGPsAlVFEQv2ENyAmhdyZ1gIS4B29XF+7VTcVDcjQZPoFL
-         hyP8Nq/cJekpOYZEbVHLm4Mc4srLZnzMuYHrF/5rQb8c7O9A2CYH1q8zzKofASn4Ifke
-         swww==
-X-Gm-Message-State: ABy/qLYGhebjEfCToWMC1VrEfWDqwerhtQPuWr4HQUv8jKiBBL0m+d0y
-        8X35CbqzU2CZ6FUIvVAI+Bds8Fq1h52WzKMN1O3X9XgrZt0=
-X-Google-Smtp-Source: APBJJlFQEpelaJgVONRqETjQPaMw/guTk1Yuygf051lL+f+Lyz1D5gcY/iHtPDM2SnOSc+icGPuhuOtanN6w5q2L38E=
-X-Received: by 2002:a4a:a585:0:b0:56c:484a:923d with SMTP id
- d5-20020a4aa585000000b0056c484a923dmr21423816oom.1.1691422847098; Mon, 07 Aug
- 2023 08:40:47 -0700 (PDT)
+        with ESMTP id S231304AbjHGPsz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Aug 2023 11:48:55 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53ADEC4;
+        Mon,  7 Aug 2023 08:48:54 -0700 (PDT)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 377EVlp3011263;
+        Mon, 7 Aug 2023 15:48:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=qcppdkim1;
+ bh=ej8CF5GhCktPJJSZ11HMY+Tfu/94AshBJi447akjUWM=;
+ b=heeUVz4Y3oY34ggmunYQy5+nkvelBGlDMNkNz8qUasLXRUdgzAPQW5zMIZeaEcxBAxur
+ vFXC1sUFyZynJ02jbziYYvP9VAzTyVdJtPm4dHmSqIHTEOtlvpvmq32gDaf9dgHvAOcP
+ iqM2LQW8Ya/Y+l1LYE6GIAOCCjv2Xi6n15yvldKJ1pTtDU8+KWxW2RyeA+j2BzpMHa87
+ cxhF2g6WY3JVm2geMJGffW7LEnR6egKYZAOs/noyMrKTVuZeIbHFW598bYkmgAxcrXFr
+ BPD1Yq5WRr/OgGVgCaK42UXoYEgmX7/iQLl5PvHxxUszfVR9/wk5NMDE+KUCiidsrhPV yw== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s9deekwjd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 07 Aug 2023 15:48:36 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 377FmZRc011339
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 7 Aug 2023 15:48:35 GMT
+Received: from localhost (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Mon, 7 Aug
+ 2023 08:48:34 -0700
+From:   Oza Pawandeep <quic_poza@quicinc.com>
+To:     <sudeep.holla@arm.com>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <jiles@qti.qualcomm.com>, <quic_poza@quicinc.com>
+Subject: [PATCH v2] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast timer
+Date:   Mon, 7 Aug 2023 08:48:34 -0700
+Message-ID: <20230807154834.888328-1-quic_poza@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <13318886.uLZWGnKmhe@kreacher> <4878513.31r3eYUQgx@kreacher>
- <1967710.PYKUYFuaPT@kreacher> <f47b7e17-7ec6-4c19-9db1-c1a2e1ad66b6@linaro.org>
-In-Reply-To: <f47b7e17-7ec6-4c19-9db1-c1a2e1ad66b6@linaro.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 7 Aug 2023 17:40:36 +0200
-Message-ID: <CAJZ5v0iNOD9FW0deZYvfjmB8Us+7KjTNnB8Fkm=nnVJ6a82EZQ@mail.gmail.com>
-Subject: Re: [PATCH v4 04/10] thermal: core: Add thermal_zone_update_trip_temp()
- helper routine
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Michal Wilczynski <michal.wilczynski@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: XjRmU7sUpnLdOCAq34t6RZTxXTy8q1NZ
+X-Proofpoint-ORIG-GUID: XjRmU7sUpnLdOCAq34t6RZTxXTy8q1NZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-07_16,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ malwarescore=0 impostorscore=0 spamscore=0 clxscore=1015 mlxlogscore=231
+ mlxscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2308070146
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 7, 2023 at 1:34 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
->
-> On 04/08/2023 23:05, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Introduce a helper routine called thermal_zone_update_trip_temp() that
-> > can be used to update a trip point's temperature with the help of a
-> > pointer to local data associated with that trip point provided by
-> > the thermal driver that created it.
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >
-> > New patch in v4.
-> >
-> > ---
-> >   drivers/thermal/thermal_trip.c |   37 +++++++++++++++++++++++++++++++++++++
-> >   include/linux/thermal.h        |    4 ++++
-> >   2 files changed, 41 insertions(+)
-> >
-> > Index: linux-pm/drivers/thermal/thermal_trip.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/thermal/thermal_trip.c
-> > +++ linux-pm/drivers/thermal/thermal_trip.c
-> > @@ -180,3 +180,40 @@ int thermal_zone_set_trip(struct thermal
-> >
-> >       return 0;
-> >   }
-> > +
-> > +/**
-> > + * thermal_zone_update_trip_temp - Update the trip point temperature.
-> > + * @tz: Thermal zone.
-> > + * @trip_priv: Trip tag.
-> > + * @temp: New trip temperature.
-> > + *
-> > + * This only works for thermal zones using trip tables and its caller must
-> > + * ensure that the zone lock is held before using it.
-> > + *
-> > + * @trip_priv is expected to be the value that has been stored by the driver
-> > + * in the struct thermal_trip representing the trip point in question, so it
-> > + * can be matched against the value of the priv field in that structure.
-> > + *
-> > + * If @trip_priv does not match any trip point in the trip table of @tz,
-> > + * nothing happens.
-> > + */
-> > +void thermal_zone_update_trip_temp(struct thermal_zone_device *tz,
-> > +                                void *trip_priv, int temperature)
-> > +{
-> > +     int i;
-> > +
-> > +     lockdep_assert_held(&tz->lock);
-> > +
-> > +     if (!tz->trips || !trip_priv)
-> > +             return;
-> > +
-> > +     for (i = 0; i < tz->num_trips; i++) {
-> > +             struct thermal_trip *trip = &tz->trips[i];
-> > +
-> > +             if (trip->priv == trip_priv) {
-> > +                     trip->temperature = temperature;
-> > +                     return;
-> > +             }
-> > +     }
-> > +}
-> > +EXPORT_SYMBOL_GPL(thermal_zone_update_trip_temp);
->
-> This function would imply the comparator is always trip->priv but if we
-> want another comparison eg. trip->priv->id, that won't be possible.
->
-> Actually, I think you can reuse an existing function with a simple
-> change, for_each_thermal_trip() located in thermal_core.h.
+Arm® Functional Fixed Hardware Specification defines LPI states, which provide
+an architectural context loss flags field that can be used to describe the
+context that might be lost when an LPI state is entered.
 
-for_each_thermal_trip() is only defined in tools/lib/thermal/thermal.c
-AFAICS, but this one could actually work, so I can copy that
-definition to somewhere else.
+- Core context Lost
+        - General purpose registers.
+        - Floating point and SIMD registers.
+        - System registers, include the System register based
+        - generic timer for the core.
+        - Debug register in the core power domain.
+        - PMU registers in the core power domain.
+        - Trace register in the core power domain.
+- Trace context loss
+- GICR
+- GICD
 
-But I suppose that you mean __for_each_thermal_trip() which won't
-work, because it makes a copy of the trip and passes that to the
-callback, but the callback would need to update the temperature of the
-original trip.
+Qualcomm's custom CPUs preserves the architectural state,
+including keeping the power domain for local timers active.
+when core is power gated, the local timers are sufficient to
+wake the core up without needing broadcast timer.
 
-It would work if it passed the original trip to the caller, so I can
-add something like that.
+The patch fixes the evaluation of cpuidle arch_flags, and moves only to
+broadcast timer if core context lost is defined in ACPI LPI.
 
-> The changes would be renaming it without the '__' prefix and moving it
-> in include/linux/thermal.h.
->
-> Then the comparison function and the temperature change can be an ACPI
-> driver specific callback passed as parameter to for_each_thermal_zone
+Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
 
-I guess you mean for_each_thermal_trip().
+diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
+index bd68e1b7f29f..5493b044864f 100644
+--- a/arch/arm64/include/asm/acpi.h
++++ b/arch/arm64/include/asm/acpi.h
+@@ -9,6 +9,7 @@
+ #ifndef _ASM_ACPI_H
+ #define _ASM_ACPI_H
+ 
++#include <linux/cpuidle.h>
+ #include <linux/efi.h>
+ #include <linux/memblock.h>
+ #include <linux/psci.h>
+@@ -42,6 +43,27 @@
+ #define ACPI_MADT_GICC_SPE  (offsetof(struct acpi_madt_generic_interrupt, \
+ 	spe_interrupt) + sizeof(u16))
+ 
++/*
++ * Arm® Functional Fixed Hardware Specification Version 1.2.
++ * Table 2: Arm Architecture context loss flags
++ */
++#define CPUIDLE_CORE_CTXT		BIT(0) /* Core context Lost */
++
++#ifndef arch_update_idle_state_flags
++static __always_inline void arch_update_idle_state_flags(u32 arch_flags,
++							unsigned int *sflags)
++{
++  if (arch_flags & CPUIDLE_CORE_CTXT) {
++	*sflags |= CPUIDLE_FLAG_TIMER_STOP;
++  }
++}
++#define arch_update_idle_state_flags arch_update_idle_state_flags
++#endif
++
++#define CPUIDLE_TRACE_CTXT		BIT(1) /* Trace context loss */
++#define CPUIDLE_GICR_CTXT		BIT(2) /* GICR */
++#define CPUIDLE_GICD_CTXT		BIT(3) /* GICD */
++
+ /* Basic configuration for ACPI */
+ #ifdef	CONFIG_ACPI
+ pgprot_t __acpi_get_mem_attribute(phys_addr_t addr);
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 9718d07cc2a2..420baec3465c 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -1221,8 +1221,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
+ 		strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
+ 		state->exit_latency = lpi->wake_latency;
+ 		state->target_residency = lpi->min_residency;
+-		if (lpi->arch_flags)
+-			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
++		arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
+ 		if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
+ 			state->flags |= CPUIDLE_FLAG_RCU_IDLE;
+ 		state->enter = acpi_idle_lpi_enter;
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index d584f94409e1..60f17c99465b 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -1471,6 +1471,15 @@ static inline int lpit_read_residency_count_address(u64 *address)
+ }
+ #endif
+ 
++#ifndef arch_update_idle_state_flags
++static __always_inline void arch_update_idle_state_flags(u32 arch_flags,
++							unsigned int *sflags)
++{
++
++}
++#define arch_update_idle_state_flags arch_update_idle_state_flags
++#endif
++
+ #ifdef CONFIG_ACPI_PPTT
+ int acpi_pptt_cpu_is_thread(unsigned int cpu);
+ int find_acpi_cpu_topology(unsigned int cpu, int level);
+-- 
+2.25.1
 
-As per the above, not really, but I can do something along these lines.
