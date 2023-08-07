@@ -2,127 +2,511 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 477EB773063
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Aug 2023 22:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC707773309
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Aug 2023 00:42:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230341AbjHGUhU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Aug 2023 16:37:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34724 "EHLO
+        id S230054AbjHGWl6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Aug 2023 18:41:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230216AbjHGUhS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Aug 2023 16:37:18 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09B7210D8;
-        Mon,  7 Aug 2023 13:37:17 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-686be28e1a8so3436754b3a.0;
-        Mon, 07 Aug 2023 13:37:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691440636; x=1692045436;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AkcdWxF3VIdhdBqAc/Bhm/xZMNeQwoh34ermhL900ts=;
-        b=RnphY0FF1I8cEjADWD2ipjXR41GSVVD/m3MOYoNXgmtqBPVo5ZL6xfTJOs2hNAB3/2
-         wkIQr2odC0loOJ4PQbMi7egm6nLFpjS1KtvQZI1vJ1qsZoDzcVF6BKl9Ms0Rdeqta/Nd
-         gRE5ZjCVV+lZUm2WpsABFsPPG7bnfxXUErJomoz+AgWEVWmGg6kg7gFHtwWeV0NaSsmA
-         TBl7fhl4bndUA1VM8AfWCboJQfaGvUiff4rotdXaYVA+1NhTMGNGCkWuxTk8My6QdHb9
-         15ZozFSnRRGaX8Mnrmc7vI9B70ArcYEMGgBKl4OpRtGkfJnYBup1G39F0WJdyByFfQ9j
-         Nthg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691440636; x=1692045436;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AkcdWxF3VIdhdBqAc/Bhm/xZMNeQwoh34ermhL900ts=;
-        b=WhaOpSnb0t7X/prFFkKd51B6QQrAaZCgTbNL5moSq1ESHL6BFuA7WtO+ZVAFHiBZhM
-         6q/7mP+lrxLNvQ/cgl4wdsQxn5C+JHOoyq5r2RktIIYjG6x6g4k2jXHvNyYoOwkOApCQ
-         DD74gvq2kRJplcDWV2ueYSOhR1S01fh4BC2uo20dqiMgV2pjuRVGksd+bZ/dVA0KY7N/
-         pUCD5zcNxKwuxLLjeLUBac3MmnB8okpckPvyKrXaHZClRG+ujb1cgTRWwIj306Subx9h
-         U+CDm0Vj7c1REnPxVOFuUzbhdHgghTQKIbagNtMBiLrdNDXANef6TJT2OinOIzmkZ2vi
-         avCg==
-X-Gm-Message-State: AOJu0YwWXB+ryHzDCAwBfGMUG1QQ3YrwCzG30ybSXYd7sQVjSDoHi371
-        RRTlbj6opsl0dwxZtVDfEe+gaWVK3U0=
-X-Google-Smtp-Source: AGHT+IEKmK0BmgKPBT2it75tXWkSx8ysqKgPxFAxn0DZjPXZB2zhCP3ectLWjEtdLMTNXlOjUs6WEA==
-X-Received: by 2002:a05:6a00:1828:b0:687:8417:ab51 with SMTP id y40-20020a056a00182800b006878417ab51mr10737572pfa.8.1691440636312;
-        Mon, 07 Aug 2023 13:37:16 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:b0a6:8f72:5b50:cfc])
-        by smtp.gmail.com with ESMTPSA id s8-20020aa78d48000000b006873aa079aasm6808889pfe.171.2023.08.07.13.37.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Aug 2023 13:37:15 -0700 (PDT)
-Date:   Mon, 7 Aug 2023 13:37:12 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
+        with ESMTP id S229863AbjHGWl5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Aug 2023 18:41:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FBB7F1;
+        Mon,  7 Aug 2023 15:41:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F2BE622DC;
+        Mon,  7 Aug 2023 22:41:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB88C433C7;
+        Mon,  7 Aug 2023 22:41:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691448114;
+        bh=/wqwxDzojgw9myRfOZV564yc0J8qMQhJKtSUll8LP68=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=Vto2ACVmYOtKrWbtwRsyoqYdXTD8QSqVm8z+hf0KtmIVU72Eb6ewshTEg26/gd0XE
+         BerjH6Lzq5bu8HPW+skCACpfVrrH+8Y1EOxOnwEASJViWHyR3cMoCSt/jvzPiWIgS5
+         P/f1B5s74dhXm+ya5L++o6/8YvuPorxWeh5F2t3XtDbq1qA0LYCQR0H7UYnlqkUjAb
+         bPzcj/9jkML6UTYuux0i2oeMgp+mDyFi404BTE4f3mCB7AjAlcoFFXgp0bLiEwIk3h
+         JVoHoB5WTIhshJwf10e+0acMiMuZMxQ1OE8SoDRMtB9rHXJN32FaTjr8cOpx97LTpG
+         R2dpJFe4Xf0fw==
+Date:   Mon, 7 Aug 2023 17:41:52 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Sunil V L <sunilvl@ventanamicro.com>
+Cc:     linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct bus_type
-Message-ID: <ZNFV+C1HCIRJpbdC@google.com>
-References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
- <20230805174036.129ffbc2@jic23-huawei>
- <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <20230806142950.6c409600@jic23-huawei>
- <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Anup Patel <anup@brainfault.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Haibo Xu <haibo1.xu@intel.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Atish Kumar Patra <atishp@rivosinc.com>
+Subject: Re: [RFC PATCH v1 05/21] arm64: PCI: Migrate ACPI related functions
+ to pci-acpi.c
+Message-ID: <20230807224152.GA274647@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230803175916.3174453-6-sunilvl@ventanamicro.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 07, 2023 at 05:54:07PM +0300, Andy Shevchenko wrote:
-> On Sun, Aug 06, 2023 at 02:29:50PM +0100, Jonathan Cameron wrote:
-> > On Sat, 5 Aug 2023 17:42:21 +0000
-> > Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> > > > On Fri,  4 Aug 2023 17:17:24 +0100
-> > > > Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> 
-> ...
-> 
-> > > + * Besides the fact that some drivers abuse the device ID driver_data type
-> > > + * and claim it to be integer, for the bus specific ID tables the driver_data
-> > > + * may be defined as kernel_ulong_t. For these tables 0 is a valid response,
-> > > + * but not for this function. It's recommended to convert those either to avoid
-> > > + * 0 or use a real pointer to the predefined driver data.
-> 
-> > We still need to maintain consistency across the two tables, which
-> > is a stronger requirement than avoiding 0.
-> 
-> True. Any suggestion how to amend the above comment? Because the documentation
-> makes sense on its own (may be split from the series?).
-> 
-> > Some drivers already do that by forcing the enum used to start at 1 which
-> > doesn't solver the different data types issue.
-> 
-> And some maintainers do not want to see non-enum values in i2c ID table.
-> *Shrug*.
+On Thu, Aug 03, 2023 at 11:29:00PM +0530, Sunil V L wrote:
+> The functions defined in arm64 for ACPI support are required
+> for RISC-V also. To avoid duplication, copy these functions
+> to common location.
 
-So in legacy ID lookup path we can safely assume that values below 4096
-are scalars and return NULL from the new device_get_match_data(). This
-way current drivers using the values as indices or doing direct
-comparisons against them can continue doing manual look up and using
-them as they see fit. And we can convert the drivers at our leisure.
+I assume this is a "move" (not a copy) and the code being moved isn't
+being changed.
 
-Thanks.
+If so,
 
--- 
-Dmitry
+  Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> ---
+>  arch/arm64/kernel/pci.c | 193 ----------------------------------------
+>  drivers/pci/pci-acpi.c  | 182 +++++++++++++++++++++++++++++++++++++
+>  2 files changed, 182 insertions(+), 193 deletions(-)
+> 
+> diff --git a/arch/arm64/kernel/pci.c b/arch/arm64/kernel/pci.c
+> index 2276689b5411..fd9a7bed83ce 100644
+> --- a/arch/arm64/kernel/pci.c
+> +++ b/arch/arm64/kernel/pci.c
+> @@ -6,30 +6,7 @@
+>   * Copyright (C) 2014 ARM Ltd.
+>   */
+>  
+> -#include <linux/acpi.h>
+> -#include <linux/init.h>
+> -#include <linux/io.h>
+> -#include <linux/kernel.h>
+> -#include <linux/mm.h>
+> -#include <linux/of_pci.h>
+> -#include <linux/of_platform.h>
+>  #include <linux/pci.h>
+> -#include <linux/pci-acpi.h>
+> -#include <linux/pci-ecam.h>
+> -#include <linux/slab.h>
+> -
+> -#ifdef CONFIG_ACPI
+> -/*
+> - * Try to assign the IRQ number when probing a new device
+> - */
+> -int pcibios_alloc_irq(struct pci_dev *dev)
+> -{
+> -	if (!acpi_disabled)
+> -		acpi_pci_irq_enable(dev);
+> -
+> -	return 0;
+> -}
+> -#endif
+>  
+>  /*
+>   * raw_pci_read/write - Platform-specific PCI config space access.
+> @@ -63,173 +40,3 @@ int pcibus_to_node(struct pci_bus *bus)
+>  EXPORT_SYMBOL(pcibus_to_node);
+>  
+>  #endif
+> -
+> -#ifdef CONFIG_ACPI
+> -
+> -struct acpi_pci_generic_root_info {
+> -	struct acpi_pci_root_info	common;
+> -	struct pci_config_window	*cfg;	/* config space mapping */
+> -};
+> -
+> -int acpi_pci_bus_find_domain_nr(struct pci_bus *bus)
+> -{
+> -	struct pci_config_window *cfg = bus->sysdata;
+> -	struct acpi_device *adev = to_acpi_device(cfg->parent);
+> -	struct acpi_pci_root *root = acpi_driver_data(adev);
+> -
+> -	return root->segment;
+> -}
+> -
+> -int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge)
+> -{
+> -	struct pci_config_window *cfg;
+> -	struct acpi_device *adev;
+> -	struct device *bus_dev;
+> -
+> -	if (acpi_disabled)
+> -		return 0;
+> -
+> -	cfg = bridge->bus->sysdata;
+> -
+> -	/*
+> -	 * On Hyper-V there is no corresponding ACPI device for a root bridge,
+> -	 * therefore ->parent is set as NULL by the driver. And set 'adev' as
+> -	 * NULL in this case because there is no proper ACPI device.
+> -	 */
+> -	if (!cfg->parent)
+> -		adev = NULL;
+> -	else
+> -		adev = to_acpi_device(cfg->parent);
+> -
+> -	bus_dev = &bridge->bus->dev;
+> -
+> -	ACPI_COMPANION_SET(&bridge->dev, adev);
+> -	set_dev_node(bus_dev, acpi_get_node(acpi_device_handle(adev)));
+> -
+> -	return 0;
+> -}
+> -
+> -static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
+> -{
+> -	struct resource_entry *entry, *tmp;
+> -	int status;
+> -
+> -	status = acpi_pci_probe_root_resources(ci);
+> -	resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
+> -		if (!(entry->res->flags & IORESOURCE_WINDOW))
+> -			resource_list_destroy_entry(entry);
+> -	}
+> -	return status;
+> -}
+> -
+> -/*
+> - * Lookup the bus range for the domain in MCFG, and set up config space
+> - * mapping.
+> - */
+> -static struct pci_config_window *
+> -pci_acpi_setup_ecam_mapping(struct acpi_pci_root *root)
+> -{
+> -	struct device *dev = &root->device->dev;
+> -	struct resource *bus_res = &root->secondary;
+> -	u16 seg = root->segment;
+> -	const struct pci_ecam_ops *ecam_ops;
+> -	struct resource cfgres;
+> -	struct acpi_device *adev;
+> -	struct pci_config_window *cfg;
+> -	int ret;
+> -
+> -	ret = pci_mcfg_lookup(root, &cfgres, &ecam_ops);
+> -	if (ret) {
+> -		dev_err(dev, "%04x:%pR ECAM region not found\n", seg, bus_res);
+> -		return NULL;
+> -	}
+> -
+> -	adev = acpi_resource_consumer(&cfgres);
+> -	if (adev)
+> -		dev_info(dev, "ECAM area %pR reserved by %s\n", &cfgres,
+> -			 dev_name(&adev->dev));
+> -	else
+> -		dev_warn(dev, FW_BUG "ECAM area %pR not reserved in ACPI namespace\n",
+> -			 &cfgres);
+> -
+> -	cfg = pci_ecam_create(dev, &cfgres, bus_res, ecam_ops);
+> -	if (IS_ERR(cfg)) {
+> -		dev_err(dev, "%04x:%pR error %ld mapping ECAM\n", seg, bus_res,
+> -			PTR_ERR(cfg));
+> -		return NULL;
+> -	}
+> -
+> -	return cfg;
+> -}
+> -
+> -/* release_info: free resources allocated by init_info */
+> -static void pci_acpi_generic_release_info(struct acpi_pci_root_info *ci)
+> -{
+> -	struct acpi_pci_generic_root_info *ri;
+> -
+> -	ri = container_of(ci, struct acpi_pci_generic_root_info, common);
+> -	pci_ecam_free(ri->cfg);
+> -	kfree(ci->ops);
+> -	kfree(ri);
+> -}
+> -
+> -/* Interface called from ACPI code to setup PCI host controller */
+> -struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+> -{
+> -	struct acpi_pci_generic_root_info *ri;
+> -	struct pci_bus *bus, *child;
+> -	struct acpi_pci_root_ops *root_ops;
+> -	struct pci_host_bridge *host;
+> -
+> -	ri = kzalloc(sizeof(*ri), GFP_KERNEL);
+> -	if (!ri)
+> -		return NULL;
+> -
+> -	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
+> -	if (!root_ops) {
+> -		kfree(ri);
+> -		return NULL;
+> -	}
+> -
+> -	ri->cfg = pci_acpi_setup_ecam_mapping(root);
+> -	if (!ri->cfg) {
+> -		kfree(ri);
+> -		kfree(root_ops);
+> -		return NULL;
+> -	}
+> -
+> -	root_ops->release_info = pci_acpi_generic_release_info;
+> -	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
+> -	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
+> -	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
+> -	if (!bus)
+> -		return NULL;
+> -
+> -	/* If we must preserve the resource configuration, claim now */
+> -	host = pci_find_host_bridge(bus);
+> -	if (host->preserve_config)
+> -		pci_bus_claim_resources(bus);
+> -
+> -	/*
+> -	 * Assign whatever was left unassigned. If we didn't claim above,
+> -	 * this will reassign everything.
+> -	 */
+> -	pci_assign_unassigned_root_bus_resources(bus);
+> -
+> -	list_for_each_entry(child, &bus->children, node)
+> -		pcie_bus_configure_settings(child);
+> -
+> -	return bus;
+> -}
+> -
+> -void pcibios_add_bus(struct pci_bus *bus)
+> -{
+> -	acpi_pci_add_bus(bus);
+> -}
+> -
+> -void pcibios_remove_bus(struct pci_bus *bus)
+> -{
+> -	acpi_pci_remove_bus(bus);
+> -}
+> -
+> -#endif
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index a05350a4e49c..d6b2d64b8237 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/pci_hotplug.h>
+>  #include <linux/module.h>
+>  #include <linux/pci-acpi.h>
+> +#include <linux/pci-ecam.h>
+>  #include <linux/pm_runtime.h>
+>  #include <linux/pm_qos.h>
+>  #include <linux/rwsem.h>
+> @@ -1517,4 +1518,185 @@ static int __init acpi_pci_init(void)
+>  
+>  	return 0;
+>  }
+> +
+>  arch_initcall(acpi_pci_init);
+> +
+> +#if defined(CONFIG_ARM64)
+> +/*
+> + * Try to assign the IRQ number when probing a new device
+> + */
+> +int pcibios_alloc_irq(struct pci_dev *dev)
+> +{
+> +	if (!acpi_disabled)
+> +		acpi_pci_irq_enable(dev);
+> +
+> +	return 0;
+> +}
+> +
+> +struct acpi_pci_generic_root_info {
+> +	struct acpi_pci_root_info	common;
+> +	struct pci_config_window	*cfg;	/* config space mapping */
+> +};
+> +
+> +int acpi_pci_bus_find_domain_nr(struct pci_bus *bus)
+> +{
+> +	struct pci_config_window *cfg = bus->sysdata;
+> +	struct acpi_device *adev = to_acpi_device(cfg->parent);
+> +	struct acpi_pci_root *root = acpi_driver_data(adev);
+> +
+> +	return root->segment;
+> +}
+> +
+> +int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge)
+> +{
+> +	struct pci_config_window *cfg;
+> +	struct acpi_device *adev;
+> +	struct device *bus_dev;
+> +
+> +	if (acpi_disabled)
+> +		return 0;
+> +
+> +	cfg = bridge->bus->sysdata;
+> +
+> +	/*
+> +	 * On Hyper-V there is no corresponding ACPI device for a root bridge,
+> +	 * therefore ->parent is set as NULL by the driver. And set 'adev' as
+> +	 * NULL in this case because there is no proper ACPI device.
+> +	 */
+> +	if (!cfg->parent)
+> +		adev = NULL;
+> +	else
+> +		adev = to_acpi_device(cfg->parent);
+> +
+> +	bus_dev = &bridge->bus->dev;
+> +
+> +	ACPI_COMPANION_SET(&bridge->dev, adev);
+> +	set_dev_node(bus_dev, acpi_get_node(acpi_device_handle(adev)));
+> +
+> +	return 0;
+> +}
+> +
+> +static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
+> +{
+> +	struct resource_entry *entry, *tmp;
+> +	int status;
+> +
+> +	status = acpi_pci_probe_root_resources(ci);
+> +	resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
+> +		if (!(entry->res->flags & IORESOURCE_WINDOW))
+> +			resource_list_destroy_entry(entry);
+> +	}
+> +	return status;
+> +}
+> +
+> +/*
+> + * Lookup the bus range for the domain in MCFG, and set up config space
+> + * mapping.
+> + */
+> +static struct pci_config_window *
+> +pci_acpi_setup_ecam_mapping(struct acpi_pci_root *root)
+> +{
+> +	struct device *dev = &root->device->dev;
+> +	struct resource *bus_res = &root->secondary;
+> +	u16 seg = root->segment;
+> +	const struct pci_ecam_ops *ecam_ops;
+> +	struct resource cfgres;
+> +	struct acpi_device *adev;
+> +	struct pci_config_window *cfg;
+> +	int ret;
+> +
+> +	ret = pci_mcfg_lookup(root, &cfgres, &ecam_ops);
+> +	if (ret) {
+> +		dev_err(dev, "%04x:%pR ECAM region not found\n", seg, bus_res);
+> +		return NULL;
+> +	}
+> +
+> +	adev = acpi_resource_consumer(&cfgres);
+> +	if (adev)
+> +		dev_info(dev, "ECAM area %pR reserved by %s\n", &cfgres,
+> +			 dev_name(&adev->dev));
+> +	else
+> +		dev_warn(dev, FW_BUG "ECAM area %pR not reserved in ACPI namespace\n",
+> +			 &cfgres);
+> +
+> +	cfg = pci_ecam_create(dev, &cfgres, bus_res, ecam_ops);
+> +	if (IS_ERR(cfg)) {
+> +		dev_err(dev, "%04x:%pR error %ld mapping ECAM\n", seg, bus_res,
+> +			PTR_ERR(cfg));
+> +		return NULL;
+> +	}
+> +
+> +	return cfg;
+> +}
+> +
+> +/* release_info: free resources allocated by init_info */
+> +static void pci_acpi_generic_release_info(struct acpi_pci_root_info *ci)
+> +{
+> +	struct acpi_pci_generic_root_info *ri;
+> +
+> +	ri = container_of(ci, struct acpi_pci_generic_root_info, common);
+> +	pci_ecam_free(ri->cfg);
+> +	kfree(ci->ops);
+> +	kfree(ri);
+> +}
+> +
+> +/* Interface called from ACPI code to setup PCI host controller */
+> +struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+> +{
+> +	struct acpi_pci_generic_root_info *ri;
+> +	struct pci_bus *bus, *child;
+> +	struct acpi_pci_root_ops *root_ops;
+> +	struct pci_host_bridge *host;
+> +
+> +	ri = kzalloc(sizeof(*ri), GFP_KERNEL);
+> +	if (!ri)
+> +		return NULL;
+> +
+> +	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
+> +	if (!root_ops) {
+> +		kfree(ri);
+> +		return NULL;
+> +	}
+> +
+> +	ri->cfg = pci_acpi_setup_ecam_mapping(root);
+> +	if (!ri->cfg) {
+> +		kfree(ri);
+> +		kfree(root_ops);
+> +		return NULL;
+> +	}
+> +
+> +	root_ops->release_info = pci_acpi_generic_release_info;
+> +	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
+> +	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
+> +	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
+> +	if (!bus)
+> +		return NULL;
+> +
+> +	/* If we must preserve the resource configuration, claim now */
+> +	host = pci_find_host_bridge(bus);
+> +	if (host->preserve_config)
+> +		pci_bus_claim_resources(bus);
+> +
+> +	/*
+> +	 * Assign whatever was left unassigned. If we didn't claim above,
+> +	 * this will reassign everything.
+> +	 */
+> +	pci_assign_unassigned_root_bus_resources(bus);
+> +
+> +	list_for_each_entry(child, &bus->children, node)
+> +		pcie_bus_configure_settings(child);
+> +
+> +	return bus;
+> +}
+> +
+> +void pcibios_add_bus(struct pci_bus *bus)
+> +{
+> +	acpi_pci_add_bus(bus);
+> +}
+> +
+> +void pcibios_remove_bus(struct pci_bus *bus)
+> +{
+> +	acpi_pci_remove_bus(bus);
+> +}
+> +
+> +#endif
+> -- 
+> 2.39.2
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
