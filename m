@@ -2,147 +2,239 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 865DD772392
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Aug 2023 14:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBE8E772510
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Aug 2023 15:08:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231810AbjHGMSD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Aug 2023 08:18:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48968 "EHLO
+        id S233805AbjHGNIw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Aug 2023 09:08:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233352AbjHGMR4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Aug 2023 08:17:56 -0400
+        with ESMTP id S233235AbjHGNIv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Aug 2023 09:08:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6163106
-        for <linux-acpi@vger.kernel.org>; Mon,  7 Aug 2023 05:17:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0EA6171E
+        for <linux-acpi@vger.kernel.org>; Mon,  7 Aug 2023 06:07:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691410632;
+        s=mimecast20190719; t=1691413670;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=bu2WjHOzIVOP9vk1kJBHvL9JLmqO8vpFvQBXM5x68QA=;
-        b=Mk2BZTKcMCi8CLx0PagH6QHzQdXQQbXWX5pi4rrFk/9Im2ZPlbLAyJpjzPL+llY5/KzEE0
-        ZScrMgrM5MDCLDko1h8eZ/znUr9fN/aw7xMFEvN6FZmkZzF7Fvy0T0htUL85Vvg6jW/F45
-        efD+PDqYAYmE8GQcs59zOynKaWo6yAo=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=jme0rhfzh6JhD99ZB8QzeloyQi3m6yoYS6ZHD9wuvr8=;
+        b=a6IePgmJ8TUo0/05KHF6PBSiS6vjHiM4cz4Xeg/LDabRinThIW4sIxfoIXt/+jE464CMQz
+        AfkwLEfGVy3kBu2NuJzxnzaqaQmNCXvcY5yiGuE7yAEuSXoYwsTGfvjpBrwJQwi7ZDOCPa
+        mLchtT4Rvg2WgiyrLQ029oOk/Pc/DkM=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-qHXbLWg6MPmGJje3gCI5dg-1; Mon, 07 Aug 2023 08:17:11 -0400
-X-MC-Unique: qHXbLWg6MPmGJje3gCI5dg-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-94a355cf318so358293266b.2
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Aug 2023 05:17:11 -0700 (PDT)
+ us-mta-282-DVIZdxPtPi-aJ4VxyePsEw-1; Mon, 07 Aug 2023 09:07:49 -0400
+X-MC-Unique: DVIZdxPtPi-aJ4VxyePsEw-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-99bd6ea0d9eso361335466b.3
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Aug 2023 06:07:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691410630; x=1692015430;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bu2WjHOzIVOP9vk1kJBHvL9JLmqO8vpFvQBXM5x68QA=;
-        b=NzlfrpN2NGUCNpzbNFO9TRe3/1K3CqV/URX6RZ8Y4+1PbvuJLF13Y63zoI/8OvkxKk
-         eh1NIG8TU2Sszv2+r/EzVQILzgTb0yMGKk0nYR4s0eVGUhbu6t9HQZnnegzmJIRXrmC+
-         TzC11wMxDqyYTvTovpkYd+CYHwPUEkVYM5msfSCAswHw2JMfKb7Z5lgqjyTQ2P3FMiDP
-         zZrs3gnUsPtGR7NpljAGCiUsoJvgVENSpYn3QvTnJHHnBzSBCLGnmu6mYK68X0cSruJG
-         8NjMSJJLtjTDQTTryrEzHiQnzLbCrsQnHRV6Lms3YH5SwhGmvOzIMkjKfwCUSqBB/iMn
-         yP0A==
-X-Gm-Message-State: AOJu0YyAfTHyy8DNc3bKTmyoviwqfg0wfaqda9ipXcNLz8Z7ZnDdYOMs
-        sK74tnsVwxc9LBxkZpbeXIPIaJJC0ydEt/4wSWHJSpBVP8FsCTAJ9DR7nX0243F3xQ47/r0YpL2
-        YFvHFOIAujVJxnCUEtKF/jijWbaoGWg==
-X-Received: by 2002:a17:906:3f47:b0:994:4e16:d430 with SMTP id f7-20020a1709063f4700b009944e16d430mr8844991ejj.20.1691410630301;
-        Mon, 07 Aug 2023 05:17:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHGii5TVZLhLUxEgHq/U5r38qAbFz19C3rD9mDEGBgoqUEo8Ox3+IjpazjZhLuxKKGpm+73DQ==
-X-Received: by 2002:a17:906:3f47:b0:994:4e16:d430 with SMTP id f7-20020a1709063f4700b009944e16d430mr8844978ejj.20.1691410629973;
-        Mon, 07 Aug 2023 05:17:09 -0700 (PDT)
-Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id c21-20020a170906d19500b00992acab8c45sm5226906ejz.12.2023.08.07.05.17.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Aug 2023 05:17:09 -0700 (PDT)
-Message-ID: <db155678-c717-351a-730b-aa7fb5c80a0e@redhat.com>
-Date:   Mon, 7 Aug 2023 14:17:08 +0200
+        d=1e100.net; s=20221208; t=1691413668; x=1692018468;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jme0rhfzh6JhD99ZB8QzeloyQi3m6yoYS6ZHD9wuvr8=;
+        b=AeF1MRaiDGrrmoHmjPhSqzov3BBo1VOjnYaXS0EJG9uPpMttsuObETPpU+n2higanG
+         JaNKs7othAvfl/N/bzP7Tfe89i2pjtHFDR+RGv+7shNe/Mlh/a7yIvJbApHlFBtTekI0
+         iKpi+sPsss2PPEnfjnJyVi76E4zKEA0kmmKPpKrcu4PHMCifhCReMy9LUgwAE54RWIvh
+         TjqJgkoI7dpsvcqule0jfhrIQV8yidO2XXbi27wrDlHs8GmLmYmYMfr9ipd5hbfb+qDY
+         SSQYmF7DepI0V/e7BYb54ZmsxYHPcg4wvbNIrFmenuDcyFNvL9KGg2Zu1NO551ykWUo/
+         tJxg==
+X-Gm-Message-State: AOJu0Yy8ax28DDPFrzJCMqmjWkWFH+0oe1UABdx5FSJbhIF8/chyiqaf
+        l+8x185KEpHARQRY3I9jDy/od0AfUn9m3+X1exsPQR5S/CPtzQdi8V6KpBzkEFGc2Y11PGFGbKv
+        efRo/ug9auYp3WAj96xRNOMtAR+4Rjw==
+X-Received: by 2002:a17:906:1099:b0:99c:9e69:6a1c with SMTP id u25-20020a170906109900b0099c9e696a1cmr8450750eju.67.1691413667811;
+        Mon, 07 Aug 2023 06:07:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvInCHNia93LEtdHlepW/JiEfDS2iww5AfvYdIACudI7+y/DnDZC10te1SlCSv/d3wNgreXw==
+X-Received: by 2002:a17:906:1099:b0:99c:9e69:6a1c with SMTP id u25-20020a170906109900b0099c9e696a1cmr8450735eju.67.1691413667517;
+        Mon, 07 Aug 2023 06:07:47 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id y16-20020a170906071000b00992d122af63sm5190783ejb.89.2023.08.07.06.07.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Aug 2023 06:07:46 -0700 (PDT)
+Date:   Mon, 7 Aug 2023 15:07:46 +0200
+From:   Igor Mammedov <imammedo@redhat.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, terraluna977@gmail.com,
+        bhelgaas@google.com, linux-pci@vger.kernel.org, mst@redhat.com,
+        rafael@kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 1/1] PCI: acpiphp:: use
+ pci_assign_unassigned_bridge_resources() only if bus->self not NULL
+Message-ID: <20230807150746.71ca1df3@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230804232709.GA174043@bhelgaas>
+References: <20230726123518.2361181-2-imammedo@redhat.com>
+        <20230804232709.GA174043@bhelgaas>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] ACPI: video: Add backlight=native DMI quirk for Apple
- iMac12,1 and iMac12,2
-Content-Language: en-US
-To:     Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     linux-acpi@vger.kernel.org
-References: <20230807094408.242069-1-hdegoede@redhat.com>
- <37253231-82bb-4f31-a9d8-1b74e7806282@amd.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <37253231-82bb-4f31-a9d8-1b74e7806282@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mario,
+On Fri, 4 Aug 2023 18:27:09 -0500
+Bjorn Helgaas <helgaas@kernel.org> wrote:
 
-On 8/7/23 13:32, Mario Limonciello wrote:
-> On 8/7/23 04:44, Hans de Goede wrote:
->> Linux defaults to picking the non-working ACPI video backlight interface
->> on the Apple iMac12,1 and iMac12,2.
->>
->> Add a DMI quirk to pick the working native radeon_bl0 interface instead.
->>
->> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1838
->> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2753
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->>   drivers/acpi/video_detect.c | 18 ++++++++++++++++++
->>   1 file changed, 18 insertions(+)
+> On Wed, Jul 26, 2023 at 02:35:18PM +0200, Igor Mammedov wrote:
+> > Commit [1] switched acpiphp hotplug to use
+> >    pci_assign_unassigned_bridge_resources()
+> > which depends on bridge being available, however in some cases
+> > when acpiphp is in use, enable_slot() can get a slot without
+> > bridge associated.  
 > 
-> I'm wondering if you also in the same series should be reverting these two commits?
+> acpiphp is *always* in use if we get to enable_slot(), so that doesn't
+> really add information here.
 > 
-> 05eacc198c68 ("drm/radeon: Fix eDP for single-display iMac11,2")
-> 564d8a2cf3ab ("drm/radeon: Fix eDP for single-display iMac10,1 (v2)")
+> >   1. legitimate case of hotplug on root bus
+> >       (likely not exiting on real hw, but widely used in virt world)
+> >   2. broken firmware, that sends 'Bus check' events to non
+> >      existing root ports (Dell Inspiron 7352/0W6WV0), which somehow
+> >      endup at acpiphp:enable_slot(..., bridge = 0) and with bus
+> >      without bridge assigned to it.  
 
-Those 2 patches select which encoder to use to driver the eDP link,
-this seems to be something independent of / orthogonal to which
-backlight contrl method to use which is what this patch is about.
+how about following commit message (incorporating all feed back in this thread):
 
-Regards,
+-- cut --
+Commit [1] switched acpiphp hotplug to use
+   pci_assign_unassigned_bridge_resources()
+which depends on bridge being available, however in case
+when acpiphp is enabled [2], enable_slot() can be called without
+bridge associated.
+  1. legitimate case of hotplug on root bus
+      (widely used in virt world)
+  2. a (misbehaving) firmware, that sends 'Bus check' events
+     to non existing root ports (Dell Inspiron 7352/0W6WV0),
+     which endup at acpiphp:enable_slot(..., bridge = 0)
+     where bus has not bridge assigned to it.
+     acpihp doesn't know that it's a bridge, and bus specific
+     'PCI subsystem' can't argument ACPI context with bridge
+     information since the PCI device to get this data from
+     is/was not available.
 
-Hans
+Issue is easy to reproduce with QEMU's 'pc' machine, which supports
+PCI hotplug on hostbridge slots. To reproduce boot kernel at
+commit [1] in VM started with following CLI (assuming guest root fs
+is installed on sda1 partition):
 
+   # qemu-system-x86_64 -M pc -m 1G -enable-kvm -cpu host \
+         -monitor stdio -serial file:serial.log           \
+         -kernel arch/x86/boot/bzImage                    \
+         -append "root=/dev/sda1 console=ttyS0"           \
+         guest_disk.img
 
+once guest OS is fully booted at qemu prompt:
 
+(qemu) device_add e1000
+
+(check serial.log) it will cause NULL pointer dereference at:
+
+    void pci_assign_unassigned_bridge_resources(struct pci_dev *bridge)
+    {
+        struct pci_bus *parent = bridge->subordinate;
+
+[  612.277651] BUG: kernel NULL pointer dereference, address: 0000000000000018
+[...]
+[  612.277798]  ? pci_assign_unassigned_bridge_resources+0x1f/0x260
+[  612.277804]  ? pcibios_allocate_dev_resources+0x3c/0x2a0
+[  612.277809]  enable_slot+0x21f/0x3e0
+[  612.277816]  acpiphp_hotplug_notify+0x13d/0x260
+[  612.277822]  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
+[  612.277827]  acpi_device_hotplug+0xbc/0x540
+[  612.277834]  acpi_hotplug_work_fn+0x15/0x20
+[  612.277839]  process_one_work+0x1f7/0x370
+[  612.277845]  worker_thread+0x45/0x3b0
+[  612.277850]  ? __pfx_worker_thread+0x10/0x10
+[  612.277854]  kthread+0xdc/0x110
+[  612.277860]  ? __pfx_kthread+0x10/0x10
+[  612.277866]  ret_from_fork+0x28/0x40
+[  612.277871]  ? __pfx_kthread+0x10/0x10
+[  612.277876]  ret_from_fork_asm+0x1b/0x30
+
+The issue was discovered on Dell Inspiron 7352/0W6WV0 laptop with
+following sequence:
+   1. suspend to RAM
+   2. wake up with the same backtrace being observed:
+   3. 2nd suspend to RAM attempt makes laptop freeze
+
+Fix it by using __pci_bus_assign_resources() instead of
+pci_assign_unassigned_bridge_resources() as we used to do
+but only in case when bus doesn't have a bridge associated
+(to cover for the case of ACPI event on hostbridge or
+non existing root port).
+
+That let us keep hotplug on root bus working like it used to be
+and at the same time keeps resource reassignment usable on
+root ports (and other 1st level bridges) that was fixed by [1].
+
+1)
+Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
+2) CONFIG_HOTPLUG_PCI_ACPI=y
+
+-- cut --
+
+if commit message is looking acceptable to you, I can respin
+amended patch with your suggestions taken in account.
+
+> IIUC, the Inspiron problem happens when:
 > 
->>
->> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
->> index 18cc08c858cf..7cceaf31d928 100644
->> --- a/drivers/acpi/video_detect.c
->> +++ b/drivers/acpi/video_detect.c
->> @@ -486,6 +486,24 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
->>           DMI_MATCH(DMI_PRODUCT_NAME, "iMac11,3"),
->>           },
->>       },
->> +    {
->> +     /* https://gitlab.freedesktop.org/drm/amd/-/issues/1838 */
->> +     .callback = video_detect_force_native,
->> +     /* Apple iMac12,1 */
->> +     .matches = {
->> +        DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
->> +        DMI_MATCH(DMI_PRODUCT_NAME, "iMac12,1"),
->> +        },
->> +    },
->> +    {
->> +     /* https://gitlab.freedesktop.org/drm/amd/-/issues/2753 */
->> +     .callback = video_detect_force_native,
->> +     /* Apple iMac12,2 */
->> +     .matches = {
->> +        DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
->> +        DMI_MATCH(DMI_PRODUCT_NAME, "iMac12,2"),
->> +        },
->> +    },
->>       {
->>        /* https://bugzilla.redhat.com/show_bug.cgi?id=1217249 */
->>        .callback = video_detect_force_native,
+>   - acpiphp_context->bridge is NULL, so hotplug_event() calls
+>     enable_slot() instead of acpiphp_check_bridge(), AND
 > 
+>   - acpiphp_slot->bus->self is also NULL, because enable_slot() calls
+>     pci_assign_unassigned_bridge_resources() with that NULL pointer,
+>     which dereferences "bridge->subordinate"
+> 
+> But I can't figure out why acpiphp_context->bridge is NULL for RP07
+> and RP08 (which don't exist), but not for RP03 (which does).
+> 
+> I guess all the acpiphp_contexts (RP03, RP07, RP08) must be allocated in
+> acpiphp_add_context() by acpiphp_init_context().
+> 
+> Woody's lspci from [1] shows only one Root Port:
+> 
+>   00:1c.0 Wildcat Point-LP PCI Express Root Port #3
+> 
+> The DSDT.DSL includes:
+> 
+>   Device (RP01) _ADR 0x001C0000		# 1c.0
+>   Device (RP02) _ADR 0x001C0001		# 1c.1
+>   Device (RP03) _ADR 0x001C0002		# 1c.2
+>   Device (RP04) _ADR 0x001C0003		# 1c.3
+>   Device (RP05) _ADR 0x001C0004		# 1c.4
+>   Device (RP06) _ADR 0x001C0005		# 1c.5
+>   Device (RP07) _ADR 0x001C0006		# 1c.6
+>   Device (RP08) _ADR 0x001C0007		# 1c.7
+> 
+> I can see why we might need a Bus Check after resume to see if
+> something got added while we were suspended.  But I don't see why we
+> handle RP03 differently from RP07 and RP08.
+> 
+> Can you help me out?  I'm lost in a maze of twisty passages, all
+> alike.
+
+I'll try to trace call path and see where it leads
+(based on a guess in updated commit message: OS/nor ACPI
+has info if it's bridge when the device didn't exists
+during boot).
+
+(though, I don't think it should hold this patch.
+while it would be good to understand where bridge
+gets added in acpi context, it's not directly relevant
+to the fixing hotplug on hostbridge and buscheck events 
+on non-existing root-ports)
+
+> Bjorn
+> 
+> [1] https://lore.kernel.org/r/92150d8d-8a3a-d600-a996-f60a8e4c876c@gmail.com
+> 
+
 
