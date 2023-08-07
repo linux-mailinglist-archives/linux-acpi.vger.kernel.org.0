@@ -2,139 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 212F4772D9F
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Aug 2023 20:21:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADB68772FC0
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Aug 2023 21:46:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbjHGSU7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Aug 2023 14:20:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53306 "EHLO
+        id S229613AbjHGTqX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Aug 2023 15:46:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbjHGSU5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Aug 2023 14:20:57 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38B78F;
-        Mon,  7 Aug 2023 11:20:55 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id 94dc6781b6e2d306; Mon, 7 Aug 2023 20:20:53 +0200
-Authentication-Results: v370.home.net.pl; spf=softfail (domain owner 
-   discourages use of this host) smtp.mailfrom=rjwysocki.net 
-   (client-ip=195.136.19.94; helo=[195.136.19.94]; 
-   envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
-Received: from kreacher.localnet (unknown [195.136.19.94])
+        with ESMTP id S229509AbjHGTqX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Aug 2023 15:46:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE5722121;
+        Mon,  7 Aug 2023 12:45:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 095486625B2;
-        Mon,  7 Aug 2023 20:20:53 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Michal Wilczynski <michal.wilczynski@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH v5 11/11] thermal: core: Eliminate code duplication from acpi_thermal_notify()
-Date:   Mon, 07 Aug 2023 20:20:18 +0200
-Message-ID: <23175634.6Emhk5qWAg@kreacher>
-In-Reply-To: <4503814.LvFx2qVVIh@kreacher>
-References: <13318886.uLZWGnKmhe@kreacher> <4503814.LvFx2qVVIh@kreacher>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ECC2C619F1;
+        Mon,  7 Aug 2023 19:45:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB52C433C8;
+        Mon,  7 Aug 2023 19:45:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691437513;
+        bh=/H/K+rkMsK2omYcW/qNUyfid3VGJ1y+Y1xoeTLm/UbI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=sxFyG8N9964gi9g8QW6N5rJAxP0itZZ/ve4N117v75OWaFcQ9txqbuE01zhwi/8An
+         NfQtGMdibXgTxPceDDcIdPiw5lakYwPTa1kjXd40wWpZR2F3xgWkpKfzWSAwqUWoto
+         YxRXFU5hVZrL4bKbKqioF7gNaDTFztQSxNjz3XkPCNdRzNqerqizEB3pWpIaeW+a3m
+         O2q7GihLcL0OzmxhmkejNmNe9QQmjHbaAUHgASKSWkmkWAeOe1GZjXasalj4hdH+u3
+         MQhW74jV5/OWlov+1qBVRxTHjL+pnRGhuVDDxsPPDjUGNYWIeSeCszUDGuJhI0OXZL
+         EjaQnYcY1lAbA==
+Date:   Mon, 7 Aug 2023 20:45:05 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct
+ bus_type
+Message-ID: <20230807204505.5f3f245e@jic23-huawei>
+In-Reply-To: <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
+        <20230805174036.129ffbc2@jic23-huawei>
+        <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+        <20230806142950.6c409600@jic23-huawei>
+        <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrledtgdduudejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepjedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
- thhtohepmhhitghhrghlrdifihhltgiihihnshhkihesihhnthgvlhdrtghomhdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Mon, 7 Aug 2023 17:54:07 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Move the acpi_bus_generate_netlink_event() invocation into
-acpi_thermal_trips_update() which allows the code duplication in
-acpi_thermal_notify() to be cleaned up, but for this purpose the
-event value needs to be passed to acpi_thermal_trips_update() and
-from there to acpi_thermal_adjust_thermal_zone() which has to
-determine the flag value for __acpi_thermal_trips_update() by
-itself.
+> On Sun, Aug 06, 2023 at 02:29:50PM +0100, Jonathan Cameron wrote:
+> > On Sat, 5 Aug 2023 17:42:21 +0000
+> > Biju Das <biju.das.jz@bp.renesas.com> wrote:  
+> > > > On Fri,  4 Aug 2023 17:17:24 +0100
+> > > > Biju Das <biju.das.jz@bp.renesas.com> wrote:  
+> 
+> ...
+> 
+> > > + * Besides the fact that some drivers abuse the device ID driver_data type
+> > > + * and claim it to be integer, for the bus specific ID tables the driver_data
+> > > + * may be defined as kernel_ulong_t. For these tables 0 is a valid response,
+> > > + * but not for this function. It's recommended to convert those either to avoid
+> > > + * 0 or use a real pointer to the predefined driver data.  
+> 
+> > We still need to maintain consistency across the two tables, which
+> > is a stronger requirement than avoiding 0.  
+> 
+> True. Any suggestion how to amend the above comment? Because the documentation
+> makes sense on its own (may be split from the series?).
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
+For bus ID tables it is fine right now as long as no one checks for NULL.
+I guess adding this to the i2c_get_match_data and spi equivalent wrapper
+functions might avoid someone shooting themselves in the foot (I've done it
+for starters more than once).
 
-v4 -> v5: Rebase.
+> 
+> > Some drivers already do that by forcing the enum used to start at 1 which
+> > doesn't solver the different data types issue.  
+> 
+> And some maintainers do not want to see non-enum values in i2c ID table.
+> *Shrug*.
+> 
 
-New patch in v4.
+That leaves us stuck unless we move to a form where the i2c ID table isn't
+used if there is an of_device_id table (or maybe we invent yet another table
+and if that is present it is used for dt and were i2c_device_id is used and
+hence becomes an opt in?  That will also be tricky however.
 
----
- drivers/acpi/thermal.c |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
-
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -419,8 +419,10 @@ static void acpi_thermal_adjust_thermal_
- 					     unsigned long data)
- {
- 	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
-+	int flag = data == ACPI_THERMAL_NOTIFY_THRESHOLDS ?
-+				ACPI_TRIPS_THRESHOLDS : ACPI_TRIPS_DEVICES;
- 
--	__acpi_thermal_trips_update(tz, data);
-+	__acpi_thermal_trips_update(tz, flag);
- 
- 	for_each_thermal_trip(tz->thermal_zone, acpi_thermal_adjust_trip, tz);
- }
-@@ -431,8 +433,10 @@ static void acpi_queue_thermal_check(str
- 		queue_work(acpi_thermal_pm_queue, &tz->thermal_check_work);
- }
- 
--static void acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
-+static void acpi_thermal_trips_update(struct acpi_thermal *tz, u32 event)
- {
-+	struct acpi_device *adev = tz->device;
-+
- 	/*
- 	 * Use thermal_zone_device_adjust() to carry out the trip points
- 	 * update, so as to protect thermal_get_trend() from getting stale
-@@ -440,8 +444,10 @@ static void acpi_thermal_trips_update(st
- 	 * invoked from acpi_thermal_check_fn() from producing inconsistent
- 	 * results.
- 	 */
--	thermal_zone_device_adjust(tz->thermal_zone, flag);
-+	thermal_zone_device_adjust(tz->thermal_zone, event);
- 	acpi_queue_thermal_check(tz);
-+	acpi_bus_generate_netlink_event(adev->pnp.device_class,
-+					dev_name(&adev->dev), event, 0);
- }
- 
- static int acpi_thermal_get_trip_points(struct acpi_thermal *tz)
-@@ -812,14 +818,8 @@ static void acpi_thermal_notify(acpi_han
- 		acpi_queue_thermal_check(tz);
- 		break;
- 	case ACPI_THERMAL_NOTIFY_THRESHOLDS:
--		acpi_thermal_trips_update(tz, ACPI_TRIPS_THRESHOLDS);
--		acpi_bus_generate_netlink_event(device->pnp.device_class,
--						dev_name(&device->dev), event, 0);
--		break;
- 	case ACPI_THERMAL_NOTIFY_DEVICES:
--		acpi_thermal_trips_update(tz, ACPI_TRIPS_DEVICES);
--		acpi_bus_generate_netlink_event(device->pnp.device_class,
--						dev_name(&device->dev), event, 0);
-+		acpi_thermal_trips_update(tz, event);
- 		break;
- 	default:
- 		acpi_handle_debug(device->handle, "Unsupported event [0x%x]\n",
-
-
-
+Jonathan
