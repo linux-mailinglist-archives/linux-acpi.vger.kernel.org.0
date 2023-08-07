@@ -2,239 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBE8E772510
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Aug 2023 15:08:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1515772845
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Aug 2023 16:54:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233805AbjHGNIw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Aug 2023 09:08:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55106 "EHLO
+        id S229576AbjHGOyQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Aug 2023 10:54:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233235AbjHGNIv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Aug 2023 09:08:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0EA6171E
-        for <linux-acpi@vger.kernel.org>; Mon,  7 Aug 2023 06:07:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691413670;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=jme0rhfzh6JhD99ZB8QzeloyQi3m6yoYS6ZHD9wuvr8=;
-        b=a6IePgmJ8TUo0/05KHF6PBSiS6vjHiM4cz4Xeg/LDabRinThIW4sIxfoIXt/+jE464CMQz
-        AfkwLEfGVy3kBu2NuJzxnzaqaQmNCXvcY5yiGuE7yAEuSXoYwsTGfvjpBrwJQwi7ZDOCPa
-        mLchtT4Rvg2WgiyrLQ029oOk/Pc/DkM=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-282-DVIZdxPtPi-aJ4VxyePsEw-1; Mon, 07 Aug 2023 09:07:49 -0400
-X-MC-Unique: DVIZdxPtPi-aJ4VxyePsEw-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-99bd6ea0d9eso361335466b.3
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Aug 2023 06:07:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691413668; x=1692018468;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jme0rhfzh6JhD99ZB8QzeloyQi3m6yoYS6ZHD9wuvr8=;
-        b=AeF1MRaiDGrrmoHmjPhSqzov3BBo1VOjnYaXS0EJG9uPpMttsuObETPpU+n2higanG
-         JaNKs7othAvfl/N/bzP7Tfe89i2pjtHFDR+RGv+7shNe/Mlh/a7yIvJbApHlFBtTekI0
-         iKpi+sPsss2PPEnfjnJyVi76E4zKEA0kmmKPpKrcu4PHMCifhCReMy9LUgwAE54RWIvh
-         TjqJgkoI7dpsvcqule0jfhrIQV8yidO2XXbi27wrDlHs8GmLmYmYMfr9ipd5hbfb+qDY
-         SSQYmF7DepI0V/e7BYb54ZmsxYHPcg4wvbNIrFmenuDcyFNvL9KGg2Zu1NO551ykWUo/
-         tJxg==
-X-Gm-Message-State: AOJu0Yy8ax28DDPFrzJCMqmjWkWFH+0oe1UABdx5FSJbhIF8/chyiqaf
-        l+8x185KEpHARQRY3I9jDy/od0AfUn9m3+X1exsPQR5S/CPtzQdi8V6KpBzkEFGc2Y11PGFGbKv
-        efRo/ug9auYp3WAj96xRNOMtAR+4Rjw==
-X-Received: by 2002:a17:906:1099:b0:99c:9e69:6a1c with SMTP id u25-20020a170906109900b0099c9e696a1cmr8450750eju.67.1691413667811;
-        Mon, 07 Aug 2023 06:07:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHvInCHNia93LEtdHlepW/JiEfDS2iww5AfvYdIACudI7+y/DnDZC10te1SlCSv/d3wNgreXw==
-X-Received: by 2002:a17:906:1099:b0:99c:9e69:6a1c with SMTP id u25-20020a170906109900b0099c9e696a1cmr8450735eju.67.1691413667517;
-        Mon, 07 Aug 2023 06:07:47 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id y16-20020a170906071000b00992d122af63sm5190783ejb.89.2023.08.07.06.07.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Aug 2023 06:07:46 -0700 (PDT)
-Date:   Mon, 7 Aug 2023 15:07:46 +0200
-From:   Igor Mammedov <imammedo@redhat.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, terraluna977@gmail.com,
-        bhelgaas@google.com, linux-pci@vger.kernel.org, mst@redhat.com,
-        rafael@kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 1/1] PCI: acpiphp:: use
- pci_assign_unassigned_bridge_resources() only if bus->self not NULL
-Message-ID: <20230807150746.71ca1df3@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230804232709.GA174043@bhelgaas>
-References: <20230726123518.2361181-2-imammedo@redhat.com>
-        <20230804232709.GA174043@bhelgaas>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+        with ESMTP id S229627AbjHGOyP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Aug 2023 10:54:15 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4522310CB;
+        Mon,  7 Aug 2023 07:54:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691420054; x=1722956054;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CyA/irSlGgoAqRyWRxyHWnwM5bPue1oYBQqCe5tRXz4=;
+  b=Y0+l5alrEmwq3obV3hynzOYV/d6KxPfy8yIJvXQsfkrP4VQoHPfTLvfg
+   kammXpHenx7/titxNUy/jykpLH54k7H+NqtdUCiV7Qpkkh9K/HI+4vXVu
+   pFGKRyDgUk1fCN1DHI35BCTrWYSqTDExSd5/eGWxxtCwMvlyLx6bhv6RY
+   kc214SsjtbMT0jNgyKAdsJCJibjfX6JaMt5+DyqCbfJI+6iZJN4Mmz5qv
+   BCAHzSUPFCw08BZBvdGUQ9IvpR9yqI9sWHGzgLE5FmfJHkYv4Mjxoye+N
+   0gKkGTMYGUTpSdljXuzASlQzocniP8KVdcfxsryXkgQXDCbs31EO9kzPp
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="369467931"
+X-IronPort-AV: E=Sophos;i="6.01,262,1684825200"; 
+   d="scan'208";a="369467931"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2023 07:54:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="734108295"
+X-IronPort-AV: E=Sophos;i="6.01,262,1684825200"; 
+   d="scan'208";a="734108295"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 07 Aug 2023 07:54:09 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qT1cW-00GD0C-0M;
+        Mon, 07 Aug 2023 17:54:08 +0300
+Date:   Mon, 7 Aug 2023 17:54:07 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct bus_type
+Message-ID: <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
+ <20230805174036.129ffbc2@jic23-huawei>
+ <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <20230806142950.6c409600@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230806142950.6c409600@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 4 Aug 2023 18:27:09 -0500
-Bjorn Helgaas <helgaas@kernel.org> wrote:
+On Sun, Aug 06, 2023 at 02:29:50PM +0100, Jonathan Cameron wrote:
+> On Sat, 5 Aug 2023 17:42:21 +0000
+> Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> > > On Fri,  4 Aug 2023 17:17:24 +0100
+> > > Biju Das <biju.das.jz@bp.renesas.com> wrote:
 
-> On Wed, Jul 26, 2023 at 02:35:18PM +0200, Igor Mammedov wrote:
-> > Commit [1] switched acpiphp hotplug to use
-> >    pci_assign_unassigned_bridge_resources()
-> > which depends on bridge being available, however in some cases
-> > when acpiphp is in use, enable_slot() can get a slot without
-> > bridge associated.  
-> 
-> acpiphp is *always* in use if we get to enable_slot(), so that doesn't
-> really add information here.
-> 
-> >   1. legitimate case of hotplug on root bus
-> >       (likely not exiting on real hw, but widely used in virt world)
-> >   2. broken firmware, that sends 'Bus check' events to non
-> >      existing root ports (Dell Inspiron 7352/0W6WV0), which somehow
-> >      endup at acpiphp:enable_slot(..., bridge = 0) and with bus
-> >      without bridge assigned to it.  
+...
 
-how about following commit message (incorporating all feed back in this thread):
+> > + * Besides the fact that some drivers abuse the device ID driver_data type
+> > + * and claim it to be integer, for the bus specific ID tables the driver_data
+> > + * may be defined as kernel_ulong_t. For these tables 0 is a valid response,
+> > + * but not for this function. It's recommended to convert those either to avoid
+> > + * 0 or use a real pointer to the predefined driver data.
 
--- cut --
-Commit [1] switched acpiphp hotplug to use
-   pci_assign_unassigned_bridge_resources()
-which depends on bridge being available, however in case
-when acpiphp is enabled [2], enable_slot() can be called without
-bridge associated.
-  1. legitimate case of hotplug on root bus
-      (widely used in virt world)
-  2. a (misbehaving) firmware, that sends 'Bus check' events
-     to non existing root ports (Dell Inspiron 7352/0W6WV0),
-     which endup at acpiphp:enable_slot(..., bridge = 0)
-     where bus has not bridge assigned to it.
-     acpihp doesn't know that it's a bridge, and bus specific
-     'PCI subsystem' can't argument ACPI context with bridge
-     information since the PCI device to get this data from
-     is/was not available.
+> We still need to maintain consistency across the two tables, which
+> is a stronger requirement than avoiding 0.
 
-Issue is easy to reproduce with QEMU's 'pc' machine, which supports
-PCI hotplug on hostbridge slots. To reproduce boot kernel at
-commit [1] in VM started with following CLI (assuming guest root fs
-is installed on sda1 partition):
+True. Any suggestion how to amend the above comment? Because the documentation
+makes sense on its own (may be split from the series?).
 
-   # qemu-system-x86_64 -M pc -m 1G -enable-kvm -cpu host \
-         -monitor stdio -serial file:serial.log           \
-         -kernel arch/x86/boot/bzImage                    \
-         -append "root=/dev/sda1 console=ttyS0"           \
-         guest_disk.img
+> Some drivers already do that by forcing the enum used to start at 1 which
+> doesn't solver the different data types issue.
 
-once guest OS is fully booted at qemu prompt:
+And some maintainers do not want to see non-enum values in i2c ID table.
+*Shrug*.
 
-(qemu) device_add e1000
-
-(check serial.log) it will cause NULL pointer dereference at:
-
-    void pci_assign_unassigned_bridge_resources(struct pci_dev *bridge)
-    {
-        struct pci_bus *parent = bridge->subordinate;
-
-[  612.277651] BUG: kernel NULL pointer dereference, address: 0000000000000018
-[...]
-[  612.277798]  ? pci_assign_unassigned_bridge_resources+0x1f/0x260
-[  612.277804]  ? pcibios_allocate_dev_resources+0x3c/0x2a0
-[  612.277809]  enable_slot+0x21f/0x3e0
-[  612.277816]  acpiphp_hotplug_notify+0x13d/0x260
-[  612.277822]  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
-[  612.277827]  acpi_device_hotplug+0xbc/0x540
-[  612.277834]  acpi_hotplug_work_fn+0x15/0x20
-[  612.277839]  process_one_work+0x1f7/0x370
-[  612.277845]  worker_thread+0x45/0x3b0
-[  612.277850]  ? __pfx_worker_thread+0x10/0x10
-[  612.277854]  kthread+0xdc/0x110
-[  612.277860]  ? __pfx_kthread+0x10/0x10
-[  612.277866]  ret_from_fork+0x28/0x40
-[  612.277871]  ? __pfx_kthread+0x10/0x10
-[  612.277876]  ret_from_fork_asm+0x1b/0x30
-
-The issue was discovered on Dell Inspiron 7352/0W6WV0 laptop with
-following sequence:
-   1. suspend to RAM
-   2. wake up with the same backtrace being observed:
-   3. 2nd suspend to RAM attempt makes laptop freeze
-
-Fix it by using __pci_bus_assign_resources() instead of
-pci_assign_unassigned_bridge_resources() as we used to do
-but only in case when bus doesn't have a bridge associated
-(to cover for the case of ACPI event on hostbridge or
-non existing root port).
-
-That let us keep hotplug on root bus working like it used to be
-and at the same time keeps resource reassignment usable on
-root ports (and other 1st level bridges) that was fixed by [1].
-
-1)
-Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
-2) CONFIG_HOTPLUG_PCI_ACPI=y
-
--- cut --
-
-if commit message is looking acceptable to you, I can respin
-amended patch with your suggestions taken in account.
-
-> IIUC, the Inspiron problem happens when:
-> 
->   - acpiphp_context->bridge is NULL, so hotplug_event() calls
->     enable_slot() instead of acpiphp_check_bridge(), AND
-> 
->   - acpiphp_slot->bus->self is also NULL, because enable_slot() calls
->     pci_assign_unassigned_bridge_resources() with that NULL pointer,
->     which dereferences "bridge->subordinate"
-> 
-> But I can't figure out why acpiphp_context->bridge is NULL for RP07
-> and RP08 (which don't exist), but not for RP03 (which does).
-> 
-> I guess all the acpiphp_contexts (RP03, RP07, RP08) must be allocated in
-> acpiphp_add_context() by acpiphp_init_context().
-> 
-> Woody's lspci from [1] shows only one Root Port:
-> 
->   00:1c.0 Wildcat Point-LP PCI Express Root Port #3
-> 
-> The DSDT.DSL includes:
-> 
->   Device (RP01) _ADR 0x001C0000		# 1c.0
->   Device (RP02) _ADR 0x001C0001		# 1c.1
->   Device (RP03) _ADR 0x001C0002		# 1c.2
->   Device (RP04) _ADR 0x001C0003		# 1c.3
->   Device (RP05) _ADR 0x001C0004		# 1c.4
->   Device (RP06) _ADR 0x001C0005		# 1c.5
->   Device (RP07) _ADR 0x001C0006		# 1c.6
->   Device (RP08) _ADR 0x001C0007		# 1c.7
-> 
-> I can see why we might need a Bus Check after resume to see if
-> something got added while we were suspended.  But I don't see why we
-> handle RP03 differently from RP07 and RP08.
-> 
-> Can you help me out?  I'm lost in a maze of twisty passages, all
-> alike.
-
-I'll try to trace call path and see where it leads
-(based on a guess in updated commit message: OS/nor ACPI
-has info if it's bridge when the device didn't exists
-during boot).
-
-(though, I don't think it should hold this patch.
-while it would be good to understand where bridge
-gets added in acpi context, it's not directly relevant
-to the fixing hotplug on hostbridge and buscheck events 
-on non-existing root-ports)
-
-> Bjorn
-> 
-> [1] https://lore.kernel.org/r/92150d8d-8a3a-d600-a996-f60a8e4c876c@gmail.com
-> 
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
