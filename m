@@ -2,184 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC363774A62
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Aug 2023 22:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8C37774BD9
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Aug 2023 22:58:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229668AbjHHU0f convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 8 Aug 2023 16:26:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45110 "EHLO
+        id S230366AbjHHU6y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Aug 2023 16:58:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230195AbjHHU0T (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Aug 2023 16:26:19 -0400
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77001222E7;
-        Tue,  8 Aug 2023 12:39:34 -0700 (PDT)
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6bcde3d8657so338632a34.0;
-        Tue, 08 Aug 2023 12:39:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691523574; x=1692128374;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c58ks/9Dr1zfmu2zS+3clcM4+/iOwxmZoLK5TyGbzOA=;
-        b=KjWNRRrDvLJVFG/WPtWQrgIe+2J3lMSHdk7DQPU0u2i/GiLspYK3VrZqZ4q3m5CBrA
-         gwTxHNn1ZpYfTtp/dNwQPDgivO9PNzSSbzh9UdyO4qP9FDf5RkoYKOt+vBRmtoAKSTwf
-         /tvo27UY0QusBrOPZo1QaCG9Iso1i0zboccH6b3FpRJ6+sdeoPr7Hl/T69wgpPTkRLtQ
-         12+CWaX8lj8lk3I5lXAQsb7MlGVVZSgSfx216v60LD04n9rxvtO4y8m3xyUoEI3AmwTc
-         A5Qei6rq73DDk2JNrj+Vtcj4Qi/Pn+StHb0DlR/QDIl2pMt9gCMMoI2NZrm6N/Vu6Pxe
-         inEQ==
-X-Gm-Message-State: AOJu0YypN3cZGe8CEfpUvVH/bk8AqdZU64GPdUnd14hnqOkvMsUxmsBI
-        eROwG4f60p7b9EWTXbE4D8FiUdboR7TgSxw9i58=
-X-Google-Smtp-Source: AGHT+IGqqLxXoaFah+KuxrNf99luNlzlovc9mCHxcHPECaaaLauzdCLB9tuj6JZkAHUTjO61utQXwNJuomt3rbEABi4=
-X-Received: by 2002:a4a:a64a:0:b0:56c:484a:923d with SMTP id
- j10-20020a4aa64a000000b0056c484a923dmr786914oom.1.1691523573721; Tue, 08 Aug
- 2023 12:39:33 -0700 (PDT)
+        with ESMTP id S235709AbjHHUmd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Aug 2023 16:42:33 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D312711F7C;
+        Tue,  8 Aug 2023 13:15:17 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
+ id 07c178e901b4681b; Tue, 8 Aug 2023 22:15:15 +0200
+Authentication-Results: v370.home.net.pl; spf=softfail (domain owner 
+   discourages use of this host) smtp.mailfrom=rjwysocki.net 
+   (client-ip=195.136.19.94; helo=[195.136.19.94]; 
+   envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
+Received: from kreacher.localnet (unknown [195.136.19.94])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 0057166137E;
+        Tue,  8 Aug 2023 22:15:14 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Linux PM <linux-pm@vger.kernel.org>
+Subject: [PATCH v1] ACPI: thermal: Do not attach private data to ACPI handles
+Date:   Tue, 08 Aug 2023 22:15:15 +0200
+Message-ID: <5703187.DvuYhMxLoT@kreacher>
 MIME-Version: 1.0
-References: <20230808192713.329414-1-helgaas@kernel.org>
-In-Reply-To: <20230808192713.329414-1-helgaas@kernel.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 8 Aug 2023 21:39:22 +0200
-Message-ID: <CAJZ5v0jc5dn+6WtH6O30EeJfGDLewiLaAY9YJEAO6d_n+Uv7ig@mail.gmail.com>
-Subject: Re: [PATCH] PCI: acpiphp: Log more slot and notification details
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     linux-pci@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Igor Mammedov <imammedo@redhat.com>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        Woody Suwalski <terraluna977@gmail.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrledvgddugeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdp
+ rhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 8, 2023 at 9:27 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
->
-> From: Bjorn Helgaas <bhelgaas@google.com>
->
-> When registering an acpiphp slot, log the slot name in the same style as
-> pciehp and include the PCI bus/device and whether a device is present or
-> the slot is empty.
->
-> When handling an ACPI notification, log the PCI bus/device and notification
-> type.
->
-> Sample dmesg log diff:
->
->     ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-ff])
->   - acpiphp: Slot [3] registered
->   - acpiphp: Slot [4] registered
->     PCI host bridge to bus 0000:00
->     pci 0000:00:03.0: [8086:100e] type 00 class 0x020000
->     <ACPI Device Check notification>
->     pci 0000:00:04.0: [8086:100e] type 00 class 0x020000
->
->     ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-ff])
->   + acpiphp: pci 0000:00:03 Slot(3) registered (enabled)
->   + acpiphp: pci 0000:00:04 Slot(4) registered (empty)
->     PCI host bridge to bus 0000:00
->     pci 0000:00:03.0: [8086:100e] type 00 class 0x020000
->     <ACPI Device Check notification>
->   + acpiphp: pci 0000:00:04 Slot(4) Device Check
->     pci 0000:00:04.0: [8086:100e] type 00 class 0x020000
->
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> ---
->  drivers/pci/hotplug/acpiphp_core.c |  4 ----
->  drivers/pci/hotplug/acpiphp_glue.c | 23 +++++++++++++++++++++--
->  2 files changed, 21 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/pci/hotplug/acpiphp_core.c b/drivers/pci/hotplug/acpiphp_core.c
-> index c02257f4b61c..19d47607d009 100644
-> --- a/drivers/pci/hotplug/acpiphp_core.c
-> +++ b/drivers/pci/hotplug/acpiphp_core.c
-> @@ -282,8 +282,6 @@ int acpiphp_register_hotplug_slot(struct acpiphp_slot *acpiphp_slot,
->                 goto error_slot;
->         }
->
-> -       pr_info("Slot [%s] registered\n", slot_name(slot));
-> -
->         return 0;
->  error_slot:
->         kfree(slot);
-> @@ -296,8 +294,6 @@ void acpiphp_unregister_hotplug_slot(struct acpiphp_slot *acpiphp_slot)
->  {
->         struct slot *slot = acpiphp_slot->slot;
->
-> -       pr_info("Slot [%s] unregistered\n", slot_name(slot));
-> -
->         pci_hp_deregister(&slot->hotplug_slot);
->         kfree(slot);
->  }
-> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-> index 328d1e416014..eeca2753a5c7 100644
-> --- a/drivers/pci/hotplug/acpiphp_glue.c
-> +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> @@ -25,7 +25,7 @@
->   *    bus. It loses the refcount when the driver unloads.
->   */
->
-> -#define pr_fmt(fmt) "acpiphp_glue: " fmt
-> +#define pr_fmt(fmt) "acpiphp: " fmt
->
->  #include <linux/module.h>
->
-> @@ -333,6 +333,12 @@ static acpi_status acpiphp_add_context(acpi_handle handle, u32 lvl, void *data,
->                                        &val, 60*1000))
->                 slot->flags |= SLOT_ENABLED;
->
-> +       if (slot->slot)
-> +               pr_info("pci %04x:%02x:%02x Slot(%s) registered (%s)\n",
-> +                       pci_domain_nr(slot->bus), slot->bus->number,
-> +                       slot->device, slot_name(slot->slot),
-> +                       slot->flags & SLOT_ENABLED ? "enabled" : "empty");
-> +
->         return AE_OK;
->  }
->
-> @@ -351,8 +357,13 @@ static void cleanup_bridge(struct acpiphp_bridge *bridge)
->                         acpi_unlock_hp_context();
->                 }
->                 slot->flags |= SLOT_IS_GOING_AWAY;
-> -               if (slot->slot)
-> +               if (slot->slot) {
-> +                       pr_info("pci %04x:%02x:%02x Slot(%s) unregistered\n",
-> +                               pci_domain_nr(slot->bus), slot->bus->number,
-> +                               slot->device, slot_name(slot->slot));
-> +
->                         acpiphp_unregister_hotplug_slot(slot);
-> +               }
->         }
->
->         mutex_lock(&bridge_mutex);
-> @@ -793,6 +804,14 @@ static void hotplug_event(u32 type, struct acpiphp_context *context)
->
->         pci_lock_rescan_remove();
->
-> +       pr_info("pci %04x:%02x:%02x Slot(%s) %s\n",
-> +               pci_domain_nr(slot->bus), slot->bus->number,
-> +               slot->device, slot_name(slot->slot),
-> +               type == ACPI_NOTIFY_BUS_CHECK ? "Bus Check" :
-> +               type == ACPI_NOTIFY_DEVICE_CHECK ? "Device Check" :
-> +               type == ACPI_NOTIFY_EJECT_REQUEST ? "Eject Request" :
-> +               "Notification");
-> +
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-pr_debug() perhaps?
+The ACPI thermal driver uses acpi_bus_attach_private_data() to attach
+the thermal zone object to the ACPI handle of the thermal zone and
+acpi_bus_detach_private_data() to clean that up, but it never uses
+acpi_bus_get_private_data() to retrieve that object.
 
-On systems that don't have any hotplug problems these messages will
-just be filling the kernel log unnecessarily.
+Drop the unneded acpi_bus_attach_private_data() and
+acpi_bus_detach_private_data() calls from the ACPI thermal driver and
+clean up the related code.
 
->         switch (type) {
->         case ACPI_NOTIFY_BUS_CHECK:
->                 /* bus re-enumerate */
-> --
+No intentional functional impact.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/thermal.c |   13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
+
+Index: linux-pm/drivers/acpi/thermal.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/thermal.c
++++ linux-pm/drivers/acpi/thermal.c
+@@ -742,7 +742,6 @@ static int acpi_thermal_register_thermal
+ {
+ 	int trips = 0;
+ 	int result;
+-	acpi_status status;
+ 	int i;
+ 
+ 	if (tz->trips.critical.valid)
+@@ -775,24 +774,15 @@ static int acpi_thermal_register_thermal
+ 	if (result)
+ 		goto unregister_tzd;
+ 
+-	status =  acpi_bus_attach_private_data(tz->device->handle,
+-					       tz->thermal_zone);
+-	if (ACPI_FAILURE(status)) {
+-		result = -ENODEV;
+-		goto remove_links;
+-	}
+-
+ 	result = thermal_zone_device_enable(tz->thermal_zone);
+ 	if (result)
+-		goto acpi_bus_detach;
++		goto remove_links;
+ 
+ 	dev_info(&tz->device->dev, "registered as thermal_zone%d\n",
+ 		 thermal_zone_device_id(tz->thermal_zone));
+ 
+ 	return 0;
+ 
+-acpi_bus_detach:
+-	acpi_bus_detach_private_data(tz->device->handle);
+ remove_links:
+ 	acpi_thermal_zone_sysfs_remove(tz);
+ unregister_tzd:
+@@ -806,7 +796,6 @@ static void acpi_thermal_unregister_ther
+ 	acpi_thermal_zone_sysfs_remove(tz);
+ 	thermal_zone_device_unregister(tz->thermal_zone);
+ 	tz->thermal_zone = NULL;
+-	acpi_bus_detach_private_data(tz->device->handle);
+ }
+ 
+ 
+
+
+
