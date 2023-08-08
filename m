@@ -2,122 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8C37774BD9
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Aug 2023 22:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5263774B42
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Aug 2023 22:44:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230366AbjHHU6y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Aug 2023 16:58:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37210 "EHLO
+        id S234402AbjHHUoG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Aug 2023 16:44:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235709AbjHHUmd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Aug 2023 16:42:33 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D312711F7C;
-        Tue,  8 Aug 2023 13:15:17 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id 07c178e901b4681b; Tue, 8 Aug 2023 22:15:15 +0200
-Authentication-Results: v370.home.net.pl; spf=softfail (domain owner 
-   discourages use of this host) smtp.mailfrom=rjwysocki.net 
-   (client-ip=195.136.19.94; helo=[195.136.19.94]; 
-   envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
-Received: from kreacher.localnet (unknown [195.136.19.94])
+        with ESMTP id S234474AbjHHUny (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Aug 2023 16:43:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65097271E
+        for <linux-acpi@vger.kernel.org>; Tue,  8 Aug 2023 13:18:59 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 0057166137E;
-        Tue,  8 Aug 2023 22:15:14 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: [PATCH v1] ACPI: thermal: Do not attach private data to ACPI handles
-Date:   Tue, 08 Aug 2023 22:15:15 +0200
-Message-ID: <5703187.DvuYhMxLoT@kreacher>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 266AF62C35
+        for <linux-acpi@vger.kernel.org>; Tue,  8 Aug 2023 20:18:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7A3C433C8;
+        Tue,  8 Aug 2023 20:18:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691525937;
+        bh=6gqxv3INJ4ZEPQUhaCDLMY1vc1+DCDuzEt5dPGtJ1+g=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Z/SHK5AFiK0O/Gw3/v/gSIk7JXcCZ+0vg19bAY4K12i7wUZid5gbADrK4M5de8csD
+         LVi8AvFnNShG8Pi6Ev45b1t5TKSRQR7CZqFWAWU26uY4pVSjMmuViK7iRiiRKsTN70
+         AbPVakgvZVWLuK1zQGW1O2t0qG5zvyCz2NtscFBTI6pi9oI+SaLtZGjKiBz2bfka9y
+         0lgWeFsvdgrRoPbSm3pQHndRrmTLa0Ynf2s+Bn/WlsVISnOv4wLtVrCyO7YbXCt4Gi
+         bNDl+spkueePYxELzFMHEDWDl82ond1MXWLkX6lLmA5hWRAiWGgMTt7F4sIymusgtl
+         Owv0DTjK6Qh2Q==
+Date:   Tue, 8 Aug 2023 21:18:51 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Jason Gunthorpe <jgg@nvidia.com>
+Cc:     iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Chen-Yu Tsai <wenst@chromium.org>, Aishwarya.TCV@arm.com
+Subject: Re: [PATCH 0/3] Fix device_lock deadlock on two probe() paths
+Message-ID: <0bf0557d-1dd9-45e7-a4a3-8b2527eeff7e@sirena.org.uk>
+References: <0-v1-8612b9ef48da+333-iommu_group_locking2_jgg@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrledvgddugeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdp
- rhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="aKHBjBx3iwUEeJQb"
+Content-Disposition: inline
+In-Reply-To: <0-v1-8612b9ef48da+333-iommu_group_locking2_jgg@nvidia.com>
+X-Cookie: Every solution breeds new problems.
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The ACPI thermal driver uses acpi_bus_attach_private_data() to attach
-the thermal zone object to the ACPI handle of the thermal zone and
-acpi_bus_detach_private_data() to clean that up, but it never uses
-acpi_bus_get_private_data() to retrieve that object.
+--aKHBjBx3iwUEeJQb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Drop the unneded acpi_bus_attach_private_data() and
-acpi_bus_detach_private_data() calls from the ACPI thermal driver and
-clean up the related code.
+On Tue, Aug 08, 2023 at 02:27:04PM -0300, Jason Gunthorpe wrote:
+> I missed two paths where __iommu_probe_device() can be called while
+> already holding the device_lock() for the device that is to be probed.
+>=20
+> This causes a deadlock because __iommu_probe_device() will attempt to
+> re-acquire the lock.
+>=20
+> Organize things so that these two paths can re-use the existing already
+> held device_lock by marking the call chains based on if the lock is held
+> or not.
+>=20
+> This is an incremental on top of Joerg's next, but it could also be handl=
+ed by
+> respinning the last patch in that series. Please let me know.
 
-No intentional functional impact.
+The issues this series fixes have been causing quite a bit of breakage
+in a range of CI systems (Arm's internal stuff, KernelCI and my personal
+CI).  Both the KernelCI bot and my colleague Aishwarya (CCed) bisected
+which pointed to this series so I've tested them - I didn't cover every
+board but this does fix at least some boots so:
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/thermal.c |   13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -742,7 +742,6 @@ static int acpi_thermal_register_thermal
- {
- 	int trips = 0;
- 	int result;
--	acpi_status status;
- 	int i;
- 
- 	if (tz->trips.critical.valid)
-@@ -775,24 +774,15 @@ static int acpi_thermal_register_thermal
- 	if (result)
- 		goto unregister_tzd;
- 
--	status =  acpi_bus_attach_private_data(tz->device->handle,
--					       tz->thermal_zone);
--	if (ACPI_FAILURE(status)) {
--		result = -ENODEV;
--		goto remove_links;
--	}
--
- 	result = thermal_zone_device_enable(tz->thermal_zone);
- 	if (result)
--		goto acpi_bus_detach;
-+		goto remove_links;
- 
- 	dev_info(&tz->device->dev, "registered as thermal_zone%d\n",
- 		 thermal_zone_device_id(tz->thermal_zone));
- 
- 	return 0;
- 
--acpi_bus_detach:
--	acpi_bus_detach_private_data(tz->device->handle);
- remove_links:
- 	acpi_thermal_zone_sysfs_remove(tz);
- unregister_tzd:
-@@ -806,7 +796,6 @@ static void acpi_thermal_unregister_ther
- 	acpi_thermal_zone_sysfs_remove(tz);
- 	thermal_zone_device_unregister(tz->thermal_zone);
- 	tz->thermal_zone = NULL;
--	acpi_bus_detach_private_data(tz->device->handle);
- }
- 
- 
+It'd be great to get these fixes into -next, thanks for getting the
+patches out so quickly.
 
+--aKHBjBx3iwUEeJQb
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmTSoyoACgkQJNaLcl1U
+h9CW0wf/W/pjGFGgTE9Wf1ci+gK1RanzAa19FUc2aRHQYrX8ws2pBOc6zyWUQkBH
+0618UoxVmI/2jQ8wJwzgg7ALPpraXosFv1p0me2ZS6p+QgVr1jJvDWlS3hgloSIP
+623DAAumHbxOmQUOS75R9pNJKRWIkneUV22QLvR9E6CYzGfgfjBHkZaj/vQYaVW4
+AYkLVM9Ene2HH5u0qZyXSrZagjOm4YP+4JRkCz3s8rqV/Ez6OmyHw3Fvuj9Tj5Sy
+DomWIrwrTTYDSF/p6cFMa3OrRub99EgeAbG/ibNN+g1B5tyJRXVSbxqqSOfcz8T1
+9ofA7D6mY5sCdIxZ8wS3svw9tOhLeQ==
+=dkd2
+-----END PGP SIGNATURE-----
+
+--aKHBjBx3iwUEeJQb--
