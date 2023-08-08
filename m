@@ -2,89 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D9C17736D8
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Aug 2023 04:40:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 121A0773780
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Aug 2023 05:17:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231146AbjHHCkr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Aug 2023 22:40:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56888 "EHLO
+        id S229640AbjHHDRi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Aug 2023 23:17:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230073AbjHHCkq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Aug 2023 22:40:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCC6E10D2
-        for <linux-acpi@vger.kernel.org>; Mon,  7 Aug 2023 19:40:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 678A362324
-        for <linux-acpi@vger.kernel.org>; Tue,  8 Aug 2023 02:40:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C3344C433CA;
-        Tue,  8 Aug 2023 02:40:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691462421;
-        bh=xKOlSGJHH9pDn+O9oivNc+VjOK0cMPfD2BollqSq4Fw=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=q/1OfgqMBDmpZmtVuuBL96TFd4roSmxBFKCsszfwoT40QhFNMDWlz8IlmzDCzElDk
-         kyyjZcej6MuXJpRurqZR7iaT+2JZ6IVmhMcSx7LJwcWZGUzX8zzmOLQXkJ4ImCMcH/
-         qSdTql7wtYvx6KZ29FGc9EmTlEjJb99xNesLz8K7iktcJeEyM4m7v+7ltmn3eJ0jpX
-         3Yb9B/eUSa/f+Jb5xxQxGirByHhvrWnDob0xG9Zsp0ZkpSufuuVoU66Q8EECtyzK7G
-         qD/b5B5FyF0EWX/wogAr0mSRemT3HYBlu3rwuY41aQ24KzW10jh1J0n7+RquE6eMd8
-         y+2MFob0NKzfw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A77E0E505D5;
-        Tue,  8 Aug 2023 02:40:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229592AbjHHDRh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Aug 2023 23:17:37 -0400
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 574E6E7;
+        Mon,  7 Aug 2023 20:17:36 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R371e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0VpJIIhI_1691464649;
+Received: from 30.240.115.244(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VpJIIhI_1691464649)
+          by smtp.aliyun-inc.com;
+          Tue, 08 Aug 2023 11:17:31 +0800
+Message-ID: <19bc33e2-1f47-43d6-599c-3e48bb697f7c@linux.alibaba.com>
+Date:   Tue, 8 Aug 2023 11:17:27 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3] platform/chrome: chromeos_acpi: support official HID
- GOOG0016
-From:   patchwork-bot+chrome-platform@kernel.org
-Message-Id: <169146242168.22152.1080564918581930878.git-patchwork-notify@kernel.org>
-Date:   Tue, 08 Aug 2023 02:40:21 +0000
-References: <20230731024214.908235-1-tzungbi@kernel.org>
-In-Reply-To: <20230731024214.908235-1-tzungbi@kernel.org>
-To:     Tzung-Bi Shih <tzungbi@kernel.org>
-Cc:     bleung@chromium.org, groeck@chromium.org, rafael@kernel.org,
-        lenb@kernel.org, guillaume.tucker@collabora.com,
-        denys.f@collabora.com, ricardo.canuelo@collabora.com,
-        usama.anjum@collabora.com, chrome-platform@lists.linux.dev,
-        linux-acpi@vger.kernel.org
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [RESEND PATCH v7 0/2] ACPI: APEI: handle synchronous exceptions
+ with proper si_code
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     rafael@kernel.org, wangkefeng.wang@huawei.com,
+        tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
+        naoya.horiguchi@nec.com,
+        "james.morse@arm.com" <james.morse@arm.com>
+Cc:     linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, justin.he@arm.com,
+        akpm@linux-foundation.org, ardb@kernel.org, ashish.kalra@amd.com,
+        baolin.wang@linux.alibaba.com, bp@alien8.de,
+        cuibixuan@linux.alibaba.com, dave.hansen@linux.intel.com,
+        jarkko@kernel.org, lenb@kernel.org, linmiaohe@huawei.com,
+        lvying6@huawei.com, xiexiuqi@huawei.com,
+        zhuo.song@linux.alibaba.com
+References: <20230606074238.97166-1-xueshuai@linux.alibaba.com>
+ <a2b16cca-5449-1d16-f49c-7b83fb45771c@linux.alibaba.com>
+ <1fe4f86e-63ce-3702-4e08-4bc0e7bb391b@linux.alibaba.com>
+Content-Language: en-US
+In-Reply-To: <1fe4f86e-63ce-3702-4e08-4bc0e7bb391b@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-11.7 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello:
 
-This patch was applied to chrome-platform/linux.git (for-next)
-by Tzung-Bi Shih <tzungbi@kernel.org>:
 
-On Mon, 31 Jul 2023 10:42:14 +0800 you wrote:
-> Support official HID GOOG0016 for ChromeOS ACPI (see [1]).
+On 2023/7/10 11:15, Shuai Xue wrote:
 > 
-> [1]: https://crrev.com/c/2266713
 > 
-> Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-> ---
-> Changes from v2[2]:
-> - Instead of replacing, appending "GOOG0016" in sysfs-driver-chromeos-acpi.
+> On 2023/6/16 15:15, Shuai Xue wrote:
+>>
+>>
+>> On 2023/6/6 15:42, Shuai Xue wrote:
+>>> changes since v6:
+>>> - add more explicty error message suggested by Xiaofei
+>>> - pick up reviewed-by tag from Xiaofei
+>>> - pick up internal reviewed-by tag from Baolin
+>>>
+>>> changes since v5 by addressing comments from Kefeng:
+>>> - document return value of memory_failure()
+>>> - drop redundant comments in call site of memory_failure() 
+>>> - make ghes_do_proc void and handle abnormal case within it
+>>> - pick up reviewed-by tag from Kefeng Wang 
+>>>
+>>> changes since v4 by addressing comments from Xiaofei:
+>>> - do a force kill only for abnormal sync errors
+>>>
+>>> changes since v3 by addressing comments from Xiaofei:
+>>> - do a force kill for abnormal memory failure error such as invalid PA,
+>>> unexpected severity, OOM, etc
+>>> - pcik up tested-by tag from Ma Wupeng
+>>>
+>>> changes since v2 by addressing comments from Naoya:
+>>> - rename mce_task_work to sync_task_work
+>>> - drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
+>>> - add steps to reproduce this problem in cover letter
+>>>
+>>> changes since v1:
+>>> - synchronous events by notify type
+>>> - Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
+>>>
+>>>
+>>> Shuai Xue (2):
+>>>   ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on
+>>>     synchronous events
+>>>   ACPI: APEI: handle synchronous exceptions in task work
+>>>
+>>>  arch/x86/kernel/cpu/mce/core.c |   9 +--
+>>>  drivers/acpi/apei/ghes.c       | 113 ++++++++++++++++++++++-----------
+>>>  include/acpi/ghes.h            |   3 -
+>>>  mm/memory-failure.c            |  17 +----
+>>>  4 files changed, 79 insertions(+), 63 deletions(-)
+>>>
+>>
+>>
+>> Hi, Rafael,
+>>
+>> Gentle ping.
+>>
+>> Are you happy to queue this patch set or anything I can do to improve it?
+>> As @Kefeng said, this issue is met in Alibaba and Huawei products, we hope it
+>> could be fixed ASAP.
 > 
-> [...]
+> Hi Rafael, Tony, and Naoya,
+> 
+> Gentle ping. I am sorry to see that we have missed v6.3 and v6.4 merge window
+> since three Reviewed-by tags and one Tested-by tag.
+> 
+> Do we still need any designated APEI reviewers Reviewed-by? Could you give me your
+> Reviewed-by @Tony, and @Naoya if you are happy with the change.
+> 
+> Or Please could you Ack this change if you are happy with the proposal and the
+> change? @Rafael
+> 
 
-Here is the summary with links:
-  - [v3] platform/chrome: chromeos_acpi: support official HID GOOG0016
-    https://git.kernel.org/chrome-platform/c/703e77134ebf
+Hi, ALL,
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Gentle ping.
 
-
+>>
+>> Thank you.
+>>
+>> Best Regards,
+>> Shuai
