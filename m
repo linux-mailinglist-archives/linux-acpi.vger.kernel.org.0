@@ -2,61 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 051F877477F
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Aug 2023 21:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FF817744B7
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Aug 2023 20:27:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235480AbjHHTPc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Aug 2023 15:15:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54566 "EHLO
+        id S235704AbjHHS10 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Aug 2023 14:27:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234082AbjHHTPF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Aug 2023 15:15:05 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BCBD3C200;
-        Tue,  8 Aug 2023 09:38:01 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        with ESMTP id S235974AbjHHS1H (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Aug 2023 14:27:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C965022AC5
+        for <linux-acpi@vger.kernel.org>; Tue,  8 Aug 2023 10:40:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691516412;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=p2P7o3SWFMhac7R/CmLbPa6CJ+KlwYU2q6QemqG6buQ=;
+        b=BVNsAoaQJyxWfdDfmAfGe4gB8QeGaZ42E+wiKYdyJqZclzTSuhq8D1OlJyILZMNvgTPqkY
+        EuNwlVqVQeqBlv/vPsg4yggx7/uH91vfJoDUaoTnVwFdRF+Zy+cFmTS6y4p7BhCVkbxxjN
+        c39UqJ1KccYZtMKNu2G8gWoqNmp8YLA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-639-ybtwm-viNvyK3DQ0cKNvFw-1; Tue, 08 Aug 2023 06:33:45 -0400
+X-MC-Unique: ybtwm-viNvyK3DQ0cKNvFw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 80AA62247E;
-        Tue,  8 Aug 2023 09:25:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1691486707; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=1anG8IJZHp2UOy4q48lcqQRJhQy3OSUMlqLkKSLuNX8=;
-        b=AsKxsIU23VnIvXB6MjRIlupIpguZHhh6Uo3483cmq0eQ54rvU7PfooweNoA04ywlxHdN7P
-        cjr7MhnRQOLUzE3Rqzan1icRYIUiQS/IrUtR4A+E74NuQowflx/Y+Jsn8nA1WwETxeWbM1
-        ZST4X/QT7ijLm5K+qTWSKhRisknEDw4=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5658D13451;
-        Tue,  8 Aug 2023 09:25:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id s1joE/MJ0mSBFwAAMHmgww
-        (envelope-from <mkoutny@suse.com>); Tue, 08 Aug 2023 09:25:07 +0000
-Date:   Tue, 8 Aug 2023 11:25:06 +0200
-From:   Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To:     Igor Mammedov <imammedo@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, terraluna977@gmail.com,
-        bhelgaas@google.com, linux-pci@vger.kernel.org, mst@redhat.com,
-        rafael@kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 1/1] PCI: acpiphp:: use
- pci_assign_unassigned_bridge_resources() only if bus->self not NULL
-Message-ID: <ku2hdnc2wixu5ygnwvtzbti3ujgkcte7fluvypno2zufnqqzt5@5ip4ndk4ha5l>
-References: <20230726123518.2361181-1-imammedo@redhat.com>
- <20230726123518.2361181-2-imammedo@redhat.com>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 359288564F0;
+        Tue,  8 Aug 2023 10:33:45 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.194.191])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2CD9840C2076;
+        Tue,  8 Aug 2023 10:33:44 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
+Subject: [PATCH v2 0/3] ACPI: resource: Fix regressions from "Remove "Zen" specific match and quirks"
+Date:   Tue,  8 Aug 2023 12:33:32 +0200
+Message-ID: <20230808103335.95339-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="loif23qxzpmsi74g"
-Content-Disposition: inline
-In-Reply-To: <20230726123518.2361181-2-imammedo@redhat.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,46 +59,40 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi All,
 
---loif23qxzpmsi74g
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+As discussed here in the v1 thread:
+https://lore.kernel.org/linux-acpi/20230806151453.10690-1-hdegoede@redhat.com/
 
-Hello.
+Here is a v2 which adds a few fixes on top of the revert
+to avoid the revert causing regressions on AMD Zen systems
+where dropping the special Zen behavior was known to fix
+things.
 
-On Wed, Jul 26, 2023 at 02:35:18PM +0200, Igor Mammedov <imammedo@redhat.co=
-m> wrote:
-> The issue was discovered on Dell Inspiron 7352/0W6WV0 laptop with
-> following sequence:
->    1. suspend to RAM
->    2. wake up with the same backtrace being observed:
->    3. 2nd suspend to RAM attempt makes laptop freeze
+As also mentioned in the thread this is intended as a short term fix
+for 6.4.y >= 6.4.7 and 6.5 to get all the systems which were working
+fine before commit a9c4a912b7dc ("ACPI: resource: Remove "Zen"
+specific match and quirks") to work again.
 
-My Dell laptop suffers this since v6.5-rc1.
-I've found this thread because of the same call stack triggering the
-NULL ptr dereference I captured on my machine.
+The long term plan is to see if we can read back what the BIOS
+has actually programmed as IRQ trigger-type / polarity into
+the IOAPIC.
 
-I applied this patch and resume works as before and I have observed no
-issues during typical usage.
+Regards,
 
-I'd be glad if a fix like this makes it into the next -rc.
-Feel free to add
+Hans
 
-Tested-by: Michal Koutn=FD <mkoutny@suse.com>
 
-Thanks for looking into this,
-Michal
+Hans de Goede (3):
+  ACPI: resource: revert "Remove "Zen" specific match and quirks"
+  ACPI: resource: Always use MADT override IRQ settings for GSI != 1
+  ACPI: resource: Honor MADT INT_SRC_OVR settings for IRQ1 on AMD Zen
 
---loif23qxzpmsi74g
-Content-Type: application/pgp-signature; name="signature.asc"
+ arch/x86/include/asm/acpi.h |  1 +
+ arch/x86/kernel/acpi/boot.c |  4 +++
+ drivers/acpi/resource.c     | 52 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 57 insertions(+)
 
------BEGIN PGP SIGNATURE-----
+-- 
+2.41.0
 
-iHUEABYKAB0WIQQpEWyjXuwGT2dDBqAGvrMr/1gcjgUCZNIJ4AAKCRAGvrMr/1gc
-jpuqAQC6YiooWMYGa8M8En3OudIzKzX9KgLGGk4WGtRNpJOoewD/XP+2J37kJXqr
-7MwD+1Fye6AtqSyVCMDokgVsiwqiiwM=
-=hxD1
------END PGP SIGNATURE-----
-
---loif23qxzpmsi74g--
