@@ -2,76 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B757774AF5
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Aug 2023 22:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E302774B81
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Aug 2023 22:49:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230323AbjHHUi4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Aug 2023 16:38:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40944 "EHLO
+        id S235394AbjHHUtJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Aug 2023 16:49:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232698AbjHHUbv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Aug 2023 16:31:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 376034AA90;
-        Tue,  8 Aug 2023 09:50:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        with ESMTP id S235125AbjHHUsz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Aug 2023 16:48:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83CC43A6B2
+        for <linux-acpi@vger.kernel.org>; Tue,  8 Aug 2023 09:39:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691512732;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=CNB47Sp7trc9bmNcKr/Qyt4K/JLPlJPyfPKXwvKIQrU=;
+        b=QUT25xh2x6xZU2IKxaIgLawMA7xqQ5IwhPqTQKSDLl7ut+/DuHStae7KFUBqqlvTmBpsqS
+        zn0CRGi+h3MG4dByNhkulJX+OvxKkwJMDd/wgJxOLHAYncVKWPlxCinNuKwtraM/5mFuut
+        guoeLIoCQJeWaSXa/tm1dZvJMcFiaJI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-550-a_3N6NsJOtqpEwgmPnVgVQ-1; Tue, 08 Aug 2023 06:33:46 -0400
+X-MC-Unique: a_3N6NsJOtqpEwgmPnVgVQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 60970623F2;
-        Tue,  8 Aug 2023 08:31:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A31BC433C8;
-        Tue,  8 Aug 2023 08:31:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691483517;
-        bh=MpyvTQzwBjHbZI8sMSOd7J9/piSikcHHm+TWFR/stac=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pka7NzrVjEQNbyWGI/WnWkrr+a5FjLtxCmsQcCOXphsY9L5W46RUvd6aapwlo9jCS
-         NolUJckCfoY7fX/X9OHUnpMLYiuwRY70OYahppcxYoMgc9SHLse5Xn7id/DhVU/r/7
-         nnGGJeO6e3yUm2+hcyf2EF+9bqOSVK4poXjiqNSyxgEPFVLlt4kExzhNuWuz9Xm7fH
-         b1yO+pqKpbEjzdwsS/cserCryKALKg+zlphWhxpBehWtx4z+lnaAb+TJGL2UPyW0E/
-         ETh8bu5SwkRbm9SP9U2vRi75kNMH8ZwGOZ53Zv9IaZc7clxnmeiTFjwGGpWVI3Plsk
-         /lL4HFoVfbKgQ==
-Date:   Tue, 8 Aug 2023 09:31:49 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Atish Kumar Patra <atishp@rivosinc.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Will Deacon <will@kernel.org>, Haibo Xu <haibo1.xu@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Anup Patel <anup@brainfault.org>, Len Brown <lenb@kernel.org>
-Subject: Re: [RFC PATCH v1 12/21] irqchip/riscv-intc: Use swnode framework to
- create fwnode
-Message-ID: <20230808-chuck-jailhouse-0cb08b55d1bd@spud>
-References: <20230803175916.3174453-1-sunilvl@ventanamicro.com>
- <20230803175916.3174453-13-sunilvl@ventanamicro.com>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 63D93185A793;
+        Tue,  8 Aug 2023 10:33:46 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.194.191])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 68C8740C2076;
+        Tue,  8 Aug 2023 10:33:45 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
+Subject: [PATCH v2 1/3] ACPI: resource: revert "Remove "Zen" specific match and quirks"
+Date:   Tue,  8 Aug 2023 12:33:33 +0200
+Message-ID: <20230808103335.95339-2-hdegoede@redhat.com>
+In-Reply-To: <20230808103335.95339-1-hdegoede@redhat.com>
+References: <20230808103335.95339-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="KGbrO9FdUrNn/kR9"
-Content-Disposition: inline
-In-Reply-To: <20230803175916.3174453-13-sunilvl@ventanamicro.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,207 +62,111 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Commit a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and
+quirks") is causing keyboard problems for quite a log of AMD based
+laptop users, leading to many bug reports.
 
---KGbrO9FdUrNn/kR9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Revert this change for now, until we can come up with
+a better fix for the PS/2 IRQ trigger-type/polarity problems
+on some x86 laptops.
 
-Hey Sunil,
+Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229165
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229317
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217726
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/resource.c | 60 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-On Thu, Aug 03, 2023 at 11:29:07PM +0530, Sunil V L wrote:
-> By using swnode framework, all data from ACPI tables can
-> be populated as properties of the swnode. This simplifies
-> the driver code and removes the need for ACPI vs DT checks.
-> Use this framework for RISC-V INTC driver.
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 1dd8d5aebf67..0800a9d77558 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -470,6 +470,52 @@ static const struct dmi_system_id asus_laptop[] = {
+ 	{ }
+ };
+ 
++static const struct dmi_system_id lenovo_laptop[] = {
++	{
++		.ident = "LENOVO IdeaPad Flex 5 14ALC7",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
++		},
++	},
++	{
++		.ident = "LENOVO IdeaPad Flex 5 16ALC7",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
++		},
++	},
++	{ }
++};
++
++static const struct dmi_system_id tongfang_gm_rg[] = {
++	{
++		.ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
++		},
++	},
++	{ }
++};
++
++static const struct dmi_system_id maingear_laptop[] = {
++	{
++		.ident = "MAINGEAR Vector Pro 2 15",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-15A3070T"),
++		}
++	},
++	{
++		.ident = "MAINGEAR Vector Pro 2 17",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-17A3070T"),
++		},
++	},
++	{ }
++};
++
+ static const struct dmi_system_id lg_laptop[] = {
+ 	{
+ 		.ident = "LG Electronics 17U70P",
+@@ -493,6 +539,10 @@ struct irq_override_cmp {
+ static const struct irq_override_cmp override_table[] = {
+ 	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+ 	{ asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
++	{ lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
++	{ lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
++	{ tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
++	{ maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+ 	{ lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+ };
+ 
+@@ -512,6 +562,16 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+ 			return entry->override;
+ 	}
+ 
++#ifdef CONFIG_X86
++	/*
++	 * IRQ override isn't needed on modern AMD Zen systems and
++	 * this override breaks active low IRQs on AMD Ryzen 6000 and
++	 * newer systems. Skip it.
++	 */
++	if (boot_cpu_has(X86_FEATURE_ZEN))
++		return false;
++#endif
++
+ 	return true;
+ }
+ 
+-- 
+2.41.0
 
-btw, you are permitted to use more than 60 characters in a commit
-message...
-
->=20
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> ---
->  Documentation/riscv/acpi.rst     | 21 +++++++++++++++
->  arch/riscv/include/asm/acpi.h    |  1 +
->  drivers/acpi/riscv/Makefile      |  2 +-
->  drivers/acpi/riscv/irqchip.c     | 46 ++++++++++++++++++++++++++++++++
->  drivers/irqchip/irq-riscv-intc.c | 12 ++++-----
->  5 files changed, 75 insertions(+), 7 deletions(-)
->  create mode 100644 drivers/acpi/riscv/irqchip.c
->=20
-> diff --git a/Documentation/riscv/acpi.rst b/Documentation/riscv/acpi.rst
-> index 9870a282815b..e2406546bc16 100644
-> --- a/Documentation/riscv/acpi.rst
-> +++ b/Documentation/riscv/acpi.rst
-> @@ -8,3 +8,24 @@ The ISA string parsing rules for ACPI are defined by `Ve=
-rsion ASCIIDOC
->  Conversion, 12/2022 of the RISC-V specifications, as defined by tag
->  "riscv-isa-release-1239329-2023-05-23" (commit 1239329
->  ) <https://github.com/riscv/riscv-isa-manual/releases/tag/riscv-isa-rele=
-ase-1239329-2023-05-23>`_
-> +
-> +Interrupt Controller Drivers
-> +=3D=3D=3D=3D=3D=3D=3D
-> +
-> +ACPI drivers for RISC-V interrupt controllers use software node framewor=
-k to
-> +create the fwnode for the interrupt controllers. Below properties are
-> +additionally required for some firmware nodes apart from the properties
-> +defined by the device tree bindings for these interrupt controllers. The
-> +properties are created using the data in MADT table.
-
-I don't really understand this text, specifically what you are getting
-at w/ the dependency on devicetree properties. What exactly does "apart
-=66rom the properties defined by the devicetree bindings" mean?
-
-Is there prior art for this kind of "ACPI needs swnodes that look
-vaguely similar to devicetree" for other interrupt controllers?
-
-Thanks,
-Conor.
-
-> +1) RISC-V Interrupt Controller (INTC)
-> +-----------
-> +``hartid`` - Hart ID of the hart this interrupt controller belongs to.
-> +
-> +``riscv,imsic-addr`` - Physical base address of the Incoming MSI Control=
-ler
-> +(IMSIC) MMIO region of this hart.
-> +
-> +``riscv,imsic-size`` - Size in bytes of the IMSIC MMIO region of this ha=
-rt.
-> +
-> +``riscv,ext-intc-id`` - The unique ID of the external interrupts connect=
-ed
-> +to this hart.
-> diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
-> index 0c4e8b35103e..0ac2df2dd194 100644
-> --- a/arch/riscv/include/asm/acpi.h
-> +++ b/arch/riscv/include/asm/acpi.h
-> @@ -68,6 +68,7 @@ int acpi_get_riscv_isa(struct acpi_table_header *table,
->  static inline int acpi_numa_get_nid(unsigned int cpu) { return NUMA_NO_N=
-ODE; }
->  int acpi_get_cbo_block_size(struct acpi_table_header *table, unsigned in=
-t cpu, u32 *cbom_size,
->  			    u32 *cboz_size, u32 *cbop_size);
-> +struct fwnode_handle *acpi_rintc_create_irqchip_fwnode(struct acpi_madt_=
-rintc *rintc);
->  #else
->  static inline void acpi_init_rintc_map(void) { }
->  static inline struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu)
-> diff --git a/drivers/acpi/riscv/Makefile b/drivers/acpi/riscv/Makefile
-> index 8b3b126e0b94..8b664190d172 100644
-> --- a/drivers/acpi/riscv/Makefile
-> +++ b/drivers/acpi/riscv/Makefile
-> @@ -1,2 +1,2 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> -obj-y 	+=3D rhct.o
-> +obj-y 	+=3D rhct.o irqchip.o
-> diff --git a/drivers/acpi/riscv/irqchip.c b/drivers/acpi/riscv/irqchip.c
-> new file mode 100644
-> index 000000000000..36f066a2cad5
-> --- /dev/null
-> +++ b/drivers/acpi/riscv/irqchip.c
-> @@ -0,0 +1,46 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2023, Ventana Micro Systems Inc
-> + *	Author: Sunil V L <sunilvl@ventanamicro.com>
-> + *
-> + */
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/fwnode.h>
-> +#include <linux/irqdomain.h>
-> +#include <linux/list.h>
-> +#include <linux/property.h>
-> +
-> +struct riscv_irqchip_list {
-> +	struct fwnode_handle *fwnode;
-> +	struct list_head list;
-> +};
-> +
-> +LIST_HEAD(rintc_list);
-> +
-> +struct fwnode_handle *acpi_rintc_create_irqchip_fwnode(struct acpi_madt_=
-rintc *rintc)
-> +{
-> +	struct property_entry props[6] =3D {};
-> +	struct fwnode_handle *fwnode;
-> +	struct riscv_irqchip_list *rintc_element;
-> +
-> +	props[0] =3D PROPERTY_ENTRY_U64("hartid", rintc->hart_id);
-> +	props[1] =3D PROPERTY_ENTRY_U32("riscv,ext-intc-id", rintc->ext_intc_id=
-);
-> +	props[2] =3D PROPERTY_ENTRY_U64("riscv,imsic-addr", rintc->imsic_addr);
-> +	props[3] =3D PROPERTY_ENTRY_U32("riscv,imsic-size", rintc->imsic_size);
-> +	props[4] =3D PROPERTY_ENTRY_U32("#interrupt-cells", 1);
-> +
-> +	fwnode =3D fwnode_create_software_node_early(props, NULL);
-> +	if (fwnode) {
-> +		rintc_element =3D kzalloc(sizeof(*rintc_element), GFP_KERNEL);
-> +		if (!rintc_element) {
-> +			fwnode_remove_software_node(fwnode);
-> +			return NULL;
-> +		}
-> +
-> +		rintc_element->fwnode =3D fwnode;
-> +		list_add_tail(&rintc_element->list, &rintc_list);
-> +	}
-> +
-> +	return fwnode;
-> +}
-> diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv=
--intc.c
-> index 1a0fc87152c5..1ef9cada1ed3 100644
-> --- a/drivers/irqchip/irq-riscv-intc.c
-> +++ b/drivers/irqchip/irq-riscv-intc.c
-> @@ -203,6 +203,12 @@ static int __init riscv_intc_acpi_init(union acpi_su=
-btable_headers *header,
-> =20
->  	rintc =3D (struct acpi_madt_rintc *)header;
-> =20
-> +	fn =3D acpi_rintc_create_irqchip_fwnode(rintc);
-> +	if (!fn) {
-> +		pr_err("unable to create INTC FW node\n");
-> +		return -ENOMEM;
-> +	}
-> +
->  	/*
->  	 * The ACPI MADT will have one INTC for each CPU (or HART)
->  	 * so riscv_intc_acpi_init() function will be called once
-> @@ -212,12 +218,6 @@ static int __init riscv_intc_acpi_init(union acpi_su=
-btable_headers *header,
->  	if (riscv_hartid_to_cpuid(rintc->hart_id) !=3D smp_processor_id())
->  		return 0;
-> =20
-> -	fn =3D irq_domain_alloc_named_fwnode("RISCV-INTC");
-> -	if (!fn) {
-> -		pr_err("unable to allocate INTC FW node\n");
-> -		return -ENOMEM;
-> -	}
-> -
->  	return riscv_intc_init_common(fn);
->  }
-> =20
-> --=20
-> 2.39.2
->=20
->=20
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
-
---KGbrO9FdUrNn/kR9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNH9dQAKCRB4tDGHoIJi
-0irpAQCn4tpo+ZUuKBiS5LlN2kTNA7QFVujwPoaS1jfnlSeJTAEAkLdDYwU7W+ML
-Vydp6LtqVqBQYdbOuMRHnZvBwVgH6A0=
-=cP5x
------END PGP SIGNATURE-----
-
---KGbrO9FdUrNn/kR9--
