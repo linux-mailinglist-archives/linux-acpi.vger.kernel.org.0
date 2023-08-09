@@ -2,148 +2,164 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBC537755F7
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Aug 2023 10:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87C2F77561B
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Aug 2023 11:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231337AbjHII5H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Aug 2023 04:57:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56466 "EHLO
+        id S229489AbjHIJGD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Aug 2023 05:06:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231776AbjHII5G (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 04:57:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD2A1FD4
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Aug 2023 01:55:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691571337;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=s3VBFXxI2pbsP1ZmcIb5tJNksNxfiIu3X88w43HuLHw=;
-        b=bB0DqbLbpUwkzhLAb11OxIkm9ei+IlUE+pe5/dXO0tjfZL4QsIqFCt5JsCy42eT2jb5yOX
-        kw7dXTupY5jKY7OIY0/xxNeWtrqy5FfkRP0GP4Ek+KoZ82C2rS2iHgCq4IfCyF848VEeXk
-        d5cSYWE9PTNXY53fHAJj3HUmXulT4KE=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-131-UJb9c5GZOCeulE0Mbv0kpg-1; Wed, 09 Aug 2023 04:55:32 -0400
-X-MC-Unique: UJb9c5GZOCeulE0Mbv0kpg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ACBDE3C1015A;
-        Wed,  9 Aug 2023 08:55:31 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.194.12])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 962081121314;
-        Wed,  9 Aug 2023 08:55:30 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        August Wikerfors <git@augustwikerfors.se>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v3 3/3] ACPI: resource: Honor MADT INT_SRC_OVR settings for IRQ1 on AMD Zen
-Date:   Wed,  9 Aug 2023 10:55:25 +0200
-Message-ID: <20230809085526.84913-4-hdegoede@redhat.com>
-In-Reply-To: <20230809085526.84913-1-hdegoede@redhat.com>
-References: <20230809085526.84913-1-hdegoede@redhat.com>
+        with ESMTP id S230403AbjHIJGD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 05:06:03 -0400
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FE391FCE
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Aug 2023 02:06:02 -0700 (PDT)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-1bfc2b68090so3079368fac.3
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Aug 2023 02:06:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691571961; x=1692176761;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VLwyECYT6Xn6msmS0NUyb2lEiZ0edDW9yNz2SldE0mc=;
+        b=BJCH8EKq9jxX7cTgHO4TsdzBRQ3EvmByUEt/z+XszLHl8hJQdaHrR7je53WAWig8c5
+         FR69YAOC1z9J2gzHpyc0Ltl5aqRL2CTZHWzyf4DzDNJeVLpYnobBKG1Q8vgFLExjPuOY
+         NSXfmusCh0bX2Cz9X+1I24kDHvoKbpoOf7UXKhpHmzWgCtPXUu0ypG+esn7/n3XF+YXC
+         1NuWj40XFfLBdVQsb1e9BFmZc8FiDfxkPS+0dZWz4DWRKGoMJ4nMbNxmTAD8Fkf4nLJX
+         +TOhVaO/PnPDx3Lrofr4zp6cowNBKlS663h3znJ7Nas8g44hSLsmsBGnRIYMTDmUqe62
+         UvAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691571961; x=1692176761;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VLwyECYT6Xn6msmS0NUyb2lEiZ0edDW9yNz2SldE0mc=;
+        b=OAz1iUh34aid9Yl4gLfc031JSWVV0NJ44u6tYAJdL0PVMfH0EGwDYkYbnHPepDRh8j
+         6uQSRGY98RLPQgHdyBvumE81nPQmeVGZXn4OPCFC3pl13o/mT1g+f5m6bXKiWS5zSxki
+         yeQjRVbcJrv3r/9V2gOYJWcpuCUdNSrbE/WbQTpoyQffMOUEyfSVF7CI1i2O5tTEacQG
+         rHHYsE7PzqlCqIlRYktV4B9AwCLVumpDEr7uhPoE6dPsmvxt5SUt5wRDR+0yiud1jQSY
+         wRct34TYMHv784gjtZHIfntAA7/TccAWGvg5Esn02DELgq2TJPfrmp5d5EuxFMBRljbF
+         8j+Q==
+X-Gm-Message-State: AOJu0YxZVb4oNxpxABbu1LE9m6BQNgeK+UGLKzLM9w7/AasRiVOyll4K
+        NM8gY+1KJZ5CveHOjAzQFmP7hOp6RhfjOwRjDLA=
+X-Google-Smtp-Source: AGHT+IHQzYTaI51nIwXm5MeNFV+xf6Yw4lQVb/h8CESe1IEo8EoCViw6xj+zsV+CXnfG8Z/9E1I/YG517iHk47wjnCI=
+X-Received: by 2002:a05:6808:2916:b0:3a7:30ad:df27 with SMTP id
+ ev22-20020a056808291600b003a730addf27mr1922201oib.19.1691571961456; Wed, 09
+ Aug 2023 02:06:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <20230721154813.310996-1-cezary.rojewski@intel.com>
+ <20230721154813.310996-2-cezary.rojewski@intel.com> <ZNMdertpWWvoAJM3@surfacebook>
+ <c987d5dc-ae21-8fdc-3037-ad05c44742dc@intel.com>
+In-Reply-To: <c987d5dc-ae21-8fdc-3037-ad05c44742dc@intel.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 9 Aug 2023 12:05:25 +0300
+Message-ID: <CAHp75VdbXXfWT9NB+EF3Wqdjq2egpPReRAwnG96bEckeA9a0sQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] ACPI: NHLT: Device configuration access interface
+To:     Cezary Rojewski <cezary.rojewski@intel.com>
+Cc:     rafael@kernel.org, linux-acpi@vger.kernel.org,
+        robert.moore@intel.com, amadeuszx.slawinski@linux.intel.com,
+        andriy.shevchenko@linux.intel.com,
+        pierre-louis.bossart@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On AMD Zen acpi_dev_irq_override() by default prefers the DSDT IRQ 1
-settings over the MADT settings.
+On Wed, Aug 9, 2023 at 11:48=E2=80=AFAM Cezary Rojewski
+<cezary.rojewski@intel.com> wrote:
+>
+> On 2023-08-09 7:00 AM, andy.shevchenko@gmail.com wrote:
+> > Fri, Jul 21, 2023 at 05:48:10PM +0200, Cezary Rojewski kirjoitti:
+> >> Device configuration structures are plenty so declare a struct for eac=
+h
+> >> known variant. As neither of them shall be accessed without verifying
+> >> the memory block first, introduce macros to make it easy to do so.
+> >>
+> >> Link: https://github.com/acpica/acpica/pull/881
+> >
+> > Thinking of this over night (as I replied in the above)...
+> >
+> >> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> >
+> > Sorry, but seems I have to retract my tag and even more, NAK to the ACP=
+ICA changes.
+> >
+> > I have thought that this is something new to the header there, but it a=
+ppears that
+> > it duplicates (in a wrong way in my opinion) existing data types.
+> >
+> > Existing data types are crafted (as far as I get them) in a way to be a=
+ble to be
+> > combined in the union. In the similar way how _CRS is parsed in DSDT (f=
+irst that
+> > comes to my mind). Hence that "simplification" is quite wrong in a few =
+ways:
+> > - it breaks ACPICA agreement on naming schema
+> > - it duplicates existing data
+> > - it made it even partially
+> > - it is fine and correct in ACPICA to have long dereferenced data, agai=
+n see
+> >    for the union of acpi_object
+> >
+> > I trully believe now that the above change in ACPICA must be reverted.
+> >
+> > Again, sorry for this late bad news from my side. I have no clue why
+> > it was merged, perhaps lack of review? Or anything subtle I so miserabl=
+y
+> > missed?
+>
+> First, you took the review seriously and provided a ton of valid
+> feedback. And your reviews and expertise helped me grow as a developer,
+> so from my perspective no need to sorry about spotting bad things late.
+>
+> Now, I admit, a bit surprised given the number of revisions and age of
+> the initial patchset. The cover-letter, attached for each revision, made
+> the intentions clear.
 
-This causes the keyboard to malfunction on some laptop models
-(see Links), all models from the Links have an INT_SRC_OVR MADT entry
-for IRQ 1.
+As you may notice I'm not against code that is done as a part of the
+Linux kernel and my surprise is the ACPICA change. My focus for review
+was a Linux kernel and it was just by a chance I looked at the PR on
+GitHub. There is neither good explanation in the commit message nor
+discussion of the change. What I probably miss (and that may help me
+to understand better the change) are:
+- the examples of the code snippets that are using data types before and af=
+ter
+- explanation why not all data types were covered (there are more
+"strange" names like with _a, _b suffix)
+- how this is supposed to be maintained as the ACPICA has users
+outside of the kernel and how the change
+ makes their life easier (to me it's the opposite).
 
-Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217336
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217394
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217406
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v3:
-- Make acpi_int_src_ovr an array which keep track of the status
-  of all legacy IRQs and not just IRQ 1
----
- arch/x86/include/asm/acpi.h | 2 ++
- arch/x86/kernel/acpi/boot.c | 4 ++++
- drivers/acpi/resource.c     | 4 ++++
- 3 files changed, 10 insertions(+)
+> Our goal is to help actual users of NHLT i.e.:
+> audio teams. While part of ACPICA, NHLT-code is hidden within sound/ so
+> no one asks questions. Leaving things at status quo does not improve the
+> situation.
 
-diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-index 8eb74cf386db..6bc00fddf8dd 100644
---- a/arch/x86/include/asm/acpi.h
-+++ b/arch/x86/include/asm/acpi.h
-@@ -15,6 +15,7 @@
- #include <asm/mpspec.h>
- #include <asm/x86_init.h>
- #include <asm/cpufeature.h>
-+#include <asm/irq_vectors.h>
- 
- #ifdef CONFIG_ACPI_APEI
- # include <asm/pgtable_types.h>
-@@ -31,6 +32,7 @@ extern int acpi_skip_timer_override;
- extern int acpi_use_timer_override;
- extern int acpi_fix_pin2_polarity;
- extern int acpi_disable_cmcff;
-+extern int acpi_int_src_ovr[NR_IRQS_LEGACY];
- 
- extern u8 acpi_sci_flags;
- extern u32 acpi_sci_override_gsi;
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 21b542a6866c..b88e5e0135ab 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -52,6 +52,7 @@ int acpi_lapic;
- int acpi_ioapic;
- int acpi_strict;
- int acpi_disable_cmcff;
-+int acpi_int_src_ovr[NR_IRQS_LEGACY];
- 
- /* ACPI SCI override configuration */
- u8 acpi_sci_flags __initdata;
-@@ -588,6 +589,9 @@ acpi_parse_int_src_ovr(union acpi_subtable_headers * header,
- 
- 	acpi_table_print_madt_entry(&header->common);
- 
-+	if (intsrc->source_irq < NR_IRQS_LEGACY)
-+		acpi_int_src_ovr[intsrc->source_irq] = 1;
-+
- 	if (intsrc->source_irq == acpi_gbl_FADT.sci_interrupt) {
- 		acpi_sci_ioapic_setup(intsrc->source_irq,
- 				      intsrc->inti_flags & ACPI_MADT_POLARITY_MASK,
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 380cda1e86f4..a0bb53868e18 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -551,6 +551,10 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
- 	if (gsi != 1 && gsi != 12)
- 		return true;
- 
-+	/* If the override comes from an INT_SRC_OVR MADT entry honor it */
-+	if (acpi_int_src_ovr[gsi])
-+		return true;
-+
- 	/*
- 	 * IRQ override isn't needed on modern AMD Zen systems and
- 	 * this override breaks active low IRQs on AMD Ryzen 6000 and
--- 
-2.41.0
+What situation? To me it makes it worse. (Again, I'm talking solely
+for ACPICA change, the rest I have reviewed and I am fine with the
+direction taken.)
 
+> Thus I believe simple "no" is not an option here. To make the
+> code better overall, relevant pieces should be made part of drivers/acpi.
+>
+> Original problems stem from the fact that audio teams were not looped in
+> during initial integration of NHLT-code. Turned out that no users
+> utilize it in its current form. The problems are subtle, but a
+> discussion wouldn't hurt.
+>
+> To avoid double posting, should we continue the discussion here or in
+> the PR on github?
+
+Let's do it there, as it's purely about ACPICA.
+The kernel part will be affected depending on the result of the discussion.
+
+--=20
+With Best Regards,
+Andy Shevchenko
