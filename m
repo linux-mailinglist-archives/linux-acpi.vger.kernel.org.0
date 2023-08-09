@@ -2,150 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4586C775260
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Aug 2023 07:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D57587752F1
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Aug 2023 08:37:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230323AbjHIFtM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Aug 2023 01:49:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47260 "EHLO
+        id S229782AbjHIGh1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Aug 2023 02:37:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230267AbjHIFtM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 01:49:12 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89D511BF2
-        for <linux-acpi@vger.kernel.org>; Tue,  8 Aug 2023 22:49:10 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-686be3cbea0so406027b3a.0
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Aug 2023 22:49:10 -0700 (PDT)
+        with ESMTP id S229445AbjHIGh0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 02:37:26 -0400
+Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com [IPv6:2607:f8b0:4864:20::932])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C605A10CF
+        for <linux-acpi@vger.kernel.org>; Tue,  8 Aug 2023 23:37:25 -0700 (PDT)
+Received: by mail-ua1-x932.google.com with SMTP id a1e0cc1a2514c-79b191089a3so1150148241.3
+        for <linux-acpi@vger.kernel.org>; Tue, 08 Aug 2023 23:37:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1691560150; x=1692164950;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LVTaAMwRyC5EbNmGnKMt5GVO62sfdhMkzEYvy7bRsXA=;
-        b=pMiFqkbnzjp3jnyPBYTlRVYHWKdOC3du5VSbz4kIkpsKYuFw9hdbPRFTVwZMALrr6e
-         SZQa4f+4WZaBbUbb6WuQfpPki/JvBjPp3gjUfPEIXaiLa05X12JMBBOfzjSrRxroNd8E
-         U8Edn8SEcynqoXeuGV5OH3SalOEtqtT5FxFqX3SU35gIbEJIMsWiFKFV8NvAmigpo6ZX
-         1VFuoHP8/06kb6ySqnq3J06knDAvIozFyfM6zzK+UBFfagPTFrZhAS/6e+TQ40mMrgEV
-         TIYNk8nuqoeDiKI9nMVSb8/4cZxnMmXu4gGya+KvDa2cNxeo6xZuYxs2vwpsCYCPIRLF
-         DSDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691560150; x=1692164950;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1691563045; x=1692167845;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LVTaAMwRyC5EbNmGnKMt5GVO62sfdhMkzEYvy7bRsXA=;
-        b=Iw3Pzy41HN0LHvNb37lp9bpd3iP53ALmSJnVx5U+Fh7DvEknGNfD6E4VCij4aiuoQ3
-         9EOmPz1lsAc78Nw8M6zlhNIV3cfKCUpfQrqwDfhue+oL4TYe5QA2qcFiAJP6nS+BM2LT
-         jCzVIwj0d6VcdMchRgkmC4926j9A7i6DBN+zeXFmlYJ4rT8gskk3NXmmuWsyVLPoOprS
-         39iMYLFxC5WiRaLkIedQlHf3eveJ60dWFqlA44H6/8iSIawiZS+EEeiVZTNXaAfmFe1Y
-         VVvzCjMYaj4ybifXNZtDaovVCilZmcHD2sg1nkSo9Uk4+GBfOs4PomMnoaQPp2YXyD21
-         Odkg==
-X-Gm-Message-State: AOJu0YzJ19iimClNgT4Fp0rZ5wxoHzW/ByI3uLntK/zqGQyrOSWw/LQH
-        n5sN8Y9YbVmTPZN7NoJJSmip8w==
-X-Google-Smtp-Source: AGHT+IE7jfHYeQCcbaWLiyPRjvliIUWRMsM3DMDq94jcA4CT6KzEh4TL3KUw8Az8khdjGzhK4KpCbw==
-X-Received: by 2002:a05:6a20:9147:b0:141:2cb:2954 with SMTP id x7-20020a056a20914700b0014102cb2954mr2498077pzc.3.1691560149975;
-        Tue, 08 Aug 2023 22:49:09 -0700 (PDT)
-Received: from sunil-laptop ([106.51.83.242])
-        by smtp.gmail.com with ESMTPSA id z21-20020aa791d5000000b006829969e3b0sm9001358pfa.85.2023.08.08.22.49.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Aug 2023 22:49:09 -0700 (PDT)
-Date:   Wed, 9 Aug 2023 11:19:00 +0530
-From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Atish Kumar Patra <atishp@rivosinc.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Will Deacon <will@kernel.org>, Haibo Xu <haibo1.xu@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Anup Patel <anup@brainfault.org>, Len Brown <lenb@kernel.org>
-Subject: Re: [RFC PATCH v1 12/21] irqchip/riscv-intc: Use swnode framework to
- create fwnode
-Message-ID: <ZNMozPV2yU1G9+1z@sunil-laptop>
-References: <20230803175916.3174453-1-sunilvl@ventanamicro.com>
- <20230803175916.3174453-13-sunilvl@ventanamicro.com>
- <20230808-chuck-jailhouse-0cb08b55d1bd@spud>
+        bh=VXim2MymBxTflefzDOZEMnQ/WX10EzI7OaoHPJ5kCOg=;
+        b=eTdOW3qToxUPAT6ev8xRADd/Y8t00wIqEDMXLZM/aliVEHzifmLaPqxvuMk1K+9Z28
+         QjTx2EuHFt8znaqPNZYEfI3N3LSynhT5mfZj/f8aLJHl7986YPAcWQmqmV33ruoMEI4F
+         Wy/HkHqqPAbnQkSrM2kcFzvABsJarpOJtyBmI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691563045; x=1692167845;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VXim2MymBxTflefzDOZEMnQ/WX10EzI7OaoHPJ5kCOg=;
+        b=TtYjGk6L0OESJ8ReapjS0eLDImR1hO0CAQhmGUDzrS6opLwWCvfp++YS3NdzEGw3rn
+         1G/p+Zr4Y1eJO26+5thtrNVo6U9SHV9VEFQlCVrMPz11DhhXN/SoqSNm27KGBukL1e89
+         5u07EEGcmwUMfuzhU4JtgeFzynvImH7Vp9rmZRTxIM98BhC4Yx9iNcWbwm31QDZWWwC+
+         V5ENHDKNThTYERAX/6JWjU9sq4TDpipBrJbtt9MSNicrZb7KRZbff1pMfyKci9vTjia/
+         xOAk0r0/qRoVUychUm+hgL7Pcu9g68GpKwV4/qz5fa/2y53NmXTlI4+nYXaXHgDfEQ6q
+         h3sg==
+X-Gm-Message-State: AOJu0Yzj607GmWNdKTU1e0cXZBP68IB7ntnONq971vq+3dqdVmIlHJ+a
+        TJql2urVb74/Hu5sCVyCgZ6cLIvMyMjwQEBf3TA+Ww==
+X-Google-Smtp-Source: AGHT+IGz/4D96cU9ja2eYEBssih1gH0rRpSOd+CLJoi0SzNs4SxPmgwff00GMCkK5WIE2enVwuqkKwI69LXZcGTKcJI=
+X-Received: by 2002:a67:f3d3:0:b0:443:a4d2:86b9 with SMTP id
+ j19-20020a67f3d3000000b00443a4d286b9mr1919249vsn.0.1691563044929; Tue, 08 Aug
+ 2023 23:37:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230808-chuck-jailhouse-0cb08b55d1bd@spud>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <0-v1-8612b9ef48da+333-iommu_group_locking2_jgg@nvidia.com>
+In-Reply-To: <0-v1-8612b9ef48da+333-iommu_group_locking2_jgg@nvidia.com>
+From:   Chen-Yu Tsai <wenst@chromium.org>
+Date:   Wed, 9 Aug 2023 14:37:13 +0800
+Message-ID: <CAGXv+5GL33D-uZ9MeZbvUuy5aSntOSfk3KaYMa1pFarydp=Vjg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Fix device_lock deadlock on two probe() paths
+To:     Jason Gunthorpe <jgg@nvidia.com>
+Cc:     iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 08, 2023 at 09:31:49AM +0100, Conor Dooley wrote:
-> Hey Sunil,
-> 
-> On Thu, Aug 03, 2023 at 11:29:07PM +0530, Sunil V L wrote:
-> > By using swnode framework, all data from ACPI tables can
-> > be populated as properties of the swnode. This simplifies
-> > the driver code and removes the need for ACPI vs DT checks.
-> > Use this framework for RISC-V INTC driver.
-> 
-> btw, you are permitted to use more than 60 characters in a commit
-> message...
-> 
-Sure.
-
-> > 
-> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > ---
-> >  Documentation/riscv/acpi.rst     | 21 +++++++++++++++
-> >  arch/riscv/include/asm/acpi.h    |  1 +
-> >  drivers/acpi/riscv/Makefile      |  2 +-
-> >  drivers/acpi/riscv/irqchip.c     | 46 ++++++++++++++++++++++++++++++++
-> >  drivers/irqchip/irq-riscv-intc.c | 12 ++++-----
-> >  5 files changed, 75 insertions(+), 7 deletions(-)
-> >  create mode 100644 drivers/acpi/riscv/irqchip.c
-> > 
-> > diff --git a/Documentation/riscv/acpi.rst b/Documentation/riscv/acpi.rst
-> > index 9870a282815b..e2406546bc16 100644
-> > --- a/Documentation/riscv/acpi.rst
-> > +++ b/Documentation/riscv/acpi.rst
-> > @@ -8,3 +8,24 @@ The ISA string parsing rules for ACPI are defined by `Version ASCIIDOC
-> >  Conversion, 12/2022 of the RISC-V specifications, as defined by tag
-> >  "riscv-isa-release-1239329-2023-05-23" (commit 1239329
-> >  ) <https://github.com/riscv/riscv-isa-manual/releases/tag/riscv-isa-release-1239329-2023-05-23>`_
-> > +
-> > +Interrupt Controller Drivers
-> > +=======
-> > +
-> > +ACPI drivers for RISC-V interrupt controllers use software node framework to
-> > +create the fwnode for the interrupt controllers. Below properties are
-> > +additionally required for some firmware nodes apart from the properties
-> > +defined by the device tree bindings for these interrupt controllers. The
-> > +properties are created using the data in MADT table.
-> 
-> I don't really understand this text, specifically what you are getting
-> at w/ the dependency on devicetree properties. What exactly does "apart
-> from the properties defined by the devicetree bindings" mean?
-> 
-> Is there prior art for this kind of "ACPI needs swnodes that look
-> vaguely similar to devicetree" for other interrupt controllers?
+On Wed, Aug 9, 2023 at 1:27=E2=80=AFAM Jason Gunthorpe <jgg@nvidia.com> wro=
+te:
 >
-Never mind. This will not be required with Marc's feedback.
+> I missed two paths where __iommu_probe_device() can be called while
+> already holding the device_lock() for the device that is to be probed.
+>
+> This causes a deadlock because __iommu_probe_device() will attempt to
+> re-acquire the lock.
+>
+> Organize things so that these two paths can re-use the existing already
+> held device_lock by marking the call chains based on if the lock is held
+> or not.
+>
+> This is an incremental on top of Joerg's next, but it could also be handl=
+ed by
+> respinning the last patch in that series. Please let me know.
+>
+> Jason Gunthorpe (3):
+>   iommu: Provide iommu_probe_device_locked()
+>   iommu: Pass in the iommu_device to probe for in bus_iommu_probe()
+>   iommu: Do not attempt to re-lock the iommu device when probing
 
-Thanks,
-Sunil 
+Tested-by: Chen-Yu Tsai <wenst@chromium.org>
+
+Thank you for coming up with fixes so quickly.
