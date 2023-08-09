@@ -2,142 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FA5B776337
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Aug 2023 17:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AD84776460
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Aug 2023 17:49:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231962AbjHIPBb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Aug 2023 11:01:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44930 "EHLO
+        id S232212AbjHIPts (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Aug 2023 11:49:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231233AbjHIPB3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 11:01:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C26B72107
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Aug 2023 08:00:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691593237;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dveDaPi6Pv31ovE5nh4Udys9b+Io+evbznraaB9ZP6k=;
-        b=Kmwl8hzqnKQH79BwoQgIYVez0hf0Ig5Qt+ZWQN675GcL1bImQG6JG22pFo5/XQyy1vKg6I
-        86eyQlG3/oI9R8+GsH8Qmyr1Xq1H7z0vS50czLQMGit4PM9HNSGmtUt/rOGlW6H9bUVzUu
-        9Ef5sJWhHuHQnd3UTjeXvBMcBJ4alRE=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-Ll-0aoYaMxCzJd8R59Ejzg-1; Wed, 09 Aug 2023 11:00:36 -0400
-X-MC-Unique: Ll-0aoYaMxCzJd8R59Ejzg-1
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-50bf847b267so5068170a12.3
-        for <linux-acpi@vger.kernel.org>; Wed, 09 Aug 2023 08:00:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691593235; x=1692198035;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dveDaPi6Pv31ovE5nh4Udys9b+Io+evbznraaB9ZP6k=;
-        b=VdbfQpE+RzVxlwDsOGr8HF7Rm6456z6KQKw44fcj49yg/Ql3fZb2moNebDZkQ4WADh
-         ADlkiHUePEx2Ia0/8De3Gw9loAfU6JYR0o6zih7CY34sxYMgXp7k84ms+s4CTtwt/w0j
-         nvQ1+2ohsoEoPwwx/BFz13orHgFWqoOIKuW0ntAVIcSnS9LZeOy4Nf8wdrsXPYVl53Eg
-         NTMZX1oavJ1PZLYRJPw9eM7UU2KdbHuDUQDAVYpkvr7ote4OQYi8BbQOGM2eRlpoD9Hr
-         cWl6UgWO+Ke2ReS1SBYFqasIdZolyt5OeeGL3klLfLYZPpBPY2H5mI3unL/INOfMcpX0
-         8NfQ==
-X-Gm-Message-State: AOJu0YxQ8zuFLIyWOhhKHYhW6LZtciFjjtlXbegpYd1CWYaUZu16GLuH
-        6Xmf+6SDq3wLdrbtQfTvDrqJUZQBfEsOlQ9BiQEq4UoJtiANouK464/AfQ3NWEZV+G04Ulgn3Sr
-        k3d6uWcT5kTPKnZDbXxcJdA==
-X-Received: by 2002:a50:ed83:0:b0:523:4dea:2498 with SMTP id h3-20020a50ed83000000b005234dea2498mr2759510edr.19.1691593235400;
-        Wed, 09 Aug 2023 08:00:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGBydt7ncisNSGPFhnkpSoFZ6lJjwg/5Am06dis4i75dQxHRBzi1C/4QrSr8oiu+7QmmEtncQ==
-X-Received: by 2002:a50:ed83:0:b0:523:4dea:2498 with SMTP id h3-20020a50ed83000000b005234dea2498mr2759486edr.19.1691593235143;
-        Wed, 09 Aug 2023 08:00:35 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id g17-20020a056402115100b005230f2a12b9sm8024864edw.43.2023.08.09.08.00.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Aug 2023 08:00:34 -0700 (PDT)
-Message-ID: <642bc861-f7fa-4c5f-2082-eb26258132a5@redhat.com>
-Date:   Wed, 9 Aug 2023 17:00:33 +0200
+        with ESMTP id S229882AbjHIPts (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 11:49:48 -0400
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 78C6F1BD9
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Aug 2023 08:49:47 -0700 (PDT)
+Received: from 8bytes.org (pd9fe94eb.dip0.t-ipconnect.de [217.254.148.235])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.8bytes.org (Postfix) with ESMTPSA id 0F17E280529;
+        Wed,  9 Aug 2023 17:49:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+        s=default; t=1691596186;
+        bh=CzVTmNvvlosemzzOjEBPXfho0AE1ckTXDIOjya/Oopc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nyoveX6MRa9kGR1uQBmJlwszz5AKx16c9aouXoXcDDrtxzeDE3onStHf6UzZH8omj
+         d50P9V8tl2jWC2d8IMILLvytXcls7kGitCaijOPo2jMNGVoMa3G8SIrBGjeuB1UQeX
+         n/ONdvYRF0eR8sRpQwBPUuQoVtY0OlJYiFUFQGaK/RbQnSFOVZLFF2oefdxsV+H1uj
+         YfnBcl0BFFgohd3Ll1eW2iLGvoBOAmjlT5mgd0chI/7/c5/ICjAm7y5icAturoGslT
+         hjRWDOqB7f58h8czbpRn58nqQRkMEt474MGiBgd3pLNVBJbgSzQAW7mRRvlsBNr+c5
+         AAyFJcPDA5I6Q==
+Date:   Wed, 9 Aug 2023 17:49:44 +0200
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Jason Gunthorpe <jgg@nvidia.com>
+Cc:     iommu@lists.linux.dev, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Joerg Roedel <jroedel@suse.de>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Chen-Yu Tsai <wenst@chromium.org>
+Subject: Re: [PATCH v2 0/4] Fix device_lock deadlock on two probe() paths
+Message-ID: <ZNO1mDqas0uX_TVA@8bytes.org>
+References: <0-v2-d2762acaf50a+16d-iommu_group_locking2_jgg@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 3/3] ACPI: resource: Honor MADT INT_SRC_OVR settings
- for IRQ1 on AMD Zen
-Content-Language: en-US, nl
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Jiri Slaby <jirislaby@kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        August Wikerfors <git@augustwikerfors.se>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
-References: <20230809085526.84913-1-hdegoede@redhat.com>
- <20230809085526.84913-4-hdegoede@redhat.com>
- <f133d401-1975-6c85-47c5-f9464d5ef06f@kernel.org>
- <3fe197da-c26e-e826-4ea2-c13d2880046d@redhat.com>
- <CAJZ5v0garg=icaM5f0JNvY+ip7PX1omMRWDS-UvF1_1f82SYZg@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAJZ5v0garg=icaM5f0JNvY+ip7PX1omMRWDS-UvF1_1f82SYZg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0-v2-d2762acaf50a+16d-iommu_group_locking2_jgg@nvidia.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Wed, Aug 09, 2023 at 11:43:46AM -0300, Jason Gunthorpe wrote:
+> Jason Gunthorpe (4):
+>   iommu: Provide iommu_probe_device_locked()
+>   iommu: Pass in the iommu_device to probe for in bus_iommu_probe()
+>   iommu: Do not attempt to re-lock the iommu device when probing
+>   iommu: dev->iommu->iommu_dev must be set before ops->device_group()
 
-On 8/9/23 16:57, Rafael J. Wysocki wrote:
-> On Wed, Aug 9, 2023 at 4:40 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi,
->>
->> On 8/9/23 11:20, Jiri Slaby wrote:
->>> On 09. 08. 23, 10:55, Hans de Goede wrote:
->>>> On AMD Zen acpi_dev_irq_override() by default prefers the DSDT IRQ 1
->>>> settings over the MADT settings.
->>>>
->>>> This causes the keyboard to malfunction on some laptop models
->>>> (see Links), all models from the Links have an INT_SRC_OVR MADT entry
->>>> for IRQ 1.
->>> ...
->>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>> ...
->>>> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
->>>> index 21b542a6866c..b88e5e0135ab 100644
->>>> --- a/arch/x86/kernel/acpi/boot.c
->>>> +++ b/arch/x86/kernel/acpi/boot.c
->>>> @@ -52,6 +52,7 @@ int acpi_lapic;
->>>>   int acpi_ioapic;
->>>>   int acpi_strict;
->>>>   int acpi_disable_cmcff;
->>>> +int acpi_int_src_ovr[NR_IRQS_LEGACY];
->>>
->>> So why not to use bool to make it clear this is not an irq number, but a state?
->>>
->>>>     /* ACPI SCI override configuration */
->>>>   u8 acpi_sci_flags __initdata;
->>>> @@ -588,6 +589,9 @@ acpi_parse_int_src_ovr(union acpi_subtable_headers * header,
->>>>         acpi_table_print_madt_entry(&header->common);
->>>>   +    if (intsrc->source_irq < NR_IRQS_LEGACY)
->>>> +        acpi_int_src_ovr[intsrc->source_irq] = 1;
->>>
->>> And "true" here.
->>
->> Ack that would indeed be better.
->>
->> Rafael, can you fix this up while merging or do you want a v4 series ?
-> 
-> I think I can do that.
-
-Great, thank you.
-
-Do you have any comments on this series, or is this ready for merging now?
-
-Regards,
-
-Hans
-
+Applied, thanks for fixing this quickly.
