@@ -2,167 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEF8577628E
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Aug 2023 16:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 684447762B5
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Aug 2023 16:40:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231697AbjHIOdi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Aug 2023 10:33:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40594 "EHLO
+        id S233921AbjHIOkv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Aug 2023 10:40:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229743AbjHIOdi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 10:33:38 -0400
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2072.outbound.protection.outlook.com [40.107.93.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A469170B
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Aug 2023 07:33:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YdCFYI/9UjVv/poSd9ry8y0VpZo27LOKuxROzU6RjWNhaGQe//w80HIMclPoovme1TS8RkqIEiX2EsmhfH6M+6ZcV8qogydIJZQraL9wbbHRyPfIxv690/DrIZB9ARSRh5Zl+Kzd+WtYMzJZNsh2eafKDs7qdPlYRdXayx0dwHlb+Mu6uHlW1/UVfE5q10R1rT/nTvg8YTaqP4uLutG7Of87KjDe6DlYESD9H7BZ+opV+OswCMrwbBsaHue/kXzWR1Lo2i7M+PuOyE6HTCmDRpKY4AWweQdWMavonkxIX1CV03gImNZzz+yaOwmmcLo1eC/h5/8k8SggSGzVNCPnBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DyzcLX+RJpDkm4FbXeuvRkPw7lTYnbqBaoAAkbR6lzM=;
- b=ZutlRYIiKedSajx02YAhju1fk8oUZ8OFAGt0sF9yaCZzvDFeXHI1UPccs1mbO0PpUcQT3LYBDlkfEzzD8nicr54kXRQaH9eoUkbrXj9vnOtt1+3GswWClS0riTBHddZwm8FOdt4P+3XKkaHHLu3ZCJAfACGMK/Da12zO0/HBjvUR1qFJnGa2KIDk168kKs+Ps9KPc4VfCYqo3bC0pQfXFchoHVXigBg3IFiVHpiBClw9yrTEsUHuT1B8Y6M4zlKZs/7ZhvEilMwZDwIu585rhYQLt8OMaqve+xK4QXdwir2nRlfX0Hy4OYXZWf/L4SHnE0/MoZhf3xCt2G0gjw6B/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DyzcLX+RJpDkm4FbXeuvRkPw7lTYnbqBaoAAkbR6lzM=;
- b=cJo8YVrjjsQ8P1aZQRngmdbiPPO4+PyJRQBfieRGf9fZyzJrIxXl8Pxs9rvAPOQPHmVQHN7wZ4A9nvDckzA6obfT0HBwN1GL3sWLxcD4VFYe8w6gzuMv0yCyzm2D1BgXgXe5O0p6cQI3wDuBs/EGv0tPysD2NBtNr7Lrx0xoWnXeWC3n7dyJgM2KWKpcj9NO4w/2JPTdLI0V1kWDlw1plyx9CBfDXkL0lB7bfo9UkvJRQEW5SdjSue/43ILIusrhPAevly5t8pRb1nnT1DeuiK7JI3IyTUatS97RrKBahxy8zaTkmDoLwE5s09+Y5PZGmObhdvfhK7oi4kTazPhBVA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
- by SJ0PR12MB7475.namprd12.prod.outlook.com (2603:10b6:a03:48d::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.28; Wed, 9 Aug
- 2023 14:33:32 +0000
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::5111:16e8:5afe:1da1]) by LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::5111:16e8:5afe:1da1%6]) with mapi id 15.20.6652.028; Wed, 9 Aug 2023
- 14:33:32 +0000
-Date:   Wed, 9 Aug 2023 11:33:30 -0300
-From:   Jason Gunthorpe <jgg@nvidia.com>
-To:     Marek Szyprowski <m.szyprowski@samsung.com>
-Cc:     "Tian, Kevin" <kevin.tian@intel.com>,
-        "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Chen-Yu Tsai <wenst@chromium.org>
-Subject: Re: [PATCH 3/3] iommu: Do not attempt to re-lock the iommu device
- when probing
-Message-ID: <ZNOjuo9jYdSgUwZ5@nvidia.com>
-References: <0-v1-8612b9ef48da+333-iommu_group_locking2_jgg@nvidia.com>
- <3-v1-8612b9ef48da+333-iommu_group_locking2_jgg@nvidia.com>
- <BN9PR11MB5276EA0632C6E65C83397B1A8C12A@BN9PR11MB5276.namprd11.prod.outlook.com>
- <CGME20230809121601eucas1p150499eaa6e5fa6aa998385b3fba70a5a@eucas1p1.samsung.com>
- <ZNODeRzC+Rtkta1U@nvidia.com>
- <4208251b-8822-9376-cbe3-572f362720c5@samsung.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4208251b-8822-9376-cbe3-572f362720c5@samsung.com>
-X-ClientProxiedBy: BL6PEPF00013E0B.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:22e:400:0:1001:0:10) To LV2PR12MB5869.namprd12.prod.outlook.com
- (2603:10b6:408:176::16)
+        with ESMTP id S233945AbjHIOkt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 10:40:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55187210D
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Aug 2023 07:40:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691592002;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=QE78PQ7iVBej15oB5yPppMhS2FGb0gwiYPKV6kLIcTg=;
+        b=Lst/9E26VHKP7VdSGH1/6tMkjKXsdxaJ5O0sLVEyLTS3SYixLDMwmin7GAun6Qp0nvb5nl
+        NjRhF6/CrfMNai6camsQmFNKDND8kRfHIycyWVc0cpEok21I3WITBItMMThNoTb8P1cUOr
+        92RJozs6WEvqFDqu5av17iH13ziiq5U=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-494-cdm7bfKaMe-engcVDi27wg-1; Wed, 09 Aug 2023 10:40:01 -0400
+X-MC-Unique: cdm7bfKaMe-engcVDi27wg-1
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-993c2d9e496so464623066b.0
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Aug 2023 07:40:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691592000; x=1692196800;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QE78PQ7iVBej15oB5yPppMhS2FGb0gwiYPKV6kLIcTg=;
+        b=kMcml0zO2DRPQcaFGEIEKELuXnNRPOqQua5+QRygNCUG/0E0iMbI9XfG1w1iWI6DeS
+         1i954CvcQLHp1ZyvRYEBB6XzNfetZ7qzTeUNr0Zlf94crdBRJ0eXmggFu+bfltY/XPXx
+         /O8fg6Z0HUttssmHdQC7kuxRCUErlsVv5b6SrFgFiAEqxAL8Pa6pdgMo24kRpGbWbxNw
+         4m4AaJIk7QakrWxBoLObBaV+n1yW1bf2Z5C8EZ21fthpyLJb6peWT6Bud4yqXddj65AC
+         OUVqWpY12NcMTu4G8dr78EUMue54/NN/FYNoBXOA+bHhcRGu9n4iFF9UkApoY+OynxUc
+         QfSA==
+X-Gm-Message-State: AOJu0YxUEEYNDsAKaRpshzYhIDTaBC6ejf67HoB3AJoNv529TZQDbAiS
+        oK+cotKvAJVGu6VdPUW4S6kPS0Abq/CqlgeU1W4QZG1/k75oD2p/F5gGx3WUc32BB94fL9Avql0
+        70sNA1vMAMK950eH9i3VlNQ==
+X-Received: by 2002:a17:906:19b:b0:992:a90a:5d1f with SMTP id 27-20020a170906019b00b00992a90a5d1fmr2538412ejb.68.1691591999923;
+        Wed, 09 Aug 2023 07:39:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGxOAkAnR+lsG01THkgi5DLnNo2B4fwxuzOvrIqPnpF+a2p0A5CIujpmCmKQg1GWF9uB6lJCA==
+X-Received: by 2002:a17:906:19b:b0:992:a90a:5d1f with SMTP id 27-20020a170906019b00b00992a90a5d1fmr2538402ejb.68.1691591999648;
+        Wed, 09 Aug 2023 07:39:59 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id j15-20020a170906430f00b0099b76c3041csm8181983ejm.7.2023.08.09.07.39.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Aug 2023 07:39:59 -0700 (PDT)
+Message-ID: <3fe197da-c26e-e826-4ea2-c13d2880046d@redhat.com>
+Date:   Wed, 9 Aug 2023 16:39:58 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|SJ0PR12MB7475:EE_
-X-MS-Office365-Filtering-Correlation-Id: 74a5a748-3204-4adb-1cf1-08db98e59b1e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wneidIh35MQOi3aKqxODkl3B10RGl+s7HWo4epR64RCyf19DM/mvIGPxE+MyYoYmiAiZYjHjxOuoLkEXhd8u1D4qFLs4ZDSSL2RqGbz/OW3l1OTb1xkGDcjT0KxLOEdYEI3C/h+24w8/dt+5EUG5b2OJniH8QMRCYOtoMaetlT4wZAW/9PKz5GVOXKSZ/LikKDbRu9IkT5gXf+4PkCrF/MHk4/AmUnOnYabso3Pe/3FsIQU0kNyUe0xJe/XeXxlvXlxIpovWNb7+Ar/HqrcWOwlmwda52+/rb8wZgJ3AkR536tOt1towBJ60Ng6LE2LPv774NcqM3APAGnNbFfMqIurg5OjdbTbuY4lAiaAEZ/w9l6+b6tRmOfvkpN8/c1Iki75c8/edKWBbLmuF9rgOCQNtL7CxR9ZoWCn0J6o4WE2hy09xVUMx1482Ys2DK/0B9oG+e9gJ0C2sPNeDEtD6txMlR+OJ2SA61CeJKctmA2ZQs90aic8OW3TH6qJ9V425Ve9LfpcFhHSyNJBKXZE/vXMBxMnmYb/kGpZhP8DWGLMuVM6MIM6cOOfHpxlJxSp+
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(39860400002)(376002)(396003)(346002)(136003)(1800799006)(186006)(451199021)(6506007)(26005)(38100700002)(53546011)(6916009)(478600001)(7416002)(54906003)(5660300002)(8676002)(4326008)(8936002)(66556008)(66946007)(66476007)(316002)(6512007)(86362001)(41300700001)(6486002)(2616005)(36756003)(2906002)(83380400001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?6+iq5M0u6kKyUTZM/tQoAz3GgIM6ale15BeXvIlobPcKA/BkDZsuzcvBIz+2?=
- =?us-ascii?Q?+tYGvlXTAcAZ50sWJV6X2kQw9l2krSOYb+gSp6UEvP1+PzK3NiTIgj048/Zq?=
- =?us-ascii?Q?gC6ZgmXGPnTP+mvKZEm+AF/TPGAm6l5QQurxgAtTWpyY1fftgkqm2jLEoveg?=
- =?us-ascii?Q?QQGJ9WshFPOLocjoLmdsCWeLqfDeLFmmylz4a8H2WUe4X+N3FaJH5Opv1AjY?=
- =?us-ascii?Q?/ET7DSAfjmUo/dR0uS9zn/cDFUVXwOHbB9WqU7ueYZdFbcOr1gMxqNPFmdt1?=
- =?us-ascii?Q?uiVl34mu3THqgv+pxjZazv4AYNNj8P78axBvISiL3IfYswJG8xRctg++4NCw?=
- =?us-ascii?Q?OkCwbr9KaStEa+Zk0AHPs8HOsUUxa3opZe3wTbYlr6Lo4GQsugl03saRjwov?=
- =?us-ascii?Q?6PftPn5XFeo/83VD/aspeVcsR/eDF4eoYt8YhXWrdjg/0nyApBoBQQpRx/Nf?=
- =?us-ascii?Q?Uwa8HHVm65vt0ydjbjQNADmAMg3DAK/yyOOu2qRRkZ25nSWfv6D60GuCJ0iv?=
- =?us-ascii?Q?46YJJzAVDKu9D9T4tRuxbAsoC6YAKVpeNNxsUTlWVi6LbHnwXffHBcccardg?=
- =?us-ascii?Q?zwRPNz/eP2cdMTpmPUSyBuqYlpegMolbMJz7CP05jx9loPoa4928ZotkR/8m?=
- =?us-ascii?Q?tcmHcqbnVykwH+3tVTzjhyDtZ/IiIZ8od28pRqdwKZkaLjdlFso2dCAScBIS?=
- =?us-ascii?Q?KIP3OYzK+SRKs/x5MYveMK/9GkL+dy/uXjd0Jh1bvOOkMUIgwrC2MHxOkgAG?=
- =?us-ascii?Q?rtbYX75Ov7XjjEg49JiC4GFyVordZaWKheRbJjEC1IJUL9jFPrxFpgYHM0Mt?=
- =?us-ascii?Q?XgPQAtUqo3Pi8WpUMcvnylSwrfERHleaObqOExEAIFUVczysLuyGwjwMUIp3?=
- =?us-ascii?Q?CDJMVmf6ularYWnBPXObUtzEebjvJE1rz2/td5RlTibGiiSrsBvwsy4bovMa?=
- =?us-ascii?Q?J7VWa7oWc/A55oJRrjuQ/BOg8HNqnfRFqiCYzvRnTYtfqlBwz6+sNZ+HFSd9?=
- =?us-ascii?Q?nYZpXf4yMsp4wmPQkUaw5Kug5cupT67nj01O9CLn3xcc4NYkvQ8qwDi5GNzM?=
- =?us-ascii?Q?L+g36W6piOWToSmRLPGh7mWVWcKFtCRoEwpvwsNzIFoRsoFzshhRNH/7ZPTj?=
- =?us-ascii?Q?ne2ZzClNR5k13JzVL+Rb6ktwh6bjyHFbBCGd9IzU+ynsE4x4geFRg+9Z9DwR?=
- =?us-ascii?Q?ek1JkO/hOnhTf+DsOTdsHLiOspyv/ksc7x9KTXXVaT6tzKOBP181neHn8tA/?=
- =?us-ascii?Q?Slmdy25Gr5wmcq2Y76BVy/GrY4huESwsouAPFWl/N1NpWCoFdibgEiq33pZ5?=
- =?us-ascii?Q?SvzTczoBeve+oBiBSrOd/LIo+pbOt12+9cAKO/vtVtBKh3Z7rDw+JL+QQepZ?=
- =?us-ascii?Q?5kqt4lJWWyFeyc+8YUU8Xt0W/zFazYdn7KhcY4mZEaxWUeMxvHMbBubwD3d6?=
- =?us-ascii?Q?xyMiiJ8CXAi52U20aqeua8fkcEowqTZBpZBCSfsebjSGWF3/dN6HhsqeGX/e?=
- =?us-ascii?Q?w0J5ExIH38obYBchzwqJjoQA9wKs3Vi96CwgQtAISNPX6/JA09udrucn9VPj?=
- =?us-ascii?Q?z+kreNVb+6d//wOSIt/K/4gJePxEp5wBAGSFPzLV?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 74a5a748-3204-4adb-1cf1-08db98e59b1e
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2023 14:33:32.1716
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Gd1+q4PH9pbSTbYLfA5XIoCxWa3AAMWxgxZ6trAoP1RnZvpNoJ1HimRXLu6lTvXz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7475
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 3/3] ACPI: resource: Honor MADT INT_SRC_OVR settings
+ for IRQ1 on AMD Zen
+Content-Language: en-US, nl
+To:     Jiri Slaby <jirislaby@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        August Wikerfors <git@augustwikerfors.se>
+Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
+References: <20230809085526.84913-1-hdegoede@redhat.com>
+ <20230809085526.84913-4-hdegoede@redhat.com>
+ <f133d401-1975-6c85-47c5-f9464d5ef06f@kernel.org>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <f133d401-1975-6c85-47c5-f9464d5ef06f@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 09, 2023 at 03:38:30PM +0200, Marek Szyprowski wrote:
-> On 09.08.2023 14:15, Jason Gunthorpe wrote:
-> > On Wed, Aug 09, 2023 at 04:01:42AM +0000, Tian, Kevin wrote:
-> >>> From: Jason Gunthorpe <jgg@nvidia.com>
-> >>> Sent: Wednesday, August 9, 2023 1:27 AM
-> >>>
-> >>> @@ -1800,11 +1801,18 @@ struct probe_iommu_args {
-> >>>   static int probe_iommu_group(struct device *dev, void *data)
-> >>>   {
-> >>>   	struct probe_iommu_args *args = data;
-> >>> +	bool need_lock;
-> >>>   	int ret;
-> >>>
-> >>> -	device_lock(dev);
-> >>> +	/* Probing the iommu itself is always done under the device_lock */
-> >>> +	need_lock = !args->iommu || args->iommu->hwdev != dev;
-> >>> +
-> >> is !args->iommu a valid case?
-> > Hmm, not any more, it used to happen in an earlier version
-> >   
-> >> btw probably a dumb question. Why do we continue to probe the
-> >> iommu device itself instead of skipping it? The group is a concept
-> >> for devices which require DMA protection from iommu instead of
-> >> for the iommu device itself...
-> > Yeah, that is how I originally did it, but since the locking appeared
-> > here I thought it would be safer to just continue to invoke probe as
-> > we have always done. I don't know for sure that there isn't some
-> > driver that relies on this for some reason.
-> >
-> > eg it might change the group layouts or something.
+Hi,
+
+On 8/9/23 11:20, Jiri Slaby wrote:
+> On 09. 08. 23, 10:55, Hans de Goede wrote:
+>> On AMD Zen acpi_dev_irq_override() by default prefers the DSDT IRQ 1
+>> settings over the MADT settings.
+>>
+>> This causes the keyboard to malfunction on some laptop models
+>> (see Links), all models from the Links have an INT_SRC_OVR MADT entry
+>> for IRQ 1.
+> ...
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ...
+>> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+>> index 21b542a6866c..b88e5e0135ab 100644
+>> --- a/arch/x86/kernel/acpi/boot.c
+>> +++ b/arch/x86/kernel/acpi/boot.c
+>> @@ -52,6 +52,7 @@ int acpi_lapic;
+>>   int acpi_ioapic;
+>>   int acpi_strict;
+>>   int acpi_disable_cmcff;
+>> +int acpi_int_src_ovr[NR_IRQS_LEGACY];
 > 
-> Well, I don't think that there is any driver doing such things, but the 
-> only way to check is simply change the behavior an wait for complaints.
+> So why not to use bool to make it clear this is not an irq number, but a state?
+> 
+>>     /* ACPI SCI override configuration */
+>>   u8 acpi_sci_flags __initdata;
+>> @@ -588,6 +589,9 @@ acpi_parse_int_src_ovr(union acpi_subtable_headers * header,
+>>         acpi_table_print_madt_entry(&header->common);
+>>   +    if (intsrc->source_irq < NR_IRQS_LEGACY)
+>> +        acpi_int_src_ovr[intsrc->source_irq] = 1;
+> 
+> And "true" here.
 
-My other concern is that we don't fully block iommu devices from being
-self probed. They can still be probed during rescan and during 2nd
-calls to bus_iommu_probe().
+Ack that would indeed be better.
 
-But OK, it makes more logical sense to just block it so lets try that.
+Rafael, can you fix this up while merging or do you want a v4 series ?
 
-Jason
+Regards,
+
+Hans
+
+
+
