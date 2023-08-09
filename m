@@ -2,80 +2,182 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8895E77521B
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Aug 2023 07:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F13877524F
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Aug 2023 07:44:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbjHIFA5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Aug 2023 01:00:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53446 "EHLO
+        id S230346AbjHIFos (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Aug 2023 01:44:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbjHIFA4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 01:00:56 -0400
-Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAA12172A
-        for <linux-acpi@vger.kernel.org>; Tue,  8 Aug 2023 22:00:52 -0700 (PDT)
-Received: from localhost (88-113-24-87.elisa-laajakaista.fi [88.113.24.87])
-        by fgw20.mail.saunalahti.fi (Halon) with ESMTP
-        id b1333d4d-3671-11ee-b3cf-005056bd6ce9;
-        Wed, 09 Aug 2023 08:00:43 +0300 (EEST)
-From:   andy.shevchenko@gmail.com
-Date:   Wed, 9 Aug 2023 08:00:42 +0300
-To:     Cezary Rojewski <cezary.rojewski@intel.com>
-Cc:     rafael@kernel.org, linux-acpi@vger.kernel.org,
-        robert.moore@intel.com, amadeuszx.slawinski@linux.intel.com,
-        andriy.shevchenko@linux.intel.com,
-        pierre-louis.bossart@linux.intel.com
-Subject: Re: [PATCH v4 1/4] ACPI: NHLT: Device configuration access interface
-Message-ID: <ZNMdertpWWvoAJM3@surfacebook>
-References: <20230721154813.310996-1-cezary.rojewski@intel.com>
- <20230721154813.310996-2-cezary.rojewski@intel.com>
+        with ESMTP id S229459AbjHIFor (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 01:44:47 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03D261BF1
+        for <linux-acpi@vger.kernel.org>; Tue,  8 Aug 2023 22:44:47 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1b8b4748fe4so42760875ad.1
+        for <linux-acpi@vger.kernel.org>; Tue, 08 Aug 2023 22:44:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1691559886; x=1692164686;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vxcldl12I3EwBgJQlvH4uhDdlUAS8X8H2ABb+awGB+s=;
+        b=bWGuxL1DOLIxUyEVzJG60PbAM1TTn29jgsmsdGFv9qt+PlkLpRdGCCJZGPoiRMfOYr
+         w9qFJTH5PT+r7p4FA5jao0vuTT90gasDkW6Bo1XxbbOWe/fhyXTmQUTE2pfQLsatgY0r
+         lX7gmoWKIwHD6LZwG2TlGOKagQrqaidNlUvAOGhXyV8pCSVZ/Lk0UmyWUdXrIu+T9Eh3
+         /Soqy/xjVjR1GiUStLrKv7rmXMRysXV7RIbStm8m+wr2i3F1i+UdIwa9g55kgvjwJrxx
+         DBO33rOID4saTHn/d3MhTY0k3X/iUrCb06S3/3JTmz6goyAyYFhB0CeGlH+nFXPQYBNd
+         TuBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691559886; x=1692164686;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vxcldl12I3EwBgJQlvH4uhDdlUAS8X8H2ABb+awGB+s=;
+        b=IOz0VAXm63vCDGWUt9w5geB/ivvozZ7Q5+zYNSZ0efMDOstfJOH0Z0Xe1a7LsIbRJw
+         7epfVAA9ITjx6NMmbOdpqMiPhWMJh0Ru4vQvJVnh/95S6MDYq17UytVXrj1GNW0FlAbz
+         bumNPHDO60Uo/oeX7KSjvjDpw0sfbcgso0Fhc2hnkoAXxFRRtLOiiblUVwDmsWv3hA/9
+         JmFehgUDr0XzJCaAqpoX7VCKBn8uzSqH55NHdzbzwFBiY3PJQq2cMzlkC2VPuTeQdb0S
+         EQ1eR1ljblZb/Pxld/JFEpT6o0BYcKdu6hZ2lQ4YLQj6puXPr/LAWN8wrt8PQPQSD0Zw
+         V0Cw==
+X-Gm-Message-State: AOJu0Yx0MVmcbYiUE0RifKuk/+4d4CXQdm2V4bPQ25ehdgOH2utZjz2I
+        l28AZCbbXxUIM60yg/NkU3wTpA==
+X-Google-Smtp-Source: AGHT+IFQByYfqVXmufCi4ZexsDkSCJeetmAUHqrPdPKuKE7/AuT3eoLpHY4Ewpuc1qDtZMZN3aNTyA==
+X-Received: by 2002:a17:902:e88b:b0:1bb:dc48:644a with SMTP id w11-20020a170902e88b00b001bbdc48644amr1829426plg.49.1691559886467;
+        Tue, 08 Aug 2023 22:44:46 -0700 (PDT)
+Received: from sunil-laptop ([106.51.83.242])
+        by smtp.gmail.com with ESMTPSA id jw15-20020a170903278f00b001b8a54f99d1sm10040833plb.275.2023.08.08.22.44.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Aug 2023 22:44:46 -0700 (PDT)
+Date:   Wed, 9 Aug 2023 11:14:36 +0530
+From:   Sunil V L <sunilvl@ventanamicro.com>
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Anup Patel <anup@brainfault.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Haibo Xu <haibo1.xu@intel.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Atish Kumar Patra <atishp@rivosinc.com>,
+        Anup Patel <apatel@ventanamicro.com>
+Subject: Re: [RFC PATCH v1 11/21] swnode: Add support to create early during
+ boot
+Message-ID: <ZNMnxAVn6Vy337Eq@sunil-laptop>
+References: <20230803175916.3174453-1-sunilvl@ventanamicro.com>
+ <20230803175916.3174453-12-sunilvl@ventanamicro.com>
+ <ZMyWDDD6Lw8REd1r@smile.fi.intel.com>
+ <ZMyymUdV63g4eGaT@sunil-laptop>
+ <865y5phdwd.wl-maz@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230721154813.310996-2-cezary.rojewski@intel.com>
-X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <865y5phdwd.wl-maz@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fri, Jul 21, 2023 at 05:48:10PM +0200, Cezary Rojewski kirjoitti:
-> Device configuration structures are plenty so declare a struct for each
-> known variant. As neither of them shall be accessed without verifying
-> the memory block first, introduce macros to make it easy to do so.
+On Tue, Aug 08, 2023 at 02:17:22PM +0100, Marc Zyngier wrote:
+> On Fri, 04 Aug 2023 09:11:05 +0100,
+> Sunil V L <sunilvl@ventanamicro.com> wrote:
+> > 
+> > Hi Andy,
+> > 
+> > On Fri, Aug 04, 2023 at 09:09:16AM +0300, Andy Shevchenko wrote:
+> > > On Thu, Aug 03, 2023 at 11:29:06PM +0530, Sunil V L wrote:
+> > > > From: Anup Patel <apatel@ventanamicro.com>
+> > > > 
+> > > > swnode framework can be used to create fwnode for interrupt
+> > > > controllers.
+> > > 
+> > > Why? What is this for?
+> > > Can you elaborate? This commit message is poorly written...
+> > > 
+> > > And why firmware node is not enough for ACPI case?
+> > > I assume the fwnode in DT case is already provided by OF.
+> > > 
+> > Thanks a lot for the review!.
+> > 
+> > You are right, OF provides the fwnode for irqchip drivers. However, for
+> > ACPI case, it is typically created using irq_domain_alloc_named_fwnode
+> > or irq_domain_alloc_fwnode since these are not ACPI devices in the
+> > namespace but from MADT. The fwnode created using
+> > irq_domain_alloc_fwnode() is a simple one which doesn't support properties
+> > similar to the one created by OF framework or software node framework.
+> > Hence, lot of data from the MADT structures need to be cached as
+> > separate structures in the drivers and also would need several ifdefs to
+> > check for ACPI and some amount of code duplication is also required due
+> > to the way DT driver gets the information vs ACPI.
+> > 
+> > The beauty of software node framework is, it supports adding properties
+> > and also is a supported fwnode type in __irq_domain_create().
 > 
-> Link: https://github.com/acpica/acpica/pull/881
+> There is no beauty here. Only some extra bloat that we do not need.
+> 
+> DT and ACPI exposes very different attributes. One describe the HW,
+> the other one describe an OS abstraction. Pretending that you can
+> summon both into the same infrastructure is a fallacy. You'll just end
+> up with the cross product of both infrastructure, and pollute the rest
+> of the kernel with pointless cruft.
+> 
+Hi Marc,
 
-Thinking of this over night (as I replied in the above)...
+Thank you very much for the feedback!. Sure, let me revert this approach
+and do as you recommended in next version.
 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > So, if we
+> > can create the fwnode for these irqchip using software node, we can
+> > attach the same properties and the actual irqchip driver which uses the
+> > fwnode doesn't need to have any ACPI vs DT checks. Same driver will work
+> > seamlessly on both DT and ACPI platforms.  But the challenge is,
+> > currently swnode expects to be created with sysfs which won't be
+> > available during early boot when irqchip drivers need to be probed. So,
+> > adding support to create without dependency on sysfs help us to reuse
+> > the same framework for irqchip use case also.
+> 
+> That's another fallacy.
+> 
+> Most irqchips *DO NOT* need to be probed early. Only the root
+> irqchip. Given that this series is about *secondary* interrupt
+> controllers, they absolutely don't need to be probed early.
+>
+Since we created swnode for root irqchip also in this approach, we had
+to support early creation. With your feedback, this is no longer
+required.
 
-Sorry, but seems I have to retract my tag and even more, NAK to the ACPICA changes.
+> To be clear: I do not intend to merge anything that:
+> 
+> - invents yet another way to "abstract" firmware interfaces
+> 
+> - adds more "early probe" hacks for non-primary interrupt controllers
+> 
+> I have already said that in response to Anup's AIA series, and this
+> equally applies to this series.
+>
+In Anup's AIA v7 series, he has made non-primary controller drivers as
+platform drivers which are not probed early.
 
-I have thought that this is something new to the header there, but it appears that
-it duplicates (in a wrong way in my opinion) existing data types.
-
-Existing data types are crafted (as far as I get them) in a way to be able to be
-combined in the union. In the similar way how _CRS is parsed in DSDT (first that
-comes to my mind). Hence that "simplification" is quite wrong in a few ways:
-- it breaks ACPICA agreement on naming schema
-- it duplicates existing data
-- it made it even partially
-- it is fine and correct in ACPICA to have long dereferenced data, again see
-  for the union of acpi_object
-
-I trully believe now that the above change in ACPICA must be reverted.
-
-Again, sorry for this late bad news from my side. I have no clue why
-it was merged, perhaps lack of review? Or anything subtle I so miserably
-missed?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Thanks,
+Sunil
