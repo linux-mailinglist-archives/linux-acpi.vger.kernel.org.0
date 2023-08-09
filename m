@@ -2,125 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 504E2776898
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Aug 2023 21:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 978347768B9
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Aug 2023 21:26:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233810AbjHITWp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Aug 2023 15:22:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45264 "EHLO
+        id S233955AbjHIT0H convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 9 Aug 2023 15:26:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234188AbjHITWU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 15:22:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DB303C34
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Aug 2023 12:21:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691608825;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=NYJARn+Tr8oo6UNssY2uogwaQ1veOX4LdfLq6I1sIi0=;
-        b=GpFWoA4noun05sXXu7hal0LWdvtPYTYKjCQvsgXd5UwjHnPqCWUnQ45tsc81SAouVkAcG4
-        r8zXt3KElfCvuCLW1rBSLrcGzfK1y4btTVGJosgEHCwu58+xc1icIIXzDJiKTQFV3TsU9o
-        eJIZeRCfEb3KzhyKeDZM5NoZbRKQ5tY=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-BKRzEhU0PL-Wm04u55nHng-1; Wed, 09 Aug 2023 15:20:23 -0400
-X-MC-Unique: BKRzEhU0PL-Wm04u55nHng-1
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2b9bf49342dso1577001fa.1
-        for <linux-acpi@vger.kernel.org>; Wed, 09 Aug 2023 12:20:23 -0700 (PDT)
+        with ESMTP id S233721AbjHITZe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 15:25:34 -0400
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 672722718;
+        Wed,  9 Aug 2023 12:24:38 -0700 (PDT)
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-56d26137095so28072eaf.1;
+        Wed, 09 Aug 2023 12:24:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691608822; x=1692213622;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NYJARn+Tr8oo6UNssY2uogwaQ1veOX4LdfLq6I1sIi0=;
-        b=V4yy6eQEKGpVWScmRy1rqYD+casnJmCu8ZJnDOfhTvReeOjdmIRWe47GKvA0DZzBI3
-         Mg2Dw/vkVNos5gzSNLr3WkTQzTkwBIQkatt+2N0fp2/jb1L0W4CpGl4UC7pdGqGFIRNk
-         7KDnByEdwgwinDu7lFwXsdEIBMV5AWRwtu4FhjdK1krNuEvqSqjZ2zVfrR+rZUx2sOg+
-         fK9rZrx1S9siuJywZI3LVhaA59Wk77htkIPd5ztMFObVOWQeu8kv6o3eDZUJm+m1Z4T8
-         UymcuaxN2PdhIGgo7hd/5JkT7fV09Or2Xp0FFSWqokKDZh7wtRup70ukh+iSfjNPCtH6
-         yzow==
-X-Gm-Message-State: AOJu0YxTs7GPxBZ2l+fp2kOFODZv2+h/zTkLC+0bmRMaGDRxC46AUZFu
-        CKZSbAB+SoLFcvLQw94ifWed534N5lRKKlDaYL5QdEQOXEDhA3XXAlgE5inG/ryYM+YUHuF6071
-        Lh6kKsP+zdfPOuP7DbLVRYg==
-X-Received: by 2002:a05:6512:6d5:b0:4fe:825:a081 with SMTP id u21-20020a05651206d500b004fe0825a081mr44160lff.45.1691608822370;
-        Wed, 09 Aug 2023 12:20:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGtu6F06SjXUXLKVgFHropPatS+pATl3bG4JmLunyJmmo8QQwzISppJhRNnKn08hjruOqg3Cg==
-X-Received: by 2002:a05:6512:6d5:b0:4fe:825:a081 with SMTP id u21-20020a05651206d500b004fe0825a081mr44145lff.45.1691608822042;
-        Wed, 09 Aug 2023 12:20:22 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id p17-20020a1709066a9100b009887f4e0291sm8302774ejr.27.2023.08.09.12.20.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Aug 2023 12:20:20 -0700 (PDT)
-Message-ID: <c3684f00-27bd-d4dd-93dd-18936c006de9@redhat.com>
-Date:   Wed, 9 Aug 2023 21:20:20 +0200
+        d=1e100.net; s=20221208; t=1691609077; x=1692213877;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X6nqZfavj7lPMTgzRnojuEHNFwXHJ0sR2jKpGGcn1g8=;
+        b=B89fwSymMMhToB6cP9heP2nI9diISTDFEZrYIvPA1E3Kj+OGLNtaviv4D0Ds+s+SJC
+         hMwViZSfLlc5lPPHj1l4S13Wv6MjVhiXY2ZOAcorKVqT3xAM/uEW67qMEERKqRltfMmI
+         /OpGyKh5uoCqDb4bsjgufCx0nglpY8rVV+LW5Myu+zotXy/LjsLCPPYc3nX4AhWS/Gmo
+         WLDAoag2dKe6NMIWHcsli1EQXfcIyvKvFlDlIO3Z75xHNVAE4cksd6JBo9dXx049WuYp
+         e3O/T9FaxZivjqf43QVpfxjPd3Pmngh7Xjs3UVCXrqzjvm5v/BkzCd11A7NGdj7rN0de
+         70Yw==
+X-Gm-Message-State: AOJu0Yz5jBKw2Q4JP47tB7AZkWJvqsDRBTkzBp1Hkp+yWBQtlvdhxnPh
+        y8daKemtvjLg/lWInLVF/Q2GUctzK2HNxYFLYeQ=
+X-Google-Smtp-Source: AGHT+IGU8IICmAsS+amt7KaPQqAJIjXzDKMaOEuKUKFxn0mp/ZA9pnGU+wWtlBQomuSsEfqlSb3khKZO8hTNbwkbqXg=
+X-Received: by 2002:a4a:dc87:0:b0:56d:72dc:5410 with SMTP id
+ g7-20020a4adc87000000b0056d72dc5410mr199666oou.1.1691609077493; Wed, 09 Aug
+ 2023 12:24:37 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
+References: <20230809085526.84913-1-hdegoede@redhat.com> <20230809085526.84913-4-hdegoede@redhat.com>
+ <f133d401-1975-6c85-47c5-f9464d5ef06f@kernel.org> <3fe197da-c26e-e826-4ea2-c13d2880046d@redhat.com>
+ <CAJZ5v0garg=icaM5f0JNvY+ip7PX1omMRWDS-UvF1_1f82SYZg@mail.gmail.com> <642bc861-f7fa-4c5f-2082-eb26258132a5@redhat.com>
+In-Reply-To: <642bc861-f7fa-4c5f-2082-eb26258132a5@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 9 Aug 2023 21:24:26 +0200
+Message-ID: <CAJZ5v0ik0pE+HikC+22yKLODvAiCoJ3sFwaSTxHi2yAsN_SLYw@mail.gmail.com>
 Subject: Re: [PATCH v3 3/3] ACPI: resource: Honor MADT INT_SRC_OVR settings
  for IRQ1 on AMD Zen
-Content-Language: en-US, nl
-To:     August Wikerfors <git@augustwikerfors.se>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
         Mario Limonciello <mario.limonciello@amd.com>,
+        August Wikerfors <git@augustwikerfors.se>,
         Linux regressions mailing list <regressions@lists.linux.dev>,
         stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
-References: <20230809085526.84913-1-hdegoede@redhat.com>
- <20230809085526.84913-4-hdegoede@redhat.com>
- <6a6fa2ba-c07d-45b2-96c5-b0f44f5f288b@augustwikerfors.se>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <6a6fa2ba-c07d-45b2-96c5-b0f44f5f288b@augustwikerfors.se>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Wed, Aug 9, 2023 at 5:00 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi,
+>
+> On 8/9/23 16:57, Rafael J. Wysocki wrote:
+> > On Wed, Aug 9, 2023 at 4:40 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> >>
+> >> Hi,
+> >>
+> >> On 8/9/23 11:20, Jiri Slaby wrote:
+> >>> On 09. 08. 23, 10:55, Hans de Goede wrote:
+> >>>> On AMD Zen acpi_dev_irq_override() by default prefers the DSDT IRQ 1
+> >>>> settings over the MADT settings.
+> >>>>
+> >>>> This causes the keyboard to malfunction on some laptop models
+> >>>> (see Links), all models from the Links have an INT_SRC_OVR MADT entry
+> >>>> for IRQ 1.
+> >>> ...
+> >>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> >>> ...
+> >>>> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+> >>>> index 21b542a6866c..b88e5e0135ab 100644
+> >>>> --- a/arch/x86/kernel/acpi/boot.c
+> >>>> +++ b/arch/x86/kernel/acpi/boot.c
+> >>>> @@ -52,6 +52,7 @@ int acpi_lapic;
+> >>>>   int acpi_ioapic;
+> >>>>   int acpi_strict;
+> >>>>   int acpi_disable_cmcff;
+> >>>> +int acpi_int_src_ovr[NR_IRQS_LEGACY];
+> >>>
+> >>> So why not to use bool to make it clear this is not an irq number, but a state?
+> >>>
+> >>>>     /* ACPI SCI override configuration */
+> >>>>   u8 acpi_sci_flags __initdata;
+> >>>> @@ -588,6 +589,9 @@ acpi_parse_int_src_ovr(union acpi_subtable_headers * header,
+> >>>>         acpi_table_print_madt_entry(&header->common);
+> >>>>   +    if (intsrc->source_irq < NR_IRQS_LEGACY)
+> >>>> +        acpi_int_src_ovr[intsrc->source_irq] = 1;
+> >>>
+> >>> And "true" here.
+> >>
+> >> Ack that would indeed be better.
+> >>
+> >> Rafael, can you fix this up while merging or do you want a v4 series ?
+> >
+> > I think I can do that.
+>
+> Great, thank you.
+>
+> Do you have any comments on this series, or is this ready for merging now?
 
-On 8/9/23 17:58, August Wikerfors wrote:
-> On 2023-08-09 10:55, Hans de Goede wrote:
->> On AMD Zen acpi_dev_irq_override() by default prefers the DSDT IRQ 1
->> settings over the MADT settings.
->>
->> This causes the keyboard to malfunction on some laptop models
->> (see Links), all models from the Links have an INT_SRC_OVR MADT entry
->> for IRQ 1.
->>
->> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
->> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217336
->> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217394
->> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217406
->> Cc: Mario Limonciello <mario.limonciello@amd.com>
->> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> 
-> One of the laptops fixed by a9c4a912b7dc, PCSpecialist Elimina Pro 16 M [1], seems to have no INT_SRC_OVR entry for IRQ 1 [2]:
-> 
->> [    0.084265] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
->> [    0.084266] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 low level)
-> 
-> I'm not sure if it was IRQ 1 that needed to be overridden for that model though, so it may work anyway with patch 2 of this series.
-> 
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=217394#c18
-> [2] https://bugzilla.kernel.org/attachment.cgi?id=304338
+I've applied this series as 6.5-rc6 material and made the change
+discussed above.
 
-Good catch, thanks. So it looks like this one needs a DMI quirk (until we have a better generic solution.
+It has been added to my linux-next branch too.
 
-I'll reach out to the reporter and ask for dmidecode output and prepare a follow-up patch. Still I think that we should move forward with this series to fix the 6 bugs which are linked to from PAtch 1's commitmsg and those are likely just the top of the iceberg.
-
-Regards,
-
-Hans
-
+Thanks!
