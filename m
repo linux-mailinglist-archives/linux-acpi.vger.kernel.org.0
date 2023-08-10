@@ -2,101 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB0D47780B4
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 20:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 656CE778405
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Aug 2023 01:16:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234124AbjHJSt2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Aug 2023 14:49:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47558 "EHLO
+        id S232904AbjHJXQq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Aug 2023 19:16:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236209AbjHJSt0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 14:49:26 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF28726A6;
-        Thu, 10 Aug 2023 11:49:10 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id cf8b8b0f17ceead9; Thu, 10 Aug 2023 20:49:09 +0200
-Authentication-Results: v370.home.net.pl; spf=softfail (domain owner 
-   discourages use of this host) smtp.mailfrom=rjwysocki.net 
-   (client-ip=195.136.19.94; helo=[195.136.19.94]; 
-   envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
-Received: from kreacher.localnet (unknown [195.136.19.94])
+        with ESMTP id S229748AbjHJXQp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 19:16:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E0A82D44;
+        Thu, 10 Aug 2023 16:16:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id EF65A66275F;
-        Thu, 10 Aug 2023 20:49:08 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: [PATCH v2] ACPI: thermal: Drop redundant local variable from acpi_thermal_resume()
-Date:   Thu, 10 Aug 2023 20:49:08 +0200
-Message-ID: <4515915.LvFx2qVVIh@kreacher>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D97C760C5B;
+        Thu, 10 Aug 2023 23:16:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1FEC433C7;
+        Thu, 10 Aug 2023 23:16:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691709404;
+        bh=ZmrWlyLDwcmwi9hUwauGbIn2pC+uqr3wNk2fOa0Tmtc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=SAQglvG+C+UjhCWhv1P2LHig050JiUg/j9MWLFVK7hj/7mnBjMFPkSx3X1+Idlcyg
+         QIMjHYxCCTUwVrso10FiV0kAgIMUzJ42bV+ca6NDs7NdHwhxYGQj8x6iBfaFl2cRG1
+         XleuAEM/5LZlE7noiElqHs04GtNmocgk2R146bojaFK6ezYM5KXep2tZrdG/kenI6D
+         QXcD5JAT3G5jFgHAbLGmy7RZc/aAV7R98EntmgFz3xT2nGQLwtH+mJmPYcBMJt1t00
+         A0Wq9he4ONcMxtxl+6gmV7HNhz6pR8vAY73AyftNFcj2cVLf6cicQtJi6abjZdd6H9
+         ZpXHJtoll7FEQ==
+Date:   Thu, 10 Aug 2023 18:16:42 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
+Cc:     lenb@kernel.org, james.morse@arm.com, tony.luck@intel.com,
+        bp@alien8.de, bhelgaas@google.com, robert.moore@intel.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, acpica-devel@lists.linuxfoundation.org
+Subject: Re: [PATCH v3 3/5] PCI: Add PCIe to PCI/PCI-X Bridge AER fields
+Message-ID: <20230810231642.GA50403@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrleeigdduvdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdp
- rhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230704120530.1322257-1-LeoLiu-oc@zhaoxin.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Tue, Jul 04, 2023 at 08:05:30PM +0800, LeoLiu-oc wrote:
+> From: leoliu-oc <leoliu-oc@zhaoxin.com>
+> 
+> Define Secondary Uncorrectable Error Mask Register, Secondary
+> Uncorrectable Error Severity Register and Secondary Error Capabilities and
+> Control Register bits in AER capability for PCIe to PCI/PCI-X Bridge.
+> Please refer to PCIe to PCI/PCI-X Bridge Specification, sec 5.2.3.2,
+> 5.2.3.3 and 5.2.3.4.
+> 
+> Signed-off-by: leoliu-oc <leoliu-oc@zhaoxin.com>
+> ---
+>  include/uapi/linux/pci_regs.h | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+> index e5f558d964939..28e20c4d0afc3 100644
+> --- a/include/uapi/linux/pci_regs.h
+> +++ b/include/uapi/linux/pci_regs.h
+> @@ -800,6 +800,9 @@
+>  #define  PCI_ERR_ROOT_FATAL_RCV		0x00000040 /* Fatal Received */
+>  #define  PCI_ERR_ROOT_AER_IRQ		0xf8000000 /* Advanced Error Interrupt Message Number */
+>  #define PCI_ERR_ROOT_ERR_SRC	0x34	/* Error Source Identification */
+> +#define PCI_ERR_UNCOR_MASK2		0x30	/* PCIe to PCI/PCI-X Bridge */
+> +#define PCI_ERR_UNCOR_SEVER2	0x34	/* PCIe to PCI/PCI-X Bridge */
+> +#define PCI_ERR_CAP2			0x38	/* PCIe to PCI/PCI-X Bridge */
 
-Commit dabc621a3110 ("ACPI: thermal: Drop enabled flag from struct
-acpi_thermal_active") left behind a variable that is only assigned to
-and never read, so drop it now.
+These need to line up with the offsets above, i.e.,
+PCI_ERR_ROOT_ERR_SRC.
 
-Fixes: dabc621a3110 ("ACPI: thermal: Drop enabled flag from struct acpi_thermal_active")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
+I think these should be named:
 
-v1 -> v2: Use correct subject.
+  PCI_ERR_SEC_UNCOR_MASK
+  PCI_ERR_SEC_UNCOR_SEVER
+  PCI_ERR_SEC_ERR_CAP
 
-The commit mentioned above is a linux-next one.
+because "Secondary" in this context doesn't have anything to do with
+"2"; it just means the secondary (downstream) interface of the bridge.
 
----
- drivers/acpi/thermal.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -1039,7 +1039,7 @@ static int acpi_thermal_suspend(struct d
- static int acpi_thermal_resume(struct device *dev)
- {
- 	struct acpi_thermal *tz;
--	int i, j, power_state, result;
-+	int i, j, power_state;
- 
- 	if (!dev)
- 		return -EINVAL;
-@@ -1053,9 +1053,8 @@ static int acpi_thermal_resume(struct de
- 			break;
- 
- 		for (j = 0; j < tz->trips.active[i].devices.count; j++) {
--			result = acpi_bus_update_power(
--					tz->trips.active[i].devices.handles[j],
--					&power_state);
-+			acpi_bus_update_power(tz->trips.active[i].devices.handles[j],
-+					      &power_state);
- 		}
- 	}
- 
-
-
-
+Bjorn
