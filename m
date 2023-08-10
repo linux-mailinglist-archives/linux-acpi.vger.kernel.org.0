@@ -2,142 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B467A77798D
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 15:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1503777A1E
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 16:06:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234753AbjHJN1I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Aug 2023 09:27:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54930 "EHLO
+        id S233772AbjHJOGx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Aug 2023 10:06:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232369AbjHJN1H (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 09:27:07 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF63E26AC;
-        Thu, 10 Aug 2023 06:27:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691674026; x=1723210026;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NNTKjAQ4/Nbiw5gObH2nRESWhwRRZzoZr3mLclxqhow=;
-  b=F52AEd15Lkv8izGmXNJAAZGncCFHi/iN6nsnfiosSrV46kqXDe3a2XzN
-   chqoJ9W1/nhD/EqW410iZZvmySdJeICue7bL49ATfFmpAOcsxCAadX3pf
-   j9FwmC0k3PhHQwdwV5C8mi6BpXD0q9DIqQi4AIoXNE/LsqM3dt4wxd/w/
-   zt6c+QMNGrm0uowQWj+hheIO35aQEIXFtX07XU1CIkIGaP4MJa5+69M/f
-   RDnKZwEyYxknpE5p+0vmDHwpJ4IXTt+FtyyN/fgU8KJMeSWABvowSton+
-   3lCc1WbjytTHr4/YrqYIQ9CyiTIP4MSM6TA5/JCME+3/Sfm2/bxO5s959
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="435295103"
-X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
-   d="scan'208";a="435295103"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 06:27:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="855940741"
-X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
-   d="scan'208";a="855940741"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004.jf.intel.com with ESMTP; 10 Aug 2023 06:26:57 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qU5gk-002j9r-39;
-        Thu, 10 Aug 2023 16:26:54 +0300
-Date:   Thu, 10 Aug 2023 16:26:54 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Gerald Loacker <gerald.loacker@wolfvision.net>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v1 2/6] device property: Add
- fwnode_property_match_property_string()
-Message-ID: <ZNTlniWf8Ou9hHOT@smile.fi.intel.com>
-References: <20230808162800.61651-1-andriy.shevchenko@linux.intel.com>
- <20230808162800.61651-3-andriy.shevchenko@linux.intel.com>
- <20230809185944.1ae78e34@jic23-huawei>
+        with ESMTP id S231659AbjHJOGx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 10:06:53 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D9CC120;
+        Thu, 10 Aug 2023 07:06:52 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37ABvDJL028605;
+        Thu, 10 Aug 2023 14:05:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=FGgT2AN6JO5dh8TcsmYsl/Z1ovgEquJBrJ3QcMh1zdY=;
+ b=T+5oviV/QoGRHiwCt9rXgi7wPs5smvNnOIrmnF6ZgIDYpgcO7xT3fB9K+o01Iyp5vCp5
+ MdZUR8bipmxaFF2GlZcVH45ty2KbrXqHtAV5KGUyHAtMQM1XPbVUjlNXuRtDrWyQMiDB
+ b1h76NZf2WHzk9sUj8V63mij2SLRABBM+LbF6YTBr948zL/QF0fF0497/fzz9/hNjUaD
+ jhZ5a1gGJ3Ivhqae72YgrQSJjB0f5tBSYYr2zc+Nu598v5Ysl3nAwcZ4fb+6a8pUzcqG
+ J9XeTorsXXH4Zw6rNe+y7zvdfYk+qRPsBIn8FB8HpgushR6aXbDYdeW2ebgeM5G+o3Xn vA== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3scbcgjnyn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 10 Aug 2023 14:05:58 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37AE5ucc014615
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 10 Aug 2023 14:05:56 GMT
+Received: from [10.111.183.64] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Thu, 10 Aug
+ 2023 07:05:55 -0700
+Message-ID: <ec8d88db-4af7-3567-ac6a-92f50f0da8bb@quicinc.com>
+Date:   Thu, 10 Aug 2023 07:05:54 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230809185944.1ae78e34@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V8 3/9] cfg80211: expose nl80211_chan_width_to_mhz for
+ wide sharing
+Content-Language: en-US
+To:     Evan Quan <evan.quan@amd.com>, <rafael@kernel.org>,
+        <lenb@kernel.org>, <Alexander.Deucher@amd.com>,
+        <Christian.Koenig@amd.com>, <Xinhui.Pan@amd.com>,
+        <airlied@gmail.com>, <daniel@ffwll.ch>,
+        <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <Mario.Limonciello@amd.com>, <mdaenzer@redhat.com>,
+        <maarten.lankhorst@linux.intel.com>, <tzimmermann@suse.de>,
+        <hdegoede@redhat.com>, <jingyuwang_vip@163.com>,
+        <Lijo.Lazar@amd.com>, <jim.cromie@gmail.com>,
+        <bellosilicio@gmail.com>, <andrealmeid@igalia.com>,
+        <trix@redhat.com>, <jsg@jsg.id.au>, <arnd@arndb.de>,
+        <andrew@lunn.ch>
+CC:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
+References: <20230810073803.1643451-1-evan.quan@amd.com>
+ <20230810073803.1643451-4-evan.quan@amd.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230810073803.1643451-4-evan.quan@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: QEmG93UZJ8DRDDG4MdFLuG057js1UGpo
+X-Proofpoint-ORIG-GUID: QEmG93UZJ8DRDDG4MdFLuG057js1UGpo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-10_10,2023-08-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ adultscore=0 phishscore=0 mlxlogscore=964 mlxscore=0 spamscore=0
+ priorityscore=1501 suspectscore=0 impostorscore=0 clxscore=1011
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308100119
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 09, 2023 at 06:59:44PM +0100, Jonathan Cameron wrote:
-> On Tue,  8 Aug 2023 19:27:56 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-
-...
-
-> > +int fwnode_property_match_property_string(const struct fwnode_handle *fwnode,
-> > +	const char *propname, const char * const *array, size_t n)
+On 8/10/2023 12:37 AM, Evan Quan wrote:
+> The newly added WBRF feature needs this interface for channel
+> width calculation.
 > 
-> Hi Andy,
+> Signed-off-by: Evan Quan <evan.quan@amd.com>
+> ---
+>   include/net/cfg80211.h | 8 ++++++++
+>   net/wireless/chan.c    | 3 ++-
+>   2 files changed, 10 insertions(+), 1 deletion(-)
 > 
-> Whilst I'm not 100% sold on adding ever increasing complexity to what we
-> match, this one feels like a common enough thing to be worth providing.
+> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+> index 7c7d03aa9d06..f50508e295db 100644
+> --- a/include/net/cfg80211.h
+> +++ b/include/net/cfg80211.h
+> @@ -920,6 +920,14 @@ const struct cfg80211_chan_def *
+>   cfg80211_chandef_compatible(const struct cfg80211_chan_def *chandef1,
+>   			    const struct cfg80211_chan_def *chandef2);
+>   
+> +/**
+> + * nl80211_chan_width_to_mhz - get the channel width in Mhz
+> + * @chan_width: the channel width from &enum nl80211_chan_width
+> + * Return: channel width in Mhz if the chan_width from &enum nl80211_chan_width
+> + * is valid. -1 otherwise.
 
-Yep, that's why I considered it's good to add (and because of new comers).
+SI nit: s/Mhz/MHz/ in both places
 
-> Looking at the usecases I wonder if it would be better to pass in
-> an unsigned int *ret which is only updated on a match?
-
-So the question is here are we going to match (pun intended) the prototype to
-the device_property_match*() family of functions or to device_property_read_*()
-one. If the latter, this has to be renamed, but then it probably will contradict
-the semantics as we are _matching_ against something and not just _reading_
-something.
-
-That said, do you agree that current implementation is (slightly) better from
-these aspects? Anyway, look at the below.
-
-> That way the common properties approach of not checking the return value
-> if we have an optional property would apply.
-> 
-> e.g. patch 3
-
-Only?
-
-> would end up with a block that looks like:
-> 
-> 	st->input_mode = ADMV1014_IQ_MODE;
-> 	device_property_match_property_string(&spi->dev, "adi,input-mode",
-> 					      input_mode_names,
-> 					      ARRAY_SIZE(input_mode_names),
-> 					      &st->input_mode);
-> 
-> Only neat and tidy if the thing being optionally read into is an unsigned int
-> though (otherwise you still need a local variable)
-
-We also can have a hybrid variant, returning in both sides
-
-  int device_property_match_property_string(..., size_t *index)
-  {
-	  if (index)
-		  *index = ret;
-	  return ret;
-  }
-
-(also note the correct return type as it has to match to @n).
-
-Would it be still okay or too over engineered?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> + */
+> +int nl80211_chan_width_to_mhz(enum nl80211_chan_width chan_width);
+> +
+>   /**
+>    * cfg80211_chandef_valid - check if a channel definition is valid
+>    * @chandef: the channel definition to check
+> diff --git a/net/wireless/chan.c b/net/wireless/chan.c
+> index 0b7e81db383d..227db04eac42 100644
+> --- a/net/wireless/chan.c
+> +++ b/net/wireless/chan.c
+> @@ -141,7 +141,7 @@ static bool cfg80211_edmg_chandef_valid(const struct cfg80211_chan_def *chandef)
+>   	return true;
+>   }
+>   
+> -static int nl80211_chan_width_to_mhz(enum nl80211_chan_width chan_width)
+> +int nl80211_chan_width_to_mhz(enum nl80211_chan_width chan_width)
+>   {
+>   	int mhz;
+>   
+> @@ -190,6 +190,7 @@ static int nl80211_chan_width_to_mhz(enum nl80211_chan_width chan_width)
+>   	}
+>   	return mhz;
+>   }
+> +EXPORT_SYMBOL(nl80211_chan_width_to_mhz);
+>   
+>   static int cfg80211_chandef_get_width(const struct cfg80211_chan_def *c)
+>   {
 
