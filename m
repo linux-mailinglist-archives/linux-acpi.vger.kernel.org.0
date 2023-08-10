@@ -2,132 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5169A777BD2
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 17:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFA55777C75
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 17:41:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232967AbjHJPMI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Aug 2023 11:12:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49056 "EHLO
+        id S234846AbjHJPlq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Aug 2023 11:41:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230505AbjHJPMH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 11:12:07 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F58D26A6;
-        Thu, 10 Aug 2023 08:12:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691680326; x=1723216326;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PoPLH6q9kFPcmdWUSyqja114zqyQiVZBg03NQdgbgJA=;
-  b=C4GWCdmHECke++9Bf7GWK6BC/DTCegWyp5Tn9PSpngIBpzPpt+fPwwp+
-   0Ni3SxVV1Pv+qpRCFEzXh/ihtgjcTFbdCp8SzI1ZQLZQvPtofWOM9hZnq
-   Hyl/ti1G0HLcZa35cqTFkLYQddYiHbWEXvhCHvzFhRu6vv36hRKEEZZgN
-   EBMW+JTxj1HtzUMQoGqCwBw6eY5eCw4wFGgqnZ7/tlwcYAGFsscH5Y8fq
-   9jQ9ytULTHHMuxQ4hcd8HUTUP9RwSaampdU4uISAYfLvq8W8lGSawNFfl
-   idX/DM8fv3rbNTcQbGdPH9XpC6Rt+mKkzhLn4ok94PDkWTWgEkc8ISYFK
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="361565741"
-X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
-   d="scan'208";a="361565741"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 08:11:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="797644555"
-X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
-   d="scan'208";a="797644555"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga008.fm.intel.com with ESMTP; 10 Aug 2023 08:11:51 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qU7KH-006JF1-1j;
-        Thu, 10 Aug 2023 18:11:49 +0300
-Date:   Thu, 10 Aug 2023 18:11:49 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Peter Rosin <peda@axentia.se>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct bus_type
-Message-ID: <ZNT+NY99n7y3abwa@smile.fi.intel.com>
-References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
- <20230805174036.129ffbc2@jic23-huawei>
- <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <20230806142950.6c409600@jic23-huawei>
- <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
- <ZNFV+C1HCIRJpbdC@google.com>
- <ZNIyrG/2h/PeS9Oz@smile.fi.intel.com>
- <20230809182551.7eca502e@jic23-huawei>
- <OS0PR01MB59221A1ADB67E96E9E39D0198613A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+        with ESMTP id S233659AbjHJPlp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 11:41:45 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E862125;
+        Thu, 10 Aug 2023 08:41:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+        bh=LZZwhU2q9tKRTuT4LMGtkLl/YytlWdJV5ADQ7yyf884=; b=nzCVWxdZKZwPPVrpb79vDihKKN
+        YQMNeNih7Df6L+pZOvTjw50y9FCJs6aH8rL8h5X2REST5vdC3Wq9YdRoE5xnf6hw68vx0zt8985/4
+        +9cDPaBlKuKeAHsCvu3wOh/4f+NA8FgH2SNngUajJxMQhE16KsGIQEWgQG79GUlXunzjgzLhpAOr+
+        SYDCVy0iFP1vRNzRSbC+T0oIVVz6F2RvcjiMZYX3czR+nm5oLvCNzwtupO+DnMacrLMCIbCpZMS31
+        kUka0xfiEZR78ZR0A8ZecYiCVpTdwXhUWyz2kMWRbBUeMIq9zHuWNHz7b8W60+R7DbtqAwg0Ryp6u
+        XrPT05iA==;
+Received: from [2601:1c2:980:9ec0::2764]
+        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qU7mf-0084NA-10;
+        Thu, 10 Aug 2023 15:41:09 +0000
+Message-ID: <efb2d30c-3945-a63d-9a3f-7cf39124f76a@infradead.org>
+Date:   Thu, 10 Aug 2023 08:41:07 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <OS0PR01MB59221A1ADB67E96E9E39D0198613A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH V8 1/9] drivers core: Add support for Wifi band RF
+ mitigations
+Content-Language: en-US
+To:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
+        Alexander.Deucher@amd.com, Christian.Koenig@amd.com,
+        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
+        johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        Mario.Limonciello@amd.com, mdaenzer@redhat.com,
+        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+        hdegoede@redhat.com, jingyuwang_vip@163.com, Lijo.Lazar@amd.com,
+        jim.cromie@gmail.com, bellosilicio@gmail.com,
+        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
+        arnd@arndb.de, andrew@lunn.ch
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <20230810073803.1643451-1-evan.quan@amd.com>
+ <20230810073803.1643451-2-evan.quan@amd.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20230810073803.1643451-2-evan.quan@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 09:05:10AM +0000, Biju Das wrote:
-> > On Tue, 8 Aug 2023 15:18:52 +0300
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > > On Mon, Aug 07, 2023 at 01:37:12PM -0700, Dmitry Torokhov wrote:
-> > > > On Mon, Aug 07, 2023 at 05:54:07PM +0300, Andy Shevchenko wrote:
 
-...
 
-> > > > So in legacy ID lookup path we can safely assume that values below
-> > > > 4096 are scalars and return NULL from the new
-> > > > device_get_match_data(). This way current drivers using the values
-> > > > as indices or doing direct comparisons against them can continue
-> > > > doing manual look up and using them as they see fit. And we can
-> > convert the drivers at our leisure.
-> > >
-> > > It's a good idea, but I believe will be received as hack.
-> > > But why not to try? We indeed have an error pointers for the last page
-> > > and NULL (which is only up to 16 IIRC) and reserved space in the first
-> > > page. To be more robust I would check all enums that are being used in
-> > > I2C ID tables for maximum value and if that is less than 16, use
-> > > ZERO_OR_NULL_PTR() instead of custom stuff.
-> > >
-> > See iio/adc/max1363 example that has 37ish.
-> > 
-> > Could tidy that one up first and hopefully not find any others that are in
-> > subsystems not keen on the move away from enums.
-> 
-> If there is no objection, I can fix this using i2c_get_match_data() for
-> iio/adc/max1363 and device_match_data() will return ZERO_OR_NULL_PTR()
-> if max enum ID in the ID lookup table is less than 16. And the drivers
-> that use legacy ID's will fallback to ID lookup. So that there won't be
-> any regression.
+On 8/10/23 00:37, Evan Quan wrote:
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index a1457995fd41..21f73a0bbd0b 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -7152,3 +7152,12 @@
+>  				xmon commands.
+>  			off	xmon is disabled.
+>  
+> +	wbrf=		[KNL]
+> +			Format: { on | auto | off }
+> +			Controls if WBRF features should be enabled or disabled
+> +			forcely. Default is auto.
 
-I'm good with this approach, but make sure you checked the whole kernel source
-tree for a such.
+"forcely" is not a word. "forcedly" is a word, but it's not used very much
+AFAIK.
+I would probably write "Controls if WBRF features should be forced on or off."
+
+> +			on	Force enable the WBRF features.
+> +			auto	Up to the system to do proper checks to
+> +				determine the WBRF features should be enabled
+> +				or not.
+> +			off	Force disable the WBRF features.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+~Randy
