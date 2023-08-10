@@ -2,200 +2,174 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82BCF776E23
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 04:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 628BC777175
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 09:39:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230212AbjHJCho (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Aug 2023 22:37:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57558 "EHLO
+        id S230019AbjHJHj1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Aug 2023 03:39:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231283AbjHJChn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Aug 2023 22:37:43 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 909D61BF7
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Aug 2023 19:37:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691635063; x=1723171063;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=NVNplHDxqeI8+/c3kLCKf87zKFy9nL4z+g09AGAGtuY=;
-  b=LBxDI8GYWfxr0EdCmz1L2zhZmVBAol99HB+wdSs8cU5R1/3+TBw8NJUa
-   r0n8Y1fFytDbSjhD9HuD1R6zmB2vPej7P091OdF3/LRFUOFsgPWj/PQ8k
-   40fjnfAn4iqc2aM9daP2lbkkTVF7YBqbD+ivLFIBNNDQIrWV5N2GvHOzg
-   7F+gb+QeIlf6TbAwBIB2c6Al64M9NGAb18UyvYuRceQvXkjbTl1QBUDp3
-   f2oJNBF/NWFsd9p/7vM5dDmVbLESYDyqVaweSantnLcGHvd+yVcXf436q
-   M23jE3WJJ5Hl/5xG0F1ztls2znhddVmZIfe3M8cpXFfkKNfrptiPUSJX5
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="437637811"
-X-IronPort-AV: E=Sophos;i="6.01,160,1684825200"; 
-   d="scan'208";a="437637811"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2023 19:37:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="905877672"
-X-IronPort-AV: E=Sophos;i="6.01,160,1684825200"; 
-   d="scan'208";a="905877672"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orsmga005.jf.intel.com with ESMTP; 09 Aug 2023 19:37:43 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Wed, 9 Aug 2023 19:37:42 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Wed, 9 Aug 2023 19:37:42 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.176)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Wed, 9 Aug 2023 19:37:42 -0700
+        with ESMTP id S229518AbjHJHj0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 03:39:26 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2084.outbound.protection.outlook.com [40.107.237.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02A0310F6;
+        Thu, 10 Aug 2023 00:39:26 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kAzHsIzJ1yuf5V1Y+wLnJHtNAzdQ68xz+KYAe9zRXYb5cx8biBbROMbQjRQXRhMBQQKDXDxXPnrBIi4zFdgV6KifmwCyOrWyLT4uXPu3AcS9xsPjT3P2fAuU1GCmyun1twJkpBTc0axp3eJzKxwokgVIBneg+5m+w68CqApM4vbLh5dee4MbDKqa2SD6fGYVZAeJO8RRcH/ilGkaKqA0SllwBUrr512NLQtiMozuF3yhxMo1R5RPGLEu3HJ+DnsoyRJNrHFv/hHIr2UaTCqDTDuK4iagV5AL8vyRzxIh8jUOJvjgIwG4E2sB2qclWhnCkqYKbE962ytt2jyAayCODw==
+ b=h1mW77tPo9qk0rO95ieLwfcnKxhkk4cDbc3AOs4QA4IdDYwfsY+BYi0MHEkZVIjdgJJolRNfy+D7IvpDNfC3ndZZKjCCXvbTykpqVbPcTttdfJm6JzHJk7BNIDT4J3m2VVZ5kaH4uBEhMMqxPAP86s06KjyVtmaU73qr2Z14ieFIoY6MLzDFZH+/dOOdbI0Z2kPS1+nb7NBPVqDzbfnVPFKnPZ16eXX62mD11hE2NH79mxikl2P+xw35j8gr5IvfIZ9x6C/gHWJOVBCyc7VZIEGrBAswFpuFu2u7SqItqdADREOEaISU4YveskI6qPNvnvMhLZl4op0OBQAiAk4dQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pkRptwKkrnz2Ykg8D50SZ6PjHDFFn7NRA756rx348YU=;
- b=OmBvnsv1Kz3/2ZwqE1forhVyM5Gkr/lbRs2Fn3T4axVV0dCAipjP9465sYebT8J/4NJfL8UQmIr0/dASlzil+O7ockHq2+J3VmwVYGPxMtpajNg4Hur+lrEuu10GA5C+V32Mo5k7ecvG6W+yrj4IsoMg0MrtMEecKYHo6BVltJtiIql/2faR8MeH3/6uD7XH0xIV2qakZnPVazFpi9ByPu1C65Di0/Pt3t8YEl8j6zde1EjXtM2xjkxqNkd1jIqZGznmLZ58PxkTHWXYJc+oBZi+4Gi3D+UE2HEuK0pSM0HWZmroecibfU18nkE5mjQSOTBvoIz4EGK2WpporC7nJg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
- by IA1PR11MB7176.namprd11.prod.outlook.com (2603:10b6:208:418::5) with
+ bh=muNvOhhnH4HZCU1c+YHM9USnz4tEVkuw0me1IXMRoio=;
+ b=dir18Ug7w4oKO+Yvu1k4RvzLTLCcNrjh4Hsc6urROrF1EibK5yuE0To8A8YIHSf7BmUanCLFys/JxbeTlj4CcwRYndgfwip23VIQgrbc0vs03MRUc4/k3iKnHuIgJzE+TRmeIw4bOPHkue23bU8927JBZaEjt2SCckwSxLl0FrQvOxsM3s99DqPZQO9QUArZjVpcafr3J0+liw2sdVayu5U4DpZ9UPbHtOyt/YmRl5+GV/jLM910KkmZVWamEzLBBdAG5Ov5pjpE7GR2bGe5ugLeGYGy+dEd4lX1t17/J7stqqrdqR9QA4uvB30KyqRc06wZvGEfVFWcdCYT7mE+cQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=muNvOhhnH4HZCU1c+YHM9USnz4tEVkuw0me1IXMRoio=;
+ b=ukbZHfTCMGkoL30CSl04nn8dRcBGk9OU/k8/DX2Gd/xEHzbKLN66UN+gseVZ1u6NcEPRN5bBV6dDh67CRwqxK8iPpcmb+Z6BeLnbbtOdQHLz5AlMIzu68KEhnRX4eXEIIgT4UdishPVsIG+UlPwh1moI2564p/yHiRbN3/LtD/0=
+Received: from CH0PR03CA0032.namprd03.prod.outlook.com (2603:10b6:610:b3::7)
+ by CH2PR12MB4198.namprd12.prod.outlook.com (2603:10b6:610:7e::23) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30; Thu, 10 Aug
- 2023 02:37:41 +0000
-Received: from BN9PR11MB5276.namprd11.prod.outlook.com
- ([fe80::dcf3:7bac:d274:7bed]) by BN9PR11MB5276.namprd11.prod.outlook.com
- ([fe80::dcf3:7bac:d274:7bed%4]) with mapi id 15.20.6652.029; Thu, 10 Aug 2023
- 02:37:40 +0000
-From:   "Tian, Kevin" <kevin.tian@intel.com>
-To:     Jason Gunthorpe <jgg@nvidia.com>,
-        "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>
-CC:     Lu Baolu <baolu.lu@linux.intel.com>,
-        "Rodel, Jorg" <jroedel@suse.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Chen-Yu Tsai <wenst@chromium.org>
-Subject: RE: [PATCH v2 4/4] iommu: dev->iommu->iommu_dev must be set before
- ops->device_group()
-Thread-Topic: [PATCH v2 4/4] iommu: dev->iommu->iommu_dev must be set before
- ops->device_group()
-Thread-Index: AQHZys/2nwYChGiNH0a5WZggwO/jpK/i0Yfg
-Date:   Thu, 10 Aug 2023 02:37:40 +0000
-Message-ID: <BN9PR11MB52769845D11B3B23401644098C13A@BN9PR11MB5276.namprd11.prod.outlook.com>
-References: <0-v2-d2762acaf50a+16d-iommu_group_locking2_jgg@nvidia.com>
- <4-v2-d2762acaf50a+16d-iommu_group_locking2_jgg@nvidia.com>
-In-Reply-To: <4-v2-d2762acaf50a+16d-iommu_group_locking2_jgg@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|IA1PR11MB7176:EE_
-x-ms-office365-filtering-correlation-id: 0f18d164-a8b7-4cbf-f26a-08db994ac4a6
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: n5pJhAPfRAaV08BjOo9AWrC3Z0xXt61oAg7x4EtDuDL/ktdDiwUATiOBdqHpc2oveawffnSRWl8X2sHXAzdyY3f+o3rzY1HeMdWd47Y7954Y2njA2mKS2rbmOYYKSJmaTYir6fLYfd9FUr0KOc6YCA5QCL5QOYNterSAcuZKK1GjCRZNTzgJ2hSHM4BlCz8ufHjqmRNELneHRjv/p6MqNbxpnWkrvAja1cdyq7RRePCnpenJZSDE9Tt4hy7gg4AvhxdHGYlz5EBj4xtyNGz0gS6YLUeXTMuWDLk7qRqFyXIN+bQ4ZyodUqIwoNKn4e/tPLYNz6rcPrjp3+s+VhuQ252EZ6bTkOJasfKaOYouqNzYnGmJih7Fy1MLzFUYXG10Nyf+rO6CZhjrqdkKkW9MdZCT7uG3pG1Gi6OdqJdT6yIwiFBGAPpn1tnZZyUWztdOG5TycZRXocHJgfLXYttdyrCEFFMlX22H+2xnSDTt7AthjwbzWTCQV79vePi9UU/TEE1+HfOzTkkbES/3ZKcpnWD/NT9ARdic/A82QyMNyvQzQDWygacy7V8yeCzbRV89l0/uhEMqgRcTFlx5SKfha+aKuwrmLbZKzn0fmp9v4gs=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(346002)(39860400002)(366004)(136003)(396003)(451199021)(1800799006)(186006)(83380400001)(2906002)(38100700002)(110136005)(54906003)(478600001)(122000001)(86362001)(55016003)(7416002)(5660300002)(71200400001)(38070700005)(52536014)(6506007)(26005)(82960400001)(316002)(9686003)(966005)(7696005)(8936002)(8676002)(33656002)(41300700001)(76116006)(64756008)(66556008)(66476007)(66446008)(66946007)(4326008);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ALQdh/KWB5zl6b1Z8oXhuh+AmGtBjC+xNDDE4jceXu42BG3BwZZ9ga5LnI8W?=
- =?us-ascii?Q?7Q8TFMdV6d4QcGqZsJwEq9pDj8ZsQVdtc7alNxb+0+OmQqVRJJ0xXcRVKt73?=
- =?us-ascii?Q?FC+f9nGJw3d+rmg3T6jFNVe1/Y1mjhiCW5USc/Oy+YNF4/0ebiixUhjlJHKG?=
- =?us-ascii?Q?SLXkU2DdO4hZ7JHUcYPOhAC3hKsvg1QVtKpDG1YK3dNiIaIy+NM20FufgVIs?=
- =?us-ascii?Q?YQhJoLRdiL5u6we/5lXagNtRbg8oVNmyx9JJBpkTziLs/e8l+UgXianZMTsZ?=
- =?us-ascii?Q?G6r9AUY+AlWIS94BPUCPAi6jupyiFtF0vX0Wse3cLA+rsU0NUw4kHikd5xjU?=
- =?us-ascii?Q?14SXE08Ph27isvdX463KX0eOfFP+RQa8kavfD8/3dNoBT7Or6MvkpsJz39fE?=
- =?us-ascii?Q?dHMvZKtQoapm4qBTISg5GcBEXigRo91gU7+gb20VtbMaJmQvbqsc4F6i2ii4?=
- =?us-ascii?Q?S8TJ3sg9+rF/DUMGy5YHZGfThkuy/ONL4k4Na+BVgkhpqzYP4DRVtnenrO7w?=
- =?us-ascii?Q?R38nMKOPnVRMKjUNe9pj8KAbuGZBx39vSW4Dw6jUBbYFUtIEU0pd16tGJLZI?=
- =?us-ascii?Q?k6sjfPOxNeHqUGdIn8i2acg7u3Fqd9p0DH5wKRXCOtvc9WwFbe2AR4vvKHgU?=
- =?us-ascii?Q?yAHF2VE1o6LvPxOxPdXWUZSzFmltr8X2Riy4jiwkJC6K5QcSZGnsIjunvIbw?=
- =?us-ascii?Q?RNT7LO01Okd3tu/OhgMWsFDBA9thWkJEa5Hgw8orDkP39e8MfNYEpE/e/LtF?=
- =?us-ascii?Q?n1q/tO1RBpc5LmnrBrjsXGefQkGMRtwcnpMd9GbjqgJt6eItyTU0V0Z6nEgb?=
- =?us-ascii?Q?w/C5/mgvyUZ0wTWKuRvpt6opbwuj2Y0OfmkTCO6D3fdy9CHAP9Ma/AaKoGpr?=
- =?us-ascii?Q?2JoIsVWW3jukTiyF//Bbftc+R/Y0vd3roiuggtR4njhLhQUx0qfnAgUco2ec?=
- =?us-ascii?Q?5z/Zb70+0v0TebVuVPn50MmXv/Y/PikjlV4MqLCxES4ZVuHdJXC2LNVEcUHU?=
- =?us-ascii?Q?L0cnHwoazUYGuPK1r6YO24UvFj95ttoHYUzmnyXIdUfSMgvGBX32ysFba2PT?=
- =?us-ascii?Q?JaEDHipkXbe3UaWuaIfuKH5Ofu/u5ouxQZuM4c7UcKxoDPN4XnDvJvONvBfu?=
- =?us-ascii?Q?meK7HhWVCkHTaYkz3JWGD8EchdYbDkIfTv05KVR7N88Vqx/xJM9v0rb49IAV?=
- =?us-ascii?Q?493VF9Eh8Sf3SzXmghZf5SufTNJLM41l5fFF5K9yyVI4wUohZsI7lfVhoWS0?=
- =?us-ascii?Q?OYYNTk0t7nphW9Vea8tjkMv4SRZ42kEg0vi6xFo4SzSWOlzyiXFgGmfMmAcV?=
- =?us-ascii?Q?2UMpVxt4avoMRPDWyH0GNXmbFayu8BRsck2IP5AaQh0ySJN58NxPLWUIxkV2?=
- =?us-ascii?Q?92wF5rgcwMGR0yV+h/Qg8SPN/JWZYadZR6Oh5NbotHU23nCZuk5tyc+5osb2?=
- =?us-ascii?Q?Yhe00GIA3KEQdVdiJ68zaiv4Fym5BciiC5j/HEF8IiXhKkX3wfCNki4Rpd4U?=
- =?us-ascii?Q?11rnRuOsDSAXoy4v2+Z82lvLU6ZoanSLVJaqiJwN3oLtChXrFMGTREXVrl2u?=
- =?us-ascii?Q?bEsYQhyonxM5hLakEXdq/Z/FO0RfFAoQjsp1R4dJ?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 2023 07:39:23 +0000
+Received: from MWH0EPF000971E2.namprd02.prod.outlook.com
+ (2603:10b6:610:b3:cafe::4f) by CH0PR03CA0032.outlook.office365.com
+ (2603:10b6:610:b3::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30 via Frontend
+ Transport; Thu, 10 Aug 2023 07:39:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MWH0EPF000971E2.mail.protection.outlook.com (10.167.243.69) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6652.20 via Frontend Transport; Thu, 10 Aug 2023 07:39:22 +0000
+Received: from equan-buildpc.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 10 Aug
+ 2023 02:39:12 -0500
+From:   Evan Quan <evan.quan@amd.com>
+To:     <rafael@kernel.org>, <lenb@kernel.org>,
+        <Alexander.Deucher@amd.com>, <Christian.Koenig@amd.com>,
+        <Xinhui.Pan@amd.com>, <airlied@gmail.com>, <daniel@ffwll.ch>,
+        <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <Mario.Limonciello@amd.com>, <mdaenzer@redhat.com>,
+        <maarten.lankhorst@linux.intel.com>, <tzimmermann@suse.de>,
+        <hdegoede@redhat.com>, <jingyuwang_vip@163.com>,
+        <Lijo.Lazar@amd.com>, <jim.cromie@gmail.com>,
+        <bellosilicio@gmail.com>, <andrealmeid@igalia.com>,
+        <trix@redhat.com>, <jsg@jsg.id.au>, <arnd@arndb.de>,
+        <andrew@lunn.ch>
+CC:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        Evan Quan <evan.quan@amd.com>
+Subject: [PATCH V8 0/9] Enable Wifi RFI interference mitigation feature support
+Date:   Thu, 10 Aug 2023 15:37:54 +0800
+Message-ID: <20230810073803.1643451-1-evan.quan@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f18d164-a8b7-4cbf-f26a-08db994ac4a6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Aug 2023 02:37:40.8408
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E2:EE_|CH2PR12MB4198:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01816b74-728d-4048-9a2e-08db9974ea46
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: oS8JA/qyuQuaB3f4nINEmtt/FaUMLUXhAREd3Drr5bwFicFwghNid1eY8Xa1xAXCOulxVr8cmscYWC5oKrfyTxK3x5yz8SmMOwnoTwGuhZnTMX9c4X0c93pxlpeviYQD8eNYPQZY/IgzzATIpKL0rGp6s0tkNx+TByL08Xi545Y40LYFsFHDfhC7b3zTRsUus8xotYNt4abJi6ekw+EUzR0haKPbU9RQXYkOR7fJeueDnUAXTbPieEH6rc1o1eWdvarxsLodzpcnj/46EHIPvkUBrtA1Rg1Hu+ZPTk72YTl2MueLpx+HeIUHPAtsWGpGw5/RbrLlb93k4owML/4Itp7Fat4L4ZBF+S+NYKtY5sjM5cOgV7h7G62AIrVRymqYH9u+w1HlHKZolpnGgEBMtmetnKJHl7F8958PDsiIziQfRmQduGjzNmrrciRUsgQ9vAkIiPEtHUynyeFvqrpmBocMQMh5qyAoVg6haSUKIouC9/qtH8qieZxN09mysmVBtZghJ0JgT+7iQsE6AygGcq/zfsAOLUNfCvPrQo+ZM31RAc/6i+mtwhxaWlXVrN+sO3xrBsPtwVijDt1iljUVcma35mK2+uYQlS3+fdz68GErpzya8hJeG8CwqB/f0foT9//pxOEvceWocJQIODSboeVigeG/s2Yp+oSMKfRxwbL2sGz2N0PKFoqhIEyRkIYVeadEh7A+zKAMkfhWkyo5EF742h0AbjMTciS/kzQr/Clgx3m9cfFEZzYFBPe7Yx47XYcJHpyQhRZBZLYDY1Acc4Of6R6ZrPaSWiwqoDb42g55r7Hr8c0O7h0EH8FIWGC45vZ9HQPCC18208sdZcA0bw==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(376002)(136003)(346002)(396003)(1800799006)(451199021)(186006)(82310400008)(36840700001)(40470700004)(46966006)(8676002)(8936002)(86362001)(7696005)(110136005)(316002)(6666004)(54906003)(26005)(1076003)(2906002)(478600001)(36756003)(41300700001)(44832011)(7416002)(921005)(40460700003)(4326008)(2616005)(16526019)(356005)(81166007)(336012)(82740400003)(426003)(83380400001)(70206006)(47076005)(40480700001)(36860700001)(70586007)(5660300002)(36900700001)(83996005)(2101003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2023 07:39:22.7246
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EXbRgqws7q4ITCqest0gZQ9fFWDGrqdR4xudgzWLQi7e8YaC1dEgZhLyQmf2hd85SWeu6NwY+5kMmlIwmNVjaA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7176
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01816b74-728d-4048-9a2e-08db9974ea46
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000971E2.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4198
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> From: Jason Gunthorpe <jgg@nvidia.com>
-> Sent: Wednesday, August 9, 2023 10:44 PM
->=20
-> As generic_single_device_group() requires it. Otherwise it crashes:
->=20
->   generic_single_device_group+0x24/0x88
->   __iommu_probe_device+0xe8/0x444
->   iommu_probe_device+0x1c/0x54
->   of_iommu_configure+0x10c/0x200
->   of_dma_configure_id+0x1e0/0x3b4
->   platform_dma_configure+0x30/0x78
->   really_probe+0x70/0x2b4
->   __driver_probe_device+0x78/0x12c
->   driver_probe_device+0x3c/0x160
->   __driver_attach+0x9c/0x1ac
->   bus_for_each_dev+0x74/0xd4
->   driver_attach+0x24/0x30
->   bus_add_driver+0xe4/0x1e8
->   driver_register+0x60/0x128
->   __platform_driver_register+0x28/0x34
->   hantro_driver_init+0x20/0x1000 [hantro_vpu]
->   do_one_initcall+0x74/0x2f0
->   do_init_module+0x58/0x1ec
->   load_module+0x1a20/0x1c64
->   init_module_from_file+0x84/0xc0
->   idempotent_init_module+0x180/0x250
->   __arm64_sys_finit_module+0x64/0xa0
->   invoke_syscall+0x48/0x114
->   el0_svc_common.constprop.0+0xec/0x10c
->   do_el0_svc+0x38/0xa4
->   el0_svc+0x40/0xac
->   el0t_64_sync_handler+0xc0/0xc4
->   el0t_64_sync+0x190/0x194
->=20
-> Fixes: 5dd59857af60 ("iommu: Add generic_single_device_group()")
-> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Closes: https://lore.kernel.org/all/e5e75222-13a9-ee01-0c25-
-> 8311b622fe0d@samsung.com/
-> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Due to electrical and mechanical constraints in certain platform designs there
+may be likely interference of relatively high-powered harmonics of the (G-)DDR
+memory clocks with local radio module frequency bands used by Wifi 6/6e/7. To
+mitigate possible RFI interference producers can advertise the frequencies in
+use and consumers can use this information to avoid using these frequencies for
+sensitive features.
 
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+The whole patch set is based on Linux 6.5-rc5. With some brief introductions
+as below:
+Patch1 - 2:  Core functionality setup for WBRF feature support
+Patch3 - 4:  Bring WBRF support to wifi subsystem.
+Patch5 - 9:  Bring WBRF support to AMD graphics driver.
+
+Evan Quan (9):
+  drivers core: Add support for Wifi band RF mitigations
+  drivers core: add ACPI based WBRF mechanism introduced by AMD
+  cfg80211: expose nl80211_chan_width_to_mhz for wide sharing
+  wifi: mac80211: Add support for WBRF features
+  drm/amd/pm: update driver_if and ppsmc headers for coming wbrf feature
+  drm/amd/pm: setup the framework to support Wifi RFI mitigation feature
+  drm/amd/pm: add flood detection for wbrf events
+  drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.0
+  drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.7
+
+ .../admin-guide/kernel-parameters.txt         |   9 +
+ drivers/acpi/Makefile                         |   2 +
+ drivers/acpi/amd_wbrf.c                       | 294 ++++++++++++++
+ drivers/base/Kconfig                          |  20 +
+ drivers/base/Makefile                         |   1 +
+ drivers/base/wbrf.c                           | 367 ++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h           |   2 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c       |  17 +
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c     | 213 ++++++++++
+ drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h |  33 ++
+ .../inc/pmfw_if/smu13_driver_if_v13_0_0.h     |  14 +-
+ .../inc/pmfw_if/smu13_driver_if_v13_0_7.h     |  14 +-
+ .../pm/swsmu/inc/pmfw_if/smu_v13_0_0_ppsmc.h  |   3 +-
+ .../pm/swsmu/inc/pmfw_if/smu_v13_0_7_ppsmc.h  |   3 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h  |   3 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h  |   3 +
+ .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c    |   9 +
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c  |  60 +++
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  |  59 +++
+ drivers/gpu/drm/amd/pm/swsmu/smu_internal.h   |   3 +
+ include/linux/acpi_amd_wbrf.h                 |  25 ++
+ include/linux/ieee80211.h                     |   1 +
+ include/linux/wbrf.h                          |  47 +++
+ include/net/cfg80211.h                        |   8 +
+ net/mac80211/Makefile                         |   2 +
+ net/mac80211/chan.c                           |   9 +
+ net/mac80211/ieee80211_i.h                    |   9 +
+ net/mac80211/main.c                           |   2 +
+ net/mac80211/wbrf.c                           | 103 +++++
+ net/wireless/chan.c                           |   3 +-
+ 30 files changed, 1332 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/acpi/amd_wbrf.c
+ create mode 100644 drivers/base/wbrf.c
+ create mode 100644 include/linux/acpi_amd_wbrf.h
+ create mode 100644 include/linux/wbrf.h
+ create mode 100644 net/mac80211/wbrf.c
+
+-- 
+2.34.1
+
