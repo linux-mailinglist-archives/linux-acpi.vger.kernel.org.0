@@ -2,146 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1503777A1E
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 16:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F7E2777B41
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 16:49:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233772AbjHJOGx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Aug 2023 10:06:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56718 "EHLO
+        id S234191AbjHJOtp convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 10 Aug 2023 10:49:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231659AbjHJOGx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 10:06:53 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D9CC120;
-        Thu, 10 Aug 2023 07:06:52 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37ABvDJL028605;
-        Thu, 10 Aug 2023 14:05:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=FGgT2AN6JO5dh8TcsmYsl/Z1ovgEquJBrJ3QcMh1zdY=;
- b=T+5oviV/QoGRHiwCt9rXgi7wPs5smvNnOIrmnF6ZgIDYpgcO7xT3fB9K+o01Iyp5vCp5
- MdZUR8bipmxaFF2GlZcVH45ty2KbrXqHtAV5KGUyHAtMQM1XPbVUjlNXuRtDrWyQMiDB
- b1h76NZf2WHzk9sUj8V63mij2SLRABBM+LbF6YTBr948zL/QF0fF0497/fzz9/hNjUaD
- jhZ5a1gGJ3Ivhqae72YgrQSJjB0f5tBSYYr2zc+Nu598v5Ysl3nAwcZ4fb+6a8pUzcqG
- J9XeTorsXXH4Zw6rNe+y7zvdfYk+qRPsBIn8FB8HpgushR6aXbDYdeW2ebgeM5G+o3Xn vA== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3scbcgjnyn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 10 Aug 2023 14:05:58 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37AE5ucc014615
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 10 Aug 2023 14:05:56 GMT
-Received: from [10.111.183.64] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Thu, 10 Aug
- 2023 07:05:55 -0700
-Message-ID: <ec8d88db-4af7-3567-ac6a-92f50f0da8bb@quicinc.com>
-Date:   Thu, 10 Aug 2023 07:05:54 -0700
+        with ESMTP id S231807AbjHJOtp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 10:49:45 -0400
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A49AF2106;
+        Thu, 10 Aug 2023 07:49:44 -0700 (PDT)
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-56dd9ae2a5fso65171eaf.0;
+        Thu, 10 Aug 2023 07:49:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691678984; x=1692283784;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vMzgW+3jzEv/ecQrQa5Qs5BoMZYlUEy0gREGzAbobF4=;
+        b=PcrPjuLds6y0oCV/wKDHaB/TeFYLuZGgJRzAO+smP3gFFtuZfZezUXtsMrAtlTSsaF
+         yHLrXEPVnBy5j0aqQHzG1pcuVcW8e/t4a7TlWK92iOcxxufoGz6Ig1UwYF+lpJOIuENw
+         28hG5daCFqd4GEyvL4dqHvrxg5MBb9BXuK0XoJokw7jsi0xSRc3mb4kCXKpkJnLGESeR
+         /0HBTRcBvRspodFwzpRp0IF2R1QoJ1m+52L2Hw4DINClq2oyc8hzZBST03D0YMbnWkAb
+         ZXiJKE4I+t+o1kiGwiB4xx2GfJw/EIgDUCt/fyNmcZ+cKdiCfJJ/Ao8KQw8tGqUciODS
+         cO0g==
+X-Gm-Message-State: AOJu0YwmM001FnPVv+SqajsKI6VUw5Y8fs3r5qeAihQ0NllBUAvKr1pl
+        Qk0eeM+xra526muVSDJu2bM+DQ/w7Jx2QbE6d1M=
+X-Google-Smtp-Source: AGHT+IHV+Te+ZF4lEDRo0HwOLd5Evjv0bTsSv5sNdWTyzooon9iztBBVQu0huihwds5RKBsy7qk8LjI+k7gEH/lG0ZM=
+X-Received: by 2002:a05:6820:210a:b0:56d:6bd4:4db5 with SMTP id
+ cd10-20020a056820210a00b0056d6bd44db5mr2065984oob.0.1691678983854; Thu, 10
+ Aug 2023 07:49:43 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V8 3/9] cfg80211: expose nl80211_chan_width_to_mhz for
- wide sharing
-Content-Language: en-US
-To:     Evan Quan <evan.quan@amd.com>, <rafael@kernel.org>,
-        <lenb@kernel.org>, <Alexander.Deucher@amd.com>,
-        <Christian.Koenig@amd.com>, <Xinhui.Pan@amd.com>,
-        <airlied@gmail.com>, <daniel@ffwll.ch>,
-        <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <Mario.Limonciello@amd.com>, <mdaenzer@redhat.com>,
-        <maarten.lankhorst@linux.intel.com>, <tzimmermann@suse.de>,
-        <hdegoede@redhat.com>, <jingyuwang_vip@163.com>,
-        <Lijo.Lazar@amd.com>, <jim.cromie@gmail.com>,
-        <bellosilicio@gmail.com>, <andrealmeid@igalia.com>,
-        <trix@redhat.com>, <jsg@jsg.id.au>, <arnd@arndb.de>,
-        <andrew@lunn.ch>
-CC:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
-References: <20230810073803.1643451-1-evan.quan@amd.com>
- <20230810073803.1643451-4-evan.quan@amd.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230810073803.1643451-4-evan.quan@amd.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: QEmG93UZJ8DRDDG4MdFLuG057js1UGpo
-X-Proofpoint-ORIG-GUID: QEmG93UZJ8DRDDG4MdFLuG057js1UGpo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-10_10,2023-08-10_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
- adultscore=0 phishscore=0 mlxlogscore=964 mlxscore=0 spamscore=0
- priorityscore=1501 suspectscore=0 impostorscore=0 clxscore=1011
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308100119
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230810090011.104770-1-hdegoede@redhat.com>
+In-Reply-To: <20230810090011.104770-1-hdegoede@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 10 Aug 2023 16:49:32 +0200
+Message-ID: <CAJZ5v0h=gPsKVHJYN0PjVgqNp4BWND8Psi1y-cu3R-WYrK=45g@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: Add IRQ override quirk for PCSpecialist
+ Elimina Pro 16 M
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        August Wikerfors <git@augustwikerfors.se>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        stable@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 8/10/2023 12:37 AM, Evan Quan wrote:
-> The newly added WBRF feature needs this interface for channel
-> width calculation.
-> 
-> Signed-off-by: Evan Quan <evan.quan@amd.com>
+On Thu, Aug 10, 2023 at 11:00 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> The PCSpecialist Elimina Pro 16 M laptop model is a Zen laptop which
+> needs to use the MADT IRQ settings override and which does not have
+> an INT_SRC_OVR entry for IRQ 1 in its MADT.
+>
+> So this model needs a DMI quirk to enable the MADT IRQ settings override
+> to fix its keyboard not working.
+>
+> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217394#c18
+> Cc: Mario Limonciello <mario.limonciello@amd.com>
+> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
+> Cc: All applicable <stable@vger.kernel.org>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
->   include/net/cfg80211.h | 8 ++++++++
->   net/wireless/chan.c    | 3 ++-
->   2 files changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-> index 7c7d03aa9d06..f50508e295db 100644
-> --- a/include/net/cfg80211.h
-> +++ b/include/net/cfg80211.h
-> @@ -920,6 +920,14 @@ const struct cfg80211_chan_def *
->   cfg80211_chandef_compatible(const struct cfg80211_chan_def *chandef1,
->   			    const struct cfg80211_chan_def *chandef2);
->   
-> +/**
-> + * nl80211_chan_width_to_mhz - get the channel width in Mhz
-> + * @chan_width: the channel width from &enum nl80211_chan_width
-> + * Return: channel width in Mhz if the chan_width from &enum nl80211_chan_width
-> + * is valid. -1 otherwise.
-
-SI nit: s/Mhz/MHz/ in both places
-
-> + */
-> +int nl80211_chan_width_to_mhz(enum nl80211_chan_width chan_width);
+>  drivers/acpi/resource.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 8e32dd5776f5..a4d9f149b48d 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -498,6 +498,17 @@ static const struct dmi_system_id maingear_laptop[] = {
+>         { }
+>  };
+>
+> +static const struct dmi_system_id pcspecialist_laptop[] = {
+> +       {
+> +               .ident = "PCSpecialist Elimina Pro 16 M",
+> +               .matches = {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "PCSpecialist"),
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "Elimina Pro 16 M"),
+> +               },
+> +       },
+> +       { }
+> +};
 > +
->   /**
->    * cfg80211_chandef_valid - check if a channel definition is valid
->    * @chandef: the channel definition to check
-> diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-> index 0b7e81db383d..227db04eac42 100644
-> --- a/net/wireless/chan.c
-> +++ b/net/wireless/chan.c
-> @@ -141,7 +141,7 @@ static bool cfg80211_edmg_chandef_valid(const struct cfg80211_chan_def *chandef)
->   	return true;
->   }
->   
-> -static int nl80211_chan_width_to_mhz(enum nl80211_chan_width chan_width)
-> +int nl80211_chan_width_to_mhz(enum nl80211_chan_width chan_width)
->   {
->   	int mhz;
->   
-> @@ -190,6 +190,7 @@ static int nl80211_chan_width_to_mhz(enum nl80211_chan_width chan_width)
->   	}
->   	return mhz;
->   }
-> +EXPORT_SYMBOL(nl80211_chan_width_to_mhz);
->   
->   static int cfg80211_chandef_get_width(const struct cfg80211_chan_def *c)
->   {
+>  static const struct dmi_system_id lg_laptop[] = {
+>         {
+>                 .ident = "LG Electronics 17U70P",
+> @@ -523,6 +534,7 @@ static const struct irq_override_cmp override_table[] = {
+>         { asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+>         { tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+>         { maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+> +       { pcspecialist_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+>         { lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+>  };
+>
+> --
 
+Applied and added to the linux-next branch in linux-pm.git, thanks!
