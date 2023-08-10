@@ -2,222 +2,233 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14EFC7771B8
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 09:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D1AE7772DD
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 10:27:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233956AbjHJHmW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Aug 2023 03:42:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35646 "EHLO
+        id S233339AbjHJI1J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Aug 2023 04:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233950AbjHJHmE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 03:42:04 -0400
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2083.outbound.protection.outlook.com [40.107.223.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A67C32133;
-        Thu, 10 Aug 2023 00:42:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CWnUsdMYlzT+BLhd9hshsKxjS6QZ7L1cSrFd5kwD28LvXMcTLNuTJ1i8VL8vRkjkQZZQphtS+W+AgyVwS/hj1BeU9CkZ0onETDTwhL9wtGalAWg12xz60DjfZhfUlffYnJO3KAGADgajtztts9jlf9oqh7Ok4MyawgvtxgkQZLKtyjT9GX78ekHo/8/9ZSqcSX6oP+s3X+8Us3Sy96pAp7ct59iWibW61KdkLshdhhAfz4oDsly9h8BMmuRksLoP9qoW4zJEAfRseZ6QrRM/QSrsqYzE6zryL0mWZxGqbK+VnVii4npsmrmrKkPM5v+JPS1w7nVOYog6fr/JsDMwZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oBMyP5sjBldwqJ3K6uKO9aVAXKYlirNWck9M6BuMFVM=;
- b=NIdPwMPCnTULVR3KLOkeafZ7axdU8t9i6YArgVguBYEaH6TmMz9kS9RkyHAYh+p7+JC8ZJzBsbJxBkWIAbiiNqsr+W4BbfPwyQoSQ6GUxRE1vsWWJxCM7bRAkSOkQ6+DeUHXmyAkH4Grg/YxZDVk7STclejMiR86wfL3AzG68VXX9zKC2MqEcd7W0mHMyfsTDmj16zt0aTgkO6Z4nqpdq5OqMtwXieiXLg+Zvnz3jLabGIEvpXCyVfyVYj/Olvi9WwJUKVb/SX+IVgH6ZAYdVYzfOQ3YMlKTn2tZ9PPkWgxe7dHgyC2qU9urLl9To/iWuZtVNr8kcbeUKNYcPgg+yA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oBMyP5sjBldwqJ3K6uKO9aVAXKYlirNWck9M6BuMFVM=;
- b=zAqJKDQ9IiHRkEX+Cs6pNW/svGZTMpIR76Y1TLbGPzkkogd0JJkoT5PWs+ENbJ3qCFoj8D5abrws9GtO8Y3x6YOBhR3N2qHyK+fmZwq6+DVcREYGjLGStZbCXgNOWm2WFoDeILOMzYBkZbvNEmiPw3ZjZ0K/VcV/hYE/aMhlSfQ=
-Received: from CY5PR15CA0233.namprd15.prod.outlook.com (2603:10b6:930:88::29)
- by SN7PR12MB7882.namprd12.prod.outlook.com (2603:10b6:806:348::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.28; Thu, 10 Aug
- 2023 07:42:00 +0000
-Received: from CY4PEPF0000E9D3.namprd03.prod.outlook.com
- (2603:10b6:930:88:cafe::84) by CY5PR15CA0233.outlook.office365.com
- (2603:10b6:930:88::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30 via Frontend
- Transport; Thu, 10 Aug 2023 07:41:59 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000E9D3.mail.protection.outlook.com (10.167.241.146) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6652.19 via Frontend Transport; Thu, 10 Aug 2023 07:41:59 +0000
-Received: from equan-buildpc.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 10 Aug
- 2023 02:41:51 -0500
-From:   Evan Quan <evan.quan@amd.com>
-To:     <rafael@kernel.org>, <lenb@kernel.org>,
-        <Alexander.Deucher@amd.com>, <Christian.Koenig@amd.com>,
-        <Xinhui.Pan@amd.com>, <airlied@gmail.com>, <daniel@ffwll.ch>,
-        <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <Mario.Limonciello@amd.com>, <mdaenzer@redhat.com>,
-        <maarten.lankhorst@linux.intel.com>, <tzimmermann@suse.de>,
-        <hdegoede@redhat.com>, <jingyuwang_vip@163.com>,
-        <Lijo.Lazar@amd.com>, <jim.cromie@gmail.com>,
-        <bellosilicio@gmail.com>, <andrealmeid@igalia.com>,
-        <trix@redhat.com>, <jsg@jsg.id.au>, <arnd@arndb.de>,
-        <andrew@lunn.ch>
-CC:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        Evan Quan <evan.quan@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH V8 9/9] drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.7
-Date:   Thu, 10 Aug 2023 15:38:03 +0800
-Message-ID: <20230810073803.1643451-10-evan.quan@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230810073803.1643451-1-evan.quan@amd.com>
-References: <20230810073803.1643451-1-evan.quan@amd.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D3:EE_|SN7PR12MB7882:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2645e1bb-d213-46b1-e026-08db997547da
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: LeRKh9mRJ6CAvSBAx6lPLSKFZDcYzELuoznfWpSoDoQj1MjItEEgn0q9v8ePZPECaigv+QTq+5Xk8720gKXnmIjL5cEL7daeYz5nM/5b+DT/LxwtrTp9YTWQ0vopw8BYXzPfgC8/Qgkuz2MII3N0IFTFksjuE13GxhHsgo4BDad/Va/6mlaHNCyU9SHvRmsTFoOPSRukQOXPqxYi2GZcna882NxY+myac/4bOLazL53UVp7j4v1tFj5LGH1szg3OB+JSN/YPAM2GQhfGhMBIAL6g7iMLcRdlamNKGEdVE7/NFOWSW9D/ympgZjU9+k805wKRVBGeaepRI3PViaQ+eMLjkiFR35sJL5fX/VpJ3etWF5gynSpxhuchXq2SQMtXxoiTI1LCpSvDVaTsUsBzYsE3WPB58isPOhs3aTmPM9FNP6Z41mq2IBTCo1ZAABFcI8k6y/NZ1h+GihpvvPgvIuAHKlJm3m0qtMIugI+eh7pOrlzEdcdEXkENBAmKGRKeSiz2ciwbCueXayMFmIhkJQX1z0NFhEP1XwRQFDOmOd2+P6XvOotoL8KZxwQx/2JLdA7WzPMKhtCI046Jl1siJgEO7cicMsgra/pWUOLf6MBL/3FUKXdLF/lCPiwKEsCA1Pjst998BU38UbxUL6hAr4upgXdCylD9h4XxXPqH4NQe3Dd743kI1DxzzktdFafYJERcVQgLNXlU6mkV/sN6tEm7wbMwTeVTqkBFnnnCHykBCWXVBBsl4sdC6id1HF5pogq2/wW2oIE2iUhrrsbWZGP8IqgHsrm8sd1LZ1nbPan7UUZpTRVmdmqb0RG2WfUS74QM/EYDEEFEYSxemlzGMQ==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(346002)(396003)(376002)(136003)(186006)(1800799006)(82310400008)(451199021)(36840700001)(40470700004)(46966006)(40460700003)(40480700001)(1076003)(70206006)(54906003)(16526019)(26005)(336012)(478600001)(6666004)(110136005)(36756003)(70586007)(83380400001)(47076005)(426003)(2616005)(36860700001)(41300700001)(316002)(44832011)(7416002)(7696005)(4326008)(2906002)(86362001)(921005)(81166007)(5660300002)(8936002)(356005)(82740400003)(8676002)(2101003)(36900700001)(83996005);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2023 07:41:59.7557
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2645e1bb-d213-46b1-e026-08db997547da
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D3.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7882
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S234382AbjHJI1H (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 04:27:07 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A4901BCF;
+        Thu, 10 Aug 2023 01:27:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691656026; x=1723192026;
+  h=date:from:to:cc:subject:message-id;
+  bh=DJ5mRzZTvB0IPNRw4ZYrQBwlV4zuLDV+mUbsfDnSjOg=;
+  b=D8HSv2DyLzqc1AI4/lWzRDo3sfPaN3RM62ZGyAe6jZJ6tSfBGYh4j3l1
+   pLYe7oD0DxxO61xXVUWAqitgEU9D1ANrEU/Q9bZxFtCTESofyR1jeMxg0
+   jWMWVYXNT3ARghGSoRGn+DNSwhjTa6stxb8Vt27wjDx20Y3vDKQe9qX6s
+   KWMMascLhpxnhZ5zQpTgrXhONSSvJaW5SogOhqdgVFevBEeWaIBn6on46
+   mP+PXY9KnEdCMv7NH0bhjG959srORrgUdl7inWaKX+vuLGYCRxYFEdcCx
+   /w/zwrymJ1Dhyzy/5Wyv5AwVmgIDaUu0CiTm1SolhUNKgSmFfBhfdgRaZ
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="402296900"
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; 
+   d="scan'208";a="402296900"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 01:27:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="725702028"
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; 
+   d="scan'208";a="725702028"
+Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 10 Aug 2023 01:27:04 -0700
+Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qU10Z-0006r5-19;
+        Thu, 10 Aug 2023 08:27:03 +0000
+Date:   Thu, 10 Aug 2023 16:26:27 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS WITH WARNING
+ d8094e7904c2148417eb46e618fdf9649bb01e76
+Message-ID: <202308101621.jjROtMGW-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fulfill the SMU13.0.7 support for Wifi RFI mitigation feature.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: d8094e7904c2148417eb46e618fdf9649bb01e76  Merge branch 'acpi-thermal-next' into bleeding-edge
 
-Signed-off-by: Evan Quan <evan.quan@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
----
- .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  | 59 +++++++++++++++++++
- 1 file changed, 59 insertions(+)
+Warning reports:
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-index b1f0937ccade..d02fe284b05d 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -126,6 +126,7 @@ static struct cmn2asic_msg_mapping smu_v13_0_7_message_map[SMU_MSG_MAX_COUNT] =
- 	MSG_MAP(AllowGpo,			PPSMC_MSG_SetGpoAllow,           0),
- 	MSG_MAP(GetPptLimit,			PPSMC_MSG_GetPptLimit,                 0),
- 	MSG_MAP(NotifyPowerSource,		PPSMC_MSG_NotifyPowerSource,           0),
-+	MSG_MAP(EnableUCLKShadow,		PPSMC_MSG_EnableUCLKShadow,            0),
- };
- 
- static struct cmn2asic_mapping smu_v13_0_7_clk_map[SMU_CLK_COUNT] = {
-@@ -207,6 +208,7 @@ static struct cmn2asic_mapping smu_v13_0_7_table_map[SMU_TABLE_COUNT] = {
- 	TAB_MAP(ACTIVITY_MONITOR_COEFF),
- 	[SMU_TABLE_COMBO_PPTABLE] = {1, TABLE_COMBO_PPTABLE},
- 	TAB_MAP(OVERDRIVE),
-+	TAB_MAP(WIFIBAND),
- };
- 
- static struct cmn2asic_mapping smu_v13_0_7_pwr_src_map[SMU_POWER_SOURCE_COUNT] = {
-@@ -497,6 +499,9 @@ static int smu_v13_0_7_tables_init(struct smu_context *smu)
- 	               AMDGPU_GEM_DOMAIN_VRAM);
- 	SMU_TABLE_INIT(tables, SMU_TABLE_COMBO_PPTABLE, MP0_MP1_DATA_REGION_SIZE_COMBOPPTABLE,
- 			PAGE_SIZE, AMDGPU_GEM_DOMAIN_VRAM);
-+	SMU_TABLE_INIT(tables, SMU_TABLE_WIFIBAND,
-+		       sizeof(WifiBandEntryTable_t), PAGE_SIZE,
-+		       AMDGPU_GEM_DOMAIN_VRAM);
- 
- 	smu_table->metrics_table = kzalloc(sizeof(SmuMetricsExternal_t), GFP_KERNEL);
- 	if (!smu_table->metrics_table)
-@@ -2173,6 +2178,57 @@ static int smu_v13_0_7_set_df_cstate(struct smu_context *smu,
- 					       NULL);
- }
- 
-+static bool smu_v13_0_7_wbrf_support_check(struct smu_context *smu)
-+{
-+	return smu->smc_fw_version > 0x00524600;
-+}
-+
-+static int smu_v13_0_7_set_wbrf_exclusion_ranges(struct smu_context *smu,
-+						 struct exclusion_range *exclusion_ranges)
-+{
-+	WifiBandEntryTable_t wifi_bands;
-+	int valid_entries = 0;
-+	int ret, i;
-+
-+	memset(&wifi_bands, 0, sizeof(wifi_bands));
-+	for (i = 0; i < ARRAY_SIZE(wifi_bands.WifiBandEntry); i++) {
-+		if (!exclusion_ranges[i].start &&
-+		    !exclusion_ranges[i].end)
-+			break;
-+
-+		/* PMFW expects the inputs to be in Mhz unit */
-+		wifi_bands.WifiBandEntry[valid_entries].LowFreq =
-+			DIV_ROUND_DOWN_ULL(exclusion_ranges[i].start, HZ_IN_MHZ);
-+		wifi_bands.WifiBandEntry[valid_entries++].HighFreq =
-+			DIV_ROUND_UP_ULL(exclusion_ranges[i].end, HZ_IN_MHZ);
-+	}
-+	wifi_bands.WifiBandEntryNum = valid_entries;
-+
-+	/*
-+	 * Per confirm with PMFW team, WifiBandEntryNum = 0 is a valid setting.
-+	 * Considering the scenarios below:
-+	 * - At first the wifi device adds an exclusion range e.g. (2400,2500) to
-+	 *   BIOS and our driver gets notified. We will set WifiBandEntryNum = 1
-+	 *   and pass the WifiBandEntry (2400, 2500) to PMFW.
-+	 *
-+	 * - Later the wifi device removes the wifiband list added above and
-+	 *   our driver gets notified again. At this time, driver will set
-+	 *   WifiBandEntryNum = 0 and pass an empty WifiBandEntry list to PMFW.
-+	 *   - PMFW may still need to do some uclk shadow update(e.g. switching
-+	 *     from shadow clock back to primary clock) on receiving this.
-+	 */
-+
-+	ret = smu_cmn_update_table(smu,
-+				   SMU_TABLE_WIFIBAND,
-+				   0,
-+				   (void *)(&wifi_bands),
-+				   true);
-+	if (ret)
-+		dev_err(smu->adev->dev, "Failed to set wifiband!");
-+
-+	return ret;
-+}
-+
- static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {
- 	.get_allowed_feature_mask = smu_v13_0_7_get_allowed_feature_mask,
- 	.set_default_dpm_table = smu_v13_0_7_set_default_dpm_table,
-@@ -2241,6 +2297,9 @@ static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {
- 	.set_mp1_state = smu_v13_0_7_set_mp1_state,
- 	.set_df_cstate = smu_v13_0_7_set_df_cstate,
- 	.gpo_control = smu_v13_0_gpo_control,
-+	.is_asic_wbrf_supported = smu_v13_0_7_wbrf_support_check,
-+	.enable_uclk_shadow = smu_v13_0_enable_uclk_shadow,
-+	.set_wbrf_exclusion_ranges = smu_v13_0_7_set_wbrf_exclusion_ranges,
- };
- 
- void smu_v13_0_7_set_ppt_funcs(struct smu_context *smu)
+https://lore.kernel.org/oe-kbuild-all/202308020253.WHEHp60K-lkp@intel.com
+
+Warning: (recently discovered and may have been fixed)
+
+drivers/acpi/thermal.c:1008:32: warning: variable 'result' set but not used [-Wunused-but-set-variable]
+
+Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- arm64-allyesconfig
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- arm64-defconfig
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- i386-allyesconfig
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- i386-buildonly-randconfig-r005-20230809
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- i386-debian-10.3
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- i386-defconfig
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- i386-randconfig-i001-20230809
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- i386-randconfig-i002-20230809
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- i386-randconfig-i003-20230809
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- i386-randconfig-i004-20230809
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- i386-randconfig-i005-20230809
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- loongarch-allmodconfig
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- loongarch-allyesconfig
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- loongarch-defconfig
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- x86_64-allyesconfig
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- x86_64-defconfig
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- x86_64-kexec
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- x86_64-randconfig-x012-20230809
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- x86_64-randconfig-x014-20230809
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+|-- x86_64-randconfig-x016-20230809
+|   `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+`-- x86_64-rhel-8.3
+    `-- drivers-acpi-thermal.c:warning:variable-result-set-but-not-used
+
+elapsed time: 722m
+
+configs tested: 105
+configs skipped: 6
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r006-20230809   gcc  
+alpha                randconfig-r025-20230809   gcc  
+alpha                randconfig-r034-20230809   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r005-20230809   gcc  
+arc                  randconfig-r043-20230809   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r046-20230809   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r012-20230809   clang
+arm64                randconfig-r024-20230809   clang
+arm64                randconfig-r033-20230809   gcc  
+csky                                defconfig   gcc  
+hexagon              randconfig-r041-20230809   clang
+hexagon              randconfig-r045-20230809   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230809   gcc  
+i386         buildonly-randconfig-r005-20230809   gcc  
+i386         buildonly-randconfig-r006-20230809   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230809   gcc  
+i386                 randconfig-i002-20230809   gcc  
+i386                 randconfig-i003-20230809   gcc  
+i386                 randconfig-i004-20230809   gcc  
+i386                 randconfig-i005-20230809   gcc  
+i386                 randconfig-i006-20230809   gcc  
+i386                 randconfig-i011-20230809   clang
+i386                 randconfig-i012-20230809   clang
+i386                 randconfig-i013-20230809   clang
+i386                 randconfig-i014-20230809   clang
+i386                 randconfig-i015-20230809   clang
+i386                 randconfig-i016-20230809   clang
+i386                 randconfig-r011-20230809   clang
+i386                 randconfig-r014-20230809   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r003-20230809   clang
+nios2                               defconfig   gcc  
+nios2                randconfig-r035-20230809   gcc  
+openrisc             randconfig-r021-20230809   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r001-20230809   gcc  
+parisc               randconfig-r026-20230809   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r042-20230809   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r044-20230809   clang
+sh                               allmodconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r031-20230809   gcc  
+sparc                randconfig-r032-20230809   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r002-20230809   clang
+um                   randconfig-r004-20230809   clang
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230809   gcc  
+x86_64       buildonly-randconfig-r002-20230809   gcc  
+x86_64       buildonly-randconfig-r003-20230809   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-x001-20230809   clang
+x86_64               randconfig-x002-20230809   clang
+x86_64               randconfig-x003-20230809   clang
+x86_64               randconfig-x004-20230809   clang
+x86_64               randconfig-x005-20230809   clang
+x86_64               randconfig-x006-20230809   clang
+x86_64               randconfig-x011-20230809   gcc  
+x86_64               randconfig-x012-20230809   gcc  
+x86_64               randconfig-x013-20230809   gcc  
+x86_64               randconfig-x014-20230809   gcc  
+x86_64               randconfig-x015-20230809   gcc  
+x86_64               randconfig-x016-20230809   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r016-20230809   gcc  
+xtensa               randconfig-r036-20230809   gcc  
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
