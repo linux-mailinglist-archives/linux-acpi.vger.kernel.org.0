@@ -2,214 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E33D87773A8
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 11:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 851E57773B5
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 11:09:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233715AbjHJJFX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Aug 2023 05:05:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60280 "EHLO
+        id S232925AbjHJJIj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Aug 2023 05:08:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234555AbjHJJFV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 05:05:21 -0400
-Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2107.outbound.protection.outlook.com [40.107.113.107])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FD8F2123;
-        Thu, 10 Aug 2023 02:05:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TmciIPOBkx/KVvKB1h19wuFaYe3DKtNFjUXJ/yOVR2w3p132wgntLgI6//DQOYQ/2Eryye/iPzUcw37EcPDliRah3dfzWyW0+34dv8eDF9HxFGHkfuqmHy6bJnM5WKehgFUkRLuZJiQhZrHefKWtXjBFVtJeINaEyllAChaukw1mm0cARynTvPHdUq3TYlxisisdq1w5JcFYa9Sk7uOibWPW0npAzu9Zens1CTxjfYP7GM0cVjx0nEwivBn/XtFOJpZ/IEeKvnlsHG6YSXGiDMrcO/gYDNGDZkAowcObMlRz1ZKAwu2nPf1O14nVCvG22Ls574qBtxoXbcYtPWOYZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CLl+zSjBNaV70pG2UUTYnQ0g1nQhGJ0X7X0IlQpgyvw=;
- b=bj4N6ZK2f2g2C1Cs+rQGqqT8FTyZCEri+5DdmGYd8/P6bzzEshay3CGJl3saRqXAexgYjTvTvw5SQSnudsXFzLcwBwV5gs/LtgEVPO+oC/ASpmeFVeskJlGjPetRV16lm+cpGzEDvQQ6gxHSCMiw68GL0vO9rx97ZPN2NnJZAUk+c/IsBwxpLXGf4Shc4MxtOOjAIKwpMpROXGgcWiVz/qxuUxp/S3RpfhHNBf5klLj8ZYTa0F4xcF63lLUEacCNRwYmeSm+k8S6qiEiqUZujCMAIQZqEWKMBjoXEcDQ6kZo3d+zduckVa1dk/ShA/jfHG0fd1xFkk4C5nYD33SMSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CLl+zSjBNaV70pG2UUTYnQ0g1nQhGJ0X7X0IlQpgyvw=;
- b=G1YTueZX2Fmr5VeKX7GQWE9EK3FMkhyXh20z0u8x4SFW9cANJGn3ZF8+QgfmbpwZbo8bxIekGlakoya1QwEhlosW/AkAp3ZzlPvbY8Zw+1h2yanEst2FsKCsauIF03X6t4SrBpggJksI4ac94ixmxdC8qAxe5AJp4xTNga6GnrA=
-Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com (2603:1096:604:bb::5)
- by TYCPR01MB8581.jpnprd01.prod.outlook.com (2603:1096:400:154::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30; Thu, 10 Aug
- 2023 09:05:13 +0000
-Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com
- ([fe80::f4c1:5f6e:abd1:2bf9]) by OS0PR01MB5922.jpnprd01.prod.outlook.com
- ([fe80::f4c1:5f6e:abd1:2bf9%6]) with mapi id 15.20.6652.029; Thu, 10 Aug 2023
- 09:05:10 +0000
-From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Peter Rosin <peda@axentia.se>
-CC:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: RE: [PATCH v7 0/4] Extend device_get_match_data() to struct bus_type
-Thread-Topic: [PATCH v7 0/4] Extend device_get_match_data() to struct bus_type
-Thread-Index: AQHZxu8xqdWpTKFxl0mrPmlP0GQCwa/b6UAAgAADvoCAAVlKAIABqeGAgABf2wCAAQcZAIAB6BqAgAED5pA=
-Date:   Thu, 10 Aug 2023 09:05:10 +0000
-Message-ID: <OS0PR01MB59221A1ADB67E96E9E39D0198613A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
-        <20230805174036.129ffbc2@jic23-huawei>
-        <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-        <20230806142950.6c409600@jic23-huawei>  <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
-        <ZNFV+C1HCIRJpbdC@google.com>   <ZNIyrG/2h/PeS9Oz@smile.fi.intel.com>
- <20230809182551.7eca502e@jic23-huawei>
-In-Reply-To: <20230809182551.7eca502e@jic23-huawei>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=bp.renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: OS0PR01MB5922:EE_|TYCPR01MB8581:EE_
-x-ms-office365-filtering-correlation-id: 4b13a60f-3b15-4624-1e67-08db9980e6c3
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: uqXjEOEs3z+seNmsEVd4ssjoAUx6Zm3hiBH105DOef3Spc4iVdRlJnPB1RHLsN2TScOVEYHPsyrhyvypJN3M/kRiTHia7EAfUnomZYwC2BEEhrEfjACVhk0BguXSiZ148CI2oVnpGNY2r0Yc6Mg58OkFhJsjH8Jo0SpEGdpMA1pu29jU57OxO8ynOZETYRSEkEY6TqyKSNgMPjtHxN8z0DZWlH9gtQK+C5Eb/TYlyv3x/BPN034qmU3QRtqgf9jT118c0j7EAI6wHHzb/54QazrXh5TyhMnUP4tu5lgNErXbmfjNO9DRMwHJCv217qDF9usgMsLyR7T2KQjr0WFKwW+4aXMwiY5OR2WuQjOkdbiKrEU9Cx8wlAT4Qrvyrjf7T3mSvCtLXtSIq6k362zixLUdaBKYAC2J7RxkoI5sOtxJVEbWM/m9CEkx0AuOyGRNb0qe+FKBo+FEWV7tTic1hIwPp8AwpTHBxPFZ9k9dfwDRPbfhkxa90NoRW+mb5URrgRmzl5DMi0swBFCWjtBuKxSrN9+pXG7OoFdi3M4CLbNBot0IRWrEVB2lmIlSDbNvv6FzTLY5z4QZef4JaTLv1no1a+4FpZ19axhJKbqSDhTeJO3rgp1r8KedMjoqvyX7
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS0PR01MB5922.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(366004)(396003)(136003)(346002)(451199021)(1800799006)(186006)(86362001)(110136005)(33656002)(478600001)(71200400001)(26005)(66946007)(66476007)(54906003)(6506007)(76116006)(66446008)(64756008)(66556008)(4326008)(7696005)(9686003)(2906002)(41300700001)(316002)(7416002)(8936002)(8676002)(122000001)(5660300002)(52536014)(38100700002)(38070700005)(55016003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?VtGB9u7GdXY5lapbfHoFGy88AsG8PFNgk/wF3FNsrLtQc0nfWQHkm5329VOY?=
- =?us-ascii?Q?uz4ZOso60Ytsi8FppruqwRw4SjPXlwGMmmCXzU4hwP90CVR7U3QhTXuZsRFa?=
- =?us-ascii?Q?tFgsZO0Kf9duI8piKiU/yTT4/+snKiKi3FDbua2PI6hJdRFZFOphOvYecHze?=
- =?us-ascii?Q?UIOHcAxDyUuqr2IjGtJ5AzJa+FoRmdZygQm5K+PrPZ9BmVj4/m4xZ6mt/ATo?=
- =?us-ascii?Q?sdwXFv+4Z5UpLcVc3TgXRH/7Ee3lQhgHl5Z/OOUpQ7ZUJEHqh4RsnTCmZnpV?=
- =?us-ascii?Q?E8dHYRtuo6qvKSYsESzDI74v1CK+aaYn743ILphc7DNBL4ZUn0rL2Tgc1lgM?=
- =?us-ascii?Q?Gd35/S9nl2Ocuw0SyIN5AJ1yRtWkHSX+/gNHY/7zPL/IG3N393z5znnlN+Rm?=
- =?us-ascii?Q?haf1OWea1xklWpyAjzEizDP6tiL0uXg5iqtj853kJohK0nhX8K17ZfJTjFvX?=
- =?us-ascii?Q?6Le9eDAd9fp9WbwQugWUA0kHcZWI8cwI2zzhS7sqMwlrqmQJxAN2/YRqsFoY?=
- =?us-ascii?Q?/V+J1GI0dRemS6Oml3YXCaUWUvGl0eJaoG6Ge5GReLhIZ/Ks4H+F0N5xWdTM?=
- =?us-ascii?Q?r9I+C8xjtfDJI/TTA9r/r9v7Yw/ba6ujbFfQ1wNhpR4eeQe+6DkoFXPerVmv?=
- =?us-ascii?Q?udav78M+U5HXV4KJv4OJYEdgwyvMitEIeyN1D8hSLkoQ5Nn95sFT9gcTisBx?=
- =?us-ascii?Q?dM0HUZYRfhIl94BJh7RrY8XA6G1rRBz42I03A4Tb8KM/oS4nvT1GqNzGyPHk?=
- =?us-ascii?Q?6YxOlZr2U7D5LD/i3+cssZR2QP9d1/261MdbysHd95G3nFOseBwD4uSdvfjF?=
- =?us-ascii?Q?MO1J+UJRYWnmymGcNe3U0KtnwHENTfhOeVlBAa6CNS8QGlLzmV3K+jeoK9Uf?=
- =?us-ascii?Q?4mywn7Qto+jt6UQ+dvieRNnxfvv+SVvzHvl1G9sqXntbuXSNSN8jWPmFt3l5?=
- =?us-ascii?Q?me5k7AukIhzZ3Fjojrh+jY99v/3iDYO3E4S8Qzj8H6fkjP/r5bvoPsLwHXa7?=
- =?us-ascii?Q?RczSV2ypDHbeaJPNNL0HhrRchQ2IGYz+ke+LfRP5v+KqK0G4lCrZ6BTuHD9R?=
- =?us-ascii?Q?+FeesYmff9CvFLTryPhThY2ud2DMFzRHLig7vshcw+DfjIUGFb3HEExDgp+i?=
- =?us-ascii?Q?mMd97bJS9gEF7vQvapRQIPsDg69Dz/X8VwakpgXSj9Td3zDj3O1uQ2OOh0fN?=
- =?us-ascii?Q?Ouw9G8dLPWpqkVP5xQCh8TauKtKxkG5XfnXKU5lrNXZbTqP3edSQ9HV0J+Wj?=
- =?us-ascii?Q?sVpsy9jdNLvHv7tfN6IYCILLvG4cr6gw5RRczaY2yFev0A/25Jxnn7DmYCV2?=
- =?us-ascii?Q?BGuYZUDnkhXBUqr6jyKwjCVDJB2Cyu0uIKVdUrZRlyonGqeLH/u5pBPHL+sl?=
- =?us-ascii?Q?VLKEWKyqSR3UjiS0ZRAxq33FHgqTxS6HvYhRhLMfl0uDrbh+N5KIhI1mW1we?=
- =?us-ascii?Q?FsHYz0AW/sMU5p3Ejh+wWmCD1xbjuFkZMGVWXH/g24r1w1ZZlf4lpVDsMOeZ?=
- =?us-ascii?Q?yPUuFXb3ouU8eNe3OQ4iisfQVB7C+xi4zrLbPGG1ijBoL/FgH068FbeqDGqG?=
- =?us-ascii?Q?l7KOGfMLCKefSeIQ3z/dw9ND2KnDmTzRjyML4HpG?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S233624AbjHJJIe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 05:08:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BF442103
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Aug 2023 02:07:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691658467;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HvsQTU+s0yg5fJsIHyPTwlq37yneMxzeYu4hOdW9o58=;
+        b=XZTa/JiW79FJ7u8IFVi6XBng/zRz/hqgh1xkkHb/FNqlObQSHwzhPwiTaM6xDurPcujuRC
+        3kRnI1f0lxVtoAA6Qr26rpueOqB3JPWubsC+8XG7UTbnxxrlFlH8nRVw6Pubhb5uHGxIHa
+        +5jK125noIRc9iUNK5gKB/+wG/MGMKw=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-640-NLYdOdRjPq-ZxZrkvPe9JQ-1; Thu, 10 Aug 2023 05:07:45 -0400
+X-MC-Unique: NLYdOdRjPq-ZxZrkvPe9JQ-1
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-4fe3e3472bcso575020e87.1
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Aug 2023 02:07:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691658464; x=1692263264;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HvsQTU+s0yg5fJsIHyPTwlq37yneMxzeYu4hOdW9o58=;
+        b=Brm5ECyiP6MWiATO6RkUcwi2qlSH6H3NnviBcy3oeOoTjAzKTwXJUrdVqeLLMr58/V
+         xCnONl9Ui4SWmAD2JPZKja3BNAI8Ow4UGREQRjwRBE+HUS4TnrUdlXfSFUvDC+JigqfR
+         jtAztoODcSuBXg/DTJXq57v0W9eepAQhbKd8QnTESQsznC7zwN1uW2RRORF7FQ2b+kJk
+         NTsaHVVOR2/ejxdVzhen0JWEwiuPezh7LVsI+l+p+EVBsclsJhJZTevjkonf94/rMymm
+         Mly9u4Q8aQe6fpzb+rIsLppveVKa8JsqrOA3TMTey3FE3PvReLGw9+oLAiro6gTmHp1G
+         Lriw==
+X-Gm-Message-State: AOJu0Yxa/yIZnd36rPWGxEPFXPxEyNfeT3E5hbvGTsiNOy84m4yZ9X7v
+        mahx4a2Ls0HxF6cxWzoiQwLWR6TxTzbn7sBcQprRenUGxeUPgvrZZSuGf0QKASCwk5b8MUDQY+x
+        VbBLGxLpgm4SayRwtMU2CiQ==
+X-Received: by 2002:a05:6512:224c:b0:4fe:167e:9f04 with SMTP id i12-20020a056512224c00b004fe167e9f04mr1495944lfu.61.1691658464353;
+        Thu, 10 Aug 2023 02:07:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMz5tsMomC2dZDvww3SHQAA28ffSlWI+EH25V7an7RGKZkIiAxT7W0QM3DOYw3FQxvUfceCA==
+X-Received: by 2002:a05:6512:224c:b0:4fe:167e:9f04 with SMTP id i12-20020a056512224c00b004fe167e9f04mr1495918lfu.61.1691658463972;
+        Thu, 10 Aug 2023 02:07:43 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id u25-20020ac243d9000000b004fb8a2b9485sm204964lfl.248.2023.08.10.02.07.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Aug 2023 02:07:43 -0700 (PDT)
+Message-ID: <666f794b-89fe-6aff-463e-2a150fd0712e@redhat.com>
+Date:   Thu, 10 Aug 2023 11:07:42 +0200
 MIME-Version: 1.0
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5922.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4b13a60f-3b15-4624-1e67-08db9980e6c3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Aug 2023 09:05:10.9168
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: k48BC70e0nh2f30DUgoRA1lGPOBsnwMp1DQk+Cuqp6s9/8pbAOhw/zDut/pjKpTRK8v8EEcY2KEq2Y78PK7Ar6YhiybWevQMStHchbrTtII=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB8581
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 3/3] ACPI: resource: Honor MADT INT_SRC_OVR settings
+ for IRQ1 on AMD Zen
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     August Wikerfors <git@augustwikerfors.se>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
+References: <20230809085526.84913-1-hdegoede@redhat.com>
+ <20230809085526.84913-4-hdegoede@redhat.com>
+ <6a6fa2ba-c07d-45b2-96c5-b0f44f5f288b@augustwikerfors.se>
+ <c3684f00-27bd-d4dd-93dd-18936c006de9@redhat.com>
+ <CAJZ5v0gx_vu_Pip3rkUo_78mNnUbp++hpRfpa-iDaZP9r6_4sw@mail.gmail.com>
+ <e0dd9065-6dd8-af33-29a0-ae21f82063a2@redhat.com>
+In-Reply-To: <e0dd9065-6dd8-af33-29a0-ae21f82063a2@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi all,
+Hi,
 
-> Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct
-> bus_type
->=20
-> On Tue, 8 Aug 2023 15:18:52 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
->=20
-> > On Mon, Aug 07, 2023 at 01:37:12PM -0700, Dmitry Torokhov wrote:
-> > > On Mon, Aug 07, 2023 at 05:54:07PM +0300, Andy Shevchenko wrote:
-> > > > On Sun, Aug 06, 2023 at 02:29:50PM +0100, Jonathan Cameron wrote:
-> > > > > On Sat, 5 Aug 2023 17:42:21 +0000 Biju Das
-> > > > > <biju.das.jz@bp.renesas.com> wrote:
-> > > > > > > On Fri,  4 Aug 2023 17:17:24 +0100 Biju Das
-> > > > > > > <biju.das.jz@bp.renesas.com> wrote:
-> >
-> > ...
-> >
-> > > > > > + * Besides the fact that some drivers abuse the device ID
-> > > > > > + driver_data type
-> > > > > > + * and claim it to be integer, for the bus specific ID tables
-> > > > > > + the driver_data
-> > > > > > + * may be defined as kernel_ulong_t. For these tables 0 is a
-> > > > > > + valid response,
-> > > > > > + * but not for this function. It's recommended to convert
-> > > > > > + those either to avoid
-> > > > > > + * 0 or use a real pointer to the predefined driver data.
-> > > >
-> > > > > We still need to maintain consistency across the two tables,
-> > > > > which is a stronger requirement than avoiding 0.
-> > > >
-> > > > True. Any suggestion how to amend the above comment? Because the
-> > > > documentation makes sense on its own (may be split from the
-> series?).
-> > > >
-> > > > > Some drivers already do that by forcing the enum used to start
-> > > > > at 1 which doesn't solver the different data types issue.
-> > > >
-> > > > And some maintainers do not want to see non-enum values in i2c ID
-> table.
-> > > > *Shrug*.
-> > >
-> > > So in legacy ID lookup path we can safely assume that values below
-> > > 4096 are scalars and return NULL from the new
-> > > device_get_match_data(). This way current drivers using the values
-> > > as indices or doing direct comparisons against them can continue
-> > > doing manual look up and using them as they see fit. And we can
-> convert the drivers at our leisure.
-> >
-> > It's a good idea, but I believe will be received as hack.
-> > But why not to try? We indeed have an error pointers for the last page
-> > and NULL (which is only up to 16 IIRC) and reserved space in the first
-> > page. To be more robust I would check all enums that are being used in
-> > I2C ID tables for maximum value and if that is less than 16, use
-> > ZERO_OR_NULL_PTR() instead of custom stuff.
-> >
-> See iio/adc/max1363 example that has 37ish.
->=20
-> Could tidy that one up first and hopefully not find any others that are i=
-n
-> subsystems not keen on the move away from enums.
+On 8/9/23 21:41, Hans de Goede wrote:
+> Hi,
+> 
+> On 8/9/23 21:25, Rafael J. Wysocki wrote:
+>> On Wed, Aug 9, 2023 at 9:20 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>>
+>>> Hi,
+>>>
+>>> On 8/9/23 17:58, August Wikerfors wrote:
+>>>> On 2023-08-09 10:55, Hans de Goede wrote:
+>>>>> On AMD Zen acpi_dev_irq_override() by default prefers the DSDT IRQ 1
+>>>>> settings over the MADT settings.
+>>>>>
+>>>>> This causes the keyboard to malfunction on some laptop models
+>>>>> (see Links), all models from the Links have an INT_SRC_OVR MADT entry
+>>>>> for IRQ 1.
+>>>>>
+>>>>> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
+>>>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217336
+>>>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217394
+>>>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217406
+>>>>> Cc: Mario Limonciello <mario.limonciello@amd.com>
+>>>>> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>>>>
+>>>> One of the laptops fixed by a9c4a912b7dc, PCSpecialist Elimina Pro 16 M [1], seems to have no INT_SRC_OVR entry for IRQ 1 [2]:
+>>>>
+>>>>> [    0.084265] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
+>>>>> [    0.084266] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 low level)
+>>>>
+>>>> I'm not sure if it was IRQ 1 that needed to be overridden for that model though, so it may work anyway with patch 2 of this series.
+>>>>
+>>>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=217394#c18
+>>>> [2] https://bugzilla.kernel.org/attachment.cgi?id=304338
+>>>
+>>> Good catch, thanks. So it looks like this one needs a DMI quirk (until we have a better generic solution.
+>>>
+>>> I'll reach out to the reporter and ask for dmidecode output and prepare a follow-up patch. Still I think
+>>> that we should move forward with this series to fix the 6 bugs which are linked to from PAtch 1's
+>>> commitmsg and those are likely just the top of the iceberg.
+>>
+>> You are probably right, but it would be good to get a fix for this
+>> ASAP, as I would prefer it to go in along with the series, if
+>> possible.
+> 
+> Agreed I've asked in the bugzilla for dmidecode output for the laptop model in question (I checked  https://linux-hardware.org/ and it does not have this model).
+> 
+> As soon as I've dmidecode info I'll prepare the follow-up patch as well as a Fedora kernel with the entire series + qurik patch for the reporter to test.
 
-If there is no objection, I can fix this using i2c_get_match_data() for iio=
-/adc/max1363
+I have just send out the follow up patch with the DMI quirk:
 
-and=20
+https://lore.kernel.org/linux-acpi/20230810090011.104770-1-hdegoede@redhat.com/
 
-device_match_data() will return ZERO_OR_NULL_PTR() if max enum ID in the ID=
- lookup table is less than 16.
+And I have started a Fedora kernel test build with this series + the quirk for the reporter to test:
 
-and the drivers that use legacy ID's will fallback to ID lookup.
+https://bugzilla.kernel.org/show_bug.cgi?id=217394#c33
 
-So that there won't be any regression.
+Regards,
 
-Cheers,
-Biju
+Hans
 
