@@ -2,95 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFA55777C75
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 17:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0E0C777C90
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Aug 2023 17:47:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234846AbjHJPlq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Aug 2023 11:41:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41852 "EHLO
+        id S232404AbjHJPrv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Aug 2023 11:47:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233659AbjHJPlp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 11:41:45 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E862125;
-        Thu, 10 Aug 2023 08:41:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=LZZwhU2q9tKRTuT4LMGtkLl/YytlWdJV5ADQ7yyf884=; b=nzCVWxdZKZwPPVrpb79vDihKKN
-        YQMNeNih7Df6L+pZOvTjw50y9FCJs6aH8rL8h5X2REST5vdC3Wq9YdRoE5xnf6hw68vx0zt8985/4
-        +9cDPaBlKuKeAHsCvu3wOh/4f+NA8FgH2SNngUajJxMQhE16KsGIQEWgQG79GUlXunzjgzLhpAOr+
-        SYDCVy0iFP1vRNzRSbC+T0oIVVz6F2RvcjiMZYX3czR+nm5oLvCNzwtupO+DnMacrLMCIbCpZMS31
-        kUka0xfiEZR78ZR0A8ZecYiCVpTdwXhUWyz2kMWRbBUeMIq9zHuWNHz7b8W60+R7DbtqAwg0Ryp6u
-        XrPT05iA==;
-Received: from [2601:1c2:980:9ec0::2764]
-        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qU7mf-0084NA-10;
-        Thu, 10 Aug 2023 15:41:09 +0000
-Message-ID: <efb2d30c-3945-a63d-9a3f-7cf39124f76a@infradead.org>
-Date:   Thu, 10 Aug 2023 08:41:07 -0700
+        with ESMTP id S231802AbjHJPrv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 11:47:51 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4067226A9;
+        Thu, 10 Aug 2023 08:47:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691682470; x=1723218470;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dQFPUxO8iLe1qVYO9TeDEyOetiCvWzFEQmGWwEcD6lE=;
+  b=Oko4c06fN84h3+fnljGX+ux5yNkVKtsBD5ynNZdHdxzoHHP9FND8HUau
+   eCbhJRM9Nziqzy1Byqv71Hd0Hz5BCFQ2h7uOlnDYKZGLMVZVuWJzIkBCA
+   rKsxf3k7kUfdeeD4YoVSwurEbrJvAv4ul8J2Xo2QjG2guFzfqRbTMsUrU
+   pzG/BxVdiiewF3yL2HS27zyfK/PXW7P3NgqwhJiY4truBKpDNJpp2QWlL
+   gzURoiPJpjyG8Kqy7rr3N511oVUyqOY4fo7kXVZmbkoFrW7Xzb16iMap0
+   n4tvOCQ0zUt8z4aVhOHF7LKr6lNVOy/pl1p66CzoAqLd/K9rfc+ecoLLm
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="375152381"
+X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
+   d="scan'208";a="375152381"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 08:47:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="846443238"
+X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
+   d="scan'208";a="846443238"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP; 10 Aug 2023 08:47:47 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qU7t3-007XhA-0n;
+        Thu, 10 Aug 2023 18:47:45 +0300
+Date:   Thu, 10 Aug 2023 18:47:44 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Iain Lane <iain@orangesquash.org.uk>,
+        Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
+Subject: Re: [PATCH v11 6/9] ACPI: x86: s2idle: Add a function to get
+ constraints for a device
+Message-ID: <ZNUGoONuUZAp0TM9@smile.fi.intel.com>
+References: <20230809185453.40916-1-mario.limonciello@amd.com>
+ <20230809185453.40916-7-mario.limonciello@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH V8 1/9] drivers core: Add support for Wifi band RF
- mitigations
-Content-Language: en-US
-To:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
-        Alexander.Deucher@amd.com, Christian.Koenig@amd.com,
-        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
-        johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        Mario.Limonciello@amd.com, mdaenzer@redhat.com,
-        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
-        hdegoede@redhat.com, jingyuwang_vip@163.com, Lijo.Lazar@amd.com,
-        jim.cromie@gmail.com, bellosilicio@gmail.com,
-        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
-        arnd@arndb.de, andrew@lunn.ch
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-References: <20230810073803.1643451-1-evan.quan@amd.com>
- <20230810073803.1643451-2-evan.quan@amd.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20230810073803.1643451-2-evan.quan@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230809185453.40916-7-mario.limonciello@amd.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Wed, Aug 09, 2023 at 01:54:50PM -0500, Mario Limonciello wrote:
+> Other parts of the kernel may use constraints information to make
+> decisions on what power state to put a device into.
 
+...
 
-On 8/10/23 00:37, Evan Quan wrote:
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index a1457995fd41..21f73a0bbd0b 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -7152,3 +7152,12 @@
->  				xmon commands.
->  			off	xmon is disabled.
->  
-> +	wbrf=		[KNL]
-> +			Format: { on | auto | off }
-> +			Controls if WBRF features should be enabled or disabled
-> +			forcely. Default is auto.
+> +int acpi_get_lps0_constraint(struct device *dev)
+> +{
 
-"forcely" is not a word. "forcedly" is a word, but it's not used very much
-AFAIK.
-I would probably write "Controls if WBRF features should be forced on or off."
+> +	int i;
+> +
+> +	for (i = 0; i < lpi_constraints_table_size; ++i) {
+> +		static struct lpi_constraints *entry;
 
-> +			on	Force enable the WBRF features.
-> +			auto	Up to the system to do proper checks to
-> +				determine the WBRF features should be enabled
-> +				or not.
-> +			off	Force disable the WBRF features.
+static?!
+
+Seems to me with the code in lpi_check_constraints() this actually can be first
+(separate patch maybe with conversion of the mentioned user) transformed to
+
+#define for_each_lpi_constraint(entry)
+	for (int i = 0;
+	     entry = &lpi_constraints_table[i], i < lpi_constraints_table_size;
+	     i++)
+
+> +		int val;
+> +
+> +		entry = &lpi_constraints_table[i];
+> +		if (!device_match_acpi_handle(dev, entry->handle))
+> +			continue;
+> +		val = entry->enabled ? entry->min_dstate : 0;
+> +		acpi_handle_debug(entry->handle,
+> +				  "ACPI device constraint: %d\n", val);
+> +		return val;
+> +	}
+
+So will become
+
+	struct lpi_constraints *entry;
+	int val;
+
+	for_each_lpi_constraint(entry) {
+		if (!device_match_acpi_handle(dev, entry->handle))
+			continue;
+		val = entry->enabled ? entry->min_dstate : 0;
+		acpi_handle_debug(entry->handle,
+				  "ACPI device constraint: %d\n", val);
+		return val;
+	}
+
+> +	return -ENODEV;
+> +}
 
 -- 
-~Randy
+With Best Regards,
+Andy Shevchenko
+
+
