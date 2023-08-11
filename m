@@ -2,133 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01BA7778A2F
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Aug 2023 11:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFE36778A80
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Aug 2023 11:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235526AbjHKJit (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Aug 2023 05:38:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42572 "EHLO
+        id S229732AbjHKJ7k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Aug 2023 05:59:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235313AbjHKJib (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Aug 2023 05:38:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E9F83593;
-        Fri, 11 Aug 2023 02:37:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D6A766D89;
-        Fri, 11 Aug 2023 09:37:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07F3C433C7;
-        Fri, 11 Aug 2023 09:37:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691746666;
-        bh=jUB8VsZj4uee0oA780wgQ9ju7Cxe5ZCc6R6lPpXG4hs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gGaDJWkA9t43Cexb+KYgyTgJiDvCgE1Id7EFhXI3HzKZs0GpVE9wiTt9BA8iNhPSJ
-         l55/GiQ695LqiZeP1tNT6rJ9ggknUV8zGbNY/e2xH17g/nVK0azwJdJwZDBOGXFH0Y
-         KhwmAVBkZOkKPvVzHm5gSiCBgJw72KKE/yzHc8i10Dg0/S1CTsRQjEoYu9XbmZxRRo
-         FdTSkylp/bTEmqmNpoowILfi+y4gARSbBl5EkVAA26rS62IPLkvwEl4uIYgNR84rXf
-         /KTOWP+E6W2xLn1/ICLAmNIjZc6DEfDTCjSJ59rM7PmSNL64ifD0L6ORPDANa0P/dg
-         HRr5Wl/SxqqPg==
-Date:   Fri, 11 Aug 2023 11:37:38 +0200
-From:   Simon Horman <horms@kernel.org>
-To:     Evan Quan <evan.quan@amd.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, Alexander.Deucher@amd.com,
-        Christian.Koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
-        daniel@ffwll.ch, johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        Mario.Limonciello@amd.com, mdaenzer@redhat.com,
-        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
-        hdegoede@redhat.com, jingyuwang_vip@163.com, Lijo.Lazar@amd.com,
-        jim.cromie@gmail.com, bellosilicio@gmail.com,
-        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
-        arnd@arndb.de, andrew@lunn.ch, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH V8 2/9] drivers core: add ACPI based WBRF mechanism
- introduced by AMD
-Message-ID: <ZNYBYuUSaio66vLN@vergenet.net>
-References: <20230810073803.1643451-1-evan.quan@amd.com>
- <20230810073803.1643451-3-evan.quan@amd.com>
+        with ESMTP id S230149AbjHKJ7h (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Aug 2023 05:59:37 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B46D9273E;
+        Fri, 11 Aug 2023 02:59:36 -0700 (PDT)
+Received: from canpemm500007.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RMfNd0P6yzTmQq;
+        Fri, 11 Aug 2023 17:57:37 +0800 (CST)
+Received: from localhost (10.174.179.215) by canpemm500007.china.huawei.com
+ (7.192.104.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 11 Aug
+ 2023 17:59:34 +0800
+From:   Yue Haibing <yuehaibing@huawei.com>
+To:     <rafael@kernel.org>, <lenb@kernel.org>, <bhelgaas@google.com>,
+        <scott@spiteful.org>, <yuehaibing@huawei.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH -next] PCI: Remove unused function declarations
+Date:   Fri, 11 Aug 2023 17:59:33 +0800
+Message-ID: <20230811095933.28652-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230810073803.1643451-3-evan.quan@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.174.179.215]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ canpemm500007.china.huawei.com (7.192.104.62)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 03:37:56PM +0800, Evan Quan wrote:
-> AMD has introduced an ACPI based mechanism to support WBRF for some
-> platforms with AMD dGPU + WLAN. This needs support from BIOS equipped
-> with necessary AML implementations and dGPU firmwares.
-> 
-> For those systems without the ACPI mechanism and developing solutions,
-> user can use/fall-back the generic WBRF solution for diagnosing potential
-> interference issues.
-> 
-> And for the platform which does not equip with the necessary AMD ACPI
-> implementations but with CONFIG_WBRF_AMD_ACPI built as 'y', it will
-> fall back to generic WBRF solution if the `wbrf` is set as "on".
-> 
-> Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> Co-developed-by: Evan Quan <evan.quan@amd.com>
-> Signed-off-by: Evan Quan <evan.quan@amd.com>
+These declarations is never implemented since the beginning of git history.
 
-...
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+ drivers/pci/hotplug/acpiphp.h      | 1 -
+ drivers/pci/hotplug/cpci_hotplug.h | 2 --
+ drivers/pci/hotplug/ibmphp.h       | 2 --
+ include/linux/pci.h                | 1 -
+ 4 files changed, 6 deletions(-)
 
-> diff --git a/drivers/acpi/amd_wbrf.c b/drivers/acpi/amd_wbrf.c
+diff --git a/drivers/pci/hotplug/acpiphp.h b/drivers/pci/hotplug/acpiphp.h
+index 1f8ab4377ad8..5745be6018e1 100644
+--- a/drivers/pci/hotplug/acpiphp.h
++++ b/drivers/pci/hotplug/acpiphp.h
+@@ -178,7 +178,6 @@ void acpiphp_unregister_hotplug_slot(struct acpiphp_slot *slot);
+ int acpiphp_enable_slot(struct acpiphp_slot *slot);
+ int acpiphp_disable_slot(struct acpiphp_slot *slot);
+ u8 acpiphp_get_power_status(struct acpiphp_slot *slot);
+-u8 acpiphp_get_attention_status(struct acpiphp_slot *slot);
+ u8 acpiphp_get_latch_status(struct acpiphp_slot *slot);
+ u8 acpiphp_get_adapter_status(struct acpiphp_slot *slot);
+ 
+diff --git a/drivers/pci/hotplug/cpci_hotplug.h b/drivers/pci/hotplug/cpci_hotplug.h
+index 3fdd1b9bd8c3..6d8970d8c3f2 100644
+--- a/drivers/pci/hotplug/cpci_hotplug.h
++++ b/drivers/pci/hotplug/cpci_hotplug.h
+@@ -83,8 +83,6 @@ extern int cpci_debug;
+  * board/chassis drivers.
+  */
+ u8 cpci_get_attention_status(struct slot *slot);
+-u8 cpci_get_latch_status(struct slot *slot);
+-u8 cpci_get_adapter_status(struct slot *slot);
+ u16 cpci_get_hs_csr(struct slot *slot);
+ int cpci_set_attention_status(struct slot *slot, int status);
+ int cpci_check_and_clear_ins(struct slot *slot);
+diff --git a/drivers/pci/hotplug/ibmphp.h b/drivers/pci/hotplug/ibmphp.h
+index 0399c60d2ec1..41eafe511210 100644
+--- a/drivers/pci/hotplug/ibmphp.h
++++ b/drivers/pci/hotplug/ibmphp.h
+@@ -264,8 +264,6 @@ extern struct list_head ibmphp_slot_head;
+ void ibmphp_free_ebda_hpc_queue(void);
+ int ibmphp_access_ebda(void);
+ struct slot *ibmphp_get_slot_from_physical_num(u8);
+-int ibmphp_get_total_hp_slots(void);
+-void ibmphp_free_ibm_slot(struct slot *);
+ void ibmphp_free_bus_info_queue(void);
+ void ibmphp_free_ebda_pci_rsrc_queue(void);
+ struct bus_info *ibmphp_find_same_bus_num(u32);
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index eeb2e6f6130f..494470a38abf 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1403,7 +1403,6 @@ void pci_assign_unassigned_bridge_resources(struct pci_dev *bridge);
+ void pci_assign_unassigned_bus_resources(struct pci_bus *bus);
+ void pci_assign_unassigned_root_bus_resources(struct pci_bus *bus);
+ int pci_reassign_bridge_resources(struct pci_dev *bridge, unsigned long type);
+-void pdev_enable_device(struct pci_dev *);
+ int pci_enable_resources(struct pci_dev *, int mask);
+ void pci_assign_irq(struct pci_dev *dev);
+ struct resource *pci_find_resource(struct pci_dev *dev, struct resource *res);
+-- 
+2.34.1
 
-...
-
-> +static bool check_acpi_wbrf(acpi_handle handle, u64 rev, u64 funcs)
-> +{
-> +	int i;
-> +	u64 mask = 0;
-> +	union acpi_object *obj;
-> +
-> +	if (funcs == 0)
-> +		return false;
-> +
-> +	obj = acpi_evaluate_wbrf(handle, rev, 0);
-> +	if (!obj)
-> +		return false;
-> +
-> +	if (obj->type != ACPI_TYPE_BUFFER)
-> +		return false;
-> +
-> +	/*
-> +	 * Bit vector providing supported functions information.
-> +	 * Each bit marks support for one specific function of the WBRF method.
-> +	 */
-> +	for (i = 0; i < obj->buffer.length && i < 8; i++)
-> +		mask |= (((u64)obj->buffer.pointer[i]) << (i * 8));
-> +
-> +	ACPI_FREE(obj);
-> +
-> +	if ((mask & BIT(WBRF_ENABLED)) &&
-> +	     (mask & funcs) == funcs)
-
-Hi Evan,
-
-a minor nit from my side: the indentation of the line above seems odd.
-
-	if ((mask & BIT(WBRF_ENABLED)) &&
-	    (mask & funcs) == funcs)
-
-> +		return true;
-> +
-> +	return false;
-> +}
-
-...
