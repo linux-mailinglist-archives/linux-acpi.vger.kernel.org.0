@@ -2,96 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28E7877975B
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Aug 2023 20:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B86D77981E
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Aug 2023 22:05:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231126AbjHKSx1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Aug 2023 14:53:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54008 "EHLO
+        id S233523AbjHKUFS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Aug 2023 16:05:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236512AbjHKSx1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Aug 2023 14:53:27 -0400
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87842D7;
-        Fri, 11 Aug 2023 11:53:26 -0700 (PDT)
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-56d75fb64a6so433561eaf.0;
-        Fri, 11 Aug 2023 11:53:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691780006; x=1692384806;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BdcsZOOFhEeWZqhLiC+0+fFuu6bjcWEXFGlC9mcIT98=;
-        b=C4+RHkQzz8LUIVSeClldhvkpUkvOl1vi7VdgpbgNX4uNnm06wQIZ109D+Mb4g+aVdU
-         TYkeqAQZbRLDhfmpn8Ak7+rphmZKmadUACwcxTHBCkZugRzp8dkiNCRxCOmXb2ubjatA
-         imfcpKahLxASYCXi7CEQ31uBFaBizQVYkt0cdXxu2NZoe0CwoCQgC3Egpi67B3FvKpeN
-         /ASjn+G0Y9vN2ibjzhkZtqub3N6CL4Mrwr3Ox7wWfJUd2MbaU5wEzebynAH1fmZxV1KX
-         Ig8nvrrLFCWUaUgeW7lgmbmDUERFF20SuIKl4eUBnS1a2gcyOz4+GV8vopbF70nYHCG6
-         yv1A==
-X-Gm-Message-State: AOJu0Yz8AIf6UroeYB2q0cCMKmGW/xOnDPB7qB+Vnb4bksA/vknHLW2z
-        uA8dP1JyrfWJAE2xZAA/8a/vxHJH6M/3EPzpi20m6ntf5O4=
-X-Google-Smtp-Source: AGHT+IFWIcp8hXhWx2rklGQE2gY8/NcQ6tbJ/t59+q0cAkzobBpwaSOQ86dDBm9YCNeAFkxkx7hE1fio4xSsQ446Iho=
-X-Received: by 2002:a05:6820:1687:b0:566:951e:140c with SMTP id
- bc7-20020a056820168700b00566951e140cmr2648843oob.1.1691780005647; Fri, 11 Aug
- 2023 11:53:25 -0700 (PDT)
-MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 11 Aug 2023 20:53:14 +0200
-Message-ID: <CAJZ5v0ik0R89HH2fMGV9YP=Poc+5fyjpSkFcMYLU-wSFEVcttg@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v6.5-rc6
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        with ESMTP id S236468AbjHKUE6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Aug 2023 16:04:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18BA530E8;
+        Fri, 11 Aug 2023 13:04:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A0843667D4;
+        Fri, 11 Aug 2023 20:04:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EBC9AC433AD;
+        Fri, 11 Aug 2023 20:04:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691784297;
+        bh=nSnSR8oLOzGq85rxD/nWXB7lE4izqLYhjSRU7KH6FIU=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=BygXb0SzS868ACBzb7DstxUt6t0AEfVd9Elwv5axNdBJeMC7q/tUnFeGUCJSDb7Er
+         C32i/dJTpebLSEe7cQ5KvfYKXvIYeXUK6YqOraYHFVD4h4CX/nL5Xph+rCZhpRhXIa
+         VJcQETP8zpVn2dF6CoxJtnNDTAHpZRpRFK56kItrlFIYAs3ELe7Hco30d+HMSTevtW
+         McrfUKxe4o1bC48tcX/AMokst81WUFcwUQU5McfGqrDVLMTxILhQ2D/pb/7oSuGkn6
+         kbrgqrCdBaKPnipYbH6WQLuqIQAKXPFrs+2hWMb51e0izN9EELIfJZsf476qs/DRmK
+         /EvrWwRvp0n5Q==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 9EA1CC3274B;
+        Fri, 11 Aug 2023 20:04:56 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fixes for v6.5-rc6
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0ik0R89HH2fMGV9YP=Poc+5fyjpSkFcMYLU-wSFEVcttg@mail.gmail.com>
+References: <CAJZ5v0ik0R89HH2fMGV9YP=Poc+5fyjpSkFcMYLU-wSFEVcttg@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0ik0R89HH2fMGV9YP=Poc+5fyjpSkFcMYLU-wSFEVcttg@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.5-rc6
+X-PR-Tracked-Commit-Id: 56fec0051a69ace182ca3fba47be9c13038b4e3f
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 29d99aae13cf2713b85bc26a37921e231676ba48
+Message-Id: <169178429664.22025.2918340895254967873.pr-tracker-bot@kernel.org>
+Date:   Fri, 11 Aug 2023 20:04:56 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Hans de Goede <hdegoede@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Fri, 11 Aug 2023 20:53:14 +0200:
 
-Please pull from the tag
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.5-rc6
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.5-rc6
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/29d99aae13cf2713b85bc26a37921e231676ba48
 
-with top-most commit 56fec0051a69ace182ca3fba47be9c13038b4e3f
+Thank you!
 
- ACPI: resource: Add IRQ override quirk for PCSpecialist Elimina Pro 16 M
-
-on top of commit 52a93d39b17dc7eb98b6aa3edb93943248e03b2f
-
- Linux 6.5-rc5
-
-to receive ACPI fixes for 6.5-rc6.
-
-These rework the handling of interrupt overrides on AMD Zen-based
-machines to avoid recently introduced regressions (Hans de Goede).
-
-Note that this is intended as a short-term mitigation for 6.5 and
-the long-term approach will be to attempt to use the configuration
-left by the BIOS, but it requires more investigation.
-
-Thanks!
-
-
----------------
-
-Hans de Goede (4):
-      ACPI: resource: revert "Remove "Zen" specific match and quirks"
-      ACPI: resource: Always use MADT override IRQ settings for all
-legacy non i8042 IRQs
-      ACPI: resource: Honor MADT INT_SRC_OVR settings for IRQ1 on AMD Zen
-      ACPI: resource: Add IRQ override quirk for PCSpecialist Elimina Pro 16 M
-
----------------
-
- arch/x86/include/asm/acpi.h |  2 ++
- arch/x86/kernel/acpi/boot.c |  4 +++
- drivers/acpi/resource.c     | 64 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 70 insertions(+)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
