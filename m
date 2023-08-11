@@ -2,271 +2,164 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFE9D7784CF
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Aug 2023 03:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3D16778642
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Aug 2023 05:53:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230217AbjHKBPH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Aug 2023 21:15:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47728 "EHLO
+        id S229930AbjHKDxH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Aug 2023 23:53:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbjHKBPG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 21:15:06 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DEA12D60;
-        Thu, 10 Aug 2023 18:15:05 -0700 (PDT)
+        with ESMTP id S232523AbjHKDxF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Aug 2023 23:53:05 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F1FE2D7B;
+        Thu, 10 Aug 2023 20:53:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691716505; x=1723252505;
+  t=1691725984; x=1723261984;
   h=from:to:cc:subject:references:date:in-reply-to:
    message-id:mime-version;
-  bh=GSoNnc9ZROtEeZh8ssPdb9O3EsO5sMHiL/NsY3M9aQE=;
-  b=LeikNHiqFaCFubmCHm5+fHrSGRB7SzGhVEbu/1FrQZ/H5Byz2nAGsPFZ
-   9gwzydTS50Q+iTgSB4kkKnUAa8mXSu0K5v91Rfm9WvLS4l1o6B4BEEes3
-   MTkf5NZdrTikyw+OR+fxrcmhwjMdfVi5uzDe/W6Mfr1hL6/uqW8pyLIUY
-   /zRWmjIsmM2pnejPMf4eJPiFxE4efec2jy5CriqoqvEjHWHyyG9ElKwgx
-   PCYx8rvb10+rz+bdV5ic8ZiRJffPImtwF4YGchfCVMBt53H1E00EbIhg2
-   /r8a2LfXeDinnlVYFH35gLY9vlP5N5p6HohKsu8vwZQy86m5hsAEJrG4Q
+  bh=WDGapeIqb0kOff3B56X84HvpVJViEsZOYrPk6MNaeOU=;
+  b=Ctn66cBxofOwwkE03ffEPaHE/S+RI7dXPLTEzgxNj0svt+iYTdGcVRC3
+   jO5bJeVzXYy8nhI39NjVkGHLGM8bKwgj9URhpKrGR9HwHJFTTvkz6BFwU
+   0H9jgCBj034M6qceLULJ5TwrGy/1uyxTI08ErooUqCp27pL+IAudtXVou
+   qRu8o9v/3Jpj93yEoHUAhvc1qNmaEGkkjMBLCXiBTUdXQ2qJCkthlHI97
+   SpwncJKenw5Kc3C0vCUENwRWNVALJNdLCItKHNQ+SWqzbTh3sNw71vpcS
+   PehQSoTLRq0SybPFgoxeHCgSoNLkh6wBYSU3xBvGfI+am3ke1hCp9HAeD
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="374332140"
-X-IronPort-AV: E=Sophos;i="6.01,163,1684825200"; 
-   d="scan'208";a="374332140"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 18:15:04 -0700
+X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="356554302"
+X-IronPort-AV: E=Sophos;i="6.01,164,1684825200"; 
+   d="scan'208";a="356554302"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 20:53:02 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="979042916"
-X-IronPort-AV: E=Sophos;i="6.01,163,1684825200"; 
-   d="scan'208";a="979042916"
+X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="762047251"
+X-IronPort-AV: E=Sophos;i="6.01,164,1684825200"; 
+   d="scan'208";a="762047251"
 Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 18:15:00 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 20:52:58 -0700
 From:   "Huang, Ying" <ying.huang@intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Alistair Popple <apopple@nvidia.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
         <linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
         <nvdimm@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
         "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
         Wei Xu <weixugc@google.com>,
-        Alistair Popple <apopple@nvidia.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Dave Hansen <dave.hansen@intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        "Johannes Weiner" <hannes@cmpxchg.org>,
+        "Davidlohr Bueso" <dave@stgolabs.net>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
         Michal Hocko <mhocko@kernel.org>,
         Yang Shi <shy828301@gmail.com>,
-        Rafael J Wysocki <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH RESEND 2/4] acpi, hmat: refactor
- hmat_register_target_initiators()
+        Rafael J Wysocki <rafael.j.wysocki@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>
+Subject: Re: [PATCH RESEND 1/4] memory tiering: add abstract distance
+ calculation algorithms management
 References: <20230721012932.190742-1-ying.huang@intel.com>
-        <20230721012932.190742-3-ying.huang@intel.com>
-        <20230807175546.00001566@Huawei.com>
-Date:   Fri, 11 Aug 2023 09:13:23 +0800
-In-Reply-To: <20230807175546.00001566@Huawei.com> (Jonathan Cameron's message
-        of "Mon, 7 Aug 2023 17:55:46 +0100")
-Message-ID: <87v8dmpej0.fsf@yhuang6-desk2.ccr.corp.intel.com>
+        <20230721012932.190742-2-ying.huang@intel.com>
+        <87r0owzqdc.fsf@nvdebian.thelocal>
+        <87r0owy95t.fsf@yhuang6-desk2.ccr.corp.intel.com>
+        <87sf9cxupz.fsf@nvdebian.thelocal>
+        <878rb3xh2x.fsf@yhuang6-desk2.ccr.corp.intel.com>
+        <87351axbk6.fsf@nvdebian.thelocal>
+        <87edkuvw6m.fsf@yhuang6-desk2.ccr.corp.intel.com>
+        <87y1j2vvqw.fsf@nvdebian.thelocal>
+        <87a5vhx664.fsf@yhuang6-desk2.ccr.corp.intel.com>
+        <87lef0x23q.fsf@nvdebian.thelocal>
+Date:   Fri, 11 Aug 2023 11:51:11 +0800
+In-Reply-To: <87lef0x23q.fsf@nvdebian.thelocal> (Alistair Popple's message of
+        "Fri, 28 Jul 2023 11:20:05 +1000")
+Message-ID: <87r0oack40.fsf@yhuang6-desk2.ccr.corp.intel.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ascii
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Jonathan,
+Hi, Alistair,
 
-Thanks for review!
+Sorry for late response.  Just come back from vacation.
 
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> writes:
+Alistair Popple <apopple@nvidia.com> writes:
 
-> On Fri, 21 Jul 2023 09:29:30 +0800
-> Huang Ying <ying.huang@intel.com> wrote:
+> "Huang, Ying" <ying.huang@intel.com> writes:
 >
->> Previously, in hmat_register_target_initiators(), the performance
->> attributes are calculated and the corresponding sysfs links and files
->> are created too.  Which is called during memory onlining.
->> 
->> But now, to calculate the abstract distance of a memory target before
->> memory onlining, we need to calculate the performance attributes for
->> a memory target without creating sysfs links and files.
->> 
->> To do that, hmat_register_target_initiators() is refactored to make it
->> possible to calculate performance attributes separately.
->> 
->> Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
->> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> Cc: Wei Xu <weixugc@google.com>
->> Cc: Alistair Popple <apopple@nvidia.com>
->> Cc: Dan Williams <dan.j.williams@intel.com>
->> Cc: Dave Hansen <dave.hansen@intel.com>
->> Cc: Davidlohr Bueso <dave@stgolabs.net>
->> Cc: Johannes Weiner <hannes@cmpxchg.org>
->> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Cc: Michal Hocko <mhocko@kernel.org>
->> Cc: Yang Shi <shy828301@gmail.com>
->> Cc: Rafael J Wysocki <rafael.j.wysocki@intel.com>
+>> Alistair Popple <apopple@nvidia.com> writes:
+>>
+>>> "Huang, Ying" <ying.huang@intel.com> writes:
+>>>
+>>>> Alistair Popple <apopple@nvidia.com> writes:
+>>>>
+>>>>>>>> While other memory device drivers can use the general notifier chain
+>>>>>>>> interface at the same time.
+>>>>>
+>>>>> How would that work in practice though? The abstract distance as far as
+>>>>> I can tell doesn't have any meaning other than establishing preferences
+>>>>> for memory demotion order. Therefore all calculations are relative to
+>>>>> the rest of the calculations on the system. So if a driver does it's own
+>>>>> thing how does it choose a sensible distance? IHMO the value here is in
+>>>>> coordinating all that through a standard interface, whether that is HMAT
+>>>>> or something else.
+>>>>
+>>>> Only if different algorithms follow the same basic principle.  For
+>>>> example, the abstract distance of default DRAM nodes are fixed
+>>>> (MEMTIER_ADISTANCE_DRAM).  The abstract distance of the memory device is
+>>>> in linear direct proportion to the memory latency and inversely
+>>>> proportional to the memory bandwidth.  Use the memory latency and
+>>>> bandwidth of default DRAM nodes as base.
+>>>>
+>>>> HMAT and CDAT report the raw memory latency and bandwidth.  If there are
+>>>> some other methods to report the raw memory latency and bandwidth, we
+>>>> can use them too.
+>>>
+>>> Argh! So we could address my concerns by having drivers feed
+>>> latency/bandwidth numbers into a standard calculation algorithm right?
+>>> Ie. Rather than having drivers calculate abstract distance themselves we
+>>> have the notifier chains return the raw performance data from which the
+>>> abstract distance is derived.
+>>
+>> Now, memory device drivers only need a general interface to get the
+>> abstract distance from the NUMA node ID.  In the future, if they need
+>> more interfaces, we can add them.  For example, the interface you
+>> suggested above.
 >
-> Unfortunately I don't think I still have the tables I used to test the
-> generic initiator and won't get time to generate them all again in
-> next few weeks.  So just a superficial review for now.
-> I 'think' the cleanup looks good but the original code was rather fiddly
-> so I'm not 100% sure nothing is missed.
+> Huh? Memory device drivers (ie. dax/kmem.c) don't care about abstract
+> distance, it's a meaningless number. The only reason they care about it
+> is so they can pass it to alloc_memory_type():
 >
-> One comment inline on the fact the list is now sorted twice.
+> struct memory_dev_type *alloc_memory_type(int adistance)
 >
->
->> ---
->>  drivers/acpi/numa/hmat.c | 81 +++++++++++++++-------------------------
->>  1 file changed, 30 insertions(+), 51 deletions(-)
->> 
->> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
->> index bba268ecd802..2dee0098f1a9 100644
->> --- a/drivers/acpi/numa/hmat.c
->> +++ b/drivers/acpi/numa/hmat.c
->> @@ -582,28 +582,25 @@ static int initiators_to_nodemask(unsigned long *p_nodes)
->>  	return 0;
->>  }
->>  
->> -static void hmat_register_target_initiators(struct memory_target *target)
->> +static void hmat_update_target_attrs(struct memory_target *target,
->> +				     unsigned long *p_nodes, int access)
->>  {
->> -	static DECLARE_BITMAP(p_nodes, MAX_NUMNODES);
->>  	struct memory_initiator *initiator;
->> -	unsigned int mem_nid, cpu_nid;
->> +	unsigned int cpu_nid;
->>  	struct memory_locality *loc = NULL;
->>  	u32 best = 0;
->> -	bool access0done = false;
->>  	int i;
->>  
->> -	mem_nid = pxm_to_node(target->memory_pxm);
->> +	bitmap_zero(p_nodes, MAX_NUMNODES);
->>  	/*
->> -	 * If the Address Range Structure provides a local processor pxm, link
->> +	 * If the Address Range Structure provides a local processor pxm, set
->>  	 * only that one. Otherwise, find the best performance attributes and
->> -	 * register all initiators that match.
->> +	 * collect all initiators that match.
->>  	 */
->>  	if (target->processor_pxm != PXM_INVAL) {
->>  		cpu_nid = pxm_to_node(target->processor_pxm);
->> -		register_memory_node_under_compute_node(mem_nid, cpu_nid, 0);
->> -		access0done = true;
->> -		if (node_state(cpu_nid, N_CPU)) {
->> -			register_memory_node_under_compute_node(mem_nid, cpu_nid, 1);
->> +		if (access == 0 || node_state(cpu_nid, N_CPU)) {
->> +			set_bit(target->processor_pxm, p_nodes);
->>  			return;
->>  		}
->>  	}
->> @@ -617,47 +614,10 @@ static void hmat_register_target_initiators(struct memory_target *target)
->>  	 * We'll also use the sorting to prime the candidate nodes with known
->>  	 * initiators.
->>  	 */
->> -	bitmap_zero(p_nodes, MAX_NUMNODES);
->>  	list_sort(NULL, &initiators, initiator_cmp);
->>  	if (initiators_to_nodemask(p_nodes) < 0)
->>  		return;
->
-> One result of this refactor is that a few things run twice, that previously only ran once
-> like this list_sort()
-> Not necessarily a problem though as probably fairly cheap.
+> Instead alloc_memory_type() should be taking bandwidth/latency numbers
+> and the calculation of abstract distance should be done there. That
+> resovles the issues about how drivers are supposed to devine adistance
+> and also means that when CDAT is added we don't have to duplicate the
+> calculation code.
 
-Yes.  The original code sorts once for each target.  But it appears that
-it's unnecessary too.  We can sort the initiators list when adding new
-item to it in alloc_memory_initiator().  If necessary, I can add an
-additional patch to do that.  But as you said, it may be unnecessary
-because the sort should be fairly cheap.
+In the current design, the abstract distance is the key concept of
+memory types and memory tiers.  And it is used as interface to allocate
+memory types.  This provides more flexibility than some other interfaces
+(e.g. read/write bandwidth/latency).  For example, in current
+dax/kmem.c, if HMAT isn't available in the system, the default abstract
+distance: MEMTIER_DEFAULT_DAX_ADISTANCE is used.  This is still useful
+to support some systems now.  On a system without HMAT/CDAT, it's
+possible to calculate abstract distance from ACPI SLIT, although this is
+quite limited.  I'm not sure whether all systems will provide read/write
+bandwith/latency data for all memory devices.
+
+HMAT and CDAT or some other mechanisms may provide the read/write
+bandwidth/latency data to be used to calculate abstract distance.  For
+them, we can provide a shared implementation in mm/memory-tiers.c to map
+from read/write bandwith/latency to the abstract distance.  Can this
+solve your concerns about the consistency among algorithms?  If so, we
+can do that when we add the second algorithm that needs that.
 
 --
 Best Regards,
 Huang, Ying
-
->>  
->> -	if (!access0done) {
->> -		for (i = WRITE_LATENCY; i <= READ_BANDWIDTH; i++) {
->> -			loc = localities_types[i];
->> -			if (!loc)
->> -				continue;
->> -
->> -			best = 0;
->> -			list_for_each_entry(initiator, &initiators, node) {
->> -				u32 value;
->> -
->> -				if (!test_bit(initiator->processor_pxm, p_nodes))
->> -					continue;
->> -
->> -				value = hmat_initiator_perf(target, initiator,
->> -							    loc->hmat_loc);
->> -				if (hmat_update_best(loc->hmat_loc->data_type, value, &best))
->> -					bitmap_clear(p_nodes, 0, initiator->processor_pxm);
->> -				if (value != best)
->> -					clear_bit(initiator->processor_pxm, p_nodes);
->> -			}
->> -			if (best)
->> -				hmat_update_target_access(target, loc->hmat_loc->data_type,
->> -							  best, 0);
->> -		}
->> -
->> -		for_each_set_bit(i, p_nodes, MAX_NUMNODES) {
->> -			cpu_nid = pxm_to_node(i);
->> -			register_memory_node_under_compute_node(mem_nid, cpu_nid, 0);
->> -		}
->> -	}
->> -
->> -	/* Access 1 ignores Generic Initiators */
->> -	bitmap_zero(p_nodes, MAX_NUMNODES);
->> -	if (initiators_to_nodemask(p_nodes) < 0)
->> -		return;
->> -
->>  	for (i = WRITE_LATENCY; i <= READ_BANDWIDTH; i++) {
->>  		loc = localities_types[i];
->>  		if (!loc)
->> @@ -667,7 +627,7 @@ static void hmat_register_target_initiators(struct memory_target *target)
->>  		list_for_each_entry(initiator, &initiators, node) {
->>  			u32 value;
->>  
->> -			if (!initiator->has_cpu) {
->> +			if (access == 1 && !initiator->has_cpu) {
->>  				clear_bit(initiator->processor_pxm, p_nodes);
->>  				continue;
->>  			}
->> @@ -681,14 +641,33 @@ static void hmat_register_target_initiators(struct memory_target *target)
->>  				clear_bit(initiator->processor_pxm, p_nodes);
->>  		}
->>  		if (best)
->> -			hmat_update_target_access(target, loc->hmat_loc->data_type, best, 1);
->> +			hmat_update_target_access(target, loc->hmat_loc->data_type, best, access);
->>  	}
->> +}
->> +
->> +static void __hmat_register_target_initiators(struct memory_target *target,
->> +					      unsigned long *p_nodes,
->> +					      int access)
->> +{
->> +	unsigned int mem_nid, cpu_nid;
->> +	int i;
->> +
->> +	mem_nid = pxm_to_node(target->memory_pxm);
->> +	hmat_update_target_attrs(target, p_nodes, access);
->>  	for_each_set_bit(i, p_nodes, MAX_NUMNODES) {
->>  		cpu_nid = pxm_to_node(i);
->> -		register_memory_node_under_compute_node(mem_nid, cpu_nid, 1);
->> +		register_memory_node_under_compute_node(mem_nid, cpu_nid, access);
->>  	}
->>  }
->>  
->> +static void hmat_register_target_initiators(struct memory_target *target)
->> +{
->> +	static DECLARE_BITMAP(p_nodes, MAX_NUMNODES);
->> +
->> +	__hmat_register_target_initiators(target, p_nodes, 0);
->> +	__hmat_register_target_initiators(target, p_nodes, 1);
->> +}
->> +
->>  static void hmat_register_target_cache(struct memory_target *target)
->>  {
->>  	unsigned mem_nid = pxm_to_node(target->memory_pxm);
