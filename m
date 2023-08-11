@@ -2,109 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFE36778A80
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Aug 2023 11:59:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99206778D3E
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Aug 2023 13:17:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229732AbjHKJ7k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Aug 2023 05:59:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44110 "EHLO
+        id S234278AbjHKLRt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Aug 2023 07:17:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230149AbjHKJ7h (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Aug 2023 05:59:37 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B46D9273E;
-        Fri, 11 Aug 2023 02:59:36 -0700 (PDT)
-Received: from canpemm500007.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RMfNd0P6yzTmQq;
-        Fri, 11 Aug 2023 17:57:37 +0800 (CST)
-Received: from localhost (10.174.179.215) by canpemm500007.china.huawei.com
- (7.192.104.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 11 Aug
- 2023 17:59:34 +0800
-From:   Yue Haibing <yuehaibing@huawei.com>
-To:     <rafael@kernel.org>, <lenb@kernel.org>, <bhelgaas@google.com>,
-        <scott@spiteful.org>, <yuehaibing@huawei.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH -next] PCI: Remove unused function declarations
-Date:   Fri, 11 Aug 2023 17:59:33 +0800
-Message-ID: <20230811095933.28652-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        with ESMTP id S231745AbjHKLRs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Aug 2023 07:17:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45BBDC3;
+        Fri, 11 Aug 2023 04:17:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D80AD64D2F;
+        Fri, 11 Aug 2023 11:17:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008F9C433C7;
+        Fri, 11 Aug 2023 11:17:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691752667;
+        bh=hxQAmB/8S/2RsXJqhNtMpjCrkAM+LtXclZmynSSBuH4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=k/5FA/NqE0ukdB0J5oqhAFGoGR2JvsGJAac9wnhbovyPSMZULqojPxXSiWdeWvR4z
+         hi/sPxoCZ8hMFHoepJXuZ+jHhkc3UQ8DSVklePRLzCieplyEuTw0KBXdkaH6aczZZ8
+         mIu+RO1dNGvvl3DRopf1PlfjNl4V2gFB1IBMw3ZuONNGNSkL89lS40aBAGVHLwrNId
+         MjRWIU111G+3FMx7bNp22NYMhW6kdMUqNKs8iFetCosWM5b3l/7CE96J9iKi9HEA6o
+         7IblwZQaFDdadR2KGbQfH+Fs51ZGnu/5F134IbstCnrDUHjbFB7TrZIvOFABXf0pbx
+         eQ3yuuCo9ZaCw==
+Date:   Fri, 11 Aug 2023 12:17:40 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Yicong Yang <yangyicong@huawei.com>
+Cc:     catalin.marinas@arm.com, lpieralisi@kernel.org,
+        mark.rutland@arm.com, robin.murphy@arm.com, guohanjun@huawei.com,
+        corbet@lwn.net, rafael@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jonathan.cameron@huawei.com, shameerali.kolothum.thodi@huawei.com,
+        hejunhao3@huawei.com, linuxarm@huawei.com,
+        prime.zeng@hisilicon.com, yangyicong@hisilicon.com,
+        zhurui3@huawei.com
+Subject: Re: [PATCH] perf/smmuv3: Enable HiSilicon Erratum 162001900 quirk
+ for HIP08/09
+Message-ID: <20230811111739.GD6993@willie-the-truck>
+References: <20230809100654.32036-1-yangyicong@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.174.179.215]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- canpemm500007.china.huawei.com (7.192.104.62)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230809100654.32036-1-yangyicong@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-These declarations is never implemented since the beginning of git history.
+On Wed, Aug 09, 2023 at 06:06:54PM +0800, Yicong Yang wrote:
+> diff --git a/drivers/perf/arm_smmuv3_pmu.c b/drivers/perf/arm_smmuv3_pmu.c
+> index 25a269d431e4..b854b67b81fc 100644
+> --- a/drivers/perf/arm_smmuv3_pmu.c
+> +++ b/drivers/perf/arm_smmuv3_pmu.c
+> @@ -115,6 +115,7 @@
+>  #define SMMU_PMCG_PA_SHIFT              12
+>  
+>  #define SMMU_PMCG_EVCNTR_RDONLY         BIT(0)
+> +#define SMMU_PMCG_HARDEN_DISABLE        BIT(1)
+>  
+>  static int cpuhp_state_num;
+>  
+> @@ -150,6 +151,22 @@ SMMU_PMU_EVENT_ATTR_EXTRACTOR(filter_stream_id, config1, 0, 31);
+>  SMMU_PMU_EVENT_ATTR_EXTRACTOR(filter_span, config1, 32, 32);
+>  SMMU_PMU_EVENT_ATTR_EXTRACTOR(filter_enable, config1, 33, 33);
+>  
+> +static int smmu_pmu_apply_event_filter(struct smmu_pmu *smmu_pmu,
+> +				       struct perf_event *event, int idx);
+> +
+> +static inline void smmu_pmu_enable_quirk_hip08_09(struct pmu *pmu)
+> +{
+> +	struct smmu_pmu *smmu_pmu = to_smmu_pmu(pmu);
+> +	unsigned int idx;
+> +
+> +	for_each_set_bit(idx, smmu_pmu->used_counters, smmu_pmu->num_counters)
+> +		smmu_pmu_apply_event_filter(smmu_pmu, smmu_pmu->events[idx], idx);
+> +
+> +	writel(SMMU_PMCG_IRQ_CTRL_IRQEN,
+> +	       smmu_pmu->reg_base + SMMU_PMCG_IRQ_CTRL);
+> +	writel(SMMU_PMCG_CR_ENABLE, smmu_pmu->reg_base + SMMU_PMCG_CR);
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- drivers/pci/hotplug/acpiphp.h      | 1 -
- drivers/pci/hotplug/cpci_hotplug.h | 2 --
- drivers/pci/hotplug/ibmphp.h       | 2 --
- include/linux/pci.h                | 1 -
- 4 files changed, 6 deletions(-)
+Can you tail-call smmu_pmu_enable() instead of duplicating it here?
 
-diff --git a/drivers/pci/hotplug/acpiphp.h b/drivers/pci/hotplug/acpiphp.h
-index 1f8ab4377ad8..5745be6018e1 100644
---- a/drivers/pci/hotplug/acpiphp.h
-+++ b/drivers/pci/hotplug/acpiphp.h
-@@ -178,7 +178,6 @@ void acpiphp_unregister_hotplug_slot(struct acpiphp_slot *slot);
- int acpiphp_enable_slot(struct acpiphp_slot *slot);
- int acpiphp_disable_slot(struct acpiphp_slot *slot);
- u8 acpiphp_get_power_status(struct acpiphp_slot *slot);
--u8 acpiphp_get_attention_status(struct acpiphp_slot *slot);
- u8 acpiphp_get_latch_status(struct acpiphp_slot *slot);
- u8 acpiphp_get_adapter_status(struct acpiphp_slot *slot);
- 
-diff --git a/drivers/pci/hotplug/cpci_hotplug.h b/drivers/pci/hotplug/cpci_hotplug.h
-index 3fdd1b9bd8c3..6d8970d8c3f2 100644
---- a/drivers/pci/hotplug/cpci_hotplug.h
-+++ b/drivers/pci/hotplug/cpci_hotplug.h
-@@ -83,8 +83,6 @@ extern int cpci_debug;
-  * board/chassis drivers.
-  */
- u8 cpci_get_attention_status(struct slot *slot);
--u8 cpci_get_latch_status(struct slot *slot);
--u8 cpci_get_adapter_status(struct slot *slot);
- u16 cpci_get_hs_csr(struct slot *slot);
- int cpci_set_attention_status(struct slot *slot, int status);
- int cpci_check_and_clear_ins(struct slot *slot);
-diff --git a/drivers/pci/hotplug/ibmphp.h b/drivers/pci/hotplug/ibmphp.h
-index 0399c60d2ec1..41eafe511210 100644
---- a/drivers/pci/hotplug/ibmphp.h
-+++ b/drivers/pci/hotplug/ibmphp.h
-@@ -264,8 +264,6 @@ extern struct list_head ibmphp_slot_head;
- void ibmphp_free_ebda_hpc_queue(void);
- int ibmphp_access_ebda(void);
- struct slot *ibmphp_get_slot_from_physical_num(u8);
--int ibmphp_get_total_hp_slots(void);
--void ibmphp_free_ibm_slot(struct slot *);
- void ibmphp_free_bus_info_queue(void);
- void ibmphp_free_ebda_pci_rsrc_queue(void);
- struct bus_info *ibmphp_find_same_bus_num(u32);
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index eeb2e6f6130f..494470a38abf 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1403,7 +1403,6 @@ void pci_assign_unassigned_bridge_resources(struct pci_dev *bridge);
- void pci_assign_unassigned_bus_resources(struct pci_bus *bus);
- void pci_assign_unassigned_root_bus_resources(struct pci_bus *bus);
- int pci_reassign_bridge_resources(struct pci_dev *bridge, unsigned long type);
--void pdev_enable_device(struct pci_dev *);
- int pci_enable_resources(struct pci_dev *, int mask);
- void pci_assign_irq(struct pci_dev *dev);
- struct resource *pci_find_resource(struct pci_dev *dev, struct resource *res);
--- 
-2.34.1
+> +static inline void smmu_pmu_disable_quirk_hip08_09(struct pmu *pmu)
+> +{
+> +	struct smmu_pmu *smmu_pmu = to_smmu_pmu(pmu);
+> +	unsigned int idx;
+> +
+> +	/*
+> +	 * The global disable of PMU sometimes fail to stop the counting.
+> +	 * Harden this by writing an invalid event type to each used counter
+> +	 * to forcibly stop counting.
+> +	 */
+> +	for_each_set_bit(idx, smmu_pmu->used_counters, smmu_pmu->num_counters)
+> +		writel(0xffff, smmu_pmu->reg_base + SMMU_PMCG_EVTYPER(idx));
+> +
+> +	writel(0, smmu_pmu->reg_base + SMMU_PMCG_CR);
+> +	writel(0, smmu_pmu->reg_base + SMMU_PMCG_IRQ_CTRL);
 
+Same things here, but with smmu_pmu_disable()
+
+Will
