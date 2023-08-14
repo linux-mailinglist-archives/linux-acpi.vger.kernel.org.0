@@ -2,206 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23F5577B8DD
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Aug 2023 14:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AC1D77B956
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Aug 2023 15:02:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbjHNMm7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Aug 2023 08:42:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60702 "EHLO
+        id S231240AbjHNNCT convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 14 Aug 2023 09:02:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbjHNMme (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Aug 2023 08:42:34 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72E23E4A;
-        Mon, 14 Aug 2023 05:42:32 -0700 (PDT)
-Received: from canpemm500009.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RPYsz3rLbzrSLV;
-        Mon, 14 Aug 2023 20:41:11 +0800 (CST)
-Received: from localhost.localdomain (10.50.163.32) by
- canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 14 Aug 2023 20:42:29 +0800
-From:   Yicong Yang <yangyicong@huawei.com>
-To:     <will@kernel.org>, <catalin.marinas@arm.com>,
-        <lpieralisi@kernel.org>, <mark.rutland@arm.com>,
-        <robin.murphy@arm.com>, <guohanjun@huawei.com>, <corbet@lwn.net>,
-        <rafael@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-doc@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <jonathan.cameron@huawei.com>,
-        <shameerali.kolothum.thodi@huawei.com>, <hejunhao3@huawei.com>,
-        <linuxarm@huawei.com>, <prime.zeng@hisilicon.com>,
-        <yangyicong@hisilicon.com>, <zhurui3@huawei.com>
-Subject: [PATCH v2] perf/smmuv3: Enable HiSilicon Erratum 162001900 quirk for HIP08/09
-Date:   Mon, 14 Aug 2023 20:40:12 +0800
-Message-ID: <20230814124012.58013-1-yangyicong@huawei.com>
-X-Mailer: git-send-email 2.31.0
+        with ESMTP id S231623AbjHNNCG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Aug 2023 09:02:06 -0400
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D341738;
+        Mon, 14 Aug 2023 06:01:53 -0700 (PDT)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-589a6c2c020so61635517b3.1;
+        Mon, 14 Aug 2023 06:01:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692018096; x=1692622896;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ri/aAhV9V1QKg7f5IB5V2rWz5Gg5B1mduf0Q//YtRKw=;
+        b=TdW/cEEx1B47rEg/w44vUWBwTbSwnVJ6raS93GmpebRkmvR3kAgv5SKG5EQtNNELUE
+         2Q3HNHhveh8lY4SfTHFMkLuV/XKB/KoWfMZ7uOdi1tBuGznLzA/iTdLtz1VszyXTdOjS
+         OlM0emgQ3Hy1HqT8xqMJzoCniTLCUVFUX2pmULh0C7qrDr/2PcKIwXOwCgFJNlHDMeIS
+         wlSrPxqu0JRfYyrxoXCRnDa8l+7/8QOkA7igbJUoCd+1pegSl2KsU/XopT79uepqJNHc
+         SHMKusT/Ea7KmZvinANULLeqOcwlRdfxIMsrgOz4+b3lYRsyWUCDDZjk66ryZeKg3q8O
+         RIIw==
+X-Gm-Message-State: AOJu0YzYLjBLdQSs0yNr8efdBnweIKZgEeqeTvcRBf17kmSHfwyrkIuV
+        ju3pR8xbO37ywMVCUH3Tz8f7n+jx0Vul4A==
+X-Google-Smtp-Source: AGHT+IEMeRQYvn22++yzjtAWK3gd9orQ/RXnamvbeDfRBA9FXiU4VWSUM6P6Jab0/J7qK5/Mp4+vEQ==
+X-Received: by 2002:a5b:60a:0:b0:d09:22c0:138d with SMTP id d10-20020a5b060a000000b00d0922c0138dmr11861914ybq.7.1692018094963;
+        Mon, 14 Aug 2023 06:01:34 -0700 (PDT)
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com. [209.85.219.180])
+        by smtp.gmail.com with ESMTPSA id b8-20020a252e48000000b00d0d080074f3sm2311971ybn.31.2023.08.14.06.01.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Aug 2023 06:01:34 -0700 (PDT)
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-d67305c80deso3901354276.1;
+        Mon, 14 Aug 2023 06:01:33 -0700 (PDT)
+X-Received: by 2002:a25:361f:0:b0:d48:8ff1:dd12 with SMTP id
+ d31-20020a25361f000000b00d488ff1dd12mr15424802yba.18.1692018093136; Mon, 14
+ Aug 2023 06:01:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.50.163.32]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- canpemm500009.china.huawei.com (7.192.105.203)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
+ <20230805174036.129ffbc2@jic23-huawei> <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <20230806142950.6c409600@jic23-huawei> <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+In-Reply-To: <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 14 Aug 2023 15:01:21 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUHjema72HrmghH6ozVYHEBHZhnS4+mkrJJZPu2pQNUxg@mail.gmail.com>
+Message-ID: <CAMuHMdUHjema72HrmghH6ozVYHEBHZhnS4+mkrJJZPu2pQNUxg@mail.gmail.com>
+Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct bus_type
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+Hi Andy,
 
-Some HiSilicon SMMU PMCG suffers the erratum 162001900 that the PMU
-disable control sometimes fail to disable the counters. This will lead
-to error or inaccurate data since before we enable the counters the
-counter's still counting for the event used in last perf session.
+On Mon, Aug 7, 2023 at 4:54 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+> On Sun, Aug 06, 2023 at 02:29:50PM +0100, Jonathan Cameron wrote:
+> > On Sat, 5 Aug 2023 17:42:21 +0000
+> > Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> > > > On Fri,  4 Aug 2023 17:17:24 +0100
+> > > > Biju Das <biju.das.jz@bp.renesas.com> wrote:
+>
+> ...
+>
+> > > + * Besides the fact that some drivers abuse the device ID driver_data type
+> > > + * and claim it to be integer, for the bus specific ID tables the driver_data
+> > > + * may be defined as kernel_ulong_t. For these tables 0 is a valid response,
+> > > + * but not for this function. It's recommended to convert those either to avoid
+> > > + * 0 or use a real pointer to the predefined driver data.
+>
+> > We still need to maintain consistency across the two tables, which
+> > is a stronger requirement than avoiding 0.
+>
+> True. Any suggestion how to amend the above comment? Because the documentation
+> makes sense on its own (may be split from the series?).
 
-This patch tries to fix this by hardening the global disable process.
-Before disable the PMU, writing an invalid event type (0xffff) to
-focibly stop the counters. Correspondingly restore each events on
-pmu::pmu_enable().
+I do have an idea how to handle that (inspired by the macro-heavy
+R-Car pin control drivers ;-)
 
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
----
-Change since v1:
-- Tail call smmu_pmu_{enable, disable}() in quirk handler to avoid duplication
-Link: https://lore.kernel.org/all/20230809100654.32036-1-yangyicong@huawei.com/
+    #define DEVICES(fn) \
+        fn("vendor1", "device1", &driver_data1) \
+        fn("vendor3", "device2", &driver_data2) \
+        fn("vendor3", "device2", &driver_data3)
 
- Documentation/arch/arm64/silicon-errata.rst |  3 ++
- drivers/acpi/arm64/iort.c                   |  5 ++-
- drivers/perf/arm_smmuv3_pmu.c               | 46 ++++++++++++++++++++-
- include/linux/acpi_iort.h                   |  1 +
- 4 files changed, 53 insertions(+), 2 deletions(-)
+    OF_MATCH_TABLE(driver_of_match, DEVICES);
+    I2C_MATCH_TABLE(driver_i2c_ids, DEVICES);
 
-diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
-index bedd3a1d7b42..0ac452333eb4 100644
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -198,6 +198,9 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
-+| Hisilicon      | Hip08 SMMU PMCG | #162001900      | N/A                         |
-+|                | Hip09 SMMU PMCG |                 |                             |
-++----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
- | Qualcomm Tech. | Kryo/Falkor v1  | E1003           | QCOM_FALKOR_ERRATUM_1003    |
- +----------------+-----------------+-----------------+-----------------------------+
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 56d887323ae5..6496ff5a6ba2 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1708,7 +1708,10 @@ static void __init arm_smmu_v3_pmcg_init_resources(struct resource *res,
- static struct acpi_platform_list pmcg_plat_info[] __initdata = {
- 	/* HiSilicon Hip08 Platform */
- 	{"HISI  ", "HIP08   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
--	 "Erratum #162001800", IORT_SMMU_V3_PMCG_HISI_HIP08},
-+	 "Erratum #162001800, Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP08},
-+	/* HiSilicon Hip09 Platform */
-+	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
-+	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
- 	{ }
- };
- 
-diff --git a/drivers/perf/arm_smmuv3_pmu.c b/drivers/perf/arm_smmuv3_pmu.c
-index 25a269d431e4..0e17c57ddb87 100644
---- a/drivers/perf/arm_smmuv3_pmu.c
-+++ b/drivers/perf/arm_smmuv3_pmu.c
-@@ -115,6 +115,7 @@
- #define SMMU_PMCG_PA_SHIFT              12
- 
- #define SMMU_PMCG_EVCNTR_RDONLY         BIT(0)
-+#define SMMU_PMCG_HARDEN_DISABLE        BIT(1)
- 
- static int cpuhp_state_num;
- 
-@@ -159,6 +160,20 @@ static inline void smmu_pmu_enable(struct pmu *pmu)
- 	writel(SMMU_PMCG_CR_ENABLE, smmu_pmu->reg_base + SMMU_PMCG_CR);
- }
- 
-+static int smmu_pmu_apply_event_filter(struct smmu_pmu *smmu_pmu,
-+				       struct perf_event *event, int idx);
-+
-+static inline void smmu_pmu_enable_quirk_hip08_09(struct pmu *pmu)
-+{
-+	struct smmu_pmu *smmu_pmu = to_smmu_pmu(pmu);
-+	unsigned int idx;
-+
-+	for_each_set_bit(idx, smmu_pmu->used_counters, smmu_pmu->num_counters)
-+		smmu_pmu_apply_event_filter(smmu_pmu, smmu_pmu->events[idx], idx);
-+
-+	smmu_pmu_enable(pmu);
-+}
-+
- static inline void smmu_pmu_disable(struct pmu *pmu)
- {
- 	struct smmu_pmu *smmu_pmu = to_smmu_pmu(pmu);
-@@ -167,6 +182,22 @@ static inline void smmu_pmu_disable(struct pmu *pmu)
- 	writel(0, smmu_pmu->reg_base + SMMU_PMCG_IRQ_CTRL);
- }
- 
-+static inline void smmu_pmu_disable_quirk_hip08_09(struct pmu *pmu)
-+{
-+	struct smmu_pmu *smmu_pmu = to_smmu_pmu(pmu);
-+	unsigned int idx;
-+
-+	/*
-+	 * The global disable of PMU sometimes fail to stop the counting.
-+	 * Harden this by writing an invalid event type to each used counter
-+	 * to forcibly stop counting.
-+	 */
-+	for_each_set_bit(idx, smmu_pmu->used_counters, smmu_pmu->num_counters)
-+		writel(0xffff, smmu_pmu->reg_base + SMMU_PMCG_EVTYPER(idx));
-+
-+	smmu_pmu_disable(pmu);
-+}
-+
- static inline void smmu_pmu_counter_set_value(struct smmu_pmu *smmu_pmu,
- 					      u32 idx, u64 value)
- {
-@@ -765,7 +796,10 @@ static void smmu_pmu_get_acpi_options(struct smmu_pmu *smmu_pmu)
- 	switch (model) {
- 	case IORT_SMMU_V3_PMCG_HISI_HIP08:
- 		/* HiSilicon Erratum 162001800 */
--		smmu_pmu->options |= SMMU_PMCG_EVCNTR_RDONLY;
-+		smmu_pmu->options |= SMMU_PMCG_EVCNTR_RDONLY | SMMU_PMCG_HARDEN_DISABLE;
-+		break;
-+	case IORT_SMMU_V3_PMCG_HISI_HIP09:
-+		smmu_pmu->options |= SMMU_PMCG_HARDEN_DISABLE;
- 		break;
- 	}
- 
-@@ -890,6 +924,16 @@ static int smmu_pmu_probe(struct platform_device *pdev)
- 	if (!dev->of_node)
- 		smmu_pmu_get_acpi_options(smmu_pmu);
- 
-+	/*
-+	 * For platforms suffer this quirk, the PMU disable sometimes fails to
-+	 * stop the counters. This will leads to inaccurate or error counting.
-+	 * Forcibly disable the counters with these quirk handler.
-+	 */
-+	if (smmu_pmu->options & SMMU_PMCG_HARDEN_DISABLE) {
-+		smmu_pmu->pmu.pmu_enable = smmu_pmu_enable_quirk_hip08_09;
-+		smmu_pmu->pmu.pmu_disable = smmu_pmu_disable_quirk_hip08_09;
-+	}
-+
- 	/* Pick one CPU to be the preferred one to use */
- 	smmu_pmu->on_cpu = raw_smp_processor_id();
- 	WARN_ON(irq_set_affinity(smmu_pmu->irq, cpumask_of(smmu_pmu->on_cpu)));
-diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
-index ee7cb6aaff71..1cb65592c95d 100644
---- a/include/linux/acpi_iort.h
-+++ b/include/linux/acpi_iort.h
-@@ -21,6 +21,7 @@
-  */
- #define IORT_SMMU_V3_PMCG_GENERIC        0x00000000 /* Generic SMMUv3 PMCG */
- #define IORT_SMMU_V3_PMCG_HISI_HIP08     0x00000001 /* HiSilicon HIP08 PMCG */
-+#define IORT_SMMU_V3_PMCG_HISI_HIP09     0x00000002 /* HiSilicon HIP09 PMCG */
- 
- int iort_register_domain_token(int trans_id, phys_addr_t base,
- 			       struct fwnode_handle *fw_node);
+and in the of resp. i2c headers:
+
+    #define EMIT_OF_ENTRY(_vendor, _device, _data) \
+            { .name = _vendor ## "," ## _device, .data = _data) },
+    #define EMIT_OF_ENTRIES(_name, _devs) \
+            static const struct of_device_id _name[] = { \
+                    _devs(EMIT_OF_ENTRY) \
+                    { } \
+            } \
+
+    #define EMIT_I2C_ENTRY(_vendor, _device, _data) \
+            { .name = _device, .driver_data = (void *)_data) },
+    #define EMIT_I2C_ENTRIES(_name, _devs) \
+            static const struct i2c_device_id _name[] = { \
+                    _devs(EMIT_I2C_ENTRY) \
+                    { } \
+            } \
+
+I didn't try to compile this, so I may have missed something (e.g.
+a required intermediate macro to ensure proper expansion).
+Unfortunately this would break grep'ability for compatible values...
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.24.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
