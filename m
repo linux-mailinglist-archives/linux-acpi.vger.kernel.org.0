@@ -2,229 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 674BB77B2F3
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Aug 2023 09:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E102B77B302
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Aug 2023 09:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234294AbjHNHsB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Aug 2023 03:48:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53140 "EHLO
+        id S234346AbjHNHv4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Aug 2023 03:51:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234308AbjHNHri (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Aug 2023 03:47:38 -0400
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2064.outbound.protection.outlook.com [40.107.223.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E777E77;
-        Mon, 14 Aug 2023 00:47:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KyHpqzjaEJbTRGy0g8YvJ2O9ceeCjhGp4N92lt6kOL5I35rVZhl3R+QwQJE1zFezvY+Ca/LflTeSKPwk5AaAmtdK/BNE39TIKaWaL+PvskZIxJaK/8BxsMG8rb4Ky1NnDNLrpkL5VLODIYFmgOEqaZun1+77+A6/pCZOtCTsHjTCdIC21v6ynNHJ3XvD34706L/gsleR60dMqm/aec+jtqhxTGaOYHzOA8TY07/XVgHjMiyNrRXIqwYV4JRsz4pZeAqcOzsm6Jzs07SLMgHbRL5mrpWyNx7bG6cFQUQ3VuzIOsjv7XbAQh0KvorPmjCNtth42CdVOOON5qAYLUhwNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6BdtJuUwuwfwtIcoNVR/TBdg9eTbXzCDEGhbKzAXMkY=;
- b=TRJ+W7dyd3vvptJyuWm3ZfGEzE8u622q+9vOgq2UefjeZ0rGBvEg1pfmBfF6hHMdE1nH438UKe+g7gpN6l6oTFur4gfMAqOEt6EWO1f1cPbufrpKxRVSmCwYdPQI/3FO0Rn0c589qJT4OZ0XhgG/VVGDGQygIxckK+axVO892haTy7AdGZ9ULIiLXpx74fmpoPXu8ThaRbtbG3fUD3M7I1hQJBEoHHFEIWcqteEyPRuNxG3SY4Veh1YxUisYFkL9QhQC/hHK3Hkzd57GwYf2FoIo7jHxI2OAPzt1/nP83Uh1fgc3lVp96L/IfehyvnhE86V06OCBmj1h3wlxHFOD+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6BdtJuUwuwfwtIcoNVR/TBdg9eTbXzCDEGhbKzAXMkY=;
- b=NthudOvj5gkDk7KZnlLNqFU6t5A0CYJDge/HQamzyq8tsVmd4Ajc29dBdvwVc6MF9BOzWimZhazZ1IoAxkpFnvZJTfHJNP7ljwRX2CltKNiqY3sFQXJH3oY5LQM7q3Evjiq+5JErD5SyT341m3xIqufb1UQW2+4WWdN0vkEec7U=
-Received: from DM6PR12MB2619.namprd12.prod.outlook.com (2603:10b6:5:45::18) by
- DM4PR12MB7694.namprd12.prod.outlook.com (2603:10b6:8:102::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6678.24; Mon, 14 Aug 2023 07:47:34 +0000
-Received: from DM6PR12MB2619.namprd12.prod.outlook.com
- ([fe80::ed2a:4807:1825:170f]) by DM6PR12MB2619.namprd12.prod.outlook.com
- ([fe80::ed2a:4807:1825:170f%5]) with mapi id 15.20.6678.022; Mon, 14 Aug 2023
- 07:47:34 +0000
-From:   "Quan, Evan" <Evan.Quan@amd.com>
-To:     Simon Horman <horms@kernel.org>
-CC:     "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        "airlied@gmail.com" <airlied@gmail.com>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
-        "mdaenzer@redhat.com" <mdaenzer@redhat.com>,
-        "maarten.lankhorst@linux.intel.com" 
-        <maarten.lankhorst@linux.intel.com>,
-        "tzimmermann@suse.de" <tzimmermann@suse.de>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "jingyuwang_vip@163.com" <jingyuwang_vip@163.com>,
-        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
-        "jim.cromie@gmail.com" <jim.cromie@gmail.com>,
-        "bellosilicio@gmail.com" <bellosilicio@gmail.com>,
-        "andrealmeid@igalia.com" <andrealmeid@igalia.com>,
-        "trix@redhat.com" <trix@redhat.com>,
-        "jsg@jsg.id.au" <jsg@jsg.id.au>, "arnd@arndb.de" <arnd@arndb.de>,
-        "andrew@lunn.ch" <andrew@lunn.ch>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [PATCH V8 6/9] drm/amd/pm: setup the framework to support Wifi
- RFI mitigation feature
-Thread-Topic: [PATCH V8 6/9] drm/amd/pm: setup the framework to support Wifi
- RFI mitigation feature
-Thread-Index: AQHZy14e3OnvhnQIWky/lZoPSxsKIK/k12uAgASYsXA=
-Date:   Mon, 14 Aug 2023 07:47:33 +0000
-Message-ID: <DM6PR12MB261906B335C4490EAB5DA6B3E417A@DM6PR12MB2619.namprd12.prod.outlook.com>
-References: <20230810073803.1643451-1-evan.quan@amd.com>
- <20230810073803.1643451-7-evan.quan@amd.com> <ZNYAuyrEWbRiHm55@vergenet.net>
-In-Reply-To: <ZNYAuyrEWbRiHm55@vergenet.net>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2023-08-14T07:47:31Z;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=5c97aa45-4901-401b-bddc-26d30f32ed97;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=1
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR12MB2619:EE_|DM4PR12MB7694:EE_
-x-ms-office365-filtering-correlation-id: ee8da75f-8d78-4174-23c0-08db9c9ab89b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: +4qHWNErIOCaJrVF/PVYCIXmKtnMBGcLpbZTdhK/gnH+PSKvlZcXL4OMTzUIpVVBEwbX949G5sHJ+EBTOKq1/s7W0DRd10EqBtTuTGSU8PIcjBwuisWuEAhwsJ6e3q48NcusIKfbLZ7EoOjgHvMK/46W9LprCzMZcLXDRHGr03Uxdj5rbx4IWaxsaFFEr5Sj6ObT9TN1iwZznvYQzFo3j0iQUF4vpRFXkYQ9SLlp2y+ooGUVdLa6cxGc1BDk9tMG4g9g4PCsoHO2JmpTveCTbcV8Z2D1J3RO8O3Yz/yhdNGGVbLeXYPMY26p9GGIVRQQZ9cnKum0aOluTnpwiv9umaiZ/H0YTrRfb0TeqYyfvk6so7Gmv8ae2GWa+qq9uZS0GQDIOdS6AYjZuYZz3kMnyUaZhFpujoqTRG/0JXeJh2IaNbqOC83QrZFkjiO4dnS6igXwo5TeenYNNyOPvEccu6KI6ZHRT9YTqMklpeKUIJc/eE9uaLZV+te7KSV5kTfK+n4WbwARlWgfjLN8wZG3EXkuaGtaQvGO97pLMmOhg+1Chfz8Osu5EDr083t3LBu8gKj83Z0vcVpKBFKJj/xQUblUaYmvwr2JkC7Fe83TajiaD0ohxMLUHEeqHwMHynHv
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2619.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(136003)(396003)(366004)(376002)(39860400002)(1800799006)(186006)(451199021)(6506007)(53546011)(26005)(8936002)(41300700001)(64756008)(66446008)(66476007)(66556008)(66946007)(76116006)(8676002)(316002)(9686003)(83380400001)(71200400001)(7696005)(122000001)(478600001)(38100700002)(55016003)(54906003)(33656002)(86362001)(6916009)(4326008)(5660300002)(2906002)(7416002)(38070700005)(52536014);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?zTw92pJI5GQsExsRS2oCZIZqr83TTQOELRfwUDXlZCDcJOZhM4qZLGJSxS0I?=
- =?us-ascii?Q?0NxmEcodIBVWP/GNKmfqvs4hxKDwnncwP48HytGvRiUvWNvm14CCMJrMrrF0?=
- =?us-ascii?Q?LUGQ94rvof8kiE7T4jkDMo6BWp5GZkJB+0CW+/rxTk5+A5tHllT+LKFXtA9V?=
- =?us-ascii?Q?wzlldhfwqtZL/9jGmQ++XJAIVN+gP5G7ZLsbTynxop1uouejIBIWqdxSCbgm?=
- =?us-ascii?Q?LHuRoARl3NI7OY7ho3pJbPDEQL9zGxxwSaTZj0oTkO1trIGqht1tgvL8+R93?=
- =?us-ascii?Q?RIMy4/hPDJjOFWC4Y/Q0Y0YwC1DGuRauotbwzAbmk92VroIujtzuIka6mAwC?=
- =?us-ascii?Q?y048B/0amF2ddxSAyg93X5lep4DHYCG86yUI9VN8rVBTCED4+YFW1LwFHtL9?=
- =?us-ascii?Q?AhxHc/+sfchhGSz9rOb3A/IVPTSFUWPsbP1FDefm2wMZlaVcW4nl7LHnk/z4?=
- =?us-ascii?Q?ZBeYYxDT5NM9ja/0Is+oGgEthraaVtICfVlAff4eV0Na2lfvhTy3C9HrFsTW?=
- =?us-ascii?Q?RlTlvRPeGHOMGtR7E45rDCu2JuVcBle4rtY0sYHsMn6rcFf1oJfMp1wEU7kb?=
- =?us-ascii?Q?H6i2VzQRW4IrzeQk67rSjI1445wkTs2uz1WJfK9nH1Vuv8vD/j9ZQdTR256i?=
- =?us-ascii?Q?N8jld8/Osm6eoZSig5taylTs44GUirlOJWQvQuMXro47em3rwpr64IWa60iu?=
- =?us-ascii?Q?rH6mKJgu8wBO8c+ZgidMPoJ2/VDFU1x1V5sqBftw+Ieg7t+nUk1zSlt3kmSh?=
- =?us-ascii?Q?VIuzHjaHKMzmjMrt0Wn78Ak52/62pYNmXSZzh03qf1ZCcP/qSrn1fUqr5OpC?=
- =?us-ascii?Q?hm2TMWLkeIV3syvJDv2/LOpC3uxYEek3AVl3kXq2YSZrKaaxtUjQI8FyYDf2?=
- =?us-ascii?Q?H4d4a60vh//QaLgRSXbpfMqx3nO0DggcTSNYB8mWUP2wOrC6GzAd3+DRlQWB?=
- =?us-ascii?Q?VP+I+zmUMAAFBcaYd3nqAkehm5a+i+JgZnXJunxuBU8UBpFu0N1fjf3x/iJg?=
- =?us-ascii?Q?cJH1A4674jbAB41ZRbVUqwTLPhu+N/rphiF47gNMAM/hi+HBsOYFVmm0nxmr?=
- =?us-ascii?Q?5yYHdSToU3mER+FxvdzpWiIaieduVrzUbmgfzFoHIPOsXo/pEwy/h7aRK/rE?=
- =?us-ascii?Q?A671ZbTi6mt7rUlK++uI2TrbkaVasHmDA1i4oLi8HkH29uZaITNe4AUFB8e3?=
- =?us-ascii?Q?KCEeUQtDnb14Y4OQJNTX/GlH7CIm1TacbAerWgpVvyk7JkKLgBGilbQT0Juc?=
- =?us-ascii?Q?8wyj1AK/iJBel7kf2sKPpLjyFIOWjoTSn9TRfFRKzWPbeYDqG7QIqgq5c4ew?=
- =?us-ascii?Q?MnwYtKXAPM//n8f23eO+5S/gvpb8KfvkJzxn43fG6HHiXgeEkDZ8IyODzsMQ?=
- =?us-ascii?Q?oYyjCHCEnL4Yke5Yya81mXPs/t2bLjV5RXlXkHRb9bkVfMLgWIsG38rUKEMM?=
- =?us-ascii?Q?ZgZ0DmXkt1RwR29pno70tFA0Ey9shSBxoSlVEHRkyARXdEQ1NPM1jUeGvT/e?=
- =?us-ascii?Q?MoXXj+xm4K/Yvv1/HfspI301VwhtgkHc5ZlmwMm/nHjzyWtOTqg4t10OcxSu?=
- =?us-ascii?Q?NfBKqfivDBggJzkHRZ0=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S234362AbjHNHvs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Aug 2023 03:51:48 -0400
+Received: from mail.commercesolutions.pl (unknown [162.19.155.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF316B5
+        for <linux-acpi@vger.kernel.org>; Mon, 14 Aug 2023 00:51:47 -0700 (PDT)
+Received: by mail.commercesolutions.pl (Postfix, from userid 1002)
+        id A975422CD4; Mon, 14 Aug 2023 07:51:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=commercesolutions.pl;
+        s=mail; t=1691999506;
+        bh=PcMncQpBfIZCnTOfZJY5G1G+gaLn4c9QPfFvoXrE4rA=;
+        h=Date:From:To:Subject:From;
+        b=Jck5BNRaUyjF8kt9jSyVEDwJiayoBm/rZylbIULXANdwpYbSB9tOgn2KT5LylrbGh
+         TV8tP+mJJUGU1og2szZqCjolSM39bDAUz4xLV0csz8NncHzyoH9FtK3y6jlPSvRbtM
+         TdJkbeLphMUakggc8qcbwpr4VkavndwRS+Oi1HNahwq6jr8F+koWSdd1gH4Csaal7T
+         lMa+w7N94wPaKqD8R/MAQp1Q3eg0UdFBifHKtR9WWnKgWihWEH4DvR9yH3QQiW/UNi
+         JQTDfZLGLfYcq37udQk87WS8dZWLGAumH0gdzxKYQ4MGDsCofq2vNCALves++CaY+h
+         Ie3tjq7+5dP3Q==
+Received: by mail.commercesolutions.pl for <linux-acpi@vger.kernel.org>; Mon, 14 Aug 2023 07:51:16 GMT
+Message-ID: <20230814064500-0.1.80.1fl4a.0.nioloecrpe@commercesolutions.pl>
+Date:   Mon, 14 Aug 2023 07:51:16 GMT
+From:   "Kamil Tralewski" <kamil.tralewski@commercesolutions.pl>
+To:     <linux-acpi@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.commercesolutions.pl
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2619.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee8da75f-8d78-4174-23c0-08db9c9ab89b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Aug 2023 07:47:33.9096
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: bXakM/97IT+kIfTTWzAgliDYmWc04arfXhima65n/Bz7grEB1vztdlrPhaGBIPC0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7694
-X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[AMD Official Use Only - General]
+Dzie=C5=84 dobry,
 
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-> -----Original Message-----
-> From: Simon Horman <horms@kernel.org>
-> Sent: Friday, August 11, 2023 5:35 PM
-> To: Quan, Evan <Evan.Quan@amd.com>
-> Cc: rafael@kernel.org; lenb@kernel.org; Deucher, Alexander
-> <Alexander.Deucher@amd.com>; Koenig, Christian
-> <Christian.Koenig@amd.com>; Pan, Xinhui <Xinhui.Pan@amd.com>;
-> airlied@gmail.com; daniel@ffwll.ch; johannes@sipsolutions.net;
-> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
-> pabeni@redhat.com; Limonciello, Mario <Mario.Limonciello@amd.com>;
-> mdaenzer@redhat.com; maarten.lankhorst@linux.intel.com;
-> tzimmermann@suse.de; hdegoede@redhat.com; jingyuwang_vip@163.com;
-> Lazar, Lijo <Lijo.Lazar@amd.com>; jim.cromie@gmail.com;
-> bellosilicio@gmail.com; andrealmeid@igalia.com; trix@redhat.com;
-> jsg@jsg.id.au; arnd@arndb.de; andrew@lunn.ch; linux-
-> kernel@vger.kernel.org; linux-acpi@vger.kernel.org; amd-
-> gfx@lists.freedesktop.org; dri-devel@lists.freedesktop.org; linux-
-> wireless@vger.kernel.org; netdev@vger.kernel.org
-> Subject: Re: [PATCH V8 6/9] drm/amd/pm: setup the framework to support
-> Wifi RFI mitigation feature
->=20
-> On Thu, Aug 10, 2023 at 03:38:00PM +0800, Evan Quan wrote:
-> > With WBRF feature supported, as a driver responding to the frequencies,
-> > amdgpu driver is able to do shadow pstate switching to mitigate possibl=
-e
-> > interference(between its (G-)DDR memory clocks and local radio module
-> > frequency bands used by Wifi 6/6e/7).
-> >
-> > Signed-off-by: Evan Quan <evan.quan@amd.com>
-> > Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
->=20
-> ...
->=20
-> > +/**
-> > + * smu_wbrf_event_handler - handle notify events
-> > + *
-> > + * @nb: notifier block
-> > + * @action: event type
-> > + * @data: event data
->=20
-> Hi Evan,
->=20
-> a minor nit from my side: although it is documented here,
-> smu_wbrf_event_handler has no @data parameter, while
-> it does have an undocumented _arg parameter.
-Thanks for pointing this out. I will fix this.
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
-Evan
->=20
-> > + *
-> > + * Calls relevant amdgpu function in response to wbrf event
-> > + * notification from kernel.
-> > + */
-> > +static int smu_wbrf_event_handler(struct notifier_block *nb,
-> > +				  unsigned long action, void *_arg)
-> > +{
-> > +	struct smu_context *smu =3D container_of(nb, struct smu_context,
-> > +					       wbrf_notifier);
-> > +
-> > +	switch (action) {
-> > +	case WBRF_CHANGED:
-> > +		smu_wbrf_handle_exclusion_ranges(smu);
-> > +		break;
-> > +	default:
-> > +		return NOTIFY_DONE;
-> > +	};
-> > +
-> > +	return NOTIFY_OK;
-> > +}
->=20
-> ...
+Pozdrawiam
+Kamil Tralewski
