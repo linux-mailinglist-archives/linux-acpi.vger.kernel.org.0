@@ -2,103 +2,206 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CA6A77B5E8
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Aug 2023 12:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23F5577B8DD
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Aug 2023 14:43:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234869AbjHNKD1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Aug 2023 06:03:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60268 "EHLO
+        id S229600AbjHNMm7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Aug 2023 08:42:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235135AbjHNKDL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Aug 2023 06:03:11 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26713D8;
-        Mon, 14 Aug 2023 03:03:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=J2KANedUadXaYMFYELF3QAJcmMwnPhF0mdoeDT4tKH0=;
-        t=1692007389; x=1693216989; b=hHkReWAbt42IF9MXIeAefNGCuOXVvNDK4LSEmciBDTE4Ibk
-        ckDvGhPxakp2EOkDMSYS2LR40erpszugfpCu4pju+N8+Clm9irU4AKb77iucaLr0oOVdk63io9HIj
-        X/qKrpXi7nDiC3pc2cqiAEtnEdwa/49R827X+jrrRlajHzdM7HePOWabNcFl2145CoTbbTrjbAgTl
-        MTIwbzDFO08U6yYDgJl5p+eKWswcMt1nHVAoJiD5CEyGgm+C7YikaMVlJX77+qxban0J9oWPjr9xs
-        vnrcMm4xfzpdDycj+Tafj+OfwhCgazJJcs1wSJFB5MOjixCK6t67MXyxobio2ADg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qVUP9-006dCg-23;
-        Mon, 14 Aug 2023 12:02:31 +0200
-Message-ID: <cabc7d0326e1169570eafdecef8df56369b4300b.camel@sipsolutions.net>
-Subject: Re: [PATCH V7 4/9] wifi: mac80211: Add support for ACPI WBRF
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Quan, Evan" <Evan.Quan@amd.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        "airlied@gmail.com" <airlied@gmail.com>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "mdaenzer@redhat.com" <mdaenzer@redhat.com>,
-        "maarten.lankhorst@linux.intel.com" 
-        <maarten.lankhorst@linux.intel.com>,
-        "tzimmermann@suse.de" <tzimmermann@suse.de>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "jingyuwang_vip@163.com" <jingyuwang_vip@163.com>,
-        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
-        "jim.cromie@gmail.com" <jim.cromie@gmail.com>,
-        "bellosilicio@gmail.com" <bellosilicio@gmail.com>,
-        "andrealmeid@igalia.com" <andrealmeid@igalia.com>,
-        "trix@redhat.com" <trix@redhat.com>,
-        "jsg@jsg.id.au" <jsg@jsg.id.au>, "arnd@arndb.de" <arnd@arndb.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Date:   Mon, 14 Aug 2023 12:02:29 +0200
-In-Reply-To: <5e92b45a-d99b-4a8a-9987-46c75a5fcb3c@lunn.ch>
-References: <20230719090020.2716892-1-evan.quan@amd.com>
-         <20230719090020.2716892-5-evan.quan@amd.com>
-         <9b1f45f9-02a3-4c03-b9d5-cc3b9ab3a058@lunn.ch>
-         <7d059aed-fac0-cdcd-63d5-58185bb345db@amd.com>
-         <DM6PR12MB26196A993B3BA93392AA0FEDE403A@DM6PR12MB2619.namprd12.prod.outlook.com>
-         <d4cfbbae-9cd0-4767-8c80-ec09d1dbaf9c@lunn.ch>
-         <6aa9061b-1702-b8f2-9cb8-982895b9def4@amd.com>
-         <5e92b45a-d99b-4a8a-9987-46c75a5fcb3c@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S229540AbjHNMme (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Aug 2023 08:42:34 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72E23E4A;
+        Mon, 14 Aug 2023 05:42:32 -0700 (PDT)
+Received: from canpemm500009.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RPYsz3rLbzrSLV;
+        Mon, 14 Aug 2023 20:41:11 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Mon, 14 Aug 2023 20:42:29 +0800
+From:   Yicong Yang <yangyicong@huawei.com>
+To:     <will@kernel.org>, <catalin.marinas@arm.com>,
+        <lpieralisi@kernel.org>, <mark.rutland@arm.com>,
+        <robin.murphy@arm.com>, <guohanjun@huawei.com>, <corbet@lwn.net>,
+        <rafael@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-doc@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <jonathan.cameron@huawei.com>,
+        <shameerali.kolothum.thodi@huawei.com>, <hejunhao3@huawei.com>,
+        <linuxarm@huawei.com>, <prime.zeng@hisilicon.com>,
+        <yangyicong@hisilicon.com>, <zhurui3@huawei.com>
+Subject: [PATCH v2] perf/smmuv3: Enable HiSilicon Erratum 162001900 quirk for HIP08/09
+Date:   Mon, 14 Aug 2023 20:40:12 +0800
+Message-ID: <20230814124012.58013-1-yangyicong@huawei.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.50.163.32]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ canpemm500009.china.huawei.com (7.192.105.203)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 2023-07-25 at 22:09 +0200, Andrew Lunn wrote:
->=20
->=20
-> It could well be that AMD based machine has a different ACPI extension
-> to indicate this policy to what Intel machine has. As far as i
-> understand it, you have not submitted this yet for formal approval,
-> this is all vendor specific, so Intel could do it completely
-> differently.
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-Already do, without the host software being involved in the same way.
-There, I believe the ACPI tables just indicate what's needed and the
-WiFi firmware sorts out the rest.
+Some HiSilicon SMMU PMCG suffers the erratum 162001900 that the PMU
+disable control sometimes fail to disable the counters. This will lead
+to error or inaccurate data since before we enable the counters the
+counter's still counting for the event used in last perf session.
 
-johannes
+This patch tries to fix this by hardening the global disable process.
+Before disable the PMU, writing an invalid event type (0xffff) to
+focibly stop the counters. Correspondingly restore each events on
+pmu::pmu_enable().
+
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+---
+Change since v1:
+- Tail call smmu_pmu_{enable, disable}() in quirk handler to avoid duplication
+Link: https://lore.kernel.org/all/20230809100654.32036-1-yangyicong@huawei.com/
+
+ Documentation/arch/arm64/silicon-errata.rst |  3 ++
+ drivers/acpi/arm64/iort.c                   |  5 ++-
+ drivers/perf/arm_smmuv3_pmu.c               | 46 ++++++++++++++++++++-
+ include/linux/acpi_iort.h                   |  1 +
+ 4 files changed, 53 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
+index bedd3a1d7b42..0ac452333eb4 100644
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -198,6 +198,9 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
++| Hisilicon      | Hip08 SMMU PMCG | #162001900      | N/A                         |
++|                | Hip09 SMMU PMCG |                 |                             |
+++----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Qualcomm Tech. | Kryo/Falkor v1  | E1003           | QCOM_FALKOR_ERRATUM_1003    |
+ +----------------+-----------------+-----------------+-----------------------------+
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 56d887323ae5..6496ff5a6ba2 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1708,7 +1708,10 @@ static void __init arm_smmu_v3_pmcg_init_resources(struct resource *res,
+ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
+ 	/* HiSilicon Hip08 Platform */
+ 	{"HISI  ", "HIP08   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
+-	 "Erratum #162001800", IORT_SMMU_V3_PMCG_HISI_HIP08},
++	 "Erratum #162001800, Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP08},
++	/* HiSilicon Hip09 Platform */
++	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
++	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
+ 	{ }
+ };
+ 
+diff --git a/drivers/perf/arm_smmuv3_pmu.c b/drivers/perf/arm_smmuv3_pmu.c
+index 25a269d431e4..0e17c57ddb87 100644
+--- a/drivers/perf/arm_smmuv3_pmu.c
++++ b/drivers/perf/arm_smmuv3_pmu.c
+@@ -115,6 +115,7 @@
+ #define SMMU_PMCG_PA_SHIFT              12
+ 
+ #define SMMU_PMCG_EVCNTR_RDONLY         BIT(0)
++#define SMMU_PMCG_HARDEN_DISABLE        BIT(1)
+ 
+ static int cpuhp_state_num;
+ 
+@@ -159,6 +160,20 @@ static inline void smmu_pmu_enable(struct pmu *pmu)
+ 	writel(SMMU_PMCG_CR_ENABLE, smmu_pmu->reg_base + SMMU_PMCG_CR);
+ }
+ 
++static int smmu_pmu_apply_event_filter(struct smmu_pmu *smmu_pmu,
++				       struct perf_event *event, int idx);
++
++static inline void smmu_pmu_enable_quirk_hip08_09(struct pmu *pmu)
++{
++	struct smmu_pmu *smmu_pmu = to_smmu_pmu(pmu);
++	unsigned int idx;
++
++	for_each_set_bit(idx, smmu_pmu->used_counters, smmu_pmu->num_counters)
++		smmu_pmu_apply_event_filter(smmu_pmu, smmu_pmu->events[idx], idx);
++
++	smmu_pmu_enable(pmu);
++}
++
+ static inline void smmu_pmu_disable(struct pmu *pmu)
+ {
+ 	struct smmu_pmu *smmu_pmu = to_smmu_pmu(pmu);
+@@ -167,6 +182,22 @@ static inline void smmu_pmu_disable(struct pmu *pmu)
+ 	writel(0, smmu_pmu->reg_base + SMMU_PMCG_IRQ_CTRL);
+ }
+ 
++static inline void smmu_pmu_disable_quirk_hip08_09(struct pmu *pmu)
++{
++	struct smmu_pmu *smmu_pmu = to_smmu_pmu(pmu);
++	unsigned int idx;
++
++	/*
++	 * The global disable of PMU sometimes fail to stop the counting.
++	 * Harden this by writing an invalid event type to each used counter
++	 * to forcibly stop counting.
++	 */
++	for_each_set_bit(idx, smmu_pmu->used_counters, smmu_pmu->num_counters)
++		writel(0xffff, smmu_pmu->reg_base + SMMU_PMCG_EVTYPER(idx));
++
++	smmu_pmu_disable(pmu);
++}
++
+ static inline void smmu_pmu_counter_set_value(struct smmu_pmu *smmu_pmu,
+ 					      u32 idx, u64 value)
+ {
+@@ -765,7 +796,10 @@ static void smmu_pmu_get_acpi_options(struct smmu_pmu *smmu_pmu)
+ 	switch (model) {
+ 	case IORT_SMMU_V3_PMCG_HISI_HIP08:
+ 		/* HiSilicon Erratum 162001800 */
+-		smmu_pmu->options |= SMMU_PMCG_EVCNTR_RDONLY;
++		smmu_pmu->options |= SMMU_PMCG_EVCNTR_RDONLY | SMMU_PMCG_HARDEN_DISABLE;
++		break;
++	case IORT_SMMU_V3_PMCG_HISI_HIP09:
++		smmu_pmu->options |= SMMU_PMCG_HARDEN_DISABLE;
+ 		break;
+ 	}
+ 
+@@ -890,6 +924,16 @@ static int smmu_pmu_probe(struct platform_device *pdev)
+ 	if (!dev->of_node)
+ 		smmu_pmu_get_acpi_options(smmu_pmu);
+ 
++	/*
++	 * For platforms suffer this quirk, the PMU disable sometimes fails to
++	 * stop the counters. This will leads to inaccurate or error counting.
++	 * Forcibly disable the counters with these quirk handler.
++	 */
++	if (smmu_pmu->options & SMMU_PMCG_HARDEN_DISABLE) {
++		smmu_pmu->pmu.pmu_enable = smmu_pmu_enable_quirk_hip08_09;
++		smmu_pmu->pmu.pmu_disable = smmu_pmu_disable_quirk_hip08_09;
++	}
++
+ 	/* Pick one CPU to be the preferred one to use */
+ 	smmu_pmu->on_cpu = raw_smp_processor_id();
+ 	WARN_ON(irq_set_affinity(smmu_pmu->irq, cpumask_of(smmu_pmu->on_cpu)));
+diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
+index ee7cb6aaff71..1cb65592c95d 100644
+--- a/include/linux/acpi_iort.h
++++ b/include/linux/acpi_iort.h
+@@ -21,6 +21,7 @@
+  */
+ #define IORT_SMMU_V3_PMCG_GENERIC        0x00000000 /* Generic SMMUv3 PMCG */
+ #define IORT_SMMU_V3_PMCG_HISI_HIP08     0x00000001 /* HiSilicon HIP08 PMCG */
++#define IORT_SMMU_V3_PMCG_HISI_HIP09     0x00000002 /* HiSilicon HIP09 PMCG */
+ 
+ int iort_register_domain_token(int trans_id, phys_addr_t base,
+ 			       struct fwnode_handle *fw_node);
+-- 
+2.24.0
+
