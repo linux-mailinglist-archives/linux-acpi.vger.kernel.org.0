@@ -2,140 +2,173 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1BFB77C7AF
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Aug 2023 08:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 555B677C803
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Aug 2023 08:45:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235096AbjHOGT2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Aug 2023 02:19:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60906 "EHLO
+        id S233215AbjHOGox (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Aug 2023 02:44:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235120AbjHOGSO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Aug 2023 02:18:14 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2057.outbound.protection.outlook.com [40.107.244.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D193B26B3;
-        Mon, 14 Aug 2023 23:17:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LBQZk2YDzZjRbDyMJKJT4alVTnLui+ZvWRHGGDfV4z/cq24+9Vvlqu8DKNXhqGakw3wwfYV7eldMsj/MGyjkdA/zNO+EapB/YyLBV7sJIKX3CMpzyZmihfbZwp+K9pHJ2T8wBXhl6h06jZ3iKd7C3v52HhtLxIepN/aYxyHWzXJ+PE8XRrc5c1VEBWW4XJhojwrpkeNkRa4Mj2gH3MWDT1U+TfWuU8k7PXk5sDP1Uym76YFWtVfV5/W+pUz4ZesWZxPVWpUQ4kPp6wQWwWxTe1HPKBFzMVGkSpLReV1nR4CRgxQFWnuSPksAhi3b4tRtIofsnYl9MDxXREHHB/mLJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fD5SW4ZMZUACDC28VDgFXSClMzlQYedjVWuE+bSD/4U=;
- b=L2tViCdkb++o2ecI5tti4EEwJt7DwqZJRqOy7U3TkYcydFk+d9fLNEaOgHndxm7WfIaPm4qPJBGNbuZpkkLwfvsubx8UyV7GgLEM6yDpTkwzSbh4d1hNqi8thw1BtnlYZoLDGItFjgaaMCBhp9xDNWMLQor4avloBlF4YtcmiiBdo3eUZYb2oXXSnY9mwQl8N6zA5ZdW75im1dNA9YgI57NnT3bAyZwv+v0jV95vqWibGvrXiELQEOWv39mMgS8w4axHIzEIC96P4g/CihIxQbYoLpNqblF4KCYuwvLk4NXaaqsUuf7+YDT2e2/wKldy1MdE24pn6CrLqCjLdn1tfw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fD5SW4ZMZUACDC28VDgFXSClMzlQYedjVWuE+bSD/4U=;
- b=lf0/2wmscXW7GiId4MTQzSrNqpus+ndMkN+wupy0PexDhOUgDX1AslumtETI5hVpAzO9ftzfjV4V7dYn8gAV5dSQ9IiPgaiEP1FcSEI5K6qS+aUv+WhA7dCr66CwuwHovIllqaPk13eEc1nZNXxG348uVa0vJGNc9VdbYBFfvrw=
-Received: from MW4PR04CA0140.namprd04.prod.outlook.com (2603:10b6:303:84::25)
- by SN7PR12MB6791.namprd12.prod.outlook.com (2603:10b6:806:268::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.24; Tue, 15 Aug
- 2023 06:17:33 +0000
-Received: from CO1PEPF000044F6.namprd21.prod.outlook.com
- (2603:10b6:303:84:cafe::14) by MW4PR04CA0140.outlook.office365.com
- (2603:10b6:303:84::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.33 via Frontend
- Transport; Tue, 15 Aug 2023 06:17:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000044F6.mail.protection.outlook.com (10.167.241.196) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6723.3 via Frontend Transport; Tue, 15 Aug 2023 06:17:33 +0000
-Received: from jasmine-meng.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 15 Aug
- 2023 01:17:27 -0500
-From:   Meng Li <li.meng@amd.com>
-To:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Huang Rui <ray.huang@amd.com>
-CC:     <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <x86@kernel.org>, <linux-acpi@vger.kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        <linux-kselftest@vger.kernel.org>,
-        "Nathan Fontenot" <nathan.fontenot@amd.com>,
-        Deepak Sharma <deepak.sharma@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Shimmer Huang <shimmer.huang@amd.com>,
-        "Perry Yuan" <Perry.Yuan@amd.com>,
-        Xiaojian Du <Xiaojian.Du@amd.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Borislav Petkov <bp@alien8.de>, Meng Li <li.meng@amd.com>
-Subject: [PATCH V2 7/7] Documentation: introduce AMD Pstate Preferrd Core mode kernel command line options
-Date:   Tue, 15 Aug 2023 14:15:46 +0800
-Message-ID: <20230815061546.3556083-8-li.meng@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230815061546.3556083-1-li.meng@amd.com>
-References: <20230815061546.3556083-1-li.meng@amd.com>
+        with ESMTP id S234110AbjHOGok (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Aug 2023 02:44:40 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87224E72;
+        Mon, 14 Aug 2023 23:44:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692081879; x=1723617879;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WoRkywen7QyRJh5gY+NeF3XBAuuj7J1YVN5gmyneGXU=;
+  b=HwsMxuzTNnjKD4mNmnnpLkqJnmEIjMvJbxwqZ9Zty7pLwWtg/r2kJb4h
+   tYrJEy53LpG/6WXYT+8bDcl0uhMGZl0edgHlrFPCnC/1fToEg9JcHQRNV
+   PCr3bn1zjrMEtHVdaqe2xO6znx1VvXPu5+xgVjWm/3SmCYRND/ZQpWAt3
+   hF6+IYSfpbm7O+XGuNciB8jnJnNi9tPBUloQYJLxQ9/5yTWID3ZP9qUg9
+   sHkQvQVa9n2XAd3edXDVhiKHZpyvUN9sgqX1BP0p7X15GWQCEHkxr0vnA
+   CIulMNzpMucW/zxa8MD8uaeMKZ2iR4d06IfD+l1vBF9g6HRXeqUXgLdhH
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="438554581"
+X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
+   d="scan'208";a="438554581"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 23:44:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="736809481"
+X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
+   d="scan'208";a="736809481"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 14 Aug 2023 23:44:34 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qVnn5-006tP3-2q;
+        Tue, 15 Aug 2023 09:44:31 +0300
+Date:   Tue, 15 Aug 2023 09:44:31 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Peter Rosin <peda@axentia.se>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct bus_type
+Message-ID: <ZNsez3oWNcT72PGy@smile.fi.intel.com>
+References: <20230806142950.6c409600@jic23-huawei>
+ <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+ <ZNFV+C1HCIRJpbdC@google.com>
+ <ZNIyrG/2h/PeS9Oz@smile.fi.intel.com>
+ <20230809182551.7eca502e@jic23-huawei>
+ <OS0PR01MB59221A1ADB67E96E9E39D0198613A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <ZNT+NY99n7y3abwa@smile.fi.intel.com>
+ <OS0PR01MB5922DD3C809B78F1E9C5949B8610A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <ZNZF6cjx5N+ZsIJx@smile.fi.intel.com>
+ <OS0PR01MB5922E09340CDCFF54A9A6CBA8610A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044F6:EE_|SN7PR12MB6791:EE_
-X-MS-Office365-Filtering-Correlation-Id: f101cc84-d0a3-46e9-6b01-08db9d574ffb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1RHaqXVRk2Jj3xamC56i2BJ8MPGNKkOw/pPlu50JDEtxRw0XPj5JP3nrhkgS2SH8A0R1OOVYdRQdPYMMDe9qWvUv/de/Yiobayx6/b58H1N//Puzs2sEBiEt4vD/AodOV46OPT7TzAPtsJLQLBxSjHOLqqXgeCw+ZfuawaN5i1XBg4f8rX8It0Sja6RC93anMM9cnnBwYMH/CJgj9g4voR6DzxiR+NdQ3wmksj981KjMGmD7RCnXBR/+vUIMT1YT4NxL6ptC262JoHocrpPdX0LS3gduV51qgvkfvRsKFYkEK/g7OJzGgPYC0rdEHgCkhZ5ei1lZKK3f7YSOnyulpVwI95rr6qgHLrg+P7MXoBd2PR9yhNmxLneShAC/khkeAqXwPj10plY9vAUFE7ive5qLwA+sQrLjz7/zeddr356a3gaFlD1MSadtOCzyebG8r8WtAKxpgFsivKnUGqPwiAiLrvhVHCgBLcjHbrwOW9f4eajC/dQu8OKVcnmPP5brVbZ2CHBWVwg7Ftb2aHGFzjBVq+Fe2ZiCdku84vD6aNUJWq8fD6YawPZCNRTMpQFZNx/UQMnIKN7aRK/F+LQhPfSId40Ham9XAd0d6TiQyrPDgKE9pm2PTUFO9n/Fn5aCKXgdFzlxOk+PYTKg1aMQHlcDTgfb8/O9t6OfuZ5iN/AbtJEbPF4KH1j7G6uN2y5sPvQs8zVtHbDJlRWcmgMsfIzOuT30O6h0vvKB3fA0+sCm5ZbVPWtLve1lFsFGL0PhAXVbTccO7wEK+bl0dXltEkReFyLg8eoPfpVgfCWCvFHbirp/yNdgKVWMUnjCbpF5
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(39860400002)(376002)(136003)(396003)(186006)(1800799006)(451199021)(82310400008)(40470700004)(36840700001)(46966006)(83380400001)(36756003)(426003)(336012)(47076005)(36860700001)(86362001)(40480700001)(41300700001)(478600001)(356005)(81166007)(54906003)(70586007)(6636002)(70206006)(316002)(8676002)(110136005)(5660300002)(4326008)(82740400003)(8936002)(40460700003)(2616005)(1076003)(16526019)(26005)(7696005)(6666004)(2906002)(4744005)(36900700001)(14943795004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2023 06:17:33.0931
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f101cc84-d0a3-46e9-6b01-08db9d574ffb
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F6.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6791
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <OS0PR01MB5922E09340CDCFF54A9A6CBA8610A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-AMD Pstate driver support enable/disable Preferred core.
-Default enabled on platforms supporting AMD Preferred Core.
-Disable AMD Pstate Preferred Core with
-"amd_prefcore=disable" added to the kernel command line.
+On Fri, Aug 11, 2023 at 02:46:10PM +0000, Biju Das wrote:
+> > Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct
+> > bus_type
+> > On Fri, Aug 11, 2023 at 01:27:36PM +0000, Biju Das wrote:
+> > > > On Thu, Aug 10, 2023 at 09:05:10AM +0000, Biju Das wrote:
 
-Signed-off-by: Meng Li <li.meng@amd.com>
----
- Documentation/admin-guide/kernel-parameters.txt | 5 +++++
- 1 file changed, 5 insertions(+)
+...
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 23ebe34ff901..4f78067bb8af 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -363,6 +363,11 @@
- 			  selects a performance level in this range and appropriate
- 			  to the current workload.
- 
-+	amd_prefcore=
-+			[X86]
-+			disable
-+			  Disable AMD Pstate Preferred Core.
-+
- 	amijoy.map=	[HW,JOY] Amiga joystick support
- 			Map of devices attached to JOY0DAT and JOY1DAT
- 			Format: <a>,<b>
+> > > > I'm good with this approach, but make sure you checked the whole
+> > > > kernel source tree for a such.
+> > >
+> > > Checking against 16 is too short I guess??
+> > >
+> > > drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h has 18 enums.
+> > 
+> > So, what does prevent us from moving that tables to use pointers?
+> 
+> I think that will lead to ABI breakage(client->name vs id->name)
+> 
+> 	match = device_get_match_data(&client->dev);
+> 	if (match) {
+> 		chip_type = (uintptr_t)match;
+> 		name = client->name;
+> 	} else if (id) {
+> 		chip_type = (enum inv_devices)
+> 			id->driver_data;
+> 		name = id->name;
+> 	} else {
+> 		return -ENOSYS;
+> 	}
+
+
+It's easy to work around (may be better fix can be found, haven't checked, just
+what first comes to my mind):
+
+	match ...
+	name = match->name;
+
+	/* If enumerated via firmware node, fix the ABI */
+	if (dev_fwnode())
+		client->name
+
+> > > /*device enum */
+> > > enum inv_devices {
+> > > 	INV_MPU6050,
+> > > 	INV_MPU6500,
+> > > 	INV_MPU6515,
+> > > 	INV_MPU6880,
+> > > 	INV_MPU6000,
+> > > 	INV_MPU9150,
+> > > 	INV_MPU9250,
+> > > 	INV_MPU9255,
+> > > 	INV_ICM20608,
+> > > 	INV_ICM20608D,
+> > > 	INV_ICM20609,
+> > > 	INV_ICM20689,
+> > > 	INV_ICM20600,
+> > > 	INV_ICM20602,
+> > > 	INV_ICM20690,
+> > > 	INV_IAM20680,
+> > > 	INV_NUM_PARTS
+> > > };
+> > >
+> > > The new helper function
+> > 
+> > You mean for debugging? We don't need that in production.
+> 
+> That is sample code for iterating through id table to find max enum
+> and check against ZERO_OR_NULL_PTR
+
+Much better with a coccinelle. You will find all or almost all occurrences
+without too much effort done.
+
+> > I think what you need is a coccinelle script to find these.
+> 
+> I need to explore using coccinelle script as I have n't tried before.
+
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
