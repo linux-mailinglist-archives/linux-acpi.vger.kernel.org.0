@@ -2,120 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9ABB77CAA6
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Aug 2023 11:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4837677CDDE
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Aug 2023 16:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236238AbjHOJnL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Aug 2023 05:43:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51194 "EHLO
+        id S237523AbjHOOLZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Aug 2023 10:11:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236224AbjHOJmx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Aug 2023 05:42:53 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A201110D8;
-        Tue, 15 Aug 2023 02:42:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692092551; x=1723628551;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7h+/sSxZl6JCDHnh5reN75axgALtcqO8XExNpLMoAEQ=;
-  b=nfvhqr9cJvOCEq7a0FlaFMqVf1qFKRTzpLODenqzjFwaAou9RMSCouSD
-   ovQoYx+Rd1KaO5IUdaV5brq7Vp/4mFqiAJey6yE1vPujRXAgR7b7Ay13U
-   DMNdLRPEeQClhWbIBb6KOy4R47V7Uh3b+H7GCmaF/GG/7U9o3kfnal0o1
-   lod+uQSSGO2Dj/51i7jg8Mv7exVxQpaTm+PBFHlLMKKF9UXJfGHpoedrH
-   49+I/bTQAy4AXO7ALMZzZOVN2dewGGtLg6Cu0bsT4MmwxJ+oej4tTf/Ir
-   5NDZKQyRdkMKRKHcnABMrMLIm4PZriLBgXnQ6QtAoI7qrRkjt5QR85UPa
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="403222827"
-X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="403222827"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 02:42:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="763223745"
-X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="763223745"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP; 15 Aug 2023 02:42:26 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qVqZE-00Cz3N-1T;
-        Tue, 15 Aug 2023 12:42:24 +0300
-Date:   Tue, 15 Aug 2023 12:42:24 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Peter Rosin <peda@axentia.se>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct bus_type
-Message-ID: <ZNtIgA4S2rHp/jbA@smile.fi.intel.com>
-References: <ZNFV+C1HCIRJpbdC@google.com>
- <ZNIyrG/2h/PeS9Oz@smile.fi.intel.com>
- <20230809182551.7eca502e@jic23-huawei>
- <OS0PR01MB59221A1ADB67E96E9E39D0198613A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <ZNT+NY99n7y3abwa@smile.fi.intel.com>
- <OS0PR01MB5922DD3C809B78F1E9C5949B8610A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <ZNZF6cjx5N+ZsIJx@smile.fi.intel.com>
- <OS0PR01MB5922E09340CDCFF54A9A6CBA8610A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <ZNsez3oWNcT72PGy@smile.fi.intel.com>
- <OS0PR01MB592231608697B4FB0D142CCD8614A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+        with ESMTP id S237555AbjHOOLF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Aug 2023 10:11:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DE05199B;
+        Tue, 15 Aug 2023 07:11:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AEBF62C9C;
+        Tue, 15 Aug 2023 14:11:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB76C433C9;
+        Tue, 15 Aug 2023 14:10:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692108663;
+        bh=IhgKIaCPd+mwevpEPUSDQZbSsOZK+yrdE/Fu9JPnvXw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=pK3EUfmzxr5H5AGVajSpO3bVBNMnf8/nnT7gE+x2ZsXaUoSmN8vzLXKBn5KlrfO8a
+         F+ZQ+tJrtUks5d6DqsU0iyIXFofegNIaHes6Iiclv0PHwxqzbMwovfckO+cf6Y+VsX
+         1X9ntDMWuj2W7GfuFQae4Fe91iirYZ3n6vdL6/rWk2nKdclnEE+f/8nYtuwx671CRs
+         fDROWl07GrtNHlwJTt5R4MXHxsb1gw52b+3QGGPXKhNqD/SJt2O7Ldh6IHAv2lNOrP
+         mcRcUgNs20v1+pkcq5zdgBbKbJBjZZCg3wSC19vZjtIjedS/919vE326w9/k5zUgc5
+         0Qq4tYrkkGxWQ==
+From:   Will Deacon <will@kernel.org>
+To:     linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        robin.murphy@arm.com, linux-acpi@vger.kernel.org,
+        lpieralisi@kernel.org, guohanjun@huawei.com, mark.rutland@arm.com,
+        rafael@kernel.org, corbet@lwn.net,
+        Yicong Yang <yangyicong@huawei.com>, catalin.marinas@arm.com
+Cc:     kernel-team@android.com, Will Deacon <will@kernel.org>,
+        yangyicong@hisilicon.com, jonathan.cameron@huawei.com,
+        zhurui3@huawei.com, hejunhao3@huawei.com,
+        linux-kernel@vger.kernel.org, prime.zeng@hisilicon.com,
+        shameerali.kolothum.thodi@huawei.com, linuxarm@huawei.com
+Subject: Re: [PATCH v2] perf/smmuv3: Enable HiSilicon Erratum 162001900 quirk for HIP08/09
+Date:   Tue, 15 Aug 2023 15:10:50 +0100
+Message-Id: <169210025390.538323.7942274665229323750.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20230814124012.58013-1-yangyicong@huawei.com>
+References: <20230814124012.58013-1-yangyicong@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <OS0PR01MB592231608697B4FB0D142CCD8614A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 15, 2023 at 06:58:41AM +0000, Biju Das wrote:
-> > Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct
-> > bus_type
-> > On Fri, Aug 11, 2023 at 02:46:10PM +0000, Biju Das wrote:
-
-...
-
-> > It's easy to work around (may be better fix can be found, haven't checked,
-> > just what first comes to my mind):
-> > 
-> > 	match ...
-> > 	name = match->name;
+On Mon, 14 Aug 2023 20:40:12 +0800, Yicong Yang wrote:
+> From: Yicong Yang <yangyicong@hisilicon.com>
 > 
-> The device_get_match_data()API returns matched data, so we cannot use that one here.
+> Some HiSilicon SMMU PMCG suffers the erratum 162001900 that the PMU
+> disable control sometimes fail to disable the counters. This will lead
+> to error or inaccurate data since before we enable the counters the
+> counter's still counting for the event used in last perf session.
 > 
-> Maybe??
-> 
-> /* If enumerated via ID lookup, fix the ABI */
-> if (!dev_fwnode())
-> 	name = id->name;
+> [...]
 
-Yeah, you got the idea.
+Applied to will (for-next/perf), thanks!
 
+[1/1] perf/smmuv3: Enable HiSilicon Erratum 162001900 quirk for HIP08/09
+      https://git.kernel.org/will/c/0242737dc4eb
+
+Cheers,
 -- 
-With Best Regards,
-Andy Shevchenko
+Will
 
-
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
