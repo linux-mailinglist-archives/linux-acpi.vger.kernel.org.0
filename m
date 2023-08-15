@@ -2,173 +2,182 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7147277C158
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Aug 2023 22:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 509D777C792
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Aug 2023 08:17:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231901AbjHNUNf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Aug 2023 16:13:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58346 "EHLO
+        id S232771AbjHOGQr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Aug 2023 02:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229952AbjHNUNZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Aug 2023 16:13:25 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 906C313E;
-        Mon, 14 Aug 2023 13:13:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692044003; x=1723580003;
-  h=date:from:to:cc:subject:message-id;
-  bh=hqw5SfjEoG+z3rv5ZlFyo7lmRfDYcSlFwwV0692yl0c=;
-  b=Y+h5IxFyzIbNUYnexnd/Ufjx6U5uuEy5CQFvAEW9gWL+HdapNjZ67H7H
-   zkhj+zcCjQFJZxeXceEpz5eh259ogrNIQqa5PCO0arnlA0rn5d1Tna9zA
-   P2ztP8C1ro2noIFkI8WXvtmfY8KT/o0Oz/tu9h8OJybQqq65b3EuFVaCD
-   gN6EW6/dOuToLgVUX60DwwjSwWlB0CQyusk010bhR7B8j4SGO8toJwTNt
-   5zO2CAInsbKFUp8fnB4T3w0pOPCwqDxzRvAQRU9hu5NzX7ZQvOh/6CbqE
-   l9f53Dmtp8wDyXG/mgCuj468DkUOfnPOXezsnmaoRdEh7k+zfU2g9bvX9
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="369604778"
-X-IronPort-AV: E=Sophos;i="6.01,173,1684825200"; 
-   d="scan'208";a="369604778"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 13:13:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="683421919"
-X-IronPort-AV: E=Sophos;i="6.01,173,1684825200"; 
-   d="scan'208";a="683421919"
-Received: from lkp-server02.sh.intel.com (HELO b5fb8d9e1ffc) ([10.239.97.151])
-  by orsmga003.jf.intel.com with ESMTP; 14 Aug 2023 13:13:16 -0700
-Received: from kbuild by b5fb8d9e1ffc with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qVdw3-0000OP-1c;
-        Mon, 14 Aug 2023 20:13:10 +0000
-Date:   Tue, 15 Aug 2023 04:12:24 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- dd86d4481e181c84b56d260878a59ea7931930f7
-Message-ID: <202308150422.7eREQLcb-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S234891AbjHOGQN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Aug 2023 02:16:13 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2062b.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eab::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6072183;
+        Mon, 14 Aug 2023 23:16:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LSiZwu9ehuX9LKpE4/eqeCQ2ADQt5qDmX99scLaoXSEtjteCG9/420GkvMwlHA/Jh5Rt3QhZ7P0l0GgZCKKUYMI3NQLIKCWeOsCM1xadb7mgvDRUJz+JqNlKfD0ia5/T3sBQfFzxPAoLcLdF17Njf4fXdaRwACiN/aVVGCy3hCVGO1q3hREfUdohl46S/D+WrcybUiPeRnAb1DFdLT5lovWDa8PFHymLWzOT+QPTF3TKKWraVZ6VVrYoEN9hYxtSAV06/mIo0oaulMEUX1mX5ItmOW3+gvz8I2BFcGXVEfV8aY6P4DoX7PKnihAg4yI2yM5jfxZy3ydbq1t831e6UA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kr6tYcyJnpQUoOqfK/IAVeqXQkT4tMaEKIh0UCMHWWs=;
+ b=JZEQS+0svO5OjDvksIF/M5movHYaQKGEb2I/sWzVXw8vcUGffU0sjnNE+3A/gTbxcBu51BKRcZTb8O+Ol7j1Eb+jJD3R808XXAmoj2yc7TBF8qDAFSV5CntP1de71NMJZ/gneowzyCe37SvAL7+mT247Q2L02bN959QwED6RFGyjf/Vu3QCRr8uOtZyKqjpKe7DjtvdHu/WTjTO5z1ujjFRF5Zknhzt3gHn9OlLVhw76tYeByfF9KtL8KB7DKGDAOFuR/zeqep6MlALGXEy69ZsxN0wJCDpx4iQ0YDw0vMDr/Y54L2c/qmxywEz6P7XIuuOLtT2PxAGVIq0XDayOIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kr6tYcyJnpQUoOqfK/IAVeqXQkT4tMaEKIh0UCMHWWs=;
+ b=M7tqLS/88x67QQQ/SI6V4jveo65nzX9F7UhWlvsvTd+u3zAbKC0w4gPzXamApRRFhsxbeUiIe7R7cqTsddujZtukrPkerV60HOyv1kaQjmvqfR5CTKHuBbQGeovitdyFDkXsyeYbSCzlPk60Pfkq9p9MPVWHbqeJNCJABhSm8ZE=
+Received: from SN4PR0501CA0104.namprd05.prod.outlook.com
+ (2603:10b6:803:42::21) by DM8PR12MB5493.namprd12.prod.outlook.com
+ (2603:10b6:8:3d::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.26; Tue, 15 Aug
+ 2023 06:16:08 +0000
+Received: from SA2PEPF0000150A.namprd04.prod.outlook.com
+ (2603:10b6:803:42:cafe::a1) by SN4PR0501CA0104.outlook.office365.com
+ (2603:10b6:803:42::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.14 via Frontend
+ Transport; Tue, 15 Aug 2023 06:16:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SA2PEPF0000150A.mail.protection.outlook.com (10.167.242.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6699.14 via Frontend Transport; Tue, 15 Aug 2023 06:16:08 +0000
+Received: from jasmine-meng.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 15 Aug
+ 2023 01:16:03 -0500
+From:   Meng Li <li.meng@amd.com>
+To:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Huang Rui <ray.huang@amd.com>
+CC:     <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <x86@kernel.org>, <linux-acpi@vger.kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        <linux-kselftest@vger.kernel.org>,
+        "Nathan Fontenot" <nathan.fontenot@amd.com>,
+        Deepak Sharma <deepak.sharma@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Shimmer Huang <shimmer.huang@amd.com>,
+        "Perry Yuan" <Perry.Yuan@amd.com>,
+        Xiaojian Du <Xiaojian.Du@amd.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Borislav Petkov <bp@alien8.de>, Meng Li <li.meng@amd.com>
+Subject: [PATCH V2 0/7] AMD Pstate Preferred Core
+Date:   Tue, 15 Aug 2023 14:15:39 +0800
+Message-ID: <20230815061546.3556083-1-li.meng@amd.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF0000150A:EE_|DM8PR12MB5493:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21572701-3295-47d6-2141-08db9d571d35
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: mWRTANEAUazUZKLgK41l2paFWe5fcjvhv81D9IYaKjP3m9WcB5k24RDBEPmQ1Ow9M8kJbcD5sUWtkx2ioSMjm/CBUJXyz+IvlIxvqEAPcIrsXHMSxV450sbuER8YGkfaueS0rBCBplTsg1ZCrvu5YrhPmYmB5ehsj/6BofSopZY9chFzr7DYGMlH1vSD6Yzt4oB8ElTOBb7Chs0o0E9P5jqwR/kAKWwKr+R8ffolJflKWz2VAwVEJK59yj2b2zmADLmPFqkpGAXzMnT7COI8MCyA+Zg8OmfbquAOXHUSybFb/vFeyx0HPkOmRa8wcnRQ7dl/BxXQeeWV49u+q4SI1Btlx/KgZr3z+VgaKMLLa2XJbrh3Bv2Z9YbLKf6yYVUqYCAIcyOAzf+YD0oLLPv8A+VmrRslEIrVwqTtUEqLGm7T+7daMWLo6IaCk56SVfDOsSrPfScyi6W/xuVwJqc6FxWPhLPC+KBeTL/Bk/QDYHk1fMBJIVoqnsCl0JJ+3JLGg+v59S0IvMfWAm7Cr4KIAdzncYKtr0CYvmzKgCSPElFU2KAL5CmlFQbWcWNqrEnbaFk+Ys9dhzAi0fhimFQdRlxIpEYnDOgOcEoD22yrsFy9q7G/OHYnkhaqCtR8DhjC6vE0eknYFaLxxnG4ZQvn91MyZHNPpV88tym0xcTL2QQJdRapSvcFadEi6RLCqGOWyHDofaNVCtjPRPxQLyKno/fRKtVHLwkjltF3zSdOhG4QZTxaDCIzPEHELXdM7Lj7ymxMIqIW68qRhzxI9mVBaw==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(346002)(136003)(39860400002)(82310400008)(451199021)(186006)(1800799006)(46966006)(36840700001)(40470700004)(40480700001)(40460700003)(356005)(110136005)(54906003)(478600001)(86362001)(7696005)(6666004)(82740400003)(41300700001)(5660300002)(4326008)(70206006)(316002)(70586007)(6636002)(81166007)(2906002)(8936002)(8676002)(16526019)(36756003)(1076003)(336012)(83380400001)(26005)(426003)(2616005)(36860700001)(47076005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2023 06:16:08.0168
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21572701-3295-47d6-2141-08db9d571d35
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF0000150A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5493
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: dd86d4481e181c84b56d260878a59ea7931930f7  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
+Hi all:
 
-elapsed time: 720m
+The core frequency is subjected to the process variation in semiconductors.
+Not all cores are able to reach the maximum frequency respecting the
+infrastructure limits. Consequently, AMD has redefined the concept of
+maximum frequency of a part. This means that a fraction of cores can reach
+maximum frequency. To find the best process scheduling policy for a given
+scenario, OS needs to know the core ordering informed by the platform through
+highest performance capability register of the CPPC interface.
 
-configs tested: 97
-configs skipped: 3
+Earlier implementations of AMD Pstate Preferred Core only support a static
+core ranking and targeted performance. Now it has the ability to dynamically
+change the preferred core based on the workload and platform conditions and
+accounting for thermals and aging.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+AMD Pstate driver utilizes the functions and data structures provided by
+the ITMT architecture to enable the scheduler to favor scheduling on cores
+which can be get a higher frequency with lower voltage.
+We call it AMD Pstate Preferrred Core.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r023-20230814   gcc  
-alpha                randconfig-r035-20230814   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r036-20230814   gcc  
-arc                  randconfig-r043-20230814   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r046-20230814   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r006-20230814   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r022-20230814   gcc  
-hexagon              randconfig-r026-20230814   clang
-hexagon              randconfig-r041-20230814   clang
-hexagon              randconfig-r045-20230814   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230814   gcc  
-i386         buildonly-randconfig-r005-20230814   gcc  
-i386         buildonly-randconfig-r006-20230814   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230814   gcc  
-i386                 randconfig-i002-20230814   gcc  
-i386                 randconfig-i003-20230814   gcc  
-i386                 randconfig-i004-20230814   gcc  
-i386                 randconfig-i005-20230814   gcc  
-i386                 randconfig-i006-20230814   gcc  
-i386                 randconfig-i011-20230814   clang
-i386                 randconfig-i012-20230814   clang
-i386                 randconfig-i013-20230814   clang
-i386                 randconfig-i014-20230814   clang
-i386                 randconfig-i015-20230814   clang
-i386                 randconfig-i016-20230814   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r004-20230814   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r003-20230814   gcc  
-openrisc             randconfig-r005-20230814   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc              randconfig-r021-20230814   clang
-powerpc              randconfig-r024-20230814   clang
-powerpc              randconfig-r031-20230814   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230814   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r044-20230814   clang
-sh                               allmodconfig   gcc  
-sh                   randconfig-r032-20230814   gcc  
-sh                   randconfig-r034-20230814   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64              randconfig-r025-20230814   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230814   gcc  
-x86_64       buildonly-randconfig-r002-20230814   gcc  
-x86_64       buildonly-randconfig-r003-20230814   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r033-20230814   gcc  
-x86_64               randconfig-x006-20230814   clang
-x86_64               randconfig-x011-20230814   gcc  
-x86_64               randconfig-x012-20230814   gcc  
-x86_64               randconfig-x013-20230814   gcc  
-x86_64               randconfig-x014-20230814   gcc  
-x86_64               randconfig-x015-20230814   gcc  
-x86_64               randconfig-x016-20230814   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r002-20230814   gcc  
+Here sched_set_itmt_core_prio() is called to set priorities and
+sched_set_itmt_support() is called to enable ITMT feature.
+AMD Pstate driver uses the highest performance value to indicate
+the priority of CPU. The higher value has a higher priority.
+
+AMD Pstate driver will provide an initial core ordering at boot time.
+It relies on the CPPC interface to communicate the core ranking to the
+operating system and scheduler to make sure that OS is choosing the cores
+with highest performance firstly for scheduling the process. When AMD Pstate
+driver receives a message with the highest performance change, it will
+update the core ranking.
+
+Changes form V1->V2:
+- acpi: cppc:
+- - Add reference link.
+- cpufreq:
+- - Moidfy link error.
+- cpufreq: amd-pstate: 
+- - Init the priorities of all online CPUs
+- - Use a single variable to represent the status of Preferred Core.
+- Documentation:
+- - Default enabled preferred core.
+- Documentation: amd-pstate: 
+- - Modify inappropriate descriptions.
+- - Default enabled preferred core.
+- - Use a single variable to represent the status of Preferred Core.
+
+Meng Li (7):
+  x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for the expansion.
+  acpi: cppc: Add get the highest performance cppc control
+  cpufreq: amd-pstate: Enable AMD Pstate Preferred Core Supporting.
+  cpufreq: Add a notification message that the highest perf has changed
+  cpufreq: amd-pstate: Update AMD Pstate Preferred Core ranking
+    dynamically
+  Documentation: amd-pstate: introduce AMD Pstate Preferred Core
+  Documentation: introduce AMD Pstate Preferrd Core mode kernel command
+    line options
+
+ .../admin-guide/kernel-parameters.txt         |   5 +
+ Documentation/admin-guide/pm/amd-pstate.rst   |  54 +++++++
+ arch/x86/Kconfig                              |   3 +-
+ drivers/acpi/cppc_acpi.c                      |  13 ++
+ drivers/acpi/processor_driver.c               |   6 +
+ drivers/cpufreq/amd-pstate.c                  | 152 ++++++++++++++++--
+ drivers/cpufreq/cpufreq.c                     |  13 ++
+ include/acpi/cppc_acpi.h                      |   5 +
+ include/linux/amd-pstate.h                    |   1 +
+ include/linux/cpufreq.h                       |   4 +
+ 10 files changed, 239 insertions(+), 17 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
