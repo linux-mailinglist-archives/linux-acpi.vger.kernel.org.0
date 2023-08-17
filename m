@@ -2,48 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2880177FD16
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Aug 2023 19:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5767B77FD20
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Aug 2023 19:41:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353567AbjHQRgq convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 17 Aug 2023 13:36:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38980 "EHLO
+        id S1351881AbjHQRka convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 17 Aug 2023 13:40:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354088AbjHQRgf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Aug 2023 13:36:35 -0400
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C74A30E1;
-        Thu, 17 Aug 2023 10:36:34 -0700 (PDT)
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-56d0deeca09so17072eaf.0;
-        Thu, 17 Aug 2023 10:36:34 -0700 (PDT)
+        with ESMTP id S1354059AbjHQRkG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Aug 2023 13:40:06 -0400
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2296C3581;
+        Thu, 17 Aug 2023 10:40:04 -0700 (PDT)
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-56cae50792fso16027eaf.1;
+        Thu, 17 Aug 2023 10:40:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692293793; x=1692898593;
+        d=1e100.net; s=20221208; t=1692294003; x=1692898803;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=T4POan3u+Y/SlkSMPxL3CN9jU2ZHvHGktHCzOOpZh90=;
-        b=LNTimVv8zYF6pbeZqo8aSGp1Ufw3nc6BEY0XZuC2Xxc1X8bb4pMIlGXp9UdsA1sopg
-         P7L1ej+D857Qz0mYwbG3tiszG0RJXrPlazxWwdEQNAzf4Lr6iIwa/uqXmcPIVdpImcIg
-         T3XeAC9INrF7wT7QTgU0bftc8zNk7vvSnjgCkx/58bnTT8hGSGueUTL7WODTrzYnVrYl
-         NkNLUr6F+9Gul39+z8PcBGdG6LLy0cNBLPdmRkewcf15+Dzq5SyJDFwRAfy7xCqVxqh9
-         A4WN40RdpmhVzf81a9DOpvJJEcI/3ALM+i2wS4hLe9on1dHKWabNS0lhc7BBOVPyvetf
-         U41Q==
-X-Gm-Message-State: AOJu0Yy9CpI1AUQ9C+FSXIQuVJEXfJnV+Gsn6av3mvg1vsE3LI5v2Gpo
-        n5Ak3KFY2xfqPNpUlWsYwtAfs/pe5OgPD/UpGL253vDR
-X-Google-Smtp-Source: AGHT+IGTcQ9DCtLw0ChNdKRuXWWJaUVH4+ikaRgueJDspC3PzGinK/JGoJSbvfTgAT/9gKzQ4Azi1uRUFzZ4gJkY+rA=
-X-Received: by 2002:a4a:bb05:0:b0:569:a08a:d9c5 with SMTP id
- f5-20020a4abb05000000b00569a08ad9c5mr532699oop.0.1692293793201; Thu, 17 Aug
- 2023 10:36:33 -0700 (PDT)
+        bh=jFxiQ2m+6cW+GOh7phG4Yhq5aaTkgOtH7GPedvSmphs=;
+        b=kfOJsBksfUPfHPRjF7mTroCSHQ91NCTdgIMflUE1nVQ71UIPIpsAdiZXkEzL2DF8KN
+         vn/pnhwMy7kgiIw5qXeblH5b9LMn+nWK0oaXsFhVf+lMhiNns24yd7jcE0Rdy1RifVgY
+         xUSYdiZhDsNietyIjWnbPwk31k2qS65WhxC/Il8cFtvGugHq9jws3EpDZhhK6lvanE14
+         w385mtimFJ/Q3Wc7HRqwluK1qPNNNRl0wly2cnWFA/jDgmf/ITSrQJ61NS+esVAZlojo
+         SZrLupv7mzRhApPN57WTRGVQM+w2qQaOE5a2TZ+fGhzaxwWf0E0KDrtIEjRf7vo4won6
+         G3IA==
+X-Gm-Message-State: AOJu0Yx4+ZlBkCoQ6fd5GjFwZ+siLj1wkbz7+R6OXCJkQr7B0k2Slg3q
+        6vJyJwbrqFadElSOdjf2EXxQiwXclCY/4nzTAt8=
+X-Google-Smtp-Source: AGHT+IHofVobBDAIkQf95t4NTpGFRNeI0FQHifx+PC0IjGHYligki3ZG9sFys5q6WwSvM09To3FdhBRazDzSglyAOBE=
+X-Received: by 2002:a4a:e684:0:b0:56d:6bd4:4db5 with SMTP id
+ u4-20020a4ae684000000b0056d6bd44db5mr540208oot.0.1692294003217; Thu, 17 Aug
+ 2023 10:40:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230722025246.8332-1-yuehaibing@huawei.com>
-In-Reply-To: <20230722025246.8332-1-yuehaibing@huawei.com>
+References: <20230725052925.1712680-1-sunilvl@ventanamicro.com>
+In-Reply-To: <20230725052925.1712680-1-sunilvl@ventanamicro.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 17 Aug 2023 19:36:22 +0200
-Message-ID: <CAJZ5v0gsij=EFws0JiRD8TyzmnBSwNiKpBZqVGfwU2hiwjdaFw@mail.gmail.com>
-Subject: Re: [PATCH -next] ACPI: Remove unsued extern declaration acpi_paddr_to_node()
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Date:   Thu, 17 Aug 2023 19:39:52 +0200
+Message-ID: <CAJZ5v0icCBBvR1WXUh1qKMC-Uqie-PaoaE4gMULdmUMKNzJZ_A@mail.gmail.com>
+Subject: Re: [PATCH] PNP/ACPI: Fix string truncation warning
+To:     Sunil V L <sunilvl@ventanamicro.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Andrew Jones <ajones@ventanamicro.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        kernel test robot <lkp@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -56,29 +61,39 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jul 22, 2023 at 4:52 AM YueHaibing <yuehaibing@huawei.com> wrote:
+On Tue, Jul 25, 2023 at 7:29 AM Sunil V L <sunilvl@ventanamicro.com> wrote:
 >
-> This is never used since commit 1e3590e2e4a3 ("[PATCH] pgdat allocation for new node
-> add (get node id by acpi)")
+> LKP reports below warning when building for RISC-V.
 >
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> drivers/pnp/pnpacpi/core.c:253:17:
+> warning: 'strncpy' specified bound 50 equals destination
+> size [-Wstringop-truncation]
+>
+> This appears like a valid issue since the destination
+> string may not be null-terminated. To fix this, append
+> the NUL explicitly after the strncpy.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202307241942.Rff2Nri5-lkp@intel.com/
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > ---
->  include/linux/acpi.h | 2 --
->  1 file changed, 2 deletions(-)
+>  drivers/pnp/pnpacpi/core.c | 3 +++
+>  1 file changed, 3 insertions(+)
 >
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 641dc4843987..58a0fdf68ca2 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -477,8 +477,6 @@ static inline int acpi_get_node(acpi_handle handle)
->         return 0;
->  }
->  #endif
-> -extern int acpi_paddr_to_node(u64 start_addr, u64 size);
-> -
->  extern int pnpacpi_disabled;
+> diff --git a/drivers/pnp/pnpacpi/core.c b/drivers/pnp/pnpacpi/core.c
+> index 38928ff7472b..6ab272c84b7b 100644
+> --- a/drivers/pnp/pnpacpi/core.c
+> +++ b/drivers/pnp/pnpacpi/core.c
+> @@ -254,6 +254,9 @@ static int __init pnpacpi_add_device(struct acpi_device *device)
+>         else
+>                 strncpy(dev->name, acpi_device_bid(device), sizeof(dev->name));
 >
->  #define PXM_INVAL      (-1)
+> +       /* Handle possible string truncation */
+> +       dev->name[sizeof(dev->name) - 1] = '\0';
+> +
+>         if (dev->active)
+>                 pnpacpi_parse_allocated_resource(dev);
+>
 > --
 
-Applied (with a typo fix in the subject) as 6.6 material, thanks!
+Applied as 6.6 material, thanks!
