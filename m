@@ -2,50 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA70F77FD0A
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Aug 2023 19:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2880177FD16
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Aug 2023 19:37:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233470AbjHQRb5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 17 Aug 2023 13:31:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56642 "EHLO
+        id S1353567AbjHQRgq convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 17 Aug 2023 13:36:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354015AbjHQRbb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Aug 2023 13:31:31 -0400
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABB89BF
-        for <linux-acpi@vger.kernel.org>; Thu, 17 Aug 2023 10:31:30 -0700 (PDT)
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-56d26137095so11318eaf.1
-        for <linux-acpi@vger.kernel.org>; Thu, 17 Aug 2023 10:31:30 -0700 (PDT)
+        with ESMTP id S1354088AbjHQRgf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Aug 2023 13:36:35 -0400
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C74A30E1;
+        Thu, 17 Aug 2023 10:36:34 -0700 (PDT)
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-56d0deeca09so17072eaf.0;
+        Thu, 17 Aug 2023 10:36:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692293490; x=1692898290;
+        d=1e100.net; s=20221208; t=1692293793; x=1692898593;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rAnNvJFPyOKScRV6b+f0B2/xCdji87Zfn6pP272UWYE=;
-        b=iSStarjve1L3g1msG/0EoospyytAa07uUFuXX7gnlzhJruWd0Fnqnt64JMnV7lQOrN
-         pYAJKwXMFfonP8CxmZyobGdI9r2Xp46LpLKZP6pasBp7fX6bMtLo9HH2XxDbZTTSoGbO
-         N3ssbH1ZZ/zuhgOhOXaC7fMxGQhOXmBe3qJLBE324k5QjtKnJ5Si4ygTwo0oPIGayHGn
-         N/lSnzPkhxeaPgANpKtP0V81lMxbSbTAGGUN9g1XaINNYbHWJO4e7wO3x43WGKYElOUu
-         J/nS9VAg7SoKTWBscCF5ARsnyjgqE32GAsQyyPbbdUT2Y759Qq4MakWa2oOV4AcTnPTP
-         jNDQ==
-X-Gm-Message-State: AOJu0YzB1aKCgrDAKcrQhx6wrwY7p50/ZfHsIwjYo25DHdDe8mFmaMK+
-        GYNDr8zfXVxjCclYruE/L9Q34BnvNFQehbV+XFnUhG+x
-X-Google-Smtp-Source: AGHT+IHfN/7WzAOlmiiu9eZAZBO6qB3ZXEl8+PUPm3CiGBFa78oYboFMrAeXZRhNv4Y3dBRIQChM9SjQR5GcZ926Nzw=
-X-Received: by 2002:a4a:d581:0:b0:56e:487f:8caa with SMTP id
- z1-20020a4ad581000000b0056e487f8caamr407090oos.1.1692293489991; Thu, 17 Aug
- 2023 10:31:29 -0700 (PDT)
+        bh=T4POan3u+Y/SlkSMPxL3CN9jU2ZHvHGktHCzOOpZh90=;
+        b=LNTimVv8zYF6pbeZqo8aSGp1Ufw3nc6BEY0XZuC2Xxc1X8bb4pMIlGXp9UdsA1sopg
+         P7L1ej+D857Qz0mYwbG3tiszG0RJXrPlazxWwdEQNAzf4Lr6iIwa/uqXmcPIVdpImcIg
+         T3XeAC9INrF7wT7QTgU0bftc8zNk7vvSnjgCkx/58bnTT8hGSGueUTL7WODTrzYnVrYl
+         NkNLUr6F+9Gul39+z8PcBGdG6LLy0cNBLPdmRkewcf15+Dzq5SyJDFwRAfy7xCqVxqh9
+         A4WN40RdpmhVzf81a9DOpvJJEcI/3ALM+i2wS4hLe9on1dHKWabNS0lhc7BBOVPyvetf
+         U41Q==
+X-Gm-Message-State: AOJu0Yy9CpI1AUQ9C+FSXIQuVJEXfJnV+Gsn6av3mvg1vsE3LI5v2Gpo
+        n5Ak3KFY2xfqPNpUlWsYwtAfs/pe5OgPD/UpGL253vDR
+X-Google-Smtp-Source: AGHT+IGTcQ9DCtLw0ChNdKRuXWWJaUVH4+ikaRgueJDspC3PzGinK/JGoJSbvfTgAT/9gKzQ4Azi1uRUFzZ4gJkY+rA=
+X-Received: by 2002:a4a:bb05:0:b0:569:a08a:d9c5 with SMTP id
+ f5-20020a4abb05000000b00569a08ad9c5mr532699oop.0.1692293793201; Thu, 17 Aug
+ 2023 10:36:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230807094408.242069-1-hdegoede@redhat.com>
-In-Reply-To: <20230807094408.242069-1-hdegoede@redhat.com>
+References: <20230722025246.8332-1-yuehaibing@huawei.com>
+In-Reply-To: <20230722025246.8332-1-yuehaibing@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 17 Aug 2023 19:31:18 +0200
-Message-ID: <CAJZ5v0iBZQGzmYi0kJkwyY1=gE5UYz+FgHFRYSWGxzWNEGOWow@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: video: Add backlight=native DMI quirk for Apple
- iMac12,1 and iMac12,2
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        linux-acpi@vger.kernel.org
+Date:   Thu, 17 Aug 2023 19:36:22 +0200
+Message-ID: <CAJZ5v0gsij=EFws0JiRD8TyzmnBSwNiKpBZqVGfwU2hiwjdaFw@mail.gmail.com>
+Subject: Re: [PATCH -next] ACPI: Remove unsued extern declaration acpi_paddr_to_node()
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -58,49 +56,29 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 7, 2023 at 11:44 AM Hans de Goede <hdegoede@redhat.com> wrote:
+On Sat, Jul 22, 2023 at 4:52 AM YueHaibing <yuehaibing@huawei.com> wrote:
 >
-> Linux defaults to picking the non-working ACPI video backlight interface
-> on the Apple iMac12,1 and iMac12,2.
+> This is never used since commit 1e3590e2e4a3 ("[PATCH] pgdat allocation for new node
+> add (get node id by acpi)")
 >
-> Add a DMI quirk to pick the working native radeon_bl0 interface instead.
->
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1838
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2753
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 > ---
->  drivers/acpi/video_detect.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
+>  include/linux/acpi.h | 2 --
+>  1 file changed, 2 deletions(-)
 >
-> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> index 18cc08c858cf..7cceaf31d928 100644
-> --- a/drivers/acpi/video_detect.c
-> +++ b/drivers/acpi/video_detect.c
-> @@ -486,6 +486,24 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
->                 DMI_MATCH(DMI_PRODUCT_NAME, "iMac11,3"),
->                 },
->         },
-> +       {
-> +        /* https://gitlab.freedesktop.org/drm/amd/-/issues/1838 */
-> +        .callback = video_detect_force_native,
-> +        /* Apple iMac12,1 */
-> +        .matches = {
-> +               DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-> +               DMI_MATCH(DMI_PRODUCT_NAME, "iMac12,1"),
-> +               },
-> +       },
-> +       {
-> +        /* https://gitlab.freedesktop.org/drm/amd/-/issues/2753 */
-> +        .callback = video_detect_force_native,
-> +        /* Apple iMac12,2 */
-> +        .matches = {
-> +               DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-> +               DMI_MATCH(DMI_PRODUCT_NAME, "iMac12,2"),
-> +               },
-> +       },
->         {
->          /* https://bugzilla.redhat.com/show_bug.cgi?id=1217249 */
->          .callback = video_detect_force_native,
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 641dc4843987..58a0fdf68ca2 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -477,8 +477,6 @@ static inline int acpi_get_node(acpi_handle handle)
+>         return 0;
+>  }
+>  #endif
+> -extern int acpi_paddr_to_node(u64 start_addr, u64 size);
+> -
+>  extern int pnpacpi_disabled;
+>
+>  #define PXM_INVAL      (-1)
 > --
 
-Applied as 6.6 material, thanks!
+Applied (with a typo fix in the subject) as 6.6 material, thanks!
