@@ -2,166 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B11E77FD35
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Aug 2023 19:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96E1377FD4B
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Aug 2023 19:53:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354086AbjHQRtj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 17 Aug 2023 13:49:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56662 "EHLO
+        id S244118AbjHQRx2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 17 Aug 2023 13:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354118AbjHQRtV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Aug 2023 13:49:21 -0400
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48999FD;
-        Thu, 17 Aug 2023 10:49:20 -0700 (PDT)
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-56d67c5e87cso16958eaf.0;
-        Thu, 17 Aug 2023 10:49:20 -0700 (PDT)
+        with ESMTP id S1354144AbjHQRxY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Aug 2023 13:53:24 -0400
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69CAB26BC;
+        Thu, 17 Aug 2023 10:53:23 -0700 (PDT)
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-56d26137095so14768eaf.1;
+        Thu, 17 Aug 2023 10:53:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692294559; x=1692899359;
+        d=1e100.net; s=20221208; t=1692294802; x=1692899602;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=O3kJKBjM8HeUH9yQyk9NqrnEPzqgaX/ykR5hFJ5dGi8=;
-        b=eYaudM3LeYeTw6tWb8Q/36A3har7HQ9RReySYEZ4DninScxJucsxBJ8xwzZPqJHTMj
-         LULpKkvVQLlAM12sEj0PCmdSjGgZNA2GpBDEt+f2mo4Vd9XIAgPgmo/SCmJv1/Cf0Qce
-         01WhEjq5mA6dyo48b1Si7jjnmD8CcXy+pF9RA6IGhDdhrpGz6IINjlowU9zE3V+McSTG
-         BymyemvviHIH0Tg8m8Q7CGvE0U5gpOkmRhfjsthJBXfwio8pxOvLE8SIlYVf4W4Z+b1t
-         LsNIBdAhM3gymFWa8i9N90/tDCFF4VhBpA3czMKRpHP6Gq8IWxc96D7zj9tyDJW9OzyC
-         9GxA==
-X-Gm-Message-State: AOJu0Yw92kAZoCJ6OyN7hzY523ARN0UPOfEGoTQ4BAEFt74gO+XEX2Pz
-        mmVBSj2sl1v0qy6J2o+2TAa6xdpHCVbEMo79f0A=
-X-Google-Smtp-Source: AGHT+IHQAj18DF5FMKJCfqRgpf97T7Vbzi6PVutl3QcQI8lJuQ6AEmA6vxmsO8gwukYaA8PvCYSRlWNSVlkkXyYCgKI=
+        bh=IlvBL9hLbtt33M9fY9Puk2USBot1CchuwIVoJwFLp4M=;
+        b=fLha4IsJDYIVV2C0uNF8n1zfoljQOraEBjkWUleDxZAjZr2NRqJkxa6Zhy+2c3fYKY
+         x7uJeSt3s0ZiCLVOU74euTwRjHFgAeLOqHjgu3WZDhjJL2jk8D/YHFeUNmBPbOXLcy5i
+         4WLVW8BcepTSXfmYf74PvltQgl15JuZAY/O3CHAJXhSbDKbVuKSvFgQytJX6SIUVEcif
+         fD9OWpggqLISxp5eO1WOeEV/f8X+3vi3aEkUfOR+FMnSiKw4YGCD5aCS1BDmUiqjbWdt
+         nliBc3XrsV5ae8/D2Dvdf4jEKsSwMEtQckrbnKh0/qdOtbvrlGQMQ+/WX8LW+M+eebuK
+         +jIA==
+X-Gm-Message-State: AOJu0YwxQpabr3wXNtCLQ767suPGZw0xv4MSr5WhnFzmNGVoNfscALGm
+        zGnNjzTuUZBIzYows6lgUzM/0uxFZjWKvFSr/kH2W1pX
+X-Google-Smtp-Source: AGHT+IGpJnfL4dL61F5vbkydy8Y/n0LzYI8rG4OnuLVHJl+NzAE3rns4FtoWsDIrSl7ASVw6NQEEGjyH4bxudSM646Q=
 X-Received: by 2002:a4a:d581:0:b0:56e:487f:8caa with SMTP id
- z1-20020a4ad581000000b0056e487f8caamr455288oos.1.1692294558381; Thu, 17 Aug
- 2023 10:49:18 -0700 (PDT)
+ z1-20020a4ad581000000b0056e487f8caamr465349oos.1.1692294802755; Thu, 17 Aug
+ 2023 10:53:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230807154834.888328-1-quic_poza@quicinc.com>
-In-Reply-To: <20230807154834.888328-1-quic_poza@quicinc.com>
+References: <20230814135623.23084-1-yuehaibing@huawei.com>
+In-Reply-To: <20230814135623.23084-1-yuehaibing@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 17 Aug 2023 19:49:07 +0200
-Message-ID: <CAJZ5v0h_m_kzJfatUeDxwhECHJQH0H7S37aqBQannDFj2ptKEw@mail.gmail.com>
-Subject: Re: [PATCH v2] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast timer
-To:     Oza Pawandeep <quic_poza@quicinc.com>
-Cc:     sudeep.holla@arm.com, catalin.marinas@arm.com, will@kernel.org,
-        rafael@kernel.org, lenb@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, jiles@qti.qualcomm.com
+Date:   Thu, 17 Aug 2023 19:53:11 +0200
+Message-ID: <CAJZ5v0j6_YFXyf7m7EVp7qNoy4RRhefsM0-VENBfJtDg09j7Sg@mail.gmail.com>
+Subject: Re: [PATCH -next] ACPI: Remove unused declarations
+To:     Yue Haibing <yuehaibing@huawei.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com,
+        hdegoede@redhat.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        acpica-devel@lists.linuxfoundation.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 7, 2023 at 5:48 PM Oza Pawandeep <quic_poza@quicinc.com> wrote:
+On Mon, Aug 14, 2023 at 3:56 PM Yue Haibing <yuehaibing@huawei.com> wrote:
 >
-> Arm® Functional Fixed Hardware Specification defines LPI states, which provide
-> an architectural context loss flags field that can be used to describe the
-> context that might be lost when an LPI state is entered.
+> acpi_create_dir()/acpi_remove_dir() are never implemented since
+> the beginning of git history.
+> Commit f8d31489629c ("ACPICA: Debugger: Convert some mechanisms to OSPM specific")
+> declared but never implemented acpi_run_debugger().
+> Commit 781d737c7466 ("ACPI: Drop power resources driver")
+> removed acpi_power_init() but not its declaration.
 >
-> - Core context Lost
->         - General purpose registers.
->         - Floating point and SIMD registers.
->         - System registers, include the System register based
->         - generic timer for the core.
->         - Debug register in the core power domain.
->         - PMU registers in the core power domain.
->         - Trace register in the core power domain.
-> - Trace context loss
-> - GICR
-> - GICD
+> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+> ---
+>  drivers/acpi/internal.h | 1 -
+>  include/acpi/acpi_bus.h | 2 --
+>  include/acpi/acpixf.h   | 2 --
+>  3 files changed, 5 deletions(-)
 >
-> Qualcomm's custom CPUs preserves the architectural state,
-> including keeping the power domain for local timers active.
-> when core is power gated, the local timers are sufficient to
-> wake the core up without needing broadcast timer.
+> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+> index 5f5c3a159872..866c7c4ed233 100644
+> --- a/drivers/acpi/internal.h
+> +++ b/drivers/acpi/internal.h
+> @@ -123,7 +123,6 @@ int __acpi_device_uevent_modalias(const struct acpi_device *adev,
+>  /* --------------------------------------------------------------------------
+>                                    Power Resource
+>     -------------------------------------------------------------------------- */
+> -int acpi_power_init(void);
+>  void acpi_power_resources_list_free(struct list_head *list);
+>  int acpi_extract_power_resources(union acpi_object *package, unsigned int start,
+>                                  struct list_head *list);
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index 23fbe4a16972..18203ee9096d 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -569,8 +569,6 @@ int acpi_match_device_ids(struct acpi_device *device,
+>                           const struct acpi_device_id *ids);
+>  void acpi_set_modalias(struct acpi_device *adev, const char *default_id,
+>                        char *modalias, size_t len);
+> -int acpi_create_dir(struct acpi_device *);
+> -void acpi_remove_dir(struct acpi_device *);
 >
-> The patch fixes the evaluation of cpuidle arch_flags, and moves only to
-> broadcast timer if core context lost is defined in ACPI LPI.
+>  static inline bool acpi_device_enumerated(struct acpi_device *adev)
+>  {
+> diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
+> index 0c1b69ad95d0..3d90716f9522 100644
+> --- a/include/acpi/acpixf.h
+> +++ b/include/acpi/acpixf.h
+> @@ -970,8 +970,6 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+>                                                void **data,
+>                                                void (*callback)(void *)))
 >
-> Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
+> -void acpi_run_debugger(char *batch_buffer);
+> -
+>  void acpi_set_debugger_thread_id(acpi_thread_id thread_id);
 >
-> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-> index bd68e1b7f29f..5493b044864f 100644
-> --- a/arch/arm64/include/asm/acpi.h
-> +++ b/arch/arm64/include/asm/acpi.h
-> @@ -9,6 +9,7 @@
->  #ifndef _ASM_ACPI_H
->  #define _ASM_ACPI_H
->
-> +#include <linux/cpuidle.h>
->  #include <linux/efi.h>
->  #include <linux/memblock.h>
->  #include <linux/psci.h>
-> @@ -42,6 +43,27 @@
->  #define ACPI_MADT_GICC_SPE  (offsetof(struct acpi_madt_generic_interrupt, \
->         spe_interrupt) + sizeof(u16))
->
-> +/*
-> + * Arm® Functional Fixed Hardware Specification Version 1.2.
-> + * Table 2: Arm Architecture context loss flags
-> + */
-> +#define CPUIDLE_CORE_CTXT              BIT(0) /* Core context Lost */
-> +
-> +#ifndef arch_update_idle_state_flags
-> +static __always_inline void arch_update_idle_state_flags(u32 arch_flags,
-> +                                                       unsigned int *sflags)
-> +{
-> +  if (arch_flags & CPUIDLE_CORE_CTXT) {
-> +       *sflags |= CPUIDLE_FLAG_TIMER_STOP;
-> +  }
-> +}
-> +#define arch_update_idle_state_flags arch_update_idle_state_flags
-> +#endif
-> +
-> +#define CPUIDLE_TRACE_CTXT             BIT(1) /* Trace context loss */
-> +#define CPUIDLE_GICR_CTXT              BIT(2) /* GICR */
-> +#define CPUIDLE_GICD_CTXT              BIT(3) /* GICD */
-> +
->  /* Basic configuration for ACPI */
->  #ifdef CONFIG_ACPI
->  pgprot_t __acpi_get_mem_attribute(phys_addr_t addr);
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index 9718d07cc2a2..420baec3465c 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -1221,8 +1221,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
->                 strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
->                 state->exit_latency = lpi->wake_latency;
->                 state->target_residency = lpi->min_residency;
-> -               if (lpi->arch_flags)
-> -                       state->flags |= CPUIDLE_FLAG_TIMER_STOP;
-> +               arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
->                 if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
->                         state->flags |= CPUIDLE_FLAG_RCU_IDLE;
->                 state->enter = acpi_idle_lpi_enter;
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index d584f94409e1..60f17c99465b 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1471,6 +1471,15 @@ static inline int lpit_read_residency_count_address(u64 *address)
->  }
->  #endif
->
-> +#ifndef arch_update_idle_state_flags
-> +static __always_inline void arch_update_idle_state_flags(u32 arch_flags,
-> +                                                       unsigned int *sflags)
-> +{
-> +
-> +}
-> +#define arch_update_idle_state_flags arch_update_idle_state_flags
-> +#endif
-> +
->  #ifdef CONFIG_ACPI_PPTT
->  int acpi_pptt_cpu_is_thread(unsigned int cpu);
->  int find_acpi_cpu_topology(unsigned int cpu, int level);
+>  #endif                         /* __ACXFACE_H__ */
 > --
 
-If I'm to apply this, an ACK from the ARM people is requisite.
-
-Thanks!
+Applied (under edited subject) as 6.6 material, thanks!
