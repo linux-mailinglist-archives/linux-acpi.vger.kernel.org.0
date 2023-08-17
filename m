@@ -2,53 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5767B77FD20
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Aug 2023 19:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 261BE77FD27
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Aug 2023 19:43:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351881AbjHQRka convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 17 Aug 2023 13:40:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40422 "EHLO
+        id S240587AbjHQRmk convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 17 Aug 2023 13:42:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354059AbjHQRkG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Aug 2023 13:40:06 -0400
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2296C3581;
-        Thu, 17 Aug 2023 10:40:04 -0700 (PDT)
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-56cae50792fso16027eaf.1;
-        Thu, 17 Aug 2023 10:40:04 -0700 (PDT)
+        with ESMTP id S1354073AbjHQRmd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Aug 2023 13:42:33 -0400
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 447412D68;
+        Thu, 17 Aug 2023 10:42:32 -0700 (PDT)
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-56cae50792fso16353eaf.1;
+        Thu, 17 Aug 2023 10:42:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692294003; x=1692898803;
+        d=1e100.net; s=20221208; t=1692294151; x=1692898951;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jFxiQ2m+6cW+GOh7phG4Yhq5aaTkgOtH7GPedvSmphs=;
-        b=kfOJsBksfUPfHPRjF7mTroCSHQ91NCTdgIMflUE1nVQ71UIPIpsAdiZXkEzL2DF8KN
-         vn/pnhwMy7kgiIw5qXeblH5b9LMn+nWK0oaXsFhVf+lMhiNns24yd7jcE0Rdy1RifVgY
-         xUSYdiZhDsNietyIjWnbPwk31k2qS65WhxC/Il8cFtvGugHq9jws3EpDZhhK6lvanE14
-         w385mtimFJ/Q3Wc7HRqwluK1qPNNNRl0wly2cnWFA/jDgmf/ITSrQJ61NS+esVAZlojo
-         SZrLupv7mzRhApPN57WTRGVQM+w2qQaOE5a2TZ+fGhzaxwWf0E0KDrtIEjRf7vo4won6
-         G3IA==
-X-Gm-Message-State: AOJu0Yx4+ZlBkCoQ6fd5GjFwZ+siLj1wkbz7+R6OXCJkQr7B0k2Slg3q
-        6vJyJwbrqFadElSOdjf2EXxQiwXclCY/4nzTAt8=
-X-Google-Smtp-Source: AGHT+IHofVobBDAIkQf95t4NTpGFRNeI0FQHifx+PC0IjGHYligki3ZG9sFys5q6WwSvM09To3FdhBRazDzSglyAOBE=
+        bh=SbKSS3dbtmxuOxHslNWQ0jBSymfmz4ReQayKmard/fU=;
+        b=HtWk63haCpIV6SNB4GdAUIPyCab39m0kbTK3LuFUtZkxv+KrNXmvByUrJ9U09qSt9D
+         g0K7+PBFJpCahWcS9keXWGB8Q85rpiukrhcARHbl+Jo+e9+7nPsebGBADClZZotuoLsm
+         1NpA5yKRiXidrYi1r0SPa2gUq0GS7NR78POIQ59md4eNfSWkFqZSHx8NLM53/EvwrmXU
+         CyMaqval0vdg0EJ8ysV8XKl08FVZG5VgdXM4ikCZjRk80zAgLZJLTybhZ313o5YRarhq
+         sWUu25s68Cga28SOnyKnCvZ2WQ1QLV4qrZ3WmTXJs2kHBO2OWFkKyyZXzV+QixK4xk1g
+         iu/g==
+X-Gm-Message-State: AOJu0YxR7339jl33AUSTaJrNC1lhaj76j0I3Aqj0ywCWACFGEEjKXNbW
+        OFHAP88U6nnJWmH0G76zCHs8iyBXzafgaCAYMhyOpB7m
+X-Google-Smtp-Source: AGHT+IGt8tO+aZwGEy2r7Ioxzk3ccY4xwluoQTDNQn/dr49mrftA2TviKHvbBAGgENCBk6dlXXMg//68Gn00p/30J5w=
 X-Received: by 2002:a4a:e684:0:b0:56d:6bd4:4db5 with SMTP id
- u4-20020a4ae684000000b0056d6bd44db5mr540208oot.0.1692294003217; Thu, 17 Aug
- 2023 10:40:03 -0700 (PDT)
+ u4-20020a4ae684000000b0056d6bd44db5mr546709oot.0.1692294151461; Thu, 17 Aug
+ 2023 10:42:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230725052925.1712680-1-sunilvl@ventanamicro.com>
-In-Reply-To: <20230725052925.1712680-1-sunilvl@ventanamicro.com>
+References: <20230802092856.819328-1-lizhijian@cn.fujitsu.com>
+In-Reply-To: <20230802092856.819328-1-lizhijian@cn.fujitsu.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 17 Aug 2023 19:39:52 +0200
-Message-ID: <CAJZ5v0icCBBvR1WXUh1qKMC-Uqie-PaoaE4gMULdmUMKNzJZ_A@mail.gmail.com>
-Subject: Re: [PATCH] PNP/ACPI: Fix string truncation warning
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Andrew Jones <ajones@ventanamicro.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        kernel test robot <lkp@intel.com>
+Date:   Thu, 17 Aug 2023 19:42:20 +0200
+Message-ID: <CAJZ5v0jY87yCjmFv2HsJ1ZuDF_9bXW0iM5rqGJdY1DhkEuRdfQ@mail.gmail.com>
+Subject: Re: [PATCH] acpi,mm: fix typo sibiling -> sibling
+To:     Li Zhijian <lizhijian@cn.fujitsu.com>
+Cc:     akpm@linux-foundation.org, linux-acpi@vger.kernel.org,
+        linux-mm@kvack.org, rafael@kernel.org, lenb@kernel.org,
+        linux-kernel@vger.kernel.org, ying.huang@intel.com,
+        aneesh.kumar@linux.ibm.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -61,39 +58,100 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jul 25, 2023 at 7:29 AM Sunil V L <sunilvl@ventanamicro.com> wrote:
+On Wed, Aug 2, 2023 at 11:30 AM Li Zhijian <lizhijian@cn.fujitsu.com> wrote:
 >
-> LKP reports below warning when building for RISC-V.
+> First found this typo as reviewing memory tier code. Fix it by sed like:
+> $ sed -i 's/sibiling/sibling/g' $(git grep -l sibiling)
 >
-> drivers/pnp/pnpacpi/core.c:253:17:
-> warning: 'strncpy' specified bound 50 equals destination
-> size [-Wstringop-truncation]
+> so the acpi one will be corrected as well.
 >
-> This appears like a valid issue since the destination
-> string may not be null-terminated. To fix this, append
-> the NUL explicitly after the strncpy.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202307241942.Rff2Nri5-lkp@intel.com/
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> ---
->  drivers/pnp/pnpacpi/core.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/pnp/pnpacpi/core.c b/drivers/pnp/pnpacpi/core.c
-> index 38928ff7472b..6ab272c84b7b 100644
-> --- a/drivers/pnp/pnpacpi/core.c
-> +++ b/drivers/pnp/pnpacpi/core.c
-> @@ -254,6 +254,9 @@ static int __init pnpacpi_add_device(struct acpi_device *device)
->         else
->                 strncpy(dev->name, acpi_device_bid(device), sizeof(dev->name));
->
-> +       /* Handle possible string truncation */
-> +       dev->name[sizeof(dev->name) - 1] = '\0';
-> +
->         if (dev->active)
->                 pnpacpi_parse_allocated_resource(dev);
->
-> --
+> Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
 
-Applied as 6.6 material, thanks!
+Please post the ACPI and mm changes as separate patches.
+
+Thanks!
+
+> ---
+>  drivers/acpi/acpi_pad.c      |  2 +-
+>  include/linux/memory-tiers.h |  2 +-
+>  mm/memory-tiers.c            | 10 +++++-----
+>  3 files changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
+> index 7a453c5ff303..7f073ca64f0e 100644
+> --- a/drivers/acpi/acpi_pad.c
+> +++ b/drivers/acpi/acpi_pad.c
+> @@ -100,7 +100,7 @@ static void round_robin_cpu(unsigned int tsk_index)
+>         for_each_cpu(cpu, pad_busy_cpus)
+>                 cpumask_or(tmp, tmp, topology_sibling_cpumask(cpu));
+>         cpumask_andnot(tmp, cpu_online_mask, tmp);
+> -       /* avoid HT sibilings if possible */
+> +       /* avoid HT siblings if possible */
+>         if (cpumask_empty(tmp))
+>                 cpumask_andnot(tmp, cpu_online_mask, pad_busy_cpus);
+>         if (cpumask_empty(tmp)) {
+> diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
+> index fc9647b1b4f9..1e6c8ddcaa92 100644
+> --- a/include/linux/memory-tiers.h
+> +++ b/include/linux/memory-tiers.h
+> @@ -22,7 +22,7 @@
+>  struct memory_tier;
+>  struct memory_dev_type {
+>         /* list of memory types that are part of same tier as this type */
+> -       struct list_head tier_sibiling;
+> +       struct list_head tier_sibling;
+>         /* abstract distance for this specific memory type */
+>         int adistance;
+>         /* Nodes of same abstract distance */
+> diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+> index a516e303e304..56c22470c96d 100644
+> --- a/mm/memory-tiers.c
+> +++ b/mm/memory-tiers.c
+> @@ -115,7 +115,7 @@ static __always_inline nodemask_t get_memtier_nodemask(struct memory_tier *memti
+>         nodemask_t nodes = NODE_MASK_NONE;
+>         struct memory_dev_type *memtype;
+>
+> -       list_for_each_entry(memtype, &memtier->memory_types, tier_sibiling)
+> +       list_for_each_entry(memtype, &memtier->memory_types, tier_sibling)
+>                 nodes_or(nodes, nodes, memtype->nodes);
+>
+>         return nodes;
+> @@ -174,7 +174,7 @@ static struct memory_tier *find_create_memory_tier(struct memory_dev_type *memty
+>          * If the memtype is already part of a memory tier,
+>          * just return that.
+>          */
+> -       if (!list_empty(&memtype->tier_sibiling)) {
+> +       if (!list_empty(&memtype->tier_sibling)) {
+>                 list_for_each_entry(memtier, &memory_tiers, list) {
+>                         if (adistance == memtier->adistance_start)
+>                                 return memtier;
+> @@ -218,7 +218,7 @@ static struct memory_tier *find_create_memory_tier(struct memory_dev_type *memty
+>         memtier = new_memtier;
+>
+>  link_memtype:
+> -       list_add(&memtype->tier_sibiling, &memtier->memory_types);
+> +       list_add(&memtype->tier_sibling, &memtier->memory_types);
+>         return memtier;
+>  }
+>
+> @@ -527,7 +527,7 @@ static bool clear_node_memory_tier(int node)
+>                 memtype = node_memory_types[node].memtype;
+>                 node_clear(node, memtype->nodes);
+>                 if (nodes_empty(memtype->nodes)) {
+> -                       list_del_init(&memtype->tier_sibiling);
+> +                       list_del_init(&memtype->tier_sibling);
+>                         if (list_empty(&memtier->memory_types))
+>                                 destroy_memory_tier(memtier);
+>                 }
+> @@ -553,7 +553,7 @@ struct memory_dev_type *alloc_memory_type(int adistance)
+>                 return ERR_PTR(-ENOMEM);
+>
+>         memtype->adistance = adistance;
+> -       INIT_LIST_HEAD(&memtype->tier_sibiling);
+> +       INIT_LIST_HEAD(&memtype->tier_sibling);
+>         memtype->nodes  = NODE_MASK_NONE;
+>         kref_init(&memtype->kref);
+>         return memtype;
+> --
+> 2.31.1
+>
