@@ -2,134 +2,220 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B229F77F628
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Aug 2023 14:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8E0A77F75A
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Aug 2023 15:11:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234378AbjHQMOU convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 17 Aug 2023 08:14:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33302 "EHLO
+        id S1351230AbjHQNLN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Aug 2023 09:11:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350735AbjHQMNv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Aug 2023 08:13:51 -0400
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 245432727;
-        Thu, 17 Aug 2023 05:13:46 -0700 (PDT)
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-56d0deeca09so1156057eaf.0;
-        Thu, 17 Aug 2023 05:13:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692274425; x=1692879225;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=35lrfKrc1jJmS1GksDSgsQkAe1/qYH5sZbvlKzuw6F0=;
-        b=ECq5Upo1NVakeioVKkf4Eaz2FG32K0uK9235hXLK58V8HYC8PBOyyL6FpKDGmQJlNd
-         +vWmi17+mZogE24FxSGmEAQjHp96wF86I1S6OHz7MhIUV07jsRbjZve7ES7RRWvJc+yk
-         irpWRO4QCcRrOVg6soFW0DT8c3JwvmaF+UFKo90yj5uhIVQl43e+IvzkkQnZtZpVCwlq
-         m/um7APIfGIvEkx/ZKngVSdeKyRfWCatYifSYG1q45i1ZGTXiDiUi25YccI423vBTSAx
-         6iKJG4/LwjHeNpkzrZMmghrCy403Rm/w3xt4G1tFzo1QRumdftV/mmBWlLZFoRAVHLwA
-         Rj3g==
-X-Gm-Message-State: AOJu0Yx9S9UzXwRaiSnIHb9lQE69D2abZOcJMncmvtOA1HoEwo+McTqV
-        L3vmJgvUPo0RVxRfTPx10TQflxagTUGnG/VmU2U=
-X-Google-Smtp-Source: AGHT+IEV3ZsCfY4D+eopVMXtQI0RCA0Ekyx5phmY3CkyIpLxnRc2AVJnQUHO4M1WGy62fNAG/4g5UuQsIu+ujKdgtf0=
-X-Received: by 2002:a4a:4305:0:b0:56e:72e0:9c5f with SMTP id
- k5-20020a4a4305000000b0056e72e09c5fmr1435739ooj.1.1692274425389; Thu, 17 Aug
- 2023 05:13:45 -0700 (PDT)
+        with ESMTP id S1351489AbjHQNLJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Aug 2023 09:11:09 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 676E735B8;
+        Thu, 17 Aug 2023 06:10:40 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
+ id 781fc99a341be9fa; Thu, 17 Aug 2023 15:09:35 +0200
+Authentication-Results: v370.home.net.pl; spf=softfail (domain owner 
+   discourages use of this host) smtp.mailfrom=rjwysocki.net 
+   (client-ip=195.136.19.94; helo=[195.136.19.94]; 
+   envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
+Received: from kreacher.localnet (unknown [195.136.19.94])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 0A246662A72;
+        Thu, 17 Aug 2023 15:09:35 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Michal Wilczynski <michal.wilczynski@intel.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: Re: [PATCH v5 05/11] ACPI: thermal: Carry out trip point updates under zone lock
+Date:   Thu, 17 Aug 2023 15:09:34 +0200
+Message-ID: <3262036.aeNJFYEL58@kreacher>
+In-Reply-To: <c53f99db-353a-26c3-3b0a-3a3befbed528@linaro.org>
+References: <13318886.uLZWGnKmhe@kreacher> <2236767.iZASKD2KPV@kreacher> <c53f99db-353a-26c3-3b0a-3a3befbed528@linaro.org>
 MIME-Version: 1.0
-References: <20230816223831.GA291481@bhelgaas> <6a91a3e1-61a2-4f33-ae01-ea4b5ad24ec6@amd.com>
-In-Reply-To: <6a91a3e1-61a2-4f33-ae01-ea4b5ad24ec6@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 17 Aug 2023 14:13:34 +0200
-Message-ID: <CAJZ5v0i46b2th2iATB-Zsfhexcva8h_KAxYtUsGDHS_3zXnn-Q@mail.gmail.com>
-Subject: Re: [PATCH v11 9/9] PCI: ACPI: Use device constraints to decide PCI
- target state fallback policy
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Iain Lane <iain@orangesquash.org.uk>,
-        Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrudduuddgieduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepjedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
+ thhtohepmhhitghhrghlrdifihhltgiihihnshhkihesihhnthgvlhdrtghomhdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 17, 2023 at 3:26 AM Limonciello, Mario
-<mario.limonciello@amd.com> wrote:
->
->
->
-> On 8/16/2023 5:38 PM, Bjorn Helgaas wrote:
-> > [I see that you just posted a v12 that doesn't touch drivers/pci at
-> > all.  I haven't looked at it yet, so maybe my questions/comments below
-> > are no longer relevant.]
->
-> I'm not married to either approach but I think that you'll like the v12
-> approach better.
->
-> Let me try to answer your questions anyway though because I think
-> they're still applicable for understanding of this issue.
->
-> >
-> > On Wed, Aug 16, 2023 at 07:57:52AM -0500, Limonciello, Mario wrote:
-> >> On 8/15/2023 6:48 PM, Bjorn Helgaas wrote:
-> >>> On Wed, Aug 09, 2023 at 01:54:53PM -0500, Mario Limonciello wrote:
-> >>>> Since commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-> >>>> PCIe ports from modern machines (>=2015) are allowed to be put into D3 by
-> >>>> storing a value to the `bridge_d3` variable in the `struct pci_dev`
-> >>>> structure.
-> >>>>
-> >>>> pci_power_manageable() uses this variable to indicate a PCIe port can
-> >>>> enter D3.
-> >>>> pci_pm_suspend_noirq() uses the return from pci_power_manageable() to
-> >>>> decide whether to try to put a device into its target state for a sleep
-> >>>> cycle via pci_prepare_to_sleep().
-> >>>>
-> >>>> For devices that support D3, the target state is selected by this policy:
-> >>>> 1. If platform_pci_power_manageable():
-> >>>>      Use platform_pci_choose_state()
-> >>>> 2. If the device is armed for wakeup:
-> >>>>      Select the deepest D-state that supports a PME.
-> >>>> 3. Else:
-> >>>>      Use D3hot.
-> >>>>
-> >>>> Devices are considered power manageable by the platform when they have
-> >>>> one or more objects described in the table in section 7.3 of the ACPI 6.5
-> >>>> specification.
-> >>>>
-> >>>> When devices are not considered power manageable; specs are ambiguous as
-> >>>> to what should happen.  In this situation Windows 11 leaves PCIe
-> >>>> ports in D0 while Linux puts them into D3 due to the above mentioned
-> >>>> commit.
-> >>>
-> >>> Why would we not use the same policy as Windows 11?
-> >>
-> >> That's what I'm aiming to do with my patch series.
-> >
-> > OK, help me out because I think I have a hint of how this works, but
-> > I'm still really confused.  Here's the sort of commit log I envision
-> > (but I know it's all wrong, so help me out):
->
-> I was intentionally trying to leave the actual problem out of the commit
-> from your earlier feedback and just put it in the cover letter.
->
-> But if it's better to keep in the commit message I'll return those details.
+On Wednesday, August 16, 2023 6:25:30 PM CEST Daniel Lezcano wrote:
+> On 07/08/2023 20:08, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > 
+> > There is a race condition between acpi_thermal_trips_update() and
+> > acpi_thermal_check_fn(), because the trip points may get updated while
+> > the latter is running which in theory may lead to inconsistent results.
+> > For example, if two trips are updated together, using the temperature
+> > value of one of them from before the update and the temperature value
+> > of the other one from after the update may not lead to the expected
+> > outcome.
+> > 
+> > Moreover, if thermal_get_trend() runs when a trip points update is in
+> > progress, it may end up using stale trip point temperatures.
+> > 
+> > To address this, make acpi_thermal_trips_update() call
+> > thermal_zone_device_adjust() to carry out the trip points update and
+> > provide a new  acpi_thermal_adjust_thermal_zone() wrapper around
+> > __acpi_thermal_trips_update() as the callback function for the latter.
+> > 
+> > While at it, change the acpi_thermal_trips_update() return data type
+> > to void as that function always returns 0 anyway.
+> > 
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> 
+> [ ... ]
+> 
+> >   {
+> > -	int i, ret = acpi_thermal_trips_update(tz, ACPI_TRIPS_INIT);
+> >   	bool valid;
+> > +	int i;
+> >   
+> > -	if (ret)
+> > -		return ret;
+> > +	__acpi_thermal_trips_update(tz, ACPI_TRIPS_INIT);
+> >   
+> >   	valid = tz->trips.critical.valid |
+> >   		tz->trips.hot.valid |
+> > @@ -710,6 +732,7 @@ static struct thermal_zone_device_ops ac
+> >   	.get_trend = thermal_get_trend,
+> >   	.hot = acpi_thermal_zone_device_hot,
+> >   	.critical = acpi_thermal_zone_device_critical,
+> > +	.update = acpi_thermal_adjust_thermal_zone,
+> 
+> It is too bad we have to add a callback in the core code just for this 
+> driver.
+> 
+> I'm wondering if it is not possible to get rid of it ?
 
-It is.
+Well, it is possible to pass the callback as an argument to the function running it.
 
-If you make a change in order to address a specific problem, that
-problem needs to be described in the changelog of the patch making
-that change.
+The code is slightly simpler this way, so I think I'm going to do that.
 
-Anything else is more or less confusing IMO.
+Please see the appended replacement for patch [02/11].
+
+Of course, it also is possible to provide accessors for acquiring and releasing
+the zone lock, which would be more straightforward still (as mentioned before),
+but I kind of understand the concerns regarding possible abuse of those by
+drivers.
+
+> Is it possible to use an internal lock for the ACPI driver to solve the 
+> race issue above ?
+
+No, it is not, and I have already explained it at least once, but let me do
+that once again.
+
+There are three code paths that need to be synchronized, because each of them
+can run in parallel with any of the other two.
+
+(a) acpi_thermal_trips_update() called via acpi_thermal_notify() which runs
+    in the ACPI notify kworker context.
+(b) thermal_get_trend(), already called under the zone lock by the core.
+(c) acpi_thermal_check_fn() running in a kworker context, which calls
+    thermal_zone_device_update() which it turn takes the zone lock.
+
+Also the trip points update should not race with any computations using trip
+point temperatures in the core or in the governors (they are carried out under
+the zone lock as a rule).
+
+(b) means that the local lock would need to be always taken under the zone
+lock and then either acpi_thermal_check_fn() would need to be able to take
+the local lock under the zone lock (so it would need to be able to acquire
+the zone lock more or less directly), or acpi_thermal_trips_update() can
+use the zone lock (which happens in the $subject patch via the new helper
+function).
+
+Moreover, using a local lock in acpi_thermal_trips_update() does not provide
+any protection for the code using trip temperatures that runs under the zone
+lock mentioned above.
+
+So as I said, the patch below replaces [02/11] and it avoids adding a new
+callback to zone operations.  The code gets slightly simpler with [02/11]
+replaced with the appended one, so I'm going to use the latter.
+
+It requires the $subject patch and patch [11/11] to be rebased, but that
+is so trivial that I'm not even going to send updates of these patches.
+
+The current series is available in the acpi-thermal git branch in
+linux-pm.git.
+
+---
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Subject: [PATCH] thermal: core: Introduce thermal_zone_device_exec()
+
+Introduce a new helper function, thermal_zone_device_exec(), that can
+be used by drivers to run a given callback routine under the zone lock.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/thermal/thermal_core.c |   19 +++++++++++++++++++
+ include/linux/thermal.h        |    4 ++++
+ 2 files changed, 23 insertions(+)
+
+Index: linux-pm/include/linux/thermal.h
+===================================================================
+--- linux-pm.orig/include/linux/thermal.h
++++ linux-pm/include/linux/thermal.h
+@@ -323,6 +323,10 @@ int thermal_zone_unbind_cooling_device(s
+ 				       struct thermal_cooling_device *);
+ void thermal_zone_device_update(struct thermal_zone_device *,
+ 				enum thermal_notify_event);
++void thermal_zone_device_exec(struct thermal_zone_device *tz,
++			      void (*cb)(struct thermal_zone_device *,
++					 unsigned long),
++			      unsigned long data);
+ 
+ struct thermal_cooling_device *thermal_cooling_device_register(const char *,
+ 		void *, const struct thermal_cooling_device_ops *);
+Index: linux-pm/drivers/thermal/thermal_core.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/thermal_core.c
++++ linux-pm/drivers/thermal/thermal_core.c
+@@ -497,6 +497,25 @@ void thermal_zone_device_update(struct t
+ }
+ EXPORT_SYMBOL_GPL(thermal_zone_device_update);
+ 
++/**
++ * thermal_zone_device_exec - Run a callback under the zone lock.
++ * @tz: Thermal zone.
++ * @cb: Callback to run.
++ * @data: Data to pass to the callback.
++ */
++void thermal_zone_device_exec(struct thermal_zone_device *tz,
++				void (*cb)(struct thermal_zone_device *,
++					   unsigned long),
++				unsigned long data)
++{
++	mutex_lock(&tz->lock);
++
++	cb(tz, data);
++
++	mutex_unlock(&tz->lock);
++}
++EXPORT_SYMBOL_GPL(thermal_zone_device_exec);
++
+ static void thermal_zone_device_check(struct work_struct *work)
+ {
+ 	struct thermal_zone_device *tz = container_of(work, struct
+
+
+
