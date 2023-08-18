@@ -2,186 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A144780FD1
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Aug 2023 18:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F74D780FE2
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Aug 2023 18:07:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378401AbjHRQGp convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 18 Aug 2023 12:06:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60506 "EHLO
+        id S1378495AbjHRQHR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Aug 2023 12:07:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378236AbjHRQGS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Aug 2023 12:06:18 -0400
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8EF8E42;
-        Fri, 18 Aug 2023 09:06:16 -0700 (PDT)
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-56cae50792fso153303eaf.1;
-        Fri, 18 Aug 2023 09:06:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692374776; x=1692979576;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9Jt2ZhPuIxHkcFze1mQsYQAQR93Iny64sokh0i49zSw=;
-        b=GkOOkexJLwc1yjFptML9gv7xZJjFvMPIh715VhrdIw35xQJOOZ3MXkhiCdqh8k+ihB
-         v9pH/YlCmR4WLE84be5UaE51qdH/mxinISN0OXA896XW6TdxEsio27qjg8SXqPe72mLO
-         0/bTzJUIdmJrKjm2dC28FVL029TEtq7a23pEbxti97ZxY752mrKZP2MlMbcSrmXGjMN2
-         6hQXYz14alaSBKDi8HP2+Oulnc0dnooPEsXcq+t77LkX4Ru7Mhl7VdJIcs0H73k3MsXM
-         RzG6tjhTIN0bZRxEHyUWTEZkXUIYORjdlFbFH6sntFQIVs9rnEuh49d5xkgfkQcXFi7U
-         xT5w==
-X-Gm-Message-State: AOJu0YwP5RJ2rcO4Br6NkHZbVReqgS9eBatTSvm3AJIpTBJmwZ2at9z0
-        L9wTc60Q5ydd3bJUIo/hL9TUndi9dJZBRGKcbYo=
-X-Google-Smtp-Source: AGHT+IGRXVkOfek40tkKpLfQWtAuSOTCYBMIYxziW7ig/9HfgrRzUDflKxESlYdN8kZ/2fVBZy3h+cpQFh/uSNyEDX8=
-X-Received: by 2002:a05:6820:3d1:b0:56e:94ed:c098 with SMTP id
- s17-20020a05682003d100b0056e94edc098mr1792962ooj.0.1692374775591; Fri, 18 Aug
- 2023 09:06:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230818051319.551-1-mario.limonciello@amd.com> <20230818051319.551-12-mario.limonciello@amd.com>
-In-Reply-To: <20230818051319.551-12-mario.limonciello@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 18 Aug 2023 18:06:04 +0200
-Message-ID: <CAJZ5v0iowLso0Wvg7gnQfXikvn_TJcpPMAW_WPNmSW6zxHUVpQ@mail.gmail.com>
-Subject: Re: [PATCH v13 11/12] PCI: ACPI: Use device constraints to opt
- devices into D3 support
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        with ESMTP id S1378413AbjHRQGr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Aug 2023 12:06:47 -0400
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2066.outbound.protection.outlook.com [40.107.212.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D7ACE42
+        for <linux-acpi@vger.kernel.org>; Fri, 18 Aug 2023 09:06:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GvKRH8buyVP9G4OnVogzUOP61N8GOavYAHx1ZIbv4Os4MGlVb+L1OZhDOTYuIttGxLv82fv0ZtDa+sYQTzVOJOQz+DqXKyucmJAPnZ7UlRCWhNaSqTxpong6AKjd8KPMoM+N2QxVEwcrJAC74Ss5UQkanOJwTGKJScFY+UOYPGG/MIykatRRFXL73o0dpJ32AUyBM/cWSRIanFu8b1DwyMgCjuNR6PII+OzsLxP4W9bPE4b90U/litt0eBUea07Tnmjkx2lhe0Z7/0mdxmtzPGy+zDRgO0XK3tXD7836XsMxUmBag24dOOG0RxFoIIp49JQEo5hvbAHm7FjMWezkog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zSfFsF9oV6k6xTud9gJvzH6X6jH0yAPr/JjuGNpFVVc=;
+ b=iVAnG/nrSF4apg/xV798uHKiAHgJdtBWPfPUL5G+Tg9ktO27i7URoZ/n4wske69bUOV3Q8srBHCmLFlKhhB9v6PypBfDJUlBIOqTDNKDg/VS6sQBwltxwVakQZIvoI7DXohNqEEEwD5CMHaTw9l9z3lkq5xv4TCEhQ9x5PoT0IgfBSoTGqa35fQRk1Tz6AgD4Gjy0Amm9ztkxOTMYq2o12u6mY+d4jaRHOe5aA+W7Z+FkT6XGsgo8QKM5CQCJHDnIAftBUEbKQgjvGKbvTd+DzuN2Cjb9D1Ydiyqamw/OHm099vP2cEuemczUA9jH8THzdKKMXnQZtj8mujhTOqiuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zSfFsF9oV6k6xTud9gJvzH6X6jH0yAPr/JjuGNpFVVc=;
+ b=nETiDpz43NkqRgXTqrFBzx7VDq4Nd7t/jL26Jh8nbyh+syunVnDpgKo8mZM+hHL1l2WOY0A/oDJFFvYQWaXE031EhPwlUrJyDj3sWjlVD+bkYNxsWRTyz3qgznIPrQHocUQQxMJWLFUyidSA+o1buWQVR4evmjU5l5uII2WSfReR+/NmfwdKLnL2DSupcKHDvsg9WWKfBuOzwjVWJ8zxY90Q82F/ZH7uk+5ByKUGlUZpcq1Zc2mw3C+03NxmVtR/8Tz/PZSf8incKrQn8haOMXNxfe4lr+8RsG5NGatuxz9VCfn7TEHNlLKc9jnJJzhOMJh6/sneiMrDCAlh0uV2Ww==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by LV8PR12MB9136.namprd12.prod.outlook.com (2603:10b6:408:18e::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Fri, 18 Aug
+ 2023 16:06:44 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::5111:16e8:5afe:1da1]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::5111:16e8:5afe:1da1%6]) with mapi id 15.20.6678.031; Fri, 18 Aug 2023
+ 16:06:44 +0000
+Date:   Fri, 18 Aug 2023 13:06:43 -0300
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Joerg Roedel <jroedel@suse.de>
+Cc:     Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev,
+        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
         linux-acpi@vger.kernel.org,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Iain Lane <iain@orangesquash.org.uk>,
-        Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Chen-Yu Tsai <wenst@chromium.org>
+Subject: Re: [PATCH v2 0/4] Fix device_lock deadlock on two probe() paths
+Message-ID: <ZN+XE7dk04f2C3D7@nvidia.com>
+References: <CGME20230809144403eucas1p1345aec6ec34440f1794594426e0402ab@eucas1p1.samsung.com>
+ <0-v2-d2762acaf50a+16d-iommu_group_locking2_jgg@nvidia.com>
+ <d090f196-a5c2-b188-31bf-e42553d8d251@samsung.com>
+ <ZN5n7GnlrTS6s5Yg@nvidia.com>
+ <ZN-UpDFHab0vGuXp@suse.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZN-UpDFHab0vGuXp@suse.de>
+X-ClientProxiedBy: MN2PR15CA0045.namprd15.prod.outlook.com
+ (2603:10b6:208:237::14) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|LV8PR12MB9136:EE_
+X-MS-Office365-Filtering-Correlation-Id: dcd7351d-77c9-4e62-9322-08dba0051de1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: UaYy895+bAe19gNvLi9GKmhHj72PxFb9M8JVevfn8eBeUdZ/m7x0ngB36/ySde+22q+R1InUSdQZwaYiiK5bSEYjdpcuLbWQuN/uaZHnrlM8xr5w+wys8Mys5l3a75gWckM31Z+7ifGnRZ2uGV3Ojx19i/wlSrOz/8yp47lO7KMDoVjnt7LBIcavVTq/n3U6j5iyvmoFNf7+gXs4Lm6fx3HhP5ihGkkdManC0ksvqiigBSDHdM+C7dPU3erXYLH6cFRYBO7l+PjfX/PMxPc/R73gywvOm2VCRbyv2ew+GzSRKxMHTCI/cFhSKSfzLW85kuLn7mDoPSQyv6uLwjjWkw3vm+XIdcIg4H1OaBnfu2nvFMZDY3SDhhPLMtiiFVw2IpDxMGQ/NqWrmx9Jx8/1WrwJQuCAqA2Hh6XdlNL+cg/WCA5mUUqJUUH8YIcH/6p8Ixvgt8/s1QO9Scl+AXkxDmilIEObFqtJDGujkeE4cAxVp1zAxm4ygK+wXs2HaSHQUFHzF31UBdMRHxPu3y7xa4oefPabVFIegfwe/xyNoydV6VotGdYZU5ElBb577z808tdlL3QoDgLadF7NE151LbeUPidit4SZGYn4YZG+XFU=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(396003)(376002)(366004)(136003)(346002)(451199024)(186009)(1800799009)(5660300002)(2616005)(41300700001)(2906002)(66476007)(66556008)(316002)(6916009)(66946007)(54906003)(7416002)(8676002)(4326008)(8936002)(478600001)(86362001)(6486002)(38100700002)(6506007)(6512007)(36756003)(83380400001)(26005)(67856001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XCHM9gDIqVKOtzd2ojGSaP2JQ3d2HbDYDBu3YsyLULqlFSkCaDTcscjERwgR?=
+ =?us-ascii?Q?jeKhcHuvjDggohE3ySEYpzQrZhdMeCS9O1+CQaQxfo2KYtiO3UfCMx1XPSsn?=
+ =?us-ascii?Q?mfsOwpBoCBShSt8WwID/qmZClbu57Rg6zF7Mc1l+g06abiCP0cvf7oKnQc90?=
+ =?us-ascii?Q?o/TqkP6UlYaA3ZIB98ibqMkYOVhRTuBwepyo1A5/bYbhUERBXQnn38DfbqQB?=
+ =?us-ascii?Q?KGHa5y+ngt+Gv7KETuk/7ZGkplvFQpAFGOFzGT+cTF4BXkqG8bPK++G7h5Mr?=
+ =?us-ascii?Q?+Et8NRB6BSTirwrNurWDwbD0xtZusrgIMOeCVp2ss9/+/isLvpw5AMhr3gUq?=
+ =?us-ascii?Q?PfnfA95fmAp9LrHjldl30xwLsJA8tPhJa4Cn/aeeYapd3eGtz/dWQzNpAXwl?=
+ =?us-ascii?Q?HL3XtgZvccIwi0Dg0WYt+M4o7jDzCnjysrmFnM9qseFmALkgL3Vc+9ksJyWR?=
+ =?us-ascii?Q?xYczQspF9etHk2MzkntsjxHrEVSZbcICbK96ersMgQMN7yRroPVyBT+LHmWA?=
+ =?us-ascii?Q?nb3n949HHv8JDCfgwzQYKYpYOA3EsbbaP9WI1MjY8g/4H8ghFLn4CS3b5SQU?=
+ =?us-ascii?Q?HwL8VbnRNKh28gHL28HRtslUTZFGj6quo1W0YqwaCdmllGrAV6k0zmyA5H4O?=
+ =?us-ascii?Q?1I0+wl4qxitqw+kg0ll6CbZJ/bcBa+uouqzZUDDzPDQnxxFXwPOg+1hsIciG?=
+ =?us-ascii?Q?ywArvgwEzz7k5W5WdOM0KngsfU4owCT+MdQaNeJ5nIua6Jc9waOadTX/uzN/?=
+ =?us-ascii?Q?wxS3Kh6YY9GzMiUdz/YuPiZx2Vx3CHRSdLcM11Y7WrKgxwVyyfzTtYLGl1Ho?=
+ =?us-ascii?Q?HBIGpAzTtlNYTeYxE4W8ZBtBzFakr0uHHVEdE3UsOTMnvPl5uKSH5H1yqgqT?=
+ =?us-ascii?Q?0UXRrrPD8tfSGBO2LJzXby7Stc367KTkbE5mSXRquBhKLQPVGJJpw0UVOfKz?=
+ =?us-ascii?Q?GY0zrn23tVlggvVnDpQ0wFP2+t3YYYFxPbzGdBz9x4S+4KbPw5tF0Oa49BkS?=
+ =?us-ascii?Q?EF+Bomuv5KvrwXO2OK9nSbCdptrN6f6ldJQvP4+10yoxYYor5kqnreWeM39P?=
+ =?us-ascii?Q?Jwh1wbc/1KbQCDDvwSx9QxO+c0oPEnNzLbLxWJqvPzOisM33l+ntJBMShloI?=
+ =?us-ascii?Q?IRYMzpNx6OVMgdd6aXzrN/tmn4wFRG0nbIgPDLrU86PdvhDivLwmbQAKgB1b?=
+ =?us-ascii?Q?H2wpdItp4ioLvIA5qZXr4FsQYGUlaTnwiJ4TpvXk8WcnJKJclvEyf6pYzoa2?=
+ =?us-ascii?Q?mGZVDxK2AA8WxFA6lwnkZDqPmYOL8bADh8yhvjFpkJEe2SggOdczM82J3oQB?=
+ =?us-ascii?Q?sW9tPWVo+d36ZF6jGqwQl3beBo75YOLtoN1Lq1cVuYq6lBpNMDs7f6/FxLj7?=
+ =?us-ascii?Q?nuQcxbA2+4auzFLe69RATrjE+3qhYvnk+TZhnI1DoXRJlxV0VCMHlXugcS+5?=
+ =?us-ascii?Q?Mx8Ypdk46XRFJKRNVDYOxDf41GZfij7q+nUyQCfVrWshqLpAzxPofiPvYAbs?=
+ =?us-ascii?Q?+vBh6x+4ddsl4LwAHpNS94tt4xMmL/oVwzkmaw8BLkv8Xa0rOW5Jj9SDu95R?=
+ =?us-ascii?Q?C/DH4pX4vwm7NkuN1QNJoAYHCBUWqaw4B7gbrYDI?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dcd7351d-77c9-4e62-9322-08dba0051de1
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2023 16:06:44.0758
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ASwRW8OpSl0ixpekI+5EUTdoMjYYQ7nfDRIA1edMooypZMOPmPlkBpB3hPB54/ok
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9136
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 7:15 AM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
-> In Windows, systems that support Modern Standby specify hardware
-> pre-conditions for the SoC to be able to achieve the lowest power state
-> by using 'device constraints' in a SOC specific "Power Engine
-> Plugin" (PEP) [1] [2].
+On Fri, Aug 18, 2023 at 05:56:20PM +0200, Joerg Roedel wrote:
+> On Thu, Aug 17, 2023 at 03:33:16PM -0300, Jason Gunthorpe wrote:
+> > Bascially.. Yikes!
+> 
+> Hmm, that is a difficult situation. Even if the problem is a misuse of
+> the APIs we can not just blindly break other drivers by our core
+> changes.
 
-The connection between the device power states and the "PEP
-constraints" is still rather unclear after reading the above.  I would
-add something like
+They are not broken, they just throw a lockdep warning and keep going
+as before. This is what triggers:
 
-"For each device, the constraint is the minimum (shallowest) power
-state in which the device can be for the platform to be still able to
-achieve significant energy conservation in a system-wide low-power
-idle configuration."
+static inline void device_lock_assert(struct device *dev)
+{
+	lockdep_assert_held(&dev->mutex);
+}
 
-> Device constraints are specified in the return value for a _DSM of
-> a PNP0D80 device, and Linux enumerates the constraints during probing.
->
-> In cases that the existing logic for pci_bridge_d3_possible() may not
-> enable D3 support query for any constraints specified by the device.
-> If the constraints specify D3 support, then use D3 for the PCI device.
+So non-debug builds won't even see anything.
 
-The above paragraph is not particularly clear IMO.  I would say
-something like this instead:
+> We need to resolve this situation pretty soon, otherwise I need to
+> remove the locking rework patches from the IOMMU tree until the
+> callers are fixed.
+> 
+> Is there a way to keep the broken drivers working for now?
 
-"For PCI bridges (including PCIe ports), the constraints may be
-regarded as an additional source of information regarding the power
-state to put the device into when it is suspended.  In particular, if
-the constraint for a given PCI bridge is D3hot, the platform regards
-D3hot as a valid power state for the bridge and it is reasonable to
-expect that there won't be any side effects caused by putting the
-bridge into that power state.
+Historically we've tolerated lockdep warnings as a way to motivate
+people who care to fix their stuff properly. eg the Intel VT-D had a
+lockdep warning at kernel boot for many releases before it was fixed.
 
-Accordingly, take the low-power S0 idle (LPS0) constraints into
-account when deciding whether or not to allow a given PCI bridge to be
-put into D3."
+The series doesn't make things any functionally worse for these places
+misusing the API, but it now does throw a warning in some cases.
 
-> Link: https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/platform-design-for-modern-standby#low-power-core-silicon-cpu-soc-dram [1]
-> Link: https://uefi.org/sites/default/files/resources/Intel_ACPI_Low_Power_S0_Idle.pdf [2]
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
-> v12->v13:
->  * Move back to PCI code
->  * Trim commit message
-> v11->v12:
->  * Adjust for dropped patch 8/9 from v11.
->  * Update comment
-> v10->v11:
->  * Fix kernel kernel build robot errors and various sparse warnings
->    related to new handling of pci_power_t.
->  * Use the new helpers introduced in previous patches
-> ---
->  drivers/pci/pci-acpi.c | 14 ++++++++++++++
->  drivers/pci/pci.c      | 12 ++++++++++++
->  drivers/pci/pci.h      |  5 +++++
->  3 files changed, 31 insertions(+)
->
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index b5b65cdfa3b8b..bcc76e9d399c5 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -1081,6 +1081,20 @@ bool acpi_pci_bridge_d3(struct pci_dev *dev)
->         return false;
->  }
->
-> +/**
-> + * acpi_pci_check_d3_constraint - Check if device specifies a D3 platform constraint
-> + * @dev: PCI device to check
-> + *
-> + * This function checks if the platform specifies that a given PCI device should
-> + * be put into D3 to satisfy a low power platform constraint
-> + *
-> + * Returns: TRUE if constraint for D3hot or deeper, FALSE otherwise.
-> + */
-> +bool acpi_pci_check_d3_constraint(struct pci_dev *dev)
-> +{
-> +       return acpi_get_lps0_constraint(&dev->dev) >= ACPI_STATE_D3_HOT;
-> +}
-> +
->  static void acpi_pci_config_space_access(struct pci_dev *dev, bool enable)
->  {
->         int val = enable ? ACPI_REG_CONNECT : ACPI_REG_DISCONNECT;
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 051e88ee64c63..0fc8d35154f97 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -1082,6 +1082,14 @@ static inline bool platform_pci_bridge_d3(struct pci_dev *dev)
->         return acpi_pci_bridge_d3(dev);
->  }
->
-> +static inline bool platform_check_d3_constraint(struct pci_dev *dev)
-> +{
-> +       if (pci_use_mid_pm())
-> +               return false;
-> +
-> +       return acpi_pci_check_d3_constraint(dev);
-> +}
+IMHO I'd rather keep the warning rather than supress it by adding
+device_locks(). Do you agree?
 
-As I said elsewhere, the above looks redundant to me.  I would rather
-make acpi_pci_bridge_d3() use the PEP constraints as an additional
-source of information.
-
-> +
->  /**
->   * pci_update_current_state - Read power state of given device and cache it
->   * @dev: PCI device to handle.
-> @@ -3036,6 +3044,10 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
->                 if (dmi_check_system(bridge_d3_blacklist))
->                         return false;
->
-> +               /* the platform specifies in LPS0 constraints to use D3 */
-> +               if (platform_check_d3_constraint(bridge))
-> +                       return true;
-> +
->                 /*
->                  * It is safe to put Intel PCIe ports from 2015 or newer
->                  * to D3.
+Jason
