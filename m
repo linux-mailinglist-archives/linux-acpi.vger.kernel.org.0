@@ -2,89 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B43BC780F90
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Aug 2023 17:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAE7F780FAD
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Aug 2023 17:56:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378303AbjHRPsP convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 18 Aug 2023 11:48:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45578 "EHLO
+        id S1378347AbjHRP41 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Aug 2023 11:56:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378311AbjHRPrx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Aug 2023 11:47:53 -0400
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5A9DD1;
-        Fri, 18 Aug 2023 08:47:52 -0700 (PDT)
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-56d67c5e87cso183632eaf.0;
-        Fri, 18 Aug 2023 08:47:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692373672; x=1692978472;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NsedMiohvIXVJRVYsj8/qaLjYWaDGUe70KiJ0FudpQI=;
-        b=XExif7H1lrTXwWMJ53aloZ7kTLb2uzBvoNf7Ka8LCMgdA28d7Qhv6ZrtsfFNlY96Ze
-         w6su1o+HFP1W6SOns3RbeTg7OANcDzmMaeLmU0SpOm9Se2NnGSn14UpPulOYK3ZQ/F7w
-         S1MQvjIEylJEmP/bMVAmb8Fx7eBtvjrRbv2jYLwcWkKvt6CpYsfuEuOUTYzilyh4wpHs
-         ZnyevsleTVBKfn7d0Hh99IZnzB++x1u6JwABp3T1VX+PNmGZeh6Cagtqc2ppJBT837I5
-         SeKpX2kWqMbathHeqisNcMvZvK2QMEIZF5SkXdkmu9LleHgANsEqrYSLcmlekwAZLGTh
-         FXQA==
-X-Gm-Message-State: AOJu0YwRgcxGzi41cmW84jwtWb7mnK775xgOCiN8Oo/3LNVes3whQlhX
-        Uy7EbETzsNVdg3CMAomQf4UWCBG2D8ySpEuC+KM=
-X-Google-Smtp-Source: AGHT+IF9is1SR8iGVUtoWkvdA4nPO8F511+o72EOH72MKPxlpwtC4Eeee1nj2mfzAvTl/CMpqZx2pXm39rcfJiXi+4s=
-X-Received: by 2002:a05:6820:44a:b0:563:3b56:5dc1 with SMTP id
- p10-20020a056820044a00b005633b565dc1mr3127017oou.0.1692373672110; Fri, 18 Aug
- 2023 08:47:52 -0700 (PDT)
+        with ESMTP id S1378438AbjHRP4Y (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Aug 2023 11:56:24 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CD5D2722
+        for <linux-acpi@vger.kernel.org>; Fri, 18 Aug 2023 08:56:23 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id D50C11F8AC;
+        Fri, 18 Aug 2023 15:56:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1692374181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ck7ckU+/gf4JNt8Ash+l5BzHSiiOBGSDD7RN1DViGuc=;
+        b=xUUI8Jy2qVLDxk2Yw2zOCL3/NoCJwsU9ZzCz2YbFQhpbMUFcIdW+xRr6TIGKYQbtEtBcF5
+        UmVOc86eTAqtXrx57kAf1sx2FmN/DDmu6qKcvvJVIBrbhLdhFES9kqMTLomCpD2d7yOrrU
+        3x3835OVhOIEirjRygYLE6ygekxkha4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1692374181;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ck7ckU+/gf4JNt8Ash+l5BzHSiiOBGSDD7RN1DViGuc=;
+        b=MqAQxNBbpshhWYUCKYeVoIwqCDc650X0W4PmPQ97gUkfa2xi1xyghgdHMbEhsbUG/VrfBS
+        SxtaCxvDN0Rm/wBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8DAED13441;
+        Fri, 18 Aug 2023 15:56:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id uWVpIaWU32RAbQAAMHmgww
+        (envelope-from <jroedel@suse.de>); Fri, 18 Aug 2023 15:56:21 +0000
+Date:   Fri, 18 Aug 2023 17:56:20 +0200
+From:   Joerg Roedel <jroedel@suse.de>
+To:     Jason Gunthorpe <jgg@nvidia.com>
+Cc:     Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev,
+        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Chen-Yu Tsai <wenst@chromium.org>
+Subject: Re: [PATCH v2 0/4] Fix device_lock deadlock on two probe() paths
+Message-ID: <ZN-UpDFHab0vGuXp@suse.de>
+References: <CGME20230809144403eucas1p1345aec6ec34440f1794594426e0402ab@eucas1p1.samsung.com>
+ <0-v2-d2762acaf50a+16d-iommu_group_locking2_jgg@nvidia.com>
+ <d090f196-a5c2-b188-31bf-e42553d8d251@samsung.com>
+ <ZN5n7GnlrTS6s5Yg@nvidia.com>
 MIME-Version: 1.0
-References: <20230818051319.551-1-mario.limonciello@amd.com>
- <20230818051319.551-10-mario.limonciello@amd.com> <CAJZ5v0heB1yGcEzJCA88tyEhFi_LDWcHAF6xsrEFgH4j-DmT7Q@mail.gmail.com>
- <ZN9MQMjcNZK+Ul9z@smile.fi.intel.com> <0ed1f73e-3931-4e22-ac7a-22ce57094d67@amd.com>
- <CAJZ5v0jdqHeEFNbxTvVPHnC6uUVYmXKNVGZNMnSDVQDCyhCvNg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0jdqHeEFNbxTvVPHnC6uUVYmXKNVGZNMnSDVQDCyhCvNg@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 18 Aug 2023 17:47:40 +0200
-Message-ID: <CAJZ5v0jCB79Vh7KgWL=jDCETod43DfomXR4bUzjX=UMGzH2-iQ@mail.gmail.com>
-Subject: Re: [PATCH v13 09/12] ACPI: x86: s2idle: Add a function to get
- constraints for a device
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Iain Lane <iain@orangesquash.org.uk>,
-        Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZN5n7GnlrTS6s5Yg@nvidia.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 5:38â€¯PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Fri, Aug 18, 2023 at 4:04â€¯PM Mario Limonciello
-> <mario.limonciello@amd.com> wrote:
-> >
-> > On 8/18/2023 05:47, Andy Shevchenko wrote:
-> > > On Fri, Aug 18, 2023 at 10:31:03AM +0200, Rafael J. Wysocki wrote:
-> > >> On Fri, Aug 18, 2023 at 7:15â€¯AM Mario Limonciello
-> > >> <mario.limonciello@amd.com> wrote:
-> > >
-> > > ...
-> > >
-> > >>> +int acpi_get_lps0_constraint(struct device *dev)
-> > >>
-> > >> I think that some overhead would be reduced below if this were taking
-> > >> a struct acpi_device pointer as the argument.
+On Thu, Aug 17, 2023 at 03:33:16PM -0300, Jason Gunthorpe wrote:
+> Bascially.. Yikes!
 
-Besides, I don't think that the constraints should be checked directly
-from pci_bridge_d3_possible().
+Hmm, that is a difficult situation. Even if the problem is a misuse of
+the APIs we can not just blindly break other drivers by our core
+changes.
 
-I'd rather check them from acpi_pci_bridge_d3() which knows the ACPI
-companion of the given device already and can use it directly.
+We need to resolve this situation pretty soon, otherwise I need to
+remove the locking rework patches from the IOMMU tree until the
+callers are fixed.
+
+Is there a way to keep the broken drivers working for now?
+
+Regards,
+
+-- 
+Jörg Rödel
+jroedel@suse.de
+
+SUSE Software Solutions Germany GmbH
+Frankenstraße 146
+90461 Nürnberg
+Germany
+
+(HRB 36809, AG Nürnberg)
+Geschäftsführer: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+
