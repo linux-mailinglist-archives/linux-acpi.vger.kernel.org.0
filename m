@@ -2,243 +2,198 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A73A781283
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Aug 2023 20:02:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 838A87812AF
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Aug 2023 20:16:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379293AbjHRSB3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Aug 2023 14:01:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58020 "EHLO
+        id S1351507AbjHRSQI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Aug 2023 14:16:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379356AbjHRSBB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Aug 2023 14:01:01 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F9A03C0F
-        for <linux-acpi@vger.kernel.org>; Fri, 18 Aug 2023 11:00:52 -0700 (PDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37IHr4pA006391;
-        Fri, 18 Aug 2023 18:00:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=FjK6Qk297I6FQIeWHczgjk8DBvOjxzQVed81ZCIFzpM=;
- b=naMhw4zwg07FeJjJ0dX26LiCgpwVnBK1+6/SX+Y7uYprhffL5uCLCiiCNy50GE/pVRnj
- AVyyCcCMM26Qw8GhW7mDm6v2HdwCbv62h/WcdpjQA6+173zArbSNh0oaKlZ6RKO3Iy9Y
- 1WrW1+SishQhSOP3NXlCbLfgz5Yqqo7TCCLqlNXYv1B74SPDYxby60oOWOWNFMQJIPG8
- 1Ndaarcv/gGglXW8JDo8dnLbNJwNTcHmez2xm1k8wOBY2VeuQJ21RaGspz9ThWwzOFkB
- uR5K3iV/KwOqWeGdkVGNFOzJYxut4IyLbUkeULkzP3L/+xXvTv8Rp0TQ1a6/ZGnVA/qC iA== 
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sjdedg6ub-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 18 Aug 2023 18:00:24 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-        by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37IH5eei018920;
-        Fri, 18 Aug 2023 18:00:23 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-        by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3seq428ce7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 18 Aug 2023 18:00:23 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-        by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37II0Mwf35062114
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 18 Aug 2023 18:00:23 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BDA2858061;
-        Fri, 18 Aug 2023 18:00:22 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C2A1458043;
-        Fri, 18 Aug 2023 18:00:21 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown [9.61.79.45])
-        by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Fri, 18 Aug 2023 18:00:21 +0000 (GMT)
-Message-ID: <bff750f47b326c7c0066f1debc5411a8208a128c.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 0/4] Fix device_lock deadlock on two probe() paths
-From:   Eric Farman <farman@linux.ibm.com>
-To:     Jason Gunthorpe <jgg@nvidia.com>, Joerg Roedel <jroedel@suse.de>
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev,
-        Joerg Roedel <joro@8bytes.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org,
+        with ESMTP id S1379428AbjHRSPw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Aug 2023 14:15:52 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2069.outbound.protection.outlook.com [40.107.92.69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F7D31982
+        for <linux-acpi@vger.kernel.org>; Fri, 18 Aug 2023 11:15:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=G/+30svSFJRocjy7cJDD2nAdvKzvKU/7xp9TqdV0vUJMudqVAtaoCZ8K8mW+Al4aGI9o6R6Rfw4nXGYkhGw1tILSvsgXYzU2cfxxu4AwkMIpRqP9yeDD5BW2qmbZjzOjQDjpASLoCZ/JkUjpkR0ZTjpNK1/+R2E8bAG6h5Q4GqQpOsXC/WUJpEMMpM0CZ4tIZYH18L14yLitx2LSdSjNs/Yn+oifi1uwdoH+1itfcM8gYxNh4PI2ZCgYGGXcdXtgajZnywHMxmbHWB0N39+lik9lN6CrCucObQx94kGxvlODvvkmEaowWVFsuB7LcqkdQc7Y/fd5pqCN8mCH1AGPLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=l1vxHGKTkhh3J8yHFR4SgT7fC9Cvr7Ev5U1p2CCZNeE=;
+ b=N8H+cM4jYLt0MbI7I74kc8orq9avUegmKAlEPTxffi0b2Bx4NVGtrPhhx1Rt1eB1nQZtjY5cd8NRwu7BsDe5aZwEVlxttXupYMI4VqlZQyAaS0ZxGZergwknZVC85W1cdVKe5fmtWyKEZc+XUo2UU8FxmCR2xauu/SuvyPOf8h09a+L7yvao26cOJaYNLLqY3KYygCaU1y+sF86haUaEf94M5hGfgGeuO7sfEqEV3N6t5CBRHM9P6EVMaqGtcNxa1rPu9v9kmG4w4KtH4ekmXSASVOxsqQDFBfaqkMN3W1nluN2sbj7PMfD3LyCDf/udCQ5Jst/o6U9ki7akVJ8cKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l1vxHGKTkhh3J8yHFR4SgT7fC9Cvr7Ev5U1p2CCZNeE=;
+ b=kFE5a/ObxkfFmebQyM8G/Oer8XdzsSPpcd7tiQuJ4G3ljLhjiItRrZBcmSNWz74S/OUO8DxgiN0Ft0lYwB0QlWKVZX4IYfb+aE4ia3SpaEi+g7srsySVksWoSIO5w1UqdlliWgS7TXzrMZJQi3mB/V1fQ/EcrxApatbJAkUUOdyhv0fAu2nkQRcWRikBHaztI6jCtO5u/Omjez85DzRXcW4unzaXglxTMhkm5hQkdc5Ldn4yFOAlCi8hkzRFB/7VCEfxlEwgZRZiuOZT2saDcJA0A5IH0W2YhU/1SQuYa5D1leUi5Eu/jxSrLna3ky1iapNFbKdlR08W38V7rK79Rw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by SA1PR12MB8987.namprd12.prod.outlook.com (2603:10b6:806:386::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Fri, 18 Aug
+ 2023 18:15:47 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::5111:16e8:5afe:1da1]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::5111:16e8:5afe:1da1%6]) with mapi id 15.20.6678.031; Fri, 18 Aug 2023
+ 18:15:47 +0000
+Date:   Fri, 18 Aug 2023 15:15:46 -0300
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Eric Farman <farman@linux.ibm.com>
+Cc:     Joerg Roedel <jroedel@suse.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Robin Murphy <robin.murphy@arm.com>,
         Will Deacon <will@kernel.org>,
         Lu Baolu <baolu.lu@linux.intel.com>,
         Kevin Tian <kevin.tian@intel.com>,
         Chen-Yu Tsai <wenst@chromium.org>
-Date:   Fri, 18 Aug 2023 14:00:21 -0400
-In-Reply-To: <ZN+XE7dk04f2C3D7@nvidia.com>
+Subject: Re: [PATCH v2 0/4] Fix device_lock deadlock on two probe() paths
+Message-ID: <ZN+1UktCwqTu53FI@nvidia.com>
 References: <CGME20230809144403eucas1p1345aec6ec34440f1794594426e0402ab@eucas1p1.samsung.com>
-         <0-v2-d2762acaf50a+16d-iommu_group_locking2_jgg@nvidia.com>
-         <d090f196-a5c2-b188-31bf-e42553d8d251@samsung.com>
-         <ZN5n7GnlrTS6s5Yg@nvidia.com> <ZN-UpDFHab0vGuXp@suse.de>
-         <ZN+XE7dk04f2C3D7@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ <0-v2-d2762acaf50a+16d-iommu_group_locking2_jgg@nvidia.com>
+ <d090f196-a5c2-b188-31bf-e42553d8d251@samsung.com>
+ <ZN5n7GnlrTS6s5Yg@nvidia.com>
+ <ZN-UpDFHab0vGuXp@suse.de>
+ <ZN+XE7dk04f2C3D7@nvidia.com>
+ <bff750f47b326c7c0066f1debc5411a8208a128c.camel@linux.ibm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bff750f47b326c7c0066f1debc5411a8208a128c.camel@linux.ibm.com>
+X-ClientProxiedBy: MN2PR05CA0053.namprd05.prod.outlook.com
+ (2603:10b6:208:236::22) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Ppcchw2uaytaXBlr7S9gRwkfiNJ29soo
-X-Proofpoint-GUID: Ppcchw2uaytaXBlr7S9gRwkfiNJ29soo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-18_22,2023-08-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
- priorityscore=1501 mlxlogscore=999 mlxscore=0 spamscore=0 suspectscore=0
- phishscore=0 adultscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2308180162
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|SA1PR12MB8987:EE_
+X-MS-Office365-Filtering-Correlation-Id: 39d8383f-0362-462d-336c-08dba017254d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: uG+dNyN9Tzfx93kL4bOJSVdoageY5ARn6/YHcMl/98+yZ9PVig1X7AfW31pSywAkxzs/+m/3tXjaDa7UTR9T4X7LFPu2IQxkHEcPmDxxFT5Yk4EzF8jbV6LHj4ZjQob10mQWBZcCkojONyaMvtSGlXS6kiJW3RBiuyaA2UVe04moYmXg+gTUb3N9PN3k1V7n9DCO1k9cI0QSAobeIKtRe3YbFXisyMjciEeSfDeeb85c2Jic00+6BvVSswxo0sZzgoRKMYoQFp88KhycFI0YkeOaChGUthHxirMdqU+cJgb/OgM4+DRtLJYg8++zGlafhqMLv/LNoEB/lfNZsFrb+rBHdif+6FoUMBhIx2qaZ6KThbiCaC0rFw9+ch/q/95EMf/0gm31Mjy5qWPGw9xPERnuENru66BCiXEd5U5vB23qxdW/L5oQerG+x4FgNIKUBXXZ+TtfTz2zhD0x0ZVyl9BmQy70gEl5Bx7jv+0N3q0JjJ7anwtogb4uAlZhRg7jBzURPNC6H8XZzMq9ET9RB1ZzyJ8jkiVGbQF0a4AAdI/YQE4yWOL+2akQaT6GqkTSYXK+QnCibeCRtNHTs7uSxR9GOust+yysuRbEZODS+nI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(376002)(396003)(39860400002)(366004)(186009)(1800799009)(451199024)(6486002)(6506007)(38100700002)(6512007)(26005)(83380400001)(36756003)(86362001)(2616005)(2906002)(66556008)(54906003)(316002)(6916009)(66476007)(66946007)(41300700001)(5660300002)(7416002)(8676002)(4326008)(8936002)(478600001)(67856001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4YXsu8kQRfV/1jIncF/mQ6WtnTyEMUVhNOZdGzKIPnXyE6Vo/FcKCeNTb2o8?=
+ =?us-ascii?Q?REA65aAOzaPtNN1JWSqM89FDbTqr62YHN+qvHVlUipJKq0ExbsEZI5pgy/iy?=
+ =?us-ascii?Q?VnX60jI9JBSlC2VWFIJVGFXP1kX6v2aDujxwHAdEStmHlSGYsuch6ObZ3guw?=
+ =?us-ascii?Q?LLo/W3z4/zlDf69oIECCKAdNJe8CoPBMtgMlQKjGimeAS4wQoIRc5LyOghCx?=
+ =?us-ascii?Q?3QMEUvPzH3JxPZ7zUDKfflK1/p/B32NbXHRHw9bJThKsBmOYLf6Gwb/05tpj?=
+ =?us-ascii?Q?sICH2+Hdbf7h8XcH2trDd6SsaapOLbbrxBlFETdGdODizpPhTC/IEg7CvsA8?=
+ =?us-ascii?Q?lM/vcTFUOoNSgF38Q7btfcMRraxgutFojQl71uM4G+8f1lE8ZWHitcE+fkrt?=
+ =?us-ascii?Q?YcBz8sXqdDtz+xSNDTj6O8mku78yDwAzrF6devmYJzc2lLneG/0vBm2gXm3I?=
+ =?us-ascii?Q?xtO9F1i1MNlFbXSgEs7Pe/Ck7OqSGo414yITO/Pl90CK2ghiOLdiRJJHwQja?=
+ =?us-ascii?Q?tdIP04xsRZ/+dulEiDZvlp+iThi07U7Ec8uDk5pSmdx10EhMTTmc7ydq+9lM?=
+ =?us-ascii?Q?/LODNmMb9yg+ShV6nknIqP9M/Nxk1FYwNFqnb+XItLULVUMUiYaqE64MlFpB?=
+ =?us-ascii?Q?yaVY+l81IU1Pbf9Usc/a0fGsmC2+jYgcT9BcM7LXsd8pw7IYuQcVbPxFU91c?=
+ =?us-ascii?Q?yrZhsOCSeZSU/GSruJwtxOJUMKJL0H5ThhzB1p9ax48/jqwgCNREwS9ZhwIz?=
+ =?us-ascii?Q?M7wAMaNkv0FJCg9sCs0jIbgWJYE70g49sXV1Js4TdWD3LwRkTfCpaLbSba3l?=
+ =?us-ascii?Q?0WCDSxFxXeZSyRkFOfHBsrpUp0cG7aZ9UAbrfVMyxvU+Gb9h53W3SU68knIS?=
+ =?us-ascii?Q?qbpSj52zGoW91Ev2pDaEfAGuKBOVpiEPoR0qOjPBVUiZrhQkMlTwvifUYE87?=
+ =?us-ascii?Q?flu49SBVAhB+FHe+fUG+dAOedKlXQZPdpZE/nzEOYnl806VAg2TL1ANQHMbe?=
+ =?us-ascii?Q?j/8JcQSD+nMh1fR+1QsCQgQGWY4bcSZq2ibbVVcRiFW4h+FiqpT0KhJde745?=
+ =?us-ascii?Q?bLfwCvW8k8bBxHpGKxwBYb1/uFqyM10YVeLoVrJVnGV5CY4ulKB1/0MLVZFE?=
+ =?us-ascii?Q?qtYDfvY8Qwk6SmjRXTagYmIjgX/1AbkeWEXccZv1HJ+3HGrtVYsKZpQgcbGQ?=
+ =?us-ascii?Q?wjQ/telmu7hbXRBE+L4aY5uf8pV2F6ETpXYYZ6Q/wLuP06X8gkU2DUnhkVLl?=
+ =?us-ascii?Q?wGsqrpjRwao6nz4hGaSsqHedSxqdTZU6/tRQE3kGuudIf0h+1b4KDK/35pDa?=
+ =?us-ascii?Q?iE4TMHOg46zCTZtnifNBvQNRZsUb5zyO1UOM3vUmwxCLxt+hhKNwCfs8TnFR?=
+ =?us-ascii?Q?S6PgU8uPbQ9rNiZLlg7F0O97A3j9/FR1M1fAoPOuyA6DIxlSNbM1iVl8i+9L?=
+ =?us-ascii?Q?nE3YFxU3kAa6XsBRRdW6QwKgdTyjfYbNFXqXoiJd4F1MPGxJehnlpYVnrY26?=
+ =?us-ascii?Q?WtOxk8ZyspEp2Bf9Tjgcqo7VdN/d2PzEg3nDgnrUIsoeq7H/qHXQXtWsCiuy?=
+ =?us-ascii?Q?WuOTh7LoHofpKJfgOoQmQmAWMVqHrwpxS9eCv7kO?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39d8383f-0362-462d-336c-08dba017254d
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2023 18:15:47.5721
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0VPJVfkHEr/yWlQqhSuL/dD+/HboaZiJd/m5MV6+lB86dIL9b7RANpaCyZ7otuNN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8987
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 2023-08-18 at 13:06 -0300, Jason Gunthorpe wrote:
-> On Fri, Aug 18, 2023 at 05:56:20PM +0200, Joerg Roedel wrote:
-> > On Thu, Aug 17, 2023 at 03:33:16PM -0300, Jason Gunthorpe wrote:
-> > > Bascially.. Yikes!
-> >=20
-> > Hmm, that is a difficult situation. Even if the problem is a misuse
-> > of
-> > the APIs we can not just blindly break other drivers by our core
-> > changes.
->=20
-> They are not broken, they just throw a lockdep warning and keep going
-> as before. This is what triggers:
->=20
-> static inline void device_lock_assert(struct device *dev)
-> {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0lockdep_assert_held(&dev-=
->mutex);
-> }
->=20
-> So non-debug builds won't even see anything.
->=20
-> > We need to resolve this situation pretty soon, otherwise I need to
-> > remove the locking rework patches from the IOMMU tree until the
-> > callers are fixed.
-> >=20
-> > Is there a way to keep the broken drivers working for now?
->=20
-> Historically we've tolerated lockdep warnings as a way to motivate
-> people who care to fix their stuff properly. eg the Intel VT-D had a
-> lockdep warning at kernel boot for many releases before it was fixed.
->=20
-> The series doesn't make things any functionally worse for these
-> places
-> misusing the API, but it now does throw a warning in some cases.
+On Fri, Aug 18, 2023 at 02:00:21PM -0400, Eric Farman wrote:
 
-Hi Jason,
+> Well, I'm trying to chase down an apparent deadlock in the mdev cases
+> that is introduced with the commit [1] blamed by these fixes. Seems
+> that when iommu_group_{add|remove}_device gets called out of vfio (for
+> example, vfio-ap or -ccw), the device lock is already held so
+> attempting to get it again isn't going to go well.
 
-Well, I'm trying to chase down an apparent deadlock in the mdev cases
-that is introduced with the commit [1] blamed by these fixes. Seems
-that when iommu_group_{add|remove}_device gets called out of vfio (for
-example, vfio-ap or -ccw), the device lock is already held so
-attempting to get it again isn't going to go well.
+Oh, yes. Thankfully due to all the recent cleanup there is now only
+one caller of iommu_group_add_device() - VFIO and only on the
+vfio_register_emulated_iommu_dev() path.
 
-As near as I see, mdev_device_create calls device_driver_attach, which
-acquires the lock and eventually gets us into the vfio code, and then
-vfio_device_set_group get us into the iommu side. Not sure how to best
-untangle that.
+All those callers are under mdev probe callbacks so they all must have
+the device lock held. iommu_group_remove_device is the same. Simple
+fix to just assert the device lock is held.
 
-I'm puzzled why lockdep isn't shouting over this for me, so I added a
-lockdep_assert_not_held() in those paths to get a proper callchain:
+> I'm puzzled why lockdep isn't shouting over this for me, so I added a
+> lockdep_assert_not_held() in those paths to get a proper callchain:
 
-[   49.319508] ------------[ cut here ]------------
-[   49.319546] WARNING: CPU: 0 PID: 4472 at drivers/iommu/iommu.c:1216
-iommu_group_add_device+0xfc/0x120
-[   49.319562] Modules linked in: vhost_vsock
-vmw_vsock_virtio_transport_common vsock vhost vhost_iotlb algif_hash
-af_alg lcs ctcm fsm kvm xt_MASQUERADE xt_conntrack ipt_REJECT
-nf_reject_ipv4 xt_tcpudp iptable_mangle iptable_nat nf_nat nf_conntrack
-nf_defrag_ipv6 nf_defrag_ipv4 iptable_filter ip_tables x_tables bridge
-stp llc vfio_ccw zcrypt_cex4 eadm_sch mdev vfio_iommu_type1 vfio loop
-configfs zram zsmalloc ghash_s390 prng aes_s390 des_s390 libdes qeth_l2
-sha512_s390 sha256_s390 sha1_s390 sha_common pkey zcrypt rng_core
-dm_multipath dm_mod autofs4
-[   49.319721] CPU: 0 PID: 4472 Comm: python Kdump: loaded Not tainted
-6.5.0-rc6-next-20230818-dirty #2
-[   49.319728] Hardware name: IBM 2964 NE1 749 (LPAR)
-[   49.319734] Krnl PSW : 0704f00180000000 0000000190aab690
-(iommu_group_add_device+0x100/0x120)
-[   49.319748]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:3
-PM:0 RI:0 EA:3
-[   49.319758] Krnl GPRS: 0000000000000000 0000000100000000
-0000000000000001 00000000ae8924f0
-[   49.319765]            00000001bc05a920 000000008e7f8000
-0000000000000000 0000000000000001
-[   49.319772]            00000000ae892400 00000000ae892400
-000000008d23b200 0000000000000000
-[   49.319779]            000003ff901d8d18 000003ff90616a08
-0000000190aab686 0000038005c8ba50
-[   49.319792] Krnl Code: 0000000190aab680:
-c0e5001e5624	brasl	%r14,0000000190e762c8
-                          0000000190aab686:
-ec26ff9f017e	cij	%r2,1,6,0000000190aab5c4
-                         #0000000190aab68c:
-af000000		mc	0,0
-                         >0000000190aab690:
-a7f4ff9a		brc	15,0000000190aab5c4
-                          0000000190aab694:
-b9040028		lgr	%r2,%r8
-                          0000000190aab698:
-c0e5001eb210	brasl	%r14,0000000190e81ab8
-                          0000000190aab69e:
-182b		lr	%r2,%r11
-                          0000000190aab6a0:
-eb6ff0a00004	lmg	%r6,%r15,160(%r15)
-[   49.319872] Call Trace:
-[   49.319878]  [<0000000190aab690>] iommu_group_add_device+0x100/0x120
-[   49.319886] ([<0000000190aab686>] iommu_group_add_device+0xf6/0x120)
-[   49.319894]  [<000003ff8002f404>] vfio_device_set_group+0x9c/0x128
-[vfio]=20
-[   49.319909]  [<000003ff8002cf12>]
-vfio_register_emulated_iommu_dev+0x6a/0xd0 [vfio]=20
-[   49.319918]  [<000003ff80083906>] vfio_ccw_mdev_probe+0xce/0x108
-[vfio_ccw]=20
-[   49.319931]  [<0000000190abdbc8>] really_probe+0xd0/0x338=20
-[   49.319939]  [<0000000190abe3cc>] device_driver_attach+0x5c/0xc8=20
-[   49.319947]  [<000003ff8003ca30>] mdev_device_create+0x200/0x278
-[mdev]=20
-[   49.319956]  [<000003ff8003ce1c>] create_store+0x8c/0xb8 [mdev]=20
-[   49.319964]  [<000000019059fba2>] kernfs_fop_write_iter+0x142/0x1d8=20
-[   49.319975]  [<00000001904c7c76>] vfs_write+0x1de/0x440=20
-[   49.319986]  [<00000001904c814e>] ksys_write+0x6e/0x100=20
-[   49.320024]  [<0000000190e75bfe>] __do_syscall+0x1de/0x208=20
-[   49.320033]  [<0000000190e8c470>] system_call+0x70/0x98=20
-[   49.320042] 5 locks held by python/4472:
-[   49.320048]  #0: 0000000086d86440 (sb_writers#3){.+.+}-{0:0}, at:
-ksys_write+0x6e/0x100
-[   49.320074]  #1: 000000008d239c90 (&of->mutex){+.+.}-{3:3}, at:
-kernfs_fop_write_iter+0x102/0x1d8
-[   49.320095]  #2: 000000008ad95428 (kn->active#266){.+.+}-{0:0}, at:
-kernfs_fop_write_iter+0x10e/0x1d8
-[   49.320119]  #3: 00000000ae888b78 (&parent->unreg_sem){.+.+}-{3:3},
-at: mdev_device_create+0x1b0/0x278 [mdev]
-[   49.320141]  #4: 00000000ae8924f0 (&dev->mutex){....}-{3:3}, at:
-device_driver_attach+0x4e/0xc8
-[   49.320162] Last Breaking-Event-Address:
-[   49.320168]  [<0000000190f7734c>] __s390_indirect_jump_r14+0x0/0xc
-[   49.320179] irq event stamp: 147555
-[   49.320185] hardirqs last  enabled at (147563): [<00000001901edcb4>]
-console_unlock+0x10c/0x118
-[   49.320194] hardirqs last disabled at (147570): [<00000001901edc96>]
-console_unlock+0xee/0x118
-[   49.320201] softirqs last  enabled at (147304): [<0000000190e8e674>]
-__do_softirq+0x47c/0x510
-[   49.320209] softirqs last disabled at (147295): [<000000019015732a>]
-__irq_exit_rcu+0x11a/0x130
-[   49.320218] ---[ end trace 0000000000000000 ]---
+The driver core mostly disables lockdep on the device_lock() :(
+
+Does this work for you?
 
 Thanks,
-Eric
+Jason
 
-[1] a16b5d1681ab ("iommu: Complete the locking for dev->iommu_group")
-
->=20
-> IMHO I'd rather keep the warning rather than supress it by adding
-> device_locks(). Do you agree?
->=20
-> Jason
-
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 18162049bd2294..1f58bfacb47951 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -1166,12 +1166,11 @@ int iommu_group_add_device(struct iommu_group *group, struct device *dev)
+ {
+ 	struct group_device *gdev;
+ 
+-	device_lock(dev);
++	device_lock_assert(dev);
++
+ 	gdev = iommu_group_alloc_device(group, dev);
+-	if (IS_ERR(gdev)) {
+-		device_unlock(dev);
++	if (IS_ERR(gdev))
+ 		return PTR_ERR(gdev);
+-	}
+ 
+ 	iommu_group_ref_get(group);
+ 	dev->iommu_group = group;
+@@ -1179,7 +1178,6 @@ int iommu_group_add_device(struct iommu_group *group, struct device *dev)
+ 	mutex_lock(&group->mutex);
+ 	list_add_tail(&gdev->list, &group->devices);
+ 	mutex_unlock(&group->mutex);
+-	device_unlock(dev);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(iommu_group_add_device);
+@@ -1195,14 +1193,13 @@ void iommu_group_remove_device(struct device *dev)
+ {
+ 	struct iommu_group *group;
+ 
+-	device_lock(dev);
++	device_lock_assert(dev);
++
+ 	group = dev->iommu_group;
+ 	if (group) {
+ 		dev_info(dev, "Removing from iommu group %d\n", group->id);
+ 		__iommu_group_remove_device(dev);
+ 	}
+-	device_unlock(dev);
+-
+ }
+ EXPORT_SYMBOL_GPL(iommu_group_remove_device);
+ 
