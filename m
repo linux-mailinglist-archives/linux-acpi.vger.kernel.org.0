@@ -2,205 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1012A7812F5
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Aug 2023 20:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81F0C7812EA
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Aug 2023 20:35:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359123AbjHRShr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Aug 2023 14:37:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60528 "EHLO
+        id S1379088AbjHRSee convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 18 Aug 2023 14:34:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379471AbjHRShp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Aug 2023 14:37:45 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37CDE3C3F
-        for <linux-acpi@vger.kernel.org>; Fri, 18 Aug 2023 11:37:44 -0700 (PDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37IIbCPT030560;
-        Fri, 18 Aug 2023 18:37:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=EXIi0eK12ai89YFTLn4ywUx2yW7twMKUH+DjVC8xJjU=;
- b=eju15apjYlNxCNz8y+YbNRWTDI39MtGeoZraAJtR3M0/xqtL+O7K6JGenAwRBcNncS4U
- 7RSUgem65mKMeo20aQEUk5t2y0X2hBJyewmloTysJVaSkm59QJEI2G07AAWVOBIPJ6e7
- TI500xBn1dv3A4JbwixNWYdkpVfFEjO3l4Tcx3B8hv0TW05THv6KpSnFJTyz4Q43PYh4
- 4sBd87X66F/n17xJZeulY0xDnyJSE/8hrAA/YtdEkVmabbJt8c/t3xXCz0H2NM/v+4N4
- biKk87WWc2MNzTRSGTeJKzhNToFP42ERWTlfFAw3Sx9MMyyr1OQviacHlO/aTyHo6TpL Ig== 
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sjdy0r265-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 18 Aug 2023 18:37:14 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-        by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37IHu4cb018848;
-        Fri, 18 Aug 2023 18:32:19 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-        by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3seq428k0j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 18 Aug 2023 18:32:19 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-        by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37IIWI8t7799324
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 18 Aug 2023 18:32:18 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 935535803F;
-        Fri, 18 Aug 2023 18:32:18 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 90E8258056;
-        Fri, 18 Aug 2023 18:32:17 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown [9.61.79.45])
-        by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Fri, 18 Aug 2023 18:32:17 +0000 (GMT)
-Message-ID: <6ad5408dbe7acee4c83b7e9466c21f326f08b9b6.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 0/4] Fix device_lock deadlock on two probe() paths
-From:   Eric Farman <farman@linux.ibm.com>
-To:     Jason Gunthorpe <jgg@nvidia.com>
-Cc:     Joerg Roedel <jroedel@suse.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Chen-Yu Tsai <wenst@chromium.org>
-Date:   Fri, 18 Aug 2023 14:32:17 -0400
-In-Reply-To: <ZN+1UktCwqTu53FI@nvidia.com>
-References: <CGME20230809144403eucas1p1345aec6ec34440f1794594426e0402ab@eucas1p1.samsung.com>
-         <0-v2-d2762acaf50a+16d-iommu_group_locking2_jgg@nvidia.com>
-         <d090f196-a5c2-b188-31bf-e42553d8d251@samsung.com>
-         <ZN5n7GnlrTS6s5Yg@nvidia.com> <ZN-UpDFHab0vGuXp@suse.de>
-         <ZN+XE7dk04f2C3D7@nvidia.com>
-         <bff750f47b326c7c0066f1debc5411a8208a128c.camel@linux.ibm.com>
-         <ZN+1UktCwqTu53FI@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S229891AbjHRSeC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Aug 2023 14:34:02 -0400
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FE6B2D7D;
+        Fri, 18 Aug 2023 11:34:01 -0700 (PDT)
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-56d0deeca09so194048eaf.0;
+        Fri, 18 Aug 2023 11:34:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692383640; x=1692988440;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vBlf1nUQbQFfKp2zKc4LcGN+VaY8kuxNt6d+r4cR42E=;
+        b=M1dk1rxTlI9dCNyIuG6vzOIXFNP63CbNcCzQnzj5+84HmYfjcKfxU/Bgut+R7kBXAe
+         A/6QwkUs5Q27G+l4tOqFU+QtCcC9w3SBm8sBBRg/x1Pcga9KgTJkEyn36/yevYBQLIVw
+         8DMLtQYzDnDxgR+LZXv9vdkiCrAo56x0hZ5F+bB8JG8tBoh94wFl7JUhy10gmwCxpFQN
+         0DZFI2MxW4uyr+V4Rm5gEjt3tsWiVH1pJ8FY20bOzQ9Tb8s8q4XT5HIEXelcvFxGNt6J
+         c44MS6EtUXZicg2jcKppSqxSJvZaqfiqlkUVEvT9lsvOMUx7gBBYd61kcM/sFaK5JNm9
+         maAQ==
+X-Gm-Message-State: AOJu0YxoVwoCwwodE1sx3DsZY7jYMc7Pzi+qF3haSECTqwuHvc0LYILk
+        7HRt15kH4nJ+SCLln6D4xlqYAU6UX4/JL/+DA10=
+X-Google-Smtp-Source: AGHT+IGuDEf404L20cLinB+qq0IvT6x+B4zee3DZX6C39FncXp/0fDdfUrlcQSfj4EdEaLs7zjsYafTuCQ2678V5Ghw=
+X-Received: by 2002:a4a:be17:0:b0:56e:72e0:9c5f with SMTP id
+ l23-20020a4abe17000000b0056e72e09c5fmr36938oop.1.1692383640542; Fri, 18 Aug
+ 2023 11:34:00 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: x2OwDuS7gfQcZE6cJ2WYbd9bYpJ05aYo
-X-Proofpoint-GUID: x2OwDuS7gfQcZE6cJ2WYbd9bYpJ05aYo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-18_23,2023-08-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=999 clxscore=1015 bulkscore=0
- phishscore=0 impostorscore=0 mlxscore=0 priorityscore=1501 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308180170
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230817093011.1378-1-sumitg@nvidia.com> <20230817093011.1378-2-sumitg@nvidia.com>
+In-Reply-To: <20230817093011.1378-2-sumitg@nvidia.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 18 Aug 2023 20:33:49 +0200
+Message-ID: <CAJZ5v0gKtwgu=ysdROapfK-pnr3om8zXH_xsP3i=HVqQSs_d-g@mail.gmail.com>
+Subject: Re: [Patch 1/2] ACPI: thermal: Add Thermal fast Sampling Period
+ (_TFP) support
+To:     Sumit Gupta <sumitg@nvidia.com>
+Cc:     rafael@kernel.org, rui.zhang@intel.com, lenb@kernel.org,
+        treding@nvidia.com, jonathanh@nvidia.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        sanjayc@nvidia.com, ksitaraman@nvidia.com, srikars@nvidia.com,
+        jbrasen@nvidia.com, bbasu@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 2023-08-18 at 15:15 -0300, Jason Gunthorpe wrote:
-> On Fri, Aug 18, 2023 at 02:00:21PM -0400, Eric Farman wrote:
->=20
-> > Well, I'm trying to chase down an apparent deadlock in the mdev
-> > cases
-> > that is introduced with the commit [1] blamed by these fixes. Seems
-> > that when iommu_group_{add|remove}_device gets called out of vfio
-> > (for
-> > example, vfio-ap or -ccw), the device lock is already held so
-> > attempting to get it again isn't going to go well.
->=20
-> Oh, yes. Thankfully due to all the recent cleanup there is now only
-> one caller of iommu_group_add_device() - VFIO and only on the
-> vfio_register_emulated_iommu_dev() path.
->=20
-> All those callers are under mdev probe callbacks so they all must
-> have
-> the device lock held. iommu_group_remove_device is the same. Simple
-> fix to just assert the device lock is held.
+On Thu, Aug 17, 2023 at 11:30 AM Sumit Gupta <sumitg@nvidia.com> wrote:
+>
+> From: Jeff Brasen <jbrasen@nvidia.com>
+>
+> Add support for Thermal fast Sampling Period (_TFP) for Passive cooling.
+> As per UEFI spec,
 
-Agreed.
+You mean the ACPI spec I suppose?  It would be good to give the
+relevant section number and title.
 
->=20
-> > I'm puzzled why lockdep isn't shouting over this for me, so I added
-> > a
-> > lockdep_assert_not_held() in those paths to get a proper callchain:
->=20
-> The driver core mostly disables lockdep on the device_lock() :(
-
-Ah, TIL. Thanks!
-
->=20
-> Does this work for you?
-
-Yup, for both -ap and -ccw devices that I have handy. Thanks for the
-quick turnaround!
-
-Thanks,
-Eric
-
->=20
-> Thanks,
-> Jason
->=20
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index 18162049bd2294..1f58bfacb47951 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -1166,12 +1166,11 @@ int iommu_group_add_device(struct iommu_group
-> *group, struct device *dev)
-> =C2=A0{
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct group_device *gdev=
-;
-> =C2=A0
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0device_lock(dev);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0device_lock_assert(dev);
+>  _TFP overrides the "Thermal Sampling Period (_TSP)"
+>  if both are present in a Thermal zone.
+>
+> Signed-off-by: Jeff Brasen <jbrasen@nvidia.com>
+> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+> ---
+>  drivers/acpi/thermal.c | 21 ++++++++++++++-------
+>  1 file changed, 14 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+> index f9f6ebb08fdb..5dee3722509c 100644
+> --- a/drivers/acpi/thermal.c
+> +++ b/drivers/acpi/thermal.c
+> @@ -111,7 +111,7 @@ struct acpi_thermal_passive {
+>         unsigned long temperature;
+>         unsigned long tc1;
+>         unsigned long tc2;
+> -       unsigned long tsp;
+> +       unsigned long sampling_period;
+>         bool valid;
+>  };
+>
+> @@ -289,11 +289,18 @@ static int acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
+>                                         tz->trips.passive.tc2 = tmp;
+>
+>                                 status = acpi_evaluate_integer(tz->device->handle,
+> -                                                              "_TSP", NULL, &tmp);
+> -                               if (ACPI_FAILURE(status))
+> -                                       tz->trips.passive.valid = false;
+> -                               else
+> -                                       tz->trips.passive.tsp = tmp;
+> +                                                              "_TFP", NULL, &tmp);
+> +                               if (ACPI_FAILURE(status)) {
+> +                                       status = acpi_evaluate_integer(tz->device->handle,
+> +                                                                      "_TSP", NULL, &tmp);
+> +                                       if (ACPI_FAILURE(status))
+> +                                               tz->trips.passive.valid = false;
+> +                                       else
+> +                                               tz->trips.passive.sampling_period = tmp * 100;
 > +
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0gdev =3D iommu_group_allo=
-c_device(group, dev);
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (IS_ERR(gdev)) {
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0device_unlock(dev);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (IS_ERR(gdev))
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0return PTR_ERR(gdev);
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0iommu_group_ref_get(group=
-);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dev->iommu_group =3D grou=
-p;
-> @@ -1179,7 +1178,6 @@ int iommu_group_add_device(struct iommu_group
-> *group, struct device *dev)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mutex_lock(&group->mutex)=
-;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0list_add_tail(&gdev->list=
-, &group->devices);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mutex_unlock(&group->mute=
-x);
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0device_unlock(dev);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-> =C2=A0}
-> =C2=A0EXPORT_SYMBOL_GPL(iommu_group_add_device);
-> @@ -1195,14 +1193,13 @@ void iommu_group_remove_device(struct device
-> *dev)
-> =C2=A0{
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iommu_group *group=
-;
-> =C2=A0
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0device_lock(dev);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0device_lock_assert(dev);
-> +
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0group =3D dev->iommu_grou=
-p;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (group) {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0dev_info(dev, "Removing from iommu group %d\n",
-> group->id);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0__iommu_group_remove_device(dev);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0device_unlock(dev);
-> -
-> =C2=A0}
-> =C2=A0EXPORT_SYMBOL_GPL(iommu_group_remove_device);
-> =C2=A0
+> +                               } else {
+> +                                       tz->trips.passive.sampling_period = tmp;
+> +                               }
+>                         }
+>                 }
+>         }
+> @@ -765,7 +772,7 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
+>         if (tz->trips.passive.valid)
+>                 tz->thermal_zone = thermal_zone_device_register("acpitz", trips, 0, tz,
+>                                                                 &acpi_thermal_zone_ops, NULL,
+> -                                                               tz->trips.passive.tsp * 100,
+> +                                                               tz->trips.passive.sampling_period,
+>                                                                 tz->polling_frequency * 100);
+>         else
+>                 tz->thermal_zone =
+> --
 
+So this needs to be rebased on top of the current linux-next branch in
+linux-pm.git or on top of the acpi-thermal branch in there.
