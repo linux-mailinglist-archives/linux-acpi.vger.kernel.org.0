@@ -2,141 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 193BB780586
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Aug 2023 07:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FBF97805CB
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Aug 2023 08:04:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356846AbjHRFPx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Aug 2023 01:15:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37688 "EHLO
+        id S1357547AbjHRGEA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Aug 2023 02:04:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356508AbjHRFPX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Aug 2023 01:15:23 -0400
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2082.outbound.protection.outlook.com [40.107.101.82])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7A2726B6;
-        Thu, 17 Aug 2023 22:15:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ImAx0XHXweq9cxFzwr/38kpHevq4xVbdblWlY4eY2lhnY2sDEAz4tGzvAfm2khQQ3T9sOhJRQi9BFnJgDUTNr68d5VDjZ+UwGMiEa9iiBMm43FduywxkE2O1CM0zrSpljhw6G5VNyLzZwweXhYWoequMkiJRKBC3T30MAgx9d9jU1yU2OzZGRiLXuA9kc91UDpJzTTKAyRsowJYIdrPrt2cb49oavd0WbKH2+Ysdz7t2rkf7KhLru06yNwzz5bF0Q2k5m9/6R5P7yD7RuiBJWX2faRElZyU7LMtnl26bCJMzufFSMA+xaO9r3UwniolV5405wrzXnfHUJ0+x4uYgSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6mdpErebdeUHIqJqXzE4h8gfzDj6nsgjdNisiSYee2M=;
- b=ItxB9DbmieBzS/7lNZlfGpiJX8M0gRkXW3OCM8IEYyv9712WUdsgzYFXOIdP9eN/YCwNEHs+cW33uG7/ZjlUplzGkQJxySuEk4lTVuDWNRYwfAc6x+BvmrC3jdhPzYUUuD5cv02CgCgulcbMh9P68N3YO/GpqFvzgVaDfLxvtbkcoJp42nNEvq/3qBdZCgT0rnKF/Uq1TOH62UVTT/X0YOJRHsH4LDbik+7xdAAxGcAPWK2dcNG5pRjPhUXCwlocEAO/ZNqAcCARTz0BDKJzKeB6IGAyyx59mjfXVR7TmxdHRtWxDtLpK1oiuHFhgP8js7+pznfusD6nNVWWZryvpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6mdpErebdeUHIqJqXzE4h8gfzDj6nsgjdNisiSYee2M=;
- b=xbgoxgWZBlHK0lcc1p9FE4WFjfIsfJPZ9RAxb9lVoVkn3Z0p1TLa5Sw6sxksrmH7D7PZGNU7wY054xMGHMB91T6SKTG3gtT0slq5lHvS7XmInRjrxv4EstoGgVFlUicONWVrFvLixJMSQXd2g6oKHn6tPXPPhv4Tk4OC/m4q7BM=
-Received: from SN7PR04CA0194.namprd04.prod.outlook.com (2603:10b6:806:126::19)
- by SA1PR12MB7367.namprd12.prod.outlook.com (2603:10b6:806:2b5::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.31; Fri, 18 Aug
- 2023 05:15:09 +0000
-Received: from SN1PEPF0002636C.namprd02.prod.outlook.com
- (2603:10b6:806:126:cafe::7c) by SN7PR04CA0194.outlook.office365.com
- (2603:10b6:806:126::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.17 via Frontend
- Transport; Fri, 18 Aug 2023 05:15:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF0002636C.mail.protection.outlook.com (10.167.241.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6699.15 via Frontend Transport; Fri, 18 Aug 2023 05:15:09 +0000
-Received: from SITE-L-T34-2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 18 Aug
- 2023 00:15:07 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>
-CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
-        <linux-acpi@vger.kernel.org>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Iain Lane" <iain@orangesquash.org.uk>,
-        Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v13 12/12] PCI: ACPI: Limit the Intel specific opt-in to D3 to 2024
-Date:   Fri, 18 Aug 2023 00:13:19 -0500
-Message-ID: <20230818051319.551-13-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230818051319.551-1-mario.limonciello@amd.com>
-References: <20230818051319.551-1-mario.limonciello@amd.com>
+        with ESMTP id S1357717AbjHRGDz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Aug 2023 02:03:55 -0400
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4599030E1;
+        Thu, 17 Aug 2023 23:03:51 -0700 (PDT)
+Received: from loongson.cn (unknown [10.20.42.170])
+        by gateway (Coremail) with SMTP id _____8BxuOjFCd9kh8wZAA--.17256S3;
+        Fri, 18 Aug 2023 14:03:50 +0800 (CST)
+Received: from [10.20.42.170] (unknown [10.20.42.170])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8CxriPFCd9kk2ldAA--.57484S3;
+        Fri, 18 Aug 2023 14:03:49 +0800 (CST)
+Message-ID: <175ba9b3-d667-f887-e04c-f19ad15a57e4@loongson.cn>
+Date:   Fri, 18 Aug 2023 14:03:49 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] ACPI: processor_core: LoongArch: Get physical id from
+ MADT table
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230717022258.2579631-1-maobibo@loongson.cn>
+ <fbe94cf6-0fd0-fbb5-4308-e1730e3af214@loongson.cn>
+ <CAJZ5v0iU0iQR=s2Df2E8wNnSLDvTAkxGfRrBAowmLEZ9yQKRsA@mail.gmail.com>
+Content-Language: en-US
+From:   bibo mao <maobibo@loongson.cn>
+In-Reply-To: <CAJZ5v0iU0iQR=s2Df2E8wNnSLDvTAkxGfRrBAowmLEZ9yQKRsA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002636C:EE_|SA1PR12MB7367:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e262cff-f303-4be1-12d1-08db9faa17bb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 6GYZafMXTYjq2f0Gk9HfJWdLzCfZARHLscM/nu4D4J3PWWnsoVnp58mO2bQ/j7OM1mkFrUDJpLlLKNjOtnfnpIt5a21ir+eaRraBUOJ+Es0qA234tjXwEudwU7+r0VprHgE5H1igKGM6BcsGlWxu3BnYYc1Z/IMrhhXlOWmyBayBmz+9/+YdvBLPWY15X1dvi0DJJcWqPtiTKMlQpWyzzZaAmR8WcNfXudiFSwfZFQgQs/wvn7dWy9shcP/GuGLZ8V6+I4fJPXEiZo/b10cd5awMVDhJAAPkVEs8to7DCo6ztBi0zFaHN7ZXE9AgyCXXpXXvxMhqfF32JRVvVwZx9sS7KnNSnAVUcjdD/veUuncqJAWzn+Z44hL88+f0r9wbD5g4vXAJAKx9oFwXEVTwHHXwXe3paLPX9HSfYNkTDRLgDUxnntuLh3yzkFa7fdn4wsBd+0KlsM8DSVKzg1WlW1UjWjlefEn3kcuioOv5BDG2aznOfbQUXL2ABKpn4eWprJ0MddfV8aOAJQgcPP1drg++5eRhHMn5BPkYw8uKwi+52vWdakQKw0FVATWmrMw86KNKRHF55tlxO3vNTcwSHEMXpzIonGfI0zGvriJYl5s2yiMt9zzSTAytx/G25XaomgNLsNT6voLuyM3gTo1hTUARG0lqcKePQDvBmb811KXNJMYi/oeqFaouhe4k+fEBWU0w5XMg8Mcf2IRZtZVnKIGiQkiFVTT0oxysp73TeluUZX0Ewaz6xPCdDDNw146by7BPCwc4RVlqC6oqoFG77Q==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(376002)(136003)(396003)(39860400002)(451199024)(1800799009)(82310400011)(186009)(40470700004)(36840700001)(46966006)(86362001)(36756003)(82740400003)(356005)(81166007)(40480700001)(2616005)(5660300002)(44832011)(110136005)(16526019)(70586007)(478600001)(70206006)(7696005)(6666004)(54906003)(316002)(26005)(1076003)(4326008)(8676002)(8936002)(41300700001)(40460700003)(47076005)(336012)(36860700001)(83380400001)(426003)(4744005)(2906002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2023 05:15:09.3668
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e262cff-f303-4be1-12d1-08db9faa17bb
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002636C.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7367
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-CM-TRANSID: AQAAf8CxriPFCd9kk2ldAA--.57484S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxZw18WrW5trW8Cw47Aw4kZrc_yoW5Zw4kpF
+        y8Ka4Yk3WUWF12gw1Sq3WYgFyFv3y8Ca4fWFs7Gry3K3ZYkryfXFWUXryagryUAF4Fk3y0
+        vr1UtFZrWFWFvFgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+        sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+        0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+        IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+        e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+        0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+        6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+        Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
+        14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+        AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+        rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
+        CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+        67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
+        0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUrNtx
+        DUUUU
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Intel systems that need to have PCIe ports in D3 for low power idle
-specify this by constraints on the ACPI PNP0D80 device. As this information
-is queried, limit the DMI BIOS year check to stop at 2024. This will
-allow future systems to rely on the constraints check to set up policy
-like non-Intel systems do.
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
-v12->v13:
- * New patch
----
- drivers/pci/pci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 0fc8d35154f97..5b9e11e254f34 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3049,10 +3049,11 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
- 			return true;
- 
- 		/*
--		 * It is safe to put Intel PCIe ports from 2015 or newer
-+		 * It is safe to put Intel PCIe ports from 2015 to 2024
- 		 * to D3.
- 		 */
- 		if (bridge->vendor == PCI_VENDOR_ID_INTEL &&
-+		    dmi_get_bios_year() <= 2024 &&
- 		    dmi_get_bios_year() >= 2015)
- 			return true;
- 		break;
--- 
-2.34.1
+在 2023/8/18 00:40, Rafael J. Wysocki 写道:
+> On Tue, Jul 25, 2023 at 2:32 AM bibo mao <maobibo@loongson.cn> wrote:
+>>
+>> slightly ping :)
+>>
+>> 在 2023/7/17 10:22, Bibo Mao 写道:
+>>> With ACPI Spec 6.5 chapter 5.2.12.20, each processor in LoongArch
+>>> system has a Core Programmable Interrupt Controller in MADT table,
+>>> value of its type is 0x11 in the spec and defined as enum variable
+>>> ACPI_MADT_TYPE_CORE_PIC in Linux kernel. Physical id can be parsed
+>>> from MADT table for LoongArch system, also it can be parsed from
+>>> MAT table for hotplug cpu. This patch adds physical id parsing for
+>>> LoongArch system.
+>>>
+>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>>> ---
+>>> Changes in v2:
+>>>  Refresh the changelog and add detailed description of acpi spec
+>>>  about MADT table for LoongArch system.
+>>>
+>>>  Add comments in function map_core_pic_id.
+>>>
+>>> ---
+>>>  drivers/acpi/processor_core.c | 29 +++++++++++++++++++++++++++++
+>>>  1 file changed, 29 insertions(+)
+>>>
+>>> diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
+>>> index d6606a9f2da6..7dd6dbaa98c3 100644
+>>> --- a/drivers/acpi/processor_core.c
+>>> +++ b/drivers/acpi/processor_core.c
+>>> @@ -132,6 +132,30 @@ static int map_rintc_hartid(struct acpi_subtable_header *entry,
+>>>       return -EINVAL;
+>>>  }
+>>>
+>>> +/*
+>>> + * Retrieve LoongArch CPU physical id
+>>> + */
+>>> +static int map_core_pic_id(struct acpi_subtable_header *entry,
+>>> +             int device_declaration, u32 acpi_id, phys_cpuid_t *phys_id)
+>>> +{
+>>> +     struct acpi_madt_core_pic *core_pic =
+>>> +             container_of(entry, struct acpi_madt_core_pic, header);
+>>> +
+>>> +     if (!(core_pic->flags & ACPI_MADT_ENABLED))
+>>> +             return -ENODEV;
+>>> +
+>>> +     /* device_declaration means Device object in DSDT, in LoongArch
+>>> +      * system, logical processor acpi_id is required in _UID property
+>>> +      * of DSDT table, so we should check device_declaration here
+>>> +      */
+>>> +     if (device_declaration && (core_pic->processor_id == acpi_id)) {
+>>> +             *phys_id = core_pic->core_id;
+>>> +             return 0;
+>>> +     }
+>>> +
+>>> +     return -EINVAL;
+>>> +}
+>>> +
+>>>  static phys_cpuid_t map_madt_entry(struct acpi_table_madt *madt,
+>>>                                  int type, u32 acpi_id)
+>>>  {
+>>> @@ -165,6 +189,9 @@ static phys_cpuid_t map_madt_entry(struct acpi_table_madt *madt,
+>>>               } else if (header->type == ACPI_MADT_TYPE_RINTC) {
+>>>                       if (!map_rintc_hartid(header, type, acpi_id, &phys_id))
+>>>                               break;
+>>> +             } else if (header->type == ACPI_MADT_TYPE_CORE_PIC) {
+>>> +                     if (!map_core_pic_id(header, type, acpi_id, &phys_id))
+>>> +                             break;
+>>>               }
+>>>               entry += header->length;
+>>>       }
+>>> @@ -216,6 +243,8 @@ static phys_cpuid_t map_mat_entry(acpi_handle handle, int type, u32 acpi_id)
+>>>               map_x2apic_id(header, type, acpi_id, &phys_id);
+>>>       else if (header->type == ACPI_MADT_TYPE_GENERIC_INTERRUPT)
+>>>               map_gicc_mpidr(header, type, acpi_id, &phys_id);
+>>> +     else if (header->type == ACPI_MADT_TYPE_CORE_PIC)
+>>> +             map_core_pic_id(header, type, acpi_id, &phys_id);
+>>>
+>>>  exit:
+>>>       kfree(buffer.pointer);
+>>
+> 
+> Sorry for the delay.
+> 
+> Applied (under a slightly edited subject) as 6.6 material, thanks!
+
+Thanks for applying the patch.
 
