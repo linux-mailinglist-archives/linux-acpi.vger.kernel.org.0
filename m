@@ -2,166 +2,202 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52AB67830B1
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Aug 2023 21:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAB2B783140
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Aug 2023 21:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229825AbjHUTIW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Aug 2023 15:08:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46424 "EHLO
+        id S229820AbjHUTQ0 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 21 Aug 2023 15:16:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229762AbjHUTIV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 15:08:21 -0400
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2054.outbound.protection.outlook.com [40.107.102.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 414991BB;
-        Mon, 21 Aug 2023 12:08:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=a+Ir2iwjUUF2AbQYyn1hnl/RVusMj96c4blZwhTMG+f1N9SUH2SfRWWp/WIBML8LNZ1PHwqS2ZdMAg/wmAp6/88J3pXGJ5YJKqGwfE2bmtRJJEB0MBYWurpQTB+qAliSsbiVmuYY5eh/XyrMQFefDt7XUEKonnHRp8GqdfzWt9Dgt6WUdnOi1hOTdqIyE1NKlqROlf7Q/KXCW57D1UCcLd0C57xnos4PQtXHIBDPIkmTLK+DyokhYdS5I/1Z9C3sjrP+IqnOdVq/HDzNK67EknjsyJW7a1tbmcEtnhBj3SAUYc4nM36/cY4WnVda0REpTEWodtAGiBL+PetCFwP/1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ikGcVF3RzrpuanPRnXZOfXLC3ZJ8N8vkYp0iCDN8H00=;
- b=ewsf68uqRdFljRGCHLey71bZn4zb3p/iNzD5A3SBz4r7qNurdgWivwPe++Vhd7zEjeFBsojxPcQL9Z9uIT6gBFsWUvY8z75RXK8FXfyE/X1wUpJ2bcCmekkVlWtjng0RGTIkWCrldROHoveWIXIP48E5zFBiwu6w6dOH8ExroUsywN+336mv2e72ZB7rL7XuGUMDTXKG0EGWjYPQqqUgWAk+b7Qf/KDJEGK/+WIV7C8N0jHJniBzc7NPSDpNtxG5m6JWRQjEjWPtJD6EDZXhtuggTPn0OdBb7yqpCR1nqBJvtGtI/Nlqogqu76nNy+MHYGvGMTdrJf+ZmaWk14vPew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ikGcVF3RzrpuanPRnXZOfXLC3ZJ8N8vkYp0iCDN8H00=;
- b=HVOdFdFmvROMTm94f3JIYN5lJQXP9yv8aJEQ7Ghe7WA+CLAYBgdx0/hthYdwGE+eKtD2uGIRH+3JUXvQt0XVyXjLPrPQ1mlHrLbrUwSypXDSfYbbyHI09CliSeDyK25glcpFM4tSWPWs4fbWYNQ7EOFRhbhd6gT1cQ7imSEhkpE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SJ2PR12MB8783.namprd12.prod.outlook.com (2603:10b6:a03:4d0::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Mon, 21 Aug
- 2023 19:08:15 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6699.022; Mon, 21 Aug 2023
- 19:08:15 +0000
-Message-ID: <eceb8980-d957-44b8-961c-3accfce962de@amd.com>
-Date:   Mon, 21 Aug 2023 14:08:12 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14.b 0/7] Export LPS0 constraints
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Iain Lane <iain@orangesquash.org.uk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-References: <20230818194007.27410-1-mario.limonciello@amd.com>
- <CAJZ5v0gNZNRs4hpV5QxxTaPDu1Mp-vDhN-fZZ+_6AZg+nDmg1A@mail.gmail.com>
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <CAJZ5v0gNZNRs4hpV5QxxTaPDu1Mp-vDhN-fZZ+_6AZg+nDmg1A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1PR04CA0011.namprd04.prod.outlook.com
- (2603:10b6:806:2ce::18) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        with ESMTP id S229782AbjHUTQZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 15:16:25 -0400
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DBD2127;
+        Mon, 21 Aug 2023 12:16:23 -0700 (PDT)
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-56e9b517f85so481127eaf.0;
+        Mon, 21 Aug 2023 12:16:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692645383; x=1693250183;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wesEcQczhil1rTgJt8VpxwEYXmS1Bydkl0eNAbgbhGE=;
+        b=QCHozjueCtVOFAu9SuaQncZx9cBvrJviYrJUrTGjs6WJ3NsMMinPqzoyl+weMYnk+7
+         waSdY2jfm9U+W83nZs+PHxMsAvHqJ0NK0mK9447kaC1Rg6ZgzD7dtMkk6EfQ0IfNurez
+         PTGrLokRc8+xRax/PvlOVRr5KIhEQFX24n1EeSCJNj9V9rdZudKfqTLSoJ6s2lcLzZIP
+         O2jroavAaHVX0IfA123iaA1GMMzMfjPUdlZ8MT5/hL7a8b+BjUPlbTypDp5fAwMsl7Ac
+         xPVB3pmSWvkRhMRDDClBlQu/RSI+A7N9a2mDggqELnJX8ceEfQFODrVx5BwcnHRT9HbE
+         773w==
+X-Gm-Message-State: AOJu0Yx7ZBBwufKkMOdmkPpHz0wyYlcNh488IpTPNU/wDfcFMh8f1mRa
+        tNnFKGoqwpeoVxCPB9+L8e+2hmtwf77aCsz60P4=
+X-Google-Smtp-Source: AGHT+IHE5qN9ZXM13J716vKGllHEZCGy9qaghFoPXWUs4zNKfFI7y0AoKs0MIZQfS5ai3gWBw/qyFIccPAXZD7rd92c=
+X-Received: by 2002:a4a:bc85:0:b0:560:b01a:653d with SMTP id
+ m5-20020a4abc85000000b00560b01a653dmr7084604oop.0.1692645382732; Mon, 21 Aug
+ 2023 12:16:22 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SJ2PR12MB8783:EE_
-X-MS-Office365-Filtering-Correlation-Id: a53c9afd-7054-41fa-f2e7-08dba279f8ac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 4pYTy3rq1vGL7vHFLAlB9Qln1vLR8USDitER/j8LiSDjGfvOLlcc8+xuut5lR1MOVUWhWkmlcjXOPyOXuw+dRxfSXbYsmdc96gtQjMJSXHrSpaQVR5SDAw3hjZLg0ubsQBmrXI3vnb/cmKNiLiRBTelxijg7FCaaPUm3nP3y1hmLCb5y5lclFdAKrd0ZicuyHzV/Y5T3Y2zenchqJ2COGNKIXSk5aYDvn654ujPJroQkwhdQaH121buhzwEL7WJo9barUFcBtk8II8+RdSJg6S/f/DVWNRsxf1rCkFf+XPQdBYCX7SENJJ3/TKUgUx0TLMU1KnK4hXChMAkq2lyclKmKp2LGGrj7BXtPjcD2hfm1m/DlyszfNTXE1uEQWJsXNkKS3iYvLmBd3pUapec89EuHQKs8Iebgddxnu6i82o2JwqqahykOFEQSNwOF7DXkjfCCrGj6L9S7SHvDbugB1xTkaq1RmhDurbTinJkmuJeotq3F4bTqa3jQAgu1T8kYx7bbuur2Ir2Mgo8K5uIy7GaUM5Kk9FvKdId+hThT2h8lfAuRVUwM5nPmDghXJSO4+ZEIqVWxoIdF0S+r0d7qtWF/Pu1G1XZ1YeOyO8C5e6xF6POovxBNazvGEebXBElnRmtqP90TnEx+j32ezJOZBw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(376002)(366004)(396003)(136003)(346002)(451199024)(1800799009)(186009)(86362001)(5660300002)(2616005)(41300700001)(66556008)(66476007)(316002)(2906002)(66946007)(6916009)(54906003)(31686004)(8676002)(478600001)(4326008)(8936002)(31696002)(6666004)(6486002)(53546011)(6506007)(38100700002)(6512007)(26005)(36756003)(83380400001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?clVZNkRjbUNyNVhvL3FwbFViL090Rnk0QnoycHJHRVZTN21Gdno4QzhOamNV?=
- =?utf-8?B?YUowOVZ4eVpYdFp3N21JZFU5bEU3M1liV2FhMllXN2RvR29rRVRSbEUxa3lN?=
- =?utf-8?B?R0hZdmk2WURaWGhjM2lEMU1UOFFoUWtnMlUwTEtBL0NPeVBNS0JNckxDRTJz?=
- =?utf-8?B?a0wydWlWekw4Wk4wb2lmdkRhaENLaXBuaUJrVUlPaW1UM2VaamxMQXhMM3Va?=
- =?utf-8?B?WGNGNlNuSnFiMlJhaisyWjZOaVpHbitYZ3ZHL0hkZDZVbXlyc244c1ZrNTYr?=
- =?utf-8?B?N2dGUmp3dDEyY0pOalpNY3Q4N0FqVjNxakFvbGxYN216QUovZHVrbHhrOW5Q?=
- =?utf-8?B?Vy8xWWZVVldCWUJXdENlRlJPc1NiajJpNWVkRi9WcTVvWjkyOTYyMmlISjhD?=
- =?utf-8?B?Z0N1NUhJNTRZQ0J1WDRwNkMzYWhVb0lYeG90M2VISnpoLzFXMVM4aE5iaVla?=
- =?utf-8?B?eUd1bFJicThPWlI2UzgrV0ZFR09nMXN0SkFLU3NGemFpZzdhNWVFdnVXUHY5?=
- =?utf-8?B?YU5JM3RxOTBzS2lzNllNNExCMVhsVlZpU0V1aEM0STJJb3VsYmFVLytVY0xh?=
- =?utf-8?B?dVMrRmtGY011MzJpOTk5ekZmOFBCeVczdTJDVGI5SXFKYkc4RGRYODlFOG1C?=
- =?utf-8?B?Qi9YNTd4bGpBTFhzUFNKTG9GSjYwQ1FGRXVvcjdHZGEwY0xuT2w2M2kzYTQv?=
- =?utf-8?B?L0U1V1czT2J0bkRLZzF3YVM1aHlhelYrOUJXQ0M0NkFwT3BuNUYwREo0Zlh1?=
- =?utf-8?B?S2FENGU4a3RRZUl5ZlhjWXErMGF2VkdiWDJnSVIyZCtCS3k2N1BMYXlHSmlr?=
- =?utf-8?B?Zm5KZDJ5cGFOOGlYWFVFVDcwejNzdlp4UWZJeGZrMGZQemsxdHQ0bmxWM3NR?=
- =?utf-8?B?aE1iRmFISGt2ZkZVQm1sL3lJV04yRzhDUjZRaTNnM2RNRWp0SjU0NkRUTFBh?=
- =?utf-8?B?OXNhaWhLRC9EUTBQUTJhWFlxVU5saEVCZ2lDejlhYm1xekM1QlJiRTdpZGQz?=
- =?utf-8?B?K0w2NGxCUVMvTDFlWFJ5T3cvK2l1L214MlJteThJRHMvanRlOFpNMW9xUGRx?=
- =?utf-8?B?UXRDZnRRQUtCZnNHR0lUeWFxUVpReWFxeDM4Y0tvbWpSd3NEMWlrYU5CR1N1?=
- =?utf-8?B?cnRWZHZZbW9SaFlnMnpHWmdSSXVOQkFLOUpsMmY1TGkwemNHSHZRdzJNS2o5?=
- =?utf-8?B?ZmhDVHg5QkxKQ3Z3bnZsaE96RUorMTNDUjlzQkZPUG5TTTgxb2pPcEs4MDcz?=
- =?utf-8?B?c25mYVROMDhNNG9pTTNaRGcvZ0VoSDVMTzgxaFBCYUdlYWRPYnlyMW1ON0c4?=
- =?utf-8?B?YTJ1b3MrcFBLRFlXNmtIdkNQamExQzJGVHF2aURBZEdjeU4vaWR1dCtXbE4w?=
- =?utf-8?B?cE4vRFkxN21hYjlhME0vWmNBUkVDOUpyWDU3d2tTRk5pYnNYN3FUWGpyZ24w?=
- =?utf-8?B?Um9rTXdualplSzk2NitkOXBsM2FhMVFFTzQzRWVyMlFpMW5pOUt5a28xbk1k?=
- =?utf-8?B?dm9PQ1RxLzBueGlDcjBQQ0g0YUVKV0plZXFVK1psZm1wVkZ0WER4YzhHN3JK?=
- =?utf-8?B?K2VQYjNjN1R6QndKR0JpcGVabldMZWpiNUZoZ3B1SVpERU13dGkzYVBxTndI?=
- =?utf-8?B?YzN2dy9wZ2F3UVdWWUs2MVc1bklkVndqU01md2FiV3BoWjBxdXczWURLOW11?=
- =?utf-8?B?VHB0YlpQcmhmRnJSVWdCUDhNZ09HbDVsNHcvUXhISVB4RlQ2ZlgxR1B1WWg5?=
- =?utf-8?B?UG5QdmNwV1h5YlcxTUVrUDc4amt4Qm1hamNLVVJ6TmFVTWRZS3BuODB0VUFw?=
- =?utf-8?B?N0dLY21CMzZUZGVOUUxhNFFEZFRkZzJQTEVBcFIyR2c4Z0NvK3hKcnB0TGN4?=
- =?utf-8?B?N2E5UkdQaEVMZncza0VzR1NhNUt1K2RNSzR0VnZialAzRzJHaDdHZUQzaXpL?=
- =?utf-8?B?OFpJYlR6bkhQcitTT0Y5Qy8vcmd4ek5saWRIUXZmMldxM3lJQWhtSzJ4bzI2?=
- =?utf-8?B?T0tTOWNsdkUrRS8xczJUMjMwZGk1YWJ5aEhXQy84YUpDMlVwamZnMHFNQitO?=
- =?utf-8?B?UXdBNFRuajZldWNucmI5djNXc3V4aFJsT2w4bU1wUHlaT0J2NlVremRnWjhw?=
- =?utf-8?Q?olSDxut1eIwbQv+24mRui2ibo?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a53c9afd-7054-41fa-f2e7-08dba279f8ac
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2023 19:08:15.1716
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YkkPOyKbqR4/iY1nrJb7zqS1sU5qXUVNMh1N4M9RoniEGUiSMVX9OfZbBeIspa9KHZFHUuQzS7jYiMP8lO7e6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8783
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+References: <20230810234856.2580143-1-avadhut.naik@amd.com>
+ <a0ab4d07-fb73-418b-b88d-c3ad6aa4cf49@intel.com> <655c916e-356c-03e3-6c67-aa40886dd5e2@amd.com>
+ <CAJZ5v0j0R1GK=0z+LJd_PSh4zDv9Ydw2YA7HWm1R5wjCUsbbYQ@mail.gmail.com>
+ <1c579c96-5010-4e5b-aa27-afb4f4f6746a@amd.com> <CAJZ5v0iPRCJLH5bkKyhjUq_tmjmR6R73fhUm3JnKptcm1cn9fQ@mail.gmail.com>
+ <6bc15195-aa26-4e29-b625-74fca84f7a6f@amd.com> <CAJZ5v0jEcD_1+jHfAk9eN0YYJFbDZN2rZ97KHyH2-w6EqRN9+g@mail.gmail.com>
+ <43b65307-bc3f-4014-9bf8-a96c6ed15d9b@amd.com> <CAJZ5v0g+uVZwoOr-2W19Ux9u-D=WiY=-dtcQZwYU0Ov_GE5d=w@mail.gmail.com>
+ <CAJZ5v0g_DyQAnSuigBc-f0UNmW0mo=0yMadES+0NhphJs_k+cw@mail.gmail.com>
+ <9d491dfe-13d8-4072-a90b-5f68107fcf95@amd.com> <CAJZ5v0jxKwtHM3vhtw44TW5=J916XvXSeP3DyNLcJDo+eTSRHw@mail.gmail.com>
+ <fbc0b21d-33e6-4c32-bc34-3fbfe5e99b1f@amd.com>
+In-Reply-To: <fbc0b21d-33e6-4c32-bc34-3fbfe5e99b1f@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 21 Aug 2023 21:16:11 +0200
+Message-ID: <CAJZ5v0i-=kfBPp2oW-40mNSAFnOzTEeey0EhDUsN6qNU+QY4Ug@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PHAT: Add Platform Health Assessment Table support
+To:     Yazen Ghannam <yazen.ghannam@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Avadhut Naik <avadnaik@amd.com>,
+        "Wilczynski, Michal" <michal.wilczynski@intel.com>,
+        Avadhut Naik <avadhut.naik@amd.com>, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-
-On 8/21/2023 1:31 PM, Rafael J. Wysocki wrote:
-> On Fri, Aug 18, 2023 at 9:40 PM Mario Limonciello
-> <mario.limonciello@amd.com> wrote:
->> LPS0 constraints can be useful to other parts of the kernel to make
->> decisions what state to put devices into.
->>
->> In v14 this series has been split into 3 parts.
->>   part A: Immediate fix for AMD issue.
->>   part B: LPS0 export improvements
->>   part C: Long term solution for all vendors
->>
->> This is part B, it can be applied and reviewed independently from part A.
->>
->> Andy Shevchenko (1):
->>    ACPI: x86: s2idle: Add for_each_lpi_constraint() helper
->>
->> Mario Limonciello (6):
->>    ACPI: Adjust #ifdef for *_lps0_dev use
->>    ACPI: x86: s2idle: Post-increment variables when getting constraints
->>    ACPI: x86: s2idle: Catch multiple ACPI_TYPE_PACKAGE objects
->>    ACPI: x86: s2idle: Fix a logic error parsing AMD constraints table
->>    ACPI: x86: s2idle: Add more debugging for AMD constraints parsing
->>    ACPI: x86: s2idle: Add a function to get constraints for a device
->>
->>   drivers/acpi/x86/s2idle.c | 96 +++++++++++++++++++++++++--------------
->>   include/linux/acpi.h      | 10 +++-
->>   2 files changed, 70 insertions(+), 36 deletions(-)
->>
->> --
-> All applied as 6.6 material, but I rewrote the last patch my way, so
-> please see the result in the bleeding-edge branch and let me know if
-> there's anything wrong with it.
+On Mon, Aug 21, 2023 at 9:02 PM Yazen Ghannam <yazen.ghannam@amd.com> wrote:
 >
-> Thanks!
-Looks great, thanks!
+> On 8/21/23 2:49 PM, Rafael J. Wysocki wrote:
+> > On Mon, Aug 21, 2023 at 8:44 PM Yazen Ghannam <yazen.ghannam@amd.com> wrote:
+> >>
+> >> On 8/21/23 2:01 PM, Rafael J. Wysocki wrote:
+> >>> On Mon, Aug 21, 2023 at 7:52 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >>>>
+> >>>> On Mon, Aug 21, 2023 at 7:35 PM Limonciello, Mario
+> >>>> <mario.limonciello@amd.com> wrote:
+> >>>>>
+> >>>>>
+> >>>>>
+> >>>>> On 8/21/2023 12:29 PM, Rafael J. Wysocki wrote:
+> >>>>>> On Mon, Aug 21, 2023 at 7:17 PM Limonciello, Mario
+> >>>>>> <mario.limonciello@amd.com> wrote:
+> >>>>>>>
+> >>>>>>> On 8/21/2023 12:12 PM, Rafael J. Wysocki wrote:
+> >>>>>>> <snip>
+> >>>>>>>>> I was just talking to some colleagues about PHAT recently as well.
+> >>>>>>>>>
+> >>>>>>>>> The use case that jumps out is "system randomly rebooted while I was
+> >>>>>>>>> doing XYZ".  You don't know what happened, but you keep using your
+> >>>>>>>>> system.  Then it happens again.
+> >>>>>>>>>
+> >>>>>>>>> If the reason for the random reboot is captured to dmesg you can cross
+> >>>>>>>>> reference your journal from the next boot after any random reboot and
+> >>>>>>>>> get the reason for it.  If a user reports this to a Gitlab issue tracker
+> >>>>>>>>> or Bugzilla it can be helpful in establishing a pattern.
+> >>>>>>>>>
+> >>>>>>>>>>> The below location may be appropriate in that case:
+> >>>>>>>>>>> /sys/firmware/acpi/
+> >>>>>>>>>>
+> >>>>>>>>>> Yes, it may. >
+> >>>>>>>>>>> We already have FPDT and BGRT being exported from there.
+> >>>>>>>>>>
+> >>>>>>>>>> In fact, all of the ACPI tables can be retrieved verbatim from
+> >>>>>>>>>> /sys/firmware/acpi/tables/ already, so why exactly do you want the
+> >>>>>>>>>> kernel to parse PHAT in particular?
+> >>>>>>>>>>
+> >>>>>>>>>
+> >>>>>>>>> It's not to say that /sys/firmware/acpi/PHAT isn't useful, but having
+> >>>>>>>>> something internal to the kernel "automatically" parsing it and saving
+> >>>>>>>>> information to a place like the kernel log that is already captured by
+> >>>>>>>>> existing userspace tools I think is "more" useful.
+> >>>>>>>>
+> >>>>>>>> What existing user space tools do you mean?  Is there anything already
+> >>>>>>>> making use of the kernel's PHAT output?
+> >>>>>>>>
+> >>>>>>>
+> >>>>>>> I was meaning things like systemd already capture the kernel long
+> >>>>>>> ringbuffer.  If you save stuff like this into the kernel log, it's going
+> >>>>>>> to be indexed and easier to grep for boots that had it.
+> >>>>>>>
+> >>>>>>>> And why can't user space simply parse PHAT by itself?
+> >>>>>>>>   > There are multiple ACPI tables that could be dumped into the kernel
+> >>>>>>>> log, but they aren't.  Guess why.
+> >>>>>>>
+> >>>>>>> Right; there's not reason it can't be done by userspace directly.
+> >>>>>>>
+> >>>>>>> Another way to approach this problem could be to modify tools that
+> >>>>>>> excavate records from a reboot to also get PHAT.  For example
+> >>>>>>> systemd-pstore will get any kernel panics from the previous boot from
+> >>>>>>> the EFI pstore and put them into /var/lib/systemd/pstore.
+> >>>>>>>
+> >>>>>>> No reason that couldn't be done automatically for PHAT too.
+> >>>>>>
+> >>>>>> I'm not sure about the connection between the PHAT dump in the kernel
+> >>>>>> log and pstore.
+> >>>>>>
+> >>>>>> The PHAT dump would be from the time before the failure, so it is
+> >>>>>> unclear to me how useful it can be for diagnosing it.  However, after
+> >>>>>> a reboot one should be able to retrieve PHAT data from the table
+> >>>>>> directly and that may include some information regarding the failure.
+> >>>>>
+> >>>>> Right so the thought is that at bootup you get the last entry from PHAT
+> >>>>> and save that into the log.
+> >>>>>
+> >>>>> Let's say you have 3 boots:
+> >>>>> X - Triggered a random reboot
+> >>>>> Y - Cleanly shut down
+> >>>>> Z - Boot after a clean shut down
+> >>>>>
+> >>>>> So on boot Y you would have in your logs the reason that boot X rebooted.
+> >>>>
+> >>>> Yes, and the same can be retrieved from the PHAT directly from user
+> >>>> space at that time, can't it?
+> >>>>
+> >>>>> On boot Z you would see something about how boot Y's reason.
+> >>>>>
+> >>>>>>
+> >>>>>> With pstore, the assumption is that there will be some information
+> >>>>>> relevant for diagnosing the failure in the kernel buffer, but I'm not
+> >>>>>> sure how the PHAT dump from before the failure can help here?
+> >>>>>
+> >>>>> Alone it's not useful.
+> >>>>> I had figured if you can put it together with other data it's useful.
+> >>>>> For example if you had some thermal data in the logs showing which
+> >>>>> component overheated or if you looked at pstore and found a NULL pointer
+> >>>>> dereference.
+> >>>>
+> >>>> IIUC, the current PHAT content can be useful.  The PHAT content from
+> >>>> boot X (before the failure) which is what will be there in pstore
+> >>>> after the random reboot, is of limited value AFAICS.
+> >>>
+> >>> To be more precise, I don't see why the kernel needs to be made a
+> >>> man-in-the-middle between the firmware which is the source of the
+> >>> information and user space that consumes it.
+> >>
+> >> I think that's a fair point.
+> >>
+> >> Is there a preferred set of tools that can be updated?
+> >
+> > I think you need to talk to distro people about this.
+> >
+> >> If not, would it make sense to develop a set of common kernel tools for
+> >> this?
+> >
+> > Yes, it would, but please see above in the first place.
+> >
+> >> In my experience, it seems many folks use tools from their vendors or
+> >> custom tools.
+> >
+> > This observation matches my own experience.
+>
+> For the sake of discussion, and from a kernel developer's point of view,
+> should the tools be part of a separate project? Or should the tools be
+> part of the kernel tree like perf, etc.? Assuming that this needs to
+> start from scratch and not extending an existing project.
+
+It can be both in principle, but from the practical standpoint it is
+more likely to get all of the people to use the same set of tools if
+they are included into the kernel source tree.
