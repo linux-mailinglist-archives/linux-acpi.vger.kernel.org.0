@@ -2,125 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44A1A78287E
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Aug 2023 14:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66203782A69
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Aug 2023 15:24:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232968AbjHUMEs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Aug 2023 08:04:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57030 "EHLO
+        id S235363AbjHUNYc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Aug 2023 09:24:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232837AbjHUMEr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 08:04:47 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2070.outbound.protection.outlook.com [40.107.244.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08433EA;
-        Mon, 21 Aug 2023 05:04:44 -0700 (PDT)
+        with ESMTP id S232495AbjHUNYc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 09:24:32 -0400
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2042.outbound.protection.outlook.com [40.107.100.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F03A6CE;
+        Mon, 21 Aug 2023 06:24:29 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TAYqE7u2YlvYkkfyYIWaLISs0b00xafrK7BKA9ukcrtGaeZpmAYP7KIMJzYZyNEmVklT470xl53RUA1Cd8g3ZZ2WsFaFfLxb6OXvRQm89DbZwZxTsGvI5upxZWg8NU1iuRgGemp6pBpEDlB9p+H2wWrGsS3YbnsYDMnqbheZbKPAc0Phq4pVUptbqJls/pejZ/M4hgTWfgySmlepE+ZrPQsIR8JKeVzu7YvRIrwBxPIcA/ib74pAWXWWlE3grruO92Y12BEGy/ekRKTBpGt5QhEti8yNKN6hQYXskTN3sUatWx4SQCztT6WVVsacGLmEl1MrI1S8Gpit9mE5izNOuQ==
+ b=jPVLhif48DWgv066N6bMhUXqn27ryuDlFZASBkE92Yvv9CGvlIRHffQrrC/FHneh5l0FvRwsiUVMD49tUMO7lhdIc62STNjtDQHbSR7PFTc71ECq019fTIr+76vfXXvunBSW/aQeG+rqsR4eZ7mWVsk1uzaOWBI+DOYKEYpBTAxTdZa6BSUCWTnrdDEvZsvkq8sx5JrpaZ+McYZLN0oroZeoEaiACz1wARRvugEwNsPlF5Y8f2qDi3kzX5uWDuKo8DyHt4ov1tgr2OwjCGgy/4awul4vKacAgk/ErGqNnjW0X0SUVnW/cnNULfwPDxGrX68P4t8i72sMEygV5T5Wjw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dioL6Aa6WE4M3qb3Wlgzj4nP+bmTmnnJ+Px2FKUzQMw=;
- b=hGZhx/AB0gDMr/R6etKa24PuzeB4/yS6or/mirRyBO4RJFrkAamiPc90BajJc/umOQyninBjleSOR1HRNulVaaeVgkprCXtcwuDpVn5gRIyiix0tZz59cr4HAyv9JGh5bPmm2EDn0EkvC4p5pXoef6J/+1ka3t2BcYJ96wBFyKQkSCvkktl9+VHXYjI70apUw6/TO6x1yWUo/aN0X5lclGmKovgL8vXJPCH3XhMdmVl9nKxnmnS+JC3X8OMtL27K11wZaMrVI0omB9UceUTFbRlpctG1atOgGPJtk1E1qzTXCx8/5jc6DZZ/2Dnh9T82ubVCDJM/QjUppV3yLhgpWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
+ bh=RDZpIT3zL3f1kV1OplTws3X1idG7ly59oTANcv+FNDs=;
+ b=MBDhajugmJCwNpimUEtNh5C1uytRtZA3HBlQZNxLPVpKy355WFTC7lZNGVpjjR9xOYxO6J038DpV+lPa1iEk58vvb0K2hsJDdmkZ/PpWgwF7kTpbxaaZZEh4M8WKw2PuCF+8gLhpqJCUaZVR2k6PFAm9AVdTCn6kPnl3g8NvxQVUU5El+GphzcVC3TiEaTMTH+RKaSS5fDRs7h8SfC2Gbp0OP4RfyAH33isSh59VgNZj+927dM4qVMmOf5JhB6W8uv/ezejQM+NOWECnPL51TciBrmTLLMEODqilK3tVbmrT1W36sfZzV2AsU4TB2qSQQbJcA055fEOz9usqfRDZcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dioL6Aa6WE4M3qb3Wlgzj4nP+bmTmnnJ+Px2FKUzQMw=;
- b=EEcIfUj3uBpajy5uEI4o/Uvvua0dTYTcSmd5BWJQDZGXOzJE5nV0IXKW6vbId0hGhIzmkm0w9m5HfFFEi6dmJSkvWmhfQZVdm8Q5RACB1tNe2FyIyU+PkmDnasROJlycF4bIlmrG8V4yrUzFUH/0WxwjWoI1lbhxIFZlH8bz5bACjQ2AC+2JU4Sz+kPRNvoGc9TuahoMUGZIVmMlOkL/TxBj3cs5xmN2Q+mrSshhG60GCcPNCsmUr1X52yKvxO8ffEKqm7/EJg7QUPGY+t5NOwo9Dcf0gKUKFwvhqc2xE3xzzefVHy/KbshvR2yMJDVEPY3DhckUGLuasLc8HKiNTw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
- by DM4PR12MB5167.namprd12.prod.outlook.com (2603:10b6:5:396::10) with
+ bh=RDZpIT3zL3f1kV1OplTws3X1idG7ly59oTANcv+FNDs=;
+ b=brI1hK9p0vbNlefaxFV+qj2BMEBh8Duslg659hmOlcA56B+rLBxeAFEa7zP8+Hbeaa+NTb8pLewvb0K5Hnb/cCg2qi6BNvLYLySpNFs2nZsBME+JEeYtf/QgAHI7IxKK6EkxnI3nx+k3cYc97PR2Ibbw0CGsJBYubkeGkcOudLKg0i3SgnKpLL6HbBQDoOdFnzhwa4XFznIhvZuo9rejQVw/LvTM6oIZLaGDBn2pcxNKjTdVpUXiQeQBznN/x1QK/RUtf0p20vfA7n8faSac+twpAjuyvKFBpomElI02MyDBF0ru1XkYNZe0rDjLfgKIwBtlAQGzGowx51aLxUVa1A==
+Received: from CY5PR15CA0140.namprd15.prod.outlook.com (2603:10b6:930:67::10)
+ by DM6PR12MB4089.namprd12.prod.outlook.com (2603:10b6:5:213::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Mon, 21 Aug
- 2023 12:04:41 +0000
-Received: from BYAPR12MB3176.namprd12.prod.outlook.com
- ([fe80::3bf6:11f3:64d7:2475]) by BYAPR12MB3176.namprd12.prod.outlook.com
- ([fe80::3bf6:11f3:64d7:2475%7]) with mapi id 15.20.6699.022; Mon, 21 Aug 2023
- 12:04:41 +0000
-References: <20230721012932.190742-1-ying.huang@intel.com>
- <20230721012932.190742-5-ying.huang@intel.com>
- <87edkwznsf.fsf@nvdebian.thelocal>
- <87cz0gxylp.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-agent: mu4e 1.8.13; emacs 28.2
-From:   Alistair Popple <apopple@nvidia.com>
-To:     "Huang, Ying" <ying.huang@intel.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-        nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-        Wei Xu <weixugc@google.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        Yang Shi <shy828301@gmail.com>,
-        Rafael J Wysocki <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH RESEND 4/4] dax, kmem: calculate abstract distance with
- general interface
-Date:   Mon, 21 Aug 2023 22:03:43 +1000
-In-reply-to: <87cz0gxylp.fsf@yhuang6-desk2.ccr.corp.intel.com>
-Message-ID: <871qfwwqi3.fsf@nvdebian.thelocal>
-Content-Type: text/plain
-X-ClientProxiedBy: SY6PR01CA0105.ausprd01.prod.outlook.com
- (2603:10c6:10:111::20) To BYAPR12MB3176.namprd12.prod.outlook.com
- (2603:10b6:a03:134::26)
+ 2023 13:24:27 +0000
+Received: from CY4PEPF0000E9D9.namprd05.prod.outlook.com
+ (2603:10b6:930:67:cafe::8c) by CY5PR15CA0140.outlook.office365.com
+ (2603:10b6:930:67::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20 via Frontend
+ Transport; Mon, 21 Aug 2023 13:24:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CY4PEPF0000E9D9.mail.protection.outlook.com (10.167.241.77) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6699.14 via Frontend Transport; Mon, 21 Aug 2023 13:24:27 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Mon, 21 Aug 2023
+ 06:24:15 -0700
+Received: from [10.41.21.79] (10.126.230.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Mon, 21 Aug
+ 2023 06:24:11 -0700
+Message-ID: <63eea3ac-4714-2c54-c740-84f9f9e7fd64@nvidia.com>
+Date:   Mon, 21 Aug 2023 18:54:08 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [Patch 2/2] ACPI: processor: Add support to configure CPUFREQ
+ reduction pctg
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     <rui.zhang@intel.com>, <lenb@kernel.org>, <treding@nvidia.com>,
+        <jonathanh@nvidia.com>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <sanjayc@nvidia.com>,
+        <ksitaraman@nvidia.com>, <srikars@nvidia.com>,
+        <jbrasen@nvidia.com>, <bbasu@nvidia.com>,
+        Sumit Gupta <sumitg@nvidia.com>
+References: <20230817093011.1378-1-sumitg@nvidia.com>
+ <20230817093011.1378-3-sumitg@nvidia.com>
+ <CAJZ5v0hkm6eou9E+CVwasURjPG3RtVH+TMvvzGqVwQnDDrBocA@mail.gmail.com>
+From:   Sumit Gupta <sumitg@nvidia.com>
+In-Reply-To: <CAJZ5v0hkm6eou9E+CVwasURjPG3RtVH+TMvvzGqVwQnDDrBocA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.126.230.37]
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR12MB3176:EE_|DM4PR12MB5167:EE_
-X-MS-Office365-Filtering-Correlation-Id: de8efce8-ae38-477e-7dc2-08dba23ecd0a
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D9:EE_|DM6PR12MB4089:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9114d8dd-3e0f-4f8b-e275-08dba249f1a6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: N3sA6Wn6bQxAC28Tp9NSeAOAuPL5vbNMxb7ogh3MWQQQNIpl4UUxrxxbfvGmXvGdQn4fFwU0DXmIWdiUEqwWlQWifA43Gk9edoe32qJIx/YZGG8iYAbVpinOPbgWS3IA9NhH387QiiihVexc0yrNBaFm37D5NGO8Gue1ATkB/r7Rho75jfjleXM+CD/evStQYpX4ifFMXU1ISH2T9kL5JsAuRHwO7Ngl0f9TXS9Ypjl2O7GULbVu9wneqLjOQc8yp3Ze2RDPQDforOoWmwv8Oden+TMlkIS8rwBltLaAZ2PY3GXKeuRx8IGIzG/mydtrfoi2LTqhbY9XF53NSd4npQeaHHaxc844RzSYbXYIJ1cBFAl+Uz6vKilbWwjAd+Yb8EvGHdZgZMZcN/keQZHkrzGOopiNB91L7H7qRQnNTxBxomLx0/9CpHMXBw1ViaK3RWCHya20ynxVEH9F24YSWHex464XiF3wxJ0hrbns4j1jl4pIJEHR9jc54GD77tYRk2C/QnM/nZWVZlxO9gUHywtQMD3138Igx6PDz3jCVkM1fKjWlH3CITHbgi2l4M49
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(136003)(396003)(346002)(376002)(1800799009)(451199024)(186009)(66476007)(41300700001)(6916009)(66556008)(66946007)(54906003)(316002)(6506007)(6486002)(38100700002)(26005)(8936002)(4326008)(8676002)(5660300002)(83380400001)(7416002)(9686003)(6512007)(2906002)(86362001)(478600001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Gy2iStiffJ9yGVuMehvG9/0KSALwLYAvSHL2inXPUbUW2MZMcgWV3XqlzlJV?=
- =?us-ascii?Q?DtWMuGNPZILwxdInMWtx+kBW7DTyk0B98kZM17f+oMaCpoHufZyDkzxyru1m?=
- =?us-ascii?Q?RpYgjrMd9TApIAAYWECzoJ6IVALLvi95zp/Jam1imi6f4OLAULlxGwxLPM+6?=
- =?us-ascii?Q?o0unZHo3FCWddSAJRO9yKRv3riIKcIcl3caSa21vo4dtcC5HN78YkY5BCg/5?=
- =?us-ascii?Q?lw8hyLZezptrlC8q+G7y3HA5TmkuMkfrxOnUYF+prN9SiX+GPbUKFZ1cW0l+?=
- =?us-ascii?Q?IaeWWKHht+8tOUwY+hg32WI3bJHyA3xAha4IRwtn/pVPov0ZZoMHT+HBthyY?=
- =?us-ascii?Q?t5lORQYkZEU+Y0p9eBvto3R1U1B0Ka2LUapwhgJF1r0CHBX3XLNX8glzT5aj?=
- =?us-ascii?Q?qpZdJNM4GPovLpTT87y/7nFHNToMw0ogRLeShzkWqSw8C4Mnb53y0EKUMmF0?=
- =?us-ascii?Q?J7PDbb34sA/+yao1zM91uPQsobzLeS0i0z31iE09aKzUo3yOUvaWIZHb59AB?=
- =?us-ascii?Q?vWO9YLRTHDbYbHctW7GcTeSiK43SGQwBf7AJ5J4P5UgOX7r3tCKOPTFmGZ91?=
- =?us-ascii?Q?W1B182SsGTUUaO8qzoxLhenDV+1+yjG+oZlQ7yE/Kvpr+ehst0/dT0f4cb8A?=
- =?us-ascii?Q?Vbc6SxtTVZp2BeiQIHH08OmJ9llvvByC2h2ro3tcZLJKbqcKngk8+qN4+xCr?=
- =?us-ascii?Q?VmIqyF4wUkxkvDPZBUlF9Vjh8I/w1H2uxbU49fVeJhv8459DZ6+PtXFoP6Ge?=
- =?us-ascii?Q?RcT2ORGsiOrA/vPwCBj3Tz6naTnFtA2SJ9L5rQ9MDZEV1ebkNfk1eIL0flTw?=
- =?us-ascii?Q?8eWcF6sSZR3IwH4z48ytkQk8e+AUXUUNu46FPeKMkU/xIAKLDQ+8E6DuZrsW?=
- =?us-ascii?Q?xlUS1voUZPavmakA16fyeZUiz9s3tCW5I+VL3Fl+r8nfRLUsC8SomgpYWNwR?=
- =?us-ascii?Q?jF6zQtbWxoHao2rPb5bJSDR3XAOE/XcqviSLhlheKafRKVHKV0jbAq88Lt0m?=
- =?us-ascii?Q?zfe5ZlQXQcY7g4735NzgmKNuAKDC02MwTPy87om3z3+598gqDj7XLsdu2057?=
- =?us-ascii?Q?/DU8OkIiZeHJzDRUg7V0DMwALJMPe9FVjrZLVcHk+kqCeWBzy3WysMpbWYBX?=
- =?us-ascii?Q?hQ67uxFABmsKk/5Qht6pQWRV9Jfgp/2dRIWHsktIZLwlqbp7p6VFJOOyItZ1?=
- =?us-ascii?Q?O7qKsFvubNF1DV1eSBUUe7WYxnkgK8QzVP3+LSRJ94ac9BvPHX8u1/zrreGD?=
- =?us-ascii?Q?kDr/wmCF5ImGmpA0kSc8DtMD4hFsdsHJEp03zM+HBZmmYiq8MKFP9xwoMFyg?=
- =?us-ascii?Q?x3Jj/jkHxNTcgU0ZEHLR6tNJTbilbS45R5Jk1BH07qlgE5PheuvwMlZiZf+q?=
- =?us-ascii?Q?5C9yAaYePExLOC28w8jDEdvwrrdwq/FIIbKEKp4rXNc+w07BiSBbAKwkiJw2?=
- =?us-ascii?Q?K4AGRWVbnuMbJ0ZSe8d/Z+j1u0rJIMSuCVmR1+0WUhD1obyePYz9pvXHskKj?=
- =?us-ascii?Q?Co10TStctcJ0fVwdstc4rtZu58euaqVOAujgtIFLRBVpwAFGITr7A0UWix0v?=
- =?us-ascii?Q?Byc9o+RHzYvffHggVcdgGr6eJ0quBB4U8tavkgrZ?=
+X-Microsoft-Antispam-Message-Info: //GyECLmB56FIz1JuoyY7tgsJ150qVlLSBU/dMz6mXEm1hmM6397mq6/YtecCaxkMZbWRgz9jobiunOXuAHsn4FERlKXQqqLEcfbTi1zr43bPSJoh4lDKGlMhA5KyIpVYy4o2/t94pqGmbUYflZGNdB7igB0DXff2xz9JjPujeBoDA990+Mn4vMYv/WQX1KKQ3W/CMGaqqBtwWzPDjKhAQTBNT8R/WcgyCxFKvu125oTuTP03W+tAJ+LSeh4jLp1aAU0LF8aiI2mf3wpWNtJIuepH7FAwl2BwrtcXaVgyJ47rY0hrAEpjKsEOlu12ME0zBeNKVqBBHJzwZrnBElvhi+MY4Fwu0G1a5oWn1lsjktMR8JbazgnXwvV6pkkWD7NhCb8pxa/p3x1SBEdemINsj1f77wWuOqSyminonlu9h0D9/6Zk0Qnu+KwcdzoXj6PIgna7JtyomTO3+HGmNrh+pZpyDl8hOdn9FbCerhcWqOmbwlVftDmX/d+2AT29KgOzzhgH7cmZiNv7ik+fNTcv7svKuEBFkPZCF75vVNN/46Nxsym/PJ8qrY+WZbdwxoYR04385QQOg4IRHOyv5M14QnZYchqgKIXi9tvtnkkt+phy5Ya97fcdv8OpT1GnV+yTj1C39ZFhLY4Ftwv/eTthldLHjC2qgFXz1PIXECls/q5Zsg+rnXQSEGWkx7QfIvJADPJfTax6jqD2qKMmPIMQfrOwyZusedRgOu2E+iFiz74LeR6OYZdp8dvmfyoNpTa9ryqjpGUOmDxmzDa7Qi2rg==
+X-Forefront-Antispam-Report: CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(346002)(39860400002)(376002)(136003)(396003)(82310400011)(451199024)(186009)(1800799009)(36840700001)(40470700004)(46966006)(2906002)(53546011)(40480700001)(83380400001)(5660300002)(336012)(426003)(16526019)(26005)(86362001)(31686004)(36860700001)(31696002)(47076005)(8676002)(2616005)(8936002)(107886003)(4326008)(70206006)(316002)(16576012)(54906003)(6916009)(70586007)(478600001)(82740400003)(356005)(6666004)(36756003)(41300700001)(40460700003)(7636003)(43740500002);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de8efce8-ae38-477e-7dc2-08dba23ecd0a
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2023 12:04:41.5832
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2023 13:24:27.2209
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9114d8dd-3e0f-4f8b-e275-08dba249f1a6
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QpTyjS9UDx2zbOxarqdIb77g5rmZkD8q40XEiTpriyrKuaNkPSCcvDDhelBjtwvfeWF9Gyv4nQyY+C4hqTZCbQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5167
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D9.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4089
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -128,119 +113,108 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
-"Huang, Ying" <ying.huang@intel.com> writes:
 
-> Alistair Popple <apopple@nvidia.com> writes:
->
->> Huang Ying <ying.huang@intel.com> writes:
+On 19/08/23 00:10, Rafael J. Wysocki wrote:
+> External email: Use caution opening links or attachments
+> 
+> 
+> On Thu, Aug 17, 2023 at 11:31 AM Sumit Gupta <sumitg@nvidia.com> wrote:
 >>
->>> Previously, a fixed abstract distance MEMTIER_DEFAULT_DAX_ADISTANCE is
->>> used for slow memory type in kmem driver.  This limits the usage of
->>> kmem driver, for example, it cannot be used for HBM (high bandwidth
->>> memory).
->>>
->>> So, we use the general abstract distance calculation mechanism in kmem
->>> drivers to get more accurate abstract distance on systems with proper
->>> support.  The original MEMTIER_DEFAULT_DAX_ADISTANCE is used as
->>> fallback only.
->>>
->>> Now, multiple memory types may be managed by kmem.  These memory types
->>> are put into the "kmem_memory_types" list and protected by
->>> kmem_memory_type_lock.
+>> From: Srikar Srimath Tirumala <srikars@nvidia.com>
 >>
->> See below but I wonder if kmem_memory_types could be a common helper
->> rather than kdax specific?
+>> Add support to configure the CPUFREQ reduction percentage and set the
+>> maximum number of throttling steps accordingly. Current implementation
+>> of processor_thermal performs software throttling in fixed steps of
+>> "20%" which can be too coarse for some platforms. Change that by adding
+>> new config to provide the reduction percentage.
 >>
->>> Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
->>> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>> Cc: Wei Xu <weixugc@google.com>
->>> Cc: Alistair Popple <apopple@nvidia.com>
->>> Cc: Dan Williams <dan.j.williams@intel.com>
->>> Cc: Dave Hansen <dave.hansen@intel.com>
->>> Cc: Davidlohr Bueso <dave@stgolabs.net>
->>> Cc: Johannes Weiner <hannes@cmpxchg.org>
->>> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>> Cc: Michal Hocko <mhocko@kernel.org>
->>> Cc: Yang Shi <shy828301@gmail.com>
->>> Cc: Rafael J Wysocki <rafael.j.wysocki@intel.com>
->>> ---
->>>  drivers/dax/kmem.c           | 54 +++++++++++++++++++++++++++---------
->>>  include/linux/memory-tiers.h |  2 ++
->>>  mm/memory-tiers.c            |  2 +-
->>>  3 files changed, 44 insertions(+), 14 deletions(-)
->>>
->>> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
->>> index 898ca9505754..837165037231 100644
->>> --- a/drivers/dax/kmem.c
->>> +++ b/drivers/dax/kmem.c
->>> @@ -49,14 +49,40 @@ struct dax_kmem_data {
->>>  	struct resource *res[];
->>>  };
->>>  
->>> -static struct memory_dev_type *dax_slowmem_type;
->>> +static DEFINE_MUTEX(kmem_memory_type_lock);
->>> +static LIST_HEAD(kmem_memory_types);
->>> +
->>> +static struct memory_dev_type *kmem_find_alloc_memorty_type(int adist)
->>> +{
->>> +	bool found = false;
->>> +	struct memory_dev_type *mtype;
->>> +
->>> +	mutex_lock(&kmem_memory_type_lock);
->>> +	list_for_each_entry(mtype, &kmem_memory_types, list) {
->>> +		if (mtype->adistance == adist) {
->>> +			found = true;
->>> +			break;
->>> +		}
->>> +	}
->>> +	if (!found) {
->>> +		mtype = alloc_memory_type(adist);
->>> +		if (!IS_ERR(mtype))
->>> +			list_add(&mtype->list, &kmem_memory_types);
->>> +	}
->>> +	mutex_unlock(&kmem_memory_type_lock);
->>> +
->>> +	return mtype;
->>> +}
->>> +
->>>  static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->>>  {
->>>  	struct device *dev = &dev_dax->dev;
->>>  	unsigned long total_len = 0;
->>>  	struct dax_kmem_data *data;
->>> +	struct memory_dev_type *mtype;
->>>  	int i, rc, mapped = 0;
->>>  	int numa_node;
->>> +	int adist = MEMTIER_DEFAULT_DAX_ADISTANCE;
->>>  
->>>  	/*
->>>  	 * Ensure good NUMA information for the persistent memory.
->>> @@ -71,6 +97,11 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->>>  		return -EINVAL;
->>>  	}
->>>  
->>> +	mt_calc_adistance(numa_node, &adist);
->>> +	mtype = kmem_find_alloc_memorty_type(adist);
->>> +	if (IS_ERR(mtype))
->>> +		return PTR_ERR(mtype);
->>> +
+>> Signed-off-by: Srikar Srimath Tirumala <srikars@nvidia.com>
+>> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+>> ---
+>>   drivers/acpi/Kconfig             | 15 +++++++++++++++
+>>   drivers/acpi/processor_thermal.c | 19 ++++++++++++++++---
+>>   2 files changed, 31 insertions(+), 3 deletions(-)
 >>
->> I wrote my own quick and dirty module to test this and wrote basically
->> the same code sequence.
+>> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+>> index 00dd309b6682..287cf58defbf 100644
+>> --- a/drivers/acpi/Kconfig
+>> +++ b/drivers/acpi/Kconfig
+>> @@ -254,6 +254,21 @@ config ACPI_DOCK
+>>   config ACPI_CPU_FREQ_PSS
+>>          bool
 >>
->> I notice your using a list of memory types here though. I think it would
->> be nice to have a common helper that other users could call to do the
->> mt_calc_adistance() / kmem_find_alloc_memory_type() /
->> init_node_memory_type() sequence and cleanup as my naive approach would
->> result in a new memory_dev_type per device even though adist might be
->> the same. A common helper would make it easy to de-dup those.
->
-> If it's useful, we can move kmem_find_alloc_memory_type() to
-> memory-tier.c after some revision.  But I tend to move it after we have
-> the second user.  What do you think about that?
+>> +config ACPI_CPU_FREQ_THERM_HAS_PARAMS
+>> +       bool "CPU frequency throttling control"
+>> +       depends on ACPI_PROCESSOR
+>> +
+>> +config ACPI_CPU_FREQ_THERM_MIN_THROT_PCTG
+>> +       int "Minimum throttle percentage for processor_thermal cooling device"
+>> +       depends on ACPI_CPU_FREQ_THERM_HAS_PARAMS
+>> +       default 20
+>> +       help
+>> +         The processor_thermal driver uses this config to calculate the
+>> +         percentage amount by which cpu frequency must be reduced for each
+>> +         cooling state. The config is also used to calculate the maximum number
+>> +         of throttling steps or cooling states supported by the driver. Value
+>> +         must be an unsigned integer in the range [1, 50].
+>> +
+> 
+> I don't think that the new Kconfig symbols are particularly useful.
+> At least they don't help the distro vendors that each would need to
+> pick up a specific value for their kernel anyway.
+> 
+> I also wonder how the users building their own kernels are supposed to
+> determine the values suitable for the target systems.
+> 
 
-Usually I would agree, but this series already introduces a general
-interface for calculating adist even though there's only one user and
-implementation. So if we're going to add a general interface I think it
-would be better to make it more usable now rather than after variations
-of it have been cut and pasted into other drivers.
+We observed some perf gain after reducing the throttle percentage.
+Currently, kept the default to '20%' as before.
+
+Based on need, a vendor can overwrite the default value with macro
+'CONFIG_ACPI_CPU_FREQ_THERM_MIN_THROT_PCTG'. Otherwise, the behavior
+will remain same.
+
+Thank you,
+Sumit Gupta
+
+>>   config ACPI_PROCESSOR_CSTATE
+>>          def_bool y
+>>          depends on ACPI_PROCESSOR
+>> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
+>> index b7c6287eccca..ee443cc69b73 100644
+>> --- a/drivers/acpi/processor_thermal.c
+>> +++ b/drivers/acpi/processor_thermal.c
+>> @@ -25,8 +25,20 @@
+>>    * _any_ cpufreq driver and not only the acpi-cpufreq driver.
+>>    */
+>>
+>> -#define CPUFREQ_THERMAL_MIN_STEP 0
+>> -#define CPUFREQ_THERMAL_MAX_STEP 3
+>> +#define CPUFREQ_THERMAL_MIN_STEP       0
+>> +#ifdef CONFIG_ACPI_CPU_FREQ_THERM_HAS_PARAMS
+>> +#define CPUFREQ_THERMAL_PCTG           CONFIG_ACPI_CPU_FREQ_THERM_MIN_THROT_PCTG
+>> +
+>> +/* Derive the MAX_STEP from minimum throttle percentage so that the reduction
+>> + * percentage does end up becoming negative. Also cap the MAX_STEP so that
+>> + * the CPU performance doesn't become 0.
+>> + */
+>> +#define CPUFREQ_THERMAL_MAX_STEP       ((100 / CPUFREQ_THERMAL_PCTG) - 1)
+>> +
+>> +#else
+>> +#define CPUFREQ_THERMAL_MAX_STEP       3
+>> +#define CPUFREQ_THERMAL_PCTG           20
+>> +#endif
+>>
+>>   static DEFINE_PER_CPU(unsigned int, cpufreq_thermal_reduction_pctg);
+>>
+>> @@ -113,7 +125,8 @@ static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>>                  if (!policy)
+>>                          return -EINVAL;
+>>
+>> -               max_freq = (policy->cpuinfo.max_freq * (100 - reduction_pctg(i) * 20)) / 100;
+>> +               max_freq = (policy->cpuinfo.max_freq *
+>> +                           (100 - reduction_pctg(i) * CPUFREQ_THERMAL_PCTG)) / 100;
+>>
+>>                  cpufreq_cpu_put(policy);
+>>
+>> --
