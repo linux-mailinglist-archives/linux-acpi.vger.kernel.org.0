@@ -2,138 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1488F7835DD
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Aug 2023 00:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 758CC7835FB
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Aug 2023 00:53:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230315AbjHUWmN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Aug 2023 18:42:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32910 "EHLO
+        id S231237AbjHUWxF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Aug 2023 18:53:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjHUWmM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 18:42:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A42711C;
-        Mon, 21 Aug 2023 15:42:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D41860B61;
-        Mon, 21 Aug 2023 22:42:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA9A8C433C8;
-        Mon, 21 Aug 2023 22:42:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692657730;
-        bh=wnGPBph7Q+YS0lgZNbdSI4MH/lKrnH8xevzYsEDK9DY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=F+iESIhKAuiC0AqtVgOkNdPVExHLcRC88dW2Tq0nf4rmxSin0vO5NMsvLMyqjvEMv
-         Nducytwp7mnf5M8IqMoWaSla0kXQRfcCa8cTLR0dnZE2Qjcl4dNY6iy4jHt3GtqkZE
-         8D/o7xdFLUdvGhAlXsyYD1SR18p8x4edIsWnRaa8+/z85KLldpWYhq4K+B6g2Eb6D6
-         FQhOhMPy+FuU88VZ3UJ+2T46uj0OD1iEnu1HHhaayPtvPMRVq5Uxvz0vDblYLvX7tw
-         bmKuKSb0q0PDZZMrLmOYaviaLISUND7l4gcntVqj1Hu07XERZ9o0QpxetKd6kyC8Qr
-         zj3BTHdYy1TeQ==
-Date:   Mon, 21 Aug 2023 17:42:07 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v14.a 1/1] PCI: Only put Intel PCIe ports >= 2015 into D3
-Message-ID: <20230821224207.GA369432@bhelgaas>
+        with ESMTP id S229564AbjHUWxE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 18:53:04 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 474F6131;
+        Mon, 21 Aug 2023 15:53:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692658382; x=1724194382;
+  h=from:to:cc:subject:references:date:in-reply-to:
+   message-id:mime-version;
+  bh=LWApvfOUqHT4CVxPmBOO1cFmnp8lGFEMfYD9ICj0u+Q=;
+  b=JaKYXShNyfbPcGCHJ7F5GOIpd0Az0eKj7ekcgvMvde3e9uIsx0SMapGT
+   9DG4R2TTf7ZNYjmro7tLLDcU+KhzWYY2IAeGC3XIBxZkYvFellf+6P563
+   fBxHPVOyQ8TbY9kM5xT41fCsdN+U6pbl5IemsMVjC+VBwqCct7eWuZkMz
+   xGNSTdEmEvMsasUc0YbxSUwmjNCpGqFXU5LLsbzfTzuVKMSlf1p4h2gh2
+   r6akXKHjm+liNewigwI08UryXLZs5I9EAcQM0Zdf9SswmFjdiC7nUx7Tp
+   Hc67PL+ANuRp1MUD/UfIznfCLEODvgrChnz3qVCkPR4XfKFvXVyL/zoH2
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="363888718"
+X-IronPort-AV: E=Sophos;i="6.01,191,1684825200"; 
+   d="scan'208";a="363888718"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2023 15:53:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="909872297"
+X-IronPort-AV: E=Sophos;i="6.01,191,1684825200"; 
+   d="scan'208";a="909872297"
+Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2023 15:52:56 -0700
+From:   "Huang, Ying" <ying.huang@intel.com>
+To:     Alistair Popple <apopple@nvidia.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        <nvdimm@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+        Wei Xu <weixugc@google.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        "Davidlohr Bueso" <dave@stgolabs.net>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+        Michal Hocko <mhocko@kernel.org>,
+        Yang Shi <shy828301@gmail.com>,
+        Rafael J Wysocki <rafael.j.wysocki@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>
+Subject: Re: [PATCH RESEND 1/4] memory tiering: add abstract distance
+ calculation algorithms management
+References: <20230721012932.190742-1-ying.huang@intel.com>
+        <20230721012932.190742-2-ying.huang@intel.com>
+        <87r0owzqdc.fsf@nvdebian.thelocal>
+        <87r0owy95t.fsf@yhuang6-desk2.ccr.corp.intel.com>
+        <87sf9cxupz.fsf@nvdebian.thelocal>
+        <878rb3xh2x.fsf@yhuang6-desk2.ccr.corp.intel.com>
+        <87351axbk6.fsf@nvdebian.thelocal>
+        <87edkuvw6m.fsf@yhuang6-desk2.ccr.corp.intel.com>
+        <87y1j2vvqw.fsf@nvdebian.thelocal>
+        <87a5vhx664.fsf@yhuang6-desk2.ccr.corp.intel.com>
+        <87lef0x23q.fsf@nvdebian.thelocal>
+        <87r0oack40.fsf@yhuang6-desk2.ccr.corp.intel.com>
+        <87cyzgwrys.fsf@nvdebian.thelocal>
+Date:   Tue, 22 Aug 2023 06:50:51 +0800
+In-Reply-To: <87cyzgwrys.fsf@nvdebian.thelocal> (Alistair Popple's message of
+        "Mon, 21 Aug 2023 21:26:24 +1000")
+Message-ID: <87il98c8ms.fsf@yhuang6-desk2.ccr.corp.intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230818193932.27187-1-mario.limonciello@amd.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ascii
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 02:39:32PM -0500, Mario Limonciello wrote:
-> commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-> changed pci_bridge_d3_possible() so that any vendor's PCIe ports
-> from modern machines (>=2015) are allowed to be put into D3.
-> 
-> Iain reports that USB devices can't be used to wake a Lenovo Z13
-> from suspend. This is because the PCIe root port has been put
-> into D3 and AMD's platform can't handle USB devices waking in this
-> case.
-> 
-> This behavior is only reported on Linux. Comparing the behavior
-> on Windows and Linux, Windows doesn't put the root ports into D3.
-> 
-> To fix the issue without regressing existing Intel systems,
-> limit the >=2015 check to only apply to Intel PCIe ports.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-> Reported-by: Iain Lane <iain@orangesquash.org.uk>
-> Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
-> Reviewed-by:Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
-> In v14 this series has been split into 3 parts.
->  part A: Immediate fix for AMD issue.
->  part B: LPS0 export improvements
->  part C: Long term solution for all vendors
-> v13->v14:
->  * Reword the comment
->  * add tag
-> v12->v13:
->  * New patch
-> ---
->  drivers/pci/pci.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 60230da957e0c..bfdad2eb36d13 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -3037,10 +3037,15 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
->  			return false;
->  
->  		/*
-> -		 * It should be safe to put PCIe ports from 2015 or newer
-> -		 * to D3.
-> +		 * Allow Intel PCIe ports from 2015 onward to go into D3 to
-> +		 * achieve additional energy conservation on some platforms.
-> +		 *
-> +		 * This is only set for Intel PCIe ports as it causes problems
-> +		 * on both AMD Rembrandt and Phoenix platforms where USB keyboards
-> +		 * can not be used to wake the system from suspend.
->  		 */
-> -		if (dmi_get_bios_year() >= 2015)
-> +		if (bridge->vendor == PCI_VENDOR_ID_INTEL &&
-> +		    dmi_get_bios_year() >= 2015)
->  			return true;
+Alistair Popple <apopple@nvidia.com> writes:
 
-Hmm.  I'm really not a fan of checks like this that aren't connected
-to an actual property of the platform.  The Intel Vendor ID tells us
-nothing about what the actual problem is, which makes it really hard
-to maintain in the future.  It's also very AMD- and Intel-centric,
-when this code is ostensibly arch-agnostic, so this potentially
-regresses ARM64, RISC-V, powerpc, etc.
+> "Huang, Ying" <ying.huang@intel.com> writes:
+>
+>> Hi, Alistair,
+>>
+>> Sorry for late response.  Just come back from vacation.
+>
+> Ditto for this response :-)
+>
+> I see Andrew has taken this into mm-unstable though, so my bad for not
+> getting around to following all this up sooner.
+>
+>> Alistair Popple <apopple@nvidia.com> writes:
+>>
+>>> "Huang, Ying" <ying.huang@intel.com> writes:
+>>>
+>>>> Alistair Popple <apopple@nvidia.com> writes:
+>>>>
+>>>>> "Huang, Ying" <ying.huang@intel.com> writes:
+>>>>>
+>>>>>> Alistair Popple <apopple@nvidia.com> writes:
+>>>>>>
+>>>>>>>>>> While other memory device drivers can use the general notifier chain
+>>>>>>>>>> interface at the same time.
+>>>>>>>
+>>>>>>> How would that work in practice though? The abstract distance as far as
+>>>>>>> I can tell doesn't have any meaning other than establishing preferences
+>>>>>>> for memory demotion order. Therefore all calculations are relative to
+>>>>>>> the rest of the calculations on the system. So if a driver does it's own
+>>>>>>> thing how does it choose a sensible distance? IHMO the value here is in
+>>>>>>> coordinating all that through a standard interface, whether that is HMAT
+>>>>>>> or something else.
+>>>>>>
+>>>>>> Only if different algorithms follow the same basic principle.  For
+>>>>>> example, the abstract distance of default DRAM nodes are fixed
+>>>>>> (MEMTIER_ADISTANCE_DRAM).  The abstract distance of the memory device is
+>>>>>> in linear direct proportion to the memory latency and inversely
+>>>>>> proportional to the memory bandwidth.  Use the memory latency and
+>>>>>> bandwidth of default DRAM nodes as base.
+>>>>>>
+>>>>>> HMAT and CDAT report the raw memory latency and bandwidth.  If there are
+>>>>>> some other methods to report the raw memory latency and bandwidth, we
+>>>>>> can use them too.
+>>>>>
+>>>>> Argh! So we could address my concerns by having drivers feed
+>>>>> latency/bandwidth numbers into a standard calculation algorithm right?
+>>>>> Ie. Rather than having drivers calculate abstract distance themselves we
+>>>>> have the notifier chains return the raw performance data from which the
+>>>>> abstract distance is derived.
+>>>>
+>>>> Now, memory device drivers only need a general interface to get the
+>>>> abstract distance from the NUMA node ID.  In the future, if they need
+>>>> more interfaces, we can add them.  For example, the interface you
+>>>> suggested above.
+>>>
+>>> Huh? Memory device drivers (ie. dax/kmem.c) don't care about abstract
+>>> distance, it's a meaningless number. The only reason they care about it
+>>> is so they can pass it to alloc_memory_type():
+>>>
+>>> struct memory_dev_type *alloc_memory_type(int adistance)
+>>>
+>>> Instead alloc_memory_type() should be taking bandwidth/latency numbers
+>>> and the calculation of abstract distance should be done there. That
+>>> resovles the issues about how drivers are supposed to devine adistance
+>>> and also means that when CDAT is added we don't have to duplicate the
+>>> calculation code.
+>>
+>> In the current design, the abstract distance is the key concept of
+>> memory types and memory tiers.  And it is used as interface to allocate
+>> memory types.  This provides more flexibility than some other interfaces
+>> (e.g. read/write bandwidth/latency).  For example, in current
+>> dax/kmem.c, if HMAT isn't available in the system, the default abstract
+>> distance: MEMTIER_DEFAULT_DAX_ADISTANCE is used.  This is still useful
+>> to support some systems now.  On a system without HMAT/CDAT, it's
+>> possible to calculate abstract distance from ACPI SLIT, although this is
+>> quite limited.  I'm not sure whether all systems will provide read/write
+>> bandwith/latency data for all memory devices.
+>>
+>> HMAT and CDAT or some other mechanisms may provide the read/write
+>> bandwidth/latency data to be used to calculate abstract distance.  For
+>> them, we can provide a shared implementation in mm/memory-tiers.c to map
+>> from read/write bandwith/latency to the abstract distance.  Can this
+>> solve your concerns about the consistency among algorithms?  If so, we
+>> can do that when we add the second algorithm that needs that.
+>
+> I guess it would address my concerns if we did that now. I don't see why
+> we need to wait for a second implementation for that though - the whole
+> series seems to be built around adding a framework for supporting
+> multiple algorithms even though only one exists. So I think we should
+> support that fully, or simplfy the whole thing and just assume the only
+> thing that exists is HMAT and get rid of the general interface until a
+> second algorithm comes along.
 
-It's bad enough that we check for 2015.  A BIOS security update to a
-2014 platform will break things, even though the update has nothing to
-do with D3.  We're stuck with that one, and it's old enough that maybe
-it won't bite us any more, but I hate to add more.
+We will need a general interface even for one algorithm implementation.
+Because it's not good to make a dax subsystem driver (dax/kmem) to
+depend on a ACPI subsystem driver (acpi/hmat).  We need some general
+interface at subsystem level (memory tier here) between them.
 
-The list of conditions in pci_bridge_d3_possible() is a pretty good
-clue that we don't really know what we're doing, and all we can do is
-find configurations that happen to work.  
-
-I don't have any better suggestions, other than that this should be
-described somehow via ACPI (and not in vendor-specific stuff like
-PNP0D80).
-
-Bjorn
+Best Regards,
+Huang, Ying
