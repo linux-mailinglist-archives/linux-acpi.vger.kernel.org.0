@@ -2,57 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5993278191B
-	for <lists+linux-acpi@lfdr.de>; Sat, 19 Aug 2023 12:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3446B782611
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Aug 2023 11:10:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231321AbjHSKw3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 19 Aug 2023 06:52:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47164 "EHLO
+        id S233969AbjHUJKX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Aug 2023 05:10:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230371AbjHSKwW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 19 Aug 2023 06:52:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C698F5246;
-        Sat, 19 Aug 2023 03:50:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        with ESMTP id S232445AbjHUJKW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 05:10:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222A8C7
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Aug 2023 02:09:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1692608973;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=n+un/h4Se3kF0gyO71Y6Gkd3Cbyfhb2n6D6SM21FoJ4=;
+        b=aspTLXAcDaNdqWcRTmUMb8F8u5/bxxMFvPQhKWN2qEmX2D9TQ+od+jUde4IDFYELOuTzzD
+        4mqpRs8cVhIHVJ2aFeS+JXXJbVFEU54h3scRwn2a6eIKiPpZr29WhGUBjKuThv9H6RVGtg
+        k0eYWVq8QPUv2AL9q3x5nG9RqjY4zU0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-211-56PgXgEnOOe2q1rWZ575uw-1; Mon, 21 Aug 2023 05:09:29 -0400
+X-MC-Unique: 56PgXgEnOOe2q1rWZ575uw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5826E6222E;
-        Sat, 19 Aug 2023 10:50:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AB7C433C8;
-        Sat, 19 Aug 2023 10:50:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692442210;
-        bh=UOf0VrNbj7jijgQLUEJOQOBTWQ8bE2tlLoIK1cWZfF4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Kei/cEnCzd9vylrM81C/pPpoNImWO9ct/BfmNbABJtoIAiUdlMrA6QirCewN8nGsl
-         E+/EyT5QuE5r/CU3d6rHBMKoRtj1M4beqjlpX4igDLY31/WCHuJE9cep162hACy+zA
-         MkHvny2Q8i8kBUce3Avd2yXp9bzBiQ31Ho3RWg+I=
-Date:   Sat, 19 Aug 2023 12:50:07 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     Evan Quan <evan.quan@amd.com>, Andrew Lunn <andrew@lunn.ch>,
-        rafael@kernel.org, lenb@kernel.org, johannes@sipsolutions.net,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, alexander.deucher@amd.com,
-        rdunlap@infradead.org, quic_jjohnson@quicinc.com, horms@kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [V9 1/9] drivers core: Add support for Wifi band RF mitigations
-Message-ID: <2023081919-mockup-bootleg-bdb9@gregkh>
-References: <20230818032619.3341234-1-evan.quan@amd.com>
- <20230818032619.3341234-2-evan.quan@amd.com>
- <2023081806-rounding-distract-b695@gregkh>
- <2328cf53-849d-46a1-87e6-436e3a1f5fd8@amd.com>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 72CA58DC664;
+        Mon, 21 Aug 2023 09:09:29 +0000 (UTC)
+Received: from x1.localdomain.com (unknown [10.39.192.244])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id AB27C140E950;
+        Mon, 21 Aug 2023 09:09:28 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        linux-acpi@vger.kernel.org, All applicable <stable@vger.kernel.org>
+Subject: [PATCH] ACPI: resource: Fix IRQ override quirk for PCSpecialist Elimina Pro 16 M
+Date:   Mon, 21 Aug 2023 11:09:27 +0200
+Message-ID: <20230821090927.305926-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2328cf53-849d-46a1-87e6-436e3a1f5fd8@amd.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,50 +58,39 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 05:49:14PM -0500, Limonciello, Mario wrote:
-> 
-> 
-> On 8/18/2023 4:24 PM, Greg KH wrote:
-> > On Fri, Aug 18, 2023 at 11:26:11AM +0800, Evan Quan wrote:
-> > >   drivers/base/Makefile                         |   1 +
-> > >   drivers/base/wbrf.c                           | 280 ++++++++++++++++++
-> > 
-> > Why is a wifi-specific thing going into drivers/base/?
-> > 
-> > confused,
-> > 
-> > greg k-h
-> 
-> The original problem statement was at a high level 'there can be
-> interference between different devices operating at high frequencies'. The
-> original patches introduced some ACPI library code that enabled a mitigated
-> for this interference between mac80211 devices and amdgpu devices.
-> 
-> Andrew Lunn wanted to see something more generic, so the series has morphed
-> into base code for things to advertise frequencies in use and other things
-> to listen to frequencies in use and react.
-> 
-> The idea is supposed to be that if the platform knows that these mitigations
-> are needed then the producers send the frequencies in use, consumers react
-> to them.  The AMD implementation of getting this info from the platform
-> plugs into the base code (patch 2).
-> 
-> If users don't want this behavior they can turn it off on kernel command
-> line.
-> 
-> If the platform doesn't know mitigations are needed but user wants to turn
-> them on anyway they can turn it on kernel command line.
+It turns out that some PCSpecialist Elimina Pro 16 M models
+have "GM6BGEQ" as DMI product-name instead of "Elimina Pro 16 M",
+causing the existing DMI quirk to not work on these models.
 
-That's all fine, I don't object to that at all.  But bus/device-specific
-stuff should NOT be in drivers/base/ if at all possible (yes, we do have
-some exceptions with hypervisor.c and memory and cpu stuff) but for a
-frequency thing like this, why can't it live with the other
-wifi/frequency code in drivers/net/wireless/?
+The DMI board-name is always "GM6BGEQ", so match on that instead.
 
-In other words, what's the benefit to having me be the maintainer of
-this, someone who knows nothing about this subsystem, other than you
-passing off that work to me?  :)
+Fixes: 56fec0051a69 ("ACPI: resource: Add IRQ override quirk for PCSpecialist Elimina Pro 16 M")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217394#c36
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/resource.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-thanks,
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index a4d9f149b48d..32cfa3f4efd3 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -501,9 +501,13 @@ static const struct dmi_system_id maingear_laptop[] = {
+ static const struct dmi_system_id pcspecialist_laptop[] = {
+ 	{
+ 		.ident = "PCSpecialist Elimina Pro 16 M",
++		/*
++		 * Some models have product-name "Elimina Pro 16 M",
++		 * others "GM6BGEQ". Match on board-name to match both.
++		 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "PCSpecialist"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Elimina Pro 16 M"),
++			DMI_MATCH(DMI_BOARD_NAME, "GM6BGEQ"),
+ 		},
+ 	},
+ 	{ }
+-- 
+2.41.0
 
-greg k-h
