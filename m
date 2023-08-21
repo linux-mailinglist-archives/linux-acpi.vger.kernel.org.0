@@ -2,129 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C21783087
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Aug 2023 21:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 223C97830CA
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Aug 2023 21:13:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229517AbjHUSyZ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 21 Aug 2023 14:54:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33294 "EHLO
+        id S229647AbjHUTAR convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 21 Aug 2023 15:00:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbjHUSyY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 14:54:24 -0400
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EABEB65A5;
-        Mon, 21 Aug 2023 11:54:03 -0700 (PDT)
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6874a386ec7so460145b3a.1;
-        Mon, 21 Aug 2023 11:54:03 -0700 (PDT)
+        with ESMTP id S229657AbjHUTAR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 15:00:17 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B51D12B71;
+        Mon, 21 Aug 2023 11:59:46 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-68a4dab8172so261069b3a.0;
+        Mon, 21 Aug 2023 11:59:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692644023; x=1693248823;
+        d=1e100.net; s=20221208; t=1692644279; x=1693249079;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AjNsowUK9gird43ia4GlcF2/+kMuvjQMQyQUr20YgY8=;
-        b=amwrs4uh45BMtmtUtzHNXlwhVSjGqBD76zMSECZDaXl+dtPX9a5THloXqYsZv5SSx+
-         GhsYMWBuQ//jlDXawrcaTaR4pvALU9H53LVU0L/j8ztAQSfKDYygplHam3MivfZgB6XS
-         2utuKvz2ckcnVLjKo1T0AqZaQfFjb0jghYGohaUbokXhdJlAlDxWYHjAwHuav3gH7YG8
-         F4RB9IxwgYh/jL9I91ZNAVRjED6f2f8+aV0sjE2m9LSlwhIHgbKmr3VGOJ1QuVX8Yfk1
-         j5+fLNLdQ1dqu/OLEwAqz07RoUDU0aZsr/c0OhXYeB3yAz+lR1PXmmwVpU+2pSGwFdFx
-         L5xw==
-X-Gm-Message-State: AOJu0YyiPbab9WQt6/FqQsKbaK4SBUdCr+9O+PEVndr6rhfR4Ol9Q3aJ
-        oOK0/8UpVh8OSMOj5FuCksH0R4FhQTS6tCsFpIh7k8si
-X-Google-Smtp-Source: AGHT+IGbkE5EtyoRuBeaQEblim4mO21X78UOxSVlgSlgdlH4DAwReaNaX8x02A4Ls5imOEsvndnFA+E2HFdO+x3TqsA=
-X-Received: by 2002:a4a:e882:0:b0:570:d852:f77f with SMTP id
- g2-20020a4ae882000000b00570d852f77fmr3034647ooe.1.1692643588293; Mon, 21 Aug
- 2023 11:46:28 -0700 (PDT)
+        bh=g0ILDH/g5WvpuVuWafhgCHGmQa9G1Jkqjs3DU2lv7hI=;
+        b=ZXrbOjuDsApwJg/nBrd8K9+e56pE+qxNzDvpRYOANTb3czuqx5vmWLd7S1YYfnGwM9
+         5/J2SWAFQmkaDC3NmxVl5zsPhg7A74m2qDCYeeA+MnayXrRcWcL+utRPs/D/jAQorapm
+         EOdFxV/UTiABHWM7kGVwTJ9fQwPpEAvJHiHre8TDM69z7pjRbJ8oUPqxJSkkIh2IRi/j
+         hpMsRiEpESE5qMmHOauQQSUbOdhUTJnHKb6+ENZCgRoxdK68qPr7fnZ4PbpdaY4tsK9p
+         UgEHKkpL552j+9e6qeadBsTHPgJVg7yCaQemLDsA1OalR8PkzDVD86wh/tg7OJ3rshUR
+         ousA==
+X-Gm-Message-State: AOJu0YyvRfMovvuxoFqPre9PwWR/IDsCRF7sUkzhl/ryNv9mmQ/aEDa4
+        +BsZGvgXymZ11BHVVdPwvwJwRrRNSLlBODVo8Qunuiv2
+X-Google-Smtp-Source: AGHT+IG5QmTTwNd/TxKRz4vs+mqranVuKoVwuCjOaErEOA0TL30BQvSHU0yrS3wU/9Td45bZbzjxqUg+7d9IUQ0Fz/Y=
+X-Received: by 2002:a4a:d9c7:0:b0:563:3b56:5dc1 with SMTP id
+ l7-20020a4ad9c7000000b005633b565dc1mr7153280oou.0.1692643774581; Mon, 21 Aug
+ 2023 11:49:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230818194027.27559-1-mario.limonciello@amd.com> <20230818194027.27559-5-mario.limonciello@amd.com>
-In-Reply-To: <20230818194027.27559-5-mario.limonciello@amd.com>
+References: <20230810234856.2580143-1-avadhut.naik@amd.com>
+ <a0ab4d07-fb73-418b-b88d-c3ad6aa4cf49@intel.com> <655c916e-356c-03e3-6c67-aa40886dd5e2@amd.com>
+ <CAJZ5v0j0R1GK=0z+LJd_PSh4zDv9Ydw2YA7HWm1R5wjCUsbbYQ@mail.gmail.com>
+ <1c579c96-5010-4e5b-aa27-afb4f4f6746a@amd.com> <CAJZ5v0iPRCJLH5bkKyhjUq_tmjmR6R73fhUm3JnKptcm1cn9fQ@mail.gmail.com>
+ <6bc15195-aa26-4e29-b625-74fca84f7a6f@amd.com> <CAJZ5v0jEcD_1+jHfAk9eN0YYJFbDZN2rZ97KHyH2-w6EqRN9+g@mail.gmail.com>
+ <43b65307-bc3f-4014-9bf8-a96c6ed15d9b@amd.com> <CAJZ5v0g+uVZwoOr-2W19Ux9u-D=WiY=-dtcQZwYU0Ov_GE5d=w@mail.gmail.com>
+ <CAJZ5v0g_DyQAnSuigBc-f0UNmW0mo=0yMadES+0NhphJs_k+cw@mail.gmail.com> <9d491dfe-13d8-4072-a90b-5f68107fcf95@amd.com>
+In-Reply-To: <9d491dfe-13d8-4072-a90b-5f68107fcf95@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 21 Aug 2023 20:46:17 +0200
-Message-ID: <CAJZ5v0j_tmW1uWZF7ShK=fwnVGjjy8CSf7DJErJdSaD_dgW8WQ@mail.gmail.com>
-Subject: Re: [PATCH v14.c 4/4] PCI: ACPI: Limit the Intel specific opt-in to
- D3 to 2024
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Iain Lane <iain@orangesquash.org.uk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Date:   Mon, 21 Aug 2023 20:49:23 +0200
+Message-ID: <CAJZ5v0jxKwtHM3vhtw44TW5=J916XvXSeP3DyNLcJDo+eTSRHw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PHAT: Add Platform Health Assessment Table support
+To:     Yazen Ghannam <yazen.ghannam@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Avadhut Naik <avadnaik@amd.com>,
+        "Wilczynski, Michal" <michal.wilczynski@intel.com>,
+        Avadhut Naik <avadhut.naik@amd.com>, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 9:40 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Mon, Aug 21, 2023 at 8:44 PM Yazen Ghannam <yazen.ghannam@amd.com> wrote:
 >
-> Intel systems that need to have PCIe ports in D3 for low power idle
-> specify this by constraints on the ACPI PNP0D80 device. As this information
-> is queried by acpi_pci_bridge_d3(), limit the DMI BIOS year check to stop
-> at 2024. This will allow future systems to rely on the constraints check
-> and ACPI checks to set up policy like non-Intel systems do.
-
-So I'm not sure about the value of this change.
-
-The behavior is made Intel-specific in [14a 1/1] and it will be that
-way at least for some time.  This change only sets the date after
-which it won't be Intel-specific any more, but for what reason
-exactly?
-
-And why is 2024 the cut-off year (and not 2025, for example)?
-
-If Intel platforms continue to be OK with putting all PCIe ports into
-D3hot beyond 2024, why restrict the kernel from doing so on them?
-
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
-> v13->v14:
->  * Use a variable instead
-> v12->v13:
->  * New patch
-> ---
->  drivers/pci/pci.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
+> On 8/21/23 2:01 PM, Rafael J. Wysocki wrote:
+> > On Mon, Aug 21, 2023 at 7:52 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >>
+> >> On Mon, Aug 21, 2023 at 7:35 PM Limonciello, Mario
+> >> <mario.limonciello@amd.com> wrote:
+> >>>
+> >>>
+> >>>
+> >>> On 8/21/2023 12:29 PM, Rafael J. Wysocki wrote:
+> >>>> On Mon, Aug 21, 2023 at 7:17 PM Limonciello, Mario
+> >>>> <mario.limonciello@amd.com> wrote:
+> >>>>>
+> >>>>> On 8/21/2023 12:12 PM, Rafael J. Wysocki wrote:
+> >>>>> <snip>
+> >>>>>>> I was just talking to some colleagues about PHAT recently as well.
+> >>>>>>>
+> >>>>>>> The use case that jumps out is "system randomly rebooted while I was
+> >>>>>>> doing XYZ".  You don't know what happened, but you keep using your
+> >>>>>>> system.  Then it happens again.
+> >>>>>>>
+> >>>>>>> If the reason for the random reboot is captured to dmesg you can cross
+> >>>>>>> reference your journal from the next boot after any random reboot and
+> >>>>>>> get the reason for it.  If a user reports this to a Gitlab issue tracker
+> >>>>>>> or Bugzilla it can be helpful in establishing a pattern.
+> >>>>>>>
+> >>>>>>>>> The below location may be appropriate in that case:
+> >>>>>>>>> /sys/firmware/acpi/
+> >>>>>>>>
+> >>>>>>>> Yes, it may. >
+> >>>>>>>>> We already have FPDT and BGRT being exported from there.
+> >>>>>>>>
+> >>>>>>>> In fact, all of the ACPI tables can be retrieved verbatim from
+> >>>>>>>> /sys/firmware/acpi/tables/ already, so why exactly do you want the
+> >>>>>>>> kernel to parse PHAT in particular?
+> >>>>>>>>
+> >>>>>>>
+> >>>>>>> It's not to say that /sys/firmware/acpi/PHAT isn't useful, but having
+> >>>>>>> something internal to the kernel "automatically" parsing it and saving
+> >>>>>>> information to a place like the kernel log that is already captured by
+> >>>>>>> existing userspace tools I think is "more" useful.
+> >>>>>>
+> >>>>>> What existing user space tools do you mean?  Is there anything already
+> >>>>>> making use of the kernel's PHAT output?
+> >>>>>>
+> >>>>>
+> >>>>> I was meaning things like systemd already capture the kernel long
+> >>>>> ringbuffer.  If you save stuff like this into the kernel log, it's going
+> >>>>> to be indexed and easier to grep for boots that had it.
+> >>>>>
+> >>>>>> And why can't user space simply parse PHAT by itself?
+> >>>>>>   > There are multiple ACPI tables that could be dumped into the kernel
+> >>>>>> log, but they aren't.  Guess why.
+> >>>>>
+> >>>>> Right; there's not reason it can't be done by userspace directly.
+> >>>>>
+> >>>>> Another way to approach this problem could be to modify tools that
+> >>>>> excavate records from a reboot to also get PHAT.  For example
+> >>>>> systemd-pstore will get any kernel panics from the previous boot from
+> >>>>> the EFI pstore and put them into /var/lib/systemd/pstore.
+> >>>>>
+> >>>>> No reason that couldn't be done automatically for PHAT too.
+> >>>>
+> >>>> I'm not sure about the connection between the PHAT dump in the kernel
+> >>>> log and pstore.
+> >>>>
+> >>>> The PHAT dump would be from the time before the failure, so it is
+> >>>> unclear to me how useful it can be for diagnosing it.  However, after
+> >>>> a reboot one should be able to retrieve PHAT data from the table
+> >>>> directly and that may include some information regarding the failure.
+> >>>
+> >>> Right so the thought is that at bootup you get the last entry from PHAT
+> >>> and save that into the log.
+> >>>
+> >>> Let's say you have 3 boots:
+> >>> X - Triggered a random reboot
+> >>> Y - Cleanly shut down
+> >>> Z - Boot after a clean shut down
+> >>>
+> >>> So on boot Y you would have in your logs the reason that boot X rebooted.
+> >>
+> >> Yes, and the same can be retrieved from the PHAT directly from user
+> >> space at that time, can't it?
+> >>
+> >>> On boot Z you would see something about how boot Y's reason.
+> >>>
+> >>>>
+> >>>> With pstore, the assumption is that there will be some information
+> >>>> relevant for diagnosing the failure in the kernel buffer, but I'm not
+> >>>> sure how the PHAT dump from before the failure can help here?
+> >>>
+> >>> Alone it's not useful.
+> >>> I had figured if you can put it together with other data it's useful.
+> >>> For example if you had some thermal data in the logs showing which
+> >>> component overheated or if you looked at pstore and found a NULL pointer
+> >>> dereference.
+> >>
+> >> IIUC, the current PHAT content can be useful.  The PHAT content from
+> >> boot X (before the failure) which is what will be there in pstore
+> >> after the random reboot, is of limited value AFAICS.
+> >
+> > To be more precise, I don't see why the kernel needs to be made a
+> > man-in-the-middle between the firmware which is the source of the
+> > information and user space that consumes it.
 >
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index bfdad2eb36d13..c8787d898c377 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -3037,16 +3037,22 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
->                         return false;
+> I think that's a fair point.
 >
->                 /*
-> -                * Allow Intel PCIe ports from 2015 onward to go into D3 to
-> +                * Allow Intel PCIe ports from 2015 to 2024 to go into D3 to
->                  * achieve additional energy conservation on some platforms.
->                  *
-> +                * Intel systems from 2025 onward that need this are expected
-> +                * to specify this in an LPS0 device constraint instead.
-> +                *
->                  * This is only set for Intel PCIe ports as it causes problems
->                  * on both AMD Rembrandt and Phoenix platforms where USB keyboards
->                  * can not be used to wake the system from suspend.
->                  */
-> -               if (bridge->vendor == PCI_VENDOR_ID_INTEL &&
-> -                   dmi_get_bios_year() >= 2015)
-> -                       return true;
-> +               if (bridge->vendor == PCI_VENDOR_ID_INTEL) {
-> +                       int year = dmi_get_bios_year();
-> +
-> +                       if (year >= 2015 && year <= 2024)
-> +                               return true;
-> +               }
->                 break;
->         }
->
-> --
-> 2.34.1
->
+> Is there a preferred set of tools that can be updated?
+
+I think you need to talk to distro people about this.
+
+> If not, would it make sense to develop a set of common kernel tools for
+> this?
+
+Yes, it would, but please see above in the first place.
+
+> In my experience, it seems many folks use tools from their vendors or
+> custom tools.
+
+This observation matches my own experience.
