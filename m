@@ -2,112 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 847AB782672
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Aug 2023 11:44:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D77317826EE
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Aug 2023 12:19:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234449AbjHUJos (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Aug 2023 05:44:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52894 "EHLO
+        id S234608AbjHUKT6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 21 Aug 2023 06:19:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230107AbjHUJos (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 05:44:48 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AEC5A1;
-        Mon, 21 Aug 2023 02:44:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=d9AC3Y3wKvLhTCxarPAnq2BCxnL4Toqn/q0Gu3hZcq0=;
-        t=1692611087; x=1693820687; b=pce1bbcqzid6XJBsSrkqYv/RaOqYOpF/w4Kfw+fB1fv6kM+
-        UeGMP5K2y7zfNElskru7tulx+03dzI35U65rtGZbQuVWMFeaxJs2Y58Pbcbr2x7cLUG6CozHXjO3Y
-        URpdVZzUhXnbjQ/uXx2S56oD/25Wzw89AOHUBylrEcsdYOAp9TyOLNG4Xc8EJvWxLRF1jVWOF8fPJ
-        ZGCBzmqnkYWVNW+9O4ec7a7FVzDwhRkRPE4MNvFt+rp6MlmrJUnXqqH9QqtJmb2bHpFh1RQOZSd0a
-        BbokVvvEfOuVkGYAXzsr+FLDAqX6k0M/j7dy0bBZ+1r/5EzbN9/10LkASrDN8FaQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qY1SZ-002xnF-2J;
-        Mon, 21 Aug 2023 11:44:31 +0200
-Message-ID: <e167e97797a90d3d6ea09840ac909325537d6034.camel@sipsolutions.net>
-Subject: Re: [V9 4/9] wifi: mac80211: Add support for WBRF features
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Evan Quan <evan.quan@amd.com>, gregkh@linuxfoundation.org,
-        rafael@kernel.org, lenb@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        alexander.deucher@amd.com, andrew@lunn.ch, rdunlap@infradead.org,
-        quic_jjohnson@quicinc.com, horms@kernel.org
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Mario Limonciello <mario.limonciello@amd.com>
-Date:   Mon, 21 Aug 2023 11:44:29 +0200
-In-Reply-To: <20230818032619.3341234-5-evan.quan@amd.com>
-References: <20230818032619.3341234-1-evan.quan@amd.com>
-         <20230818032619.3341234-5-evan.quan@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S230421AbjHUKT5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 06:19:57 -0400
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95E93D8;
+        Mon, 21 Aug 2023 03:19:55 -0700 (PDT)
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3a7491aa219so527498b6e.1;
+        Mon, 21 Aug 2023 03:19:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692613195; x=1693217995;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F1pwCQpskI0ZyDftxOYmx2IzrpxK27DB6PQlzOMS/Gw=;
+        b=XklzuJKOgoo+Wz7TBJ6OA2iptC8tSRr09aL5VFrD6HgAf6o5gbHdJhf1FhyMeza0+z
+         0+6ROOO+004bkEZeNT+fsXvB/8cPWH7OGNAxxF0J1PA/FhpQqcJQInSGUn/CDf5hEw0+
+         eBSMEzE543i7Jo/x+ZNEteCprX1S2JG+2bq1qtZgJ7flT/Y5IAb8doz/k/JJvHkOhJuX
+         jPD5u5ZycQeuecp0MalUNqC7eSI1N2Aq6wKhkfsOhyFHeNexLrNArOSlHNQwFsfaHtgY
+         L0YF7MMN4820CHYcxdIyUiR8I6gCG5uTcPvoToQkQJ2yNQ59bhpXJ+kSBjH3TxFgKdy7
+         wx7Q==
+X-Gm-Message-State: AOJu0Yw5DMLPqH5BYMsFSAC1aT3swUi8t/Xp/m2F8cdMpFbCWiJ+ju3l
+        0eACWasQZ1gLZTJc1a640L6RPpU6uHmNOsDJcUADWNVm
+X-Google-Smtp-Source: AGHT+IFLHqhKOzDTcv0/YpBPc9VdHE75tGVBf/jfDGlim9JZmihkN4lQYf5NzjVkb5Y1RboG7Jr+IWJ30RIjwsRzjxM=
+X-Received: by 2002:a4a:c3c8:0:b0:56e:487f:8caa with SMTP id
+ e8-20020a4ac3c8000000b0056e487f8caamr5537476ooq.1.1692613194753; Mon, 21 Aug
+ 2023 03:19:54 -0700 (PDT)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230821090927.305926-1-hdegoede@redhat.com>
+In-Reply-To: <20230821090927.305926-1-hdegoede@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 21 Aug 2023 12:19:39 +0200
+Message-ID: <CAJZ5v0hGkHE5mjoKweXeLUCzyGC-6DG+XQj0dY76dUDj8HrthQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: Fix IRQ override quirk for PCSpecialist
+ Elimina Pro 16 M
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        linux-acpi@vger.kernel.org, All applicable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 2023-08-18 at 11:26 +0800, Evan Quan wrote:
-> To support the WBRF mechanism, Wifi adapters utilized in the system must
-> register the frequencies in use(or unregister those frequencies no longer
-> used) via the dedicated calls. So that, other drivers responding to the
-> frequencies can take proper actions to mitigate possible interference.
->=20
-> Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> Co-developed-by: Evan Quan <evan.quan@amd.com>
-> Signed-off-by: Evan Quan <evan.quan@amd.com>
+On Mon, Aug 21, 2023 at 11:09 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> It turns out that some PCSpecialist Elimina Pro 16 M models
+> have "GM6BGEQ" as DMI product-name instead of "Elimina Pro 16 M",
+> causing the existing DMI quirk to not work on these models.
+>
+> The DMI board-name is always "GM6BGEQ", so match on that instead.
+>
+> Fixes: 56fec0051a69 ("ACPI: resource: Add IRQ override quirk for PCSpecialist Elimina Pro 16 M")
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217394#c36
+> Cc: All applicable <stable@vger.kernel.org>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/resource.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index a4d9f149b48d..32cfa3f4efd3 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -501,9 +501,13 @@ static const struct dmi_system_id maingear_laptop[] = {
+>  static const struct dmi_system_id pcspecialist_laptop[] = {
+>         {
+>                 .ident = "PCSpecialist Elimina Pro 16 M",
+> +               /*
+> +                * Some models have product-name "Elimina Pro 16 M",
+> +                * others "GM6BGEQ". Match on board-name to match both.
+> +                */
+>                 .matches = {
+>                         DMI_MATCH(DMI_SYS_VENDOR, "PCSpecialist"),
+> -                       DMI_MATCH(DMI_PRODUCT_NAME, "Elimina Pro 16 M"),
+> +                       DMI_MATCH(DMI_BOARD_NAME, "GM6BGEQ"),
+>                 },
+>         },
+>         { }
+> --
 
-From WiFi POV, this looks _almost_ fine to me.
-
-> +static void wbrf_get_ranges_from_chandef(struct cfg80211_chan_def *chand=
-ef,
-> +					 struct wbrf_ranges_in *ranges_in)
-> +{
-> +	u64 start_freq1, end_freq1;
-> +	u64 start_freq2, end_freq2;
-> +	int bandwidth;
-> +
-> +	bandwidth =3D nl80211_chan_width_to_mhz(chandef->width);
-> +
-> +	get_chan_freq_boundary(chandef->center_freq1,
-> +			       bandwidth,
-> +			       &start_freq1,
-> +			       &end_freq1);
-> +
-> +	ranges_in->band_list[0].start =3D start_freq1;
-> +	ranges_in->band_list[0].end =3D end_freq1;
-> +
-> +	if (chandef->width =3D=3D NL80211_CHAN_WIDTH_80P80) {
-> +		get_chan_freq_boundary(chandef->center_freq2,
-> +				       bandwidth,
-> +				       &start_freq2,
-> +				       &end_freq2);
-> +
-> +		ranges_in->band_list[1].start =3D start_freq2;
-> +		ranges_in->band_list[1].end =3D end_freq2;
-> +	}
-> +}
-
-This has to setup ranges_in->num_of_ranges, no?
-(Also no real good reason for num_of_ranges to be a u64, btw, since it
-can only go up to 11)
-
-With that fixed, you can add
-
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-
-johannes
-
+Applied as 6.5-rc material, thanks!
