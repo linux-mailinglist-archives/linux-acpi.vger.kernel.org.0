@@ -2,67 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E19578314B
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Aug 2023 21:51:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3513783197
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Aug 2023 21:52:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229525AbjHUTsf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Aug 2023 15:48:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40384 "EHLO
+        id S229586AbjHUTvg convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 21 Aug 2023 15:51:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjHUTse (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 15:48:34 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F33D1DB
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Aug 2023 12:48:32 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-7921b70c1a5so77929139f.3
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Aug 2023 12:48:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1692647312; x=1693252112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3N7X/HZKiODl+6+MNX6JndqNW1xPMfJ5KlQEIhhEp20=;
-        b=donK6i774XrVXYP+eFrBY/Un4gIoAVwXckSA4zoLb4QBZYzF5hY1hU1F0BosScRQZ7
-         l8eJtPP5cxDUF78dsofEIp4j0EcKrNglBt9oSms17GThKXCDrYdb5byaw/WwyU/nlFex
-         UW6rQKBjf9lgmZW8uJ/Z05szJXngqVckaTEWQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692647312; x=1693252112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3N7X/HZKiODl+6+MNX6JndqNW1xPMfJ5KlQEIhhEp20=;
-        b=Lie2tSfzsqLfYTdpvq/8TxNP4RxET78pIK6RDc/+s20iIZBXMV+u/vviRb5G+6w6hi
-         gBFBB/qjMbnAfiJthOvqvME4k7qxDN5uxzX+0PaNeVc0mFgvUclXaQQQpBNaMJ7RZ48Y
-         1l+Kfe0EcnicDBrU9285N6Vygmt5uy2aAma8H0kCh+sljWXla0GRANexLpMvKr9xCwhw
-         tuX0VtvN4ncS6ISJSYOvVsXi1GDGVeNETVjmO+qox4KEcy1R7BtFqhHppr8I508OvLH5
-         46p5r3ZFWwmOzj98flzUlELWflZ0D9R2Ewab2RGuqEPcYzT3sE4ufPBgIM/byOy6tvWZ
-         y1Qg==
-X-Gm-Message-State: AOJu0YwAtDc967gsub2RJhzSyLHwOKtBU7LkST0n6X5gyQ2dItXB94Ie
-        bkVQArV2ahzl4gV7l0L5dohpi83KGS2Y8Zxte20=
-X-Google-Smtp-Source: AGHT+IFcu3IPYhGGuLvsyVJO8RzW3hUh7Hrcr3zrfVG6DkyEQPecWurr30tfPYr4FOJh+8GUA9xkMA==
-X-Received: by 2002:a05:6602:690:b0:785:5917:a35f with SMTP id dp16-20020a056602069000b007855917a35fmr10766390iob.8.1692647312413;
-        Mon, 21 Aug 2023 12:48:32 -0700 (PDT)
-Received: from kea.bld.corp.google.com ([2620:15c:183:200:9102:8976:7620:5093])
-        by smtp.gmail.com with ESMTPSA id o21-20020a02c6b5000000b0042b0ce92dddsm2552076jan.161.2023.08.21.12.48.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Aug 2023 12:48:32 -0700 (PDT)
-From:   Simon Glass <sjg@chromium.org>
-To:     devicetree@vger.kernel.org
-Cc:     Lean Sheng Tan <sheng.tan@9elements.com>,
-        Tom Rini <trini@konsulko.com>,
-        lkml <linux-kernel@vger.kernel.org>, linux-acpi@vger.kernel.org,
-        Rob Herring <robh@kernel.org>,
-        Chiu Chasel <chasel.chiu@intel.com>,
-        U-Boot Mailing List <u-boot@lists.denx.de>,
-        Gua Guo <gua.guo@intel.com>, Simon Glass <sjg@chromium.org>
-Subject: [PATCH v2] schemas: Add a schema for memory map
-Date:   Mon, 21 Aug 2023 13:48:19 -0600
-Message-ID: <20230821194821.2961213-1-sjg@chromium.org>
-X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
+        with ESMTP id S229543AbjHUTvg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 15:51:36 -0400
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D72111D
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Aug 2023 12:51:33 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
+ id 263aaab2bd53e7c7; Mon, 21 Aug 2023 21:51:31 +0200
+Authentication-Results: v370.home.net.pl; spf=softfail (domain owner 
+   discourages use of this host) smtp.mailfrom=rjwysocki.net 
+   (client-ip=195.136.19.94; helo=[195.136.19.94]; 
+   envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
+Received: from kreacher.localnet (unknown [195.136.19.94])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id AE3CF662C8C;
+        Mon, 21 Aug 2023 21:51:30 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     acpica-devel@lists.linuxfoundation.org,
+        "Kirill A . Shutemov" <kirill.shtuemov@linux.intel.com>
+Subject: [RFC] ACPI Code First ECR: Support for resetting the Multiprocessor Wakeup Mailbox
+Date:   Mon, 21 Aug 2023 21:51:30 +0200
+Message-ID: <13356251.uLZWGnKmhe@kreacher>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrudduledgudegfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthhqredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeetueduleelheeutdeigeetvefhuddvhffhveeigefhkeegudfgkefhuddutdetffenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeefpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggtphhitggrqdguvghvvghlsehlihhsthhsrdhlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepkhhirhhilhhlrdhshhhtuhgvmhhovheslhhinhhugidrihhnthgvlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=3 Fuz1=3 Fuz2=3
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,95 +51,138 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Devicespec specification skips over handling of a logical view of
-the memory map, pointing users to the UEFI specification.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-It is common to split firmware into 'Platform Init', which does the
-initial hardware setup and a "Payload" which selects the OS to be booted.
-Thus an handover interface is required between these two pieces.
+The Multiprocessor Wakeup Structure in MADT is used for starting application
+processors (APs) on systems without a hardware mechanism suitable for this
+purpose.  It describes a mailbox (Multiprocessor Wakeup Mailbox) allowing
+the boot CPU to send commands to APs and, in particular, to cause them to
+jump to a wakeup vector provided by the OS.
 
-Where UEFI boot-time services are not available, but UEFI firmware is
-present on either side of this interface, information about memory usage
-and attributes must be presented to the "Payload" in some form.
+As currently defined, after using the Multiprocessor Wakeup Mailbox to make
+a given AP jump to the wakeup vector, it cannot be used any more with that AP,
+which is problematic in some use cases, like kexec() or hibernation, because
+it makes transferring control of APs from one OS instance to another difficult.
 
-This aims to provide an initial schema for this mapping.
+For this reason, the definition of Multiprocessor Wakeup Structure is changed
+so as to allow the Multiprocessor Wakeup Mailbox to be reset in order to be
+used once again with a given AP.
 
-Note that this is separate from the existing /memory and /reserved-memory
-nodes, since it is mostly concerned with what the memory is used for. It
-may cover only a small fraction of available memory, although it could be
-used to signal which area of memory has ECC.
+# Title: Add support for resetting the Multiprocessor Wakeup Mailbox
 
-For now, no attempt is made to create an exhaustive binding, so there are
-some example types lists. This can be completed once this has passed
-initial review.
+# Status: Draft
 
-Signed-off-by: Simon Glass <sjg@chromium.org>
+# Document: ACPI Specification 6.6
+
+# License
+SPDX-License Identifier: CC-BY-4.0
+
+# Submitter:
+* Sponsor: Rafael J. Wysocki, Intel
+* Creator/Contributor: Kirill Shutemov, Intel
+
+# Summary of the Change
+Add a ResetVector field to Multiprocessor Wakeup Structure in order to provide
+the OS with a physical address of a Multiprocessor Wakeup Mailbox entry point
+for application processors that need to use the mailbox again after having used
+it once already.
+
+# Benefits of the Change
+It will allow a new OS instance to be started without going through a full
+system reset, for example after carrying out an OS update.
+
+There are valid use cases in which the new OS started this way is different from
+the OS that has been running so far and in the absence of a hardware mechanism
+for resetting application processors, the only way to pass control of them from
+one OS instance to the other is through the platform firmware.
+
+# Impact of the Change
+OS and platform firmware will need to recognize version 1 of the Multiprocessor
+Wakeup Mailbox.
+
+# Detailed Description of the Change
+ACPI specification source changes needed to implement this proposal are as
+follows:
+
 ---
+ source/05_ACPI_Software_Programming_Model.rst |   40 +++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 4 deletions(-)
 
-Changes in v2:
-- Reword commit message
+Index: ACPI_spec/source/05_ACPI_Software_Programming_Model.rst
+===================================================================
+--- ACPI_spec.orig/source/05_ACPI_Software_Programming_Model.rst
++++ ACPI_spec/source/05_ACPI_Software_Programming_Model.rst
+@@ -4488,7 +4488,27 @@ The OS section can only be written by OS
+ 
+ The OS section contains command, flags, APIC ID, and a wakeup address. After the OS detects the processor number from the MADT table, the OS may prepare the wakeup routine, fill the wakeup address field in the mailbox, indicate which processor need to be wakeup in the APID ID field, and send wakeup command. Once an application processor detects the wakeup command and its own APIC ID, the application processor will jump to the OS-provided wakeup address. The application processor will ignore the command if the APIC ID does not match its own.
+ 
+-For each application processor, the mailbox can be used only once for the wakeup command. After the application process takes the action according to the command, this mailbox will no longer be checked by this application processor. Other processors can continue using the mailbox for the next command.
++For each application processor, the mailbox can be used only once for the wakeup command, unless
++the MailBoxVersion field value is greater than 0 and the ResetVector field contains a nonzero value.
++
++After the application process takes the action according to the command, this mailbox will no longer
++be checked by this application processor until the mailbox is reset for it as described below. Other
++processors can continue using the mailbox for the next command.
++
++In case the mailbox needs to be used once again, for example in order to start a new version of
++the OS without carrying out a full system reset, the ResetVector field value can be used for
++making the given application processor enter a state to check the mailbox. For this purpose,
++the OS needs to set up the mailbox reset environment, as per the ResetVector field description,
++for the application processor in question and make that application processor jump to the
++firmware-provided mailbox reset address retrieved from the ResetVector field. This needs to be
++done for each application processor individually and doing it for one application processor does
++not affect the other application processors, so they can continue to operate undisturbed.  However,
++if the ResetVector field value is 0, the mailbox cannot be reset and so it can be used only once.
++
++After an application processor has jumped to the reset address, the OS is required to verify that
++the mailbox responds to commands by sending the test command to it. When it responds by changing
++the command to noop, the OS is not required to maintain the mailbox reset environment for the given
++application processor any more.
+ 
+ .. list-table:: **Multiprocessor Wakeup Structure**
+    :name: multiprocessor-wakeup-structure-table
+@@ -4507,11 +4527,11 @@ For each application processor, the mail
+    * - Length
+      - 1
+      - 1
+-     - 16
++     - 24
+    * - MailBoxVersion
+      - 2
+      - 2
+-     - Version of the mailbox. 0 for this version of the spec.
++     - Version of the mailbox. 1 for this version of the spec.
+    * - *Reserved*
+      - 4
+      - 4
+@@ -4520,6 +4540,17 @@ For each application processor, the mail
+      - 8
+      - 8
+      - Physical address of the mailbox. It must be in ACPINvs. It must also be 4K bytes aligned. See :numref:`multiprocessor-wakeup-mailbox-structure` for the Mailbox definition. 
++   * - ResetVector
++     - 8
++     - 16
++     - | The mailbox reset vector address for application processor(s).
++       | For Intel processors, the mailbox reset environment is:
++       |   Interrupts must be disabled.
++       |   RFLAGES.IF set to 0.
++       |   Long mode enabled.
++       |   Paging mode is enabled and physical memory for reset vector is identity mapped (virtual address equals physical address).
++       |   Reset vector must be contained within one physical page.
++       |   Selectors are set to flat and otherwise not used.
+ 
+ .. list-table:: **Multiprocessor Wakeup Mailbox Structure**
+    :name: multiprocessor-wakeup-mailbox-structure
+@@ -4536,7 +4567,8 @@ For each application processor, the mail
+      - 0
+      - | 0: Noop - no operation.
+        | 1: Wakeup – jump to the wakeup vector.
+-       | 2-0xFFFF: Reserved 
++       | 2: Test - respond by changing the command to Noop.
++       | 3-0xFFFF: Reserved.
+    * - *Reserved*
+      - 2
+      - 2
 
- dtschema/schemas/memory-map.yaml | 51 ++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
- create mode 100644 dtschema/schemas/memory-map.yaml
 
-diff --git a/dtschema/schemas/memory-map.yaml b/dtschema/schemas/memory-map.yaml
-new file mode 100644
-index 0000000..97e531e
---- /dev/null
-+++ b/dtschema/schemas/memory-map.yaml
-@@ -0,0 +1,51 @@
-+# SPDX-License-Identifier: BSD-2-Clause
-+# Copyright 2023 Google LLC
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/memory-map.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: /memory-map nodes
-+description: |
-+  Common properties always required in /memory-map nodes. These nodes are
-+  intended to resolve the nonchalant clause 3.4.1 ("/memory node and UEFI")
-+  in the Devicetree Specification.
-+
-+maintainers:
-+  - Simon Glass <sjg@chromium.org>
-+
-+properties:
-+  $nodename:
-+    const: '/'
-+  usage:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description: |
-+      Describes the usage of the memory region, e.g.:
-+
-+        "acpi-reclaim", "acpi-nvs", "bootcode", "bootdata", "bootdata",
-+        "runtime-code", "runtime-data"
-+  attr:
-+    $ref: /schemas/types.yaml#/definitions/string-array
-+    description: |
-+      Attributes possessed by this memory region:
-+
-+        "single-bit-ecc" - supports single-bit ECC
-+        "multi-bit-ecc" - supports multiple-bit ECC
-+        "no-ecc" - non-ECC memory
-+
-+patternProperties:
-+  "^([a-z][a-z0-9\\-]+@[0-9a-f]+)?$":
-+    type: object
-+    additionalProperties: false
-+
-+    properties:
-+      reg:
-+        minItems: 1
-+        maxItems: 1024
-+
-+    required:
-+      - reg
-+
-+additionalProperties: true
-+
-+...
--- 
-2.42.0.rc1.204.g551eb34607-goog
 
