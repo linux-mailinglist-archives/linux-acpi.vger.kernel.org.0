@@ -2,273 +2,174 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D892783B0E
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Aug 2023 09:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDEFB783DA6
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Aug 2023 12:11:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233192AbjHVHio (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Aug 2023 03:38:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34212 "EHLO
+        id S232263AbjHVKLd convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 22 Aug 2023 06:11:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229954AbjHVHin (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Aug 2023 03:38:43 -0400
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2088.outbound.protection.outlook.com [40.107.220.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E12C116;
-        Tue, 22 Aug 2023 00:38:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=g0D1onw0hdaMcWAZ3qQ2uLC54WJ63Huzh0exxM2EpUCCwo6iiivEoPezPgCNBFj/8iYX0CVUq679+byEkjltfawdD9BgIIXSdmQhdE4eSbLdVdCHlZClkG0FrUca81bYxqF3Zlv9nJ4RBrJCJ2HZ33rRB7OplsCcoQlc1OaskPkMh+C4BSC94vii3GlxnLmfDi9wfzszDPpi4YwFNUB/pt52HGDeUSzvCkk18eqIc2/oJqTu1zALb41rqViXLqlv9M9xWAEVqQaaARlsTmlY7edBpoLD/dXtPoHrqZS83rz2kPSIR265d5leR0Th3l2xCBjaiCHxSzSO11gVUgOviA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=20o4qcor3z9cNEIevtNrbG9Jlr8wL1BRyiWOwNC3gYc=;
- b=Q61ArdWYDeHrdoKFC5QZAtMaWMUmIpk914vMF6GQeWCwhDQcj/rqlAD3+2x3uVd8CzmJpMFSNJFZYzfpe/qw8svWYuR3S8qtjHMTLMfO4vrr1KtSRf+OM5AoqQeXJspSsqMHLHbNGcdwXUtxuFFPdbHg8iv5fl/ceG4rJYhUoCvvVmWdj5p3sC5iHQeTppMC1o5VKNWFRCxF1PCVTSx8ey0KU2JMAJK6aQuUBcZ9PEr+dyX8wewRrbKIwxVt0ntT+0VLUgwfQwYeCpmY3kdny3KKf+KlhUUlNwttrXkuT2MCh5sV7VmJ0gjqnHJ+dUIi1gLJ6JghMPGeXKV8ol9CYw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=20o4qcor3z9cNEIevtNrbG9Jlr8wL1BRyiWOwNC3gYc=;
- b=rAIF/TUjhzV8SjnKoAHl1W/6frA9QI7sXgYgIjS5NqBnxV4LQ4KarWZ1C7i0O39FanIavo+gh/6yIqUvefNMkUH/QGNjmIipzGm76LmxDGCpY4b1gSI3NYYMvOkdkkJYvx/eiY9lXakVp5Y2pzd1uOy/WzJVtIZq1Lozw1m74jo4A4Ce9QLubfjpmY0YPi0oJyEIQPjxCtuKO4DLpL76q6TTgBmhQtqjAaxghgb1KtA3+0O6gx7POWnAsCtU0t60mqsJMsuBeAgdGbssiey5cy5UtFJpS9762LftZLLaBHRH3zMSI6OjHGTG0OI6QfNSwLgY/vX5N7qo/4FoOZYilQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
- by BY5PR12MB5000.namprd12.prod.outlook.com (2603:10b6:a03:1d7::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Tue, 22 Aug
- 2023 07:38:39 +0000
-Received: from BYAPR12MB3176.namprd12.prod.outlook.com
- ([fe80::3bf6:11f3:64d7:2475]) by BYAPR12MB3176.namprd12.prod.outlook.com
- ([fe80::3bf6:11f3:64d7:2475%7]) with mapi id 15.20.6699.022; Tue, 22 Aug 2023
- 07:38:38 +0000
-References: <20230721012932.190742-1-ying.huang@intel.com>
- <20230721012932.190742-5-ying.huang@intel.com>
- <87edkwznsf.fsf@nvdebian.thelocal>
- <87cz0gxylp.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <871qfwwqi3.fsf@nvdebian.thelocal>
- <87a5ukc6nr.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-agent: mu4e 1.8.13; emacs 28.2
-From:   Alistair Popple <apopple@nvidia.com>
-To:     "Huang, Ying" <ying.huang@intel.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-        nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-        Wei Xu <weixugc@google.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        Yang Shi <shy828301@gmail.com>,
-        Rafael J Wysocki <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH RESEND 4/4] dax, kmem: calculate abstract distance with
- general interface
-Date:   Tue, 22 Aug 2023 17:36:22 +1000
-In-reply-to: <87a5ukc6nr.fsf@yhuang6-desk2.ccr.corp.intel.com>
-Message-ID: <87sf8ble6g.fsf@nvdebian.thelocal>
-Content-Type: text/plain
-X-ClientProxiedBy: SY6PR01CA0156.ausprd01.prod.outlook.com
- (2603:10c6:10:1ba::8) To BYAPR12MB3176.namprd12.prod.outlook.com
- (2603:10b6:a03:134::26)
+        with ESMTP id S233487AbjHVKLb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Aug 2023 06:11:31 -0400
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE404CCB;
+        Tue, 22 Aug 2023 03:11:23 -0700 (PDT)
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-570e8bee8b5so197940eaf.1;
+        Tue, 22 Aug 2023 03:11:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692699083; x=1693303883;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nkUB8Q5p3An3nKuRxt+zSoSlyY4Sk7U3gc/0U0+fP/w=;
+        b=Tp6rVq78aBjVF+ft1x5LZBlsX0wocZXbT+naDOw2F0NyQiwWThBrgLEH+2oM3IT603
+         b/nFkI8KnMI9ukaa4tRZ0ZuzkCu8Y71kwsqzazl3NZ2rhHbUtQTqFJbhLR42E6qaokfN
+         gOz1zOEjyQwlawLMnWDxD/hiZUpRvSAryJXn3TPCrV17F7CKv3BM5DvGH65y4vs88ejJ
+         1Q5lQpdn5rphmGwEHcQUnFgtm4DmKRJfBSoWBIdg3WEpeNmvWw9xO1/mQEv9aGj6HMuR
+         dsyU2PCzd+M9X1QmtqWNd6S0e6yzSDopEgBMtpN9IiG/6Afn9ALBn/c5uxXdaXMn+u2C
+         4lww==
+X-Gm-Message-State: AOJu0YyTS1evZxOiWqlT4OdQPtZqSrLdc3l3CNVJQuL+costLf8A+m0j
+        GOeOadgMbnSb/euEqlKq/OVFEQK0a3yj4BeThEc=
+X-Google-Smtp-Source: AGHT+IGIZwFt4/TzRTflcghiEdeOQjaN4GPFJhE/xj5C2hPs8sU4QnS0JjMPyOz/AknP8fGhbotpWP0JTbIxKT2oaBE=
+X-Received: by 2002:a4a:e882:0:b0:570:d852:f77f with SMTP id
+ g2-20020a4ae882000000b00570d852f77fmr4467620ooe.1.1692699082625; Tue, 22 Aug
+ 2023 03:11:22 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR12MB3176:EE_|BY5PR12MB5000:EE_
-X-MS-Office365-Filtering-Correlation-Id: ebeca8ee-dec5-4989-28ae-08dba2e2ccf2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: yPddi3rG4JQoOmvZOyBxUllQqqCsCdMJhzN1RDqj4wYUxgIa9RVRCU8Q8Rb3DR02CAYomIPhDOTuy39wbG9GLq9hxIFgKhs5VnDegTtEd0eWezU/iXDhcL+mbFmGm/B4DU+UJTC8kBeqbTW0cz+zZTnmQF6MuQfPqxajQfzEDfBB+/uBotEw6zvIhm2SItBhQVXWcongEEyKPRbGjxWybWCsQcikgXVLLwAq5XjhzmkNjRW8TvyTT6A/Bf/kGNAc6X+MOvB41A8WO7yEryQAUruIZlFLS5ePMNEjQKX6w6+z0W2IyJDPp8ccS/MoU7l6aY6Px48RBfNIH3ScTUyvPXx7RAvUihRJSKhuQDtqBYjilPdsnip8pmdVImFJSb1JGUn/EZf23/BhJT1C8bhP3Sm9lzQODTagIBUdyhIWpJvRYDl+Z5JfEujlKLVSaSw0T0rXtsJC4iVl4ShM86QC3JiaiaC/vDIvDyzxMcqZHveXNan01pyfGmIqtxS+sNqKaa6FPcSaub8DvV0ip3Wrx8PO7Zl+aqmxgFATFTdjPjMeWmRM95sWMM0djqe3oyIk
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(39860400002)(346002)(376002)(366004)(1800799009)(186009)(451199024)(54906003)(6916009)(66476007)(66556008)(316002)(66946007)(6512007)(9686003)(8676002)(8936002)(4326008)(41300700001)(478600001)(6666004)(38100700002)(6506007)(6486002)(83380400001)(2906002)(7416002)(86362001)(5660300002)(26005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?grYESB61KVLkveFW0QlOTpSJ+IUU8YpftgH3kqdm0bPtbHmBNnXMsjvMqW69?=
- =?us-ascii?Q?IcD5Z6vCcz4UyWBnEJANnsBGcKYypKg+bkYGC6HaX9Qk7YznmNi8wNdeXGpw?=
- =?us-ascii?Q?Pc2b5ZyAuSpmuuFgkZw16lYHVzlWnwqWJZcq00+5xoF6MiXPo7bgqBXG/xdt?=
- =?us-ascii?Q?AI+2fxsyVP6pot09MfBlS/uuRjyHa/HbD5NJ0GgxnE+uylXX/+kgLPk+yPpb?=
- =?us-ascii?Q?mYHocfiCJJwfJooxfo+n4wHq3PSiMaB7WlnOHOFZZhg+SwkFIxhDk5MJybMl?=
- =?us-ascii?Q?8tRVtTYDLFhlvvrqqhsGxtO+IQ+jcGWAqjZaTjjO9KTVU8i+82lSDXbiTKqX?=
- =?us-ascii?Q?KWnWyJWyF2gdeA/voA7iiO0j0bthvDdRXtvDyWbk9jCvnojSRvwrOVUUcH9R?=
- =?us-ascii?Q?bZJirvvYjfsmWkEY7V/Gruoko94rma8W0E/qus2pwD3LOmSwkbq5XKm/zBXJ?=
- =?us-ascii?Q?rW9fxIrsI4Vcw4oPCov8smJITioOv7g3Cjuf+R/v+/gjlC4qQ7yQIli9TZJD?=
- =?us-ascii?Q?REpBEt5z2yjKkLVXulh9oc/Yy1TCRywl4l9x/SKR7nOGx7ZK1v33PlQPsBtm?=
- =?us-ascii?Q?9mGk7nhHTuxhheEooyEVw0vamM7BBR8FqkmSI3c2H5KtcNNoQdxaOgZ7lmzO?=
- =?us-ascii?Q?KJrsftVAMPFSqOxyzU3ZV6RTvfFJu7TnV8GbBRQSsV+ONccgtRFi+sPela6s?=
- =?us-ascii?Q?QxCIHkBY7adnNx2b3ElxEq0gPuw8V2SCl1H5GIDD0gmFGWGkEO3WIfKJtaK9?=
- =?us-ascii?Q?Y0t0HVL0zr6Qv3B/NLjKRWFQj/G3rvwp37N4Ic+IqzPj9ZHWa8g8osbiyHj3?=
- =?us-ascii?Q?AkhxAAPPq+gBbGBHLspmvpmp2ZmNdUITUziUSxu2sFDHRtSlhmlSTs8VHUAS?=
- =?us-ascii?Q?IataYGpHwc+H0tiuy4q995599POalmzGKfDwN9YMj4oZwCqNfU6lb/0I6j4D?=
- =?us-ascii?Q?X71w/nTrSYmNyEKT1EfuftPOtwMLcDvT8avqS5yq4Vodu+FvOb8qHR0iAHmX?=
- =?us-ascii?Q?ND1m3/LaWiUHIdiFXetK27L1JzGcCAdpSD3hShfqqJrfkREskCcEFOvWDdGI?=
- =?us-ascii?Q?5BKWC8ScDbxw5/hS/fnrqLC35WQ2ao+UwIHaK8nPmmq5dRTmlfFv94rS/Fzr?=
- =?us-ascii?Q?ch5ABLMp1+gGrilai+nvFJEZtregqiJTFuW0gn6bmRw97SxMYcCRwhalllso?=
- =?us-ascii?Q?2hZDRwMXKSUC3rFezuvMKlvuUqKXNOILCZA5R/8GmzXYptEX2ZfF9KNWDgJt?=
- =?us-ascii?Q?VKV+dZH5XBNhmUdPT3a+E3XQcs/AChd6qPACs8bZBQOF51ACa53h/T+jdurr?=
- =?us-ascii?Q?x581QnAtDvOfLjE2zFDDrvW+m3lWdeydm57yIKIWAFyO1yuoXZpuWQj5u0Ih?=
- =?us-ascii?Q?8rSOuQLyqvyV58hRP+DbxiouyfgfLrgsdlM+R2HLAufN4GprSepcW3t6V48d?=
- =?us-ascii?Q?32TlWDj7f8WrNSDqg1pU4uZ20RXZ/aN38ZbcVR7tXhkQtLa5i5FZMWJ+ZlTr?=
- =?us-ascii?Q?c5G5NfUiplYa3QlB/99TgpKuUc/MZJuKcJXacHyxXoNk1IHtprjwlMuDakkE?=
- =?us-ascii?Q?iyukYQFR1cj56jy2OAKo0iJ4YBT3TZVLk/yr1wO5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ebeca8ee-dec5-4989-28ae-08dba2e2ccf2
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2023 07:38:38.9170
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: skMOyU08HLQcKG/fU+y4xExwZLBaEKRhZdEBvspagUqejgaMWDmwvm3zgRokWywpFdC5lE4kqQsxu0b1vfLe+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB5000
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+References: <20230818193932.27187-1-mario.limonciello@amd.com> <20230821224207.GA369432@bhelgaas>
+In-Reply-To: <20230821224207.GA369432@bhelgaas>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 22 Aug 2023 12:11:10 +0200
+Message-ID: <CAJZ5v0hU3mWFaaujWozHnPw8+A=bf2OwzcendXjpP35wCv_B6g@mail.gmail.com>
+Subject: Re: [PATCH v14.a 1/1] PCI: Only put Intel PCIe ports >= 2015 into D3
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Mario Limonciello <mario.limonciello@amd.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-"Huang, Ying" <ying.huang@intel.com> writes:
-
-> Alistair Popple <apopple@nvidia.com> writes:
+On Tue, Aug 22, 2023 at 12:42 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
 >
->> "Huang, Ying" <ying.huang@intel.com> writes:
->>
->>> Alistair Popple <apopple@nvidia.com> writes:
->>>
->>>> Huang Ying <ying.huang@intel.com> writes:
->>>>
->>>>> Previously, a fixed abstract distance MEMTIER_DEFAULT_DAX_ADISTANCE is
->>>>> used for slow memory type in kmem driver.  This limits the usage of
->>>>> kmem driver, for example, it cannot be used for HBM (high bandwidth
->>>>> memory).
->>>>>
->>>>> So, we use the general abstract distance calculation mechanism in kmem
->>>>> drivers to get more accurate abstract distance on systems with proper
->>>>> support.  The original MEMTIER_DEFAULT_DAX_ADISTANCE is used as
->>>>> fallback only.
->>>>>
->>>>> Now, multiple memory types may be managed by kmem.  These memory types
->>>>> are put into the "kmem_memory_types" list and protected by
->>>>> kmem_memory_type_lock.
->>>>
->>>> See below but I wonder if kmem_memory_types could be a common helper
->>>> rather than kdax specific?
->>>>
->>>>> Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
->>>>> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>>> Cc: Wei Xu <weixugc@google.com>
->>>>> Cc: Alistair Popple <apopple@nvidia.com>
->>>>> Cc: Dan Williams <dan.j.williams@intel.com>
->>>>> Cc: Dave Hansen <dave.hansen@intel.com>
->>>>> Cc: Davidlohr Bueso <dave@stgolabs.net>
->>>>> Cc: Johannes Weiner <hannes@cmpxchg.org>
->>>>> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>>> Cc: Michal Hocko <mhocko@kernel.org>
->>>>> Cc: Yang Shi <shy828301@gmail.com>
->>>>> Cc: Rafael J Wysocki <rafael.j.wysocki@intel.com>
->>>>> ---
->>>>>  drivers/dax/kmem.c           | 54 +++++++++++++++++++++++++++---------
->>>>>  include/linux/memory-tiers.h |  2 ++
->>>>>  mm/memory-tiers.c            |  2 +-
->>>>>  3 files changed, 44 insertions(+), 14 deletions(-)
->>>>>
->>>>> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
->>>>> index 898ca9505754..837165037231 100644
->>>>> --- a/drivers/dax/kmem.c
->>>>> +++ b/drivers/dax/kmem.c
->>>>> @@ -49,14 +49,40 @@ struct dax_kmem_data {
->>>>>  	struct resource *res[];
->>>>>  };
->>>>>  
->>>>> -static struct memory_dev_type *dax_slowmem_type;
->>>>> +static DEFINE_MUTEX(kmem_memory_type_lock);
->>>>> +static LIST_HEAD(kmem_memory_types);
->>>>> +
->>>>> +static struct memory_dev_type *kmem_find_alloc_memorty_type(int adist)
->>>>> +{
->>>>> +	bool found = false;
->>>>> +	struct memory_dev_type *mtype;
->>>>> +
->>>>> +	mutex_lock(&kmem_memory_type_lock);
->>>>> +	list_for_each_entry(mtype, &kmem_memory_types, list) {
->>>>> +		if (mtype->adistance == adist) {
->>>>> +			found = true;
->>>>> +			break;
->>>>> +		}
->>>>> +	}
->>>>> +	if (!found) {
->>>>> +		mtype = alloc_memory_type(adist);
->>>>> +		if (!IS_ERR(mtype))
->>>>> +			list_add(&mtype->list, &kmem_memory_types);
->>>>> +	}
->>>>> +	mutex_unlock(&kmem_memory_type_lock);
->>>>> +
->>>>> +	return mtype;
->>>>> +}
->>>>> +
->>>>>  static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->>>>>  {
->>>>>  	struct device *dev = &dev_dax->dev;
->>>>>  	unsigned long total_len = 0;
->>>>>  	struct dax_kmem_data *data;
->>>>> +	struct memory_dev_type *mtype;
->>>>>  	int i, rc, mapped = 0;
->>>>>  	int numa_node;
->>>>> +	int adist = MEMTIER_DEFAULT_DAX_ADISTANCE;
->>>>>  
->>>>>  	/*
->>>>>  	 * Ensure good NUMA information for the persistent memory.
->>>>> @@ -71,6 +97,11 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->>>>>  		return -EINVAL;
->>>>>  	}
->>>>>  
->>>>> +	mt_calc_adistance(numa_node, &adist);
->>>>> +	mtype = kmem_find_alloc_memorty_type(adist);
->>>>> +	if (IS_ERR(mtype))
->>>>> +		return PTR_ERR(mtype);
->>>>> +
->>>>
->>>> I wrote my own quick and dirty module to test this and wrote basically
->>>> the same code sequence.
->>>>
->>>> I notice your using a list of memory types here though. I think it would
->>>> be nice to have a common helper that other users could call to do the
->>>> mt_calc_adistance() / kmem_find_alloc_memory_type() /
->>>> init_node_memory_type() sequence and cleanup as my naive approach would
->>>> result in a new memory_dev_type per device even though adist might be
->>>> the same. A common helper would make it easy to de-dup those.
->>>
->>> If it's useful, we can move kmem_find_alloc_memory_type() to
->>> memory-tier.c after some revision.  But I tend to move it after we have
->>> the second user.  What do you think about that?
->>
->> Usually I would agree, but this series already introduces a general
->> interface for calculating adist even though there's only one user and
->> implementation. So if we're going to add a general interface I think it
->> would be better to make it more usable now rather than after variations
->> of it have been cut and pasted into other drivers.
+> On Fri, Aug 18, 2023 at 02:39:32PM -0500, Mario Limonciello wrote:
+> > commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> > changed pci_bridge_d3_possible() so that any vendor's PCIe ports
+> > from modern machines (>=2015) are allowed to be put into D3.
+> >
+> > Iain reports that USB devices can't be used to wake a Lenovo Z13
+> > from suspend. This is because the PCIe root port has been put
+> > into D3 and AMD's platform can't handle USB devices waking in this
+> > case.
+> >
+> > This behavior is only reported on Linux. Comparing the behavior
+> > on Windows and Linux, Windows doesn't put the root ports into D3.
+> >
+> > To fix the issue without regressing existing Intel systems,
+> > limit the >=2015 check to only apply to Intel PCIe ports.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> > Reported-by: Iain Lane <iain@orangesquash.org.uk>
+> > Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
+> > Reviewed-by:Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> > ---
+> > In v14 this series has been split into 3 parts.
+> >  part A: Immediate fix for AMD issue.
+> >  part B: LPS0 export improvements
+> >  part C: Long term solution for all vendors
+> > v13->v14:
+> >  * Reword the comment
+> >  * add tag
+> > v12->v13:
+> >  * New patch
+> > ---
+> >  drivers/pci/pci.c | 11 ++++++++---
+> >  1 file changed, 8 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> > index 60230da957e0c..bfdad2eb36d13 100644
+> > --- a/drivers/pci/pci.c
+> > +++ b/drivers/pci/pci.c
+> > @@ -3037,10 +3037,15 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
+> >                       return false;
+> >
+> >               /*
+> > -              * It should be safe to put PCIe ports from 2015 or newer
+> > -              * to D3.
+> > +              * Allow Intel PCIe ports from 2015 onward to go into D3 to
+> > +              * achieve additional energy conservation on some platforms.
+> > +              *
+> > +              * This is only set for Intel PCIe ports as it causes problems
+> > +              * on both AMD Rembrandt and Phoenix platforms where USB keyboards
+> > +              * can not be used to wake the system from suspend.
+> >                */
+> > -             if (dmi_get_bios_year() >= 2015)
+> > +             if (bridge->vendor == PCI_VENDOR_ID_INTEL &&
+> > +                 dmi_get_bios_year() >= 2015)
+> >                       return true;
 >
-> In general, I would like to introduce complexity when necessary.  So, we
-> can discuss the necessity of the general interface firstly.  We can do
-> that in [1/4] of the series.
+> Hmm.  I'm really not a fan of checks like this that aren't connected
+> to an actual property of the platform.  The Intel Vendor ID tells us
+> nothing about what the actual problem is, which makes it really hard
+> to maintain in the future.  It's also very AMD- and Intel-centric,
+> when this code is ostensibly arch-agnostic, so this potentially
+> regresses ARM64, RISC-V, powerpc, etc.
 
-Do we need one memory_dev_type per adistance or per adistance+device?
+That's a fair point.
 
-If IUC correctly I think it's the former. Logically that means
-memory_dev_types should be managed by the memory-tiering subsystem
-because they are system wide rather than driver specific resources. That
-we need to add the list field to struct memory_dev_type specifically for
-use by dax/kmem supports that idea.
+Would it be better to reverse this and filter out AMD systems as they
+are affected by the existing check?
 
-Also I'm not sure why you consider moving the
-kmem_memory_types/kmem_find_alloc_memory_type()/etc. functions into
-mm/memory-tiers.c to add complexity. Isn't it just moving code around or
-am I missing some other subtlety that makes this hard? I really think
-logically memory-tiering.c is where management of the various
-memory_dev_types belongs.
+> It's bad enough that we check for 2015.  A BIOS security update to a
+> 2014 platform will break things,
 
-Thanks.
-Alistair
+Well, not necessarily.  Pre-2015 systems already worked and the check
+was added as "surely, everything 2015 or newer should work either".
+While it is true that putting PCIe Root Ports into D3hot was necessary
+for extra energy conservation on Intel systems, it actually has been
+expected to work everywhere.
+
+> even though the update has nothing to
+> do with D3.  We're stuck with that one, and it's old enough that maybe
+> it won't bite us any more, but I hate to add more.
+
+Well, how would you like to deal with the systems that don't work
+today, because they expect a different behavior?
+
+Effectively, the current behavior for all modern systems is to allow
+bridge D3 if there are no indications that it shouldn't be allowed.
+The platforms in question assume the reverse, so what else can be
+done?
+
+> The list of conditions in pci_bridge_d3_possible() is a pretty good
+> clue that we don't really know what we're doing, and all we can do is
+> find configurations that happen to work.
+
+Yes, because by the spec it all should work just fine.  The PCI PM 1.2
+specification defines the expected behavior for bridges and the PCIe
+specification claims to be a superset of that.
+
+What we need to deal with here is basically non-compliant systems and
+so we have to catch the various forms of non-compliance.
+
+> I don't have any better suggestions, other than that this should be
+> described somehow via ACPI (and not in vendor-specific stuff like
+> PNP0D80).
+
+Well, it isn't in practice.
