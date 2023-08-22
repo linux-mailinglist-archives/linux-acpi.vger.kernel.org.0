@@ -2,249 +2,189 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 489CB783FFC
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Aug 2023 13:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FE367849B5
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Aug 2023 20:53:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233467AbjHVLtL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Aug 2023 07:49:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50954 "EHLO
+        id S229914AbjHVSxG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Aug 2023 14:53:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233339AbjHVLtL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Aug 2023 07:49:11 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE468E7B;
-        Tue, 22 Aug 2023 04:48:49 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id 09be78d781e11d50; Tue, 22 Aug 2023 13:40:06 +0200
-Authentication-Results: v370.home.net.pl; spf=softfail (domain owner 
-   discourages use of this host) smtp.mailfrom=rjwysocki.net 
-   (client-ip=195.136.19.94; helo=[195.136.19.94]; 
-   envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
-Received: from kreacher.localnet (unknown [195.136.19.94])
+        with ESMTP id S229919AbjHVSxG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Aug 2023 14:53:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B9C2CF9;
+        Tue, 22 Aug 2023 11:52:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 06EF4662D25;
-        Tue, 22 Aug 2023 13:40:06 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PM <linux-pm@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Amit Kucheria <amitk@kernel.org>, linux-omap@vger.kernel.org
-Subject: [PATCH v1] thermal: core: Rework .get_trend() thermal zone callback
-Date:   Tue, 22 Aug 2023 13:40:06 +0200
-Message-ID: <4511659.LvFx2qVVIh@kreacher>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16E7B65CF7;
+        Tue, 22 Aug 2023 18:52:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E560C433C9;
+        Tue, 22 Aug 2023 18:52:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692730375;
+        bh=y2UELRC+XrfrXIM+d1BDwygTgdYn21N6QRXFuKS7+aI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=mNV0oY6dloiYoJX/7q5qbg/uqnNeprKkg4mGaVd7UTCBTwxf7z9L5nAapNlV90Rss
+         sDE/cMuDC326VPLmunXf68EHPmsUaRD/BRkYr8gtZjanH0jNeA95x+zB6Yi26tg1SM
+         O3UuuvrrEPciTyvjX7Yb+aXvKepEcc04c7ozzej+TG3DdfvPZhAg4nL8Vyzn3RJPYh
+         ZXgJjQqQpE/pe3adSfqZQ/nf/3KpSwOZU6DG4kmjmmdjlzsYpQrggC0O89LkUYJgmk
+         xM5ACCkUkqAfU7e3OcZMLyiAW5MJfFl8iqT9REnaBgUU5QSnqM64VHVVCLv6XngA77
+         gWenBzj5gZuzQ==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2b9c907bc68so80846301fa.2;
+        Tue, 22 Aug 2023 11:52:55 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yzy2Eh38Dz8aRCUWiIqLg6IuNLCdCdWYYNOSB7IGUM+9kf6J215
+        QAo4ku9/JFAxoLSHLIiGDsM0e8nCCsKINfqWyw==
+X-Google-Smtp-Source: AGHT+IEEMIR41THd0LMOBZubTsjgagaLMHV572WPlVXzbt4x3ZGS4hiPTCQhKUt6KcVET9reHOKhSgkJ+dgKFh2X5wU=
+X-Received: by 2002:a2e:b049:0:b0:2bc:c38a:bd7c with SMTP id
+ d9-20020a2eb049000000b002bcc38abd7cmr4455281ljl.33.1692730373473; Tue, 22 Aug
+ 2023 11:52:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <20230821194821.2961213-1-sjg@chromium.org>
+In-Reply-To: <20230821194821.2961213-1-sjg@chromium.org>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 22 Aug 2023 13:52:40 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+jYexj8CR86cktxeiXyo7X+8i35+Ao0GBMhinVPNUoEw@mail.gmail.com>
+Message-ID: <CAL_Jsq+jYexj8CR86cktxeiXyo7X+8i35+Ao0GBMhinVPNUoEw@mail.gmail.com>
+Subject: Re: [PATCH v2] schemas: Add a schema for memory map
+To:     Simon Glass <sjg@chromium.org>
+Cc:     devicetree@vger.kernel.org,
+        Lean Sheng Tan <sheng.tan@9elements.com>,
+        Tom Rini <trini@konsulko.com>,
+        lkml <linux-kernel@vger.kernel.org>, linux-acpi@vger.kernel.org,
+        Chiu Chasel <chasel.chiu@intel.com>,
+        U-Boot Mailing List <u-boot@lists.denx.de>,
+        Gua Guo <gua.guo@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedruddvuddggedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepkedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhgpdhrtghpthht
- oheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=8 Fuz1=8 Fuz2=8
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Mon, Aug 21, 2023 at 2:48=E2=80=AFPM Simon Glass <sjg@chromium.org> wrot=
+e:
+>
+> The Devicespec specification skips over handling of a logical view of
+> the memory map, pointing users to the UEFI specification.
 
-Passing a struct thermal_trip pointer instead of a trip index to the
-.get_trend() thermal zone callback allows one of its 2 implementations,
-the thermal_get_trend() function in the ACPI thermal driver, to be
-simplified quite a bit, and the other implementation of it in the
-ti-soc-thermal driver does not even use the relevant callback argument.
+It's more that the DT spec defines what is not used with UEFI. If UEFI
+covers more than the DT Spec defined, then we should look at that.
 
-For this reason, change the .get_trend() thermal zone callback
-definition and adjust the related code accordingly.
+I would look some into (IBM) PowerPC for any prior art in this area.
+Unfortunately, not publicly documented other than any users.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
+> It is common to split firmware into 'Platform Init', which does the
+> initial hardware setup and a "Payload" which selects the OS to be booted.
+> Thus an handover interface is required between these two pieces.
+>
+> Where UEFI boot-time services are not available, but UEFI firmware is
+> present on either side of this interface, information about memory usage
+> and attributes must be presented to the "Payload" in some form.
+>
+> This aims to provide an initial schema for this mapping.
+>
+> Note that this is separate from the existing /memory and /reserved-memory
+> nodes, since it is mostly concerned with what the memory is used for. It
+> may cover only a small fraction of available memory, although it could be
+> used to signal which area of memory has ECC.
+>
+> For now, no attempt is made to create an exhaustive binding, so there are
+> some example types lists. This can be completed once this has passed
+> initial review.
 
-This is based on the thermal branch in linux-pm.git (which is also
-included in the linux-next branch of that tree).
+I don't have much interest in picking this up unless there's some
+wider agreement. From the previously referenced discussion[1], it
+didn't seem like there was. But none of those folk are Cc'ed here.
 
----
- drivers/acpi/thermal.c                             |   41 +++++++++------------
- drivers/thermal/thermal_core.h                     |    2 -
- drivers/thermal/thermal_helpers.c                  |    3 +
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c |    3 +
- include/linux/thermal.h                            |   30 +++++++--------
- 5 files changed, 38 insertions(+), 41 deletions(-)
+> ---
+>
+> Changes in v2:
+> - Reword commit message
+>
+>  dtschema/schemas/memory-map.yaml | 51 ++++++++++++++++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+>  create mode 100644 dtschema/schemas/memory-map.yaml
+>
+> diff --git a/dtschema/schemas/memory-map.yaml b/dtschema/schemas/memory-m=
+ap.yaml
+> new file mode 100644
+> index 0000000..97e531e
+> --- /dev/null
+> +++ b/dtschema/schemas/memory-map.yaml
+> @@ -0,0 +1,51 @@
+> +# SPDX-License-Identifier: BSD-2-Clause
+> +# Copyright 2023 Google LLC
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/memory-map.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: /memory-map nodes
+> +description: |
+> +  Common properties always required in /memory-map nodes. These nodes ar=
+e
+> +  intended to resolve the nonchalant clause 3.4.1 ("/memory node and UEF=
+I")
+> +  in the Devicetree Specification.
+> +
+> +maintainers:
+> +  - Simon Glass <sjg@chromium.org>
+> +
+> +properties:
+> +  $nodename:
+> +    const: '/'
 
-Index: linux-pm/include/linux/thermal.h
-===================================================================
---- linux-pm.orig/include/linux/thermal.h
-+++ linux-pm/include/linux/thermal.h
-@@ -53,6 +53,20 @@ enum thermal_notify_event {
- 	THERMAL_EVENT_KEEP_ALIVE, /* Request for user space handler to respond */
- };
- 
-+/**
-+ * struct thermal_trip - representation of a point in temperature domain
-+ * @temperature: temperature value in miliCelsius
-+ * @hysteresis: relative hysteresis in miliCelsius
-+ * @type: trip point type
-+ * @priv: pointer to driver data associated with this trip
-+ */
-+struct thermal_trip {
-+	int temperature;
-+	int hysteresis;
-+	enum thermal_trip_type type;
-+	void *priv;
-+};
-+
- struct thermal_zone_device_ops {
- 	int (*bind) (struct thermal_zone_device *,
- 		     struct thermal_cooling_device *);
-@@ -70,26 +84,12 @@ struct thermal_zone_device_ops {
- 	int (*set_trip_hyst) (struct thermal_zone_device *, int, int);
- 	int (*get_crit_temp) (struct thermal_zone_device *, int *);
- 	int (*set_emul_temp) (struct thermal_zone_device *, int);
--	int (*get_trend) (struct thermal_zone_device *, int,
-+	int (*get_trend) (struct thermal_zone_device *, struct thermal_trip *,
- 			  enum thermal_trend *);
- 	void (*hot)(struct thermal_zone_device *);
- 	void (*critical)(struct thermal_zone_device *);
- };
- 
--/**
-- * struct thermal_trip - representation of a point in temperature domain
-- * @temperature: temperature value in miliCelsius
-- * @hysteresis: relative hysteresis in miliCelsius
-- * @type: trip point type
-- * @priv: pointer to driver data associated with this trip
-- */
--struct thermal_trip {
--	int temperature;
--	int hysteresis;
--	enum thermal_trip_type type;
--	void *priv;
--};
--
- struct thermal_cooling_device_ops {
- 	int (*get_max_state) (struct thermal_cooling_device *, unsigned long *);
- 	int (*get_cur_state) (struct thermal_cooling_device *, unsigned long *);
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -492,26 +492,22 @@ static int thermal_get_temp(struct therm
- }
- 
- static int thermal_get_trend(struct thermal_zone_device *thermal,
--			     int trip_index, enum thermal_trend *trend)
-+			     struct thermal_trip *trip,
-+			     enum thermal_trend *trend)
- {
- 	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
- 	struct acpi_thermal_trip *acpi_trip;
--	int t, i;
-+	int t;
- 
--	if (!tz || trip_index < 0)
-+	if (!tz || !trip)
- 		return -EINVAL;
- 
--	if (tz->trips.critical.valid)
--		trip_index--;
--
--	if (tz->trips.hot.valid)
--		trip_index--;
--
--	if (trip_index < 0)
-+	acpi_trip = trip->priv;
-+	if (!acpi_trip || !acpi_trip->valid)
- 		return -EINVAL;
- 
--	acpi_trip = &tz->trips.passive.trip;
--	if (acpi_trip->valid && !trip_index--) {
-+	switch (trip->type) {
-+	case THERMAL_TRIP_PASSIVE:
- 		t = tz->trips.passive.tc1 * (tz->temperature -
- 						tz->last_temperature) +
- 			tz->trips.passive.tc2 * (tz->temperature -
-@@ -524,19 +520,18 @@ static int thermal_get_trend(struct ther
- 			*trend = THERMAL_TREND_STABLE;
- 
- 		return 0;
--	}
--
--	t = acpi_thermal_temp(tz, tz->temperature);
- 
--	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
--		acpi_trip = &tz->trips.active[i].trip;
--		if (acpi_trip->valid && !trip_index--) {
--			if (t > acpi_thermal_temp(tz, acpi_trip->temperature)) {
--				*trend = THERMAL_TREND_RAISING;
--				return 0;
--			}
-+	case THERMAL_TRIP_ACTIVE:
-+		t = acpi_thermal_temp(tz, tz->temperature);
-+		if (t <= trip->temperature)
- 			break;
--		}
-+
-+		*trend = THERMAL_TREND_RAISING;
-+
-+		return 0;
-+
-+	default:
-+		break;
- 	}
- 
- 	return -EINVAL;
-Index: linux-pm/drivers/thermal/thermal_core.h
-===================================================================
---- linux-pm.orig/drivers/thermal/thermal_core.h
-+++ linux-pm/drivers/thermal/thermal_core.h
-@@ -70,7 +70,7 @@ static inline bool cdev_is_power_actor(s
- void thermal_cdev_update(struct thermal_cooling_device *);
- void __thermal_cdev_update(struct thermal_cooling_device *cdev);
- 
--int get_tz_trend(struct thermal_zone_device *tz, int trip);
-+int get_tz_trend(struct thermal_zone_device *tz, int trip_index);
- 
- struct thermal_instance *
- get_thermal_instance(struct thermal_zone_device *tz,
-Index: linux-pm/drivers/thermal/thermal_helpers.c
-===================================================================
---- linux-pm.orig/drivers/thermal/thermal_helpers.c
-+++ linux-pm/drivers/thermal/thermal_helpers.c
-@@ -22,8 +22,9 @@
- #include "thermal_core.h"
- #include "thermal_trace.h"
- 
--int get_tz_trend(struct thermal_zone_device *tz, int trip)
-+int get_tz_trend(struct thermal_zone_device *tz, int trip_index)
- {
-+	struct thermal_trip *trip = tz->trips ? &tz->trips[trip_index] : NULL;
- 	enum thermal_trend trend;
- 
- 	if (tz->emul_temperature || !tz->ops->get_trend ||
-Index: linux-pm/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-===================================================================
---- linux-pm.orig/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ linux-pm/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -109,7 +109,8 @@ static inline int __ti_thermal_get_temp(
- 	return ret;
- }
- 
--static int __ti_thermal_get_trend(struct thermal_zone_device *tz, int trip, enum thermal_trend *trend)
-+static int __ti_thermal_get_trend(struct thermal_zone_device *tz,
-+				  struct thermal_trip *trip, enum thermal_trend *trend)
- {
- 	struct ti_thermal_data *data = thermal_zone_device_priv(tz);
- 	struct ti_bandgap *bgp;
+This goes in the root node?
 
+> +  usage:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    description: |
+> +      Describes the usage of the memory region, e.g.:
+> +
+> +        "acpi-reclaim", "acpi-nvs", "bootcode", "bootdata", "bootdata",
+> +        "runtime-code", "runtime-data"
 
+Can't these be covered by reserved-memory? The client is free to
+reclaim any regions if it knows what they are.
 
+> +  attr:
+> +    $ref: /schemas/types.yaml#/definitions/string-array
+> +    description: |
+> +      Attributes possessed by this memory region:
+> +
+> +        "single-bit-ecc" - supports single-bit ECC
+> +        "multi-bit-ecc" - supports multiple-bit ECC
+> +        "no-ecc" - non-ECC memory
+
+Isn't this pretty much a property of a memory region as a whole. IOW,
+couldn't it just go into /memory node(s)?
+
+> +
+> +patternProperties:
+> +  "^([a-z][a-z0-9\\-]+@[0-9a-f]+)?$":
+> +    type: object
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      reg:
+> +        minItems: 1
+> +        maxItems: 1024
+> +
+> +    required:
+> +      - reg
+> +
+> +additionalProperties: true
+> +
+> +...
+> --
+> 2.42.0.rc1.204.g551eb34607-goog
+
+[1] https://patches.linaro.org/project/linux-acpi/patch/20230426034001.16-1=
+-cuiyunhui@bytedance.com/
