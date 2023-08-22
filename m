@@ -2,100 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66E81783864
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Aug 2023 05:16:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8D4E783A94
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Aug 2023 09:12:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232081AbjHVDQL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Aug 2023 23:16:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52192 "EHLO
+        id S233364AbjHVHMe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Aug 2023 03:12:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232469AbjHVDQL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 23:16:11 -0400
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3C918B
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Aug 2023 20:16:08 -0700 (PDT)
-Received: by mail-ot1-x332.google.com with SMTP id 46e09a7af769-6b9cd6876bbso1073127a34.1
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Aug 2023 20:16:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1692674168; x=1693278968;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6rnVFDEA1BgBA+mUdzjBw9TA8+0/ZjVyvpi44MeCEbk=;
-        b=D+i+k3YVcHfIwdFKTK6u+UcarnqVXwgBhW3iKfiT2Zwn1ub4l+WbMH1beEW9Mpqi0Y
-         Dtdn/bmO42xhBa7dak0KWbyRJF9QTIc0utQQrOl7sQmHB+ZUoM0OGHssl2GjfXakNqZW
-         tDH0zv4298Nk8X8PbVeidqoc7Clz9/Fc2+4dexHUmatT7pRUuRtkqirGnYgzAIx49/Ao
-         OpRmVcgize74ORrRKgLFPTwRTfWmKwHmcHVYq9GDPfW++IM3bdRWk0cZRsK4HTyKdKS4
-         /gix+jRBJJzXCGW3z5eZGWBUgIFVvFXCZks59GOGGzoKZAHPw0JrS+lzolt4DDoCeNFO
-         Oa6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692674168; x=1693278968;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6rnVFDEA1BgBA+mUdzjBw9TA8+0/ZjVyvpi44MeCEbk=;
-        b=DK0GzM6vEdCnULQVARGz7UlI03wUvdbcG+p0rI7QW+RbRuzEOHVqtkL9Z8gbU6j7Za
-         ozuWcYx5D+1Zd/k10beWJRO9AkuWi2YDSnUAkBYcowlDA1GcuSveDO/JUQHFv3O17WYm
-         2AFK09t6Lh6Jt8BvJ5XsOPr7hLDUsrBi0nEPvhRkZhBSoFoSKycjoDhia9HbYpQYtzij
-         c3TNz552HE5M7YOX3ZfHCpOb9A0nMdHhgHgQeuyi2DTuzqhQAZUp8/LCYr7U2eVIIC2g
-         GCvOtMEIlIXWrlw4rxsS5qMqOVWFwfWCG2xzI6HyjhrYJrx/CCEvth/SNUWKxR1aX6sz
-         5jJw==
-X-Gm-Message-State: AOJu0YzKGOwVFx3RbGYYcAV5IN0fc0f9pHPwDk5fS+kO4H3zSgwpMedQ
-        HxD9SFBR1xefG+Mi3kHzkjl25A==
-X-Google-Smtp-Source: AGHT+IHTu5O309+spg7Mkh7rJrIe7RQpXLqzJH7gxYltD1c18fv1QejjDlS2KcrqmRaICnpgUTVxsw==
-X-Received: by 2002:a05:6808:448d:b0:3a7:56a6:bd2b with SMTP id eq13-20020a056808448d00b003a756a6bd2bmr8913866oib.4.1692674168281;
-        Mon, 21 Aug 2023 20:16:08 -0700 (PDT)
-Received: from cork (c-73-158-249-15.hsd1.ca.comcast.net. [73.158.249.15])
-        by smtp.gmail.com with ESMTPSA id p15-20020a637f4f000000b00563590be25esm7050630pgn.29.2023.08.21.20.16.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Aug 2023 20:16:07 -0700 (PDT)
-Date:   Mon, 21 Aug 2023 20:16:05 -0700
-From:   =?iso-8859-1?Q?J=F6rn?= Engel <joern@purestorage.com>
-To:     "Huang, Ying" <ying.huang@intel.com>
-Cc:     Uday Shankar <ushankar@purestorage.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Len Brown <len.brown@intel.com>,
-        linux-hardening@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Subject: Re: [PATCH] Revert "ACPI, APEI, use raw spinlock in ERST"
-Message-ID: <ZOQodU1CNMRtjYZ6@cork>
-References: <20230822010933.2247671-1-ushankar@purestorage.com>
- <87y1i3c015.fsf@yhuang6-desk2.ccr.corp.intel.com>
+        with ESMTP id S233366AbjHVHMA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Aug 2023 03:12:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77D0FCED;
+        Tue, 22 Aug 2023 00:11:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F66163B33;
+        Tue, 22 Aug 2023 07:11:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C08C43140;
+        Tue, 22 Aug 2023 07:11:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692688268;
+        bh=OSFmIc6DjVqzpF68MG32L32Nfk/PkwF+T/iEcUfE7zI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=yFhT1h6G7GQs4G8xdXWO83os1xmaegpIyyVgziAzY/RjT4jaPabj1XFXBMGL/iE0W
+         IHtR6aNZw4QOeK7FZqjtRLpC+fVw62vbtkU06cUtNIRZiBgB1yiGvLyyej+vglfWid
+         24ydufv4IeSFNst1ft204xjSah4Qbu3Wjk6I543w=
+Date:   Tue, 22 Aug 2023 08:39:00 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     Evan Quan <evan.quan@amd.com>, Andrew Lunn <andrew@lunn.ch>,
+        rafael@kernel.org, lenb@kernel.org, johannes@sipsolutions.net,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alexander.deucher@amd.com,
+        rdunlap@infradead.org, quic_jjohnson@quicinc.com, horms@kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [V9 1/9] drivers core: Add support for Wifi band RF mitigations
+Message-ID: <2023082247-synthesis-revenge-470d@gregkh>
+References: <20230818032619.3341234-1-evan.quan@amd.com>
+ <20230818032619.3341234-2-evan.quan@amd.com>
+ <2023081806-rounding-distract-b695@gregkh>
+ <2328cf53-849d-46a1-87e6-436e3a1f5fd8@amd.com>
+ <2023081919-mockup-bootleg-bdb9@gregkh>
+ <e5d153ed-df8a-4d6f-8222-18dfd97f6371@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87y1i3c015.fsf@yhuang6-desk2.ccr.corp.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,T_SPF_PERMERROR,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <e5d153ed-df8a-4d6f-8222-18dfd97f6371@amd.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 22, 2023 at 09:56:38AM +0800, Huang, Ying wrote:
-> 
-> ERST is mainly used to log the hardware error.  While, hardware error
-> may be reported via NMI (e.g., ACPI APEI GHES NMI), so we need to call
-> ERST functions in NMI handlers.  Where normal spinlock cannot be used
-> because they will be converted to sleepable rt_mutex in RT kernel.
+On Mon, Aug 21, 2023 at 10:13:45PM -0500, Limonciello, Mario wrote:
+> So I wonder if the right answer is to put it in drivers/net/wireless
+> initially and if we come up with a need later for non wifi producers we can
+> discuss moving it at that time.
 
-Non-sleeping spinlocks cannot be used in NMI context either.
-raw_spin_lock_irqsave() will prevent regular interrupts, but not NMI.
-So taking a spinlock inside an NMI can trigger a deadlock.
+Please do so.
 
-Am I missing something here?
+thanks,
 
-Jörn
-
---
-All art is but imitation of nature.
--- Lucius Annaeus Seneca
+greg k-h
