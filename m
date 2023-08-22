@@ -2,129 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB8BF7837E8
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Aug 2023 04:26:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1C027837F7
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Aug 2023 04:32:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232202AbjHVC0N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Aug 2023 22:26:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51870 "EHLO
+        id S232242AbjHVCcy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Aug 2023 22:32:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232125AbjHVC0M (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 22:26:12 -0400
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2043.outbound.protection.outlook.com [40.107.101.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C2C0DB;
-        Mon, 21 Aug 2023 19:26:10 -0700 (PDT)
+        with ESMTP id S231157AbjHVCcx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Aug 2023 22:32:53 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2054.outbound.protection.outlook.com [40.107.92.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE8C0DB;
+        Mon, 21 Aug 2023 19:32:49 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Pb0y21/gWxtHFMGPZsKcAVYEzIuV6ItXneXqbTupyX7Qptc0uKH8flNHM6fZKZp2ijiYsivUcGn/p6fH2xRErzgjCPj76fO3HipyFH+GcqTx+a1BlN1rwgAYhtfK55xbiNfxXeD51BEOi+vwCg6dN1efel6hQUP3Kyn5VsQ22gHf/RvhKapDdgAj1njwlquCxtSrxX4NLmpSS2h0fPBFecUyry16ZNyItpyIDi1MJQ2gtzhmr1wJ0NX3y906iwIIF1stj/yYx8mqdR2IiBbUS5Dh1kLPOa9PhFgg5geJ2X4j4ZJyP3jOoTjrjTda+2KDjCvVKXgMAXZkyFKbf3hBbw==
+ b=BUhIu/QHJ7hGSpNR/MldPBCSjeXsUyOWzH6RCKyo9ahtJW3imq0bstJpZ5kwK2R88h1FZlCWN2C/rQQ5z2Izavr9bdDlxnBqMasXvqqJozfKoMiV8kgcVvxJodats8uUjU5ur/nd70NQyn7oClu2e9wIuPVHuuZi2JegQRk3wneWvUb6h+sRBGGF/6QUQlbw6WGQWROcG2sN6j9+DdTOQqtIz5phrc/6YrVzRNzxXP8zm9x/BXclf68Zef8mbhyH3uSg/pn62OW3mU9uxKcVZhhpxAG0everzK//mPUmPHjvjOZKeroaD56te/kQbdj/oeO7zYMUlWb2yiR2jcVeyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Odbk600YgWvbbDRn32SO9sC5JlFv/7FRmRF840lqEgk=;
- b=NV6jr3dLHEddV8k1ZgoMurdGEJi27k7QWMZMLOVfzjfNg8c6Q7yW9rsBBBBgxKSEH3LXybPrFy93AoEY5X5MGTR739CzEfZ5EDCoFYzaWf9HftmQAn6o7GuDrfE9FATuRWXzaLrxpYe18WFZqjW9RqTZqYBcNol4uUVOMDWHe6q9rI0/Nuz/F+yaYrpNZE0rI/Oua8k/yDVCwgo8/ZSrBMFTLVN7TGBcy6ePSonkjz7R1E4VS6oL05TqtbH5WE/GaW/OEH9MTQ66L/I+BPEBgpQbXY/AsIuxnXjYmc/PnrKJvwSMoGl5QDvio/1ykHpV/S8DM+kAPbEl+K2FWDZpxA==
+ bh=qbSUviRNAB0voKPsYcG66fGJerrolRy/54KPYtasvkw=;
+ b=HqUuyw8+ZeoAOBxjalVRB+1GrUuiUOCAw/XyBXokguAZDZl/L2R+gfwF1gopezc7dYwfdmMOvLyzQlr2P4FeigOPYnnz80i3aJ4reqQJpzHB/KYp5y+I7tl5aVNFL8Bjg56KD5Hs9yQPFsp+sjl7TosHsk6A9oBs+FoD6HXRzjZTXWbcDohaB2iPDzu+Cghi1xzGxcrNfmTzOVWcrju2a/6a7j127OR+QjwM6Xwn3M2sdi0joFhRq8ZuJZKVK+eDqL3mcgZOxlINFQVjPpnw4QVxC/yUKQz7cqGX5DtR4nlVxQVYbaFJE4Bd8HXHMk0mtSGnNkfZDAg6n53/q4gtFw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Odbk600YgWvbbDRn32SO9sC5JlFv/7FRmRF840lqEgk=;
- b=NvexEDWHH7u5nSmnu/BvSLMfz8F9Ni3DGaWE6VPvnHXm6UZa6hZ1bw6XyvetMlUwiqPJyiDRhHxSxFdY7x61Cq83NRgUzJaSQV/0680kcXybqbiQ+WMqI4LM/gTNpQn1h05Qg4wVqCN87Kxp9MF4VZ/JSDMeefApygKxKLlG0Bw=
+ bh=qbSUviRNAB0voKPsYcG66fGJerrolRy/54KPYtasvkw=;
+ b=jucnZ3PovQrjL/r/R6DYOiJ1bXLww5TdzMpEeGqkZBdLb1EKuR3X97fN7wDsIzsW8z+n3AC4VtXjSHWXHh4gamcn5x2ki69ejOEhsAwuGGBIcCLhsvQUSg+ucMATWpMj3DQHWeUdK+BJXRMHAjPUSoPHANy+vVwzXjsVqguODWI=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CY5PR12MB6203.namprd12.prod.outlook.com (2603:10b6:930:24::17)
- by DM6PR12MB4092.namprd12.prod.outlook.com (2603:10b6:5:214::14) with
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by CY5PR12MB6431.namprd12.prod.outlook.com (2603:10b6:930:39::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Tue, 22 Aug
- 2023 02:26:05 +0000
-Received: from CY5PR12MB6203.namprd12.prod.outlook.com
- ([fe80::48cb:8b61:d51e:3582]) by CY5PR12MB6203.namprd12.prod.outlook.com
- ([fe80::48cb:8b61:d51e:3582%7]) with mapi id 15.20.6699.022; Tue, 22 Aug 2023
- 02:26:05 +0000
-Message-ID: <ca876775-6cb5-33c7-5512-232d34a47f4a@amd.com>
-Date:   Mon, 21 Aug 2023 21:26:02 -0500
+ 2023 02:32:47 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6699.022; Tue, 22 Aug 2023
+ 02:32:47 +0000
+Message-ID: <ef25fbe1-28fe-49d7-a171-4bf2ac95a056@amd.com>
+Date:   Mon, 21 Aug 2023 21:32:43 -0500
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH] ACPI: PHAT: Add Platform Health Assessment Table support
+Subject: Re: [PATCH v14.a 1/1] PCI: Only put Intel PCIe ports >= 2015 into D3
 Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     "Wilczynski, Michal" <michal.wilczynski@intel.com>,
-        Avadhut Naik <avadhut.naik@amd.com>, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, yazen.ghannam@amd.com,
-        linux-kernel@vger.kernel.org
-References: <20230810234856.2580143-1-avadhut.naik@amd.com>
- <a0ab4d07-fb73-418b-b88d-c3ad6aa4cf49@intel.com>
- <655c916e-356c-03e3-6c67-aa40886dd5e2@amd.com>
- <CAJZ5v0j0R1GK=0z+LJd_PSh4zDv9Ydw2YA7HWm1R5wjCUsbbYQ@mail.gmail.com>
- <1c579c96-5010-4e5b-aa27-afb4f4f6746a@amd.com>
- <CAJZ5v0iPRCJLH5bkKyhjUq_tmjmR6R73fhUm3JnKptcm1cn9fQ@mail.gmail.com>
- <6bc15195-aa26-4e29-b625-74fca84f7a6f@amd.com>
- <CAJZ5v0jEcD_1+jHfAk9eN0YYJFbDZN2rZ97KHyH2-w6EqRN9+g@mail.gmail.com>
- <43b65307-bc3f-4014-9bf8-a96c6ed15d9b@amd.com>
- <CAJZ5v0g+uVZwoOr-2W19Ux9u-D=WiY=-dtcQZwYU0Ov_GE5d=w@mail.gmail.com>
- <CAJZ5v0g_DyQAnSuigBc-f0UNmW0mo=0yMadES+0NhphJs_k+cw@mail.gmail.com>
-From:   Avadhut Naik <avadnaik@amd.com>
-In-Reply-To: <CAJZ5v0g_DyQAnSuigBc-f0UNmW0mo=0yMadES+0NhphJs_k+cw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SN7PR04CA0065.namprd04.prod.outlook.com
- (2603:10b6:806:121::10) To CY5PR12MB6203.namprd12.prod.outlook.com
- (2603:10b6:930:24::17)
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        stable@vger.kernel.org
+References: <20230821224207.GA369432@bhelgaas>
+From:   "Limonciello, Mario" <mario.limonciello@amd.com>
+In-Reply-To: <20230821224207.GA369432@bhelgaas>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9PR13CA0114.namprd13.prod.outlook.com
+ (2603:10b6:806:24::29) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR12MB6203:EE_|DM6PR12MB4092:EE_
-X-MS-Office365-Filtering-Correlation-Id: 601f0bfa-597f-49e6-468f-08dba2b722bc
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CY5PR12MB6431:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0704689-40e9-4de0-49fb-08dba2b8125a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: XLOtDI3CtLz73546H5idCrCR/r0tiIoRF+Wa+thlxnSxJg4eI+z5iGjBXntCPeRWKeB8YGfYyxZWKh7Ilg6dY+kZ6dFkTyh9yfIu9uw4gNqNxhcXVQY4B/OJrc7ZELkxtRO5gCHbt+AAVce8myISvJs+wnfMMZKXZxEKz6zS00C3eVSJRIHlxNtFFUKyJIP0YcvwffJDG+whv0qo500A9SOUH0uYRpSIm1Qs2AKL3VCAi/k5FbDB6/6ag8s4Ph15vufHo2Yx13sIz8q/pb9xs2AFx2J2/vWlj3W0UB/tn0U/vh6haLLooGA3jDKugWoh5NQoGrXJVLDJeI6DebZJKw+XvSQoMvMzAqZ0Jjg3xz3seah9atF8aZZyru1Jlgm8C5icM8yVVQmr2qEnSeULfdJo6ZI0I3Gws75XqRtxi1eo0/EW3CS3Efno4gFOlAMGeMudyky1il3CvwD5YFCgH2G3RH8tS92GvAruT9TADj+NLIbvfMRmm67BmDvPBbgu4G7t+h7Uf0FWiTCeCWi1WnznaDwE6iBtG/2f/kF4onSd/21t3An0fCoPblasiavpvr4SUdx2LUhimKX2ahrlVmY2yETugbUpfJfXc/l7nhkrmB3uokS4SlnFuzipppl/QXpCD78hScZshV9MP9vLJ3hbqRmZNioMXLqcFhWPgz1tydM1znwC3aVziVJSy+/ewwCp68RoPz6Y7I3zropXtQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6203.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(39860400002)(136003)(376002)(396003)(451199024)(1800799009)(186009)(2906002)(53546011)(38100700002)(6486002)(6506007)(83380400001)(5660300002)(26005)(31686004)(31696002)(8676002)(8936002)(2616005)(4326008)(316002)(66946007)(6512007)(6636002)(54906003)(66556008)(66476007)(110136005)(478600001)(6666004)(41300700001)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: jdALVq8b/ardWzNLMCUHB0bYIne0xtIzFrpv+W5wR94uLJp1ilvDLX8D4fIwybrE0dsoU4255VZwuGB74RskJeybxmv1ItlpU+pUkDZQ4l0gK4oflAfUog/WxfJ4PbS+YfmqDQrxVpBXbA77XJ50RElA1ixvGkY2ue62Awvcbjbds4FdP510kBEuGBcLU3NxnQlrhZvtRGtWu9Njdf+bEbhfGfaungHNE5SxtTdJIcKt2XzBf5DKH82Xk/UmiwP8uP3TlqwKMEsbIsKGBnQv5vBYk6Fw9vr9eJp1nOWH7VpAvuSQiGHRASrOTFtti4CYkaZ3ZrWexQ4QThDQv3BkyT9OCdE5bIM0VpLv7k2Tqkmy9bNclFHwEgoyhBNDkh87clHgfpQLw9aCBkMoBndzW5D1acTdkZR1ooY3p7qPvvS+oxffWTaSqrGob7L/6cHAoD3AL2d5Jp9ObUas43ncimUtbRW7StIOHAvsToQrBii3a99H5zFQy7DB8AI8JWZkI2zA/SyxCS2gqzvfxXBVvyAqNqjqC7RXEHMDz/zRlz0OYYY+zJK7w9Af/8vU3h+AwQde0qceH5Kdz6tWfTUCAUxqvFRNGv7uW///s4x0NCGIPMgMJPSO3bq/7dqHCtKj91BNRXLn3SbQ8+1QpoihtA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(39860400002)(376002)(346002)(366004)(1800799009)(186009)(451199024)(54906003)(6916009)(66476007)(66556008)(316002)(66946007)(6512007)(8676002)(8936002)(2616005)(4326008)(41300700001)(36756003)(966005)(478600001)(6666004)(38100700002)(53546011)(45080400002)(6506007)(6486002)(83380400001)(2906002)(7416002)(86362001)(31686004)(31696002)(5660300002)(26005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TVFTczRSZlQxbnFiSE9mNldIMFZER2oyZmo4d1ZYM1EraFdnbm4yZ1Y0dkNo?=
- =?utf-8?B?OHowa2xCMmtyVklDUVRnYWRZdEc5U3pseDZZdThxMlQvZ29BeldBVStsNHJ6?=
- =?utf-8?B?MmtEVjR1RFZFeXlyWE5tN1JZSmRaZWtnQkNDYTZldVhoVmF2a0NsZ241b3J0?=
- =?utf-8?B?UzhRcjYxNTdGQjQ5OFBkaVBpUEFtbDJ2azdLdGZPSVJLNnlVNzNRaTdIUVVr?=
- =?utf-8?B?bFdPdTkvVUFkTTVnSjFnWklDNnVBQXV1aE9xNThPcU9XTDVWS3doVzJwWmNN?=
- =?utf-8?B?Y1lqTVZzM0xucU5CdTZSb2R5TjIrVyswOTlOamVsL1hwMStxNE5qaXBnazZw?=
- =?utf-8?B?ejZqOFg1cjZJSW5rTGNoUXZVUzNBV0J3dlVJb0RUZ0tkMS9UK1VOeXh6SHow?=
- =?utf-8?B?YlZVREhNdExGTVdsd1Btck44anlURy9vZWpGL05zVnFEbnJ0R1Vpa3NFTzJq?=
- =?utf-8?B?SEhQSVNEZ3JGcEY0dlA5OHJ4WmV5Q0tPRm5tSHpYZ1Z0N2d5NUJXRmxMaEtw?=
- =?utf-8?B?eGErSWNLcmtZcjFydkpVZ1dHM29hOExHVTdxeXNHSXVudjdrbnJuUmNpcHJY?=
- =?utf-8?B?RHJCZ1VSM2tVa2NCYXRWLzFHdmptVzhrMjQwN2hLMWlRaTFpS25zQXA2VDNN?=
- =?utf-8?B?ejNDRm9OWXBtUVlLMXNmSEFZdXpjWGlWdkpEUDUrdVpybkhrNmlLc0tpT3Fx?=
- =?utf-8?B?SHM3MktGME12aVNhVnVTUzRoYWQySTJVaWo0RmcyTGxzMmZkQ0hkd09yRmxY?=
- =?utf-8?B?ZEpwNnM2RFJIazlSRk9ZYzFSNHRGZ0R4anhFeWV0bWcwRXk2ZkptZk9xeWpt?=
- =?utf-8?B?OWMva09IVDd5SnIrOUZqY2pWdzZtWUF5K3VOM2FBbEYza0VwMTlYdTI2VG85?=
- =?utf-8?B?REt0OHlpWW10UDVCTGxHaWJabHl5UEpITFNENktsZ01aYjNjZmFlakxUUmNE?=
- =?utf-8?B?eUVMN2ZJMTBoRERhSG9YT2NzY2c3eGNkUytmTExqcDF1TlA5ZTlyRmYxbmJC?=
- =?utf-8?B?OWpJTmxPSG1qYm94THdtWWxqOGdnUndIRXl6TWRHQlN4Vis2dUMwc3I1V0x6?=
- =?utf-8?B?RUZPTW8rd09hRFV6bElTZFhEWkdPUXlKMDNpVXFsaEJHQlNoN09Pbld5OHN4?=
- =?utf-8?B?dVF3UXQ4c2JxQ3p5TndJd1FrMEsvS2l0bm4wdjRuMFJBbmt3b01STmw1YUxY?=
- =?utf-8?B?VjcxdE1mK1BkYlNoaDhMaTkzT0tkaGhlRXBXZnhMZFJEQWxvbXZHK09MSmJT?=
- =?utf-8?B?Qk9zOU1sSXhJeXBydzUwYlZDRU1jd1I0ejlWWnFKTmRMREFCbC96bkcwbGtZ?=
- =?utf-8?B?TzRlN2JGcy9keU1xR2ZBNHh4ck0vUFNadWk5eEl4d0ErTjZRM1JJVzhUSnI2?=
- =?utf-8?B?V3VhMk8xWnNVNU9neURMMXZZU3hXV2lzcDZNRkszWXJTWjZUREN6NmVnR1NQ?=
- =?utf-8?B?Tm1zUTFuS3ZhYVduekVuSGloR3B0a1MybGt2L0FrR3ZNMzdYZlhTMHRVd2RH?=
- =?utf-8?B?ZFBnczFvRG10UFZBV1F5L05YZTFhZ0pjVFAyZ29ycTQyQUU1ZG41NUZGd0Y1?=
- =?utf-8?B?cURuREs5aDhMVTN6OXhKdXlZYzcwM0YvMXNwOFNzRDk0bEZHelMxeGJNSDVT?=
- =?utf-8?B?MUVRZ1N3RURobE1VYWhKbXNMdy9oOGhwSUJkWEplN0tTS2s2SUZ5eEpCbFFr?=
- =?utf-8?B?RXllTFpkOVZZSysveDZITnFSQk9aUWlOWWZSdVQrQUc5cWJNQmZWWU5YSlRW?=
- =?utf-8?B?Q3ZjUGUxdUVwc3dCenNGQjJwSmtuYXVRNUlOYThWemYyM0dxbU5YZER5L2VN?=
- =?utf-8?B?RHhoajlkT2NRanV4L1FXZmhFT1d0cUluVk9UMDNxUTV0S2NRMEJCVzVSbThv?=
- =?utf-8?B?ZG1oR2Jib3NhV3I4TWpFTDRuMmtOTzNUbnhzMTNlTndOeUIwT0cyWkthUXh5?=
- =?utf-8?B?U3lRQ3VRVWlhQUlDWVRTTXFJSWJwQW5ySFBpRnlXY1NIWWRaeS9YMUFGUXR3?=
- =?utf-8?B?dlEzS25JZjlaRXcxWUZWcVBnRS9RYytQTnI5NGtsZGxLelFYaGVFMmcvYW5j?=
- =?utf-8?B?a2FNa0dTbDZCTkw2MmNsUnpjTHNxY2NGc0plTTRNcnk5emd6ZnVTWGRhRTFm?=
- =?utf-8?Q?KwEm0It8qM0KpM0J6uQ6VXt+F?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L2MweFFSSXJuSjRMemtGSU9jcWg2RUxZSUFvaHI5cnFxMG1sc0toakxRVDd3?=
+ =?utf-8?B?ZW05dGVBL1NEb3VoKzRXclVCTXpxdnpHTjU4WjJsaUpPVUY0Q1BzVTN0ZVk1?=
+ =?utf-8?B?UmRyZ2RmdVlzRzJ2cHZaUmVQcjE2YlRQaUkrUm5YcnBlanc3MjI0MDcwTmR0?=
+ =?utf-8?B?NWVyamFWVm5VcTIybVg5Uk5DVHkrOHZ3czFudDlaQjdaRUFSeU5PZFBWRnIy?=
+ =?utf-8?B?YmF5TnByT1NsRGpyalBDM0Y5anJRK01iMEsrcU1oNGw4VWVSY1lKclg0OFB3?=
+ =?utf-8?B?d0xaK1ZkblFaWHY3cFVQODRJN0t5MUpCdXEwcFBZUGY0czY0N2xYSlg0SVBj?=
+ =?utf-8?B?T3J4UzA5RzFWcU9FOVp1Tk5kWlJ3ckN2Y2VRWSthajNZTTVmV3QxUjNteG1N?=
+ =?utf-8?B?TW5BdWJ1NXJIKzJtZ1NtVVZSYXNkN0FzN0t4SytUbUE2K1JEaHZuUHJGM2lM?=
+ =?utf-8?B?WWxGVHMyWkJweTV0aysxc1pqeDJJVnk3MHBYdk9BbHBteTJiUmEwRVZ1S2Vx?=
+ =?utf-8?B?ZEZnclIxWXM5bjZjdTNiZ2N0NE9pdjdpbXpzbE5Oc0w0Rm1VNk83cVNyV1BQ?=
+ =?utf-8?B?YTg0elY1a0MwUTBnUzQ1NEJEd2xTMktYS1NsUFprc1l4Z0FrbEFzbXBoTWF2?=
+ =?utf-8?B?UkVlakl0ZGdrR094em9SY01QL2M0R0tiSmZHUTBRWGxKNi9kUVY4K3I0OTJq?=
+ =?utf-8?B?cTlJMWJRdmNRa2FqSnRSR3Y4elBDcnpjczk3NlNyaUNVZ1Y3OGJnYUxhWFRq?=
+ =?utf-8?B?MU5lWWpmZ0xlb3grd1NkZ0c5ZXBkanBzTld3Nm9vLzQxVytXQnJ5cGtFSThN?=
+ =?utf-8?B?WlE1LzFxaTNwOVh1UlduUlpHNGY1OSttaHdQenV5NnpXNXAzODl0bTJqd3Fp?=
+ =?utf-8?B?WGxzalhYYXdKNWZoWlh3OUhYTW5NOGVVUUg1Yk52ckdVQlFPYXhodGUrZ3BI?=
+ =?utf-8?B?WHNFNzhSNy9NMEQyaWtybEd2d3BCTStRQThJZjVncDUyTUlOQkpoNEM1Vzd5?=
+ =?utf-8?B?bXozdHQ3Y0prMG9zS1IrTEc1dUFUNjJ4eW9zSktXVkZSSitLTWNpdG56dno3?=
+ =?utf-8?B?Q2lvQWNEdDhkSmJheG9ZV2hYOUdMVHdVemNUZHQ2dDhxWm90cmQ2LzZlTGNC?=
+ =?utf-8?B?dGxLZWhHZ3Q5WVVNUEU3Wkk0SmQ4SGpJTFZVZWhaSTN0aGVNKzhyU3ZBbk1o?=
+ =?utf-8?B?a3FEREpzT2l5MGpveE9xNFR4WGlDL1lqMGhTVEVVNldZT2dWWGtoTlg0NXFn?=
+ =?utf-8?B?WHViVDdBMHFndXVhOXVDZ1hPRk1STm1RZHlpT0l0QVh2bFJGOHFDanErQmxF?=
+ =?utf-8?B?SjJkV3pVNm9vYm9KUDlMTzlWQ0Q5c3QyWStFUGUzelpGU3U3S1pTN3lkeHBw?=
+ =?utf-8?B?cjFQcXhGRTcvOFovM3NaOTc1MkhqZ0VIZjlHekJLR1JiMFRkN3YxWExRY0NZ?=
+ =?utf-8?B?ME5ieGl5N0NOTENYYTE1M3M2L2ZlQUxRMU84NkFnalZDOEVYZkNsOC83cDVV?=
+ =?utf-8?B?UkI5L0NGY1ZnYmhpVXdvSElVVXVPWFpTRUgwMyt5ZU9IUTl3ZGpZWnd1R2s5?=
+ =?utf-8?B?dEdOR04vb2VzYUkyV2doQXlMZXdkTnhJWkxBMXlhaGVkckVJQnUrMFFXaVNS?=
+ =?utf-8?B?d0JQZlRDanNHRkZDekpxaFoweFhNMnJOd1R1bXhRU1hJUkNUODlaelVTYW9w?=
+ =?utf-8?B?aDVFTmU4SmJ4c1Yydk9WRVAxL1pvSTVtdDdTSmRRWWFoajl0ZEpxdlpZYlRS?=
+ =?utf-8?B?WFkxSXpoRVdqWnVYODI3U0c2VCtMMUoxYXZmR05EaVpLcXNkUUVZSytoT2Jq?=
+ =?utf-8?B?ZXQzWTc0UDI5aFA4WElMblJJSEh2VnY0ZzNrMUduV2trTjYzYkV3aVFIU3Nm?=
+ =?utf-8?B?VWQ4d2hSZFYwS1pVTFlUK3NuZFpnREVZb2h2cDdnQkdsMnhTQVZwR1RNMWNZ?=
+ =?utf-8?B?WVVyck12bmtLeWltUlY3MVV4TEVoRjk4ZTN6dnEyMFhkK2JLdDlnMGF2a3J3?=
+ =?utf-8?B?VkVQN3BZRjR0WnJNdjBsUEo0eGRZY2IvNHliV3pDOVMzREs4TG13MkE5T1hN?=
+ =?utf-8?B?bnZyRkwrRVB6WGovWXNlMjdyNjNCMVVpN1lZNGh3QVdCZldaYythQ24wRnlw?=
+ =?utf-8?Q?oZTgcNvbTmr3OgQmjdQYX+kqG?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 601f0bfa-597f-49e6-468f-08dba2b722bc
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6203.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0704689-40e9-4de0-49fb-08dba2b8125a
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2023 02:26:05.0376
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2023 02:32:47.0533
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pyJ4xTPNwwGwM7uoYWuiQ0IRsuEtLe2VL2HXltTstcBotsizNAhPrl/Ca+c8QQk7JbJddriUM/Az8DXNsFDt2w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4092
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9YapMJN2cSjH1vmku5+QUH4+11IjcQMaDkOhOeZ5IVwmjB4jpREXMt9826N3NhbH6LY88I7p9V8c7ySqB1GhEg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6431
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
@@ -135,144 +128,165 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
 
-On 8/21/2023 13:01, Rafael J. Wysocki wrote:
-> On Mon, Aug 21, 2023 at 7:52 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+
+On 8/21/2023 5:42 PM, Bjorn Helgaas wrote:
+> On Fri, Aug 18, 2023 at 02:39:32PM -0500, Mario Limonciello wrote:
+>> commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+>> changed pci_bridge_d3_possible() so that any vendor's PCIe ports
+>> from modern machines (>=2015) are allowed to be put into D3.
 >>
->> On Mon, Aug 21, 2023 at 7:35 PM Limonciello, Mario
->> <mario.limonciello@amd.com> wrote:
->>>
->>>
->>>
->>> On 8/21/2023 12:29 PM, Rafael J. Wysocki wrote:
->>>> On Mon, Aug 21, 2023 at 7:17 PM Limonciello, Mario
->>>> <mario.limonciello@amd.com> wrote:
->>>>>
->>>>> On 8/21/2023 12:12 PM, Rafael J. Wysocki wrote:
->>>>> <snip>
->>>>>>> I was just talking to some colleagues about PHAT recently as well.
->>>>>>>
->>>>>>> The use case that jumps out is "system randomly rebooted while I was
->>>>>>> doing XYZ".  You don't know what happened, but you keep using your
->>>>>>> system.  Then it happens again.
->>>>>>>
->>>>>>> If the reason for the random reboot is captured to dmesg you can cross
->>>>>>> reference your journal from the next boot after any random reboot and
->>>>>>> get the reason for it.  If a user reports this to a Gitlab issue tracker
->>>>>>> or Bugzilla it can be helpful in establishing a pattern.
->>>>>>>
->>>>>>>>> The below location may be appropriate in that case:
->>>>>>>>> /sys/firmware/acpi/
->>>>>>>>
->>>>>>>> Yes, it may. >
->>>>>>>>> We already have FPDT and BGRT being exported from there.
->>>>>>>>
->>>>>>>> In fact, all of the ACPI tables can be retrieved verbatim from
->>>>>>>> /sys/firmware/acpi/tables/ already, so why exactly do you want the
->>>>>>>> kernel to parse PHAT in particular?
->>>>>>>>
->>>>>>>
->>>>>>> It's not to say that /sys/firmware/acpi/PHAT isn't useful, but having
->>>>>>> something internal to the kernel "automatically" parsing it and saving
->>>>>>> information to a place like the kernel log that is already captured by
->>>>>>> existing userspace tools I think is "more" useful.
->>>>>>
->>>>>> What existing user space tools do you mean?  Is there anything already
->>>>>> making use of the kernel's PHAT output?
->>>>>>
->>>>>
->>>>> I was meaning things like systemd already capture the kernel long
->>>>> ringbuffer.  If you save stuff like this into the kernel log, it's going
->>>>> to be indexed and easier to grep for boots that had it.
->>>>>
->>>>>> And why can't user space simply parse PHAT by itself?
->>>>>>   > There are multiple ACPI tables that could be dumped into the kernel
->>>>>> log, but they aren't.  Guess why.
->>>>>
->>>>> Right; there's not reason it can't be done by userspace directly.
->>>>>
->>>>> Another way to approach this problem could be to modify tools that
->>>>> excavate records from a reboot to also get PHAT.  For example
->>>>> systemd-pstore will get any kernel panics from the previous boot from
->>>>> the EFI pstore and put them into /var/lib/systemd/pstore.
->>>>>
->>>>> No reason that couldn't be done automatically for PHAT too.
->>>>
->>>> I'm not sure about the connection between the PHAT dump in the kernel
->>>> log and pstore.
->>>>
->>>> The PHAT dump would be from the time before the failure, so it is
->>>> unclear to me how useful it can be for diagnosing it.  However, after
->>>> a reboot one should be able to retrieve PHAT data from the table
->>>> directly and that may include some information regarding the failure.
->>>
->>> Right so the thought is that at bootup you get the last entry from PHAT
->>> and save that into the log.
->>>
->>> Let's say you have 3 boots:
->>> X - Triggered a random reboot
->>> Y - Cleanly shut down
->>> Z - Boot after a clean shut down
->>>
->>> So on boot Y you would have in your logs the reason that boot X rebooted.
+>> Iain reports that USB devices can't be used to wake a Lenovo Z13
+>> from suspend. This is because the PCIe root port has been put
+>> into D3 and AMD's platform can't handle USB devices waking in this
+>> case.
 >>
->> Yes, and the same can be retrieved from the PHAT directly from user
->> space at that time, can't it?
+>> This behavior is only reported on Linux. Comparing the behavior
+>> on Windows and Linux, Windows doesn't put the root ports into D3.
 >>
->>> On boot Z you would see something about how boot Y's reason.
->>>
->>>>
->>>> With pstore, the assumption is that there will be some information
->>>> relevant for diagnosing the failure in the kernel buffer, but I'm not
->>>> sure how the PHAT dump from before the failure can help here?
->>>
->>> Alone it's not useful.
->>> I had figured if you can put it together with other data it's useful.
->>> For example if you had some thermal data in the logs showing which
->>> component overheated or if you looked at pstore and found a NULL pointer
->>> dereference.
+>> To fix the issue without regressing existing Intel systems,
+>> limit the >=2015 check to only apply to Intel PCIe ports.
 >>
->> IIUC, the current PHAT content can be useful.  The PHAT content from
->> boot X (before the failure) which is what will be there in pstore
->> after the random reboot, is of limited value AFAICS.
+>> Cc: stable@vger.kernel.org
+>> Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+>> Reported-by: Iain Lane <iain@orangesquash.org.uk>
+>> Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
+>> Reviewed-by:Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> ---
+>> In v14 this series has been split into 3 parts.
+>>   part A: Immediate fix for AMD issue.
+>>   part B: LPS0 export improvements
+>>   part C: Long term solution for all vendors
+>> v13->v14:
+>>   * Reword the comment
+>>   * add tag
+>> v12->v13:
+>>   * New patch
+>> ---
+>>   drivers/pci/pci.c | 11 ++++++++---
+>>   1 file changed, 8 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+>> index 60230da957e0c..bfdad2eb36d13 100644
+>> --- a/drivers/pci/pci.c
+>> +++ b/drivers/pci/pci.c
+>> @@ -3037,10 +3037,15 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
+>>   			return false;
+>>   
+>>   		/*
+>> -		 * It should be safe to put PCIe ports from 2015 or newer
+>> -		 * to D3.
+>> +		 * Allow Intel PCIe ports from 2015 onward to go into D3 to
+>> +		 * achieve additional energy conservation on some platforms.
+>> +		 *
+>> +		 * This is only set for Intel PCIe ports as it causes problems
+>> +		 * on both AMD Rembrandt and Phoenix platforms where USB keyboards
+>> +		 * can not be used to wake the system from suspend.
+>>   		 */
+>> -		if (dmi_get_bios_year() >= 2015)
+>> +		if (bridge->vendor == PCI_VENDOR_ID_INTEL &&
+>> +		    dmi_get_bios_year() >= 2015)
+>>   			return true;
 > 
-> To be more precise, I don't see why the kernel needs to be made a
-> man-in-the-middle between the firmware which is the source of the
-> information and user space that consumes it.
+> Hmm.  I'm really not a fan of checks like this that aren't connected
+> to an actual property of the platform.  The Intel Vendor ID tells us
+> nothing about what the actual problem is, which makes it really hard
+> to maintain in the future.  It's also very AMD- and Intel-centric,
+> when this code is ostensibly arch-agnostic, so this potentially
+> regresses ARM64, RISC-V, powerpc, etc.
+> 
+> It's bad enough that we check for 2015.  A BIOS security update to a
+> 2014 platform will break things, even though the update has nothing to
+> do with D3.  We're stuck with that one, and it's old enough that maybe
+> it won't bite us any more, but I hate to add more.
 
-I do somewhat agree with your point.
+I don't see this change as adding any more checks.
+It's correcting what should have been a more narrow check when that one 
+was introduced.
 
-IIUC, ACPI Table parsing can be undertaken from user-space for ACPI
-tables that provide error information through sysfs and, if required, MMIO.
+There was no spec backing the 2015 date, it was just "hardware works 
+with this and it's needed".
 
-Our principal motive though in wanting to add support for this table in the
-kernel, and please correct me if I am wrong, was the absence of an open-source
-tool to accomplish this. Having support for the table in the kernel should alleviate
-users from the need to develop tools and manually run them whence an unexpected
-reset is encountered. The data is already available in the dmesg / journal for
-analysis and will be available across reboots in the journal.
+> 
+> The list of conditions in pci_bridge_d3_possible() is a pretty good
+> clue that we don't really know what we're doing, and all we can do is
+> find configurations that happen to work.
+> 
 
-An alternative for a tool might be using acpidump utility and ASL but even that
-can be tedious at times since tables are in little-endian format and users might
-be required to undertake byte level decoding of the dumped table by referring
-to ACPI specs. Wouldn't having parsed data available in the dmesg, at least,
-be convenient in such cases?
+I see this function as stemming from three high level desires that 
+intersect.
 
-Another important motive was the reset reason health record itself. Below is
-an excerpt from the ACPI spec v6.5
+1) Make hardware not originally designated for the PC ecosystem work.
+Macs fall in this camp.  They don't always adhere to the same "firmware 
+norms" as UEFI PCs do.  They don't run Microsoft's certifications, and 
+thus they don't always work the same.
 
-The reset reason is intended to supplement existing fault reporting mechanisms on the platform (e.g. BERT tables, CPER) or in the operating system (e.g. event logs)
+2) Make hardware compatible to the the ACPI and PCI specs where possible.
 
-Since existing fault reporting mechanisms log into the dmesg buffer (AFAIK) and
-Reset Reason Health Record is intended to supplement them, wouldn't it be fitting
-to have the record available in dmesg buffer too and ensure that all error info
-is not scattered but available in a single place and across reboots?
+3) Make hardware compatible with Windows behavior.
 
-Also, I do agree with Mario in that we should set expected reset reasons to
-debug. Rather, we could have the entire record as debug for expected resets and
-only log to the dmesg for unexpected resets.
+In a strict world <2> would be the only one that was followed and 
+everything else would be relegated to quirks or sub-drivers that made 
+decisions, but we are where we are.
 
--- 
-Thanks,
-Avadhut Naik
+I'm not saying it's a bad thing that all 3 goals overlap.
+If not for the changes that were introduced into this function for Mac 
+compatibility I don't think we would Thunderbolt/USB4 where it is today.
+
+> I don't have any better suggestions, other than that this should be
+> described somehow via ACPI (and not in vendor-specific stuff like
+> PNP0D80).
+> 
+> Bjorn
+
+The problem is the ACPI spec doesn't say what OSPM should do when 
+something isn't power manageable by ACPI.  Can you really argue it should?
+
+Even if we DID manage to get something added to the spec how does that 
+help everything already on the marketplace that's broken?
+
+If we can't fix the check to be more narrow the only options I see left:
+
+0) Do nothing.
+
+Document somewhere that if you're on AMD and care about wake from 
+keyboard that you need pcie_port_pm=off.  I really don't think this is a 
+good idea.  Here's why:
+
+Completely separate from this wake from USB issue I know of another 
+issue where some PHX BIOS versions HANG the system during resume because 
+of root port being in D3.
+
+It's fixed in newer PHX BIOS versions, but if you end up with an OEM 
+system that happened to launch with one of these you're in a very bad 
+place.  I haven't mentioned it because I've not seen an OEM system with 
+this yet.
+
+If we "do nothing" the only way to solve those will be to grow the DMI 
+avoid list if any of these come up.
+
+1) Hardcode all the Intel root ports that need D3 into a quirk list.
+
+I don't know how big this list is, but I assume it's massive and doesn't 
+scale unless the constraints stuff works for Intel to opt in the newer
+things.
+
+2) Hardcode quirks for all the affected AMD PCI root ports to avoid D3.
+
+It's 4 of them for the 2022-2023 platforms.
+It will probably be another 2 more for 2024 ones, and then another 2 
+more for 2025 ones.
+Maybe by 2025 the affected root port can handle D3 and let USB wake it 
+up?  I don't know.
+
+3) Move the quirk somewhere that AMD can maintain specifically for this 
+case outside of drivers/pci.
+
+I did prototype it being put into drivers/platform/x86/amd/pmc.c or 
+drivers/platform/x86/amd/pmc_quirks.c instead as part of the suspend 
+callbacks or LPS0 callbacks.
+
+This works and can scale as that driver at a minimum gets new IDs added 
+for new platforms.  However it makes all this logic much more convoluted 
+and harder for anyone to follow.
