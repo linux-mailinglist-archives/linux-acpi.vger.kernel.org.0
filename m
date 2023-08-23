@@ -2,83 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B095C7861F5
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Aug 2023 23:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAC0F7862AF
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Aug 2023 23:42:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236855AbjHWVJR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Aug 2023 17:09:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35610 "EHLO
+        id S238649AbjHWVlm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Aug 2023 17:41:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237276AbjHWVJL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Aug 2023 17:09:11 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FA6A10C8
-        for <linux-acpi@vger.kernel.org>; Wed, 23 Aug 2023 14:09:09 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-68bbd45d0d5so285563b3a.1
-        for <linux-acpi@vger.kernel.org>; Wed, 23 Aug 2023 14:09:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1692824948; x=1693429748;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=JFA7r4cNhfzTJhPZhI+QcYB/p/GZPr14BEMJCD/PtOY=;
-        b=DVckDtCpUXRZBc77gErGk4Njjl0I5ExAOMx3zbSBKDzFTqbAzgH1O82f1FsJbF+NXF
-         8DfAkedAkVgGvDB5ZFEg7wOprm0ebkbeK62SVA7zX6yzjBwJ4oAz+LhLzRpHXqpzCo6m
-         Yg/5bwuDAlASbTneg6yNCmtH1R+GDwLfQK1/JP4V6AggmATXovZC0q4zy2g+yjAiA5E6
-         +jovmx6t+9fkOuQxLMncFc5PF5msuM642r17sCwPOqlVZPjbPkVsugGNJfIsJRFHOXME
-         OA6Pk6PbRPtPeBOanECX43/fk7bvhkglQ9HtLaXWqG1DUa6sRGb6wv59WvfLxsz0xDNQ
-         rcNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692824948; x=1693429748;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JFA7r4cNhfzTJhPZhI+QcYB/p/GZPr14BEMJCD/PtOY=;
-        b=fIoVtdl0iuqr4mbR4ccK8GZwrgoDQFYB+Ti4gPIRhDayBKT/JMSK3bDUjOopTaq/yz
-         xFGV1kzidu/UuwNJWn61VGmP+kK+eGj10PtlsTgSyoHnJtYRdAXty3FxXkvR3+sKLANY
-         GwANCd6Jo0XxYGkQIbfVbifwEcmmSaOP7199Wdg21oYS9c4czzExWoyaF1l0RAUQI9yW
-         ehbOdrt7cTQXdQTzmptfO2j4qvrHhfaLkG+1uRHNilmCoBYbg14UTHNP1ObTGKyqzPBC
-         bONuJa9VtQBHAzy0OOvNxTprxUYI4x6XJYaTHg7INLoPxwcM7wMwpSheJtHTsf4CTlJG
-         LVgQ==
-X-Gm-Message-State: AOJu0YxHi4cIk8l8S0qUiAYx3as8ZHVqhCk1x+KWU4WykErWfYk1HYo0
-        baQ5z1co1EEBRAoIHcZlfa4PMQ==
-X-Google-Smtp-Source: AGHT+IFMSv5r5leBe1LvmuzI1T7xBfHmYz/q0tLbnGP7JZsx/vAE7FzTymHX6XV8fUlxXrab4Cef6g==
-X-Received: by 2002:a05:6a20:7da6:b0:12e:f6e6:882b with SMTP id v38-20020a056a207da600b0012ef6e6882bmr17494947pzj.1.1692824948655;
-        Wed, 23 Aug 2023 14:09:08 -0700 (PDT)
-Received: from cork (c-73-158-249-15.hsd1.ca.comcast.net. [73.158.249.15])
-        by smtp.gmail.com with ESMTPSA id c10-20020aa78c0a000000b006875df4773fsm1927889pfd.163.2023.08.23.14.09.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Aug 2023 14:09:08 -0700 (PDT)
-Date:   Wed, 23 Aug 2023 14:09:06 -0700
-From:   =?iso-8859-1?Q?J=F6rn?= Engel <joern@purestorage.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Uday Shankar <ushankar@purestorage.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Len Brown <len.brown@intel.com>,
-        linux-hardening@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        "Huang, Ying" <ying.huang@intel.com>
-Subject: Re: [PATCH] Revert "ACPI, APEI, use raw spinlock in ERST"
-Message-ID: <ZOZ1cmqF3G0XO0ZH@cork>
-References: <20230822010933.2247671-1-ushankar@purestorage.com>
- <87y1i3c015.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <ZOQodU1CNMRtjYZ6@cork>
- <20230822234522.GA2590891@dev-ushankar.dev.purestorage.com>
- <87cyzebi00.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <ZOV1sM8xZ6+P48Z1@cork>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZOV1sM8xZ6+P48Z1@cork>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,T_SPF_PERMERROR,URIBL_BLOCKED autolearn=ham
+        with ESMTP id S238567AbjHWVlV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Aug 2023 17:41:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0D4711F;
+        Wed, 23 Aug 2023 14:40:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A772762505;
+        Wed, 23 Aug 2023 21:40:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CCD1BC433C8;
+        Wed, 23 Aug 2023 21:40:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692826852;
+        bh=OJoinr9NasZYSHUKzxf+4iL/gfReFtLllCtMGAVmrOI=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=Hu1XR/+Q+AjfLfdaw6xMOWmMh79wDdKRy88b1W70G/KTtZnywpWd980mMeN5D3on7
+         XSj/r0rCr96FSvMV4SMtqXguZz796wMLONjQURPOh9E9YmLZo1jM6dSk7K0226TH1G
+         n/2b7fl2C8aitepsu7dru3cUagkn9Vb5yFDQqm7i3qj6M3668dezX3HnmpG2KbJy4p
+         Rv3YGJaKb4VOU+1tf0YApIL9fzIITxS60fCl5xQuvHyuwumyhNVwi+yl6Vqi8BX+ub
+         z1RMeUemm1MQp3vbdShaXGU6PSRMitWYcS7wgk/Ku/nwMVT/Eqx6uctpdfb/PcMKjy
+         /8+b7UG2hySKQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id ACD6FC4314B;
+        Wed, 23 Aug 2023 21:40:52 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fix for v6.5-rc8
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0gGifSL5e30wYj7kRfAuzYerAH1hwkz3j8ayYZ7Y15LkQ@mail.gmail.com>
+References: <CAJZ5v0gGifSL5e30wYj7kRfAuzYerAH1hwkz3j8ayYZ7Y15LkQ@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0gGifSL5e30wYj7kRfAuzYerAH1hwkz3j8ayYZ7Y15LkQ@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.5-rc8
+X-PR-Tracked-Commit-Id: 453b014e2c294abf762d3bce12e91ce4b34055e6
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 93f5de5f648d2b1ce3540a4ac71756d4a852dc23
+Message-Id: <169282685269.21732.1927971752718750893.pr-tracker-bot@kernel.org>
+Date:   Wed, 23 Aug 2023 21:40:52 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -86,40 +62,15 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 22, 2023 at 07:57:52PM -0700, Jörn Engel wrote:
-> 
-> You are right.  I'm actually quite surprised how we turn a trylock into
-> a spinning lock.  Now I know, thank you!
+The pull request you sent on Wed, 23 Aug 2023 21:38:04 +0200:
 
-On that subject, why do we turn a trylock into a spinning lock?  Thomas,
-is there a good argument against a patch like the one below?
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.5-rc8
 
-If the question was ever considered, it seems to have happened outside
-of mainline.  At least I cannot find it in git history.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/93f5de5f648d2b1ce3540a4ac71756d4a852dc23
 
-Jörn
+Thank you!
 
---
-If you cannot make a function run 100x faster, maybe you can
-call it 100x less often.
--- Unknown
-
-diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
-index fcd9ad3f7f2e..5bda84d5879a 100644
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1255,11 +1255,13 @@ static int __sched rt_mutex_slowtrylock(struct rt_mutex_base *lock)
- 
- 	/*
- 	 * The mutex has currently no owner. Lock the wait lock and try to
- 	 * acquire the lock. We use irqsave here to support early boot calls.
- 	 */
--	raw_spin_lock_irqsave(&lock->wait_lock, flags);
-+	ret = raw_spin_trylock_irqsave(&lock->wait_lock, flags);
-+	if (!ret)
-+		return 0;
- 
- 	ret = __rt_mutex_slowtrylock(lock);
- 
- 	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
- 
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
