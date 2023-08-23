@@ -2,46 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE3BA785375
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Aug 2023 11:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DA3B7854FF
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Aug 2023 12:11:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234973AbjHWJFl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Aug 2023 05:05:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59720 "EHLO
+        id S232254AbjHWKLe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Aug 2023 06:11:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235321AbjHWJER (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Aug 2023 05:04:17 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D549710D1;
-        Wed, 23 Aug 2023 01:59:03 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2E50D1042;
-        Wed, 23 Aug 2023 01:59:43 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.3.204])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A51B53F740;
-        Wed, 23 Aug 2023 01:59:00 -0700 (PDT)
-Date:   Wed, 23 Aug 2023 09:58:54 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Simon Glass <sjg@chromium.org>
-Cc:     devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Chiu Chasel <chasel.chiu@intel.com>,
-        U-Boot Mailing List <u-boot@lists.denx.de>,
-        Gua Guo <gua.guo@intel.com>, linux-acpi@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>,
-        Yunhui Cui <cuiyunhui@bytedance.com>,
-        ron minnich <rminnich@gmail.com>,
-        Tom Rini <trini@konsulko.com>,
-        Lean Sheng Tan <sheng.tan@9elements.com>
-Subject: Re: [PATCH v3 1/2] schemas: Add a schema for memory map
-Message-ID: <ZOXKTrC_dzN_hUkY@FVFF77S0Q05N>
-References: <20230822203446.4111742-1-sjg@chromium.org>
+        with ESMTP id S234558AbjHWIVZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Aug 2023 04:21:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00D9A1707;
+        Wed, 23 Aug 2023 01:15:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF9E96214F;
+        Wed, 23 Aug 2023 08:15:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C03C433C8;
+        Wed, 23 Aug 2023 08:15:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692778548;
+        bh=f7/tnL/CYJkwKNLcLrlquf8W0oqouUPAZbxzQF2xWrg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=K29YbCvSIvPIqrCKyzF6IAffEdlYbhbCNNjtIERAkM39WOwz/obWYbhEcPuC8WYTw
+         IRvra7Xt1BozBNGXoyiLEp4yBZFEMiH4plosQCODwPjZApgakAChJ4c9p2Hu+sI5VE
+         JP8V0gaTauWxvLnx2Ti8GdmxbTFgmQMdp8kAW7RQ=
+Date:   Wed, 23 Aug 2023 10:15:45 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Evan Quan <evan.quan@amd.com>, Andrew Lunn <andrew@lunn.ch>,
+        rafael@kernel.org, lenb@kernel.org, johannes@sipsolutions.net,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alexander.deucher@amd.com,
+        rdunlap@infradead.org, quic_jjohnson@quicinc.com, horms@kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [V9 1/9] drivers core: Add support for Wifi band RF mitigations
+Message-ID: <2023082333-unruly-explode-9ee8@gregkh>
+References: <20230818032619.3341234-1-evan.quan@amd.com>
+ <20230818032619.3341234-2-evan.quan@amd.com>
+ <2023081806-rounding-distract-b695@gregkh>
+ <2328cf53-849d-46a1-87e6-436e3a1f5fd8@amd.com>
+ <2023081919-mockup-bootleg-bdb9@gregkh>
+ <e5d153ed-df8a-4d6f-8222-18dfd97f6371@amd.com>
+ <2023082247-synthesis-revenge-470d@gregkh>
+ <87a5uiw5x4.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230822203446.4111742-1-sjg@chromium.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+In-Reply-To: <87a5uiw5x4.fsf@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,134 +65,23 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 22, 2023 at 02:34:42PM -0600, Simon Glass wrote:
-> The Devicetree specification skips over handling of a logical view of
-> the memory map, pointing users to the UEFI specification.
+On Wed, Aug 23, 2023 at 10:53:43AM +0300, Kalle Valo wrote:
+> Greg KH <gregkh@linuxfoundation.org> writes:
 > 
-> It is common to split firmware into 'Platform Init', which does the
-> initial hardware setup and a "Payload" which selects the OS to be booted.
-> Thus an handover interface is required between these two pieces.
+> > On Mon, Aug 21, 2023 at 10:13:45PM -0500, Limonciello, Mario wrote:
+> >> So I wonder if the right answer is to put it in drivers/net/wireless
+> >> initially and if we come up with a need later for non wifi producers we can
+> >> discuss moving it at that time.
+> >
+> > Please do so.
 > 
-> Where UEFI boot-time services are not available, but UEFI firmware is
-> present on either side of this interface, information about memory usage
-> and attributes must be presented to the "Payload" in some form.
+> Sorry, I haven't been able to follow the discussion in detail but just a
+> quick comment: if there's supposed to be code which is shared with
+> different wifi drivers then drivers/net/wireless sounds wrong,
+> net/wireless or net/mac80211 would be more approriate location.
 
-Today Linux does that by passing:
+That's fine with me as well, just not drivers/core/ please :)
 
-  /chosen/linux,uefi-mmap-start
-  /chosen/linux,uefi-mmap-size
-  /chosen/linux,uefi-mmap-desc-size
-  /chosen/linux,uefi-mmap-desc-ver
+thanks,
 
-... or /chosen/xen,* variants of those.
-
-Can't we document / genericise that?
-
-Pointing to that rather than re-encoding it in DT means that it stays in-sync
-with the EFI spec and we won't back ourselves into a corner where we cannot
-encode something due to a structural difference. I don't think it's a good idea
-to try to re-encode it, or we're just setting ourselves up for futher pain.
-
-Thanks,
-Mark.
-
-> 
-> This aims to provide an initial schema for this mapping.
-> 
-> Note that this is separate from the existing /memory and /reserved-memory
-> nodes, since it is mostly concerned with what the memory is used for. It
-> may cover only a small fraction of available memory.
-> 
-> For now, no attempt is made to create an exhaustive binding, so there are
-> some example types listed. This can be completed once this has passed
-> initial review.
-> 
-> This binding does not include a binding for the memory 'attribute'
-> property, defined by EFI_BOOT_SERVICES.GetMemoryMap(). It may be useful
-> to have that as well, but perhaps not as a bit mask.
-> 
-> Signed-off-by: Simon Glass <sjg@chromium.org>
-> ---
-> 
-> Changes in v3:
-> - Reword commit message again
-> - cc a lot more people, from the FFI patch
-> - Split out the attributes into the /memory nodes
-> 
-> Changes in v2:
-> - Reword commit message
-> 
->  dtschema/schemas/memory-map.yaml | 61 ++++++++++++++++++++++++++++++++
->  1 file changed, 61 insertions(+)
->  create mode 100644 dtschema/schemas/memory-map.yaml
-> 
-> diff --git a/dtschema/schemas/memory-map.yaml b/dtschema/schemas/memory-map.yaml
-> new file mode 100644
-> index 0000000..4b06583
-> --- /dev/null
-> +++ b/dtschema/schemas/memory-map.yaml
-> @@ -0,0 +1,61 @@
-> +# SPDX-License-Identifier: BSD-2-Clause
-> +# Copyright 2023 Google LLC
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/memory-map.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: /memory-map nodes
-> +description: |
-> +  Common properties always required in /memory-map nodes. These nodes are
-> +  intended to resolve the nonchalant clause 3.4.1 ("/memory node and UEFI")
-> +  in the Devicetree Specification.
-> +
-> +maintainers:
-> +  - Simon Glass <sjg@chromium.org>
-> +
-> +properties:
-> +  $nodename:
-> +    const: 'memory-map'
-> +
-> +patternProperties:
-> +  "^([a-z][a-z0-9\\-]+@[0-9a-f]+)?$":
-> +    type: object
-> +    additionalProperties: false
-> +
-> +    properties:
-> +      reg:
-> +        minItems: 1
-> +        maxItems: 1024
-> +
-> +      usage:
-> +        $ref: /schemas/types.yaml#/definitions/string
-> +        description: |
-> +          Describes the usage of the memory region, e.g.:
-> +
-> +            "acpi-reclaim", "acpi-nvs", "bootcode", "bootdata", "bootdata",
-> +            "runtime-code", "runtime-data".
-> +
-> +            See enum EFI_MEMORY_TYPE in "Unified Extensible Firmware Interface
-> +            (UEFI) Specification" for all the types. For now there are not
-> +            listed here.
-> +
-> +    required:
-> +      - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    memory-map {
-> +        acpi@f0000 {
-> +            reg = <0xf0000 0x4000>;
-> +            usage = "acpi-reclaim";
-> +        };
-> +
-> +        runtime@12300000 {
-> +            reg = <0x12300000 0x28000>;
-> +            usage = "runtime-code";
-> +        };
-> +    };
-> +...
-> -- 
-> 2.42.0.rc1.204.g551eb34607-goog
-> 
+greg k-h
