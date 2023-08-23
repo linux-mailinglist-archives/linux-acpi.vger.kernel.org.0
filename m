@@ -2,243 +2,170 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 123BB78612A
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Aug 2023 22:04:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B70847861E2
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Aug 2023 23:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234838AbjHWUE1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Aug 2023 16:04:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57516 "EHLO
+        id S236808AbjHWVAv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Aug 2023 17:00:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234700AbjHWUE1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Aug 2023 16:04:27 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 360A110CB
-        for <linux-acpi@vger.kernel.org>; Wed, 23 Aug 2023 13:04:24 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-5298e43bb67so408674a12.1
-        for <linux-acpi@vger.kernel.org>; Wed, 23 Aug 2023 13:04:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1692821062; x=1693425862;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mbNGjy7zX9g+WJW97/AU37/Lm90Tn7R9l3Tj2bMGc18=;
-        b=F4wOBbseRiVjpbDrTHSFdiu7aS8clVWte3lx2jqucjj+QSjkjxiR4dxhwcoeqwLTvV
-         cpV9GHLpSf80jOH8Gw4Dsuvs0zYy5dzc9foLe7c1lr6mKhjBuV8k1rotMjoFutNoLmaC
-         BN8ONzMiFx/UUbieNBZlNr1K9qv6ndCynIGSQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692821062; x=1693425862;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mbNGjy7zX9g+WJW97/AU37/Lm90Tn7R9l3Tj2bMGc18=;
-        b=a68SoooqNphQr2v07kyILMGjD3ooR0rkhAsPERbXC3M8MGmjArgDN7/a27K0eIYF9W
-         +xtCI0keXDr5vN3hXUZ8gAUHZxTx8D40ztebfFl9aYWr0A7sQ2+a9A/98osu0JYjCO02
-         cK1RyZkzdNsRNEVDGByWyNpSBfbuUe/jEDZWq845DAAcFxNEMo0amMZhHpfUzlAVMLMG
-         K8UVP5yW0j0VK54l/YTwa6MJfkdX+7NU7I+ZKCHBr+1ThiWNAzUDh7rKmaZyxck7NIMK
-         z/AjKN2pePzbJZM/bdMC33BGaJyKsCYsgF1OhUHLkBn9gqGawC+Q7U5eZbn/cScqY/Jn
-         0wnw==
-X-Gm-Message-State: AOJu0YyR4BJvjdXxD1w0Vk/FFNuytdWQaB0HKPTpYOHr5zLWf9Pg097h
-        B77IX68NxP3FO2g+429/IrodvVNUo6JHDhFm54flWw==
-X-Google-Smtp-Source: AGHT+IFJY3KXPDLQhJJTyqi58QXqh+TZuzYefqKWmN30vLkuxUEYHA5cDTOIlkGSEYQRpwD4bXdmfPW9Siw5UNXU32U=
-X-Received: by 2002:a05:6402:34cf:b0:51d:b184:efd with SMTP id
- w15-20020a05640234cf00b0051db1840efdmr14823948edc.20.1692821062414; Wed, 23
- Aug 2023 13:04:22 -0700 (PDT)
+        with ESMTP id S236565AbjHWVA2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Aug 2023 17:00:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A50C10D8;
+        Wed, 23 Aug 2023 14:00:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10B2664D1D;
+        Wed, 23 Aug 2023 21:00:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35818C433CA;
+        Wed, 23 Aug 2023 21:00:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692824425;
+        bh=1GUjNlOG+KBoYDglAFVyksE2nk/O4gZ7mJ1bEw2jBKg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=IV+voB0G0KbhCnH8oRVzLlqIvelRo3Qb7aKgVDPeKPaa8nv7fDu3MqkuUPkU83dcs
+         tpNxr2/AmUv3cCJIri0fXXb+JCcgq5yOrehAwltyrx6yLSpx8q8JXkzujdzafUQG1Q
+         LrGFXCBxC6un/ITuRIxEBDWwWM30SraT9Xgzuk9UyfPzDEBfO8AC9u1NxYEdD1/L0A
+         kXIj4LaXef1NjDvg1spy3bzq5k175sbns4bgrxQl3UQqAllG1eKN+lT45nZSCg8QoI
+         tScY6blf2etQOseXJMVcQgAk/rA9qpR5oYzbz8BKTn8dUE9okWtk1GH1VoSIom3A8n
+         BexLh2bkWN1+A==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2bb99fbaebdso94080021fa.0;
+        Wed, 23 Aug 2023 14:00:25 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yyvlc7SV3O/hHNRcpKinuI4ZrHiThRvMbK9IdXkxHKAZTkGmQQC
+        XHVyDia19SllgpytismLF5b5vLXW6Yk1/GQcFw==
+X-Google-Smtp-Source: AGHT+IFv6lCE+fGtNgK3kYv6M1ccl+19kAPfdjWlF3xtOGLzM78M6RmnVdbW3zISvtaBDaCWim7XM+3GGUisex3UtPE=
+X-Received: by 2002:a2e:a316:0:b0:2bc:c846:aa17 with SMTP id
+ l22-20020a2ea316000000b002bcc846aa17mr6012102lje.41.1692824422953; Wed, 23
+ Aug 2023 14:00:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230822203446.4111742-1-sjg@chromium.org> <ZOXKTrC_dzN_hUkY@FVFF77S0Q05N>
- <CAMj1kXEHpRjk_YKOm4czCnnpjqgahj2jV8MMfGLx7b1RdnBnVw@mail.gmail.com>
-In-Reply-To: <CAMj1kXEHpRjk_YKOm4czCnnpjqgahj2jV8MMfGLx7b1RdnBnVw@mail.gmail.com>
-From:   Simon Glass <sjg@chromium.org>
-Date:   Wed, 23 Aug 2023 14:04:11 -0600
-Message-ID: <CAPnjgZ1S8G=7eCBF9PcDk4H5sk3AcxSSWXO575jK8SjA9dR8qw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] schemas: Add a schema for memory map
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
-        Rob Herring <robh@kernel.org>,
+References: <20230821194821.2961213-1-sjg@chromium.org> <CAL_Jsq+jYexj8CR86cktxeiXyo7X+8i35+Ao0GBMhinVPNUoEw@mail.gmail.com>
+ <CAPnjgZ1iXoiByBPvBJfOa+q7qV5mvq4yGm483TmypzSKKy5PYg@mail.gmail.com>
+In-Reply-To: <CAPnjgZ1iXoiByBPvBJfOa+q7qV5mvq4yGm483TmypzSKKy5PYg@mail.gmail.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Wed, 23 Aug 2023 16:00:10 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKCYvfme3UURPuukdmQ6BQHAPtF50vksJyQTtu7uc0cfQ@mail.gmail.com>
+Message-ID: <CAL_JsqKCYvfme3UURPuukdmQ6BQHAPtF50vksJyQTtu7uc0cfQ@mail.gmail.com>
+Subject: Re: [PATCH v2] schemas: Add a schema for memory map
+To:     Simon Glass <sjg@chromium.org>
+Cc:     devicetree@vger.kernel.org,
+        Lean Sheng Tan <sheng.tan@9elements.com>,
+        Tom Rini <trini@konsulko.com>,
+        lkml <linux-kernel@vger.kernel.org>, linux-acpi@vger.kernel.org,
         Chiu Chasel <chasel.chiu@intel.com>,
         U-Boot Mailing List <u-boot@lists.denx.de>,
-        Gua Guo <gua.guo@intel.com>, linux-acpi@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>,
-        Yunhui Cui <cuiyunhui@bytedance.com>,
-        ron minnich <rminnich@gmail.com>,
-        Tom Rini <trini@konsulko.com>,
-        Lean Sheng Tan <sheng.tan@9elements.com>
+        Gua Guo <gua.guo@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-        USER_IN_DEF_SPF_WL autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On Wed, 23 Aug 2023 at 08:24, Ard Biesheuvel <ardb@kernel.org> wrote:
+On Tue, Aug 22, 2023 at 3:34=E2=80=AFPM Simon Glass <sjg@chromium.org> wrot=
+e:
 >
-> On Wed, 23 Aug 2023 at 10:59, Mark Rutland <mark.rutland@arm.com> wrote:
+> Hi Rob,
+>
+> On Tue, 22 Aug 2023 at 12:53, Rob Herring <robh@kernel.org> wrote:
 > >
-> > On Tue, Aug 22, 2023 at 02:34:42PM -0600, Simon Glass wrote:
-> > > The Devicetree specification skips over handling of a logical view of
-> > > the memory map, pointing users to the UEFI specification.
+> > On Mon, Aug 21, 2023 at 2:48=E2=80=AFPM Simon Glass <sjg@chromium.org> =
+wrote:
 > > >
+> > > The Devicespec specification skips over handling of a logical view of
+> > > the memory map, pointing users to the UEFI specification.
+> >
+> > It's more that the DT spec defines what is not used with UEFI. If UEFI
+> > covers more than the DT Spec defined, then we should look at that.
+> >
+> > I would look some into (IBM) PowerPC for any prior art in this area.
+> > Unfortunately, not publicly documented other than any users.
+>
+> OK, but I'm not sure what you are looking for here. The DT (as
+> currently specified) is an incomplete description of memory, for
+> EFI-type firmware.
+
+I thought this was for non-EFI based systems. Confused.
+
+> I recall the ePAPR thing, but not much else. Any
+> pointers?
+
+ePAPR is the source of DT Spec. That was mainly FSL PPC, not IBM PPC.
+There's something called SPAPR, but no public spec. Otherwise, it's
+looking at arch/powerpc in the kernel.
+
 > > > It is common to split firmware into 'Platform Init', which does the
-> > > initial hardware setup and a "Payload" which selects the OS to be booted.
+> > > initial hardware setup and a "Payload" which selects the OS to be boo=
+ted.
 > > > Thus an handover interface is required between these two pieces.
 > > >
 > > > Where UEFI boot-time services are not available, but UEFI firmware is
-> > > present on either side of this interface, information about memory usage
+> > > present on either side of this interface, information about memory us=
+age
 > > > and attributes must be presented to the "Payload" in some form.
->
-> Not quite.
->
-> This seems to be intended for consumption by Linux booting in ACPI
-> mode, but not via UEFI, right?
-
-Actually, this is for consumption by firmware. The goal is to allow
-edk2 to boot into U-Boot and vice versa, i.e. provide some
-interoperability between firmware projects. I will use the "Platform
-Init" and "Payload" terminology here too.
-
-> Some proposed changes to support that
-> were rejected on the basis that ACPI on non-x86 is strictly tied to
-> ACPI boot, not only because the ACPI root table (rsdp) can only be
-> discovered via UEFI, but also because the ACPI subsystem in Linux
-> cross-references any memory mappings created from AML code against the
-> UEFI memory map.
->
-> Unfortunately, having a vague, non-exhaustive approximation of the
-> UEFI memory map is unlikely to be sufficient here. The existing logic
-> assumes that addresses not covered by the UEFI memory map are MMIO,
-> which means that either a) the UEFI memory map needs to describe all
-> RAM exhaustively or b) the existing logic needs to be modified to take
-> memblock or other information sources into account as well in order to
-> reason about whether a certain address requires device or normal
-> memory attributes.
->
-> Note that the ACPI spec only lists EFI as a valid way to obtain the
-> root table pointer on architectures other than x86. If other ways are
-> needed, they should be contributed to the spec, rather than being
-> added to Linux as an ad hoc workaround for bootloaders that have
-> trouble implementing the spec as is.
-
-There is no intent to implement the UEFI spec, here. It is simply that
-some payloads (EDK2) are used to having this information.
-
-Imagine splitting EDK2 into two parts, one of which does platform init
-and the other which (the payload) boots the OS. The payload wants
-information from Platform Init and it needs to be in a devicetree,
-since that is what we have chosen for this interface. So to some
-extent this is unrelated to whether you have EFI boot services. We
-just need to be able to pass the information across the interface.
-Note that the user can (without recompilation, etc.) replace the
-second part with U-Boot (for example) and it must still work.
-
->
-> >
-> > Today Linux does that by passing:
-> >
-> >   /chosen/linux,uefi-mmap-start
-> >   /chosen/linux,uefi-mmap-size
-> >   /chosen/linux,uefi-mmap-desc-size
-> >   /chosen/linux,uefi-mmap-desc-ver
-> >
-> > ... or /chosen/xen,* variants of those.
-> >
-> > Can't we document / genericise that?
-
-That seems to me to be the fields from the EFI memory-map call, but
-where is the actual content? I looked in the kernel but it seems to be
-an internal interface (between the stub and the kernel)?
-
-> >
->
-> Given the ACPI angle, promoting this to external ABI would introduce a
-> DT dependency to ACPI boot. So we'll at least have to be very clear
-> about which takes precedence, or maybe disregard everything except the
-> /chosen node when doing ACPI boot?
->
-> This also argues for not creating an ordinary binding for this (i.e.,
-> describing it as part of the platform topology), but putting it under
-> /chosen as a Linux-only boot tweak.
->
-> > Pointing to that rather than re-encoding it in DT means that it stays in-sync
-> > with the EFI spec and we won't back ourselves into a corner where we cannot
-> > encode something due to a structural difference. I don't think it's a good idea
-> > to try to re-encode it, or we're just setting ourselves up for futher pain.
-> >
->
-> What I would prefer is to formalize pseudo-EFI boot and define the
-> bare required minimum (system table + memory map + config tables) in
-> an arch-agnostic manner. That way, the only thing that needs to be
-> passed via DT/boot_params/etc is the (pseudo-)EFI system table
-> address, and everything else (SMBIOS, ACPI as well as the EFI memory
-> map and even the initrd) can be passed via config tables as usual, all
-> of which is already supported in (mostly) generic kernel code.
->
-> This means that booting via the EFI stub would not be required, nor is
-> implementing boot services or runtime services or any of the other
-> things that people appear to hate with such a passion.
->
-> I'd actually prefer not to use those /chosen DT nodes, but pass the
-> memory map via a config table. This, however, requires* that the
-> runtime services memory regions are mapped 1:1 so it is not something
-> we can do for all currently supported systems. But for pseudo-EFI
-> boot, stipulating 1:1 runtime mappings is fine (or no runtime mappings
-> at all if the firmware does not expose runtime services)
->
-> * SetVirtualAddressMap() relocates the config table array, and without
-> a memory map, it is not possible to convert those address back to
-> physical. SetVirtualAddressMap() is evil and needs to die, but this is
-> off-topic for the thread at hand.
-
-Here I believe you are talking about booting the kernel in EFI mode,
-but that is not the intent of this patch. This is all about things
-happening in firmware. Now, if the payload (second) part of the
-firmware decides it wants to offer EFI boot services and boot the
-kernel via the EFI stub, then it may very well pack this information
-(with a few changes) into a system table and make it available to the
-kernel stub. But by then this FDT binding is irrelevant, since it has
-served its purpose (which, to reiterate, is to facilitate information
-passage from platform init to 'payload').
-
->
 > > >
 > > > This aims to provide an initial schema for this mapping.
 > > >
-> > > Note that this is separate from the existing /memory and /reserved-memory
-> > > nodes, since it is mostly concerned with what the memory is used for. It
-> > > may cover only a small fraction of available memory.
+> > > Note that this is separate from the existing /memory and /reserved-me=
+mory
+> > > nodes, since it is mostly concerned with what the memory is used for.=
+ It
+> > > may cover only a small fraction of available memory, although it coul=
+d be
+> > > used to signal which area of memory has ECC.
 > > >
-> > > For now, no attempt is made to create an exhaustive binding, so there are
-> > > some example types listed. This can be completed once this has passed
+> > > For now, no attempt is made to create an exhaustive binding, so there=
+ are
+> > > some example types lists. This can be completed once this has passed
 > > > initial review.
-> > >
-> > > This binding does not include a binding for the memory 'attribute'
-> > > property, defined by EFI_BOOT_SERVICES.GetMemoryMap(). It may be useful
-> > > to have that as well, but perhaps not as a bit mask.
-> > >
-> > > Signed-off-by: Simon Glass <sjg@chromium.org>
+> >
+> > I don't have much interest in picking this up unless there's some
+> > wider agreement. From the previously referenced discussion[1], it
+> > didn't seem like there was. But none of those folk are Cc'ed here.
+>
+> Yes, Ron pointed me to that...although it isn't quite the same thing.
+> That is implementing a way to pass SMBIOS and ACPI tables through to
+> Linux, right? But it does mention memory types, so I'll send a new
+> version with those people on cc, in case they don't look at linux-acpi
+> much.
+
+Both are defining regions of memory to pass from one stage to the
+next. Isn't that the same thing?
+
+> But note, this is for *firmware* (on both sides of the interface).
+> Whether it is useful for Linux is another question. But in any case,
+> we should avoid having things in the DT which Linux cannot validate /
+> parse.
+
+Perhaps it is easiest if firmware removes its private stuff. You can
+put whatever you want into a DT and I don't care if it's not an ABI
+between the components. You may still want to document things and have
+a schema for other reasons.
+
 > > > ---
-> > >
-> > > Changes in v3:
-> > > - Reword commit message again
-> > > - cc a lot more people, from the FFI patch
-> > > - Split out the attributes into the /memory nodes
 > > >
 > > > Changes in v2:
 > > > - Reword commit message
 > > >
-> > >  dtschema/schemas/memory-map.yaml | 61 ++++++++++++++++++++++++++++++++
-> > >  1 file changed, 61 insertions(+)
+> > >  dtschema/schemas/memory-map.yaml | 51 ++++++++++++++++++++++++++++++=
+++
+> > >  1 file changed, 51 insertions(+)
 > > >  create mode 100644 dtschema/schemas/memory-map.yaml
 > > >
-> > > diff --git a/dtschema/schemas/memory-map.yaml b/dtschema/schemas/memory-map.yaml
+> > > diff --git a/dtschema/schemas/memory-map.yaml b/dtschema/schemas/memo=
+ry-map.yaml
 > > > new file mode 100644
-> > > index 0000000..4b06583
+> > > index 0000000..97e531e
 > > > --- /dev/null
 > > > +++ b/dtschema/schemas/memory-map.yaml
-> > > @@ -0,0 +1,61 @@
+> > > @@ -0,0 +1,51 @@
 > > > +# SPDX-License-Identifier: BSD-2-Clause
 > > > +# Copyright 2023 Google LLC
 > > > +%YAML 1.2
@@ -248,8 +175,10 @@ passage from platform init to 'payload').
 > > > +
 > > > +title: /memory-map nodes
 > > > +description: |
-> > > +  Common properties always required in /memory-map nodes. These nodes are
-> > > +  intended to resolve the nonchalant clause 3.4.1 ("/memory node and UEFI")
+> > > +  Common properties always required in /memory-map nodes. These node=
+s are
+> > > +  intended to resolve the nonchalant clause 3.4.1 ("/memory node and=
+ UEFI")
 > > > +  in the Devicetree Specification.
 > > > +
 > > > +maintainers:
@@ -257,52 +186,58 @@ passage from platform init to 'payload').
 > > > +
 > > > +properties:
 > > > +  $nodename:
-> > > +    const: 'memory-map'
-> > > +
-> > > +patternProperties:
-> > > +  "^([a-z][a-z0-9\\-]+@[0-9a-f]+)?$":
-> > > +    type: object
-> > > +    additionalProperties: false
-> > > +
-> > > +    properties:
-> > > +      reg:
-> > > +        minItems: 1
-> > > +        maxItems: 1024
-> > > +
-> > > +      usage:
-> > > +        $ref: /schemas/types.yaml#/definitions/string
-> > > +        description: |
-> > > +          Describes the usage of the memory region, e.g.:
-> > > +
-> > > +            "acpi-reclaim", "acpi-nvs", "bootcode", "bootdata", "bootdata",
-> > > +            "runtime-code", "runtime-data".
-> > > +
-> > > +            See enum EFI_MEMORY_TYPE in "Unified Extensible Firmware Interface
-> > > +            (UEFI) Specification" for all the types. For now there are not
-> > > +            listed here.
-> > > +
-> > > +    required:
-> > > +      - reg
-> > > +
-> > > +additionalProperties: false
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    memory-map {
-> > > +        acpi@f0000 {
-> > > +            reg = <0xf0000 0x4000>;
-> > > +            usage = "acpi-reclaim";
-> > > +        };
-> > > +
-> > > +        runtime@12300000 {
-> > > +            reg = <0x12300000 0x28000>;
-> > > +            usage = "runtime-code";
-> > > +        };
-> > > +    };
-> > > +...
-> > > --
-> > > 2.42.0.rc1.204.g551eb34607-goog
-> > >
+> > > +    const: '/'
+> >
+> > This goes in the root node?
+>
+> I suppose I'm just confused about how the schema is described. I think
+> it is better to have a /memory-map node with subnodes of that for each
+> region.
 
-Regards,
-Simon
+What you need is $nodename should be "memory-map", not "/". There is
+not a way to say it has to be under the root node other than adding it
+to root-node.yaml.
+
+> > > +  usage:
+> > > +    $ref: /schemas/types.yaml#/definitions/string
+> > > +    description: |
+> > > +      Describes the usage of the memory region, e.g.:
+> > > +
+> > > +        "acpi-reclaim", "acpi-nvs", "bootcode", "bootdata", "bootdat=
+a",
+> > > +        "runtime-code", "runtime-data"
+> >
+> > Can't these be covered by reserved-memory? The client is free to
+> > reclaim any regions if it knows what they are.
+>
+> I don't see that in the schema, but given what you say, it is
+> definitely an option.
+>
+> If the reserved-memory node hiding somewhere?
+
+The DT Spec. :)
+
+The schema is in the kernel currently in
+Documentation/devicetree/bindings/reserved-memory/reserved-memory.yaml.
+I need to move it out.
+
+> > > +  attr:
+> > > +    $ref: /schemas/types.yaml#/definitions/string-array
+> > > +    description: |
+> > > +      Attributes possessed by this memory region:
+> > > +
+> > > +        "single-bit-ecc" - supports single-bit ECC
+> > > +        "multi-bit-ecc" - supports multiple-bit ECC
+> > > +        "no-ecc" - non-ECC memory
+> >
+> > Isn't this pretty much a property of a memory region as a whole. IOW,
+> > couldn't it just go into /memory node(s)?
+>
+> Yes I think so. I wasn't sure if adding it there would break things,
+> but it seems not.
+
+There's some precedence for other things already. The spec defines the
+"hotpluggable" property. lshw will parse some DIMM properties which I
+think date back to PowerMacs.
+
+Rob
