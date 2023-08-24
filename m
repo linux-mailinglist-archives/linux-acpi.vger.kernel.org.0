@@ -2,223 +2,195 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37357786DBF
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Aug 2023 13:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D10DD78701C
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Aug 2023 15:19:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233632AbjHXLW6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Aug 2023 07:22:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43054 "EHLO
+        id S231676AbjHXNSg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Aug 2023 09:18:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241001AbjHXLWi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Aug 2023 07:22:38 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2088.outbound.protection.outlook.com [40.107.237.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AB0810FA;
-        Thu, 24 Aug 2023 04:22:36 -0700 (PDT)
+        with ESMTP id S241100AbjHXNS0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Aug 2023 09:18:26 -0400
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2069.outbound.protection.outlook.com [40.107.223.69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8FD3198D;
+        Thu, 24 Aug 2023 06:18:24 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ip6PdcikMcGmLDuLFA3qOtY1v1kJ8s4FkONk7HtfuFYVAAN3b3q1KH1G15mp8E2eAYT6EvP3dwtDhzhFz9Tq1BOkqa8aKg345ipEcOB6GgpHa9sy9OsI73+jehV0nyfFyVCBrdzgUyup4az+rd9QOrwMZ0rp/UmngyN7vLKdoiBeq5q6GABvVae4k960m6gO/H5SENpLb2TgHVc8uYYvi7U3f/avB3x9jfvCPub0MaG7rOzmI85AfAv6b1SJZ1zFLzroulRfkw784jC2j8VI3zWwsEfTO8PajAw6XdxCgLYDPFs51aeCSWkjbSg1BJe96iET7MjBmPPr+5txVFHtGw==
+ b=TCXTFXyDyxF7DuTgES+pAZD3OVf/j/HAoZjDjQpGIxmTfu5zA9C0TjDXfCIiBhjruc4hfWY1qi0ySgEFA6le0h06bmdGLnwXw3mNLnhSdlcY+VlLvqRh/IWd9G8WMB7IW2Ba9b7uYNuK1PMQ2KPwaIHDRenGAv/dap4LORO4DWRyVv5J9IvaORr2tuQuHNYBxHD1n6mhizRt3J8VW0+YC1lwUxh4sWAWB7R7TnoLEJ7G6xIfODdsGCSa0beg84oQwdv7ZLug8BnMgsBJY2aAaP3bdD+5ITo/DnhKQ0SrmrLcXDTfJGlA53MfGyB9fWtX9QQOfkmfY/Uawh2/k6mbFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KZbgXjDmAjOGB6JTrkqx1k8EpvD7Zwqvs7W6MQ2XHs4=;
- b=XGzDGTsPA/pbygET+jx+l/ImH4LhDhbrvUQfWfO4nE9qsUjLX4nFPla3iMS14a8k0Y1lWm07QoUlAWC6NbVJ7WtVJXLWJLj4QOhoqFDvV8r930ZoXmsE7N5f/5kjVgCYOwoQLnrY6RbeairM5YnIp56/WAwAT/OoWXU8l2a0WTGKKuhUCjHRfDdT7J7AM20eR08u03GXiS2UQJ0503PSJd1NR2M4AkB422xnvD4wV9gtG2HiyLgjDwitG6BvPIYHkxNhEGCcFEwvx08uju5LgaeMDUgrxEeUEwJdNOARwwIzLgBOAMHCPh5kIdS4fvt4ib7htx2BcdROdNA9mdaBCQ==
+ bh=rbmy87BFURB5psuKjpaHhZbimcVTQ0NyNrDtUbbr+FI=;
+ b=dE7lSByqMJi/+IrcgY4qAmcEJHBblaixcMFLNPU0g3eHohAbByann/oiI3hE5cZeJjsSioXJCosQg3mbBiWEFpyMwTLc+kd9clovJ90OrfaLBJVzqiQ/jrWFZPEzZDs9f4llivtwfB08T7qdbXuKTzHi5gNjnmhaN8/x2UDV5Ax9TVGlzM6Ia7TmEbyjUllE75JMhP+gnTGiR7UfVGW882K9FUb5ZMRwteAE9ZPEVbRiLneghYU8rIqNHAWnN2tmuGqDIyOgnxLAVKKi0HIhOx8GYyrKxl11b8kdFuZzA2Z0SPEtDHSetvo35PCZI0MjUWsA+okG4mOLjNEHtSVZfA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KZbgXjDmAjOGB6JTrkqx1k8EpvD7Zwqvs7W6MQ2XHs4=;
- b=3hPAspD9LRdploPi/YPEVVZJ3FNQ7NYPfnpmpGf+XOooMc77k1g2V+c6Du7E4kAoZzM3q/LUV1ptqgkbsHinrHo8s8L9yMCNKcYO+FN1uqvE4JALXS0QqCAm6CbdWmaH4vuoKMOX98pp0WVa2H3g/+GAKF8VfsCtJTHsp4il6t8=
-Received: from PH7PR10CA0020.namprd10.prod.outlook.com (2603:10b6:510:23d::18)
- by CH2PR12MB4213.namprd12.prod.outlook.com (2603:10b6:610:a4::24) with
+ bh=rbmy87BFURB5psuKjpaHhZbimcVTQ0NyNrDtUbbr+FI=;
+ b=NmYMo4sKdEv0LB6P+hApwRwVy/ktzreSjjYgl7+gIAocJBnhLf6jN2+V1IK0s17ZNLgLKMxn2QFlwf28FIxRTx2K3Ym5uSWw4B9/XCPIviMbcjDWbyCUjfrBrdfsmjZ3ogLsKsCZ8Rb7SoRR8jhIdOrEQfKk8i8zjIghHa+1XXvnqmcWycoxSIyqpunsHKiYWzfn8D2hySdYzmSmW+jN7098RAsZOhbD57jIPYH2XZ7pFCErG3pxXcNrZHwF2uJ/NmHtwoc+pltTpU/8Anrje2DtfAmyAVuhBpfaiNPSxRQbAfnSpNXgeuHXzYTyRQb3/ZVLlPZflW8W7viAM3VyUg==
+Received: from CY8PR12CA0024.namprd12.prod.outlook.com (2603:10b6:930:4e::22)
+ by BL1PR12MB5206.namprd12.prod.outlook.com (2603:10b6:208:31c::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.26; Thu, 24 Aug
- 2023 11:22:33 +0000
-Received: from SN1PEPF0002529F.namprd05.prod.outlook.com
- (2603:10b6:510:23d:cafe::15) by PH7PR10CA0020.outlook.office365.com
- (2603:10b6:510:23d::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27; Thu, 24 Aug
+ 2023 13:18:21 +0000
+Received: from CY4PEPF0000E9D7.namprd05.prod.outlook.com
+ (2603:10b6:930:4e:cafe::a9) by CY8PR12CA0024.outlook.office365.com
+ (2603:10b6:930:4e::22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27 via Frontend
- Transport; Thu, 24 Aug 2023 11:22:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF0002529F.mail.protection.outlook.com (10.167.242.6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6699.15 via Frontend Transport; Thu, 24 Aug 2023 11:22:32 +0000
-Received: from BLR-5CG13462PL.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 24 Aug
- 2023 06:22:26 -0500
-From:   Wyes Karny <wyes.karny@amd.com>
-To:     Meng Li <li.meng@amd.com>
-CC:     Wyes Karny <wyes.karny@amd.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Huang Rui <ray.huang@amd.com>, <linux-pm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-        <linux-acpi@vger.kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        <linux-kselftest@vger.kernel.org>,
-        Nathan Fontenot <nathan.fontenot@amd.com>,
-        Deepak Sharma <deepak.sharma@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Shimmer Huang <shimmer.huang@amd.com>,
-        Perry Yuan <Perry.Yuan@amd.com>,
-        Xiaojian Du <Xiaojian.Du@amd.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH V3 6/7] Documentation: amd-pstate: introduce AMD Pstate Preferred Core
-Date:   Thu, 24 Aug 2023 16:48:45 +0530
-Message-ID: <20230824111319.vyyaxnlpw6wxkni6@BLR-5CG13462PL.amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230824021249.271946-7-li.meng@amd.com>
-References: <20230824021249.271946-1-li.meng@amd.com> <20230824021249.271946-7-li.meng@amd.com>
+ Transport; Thu, 24 Aug 2023 13:18:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CY4PEPF0000E9D7.mail.protection.outlook.com (10.167.241.78) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6699.14 via Frontend Transport; Thu, 24 Aug 2023 13:18:21 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Thu, 24 Aug 2023
+ 06:18:07 -0700
+Received: from [10.41.21.79] (10.126.231.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Thu, 24 Aug
+ 2023 06:18:04 -0700
+Message-ID: <fe4e1458-c39a-339c-c7b0-1dfff8ed5c30@nvidia.com>
+Date:   Thu, 24 Aug 2023 18:48:01 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [Patch 2/2] ACPI: processor: Add support to configure CPUFREQ
+ reduction pctg
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     <rui.zhang@intel.com>, <lenb@kernel.org>, <treding@nvidia.com>,
+        <jonathanh@nvidia.com>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <sanjayc@nvidia.com>,
+        <ksitaraman@nvidia.com>, <srikars@nvidia.com>,
+        <jbrasen@nvidia.com>, <bbasu@nvidia.com>,
+        Sumit Gupta <sumitg@nvidia.com>
+References: <20230817093011.1378-1-sumitg@nvidia.com>
+ <20230817093011.1378-3-sumitg@nvidia.com>
+ <CAJZ5v0hkm6eou9E+CVwasURjPG3RtVH+TMvvzGqVwQnDDrBocA@mail.gmail.com>
+ <63eea3ac-4714-2c54-c740-84f9f9e7fd64@nvidia.com>
+ <CAJZ5v0hBmOh3gOa71sAV1kbzCzoJO-gphr4CEgyA6+-+FquvOQ@mail.gmail.com>
+From:   Sumit Gupta <sumitg@nvidia.com>
+In-Reply-To: <CAJZ5v0hBmOh3gOa71sAV1kbzCzoJO-gphr4CEgyA6+-+FquvOQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.126.231.37]
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002529F:EE_|CH2PR12MB4213:EE_
-X-MS-Office365-Filtering-Correlation-Id: c46e0839-e542-4f64-f50e-08dba494691a
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D7:EE_|BL1PR12MB5206:EE_
+X-MS-Office365-Filtering-Correlation-Id: 390fffac-04ac-40ab-720c-08dba4a496ba
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: DQNAlOiHTa/7kdFAzLXpfEBinZdXerO9nI34r88QxFH796mjeZA/SA/khzrnooXEXmm/a5rEUdXMRI1z7Sl8tImnyx8eEuRv9yPhUvhFVPvCqGEaW588tklzYUXOCBo226Z01pZIQOSH9nwyXzKfFbNfvhm/nvtzLew9JdD5VywzGdzMC+bh9+vdPlEx0puZZ9MMJJGth3WpYir7RH11zys7OsCyPKmoj2ASzx8x0L3mDwLsqXWGB+9QUYa2mCruzKYXUiq3np86t7OGMmX6NuHZhdGlJR9yla59na7hFY1ov8B5KKXyB+vNLgZV+hnkFd5PzhcRFtWHQO0tYoYdRUa6vXRN5R6A+YK8rNscQ19IbdLcYi829lnHUQckM7QrJPdgqu10JIOxIHCkRd0aYxLP9Vf+nCF3DQnRPdcQjng+l3EBuRGIYkIR4uvCj3gL4Ar3FbR4yVJSiSJBHvYT//iQ+hkC9iso4OBNKl8Eud+VdRrsLimpJcb54WjspBoaXppQA/iMftBgMuLPwqm6A27uzZ+/OziqYH+2yx+vnNfmUB9Ht7aqx9ONh5zkARWSQfkAKPcM7W6itzx4rk4RarUOwsJYdVL+T4DrWrLhiQGHhbxR8jMV5AHidBSbUSVQVU38xAxH78/nd9FTZBmh7F2E9fVCgJmN06jM5Ue3KmZ0kpdquMHmL+3K+DcyGWGKFc8I2/gsfDxKViKaEEFa/TtWVHXjjpmrpBaoi2MSO/l2HsHMaj90kjhgtdvrMudzq0zVce/7bQnERYOu7k1Ptw==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(396003)(39860400002)(136003)(346002)(82310400011)(451199024)(1800799009)(186009)(46966006)(36840700001)(40470700004)(83380400001)(40480700001)(426003)(336012)(2906002)(40460700003)(47076005)(36860700001)(55016003)(6636002)(7696005)(316002)(54906003)(6666004)(70206006)(70586007)(478600001)(86362001)(81166007)(44832011)(82740400003)(1076003)(356005)(5660300002)(26005)(16526019)(8676002)(41300700001)(8936002)(6862004)(4326008)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2023 11:22:32.7921
+X-Microsoft-Antispam-Message-Info: yuyinVYmDJt1O76cBv/udXIcmV9RNgNQ9qjpkIp5OSZizOJFXmHB54E9Kwo50bEFDEmMVBgruiYWlUvYuaBD0HG4Oa6I3ByE8ga4xa1XLaLR45c393GQ7yt9YaZcRm7wgLyWyDHatjHfPuOTpelmxRp1kpZ6JDNBT8tGAxq9NCjXxO+qEWk7TCrHe7UN22tzXWRDQrsUQRthMBNXE/28KBJJ+BwWhaWE8GzIlYPrj66cV/peRCgoo/8TyD8Zdgw9hoJgJR/vE4ZUuKplgQGOMGVQLh8IvLI8Ss8xfI7Hluclur0fx6v67gx7HM2a5F8RbAeeA8MY4Zh5XrhEt7kPvHvUECxFRivzxbjHWVVrPQL6RrJpRqkgQF+9xWCw0EMPgJJ92LPJpbCSK6i16csIaIZ5b6Q1qG7qT1Lk5ZJU1kDh34ohcKqHlXSUmcx7TrnLahLwrGUOb9xS1hv7UH1w4yjy417hfkmnheNdRZtbIPNznxM3bwOG5xZ78tTe3yD1u/1L1bhs6FuwLRv1UaqGTubl9F6FPqjbUkEyD+3M8ZV73NousyFoTmMbFsW7otX9ex7cHEUPi8xzbD0Vf6p/ag1Djp0uxhwU6dS7OXrN+NnpErKCfL/WrMBMqkPck3smmgh1ggzTwCE7JuGEMcP0iB0A6pwleSMOiMKl8p/syIfMQrWtaJEhC8cyzwkSa1BN9I9dy0Ivp4A2q2lWYCqHE9UJtEw1nNRsXr1P97Q485T1trGZ9ncLxNVrOsTm3bqi/YubSbZxG4HOnEXyIinx7eLf0S0a+1dDCFmNP5BMi/VCqylDTHbrAibJVc0WH4A+
+X-Forefront-Antispam-Report: CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(136003)(39860400002)(376002)(346002)(396003)(451199024)(82310400011)(186009)(1800799009)(36840700001)(40470700004)(46966006)(54906003)(70586007)(70206006)(6916009)(316002)(16576012)(478600001)(26005)(36860700001)(356005)(7636003)(6666004)(16526019)(40480700001)(82740400003)(41300700001)(86362001)(31696002)(2906002)(31686004)(8676002)(8936002)(4326008)(66899024)(40460700003)(2616005)(107886003)(5660300002)(83380400001)(36756003)(336012)(47076005)(426003)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2023 13:18:21.2043
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c46e0839-e542-4f64-f50e-08dba494691a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002529F.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 390fffac-04ac-40ab-720c-08dba4a496ba
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D7.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4213
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5206
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 24 Aug 10:12, Meng Li wrote:
-> Introduce AMD Pstate Preferred Core.
+
+>>>>
+>>>> Add support to configure the CPUFREQ reduction percentage and set the
+>>>> maximum number of throttling steps accordingly. Current implementation
+>>>> of processor_thermal performs software throttling in fixed steps of
+>>>> "20%" which can be too coarse for some platforms. Change that by adding
+>>>> new config to provide the reduction percentage.
+>>>>
+>>>> Signed-off-by: Srikar Srimath Tirumala <srikars@nvidia.com>
+>>>> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+>>>> ---
+>>>>    drivers/acpi/Kconfig             | 15 +++++++++++++++
+>>>>    drivers/acpi/processor_thermal.c | 19 ++++++++++++++++---
+>>>>    2 files changed, 31 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+>>>> index 00dd309b6682..287cf58defbf 100644
+>>>> --- a/drivers/acpi/Kconfig
+>>>> +++ b/drivers/acpi/Kconfig
+>>>> @@ -254,6 +254,21 @@ config ACPI_DOCK
+>>>>    config ACPI_CPU_FREQ_PSS
+>>>>           bool
+>>>>
+>>>> +config ACPI_CPU_FREQ_THERM_HAS_PARAMS
+>>>> +       bool "CPU frequency throttling control"
+>>>> +       depends on ACPI_PROCESSOR
+>>>> +
+>>>> +config ACPI_CPU_FREQ_THERM_MIN_THROT_PCTG
+>>>> +       int "Minimum throttle percentage for processor_thermal cooling device"
+>>>> +       depends on ACPI_CPU_FREQ_THERM_HAS_PARAMS
+>>>> +       default 20
+>>>> +       help
+>>>> +         The processor_thermal driver uses this config to calculate the
+>>>> +         percentage amount by which cpu frequency must be reduced for each
+>>>> +         cooling state. The config is also used to calculate the maximum number
+>>>> +         of throttling steps or cooling states supported by the driver. Value
+>>>> +         must be an unsigned integer in the range [1, 50].
+>>>> +
+>>>
+>>> I don't think that the new Kconfig symbols are particularly useful.
+>>> At least they don't help the distro vendors that each would need to
+>>> pick up a specific value for their kernel anyway.
+>>>
+>>> I also wonder how the users building their own kernels are supposed to
+>>> determine the values suitable for the target systems.
+>>>
+>>
+>> We observed some perf gain after reducing the throttle percentage.
+>> Currently, kept the default to '20%' as before.
 > 
-> check preferred core state:
-> $ cat /sys/devices/system/cpu/amd-pstate/prefcore
+> So you should add this information to the patch changelog, ideally
+> along with the description of the hardware configuration in which the
+> improvement has been observed.
 > 
-> Signed-off-by: Meng Li <li.meng@amd.com>
-> ---
->  Documentation/admin-guide/pm/amd-pstate.rst | 53 +++++++++++++++++++++
->  1 file changed, 53 insertions(+)
+
+Sure, will add in v2.
+
+>> Based on need, a vendor can overwrite the default value with macro
+>> 'CONFIG_ACPI_CPU_FREQ_THERM_MIN_THROT_PCTG'. Otherwise, the behavior
+>> will remain same.
 > 
-> diff --git a/Documentation/admin-guide/pm/amd-pstate.rst b/Documentation/admin-guide/pm/amd-pstate.rst
-> index 1cf40f69278c..2369b58a3521 100644
-> --- a/Documentation/admin-guide/pm/amd-pstate.rst
-> +++ b/Documentation/admin-guide/pm/amd-pstate.rst
-> @@ -353,6 +353,47 @@ is activated.  In this mode, driver requests minimum and maximum performance
->  level and the platform autonomously selects a performance level in this range
->  and appropriate to the current workload.
->  
-> +AMD Pstate Preferred Core
-> +=================================
-> +
-> +The core frequency is subjected to the process variation in semiconductors.
-> +Not all cores are able to reach the maximum frequency respecting the
-> +infrastructure limits. Consequently, AMD has redefined the concept of
-> +maximum frequency of a part. This means that a fraction of cores can reach
-> +maximum frequency. To find the best process scheduling policy for a given
-> +scenario, OS needs to know the core ordering informed by the platform through
-> +highest performance capability register of the CPPC interface.
-> +
-
----------------------------->8----------------------------------
-> +``AMD Pstate Preferred Core`` enable the scheduler to favor scheduling on cores
-> +can be get a higher frequency with lower voltage under preferred core.
-> +And it has the ability to dynamically change the preferred core based on the
-> +workload and platform conditions and accounting for thermals and aging.
-
-Can we reword this like below:
-
-``AMD Pstate Preferred Core`` enables the scheduler to prefer scheduling
-on cores that can achieve a higher frequency with lower voltage.  The
-preferred core rankings can dynamically change based on the workload,
-platform conditions, thermals and ageing.
-
-> +
-> +The priority metric will be initialized by the AMD Pstate driver. The AMD Pstate
-> +driver will also determine whether or not ``AMD Pstate Preferred Core`` is
-> +supported by the platform.
-> +
-> +AMD Pstate driver will provide an initial core ordering when the system boots.
-> +The platform uses the CPPC interfaces to communicate the core ranking to the
-> +operating system and scheduler to make sure that OS is choosing the cores
-> +with highest performance firstly for scheduling the process. When AMD Pstate
-> +driver receives a message with the highest performance change, it will
-> +update the core ranking and set the cpu's priority.
-> +
-> +AMD Preferred Core Switch
-> +=================================
-> +Kernel Parameters
-> +-----------------
-> +
-
------------------------------>8------------------------------
-> +``AMD Pstate Preferred Core`` has two states: enable and disable.
-> +Enable/disable states can be chosen by different kernel parameters.
-> +Default enable ``AMD Pstate Preferred Core``.
-> +
-> +``amd_prefcore=disable``
-> +
-> +``AMD Pstate Preferred Core`` will be enabled if the underlying platform
-> +supports it. It can be disabled by kernerl parameter: ``amd_prefcore=disable``.
-
-Can we re-word this like below:
-
-``amd_prefcore=disable``
-
-For systems that support ``AMD Pstate Preferred Core``, the core
-rankings will always be advertised by the platform. But OS can choose to
-ignore that via the kernel parameter ``amd_prefcore=disable``.
-
-
-Thanks,
-Wyes
-> +
->  User Space Interface in ``sysfs`` - General
->  ===========================================
->  
-> @@ -385,6 +426,18 @@ control its functionality at the system level.  They are located in the
->          to the operation mode represented by that string - or to be
->          unregistered in the "disable" case.
->  
-> +``prefcore``
-> +	Preferred Core state of the driver: "enabled" or "disabled".
-> +
-> +	"enabled"
-> +		Enable the AMD Preferred Core.
-> +
-> +	"disabled"
-> +		Disable the AMD Preferred Core
-> +
-> +
-> +        This attribute is read-only to check the state of Preferred Core.
-> +
->  ``cpupower`` tool support for ``amd-pstate``
->  ===============================================
->  
-> -- 
-> 2.34.1
+> Yes, that's how it works.
 > 
+> What I'm saying is that the way it works does not appear to be
+> particularly useful.
+> 
+> For example, how exactly is a distribution supposed to guess the
+> "right" value for their general-purpose kernel?
+
+We tested on Tegra241 (Grace) SoC with "5%" throttle percentage.
+Didn't change the default value as behavior could be different on other 
+chips.
+An alternate way could be to overwrite the default value for the 
+specific SoC using "arm_smccc_get_soc_id_version()" check. But not sure 
+if such change in the generic "processor_thermal" driver is Okay?
+Please suggest if the above sounds fine or any better way?
+
+Thank you,
+Sumit Gupta
+
