@@ -2,73 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 543DE7879CA
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Aug 2023 23:00:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08ABB787B20
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Aug 2023 00:03:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235845AbjHXU7s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Aug 2023 16:59:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49606 "EHLO
+        id S243795AbjHXWCe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Aug 2023 18:02:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242778AbjHXU7W (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Aug 2023 16:59:22 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E1121BC2;
-        Thu, 24 Aug 2023 13:59:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692910760; x=1724446760;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8DEArnJeuB0FcMiUzS3W+pvVFOIM+/0b2Mg5YZ+yJ4U=;
-  b=guvVqkeo3qgQ3vwQEg6ygBNtHfhMX/8rSEeMomXqnJAwEtAfNbzUtx5/
-   0aGPrVyv2aHfzPJ9OzViEbPrcuMNqLk2R6lYAiQM6If+C1FsKUbEvctOe
-   wEccIPkfceTJZnpvO/SKDZbJL6B9MNk/MjQo6lAUTMRzo4HPGFrr6moay
-   xTv1mMmPH3xCgUzkWz52F/EEd4/9QYgDQoayeBojJ6LQFCTa8JfCz68Uy
-   q5sLI9Lp4c0MIGPy6vjoHHubXMIoLAbTj1Yo0TNCo0Y0edNEXJGvFLyiH
-   e+Rp6vY/v8aPUL+YJwyK1zoGdtc7ZEa8X3PS0fQAnfPbxSc6NiuVRf4j8
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="374535716"
-X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="374535716"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 13:59:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="766702088"
-X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="766702088"
-Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 24 Aug 2023 13:59:15 -0700
-Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qZHQA-0002xc-1L;
-        Thu, 24 Aug 2023 20:59:14 +0000
-Date:   Fri, 25 Aug 2023 04:59:06 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        with ESMTP id S243801AbjHXWCG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Aug 2023 18:02:06 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3F81BD4
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Aug 2023 15:02:04 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-c647150c254so844986276.1
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Aug 2023 15:02:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692914523; x=1693519323;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+ByfN+noqMCVkVscBGCrI7pkixl0yY22EjKSAxd2EZU=;
+        b=FW2erCnLQgKayhTZ1wVW9bz0T67VsUF1CK5WHkoQqQxEE2KF0iRsarlccu1dyv2SGL
+         eA5k6PLHdgB12BXIe/KZnfbdPEBplyPPBvqW++IQobq0vl+oNXUqJKppFVULGZE0DPnC
+         3g+eS1qmuWPjegyzhjMFmsWzLgz+J37nt9Y1w+/fkP/AfLH0uuQSmtZSTzRu03AVWhzi
+         nvnlRsplZuLFpnfFEhJX4YNJvBIYgECemDv+4hLueCKlO7oOHdPWI1udE7+FQ/8KyH/u
+         0AUi8XQn2oZxt6Wmd6BVMmraFxPvWZR+Qkw/7gvYq1ZLMS3wWBWAu3u2jN2YuAPK1GWT
+         BPdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692914523; x=1693519323;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+ByfN+noqMCVkVscBGCrI7pkixl0yY22EjKSAxd2EZU=;
+        b=kshN/8s3jE7PRfii+GVh067+W/FKhXoDeqB+R62U9/tW9QaTBO9tZ9bz5fuV5u6Zgd
+         WsPh07kGA2v6gvL3grXUDHnkT8I3gqQrk/u1Xu1gTaRMdodmbsanXUMUa+ACBUGunKTC
+         9wbQSrSoppGRe3Mqcg96e0FOtci4LQ56gUNDKQqFR+gx2/UZEnbClC6Ycq0PaWobwXiy
+         nt5mBvBn1VziP9Goq7CbpePWE0S2HT/FKwjFiRo24nzZXiABjYfhR7EqWtFSYUtckZbX
+         /yxAbXxUoRMdA1HM9d59GuRtCt+UAgtYBFkECXj+OJxHgeEURexmV9N1Mjd2xARWng6V
+         3f3A==
+X-Gm-Message-State: AOJu0YzOf88/FA9xqiOpsOtdJIMp7S4SSDO6DNABuqH6jsk/E8xMZ+w2
+        9aBuXr9Otdt6VtqO2UBQFMMom7gKxPryJTQo+A==
+X-Google-Smtp-Source: AGHT+IEshr77Q7qNUIKJt/rqr0sZwkrC1oqkt+XoJDSjwXojBu49XkLcMiNAZ3o+agl+ciZNsen26PutIQ7eEzU2gw==
+X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
+ (user=justinstitt job=sendgmr) by 2002:a05:6902:691:b0:bd5:dc2d:9d7f with
+ SMTP id i17-20020a056902069100b00bd5dc2d9d7fmr353667ybt.4.1692914523292; Thu,
+ 24 Aug 2023 15:02:03 -0700 (PDT)
+Date:   Thu, 24 Aug 2023 22:02:02 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAFnT52QC/x3MPQqEQAxA4atI6g04P4XYCh7AdtliHKOmGYdEZ
+ EW8u4PNg695FygJk0JbXSB0sPKWCsyngriGtBDyVAy2tq5urEfdJcV84iR8kCiGmPlNDOisCbO j0RtPUA5ZaOb/e//C0Hfwu+8HdjFd0XIAAAA=
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1692914522; l=3684;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=a9UsameJpI592QOpENgrhz3IgrWL7+TLPCUljbg60hc=; b=e3Pv4SmVInFuVIbTKSQXxLeqrBg7t0W4yh/+B4IXTVUNIyarAJtZGQqiq8TM2ro117RoQHQoX
+ BrU6DwJ/4dmBFk6SNWPePeKezFEJP6lF76aWDrBPbEHYmyL328c6yOk
+X-Mailer: b4 0.12.3
+Message-ID: <20230824-strncpy-drivers-acpi-acpica-v1-1-d027ba183b66@google.com>
+Subject: [PATCH RFC] ACPICA: remove acpi_ut_safe_strncpy in favor of strscpy
+From:   Justin Stitt <justinstitt@google.com>
+To:     Robert Moore <robert.moore@intel.com>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Rob Herring <robh@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Len Brown <lenb@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Peng Fan <peng.fan@nxp.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 1/1] amba: bus: balance firmware node reference
- counting
-Message-ID: <202308250458.VwjoWF3t-lkp@intel.com>
-References: <20230824162654.2890992-1-andriy.shevchenko@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230824162654.2890992-1-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        Len Brown <lenb@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+        linux-kernel@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Kees Cook <keescook@chromium.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Justin Stitt <justinstitt@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,55 +78,103 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+I wanted to gather some thoughts on removing `acpi_ut_safe_strncpy` (and
+potentially other `acpi...safe...()` interfaces) in favor of
+pre-existing interfaces in the kernel (like strscpy).
 
-kernel test robot noticed the following build errors:
+Running a git blame shows these functions were implemented 10 years ago
+and their implementations generally mirror the _newer_ and more robust
+stuff in lib/string.h -- Let's just use these, right?
 
-[auto build test ERROR on next-20230824]
-[cannot apply to rafael-pm/linux-next robh/for-next soc/for-next linus/master v6.5-rc7 v6.5-rc6 v6.5-rc5 v6.5-rc7]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I appreciate any comments and whether or not I should stop at just
+`strncpy`.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/amba-bus-balance-firmware-node-reference-counting/20230825-003007
-base:   next-20230824
-patch link:    https://lore.kernel.org/r/20230824162654.2890992-1-andriy.shevchenko%40linux.intel.com
-patch subject: [PATCH v1 1/1] amba: bus: balance firmware node reference counting
-config: arm-randconfig-001-20230825 (https://download.01.org/0day-ci/archive/20230825/202308250458.VwjoWF3t-lkp@intel.com/config)
-compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
-reproduce: (https://download.01.org/0day-ci/archive/20230825/202308250458.VwjoWF3t-lkp@intel.com/reproduce)
+Thanks
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202308250458.VwjoWF3t-lkp@intel.com/
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+ drivers/acpi/acpica/acutils.h   | 2 --
+ drivers/acpi/acpica/dbfileio.c  | 2 +-
+ drivers/acpi/acpica/psutils.c   | 2 +-
+ drivers/acpi/acpica/utnonansi.c | 8 --------
+ drivers/acpi/acpica/uttrack.c   | 2 +-
+ 5 files changed, 3 insertions(+), 13 deletions(-)
 
-All errors (new ones prefixed by >>):
+diff --git a/drivers/acpi/acpica/acutils.h b/drivers/acpi/acpica/acutils.h
+index edfdbbef81c1..4d5c401a14b4 100644
+--- a/drivers/acpi/acpica/acutils.h
++++ b/drivers/acpi/acpica/acutils.h
+@@ -626,8 +626,6 @@ void acpi_ut_repair_name(char *name);
+ #if defined (ACPI_DEBUGGER) || defined (ACPI_APPLICATION) || defined (ACPI_DEBUG_OUTPUT)
+ u8 acpi_ut_safe_strcpy(char *dest, acpi_size dest_size, char *source);
+ 
+-void acpi_ut_safe_strncpy(char *dest, char *source, acpi_size dest_size);
+-
+ u8 acpi_ut_safe_strcat(char *dest, acpi_size dest_size, char *source);
+ 
+ u8
+diff --git a/drivers/acpi/acpica/dbfileio.c b/drivers/acpi/acpica/dbfileio.c
+index e1b6e54a96ac..197e1ff1f72c 100644
+--- a/drivers/acpi/acpica/dbfileio.c
++++ b/drivers/acpi/acpica/dbfileio.c
+@@ -63,7 +63,7 @@ void acpi_db_open_debug_file(char *name)
+ 	}
+ 
+ 	acpi_os_printf("Debug output file %s opened\n", name);
+-	acpi_ut_safe_strncpy(acpi_gbl_db_debug_filename, name,
++	strscpy(acpi_gbl_db_debug_filename, name,
+ 			     sizeof(acpi_gbl_db_debug_filename));
+ 	acpi_gbl_db_output_to_file = TRUE;
+ }
+diff --git a/drivers/acpi/acpica/psutils.c b/drivers/acpi/acpica/psutils.c
+index d550c4af4702..95af2c74e00b 100644
+--- a/drivers/acpi/acpica/psutils.c
++++ b/drivers/acpi/acpica/psutils.c
+@@ -60,7 +60,7 @@ void acpi_ps_init_op(union acpi_parse_object *op, u16 opcode)
+ 	op->common.descriptor_type = ACPI_DESC_TYPE_PARSER;
+ 	op->common.aml_opcode = opcode;
+ 
+-	ACPI_DISASM_ONLY_MEMBERS(acpi_ut_safe_strncpy(op->common.aml_op_name,
++	ACPI_DISASM_ONLY_MEMBERS(strscpy(op->common.aml_op_name,
+ 						      (acpi_ps_get_opcode_info
+ 						       (opcode))->name,
+ 						      sizeof(op->common.
+diff --git a/drivers/acpi/acpica/utnonansi.c b/drivers/acpi/acpica/utnonansi.c
+index ff0802ace19b..a465e5a1d309 100644
+--- a/drivers/acpi/acpica/utnonansi.c
++++ b/drivers/acpi/acpica/utnonansi.c
+@@ -164,12 +164,4 @@ acpi_ut_safe_strncat(char *dest,
+ 	return (FALSE);
+ }
+ 
+-void acpi_ut_safe_strncpy(char *dest, char *source, acpi_size dest_size)
+-{
+-	/* Always terminate destination string */
+-
+-	strncpy(dest, source, dest_size);
+-	dest[dest_size - 1] = 0;
+-}
+-
+ #endif
+diff --git a/drivers/acpi/acpica/uttrack.c b/drivers/acpi/acpica/uttrack.c
+index f5f5da441458..a96a86bc5781 100644
+--- a/drivers/acpi/acpica/uttrack.c
++++ b/drivers/acpi/acpica/uttrack.c
+@@ -368,7 +368,7 @@ acpi_ut_track_allocation(struct acpi_debug_mem_block *allocation,
+ 	allocation->component = component;
+ 	allocation->line = line;
+ 
+-	acpi_ut_safe_strncpy(allocation->module, (char *)module,
++	strscpy(allocation->module, (char *)module,
+ 			     ACPI_MAX_MODULE_NAME);
+ 
+ 	if (!element) {
 
->> drivers/amba/bus.c:532:39: error: expected ')'
-     532 |         fwnode_handle_put(dev_fwnode(&d->dev);
-         |                                              ^
-   drivers/amba/bus.c:532:19: note: to match this '('
-     532 |         fwnode_handle_put(dev_fwnode(&d->dev);
-         |                          ^
-   1 error generated.
+---
+base-commit: f9604036a3fb6149badf346994b46b03f9292db7
+change-id: 20230824-strncpy-drivers-acpi-acpica-321af3eb414e
 
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
 
-vim +532 drivers/amba/bus.c
-
-   527	
-   528	static void amba_device_release(struct device *dev)
-   529	{
-   530		struct amba_device *d = to_amba_device(dev);
-   531	
- > 532		fwnode_handle_put(dev_fwnode(&d->dev);
-   533		if (d->res.parent)
-   534			release_resource(&d->res);
-   535		mutex_destroy(&d->periphid_lock);
-   536		kfree(d);
-   537	}
-   538	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
