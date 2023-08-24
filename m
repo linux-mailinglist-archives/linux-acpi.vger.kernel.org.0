@@ -2,209 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A387786B31
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Aug 2023 11:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FFAC786D97
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Aug 2023 13:20:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231363AbjHXJKb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Aug 2023 05:10:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49924 "EHLO
+        id S233310AbjHXLTq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Aug 2023 07:19:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235115AbjHXJKU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Aug 2023 05:10:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBAE710FA;
-        Thu, 24 Aug 2023 02:10:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 707C566868;
-        Thu, 24 Aug 2023 09:10:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD22FC433CC;
-        Thu, 24 Aug 2023 09:10:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692868216;
-        bh=7M2xqO1AKiy66zJXRZ//i4wSn+wQl5CkWQs5eGyEols=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=UaCn6ZVe225sX5NaZDcDs9oSE1RypLFGbrd8IvEqX4ijSeAmZ3YzLv8gd6qDnummg
-         /puBieqcwhAOmigju3arMX+WbVhSc4LDyRHBbP0gNmiyyC7PrBwbD00OKN9C0P7KS/
-         9jqBwNUBLvwfKT6JWK5dQNDp7w4k9EiDq062stg9C2K/Acxy0uFEfq+geEWBkOtvUm
-         uTZOGlyET1LWblPQDHjvi7HWVLKiBfZ/zk/lWUDUYdmIH8Rj6l9vgLHp9HpkpKREm1
-         SuDKv2dc7jNF1S9WJEuw2SL/qIiyxQc3ZylVWFortxNwHyAwPjzjC/BODaAgtPr0CS
-         BiB5qCY5rXIKg==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-4fe8c16c1b4so10007586e87.2;
-        Thu, 24 Aug 2023 02:10:16 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzBQjvfjskzy+ei6I7l3x8C9QHkqPpEZRcli6RBX1Hx+33Gd2qB
-        gDX3wziFxF7gACVbLNlDo8J8FDHlHemfO/dsJgg=
-X-Google-Smtp-Source: AGHT+IEPbWrWaIcRd6K499nFrbiiTHWR7hUuTXAc8g5hvMnTaZ9GhrUD90DQzmZfscTZhkyjTgykTwhlMpySKF6Ohhc=
-X-Received: by 2002:a05:6512:2208:b0:4ff:74e2:4268 with SMTP id
- h8-20020a056512220800b004ff74e24268mr13170713lfu.56.1692868214708; Thu, 24
- Aug 2023 02:10:14 -0700 (PDT)
+        with ESMTP id S231575AbjHXLTU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Aug 2023 07:19:20 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2049.outbound.protection.outlook.com [40.107.220.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1556110F3;
+        Thu, 24 Aug 2023 04:19:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SaTBwfXVKBz+2Wc3YYFbqm8JEjC92JAZDQ83F775Pb4UBKezMRy+V+cbHV79pl6kprl3q1Obrdb/O7b2bgadwllkn73KFRanGaR2zvRUvYPmZ5cHDfuDXhxxS+4C84jbM1aKA030U3cKRkTCm2ybTSfwgMgSUl27BvzbRkg7LqxmwzNPtWKFIwIxsi2vaYclB+x3qbW4YJiyj+viVi//INoC2zfPg5pWGub457gV4oJZdPiv0vouToSH9ahi8AMTP/UUHZmrBYXXjRpLC8r5kCnFobOI6qRgEHL+upMGDedVFoUmWcsd5yYxrhUcmMoKm5PD3eLdBTVzyXCFaTMklg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a5tKlm0n2eSgG+wMWjeSh0PQlUEtQOmZ7IwgmtijtaM=;
+ b=X2RL82ci1s+oMf5Psf3mbbdexabAv5CImbUPgYJ3BnSvH4VIGdWCjf8mIeEza7Okjfr1b+HpyOAhDZ3svRXko9J5QZ1/tUDXCFdsYIplgVV80uIgGS4kY82FQPPPf6O1cbMqgUDFse2mOdFgV8Dkodt6kMckbBB8Gqy/mxd2uH+UIGc4nr/GeAqJUC3mnSFmYvCjNAGfr2VfE9PaBjdS0L1VScc44c5bOsGEbh6jKtToLLw0YhrBBOVwC4bcMiH+hKnylqfmuaUmMGZ/5TbqONuo2ycjFnCQv9gAlBLoBRuY8QDlVCwCn9DaMAv8gUnATXCiEKahKkksupjnshDJWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a5tKlm0n2eSgG+wMWjeSh0PQlUEtQOmZ7IwgmtijtaM=;
+ b=parsDJkUs4c6ojtYr9Nq0I+f16AbLGhRScQV9V2nKHHpOiOSuO76BDV7qmAhjVyAFM3AZOFKQO6XRyCGu/9yh7ojz06JAa/fKmY3DWeC4XHjh0YftviaMwANj0Rg7I0VlUSu+8zFAHltTw4ABnNMkjZtVZ5w00lf/SCGsv9uPYc=
+Received: from CY5PR19CA0086.namprd19.prod.outlook.com (2603:10b6:930:83::11)
+ by DM6PR12MB5517.namprd12.prod.outlook.com (2603:10b6:5:1be::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27; Thu, 24 Aug
+ 2023 11:19:15 +0000
+Received: from CY4PEPF0000EE3C.namprd03.prod.outlook.com
+ (2603:10b6:930:83:cafe::ff) by CY5PR19CA0086.outlook.office365.com
+ (2603:10b6:930:83::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27 via Frontend
+ Transport; Thu, 24 Aug 2023 11:19:15 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE3C.mail.protection.outlook.com (10.167.242.16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6699.15 via Frontend Transport; Thu, 24 Aug 2023 11:19:15 +0000
+Received: from BLR-5CG13462PL.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 24 Aug
+ 2023 06:19:06 -0500
+From:   Wyes Karny <wyes.karny@amd.com>
+To:     Meng Li <li.meng@amd.com>
+CC:     Wyes Karny <wyes.karny@amd.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Huang Rui <ray.huang@amd.com>, <linux-pm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+        <linux-acpi@vger.kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        <linux-kselftest@vger.kernel.org>,
+        Nathan Fontenot <nathan.fontenot@amd.com>,
+        Deepak Sharma <deepak.sharma@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Shimmer Huang <shimmer.huang@amd.com>,
+        Perry Yuan <Perry.Yuan@amd.com>,
+        Xiaojian Du <Xiaojian.Du@amd.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH V3 7/7] Documentation: introduce AMD Pstate Preferrd Core mode kernel command line options
+Date:   Thu, 24 Aug 2023 16:48:41 +0530
+Message-ID: <20230824105935.qr2pbt4utegulug5@BLR-5CG13462PL.amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230824021249.271946-8-li.meng@amd.com>
+References: <20230824021249.271946-1-li.meng@amd.com> <20230824021249.271946-8-li.meng@amd.com>
 MIME-Version: 1.0
-References: <20230822203446.4111742-1-sjg@chromium.org> <ZOXKTrC_dzN_hUkY@FVFF77S0Q05N>
- <CAMj1kXEHpRjk_YKOm4czCnnpjqgahj2jV8MMfGLx7b1RdnBnVw@mail.gmail.com> <CAPnjgZ1S8G=7eCBF9PcDk4H5sk3AcxSSWXO575jK8SjA9dR8qw@mail.gmail.com>
-In-Reply-To: <CAPnjgZ1S8G=7eCBF9PcDk4H5sk3AcxSSWXO575jK8SjA9dR8qw@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 24 Aug 2023 11:10:03 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXH83_TB4S0PL3jswxjCP+907YpgS7FRuVTO3G62s7nn5w@mail.gmail.com>
-Message-ID: <CAMj1kXH83_TB4S0PL3jswxjCP+907YpgS7FRuVTO3G62s7nn5w@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] schemas: Add a schema for memory map
-To:     Simon Glass <sjg@chromium.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
-        Rob Herring <robh@kernel.org>,
-        Chiu Chasel <chasel.chiu@intel.com>,
-        U-Boot Mailing List <u-boot@lists.denx.de>,
-        Gua Guo <gua.guo@intel.com>, linux-acpi@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>,
-        Yunhui Cui <cuiyunhui@bytedance.com>,
-        ron minnich <rminnich@gmail.com>,
-        Tom Rini <trini@konsulko.com>,
-        Lean Sheng Tan <sheng.tan@9elements.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3C:EE_|DM6PR12MB5517:EE_
+X-MS-Office365-Filtering-Correlation-Id: 19766e3c-92c7-4ee7-fa83-08dba493f378
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: zncRFqrpzVwu3NlfR///Gmi1h/V2Lqf0APxCfJJlGEVKH6F0oDCZ4Ol7xyXDdSuiItKcdTBIIQ8OeokJoP/ZekjE05hnBGo98o9ZNrh5Svy4PmF5KhCp/ADTERViZ8Sq8QBrhecQXpqOtMpjcKfdt5GnyxNIXmxXLtiBjQqrxm3ROK7XOt1dZhuKY93uLfplNgkMzNiCO9IU3Vne0SDl+Kw1Qu5te+GwZRg0Qc3RFVlpUDLpTKVUUjyqXNNC9dKNrUXnHJ3TW8OtKB1zU655HQPX/FyV+GReN0GZBzlafDI2C8hvGcx/agVyhouJsZDDdeh8uHqJcBDCYZqkyeh0kpDYGbqunMmuB0RIg7adMooWS1As7O4ujF/IPbE/9b+oCC9rP0+Kma1k9oM0X6Nuy/2PI/vL2arwqB3lbCZ4oIadu+9GkeNoEUVX/FRqOPPXVOvKfIvlbMqC0ONdwDSNzV7CyoKJkIs2D0u8me89jPx4iexvi+JFCPq2voz33QjW83/Ly0b1nW27xAPgMmDOFewv8vr+BhBB8j9OcvJv0dC/Pv4DGXmEJfOLzzSWxfNr54gRzJ/+uReBMAXlBrXTvZHCWKmy1AbHsOo8rWr83Hdd6CylMu8yogRXB/I+C08cx09KsGrjAYW6rx4imLhTYMTjWjz0iJEWJCYoESYXSOKwG7E3xxtlR81CzdvfBn7LzuKaJSeUlKPkFwhJG2SwbGZAl0R4Hfw1r3r2TVbQK/G3rYIj0OjIdI5coL9D3ZQ1yupGyy7vos1P13Bn1t1pZQGG5NJgOLd91Isc+KbOqfP8JVzmhzjC2+0QziOvOgJL
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(376002)(136003)(39860400002)(346002)(1800799009)(186009)(82310400011)(451199024)(40470700004)(46966006)(36840700001)(40460700003)(8936002)(4326008)(6862004)(8676002)(83380400001)(5660300002)(1076003)(336012)(426003)(36860700001)(47076005)(44832011)(16526019)(40480700001)(26005)(55016003)(82740400003)(6666004)(81166007)(70206006)(70586007)(54906003)(6636002)(316002)(478600001)(356005)(41300700001)(2906002)(86362001)(7696005)(36900700001)(14943795004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2023 11:19:15.3121
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19766e3c-92c7-4ee7-fa83-08dba493f378
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE3C.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB5517
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 23 Aug 2023 at 22:04, Simon Glass <sjg@chromium.org> wrote:
->
-> Hi,
->
-> On Wed, 23 Aug 2023 at 08:24, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > On Wed, 23 Aug 2023 at 10:59, Mark Rutland <mark.rutland@arm.com> wrote:
-> > >
-> > > On Tue, Aug 22, 2023 at 02:34:42PM -0600, Simon Glass wrote:
-> > > > The Devicetree specification skips over handling of a logical view of
-> > > > the memory map, pointing users to the UEFI specification.
-> > > >
-> > > > It is common to split firmware into 'Platform Init', which does the
-> > > > initial hardware setup and a "Payload" which selects the OS to be booted.
-> > > > Thus an handover interface is required between these two pieces.
-> > > >
-> > > > Where UEFI boot-time services are not available, but UEFI firmware is
-> > > > present on either side of this interface, information about memory usage
-> > > > and attributes must be presented to the "Payload" in some form.
-> >
-> > Not quite.
-> >
-> > This seems to be intended for consumption by Linux booting in ACPI
-> > mode, but not via UEFI, right?
->
-> Actually, this is for consumption by firmware. The goal is to allow
-> edk2 to boot into U-Boot and vice versa, i.e. provide some
-> interoperability between firmware projects. I will use the "Platform
-> Init" and "Payload" terminology here too.
->
+On 24 Aug 10:12, Meng Li wrote:
+> AMD Pstate driver support enable/disable Preferred core.
+> Default enabled on platforms supporting AMD Preferred Core.
+> Disable AMD Pstate Preferred Core with
+> "amd_prefcore=disable" added to the kernel command line.
+> 
+> Signed-off-by: Meng Li <li.meng@amd.com>
+> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Wyes Karny <wyes.karny@amd.com>
 
-OK. It was the cc to linux-acpi@ and the authors of the
-ACPI/SMBIOS-without-UEFI patches that threw me off here.
-
-If we are talking about an internal interface for firmware components,
-I'd be inclined to treat this as an implementation detail, as long as
-the OS is not expected to consume these DT nodes.
-
-However, I struggle to see the point of framing this information as a
-'UEFI memory map'. Neither EDK2 nor u-boot consume this information
-natively, and there is already prior art in both projects to consume
-nodes following the existing bindings for device_type=memory and the
-/reserved-memory node. UEFI runtime memory is generally useless
-without UEFI runtime services, and UEFI boot services memory is just
-free memory.
-
-There is also an overlap with the handover between secure and
-non-secure firmware on arm64, which is also DT based, and communicates
-available memory as well as RAM regions that are reserved for firmware
-use.
-
-In summary, I don't see why a non-UEFI payload would care about UEFI
-semantics for pre-existing memory reservations, or vice versa. Note
-that EDK2 will manage its own memory map, and expose it via UEFI boot
-services and not via DT.
-
-...
->
-> There is no intent to implement the UEFI spec, here. It is simply that
-> some payloads (EDK2) are used to having this information.
->
-> Imagine splitting EDK2 into two parts, one of which does platform init
-> and the other which (the payload) boots the OS. The payload wants
-> information from Platform Init and it needs to be in a devicetree,
-> since that is what we have chosen for this interface. So to some
-> extent this is unrelated to whether you have EFI boot services. We
-> just need to be able to pass the information across the interface.
-> Note that the user can (without recompilation, etc.) replace the
-> second part with U-Boot (for example) and it must still work.
->
-
-OK, so device tree makes sense for this. This is how I implemented the
-EDK2 port that targets QEMU/mach-virt - it consumes the DT to discover
-the UART, RTC,, memory, PCI host bridge, etc.
-
-But I don't see a use case for a UEFI memory map here.
-
-
-> >
-> > >
-> > > Today Linux does that by passing:
-> > >
-> > >   /chosen/linux,uefi-mmap-start
-> > >   /chosen/linux,uefi-mmap-size
-> > >   /chosen/linux,uefi-mmap-desc-size
-> > >   /chosen/linux,uefi-mmap-desc-ver
-> > >
-> > > ... or /chosen/xen,* variants of those.
-> > >
-> > > Can't we document / genericise that?
->
-> That seems to me to be the fields from the EFI memory-map call, but
-> where is the actual content? I looked in the kernel but it seems to be
-> an internal interface (between the stub and the kernel)?
->
-> > >
-> >
-> > Given the ACPI angle, promoting this to external ABI would introduce a
-> > DT dependency to ACPI boot. So we'll at least have to be very clear
-> > about which takes precedence, or maybe disregard everything except the
-> > /chosen node when doing ACPI boot?
-> >
-> > This also argues for not creating an ordinary binding for this (i.e.,
-> > describing it as part of the platform topology), but putting it under
-> > /chosen as a Linux-only boot tweak.
-> >
-> > > Pointing to that rather than re-encoding it in DT means that it stays in-sync
-> > > with the EFI spec and we won't back ourselves into a corner where we cannot
-> > > encode something due to a structural difference. I don't think it's a good idea
-> > > to try to re-encode it, or we're just setting ourselves up for futher pain.
-> > >
-> >
-> > What I would prefer is to formalize pseudo-EFI boot and define the
-> > bare required minimum (system table + memory map + config tables) in
-> > an arch-agnostic manner. That way, the only thing that needs to be
-> > passed via DT/boot_params/etc is the (pseudo-)EFI system table
-> > address, and everything else (SMBIOS, ACPI as well as the EFI memory
-> > map and even the initrd) can be passed via config tables as usual, all
-> > of which is already supported in (mostly) generic kernel code.
-> >
-
-<snip some lines>
-
->
-> Here I believe you are talking about booting the kernel in EFI mode,
-> but that is not the intent of this patch. This is all about things
-> happening in firmware. Now, if the payload (second) part of the
-> firmware decides it wants to offer EFI boot services and boot the
-> kernel via the EFI stub, then it may very well pack this information
-> (with a few changes) into a system table and make it available to the
-> kernel stub. But by then this FDT binding is irrelevant, since it has
-> served its purpose (which, to reiterate, is to facilitate information
-> passage from platform init to 'payload').
->
-
-Indeed. As long as this binding is never consumed by the OS, I don't
-have any objections to it - I just fail to see the point.
+> ---
+>  Documentation/admin-guide/kernel-parameters.txt | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index 23ebe34ff901..4f78067bb8af 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -363,6 +363,11 @@
+>  			  selects a performance level in this range and appropriate
+>  			  to the current workload.
+>  
+> +	amd_prefcore=
+> +			[X86]
+> +			disable
+> +			  Disable AMD Pstate Preferred Core.
+> +
+>  	amijoy.map=	[HW,JOY] Amiga joystick support
+>  			Map of devices attached to JOY0DAT and JOY1DAT
+>  			Format: <a>,<b>
+> -- 
+> 2.34.1
+> 
