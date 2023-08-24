@@ -2,54 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 688D4787601
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Aug 2023 18:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C8547878FB
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Aug 2023 21:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242691AbjHXQu6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Aug 2023 12:50:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40998 "EHLO
+        id S243315AbjHXTzz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Aug 2023 15:55:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242725AbjHXQub (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Aug 2023 12:50:31 -0400
+        with ESMTP id S243229AbjHXTzY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Aug 2023 15:55:24 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9E981B9;
-        Thu, 24 Aug 2023 09:50:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5285C1BE6;
+        Thu, 24 Aug 2023 12:55:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692895828; x=1724431828;
-  h=date:from:to:cc:subject:message-id;
-  bh=OSzNcZLK/IfiQx721ODEPw23HRPuIfmyddt8B9DSw/c=;
-  b=cT8Yp3JFh1V53UKV6GVzmJ7xicqiBIPj2zTlwntmS3zlOWlZfB9UHT05
-   mir/ElULmE3v3wuUs25+t5BVRuqELDFgXiFgC+nGGM/vzvsE05A+1RxXM
-   OQ5BwWVM9s5BxxFrbIAmS9ZI3nUcB6vDP1FjKXnHenuvaNOO6pdzYTZ/Z
-   svOItUob/RtRqqHaiVeXp05z/NjTlBtUwNiol8/lKq/+UShXHvIdVwQWO
-   hNMMp0FkEDA34I7mtxhBYOZ+JFaxvVuNxgOHWenZfvm0Do3lv7G3NFeLV
-   YSBULoEOZHjYhJTw1mkZQCH7OMbXYxB65ew3YR143oCgyle3i8SZPEG4U
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="359496413"
+  t=1692906922; x=1724442922;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HHxd+sRQno+zlKMlOXPg8GU8rShd+SQCJ3iQuiwJQoA=;
+  b=iqr37zVJlwf4CSAlXcHKqADe8xmuDJCGA26pe9jGasuKVcTu9QvhNnr6
+   H/mjeF5MqmpHpFnkMxIg5N+hC7560b7CotTsDx68En8eUNEta7Y5B8Zpx
+   hjuDPL0TlI2u6hJ1eQUGv3+Ga8kzUwBXB8IPmGFroXcbPgA3xlvMZYPe6
+   dzyp2aqsP7pK27r4kNXVXszCwPY6KeqnWq+GqT59NXRgsea2lIC3qYtxT
+   SoHI5+zlvBuT7lbvZySsVRq8fs44eWS2etrcF6g/wsKJCUFu5ulXKjCxM
+   MXTOMMnpUDRGTiLqnFMvqfyBFaTNZABEgWSp13r+ry9tfQr5BJ9XybK3m
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="359543617"
 X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="359496413"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 09:50:27 -0700
+   d="scan'208";a="359543617"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 12:55:21 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="714026687"
+X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="740339883"
 X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="714026687"
+   d="scan'208";a="740339883"
 Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
-  by orsmga006.jf.intel.com with ESMTP; 24 Aug 2023 09:50:25 -0700
+  by fmsmga007.fm.intel.com with ESMTP; 24 Aug 2023 12:55:18 -0700
 Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
         (envelope-from <lkp@intel.com>)
-        id 1qZDXM-0002rn-17;
-        Thu, 24 Aug 2023 16:50:24 +0000
-Date:   Fri, 25 Aug 2023 00:49:22 +0800
+        id 1qZGQH-0002wA-1Q;
+        Thu, 24 Aug 2023 19:55:17 +0000
+Date:   Fri, 25 Aug 2023 03:54:45 +0800
 From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- b7dde0aa86616fe65545c48835feb4182f34a0c1
-Message-ID: <202308250020.x5UJ8pRT-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Rob Herring <robh@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Len Brown <lenb@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Peng Fan <peng.fan@nxp.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] amba: bus: balance firmware node reference
+ counting
+Message-ID: <202308250317.taQ9kshJ-lkp@intel.com>
+References: <20230824162654.2890992-1-andriy.shevchenko@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230824162654.2890992-1-andriy.shevchenko@linux.intel.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
@@ -60,190 +76,57 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: b7dde0aa86616fe65545c48835feb4182f34a0c1  Merge branch 'pm-cpuidle' into bleeding-edge
+Hi Andy,
 
-elapsed time: 1460m
+kernel test robot noticed the following build errors:
 
-configs tested: 172
-configs skipped: 2
+[auto build test ERROR on next-20230824]
+[cannot apply to rafael-pm/linux-next robh/for-next soc/for-next linus/master v6.5-rc7 v6.5-rc6 v6.5-rc5 v6.5-rc7]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/amba-bus-balance-firmware-node-reference-counting/20230825-003007
+base:   next-20230824
+patch link:    https://lore.kernel.org/r/20230824162654.2890992-1-andriy.shevchenko%40linux.intel.com
+patch subject: [PATCH v1 1/1] amba: bus: balance firmware node reference counting
+config: arm-defconfig (https://download.01.org/0day-ci/archive/20230825/202308250317.taQ9kshJ-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 13.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20230825/202308250317.taQ9kshJ-lkp@intel.com/reproduce)
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20230824   gcc  
-arc                  randconfig-r012-20230824   gcc  
-arc                  randconfig-r032-20230824   gcc  
-arc                  randconfig-r035-20230824   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                       aspeed_g5_defconfig   gcc  
-arm                                 defconfig   gcc  
-arm                   randconfig-001-20230824   gcc  
-arm                  randconfig-r024-20230824   gcc  
-arm                           sunxi_defconfig   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r004-20230824   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r036-20230824   gcc  
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20230824   clang
-hexagon               randconfig-002-20230824   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20230824   gcc  
-i386         buildonly-randconfig-002-20230824   gcc  
-i386         buildonly-randconfig-003-20230824   gcc  
-i386         buildonly-randconfig-004-20230824   gcc  
-i386         buildonly-randconfig-005-20230824   gcc  
-i386         buildonly-randconfig-006-20230824   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20230824   gcc  
-i386                  randconfig-002-20230824   gcc  
-i386                  randconfig-003-20230824   gcc  
-i386                  randconfig-004-20230824   gcc  
-i386                  randconfig-005-20230824   gcc  
-i386                  randconfig-006-20230824   gcc  
-i386                  randconfig-011-20230824   clang
-i386                  randconfig-012-20230824   clang
-i386                  randconfig-013-20230824   clang
-i386                  randconfig-014-20230824   clang
-i386                  randconfig-015-20230824   clang
-i386                  randconfig-016-20230824   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20230824   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r015-20230824   gcc  
-m68k                 randconfig-r021-20230824   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-microblaze           randconfig-r001-20230824   gcc  
-microblaze           randconfig-r002-20230824   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                 decstation_r4k_defconfig   gcc  
-mips                          malta_defconfig   clang
-mips                      malta_kvm_defconfig   clang
-mips                 randconfig-r006-20230824   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r003-20230824   gcc  
-nios2                randconfig-r005-20230824   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-openrisc             randconfig-r011-20230824   gcc  
-openrisc             randconfig-r014-20230824   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc               mpc834x_itxgp_defconfig   clang
-powerpc                      pasemi_defconfig   gcc  
-powerpc                     powernv_defconfig   clang
-powerpc64            randconfig-r013-20230824   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20230824   gcc  
-riscv                randconfig-r026-20230824   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                          debug_defconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20230824   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                   randconfig-r022-20230824   gcc  
-sh                   randconfig-r031-20230824   gcc  
-sh                             sh03_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r025-20230824   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64              randconfig-r016-20230824   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r023-20230824   gcc  
-um                   randconfig-r033-20230824   clang
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20230824   gcc  
-x86_64       buildonly-randconfig-002-20230824   gcc  
-x86_64       buildonly-randconfig-003-20230824   gcc  
-x86_64       buildonly-randconfig-004-20230824   gcc  
-x86_64       buildonly-randconfig-005-20230824   gcc  
-x86_64       buildonly-randconfig-006-20230824   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20230824   clang
-x86_64                randconfig-002-20230824   clang
-x86_64                randconfig-003-20230824   clang
-x86_64                randconfig-004-20230824   clang
-x86_64                randconfig-005-20230824   clang
-x86_64                randconfig-006-20230824   clang
-x86_64                randconfig-011-20230824   gcc  
-x86_64                randconfig-012-20230824   gcc  
-x86_64                randconfig-013-20230824   gcc  
-x86_64                randconfig-014-20230824   gcc  
-x86_64                randconfig-015-20230824   gcc  
-x86_64                randconfig-016-20230824   gcc  
-x86_64                randconfig-071-20230824   gcc  
-x86_64                randconfig-072-20230824   gcc  
-x86_64                randconfig-073-20230824   gcc  
-x86_64                randconfig-074-20230824   gcc  
-x86_64                randconfig-075-20230824   gcc  
-x86_64                randconfig-076-20230824   gcc  
-x86_64               randconfig-r034-20230824   gcc  
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa                              defconfig   gcc  
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202308250317.taQ9kshJ-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/amba/bus.c: In function 'amba_device_release':
+>> drivers/amba/bus.c:532:46: error: expected ')' before ';' token
+     532 |         fwnode_handle_put(dev_fwnode(&d->dev);
+         |                          ~                   ^
+>> drivers/amba/bus.c:536:18: error: expected ';' before '}' token
+     536 |         kfree(d);
+         |                  ^
+         |                  ;
+     537 | }
+         | ~                 
+
+
+vim +532 drivers/amba/bus.c
+
+   527	
+   528	static void amba_device_release(struct device *dev)
+   529	{
+   530		struct amba_device *d = to_amba_device(dev);
+   531	
+ > 532		fwnode_handle_put(dev_fwnode(&d->dev);
+   533		if (d->res.parent)
+   534			release_resource(&d->res);
+   535		mutex_destroy(&d->periphid_lock);
+ > 536		kfree(d);
+   537	}
+   538	
 
 -- 
 0-DAY CI Kernel Test Service
