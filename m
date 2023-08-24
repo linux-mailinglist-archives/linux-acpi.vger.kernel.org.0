@@ -2,75 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08ABB787B20
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Aug 2023 00:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84EF5787BF0
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Aug 2023 01:22:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243795AbjHXWCe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Aug 2023 18:02:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41010 "EHLO
+        id S244084AbjHXXWM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Aug 2023 19:22:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243801AbjHXWCG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Aug 2023 18:02:06 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3F81BD4
-        for <linux-acpi@vger.kernel.org>; Thu, 24 Aug 2023 15:02:04 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-c647150c254so844986276.1
-        for <linux-acpi@vger.kernel.org>; Thu, 24 Aug 2023 15:02:04 -0700 (PDT)
+        with ESMTP id S244079AbjHXXV5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Aug 2023 19:21:57 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5394EE51
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Aug 2023 16:21:53 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1bbc87ded50so3490175ad.1
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Aug 2023 16:21:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692914523; x=1693519323;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+ByfN+noqMCVkVscBGCrI7pkixl0yY22EjKSAxd2EZU=;
-        b=FW2erCnLQgKayhTZ1wVW9bz0T67VsUF1CK5WHkoQqQxEE2KF0iRsarlccu1dyv2SGL
-         eA5k6PLHdgB12BXIe/KZnfbdPEBplyPPBvqW++IQobq0vl+oNXUqJKppFVULGZE0DPnC
-         3g+eS1qmuWPjegyzhjMFmsWzLgz+J37nt9Y1w+/fkP/AfLH0uuQSmtZSTzRu03AVWhzi
-         nvnlRsplZuLFpnfFEhJX4YNJvBIYgECemDv+4hLueCKlO7oOHdPWI1udE7+FQ/8KyH/u
-         0AUi8XQn2oZxt6Wmd6BVMmraFxPvWZR+Qkw/7gvYq1ZLMS3wWBWAu3u2jN2YuAPK1GWT
-         BPdg==
+        d=chromium.org; s=google; t=1692919313; x=1693524113;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8w5mv6lG3O3l4xUxVWDEcklkLQovn+KSfkFXrkAtd8o=;
+        b=HUNbIF3SZFESQtWsYGw4ufoOPQfn0DMhz6J6tkXQyiqY0N4QCZMi+uH9lXx7i5V4JS
+         WShu9Elj1MhAzOogVa/Zk7n3ucdznSw165k9gkqJc5lkHungrIP+gxo55QxUrPQoUgLX
+         K4NXLnL4+wIUv0fIgiY8+1FVzP9yZ1K5RkeQY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692914523; x=1693519323;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+ByfN+noqMCVkVscBGCrI7pkixl0yY22EjKSAxd2EZU=;
-        b=kshN/8s3jE7PRfii+GVh067+W/FKhXoDeqB+R62U9/tW9QaTBO9tZ9bz5fuV5u6Zgd
-         WsPh07kGA2v6gvL3grXUDHnkT8I3gqQrk/u1Xu1gTaRMdodmbsanXUMUa+ACBUGunKTC
-         9wbQSrSoppGRe3Mqcg96e0FOtci4LQ56gUNDKQqFR+gx2/UZEnbClC6Ycq0PaWobwXiy
-         nt5mBvBn1VziP9Goq7CbpePWE0S2HT/FKwjFiRo24nzZXiABjYfhR7EqWtFSYUtckZbX
-         /yxAbXxUoRMdA1HM9d59GuRtCt+UAgtYBFkECXj+OJxHgeEURexmV9N1Mjd2xARWng6V
-         3f3A==
-X-Gm-Message-State: AOJu0YzOf88/FA9xqiOpsOtdJIMp7S4SSDO6DNABuqH6jsk/E8xMZ+w2
-        9aBuXr9Otdt6VtqO2UBQFMMom7gKxPryJTQo+A==
-X-Google-Smtp-Source: AGHT+IEshr77Q7qNUIKJt/rqr0sZwkrC1oqkt+XoJDSjwXojBu49XkLcMiNAZ3o+agl+ciZNsen26PutIQ7eEzU2gw==
-X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
- (user=justinstitt job=sendgmr) by 2002:a05:6902:691:b0:bd5:dc2d:9d7f with
- SMTP id i17-20020a056902069100b00bd5dc2d9d7fmr353667ybt.4.1692914523292; Thu,
- 24 Aug 2023 15:02:03 -0700 (PDT)
-Date:   Thu, 24 Aug 2023 22:02:02 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAFnT52QC/x3MPQqEQAxA4atI6g04P4XYCh7AdtliHKOmGYdEZ
- EW8u4PNg695FygJk0JbXSB0sPKWCsyngriGtBDyVAy2tq5urEfdJcV84iR8kCiGmPlNDOisCbO j0RtPUA5ZaOb/e//C0Hfwu+8HdjFd0XIAAAA=
-X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1692914522; l=3684;
- i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
- bh=a9UsameJpI592QOpENgrhz3IgrWL7+TLPCUljbg60hc=; b=e3Pv4SmVInFuVIbTKSQXxLeqrBg7t0W4yh/+B4IXTVUNIyarAJtZGQqiq8TM2ro117RoQHQoX
- BrU6DwJ/4dmBFk6SNWPePeKezFEJP6lF76aWDrBPbEHYmyL328c6yOk
-X-Mailer: b4 0.12.3
-Message-ID: <20230824-strncpy-drivers-acpi-acpica-v1-1-d027ba183b66@google.com>
-Subject: [PATCH RFC] ACPICA: remove acpi_ut_safe_strncpy in favor of strscpy
-From:   Justin Stitt <justinstitt@google.com>
-To:     Robert Moore <robert.moore@intel.com>,
+        d=1e100.net; s=20221208; t=1692919313; x=1693524113;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8w5mv6lG3O3l4xUxVWDEcklkLQovn+KSfkFXrkAtd8o=;
+        b=F+4aawDoOnFJfnMpW976XecxREs5HM2cD+U6u28HAbXuoP3LavrWPQ9UeuQmaNAzGy
+         3m+6ulZkJw6UQnHftsykW0EVRBWvO12sTpt7TpGMVCNv5oEQceHazQLZ/OaCDOtlL8V8
+         QV7FgboKTFyLRYmaDJFRpFcgKKzMbXxjr2A7KkextWv1AZNm+UPsriN8nH8lAea1gBxv
+         Hz0EJ3bocW+heVI6Cl+kSRig7N6O8nnChOD12TEzI46xYQiHKFRGtSaE/6L2sdDcFbds
+         bpgXiD90mjbf/d0VK25kaWxcn5UcPZ/pIVPytUnX238wcQXauSPAxMbXsLgE9LDufJiX
+         rKtA==
+X-Gm-Message-State: AOJu0YxC7veOlq/go5asIxxtLa3OZ1zP8+Mirftx+Gis6k3Loz3ld6hp
+        IVo3CeU7J7OcyNEkyy0vJovx0R09dtve9k1bgpE=
+X-Google-Smtp-Source: AGHT+IGJh2BpYlnLI9AIMkXlJ+xO74J7Z1ns9je/GIWPjgLHY3P/y30UST+GseFimmXO+HAnYy+e4A==
+X-Received: by 2002:a17:902:b782:b0:1bf:22b7:86d with SMTP id e2-20020a170902b78200b001bf22b7086dmr13934006pls.3.1692919312831;
+        Thu, 24 Aug 2023 16:21:52 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id ju14-20020a170903428e00b001b672af624esm214114plb.164.2023.08.24.16.21.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Aug 2023 16:21:51 -0700 (PDT)
+Date:   Thu, 24 Aug 2023 16:21:50 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Justin Stitt <justinstitt@google.com>
+Cc:     Robert Moore <robert.moore@intel.com>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        acpica-devel@lists.linuxfoundation.org,
         linux-kernel@vger.kernel.org,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Justin Stitt <justinstitt@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
+        Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH RFC] ACPICA: remove acpi_ut_safe_strncpy in favor of
+ strscpy
+Message-ID: <202308241612.DFE4119@keescook>
+References: <20230824-strncpy-drivers-acpi-acpica-v1-1-d027ba183b66@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230824-strncpy-drivers-acpi-acpica-v1-1-d027ba183b66@google.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,103 +73,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-I wanted to gather some thoughts on removing `acpi_ut_safe_strncpy` (and
-potentially other `acpi...safe...()` interfaces) in favor of
-pre-existing interfaces in the kernel (like strscpy).
+On Thu, Aug 24, 2023 at 10:02:02PM +0000, Justin Stitt wrote:
+> I wanted to gather some thoughts on removing `acpi_ut_safe_strncpy` (and
+> potentially other `acpi...safe...()` interfaces) in favor of
+> pre-existing interfaces in the kernel (like strscpy).
+> 
+> Running a git blame shows these functions were implemented 10 years ago
+> and their implementations generally mirror the _newer_ and more robust
+> stuff in lib/string.h -- Let's just use these, right?
+> 
+> I appreciate any comments and whether or not I should stop at just
+> `strncpy`.
 
-Running a git blame shows these functions were implemented 10 years ago
-and their implementations generally mirror the _newer_ and more robust
-stuff in lib/string.h -- Let's just use these, right?
+ACPICA is actually a separate upstream project, so changes are best made
+there[1]. However, this code base is shared with many OSes and
+compilers, so there won't be a common "strscpy" available. Perhaps the
+right thing to do here is to implement acpi_ut_safe_strncpy() in terms
+of strnlen(), memcpy(), and memset(). That would make the upstream
+project safe against "too long reads", etc, and would require no
+collateral changes:
 
-I appreciate any comments and whether or not I should stop at just
-`strncpy`.
+void acpi_ut_safe_strncpy(char *dest, char *source, acpi_size dest_size)
+{
+	/* Do not over-read the source string. */
+	acpi_size len = 0;
 
-Thanks
+	if (dest_size > 0)
+		len = strnlen(source, dest_size - 1);
+	if (len)
+		memcpy(dest, source, len)
+	/* Always terminate destination string and pad to dest_size. */
+	memset(dest + len, '\0', dest_size - len);
+}
 
-Signed-off-by: Justin Stitt <justinstitt@google.com>
----
- drivers/acpi/acpica/acutils.h   | 2 --
- drivers/acpi/acpica/dbfileio.c  | 2 +-
- drivers/acpi/acpica/psutils.c   | 2 +-
- drivers/acpi/acpica/utnonansi.c | 8 --------
- drivers/acpi/acpica/uttrack.c   | 2 +-
- 5 files changed, 3 insertions(+), 13 deletions(-)
+-Kees
 
-diff --git a/drivers/acpi/acpica/acutils.h b/drivers/acpi/acpica/acutils.h
-index edfdbbef81c1..4d5c401a14b4 100644
---- a/drivers/acpi/acpica/acutils.h
-+++ b/drivers/acpi/acpica/acutils.h
-@@ -626,8 +626,6 @@ void acpi_ut_repair_name(char *name);
- #if defined (ACPI_DEBUGGER) || defined (ACPI_APPLICATION) || defined (ACPI_DEBUG_OUTPUT)
- u8 acpi_ut_safe_strcpy(char *dest, acpi_size dest_size, char *source);
- 
--void acpi_ut_safe_strncpy(char *dest, char *source, acpi_size dest_size);
--
- u8 acpi_ut_safe_strcat(char *dest, acpi_size dest_size, char *source);
- 
- u8
-diff --git a/drivers/acpi/acpica/dbfileio.c b/drivers/acpi/acpica/dbfileio.c
-index e1b6e54a96ac..197e1ff1f72c 100644
---- a/drivers/acpi/acpica/dbfileio.c
-+++ b/drivers/acpi/acpica/dbfileio.c
-@@ -63,7 +63,7 @@ void acpi_db_open_debug_file(char *name)
- 	}
- 
- 	acpi_os_printf("Debug output file %s opened\n", name);
--	acpi_ut_safe_strncpy(acpi_gbl_db_debug_filename, name,
-+	strscpy(acpi_gbl_db_debug_filename, name,
- 			     sizeof(acpi_gbl_db_debug_filename));
- 	acpi_gbl_db_output_to_file = TRUE;
- }
-diff --git a/drivers/acpi/acpica/psutils.c b/drivers/acpi/acpica/psutils.c
-index d550c4af4702..95af2c74e00b 100644
---- a/drivers/acpi/acpica/psutils.c
-+++ b/drivers/acpi/acpica/psutils.c
-@@ -60,7 +60,7 @@ void acpi_ps_init_op(union acpi_parse_object *op, u16 opcode)
- 	op->common.descriptor_type = ACPI_DESC_TYPE_PARSER;
- 	op->common.aml_opcode = opcode;
- 
--	ACPI_DISASM_ONLY_MEMBERS(acpi_ut_safe_strncpy(op->common.aml_op_name,
-+	ACPI_DISASM_ONLY_MEMBERS(strscpy(op->common.aml_op_name,
- 						      (acpi_ps_get_opcode_info
- 						       (opcode))->name,
- 						      sizeof(op->common.
-diff --git a/drivers/acpi/acpica/utnonansi.c b/drivers/acpi/acpica/utnonansi.c
-index ff0802ace19b..a465e5a1d309 100644
---- a/drivers/acpi/acpica/utnonansi.c
-+++ b/drivers/acpi/acpica/utnonansi.c
-@@ -164,12 +164,4 @@ acpi_ut_safe_strncat(char *dest,
- 	return (FALSE);
- }
- 
--void acpi_ut_safe_strncpy(char *dest, char *source, acpi_size dest_size)
--{
--	/* Always terminate destination string */
--
--	strncpy(dest, source, dest_size);
--	dest[dest_size - 1] = 0;
--}
--
- #endif
-diff --git a/drivers/acpi/acpica/uttrack.c b/drivers/acpi/acpica/uttrack.c
-index f5f5da441458..a96a86bc5781 100644
---- a/drivers/acpi/acpica/uttrack.c
-+++ b/drivers/acpi/acpica/uttrack.c
-@@ -368,7 +368,7 @@ acpi_ut_track_allocation(struct acpi_debug_mem_block *allocation,
- 	allocation->component = component;
- 	allocation->line = line;
- 
--	acpi_ut_safe_strncpy(allocation->module, (char *)module,
-+	strscpy(allocation->module, (char *)module,
- 			     ACPI_MAX_MODULE_NAME);
- 
- 	if (!element) {
+[1] https://github.com/acpica/acpica
+    e.g. https://github.com/acpica/acpica/pull/856
 
----
-base-commit: f9604036a3fb6149badf346994b46b03f9292db7
-change-id: 20230824-strncpy-drivers-acpi-acpica-321af3eb414e
-
-Best regards,
---
-Justin Stitt <justinstitt@google.com>
-
+-- 
+Kees Cook
