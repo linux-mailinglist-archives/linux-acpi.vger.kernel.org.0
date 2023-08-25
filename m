@@ -2,62 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82401787F74
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Aug 2023 08:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 406E9787F86
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Aug 2023 08:06:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239852AbjHYGAC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Aug 2023 02:00:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40560 "EHLO
+        id S240376AbjHYGF4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Aug 2023 02:05:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239973AbjHYF7l (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Aug 2023 01:59:41 -0400
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2045.outbound.protection.outlook.com [40.107.220.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B8031FE9;
-        Thu, 24 Aug 2023 22:59:38 -0700 (PDT)
+        with ESMTP id S235624AbjHYGFm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Aug 2023 02:05:42 -0400
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2083.outbound.protection.outlook.com [40.107.102.83])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427E91BC7;
+        Thu, 24 Aug 2023 23:05:40 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=boZaM68C3SD32jQZdQ42G1ULLfg+KoILJdljIcaROZDqWcAZN8wDLxP4BywXyUeucYSq6oD4CSrDHZ5426GBnjf8q24CplRZxTFnC8vG5IVHCat7Kz+ORTq19S3mS30e9WejPUb+9VEQA71lI9oC9mKZ8EJzP+Oo+1OtI4anPLxk5OU/Yfo0NWNmDx1LPgcUDcAGzg8K2q9Xzyd4KoIU0Hk8uFASOIeCM3hs7YRk+Hn8VmpJHT/VMo4uuBNV3ooAHKbw6OcukUKTDDVB/pCDozXfgTPbOH1WxGifgy8nry811JuuSyJjaEyAqnaM4WgHFcw9XEeX955ZVyXBml9S6A==
+ b=SP04/inhNo7EPtBRe2cz62GN8jiQxcmowOl7NFdSYzFA37Gm/5CjwgcmnQknIE0qWaFRSTtSbhAP/p+IQgr1iZh7lGCUKBryEyTHFdngAvgBK4YuGufpE7uNDkZofXdjhcGFBLrCqFbi/D40Wg25+mOfJmcmADXAAg5F83TejwFrjiXEwOU8JZAYC2rptr1t9qJLWc7IteYBKo49607XgTaPd+NVck7aKtzBggY+mh4qHIE0FQaRvj7PBryxjKyIT59BILznMbRngP1L/Rm3VSgabpvAgmLhpHArKBMZOQpen7IeTApxwRUpZ61jBl5gZxh7ELwjzFSn7PZ6DO6M1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RNwJzQhlut9HUnTNyocIvHfnX84GIES6jg9s4mYbvh0=;
- b=L/vFfMfIdeAueu4ZE/nB4LT9rwHxFupEacxk3m9BvJ0tHBZAJEZpAxrHExF4/2IgAQa1BawERkueaU4h5Cg2ci47tJvGfrTuqaU8RpHIsSHmZQc5o+NmuJp63dv1q+Ihv8LC2M1XyHv/XwSpJhTPybJomjcCBcpCYt0wVwpgcl6BwPR5RDOSCvm3kf/z4Fbr7rAHeL1Q3d5Z/IRVkcMQFCUjATIY0N2KIHbaCFQ5UHytAqP+rCZKr1+kjc01wYL2ov1fWeeN0lbhN5O7RUvX+s5C0X+zutlThG2CpFUSiKUQUF9ziShoZpYkLcgTNzP3sDl3R7jzktrqVmkRyDzt6Q==
+ bh=mvbV5hPrhiWL/ZCaymdF+2Ma7RnVsHLWvSAkvMJjB2M=;
+ b=MTHSIil1p7U5aJPHV7vqxRmCrjSsQC4+oQlNxcJdFyeLU3PPWCcZlY3oXsvu7VNqJlphm6/50GsLEWD31Al7+zI0frllLdzbuOSEBkA79okPKjCwjPdeKIZk1J0xuXqxE1syYzgqk/iSSl+whV+q16WUohpZqsJHnuAvccp2j6TQ3Zu2uMKDY8cN0LNFj7RniO3RAbdZ6ze/6MTmAeNMK6SitdVq2n/QN8hdyZjpLy8jduGvL2GNbV0zmrzF3kd9MWiJyUilZR4m6+suCO0X4SkNq1AT1L1/7SVAhJnUKLpOuAfEhtttVMqur55vy0qoe0S/lwmAdkJ045LxovgK2A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RNwJzQhlut9HUnTNyocIvHfnX84GIES6jg9s4mYbvh0=;
- b=Tn0vst7ipDZVefQVeaMOnZptIlRwiMbwNGEtMnZDwbgpFkikq7OpBSbTw6CBTMe3RbLo+h4u2ZLNgeRzZiO7wnlUCphjEW+3zf100wm8nSdfGvAMSGhlqOnx9dsWCUNeuXU6MATVZajzBZHuuo2TEvYgKjAhq5oWOGC22thbqOMQhr4QFLGo6IAmcG2Q182EQ+VIhAuKf/huW4Uc3pUgMAuG5vdEzDjNFIgiBuJg6jDtmp1lJB5P61g6nC60VOA0XHWU5WxU9fHobkrTnVY/VsfQVKK4GdG0haxja0haVETn6RfEqy8kl3O+7kce0vPq7nDcHdadazMpfL4dpoZ+ag==
+ bh=mvbV5hPrhiWL/ZCaymdF+2Ma7RnVsHLWvSAkvMJjB2M=;
+ b=cXuHFbcIzWG4D1B+ha0oQRoMlPeXtqCUuoLppGuRFhH7Vo0dW1gfrpKFgMvQFQ+BxSbB3YfxBCzCGq0fPI27LIXCLMtzJTGn+ef1Yq720wmWv5aIlwbjk4gyS1+G5LHMCrWb4RGmRXAFlFy11thElduxbGYBitWtP22MmUdjGPirHAxK9FGHJu6qYnLxbt+bAp2YlkcIMxhpPbbLZ0iLSJFA998jeexQIoHAJiSesnVxC8dMapObzdNBAVlmDVaO9FUwauhuwlb9ZMolMgnX3iHTS/g+07y5gj7fFwbDTMkDn7EPsJNJCqwVMuLrXRI8aIMTiRh8Yzidrde3N0e/kg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
- by CY5PR12MB6202.namprd12.prod.outlook.com (2603:10b6:930:25::8) with
+ by CH2PR12MB4937.namprd12.prod.outlook.com (2603:10b6:610:64::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.29; Fri, 25 Aug
- 2023 05:59:36 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27; Fri, 25 Aug
+ 2023 06:05:38 +0000
 Received: from BYAPR12MB3176.namprd12.prod.outlook.com
  ([fe80::3bf6:11f3:64d7:2475]) by BYAPR12MB3176.namprd12.prod.outlook.com
  ([fe80::3bf6:11f3:64d7:2475%7]) with mapi id 15.20.6699.022; Fri, 25 Aug 2023
- 05:59:36 +0000
+ 06:05:37 +0000
 References: <20230721012932.190742-1-ying.huang@intel.com>
- <20230721012932.190742-2-ying.huang@intel.com>
- <87r0owzqdc.fsf@nvdebian.thelocal>
- <87r0owy95t.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <87sf9cxupz.fsf@nvdebian.thelocal>
- <878rb3xh2x.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <87351axbk6.fsf@nvdebian.thelocal>
- <87edkuvw6m.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <87y1j2vvqw.fsf@nvdebian.thelocal>
- <87a5vhx664.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <87lef0x23q.fsf@nvdebian.thelocal>
- <87r0oack40.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <87cyzgwrys.fsf@nvdebian.thelocal>
- <87il98c8ms.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <87edjwlzn7.fsf@nvdebian.thelocal>
- <875y57dhar.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <87wmxnlfer.fsf@nvdebian.thelocal>
- <878ra2b8uk.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <20230721012932.190742-5-ying.huang@intel.com>
+ <87edkwznsf.fsf@nvdebian.thelocal>
+ <87cz0gxylp.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <871qfwwqi3.fsf@nvdebian.thelocal>
+ <87a5ukc6nr.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <87sf8ble6g.fsf@nvdebian.thelocal>
+ <87lee2bj5g.fsf@yhuang6-desk2.ccr.corp.intel.com>
 User-agent: mu4e 1.8.13; emacs 28.2
 From:   Alistair Popple <apopple@nvidia.com>
 To:     "Huang, Ying" <ying.huang@intel.com>
@@ -73,68 +63,67 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Michal Hocko <mhocko@kernel.org>,
         Yang Shi <shy828301@gmail.com>,
-        Rafael J Wysocki <rafael.j.wysocki@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>
-Subject: Re: [PATCH RESEND 1/4] memory tiering: add abstract distance
- calculation algorithms management
-Date:   Fri, 25 Aug 2023 15:41:26 +1000
-In-reply-to: <878ra2b8uk.fsf@yhuang6-desk2.ccr.corp.intel.com>
-Message-ID: <871qfr8xx9.fsf@nvdebian.thelocal>
+        Rafael J Wysocki <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH RESEND 4/4] dax, kmem: calculate abstract distance with
+ general interface
+Date:   Fri, 25 Aug 2023 16:00:28 +1000
+In-reply-to: <87lee2bj5g.fsf@yhuang6-desk2.ccr.corp.intel.com>
+Message-ID: <87wmxj7j2v.fsf@nvdebian.thelocal>
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0233.namprd03.prod.outlook.com
- (2603:10b6:a03:39f::28) To BYAPR12MB3176.namprd12.prod.outlook.com
+X-ClientProxiedBy: MEWPR01CA0018.ausprd01.prod.outlook.com
+ (2603:10c6:220:1e4::17) To BYAPR12MB3176.namprd12.prod.outlook.com
  (2603:10b6:a03:134::26)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR12MB3176:EE_|CY5PR12MB6202:EE_
-X-MS-Office365-Filtering-Correlation-Id: c64781cf-0d23-484e-b6bb-08dba53075ab
+X-MS-TrafficTypeDiagnostic: BYAPR12MB3176:EE_|CH2PR12MB4937:EE_
+X-MS-Office365-Filtering-Correlation-Id: 66310b58-9b30-4442-d00b-08dba5314d6e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: O+jTIZcsOgK0vAZXBGI5kPUNRxTeDEd36DN8vrpKSxaWHxZTiyPWamYJr0vC2yXNLtjhpm045NNKV97udoZUsia+2lN2qRMJsu7mNzqc9F9flJmwO0DplePvYDn4CRSFDKOtgTN5jzXOjn3hM6pkEScaDeGweoKobipWBNoUpcjOnjfxPKnIKyIedZrRUn1oQKqIf360KoO6cc8Az+ObW+SiNhTGcfMX3OrNIne0OGxv0+q2olfHYc7rAqtOLgNy1chuUeH5vaee3njYNpRcyA4jbxDYh09rdJYyKIQLli9DYHokIwuvNCN5SqNFI1pHA8mM9hPglKt8zok9MoATyieEkPz61c4XS62aPMuQL4rhlCl18OmTZaAofK/rEnuQLWlVlbEJak0dVvOWiCDhLAz8if53D7M5sSfDFxMv+bKhLg0hgmrKbA+CwZfP7M6fbTevC89ptTQTC6awzAMZ03k206hnA7S1cVUtC9L9Oku5Vjl3eRmR5AKMSCxZeJZakt1fI9fo8Jxw3aX/xsxi9LOk62tM3cMeK36YaSQkvJRhZJNJErcRsaeVnIrEGv/p
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(376002)(396003)(136003)(346002)(451199024)(1800799009)(186009)(38100700002)(8676002)(4326008)(8936002)(54906003)(41300700001)(6486002)(6506007)(6666004)(316002)(6916009)(66476007)(66556008)(66946007)(86362001)(6512007)(9686003)(26005)(478600001)(7416002)(83380400001)(2906002)(5660300002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: JNxqpEi26bSwdRwHpk8ecm3ggIsshloqQFO3wKVdu0E2Q1lRi/5KcPUUFVeari1ISqHdyzy9dC7DWdlshNM4NLXphMlEw3P8duOD98Ia6CoqOWU/nNOyU4FD7vdbH8wFmKm+NykIJcQTA8hs5RHc3gVFtwsAkKsb77MiG7Skhn5NX2FPuYygAHR9Ie5Vz1+OxcPrn6swzexJym6OAYpNDUSarDMHDDYR4mNKV+IDJh6eqtEYHdJWzDDMTG2+k4Y8K91HVeN2KwxJMtzGQKoiJ4B0iuHGOlm8mdr8s9sz7txfd0YsUrs9+xIgelxKaxSkCsnfL2OntPm2mR6BJ18f1gcosoGdoBeD50HKOz/iGKRNYqdGpY/NVIL4A0ezBBWI5o/19kBxAhzZCm+vkX3hgcFWnpInyUDckm7Zd866pxgjQSEgH/xRhkwgNblzGiCLzri6DH+I9aHcPSL+mdsjU7yPiLQWxi95Z9xvMQf3HyQ2EcFBBmNk9T/i6BcgCXXprFCyVnxmWoCz9bdbTtAoeWMR98Lf/YvzyqfgagdOqWKzhadU9b50V00XsJIfNUBX
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(346002)(366004)(376002)(39860400002)(1800799009)(186009)(451199024)(8936002)(4326008)(8676002)(83380400001)(5660300002)(7416002)(26005)(6666004)(38100700002)(66946007)(66556008)(66476007)(54906003)(2906002)(6916009)(316002)(478600001)(41300700001)(6512007)(9686003)(6506007)(6486002)(86362001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?sVQczOmd9yQ4olMOLpMWsagQvUUiZKrHghtrIdzd769rnn0C3779R4tJqYz9?=
- =?us-ascii?Q?OCxi2KPS9pzTtz6AgZD1W02bdFexeosH0eswSRRj1+1SRQaT72zTWi3FtukS?=
- =?us-ascii?Q?x3geylzv3AQx5bLhK21TZ6MtwYRu/4Z1EozDL+dcmsqRFCgeO1boOA/xto/e?=
- =?us-ascii?Q?FOF/HYBAE3XY75cMIOR2tZgdA5qNMtdGgFUM1tM8z3mS3DQNgFvlIsoVEM23?=
- =?us-ascii?Q?vPwSVyP/RyJ9r2lhU4qga+ddRanzTnZmO6N07eDQdVF7yX8ZvaoNlNLgvfDD?=
- =?us-ascii?Q?vZfpVDZaY0gCQES/PhtyQO6CWUfQ7mbk4oss73dg3nmZJoJpKrZFLqhxuIK9?=
- =?us-ascii?Q?jsOGZOHI/9JUPdnB/tvQM2pj957fGFflHV08FgfgsOErHK5V30XQIXAAWTKc?=
- =?us-ascii?Q?PI9T+iCVGV/ddBALw5AFxHCndUozq7bkuiLJFNvlby0uIG2e9T+lwRmW6MLC?=
- =?us-ascii?Q?NmBFiuzxI+d/WfFySRCau9P1K5Y2cbBVYKJ4EXXn5/YlDRLpYAYjuy3Lh+Xq?=
- =?us-ascii?Q?VzOCeLy+L3Egm6GW43qhgIHvD+Xv+EYrush3TiQf/iqeYDEsxFDwjM7vUPhL?=
- =?us-ascii?Q?8kr8/kexRwiDzTQ1/UloqSe9GaICftT01C1v8kuFVZvaYBXJ2lLeFc6z1VIO?=
- =?us-ascii?Q?u8ez3F9t9LMjCWXduQrW+u4yv2nWjsjd+Pejn509iBjC+VSpvo8i1C5fIilG?=
- =?us-ascii?Q?lX19TsERCxXxBDfewksWoZDhVch7nmLCqyfvfC4IU856ZiwDFDQEK3/80ITD?=
- =?us-ascii?Q?64czmUYQNvGxIM/QTA3g19qjn+yK/65pD4GTVDGZXcrNV3MfYBytIphP0enK?=
- =?us-ascii?Q?tDdjex/UEY8fMFb32dKe3YbCc6cawKqx02J/qaRpw/GEgL8zQqdDNiTTOAeO?=
- =?us-ascii?Q?Q95DAA91iqIsl145U3N1ov/RlbqU2Q0b35I6b5ckgG/iuIchHq5ls1mc4+gY?=
- =?us-ascii?Q?tOwrhWkTiKa5G9yY93DgGD6R3MqcplwBpCy5NwWrE8Y+1oplxedctVif1Y5M?=
- =?us-ascii?Q?dqWMEmcLokF7e8rke9QWCZv/iBRrHILs5pggF9TIGnFS3jTukyNPa2u9G8ct?=
- =?us-ascii?Q?P0iUm/C/2Hfe26KW7QY7aY/7gzafbhSD674lkSxADFwKRrF3h6a451aBfvHl?=
- =?us-ascii?Q?MRzffZMN/a8T3Pt1i6oiXC7gNIiPIhbtxITailcas07E5cue96All3O3pDaZ?=
- =?us-ascii?Q?rz3N7JtdIcBUASyL7qxJMg8rCc/4b9UZM5v+92Mn91kMzei+i3mVig9yOL+6?=
- =?us-ascii?Q?Oewt68xjiTdx43DtTpE8GrgAAQXq/+wZjtTi+k+g9/VxctpFd6RLBf2w96Go?=
- =?us-ascii?Q?y+eApK1kZxEANY8zyqBdOJvYgkMzi0+psJ4D7VOpDkRyScchkVu0F164PElg?=
- =?us-ascii?Q?R+754bjE0vtEGJ15ED0e3NEbtol3JZF5yBxNRTyfDADozBphh7gAaUlTvPzd?=
- =?us-ascii?Q?rMb5Faz3Nt9r5AyViSKkEFt2N6tOiacUjoyDXYwQsx4fXxcpGW+f2VXjbazf?=
- =?us-ascii?Q?HGo3XkvOCYAY0NOziZ9SM2ayuMVcVy+/7YmnvddNCJYpLZaAmJ+NcV81myqn?=
- =?us-ascii?Q?5bQaLo8mQO0+8iFsimzVClkN4QO1tHNuqRVl5y08?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mTREJ/PCJqx1wme6yS8Tp2RdSueUTuM6KstnlJb/6zq5jyYmED9IN/DzMMvY?=
+ =?us-ascii?Q?TDK1ivr4AKB3tNjEYAuCV34C/I1dzr0HkOXN8/QbhZ1TweFAxfwx4owNM4xw?=
+ =?us-ascii?Q?CpZhB+I4D6GTWChTkfvyKCCDPPaRVE8S4h7380Oi0mWzmL19V9qGjSUZbCIO?=
+ =?us-ascii?Q?EXuklaWzChHGZreCfijLTlBXmhGd2ByVZPGIhOFeH0bjvQcgGlyFGjaNq4fo?=
+ =?us-ascii?Q?HZWDNvxaavUsD7zKgh28Pc+O46V5MVs1Jis4tL35vVqPsHwAigPVk3nWMTkD?=
+ =?us-ascii?Q?kIkBKzFmkSfazonF+ayC7EhMioBzIBhAdXOKgmALkUfAUsRCXrA5XtWDl5J8?=
+ =?us-ascii?Q?SMBSpzqDQ0LviL2sKarctT3sAad8ifiUuTw8JarQmMCIxVpZsS6PyOmuExjb?=
+ =?us-ascii?Q?bcZgqzrhGb63qBe2zUXdCIxwEFsMZL1kl9GHqqA0ZO4VE0hCSsbUcDhDFCcC?=
+ =?us-ascii?Q?a4f/DSNkG4eLqhxJxOt5vwbV5Gs0WKI4ZGFrAKUWnq6Pw70Id56iRBJlgDzu?=
+ =?us-ascii?Q?LrwQyBbdk6DU6opgqravn2EApFnfYGMtahuazjGypOXAlRYlXDFc2OQIR+KG?=
+ =?us-ascii?Q?RP4gMDhaYlL8O1PFnP/pHaFaYIuBXsRTKA4qcCj8pmXdT/LJ/ZNUL0ou3R4J?=
+ =?us-ascii?Q?rTNxcIE2xxIcngGABS5pstYfuSfyU9xlFHsxblLH6ZxqRe43bXiWHn8ALQrg?=
+ =?us-ascii?Q?Zi/ohH00rPvCRbAbOTTm3RtxzhTQbWUcO0lfM9sp9TTIMdWGK+hXMdoVYewV?=
+ =?us-ascii?Q?xBUZknCpYnxlQBaowbRZBAlc3MBAxJEKEhmj6nYpxVRR+KlL1iCp8jXyDpv4?=
+ =?us-ascii?Q?bPxZw4L3FpdPipxONgVaDTWi8NbPJEkJfmDlTlWsHmgyh6XqKK1eyBso0iM2?=
+ =?us-ascii?Q?RpGytEkAxCQtxhyYNiNZjVdEtGbd8G7cpPuywPCS2mn7Gh5km5pE5VaPX58i?=
+ =?us-ascii?Q?77nxGXEDOeVM4ZsQCJtZjs/RWvoQIzLjxRla2DPDxgtqTTgecBK8OlBM3U6w?=
+ =?us-ascii?Q?Pfy4DFctrqiV072j3zvqQ5w61FX47R/ODPA89w+7f7dxkcswfGVY7k1N6rdV?=
+ =?us-ascii?Q?tow2EUt7hxmPwogZc54xPgahR06+pC1w/WTabUdXRHH7lGhj7KVBhIjTJfL/?=
+ =?us-ascii?Q?ZqE0AqkzgR7aCWMjMft0NHqBmYyMAORmT6ccJ/JkvXxTOkI1TqzDAM7kk517?=
+ =?us-ascii?Q?z7jR/8ybaCafJom6M2dfVZt7HCuveL2J/6InBgRWU6vR6i13/uB8lJmQgHHH?=
+ =?us-ascii?Q?FCzG3tEhxBuKxCrWDdAmc+/OSGiIgbBqs8I7Avu7h+xpLgnih+bBrHR0RbxF?=
+ =?us-ascii?Q?2ePdjEuKy0mf6cp/4AOoZ15DeYd4Vz11DGGB0c/eY27oZJtlvREuOkS7TPg8?=
+ =?us-ascii?Q?IHVJuS4xnvCqSvXgM5eAp+1rJHamkR7gEaxpOYO8vGiqdbXFYIW35Q9OgRM4?=
+ =?us-ascii?Q?0iLr77L0Ojs83BQ6Z1QR+xFH2MezJg7BQP/E71mE+fkcNzQCZWMdgEjt502r?=
+ =?us-ascii?Q?xV/xytBG/KIJUdbCu8mtGeyzUv3WrgZm+OzccRI+b/UvzuEo0h9R7jmTWeb2?=
+ =?us-ascii?Q?fJ6W6WC60gEEOaHWbnbI15kcTZ89NB4luUP68cx7?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c64781cf-0d23-484e-b6bb-08dba53075ab
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66310b58-9b30-4442-d00b-08dba5314d6e
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2023 05:59:35.9623
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2023 06:05:37.8978
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 65f2mxhXnx7sRyNPTVqsLax8tJqrQDfEmdzHBqd1t1mVVMTqO7vE16eVlOAKVf/s5OzM5YD7Gqz/IJN4lRkZDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6202
+X-MS-Exchange-CrossTenant-UserPrincipalName: 07PWGzwalyDAHYcNc8pZlaeQO+tTbKDSFG4mEb6oPR7Etmc5Fr5UoNwscl4I+6kVIIQ7wwOdnTmCWYQ6bnCmyQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4937
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
         autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -155,158 +144,150 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 >>>>
 >>>>> Alistair Popple <apopple@nvidia.com> writes:
 >>>>>
->>>>>> "Huang, Ying" <ying.huang@intel.com> writes:
+>>>>>> Huang Ying <ying.huang@intel.com> writes:
 >>>>>>
->>>>>>> Hi, Alistair,
+>>>>>>> Previously, a fixed abstract distance MEMTIER_DEFAULT_DAX_ADISTANCE is
+>>>>>>> used for slow memory type in kmem driver.  This limits the usage of
+>>>>>>> kmem driver, for example, it cannot be used for HBM (high bandwidth
+>>>>>>> memory).
 >>>>>>>
->>>>>>> Sorry for late response.  Just come back from vacation.
->>>>>>
->>>>>> Ditto for this response :-)
->>>>>>
->>>>>> I see Andrew has taken this into mm-unstable though, so my bad for not
->>>>>> getting around to following all this up sooner.
->>>>>>
->>>>>>> Alistair Popple <apopple@nvidia.com> writes:
+>>>>>>> So, we use the general abstract distance calculation mechanism in kmem
+>>>>>>> drivers to get more accurate abstract distance on systems with proper
+>>>>>>> support.  The original MEMTIER_DEFAULT_DAX_ADISTANCE is used as
+>>>>>>> fallback only.
 >>>>>>>
->>>>>>>> "Huang, Ying" <ying.huang@intel.com> writes:
->>>>>>>>
->>>>>>>>> Alistair Popple <apopple@nvidia.com> writes:
->>>>>>>>>
->>>>>>>>>> "Huang, Ying" <ying.huang@intel.com> writes:
->>>>>>>>>>
->>>>>>>>>>> Alistair Popple <apopple@nvidia.com> writes:
->>>>>>>>>>>
->>>>>>>>>>>>>>> While other memory device drivers can use the general notifier chain
->>>>>>>>>>>>>>> interface at the same time.
->>>>>>>>>>>>
->>>>>>>>>>>> How would that work in practice though? The abstract distance as far as
->>>>>>>>>>>> I can tell doesn't have any meaning other than establishing preferences
->>>>>>>>>>>> for memory demotion order. Therefore all calculations are relative to
->>>>>>>>>>>> the rest of the calculations on the system. So if a driver does it's own
->>>>>>>>>>>> thing how does it choose a sensible distance? IHMO the value here is in
->>>>>>>>>>>> coordinating all that through a standard interface, whether that is HMAT
->>>>>>>>>>>> or something else.
->>>>>>>>>>>
->>>>>>>>>>> Only if different algorithms follow the same basic principle.  For
->>>>>>>>>>> example, the abstract distance of default DRAM nodes are fixed
->>>>>>>>>>> (MEMTIER_ADISTANCE_DRAM).  The abstract distance of the memory device is
->>>>>>>>>>> in linear direct proportion to the memory latency and inversely
->>>>>>>>>>> proportional to the memory bandwidth.  Use the memory latency and
->>>>>>>>>>> bandwidth of default DRAM nodes as base.
->>>>>>>>>>>
->>>>>>>>>>> HMAT and CDAT report the raw memory latency and bandwidth.  If there are
->>>>>>>>>>> some other methods to report the raw memory latency and bandwidth, we
->>>>>>>>>>> can use them too.
->>>>>>>>>>
->>>>>>>>>> Argh! So we could address my concerns by having drivers feed
->>>>>>>>>> latency/bandwidth numbers into a standard calculation algorithm right?
->>>>>>>>>> Ie. Rather than having drivers calculate abstract distance themselves we
->>>>>>>>>> have the notifier chains return the raw performance data from which the
->>>>>>>>>> abstract distance is derived.
->>>>>>>>>
->>>>>>>>> Now, memory device drivers only need a general interface to get the
->>>>>>>>> abstract distance from the NUMA node ID.  In the future, if they need
->>>>>>>>> more interfaces, we can add them.  For example, the interface you
->>>>>>>>> suggested above.
->>>>>>>>
->>>>>>>> Huh? Memory device drivers (ie. dax/kmem.c) don't care about abstract
->>>>>>>> distance, it's a meaningless number. The only reason they care about it
->>>>>>>> is so they can pass it to alloc_memory_type():
->>>>>>>>
->>>>>>>> struct memory_dev_type *alloc_memory_type(int adistance)
->>>>>>>>
->>>>>>>> Instead alloc_memory_type() should be taking bandwidth/latency numbers
->>>>>>>> and the calculation of abstract distance should be done there. That
->>>>>>>> resovles the issues about how drivers are supposed to devine adistance
->>>>>>>> and also means that when CDAT is added we don't have to duplicate the
->>>>>>>> calculation code.
->>>>>>>
->>>>>>> In the current design, the abstract distance is the key concept of
->>>>>>> memory types and memory tiers.  And it is used as interface to allocate
->>>>>>> memory types.  This provides more flexibility than some other interfaces
->>>>>>> (e.g. read/write bandwidth/latency).  For example, in current
->>>>>>> dax/kmem.c, if HMAT isn't available in the system, the default abstract
->>>>>>> distance: MEMTIER_DEFAULT_DAX_ADISTANCE is used.  This is still useful
->>>>>>> to support some systems now.  On a system without HMAT/CDAT, it's
->>>>>>> possible to calculate abstract distance from ACPI SLIT, although this is
->>>>>>> quite limited.  I'm not sure whether all systems will provide read/write
->>>>>>> bandwith/latency data for all memory devices.
->>>>>>>
->>>>>>> HMAT and CDAT or some other mechanisms may provide the read/write
->>>>>>> bandwidth/latency data to be used to calculate abstract distance.  For
->>>>>>> them, we can provide a shared implementation in mm/memory-tiers.c to map
->>>>>>> from read/write bandwith/latency to the abstract distance.  Can this
->>>>>>> solve your concerns about the consistency among algorithms?  If so, we
->>>>>>> can do that when we add the second algorithm that needs that.
+>>>>>>> Now, multiple memory types may be managed by kmem.  These memory types
+>>>>>>> are put into the "kmem_memory_types" list and protected by
+>>>>>>> kmem_memory_type_lock.
 >>>>>>
->>>>>> I guess it would address my concerns if we did that now. I don't see why
->>>>>> we need to wait for a second implementation for that though - the whole
->>>>>> series seems to be built around adding a framework for supporting
->>>>>> multiple algorithms even though only one exists. So I think we should
->>>>>> support that fully, or simplfy the whole thing and just assume the only
->>>>>> thing that exists is HMAT and get rid of the general interface until a
->>>>>> second algorithm comes along.
+>>>>>> See below but I wonder if kmem_memory_types could be a common helper
+>>>>>> rather than kdax specific?
+>>>>>>
+>>>>>>> Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
+>>>>>>> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>>>>>> Cc: Wei Xu <weixugc@google.com>
+>>>>>>> Cc: Alistair Popple <apopple@nvidia.com>
+>>>>>>> Cc: Dan Williams <dan.j.williams@intel.com>
+>>>>>>> Cc: Dave Hansen <dave.hansen@intel.com>
+>>>>>>> Cc: Davidlohr Bueso <dave@stgolabs.net>
+>>>>>>> Cc: Johannes Weiner <hannes@cmpxchg.org>
+>>>>>>> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>>>>> Cc: Michal Hocko <mhocko@kernel.org>
+>>>>>>> Cc: Yang Shi <shy828301@gmail.com>
+>>>>>>> Cc: Rafael J Wysocki <rafael.j.wysocki@intel.com>
+>>>>>>> ---
+>>>>>>>  drivers/dax/kmem.c           | 54 +++++++++++++++++++++++++++---------
+>>>>>>>  include/linux/memory-tiers.h |  2 ++
+>>>>>>>  mm/memory-tiers.c            |  2 +-
+>>>>>>>  3 files changed, 44 insertions(+), 14 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+>>>>>>> index 898ca9505754..837165037231 100644
+>>>>>>> --- a/drivers/dax/kmem.c
+>>>>>>> +++ b/drivers/dax/kmem.c
+>>>>>>> @@ -49,14 +49,40 @@ struct dax_kmem_data {
+>>>>>>>  	struct resource *res[];
+>>>>>>>  };
+>>>>>>>  
+>>>>>>> -static struct memory_dev_type *dax_slowmem_type;
+>>>>>>> +static DEFINE_MUTEX(kmem_memory_type_lock);
+>>>>>>> +static LIST_HEAD(kmem_memory_types);
+>>>>>>> +
+>>>>>>> +static struct memory_dev_type *kmem_find_alloc_memorty_type(int adist)
+>>>>>>> +{
+>>>>>>> +	bool found = false;
+>>>>>>> +	struct memory_dev_type *mtype;
+>>>>>>> +
+>>>>>>> +	mutex_lock(&kmem_memory_type_lock);
+>>>>>>> +	list_for_each_entry(mtype, &kmem_memory_types, list) {
+>>>>>>> +		if (mtype->adistance == adist) {
+>>>>>>> +			found = true;
+>>>>>>> +			break;
+>>>>>>> +		}
+>>>>>>> +	}
+>>>>>>> +	if (!found) {
+>>>>>>> +		mtype = alloc_memory_type(adist);
+>>>>>>> +		if (!IS_ERR(mtype))
+>>>>>>> +			list_add(&mtype->list, &kmem_memory_types);
+>>>>>>> +	}
+>>>>>>> +	mutex_unlock(&kmem_memory_type_lock);
+>>>>>>> +
+>>>>>>> +	return mtype;
+>>>>>>> +}
+>>>>>>> +
+>>>>>>>  static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+>>>>>>>  {
+>>>>>>>  	struct device *dev = &dev_dax->dev;
+>>>>>>>  	unsigned long total_len = 0;
+>>>>>>>  	struct dax_kmem_data *data;
+>>>>>>> +	struct memory_dev_type *mtype;
+>>>>>>>  	int i, rc, mapped = 0;
+>>>>>>>  	int numa_node;
+>>>>>>> +	int adist = MEMTIER_DEFAULT_DAX_ADISTANCE;
+>>>>>>>  
+>>>>>>>  	/*
+>>>>>>>  	 * Ensure good NUMA information for the persistent memory.
+>>>>>>> @@ -71,6 +97,11 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+>>>>>>>  		return -EINVAL;
+>>>>>>>  	}
+>>>>>>>  
+>>>>>>> +	mt_calc_adistance(numa_node, &adist);
+>>>>>>> +	mtype = kmem_find_alloc_memorty_type(adist);
+>>>>>>> +	if (IS_ERR(mtype))
+>>>>>>> +		return PTR_ERR(mtype);
+>>>>>>> +
+>>>>>>
+>>>>>> I wrote my own quick and dirty module to test this and wrote basically
+>>>>>> the same code sequence.
+>>>>>>
+>>>>>> I notice your using a list of memory types here though. I think it would
+>>>>>> be nice to have a common helper that other users could call to do the
+>>>>>> mt_calc_adistance() / kmem_find_alloc_memory_type() /
+>>>>>> init_node_memory_type() sequence and cleanup as my naive approach would
+>>>>>> result in a new memory_dev_type per device even though adist might be
+>>>>>> the same. A common helper would make it easy to de-dup those.
 >>>>>
->>>>> We will need a general interface even for one algorithm implementation.
->>>>> Because it's not good to make a dax subsystem driver (dax/kmem) to
->>>>> depend on a ACPI subsystem driver (acpi/hmat).  We need some general
->>>>> interface at subsystem level (memory tier here) between them.
+>>>>> If it's useful, we can move kmem_find_alloc_memory_type() to
+>>>>> memory-tier.c after some revision.  But I tend to move it after we have
+>>>>> the second user.  What do you think about that?
 >>>>
->>>> I don't understand this argument. For a single algorithm it would be
->>>> simpler to just define acpi_hmat_calculate_adistance() and a static
->>>> inline version of it that returns -ENOENT when !CONFIG_ACPI than adding
->>>> a layer of indirection through notifier blocks. That breaks any
->>>> dependency on ACPI and there's plenty of precedent for this approach in
->>>> the kernel already.
+>>>> Usually I would agree, but this series already introduces a general
+>>>> interface for calculating adist even though there's only one user and
+>>>> implementation. So if we're going to add a general interface I think it
+>>>> would be better to make it more usable now rather than after variations
+>>>> of it have been cut and pasted into other drivers.
 >>>
->>> ACPI is a subsystem, so it's OK for dax/kmem to depends on CONFIG_ACPI.
->>> But HMAT is a driver of ACPI subsystem (controlled via
->>> CONFIG_ACPI_HMAT).  It's not good for a driver of DAX subsystem
->>> (dax/kmem) to depend on a *driver* of ACPI subsystem.
->>>
->>> Yes.  Technically, there's no hard wall to prevent this.  But I think
->>> that a good design should make drivers depends on subsystems or drivers
->>> of the same subsystem, NOT drivers of other subsystems.
+>>> In general, I would like to introduce complexity when necessary.  So, we
+>>> can discuss the necessity of the general interface firstly.  We can do
+>>> that in [1/4] of the series.
 >>
->> Thanks, I wasn't really thinking of HMAT as an ACPI driver. I understand
->> where you're coming from but I really don't see the problem with using a
->> static inline. It doesn't create dependencies (you could still use
->> dax/kmem without ACPI) and results in smaller and easier to follow code.
+>> Do we need one memory_dev_type per adistance or per adistance+device?
 >>
->> IMHO it's far more obvious that a call to acpi_hmat_calcaulte_adist()
->> returns either a default if ACPI HMAT isn't configured or a calculated
->> value than it is to figure out what notifiers may or may not be
->> registered at runtime and what priority they may be called in from
->> mt_calc_adistance().
->>
->> It appears you think that is a bad design, but I don't understand
->> why. What does this approach give us that a simpler approach wouldn't?
+>> If IUC correctly I think it's the former. Logically that means
+>> memory_dev_types should be managed by the memory-tiering subsystem
+>> because they are system wide rather than driver specific resources. That
+>> we need to add the list field to struct memory_dev_type specifically for
+>> use by dax/kmem supports that idea.
 >
-> Think about all these again.  Finally I admit you are right.  The
-> general interface is better mainly if there are multiple implementations
-> of the interface.
->
-> In this series, we provide just one implementation: HMAT.  And, the
-> second one: CDAT will be implemented soon.  And, CDAT will use the same
-> method to translate from read/write bandwidth/latency to adistance.  So,
-> I suggest to:
->
-> - Keep the general interface (and notifier chain), for HMAT and soon
->   available CDAT
->
-> - Move the code to translate from read/write bandwidth/latency to
->   adistance to memory-tiers.c.  Which is used by HMAT now and will be
->   used by CDAT soon.  And it can be used by other drivers.
->
-> What do you think about that?
+> In the original design (page 9/10/11 of [1]), memory_dev_type (Memory
+> Type) is driver specific.
 
-That sounds great. I had kinda assumed CDAT was around the corner, and
-was "the other driver" I was thinking of hence the suggestion to make it
-a bit more general (or alternatively ignore that and make it specific,
-but you've already done the work to make it general so happy to keep
-it).
+Oh fair enough. I was making these comments based on the incorrect
+understanding that these were a global rather than driver specific
+resource. Thanks for correcting that!
 
-BTW for what it's worth I still think it might be best to have the
-notifiers return bandwidth/latency numbers. In practice though that
-would actually make my life harder so I'm happy to see where the above
-takes us.
+>> Also I'm not sure why you consider moving the
+>> kmem_memory_types/kmem_find_alloc_memory_type()/etc. functions into
+>> mm/memory-tiers.c to add complexity. Isn't it just moving code around or
+>> am I missing some other subtlety that makes this hard? I really think
+>> logically memory-tiering.c is where management of the various
+>> memory_dev_types belongs.
+>
+> IMHO, it depends on whether these functions are shared by at least 2
+> drivers.  If so, we can put them in mm/memory-tiers.c.  Otherwise, we
+> should keep them in the driver.
+
+Ok. Not sure I entirely agree because I suspect it would still make the
+code clearer even for a single user. But generally you're correct and as
+these memory_dev_type's are *supposed* to be driver specific (rather
+than one per adistance) I don't think it's such a big issue.
