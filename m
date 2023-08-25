@@ -2,49 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BC7E787ED7
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Aug 2023 06:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9A60787F39
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Aug 2023 07:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbjHYEA0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Aug 2023 00:00:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37062 "EHLO
+        id S230167AbjHYF0O (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Aug 2023 01:26:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240875AbjHYD7y (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Aug 2023 23:59:54 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 474661FE6;
-        Thu, 24 Aug 2023 20:59:51 -0700 (PDT)
-Received: from dggpeml500003.china.huawei.com (unknown [172.30.72.55])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RX5j84zBhzNn8Z;
-        Fri, 25 Aug 2023 11:56:12 +0800 (CST)
-Received: from [10.174.177.173] (10.174.177.173) by
- dggpeml500003.china.huawei.com (7.185.36.200) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 25 Aug 2023 11:59:47 +0800
-Message-ID: <a29d4ef5-fba2-b1f4-9c48-5c125dbe0e27@huawei.com>
-Date:   Fri, 25 Aug 2023 11:59:47 +0800
+        with ESMTP id S232440AbjHYF0C (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Aug 2023 01:26:02 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA9A61FE4;
+        Thu, 24 Aug 2023 22:26:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692941160; x=1724477160;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aI6BWUAP+LSvDVU35aySOQGiA1HZ2NfjXkBNcqq4AeE=;
+  b=Z0G+n1Wi81D+63XUA3DPf2g1H0V3vZAXV9+3GJoDiirHwgSsKlq8CaSH
+   RIwohCUHn/qkTJNw10pCyiDb9Wh5/xLkUbARzQwX3wy8kuM1s8XaoOtFx
+   jklpe1Y0/Q2WimZaAm0S/Cuug9y53f5UxL/vw1TexRwX6COghZxMLK6OY
+   1HFmA8IgoUrE5qNZeOliDExxoFdtft3nDFWVZP1+m7b3UMxN59D5ZZOqT
+   G0gSWcEc1L+zQTuXE3ZXV9cGOSoXuF8pFQYube2LM06xTRwwFLMA0wg3j
+   9n63mpw8G4rEKRW6/mAW7mtnMBHkTOcDhaXkTG7kwv/dCBE5+fKonlkoM
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="440978245"
+X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
+   d="scan'208";a="440978245"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 22:26:00 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
+   d="scan'208";a="881045210"
+Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
+  by fmsmga001.fm.intel.com with ESMTP; 24 Aug 2023 22:26:01 -0700
+Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qZPKV-0003Ei-26;
+        Fri, 25 Aug 2023 05:25:55 +0000
+Date:   Fri, 25 Aug 2023 13:25:21 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>
+Cc:     oe-kbuild-all@lists.linux.dev, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Iain Lane <iain@orangesquash.org.uk>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v14.b 7/7] ACPI: x86: s2idle: Add a function to get
+ constraints for a device
+Message-ID: <202308251347.C2sdb28f-lkp@intel.com>
+References: <20230818194007.27410-8-mario.limonciello@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH 1/2] ACPI: NFIT: Fix incorrect calculation of idt size
-Content-Language: en-US
-To:     <dan.j.williams@intel.com>, <vishal.l.verma@intel.com>,
-        <dave.jiang@intel.com>, <ira.weiny@intel.com>, <rafael@kernel.org>
-CC:     <liwei391@huawei.com>, <lenb@kernel.org>, <robert.moore@intel.com>,
-        <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20230817091124.915407-1-liaoyu15@huawei.com>
-From:   Yu Liao <liaoyu15@huawei.com>
-In-Reply-To: <20230817091124.915407-1-liaoyu15@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.173]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpeml500003.china.huawei.com (7.185.36.200)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,HK_RANDOM_ENVFROM,
-        HK_RANDOM_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230818194007.27410-8-mario.limonciello@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,40 +72,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Mario,
 
-A kindly ping, any comment on this?
+kernel test robot noticed the following build warnings:
 
-Best regards,
-Yu
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.5-rc7]
+[cannot apply to next-20230824]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/ACPI-Adjust-ifdef-for-_lps0_dev-use/20230821-113922
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20230818194007.27410-8-mario.limonciello%40amd.com
+patch subject: [PATCH v14.b 7/7] ACPI: x86: s2idle: Add a function to get constraints for a device
+config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20230825/202308251347.C2sdb28f-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
+reproduce: (https://download.01.org/0day-ci/archive/20230825/202308251347.C2sdb28f-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202308251347.C2sdb28f-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/acpi/x86/s2idle.c:311: warning: Function parameter or member 'adev' not described in 'acpi_get_lps0_constraint'
+>> drivers/acpi/x86/s2idle.c:311: warning: Excess function parameter 'dev' description in 'acpi_get_lps0_constraint'
 
 
-On 2023/8/17 17:11, Yu Liao wrote:
-> acpi_nfit_interleave's field 'line_offset' is switched to flexible array [1],
-> but sizeof_idt() still calculates the size in the form of 1-element array.
-> 
-> Therefore, fix incorrect calculation in sizeof_idt().
-> 
-> [1] https://lore.kernel.org/lkml/2652195.BddDVKsqQX@kreacher/
-> 
-> Fixes: 2a5ab99847bd ("ACPICA: struct acpi_nfit_interleave: Replace 1-element array with flexible array")
-> Cc: stable@vger.kernel.org # v6.4+
-> Signed-off-by: Yu Liao <liaoyu15@huawei.com>
-> ---
->  drivers/acpi/nfit/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> index 07204d482968..305f590c54a8 100644
-> --- a/drivers/acpi/nfit/core.c
-> +++ b/drivers/acpi/nfit/core.c
-> @@ -855,7 +855,7 @@ static size_t sizeof_idt(struct acpi_nfit_interleave *idt)
->  {
->  	if (idt->header.length < sizeof(*idt))
->  		return 0;
-> -	return sizeof(*idt) + sizeof(u32) * (idt->line_count - 1);
-> +	return sizeof(*idt) + sizeof(u32) * idt->line_count;
->  }
->  
->  static bool add_idt(struct acpi_nfit_desc *acpi_desc,
+vim +311 drivers/acpi/x86/s2idle.c
 
+   301	
+   302	/**
+   303	 * acpi_get_lps0_constraint - get the LPS0 constraint for a device
+   304	 * @dev: device to get constraints for
+   305	 *
+   306	 * Returns:
+   307	 *  - ACPI state value for constraint.
+   308	 *  - Otherwise, ACPI_STATE_UNKNOWN.
+   309	 */
+   310	int acpi_get_lps0_constraint(struct acpi_device *adev)
+ > 311	{
+   312		struct lpi_constraints *entry;
+   313	
+   314		for_each_lpi_constraint(entry) {
+   315			if (adev->handle != entry->handle)
+   316				continue;
+   317			return entry->min_dstate;
+   318		}
+   319	
+   320		return ACPI_STATE_UNKNOWN;
+   321	}
+   322	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
