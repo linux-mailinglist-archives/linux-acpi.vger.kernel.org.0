@@ -2,152 +2,242 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30C55788D4C
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Aug 2023 18:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6CD7788FDE
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Aug 2023 22:32:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344045AbjHYQnR convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 25 Aug 2023 12:43:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38432 "EHLO
+        id S230117AbjHYUbh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Aug 2023 16:31:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344076AbjHYQm4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Aug 2023 12:42:56 -0400
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EC04E54;
-        Fri, 25 Aug 2023 09:42:52 -0700 (PDT)
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-573128cd77dso195582eaf.0;
-        Fri, 25 Aug 2023 09:42:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692981771; x=1693586571;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mb6UwN7bqxNEBVBwpVvxzoowsG5Fs07U9AiGF9V4s0g=;
-        b=klRKXH3WoI0t7v1fqOX27ynJ/ZhUxAbEikGL9MHEO4+3YwPp08XPEQSUIZiV6LI9o0
-         EfwxOi9XcBsCxU33v6lqBjTRhypmUJpiFb9ZYkfbhMP4jGswrn+DPvFVv+ffdeGimk+G
-         jjUHejgQEH1DG/ZnGZUO8ZGY2WshCTIIZIes+/bDnCvUfM4b/FZMucG79uUrn+RYzGBW
-         oZhiKQ03x4AzhX+hhE+p22U2e9AJYTiQjEV0jvVLB/lplsikNYlcqCnfCb0JUosxFDAm
-         YtF6zMofJ7sEqs9bvRnNehDx4uOO9YPsCIojE6FVB7I8HXb3830NrBWCt8QnUAN+Tnnb
-         pyaA==
-X-Gm-Message-State: AOJu0YwL/2lMugyCdklAiufzVLmHXgtaP1llzWloin1TXRDf0/asocnJ
-        ilxXkBFIDMW6sTixjghp9glCk/bPREglqWh6o4o=
-X-Google-Smtp-Source: AGHT+IFo1xts08LHwvna+TJOgUK2rfrorRhxJjJfcSqsbQ7yNEqg3JkIMYrx2iieZeWVQwJ5+oqBkuK6NfjLbCwi4uk=
-X-Received: by 2002:a4a:e741:0:b0:56e:94ed:c098 with SMTP id
- n1-20020a4ae741000000b0056e94edc098mr19227852oov.0.1692981771638; Fri, 25 Aug
- 2023 09:42:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <12270283.O9o76ZdvQC@kreacher>
-In-Reply-To: <12270283.O9o76ZdvQC@kreacher>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 25 Aug 2023 18:42:40 +0200
-Message-ID: <CAJZ5v0iizEDW50Rr17qu2xCnPVE+4eY3aNMQ3FNRNTvmiRL1Zw@mail.gmail.com>
-Subject: Re: [PATCH v1] thermal: core: Drop unused .get_trip_*() callbacks
+        with ESMTP id S230098AbjHYUbY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Aug 2023 16:31:24 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA2F51BE6;
+        Fri, 25 Aug 2023 13:31:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692995481; x=1724531481;
+  h=date:from:to:cc:subject:message-id;
+  bh=++TkEGbsL0jK4oH5knq3rKGZEabvttSthN1xc9pKCxA=;
+  b=Qz24A7QQ1j3n4eTxCL/CrPBRXTNDYrSBcJmPc2PCr/RMputeAMzzy4ei
+   86v3pin0NPg4eybMNhfECcqg9opdzkaZUQE6jeVsJdrIt0SeDM0eAA+Vk
+   HxmV9u29V5zmxiXZN4YS7AgJbLblfYIn3fF5vIhZQDSbJUsI+Su/kVlSs
+   fjsJKCDpDNntms6D3Bd8Ru321FZ9UzFQ+CUpuz4CsxgM+GPDsDCnwa8ZL
+   UCxP1eNIKboFkTDlW1+gAFjNUGXap+4rbLwzXq917PZC9KFaf/6dG29Bp
+   YLzhoGFcemzagknCMy69BZK1aeVk3OufOz+o3HEs4++9R5/uvYNH83/uJ
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10813"; a="438737588"
+X-IronPort-AV: E=Sophos;i="6.02,201,1688454000"; 
+   d="scan'208";a="438737588"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2023 13:31:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10813"; a="1068351824"
+X-IronPort-AV: E=Sophos;i="6.02,201,1688454000"; 
+   d="scan'208";a="1068351824"
+Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 25 Aug 2023 13:31:18 -0700
+Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qZdSf-0003z9-1H;
+        Fri, 25 Aug 2023 20:31:17 +0000
+Date:   Sat, 26 Aug 2023 04:30:27 +0800
+From:   kernel test robot <lkp@intel.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Amit Kucheria <amitk@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 1d5e1321ead0b6172df55d47f190742f7a614bfd
+Message-ID: <202308260426.wCSfRBBP-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 25, 2023 at 6:17 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
->
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> After recent changes in the ACPI thermal driver and in the Intel DTS
-> IOSF thermal driver, all thermal zone drivers are expected to use trip
-> tables for initialization and none of them should implement
-> .get_trip_type(), .get_trip_temp() or .get_trip_hyst() callbacks, so
-> drop these callbacks entirely from the core.
->
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->  drivers/thermal/thermal_core.c |    2 +-
->  drivers/thermal/thermal_trip.c |   22 +++-------------------
->  include/linux/thermal.h        |    4 ----
->  3 files changed, 4 insertions(+), 24 deletions(-)
->
-> Index: linux-pm/include/linux/thermal.h
-> ===================================================================
-> --- linux-pm.orig/include/linux/thermal.h
-> +++ linux-pm/include/linux/thermal.h
-> @@ -76,11 +76,7 @@ struct thermal_zone_device_ops {
->         int (*set_trips) (struct thermal_zone_device *, int, int);
->         int (*change_mode) (struct thermal_zone_device *,
->                 enum thermal_device_mode);
-> -       int (*get_trip_type) (struct thermal_zone_device *, int,
-> -               enum thermal_trip_type *);
-> -       int (*get_trip_temp) (struct thermal_zone_device *, int, int *);
->         int (*set_trip_temp) (struct thermal_zone_device *, int, int);
-> -       int (*get_trip_hyst) (struct thermal_zone_device *, int, int *);
->         int (*set_trip_hyst) (struct thermal_zone_device *, int, int);
->         int (*get_crit_temp) (struct thermal_zone_device *, int *);
->         int (*set_emul_temp) (struct thermal_zone_device *, int);
-> Index: linux-pm/drivers/thermal/thermal_trip.c
-> ===================================================================
-> --- linux-pm.orig/drivers/thermal/thermal_trip.c
-> +++ linux-pm/drivers/thermal/thermal_trip.c
-> @@ -118,27 +118,11 @@ int __thermal_zone_get_trip(struct therm
->  {
->         int ret;
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 1d5e1321ead0b6172df55d47f190742f7a614bfd  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
 
-The above needs to be dropped from this function too, but I'll fix it
-up when applying the patch.
+elapsed time: 1533m
 
-Hopefully, that will be fine with everyone.
+configs tested: 165
+configs skipped: 2
 
->
-> -       if (!tz || trip_id < 0 || trip_id >= tz->num_trips || !trip)
-> +       if (!tz || !tz->trips || trip_id < 0 || trip_id >= tz->num_trips || !trip)
->                 return -EINVAL;
->
-> -       if (tz->trips) {
-> -               *trip = tz->trips[trip_id];
-> -               return 0;
-> -       }
-> -
-> -       if (tz->ops->get_trip_hyst) {
-> -               ret = tz->ops->get_trip_hyst(tz, trip_id, &trip->hysteresis);
-> -               if (ret)
-> -                       return ret;
-> -       } else {
-> -               trip->hysteresis = 0;
-> -       }
-> -
-> -       ret = tz->ops->get_trip_temp(tz, trip_id, &trip->temperature);
-> -       if (ret)
-> -               return ret;
-> -
-> -       return tz->ops->get_trip_type(tz, trip_id, &trip->type);
-> +       *trip = tz->trips[trip_id];
-> +       return 0;
->  }
->  EXPORT_SYMBOL_GPL(__thermal_zone_get_trip);
->
-> Index: linux-pm/drivers/thermal/thermal_core.c
-> ===================================================================
-> --- linux-pm.orig/drivers/thermal/thermal_core.c
-> +++ linux-pm/drivers/thermal/thermal_core.c
-> @@ -1266,7 +1266,7 @@ thermal_zone_device_register_with_trips(
->                 return ERR_PTR(-EINVAL);
->         }
->
-> -       if (num_trips > 0 && (!ops->get_trip_type || !ops->get_trip_temp) && !trips)
-> +       if (num_trips > 0 && !trips)
->                 return ERR_PTR(-EINVAL);
->
->         if (!thermal_class)
->
->
->
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r014-20230825   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20230825   gcc  
+arc                  randconfig-r006-20230825   gcc  
+arc                  randconfig-r034-20230825   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20230825   clang
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r003-20230825   gcc  
+csky                 randconfig-r025-20230825   gcc  
+hexagon               randconfig-001-20230825   clang
+hexagon               randconfig-002-20230825   clang
+i386         buildonly-randconfig-001-20230825   clang
+i386         buildonly-randconfig-002-20230825   clang
+i386         buildonly-randconfig-003-20230825   clang
+i386         buildonly-randconfig-004-20230825   clang
+i386         buildonly-randconfig-005-20230825   clang
+i386         buildonly-randconfig-006-20230825   clang
+i386                                defconfig   gcc  
+i386                  randconfig-001-20230825   clang
+i386                  randconfig-002-20230825   clang
+i386                  randconfig-003-20230825   clang
+i386                  randconfig-004-20230825   clang
+i386                  randconfig-005-20230825   clang
+i386                  randconfig-006-20230825   clang
+i386                  randconfig-011-20230825   gcc  
+i386                  randconfig-012-20230825   gcc  
+i386                  randconfig-013-20230825   gcc  
+i386                  randconfig-014-20230825   gcc  
+i386                  randconfig-015-20230825   gcc  
+i386                  randconfig-016-20230825   gcc  
+i386                 randconfig-r032-20230825   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20230825   gcc  
+loongarch            randconfig-r011-20230825   gcc  
+loongarch            randconfig-r016-20230825   gcc  
+loongarch            randconfig-r031-20230825   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r024-20230825   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                            gpr_defconfig   gcc  
+mips                           ip28_defconfig   clang
+mips                     loongson2k_defconfig   clang
+mips                 randconfig-r015-20230825   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r026-20230825   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+openrisc                    or1ksim_defconfig   gcc  
+openrisc             randconfig-r033-20230825   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r005-20230825   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc                      obs600_defconfig   clang
+powerpc              randconfig-r036-20230825   clang
+powerpc                         wii_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20230825   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20230825   gcc  
+s390                 randconfig-r012-20230825   gcc  
+s390                 randconfig-r023-20230825   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                          polaris_defconfig   gcc  
+sh                   randconfig-r001-20230825   gcc  
+sh                          rsk7201_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64              randconfig-r002-20230825   gcc  
+sparc64              randconfig-r021-20230825   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20230825   clang
+x86_64       buildonly-randconfig-002-20230825   clang
+x86_64       buildonly-randconfig-003-20230825   clang
+x86_64       buildonly-randconfig-004-20230825   clang
+x86_64       buildonly-randconfig-005-20230825   clang
+x86_64       buildonly-randconfig-006-20230825   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20230825   gcc  
+x86_64                randconfig-002-20230825   gcc  
+x86_64                randconfig-003-20230825   gcc  
+x86_64                randconfig-004-20230825   gcc  
+x86_64                randconfig-005-20230825   gcc  
+x86_64                randconfig-006-20230825   gcc  
+x86_64                randconfig-011-20230825   clang
+x86_64                randconfig-012-20230825   clang
+x86_64                randconfig-013-20230825   clang
+x86_64                randconfig-014-20230825   clang
+x86_64                randconfig-015-20230825   clang
+x86_64                randconfig-016-20230825   clang
+x86_64                randconfig-071-20230825   clang
+x86_64                randconfig-072-20230825   clang
+x86_64                randconfig-073-20230825   clang
+x86_64                randconfig-074-20230825   clang
+x86_64                randconfig-075-20230825   clang
+x86_64                randconfig-076-20230825   clang
+x86_64               randconfig-r022-20230825   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+xtensa               randconfig-r004-20230825   gcc  
+xtensa               randconfig-r013-20230825   gcc  
+xtensa               randconfig-r035-20230825   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
