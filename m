@@ -2,105 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9377789445
-	for <lists+linux-acpi@lfdr.de>; Sat, 26 Aug 2023 09:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B7EA78A009
+	for <lists+linux-acpi@lfdr.de>; Sun, 27 Aug 2023 17:44:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231755AbjHZHWN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 26 Aug 2023 03:22:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54626 "EHLO
+        id S230243AbjH0Pns (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 27 Aug 2023 11:43:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230435AbjHZHVm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 26 Aug 2023 03:21:42 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4846E2139;
-        Sat, 26 Aug 2023 00:21:35 -0700 (PDT)
-Received: from dggpeml500003.china.huawei.com (unknown [172.30.72.54])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RXp9q2qVBz1L9Vf;
-        Sat, 26 Aug 2023 15:19:59 +0800 (CST)
-Received: from huawei.com (10.175.103.91) by dggpeml500003.china.huawei.com
- (7.185.36.200) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Sat, 26 Aug
- 2023 15:21:31 +0800
-From:   Yu Liao <liaoyu15@huawei.com>
-To:     <dan.j.williams@intel.com>, <vishal.l.verma@intel.com>,
-        <dave.jiang@intel.com>, <ira.weiny@intel.com>, <rafael@kernel.org>
-CC:     <liaoyu15@huawei.com>, <liwei391@huawei.com>, <lenb@kernel.org>,
-        <robert.moore@intel.com>, <linux-acpi@vger.kernel.org>,
-        <nvdimm@lists.linux.dev>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 2/2] ACPI: NFIT: use struct_size() helper
-Date:   Sat, 26 Aug 2023 15:16:54 +0800
-Message-ID: <20230826071654.564372-2-liaoyu15@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230826071654.564372-1-liaoyu15@huawei.com>
-References: <20230826071654.564372-1-liaoyu15@huawei.com>
+        with ESMTP id S230202AbjH0Pnb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 27 Aug 2023 11:43:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F36F4ED;
+        Sun, 27 Aug 2023 08:43:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88BFE61122;
+        Sun, 27 Aug 2023 15:43:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD65C433C8;
+        Sun, 27 Aug 2023 15:43:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693151007;
+        bh=bPb4p4j0igZCsViibtVoyOO+JM0u5QNB2s0HIgV+F8I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=lC44SRzrz4+W1/99hfg3uctoMoGo8F8b9BvJLyDlihyuz3NJ3XpESzTeDCSAw5uBR
+         p0dwoGWIBkEt5/2tCuIHNUtllS+hiJjoQ1zpyofy47tXbEMI2VPMhm1q4R1kSluSNx
+         2MxxGeDs6JiyybQdvmUEp7BpegjQ2oXA2oKROvhDj/3y7ZGUTqO8kB5vLUEVGJrUls
+         J7omuqoSq0psI8MzX+L6V8SzHkTb0dXSWNnYafi+TeW/pW8Ig8R1WhPWgiZNTKsIIn
+         iTowfQ5UTG1oH/WXP9oeYXumpG6f2BFAbv50c4NxjItLE5vPDNNiFYdCdZe6XwZ9lr
+         LFWxOpV/Fz3Yw==
+Date:   Sun, 27 Aug 2023 17:43:12 +0200
+From:   Simon Horman <horms@kernel.org>
+To:     Evan Quan <evan.quan@amd.com>
+Cc:     lenb@kernel.org, johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        alexander.deucher@amd.com, rafael@kernel.org, Lijo.Lazar@amd.com,
+        mario.limonciello@amd.com, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [V10 1/8] ACPI: Add support for AMD ACPI based Wifi band RFI
+ mitigation feature
+Message-ID: <20230827154312.GT3523530@kernel.org>
+References: <20230825083846.4001973-1-evan.quan@amd.com>
+ <20230825083846.4001973-2-evan.quan@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml500003.china.huawei.com (7.185.36.200)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,HK_RANDOM_ENVFROM,
-        HK_RANDOM_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230825083846.4001973-2-evan.quan@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Make use of the struct_size() helper instead of an open-coded version,
-in order to avoid any potential type mistakes or integer overflows that,
-in the worst scenario, could lead to heap overflows.
+On Fri, Aug 25, 2023 at 04:38:39PM +0800, Evan Quan wrote:
+> Due to electrical and mechanical constraints in certain platform designs
+> there may be likely interference of relatively high-powered harmonics of
+> the (G-)DDR memory clocks with local radio module frequency bands used
+> by Wifi 6/6e/7.
+> 
+> To mitigate this, AMD has introduced a mechanism that devices can use to
+> notify active use of particular frequencies so that other devices can make
+> relative internal adjustments as necessary to avoid this resonance.
+> 
+> Signed-off-by: Evan Quan <evan.quan@amd.com>
 
-Signed-off-by: Yu Liao <liaoyu15@huawei.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
----
- drivers/acpi/nfit/core.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+...
 
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index 305f590c54a8..2f7217600307 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -712,8 +712,7 @@ static bool add_spa(struct acpi_nfit_desc *acpi_desc,
- 		}
- 	}
- 
--	nfit_spa = devm_kzalloc(dev, sizeof(*nfit_spa) + sizeof_spa(spa),
--			GFP_KERNEL);
-+	nfit_spa = devm_kzalloc(dev, struct_size(nfit_spa, spa, 1), GFP_KERNEL);
- 	if (!nfit_spa)
- 		return false;
- 	INIT_LIST_HEAD(&nfit_spa->list);
-@@ -741,7 +740,7 @@ static bool add_memdev(struct acpi_nfit_desc *acpi_desc,
- 			return true;
- 		}
- 
--	nfit_memdev = devm_kzalloc(dev, sizeof(*nfit_memdev) + sizeof(*memdev),
-+	nfit_memdev = devm_kzalloc(dev, struct_size(nfit_memdev, memdev, 1),
- 			GFP_KERNEL);
- 	if (!nfit_memdev)
- 		return false;
-@@ -812,8 +811,7 @@ static bool add_dcr(struct acpi_nfit_desc *acpi_desc,
- 			return true;
- 		}
- 
--	nfit_dcr = devm_kzalloc(dev, sizeof(*nfit_dcr) + sizeof(*dcr),
--			GFP_KERNEL);
-+	nfit_dcr = devm_kzalloc(dev, struct_size(nfit_dcr, dcr, 1), GFP_KERNEL);
- 	if (!nfit_dcr)
- 		return false;
- 	INIT_LIST_HEAD(&nfit_dcr->list);
-@@ -855,7 +853,7 @@ static size_t sizeof_idt(struct acpi_nfit_interleave *idt)
- {
- 	if (idt->header.length < sizeof(*idt))
- 		return 0;
--	return sizeof(*idt) + sizeof(u32) * idt->line_count;
-+	return struct_size(idt, line_offset, idt->line_count);
- }
- 
- static bool add_idt(struct acpi_nfit_desc *acpi_desc,
--- 
-2.25.1
+> diff --git a/drivers/acpi/amd_wbrf.c b/drivers/acpi/amd_wbrf.c
 
+...
+
+> +/**
+> + * acpi_amd_wbrf_add_exclusion - broadcast the frequency band the device
+> + *                               is using
+> + *
+> + * @dev: device pointer
+> + * @in: input structure containing the frequency band the device is using
+> + *
+> + * Broadcast to other consumers the frequency band the device starts
+> + * to use. Underneath the surface the information is cached into an
+> + * internal buffer first. Then a notification is sent to all those
+> + * registered consumers. So then they can retrieve that buffer to
+> + * know the latest active frequency bands. The benifit with such design
+
+nit: ./checkpatch.pl --codespell suggests benifit -> benefit.
+
+> + * is for those consumers which have not been registered yet, they can
+> + * still have a chance to retrieve such information later.
+> + */
+> +int acpi_amd_wbrf_add_exclusion(struct device *dev,
+> +				struct wbrf_ranges_in_out *in)
+> +{
+> +	struct acpi_device *adev = ACPI_COMPANION(dev);
+> +	int ret;
+> +
+> +	if (!adev)
+> +		return -ENODEV;
+> +
+> +	ret = wbrf_record(adev, WBRF_RECORD_ADD, in);
+> +	if (ret)
+> +		return ret;
+> +
+> +	blocking_notifier_call_chain(&wbrf_chain_head,
+> +				     WBRF_CHANGED,
+> +				     NULL);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_amd_wbrf_add_exclusion);
+
+...
