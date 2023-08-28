@@ -2,142 +2,216 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A19378B6EF
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Aug 2023 20:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AABF78B927
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Aug 2023 22:11:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232987AbjH1SBO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Aug 2023 14:01:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55648 "EHLO
+        id S231929AbjH1ULB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Aug 2023 16:11:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233001AbjH1SAr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Aug 2023 14:00:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0328010D;
-        Mon, 28 Aug 2023 11:00:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S233201AbjH1UKw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Aug 2023 16:10:52 -0400
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30045195;
+        Mon, 28 Aug 2023 13:10:49 -0700 (PDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 965B963D91;
-        Mon, 28 Aug 2023 18:00:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5695FC433C7;
-        Mon, 28 Aug 2023 18:00:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693245644;
-        bh=anTSmw6MgyMNpmqC7sR5fOUZIGW4VnZ7ptwo6QfqrwM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=F2kqKyUReIXbWgeBCBB0IPwXKeN+gGSKd7SxvtUnsdlacikInN2+FxRKGxDdy0v+u
-         bwDxue+PcVHpJIVlXwOOjBierv35ag0lVbtPsWSOiXGBnQWN1fzUa3zqGE+U8jV9kZ
-         v6HhvUlEHvpdnMnePOUioD94jG30D5RXkcHdD2f+kt47KmrVBb9TKgZoSLwuc6NQDz
-         IFmmFG1ik+J2IawdrQr47pc4XN/FxbWfxgHod2iifEDS7q9C8RdLPl7rizqKwzeRN0
-         wNuKqIBszTVKsTe3gyUMwV1y2CMygohiF6940p7LJ4MImSC7QncIG9VDO4IlGXvoi7
-         m71sa1EOu+eBQ==
-Date:   Mon, 28 Aug 2023 19:01:01 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Gerald Loacker <gerald.loacker@wolfvision.net>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v1 2/6] device property: Add
- fwnode_property_match_property_string()
-Message-ID: <20230828190101.50f70921@jic23-huawei>
-In-Reply-To: <ZNTlniWf8Ou9hHOT@smile.fi.intel.com>
-References: <20230808162800.61651-1-andriy.shevchenko@linux.intel.com>
-        <20230808162800.61651-3-andriy.shevchenko@linux.intel.com>
-        <20230809185944.1ae78e34@jic23-huawei>
-        <ZNTlniWf8Ou9hHOT@smile.fi.intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 5ADED30000085;
+        Mon, 28 Aug 2023 22:10:47 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id 38C422ED8B1; Mon, 28 Aug 2023 22:10:47 +0200 (CEST)
+Date:   Mon, 28 Aug 2023 22:10:47 +0200
+From:   Lukas Wunner <lukas@wunner.de>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v14.a 1/1] PCI: Only put Intel PCIe ports >= 2015 into D3
+Message-ID: <20230828201047.GA3545@wunner.de>
+References: <20230823050453.GA9103@wunner.de>
+ <20230823114619.GA414059@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230823114619.GA414059@bhelgaas>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 10 Aug 2023 16:26:54 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-
-> On Wed, Aug 09, 2023 at 06:59:44PM +0100, Jonathan Cameron wrote:
-> > On Tue,  8 Aug 2023 19:27:56 +0300
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:  
-> 
-> ...
-> 
-> > > +int fwnode_property_match_property_string(const struct fwnode_handle *fwnode,
-> > > +	const char *propname, const char * const *array, size_t n)  
+On Wed, Aug 23, 2023 at 06:46:19AM -0500, Bjorn Helgaas wrote:
+> On Wed, Aug 23, 2023 at 07:04:53AM +0200, Lukas Wunner wrote:
+> > On Tue, Aug 22, 2023 at 07:02:43PM -0500, Bjorn Helgaas wrote:
+> > > On Tue, Aug 22, 2023 at 12:11:10PM +0200, Rafael J. Wysocki wrote:
+> > > > What we need to deal with here is basically non-compliant systems and
+> > > > so we have to catch the various forms of non-compliance.
+> > > 
+> > > Thanks for this, that helps.  If pci_bridge_d3_possible() is a list of
+> > > quirks for systems that are known to be broken (or at least not known
+> > > to work correctly and avoiding D3 is acceptable), then we should
+> > > document and use it that way.
+> > > 
+> > > The current documentation ("checks if it is possible to move to D3")
+> > > frames it as "does the bridge have the required features?" instead of
+> > > "do we know about something broken in this bridge or this platform?"
+> > > 
+> > > If something is broken, I would expect tests based on the device or
+> > > DMI check.  But several some are not obvious defects.  E.g.,
+> > > "bridge->is_hotplug_bridge && !pciehp_is_native(bridge)" -- what
+> > > defect are we finding there?  What does the spec require that isn't
+> > > happening?
 > > 
-> > Hi Andy,
+> > This particular check doesn't pertain to a defect, but indeed
+> > follows from the spec:
 > > 
-> > Whilst I'm not 100% sold on adding ever increasing complexity to what we
-> > match, this one feels like a common enough thing to be worth providing.  
-> 
-> Yep, that's why I considered it's good to add (and because of new comers).
-> 
-> > Looking at the usecases I wonder if it would be better to pass in
-> > an unsigned int *ret which is only updated on a match?  
-> 
-> So the question is here are we going to match (pun intended) the prototype to
-> the device_property_match*() family of functions or to device_property_read_*()
-> one. If the latter, this has to be renamed, but then it probably will contradict
-> the semantics as we are _matching_ against something and not just _reading_
-> something.
-> 
-> That said, do you agree that current implementation is (slightly) better from
-> these aspects? Anyway, look at the below.
-> 
-> > That way the common properties approach of not checking the return value
-> > if we have an optional property would apply.
+> > If hotplug control wasn't granted to the OS, the OS shall not put
+> > the hotplug port in D3 behind firmware's back because the power state
+> > affects accessibility of devices downstream of the hotplug port.
 > > 
-> > e.g. patch 3  
-> 
-> Only?
-I didn't look further :)
-
-> 
-> > would end up with a block that looks like:
+> > Put another way, the firmware expects to have control of hotplug
+> > and hotplug may break if the OS fiddles with the power state of the
+> > hotplug port.
 > > 
-> > 	st->input_mode = ADMV1014_IQ_MODE;
-> > 	device_property_match_property_string(&spi->dev, "adi,input-mode",
-> > 					      input_mode_names,
-> > 					      ARRAY_SIZE(input_mode_names),
-> > 					      &st->input_mode);
+> > Here's a bugzilla where this caused issues:
+> > https://bugzilla.kernel.org/show_bug.cgi?id=53811
 > > 
-> > Only neat and tidy if the thing being optionally read into is an unsigned int
-> > though (otherwise you still need a local variable)  
+> > On the other hand Thunderbolt hotplug ports are required to runtime
+> > suspend to D3 in order to save power.  
 > 
-> We also can have a hybrid variant, returning in both sides
-> 
->   int device_property_match_property_string(..., size_t *index)
->   {
-> 	  if (index)
-> 		  *index = ret;
-> 	  return ret;
->   }
-> 
-> (also note the correct return type as it has to match to @n).
-> 
-> Would it be still okay or too over engineered?
-> 
-Probably over engineered....
+> Sounds like there may be a requirement in a Thunderbolt spec about
+> this, so maybe we could add that citation?  I guess this goes with the
+> "bridge->is_thunderbolt" check?
 
-Lets stick to what you have.  If various firmware folk are happy with
-the new function that's fine by me.  Rafael?
+Right, that's the check I was referring to.  But I'm afraid there is
+no explicit rule in Thunderbolt / USB4 specs that hotplug ports must
+be runtime suspended in order to save power, at least to the best
+of my knowledge.
 
-Jonathan
+In practice, Thunderbolt controllers come in one of two forms,
+discrete or integrated into the CPU.  Originally only discrete
+controllers existed, but over time it became more and more common
+to integrate them.
+
+Apple was pretty much the only vendor which sold larger quantities
+of Thunderbolt 1 and 2 chips in the 2010 to 2016 era.  Back in the day,
+only discrete controllers existed and they consumed around 1.5 to 2 W.
+On laptops, that's a significant amount of energy, so from day 1, Apple
+put load switches on their motherboards which allowed the Thunderbolt
+controllers to be powered down if nothing is plugged in.
+
+With the *integrated* Thunderbolt controllers, powering down on idle
+is usually likewise required to allow the entire CPU package to enter
+a low power state.
+
+To the operating system, a Thunderbolt controller is visible as a
+PCIe switch with an NHI device below one of the Downstream Ports
+and hotplugged devices appearing below the other Downstream Ports.
+The NHI is a vendor-agnostic Native Host Interface for tunnel setup,
+similar to the OHCI, EHCI, XHCI interface definitions that are in use
+with USB and FireWire controllers.
+
+Linux uses a hierarchical power management model, i.e. parent devices
+cannot runtime suspend unless their children runtime suspend.  Thus,
+the hotplug ports need to runtime suspend and then the Switch Upstream
+Port can runtime suspend and that triggers powerdown of the controller.
+
+To cut a long story short, in *practice* Thunderbolt hotplug ports need
+to be put into D3hot in order to save power, so that's what we do.
+And we know from experience that they're all *safe* to be put into D3hot.
+Hence we're whitelisting them in pci_bridge_d3_possible().
+
+By contrast, I recall that we got MCEs on Xeon-SP processors back in
+the day when their Root Ports were put into D3hot.  Hence the rather
+conservative approach taken in pci_bridge_d3_possible() to whitelist
+only known-good, newer hardware.
 
 
+> > On Macs they're always handled
+> > natively by the OS.  Hence the code comment.
+> 
+> And I guess this goes with the "System Management Mode" and
+> "Thunderbolt on non-Macs" comments?  A citation to the source behind
+> "OS shall not put the hotplug port in D3 behind firmware's back" would
+> be super helpful here.
+
+So I've just looked through the PCI Firmware Spec and can't find that
+mentioned anywhere explicitly, but it's pretty obvious if you think
+about it:
+
+If the OS puts the hotplug port in D3hot, its downstream bus transitions
+to either B2 or B3 (PCI Power Management Spec r1.2 sec 4.7.1).
+
+Which means devices downstream of the hotplug port become inaccessible.
+If hotplug control wasn't granted to the OS, firmware expects it may
+handle the hotplug port without interference by the OS.
+
+If the OS fiddles with the hotplug port's power state, that expectation
+is no longer met.  Let's say the firmware reads the downstream device's
+Vendor ID register to probe whether the device is there.  That'll no
+longer work as expected once the hotplug port is transitioned to D3hot
+by the operating system.
+
+In retrospect, this code comment is probably confusing:
+
+		/*
+		 * Hotplug ports handled by firmware in System Management Mode
+		 * may not be put into D3 by the OS (Thunderbolt on non-Macs).
+		 */
+		if (bridge->is_hotplug_bridge && !pciehp_is_native(bridge))
+			return false;
+
+This is not in any way specific to Thunderbolt.  It's just that
+back in the day, Thunderbolt tunnel management was done natively
+on Macs, whereas non-Macs did it in firmware.  That has since
+changed and most vendors have adopted native tunnel management.
+So the code comment is outdated.  The following would probably
+be more accurate today:
+
+		/*
+		 * Hotplug ports handled by firmware in System Management Mode
+		 * may not be put into D3 by the OS (behind firmware's back).
+		 */
+
+
+> > A somewhat longer explanation I gave in 2016:
+> > https://lore.kernel.org/all/20160617213209.GA1927@wunner.de/
+> > 
+> > Perhaps the code comment preceding that check can be rephrased to
+> > convey its meaning more clearly...
+> 
+> Thanks!  I think it would be worth trying to separate out the "normal"
+> things that correspond to the spec from the "quirk" things that work
+> around defects.  That's not material for *this* patch, though.
+> 
+> It's also a little weird that pci_bridge_d3_possible() itself looks
+> like it's invariant for the life of the system, but we call it several
+> times (pci_pm_init(), pci_bridge_d3_update(), pcie_portdrv_probe(),
+> etc).  I guess this is because we save the result in dev->bridge_d3,
+> but then pci_bridge_d3_update() updates dev->bridge_d3 based on other
+> things, so the original value is lost.  Maybe another bit or two could
+> avoid those extra calls.
+
+Right on all accounts.  Those invocations of pci_bridge_d3_possible()
+are all in code paths which run only once, e.g. on enumeration and removal
+of the PCIe port and on shutdown.  We figured that it's not worth it
+to cache the return value of pci_bridge_d3_possible() for these few
+invocations, none of which are in hot paths.  ("We" is mostly Mika and
+yours truly, who introduced this for Thunderbolt power management.)
+
+Thanks,
+
+Lukas
