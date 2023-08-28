@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 003DB78B123
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Aug 2023 14:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7648778B131
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Aug 2023 14:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230385AbjH1Mzh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Aug 2023 08:55:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48538 "EHLO
+        id S231377AbjH1M6T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Aug 2023 08:58:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230335AbjH1MzX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Aug 2023 08:55:23 -0400
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E505C3;
-        Mon, 28 Aug 2023 05:55:19 -0700 (PDT)
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-57328758a72so864615eaf.1;
-        Mon, 28 Aug 2023 05:55:19 -0700 (PDT)
+        with ESMTP id S230487AbjH1M6L (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Aug 2023 08:58:11 -0400
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B12F11A;
+        Mon, 28 Aug 2023 05:58:08 -0700 (PDT)
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-573128cd77dso538905eaf.0;
+        Mon, 28 Aug 2023 05:58:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693227318; x=1693832118;
+        d=1e100.net; s=20221208; t=1693227488; x=1693832288;
         h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=m38t+6ENHSM7sxq7lBG7ajN0dx0/1nAUuWaIrnX+J0s=;
-        b=H7IoMFL2SvlnyOgR80St5WGm6iHO/KI7bbo/842+A5Z2O+WFnKaHQ3OtLn5poRxArr
-         JKAoyvfTCo05ULqKqll0tYM/vjfg2afiz7Oikr/+xOe44mNVechT2K3Sbwb9A96tuR9k
-         FaTfEOQQK9v8UDjD8JZDSs9cg/vzJLOQDLuUTg5KJ/y0OussdQVQQXd9PAmwK1Ww18MG
-         teKUJwhn+snX6T7e2i1+UovELqYST83SHZy5D1cPUOrH2b0zpXtCdRUiRTWZPbZksLvB
-         I30+qATOaiHW83DFDlrw7Wl30uuGD79Nb7cqxUeuRXMWFkEqPqQVew+X4Vr0phYONodz
-         VAXA==
-X-Gm-Message-State: AOJu0YwpYiN3GuInM68wBkhpIlyjORzngozHhEa9rvO7BsLziExocXxP
-        9C1Fgl1E80PojJved0ktRks5CYzTdBDiXggJJ0SZVdcYjKY=
-X-Google-Smtp-Source: AGHT+IEbzDvsKN7NxRk6ArW8L89mABVQymOMbOmA8WutwQKDSp7CMy6s79khs/kh12Ky8UX2gDSuQb4MEy0pJQQfwkI=
-X-Received: by 2002:a4a:d137:0:b0:571:1906:47f0 with SMTP id
- n23-20020a4ad137000000b00571190647f0mr13795453oor.1.1693227318607; Mon, 28
- Aug 2023 05:55:18 -0700 (PDT)
+        bh=AcC0NwRtz8BRXXrALTbmTwDgHHxjiLSWqbQlSzdPqCI=;
+        b=P+J/zFlYxALRku/lmaVBc37/J8hasS/t/kfptHcYUpd1M3USP/IRLUhKVC21CJjhDw
+         fP0ZgyX7aKonQLPuXX2o5JujDi7V7tKaZFUYXNfNjDbYW9zXF5jv1AUgMbrL7WY71Fd0
+         2tllznmhQfhvcOxFpRYdtKKUaMbJyveok/r/TNiE/3fzt1dCN3HaPuCwzTR3XpOpUE7E
+         L1QGa8BDm3vyeZzNYHKnMHPu2a7gbBH+CcdZ/etIMjJBu5UjCWmzMCM/DqkP27Ehmcm2
+         Y+RAIXSJ6E2EnQpw4UxPFsa7jw5DxEQw9JvrXw+KAT6FQk0UtkkIMepss59fKL7Cu65y
+         cWPQ==
+X-Gm-Message-State: AOJu0YwWjdPZtoEzerKRMaA8QKURNHhmmdy1wrcV5LQoqCJY/w1JwxIk
+        BVe8MjKy43NpuRgyu2wXg5G/deaaKCYLCyfmrMk6rKyM+Jk=
+X-Google-Smtp-Source: AGHT+IHOTjYU+8aWo7ejeABgwwVL58psYEkU8H+PUodCCG8/9ZHjZnk2cLIyVx6aorNUAsVPFlgKhQWMFP57mALY27s=
+X-Received: by 2002:a4a:da10:0:b0:56e:6532:467a with SMTP id
+ e16-20020a4ada10000000b0056e6532467amr23436697oou.1.1693227487727; Mon, 28
+ Aug 2023 05:58:07 -0700 (PDT)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 28 Aug 2023 14:55:04 +0200
-Message-ID: <CAJZ5v0hsVwQ+F1NN5OfY7HG7tPcbcZi_X2SdgWXfF9ExW6r3hg@mail.gmail.com>
-Subject: [GIT PULL] ACPI updates for v6.6-rc1
+Date:   Mon, 28 Aug 2023 14:57:53 +0200
+Message-ID: <CAJZ5v0jLOQhXnfE2z9OjmYOh=7MPtJ8=OSNSVVAoZ7=brRgqvg@mail.gmail.com>
+Subject: [GIT PULL] Power management updates for v6.6-rc1
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -58,268 +58,300 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.6-rc1
+ pm-6.6-rc1
 
-with top-most commit b483d3b8a54a544ab8854ca6dbb8d99c423b3ba4
+with top-most commit 422ec6fe2704593c87c14a8ef296d92f6b368c53
 
- Merge branch 'pnp'
+ Merge tag 'opp-updates-6.6' of
+git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm
 
-on top of commit 93f5de5f648d2b1ce3540a4ac71756d4a852dc23
+on top of commit 706a741595047797872e669b3101429ab8d378ef
 
- Merge tag 'acpi-6.5-rc8' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+ Linux 6.5-rc7
 
-to receive ACPI updates for 6.6-rc1.
+to receive power management updates for 6.6-rc1.
 
-These include new ACPICA material, a rework of the ACPI thermal driver,
-a switch-over of the ACPI processor driver to using _OSC instead of
-(long deprecated) _PDC for CPU initialization, a rework of firmware
-notifications handling in several drivers, fixes and cleanups for
-suspend-to-idle handling on AMD systems, ACPI backlight driver
-updates and more.
+These rework cpuidle governors to call tick_nohz_get_sleep_length() less
+often and fix one of them, rework hibernation to avoid storing pages
+filled with zeros in hibernation images, switch over some cpufreq
+drivers to use void remove callbacks, fix and clean up multiple
+cpufreq drivers, fix the devfreq core, update the cpupower utility and
+make other assorted improvements.
 
 Specifics:
 
- - Update the ACPICA code in the kernel to upstream revision 20230628
-   including the following changes:
-   * Suppress a GCC 12 dangling-pointer warning (Philip Prindeville).
-   * Reformat the ACPI_STATE_COMMON macro and its users (George Guo).
-   * Replace the ternary operator with ACPI_MIN() (Jiangshan Yi).
-   * Add support for _DSC as per ACPI 6.5 (Saket Dumbre).
-   * Remove a duplicate macro from zephyr header (Najumon B.A).
-   * Add data structures for GED and _EVT tracking (Jose Marinho).
-   * Fix misspelled CDAT DSMAS define (Dave Jiang).
-   * Simplify an error message in acpi_ds_result_push() (Christophe
-     Jaillet).
-   * Add a struct size macro related to SRAT (Dave Jiang).
-   * Add AML_NO_OPERAND_RESOLVE flag to Timer (Abhishek Mainkar).
-   * Add support for RISC-V external interrupt controllers in MADT (Sunil
-     V L).
-   * Add RHCT flags, CMO and MMU nodes (Sunil V L).
-   * Change ACPICA version to 20230628 (Bob Moore).
+ - Rework the menu and teo cpuidle governors to avoid calling
+   tick_nohz_get_sleep_length(), which is likely to become quite
+   expensive going forward, too often and improve making decisions
+   regarding whether or not to stop the scheduler tick in the teo
+   governor (Rafael Wysocki).
 
- - Introduce new wrappers for ACPICA notify handler install/remove and
-   convert multiple drivers to using their own Notify() handlers instead
-   of the ACPI bus type .notify() slated for removal (Michal Wilczynski).
+ - Improve the performance of cpufreq_stats_create_table() in some
+   cases (Liao Chang).
 
- - Add backlight=native DMI quirk for Apple iMac12,1 and iMac12,2 (Hans
-   de Goede).
+ - Fix two issues in the amd-pstate-ut cpufreq driver (Swapnil Sapkal).
 
- - Put ACPI video and its child devices explicitly into D0 on boot to
-   avoid platform firmware confusion (Kai-Heng Feng).
+ - Use clamp() helper macro to improve the code readability in
+   cpufreq_verify_within_limits() (Liao Chang).
 
- - Add backlight=native DMI quirk for Lenovo Ideapad Z470 (Jiri Slaby).
+ - Set stale CPU frequency to minimum in intel_pstate (Doug Smythies).
 
- - Support obtaining physical CPU ID from MADT on LoongArch (Bibo Mao).
+ - Migrate cpufreq drivers for various platforms to use void remove
+   callback (Yangtao Li).
 
- - Convert ACPI CPU initialization to using _OSC instead of _PDC that
-   has been deprecated since 2018 and dropped from the specification in
-   ACPI 6.5 (Michal Wilczynski, Rafael Wysocki).
+ - Add online/offline/exit hooks for Tegra driver (Sumit Gupta).
 
- - Drop non-functional nocrt parameter from ACPI thermal (Mario
-   Limonciello).
+ - Explicitly include correct DT includes in cpufreq (Rob Herring).
 
- - Clean up the ACPI thermal driver, rework the handling of firmware
-   notifications in it and make it provide a table of generic trip point
-   structures to the core during initialization (Rafael Wysocki).
+ - Frequency domain updates for qcom-hw driver (Neil Armstrong).
 
- - Defer enumeration of devices with _DEP pointing to IVSC (Wentong Wu).
+ - Modify AMD pstate driver to return the highest_perf value (Meng Li).
 
- - Install SystemCMOS address space handler for ACPI000E (TAD) to meet
-   platform firmware expectations on some platforms (Zhang Rui).
+ - Generic cleanups for cppc, mediatek and powernow driver (Liao Chang,
+   Konrad Dybcio).
 
- - Fix finding the generic error data in the ACPi extlog driver for
-   compatibility with old and new firmware interface versions (Xiaochun
-   Lee).
+ - Add more platforms to cpufreq-arm driver's blocklist (AngeloGioacchino
+   Del Regno and Konrad Dybcio).
 
- - Remove assorted unused declarations of functions (Yue Haibing).
+ - brcmstb-avs-cpufreq: Fix -Warray-bounds bug (Gustavo A. R. Silva).
 
- - Move AMBA bus scan handling into arm64 specific directory (Sudeep
-   Holla).
+ - Add device PM helpers to allow a device to remain powered-on during
+   system-wide transitions (Ulf Hansson).
 
- - Fix and clean up suspend-to-idle interface for AMD systems (Mario
-   Limonciello, Andy Shevchenko).
+ - Rework hibernation memory snapshotting to avoid storing pages filled
+   with zeros in hibernation image files (Brian Geffon).
 
- - Fix string truncation warning in pnpacpi_add_device() (Sunil V L).
+ - Add check to make sure that CPU latency QoS constraints do not use
+   negative values (Clive Lin).
+
+ - Optimize rp->domains memory allocation in the Intel RAPL power
+   capping driver (xiongxin).
+
+ - Remove recursion while parsing zones in the arm_scmi power capping
+   driver (Cristian Marussi).
+
+ - Fix memory leak in devfreq_dev_release() (Boris Brezillon).
+
+ - Rewrite devfreq_monitor_start() kerneldoc comment (Manivannan
+   Sadhasivam).
+
+ - Explicitly include correct DT includes in devfreq (Rob Herring).
+
+ - Remove unused pm_runtime_update_max_time_suspended() extern
+   declaration (YueHaibing).
+
+ - Add turbo-boost support to cpupower (Wyes Karny).
+
+ - Add support for amd_pstate mode change to cpupower (Wyes Karny).
+
+ - Fix 'cpupower idle_set' command to accept only numeric values of
+   arguments (Likhitha Korrapati).
+
+ - Clean up OPP code and add new frequency related APIs to it (Viresh
+   Kumar, Manivannan Sadhasivam).
+
+ - Convert ti cpufreq/opp bindings to json schema (Nishanth Menon).
 
 Thanks!
 
 
 ---------------
 
-Abhishek Mainkar (1):
-      ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
+AngeloGioacchino Del Regno (1):
+      cpufreq: blocklist MSM8998 in cpufreq-dt-platdev
 
-Andy Shevchenko (1):
-      ACPI: x86: s2idle: Add for_each_lpi_constraint() helper
+Ben Hutchings (1):
+      cpupower: Bump soname version
 
-Bibo Mao (1):
-      ACPI: processor: LoongArch: Get physical ID from MADT
+Boris Brezillon (1):
+      PM / devfreq: Fix leak in devfreq_dev_release()
 
-Bob Moore (1):
-      ACPICA: Update version to 20230628
+Brian Geffon (1):
+      PM: hibernate: don't store zero pages in the image file
 
-Christophe Jaillet (1):
-      ACPICA: Slightly simplify an error message in acpi_ds_result_push()
+Clive Lin (1):
+      PM: QoS: Add check to make sure CPU latency is non-negative
 
-Dave Jiang (2):
-      ACPICA: Fix misspelled CDAT DSMAS define
-      ACPICA: Add a define for size of struct
-acpi_srat_generic_affinity device_handle
+Cristian Marussi (1):
+      powercap: arm_scmi: Remove recursion while parsing zones
 
-George Guo (1):
-      ACPICA: Modify ACPI_STATE_COMMON
+Doug Smythies (1):
+      cpufreq: intel_pstate: set stale CPU frequency to minimum
 
-Hans de Goede (1):
-      ACPI: video: Add backlight=native DMI quirk for Apple iMac12,1
-and iMac12,2
+Gustavo A. R. Silva (1):
+      cpufreq: brcmstb-avs-cpufreq: Fix -Warray-bounds bug
 
-Jiangshan Yi (1):
-      ACPICA: exserial.c: replace ternary operator with ACPI_MIN()
+Konrad Dybcio (2):
+      cpufreq: blocklist more Qualcomm platforms in cpufreq-dt-platdev
+      cpufreq: mediatek-hw: Remove unused define
 
-Jiri Slaby (SUSE) (1):
-      ACPI: video: Add backlight=native DMI quirk for Lenovo Ideapad Z470
+Liao Chang (6):
+      cpufreq: Prefer to print cpuid in MIN/MAX QoS register error message
+      cpufreq: cppc: cppc_cpufreq_get_rate() returns zero in all error cases.
+      cpufreq: cppc: Set fie_disabled to FIE_DISABLED if fails to
+create kworker_fie
+      cpufreq: stats: Improve the performance of cpufreq_stats_create_table()
+      cpufreq: Use clamp() helper macro to improve the code readability
+      cpufreq: powernow-k8: Use related_cpus instead of cpus in driver.exit()
 
-Jose Marinho (2):
-      ACPICA: Detect GED device and keep track of _EVT
-      ACPICA: Add interrupt command to acpiexec
+Likhitha Korrapati (1):
+      cpupower: Fix cpuidle_set to accept only numeric values for
+idle-set operation.
 
-Kai-Heng Feng (1):
-      ACPI: video: Put ACPI video and its child devices into D0 on boot
+Manivannan Sadhasivam (6):
+      OPP: Introduce dev_pm_opp_find_freq_{ceil/floor}_indexed() APIs
+      PM / devfreq: Reword the kernel-doc comment for
+devfreq_monitor_start() API
+      OPP: Introduce dev_pm_opp_get_freq_indexed() API
+      OPP: Fix potential null ptr dereference in
+dev_pm_opp_get_required_pstate()
+      OPP: Fix passing 0 to PTR_ERR in _opp_attach_genpd()
+      dt-bindings: opp: Increase maxItems for opp-hz property
 
-Mario Limonciello (7):
-      ACPI: thermal: Drop nocrt parameter
-      ACPI: Adjust #ifdef for *_lps0_dev use
-      ACPI: x86: s2idle: Post-increment variables when getting constraints
-      ACPI: x86: s2idle: Catch multiple ACPI_TYPE_PACKAGE objects
-      ACPI: x86: s2idle: Fix a logic error parsing AMD constraints table
-      ACPI: x86: s2idle: Add more debugging for AMD constraints parsing
-      ACPI: x86: s2idle: Add a function to get LPS0 constraint for a device
+Meng Li (1):
+      cpufreq: amd-pstate-ut: Modify the function to get the highest_perf value
 
-Michal Wilczynski (18):
-      ACPI: processor: Move MWAIT quirk out of acpi_processor.c
-      ACPI: processor: Move processor_physically_present() to acpi_processor.c
-      ACPI: processor: Refactor arch_acpi_set_pdc_bits()
-      ACPI: processor: Rename ACPI_PDC symbols
-      ACPI: processor: Clear C_C2C3_FFH and C_C1_FFH in
-arch_acpi_set_proc_cap_bits()
-      ACPI: processor: Set CAP_SMP_T_SWCOORD in arch_acpi_set_proc_cap_bits()
-      ACPI: processor: Introduce acpi_processor_osc()
-      ACPI: bus: Introduce wrappers for ACPICA notify handler install/remove
-      ACPI: bus: Set driver_data to NULL every time .add() fails
-      ACPI: AC: Install Notify() handler directly
-      ACPI: video: Install Notify() handler directly
-      ACPI: battery: Install Notify() handler directly
-      ACPI: HED: Install Notify() handler directly
-      ACPI: NFIT: Install Notify() handler directly
-      ACPI: NFIT: Remove unnecessary .remove callback
-      ACPI: thermal: Install Notify() handler directly
-      ACPI: processor: Use _OSC to convey OSPM processor support information
-      ACPI: processor: Remove acpi_hwp_native_thermal_lvt_osc()
+Neil Armstrong (2):
+      dt-bindings: cpufreq: qcom-hw: add a 4th frequency domain
+      cpufreq: qcom-cpufreq-hw: add support for 4 freq domains
 
-Najumon B.A (1):
-      ACPICA: fix for conflict macro definition on zephyr interface
+Nishanth Menon (2):
+      dt-bindings: opp: Convert ti-omap5-opp-supply to json schema
+      dt-bindings: cpufreq: Convert ti-cpufreq to json schema
 
-Philip Prindeville (1):
-      ACPICA: Fix GCC 12 dangling-pointer warning
+Rafael J. Wysocki (8):
+      cpuidle: teo: Update idle duration estimate when choosing shallower state
+      cpuidle: teo: Avoid stopping the tick unnecessarily when bailing out
+      cpuidle: teo: Drop utilized from struct teo_cpu
+      cpuidle: teo: Do not call tick_nohz_get_sleep_length() upfront
+      cpuidle: teo: Skip tick_nohz_get_sleep_length() call in some cases
+      cpuidle: teo: Gather statistics regarding whether or not to stop the tick
+      cpuidle: menu: Skip tick_nohz_get_sleep_length() call in some cases
+      cpuidle: teo: Avoid unnecessary variable assignments
 
-Rafael J. Wysocki (15):
-      ACPI: processor: Refine messages in acpi_early_processor_control_setup()
-      ACPI: thermal: Drop enabled flag from struct acpi_thermal_active
-      ACPI: thermal: Do not attach private data to ACPI handles
-      ACPI: thermal: Drop redundant local variable from acpi_thermal_resume()
-      thermal: core: Do not handle trip points with invalid temperature
-      thermal: core: Introduce thermal_zone_device_exec()
-      thermal: core: Add priv pointer to struct thermal_trip
-      ACPI: thermal: Clean up acpi_thermal_register_thermal_zone()
-      ACPI: thermal: Carry out trip point updates under zone lock
-      ACPI: thermal: Introduce struct acpi_thermal_trip
-      thermal: core: Rework and rename __for_each_thermal_trip()
-      ACPI: thermal: Use trip point table to register thermal zones
-      ACPI: thermal: Rework thermal_get_trend()
-      ACPI: thermal: Drop unnecessary thermal zone callbacks
-      ACPI: thermal: Eliminate code duplication from acpi_thermal_notify()
+Rob Herring (2):
+      cpufreq: Explicitly include correct DT includes
+      PM / devfreq: Explicitly include correct DT includes
 
-Saket Dumbre (1):
-      ACPICA: Add support for _DSC as per ACPI 6.5
+Sumit Gupta (2):
+      cpufreq: tegra194: add online/offline hooks
+      cpufreq: tegra194: remove opp table in exit hook
 
-Sudeep Holla (1):
-      ACPI: Move AMBA bus scan handling into arm64 specific directory
+Swapnil Sapkal (2):
+      cpufreq: amd-pstate-ut: Remove module parameter access
+      cpufreq: amd-pstate-ut: Fix kernel panic when loading the driver
 
-Sunil V L (3):
-      ACPICA: MADT: Add RISC-V external interrupt controllers
-      ACPICA: RHCT: Add flags, CMO and MMU nodes
-      PNP: ACPI: Fix string truncation warning
+Ulf Hansson (1):
+      PM: sleep: Add helpers to allow a device to remain powered-on
 
-Wentong Wu (1):
-      ACPI: scan: Defer enumeration of devices with a _DEP pointing to
-IVSC device
+Viresh Kumar (5):
+      OPP: Rearrange entries in pm_opp.h
+      OPP: Add dev_pm_opp_find_freq_exact_indexed()
+      OPP: Update _read_freq() to return the correct frequency
+      OPP: Reuse dev_pm_opp_get_freq_indexed()
+      OPP: Fix argument name in doc comment
 
-Xiaochun Lee (1):
-      ACPI: extlog: Fix finding the generic error data for v3 structure
+Wyes Karny (5):
+      cpupower: Recognise amd-pstate active mode driver
+      cpupower: Add is_valid_path API
+      cpupower: Add EPP value change support
+      cpupower: Add support for amd_pstate mode change
+      cpupower: Add turbo-boost support in cpupower
 
-Yue Haibing (1):
-      ACPI: Remove assorted unused declarations of functions
+Yangtao Li (19):
+      cpufreq: sun50i: Convert to platform remove callback returning void
+      cpufreq: dt: Convert to platform remove callback returning void
+      cpufreq: qcom-cpufreq-hw: Convert to platform remove callback
+returning void
+      cpufreq: vexpress: Convert to platform remove callback returning void
+      cpufreq: imx6q: Convert to platform remove callback returning void
+      cpufreq: mediatek-hw: Convert to platform remove callback returning void
+      cpufreq: scpi: Convert to platform remove callback returning void
+      cpufreq: tegra194: Convert to platform remove callback returning void
+      cpufreq: brcmstb-avs-cpufreq: Convert to platform remove
+callback returning void
+      cpufreq: imx-cpufreq-dt: Convert to platform remove callback
+returning void
+      cpufreq: davinci: Convert to platform remove callback returning void
+      cpufreq: raspberrypi: Convert to platform remove callback returning void
+      cpufreq: pcc-cpufreq: Convert to platform remove callback returning void
+      cpufreq: kirkwood: Convert to platform remove callback returning void
+      cpufreq: qcom-nvmem: Convert to platform remove callback returning void
+      cpufreq: tegra186: Convert to platform remove callback returning void
+      cpufreq: acpi: Convert to platform remove callback returning void
+      cpufreq: qoriq: Convert to platform remove callback returning void
+      cpufreq: omap: Convert to platform remove callback returning void
 
 YueHaibing (1):
-      ACPI: Remove unused extern declaration acpi_paddr_to_node()
+      PM: runtime: Remove unsued extern declaration of
+pm_runtime_update_max_time_suspended()
 
-Zhang Rui (1):
-      ACPI: TAD: Install SystemCMOS address space handler for ACPI000E
+xiongxin (1):
+      powercap: intel_rapl: Optimize rp->domains memory allocation
 
 ---------------
 
- Documentation/admin-guide/kernel-parameters.txt |   4 -
- arch/ia64/include/asm/acpi.h                    |   6 +-
- arch/x86/include/asm/acpi.h                     |  24 +-
- arch/x86/xen/enlighten_pv.c                     |   8 +-
- drivers/acpi/Makefile                           |   1 -
- drivers/acpi/ac.c                               |  27 +-
- drivers/acpi/acpi_cmos_rtc.c                    |  25 +-
- drivers/acpi/acpi_extlog.c                      |   2 +-
- drivers/acpi/acpi_processor.c                   | 124 +++++--
- drivers/acpi/acpi_tad.c                         |  27 +-
- drivers/acpi/acpi_video.c                       |  26 +-
- drivers/acpi/acpica/acdebug.h                   |   2 +
- drivers/acpi/acpica/acglobal.h                  |   1 +
- drivers/acpi/acpica/aclocal.h                   |  38 +-
- drivers/acpi/acpica/acpredef.h                  |   3 +
- drivers/acpi/acpica/dbcmds.c                    |  58 +++
- drivers/acpi/acpica/dbinput.c                   |   8 +
- drivers/acpi/acpica/dswstate.c                  |   4 +-
- drivers/acpi/acpica/exserial.c                  |   3 +-
- drivers/acpi/acpica/psopcode.c                  |   2 +-
- drivers/acpi/acpica/utdebug.c                   |   5 +
- drivers/acpi/arm64/Makefile                     |   1 +
- drivers/acpi/{acpi_amba.c => arm64/amba.c}      |   2 +-
- drivers/acpi/arm64/init.c                       |   2 +
- drivers/acpi/arm64/init.h                       |   1 +
- drivers/acpi/battery.c                          |  24 +-
- drivers/acpi/bus.c                              |  33 +-
- drivers/acpi/hed.c                              |  15 +-
- drivers/acpi/internal.h                         |  16 +-
- drivers/acpi/nfit/core.c                        |  42 ++-
- drivers/acpi/processor_core.c                   |  29 ++
- drivers/acpi/processor_pdc.c                    |  97 +----
- drivers/acpi/scan.c                             |   4 +-
- drivers/acpi/thermal.c                          | 470 +++++++++++-------------
- drivers/acpi/video_detect.c                     |  27 ++
- drivers/acpi/x86/s2idle.c                       |  99 +++--
- drivers/acpi/x86/utils.c                        |  35 ++
- drivers/pnp/pnpacpi/core.c                      |   3 +
- drivers/thermal/thermal_core.c                  |  22 +-
- drivers/thermal/thermal_core.h                  |   4 -
- drivers/thermal/thermal_trip.c                  |  18 +-
- include/acpi/acnames.h                          |   1 +
- include/acpi/acpi_bus.h                         |  17 +-
- include/acpi/acpixf.h                           |   4 +-
- include/acpi/actbl1.h                           |   2 +-
- include/acpi/actbl2.h                           |  76 +++-
- include/acpi/actbl3.h                           |   4 +-
- include/acpi/pdc_intel.h                        |  36 --
- include/acpi/platform/aclinux.h                 |   1 +
- include/acpi/platform/aczephyr.h                |   3 -
- include/acpi/proc_cap_intel.h                   |  40 ++
- include/linux/acpi.h                            |  12 +-
- include/linux/thermal.h                         |   9 +
- 53 files changed, 967 insertions(+), 580 deletions(-)
+ .../bindings/cpufreq/cpufreq-qcom-hw.yaml          |   5 +-
+ .../devicetree/bindings/cpufreq/ti-cpufreq.txt     | 132 ------------
+ .../bindings/opp/operating-points-v2-ti-cpu.yaml   |  92 ++++++++
+ .../devicetree/bindings/opp/opp-v2-base.yaml       |   2 +-
+ .../bindings/opp/ti,omap-opp-supply.yaml           | 101 +++++++++
+ .../bindings/opp/ti-omap5-opp-supply.txt           |  63 ------
+ drivers/cpufreq/acpi-cpufreq.c                     |   6 +-
+ drivers/cpufreq/amd-pstate-ut.c                    |  50 ++---
+ drivers/cpufreq/armada-37xx-cpufreq.c              |   4 +-
+ drivers/cpufreq/brcmstb-avs-cpufreq.c              |  12 +-
+ drivers/cpufreq/cppc_cpufreq.c                     |  13 +-
+ drivers/cpufreq/cpufreq-dt-platdev.c               |   7 +
+ drivers/cpufreq/cpufreq-dt.c                       |   5 +-
+ drivers/cpufreq/cpufreq.c                          |   8 +-
+ drivers/cpufreq/cpufreq_stats.c                    |   3 +-
+ drivers/cpufreq/davinci-cpufreq.c                  |   6 +-
+ drivers/cpufreq/imx-cpufreq-dt.c                   |   6 +-
+ drivers/cpufreq/imx6q-cpufreq.c                    |   6 +-
+ drivers/cpufreq/intel_pstate.c                     |   5 +
+ drivers/cpufreq/kirkwood-cpufreq.c                 |   6 +-
+ drivers/cpufreq/mediatek-cpufreq-hw.c              |   9 +-
+ drivers/cpufreq/mediatek-cpufreq.c                 |   2 -
+ drivers/cpufreq/omap-cpufreq.c                     |   6 +-
+ drivers/cpufreq/pcc-cpufreq.c                      |   6 +-
+ drivers/cpufreq/powernow-k8.c                      |   3 +-
+ drivers/cpufreq/ppc_cbe_cpufreq.c                  |   2 +-
+ drivers/cpufreq/ppc_cbe_cpufreq_pmi.c              |   1 -
+ drivers/cpufreq/qcom-cpufreq-hw.c                  |   8 +-
+ drivers/cpufreq/qcom-cpufreq-nvmem.c               |   7 +-
+ drivers/cpufreq/qoriq-cpufreq.c                    |   6 +-
+ drivers/cpufreq/raspberrypi-cpufreq.c              |   6 +-
+ drivers/cpufreq/scpi-cpufreq.c                     |   7 +-
+ drivers/cpufreq/sti-cpufreq.c                      |   2 +-
+ drivers/cpufreq/sun50i-cpufreq-nvmem.c             |   6 +-
+ drivers/cpufreq/tegra186-cpufreq.c                 |   6 +-
+ drivers/cpufreq/tegra194-cpufreq.c                 |  35 ++-
+ drivers/cpufreq/ti-cpufreq.c                       |   2 +-
+ drivers/cpufreq/vexpress-spc-cpufreq.c             |   6 +-
+ drivers/cpuidle/governors/gov.h                    |  14 ++
+ drivers/cpuidle/governors/menu.c                   |  65 +++---
+ drivers/cpuidle/governors/teo.c                    | 235 +++++++++++++--------
+ drivers/devfreq/devfreq.c                          |  10 +-
+ drivers/devfreq/imx-bus.c                          |   2 +-
+ drivers/devfreq/imx8m-ddrc.c                       |   2 +-
+ drivers/devfreq/mtk-cci-devfreq.c                  |   1 -
+ drivers/devfreq/tegra30-devfreq.c                  |   2 +-
+ drivers/opp/core.c                                 | 117 ++++++++--
+ drivers/opp/cpu.c                                  |   4 +-
+ drivers/powercap/arm_scmi_powercap.c               | 159 ++++++++------
+ drivers/powercap/intel_rapl_common.c               |   2 +-
+ include/linux/cpufreq.h                            |  16 +-
+ include/linux/pm_opp.h                             |  62 ++++--
+ include/linux/pm_runtime.h                         |   2 -
+ include/linux/pm_wakeup.h                          |  10 +
+ kernel/power/qos.c                                 |   9 +-
+ kernel/power/snapshot.c                            | 187 ++++++++++++----
+ tools/power/cpupower/Makefile                      |   2 +-
+ tools/power/cpupower/lib/cpupower.c                |   7 +
+ tools/power/cpupower/lib/cpupower_intern.h         |   1 +
+ tools/power/cpupower/utils/cpuidle-set.c           |  16 +-
+ tools/power/cpupower/utils/cpupower-set.c          |  65 +++++-
+ tools/power/cpupower/utils/helpers/helpers.h       |  11 +
+ tools/power/cpupower/utils/helpers/misc.c          |  57 ++++-
+ 63 files changed, 1097 insertions(+), 613 deletions(-)
