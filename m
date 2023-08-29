@@ -2,175 +2,143 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69DEC78CD60
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 22:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC1C478CDFB
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 23:06:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240390AbjH2UL1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Aug 2023 16:11:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55774 "EHLO
+        id S233740AbjH2VFa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Aug 2023 17:05:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240362AbjH2ULT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Aug 2023 16:11:19 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA12DB;
-        Tue, 29 Aug 2023 13:11:16 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37TJ0C4l015179;
-        Tue, 29 Aug 2023 20:11:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=qcppdkim1;
- bh=Awg9q4mOGZeep+5lIZ30sn8eUT3HNaXaCtE1ur1IFgY=;
- b=hxi5PQtEDhZSB++Ikc3o19/8NhayFCWRR9JfkHGLyQxRad2aKwqY74XSIj0RIkFPFVY/
- oxflJCKBGqtCAdpEj6CUULoWTlVGrB6E2LPiKk5WKNOWG8SFqz/M4sVdeHn1W4XpBSY1
- qc4PtndgaPh0QDLQZzpU8jMvwh410eVtenNIMgG8IP9P1RQb6jARjNSK7WPUP70FSOv1
- jNscds6l7iXmBe3XI3jlCVVidb8g9NZO0qQFC4R80Z0sc36S84XgkOUXzCdNSI8rsCBO
- qYVlKBUmprxXp3/abCyKk6K1EQviIK+gz2rJAbLQ0HXY+Xyw0id9yvg4fBzlCAw6o2rs aA== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3srybqbbge-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Aug 2023 20:11:05 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37TKB4FL018451
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Aug 2023 20:11:04 GMT
-Received: from localhost (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 29 Aug
- 2023 13:11:03 -0700
-From:   Oza Pawandeep <quic_poza@quicinc.com>
-To:     <sudeep.holla@arm.com>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-CC:     Oza Pawandeep <quic_poza@quicinc.com>
-Subject: [PATCH v3] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast timer
-Date:   Tue, 29 Aug 2023 13:11:01 -0700
-Message-ID: <20230829201101.3330337-1-quic_poza@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S233765AbjH2VFX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Aug 2023 17:05:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B70B1BE;
+        Tue, 29 Aug 2023 14:05:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1530C63AB4;
+        Tue, 29 Aug 2023 21:05:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E68BC433CB;
+        Tue, 29 Aug 2023 21:05:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693343119;
+        bh=JFvftynlWSpx2Z07NIHz5LNL4Jx2zBCJhehgL9bvydA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=iiB+mNUpSoyWK4nP+SYz4igNO0RzsjxQPmyX06RAeDRf/ArYKrX5rGrH5mrzm6sq2
+         LmOAuiLVRFvZ55jbFT+rmpPlJar3fLlKlcG5yvby52X7+P0KEDv3KvhpJHJ43xnXSc
+         X/+qkaOv45GbJReT2EG9/f+bCcL9avcrtBwMrtgnnkyp6z5Kl5b0seo67HKtr1jyxt
+         paqrWQzvQOjSWmxczmguuAWqlPAm0sV5SM9FUeQTLzBba5kuKJ/sGs8qU+9PNkgdH5
+         4vSPqYGsmOB7zc32FcQ4T+oiPFV0/UEPzfKOUDZ2eFlY6BZ8Iwr+divQEgSHZL7gl2
+         yeSfFqh7lZ5xw==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2bc63e0d8cdso71858411fa.2;
+        Tue, 29 Aug 2023 14:05:19 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yzx1aKRVu8zD16Nl7qaH9vugvw067lbv3d5hqLNbWM1BobLfq3r
+        R9Fb72bg8UdRFC7hKcHrROg7GcdrGhRoG5h5Cg==
+X-Google-Smtp-Source: AGHT+IH/2nk4OWk7vLoTXXAxI4zCPN6UHpyrVHeHQbqFQEb5An/vtxt64lCxLTzYyqgWoFhn7ZDJ4hVE8qGkaKVkpe0=
+X-Received: by 2002:a2e:a16b:0:b0:2bc:c490:10cf with SMTP id
+ u11-20020a2ea16b000000b002bcc49010cfmr395430ljl.18.1693343117338; Tue, 29 Aug
+ 2023 14:05:17 -0700 (PDT)
 MIME-Version: 1.0
+References: <20230829191812.135759-1-sjg@chromium.org> <20230829191812.135759-2-sjg@chromium.org>
+In-Reply-To: <20230829191812.135759-2-sjg@chromium.org>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 29 Aug 2023 16:05:04 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKVRoB4W31yuSQxc5hVt2pV6zY9y-scqdoxKLpFpe349Q@mail.gmail.com>
+Message-ID: <CAL_JsqKVRoB4W31yuSQxc5hVt2pV6zY9y-scqdoxKLpFpe349Q@mail.gmail.com>
+Subject: Re: [PATCH v4 2/4] Bring in other reserved-memory files
+To:     Simon Glass <sjg@chromium.org>
+Cc:     devicetree@vger.kernel.org, Dhaval Sharma <dhaval@rivosinc.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Gua Guo <gua.guo@intel.com>, Tom Rini <trini@konsulko.com>,
+        U-Boot Mailing List <u-boot@lists.denx.de>,
+        ron minnich <rminnich@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Lean Sheng Tan <sheng.tan@9elements.com>,
+        Maximilian Brune <maximilian.brune@9elements.com>,
+        Chiu Chasel <chasel.chiu@intel.com>,
+        lkml <linux-kernel@vger.kernel.org>,
+        Yunhui Cui <cuiyunhui@bytedance.com>,
+        linux-acpi@vger.kernel.org, Guo Dong <guo.dong@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: ndMI1TyhmIVb26SOKF71NF09wpflHLRV
-X-Proofpoint-GUID: ndMI1TyhmIVb26SOKF71NF09wpflHLRV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-29_13,2023-08-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=14 malwarescore=0 phishscore=0
- clxscore=1011 mlxlogscore=78 lowpriorityscore=0 priorityscore=1501
- mlxscore=14 impostorscore=0 adultscore=0 suspectscore=0 spamscore=14
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308290175
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Arm® Functional Fixed Hardware Specification defines LPI states,
-which provide an architectural context loss flags field that can
-be used to describe the context that might be lost when an LPI
-state is entered.
+On Tue, Aug 29, 2023 at 2:18=E2=80=AFPM Simon Glass <sjg@chromium.org> wrot=
+e:
+>
+> Add those files from v6.5 which are already converted to yaml.
+>
+> Signed-off-by: Simon Glass <sjg@chromium.org>
+> ---
+>
+> Changes in v4:
+> - New patch
+>
+>  .../schemas/reserved-memory/framebuffer.yaml  |  52 +++++++
+>  .../reserved-memory/google,open-dice.yaml     |  46 ++++++
+>  .../reserved-memory/memory-region.yaml        |  40 +++++
+>  .../nvidia,tegra210-emc-table.yaml            |  31 ++++
+>  .../nvidia,tegra264-bpmp-shmem.yaml           |  47 ++++++
+>  dtschema/schemas/reserved-memory/phram.yaml   |  47 ++++++
+>  .../schemas/reserved-memory/qcom,cmd-db.yaml  |  46 ++++++
+>  .../reserved-memory/qcom,rmtfs-mem.yaml       |  55 +++++++
+>  dtschema/schemas/reserved-memory/ramoops.yaml | 144 ++++++++++++++++++
+>  .../reserved-memory/shared-dma-pool.yaml      |  97 ++++++++++++
+>  10 files changed, 605 insertions(+)
 
-- Core context Lost
-        - General purpose registers.
-        - Floating point and SIMD registers.
-        - System registers, include the System register based
-        - generic timer for the core.
-        - Debug register in the core power domain.
-        - PMU registers in the core power domain.
-        - Trace register in the core power domain.
-- Trace context loss
-- GICR
-- GICD
+I don't think I want all of these in dtschema. Certainly not vendor
+specific ones. Generally, if it's not something we'd put in the spec,
+then I don't want it in dtschema. The u-boot stuff so far has been an
+exception.
 
-Qualcomm's custom CPUs preserves the architectural state,
-including keeping the power domain for local timers active.
-when core is power gated, the local timers are sufficient to
-wake the core up without needing broadcast timer.
+Probably a good rule is if it has a compatible, then it doesn't go
+into dtschema. Though there's some exceptions already.
 
-The patch fixes the evaluation of cpuidle arch_flags, and moves only to
-broadcast timer if core context lost is defined in ACPI LPI.
+>  create mode 100644 dtschema/schemas/reserved-memory/framebuffer.yaml
 
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
+Maybe
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index bd68e1b7f29f..0d455b02971e 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -9,6 +9,7 @@
- #ifndef _ASM_ACPI_H
- #define _ASM_ACPI_H
- 
-+#include <linux/cpuidle.h>
- #include <linux/efi.h>
- #include <linux/memblock.h>
- #include <linux/psci.h>
-@@ -42,6 +43,26 @@
- #define ACPI_MADT_GICC_SPE  (offsetof(struct acpi_madt_generic_interrupt, \
- 	spe_interrupt) + sizeof(u16))
- 
-+/*
-+ * Arm® Functional Fixed Hardware Specification Version 1.2.
-+ * Table 2: Arm Architecture context loss flags
-+ */
-+#define CPUIDLE_CORE_CTXT		BIT(0) /* Core context Lost */
-+
-+#ifndef arch_update_idle_state_flags
-+static __always_inline void _arch_update_idle_state_flags(u32 arch_flags,
-+							unsigned int *sflags)
-+{
-+	if (arch_flags & CPUIDLE_CORE_CTXT)
-+		*sflags |= CPUIDLE_FLAG_TIMER_STOP;
-+}
-+#define arch_update_idle_state_flags _arch_update_idle_state_flags
-+#endif
-+
-+#define CPUIDLE_TRACE_CTXT		BIT(1) /* Trace context loss */
-+#define CPUIDLE_GICR_CTXT		BIT(2) /* GICR */
-+#define CPUIDLE_GICD_CTXT		BIT(3) /* GICD */
-+
- /* Basic configuration for ACPI */
- #ifdef	CONFIG_ACPI
- pgprot_t __acpi_get_mem_attribute(phys_addr_t addr);
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 9718d07cc2a2..420baec3465c 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -1221,8 +1221,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
- 		strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
- 		state->exit_latency = lpi->wake_latency;
- 		state->target_residency = lpi->min_residency;
--		if (lpi->arch_flags)
--			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
-+		arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
- 		if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
- 			state->flags |= CPUIDLE_FLAG_RCU_IDLE;
- 		state->enter = acpi_idle_lpi_enter;
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index d584f94409e1..d49488fdbc49 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1471,6 +1471,10 @@ static inline int lpit_read_residency_count_address(u64 *address)
- }
- #endif
- 
-+#ifndef arch_update_idle_state_flags
-+#define arch_update_idle_state_flags	do {} while (0);
-+#endif
-+
- #ifdef CONFIG_ACPI_PPTT
- int acpi_pptt_cpu_is_thread(unsigned int cpu);
- int find_acpi_cpu_topology(unsigned int cpu, int level);
--- 
-2.25.1
+>  create mode 100644 dtschema/schemas/reserved-memory/google,open-dice.yam=
+l
 
+No
+
+>  create mode 100644 dtschema/schemas/reserved-memory/memory-region.yaml
+
+Yes
+
+>  create mode 100644 dtschema/schemas/reserved-memory/nvidia,tegra210-emc-=
+table.yaml
+>  create mode 100644 dtschema/schemas/reserved-memory/nvidia,tegra264-bpmp=
+-shmem.yaml
+
+No
+
+>  create mode 100644 dtschema/schemas/reserved-memory/phram.yaml
+
+Depends on mtd.yaml in the kernel, so no.
+
+>  create mode 100644 dtschema/schemas/reserved-memory/qcom,cmd-db.yaml
+>  create mode 100644 dtschema/schemas/reserved-memory/qcom,rmtfs-mem.yaml
+
+No.
+
+>  create mode 100644 dtschema/schemas/reserved-memory/ramoops.yaml
+
+Probably not.
+
+>  create mode 100644 dtschema/schemas/reserved-memory/shared-dma-pool.yaml
+
+Maybe.
+
+Rob
