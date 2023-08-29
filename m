@@ -2,98 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6CC778CCED
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 21:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D97978CCD4
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 21:19:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238641AbjH2T26 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Aug 2023 15:28:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43308 "EHLO
+        id S235685AbjH2TSu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Aug 2023 15:18:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233921AbjH2T2i (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Aug 2023 15:28:38 -0400
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2063.outbound.protection.outlook.com [40.107.92.63])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A3D7109;
-        Tue, 29 Aug 2023 12:28:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lc2wCExCvFHtrA8tVogIxN9tom0DbXHhatjJlU2VaPw3Uh1NGXRiub+czOSHSS7zlebMGpAx+qCVA2IdhV5MCJNcLR1POgSyEn+kwRfH+KYGmitvNO2+W4uk8DMCHy1vqG56ZazOHcm0nsrG6OYArbDMzjK/3iyDBIcvCVqpVfbLhMQje3HqgplNYgNEb01IucocOAnguCwrLES15RaZ/BT3sciBfvdhSjRRYY2i5iW/WmEL/R073uDf7hLRaoGvKPGqM9VeA3pj4cgsKr4DKgOPf9mM6zoETOzh/4GsjjgA+g1rD2bIPKQ23lLc9zhyp6bTe5VX9FThWpQT4vBRxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=U9fyVuIreUbf6OgEFV4sz7YMe46WwDMMWeynvizgo0k=;
- b=Uq8466k+V8ovWvnvXzwUSoCmk0n5a6XV6XsP9MNyCdXj2oFx2WvO2TU7Jznni0QF3Dwa6dYAOGSb7tdtIuhW1BRA3ytv9VLDQBm6CtcfGxPl8B+PmDZ7XGHtcS4zHiZwodvWYJzyh1JNCdS8XJSDJJZRt16OlOAn4SJ/glFUEEdtvg7QBo3JUIDp9foHb/OkHjx+Vv6BEBiw4Nso6YOvTg6MStD2y6gKWkOsQkQJA7yj4jgQZ5Gely+R4xV/CrIvhLsBGhd7xgJIb3kkKNIYfXPwYXBljMinY52NF4qfGJuSfW1REq+Dd1TQyzizs4+eBhQPETo76ttYp/lcZkT7YA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=U9fyVuIreUbf6OgEFV4sz7YMe46WwDMMWeynvizgo0k=;
- b=wfCB1bGsgy4KHAVGfmDDfBUuR8vct/rgJDQmh72arZEKCFMsZ3sT94daxVRDWwWVMjiyirBrBkEh4o8eOG4aE72hUnPmu+MEqHIWMeO87tnlL1KYbooNFJos5rTI3NVaxAhl8soMiI1k+kuj5WOoX6bDbskPgMTrmoqiAqMYXiU=
-Received: from CY5PR19CA0043.namprd19.prod.outlook.com (2603:10b6:930:1a::33)
- by DS7PR12MB6335.namprd12.prod.outlook.com (2603:10b6:8:94::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.34; Tue, 29 Aug
- 2023 19:28:33 +0000
-Received: from CY4PEPF0000E9D7.namprd05.prod.outlook.com
- (2603:10b6:930:1a:cafe::71) by CY5PR19CA0043.outlook.office365.com
- (2603:10b6:930:1a::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.18 via Frontend
- Transport; Tue, 29 Aug 2023 19:28:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000E9D7.mail.protection.outlook.com (10.167.241.78) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6745.16 via Frontend Transport; Tue, 29 Aug 2023 19:28:32 +0000
-Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 29 Aug
- 2023 14:28:31 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <hdegoede@redhat.com>, <bhelgaas@google.com>, <rafael@kernel.org>,
-        <Shyam-sundar.S-k@amd.com>
-CC:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Iain Lane <iain@orangesquash.org.uk>
-Subject: [PATCH v16 3/3] platform/x86/amd: pmc: Don't let PCIe root ports go into D3
-Date:   Tue, 29 Aug 2023 12:12:12 -0500
-Message-ID: <20230829171212.156688-4-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230829171212.156688-1-mario.limonciello@amd.com>
-References: <20230829171212.156688-1-mario.limonciello@amd.com>
+        with ESMTP id S239975AbjH2TSh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Aug 2023 15:18:37 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C2A1A8
+        for <linux-acpi@vger.kernel.org>; Tue, 29 Aug 2023 12:18:34 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-52a250aa012so6266158a12.3
+        for <linux-acpi@vger.kernel.org>; Tue, 29 Aug 2023 12:18:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1693336712; x=1693941512; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=XY6m0jrM1EIVxXZKsdM96lBHZBbK4+oaifCRdomyQwM=;
+        b=ggeAGzDtrtR1fsr0tJrYLFSyK078f2U9HNB0qWWgeRcAKJl3JNzDbNFLA2h0J9LRJ7
+         uRstepuCugK11GShKZBnbQ7clCyATthZ/kuUmWiaWBeSAxeuG/yo2aSgLAryBhoKnsA+
+         zUWP8bomW03iCb9JppmgDgPWUPKaf7sSBfa1w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693336712; x=1693941512;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XY6m0jrM1EIVxXZKsdM96lBHZBbK4+oaifCRdomyQwM=;
+        b=BJgKonZGSWyejz9GUlucaNJnieuk6fJfiO+uVdLCjjKhJfOroNor3tWUSXclj4qP2P
+         RkbqNpbZv6PZPnaQNiI77gNEiw4kdRl13jBYBMXjge0eSJp1GIr30WfAmFRPxARxLBQ4
+         ldfod0pNMB14+XsO2ifVhg6bx893ILroERPcrza8ci7se1V5fiQboUDnvwPZPNXZYw80
+         +Q4U6s5uP7BiVslGD7K0wSUQWugdhmhRb0AiDIzwyZAaHUy2+zKZoYARc7prWuqfMNrv
+         OFjpAiqvVKp+4oShsfEl1nX6i/az38jVQmmtnAvHAhNXr4Ya1dyer/SNB4R0ZJpgCtlQ
+         O0ww==
+X-Gm-Message-State: AOJu0YxnftLZQOiAwoQxXCnRg3EK8zNRywJE8i0U837m/1f1D6F5skiN
+        pPEoZkqQd+zWD3gHSHAtBMDHkKn/B9qQm5CSyrb6vw==
+X-Google-Smtp-Source: AGHT+IFI+6hIzTjgJuzAa1zO1wGKWDxOAL24PqezgVa4g1DgJpvIb/BqU2ngDxgfIuxCB7U7LzNQnl5VC1qyua0ZTCk=
+X-Received: by 2002:aa7:d898:0:b0:522:b929:9f01 with SMTP id
+ u24-20020aa7d898000000b00522b9299f01mr195406edq.9.1693336712271; Tue, 29 Aug
+ 2023 12:18:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D7:EE_|DS7PR12MB6335:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3e8c513-e6ad-4752-5252-08dba8c621e4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: lEqpVsOF/7WLnB9Tr9lYIOP0HHVsbjey3+Ei8q8Wsax3PqcooarVD52CT/x+nyYjUufFnKQE/Gn0Ynvzv+21yVHDhTFvEB51LX763gAxzd8JGQRtzjn7HUhqNix2MHSvvfAyOHC2bShrwllj8L8dKCJxxyRRonaQNfX1NK72u1Dme93ZEivmNyOMkZxlUgY4u4mMi+Y6pdbyyUtzFldiwhABq22nA6I28wcSq4wW1g1vA48C6GRdazSUcweL1IqGvUBfkhPBIAQW5GchQHzqv5Ap9GZQKlo2s7CyBC7rDUOKlhhPNEygOflinBndvgd1UGIS8RiDjNO0eO0jZQHusMZNSsb/j1JHUs6/WcyNBUeAgp6edOD/w8oqes59wgEnYkWeM5g96fUxtcvzrKmZ0cwEZPtWuHVoxrqfdev9AgyJ9Xaz//WG/+jqBOxL7wLu10QBSkWG/aOOJsw1RfQ7raDNEvf7yLq14NU5Q9Olj/6Q6XnhMBlRn/AZUZrVl9HcY0/D/e/B1xw/rMlMGYa80gjLTKyR3W1ERXuZun3lveky15E8CpYMB2VpEJ3YDU/jodElWwWhdcnrKpiWfq0TksbeeIPPf6eI67IdLljJbcZK83Hn7FDC1G5wqtcKqfZPGoJDqiOME7mZNj1c23JfXwu/WkPyPFRwNoGFJGdjsECrxxg0bvH/jRYkCGv4bTVSHxne8RHKteu+4lTeAI5RKo/Khl8WqXHUEbxRgeC3Ics1V4MGaMrbmOwqSrf6klsN
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(136003)(396003)(39860400002)(376002)(451199024)(82310400011)(1800799009)(186009)(36840700001)(40470700004)(46966006)(82740400003)(6666004)(7696005)(86362001)(36756003)(40460700003)(356005)(81166007)(36860700001)(40480700001)(47076005)(2616005)(2906002)(1076003)(478600001)(26005)(110136005)(16526019)(426003)(336012)(83380400001)(966005)(70586007)(8936002)(5660300002)(54906003)(4326008)(41300700001)(8676002)(44832011)(70206006)(6636002)(316002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2023 19:28:32.7565
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3e8c513-e6ad-4752-5252-08dba8c621e4
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D7.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6335
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+References: <20230822203446.4111742-1-sjg@chromium.org> <ZOXKTrC_dzN_hUkY@FVFF77S0Q05N>
+ <CAMj1kXEHpRjk_YKOm4czCnnpjqgahj2jV8MMfGLx7b1RdnBnVw@mail.gmail.com>
+ <CAPnjgZ1S8G=7eCBF9PcDk4H5sk3AcxSSWXO575jK8SjA9dR8qw@mail.gmail.com> <CAMj1kXH83_TB4S0PL3jswxjCP+907YpgS7FRuVTO3G62s7nn5w@mail.gmail.com>
+In-Reply-To: <CAMj1kXH83_TB4S0PL3jswxjCP+907YpgS7FRuVTO3G62s7nn5w@mail.gmail.com>
+From:   Simon Glass <sjg@chromium.org>
+Date:   Tue, 29 Aug 2023 13:17:48 -0600
+Message-ID: <CAPnjgZ2kkUt1eOWX8K+EsbjcQZPefNvj5DSaFb9QrvRg0t2h7w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] schemas: Add a schema for memory map
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        Chiu Chasel <chasel.chiu@intel.com>,
+        U-Boot Mailing List <u-boot@lists.denx.de>,
+        Gua Guo <gua.guo@intel.com>, linux-acpi@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>,
+        Yunhui Cui <cuiyunhui@bytedance.com>,
+        ron minnich <rminnich@gmail.com>,
+        Tom Rini <trini@konsulko.com>,
+        Lean Sheng Tan <sheng.tan@9elements.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_SPF_WL
         autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -101,96 +73,160 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-changed pci_bridge_d3_possible() so that any vendor's PCIe ports
-from modern machines (>=2015) are allowed to be put into D3.
+Hi Ard,
 
-Iain reports that USB devices can't be used to wake a Lenovo Z13
-from suspend. This is because the PCIe root port has been put
-into D3 and AMD's platform can't handle USB devices waking from
-a hardware sleep state in this case.
+On Thu, 24 Aug 2023 at 03:10, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Wed, 23 Aug 2023 at 22:04, Simon Glass <sjg@chromium.org> wrote:
+> >
+> > Hi,
+> >
+> > On Wed, 23 Aug 2023 at 08:24, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > >
+> > > On Wed, 23 Aug 2023 at 10:59, Mark Rutland <mark.rutland@arm.com> wrote:
+> > > >
+> > > > On Tue, Aug 22, 2023 at 02:34:42PM -0600, Simon Glass wrote:
+> > > > > The Devicetree specification skips over handling of a logical view of
+> > > > > the memory map, pointing users to the UEFI specification.
+> > > > >
+> > > > > It is common to split firmware into 'Platform Init', which does the
+> > > > > initial hardware setup and a "Payload" which selects the OS to be booted.
+> > > > > Thus an handover interface is required between these two pieces.
+> > > > >
+> > > > > Where UEFI boot-time services are not available, but UEFI firmware is
+> > > > > present on either side of this interface, information about memory usage
+> > > > > and attributes must be presented to the "Payload" in some form.
+> > >
+> > > Not quite.
+> > >
+> > > This seems to be intended for consumption by Linux booting in ACPI
+> > > mode, but not via UEFI, right?
+> >
+> > Actually, this is for consumption by firmware. The goal is to allow
+> > edk2 to boot into U-Boot and vice versa, i.e. provide some
+> > interoperability between firmware projects. I will use the "Platform
+> > Init" and "Payload" terminology here too.
+> >
+>
+> OK. It was the cc to linux-acpi@ and the authors of the
+> ACPI/SMBIOS-without-UEFI patches that threw me off here.
+>
+> If we are talking about an internal interface for firmware components,
+> I'd be inclined to treat this as an implementation detail, as long as
+> the OS is not expected to consume these DT nodes.
+>
+> However, I struggle to see the point of framing this information as a
+> 'UEFI memory map'. Neither EDK2 nor u-boot consume this information
+> natively, and there is already prior art in both projects to consume
+> nodes following the existing bindings for device_type=memory and the
+> /reserved-memory node. UEFI runtime memory is generally useless
+> without UEFI runtime services, and UEFI boot services memory is just
+> free memory.
+>
+> There is also an overlap with the handover between secure and
+> non-secure firmware on arm64, which is also DT based, and communicates
+> available memory as well as RAM regions that are reserved for firmware
+> use.
+>
+> In summary, I don't see why a non-UEFI payload would care about UEFI
+> semantics for pre-existing memory reservations, or vice versa. Note
+> that EDK2 will manage its own memory map, and expose it via UEFI boot
+> services and not via DT.
 
-This problem only occurs on Linux, and only when the AMD PMC driver
-is utilized to put the device into a hardware sleep state. Comparing
-the behavior on Windows and Linux, Windows doesn't put the root ports
-into D3.
+Bear in mind that one or both sides of this interface may be UEFI.
+There is no boot-services link between the two parts that I have
+outlined.
 
-A variety of approaches were discussed to change PCI core to handle this
-case generically but no consensus was reached. To limit the scope of
-effect only to the affected machines introduce a workaround into the
-amd-pmc driver to only apply to the PCI root ports in affected machines
-when going into hardware sleep.
+>
+> ...
+> >
+> > There is no intent to implement the UEFI spec, here. It is simply that
+> > some payloads (EDK2) are used to having this information.
+> >
+> > Imagine splitting EDK2 into two parts, one of which does platform init
+> > and the other which (the payload) boots the OS. The payload wants
+> > information from Platform Init and it needs to be in a devicetree,
+> > since that is what we have chosen for this interface. So to some
+> > extent this is unrelated to whether you have EFI boot services. We
+> > just need to be able to pass the information across the interface.
+> > Note that the user can (without recompilation, etc.) replace the
+> > second part with U-Boot (for example) and it must still work.
+> >
+>
+> OK, so device tree makes sense for this. This is how I implemented the
+> EDK2 port that targets QEMU/mach-virt - it consumes the DT to discover
+> the UART, RTC,, memory, PCI host bridge, etc.
+>
+> But I don't see a use case for a UEFI memory map here.
+>
+>
+> > >
+> > > >
+> > > > Today Linux does that by passing:
+> > > >
+> > > >   /chosen/linux,uefi-mmap-start
+> > > >   /chosen/linux,uefi-mmap-size
+> > > >   /chosen/linux,uefi-mmap-desc-size
+> > > >   /chosen/linux,uefi-mmap-desc-ver
+> > > >
+> > > > ... or /chosen/xen,* variants of those.
+> > > >
+> > > > Can't we document / genericise that?
+> >
+> > That seems to me to be the fields from the EFI memory-map call, but
+> > where is the actual content? I looked in the kernel but it seems to be
+> > an internal interface (between the stub and the kernel)?
+> >
+> > > >
+> > >
+> > > Given the ACPI angle, promoting this to external ABI would introduce a
+> > > DT dependency to ACPI boot. So we'll at least have to be very clear
+> > > about which takes precedence, or maybe disregard everything except the
+> > > /chosen node when doing ACPI boot?
+> > >
+> > > This also argues for not creating an ordinary binding for this (i.e.,
+> > > describing it as part of the platform topology), but putting it under
+> > > /chosen as a Linux-only boot tweak.
+> > >
+> > > > Pointing to that rather than re-encoding it in DT means that it stays in-sync
+> > > > with the EFI spec and we won't back ourselves into a corner where we cannot
+> > > > encode something due to a structural difference. I don't think it's a good idea
+> > > > to try to re-encode it, or we're just setting ourselves up for futher pain.
+> > > >
+> > >
+> > > What I would prefer is to formalize pseudo-EFI boot and define the
+> > > bare required minimum (system table + memory map + config tables) in
+> > > an arch-agnostic manner. That way, the only thing that needs to be
+> > > passed via DT/boot_params/etc is the (pseudo-)EFI system table
+> > > address, and everything else (SMBIOS, ACPI as well as the EFI memory
+> > > map and even the initrd) can be passed via config tables as usual, all
+> > > of which is already supported in (mostly) generic kernel code.
+> > >
+>
+> <snip some lines>
+>
+> >
+> > Here I believe you are talking about booting the kernel in EFI mode,
+> > but that is not the intent of this patch. This is all about things
+> > happening in firmware. Now, if the payload (second) part of the
+> > firmware decides it wants to offer EFI boot services and boot the
+> > kernel via the EFI stub, then it may very well pack this information
+> > (with a few changes) into a system table and make it available to the
+> > kernel stub. But by then this FDT binding is irrelevant, since it has
+> > served its purpose (which, to reiterate, is to facilitate information
+> > passage from platform init to 'payload').
+> >
+>
+> Indeed. As long as this binding is never consumed by the OS, I don't
+> have any objections to it - I just fail to see the point.
 
-Link: https://lore.kernel.org/linux-pci/20230818193932.27187-1-mario.limonciello@amd.com/
-Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-Reported-by: Iain Lane <iain@orangesquash.org.uk>
-Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
-v15->v16:
- * Only match PCIe root ports with ACPI companions
- * Use constraints when workaround activated
----
- drivers/platform/x86/amd/pmc/pmc.c | 39 ++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+OK thanks.
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
-index eb2a4263814c..6a037447ec5a 100644
---- a/drivers/platform/x86/amd/pmc/pmc.c
-+++ b/drivers/platform/x86/amd/pmc/pmc.c
-@@ -741,6 +741,41 @@ static int amd_pmc_czn_wa_irq1(struct amd_pmc_dev *pdev)
- 	return 0;
- }
- 
-+/* only allow PCIe root ports with a LPS0 constraint configured to go to D3 */
-+static int amd_pmc_rp_wa(struct amd_pmc_dev *pdev)
-+{
-+	struct pci_dev *pci_dev = NULL;
-+
-+	while ((pci_dev = pci_get_device(PCI_VENDOR_ID_AMD, PCI_ANY_ID, pci_dev))) {
-+		struct acpi_device *adev;
-+		int constraint;
-+
-+		if (!pci_is_pcie(pci_dev) ||
-+		    !(pci_pcie_type(pci_dev) == PCI_EXP_TYPE_ROOT_PORT))
-+			continue;
-+
-+		if (pci_dev->current_state == PCI_D3hot ||
-+		    pci_dev->current_state == PCI_D3cold)
-+			continue;
-+
-+		adev = ACPI_COMPANION(&pci_dev->dev);
-+		if (!adev)
-+			continue;
-+
-+		constraint = acpi_get_lps0_constraint(adev);
-+		if (constraint != ACPI_STATE_UNKNOWN &&
-+		    constraint >= ACPI_STATE_S3)
-+			continue;
-+
-+		if (pci_dev->bridge_d3 == 0)
-+			continue;
-+		pci_dev->bridge_d3 = 0;
-+		dev_info(&pci_dev->dev, "Disabling D3 on PCIe root port due lack of constraint\n");
-+	}
-+
-+	return 0;
-+}
-+
- static int amd_pmc_verify_czn_rtc(struct amd_pmc_dev *pdev, u32 *arg)
- {
- 	struct rtc_device *rtc_device;
-@@ -893,6 +928,10 @@ static int amd_pmc_suspend_handler(struct device *dev)
- 	case AMD_CPU_ID_CZN:
- 		rc = amd_pmc_czn_wa_irq1(pdev);
- 		break;
-+	case AMD_CPU_ID_YC:
-+	case AMD_CPU_ID_PS:
-+		rc = amd_pmc_rp_wa(pdev);
-+		break;
- 	default:
- 		break;
- 	}
--- 
-2.34.1
+The point is that Platform Init and the payload need to agree about
+where certain things are in memory. It is true that this is coming
+from an EFI context, but that is just an example. Platform Init
+doesn't necessarily know whether its payload is EFI, but may set this
+up for use by the payload, just in case.
 
+Regards,
+SImon
