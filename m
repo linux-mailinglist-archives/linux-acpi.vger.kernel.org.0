@@ -2,220 +2,164 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D941978C942
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 18:02:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B59F878C9B2
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 18:34:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232981AbjH2QBk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Aug 2023 12:01:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39894 "EHLO
+        id S235329AbjH2Qdw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Aug 2023 12:33:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237383AbjH2QBZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Aug 2023 12:01:25 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C5712F
-        for <linux-acpi@vger.kernel.org>; Tue, 29 Aug 2023 09:01:21 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-50079d148aeso7095284e87.3
-        for <linux-acpi@vger.kernel.org>; Tue, 29 Aug 2023 09:01:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1693324879; x=1693929679;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0tc7Oq+vVun/0F0TYkBBZcQLVrPo7QJsVygXG4Fbb5A=;
-        b=C75zormY29ZXEnMS0HuILcr+i3vv2IYTT61Gg+FzedECiPJ47OqKP0XncRxpBSyPJh
-         kyg18zl15b6H+Hbk1qSXudMfOYAJ/AXHDLvkpwkucR9ZQokJ6sLW9HUmcuTMsr0Jlqu+
-         vXstnR2fntcJfSznfJVwvnjJDqqPjXF97eeoE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693324879; x=1693929679;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0tc7Oq+vVun/0F0TYkBBZcQLVrPo7QJsVygXG4Fbb5A=;
-        b=UYmvVzOPlkZEt5z16ZiFDORkQrOnU+0bfs0zQrVgTRDBJHjJqZmTWnIjqtNXKKM1tW
-         f+9YogO7flHv/GmckZ6Gj8Jr8xnkQKBusTAX0jPQJFoJhvpzjJB4CEW0YLd6wveXl4aO
-         T6GpeGDi1yvqqacTO7U6By7jwHg2beDF8ozbXbak1RjEaBRCXTibeussH1uHZst85DnE
-         NGf1ZDdxCHh7iAG0utdaImimlC+Y73/5Yq1Eo4y9ukWV5GwW+v5zqnJk0yy4LkDDPNEZ
-         Y6e2Z1agMqsvHf82RWZEFLUKE2VzY3Fc5FI1kfqx8HLSfAwRYVRMtU2QCSywQkGoaqh8
-         0cZw==
-X-Gm-Message-State: AOJu0YwjcgZ/Lo8nXNWcjLJ1n0Ice6oetj20di3z4xzFZ54+9CRwty3y
-        x0/p89XLnEXLrYrKj10JP8n7eN3zIXWEJniGWN0/PA==
-X-Google-Smtp-Source: AGHT+IE/RX9iizoSgqT2x/ebB3X+QfUbrpdl+J3+w25nxLY20nEDHwjRri4n6/cHqS87tJVCVdhQHRPnPZQMtqcKUuM=
-X-Received: by 2002:a05:6512:250e:b0:4f9:54f0:b6db with SMTP id
- be14-20020a056512250e00b004f954f0b6dbmr22767776lfb.13.1693324878784; Tue, 29
- Aug 2023 09:01:18 -0700 (PDT)
+        with ESMTP id S237474AbjH2Qdu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Aug 2023 12:33:50 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 447EC184;
+        Tue, 29 Aug 2023 09:33:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693326828; x=1724862828;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LbBndQ30pApFIdN1pPSoRCOwu6jKcidtzAZxrTxto+I=;
+  b=G0mPdmDJyd0ZFftYDC1qtsdyRxiN4gpfjuxiq7XvUYR83T7NilQOG4IC
+   mvbpVNehg+xBptDZpExL21wpo+9EDcVc3v4FjchcDyUHg8aaeVDivhmDa
+   lrbbMONM+156SM5sy+jMr95Q/+q8kOG2KguvLrkj9solvalS76YYMp1gZ
+   JKTKvlHjQNJGt1O/2zSYK1YOLlRl51//a4iVsIQ+n+G6ijDOIq4c5WeT8
+   Ab5jpK1v2aWqR1jmPxUCn3W+CYgqCOPvsWbN+qSDyzgbTS/SbVhJGK3pK
+   B2o/fWnV6biXXqTnOK5QbG2O3WEsUCwPFwxGYmSBuoYDaUYLZEBsko2zD
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="461793834"
+X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
+   d="scan'208";a="461793834"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2023 09:28:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="741883388"
+X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
+   d="scan'208";a="741883388"
+Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
+  by fmsmga007.fm.intel.com with ESMTP; 29 Aug 2023 09:27:56 -0700
+Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qb1ZL-0008u3-28;
+        Tue, 29 Aug 2023 16:27:55 +0000
+Date:   Wed, 30 Aug 2023 00:27:13 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Meng Li <li.meng@amd.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Huang Rui <ray.huang@amd.com>
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, linux-acpi@vger.kernel.org,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kselftest@vger.kernel.org,
+        Nathan Fontenot <nathan.fontenot@amd.com>,
+        Deepak Sharma <deepak.sharma@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Shimmer Huang <shimmer.huang@amd.com>,
+        Perry Yuan <Perry.Yuan@amd.com>,
+        Xiaojian Du <Xiaojian.Du@amd.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Borislav Petkov <bp@alien8.de>, Meng Li <li.meng@amd.com>
+Subject: Re: [PATCH V4 4/7] cpufreq: Add a notification message that the
+ highest perf has changed
+Message-ID: <202308300057.ASUJQpsV-lkp@intel.com>
+References: <20230829064340.1136448-5-li.meng@amd.com>
 MIME-Version: 1.0
-References: <20230822203446.4111742-1-sjg@chromium.org> <ZOXKTrC_dzN_hUkY@FVFF77S0Q05N>
- <CAMj1kXEHpRjk_YKOm4czCnnpjqgahj2jV8MMfGLx7b1RdnBnVw@mail.gmail.com>
- <CAPnjgZ1S8G=7eCBF9PcDk4H5sk3AcxSSWXO575jK8SjA9dR8qw@mail.gmail.com> <CAMj1kXH83_TB4S0PL3jswxjCP+907YpgS7FRuVTO3G62s7nn5w@mail.gmail.com>
-In-Reply-To: <CAMj1kXH83_TB4S0PL3jswxjCP+907YpgS7FRuVTO3G62s7nn5w@mail.gmail.com>
-From:   Simon Glass <sjg@chromium.org>
-Date:   Tue, 29 Aug 2023 10:01:06 -0600
-Message-ID: <CAPnjgZ3aczy3sTJvppVBoM5_aB9zdML6muwwvuvwCn8n3Mpzyg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] schemas: Add a schema for memory map
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
-        Rob Herring <robh@kernel.org>,
-        Chiu Chasel <chasel.chiu@intel.com>,
-        U-Boot Mailing List <u-boot@lists.denx.de>,
-        Gua Guo <gua.guo@intel.com>, linux-acpi@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>,
-        Yunhui Cui <cuiyunhui@bytedance.com>,
-        ron minnich <rminnich@gmail.com>,
-        Tom Rini <trini@konsulko.com>,
-        Lean Sheng Tan <sheng.tan@9elements.com>,
-        "Dong, Guo" <guo.dong@intel.com>,
-        "dhaval@rivosinc.com" <dhaval@rivosinc.com>,
-        maximilian.brune@9elements.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_SPF_WL
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230829064340.1136448-5-li.meng@amd.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-(Adding a few more, will respond soon)
+Hi Meng,
 
-- Simon
+kernel test robot noticed the following build errors:
 
-On Thu, 24 Aug 2023 at 03:10, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Wed, 23 Aug 2023 at 22:04, Simon Glass <sjg@chromium.org> wrote:
-> >
-> > Hi,
-> >
-> > On Wed, 23 Aug 2023 at 08:24, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > On Wed, 23 Aug 2023 at 10:59, Mark Rutland <mark.rutland@arm.com> wrote:
-> > > >
-> > > > On Tue, Aug 22, 2023 at 02:34:42PM -0600, Simon Glass wrote:
-> > > > > The Devicetree specification skips over handling of a logical view of
-> > > > > the memory map, pointing users to the UEFI specification.
-> > > > >
-> > > > > It is common to split firmware into 'Platform Init', which does the
-> > > > > initial hardware setup and a "Payload" which selects the OS to be booted.
-> > > > > Thus an handover interface is required between these two pieces.
-> > > > >
-> > > > > Where UEFI boot-time services are not available, but UEFI firmware is
-> > > > > present on either side of this interface, information about memory usage
-> > > > > and attributes must be presented to the "Payload" in some form.
-> > >
-> > > Not quite.
-> > >
-> > > This seems to be intended for consumption by Linux booting in ACPI
-> > > mode, but not via UEFI, right?
-> >
-> > Actually, this is for consumption by firmware. The goal is to allow
-> > edk2 to boot into U-Boot and vice versa, i.e. provide some
-> > interoperability between firmware projects. I will use the "Platform
-> > Init" and "Payload" terminology here too.
-> >
->
-> OK. It was the cc to linux-acpi@ and the authors of the
-> ACPI/SMBIOS-without-UEFI patches that threw me off here.
->
-> If we are talking about an internal interface for firmware components,
-> I'd be inclined to treat this as an implementation detail, as long as
-> the OS is not expected to consume these DT nodes.
->
-> However, I struggle to see the point of framing this information as a
-> 'UEFI memory map'. Neither EDK2 nor u-boot consume this information
-> natively, and there is already prior art in both projects to consume
-> nodes following the existing bindings for device_type=memory and the
-> /reserved-memory node. UEFI runtime memory is generally useless
-> without UEFI runtime services, and UEFI boot services memory is just
-> free memory.
->
-> There is also an overlap with the handover between secure and
-> non-secure firmware on arm64, which is also DT based, and communicates
-> available memory as well as RAM regions that are reserved for firmware
-> use.
->
-> In summary, I don't see why a non-UEFI payload would care about UEFI
-> semantics for pre-existing memory reservations, or vice versa. Note
-> that EDK2 will manage its own memory map, and expose it via UEFI boot
-> services and not via DT.
->
-> ...
-> >
-> > There is no intent to implement the UEFI spec, here. It is simply that
-> > some payloads (EDK2) are used to having this information.
-> >
-> > Imagine splitting EDK2 into two parts, one of which does platform init
-> > and the other which (the payload) boots the OS. The payload wants
-> > information from Platform Init and it needs to be in a devicetree,
-> > since that is what we have chosen for this interface. So to some
-> > extent this is unrelated to whether you have EFI boot services. We
-> > just need to be able to pass the information across the interface.
-> > Note that the user can (without recompilation, etc.) replace the
-> > second part with U-Boot (for example) and it must still work.
-> >
->
-> OK, so device tree makes sense for this. This is how I implemented the
-> EDK2 port that targets QEMU/mach-virt - it consumes the DT to discover
-> the UART, RTC,, memory, PCI host bridge, etc.
->
-> But I don't see a use case for a UEFI memory map here.
->
->
-> > >
-> > > >
-> > > > Today Linux does that by passing:
-> > > >
-> > > >   /chosen/linux,uefi-mmap-start
-> > > >   /chosen/linux,uefi-mmap-size
-> > > >   /chosen/linux,uefi-mmap-desc-size
-> > > >   /chosen/linux,uefi-mmap-desc-ver
-> > > >
-> > > > ... or /chosen/xen,* variants of those.
-> > > >
-> > > > Can't we document / genericise that?
-> >
-> > That seems to me to be the fields from the EFI memory-map call, but
-> > where is the actual content? I looked in the kernel but it seems to be
-> > an internal interface (between the stub and the kernel)?
-> >
-> > > >
-> > >
-> > > Given the ACPI angle, promoting this to external ABI would introduce a
-> > > DT dependency to ACPI boot. So we'll at least have to be very clear
-> > > about which takes precedence, or maybe disregard everything except the
-> > > /chosen node when doing ACPI boot?
-> > >
-> > > This also argues for not creating an ordinary binding for this (i.e.,
-> > > describing it as part of the platform topology), but putting it under
-> > > /chosen as a Linux-only boot tweak.
-> > >
-> > > > Pointing to that rather than re-encoding it in DT means that it stays in-sync
-> > > > with the EFI spec and we won't back ourselves into a corner where we cannot
-> > > > encode something due to a structural difference. I don't think it's a good idea
-> > > > to try to re-encode it, or we're just setting ourselves up for futher pain.
-> > > >
-> > >
-> > > What I would prefer is to formalize pseudo-EFI boot and define the
-> > > bare required minimum (system table + memory map + config tables) in
-> > > an arch-agnostic manner. That way, the only thing that needs to be
-> > > passed via DT/boot_params/etc is the (pseudo-)EFI system table
-> > > address, and everything else (SMBIOS, ACPI as well as the EFI memory
-> > > map and even the initrd) can be passed via config tables as usual, all
-> > > of which is already supported in (mostly) generic kernel code.
-> > >
->
-> <snip some lines>
->
-> >
-> > Here I believe you are talking about booting the kernel in EFI mode,
-> > but that is not the intent of this patch. This is all about things
-> > happening in firmware. Now, if the payload (second) part of the
-> > firmware decides it wants to offer EFI boot services and boot the
-> > kernel via the EFI stub, then it may very well pack this information
-> > (with a few changes) into a system table and make it available to the
-> > kernel stub. But by then this FDT binding is irrelevant, since it has
-> > served its purpose (which, to reiterate, is to facilitate information
-> > passage from platform init to 'payload').
-> >
->
-> Indeed. As long as this binding is never consumed by the OS, I don't
-> have any objections to it - I just fail to see the point.
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on linus/master v6.5 next-20230829]
+[cannot apply to tip/x86/core]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Meng-Li/x86-Drop-CPU_SUP_INTEL-from-SCHED_MC_PRIO-for-the-expansion/20230829-144723
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20230829064340.1136448-5-li.meng%40amd.com
+patch subject: [PATCH V4 4/7] cpufreq: Add a notification message that the highest perf has changed
+config: i386-randconfig-r031-20230829 (https://download.01.org/0day-ci/archive/20230830/202308300057.ASUJQpsV-lkp@intel.com/config)
+compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230830/202308300057.ASUJQpsV-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202308300057.ASUJQpsV-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/acpi/processor_driver.c:88:3: error: call to undeclared function 'cpufreq_update_highest_perf'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+                   cpufreq_update_highest_perf(pr->id);
+                   ^
+   1 error generated.
+
+
+vim +/cpufreq_update_highest_perf +88 drivers/acpi/processor_driver.c
+
+    53	
+    54	static void acpi_processor_notify(acpi_handle handle, u32 event, void *data)
+    55	{
+    56		struct acpi_device *device = data;
+    57		struct acpi_processor *pr;
+    58		int saved;
+    59	
+    60		if (device->handle != handle)
+    61			return;
+    62	
+    63		pr = acpi_driver_data(device);
+    64		if (!pr)
+    65			return;
+    66	
+    67		switch (event) {
+    68		case ACPI_PROCESSOR_NOTIFY_PERFORMANCE:
+    69			saved = pr->performance_platform_limit;
+    70			acpi_processor_ppc_has_changed(pr, 1);
+    71			if (saved == pr->performance_platform_limit)
+    72				break;
+    73			acpi_bus_generate_netlink_event(device->pnp.device_class,
+    74							  dev_name(&device->dev), event,
+    75							  pr->performance_platform_limit);
+    76			break;
+    77		case ACPI_PROCESSOR_NOTIFY_POWER:
+    78			acpi_processor_power_state_has_changed(pr);
+    79			acpi_bus_generate_netlink_event(device->pnp.device_class,
+    80							  dev_name(&device->dev), event, 0);
+    81			break;
+    82		case ACPI_PROCESSOR_NOTIFY_THROTTLING:
+    83			acpi_processor_tstate_has_changed(pr);
+    84			acpi_bus_generate_netlink_event(device->pnp.device_class,
+    85							  dev_name(&device->dev), event, 0);
+    86			break;
+    87		case ACPI_PROCESSOR_NOTIFY_HIGEST_PERF_CHANGED:
+  > 88			cpufreq_update_highest_perf(pr->id);
+    89			acpi_bus_generate_netlink_event(device->pnp.device_class,
+    90							  dev_name(&device->dev), event, 0);
+    91			break;
+    92		default:
+    93			acpi_handle_debug(handle, "Unsupported event [0x%x]\n", event);
+    94			break;
+    95		}
+    96	
+    97		return;
+    98	}
+    99	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
