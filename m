@@ -2,216 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AABF78B927
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Aug 2023 22:11:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F00A78BC74
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 03:48:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231929AbjH1ULB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Aug 2023 16:11:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48398 "EHLO
+        id S235215AbjH2Brn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Aug 2023 21:47:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233201AbjH1UKw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Aug 2023 16:10:52 -0400
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30045195;
-        Mon, 28 Aug 2023 13:10:49 -0700 (PDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+        with ESMTP id S235046AbjH2BrJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Aug 2023 21:47:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FB37184;
+        Mon, 28 Aug 2023 18:47:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-         client-signature RSA-PSS (4096 bits) client-digest SHA256)
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
-        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 5ADED30000085;
-        Mon, 28 Aug 2023 22:10:47 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id 38C422ED8B1; Mon, 28 Aug 2023 22:10:47 +0200 (CEST)
-Date:   Mon, 28 Aug 2023 22:10:47 +0200
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v14.a 1/1] PCI: Only put Intel PCIe ports >= 2015 into D3
-Message-ID: <20230828201047.GA3545@wunner.de>
-References: <20230823050453.GA9103@wunner.de>
- <20230823114619.GA414059@bhelgaas>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230823114619.GA414059@bhelgaas>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D34E06168B;
+        Tue, 29 Aug 2023 01:47:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4554CC433C8;
+        Tue, 29 Aug 2023 01:47:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693273626;
+        bh=63Eb/9Zv8bMEzGEjklZL29OFlqOR10uunI+LHmGwChE=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=YrJwrOf257XUhQ9IqdBcx6B/fu6HSbZC85cJbOynY3V29XilEugo8B/j2t4q9/D3A
+         CKkoqd0vZmrhzXLgCDbnO6PdMtRkxYJnCkdOAKfY0OdScy9LSFSiDG3kAaU5qgbnuu
+         MjeVgtXTQwLjkOAReihMi7q1ZkOu97HoCxfKalXNjb+C/jbwKg7+ilVucC+Sw49ghr
+         IczbBPZtDa5zTv6GEZWspWf/o2VE8+sDHMBmTSUpokwRfKoaQyZvLacp7Lhu1SO8VY
+         CQ57Bpd62+3Dedh8VhHiQV//UMTbqWEMYSgc6GSEf0ztyZZD8j3dWLK1U8voa5EQE+
+         hyT8283+gWROg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 28AAAC3274C;
+        Tue, 29 Aug 2023 01:47:06 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI updates for v6.6-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0hsVwQ+F1NN5OfY7HG7tPcbcZi_X2SdgWXfF9ExW6r3hg@mail.gmail.com>
+References: <CAJZ5v0hsVwQ+F1NN5OfY7HG7tPcbcZi_X2SdgWXfF9ExW6r3hg@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0hsVwQ+F1NN5OfY7HG7tPcbcZi_X2SdgWXfF9ExW6r3hg@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.6-rc1
+X-PR-Tracked-Commit-Id: b483d3b8a54a544ab8854ca6dbb8d99c423b3ba4
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 330235e87410349042468b52baff02af7cb7d331
+Message-Id: <169327362616.21367.15371142110241185329.pr-tracker-bot@kernel.org>
+Date:   Tue, 29 Aug 2023 01:47:06 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 23, 2023 at 06:46:19AM -0500, Bjorn Helgaas wrote:
-> On Wed, Aug 23, 2023 at 07:04:53AM +0200, Lukas Wunner wrote:
-> > On Tue, Aug 22, 2023 at 07:02:43PM -0500, Bjorn Helgaas wrote:
-> > > On Tue, Aug 22, 2023 at 12:11:10PM +0200, Rafael J. Wysocki wrote:
-> > > > What we need to deal with here is basically non-compliant systems and
-> > > > so we have to catch the various forms of non-compliance.
-> > > 
-> > > Thanks for this, that helps.  If pci_bridge_d3_possible() is a list of
-> > > quirks for systems that are known to be broken (or at least not known
-> > > to work correctly and avoiding D3 is acceptable), then we should
-> > > document and use it that way.
-> > > 
-> > > The current documentation ("checks if it is possible to move to D3")
-> > > frames it as "does the bridge have the required features?" instead of
-> > > "do we know about something broken in this bridge or this platform?"
-> > > 
-> > > If something is broken, I would expect tests based on the device or
-> > > DMI check.  But several some are not obvious defects.  E.g.,
-> > > "bridge->is_hotplug_bridge && !pciehp_is_native(bridge)" -- what
-> > > defect are we finding there?  What does the spec require that isn't
-> > > happening?
-> > 
-> > This particular check doesn't pertain to a defect, but indeed
-> > follows from the spec:
-> > 
-> > If hotplug control wasn't granted to the OS, the OS shall not put
-> > the hotplug port in D3 behind firmware's back because the power state
-> > affects accessibility of devices downstream of the hotplug port.
-> > 
-> > Put another way, the firmware expects to have control of hotplug
-> > and hotplug may break if the OS fiddles with the power state of the
-> > hotplug port.
-> > 
-> > Here's a bugzilla where this caused issues:
-> > https://bugzilla.kernel.org/show_bug.cgi?id=53811
-> > 
-> > On the other hand Thunderbolt hotplug ports are required to runtime
-> > suspend to D3 in order to save power.  
-> 
-> Sounds like there may be a requirement in a Thunderbolt spec about
-> this, so maybe we could add that citation?  I guess this goes with the
-> "bridge->is_thunderbolt" check?
+The pull request you sent on Mon, 28 Aug 2023 14:55:04 +0200:
 
-Right, that's the check I was referring to.  But I'm afraid there is
-no explicit rule in Thunderbolt / USB4 specs that hotplug ports must
-be runtime suspended in order to save power, at least to the best
-of my knowledge.
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.6-rc1
 
-In practice, Thunderbolt controllers come in one of two forms,
-discrete or integrated into the CPU.  Originally only discrete
-controllers existed, but over time it became more and more common
-to integrate them.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/330235e87410349042468b52baff02af7cb7d331
 
-Apple was pretty much the only vendor which sold larger quantities
-of Thunderbolt 1 and 2 chips in the 2010 to 2016 era.  Back in the day,
-only discrete controllers existed and they consumed around 1.5 to 2 W.
-On laptops, that's a significant amount of energy, so from day 1, Apple
-put load switches on their motherboards which allowed the Thunderbolt
-controllers to be powered down if nothing is plugged in.
+Thank you!
 
-With the *integrated* Thunderbolt controllers, powering down on idle
-is usually likewise required to allow the entire CPU package to enter
-a low power state.
-
-To the operating system, a Thunderbolt controller is visible as a
-PCIe switch with an NHI device below one of the Downstream Ports
-and hotplugged devices appearing below the other Downstream Ports.
-The NHI is a vendor-agnostic Native Host Interface for tunnel setup,
-similar to the OHCI, EHCI, XHCI interface definitions that are in use
-with USB and FireWire controllers.
-
-Linux uses a hierarchical power management model, i.e. parent devices
-cannot runtime suspend unless their children runtime suspend.  Thus,
-the hotplug ports need to runtime suspend and then the Switch Upstream
-Port can runtime suspend and that triggers powerdown of the controller.
-
-To cut a long story short, in *practice* Thunderbolt hotplug ports need
-to be put into D3hot in order to save power, so that's what we do.
-And we know from experience that they're all *safe* to be put into D3hot.
-Hence we're whitelisting them in pci_bridge_d3_possible().
-
-By contrast, I recall that we got MCEs on Xeon-SP processors back in
-the day when their Root Ports were put into D3hot.  Hence the rather
-conservative approach taken in pci_bridge_d3_possible() to whitelist
-only known-good, newer hardware.
-
-
-> > On Macs they're always handled
-> > natively by the OS.  Hence the code comment.
-> 
-> And I guess this goes with the "System Management Mode" and
-> "Thunderbolt on non-Macs" comments?  A citation to the source behind
-> "OS shall not put the hotplug port in D3 behind firmware's back" would
-> be super helpful here.
-
-So I've just looked through the PCI Firmware Spec and can't find that
-mentioned anywhere explicitly, but it's pretty obvious if you think
-about it:
-
-If the OS puts the hotplug port in D3hot, its downstream bus transitions
-to either B2 or B3 (PCI Power Management Spec r1.2 sec 4.7.1).
-
-Which means devices downstream of the hotplug port become inaccessible.
-If hotplug control wasn't granted to the OS, firmware expects it may
-handle the hotplug port without interference by the OS.
-
-If the OS fiddles with the hotplug port's power state, that expectation
-is no longer met.  Let's say the firmware reads the downstream device's
-Vendor ID register to probe whether the device is there.  That'll no
-longer work as expected once the hotplug port is transitioned to D3hot
-by the operating system.
-
-In retrospect, this code comment is probably confusing:
-
-		/*
-		 * Hotplug ports handled by firmware in System Management Mode
-		 * may not be put into D3 by the OS (Thunderbolt on non-Macs).
-		 */
-		if (bridge->is_hotplug_bridge && !pciehp_is_native(bridge))
-			return false;
-
-This is not in any way specific to Thunderbolt.  It's just that
-back in the day, Thunderbolt tunnel management was done natively
-on Macs, whereas non-Macs did it in firmware.  That has since
-changed and most vendors have adopted native tunnel management.
-So the code comment is outdated.  The following would probably
-be more accurate today:
-
-		/*
-		 * Hotplug ports handled by firmware in System Management Mode
-		 * may not be put into D3 by the OS (behind firmware's back).
-		 */
-
-
-> > A somewhat longer explanation I gave in 2016:
-> > https://lore.kernel.org/all/20160617213209.GA1927@wunner.de/
-> > 
-> > Perhaps the code comment preceding that check can be rephrased to
-> > convey its meaning more clearly...
-> 
-> Thanks!  I think it would be worth trying to separate out the "normal"
-> things that correspond to the spec from the "quirk" things that work
-> around defects.  That's not material for *this* patch, though.
-> 
-> It's also a little weird that pci_bridge_d3_possible() itself looks
-> like it's invariant for the life of the system, but we call it several
-> times (pci_pm_init(), pci_bridge_d3_update(), pcie_portdrv_probe(),
-> etc).  I guess this is because we save the result in dev->bridge_d3,
-> but then pci_bridge_d3_update() updates dev->bridge_d3 based on other
-> things, so the original value is lost.  Maybe another bit or two could
-> avoid those extra calls.
-
-Right on all accounts.  Those invocations of pci_bridge_d3_possible()
-are all in code paths which run only once, e.g. on enumeration and removal
-of the PCIe port and on shutdown.  We figured that it's not worth it
-to cache the return value of pci_bridge_d3_possible() for these few
-invocations, none of which are in hot paths.  ("We" is mostly Mika and
-yours truly, who introduced this for Thunderbolt power management.)
-
-Thanks,
-
-Lukas
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
