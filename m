@@ -2,181 +2,220 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0188D78C853
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 17:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D941978C942
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 18:02:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236437AbjH2PLS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Aug 2023 11:11:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46424 "EHLO
+        id S232981AbjH2QBk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Aug 2023 12:01:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237102AbjH2PKy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Aug 2023 11:10:54 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F50A1BB;
-        Tue, 29 Aug 2023 08:10:52 -0700 (PDT)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37TAx7MQ032182;
-        Tue, 29 Aug 2023 15:10:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=qcppdkim1;
- bh=V6P6IgT4fq0Nz4ImFAX59N9wLTtH6dQB2NaQ9LCENME=;
- b=paHHXCyf205M5ITC8xwRDl84DaHYkXYiNLkWlXfOMZDXl/GUfbFwx8MfX0mQuq81j5F1
- I91f9dSSxElVQOJBdsfnO/jtc0ve/D5bKDxPVaLar9gGb9cl0/TQu2B55iQWtjYPi7KO
- dHC5yjGkH+YX6Euu3Up+EsAL0KtEZdG7ZKcNRxeW1VLhVSmp+U71xYW7eZgP5EGzcIRX
- pWHalczib+dbqJg5rPIUBn8q2jiJwdzy0YyT7X0sIaTQpZM+XV0qnD+K4CGQikBykzBg
- Y5+pW0KtsH3iG7bAkJ8XjUJ9K2Fbur2RIo/gNQwHUpzalIImT9Iy7Q7bbzspqOjiTV/h 9g== 
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2104.outbound.protection.outlook.com [104.47.58.104])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ss6j89nj1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Aug 2023 15:10:39 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=izccc7aTLtOBRy6C9T6aLolRAS3XM6dsAhZ8Y0KIImp3TZKM2Q0qmXCluuY+prtg/pa0xJZ3J76qhNOBNtJLLZG6GMplDQtiJdhSIUjH8SYcrYKu7yNlLBnGJ5jvGm59799woJMAoFKcp7elLKdJD/PoFlN5+9LAORiQspTcqaw6IP+3ZvPmjKHH9C+k5UxenxfjjLLpMeSSautIXZ7AUd0lAEKc3YiMyWnKHPCXePBDGVpGrRHeXMZia6tiW5rAMmEwszCQ3N1jv/S2TrKFaB94P2cUGbDdPWI5yVaxwndTkJIDUcfbQD17/hOhJICS1MRn5JDyRc74qHNSW08EJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V6P6IgT4fq0Nz4ImFAX59N9wLTtH6dQB2NaQ9LCENME=;
- b=Rk5fltOopolsGpeieD5hEwaHUPLUbSnhDc/SvgK8MYrLr5iJ0nxoegxXthkVhkHcxKUodD+N02ANVOSJSWJLHs6/PRBCvRhgVkQs+GdI2O2Bdd8eKxX4Ti7JGZ4T4NsIeH6PnLiiykfOxiLoo2hjV6xGie6AkrTDIBBkqBU4w0Zb0GDnLWqie6b0BRxOSYoyOOsxbsI/kz+wVvz5RStsDLt1gjY3qbhNrbyhyz0/7+6VBegKqp+t9/wPruu1yOFUSU/K9YY7Gl8Q/PPlZci7yj0JaQQQvoRfZ2T4+jGv4cIcLGEPVmteit/3lBtbq2ThoFxfMfRIR4pB84u0+HKsUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=qti.qualcomm.com; dmarc=pass action=none
- header.from=qti.qualcomm.com; dkim=pass header.d=qti.qualcomm.com; arc=none
-Received: from CH0PR02MB8073.namprd02.prod.outlook.com (2603:10b6:610:106::20)
- by CY8PR02MB9083.namprd02.prod.outlook.com (2603:10b6:930:92::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35; Tue, 29 Aug
- 2023 15:10:35 +0000
-Received: from CH0PR02MB8073.namprd02.prod.outlook.com
- ([fe80::3d62:6828:e5de:a985]) by CH0PR02MB8073.namprd02.prod.outlook.com
- ([fe80::3d62:6828:e5de:a985%7]) with mapi id 15.20.6699.035; Tue, 29 Aug 2023
- 15:10:34 +0000
-From:   Pawandeep Oza <poza@qti.qualcomm.com>
-To:     'Sudeep Holla' <sudeep.holla@arm.com>,
-        "Pawandeep Oza (QUIC)" <quic_poza@quicinc.com>
-CC:     "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: RE: ACPI binding with SCMI
-Thread-Topic: ACPI binding with SCMI
-Thread-Index: AQHZ15v/XxjdIx2eokuNoiWET0Kgs7ABBIYAgABgCVA=
-Date:   Tue, 29 Aug 2023 15:10:34 +0000
-Message-ID: <CH0PR02MB807367CCAD0D5938C4679E18F6E7A@CH0PR02MB8073.namprd02.prod.outlook.com>
-References: <20230807154834.888328-1-quic_poza@quicinc.com>
- <20230818091931.iqh6bxiifk4wyc32@bogus>
- <CH0PR02MB80732F4C4134B3EF2D80B4EDF6E3A@CH0PR02MB8073.namprd02.prod.outlook.com>
- <20230829091912.xefuenspdbazvqlh@bogus>
-In-Reply-To: <20230829091912.xefuenspdbazvqlh@bogus>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR02MB8073:EE_|CY8PR02MB9083:EE_
-x-ms-office365-filtering-correlation-id: d69a3efd-22b6-4ffc-b38f-08dba8a21834
-x-ld-processed: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: A/z2V+2oLBr5NBiZHeiMHCmlMyWgeuRCuZJZctRyU9lcspqIZt8QPGXXOGlShY/MP1zy/sp+5kFwXo34m9n/0tM380AvBOEhirvgQjcLGVI2Rp8sRtGjfry+RH6gkjjjOj+z0Y+MuXKJbm+0ZPPMtBVbwU5XTXoO8dH2ifiXZ3zdVdsjj0+FsljSAw05pIJTzDpSehNQMiIgu12TR7VWD4/l61OMJMS2VGEeZJaYr7tECd+rT/JdhC28tOo3t4pJ8W6wx9Osufjk3btzuPYVqHD2PEccMKyum3+yNEWx/B6k+Rs65NQX9phcFPxSzNqtPPUUGrkMO+fhZfgylypTNQNd1/hfENPR4JCvTVC4hwuEJqUOP2Sto0W2z3FtKvttzgu7AzhN9ZZhrutY2rD6aqRUUKPdxXTJWD2IAVmJqcTf0k5PFza+ORUcRLfBXcLeymwCfJzLjLIxHF2AA7LybK8aBvto9MMegc2uAvpNrqCUz3cHB20Pt7SfYyXyjkG9W+jon1sHI7B87yu8K3GPHZ5gFhyALHVturI9N/xNqpVlHT23Wm10K81acfVAgJfD1j1rkJDYsOIWMp3jUFMHdHkWL2FOojFafibCQ3LaFLcGCId/H8r3q4k6Omy8Ni3g
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR02MB8073.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(376002)(366004)(396003)(136003)(346002)(451199024)(1800799009)(186009)(7696005)(316002)(76116006)(5660300002)(52536014)(8676002)(8936002)(66556008)(478600001)(110136005)(71200400001)(54906003)(9686003)(4326008)(2906002)(66946007)(53546011)(6506007)(26005)(66476007)(41300700001)(64756008)(83380400001)(66446008)(3480700007)(86362001)(122000001)(38100700002)(38070700005)(55016003)(33656002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Be752VH4Kl4CCof3Rc2f1fgL/JLRYd8YrkprWE83Ix2VUwzeB2S/mcHxyzeC?=
- =?us-ascii?Q?gCB7KvzqIYr94GVYMtuxWn06EYXVL0j5mGnOzgSGWYwUcI+hJdRBSM7MW7kP?=
- =?us-ascii?Q?/nG4otS5zfNGNswn8MbYrfhl7RIMrIaYKty/XLoguwD5efqTy0wBVOyyfo85?=
- =?us-ascii?Q?MWVP31LYNCkZFfMW/pJ2V6y3uvFTTIbFt4WQafLu9WV3/X1EM+luJcG5OMIR?=
- =?us-ascii?Q?I2uELhDKsEO/S0kA7bShevAz7AoKpD9BvdlVLCfOpxsSnlYXo3FWE3OxEq7C?=
- =?us-ascii?Q?Jndc8tZC5sXe3iPIBRy23kpyyNhczxP7j10bnZ89ci/elVshCKASV1KRCEGL?=
- =?us-ascii?Q?0Qpm2zP9grDccMc1NN9z34AjTBZ94hhprlKCY8gBQG+RPHuNG+W509dUiOvb?=
- =?us-ascii?Q?XfqcHVyfXZlOTtUkgd2d5/k68bA68c726MrOvacR4QUT1Sfe+GM3c9vEVZwX?=
- =?us-ascii?Q?TV4uI8PeK5fJINVeRy4lcCpX9m9IDpK6VPQyxW7+19bHje8h58gpE/LfLzAW?=
- =?us-ascii?Q?r2JFkyCLWlwVcf4FP8KWz9NK5w6zcHLKAWSPTTOCT/SoDq8rw/bZD3hYiFyu?=
- =?us-ascii?Q?4YZgr3S9WagwiUuw+W2MqHHDfKzIs7TR+y0TlKWVSJultBz8x+M6E4GfbO5Y?=
- =?us-ascii?Q?XwHtL2wvDjfeALtXIBGxtHaK7ApmiIzKv3/tfXZyuuo+6NGOk3CKcKH+mnHX?=
- =?us-ascii?Q?yL/raEzG5le/J8eX0BIKw4D9CyK+JBEoG3M9HbnVhKQXMKnxzWF3tcZP9LnJ?=
- =?us-ascii?Q?Wsbm+5j5zFKbPmLBEKN8ITW8fjKVDiNx9Q7hG9I29BZjfI7NVy5dR9xj1NCI?=
- =?us-ascii?Q?URx6ICHfENAQ61j9/nKBR8Jn6lDsvQHCoMszV6Chnl10jX+m82L4n+W5aWOo?=
- =?us-ascii?Q?zF9vNQiWko2TOYtUFzMNolgfj/4KqlHuEyyVo/mRbM4nWyM9uTyY4EVvr5MO?=
- =?us-ascii?Q?ljBfFFZCx5MdeAc7fY5Rd7mF1aYR0a3Z8jUcMnlCsWs4kVLJQPKZ9EOzdL0a?=
- =?us-ascii?Q?d9Xodz2IKSIy/LLWauf/jFLPJad1GDoQGCuz2qGHrWLJOecVSrfB32MOEJH9?=
- =?us-ascii?Q?Kd6YH7q3icSlUgOCAz2LQOecYWn/S7hTHyLjeOlMLV1WAkFHCPI7OszGN9BA?=
- =?us-ascii?Q?kdQlaf3QgEwnwF85uQRXEVOdK/HAchgX+tO6m15IqTwOLIiZJ/UhJ3nS1syY?=
- =?us-ascii?Q?saBXqCCemq1rWEyDkxtNwfBo1B+z5o4UCl9tuuVvCepU3SW1y6xwZT7L3e3f?=
- =?us-ascii?Q?pOe1PBMjlS9xpwX8gvcmCaFbFG/QyXqjZYzilieluphIVelJBdoi3kZMiopO?=
- =?us-ascii?Q?ndCjPAvv9WtRFWOaH4wPGNdcxm3uyUFgpgC6OwTnXh8F3FveGJwHQgeopKwA?=
- =?us-ascii?Q?T0g5OvnD6hB0C5twkazEtqxcan0Pynmt/W8J0JTkiFH4+TVg41KAEjWgNXtM?=
- =?us-ascii?Q?VrENk2SxxI5hBUeUlZnYo+aSlNd0zmulPldobHbbASCt4CKLVYTeC4FnyYs0?=
- =?us-ascii?Q?xEfUm7H7SYD+bSPtn6t/+/wXsS4py9krJe8MnB6ZdTnJ5jlpDlL+saYMceu1?=
- =?us-ascii?Q?cTE/g6JRSjxl6QEXze9LGwC77PcC27JZ+qHDzME/?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S237383AbjH2QBZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Aug 2023 12:01:25 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C5712F
+        for <linux-acpi@vger.kernel.org>; Tue, 29 Aug 2023 09:01:21 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-50079d148aeso7095284e87.3
+        for <linux-acpi@vger.kernel.org>; Tue, 29 Aug 2023 09:01:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1693324879; x=1693929679;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0tc7Oq+vVun/0F0TYkBBZcQLVrPo7QJsVygXG4Fbb5A=;
+        b=C75zormY29ZXEnMS0HuILcr+i3vv2IYTT61Gg+FzedECiPJ47OqKP0XncRxpBSyPJh
+         kyg18zl15b6H+Hbk1qSXudMfOYAJ/AXHDLvkpwkucR9ZQokJ6sLW9HUmcuTMsr0Jlqu+
+         vXstnR2fntcJfSznfJVwvnjJDqqPjXF97eeoE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693324879; x=1693929679;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0tc7Oq+vVun/0F0TYkBBZcQLVrPo7QJsVygXG4Fbb5A=;
+        b=UYmvVzOPlkZEt5z16ZiFDORkQrOnU+0bfs0zQrVgTRDBJHjJqZmTWnIjqtNXKKM1tW
+         f+9YogO7flHv/GmckZ6Gj8Jr8xnkQKBusTAX0jPQJFoJhvpzjJB4CEW0YLd6wveXl4aO
+         T6GpeGDi1yvqqacTO7U6By7jwHg2beDF8ozbXbak1RjEaBRCXTibeussH1uHZst85DnE
+         NGf1ZDdxCHh7iAG0utdaImimlC+Y73/5Yq1Eo4y9ukWV5GwW+v5zqnJk0yy4LkDDPNEZ
+         Y6e2Z1agMqsvHf82RWZEFLUKE2VzY3Fc5FI1kfqx8HLSfAwRYVRMtU2QCSywQkGoaqh8
+         0cZw==
+X-Gm-Message-State: AOJu0YwjcgZ/Lo8nXNWcjLJ1n0Ice6oetj20di3z4xzFZ54+9CRwty3y
+        x0/p89XLnEXLrYrKj10JP8n7eN3zIXWEJniGWN0/PA==
+X-Google-Smtp-Source: AGHT+IE/RX9iizoSgqT2x/ebB3X+QfUbrpdl+J3+w25nxLY20nEDHwjRri4n6/cHqS87tJVCVdhQHRPnPZQMtqcKUuM=
+X-Received: by 2002:a05:6512:250e:b0:4f9:54f0:b6db with SMTP id
+ be14-20020a056512250e00b004f954f0b6dbmr22767776lfb.13.1693324878784; Tue, 29
+ Aug 2023 09:01:18 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: vE7w4Ncj0eWx8rZieG3DEhfL/7/JQPb3FYv9Nl116jg7L5OXcofaufDshS95v/BEArtkObW0P99WzXEdMY2mIM72Po6LLaHVTOKweuMnEhf3BskJ2b4z41BHiIbaE2yIOaV1I7pfBsHSBHC228ThXN0WtWEzwu61wRC8C6xtHZ4LIg6NV4Ziypo41cyakhuQUQ684a/AvaBrVzmBVfjSGM6wHkNKcyxbREhCxe3FfQvUWLiJzj49zTWNZf7v/YKGW+mi/TtbrzcjOiAlmJtzCd/Sq7L/O1vWGjeAtP0fs3MaBjHo9SJA3UOJc9UPw7m2F4PU6Ns6WgPEeiNc+dFC6O80BcQp4oqh52IDp9sGZ945sX6AsQ/hdNsLWNyHKtENb7EQIauZb5N8gPpZORMDnAY58YE6J4TkFWo+aME4hLMks0scPQlYg0AtJeWoBwL1BHCCVx4o/YYjYu3wDZyArflbOb0A2VilMHIlJNr03Ky9ubi8fOYKqAYppH3CzA9f3vqCzs2oiHDU7Ygge/A68yvW3m5ov1RA+Hw1TTHkALlhfhEVhZVPp6VSK3nNCcCgv2fI1eQhLDdmBysZkKdG+n+nCOgYMOfLBdl8JD/jL/XYN4DDanm2iIVJgew/nwwLb0BQmpa20fQSZ2tCDkeTstebvQQIwmNuz6XqMqwJlbiLg9JOy8j7JuJU+JF9kxc3RT+9NQHMg8wkYasC5CU8EVsPzqVdGnOHAaP5/1v7vWTYB+EkI5I5YWQJUByZaLeGd+7x1Pt9vcLZQWoIeLcO6grl/zQ8XlqFQH11raRbpAEjCRFLerLrwk8QwX4LyDdvxcondxzjgiOjoyOAjvIW5YEnmf1ORGe+IdArjKyhZXCqltNyhPGthmzIMT6OSWcX
-X-OriginatorOrg: qti.qualcomm.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR02MB8073.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d69a3efd-22b6-4ffc-b38f-08dba8a21834
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Aug 2023 15:10:34.7331
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: DP+Wju2PETT3MRNO5cl389iA/f43Sfe0QSV3on6OqfQG0d8BCqSb3xBRZUFCxjXvM/Ol2Yj62zbw3ZDGpif6AQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR02MB9083
-X-Proofpoint-ORIG-GUID: txglVPSD5v3TIDTDp5Nu-ODJAKDVWJVm
-X-Proofpoint-GUID: txglVPSD5v3TIDTDp5Nu-ODJAKDVWJVm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-29_11,2023-08-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
- impostorscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=284
- lowpriorityscore=0 phishscore=0 malwarescore=0 spamscore=0 clxscore=1011
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308290131
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230822203446.4111742-1-sjg@chromium.org> <ZOXKTrC_dzN_hUkY@FVFF77S0Q05N>
+ <CAMj1kXEHpRjk_YKOm4czCnnpjqgahj2jV8MMfGLx7b1RdnBnVw@mail.gmail.com>
+ <CAPnjgZ1S8G=7eCBF9PcDk4H5sk3AcxSSWXO575jK8SjA9dR8qw@mail.gmail.com> <CAMj1kXH83_TB4S0PL3jswxjCP+907YpgS7FRuVTO3G62s7nn5w@mail.gmail.com>
+In-Reply-To: <CAMj1kXH83_TB4S0PL3jswxjCP+907YpgS7FRuVTO3G62s7nn5w@mail.gmail.com>
+From:   Simon Glass <sjg@chromium.org>
+Date:   Tue, 29 Aug 2023 10:01:06 -0600
+Message-ID: <CAPnjgZ3aczy3sTJvppVBoM5_aB9zdML6muwwvuvwCn8n3Mpzyg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] schemas: Add a schema for memory map
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        Chiu Chasel <chasel.chiu@intel.com>,
+        U-Boot Mailing List <u-boot@lists.denx.de>,
+        Gua Guo <gua.guo@intel.com>, linux-acpi@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>,
+        Yunhui Cui <cuiyunhui@bytedance.com>,
+        ron minnich <rminnich@gmail.com>,
+        Tom Rini <trini@konsulko.com>,
+        Lean Sheng Tan <sheng.tan@9elements.com>,
+        "Dong, Guo" <guo.dong@intel.com>,
+        "dhaval@rivosinc.com" <dhaval@rivosinc.com>,
+        maximilian.brune@9elements.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_SPF_WL
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-I am looking for scmi binding to ACPI. Basically, SCMI based perf control.=
-=20
-We have ACPI based system, so I am looking for where I can describe (some w=
-ay to describe doorbell and share memory in ACPI),=20
-and then scmi perf can bind to it via some sort of transport (perhaps fastc=
-hannels ? )
+(Adding a few more, will respond soon)
 
-Regards,
-Oza.
------Original Message-----
-From: Sudeep Holla <sudeep.holla@arm.com>=20
-Sent: Tuesday, August 29, 2023 2:19 AM
-To: Pawandeep Oza (QUIC) <quic_poza@quicinc.com>
-Cc: rafael@kernel.org; Sudeep Holla <sudeep.holla@arm.com>; linux-arm-kerne=
-l@lists.infradead.org; linux-kernel@vger.kernel.org; linux-acpi@vger.kernel=
-.org
-Subject: Re: ACPI binding with SCMI
+- Simon
 
-WARNING: This email originated from outside of Qualcomm. Please be wary of =
-any links or attachments, and do not enable macros.
-
-On Fri, Aug 25, 2023 at 09:34:59PM +0000, Pawandeep Oza (QUIC) wrote:
-
-[...]
-
+On Thu, 24 Aug 2023 at 03:10, Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> But I still fail to see how fastchannel doorbell and shared memory=20
-> space could get bind to PCC space (type 3) ? I am on 6.3 kernel.
-
-They simply don't bind to PCC, PCC can't be fast channel. What exactly are =
-you looking for here ? If you provide more details on that, I can see if I =
-can help or suggest or may be explore along with you if the solution doesn'=
-t exists yet.
-
---
-Regards,
-Sudeep
+> On Wed, 23 Aug 2023 at 22:04, Simon Glass <sjg@chromium.org> wrote:
+> >
+> > Hi,
+> >
+> > On Wed, 23 Aug 2023 at 08:24, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > >
+> > > On Wed, 23 Aug 2023 at 10:59, Mark Rutland <mark.rutland@arm.com> wrote:
+> > > >
+> > > > On Tue, Aug 22, 2023 at 02:34:42PM -0600, Simon Glass wrote:
+> > > > > The Devicetree specification skips over handling of a logical view of
+> > > > > the memory map, pointing users to the UEFI specification.
+> > > > >
+> > > > > It is common to split firmware into 'Platform Init', which does the
+> > > > > initial hardware setup and a "Payload" which selects the OS to be booted.
+> > > > > Thus an handover interface is required between these two pieces.
+> > > > >
+> > > > > Where UEFI boot-time services are not available, but UEFI firmware is
+> > > > > present on either side of this interface, information about memory usage
+> > > > > and attributes must be presented to the "Payload" in some form.
+> > >
+> > > Not quite.
+> > >
+> > > This seems to be intended for consumption by Linux booting in ACPI
+> > > mode, but not via UEFI, right?
+> >
+> > Actually, this is for consumption by firmware. The goal is to allow
+> > edk2 to boot into U-Boot and vice versa, i.e. provide some
+> > interoperability between firmware projects. I will use the "Platform
+> > Init" and "Payload" terminology here too.
+> >
+>
+> OK. It was the cc to linux-acpi@ and the authors of the
+> ACPI/SMBIOS-without-UEFI patches that threw me off here.
+>
+> If we are talking about an internal interface for firmware components,
+> I'd be inclined to treat this as an implementation detail, as long as
+> the OS is not expected to consume these DT nodes.
+>
+> However, I struggle to see the point of framing this information as a
+> 'UEFI memory map'. Neither EDK2 nor u-boot consume this information
+> natively, and there is already prior art in both projects to consume
+> nodes following the existing bindings for device_type=memory and the
+> /reserved-memory node. UEFI runtime memory is generally useless
+> without UEFI runtime services, and UEFI boot services memory is just
+> free memory.
+>
+> There is also an overlap with the handover between secure and
+> non-secure firmware on arm64, which is also DT based, and communicates
+> available memory as well as RAM regions that are reserved for firmware
+> use.
+>
+> In summary, I don't see why a non-UEFI payload would care about UEFI
+> semantics for pre-existing memory reservations, or vice versa. Note
+> that EDK2 will manage its own memory map, and expose it via UEFI boot
+> services and not via DT.
+>
+> ...
+> >
+> > There is no intent to implement the UEFI spec, here. It is simply that
+> > some payloads (EDK2) are used to having this information.
+> >
+> > Imagine splitting EDK2 into two parts, one of which does platform init
+> > and the other which (the payload) boots the OS. The payload wants
+> > information from Platform Init and it needs to be in a devicetree,
+> > since that is what we have chosen for this interface. So to some
+> > extent this is unrelated to whether you have EFI boot services. We
+> > just need to be able to pass the information across the interface.
+> > Note that the user can (without recompilation, etc.) replace the
+> > second part with U-Boot (for example) and it must still work.
+> >
+>
+> OK, so device tree makes sense for this. This is how I implemented the
+> EDK2 port that targets QEMU/mach-virt - it consumes the DT to discover
+> the UART, RTC,, memory, PCI host bridge, etc.
+>
+> But I don't see a use case for a UEFI memory map here.
+>
+>
+> > >
+> > > >
+> > > > Today Linux does that by passing:
+> > > >
+> > > >   /chosen/linux,uefi-mmap-start
+> > > >   /chosen/linux,uefi-mmap-size
+> > > >   /chosen/linux,uefi-mmap-desc-size
+> > > >   /chosen/linux,uefi-mmap-desc-ver
+> > > >
+> > > > ... or /chosen/xen,* variants of those.
+> > > >
+> > > > Can't we document / genericise that?
+> >
+> > That seems to me to be the fields from the EFI memory-map call, but
+> > where is the actual content? I looked in the kernel but it seems to be
+> > an internal interface (between the stub and the kernel)?
+> >
+> > > >
+> > >
+> > > Given the ACPI angle, promoting this to external ABI would introduce a
+> > > DT dependency to ACPI boot. So we'll at least have to be very clear
+> > > about which takes precedence, or maybe disregard everything except the
+> > > /chosen node when doing ACPI boot?
+> > >
+> > > This also argues for not creating an ordinary binding for this (i.e.,
+> > > describing it as part of the platform topology), but putting it under
+> > > /chosen as a Linux-only boot tweak.
+> > >
+> > > > Pointing to that rather than re-encoding it in DT means that it stays in-sync
+> > > > with the EFI spec and we won't back ourselves into a corner where we cannot
+> > > > encode something due to a structural difference. I don't think it's a good idea
+> > > > to try to re-encode it, or we're just setting ourselves up for futher pain.
+> > > >
+> > >
+> > > What I would prefer is to formalize pseudo-EFI boot and define the
+> > > bare required minimum (system table + memory map + config tables) in
+> > > an arch-agnostic manner. That way, the only thing that needs to be
+> > > passed via DT/boot_params/etc is the (pseudo-)EFI system table
+> > > address, and everything else (SMBIOS, ACPI as well as the EFI memory
+> > > map and even the initrd) can be passed via config tables as usual, all
+> > > of which is already supported in (mostly) generic kernel code.
+> > >
+>
+> <snip some lines>
+>
+> >
+> > Here I believe you are talking about booting the kernel in EFI mode,
+> > but that is not the intent of this patch. This is all about things
+> > happening in firmware. Now, if the payload (second) part of the
+> > firmware decides it wants to offer EFI boot services and boot the
+> > kernel via the EFI stub, then it may very well pack this information
+> > (with a few changes) into a system table and make it available to the
+> > kernel stub. But by then this FDT binding is irrelevant, since it has
+> > served its purpose (which, to reiterate, is to facilitate information
+> > passage from platform init to 'payload').
+> >
+>
+> Indeed. As long as this binding is never consumed by the OS, I don't
+> have any objections to it - I just fail to see the point.
