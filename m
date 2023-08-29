@@ -2,50 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E91BF78CCCF
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 21:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 851A478CCCE
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 21:19:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236285AbjH2TSr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Aug 2023 15:18:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53266 "EHLO
+        id S239855AbjH2TSt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Aug 2023 15:18:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239121AbjH2TSX (ORCPT
+        with ESMTP id S239094AbjH2TSX (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Aug 2023 15:18:23 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABCEBFD
-        for <linux-acpi@vger.kernel.org>; Tue, 29 Aug 2023 12:18:19 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-792965813e7so112741739f.2
-        for <linux-acpi@vger.kernel.org>; Tue, 29 Aug 2023 12:18:19 -0700 (PDT)
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2991194
+        for <linux-acpi@vger.kernel.org>; Tue, 29 Aug 2023 12:18:20 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id ca18e2360f4ac-7927952ca67so140344839f.2
+        for <linux-acpi@vger.kernel.org>; Tue, 29 Aug 2023 12:18:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1693336699; x=1693941499; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1693336700; x=1693941500; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=asdwWrQgSDUsQBbMFgdwSUCGxAMIv135nq9+k2HMaa0=;
-        b=RDPVP53Na4RjKIWVH4dYAGzx+P4LsBWFkOALAa+gmqqY5yCjmdWpCUpTFmxELphu2N
-         u4XclXHLKT62uF4s7WWpt2ZIHom/6aI9lesxGW2jk1l7yERIEsKbHwUglbAhdF7oCBzl
-         F6/WkjbcJ2idMkWbb3YsaIKzXq8ompF2DDfgA=
+        bh=Q2EOlIsyyalVzQJ+ySIW4EY7rt0WpPcDJsD4cRWVzLc=;
+        b=Y8ndFGXUdPBDqaEMrjCfmJVCjWK3Y+qe25md0YtblEBllgsSd1oPIVru37PO6prVZU
+         4eqfiJEtZ4He2OXtMXrTkWUKUjXzoKVu1LfH3s94VUxIXZYxKwnpUsQv/egO0yoJp61F
+         SUelLTEiNB1m9OHnbp6uqCRQNu8CQSiYzw6CQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693336699; x=1693941499;
+        d=1e100.net; s=20221208; t=1693336700; x=1693941500;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=asdwWrQgSDUsQBbMFgdwSUCGxAMIv135nq9+k2HMaa0=;
-        b=EL63zEfsJzZWow3Lq33pMt04Q86SCRhAP+j1XtKF/V9yYrAAFqf9u58yh9ZqiISQ0x
-         2Dc2xHVNe03MpUMjxSfNVN3MAz7aI0zkzk8n7/KF8xrltR/qX/3TK/AFpPCdTekoqGtE
-         FUlSJ9af4QZmyEDpgMAlBAx4Gj6w7jLaYCujBA5prr1uIZ/uuoWS3PZkjMTcC4gvbevq
-         u4JmoDlFCpw1URdj06poln6gY3RaOEE3lpWXJ4sNB2oqDxsbi93byP9VG6baT/V7pSRU
-         WBlBZzZtYF2ceOQinKaal10CD0+AsWKKr7HMyU3ptI2knpVlZEqHKL7bLEUWZT01+E6o
-         sgig==
-X-Gm-Message-State: AOJu0YyZL1qweAAl6dYpRDhaWTYvoIccNLjCOhKCAUabuSrnNrIb/5X5
-        u0Hylm3glvoGtDzLdlo08KicvQ==
-X-Google-Smtp-Source: AGHT+IGAS+bTigCPmRP0jxu5uZgQG+yMGKUfr6n4pFO5Py5STv9I4dkw/kX8J7iBq5DSVfvEGDSG5w==
-X-Received: by 2002:a5d:990f:0:b0:790:fc73:6e3c with SMTP id x15-20020a5d990f000000b00790fc736e3cmr332445iol.8.1693336699097;
-        Tue, 29 Aug 2023 12:18:19 -0700 (PDT)
+        bh=Q2EOlIsyyalVzQJ+ySIW4EY7rt0WpPcDJsD4cRWVzLc=;
+        b=Ormus5RS9ZctjoDtWjVoMTtjq3bM27/58O0tOGM+MnMT68RfyV0w6jzV8xPmyykvTM
+         T48S8ZYVP2I/GxgeIipGc8zAWGUbjm2RnfWsSQN4BUfGFjFz596RXGI98R//2bWxa26D
+         IwJX8t23c6TO5VTMyEpEhRBDRHO4K+yyPUIdRrzHkGuOazkfPoqI67fVWB6cx1nEvUbE
+         T9CI/iSkoMbUGqDFHo3qb1dwc4JDgUsRYHbRT9POhy2NVfcVGA2GwTtnWSAypVLrW7dV
+         EHIifsVPWbbNaUWvzezVGo4/5s5/ohi8/YSk7Nc/DpHDOCcHVLAdAV2inNdyYx3HAK+p
+         wzYA==
+X-Gm-Message-State: AOJu0YzTOiDx15vE0RQDGRmpuxVJYE6yIx4BevwmTGhgkTyi1PZ95Dgx
+        onKy0nVtmB5BysJeSp4iyZHZDg==
+X-Google-Smtp-Source: AGHT+IHcNTUDqeWuGnguf30MnbXSWVIEQf0YgXYlNufXHWllcBHuQB7tTPrRkRrNldw414bQICnkvA==
+X-Received: by 2002:a6b:a05:0:b0:795:16b8:85fc with SMTP id z5-20020a6b0a05000000b0079516b885fcmr406492ioi.0.1693336700070;
+        Tue, 29 Aug 2023 12:18:20 -0700 (PDT)
 Received: from kea.bld.corp.google.com ([2620:15c:183:200:16d9:c947:1a18:4c10])
-        by smtp.gmail.com with ESMTPSA id fq8-20020a056638650800b004332f6537e2sm3359798jab.83.2023.08.29.12.18.18
+        by smtp.gmail.com with ESMTPSA id fq8-20020a056638650800b004332f6537e2sm3359798jab.83.2023.08.29.12.18.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Aug 2023 12:18:18 -0700 (PDT)
+        Tue, 29 Aug 2023 12:18:19 -0700 (PDT)
 From:   Simon Glass <sjg@chromium.org>
 To:     devicetree@vger.kernel.org
 Cc:     Dhaval Sharma <dhaval@rivosinc.com>,
@@ -62,9 +62,9 @@ Cc:     Dhaval Sharma <dhaval@rivosinc.com>,
         Yunhui Cui <cuiyunhui@bytedance.com>,
         linux-acpi@vger.kernel.org, Guo Dong <guo.dong@intel.com>,
         Simon Glass <sjg@chromium.org>
-Subject: [PATCH v4 3/4] schemas: Add a schema for memory map
-Date:   Tue, 29 Aug 2023 13:18:08 -0600
-Message-ID: <20230829191812.135759-3-sjg@chromium.org>
+Subject: [PATCH v4 4/4] memory: Add ECC property
+Date:   Tue, 29 Aug 2023 13:18:09 -0600
+Message-ID: <20230829191812.135759-4-sjg@chromium.org>
 X-Mailer: git-send-email 2.42.0.rc2.253.gd59a3bf2b4-goog
 In-Reply-To: <20230829191812.135759-1-sjg@chromium.org>
 References: <20230829191812.135759-1-sjg@chromium.org>
@@ -80,181 +80,43 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Devicetree specification skips over handling of a logical view of
-the memory map, pointing users to the UEFI specification.
+Some memories provides ECC correction. For software which wants to check
+memory, it is helpful to see which regions provide this feature.
 
-It is common to split firmware into 'Platform Init', which does the
-initial hardware setup and a "Payload" which selects the OS to be booted.
-Thus an handover interface is required between these two pieces.
-
-Where UEFI boot-time services are not available, but UEFI firmware is
-present on either side of this interface, information about memory usage
-and attributes must be presented to the "Payload" in some form.
-
-This aims to provide an initial schema for this mapping.
-
-Note that this is separate from the existing /memory and /reserved-memory
-nodes, since it is mostly concerned with what the memory is used for. It
-may cover only a small fraction of available memory.
-
-For now, no attempt is made to create an exhaustive binding, so there are
-some example types listed. This can be completed once this has passed
-initial review.
-
-The compatible string is not included, since the node name is enough to
-indicate the purpose of a node, as per the existing reserved-memory
-schema.
-
-This binding does not include a binding for the memory 'attribute'
-property, defined by EFI_BOOT_SERVICES.GetMemoryMap(). It may be useful
-to have that as well, but perhaps not as a bit mask.
+Add this as a property of the /memory nodes, since it presumably follows
+the hardware-level memory system.
 
 Signed-off-by: Simon Glass <sjg@chromium.org>
 ---
 
-Changes in v4:
-- Make use of the reserved-memory node instead of creating a new one
+(no changes since v3)
 
 Changes in v3:
-- Reword commit message again
-- cc a lot more people, from the FFI patch
-- Split out the attributes into the /memory nodes
+- Add new patch to update the /memory nodes
 
-Changes in v2:
-- Reword commit message
+ dtschema/schemas/memory.yaml | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
- dtschema/schemas/memory-map.yaml              | 61 +++++++++++++++++++
- .../reserved-memory/common-reserved.yaml      | 53 ++++++++++++++++
- 2 files changed, 114 insertions(+)
- create mode 100644 dtschema/schemas/memory-map.yaml
- create mode 100644 dtschema/schemas/reserved-memory/common-reserved.yaml
-
-diff --git a/dtschema/schemas/memory-map.yaml b/dtschema/schemas/memory-map.yaml
-new file mode 100644
-index 0000000..4b06583
---- /dev/null
-+++ b/dtschema/schemas/memory-map.yaml
-@@ -0,0 +1,61 @@
-+# SPDX-License-Identifier: BSD-2-Clause
-+# Copyright 2023 Google LLC
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/memory-map.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: /memory-map nodes
-+description: |
-+  Common properties always required in /memory-map nodes. These nodes are
-+  intended to resolve the nonchalant clause 3.4.1 ("/memory node and UEFI")
-+  in the Devicetree Specification.
-+
-+maintainers:
-+  - Simon Glass <sjg@chromium.org>
-+
-+properties:
-+  $nodename:
-+    const: 'memory-map'
-+
-+patternProperties:
-+  "^([a-z][a-z0-9\\-]+@[0-9a-f]+)?$":
-+    type: object
-+    additionalProperties: false
-+
-+    properties:
-+      reg:
-+        minItems: 1
-+        maxItems: 1024
-+
-+      usage:
-+        $ref: /schemas/types.yaml#/definitions/string
+diff --git a/dtschema/schemas/memory.yaml b/dtschema/schemas/memory.yaml
+index 1d74410..981af04 100644
+--- a/dtschema/schemas/memory.yaml
++++ b/dtschema/schemas/memory.yaml
+@@ -34,7 +34,14 @@ patternProperties:
+         description:
+           For the purpose of identification, each NUMA node is associated with
+           a unique token known as a node id.
+-
++      attr:
++        $ref: /schemas/types.yaml#/definitions/string-array
 +        description: |
-+          Describes the usage of the memory region, e.g.:
++          Attributes possessed by this memory region:
 +
-+            "acpi-reclaim", "acpi-nvs", "bootcode", "bootdata", "bootdata",
-+            "runtime-code", "runtime-data".
-+
-+            See enum EFI_MEMORY_TYPE in "Unified Extensible Firmware Interface
-+            (UEFI) Specification" for all the types. For now there are not
-+            listed here.
-+
-+    required:
-+      - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    memory-map {
-+        acpi@f0000 {
-+            reg = <0xf0000 0x4000>;
-+            usage = "acpi-reclaim";
-+        };
-+
-+        runtime@12300000 {
-+            reg = <0x12300000 0x28000>;
-+            usage = "runtime-code";
-+        };
-+    };
-+...
-diff --git a/dtschema/schemas/reserved-memory/common-reserved.yaml b/dtschema/schemas/reserved-memory/common-reserved.yaml
-new file mode 100644
-index 0000000..70cdead
---- /dev/null
-+++ b/dtschema/schemas/reserved-memory/common-reserved.yaml
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/reserved-memory/common-reserved.yaml#
-+$schema: http://devicetree.org/meta-schemas/base.yaml#
-+
-+title: Common memory reservations
-+
-+description: |
-+  Specifies that the reserved memory region can be used for the purpose
-+  indicated by its node name.
-+
-+  Clients may reuse this reserved memory if they understand what it is for.
-+
-+maintainers:
-+  - Simon Glass <sjg@chromium.org>
-+
-+# always select the core schema
-+select: true
-+
-+properties:
-+    $nodename:
-+    oneOf:
-+      - acpi-reclaim
-+      - acpi-nvs
-+      - boot-code
-+      - boot-data
-+      - runtime-code
-+      - runtime-data
-+
-+  reg:
-+    description: region of memory that is reserved for the purpose indicated
-+      by the node name.
-+
-+required:
-+  - reg
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    reserved-memory {
-+        #address-cells = <1>;
-+        #size-cells = <1>;
-+
-+        boot-code@12340000 {
-+            reg = <0x12340000 0x00800000>;
-+        };
-+
-+        boot-data@43210000 {
-+            reg = <0x43210000 0x00800000>;
-+        };
-+    };
++            "single-bit-ecc" - supports single-bit ECC
++            "multi-bit-ecc" - supports multiple-bit ECC
++            "no-ecc" - non-ECC memory
+ 
+     required:
+       - device_type
 -- 
 2.42.0.rc2.253.gd59a3bf2b4-goog
 
