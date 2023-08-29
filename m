@@ -2,164 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B59F878C9B2
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 18:34:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3E5A78CCE9
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Aug 2023 21:29:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235329AbjH2Qdw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Aug 2023 12:33:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34712 "EHLO
+        id S238098AbjH2T25 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Aug 2023 15:28:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237474AbjH2Qdu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Aug 2023 12:33:50 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 447EC184;
-        Tue, 29 Aug 2023 09:33:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693326828; x=1724862828;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LbBndQ30pApFIdN1pPSoRCOwu6jKcidtzAZxrTxto+I=;
-  b=G0mPdmDJyd0ZFftYDC1qtsdyRxiN4gpfjuxiq7XvUYR83T7NilQOG4IC
-   mvbpVNehg+xBptDZpExL21wpo+9EDcVc3v4FjchcDyUHg8aaeVDivhmDa
-   lrbbMONM+156SM5sy+jMr95Q/+q8kOG2KguvLrkj9solvalS76YYMp1gZ
-   JKTKvlHjQNJGt1O/2zSYK1YOLlRl51//a4iVsIQ+n+G6ijDOIq4c5WeT8
-   Ab5jpK1v2aWqR1jmPxUCn3W+CYgqCOPvsWbN+qSDyzgbTS/SbVhJGK3pK
-   B2o/fWnV6biXXqTnOK5QbG2O3WEsUCwPFwxGYmSBuoYDaUYLZEBsko2zD
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="461793834"
-X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
-   d="scan'208";a="461793834"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2023 09:28:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="741883388"
-X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
-   d="scan'208";a="741883388"
-Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
-  by fmsmga007.fm.intel.com with ESMTP; 29 Aug 2023 09:27:56 -0700
-Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qb1ZL-0008u3-28;
-        Tue, 29 Aug 2023 16:27:55 +0000
-Date:   Wed, 30 Aug 2023 00:27:13 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Meng Li <li.meng@amd.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Huang Rui <ray.huang@amd.com>
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, linux-acpi@vger.kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        linux-kselftest@vger.kernel.org,
-        Nathan Fontenot <nathan.fontenot@amd.com>,
-        Deepak Sharma <deepak.sharma@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Shimmer Huang <shimmer.huang@amd.com>,
-        Perry Yuan <Perry.Yuan@amd.com>,
-        Xiaojian Du <Xiaojian.Du@amd.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Borislav Petkov <bp@alien8.de>, Meng Li <li.meng@amd.com>
-Subject: Re: [PATCH V4 4/7] cpufreq: Add a notification message that the
- highest perf has changed
-Message-ID: <202308300057.ASUJQpsV-lkp@intel.com>
-References: <20230829064340.1136448-5-li.meng@amd.com>
+        with ESMTP id S231759AbjH2T2f (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Aug 2023 15:28:35 -0400
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2047.outbound.protection.outlook.com [40.107.244.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52F78EA;
+        Tue, 29 Aug 2023 12:28:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VId7LzybT3JA9fmc4naS4PfZaWk0DR7D4QqcRvQR8nz738fDUHS0jctZ4hir7Z9IE1oBvxa+/jhcxKryaVKuJcbiu9Ol/+K8aNT1SjuGL9klNmGsSZtsacyWNNXNnp9FjnT3g5Nexu1W74Wy7cBA5WCQ+JM9LhuEnWnNW+oo/+z3imkq/lZI7491bhyTyOQkHrgT6UIVvWPzBcQ6Te4A0kv+w8z3MCdt98dO4sLZvMgZFFktr8a66J1LeQRX+BSs4DHqhEWCe0aYoFsyypCJZAeSN/Lkh7RZX7loDsUl1QgNWjiBFXNdiU0U//qcMCAK7fATparn3SPYv9qyp/NoJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yWGUddQQOCoEdFIvbfmaTW1zbVVFkxfL0wof+gLd+4g=;
+ b=asZ1QoZFnQTriuQlT82UeeAVGW4w3bLXDzvYH9WcHRIPcHd3W3TMcPvNrcz1MB2TFt9kjdYyQpA0i/24X9AsMLCnuyj8MIuBbZLGGXWv93rCS1mUwRw48h8mLsDh7KPo5vwxk882thEsUbirQbLa3+BwlJ2p/VlGHuLL8ozBtGyPmBHVmhZuCzQGCoSpwkiLj/zH+/lMZ2EN1Kh1/NrBiGY1H0i+WTZFZYbBSVn+ou9aJZc2iqHy8VLxEgb77bhHAIr34OXAOUILMSIIQux47LYHNZWGuwd/aT18d6b+oRchOmwxhlgyRStaO5krQiczBnN370FjqAg92d+EkUSRrA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yWGUddQQOCoEdFIvbfmaTW1zbVVFkxfL0wof+gLd+4g=;
+ b=VCdvdNgFgh3KDkM5/sXZ6udggVPXCpqznd6CtoHjcjTPThxZV67xrQecTzH2Frvw6cPNF/8pdV40/kMCjNGN45H2jKgEspn1/cyZUePPs41GLUUHG8k06wEg+0CgpxPcMpUK+Zn7G6xt0S2UHfX0/qppSIIrT/12rXtoTYp3PcI=
+Received: from CY5PR19CA0040.namprd19.prod.outlook.com (2603:10b6:930:1a::31)
+ by SJ0PR12MB6757.namprd12.prod.outlook.com (2603:10b6:a03:449::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.34; Tue, 29 Aug
+ 2023 19:28:30 +0000
+Received: from CY4PEPF0000E9D7.namprd05.prod.outlook.com
+ (2603:10b6:930:1a:cafe::ac) by CY5PR19CA0040.outlook.office365.com
+ (2603:10b6:930:1a::31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.36 via Frontend
+ Transport; Tue, 29 Aug 2023 19:28:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000E9D7.mail.protection.outlook.com (10.167.241.78) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6745.16 via Frontend Transport; Tue, 29 Aug 2023 19:28:30 +0000
+Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 29 Aug
+ 2023 14:28:29 -0500
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     <hdegoede@redhat.com>, <bhelgaas@google.com>, <rafael@kernel.org>,
+        <Shyam-sundar.S-k@amd.com>
+CC:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH v16 0/3] Avoid PCIe D3 for AMD PCIe root ports
+Date:   Tue, 29 Aug 2023 12:12:09 -0500
+Message-ID: <20230829171212.156688-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230829064340.1136448-5-li.meng@amd.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D7:EE_|SJ0PR12MB6757:EE_
+X-MS-Office365-Filtering-Correlation-Id: 88f21ce1-3c4e-461d-af12-08dba8c6209d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: dmltj9pSh8Qx2sn8kP3XQ+PeS8IKj3n9yzeIXAw7PcYIeM0xR1FYQiTpLA6xrlPEQ2FfhPi5cZnoI7qX8KnIV7nH24Y93VI09YHyMvtCM5wzN0IYT5/g2/JqfxmmHfHUv8w/veD6GTVYB71Ldyslf5P/lHHfBzK2VYfNP+M/SPwxLisahbFfR2wV+ZzxWXjx5K15YRfxM4cXP/hYMdlv6/0zsf/EwBYpxb7DhMAgxYPRnfiSwp4gfHsj+Tr2i5kqVK33KSKLLUC4bXqruMztsL16npaptdb3ANx43sGNiALm10zxE7TEsffwnushlEwq5fJ5Is7lPGdMCmgAJDzqws/Bp+BoKKbZdUK2H7AHLI03aVt8SuimVr6EtMbuN/vTZ1Yrmb8WLc1sSUOoSUNizA2Ki3z1ZfDhUqFitDqVeg5UgC4P4FDGq7S6HlVQG+VznZ8Wk7oDf4u0PC6IoprCFhYLHeFSxxWbA4NClIBmE8v8F9YX52kn+ZvoNcHxNxxBWcuThb/7aNwV9pU2tSNT5e01PUQkCsvi2sMWDi/mwhBOlE4uyeeAqxCcXp5CRtSSjsGpdKzxT1I0eX4B8SSpVRXp9e5CDFKEkBxnEQnPBruVIRDgh+jOylAPwOsZD1QaHby/cS40gHvXgX4GyYAa8EIqz9fJsEB1cOs+umyfcArfa2MutP03GPLfScwfNucuO+IgtHiOuOldMwC6LEDIKsUqtYvdbyUlfesGD7LKkKG1jB4T8LLecFTac8P3uxqKX4OEsSpH9+cbbp77srR7TA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(136003)(396003)(376002)(346002)(82310400011)(451199024)(186009)(1800799009)(36840700001)(46966006)(40470700004)(83380400001)(1076003)(5660300002)(426003)(44832011)(336012)(2616005)(6666004)(4326008)(26005)(8676002)(47076005)(8936002)(36860700001)(16526019)(40460700003)(7696005)(6636002)(316002)(54906003)(41300700001)(356005)(4744005)(40480700001)(82740400003)(81166007)(2906002)(110136005)(86362001)(70206006)(478600001)(70586007)(36756003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2023 19:28:30.6159
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 88f21ce1-3c4e-461d-af12-08dba8c6209d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D7.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6757
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Meng,
+D3 on PCIe root ports isn't used on Windows systems in Modern Standby.
+This series adjusts the amd-pmc driver to choose the same strategy
+for Rembrandt and Phoenix platforms in Linux with s2idle.
 
-kernel test robot noticed the following build errors:
+LPS0 constraints are the basis for it; which if they are added for
+Windows would also apply for Linux as well.
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on linus/master v6.5 next-20230829]
-[cannot apply to tip/x86/core]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This version doesn't incorporate a callback, as it's pending feedback
+from Bjorn if that approach is amenable.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Meng-Li/x86-Drop-CPU_SUP_INTEL-from-SCHED_MC_PRIO-for-the-expansion/20230829-144723
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20230829064340.1136448-5-li.meng%40amd.com
-patch subject: [PATCH V4 4/7] cpufreq: Add a notification message that the highest perf has changed
-config: i386-randconfig-r031-20230829 (https://download.01.org/0day-ci/archive/20230830/202308300057.ASUJQpsV-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230830/202308300057.ASUJQpsV-lkp@intel.com/reproduce)
+NOTE:
+This series relies upon changes that are both in linux-pm.git and
+platform-x86.git. So it won't be able to apply to either maintainer's
+tree until later.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202308300057.ASUJQpsV-lkp@intel.com/
+Mario Limonciello (3):
+  ACPI: x86: s2idle: Export symbol for fetching constraints for module
+    use
+  platform/x86/amd: pmc: Adjust workarounds to be part of a switch/case
+  platform/x86/amd: pmc: Don't let PCIe root ports go into D3
 
-All errors (new ones prefixed by >>):
-
->> drivers/acpi/processor_driver.c:88:3: error: call to undeclared function 'cpufreq_update_highest_perf'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-                   cpufreq_update_highest_perf(pr->id);
-                   ^
-   1 error generated.
-
-
-vim +/cpufreq_update_highest_perf +88 drivers/acpi/processor_driver.c
-
-    53	
-    54	static void acpi_processor_notify(acpi_handle handle, u32 event, void *data)
-    55	{
-    56		struct acpi_device *device = data;
-    57		struct acpi_processor *pr;
-    58		int saved;
-    59	
-    60		if (device->handle != handle)
-    61			return;
-    62	
-    63		pr = acpi_driver_data(device);
-    64		if (!pr)
-    65			return;
-    66	
-    67		switch (event) {
-    68		case ACPI_PROCESSOR_NOTIFY_PERFORMANCE:
-    69			saved = pr->performance_platform_limit;
-    70			acpi_processor_ppc_has_changed(pr, 1);
-    71			if (saved == pr->performance_platform_limit)
-    72				break;
-    73			acpi_bus_generate_netlink_event(device->pnp.device_class,
-    74							  dev_name(&device->dev), event,
-    75							  pr->performance_platform_limit);
-    76			break;
-    77		case ACPI_PROCESSOR_NOTIFY_POWER:
-    78			acpi_processor_power_state_has_changed(pr);
-    79			acpi_bus_generate_netlink_event(device->pnp.device_class,
-    80							  dev_name(&device->dev), event, 0);
-    81			break;
-    82		case ACPI_PROCESSOR_NOTIFY_THROTTLING:
-    83			acpi_processor_tstate_has_changed(pr);
-    84			acpi_bus_generate_netlink_event(device->pnp.device_class,
-    85							  dev_name(&device->dev), event, 0);
-    86			break;
-    87		case ACPI_PROCESSOR_NOTIFY_HIGEST_PERF_CHANGED:
-  > 88			cpufreq_update_highest_perf(pr->id);
-    89			acpi_bus_generate_netlink_event(device->pnp.device_class,
-    90							  dev_name(&device->dev), event, 0);
-    91			break;
-    92		default:
-    93			acpi_handle_debug(handle, "Unsupported event [0x%x]\n", event);
-    94			break;
-    95		}
-    96	
-    97		return;
-    98	}
-    99	
+ drivers/acpi/x86/s2idle.c          |  1 +
+ drivers/platform/x86/amd/pmc/pmc.c | 56 ++++++++++++++++++++++++++----
+ 2 files changed, 50 insertions(+), 7 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
