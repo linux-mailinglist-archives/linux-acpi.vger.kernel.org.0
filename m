@@ -2,141 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8178578D0D4
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Aug 2023 02:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 002F878DCC6
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Aug 2023 20:50:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230083AbjH2XzF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Aug 2023 19:55:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40606 "EHLO
+        id S230033AbjH3Sqo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Aug 2023 14:46:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234848AbjH2Xyx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Aug 2023 19:54:53 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 602841B3;
-        Tue, 29 Aug 2023 16:54:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693353289; x=1724889289;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=poo2erOym6FYVcclncpP4gJ8Sb9wFCKFIGFC0CCir4M=;
-  b=WBjeE5wBpEFEamaugUgxQ+R3JHegWHydFV4GKzyETMTsTTOjFxsxoCxa
-   GGpbMHGddlB/EEucTgbyxrusPs/opyAagyMUtKKvYt5HvZOuXRvzNEmf7
-   yxSsenA8BGw63QaPSoTbIEHAbDo8IMCXL5x8SFMp7g8VOWnPS3sSfJ4x7
-   jISiYQ+jSh1Coypbmw9ATBB/+C4Exy/DO11O2K9B0XQerKnrVlSJQSDWC
-   v57OJKtBRqot9pv+mZwrG/mdPs5LWmVEX16zKHfqbItJo7wGSSTCr4SlP
-   3CDHbk6A3v5uHSSkgt0yvN7HH4h1u/YQql1bNiFqSE6QiT4IVDO0EXr5D
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="374413065"
-X-IronPort-AV: E=Sophos;i="6.02,211,1688454000"; 
-   d="scan'208";a="374413065"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2023 16:54:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="732395012"
-X-IronPort-AV: E=Sophos;i="6.02,211,1688454000"; 
-   d="scan'208";a="732395012"
-Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 29 Aug 2023 16:54:32 -0700
-Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qb8XX-0009DH-2O;
-        Tue, 29 Aug 2023 23:54:31 +0000
-Date:   Wed, 30 Aug 2023 07:54:22 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Oza Pawandeep <quic_poza@quicinc.com>, sudeep.holla@arm.com,
-        catalin.marinas@arm.com, will@kernel.org, rafael@kernel.org,
-        lenb@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Oza Pawandeep <quic_poza@quicinc.com>
-Subject: Re: [PATCH v3] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast
- timer
-Message-ID: <202308300720.JEfxnfQ5-lkp@intel.com>
-References: <20230829201101.3330337-1-quic_poza@quicinc.com>
+        with ESMTP id S242670AbjH3JOi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Aug 2023 05:14:38 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0212FD2;
+        Wed, 30 Aug 2023 02:14:36 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 303B92F4;
+        Wed, 30 Aug 2023 02:15:15 -0700 (PDT)
+Received: from bogus (unknown [10.57.36.157])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 689003F64C;
+        Wed, 30 Aug 2023 02:14:34 -0700 (PDT)
+Date:   Wed, 30 Aug 2023 10:13:37 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Pawandeep Oza <poza@qti.qualcomm.com>
+Cc:     "Pawandeep Oza (QUIC)" <quic_poza@quicinc.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: ACPI binding with SCMI
+Message-ID: <20230830091337.4rsik2tza6hqa22r@bogus>
+References: <20230807154834.888328-1-quic_poza@quicinc.com>
+ <20230818091931.iqh6bxiifk4wyc32@bogus>
+ <CH0PR02MB80732F4C4134B3EF2D80B4EDF6E3A@CH0PR02MB8073.namprd02.prod.outlook.com>
+ <20230829091912.xefuenspdbazvqlh@bogus>
+ <CH0PR02MB807367CCAD0D5938C4679E18F6E7A@CH0PR02MB8073.namprd02.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230829201101.3330337-1-quic_poza@quicinc.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CH0PR02MB807367CCAD0D5938C4679E18F6E7A@CH0PR02MB8073.namprd02.prod.outlook.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Oza,
+On Tue, Aug 29, 2023 at 03:10:34PM +0000, Pawandeep Oza wrote:
+> I am looking for scmi binding to ACPI. Basically, SCMI based perf control.
+> We have ACPI based system, so I am looking for where I can describe (some
+> way to describe doorbell and share memory in ACPI), and then scmi perf can
+> bind to it via some sort of transport (perhaps fastchannels ? )
 
-kernel test robot noticed the following build warnings:
+OK, the Section 5.2 ACPI-based Transport in the SCMI spec can be more clearer
+IMO. It does state:
+" SCMI FastChannels can be represented as ACPI System Memory and used
+  in the Continuous Performance Control (CPC) object when using ACPI 
+  Collaborative Processor Performance Control (CPPC)."
 
-[auto build test WARNING on soc/for-next]
-[also build test WARNING on v6.5]
-[cannot apply to rafael-pm/linux-next arm64/for-next/core linus/master next-20230829]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+It doesn't cover the fact that CPPC is compatible only with SCMI fastchannels
+without doorbells. Just a plain MMIO register to set the perf.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Oza-Pawandeep/cpuidle-ACPI-Evaluate-LPI-arch_flags-for-broadcast-timer/20230830-041258
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git for-next
-patch link:    https://lore.kernel.org/r/20230829201101.3330337-1-quic_poza%40quicinc.com
-patch subject: [PATCH v3] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast timer
-config: loongarch-allyesconfig (https://download.01.org/0day-ci/archive/20230830/202308300720.JEfxnfQ5-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230830/202308300720.JEfxnfQ5-lkp@intel.com/reproduce)
+The normal PCC mailbox works fine if the CPPC Desired Perf Register is
+a PCC address space based GAS. However the command is not 1:1 compatible
+with SCMI perf. This is one of the reason why the protocols 0x0-0xF was
+reserved in SCMI to be compatible with the ACPI CPPC way of using PCC
+for perf.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202308300720.JEfxnfQ5-lkp@intel.com/
+Hope this helps and I didn't make it more complicated for you.
 
-All warnings (new ones prefixed by >>):
-
-   drivers/acpi/processor_idle.c: In function 'acpi_processor_setup_lpi_states':
->> drivers/acpi/processor_idle.c:1220:61: warning: left-hand operand of comma expression has no effect [-Wunused-value]
-    1220 |                 arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
-         |                                                             ^
->> drivers/acpi/processor_idle.c:1220:61: warning: statement with no effect [-Wunused-value]
-    1220 |                 arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
-         |                                             ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
-
-
-vim +1220 drivers/acpi/processor_idle.c
-
-  1201	
-  1202	static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
-  1203	{
-  1204		int i;
-  1205		struct acpi_lpi_state *lpi;
-  1206		struct cpuidle_state *state;
-  1207		struct cpuidle_driver *drv = &acpi_idle_driver;
-  1208	
-  1209		if (!pr->flags.has_lpi)
-  1210			return -EOPNOTSUPP;
-  1211	
-  1212		for (i = 0; i < pr->power.count && i < CPUIDLE_STATE_MAX; i++) {
-  1213			lpi = &pr->power.lpi_states[i];
-  1214	
-  1215			state = &drv->states[i];
-  1216			snprintf(state->name, CPUIDLE_NAME_LEN, "LPI-%d", i);
-  1217			strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
-  1218			state->exit_latency = lpi->wake_latency;
-  1219			state->target_residency = lpi->min_residency;
-> 1220			arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
-  1221			if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
-  1222				state->flags |= CPUIDLE_FLAG_RCU_IDLE;
-  1223			state->enter = acpi_idle_lpi_enter;
-  1224			drv->safe_state_index = i;
-  1225		}
-  1226	
-  1227		drv->state_count = i;
-  1228	
-  1229		return 0;
-  1230	}
-  1231	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--
+Regards,
+Sudeep
