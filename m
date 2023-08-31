@@ -2,97 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BC2D78E98F
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Aug 2023 11:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3783B78ED0F
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Aug 2023 14:28:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240187AbjHaJfk convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 31 Aug 2023 05:35:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39354 "EHLO
+        id S244132AbjHaM2w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 31 Aug 2023 08:28:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231892AbjHaJfk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 31 Aug 2023 05:35:40 -0400
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60361CDD;
-        Thu, 31 Aug 2023 02:35:37 -0700 (PDT)
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-5733d11894dso147846eaf.0;
-        Thu, 31 Aug 2023 02:35:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693474536; x=1694079336;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w1zXFq6yH7gKwLUxTi+5zNAwg8QTKD31cnvIQY4Ezq4=;
-        b=MdQZEA+QRH/2YwCpiwqPxcVTSPPPiY85nOMb4Fwr0eYW7x4rDUa4cny7IQL1FwfDIx
-         qwNjRICZRVRNrw6kZHatEI6UlP21bSmSduWGTiCMPWBJem1QEVXu3RibF8Gi1N9Cm/86
-         /NIp/il3aQ2lwmaqpN0vad6I+pwYDkn/pYVTU7xWPXYiG4ZptLPdB1vgma5tDlnq2xYX
-         lB5rZq2kVOM3Q6FW/KB9n/s7TMB5JEF/S7PBDsX+LEWgZk2Q8D1ny/hjhA2RaCQCnP1d
-         ZknscjsER6+Vs80bzK/AfgwtpBArS0i+fySahEV+sbB+ZNs0g4anG0g8Jittv5J8djHv
-         XUBg==
-X-Gm-Message-State: AOJu0YxYKMAVltPBnOC+qC+D73oz6b3CgYmbRDTSypk6xnMs1OZQCYuP
-        gEMtWKjcGsvpZ5qMN5qjUjvWztpl1ka//o4bPAbpZI+gZhw=
-X-Google-Smtp-Source: AGHT+IGs+OAQkyf1C22XbnDRZlpFQWeSdCYSJR8ugVMflKZNJqiA0hEKd6f20IUpQWn0zmZLVycO62nGOrz+psrh70U=
-X-Received: by 2002:a4a:a302:0:b0:573:764b:3b8d with SMTP id
- q2-20020a4aa302000000b00573764b3b8dmr4332395ool.0.1693474536546; Thu, 31 Aug
- 2023 02:35:36 -0700 (PDT)
+        with ESMTP id S231799AbjHaM2w (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 31 Aug 2023 08:28:52 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42297CDB;
+        Thu, 31 Aug 2023 05:28:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CFC8BB82288;
+        Thu, 31 Aug 2023 12:28:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F28C433CC;
+        Thu, 31 Aug 2023 12:28:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693484926;
+        bh=Vyak1dTXZ6H1ELH2V6tR0Berxj+Mh0hnmpnrgiYOi4A=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Q1vNqyifUgY4lrK/jaUT18rHZBA7ZouBEtmNsHQrf/SAjjjQuQjLXKbwAsxSI9u/p
+         666GulrypEJKTm7gSCZINhrAB2IQXEZTDf4ln8oQ367RsqpBnuzXgU0TQT1r2zYCed
+         uUnPgTwPOra/Q6faCjIwmLori4K0rresH6Q6CbQIbrP1UfINp01kdKl0++ck5MQbRk
+         BDfe1zXfiNC35th+hz6rypABL3mUyf8Bhvg+R/z4G0YUS17PYvP0iml8ae0pnNw9bD
+         pdlkfQbsqCdmwFmN5iYRskkat7qDnWnIQo8Xu4rHa47FUghBSOEh4EA29OUE/pUeki
+         bDclJWwmEk8jA==
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-500bbe3ef0eso842035e87.1;
+        Thu, 31 Aug 2023 05:28:46 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwyZ1xpZkXl4wbHwvJfkvSBsC4ch/T04sSvCWY9Y60u9uko22JP
+        5kK0XyuhvBSxEvDI5eHL/cwDtmQ5VwsnaWpUxD4=
+X-Google-Smtp-Source: AGHT+IEt6ssTLnEZQPql8uv0e9cCMN2qYBu4GX0LcJsKO+irQC/odNOUf2HHFRys9I3941ggRp0B4CR23/MLwZcdE20=
+X-Received: by 2002:a05:6512:ba9:b0:500:8676:aa7f with SMTP id
+ b41-20020a0565120ba900b005008676aa7fmr819687lfv.23.1693484924436; Thu, 31 Aug
+ 2023 05:28:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230831073432.1712904-1-suhui@nfschina.com>
-In-Reply-To: <20230831073432.1712904-1-suhui@nfschina.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 31 Aug 2023 11:35:24 +0200
-Message-ID: <CAJZ5v0iBZhz6oRgzU3_E+TFT244cgcWxS5ufo_8LnsgvrbbTJQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ACPICA: Use strscpy to replace strncpy
-To:     Su Hui <suhui@nfschina.com>
-Cc:     robert.moore@intel.com, rafael.j.wysocki@intel.com,
-        lenb@kernel.org, linux-acpi@vger.kernel.org,
-        acpica-devel@lists.linuxfoundation.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20230822203446.4111742-1-sjg@chromium.org> <ZOXKTrC_dzN_hUkY@FVFF77S0Q05N>
+ <CAMj1kXEHpRjk_YKOm4czCnnpjqgahj2jV8MMfGLx7b1RdnBnVw@mail.gmail.com>
+ <CAPnjgZ1S8G=7eCBF9PcDk4H5sk3AcxSSWXO575jK8SjA9dR8qw@mail.gmail.com>
+ <CAMj1kXH83_TB4S0PL3jswxjCP+907YpgS7FRuVTO3G62s7nn5w@mail.gmail.com>
+ <CAPnjgZ2kkUt1eOWX8K+EsbjcQZPefNvj5DSaFb9QrvRg0t2h7w@mail.gmail.com>
+ <CAMj1kXGe84uaJ9j9ic0V4HC43p7QBoKQ5ssTYd5DMBGtZ3++Jw@mail.gmail.com> <CAPnjgZ3L-jGxoXNHnsXY0MXU=jTAN66KNAxSLHPVeHinHMjzkQ@mail.gmail.com>
+In-Reply-To: <CAPnjgZ3L-jGxoXNHnsXY0MXU=jTAN66KNAxSLHPVeHinHMjzkQ@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Thu, 31 Aug 2023 14:28:33 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGw6DGK=gVF3bMH5dp=LL89V9n1V1LMGKDn0CZWGHh8qg@mail.gmail.com>
+Message-ID: <CAMj1kXGw6DGK=gVF3bMH5dp=LL89V9n1V1LMGKDn0CZWGHh8qg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] schemas: Add a schema for memory map
+To:     Simon Glass <sjg@chromium.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        Chiu Chasel <chasel.chiu@intel.com>,
+        U-Boot Mailing List <u-boot@lists.denx.de>,
+        Gua Guo <gua.guo@intel.com>, linux-acpi@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>,
+        Yunhui Cui <cuiyunhui@bytedance.com>,
+        ron minnich <rminnich@gmail.com>,
+        Tom Rini <trini@konsulko.com>,
+        Lean Sheng Tan <sheng.tan@9elements.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 31, 2023 at 9:35 AM Su Hui <suhui@nfschina.com> wrote:
+On Wed, 30 Aug 2023 at 23:11, Simon Glass <sjg@chromium.org> wrote:
 >
-> With gcc and W=1 option to compile kernel, warning happens:
+> Hi Ard,
 >
-> inlined from ‘acpi_tb_find_table’ at drivers/acpi/acpica/tbfind.c:60:2:
-> include/linux/fortify-string.h:68:30: error: ‘__builtin_strncpy’ specified
-> bound 6 equals destination size [-Werror=stringop-truncation]
+> On Tue, 29 Aug 2023 at 15:32, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > On Tue, 29 Aug 2023 at 21:18, Simon Glass <sjg@chromium.org> wrote:
+> > >
+> > > Hi Ard,
+> > >
+> > > On Thu, 24 Aug 2023 at 03:10, Ard Biesheuvel <ardb@kernel.org> wrote:
+...
+> > > > In summary, I don't see why a non-UEFI payload would care about UEFI
+> > > > semantics for pre-existing memory reservations, or vice versa. Note
+> > > > that EDK2 will manage its own memory map, and expose it via UEFI boot
+> > > > services and not via DT.
+> > >
+> > > Bear in mind that one or both sides of this interface may be UEFI.
+> > > There is no boot-services link between the two parts that I have
+> > > outlined.
+> > >
+> >
+> > I don't understand what this means.
+> >
+> > UEFI specifies how one component invokes another, and it is not based
+> > on a DT binding. If the second component calls UEFI boot or runtime
+> > services, it should be invoked in this manner. If it doesn't, then it
+> > doesn't care about these memory reservations (and the OS will not be
+> > booted via UEFI either)
+> >
+> > So I feel I am missing something here. Perhaps a practical example
+> > would be helpful?
 >
-> Use strscpy to avoid this warning and is safer.
+> Let's say we want to support these combinations:
 >
-> Signed-off-by: Su Hui <suhui@nfschina.com>
+> Platform Init -> Payload
+> --------------------------------
+> U-Boot -> Tianocore
+> coreboot -> U-Boot
+> Tianocore -> U-Boot
+> Tianocore -> Tianocore
+> U-Boot -> U-Boot
+>
+> Some of the above things have UEFI interfaces, some don't. But in the
+> case of Tianocore -> Tianocore we want things to work as if it were
+> Tianocore -> (its own handoff mechanism) Tiancore.
+>
 
-Please see
+If Tianocore is the payload, it is either implemented as a EFI app, in
+which case it has access to EFI services, or it is not, in which case
+it doesn't care about UEFI semantics of the existing reserved regions,
+and it only needs to know which regions exist and which of those are
+reserved.
 
-https://lore.kernel.org/linux-acpi/202308241612.DFE4119@keescook/
+And I think the same applies to all other rows in your table: either
+the existence of UEFI needs to be carried forward, which needs to be
+done via EFI services, or it doesn't, in which case the UEFI specific
+reservations can be dropped, and only reserved and available memory is
+relevant.
 
-> ---
->  drivers/acpi/acpica/tbfind.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> Some Platform Init may create runtime code which needs to accessible later.
 >
-> diff --git a/drivers/acpi/acpica/tbfind.c b/drivers/acpi/acpica/tbfind.c
-> index 1c1b2e284bd9..5536d1755188 100644
-> --- a/drivers/acpi/acpica/tbfind.c
-> +++ b/drivers/acpi/acpica/tbfind.c
-> @@ -57,8 +57,8 @@ acpi_tb_find_table(char *signature,
+
+But not UEFI runtime code, right? If the payload is not UEFI based,
+the OS would never be able to call that runtime code unless it is
+described in a different, non-UEFI way. This is fine, but it is not
+UEFI so we shouldn't call it UEFI runtime memory.
+
+> The way I think of it is that we need to generalise the memory map a
+> bit. Saying that you must use UEFI boot services to discover it is too
+> UEFI-specific.
 >
->         memset(&header, 0, sizeof(struct acpi_table_header));
->         ACPI_COPY_NAMESEG(header.signature, signature);
-> -       strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
-> -       strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE);
-> +       strscpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
-> +       strscpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE);
->
->         /* Search for the table */
->
-> --
-> 2.30.2
->
+
+What I am questioning is why a memory map with UEFI semantics is even
+relevant when those boot services do not exist.
+
+Could you be more specific about why a payload would have to be aware
+of the existence of UEFI boot/runtime service regions if it does not
+consume the UEFI interfaces of the platform init? And if the payload
+exposes UEFI services to the OS, why would it consume a memory map
+with UEFI semantics rather than a simple list of memblocks and memory
+reservations?
+
+Again, I am inclined to treat this as a firmware implementation
+detail, and the OS must never consume this binding. But I am still
+puzzled about what exact purpose it is expected to serve.
