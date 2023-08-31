@@ -2,94 +2,190 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6172D78F2FA
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Aug 2023 20:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E88F578F304
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Aug 2023 21:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347093AbjHaS7L convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 31 Aug 2023 14:59:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41426 "EHLO
+        id S1347106AbjHaTD2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 31 Aug 2023 15:03:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236263AbjHaS7K (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 31 Aug 2023 14:59:10 -0400
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32EABE65;
-        Thu, 31 Aug 2023 11:59:08 -0700 (PDT)
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5711d5dac14so244255eaf.0;
-        Thu, 31 Aug 2023 11:59:08 -0700 (PDT)
+        with ESMTP id S236263AbjHaTD1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 31 Aug 2023 15:03:27 -0400
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8490CE65
+        for <linux-acpi@vger.kernel.org>; Thu, 31 Aug 2023 12:03:24 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-d7b66b5641eso901238276.3
+        for <linux-acpi@vger.kernel.org>; Thu, 31 Aug 2023 12:03:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1693508604; x=1694113404; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0mQPB8XxUb5OP/KXE1oeSlmWSBTEOE9Ge4MhauaXzcU=;
+        b=X8tpNHEyhugJur8VoEnXX15d6uACX4Fc6QPRIYjSFXAq9Cy/XbpWerbBC7YsgolaWx
+         V7hk4soqAqKQAU5Q8etE+CNPV6OhBdFrDsc519KVmWhPXaCgpeDfwJlNZ9v2L4NiONsQ
+         MQl8t33m52L6uT7G50UfanvYa7QgIzpqAqSXc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693508347; x=1694113147;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=owyEPNij5vc6Nz2n0ejjQMnqcMpa572QB0sGcFXBGz8=;
-        b=LjajlZ7S7cbdk43eoZo8ptAi+oFmslR2pVqPBl2JQrddoOKNsrznHGgHVDm0D6gf2b
-         OthL4dRfrx+6u1cW2XwSwfig8ghVZsz8oIZqL3GOBy5r2xs/+tWqdF9Dc5vHF2rOBzY/
-         247JlfQzfZFUkw5BL/2YgwvjsiBobP4OiMtsbbX9/cKNaaM/qDFjPY0GCflucqjvXAzg
-         gu0IXP0bcqYN/d5dTPKDGqnVmdl6jRrf0C4BnUg6rOiWSso19Qd9RVkhdie6iLwC4Piy
-         RZE76ILa9Os3EVDQv9aO9T7omx8iInElqAn7lncIZTYFkXoMUkWzU1pTX7YXNuyWrQ4J
-         ovVA==
-X-Gm-Message-State: AOJu0YysaCvN86xUobgAjy2CpYenL1qD2/RdHeko9M+nZGiFA8iceuF7
-        xV/OUyBRM6ZHN1sCB8qux81HpoZziyM6IV2m6Io=
-X-Google-Smtp-Source: AGHT+IGpKGlHdPEGp22AQkareb+5rq++ydP6FTuJfuT1OAMYhCYVcGMDVWj2hXHVNh1eU8X0Pwl78FPHzenlT/yslnY=
-X-Received: by 2002:a4a:de43:0:b0:573:2a32:6567 with SMTP id
- z3-20020a4ade43000000b005732a326567mr400925oot.0.1693508347419; Thu, 31 Aug
- 2023 11:59:07 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1693508604; x=1694113404;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0mQPB8XxUb5OP/KXE1oeSlmWSBTEOE9Ge4MhauaXzcU=;
+        b=OTcvHvjetVSk67FMsYYeyPogRbFoiU0KmNOdQS/zPSeDkVwlya8+9brJa+OyjVi8ph
+         xxSxQwMgkPKEb1Pn6iKvl5Un8SWthpqfVAkbIaR2vejJHK7dChBG2vxab1LQDJYnJuOj
+         9Y/QNiAU4YnQdo+yultpHi6mQ77NBJggZvy4N70Cto14+Izne59HKVInRlK9ainqNgZO
+         QTKzduQjmFy98n9AIEmqB7jDyuZQlNiQZy3IKxJSo7KkDKbiO8ILpgcPTXjYsbNJtLaV
+         DE2Bl/wNq7iGIogBxFxKIfCeJGmHPoVQkgdH/4beBPy5rAKIMGnnYYnQhpDmxSuJPKea
+         HGkQ==
+X-Gm-Message-State: AOJu0YxVDpCiQE5M3XE4r9zzwZxwoNMYorqdS6CQhGWQCQ271whxGOuO
+        fVEe1F4I9kAZ+xO6+YgFoJCkbpj432Ow0u40LBNDvg==
+X-Google-Smtp-Source: AGHT+IFgK3CYg/SLq61wmdqsP6GkeNlwlUUqSxXvTpLJ9zbWqnbqaeeme9BcbxPZX+EdxGR7aKxWcikWGBuh/0Fvn1M=
+X-Received: by 2002:a25:cf12:0:b0:d7e:3db3:da2c with SMTP id
+ f18-20020a25cf12000000b00d7e3db3da2cmr611334ybg.43.1693508603480; Thu, 31 Aug
+ 2023 12:03:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230829171212.156688-1-mario.limonciello@amd.com> <20230829171212.156688-2-mario.limonciello@amd.com>
-In-Reply-To: <20230829171212.156688-2-mario.limonciello@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 31 Aug 2023 20:58:56 +0200
-Message-ID: <CAJZ5v0ggnjtnyZtNYfozTPpHN7qondg8bAYZ7jE=+Q4LTLHE0w@mail.gmail.com>
-Subject: Re: [PATCH v16 1/3] ACPI: x86: s2idle: Export symbol for fetching
- constraints for module use
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     hdegoede@redhat.com, bhelgaas@google.com, rafael@kernel.org,
-        Shyam-sundar.S-k@amd.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org
+References: <20230822203446.4111742-1-sjg@chromium.org> <ZOXKTrC_dzN_hUkY@FVFF77S0Q05N>
+ <CAMj1kXEHpRjk_YKOm4czCnnpjqgahj2jV8MMfGLx7b1RdnBnVw@mail.gmail.com>
+ <CAPnjgZ1S8G=7eCBF9PcDk4H5sk3AcxSSWXO575jK8SjA9dR8qw@mail.gmail.com>
+ <CAMj1kXH83_TB4S0PL3jswxjCP+907YpgS7FRuVTO3G62s7nn5w@mail.gmail.com>
+ <CAPnjgZ2kkUt1eOWX8K+EsbjcQZPefNvj5DSaFb9QrvRg0t2h7w@mail.gmail.com>
+ <CAMj1kXGe84uaJ9j9ic0V4HC43p7QBoKQ5ssTYd5DMBGtZ3++Jw@mail.gmail.com>
+ <CAPnjgZ3L-jGxoXNHnsXY0MXU=jTAN66KNAxSLHPVeHinHMjzkQ@mail.gmail.com> <CAMj1kXGw6DGK=gVF3bMH5dp=LL89V9n1V1LMGKDn0CZWGHh8qg@mail.gmail.com>
+In-Reply-To: <CAMj1kXGw6DGK=gVF3bMH5dp=LL89V9n1V1LMGKDn0CZWGHh8qg@mail.gmail.com>
+From:   Simon Glass <sjg@chromium.org>
+Date:   Thu, 31 Aug 2023 13:02:05 -0600
+Message-ID: <CAPnjgZ1fjee3rf91onPbuLpgqTHe3dZgz0WBSzoiKAabO+ETkQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] schemas: Add a schema for memory map
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        Chiu Chasel <chasel.chiu@intel.com>,
+        U-Boot Mailing List <u-boot@lists.denx.de>,
+        Gua Guo <gua.guo@intel.com>, linux-acpi@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>,
+        Yunhui Cui <cuiyunhui@bytedance.com>,
+        ron minnich <rminnich@gmail.com>,
+        Tom Rini <trini@konsulko.com>,
+        Lean Sheng Tan <sheng.tan@9elements.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-9.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_SPF_WL
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 29, 2023 at 9:28 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
-> The amd-pmc driver will be fetching constraints to make decisions at
-> suspend time. This driver can be compiled as a module, so export the
-> symbol for when it is a module.
->
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Hi Ard,
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Thu, 31 Aug 2023 at 06:28, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Wed, 30 Aug 2023 at 23:11, Simon Glass <sjg@chromium.org> wrote:
+> >
+> > Hi Ard,
+> >
+> > On Tue, 29 Aug 2023 at 15:32, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > >
+> > > On Tue, 29 Aug 2023 at 21:18, Simon Glass <sjg@chromium.org> wrote:
+> > > >
+> > > > Hi Ard,
+> > > >
+> > > > On Thu, 24 Aug 2023 at 03:10, Ard Biesheuvel <ardb@kernel.org> wrote:
+> ...
+> > > > > In summary, I don't see why a non-UEFI payload would care about UEFI
+> > > > > semantics for pre-existing memory reservations, or vice versa. Note
+> > > > > that EDK2 will manage its own memory map, and expose it via UEFI boot
+> > > > > services and not via DT.
+> > > >
+> > > > Bear in mind that one or both sides of this interface may be UEFI.
+> > > > There is no boot-services link between the two parts that I have
+> > > > outlined.
+> > > >
+> > >
+> > > I don't understand what this means.
+> > >
+> > > UEFI specifies how one component invokes another, and it is not based
+> > > on a DT binding. If the second component calls UEFI boot or runtime
+> > > services, it should be invoked in this manner. If it doesn't, then it
+> > > doesn't care about these memory reservations (and the OS will not be
+> > > booted via UEFI either)
+> > >
+> > > So I feel I am missing something here. Perhaps a practical example
+> > > would be helpful?
+> >
+> > Let's say we want to support these combinations:
+> >
+> > Platform Init -> Payload
+> > --------------------------------
+> > U-Boot -> Tianocore
+> > coreboot -> U-Boot
+> > Tianocore -> U-Boot
+> > Tianocore -> Tianocore
+> > U-Boot -> U-Boot
+> >
+> > Some of the above things have UEFI interfaces, some don't. But in the
+> > case of Tianocore -> Tianocore we want things to work as if it were
+> > Tianocore -> (its own handoff mechanism) Tiancore.
+> >
+>
+> If Tianocore is the payload, it is either implemented as a EFI app, in
+> which case it has access to EFI services, or it is not, in which case
+> it doesn't care about UEFI semantics of the existing reserved regions,
+> and it only needs to know which regions exist and which of those are
+> reserved.
+>
+> And I think the same applies to all other rows in your table: either
+> the existence of UEFI needs to be carried forward, which needs to be
+> done via EFI services, or it doesn't, in which case the UEFI specific
+> reservations can be dropped, and only reserved and available memory is
+> relevant.
+>
+> > Some Platform Init may create runtime code which needs to accessible later.
+> >
+>
+> But not UEFI runtime code, right? If the payload is not UEFI based,
+> the OS would never be able to call that runtime code unless it is
+> described in a different, non-UEFI way. This is fine, but it is not
+> UEFI so we shouldn't call it UEFI runtime memory.
+>
+> > The way I think of it is that we need to generalise the memory map a
+> > bit. Saying that you must use UEFI boot services to discover it is too
+> > UEFI-specific.
+> >
+>
+> What I am questioning is why a memory map with UEFI semantics is even
+> relevant when those boot services do not exist.
+>
+> Could you be more specific about why a payload would have to be aware
+> of the existence of UEFI boot/runtime service regions if it does not
+> consume the UEFI interfaces of the platform init? And if the payload
+> exposes UEFI services to the OS, why would it consume a memory map
+> with UEFI semantics rather than a simple list of memblocks and memory
+> reservations?
 
-and please route this along with the rest of the series.
+It seems like you are thinking of the Payload as grub, or something
+like that? This is not about grub. If there are EFI boot services to
+be provided, they are provided by the Payload, not Platform Init. I am
+not that familiar with Tianocore, but if you are, perhaps think of it
+as splitting Tianocore into two pieces, one of which inits the silicon
+and the other which provides the EFI boot services.
 
-> ---
-> v15->v16:
->  * new patch
-> ---
->  drivers/acpi/x86/s2idle.c | 1 +
->  1 file changed, 1 insertion(+)
+Again, if you are familiar with Tianocore, it can be built either as a
+monolithic whole, or as a coreboot Payload. The Payload part of the
+code is (roughly) the same in each case. But the Platform Init is
+different[1]
+
 >
-> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-> index 08f7c6708206..de9c313c21fa 100644
-> --- a/drivers/acpi/x86/s2idle.c
-> +++ b/drivers/acpi/x86/s2idle.c
-> @@ -322,6 +322,7 @@ int acpi_get_lps0_constraint(struct acpi_device *adev)
->
->         return ACPI_STATE_UNKNOWN;
->  }
-> +EXPORT_SYMBOL_GPL(acpi_get_lps0_constraint);
->
->  static void lpi_check_constraints(void)
->  {
-> --
-> 2.34.1
->
+> Again, I am inclined to treat this as a firmware implementation
+> detail, and the OS must never consume this binding. But I am still
+> puzzled about what exact purpose it is expected to serve.
+
+It really is purely so we can mix and match Platform Init (perhaps
+silicon init is a more familiar term?) and the Payload.
+
+Regards,
+Simon
+
+[1] Of course, coreboot uses blobs which are chunks of UEFI, but that
+is a separate issue
