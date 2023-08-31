@@ -2,304 +2,160 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD05778E5ED
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Aug 2023 07:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C72078E63C
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Aug 2023 08:21:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240300AbjHaFrN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 31 Aug 2023 01:47:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50210 "EHLO
+        id S243220AbjHaGVX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 31 Aug 2023 02:21:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229898AbjHaFrK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 31 Aug 2023 01:47:10 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34D14E0;
-        Wed, 30 Aug 2023 22:47:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693460826; x=1724996826;
-  h=date:from:to:cc:subject:message-id;
-  bh=CnOsyx8oq1YnERBwL/fXRx02nGiEL6rQEC37SWQfvP4=;
-  b=GUXBbbA2Ra7aojangX0yulULUFxVWubBj1MxoNTPFsJViLc9z7nYHIOG
-   nDlCxFTmEgQuB+zK3tvTv0+ugknScYqelnpAlov2B1Z39I/TaxYmHXDQ7
-   VVsQgusUyPBl+vOCn7mlx3SU+zhziX7pO5sUcOjkHcvk2lbKhb4z724dL
-   AIztAD3UjaV05DN2Hk11EsFrPu0/gFnX0wAfc5uq7dx2kj2K5PUMzHp7G
-   4tzl2+PpQuTHdzPM9LgQavXpsPw2ngZriL+MRA+toZvgMaRZMG+sKg0R0
-   omI+tZasiZ8Dr09eD/oe3+/hOrxppjp6XFxT4Rn4ePhlUdWWQpoKC0Oh0
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10818"; a="356136764"
-X-IronPort-AV: E=Sophos;i="6.02,215,1688454000"; 
-   d="scan'208";a="356136764"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2023 22:47:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10818"; a="739346773"
-X-IronPort-AV: E=Sophos;i="6.02,215,1688454000"; 
-   d="scan'208";a="739346773"
-Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 30 Aug 2023 22:47:04 -0700
-Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qbaWG-000AjM-0X;
-        Thu, 31 Aug 2023 05:47:04 +0000
-Date:   Thu, 31 Aug 2023 13:45:19 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 003894c19da3987667731ef1c6d4734b5632eeb6
-Message-ID: <202308311317.ywzYDoZC-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S230354AbjHaGVW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 31 Aug 2023 02:21:22 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2044.outbound.protection.outlook.com [40.107.243.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29839E45;
+        Wed, 30 Aug 2023 23:21:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=InmPMiQEHmRh17pc01m0OnnXFlDs73fIeUY1Nmmda/22ud3kw2BDvBqPk8wBs/hog+mX2dl5hkj3LjVyftAzxoj+GLxHp20OPCQ+9CLucsV2ftL+oaZvc5QiYcUtU9mmENRx0gnFlIHt/cq2tWov9XOtsKuR3/T4B0xfvizGspAfwV3XE0tJ5u+CK90tBi3CaMBL0b/1Z9K/KultJXKMB93XiTCvl/tqAK4ut58xVUuPt1vSB38vajNJjmwSGplWvgyGRzqMd488ss2gBFXs9e/FcoBXSX4hcoJ29F+SgWZl4oBQNHLnB3ofKzy2Hk8SUKn05FTBZzP4B23XeKdYsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HBVHUHsTkn24bWu/rkYnEOGwggNfkFjB//MqH/AIN2s=;
+ b=cQgAzvbzwpMVXN89IbJnoKIc1YxQdj+Av+iCM5ZioO8nUXVBOtRUYbBPxBkoCj9chBnH0EHNO/1S5PV53fvyVX3hWPlUO4uo0jmHW0pw3n+aogij9hYy8Xm73lIoGrQXWxIcJBouk30jWet6BuxPcuFpHGF3Ug0h+oEyNX78t9lVbIHLBtSN29qdFkum6XSCEbc+pRkvS7q48TZUvhfgqYB+aIsOI6vya+ltEwCXn/Pj2qhKqkv3ws14KTMg2aP4eIwCB6aZ8rPMc/L2UqMAccQr0Mhzv0pyHBtm4Lft/yn5022Aa47F6pil1WkuQ5nMER+V82onZOt/WmJSSuR/qg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HBVHUHsTkn24bWu/rkYnEOGwggNfkFjB//MqH/AIN2s=;
+ b=2LIqEdCggZlp1Ij+wRkQqS31HYFXn57UD4/thFiRr8MZ0ogE+2cHbnKNqbPC9tE4RPT/wFOlJIx0nSHAqcpAxK5Av4lg11RQxODgJu7XKkUfgL9kT9J1j3eDoJPC3uCRrLZC086hXqbcryk+blQFzwcDTVA9pWEQRUg1AzuacSY=
+Received: from MW2PR2101CA0014.namprd21.prod.outlook.com (2603:10b6:302:1::27)
+ by DS7PR12MB9042.namprd12.prod.outlook.com (2603:10b6:8:ed::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.20; Thu, 31 Aug
+ 2023 06:21:06 +0000
+Received: from CO1PEPF000044F9.namprd21.prod.outlook.com
+ (2603:10b6:302:1:cafe::61) by MW2PR2101CA0014.outlook.office365.com
+ (2603:10b6:302:1::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.12 via Frontend
+ Transport; Thu, 31 Aug 2023 06:21:06 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000044F9.mail.protection.outlook.com (10.167.241.199) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6768.2 via Frontend Transport; Thu, 31 Aug 2023 06:21:05 +0000
+Received: from equan-buildpc.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 31 Aug
+ 2023 01:20:56 -0500
+From:   Evan Quan <evan.quan@amd.com>
+To:     <lenb@kernel.org>, <johannes@sipsolutions.net>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <alexander.deucher@amd.com>,
+        <rafael@kernel.org>, <Lijo.Lazar@amd.com>,
+        <mario.limonciello@amd.com>
+CC:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        Evan Quan <evan.quan@amd.com>
+Subject: [V11 0/8] Enable Wifi RFI interference mitigation feature support
+Date:   Thu, 31 Aug 2023 14:20:23 +0800
+Message-ID: <20230831062031.1014799-1-evan.quan@amd.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F9:EE_|DS7PR12MB9042:EE_
+X-MS-Office365-Filtering-Correlation-Id: 35e20041-acaf-4ca0-a384-08dba9ea755f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3b8oQBlQBqr+tEPBIkrHfZXknIAwzcTjXh7UtLDaLvkaz4M9qVwGDJ7u2HkHZYTCgdj/Xc9eIupgG3JqjR6OyCudrR1yug0uuKE818X9p11jj//8A6bPCxEXf/7UcQbhGxSzasY01+/bTrPukfbHbmYTnBqL+oCAH8kaF/B/4HXU7QR8eHh6s+q8kYZU3IL3Y5gI1i03vJfcvM3PirDvMZERLreKQPtoWelJYRA6YVoG9g9HDXH8bj9czevl/kfhQoy5S6nW5lpkHJYflsHWeGjsuOO9TAv3dEcecEO6qRmdX+yop2Yx6je1HaboGz9kw/EDLTyuaQeEUstY0Gcdi13BZBpmOwRdiyfE8L+EZxs4IaaRzoIvl120cE7QR8RvGRa9FlZtlSybPOdSI2sfXQOI2eg1e6hwxphULUqrNaDS5lmJ6Hy/maIwhJmPbffZ+IAhqCayMrkRGBH1eE5LER/+aIKd3iBc4vBOdS3peByQYy7hOkMPjuqOHo0dcU/oEAMfTh8QcdI8/nsApVXt6kRupCP0ZgctqgHEz0vECgzvGrk2wLZNdU6+tYEx9Oa4bdOVjFP8L92pZ19it55vBkisNus4xlfgumVgEXYfooSve/ygX+J3it59NgvQfNcWEMmx+ZbGxUSJ9TI6rvEzoP2SLq7OHhXqkDNWgxQFGkuk7pIoo7UiHVPyPoZ3jq/c+Lnt+l8WBVj8NTnkvkGTYc5vpcihOUjZKxkLj8TuaqeVQ5HQzFZ9491oJ4XUFJY7Yb0wKR1Pjhrkn1fxoES3m0T+p4lLsGO7bj/+vZ26sdI=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(346002)(376002)(396003)(136003)(1800799009)(186009)(82310400011)(451199024)(46966006)(36840700001)(40470700004)(70206006)(41300700001)(8936002)(83380400001)(40480700001)(47076005)(36860700001)(336012)(8676002)(4326008)(478600001)(6666004)(6636002)(110136005)(70586007)(26005)(316002)(2616005)(16526019)(426003)(1076003)(54906003)(7696005)(2906002)(356005)(82740400003)(81166007)(921005)(40460700003)(5660300002)(7416002)(36756003)(44832011)(86362001)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 06:21:05.7513
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 35e20041-acaf-4ca0-a384-08dba9ea755f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F9.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9042
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 003894c19da3987667731ef1c6d4734b5632eeb6  Merge branch 'thermal-core' into linux-next
+Due to electrical and mechanical constraints in certain platform designs there
+may be likely interference of relatively high-powered harmonics of the (G-)DDR
+memory clocks with local radio module frequency bands used by Wifi 6/6e/7. To
+mitigate possible RFI interference producers can advertise the frequencies in
+use and consumers can use this information to avoid using these frequencies for
+sensitive features.
 
-elapsed time: 969m
+The whole patch set is based on Linux 6.5-rc5. With some brief introductions
+as below:
+Patch1:      Core functionality setup for WBRF feature support
+Patch2 - 3:  Bring WBRF support to wifi subsystem.
+Patch4 - 8:  Bring WBRF support to AMD graphics driver.
 
-configs tested: 227
-configs skipped: 2
+Evan Quan (8):
+  ACPI: Add support for AMD ACPI based Wifi band RFI mitigation feature
+  cfg80211: expose nl80211_chan_width_to_mhz for wide sharing
+  wifi: mac80211: Add support for WBRF features
+  drm/amd/pm: update driver_if and ppsmc headers for coming wbrf feature
+  drm/amd/pm: setup the framework to support Wifi RFI mitigation feature
+  drm/amd/pm: add flood detection for wbrf events
+  drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.0
+  drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.7
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r023-20230831   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20230830   gcc  
-arc                   randconfig-001-20230831   gcc  
-arc                  randconfig-r001-20230831   gcc  
-arc                  randconfig-r006-20230830   gcc  
-arc                  randconfig-r026-20230831   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                   randconfig-001-20230830   clang
-arm                   randconfig-001-20230831   gcc  
-arm                  randconfig-r013-20230831   gcc  
-arm                  randconfig-r025-20230831   gcc  
-arm                  randconfig-r031-20230831   clang
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r012-20230830   gcc  
-arm64                randconfig-r033-20230831   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-hexagon               randconfig-001-20230830   clang
-hexagon               randconfig-001-20230831   clang
-hexagon               randconfig-002-20230830   clang
-hexagon               randconfig-002-20230831   clang
-hexagon              randconfig-r024-20230830   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20230830   clang
-i386         buildonly-randconfig-001-20230831   gcc  
-i386         buildonly-randconfig-002-20230830   clang
-i386         buildonly-randconfig-002-20230831   gcc  
-i386         buildonly-randconfig-003-20230830   clang
-i386         buildonly-randconfig-003-20230831   gcc  
-i386         buildonly-randconfig-004-20230830   clang
-i386         buildonly-randconfig-004-20230831   gcc  
-i386         buildonly-randconfig-005-20230830   clang
-i386         buildonly-randconfig-005-20230831   gcc  
-i386         buildonly-randconfig-006-20230830   clang
-i386         buildonly-randconfig-006-20230831   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20230830   clang
-i386                  randconfig-001-20230831   gcc  
-i386                  randconfig-002-20230830   clang
-i386                  randconfig-002-20230831   gcc  
-i386                  randconfig-003-20230830   clang
-i386                  randconfig-003-20230831   gcc  
-i386                  randconfig-004-20230830   clang
-i386                  randconfig-004-20230831   gcc  
-i386                  randconfig-005-20230830   clang
-i386                  randconfig-005-20230831   gcc  
-i386                  randconfig-006-20230830   clang
-i386                  randconfig-006-20230831   gcc  
-i386                  randconfig-011-20230830   gcc  
-i386                  randconfig-011-20230831   clang
-i386                  randconfig-012-20230830   gcc  
-i386                  randconfig-012-20230831   clang
-i386                  randconfig-013-20230830   gcc  
-i386                  randconfig-013-20230831   clang
-i386                  randconfig-014-20230830   gcc  
-i386                  randconfig-014-20230831   clang
-i386                  randconfig-015-20230830   gcc  
-i386                  randconfig-015-20230831   clang
-i386                  randconfig-016-20230830   gcc  
-i386                  randconfig-016-20230831   clang
-i386                 randconfig-r013-20230830   gcc  
-i386                 randconfig-r016-20230830   gcc  
-i386                 randconfig-r026-20230830   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20230830   gcc  
-loongarch            randconfig-r002-20230831   gcc  
-loongarch            randconfig-r011-20230831   gcc  
-loongarch            randconfig-r014-20230830   gcc  
-loongarch            randconfig-r036-20230830   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r011-20230830   gcc  
-m68k                 randconfig-r015-20230830   gcc  
-m68k                 randconfig-r035-20230830   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-microblaze           randconfig-r001-20230830   gcc  
-microblaze           randconfig-r023-20230830   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                 randconfig-r032-20230831   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r005-20230831   gcc  
-nios2                randconfig-r022-20230831   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc              randconfig-r036-20230831   gcc  
-powerpc64            randconfig-r003-20230830   clang
-powerpc64            randconfig-r006-20230831   gcc  
-powerpc64            randconfig-r012-20230831   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20230830   clang
-riscv                 randconfig-001-20230831   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20230830   gcc  
-s390                  randconfig-001-20230831   clang
-s390                 randconfig-r003-20230831   gcc  
-s390                 randconfig-r032-20230830   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                   randconfig-r021-20230831   gcc  
-sh                   randconfig-r034-20230830   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r004-20230830   gcc  
-sparc                randconfig-r004-20230831   gcc  
-sparc                randconfig-r005-20230830   gcc  
-sparc                randconfig-r031-20230830   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64              randconfig-r033-20230830   gcc  
-sparc64              randconfig-r035-20230831   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r014-20230831   gcc  
-um                   randconfig-r015-20230831   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20230830   clang
-x86_64       buildonly-randconfig-002-20230830   clang
-x86_64       buildonly-randconfig-003-20230830   clang
-x86_64       buildonly-randconfig-004-20230830   clang
-x86_64       buildonly-randconfig-005-20230830   clang
-x86_64       buildonly-randconfig-006-20230830   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20230830   gcc  
-x86_64                randconfig-001-20230831   clang
-x86_64                randconfig-002-20230830   gcc  
-x86_64                randconfig-002-20230831   clang
-x86_64                randconfig-003-20230830   gcc  
-x86_64                randconfig-003-20230831   clang
-x86_64                randconfig-004-20230830   gcc  
-x86_64                randconfig-004-20230831   clang
-x86_64                randconfig-005-20230830   gcc  
-x86_64                randconfig-005-20230831   clang
-x86_64                randconfig-006-20230830   gcc  
-x86_64                randconfig-006-20230831   clang
-x86_64                randconfig-011-20230830   clang
-x86_64                randconfig-011-20230831   gcc  
-x86_64                randconfig-012-20230830   clang
-x86_64                randconfig-012-20230831   gcc  
-x86_64                randconfig-013-20230830   clang
-x86_64                randconfig-013-20230831   gcc  
-x86_64                randconfig-014-20230830   clang
-x86_64                randconfig-014-20230831   gcc  
-x86_64                randconfig-015-20230830   clang
-x86_64                randconfig-015-20230831   gcc  
-x86_64                randconfig-016-20230830   clang
-x86_64                randconfig-016-20230831   gcc  
-x86_64                randconfig-071-20230830   clang
-x86_64                randconfig-071-20230831   gcc  
-x86_64                randconfig-072-20230830   clang
-x86_64                randconfig-072-20230831   gcc  
-x86_64                randconfig-073-20230830   clang
-x86_64                randconfig-073-20230831   gcc  
-x86_64                randconfig-074-20230830   clang
-x86_64                randconfig-074-20230831   gcc  
-x86_64                randconfig-075-20230830   clang
-x86_64                randconfig-075-20230831   gcc  
-x86_64                randconfig-076-20230830   clang
-x86_64                randconfig-076-20230831   gcc  
-x86_64               randconfig-r016-20230831   clang
-x86_64               randconfig-r022-20230830   gcc  
-x86_64               randconfig-r024-20230831   clang
-x86_64               randconfig-r025-20230830   gcc  
-x86_64               randconfig-r034-20230831   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa               randconfig-r002-20230830   gcc  
-xtensa               randconfig-r021-20230830   gcc  
+ drivers/acpi/Kconfig                          |  17 +
+ drivers/acpi/Makefile                         |   2 +
+ drivers/acpi/amd_wbrf.c                       | 414 ++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h           |   2 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c       |  17 +
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c     | 214 +++++++++
+ drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h |  33 ++
+ .../inc/pmfw_if/smu13_driver_if_v13_0_0.h     |  14 +-
+ .../inc/pmfw_if/smu13_driver_if_v13_0_7.h     |  14 +-
+ .../pm/swsmu/inc/pmfw_if/smu_v13_0_0_ppsmc.h  |   3 +-
+ .../pm/swsmu/inc/pmfw_if/smu_v13_0_7_ppsmc.h  |   3 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h  |   3 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h  |   3 +
+ .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c    |   9 +
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c  |  60 +++
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  |  59 +++
+ drivers/gpu/drm/amd/pm/swsmu/smu_internal.h   |   3 +
+ include/linux/acpi_amd_wbrf.h                 | 140 ++++++
+ include/linux/ieee80211.h                     |   1 +
+ include/net/cfg80211.h                        |   8 +
+ net/mac80211/Makefile                         |   2 +
+ net/mac80211/chan.c                           |   9 +
+ net/mac80211/ieee80211_i.h                    |   9 +
+ net/mac80211/main.c                           |   2 +
+ net/mac80211/wbrf.c                           | 105 +++++
+ net/wireless/chan.c                           |   3 +-
+ 26 files changed, 1143 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/acpi/amd_wbrf.c
+ create mode 100644 include/linux/acpi_amd_wbrf.h
+ create mode 100644 net/mac80211/wbrf.c
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
