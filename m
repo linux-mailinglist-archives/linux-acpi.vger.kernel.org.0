@@ -2,92 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFEDF7915CE
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Sep 2023 12:43:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C25347915DD
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Sep 2023 12:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241850AbjIDKnK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 Sep 2023 06:43:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50278 "EHLO
+        id S233758AbjIDKuZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 Sep 2023 06:50:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233006AbjIDKnJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Sep 2023 06:43:09 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5954191;
-        Mon,  4 Sep 2023 03:42:58 -0700 (PDT)
+        with ESMTP id S230431AbjIDKuY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Sep 2023 06:50:24 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C99EDD;
+        Mon,  4 Sep 2023 03:50:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693824179; x=1725360179;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=KG2QeDOlI8MHwoCPiPd6JfLSLSr0kBD/fqXSBY4+KyQ=;
-  b=Uk6LKvYlA+UvUUUOjLLbyzwrv4wCfCtCkSLV3131fj9GmXa6V2Nz9UAq
-   bwhQTiZPBsbpmmet5J1ulq7H0mT/n6RlEvBjaMEOIoEdy6iEz4Bf06pdk
-   HIfRhChwvoDjoEv85vBOG38+ngdVAuyl583iFCeFVrV0bvTRO81InUgoO
-   g8VFlvMZivQV3x2W+7vC2xetPV+P/MLsX8ZymjOy9aHoY6i/FIpUBTzeX
-   St1rGEdxCgYDMF9Egvz6t4ON0FfexsaJg9DnXRfbDD5DGYgxcW70iCgla
-   6WhR8JKqmGeSvwaYkgOIi/y88p+HIuUYcDpxCKLnc3hhM2od8loocl/jp
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10822"; a="407570314"
+  t=1693824621; x=1725360621;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WBXVQvn4cAjmdr8D6OmweKSu5H2pPRHiyJxB1xRH74o=;
+  b=FnJVBIp4Gx8+F0dm3eu8cGTaZqasDgStsFNaTUJbPBRvA+m3/CAeICWv
+   19q5pOCxaKRZNaR6fOip48kcPCoVRWiV+3aOxIeHl7JMjZH24ZOqo9Uvp
+   rflkpztK8mduZ3DMy5Kr3JACNR1IL4s73lHkT/rSJBCRsSMMhhXw9eMO4
+   bYZuzzZXryT61fDJaae+s3npO4AEKTB7eRFQGojCCX8wfxcwOOXws+c9c
+   hzscy0garb9ADJxQ7Qi/ivjpAZNHUeYfkn+YzCpIBG8BpTCgPzDBRW5FR
+   tIQylHBhY+ay377ToDXNHvJtVUesxhiuLo8VbSB1Hl9m8AxMgmc52TE10
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10822"; a="380372456"
 X-IronPort-AV: E=Sophos;i="6.02,226,1688454000"; 
-   d="scan'208";a="407570314"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2023 03:40:52 -0700
+   d="scan'208";a="380372456"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2023 03:50:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10822"; a="855567438"
+X-IronPort-AV: E=McAfee;i="6600,9927,10822"; a="883992451"
 X-IronPort-AV: E=Sophos;i="6.02,226,1688454000"; 
-   d="scan'208";a="855567438"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga002.fm.intel.com with ESMTP; 04 Sep 2023 03:40:49 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 0ED14892; Mon,  4 Sep 2023 13:40:47 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Saravana Kannan <saravanak@google.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+   d="scan'208";a="883992451"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 04 Sep 2023 03:50:11 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 04 Sep 2023 13:50:15 +0300
+Date:   Mon, 4 Sep 2023 13:50:15 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Saravana Kannan <saravanak@google.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: [PATCH v1 1/1] device property: Clarify usage scope of some struct fwnode_handle members
-Date:   Mon,  4 Sep 2023 13:40:46 +0300
-Message-Id: <20230904104046.1682875-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
+Subject: Re: [PATCH v1 1/1] device property: Clarify usage scope of some
+ struct fwnode_handle members
+Message-ID: <ZPW2Z7lRZTOhTU/m@kuha.fi.intel.com>
+References: <20230904104046.1682875-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230904104046.1682875-1-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Most of the struct fwnode_handle members are for exclusive use with
-device links framework. Clarify this by adding a respective comment.
+On Mon, Sep 04, 2023 at 01:40:46PM +0300, Andy Shevchenko wrote:
+> Most of the struct fwnode_handle members are for exclusive use with
+> device links framework. Clarify this by adding a respective comment.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- include/linux/fwnode.h | 2 ++
- 1 file changed, 2 insertions(+)
+Yes, this is important clarification.
 
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 5700451b300f..2a72f55d26eb 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -41,6 +41,8 @@ struct device;
- struct fwnode_handle {
- 	struct fwnode_handle *secondary;
- 	const struct fwnode_operations *ops;
-+
-+	/* The below is used solely by device links, don't use otherwise */
- 	struct device *dev;
- 	struct list_head suppliers;
- 	struct list_head consumers;
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
+> ---
+>  include/linux/fwnode.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+> index 5700451b300f..2a72f55d26eb 100644
+> --- a/include/linux/fwnode.h
+> +++ b/include/linux/fwnode.h
+> @@ -41,6 +41,8 @@ struct device;
+>  struct fwnode_handle {
+>  	struct fwnode_handle *secondary;
+>  	const struct fwnode_operations *ops;
+> +
+> +	/* The below is used solely by device links, don't use otherwise */
+>  	struct device *dev;
+>  	struct list_head suppliers;
+>  	struct list_head consumers;
+> -- 
+> 2.40.0.1.gaa8946217a0b
+
 -- 
-2.40.0.1.gaa8946217a0b
-
+heikki
