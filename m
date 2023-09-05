@@ -2,202 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67E777925F9
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Sep 2023 18:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35945792D98
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Sep 2023 20:46:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238841AbjIEQG6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Sep 2023 12:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43386 "EHLO
+        id S233293AbjIESqK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Sep 2023 14:46:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354583AbjIEMpc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Sep 2023 08:45:32 -0400
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2040.outbound.protection.outlook.com [40.107.92.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77250DA;
-        Tue,  5 Sep 2023 05:45:28 -0700 (PDT)
+        with ESMTP id S232792AbjIESqK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Sep 2023 14:46:10 -0400
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on20604.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e83::604])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C36D2CFB;
+        Tue,  5 Sep 2023 11:45:37 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=noExXijlI5lZijFLmJUe9JyW92gwQR0V+bc22E0Drkd3UjQZaZq/4MTE+b1DCcqhLbZQPEbCAGjpxTuxRnjbUOfANI+GV4p+dUY4IrKDcTYOL/znxvOOy+SbI1puQpZwAoHguAdm+yO2UcOOECT5hNAT14WufBkBxLxh82AANlRuN+c030bZK7/LKFiQi12dnZdC2wbjZNA+sjNcCfx30LbitVzBpRWUObalr6WUYY8vqTNYgWZ3MoTVHWASK0xYeBonLZi7H7VMd5rj+gNjnFNQfQME/vBTNqXZf0BMU9GR6Njz4AHUhwX+eiZmltZBa9kIBvFApThqiWSLmP3uIw==
+ b=JDdJj3BHAQRDgCMyUKJktI28Q97hWAFEtEchl6ITb0wYHNB8N8Qw4+vdrrutfJgyvv4Ngyty3fgsQrMix222FKcEdu0MiJnNuBsaJmd87wDeGqoldW76mUbiwl/QYtIvby3utzft8/BabB4L3UN5Llz+SzbppBtN6JrfvYD7l1luFGnA+EkoM06KMZfbheRAV9GvDtc694gV2dnHCEwNKvRNa1X0dPiv+F9hTxLKQ6dI+zYISpGPUBuuGDkkj7aO+0/mE7KCqYl1a0q8uJDFz4jgJN7hxEQ0kJtfaU29pZyfQWgV4qMo+X55sE+F8ay1NjkSRtEqt7llO/psb4NpsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kNHN0aqnUGRGK/NsTOGjSTGKz4I4m8qDYT5dFw2EaBo=;
- b=WncGw6b0PT3l6OLbZxDo0DznMzDyT/9N+HbiHGawSmw7NNe/DXqu3Y2kDwzy1vOEPWyiZErZ91Vpule5FCdF+Bs4nEgUrg7NRy/gPHOqK5HVGszG8iPPJgH6AaS+6PCpYolehK/fWMpaYLPfTNKCBjhoJ+AoUQj9f/3gbSNyy+DXv4FqH/hUWONNmXn+VoEuf0aIK6e0gbQ2gl4J5ER18ZzLs8WhUPLvz/3fQwSfZ+2iwp9000o9c0n1PSlV6BJQCs4mgQyd57XqGWuyXvg9snSIDqp/VpicOYKwLeBV+efOlBHuFN3tlOVr99z3gE3L8vx4uR5jyTECybLZx+jyLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=NwJYvfRlXToyD+xkMD/NcRPQ5+NlD12l9uuut6vBhy8=;
+ b=kEQjvSTJpPolwt+gpJtgf0V++vd1SUz0lVCfIT1Xuoira4Vj/yNdhBwYvSZH7bI9dW7xS4OEHNCgOzigUZfNiEQAvIS9GOAOgU9b75nIuZlHzZmw1TYSZTwgfJQT9eIMaJWzBX7HuZwTT8I3vY3WtQ7q/acQ1Di9fgFskYSUWGeJCoQGYJiljYHgXLLUjB7Pd6Voj53IJdukH6e73s0IYA3cpi/czKv9Um/04TVxIcj3fFvCKNiU/IMT+fyqctNpcoXwLy6dWTSkK/sctW7x3de6RN/XVtc/QrCVqzG+rA94rDkV0InMWG/YGhI+Ygn+OI9mzxWNAeilfV1F0kTXPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kNHN0aqnUGRGK/NsTOGjSTGKz4I4m8qDYT5dFw2EaBo=;
- b=LQfz0xezbMQdhO3/8VJ/pT0+/5pq3XIhQblDfm5DwqBtusYPfVkc+RJOStKtceCyJiWVHmIlP08i1b6a7LDxeudMv7L48LvyxbNaAGqsnfgjtSGLp52NPvib+xF4KuNL1MgNfOprF553Zu6N0YJu2+W5Z5+89fwhjIrl/FIdrnQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by BL1PR12MB5077.namprd12.prod.outlook.com (2603:10b6:208:310::17) with
+ bh=NwJYvfRlXToyD+xkMD/NcRPQ5+NlD12l9uuut6vBhy8=;
+ b=bD34RIBjx3bZpWPRKu893I2YRciEszL782XxbA/W4can58/R+VG/ppn4jETa4XJTxzB7ZRPtkvdP2l96jyEkYwJ+xtqEX0Pe4YPHZAiVME+R+qJ37+N2sBIUPo/iJ2J+2K1dxpetNa89vM13AxNEDQLzqmgtYiqY5ujMO2DLeIQ=
+Received: from MW4PR04CA0276.namprd04.prod.outlook.com (2603:10b6:303:89::11)
+ by MW4PR12MB7192.namprd12.prod.outlook.com (2603:10b6:303:22a::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33; Tue, 5 Sep
- 2023 12:45:25 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6745.030; Tue, 5 Sep 2023
- 12:45:25 +0000
-Message-ID: <4c80cda2-82e4-4eb3-99c5-f2be3bfa96ed@amd.com>
-Date:   Tue, 5 Sep 2023 07:45:20 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 0/3] Avoid PCIe D3 for AMD PCIe root ports
-To:     Hans de Goede <hdegoede@redhat.com>, bhelgaas@google.com,
-        rafael@kernel.org, Shyam-sundar.S-k@amd.com
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-References: <20230829171212.156688-1-mario.limonciello@amd.com>
- <6ce36e6e-726a-69f3-882c-0790d311eee1@redhat.com>
-Content-Language: en-US
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <6ce36e6e-726a-69f3-882c-0790d311eee1@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DM6PR08CA0040.namprd08.prod.outlook.com
- (2603:10b6:5:1e0::14) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.32; Tue, 5 Sep
+ 2023 18:44:21 +0000
+Received: from CO1PEPF000044F5.namprd05.prod.outlook.com
+ (2603:10b6:303:89:cafe::11) by MW4PR04CA0276.outlook.office365.com
+ (2603:10b6:303:89::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33 via Frontend
+ Transport; Tue, 5 Sep 2023 18:44:20 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000044F5.mail.protection.outlook.com (10.167.241.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6768.25 via Frontend Transport; Tue, 5 Sep 2023 18:44:20 +0000
+Received: from bcheatha-HP-EliteBook-845-G8-Notebook-PC.amd.com
+ (10.180.168.240) by SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 5 Sep 2023 13:44:18 -0500
+From:   Ben Cheatham <Benjamin.Cheatham@amd.com>
+To:     <rafael@kernel.org>, <dan.j.williams@intel.com>,
+        <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+CC:     <bhelgaas@google.com>, <benjamin.cheatham@amd.com>,
+        <yazen.ghannam@amd.com>
+Subject: [PATCH v3 0/3] CXL, ACPI, APEI, EINJ: Update EINJ for CXL 1.1 error types
+Date:   Tue, 5 Sep 2023 13:44:03 -0500
+Message-ID: <20230905184406.135851-1-Benjamin.Cheatham@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|BL1PR12MB5077:EE_
-X-MS-Office365-Filtering-Correlation-Id: df491f4b-4e4d-4a2c-29d6-08dbae0df954
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F5:EE_|MW4PR12MB7192:EE_
+X-MS-Office365-Filtering-Correlation-Id: c90bb555-0fd2-4a9f-8e23-08dbae401df7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: FT4AUGVeQuQdlzQOUvSNWQkF3CrZCX6y4uUgpT21BpDq5SX0NdABRH2hcDmatvdX+SSrv/LIRQ15kRez3fXiSsTb17b16tp76cRjVnDCtzyF/Fz3Dkpuc5GIuS6exb9yrue26MpPOZ9uu2PBLSgpNLo7lxuKIR58HoIBJf6RxkEzg7YxOPYqYj4R+BUStIZlV9TiVvVOiB+BF/HIsF/sxIM+XbZ8/Fzycavf/JWiJ3v8pX17fmmJkWxXrzPjfOqepyeWjtZVRTSwAB6KhB7oab99krn/uyu75+PvCJuE+Vm1km70s2ns4HsUcbApsvwD8rqctHR88lIuoed9quvTl/tc3L33BewmMWDn5dVtiw/mLuq9oECjZH5EbJrUsZ3EU6jVNkv/1eutkp5kMBOgRIawumyRsgQ/Ce6kADwl71XoQoRsoocTp4nUWNF6BBkttmSXZdceJm8sNSc/fVt+VluLr7mm9yX1baJsSA1hscTQJqterTRzhdyKLFWizkOCpAzitr4ihJ33uC4wU/3k1rAaHk5nhhKeBooPX/eeTb0R81+4gsDUpEeeP0Db36M+UOIDYXVfTgNz530Q3MmNx14mH242CNNG1CcKyfB3ptliUFxwtcyj4PFfRWeEkRuhnr9uw/nQobkm7izdiNFOAA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(376002)(346002)(39860400002)(366004)(451199024)(1800799009)(186009)(2616005)(8936002)(316002)(6636002)(8676002)(4326008)(66946007)(66556008)(66476007)(6486002)(6506007)(53546011)(6512007)(41300700001)(5660300002)(83380400001)(26005)(44832011)(6666004)(31686004)(478600001)(966005)(2906002)(31696002)(86362001)(36756003)(38100700002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aEtkY1JPTDlNWWc4K2xNYWR0NGd5R3ZsM2JaQnpsVjJoQUNPMUwrWXk5cEp5?=
- =?utf-8?B?VmtjVGFCa0lCcGNLKzJZU0NkbDI5K1krdS93elJEZFNnbGRPcGl6MlhpbS9w?=
- =?utf-8?B?d3UxTGx4QTVMN2orTjRqZXNaS2VhZHJHNXBMZUVnN09Ja3ZOQzRCMlJsYkpK?=
- =?utf-8?B?WG1kSnZqRVFYL2hGR2svMGltWkhwNEVsTjFKZi9sN3BqeElqOVBaaGppRG1W?=
- =?utf-8?B?bTdqUUZDbkFoSmxod2loN1NwQVZoOXFzSUpMUzlNUmtMR0haY2hJZGFiWHRa?=
- =?utf-8?B?RHc4bkdFVXc4S3lYUm05SFplaU5BaHZjMytFNWhRRGlUenVLYjdINGNpQXZL?=
- =?utf-8?B?czhEbDYrMk51ZjdDVGtLd1Z6OVQvU0ZEWENQQ1U1TEVMRWR1RjVIN2dxaE81?=
- =?utf-8?B?VlRrbGFzcHFJLzlyL0dRNWlHOUF1WjlLTEd1Q1k0VDJZeFJBNzZjMUZROUEx?=
- =?utf-8?B?SjdScFIyVnViWFkzYk9Zak1PV0JWVjBPMHpOcXZNUFAycy9IaEFkdVVUYjJU?=
- =?utf-8?B?WUh3enNRNEdBbDRVeWgzVHJaejdBWDR2L3hqcjJqdTRncVZScC9KV21wd0hK?=
- =?utf-8?B?WVJhWDkyVXdoc05RdndTeGpvZlFEZUVmOFIvMWhwMndwZGpTR2trSUpjcDRu?=
- =?utf-8?B?NlJZMExXcTR3S2JMa2hTZjlTV1liM3pOdW1kMitLR01USVY5QmRSTi9uei9Q?=
- =?utf-8?B?dUwrdGg0YzY0ck0remYxcnRSMVoyYS9oN0tzZkNNOGRtOVBMakQrTXVKWHJM?=
- =?utf-8?B?eWFRb1Mwb1BMaktvYS9idHZpc3gyWm02bkFnaVlBbnEreEtpbjM3K1JRUkRz?=
- =?utf-8?B?Y1o1VXpNemtxZ0tSSUo1QlFjaXoyS1owb01nYnJtSWZmNlRhTU9VVlFhdklH?=
- =?utf-8?B?TGI1VUQ2ZUhSRXFRbmhvU0FzdnM3OStTWjl3R0NtaFJVdkVPTkRDbVlMcXdO?=
- =?utf-8?B?b0psenNaMlk0U3ZLRXlnKzZ4R1Z6dGZtK0NKSk1nMkpCVkhlZXhUb3VXK3pv?=
- =?utf-8?B?ZTRHMVArbUpzQjdac0JMYnltakV2YVQ1cXNuaUdpb1FOaFNiWE5yVnRTazhv?=
- =?utf-8?B?a2YwWkZjUlVmTktRWnlwcnY2M1pkNEVvcFZmSTJNMGExY1ZyNkEwbzRYRVhF?=
- =?utf-8?B?b1RGUlVXL0s1Y2JnYS9leDlqYTBPQXE1dzdZMWhUN25ldkZBU00zQTM3SHJ4?=
- =?utf-8?B?TFVNQUt1V3oyT0xCb0VsT3ZhUE9PQnJpRWRyL2h5SlE1V1dqYllDcFlLYWN4?=
- =?utf-8?B?ZU5VRFVGckJmRkE0b0t1Slc0OGlTQXdON1E0eEFwbExnUlRqaFliNG5NcVpn?=
- =?utf-8?B?T25HeE53MUlSaTY0dC9VSmdRUXBLcFc2NDN1R25tMmxNc0RKNHdEb25ZN0Mv?=
- =?utf-8?B?NURCUllsOEhoTFZ5T2hISjhrRXdRZVZJWk5PYjVBVGVYZmdVaThFVkpxUkUx?=
- =?utf-8?B?aE9hTlRQMHV2Nk9GN2ViOThQZWJZcmh3TzF6blp0SnlFaFgvMkUvb2RnL3Fw?=
- =?utf-8?B?UHlsUHJERFdrMFVZZk12N1NaK2lOZXB3bU92RFJSME1ZaE9mK1dEZjc1b1o1?=
- =?utf-8?B?bFJVN0R0aXd5MU9ObWE2YVkyMU1hM1FpNi9VSHBrd3ZGa1oxcW9IL2I2bko4?=
- =?utf-8?B?aFQrWmo4WC9aTlRXUEF3bGhTMmkvdkttUzBmL09qZzhXbllYUnk1QWZXT1Q1?=
- =?utf-8?B?ei9senhmTzh5RUlPa0QxVFNzZ0I2YjBGampPcEpRZ2FsYmdRWHNjU0hNRDFM?=
- =?utf-8?B?N2RHdE1mTWw2aG90ZFIrRjNydUZtcGpSdXJub3BxSGF2RnljeVNtYlpMUm1G?=
- =?utf-8?B?OFRFdklMczIzai80NWNoLzR1YnA0L2h5dlZST0ZnQUFIUHJoNDFtZVRKQ0pm?=
- =?utf-8?B?Q3FwekdiTnhNL1FqZlJZYzliMXpFR3pqdnFVUDZXMjRYOGxqVE14M002RUFF?=
- =?utf-8?B?dUNnVnozOEx3Yk45V1JtS0RYczE1RHp5RkkvUWpSYmpMSG85Ky9hQ2c4TzdM?=
- =?utf-8?B?ZjF3TUt4TzN4dVNtbHlaKzh3dW5NVzV1cHd0WmM0cnVPdlZacEoyZ3JGblRJ?=
- =?utf-8?B?eklsTjFnSy82N3AwWWR2ckNLdUZ1eVRwWGNQczNmSW13ektkbUhFSjU4Vktj?=
- =?utf-8?Q?eCk+2XkaCBAve33aNKUV4ATyh?=
+X-Microsoft-Antispam-Message-Info: pTC0x0gQtLv2j3tGNMDq8YG4atua0sTGno+Wn2IhqzssZhCR2l2J32FV5JhXuI1nIniCu8xYaMqRr2uPEoPnRjXUOk+fxtifGrqtIvl2A+/2sfxP22KEcwzVj8uroi3SosTZiGhIHEocWRPZP6NK6bKU/DT3GA8CWc2dRegWN5eB3fplZmxYi8YOgig3QFbOPL1I0s0kv7c+h8sejTj2aHnqtDI6lv+4MK0sW0l6xg1g3bQgnJ01Cgx8PhRUx4tVam5fw8EndXAFWPiFzsHXqSJdCIZorCgjq4a9OQDr3M6J/UbNDg4mSTK1Pc5dDIaYrTLwT89h+fys+XBla5ScOiWsqIij0+4kfUfhBimQh65YoHayBVR7O8dQhNwFVePettf6HoQqwtiIyOr3KaNVA2OdG7fDhCFof93AzK0o3QuEqseZ2DJQW6+a/sVkROz9WTu6rvKCXDaTbqkMDpZ4SLvljThKYWOF1RZuaPF13Kt4Ws/v40pAsCMB9uhwbWl+cIHrMv3atBqbRqJtLfAwI7JorhvupqF+/aFY4qFylzEat0Bn3r1IqwaSdZAagN/NrrYfpeSAULnDIIxZ38d3e3Nz18S5JaKj+VsfNg5ILlIwJIeShfEV4all7gCUQ6jWh3PCcs25NwTeqNay83mEZMjzPY1ZV7ZgeXpWpcY5QJmUjK2opUkk5Wp+4MtmpbcytAfxgY95dlkZD+7MkP+D+GpgQpNQ5Pe2X/wilIoO8VGRtP9Bqhwwu4BKr1jZI0Lm3q4IWO/0WmHgVK26y54LzQ5tq3nCWTIqXvFYVS8JSaI=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(346002)(39860400002)(136003)(396003)(186009)(1800799009)(82310400011)(451199024)(40470700004)(36840700001)(46966006)(8676002)(8936002)(5660300002)(36756003)(316002)(54906003)(110136005)(2906002)(70586007)(70206006)(4326008)(36860700001)(41300700001)(40460700003)(7696005)(26005)(1076003)(16526019)(40480700001)(426003)(15650500001)(47076005)(336012)(82740400003)(6666004)(81166007)(356005)(478600001)(966005)(83380400001)(2616005)(86362001)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: df491f4b-4e4d-4a2c-29d6-08dbae0df954
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2023 12:45:24.9945
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2023 18:44:20.4772
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: c90bb555-0fd2-4a9f-8e23-08dbae401df7
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q27g+FacnmC2WMd6p5e5IYRN1nvuKaFxzy5/8OMPIaM7j7dwQdLmKLNcpa3fDTu/k8MSxBwHefoym5FBSXOZxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5077
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F5.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7192
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 9/5/2023 05:13, Hans de Goede wrote:
-> Hi Mario,
-> 
-> On 8/29/23 19:12, Mario Limonciello wrote:
->> D3 on PCIe root ports isn't used on Windows systems in Modern Standby.
->> This series adjusts the amd-pmc driver to choose the same strategy
->> for Rembrandt and Phoenix platforms in Linux with s2idle.
->>
->> LPS0 constraints are the basis for it; which if they are added for
->> Windows would also apply for Linux as well.
->>
->> This version doesn't incorporate a callback, as it's pending feedback
->> from Bjorn if that approach is amenable.
->>
->> NOTE:
->> This series relies upon changes that are both in linux-pm.git and
->> platform-x86.git. So it won't be able to apply to either maintainer's
->> tree until later.
->>
->> Mario Limonciello (3):
->>    ACPI: x86: s2idle: Export symbol for fetching constraints for module
->>      use
->>    platform/x86/amd: pmc: Adjust workarounds to be part of a switch/case
->>    platform/x86/amd: pmc: Don't let PCIe root ports go into D3
-> 
-> Thank you for the new version.
-> 
-> I understand you wanted to get this new approach "out there" but
-> this does not address my remarks on v15:
-> 
-> https://lore.kernel.org/platform-driver-x86/53d26a63-64f3-e736-99f5-32bf4b5ba31d@redhat.com/
-> 
+v3 Changes:
+	- Add sysfs files for finding valid CXL 1.1 downstream port
+	  MMIO addresses, along with validation of said addresses
+	- Update EINJ documentation to include relevant information
+	  for injecting CXL error types
+	- Dropped Yazen's from tag
 
-Right; I called out in the cover letter this is pending feedback from Bjorn.
+This patch is a follow up to the discussion at [1], and builds on Tony's
+CXL error patch at [2].
 
-> Bjorn, I suggest to allow platform code to register a callback
-> to influence pci_bridge_d3_possible() results there. Can you
-> take a look at this and let us know what you think of this
-> suggestion ?
-> 
-> Looking at this problem again and rereading the commit message
-> of "platform/x86/amd: pmc: Don't let PCIe root ports go into D3"
-> 
-> I see that the problem is that the PCIe root ports to which
-> the USB controllers connect should not be allowed to go
-> into D3 when an USB child of them is configured to wakeup
-> the system.
-> 
-> It seems to me that given that problem description,
-> we should not be directly messing with the bridge_d3
-> setting at all.
-> 
-> Instead the XHCI code should have an AMD specific quirk
-> where it either unconditionally calls pci_d3cold_disable()
-> on the XHCI PCIe device; or it could even try to be smart
-> and call pci_d3cold_enable() / pci_d3cold_disable()
-> from its (runtime)suspend handler depending on if any
-> USB child is configured as a system wakeup source.
-> 
-> Note that it is safe to repeatedly call pci_d3cold_enable()
-> / _disable() there is no need to balance the calls.
-> 
+The new CXL error types will use the Memory Address field in the
+SET_ERROR_TYPE_WITH_ADDRESS structure in order to target a CXL 1.1
+compliant memory-mapped downstream port. The value of the memory address
+will be in the port's MMIO range, and it will not represent physical
+(normal or persistent) memory.
 
-It's only the PCIe root port that is used for XHCI tunneling that has 
-this issue.  This specific problem is NOT for the root port of "any" AMD 
-XHCI controllers.  There is no problem with any of the XHCI controllers
-going into D3hot.
+In v2 [3], the user supplied the MMIO address for the downstream port, but
+per Dan Williams' suggestion [3], the addresses are predetermined and
+the user only picks the error type to inject and the downstream port to
+inject into. In order to inject an error, the user write the error type
+to the error_type file under the einj debugfs directory, then writes any
+integer into one of the files under the cxl directory.
 
-So if a quirk was used in the XHCI driver, it's going to mean examining 
-the topology of the PCI devices to find the right one.  I really don't 
-think this is a scalable way to do it.
+[1]:
+Link: https://lore.kernel.org/linux-acpi/20221206205234.606073-1-Benjamin.Cheatham@amd.com/
+[2]:
+Link: https://lore.kernel.org/linux-cxl/CAJZ5v0hNQUfWViqxbJ5B4JCGJUuHpWWSpqpCFWPNpGuagoFbsQ@mail.gmail.com/T/#t
+[3]:
+Link: https://lore.kernel.org/linux-cxl/20230403151849.43408-1-Benjamin.Cheatham@amd.com/
 
-The big advantage of the way this quirking is done now is that it should 
-mirror how Windows makes the decision.  On Windows the uPEP ACPI driver 
-uses the constraints to orchestrate the desired ACPI states for Modern 
-Standby.  In Linux we can then use the matching driver (amd-pmc) to make 
-the decision.
+Ben Cheatham (3):
+  CXL, PCIE: Add cxl_rcrb_addr file to dport_dev
+  ACPI, APEI, EINJ: Add CXL 1.1 EINJ error type support
+  ACPI, APEI, EINJ: Update EINJ documentation
+
+ Documentation/ABI/testing/sysfs-bus-cxl       |  8 +++
+ .../firmware-guide/acpi/apei/einj.rst         | 26 ++++++++--
+ drivers/acpi/apei/einj.c                      | 26 +++++++++-
+ drivers/cxl/acpi.c                            |  2 +
+ drivers/cxl/core/port.c                       | 50 +++++++++++++++++++
+ drivers/cxl/cxl.h                             |  3 ++
+ include/linux/cxl.h                           | 18 +++++++
+ 7 files changed, 128 insertions(+), 5 deletions(-)
+ create mode 100644 include/linux/cxl.h
+
+-- 
+2.34.1
+
