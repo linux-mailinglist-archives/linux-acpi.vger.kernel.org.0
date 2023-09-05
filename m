@@ -2,147 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27A4A792DED
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Sep 2023 20:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F16B7792EE6
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Sep 2023 21:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240865AbjIESzb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Sep 2023 14:55:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41296 "EHLO
+        id S239060AbjIETbB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Sep 2023 15:31:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240244AbjIESzW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Sep 2023 14:55:22 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DAC310DE
-        for <linux-acpi@vger.kernel.org>; Tue,  5 Sep 2023 11:54:56 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-401b393df02so28812825e9.1
-        for <linux-acpi@vger.kernel.org>; Tue, 05 Sep 2023 11:54:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1693940032; x=1694544832; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UrAFFOP3UXm+2vTLeazN1us+BKa1tnA/xN1dYjhLvHM=;
-        b=MQWbDF4rE965sDGpw+Z8xVUKRHWw3YwzcUYhTRpv6IjQmey/WoA0wHY8VDz3R0Gs38
-         ONt/xesxsRZkGk1oQAbVZ3/Xb76GeT7pfbvfb4yr9zqV/VjJ5K2WB6AlPVPvoo50v0VM
-         k8osQxqM9YtwOMW+1OwNpMmpWUQOpl+gVSuTgLVkExdc/SXvLBOJbw1sLo5ay63Ho/fb
-         YddhACrq0zNDPR8OLrpkxFlpuOCulETe0g8uTQKCP3PPXZZ52MdDVgn9LSEANBfDGdLV
-         nm2HV2DtdgVJ9nmvVVDfsHadpACFPjc9utovdDApP0UYgxae8AB0ZTtfWUDNP5Wf+vfS
-         eyUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693940032; x=1694544832;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UrAFFOP3UXm+2vTLeazN1us+BKa1tnA/xN1dYjhLvHM=;
-        b=D1mi58UlFURN+Dk+jOZEDxMpxJInIWAhO+IDbwFqJtY/wnT40fGbQZA+Sxwu8vyGqX
-         l+orO0zJy5baBZvQe21/0ooxFClE1Luw8U1twQR7lppmRgtwUdCoDTmtQpMx7/T1a3A9
-         R+tZv+hIfqYhB3Ma5JRoqJc6FDtGw6LKGuVwLIxnJsShS77lwfSe1O66zA5Lfqi+Gg0K
-         0Dj6budzVUaXdG6MsxhnX9v9/emjwt+xDaEBe95IRbMUhBZn2++pLdOfA83J18txBV4/
-         n6TVHAHbtYUQ2bzYeMFjOTgBuyJN8DJmdv6aavGA5CCYVGYFY4J3QGSARegMnQPVwl6f
-         uqwQ==
-X-Gm-Message-State: AOJu0Yw43zUiqAPbfcIVz5mm0qkSh4s23eb9L8rpfdZPBBWXvESc5jQH
-        3/QBt1ROgtq7jII7JpcgH32Kbg==
-X-Google-Smtp-Source: AGHT+IG5rvnvzkhR7zSqbm37o4SyQS5DF2Q3QExpMFHirbdRnNeCry1xvOOt3d5Fk7gOho9h35WBqA==
-X-Received: by 2002:a05:600c:11ce:b0:3fe:2011:a7ce with SMTP id b14-20020a05600c11ce00b003fe2011a7cemr453840wmi.6.1693940031710;
-        Tue, 05 Sep 2023 11:53:51 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:334:ac00:7a54:5dbc:6d09:48b7])
-        by smtp.gmail.com with ESMTPSA id 17-20020a05600c249100b003fbc30825fbsm17550010wms.39.2023.09.05.11.53.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Sep 2023 11:53:51 -0700 (PDT)
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Dipen Patel <dipenp@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
-        linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 21/21] gpiolib: remove gpiochip_find()
-Date:   Tue,  5 Sep 2023 20:53:09 +0200
-Message-Id: <20230905185309.131295-22-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230905185309.131295-1-brgl@bgdev.pl>
-References: <20230905185309.131295-1-brgl@bgdev.pl>
+        with ESMTP id S240535AbjIETbB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Sep 2023 15:31:01 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 570A6E5B;
+        Tue,  5 Sep 2023 12:30:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693942244; x=1725478244;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=KcNUXs4+zMxG7TVyRLja8exWrEMSbmgUqcrWWaIjkpE=;
+  b=c3UZSH9aixFOosXXR8zV18RAZhSEQGVmTrAQMDLeRgyCeQg3T7LQmKsW
+   n576apHXX6CBTDzzJ08VaMU1P7jtKQ+JpC4RgyTd4wt4G+v0UZ4/91KFb
+   b3vK0SWZqZpeKsYjQYeaBjjJCT6G9CoZTEqU2ud2BX/v54zULEU56JbZt
+   0zIBx3QHSlNc7EWAOPSdVJIl3ikYijrj8QHRyIOKwA0xUwYccFpb5E4bK
+   B6cFnjivZQxLgC9hCsRH5IGACQ04BDFQ8FLXDQVxOxZGSsWorsbAwIomd
+   0GakQ9s9rMYD6l5HfNkNmtaPCdlurT/qpe3NQrYo7PFLHVhthqMRejRgN
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="379604201"
+X-IronPort-AV: E=Sophos;i="6.02,229,1688454000"; 
+   d="scan'208";a="379604201"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2023 12:30:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="987944191"
+X-IronPort-AV: E=Sophos;i="6.02,229,1688454000"; 
+   d="scan'208";a="987944191"
+Received: from lkp-server02.sh.intel.com (HELO e0b2ea88afd5) ([10.239.97.151])
+  by fmsmga006.fm.intel.com with ESMTP; 05 Sep 2023 12:30:19 -0700
+Received: from kbuild by e0b2ea88afd5 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qdbkf-00020C-0g;
+        Tue, 05 Sep 2023 19:30:17 +0000
+Date:   Wed, 6 Sep 2023 03:29:58 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+        devel@acpica.org, linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge 1/5] include/linux/thermal.h:378:1: error:
+ expected identifier or '(' before '{' token
+Message-ID: <202309060300.8TA9PBXT-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   3013f879e8da5a4cf707cdb0dfa927f89b9374cd
+commit: 6c106aa9e0f7f8be4146c50bea5cd71052bebe3a [1/5] thermal: core: Clean up headers of thermal zone registration functions
+config: loongarch-allnoconfig (https://download.01.org/0day-ci/archive/20230906/202309060300.8TA9PBXT-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230906/202309060300.8TA9PBXT-lkp@intel.com/reproduce)
 
-With all users of gpiochip_find() converted to using gpio_device_find(),
-we can now remove this function from the kernel.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202309060300.8TA9PBXT-lkp@intel.com/
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
----
- drivers/gpio/gpiolib.c      | 22 ----------------------
- include/linux/gpio/driver.h |  3 ---
- 2 files changed, 25 deletions(-)
+All error/warnings (new ones prefixed by >>):
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 90e8c3d8b6f6..bd700fb4871e 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -1081,28 +1081,6 @@ void gpiochip_remove(struct gpio_chip *gc)
- }
- EXPORT_SYMBOL_GPL(gpiochip_remove);
- 
--/*
-- * FIXME: This will be removed soon.
-- *
-- * This function is depracated, don't use.
-- */
--struct gpio_chip *gpiochip_find(void *data,
--				int (*match)(struct gpio_chip *gc,
--					     void *data))
--{
--	struct gpio_device *gdev;
--	struct gpio_chip *gc = NULL;
--
--	gdev = gpio_device_find(data, match);
--	if (gdev) {
--		gc = gdev->chip;
--		gpio_device_put(gdev);
--	}
--
--	return gc;
--}
--EXPORT_SYMBOL_GPL(gpiochip_find);
--
- /**
-  * gpio_device_find() - find a specific GPIO device
-  * @data: data to pass to match function
-diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
-index bb9ec741bfda..7d2bf464478a 100644
---- a/include/linux/gpio/driver.h
-+++ b/include/linux/gpio/driver.h
-@@ -603,9 +603,6 @@ int devm_gpiochip_add_data_with_key(struct device *dev, struct gpio_chip *gc,
- 				    void *data, struct lock_class_key *lock_key,
- 				    struct lock_class_key *request_key);
- 
--struct gpio_chip *gpiochip_find(void *data,
--				int (*match)(struct gpio_chip *gc, void *data));
--
- struct gpio_device *gpio_device_find(void *data,
- 				     int (*match)(struct gpio_chip *gc,
- 						  void *data));
+   In file included from include/acpi/processor.h:11,
+                    from drivers/acpi/acpi_processor.c:22:
+>> include/linux/thermal.h:378:1: error: expected identifier or '(' before '{' token
+     378 | { return ERR_PTR(-ENODEV); }
+         | ^
+>> include/linux/thermal.h:370:43: warning: 'thermal_zone_device_register_with_trips' declared 'static' but never defined [-Wunused-function]
+     370 | static inline struct thermal_zone_device *thermal_zone_device_register_with_trips(
+         |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+vim +378 include/linux/thermal.h
+
+   369	
+ > 370	static inline struct thermal_zone_device *thermal_zone_device_register_with_trips(
+   371						const char *type,
+   372						struct thermal_trip *trips,
+   373						int num_trips, int mask,
+   374						void *devdata,
+   375						struct thermal_zone_device_ops *ops,
+   376						const struct thermal_zone_params *tzp,
+   377						int passive_delay, int polling_delay);
+ > 378	{ return ERR_PTR(-ENODEV); }
+   379	
+
 -- 
-2.39.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
