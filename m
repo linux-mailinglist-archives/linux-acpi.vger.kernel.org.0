@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED518793F81
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Sep 2023 16:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83881793F8D
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Sep 2023 16:52:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241943AbjIFOu5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 Sep 2023 10:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49974 "EHLO
+        id S231553AbjIFOwj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Sep 2023 10:52:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbjIFOu4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Sep 2023 10:50:56 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9759610D0;
-        Wed,  6 Sep 2023 07:50:53 -0700 (PDT)
+        with ESMTP id S229564AbjIFOwj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Sep 2023 10:52:39 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C310C10D0;
+        Wed,  6 Sep 2023 07:52:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694011853; x=1725547853;
+  t=1694011955; x=1725547955;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=HjAh8SMqCXR1Rjl9aKlTDFEP6jadc3qGb5loq/FNe5w=;
-  b=nV2Ae7tMzwJ0UFkb8VXzx4aLELs4XcFC8Tx6esfxmJnKju5I8HCIwGPQ
-   Zh2Pb73DYK9LepwQeEuxE60nANVte35K4BvnyoN0QT4IPsM8kjcq+Yaqw
-   EUuE4vgSFB98ydqIXgNUVs2TQebEoZAhTcJ6Jb89ieQspuXQTd172ZziI
-   fhjvWS4DVcbyhDrgYhHYrWA180MzcXlDflagOdM6+64QMKvubHDnh7/5o
-   F+A015cRogv3hxKWI8fTgg4r239ajwPyOzstDlFHijzru4UAeA7vlCsOU
-   7zj1qQrvzoqTY1U+kVlZsZmmLaTuGGHW9VVXtl/KaNrNzP6T5jGk5PJnV
+  bh=inkf0Vv2sw3e1+dq2vxBlduL5A9wIEDv+hfvFclNOlw=;
+  b=abt4nUVCMuaT/gHOabGR7uBLGZ0hx6cfdAAh8D8N2d11XqJgCK0m2SXQ
+   YNdl7oTLirpqw1iHpfyiV9LR+HWd5GDyah8y3wvJiwCBic5dRf1onkT+J
+   J8JoUJxv9seRFtrqgMIXgCjQKwIRHlFN5FGpuNvQ9VuGWj6VriiQRjVQi
+   T5lFY9ZzAdrQuStBCpO0xcnzoHFwcEFvBkQzCZ+KG/xxxrcUooJuPYZys
+   OVEcfCZexJbrrQctgKVk9L9ztggdjylZWZ54CqIUOrdSBDAbfak/CnVr8
+   Bvr3LLlfDci/Y+nS8yYbek3nyVF/YoI3NWI36/91QZWarktCYxVNFfF/j
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="375986346"
+X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="362116757"
 X-IronPort-AV: E=Sophos;i="6.02,232,1688454000"; 
-   d="scan'208";a="375986346"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 07:50:53 -0700
+   d="scan'208";a="362116757"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 07:52:35 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="831691131"
+X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="735086303"
 X-IronPort-AV: E=Sophos;i="6.02,232,1688454000"; 
-   d="scan'208";a="831691131"
+   d="scan'208";a="735086303"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by FMSMGA003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 07:50:48 -0700
+  by orsmga007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 07:52:29 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qdtrg-006y3r-0f;
-        Wed, 06 Sep 2023 17:50:44 +0300
-Date:   Wed, 6 Sep 2023 17:50:43 +0300
+        id 1qdttJ-006y5B-3D;
+        Wed, 06 Sep 2023 17:52:26 +0300
+Date:   Wed, 6 Sep 2023 17:52:25 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Bartosz Golaszewski <brgl@bgdev.pl>
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
@@ -61,35 +61,65 @@ Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
         linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
         linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH 18/21] gpio: acpi: replace gpiochip_find() with
- gpio_device_find()
-Message-ID: <ZPiRw5fyx3iZQMDx@smile.fi.intel.com>
+Subject: Re: [PATCH 19/21] gpio: swnode: replace gpiochip_find() with
+ gpio_device_find_by_label()
+Message-ID: <ZPiSKTfIU3BSrqTj@smile.fi.intel.com>
 References: <20230905185309.131295-1-brgl@bgdev.pl>
- <20230905185309.131295-19-brgl@bgdev.pl>
+ <20230905185309.131295-20-brgl@bgdev.pl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230905185309.131295-19-brgl@bgdev.pl>
+In-Reply-To: <20230905185309.131295-20-brgl@bgdev.pl>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 05, 2023 at 08:53:06PM +0200, Bartosz Golaszewski wrote:
+On Tue, Sep 05, 2023 at 08:53:07PM +0200, Bartosz Golaszewski wrote:
 > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
 > We're porting all users of gpiochip_find() to using gpio_device_find().
-> Update the ACPI GPIO code.
+> Update the swnode GPIO code.
 
 ...
 
-> -	return gpiochip_get_desc(chip, pin);
-> +	return gpiochip_get_desc(gdev->chip, pin);
+> -static int swnode_gpiochip_match_name(struct gpio_chip *chip, void *data)
+> +static struct gpio_device *swnode_get_gpio_device(struct fwnode_handle *fwnode)
+>  {
+> -	return !strcmp(chip->label, data);
+> -}
+> +	const struct software_node *gdev_node;
+> +	struct gpio_device *gdev;
+>  
+> -static struct gpio_chip *swnode_get_chip(struct fwnode_handle *fwnode)
+> -{
+
+Not sure if you used --patience. Patches might look better.
+
+> -	const struct software_node *chip_node;
+> -	struct gpio_chip *chip;
+> -
+> -	chip_node = to_software_node(fwnode);
+> -	if (!chip_node || !chip_node->name)
+> +	gdev_node = to_software_node(fwnode);
+> +	if (!gdev_node || !gdev_node->name)
+>  		return ERR_PTR(-EINVAL);
+>  
+> -	chip = gpiochip_find((void *)chip_node->name, swnode_gpiochip_match_name);
+> -	return chip ?: ERR_PTR(-EPROBE_DEFER);
+> +	gdev = gpio_device_find_by_label((void *)gdev_node->name);
+> +	return gdev ?: ERR_PTR(-EPROBE_DEFER);
+>  }
+
+...
+
+> -	desc = gpiochip_get_desc(chip, args.args[0]);
+> +	desc = gpiochip_get_desc(gdev->chip, args.args[0]);
 
 gpio_device_get_desc() ?
 
