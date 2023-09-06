@@ -2,122 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A29F793D78
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Sep 2023 15:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6D06793DD9
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Sep 2023 15:38:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233429AbjIFNLi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 Sep 2023 09:11:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35010 "EHLO
+        id S234095AbjIFNiN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Sep 2023 09:38:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjIFNLh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Sep 2023 09:11:37 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2089.outbound.protection.outlook.com [40.107.237.89])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA05410C8;
-        Wed,  6 Sep 2023 06:11:32 -0700 (PDT)
+        with ESMTP id S232937AbjIFNiN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Sep 2023 09:38:13 -0400
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2059.outbound.protection.outlook.com [40.107.212.59])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF4A510E2;
+        Wed,  6 Sep 2023 06:38:07 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kmveC3JiTsrL3E2zg7+0iE+IDR3P2sCXQ+2kp+a/TT0Djc9hRDScHlFUwdS7LQEbty9pHjQnsYLTQSotFAc1lPFTsU7/cGvtheJBpkUEWzeoZOd6dU+7hJNXYowo9LBIGkB2Gowul1O59p43LPkOxZgR9EtLN0YpywftqItYsVdijHqQ3QjDH3G886Nj8DuNvgjd+/ibw7X+K3aWH8H1NardTKLm3NJIDXF71+OXvWMFb3Kc5HwVCFqm7kzN1msP2/jqseCeXzpK8oGtftNjUnkfCLjUjYpaalQa6m/WgxPgdCYkBReXO7U31IVOZ61HB594agG7MorYKWS01Dsl2w==
+ b=YvHxapto0uuJ7A0S+c0RTQjA5qlnznhfd+Jgznt9WiC/TE+WBIFG2MKmtWyq1wVi6OnH5KQ5z2BME2OIPNJSE1HTQBXnzIjwWasZROVHviulnlIyGUP5i6LbSxp3wLybvmAOD7upf7vjN/vswZcbhi1c9rjp5OH8Z8oXUPjeKekjbij8FV8X1yG6FgwXoizrWNw7x/69vsTon03wcA+ukCkNcStgL0xEMQdozF9Eb5ILj7XlwnbKQjAweZTjre0+219IySBnpR5e5I11Nxm/jEMC6zh0GBxZ3/w8wFeuStNk5gNtUYTq3EkD9BaHCa6UQ5iNa9OGGl4J6uu2XWL1RA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wFugSFc5sErIba6EKUJf92SdRg//N8v85O2Lwop+HYU=;
- b=hXAJ+v92/bLZ7lNPTcWUiUSRokitO1vSBMKtTGkKwPikASWeD2gAgxE1MYe0R1cpCe7nzM2Cvpwfi/3iLGxUr/RqBIH4W2suYadRiufjNZY5xVb0VrovxnR53ayCpPGvdndCf80URI1q0aihA3UQdRCPI1cTEklEmETLlRj9J9BG4PYDBCnQMtl3iMcwlKiYAEln795q17VjWY++nX6N5Je9iveK4Z4BQxmRPx/sHeEXmAfbdt7OOlwg2eE5zXDgwlhCnp/+lv3VbRUrdkL3iSnFnGlwgdPAq7ItCy5D2FDuHe29qEAAeEt96VBti5YGBSNOiQhZkFM/0O6S3mPULA==
+ bh=yiK3I6KsWjZamW+5fXpqUxv+E7aQ/vqHMJNAfdIWt+g=;
+ b=Cmos/o5WVJxQg+lwx/ljROxiNWVt2aJueplqWxacQiJqNNQHXjlWcfZksvVaJIqYctEo+l3JmUD+BNogBh6nOL3zHqEGgXFdORAEX8s6jwprzcn88YaWUgGfN6IvLmt9sPiDtQVz3t3j7O6I+ANVg41CbFrcvhxizWBnbQfOPd0krq7p48Bu46nEzLTrtKNgroirFEfsfKTw0shCXqNPvqybv2QyXcxF80EFpTpHHtFncAJpLtHn0QWExW3Xve5h6hx6HZdahk6zqSVPC43fIkYgbUJbWB5RUI08Qc8bffZacRi/8oZnS3KgZ5tVWqZxrp+uo/VLGxKBJVNafi1VKQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wFugSFc5sErIba6EKUJf92SdRg//N8v85O2Lwop+HYU=;
- b=KwREbWS0a/jt04JZP3+C0GFviQEn57b9Ugxi7AOOvrESI0Rt2QS67ecUz+kVrYCVzvdtxFPjh7Tb74zkv3GJ/mvv7GCroizW7XBpiOONFIIL+O/yYa4PRPx4If72zAUjXroo/cy+gqxqzHJnnmWDgUQNWh39jYvo+G5cbnqvKnI=
+ bh=yiK3I6KsWjZamW+5fXpqUxv+E7aQ/vqHMJNAfdIWt+g=;
+ b=CdWhBf/zAc8zvpLDyXjhDwSFG2UL+31biFA3knZWB53TjnsFPfx/j6Juvjgp/w6e5PwcGSnurlN0R1mPQNs+rWHZWjZj5ZNDWsHFdm7pPYDkcf+DJsBJL63IyLgun5IWlZh1Rb85l6EMLFynu+TprKXh6yT+cN6olPSMiQblzXo=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
- by MW6PR12MB7085.namprd12.prod.outlook.com (2603:10b6:303:238::9) with
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by IA1PR12MB8336.namprd12.prod.outlook.com (2603:10b6:208:3fc::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34; Wed, 6 Sep
- 2023 13:11:27 +0000
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::da13:5f6:45:fa40]) by SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::da13:5f6:45:fa40%4]) with mapi id 15.20.6745.030; Wed, 6 Sep 2023
- 13:11:27 +0000
-Date:   Wed, 6 Sep 2023 21:11:04 +0800
-From:   Huang Rui <ray.huang@amd.com>
-To:     "Meng, Li (Jassmine)" <Li.Meng@amd.com>
-Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-        "Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
-        "Sharma, Deepak" <Deepak.Sharma@amd.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
-        "Huang, Shimmer" <Shimmer.Huang@amd.com>,
-        "Yuan, Perry" <Perry.Yuan@amd.com>,
-        "Du, Xiaojian" <Xiaojian.Du@amd.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Borislav Petkov <bp@alien8.de>,
-        "Karny, Wyes" <Wyes.Karny@amd.com>
-Subject: Re: [PATCH V5 2/7] acpi: cppc: Add get the highest performance cppc
- control
-Message-ID: <ZPh6aALLZ9/FTpKX@amd.com>
-References: <20230905015116.2268926-1-li.meng@amd.com>
- <20230905015116.2268926-3-li.meng@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230905015116.2268926-3-li.meng@amd.com>
-X-ClientProxiedBy: TYCP286CA0021.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:263::11) To SJ2PR12MB8690.namprd12.prod.outlook.com
- (2603:10b6:a03:540::10)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33; Wed, 6 Sep
+ 2023 13:38:05 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6745.034; Wed, 6 Sep 2023
+ 13:38:05 +0000
+Message-ID: <29ad9d0b-ccb7-49d4-a712-53bef5c73181@amd.com>
+Date:   Wed, 6 Sep 2023 08:38:02 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 0/3] Avoid PCIe D3 for AMD PCIe root ports
+Content-Language: en-US
+To:     Hans de Goede <hdegoede@redhat.com>, bhelgaas@google.com,
+        rafael@kernel.org, Shyam-sundar.S-k@amd.com
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+References: <20230829171212.156688-1-mario.limonciello@amd.com>
+ <6ce36e6e-726a-69f3-882c-0790d311eee1@redhat.com>
+ <4c80cda2-82e4-4eb3-99c5-f2be3bfa96ed@amd.com>
+ <fbd1369e-1738-3346-19ad-e291da491f12@redhat.com>
+From:   Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <fbd1369e-1738-3346-19ad-e291da491f12@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DS7PR03CA0108.namprd03.prod.outlook.com
+ (2603:10b6:5:3b7::23) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|MW6PR12MB7085:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54c940d3-731a-4eb4-4386-08dbaedac6fb
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|IA1PR12MB8336:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7696b7c-0562-462a-6d3c-08dbaede7fd9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: SOKwQzPJjatuwPcJZNjMmxfkoGYK7FzJ4FlbBv8SDOn0DARzYuOiDKNqZNI6RIIHv4O99ToLmTNe4NtbD0ATncjKx5AKAGe9bjfN0f3O6BNVMjdd+bwIbodFNvxXaeMcUqRbOzE0jIwrg4M+Si1YjchU8CfBNd2UeoYFa6Qtaxj6avBNe40fgOteu1ltAvvNSLKvIrmU/pJOcX+vuKD6zS8slnfAzFd5W6K4rAMo36Akn9IRyR9sJBi/DtVRgkSsjOky0cCMu4FhV9tuLdNjIqN2B9gWvjtcirv025D6mM3H09CV+ThyK/7odQsyIycs9pxQBhlMx4NWThDVkCVWsuSZFDNkDSnZKKkeBSwT0Ozu8NXf/oCCJW05vgU6TAM1OgXDsvOeD3XgmQ5qeesu2+ZFi+3k8HOw2USjQ3AFNTGrx8ceB50r9lYbg1hLVkhWavzXNY5bRFjNhnvVguaTjeZwFcBd8NU8VZzYNfWaKxT3eed2e+00WjatUNm37nPABQWy1xGoO2lv/Abv6mt+vUnQo2pmW62TK73BU6vFG6g7zeHmf0bQ4Beqj6degTvkT8d8lwT31ZEIUkfFwXVFt+9hqP7/UwLzDJPiQxZFBB8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8690.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(39860400002)(376002)(396003)(366004)(1800799009)(451199024)(186009)(38100700002)(36756003)(86362001)(6512007)(6666004)(6506007)(6486002)(478600001)(2906002)(6862004)(4326008)(5660300002)(8936002)(8676002)(41300700001)(966005)(6636002)(66946007)(37006003)(316002)(54906003)(66556008)(66476007)(26005)(2616005)(15583001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 2vl/xFQ5JIsVOBsmJDrr2kLt4o75qaYKgwknMZz1j5wYsXQR+mvproi/GvhqQtJ9Zlevk75kdwSM7kDcLpbZYZM8kKnkzg2mP2j/BseZhcsRSYj7lO1xKFVz/kbWLgloNveHX0AcyeYgAZSa4jV0z3fwfvpV4nsJJoUTX1hQrj9Wgrk0wyBmwKHIbmC8LXgJvfgPW4N4w1jYKQnZLWDINDXoQlE4yIS0fO/TO5DcvjxQ4aSD/36HiIft/g/oJk1kbha3iTH6ygLGlFWYEFANDZdLZX9FuBHM2a5W9AfSMSQbitEz11U8a5/GLtU90P3UltwCFZp/Vfm/1blEx0q3niqzWQ6ruXS8ip97ft2O2fY/NB22nOMMQZA3llduhpqgYBIc77KRX8K9OXLwpgUzdUUA3NsjhQWgZyAl4KiCeSCWw6d485/ZK8TsoZ/Vk/pdXBp/Ya1d4uWVjYVqrUuMgEW4TM380bS0D7nLbldEPoBdDx2xo5Zwf9+Bj8+/xwjOEs/S2BhRDx+qgxx/J6w5AXy66nK+Sd2CgeNdVXtWvOkRzoMoovPvTeRqzYexm/lx+PaEkdLPFrmSf2f6taY5DKoOhk2pBl893AF73Vsha3sGhVd6DiUavuVtCeU3VVOl6k8Q51yxpE/VY8Y0mawSMw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(396003)(376002)(136003)(366004)(186009)(451199024)(1800799009)(41300700001)(38100700002)(86362001)(6666004)(2616005)(83380400001)(478600001)(31696002)(26005)(6512007)(53546011)(6486002)(6506007)(66946007)(36756003)(66476007)(6636002)(2906002)(66556008)(316002)(5660300002)(31686004)(8936002)(8676002)(4326008)(44832011)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?WgXRZEgcBruvzsd3FSaDYLJlhlekvKp2blE920br5teUVSQpLVA0xd+EZcBE?=
- =?us-ascii?Q?iC+QI6LgF7gBFyYKh8Ae3Sn/nCVoY9SAIJ9uWn73yaiNlkR/es8vjZPNDJBb?=
- =?us-ascii?Q?WrKFTGvmbYmcHVcE3YfcH5d11EjPlrNuO2XMGaJASnuyuArb01xO59+DwSwY?=
- =?us-ascii?Q?hCgHS5md5/Gt1OJadBc+hVDJ4VQ/LjiiSpCe3lP3ckJGrt6FQpH1SNJz/ueo?=
- =?us-ascii?Q?AitXIX9XBfFMVm6wJm5NTkK6Iy7sDqVKXqes7NvGDyhgS09lby58AMLKUsJY?=
- =?us-ascii?Q?HpGZluqxnTA3k/L9hWTMjf5J5B0SmKfp8ghZf8oYccOWbrBUnJvg8YIPjhak?=
- =?us-ascii?Q?pOk65StzZSSA0udo0OV2pNVJuQ/G2YwH/WDjGciBMgNUkC2xGO9uuXWWTgJv?=
- =?us-ascii?Q?u6bfKbd9ID5W4Q2w1tI1GT095gydFdS2AuJcsH0Tfxfv81yXNzibF23oKrlW?=
- =?us-ascii?Q?aqI2Jx7vJP2sEDuxPnfTLNBjhYbAg0SUB4F6DCZVIGGVTkNdEBGXX0sekm1Z?=
- =?us-ascii?Q?+ElZliVqRt329x5RKx3mJ/7vd1RUZmUFd6HSDF/Uey3GNSBVX8Xw/OYHJLkL?=
- =?us-ascii?Q?CbO3iSd/8T/AQh4De4eKKz/Y+ZvTBVcIL0qM9YrHOvFDFLyNblLamQMmcGky?=
- =?us-ascii?Q?EIsF5ehfy75FQpklzUg/SqIrHWb4C3DIaEtL5hmcIMnNzkA0EYTGgxBqru3R?=
- =?us-ascii?Q?fVGqa2icNyL6WgJZgkcVsURb7l9yxooNr/2tQx3iE3MzhdxMAk5C3tMc6dgV?=
- =?us-ascii?Q?2ryabq0+LvmC4OLsyzdiujdA6FWd1z4qorE3E2ykWlByAcBv3WTWdmsL7FPq?=
- =?us-ascii?Q?QZlLkvEBBRDF332l57HdDHvz3GKozUTx1oABJJloQuNm16l/4gqrII8oMxBz?=
- =?us-ascii?Q?xlX2kpynWecVPFpJJBK6N1hmgL8kl0eVzuqMipPTVjggUBLYaMagbZFFaZwH?=
- =?us-ascii?Q?cyc+91uWtYQnjBOz8Ol2uksWwPX2ICMcqUrB2YYeXvF5bKo7Q/YpS3Bll/H5?=
- =?us-ascii?Q?9K+7L5UrL3RBORTq1SgsuRi9twe6oojyfOhpzMM3IePwZvlscCWEOA6jumU5?=
- =?us-ascii?Q?koryqOsHyUoYmhRjlt8PiMOk6dSuphd4H+JHTZOnVrny9IEDcJ6BcnNP9Y3J?=
- =?us-ascii?Q?Wew+Ntpek1bU6H6Srxei0nZOP47wt5d+SyBbfvfOo7NdxOs9XJaejUE0YrLt?=
- =?us-ascii?Q?amyfa645i1JAD3wy01suWByQKXdO9vjyrRuZRmNXvvPKCIqlxf8JoLDQg4JI?=
- =?us-ascii?Q?kUzM+Rfkrq4QuKAtW8eD7tGqEBTCUrhUCXImNOBVG1KXTEhw47i8Tru5HOiJ?=
- =?us-ascii?Q?YV9wqzbIbFRbrw7SRWGT5emwA31gIvEIaccEzd8uGSy7s1z6t1CKpvSa8DyV?=
- =?us-ascii?Q?BEqQvql3Irvr8be6AASQrmErdynIx9qWE9D/fsQHCouplaQEVzMcEx2tduQ2?=
- =?us-ascii?Q?29evY0AW7olRjYQPbzt0/xmWabQtyPVzI08CUlrxZvr90PT04ymPtaCHt5f9?=
- =?us-ascii?Q?lUzbnLlyGZLUJEA9HeOZDaJBWj8S5l5DkhWZ9YNjD8Z0RTaj9pJ0CQYk9pzm?=
- =?us-ascii?Q?WMXMkp52HCCeyiRfn0xO8IBHcKUHHa7dYnqwm0gV?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZDVKWEJ1MHBCVVVUNGdVQ1hYK2tidWZQNVZTbVNqQmxZTDBvNUIwNjhtVjBB?=
+ =?utf-8?B?VDlTb1ZOUGVGVGdlMFlMOU5zOGhvV2VLOHBHWm5ROUNWUnJ4ZGVsRFhMMU1S?=
+ =?utf-8?B?Zjl1Q01sbm5uN3Nsa1lvbVNCK1RacWxzZDFod3M5M3I4ZWtuZ1EvZGRKZWlB?=
+ =?utf-8?B?T2tCbmRPSUc3VndlWm5WQ0ZtcFN0VnNlZVNHeDY0dGZETXE0dEJWcXByU25J?=
+ =?utf-8?B?dUJaTXRodUpELzF6aGoxYmxhUGo3a3hGbERvbndTdDAyWW5nQVZHcWpiQjN2?=
+ =?utf-8?B?ZUNKSHV5MnhZaElRb1EyTnY5SnlNOTlMKzlTOUZrdEJpa3VaOUM3TGtjMk1G?=
+ =?utf-8?B?aVhkVlp2OG9wbllISVJSdHVYbnBYS3ZsdWF1bXRBWkk1U0laTHhJbk9oekk3?=
+ =?utf-8?B?b0F5bXBNNndOdkJUc28vazhNTmJXTG9nRFlyRVh0bTk4bERHQTB6U3FuTFJR?=
+ =?utf-8?B?UnoxbFBKbUo4RllaYU1FcjYzZitQWkc4aWZ3MnUvNytSbXlTaldWZHljNGR1?=
+ =?utf-8?B?aWRBY0x3VkFReUdDSll2d2tBS3ZTQmV3bHM5K0ZJdzRCY29pUXNaRU1yN3Rr?=
+ =?utf-8?B?aHJjb0xVS0s1UTV5WUNJalZYR2YxS1Z5b2RvU1NsZVZ1QXJKRXVZVlNQQ3Ux?=
+ =?utf-8?B?dGV1REIxRDFJUS9qbnNtR0pKQnVaQmFueHFORVVSeXlhMUl1OUIvZ0VIMlc0?=
+ =?utf-8?B?eDJFeVBWSm5IaGk3dmtnVHU3YmI0VWh3c3FaTHppT3JWL3pxQUhCZ1dwZ0NH?=
+ =?utf-8?B?S1dFNTdQUkg0M2FYaXV1aTZzNlh3VFdpNkMyelZiVjlQbXJ3TkFQTUdSa1V3?=
+ =?utf-8?B?cXNBYnMvc2dMczJ5MGJBWTIrZkpacWlwUCtsTTE4bHM5c3JtM0sxU0EydGJZ?=
+ =?utf-8?B?RFVPMXdYcFF6WTFOb2ZJbUt3ZEJhSWN6RFJncWtuaHQ4dmhndXJrOGdxMEM0?=
+ =?utf-8?B?dzRCaGRaN3JrZzFiRXpmbmJvZTB3eE5sSWVLcmtWMGpxVzR0K1RFTUFNekNw?=
+ =?utf-8?B?ckpkL0JKU2lPbHFLTzJQMDE0MWoxV2taTE1tYktteTdMeElGeGtSSytCMGRQ?=
+ =?utf-8?B?MU1OSDhJMER4V200cVMyRjZ3ajE1bS9TRkcvM2N3K2hxVXlxWjQ4Mm9tNG1Z?=
+ =?utf-8?B?TTZqRE82OUIyTDZ3b0RrZHZidjd3R3V6QUoyVWE2VXNWUjMrSHA5VlpvejN2?=
+ =?utf-8?B?NnZ4MGdQbGZKOGFFOUt0ZnBWMUJuTCtmbFFBV1lObG02R1BkQWI0M040S0pR?=
+ =?utf-8?B?d01ZMXdqTjU3UzBKaVVxNDgyc2laSDBDTFFCeHBTNDVuZ0ZUYVhpcHNyR21v?=
+ =?utf-8?B?SlplMUcxRFQ5MitUK2NmWGkyTmFWQmVnZTR5bWw2bm45cDNXOXNFbFBCMzM4?=
+ =?utf-8?B?SnA0RVZWWklzNEY0TGttRjBucXYybGZjNGdXTG1aMHgzQng4ekxIL3M3U2Nn?=
+ =?utf-8?B?bklNdmVoQzNKQmF6a2tLTnV2eHBCaVhkbUZjc28wSGpQUTAwU2dXekRJWkhG?=
+ =?utf-8?B?VzJUTFQwSm16YkFMRlFUZFAvRWhiRSt6Q3FHNnJhTXZRdnpYUGYxYjlRV1dk?=
+ =?utf-8?B?RkhjaVNWTURMR2lDckp0eW1TeTVMZ2ZsMkNKZUtiQ1VXY09weWI2bEkxSUpP?=
+ =?utf-8?B?VUNrNDNhVE12L2VDSmc5cE9sWS82OEoxR213TnQwT0xNaUViNEJDZDNiNzlF?=
+ =?utf-8?B?ZmcxQ2tlZ21SZFF4N2xWbnhtQXkxazZjYzZCZUx0bFZRdnpCVWd6d0FrazM2?=
+ =?utf-8?B?UXNDTURGMHg2bUFtakozZ28yaGZaSHhReXZja1NhOFlib3MvZWl1cVFHUkJy?=
+ =?utf-8?B?aHRoWHZ0b2NIcmltSXM5SHNleUhGSStDa1ViYWUxZlQrN3pQUlo5R3dETFJo?=
+ =?utf-8?B?YkxIS3ZWTW9RQmJqT1lGaWJQME5vY21nb3ZCYVRyZHVFeEMzTGVjbWYxeEgy?=
+ =?utf-8?B?TjI0dkFDazAyajFNYk1uck45bjJUZzR4clpXQTRJS2h2dXJzY3VrMHVYUWc0?=
+ =?utf-8?B?QUkyeU9XVFd4MmZwQ0FTcU5pS2Yxb0VETVhRemR2WU81NFVzanU2bFhNWm9q?=
+ =?utf-8?B?R0RQT0FabEtyUXN6SFZUbC9KZlpBNzBlZ1I3czhxNFVYRE1RUkpnQWRlbUlG?=
+ =?utf-8?Q?i5SuZLYBtqErveZ/WbxLXDSyp?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54c940d3-731a-4eb4-4386-08dbaedac6fb
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7696b7c-0562-462a-6d3c-08dbaede7fd9
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 13:11:26.8989
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 13:38:05.5374
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v7PKP8m4O898hE4FNfPg1+TI7lR2KUowY+t/qlFuOGnQU/cYB1n6OtS9yAzxBjRJLKr9DIieDScsDNmPR43YCA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB7085
+X-MS-Exchange-CrossTenant-UserPrincipalName: PTIINVuScTkA1ACA+HEgvjiL2S0c+KwOOHy1zpx5Tv7ECHcz2JkTgcrqvFIR6ER2ZYYzmk62GnESc0/sx91OSQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8336
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
@@ -128,73 +126,39 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 05, 2023 at 09:51:11AM +0800, Meng, Li (Jassmine) wrote:
-> Add support for getting the highest performance to the
-> generic CPPC driver. This enables downstream drivers
-> such as amd-pstate to discover and use these values.
+On 9/6/2023 07:24, Hans de Goede wrote:
 > 
-> Please refer to the ACPI_Spec for details on continuous
-> performance control of CPPC.
+> "XHCI tunneling" is an unfamiliar term for me. Are we talking about a XHCI controller inside a USB4/thunderbold dock here which is connected to the laptop over PCIe tunneling over thunderbolt ?
 > 
-> Signed-off-by: Meng Li <li.meng@amd.com>
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Reviewed-by: Wyes Karny <wyes.karny@amd.com>
-> Link: https://uefi.org/specs/ACPI/6.5/08_Processor_Configuration_and_Control.html?highlight=cppc#cpc-continuous-performance-control
+> Or do you mean the XHCI controller inside the laptop which is connected to a USB4/thunderbolt capable Type-C port which is used when that port is in USB3/USB2 mode ?
+> 
+> As long as the XHCI controller is inside the laptop (and not in the dock), presumably you can identify it by say a set of PCI device-ids of the "tunneling" XHCI controllers on affected AMD platforms. So you could then still call pci_d3cold_disable() from the XHCI driver on only those controllers.
 
-Acked-by: Huang Rui <ray.huang@amd.com>
+XHCI tunneling refers to XHCI over USB4 fabric.   The problem isn't with 
+the XHCI controllers going to D3 - it's with the root ports they are 
+connected to.  And the issue occurs with D3hot.
 
-> ---
->  drivers/acpi/cppc_acpi.c | 13 +++++++++++++
->  include/acpi/cppc_acpi.h |  5 +++++
->  2 files changed, 18 insertions(+)
+An earlier version of the series did do something like this where it was 
+quirks for the PCI IDs for the root ports but it has two problems:
+
+1) It covers too many things.  The same PCI ID is used for a second root 
+port that is unaffected by the issue.  So this means the quirk needs to 
+look at the topology to make sure the right device combination is quirked.
+
+2) It doesn't scale.  I don't have any reason to believe the constraints 
+requirements change which means we'll be adding new quirks with every 
+single new CPU.
+
 > 
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index 7ff269a78c20..ad388a0e8484 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -1154,6 +1154,19 @@ int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf)
->  	return cppc_get_perf(cpunum, NOMINAL_PERF, nominal_perf);
->  }
->  
-> +/**
-> + * cppc_get_highest_perf - Get the highest performance register value.
-> + * @cpunum: CPU from which to get highest performance.
-> + * @highest_perf: Return address.
-> + *
-> + * Return: 0 for success, -EIO otherwise.
-> + */
-> +int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
-> +{
-> +	return cppc_get_perf(cpunum, HIGHEST_PERF, highest_perf);
-> +}
-> +EXPORT_SYMBOL_GPL(cppc_get_highest_perf);
-> +
->  /**
->   * cppc_get_epp_perf - Get the epp register value.
->   * @cpunum: CPU from which to get epp preference value.
-> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-> index 6126c977ece0..c0b69ffe7bdb 100644
-> --- a/include/acpi/cppc_acpi.h
-> +++ b/include/acpi/cppc_acpi.h
-> @@ -139,6 +139,7 @@ struct cppc_cpudata {
->  #ifdef CONFIG_ACPI_CPPC_LIB
->  extern int cppc_get_desired_perf(int cpunum, u64 *desired_perf);
->  extern int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf);
-> +extern int cppc_get_highest_perf(int cpunum, u64 *highest_perf);
->  extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs);
->  extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
->  extern int cppc_set_enable(int cpu, bool enable);
-> @@ -165,6 +166,10 @@ static inline int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf)
->  {
->  	return -ENOTSUPP;
->  }
-> +static inline int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
-> +{
-> +	return -ENOTSUPP;
-> +}
->  static inline int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
->  {
->  	return -ENOTSUPP;
-> -- 
-> 2.34.1
+> Note I'm not saying this is the best solution. I'm just trying to understand what you mean with " the PCIe root port that is used for XHCI tunneling" .
 > 
+> I also see that Rafael has said elsewhere in the thread that he needs to think a bit about how to best handle this ...
+> 
+
+I have done a prototype for your callback proposal, and I've got 
+something working at least for amd-pmc.  It only calls the callback one 
+time rather than at suspend.
+
+Unless I get some feedback from Bjorn that the callback proposal is a 
+bad idea I'll post something later today.
+
