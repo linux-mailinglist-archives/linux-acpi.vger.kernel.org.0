@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7039793E66
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Sep 2023 16:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF699793E72
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Sep 2023 16:13:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241492AbjIFOKl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 Sep 2023 10:10:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40808 "EHLO
+        id S237054AbjIFONf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Sep 2023 10:13:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233888AbjIFOKk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Sep 2023 10:10:40 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 639B51726;
-        Wed,  6 Sep 2023 07:10:27 -0700 (PDT)
+        with ESMTP id S231316AbjIFONe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Sep 2023 10:13:34 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18813CF;
+        Wed,  6 Sep 2023 07:13:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694009427; x=1725545427;
+  t=1694009611; x=1725545611;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=F7bl2h3DX3KJUesLeL2e/fpx9L5jnQCY/nK4NgE/LN8=;
-  b=g3TfX+F5c9xs045JV9UkPGwPcOsj25+u2hqakhIJSlX5rsF/Xnj+2PbX
-   GFOUeqZxs1Omg3vIbqQoir+ARc9lysQGgTbH1lgVFKuzr2wIE3LQF5Dkl
-   LVPw/mEiJWCmdAR4HCu/aP9PXgiWO/3JSdpmPo/OaqRJcAyB+/2dFLsy4
-   fJ+zadFSrAZsoP2M8E4LWE7t6OvVY9G7h+fg3Z8loUTRNpqBR2VRVWPRh
-   gKhXFt91pM8pzQFuyWtfVd3rHmUWpC0yGL3FdxgGlD8yWVFGfkUdypJ9K
-   EQfqvoL8PafH9Q1XCCFqblVCAkFqmy9VY3mDMUPokCMjvYcGcMiit++O3
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="441049792"
+  bh=IDnUPIn2SR7PPT+yx17NZwjwnlF2gGHn7F4nZ5dZw5o=;
+  b=d1PJl3crDFtjg+1l7gfERvFHqUrCbx19ZjEckQ7CMzt1W12sz++PRDWM
+   HQ9yltzbi41BuxsDLn/sUzBWpKtw5XMkmppEQV9/EsI9cI6UnTSZ10W8x
+   O7yUn4wc83oT1LDepdX8z6JOQkuCMMkZobpMUZh34pLxNlgqp8Zlp1rOd
+   WbsPc+TptO73CGiD9ULLVVLeCddNaVLVIOXqSyfhIEv0MAMkVnRx0YkAB
+   X7T4IxnUZiwgzDB0m8Szsm4oMnYUXVXpcQIp6SEabcxhFXuFm3TTdKkIW
+   Rq/zbYA67XIvFMu9CAF81vW0+ntZUMYApfLdi0Avj3GUFSJHAbuTTxiQf
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="362106876"
 X-IronPort-AV: E=Sophos;i="6.02,232,1688454000"; 
-   d="scan'208";a="441049792"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 07:10:26 -0700
+   d="scan'208";a="362106876"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 07:13:29 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="735068521"
+X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="831679120"
 X-IronPort-AV: E=Sophos;i="6.02,232,1688454000"; 
-   d="scan'208";a="735068521"
+   d="scan'208";a="831679120"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 07:10:21 -0700
+  by FMSMGA003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 07:13:24 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qdtEY-006xYP-12;
-        Wed, 06 Sep 2023 17:10:18 +0300
-Date:   Wed, 6 Sep 2023 17:10:18 +0300
+        id 1qdtHU-006xaj-2B;
+        Wed, 06 Sep 2023 17:13:20 +0300
+Date:   Wed, 6 Sep 2023 17:13:20 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Bartosz Golaszewski <brgl@bgdev.pl>
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
@@ -61,93 +61,55 @@ Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
         linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
         linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH 02/21] gpiolib: provide gpio_device_find()
-Message-ID: <ZPiISpLoVx35PuYc@smile.fi.intel.com>
+Subject: Re: [PATCH 03/21] gpiolib: provide gpio_device_find_by_label()
+Message-ID: <ZPiJAHj3T9yhWXRG@smile.fi.intel.com>
 References: <20230905185309.131295-1-brgl@bgdev.pl>
- <20230905185309.131295-3-brgl@bgdev.pl>
+ <20230905185309.131295-4-brgl@bgdev.pl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230905185309.131295-3-brgl@bgdev.pl>
+In-Reply-To: <20230905185309.131295-4-brgl@bgdev.pl>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 05, 2023 at 08:52:50PM +0200, Bartosz Golaszewski wrote:
+On Tue, Sep 05, 2023 at 08:52:51PM +0200, Bartosz Golaszewski wrote:
 > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> gpiochip_find() is wrong and its kernel doc is misleading as the
-> function doesn't return a reference to the gpio_chip but just a raw
-> pointer. The chip itself is not guaranteed to stay alive, in fact it can
-> be deleted at any point. Also: other than GPIO drivers themselves,
-> nobody else has any business accessing gpio_chip structs.
-> 
-> Provide a new gpio_device_find() function that returns a real reference
-> to the opaque gpio_device structure that is guaranteed to stay alive for
-> as long as there are active users of it.
+> By far the most common way of looking up GPIO devices is using their
+> label. Provide a helpers for that to avoid every user implementing their
+> own matching function.
 
 ...
 
 > +/**
-> + * gpio_device_find() - find a specific GPIO device
-> + * @data: data to pass to match function
-> + * @match: Callback function to check gpio_chip
-
+> + * gpio_device_find_by_label() - wrapper around gpio_device_find() finding the
+> + *                               GPIO device by its backing chip's label
+> + * @label: Label to lookup
+> + *
 > + * Returns:
-> + * New reference to struct gpio_device.
+> + * Reference to the GPIO device or NULL. Reference must be released with
 
-I believe this is wrong location of the Return section.
-AFAIU how kernel doc uses section markers, this entire description becomes
-a Return(s) section. Have you tried to render man/html/pdf and see this?
+> + * ``gpio_device_put``.
 
-> + * Similar to bus_find_device(). It returns a reference to a gpio_device as
-> + * determined by a user supplied @match callback. The callback should return
-> + * 0 if the device doesn't match and non-zero if it does. If the callback
-> + * returns non-zero, this function will return to the caller and not iterate
-> + * over any more gpio_devices.
-> + *
-> + * The callback takes the GPIO chip structure as argument. During the execution
-> + * of the callback function the chip is protected from being freed. TODO: This
-> + * actually has yet to be implemented.
-> + *
-> + * If the function returns non-NULL, the returned reference must be freed by
-> + * the caller using gpio_device_put().
+Out of a sudden different format to refer the function.
+Should be gpio_device_put(), so kernel-doc makes a hyperlink.
+
 > + */
-> +struct gpio_device *gpio_device_find(void *data,
 
-> +				     int (*match)(struct gpio_chip *gc,
-> +						  void *data))
-
-One line?
-Or maybe a type for it? (gpio_match_fn, for example)
-
-> +{
-> +	struct gpio_device *gdev;
-> +
-> +	guard(spinlock_irqsave)(&gpio_lock);
-> +
-> +	list_for_each_entry(gdev, &gpio_devices, list) {
-> +		if (gdev->chip && match(gdev->chip, data))
-> +			return gpio_device_get(gdev);
-> +	}
-> +
-> +	return NULL;
-> +}
+So, please, render all your kernel docs and look at the end result.
 
 ...
 
-> +struct gpio_device *gpio_device_find(void *data,
-> +				     int (*match)(struct gpio_chip *gc,
-> +						  void *data));
+> +	return gpio_device_find((void *)label, gpio_chip_match_by_label);
 
-Ditto.
-
+This casting is a bit awkward... But I have no good proposal for a change.
 
 -- 
 With Best Regards,
