@@ -2,120 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6D06793DD9
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Sep 2023 15:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3A12793E15
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Sep 2023 15:53:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234095AbjIFNiN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 Sep 2023 09:38:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38064 "EHLO
+        id S241045AbjIFNxa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Sep 2023 09:53:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232937AbjIFNiN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Sep 2023 09:38:13 -0400
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2059.outbound.protection.outlook.com [40.107.212.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF4A510E2;
-        Wed,  6 Sep 2023 06:38:07 -0700 (PDT)
+        with ESMTP id S234925AbjIFNx0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Sep 2023 09:53:26 -0400
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2061.outbound.protection.outlook.com [40.107.244.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36887CF1;
+        Wed,  6 Sep 2023 06:53:21 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YvHxapto0uuJ7A0S+c0RTQjA5qlnznhfd+Jgznt9WiC/TE+WBIFG2MKmtWyq1wVi6OnH5KQ5z2BME2OIPNJSE1HTQBXnzIjwWasZROVHviulnlIyGUP5i6LbSxp3wLybvmAOD7upf7vjN/vswZcbhi1c9rjp5OH8Z8oXUPjeKekjbij8FV8X1yG6FgwXoizrWNw7x/69vsTon03wcA+ukCkNcStgL0xEMQdozF9Eb5ILj7XlwnbKQjAweZTjre0+219IySBnpR5e5I11Nxm/jEMC6zh0GBxZ3/w8wFeuStNk5gNtUYTq3EkD9BaHCa6UQ5iNa9OGGl4J6uu2XWL1RA==
+ b=j7ylXZhNkEDmWkHNovnpux6ipbSqYqsCFfg/RHswCPb4U95B9L7cOs5ojt4QFplOQQgBEKZL7gryNUBJ5igP3fOdFAarrYlqVO/aHW6o8cW9iisCtij17HZWcucVzWfa6FCSR5WumAhErVKVpFDPw4uAydRSjiLask6DrzpHN8w2NbnltchQV+Hzdt6H9jg9ssowKw9V4NtlpiHCxVLGPJdOzsB3y7PIh4XlowcM2HnezXN6ZsqHWANbfgEvhZ8RkF/Ulgg6H8WZMtyx1d0wYROVK0Vl44Ku7q+p+tRmBZ9OvTwGGcUAmyZ/x/cy7kSmpLWk54DTwMGnLuELL3dOAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yiK3I6KsWjZamW+5fXpqUxv+E7aQ/vqHMJNAfdIWt+g=;
- b=Cmos/o5WVJxQg+lwx/ljROxiNWVt2aJueplqWxacQiJqNNQHXjlWcfZksvVaJIqYctEo+l3JmUD+BNogBh6nOL3zHqEGgXFdORAEX8s6jwprzcn88YaWUgGfN6IvLmt9sPiDtQVz3t3j7O6I+ANVg41CbFrcvhxizWBnbQfOPd0krq7p48Bu46nEzLTrtKNgroirFEfsfKTw0shCXqNPvqybv2QyXcxF80EFpTpHHtFncAJpLtHn0QWExW3Xve5h6hx6HZdahk6zqSVPC43fIkYgbUJbWB5RUI08Qc8bffZacRi/8oZnS3KgZ5tVWqZxrp+uo/VLGxKBJVNafi1VKQ==
+ bh=vY+cqapC5puSfIS6Z1/epU6HztXckU9v/uA1d3/Do+0=;
+ b=iExY+fdt6buouFxzPIc5uPt3qQFY4VcuF58MfTf3tQW71OhmtQaZOzVXap9Br3R9J5hDDwklEAdTReE6+06C/DjWEQV6eaq4pTsiX70WlL8Nu7zek033l305iz0thSBP7b/F62CW+Zg7UkjvdWyLPSXa/3c8EqzNv78Fsxo9TJurOY5GxrMYXQSTu96/2qGYP9H1Izk8GxIxk5ZQ56pG/AoPEjIpWcu1LWA1qUUCKR8UtUoDT1pYhmxxN0VIw7KHXxozaJhzulvkUtMFCmfYEtRVSTn+jDGaUu+bHRxEOwrW9mn62p5Z7i3glUfe+BXd4Sa+z0gZQmLYtxnIsWdODA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yiK3I6KsWjZamW+5fXpqUxv+E7aQ/vqHMJNAfdIWt+g=;
- b=CdWhBf/zAc8zvpLDyXjhDwSFG2UL+31biFA3knZWB53TjnsFPfx/j6Juvjgp/w6e5PwcGSnurlN0R1mPQNs+rWHZWjZj5ZNDWsHFdm7pPYDkcf+DJsBJL63IyLgun5IWlZh1Rb85l6EMLFynu+TprKXh6yT+cN6olPSMiQblzXo=
+ bh=vY+cqapC5puSfIS6Z1/epU6HztXckU9v/uA1d3/Do+0=;
+ b=yGYqNIcmGB4+y53uUbZUaIVaL+lrUK2+8PSLZNUnz3eSTGWEUpsA88aU6SBwbRDvCgm7BsuwyoiSMu3HcHnJGeuiEkIy3JZ4dRmyPGpF0uanpkuaWN8+nRXiiqr/A06dvghSIeO/8P+yDsoFi7jkwMWQyHy8xdiZR1XO/o9MHKg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by IA1PR12MB8336.namprd12.prod.outlook.com (2603:10b6:208:3fc::22) with
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
+ by SA1PR12MB6894.namprd12.prod.outlook.com (2603:10b6:806:24d::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33; Wed, 6 Sep
- 2023 13:38:05 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6745.034; Wed, 6 Sep 2023
- 13:38:05 +0000
-Message-ID: <29ad9d0b-ccb7-49d4-a712-53bef5c73181@amd.com>
-Date:   Wed, 6 Sep 2023 08:38:02 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 0/3] Avoid PCIe D3 for AMD PCIe root ports
-Content-Language: en-US
-To:     Hans de Goede <hdegoede@redhat.com>, bhelgaas@google.com,
-        rafael@kernel.org, Shyam-sundar.S-k@amd.com
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-References: <20230829171212.156688-1-mario.limonciello@amd.com>
- <6ce36e6e-726a-69f3-882c-0790d311eee1@redhat.com>
- <4c80cda2-82e4-4eb3-99c5-f2be3bfa96ed@amd.com>
- <fbd1369e-1738-3346-19ad-e291da491f12@redhat.com>
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <fbd1369e-1738-3346-19ad-e291da491f12@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DS7PR03CA0108.namprd03.prod.outlook.com
- (2603:10b6:5:3b7::23) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34; Wed, 6 Sep
+ 2023 13:53:18 +0000
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::da13:5f6:45:fa40]) by SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::da13:5f6:45:fa40%4]) with mapi id 15.20.6745.030; Wed, 6 Sep 2023
+ 13:53:18 +0000
+Date:   Wed, 6 Sep 2023 21:52:51 +0800
+From:   Huang Rui <ray.huang@amd.com>
+To:     "Meng, Li (Jassmine)" <Li.Meng@amd.com>
+Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+        "Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
+        "Sharma, Deepak" <Deepak.Sharma@amd.com>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        "Huang, Shimmer" <Shimmer.Huang@amd.com>,
+        "Yuan, Perry" <Perry.Yuan@amd.com>,
+        "Du, Xiaojian" <Xiaojian.Du@amd.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH V5 3/7] cpufreq: amd-pstate: Enable amd-pstate preferred
+ core supporting.
+Message-ID: <ZPiEM+gusure7vKy@amd.com>
+References: <20230905015116.2268926-1-li.meng@amd.com>
+ <20230905015116.2268926-4-li.meng@amd.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230905015116.2268926-4-li.meng@amd.com>
+X-ClientProxiedBy: SI2PR06CA0018.apcprd06.prod.outlook.com
+ (2603:1096:4:186::8) To SJ2PR12MB8690.namprd12.prod.outlook.com
+ (2603:10b6:a03:540::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|IA1PR12MB8336:EE_
-X-MS-Office365-Filtering-Correlation-Id: a7696b7c-0562-462a-6d3c-08dbaede7fd9
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|SA1PR12MB6894:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e168289-3d91-404c-b053-08dbaee09fb3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2vl/xFQ5JIsVOBsmJDrr2kLt4o75qaYKgwknMZz1j5wYsXQR+mvproi/GvhqQtJ9Zlevk75kdwSM7kDcLpbZYZM8kKnkzg2mP2j/BseZhcsRSYj7lO1xKFVz/kbWLgloNveHX0AcyeYgAZSa4jV0z3fwfvpV4nsJJoUTX1hQrj9Wgrk0wyBmwKHIbmC8LXgJvfgPW4N4w1jYKQnZLWDINDXoQlE4yIS0fO/TO5DcvjxQ4aSD/36HiIft/g/oJk1kbha3iTH6ygLGlFWYEFANDZdLZX9FuBHM2a5W9AfSMSQbitEz11U8a5/GLtU90P3UltwCFZp/Vfm/1blEx0q3niqzWQ6ruXS8ip97ft2O2fY/NB22nOMMQZA3llduhpqgYBIc77KRX8K9OXLwpgUzdUUA3NsjhQWgZyAl4KiCeSCWw6d485/ZK8TsoZ/Vk/pdXBp/Ya1d4uWVjYVqrUuMgEW4TM380bS0D7nLbldEPoBdDx2xo5Zwf9+Bj8+/xwjOEs/S2BhRDx+qgxx/J6w5AXy66nK+Sd2CgeNdVXtWvOkRzoMoovPvTeRqzYexm/lx+PaEkdLPFrmSf2f6taY5DKoOhk2pBl893AF73Vsha3sGhVd6DiUavuVtCeU3VVOl6k8Q51yxpE/VY8Y0mawSMw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(396003)(376002)(136003)(366004)(186009)(451199024)(1800799009)(41300700001)(38100700002)(86362001)(6666004)(2616005)(83380400001)(478600001)(31696002)(26005)(6512007)(53546011)(6486002)(6506007)(66946007)(36756003)(66476007)(6636002)(2906002)(66556008)(316002)(5660300002)(31686004)(8936002)(8676002)(4326008)(44832011)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: Zlhjt9baw/7YNEeHvLPdntG/XP+mSgjbck8H6Ta1Vps1HsmcLqDhqdtBxID2btCekyIiGGWquQck+DUNrMRKCXYRGoEGHsyzu8oi38Y7at3KVFKPqHMB1fnpgLSXkkY11noYeM/W4uA7t3ZkBKbsxvkG4lbRWa4WriegyfWeuljsO9sUJPBjmYu0hF9OIakqBJ4ftgrgm7zSmRzPN0SkEicr43M11Gj6WBvn6rrKhxRiuV5OiJ1LEKB1TaAhT9YAXc+j1XIPHVWYKd32pMI+aCBOdq8BP8Qo1ZaXKb+yxCls/JHptMMZikfXD4z8n52XOuUz9pJ8fRp9+6deqwMRsMMPjrSesUnMs76nACklfHATILECwWjSbqxqEx+OyW4EJ+IRaHVnLaP1dcSpS770LAzSomny8kB7sAQhozeWSIK+8a+BSOXs5bUB4Nrz7WK9xwPjA9GyN2khS6fHCg06pRqLikNLtAfGDPPNKGn4ylK7DsLrYbtwm+rpMO9IYfwTaxJCfmYTe0ZRMAz1ImXrYNGkmzM2bGpjyc1Vr54pwj5UABPv1ZddNEYbaicBmzxg20KqKlzozSjbGPVMgzvPJydY3rrucOdUvnx/xzl4uoI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8690.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(366004)(136003)(376002)(396003)(1800799009)(186009)(451199024)(6862004)(8676002)(8936002)(2616005)(4326008)(41300700001)(26005)(5660300002)(54906003)(83380400001)(2906002)(6666004)(478600001)(316002)(6636002)(6512007)(6506007)(6486002)(37006003)(66476007)(66556008)(36756003)(86362001)(38100700002)(66946007)(67856001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZDVKWEJ1MHBCVVVUNGdVQ1hYK2tidWZQNVZTbVNqQmxZTDBvNUIwNjhtVjBB?=
- =?utf-8?B?VDlTb1ZOUGVGVGdlMFlMOU5zOGhvV2VLOHBHWm5ROUNWUnJ4ZGVsRFhMMU1S?=
- =?utf-8?B?Zjl1Q01sbm5uN3Nsa1lvbVNCK1RacWxzZDFod3M5M3I4ZWtuZ1EvZGRKZWlB?=
- =?utf-8?B?T2tCbmRPSUc3VndlWm5WQ0ZtcFN0VnNlZVNHeDY0dGZETXE0dEJWcXByU25J?=
- =?utf-8?B?dUJaTXRodUpELzF6aGoxYmxhUGo3a3hGbERvbndTdDAyWW5nQVZHcWpiQjN2?=
- =?utf-8?B?ZUNKSHV5MnhZaElRb1EyTnY5SnlNOTlMKzlTOUZrdEJpa3VaOUM3TGtjMk1G?=
- =?utf-8?B?aVhkVlp2OG9wbllISVJSdHVYbnBYS3ZsdWF1bXRBWkk1U0laTHhJbk9oekk3?=
- =?utf-8?B?b0F5bXBNNndOdkJUc28vazhNTmJXTG9nRFlyRVh0bTk4bERHQTB6U3FuTFJR?=
- =?utf-8?B?UnoxbFBKbUo4RllaYU1FcjYzZitQWkc4aWZ3MnUvNytSbXlTaldWZHljNGR1?=
- =?utf-8?B?aWRBY0x3VkFReUdDSll2d2tBS3ZTQmV3bHM5K0ZJdzRCY29pUXNaRU1yN3Rr?=
- =?utf-8?B?aHJjb0xVS0s1UTV5WUNJalZYR2YxS1Z5b2RvU1NsZVZ1QXJKRXVZVlNQQ3Ux?=
- =?utf-8?B?dGV1REIxRDFJUS9qbnNtR0pKQnVaQmFueHFORVVSeXlhMUl1OUIvZ0VIMlc0?=
- =?utf-8?B?eDJFeVBWSm5IaGk3dmtnVHU3YmI0VWh3c3FaTHppT3JWL3pxQUhCZ1dwZ0NH?=
- =?utf-8?B?S1dFNTdQUkg0M2FYaXV1aTZzNlh3VFdpNkMyelZiVjlQbXJ3TkFQTUdSa1V3?=
- =?utf-8?B?cXNBYnMvc2dMczJ5MGJBWTIrZkpacWlwUCtsTTE4bHM5c3JtM0sxU0EydGJZ?=
- =?utf-8?B?RFVPMXdYcFF6WTFOb2ZJbUt3ZEJhSWN6RFJncWtuaHQ4dmhndXJrOGdxMEM0?=
- =?utf-8?B?dzRCaGRaN3JrZzFiRXpmbmJvZTB3eE5sSWVLcmtWMGpxVzR0K1RFTUFNekNw?=
- =?utf-8?B?ckpkL0JKU2lPbHFLTzJQMDE0MWoxV2taTE1tYktteTdMeElGeGtSSytCMGRQ?=
- =?utf-8?B?MU1OSDhJMER4V200cVMyRjZ3ajE1bS9TRkcvM2N3K2hxVXlxWjQ4Mm9tNG1Z?=
- =?utf-8?B?TTZqRE82OUIyTDZ3b0RrZHZidjd3R3V6QUoyVWE2VXNWUjMrSHA5VlpvejN2?=
- =?utf-8?B?NnZ4MGdQbGZKOGFFOUt0ZnBWMUJuTCtmbFFBV1lObG02R1BkQWI0M040S0pR?=
- =?utf-8?B?d01ZMXdqTjU3UzBKaVVxNDgyc2laSDBDTFFCeHBTNDVuZ0ZUYVhpcHNyR21v?=
- =?utf-8?B?SlplMUcxRFQ5MitUK2NmWGkyTmFWQmVnZTR5bWw2bm45cDNXOXNFbFBCMzM4?=
- =?utf-8?B?SnA0RVZWWklzNEY0TGttRjBucXYybGZjNGdXTG1aMHgzQng4ekxIL3M3U2Nn?=
- =?utf-8?B?bklNdmVoQzNKQmF6a2tLTnV2eHBCaVhkbUZjc28wSGpQUTAwU2dXekRJWkhG?=
- =?utf-8?B?VzJUTFQwSm16YkFMRlFUZFAvRWhiRSt6Q3FHNnJhTXZRdnpYUGYxYjlRV1dk?=
- =?utf-8?B?RkhjaVNWTURMR2lDckp0eW1TeTVMZ2ZsMkNKZUtiQ1VXY09weWI2bEkxSUpP?=
- =?utf-8?B?VUNrNDNhVE12L2VDSmc5cE9sWS82OEoxR213TnQwT0xNaUViNEJDZDNiNzlF?=
- =?utf-8?B?ZmcxQ2tlZ21SZFF4N2xWbnhtQXkxazZjYzZCZUx0bFZRdnpCVWd6d0FrazM2?=
- =?utf-8?B?UXNDTURGMHg2bUFtakozZ28yaGZaSHhReXZja1NhOFlib3MvZWl1cVFHUkJy?=
- =?utf-8?B?aHRoWHZ0b2NIcmltSXM5SHNleUhGSStDa1ViYWUxZlQrN3pQUlo5R3dETFJo?=
- =?utf-8?B?YkxIS3ZWTW9RQmJqT1lGaWJQME5vY21nb3ZCYVRyZHVFeEMzTGVjbWYxeEgy?=
- =?utf-8?B?TjI0dkFDazAyajFNYk1uck45bjJUZzR4clpXQTRJS2h2dXJzY3VrMHVYUWc0?=
- =?utf-8?B?QUkyeU9XVFd4MmZwQ0FTcU5pS2Yxb0VETVhRemR2WU81NFVzanU2bFhNWm9q?=
- =?utf-8?B?R0RQT0FabEtyUXN6SFZUbC9KZlpBNzBlZ1I3czhxNFVYRE1RUkpnQWRlbUlG?=
- =?utf-8?Q?i5SuZLYBtqErveZ/WbxLXDSyp?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Mdxo8f5UccGXk4zI6MYL2FHt3VNoySU+auBEshomS/LZEReT3oH90u6ZBCAH?=
+ =?us-ascii?Q?l41Ae2YGv5a6XO3jrXSM7UoueGioCbQQbXf6dGUZjZj1mElFVaHQDPmhWUbt?=
+ =?us-ascii?Q?tzD06xjxHwFDplvtj/g9r8zX7XhLwPiUlQ0tkGjS4xbuAVA5ZBCITIEX3UIv?=
+ =?us-ascii?Q?InWIxFhAQ7m6HNlPdeQLcmJxzW8WvMTM46OdBhoz7ypj25/3tEhYuRi+ndfE?=
+ =?us-ascii?Q?9xDGBqD2A4LAtnyXXzmLMg8IX6h0ijVOQSDFzkGz36sPHyY3T29mBhcgIrGq?=
+ =?us-ascii?Q?5XKmkyLIAHMh4HGFcrP0hokEb3Hs+VsPR1Gt19I/wXMAYw2662mMXhmb57K/?=
+ =?us-ascii?Q?ICA6qXhcNhfmhmFr73mTmc+1bM6T2xh5qnoT9b/VfvlA+L2QL2+SOqghNcd9?=
+ =?us-ascii?Q?VxGoMC3zZtiKr0AIxUB4Xt7L1MR4/Ev0dqp1UPdIJxX8PEhNboRmCxlEfPXO?=
+ =?us-ascii?Q?k5MwxySmxty5fWRST/ZkzOFfPWnbiYRqsRvYGrqxAnWGUAM+5Lk7Wcc/gh2d?=
+ =?us-ascii?Q?LSDoQusEhVz+SjfcOJMBtbvVD/mjChxYhzJVIVxseJ0jkmkhz+7ztHU4XinV?=
+ =?us-ascii?Q?asyWHTfhl6ApPJn6m9N/kazKkBpdIBpjK2vjcsVYMEyY0mR6hY66fz6maPG3?=
+ =?us-ascii?Q?q/xeLhvDEuk6mTmfcXBYqmzqpzI5mpIXnFkA20NCZTSmg1EJW49oGwlBab+g?=
+ =?us-ascii?Q?XE3+h0FbCErnmISClEVDSnJDoQFGQDLS8X9u7R7UeJpfRfx/EFpRjOkVBQ33?=
+ =?us-ascii?Q?MKL6BXnZZdNZdNEGAI/azOEkoDW/1KFTnQ+2VtO0xn+CJAwoEwO+pcGhHp/L?=
+ =?us-ascii?Q?ySLU3QgU+YFz+MJnaCAmaC8RLPNGU6lPSO9bpiBfM2KYX14xyfpqHOkO9Hcd?=
+ =?us-ascii?Q?Q/8awxrK+jptrrrJDYzwHSvkjp3vwgdWbbcibYEpR+RTKimHVzVSC62rtyI8?=
+ =?us-ascii?Q?dL0OG6TYv8x+0du7luzkd9ij2fAKG99hVjNEY+/tG3adv0AksbfgI2w3NV3J?=
+ =?us-ascii?Q?wvYCn0Qr0DkukDrHdDgFZyQXNiv/z/Lp5pADxOsIW/taCcO8pOynkxL5njC5?=
+ =?us-ascii?Q?G+gG3mEg4Vc61ptLPngrvOhiT+ph0HP1vP0U+6H0BvW3G42RS0AjnoIvrgNY?=
+ =?us-ascii?Q?K1GoiulSyWHKRDDoE9YnSnX4UyklKtLsHHpeBX0roB+yEfDIQdLaMJKPifSi?=
+ =?us-ascii?Q?81J4toTTIBa3sP3jAqEFpl7xGcRB6HLaKuPL9aTZdgQwCriOXaon9BMeTcoQ?=
+ =?us-ascii?Q?z3/Tk0DW8LTqsL5OE6fYRkkUE4V+J2aoXFM51EoMH0HfGHMeJzncpjPO8APS?=
+ =?us-ascii?Q?EEVjh4PLLZ7qaX4OTZWlawkuiHTxykP2XXvVc3dfH3PezwDxFv0sbQRfBwzO?=
+ =?us-ascii?Q?6GcFof23q7NMNy8EK1KN9KO561MoUlJvQQhmn0VzejgjoHruArfA5f6P7Jtu?=
+ =?us-ascii?Q?cLzOtwqEHtrIxaYx3YlbQb8ZIuMdmUy0TKlu1UHYvkN0prSedfA6ADHQ9ntY?=
+ =?us-ascii?Q?cSo11vqSSwN6RFEkIaIKkYh5XR1fbPU/q9GCzvLDEJP25Mv2ibOpNwBisWCe?=
+ =?us-ascii?Q?QHUu0+2OM1D4QYmolWutGr8WGDi/BOM3SfCeZo1l?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7696b7c-0562-462a-6d3c-08dbaede7fd9
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e168289-3d91-404c-b053-08dbaee09fb3
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 13:38:05.5374
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 13:53:18.0081
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PTIINVuScTkA1ACA+HEgvjiL2S0c+KwOOHy1zpx5Tv7ECHcz2JkTgcrqvFIR6ER2ZYYzmk62GnESc0/sx91OSQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8336
+X-MS-Exchange-CrossTenant-UserPrincipalName: IP9nzkZyyOLBQdrhgjf6OLtm3j9jH3NPled2M176cgRSMnbUt8ESF3Zktll86/eyv1S1V85/MhN3ey+vn3FHBw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6894
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
@@ -126,39 +127,279 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 9/6/2023 07:24, Hans de Goede wrote:
+On Tue, Sep 05, 2023 at 09:51:12AM +0800, Meng, Li (Jassmine) wrote:
+> amd-pstate driver utilizes the functions and data structures
+> provided by the ITMT architecture to enable the scheduler to
+> favor scheduling on cores which can be get a higher frequency
+> with lower voltage. We call it amd-pstate preferrred core.
 > 
-> "XHCI tunneling" is an unfamiliar term for me. Are we talking about a XHCI controller inside a USB4/thunderbold dock here which is connected to the laptop over PCIe tunneling over thunderbolt ?
+> Here sched_set_itmt_core_prio() is called to set priorities and
+> sched_set_itmt_support() is called to enable ITMT feature.
+> amd-pstate driver uses the highest performance value to indicate
+> the priority of CPU. The higher value has a higher priority.
 > 
-> Or do you mean the XHCI controller inside the laptop which is connected to a USB4/thunderbolt capable Type-C port which is used when that port is in USB3/USB2 mode ?
+> The initial core rankings are set up by amd-pstate when the
+> system boots.
 > 
-> As long as the XHCI controller is inside the laptop (and not in the dock), presumably you can identify it by say a set of PCI device-ids of the "tunneling" XHCI controllers on affected AMD platforms. So you could then still call pci_d3cold_disable() from the XHCI driver on only those controllers.
-
-XHCI tunneling refers to XHCI over USB4 fabric.   The problem isn't with 
-the XHCI controllers going to D3 - it's with the root ports they are 
-connected to.  And the issue occurs with D3hot.
-
-An earlier version of the series did do something like this where it was 
-quirks for the PCI IDs for the root ports but it has two problems:
-
-1) It covers too many things.  The same PCI ID is used for a second root 
-port that is unaffected by the issue.  So this means the quirk needs to 
-look at the topology to make sure the right device combination is quirked.
-
-2) It doesn't scale.  I don't have any reason to believe the constraints 
-requirements change which means we'll be adding new quirks with every 
-single new CPU.
-
+> Add device attribute for hardware preferred core. It will check
+> if the processor and power firmware support preferred core
+> feature.
 > 
-> Note I'm not saying this is the best solution. I'm just trying to understand what you mean with " the PCIe root port that is used for XHCI tunneling" .
+> Add device attribute for preferred core. Only when hardware
+> supports preferred core and user set `enabled` in early parameter,
+> it can be set to enabled.
 > 
-> I also see that Rafael has said elsewhere in the thread that he needs to think a bit about how to best handle this ...
+> Add one new early parameter `disable` to allow user to disable
+> the preferred core.
 > 
+> Signed-off-by: Perry Yuan <Perry.Yuan@amd.com>
+> Co-developed-by: Perry Yuan <Perry.Yuan@amd.com>
+> Signed-off-by: Meng Li <li.meng@amd.com>
+> Co-developed-by: Meng Li <li.meng@amd.com>
+> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  drivers/cpufreq/amd-pstate.c | 131 ++++++++++++++++++++++++++++++-----
+>  1 file changed, 115 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+> index 9a1e194d5cf8..454eb6e789e7 100644
+> --- a/drivers/cpufreq/amd-pstate.c
+> +++ b/drivers/cpufreq/amd-pstate.c
+> @@ -37,6 +37,7 @@
+>  #include <linux/uaccess.h>
+>  #include <linux/static_call.h>
+>  #include <linux/amd-pstate.h>
+> +#include <linux/topology.h>
+>  
+>  #include <acpi/processor.h>
+>  #include <acpi/cppc_acpi.h>
+> @@ -49,6 +50,8 @@
+>  
+>  #define AMD_PSTATE_TRANSITION_LATENCY	20000
+>  #define AMD_PSTATE_TRANSITION_DELAY	1000
+> +#define AMD_PSTATE_PREFCORE_THRESHOLD	166
+> +#define AMD_PSTATE_MAX_CPPC_PERF	255
+>  
+>  /*
+>   * TODO: We need more time to fine tune processors with shared memory solution
+> @@ -65,6 +68,12 @@ static struct cpufreq_driver amd_pstate_epp_driver;
+>  static int cppc_state = AMD_PSTATE_UNDEFINED;
+>  static bool cppc_enabled;
+>  
+> +/*HW preferred Core featue is supported*/
+> +static bool hw_prefcore = true;
+> +
+> +/*Preferred Core featue is supported*/
+> +static bool prefcore = true;
+> +
+>  /*
+>   * AMD Energy Preference Performance (EPP)
+>   * The EPP is used in the CCLK DPM controller to drive
+> @@ -290,23 +299,21 @@ static inline int amd_pstate_enable(bool enable)
+>  static int pstate_init_perf(struct amd_cpudata *cpudata)
+>  {
+>  	u64 cap1;
+> -	u32 highest_perf;
+>  
+>  	int ret = rdmsrl_safe_on_cpu(cpudata->cpu, MSR_AMD_CPPC_CAP1,
+>  				     &cap1);
+>  	if (ret)
+>  		return ret;
+>  
+> -	/*
+> -	 * TODO: Introduce AMD specific power feature.
+> -	 *
+> -	 * CPPC entry doesn't indicate the highest performance in some ASICs.
+> +	/* For platforms that do not support the preferred core feature, the
+> +	 * highest_pef may be configured with 166 or 255, to avoid max frequency
+> +	 * calculated wrongly. we take the AMD_CPPC_HIGHEST_PERF(cap1) value as
+> +	 * the default max perf.
+>  	 */
+> -	highest_perf = amd_get_highest_perf();
+> -	if (highest_perf > AMD_CPPC_HIGHEST_PERF(cap1))
+> -		highest_perf = AMD_CPPC_HIGHEST_PERF(cap1);
+> -
+> -	WRITE_ONCE(cpudata->highest_perf, highest_perf);
+> +	if (prefcore)
+> +		WRITE_ONCE(cpudata->highest_perf, AMD_PSTATE_PREFCORE_THRESHOLD);
+> +	else
+> +		WRITE_ONCE(cpudata->highest_perf, AMD_CPPC_HIGHEST_PERF(cap1));
+>  
+>  	WRITE_ONCE(cpudata->nominal_perf, AMD_CPPC_NOMINAL_PERF(cap1));
+>  	WRITE_ONCE(cpudata->lowest_nonlinear_perf, AMD_CPPC_LOWNONLIN_PERF(cap1));
+> @@ -318,17 +325,15 @@ static int pstate_init_perf(struct amd_cpudata *cpudata)
+>  static int cppc_init_perf(struct amd_cpudata *cpudata)
+>  {
+>  	struct cppc_perf_caps cppc_perf;
+> -	u32 highest_perf;
+>  
+>  	int ret = cppc_get_perf_caps(cpudata->cpu, &cppc_perf);
+>  	if (ret)
+>  		return ret;
+>  
+> -	highest_perf = amd_get_highest_perf();
+> -	if (highest_perf > cppc_perf.highest_perf)
+> -		highest_perf = cppc_perf.highest_perf;
+> -
+> -	WRITE_ONCE(cpudata->highest_perf, highest_perf);
+> +	if (prefcore)
+> +		WRITE_ONCE(cpudata->highest_perf, AMD_PSTATE_PREFCORE_THRESHOLD);
+> +	else
+> +		WRITE_ONCE(cpudata->highest_perf, cppc_perf.highest_perf);
+>  
+>  	WRITE_ONCE(cpudata->nominal_perf, cppc_perf.nominal_perf);
+>  	WRITE_ONCE(cpudata->lowest_nonlinear_perf,
+> @@ -676,6 +681,73 @@ static void amd_perf_ctl_reset(unsigned int cpu)
+>  	wrmsrl_on_cpu(cpu, MSR_AMD_PERF_CTL, 0);
+>  }
+>  
+> +/*
+> + * Set amd-pstate preferred core enable can't be done directly from cpufreq callbacks
+> + * due to locking, so queue the work for later.
+> + */
+> +static void amd_pstste_sched_prefcore_workfn(struct work_struct *work)
+> +{
+> +	sched_set_itmt_support();
+> +}
+> +static DECLARE_WORK(sched_prefcore_work, amd_pstste_sched_prefcore_workfn);
+> +
+> +/*
+> + * Get the highest performance register value.
+> + * @cpu: CPU from which to get highest performance.
+> + * @highest_perf: Return address.
+> + *
+> + * Return: 0 for success, -EIO otherwise.
+> + */
+> +static int amd_pstate_get_highest_perf(int cpu, u64 *highest_perf)
+> +{
+> +	int ret;
+> +
+> +	if (boot_cpu_has(X86_FEATURE_CPPC)) {
+> +		u64 cap1;
+> +
+> +		ret = rdmsrl_safe_on_cpu(cpu, MSR_AMD_CPPC_CAP1, &cap1);
+> +		if (ret)
+> +			return ret;
+> +		WRITE_ONCE(*highest_perf, AMD_CPPC_HIGHEST_PERF(cap1));
+> +	} else {
+> +		ret = cppc_get_highest_perf(cpu, highest_perf);
+> +	}
+> +
+> +	return (ret);
+> +}
+> +
+> +static void amd_pstate_init_prefcore(void)
+> +{
+> +	int cpu, ret;
+> +	u64 highest_perf;
+> +
+> +	if (!prefcore)
+> +		return;
+> +
+> +	for_each_online_cpu(cpu) {
+> +		ret = amd_pstate_get_highest_perf(cpu, &highest_perf);
+> +		if (ret)
+> +			break;
+> +
+> +		sched_set_itmt_core_prio(highest_perf, cpu);
+> +
+> +		/* check if CPPC preferred core feature is enabled*/
+> +		if (highest_perf == AMD_PSTATE_MAX_CPPC_PERF) {
+> +			hw_prefcore = false;
+> +			prefcore = false;
 
-I have done a prototype for your callback proposal, and I've got 
-something working at least for amd-pmc.  It only calls the callback one 
-time rather than at suspend.
+I think you should use prefcore which embeds into cpudata structure instead
+of global variable. Here, actually, you walked through all online cpus, the
+last cpu's status will overwrite the previous one.
 
-Unless I get some feedback from Bjorn that the callback proposal is a 
-bad idea I'll post something later today.
+> +			return;
+> +		}
+> +	}
+> +
+> +	/*
+> +	 * This code can be run during CPU online under the
+> +	 * CPU hotplug locks, so sched_set_amd_prefcore_support()
+> +	 * cannot be called from here.  Queue up a work item
+> +	 * to invoke it.
+> +	 */
+> +	schedule_work(&sched_prefcore_work);
+> +}
+> +
+>  static int amd_pstate_cpu_init(struct cpufreq_policy *policy)
+>  {
+>  	int min_freq, max_freq, nominal_freq, lowest_nonlinear_freq, ret;
+> @@ -1037,6 +1109,18 @@ static ssize_t status_store(struct device *a, struct device_attribute *b,
+>  	return ret < 0 ? ret : count;
+>  }
+>  
+> +static ssize_t hw_prefcore_show(struct device *dev,
+> +				struct device_attribute *attr, char *buf)
+> +{
+> +	return sysfs_emit(buf, "%s\n", hw_prefcore ? "supported" : "unsupported");
+> +}
 
+Is there any requirement from user space (cpupower or other tool) to query
+the capacity at runtime?  In fact, we can simplify the codes that use a
+print in the kernel to let user know whether current cpu supports prefcore
+in hardware side.
+
+Thanks,
+Ray
+
+> +
+> +static ssize_t prefcore_show(struct device *dev,
+> +			     struct device_attribute *attr, char *buf)
+> +{
+> +	return sysfs_emit(buf, "%s\n", prefcore ? "enabled" : "disabled");
+> +}
+> +
+>  cpufreq_freq_attr_ro(amd_pstate_max_freq);
+>  cpufreq_freq_attr_ro(amd_pstate_lowest_nonlinear_freq);
+>  
+> @@ -1044,6 +1128,8 @@ cpufreq_freq_attr_ro(amd_pstate_highest_perf);
+>  cpufreq_freq_attr_rw(energy_performance_preference);
+>  cpufreq_freq_attr_ro(energy_performance_available_preferences);
+>  static DEVICE_ATTR_RW(status);
+> +static DEVICE_ATTR_RO(hw_prefcore);
+> +static DEVICE_ATTR_RO(prefcore);
+>  
+>  static struct freq_attr *amd_pstate_attr[] = {
+>  	&amd_pstate_max_freq,
+> @@ -1063,6 +1149,7 @@ static struct freq_attr *amd_pstate_epp_attr[] = {
+>  
+>  static struct attribute *pstate_global_attributes[] = {
+>  	&dev_attr_status.attr,
+> +	&dev_attr_prefcore.attr,
+>  	NULL
+>  };
+>  
+> @@ -1506,6 +1593,8 @@ static int __init amd_pstate_init(void)
+>  		}
+>  	}
+>  
+> +	amd_pstate_init_prefcore();
+> +
+>  	return ret;
+>  
+>  global_attr_free:
+> @@ -1527,7 +1616,17 @@ static int __init amd_pstate_param(char *str)
+>  
+>  	return amd_pstate_set_driver(mode_idx);
+>  }
+> +
+> +static int __init amd_prefcore_param(char *str)
+> +{
+> +	if (!strcmp(str, "disable"))
+> +		prefcore = false;
+> +
+> +	return 0;
+> +}
+> +
+>  early_param("amd_pstate", amd_pstate_param);
+> +early_param("amd_prefcore", amd_prefcore_param);
+>  
+>  MODULE_AUTHOR("Huang Rui <ray.huang@amd.com>");
+>  MODULE_DESCRIPTION("AMD Processor P-state Frequency Driver");
+> -- 
+> 2.34.1
+> 
