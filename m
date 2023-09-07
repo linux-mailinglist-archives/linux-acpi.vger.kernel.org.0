@@ -2,302 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44B7D797E06
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 23:39:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 137A0797E08
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 23:40:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235277AbjIGVjw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Sep 2023 17:39:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35608 "EHLO
+        id S236616AbjIGVkV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Sep 2023 17:40:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238633AbjIGVju (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 17:39:50 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 622991BD2
-        for <linux-acpi@vger.kernel.org>; Thu,  7 Sep 2023 14:39:45 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99c93638322so293369766b.1
-        for <linux-acpi@vger.kernel.org>; Thu, 07 Sep 2023 14:39:45 -0700 (PDT)
+        with ESMTP id S238633AbjIGVkU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 17:40:20 -0400
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 408B3B4
+        for <linux-acpi@vger.kernel.org>; Thu,  7 Sep 2023 14:40:16 -0700 (PDT)
+Received: by mail-il1-x12a.google.com with SMTP id e9e14a558f8ab-34ca1aadcccso5891365ab.3
+        for <linux-acpi@vger.kernel.org>; Thu, 07 Sep 2023 14:40:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1694122784; x=1694727584; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RUsPVEm9vqSHnjAIkCxOqtiaWXrdTX4yAR2rjyQGs5c=;
-        b=QgbPS/MOXwCaJPxp1kl/Arr/Fzd2hQkmdOUyMG7bGlk7nwjM8ctIAgIWLOrFlxixEs
-         GodnS+RBkxAs8FVt15DN4P5hTQrBpuTAVt6aACYEmlyFpaF+BLDlODoTVinoz5gK7z5U
-         /ZkHqPC/5kTwna9QvBN7+bacN+pz4Q9tZQi4A=
+        d=chromium.org; s=google; t=1694122815; x=1694727615; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uuNfNRXcT/k9V+ptR/yNdUXnw9b7b9R/vB+EyNk6U1Q=;
+        b=DUcnESjB2G4a+r+kZyaMIL95itY3jFk9Xf2wUH31Wsb1CWuNuPD5M/TeOL/9MsS/Mn
+         fXDSD7la8pGixY+KDfBy9uawuatiDHbuPm03RI2uQMrEjGoeizcLIwJDF+/4ZPnKjfgy
+         VwR0caEPZOy1ONn6sfKEGK0JbfqKfdCpr/ItQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694122784; x=1694727584;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RUsPVEm9vqSHnjAIkCxOqtiaWXrdTX4yAR2rjyQGs5c=;
-        b=IAapTTtmbNoqoVSjTiH1fnRSx+iyVTRGuIF1yQTXkkFmZBTpLyEegXi4LxQAZp5FDM
-         L3GgeMk4QemjEWCq3Bmu20xutSVw4rJhG/06tZ12mqCaLFhxZvsCbw9YYV8re00k+1D7
-         MbE8jAghgjEyKZ0BlLY70h+O1ILlrkA+Ld7056IFhWCuBAy/No6RdhRPHpCUwrCRAU34
-         bUaI2V2zQdTD+9PIFkj1u0NgHCjBWYfB8a7J0eyfkgeTmXPSuT/5JJNpDicLUyzUYTvj
-         9LNxsTu0FoR8M5bzl5ksz5DOUH8YxwZvC4t0Q8l4EdbUNoLy1gRtvixj++w3y+B9tumv
-         1u2w==
-X-Gm-Message-State: AOJu0YwUFzU++eHkk/Kfqh3LFMV8OUFeNSnMS9tn/f6PHE2xA8rWoXUk
-        FjFDapy40hkw8RSINYFftJHAUtmur9k2KR2C9xuHAA==
-X-Google-Smtp-Source: AGHT+IG9HkF6tjvfcyYQ9aK3TCmIpEMo5frW8roeQ/C24x9BzOzK0WYfUUFR+RLFNjMBTKyWsDxPvOYg16MHOC3hF/0=
-X-Received: by 2002:a17:907:97d2:b0:9a9:d7fd:caf2 with SMTP id
- js18-20020a17090797d200b009a9d7fdcaf2mr3942086ejc.38.1694122783644; Thu, 07
- Sep 2023 14:39:43 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230830231758.2561402-1-sjg@chromium.org> <20230830231758.2561402-3-sjg@chromium.org>
- <CAMj1kXG5-aqoOtKdPFEdm=_5SdvgUTOhcDOBP1zdARAvKphJtg@mail.gmail.com>
- <CAL_JsqLx0KnXxFc8mFyT_RmA2qeBEutMXj_3nKo_g==cuSeYuQ@mail.gmail.com>
- <CAPnjgZ1U+Gy0Q_Sc63p0ixkWF9iJEEBLhV8-N9-sh7OGNy-OmQ@mail.gmail.com>
- <CAMj1kXG9vM0haSOu19j7ujQCBEN6CBeXVAH96nm+gixt9FmMrA@mail.gmail.com>
- <CAPnjgZ1oGF0Ni3RhK4fv6mJk40YjqyFVJxt6FfS9AW2rkcs9iA@mail.gmail.com>
- <CAMj1kXEZ4fDvbtgXKjF+L7si-=C-5E0XcjutoEF8pU9a-BGN-g@mail.gmail.com>
- <CAPnjgZ0vv+s00xvY2FqP+Fxb12tHuVWg-nwyWTrvuG+Mo4PaWg@mail.gmail.com>
- <CAMj1kXHGpCt8qkd6XYQF8mMdivQkTnEWjv6NzsFK=+N72LAn=Q@mail.gmail.com>
- <CAPnjgZ1vBaXfBa+FWvASi15=Py0DLbEK5XsRHLrJc02K2Yr_RQ@mail.gmail.com>
- <CAMj1kXFjVPwnu226R8bHbo0i0LZ7jQE+vLPNQa6cvrCYqGD+YA@mail.gmail.com>
- <CAPnjgZ1fVJE=ar_rB_So+vjkOZ_pDjaO5wwPn3pMKe=n3MmBeg@mail.gmail.com> <CAMj1kXF0J+eUC3BgCmf_ZNdpuH7gxYTUup8_AkfLEx0Co51LjQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXF0J+eUC3BgCmf_ZNdpuH7gxYTUup8_AkfLEx0Co51LjQ@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1694122815; x=1694727615;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uuNfNRXcT/k9V+ptR/yNdUXnw9b7b9R/vB+EyNk6U1Q=;
+        b=S41CyzQy8xpxW+gaNik0SXzMarta2gQsmOch5gqT8SHeiY/ogGW7PlDwtUJtMHIvBo
+         zt6S3BNXFK5xoAPjQcmOGBcUQh0lmffoqLeuDYOg3rMZDRlSRY8Hz+32vS0fZI3+4t1m
+         xvt6OfTdgQFI0wzfVdiS0AkEQ8jIAlta1+vYlsHfwKSRnzAvwNE9VYbStUdsaK4Y0ZZM
+         RrLHLdk95TOkiyweUyAINo2YMxDAhmSHKzhcSD+k58gZ4wsrpfQdwUu03zPbf93vlwes
+         DrUgDiGunU8AXXraP3hnG1O/GJquAmrV2ryZ0nuDpe4N8EzA/Vkok7IqaGA6wzhGRNL/
+         5pNA==
+X-Gm-Message-State: AOJu0YzAMKsFGiNEoS98QOMXU43L9/7tup705Wx9ZLkzrDsV8j10Fabe
+        o18cWnyzl5A7Fi/A5ABphQEohQ==
+X-Google-Smtp-Source: AGHT+IHDLp8Ggcfk51qBwQHePnX3O5h7/52QV2/g5gnYYMU/kivj6AJyv0nmeNnWNBadoPNLcyCjng==
+X-Received: by 2002:a92:d44c:0:b0:349:8a8b:70ca with SMTP id r12-20020a92d44c000000b003498a8b70camr1055691ilm.14.1694122815649;
+        Thu, 07 Sep 2023 14:40:15 -0700 (PDT)
+Received: from sjg1.lan (c-73-243-118-188.hsd1.co.comcast.net. [73.243.118.188])
+        by smtp.gmail.com with ESMTPSA id x14-20020a92d30e000000b00348edca2abesm72006ila.47.2023.09.07.14.40.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Sep 2023 14:40:15 -0700 (PDT)
 From:   Simon Glass <sjg@chromium.org>
-Date:   Thu, 7 Sep 2023 15:39:25 -0600
-Message-ID: <CAPnjgZ28+eT4ULUPnxcthJef_bi=bfFT93YJYQBT2q65Qm7qGQ@mail.gmail.com>
-Subject: Re: [PATCH v5 3/4] schemas: Add some common reserved-memory usages
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Rob Herring <robh@kernel.org>,
-        Devicetree Discuss <devicetree@vger.kernel.org>,
-        Maximilian Brune <maximilian.brune@9elements.com>,
-        ron minnich <rminnich@gmail.com>,
-        Tom Rini <trini@konsulko.com>,
-        Dhaval Sharma <dhaval@rivosinc.com>,
+To:     devicetree@vger.kernel.org
+Cc:     Dhaval Sharma <dhaval@rivosinc.com>, Guo Dong <guo.dong@intel.com>,
         U-Boot Mailing List <u-boot@lists.denx.de>,
-        Mark Rutland <mark.rutland@arm.com>,
         Yunhui Cui <cuiyunhui@bytedance.com>,
-        linux-acpi@vger.kernel.org, Gua Guo <gua.guo@intel.com>,
+        Chiu Chasel <chasel.chiu@intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-acpi@vger.kernel.org, Rob Herring <robh@kernel.org>,
+        Maximilian Brune <maximilian.brune@9elements.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Tom Rini <trini@konsulko.com>,
         Lean Sheng Tan <sheng.tan@9elements.com>,
-        Guo Dong <guo.dong@intel.com>,
-        lkml <linux-kernel@vger.kernel.org>,
-        Chiu Chasel <chasel.chiu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-9.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_SPF_WL
-        autolearn=no autolearn_force=no version=3.4.6
+        Gua Guo <gua.guo@intel.com>, ron minnich <rminnich@gmail.com>,
+        Simon Glass <sjg@chromium.org>
+Subject: [PATCH v6 1/2] schemas: Add some common reserved-memory usages
+Date:   Thu,  7 Sep 2023 15:40:10 -0600
+Message-ID: <20230907214012.74978-1-sjg@chromium.org>
+X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Ard,
+It is common to split firmware into 'Platform Init', which does the
+initial hardware setup and a "Payload" which selects the OS to be booted.
+Thus an handover interface is required between these two pieces.
 
-On Thu, 7 Sept 2023 at 10:19, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Thu, 7 Sept 2023 at 17:57, Simon Glass <sjg@chromium.org> wrote:
-> >
-> > Hi Ard,
-> >
-> > On Thu, 7 Sept 2023 at 09:07, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > On Thu, 7 Sept 2023 at 16:50, Simon Glass <sjg@chromium.org> wrote:
-> > > >
-> > > > Hi Ard,
-> > > >
-> > > > On Thu, 7 Sept 2023 at 08:12, Ard Biesheuvel <ardb@kernel.org> wrot=
-e:
-> > > > >
-> > > > > On Thu, 7 Sept 2023 at 15:56, Simon Glass <sjg@chromium.org> wrot=
-e:
-> > > > > >
-> > > > > > Hi Ard,
-> > > > > >
-> > > > > > On Thu, 7 Sept 2023 at 07:31, Ard Biesheuvel <ardb@kernel.org> =
-wrote:
-> > > > > > >
-> ...
-> > > > > > >
-> > > > > > > I'm happy to help flesh this out, but you still have not prov=
-ided us
-> > > > > > > with an actual use case, so I can only draw from my own exper=
-ience
-> > > > > > > putting together firmware for virtual and physical ARM machin=
-es.
-> > > > > >
-> > > > > > I did explain that this is needed when Tianocore is on both sid=
-es of
-> > > > > > the interface, since Platform Init places some things in memory=
- and
-> > > > > > the Payload needs to preserve them there, and/or know where the=
-y are.
-> > > > > >
-> > > > > > I think the problem might be that you don't agree with that, bu=
-t it
-> > > > > > seems to be a fact, so I am not sure how I can alter it.
-> > > > > >
-> > > > > > Please can you clearly explain which part of the use case you a=
-re missing.
-> > > > > >
-> > > > >
-> > > > > 'Tianocore on both sides of the interface' means that Tianocore r=
-uns
-> > > > > as the platform init code, and uses a bespoke DT based protocol t=
-o
-> > > > > launch another instance of Tianocore as the payload, right?
-> > > >
-> > > > Not another instance, no. Just the other half of Tianocore. The fir=
-st
-> > > > half does platform init and the second half does the loading of the
-> > > > OS.
-> > > >
-> > >
-> > > That doesn't make any sense to me.
-> > >
-> > > > >
-> > > > > Tianocore/EDK2 already implements methods to reinvoke itself if n=
-eeded
-> > > > > (e.g., during a firmware update), and does so by launching a new =
-DXE
-> > > > > core. So the boot sequence looks like
-> > > > >
-> > > > > SEC -> PEI -> DXE -> BDS -> app that invokes UpdateCapsule() -> D=
-XE ->
-> > > > > firmware update
-> > > > >
-> > > > > So please elaborate on how this Tianocore on both sides of the
-> > > > > interface is put together when it uses this DT based handover. We
-> > > > > really need a better understanding of this in order to design a D=
-T
-> > > > > binding that meets its needs.
-> > > >
-> > > > Are you familiar with building Tianocore as a coreboot payload, for
-> > > > example? That shows Tianocore running as just the Payload, with
-> > > > coreboot doing the platform init. So the use case I am talking abou=
-t
-> > > > is similar to that.
-> > > >
-> > >
-> > > Yes I am familiar with that, and it is a completely different thing.
-> >
-> > Right, but that is my use case.
-> >
->
-> OK. You alluded to Tianocore <-> Tianocore being your use case, which
-> is why I kept asking for clarification, as using a DT with this
-> binding seems unusual at the very least.
+This aims to provide an small schema addition for the memory mapping
+needed to keep these two pieces working together well.
 
-Nevertheless, that is the goal.
+Signed-off-by: Simon Glass <sjg@chromium.org>
+---
 
->
-> So coreboot does the platform init, and then hands over to Tianocore.
->
-> I take it we are not talking about x86 here, so there are no Intel FSP
-> blobs that may have dependencies on Tianocore/EDK2 pieces, right? So
-> there are no UEFI semantics in the memory descriptions that coreboot
-> provides to Tianocore.
->
-> So coreboot provides information to TIanocore about
-> - the platform topology (DT as usual)
-> - DRAM memory banks
-> - memory reservations
-> - secure firmware services perhaps?
-> - anything else?
+Changes in v6:
+- Drop mention of UEFI
+- Use compatible strings instead of node names
 
-Please don't widen the discussion as we are having enough trouble as
-it is. Let's focus on the memory reservations.
+Changes in v5:
+- Drop the memory-map node (should have done that in v4)
+- Tidy up schema a bit
 
->
->
-> > >
-> > > As i explained before, there is already prior art for this in
-> > > Tianocore, i.e., launching a Tianocore build based on a DT descriptio=
-n
-> > > of the platform, including /memory and /reserved-memory nodes.
-> >
-> > By prior art do you mean code, or an existing binding? In either case,
-> > can you please point me to it? Is this a generic binding used on x86
-> > as well, or just for ARM?
-> >
-> > My goal here is to augment the binding.
-> >
->
-> No I mean code.
->
-> There is
->
-> https://github.com/tianocore/edk2/tree/master/EmbeddedPkg/Drivers/FdtClie=
-ntDxe
->
-> which encapsulates the DT received from the previous boot stage, and
-> exposes it as a DXE protocol.
->
-> There are other drivers that depend on this protocol, e.g., to
-> discover additional memory nodes, virtio-mmio drivers and PCI host
-> bridges.
->
-> https://github.com/tianocore/edk2/tree/master/OvmfPkg/Fdt
+Changes in v4:
+- Make use of the reserved-memory node instead of creating a new one
 
-That looks like Tianocore internals rather than a binding, so far as I
-can tell. I do need a binding.
+Changes in v3:
+- Reword commit message again
+- cc a lot more people, from the FFI patch
+- Split out the attributes into the /memory nodes
 
->
-> The bindings used are the ones documented in the Linux kernel tree -
-> no ad-hoc bindings are being used as far as I know.
->
-> But the point I was making before re prior art was really about using
-> existing bindings rather than inventing new ones. Since we are now
-> talking about augmenting /reserved-memory, I think we're already on
-> the same page in this regard (with the caveat that the EDK2 code does
-> not actually honour /reserved-memory at this point, but this is
-> because none of the platforms it is being used on today uses that
-> node)
+Changes in v2:
+- Reword commit message
 
-OK I'll try that patch again with compatible strings instead of node names[=
-1]
+ .../reserved-memory/common-reserved.yaml      | 71 +++++++++++++++++++
+ 1 file changed, 71 insertions(+)
+ create mode 100644 dtschema/schemas/reserved-memory/common-reserved.yaml
 
->
-> > >
-> > > I argued that Tianocore never consumes memory reservations with UEFI
-> > > semantics, given that it supplants whatever UEFI functionality the
-> > > previous stage may have provided. But it shouldn't step on the code
-> > > and data regions used by the previous stage if it is still running in
-> > > the background (e.g., OS at EL1 and PSCI at EL2 on ARM)
-> > >
-> > > So this brings me back to the things I proposed in my previous reply:
-> > > - memory reservations should be described in detail so the consumer
-> > > knows what to do with it
-> >
-> > Yes I can add more detail, if that is all that is needed. But we seem
-> > to still not be aligned on the goal.
-> >
-> >
->
-> I do think we're converging, actually - it is just taking me some time
-> to get a clear mental picture of how this will be used.
->
-> > > - memory reservations should have attributes that describe how the
-> > > memory may be used if not for the described purpose
-> > >
-> > > I still don't see a reason for things like runtime-code and
-> > > runtime-data etc based on the above. If stage N describes the memory
-> > > it occupies itself as system memory, it should reserve it as well if
-> > > it needs to be preserved after stage N+1 has taken over, so perhaps i=
-t
-> > > should be described as a discardable memory reservation but I don't
-> > > think it necessarily needs a type in that case.
-> >
-> > Well if you can find another way to do this in the DT, that is fine.
-> >
->
-> It will all be under /reserved-memory, as far as I understand. We just
-> need to get to the right level of abstraction.
+diff --git a/dtschema/schemas/reserved-memory/common-reserved.yaml b/dtschema/schemas/reserved-memory/common-reserved.yaml
+new file mode 100644
+index 0000000..4889f59
+--- /dev/null
++++ b/dtschema/schemas/reserved-memory/common-reserved.yaml
+@@ -0,0 +1,71 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/reserved-memory/common-reserved.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Common memory reservations
++
++description: |
++  Specifies that the reserved memory region can be used for the purpose
++  indicated by its compatible string.
++
++  Clients may reuse this reserved memory if they understand what it is for,
++  subject to the notes below.
++
++maintainers:
++  - Simon Glass <sjg@chromium.org>
++
++allOf:
++  - $ref: reserved-memory.yaml
++
++properties:
++  compatible:
++    description: |
++      This describes some common memory reservations:
++
++         acpi-reclaim: Contains ACPI tables; memory may be reclaimed when the
++           tables are no-longer needed
++         acpi-nvs: Contains ACPI Non-volatile-storage data; memory may be
++           reclaimed when the tables are no-longer needed
++         boot-code: Contains code used for booting; memory may be reclaimed by
++           the OS when it is running
++         boot-code: Contains data used for booting; memory may be reclaimed by
++           the OS when it is running
++         runtime-code: Contains code used for interacting with the system when
++           running; memory may be reclaimed if this code is not called
++         runtime-data: Contains data used for interacting with the system when
++           running; memory may be reclaimed if the runtime code is not used
++    enum:
++      - acpi-reclaim
++      - acpi-nvs
++      - boot-code
++      - boot-data
++      - runtime-code
++      - runtime-data
++
++  reg:
++    description: region of memory that is reserved for the purpose indicated
++      by the compatible string.
++
++required:
++  - reg
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    reserved-memory {
++        #address-cells = <1>;
++        #size-cells = <1>;
++
++        reserved@12340000 {
++            compatible = "boot-code";
++            reg = <0x12340000 0x00800000>;
++        };
++
++        reserved@43210000 {
++            compatible = "boot-data";
++            reg = <0x43210000 0x00800000>;
++        };
++    };
+-- 
+2.42.0.283.g2d96d420d3-goog
 
-OK I'll try again.
-
-Regards,
-Simon
-
-[1] I was led down the node-name path by this text in the DT spec
-"Following the generic-names recommended practice, node names should
-reflect the purpose of the node (ie. =E2=80=9Cframebuffer=E2=80=9D or =E2=
-=80=9Cdma-pool=E2=80=9D).
-Unit address (@<address>) should be appended to the name if the node
-is a static allocation."
