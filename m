@@ -2,57 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DA63797380
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 17:26:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0A1E797522
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 17:47:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232215AbjIGPYd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Sep 2023 11:24:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50134 "EHLO
+        id S233276AbjIGPqp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Sep 2023 11:46:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230308AbjIGPXE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 11:23:04 -0400
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C90E3E66
-        for <linux-acpi@vger.kernel.org>; Thu,  7 Sep 2023 08:22:52 -0700 (PDT)
-Received: by mail-qk1-x733.google.com with SMTP id af79cd13be357-76f0807acb6so63193485a.1
-        for <linux-acpi@vger.kernel.org>; Thu, 07 Sep 2023 08:22:52 -0700 (PDT)
+        with ESMTP id S245499AbjIGP3j (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 11:29:39 -0400
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41D1A1705
+        for <linux-acpi@vger.kernel.org>; Thu,  7 Sep 2023 08:29:11 -0700 (PDT)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-58cd9d9dbf5so14732187b3.0
+        for <linux-acpi@vger.kernel.org>; Thu, 07 Sep 2023 08:29:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694100172; x=1694704972; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1694100504; x=1694705304; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Vz1SpvYEblGQIUFOwvXI44dywFm7Krfl3gOSvV8SUSg=;
-        b=LuQF6CgKrW6sjGyMh+IELn+85AVwflzOxrp8MoN5QZVOa6nA6fYVcBEy0FeBlMsfWN
-         ipXE44ggltyJt3Qa05A7lf9YrdfDroAG+MSEmoo5pRkZcRfR170ZSywMSHR4Mlx+t2uV
-         p8Zz75sQ5xqonYViW9qPegVHd1ZhhXXUFrBM54vA7EwHgRHTuWwuZtexlOMUnF1Og+Tz
-         aKvEOmOLzyIireZXYn9xVR2lD0Zc/+UB9G2vFjipwcan8KOHAIq/24lTUwdtA0BGU4Pr
-         0FKOdLoSojE23L5Tb99oJhUgQRN7CJsJ/rJVXvkbMoh2+RA2X/kcxWXbXzTIyUNeps4A
-         vn4w==
+        bh=HY2mdAZRDyp8VLACjM3IsJrv/DB/YaVz8BTWDKGc7zo=;
+        b=QYH/2RWdhkXU3aukIvHqmxGEsfopIZ1sDT0WYBEHHHQWaMGDLY++HZWbOc6fTXiufV
+         pGPdpMppsFbFycKEVWCLJ6oXZSoeU1yBojvAfCy1TNNoxqWcV2wuSdTyyxVpc/WSHVzi
+         cADb1tTEKpgEfkHMAJ3x17qJRA8LPmQIUJsHxduweQ94mbzvwixtQjWpWThi9UmyX+rV
+         wIuuLQewV9M+YSKqX2OjLcHIDlpxJeu+eRPrxk3ZIRBo0Km5a/7SjGt7j7b7GEZbIErv
+         UZHia52HxJiRifJNfLYc4wDgY3md4hVCK+DlxYat4PPaHzMEn5eHyt8C9qnvF/kQQ22c
+         ktUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694100172; x=1694704972;
+        d=1e100.net; s=20221208; t=1694100504; x=1694705304;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Vz1SpvYEblGQIUFOwvXI44dywFm7Krfl3gOSvV8SUSg=;
-        b=j1HDw+cxkIrPkOy6u5pv07MpbIcikRFrQPhEDr+ikZW5ShgUvJMIen4Ltcmeju4psc
-         00LzmCzLAU8Q72dZ+yvGw/7cddA4G0HTPqsHOsZSywGOAzGM5CUF5Cv21fLCAas8T5sJ
-         irF7/TuPEyl9WFYJmVxPQ3378wJfj85S7zspnunopncqytyHmDtV8lg+Bg0AK7QgMY3i
-         vP9HHkeXMAoyHIo0EUH2QR+R2wyjV7wLl8LY0xocKu6+fntDcag0ffTM5iD+yN/woQ5d
-         RcNjN92UCTnzCVrvlKAIZeDsDlR/1Fgwu4oUGjC1DKmrXTag/t/QU6Oe6sDaytEYSs/P
-         zbvw==
-X-Gm-Message-State: AOJu0YwtO098lMzDx4qYnj+x8yR1b7m0OjYme6QzZ22xAo8OJAo/LdqY
-        UsH8awKS2pQITadQ//Z29SwFYSJYHWJZMW+fj3KBLxzT4vpLyI5b
-X-Google-Smtp-Source: AGHT+IFX/4eyumxiC7nEFR+XPxzCJ5uyMTs6iy7ZgZ+cx415alKaYaIdPMXy/YLPsS1BT9j2oJ541saIGrDoN3xslRU=
-X-Received: by 2002:a25:838b:0:b0:d35:f59a:6e46 with SMTP id
- t11-20020a25838b000000b00d35f59a6e46mr18424020ybk.49.1694072273274; Thu, 07
- Sep 2023 00:37:53 -0700 (PDT)
+        bh=HY2mdAZRDyp8VLACjM3IsJrv/DB/YaVz8BTWDKGc7zo=;
+        b=JlTRlzoMwJjC/0TYE2KQ2X/amL3JAlBMKPXHxNtANZA4SNbc8jm6fNan0rIeLTfbJH
+         tqMTq44xbHzFUmHeRKlXAtER0l80agirdZFlEyx7oeXO5sZtOYBmWtKYXYs/Bdxsnb1j
+         05Hw3K5NUfGQoeL62JoNP6ggchQu5jzUQqFFwoEJGfHkBxF0YnjNN3CIdiQuIBWrj+Yn
+         7BlFXAAx/NM6yoMJbcVRS7UNqabX7i7gQIXIoBCWtG8wp0EiJIdNa90NDEWqj5NimhaN
+         1YesDAhW7n1xb9NpiJANtnz/Hg6wftFFqNM1DC+R+FHqlMzia01EnIU8f9Y1PV9moHwZ
+         UKkQ==
+X-Gm-Message-State: AOJu0YwCB72S4godWyvvxo7adwdxUrSDJTRtHz60Zl8Mct/YRRHC6jl1
+        CJSuz1tH3LT7dXwXd0uFIXMYWjqsLJCqUx5CG38dx2CxXyHo1H+qfzw=
+X-Google-Smtp-Source: AGHT+IG0DLNKfUPhB/XHRakKjzQvJdJ2oAW9KHDtArjRFCSpF0Q5z+EJuu/6b8snoqW3fkVGsSaqNy6kxIliPZAjMsU=
+X-Received: by 2002:a25:dc04:0:b0:d4a:499d:a881 with SMTP id
+ y4-20020a25dc04000000b00d4a499da881mr2163263ybe.9.1694072375343; Thu, 07 Sep
+ 2023 00:39:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-18-brgl@bgdev.pl>
-In-Reply-To: <20230905185309.131295-18-brgl@bgdev.pl>
+References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-19-brgl@bgdev.pl>
+In-Reply-To: <20230905185309.131295-19-brgl@bgdev.pl>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 7 Sep 2023 09:37:42 +0200
-Message-ID: <CACRpkdaq8jwYLWfqvmjJFyxRPktTSTt-FY_OoPQ-ymU3fFk41w@mail.gmail.com>
-Subject: Re: [PATCH 17/21] gpio: of: replace gpiochip_find_* with gpio_device_find_*
+Date:   Thu, 7 Sep 2023 09:39:24 +0200
+Message-ID: <CACRpkdYOp5162vhQXBp9FwLZzXnjByYHt8OurK4aUyQmJzgfoA@mail.gmail.com>
+Subject: Re: [PATCH 18/21] gpio: acpi: replace gpiochip_find() with gpio_device_find()
 To:     Bartosz Golaszewski <brgl@bgdev.pl>
 Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
         Janusz Krzysztofik <jmkrzyszt@gmail.com>,
@@ -88,6 +88,12 @@ wrote:
 > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 >
 > We're porting all users of gpiochip_find() to using gpio_device_find().
-> Update the OF GPIO code.
+> Update the ACPI GPIO code.
 >
 > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
+With Andy's comment addressed:
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij
