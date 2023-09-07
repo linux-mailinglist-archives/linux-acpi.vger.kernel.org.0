@@ -2,303 +2,363 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16C9F79752C
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 17:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C69E77975BF
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 17:54:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233018AbjIGPqo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Sep 2023 11:46:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54130 "EHLO
+        id S231489AbjIGPyf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Sep 2023 11:54:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344052AbjIGPcS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 11:32:18 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D0C41BC9;
-        Thu,  7 Sep 2023 08:31:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694100713; x=1725636713;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=vLvQ4zKn/oRHy7MXq96By2dVXlS0Z+CQliVfRpO+T9I=;
-  b=A5BKHq3CgR8QPZp7eQrjIDUj7K0zXjyuKy/BWxD8Q4+0P9kAGSo5Ha+F
-   JrrphHRmhiiKs3mE/Yqpf84bjqyKnT0EHWZvRr4GRc4C/t6YdfGZnmWX2
-   T4d2ekuPiCiOywYm24hJJSASsMDQD1HG3a/qhyt3AlMpWLeomqWqk717s
-   wXSg7tpB7mg0Dq2agmJX/T83Ngzifl/h5kRKTDnlfOILayVbKIpoQs4S9
-   oEVWaUECrKxrZRF8MdbwNKhUjUAujCS5VhFXQFD3GnlmQKaNMIb3tZ5e8
-   kwmDl1ccyZQ+aLbEjWSlAy+d+cuoP47UGwueE2sOd+65GM1Kp7a+srv+F
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="463730738"
-X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
-   d="scan'208";a="463730738"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 06:20:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="915734682"
-X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
-   d="scan'208";a="915734682"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orsmga005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 07 Sep 2023 06:20:00 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Thu, 7 Sep 2023 06:19:59 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Thu, 7 Sep 2023 06:19:59 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Thu, 7 Sep 2023 06:19:59 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.173)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Thu, 7 Sep 2023 06:19:59 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AVFzaN7IfAR/+uvZBgxHZv9+9wJLAOGyRiRRJ1YHIFsvIZn87xuiUqhV1YbmeXPaX5avCYz5YyPt2xdshHS21Q+IoGuY4seJVrq8xk8e2/HSKnc2NmiIqiaNiUb3y+O8Xxkk8ao9olQZ5imk/VNZ/U2ETGFYnau8NzWgjrYVVp6BDLp8XEiIRzH83Lml3YrlPeDD4irshG/v1Jw8TEv3YDMJzGUkuWwE9NLIOeP7A258b9FanwtfGsnUgp1oAk5nbUD0NEwEeisDhz8N4iCIWK9QCrV0x98H051b4vJ2KvByLj5Nirf+T3/3DL+Fo4quoXKYtXLMa9Ze5c8SOrQUHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ptDks/wodUORvy+EU0/HF65SkRwIz7z+/zZfjgAO3IM=;
- b=nRHmhEhky8qvnvIxj/9URae1HSZcgeJnsFeOUfTViJ+FPkjs8baADfKTxkjLNSHc9MOpwvixSSWdA2HqkSIwqO8z8H+1tzYQgnSsCzpigAedD+sDcfheHsdEULdqfeUjnzGm/gAWx6GNhiEM/iOe3r6/W0KrYVKxRk8SoMu0H8ycEghlonyeW8sRTDCHEYGmbNdpQO+fUoDGabtaJdQm4IiOO5LuEiokdeUYCtB6dP1vph6eHcAbubDOuyoC+WecZHomqRR/SkCuts4e4ihKmTLFWbQhCIGzrwUMr1gcL8gV4gXkQAiPMOfEAuDQ4/qGfwyQdR6mMytz4FYKrOjVyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO6PR11MB5603.namprd11.prod.outlook.com (2603:10b6:5:35c::12)
- by SJ0PR11MB5008.namprd11.prod.outlook.com (2603:10b6:a03:2d5::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34; Thu, 7 Sep
- 2023 13:19:56 +0000
-Received: from CO6PR11MB5603.namprd11.prod.outlook.com
- ([fe80::dbe4:218c:1bdd:510]) by CO6PR11MB5603.namprd11.prod.outlook.com
- ([fe80::dbe4:218c:1bdd:510%4]) with mapi id 15.20.6745.034; Thu, 7 Sep 2023
- 13:19:56 +0000
-Message-ID: <24a741a4-b305-c817-e8c3-34b213ad0ee5@intel.com>
-Date:   Thu, 7 Sep 2023 15:19:48 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when running
- as Xen dom0
-Content-Language: en-US
-To:     Jason Andryuk <jandryuk@gmail.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-CC:     Roger Pau Monne <roger.pau@citrix.com>, <stable@vger.kernel.org>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "Borislav Petkov" <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, <xen-devel@lists.xenproject.org>,
-        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-References: <20230906182125.48642-1-jandryuk@gmail.com>
-From:   "Wilczynski, Michal" <michal.wilczynski@intel.com>
-In-Reply-To: <20230906182125.48642-1-jandryuk@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BE1P281CA0183.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:8d::17) To CO6PR11MB5603.namprd11.prod.outlook.com
- (2603:10b6:5:35c::12)
+        with ESMTP id S244812AbjIGPuq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 11:50:46 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C78D5FF5
+        for <linux-acpi@vger.kernel.org>; Thu,  7 Sep 2023 08:41:29 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-52bca2e8563so1490099a12.2
+        for <linux-acpi@vger.kernel.org>; Thu, 07 Sep 2023 08:41:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1694101230; x=1694706030; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Knh9a76TzJatawFXuxlKAvAZyiT05+Kr5wsD+gCCT50=;
+        b=EU0g5ElgFg1d5z2JSnW1o8Oaf74irD6tPA9kw3tha6WpAGf8HgdXBWZJTmakgH89vF
+         JFfN7WBR/tddEB1aXMEcawu0/2Z4Snlml84rFndrCdsZ5GWhBRetKsYUq6sod+MkoMc6
+         Yc6aeQykjUoHzmhmg/Q2Kl6rYLRnlt06Bq7ko=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694101230; x=1694706030;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Knh9a76TzJatawFXuxlKAvAZyiT05+Kr5wsD+gCCT50=;
+        b=aDqfcn94ZNnNOy5x+uWDNbGuJqUu/MDD9Xh0mRgEjp9d1P9HMuLVES8jSDBWmE/bdP
+         9xyq+f0mnPfqWJWpnkMtVcQNt1lZLFe8Rh2P0hvbTooVcOZucBlYQK4Y251K4sce4C07
+         CwXYKCgR+cU9jPcV2s8Gr1uAdP3Z9E94cMAQO7mKz4l4lKnFDKYZKYcbg4T1bdJDqj5o
+         ny+ZkAshjXghb+sniV2F0IKXzZWvNCOrxiVdXI4w951LHO0W5cJ83fg32KKKvCevQcm7
+         hDd1YfdHt+6q6oFjfByVWyYM3aQMrSQ+mh6EvXktUYsgq74ydpxWWPsQDLuMgdaMoU+a
+         w7pA==
+X-Gm-Message-State: AOJu0YwDzheD9NEV+zBeTX+l3hCECJG0eV5+bBtJrJytEZFAHV090lV8
+        /OGP00BQLgcf9TLnKM5E6jLglFt+0pg56PIrHS4o/1KjFwarrrU8QUY=
+X-Google-Smtp-Source: AGHT+IETdVICQDqLbQlGN1y6SsCAxQthLAdWJHW+NoJoQ+1wg2YaYYe2M/S6cATjIDe4kv6ijxuWCTpyCj/K02u5IBo=
+X-Received: by 2002:a17:906:5a59:b0:9a4:dd49:da3e with SMTP id
+ my25-20020a1709065a5900b009a4dd49da3emr5402038ejc.68.1694094990646; Thu, 07
+ Sep 2023 06:56:30 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO6PR11MB5603:EE_|SJ0PR11MB5008:EE_
-X-MS-Office365-Filtering-Correlation-Id: b822507d-9976-4f29-9798-08dbafa520c5
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: i1cp4Dw3gGOsxIF2jf051UpHTGbZSsb3DL4rtocYMNIylXPtcWyfaqipYoybXcJlOD4EBJGVbasFZlsLRPXpGczEneX23nnurQvNA8NpT35WhmPpW7Xo29zrqSK8ARu/dJ6qZyTpR/nORPiGzCkWQHYWlbo2JqRAokKJHWLzro+VvwUcKZtdIEqWZaJNFirutQsUhr7im5R948E7tbnppdv+dGY0CO9fgXCr8r14PzO7aNhwpPfzZtIBOPpcwcr6IJeOriz1BgJBWItmL0x4Y+eGyuQ9Pm8ee+QhiS0vWugBMD7HMLVmS6qVg+0FAtEdOPhP3euwsfYJiKays/sYeAWHmw7xVbHj6ygEa5bhkyD2WPsGlw1ZXZwZQzthzblMiAeUs30wnqUg+oeEx8ZP3F6dF0ee2EceHnSz+YuzLeeub59bA4JBYWcOZ1f8/SShX1K4pPRA6Ix8W4AedRhc2TFv/W08D93KfcbMeo9OHT7MfejvFVuLriEaH8GWB53TBjM9Wmv+mSvMlkjTc4SNhm5zNPr3T9Q5+sXIm+hC2vJArI2pVn3HXWGHCx3lf5zDeqCHv6HS7Sv4S0HgKbawb+MhrI99fbtxfLggV3PqNGIAEzAyx2ytc7/hfYwv63NYX9muu1ul6w/EU7KKoxk2Ig==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(396003)(376002)(136003)(366004)(451199024)(186009)(1800799009)(478600001)(31686004)(66476007)(66946007)(316002)(66556008)(110136005)(54906003)(83380400001)(8676002)(2906002)(41300700001)(4326008)(8936002)(7416002)(5660300002)(6666004)(6486002)(6506007)(53546011)(6512007)(2616005)(26005)(38100700002)(31696002)(36756003)(82960400001)(86362001)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ellqUXZWRU1MbWtUK01PdkdnQTVYSlRpeXQzU3F4a0pXYmpteTdxdjFmZVl5?=
- =?utf-8?B?SmxTR3hCSXUzVEZMRnJETE4raXBERGN5ZkljbHd1N0syam1KNk9Qd2w4QmQv?=
- =?utf-8?B?OHEzcnBlQytYMkhUcEl3YkY0VDFmMVVOZlpmOGhkRFNXbmx3UzN6ZVMzeHk0?=
- =?utf-8?B?OFhJYlMzMUpyNmFicDdWb2RsVUVPU2ZBa08yaGZzTWt2OUo5QkV3aEVrNlZV?=
- =?utf-8?B?Q0o3VmpVNEdQcHBsNzZ1ZzVTSFE3cmJpMlg4Mlo5Yy95dEtueE9BaEJaMTdr?=
- =?utf-8?B?QmtwSXlXWU5hQklzTElqRWZmalAzS3RPa2RaR3d2djNPV2I0N1NMR2JNK0U3?=
- =?utf-8?B?cVNZUmNnendQb0NnWm41QUpCdG5jUFZzZDcrLzNzWkdtLzBKWDJFb0Q2bmMy?=
- =?utf-8?B?amJON0JHQnJQcGtjYUJqaDBnRXpBWHRlOU9iTlJRVXRtSnNWK1pNdkZNNXNW?=
- =?utf-8?B?QSs0NG5aSEpXMjBVMTFQYU9Db3ZkQVFvZk5VaE55cnNyTXloanV1VXMyWVJM?=
- =?utf-8?B?MTdudFYvNzN6L3JLRHRNejVqK2VRK2FUOWhPTXcvT0dUK2x2dThKNDZCdWk2?=
- =?utf-8?B?UnpSS2tETjd0dzFLNWFOeWlEamVGNVo2a1dZbkdlaVRyZDhMcEFEUmdxMitK?=
- =?utf-8?B?VVVkRXpUbUhWK3d6WDlUbWNiQVdMTHBwM1dJcFJLcTk2Q05ZcjU0Q3M0cFR0?=
- =?utf-8?B?UU91VlJIelBqVHVVR3VGc3hObEczZzlPdGJ6UVI4YkxQa2RkWDYvcjdDVkp3?=
- =?utf-8?B?VDl5ZWtMamN4MlpVNDF4eUlaVjdpOXhyVHBDM3JLOHcrRXZXa2dlRXZldW9z?=
- =?utf-8?B?bktraUZHNHVzZWRQWHNUOHd4OWIzQUtzZS9mRUxoSEQyMFF1R2R5K2pKaFp2?=
- =?utf-8?B?SDU1OUhOUzRVOW1rek42YVVkeEVtL3l2OGM0U3d0S0c3TjVaSFEwbEFqdWU5?=
- =?utf-8?B?c3FFVnJmYm1KQmE5UG1halZGQWxYUDNZdzNUVC9ieVRZTHpCNU15eFhXUjhi?=
- =?utf-8?B?OTVGd0llcHhyZFhwcDlQdFI5U3Y4SzM4WHJHcSt1UTF6b25BYXVVc3lTbXlY?=
- =?utf-8?B?TzdPOVBEdG9IdzNUUEFWTFM0VW1vanNiNnE3QnhKWWFWWkV6S3hNckQyMUhU?=
- =?utf-8?B?cHREUitLd1dmb2NqRVBtbmh5NlZ2cDlzcGQ2SHhVNXRjMkhZejNBL2trNkRp?=
- =?utf-8?B?bStocDIzeTB5RndxNGt0N3NWNU5HZldsZTk3U21Hc1IrSGFCT05JOUFoYnFQ?=
- =?utf-8?B?UmtsRDJLT01jbXdRaTRkUVVUNzJCZGw2QlBWZjZISFAwRzFqTWFOMk5BMnFy?=
- =?utf-8?B?dWUrY3NRT3J6L2ZLQi9UbEpaNTFrQnNCb2VTVVQyTFhHeU9iZ21jWGlmdG85?=
- =?utf-8?B?eHRLRGhOeG5SbHRvUnpOZWljbms1VHJUV1Mvbld3dzJReFBCcUNNSERXM01m?=
- =?utf-8?B?Zno1cy9lWk1kTUdUMkFMTG1OTUZhYjhRRXBleWNiN1owckppamxQYzZ6Vkk2?=
- =?utf-8?B?T3BxUFhHcFhuL1E0YnE5M0wyK2N6N3N6YnlzL3c4eldnQndtWDFnazJMTC9Z?=
- =?utf-8?B?TTRjeGVXOFRKMmFQTmVvdExBS2JXdXBkK2dCb1NIWXN4V3oyb3RSblJkQ2xt?=
- =?utf-8?B?ZVR2elAzVzRTdkVvR1c4aDVUNjJ5WlZZTG5GblRNRTd5bjB4SVRmOUpyN2tk?=
- =?utf-8?B?OHROZ2FaaVlEMGRZbkdoV011d2lBQVZYemxjSDRPWStiUlh0ZUROT2FYTVBC?=
- =?utf-8?B?bStoRFUydEdOYitybUV3dWNPeHluWGs1cWhabkk3ZXlvUW52R3hxR2oyQWF0?=
- =?utf-8?B?ZzNOVVVYZktxUklvQnFTOUFiWUtSMkcwdGZaUnk0REIxSVVnYURvc3gyRDZv?=
- =?utf-8?B?M28zanFQWDZMNG5LamNoRTFoTVRuYWRQVElxalpBRmRXVjl3aERFMTlRdnlY?=
- =?utf-8?B?UC9KT3BJRDNtNUJ3eFkwY3NWZUpHT2gvQVlzTnovaFZOYitRaUxpVnY4N0VN?=
- =?utf-8?B?TnpJeU5LUHJtaEVEdU5Wd0IrTE5PaklCZDJOamRjYzFTN25EOUZKUmhNMTZw?=
- =?utf-8?B?WlROL0V0R3lWdCt1TWhJdEwrMWNKbEtYcmZVZGVlVDZUVVByZHQvSGZaNGln?=
- =?utf-8?B?alRpZDQwc21vbnVIcWRMVFp1RDVwUGQ1OUFRTGRjbWp3enF0N0lmR3ZTZ3BR?=
- =?utf-8?B?OFE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b822507d-9976-4f29-9798-08dbafa520c5
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR11MB5603.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2023 13:19:55.9932
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TcUh7XMWXhjjN6uVMZfMo3OkPit/ekLz0TR31Yzg/6RovEg561dCaGKFjywraWE+tPWCFrRk8NBuWyZ6LL+APcHNEbCdmaZQdE/28HZKNsY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5008
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230830231758.2561402-1-sjg@chromium.org> <20230830231758.2561402-3-sjg@chromium.org>
+ <CAMj1kXG5-aqoOtKdPFEdm=_5SdvgUTOhcDOBP1zdARAvKphJtg@mail.gmail.com>
+ <CAL_JsqLx0KnXxFc8mFyT_RmA2qeBEutMXj_3nKo_g==cuSeYuQ@mail.gmail.com>
+ <CAPnjgZ1U+Gy0Q_Sc63p0ixkWF9iJEEBLhV8-N9-sh7OGNy-OmQ@mail.gmail.com>
+ <CAMj1kXG9vM0haSOu19j7ujQCBEN6CBeXVAH96nm+gixt9FmMrA@mail.gmail.com>
+ <CAPnjgZ1oGF0Ni3RhK4fv6mJk40YjqyFVJxt6FfS9AW2rkcs9iA@mail.gmail.com> <CAMj1kXEZ4fDvbtgXKjF+L7si-=C-5E0XcjutoEF8pU9a-BGN-g@mail.gmail.com>
+In-Reply-To: <CAMj1kXEZ4fDvbtgXKjF+L7si-=C-5E0XcjutoEF8pU9a-BGN-g@mail.gmail.com>
+From:   Simon Glass <sjg@chromium.org>
+Date:   Thu, 7 Sep 2023 07:56:12 -0600
+Message-ID: <CAPnjgZ0vv+s00xvY2FqP+Fxb12tHuVWg-nwyWTrvuG+Mo4PaWg@mail.gmail.com>
+Subject: Re: [PATCH v5 3/4] schemas: Add some common reserved-memory usages
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Rob Herring <robh@kernel.org>,
+        Devicetree Discuss <devicetree@vger.kernel.org>,
+        Maximilian Brune <maximilian.brune@9elements.com>,
+        ron minnich <rminnich@gmail.com>,
+        Tom Rini <trini@konsulko.com>,
+        Dhaval Sharma <dhaval@rivosinc.com>,
+        U-Boot Mailing List <u-boot@lists.denx.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Yunhui Cui <cuiyunhui@bytedance.com>,
+        linux-acpi@vger.kernel.org, Gua Guo <gua.guo@intel.com>,
+        Lean Sheng Tan <sheng.tan@9elements.com>,
+        Guo Dong <guo.dong@intel.com>,
+        lkml <linux-kernel@vger.kernel.org>,
+        Chiu Chasel <chasel.chiu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-9.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_SPF_WL
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Ard,
 
-Hi,
-
-On 9/6/2023 8:21 PM, Jason Andryuk wrote:
-> From: Roger Pau Monne <roger.pau@citrix.com>
+On Thu, 7 Sept 2023 at 07:31, Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> The Processor _PDC buffer bits notify ACPI of the OS capabilities, and
-> so ACPI can adjust the return of other Processor methods taking the OS
-> capabilities into account.
+> On Wed, 6 Sept 2023 at 18:50, Simon Glass <sjg@chromium.org> wrote:
+> >
+> > Hi Ard,
+> >
+> > On Wed, Sep 6, 2023, 10:09 Ard Biesheuvel <ardb@kernel.org> wrote:
+> >>
+> >> On Wed, 6 Sept 2023 at 16:54, Simon Glass <sjg@chromium.org> wrote:
+> >> >
+> >> > Hi Rob, Ard,
+> >> >
+> >> > On Wed, 6 Sept 2023 at 08:34, Rob Herring <robh@kernel.org> wrote:
+> >> > >
+> >> > > On Tue, Sep 5, 2023 at 4:44=E2=80=AFPM Ard Biesheuvel <ardb@kernel=
+.org> wrote:
+> >> > > >
+> >> > > > On Thu, 31 Aug 2023 at 01:18, Simon Glass <sjg@chromium.org> wro=
+te:
+> >> > > > >
+> >> > > > > The Devicetree specification skips over handling of a logical =
+view of
+> >> > > > > the memory map, pointing users to the UEFI specification.
+> >> > > > >
+> >> > > > > It is common to split firmware into 'Platform Init', which doe=
+s the
+> >> > > > > initial hardware setup and a "Payload" which selects the OS to=
+ be booted.
+> >> > > > > Thus an handover interface is required between these two piece=
+s.
+> >> > > > >
+> >> > > > > Where UEFI boot-time services are not available, but UEFI firm=
+ware is
+> >> > > > > present on either side of this interface, information about me=
+mory usage
+> >> > > > > and attributes must be presented to the "Payload" in some form=
+.
+> >> > > > >
+> >> > > >
+> >> > > > I don't think the UEFI references are needed or helpful here.
+> >> > > >
+> >> > > > > This aims to provide an small schema addition for this mapping=
+.
+> >> > > > >
+> >> > > > > For now, no attempt is made to create an exhaustive binding, s=
+o there are
+> >> > > > > some example types listed. More can be added later.
+> >> > > > >
+> >> > > > > The compatible string is not included, since the node name is =
+enough to
+> >> > > > > indicate the purpose of a node, as per the existing reserved-m=
+emory
+> >> > > > > schema.
+> >> > >
+> >> > > Node names reflect the 'class', but not what's specifically in the
+> >> > > node. So really, all reserved-memory nodes should have the same na=
+me,
+> >> > > but that ship already sailed for existing users. 'compatible' is t=
+he
+> >> > > right thing here. As to what the node name should be, well, we hav=
+en't
+> >> > > defined that. I think we just used 'memory' on some platforms.
+> >> >
+> >> > OK
+> >> >
+> >> > >
+> >> > > > > This binding does not include a binding for the memory 'attrib=
+ute'
+> >> > > > > property, defined by EFI_BOOT_SERVICES.GetMemoryMap(). It may =
+be useful
+> >> > > > > to have that as well, but perhaps not as a bit mask.
+> >> > > > >
+> >> > > > > Signed-off-by: Simon Glass <sjg@chromium.org>
+> >> > > > > ---
+> >> > > > >
+> >> > > > > Changes in v5:
+> >> > > > > - Drop the memory-map node (should have done that in v4)
+> >> > > > > - Tidy up schema a bit
+> >> > > > >
+> >> > > > > Changes in v4:
+> >> > > > > - Make use of the reserved-memory node instead of creating a n=
+ew one
+> >> > > > >
+> >> > > > > Changes in v3:
+> >> > > > > - Reword commit message again
+> >> > > > > - cc a lot more people, from the FFI patch
+> >> > > > > - Split out the attributes into the /memory nodes
+> >> > > > >
+> >> > > > > Changes in v2:
+> >> > > > > - Reword commit message
+> >> > > > >
+> >> > > > >  .../reserved-memory/common-reserved.yaml      | 53 ++++++++++=
++++++++++
+> >> > > > >  1 file changed, 53 insertions(+)
+> >> > > > >  create mode 100644 dtschema/schemas/reserved-memory/common-re=
+served.yaml
+> >> > > > >
+> >> > > > > diff --git a/dtschema/schemas/reserved-memory/common-reserved.=
+yaml b/dtschema/schemas/reserved-memory/common-reserved.yaml
+> >> > > > > new file mode 100644
+> >> > > > > index 0000000..d1b466b
+> >> > > > > --- /dev/null
+> >> > > > > +++ b/dtschema/schemas/reserved-memory/common-reserved.yaml
+> >> > > > > @@ -0,0 +1,53 @@
+> >> > > > > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> >> > > > > +%YAML 1.2
+> >> > > > > +---
+> >> > > > > +$id: http://devicetree.org/schemas/reserved-memory/common-res=
+erved.yaml#
+> >> > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >> > > > > +
+> >> > > > > +title: Common memory reservations
+> >> > > > > +
+> >> > > > > +description: |
+> >> > > > > +  Specifies that the reserved memory region can be used for t=
+he purpose
+> >> > > > > +  indicated by its node name.
+> >> > > > > +
+> >> > > > > +  Clients may reuse this reserved memory if they understand w=
+hat it is for.
+> >> > > > > +
+> >> > > > > +maintainers:
+> >> > > > > +  - Simon Glass <sjg@chromium.org>
+> >> > > > > +
+> >> > > > > +allOf:
+> >> > > > > +  - $ref: reserved-memory.yaml
+> >> > > > > +
+> >> > > > > +properties:
+> >> > > > > +  $nodename:
+> >> > > > > +    enum:
+> >> > > > > +      - acpi-reclaim
+> >> > > > > +      - acpi-nvs
+> >> > > > > +      - boot-code
+> >> > > > > +      - boot-data
+> >> > > > > +      - runtime-code
+> >> > > > > +      - runtime-data
+> >> > > > > +
+> >> > > >
+> >> > > > These types are used by firmware to describe the nature of certa=
+in
+> >> > > > memory regions to the OS. Boot code and data can be discarded, a=
+s well
+> >> > > > as ACPI reclaim after its contents have been consumed. Runtime c=
+ode
+> >> > > > and data need to be mapped for runtime features to work.
+> >> > > >
+> >> > > > When one firmware phase communicates the purpose of a certain me=
+mory
+> >> > > > reservation to another, it is typically not limited to whether i=
+ts
+> >> > > > needs to be preserved and when it needs to be mapped (and with w=
+hich
+> >> > > > attributes). I'd expect a memory reservation appearing under thi=
+s node
+> >> > > > to have a clearly defined purpose, and the subsequent phases nee=
+d to
+> >> > > > be able to discover this information.
+> >> > > >
+> >> > > > For example, a communication buffer for secure<->non-secure
+> >> > > > communication or a page with spin tables used by PSCI. None of t=
+he
+> >> > > > proposed labels are appropriate for this, and I'd much rather ha=
+ve a
+> >> > > > compatible string or some other property that clarifies the natu=
+re in
+> >> > > > a more suitable way. Note that 'no-map' already exists to indica=
+te
+> >> > > > that the CPU should not map this memory unless it does so for th=
+e
+> >> > > > specific purpose that the reservation was made for.
+> >> > >
+> >> > > I agree. I think compatible is the better approach. Some property =
+like
+> >> > > 'discard' may not be sufficient information if the OS needs to con=
+sume
+> >> > > the region first and then discard it. Better to state exactly what=
+'s
+> >> > > there and then the OS can imply the rest.
+> >> >
+> >> > OK, so what sort of compatible strings?
+> >> >
+> >> > How about:
+> >> > "acpi-reclaim" - holds ACPI tables; memory can be reclaimed once the
+> >> > tables are read and no-longer needed
+> >>
+> >> ACPI reclaim is a policy, not a purpose. This memory could contain
+> >> many different things.
+> >>
+> >> > "boot-code" - holds boot code; memory can be reclaimed once the boot
+> >> > phase is complete
+> >> > "runtime-code" - holds runtime code; memory can be reclaimed only if
+> >> > this code will not be used from that point
+> >> >
+> >>
+> >> These are also policies. They can be inferred from the purpose.
+> >>
+> >> > etc. We can then have more specific compatibles, like:
+> >> >
+> >> > "psci-spin-table" - holds PSCI spin tables
+> >> >
+> >> > so you could do:
+> >> >
+> >> > compatible =3D "runtime-code", "psci-spin-table";
+> >> >
+> >>
+> >> I understand that this binding targets firmware<->firmware rather than
+> >> firmware<->OS, which makes it much more difficult to keep it both
+> >> generic and sufficiently descriptive.
+> >>
+> >> However, I still feel that all the overlap with UEFI memory types is
+> >> not what we want here. UEFI knows how to manage its own memory map,
+> >> what it needs to know is what memory is already in use and for which
+> >> exact purpose. Whether or not that implies that the memory can be
+> >> freed at some point or can be mapped or not should follow from that.
+> >
+> >
+> > Can you please make a suggestion? I am unsure what you are looking for.
+> >
+>
+> I'm happy to help flesh this out, but you still have not provided us
+> with an actual use case, so I can only draw from my own experience
+> putting together firmware for virtual and physical ARM machines.
 
-_PDC method is deprecated for this purpose, since 2018, and is dropped from
-spec since 6.5
+I did explain that this is needed when Tianocore is on both sides of
+the interface, since Platform Init places some things in memory and
+the Payload needs to preserve them there, and/or know where they are.
 
-We made the switch in linux since 6.6:
-95272641338a ("ACPI: processor: Use _OSC to convey OSPM processor support information")
+I think the problem might be that you don't agree with that, but it
+seems to be a fact, so I am not sure how I can alter it.
+
+Please can you clearly explain which part of the use case you are missing.
 
 >
-> When Linux is running as a Xen dom0, it's the hypervisor the entity
-> in charge of processor power management, and hence Xen needs to make
-> sure the capabilities reported in the _PDC buffer match the
-> capabilities of the driver in Xen.
+> All the ACPI and UEFI lingo needs to be dropped. This is relevant only
+> to the OS, and only if the prior stage exposes UEFI interfaces, in
+> which case it does not need this binding.
 
-So I guess you would need to sanitize buffer passed to _OSC method instead ?
+OK I can drop those from the commit message.
 
 >
-> Introduce a small helper to sanitize the buffer when running as Xen
-> dom0.
+> So on one side, there is the requirement for each memory reservation
+> to be described with sufficient detail so that a subsequent boot stage
+> (firmware or OS) can use it for its intended purpose, provided that
+> this boot stage is aware of its purpose (i.e., it has a driver that
+> matches on the compatible string in question, and actually maps/uses
+> the memory)
 >
-> When Xen supports HWP, this serves as the equivalent of commit
-> a21211672c9a ("ACPI / processor: Request native thermal interrupt
-> handling via _OSC") to avoid SMM crashes.  Xen will set bit 12 in the
-> _PDC bits and the _PDC call will apply it.
->
-> [ jandryuk: Mention Xen HWP's need.  Move local variables ]
-> Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
-> ---
-> v2:
-> Move local variables in acpi_processor_eval_pdc() to reuse in both conditions.
-> ---
->  arch/x86/include/asm/xen/hypervisor.h |  6 ++++++
->  arch/x86/xen/enlighten.c              | 19 +++++++++++++++++++
->  drivers/acpi/processor_pdc.c          | 22 ++++++++++++++++------
->  3 files changed, 41 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
-> index 5fc35f889cd1..0f88a7e450d3 100644
-> --- a/arch/x86/include/asm/xen/hypervisor.h
-> +++ b/arch/x86/include/asm/xen/hypervisor.h
-> @@ -63,4 +63,10 @@ void __init xen_pvh_init(struct boot_params *boot_params);
->  void __init mem_map_via_hcall(struct boot_params *boot_params_p);
->  #endif
->  
-> +#ifdef CONFIG_XEN_DOM0
-> +void xen_sanitize_pdc(uint32_t *buf);
-> +#else
-> +static inline void xen_sanitize_pdc(uint32_t *buf) { BUG(); }
-> +#endif
-> +
->  #endif /* _ASM_X86_XEN_HYPERVISOR_H */
-> diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
-> index b8db2148c07d..9f7fc11330a3 100644
-> --- a/arch/x86/xen/enlighten.c
-> +++ b/arch/x86/xen/enlighten.c
-> @@ -346,3 +346,22 @@ void xen_arch_unregister_cpu(int num)
->  }
->  EXPORT_SYMBOL(xen_arch_unregister_cpu);
->  #endif
-> +
-> +#ifdef CONFIG_XEN_DOM0
-> +void xen_sanitize_pdc(uint32_t *buf)
-> +{
-> +	struct xen_platform_op op = {
-> +		.cmd			= XENPF_set_processor_pminfo,
-> +		.interface_version	= XENPF_INTERFACE_VERSION,
-> +		.u.set_pminfo.id	= -1,
-> +		.u.set_pminfo.type	= XEN_PM_PDC,
-> +	};
-> +	int ret;
-> +
-> +	set_xen_guest_handle(op.u.set_pminfo.pdc, buf);
-> +	ret = HYPERVISOR_platform_op(&op);
-> +	if (ret)
-> +		pr_info("sanitize of _PDC buffer bits from Xen failed: %d\n",
-> +		        ret);
-> +}
-> +#endif
-> diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
-> index 18fb04523f93..9393dd4a3158 100644
-> --- a/drivers/acpi/processor_pdc.c
-> +++ b/drivers/acpi/processor_pdc.c
-> @@ -122,6 +122,11 @@ static acpi_status
->  acpi_processor_eval_pdc(acpi_handle handle, struct acpi_object_list *pdc_in)
->  {
->  	acpi_status status = AE_OK;
-> +	union acpi_object *obj;
-> +	u32 *buffer = NULL;
-> +
-> +	obj = pdc_in->pointer;
-> +	buffer = (u32 *)(obj->buffer.pointer);
->  
->  	if (boot_option_idle_override == IDLE_NOMWAIT) {
->  		/*
-> @@ -129,14 +134,19 @@ acpi_processor_eval_pdc(acpi_handle handle, struct acpi_object_list *pdc_in)
->  		 * mode will be disabled in the parameter of _PDC object.
->  		 * Of course C1_FFH access mode will also be disabled.
->  		 */
-> -		union acpi_object *obj;
-> -		u32 *buffer = NULL;
-> -
-> -		obj = pdc_in->pointer;
-> -		buffer = (u32 *)(obj->buffer.pointer);
->  		buffer[2] &= ~(ACPI_PDC_C_C2C3_FFH | ACPI_PDC_C_C1_FFH);
-> -
->  	}
-> +
-> +	if (xen_initial_domain()) {
-> +		/*
-> +		 * When Linux is running as Xen dom0, the hypervisor is the
-> +		 * entity in charge of the processor power management, and so
-> +		 * Xen needs to check the OS capabilities reported in the _PDC
-> +		 * buffer matches what the hypervisor driver supports.
-> +		 */
-> +		xen_sanitize_pdc(buffer);
-> +	}
-> +
->  	status = acpi_evaluate_object(handle, "_PDC", pdc_in, NULL);
->  
->  	if (ACPI_FAILURE(status))
+> On the other side, we need to describe how a memory reservation should
+> be treated if the boot stage doesn't know its purpose, has no interest
+> in using it or has consumed the contents and has no longer a need for
+> the region. We already have no-map to describe that the memory should
+> never be mapped (and this may be disregarded by an actual driver for
+> the region). I imagine we might add 'discardable' as a boolean DT
+> property, meaning that stage N may use the memory whichever way it
+> wants if it is not going to use it for its intended purpose, provided
+> that it deletes the node from the DT before passing it on to stage
+> N+1.
 
+OK. For now I think that everything is discardable, so long as the
+Payload knows the purpose and that it not needed. That is what Rob
+seemed to be saying. If we add 'discardable', does that mean that
+things default to non-discardable? Would that not be a change of
+behaviour for existing users?
+
+>
+> One thing that needs to be clarified is how this binding interacts
+> with /memory nodes. I assume that currently, /reserved-memory is
+> independent, i.e., it could describe mappable memory that is not
+> covered by /memory at all. If this is the case, we have to decide
+> whether or not discardable regions can be treated in the same way, or
+> whether we should require that discardable regions are covered by
+> /memory.
+
+I would expect all memory to be described in /memory nodes. What is
+the use case for omitting it? Are you thinking of SRAM, etc?
+
+Regards,
+Simon
