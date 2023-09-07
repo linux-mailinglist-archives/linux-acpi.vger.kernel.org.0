@@ -2,119 +2,302 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9B1797D22
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 22:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44B7D797E06
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 23:39:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235841AbjIGUHC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Sep 2023 16:07:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46528 "EHLO
+        id S235277AbjIGVjw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Sep 2023 17:39:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229827AbjIGUHB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 16:07:01 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B942E47
-        for <linux-acpi@vger.kernel.org>; Thu,  7 Sep 2023 13:06:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694117217; x=1725653217;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ji5oa4nWlim8LvXhOALWeS/GKJBN6DVAonZWF2hx+Q8=;
-  b=lUjK0uZ1aaHxR7tVMkXTZOTUYOuTol1Gk+dLofuAiY7nMGDgRITyzbBt
-   CVoO+h1FnJZm9k3aYHIJXwcyXU5EBGrIOL1fQMUKReMxsrR97F2YEVMSV
-   PqvqK2/1Y9N02V3841sxbPk2uZTsakAondps1oIX6jxNUmmDqpRicYSBK
-   a3ESU0n5Y4cd5n7CKQq31GA//nw7VOFoyxtBo5BDHFDKtaGB82KJxUQ48
-   zO9ddvtl8OF5KbxmevqFmF2tZXz6rbaIlc3VOuzObBeYrfngnGuGRqdEi
-   6XtWbbSZJtSVlgNH9N6tRtq+cArhm19ceIuKM5dQMq1OH3tuWAq7dyUx+
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="377372755"
-X-IronPort-AV: E=Sophos;i="6.02,236,1688454000"; 
-   d="scan'208";a="377372755"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 13:06:32 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="857026720"
-X-IronPort-AV: E=Sophos;i="6.02,236,1688454000"; 
-   d="scan'208";a="857026720"
-Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 07 Sep 2023 13:06:31 -0700
-Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qeLGn-0001Xv-09;
-        Thu, 07 Sep 2023 20:06:29 +0000
-Date:   Fri, 8 Sep 2023 04:06:17 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ken Xue <Ken.Xue@amd.com>, linux-acpi@vger.kernel.org,
-        rafael@kernel.org, andriy.shevchenko@linux.intel.com
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        Ken.Xue@amd.com
-Subject: Re: [PATCH] acpi: trigger wakeup key event from power button
-Message-ID: <202309080351.xHt2qhP2-lkp@intel.com>
-References: <20230907074342.7722-1-Ken.Xue@amd.com>
+        with ESMTP id S238633AbjIGVju (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 17:39:50 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 622991BD2
+        for <linux-acpi@vger.kernel.org>; Thu,  7 Sep 2023 14:39:45 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99c93638322so293369766b.1
+        for <linux-acpi@vger.kernel.org>; Thu, 07 Sep 2023 14:39:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1694122784; x=1694727584; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RUsPVEm9vqSHnjAIkCxOqtiaWXrdTX4yAR2rjyQGs5c=;
+        b=QgbPS/MOXwCaJPxp1kl/Arr/Fzd2hQkmdOUyMG7bGlk7nwjM8ctIAgIWLOrFlxixEs
+         GodnS+RBkxAs8FVt15DN4P5hTQrBpuTAVt6aACYEmlyFpaF+BLDlODoTVinoz5gK7z5U
+         /ZkHqPC/5kTwna9QvBN7+bacN+pz4Q9tZQi4A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694122784; x=1694727584;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RUsPVEm9vqSHnjAIkCxOqtiaWXrdTX4yAR2rjyQGs5c=;
+        b=IAapTTtmbNoqoVSjTiH1fnRSx+iyVTRGuIF1yQTXkkFmZBTpLyEegXi4LxQAZp5FDM
+         L3GgeMk4QemjEWCq3Bmu20xutSVw4rJhG/06tZ12mqCaLFhxZvsCbw9YYV8re00k+1D7
+         MbE8jAghgjEyKZ0BlLY70h+O1ILlrkA+Ld7056IFhWCuBAy/No6RdhRPHpCUwrCRAU34
+         bUaI2V2zQdTD+9PIFkj1u0NgHCjBWYfB8a7J0eyfkgeTmXPSuT/5JJNpDicLUyzUYTvj
+         9LNxsTu0FoR8M5bzl5ksz5DOUH8YxwZvC4t0Q8l4EdbUNoLy1gRtvixj++w3y+B9tumv
+         1u2w==
+X-Gm-Message-State: AOJu0YwUFzU++eHkk/Kfqh3LFMV8OUFeNSnMS9tn/f6PHE2xA8rWoXUk
+        FjFDapy40hkw8RSINYFftJHAUtmur9k2KR2C9xuHAA==
+X-Google-Smtp-Source: AGHT+IG9HkF6tjvfcyYQ9aK3TCmIpEMo5frW8roeQ/C24x9BzOzK0WYfUUFR+RLFNjMBTKyWsDxPvOYg16MHOC3hF/0=
+X-Received: by 2002:a17:907:97d2:b0:9a9:d7fd:caf2 with SMTP id
+ js18-20020a17090797d200b009a9d7fdcaf2mr3942086ejc.38.1694122783644; Thu, 07
+ Sep 2023 14:39:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230907074342.7722-1-Ken.Xue@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230830231758.2561402-1-sjg@chromium.org> <20230830231758.2561402-3-sjg@chromium.org>
+ <CAMj1kXG5-aqoOtKdPFEdm=_5SdvgUTOhcDOBP1zdARAvKphJtg@mail.gmail.com>
+ <CAL_JsqLx0KnXxFc8mFyT_RmA2qeBEutMXj_3nKo_g==cuSeYuQ@mail.gmail.com>
+ <CAPnjgZ1U+Gy0Q_Sc63p0ixkWF9iJEEBLhV8-N9-sh7OGNy-OmQ@mail.gmail.com>
+ <CAMj1kXG9vM0haSOu19j7ujQCBEN6CBeXVAH96nm+gixt9FmMrA@mail.gmail.com>
+ <CAPnjgZ1oGF0Ni3RhK4fv6mJk40YjqyFVJxt6FfS9AW2rkcs9iA@mail.gmail.com>
+ <CAMj1kXEZ4fDvbtgXKjF+L7si-=C-5E0XcjutoEF8pU9a-BGN-g@mail.gmail.com>
+ <CAPnjgZ0vv+s00xvY2FqP+Fxb12tHuVWg-nwyWTrvuG+Mo4PaWg@mail.gmail.com>
+ <CAMj1kXHGpCt8qkd6XYQF8mMdivQkTnEWjv6NzsFK=+N72LAn=Q@mail.gmail.com>
+ <CAPnjgZ1vBaXfBa+FWvASi15=Py0DLbEK5XsRHLrJc02K2Yr_RQ@mail.gmail.com>
+ <CAMj1kXFjVPwnu226R8bHbo0i0LZ7jQE+vLPNQa6cvrCYqGD+YA@mail.gmail.com>
+ <CAPnjgZ1fVJE=ar_rB_So+vjkOZ_pDjaO5wwPn3pMKe=n3MmBeg@mail.gmail.com> <CAMj1kXF0J+eUC3BgCmf_ZNdpuH7gxYTUup8_AkfLEx0Co51LjQ@mail.gmail.com>
+In-Reply-To: <CAMj1kXF0J+eUC3BgCmf_ZNdpuH7gxYTUup8_AkfLEx0Co51LjQ@mail.gmail.com>
+From:   Simon Glass <sjg@chromium.org>
+Date:   Thu, 7 Sep 2023 15:39:25 -0600
+Message-ID: <CAPnjgZ28+eT4ULUPnxcthJef_bi=bfFT93YJYQBT2q65Qm7qGQ@mail.gmail.com>
+Subject: Re: [PATCH v5 3/4] schemas: Add some common reserved-memory usages
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Rob Herring <robh@kernel.org>,
+        Devicetree Discuss <devicetree@vger.kernel.org>,
+        Maximilian Brune <maximilian.brune@9elements.com>,
+        ron minnich <rminnich@gmail.com>,
+        Tom Rini <trini@konsulko.com>,
+        Dhaval Sharma <dhaval@rivosinc.com>,
+        U-Boot Mailing List <u-boot@lists.denx.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Yunhui Cui <cuiyunhui@bytedance.com>,
+        linux-acpi@vger.kernel.org, Gua Guo <gua.guo@intel.com>,
+        Lean Sheng Tan <sheng.tan@9elements.com>,
+        Guo Dong <guo.dong@intel.com>,
+        lkml <linux-kernel@vger.kernel.org>,
+        Chiu Chasel <chasel.chiu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-9.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_SPF_WL
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Ken,
+Hi Ard,
 
-kernel test robot noticed the following build warnings:
+On Thu, 7 Sept 2023 at 10:19, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Thu, 7 Sept 2023 at 17:57, Simon Glass <sjg@chromium.org> wrote:
+> >
+> > Hi Ard,
+> >
+> > On Thu, 7 Sept 2023 at 09:07, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > >
+> > > On Thu, 7 Sept 2023 at 16:50, Simon Glass <sjg@chromium.org> wrote:
+> > > >
+> > > > Hi Ard,
+> > > >
+> > > > On Thu, 7 Sept 2023 at 08:12, Ard Biesheuvel <ardb@kernel.org> wrot=
+e:
+> > > > >
+> > > > > On Thu, 7 Sept 2023 at 15:56, Simon Glass <sjg@chromium.org> wrot=
+e:
+> > > > > >
+> > > > > > Hi Ard,
+> > > > > >
+> > > > > > On Thu, 7 Sept 2023 at 07:31, Ard Biesheuvel <ardb@kernel.org> =
+wrote:
+> > > > > > >
+> ...
+> > > > > > >
+> > > > > > > I'm happy to help flesh this out, but you still have not prov=
+ided us
+> > > > > > > with an actual use case, so I can only draw from my own exper=
+ience
+> > > > > > > putting together firmware for virtual and physical ARM machin=
+es.
+> > > > > >
+> > > > > > I did explain that this is needed when Tianocore is on both sid=
+es of
+> > > > > > the interface, since Platform Init places some things in memory=
+ and
+> > > > > > the Payload needs to preserve them there, and/or know where the=
+y are.
+> > > > > >
+> > > > > > I think the problem might be that you don't agree with that, bu=
+t it
+> > > > > > seems to be a fact, so I am not sure how I can alter it.
+> > > > > >
+> > > > > > Please can you clearly explain which part of the use case you a=
+re missing.
+> > > > > >
+> > > > >
+> > > > > 'Tianocore on both sides of the interface' means that Tianocore r=
+uns
+> > > > > as the platform init code, and uses a bespoke DT based protocol t=
+o
+> > > > > launch another instance of Tianocore as the payload, right?
+> > > >
+> > > > Not another instance, no. Just the other half of Tianocore. The fir=
+st
+> > > > half does platform init and the second half does the loading of the
+> > > > OS.
+> > > >
+> > >
+> > > That doesn't make any sense to me.
+> > >
+> > > > >
+> > > > > Tianocore/EDK2 already implements methods to reinvoke itself if n=
+eeded
+> > > > > (e.g., during a firmware update), and does so by launching a new =
+DXE
+> > > > > core. So the boot sequence looks like
+> > > > >
+> > > > > SEC -> PEI -> DXE -> BDS -> app that invokes UpdateCapsule() -> D=
+XE ->
+> > > > > firmware update
+> > > > >
+> > > > > So please elaborate on how this Tianocore on both sides of the
+> > > > > interface is put together when it uses this DT based handover. We
+> > > > > really need a better understanding of this in order to design a D=
+T
+> > > > > binding that meets its needs.
+> > > >
+> > > > Are you familiar with building Tianocore as a coreboot payload, for
+> > > > example? That shows Tianocore running as just the Payload, with
+> > > > coreboot doing the platform init. So the use case I am talking abou=
+t
+> > > > is similar to that.
+> > > >
+> > >
+> > > Yes I am familiar with that, and it is a completely different thing.
+> >
+> > Right, but that is my use case.
+> >
+>
+> OK. You alluded to Tianocore <-> Tianocore being your use case, which
+> is why I kept asking for clarification, as using a DT with this
+> binding seems unusual at the very least.
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on linus/master next-20230907]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Nevertheless, that is the goal.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ken-Xue/acpi-trigger-wakeup-key-event-from-power-button/20230907-232828
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20230907074342.7722-1-Ken.Xue%40amd.com
-patch subject: [PATCH] acpi: trigger wakeup key event from power button
-config: x86_64-rhel-8.3-rust (https://download.01.org/0day-ci/archive/20230908/202309080351.xHt2qhP2-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230908/202309080351.xHt2qhP2-lkp@intel.com/reproduce)
+>
+> So coreboot does the platform init, and then hands over to Tianocore.
+>
+> I take it we are not talking about x86 here, so there are no Intel FSP
+> blobs that may have dependencies on Tianocore/EDK2 pieces, right? So
+> there are no UEFI semantics in the memory descriptions that coreboot
+> provides to Tianocore.
+>
+> So coreboot provides information to TIanocore about
+> - the platform topology (DT as usual)
+> - DRAM memory banks
+> - memory reservations
+> - secure firmware services perhaps?
+> - anything else?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309080351.xHt2qhP2-lkp@intel.com/
+Please don't widen the discussion as we are having enough trouble as
+it is. Let's focus on the memory reservations.
 
-All warnings (new ones prefixed by >>):
+>
+>
+> > >
+> > > As i explained before, there is already prior art for this in
+> > > Tianocore, i.e., launching a Tianocore build based on a DT descriptio=
+n
+> > > of the platform, including /memory and /reserved-memory nodes.
+> >
+> > By prior art do you mean code, or an existing binding? In either case,
+> > can you please point me to it? Is this a generic binding used on x86
+> > as well, or just for ARM?
+> >
+> > My goal here is to augment the binding.
+> >
+>
+> No I mean code.
+>
+> There is
+>
+> https://github.com/tianocore/edk2/tree/master/EmbeddedPkg/Drivers/FdtClie=
+ntDxe
+>
+> which encapsulates the DT received from the previous boot stage, and
+> exposes it as a DXE protocol.
+>
+> There are other drivers that depend on this protocol, e.g., to
+> discover additional memory nodes, virtio-mmio drivers and PCI host
+> bridges.
+>
+> https://github.com/tianocore/edk2/tree/master/OvmfPkg/Fdt
 
-   In file included from drivers/gpu/drm/i915/display/intel_lvds.c:30:
->> include/acpi/button.h:11:45: warning: declaration of 'struct acpi_device' will not be visible outside of this function [-Wvisibility]
-   extern void acpi_power_button_wakeup(struct acpi_device *device);
-                                               ^
-   1 warning generated.
+That looks like Tianocore internals rather than a binding, so far as I
+can tell. I do need a binding.
 
+>
+> The bindings used are the ones documented in the Linux kernel tree -
+> no ad-hoc bindings are being used as far as I know.
+>
+> But the point I was making before re prior art was really about using
+> existing bindings rather than inventing new ones. Since we are now
+> talking about augmenting /reserved-memory, I think we're already on
+> the same page in this regard (with the caveat that the EDK2 code does
+> not actually honour /reserved-memory at this point, but this is
+> because none of the platforms it is being used on today uses that
+> node)
 
-vim +11 include/acpi/button.h
+OK I'll try that patch again with compatible strings instead of node names[=
+1]
 
-     8	
-     9	#if IS_ENABLED(CONFIG_ACPI_BUTTON)
-    10	extern int acpi_lid_open(void);
-  > 11	extern void acpi_power_button_wakeup(struct acpi_device *device);
-    12	#else
-    13	static inline int acpi_lid_open(void)
-    14	{
-    15		return 1;
-    16	}
-    17	static inline void acpi_power_button_wakeup(struct acpi_device *device)
-    18	{
-    19		return;
-    20	}
-    21	#endif /* IS_ENABLED(CONFIG_ACPI_BUTTON) */
-    22	
+>
+> > >
+> > > I argued that Tianocore never consumes memory reservations with UEFI
+> > > semantics, given that it supplants whatever UEFI functionality the
+> > > previous stage may have provided. But it shouldn't step on the code
+> > > and data regions used by the previous stage if it is still running in
+> > > the background (e.g., OS at EL1 and PSCI at EL2 on ARM)
+> > >
+> > > So this brings me back to the things I proposed in my previous reply:
+> > > - memory reservations should be described in detail so the consumer
+> > > knows what to do with it
+> >
+> > Yes I can add more detail, if that is all that is needed. But we seem
+> > to still not be aligned on the goal.
+> >
+> >
+>
+> I do think we're converging, actually - it is just taking me some time
+> to get a clear mental picture of how this will be used.
+>
+> > > - memory reservations should have attributes that describe how the
+> > > memory may be used if not for the described purpose
+> > >
+> > > I still don't see a reason for things like runtime-code and
+> > > runtime-data etc based on the above. If stage N describes the memory
+> > > it occupies itself as system memory, it should reserve it as well if
+> > > it needs to be preserved after stage N+1 has taken over, so perhaps i=
+t
+> > > should be described as a discardable memory reservation but I don't
+> > > think it necessarily needs a type in that case.
+> >
+> > Well if you can find another way to do this in the DT, that is fine.
+> >
+>
+> It will all be under /reserved-memory, as far as I understand. We just
+> need to get to the right level of abstraction.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+OK I'll try again.
+
+Regards,
+Simon
+
+[1] I was led down the node-name path by this text in the DT spec
+"Following the generic-names recommended practice, node names should
+reflect the purpose of the node (ie. =E2=80=9Cframebuffer=E2=80=9D or =E2=
+=80=9Cdma-pool=E2=80=9D).
+Unit address (@<address>) should be appended to the name if the node
+is a static allocation."
