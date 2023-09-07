@@ -2,46 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B42247978EA
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 18:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DC93797901
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 19:00:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243153AbjIGQ6z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Sep 2023 12:58:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36768 "EHLO
+        id S240302AbjIGRAc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Sep 2023 13:00:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236814AbjIGQ6y (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 12:58:54 -0400
+        with ESMTP id S240202AbjIGRAQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 13:00:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8897110CF;
-        Thu,  7 Sep 2023 09:58:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4AFC116A2;
-        Thu,  7 Sep 2023 16:41:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 663C51FFA;
+        Thu,  7 Sep 2023 09:59:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7020EC433BF;
+        Thu,  7 Sep 2023 16:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694104882;
-        bh=TcXlCdBwAdhvSY29Gk4U6YRFj3oqsCMGTaUu7DO7ABc=;
+        s=k20201202; t=1694105901;
+        bh=9H8krLtYfLzgGeA5i0zuj9qgIuh5eWibHtX4rliuuxQ=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ER06lwSM/j1xnFBQOrUJerziPgcpI5gDKNTqDixQjhU0k8PiCru4SwlOiLg0ImvO/
-         kEl2QkM+/7urjlYrzxPn1a8a1ZCkKhzzM8HypyK/+JghUgI3OsD+X4qRpOf9w0w2ud
-         K9Dp7IOFdNfiBgJcfKNJsRDaKud6Z9tI6+OY2bZa7Y0P6V8dNJpLmHShL8JqTYeGoW
-         mOODtbz272BFtKswS1WP6lEktZ106QkwAwa+Ag4bzzUqiM0KMPvw/7g9cUlUzd6iyd
-         kt9RhoKcdRgV5l2w4Q9WhMRyEXIhDJHAr9j4tVqUCpFDNWVtVVTW6jLSnZrRJfkwKk
-         2NJKmzlChFiyA==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2b974031aeaso21275601fa.0;
-        Thu, 07 Sep 2023 09:41:22 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxbHfliM/B982PbsbV5AnwcW3HBXR2UZ3IYfDzwyr4OKSpHe1H9
-        GXArBySVwkE79+ixzrAcXTHzMTBJaDu5bh9EnA==
-X-Google-Smtp-Source: AGHT+IG23bFGvQrEWMPrUuiNiXfBfSQ2nV8yCIxtgarBdJYaaWK6UgdiyOScuIdqPU/mpa09cy/VQ6TL5hv239G+U08=
-X-Received: by 2002:a2e:3a18:0:b0:2bc:bdbd:1542 with SMTP id
- h24-20020a2e3a18000000b002bcbdbd1542mr5251425lja.11.1694104880149; Thu, 07
- Sep 2023 09:41:20 -0700 (PDT)
+        b=HZSOww+G/B17lm44Q4pK901JIvTJ+z2HSd8QVDZnTmfMHtw4A/FdMMdg0G9fWUG8n
+         VgwoarbRzt5ypjQeRKWF1UtKEO/iIScBixMwuctbelX+fXPN7iNwDDQkBf/gnAUYkx
+         mf6r1j0bJ0GDOXTs7goJT5QasJ1jlDe/wPpJKZAcuzxHRagM7PMKEn32dCanO0a57H
+         BtndR0lM1QbhEN3hLC1d6wDNm0i/GQHtxpbo5HFx1mhzL5rO/aiEqNINT5VrCu3Wi8
+         xES8vBcm83QU9L+UKQa6B4ed3Ba6vkmpyDuJT0GGJXIAZvb3mgxws/PkYis79hfx4E
+         V0qByRzTyJTSg==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2b9c907bc68so20219491fa.2;
+        Thu, 07 Sep 2023 09:58:21 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yw95Z9lY3YgVvxcddr3uL29CEkVHg8KuUKJ8n1JDUln1Rz0g6yB
+        asx6LKCtsna8AI/lpTpCt1CdsT+pyTtnaWMbfQ==
+X-Google-Smtp-Source: AGHT+IHLKsGi67L1BWMr0evQdFmmKrCxPICw4WCCL86IJN0XnEYKyZyPOVddUmJXTpGASiUH1k4Vzk7Q+KRVgc7tkH4=
+X-Received: by 2002:a2e:965a:0:b0:2bc:b815:d64d with SMTP id
+ z26-20020a2e965a000000b002bcb815d64dmr5383234ljh.30.1694105899386; Thu, 07
+ Sep 2023 09:58:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230830231758.2561402-1-sjg@chromium.org>
-In-Reply-To: <20230830231758.2561402-1-sjg@chromium.org>
+References: <20230830231758.2561402-1-sjg@chromium.org> <20230830231758.2561402-4-sjg@chromium.org>
+In-Reply-To: <20230830231758.2561402-4-sjg@chromium.org>
 From:   Rob Herring <robh@kernel.org>
-Date:   Thu, 7 Sep 2023 11:41:07 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJFyuHfJ1t1gKfDFp1yGuNB_FhVCnY1Tk9iBzvchHwEOw@mail.gmail.com>
-Message-ID: <CAL_JsqJFyuHfJ1t1gKfDFp1yGuNB_FhVCnY1Tk9iBzvchHwEOw@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] Add reserved-memory
+Date:   Thu, 7 Sep 2023 11:58:07 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKEbqUtWHpHXmiDSZBY7-Nw4-fLs23BEqomBevSDNBprQ@mail.gmail.com>
+Message-ID: <CAL_JsqKEbqUtWHpHXmiDSZBY7-Nw4-fLs23BEqomBevSDNBprQ@mail.gmail.com>
+Subject: Re: [PATCH v5 4/4] memory: Add ECC properties
 To:     Simon Glass <sjg@chromium.org>
 Cc:     devicetree@vger.kernel.org,
         Maximilian Brune <maximilian.brune@9elements.com>,
@@ -72,20 +72,89 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Wed, Aug 30, 2023 at 6:18=E2=80=AFPM Simon Glass <sjg@chromium.org> wrot=
 e:
 >
-> Bring in this file from Linux v6.5
+> Some memories provide ECC detection and/or correction. For software which
+> wants to check memory, it is helpful to see which regions provide this
+> feature.
+>
+> Add this as a property of the /memory nodes, since it presumably follows
+> the hardware-level memory system.
 >
 > Signed-off-by: Simon Glass <sjg@chromium.org>
 > ---
 >
-> (no changes since v4)
+> Changes in v5:
+> - Redo to make this property specific to ECC
+> - Provide properties both for detection and correction
 >
-> Changes in v4:
-> - New patch
+> Changes in v3:
+> - Add new patch to update the /memory nodes
 >
->  .../reserved-memory/reserved-memory.yaml      | 181 ++++++++++++++++++
->  1 file changed, 181 insertions(+)
->  create mode 100644 dtschema/schemas/reserved-memory/reserved-memory.yaml
+>  dtschema/schemas/memory.yaml | 30 ++++++++++++++++++++++++++++++
+>  1 file changed, 30 insertions(+)
+>
+> diff --git a/dtschema/schemas/memory.yaml b/dtschema/schemas/memory.yaml
+> index 1d74410..944aa9f 100644
+> --- a/dtschema/schemas/memory.yaml
+> +++ b/dtschema/schemas/memory.yaml
+> @@ -34,7 +34,37 @@ patternProperties:
+>          description:
+>            For the purpose of identification, each NUMA node is associate=
+d with
+>            a unique token known as a node id.
+> +      ecc-detection:
+> +        $ref: /schemas/types.yaml#/definitions/string
+> +        enum:
+> +          - none
+> +          - single-bit
+> +          - multi-bit
+> +        description: |
+> +          If present, this inidcates the type of memory errors which can=
+ be
 
-I've applied this one and patch 2.
+typo
+
+> +          detected and reported by the Error-Correction Code (ECC) memor=
+y
+> +          subsystem:
+>
+> +            none       - No error detection is possible
+> +            single-bit - Detects and reports single-bit ECC errors
+> +            multi-bit  - Detects and reports multiple-bit ECC errors
+
+I don't think 'multi' is specific enough. Perhaps this should be an
+int instead with how many bits. (And '-bits' is a standard unit suffix
+so a type isn't needed)
+
+> +
+> +          If not present, this is equivalent to 'none'.
+
+Can be expressed as schema:
+
+default: none
+
+Though if that's the default why have it as a value? (It's fine though)
+
+> +      ecc-correction:
+> +        $ref: /schemas/types.yaml#/definitions/string
+> +        enum:
+> +          - none
+> +          - single-bit
+> +          - multi-bit
+> +        description: |
+> +          If present, this inidcates the type of memory errors which can=
+ be
+
+typo
+
+> +          corrected by the Error-Correction Code (ECC) memory subsystem:
+> +
+> +            none       - No error correction is possible
+> +            single-bit - Corrects single-bit ECC errors
+> +            multi-bit  - Corrects multiple-bit ECC errors
+> +
+> +          If not present, this is equivalent to 'none'.
+
+One issue is with 2 properties nonsensical combinations are allowed.
+Not really any way to handle that in the schema though.
 
 Rob
