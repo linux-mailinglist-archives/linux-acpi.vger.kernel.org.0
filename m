@@ -2,119 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52648797B7F
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 20:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DAA5797C65
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 20:54:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243782AbjIGSTP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Sep 2023 14:19:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44124 "EHLO
+        id S233206AbjIGSyL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Sep 2023 14:54:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232978AbjIGSTP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 14:19:15 -0400
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 707EA1705;
-        Thu,  7 Sep 2023 11:18:59 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id 567bb54194be6a4c; Thu, 7 Sep 2023 20:18:57 +0200
-Authentication-Results: v370.home.net.pl; spf=softfail (domain owner 
-   discourages use of this host) smtp.mailfrom=rjwysocki.net 
-   (client-ip=195.136.19.94; helo=[195.136.19.94]; 
-   envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
-Received: from kreacher.localnet (unknown [195.136.19.94])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id D03936636D6;
-        Thu,  7 Sep 2023 20:18:56 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PM <linux-pm@vger.kernel.org>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Zhang Rui <rui.zhang@intel.com>, linux-omap@vger.kernel.org,
-        Amit Kucheria <amitk@kernel.org>, Keerthy <j-keerthy@ti.com>
-Subject: [PATCH v1] thermal: Constify the trip argument of the .get_trend() zone callback
-Date:   Thu, 07 Sep 2023 20:18:56 +0200
-Message-ID: <5709115.DvuYhMxLoT@kreacher>
+        with ESMTP id S232643AbjIGSyL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 14:54:11 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FE2910FA
+        for <linux-acpi@vger.kernel.org>; Thu,  7 Sep 2023 11:53:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694112811; x=1725648811;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vgnOU7mN8H0dHSzr5JvqUcawQyl3aS/repDyOYVvMX4=;
+  b=KGtqj5+PbVTOb7Gz92Ov9angvA2pZyHtz8jvG0KM2DRGP8XuUAWQiM6O
+   GbvcNXADG4mFnSPQH7YopaVW28Yn5pa1x+HVRk50YEiwl8n5bmwmNPf6D
+   sxbftuKFP8OLCwYvILgOtDMcpJNX1XAb/5zPwWyapwMY9Rr2Ydwi/agFy
+   kBbOH0bDPpYc00d308EHZxhID3T8VkXlNy8pCFjsrSIA4LSVaVpYYQv7b
+   5/QhNmaAvAMnoowNF2Y9ip091rRlhrS0yOXXhorHogH8VgUjj6/mWKcnZ
+   4/ooyUJPEpp6aVeTVjwyiLyYn6EhqOSuOBNs2wYF0zN0eSujQlSxtcDYq
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="408437007"
+X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
+   d="scan'208";a="408437007"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 11:51:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="1072971200"
+X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
+   d="scan'208";a="1072971200"
+Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 07 Sep 2023 11:51:28 -0700
+Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qeK69-0001Tb-2z;
+        Thu, 07 Sep 2023 18:51:25 +0000
+Date:   Fri, 8 Sep 2023 02:51:12 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ken Xue <Ken.Xue@amd.com>, linux-acpi@vger.kernel.org,
+        rafael@kernel.org, andriy.shevchenko@linux.intel.com
+Cc:     oe-kbuild-all@lists.linux.dev, Ken.Xue@amd.com
+Subject: Re: [PATCH] acpi: trigger wakeup key event from power button
+Message-ID: <202309080239.IiC7uLpW-lkp@intel.com>
+References: <20230907074342.7722-1-Ken.Xue@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrudehhedguddvfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffffffkefgheehffelteeiveeffeevhfelteejvddvieejjeelvdeiheeuveeuffenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeelpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghlrdhlvgiitggrnhhosehlihhnrghrohdrohhrghdprhgtphht
- thhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=9 Fuz1=9 Fuz2=9
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230907074342.7722-1-Ken.Xue@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi Ken,
 
-Add 'const' to the definition of the 'trip' argument of the
-.get_trend() thermal zone callback to indicate that the trip point
-passed to it should not be modified by it and adjust the
-callback functions implementing it, thermal_get_trend() in the
-ACPI thermal driver and __ti_thermal_get_trend(), accordingly.
+kernel test robot noticed the following build warnings:
 
-No intentional functional impact.
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on linus/master v6.5 next-20230907]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/thermal.c                             |    2 +-
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c |    3 ++-
- include/linux/thermal.h                            |    4 ++--
- 3 files changed, 5 insertions(+), 4 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Ken-Xue/acpi-trigger-wakeup-key-event-from-power-button/20230907-232828
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20230907074342.7722-1-Ken.Xue%40amd.com
+patch subject: [PATCH] acpi: trigger wakeup key event from power button
+config: riscv-defconfig (https://download.01.org/0day-ci/archive/20230908/202309080239.IiC7uLpW-lkp@intel.com/config)
+compiler: riscv64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230908/202309080239.IiC7uLpW-lkp@intel.com/reproduce)
 
-Index: linux-pm/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-===================================================================
---- linux-pm.orig/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ linux-pm/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -110,7 +110,8 @@ static inline int __ti_thermal_get_temp(
- }
- 
- static int __ti_thermal_get_trend(struct thermal_zone_device *tz,
--				  struct thermal_trip *trip, enum thermal_trend *trend)
-+				  const struct thermal_trip *trip,
-+				  enum thermal_trend *trend)
- {
- 	struct ti_thermal_data *data = thermal_zone_device_priv(tz);
- 	struct ti_bandgap *bgp;
-Index: linux-pm/include/linux/thermal.h
-===================================================================
---- linux-pm.orig/include/linux/thermal.h
-+++ linux-pm/include/linux/thermal.h
-@@ -80,8 +80,8 @@ struct thermal_zone_device_ops {
- 	int (*set_trip_hyst) (struct thermal_zone_device *, int, int);
- 	int (*get_crit_temp) (struct thermal_zone_device *, int *);
- 	int (*set_emul_temp) (struct thermal_zone_device *, int);
--	int (*get_trend) (struct thermal_zone_device *, struct thermal_trip *,
--			  enum thermal_trend *);
-+	int (*get_trend) (struct thermal_zone_device *,
-+			  const struct thermal_trip *, enum thermal_trend *);
- 	void (*hot)(struct thermal_zone_device *);
- 	void (*critical)(struct thermal_zone_device *);
- };
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -531,7 +531,7 @@ static int thermal_get_temp(struct therm
- }
- 
- static int thermal_get_trend(struct thermal_zone_device *thermal,
--			     struct thermal_trip *trip,
-+			     const struct thermal_trip *trip,
- 			     enum thermal_trend *trend)
- {
- 	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202309080239.IiC7uLpW-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from drivers/gpu/drm/nouveau/nouveau_connector.c:27:
+>> include/acpi/button.h:11:45: warning: 'struct acpi_device' declared inside parameter list will not be visible outside of this definition or declaration
+      11 | extern void acpi_power_button_wakeup(struct acpi_device *device);
+         |                                             ^~~~~~~~~~~
 
 
+vim +11 include/acpi/button.h
 
+     8	
+     9	#if IS_ENABLED(CONFIG_ACPI_BUTTON)
+    10	extern int acpi_lid_open(void);
+  > 11	extern void acpi_power_button_wakeup(struct acpi_device *device);
+    12	#else
+    13	static inline int acpi_lid_open(void)
+    14	{
+    15		return 1;
+    16	}
+    17	static inline void acpi_power_button_wakeup(struct acpi_device *device)
+    18	{
+    19		return;
+    20	}
+    21	#endif /* IS_ENABLED(CONFIG_ACPI_BUTTON) */
+    22	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
