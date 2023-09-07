@@ -2,156 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E00B796DE2
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 02:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCCD779737B
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 17:25:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236519AbjIGANh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 Sep 2023 20:13:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47096 "EHLO
+        id S230169AbjIGPYc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Sep 2023 11:24:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229753AbjIGANg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Sep 2023 20:13:36 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C43199F;
-        Wed,  6 Sep 2023 17:13:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694045613; x=1725581613;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WlkbumebDoiqA7h5lGLoCyy+L33WG8FJ86yAFQBnwlo=;
-  b=Vp7byVcBnpciHmmv2yagdPIuOSlHuRf92rnKKRZJSxZGTzifHs4EGcTS
-   FzYwv+usoYpyGZzAQ/TIaj2IG1+5IgnvjESqo8fhSSzP6MeUxv7NAQsjc
-   R2e/c/TucrCs7G2I8+CCmYzMoGGsxbmynPAjd4kSVvjwCgMh+MyXbURiQ
-   THoVW/qUgvDbBHie/fUo6uKCuIoYErJZpTY+vdaMsZ2d1yPCgXd1jUy9O
-   nqizCcH5fGHqp1lCBgBFe7TnugF35bT9dLgBvJf7J4yzIBGmdHssaLlf4
-   ooNBoVSTH8mkl5paTiGdF8VVU/vTtdpXILoFP6MtJd1zGOGOM/obrsscX
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="374613201"
-X-IronPort-AV: E=Sophos;i="6.02,233,1688454000"; 
-   d="scan'208";a="374613201"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 17:13:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="856680657"
-X-IronPort-AV: E=Sophos;i="6.02,233,1688454000"; 
-   d="scan'208";a="856680657"
-Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 06 Sep 2023 17:13:22 -0700
-Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qe2e8-0000j1-0U;
-        Thu, 07 Sep 2023 00:13:20 +0000
-Date:   Thu, 7 Sep 2023 08:12:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jason Andryuk <jandryuk@gmail.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        Roger Pau Monne <roger.pau@citrix.com>,
-        stable@vger.kernel.org, Jason Andryuk <jandryuk@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, xen-devel@lists.xenproject.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when
- running as Xen dom0
-Message-ID: <202309070741.2n0k8FjN-lkp@intel.com>
-References: <20230906182125.48642-1-jandryuk@gmail.com>
+        with ESMTP id S231628AbjIGPVs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 11:21:48 -0400
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3B6A10DF
+        for <linux-acpi@vger.kernel.org>; Thu,  7 Sep 2023 08:21:22 -0700 (PDT)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-5922380064bso11401247b3.2
+        for <linux-acpi@vger.kernel.org>; Thu, 07 Sep 2023 08:21:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694100082; x=1694704882; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RoLVfI/Qa17hM0LLGxXlqleEL6Bcc6ph7u/GtpOctOM=;
+        b=k75YBGrxve1OUKukHeNqufsKQcHuyhOkeuqAuIplbRrb1zqeFu3yuqiSK7eT6zMiRn
+         RogVmrPwGTflfWsYRFjxC5u72CwIunuh9OLKO526A0HNXRX1u18g0WqB5uwHlwu4K244
+         oW/AvVbs2M1yo2BaLahuUabj96zOTKz3khOlCptLSRPMx1S0JEwtzBdB7Y2LxoXd/6gg
+         2DWH8YY/o5jr69FVicXnmU/nwZZNU0EUPT6vvf/ciNva79wbcjnpl/4/7DkoIiDtKaVE
+         x1clNKdq8StXhcjldh23X86iQnJ8AiFRgEhYQbCFnFkUx6qwysfCf4muWfWOS3I7HPA5
+         55jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694100082; x=1694704882;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RoLVfI/Qa17hM0LLGxXlqleEL6Bcc6ph7u/GtpOctOM=;
+        b=Q5Uv8PSG71Ifp5Pu99M2w+nBhTOeW1KrFIF2IWHqVkQ/ECLRsmkIVdI+rUVe9mUevd
+         5HLH/NnHJc0ZTJyfLLdfZEqDICuVBYQcnOnbKEQVVtbHYgZkWi7iG2qBsKDtdoXu+3r/
+         Ek1e0ncW++s2BEEeP0c/WQnyee5JCokMncSAm9VJNLVXC0LJiisJ2c7sItASK6WGVoG9
+         1mqyqa1sD6m4utoqLSNU/ZRaDFIWpRUHOYVCczklrBY71nPougtLNqBU8ppTA2Znn69f
+         5GRnKlsjuM4XtAtwzUpIbew+K2yVCPWiCfTDqi1Co5fSuCPMHotP2ZE+8yybONkUIQ3X
+         WMTA==
+X-Gm-Message-State: AOJu0YyOiuuU9u+xr6X0w5g/KP5JOpfRAEOucAsjUpvvARb4SU0qFSOa
+        SHZiekcF+2xhhHL2Th8vvBvueqFFKCCLoRoA3vCtPSi5pGJkMiXq
+X-Google-Smtp-Source: AGHT+IHG0TBlmxyoTQFIa7FFpqQqYMcVr4pyVQslrpSztqetV//HxeApegU4hZ/YXLQ350AtIlPtITxSVFId9gOqRWY=
+X-Received: by 2002:a25:40a:0:b0:d7f:7690:d865 with SMTP id
+ 10-20020a25040a000000b00d7f7690d865mr6786114ybe.6.1694072130152; Thu, 07 Sep
+ 2023 00:35:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230906182125.48642-1-jandryuk@gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-16-brgl@bgdev.pl>
+In-Reply-To: <20230905185309.131295-16-brgl@bgdev.pl>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 7 Sep 2023 09:35:18 +0200
+Message-ID: <CACRpkdaLKqNM1xMCo9jz1Pe_18A=GJodbaTHL+VmoRZa5jJbjQ@mail.gmail.com>
+Subject: Re: [RFT PATCH 15/21] arm: omap1: ams-delta: stop using gpiochip_find()
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Dipen Patel <dipenp@nvidia.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
+        linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.9 required=5.0 tests=DATE_IN_PAST_06_12,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jason,
+Oops one more note:
 
-kernel test robot noticed the following build errors:
+On Tue, Sep 5, 2023 at 8:53=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl> =
+wrote:
 
-[auto build test ERROR on tip/x86/core]
-[also build test ERROR on v6.5]
-[cannot apply to rafael-pm/linux-next linus/master next-20230906]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> gpiochip_find() is going away as it's not hot-unplug safe. This platform
+> is not affected by any of the related problems as this GPIO controller
+> cannot really go away but in order to finally remove this function, we
+> need to convert it to using gpio_device_find() as well.
+>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+(...)
+> +       struct gpio_device *gdev;
+(...)
+> +       gdev =3D gpio_device_find_by_label(OMAP_GPIO_LABEL);
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Andryuk/acpi-processor-sanitize-_PDC-buffer-bits-when-running-as-Xen-dom0/20230907-022235
-base:   tip/x86/core
-patch link:    https://lore.kernel.org/r/20230906182125.48642-1-jandryuk%40gmail.com
-patch subject: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when running as Xen dom0
-config: i386-randconfig-003-20230907 (https://download.01.org/0day-ci/archive/20230907/202309070741.2n0k8FjN-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230907/202309070741.2n0k8FjN-lkp@intel.com/reproduce)
+This leaves a reference to the gdev right? No scoped guard?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309070741.2n0k8FjN-lkp@intel.com/
+If you leave a dangling reference intentionally I think it warrants
+a comment ("leaving a ref here so the device will never be
+free:ed").
 
-All errors (new ones prefixed by >>):
-
->> drivers/acpi/processor_pdc.c:147:3: error: call to undeclared function 'xen_sanitize_pdc'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-                   xen_sanitize_pdc(buffer);
-                   ^
-   1 error generated.
-
-
-vim +/xen_sanitize_pdc +147 drivers/acpi/processor_pdc.c
-
-   116	
-   117	/*
-   118	 * _PDC is required for a BIOS-OS handshake for most of the newer
-   119	 * ACPI processor features.
-   120	 */
-   121	static acpi_status
-   122	acpi_processor_eval_pdc(acpi_handle handle, struct acpi_object_list *pdc_in)
-   123	{
-   124		acpi_status status = AE_OK;
-   125		union acpi_object *obj;
-   126		u32 *buffer = NULL;
-   127	
-   128		obj = pdc_in->pointer;
-   129		buffer = (u32 *)(obj->buffer.pointer);
-   130	
-   131		if (boot_option_idle_override == IDLE_NOMWAIT) {
-   132			/*
-   133			 * If mwait is disabled for CPU C-states, the C2C3_FFH access
-   134			 * mode will be disabled in the parameter of _PDC object.
-   135			 * Of course C1_FFH access mode will also be disabled.
-   136			 */
-   137			buffer[2] &= ~(ACPI_PDC_C_C2C3_FFH | ACPI_PDC_C_C1_FFH);
-   138		}
-   139	
-   140		if (xen_initial_domain()) {
-   141			/*
-   142			 * When Linux is running as Xen dom0, the hypervisor is the
-   143			 * entity in charge of the processor power management, and so
-   144			 * Xen needs to check the OS capabilities reported in the _PDC
-   145			 * buffer matches what the hypervisor driver supports.
-   146			 */
- > 147			xen_sanitize_pdc(buffer);
-   148		}
-   149	
-   150		status = acpi_evaluate_object(handle, "_PDC", pdc_in, NULL);
-   151	
-   152		if (ACPI_FAILURE(status))
-   153			acpi_handle_debug(handle,
-   154			    "Could not evaluate _PDC, using legacy perf control\n");
-   155	
-   156		return status;
-   157	}
-   158	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Yours,
+Linus Walleij
