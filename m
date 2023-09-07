@@ -2,117 +2,154 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DAA5797C65
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 20:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49731797CA2
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Sep 2023 21:20:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233206AbjIGSyL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Sep 2023 14:54:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37822 "EHLO
+        id S233475AbjIGTUY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Sep 2023 15:20:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232643AbjIGSyL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 14:54:11 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FE2910FA
-        for <linux-acpi@vger.kernel.org>; Thu,  7 Sep 2023 11:53:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694112811; x=1725648811;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vgnOU7mN8H0dHSzr5JvqUcawQyl3aS/repDyOYVvMX4=;
-  b=KGtqj5+PbVTOb7Gz92Ov9angvA2pZyHtz8jvG0KM2DRGP8XuUAWQiM6O
-   GbvcNXADG4mFnSPQH7YopaVW28Yn5pa1x+HVRk50YEiwl8n5bmwmNPf6D
-   sxbftuKFP8OLCwYvILgOtDMcpJNX1XAb/5zPwWyapwMY9Rr2Ydwi/agFy
-   kBbOH0bDPpYc00d308EHZxhID3T8VkXlNy8pCFjsrSIA4LSVaVpYYQv7b
-   5/QhNmaAvAMnoowNF2Y9ip091rRlhrS0yOXXhorHogH8VgUjj6/mWKcnZ
-   4/ooyUJPEpp6aVeTVjwyiLyYn6EhqOSuOBNs2wYF0zN0eSujQlSxtcDYq
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="408437007"
-X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
-   d="scan'208";a="408437007"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 11:51:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="1072971200"
-X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
-   d="scan'208";a="1072971200"
-Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 07 Sep 2023 11:51:28 -0700
-Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qeK69-0001Tb-2z;
-        Thu, 07 Sep 2023 18:51:25 +0000
-Date:   Fri, 8 Sep 2023 02:51:12 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ken Xue <Ken.Xue@amd.com>, linux-acpi@vger.kernel.org,
-        rafael@kernel.org, andriy.shevchenko@linux.intel.com
-Cc:     oe-kbuild-all@lists.linux.dev, Ken.Xue@amd.com
-Subject: Re: [PATCH] acpi: trigger wakeup key event from power button
-Message-ID: <202309080239.IiC7uLpW-lkp@intel.com>
-References: <20230907074342.7722-1-Ken.Xue@amd.com>
+        with ESMTP id S229562AbjIGTUX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Sep 2023 15:20:23 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2060.outbound.protection.outlook.com [40.107.243.60])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FF49B2;
+        Thu,  7 Sep 2023 12:20:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FQUqF5cq34r/Fu39qENypIXVs8/8WJdeWHz0w7BoOWIRqmLg5KMgx6qiYSOfehZRB1ZSNPvBpXC0Ekg562Mi0w91KWwNNMiQgY+phQc93dUF+oa3ne+dS4l19TnxgIglisHJqMVmOsMgOjuRBc20jgKYtneX5msnysBqQSD+hUI7T1kfVIHgze/S1BgtiJfqo44D6n4AWjy3NXh+dNjhej7/AC10JOcwtdJYt79Yyqv+7urpHa0edOTeRq51jF0iFKtt3rHDQCmeMk1+u0QlQqqSwPqx66UPedZQOVDxxewrOKtstk1+7a99Rl5TMgUUKlzzvifeAoVX4RQRidtmZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xqhVyZnCpHLh+Xi0sT4a+34gKljUFALXq0Ad36lVqjo=;
+ b=C8AwHP0KLfTkJjNXIt+huv3HRtDz5SeJsnKJtzO7wAQxo4G42u7rT38NYh+geisVTf/9RXnkyuDdLUwMcpLM3rKWgwzgRsyaQAO0GF7uHt/lFrtMD2lQNzGgDY5MXY77+5gIXRmzsobhGKd9yVuss26dOeRT2RNBbfGN4Q1jvKEIrGMgzfFmcg2iZl2UqEpoYzuF2OEGD1vXI70f0HHEh4W4dxWrLqFXs7CksNfedyEhCeqwt/9kDbINb7AbryZKIsWBT3pdEQhm7GHjC4sLmTBatoJwvcK/elazqk7w4uj1gLmVZScYAOEi3YtIl8KO1BX6ek7XxnF8aDiO7QG59Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xqhVyZnCpHLh+Xi0sT4a+34gKljUFALXq0Ad36lVqjo=;
+ b=uG3KC0I4bS/smSHudzBN8RM7loTJ5lwhyuKMWd9jBaThEQCN+8asiXXYc/P/B9kT3hFWhSpN67Vhab8aDmyDcGOsuANeB9KwNzgUQP2Hbsi07IuotCG8u2C3iF6/I2/TqjNQCEc7osvCH8ijjAaVcN7cLwEEiLaSDunBBfyt0xw=
+Received: from SA1P222CA0020.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:22c::21)
+ by IA1PR12MB7565.namprd12.prod.outlook.com (2603:10b6:208:42f::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34; Thu, 7 Sep
+ 2023 19:20:14 +0000
+Received: from SN1PEPF0002636C.namprd02.prod.outlook.com
+ (2603:10b6:806:22c:cafe::30) by SA1P222CA0020.outlook.office365.com
+ (2603:10b6:806:22c::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.30 via Frontend
+ Transport; Thu, 7 Sep 2023 19:20:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF0002636C.mail.protection.outlook.com (10.167.241.137) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6768.25 via Frontend Transport; Thu, 7 Sep 2023 19:20:13 +0000
+Received: from bcheatha-HP-EliteBook-845-G8-Notebook-PC.amd.com
+ (10.180.168.240) by SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Thu, 7 Sep 2023 14:20:07 -0500
+From:   Ben Cheatham <Benjamin.Cheatham@amd.com>
+To:     <rafael@kernel.org>, <dan.j.williams@intel.com>,
+        <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+CC:     <bhelgaas@google.com>, <benjamin.cheatham@amd.com>,
+        <yazen.ghannam@amd.com>
+Subject: [PATCH v4 0/3] CXL, ACPI, APEI, EINJ: Update EINJ for CXL 1.1 error types
+Date:   Thu, 7 Sep 2023 14:19:53 -0500
+Message-ID: <20230907191956.674833-1-Benjamin.Cheatham@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230907074342.7722-1-Ken.Xue@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002636C:EE_|IA1PR12MB7565:EE_
+X-MS-Office365-Filtering-Correlation-Id: 695b4303-7b28-47c2-6659-08dbafd775f7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: HwvcpSf0T7VjUVeJsFKzjyRbGQzdJ+Vw/AFhHALlRwyCg3Xg++KEdWJnqnVhxGyTv7TBk6SFULSScn4WcahBDsiUU+H/tdnB81uz0A46qwrZ6u3ZTuLRSgaSpv2whaI4nUpVQ++U+B82A6wtZKbzUS2yd5sEyDbF5MuwdXyxxPYjbW35Plxz+JcPBU71OPikhXcaaO8S9TSTPRXnYHGIydWkj+iIEoYodmHO0EQFABAk0LnYqvEZNzSgYaVkqa80BeZHmG8X4YHjPp2uRtyzQa+ofgc9iHKWws4deMIhH8bPg8xjOSJxu+JnUThSpY5YCOZqqkUjaFQxF+0biZfoyzqJQ0JBE/iAPQNUTrKZSGUSpRszLOPZ8bZa8SR7+tZmV5Q0bH98FmELEXLRlrfOD8PctDsJpYaV4xyefXutNU/bUbD2StrRURWXBAGCXA9dco5go/3Gr2mHuQvOly52ep4k9zSwyhFgNfVlh3SoemCsO5wOvinvruvSTu/J9/AJSKM3oa3G/LaCt6BNVOmsWWjTvNKq6bJitGlbj1EBe7jHBmEpyJnQaofpTHiW1S9x+MV3NypqTaK4k4iyllGuvGhNmxwJSrwkHvhkq4QV3+0qxDiD9Tr40wI1HMWWKaKpPC7IxHQaNhxG/bNWfdHxPo8UcY7OAKkxzS2D4hsUA6XKCKZXYMrvRoDjB4ScisnPsTxubVISp6+/oAQ1LMwI0iBj+l66Nu4LP6nIKgr/sGdxTC9FjPZ5awP5DoTUX8mgefBG2nIj8MhR87E13SqCWL7yjcX0oKoOWVwfwiRlstg=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(376002)(396003)(136003)(346002)(82310400011)(1800799009)(451199024)(186009)(46966006)(36840700001)(40470700004)(82740400003)(7696005)(6666004)(1076003)(966005)(83380400001)(478600001)(41300700001)(15650500001)(426003)(16526019)(336012)(26005)(2906002)(110136005)(54906003)(316002)(70206006)(70586007)(5660300002)(4326008)(8676002)(8936002)(2616005)(40460700003)(40480700001)(47076005)(86362001)(36756003)(36860700001)(81166007)(356005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2023 19:20:13.4409
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 695b4303-7b28-47c2-6659-08dbafd775f7
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002636C.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7565
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Ken,
+v4 Changes:
+	- Fix kernel test robot build errors
+	- Add imply rules for CONFIG_CXL_ACPI and CONFIG_CXL_BUS in
+	  EINJ Kconfig to build the CXL support correctly by default
+	- Change description of building CXL error type support
+	  in EINJ documentation for brevity
 
-kernel test robot noticed the following build warnings:
+v3 Changes:
+	- Add sysfs files for finding valid CXL 1.1 downstream port
+	  MMIO addresses, along with validation of said addresses
+	- Update EINJ documentation to include relevant information
+	  for injecting CXL error types
+	- Dropped Yazen's from tag
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on linus/master v6.5 next-20230907]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This patch is a follow up to the discussion at [1], and builds on Tony's
+CXL error patch at [2].
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ken-Xue/acpi-trigger-wakeup-key-event-from-power-button/20230907-232828
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20230907074342.7722-1-Ken.Xue%40amd.com
-patch subject: [PATCH] acpi: trigger wakeup key event from power button
-config: riscv-defconfig (https://download.01.org/0day-ci/archive/20230908/202309080239.IiC7uLpW-lkp@intel.com/config)
-compiler: riscv64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230908/202309080239.IiC7uLpW-lkp@intel.com/reproduce)
+The new CXL error types will use the Memory Address field in the
+SET_ERROR_TYPE_WITH_ADDRESS structure in order to target a CXL 1.1
+compliant memory-mapped downstream port. The value of the memory address
+will be in the port's MMIO range, and it will not represent physical
+(normal or persistent) memory.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309080239.IiC7uLpW-lkp@intel.com/
+In v2 [3], the user supplied the MMIO address for the downstream port, but
+per Dan Williams' suggestion [3], the addresses are predetermined and
+the user only picks the error type to inject and the downstream port to
+inject into. In order to inject an error, the user write the error type
+to the error_type file under the einj debugfs directory, then writes any
+integer into one of the files under the cxl directory.
 
-All warnings (new ones prefixed by >>):
+[1]:
+Link: https://lore.kernel.org/linux-acpi/20221206205234.606073-1-Benjamin.Cheatham@amd.com/
+[2]:
+Link: https://lore.kernel.org/linux-cxl/CAJZ5v0hNQUfWViqxbJ5B4JCGJUuHpWWSpqpCFWPNpGuagoFbsQ@mail.gmail.com/T/#t
+[3]:
+Link: https://lore.kernel.org/linux-cxl/20230403151849.43408-1-Benjamin.Cheatham@amd.com/
 
-   In file included from drivers/gpu/drm/nouveau/nouveau_connector.c:27:
->> include/acpi/button.h:11:45: warning: 'struct acpi_device' declared inside parameter list will not be visible outside of this definition or declaration
-      11 | extern void acpi_power_button_wakeup(struct acpi_device *device);
-         |                                             ^~~~~~~~~~~
+Ben Cheatham (3):
+  CXL, PCIE: Add cxl_rcrb_addr file to dport_dev
+  ACPI, APEI, EINJ: Add CXL 1.1 EINJ error type support
+  ACPI, APEI, EINJ: Update EINJ documentation
 
-
-vim +11 include/acpi/button.h
-
-     8	
-     9	#if IS_ENABLED(CONFIG_ACPI_BUTTON)
-    10	extern int acpi_lid_open(void);
-  > 11	extern void acpi_power_button_wakeup(struct acpi_device *device);
-    12	#else
-    13	static inline int acpi_lid_open(void)
-    14	{
-    15		return 1;
-    16	}
-    17	static inline void acpi_power_button_wakeup(struct acpi_device *device)
-    18	{
-    19		return;
-    20	}
-    21	#endif /* IS_ENABLED(CONFIG_ACPI_BUTTON) */
-    22	
+ Documentation/ABI/testing/sysfs-bus-cxl       |  8 +++
+ .../firmware-guide/acpi/apei/einj.rst         | 25 +++++++--
+ drivers/acpi/apei/Kconfig                     |  2 +
+ drivers/acpi/apei/einj.c                      | 24 ++++++++-
+ drivers/cxl/acpi.c                            |  2 +
+ drivers/cxl/core/port.c                       | 52 +++++++++++++++++++
+ drivers/cxl/cxl.h                             |  3 ++
+ include/linux/cxl.h                           | 18 +++++++
+ 8 files changed, 129 insertions(+), 5 deletions(-)
+ create mode 100644 include/linux/cxl.h
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
