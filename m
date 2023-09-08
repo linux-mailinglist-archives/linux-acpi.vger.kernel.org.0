@@ -2,39 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6323798BCD
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Sep 2023 20:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94648798BDA
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Sep 2023 20:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245562AbjIHSCD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Sep 2023 14:02:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42170 "EHLO
+        id S243480AbjIHSCV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Sep 2023 14:02:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245559AbjIHSCC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Sep 2023 14:02:02 -0400
+        with ESMTP id S245695AbjIHSCT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Sep 2023 14:02:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300F3212D;
-        Fri,  8 Sep 2023 11:01:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CEE6C116A3;
-        Fri,  8 Sep 2023 18:00:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E34112690;
+        Fri,  8 Sep 2023 11:01:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9E9C43391;
+        Fri,  8 Sep 2023 18:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694196047;
-        bh=9fUtrjmWnvsh/0rq1FHs4iNmtWITarenxaafsF7vdcY=;
+        s=k20201202; t=1694196054;
+        bh=QHkqxQuF5g5yQOxy9JLwWisHm4xeq+bCIzYItndb6zo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XFoKZbw4wpSD1fy1sOvQOmWkUvPno9cLo+z7ivJuoLImhXv8XJSHq0P5npTe9ldIi
-         v+9M9IA6hvYqccvUhuahD9kCCkqIMMAwFMkoyaj4KYr4L0oeZC8YzoZRAYGiiroxW7
-         IE9lJdaHfz9xhWRdIvjWfwj1/IUC1us38DT3aLvv23AXnVPEyXu5VJFbPB3CjC9Dnd
-         N1XDS+5ynCQv8PCsA+ly2rBbNJmKFYI06hRyL22ckSr9slTvR2j8CLmKjkDeemeMGJ
-         fTzIj06Yq+ZaFpoxXNvo5FDmi12YTwf4IXUXAssOPqS9LMJoOSXA2PwUxSr2889Ti0
-         0rjiq5PUb6KEA==
+        b=Sf84edZRT7A1CpaA0fCFXyLsctHgzn1+eJCbjzVIQCfgait5o41vKviYGAtt0+WeR
+         mr9VwNslWNpQdBmf+H5CxJBYrUUyJQaVGphHA/ku3F1aH3TX14lbTDznpZ9IEHyAaB
+         PnK0FaBvvUo1b3QVxx5fowCfTBE5vr6+6llu26QwyvrQon6bfE6X4I3ciXkUZy5Pm+
+         TX6bhmSuhOtaktkJgxUlRmy4+WE4XSlO1H8ruUp2gjNLJP77hV+i9pR0wTda29mJO3
+         GxMVMgMtcAMoXUjMEOnVYYsKSVKWGfYOR8njtrPssV30OtkKOv9VyHdF9PqFiiRTHR
+         cPUR/WCOye1+Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
+Cc:     Mario Limonciello <mario.limonciello@amd.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        philipp.zabel@gmail.com, andriy.shevchenko@linux.intel.com,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.5 12/16] ACPI: video: Add backlight=native DMI quirk for Apple iMac12,1 and iMac12,2
-Date:   Fri,  8 Sep 2023 13:59:49 -0400
-Message-Id: <20230908175953.3457942-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.5 14/16] ACPI: x86: s2idle: Catch multiple ACPI_TYPE_PACKAGE objects
+Date:   Fri,  8 Sep 2023 13:59:51 -0400
+Message-Id: <20230908175953.3457942-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230908175953.3457942-1-sashal@kernel.org>
 References: <20230908175953.3457942-1-sashal@kernel.org>
@@ -52,53 +54,39 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 8cf04bb321f036dd2e523e993897e0789bd5265c ]
+[ Upstream commit 883cf0d4cf288313b71146ddebdf5d647b76c78b ]
 
-Linux defaults to picking the non-working ACPI video backlight interface
-on the Apple iMac12,1 and iMac12,2.
+If a badly constructed firmware includes multiple `ACPI_TYPE_PACKAGE`
+objects while evaluating the AMD LPS0 _DSM, there will be a memory
+leak.  Explicitly guard against this.
 
-Add a DMI quirk to pick the working native radeon_bl0 interface instead.
-
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1838
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2753
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/acpi/x86/s2idle.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 0c376edd64fe1..442396f6ed1f9 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -495,6 +495,24 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "iMac11,3"),
- 		},
- 	},
-+	{
-+	 /* https://gitlab.freedesktop.org/drm/amd/-/issues/1838 */
-+	 .callback = video_detect_force_native,
-+	 /* Apple iMac12,1 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "iMac12,1"),
-+		},
-+	},
-+	{
-+	 /* https://gitlab.freedesktop.org/drm/amd/-/issues/2753 */
-+	 .callback = video_detect_force_native,
-+	 /* Apple iMac12,2 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "iMac12,2"),
-+		},
-+	},
- 	{
- 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1217249 */
- 	 .callback = video_detect_force_native,
+diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+index ce62e61a9605e..9a179bb5823a0 100644
+--- a/drivers/acpi/x86/s2idle.c
++++ b/drivers/acpi/x86/s2idle.c
+@@ -113,6 +113,12 @@ static void lpi_device_get_constraints_amd(void)
+ 		union acpi_object *package = &out_obj->package.elements[i];
+ 
+ 		if (package->type == ACPI_TYPE_PACKAGE) {
++			if (lpi_constraints_table) {
++				acpi_handle_err(lps0_device_handle,
++						"Duplicate constraints list\n");
++				goto free_acpi_buffer;
++			}
++
+ 			lpi_constraints_table = kcalloc(package->package.count,
+ 							sizeof(*lpi_constraints_table),
+ 							GFP_KERNEL);
 -- 
 2.40.1
 
