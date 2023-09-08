@@ -2,116 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D77B798B49
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Sep 2023 19:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D6F5798BAA
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Sep 2023 19:59:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244336AbjIHRLt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Sep 2023 13:11:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36086 "EHLO
+        id S239679AbjIHSAB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Sep 2023 14:00:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233810AbjIHRLr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Sep 2023 13:11:47 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26CB81FD5;
-        Fri,  8 Sep 2023 10:11:41 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-529fb2c6583so3037262a12.1;
-        Fri, 08 Sep 2023 10:11:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694193099; x=1694797899; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZRZZtDSDbQ7ziD6U8enIVKCW6fBD3XLhOHURnTZwm+I=;
-        b=r27LHMXWq6JFzDriX8S3cF9X1svThjv4/reAkCS3DbEu72buDQ1aYGa1CvFoeZF5aj
-         e9yZ0pMOkcupdXxiv6022expw+GebuThz8p16RxTo7WORyDhnmxrUKP0H7+e0HkkQxKn
-         RHD8ezIKlE1jYuvHOwKKAUPGp4DYClq8hV+Qeg0vgYL71Wdd2OcKzCVMt7GKODJMhW2t
-         BaQyTZACPYm74HCilFHOSnlkAaXT/wZ5torJefR63qsR3Zy0JvV6VX1jGYgBXEwWNkfl
-         JWB5Rdnj+dGNmY4tj21esg3v1XdRsqIKCbrxjSC8NMoxYMxJWrpjM3tI0OtHj4CAKac6
-         CbxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694193099; x=1694797899;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZRZZtDSDbQ7ziD6U8enIVKCW6fBD3XLhOHURnTZwm+I=;
-        b=Qcxb9JWVnNmdVtposNsiw9UjB0fifaHYlKG4M2zWmaqumXJ1GVAcyNFckFi8y5KKSk
-         oKRc6ZN1H8l+Pz86awk7oOBqSA1lqcmTlOYfuACjuAau6C3BriT21JugO19Hm9pbAIXD
-         JSmRscEYsUuwC2WXL/Tf51beHJgu92p3Gh/lLOzB6nNO8svoCDfb/1NUFeLDvf4gNnwf
-         dWYqcHDMFvqK3jRv2cagb0RMA6hv1Wavg316gZMcq344xCvVKoOZGgvvvPggDJFkCia8
-         AICIHGfcoLfjC7IXOrWBQxJY5yczGLLnKLGVbCobx5FE0s+gEOBQJ0df3OLRjxCdun3J
-         38Gw==
-X-Gm-Message-State: AOJu0Yx2Q0EzD2RrZiTzKc9oL0daeTAGLJuRfvpQtpkfJbnLL3LsGXNX
-        mCKwdzEPOh/XUCr6hsdFVaHnmBeROP+4qduMBmg=
-X-Google-Smtp-Source: AGHT+IE81vOXgV+267Me6pgBsx7NyiALIoCgSFaF5/bhivgWOBvhVj01wJZJAyOS8B2FCfiqobx9r2YWGa9o39w+McA=
-X-Received: by 2002:a05:6402:1219:b0:523:102f:3ce1 with SMTP id
- c25-20020a056402121900b00523102f3ce1mr2572978edw.10.1694193099037; Fri, 08
- Sep 2023 10:11:39 -0700 (PDT)
+        with ESMTP id S237940AbjIHSAB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Sep 2023 14:00:01 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FFE31FCA;
+        Fri,  8 Sep 2023 10:59:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4D7C433C7;
+        Fri,  8 Sep 2023 17:59:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694195996;
+        bh=jAHtLt1B80Dvaw7l7CoJpQDseIGlrDLLCGLKy24S6gk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=e2iZVOsXTfU41zmvtBZQL0BNHCLpfuwg+btal883F4WN04mWw/BSyF3jYrhTnT8Sh
+         TNWBXAzZf0MhO7HHLOSM+VRjXSd+slrRRzMBcjordqDhpu/NXyEVcZ0Deq9H7Mr+ni
+         wUqhwKvhoTDrGxuLCqTumifOIJeWfJ9kPmWSt8jtCuTkjoWFig2dzgpmsgU3yHnTuo
+         0zg8chTISx51uCk6O3HTApslLJj0hy7fprm/4zF5xWNAgNaB3UUh0an7Ru7vMXcxn+
+         RWL/ZLi27pTw5kFDKTI3Wtqn+tX1D9FUrXVbhzZDV+mETA/jFZNHsRxbIwGpn5IBry
+         XMNmcg/zVLYdg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Abhishek Mainkar <abmainkar@nvidia.com>,
+        Bob Moore <robert.moore@intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
+        acpica-devel@lists.linuxfoundation.org
+Subject: [PATCH AUTOSEL 6.5 01/16] ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
+Date:   Fri,  8 Sep 2023 13:59:38 -0400
+Message-Id: <20230908175953.3457942-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <20230906182125.48642-1-jandryuk@gmail.com> <24a741a4-b305-c817-e8c3-34b213ad0ee5@intel.com>
-In-Reply-To: <24a741a4-b305-c817-e8c3-34b213ad0ee5@intel.com>
-From:   Jason Andryuk <jandryuk@gmail.com>
-Date:   Fri, 8 Sep 2023 13:11:27 -0400
-Message-ID: <CAKf6xpvOG5kunrfQEoDBvrrY+UVUn3+9ovKmqXZo88nh05tt6Q@mail.gmail.com>
-Subject: Re: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when running
- as Xen dom0
-To:     "Wilczynski, Michal" <michal.wilczynski@intel.com>
-Cc:     Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Roger Pau Monne <roger.pau@citrix.com>,
-        stable@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, xen-devel@lists.xenproject.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.5.2
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 7, 2023 at 9:20=E2=80=AFAM Wilczynski, Michal
-<michal.wilczynski@intel.com> wrote:
->
->
-> Hi,
->
-> On 9/6/2023 8:21 PM, Jason Andryuk wrote:
-> > From: Roger Pau Monne <roger.pau@citrix.com>
-> >
-> > The Processor _PDC buffer bits notify ACPI of the OS capabilities, and
-> > so ACPI can adjust the return of other Processor methods taking the OS
-> > capabilities into account.
->
-> _PDC method is deprecated for this purpose, since 2018, and is dropped fr=
-om
-> spec since 6.5
->
-> We made the switch in linux since 6.6:
-> 95272641338a ("ACPI: processor: Use _OSC to convey OSPM processor support=
- information")
+From: Abhishek Mainkar <abmainkar@nvidia.com>
 
-Thanks for the heads up, Michal.  The patch pre-dated 6.6 and I based
-this one off of 6.5.
+[ Upstream commit 3a21ffdbc825e0919db9da0e27ee5ff2cc8a863e ]
 
-> >
-> > When Linux is running as a Xen dom0, it's the hypervisor the entity
-> > in charge of processor power management, and hence Xen needs to make
-> > sure the capabilities reported in the _PDC buffer match the
-> > capabilities of the driver in Xen.
->
-> So I guess you would need to sanitize buffer passed to _OSC method instea=
-d ?
+ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5
 
-I think I'll modify the capabilities in arch_acpi_set_proc_cap_bits()
-and that will handle both _OSC and the _PDC fallback.
+According to the ACPI specification 19.6.134, no argument is required to be passed for ASL Timer instruction. For taking care of no argument, AML_NO_OPERAND_RESOLVE flag is added to ASL Timer instruction opcode.
 
-Regards,
-Jason
+When ASL timer instruction interpreted by ACPI interpreter, getting error. After adding AML_NO_OPERAND_RESOLVE flag to ASL Timer instruction opcode, issue is not observed.
+
+=============================================================
+UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12 index -1 is out of range for type 'union acpi_operand_object *[9]'
+CPU: 37 PID: 1678 Comm: cat Not tainted
+6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
+HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
+ dump_backtrace+0xe0/0x130
+ show_stack+0x20/0x60
+ dump_stack_lvl+0x68/0x84
+ dump_stack+0x18/0x34
+ ubsan_epilogue+0x10/0x50
+ __ubsan_handle_out_of_bounds+0x80/0x90
+ acpi_ds_exec_end_op+0x1bc/0x6d8
+ acpi_ps_parse_loop+0x57c/0x618
+ acpi_ps_parse_aml+0x1e0/0x4b4
+ acpi_ps_execute_method+0x24c/0x2b8
+ acpi_ns_evaluate+0x3a8/0x4bc
+ acpi_evaluate_object+0x15c/0x37c
+ acpi_evaluate_integer+0x54/0x15c
+ show_power+0x8c/0x12c [acpi_power_meter]
+
+Link: https://github.com/acpica/acpica/commit/90310989
+Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/acpica/psopcode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
+index 09029fe545f14..39e31030e5f49 100644
+--- a/drivers/acpi/acpica/psopcode.c
++++ b/drivers/acpi/acpica/psopcode.c
+@@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
+ 
+ /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
+ 			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
+-			 AML_FLAGS_EXEC_0A_0T_1R),
++			 AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
+ 
+ /* ACPI 5.0 opcodes */
+ 
+-- 
+2.40.1
+
