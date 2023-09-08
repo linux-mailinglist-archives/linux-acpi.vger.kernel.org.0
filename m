@@ -2,40 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3606798C1A
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Sep 2023 20:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5323798C11
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Sep 2023 20:04:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343520AbjIHSEc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Sep 2023 14:04:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44218 "EHLO
+        id S1343504AbjIHSEC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Sep 2023 14:04:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234383AbjIHSEb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Sep 2023 14:04:31 -0400
+        with ESMTP id S1343538AbjIHSDz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Sep 2023 14:03:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50BC42119;
-        Fri,  8 Sep 2023 11:04:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45B9C433CA;
-        Fri,  8 Sep 2023 18:02:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2FE62123;
+        Fri,  8 Sep 2023 11:03:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E9BCC433BA;
+        Fri,  8 Sep 2023 18:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694196179;
-        bh=5u73tq3hvyxQsWwF7KL0PYQ1VzDSyafpQUCVy4/X7IQ=;
+        s=k20201202; t=1694196198;
+        bh=Dp7dprOudu2ag4/LrVDxZSbzM2L/XP8It/IPfAhjFfY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jf6YSJb7/rcOJHc4xD6ApGC0Y8JkK8RectXAaOjRh17tC63o+9kWzEbE82Vw0xIsc
-         B2i6cc2uDHkVVoRypz8dSsY15JogCStlIK8Hjw7uBGrH03u1A7dMYmA8ID/7Cf4Umn
-         QK+nk/dMdVNRUUH64AT1ok7hOjqwSOVbxSg2spTgZqdlX8uxsHKsMVoEOhfjX9kT/H
-         8hD6CKZv573OMWjHFAvMi5BHvOLRQAMbLsYWO83Ck95bi36FtX8GzdIIRmxmpk6kF7
-         m6E4MM2ju+seGfxiqG+JePMjDe7bREhhObn3hLXPI8al79ejU88IBlBB3jPbEfmyh+
-         jugFN77aK4q7Q==
+        b=UcJBowxj8BvwqANf1XQuZnwRXG/Q9EM+FT3zUvuKralouvVG+Q7CyWkYbmlVz6zdj
+         SGB62O4Y0vAcaW3J3DyITUaqs/qS5HI3wabP636YRALxhvVAkah+2Kb8ngnWfjj71W
+         nGC3nmrpEAt1oaIidHCtltp1lGl2EOIjxQKwH4CzhevbK1BJ378NsTYYpxTqEW32m0
+         NC+/poE9760/mOOgzODIhLgxwPYWyX02ngyuA/6GSsNkrZVWlHzmi/stftITFgIrgY
+         fhYkYZMELTnhUvJLfzHNRvD7HwM4GGaIe0v+1v5nyIuz3/G5TXvjNCH/7BCvPfCQDB
+         vaf+kpQ3RzkUw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
+Cc:     Mario Limonciello <mario.limonciello@amd.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        philipp.zabel@gmail.com, andriy.shevchenko@linux.intel.com,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 5/9] ACPI: video: Add backlight=native DMI quirk for Lenovo Ideapad Z470
-Date:   Fri,  8 Sep 2023 14:02:36 -0400
-Message-Id: <20230908180240.3458469-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 9/9] ACPI: x86: s2idle: Catch multiple ACPI_TYPE_PACKAGE objects
+Date:   Fri,  8 Sep 2023 14:02:40 -0400
+Message-Id: <20230908180240.3458469-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230908180240.3458469-1-sashal@kernel.org>
 References: <20230908180240.3458469-1-sashal@kernel.org>
@@ -53,45 +54,39 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 96b709be183c56293933ef45b8b75f8af268c6de ]
+[ Upstream commit 883cf0d4cf288313b71146ddebdf5d647b76c78b ]
 
-The Lenovo Ideapad Z470 predates Windows 8, so it defaults to using
-acpi_video for backlight control. But this is not functional on this
-model.
+If a badly constructed firmware includes multiple `ACPI_TYPE_PACKAGE`
+objects while evaluating the AMD LPS0 _DSM, there will be a memory
+leak.  Explicitly guard against this.
 
-Add a DMI quirk to use the native backlight interface which works.
-
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1208724
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/acpi/x86/s2idle.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 038542b3a80a7..5afc42d52e49b 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -307,6 +307,15 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_BOARD_NAME, "Lenovo IdeaPad S405"),
- 		},
- 	},
-+	{
-+	 /* https://bugzilla.suse.com/show_bug.cgi?id=1208724 */
-+	 .callback = video_detect_force_native,
-+	 /* Lenovo Ideapad Z470 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+		DMI_MATCH(DMI_PRODUCT_VERSION, "IdeaPad Z470"),
-+		},
-+	},
- 	{
- 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1187004 */
- 	 .callback = video_detect_force_native,
+diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+index 4a11a38764321..3d6105ec2de1f 100644
+--- a/drivers/acpi/x86/s2idle.c
++++ b/drivers/acpi/x86/s2idle.c
+@@ -111,6 +111,12 @@ static void lpi_device_get_constraints_amd(void)
+ 		union acpi_object *package = &out_obj->package.elements[i];
+ 
+ 		if (package->type == ACPI_TYPE_PACKAGE) {
++			if (lpi_constraints_table) {
++				acpi_handle_err(lps0_device_handle,
++						"Duplicate constraints list\n");
++				goto free_acpi_buffer;
++			}
++
+ 			lpi_constraints_table = kcalloc(package->package.count,
+ 							sizeof(*lpi_constraints_table),
+ 							GFP_KERNEL);
 -- 
 2.40.1
 
