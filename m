@@ -2,48 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94648798BDA
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Sep 2023 20:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AF8A798BEA
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Sep 2023 20:02:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243480AbjIHSCV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Sep 2023 14:02:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54634 "EHLO
+        id S245711AbjIHSCr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Sep 2023 14:02:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245695AbjIHSCT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Sep 2023 14:02:19 -0400
+        with ESMTP id S245757AbjIHSCo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Sep 2023 14:02:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E34112690;
-        Fri,  8 Sep 2023 11:01:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9E9C43391;
-        Fri,  8 Sep 2023 18:00:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6164F26A8;
+        Fri,  8 Sep 2023 11:02:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255A1C433A9;
+        Fri,  8 Sep 2023 18:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694196054;
-        bh=QHkqxQuF5g5yQOxy9JLwWisHm4xeq+bCIzYItndb6zo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Sf84edZRT7A1CpaA0fCFXyLsctHgzn1+eJCbjzVIQCfgait5o41vKviYGAtt0+WeR
-         mr9VwNslWNpQdBmf+H5CxJBYrUUyJQaVGphHA/ku3F1aH3TX14lbTDznpZ9IEHyAaB
-         PnK0FaBvvUo1b3QVxx5fowCfTBE5vr6+6llu26QwyvrQon6bfE6X4I3ciXkUZy5Pm+
-         TX6bhmSuhOtaktkJgxUlRmy4+WE4XSlO1H8ruUp2gjNLJP77hV+i9pR0wTda29mJO3
-         GxMVMgMtcAMoXUjMEOnVYYsKSVKWGfYOR8njtrPssV30OtkKOv9VyHdF9PqFiiRTHR
-         cPUR/WCOye1+Q==
+        s=k20201202; t=1694196063;
+        bh=jAHtLt1B80Dvaw7l7CoJpQDseIGlrDLLCGLKy24S6gk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=iNxMB+NWXTH/1vbu6Ndx6boP3IQtcIODPrRzc/ldHH5yoMY9XQGZ2UnEYbV0liAtC
+         47rm7tSWG7LirwpvCPWUTdttENvHfX0ZHvH72NztlwdFWtzQWe+DMF1KrSDEOZNGA3
+         Xp96i+tXRJtYFmSUkGFyHF1r13wj6/P6/TY4tRnaK2otruK0KH/AM8QobOEMZCo5D1
+         Yiz41DWE1rrFvwMwxXlN7aA+64Xy9hLe49D1utw7Lx9m6OqSXbBbXy4iyqx/9+219k
+         O7+mx49ZFCzp6yIeewlPnpCPg2JCLCpbaMcwUO8/snKsxTZRVzV5mivXjqFyICT5tY
+         gPcWFK9Fp9ftw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Mario Limonciello <mario.limonciello@amd.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
+Cc:     Abhishek Mainkar <abmainkar@nvidia.com>,
+        Bob Moore <robert.moore@intel.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
-        philipp.zabel@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.5 14/16] ACPI: x86: s2idle: Catch multiple ACPI_TYPE_PACKAGE objects
-Date:   Fri,  8 Sep 2023 13:59:51 -0400
-Message-Id: <20230908175953.3457942-14-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
+        acpica-devel@lists.linuxfoundation.org
+Subject: [PATCH AUTOSEL 6.4 01/13] ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
+Date:   Fri,  8 Sep 2023 14:00:47 -0400
+Message-Id: <20230908180100.3458151-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230908175953.3457942-1-sashal@kernel.org>
-References: <20230908175953.3457942-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.5.2
+X-stable-base: Linux 6.4.15
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,39 +51,58 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Abhishek Mainkar <abmainkar@nvidia.com>
 
-[ Upstream commit 883cf0d4cf288313b71146ddebdf5d647b76c78b ]
+[ Upstream commit 3a21ffdbc825e0919db9da0e27ee5ff2cc8a863e ]
 
-If a badly constructed firmware includes multiple `ACPI_TYPE_PACKAGE`
-objects while evaluating the AMD LPS0 _DSM, there will be a memory
-leak.  Explicitly guard against this.
+ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5
 
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+According to the ACPI specification 19.6.134, no argument is required to be passed for ASL Timer instruction. For taking care of no argument, AML_NO_OPERAND_RESOLVE flag is added to ASL Timer instruction opcode.
+
+When ASL timer instruction interpreted by ACPI interpreter, getting error. After adding AML_NO_OPERAND_RESOLVE flag to ASL Timer instruction opcode, issue is not observed.
+
+=============================================================
+UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12 index -1 is out of range for type 'union acpi_operand_object *[9]'
+CPU: 37 PID: 1678 Comm: cat Not tainted
+6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
+HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
+ dump_backtrace+0xe0/0x130
+ show_stack+0x20/0x60
+ dump_stack_lvl+0x68/0x84
+ dump_stack+0x18/0x34
+ ubsan_epilogue+0x10/0x50
+ __ubsan_handle_out_of_bounds+0x80/0x90
+ acpi_ds_exec_end_op+0x1bc/0x6d8
+ acpi_ps_parse_loop+0x57c/0x618
+ acpi_ps_parse_aml+0x1e0/0x4b4
+ acpi_ps_execute_method+0x24c/0x2b8
+ acpi_ns_evaluate+0x3a8/0x4bc
+ acpi_evaluate_object+0x15c/0x37c
+ acpi_evaluate_integer+0x54/0x15c
+ show_power+0x8c/0x12c [acpi_power_meter]
+
+Link: https://github.com/acpica/acpica/commit/90310989
+Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/s2idle.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/acpi/acpica/psopcode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-index ce62e61a9605e..9a179bb5823a0 100644
---- a/drivers/acpi/x86/s2idle.c
-+++ b/drivers/acpi/x86/s2idle.c
-@@ -113,6 +113,12 @@ static void lpi_device_get_constraints_amd(void)
- 		union acpi_object *package = &out_obj->package.elements[i];
+diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
+index 09029fe545f14..39e31030e5f49 100644
+--- a/drivers/acpi/acpica/psopcode.c
++++ b/drivers/acpi/acpica/psopcode.c
+@@ -603,7 +603,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
  
- 		if (package->type == ACPI_TYPE_PACKAGE) {
-+			if (lpi_constraints_table) {
-+				acpi_handle_err(lps0_device_handle,
-+						"Duplicate constraints list\n");
-+				goto free_acpi_buffer;
-+			}
-+
- 			lpi_constraints_table = kcalloc(package->package.count,
- 							sizeof(*lpi_constraints_table),
- 							GFP_KERNEL);
+ /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
+ 			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
+-			 AML_FLAGS_EXEC_0A_0T_1R),
++			 AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
+ 
+ /* ACPI 5.0 opcodes */
+ 
 -- 
 2.40.1
 
