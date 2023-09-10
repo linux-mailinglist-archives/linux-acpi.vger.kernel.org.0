@@ -2,190 +2,169 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A5A8799D0B
-	for <lists+linux-acpi@lfdr.de>; Sun, 10 Sep 2023 10:24:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A1A3799DDC
+	for <lists+linux-acpi@lfdr.de>; Sun, 10 Sep 2023 13:20:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346475AbjIJIY7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 10 Sep 2023 04:24:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55036 "EHLO
+        id S1346645AbjIJLU5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 10 Sep 2023 07:20:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229650AbjIJIY6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 10 Sep 2023 04:24:58 -0400
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F9C5187;
-        Sun, 10 Sep 2023 01:24:54 -0700 (PDT)
-Received: by mail-oi1-x232.google.com with SMTP id 5614622812f47-3aa1446066aso2448500b6e.1;
-        Sun, 10 Sep 2023 01:24:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694334294; x=1694939094; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K2cGCOGMca8vRbxpjpl725cbqGH/LHkCUZen9VKcUek=;
-        b=Jv3pL9RMMN6N/29pv51ftrI3Yq+KmR43X9zcO0yLQf1Ia0EaXhq3ywT7gh4PZG6RSb
-         QWfVARc5JinrTOBBW+3tnicdkAy5GrkJDLRgHpX/eU5T5s9sCUfgwy6vOKIu5W3jHXHe
-         GB2C/9cOApta23/QseAKgJIraHUQ6H3pCQVZ1IM33ZPwUd7r12T5qT5FmbBKpuDV7VjB
-         2QZzyIFBlYiq91YC8iGTLShpQXRx2k+R3oszy2FF3BFsDEUEPxjZQhdMCQGR7wgca+CO
-         8jpyf1kXwUwNmj4JAEJ6ZgJhuXxyMQhtrTX8VpVMCc7wb+9uuK53NyaMWWbgJBSSxg45
-         bKFA==
+        with ESMTP id S1346644AbjIJLU4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 10 Sep 2023 07:20:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D080CD3
+        for <linux-acpi@vger.kernel.org>; Sun, 10 Sep 2023 04:20:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694344803;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=YZmzTAu+YkENFgAcTjcm87NSv+hGmQ7BjJdcULk7tNM=;
+        b=JZ2pVL2YZZHaJiwKo49+WlHquOlaHaj0+8LHqNO1M1KCjeuoxeDNuY0XQ57tj3yGqZa3YT
+        Z6WmYJRJlsdY9wh5nocUO3OV/qd+A+l0H0ZxaD2urRPttPb+HF0CMje41aWzdWiUjjsLRN
+        mlduFc7yFZq8KamNzrO4qJxudNEfvog=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-637--8X9fagyNIWPrypngAwP-w-1; Sun, 10 Sep 2023 07:20:02 -0400
+X-MC-Unique: -8X9fagyNIWPrypngAwP-w-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-9a681c3470fso220803766b.1
+        for <linux-acpi@vger.kernel.org>; Sun, 10 Sep 2023 04:20:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694334294; x=1694939094;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K2cGCOGMca8vRbxpjpl725cbqGH/LHkCUZen9VKcUek=;
-        b=Kr7XXLNyhvBu69FyBFHCFb6ewmVvbU5ll3b64vfJWN+XefrY3G+zyaci4vyGe+jRNm
-         isChTcRQrtWIGx5Q40LpKx8FrTw1dc3m++chzveMuEzIDl0nxNBeGdDB4/fF/pOpxwyy
-         hS06w/6nocMzK8oI6WKBn3/hk8DlBn3D9+RNknDy/8BpM+kZvJbIlT1MEryKb+6ye/Jq
-         KH3ciPHzhOxyX/+18G/gwudwqu1VZiGwB4VQgUYsdUycSFUch3nBDT5c4Av7WIeiwb06
-         CM2yclvlLHY7bmFk9U7QNpwCMG1lq51bujULVQd41hZNCtOdNzPpr3+dKpqOToJpbxsL
-         8Nhg==
-X-Gm-Message-State: AOJu0YxVq/3ifs0N3KiSwPifUUvcSanB7t1v4UnRT1MiFhh/cKxdETXs
-        8hI4DFhc6sUBYUhurM/ifDI995nYrVY8QN7sM8s=
-X-Google-Smtp-Source: AGHT+IG6O8mlffcP4XE6eq2h4Vi9eII81dNGZfQRo+IsflXyPKpvt3hprW7orspTgAXNvq2eT4yCxQmMRLhPttzQg4w=
-X-Received: by 2002:a05:6870:f116:b0:1ba:1998:1d23 with SMTP id
- k22-20020a056870f11600b001ba19981d23mr9322327oac.35.1694334293778; Sun, 10
- Sep 2023 01:24:53 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1694344801; x=1694949601;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YZmzTAu+YkENFgAcTjcm87NSv+hGmQ7BjJdcULk7tNM=;
+        b=DFNFmUm9DuhfgKBH4TwmLI/F4X4nTWITdOIW7jE14IlRg0SLqrqM0sgcjrt7gAxvN7
+         BX2s7FeFC/17L/HNWe657LtIp5vKDRAlR6FyOrSm/J0+xwGHMY2wmoeylyXNX5zCwNBD
+         48c6o7ccJYdo0kaEhNmJcjcbEedQqLftRJ91L+wxwPqY0RolIDD3nEVuR9BpaCkTaTrJ
+         5KQvqH/znP8wyDmkHOIvhSZr2P+22IPtL9XzcDze5NVeNFXExuLg1uq/1aDN9nx21J6H
+         v5dM1MxZRbd0zxd/iCzkeh78BWcqH62IaPtMIMu9gU//fyrCqQhDLVGlkCYk6Ss0QzHF
+         WY5A==
+X-Gm-Message-State: AOJu0YxI4jvdkTg7dNi9YvQntXdUeQJlY5KLepoqQDgs9tU9lV9dAtyp
+        fGXFU1QNK9GBAD+mKkKXYcbOkALuBkppNYvXFEAxZuPOQsOUbkoqj/mfev2qNaIV5H4GpxfmWYo
+        YTpkRP23R5mW5I/1bS0OzNw==
+X-Received: by 2002:a17:907:78d1:b0:9a1:f96c:4bb2 with SMTP id kv17-20020a17090778d100b009a1f96c4bb2mr6076896ejc.50.1694344801429;
+        Sun, 10 Sep 2023 04:20:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEwDIhGpbjzKE9Z6a032W/6kyY7c75m+YxJtY/cerZXgwxqR69KfBVG8LSnWvtTcpsAoqP7Vg==
+X-Received: by 2002:a17:907:78d1:b0:9a1:f96c:4bb2 with SMTP id kv17-20020a17090778d100b009a1f96c4bb2mr6076885ejc.50.1694344801083;
+        Sun, 10 Sep 2023 04:20:01 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id c4-20020a170906340400b00991d54db2acsm3657806ejb.44.2023.09.10.04.19.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 10 Sep 2023 04:19:59 -0700 (PDT)
+Message-ID: <32206240-a06a-2c4f-c520-4243ad9ddca5@redhat.com>
+Date:   Sun, 10 Sep 2023 13:19:59 +0200
 MIME-Version: 1.0
-References: <20230909141816.58358-1-hdegoede@redhat.com> <20230909141816.58358-7-hdegoede@redhat.com>
-In-Reply-To: <20230909141816.58358-7-hdegoede@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 10 Sep 2023 11:24:17 +0300
-Message-ID: <CAHp75Ve888X7xJ0VrQfswaStL8C3SHXjnJV35O2ajZVq6=KfMQ@mail.gmail.com>
-Subject: Re: [PATCH 6/8] platform/x86: x86-android-tablets: Stop using gpiolib
- private APIs
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 5/8] platform/x86: x86-android-tablets: Create a
+ platform_device from module_init()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Andy Shevchenko <andy@kernel.org>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
         Linus Walleij <linus.walleij@linaro.org>,
         platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230909141816.58358-1-hdegoede@redhat.com>
+ <20230909141816.58358-6-hdegoede@redhat.com>
+ <CAHp75Vf0HC-PUZWLniUPZSYVbeVW33sT9yOQxgeftXi+GmQppw@mail.gmail.com>
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAHp75Vf0HC-PUZWLniUPZSYVbeVW33sT9yOQxgeftXi+GmQppw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Sep 9, 2023 at 5:18=E2=80=AFPM Hans de Goede <hdegoede@redhat.com> =
-wrote:
->
-> Refactor x86_android_tablet_get_gpiod() to no longer use
-> gpiolib private functions like gpiochip_find().
->
-> As a bonus this allows specifying that the GPIO is active-low,
-> like the /CE (charge enable) pin on the bq25892 charger on
-> the Lenovo Yoga Tablet 3.
+Hi,
 
-The best patch in the series!
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+On 9/10/23 10:07, Andy Shevchenko wrote:
+> On Sat, Sep 9, 2023 at 5:18 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> Create a platform_device from module_init() and change
+>> x86_android_tablet_init() / cleanup() into platform_device
+>> probe() and remove() functions.
+>>
+>> This is a preparation patch for refactoring x86_android_tablet_get_gpiod()
+>> to no longer use gpiolib private functions like gpiochip_find().
+> 
+> ...
+> 
+>> +static int __init x86_android_tablet_init(void)
+>> +{
+> 
+>> +       if (!dmi_first_match(x86_android_tablet_ids)) {
+> 
+> Why do we need this? Module alias is based on DMI matching, is it
+> against manual loading?
 
-See below a couple of questions.
+Yes I added this to protect against manual loading.
 
-...
+> 
+>> +               pr_err("error loaded on unknown tablet model\n");
+>> +               return -ENODEV;
+>> +       }
+>> +
+>> +       x86_android_tablet_device = platform_create_bundle(&x86_android_tablet_driver,
+>> +                                                  x86_android_tablet_probe,
+>> +                                                  NULL, 0, NULL, 0);
+> 
+> So, in case of manual loading, would it be harmful for non-listed platforms?
 
-> -int x86_android_tablet_get_gpiod(const char *label, int pin, struct gpio=
-_desc **desc)
-> +int x86_android_tablet_get_gpiod(const char *chip, int pin, const char *=
-con_id,
-> +                                bool active_low, enum gpiod_flags dflags=
-,
-> +                                struct gpio_desc **desc)
->  {
-> +       struct gpiod_lookup_table *lookup;
->         struct gpio_desc *gpiod;
-> -       struct gpio_chip *chip;
->
-> -       chip =3D gpiochip_find((void *)label, gpiochip_find_match_label);
-> -       if (!chip) {
-> -               pr_err("error cannot find GPIO chip %s\n", label);
-> -               return -ENODEV;
-> -       }
-> +       lookup =3D kzalloc(struct_size(lookup, table, 2), GFP_KERNEL);
-> +       if (!lookup)
-> +               return -ENOMEM;
-> +
-> +       lookup->dev_id =3D KBUILD_MODNAME;
-> +       lookup->table[0].key =3D chip;
-> +       lookup->table[0].chip_hwnum =3D pin;
-> +       lookup->table[0].con_id =3D con_id;
-> +       lookup->table[0].flags =3D active_low ? GPIO_ACTIVE_LOW : GPIO_AC=
-TIVE_HIGH;
-> +
-> +       gpiod_add_lookup_table(lookup);
-> +       gpiod =3D devm_gpiod_get(&x86_android_tablet_device->dev, con_id,=
- dflags);
-> +       gpiod_remove_lookup_table(lookup);
-> +       kfree(lookup);
->
-> -       gpiod =3D gpiochip_get_desc(chip, pin);
->         if (IS_ERR(gpiod)) {
-> -               pr_err("error %ld getting GPIO %s %d\n", PTR_ERR(gpiod), =
-label, pin);
-> +               pr_err("error %ld getting GPIO %s %d\n", PTR_ERR(gpiod), =
-chip, pin);
->                 return PTR_ERR(gpiod);
->         }
+No this will not be harmful, x86_android_tablet_probe() also
+checks the DMI table and it will return -ENODEV when there is
+no match.
 
-> -       *desc =3D gpiod;
-> +       if (desc)
-> +               *desc =3D gpiod;
+So we just end up with an unused x86_android_tablets platform-device
+and otherwise no harm is done.
 
-Are we expecting that callers may not want the GPIO descriptor out of
-this function?
-Sounds a bit weird if so.
+I guess my main reason here is to not change manual loading
+behavior, before the entire insmod would fail since
+module_init() would return -ENODEV, this preserves this
+behavior.
 
->         return 0;
->  }
+But you are right that this check can be dropped without
+any bad side-effects.
 
-...
+I'll drop the check before merging this.
 
->          * The bq25890_charger driver controls these through I2C, but thi=
-s only
->          * works if not overridden by the pins. Set these pins here:
-> -        * 1. Set /CE to 0 to allow charging.
+> 
+>> +       return PTR_ERR_OR_ZERO(x86_android_tablet_device);
+>> +}
+>> +
+>> +static void __exit x86_android_tablet_exit(void)
+>> +{
+>> +       platform_device_unregister(x86_android_tablet_device);
+>> +       platform_driver_unregister(&x86_android_tablet_driver);
+>> +}
+> 
+>> +
+> 
+> Instead of adding this blank line you can move
+> module_init()/module_exit() closer to the respective callbacks.
 
-> +        * 1. Set /CE to 1 to allow charging.
->          * 2. Set OTG to 0 disable V5 boost output since the 5V boost out=
-put of
->          *    the main "bq25892_1" charger is used when necessary.
+Ack, I'll fix this before merging this.
 
-Shouldn't we use terminology "active"/"non-active" instead of plain 0
-and 1 in the above?
+Regards,
 
->          */
+Hans
 
-...
 
-> -       ret =3D x86_android_tablet_get_gpiod("INT33FF:02", 22, &gpiod);
-> +       ret =3D x86_android_tablet_get_gpiod("INT33FF:02", 22, "bq25892_0=
-_ce",
-> +                                          true, GPIOD_OUT_HIGH, NULL);
->         if (ret < 0)
->                 return ret;
 
-Hmm... Maybe better this function to return an error pointer or valid
-pointer, and in the code you choose what to do with that?
+> 
+>>  module_init(x86_android_tablet_init);
+>> -module_exit(x86_android_tablet_cleanup);
+>> +module_exit(x86_android_tablet_exit);
+> 
 
-...
-
->         /* OTG pin */
-> -       ret =3D x86_android_tablet_get_gpiod("INT33FF:03", 19, &gpiod);
-> +       ret =3D x86_android_tablet_get_gpiod("INT33FF:03", 19, "bq25892_0=
-_otg",
-> +                                          false, GPIOD_OUT_LOW, NULL);
-
-Ditto.
-
->         if (ret < 0)
->                 return ret;
-
---=20
-With Best Regards,
-Andy Shevchenko
