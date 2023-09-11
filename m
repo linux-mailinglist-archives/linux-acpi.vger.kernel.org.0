@@ -2,143 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C115879ADD6
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 01:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDADB79B0E6
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 01:50:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242659AbjIKVS3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Sep 2023 17:18:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40208 "EHLO
+        id S1344993AbjIKVTJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Sep 2023 17:19:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235857AbjIKJnG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Sep 2023 05:43:06 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B7A6FD
-        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 02:43:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694425381; x=1725961381;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bzq9y54JjLfh+Qit4Lkg4X/qMowCYKt8RUri+Nlwq2I=;
-  b=j5lmWQzJdlkClF70ZfQhUeP2nFp6h+jhxbNQzAqwT65+384c7tnT3zq9
-   WF9sWJxudfuvZVDFrboxbH+sq9u2tOCOac/DxAXTHbJgD8LKxtekFmjKZ
-   PiqfcfpgW2Zi03XcgmybNprVx8T6HAh7zJG/yxNM32gy9moNFWlJIDG0L
-   fcVLPfVRqZKA6Px/BF6pwkKAFyQAG0XhD9c0MpQbvBTwT77hrt2cu30Wv
-   0WsBZikhbxB7WaqjnAZiR/C9CmOoXfGpO6FwBBcloauYWp0da3LAjZ801
-   OfQ6Ta+WIqMLartcVVL8i9rGeb5Ej3tSbjIXRFDnOqK0HYCWjLzqM/WA7
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="442033824"
-X-IronPort-AV: E=Sophos;i="6.02,243,1688454000"; 
-   d="scan'208";a="442033824"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 02:43:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="743283447"
-X-IronPort-AV: E=Sophos;i="6.02,243,1688454000"; 
-   d="scan'208";a="743283447"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 02:42:58 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qfdRX-008HV3-2u;
-        Mon, 11 Sep 2023 12:42:55 +0300
-Date:   Mon, 11 Sep 2023 12:42:55 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Ken Xue <Ken.Xue@amd.com>
-Cc:     linux-acpi@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
-        rafael@kernel.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] acpi: trigger wakeup key event from power button
-Message-ID: <ZP7hH9i6ZQgINbcB@smile.fi.intel.com>
-References: <20230908095747.446389-1-Ken.Xue@amd.com>
+        with ESMTP id S236138AbjIKJv2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Sep 2023 05:51:28 -0400
+Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA1ACE52
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 02:51:23 -0700 (PDT)
+Received: by mail-vs1-xe2b.google.com with SMTP id ada2fe7eead31-44d3666c6cfso1619140137.3
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 02:51:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1694425883; x=1695030683; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T0WH4+Wc29rD5CEkIjJocX4Prp2Urfkick4BKKKLe1M=;
+        b=nGK0iAXhV0D+oDRRCXPHR5YFlOpdur7MkHCGOuEHBa3zDHDM0jmnOidkAh3amVWZNx
+         xbiTII5sPGbmebJG+FAlzpaIm6jijTqGn/jXpJTvsjscIsLtBAM6c1NW6GG9SIKvkca+
+         kh5Dj6WNpZMQ4fRNRi9y8mD0/JtFTNY2RqV4ZRRFVyZsS5F1+mK7RZFgK641HryEi4lZ
+         K3Bw3WNnxvxfcmRkmKLoNHEDw6ra5EMISskYBx2JGM939ToauUpCuUW1svvX5boHy+Iv
+         5zuiomzACIJfzWvi5zkgXq70q8NsGA5ZvGv5/kGDCEnDGyZmAQ+MYXDQr/NjPHQmgRB9
+         5NVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694425883; x=1695030683;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T0WH4+Wc29rD5CEkIjJocX4Prp2Urfkick4BKKKLe1M=;
+        b=jGxe2oCObGdNKihgUMfvaHdp0QpeuWSrGR+fYNCIX8UCvS251kp95UrA8cSoKpBJn/
+         844KcXh/dRCiqfR3iGwrtx2SbBfDiwjn8iXTXLdjaXCO3hoN97xKsYUp03ZLeNWb/xJv
+         31jwrzyX+fNyWdNAkEPoG7q9RPp/mVPt4AiK2kpRXt7Vc/50jJp1jgVTMyVcIMpZ+YfZ
+         p7eiPkeRmwQECQIYkVkkOOxw+MkQhpuLk1MbQELB+vb3/o+0ClcpAIDv5xy+DYns2I5h
+         iKQ8YpG+KDuuaZGkiulYLG3f51Ptn5nuYSxUoEiuO1rbghAWrX2i/Vxnz04wRQCeBoRW
+         qXLA==
+X-Gm-Message-State: AOJu0YwjbrLk/yY7Oli3m29YR1V5MwtavOLvfrjm4Fw2XiZWWr3fPUcI
+        IgRhNbQV93jlw6ysPM+aLzZbV9ABa2RCJ4F7rPm14sD6KJLtCTJQu0Q=
+X-Google-Smtp-Source: AGHT+IFOEx+C3bfi/cg9aJe+W1CyEYTAODyP1z7k1dE1LcRmzBWXPMQc1sQ2Pv7QPw6aWchIhQ5xPTtHb868sarlRdE=
+X-Received: by 2002:a67:f3c8:0:b0:44e:d85c:ac48 with SMTP id
+ j8-20020a67f3c8000000b0044ed85cac48mr8052269vsn.5.1694425883024; Mon, 11 Sep
+ 2023 02:51:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230908095747.446389-1-Ken.Xue@amd.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230909141816.58358-1-hdegoede@redhat.com> <20230909141816.58358-3-hdegoede@redhat.com>
+In-Reply-To: <20230909141816.58358-3-hdegoede@redhat.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Mon, 11 Sep 2023 11:51:12 +0200
+Message-ID: <CAMRc=MdnhF1DfaknaxNNt+paB86429C4_CjV5j5FgE0ZyJkR3g@mail.gmail.com>
+Subject: Re: [PATCH 2/8] gpiolib: acpi: Add a ignore interrupt quirk for Peaq C1010
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Sep 08, 2023 at 05:57:49PM +0800, Ken Xue wrote:
-> Andorid can wakeup from various wakeup sources,
-> but only several wakeup sources can wake up screen
-> with right events(POWER, WAKEUP) from input device.
-> 
-> Regarding pressing acpi power button, it can resume system and
-> ACPI_BITMASK_WAKE_STATUS and ACPI_BITMASK_POWER_BUTTON_STATUS
-> are set in pm1a_sts, but kernel does not report any key
-> event to user space during resume by default.
-> 
-> So, trigger wakeup key event to user space during resume
-> from power button.
-
-> Reported-by: kernel test robot <lkp@intel.com>
-
-Are you sure?
-
-> Closes: https://lore.kernel.org/oe-kbuild-all/202309080315.txQUEyHQ-lkp@intel.com/
-> Closes: https://lore.kernel.org/oe-kbuild-all/202309080239.IiC7uLpW-lkp@intel.com/
-> Closes: https://lore.kernel.org/oe-kbuild-all/202309080351.xHt2qhP2-lkp@intel.com/
-
-Are you sure?
-
-> 
-> 
-
-Blank lines are not allowed in the tag block.
-
-> Signed-off-by: Ken Xue <Ken.Xue@amd.com>
+On Sat, Sep 9, 2023 at 4:18=E2=80=AFPM Hans de Goede <hdegoede@redhat.com> =
+wrote:
+>
+> On the Peaq C1010 2-in-1 INT33FC:00 pin 3 is connected to
+> a "dolby" button. At the ACPI level an _AEI event-handler
+> is connected which sets an ACPI variable to 1 on both
+> edges. This variable can be polled + cleared to 0 using WMI.
+>
+> Since the variable is set on both edges the WMI interface is pretty
+> useless even when polling. So instead of writing a custom WMI
+> driver for this the x86-android-tablets code instantiates
+> a gpio-keys platform device for the "dolby" button.
+>
+> Add an ignore_interrupt quirk for INT33FC:00 pin 3 on the Peaq C1010,
+> so that it is not seen as busy when the gpio-keys driver requests it.
+>
+> Note this replaces a hack in x86-android-tablets where it would
+> call acpi_gpiochip_free_interrupts() on the INT33FC:00 GPIO
+> controller. acpi_gpiochip_free_interrupts() is considered private
+> (internal) gpiolib API so x86-android-tablets should stop using it.
+>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
 
-How this change is different to the previous patch you sent?
-Do you forgot versioning?
-Do you forgot changelog?
-
-Please, read Submitting Patches documentation before trying again.
-It will help to make your contribution nice and understandable.
-
-...
-
-> +	if (button->type == ACPI_BUTTON_TYPE_POWER) {
-
-	if (... != )
-		return;
-
-?
-
-> +		input = button->input;
-> +		input_report_key(input, KEY_WAKEUP, 1);
-> +		input_sync(input);
-> +		input_report_key(input, KEY_WAKEUP, 0);
-> +		input_sync(input);
-> +	}
-
-...
-
-> +#include <linux/acpi.h>
-
-There is no users of this header.
-
-Check how forward declaration can be used (as it's done in many other headers).
-
-
-> +extern void acpi_power_button_wakeup(struct acpi_device *device);
-
-...
-
-> +static inline void acpi_power_button_wakeup(struct acpi_device *device)
-> +{
-> +}
-
-This can be done on a single line.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
