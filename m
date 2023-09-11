@@ -2,81 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8CD979ADB2
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 01:40:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F3D379AE0D
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 01:41:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345335AbjIKVTd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Sep 2023 17:19:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33154 "EHLO
+        id S1345051AbjIKVTT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Sep 2023 17:19:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243529AbjIKRR2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Sep 2023 13:17:28 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9692F1AD;
-        Mon, 11 Sep 2023 10:17:23 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-502153ae36cso7506619e87.3;
-        Mon, 11 Sep 2023 10:17:23 -0700 (PDT)
+        with ESMTP id S244449AbjIKUgv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Sep 2023 16:36:51 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E307F1AD
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 13:36:45 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d7b957fd276so4335343276.0
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 13:36:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694452642; x=1695057442; darn=vger.kernel.org;
-        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SI5vlgRKYRNHM1C+DkX5FIATlpw7hyOP/MciW4qezs4=;
-        b=CEG/GNZEFcoigcN1/Kzcm/xxVTvQTJ6YQIALk5DtwB/w/ZC7GjMaHXHBQb3jvYgdAJ
-         19LsGJaWP38DQYGHjRgcOdm1Biwcvkdm4PgRfHwzZQNEDCXI7T6vFK3OTdpGlhwx7qHw
-         MaNlrzZxHGBEZ/0FX1Wz5JpIXkHaAzwELbdOKgASxwfTlNwqI2h3p83QnOQi2fHVvs8d
-         1l/EvaFum7f74bcC2zJy8BECdumI4LfJ7xPhI6X9XqaiKlSP5R/davcWPbWTNhlfyVKF
-         GEgeJXFQZf9DJ28L8ozEYoCLGrpeJ/pzT2NdT0BaUIVv2SlNuoHtkeZ9JhZvO2r0gOSr
-         /oag==
+        d=google.com; s=20230601; t=1694464605; x=1695069405; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2FnzDM/qQAqed9imlJULqe1YljfAs+NqW+4eAtGoZVY=;
+        b=1U5Wpr8Z1ntC5r0NmUbmnav0wxs52+MVc5TiUu57x4su+ZP1jvlrhuTqvBciYvd6it
+         CnuOV8RyauMJK03yxAkPrZm9IAn3JfZteLJXyW/fbdgbwCwdiqO2M0dBhdrjmDmVvL9v
+         jXMHBZUduNF/b5JC2Oj6Syh12c8FQ9VjvgHk45v+0hyGwSe9i2omChAvIdr2JUQYKu7q
+         Kt5s5ytc/4bOrtVIVNlY6j9Ifd+G4jpsRkp8M17opg7P/70hEFvgQK2+xdrqJtLShuEl
+         oRXXZ9a9udvlkElMSMqmPtZMBPcMnOj2u+znhj4Oe7GOAU+XPhogk3uCuDtqJ73G3F73
+         ou0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694452642; x=1695057442;
-        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SI5vlgRKYRNHM1C+DkX5FIATlpw7hyOP/MciW4qezs4=;
-        b=k9+wLAlyboTMEMFzMVC1Fhw+TMdGmjAmgvlfJwvbDH+m1mFCDeBuZ74ZCFLh0C3ou3
-         GBZ6mOeeEqijviTQ/UNpSdy/hE5F1RbtQrGju2iiMZDh0XYmh8ikp97e94fOXjx6Wuny
-         /3JB8MqabhZCYETuaxUYcrPwRdWcuZQNBAt7hVmNYNuR9zQvg/UqHRivZIs8a+D1xmt3
-         7788tsZiSrpueMeuWpbqlZAHtSBC+0p3i9MwZ+TuiQeiIjZmq2ayG2eqt09LyaRWSkVV
-         MJLKew/nFRPXubFlS5RGhb0sdt5OqmpSvHUbnNtVp1T77EkVq56fiYt4uVtMeeOVSDLR
-         ThEw==
-X-Gm-Message-State: AOJu0Yz4Lxy8HsQqqxO99KU/mboIShSoxlL17mbV0agY6L4o23VzmKDO
-        XBIiYplsdp0uFzXV15nwKjc=
-X-Google-Smtp-Source: AGHT+IGQJHojqhRwH0OQBhk3JhUu00YPa6S2W1S/m1cP6oA0/UCR4y1XMC4AB9LxZ3CXkImsKxpW4Q==
-X-Received: by 2002:a05:6512:108d:b0:500:97e4:587e with SMTP id j13-20020a056512108d00b0050097e4587emr9273543lfg.44.1694452641413;
-        Mon, 11 Sep 2023 10:17:21 -0700 (PDT)
-Received: from dell.localnet (77-255-201-154.dynamic.inetia.pl. [77.255.201.154])
-        by smtp.gmail.com with ESMTPSA id kj13-20020a170907764d00b009a1b857e3a5sm5622150ejc.54.2023.09.11.10.17.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Sep 2023 10:17:20 -0700 (PDT)
-From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dipen Patel <dipenp@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
-        linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [RFT PATCH 15/21] arm: omap1: ams-delta: stop using gpiochip_find()
-Date:   Mon, 11 Sep 2023 19:17:18 +0200
-Message-ID: <4001581.3daJWjYHZt@dell>
-In-Reply-To: <CAMRc=Mfrk9q6fJyEAuxDXYPpbjVHeLJaTjHEcKiYHzrE3r+_7A@mail.gmail.com>
-References: <20230905185309.131295-1-brgl@bgdev.pl> <6555932.G0QQBjFxQf@dell>
- <CAMRc=Mfrk9q6fJyEAuxDXYPpbjVHeLJaTjHEcKiYHzrE3r+_7A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart6408794.j6PcuT4dK6";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
-        HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        d=1e100.net; s=20230601; t=1694464605; x=1695069405;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2FnzDM/qQAqed9imlJULqe1YljfAs+NqW+4eAtGoZVY=;
+        b=Mdo2wVITLOO5sCQAel00+ULsg9T/V4mOU0tzpTdLwAkON5+YDBY1Vo4ybLg8OPqEKN
+         nxaeTKb0o2H3DzdZwXFEwHpRqXudfYIQrjaBwNieNndtV/jIGzAiZZMaUwoj3UnSsnpF
+         dU3n1q5cP6JlRtqzBGwBrMhGvYdlEGWoxtSpdqk1mYCIbir6T+olR7H5SDV0pY5Twzqv
+         N20AHNKbbsumWeJqM8iOcLG92poIP18kglAci5ITKMTeDcQz+aP2kXvClyxHBRqi2tOl
+         bY6shiGeyIkNHpcMfCqeabhhuHQnu7xRW9Uw+FNSnvdcOc8pkggJZ9bhJ6J1t8bsP2T/
+         kuXw==
+X-Gm-Message-State: AOJu0YxnwkruNe8KJDSdiav6iOPu2b41aOfO9KdUIx6Mf7TyC/LC70kO
+        srcflAcnTkLlDwdfES3oEi0TjSg/kS9kUkL32g==
+X-Google-Smtp-Source: AGHT+IFavwzswLW8yPM+m4Foezkzk+uicGyjzH3OefTfV/uWSx1gYNKGFR6NefIDbvFvpW7kzYGAGZiPqAq40xkDnA==
+X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
+ (user=justinstitt job=sendgmr) by 2002:a25:a28d:0:b0:d78:2690:5a47 with SMTP
+ id c13-20020a25a28d000000b00d7826905a47mr230661ybi.7.1694464605062; Mon, 11
+ Sep 2023 13:36:45 -0700 (PDT)
+Date:   Mon, 11 Sep 2023 20:36:44 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAFt6/2QC/x3MQQqEMAwAwK9Izhtoq1D1K8seNEbNpZZkEUX8u
+ 8XjXOYCYxU26KsLlHcx2VKB/1RA65AWRpmKIbhQu857tL8myidOKjur4UBZcDNBQmqdH2MTYtd GKEFWnuV48+/vvh8Kurk9bAAAAA==
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1694464604; l=1891;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=HNx9V4mK74WpkVhxiiuXehucuUIfIncQWa1keuFMymQ=; b=AO4I7CYDSx3ySiPi/FSRJ83HNqGFyhMdWiNYmP5m9j56lpVc9OLlQ9PlTc/x1Y2aKb0JecpaD
+ JdLryhyC6dtArDawSx61qfJu6+mUxUflGPGixf6WDbGpq2P/1WDKP6m
+X-Mailer: b4 0.12.3
+Message-ID: <20230911-strncpy-drivers-acpi-osi-c-v1-1-ca2ec0667b18@google.com>
+Subject: [PATCH] ACPI: OSI: refactor deprecated strncpy
+From:   Justin Stitt <justinstitt@google.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Justin Stitt <justinstitt@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,89 +74,55 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---nextPart6408794.j6PcuT4dK6
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
-From: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 11 Sep 2023 19:17:18 +0200
-Message-ID: <4001581.3daJWjYHZt@dell>
-MIME-Version: 1.0
+`strncpy` is deprecated for use on NUL-terminated destination strings [1].
 
-Hi Bartosz,
+We know `osi->string` is a NUL-terminated string due to its eventual use
+in `acpi_install_interface()` and `acpi_remove_interface()` which expect
+a `acpi_string` which has been specifically typedef'd as:
+|  typedef char *acpi_string;	/* Null terminated ASCII string */
 
-Dnia poniedzia=C5=82ek, 11 wrze=C5=9Bnia 2023 13:09:56 CEST Bartosz Golasze=
-wski pisze:
-> On Fri, Sep 8, 2023 at 8:07=E2=80=AFPM Janusz Krzysztofik <jmkrzyszt@gmai=
-l.com> wrote:
-> >
-> > Dnia czwartek, 7 wrze=C5=9Bnia 2023 09:31:01 CEST Linus Walleij pisze:
-> > > On Tue, Sep 5, 2023 at 8:53=E2=80=AFPM Bartosz Golaszewski <brgl@bgde=
-v.pl> wrote:
-> > >
-> > > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > > >
-> > > > gpiochip_find() is going away as it's not hot-unplug safe. This pla=
-tform
-> > > > is not affected by any of the related problems as this GPIO control=
-ler
-> > > > cannot really go away but in order to finally remove this function,=
- we
-> > > > need to convert it to using gpio_device_find() as well.
-> > > >
-> > > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > >
-> > > I was cleaning this one just some merge cycle ago, now it
-> > > looks even better!
-> > > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> >
-> > Acked-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-> >
->=20
-> Janusz,
->=20
-> Is it fine if I take it through the GPIO tree?
+... and which also has other string functions used on it like `strlen`.
+Furthermore, padding is not needed in this instance either.
 
-Yes, should be fine, I believe.  Tony, Aaro, any doubts?
+Due to the reasoning above a suitable replacement is `strscpy` [2] since
+it guarantees NUL-termination on the destination buffer and doesn't
+unnecessarily NUL-pad.
 
-Thanks,
-Janusz
+While there is unlikely to be a buffer overread (or other related bug)
+in this case, we should still favor a more robust and less ambiguous
+interface.
 
->=20
-> Bartosz
->=20
-> > Thanks,
-> > Janusz
-> >
-> > >
-> > > Yours,
-> > > Linus Walleij
-> > >
-> >
-> >
-> >
-> >
->=20
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
+Link: https://github.com/KSPP/linux/issues/90
+Cc: linux-hardening@vger.kernel.org
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+Note: build-tested
+---
+ drivers/acpi/osi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
+index d4405e1ca9b9..df9328c850bd 100644
+--- a/drivers/acpi/osi.c
++++ b/drivers/acpi/osi.c
+@@ -110,7 +110,7 @@ void __init acpi_osi_setup(char *str)
+ 			break;
+ 		} else if (osi->string[0] == '\0') {
+ 			osi->enable = enable;
+-			strncpy(osi->string, str, OSI_STRING_LENGTH_MAX);
++			strscpy(osi->string, str, OSI_STRING_LENGTH_MAX);
+ 			break;
+ 		}
+ 	}
 
---nextPart6408794.j6PcuT4dK6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+---
+base-commit: 2dde18cd1d8fac735875f2e4987f11817cc0bc2c
+change-id: 20230911-strncpy-drivers-acpi-osi-c-c801b7427987
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEnyr6IsGnTYAeAkHJ2WqSnltsjBoFAmT/S54ACgkQ2WqSnlts
-jBqfwggAkqeTBmvDijSA5oujmDfSsAwfI3pBy3VlWvEHNLW4jys50C18KyynuMPa
-QyvA9s4AZQjeusGTcGaGzSJ7KtMFCmTba/RuaP1mHrH/D9aXB0QlAhdaSoKEWpFl
-2ClWbPt6nnGyMQ17eFTpip9HD4ylxRY/wT748JaWqWBQPsOaSDsq1ghsuQy/6Dy2
-aos/iIizgrK5rhgxxBYmxHi7mm0Pa0sMkr6h8nqash55cMpCEMQeZmSV+GpDZ+vz
-BevtWk7pY+j5WGhOYJNulyih6cdVOVU8J6LqpUCkvKDwK2DzjKFsPSxJ2g1qA7/C
-B/sE4gkeNsH/dCnyiX/Rv1Kd3ak3YA==
-=/Mjl
------END PGP SIGNATURE-----
-
---nextPart6408794.j6PcuT4dK6--
-
-
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
 
