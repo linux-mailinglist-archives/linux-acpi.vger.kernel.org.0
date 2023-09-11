@@ -2,254 +2,229 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AE7F79B171
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 01:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 504B979B2B8
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 01:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345344AbjIKVTf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Sep 2023 17:19:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51476 "EHLO
+        id S241300AbjIKVSW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Sep 2023 17:18:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236234AbjIKKB6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Sep 2023 06:01:58 -0400
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 824CCE6B
-        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 03:01:52 -0700 (PDT)
-X-ASG-Debug-ID: 1694426509-1eb14e75131cf40001-I98ny2
-Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx2.zhaoxin.com with ESMTP id 3x4PcVHX4EIasQrC (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 11 Sep 2023 18:01:49 +0800 (CST)
-X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX2.zhaoxin.com
- (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 11 Sep
- 2023 18:01:48 +0800
-Received: from [192.168.1.204] (125.76.214.122) by ZXBJMBX03.zhaoxin.com
- (10.29.252.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 11 Sep
- 2023 18:01:47 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Message-ID: <bb01b8f1-bb25-48e5-9445-63d40703e919@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 192.168.1.204
-Date:   Mon, 11 Sep 2023 18:01:46 +0800
+        with ESMTP id S237424AbjIKMuB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Sep 2023 08:50:01 -0400
+Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1EAEE4B
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 05:49:56 -0700 (PDT)
+Received: by mail-vk1-xa30.google.com with SMTP id 71dfb90a1353d-493639d616eso1569993e0c.0
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 05:49:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1694436596; x=1695041396; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mJZ1FZwiFkPljuovGYCrOATIkTG/B1uJPfFfZJohEuw=;
+        b=amV62cb6zjsK3BgqTlvyU5CbPPaAxDgiHXEodGwK8PlpUqgVVVvHhQuMu2ovS8Lf6A
+         OBB2JrG1s7WbWDSsut50VfptuFbrr5xfSFkh8X5XWVaOb/uqJX97jOH+V3IEWtxn3ovg
+         +W2EI3A0jZ0csZuqOfO119WhG/Lh84k++lbVqfjr5Ndp/DMaoDdM5HA7p7eVQhZmE1D/
+         zYshZ/vKJynDkKjd6dxbO3HOBlNvKXni2jWuwdxuj9ULUe5KCqNQJdxk0v1iv8L/vjV5
+         t1KYu5bSS3DAMM5IZ9qtbUBsyXP9P2K9K0RDWe0YSOHO/ui35FuG21necvJHY8YuXwwS
+         HY5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694436596; x=1695041396;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mJZ1FZwiFkPljuovGYCrOATIkTG/B1uJPfFfZJohEuw=;
+        b=JKeLY/9eJgEv+og/DRcO1+CCHheX73iCJSJzCZ9vtE1QZ84cG2WyhJyVsBs10rV6Gd
+         zxUqFDCECVutE/8pUSPWPbnHGRri9MKGVDIdtAnJZUEIRAFjKidGQXNC4E8TItozHlHm
+         Km+dql12N3K6TyBptNpqITL8Y0nlJbzDeITGM5wGoQW5+w+lTXtXVqiIQujHjaJsqn+4
+         iHtnY2qx0muYBoag2iJ4e4ET6/6jDrULRiaqak+JQ7GrBmAB53RaW5zahRtZmi/iwDoW
+         TEFtwJmxfCmdsfsm76xo4an9jWDCg7hpo5sMElEYD9zjBjis0LcZ4GVKj/8wCe6Y0cee
+         FW7Q==
+X-Gm-Message-State: AOJu0Yx2Rhd2GUkvECyyZlYguxjtIB1SRynAWMTfVJ2EIz9napP+ZoON
+        lhyxOVep+0d1jztrAqCLPP3nPjNFByPW74YAnu1k6A==
+X-Google-Smtp-Source: AGHT+IFCrtVF9FUlezN8ZWtoWSPV7p/2FrBeRPbP47fzBvVOA2broT4NKCJmO8TCIWnhGp8D7wN3K3NpXEYH5P+5oAQ=
+X-Received: by 2002:a05:6122:251f:b0:48f:cd3a:108 with SMTP id
+ cl31-20020a056122251f00b0048fcd3a0108mr6700350vkb.12.1694436595827; Mon, 11
+ Sep 2023 05:49:55 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/5] ACPI/PCI: Add pci_acpi_program_hest_aer_params()
-To:     Bjorn Helgaas <helgaas@kernel.org>
-X-ASG-Orig-Subj: Re: [PATCH v3 4/5] ACPI/PCI: Add pci_acpi_program_hest_aer_params()
-CC:     <lenb@kernel.org>, <james.morse@arm.com>, <tony.luck@intel.com>,
-        <bp@alien8.de>, <bhelgaas@google.com>, <robert.moore@intel.com>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>,
-        <acpica-devel@lists.linuxfoundation.org>, <ErosZhang@zhaoxin.com>
-References: <20230810233007.GA41830@bhelgaas>
-From:   LeoLiu-oc <leoliu-oc@zhaoxin.com>
-In-Reply-To: <20230810233007.GA41830@bhelgaas>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [125.76.214.122]
-X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
- ZXBJMBX03.zhaoxin.com (10.29.252.7)
-X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
-X-Barracuda-Start-Time: 1694426509
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 5996
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.113957
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------------------------
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+References: <20230909141816.58358-1-hdegoede@redhat.com> <20230909141816.58358-7-hdegoede@redhat.com>
+ <CAHp75Ve888X7xJ0VrQfswaStL8C3SHXjnJV35O2ajZVq6=KfMQ@mail.gmail.com> <afda7862-3c36-98d8-43a3-dd67538de923@redhat.com>
+In-Reply-To: <afda7862-3c36-98d8-43a3-dd67538de923@redhat.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Mon, 11 Sep 2023 14:49:44 +0200
+Message-ID: <CAMRc=MdmzPWeZ7CtFe2b6xZFAges2cD-ckq4vn-+52CG=tVRSA@mail.gmail.com>
+Subject: Re: [PATCH 6/8] platform/x86: x86-android-tablets: Stop using gpiolib
+ private APIs
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-
-
-在 2023/8/11 7:30, Bjorn Helgaas 写道:
-> On Tue, Jul 04, 2023 at 08:05:44PM +0800, LeoLiu-oc wrote:
->> From: leoliu-oc <leoliu-oc@zhaoxin.com>
->>
->> The extracted register values from HEST PCI Express AER structures are
->> written to AER Capabilities.
-> 
-> In the subject, the prevailing style for this file is
-> (see "git log --oneline drivers/pci/pci-acpi.c"):
-> 
->    PCI/ACPI: ...
-> 
-> And I'd like the subject to tell users why they might want this patch.
-> It's obvious from the patch that this adds a function.  What's *not*
-> obvious is *why* we want this new function.  So the commit log should
-> tell us what the benefit is, and the subject line should be one-line
-> summary of that benefit.
-> 
-> This patch adds a function but no caller.  The next patch is one-liner
-> that adds the caller.  I think these two should be squashed so it's
-> easier to review (and easier to explain the benefit of *this* patch :))
-> 
-
-Ok, I will merge this patch with 5/5 in the next version.
-
->> Signed-off-by: leoliu-oc <leoliu-oc@zhaoxin.com>
->> ---
->>   drivers/pci/pci-acpi.c | 92 ++++++++++++++++++++++++++++++++++++++++++
->>   drivers/pci/pci.h      |  5 +++
->>   2 files changed, 97 insertions(+)
->>
->> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
->> index a05350a4e49cb..cff54410e2427 100644
->> --- a/drivers/pci/pci-acpi.c
->> +++ b/drivers/pci/pci-acpi.c
->> @@ -18,6 +18,7 @@
->>   #include <linux/pm_runtime.h>
->>   #include <linux/pm_qos.h>
->>   #include <linux/rwsem.h>
->> +#include <acpi/apei.h>
->>   #include "pci.h"
->>   
->>   /*
->> @@ -783,6 +784,97 @@ int pci_acpi_program_hp_params(struct pci_dev *dev)
->>   	return -ENODEV;
->>   }
->>   
->> +/*
->> + * program_aer_structure_to_aer_registers - Write the AER structure to
->> + * the corresponding dev's AER registers.
->> + *
->> + * @info - the AER structure information
->> + *
-> 
-> Remove the spurious blank comment line.
+On Sun, Sep 10, 2023 at 1:26=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
+ wrote:
+>
+> Hi,
+>
+> On 9/10/23 10:24, Andy Shevchenko wrote:
+> > On Sat, Sep 9, 2023 at 5:18=E2=80=AFPM Hans de Goede <hdegoede@redhat.c=
+om> wrote:
+> >>
+> >> Refactor x86_android_tablet_get_gpiod() to no longer use
+> >> gpiolib private functions like gpiochip_find().
+> >>
+> >> As a bonus this allows specifying that the GPIO is active-low,
+> >> like the /CE (charge enable) pin on the bq25892 charger on
+> >> the Lenovo Yoga Tablet 3.
+> >
+> > The best patch in the series!
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> >
+> > See below a couple of questions.
+> >
+> > ...
+> >
+> >> -int x86_android_tablet_get_gpiod(const char *label, int pin, struct g=
+pio_desc **desc)
+> >> +int x86_android_tablet_get_gpiod(const char *chip, int pin, const cha=
+r *con_id,
+> >> +                                bool active_low, enum gpiod_flags dfl=
+ags,
+> >> +                                struct gpio_desc **desc)
+> >>  {
+> >> +       struct gpiod_lookup_table *lookup;
+> >>         struct gpio_desc *gpiod;
+> >> -       struct gpio_chip *chip;
+> >>
+> >> -       chip =3D gpiochip_find((void *)label, gpiochip_find_match_labe=
+l);
+> >> -       if (!chip) {
+> >> -               pr_err("error cannot find GPIO chip %s\n", label);
+> >> -               return -ENODEV;
+> >> -       }
+> >> +       lookup =3D kzalloc(struct_size(lookup, table, 2), GFP_KERNEL);
+> >> +       if (!lookup)
+> >> +               return -ENOMEM;
+> >> +
+> >> +       lookup->dev_id =3D KBUILD_MODNAME;
+> >> +       lookup->table[0].key =3D chip;
+> >> +       lookup->table[0].chip_hwnum =3D pin;
+> >> +       lookup->table[0].con_id =3D con_id;
+> >> +       lookup->table[0].flags =3D active_low ? GPIO_ACTIVE_LOW : GPIO=
+_ACTIVE_HIGH;
+> >> +
+> >> +       gpiod_add_lookup_table(lookup);
+> >> +       gpiod =3D devm_gpiod_get(&x86_android_tablet_device->dev, con_=
+id, dflags);
+> >> +       gpiod_remove_lookup_table(lookup);
+> >> +       kfree(lookup);
+> >>
+> >> -       gpiod =3D gpiochip_get_desc(chip, pin);
+> >>         if (IS_ERR(gpiod)) {
+> >> -               pr_err("error %ld getting GPIO %s %d\n", PTR_ERR(gpiod=
+), label, pin);
+> >> +               pr_err("error %ld getting GPIO %s %d\n", PTR_ERR(gpiod=
+), chip, pin);
+> >>                 return PTR_ERR(gpiod);
+> >>         }
+> >
+> >> -       *desc =3D gpiod;
+> >> +       if (desc)
+> >> +               *desc =3D gpiod;
+> >
+> > Are we expecting that callers may not want the GPIO descriptor out of
+> > this function?
+> > Sounds a bit weird if so.
+>
+> Yes specifically the Charge-enable and OTG (Vboost enable) pins on the
+> bq25892 charger on the Lenovo Yoga Tab 3 just need to be set to a fixed
+> value, so we request the pins with GPIOD_OUT_LOW / _HIGH and then
+> leave them at that value.
 >
 
-OK.
+You mean you leak the descriptor? It would warrant either a comment or
+storing the descriptor somewhere and cleaning it up if the device can
+be unbound (I guess it can since the driver can be built as module).
 
->> + */
->> +static void program_aer_structure_to_aer_registers(struct acpi_hest_parse_aer_info info)
->> +{
->> +	u32 uncorrectable_mask;
->> +	u32 uncorrectable_severity;
->> +	u32 correctable_mask;
->> +	u32 advanced_capabilities;
->> +	u32 root_error_command;
->> +	u32 uncorrectable_mask2;
->> +	u32 uncorrectable_severity2;
->> +	u32 advanced_capabilities2;
->> +	int port_type;
->> +	int pos;
->> +	struct pci_dev *dev;
-> 
-> Order these declarations in order of use.
-> 
+Bart
 
-OK.
-
->> +	dev = info.pci_dev;
->> +	port_type = pci_pcie_type(dev);
->> +
->> +	pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);
->> +	if (!pos)
->> +		return;
->> +
->> +	if (port_type == PCI_EXP_TYPE_ROOT_PORT) {
->> +		uncorrectable_mask = info.acpi_hest_aer_root_port->uncorrectable_mask;
->> +		uncorrectable_severity = info.acpi_hest_aer_root_port->uncorrectable_severity;
->> +		correctable_mask = info.acpi_hest_aer_root_port->correctable_mask;
->> +		advanced_capabilities = info.acpi_hest_aer_root_port->advanced_capabilities;
->> +		root_error_command = info.acpi_hest_aer_root_port->root_error_command;
-> 
-> Except for this new code, this file fits in 80 columns, so I'd like
-> the new code to match.
+> I think similar stuff may come up later, so it seems nice to be able
+> to not have to pass an otherwise unused gpio_desc pointer.
 >
-
-OK.
-
->> +
->> +		pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK, uncorrectable_mask);
-> 
-> I'm not sure we need to copy everything into local variables.  Maybe
-> this could be split into three helper functions, which would save a
-> level of indent and a level of struct traversal (e.g., "rp->" instead
-> of "info.acpi_hest_aer_root_port->".
-> 
->    pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK, rp->uncorrectable_mask);
-> 
-> or
-> 
->    pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK,
->                           rp->uncorrectable_mask);
-> 
-> If you have to define a new struct acpi_hest_aer_root_port, you could
-> make the member names shorter.  But hopefully you *don't* have to do
-> that, so maybe we're stuck with the long existing member names in
-> acpi_hest_aer_common.
-> >> +int pci_acpi_program_hest_aer_params(struct pci_dev *dev)
->> +{
->> +	struct acpi_hest_parse_aer_info info = {
->> +		.pci_dev	= dev,
->> +		.hest_matched_with_dev	= 0,
->> +		.acpi_hest_aer_endpoint = NULL,
->> +		.acpi_hest_aer_root_port = NULL,
->> +		.acpi_hest_aer_for_bridge = NULL,
-> 
-> Drop the tab from the .pci_dev initialization since the other members
-> aren't lined up anyway.  I think you can drop the other
-> initializations completely since they will be initialized to 0 or NULL
-> pointers by default.
-> 
-
-Thanks for your guidance, I will make changes to the code where it fits 
-and does not conform to the specification.
-
-Best Regards.
-LeoLiu-oc
-
->> +	};
->> +
->> +	if (!pci_is_pcie(dev))
->> +		return -ENODEV;
->> +
->> +	apei_hest_parse(apei_hest_parse_aer, &info);
->> +	if (info.hest_matched_with_dev == 1)
->> +		program_aer_structure_to_aer_registers(info);
->> +	else
->> +		return -ENODEV;
->> +	return 0;
->> +}
->> +
->>   /**
->>    * pciehp_is_native - Check whether a hotplug port is handled by the OS
->>    * @bridge: Hotplug port to check
->> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
->> index a4c3974340576..37aa4a33eeed2 100644
->> --- a/drivers/pci/pci.h
->> +++ b/drivers/pci/pci.h
->> @@ -713,6 +713,7 @@ void acpi_pci_refresh_power_state(struct pci_dev *dev);
->>   int acpi_pci_wakeup(struct pci_dev *dev, bool enable);
->>   bool acpi_pci_need_resume(struct pci_dev *dev);
->>   pci_power_t acpi_pci_choose_state(struct pci_dev *pdev);
->> +int pci_acpi_program_hest_aer_params(struct pci_dev *dev);
->>   #else
->>   static inline int pci_dev_acpi_reset(struct pci_dev *dev, bool probe)
->>   {
->> @@ -752,6 +753,10 @@ static inline pci_power_t acpi_pci_choose_state(struct pci_dev *pdev)
->>   {
->>   	return PCI_POWER_ERROR;
->>   }
->> +static inline int pci_acpi_program_hest_aer_params(struct pci_dev *dev)
->> +{
->> +	return -ENODEV;
->> +}
->>   #endif
->>   
->>   #ifdef CONFIG_PCIEASPM
->> -- 
->> 2.34.1
->>
+>
+> >
+> >>         return 0;
+> >>  }
+> >
+> > ...
+> >
+> >>          * The bq25890_charger driver controls these through I2C, but =
+this only
+> >>          * works if not overridden by the pins. Set these pins here:
+> >> -        * 1. Set /CE to 0 to allow charging.
+> >
+> >> +        * 1. Set /CE to 1 to allow charging.
+> >>          * 2. Set OTG to 0 disable V5 boost output since the 5V boost =
+output of
+> >>          *    the main "bq25892_1" charger is used when necessary.
+> >
+> > Shouldn't we use terminology "active"/"non-active" instead of plain 0
+> > and 1 in the above?
+>
+> Well the flags are called GPIOD_OUT_HIGH / GPIOD_OUT_LOW and
+> with gpiod_set_value 0/1 is used. I'm not in favor of adding
+> "active"/"non-active" into the mix. That just adds a 3th way to
+> say 0/low or 1/high.
+>
+> Regards,
+>
+> Hans
+>
+>
+>
+>
+> >
+> >>          */
+> >
+> > ...
+> >
+> >> -       ret =3D x86_android_tablet_get_gpiod("INT33FF:02", 22, &gpiod)=
+;
+> >> +       ret =3D x86_android_tablet_get_gpiod("INT33FF:02", 22, "bq2589=
+2_0_ce",
+> >> +                                          true, GPIOD_OUT_HIGH, NULL)=
+;
+> >>         if (ret < 0)
+> >>                 return ret;
+> >
+> > Hmm... Maybe better this function to return an error pointer or valid
+> > pointer, and in the code you choose what to do with that?
+> >
+> > ...
+> >
+> >>         /* OTG pin */
+> >> -       ret =3D x86_android_tablet_get_gpiod("INT33FF:03", 19, &gpiod)=
+;
+> >> +       ret =3D x86_android_tablet_get_gpiod("INT33FF:03", 19, "bq2589=
+2_0_otg",
+> >> +                                          false, GPIOD_OUT_LOW, NULL)=
+;
+> >
+> > Ditto.
+> >
+> >>         if (ret < 0)
+> >>                 return ret;
+> >
+>
