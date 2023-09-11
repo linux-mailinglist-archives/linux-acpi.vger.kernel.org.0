@@ -2,115 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A6A79BFF4
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 02:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94FDA79B5FE
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 02:04:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243254AbjIKVTP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Sep 2023 17:19:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51382 "EHLO
+        id S243291AbjIKVSe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Sep 2023 17:18:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236272AbjIKKFb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Sep 2023 06:05:31 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85003E68;
-        Mon, 11 Sep 2023 03:05:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694426726; x=1725962726;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=00fLvhiMtv2ZiGvbKRwC5xfsj2n/I3VRQoCUrYTyoPk=;
-  b=jl2GuVQ0iTI0oRz0MkQVdaxATSUIUcHK+EK6YhVdHvcJgr9/D9jaWFjr
-   A0ptRbNEC0ApBO+JtBVMiFnMSCCOsTOZTdk5UD+iQDxVvje4Lqpz5pB08
-   rbtxdHxQWRuoF1DydnelJ+U8SGeQgSrVK5TlZKQNAvEsOZdiVitA0n+9N
-   BCZ7zruRf/ZgTd/SQDmUs9JWYzlhegseMge/UkDSffachRH+IbnEiEuQH
-   rA314T4LTrq4x7K8//h2yN56JKIA85KdDhjqiT+YNGNkrS8mFamlnHS9R
-   oItCnMlJ7jzIoTx5ZmUSpt/lEp46bwjfGZUqYm3xLfnbb5S7XemKSouiq
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="363065949"
-X-IronPort-AV: E=Sophos;i="6.02,243,1688454000"; 
-   d="scan'208";a="363065949"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 03:05:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="866884962"
-X-IronPort-AV: E=Sophos;i="6.02,243,1688454000"; 
-   d="scan'208";a="866884962"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 03:05:18 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qfdn9-008HnB-00;
-        Mon, 11 Sep 2023 13:05:15 +0300
-Date:   Mon, 11 Sep 2023 13:05:14 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        with ESMTP id S236667AbjIKLKM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Sep 2023 07:10:12 -0400
+Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00E1BCF0
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 04:10:08 -0700 (PDT)
+Received: by mail-ua1-x92f.google.com with SMTP id a1e0cc1a2514c-7a25071d633so1983796241.0
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 04:10:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1694430607; x=1695035407; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ygzI44NeTHTXZv1CATzGbcxyMKxYdJM78sd/Ui4mbh4=;
+        b=S43RlbxgMRIDxaYPaKhgHxFMDEy0YycLcdWKGNBFWNq47kUz/NhhofQvphaQpnnNxA
+         rds3vE4/NWKTO/pCmnSC4FhHUg+M40LqaQ06VSDlukuh8FqhZZYBFXONsm10ihTBcxFg
+         Bq6mZsekZCorKFbhzsTLz0J3tWCufljGqV8C/jDsHw/wECFgV7QGkvtq4dvZ++yfcMKk
+         crn3f7v3a5vweADREqwCWgCnqCMffVF3YlZhK4Q7K0kgWAsgDCrrcwwpOSzZulggjX5P
+         tTVCpNbLuc2uQtV1zkW0M/loqKJ4PXklWOB/oXmyBtH7YGIWN3nB93ojRPszCIZyyjpY
+         bwwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694430607; x=1695035407;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ygzI44NeTHTXZv1CATzGbcxyMKxYdJM78sd/Ui4mbh4=;
+        b=A7qc++mFguzoe9MdRZOa4k9Amc69or6+T+9GL5e29uGA02+fQ+P1Q+HW4OZYLouGWD
+         xv2NkxGla5Kvd048Bd+//o0VJ25UlgY7qEhDgXNzB+H6g9Kqygr8/SBuEvLPSrr02XmB
+         fBl/y1b+Grdu5aqIpBPj6mhh12iuHZABTISV6CUJAWrKMi8a9AynPt8ekMzVc0zfPMdk
+         XVj1nyph1Q9cv9kJR7fQTVATyrte9++hMfYQGXUHh8qpYSUnoUQ9ud7gU1mC+qV61/pm
+         SQOcv8gTvQxsnwVFUvbja8a6nDwE9uElqBZ8BTNCWCTrb/yUVcAJc+as/1CcXza78yNG
+         13Aw==
+X-Gm-Message-State: AOJu0YwHe5TzMXqmynGQLM2HNOXsaj1NZFC6N9TMifPj0cRQAh/SVlb4
+        VU+HGgZ0KZXnS0wtfk9eiFdN75u6VKHjcpQr823lgQ==
+X-Google-Smtp-Source: AGHT+IHKoGdBmULT8rxuDZNFn4KOQlQw0ew3QXPEPQ2cSj+YIXX/HcTVOBuC3A6SmscStWmmEPnPXA1WJ+6yAFCejlE=
+X-Received: by 2002:a67:f557:0:b0:44d:5b62:bcd5 with SMTP id
+ z23-20020a67f557000000b0044d5b62bcd5mr8865170vsn.23.1694430607044; Mon, 11
+ Sep 2023 04:10:07 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-16-brgl@bgdev.pl>
+ <CACRpkdaVUPNYVjAi2XsNKVhwmtk2qpVp62Lke4xeDOwhhBXLtg@mail.gmail.com> <6555932.G0QQBjFxQf@dell>
+In-Reply-To: <6555932.G0QQBjFxQf@dell>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Mon, 11 Sep 2023 13:09:56 +0200
+Message-ID: <CAMRc=Mfrk9q6fJyEAuxDXYPpbjVHeLJaTjHEcKiYHzrE3r+_7A@mail.gmail.com>
+Subject: Re: [RFT PATCH 15/21] arm: omap1: ams-delta: stop using gpiochip_find()
+To:     Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
         Tony Lindgren <tony@atomide.com>,
         Russell King <linux@armlinux.org.uk>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Dipen Patel <dipenp@nvidia.com>,
         Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Mark Gross <markgross@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
         linux-acpi@vger.kernel.org, timestamp@lists.linux.dev,
         linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [RFT PATCH 11/21] platform: x86: android-tablets: don't access
- GPIOLIB private members
-Message-ID: <ZP7mWk/jx3FZjMih@smile.fi.intel.com>
-References: <20230905185309.131295-1-brgl@bgdev.pl>
- <20230905185309.131295-12-brgl@bgdev.pl>
- <8f51b4a8-bb9c-4918-61a8-4ab402da1ed0@redhat.com>
- <CAMRc=Mfmp3Nd5jwNWr=kc8RFO-arFDwEvLxj5Qu9_1OOXR2gHQ@mail.gmail.com>
- <173bdafa-08da-7473-6711-61131986eb3c@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <173bdafa-08da-7473-6711-61131986eb3c@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Sep 09, 2023 at 04:17:53PM +0200, Hans de Goede wrote:
-> On 9/6/23 16:27, Bartosz Golaszewski wrote:
-> > On Wed, Sep 6, 2023 at 3:01 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Fri, Sep 8, 2023 at 8:07=E2=80=AFPM Janusz Krzysztofik <jmkrzyszt@gmail.=
+com> wrote:
+>
+> Dnia czwartek, 7 wrze=C5=9Bnia 2023 09:31:01 CEST Linus Walleij pisze:
+> > On Tue, Sep 5, 2023 at 8:53=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.=
+pl> wrote:
+> >
+> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > >
+> > > gpiochip_find() is going away as it's not hot-unplug safe. This platf=
+orm
+> > > is not affected by any of the related problems as this GPIO controlle=
+r
+> > > cannot really go away but in order to finally remove this function, w=
+e
+> > > need to convert it to using gpio_device_find() as well.
+> > >
+> > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >
+> > I was cleaning this one just some merge cycle ago, now it
+> > looks even better!
+> > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>
+> Acked-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+>
 
-...
+Janusz,
 
-> > This makes sense! Maybe we'd need a good-old board file setting up all
-> > non-described devices using the driver model?
-> 
-> Right, this is pretty much exactly what the x86-android-tablets
-> code does. Except that it does it for a bunch of boards in a single
-> .ko / driver. There is a lot of commonality between these boards,
-> so this allows sharing most of the code.
-> 
-> The driver uses DMI matching, with the match's driver_data pointing
-> to a description of which devices to instantiate and then the shared
-> code takes care of instantiating those.
-> 
-> About 90% of the data / code is __init or __initdata so both
-> the code to instantiate the devices as well as the per board
-> data is free-ed after module_init() has run.
+Is it fine if I take it through the GPIO tree?
 
-...which is nicely looked and isolated hack (or quirk if you prefer)
-that I like! Thanks, Hans, for maintaining that!
+Bartosz
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> Thanks,
+> Janusz
+>
+> >
+> > Yours,
+> > Linus Walleij
+> >
+>
+>
+>
+>
