@@ -2,86 +2,254 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E036679AE98
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 01:45:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AE7F79B171
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 01:56:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238978AbjIKVSk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Sep 2023 17:18:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41266 "EHLO
+        id S1345344AbjIKVTf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Sep 2023 17:19:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236172AbjIKJwR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Sep 2023 05:52:17 -0400
-Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E12BBCE6
-        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 02:52:12 -0700 (PDT)
-Received: by mail-vs1-xe35.google.com with SMTP id ada2fe7eead31-45088c95591so1976552137.3
-        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 02:52:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1694425932; x=1695030732; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KIn7ppfI5hUpZ9BWxWQzUJmi7tuPomUJZC2PQ3FzTQQ=;
-        b=07YFJQkUeiL3lWFl7abLIGKxeKDPyLSlQvruWtuE0RXA3iHdEPmYRzO+dSTW1yls7P
-         im38IXFacFuIQibFMVCGF/JdCcfW3gVvaehmubYhS3TwiLnxd7mmluFkj2P/PTie7skn
-         q6eDMcNkYgzx6JalgZnSoCfqjxoSpOHs0ukqDQb62PrbF/YcVHB1qcfLsVPzahBvaWW0
-         cf/SnTinPTP07H8iIT1tj//ruT97cgtd7Rj9/i8LHe6+DlpbgxXvER5McsJ9a1Hcjyhy
-         KFI4TPEYhwJDQjO3/76fuF7/Hm2flaeOl1WHskRz+E8v/TbDxu7qFWyBEkIri98v4soq
-         ZfJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694425932; x=1695030732;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KIn7ppfI5hUpZ9BWxWQzUJmi7tuPomUJZC2PQ3FzTQQ=;
-        b=OiheQchZWYlfbNt0KVa3si10NeuMNr6WFDEZBMx34X6oo71ILu4OWzx9f15ZylfOYM
-         4h22FchFgiZdgsN//hf7/IkHmZHPBJhuz+zTMw9sUxmk9b5W4bUo+PFT3gm6rDX1rZCH
-         FK8ywG9J+iUqeZObm9m+MdU+FFCtWShWG1PYOJESEq4iHTyJjJAJm+gDyx0jr9Lq6/nF
-         92qhiakbjn8ybFCidhe2ShugAzUg0uY/zvMZJ7rnvQbiyXLw1J0PpOVA2FpTyKbLZdXH
-         2N7PtzOOLmES512GoGYJtzumRkKTVIamWfX8Wrj0AL4qEo56t0CDafwr2I2K0DKtJcec
-         0rHg==
-X-Gm-Message-State: AOJu0YzcymkjIpewe6q9FTcl9UoWvGHIiCfsr/S0O+H9c+6lBrLlzVrK
-        B3PzPJ+B6tHfXap17tiXbhlYNr/6o4PyLj8MfpfJKSJpZK7jjgzPBGg=
-X-Google-Smtp-Source: AGHT+IHibDNcC0W+t+sqyHgZd/i+fSeIzfiyJ4cjrCpSbO2UJ3YBbXCP+TDuS+qow+FJct3Pniq4ec1uXbAZUbmESNQ=
-X-Received: by 2002:a67:e981:0:b0:44e:d6c3:51d6 with SMTP id
- b1-20020a67e981000000b0044ed6c351d6mr7589163vso.14.1694425932088; Mon, 11 Sep
- 2023 02:52:12 -0700 (PDT)
+        with ESMTP id S236234AbjIKKB6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Sep 2023 06:01:58 -0400
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 824CCE6B
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Sep 2023 03:01:52 -0700 (PDT)
+X-ASG-Debug-ID: 1694426509-1eb14e75131cf40001-I98ny2
+Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx2.zhaoxin.com with ESMTP id 3x4PcVHX4EIasQrC (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 11 Sep 2023 18:01:49 +0800 (CST)
+X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX2.zhaoxin.com
+ (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 11 Sep
+ 2023 18:01:48 +0800
+Received: from [192.168.1.204] (125.76.214.122) by ZXBJMBX03.zhaoxin.com
+ (10.29.252.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 11 Sep
+ 2023 18:01:47 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Message-ID: <bb01b8f1-bb25-48e5-9445-63d40703e919@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 192.168.1.204
+Date:   Mon, 11 Sep 2023 18:01:46 +0800
 MIME-Version: 1.0
-References: <20230909141816.58358-1-hdegoede@redhat.com> <20230909141816.58358-4-hdegoede@redhat.com>
-In-Reply-To: <20230909141816.58358-4-hdegoede@redhat.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 11 Sep 2023 11:52:01 +0200
-Message-ID: <CAMRc=MeErGNWcYmm=T8HXPUoYzOQwjsSZGh9w_ssTffk-ze_zA@mail.gmail.com>
-Subject: Re: [PATCH 3/8] platform/x86: x86-android-tablets: Remove
- invalid_aei_gpiochip from Peaq C1010
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/5] ACPI/PCI: Add pci_acpi_program_hest_aer_params()
+To:     Bjorn Helgaas <helgaas@kernel.org>
+X-ASG-Orig-Subj: Re: [PATCH v3 4/5] ACPI/PCI: Add pci_acpi_program_hest_aer_params()
+CC:     <lenb@kernel.org>, <james.morse@arm.com>, <tony.luck@intel.com>,
+        <bp@alien8.de>, <bhelgaas@google.com>, <robert.moore@intel.com>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>,
+        <acpica-devel@lists.linuxfoundation.org>, <ErosZhang@zhaoxin.com>
+References: <20230810233007.GA41830@bhelgaas>
+From:   LeoLiu-oc <leoliu-oc@zhaoxin.com>
+In-Reply-To: <20230810233007.GA41830@bhelgaas>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [125.76.214.122]
+X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
+ ZXBJMBX03.zhaoxin.com (10.29.252.7)
+X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
+X-Barracuda-Start-Time: 1694426509
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 5996
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.113957
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------------------------
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Sep 9, 2023 at 4:18=E2=80=AFPM Hans de Goede <hdegoede@redhat.com> =
-wrote:
->
-> Remove the invalid_aei_gpiochip setting from the x86_dev_info
-> for the Peaq C1010.
->
-> This is no longer necessary since there now is a quirk to ignore
-> the "dolby" button GPIO in gpiolib_acpi_quirks[] in
-> drivers/gpio/gpiolib-acpi.c .
->
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
 
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
+在 2023/8/11 7:30, Bjorn Helgaas 写道:
+> On Tue, Jul 04, 2023 at 08:05:44PM +0800, LeoLiu-oc wrote:
+>> From: leoliu-oc <leoliu-oc@zhaoxin.com>
+>>
+>> The extracted register values from HEST PCI Express AER structures are
+>> written to AER Capabilities.
+> 
+> In the subject, the prevailing style for this file is
+> (see "git log --oneline drivers/pci/pci-acpi.c"):
+> 
+>    PCI/ACPI: ...
+> 
+> And I'd like the subject to tell users why they might want this patch.
+> It's obvious from the patch that this adds a function.  What's *not*
+> obvious is *why* we want this new function.  So the commit log should
+> tell us what the benefit is, and the subject line should be one-line
+> summary of that benefit.
+> 
+> This patch adds a function but no caller.  The next patch is one-liner
+> that adds the caller.  I think these two should be squashed so it's
+> easier to review (and easier to explain the benefit of *this* patch :))
+> 
+
+Ok, I will merge this patch with 5/5 in the next version.
+
+>> Signed-off-by: leoliu-oc <leoliu-oc@zhaoxin.com>
+>> ---
+>>   drivers/pci/pci-acpi.c | 92 ++++++++++++++++++++++++++++++++++++++++++
+>>   drivers/pci/pci.h      |  5 +++
+>>   2 files changed, 97 insertions(+)
+>>
+>> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+>> index a05350a4e49cb..cff54410e2427 100644
+>> --- a/drivers/pci/pci-acpi.c
+>> +++ b/drivers/pci/pci-acpi.c
+>> @@ -18,6 +18,7 @@
+>>   #include <linux/pm_runtime.h>
+>>   #include <linux/pm_qos.h>
+>>   #include <linux/rwsem.h>
+>> +#include <acpi/apei.h>
+>>   #include "pci.h"
+>>   
+>>   /*
+>> @@ -783,6 +784,97 @@ int pci_acpi_program_hp_params(struct pci_dev *dev)
+>>   	return -ENODEV;
+>>   }
+>>   
+>> +/*
+>> + * program_aer_structure_to_aer_registers - Write the AER structure to
+>> + * the corresponding dev's AER registers.
+>> + *
+>> + * @info - the AER structure information
+>> + *
+> 
+> Remove the spurious blank comment line.
+>
+
+OK.
+
+>> + */
+>> +static void program_aer_structure_to_aer_registers(struct acpi_hest_parse_aer_info info)
+>> +{
+>> +	u32 uncorrectable_mask;
+>> +	u32 uncorrectable_severity;
+>> +	u32 correctable_mask;
+>> +	u32 advanced_capabilities;
+>> +	u32 root_error_command;
+>> +	u32 uncorrectable_mask2;
+>> +	u32 uncorrectable_severity2;
+>> +	u32 advanced_capabilities2;
+>> +	int port_type;
+>> +	int pos;
+>> +	struct pci_dev *dev;
+> 
+> Order these declarations in order of use.
+> 
+
+OK.
+
+>> +	dev = info.pci_dev;
+>> +	port_type = pci_pcie_type(dev);
+>> +
+>> +	pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);
+>> +	if (!pos)
+>> +		return;
+>> +
+>> +	if (port_type == PCI_EXP_TYPE_ROOT_PORT) {
+>> +		uncorrectable_mask = info.acpi_hest_aer_root_port->uncorrectable_mask;
+>> +		uncorrectable_severity = info.acpi_hest_aer_root_port->uncorrectable_severity;
+>> +		correctable_mask = info.acpi_hest_aer_root_port->correctable_mask;
+>> +		advanced_capabilities = info.acpi_hest_aer_root_port->advanced_capabilities;
+>> +		root_error_command = info.acpi_hest_aer_root_port->root_error_command;
+> 
+> Except for this new code, this file fits in 80 columns, so I'd like
+> the new code to match.
+>
+
+OK.
+
+>> +
+>> +		pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK, uncorrectable_mask);
+> 
+> I'm not sure we need to copy everything into local variables.  Maybe
+> this could be split into three helper functions, which would save a
+> level of indent and a level of struct traversal (e.g., "rp->" instead
+> of "info.acpi_hest_aer_root_port->".
+> 
+>    pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK, rp->uncorrectable_mask);
+> 
+> or
+> 
+>    pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK,
+>                           rp->uncorrectable_mask);
+> 
+> If you have to define a new struct acpi_hest_aer_root_port, you could
+> make the member names shorter.  But hopefully you *don't* have to do
+> that, so maybe we're stuck with the long existing member names in
+> acpi_hest_aer_common.
+> >> +int pci_acpi_program_hest_aer_params(struct pci_dev *dev)
+>> +{
+>> +	struct acpi_hest_parse_aer_info info = {
+>> +		.pci_dev	= dev,
+>> +		.hest_matched_with_dev	= 0,
+>> +		.acpi_hest_aer_endpoint = NULL,
+>> +		.acpi_hest_aer_root_port = NULL,
+>> +		.acpi_hest_aer_for_bridge = NULL,
+> 
+> Drop the tab from the .pci_dev initialization since the other members
+> aren't lined up anyway.  I think you can drop the other
+> initializations completely since they will be initialized to 0 or NULL
+> pointers by default.
+> 
+
+Thanks for your guidance, I will make changes to the code where it fits 
+and does not conform to the specification.
+
+Best Regards.
+LeoLiu-oc
+
+>> +	};
+>> +
+>> +	if (!pci_is_pcie(dev))
+>> +		return -ENODEV;
+>> +
+>> +	apei_hest_parse(apei_hest_parse_aer, &info);
+>> +	if (info.hest_matched_with_dev == 1)
+>> +		program_aer_structure_to_aer_registers(info);
+>> +	else
+>> +		return -ENODEV;
+>> +	return 0;
+>> +}
+>> +
+>>   /**
+>>    * pciehp_is_native - Check whether a hotplug port is handled by the OS
+>>    * @bridge: Hotplug port to check
+>> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+>> index a4c3974340576..37aa4a33eeed2 100644
+>> --- a/drivers/pci/pci.h
+>> +++ b/drivers/pci/pci.h
+>> @@ -713,6 +713,7 @@ void acpi_pci_refresh_power_state(struct pci_dev *dev);
+>>   int acpi_pci_wakeup(struct pci_dev *dev, bool enable);
+>>   bool acpi_pci_need_resume(struct pci_dev *dev);
+>>   pci_power_t acpi_pci_choose_state(struct pci_dev *pdev);
+>> +int pci_acpi_program_hest_aer_params(struct pci_dev *dev);
+>>   #else
+>>   static inline int pci_dev_acpi_reset(struct pci_dev *dev, bool probe)
+>>   {
+>> @@ -752,6 +753,10 @@ static inline pci_power_t acpi_pci_choose_state(struct pci_dev *pdev)
+>>   {
+>>   	return PCI_POWER_ERROR;
+>>   }
+>> +static inline int pci_acpi_program_hest_aer_params(struct pci_dev *dev)
+>> +{
+>> +	return -ENODEV;
+>> +}
+>>   #endif
+>>   
+>>   #ifdef CONFIG_PCIEASPM
+>> -- 
+>> 2.34.1
+>>
