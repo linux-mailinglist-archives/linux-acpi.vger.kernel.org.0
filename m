@@ -2,21 +2,21 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09DE479D910
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 20:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6BC579D90C
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 20:47:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237591AbjILSr5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Sep 2023 14:47:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41220 "EHLO
+        id S237586AbjILSr4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Sep 2023 14:47:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237590AbjILSry (ORCPT
+        with ESMTP id S237545AbjILSry (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 14:47:54 -0400
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD9C21716;
-        Tue, 12 Sep 2023 11:47:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D64E1705;
+        Tue, 12 Sep 2023 11:47:41 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id 1f78031281b7904c; Tue, 12 Sep 2023 20:47:42 +0200
+ id 25b387b3422685a1; Tue, 12 Sep 2023 20:47:40 +0200
 Authentication-Results: v370.home.net.pl; spf=softfail (domain owner 
    discourages use of this host) smtp.mailfrom=rjwysocki.net 
    (client-ip=195.136.19.94; helo=[195.136.19.94]; 
@@ -25,8 +25,8 @@ Received: from kreacher.localnet (unknown [195.136.19.94])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id E0F5A663BE5;
-        Tue, 12 Sep 2023 20:47:41 +0200 (CEST)
+        by v370.home.net.pl (Postfix) with ESMTPSA id CE019663BE5;
+        Tue, 12 Sep 2023 20:47:39 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
@@ -34,9 +34,9 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Zhang Rui <rui.zhang@intel.com>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH v1 3/9] ACPI: thermal: Determine the number of trip points earlier
-Date:   Tue, 12 Sep 2023 20:37:59 +0200
-Message-ID: <1863318.tdWV9SEqCh@kreacher>
+Subject: [PATCH v1 4/9] ACPI: thermal: Create and populate trip points table earlier
+Date:   Tue, 12 Sep 2023 20:39:15 +0200
+Message-ID: <13346091.uLZWGnKmhe@kreacher>
 In-Reply-To: <5708760.DvuYhMxLoT@kreacher>
 References: <5708760.DvuYhMxLoT@kreacher>
 MIME-Version: 1.0
@@ -45,7 +45,7 @@ Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 195.136.19.94
 X-CLIENT-HOSTNAME: 195.136.19.94
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrudeiiedgudeftdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeeipdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehs
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrudeiiedgudefudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeeipdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehs
  rhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepuggrnhhivghlrdhlvgiitggrnhhosehlihhnrghrohdrohhrgh
 X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
 Precedence: bulk
@@ -54,137 +54,172 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Compute the number of trip points in acpi_thermal_add() so as to allow the
-driver's data structures to be simplified going forward.
+Create and populate the driver's trip points table in acpi_thermal_add()
+so as to allow the its data structures to be simplified going forward.
 
 No intentional functional impact.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/thermal.c |   60 +++++++++++++++++++++++--------------------------
- 1 file changed, 29 insertions(+), 31 deletions(-)
+ drivers/acpi/thermal.c |  105 ++++++++++++++++++++++++-------------------------
+ 1 file changed, 52 insertions(+), 53 deletions(-)
 
 Index: linux-pm/drivers/acpi/thermal.c
 ===================================================================
 --- linux-pm.orig/drivers/acpi/thermal.c
 +++ linux-pm/drivers/acpi/thermal.c
-@@ -452,7 +452,7 @@ static void acpi_thermal_get_hot_trip(st
- 
- static int acpi_thermal_get_trip_points(struct acpi_thermal *tz)
- {
--	bool valid;
-+	unsigned int count = 0;
- 	int i;
- 
- 	acpi_thermal_get_critical_trip(tz);
-@@ -460,18 +460,24 @@ static int acpi_thermal_get_trip_points(
- 	/* Passive and active trip points (optional). */
- 	__acpi_thermal_trips_update(tz, ACPI_TRIPS_INIT);
- 
--	valid = tz->trips.critical.valid |
--		tz->trips.hot.valid |
--		tz->trips.passive.trip.valid;
--
--	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++)
--		valid = valid || tz->trips.active[i].trip.valid;
--
--	if (!valid) {
--		pr_warn(FW_BUG "No valid trip found\n");
--		return -ENODEV;
-+	if (tz->trips.critical.valid)
-+		count++;
-+
-+	if (tz->trips.hot.valid)
-+		count++;
-+
-+	if (tz->trips.passive.trip.valid)
-+		count++;
-+
-+	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
-+		if (tz->trips.active[i].trip.valid)
-+			count++;
-+		else
-+			break;
-+
- 	}
--	return 0;
-+
-+	return count;
+@@ -688,53 +688,10 @@ static void acpi_thermal_zone_sysfs_remo
  }
  
- /* sys I/F for generic thermal sysfs support */
-@@ -681,29 +687,15 @@ static void acpi_thermal_zone_sysfs_remo
- 	sysfs_remove_link(&tzdev->kobj, "device");
- }
- 
--static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz)
-+static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz,
-+					      unsigned int trip_count)
+ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz,
+-					      unsigned int trip_count)
++					      unsigned int trip_count,
++					      int passive_delay)
  {
- 	struct acpi_thermal_trip *acpi_trip;
- 	struct thermal_trip *trip;
- 	int passive_delay = 0;
--	int trip_count = 0;
+-	struct acpi_thermal_trip *acpi_trip;
+-	struct thermal_trip *trip;
+-	int passive_delay = 0;
  	int result;
- 	int i;
- 
--	if (tz->trips.critical.valid)
--		trip_count++;
+-	int i;
 -
--	if (tz->trips.hot.valid)
--		trip_count++;
+-	trip = kcalloc(trip_count, sizeof(*trip), GFP_KERNEL);
+-	if (!trip)
+-		return -ENOMEM;
 -
--	if (tz->trips.passive.trip.valid) {
--		trip_count++;
--		passive_delay = tz->trips.passive.tsp * 100;
+-	tz->trip_table = trip;
+-
+-	if (tz->trips.critical.valid) {
+-		trip->type = THERMAL_TRIP_CRITICAL;
+-		trip->temperature = acpi_thermal_temp(tz, tz->trips.critical.temperature);
+-		trip++;
 -	}
 -
--	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE && tz->trips.active[i].trip.valid; i++)
--		trip_count++;
+-	if (tz->trips.hot.valid) {
+-		trip->type = THERMAL_TRIP_HOT;
+-		trip->temperature = acpi_thermal_temp(tz, tz->trips.hot.temperature);
+-		trip++;
+-	}
 -
- 	trip = kcalloc(trip_count, sizeof(*trip), GFP_KERNEL);
- 	if (!trip)
- 		return -ENOMEM;
-@@ -724,6 +716,8 @@ static int acpi_thermal_register_thermal
+-	acpi_trip = &tz->trips.passive.trip;
+-	if (acpi_trip->valid) {
+-		passive_delay = tz->trips.passive.tsp * 100;
+-
+-		trip->type = THERMAL_TRIP_PASSIVE;
+-		trip->temperature = acpi_thermal_temp(tz, acpi_trip->temperature);
+-		trip->priv = acpi_trip;
+-		trip++;
+-	}
+-
+-	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
+-		acpi_trip = &tz->trips.active[i].trip;
+-
+-		if (!acpi_trip->valid)
+-			break;
+-
+-		trip->type = THERMAL_TRIP_ACTIVE;
+-		trip->temperature = acpi_thermal_temp(tz, acpi_trip->temperature);
+-		trip->priv = acpi_trip;
+-		trip++;
+-	}
  
- 	acpi_trip = &tz->trips.passive.trip;
- 	if (acpi_trip->valid) {
-+		passive_delay = tz->trips.passive.tsp * 100;
-+
- 		trip->type = THERMAL_TRIP_PASSIVE;
- 		trip->temperature = acpi_thermal_temp(tz, acpi_trip->temperature);
- 		trip->priv = acpi_trip;
-@@ -893,6 +887,7 @@ static void acpi_thermal_check_fn(struct
+ 	tz->thermal_zone = thermal_zone_device_register_with_trips("acpitz",
+ 								   tz->trip_table,
+@@ -744,10 +701,8 @@ static int acpi_thermal_register_thermal
+ 								   NULL,
+ 								   passive_delay,
+ 								   tz->polling_frequency * 100);
+-	if (IS_ERR(tz->thermal_zone)) {
+-		result = PTR_ERR(tz->thermal_zone);
+-		goto free_trip_table;
+-	}
++	if (IS_ERR(tz->thermal_zone))
++		return PTR_ERR(tz->thermal_zone);
+ 
+ 	result = acpi_thermal_zone_sysfs_add(tz);
+ 	if (result)
+@@ -766,8 +721,6 @@ remove_links:
+ 	acpi_thermal_zone_sysfs_remove(tz);
+ unregister_tzd:
+ 	thermal_zone_device_unregister(tz->thermal_zone);
+-free_trip_table:
+-	kfree(tz->trip_table);
+ 
+ 	return result;
+ }
+@@ -886,9 +839,13 @@ static void acpi_thermal_check_fn(struct
+ 
  static int acpi_thermal_add(struct acpi_device *device)
  {
++	struct acpi_thermal_trip *acpi_trip;
++	struct thermal_trip *trip;
  	struct acpi_thermal *tz;
-+	unsigned int trip_count;
+ 	unsigned int trip_count;
++	int passive_delay = 0;
  	int result;
++	int i;
  
  	if (!device)
-@@ -911,9 +906,12 @@ static int acpi_thermal_add(struct acpi_
- 	acpi_thermal_aml_dependency_fix(tz);
- 
- 	/* Get trip points [_CRT, _PSV, etc.] (required). */
--	result = acpi_thermal_get_trip_points(tz);
--	if (result)
-+	trip_count = acpi_thermal_get_trip_points(tz);
-+	if (!trip_count) {
-+		pr_warn(FW_BUG "No valid trip points!\n");
-+		result = -ENODEV;
- 		goto free_memory;
-+	}
- 
- 	/* Get temperature [_TMP] (required). */
- 	result = acpi_thermal_get_temperature(tz);
-@@ -932,7 +930,7 @@ static int acpi_thermal_add(struct acpi_
+ 		return -EINVAL;
+@@ -930,9 +887,49 @@ static int acpi_thermal_add(struct acpi_
  
  	acpi_thermal_guess_offset(tz);
  
--	result = acpi_thermal_register_thermal_zone(tz);
-+	result = acpi_thermal_register_thermal_zone(tz, trip_count);
+-	result = acpi_thermal_register_thermal_zone(tz, trip_count);
++	trip = kcalloc(trip_count, sizeof(*trip), GFP_KERNEL);
++	if (!trip)
++		return -ENOMEM;
++
++	tz->trip_table = trip;
++
++	if (tz->trips.critical.valid) {
++		trip->type = THERMAL_TRIP_CRITICAL;
++		trip->temperature = acpi_thermal_temp(tz, tz->trips.critical.temperature);
++		trip++;
++	}
++
++	if (tz->trips.hot.valid) {
++		trip->type = THERMAL_TRIP_HOT;
++		trip->temperature = acpi_thermal_temp(tz, tz->trips.hot.temperature);
++		trip++;
++	}
++
++	acpi_trip = &tz->trips.passive.trip;
++	if (acpi_trip->valid) {
++		passive_delay = tz->trips.passive.tsp * 100;
++
++		trip->type = THERMAL_TRIP_PASSIVE;
++		trip->temperature = acpi_thermal_temp(tz, acpi_trip->temperature);
++		trip->priv = acpi_trip;
++		trip++;
++	}
++
++	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
++		acpi_trip =  &tz->trips.active[i].trip;
++
++		if (!acpi_trip->valid)
++			break;
++
++		trip->type = THERMAL_TRIP_ACTIVE;
++		trip->temperature = acpi_thermal_temp(tz, acpi_trip->temperature);
++		trip->priv = acpi_trip;
++		trip++;
++	}
++
++	result = acpi_thermal_register_thermal_zone(tz, trip_count, passive_delay);
  	if (result)
- 		goto free_memory;
+-		goto free_memory;
++		goto free_trips;
+ 
+ 	refcount_set(&tz->thermal_check_count, 3);
+ 	mutex_init(&tz->thermal_check_lock);
+@@ -951,6 +948,8 @@ static int acpi_thermal_add(struct acpi_
+ flush_wq:
+ 	flush_workqueue(acpi_thermal_pm_queue);
+ 	acpi_thermal_unregister_thermal_zone(tz);
++free_trips:
++	kfree(tz->trip_table);
+ free_memory:
+ 	kfree(tz);
  
 
 
