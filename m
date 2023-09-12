@@ -2,117 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60D0C79C7BC
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 09:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECBC279C7E1
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 09:15:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231316AbjILHJf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Sep 2023 03:09:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34912 "EHLO
+        id S229556AbjILHPf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Sep 2023 03:15:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230296AbjILHJf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 03:09:35 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B216C6
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 00:09:31 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1bf57366ccdso43940415ad.1
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 00:09:31 -0700 (PDT)
+        with ESMTP id S231316AbjILHPe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 03:15:34 -0400
+Received: from mail-vk1-xa2b.google.com (mail-vk1-xa2b.google.com [IPv6:2607:f8b0:4864:20::a2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6A80E73
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 00:15:30 -0700 (PDT)
+Received: by mail-vk1-xa2b.google.com with SMTP id 71dfb90a1353d-493542a25dfso1990811e0c.0
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 00:15:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1694502570; x=1695107370; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7neP8LMiub1YbC2kDb6STylXpBWNHy6kn2mPL3bRXqg=;
-        b=XRFZPUVux/2dyUQ+A8SjhjA9/4HfNlOte/HEz+fyYTHLveaLPGJaa81+OIOCtqx8gs
-         sOSnssUeaujnEs2lAKbT+nrecygfmy4d16BkSQRPcmclq/PFA/SCO9Er5+khAkxr8QDG
-         E5feKd76R2ZCHPAhTa1WjutJH/Qpb+O5R1HSmX3fzr1jFNOu/rawABSICEwT/vcDerWz
-         wyxeqyGRN4kpzJHo5xB0xOqPt5YdqWfy9neSMOXORRnyLJmjMHVhnqeDrLo/vNFOaiig
-         xIDDANkMkrgzg/wbyxJPsC5HTe8FXPThh0PILsvrK/gvy8XVMXU0CxivWbplngg5hvXB
-         /H1w==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1694502930; x=1695107730; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z+0OLswzodm1av5Wpp7mGG8ZdGkJ1QyDOqEboshS6xU=;
+        b=xlhicadGCX8/96gvQIKsEQ6c7X5n2a8hN4cXAk7UX9THJKYlOJMyzzLni790TgOruC
+         k4SzDADDlLxFeXH60AXhGVF5v+6mEsdr/okLVL2JgmnncCWlWSBoa9TEKubWWclMGmEm
+         yU6PbDPjbLBgHQ+loJbH22GIltDe0MlyH+h8pyzeQnZvQsVHLLbohvSRqjNiU2noqdjk
+         +KzjQdts/EhOLRrUx3bSv10xviOFlh4hGKBuP+CF0tazr1wD+AYwBEleXNmWGvVxBTCR
+         Q9/9b977DkIObdrOxHTSS6INTciNOHPS+zZDV98ptmZHfHz/n8b0TY1uPs6oqyFw6svV
+         xIyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694502570; x=1695107370;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7neP8LMiub1YbC2kDb6STylXpBWNHy6kn2mPL3bRXqg=;
-        b=vjM6HMXbo1cKEM4xXTU1/6uKSlWPvX8V0rcG/2i3Sefw0efZcJgMxu3EOR/ha0PxG1
-         nxwWeZaaEfnGLH5tF6funb57vFk4KaiSw9qat1t0tzJUkgdZ20m/H77Zo2IvKgnSbA4S
-         PPigLQb0KX86LZ1lPib2o7zC7fav4S3BHPfyYlJg4ZldDGxbjvw9+iVy1/ifUrp4oms5
-         9zHLQNcT3AZj7e0XmcvC153aGX3zgJIcQ1QdyzySheRmYbiax3WCQ/Ro3EtRoHTkE8im
-         jCYzSDIKkNlOwP59wUXE8yJVuzeL91hO0ghW8rCFjY4xmK2Aj7cEw4fAm3xb5dDAMjRW
-         sd4g==
-X-Gm-Message-State: AOJu0YyDJN2hG2nZM7cPR3HYBgPfqsKQFMNDxyU6tCFEbTIqcBy0OuVX
-        f98Nf32a38pQXs637+QP5DtNiw==
-X-Google-Smtp-Source: AGHT+IGcF79zzfYpckzYOnYVVyFO1u3wU048/F7jeQAGwg5JzfCVch2AQDPKcBmJ9F6wALa+zFXMQw==
-X-Received: by 2002:a17:902:d501:b0:1c3:22a9:8643 with SMTP id b1-20020a170902d50100b001c322a98643mr2469259plg.31.1694502570653;
-        Tue, 12 Sep 2023 00:09:30 -0700 (PDT)
-Received: from PF2LML5M-SMJ.bytedance.net ([2001:c10:ff04:0:1000:0:1:f])
-        by smtp.gmail.com with ESMTPSA id d4-20020a170902c18400b001bba3a4888bsm7616431pld.102.2023.09.12.00.09.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 00:09:30 -0700 (PDT)
-From:   "guojinhui.liam" <guojinhui.liam@bytedance.com>
-To:     rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org
-Cc:     lizefan.x@bytedance.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "guojinhui.liam" <guojinhui.liam@bytedance.com>
-Subject: [PATCH] driver core: platform: set numa_node before platform_add_device()
-Date:   Tue, 12 Sep 2023 15:09:00 +0800
-Message-Id: <20230912070900.1862-1-guojinhui.liam@bytedance.com>
-X-Mailer: git-send-email 2.30.2
+        d=1e100.net; s=20230601; t=1694502930; x=1695107730;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z+0OLswzodm1av5Wpp7mGG8ZdGkJ1QyDOqEboshS6xU=;
+        b=oaLAFVe8jjWCr2wjETI3PtRNXjIewmo8vhFoEp93OngO5q0lGJWoyy1uQnFBXuhakw
+         kN7t3M5HZp5Vw+CP5dHSq2hsC4C4qbSOAC8i6UYHnFcmW5uh294XMA7q4Vep6RcLQU9y
+         JsodAQUdHq5PzbZlpOgsHDFsL9vxfbeUzV/CmeOIxbFw9bo/Ndqh/AL1Jn8k/9AXFa59
+         PyjaIR67qgzcQDSPYx/fwQLOF7Atj5R78iVMUAQnKN/wumOLmU3qLzmnF/xnBy+mVzPx
+         JZOjM0WsfUUZCQKSeHIafR3BqAlg5XxMVdf3uVl6BkzZlDALsRKcjqlS1nF9v/AljlkI
+         GtYQ==
+X-Gm-Message-State: AOJu0YzX2PtS9UrCzTz0LHrQd+Ezdw5xlA5QGl76KjyDX1n01I31clfm
+        wXHGN804aNGh8AGXW++uxSIyivPXPmFV1Xreb4n4MA==
+X-Google-Smtp-Source: AGHT+IG2nThERjU6EdD9OV0vY2s8gn+NYMxA1sZGF/r8TCUHyU5CfSLi8PvCW/yY0159NFRmyIZIhYjKhPEQXxXs4eE=
+X-Received: by 2002:a05:6122:3104:b0:495:be1c:5be9 with SMTP id
+ cg4-20020a056122310400b00495be1c5be9mr9078148vkb.1.1694502930024; Tue, 12 Sep
+ 2023 00:15:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230911210928.264908-1-hdegoede@redhat.com>
+In-Reply-To: <20230911210928.264908-1-hdegoede@redhat.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Tue, 12 Sep 2023 09:15:19 +0200
+Message-ID: <CAMRc=Md4Tch1kJtRoDUVW7MjHM9GuO_GDaQ+O_o1Pkw60EjNLA@mail.gmail.com>
+Subject: Re: [PATCH] platform/x86: x86-android-tablets: Add a comment about x86_android_tablet_get_gpiod()
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-platform_add_device creates numa_node attribute of sysfs according to
-whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
-of the device before creating numa_node attribute of sysfs.
+On Mon, Sep 11, 2023 at 11:09=E2=80=AFPM Hans de Goede <hdegoede@redhat.com=
+> wrote:
+>
+> Add a comment explaining why the special x86_android_tablet_get_gpiod()
+> helper is necessary for some of the GPIOs used in the x86-android-tablets=
+;
+> and that for normal GPIO lookups this example should not be followed.
+>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/platform/x86/x86-android-tablets/core.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/drivers/platform/x86/x86-android-tablets/core.c b/drivers/pl=
+atform/x86/x86-android-tablets/core.c
+> index 8a1f22aaac00..b55957bde034 100644
+> --- a/drivers/platform/x86/x86-android-tablets/core.c
+> +++ b/drivers/platform/x86/x86-android-tablets/core.c
+> @@ -24,6 +24,21 @@
+>
+>  static struct platform_device *x86_android_tablet_device;
+>
+> +/*
+> + * This helper allows getting a gpio_desc *before* the actual device con=
+suming
+> + * the GPIO has been instantiated. This function _must_ only be used to =
+handle
+> + * this special case such as e.g. :
+> + *
+> + * 1. Getting an IRQ from a GPIO for i2c_board_info.irq which is passed =
+to
+> + * i2c_client_new() to instantiate i2c_client-s; or
+> + * 2. Calling desc_to_gpio() to get an old style GPIO number for gpio_ke=
+ys
+> + * platform_data which still uses old style GPIO numbers.
+> + *
+> + * Since the consuming device has not been instatiated yet a dynamic loo=
+kup
+> + * is generated using the special x86_android_tablet dev for dev_id.
+> + *
+> + * For normal GPIO lookups a standard static gpiod_lookup_table _must_ b=
+e used.
+> + */
+>  int x86_android_tablet_get_gpiod(const char *chip, int pin, const char *=
+con_id,
+>                                  bool active_low, enum gpiod_flags dflags=
+,
+>                                  struct gpio_desc **desc)
+> --
+> 2.41.0
+>
 
-Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
-Signed-off-by: guojinhui.liam <guojinhui.liam@bytedance.com>
----
- drivers/acpi/acpi_platform.c | 4 +---
- drivers/base/platform.c      | 4 ++++
- 2 files changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-index 48d15dd785f6..adcbfbdc343f 100644
---- a/drivers/acpi/acpi_platform.c
-+++ b/drivers/acpi/acpi_platform.c
-@@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
- 	if (IS_ERR(pdev))
- 		dev_err(&adev->dev, "platform device creation failed: %ld\n",
- 			PTR_ERR(pdev));
--	else {
--		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-+	else
- 		dev_dbg(&adev->dev, "created platform device %s\n",
- 			dev_name(&pdev->dev));
--	}
- 
- 	kfree(resources);
- 
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 76bfcba25003..355abf91930a 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -808,6 +808,7 @@ struct platform_device *platform_device_register_full(
- {
- 	int ret;
- 	struct platform_device *pdev;
-+	struct acpi_device *adev = to_acpi_device_node(pdevinfo->fwnode);
- 
- 	pdev = platform_device_alloc(pdevinfo->name, pdevinfo->id);
- 	if (!pdev)
-@@ -841,6 +842,9 @@ struct platform_device *platform_device_register_full(
- 			goto err;
- 	}
- 
-+	if (adev)
-+		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-+
- 	ret = platform_device_add(pdev);
- 	if (ret) {
- err:
--- 
-2.20.1
-
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
