@@ -2,122 +2,169 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43FBC79D711
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 19:02:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E038679D789
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 19:29:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235629AbjILRCV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Sep 2023 13:02:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32880 "EHLO
+        id S231201AbjILR3z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Sep 2023 13:29:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236687AbjILRCN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 13:02:13 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C7A031728;
-        Tue, 12 Sep 2023 10:02:08 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B803CC15;
-        Tue, 12 Sep 2023 10:02:45 -0700 (PDT)
-Received: from [10.1.197.60] (eglon.cambridge.arm.com [10.1.197.60])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 431A73F738;
-        Tue, 12 Sep 2023 10:02:03 -0700 (PDT)
-Message-ID: <3ad03f27-1f2b-a79f-130d-afb9e713fa70@arm.com>
-Date:   Tue, 12 Sep 2023 18:01:43 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [RFC PATCH 30/32] KVM: arm64: Pass PSCI calls to userspace
-Content-Language: en-GB
-To:     Salil Mehta <salil.mehta@huawei.com>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
-        "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
+        with ESMTP id S229784AbjILR3y (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 13:29:54 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6BA110D9;
+        Tue, 12 Sep 2023 10:29:50 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38CDnUUm002778;
+        Tue, 12 Sep 2023 17:29:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=qcppdkim1;
+ bh=zd9e5Dj70FzmypSrLlmnrjpVFXyY6IVIDc43eaceI5M=;
+ b=ShL6Y7KdldL8hDa8ICU+KwY0rjNZJy+GBZZh5WMjqRj37nEhoMgsQmyjj7Lvd0xhPn0t
+ c/ItcFNpbbEXg0x1mcJ/DlF64xOcNhW9BewcKji97IW5kGPVtxLW4T+qInhtG6UBfTwy
+ ldHLPSzm3RVGRGIpQ0dyMS1JAVm0zerOHB8d4AQ9rUqvw/J6xDuA+BLqkEKSdmcMw/S7
+ AUd1UpJW0aE9wKNgfDOGkwYEHNPnuufxYV+g4gp4aDdwicLaKbujnCVuEqeaT84+Gi4x
+ hQm6C+BATq2JooN7ghBFsW+ppY7Zppw5vvq03taypIqrMD1QOtLNBO4FhCs/0CoqypMd 9Q== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t2pu4141t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 12 Sep 2023 17:29:38 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38CHTbhj032119
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 12 Sep 2023 17:29:37 GMT
+Received: from localhost (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 12 Sep
+ 2023 10:29:37 -0700
+From:   Oza Pawandeep <quic_poza@quicinc.com>
+To:     <sudeep.holla@arm.com>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        "x86@kernel.org" <x86@kernel.org>
-Cc:     Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Oliver Upton <oliver.upton@linux.dev>,
-        Len Brown <lenb@kernel.org>,
-        Rafael Wysocki <rafael@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Russell King <linux@armlinux.org.uk>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>
-References: <20230203135043.409192-1-james.morse@arm.com>
- <20230203135043.409192-31-james.morse@arm.com>
- <7e182886f20044d09d5b269cb6224af7@huawei.com>
-From:   James Morse <james.morse@arm.com>
-In-Reply-To: <7e182886f20044d09d5b269cb6224af7@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+CC:     Oza Pawandeep <quic_poza@quicinc.com>
+Subject: [PATCH v5] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast timer
+Date:   Tue, 12 Sep 2023 10:29:33 -0700
+Message-ID: <20230912172933.3561144-1-quic_poza@quicinc.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: GAMAY4Hrs4oy6eoiz21HVZMHI76JZFUS
+X-Proofpoint-ORIG-GUID: GAMAY4Hrs4oy6eoiz21HVZMHI76JZFUS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-12_16,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=35 impostorscore=0 adultscore=0
+ malwarescore=0 clxscore=1015 mlxlogscore=27 lowpriorityscore=0 mlxscore=35
+ phishscore=0 suspectscore=0 priorityscore=1501 spamscore=35 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309120147
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Salil,
+Arm® Functional Fixed Hardware Specification defines LPI states,
+which provide an architectural context loss flags field that can
+be used to describe the context that might be lost when an LPI
+state is entered.
 
-On 23/05/2023 10:32, Salil Mehta wrote:
->> From: James Morse <james.morse@arm.com>
->> Sent: Friday, February 3, 2023 1:51 PM
->> To: linux-pm@vger.kernel.org; loongarch@lists.linux.dev;
->> kvmarm@lists.linux.dev; kvm@vger.kernel.org; linux-acpi@vger.kernel.org;
->> linux-arch@vger.kernel.org; linux-ia64@vger.kernel.org; linux-
->> kernel@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
->> x86@kernel.org
-> 
-> [...]
-> 
-> 
->>
->> When the KVM_CAP_ARM_PSCI_TO_USER capability is available, userspace can
->> request to handle PSCI calls.
->>
->> This is required for virtual CPU hotplug to allow the VMM to enforce the
->> online/offline policy it has advertised via ACPI. By managing PSCI in
->> user-space, the VMM is able to return PSCI_DENIED when the guest attempts
->> to bring a disabled vCPU online.
->> Without this, the VMM is only able to not-run the vCPU, the kernel will
->> have already returned PSCI_SUCCESS to the guest. This results in
->> timeouts during boot as the OS must wait for the secondary vCPU.
->>
->> SMCCC probe requires PSCI v1.x. If userspace only implements PSCI v0.2,
->> the guest won't query SMCCC support through PSCI and won't use the
->> spectre workarounds. We could hijack PSCI_VERSION and pretend to support
->> v1.0 if userspace does not, then handle all v1.0 calls ourselves
->> (including guessing the PSCI feature set implemented by the guest), but
->> that seems unnecessary. After all the API already allows userspace to
->> force a version lower than v1.0 using the firmware pseudo-registers.
->>
->> The KVM_REG_ARM_PSCI_VERSION pseudo-register currently resets to either
->> v0.1 if userspace doesn't set KVM_ARM_VCPU_PSCI_0_2, or
->> KVM_ARM_PSCI_LATEST (1.0).
+- Core context Lost
+        - General purpose registers.
+        - Floating point and SIMD registers.
+        - System registers, include the System register based
+        - generic timer for the core.
+        - Debug register in the core power domain.
+        - PMU registers in the core power domain.
+        - Trace register in the core power domain.
+- Trace context loss
+- GICR
+- GICD
 
-> I just saw the latest PSCI standard issue (Mar 2023 E Non-Confidential
-> PSCI 1.2 issue E) and it contains the DENIED return value for the CPU_ON. 
-> 
-> Should we *explicitly* check for PSCI 1.2 support before allowing vCPU
-> Hot plug support? For this we would need KVM changes.
+Qualcomm's custom CPUs preserves the architectural state,
+including keeping the power domain for local timers active.
+when core is power gated, the local timers are sufficient to
+wake the core up without needing broadcast timer.
 
-The VMM should certainly check which version of PSCI it supports, to make sure it doesn't
-return an error code that the spec says that version of PSCI doesn't use.
+The patch fixes the evaluation of cpuidle arch_flags, and moves only to
+broadcast timer if core context lost is defined in ACPI LPI.
 
-Moving the PSCI support to the VMM is a pre-requisite for supporting this mechanism,
-otherwise KVM will allow the CPUs to come online immediately.
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
 
+diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
+index 4d537d56eb84..a30b6e16628d 100644
+--- a/arch/arm64/include/asm/acpi.h
++++ b/arch/arm64/include/asm/acpi.h
+@@ -9,6 +9,7 @@
+ #ifndef _ASM_ACPI_H
+ #define _ASM_ACPI_H
+ 
++#include <linux/cpuidle.h>
+ #include <linux/efi.h>
+ #include <linux/memblock.h>
+ #include <linux/psci.h>
+@@ -44,6 +45,25 @@
+ 
+ #define ACPI_MADT_GICC_TRBE  (offsetof(struct acpi_madt_generic_interrupt, \
+ 	trbe_interrupt) + sizeof(u16))
++/*
++ * Arm® Functional Fixed Hardware Specification Version 1.2.
++ * Table 2: Arm Architecture context loss flags
++ */
++#define CPUIDLE_CORE_CTXT		BIT(0) /* Core context Lost */
++
++#ifndef arch_update_idle_state_flags
++static __always_inline void _arch_update_idle_state_flags(u32 arch_flags,
++							unsigned int *sflags)
++{
++	if (arch_flags & CPUIDLE_CORE_CTXT)
++		*sflags |= CPUIDLE_FLAG_TIMER_STOP;
++}
++#define arch_update_idle_state_flags _arch_update_idle_state_flags
++#endif
++
++#define CPUIDLE_TRACE_CTXT		BIT(1) /* Trace context loss */
++#define CPUIDLE_GICR_CTXT		BIT(2) /* GICR */
++#define CPUIDLE_GICD_CTXT		BIT(3) /* GICD */
+ 
+ /* Basic configuration for ACPI */
+ #ifdef	CONFIG_ACPI
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index dc615ef6550a..5c1d13eecdd1 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -1217,8 +1217,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
+ 		strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
+ 		state->exit_latency = lpi->wake_latency;
+ 		state->target_residency = lpi->min_residency;
+-		if (lpi->arch_flags)
+-			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
++		arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
+ 		if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
+ 			state->flags |= CPUIDLE_FLAG_RCU_IDLE;
+ 		state->enter = acpi_idle_lpi_enter;
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index a73246c3c35e..f8c561a4215e 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -1480,6 +1480,10 @@ static inline int lpit_read_residency_count_address(u64 *address)
+ }
+ #endif
+ 
++#ifndef arch_update_idle_state_flags
++#define arch_update_idle_state_flags(af, sf)	do {} while (0)
++#endif
++
+ #ifdef CONFIG_ACPI_PPTT
+ int acpi_pptt_cpu_is_thread(unsigned int cpu);
+ int find_acpi_cpu_topology(unsigned int cpu, int level);
+-- 
+2.25.1
 
-Thanks,
-
-James
