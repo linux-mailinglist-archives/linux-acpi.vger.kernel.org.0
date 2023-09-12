@@ -2,200 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D11E079D1FA
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 15:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B90079D2D6
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 15:52:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235383AbjILNVI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Sep 2023 09:21:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55930 "EHLO
+        id S235433AbjILNwM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Sep 2023 09:52:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232376AbjILNVH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 09:21:07 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2067.outbound.protection.outlook.com [40.107.94.67])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0EBE10CA
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 06:21:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WJ+9AqfknhAcK4uZ96ZDa0xIN7PczX9+LP6ZWtfaK0XI4bnzD58YBlVSeE+j//8CZS7uanx20/O4+zxzy/lq8BMD7ta9tnnKyYZTNMjfSxLwkuOlNfRG0MNBuBZkClNzvwjsLHX2QLEkHXpxAYdDDP3v+gu6Jl9zfbESH8+9g4cSv/E+gKx+0d9BB14JaqtAzS1sK/4/9HzxNUCcS/8vQQvOo8HOm9oyupKiMjkVVJjTCLBXUfDRf2I2uXcTXqSb/ofA9Vr1ZKb9fB6t+bRcIx1T5o76Y7iF0gjDqXvaf9AgFrX9hPMsX97VIL8cgChAqkT2gx5ytmF6USTN8Z+K0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ufyn6d3prl6NZY6owdW4W7004+W2icrwGMMQS44kF9Q=;
- b=D8o+ACNkknULb4D8u2QQqsMQito83KNLk1m2w3w5IH+OzvHT0Yo9ShlSMZZUp1ISqNNfzgkIj7mkSNn3YgN7RqnV3FsDUdlNM64W47CDu5pvDYjEn4uBKt0Q0zEt0KvLkh6Y6VGn4ZbB9U9F+bhh979c1eNctXvKnZqxlpo//AiC/tgyeGrlKbn/IlIViPTfp6JtdEs+EPtEZ5BriJ/hhCQMRvsKi8P5NpzayNeKQGG935b9g3Db3X0aSJQ0bM0V1n7LVTc6GkDVhPA1U8H3azW1Hm+ORdi8cf7ZoXunxO3du4DQljlEa350FtqSoXa7iGY2QbqRTzxaqjOju9g03w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ufyn6d3prl6NZY6owdW4W7004+W2icrwGMMQS44kF9Q=;
- b=r/OPfRlONrS4EDx3eX4PVq42hn95ii7UokLnK86QoarP2Fsktjo8R3byn0lGLVlblV77iNjNcOTGs3Q4pDCVR8JBxAXaJxOY3KBcSsCrw9W6/MLxwykGrLEr17wlSDprT2Vw6C9iuP7rkHkDFpXTJAZZooXvyDqj3b8z4xWY1BM=
-Received: from DS7PR03CA0021.namprd03.prod.outlook.com (2603:10b6:5:3b8::26)
- by CY8PR12MB7337.namprd12.prod.outlook.com (2603:10b6:930:53::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.30; Tue, 12 Sep
- 2023 13:21:01 +0000
-Received: from DS3PEPF000099DC.namprd04.prod.outlook.com
- (2603:10b6:5:3b8:cafe::61) by DS7PR03CA0021.outlook.office365.com
- (2603:10b6:5:3b8::26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.37 via Frontend
- Transport; Tue, 12 Sep 2023 13:21:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS3PEPF000099DC.mail.protection.outlook.com (10.167.17.198) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6792.17 via Frontend Transport; Tue, 12 Sep 2023 13:21:01 +0000
-Received: from nv14-test.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 12 Sep
- 2023 08:20:59 -0500
-From:   Ken Xue <Ken.Xue@amd.com>
-To:     <andriy.shevchenko@linux.intel.com>, <linux-acpi@vger.kernel.org>
-CC:     <rafael@kernel.org>, <ken.xue@amd.com>, <cwhuang@linux.org.tw>,
-        Ken Xue <Ken.Xue@amd.com>
-Subject: [PATCH V3] acpi: trigger wakeup key event from power button
-Date:   Tue, 12 Sep 2023 21:16:06 +0800
-Message-ID: <20230912131605.734829-1-Ken.Xue@amd.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S235619AbjILNwG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 09:52:06 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF621703;
+        Tue, 12 Sep 2023 06:52:02 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlQ2M6WpVz6HJp3;
+        Tue, 12 Sep 2023 21:50:19 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 12 Sep
+ 2023 14:51:59 +0100
+Date:   Tue, 12 Sep 2023 14:51:58 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Ben Cheatham <Benjamin.Cheatham@amd.com>
+CC:     <rafael@kernel.org>, <dan.j.williams@intel.com>,
+        <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <bhelgaas@google.com>, <yazen.ghannam@amd.com>
+Subject: Re: [PATCH v4 3/3] ACPI, APEI, EINJ: Update EINJ documentation
+Message-ID: <20230912145158.00007d76@Huawei.com>
+In-Reply-To: <20230907191956.674833-4-Benjamin.Cheatham@amd.com>
+References: <20230907191956.674833-1-Benjamin.Cheatham@amd.com>
+        <20230907191956.674833-4-Benjamin.Cheatham@amd.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099DC:EE_|CY8PR12MB7337:EE_
-X-MS-Office365-Filtering-Correlation-Id: 56c00c13-b680-4297-ce57-08dbb3931bf8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sj4QWcn1ps72Y1qgENNj4dXC6JyiaNzmIEd73QoNbKzVQFDUg9DHCOGqThjfysia4OmQp+GHNAgaqoXJUkJKJKttym1Rl5HtxpzFC/7SGH247utLN8K+9RnW+aVFoXvjPLQ8VZWVqzljtO2nvXUqlfsz4jwv+1Ax7RBfiauR7/pC5o4vI2o4pdmarEDkAesSKoQg3b1gqnrr5lsMFwaqwLyig3PqX/P60Z/ASefnZZJ3S329y4KFq0t90V2qu05ONp4rmizDQaRnGHnIVk3NAdAp9aIk4Lt96nP2TIhdtl37vlCL0YZrPvG3OuHOl0vOnX0GNB/pbFEeqwSaK+a2w63xOH1+Hirx0roIeOnHTuz1j68QvE7SPp5Rd0EutxFGh7QJEFlIYszfaGLO+o6cNDxrhHwY9q2zwUOQs7DUB5T0h7p3EqsW56+KII2F0PPVz9ivd+5GFGK26ehpN/6xj8ncWjcf0ZAotnEmxluGSSZ/Sr1NiZxgM3kJf5cUhm//TXdfG4NZc7to6g3TIl+cmmbIKwJAhjKmEAMjcg+wlMNOdGc/T4prU4Ol1wZJcZO4MSeMimsr8CrI2UtQ4pD1ujQXOICmYB35/Z5vAGhefen7olobWOrccYP+dIjvRxN2uPK2Ym6ep5CDbhEft04rnEutkRojZQYj0nfWUIaBBiawsuY96CtDxevsgx++ybcUk0V805rz8AMCggUNjuRCUEoT/3PGSudtcPqPuuyk8TDV93PIJvC4zKUKLQbnqhpWrmrMHAJdtLTseWWjqw90RQ==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(346002)(39860400002)(136003)(396003)(1800799009)(82310400011)(186009)(451199024)(40470700004)(46966006)(36840700001)(356005)(426003)(82740400003)(81166007)(36756003)(40480700001)(86362001)(40460700003)(478600001)(2906002)(110136005)(6666004)(8676002)(70586007)(7696005)(8936002)(4326008)(26005)(5660300002)(70206006)(41300700001)(54906003)(316002)(47076005)(36860700001)(83380400001)(2616005)(16526019)(336012)(1076003)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2023 13:21:01.3130
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56c00c13-b680-4297-ce57-08dbb3931bf8
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099DC.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7337
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Andorid can wakeup from various wakeup sources,
-but only several wakeup sources can wake up screen
-with right events(POWER, WAKEUP) from input device.
+On Thu, 7 Sep 2023 14:19:56 -0500
+Ben Cheatham <Benjamin.Cheatham@amd.com> wrote:
 
-Regarding pressing acpi power button, it can resume system and
-ACPI_BITMASK_WAKE_STATUS and ACPI_BITMASK_POWER_BUTTON_STATUS
-are set in pm1a_sts, but kernel does not report any key
-event to user space during resume by default.
+> Update EINJ documentation to include CXL errors in available_error_types
+> table and usage of the types.
+> 
+> Also fix a formatting error in the param4 file description that caused
+> the description to be on the same line as the bullet point.
+> 
+> Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
 
-So, trigger wakeup key event to user space during resume
-from power button.
+Matches what the spec says, so
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Signed-off-by: Ken Xue <Ken.Xue@amd.com>
-
----
-V1->V2: fix some compile warning/error caused by lack of
-        "struct acpi_device" declaration by including acpi.h.
-V2->V3: use "forward declaration" to fix compile warning/error.
-
- drivers/acpi/button.c | 16 ++++++++++++++++
- drivers/acpi/sleep.c  |  2 ++
- include/acpi/button.h |  4 ++++
- 3 files changed, 22 insertions(+)
-
-diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-index 1e76a64cce0a..3b8aa071732b 100644
---- a/drivers/acpi/button.c
-+++ b/drivers/acpi/button.c
-@@ -363,6 +363,21 @@ static int acpi_button_remove_fs(struct acpi_device *device)
- 	return 0;
- }
- 
-+void acpi_power_button_wakeup(struct acpi_device *dev)
-+{
-+	struct acpi_button *button = acpi_driver_data(dev);
-+	struct input_dev *input;
-+
-+	if (button->type == ACPI_BUTTON_TYPE_POWER) {
-+		input = button->input;
-+		input_report_key(input, KEY_WAKEUP, 1);
-+		input_sync(input);
-+		input_report_key(input, KEY_WAKEUP, 0);
-+		input_sync(input);
-+	}
-+}
-+EXPORT_SYMBOL(acpi_power_button_wakeup);
-+
- /* Driver Interface */
- int acpi_lid_open(void)
- {
-@@ -579,6 +594,7 @@ static int acpi_button_add(struct acpi_device *device)
- 	switch (button->type) {
- 	case ACPI_BUTTON_TYPE_POWER:
- 		input_set_capability(input, EV_KEY, KEY_POWER);
-+		input_set_capability(input, EV_KEY, KEY_WAKEUP);
- 		break;
- 
- 	case ACPI_BUTTON_TYPE_SLEEP:
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index 808484d11209..dcd5d0237eeb 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -22,6 +22,7 @@
- #include <linux/syscore_ops.h>
- #include <asm/io.h>
- #include <trace/events/power.h>
-+#include <acpi/button.h>
- 
- #include "internal.h"
- #include "sleep.h"
-@@ -507,6 +508,7 @@ static void acpi_pm_finish(void)
- 	pwr_btn_adev = acpi_dev_get_first_match_dev(ACPI_BUTTON_HID_POWERF,
- 						    NULL, -1);
- 	if (pwr_btn_adev) {
-+		acpi_power_button_wakeup(pwr_btn_adev);
- 		pm_wakeup_event(&pwr_btn_adev->dev, 0);
- 		acpi_dev_put(pwr_btn_adev);
- 	}
-diff --git a/include/acpi/button.h b/include/acpi/button.h
-index af2fce5d2ee3..6126d665aa42 100644
---- a/include/acpi/button.h
-+++ b/include/acpi/button.h
-@@ -2,17 +2,21 @@
- #ifndef ACPI_BUTTON_H
- #define ACPI_BUTTON_H
- 
-+struct acpi_device;
-+
- #define ACPI_BUTTON_HID_POWER	"PNP0C0C"
- #define ACPI_BUTTON_HID_LID	"PNP0C0D"
- #define ACPI_BUTTON_HID_SLEEP	"PNP0C0E"
- 
- #if IS_ENABLED(CONFIG_ACPI_BUTTON)
- extern int acpi_lid_open(void);
-+extern void acpi_power_button_wakeup(struct acpi_device *dev);
- #else
- static inline int acpi_lid_open(void)
- {
- 	return 1;
- }
-+static inline void acpi_power_button_wakeup(struct acpi_device *dev) {}
- #endif /* IS_ENABLED(CONFIG_ACPI_BUTTON) */
- 
- #endif /* ACPI_BUTTON_H */
-
-base-commit: b483d3b8a54a544ab8854ca6dbb8d99c423b3ba4
--- 
-2.35.1
+> ---
+>  .../firmware-guide/acpi/apei/einj.rst         | 25 ++++++++++++++++---
+>  1 file changed, 21 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/firmware-guide/acpi/apei/einj.rst b/Documentation/firmware-guide/acpi/apei/einj.rst
+> index d6b61d22f525..c6f28118c48b 100644
+> --- a/Documentation/firmware-guide/acpi/apei/einj.rst
+> +++ b/Documentation/firmware-guide/acpi/apei/einj.rst
+> @@ -32,6 +32,9 @@ configuration::
+>    CONFIG_ACPI_APEI
+>    CONFIG_ACPI_APEI_EINJ
+>  
+> +To use CXL error types ``CONFIG_CXL_ACPI`` needs to be set to the same
+> +value as ``CONFIG_ACPI_APEI_EINJ`` (either "y" or "m").
+> +
+>  The EINJ user interface is in <debugfs mount point>/apei/einj.
+>  
+>  The following files belong to it:
+> @@ -40,9 +43,9 @@ The following files belong to it:
+>  
+>    This file shows which error types are supported:
+>  
+> -  ================  ===================================
+> +  ================  =========================================
+>    Error Type Value	Error Description
+> -  ================  ===================================
+> +  ================  =========================================
+>    0x00000001        Processor Correctable
+>    0x00000002        Processor Uncorrectable non-fatal
+>    0x00000004        Processor Uncorrectable fatal
+> @@ -55,7 +58,13 @@ The following files belong to it:
+>    0x00000200        Platform Correctable
+>    0x00000400        Platform Uncorrectable non-fatal
+>    0x00000800        Platform Uncorrectable fatal
+> -  ================  ===================================
+> +  0x00001000        CXL.cache Protocol Correctable
+> +  0x00002000        CXL.cache Protocol Uncorrectable non-fatal
+> +  0x00004000        CXL.cache Protocol Uncorrectable fatal
+> +  0x00008000        CXL.mem Protocol Correctable
+> +  0x00010000        CXL.mem Protocol Uncorrectable non-fatal
+> +  0x00020000        CXL.mem Protocol Uncorrectable fatal
+> +  ================  =========================================
+>  
+>    The format of the file contents are as above, except present are only
+>    the available error types.
+> @@ -106,6 +115,7 @@ The following files belong to it:
+>    Used when the 0x1 bit is set in "flags" to specify the APIC id
+>  
+>  - param4
+> +
+>    Used when the 0x4 bit is set in "flags" to specify target PCIe device
+>  
+>  - notrigger
+> @@ -159,6 +169,13 @@ and param2 (1 = PROCESSOR, 2 = MEMORY, 4 = PCI). See your BIOS vendor
+>  documentation for details (and expect changes to this API if vendors
+>  creativity in using this feature expands beyond our expectations).
+>  
+> +CXL error types are supported from ACPI 6.5 onwards. To use these error
+> +types you need the MMIO address of a CXL 1.1 downstream port. You can
+> +find the address of dportY in /sys/bus/cxl/devices/portX/dportY/cxl_rcrb_addr
+> +(it's possible that the dport is under the CXL root, in that case the
+> +path would be /sys/us/cxl/devices/rootX/dportY/cxl_rcrb_addr).
+> +From there, write the address to param1 and continue as you would for a
+> +memory error type.
+>  
+>  An error injection example::
+>  
+> @@ -201,4 +218,4 @@ The following sequence can be used:
+>    7) Read from the virtual address. This will trigger the error
+>  
+>  For more information about EINJ, please refer to ACPI specification
+> -version 4.0, section 17.5 and ACPI 5.0, section 18.6.
+> +version 4.0, section 17.5 and ACPI 6.5, section 18.6.
 
