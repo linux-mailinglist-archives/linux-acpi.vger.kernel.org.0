@@ -2,133 +2,167 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 409FE79D4B7
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 17:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 641FF79D623
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 18:22:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236095AbjILPXC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Sep 2023 11:23:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48416 "EHLO
+        id S232848AbjILQWc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Sep 2023 12:22:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234297AbjILPXC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 11:23:02 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64D8C10DC
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 08:22:58 -0700 (PDT)
+        with ESMTP id S230235AbjILQWc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 12:22:32 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3179510D;
+        Tue, 12 Sep 2023 09:22:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694532178; x=1726068178;
+  t=1694535748; x=1726071748;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=vZ/ZAwG25e92we8EIS8gvzN/EWbWAh9ZxR7aQd0ZuFk=;
-  b=goK/qiUMydxmSrfp8gI4GRInucMMaXHuencojIin1mWn1FGP5xatQyeO
-   i2ss7fEL5ddlZAn2aLCXyox5m8T9IzJ+Ul39WclxSiTKkQT8M7IOAxQ6u
-   5a69l5ZpQSfveREornWQH2X+FWdh9FanSa7cm6rqoavjQhHaL9t5rHVJv
-   SnaRLd6A0LV0ZpLxokYieCK7Gj4BpV+xLJ1Qj28fqQViAZuYHLvnzRF7d
-   GlE3EoIDAVsURpJmdUmb63fSxaTLqDJKBV0usO3XTJ1XBgIKXaC/ak32d
-   So5yTdR8T9wWh3gRlLNprTI3noSthM079Kjd1UO9h/DFtpHYJ6+R14eCy
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="464780019"
+  bh=mwK32jgEcjiMlJxPxk0G0xYgI3vfMvfC8fyaTAmOUkQ=;
+  b=hc0CsrDhA0kF05V3a9yDoaLb04iJxbSXGhgxqTOzSjKCSfS45sbHTROw
+   pX50etV23pZULg0vC7bAPXWbqnlLrdu74GFOvyJ6cv+L0EVG0S/DAuu+x
+   YpoOazIDRho9/niX3//mQDSCsT+7i4DSJqr3nj0gdBb+SjxoKObtkS/KW
+   jzmbasFFF229HfLdvxNmu5Io9kBc+0YlavuIMevo2LJkdV1kA0iW7nIYF
+   sh/7Q1o/+kKFXXKjp1arzDw0YdsCpcQJP/ad0urFwj7BAYDLy4MF0hmHn
+   k+upeIOeWK/cG6kuk5HAnoYTOBIMvUY5C8i4cboPM7fLbrRQsZ0SUfFeG
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="358702305"
 X-IronPort-AV: E=Sophos;i="6.02,139,1688454000"; 
-   d="scan'208";a="464780019"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 08:22:57 -0700
+   d="scan'208";a="358702305"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 09:19:54 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="773071577"
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="867435721"
 X-IronPort-AV: E=Sophos;i="6.02,139,1688454000"; 
-   d="scan'208";a="773071577"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 08:22:56 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qg5E5-008cK2-0r;
-        Tue, 12 Sep 2023 18:22:53 +0300
-Date:   Tue, 12 Sep 2023 18:22:52 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Ken Xue <Ken.Xue@amd.com>
-Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org, cwhuang@linux.org.tw
-Subject: Re: [PATCH V3] acpi: trigger wakeup key event from power button
-Message-ID: <ZQCCTA9YblEHgKT8@smile.fi.intel.com>
-References: <20230912131605.734829-1-Ken.Xue@amd.com>
+   d="scan'208";a="867435721"
+Received: from lkp-server02.sh.intel.com (HELO 0a6943a0b3e1) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 12 Sep 2023 09:19:49 -0700
+Received: from kbuild by 0a6943a0b3e1 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qg665-0000DX-0V;
+        Tue, 12 Sep 2023 16:18:58 +0000
+Date:   Wed, 13 Sep 2023 00:11:21 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "guojinhui.liam" <guojinhui.liam@bytedance.com>, rafael@kernel.org,
+        lenb@kernel.org, gregkh@linuxfoundation.org
+Cc:     oe-kbuild-all@lists.linux.dev, lizefan.x@bytedance.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "guojinhui.liam" <guojinhui.liam@bytedance.com>
+Subject: Re: [PATCH] driver core: platform: set numa_node before
+ platform_add_device()
+Message-ID: <202309122309.mbxAnAIe-lkp@intel.com>
+References: <20230912070900.1862-1-guojinhui.liam@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230912131605.734829-1-Ken.Xue@amd.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20230912070900.1862-1-guojinhui.liam@bytedance.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 12, 2023 at 09:16:06PM +0800, Ken Xue wrote:
-> Andorid can wakeup from various wakeup sources,
-> but only several wakeup sources can wake up screen
-> with right events(POWER, WAKEUP) from input device.
+Hi guojinhui.liam,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on linus/master]
+[also build test ERROR on v6.6-rc1 next-20230912]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/guojinhui-liam/driver-core-platform-set-numa_node-before-platform_add_device/20230912-151119
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20230912070900.1862-1-guojinhui.liam%40bytedance.com
+patch subject: [PATCH] driver core: platform: set numa_node before platform_add_device()
+config: powerpc-allnoconfig (https://download.01.org/0day-ci/archive/20230912/202309122309.mbxAnAIe-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230912/202309122309.mbxAnAIe-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/base/platform.c: In function 'platform_device_register_full':
+>> drivers/base/platform.c:846:42: error: implicit declaration of function 'acpi_get_node'; did you mean 'acpi_get_name'? [-Werror=implicit-function-declaration]
+     846 |                 set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
+         |                                          ^~~~~~~~~~~~~
+         |                                          acpi_get_name
+>> drivers/base/platform.c:846:60: error: invalid use of undefined type 'struct acpi_device'
+     846 |                 set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
+         |                                                            ^~
+   cc1: some warnings being treated as errors
 
 
-You still have a room for 10+ characters on each line in the above paragraph.
-Why not use them?
+vim +846 drivers/base/platform.c
 
-> Regarding pressing acpi power button, it can resume system and
-> ACPI_BITMASK_WAKE_STATUS and ACPI_BITMASK_POWER_BUTTON_STATUS
-> are set in pm1a_sts, but kernel does not report any key
-> event to user space during resume by default.
-> 
-> So, trigger wakeup key event to user space during resume
-> from power button.
-> 
-> Signed-off-by: Ken Xue <Ken.Xue@amd.com>
-
-...
-
-> +void acpi_power_button_wakeup(struct acpi_device *dev)
-> +{
-> +	struct acpi_button *button = acpi_driver_data(dev);
-> +	struct input_dev *input;
-
-> +	if (button->type == ACPI_BUTTON_TYPE_POWER) {
-
-It seems you missed the suggestion and I haven't heard an objection on written
-the above as
-
-	if (button->type != ACPI_BUTTON_TYPE_POWER)
-		return;
-
-> +		input = button->input;
-> +		input_report_key(input, KEY_WAKEUP, 1);
-> +		input_sync(input);
-> +		input_report_key(input, KEY_WAKEUP, 0);
-> +		input_sync(input);
-> +	}
-> +}
-
-...
-
->  #include <linux/syscore_ops.h>
->  #include <asm/io.h>
->  #include <trace/events/power.h>
-> +#include <acpi/button.h>
-
-While at it, I would add a blank line here to distinguish groups of header
-inclusions.
-
-  #include <linux/syscore_ops.h>
-  #include <asm/io.h>
-  #include <trace/events/power.h>
-
-  #include <acpi/button.h>
-
-Or even
-
-  #include <linux/syscore_ops.h>
-
-  #include <asm/io.h>
-
-  #include <trace/events/power.h>
-
-  #include <acpi/button.h>
-
+   797	
+   798	/**
+   799	 * platform_device_register_full - add a platform-level device with
+   800	 * resources and platform-specific data
+   801	 *
+   802	 * @pdevinfo: data used to create device
+   803	 *
+   804	 * Returns &struct platform_device pointer on success, or ERR_PTR() on error.
+   805	 */
+   806	struct platform_device *platform_device_register_full(
+   807			const struct platform_device_info *pdevinfo)
+   808	{
+   809		int ret;
+   810		struct platform_device *pdev;
+   811		struct acpi_device *adev = to_acpi_device_node(pdevinfo->fwnode);
+   812	
+   813		pdev = platform_device_alloc(pdevinfo->name, pdevinfo->id);
+   814		if (!pdev)
+   815			return ERR_PTR(-ENOMEM);
+   816	
+   817		pdev->dev.parent = pdevinfo->parent;
+   818		pdev->dev.fwnode = pdevinfo->fwnode;
+   819		pdev->dev.of_node = of_node_get(to_of_node(pdev->dev.fwnode));
+   820		pdev->dev.of_node_reused = pdevinfo->of_node_reused;
+   821	
+   822		if (pdevinfo->dma_mask) {
+   823			pdev->platform_dma_mask = pdevinfo->dma_mask;
+   824			pdev->dev.dma_mask = &pdev->platform_dma_mask;
+   825			pdev->dev.coherent_dma_mask = pdevinfo->dma_mask;
+   826		}
+   827	
+   828		ret = platform_device_add_resources(pdev,
+   829				pdevinfo->res, pdevinfo->num_res);
+   830		if (ret)
+   831			goto err;
+   832	
+   833		ret = platform_device_add_data(pdev,
+   834				pdevinfo->data, pdevinfo->size_data);
+   835		if (ret)
+   836			goto err;
+   837	
+   838		if (pdevinfo->properties) {
+   839			ret = device_create_managed_software_node(&pdev->dev,
+   840								  pdevinfo->properties, NULL);
+   841			if (ret)
+   842				goto err;
+   843		}
+   844	
+   845		if (adev)
+ > 846			set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
+   847	
+   848		ret = platform_device_add(pdev);
+   849		if (ret) {
+   850	err:
+   851			ACPI_COMPANION_SET(&pdev->dev, NULL);
+   852			platform_device_put(pdev);
+   853			return ERR_PTR(ret);
+   854		}
+   855	
+   856		return pdev;
+   857	}
+   858	EXPORT_SYMBOL_GPL(platform_device_register_full);
+   859	
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
