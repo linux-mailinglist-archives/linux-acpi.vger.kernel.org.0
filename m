@@ -2,86 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FCAD79CD6D
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 12:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD17F79CF02
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 12:58:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233537AbjILKKz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Sep 2023 06:10:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50460 "EHLO
+        id S234325AbjILK6L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Sep 2023 06:58:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233276AbjILKKm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 06:10:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4740F3A81
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 03:08:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694513318;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=B4FnuU5zFazKzznQKyXClo3vGbnJ76lHN9TmMtGnauo=;
-        b=B/scBfA37/NSqMv5szUtu5951BQF3bYQ4h8W+3F/sPnj2WH1VC/8goH0NOESSOQ9pc+8nH
-        vSa/VgGIN6gC6XihULTLDpkwcjX0Ik2JTVJ1AbRdEHCP0JGYMzp8ynfKK49LLb6yWaNysD
-        a7U5CrY9dAZ7OH7uiWh0WAKvdGwO6LE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-677-vRgriTc5O6-L-OnFEipXgQ-1; Tue, 12 Sep 2023 06:08:37 -0400
-X-MC-Unique: vRgriTc5O6-L-OnFEipXgQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B7728101FAA3;
-        Tue, 12 Sep 2023 10:08:36 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.194.220])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1147C2026D4B;
-        Tue, 12 Sep 2023 10:08:35 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA
-Date:   Tue, 12 Sep 2023 12:08:27 +0200
-Message-ID: <20230912100827.303590-1-hdegoede@redhat.com>
+        with ESMTP id S234368AbjILK55 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 06:57:57 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03D81173D;
+        Tue, 12 Sep 2023 03:57:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694516247; x=1726052247;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/TcDrQ6ZA804X+FGceYvm4xySIxcsUNJZtVj4ZCuNFE=;
+  b=LxTyGSplO1f1/VJWFnXVzvEvw0pEItV+65RLRRHyjBKZ9+SVzSg/AHkB
+   dfrVv0RrlcMaalDpVQgCx4uGqoOdMbwfASISDbXYa3VO5wiyDwV94wcjB
+   jvqetmqNxIqHfIUpA3Rtyfa2kQkDD0LtKVw8hl17mtQcFfFSOBudMTZQg
+   FcR4uqkYki0VLrT6IUldYQbttZu5kcDOJu5SgWHoIBYylJbiswhERNCI+
+   Es/AONQ3sXBoJhXOwH/JNZB/g8XAj8EvoQl+MFE71zk1mKKhThe6ozaMI
+   ujqCVoraj2v6OPqMPqntA+kc1/5bZfXYBk8j3rzDcmkr17VqujuhFGDtH
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="358615708"
+X-IronPort-AV: E=Sophos;i="6.02,139,1688454000"; 
+   d="scan'208";a="358615708"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 03:57:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="693455911"
+X-IronPort-AV: E=Sophos;i="6.02,139,1688454000"; 
+   d="scan'208";a="693455911"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 03:57:17 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qg150-008ZAi-1Z;
+        Tue, 12 Sep 2023 13:57:14 +0300
+Date:   Tue, 12 Sep 2023 13:57:14 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v2 04/11] gpiolib: provide gpio_device_find_by_label()
+Message-ID: <ZQBECsLHhuNRYr20@smile.fi.intel.com>
+References: <20230912100727.23197-1-brgl@bgdev.pl>
+ <20230912100727.23197-5-brgl@bgdev.pl>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230912100727.23197-5-brgl@bgdev.pl>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Like various other ASUS ExpertBook-s, the ASUS ExpertBook B1402CBA
-has an ACPI DSDT table that describes IRQ 1 as ActiveLow while
-the kernel overrides it to EdgeHigh.
+On Tue, Sep 12, 2023 at 12:07:20PM +0200, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> 
+> By far the most common way of looking up GPIO devices is using their
+> label. Provide a helpers for that to avoid every user implementing their
+> own matching function.
 
-This prevents the keyboard from working. To fix this issue, add this laptop
-to the skip_override_table so that the kernel does not override IRQ 1.
+...
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217901
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+> +static int gpio_chip_match_by_label(struct gpio_chip *gc, void *label)
+> +{
+> +	return gc->label && !strcmp(gc->label, label);
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 32cfa3f4efd3..8116b55b6c98 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -439,6 +439,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
- 		},
- 	},
-+	{
-+		.ident = "Asus ExpertBook B1402CBA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "B1402CBA"),
-+		},
-+	},
- 	{
- 		.ident = "Asus ExpertBook B1502CBA",
- 		.matches = {
+When gc->label can be NULL?
+
+> +}
+
 -- 
-2.41.0
+With Best Regards,
+Andy Shevchenko
+
 
