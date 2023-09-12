@@ -2,113 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1459E79CBCD
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 11:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1387479CD39
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 12:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233704AbjILJar (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Sep 2023 05:30:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37026 "EHLO
+        id S233836AbjILKH4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Sep 2023 06:07:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230057AbjILJaq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 05:30:46 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10CE0123
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 02:30:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694511043; x=1726047043;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZZsMX87ZBA2LSNsBXxrcaHlzB7WnuqbevwSrDLDgc/k=;
-  b=FWbHFI9hDt/GXTR1LMvmhTicqJiBHK05mFEsZmMeJvqslj9/43yc8JhA
-   fMDcn2LVQUQoMYunuu7+P+l4W5iEZKv64Yi16l3p+1qMXyweCQ+sNM7JH
-   YSjqX7D3p5SsczDURQ80En2c6tWJLjcsRL2acICvC48JQjEcsqxEcixDF
-   ypHHvbmc70JcQqnMzrv+7+7O/dAZXUqOpMBb6ouyZ1duqclEXDMYMBPqM
-   A4E2TAibQYwT5lYJNwgQcQ3qkaJ+ctdfniKt6wz9pDtAIaHCf/7fDLrxm
-   dw5xowEBNh+Fe/1cq86vewaoa3K77nW4JG58PHJ8hOSs1FiTX55bvu3Q+
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="381025440"
-X-IronPort-AV: E=Sophos;i="6.02,245,1688454000"; 
-   d="scan'208";a="381025440"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 02:30:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="990440198"
-X-IronPort-AV: E=Sophos;i="6.02,245,1688454000"; 
-   d="scan'208";a="990440198"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 02:30:18 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qfzin-008Y4U-0a;
-        Tue, 12 Sep 2023 12:30:13 +0300
-Date:   Tue, 12 Sep 2023 12:30:12 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Ken Xue <Ken.Xue@amd.com>
-Cc:     linux-acpi@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
-        rafael@kernel.org, kernel test robot <lkp@intel.com>,
-        cwhuang@linux.org.tw
-Subject: Re: [PATCH] acpi: trigger wakeup key event from power button
-Message-ID: <ZQAvpIKqmLeWbh0v@smile.fi.intel.com>
-References: <20230908095747.446389-1-Ken.Xue@amd.com>
- <ZP7hH9i6ZQgINbcB@smile.fi.intel.com>
- <2bfaa431-ca9f-c879-9967-f13d18dd4cd3@amd.com>
+        with ESMTP id S233688AbjILKHl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 06:07:41 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8363A1717
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 03:07:37 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-401da71b83cso61693255e9.2
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 03:07:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1694513256; x=1695118056; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=x4haYmdObfDE5/y07WwdJnqnP4U8yxjngc5oSCKLzDA=;
+        b=eOBil49xQ2KaWxvTRxsfcHKMH0o9oRKWUycF3TRF3ovVXr5HdMCxU0NjXLzvDFkwry
+         io5EdUVDpL1faHiEGAuwKICPpBT988WwXHgs/mc+VRM3TfNB3cPE5tTTvvQG1WKL5QgU
+         /JmQVZtbSrVUvvTnb7q5mKBxdS7Jv0R+R6EjlWZe1Kt1NFjQnQUruVsZSnajSQF40hZU
+         cffbmI0Pkc0R++dtLTRTb7XPr+J54lrhGYT6HXQ9JCgjYfLEBig8oV6zaHztkNzjreM4
+         ZgzDKBNk91G/6URNr4GdCDTfcKAyqlSd5zewrDD/IEpbm+B+pJpW7rPLnT4HDiF93sbf
+         Wp6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694513256; x=1695118056;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=x4haYmdObfDE5/y07WwdJnqnP4U8yxjngc5oSCKLzDA=;
+        b=VC451KBVOt0qgjGhVzGcGd/GDrt1Brt1gAs6ZbM+9FmwIZg48CYxNSZktBa2fwwrek
+         1BwqYA+J9JGi/gitwLtamjVJIPQCiatd36gSAPtyAU31pvdLyjX44nrsuu6/FJS2IhDT
+         JhxFatEb6M+PYlgdqk16rfO4XFW9SI5613Aa5b77IaoCfLCpl2otGsyYxAdd/Vu6vhaL
+         YpQIj3rvXTx5UAKij371S181KI7uhQjETtsfUNhnQUywkkPQfslDLdlrYNf2rF6GZ6jQ
+         ductOTgAiO48Be75KqHrftVJZfnMBmNM+6mwhju6HCpU0A28/yw6GfddJdDranxFh9yG
+         3X6g==
+X-Gm-Message-State: AOJu0YzLowk/ELmq4vCP+zzqBesLsqHCgknycIDUmY0G5KWaBCZWlIFH
+        Qi0Zmm517r+D60c/1hjvosuytg==
+X-Google-Smtp-Source: AGHT+IFP2ZkHAn0oAd5VEal3U/DDMSBmSZPRnW97oOBXBaMn4x42Nik4c/SZV7LTaAhOehrGAWOVXw==
+X-Received: by 2002:a1c:7c11:0:b0:402:98cd:aa22 with SMTP id x17-20020a1c7c11000000b0040298cdaa22mr11221950wmc.41.1694513255919;
+        Tue, 12 Sep 2023 03:07:35 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:334:ac00:907f:4cd7:f0ae:6b2a])
+        by smtp.gmail.com with ESMTPSA id h5-20020adfe985000000b0031ae8d86af4sm12351417wrm.103.2023.09.12.03.07.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Sep 2023 03:07:35 -0700 (PDT)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH v2 00/11] gpiolib: work towards removing gpiochip_find()
+Date:   Tue, 12 Sep 2023 12:07:16 +0200
+Message-Id: <20230912100727.23197-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2bfaa431-ca9f-c879-9967-f13d18dd4cd3@amd.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 12, 2023 at 01:32:02PM +0800, Ken Xue wrote:
-> On 2023/9/11 17:42, Andy Shevchenko wrote:
-> > On Fri, Sep 08, 2023 at 05:57:49PM +0800, Ken Xue wrote:
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-...
+This is a reduced subset of patches from the initial sumbission[1]
+limited only to changes inside GPIOLIB. Once this is upstream, we can
+then slowly merge patches for other subsystems (like HTE) and then
+eventually remove gpiochip_find() entirely.
 
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > Are you sure?
-> 
-> Thanks for review. Sorry for confusion.
+The GPIO subsystem does not handle hot-unplug events very well. We have
+recently patched the user-space part of it so that at least a rouge user
+cannot crash the kernel but in-kernel users are still affected by a lot of
+issues: from incorrect locking or lack thereof to using structures that are
+private to GPIO drivers. Since almost all GPIO controllers can be unbound,
+not to mention that we have USB devices registering GPIO expanders as well as
+I2C-on-USB HID devices on which I2C GPIO expanders can live, various media
+gadgets etc., we really need to make GPIO hotplug/unplug friendly.
 
-> 2) test robot reported some compile warnings and errors detected by test
-> robot which is fixed in V2.
+Before we can even get to fixing the locking, we need to address a serious
+abuse of the GPIO driver API - accessing struct gpio_chip by anyone who isn't
+the driver owning this object. This structure is owned by the GPIO provider
+and its lifetime is tied to that of that provider. It is destroyed when the
+device is unregistered and this may happen at any moment. struct gpio_device
+is the opaque, reference counted interface to struct gpio_chip (which is the
+low-level implementation) and all access should pass through it.
 
-Yes and that's what I'm asking about. You are not supposed to add it as the
-initial problem, the patch is trying to solve, has _not_ been reported by LKP,
-hasn't it?
+The end-goal is to make all gpio_device manipulators check the existence of
+gdev->chip and then lock it for the duration of any of the calls using SRCU.
+Before we can get there, we need to first provide a set of functions that will
+replace any gpio_chip functions and convert all in-kernel users.
 
-...
+This series adds several new helpers to the public GPIO API and uses
+them across the core GPIO code.
 
-> > > Closes: https://lore.kernel.org/oe-kbuild-all/202309080315.txQUEyHQ-lkp@intel.com/
-> > > Closes: https://lore.kernel.org/oe-kbuild-all/202309080239.IiC7uLpW-lkp@intel.com/
-> > > Closes: https://lore.kernel.org/oe-kbuild-all/202309080351.xHt2qhP2-lkp@intel.com/
-> > Are you sure?
-> 
-> Just some errors/warnings from the v1 patch.
+Note that this does not make everything correct just yet. Especially the
+GPIOLIB internal users release the reference returned by the lookup function
+after getting the descriptor of interest but before requesting it. This will
+eventually be addressed. This is not a regression either.
 
-Same as above.
+[1] https://lore.kernel.org/lkml/20230905185309.131295-1-brgl@bgdev.pl/T/
 
-...
+v1 -> v2:
+- drop all non-GPIOLIB patches
+- collect tags
+- fix kernel docs
+- use gpio_device_get_chip() and gpio_device_get_desc() where applicable
 
-> > > +#include <linux/acpi.h>
-> > There are no users of this header.
-> > 
-> > Check how forward declaration can be used (as it's done in many other headers).
-> > 
-> Yes, "struct acpi_device" is defined in "include/acpi/acpi_bus.h", but
-> include acpi_bus.h alone will lead to more compile issues.
-> 
-> Regarding "forward declaration", how about
-> 
-> typedef struct acpi_device *acpi_device;
+Bartosz Golaszewski (11):
+  gpiolib: make gpio_device_get() and gpio_device_put() public
+  gpiolib: add support for scope-based management to gpio_device
+  gpiolib: provide gpio_device_find()
+  gpiolib: provide gpio_device_find_by_label()
+  gpiolib: provide gpio_device_get_desc()
+  gpiolib: reluctantly provide gpio_device_get_chip()
+  gpiolib: replace find_chip_by_name() with gpio_device_find_by_label()
+  gpio: of: replace gpiochip_find_* with gpio_device_find_*
+  gpio: acpi: replace gpiochip_find() with gpio_device_find()
+  gpio: swnode: replace gpiochip_find() with gpio_device_find_by_label()
+  gpio: sysfs: drop the mention of gpiochip_find() from sysfs code
 
-Is it a forward declaration?
+ drivers/gpio/gpiolib-acpi.c   |  12 +-
+ drivers/gpio/gpiolib-of.c     |  32 +++---
+ drivers/gpio/gpiolib-swnode.c |  33 +++---
+ drivers/gpio/gpiolib-sysfs.c  |   2 +-
+ drivers/gpio/gpiolib.c        | 201 ++++++++++++++++++++++++++--------
+ drivers/gpio/gpiolib.h        |  10 --
+ include/linux/gpio/driver.h   |  13 +++
+ 7 files changed, 211 insertions(+), 92 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.39.2
 
