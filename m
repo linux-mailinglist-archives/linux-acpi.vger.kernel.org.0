@@ -2,162 +2,200 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DFBC79D16D
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 14:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D11E079D1FA
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 15:21:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232922AbjILMyI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Sep 2023 08:54:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46666 "EHLO
+        id S235383AbjILNVI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Sep 2023 09:21:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235149AbjILMyH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 08:54:07 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2053.outbound.protection.outlook.com [40.107.94.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B05198
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 05:54:02 -0700 (PDT)
+        with ESMTP id S232376AbjILNVH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 09:21:07 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2067.outbound.protection.outlook.com [40.107.94.67])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0EBE10CA
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 06:21:03 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gBbMBWZBm7R+QoDMLGmfmdazyE7H20dmUxbK0xFeOUb0+G56VVN5K4q9NyZshsyVpuQOa/oFqWzTpSoERck5rpIduFA9ZUvLthkq/jwDJiOSEjdztDC6JqdhLg6lpPMyFs74eXpuWYyUwAF3fo79b1FMD62lP5AQ3nufZGsFzoxv8xKUguRdLZLLQOS7wC00UdAK/I9O+G9f/hOSN2hTBzrwY6LY5vU6cR4tdhm9UrbqFFr1o59RSIJRnyjamTZErl+KLx28pwIYWxfOByz/iDhpllq6+EaD2FIhmgNA+EQSBvCfmp2WYTYRsLTs0BDgBHL6LcuxwePCnsze+pQQjw==
+ b=WJ+9AqfknhAcK4uZ96ZDa0xIN7PczX9+LP6ZWtfaK0XI4bnzD58YBlVSeE+j//8CZS7uanx20/O4+zxzy/lq8BMD7ta9tnnKyYZTNMjfSxLwkuOlNfRG0MNBuBZkClNzvwjsLHX2QLEkHXpxAYdDDP3v+gu6Jl9zfbESH8+9g4cSv/E+gKx+0d9BB14JaqtAzS1sK/4/9HzxNUCcS/8vQQvOo8HOm9oyupKiMjkVVJjTCLBXUfDRf2I2uXcTXqSb/ofA9Vr1ZKb9fB6t+bRcIx1T5o76Y7iF0gjDqXvaf9AgFrX9hPMsX97VIL8cgChAqkT2gx5ytmF6USTN8Z+K0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=75eANkTZ+dlTJBc9l5NrBWnA9YzYujRpt2sj9hRfvEY=;
- b=iSWs5+p14k3PB8bll36k2zZrs8W5VRcZoN/5D9TsRGotghRt9WJsyzcOwrLZa32Dk+1vg3m0oXB+3bDAAmu7YeSUW7/CAbNVYnJMkkfSr8tg7mlouMjIVjV3JA9mkyFbSO60UZdH9xN0VN47ZePuGqNGAYcYazy5eVxCTuuOKpD6NSggGIcA6jBPypJ2GSXY2GDY8byahPeFZ584PKsMCF4dwySWYAlX3F90wQIzVzPyk5NlKraTJQ5992dNf28ZUOykcMAURpQWgHW1OKOd6l/JGaMVz60tCLFDfPD+NqLbXMSqGypbbKtB+YiVFv0H18XooNkF0ldN3bFgvizyDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=Ufyn6d3prl6NZY6owdW4W7004+W2icrwGMMQS44kF9Q=;
+ b=D8o+ACNkknULb4D8u2QQqsMQito83KNLk1m2w3w5IH+OzvHT0Yo9ShlSMZZUp1ISqNNfzgkIj7mkSNn3YgN7RqnV3FsDUdlNM64W47CDu5pvDYjEn4uBKt0Q0zEt0KvLkh6Y6VGn4ZbB9U9F+bhh979c1eNctXvKnZqxlpo//AiC/tgyeGrlKbn/IlIViPTfp6JtdEs+EPtEZ5BriJ/hhCQMRvsKi8P5NpzayNeKQGG935b9g3Db3X0aSJQ0bM0V1n7LVTc6GkDVhPA1U8H3azW1Hm+ORdi8cf7ZoXunxO3du4DQljlEa350FtqSoXa7iGY2QbqRTzxaqjOju9g03w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=75eANkTZ+dlTJBc9l5NrBWnA9YzYujRpt2sj9hRfvEY=;
- b=BNzODv9bBtzGTDUTgJtv9aXGcMpiM3aB6ZLcug8s4LJf9yzakpI02gGY7ZxXw4u1eDqk7cNp+XZpnC0HLO76wwnCXapldvDyxB+ufHElpjMZDCbDdQ2AYqSOE+I9fPfgqWFvvChSnnQe6w1jtO2I2TK4/Hg31xwqTVnKnwrjuQc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB6978.namprd12.prod.outlook.com (2603:10b6:510:1b8::10)
- by MW3PR12MB4362.namprd12.prod.outlook.com (2603:10b6:303:5d::19) with
+ bh=Ufyn6d3prl6NZY6owdW4W7004+W2icrwGMMQS44kF9Q=;
+ b=r/OPfRlONrS4EDx3eX4PVq42hn95ii7UokLnK86QoarP2Fsktjo8R3byn0lGLVlblV77iNjNcOTGs3Q4pDCVR8JBxAXaJxOY3KBcSsCrw9W6/MLxwykGrLEr17wlSDprT2Vw6C9iuP7rkHkDFpXTJAZZooXvyDqj3b8z4xWY1BM=
+Received: from DS7PR03CA0021.namprd03.prod.outlook.com (2603:10b6:5:3b8::26)
+ by CY8PR12MB7337.namprd12.prod.outlook.com (2603:10b6:930:53::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.37; Tue, 12 Sep
- 2023 12:53:59 +0000
-Received: from PH7PR12MB6978.namprd12.prod.outlook.com
- ([fe80::c422:217b:5b:979d]) by PH7PR12MB6978.namprd12.prod.outlook.com
- ([fe80::c422:217b:5b:979d%4]) with mapi id 15.20.6768.029; Tue, 12 Sep 2023
- 12:53:59 +0000
-Message-ID: <ef556f45-a90c-a4c3-4cc0-f57323c438c9@amd.com>
-Date:   Tue, 12 Sep 2023 20:53:48 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH] acpi: trigger wakeup key event from power button
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
-        rafael@kernel.org, kernel test robot <lkp@intel.com>,
-        cwhuang@linux.org.tw
-References: <20230908095747.446389-1-Ken.Xue@amd.com>
- <ZP7hH9i6ZQgINbcB@smile.fi.intel.com>
- <2bfaa431-ca9f-c879-9967-f13d18dd4cd3@amd.com>
- <ZQAvpIKqmLeWbh0v@smile.fi.intel.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.30; Tue, 12 Sep
+ 2023 13:21:01 +0000
+Received: from DS3PEPF000099DC.namprd04.prod.outlook.com
+ (2603:10b6:5:3b8:cafe::61) by DS7PR03CA0021.outlook.office365.com
+ (2603:10b6:5:3b8::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.37 via Frontend
+ Transport; Tue, 12 Sep 2023 13:21:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS3PEPF000099DC.mail.protection.outlook.com (10.167.17.198) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6792.17 via Frontend Transport; Tue, 12 Sep 2023 13:21:01 +0000
+Received: from nv14-test.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 12 Sep
+ 2023 08:20:59 -0500
 From:   Ken Xue <Ken.Xue@amd.com>
-In-Reply-To: <ZQAvpIKqmLeWbh0v@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI1PR02CA0032.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::12) To PH7PR12MB6978.namprd12.prod.outlook.com
- (2603:10b6:510:1b8::10)
+To:     <andriy.shevchenko@linux.intel.com>, <linux-acpi@vger.kernel.org>
+CC:     <rafael@kernel.org>, <ken.xue@amd.com>, <cwhuang@linux.org.tw>,
+        Ken Xue <Ken.Xue@amd.com>
+Subject: [PATCH V3] acpi: trigger wakeup key event from power button
+Date:   Tue, 12 Sep 2023 21:16:06 +0800
+Message-ID: <20230912131605.734829-1-Ken.Xue@amd.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6978:EE_|MW3PR12MB4362:EE_
-X-MS-Office365-Filtering-Correlation-Id: 05339139-37b5-4a99-cd8e-08dbb38f54e3
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099DC:EE_|CY8PR12MB7337:EE_
+X-MS-Office365-Filtering-Correlation-Id: 56c00c13-b680-4297-ce57-08dbb3931bf8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: XLcbZ6p9j8saJ2EWDzfC/eZ0iFfiaZhrIwZPwnSFcpivA8Rmo24BOsnIxeFPXk9dUJEm4MfHKTe2SRQJ2Q5bsVZWwDRp0aRbD6KbnzaU1t39jDpSVY+hpZwdyY4gnjIj2lta8Ju032tcm3bQw3KIQ5BMrQi8YpX4V28Z6YpC1K3H5tMbNmzBkHFkecv2WbBqnGuymRh6MApMGerrxAotNyvbf1eqUQE8vSgKf5xUNqwr9/v5ORXKEFxZqBhFiMyr7ZMXzdNF+ddHtN7SbwrGqcz949axnRk1VcMrEfAmjz3u31dzV8OVps1Fs2cz6hUB4LKxZN38gyZm6Hmc2rmoDoSq72j4ySpycXuzMQbYB+9MRGNi85L2kCvHj8iJmLmdqjyF08rdiZemR/jFOr7gx+/z+jgjC00cFviDFfndp1Nt+A2Cx6tp+fPQ8XnJmwn8cCcVWiaoFydLvt+OUZeuSUovamKlrDHqplMVEdzF343ZI64xD782B+v6BARQM9Ca0r44TLn+W1mQmMn6rlmW7aphEOECp8peu2oI0mnvX2rBb42b2W3Qcrot7LJqL1dd9fcx30nt1WMJDztb9hrXBUfFzKrzXL4couSRsuv61wZ9LtEXRdHom5oT1QItRTlgE32sa36ntabdLm9Ux6KjkxhWkD3pGiFvbwGmmOtqaNUmO0cial6PmeABbpmQ0Ykp
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB6978.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(366004)(136003)(39860400002)(396003)(376002)(1800799009)(186009)(451199024)(83380400001)(66946007)(66476007)(36756003)(38100700002)(31696002)(86362001)(316002)(66556008)(6916009)(8936002)(8676002)(4326008)(41300700001)(5660300002)(6486002)(6506007)(53546011)(6666004)(6512007)(31686004)(966005)(2906002)(478600001)(2616005)(26005)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MVBBMWh4K3NROVJPeVdpYnBaUldnWmtpUVlxeTBJZjR1c2UzZ3IrUlJ6YTMx?=
- =?utf-8?B?dnNkcjZYN1ZabERwc3hWdWVNN05PbThwa0tFWlBVV3ZmNVB1R3RoTU96ZzJU?=
- =?utf-8?B?Y0xiZVppd0VsVDlKS0pNbkNkKy9IcGJrdXVndFJxcndCSlZWR0tYYlh0MVVN?=
- =?utf-8?B?cUZ0UzdNa3FxQXltUTFyVE8zV3ViSlBjYThzdGhVVVFndDhYNnU4Tmc0MFhM?=
- =?utf-8?B?UXNUVllvdUxDR1dQcThqNFFMc2gvWk9qcjhRVlZpNWV5WWtMbFhKTE1RRU4r?=
- =?utf-8?B?YjhSM1Y2Um1RS1ZBeGVxYlBrYzRkYlRHMW53c1ZMUnFZeFFPQ3pVeEllUXE0?=
- =?utf-8?B?YUhUQnB2V0ZWdXFyb294c21COXhGUmY0NVlrT0VsaGtqdFlodldPaGNaQWxt?=
- =?utf-8?B?ZXY3NU5qbHVmN3Jiak96ZmxNdXNxaEJlZldaVUVaZ0VxNnFSRmFXczdlYXJw?=
- =?utf-8?B?bFNQNWRDQnZsbFc3Y29rY0RJTGFlSEhONHZuRjZKL3pxdmVNa2FXZWpiT0hU?=
- =?utf-8?B?MHNXUUJyc0RGYzFVZ281bXB4Y3gvZzZKTUhQRkdVUTRaWWpwNUR3RXpVWWtw?=
- =?utf-8?B?cE5NRkZXMXdlSk5TWXFxcThnNnBMSUF4QmxrZVExQnA1elR3dDE1czJ0OGdv?=
- =?utf-8?B?K1BnOS9hZmljMm1wUThkU21sZVFZYUJRaEh3YUxkdHRtSFlTSHRsSXdrbkRG?=
- =?utf-8?B?MFFCUjRHY0haV1ZEMVNwdmxwWEtkWGxrNnkvWlZNMzE3Tnd4dHVDdG9XaFNq?=
- =?utf-8?B?WE5ZQ0ZWL3lLekcyRkN5d2hVSlN0TldoSDJLYXRzRzdVQXZwUE5hOHByeGJx?=
- =?utf-8?B?TzVFWW5YTTZobmkyZy9SdHpqNUd6VXJpWGJsY05XYXRyL0VCNXpEQ1JjajN5?=
- =?utf-8?B?N25Pb2o4UTNNalFTYU9ZbE9ZSUpVak00ZE9Xdjh2MDlaRS9CYTcrOVFpYS8r?=
- =?utf-8?B?YU9vcmllbFR4SEdhYVl3WWlNTFNxM25oQVc0eG1YZERWeWlQaUEvWVVmQjI2?=
- =?utf-8?B?MFBScGNmT0RkZzhsR3JwbzN2ZXZjUHlPN3BFY2hMTUVvQUp5ZVlkYmU4ekFx?=
- =?utf-8?B?cDd4WnlueHdvRDZuN3E1a3gyS0NCRHg0V1hKK2NJbVZsU3dodnhYOHErdHFu?=
- =?utf-8?B?aTlUR3pvWGwxNHFrMDRyNWtHdjBJdVpCTVFRVmtIa2ZJbFVBRzVBQzloQnFT?=
- =?utf-8?B?WTFCUFBOS3pwOE5PSjkrRTd2VE96Y2ZmbWdTekJVN3FsbHM2Nit1K1ZMNWx6?=
- =?utf-8?B?aHN3U3M2ZmZmNEwxeXhCTDJqL2dUTjM3by96RW5ZamtIWGdnYlNWMFZuaFpH?=
- =?utf-8?B?eFQ0aG51QW1KbjFqRHRUTmNuZC90R3UrODN6ZHhNWW9lTVF3N2N2RHNsZWln?=
- =?utf-8?B?Um9SMU8rNGJ6RHpRaTZ5cEQvMXhIaFYwUjRxWjVJZ3kvWlpuYWNjVThJbFZR?=
- =?utf-8?B?QXlGSXFiLzk1Y3BpenUxM3UxZS8wQ2pERXNEelNvU0pwV3hFRDdwWThSYWd2?=
- =?utf-8?B?aTFOcVV4Z3c3RFhmalV4TnRFNDNXR2pJYUlNK1QxYWlnYk11Ty9ZMzZRZDUx?=
- =?utf-8?B?Qi9WM2dvcUwyNmxNMnhCR1ZoVHZmeHdPYVdVcW5xeU43NW4vWEdRNkRDUzYw?=
- =?utf-8?B?enZqZmlaV2ZNQ2FSRnhkMHRPdWYwV3dkU1NLRlM4b0FoVmRRemlsMEZ5Qmdh?=
- =?utf-8?B?WU85anoyUVozcmU0SGY4SXFzdkpIQ1RwQy94VkladjVhb3RJR1VnbHRpZlli?=
- =?utf-8?B?OStXdVc1SEVxbU5jYWVaZ2llNUszZm5lejBtYjdJNE5wQXZDcVpWcXRTNTNx?=
- =?utf-8?B?TjVsMUVoZExuVFZ1RExNUVpJZHF4OHJaNWdpQVVsb2dFU09TWWw0SUpBbGVU?=
- =?utf-8?B?NWY0WGtySmd3KzFIMzRlMmJvTWpabVhMSXZZVFR0U2poLzJTM2VReTRYTjNq?=
- =?utf-8?B?Q05ZeG9NQlJWQWhySHhjOHlJODVZRlh5T1FERjA3bnNZNEhtY01BYklxWGNm?=
- =?utf-8?B?VTZGUEUrSjBZd1owVkVPbDlNWjNRVHFXZHhPeFhCK2pIZ3hESFovRFk0KzBC?=
- =?utf-8?B?VFh1cXBQN215WTVBTnJLRm5qZXZlSzZ5emF6S0Y4Qm5SajF3SG9IaEU3emU1?=
- =?utf-8?Q?PVoUdTiaKEc/jv3hFgAEdu3iL?=
+X-Microsoft-Antispam-Message-Info: sj4QWcn1ps72Y1qgENNj4dXC6JyiaNzmIEd73QoNbKzVQFDUg9DHCOGqThjfysia4OmQp+GHNAgaqoXJUkJKJKttym1Rl5HtxpzFC/7SGH247utLN8K+9RnW+aVFoXvjPLQ8VZWVqzljtO2nvXUqlfsz4jwv+1Ax7RBfiauR7/pC5o4vI2o4pdmarEDkAesSKoQg3b1gqnrr5lsMFwaqwLyig3PqX/P60Z/ASefnZZJ3S329y4KFq0t90V2qu05ONp4rmizDQaRnGHnIVk3NAdAp9aIk4Lt96nP2TIhdtl37vlCL0YZrPvG3OuHOl0vOnX0GNB/pbFEeqwSaK+a2w63xOH1+Hirx0roIeOnHTuz1j68QvE7SPp5Rd0EutxFGh7QJEFlIYszfaGLO+o6cNDxrhHwY9q2zwUOQs7DUB5T0h7p3EqsW56+KII2F0PPVz9ivd+5GFGK26ehpN/6xj8ncWjcf0ZAotnEmxluGSSZ/Sr1NiZxgM3kJf5cUhm//TXdfG4NZc7to6g3TIl+cmmbIKwJAhjKmEAMjcg+wlMNOdGc/T4prU4Ol1wZJcZO4MSeMimsr8CrI2UtQ4pD1ujQXOICmYB35/Z5vAGhefen7olobWOrccYP+dIjvRxN2uPK2Ym6ep5CDbhEft04rnEutkRojZQYj0nfWUIaBBiawsuY96CtDxevsgx++ybcUk0V805rz8AMCggUNjuRCUEoT/3PGSudtcPqPuuyk8TDV93PIJvC4zKUKLQbnqhpWrmrMHAJdtLTseWWjqw90RQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(346002)(39860400002)(136003)(396003)(1800799009)(82310400011)(186009)(451199024)(40470700004)(46966006)(36840700001)(356005)(426003)(82740400003)(81166007)(36756003)(40480700001)(86362001)(40460700003)(478600001)(2906002)(110136005)(6666004)(8676002)(70586007)(7696005)(8936002)(4326008)(26005)(5660300002)(70206006)(41300700001)(54906003)(316002)(47076005)(36860700001)(83380400001)(2616005)(16526019)(336012)(1076003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05339139-37b5-4a99-cd8e-08dbb38f54e3
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6978.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2023 12:53:59.1137
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2023 13:21:01.3130
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56c00c13-b680-4297-ce57-08dbb3931bf8
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UFc0bWq7gUYvovcmlW9U2gF3tPffuSlTEUnRBEFLbi0jM44ZwNtUDQlkTXgXIrOo
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4362
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099DC.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7337
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Andorid can wakeup from various wakeup sources,
+but only several wakeup sources can wake up screen
+with right events(POWER, WAKEUP) from input device.
 
-On 2023/9/12 17:30, Andy Shevchenko wrote:
-> On Tue, Sep 12, 2023 at 01:32:02PM +0800, Ken Xue wrote:
->> On 2023/9/11 17:42, Andy Shevchenko wrote:
->>> On Fri, Sep 08, 2023 at 05:57:49PM +0800, Ken Xue wrote:
-...
->> 2) test robot reported some compile warnings and errors detected by test
->> robot which is fixed in V2.
-> Yes and that's what I'm asking about. You are not supposed to add it as the
-> initial problem, the patch is trying to solve, has _not_ been reported by LKP,
-> hasn't it?
->
-> ...
->
->>>> Closes: https://lore.kernel.org/oe-kbuild-all/202309080315.txQUEyHQ-lkp@intel.com/
->>>> Closes: https://lore.kernel.org/oe-kbuild-all/202309080239.IiC7uLpW-lkp@intel.com/
->>>> Closes: https://lore.kernel.org/oe-kbuild-all/202309080351.xHt2qhP2-lkp@intel.com/
->>> Are you sure?
->> Just some errors/warnings from the v1 patch.
-> Same as above.
+Regarding pressing acpi power button, it can resume system and
+ACPI_BITMASK_WAKE_STATUS and ACPI_BITMASK_POWER_BUTTON_STATUS
+are set in pm1a_sts, but kernel does not report any key
+event to user space during resume by default.
 
-Get it.  Those info will not be included in commit message.
+So, trigger wakeup key event to user space during resume
+from power button.
 
+Signed-off-by: Ken Xue <Ken.Xue@amd.com>
 
->
-> ...
->
->>>> +#include <linux/acpi.h>
->>> There are no users of this header.
->>>
->>> Check how forward declaration can be used (as it's done in many other headers).
->>>
->> Yes, "struct acpi_device" is defined in "include/acpi/acpi_bus.h", but
->> include acpi_bus.h alone will lead to more compile issues.
->>
->> Regarding "forward declaration", how about
->>
->> typedef struct acpi_device *acpi_device;
-> Is it a forward declaration?
-Ok, I will use "struct acpi_device;"
+---
+V1->V2: fix some compile warning/error caused by lack of
+        "struct acpi_device" declaration by including acpi.h.
+V2->V3: use "forward declaration" to fix compile warning/error.
+
+ drivers/acpi/button.c | 16 ++++++++++++++++
+ drivers/acpi/sleep.c  |  2 ++
+ include/acpi/button.h |  4 ++++
+ 3 files changed, 22 insertions(+)
+
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index 1e76a64cce0a..3b8aa071732b 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -363,6 +363,21 @@ static int acpi_button_remove_fs(struct acpi_device *device)
+ 	return 0;
+ }
+ 
++void acpi_power_button_wakeup(struct acpi_device *dev)
++{
++	struct acpi_button *button = acpi_driver_data(dev);
++	struct input_dev *input;
++
++	if (button->type == ACPI_BUTTON_TYPE_POWER) {
++		input = button->input;
++		input_report_key(input, KEY_WAKEUP, 1);
++		input_sync(input);
++		input_report_key(input, KEY_WAKEUP, 0);
++		input_sync(input);
++	}
++}
++EXPORT_SYMBOL(acpi_power_button_wakeup);
++
+ /* Driver Interface */
+ int acpi_lid_open(void)
+ {
+@@ -579,6 +594,7 @@ static int acpi_button_add(struct acpi_device *device)
+ 	switch (button->type) {
+ 	case ACPI_BUTTON_TYPE_POWER:
+ 		input_set_capability(input, EV_KEY, KEY_POWER);
++		input_set_capability(input, EV_KEY, KEY_WAKEUP);
+ 		break;
+ 
+ 	case ACPI_BUTTON_TYPE_SLEEP:
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 808484d11209..dcd5d0237eeb 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -22,6 +22,7 @@
+ #include <linux/syscore_ops.h>
+ #include <asm/io.h>
+ #include <trace/events/power.h>
++#include <acpi/button.h>
+ 
+ #include "internal.h"
+ #include "sleep.h"
+@@ -507,6 +508,7 @@ static void acpi_pm_finish(void)
+ 	pwr_btn_adev = acpi_dev_get_first_match_dev(ACPI_BUTTON_HID_POWERF,
+ 						    NULL, -1);
+ 	if (pwr_btn_adev) {
++		acpi_power_button_wakeup(pwr_btn_adev);
+ 		pm_wakeup_event(&pwr_btn_adev->dev, 0);
+ 		acpi_dev_put(pwr_btn_adev);
+ 	}
+diff --git a/include/acpi/button.h b/include/acpi/button.h
+index af2fce5d2ee3..6126d665aa42 100644
+--- a/include/acpi/button.h
++++ b/include/acpi/button.h
+@@ -2,17 +2,21 @@
+ #ifndef ACPI_BUTTON_H
+ #define ACPI_BUTTON_H
+ 
++struct acpi_device;
++
+ #define ACPI_BUTTON_HID_POWER	"PNP0C0C"
+ #define ACPI_BUTTON_HID_LID	"PNP0C0D"
+ #define ACPI_BUTTON_HID_SLEEP	"PNP0C0E"
+ 
+ #if IS_ENABLED(CONFIG_ACPI_BUTTON)
+ extern int acpi_lid_open(void);
++extern void acpi_power_button_wakeup(struct acpi_device *dev);
+ #else
+ static inline int acpi_lid_open(void)
+ {
+ 	return 1;
+ }
++static inline void acpi_power_button_wakeup(struct acpi_device *dev) {}
+ #endif /* IS_ENABLED(CONFIG_ACPI_BUTTON) */
+ 
+ #endif /* ACPI_BUTTON_H */
+
+base-commit: b483d3b8a54a544ab8854ca6dbb8d99c423b3ba4
+-- 
+2.35.1
+
