@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B152279CFA8
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 13:17:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7286D79CFB9
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 13:21:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbjILLRA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Sep 2023 07:17:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49638 "EHLO
+        id S234398AbjILLVf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Sep 2023 07:21:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234474AbjILLQh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 07:16:37 -0400
+        with ESMTP id S234585AbjILLVX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 07:21:23 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69900B3;
-        Tue, 12 Sep 2023 04:16:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AB2898;
+        Tue, 12 Sep 2023 04:21:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694517393; x=1726053393;
+  t=1694517679; x=1726053679;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=R2Ot7xPyVMFbYyedKENeMRGoNL1E1ZnSVA5Nz2FEqo4=;
-  b=h3Lc7f1VhySMFrN3skxUdtUetUrGIu5+7ysX9BTNslWeGEd3BjAYNLlH
-   XBCJZNQDAgUiAzKQs4U7VtMnF0tE87aceIphoBJAexZ7qCYAGTQKYwmTU
-   NBqHX7DSnnHS97btJsy1OCfbo7Fiba3PZDBBuNs6bpUjsboLIFzvUQGYA
-   nMKc1JzDj7k1aVFH2C9pGXlwGbOO7p5UzKPkw5OqS99y7bPNA8fzWDdqs
-   TGB+PE9bHGV0uy22YTjEVdSeXnBTkDjJxcA4+mdgLk/HZ1od0NlFdC9r7
-   tXOIl9uUa5AcyqxAfT/N51qVIdsMXnlv6gzAhTVF+LFCp/cAw+hZ8NLRa
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="381044654"
+  bh=56HV7jHuZyzZZ9uTHHL5L4UREo6SlD9cnmXzbwvt/98=;
+  b=hZhENIoX0R57TxNsqXbWCGGqT0+5prRd8/nzZQc5eNxnSONjM9gob1st
+   DSOJ3ROoI/fbLq7Nc/qv9SGw45EWxT9RxloPz/GB8whiOx5H8RXLcSUWg
+   qJdbYsQQTEB4aGDJbdKYkDu9dCIUqa0mDWot2vebCDj7umcvxuMrQjzg0
+   Ez1bRF2Ujy+NEC88JdL5p78iKErDWZPLj7RYQAEHu1NQfVIuIG2CBlNo4
+   d33CPdSdEWVLSf88U8smrP45N2YSKH/bWyj+dOjVY8+ZXJyZa5WLpCLt3
+   /7YhEhSaprGJ4msgpoCWBAJyy350fFIVCigrawMM639DNt4NazHer6eaG
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="381045830"
 X-IronPort-AV: E=Sophos;i="6.02,139,1688454000"; 
-   d="scan'208";a="381044654"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 04:16:32 -0700
+   d="scan'208";a="381045830"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 04:20:57 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="720364871"
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="743692533"
 X-IronPort-AV: E=Sophos;i="6.02,139,1688454000"; 
-   d="scan'208";a="720364871"
+   d="scan'208";a="743692533"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 04:16:30 -0700
+  by orsmga002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 04:20:55 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qg1Nb-008ZNh-1r;
-        Tue, 12 Sep 2023 14:16:27 +0300
-Date:   Tue, 12 Sep 2023 14:16:27 +0300
+        id 1qg1Rs-008ZRc-1d;
+        Tue, 12 Sep 2023 14:20:52 +0300
+Date:   Tue, 12 Sep 2023 14:20:52 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Bartosz Golaszewski <brgl@bgdev.pl>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
@@ -50,70 +50,35 @@ Cc:     Linus Walleij <linus.walleij@linaro.org>,
         linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org,
         Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v2 07/11] gpiolib: replace find_chip_by_name() with
- gpio_device_find_by_label()
-Message-ID: <ZQBIi3OsUUe+JcoB@smile.fi.intel.com>
+Subject: Re: [PATCH v2 08/11] gpio: of: replace gpiochip_find_* with
+ gpio_device_find_*
+Message-ID: <ZQBJlJy2NnCJ489y@smile.fi.intel.com>
 References: <20230912100727.23197-1-brgl@bgdev.pl>
- <20230912100727.23197-8-brgl@bgdev.pl>
+ <20230912100727.23197-9-brgl@bgdev.pl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230912100727.23197-8-brgl@bgdev.pl>
+In-Reply-To: <20230912100727.23197-9-brgl@bgdev.pl>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 12, 2023 at 12:07:23PM +0200, Bartosz Golaszewski wrote:
+On Tue, Sep 12, 2023 at 12:07:24PM +0200, Bartosz Golaszewski wrote:
 > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> Remove all remaining uses of find_chip_by_name() (and subsequently:
-> gpiochip_find()) from gpiolib.c and use the new
-> gpio_device_find_by_label() instead.
+> We're porting all users of gpiochip_find() to using gpio_device_find().
+> Update the OF GPIO code.
 
 ...
 
->  	for (p = &table->table[0]; p->key; p++) {
-> -		struct gpio_chip *gc;
-> +		struct gpio_device *gdev __free(gpio_device_put) = NULL;
+> +	desc = of_xlate_and_get_gpiod_flags(gdev->chip, &gpiospec, flags);
 
-> +		gc = gpio_device_get_chip(gdev);
+> +		ret = of_gpiochip_add_hog(gpio_device_get_chip(gdev), rd->dn);
 
-What the heck is this, btw? You have gdev NULL here.
+> +		of_gpiochip_remove_hog(gpio_device_get_chip(gdev), rd->dn);
 
->  		/* idx must always match exactly */
->  		if (p->idx != idx)
-> @@ -4004,9 +3996,8 @@ static struct gpio_desc *gpiod_find(struct device *dev, const char *con_id,
->  			return ERR_PTR(-EPROBE_DEFER);
->  		}
->  
-> -		gc = find_chip_by_name(p->key);
-> -
-> -		if (!gc) {
-> +		gdev = gpio_device_find_by_label(p->key);
-> +		if (!gdev) {
-
-...
-
->  		if (gc->ngpio <= p->chip_hwnum) {
->  			dev_err(dev,
->  				"requested GPIO %u (%u) is out of range [0..%u] for chip %s\n",
-> -				idx, p->chip_hwnum, gc->ngpio - 1,
-> +				idx, p->chip_hwnum, gdev->chip->ngpio - 1,
-
-In other patch you use wrapper to get gdev->chip, why not here?
-
->  				gc->label);
-
-Is this gc is different to gdev->chip?
-
->  			return ERR_PTR(-EINVAL);
->  		}
-
-...
-
-Sorry, but this patch seems to me as WIP. Please, revisit it, make sure all
-things are done consistently.
+Find the difference in the first parameter in all three.
 
 -- 
 With Best Regards,
