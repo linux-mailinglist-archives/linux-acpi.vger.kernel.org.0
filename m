@@ -2,134 +2,181 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D437A79D30D
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 16:00:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3576879D357
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Sep 2023 16:11:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234834AbjILOAx convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 12 Sep 2023 10:00:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60828 "EHLO
+        id S235870AbjILOLZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Sep 2023 10:11:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232399AbjILOAw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 10:00:52 -0400
+        with ESMTP id S235920AbjILOLU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 10:11:20 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1FA310CE;
-        Tue, 12 Sep 2023 07:00:48 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlQFr6Dbbz6FGWH;
-        Tue, 12 Sep 2023 22:00:16 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1FC9CF;
+        Tue, 12 Sep 2023 07:11:16 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlQSZ1ffWz6HJmc;
+        Tue, 12 Sep 2023 22:09:34 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 12 Sep
- 2023 15:00:46 +0100
-Date:   Tue, 12 Sep 2023 15:00:45 +0100
+ 2023 15:11:13 +0100
+Date:   Tue, 12 Sep 2023 15:11:12 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Ben Cheatham <Benjamin.Cheatham@amd.com>
 CC:     <rafael@kernel.org>, <dan.j.williams@intel.com>,
         <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
         <bhelgaas@google.com>, <yazen.ghannam@amd.com>
-Subject: Re: [PATCH v4 2/3] ACPI, APEI, EINJ: Add CXL 1.1 EINJ error type
- support
-Message-ID: <20230912150045.00004137@Huawei.com>
-In-Reply-To: <20230907191956.674833-3-Benjamin.Cheatham@amd.com>
+Subject: Re: [PATCH v4 1/3] CXL, PCIE: Add cxl_rcrb_addr file to dport_dev
+Message-ID: <20230912151112.00007fe2@Huawei.com>
+In-Reply-To: <20230907191956.674833-2-Benjamin.Cheatham@amd.com>
 References: <20230907191956.674833-1-Benjamin.Cheatham@amd.com>
-        <20230907191956.674833-3-Benjamin.Cheatham@amd.com>
+        <20230907191956.674833-2-Benjamin.Cheatham@amd.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 7 Sep 2023 14:19:55 -0500
+On Thu, 7 Sep 2023 14:19:54 -0500
 Ben Cheatham <Benjamin.Cheatham@amd.com> wrote:
 
-> Add support for CXL EINJ error types for CXL 1.1 hosts added in ACPI
-> v6.5. Because these error types target memory-mapped CXL 1.1 compliant
-> downstream ports and not physical (normal/persistent) memory, these
-> error types are not currently  allowed through the memory range
-> validation done by the EINJ driver.
-> 
-> The MMIO address of a CXL 1.1 downstream port can be found in the
-> cxl_rcrb_addr file in the corresponding dport directory under
-> /sys/bus/cxl/devices/portX. CXL 1.1 error types follow the same
-> procedure as a memory error type, but with param1 set to the
-> downstream port MMIO address.
-> 
-> Example usage:
-> $ cd /sys/kernel/debug/apei/einj
-> $ cat available_error_type
->     0x00000008      Memory Correctable
->     0x00000010      Memory Uncorrectable non-fatal
->     0x00000020      Memory Uncorrectable fatal
->     0x00000040      PCI Express Correctable
->     0x00000080      PCI Express Uncorrectable non-fatal
->     0x00000100      PCI Express Uncorrectable fatal
->     0x00008000      CXL.mem Protocol Correctable
->     0x00020000      CXL.mem Protocol Uncorrectable fatal
-> $ echo 0x8000 > error_type
-> $ echo 0xfffffffffffff000 > param2
-> $ echo 0x3 > flags
-
-From einj.rst (and the ACPI spec) bit 0 here is
-Processor APIC field valid.  Why is that relevant here?
-If it were you'd be writing param3 I think.  So probably
-harmless, but I think this should be 0x2 > flags
-
-> $ cat /sys/bus/cxl/devices/portX/dportY/cxl_rcrb_addr
-> 0xb2f00000
-> $ echo 0xb2f00000 > param1
-> $ echo 1 > error_inject
+> Add cxl_rcrb_addr to the dport_dev (normally represented by a pcie
+> device) for CXL RCH root ports. The file will print the RCRB base
+> MMIO address of the root port when read and will be used by
+> users looking to inject CXL EINJ error types for RCH hosts.
 > 
 > Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
-Hi Ben,
 
-Why bother with the config dependent build?
-It doesn't save that much in code built and right now there
-are no non ACPI CXL systems so in reality it's always built
-anyway.
+Can we use is_visble to control presence of the attribute rather than
+race condition special that is dynamic addition of a sysfs file.
 
-Otherwise this LGTM
+You are adding the file to the linked device which is a bit odd.
+Why there rather than in the portX?
 
+I'd also normally expect the docs to call out the non-link path for that
+device which is somewhere in the PCI topology I think.
 
+> ---
+>  Documentation/ABI/testing/sysfs-bus-cxl |  8 ++++++
+>  drivers/cxl/acpi.c                      |  2 ++
+>  drivers/cxl/core/port.c                 | 33 +++++++++++++++++++++++++
+>  drivers/cxl/cxl.h                       |  2 ++
+>  4 files changed, 45 insertions(+)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-cxl b/Documentation/ABI/testing/sysfs-bus-cxl
+> index 087f762ebfd5..a7d169235543 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-cxl
+> +++ b/Documentation/ABI/testing/sysfs-bus-cxl
+> @@ -177,6 +177,14 @@ Description:
+>  		integer reflects the hardware port unique-id used in the
+>  		hardware decoder target list.
+>  
+> +What:		/sys/bus/cxl/devices/portX/dportY/cxl_rcrb_addr
+> +Date:		August, 2023
+> +KernelVersion:	v6.6
+> +Contact:	linux-cxl@vger.kernel.org
+> +Description:
+> +		(RO) The 'cxl_rcrb_addr' device file gives the MMIO base address
+> +		of the RCRB of the corresponding CXL 1.1 downstream port. Only
+> +		present for CXL 1.1 dports.
+>  
+>  What:		/sys/bus/cxl/devices/decoderX.Y
+>  Date:		June, 2021
+> diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
+> index d1c559879dcc..3e2ca946bf47 100644
+> --- a/drivers/cxl/acpi.c
+> +++ b/drivers/cxl/acpi.c
+> @@ -676,6 +676,8 @@ static int cxl_acpi_probe(struct platform_device *pdev)
+>  	if (IS_ERR(root_port))
+>  		return PTR_ERR(root_port);
+>  
+> +	set_cxl_root(root_port);
+> +
+>  	rc = bus_for_each_dev(adev->dev.bus, NULL, root_port,
+>  			      add_host_bridge_dport);
+>  	if (rc < 0)
 > diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-> index 001ab8742e21..f8f300496140 100644
+> index 724be8448eb4..001ab8742e21 100644
 > --- a/drivers/cxl/core/port.c
 > +++ b/drivers/cxl/core/port.c
-> @@ -1122,6 +1122,25 @@ struct cxl_dport *devm_cxl_add_rch_dport(struct cxl_port *port,
+> @@ -875,6 +875,14 @@ struct cxl_port *find_cxl_root(struct cxl_port *port)
 >  }
->  EXPORT_SYMBOL_NS_GPL(devm_cxl_add_rch_dport, CXL);
+>  EXPORT_SYMBOL_NS_GPL(find_cxl_root, CXL);
 >  
-> +#if IS_ENABLED(CONFIG_CXL_ACPI)
-I'm not a particular fan processor magic down in c files.
-
-Do we really care about the saving of not having this in builds where
-CONFIG_CXL_ACPI isn't set?  I'm thinking those don't really exist.
-
-> +struct cxl_dport *cxl_find_rch_dport_by_rcrb(resource_size_t rcrb_base)
+> +static struct cxl_port *cxl_root;
+> +
+> +void set_cxl_root(struct cxl_port *root_port)
+> +{
+> +	cxl_root = root_port;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(set_cxl_root, CXL);
+> +
+>  static struct cxl_dport *find_dport(struct cxl_port *port, int id)
+>  {
+>  	struct cxl_dport *dport;
+> @@ -930,11 +938,30 @@ static void cond_cxl_root_unlock(struct cxl_port *port)
+>  		device_unlock(&port->dev);
+>  }
+>  
+> +static ssize_t cxl_rcrb_addr_show(struct device *dev,
+> +				  struct device_attribute *attr, char *buf)
 > +{
 > +	struct cxl_dport *dport;
-> +	unsigned long index;
 > +
 > +	if (!cxl_root)
-> +		return ERR_PTR(-ENODEV);
+> +		return -ENODEV;
 > +
-> +	xa_for_each(&cxl_root->dports, index, dport)
-> +		if ((dport->rch && dport->rcrb.base != CXL_RESOURCE_NONE)
-> +		    && dport->rcrb.base == rcrb_base)
-> +			return dport;
+> +	dport = cxl_find_dport_by_dev(cxl_root, dev);
+> +	if (!dport)
+> +		return -ENODEV;
 > +
-> +	return NULL;
+> +	return sysfs_emit(buf, "0x%llx\n", (u64) dport->rcrb.base);
 > +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_find_rch_dport_by_rcrb, CXL);
-> +#endif
+> +DEVICE_ATTR_RO(cxl_rcrb_addr);
 > +
->  static int add_ep(struct cxl_ep *new)
+>  static void cxl_dport_remove(void *data)
 >  {
->  	struct cxl_port *port = new->dport->port;
+>  	struct cxl_dport *dport = data;
+>  	struct cxl_port *port = dport->port;
+>  
+> +	if (dport->rch)
+> +		device_remove_file(dport->dport_dev, &dev_attr_cxl_rcrb_addr);
+> +
+>  	xa_erase(&port->dports, (unsigned long) dport->dport_dev);
+>  	put_device(dport->dport_dev);
+>  }
+> @@ -1021,6 +1048,12 @@ __devm_cxl_add_dport(struct cxl_port *port, struct device *dport_dev,
+>  	if (rc)
+>  		return ERR_PTR(rc);
+>  
+> +	if (dport->rch && dport->rcrb.base != CXL_RESOURCE_NONE) {
+> +		rc = device_create_file(dport_dev, &dev_attr_cxl_rcrb_addr);
+> +		if (rc)
+> +			return ERR_PTR(rc);
+> +	}
+> +
+>  	return dport;
+>  }
+>  
+> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> index 76d92561af29..4d5bce4bae7e 100644
+> --- a/drivers/cxl/cxl.h
+> +++ b/drivers/cxl/cxl.h
+> @@ -690,6 +690,8 @@ struct cxl_port *devm_cxl_add_port(struct device *host,
+>  				   resource_size_t component_reg_phys,
+>  				   struct cxl_dport *parent_dport);
+>  struct cxl_port *find_cxl_root(struct cxl_port *port);
+> +void set_cxl_root(struct cxl_port *root_port);
+> +
+>  int devm_cxl_enumerate_ports(struct cxl_memdev *cxlmd);
+>  void cxl_bus_rescan(void);
+>  void cxl_bus_drain(void);
 
