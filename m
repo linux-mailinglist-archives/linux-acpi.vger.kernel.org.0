@@ -2,145 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C25B79EF38
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Sep 2023 18:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 790BC79EF46
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Sep 2023 18:48:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231330AbjIMQrp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Sep 2023 12:47:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40798 "EHLO
+        id S231701AbjIMQs0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Sep 2023 12:48:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231603AbjIMQrb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Sep 2023 12:47:31 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0F5E1FF5;
-        Wed, 13 Sep 2023 09:44:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7507FC433C8;
-        Wed, 13 Sep 2023 16:44:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694623499;
-        bh=YdvolG2o++I5uAQEd8PuhfuBfLfwYeJ286X6cm6379I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HbMSN70gxGaSNUDN01jU4tkOT1pBfLQS5PiaxfgaNJdfUvrOhi1gQHBlm8Atjt4iv
-         RENRi3gbY9puGlOir48vV6KdCHg2gh25ZQNkOtnvLOTRSZSxPmycSV+4mnBD/aMCSr
-         WFvzhG5IO2y9+ZapPUGRfHbmZZ1t3ORd23oO/EUw=
-Date:   Wed, 13 Sep 2023 18:44:55 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jinhui Guo <guojinhui.liam@bytedance.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, lizefan.x@bytedance.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v3] driver core: platform: set numa_node before
- platform_add_device()
-Message-ID: <2023091334-audacious-drudge-6001@gregkh>
-References: <20230913115454.3073-1-guojinhui.liam@bytedance.com>
+        with ESMTP id S230520AbjIMQsN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Sep 2023 12:48:13 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2053.outbound.protection.outlook.com [40.107.94.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 694F230FC;
+        Wed, 13 Sep 2023 09:47:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jXrzim9Z4XYFRHL4L+4ECA2kqZWyt5Iz4xNpyDHLsW21sE3sxlfvAubUKDo9JhXoGaAB+d00rd4tHu/z1tNu5ooT6yS3J5x6fje6E7KJebD+jjYS7lkJ4fzkPn6Oena38dWGDuf22v4RzdIbbYjUexPnnv2D4iGRJD2o7WRFPzJfPFZfxr9KV5tNQYXz+vvjtHce+DggpYDSruYPbUqiZGa63sCJoY2FYBGrYLBn9oAcFzzMqE0cIdx+YQk3Y2rgqOr/aqNZDY8lQLLrag/BMWCQyfnh8/dRq477B4OGlPOMYNfCSxnbEy8cCVjfv/neUXMYpi889z4pTgCXZd7uDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lexUrfTOHDgG17UXRgYxeBsFUV0v2PLyQwrbeunN3Yo=;
+ b=ENxZ0RJhuazhI30kgp6bqcuy3+0X8zrfWTJEPu8W2R/bXJolr+ISftjymbcR7NfcxYMKHsBiw1t9GN+po3QfBiEn5VRTLxZXjktAOjwbirVREGB880XhkEzzD6tQpLM5tVYnz2U2mEP/UtT++GXPNhMNQBV4c0Hdxnt1WlUicpbnTUmFrNkB4W2xj0DReAFzHZZWYbc7DW64GpwBM815HisIXPIRTG676RLKxo6rzBTj8ciQYWcfJlTUnSkw6q/uwH3RjPNgpA8+1hlg5tLpkRqdsaBnTPlXQPsnBLIr0ZHHZaQIrMUrQvrjVTiQPpv2hEWNThdu51Rnst3ODGrgPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lexUrfTOHDgG17UXRgYxeBsFUV0v2PLyQwrbeunN3Yo=;
+ b=ucrbBaYRf289kH848bbxO+hTnUWZnzaChCMZ+/cPSNj3mqswF1Q+zk73yJajp9l7C8tjbxHBJmVHqvekLoiMr+rRbK4AnVUP38iW7vn7P6To9GsgsZLQbbB4iUM0ran8Rjk67bbdgyQrm2NcTGb8BQ75grq5vZo+N8D4OctZPHOsIL7f/R3TeyfqTwYyy0SKM2Ppp3idpAbcTbGKaD9cF2sRcziVQgjj0oUyiSvssPoybnHppVX6MycDgJ3eGghVdAQbhqF7kIr9bnlxQKdAeRG4gyps6NGztHhQ2nhlg94zyOssn0caFuzZhTe5SLQrGRhqq/f6wWi1bMYqxj5c3A==
+Received: from BL0PR02CA0102.namprd02.prod.outlook.com (2603:10b6:208:51::43)
+ by MN2PR12MB4534.namprd12.prod.outlook.com (2603:10b6:208:24f::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.38; Wed, 13 Sep
+ 2023 16:47:25 +0000
+Received: from BL02EPF0001A0FE.namprd03.prod.outlook.com
+ (2603:10b6:208:51:cafe::a6) by BL0PR02CA0102.outlook.office365.com
+ (2603:10b6:208:51::43) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.20 via Frontend
+ Transport; Wed, 13 Sep 2023 16:47:24 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ BL02EPF0001A0FE.mail.protection.outlook.com (10.167.242.105) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6792.19 via Frontend Transport; Wed, 13 Sep 2023 16:47:23 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Wed, 13 Sep 2023
+ 09:47:13 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.41; Wed, 13 Sep 2023 09:47:13 -0700
+Received: from sumitg-l4t.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server id 15.2.986.41 via Frontend
+ Transport; Wed, 13 Sep 2023 09:47:09 -0700
+From:   Sumit Gupta <sumitg@nvidia.com>
+To:     <rafael@kernel.org>, <rui.zhang@intel.com>, <lenb@kernel.org>,
+        <treding@nvidia.com>, <jonathanh@nvidia.com>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-tegra@vger.kernel.org>
+CC:     <sumitg@nvidia.com>, <sanjayc@nvidia.com>, <ksitaraman@nvidia.com>,
+        <srikars@nvidia.com>, <jbrasen@nvidia.com>, <bbasu@nvidia.com>
+Subject: [Patch v2 0/2] Add support for _TFP and change throttle pctg
+Date:   Wed, 13 Sep 2023 22:16:57 +0530
+Message-ID: <20230913164659.9345-1-sumitg@nvidia.com>
+X-Mailer: git-send-email 2.17.1
+X-NVConfidentiality: public
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230913115454.3073-1-guojinhui.liam@bytedance.com>
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FE:EE_|MN2PR12MB4534:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3204cc23-2c2a-4188-e570-08dbb4791b01
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 7+ugCuVn8Yq1diC6tX15bKMIxws13obbWpMX7y7Q0u/mR+sVSwIZMMS3ULxdasUadxDE9weh8DzsmNIX7IhRJAYMtqwvNsfSYBgciWXw9IrZwDzf6IhGhZya0zTmyMoZw3uNoU3J+3b6zZUvnwpOfv+R0/pAYr7ZOXSb/F3GzF+vQNzUr6iGygE/rdXZkj9vEtyf0NiKhFNzDRuoryQ5ledIUwhgw8EfMIaICk2PTpM0EEkSpCj2/OJo6wxEslonzFhWE/jqCpAMTlolgJi+j2u9gMjbZDGoJ8SmFLZkWpUoRSAtOzgReYlN+wgSnO5ugLb//OOqNQhvibI/yy9sXkJCqAcNamJUtLLrskqERrRH+vQm90Mbqfhh/yxsv2GSbR4hUdlOWYHFQAEs9J4jFc4i50uoq6ZBPe179BdjDypCLceR6XpgOeNXyN3c+gkT+MdX3hzVxp3SJpHS2Xo0A/4ESSGBCvhhOyzyFtlCIVUbojORa6GfyMpRqtZa0QazztHIqsAfZY4uW1tixmTpVpDVQew9WwaeiM+ZP+mQOfRpBnBAkx+KNxRK2wchmcC5qXkFs33N4xQzsnKxObmuBCAn92ABQmXzpaZZBIKMA25wP56tXoI9/ToO+H03OUuEybNx71npqWOBsH0ISKepyMWHjd6DmxH3iNGRZ1g6zDnvtNfRabvGRhByfP32AHdwj1Ttu8d8CprC3aZph9r4tG1vHZMUZZY3gVeUZDMwlJbkWab9JV4nmy2VjfjMI0MVPQ61EZAsEkcc1QXoTnPqF+rnGw+WoyWtGzpCLkHRNTD5Hv63CPzjTQsv8vrtef6S
+X-Forefront-Antispam-Report: CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(396003)(346002)(39860400002)(376002)(136003)(451199024)(82310400011)(186009)(1800799009)(36840700001)(40470700004)(46966006)(4326008)(8676002)(8936002)(86362001)(40480700001)(5660300002)(40460700003)(2906002)(36756003)(478600001)(966005)(26005)(336012)(1076003)(70586007)(426003)(2616005)(7696005)(82740400003)(6666004)(107886003)(356005)(83380400001)(7636003)(47076005)(41300700001)(54906003)(36860700001)(316002)(110136005)(70206006)(2101003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2023 16:47:23.8177
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3204cc23-2c2a-4188-e570-08dbb4791b01
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A0FE.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4534
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 13, 2023 at 07:54:54PM +0800, Jinhui Guo wrote:
-> From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
-> 
-> platform_add_device creates numa_node attribute of sysfs according to
-> whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
-> of the device before creating numa_node attribute of sysfs.
-> 
-> Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
-> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-> ---
->  drivers/acpi/acpi_platform.c |  4 +---
->  drivers/base/platform.c      | 13 +++++++++++++
->  2 files changed, 14 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-> index 48d15dd785f6..adcbfbdc343f 100644
-> --- a/drivers/acpi/acpi_platform.c
-> +++ b/drivers/acpi/acpi_platform.c
-> @@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
->  	if (IS_ERR(pdev))
->  		dev_err(&adev->dev, "platform device creation failed: %ld\n",
->  			PTR_ERR(pdev));
-> -	else {
-> -		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-> +	else
->  		dev_dbg(&adev->dev, "created platform device %s\n",
->  			dev_name(&pdev->dev));
-> -	}
->  
->  	kfree(resources);
->  
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 76bfcba25003..206dc7b020cd 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -795,6 +795,18 @@ void platform_device_unregister(struct platform_device *pdev)
->  }
->  EXPORT_SYMBOL_GPL(platform_device_unregister);
->  
-> +#ifdef CONFIG_ACPI
-> +static inline void platform_set_dev_node(struct platform_device *pdev)
-> +{
-> +	struct acpi_device *adev = to_acpi_device_node(pdev->dev.fwnode);
-> +
-> +	if (adev && adev->handle)
-> +		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-> +}
-> +#else
-> +static inline void platform_set_dev_node(struct platform_device *pdev) {}
-> +#endif
-> +
->  /**
->   * platform_device_register_full - add a platform-level device with
->   * resources and platform-specific data
-> @@ -841,6 +853,7 @@ struct platform_device *platform_device_register_full(
->  			goto err;
->  	}
->  
-> +	platform_set_dev_node(pdev);
->  	ret = platform_device_add(pdev);
->  	if (ret) {
->  err:
-> -- 
-> 2.20.1
-> 
+This patch set adds support for two features to get a finer control
+over the impact of Thermal Throttling on performance.
 
-Hi,
+ 1) Patch 1: Adds support to read Thermal fast Sampling Period (_TFP)
+    ACPI object and use it over "Thermal Sampling Period (_TSP)" for
+    Passive cooling if both are present.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+ 2) Patch 2: Adds support to reduce the CPUFREQ reduction percentage
+    and not always cause throttling in steps of "20%".
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+Both patches can be applied independently.
 
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
+---
+v1[1] -> v2:
+- Patch 1: add ACPI spec section info in commit description and rebased.
+- Patch 2: add info about hardware in the commit description.
+- Patch 2: switched CPUFREQ THERMAL tuning macros to static variables.
+- Patch 2: update the tunings for Tegra241 SoC only using soc_id check.
 
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documetnation/process/stable-kernel-rules.rst file for how to resolve
-  this.
+Jeff Brasen (1):
+  ACPI: thermal: Add Thermal fast Sampling Period (_TFP) support
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+Srikar Srimath Tirumala (1):
+  ACPI: processor: reduce CPUFREQ thermal reduction pctg for Tegra241
 
-thanks,
+ drivers/acpi/processor_thermal.c | 41 +++++++++++++++++++++++++++++---
+ drivers/acpi/thermal.c           | 25 ++++++++++---------
+ 2 files changed, 52 insertions(+), 14 deletions(-)
 
-greg k-h's patch email bot
+[1] https://lore.kernel.org/lkml/20230817093011.1378-1-sumitg@nvidia.com/
+
+-- 
+2.17.1
+
