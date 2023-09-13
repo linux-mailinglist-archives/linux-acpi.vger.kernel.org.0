@@ -2,131 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B606479E74B
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Sep 2023 13:55:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 996D779EC43
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Sep 2023 17:14:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240547AbjIMLzj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Sep 2023 07:55:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55138 "EHLO
+        id S240970AbjIMPOt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Sep 2023 11:14:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240559AbjIMLzh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Sep 2023 07:55:37 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FBFE19A8
-        for <linux-acpi@vger.kernel.org>; Wed, 13 Sep 2023 04:55:11 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-68fc9e0e22eso2491666b3a.1
-        for <linux-acpi@vger.kernel.org>; Wed, 13 Sep 2023 04:55:11 -0700 (PDT)
+        with ESMTP id S234323AbjIMPOs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Sep 2023 11:14:48 -0400
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D593B9
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Sep 2023 08:14:44 -0700 (PDT)
+Received: by mail-qk1-x72c.google.com with SMTP id af79cd13be357-76f18e09716so413216285a.2
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Sep 2023 08:14:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1694606110; x=1695210910; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pu3JgOqK1qHfFlEv9iaLw63FLkSFt2itvwieh3FO1vk=;
-        b=bZ/l5Kd+2SjBTtwKoIHzPttwSBBYggtRYHFIzzewJ6yM+ivLoGRA3O+4AAnLoLVqYi
-         OUtrCCPtFHaVn0bdlXMOSfwSXwDKHFM90P/hsY2dP9oDW30BUbt+bhX1kpQw2hJE433i
-         o+6HbmqD2I3ADPstgQRGHftMiptC3BNc5UOE9eTemDMAHVKTkgCXT+tTAkKZhHGpehmB
-         h2Ylh5ZvAryAmpA5pw4uKvYxW1ufkTfKA23sJfwYFOZxCMl46kdk5iNFvb5AtTE2cN+A
-         E4x4ati8q0M7Bm7qG/Mdkc3F1x0HZ8rgy1g3Dfg+lM4WpS2QZjxLUWG5EPLOxABNfJnv
-         2LVQ==
+        d=google.com; s=20230601; t=1694618084; x=1695222884; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CX2gyTfQT4O4RDgos1LqqzYheqSwS8qq7SfcfXDWthY=;
+        b=VAbWruNj0I6gD2PACRUbN/vCgUJw4er9jjJMcUIOo+2am+TxTWEvYoqDsAOe1p8GmZ
+         QS4FQacRGa2umWkJCrN7aMV3gmGWXOi1zpn7SnCZwIb663SA2iCXk8IhkhdIbVb/8Zvh
+         EtiQoEaYx3irY/X0IGxWG3S98/g/c67bO0kWjFr86nWbjjVvOst4p5f52yH0NF+Vwp8G
+         D1fH6YaBAF7Tesm3VIy9pThQWzbmVu5X9kcg50/l9NusOOheMG2MSG9jyQJlZ27gnXd4
+         CflCkA2fP9IKB7PcOC2xVQgPGOg+0XX8L0A3aN+3xYvCt/Ujtbg6JEnf7TK3E6Tb0akT
+         wchQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694606110; x=1695210910;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Pu3JgOqK1qHfFlEv9iaLw63FLkSFt2itvwieh3FO1vk=;
-        b=MsAjR6uoEorJQT0t5RIIKNcP2Vh209WSzHAP/CTyifUztnqaSq+2b//W8yyWkNbTdM
-         NvUGMTcEruQIRAqvdTJfhRsBQT50PhoiolUhIQISyKmMhUbdIA07IBnY2A/czuRhwIZZ
-         gprcZV392OIqWYECAxlUU+zZDOXMFn9IvSYIsHfWeDeVrvJjK/rnW1HnkVVJVb4dqdVH
-         Svw6ZwiLmy6/28LBYbX0oxpZPofBrtrnLdD0ZW/HG9PsCFi/EpMo9BfWekAjzCrWbI95
-         x/romLxDG/28OpbyKLDtYKtH/wDEycJCBMna5MZNSevAhmawHk5qQ63aeiDKcnOdcJVQ
-         YBVA==
-X-Gm-Message-State: AOJu0YzpEyfSf2DgZmY8JOiI42jNvZpAwySLZByvJNxlL7ZdpXeuGvlE
-        8M05UPkQ4FBrmv66RUg7HBxCNQ==
-X-Google-Smtp-Source: AGHT+IEa23NP5lIOAPDrGV3RoJboYf5AS5rs7k+0dzft6BSZdffsVotXwlj4ni6ad66boED4BOGMew==
-X-Received: by 2002:a05:6a00:1a10:b0:68c:b30:8fcc with SMTP id g16-20020a056a001a1000b0068c0b308fccmr2421901pfv.20.1694606110092;
-        Wed, 13 Sep 2023 04:55:10 -0700 (PDT)
-Received: from PF2LML5M-SMJ.bytedance.net ([220.243.131.6])
-        by smtp.gmail.com with ESMTPSA id w4-20020aa78584000000b006732786b5f1sm3790854pfn.213.2023.09.13.04.55.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Sep 2023 04:55:09 -0700 (PDT)
-From:   Jinhui Guo <guojinhui.liam@bytedance.com>
-To:     rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org
-Cc:     lizefan.x@bytedance.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Jinhui Guo" <guojinhui.liam@bytedance.com>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH v3] driver core: platform: set numa_node before platform_add_device()
-Date:   Wed, 13 Sep 2023 19:54:54 +0800
-Message-Id: <20230913115454.3073-1-guojinhui.liam@bytedance.com>
-X-Mailer: git-send-email 2.30.2
+        d=1e100.net; s=20230601; t=1694618084; x=1695222884;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CX2gyTfQT4O4RDgos1LqqzYheqSwS8qq7SfcfXDWthY=;
+        b=EZU7JL6Sf02arYKGoPD4/rh0Jh2EimSLDLbCbS67AKWtT772KTni+XZ0EwsC9pFXRN
+         3TgJ4vUGJdcquS+tjPy1I8IOK7F+5tB4SmWYbtgwHHcpCxKVOSGGqe/21kJgWzbjVZvb
+         RFt9hecWNT8SMgC//6XiIUxtsBx2saNb5vqKqFm82ncFBY+voVkridbROAGFtr8cBXQT
+         JNlsCgQklePgGihff9H3dZmX7DhgNU+a9VGKzGLyntrmCKqLzFqdGsoXmHWHYSGyNsIA
+         14PeezF5xZu6I63mWLQuRyq3TbgMMTXc+1J16wAtavDKd6gSwlLI2Ie92rdYwSbE2ctu
+         Uzgg==
+X-Gm-Message-State: AOJu0YwVyrmUSt6oIYp5cPvFXlo6/WuURVxox4kyo/zkSbXyju6rotYA
+        qt8NYVIOO8QZDIJmNHZYc0UiruRFuYZZjmdMdI+c2w==
+X-Google-Smtp-Source: AGHT+IFsHqst3GwQZXJXAQcIy0+TNzFpKqmlSpLT7CnI4HztrQDdjzD1iwqyMMSfkJZYvG7zAuG3Th7x0fuuA+nDYvc=
+X-Received: by 2002:a05:6214:519a:b0:64f:6c68:4463 with SMTP id
+ kl26-20020a056214519a00b0064f6c684463mr3491132qvb.11.1694618083633; Wed, 13
+ Sep 2023 08:14:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <202309131848.CgiiHpZu-lkp@intel.com> <20230913114631.2966-1-guojinhui.liam@bytedance.com>
+In-Reply-To: <20230913114631.2966-1-guojinhui.liam@bytedance.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 13 Sep 2023 08:14:28 -0700
+Message-ID: <CAKwvOdktDE4pG3n+Z=nKSyhDuR6U6OWOYWJ1r5R1w4ukwJYqXg@mail.gmail.com>
+Subject: Re: [PATCH] driver core: platform: set numa_node before platform_add_device()
+To:     Jinhui Guo <guojinhui.liam@bytedance.com>
+Cc:     lkp@intel.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        oe-kbuild-all@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
+On Wed, Sep 13, 2023 at 4:46=E2=80=AFAM Jinhui Guo <guojinhui.liam@bytedanc=
+e.com> wrote:
+>
+> > Hi guojinhui.liam,
+> >
+> > kernel test robot noticed the following build errors:
+> >
+> > [auto build test ERROR on linus/master]
+> > [also build test ERROR on v6.6-rc1 next-20230913]
+> > [If your patch is applied to the wrong git tree, kindly drop us a note.
+> > And when submitting patch, we suggest to use '--base' as documented in
+> > https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> >
+> > url:    https://github.com/intel-lab-lkp/linux/commits/guojinhui-liam/d=
+river-core-platform-set-numa_node-before-platform_add_device/20230912-15111=
+9
+> > base:   linus/master
+> > patch link:    https://lore.kernel.org/r/20230912070900.1862-1-guojinhu=
+i.liam%40bytedance.com
+> > patch subject: [PATCH] driver core: platform: set numa_node before plat=
+form_add_device()
+> > config: um-allyesconfig (https://download.01.org/0day-ci/archive/202309=
+13/202309131848.CgiiHpZu-lkp@intel.com/config)
+> > compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project.gi=
+t f28c006a5895fc0e329fe15fead81e37457cb1d1)
+> > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/arc=
+hive/20230913/202309131848.CgiiHpZu-lkp@intel.com/reproduce)
+> >
+> > If you fix the issue in a separate patch/commit (i.e. not just a new ve=
+rsion of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202309131848.CgiiHpZu-l=
+kp@intel.com/
+> > ...
+>
+> Is there anyone known how to stop this test for my first patch? I have se=
+nt a new one to review, which fixes the compile bug.
 
-platform_add_device creates numa_node attribute of sysfs according to
-whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
-of the device before creating numa_node attribute of sysfs.
+Then it's ok to either ignore the report, or do as you did and say "I
+sent a V+1." Doesn't hurt to have a link to the next revision on lore
+if you are to reply.
 
-Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
----
- drivers/acpi/acpi_platform.c |  4 +---
- drivers/base/platform.c      | 13 +++++++++++++
- 2 files changed, 14 insertions(+), 3 deletions(-)
+kbuild test robot will test each patch sent to LKML; it might not stop
+ongoing tests if a V+1 is sent.
 
-diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-index 48d15dd785f6..adcbfbdc343f 100644
---- a/drivers/acpi/acpi_platform.c
-+++ b/drivers/acpi/acpi_platform.c
-@@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
- 	if (IS_ERR(pdev))
- 		dev_err(&adev->dev, "platform device creation failed: %ld\n",
- 			PTR_ERR(pdev));
--	else {
--		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-+	else
- 		dev_dbg(&adev->dev, "created platform device %s\n",
- 			dev_name(&pdev->dev));
--	}
- 
- 	kfree(resources);
- 
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 76bfcba25003..206dc7b020cd 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -795,6 +795,18 @@ void platform_device_unregister(struct platform_device *pdev)
- }
- EXPORT_SYMBOL_GPL(platform_device_unregister);
- 
-+#ifdef CONFIG_ACPI
-+static inline void platform_set_dev_node(struct platform_device *pdev)
-+{
-+	struct acpi_device *adev = to_acpi_device_node(pdev->dev.fwnode);
-+
-+	if (adev && adev->handle)
-+		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-+}
-+#else
-+static inline void platform_set_dev_node(struct platform_device *pdev) {}
-+#endif
-+
- /**
-  * platform_device_register_full - add a platform-level device with
-  * resources and platform-specific data
-@@ -841,6 +853,7 @@ struct platform_device *platform_device_register_full(
- 			goto err;
- 	}
- 
-+	platform_set_dev_node(pdev);
- 	ret = platform_device_add(pdev);
- 	if (ret) {
- err:
--- 
-2.20.1
+>
+> thanks,
+>
+> Jinhui Guo
+>
 
+
+--=20
+Thanks,
+~Nick Desaulniers
