@@ -2,233 +2,178 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB29979E54F
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Sep 2023 12:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05C9779E67A
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Sep 2023 13:20:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239741AbjIMKwa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Sep 2023 06:52:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48416 "EHLO
+        id S239937AbjIMLUy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Sep 2023 07:20:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239771AbjIMKwa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Sep 2023 06:52:30 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AE9419AF;
-        Wed, 13 Sep 2023 03:52:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694602346; x=1726138346;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uIXZmLagWKHpKAxrnpcZV9CNBqds5leMt0sK3E0/sCc=;
-  b=b3UIbLKk3LKG2bCFPqbfU3zUxGGKZ0BkoTl91ZMC1NJ1g6PjeetZxuHR
-   bGQ4IO53sb/M7ZHutm/zInIshmV1LaVD5ltZSeQT8Fyti48bF+NZlVonZ
-   3E11+QksACaPtyXSsMOJbe1yF0JY/ZUFvsYleTtgPHI9M9FU736ALfivv
-   puf3pStxlKgn/xy2IjldY/e/+V7X0ewuuzRqBdaIrFJAi8ee3yUBUXBcC
-   Xf/g8JOTvpX3qKlRBXHF44bQmDpYyq0837THTKwdvrBaDZzU69G5KrgyK
-   M/Q0YQnLacyD9frBEMfMfSEhSx+BElTt71bOmth2TfEV0pfUL5ETb5w4x
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="377538670"
-X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
-   d="scan'208";a="377538670"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 03:52:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="809636480"
-X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
-   d="scan'208";a="809636480"
-Received: from lkp-server02.sh.intel.com (HELO cf13c67269a2) ([10.239.97.151])
-  by fmsmga008.fm.intel.com with ESMTP; 13 Sep 2023 03:52:22 -0700
-Received: from kbuild by cf13c67269a2 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qgNTo-0000Px-2m;
-        Wed, 13 Sep 2023 10:52:20 +0000
-Date:   Wed, 13 Sep 2023 18:52:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "guojinhui.liam" <guojinhui.liam@bytedance.com>, rafael@kernel.org,
-        lenb@kernel.org, gregkh@linuxfoundation.org
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        lizefan.x@bytedance.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "guojinhui.liam" <guojinhui.liam@bytedance.com>
-Subject: Re: [PATCH] driver core: platform: set numa_node before
- platform_add_device()
-Message-ID: <202309131848.CgiiHpZu-lkp@intel.com>
-References: <20230912070900.1862-1-guojinhui.liam@bytedance.com>
+        with ESMTP id S239921AbjIMLUy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Sep 2023 07:20:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 101971BFE
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Sep 2023 04:20:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694604004;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=tjOymgKqDRYNzY2Dtis0EaBZIJIkiSL7Ryl5retnI0g=;
+        b=gnydJCv66v10GSvey5qsRFak8YZmtXGmCRyTsOFDAd+LFvPZeHfv39V+3FIiTWzor7VWIZ
+        EQDuSGLbgYQOMh9hc1H4oFkTbVtHB013V06PDeBmkmtZroMWyg4qe9qjylaw34EeTLPvMp
+        4Xek6bqXyJ0zLXm8/mvFN9QV4ln+gxo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-690-xTN9z2B_NEu7qSKlcbrDpw-1; Wed, 13 Sep 2023 07:20:00 -0400
+X-MC-Unique: xTN9z2B_NEu7qSKlcbrDpw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8D81C811738;
+        Wed, 13 Sep 2023 11:20:00 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.194.191])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 043152026D4B;
+        Wed, 13 Sep 2023 11:19:59 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org
+Subject: [PATCH 1/2] ACPI: resource: Consolidate IRQ trigger-type override DMI tables
+Date:   Wed, 13 Sep 2023 13:19:50 +0200
+Message-ID: <20230913111951.30414-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230912070900.1862-1-guojinhui.liam@bytedance.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi guojinhui.liam,
+Before this patch there were 6 dmi_system_id tables. While looking at
+the override_table[] there are only 2 cases:
+1. irq 1, level, active-low, not-shared, skip-override
+2. irq 1, edge, activ-low, shared, force-override
 
-kernel test robot noticed the following build errors:
+Merge the dmi_system_id tables for identical cases together,
+going from 6 dmi_system_id tables and 6 override_table[] entries
+to just 2, one for each case.
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.6-rc1 next-20230913]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+Note this applies on top of my recent quirk submission for
+the ASUS ExpertBook B1402CBA:
+https://lore.kernel.org/linux-acpi/20230912100827.303590-1-hdegoede@redhat.com/
+---
+ drivers/acpi/resource.c | 52 +++++++++++++++++------------------------
+ 1 file changed, 21 insertions(+), 31 deletions(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/guojinhui-liam/driver-core-platform-set-numa_node-before-platform_add_device/20230912-151119
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20230912070900.1862-1-guojinhui.liam%40bytedance.com
-patch subject: [PATCH] driver core: platform: set numa_node before platform_add_device()
-config: um-allyesconfig (https://download.01.org/0day-ci/archive/20230913/202309131848.CgiiHpZu-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project.git f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230913/202309131848.CgiiHpZu-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309131848.CgiiHpZu-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from drivers/base/platform.c:15:
-   In file included from include/linux/of_irq.h:7:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/um/include/asm/io.h:24:
-   include/asm-generic/io.h:547:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __raw_readb(PCI_IOBASE + addr);
-                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:560:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-                                                           ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
-   #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
-                                                     ^
-   In file included from drivers/base/platform.c:15:
-   In file included from include/linux/of_irq.h:7:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/um/include/asm/io.h:24:
-   include/asm-generic/io.h:573:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-                                                           ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
-   #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
-                                                     ^
-   In file included from drivers/base/platform.c:15:
-   In file included from include/linux/of_irq.h:7:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/um/include/asm/io.h:24:
-   include/asm-generic/io.h:584:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           __raw_writeb(value, PCI_IOBASE + addr);
-                               ~~~~~~~~~~ ^
-   include/asm-generic/io.h:594:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-                                                         ~~~~~~~~~~ ^
-   include/asm-generic/io.h:604:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-                                                         ~~~~~~~~~~ ^
-   include/asm-generic/io.h:692:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           readsb(PCI_IOBASE + addr, buffer, count);
-                  ~~~~~~~~~~ ^
-   include/asm-generic/io.h:700:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           readsw(PCI_IOBASE + addr, buffer, count);
-                  ~~~~~~~~~~ ^
-   include/asm-generic/io.h:708:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           readsl(PCI_IOBASE + addr, buffer, count);
-                  ~~~~~~~~~~ ^
-   include/asm-generic/io.h:717:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           writesb(PCI_IOBASE + addr, buffer, count);
-                   ~~~~~~~~~~ ^
-   include/asm-generic/io.h:726:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           writesw(PCI_IOBASE + addr, buffer, count);
-                   ~~~~~~~~~~ ^
-   include/asm-generic/io.h:735:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           writesl(PCI_IOBASE + addr, buffer, count);
-                   ~~~~~~~~~~ ^
->> drivers/base/platform.c:846:28: error: implicit declaration of function 'acpi_get_node' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                   set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-                                            ^
-   drivers/base/platform.c:846:28: note: did you mean 'acpi_get_name'?
-   include/acpi/acpixf.h:525:9: note: 'acpi_get_name' declared here
-                                acpi_get_name(acpi_handle object, u32 name_type,
-                                ^
-   include/acpi/platform/aclinux.h:93:21: note: expanded from macro 'ACPI_EXTERNAL_RETURN_STATUS'
-           static ACPI_INLINE prototype {return(AE_NOT_CONFIGURED);}
-                              ^
-   drivers/base/platform.c:846:46: error: incomplete definition of type 'struct acpi_device'
-                   set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-                                                          ~~~~^
-   include/linux/acpi.h:788:8: note: forward declaration of 'struct acpi_device'
-   struct acpi_device;
-          ^
-   12 warnings and 2 errors generated.
-
-
-vim +/acpi_get_node +846 drivers/base/platform.c
-
-   797	
-   798	/**
-   799	 * platform_device_register_full - add a platform-level device with
-   800	 * resources and platform-specific data
-   801	 *
-   802	 * @pdevinfo: data used to create device
-   803	 *
-   804	 * Returns &struct platform_device pointer on success, or ERR_PTR() on error.
-   805	 */
-   806	struct platform_device *platform_device_register_full(
-   807			const struct platform_device_info *pdevinfo)
-   808	{
-   809		int ret;
-   810		struct platform_device *pdev;
-   811		struct acpi_device *adev = to_acpi_device_node(pdevinfo->fwnode);
-   812	
-   813		pdev = platform_device_alloc(pdevinfo->name, pdevinfo->id);
-   814		if (!pdev)
-   815			return ERR_PTR(-ENOMEM);
-   816	
-   817		pdev->dev.parent = pdevinfo->parent;
-   818		pdev->dev.fwnode = pdevinfo->fwnode;
-   819		pdev->dev.of_node = of_node_get(to_of_node(pdev->dev.fwnode));
-   820		pdev->dev.of_node_reused = pdevinfo->of_node_reused;
-   821	
-   822		if (pdevinfo->dma_mask) {
-   823			pdev->platform_dma_mask = pdevinfo->dma_mask;
-   824			pdev->dev.dma_mask = &pdev->platform_dma_mask;
-   825			pdev->dev.coherent_dma_mask = pdevinfo->dma_mask;
-   826		}
-   827	
-   828		ret = platform_device_add_resources(pdev,
-   829				pdevinfo->res, pdevinfo->num_res);
-   830		if (ret)
-   831			goto err;
-   832	
-   833		ret = platform_device_add_data(pdev,
-   834				pdevinfo->data, pdevinfo->size_data);
-   835		if (ret)
-   836			goto err;
-   837	
-   838		if (pdevinfo->properties) {
-   839			ret = device_create_managed_software_node(&pdev->dev,
-   840								  pdevinfo->properties, NULL);
-   841			if (ret)
-   842				goto err;
-   843		}
-   844	
-   845		if (adev)
- > 846			set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-   847	
-   848		ret = platform_device_add(pdev);
-   849		if (ret) {
-   850	err:
-   851			ACPI_COMPANION_SET(&pdev->dev, NULL);
-   852			platform_device_put(pdev);
-   853			return ERR_PTR(ret);
-   854		}
-   855	
-   856		return pdev;
-   857	}
-   858	EXPORT_SYMBOL_GPL(platform_device_register_full);
-   859	
-
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 8116b55b6c98..c6bb28db8f30 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -385,7 +385,12 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
+ }
+ EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
+ 
+-static const struct dmi_system_id medion_laptop[] = {
++/*
++ * DMI matches for boards where the DSDT specifies the kbd IRQ as
++ * level active-low and using the override changes this to rising edge,
++ * stopping the keyboard from working.
++ */
++static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 	{
+ 		.ident = "MEDION P15651",
+ 		.matches = {
+@@ -407,10 +412,6 @@ static const struct dmi_system_id medion_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "M1xA"),
+ 		},
+ 	},
+-	{ }
+-};
+-
+-static const struct dmi_system_id asus_laptop[] = {
+ 	{
+ 		.ident = "Asus Vivobook K3402ZA",
+ 		.matches = {
+@@ -474,20 +475,28 @@ static const struct dmi_system_id asus_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
+ 		},
+ 	},
++	{
++		.ident = "LG Electronics 17U70P",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
++			DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
++		},
++	},
+ 	{ }
+ };
+ 
+-static const struct dmi_system_id tongfang_gm_rg[] = {
++/*
++ * DMI matches for AMD Zen boards where the DSDT specifies the kbd IRQ
++ * as falling edge and this must be overridden to rising edge,
++ * to have a working keyboard.
++ */
++static const struct dmi_system_id irq1_edge_low_force_override[] = {
+ 	{
+ 		.ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
+ 		},
+ 	},
+-	{ }
+-};
+-
+-static const struct dmi_system_id maingear_laptop[] = {
+ 	{
+ 		.ident = "MAINGEAR Vector Pro 2 15",
+ 		.matches = {
+@@ -502,10 +511,6 @@ static const struct dmi_system_id maingear_laptop[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-17A3070T"),
+ 		},
+ 	},
+-	{ }
+-};
+-
+-static const struct dmi_system_id pcspecialist_laptop[] = {
+ 	{
+ 		.ident = "PCSpecialist Elimina Pro 16 M",
+ 		/*
+@@ -520,17 +525,6 @@ static const struct dmi_system_id pcspecialist_laptop[] = {
+ 	{ }
+ };
+ 
+-static const struct dmi_system_id lg_laptop[] = {
+-	{
+-		.ident = "LG Electronics 17U70P",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
+-			DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
+-		},
+-	},
+-	{ }
+-};
+-
+ struct irq_override_cmp {
+ 	const struct dmi_system_id *system;
+ 	unsigned char irq;
+@@ -541,12 +535,8 @@ struct irq_override_cmp {
+ };
+ 
+ static const struct irq_override_cmp override_table[] = {
+-	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+-	{ asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+-	{ tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+-	{ maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+-	{ pcspecialist_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+-	{ lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
++	{ irq1_level_low_skip_override, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
++	{ irq1_edge_low_force_override, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+ };
+ 
+ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.41.0
+
