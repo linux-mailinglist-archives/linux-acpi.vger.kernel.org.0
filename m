@@ -2,207 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2B1A79DD3C
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Sep 2023 02:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D92D79DD9D
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Sep 2023 03:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229890AbjIMArK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Sep 2023 20:47:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49566 "EHLO
+        id S230113AbjIMBek (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Sep 2023 21:34:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237971AbjIMArJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 20:47:09 -0400
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2077.outbound.protection.outlook.com [40.107.102.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0E3D1713
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Sep 2023 17:47:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=i8NQgdhgZ12cYPbYgQf6QHIEe2A2W2JdbPDcmE8zW8GYcYiOh+MMi83HTl/QMlMclbrL+E+I0Tm859Ew6gsrQiDfLbiHSoteJsB0exhj2bkWvYyZHZoXZ/ihny8mpKQAzQ2OwT0ab6YIAnKJd1fVzqcz1o5SDrwrJ4iJV+C/hlGHR10A+KstBsubJQsWG5mUR0GHC+xX58iwaLq4uhG36yHMZBa7p9rQEcgVeOVjvrQghyw8qDWBOmZINTBcZU/vYEMiiC9vRAliSZEKVSpczt3a+gSZ/LxpV1RuMvRHRqDw5Tomsh2/uubnV0fTG7p+05NtXSKvR23Yqgfb0UEB0Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Tt7NGH2ctl67zo0Wo42vZhZkC+0TzGKgSUt6stiHsgk=;
- b=c1Z7+HAD8xxbRaxTNquZnts7+QxMFmCaV50PfxHBrxGIrVIl6jVRH6lzW0dPEisN4SIW/Lxwp2qNK51oPCi+Gb4BnrzUo/fIt2aywwm8yHBOv0b46UxkX+9eY2dLeU8bJz83enIW4OsxZeuDTs5f9mwoAAZu5cFtqFUfejuzgQ35P8zEOHnYGTWtHyt74bn0o6qDkE5vjqoX8YYDJkyXchlOid/PjSbpE/5bCYAwQkBuXanJ6GuLYF92UW5rmYVBNHcpbigrc2C7oh4g7GGXV+P6vdFE2UNWmC7bi+E/ilky440pldfKJ4FynT2CFbKGgwLcdNHb4NCLxpiQdYLD1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Tt7NGH2ctl67zo0Wo42vZhZkC+0TzGKgSUt6stiHsgk=;
- b=vP/teKHzFKepyB/4svIEoevFGXR070JAVl8NRlSmm/ZgnVJAjZFmlENj5wQBmI17O970W92QYGW2wS3k5ex0FMyJoxOFJStWxuH8kyHwn0vi2kXMrmZuHKAXyDqTWmI35DdRK426DqnOuvYtmWy5NdMDhBzyKUVufF/kKhlusOw=
-Received: from DM6PR13CA0051.namprd13.prod.outlook.com (2603:10b6:5:134::28)
- by MW4PR12MB7481.namprd12.prod.outlook.com (2603:10b6:303:212::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.37; Wed, 13 Sep
- 2023 00:47:03 +0000
-Received: from DS3PEPF000099D4.namprd04.prod.outlook.com
- (2603:10b6:5:134:cafe::36) by DM6PR13CA0051.outlook.office365.com
- (2603:10b6:5:134::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.17 via Frontend
- Transport; Wed, 13 Sep 2023 00:47:03 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS3PEPF000099D4.mail.protection.outlook.com (10.167.17.5) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6792.17 via Frontend Transport; Wed, 13 Sep 2023 00:47:02 +0000
-Received: from nv14-test.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 12 Sep
- 2023 19:47:00 -0500
-From:   Ken Xue <Ken.Xue@amd.com>
-To:     <andriy.shevchenko@linux.intel.com>, <linux-acpi@vger.kernel.org>
-CC:     <rafael@kernel.org>, <cwhuang@linux.org.tw>,
-        Ken Xue <Ken.Xue@amd.com>
-Subject: [PATCH V4] acpi: trigger wakeup key event from power button
-Date:   Wed, 13 Sep 2023 08:21:46 +0800
-Message-ID: <20230913002145.743571-1-Ken.Xue@amd.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S231414AbjIMBej (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Sep 2023 21:34:39 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D929D10FE;
+        Tue, 12 Sep 2023 18:34:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694568875; x=1726104875;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BWOxUPW3HtPNFgEFOHoQhbd+ni/5DnSj2ZCuh3rTtAc=;
+  b=gc2/i1+a6Ggyong+Hyi3NBuVgxJoss5mBmJyoxlsxTOHqcqxLK3JD2mU
+   zdNdExS27EO+uNynKx9dGD8/peBB1E/YQQ9k8QCLIjqAod3+qrvdUV4SW
+   7cxnD6vzBjcnpDtBePMb2wt+sbOf71KF2Lvku4OFEHVPUjBIDvfo60HtE
+   xgeG84dvIf0RYnGzD5tdMJIpW1/2Lz2yrbNdvHAOtGAG62F8N3Lf+s0BY
+   Kj2+CnC+7cMbHI2tTpdTVEl9AV9nGa8FS3bTzOA0pUkilRjV4wGfFYUBA
+   ukaN5PTrx19/KFX4a+3roCuq0vWMo0sshLhUeCW5oBY/C2hTlrsu3R/aL
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="375868416"
+X-IronPort-AV: E=Sophos;i="6.02,141,1688454000"; 
+   d="scan'208";a="375868416"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 18:34:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="867581317"
+X-IronPort-AV: E=Sophos;i="6.02,141,1688454000"; 
+   d="scan'208";a="867581317"
+Received: from lkp-server02.sh.intel.com (HELO 47e905db7d2b) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 12 Sep 2023 18:34:29 -0700
+Received: from kbuild by 47e905db7d2b with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qgElv-0000Zb-2H;
+        Wed, 13 Sep 2023 01:34:27 +0000
+Date:   Wed, 13 Sep 2023 09:34:19 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Meng Li <li.meng@amd.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Huang Rui <ray.huang@amd.com>
+Cc:     oe-kbuild-all@lists.linux.dev, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-acpi@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kselftest@vger.kernel.org,
+        Nathan Fontenot <nathan.fontenot@amd.com>,
+        Deepak Sharma <deepak.sharma@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Shimmer Huang <shimmer.huang@amd.com>,
+        Perry Yuan <Perry.Yuan@amd.com>,
+        Xiaojian Du <Xiaojian.Du@amd.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Borislav Petkov <bp@alien8.de>, Meng Li <li.meng@amd.com>
+Subject: Re: [PATCH V6 1/7] x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for
+ the expansion.
+Message-ID: <202309130938.dmI2pWUB-lkp@intel.com>
+References: <20230908074653.2799055-2-li.meng@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099D4:EE_|MW4PR12MB7481:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7978f10d-23c0-4cec-8fee-08dbb3f2f1fe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 26QUPZ+Mz+aP8eQ9F2OKBW8N5AqMsZ1av7fnQMWRF1bbQivQq8kVxp+EhdBdAuWsNrw4OdSMLwkXNGRFE0ZDQ8qQ2yKu6r625IpsN71bXp/Q5UiS3uekWXwtzY1gcccwSSOgPiXSHDNrkLQ5XsrSuk+Nc5Qz/wAU6OnEdwgYqH1hzGqn/5rBbetYnsXXOkhNDNg4WZvHPTA3Rh6Gh8gAqahV21OHbGXpQwfvdKfrZLcr79BirduraRNNNRqGjE+eEDWZJm5b6AfzeofsGLOcWpVmmxHlgphILKYg8wZ5x+Fb7zZcZn7SnBTPH78hXWatECEJ+2SoLS3FyEpVqULcvzHLIS4ezPtzKqnFpae0ZMjbiBdoRC3365k+1aCfKcPYxURZU9YnvjKjnhP9H6dOHekP6VeQmmP1VkhQMrkRZEkL3ZIYHr7u8lB1SQgnhNYNEsNVQ6PoUkmzgKruQjk6mYcjIjNt+VgGU843bv41S7n0kfApA0Ji/42gQHkuc7JO2bVS+ajtWK2/OljBWgo4vNR7NdOtZAIF5ALVGFz2FV2qiKk/Cn7dv8p+/A5VfTufMVFli7zqPSwiuX0x9ecVL/JB75MDxw7mDGIwtQqOCOPgxY67/YrcKydOrh/sLfD+iN7hw75diU+To2HmOrNCLQARbSycPEN9nhI0bjOd5+wYHz5fCGAuJ5CMLdsYQAHkRWl5hNTG7B1WIt00MXcu/4LsHoFzrXC9oylgl9HhO/YNKzST/Z2dVMm5zG2o+9I4JktEpJS3goHHKAcDIRpUkPIp83jouygAL1ntloFsEO8rv6G5aFzPl4lC5d/reLHG
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(136003)(396003)(39860400002)(346002)(451199024)(82310400011)(1800799009)(186009)(46966006)(36840700001)(40470700004)(86362001)(36756003)(40480700001)(40460700003)(478600001)(82740400003)(81166007)(356005)(1076003)(70586007)(2616005)(36860700001)(336012)(2906002)(47076005)(426003)(83380400001)(26005)(16526019)(70206006)(41300700001)(6666004)(5660300002)(7696005)(54906003)(8936002)(110136005)(316002)(8676002)(4326008)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2023 00:47:02.5725
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7978f10d-23c0-4cec-8fee-08dbb3f2f1fe
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099D4.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7481
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230908074653.2799055-2-li.meng@amd.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Andorid can wakeup from various wakeup sources, but only several wakeup
-sources can wake up screen with right events(POWER, WAKEUP) from input
-device.
+Hi Meng,
 
-Regarding pressing acpi power button, it can resume system and
-ACPI_BITMASK_WAKE_STATUS and ACPI_BITMASK_POWER_BUTTON_STATUS are set in
-pm1a_sts, but kernel does not report any key event to user space during
-resuming by default.
+kernel test robot noticed the following build errors:
 
-So, send wakeup key event to user space during resuming from power button.
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on tip/x86/core linus/master v6.6-rc1 next-20230912]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Signed-off-by: Ken Xue <Ken.Xue@amd.com>
+url:    https://github.com/intel-lab-lkp/linux/commits/Meng-Li/x86-Drop-CPU_SUP_INTEL-from-SCHED_MC_PRIO-for-the-expansion/20230908-154939
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20230908074653.2799055-2-li.meng%40amd.com
+patch subject: [PATCH V6 1/7] x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for the expansion.
+config: i386-buildonly-randconfig-004-20230913 (https://download.01.org/0day-ci/archive/20230913/202309130938.dmI2pWUB-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230913/202309130938.dmI2pWUB-lkp@intel.com/reproduce)
 
----
-V1->V2: fix some compile warning/error caused by lack of
-        "struct acpi_device" declaration by including acpi.h.
-V2->V3: use "forward declaration" to fix compile warning/error.
-V3->V4: refine coding style and commit message
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202309130938.dmI2pWUB-lkp@intel.com/
 
- drivers/acpi/button.c | 17 +++++++++++++++++
- drivers/acpi/sleep.c  |  5 +++++
- include/acpi/button.h |  4 ++++
- 3 files changed, 26 insertions(+)
+All errors (new ones prefixed by >>):
 
-diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-index 1e76a64cce0a..3baddecd66c6 100644
---- a/drivers/acpi/button.c
-+++ b/drivers/acpi/button.c
-@@ -363,6 +363,22 @@ static int acpi_button_remove_fs(struct acpi_device *device)
- 	return 0;
- }
- 
-+void acpi_power_button_wakeup(struct acpi_device *dev)
-+{
-+	struct acpi_button *button = acpi_driver_data(dev);
-+	struct input_dev *input;
-+
-+	if (button->type != ACPI_BUTTON_TYPE_POWER)
-+		return;
-+
-+	input = button->input;
-+	input_report_key(input, KEY_WAKEUP, 1);
-+	input_sync(input);
-+	input_report_key(input, KEY_WAKEUP, 0);
-+	input_sync(input);
-+}
-+EXPORT_SYMBOL(acpi_power_button_wakeup);
-+
- /* Driver Interface */
- int acpi_lid_open(void)
- {
-@@ -579,6 +595,7 @@ static int acpi_button_add(struct acpi_device *device)
- 	switch (button->type) {
- 	case ACPI_BUTTON_TYPE_POWER:
- 		input_set_capability(input, EV_KEY, KEY_POWER);
-+		input_set_capability(input, EV_KEY, KEY_WAKEUP);
- 		break;
- 
- 	case ACPI_BUTTON_TYPE_SLEEP:
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index 808484d11209..f816606abd71 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -20,9 +20,13 @@
- #include <linux/acpi.h>
- #include <linux/module.h>
- #include <linux/syscore_ops.h>
-+
- #include <asm/io.h>
-+
- #include <trace/events/power.h>
- 
-+#include <acpi/button.h>
-+
- #include "internal.h"
- #include "sleep.h"
- 
-@@ -507,6 +511,7 @@ static void acpi_pm_finish(void)
- 	pwr_btn_adev = acpi_dev_get_first_match_dev(ACPI_BUTTON_HID_POWERF,
- 						    NULL, -1);
- 	if (pwr_btn_adev) {
-+		acpi_power_button_wakeup(pwr_btn_adev);
- 		pm_wakeup_event(&pwr_btn_adev->dev, 0);
- 		acpi_dev_put(pwr_btn_adev);
- 	}
-diff --git a/include/acpi/button.h b/include/acpi/button.h
-index af2fce5d2ee3..6126d665aa42 100644
---- a/include/acpi/button.h
-+++ b/include/acpi/button.h
-@@ -2,17 +2,21 @@
- #ifndef ACPI_BUTTON_H
- #define ACPI_BUTTON_H
- 
-+struct acpi_device;
-+
- #define ACPI_BUTTON_HID_POWER	"PNP0C0C"
- #define ACPI_BUTTON_HID_LID	"PNP0C0D"
- #define ACPI_BUTTON_HID_SLEEP	"PNP0C0E"
- 
- #if IS_ENABLED(CONFIG_ACPI_BUTTON)
- extern int acpi_lid_open(void);
-+extern void acpi_power_button_wakeup(struct acpi_device *dev);
- #else
- static inline int acpi_lid_open(void)
- {
- 	return 1;
- }
-+static inline void acpi_power_button_wakeup(struct acpi_device *dev) {}
- #endif /* IS_ENABLED(CONFIG_ACPI_BUTTON) */
- 
- #endif /* ACPI_BUTTON_H */
+   In file included from drivers/cpufreq/amd-pstate.c:41:
+>> include/acpi/processor.h:226:9: error: unknown type name 'phys_cpuid_t'
+     226 |         phys_cpuid_t phys_id;   /* CPU hardware ID such as APIC ID for x86 */
+         |         ^~~~~~~~~~~~
+   include/acpi/processor.h:355:1: error: unknown type name 'phys_cpuid_t'
+     355 | phys_cpuid_t acpi_get_phys_id(acpi_handle, int type, u32 acpi_id);
+         | ^~~~~~~~~~~~
+   include/acpi/processor.h:356:1: error: unknown type name 'phys_cpuid_t'
+     356 | phys_cpuid_t acpi_map_madt_entry(u32 acpi_id);
+         | ^~~~~~~~~~~~
+   include/acpi/processor.h:357:20: error: unknown type name 'phys_cpuid_t'
+     357 | int acpi_map_cpuid(phys_cpuid_t phys_id, u32 acpi_id);
+         |                    ^~~~~~~~~~~~
+   drivers/cpufreq/amd-pstate.c: In function 'amd_pstate_acpi_pm_profile_server':
+   drivers/cpufreq/amd-pstate.c:1076:17: error: 'acpi_gbl_FADT' undeclared (first use in this function); did you mean 'acpi_table_fadt'?
+    1076 |         switch (acpi_gbl_FADT.preferred_profile) {
+         |                 ^~~~~~~~~~~~~
+         |                 acpi_table_fadt
+   drivers/cpufreq/amd-pstate.c:1076:17: note: each undeclared identifier is reported only once for each function it appears in
+   drivers/cpufreq/amd-pstate.c: In function 'amd_pstate_acpi_pm_profile_undefined':
+   drivers/cpufreq/amd-pstate.c:1087:13: error: 'acpi_gbl_FADT' undeclared (first use in this function); did you mean 'acpi_table_fadt'?
+    1087 |         if (acpi_gbl_FADT.preferred_profile == PM_UNSPECIFIED)
+         |             ^~~~~~~~~~~~~
+         |             acpi_table_fadt
 
-base-commit: b483d3b8a54a544ab8854ca6dbb8d99c423b3ba4
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for X86_AMD_PSTATE
+   Depends on [n]: CPU_FREQ [=y] && X86 [=y] && ACPI [=n]
+   Selected by [y]:
+   - SCHED_MC_PRIO [=y] && SCHED_MC [=y] && CPU_SUP_AMD [=y]
+   WARNING: unmet direct dependencies detected for VIDEO_OV7640
+   Depends on [n]: MEDIA_SUPPORT [=y] && VIDEO_DEV [=y] && VIDEO_CAMERA_SENSOR [=n]
+   Selected by [y]:
+   - VIDEO_GO7007 [=y] && MEDIA_SUPPORT [=y] && MEDIA_USB_SUPPORT [=y] && MEDIA_ANALOG_TV_SUPPORT [=y] && VIDEO_DEV [=y] && I2C [=y] && SND [=y] && USB [=y] && MEDIA_SUBDRV_AUTOSELECT [=y] && MEDIA_CAMERA_SUPPORT [=y]
+
+
+vim +/phys_cpuid_t +226 include/acpi/processor.h
+
+^1da177e4c3f41 Linus Torvalds    2005-04-16  222  
+^1da177e4c3f41 Linus Torvalds    2005-04-16  223  struct acpi_processor {
+^1da177e4c3f41 Linus Torvalds    2005-04-16  224  	acpi_handle handle;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  225  	u32 acpi_id;
+828aef376d7a12 Catalin Marinas   2015-03-24 @226  	phys_cpuid_t phys_id;	/* CPU hardware ID such as APIC ID for x86 */
+af8f3f514d193e Hanjun Guo        2015-01-04  227  	u32 id;		/* CPU logical ID allocated by OS */
+^1da177e4c3f41 Linus Torvalds    2005-04-16  228  	u32 pblk;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  229  	int performance_platform_limit;
+01854e697a77a4 Luming Yu         2007-05-26  230  	int throttling_platform_limit;
+ff55a9cebab024 Len Brown         2007-06-02  231  	/* 0 - states 0..n-th state available */
+01854e697a77a4 Luming Yu         2007-05-26  232  
+^1da177e4c3f41 Linus Torvalds    2005-04-16  233  	struct acpi_processor_flags flags;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  234  	struct acpi_processor_power power;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  235  	struct acpi_processor_performance *performance;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  236  	struct acpi_processor_throttling throttling;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  237  	struct acpi_processor_limit limit;
+d9460fd227ed2c Zhang Rui         2008-01-17  238  	struct thermal_cooling_device *cdev;
+ac212b6980d8d5 Rafael J. Wysocki 2013-05-03  239  	struct device *dev; /* Processor device. */
+3000ce3c52f8b8 Rafael J. Wysocki 2019-10-16  240  	struct freq_qos_request perflib_req;
+3000ce3c52f8b8 Rafael J. Wysocki 2019-10-16  241  	struct freq_qos_request thermal_req;
+^1da177e4c3f41 Linus Torvalds    2005-04-16  242  };
+^1da177e4c3f41 Linus Torvalds    2005-04-16  243  
+
 -- 
-2.35.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
