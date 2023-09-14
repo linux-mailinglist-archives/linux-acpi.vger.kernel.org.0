@@ -2,119 +2,228 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CA9D7A0799
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 16:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1237D7A07B2
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 16:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240284AbjINOnL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Sep 2023 10:43:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47002 "EHLO
+        id S240293AbjINOrs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Sep 2023 10:47:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240159AbjINOnK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 10:43:10 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 665241BF0;
-        Thu, 14 Sep 2023 07:43:06 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rmg5b623lz6K5pK;
-        Thu, 14 Sep 2023 22:42:27 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 14 Sep
- 2023 15:43:03 +0100
-Date:   Thu, 14 Sep 2023 15:43:02 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     James Morse <james.morse@arm.com>
-CC:     <linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
-        <linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-riscv@lists.infradead.org>, <kvmarm@lists.linux.dev>,
-        <x86@kernel.org>, Salil Mehta <salil.mehta@huawei.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        <jianyong.wu@arm.com>, <justin.he@arm.com>
-Subject: Re: [RFC PATCH v2 26/35] arm64: acpi: Move get_cpu_for_acpi_id() to
- a header
-Message-ID: <20230914154302.00001c11@Huawei.com>
-In-Reply-To: <20230913163823.7880-27-james.morse@arm.com>
-References: <20230913163823.7880-1-james.morse@arm.com>
-        <20230913163823.7880-27-james.morse@arm.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S234000AbjINOrr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 10:47:47 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD4D71BFC;
+        Thu, 14 Sep 2023 07:47:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+        Content-Transfer-Encoding:MIME-Version:Subject:Cc:From:To:Reply-To:Content-ID
+        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+        Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=k/kzubGMoF55SY8q/NSTULYXd8nOQVDVaZO5jElyano=; b=dBVhc8oknmbKL8K6SMVUV7f8Iq
+        x/L3g6I+OXnEQzlek24sVI6zZt3F1Mp//EWFJENAl5DLknigcxE+wIFrBH4QtwaBOvy4kQzw86szc
+        bspe08fwfuPk4ezDVX49czJQqmZKnI4d5Yq+j9k/dhj0JlOzL+9CTy9JBMIRs7JlxeOkzQNBHi8iX
+        iIHg/PccSEOhvYpUzMo5EHC0DHTh1fWWX4N3HCewZ62JfQThx5971APFS7Q5KOwuruOFp4Pt5rSf+
+        V16Nl7DCjt1Bsm4r8eZaOKsAlIRsOGEiKCsiS+Ncm//5HeiShoBkg9Nnp/HlLl+8aC41Y38BzufZN
+        hLUi7wcg==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:46516 helo=rmk-PC.armlinux.org.uk)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.96)
+        (envelope-from <rmk@armlinux.org.uk>)
+        id 1qgnd2-0004Nf-2B;
+        Thu, 14 Sep 2023 15:47:36 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+        id 1qgnd3-007ZQF-Ds; Thu, 14 Sep 2023 15:47:37 +0100
+From:   "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To:     linux-acpi@vger.kernel.org, James Morse <james.morse@arm.com>
+Subject: [PATCH RFC] cpu-hotplug: provide prototypes for arch CPU registration
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
+From:   "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc:     loongarch@lists.linux.dev, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        jianyong.wu@arm.com, justin.he@arm.com,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Salil Mehta <salil.mehta@huawei.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-ia64@vger.kernel.org
+Subject: [PATCH] cpu-hotplug: provide prototypes for arch CPU registration
+MIME-Version: 1.0
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1qgnd3-007ZQF-Ds@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date:   Thu, 14 Sep 2023 15:47:37 +0100
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 13 Sep 2023 16:38:14 +0000
-James Morse <james.morse@arm.com> wrote:
+Provide common prototypes for arch_register_cpu() and
+arch_unregister_cpu(). These are called by acpi_processor.c, with
+weak versions, so the prototype for this is already set. It is
+generally not necessary for function prototypes to be conditional
+on preprocessor macros.
 
-> ACPI identifies CPUs by UID. get_cpu_for_acpi_id() maps the ACPI UID
-> to the linux CPU number.
-> 
-> The helper to retrieve this mapping is only available in arm64's numa
-> code.
-> 
-> Move it to live next to get_acpi_id_for_cpu().
-> 
-> Signed-off-by: James Morse <james.morse@arm.com>
-Seems reasonable
+Some architectures (e.g. Loongarch) are missing the prototype for this,
+and rather than add it to Loongarch's asm/cpu.h, lets do the job once
+for everyone.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Since this covers everyone, remove the now unnecessary prototypes in
+asm/cpu.h, and we also need to remove the 'static' from one of ia64's
+arch_register_cpu() definitions.
 
-> ---
->  arch/arm64/include/asm/acpi.h | 11 +++++++++++
->  arch/arm64/kernel/acpi_numa.c | 11 -----------
->  2 files changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-> index 4d537d56eb84..ce5045038e87 100644
-> --- a/arch/arm64/include/asm/acpi.h
-> +++ b/arch/arm64/include/asm/acpi.h
-> @@ -100,6 +100,17 @@ static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
->  	return	acpi_cpu_get_madt_gicc(cpu)->uid;
->  }
->  
-> +static inline int get_cpu_for_acpi_id(u32 uid)
-> +{
-> +	int cpu;
-> +
-> +	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
-> +		if (uid == get_acpi_id_for_cpu(cpu))
-> +			return cpu;
-> +
-> +	return -EINVAL;
-> +}
-> +
->  static inline void arch_fix_phys_package_id(int num, u32 slot) { }
->  void __init acpi_init_cpus(void);
->  int apei_claim_sea(struct pt_regs *regs);
-> diff --git a/arch/arm64/kernel/acpi_numa.c b/arch/arm64/kernel/acpi_numa.c
-> index e51535a5f939..0c036a9a3c33 100644
-> --- a/arch/arm64/kernel/acpi_numa.c
-> +++ b/arch/arm64/kernel/acpi_numa.c
-> @@ -34,17 +34,6 @@ int __init acpi_numa_get_nid(unsigned int cpu)
->  	return acpi_early_node_map[cpu];
->  }
->  
-> -static inline int get_cpu_for_acpi_id(u32 uid)
-> -{
-> -	int cpu;
-> -
-> -	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
-> -		if (uid == get_acpi_id_for_cpu(cpu))
-> -			return cpu;
-> -
-> -	return -EINVAL;
-> -}
-> -
->  static int __init acpi_parse_gicc_pxm(union acpi_subtable_headers *header,
->  				      const unsigned long end)
->  {
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+Spotted during the review of James Morse's patches, I think rather than
+adding prototypes for loongarch to its asm/cpu.h, it would make more
+sense to provide the prototypes in a non-arch specific header file so
+everyone can benefit, rather than having each architecture do its own
+thing.
+
+I'm sending this as RFC as James has yet to comment on my proposal, and
+also to a wider audience, and although it makes a little more work for
+James (to respin his series) it does mean that his series should get a
+little smaller.
+
+See:
+ https://lore.kernel.org/r/20230913163823.7880-2-james.morse@arm.com
+ https://lore.kernel.org/r/20230913163823.7880-4-james.morse@arm.com
+ https://lore.kernel.org/r/20230913163823.7880-23-james.morse@arm.com
+
+ arch/ia64/include/asm/cpu.h | 5 -----
+ arch/ia64/kernel/topology.c | 2 +-
+ arch/x86/include/asm/cpu.h  | 2 --
+ include/linux/cpu.h         | 2 ++
+ 4 files changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/arch/ia64/include/asm/cpu.h b/arch/ia64/include/asm/cpu.h
+index db125df9e088..642d71675ddb 100644
+--- a/arch/ia64/include/asm/cpu.h
++++ b/arch/ia64/include/asm/cpu.h
+@@ -15,9 +15,4 @@ DECLARE_PER_CPU(struct ia64_cpu, cpu_devices);
+ 
+ DECLARE_PER_CPU(int, cpu_state);
+ 
+-#ifdef CONFIG_HOTPLUG_CPU
+-extern int arch_register_cpu(int num);
+-extern void arch_unregister_cpu(int);
+-#endif
+-
+ #endif /* _ASM_IA64_CPU_H_ */
+diff --git a/arch/ia64/kernel/topology.c b/arch/ia64/kernel/topology.c
+index 94a848b06f15..741863a187a6 100644
+--- a/arch/ia64/kernel/topology.c
++++ b/arch/ia64/kernel/topology.c
+@@ -59,7 +59,7 @@ void __ref arch_unregister_cpu(int num)
+ }
+ EXPORT_SYMBOL(arch_unregister_cpu);
+ #else
+-static int __init arch_register_cpu(int num)
++int __init arch_register_cpu(int num)
+ {
+ 	return register_cpu(&sysfs_cpus[num].cpu, num);
+ }
+diff --git a/arch/x86/include/asm/cpu.h b/arch/x86/include/asm/cpu.h
+index 3a233ebff712..25050d953eee 100644
+--- a/arch/x86/include/asm/cpu.h
++++ b/arch/x86/include/asm/cpu.h
+@@ -28,8 +28,6 @@ struct x86_cpu {
+ };
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
+-extern int arch_register_cpu(int num);
+-extern void arch_unregister_cpu(int);
+ extern void soft_restart_cpu(void);
+ #endif
+ 
+diff --git a/include/linux/cpu.h b/include/linux/cpu.h
+index 0abd60a7987b..eb768a866fe3 100644
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -80,6 +80,8 @@ extern __printf(4, 5)
+ struct device *cpu_device_create(struct device *parent, void *drvdata,
+ 				 const struct attribute_group **groups,
+ 				 const char *fmt, ...);
++extern int arch_register_cpu(int cpu);
++extern void arch_unregister_cpu(int cpu);
+ #ifdef CONFIG_HOTPLUG_CPU
+ extern void unregister_cpu(struct cpu *cpu);
+ extern ssize_t arch_cpu_probe(const char *, size_t);
+-- 
+2.30.2
+
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+
+Provide common prototypes for arch_register_cpu() and
+arch_unregister_cpu(). These are called by acpi_processor.c, with
+weak versions, so the prototype for this is already set. It is
+generally not necessary for function prototypes to be conditional
+on preprocessor macros.
+
+Some architectures (e.g. Loongarch) are missing the prototype for this,
+and rather than add it to Loongarch's asm/cpu.h, lets do the job once
+for everyone.
+
+Since this covers everyone, remove the now unnecessary prototypes in
+asm/cpu.h
+
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+
+
+ arch/ia64/include/asm/cpu.h | 5 -----
+ arch/x86/include/asm/cpu.h  | 2 --
+ include/linux/cpu.h         | 2 ++
+ 3 files changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/arch/ia64/include/asm/cpu.h b/arch/ia64/include/asm/cpu.h
+index db125df9e088..642d71675ddb 100644
+--- a/arch/ia64/include/asm/cpu.h
++++ b/arch/ia64/include/asm/cpu.h
+@@ -15,9 +15,4 @@ DECLARE_PER_CPU(struct ia64_cpu, cpu_devices);
+ 
+ DECLARE_PER_CPU(int, cpu_state);
+ 
+-#ifdef CONFIG_HOTPLUG_CPU
+-extern int arch_register_cpu(int num);
+-extern void arch_unregister_cpu(int);
+-#endif
+-
+ #endif /* _ASM_IA64_CPU_H_ */
+diff --git a/arch/x86/include/asm/cpu.h b/arch/x86/include/asm/cpu.h
+index 3a233ebff712..25050d953eee 100644
+--- a/arch/x86/include/asm/cpu.h
++++ b/arch/x86/include/asm/cpu.h
+@@ -28,8 +28,6 @@ struct x86_cpu {
+ };
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
+-extern int arch_register_cpu(int num);
+-extern void arch_unregister_cpu(int);
+ extern void soft_restart_cpu(void);
+ #endif
+ 
+diff --git a/include/linux/cpu.h b/include/linux/cpu.h
+index 0abd60a7987b..eb768a866fe3 100644
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -80,6 +80,8 @@ extern __printf(4, 5)
+ struct device *cpu_device_create(struct device *parent, void *drvdata,
+ 				 const struct attribute_group **groups,
+ 				 const char *fmt, ...);
++extern int arch_register_cpu(int cpu);
++extern void arch_unregister_cpu(int cpu);
+ #ifdef CONFIG_HOTPLUG_CPU
+ extern void unregister_cpu(struct cpu *cpu);
+ extern ssize_t arch_cpu_probe(const char *, size_t);
+-- 
+2.30.2
 
