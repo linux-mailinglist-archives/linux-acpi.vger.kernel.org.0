@@ -2,148 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC29A7A0E59
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 21:29:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C724F7A0E97
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 21:55:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231243AbjINT3N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Sep 2023 15:29:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40810 "EHLO
+        id S229942AbjINTzv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Sep 2023 15:55:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231588AbjINT3N (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 15:29:13 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ACEE26AB;
-        Thu, 14 Sep 2023 12:29:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A303FC433C7;
-        Thu, 14 Sep 2023 19:29:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694719748;
-        bh=hNAY8MGYf8YcUA4vUEpZaRVEM+yzGB604aBLvFxOsT8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wxcrE226jsia0S3OIWHpfgtZ/AoKg0fTDExE9v9F1PNvhRw0uvpE8Va/msOBLScs9
-         gpOk7cXfKnBHScKDhQrGdrE5/hJtQaAx1W0vJXNKgxwzf3D3jpyD17hVbJC075Eqnx
-         +8JtylLCHswVV53CHy8hAp5JKHzgx/i6dR8lGuRw=
-Date:   Thu, 14 Sep 2023 21:29:00 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jinhui Guo <guojinhui.liam@bytedance.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, lizefan.x@bytedance.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v4] driver core: platform: set numa_node before
- platform_add_device()
-Message-ID: <2023091440-worried-raider-7c85@gregkh>
-References: <20230914150612.3440-1-guojinhui.liam@bytedance.com>
+        with ESMTP id S229486AbjINTzu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 15:55:50 -0400
+Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85FF326B8
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Sep 2023 12:55:46 -0700 (PDT)
+Received: by mail-vs1-xe30.google.com with SMTP id ada2fe7eead31-44e8ddf1f1aso1591910137.1
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Sep 2023 12:55:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1694721345; x=1695326145; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gXvsIkg5W5kZfs+DNvZ5qg+c180aqSMtxSvU7mWnFz8=;
+        b=m0SzqUnpdyod+sf04xpoZmKPjblkBJNmfbZffWBAhwWDoaMxQyRBPOTbwhmc6Sizn5
+         q5foeEbnok18pO/XJ5BWQSdoK3/ompkIwYqdgggsJYFzGlHZaBK2RuNZfZQH1fMN/Xtr
+         9BV5oodBNClFpphEOFN4fqHBA2L/JV2YpckBhBHrKk7dKaFUzZrSHfvg6eXDybHzYpGp
+         wI9RHSd5TwiPyRoSqtLMeDT6nbN34N1yW7U2IQV4LRwaTDrbnHS9MMuwYvnJP1LSfucb
+         MbWrTa1axX/PVo3rgnuN94YUhZkJkhdtqF3tkaBxd9XJbjzZ+YfI4p56AnxIGVEKhW5f
+         UVzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694721345; x=1695326145;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gXvsIkg5W5kZfs+DNvZ5qg+c180aqSMtxSvU7mWnFz8=;
+        b=efyTmjcY8eZiTDHAV7iZzYsVbSQeMXisEhl9zzX1lZAejDl6Bld516dgNq9Jp5IafP
+         r1YSk2c+kLkO7uUBDGjthYUFL7ak7lWh5WBuvNME3i6e4BBI8wzhT1HFkpHUAq33q5hW
+         udb1hVva6jWNPmvxhLtAkuYp4mBPvnE4SC8tkoSCtuHLlZM9/17XTVR1KZsDXfYsGTLG
+         q/2wRO7H0mbJw2ol8vTYHjud7sIfm8L4G4Hgro9qxVXRS4pP3xdQg/k7QOhmw3u0C0cr
+         mMhxg4EbWWwNzA5pXzZOFROXoGAsilOTriP1XjM9xXecK4IX60zq4YopaDSNbmp+V5n9
+         iYiA==
+X-Gm-Message-State: AOJu0YwlZRjCVvthRuZem2TWy7RngtiIFyn3NbM6Aj4GFOyiZi5eEwzo
+        tT9ksf1ebW22FCIRY7TNOCTqBUovj3dnePHC0C8J4TNzFDjK/vpf
+X-Google-Smtp-Source: AGHT+IEuwtjTxVRxEt//vIYG+8ayKmKrSHrk0njIa/gvUrYHhYrp9V/i5/Oo/3a5v5Ofqyy21JQg692vj2EjgHwZY6w=
+X-Received: by 2002:a67:e94c:0:b0:44d:453c:a837 with SMTP id
+ p12-20020a67e94c000000b0044d453ca837mr1673697vso.11.1694721345618; Thu, 14
+ Sep 2023 12:55:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230914150612.3440-1-guojinhui.liam@bytedance.com>
+References: <20230912100727.23197-1-brgl@bgdev.pl> <20230912100727.23197-5-brgl@bgdev.pl>
+ <ZQBECsLHhuNRYr20@smile.fi.intel.com>
+In-Reply-To: <ZQBECsLHhuNRYr20@smile.fi.intel.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Thu, 14 Sep 2023 21:55:34 +0200
+Message-ID: <CAMRc=Me0vzHjwVPMk99Orx2EZfM-OKiEZKC2Nzk6HQFz5P867A@mail.gmail.com>
+Subject: Re: [PATCH v2 04/11] gpiolib: provide gpio_device_find_by_label()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 14, 2023 at 11:06:12PM +0800, Jinhui Guo wrote:
-> platform_add_device() creates the numa_node attribute of sysfs according
-> to whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
-> of device before creating numa_node attribute of sysfs.
-> 
-> Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
-> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-> ---
->  drivers/acpi/acpi_platform.c | 4 +---
->  drivers/base/platform.c      | 1 +
->  include/linux/acpi.h         | 5 +++++
->  3 files changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-> index 48d15dd785f6..adcbfbdc343f 100644
-> --- a/drivers/acpi/acpi_platform.c
-> +++ b/drivers/acpi/acpi_platform.c
-> @@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
->  	if (IS_ERR(pdev))
->  		dev_err(&adev->dev, "platform device creation failed: %ld\n",
->  			PTR_ERR(pdev));
-> -	else {
-> -		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-> +	else
->  		dev_dbg(&adev->dev, "created platform device %s\n",
->  			dev_name(&pdev->dev));
-> -	}
->  
->  	kfree(resources);
->  
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 76bfcba25003..35c891075d95 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
->  			goto err;
->  	}
->  
-> +	set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
->  	ret = platform_device_add(pdev);
->  	if (ret) {
->  err:
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index a73246c3c35e..6a349d53f19e 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
->  	return 0;
->  }
->  #endif
-> +
-> +#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
-> +	acpi_get_node((adev)->handle) : NUMA_NO_NODE)
-> +
->  extern int pnpacpi_disabled;
->  
->  #define PXM_INVAL	(-1)
-> @@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
->  #define ACPI_COMPANION_SET(dev, adev)	do { } while (0)
->  #define ACPI_HANDLE(dev)		(NULL)
->  #define ACPI_HANDLE_FWNODE(fwnode)	(NULL)
-> +#define ACPI_NODE_GET(adev)		NUMA_NO_NODE
->  
->  #include <acpi/acpi_numa.h>
->  
-> -- 
-> 2.20.1
-> 
+On Tue, Sep 12, 2023 at 12:57=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Tue, Sep 12, 2023 at 12:07:20PM +0200, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >
+> > By far the most common way of looking up GPIO devices is using their
+> > label. Provide a helpers for that to avoid every user implementing thei=
+r
+> > own matching function.
+>
+> ...
+>
+> > +static int gpio_chip_match_by_label(struct gpio_chip *gc, void *label)
+> > +{
+> > +     return gc->label && !strcmp(gc->label, label);
+>
+> When gc->label can be NULL?
+>
 
-Hi,
+Whenever the driver doesn't assign it. The copy in gpio_device is set
+to "unknown" for display in logs/user-space but not the one in
+gpio_chip.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Bart
 
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
-
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documetnation/process/stable-kernel-rules.rst file for how to resolve
-  this.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+> > +}
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
