@@ -2,141 +2,139 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 848DD7A0FE6
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 23:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6F907A1024
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 23:59:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229499AbjINVcC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Sep 2023 17:32:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37346 "EHLO
+        id S229531AbjINV7T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Sep 2023 17:59:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjINVcB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 17:32:01 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9A502701
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Sep 2023 14:31:57 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-68fe2470d81so1277140b3a.1
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Sep 2023 14:31:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1694727117; x=1695331917; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RzuuSbvQBu+IbXhqgSc/Jh1UYlftCrb0q8uG/spw850=;
-        b=JHd7C4CHjojVY6NuvrQbpLPpDuNxTaKWajQQni7xtxPZM7i575U+m6QfjtKI5OtUDu
-         U7S1iYQmUyWz6ZtWHJhIv2FFEXoPPkNXjKgSzv34/LULtMR8vxKjHm0R0PtqvF5+t/9y
-         yfQIqY227ERqh9fVqSLOzcId4pA211TyySUn2zCEi5omiwFwwiqkI6AXFFJVrJyQYpdS
-         F+u3uiGR8qr3hrs11LUsmMantcGyg7Vdxzj9WaDrtHFoUpNUrB+xSJ5CGofjib5bs1iA
-         gujpisWDZ1V8nyu+sMdEzoV829Fw0qwNON+KDr9w5mWhfyJO+6R0EYT2E7svEfnv13EF
-         eI5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694727117; x=1695331917;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RzuuSbvQBu+IbXhqgSc/Jh1UYlftCrb0q8uG/spw850=;
-        b=SROuPeyb9RBeneFqor44Ioj6uX7s0lRHGgmwzoGmI08i5KZMKaE0KhsJfcKXtnGKx2
-         fac4DrEI/NE+EuPKKHbD1rH1yuc/h/phzj9/fxI4bcqWUtJ0v1zkMsW25tqpTsljKEb2
-         847Ym9N0M9FJigVBcd2zccKn5elGCqL74TPx8NDuhWq6ktTkaQEbUMsqkA2lLLSVOJuM
-         68e2yn2gWJlUI4NsfLsPqXSrZ3EVJH0ublISGPwX9MrHTA0Xq0a+wpr2NytQbcB0LrI2
-         wFiDXnhdYDPpeJbAMopQIEu+h5/PW0vV/rvPxiP6tJLe0JC1die95NHlGBXuyj5RXubs
-         gb2w==
-X-Gm-Message-State: AOJu0Ywas2mYirUQrijLEM+SQxBdrKCoWMVl4A+MKzc2634UcHW4QB/s
-        xYyoBoAlEOW027TW6+CBK1Akkg==
-X-Google-Smtp-Source: AGHT+IGAwnocWxnqqmX/eAgy6D+NNt6gW2WJvtliI2d6JTOWjfa5vFoJOf23AZpuaG1+4OahgtdZGg==
-X-Received: by 2002:a05:6300:808d:b0:153:591b:4101 with SMTP id ap13-20020a056300808d00b00153591b4101mr5564711pzc.49.1694727117223;
-        Thu, 14 Sep 2023 14:31:57 -0700 (PDT)
-Received: from PF2LML5M-SMJ.lan ([49.7.199.134])
-        by smtp.gmail.com with ESMTPSA id em19-20020a17090b015300b00273fc850342sm3590801pjb.20.2023.09.14.14.31.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Sep 2023 14:31:56 -0700 (PDT)
-From:   Jinhui Guo <guojinhui.liam@bytedance.com>
-To:     rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org
-Cc:     lizefan.x@bytedance.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jinhui Guo <guojinhui.liam@bytedance.com>,
-        stable@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: [PATCH v5] driver core: platform: set numa_node before platform_add_device()
-Date:   Fri, 15 Sep 2023 05:31:48 +0800
-Message-Id: <20230914213148.3560-1-guojinhui.liam@bytedance.com>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S229472AbjINV7T (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 17:59:19 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20D7D1BFA
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Sep 2023 14:59:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694728755; x=1726264755;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=orTRfm3EWFvxsGYhX/MqmdMcQ7oo82in9+K7MsVadmc=;
+  b=m67bnL4ibR7IAMzlOwBDKnE9nJeCOe2QxdMO4lzGSN2n5NmwSAaPTifX
+   4DJuTtRPVD0g6KTGAqjdjJDtmEc28p42BpGLC9iYlYMh0ox0lsnSqfhrt
+   8zLrfuk4g9DGFECGhw5cizI2qOxKG/AU0y4yDVMcokzrv9stxcX//PB9F
+   9AuGV8BXCq5iFB7dGrpBZvxjOaqL96AxfTdgnwBlvnn4DoSfD1A5GWgIt
+   i8t/DFyrJlOU3qXds86cHAZj+sAMyJybkZ66uvc9pQOiDD1UieFEV0Y/b
+   PDYlShw/DcJYe+J1oC2iKdbq2QqSRN+JFdEg9yHGf8bDV4KVeEt74E2Yk
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="377999180"
+X-IronPort-AV: E=Sophos;i="6.02,147,1688454000"; 
+   d="scan'208";a="377999180"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 14:59:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="747939318"
+X-IronPort-AV: E=Sophos;i="6.02,147,1688454000"; 
+   d="scan'208";a="747939318"
+Received: from lkp-server02.sh.intel.com (HELO 9ef86b2655e5) ([10.239.97.151])
+  by fmsmga007.fm.intel.com with ESMTP; 14 Sep 2023 14:58:50 -0700
+Received: from kbuild by 9ef86b2655e5 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qguMK-00025t-1c;
+        Thu, 14 Sep 2023 21:58:48 +0000
+Date:   Fri, 15 Sep 2023 05:58:42 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ken Xue <Ken.Xue@amd.com>, andriy.shevchenko@linux.intel.com,
+        linux-acpi@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, rafael@kernel.org,
+        cwhuang@linux.org.tw, Ken Xue <Ken.Xue@amd.com>
+Subject: Re: [PATCH V4] acpi: trigger wakeup key event from power button
+Message-ID: <202309150547.0dolJMlI-lkp@intel.com>
+References: <20230913002145.743571-1-Ken.Xue@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230913002145.743571-1-Ken.Xue@amd.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-platform_add_device() creates the numa_node attribute of sysfs according
-to whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
-of device before creating numa_node attribute of sysfs.
+Hi Ken,
 
-Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
----
-V4 -> V5: Add Cc: stable line and changes from the previous submited
-patches
-V3 -> V4: Refactor code to be an ACPI function call
-V2 -> V3: Fix Signed-off name
-V1 -> V2: Fix compile error without enabling CONFIG_ACPI
+kernel test robot noticed the following build errors:
 
- drivers/acpi/acpi_platform.c | 4 +---
- drivers/base/platform.c      | 1 +
- include/linux/acpi.h         | 5 +++++
- 3 files changed, 7 insertions(+), 3 deletions(-)
+[auto build test ERROR on b483d3b8a54a544ab8854ca6dbb8d99c423b3ba4]
 
-diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-index 48d15dd785f6..adcbfbdc343f 100644
---- a/drivers/acpi/acpi_platform.c
-+++ b/drivers/acpi/acpi_platform.c
-@@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
- 	if (IS_ERR(pdev))
- 		dev_err(&adev->dev, "platform device creation failed: %ld\n",
- 			PTR_ERR(pdev));
--	else {
--		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-+	else
- 		dev_dbg(&adev->dev, "created platform device %s\n",
- 			dev_name(&pdev->dev));
--	}
- 
- 	kfree(resources);
- 
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 76bfcba25003..35c891075d95 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
- 			goto err;
- 	}
- 
-+	set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
- 	ret = platform_device_add(pdev);
- 	if (ret) {
- err:
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index a73246c3c35e..6a349d53f19e 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
- 	return 0;
- }
- #endif
-+
-+#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
-+	acpi_get_node((adev)->handle) : NUMA_NO_NODE)
-+
- extern int pnpacpi_disabled;
- 
- #define PXM_INVAL	(-1)
-@@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
- #define ACPI_COMPANION_SET(dev, adev)	do { } while (0)
- #define ACPI_HANDLE(dev)		(NULL)
- #define ACPI_HANDLE_FWNODE(fwnode)	(NULL)
-+#define ACPI_NODE_GET(adev)		NUMA_NO_NODE
- 
- #include <acpi/acpi_numa.h>
- 
+url:    https://github.com/intel-lab-lkp/linux/commits/Ken-Xue/acpi-trigger-wakeup-key-event-from-power-button/20230913-084852
+base:   b483d3b8a54a544ab8854ca6dbb8d99c423b3ba4
+patch link:    https://lore.kernel.org/r/20230913002145.743571-1-Ken.Xue%40amd.com
+patch subject: [PATCH V4] acpi: trigger wakeup key event from power button
+config: loongarch-randconfig-001-20230914 (https://download.01.org/0day-ci/archive/20230915/202309150547.0dolJMlI-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230915/202309150547.0dolJMlI-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202309150547.0dolJMlI-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   loongarch64-linux-ld: drivers/acpi/sleep.o: in function `acpi_pm_finish':
+>> drivers/acpi/sleep.c:514:(.text+0x29c): undefined reference to `acpi_power_button_wakeup'
+
+
+vim +514 drivers/acpi/sleep.c
+
+   472	
+   473	/**
+   474	 *	acpi_pm_finish - Instruct the platform to leave a sleep state.
+   475	 *
+   476	 *	This is called after we wake back up (or if entering the sleep state
+   477	 *	failed).
+   478	 */
+   479	static void acpi_pm_finish(void)
+   480	{
+   481		struct acpi_device *pwr_btn_adev;
+   482		u32 acpi_state = acpi_target_sleep_state;
+   483	
+   484		acpi_ec_unblock_transactions();
+   485		suspend_nvs_free();
+   486	
+   487		if (acpi_state == ACPI_STATE_S0)
+   488			return;
+   489	
+   490		pr_info("Waking up from system sleep state S%d\n", acpi_state);
+   491		acpi_disable_wakeup_devices(acpi_state);
+   492		acpi_leave_sleep_state(acpi_state);
+   493	
+   494		/* reset firmware waking vector */
+   495		acpi_set_waking_vector(0);
+   496	
+   497		acpi_target_sleep_state = ACPI_STATE_S0;
+   498	
+   499		acpi_resume_power_resources();
+   500	
+   501		/* If we were woken with the fixed power button, provide a small
+   502		 * hint to userspace in the form of a wakeup event on the fixed power
+   503		 * button device (if it can be found).
+   504		 *
+   505		 * We delay the event generation til now, as the PM layer requires
+   506		 * timekeeping to be running before we generate events. */
+   507		if (!pwr_btn_event_pending)
+   508			return;
+   509	
+   510		pwr_btn_event_pending = false;
+   511		pwr_btn_adev = acpi_dev_get_first_match_dev(ACPI_BUTTON_HID_POWERF,
+   512							    NULL, -1);
+   513		if (pwr_btn_adev) {
+ > 514			acpi_power_button_wakeup(pwr_btn_adev);
+   515			pm_wakeup_event(&pwr_btn_adev->dev, 0);
+   516			acpi_dev_put(pwr_btn_adev);
+   517		}
+   518	}
+   519	
+
 -- 
-2.20.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
