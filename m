@@ -2,40 +2,40 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E28379FF21
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 10:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E967F7A008C
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 11:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236672AbjINIzU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Sep 2023 04:55:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40110 "EHLO
+        id S237181AbjINJoK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Sep 2023 05:44:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236670AbjINIzO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 04:55:14 -0400
+        with ESMTP id S237286AbjINJn6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 05:43:58 -0400
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB0D22101;
-        Thu, 14 Sep 2023 01:55:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 901F12127;
+        Thu, 14 Sep 2023 02:41:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
         MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=f+H5x/cp2bEzCYiNMmAnXAGMN21bYlWKCmF1GGEIgsw=; b=BW29AHkaUZl9f3QBTA+GNqc2cD
-        akwSiNhK+uF/maEQuHHtaqHF3nu0XqMxMeQzdFLI+QWUc8I3cNd1o7e1l+AP6RuHSS77Y979dJek9
-        tPospno619x75OsTybQyZ7NM2GuWI87Yi3grTTDbHgrBidHuyQV1rEHjmeQGuxmWEdRCTqFzQqYc0
-        d91h9bzh+zqErANRFQ8Leyad1NX2Xzll370qcAQW+RR/IPftGMYjRAokMpI0JzlJs1wd3VChWl2rf
-        d1hr1IYTHhAbEa9+BhpuZbV46ojK/mDa3LDLTVx1IrHco4FnrM8SzXEm119Cga0UxZ8pYfs2Y0QTj
-        DmY0ADvw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52876)
+        bh=axYPg+kto0nJNL9hl8iLv0sDKfjF50COIQpJVC5Qtaw=; b=y9o36XMaTplPci06WgCoImVV8n
+        d0RovaoTBpKr7gNJzrFKhK4j6VnIAfNGEuin8IgO508xznoOSAMU8v7mEyO8Q1w+d+JewjyNHztCT
+        si3rOh/smfaFzgZ1LG1aC1fG/mKkg2b12fPFXvwKeITYYMr91dEWS8uOqqHoL+u1MtXPePE6i0phH
+        E02qmgG+39ruqyJCugCTGUAvoCwr2dxkmbUkAPkcESni1VtABAWuHsCJbC3T7qCOZIcLZffITyvnF
+        ie4bA7HGR/+yUzFkj5tEJqgJk4LDKSq+OWYx+b0Lx7uSidPZmGk5fQNwCtoBifDxNMwHZJOrNFiwg
+        IFJNmKDg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47660)
         by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.96)
         (envelope-from <linux@armlinux.org.uk>)
-        id 1qgi7l-0003km-2S;
-        Thu, 14 Sep 2023 09:54:57 +0100
+        id 1qgiqJ-0003nl-2j;
+        Thu, 14 Sep 2023 10:40:59 +0100
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
         (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1qgi7k-0004c0-45; Thu, 14 Sep 2023 09:54:56 +0100
-Date:   Thu, 14 Sep 2023 09:54:56 +0100
+        id 1qgiqI-0004eL-CR; Thu, 14 Sep 2023 10:40:58 +0100
+Date:   Thu, 14 Sep 2023 10:40:58 +0100
 From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
 To:     James Morse <james.morse@arm.com>
 Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
@@ -45,55 +45,39 @@ Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
         x86@kernel.org, Salil Mehta <salil.mehta@huawei.com>,
         Jean-Philippe Brucker <jean-philippe@linaro.org>,
         jianyong.wu@arm.com, justin.he@arm.com
-Subject: Re: [RFC PATCH v2 01/35] ACPI: Move ACPI_HOTPLUG_CPU to be disabled
- on arm64 and riscv
-Message-ID: <ZQLKYCmOT/HnAYL1@shell.armlinux.org.uk>
+Subject: Re: [RFC PATCH v2 04/35] drivers: base: Move cpu_dev_init() after
+ node_dev_init()
+Message-ID: <ZQLVKv6RgH/CM75O@shell.armlinux.org.uk>
 References: <20230913163823.7880-1-james.morse@arm.com>
- <20230913163823.7880-2-james.morse@arm.com>
+ <20230913163823.7880-5-james.morse@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230913163823.7880-2-james.morse@arm.com>
+In-Reply-To: <20230913163823.7880-5-james.morse@arm.com>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 13, 2023 at 04:37:49PM +0000, James Morse wrote:
-> diff --git a/arch/loongarch/include/asm/cpu.h b/arch/loongarch/include/asm/cpu.h
-> index 48b9f7168bcc..7afe8cbb844e 100644
-> --- a/arch/loongarch/include/asm/cpu.h
-> +++ b/arch/loongarch/include/asm/cpu.h
-> @@ -128,4 +128,11 @@ enum cpu_type_enum {
->  #define LOONGARCH_CPU_HYPERVISOR	BIT_ULL(CPU_FEATURE_HYPERVISOR)
->  #define LOONGARCH_CPU_PTW		BIT_ULL(CPU_FEATURE_PTW)
->  
-> +#if !defined(__ASSEMBLY__)
-> +#ifdef CONFIG_HOTPLUG_CPU
-> +int arch_register_cpu(int num);
-> +void arch_unregister_cpu(int cpu);
-> +#endif
-> +#endif /* ! __ASSEMBLY__ */
+On Wed, Sep 13, 2023 at 04:37:52PM +0000, James Morse wrote:
+> NUMA systems require the node descriptions to be ready before CPUs are
+> registered. This is so that the node symlinks can be created in sysfs.
+> 
+> Currently no NUMA platform uses GENERIC_CPU_DEVICES, meaning that CPUs
+> are registered by arch code, instead of cpu_dev_init().
+> 
+> Move cpu_dev_init() after node_dev_init() so that NUMA architectures
+> can use GENERIC_CPU_DEVICES.
+> 
+> Signed-off-by: James Morse <james.morse@arm.com>
 
-So, for loongarch:
+I think this patch should be merged sooner rather than later so that
+it gets a longer time to be tested, as moving the order that things
+happen in init/main.c can be problematical.
 
-grep arch_.*register_cpu arch/loongarch/ -r
-arch/loongarch/kernel/topology.c:int arch_register_cpu(int cpu)
-arch/loongarch/kernel/topology.c:EXPORT_SYMBOL(arch_register_cpu);
-arch/loongarch/kernel/topology.c:void arch_unregister_cpu(int cpu)
-arch/loongarch/kernel/topology.c:EXPORT_SYMBOL(arch_unregister_cpu);
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-So really this is a fix (since these functions should have prototypes)
-and thus should probably be a separate patch.
-
-However, I also wonder whether these prototypes should be added to
-linux/cpu.h and be done with it (rather than have every arch prototype
-these - it's not like the prototype can be different from this because
-of the generic code.
-
-I know in subsequent patches you do that, but it's rather piecemeal,
-and I think this is a change that could be submitted now as both a
-fix and clean up.
+Thanks!
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
