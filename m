@@ -2,100 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C724F7A0E97
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 21:55:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 848DD7A0FE6
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 23:32:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229942AbjINTzv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Sep 2023 15:55:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38086 "EHLO
+        id S229499AbjINVcC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Sep 2023 17:32:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbjINTzu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 15:55:50 -0400
-Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85FF326B8
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Sep 2023 12:55:46 -0700 (PDT)
-Received: by mail-vs1-xe30.google.com with SMTP id ada2fe7eead31-44e8ddf1f1aso1591910137.1
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Sep 2023 12:55:46 -0700 (PDT)
+        with ESMTP id S229472AbjINVcB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 17:32:01 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9A502701
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Sep 2023 14:31:57 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-68fe2470d81so1277140b3a.1
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Sep 2023 14:31:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1694721345; x=1695326145; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gXvsIkg5W5kZfs+DNvZ5qg+c180aqSMtxSvU7mWnFz8=;
-        b=m0SzqUnpdyod+sf04xpoZmKPjblkBJNmfbZffWBAhwWDoaMxQyRBPOTbwhmc6Sizn5
-         q5foeEbnok18pO/XJ5BWQSdoK3/ompkIwYqdgggsJYFzGlHZaBK2RuNZfZQH1fMN/Xtr
-         9BV5oodBNClFpphEOFN4fqHBA2L/JV2YpckBhBHrKk7dKaFUzZrSHfvg6eXDybHzYpGp
-         wI9RHSd5TwiPyRoSqtLMeDT6nbN34N1yW7U2IQV4LRwaTDrbnHS9MMuwYvnJP1LSfucb
-         MbWrTa1axX/PVo3rgnuN94YUhZkJkhdtqF3tkaBxd9XJbjzZ+YfI4p56AnxIGVEKhW5f
-         UVzA==
+        d=bytedance.com; s=google; t=1694727117; x=1695331917; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RzuuSbvQBu+IbXhqgSc/Jh1UYlftCrb0q8uG/spw850=;
+        b=JHd7C4CHjojVY6NuvrQbpLPpDuNxTaKWajQQni7xtxPZM7i575U+m6QfjtKI5OtUDu
+         U7S1iYQmUyWz6ZtWHJhIv2FFEXoPPkNXjKgSzv34/LULtMR8vxKjHm0R0PtqvF5+t/9y
+         yfQIqY227ERqh9fVqSLOzcId4pA211TyySUn2zCEi5omiwFwwiqkI6AXFFJVrJyQYpdS
+         F+u3uiGR8qr3hrs11LUsmMantcGyg7Vdxzj9WaDrtHFoUpNUrB+xSJ5CGofjib5bs1iA
+         gujpisWDZ1V8nyu+sMdEzoV829Fw0qwNON+KDr9w5mWhfyJO+6R0EYT2E7svEfnv13EF
+         eI5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694721345; x=1695326145;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gXvsIkg5W5kZfs+DNvZ5qg+c180aqSMtxSvU7mWnFz8=;
-        b=efyTmjcY8eZiTDHAV7iZzYsVbSQeMXisEhl9zzX1lZAejDl6Bld516dgNq9Jp5IafP
-         r1YSk2c+kLkO7uUBDGjthYUFL7ak7lWh5WBuvNME3i6e4BBI8wzhT1HFkpHUAq33q5hW
-         udb1hVva6jWNPmvxhLtAkuYp4mBPvnE4SC8tkoSCtuHLlZM9/17XTVR1KZsDXfYsGTLG
-         q/2wRO7H0mbJw2ol8vTYHjud7sIfm8L4G4Hgro9qxVXRS4pP3xdQg/k7QOhmw3u0C0cr
-         mMhxg4EbWWwNzA5pXzZOFROXoGAsilOTriP1XjM9xXecK4IX60zq4YopaDSNbmp+V5n9
-         iYiA==
-X-Gm-Message-State: AOJu0YwlZRjCVvthRuZem2TWy7RngtiIFyn3NbM6Aj4GFOyiZi5eEwzo
-        tT9ksf1ebW22FCIRY7TNOCTqBUovj3dnePHC0C8J4TNzFDjK/vpf
-X-Google-Smtp-Source: AGHT+IEuwtjTxVRxEt//vIYG+8ayKmKrSHrk0njIa/gvUrYHhYrp9V/i5/Oo/3a5v5Ofqyy21JQg692vj2EjgHwZY6w=
-X-Received: by 2002:a67:e94c:0:b0:44d:453c:a837 with SMTP id
- p12-20020a67e94c000000b0044d453ca837mr1673697vso.11.1694721345618; Thu, 14
- Sep 2023 12:55:45 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1694727117; x=1695331917;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RzuuSbvQBu+IbXhqgSc/Jh1UYlftCrb0q8uG/spw850=;
+        b=SROuPeyb9RBeneFqor44Ioj6uX7s0lRHGgmwzoGmI08i5KZMKaE0KhsJfcKXtnGKx2
+         fac4DrEI/NE+EuPKKHbD1rH1yuc/h/phzj9/fxI4bcqWUtJ0v1zkMsW25tqpTsljKEb2
+         847Ym9N0M9FJigVBcd2zccKn5elGCqL74TPx8NDuhWq6ktTkaQEbUMsqkA2lLLSVOJuM
+         68e2yn2gWJlUI4NsfLsPqXSrZ3EVJH0ublISGPwX9MrHTA0Xq0a+wpr2NytQbcB0LrI2
+         wFiDXnhdYDPpeJbAMopQIEu+h5/PW0vV/rvPxiP6tJLe0JC1die95NHlGBXuyj5RXubs
+         gb2w==
+X-Gm-Message-State: AOJu0Ywas2mYirUQrijLEM+SQxBdrKCoWMVl4A+MKzc2634UcHW4QB/s
+        xYyoBoAlEOW027TW6+CBK1Akkg==
+X-Google-Smtp-Source: AGHT+IGAwnocWxnqqmX/eAgy6D+NNt6gW2WJvtliI2d6JTOWjfa5vFoJOf23AZpuaG1+4OahgtdZGg==
+X-Received: by 2002:a05:6300:808d:b0:153:591b:4101 with SMTP id ap13-20020a056300808d00b00153591b4101mr5564711pzc.49.1694727117223;
+        Thu, 14 Sep 2023 14:31:57 -0700 (PDT)
+Received: from PF2LML5M-SMJ.lan ([49.7.199.134])
+        by smtp.gmail.com with ESMTPSA id em19-20020a17090b015300b00273fc850342sm3590801pjb.20.2023.09.14.14.31.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Sep 2023 14:31:56 -0700 (PDT)
+From:   Jinhui Guo <guojinhui.liam@bytedance.com>
+To:     rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org
+Cc:     lizefan.x@bytedance.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jinhui Guo <guojinhui.liam@bytedance.com>,
+        stable@vger.kernel.org, kernel test robot <lkp@intel.com>
+Subject: [PATCH v5] driver core: platform: set numa_node before platform_add_device()
+Date:   Fri, 15 Sep 2023 05:31:48 +0800
+Message-Id: <20230914213148.3560-1-guojinhui.liam@bytedance.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20230912100727.23197-1-brgl@bgdev.pl> <20230912100727.23197-5-brgl@bgdev.pl>
- <ZQBECsLHhuNRYr20@smile.fi.intel.com>
-In-Reply-To: <ZQBECsLHhuNRYr20@smile.fi.intel.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Thu, 14 Sep 2023 21:55:34 +0200
-Message-ID: <CAMRc=Me0vzHjwVPMk99Orx2EZfM-OKiEZKC2Nzk6HQFz5P867A@mail.gmail.com>
-Subject: Re: [PATCH v2 04/11] gpiolib: provide gpio_device_find_by_label()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 12, 2023 at 12:57=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Tue, Sep 12, 2023 at 12:07:20PM +0200, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > By far the most common way of looking up GPIO devices is using their
-> > label. Provide a helpers for that to avoid every user implementing thei=
-r
-> > own matching function.
->
-> ...
->
-> > +static int gpio_chip_match_by_label(struct gpio_chip *gc, void *label)
-> > +{
-> > +     return gc->label && !strcmp(gc->label, label);
->
-> When gc->label can be NULL?
->
+platform_add_device() creates the numa_node attribute of sysfs according
+to whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
+of device before creating numa_node attribute of sysfs.
 
-Whenever the driver doesn't assign it. The copy in gpio_device is set
-to "unknown" for display in logs/user-space but not the one in
-gpio_chip.
+Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+---
+V4 -> V5: Add Cc: stable line and changes from the previous submited
+patches
+V3 -> V4: Refactor code to be an ACPI function call
+V2 -> V3: Fix Signed-off name
+V1 -> V2: Fix compile error without enabling CONFIG_ACPI
 
-Bart
+ drivers/acpi/acpi_platform.c | 4 +---
+ drivers/base/platform.c      | 1 +
+ include/linux/acpi.h         | 5 +++++
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-> > +}
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+index 48d15dd785f6..adcbfbdc343f 100644
+--- a/drivers/acpi/acpi_platform.c
++++ b/drivers/acpi/acpi_platform.c
+@@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+ 	if (IS_ERR(pdev))
+ 		dev_err(&adev->dev, "platform device creation failed: %ld\n",
+ 			PTR_ERR(pdev));
+-	else {
+-		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
++	else
+ 		dev_dbg(&adev->dev, "created platform device %s\n",
+ 			dev_name(&pdev->dev));
+-	}
+ 
+ 	kfree(resources);
+ 
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 76bfcba25003..35c891075d95 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
+ 			goto err;
+ 	}
+ 
++	set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
+ 	ret = platform_device_add(pdev);
+ 	if (ret) {
+ err:
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index a73246c3c35e..6a349d53f19e 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
+ 	return 0;
+ }
+ #endif
++
++#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
++	acpi_get_node((adev)->handle) : NUMA_NO_NODE)
++
+ extern int pnpacpi_disabled;
+ 
+ #define PXM_INVAL	(-1)
+@@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
+ #define ACPI_COMPANION_SET(dev, adev)	do { } while (0)
+ #define ACPI_HANDLE(dev)		(NULL)
+ #define ACPI_HANDLE_FWNODE(fwnode)	(NULL)
++#define ACPI_NODE_GET(adev)		NUMA_NO_NODE
+ 
+ #include <acpi/acpi_numa.h>
+ 
+-- 
+2.20.1
+
