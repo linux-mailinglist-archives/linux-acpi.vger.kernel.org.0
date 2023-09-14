@@ -2,40 +2,40 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E967F7A008C
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 11:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C8E97A00E5
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 11:53:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237181AbjINJoK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Sep 2023 05:44:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43056 "EHLO
+        id S237518AbjINJxI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Sep 2023 05:53:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237286AbjINJn6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 05:43:58 -0400
+        with ESMTP id S237603AbjINJxG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 05:53:06 -0400
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 901F12127;
-        Thu, 14 Sep 2023 02:41:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 670601BFF;
+        Thu, 14 Sep 2023 02:53:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
         MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=axYPg+kto0nJNL9hl8iLv0sDKfjF50COIQpJVC5Qtaw=; b=y9o36XMaTplPci06WgCoImVV8n
-        d0RovaoTBpKr7gNJzrFKhK4j6VnIAfNGEuin8IgO508xznoOSAMU8v7mEyO8Q1w+d+JewjyNHztCT
-        si3rOh/smfaFzgZ1LG1aC1fG/mKkg2b12fPFXvwKeITYYMr91dEWS8uOqqHoL+u1MtXPePE6i0phH
-        E02qmgG+39ruqyJCugCTGUAvoCwr2dxkmbUkAPkcESni1VtABAWuHsCJbC3T7qCOZIcLZffITyvnF
-        ie4bA7HGR/+yUzFkj5tEJqgJk4LDKSq+OWYx+b0Lx7uSidPZmGk5fQNwCtoBifDxNMwHZJOrNFiwg
-        IFJNmKDg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47660)
+        bh=kjCoeFUXcWqdbQ4ytSudIB7XxdSYxvc86vXHZmkFftM=; b=rhzpvQlxSHf24Gd5N7JBIAIQdh
+        dLEtXRF4OgBDxIlF5hWj+Cx8mp2MGZZVwpoTdcH+pfAHOWXtY/OvJz5ZjdkVFlguAoh9uJJDY/DgI
+        6E+xe6xX02/J2eLbxvTxpvoYoAtVzmM3RqqHQEbksCz7wCDyta1Y1ZAx+QFISaWA4/fr3p7eqVBPg
+        BqjpJKJFZN4dpbfl9WPXpG0nVqeZiI5ysbUSnNvxOLprDrJ+htXi6/VlBsZJQVTxJYvBVBsTjQkaA
+        mOcj/oH8B4WaaVrenHXrDU0VgvPmsS+IzB/Iip4ia74aT5CqJrhqDtAh8KXGz4QZK4wTVVvY9SYgz
+        ZbFDsgiA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:36094)
         by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.96)
         (envelope-from <linux@armlinux.org.uk>)
-        id 1qgiqJ-0003nl-2j;
-        Thu, 14 Sep 2023 10:40:59 +0100
+        id 1qgj1u-0003pI-0M;
+        Thu, 14 Sep 2023 10:52:58 +0100
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
         (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1qgiqI-0004eL-CR; Thu, 14 Sep 2023 10:40:58 +0100
-Date:   Thu, 14 Sep 2023 10:40:58 +0100
+        id 1qgj1t-0004ee-CA; Thu, 14 Sep 2023 10:52:57 +0100
+Date:   Thu, 14 Sep 2023 10:52:57 +0100
 From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
 To:     James Morse <james.morse@arm.com>
 Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
@@ -45,39 +45,45 @@ Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
         x86@kernel.org, Salil Mehta <salil.mehta@huawei.com>,
         Jean-Philippe Brucker <jean-philippe@linaro.org>,
         jianyong.wu@arm.com, justin.he@arm.com
-Subject: Re: [RFC PATCH v2 04/35] drivers: base: Move cpu_dev_init() after
- node_dev_init()
-Message-ID: <ZQLVKv6RgH/CM75O@shell.armlinux.org.uk>
+Subject: Re: [RFC PATCH v2 05/35] drivers: base: Print a warning instead of
+ panic() when register_cpu() fails
+Message-ID: <ZQLX+XEe2gD/btaQ@shell.armlinux.org.uk>
 References: <20230913163823.7880-1-james.morse@arm.com>
- <20230913163823.7880-5-james.morse@arm.com>
+ <20230913163823.7880-6-james.morse@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230913163823.7880-5-james.morse@arm.com>
+In-Reply-To: <20230913163823.7880-6-james.morse@arm.com>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 13, 2023 at 04:37:52PM +0000, James Morse wrote:
-> NUMA systems require the node descriptions to be ready before CPUs are
-> registered. This is so that the node symlinks can be created in sysfs.
+On Wed, Sep 13, 2023 at 04:37:53PM +0000, James Morse wrote:
+> loongarch, mips, parisc, riscv and sh all print a warning if
+> register_cpu() returns an error. Architectures that use
+> GENERIC_CPU_DEVICES call panic() instead.
 > 
-> Currently no NUMA platform uses GENERIC_CPU_DEVICES, meaning that CPUs
-> are registered by arch code, instead of cpu_dev_init().
+> Errors in this path indicate something is wrong with the firmware
+> description of the platform, but the kernel is able to keep running.
 > 
-> Move cpu_dev_init() after node_dev_init() so that NUMA architectures
-> can use GENERIC_CPU_DEVICES.
+> Downgrade this to a warning to make it easier to debug this issue.
+> 
+> This will allow architectures that switching over to GENERIC_CPU_DEVICES
+> to drop their warning, but keep the existing behaviour.
 > 
 > Signed-off-by: James Morse <james.morse@arm.com>
 
-I think this patch should be merged sooner rather than later so that
-it gets a longer time to be tested, as moving the order that things
-happen in init/main.c can be problematical.
+Assuming other architectures do similar to x86 (which only return the
+error code from register_cpu()), the only error that would occur here
+is if device_register() fails, which would be catastophic, and I
+suspect the system would fail to boot anyway.
+
+Downgrading the panic to a warning at least gives us a chance that
+the system may come up sufficiently to examine what happened, so I
+think this makes sense:
 
 Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-
-Thanks!
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
