@@ -2,96 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6270A79FDA0
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 09:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED01E79FDE0
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 10:09:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235937AbjINH6D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Sep 2023 03:58:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44854 "EHLO
+        id S236177AbjINIJc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Sep 2023 04:09:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232458AbjINH6C (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 03:58:02 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BDE71BF6;
-        Thu, 14 Sep 2023 00:57:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AC2C433CA;
-        Thu, 14 Sep 2023 07:57:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694678278;
-        bh=w97jgCxmnIaSV+4bbnSk1R7YKOaENxmwU85CS3tNcPo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ZhVxi3ng0SyBcUTeBMQePKCqcaLd8ethtP02v1fL+sfnyUaoKqHkq9ju2Mb2DzGmx
-         12cPbr6KS37U3XQdfYDg39fefRxRGPkNAt0JcrqNuLoRrMOChzJNI4I+30xyF/Z+DO
-         9uUgJtnDdJgF7nEXzChIzKYS5cn58Peg6JMWClVEEmyT8kN2TvcDY5+cWznkmtlWEO
-         c1HUPT6VfSprEw7p42m6MzIVjlX2UkH0Kd4+Pu+jggh68f29rTsOMA5jm7wh31KLCT
-         cO/FDvorrtEl5TBHSc2NBxToKVfMI9e/jz1tApeqdW/ft0iWrkGBooY5qJ9zwbp4IC
-         8ehDh8M7Vy3CQ==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2bcb0b973a5so9531961fa.3;
-        Thu, 14 Sep 2023 00:57:58 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yw+9qrEMoTR7t0idesOR0RbpI5kPq+T/PRgyFtG8hVW4gMz6vls
-        x+xt8doxzKfnZHFOYXYHfc2Y77LOzwa0321qE9s=
-X-Google-Smtp-Source: AGHT+IFuQtEiIDjo1DdCQY9KR6JQVDNyxLjSiMxhcLunotHqZWQic/fNmbjkP5sAIxtK7RWx3KWbiGw4//GC4psRyfI=
-X-Received: by 2002:a2e:a172:0:b0:2bc:db70:b563 with SMTP id
- u18-20020a2ea172000000b002bcdb70b563mr4235801ljl.32.1694678276384; Thu, 14
- Sep 2023 00:57:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230913163823.7880-1-james.morse@arm.com> <20230913163823.7880-28-james.morse@arm.com>
-In-Reply-To: <20230913163823.7880-28-james.morse@arm.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 14 Sep 2023 09:57:44 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHRAt7ecB9p_dm3MjDL5wZkAsVh30hMY2SV_XUe=bm6Vg@mail.gmail.com>
-Message-ID: <CAMj1kXHRAt7ecB9p_dm3MjDL5wZkAsVh30hMY2SV_XUe=bm6Vg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 27/35] ACPICA: Add new MADT GICC flags fields [code first?]
+        with ESMTP id S232458AbjINIJc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 04:09:32 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7CA49B;
+        Thu, 14 Sep 2023 01:09:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=V/HxvkqbaFoEQh0p6Z3aJgJbBAL0SNdKKsE6KdqG0nE=; b=KhfLjilliuR7OQ+8EDr63FTB4v
+        6d+97T4jo2zB5AAn+T5RS1DCNlEsaeb5wOLcreZIM5Na+eZk55qGGLA5xUf5nxiY8k21kfWlR16PF
+        7Z81lh6wIe6EhAowPDpP84Xnf9Pzh1MQtHV6UmOJUab/33630JIRctho5GODeY5BgxlNPzzvzZuyG
+        sW3XRKEJ3o3MfAD3x7SzKPvMFP01dNFuvp66fX9BFjqArv2MLU7jl5QGQ8O79cQU8O4sdyN4dHcFg
+        3lATjUULKaMiw7VOjintw3rKhil4Qn/rc6qF2n6GUV0ApCFQwTNRS2MrIdCHPQ0J1+WT+FxxeGpu4
+        4jUVLgoQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55678)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.96)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1qghPc-0003g5-37;
+        Thu, 14 Sep 2023 09:09:21 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1qghPY-0004ZU-U9; Thu, 14 Sep 2023 09:09:17 +0100
+Date:   Thu, 14 Sep 2023 09:09:16 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
 To:     James Morse <james.morse@arm.com>
 Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
         linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
         x86@kernel.org, Salil Mehta <salil.mehta@huawei.com>,
-        Russell King <linux@armlinux.org.uk>,
         Jean-Philippe Brucker <jean-philippe@linaro.org>,
         jianyong.wu@arm.com, justin.he@arm.com
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [RFC PATCH v2 28/35] arm64, irqchip/gic-v3, ACPI: Move MADT GICC
+ enabled check into a helper
+Message-ID: <ZQK/rM/+1fGhM18m@shell.armlinux.org.uk>
+References: <20230913163823.7880-1-james.morse@arm.com>
+ <20230913163823.7880-29-james.morse@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230913163823.7880-29-james.morse@arm.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello James,
+On Wed, Sep 13, 2023 at 04:38:16PM +0000, James Morse wrote:
+> +static inline bool acpi_gicc_is_usable(struct acpi_madt_generic_interrupt *gicc)
+> +{
+> +	return (gicc->flags & ACPI_MADT_ENABLED);
 
-On Wed, 13 Sept 2023 at 18:41, James Morse <james.morse@arm.com> wrote:
->
-> Add the new flag field to the MADT's GICC structure.
->
-> 'Online Capable' indicates a disabled CPU can be enabled later.
->
+These parens are not needed.
 
-Why do we need a bit for this? What would be the point of describing
-disabled CPUs that cannot be enabled (and are you are aware of
-firmware doing this?).
-
-So why are we not able to assume that this new bit can always be treated as '1'?
-
-
-> Signed-off-by: James Morse <james.morse@arm.com>
-> ---
-> This patch probably needs to go via the upstream acpica project,
-> but is included here so the feature can be testd.
-> ---
->  include/acpi/actbl2.h | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-> index 3751ae69432f..c433a079d8e1 100644
-> --- a/include/acpi/actbl2.h
-> +++ b/include/acpi/actbl2.h
-> @@ -1046,6 +1046,7 @@ struct acpi_madt_generic_interrupt {
->  /* ACPI_MADT_ENABLED                    (1)      Processor is usable if set */
->  #define ACPI_MADT_PERFORMANCE_IRQ_MODE  (1<<1) /* 01: Performance Interrupt Mode */
->  #define ACPI_MADT_VGIC_IRQ_MODE         (1<<2) /* 02: VGIC Maintenance Interrupt mode */
-> +#define ACPI_MADT_GICC_CPU_CAPABLE      (1<<3) /* 03: CPU is online capable */
->
->  /* 12: Generic Distributor (ACPI 5.0 + ACPI 6.0 changes) */
->
-> --
-> 2.39.2
->
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
