@@ -2,113 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF0407A0574
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 15:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D14357A0684
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 15:54:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238797AbjINNWB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Sep 2023 09:22:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51540 "EHLO
+        id S239302AbjINNyC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Sep 2023 09:54:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238587AbjINNWA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 09:22:00 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FD281BEF;
-        Thu, 14 Sep 2023 06:21:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479F9C433C8;
-        Thu, 14 Sep 2023 13:21:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694697716;
-        bh=FzlNAs3rImdHO1pAdlHaXIjQ1hufjxExpSnTB4BHtY0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EdT53XN7rp75UYrl4UjRDK+k6N6DHdGyF4Kn9iog/QWHPhwnTa2HxE3vC6m9QotD1
-         deWOexHV3XmrQB1CeMf61oxOky9wqkJ7a2c79anw2bV27je28pgHT4egk82wSWrew6
-         F4YXa2AOSFG1iYoh11TIeLdONUNgOn8/f5ywnBOl+hBpg+rB4pD2nlR2j00BZJP9Nq
-         pZ3LVr4Q3LZYdMLhXV8OA4EbbazUJU6p77bm5xi2tVQSlJQWq38atrhD+ILkiMlslq
-         pftRuW4ekNk/BH5sUVItdiMY+jKYUOjSl1cX7pDzjWjQqf/38TvPT8wU/TUu8zFpow
-         5DxsDkisXaeLA==
-Date:   Thu, 14 Sep 2023 14:21:50 +0100
-From:   Will Deacon <will@kernel.org>
-To:     Oza Pawandeep <quic_poza@quicinc.com>
-Cc:     sudeep.holla@arm.com, catalin.marinas@arm.com, rafael@kernel.org,
-        lenb@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v5] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast
- timer
-Message-ID: <20230914132149.GA13461@willie-the-truck>
-References: <20230912172933.3561144-1-quic_poza@quicinc.com>
+        with ESMTP id S239292AbjINNyC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 09:54:02 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA2DF1AE;
+        Thu, 14 Sep 2023 06:53:57 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RmdwB3Lzdz6D8rX;
+        Thu, 14 Sep 2023 21:49:14 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 14 Sep
+ 2023 14:53:54 +0100
+Date:   Thu, 14 Sep 2023 14:53:53 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     James Morse <james.morse@arm.com>
+CC:     <linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
+        <linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-riscv@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+        <x86@kernel.org>, Salil Mehta <salil.mehta@huawei.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        <jianyong.wu@arm.com>, <justin.he@arm.com>
+Subject: Re: [RFC PATCH v2 15/35] ACPI: processor: Add support for
+ processors described as container packages
+Message-ID: <20230914145353.000072e2@Huawei.com>
+In-Reply-To: <20230913163823.7880-16-james.morse@arm.com>
+References: <20230913163823.7880-1-james.morse@arm.com>
+        <20230913163823.7880-16-james.morse@arm.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230912172933.3561144-1-quic_poza@quicinc.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 12, 2023 at 10:29:33AM -0700, Oza Pawandeep wrote:
-> Arm® Functional Fixed Hardware Specification defines LPI states,
-> which provide an architectural context loss flags field that can
-> be used to describe the context that might be lost when an LPI
-> state is entered.
+On Wed, 13 Sep 2023 16:38:03 +0000
+James Morse <james.morse@arm.com> wrote:
+
+> ACPI has two ways of describing processors in the DSDT. Either as a device
+> object with HID ACPI0007, or as a type 'C' package inside a Processor
+> Container. The ACPI processor driver probes CPUs described as devices, but
+> not those described as packages.
 > 
-> - Core context Lost
->         - General purpose registers.
->         - Floating point and SIMD registers.
->         - System registers, include the System register based
->         - generic timer for the core.
->         - Debug register in the core power domain.
->         - PMU registers in the core power domain.
->         - Trace register in the core power domain.
-> - Trace context loss
-> - GICR
-> - GICD
+
+Specification reference needed...
+
+Terminology wise, I'd just refer to Processor() objects as I think they
+are named objects rather than data terms like a package (Which include
+a PkgLength etc)
+
+
+
+> Duplicate descriptions are not allowed, the ACPI processor driver already
+> parses the UID from both devices and containers. acpi_processor_get_info()
+> returns an error if the UID exists twice in the DSDT.
 > 
-> Qualcomm's custom CPUs preserves the architectural state,
-> including keeping the power domain for local timers active.
-> when core is power gated, the local timers are sufficient to
-> wake the core up without needing broadcast timer.
+> The missing probe for CPUs described as packages creates a problem for
+> moving the cpu_register() calls into the acpi_processor driver, as CPUs
+> described like this don't get registered, leading to errors from other
+> subsystems when they try to add new sysfs entries to the CPU node.
+> (e.g. topology_sysfs_init()'s use of topology_add_dev() via cpuhp)
 > 
-> The patch fixes the evaluation of cpuidle arch_flags, and moves only to
-> broadcast timer if core context lost is defined in ACPI LPI.
+> To fix this, parse the processor container and call acpi_processor_add()
+> for each processor that is discovered like this. The processor container
+> handler is added with acpi_scan_add_handler(), so no detach call will
+> arrive.
 > 
-> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-> Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
+> Qemu TCG describes CPUs using packages in a processor container.
+
+processor terms in a processor container. 
 > 
-> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-> index 4d537d56eb84..a30b6e16628d 100644
-> --- a/arch/arm64/include/asm/acpi.h
-> +++ b/arch/arm64/include/asm/acpi.h
-> @@ -9,6 +9,7 @@
->  #ifndef _ASM_ACPI_H
->  #define _ASM_ACPI_H
+> Signed-off-by: James Morse <james.morse@arm.com>
+
+Otherwise looks fine to me.
+
+Jonathan
+> ---
+>  drivers/acpi/acpi_processor.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+> 
+> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> index c0839bcf78c1..b4bde78121bb 100644
+> --- a/drivers/acpi/acpi_processor.c
+> +++ b/drivers/acpi/acpi_processor.c
+> @@ -625,9 +625,31 @@ static struct acpi_scan_handler processor_handler = {
+>  	},
+>  };
 >  
-> +#include <linux/cpuidle.h>
->  #include <linux/efi.h>
->  #include <linux/memblock.h>
->  #include <linux/psci.h>
-> @@ -44,6 +45,25 @@
->  
->  #define ACPI_MADT_GICC_TRBE  (offsetof(struct acpi_madt_generic_interrupt, \
->  	trbe_interrupt) + sizeof(u16))
-> +/*
-> + * Arm® Functional Fixed Hardware Specification Version 1.2.
-> + * Table 2: Arm Architecture context loss flags
-> + */
-> +#define CPUIDLE_CORE_CTXT		BIT(0) /* Core context Lost */
-> +
-> +#ifndef arch_update_idle_state_flags
-> +static __always_inline void _arch_update_idle_state_flags(u32 arch_flags,
-> +							unsigned int *sflags)
+> +static acpi_status acpi_processor_container_walk(acpi_handle handle,
+> +						 u32 lvl,
+> +						 void *context,
+> +						 void **rv)
 > +{
-> +	if (arch_flags & CPUIDLE_CORE_CTXT)
-> +		*sflags |= CPUIDLE_FLAG_TIMER_STOP;
+> +	struct acpi_device *adev;
+> +	acpi_status status;
+> +
+> +	adev = acpi_get_acpi_dev(handle);
+> +	if (!adev)
+> +		return AE_ERROR;
+> +
+> +	status = acpi_processor_add(adev, &processor_device_ids[0]);
+> +	acpi_put_acpi_dev(adev);
+> +
+> +	return status;
 > +}
-> +#define arch_update_idle_state_flags _arch_update_idle_state_flags
-> +#endif
+> +
+>  static int acpi_processor_container_attach(struct acpi_device *dev,
+>  					   const struct acpi_device_id *id)
+>  {
+> +	acpi_walk_namespace(ACPI_TYPE_PROCESSOR, dev->handle,
+> +			    ACPI_UINT32_MAX, acpi_processor_container_walk,
+> +			    NULL, NULL, NULL);
+> +
+>  	return 1;
+>  }
+>  
 
-Why do you need the #ifndef/endif guards here? I'd have thought you'd
-_always_ want this definition to be the one used, with the compiler
-complaining otherwise.
-
-Will
