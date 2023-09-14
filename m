@@ -2,172 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 718487A0D84
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 20:52:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC29A7A0E59
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 21:29:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242007AbjINSwK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Sep 2023 14:52:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37798 "EHLO
+        id S231243AbjINT3N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Sep 2023 15:29:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242331AbjINSvb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 14:51:31 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D9762711;
-        Thu, 14 Sep 2023 11:48:51 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38EI1txs018514;
-        Thu, 14 Sep 2023 18:48:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=qcppdkim1;
- bh=euYiftLWcNaTMXljNh0KbWO1rVNZGb5RAvVpWOo8c54=;
- b=VkCOQyjM83TMRRszAWnmmg2Vf5xz4TXqPEUG4/O2SQqPiAxlx4XUSH1RGYIhO6OiGvEX
- UkMikwycpvp8pZTTzgb5DEUdyhi43hRTYeI4Xcu0EmA2jZN+GItXXZ59d5I7VOAiicGs
- 6rN0grRTAzemIk4st+GGtWeFmcDjVmTUli3QVCAzAXJd2H9SVKY/BBr08MmZ2G4ZbzzP
- M4h1rnAvSMjOj/hqkSbL1mGYniR7ULSclEAolJSiGmLuv8FEo8KfAQcYuFuflnGPPx2Y
- Bmxm4/ocNZz4+0UbjFG62XzP9YV9ZtUwoHQKfHmwxj9jyP3/ZDTQ0I9d1VUmKlZvBfVq 6Q== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t3wx19ubf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Sep 2023 18:48:44 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38EImgaI008711
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Sep 2023 18:48:43 GMT
-Received: from localhost (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Thu, 14 Sep
- 2023 11:48:42 -0700
-From:   Oza Pawandeep <quic_poza@quicinc.com>
-To:     <sudeep.holla@arm.com>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-CC:     Oza Pawandeep <quic_poza@quicinc.com>
-Subject: [PATCH v6] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast timer
-Date:   Thu, 14 Sep 2023 11:48:39 -0700
-Message-ID: <20230914184840.649412-1-quic_poza@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S231588AbjINT3N (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 15:29:13 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ACEE26AB;
+        Thu, 14 Sep 2023 12:29:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A303FC433C7;
+        Thu, 14 Sep 2023 19:29:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694719748;
+        bh=hNAY8MGYf8YcUA4vUEpZaRVEM+yzGB604aBLvFxOsT8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=wxcrE226jsia0S3OIWHpfgtZ/AoKg0fTDExE9v9F1PNvhRw0uvpE8Va/msOBLScs9
+         gpOk7cXfKnBHScKDhQrGdrE5/hJtQaAx1W0vJXNKgxwzf3D3jpyD17hVbJC075Eqnx
+         +8JtylLCHswVV53CHy8hAp5JKHzgx/i6dR8lGuRw=
+Date:   Thu, 14 Sep 2023 21:29:00 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jinhui Guo <guojinhui.liam@bytedance.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, lizefan.x@bytedance.com,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v4] driver core: platform: set numa_node before
+ platform_add_device()
+Message-ID: <2023091440-worried-raider-7c85@gregkh>
+References: <20230914150612.3440-1-guojinhui.liam@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: RiHjGaHHx4KR_0FBIOfqM7Orz7MaTYga
-X-Proofpoint-ORIG-GUID: RiHjGaHHx4KR_0FBIOfqM7Orz7MaTYga
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-14_10,2023-09-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=25 spamscore=25
- priorityscore=1501 mlxscore=25 bulkscore=0 adultscore=0 clxscore=1015
- phishscore=0 mlxlogscore=47 impostorscore=0 suspectscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309140163
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230914150612.3440-1-guojinhui.liam@bytedance.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Arm® Functional Fixed Hardware Specification defines LPI states,
-which provide an architectural context loss flags field that can
-be used to describe the context that might be lost when an LPI
-state is entered.
+On Thu, Sep 14, 2023 at 11:06:12PM +0800, Jinhui Guo wrote:
+> platform_add_device() creates the numa_node attribute of sysfs according
+> to whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
+> of device before creating numa_node attribute of sysfs.
+> 
+> Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+> ---
+>  drivers/acpi/acpi_platform.c | 4 +---
+>  drivers/base/platform.c      | 1 +
+>  include/linux/acpi.h         | 5 +++++
+>  3 files changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+> index 48d15dd785f6..adcbfbdc343f 100644
+> --- a/drivers/acpi/acpi_platform.c
+> +++ b/drivers/acpi/acpi_platform.c
+> @@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+>  	if (IS_ERR(pdev))
+>  		dev_err(&adev->dev, "platform device creation failed: %ld\n",
+>  			PTR_ERR(pdev));
+> -	else {
+> -		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
+> +	else
+>  		dev_dbg(&adev->dev, "created platform device %s\n",
+>  			dev_name(&pdev->dev));
+> -	}
+>  
+>  	kfree(resources);
+>  
+> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+> index 76bfcba25003..35c891075d95 100644
+> --- a/drivers/base/platform.c
+> +++ b/drivers/base/platform.c
+> @@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
+>  			goto err;
+>  	}
+>  
+> +	set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
+>  	ret = platform_device_add(pdev);
+>  	if (ret) {
+>  err:
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index a73246c3c35e..6a349d53f19e 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
+>  	return 0;
+>  }
+>  #endif
+> +
+> +#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
+> +	acpi_get_node((adev)->handle) : NUMA_NO_NODE)
+> +
+>  extern int pnpacpi_disabled;
+>  
+>  #define PXM_INVAL	(-1)
+> @@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
+>  #define ACPI_COMPANION_SET(dev, adev)	do { } while (0)
+>  #define ACPI_HANDLE(dev)		(NULL)
+>  #define ACPI_HANDLE_FWNODE(fwnode)	(NULL)
+> +#define ACPI_NODE_GET(adev)		NUMA_NO_NODE
+>  
+>  #include <acpi/acpi_numa.h>
+>  
+> -- 
+> 2.20.1
+> 
 
-- Core context Lost
-        - General purpose registers.
-        - Floating point and SIMD registers.
-        - System registers, include the System register based
-        - generic timer for the core.
-        - Debug register in the core power domain.
-        - PMU registers in the core power domain.
-        - Trace register in the core power domain.
-- Trace context loss
-- GICR
-- GICD
+Hi,
 
-Qualcomm's custom CPUs preserves the architectural state,
-including keeping the power domain for local timers active.
-when core is power gated, the local timers are sufficient to
-wake the core up without needing broadcast timer.
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
-The patch fixes the evaluation of cpuidle arch_flags, and moves only to
-broadcast timer if core context lost is defined in ACPI LPI.
+You are receiving this message because of the following common error(s)
+as indicated below:
 
-Fixes: a36a7fecfe607 ("Add support for Low Power Idle(LPI) states")
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
----
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
 
-Notes:
-    Will/Catalin: Rafael has acked and he prefers to take it via arm64 tree
+- You have marked a patch with a "Fixes:" tag for a commit that is in an
+  older released kernel, yet you do not have a cc: stable line in the
+  signed-off-by area at all, which means that the patch will not be
+  applied to any older kernel releases.  To properly fix this, please
+  follow the documented rules in the
+  Documetnation/process/stable-kernel-rules.rst file for how to resolve
+  this.
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index 4d537d56eb84..269d21209723 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -9,6 +9,7 @@
- #ifndef _ASM_ACPI_H
- #define _ASM_ACPI_H
- 
-+#include <linux/cpuidle.h>
- #include <linux/efi.h>
- #include <linux/memblock.h>
- #include <linux/psci.h>
-@@ -44,6 +45,23 @@
- 
- #define ACPI_MADT_GICC_TRBE  (offsetof(struct acpi_madt_generic_interrupt, \
- 	trbe_interrupt) + sizeof(u16))
-+/*
-+ * Arm® Functional Fixed Hardware Specification Version 1.2.
-+ * Table 2: Arm Architecture context loss flags
-+ */
-+#define CPUIDLE_CORE_CTXT		BIT(0) /* Core context Lost */
-+
-+static __always_inline void _arch_update_idle_state_flags(u32 arch_flags,
-+							unsigned int *sflags)
-+{
-+	if (arch_flags & CPUIDLE_CORE_CTXT)
-+		*sflags |= CPUIDLE_FLAG_TIMER_STOP;
-+}
-+#define arch_update_idle_state_flags _arch_update_idle_state_flags
-+
-+#define CPUIDLE_TRACE_CTXT		BIT(1) /* Trace context loss */
-+#define CPUIDLE_GICR_CTXT		BIT(2) /* GICR */
-+#define CPUIDLE_GICD_CTXT		BIT(3) /* GICD */
- 
- /* Basic configuration for ACPI */
- #ifdef	CONFIG_ACPI
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index dc615ef6550a..5c1d13eecdd1 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -1217,8 +1217,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
- 		strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
- 		state->exit_latency = lpi->wake_latency;
- 		state->target_residency = lpi->min_residency;
--		if (lpi->arch_flags)
--			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
-+		arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
- 		if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
- 			state->flags |= CPUIDLE_FLAG_RCU_IDLE;
- 		state->enter = acpi_idle_lpi_enter;
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index a73246c3c35e..f8c561a4215e 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1480,6 +1480,10 @@ static inline int lpit_read_residency_count_address(u64 *address)
- }
- #endif
- 
-+#ifndef arch_update_idle_state_flags
-+#define arch_update_idle_state_flags(af, sf)	do {} while (0)
-+#endif
-+
- #ifdef CONFIG_ACPI_PPTT
- int acpi_pptt_cpu_is_thread(unsigned int cpu);
- int find_acpi_cpu_topology(unsigned int cpu, int level);
--- 
-2.25.1
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
 
+thanks,
+
+greg k-h's patch email bot
