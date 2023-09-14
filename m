@@ -2,134 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A4F57A0884
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 17:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 645467A0958
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Sep 2023 17:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240347AbjINPHA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Sep 2023 11:07:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48908 "EHLO
+        id S240912AbjINPeq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Sep 2023 11:34:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234066AbjINPHA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 11:07:00 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 081B11AE
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Sep 2023 08:06:34 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-68fe2470d81so936073b3a.1
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Sep 2023 08:06:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1694703993; x=1695308793; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jG54HLrMQG4OE0xAHorBCovujULO0w3vqxw1/nGGQmo=;
-        b=JWrGR+EUYkg0BoQCe8/SpraZULjn1kcnxfs+K/PVHtFHCYa6v1+Xmxks3dOfwyjMVe
-         mhkZv3P/fGQQDxOJNqQNGZCJ3gCFp17aHKHliddYMbgtDTPfmintoOZKndmqQNapgobX
-         vPJ8bsDsG2AlYpk4b+zkIv0hzKJaTWKdT7pLoHTU67/Fp4KuewTE0PG/dU/vgGzX3H7L
-         ZmZ0W464sOJ470BK7apw2X50D2I+fjaSECA1LOdfmqdiTRMLQYBwb0vczWj5hXsw53xQ
-         i95UfdrNJb4hEL7Q5Jh+vCpfYI9INiI1FMdhhCKVWcbHwScMfzqS9XUratDBTYZx7uxk
-         awnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694703993; x=1695308793;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jG54HLrMQG4OE0xAHorBCovujULO0w3vqxw1/nGGQmo=;
-        b=Rrtmvggt66cV777L1q2MBuMvAWz0CSsrnMLqaPfFI5u9xJsKgx/c/c9n3o8/io5qhl
-         arri3uXpOTsXlDkLd/mZM8uh2AhGdjO5Lmab58ur19QhwEEkuvOs8ygjiO7YhN7FTkZ7
-         00DTPcIGpax1hbhAnhGNc3WInyvEkpN5ka2RDh9yOMB/5eBXqaJLortyFRpleXS+RIb8
-         LerWQiMsdwQs4YnOaOu5CjynY5Mkpr95pCa16xHnZL18ihiraYi0wZ3lqNwmApyjXgOq
-         rVsWHAvTWP8gPLRvd3Ou7NWKqGfjsEC+6XP4riQKKMldTiJaBWMw9K3IDDBGIHYx7T5v
-         pKGQ==
-X-Gm-Message-State: AOJu0YzkxFGTfbDJ1YvLTpKROY0Y+CpBbVSq+vNhRfxjijfVpae3MNCc
-        yZ4Icm2mA/+2royAawWsUN1BQA==
-X-Google-Smtp-Source: AGHT+IHhwHVjntzoz3jPjbLQ62A6HHdFXXYcE9CsoBNeoPxmpWbauBnbpTuoNSuRHyk4RxI1h7URXg==
-X-Received: by 2002:a05:6a00:150b:b0:68f:c6f8:1451 with SMTP id q11-20020a056a00150b00b0068fc6f81451mr6554286pfu.16.1694703993458;
-        Thu, 14 Sep 2023 08:06:33 -0700 (PDT)
-Received: from PF2LML5M-SMJ.lan ([49.7.199.234])
-        by smtp.gmail.com with ESMTPSA id t6-20020a62ea06000000b006884549adc8sm1457630pfh.29.2023.09.14.08.06.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Sep 2023 08:06:32 -0700 (PDT)
-From:   Jinhui Guo <guojinhui.liam@bytedance.com>
-To:     rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org
-Cc:     lizefan.x@bytedance.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jinhui Guo <guojinhui.liam@bytedance.com>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH v4] driver core: platform: set numa_node before platform_add_device()
-Date:   Thu, 14 Sep 2023 23:06:12 +0800
-Message-Id: <20230914150612.3440-1-guojinhui.liam@bytedance.com>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S240810AbjINPeo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Sep 2023 11:34:44 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 118D8CE;
+        Thu, 14 Sep 2023 08:34:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECC6C433CB;
+        Thu, 14 Sep 2023 15:34:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694705679;
+        bh=TC5noj5ktH2x7QwQggxt68bg/J4n39+D6FUOyZfzpR8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=VhZ3lpyNJ5JBnKIJXQOzqzyIyRP8YcFLhoDiqbK4XOP9op/up4vR9RzbsJ7Pv804p
+         1KFaej6Kan7MvEO6Pff3K4+JM46O38+EbToWV3Bm57EFMSKdtyiTKP8sGrZqGcoNdp
+         CZVXZ7ghIgZvbiwLSS2efunPvRGUYvHx4DmsMMhmbogIs5mrsYaG/1ZVOjhrE2UAhz
+         Tn0tyQ2lp9STPxG+fwsM3Aw/uNkTbUagLsBC1h2k74xzjTz5o/s0LCn+IvEaZY/DjV
+         QdWtANlmUc8rNkMzESluMKsL114Kx9zJGiTuZMwgoFyXLwvPd/RJc/dXHmUviwA8Eq
+         xR45CY7Bl5RKw==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-500913779f5so1879299e87.2;
+        Thu, 14 Sep 2023 08:34:39 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzSP9pbvs+8mlxdJkFDer/zZsBvfosHkvgruIWw211vKPwf9J2Q
+        Zg8kPfqWxLcKK4oY6/4RmmwY2739gPrsAscEyqA=
+X-Google-Smtp-Source: AGHT+IHQWhXWk9WB76jsul3E8BXF8FIj2XgeZXziogZ8+9RlZta9SMLLLzxXno0++LBAsD2vWnMl44SVOfg370+hAkA=
+X-Received: by 2002:a05:6512:452:b0:500:bb99:69a7 with SMTP id
+ y18-20020a056512045200b00500bb9969a7mr4588249lfk.14.1694705677877; Thu, 14
+ Sep 2023 08:34:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230913163823.7880-1-james.morse@arm.com> <20230913163823.7880-28-james.morse@arm.com>
+ <CAMj1kXHRAt7ecB9p_dm3MjDL5wZkAsVh30hMY2SV_XUe=bm6Vg@mail.gmail.com> <20230914155459.00002dba@Huawei.com>
+In-Reply-To: <20230914155459.00002dba@Huawei.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Thu, 14 Sep 2023 17:34:25 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFquiLGCMow3iujHUU4GBZx2t9KfKy1R9iqjBFjY+acaA@mail.gmail.com>
+Message-ID: <CAMj1kXFquiLGCMow3iujHUU4GBZx2t9KfKy1R9iqjBFjY+acaA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 27/35] ACPICA: Add new MADT GICC flags fields [code first?]
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     James Morse <james.morse@arm.com>, linux-pm@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+        x86@kernel.org, Salil Mehta <salil.mehta@huawei.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        jianyong.wu@arm.com, justin.he@arm.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-platform_add_device() creates the numa_node attribute of sysfs according
-to whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
-of device before creating numa_node attribute of sysfs.
+On Thu, 14 Sept 2023 at 16:55, Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Thu, 14 Sep 2023 09:57:44 +0200
+> Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> > Hello James,
+> >
+> > On Wed, 13 Sept 2023 at 18:41, James Morse <james.morse@arm.com> wrote:
+> > >
+> > > Add the new flag field to the MADT's GICC structure.
+> > >
+> > > 'Online Capable' indicates a disabled CPU can be enabled later.
+> > >
+> >
+> > Why do we need a bit for this? What would be the point of describing
+> > disabled CPUs that cannot be enabled (and are you are aware of
+> > firmware doing this?).
+>
+> Enabled being not set is common at some similar ACPI tables at least.
+>
+> This is available in most ACPI tables to allow firmware to use 'nearly'
+> static tables and just tweak the 'enabled' bit to say if the record should
+> be ignored or not. Also _STA not present which is for same trick.
+> If you are doing clever dynamic tables, then you can just not present
+> the entry.
+>
+> With that existing use case in mind, need another bit to say this
+> one might one day turn up.  Note this is copied from x86 though no
+> one seems to have implemented the kernel support for them yet.
+>
+> Note as per my other reply - this isn't a code first proposal. It's in the
+> spec already (via a code first proposal last year I think).
+>
+> >
+> > So why are we not able to assume that this new bit can always be treated as '1'?
+>
+> Given above, need the extra bit to size stuff to allow for the CPU showing up
+> late.
+>
 
-Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
----
- drivers/acpi/acpi_platform.c | 4 +---
- drivers/base/platform.c      | 1 +
- include/linux/acpi.h         | 5 +++++
- 3 files changed, 7 insertions(+), 3 deletions(-)
+So does this mean that on x86, the CPU object is instantiated only
+when the hardware level hotplug occurs? And before that, the object
+does not exist at all?
 
-diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-index 48d15dd785f6..adcbfbdc343f 100644
---- a/drivers/acpi/acpi_platform.c
-+++ b/drivers/acpi/acpi_platform.c
-@@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
- 	if (IS_ERR(pdev))
- 		dev_err(&adev->dev, "platform device creation failed: %ld\n",
- 			PTR_ERR(pdev));
--	else {
--		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-+	else
- 		dev_dbg(&adev->dev, "created platform device %s\n",
- 			dev_name(&pdev->dev));
--	}
- 
- 	kfree(resources);
- 
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 76bfcba25003..35c891075d95 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
- 			goto err;
- 	}
- 
-+	set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
- 	ret = platform_device_add(pdev);
- 	if (ret) {
- err:
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index a73246c3c35e..6a349d53f19e 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
- 	return 0;
- }
- #endif
-+
-+#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
-+	acpi_get_node((adev)->handle) : NUMA_NO_NODE)
-+
- extern int pnpacpi_disabled;
- 
- #define PXM_INVAL	(-1)
-@@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
- #define ACPI_COMPANION_SET(dev, adev)	do { } while (0)
- #define ACPI_HANDLE(dev)		(NULL)
- #define ACPI_HANDLE_FWNODE(fwnode)	(NULL)
-+#define ACPI_NODE_GET(adev)		NUMA_NO_NODE
- 
- #include <acpi/acpi_numa.h>
- 
--- 
-2.20.1
+Because it seems to me that _STA, having both enabled and present
+bits, could already describe what we need here, and arguably, a CPU
+that is not both present and enabled should not be used by the OS.
+This would leave room for representing off-line CPUs as present but
+not enabled.
 
+Apologies if I am missing something obvious here - the whole rationale
+behind this thing is rather confusing to me.
