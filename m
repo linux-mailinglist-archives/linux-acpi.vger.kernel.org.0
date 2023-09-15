@@ -2,229 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B5B67A17F4
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Sep 2023 10:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 909807A1918
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Sep 2023 10:45:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232462AbjIOIFw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Sep 2023 04:05:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43862 "EHLO
+        id S232905AbjIOIpZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 15 Sep 2023 04:45:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230454AbjIOIFw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Sep 2023 04:05:52 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30783AC;
-        Fri, 15 Sep 2023 01:05:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694765147; x=1726301147;
-  h=date:from:to:cc:subject:message-id;
-  bh=Nz7yu9G7XvQ7AnjJ748Yt3miXUlvB/Q80Jmr2hnQX6I=;
-  b=D0BqXIyn2+aHCyb+3lO4P2ciyq9+2U+Pt3viqKkXCPgJxzNoMGi06GxV
-   asu2N/4MqwzioWyjIyywKM2SUuhWmvqMP1DwpiH8ERHDV6ztvR6Xc0HkY
-   +IfVpsoBauJ31eOTF86/qFGRylGmisNh5T1hPyvTv1wvaeOYM7eDHHvF4
-   ccjJL5779CtC3EdHthg9oGO5hAqpQ3srRv04p+s9aN1hLy7INutUMBkBz
-   6KjTdnZB5EJ1BWu6aeaUUoLbmGRmnfFmSwl2i/d4ca355jkCq/NcsodPI
-   EJN4+F2prCa55dj9a/qgTSDdgSny4TjDBi35yfi6OUuuUg+m6+8cBo6Sa
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="358606489"
-X-IronPort-AV: E=Sophos;i="6.02,148,1688454000"; 
-   d="scan'208";a="358606489"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2023 01:05:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="774217963"
-X-IronPort-AV: E=Sophos;i="6.02,148,1688454000"; 
-   d="scan'208";a="774217963"
-Received: from lkp-server02.sh.intel.com (HELO 9ef86b2655e5) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 15 Sep 2023 01:05:44 -0700
-Received: from kbuild by 9ef86b2655e5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qh3pc-0002fv-0p;
-        Fri, 15 Sep 2023 08:05:41 +0000
-Date:   Fri, 15 Sep 2023 16:05:29 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 77717cab92056218f16b9fa41af5363b9411f4d6
-Message-ID: <202309151627.1SeuHQXS-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S232242AbjIOIpY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Sep 2023 04:45:24 -0400
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E42919A0;
+        Fri, 15 Sep 2023 01:45:19 -0700 (PDT)
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-1d542f05b9aso139488fac.1;
+        Fri, 15 Sep 2023 01:45:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694767519; x=1695372319;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bL0AhYUxrdUzQj4Hs45z84nA3TJ4ToZSnUkbGf3bwUM=;
+        b=vNcy9zJuxNcn8O8AkCBd/lX9x/tGf7b01oo8U3r1CbAhtvYE8HmX/y6lvZ6cHFpdAx
+         +Ml+zF/jlFIFT29h3Sg/G2kdJNsYJrZXVPZywAy/crwGxfvZCzJeeSTCtymEaQmWCwC+
+         Szj0T68CMaaV+BAa5eFuR5OwJSBfHLeEuGnyC4VMWBE3FcG48skc56r5Vf5fMa92JRzF
+         RQss0Waj7e2isN6/gdYiLoyRPBhobUt3YgA/tliq9zrO6q0wMhNVhM2JLA6MfLD1I/Kw
+         CDGTqqjdEz7lEq9jhCnb5D7DbavkxXLZYICnZsroEl4Gwe8qXPRoImWTKzbhMaEzZhg2
+         Ht5w==
+X-Gm-Message-State: AOJu0YzZSQpSbMqrXs1Pnk36i4SK969dxsTBU+OTDPQfQ4VabXvNFuEV
+        oe8WLUY041RzNkKG3z75Ch3Y8IJP6UpC7rbMYsw=
+X-Google-Smtp-Source: AGHT+IHl9PRzfbA8hGPGrt3+1ROWaBoHTLPlXkbCHBgq/t81poRMRxjJx/fiwhN8rIFqovs63lEpZzfcdrUxgqBUZyU=
+X-Received: by 2002:a05:6870:4250:b0:1d5:8faf:2935 with SMTP id
+ v16-20020a056870425000b001d58faf2935mr1048882oac.4.1694767518748; Fri, 15 Sep
+ 2023 01:45:18 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230913163823.7880-1-james.morse@arm.com> <20230913163823.7880-28-james.morse@arm.com>
+ <CAMj1kXHRAt7ecB9p_dm3MjDL5wZkAsVh30hMY2SV_XUe=bm6Vg@mail.gmail.com>
+ <20230914155459.00002dba@Huawei.com> <CAMj1kXFquiLGCMow3iujHUU4GBZx2t9KfKy1R9iqjBFjY+acaA@mail.gmail.com>
+ <f5d9beea95e149ab89364dcdb0f8bf69@huawei.com> <ZQQDJT6MOaIOPmq5@shell.armlinux.org.uk>
+In-Reply-To: <ZQQDJT6MOaIOPmq5@shell.armlinux.org.uk>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 15 Sep 2023 10:45:07 +0200
+Message-ID: <CAJZ5v0jUQ+4G5ArYAtu1gvYF4356CK_QVTO4oWn0ukwdOiZaHA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 27/35] ACPICA: Add new MADT GICC flags fields [code first?]
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Salil Mehta <salil.mehta@huawei.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        James Morse <james.morse@arm.com>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        "jianyong.wu@arm.com" <jianyong.wu@arm.com>,
+        "justin.he@arm.com" <justin.he@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 77717cab92056218f16b9fa41af5363b9411f4d6  Merge branch 'pm-sleep' into linux-next
+On Fri, Sep 15, 2023 at 9:09 AM Russell King (Oracle)
+<linux@armlinux.org.uk> wrote:
+>
+> On Fri, Sep 15, 2023 at 02:29:13AM +0000, Salil Mehta wrote:
+> > On x86, during init, if the MADT entry for LAPIC is found to be
+> > online-capable and is enabled as well then possible and present
+>
+> Note that the ACPI spec says enabled + online-capable isn't defined.
+>
+> "The information conveyed by this bit depends on the value of the
+> Enabled bit. If the Enabled bit is set, this bit is reserved and
+> must be zero."
+>
+> So, if x86 is doing something with the enabled && online-capable
+> state (other than ignoring the online-capable) then technically it
+> is doing something that the spec doesn't define
 
-elapsed time: 720m
+And so it is wrong.
 
-configs tested: 152
-configs skipped: 2
+> - and it's
+> completely fine if aarch64 does something else (maybe treating it
+> strictly as per the spec and ignoring online-capable.)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+That actually is the only compliant thing that can be done.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20230915   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                         lpc18xx_defconfig   gcc  
-arm                        mvebu_v5_defconfig   clang
-arm                   randconfig-001-20230915   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20230915   gcc  
-i386         buildonly-randconfig-002-20230915   gcc  
-i386         buildonly-randconfig-003-20230915   gcc  
-i386         buildonly-randconfig-004-20230915   gcc  
-i386         buildonly-randconfig-005-20230915   gcc  
-i386         buildonly-randconfig-006-20230915   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20230915   gcc  
-i386                  randconfig-002-20230915   gcc  
-i386                  randconfig-003-20230915   gcc  
-i386                  randconfig-004-20230915   gcc  
-i386                  randconfig-005-20230915   gcc  
-i386                  randconfig-006-20230915   gcc  
-i386                  randconfig-011-20230915   gcc  
-i386                  randconfig-012-20230915   gcc  
-i386                  randconfig-013-20230915   gcc  
-i386                  randconfig-014-20230915   gcc  
-i386                  randconfig-015-20230915   gcc  
-i386                  randconfig-016-20230915   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20230915   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                          malta_defconfig   clang
-mips                        omega2p_defconfig   clang
-nios2                            alldefconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc                          g5_defconfig   clang
-powerpc                      mgcoge_defconfig   gcc  
-powerpc                     mpc83xx_defconfig   gcc  
-powerpc                         wii_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20230915   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20230915   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                         ecovec24_defconfig   gcc  
-sh                        edosk7705_defconfig   gcc  
-sh                          rsk7269_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                 randconfig-001-20230915   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20230915   gcc  
-x86_64       buildonly-randconfig-002-20230915   gcc  
-x86_64       buildonly-randconfig-003-20230915   gcc  
-x86_64       buildonly-randconfig-004-20230915   gcc  
-x86_64       buildonly-randconfig-005-20230915   gcc  
-x86_64       buildonly-randconfig-006-20230915   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                randconfig-001-20230915   gcc  
-x86_64                randconfig-002-20230915   gcc  
-x86_64                randconfig-003-20230915   gcc  
-x86_64                randconfig-004-20230915   gcc  
-x86_64                randconfig-005-20230915   gcc  
-x86_64                randconfig-006-20230915   gcc  
-x86_64                randconfig-011-20230915   gcc  
-x86_64                randconfig-012-20230915   gcc  
-x86_64                randconfig-013-20230915   gcc  
-x86_64                randconfig-014-20230915   gcc  
-x86_64                randconfig-015-20230915   gcc  
-x86_64                randconfig-016-20230915   gcc  
-x86_64                randconfig-071-20230915   gcc  
-x86_64                randconfig-072-20230915   gcc  
-x86_64                randconfig-073-20230915   gcc  
-x86_64                randconfig-074-20230915   gcc  
-x86_64                randconfig-075-20230915   gcc  
-x86_64                randconfig-076-20230915   gcc  
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                         rhel-8.3-kunit   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa                         virt_defconfig   gcc  
+As per the spec (quoted above), a platform firmware setting
+online-capable to 1 when Enabled is set is not compliant and it is
+invalid to treat this as meaningful data.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+As currently defined, online-capable is only applicable to CPUs that
+are not enabled to start with and its role is to make it clear whether
+or not they can be enabled later AFAICS.
+
+If there is a need to represent the case in which a CPI that is
+enabled to start with can be disabled, but cannot be enabled again,
+the spec needs to be updated.
