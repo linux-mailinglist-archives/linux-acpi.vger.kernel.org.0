@@ -2,179 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D6FD7A280C
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Sep 2023 22:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD3597A2960
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Sep 2023 23:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237315AbjIOUZt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Sep 2023 16:25:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34116 "EHLO
+        id S232662AbjIOVaP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Sep 2023 17:30:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237390AbjIOUZe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Sep 2023 16:25:34 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4EFDE58;
-        Fri, 15 Sep 2023 13:25:24 -0700 (PDT)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38FK0VNh031699;
-        Fri, 15 Sep 2023 20:25:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=qcppdkim1;
- bh=YFfmbZH6gaxbGnFwOI4MZHQoLb9HlwagtxNd2wzZ+PM=;
- b=c1bwHGuiSIwNCGEBkwNDDeR7k5ENY3TKDrtWFNLl1biDYSeeB8+FCZEQy+4Hh2A3XrrC
- tLehgLk9Lhbh7apzlwPx+6ZHRSpKQQAhhcBCV7Rr3MN0/FL5X7JyzTWvQ8J2WUcIjpwr
- zX3sFzZdneOoCkVD/5dRdF466VjAh8pL9DHglrZ1n/GDR5OOe6htfQAmJZOm5GIh1ini
- 0sb5A3k8oFCYUV/j7aZRS4ca2YluozymYiBCl/zmOH7PWZ8Zb0wLSmrvjLrP2U2DsbDq
- pL8BGSBUl029z2OD4jOF/WVej4BjIuOY2r8A6Yvch//7ksc/XpCnABcxywemzh3OgqST Tg== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t4fsfa94a-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 15 Sep 2023 20:25:15 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38FKPESH025139
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 15 Sep 2023 20:25:15 GMT
-Received: from localhost (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Fri, 15 Sep
- 2023 13:25:14 -0700
-From:   Oza Pawandeep <quic_poza@quicinc.com>
-To:     <sudeep.holla@arm.com>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-CC:     Oza Pawandeep <quic_poza@quicinc.com>
-Subject: [PATCH v7] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast timer
-Date:   Fri, 15 Sep 2023 13:25:11 -0700
-Message-ID: <20230915202511.1452091-1-quic_poza@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S237617AbjIOVaE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Sep 2023 17:30:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C4B8AB8
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Sep 2023 14:29:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694813352;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=VtyMfYzD7xcby6o2/dzP0eRV0+P8SHlRHIxsw7xO7Vo=;
+        b=dyZWzDY8+CYHJykmuChXLveq5pfONoiZIoooqtv/YgSCdEIfqmPW+gRyhk8Q3Wv/zCdeI2
+        u2JfJYr/DdxZDe07R6R5E+nLL/3t1YkZSzsYskV9KmuBLceyTCViHAo721H9DA+53pfzdv
+        C+npa72Bk6E0r9GkLxW4N+KBeYMaMIU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-675-UQKuRmAHPniNH6oCrDMz4Q-1; Fri, 15 Sep 2023 17:29:08 -0400
+X-MC-Unique: UQKuRmAHPniNH6oCrDMz4Q-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 56EC182A620;
+        Fri, 15 Sep 2023 21:29:08 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.5])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C01EE2026D4B;
+        Fri, 15 Sep 2023 21:29:07 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org
+Subject: [PATCH 1/2] ACPI: video: Move Xiaomi Mi Pad 2 quirk to its own section
+Date:   Fri, 15 Sep 2023 23:29:01 +0200
+Message-ID: <20230915212902.59586-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: M7-COwnCTjttp9yOVaseilNUiCTGJAlc
-X-Proofpoint-GUID: M7-COwnCTjttp9yOVaseilNUiCTGJAlc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-15_17,2023-09-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=26 clxscore=1015
- lowpriorityscore=0 impostorscore=0 mlxlogscore=45 mlxscore=26
- malwarescore=0 priorityscore=1501 suspectscore=0 adultscore=0 bulkscore=0
- spamscore=26 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309150183
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Arm® Functional Fixed Hardware Specification defines LPI states,
-which provide an architectural context loss flags field that can
-be used to describe the context that might be lost when an LPI
-state is entered.
+The Xiaomi Mi Pad 2 is currently listed under the:
+"Models which should use the vendor backlight interface,
+because of broken ACPI video backlight control." section.
 
-- Core context Lost
-        - General purpose registers.
-        - Floating point and SIMD registers.
-        - System registers, include the System register based
-        - generic timer for the core.
-        - Debug register in the core power domain.
-        - PMU registers in the core power domain.
-        - Trace register in the core power domain.
-- Trace context loss
-- GICR
-- GICD
+But this is not 100% correct. The Xiaomi Mi Pad 2 is one of a set of
+x86 tablets which shipped with Android as factory OS. These tablets
+have a TI LP8557 backlight controller with its PWM input _not_
+connected to the PMIC or chipset (LPSS) PWM output.
 
-Qualcomm's custom CPUs preserves the architectural state,
-including keeping the power domain for local timers active.
-when core is power gated, the local timers are sufficient to
-wake the core up without needing broadcast timer.
+Instead the backlight can be controlled by configuring the LP8557
+for direct control through its brightness I2C register and then
+using the lp855x driver.
 
-The patch fixes the evaluation of cpuidle arch_flags, and moves only to
-broadcast timer if core context lost is defined in ACPI LPI.
+This setup means that neither i915's native or acpi_video backlight
+control works, so a "vendor" quirk is added for these tablets to
+disable both the native and acpi_video backlight devices, but these
+devices do not use vendor control in the typical meaning of
+vendor specific SMBIOS or ACPI calls being used.
 
-Fixes: a36a7fecfe607 ("Add support for Low Power Idle(LPI) states")
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
+This patch is a preparation patch for adding "vendor" quirks
+for a couple more such tablet models.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
+ drivers/acpi/video_detect.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-Notes:
-    Will/Catalin: Rafael has acked and he prefers to take it via arm64 tree
-
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index 4d537d56eb84..269d21209723 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -9,6 +9,7 @@
- #ifndef _ASM_ACPI_H
- #define _ASM_ACPI_H
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 442396f6ed1f..889902a4fdfe 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -229,14 +229,6 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_BOARD_NAME, "NC210/NC110"),
+ 		},
+ 	},
+-	{
+-	 .callback = video_detect_force_vendor,
+-	 /* Xiaomi Mi Pad 2 */
+-	 .matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
+-		},
+-	},
  
-+#include <linux/cpuidle.h>
- #include <linux/efi.h>
- #include <linux/memblock.h>
- #include <linux/psci.h>
-@@ -44,6 +45,23 @@
- 
- #define ACPI_MADT_GICC_TRBE  (offsetof(struct acpi_madt_generic_interrupt, \
- 	trbe_interrupt) + sizeof(u16))
-+/*
-+ * Arm® Functional Fixed Hardware Specification Version 1.2.
-+ * Table 2: Arm Architecture context loss flags
-+ */
-+#define CPUIDLE_CORE_CTXT		BIT(0) /* Core context Lost */
+ 	/*
+ 	 * Models which should use the vendor backlight interface,
+@@ -799,6 +791,24 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 15 3535"),
+ 		},
+ 	},
 +
-+static __always_inline void _arch_update_idle_state_flags(u32 arch_flags,
-+							unsigned int *sflags)
-+{
-+	if (arch_flags & CPUIDLE_CORE_CTXT)
-+		*sflags |= CPUIDLE_FLAG_TIMER_STOP;
-+}
-+#define arch_update_idle_state_flags _arch_update_idle_state_flags
-+
-+#define CPUIDLE_TRACE_CTXT		BIT(1) /* Trace context loss */
-+#define CPUIDLE_GICR_CTXT		BIT(2) /* GICR */
-+#define CPUIDLE_GICD_CTXT		BIT(3) /* GICD */
++	/*
++	 * x86 android tablets which directly control the backlight through
++	 * an external backlight controller, typically TI's LP8557.
++	 * The backlight is directly controlled by the lp855x driver on these.
++	 * This setup means that neither i915's native nor acpi_video backlight
++	 * control works. Add a "vendor" quirk to disable both. Note these
++	 * devices do not use vendor control in the typical meaning of
++	 * vendor specific SMBIOS or ACPI calls being used.
++	 */
++	{
++	 .callback = video_detect_force_vendor,
++	 /* Xiaomi Mi Pad 2 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
++		},
++	},
+ 	{ },
+ };
  
- /* Basic configuration for ACPI */
- #ifdef	CONFIG_ACPI
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index dc615ef6550a..5c1d13eecdd1 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -1217,8 +1217,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
- 		strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
- 		state->exit_latency = lpi->wake_latency;
- 		state->target_residency = lpi->min_residency;
--		if (lpi->arch_flags)
--			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
-+		arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
- 		if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
- 			state->flags |= CPUIDLE_FLAG_RCU_IDLE;
- 		state->enter = acpi_idle_lpi_enter;
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index a73246c3c35e..07a825c76bab 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1480,6 +1480,12 @@ static inline int lpit_read_residency_count_address(u64 *address)
- }
- #endif
- 
-+#ifdef CONFIG_ACPI_PROCESSOR_IDLE
-+#ifndef arch_update_idle_state_flags
-+#define arch_update_idle_state_flags(af, sf)	do {} while (0)
-+#endif
-+#endif /* CONFIG_ACPI_PROCESSOR_IDLE */
-+
- #ifdef CONFIG_ACPI_PPTT
- int acpi_pptt_cpu_is_thread(unsigned int cpu);
- int find_acpi_cpu_topology(unsigned int cpu, int level);
 -- 
-2.25.1
+2.41.0
 
