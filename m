@@ -2,133 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B0987A1A9E
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Sep 2023 11:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6E6D7A1AFE
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Sep 2023 11:44:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233595AbjIOJez (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Sep 2023 05:34:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42538 "EHLO
+        id S233837AbjIOJoq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Sep 2023 05:44:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233371AbjIOJey (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Sep 2023 05:34:54 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DE6E1FDE;
-        Fri, 15 Sep 2023 02:34:49 -0700 (PDT)
-Received: from lhrpeml100004.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rn86g6pjjz6D9DT;
-        Fri, 15 Sep 2023 17:30:03 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml100004.china.huawei.com (7.191.162.219) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 15 Sep 2023 10:34:46 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031;
- Fri, 15 Sep 2023 10:34:46 +0100
-From:   Salil Mehta <salil.mehta@huawei.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Russell King (Oracle)" <linux@armlinux.org.uk>
-CC:     Ard Biesheuvel <ardb@kernel.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        James Morse <james.morse@arm.com>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "Jean-Philippe Brucker" <jean-philippe@linaro.org>,
-        "jianyong.wu@arm.com" <jianyong.wu@arm.com>,
-        "justin.he@arm.com" <justin.he@arm.com>
-Subject: RE: [RFC PATCH v2 27/35] ACPICA: Add new MADT GICC flags fields [code
- first?]
-Thread-Topic: [RFC PATCH v2 27/35] ACPICA: Add new MADT GICC flags fields
- [code first?]
-Thread-Index: AQHZ5mDqpYLh+nkhC0mj9mPBt3XEBLAZ5MMAgAB0lICAAAsFgIAAEfIQgADzSoCAABq9gIAAG4DQ
-Date:   Fri, 15 Sep 2023 09:34:46 +0000
-Message-ID: <80e36ff513504a0382a1cbce83e42295@huawei.com>
-References: <20230913163823.7880-1-james.morse@arm.com>
-        <20230913163823.7880-28-james.morse@arm.com>
-        <CAMj1kXHRAt7ecB9p_dm3MjDL5wZkAsVh30hMY2SV_XUe=bm6Vg@mail.gmail.com>
-        <20230914155459.00002dba@Huawei.com>
-        <CAMj1kXFquiLGCMow3iujHUU4GBZx2t9KfKy1R9iqjBFjY+acaA@mail.gmail.com>
-        <f5d9beea95e149ab89364dcdb0f8bf69@huawei.com>
-        <ZQQDJT6MOaIOPmq5@shell.armlinux.org.uk>
- <CAJZ5v0jUQ+4G5ArYAtu1gvYF4356CK_QVTO4oWn0ukwdOiZaHA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0jUQ+4G5ArYAtu1gvYF4356CK_QVTO4oWn0ukwdOiZaHA@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.174.239]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S233855AbjIOJoj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Sep 2023 05:44:39 -0400
+Received: from mail-vk1-xa2b.google.com (mail-vk1-xa2b.google.com [IPv6:2607:f8b0:4864:20::a2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE8451FE8
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Sep 2023 02:44:16 -0700 (PDT)
+Received: by mail-vk1-xa2b.google.com with SMTP id 71dfb90a1353d-4935f2d6815so1262858e0c.1
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Sep 2023 02:44:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1694771056; x=1695375856; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tF5LWb4LmDR/0uHlwp2XVb+QliWqjJkKv0xE9oTF8bs=;
+        b=nf1+hd76BAnirPdvhSPipVmjWaXYu762fauSyG7PRWTMhK3FSSu1Us+VDtXiN76TS2
+         qo0veKMVjXPay8F1Tb5FSyMDW5P22qfXoXDEbh2+acQuUDai3OfKc3HK5zScCiseJKXP
+         PCQNfoz8xoLw+bwZ8Mj3pWDyezkE6OhMuaDAdEJwvUzOu14Bo+KsIT5rk96RFNyljP5I
+         MG+d+4bCLJjEqjlZiWV9OC7kGGTxyjbSZ5ZXNq38KhlMxqcTmeJHc2XWT2+p86sLuKqZ
+         J9bhMk3PsIwpo5CBNNBQA9PEXM0FSZERHqThZqI8z1X98Q4LsBQ8lhEwdbKCpoqZOoK3
+         JXBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694771056; x=1695375856;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tF5LWb4LmDR/0uHlwp2XVb+QliWqjJkKv0xE9oTF8bs=;
+        b=XUBHoLhpLeCwKoBoocEVnjfMIVUbnuym0n39PF9OeVSn5FZ5o2oyExNlxhrdxb8h8x
+         esucEWN+BrLf2XoNvYIiIzfhSKodBgrTlnXmplUTjhA/ouTQl0sbeihrJQcas/tYMYGX
+         Nsm7KJuNrSv15+z8ccMo5d3X34k0E0Bl7L4bKpF2pAAl4YOTC9P1KLXGjLXsuOqrPFZJ
+         hkhp/rWQS0pcbOy+6/ty0NhrCbF5b8Y8wmbXd2A8yq5miqEJ9nNdXtvwTMxeHzMjJvOT
+         uB6Hh1J6XdMOj1s5V99BI5XN2rW7CTsya+YFDHTDS76XyIISBEs2Ed+sYAJr7anIfXuq
+         vyfA==
+X-Gm-Message-State: AOJu0YyS2ppfHdNikPJihiYoDXlgUzYtHJrlA5n010TlfEbe12PtUzQZ
+        eHgDKobCGdAKtds9kriVjKAslpU7TtSml4iTYeAL1g==
+X-Google-Smtp-Source: AGHT+IGJLWXutY6U2zEqL7q1V2LuAyFrHrx4++Z9ZzxAb/VawSPdr29noZ4EdZGKdsIgtmwssVzaZ0MYfRBhaHxEU4s=
+X-Received: by 2002:a1f:ca07:0:b0:490:248d:84f4 with SMTP id
+ a7-20020a1fca07000000b00490248d84f4mr475224vkg.6.1694771056020; Fri, 15 Sep
+ 2023 02:44:16 -0700 (PDT)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230912100727.23197-1-brgl@bgdev.pl> <20230912100727.23197-8-brgl@bgdev.pl>
+ <ZQBIi3OsUUe+JcoB@smile.fi.intel.com> <CAMRc=MfS1J38ij4QjTz2SRxXrmxqqz0mQow_HUuC_0WcHZA8Cg@mail.gmail.com>
+In-Reply-To: <CAMRc=MfS1J38ij4QjTz2SRxXrmxqqz0mQow_HUuC_0WcHZA8Cg@mail.gmail.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Fri, 15 Sep 2023 11:44:05 +0200
+Message-ID: <CAMRc=MeVfXKfz=vcgDxToYpTsrSrmD5xh5J6OeEApY4d=qyyTw@mail.gmail.com>
+Subject: Re: [PATCH v2 07/11] gpiolib: replace find_chip_by_name() with gpio_device_find_by_label()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQo+IEZyb206IFJhZmFlbCBKLiBXeXNvY2tpIDxyYWZhZWxAa2VybmVsLm9yZz4NCj4gU2VudDog
-RnJpZGF5LCBTZXB0ZW1iZXIgMTUsIDIwMjMgOTo0NSBBTQ0KPiBUbzogUnVzc2VsbCBLaW5nIChP
-cmFjbGUpIDxsaW51eEBhcm1saW51eC5vcmcudWs+DQo+IENjOiBTYWxpbCBNZWh0YSA8c2FsaWwu
-bWVodGFAaHVhd2VpLmNvbT47IEFyZCBCaWVzaGV1dmVsIDxhcmRiQGtlcm5lbC5vcmc+Ow0KPiBK
-b25hdGhhbiBDYW1lcm9uIDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBKYW1lcyBNb3Jz
-ZQ0KPiA8amFtZXMubW9yc2VAYXJtLmNvbT47IGxpbnV4LXBtQHZnZXIua2VybmVsLm9yZzsgbG9v
-bmdhcmNoQGxpc3RzLmxpbnV4LmRldjsNCj4gbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7IGxp
-bnV4LWFyY2hAdmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj4ga2VybmVsQHZnZXIua2VybmVsLm9y
-ZzsgbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyBsaW51eC0NCj4gcmlzY3ZA
-bGlzdHMuaW5mcmFkZWFkLm9yZzsga3ZtYXJtQGxpc3RzLmxpbnV4LmRldjsgeDg2QGtlcm5lbC5v
-cmc7IEplYW4tDQo+IFBoaWxpcHBlIEJydWNrZXIgPGplYW4tcGhpbGlwcGVAbGluYXJvLm9yZz47
-IGppYW55b25nLnd1QGFybS5jb207DQo+IGp1c3Rpbi5oZUBhcm0uY29tDQo+IFN1YmplY3Q6IFJl
-OiBbUkZDIFBBVENIIHYyIDI3LzM1XSBBQ1BJQ0E6IEFkZCBuZXcgTUFEVCBHSUNDIGZsYWdzIGZp
-ZWxkcw0KPiBbY29kZSBmaXJzdD9dDQo+IA0KPiBPbiBGcmksIFNlcCAxNSwgMjAyMyBhdCA5OjA5
-4oCvQU0gUnVzc2VsbCBLaW5nIChPcmFjbGUpDQo+IDxsaW51eEBhcm1saW51eC5vcmcudWs+IHdy
-b3RlOg0KPiA+DQo+ID4gT24gRnJpLCBTZXAgMTUsIDIwMjMgYXQgMDI6Mjk6MTNBTSArMDAwMCwg
-U2FsaWwgTWVodGEgd3JvdGU6DQo+ID4gPiBPbiB4ODYsIGR1cmluZyBpbml0LCBpZiB0aGUgTUFE
-VCBlbnRyeSBmb3IgTEFQSUMgaXMgZm91bmQgdG8gYmUNCj4gPiA+IG9ubGluZS1jYXBhYmxlIGFu
-ZCBpcyBlbmFibGVkIGFzIHdlbGwgdGhlbiBwb3NzaWJsZSBhbmQgcHJlc2VudA0KPiA+DQo+ID4g
-Tm90ZSB0aGF0IHRoZSBBQ1BJIHNwZWMgc2F5cyBlbmFibGVkICsgb25saW5lLWNhcGFibGUgaXNu
-J3QgZGVmaW5lZC4NCj4gPg0KPiA+ICJUaGUgaW5mb3JtYXRpb24gY29udmV5ZWQgYnkgdGhpcyBi
-aXQgZGVwZW5kcyBvbiB0aGUgdmFsdWUgb2YgdGhlDQo+ID4gRW5hYmxlZCBiaXQuIElmIHRoZSBF
-bmFibGVkIGJpdCBpcyBzZXQsIHRoaXMgYml0IGlzIHJlc2VydmVkIGFuZA0KPiA+IG11c3QgYmUg
-emVyby4iDQo+ID4NCj4gPiBTbywgaWYgeDg2IGlzIGRvaW5nIHNvbWV0aGluZyB3aXRoIHRoZSBl
-bmFibGVkICYmIG9ubGluZS1jYXBhYmxlDQo+ID4gc3RhdGUgKG90aGVyIHRoYW4gaWdub3Jpbmcg
-dGhlIG9ubGluZS1jYXBhYmxlKSB0aGVuIHRlY2huaWNhbGx5IGl0DQo+ID4gaXMgZG9pbmcgc29t
-ZXRoaW5nIHRoYXQgdGhlIHNwZWMgZG9lc24ndCBkZWZpbmUNCj4gDQo+IEFuZCBzbyBpdCBpcyB3
-cm9uZy4NCg0KDQpPciBtYXliZSwgc3BlY2lmaWNhdGlvbiBoYXMgbm90IGJlZW4gdXBkYXRlZCB5
-ZXQuIGNvZGUtZmlyc3Q/DQoNCg0KPiANCj4gPiAtIGFuZCBpdCdzDQo+ID4gY29tcGxldGVseSBm
-aW5lIGlmIGFhcmNoNjQgZG9lcyBzb21ldGhpbmcgZWxzZSAobWF5YmUgdHJlYXRpbmcgaXQNCj4g
-PiBzdHJpY3RseSBhcyBwZXIgdGhlIHNwZWMgYW5kIGlnbm9yaW5nIG9ubGluZS1jYXBhYmxlLikN
-Cj4gDQo+IFRoYXQgYWN0dWFsbHkgaXMgdGhlIG9ubHkgY29tcGxpYW50IHRoaW5nIHRoYXQgY2Fu
-IGJlIGRvbmUuDQoNClllcywgYnV0IHRoZSBxdWVzdGlvbiBpcyBpdCB3aGF0IGlzIHJlcXVpcmVk
-IGFuZCBkb2VzIGl0IHNvbHZlcw0KdGhlIHByb2JsZW0gb2YgSG90cGx1Zy4gSSB0aGluayBuby4g
-DQoNCkJ5IGNvbXBseWluZyB3aXRoIHdoYXQgaXMgdGhlcmUgaW4gdGhlIHNwZWMgbWVhbnMgd2Ug
-aGF2ZSB0bw0KZG8gdGhlIHRyYWRlb2ZmIGJldHdlZW4gaGF2aW5nIG5vdCB0byBzdXBwb3J0IGhv
-dCh1bilwbHVnZ2luZw0Kb2YgdGhlIGNvbGQtcGx1Z2dlZCBDUFVzIFZzIHJpc2sgb2YgYnJlYWtp
-bmcgdGhlIGxlZ2FjeSBPUw0KYXR0ZW1wdGluZyB0byB1c2UgbmV3ZXIgcGxhdGZvcm1zIHdpdGgg
-SG90cGx1ZyBzdXBwb3J0LiBMYXRlcg0KaXMgbW9yZSBvZiBhIEFSTSBwcm9ibGVtIGFzIHdlIGFy
-ZSBub3QgYWxsb3dlZCB0byB0d2VhayB0aGUNCkFDUEkgdGFibGVzIG9uY2UgdGhlIHN5c3RlbSBo
-YXMgYm9vdGVkLg0KDQoNCj4gDQo+IEFzIHBlciB0aGUgc3BlYyAocXVvdGVkIGFib3ZlKSwgYSBw
-bGF0Zm9ybSBmaXJtd2FyZSBzZXR0aW5nDQo+IG9ubGluZS1jYXBhYmxlIHRvIDEgd2hlbiBFbmFi
-bGVkIGlzIHNldCBpcyBub3QgY29tcGxpYW50IGFuZCBpdCBpcw0KPiBpbnZhbGlkIHRvIHRyZWF0
-IHRoaXMgYXMgbWVhbmluZ2Z1bCBkYXRhLg0KDQpDb3JyZWN0LiBidXQgaXMgaXQgcmVhbGx5IHdo
-YXQgd2UgbmVlZD8gV2UgbmVlZCBib3RoIG9mIHRoZQ0KQml0cyB0byBiZSBzZXQgZm9yIHN1cHBv
-cnRpbmcgaG90KHVuKXBsdWdnaW5nIG9mIGNvbGQgYm9vdGVkDQpDUFVzLg0KDQoNCj4gDQo+IEFz
-IGN1cnJlbnRseSBkZWZpbmVkLCBvbmxpbmUtY2FwYWJsZSBpcyBvbmx5IGFwcGxpY2FibGUgdG8g
-Q1BVcyB0aGF0DQo+IGFyZSBub3QgZW5hYmxlZCB0byBzdGFydCB3aXRoIGFuZCBpdHMgcm9sZSBp
-cyB0byBtYWtlIGl0IGNsZWFyIHdoZXRoZXINCj4gb3Igbm90IHRoZXkgY2FuIGJlIGVuYWJsZWQg
-bGF0ZXIgQUZBSUNTLg0KDQpDb3JyZWN0Lg0KDQo+IA0KPiBJZiB0aGVyZSBpcyBhIG5lZWQgdG8g
-cmVwcmVzZW50IHRoZSBjYXNlIGluIHdoaWNoIGEgQ1BJIHRoYXQgaXMNCj4gZW5hYmxlZCB0byBz
-dGFydCB3aXRoIGNhbiBiZSBkaXNhYmxlZCwgYnV0IGNhbm5vdCBiZSBlbmFibGVkIGFnYWluLA0K
-PiB0aGUgc3BlYyBuZWVkcyB0byBiZSB1cGRhdGVkLg0KDQpBYnNvbHV0ZWx5LiBBbmQgdGhhdOKA
-mXMgd2hhdCBteSBodW1ibGUgc3VnZ2VzdGlvbiBpcyBhcyB3ZWxsLg0KDQoNClRoYW5rcw0KU2Fs
-aWwuDQoNCg==
+On Tue, Sep 12, 2023 at 1:35=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
+>
+> On Tue, Sep 12, 2023 at 1:16=E2=80=AFPM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > On Tue, Sep 12, 2023 at 12:07:23PM +0200, Bartosz Golaszewski wrote:
+> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > >
+> > > Remove all remaining uses of find_chip_by_name() (and subsequently:
+> > > gpiochip_find()) from gpiolib.c and use the new
+> > > gpio_device_find_by_label() instead.
+> >
+> > ...
+> >
+> > >       for (p =3D &table->table[0]; p->key; p++) {
+> > > -             struct gpio_chip *gc;
+> > > +             struct gpio_device *gdev __free(gpio_device_put) =3D NU=
+LL;
+> >
+> > > +             gc =3D gpio_device_get_chip(gdev);
+> >
+> > What the heck is this, btw? You have gdev NULL here.
+> >
+>
+> Gah! Thanks. I relied on tests succeeding and no KASAN warnings, I
+> need to go through this line-by-line again.
+>
+
+Fortunately, this was just an unused leftover. I fixed it for v3.
+
+Bart
+
+> Bart
+>
+> > >               /* idx must always match exactly */
+> > >               if (p->idx !=3D idx)
+> > > @@ -4004,9 +3996,8 @@ static struct gpio_desc *gpiod_find(struct devi=
+ce *dev, const char *con_id,
+> > >                       return ERR_PTR(-EPROBE_DEFER);
+> > >               }
+> > >
+> > > -             gc =3D find_chip_by_name(p->key);
+> > > -
+> > > -             if (!gc) {
+> > > +             gdev =3D gpio_device_find_by_label(p->key);
+> > > +             if (!gdev) {
+> >
+> > ...
+> >
+> > >               if (gc->ngpio <=3D p->chip_hwnum) {
+> > >                       dev_err(dev,
+> > >                               "requested GPIO %u (%u) is out of range=
+ [0..%u] for chip %s\n",
+> > > -                             idx, p->chip_hwnum, gc->ngpio - 1,
+> > > +                             idx, p->chip_hwnum, gdev->chip->ngpio -=
+ 1,
+> >
+> > In other patch you use wrapper to get gdev->chip, why not here?
+> >
+> > >                               gc->label);
+> >
+> > Is this gc is different to gdev->chip?
+> >
+> > >                       return ERR_PTR(-EINVAL);
+> > >               }
+> >
+> > ...
+> >
+> > Sorry, but this patch seems to me as WIP. Please, revisit it, make sure=
+ all
+> > things are done consistently.
+> >
+> > --
+> > With Best Regards,
+> > Andy Shevchenko
+> >
+> >
