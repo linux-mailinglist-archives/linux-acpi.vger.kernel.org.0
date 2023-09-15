@@ -2,109 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B95E7A25CE
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Sep 2023 20:32:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AF0F7A26EE
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Sep 2023 21:09:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235290AbjIOSbx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Sep 2023 14:31:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56210 "EHLO
+        id S234228AbjIOTJV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Sep 2023 15:09:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236547AbjIOSbi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Sep 2023 14:31:38 -0400
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80246210A;
-        Fri, 15 Sep 2023 11:31:33 -0700 (PDT)
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-1a2dd615ddcso378761fac.0;
-        Fri, 15 Sep 2023 11:31:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694802693; x=1695407493;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+RgYCzFpl6DzKu9Fze9sl7wbETYZX6GdWsejgca91oM=;
-        b=abn/NDPM7ucaLRj5kSjyVq3w2Z7nO6Hg0QNtae6KmJpINEA5MhAW8Vc8YsFAL6UrJk
-         V17DPN7aG9xR9DWAwjpVng3EPwP9F/rQtwiLTvWYp2JO+oj0opyf2Pz8+loGwadrfjE5
-         ZKW6hcmLHVAt4I60zfR0KWkyWyhMdF8AUwwxlL5SN50BZj8drEjpAydLMJEiDV0d/6rD
-         JlF7hIvVyRa/6Dg0H6UzzXNpgmyT0jwks2BvlmGd9nhoebulsJyeadwMldDOTjfQ1aza
-         aoEHDG1S6i4qLEP4Awim/IqoPIViQjO3q35RheEZqGVm7hL3JZ53+2/IfGrkJuOncTFK
-         YBCw==
-X-Gm-Message-State: AOJu0YxEoVZhTiLcschkgu0owquex1CTnkbBJulC2h6p4ujBGpDBg6pP
-        0WZRlbTO+nzU70zog0lhNMfX0+cT61WcRv1/JfI=
-X-Google-Smtp-Source: AGHT+IH0z5TeQlSLJyYiHcsKw5LugzfwbV7Mem0ZGYRa6hbzNsCnfaaIkdZb6q3zjat9j3l+CU1Fnmm84htOZKgTcx0=
-X-Received: by 2002:a05:6871:686:b0:1d5:f814:56a3 with SMTP id
- l6-20020a056871068600b001d5f81456a3mr2676714oao.2.1694802692675; Fri, 15 Sep
- 2023 11:31:32 -0700 (PDT)
+        with ESMTP id S236950AbjIOTJS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Sep 2023 15:09:18 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5C9498;
+        Fri, 15 Sep 2023 12:09:13 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1694804951;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=FDeIVKTICKDFwpeyMiKeUyQnaEhJj8v8RkRSMefmd/k=;
+        b=AHhoxWCpLqkPmcYu/FFKkCMeN1qFRbSQa9NH06THW5izeby06dvSy8CbZpcnjAln4Y9CZW
+        +YnMsh53yrTYClYKQ2Hlrn0ZSNZRO03YSPFHP9egzWgUldP072yO8kSidxwSx881SkmpUI
+        WXQSiF4ghsDsnDK3I+JS2f6PtOSfiYMNOm2uhITtE8MThM7nvkwzC72foLGnqIHtnlRGbd
+        0LvoKP1quv4a9z6mNqyUp6kuXEDr8HOCl8BHHDMHIoBBrZmVE1EOziz2MKhGUvMTAAAxtA
+        mKU2tks1Qp9J0F0oeB2aYYINw4fyoXMVhmUb4I0Hv6P2deRKSnEoNGyHY9QjaA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1694804951;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=FDeIVKTICKDFwpeyMiKeUyQnaEhJj8v8RkRSMefmd/k=;
+        b=ijQ0D6WzikBWYrorxKopMvxIQLmVdcyirOD2bgrPoV6JiJG3+BsxpPmKRUZIYx+Nm78qDP
+        WLkEpJeyJvydd7Bg==
+To:     "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        linux-acpi@vger.kernel.org, James Morse <james.morse@arm.com>
+Cc:     loongarch@lists.linux.dev, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        jianyong.wu@arm.com, justin.he@arm.com,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Salil Mehta <salil.mehta@huawei.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-ia64@vger.kernel.org
+Subject: Re: [PATCH RFC v2] cpu-hotplug: provide prototypes for arch CPU
+ registration
+In-Reply-To: <E1qgnh2-007ZRZ-WD@rmk-PC.armlinux.org.uk>
+References: <E1qgnh2-007ZRZ-WD@rmk-PC.armlinux.org.uk>
+Date:   Fri, 15 Sep 2023 21:09:10 +0200
+Message-ID: <871qez1cfd.ffs@tglx>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 15 Sep 2023 20:31:21 +0200
-Message-ID: <CAJZ5v0i4qvW-4=erNtMn=awuzHZM9YhUmuEuCiD9OOqNrA3Y4w@mail.gmail.com>
-Subject: [GIT PULL] Thermal control updates for v6.6-rc2
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+On Thu, Sep 14 2023 at 15:51, Russell King wrote:
+> Provide common prototypes for arch_register_cpu() and
+> arch_unregister_cpu(). These are called by acpi_processor.c, with
+> weak versions, so the prototype for this is already set. It is
+> generally not necessary for function prototypes to be conditional
+> on preprocessor macros.
+>
+> Some architectures (e.g. Loongarch) are missing the prototype for this,
+> and rather than add it to Loongarch's asm/cpu.h, lets do the job once
+> for everyone.
+>
+> Since this covers everyone, remove the now unnecessary prototypes in
+> asm/cpu.h, and we also need to remove the 'static' from one of ia64's
+> arch_register_cpu() definitions.
+>
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> ---
+> Spotted during the review of James Morse's patches, I think rather than
+> adding prototypes for loongarch to its asm/cpu.h, it would make more
+> sense to provide the prototypes in a non-arch specific header file so
+> everyone can benefit, rather than having each architecture do its own
+> thing.
+>
+> I'm sending this as RFC as James has yet to comment on my proposal, and
+> also to a wider audience, and although it makes a little more work for
+> James (to respin his series) it does mean that his series should get a
+> little smaller.
 
-Please pull from the tag
+And it makes tons of sense.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- thermal-6.6-rc2
+> See:
+>  https://lore.kernel.org/r/20230913163823.7880-2-james.morse@arm.com
+>  https://lore.kernel.org/r/20230913163823.7880-4-james.morse@arm.com
+>  https://lore.kernel.org/r/20230913163823.7880-23-james.morse@arm.com
+>
+> v2: lets try not fat-fingering vim.
 
-with top-most commit fb2c10245f201278804a6f28e196e95436059d6d
+Yeah. I wondered how you managed to mangle that :)
 
- thermal: core: Fix disabled trip point check in handle_thermal_trip()
+>  arch/ia64/include/asm/cpu.h | 5 -----
+>  arch/ia64/kernel/topology.c | 2 +-
 
-on top of commit 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
+That's moot as ia64 is queued for removal :)
 
- Linux 6.6-rc1
+Thanks,
 
-to receive thermal control updates for 6.6-rc2.
-
-These fix a thermal core breakage introduced by one of the recent
-changes, amend those changes by adding 'const' to a new callback
-argument and fix 2 memory leaks.
-
-Specifics:
-
- - Unbreak disabled trip point check in handle_thermal_trip() that may
-   cause it to skip enabled trip points (Rafael Wysocki).
-
- - Add missing of_node_put() to of_find_trip_id() and
-   thermal_of_for_each_cooling_maps() that each break out of a
-   for_each_child_of_node() loop without dropping the reference to
-   the child object (Julia Lawall).
-
- - Constify the recently added trip argument of the .get_trend() thermal
-   zone callback (Rafael Wysocki).
-
-Thanks!
-
-
----------------
-
-Julia Lawall (1):
-      thermal/of: add missing of_node_put()
-
-Rafael J. Wysocki (2):
-      thermal: Constify the trip argument of the .get_trend() zone callback
-      thermal: core: Fix disabled trip point check in handle_thermal_trip()
-
----------------
-
- drivers/acpi/thermal.c                             | 2 +-
- drivers/thermal/thermal_core.c                     | 6 ++++--
- drivers/thermal/thermal_of.c                       | 8 ++++++--
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 3 ++-
- include/linux/thermal.h                            | 4 ++--
- 5 files changed, 15 insertions(+), 8 deletions(-)
+        tglx
