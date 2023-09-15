@@ -2,167 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A6CB7A2509
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Sep 2023 19:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B95E7A25CE
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Sep 2023 20:32:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234435AbjIORpo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Sep 2023 13:45:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44850 "EHLO
+        id S235290AbjIOSbx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Sep 2023 14:31:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236367AbjIORpb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Sep 2023 13:45:31 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51907210A;
-        Fri, 15 Sep 2023 10:45:22 -0700 (PDT)
-Received: from lhrpeml500006.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RnM0j2d3Sz67bgN;
-        Sat, 16 Sep 2023 01:40:37 +0800 (CST)
-Received: from SecurePC30232.china.huawei.com (10.122.247.234) by
- lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 15 Sep 2023 18:45:19 +0100
-From:   <shiju.jose@huawei.com>
-To:     <helgaas@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
-        <tony.luck@intel.com>, <james.morse@arm.com>, <bp@alien8.de>,
-        <ying.huang@intel.com>, <linux-acpi@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-        <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
-        <shiju.jose@huawei.com>
-Subject: [RFC PATCH 1/1] ACPI / APEI: Fix for overwriting aer info when error status data have multiple sections
-Date:   Sat, 16 Sep 2023 01:44:35 +0800
-Message-ID: <20230915174435.779-1-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.35.1.windows.2
+        with ESMTP id S236547AbjIOSbi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Sep 2023 14:31:38 -0400
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80246210A;
+        Fri, 15 Sep 2023 11:31:33 -0700 (PDT)
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-1a2dd615ddcso378761fac.0;
+        Fri, 15 Sep 2023 11:31:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694802693; x=1695407493;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+RgYCzFpl6DzKu9Fze9sl7wbETYZX6GdWsejgca91oM=;
+        b=abn/NDPM7ucaLRj5kSjyVq3w2Z7nO6Hg0QNtae6KmJpINEA5MhAW8Vc8YsFAL6UrJk
+         V17DPN7aG9xR9DWAwjpVng3EPwP9F/rQtwiLTvWYp2JO+oj0opyf2Pz8+loGwadrfjE5
+         ZKW6hcmLHVAt4I60zfR0KWkyWyhMdF8AUwwxlL5SN50BZj8drEjpAydLMJEiDV0d/6rD
+         JlF7hIvVyRa/6Dg0H6UzzXNpgmyT0jwks2BvlmGd9nhoebulsJyeadwMldDOTjfQ1aza
+         aoEHDG1S6i4qLEP4Awim/IqoPIViQjO3q35RheEZqGVm7hL3JZ53+2/IfGrkJuOncTFK
+         YBCw==
+X-Gm-Message-State: AOJu0YxEoVZhTiLcschkgu0owquex1CTnkbBJulC2h6p4ujBGpDBg6pP
+        0WZRlbTO+nzU70zog0lhNMfX0+cT61WcRv1/JfI=
+X-Google-Smtp-Source: AGHT+IH0z5TeQlSLJyYiHcsKw5LugzfwbV7Mem0ZGYRa6hbzNsCnfaaIkdZb6q3zjat9j3l+CU1Fnmm84htOZKgTcx0=
+X-Received: by 2002:a05:6871:686:b0:1d5:f814:56a3 with SMTP id
+ l6-20020a056871068600b001d5f81456a3mr2676714oao.2.1694802692675; Fri, 15 Sep
+ 2023 11:31:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.122.247.234]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500006.china.huawei.com (7.191.161.198)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 15 Sep 2023 20:31:21 +0200
+Message-ID: <CAJZ5v0i4qvW-4=erNtMn=awuzHZM9YhUmuEuCiD9OOqNrA3Y4w@mail.gmail.com>
+Subject: [GIT PULL] Thermal control updates for v6.6-rc2
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Shiju Jose <shiju.jose@huawei.com>
+Hi Linus,
 
-ghes_handle_aer() lacks synchronization with aer_recover_work_func(),
-so when error status data have multiple sections, aer_recover_work_func()
-may use estatus data for aer_capability_regs after it has been overwritten.
+Please pull from the tag
 
-The problem statement is here,
-https://lore.kernel.org/all/20230901225755.GA90053@bhelgaas/
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ thermal-6.6-rc2
 
-In ghes_handle_aer() allocates memory for aer_capability_regs from the
-ghes_estatus_pool and copy data for aer_capability_regs from the estatus
-buffer. Free the memory in aer_recover_work_func() after processing the
-data using the ghes_estatus_pool_region_free() added.
+with top-most commit fb2c10245f201278804a6f28e196e95436059d6d
 
-Reported-by: Bjorn Helgaas <helgaas@kernel.org>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
----
- drivers/acpi/apei/ghes.c | 23 ++++++++++++++++++++++-
- drivers/pci/pcie/aer.c   | 10 ++++++++++
- include/acpi/ghes.h      |  1 +
- 3 files changed, 33 insertions(+), 1 deletion(-)
+ thermal: core: Fix disabled trip point check in handle_thermal_trip()
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index ef59d6ea16da..63ad0541db38 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -209,6 +209,20 @@ int ghes_estatus_pool_init(unsigned int num_ghes)
- 	return -ENOMEM;
- }
- 
-+/**
-+ * ghes_estatus_pool_region_free - free previously allocated memory
-+ *				   from the ghes_estatus_pool.
-+ * @addr: address of memory to free.
-+ * @size: size of memory to free.
-+ *
-+ * Returns none.
-+ */
-+void ghes_estatus_pool_region_free(unsigned long addr, u32 size)
-+{
-+	gen_pool_free(ghes_estatus_pool, addr, size);
-+}
-+EXPORT_SYMBOL_GPL(ghes_estatus_pool_region_free);
-+
- static int map_gen_v2(struct ghes *ghes)
- {
- 	return apei_map_generic_address(&ghes->generic_v2->read_ack_register);
-@@ -564,6 +578,7 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
- 	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
- 		unsigned int devfn;
- 		int aer_severity;
-+		u8 *aer_info;
- 
- 		devfn = PCI_DEVFN(pcie_err->device_id.device,
- 				  pcie_err->device_id.function);
-@@ -577,11 +592,17 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
- 		if (gdata->flags & CPER_SEC_RESET)
- 			aer_severity = AER_FATAL;
- 
-+		aer_info = (void *)gen_pool_alloc(ghes_estatus_pool,
-+						  sizeof(struct aer_capability_regs));
-+		if (!aer_info)
-+			return;
-+		memcpy(aer_info, pcie_err->aer_info, sizeof(struct aer_capability_regs));
-+
- 		aer_recover_queue(pcie_err->device_id.segment,
- 				  pcie_err->device_id.bus,
- 				  devfn, aer_severity,
- 				  (struct aer_capability_regs *)
--				  pcie_err->aer_info);
-+				  aer_info);
- 	}
- #endif
- }
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index e85ff946e8c8..388b614c11fd 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -29,6 +29,7 @@
- #include <linux/kfifo.h>
- #include <linux/slab.h>
- #include <acpi/apei.h>
-+#include <acpi/ghes.h>
- #include <ras/ras_event.h>
- 
- #include "../pci.h"
-@@ -996,6 +997,15 @@ static void aer_recover_work_func(struct work_struct *work)
- 			continue;
- 		}
- 		cper_print_aer(pdev, entry.severity, entry.regs);
-+		/*
-+		 * Memory for aer_capability_regs(entry.regs) is being allocated from the
-+		 * ghes_estatus_pool to protect it from overwriting when multiple sections
-+		 * are present in the error status. Thus free the same after processing
-+		 * the data.
-+		 */
-+		ghes_estatus_pool_region_free((unsigned long)entry.regs,
-+					      sizeof(struct aer_capability_regs));
-+
- 		if (entry.severity == AER_NONFATAL)
- 			pcie_do_recovery(pdev, pci_channel_io_normal,
- 					 aer_root_reset);
-diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-index 3c8bba9f1114..40d89e161076 100644
---- a/include/acpi/ghes.h
-+++ b/include/acpi/ghes.h
-@@ -78,6 +78,7 @@ static inline struct list_head *ghes_get_devices(void) { return NULL; }
- #endif
- 
- int ghes_estatus_pool_init(unsigned int num_ghes);
-+void ghes_estatus_pool_region_free(unsigned long addr, u32 size);
- 
- static inline int acpi_hest_get_version(struct acpi_hest_generic_data *gdata)
- {
--- 
-2.34.1
+on top of commit 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
 
+ Linux 6.6-rc1
+
+to receive thermal control updates for 6.6-rc2.
+
+These fix a thermal core breakage introduced by one of the recent
+changes, amend those changes by adding 'const' to a new callback
+argument and fix 2 memory leaks.
+
+Specifics:
+
+ - Unbreak disabled trip point check in handle_thermal_trip() that may
+   cause it to skip enabled trip points (Rafael Wysocki).
+
+ - Add missing of_node_put() to of_find_trip_id() and
+   thermal_of_for_each_cooling_maps() that each break out of a
+   for_each_child_of_node() loop without dropping the reference to
+   the child object (Julia Lawall).
+
+ - Constify the recently added trip argument of the .get_trend() thermal
+   zone callback (Rafael Wysocki).
+
+Thanks!
+
+
+---------------
+
+Julia Lawall (1):
+      thermal/of: add missing of_node_put()
+
+Rafael J. Wysocki (2):
+      thermal: Constify the trip argument of the .get_trend() zone callback
+      thermal: core: Fix disabled trip point check in handle_thermal_trip()
+
+---------------
+
+ drivers/acpi/thermal.c                             | 2 +-
+ drivers/thermal/thermal_core.c                     | 6 ++++--
+ drivers/thermal/thermal_of.c                       | 8 ++++++--
+ drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 3 ++-
+ include/linux/thermal.h                            | 4 ++--
+ 5 files changed, 15 insertions(+), 8 deletions(-)
