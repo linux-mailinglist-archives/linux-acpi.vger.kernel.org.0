@@ -2,110 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5EAA7A307C
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Sep 2023 15:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F1C7A3DCA
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 Sep 2023 23:15:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239302AbjIPNDx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 16 Sep 2023 09:03:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37458 "EHLO
+        id S231454AbjIQVOv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 Sep 2023 17:14:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236560AbjIPNDo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 16 Sep 2023 09:03:44 -0400
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62208DD;
-        Sat, 16 Sep 2023 06:03:38 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0VsA36xg_1694869413;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VsA36xg_1694869413)
-          by smtp.aliyun-inc.com;
-          Sat, 16 Sep 2023 21:03:34 +0800
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
-        rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-        bp@alien8.de, tglx@linutronix.de, mingo@redhat.com,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, robert.moore@intel.com
-Cc:     linux-hardening@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        linux-efi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
-        xueshuai@linux.alibaba.com, baolin.wang@linux.alibaba.com
-Subject: [RFC PATCH 9/9] ACPI: APEI: ESRT: log ARM processor error
-Date:   Sat, 16 Sep 2023 21:03:16 +0800
-Message-Id: <20230916130316.65815-10-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230916130316.65815-1-xueshuai@linux.alibaba.com>
-References: <20230916130316.65815-1-xueshuai@linux.alibaba.com>
+        with ESMTP id S231953AbjIQVO0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 17 Sep 2023 17:14:26 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D12012B
+        for <linux-acpi@vger.kernel.org>; Sun, 17 Sep 2023 14:14:21 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-d81adf0d57fso2960449276.1
+        for <linux-acpi@vger.kernel.org>; Sun, 17 Sep 2023 14:14:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1694985260; x=1695590060; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fE9zhEHg7Ff1TIIzy8crm7OARMfmzExyLqxHdSZc9JU=;
+        b=F+7HQI2hYDV4Uocc9TJgAWRbogODOqjZrPwJ0+O0RovAEZ3xleVkmaFiaU4FHPshzs
+         M/WZMA0vCIB1518QE6iH2ohZMq5Hv4c176DVv/VI2kEnLH3X5zdIW/k18Y+/S6If0nCP
+         Lsi3P1ErEfPFzqiUpAfP9FxUumbeFwARDltI0rbb/412rwwTRijt3Uy0N3kJnwWAoS8w
+         Bc7uLm3yQXH16Tjrvpj9g6HAMi+LIBgD6Ms7DRhhwlWFB7b+HazJsvHAdejj997HyhLN
+         9UyS76lbgm3F4PZt+mUmPGvzUWZ6250Mg+Uc+0PxAfsIbLwt/L51JHsmXT7DYuX100ys
+         20Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694985260; x=1695590060;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fE9zhEHg7Ff1TIIzy8crm7OARMfmzExyLqxHdSZc9JU=;
+        b=R/XRPU4nVUvOimdgJdoc+H6tPzJWIDnzYYjXx7HpB7HuPyUfl49BClOnCE2SS+hoAl
+         T4C8E0+M1hNfO1c01qVqXIEEoalGRxq3YOFfnuDmfLhhlADMuAoO0kggIKp7qmhBL67t
+         yA4v3PR8s9FJB9+nx1uRqPbUS2htZNFLwE5YC+etJ4/eKlzoY9lR8ixulGnzqTzeyq0w
+         V1f6B0AGgIudc8hX/badJU7QHMTyDPUTsWu+AYe0jzuhHkp3W0YSmpFD7jUSceRIdk6n
+         Tu8cI2J9G7z48792YeaRRZ9soLXoB4Yiy6J8ptTcd1Fwy0lkkDkyTvWYJfG1EhvT1sp8
+         o/0A==
+X-Gm-Message-State: AOJu0YyzrQ7ngQo2TgCXCTvwFHltJ7ZNw1UtcvldRDDeSezH5omLiqun
+        A/8uUdjek9Emo0bOzrJ1Iiu103jqWptLOW8dWTItu6/DpMQ8rFjk3+Y=
+X-Google-Smtp-Source: AGHT+IEYEGBmaguetuVmqnK/hfRS4pvSVNkwBOqKRbYYNfEh9KrK07Nkvg60EdrkayQBd3d8ORZ8YJ+Y3ccSnxRGE/Y=
+X-Received: by 2002:a25:dc8a:0:b0:d0e:b5c8:6359 with SMTP id
+ y132-20020a25dc8a000000b00d0eb5c86359mr6726072ybe.55.1694985260079; Sun, 17
+ Sep 2023 14:14:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+References: <20230915172818.761-1-shiju.jose@huawei.com>
+In-Reply-To: <20230915172818.761-1-shiju.jose@huawei.com>
+From:   Jiaqi Yan <jiaqiyan@google.com>
+Date:   Sun, 17 Sep 2023 14:14:06 -0700
+Message-ID: <CACw3F50Edbk7uemvS-ZCNABKSz=3VMaRdPjzoYp9XE-hkOUKBg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/9] ACPI:RASF: Add support for ACPI RASF, ACPI RAS2
+ and configure scrubbers
+To:     shiju.jose@huawei.com
+Cc:     linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+        naoya.horiguchi@nec.com, tony.luck@intel.com, james.morse@arm.com,
+        dave.hansen@linux.intel.com, david@redhat.com,
+        jthoughton@google.com, somasundaram.a@hpe.com,
+        erdemaktas@google.com, pgonda@google.com, rientjes@google.com,
+        duenwen@google.com, Vilas.Sridharan@amd.com,
+        mike.malvestuto@intel.com, gthelen@google.com, linuxarm@huawei.com,
+        jonathan.cameron@huawei.com, tanxiaofei@huawei.com,
+        prime.zeng@hisilicon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
-        version=3.4.6
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Introduce a new pstore_record type, PSTORE_TYPE_CPER_PROC_ARM, so that
-serialized ARM processor errors can be retrieved and saved as a file in
-pstore file system. While the serialized errors is retrieved from ERST
-backend, log it.
+On Fri, Sep 15, 2023 at 10:29=E2=80=AFAM <shiju.jose@huawei.com> wrote:
+>
+> From: Shiju Jose <shiju.jose@huawei.com>
+>
+> This series add,
+> 1. support for ACPI RASF(RAS feature table) PCC interfaces
+> to communicate with the HW patrol scrubber in the platform,
+> as per ACPI 5.1 & upwards revision. Section 5.2.20.
+>
+> 2. support for ACPI RAS2(RAS2 feature table), as per
+> ACPI 6.5 & upwards revision. Section 5.2.21.
+>
+> 3. scrub driver supports configuring parameters of the memory
+> scrubbers in the system. This driver has been implemented
+> based on the hwmon subsystem.
+>
+> The features have tested with RASF and RAS2 emulation in the QEMU.
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/acpi/apei/erst.c | 6 ++++++
- fs/pstore/platform.c     | 1 +
- include/linux/pstore.h   | 1 +
- 3 files changed, 8 insertions(+)
+I am very curious how the test is done. Does the hw patrol scrubber on
+host actually been driven by the driver to scrub memory DIMMs (doesn't
+seem so to me, but do correct me)? Or it is like to a VM scrubbing is
+simulated and no real op to DIMMs?
 
-diff --git a/drivers/acpi/apei/erst.c b/drivers/acpi/apei/erst.c
-index 4f000cb1433a..c92d977d15cd 100644
---- a/drivers/acpi/apei/erst.c
-+++ b/drivers/acpi/apei/erst.c
-@@ -29,6 +29,7 @@
- #include <acpi/ghes.h>
- #include <linux/aer.h>
- #include <linux/pci.h>
-+#include <linux/ras.h>
- /* only define CREATE_TRACE_POINTS once */
- #include <trace/events/mce.h>
- 
-@@ -1088,6 +1089,11 @@ static ssize_t erst_reader(struct pstore_record *record)
- 		cper_print_aer(
- 			pdev, AER_FATAL,
- 			(struct aer_capability_regs *)pcie_err->aer_info);
-+	} else if (guid_equal(&rcd->sec_hdr.section_type, &CPER_SEC_PROC_ARM)) {
-+		struct cper_sec_proc_arm *err = (struct cper_sec_proc_arm *)rcd->data;
-+
-+		record->type = PSTORE_TYPE_CPER_PROC_ARM;
-+		log_arm_hw_error(err);
- 	}
- 	else
- 		record->type = PSTORE_TYPE_MAX;
-diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
-index 40a062546fe4..48ad3202284c 100644
---- a/fs/pstore/platform.c
-+++ b/fs/pstore/platform.c
-@@ -53,6 +53,7 @@ static const char * const pstore_type_names[] = {
- 	"powerpc-opal",
- 	"cper-mem",
- 	"cper-pcie",
-+	"cper-proc-arm",
- };
- 
- static int pstore_new_entry;
-diff --git a/include/linux/pstore.h b/include/linux/pstore.h
-index e63f51e9c22e..83edff5aab0b 100644
---- a/include/linux/pstore.h
-+++ b/include/linux/pstore.h
-@@ -43,6 +43,7 @@ enum pstore_type_id {
- 	/* APEI section */
- 	PSTORE_TYPE_CPER_MEM		= 9,
- 	PSTORE_TYPE_CPER_PCIE		= 10,
-+	PSTORE_TYPE_CPER_PROC_ARM	= 11,
- 
- 	/* End of the list */
- 	PSTORE_TYPE_MAX
--- 
-2.41.0
-
+>
+> Previous references to the memory scub and RASF topics.
+> https://lore.kernel.org/all/20221103155029.2451105-1-jiaqiyan@google.com/
+> https://patchwork.kernel.org/project/linux-arm-kernel/patch/CS1PR84MB0038=
+718F49DBC0FF03919E1184390@CS1PR84MB0038.NAMPRD84.PROD.OUTLOOK.COM/
+>
+> A Somasundaram (2):
+>   ACPI:RASF: Add extract RASF table to register RASF platform devices
+>   ACPI:RASF: Add common library for RASF and RAS2 PCC interfaces
+>
+> Shiju Jose (7):
+>   memory: scrub: Add scrub driver supports configuring memory scrubbers
+>     in the system
+>   memory: scrub: sysfs: Add Documentation entries for set of scrub
+>     attributes
+>   Documentation/scrub-configure.rst: Add documentation for scrub driver
+>   memory: RASF: Add memory RASF driver
+>   ACPICA: ACPI 6.5: Add support for RAS2 table
+>   ACPI:RAS2: Add driver for ACPI RAS2 feature table (RAS2)
+>   memory: RAS2: Add memory RAS2 driver
+>
+>  .../ABI/testing/sysfs-class-scrub-configure   |  82 ++++
+>  Documentation/scrub-configure.rst             |  55 +++
+>  drivers/acpi/Kconfig                          |  15 +
+>  drivers/acpi/Makefile                         |   1 +
+>  drivers/acpi/ras2_acpi.c                      |  97 ++++
+>  drivers/acpi/rasf_acpi.c                      |  71 +++
+>  drivers/acpi/rasf_acpi_common.c               | 272 +++++++++++
+>  drivers/memory/Kconfig                        |  15 +
+>  drivers/memory/Makefile                       |   3 +
+>  drivers/memory/ras2.c                         | 334 +++++++++++++
+>  drivers/memory/rasf.c                         | 335 +++++++++++++
+>  drivers/memory/rasf_common.c                  | 251 ++++++++++
+>  drivers/memory/scrub/Kconfig                  |  11 +
+>  drivers/memory/scrub/Makefile                 |   6 +
+>  drivers/memory/scrub/memory-scrub.c           | 452 ++++++++++++++++++
+>  include/acpi/actbl2.h                         |  55 +++
+>  include/acpi/rasf_acpi.h                      |  59 +++
+>  include/memory/memory-scrub.h                 |  85 ++++
+>  include/memory/rasf.h                         |  82 ++++
+>  19 files changed, 2281 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-class-scrub-configure
+>  create mode 100644 Documentation/scrub-configure.rst
+>  create mode 100755 drivers/acpi/ras2_acpi.c
+>  create mode 100755 drivers/acpi/rasf_acpi.c
+>  create mode 100755 drivers/acpi/rasf_acpi_common.c
+>  create mode 100644 drivers/memory/ras2.c
+>  create mode 100644 drivers/memory/rasf.c
+>  create mode 100644 drivers/memory/rasf_common.c
+>  create mode 100644 drivers/memory/scrub/Kconfig
+>  create mode 100644 drivers/memory/scrub/Makefile
+>  create mode 100755 drivers/memory/scrub/memory-scrub.c
+>  create mode 100755 include/acpi/rasf_acpi.h
+>  create mode 100755 include/memory/memory-scrub.h
+>  create mode 100755 include/memory/rasf.h
+>
+> --
+> 2.34.1
+>
