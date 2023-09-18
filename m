@@ -2,180 +2,258 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B470A7A50DB
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Sep 2023 19:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A2EA7A5122
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Sep 2023 19:41:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229561AbjIRRV7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Sep 2023 13:21:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47982 "EHLO
+        id S229968AbjIRRlK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Sep 2023 13:41:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbjIRRV6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Sep 2023 13:21:58 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6D76FA;
-        Mon, 18 Sep 2023 10:21:52 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38IEPn2i017417;
-        Mon, 18 Sep 2023 17:21:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=qcppdkim1;
- bh=cS+wpZ5V56K6I1xkmbCKM44QVguTfU3WjZmElYRFn1U=;
- b=kvtxfzLOp1GSqAV/VfcwV0c1voqGpNZziks9IPDwRwhdxuqSidzrlywqmYAq6m3yp2sX
- YITBS/aQbUuJBitskLKuZwAuOVc3DTSPFAHsbDWb9mKbgGZxI5DEkj4ZnL2CRL61fnJ+
- dOftVK7Q+bupZJrNx5E8IFPbvKIHn/7ZdOF/T06yPX5ZOHv0bsfOx2dEG4Lv9nlGE9ag
- /xqQAomXQlIq/7ofqpB5rtAq2P/g30dANeGCsLSuT1kjjYg5eQ3jNn9u1pJb+2yMKH/t
- 6teuJQVZfDDPSJRoNaO73res34PXW0cazOBeTvCH1bxiPtPS4VSiHgAwGPp22eq74KbP Fw== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t6pmq0pd5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 18 Sep 2023 17:21:43 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38IHLgwO019030
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 18 Sep 2023 17:21:42 GMT
-Received: from localhost (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 18 Sep
- 2023 10:21:42 -0700
-From:   Oza Pawandeep <quic_poza@quicinc.com>
-To:     <sudeep.holla@arm.com>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-CC:     Oza Pawandeep <quic_poza@quicinc.com>
-Subject: [PATCH v8] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast timer
-Date:   Mon, 18 Sep 2023 10:21:40 -0700
-Message-ID: <20230918172140.2825357-1-quic_poza@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229501AbjIRRlJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Sep 2023 13:41:09 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2082.outbound.protection.outlook.com [40.107.92.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CA4CFA;
+        Mon, 18 Sep 2023 10:41:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SdU5Co+oWYZm5F76sPgqSf+rrbf4T3RMgngPWm7QnXapHuyfzpDu/hBHQOpz99VeB4JecgVW9op2aeimt4jFQOntdlzHXr142DxEilWWDTZOfKEdDEEdHalDuX4dZW7SS6mN93LI0mcaGHK4QG+FWMx6hH+DWo1FVOju5i6qIFJhhF6d0WI0KG08Hp1VBK17KUnLJKF8LOnaWwZVWu+2B4Clvj4AQQ48ru6tmvkGrF8jXAJoGQI3fz28kqucJPiM8hPVnhds2im7+OlwaydUOtV4QkkXrzDMgjkbGd9hHpHKRt5Y2uZHhhA4A1325WnicCPylHeMmTc/zvhtS/Ol9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lUSotfAZMYicWvsx6MjkMm/YAeC72le42oVNHidISGE=;
+ b=gLNPzlflf7niwc+1m2srQU4MD7HSnUrtxyzS7QZ6jDBK2WozFXRVOQ0WK2Zb0bC1OAqVRwiZE5BpXqWEkAURCcdX46qicwh2vL5ZkAiOU7oDzLd8/8Iw8V5mEB0m/OMU2OjH8i31ASXU772P8sAOxtI3teHZrooN4IXzPM+jfGkdHqzZD26xw85l1Xo6Eo9v1rWBWKkTw+/uKVVIWP+oFPyCpwMk89XRykHHpNF+1H06hgMf6phW/1UaITrJhBHp8avEKcNalSbrPwa7Xvu/zsfF3luAClmvbxuZp0xsmwZuLPiq5ZYKi6Rgdm31mbYqZNPP7yGXIjTF078tRhFIhg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lUSotfAZMYicWvsx6MjkMm/YAeC72le42oVNHidISGE=;
+ b=MjIP2tWb2Gg30g0/sIHs2Kv9/fVis6pA/lzhoB4aAtwfmCPKdDKSqcG2hcBHPwmf75uoYYwPBM+ALZ6zjsKv5MwJo1MR1jI5q+H9sbf1DT221HZmJB0FnkuHh3wKkLGZL8kK0zy41Ly36jlUUjxdfibxijG/axsRDFeZuwkewn4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6095.namprd12.prod.outlook.com (2603:10b6:8:9c::19) by
+ DM6PR12MB4353.namprd12.prod.outlook.com (2603:10b6:5:2a6::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6792.27; Mon, 18 Sep 2023 17:40:59 +0000
+Received: from DS7PR12MB6095.namprd12.prod.outlook.com
+ ([fe80::44a:f414:7a0f:9dae]) by DS7PR12MB6095.namprd12.prod.outlook.com
+ ([fe80::44a:f414:7a0f:9dae%7]) with mapi id 15.20.6792.026; Mon, 18 Sep 2023
+ 17:40:59 +0000
+Message-ID: <8010edd3-6eac-4f14-a4ed-ef69cca63906@amd.com>
+Date:   Mon, 18 Sep 2023 12:40:56 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V7 0/7] amd-pstate preferred core
+Content-Language: en-US
+To:     Meng Li <li.meng@amd.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Huang Rui <ray.huang@amd.com>
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, linux-acpi@vger.kernel.org,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kselftest@vger.kernel.org,
+        Nathan Fontenot <nathan.fontenot@amd.com>,
+        Deepak Sharma <deepak.sharma@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Shimmer Huang <shimmer.huang@amd.com>,
+        Perry Yuan <Perry.Yuan@amd.com>,
+        Xiaojian Du <Xiaojian.Du@amd.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Borislav Petkov <bp@alien8.de>
+References: <20230918081407.756858-1-li.meng@amd.com>
+From:   Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <20230918081407.756858-1-li.meng@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7P222CA0014.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:124::8) To DS7PR12MB6095.namprd12.prod.outlook.com
+ (2603:10b6:8:9c::19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: c86pfDBfPTRVd9Mv1waKxsQghRSdD3LG
-X-Proofpoint-ORIG-GUID: c86pfDBfPTRVd9Mv1waKxsQghRSdD3LG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-18_08,2023-09-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=40 malwarescore=0 spamscore=40
- priorityscore=1501 impostorscore=0 mlxlogscore=18 mlxscore=40 phishscore=0
- clxscore=1015 lowpriorityscore=0 adultscore=0 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309180153
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6095:EE_|DM6PR12MB4353:EE_
+X-MS-Office365-Filtering-Correlation-Id: 186684e9-e98d-472f-1b85-08dbb86e6bbe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: i0t5jLALP2bz957tnJ+Rx86c4X/+zzitg5AluTTGSwNE5mm5bCALqQOMMbI1EAfwRpyWabbaEQkBD7JEc0k0wmVzQcKz6/KZMzbI1Q2BcbgdogAE8x9trp61JEYiRlZF1vw/GqdGf1boDXr0DrXuCTD+ufkdXgkHjtZWrmWJkATvu2TLbQvmgD7MombYQj8DDyz8D9tox/x6o4++AYgak+AKM9CwKBVAFFr//i8g1QuMk8IeSots2v8DhwobwaE0kXeFYVWS+nAivlewzfhEeT2i7ayWC6RC/5wqCPv8NAb3tP0q/fZBsYCoSFkG/Jg7EFHz3eYA52SQQWXXNakPgFOntbSWRWaOnwrLaPvo0ptMv2jrn7RielZ8FTYyhdakUec5kHO4OmOS7n05bLgmd5o3HiKyFxjwCWP3JVy1l44AvXW4x1ssMdu/Scnar4sBuXLqpttrsdJha+kNxnpa3+v1O5Lefe5VH1tItuFptfrWCBrHd+eSMY9+qWWhJbnAKgBY6Yy2MBSAdW39F+FoHW4r06oFEWwPK1Vv9qxGkgL2gVkW9EBDtI0qFoAHHN8IyErWDQaK1rt1MAZCqnCMLA8VygT5WY/gnOmD8HuYVXlhEEAv96lxbrDFixsCdOEIsjuivd494N21XVzdGPNlZg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6095.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(39860400002)(396003)(136003)(376002)(1800799009)(451199024)(186009)(8936002)(2906002)(8676002)(4326008)(316002)(41300700001)(6636002)(26005)(31686004)(478600001)(66946007)(66476007)(66556008)(110136005)(54906003)(44832011)(5660300002)(6486002)(53546011)(6512007)(6506007)(36756003)(2616005)(83380400001)(6666004)(38100700002)(31696002)(86362001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SjdFY2FNNFF0QW9xaEFoZmxmS1JqN2pxWVhDS284eTVqVHh6UVJBdGkzdjZH?=
+ =?utf-8?B?bDdGcEgzR0RveDFrYk53bnNDYytlL0k2dlpLTFVWdVNub0R3NlI5bU5GQnIx?=
+ =?utf-8?B?aWlvSEdZOE5lbW5scTNBK2Rtd0V1dk95S2xjZlJmcnlXQVJMOXRjS2s0b2Ey?=
+ =?utf-8?B?VVFSdUYrYUlrajJKTjBjamlsN1pjb0ZNNlkwVmZSeWY4QWNzSlZzb1QxekR6?=
+ =?utf-8?B?TVljNjM2czNValBKLzZjbGFJSld1ZXpCWnEvN3AvWkV2YkxYclY4MTBqcWdi?=
+ =?utf-8?B?Z1E2UTIrTFBEMFd2VjROZEhWNkJhb2YyYzVnUkpkV1R3c1g5NTdtd3FWVVpU?=
+ =?utf-8?B?NTlCRHNMVG1qZmNLcVhjRGI0Tnc5MExHQUpJa3NUVUljbzArUThYK1JvM3dH?=
+ =?utf-8?B?eGRTQ2FLbHBjcGQrTHlWVEpNdEVEWGJhUFplTlVrZXIwQ3J0ZnpXeVFReFBw?=
+ =?utf-8?B?OEJ4dUxpTFZnVkUvUEZyWm1LWEEycGVMRFdpVUcrdEpTVVJSSTcrS2lRaFBo?=
+ =?utf-8?B?d3VWbi9oamN1YnBmZ20xczNtVTRWSlZJTmhzWXJQMVY2T0wra2d2MGVKUmV6?=
+ =?utf-8?B?OW5xOVM3aEpteUxBMiszWnNvNE9KVjF6aXVrcFEzQXF4K2c5WjMvR2pFRGRI?=
+ =?utf-8?B?NWJXNkxBZ0x3QzlhYzJsb1BkZCsxTnI1STBMM3JKNWh6bDd1eS9qa0V6aExw?=
+ =?utf-8?B?TTdNQlA0bGtsNWNMS2lOUDBoV1R5aFpqdFg3UERNd1Y5Zmk5YkY0cUtwcXpS?=
+ =?utf-8?B?bGdJZTZ5K05McVorNW8yUXZqM1RHQkVwUnZ2MmlyNnpzdCtCdE9xa3hJajRP?=
+ =?utf-8?B?T3MyaUpQbTZyRUM1UnJRZ3pEbEpDL1htL2l3UXJPSEswZktXSFZreVJkVDhy?=
+ =?utf-8?B?cCtrUWZ0RWtvV1dQU1hra0F5WDk5VElXS20zSXFuMGRsdjN4ODF2bFAyR0hE?=
+ =?utf-8?B?ZVVjZElta0F2ZXlSNW5VcjNmMGljZExSS0NPQnF0b2Q1WmZtTW5uem9hYWov?=
+ =?utf-8?B?VjRRUGZBS3k4YmZCM2ZNMFBEdEw3SjhPODFsR2F3YnZwS2Rqc3ArVzFqdXdK?=
+ =?utf-8?B?N2hRWEoyNVRvUnhYZkZrNG95MitqV0NUM0N6RnRnTzVPTzlibnJndmlXbDRN?=
+ =?utf-8?B?dmJJZkdXcGlTY3A1RCtIS0VTMm9ic1h1MkplNENTMWFqM0VlT1V4bFhaS1d2?=
+ =?utf-8?B?djRXK2pXRDNBTHE5ZGNWSVBjODdlTlBkemJ1MnAwQlJRK1I1M09sTmpKcTF0?=
+ =?utf-8?B?dFdEeEQ1aEhrS0JHS3U4eWpYZ0paSjBrRC95Q3VvYnE2SlBWYXJjZ0NMVmlo?=
+ =?utf-8?B?QWlDY0R5OFlBb3cvNzY1cUR1dTdpL2FaanZ5Yk9ia1NHaXVNTzRvK1NyUTBV?=
+ =?utf-8?B?VG1WU2hoVndKWlNjMUtvelZVNFhRSFBZeEtzVTY4eE1xYUlFMVdFek5UUGVW?=
+ =?utf-8?B?NndPRURaazd6VWNTNHk2ZWF4N2ZYMmF5Q0Q5YlhaZzFYb2JDc1p6a3Q1NFhJ?=
+ =?utf-8?B?Q3FVRVBrOXhVaVQvbzhTcHU2OXVFd01URC9kWlBEZ0RHaXdnK2xTT3B2dXFK?=
+ =?utf-8?B?Q2RndGNBbTZJV3BCd0U0M1A1ODF0alBxNUE3bkFobDhEQWVkYUl0UnNIa2Fh?=
+ =?utf-8?B?djJ6TEI4VE5yRDhaRGoxWmFJQUlXTThhM05VdTdpbHdaanl5bXRGbi9CUkNJ?=
+ =?utf-8?B?d2R3ZldEZFpwVWUzVG4xUzZMbGx1UVdRdC93MFNsZlEwakdQRVd1aTJVc0p3?=
+ =?utf-8?B?OVc0eERwd2Q0QlRRYklQSlJxSUszY0ZqYnM5cUcwV2xXQTBTR1dZNUhhcFNl?=
+ =?utf-8?B?eE1RRVQyUURmeEdNMEZUOGY5ZkpjQWdJRUw0ODY4ckd1Umx2TlV1SXVLcDNh?=
+ =?utf-8?B?TnJOcHR3QmsrWE5vZDc0TFBuMk5ONEw5UFAwS2FKZGtLd3JvMHl1NzB1ZUpQ?=
+ =?utf-8?B?c1JncjJITzJ4M2VpSUowWEpQTm5YdUVBYStBdVRWSjk1NHNPNXphL1gzSDZi?=
+ =?utf-8?B?cHJycUdLcVI1eE5iME00eWI4ZzdnclVCQkd3TVh3akdNRjl5NG1PLzVyQ1Zp?=
+ =?utf-8?B?T3BOa0FEVTZYWjFhTVFNN1FncGIwSGdZQ3hzYW1LeXFnS1hHZ0RwU2daMDdy?=
+ =?utf-8?Q?nddRzklrmPa6FD0fcji7G4HB1?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 186684e9-e98d-472f-1b85-08dbb86e6bbe
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6095.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2023 17:40:59.8593
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hw2amCWIvo1dMZk7Ea6aVAFJHsN5vqs/zMDeAT5seTwqPvALPNfL0MeyhAGVTeSodqu5+dPQDZ+5MUY7CM1x+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4353
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Arm® Functional Fixed Hardware Specification defines LPI states,
-which provide an architectural context loss flags field that can
-be used to describe the context that might be lost when an LPI
-state is entered.
+On 9/18/2023 03:14, Meng Li wrote:
+> Hi all:
+> 
+> The core frequency is subjected to the process variation in semiconductors.
+> Not all cores are able to reach the maximum frequency respecting the
+> infrastructure limits. Consequently, AMD has redefined the concept of
+> maximum frequency of a part. This means that a fraction of cores can reach
+> maximum frequency. To find the best process scheduling policy for a given
+> scenario, OS needs to know the core ordering informed by the platform through
+> highest performance capability register of the CPPC interface.
+> 
+> Earlier implementations of amd-pstate preferred core only support a static
+> core ranking and targeted performance. Now it has the ability to dynamically
+> change the preferred core based on the workload and platform conditions and
+> accounting for thermals and aging.
+> 
+> Amd-pstate driver utilizes the functions and data structures provided by
+> the ITMT architecture to enable the scheduler to favor scheduling on cores
+> which can be get a higher frequency with lower voltage.
+> We call it amd-pstate preferred core.
+> 
+> Here sched_set_itmt_core_prio() is called to set priorities and
+> sched_set_itmt_support() is called to enable ITMT feature.
+> Amd-pstate driver uses the highest performance value to indicate
+> the priority of CPU. The higher value has a higher priority.
+> 
+> Amd-pstate driver will provide an initial core ordering at boot time.
+> It relies on the CPPC interface to communicate the core ranking to the
+> operating system and scheduler to make sure that OS is choosing the cores
+> with highest performance firstly for scheduling the process. When amd-pstate
+> driver receives a message with the highest performance change, it will
+> update the core ranking.
+> 
 
-- Core context Lost
-        - General purpose registers.
-        - Floating point and SIMD registers.
-        - System registers, include the System register based
-        - generic timer for the core.
-        - Debug register in the core power domain.
-        - PMU registers in the core power domain.
-        - Trace register in the core power domain.
-- Trace context loss
-- GICR
-- GICD
+For the remaining patches missing my tag:
 
-Qualcomm's custom CPUs preserves the architectural state,
-including keeping the power domain for local timers active.
-when core is power gated, the local timers are sufficient to
-wake the core up without needing broadcast timer.
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 
-The patch fixes the evaluation of cpuidle arch_flags, and moves only to
-broadcast timer if core context lost is defined in ACPI LPI.
-
-Fixes: a36a7fecfe607 ("Add support for Low Power Idle(LPI) states")
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
----
-
-Notes:
-    Will/Catalin: Rafael has acked and he prefers to take it via arm64 tree
-
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index 4d537d56eb84..269d21209723 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -9,6 +9,7 @@
- #ifndef _ASM_ACPI_H
- #define _ASM_ACPI_H
- 
-+#include <linux/cpuidle.h>
- #include <linux/efi.h>
- #include <linux/memblock.h>
- #include <linux/psci.h>
-@@ -44,6 +45,23 @@
- 
- #define ACPI_MADT_GICC_TRBE  (offsetof(struct acpi_madt_generic_interrupt, \
- 	trbe_interrupt) + sizeof(u16))
-+/*
-+ * Arm® Functional Fixed Hardware Specification Version 1.2.
-+ * Table 2: Arm Architecture context loss flags
-+ */
-+#define CPUIDLE_CORE_CTXT		BIT(0) /* Core context Lost */
-+
-+static __always_inline void _arch_update_idle_state_flags(u32 arch_flags,
-+							unsigned int *sflags)
-+{
-+	if (arch_flags & CPUIDLE_CORE_CTXT)
-+		*sflags |= CPUIDLE_FLAG_TIMER_STOP;
-+}
-+#define arch_update_idle_state_flags _arch_update_idle_state_flags
-+
-+#define CPUIDLE_TRACE_CTXT		BIT(1) /* Trace context loss */
-+#define CPUIDLE_GICR_CTXT		BIT(2) /* GICR */
-+#define CPUIDLE_GICD_CTXT		BIT(3) /* GICD */
- 
- /* Basic configuration for ACPI */
- #ifdef	CONFIG_ACPI
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index dc615ef6550a..5c1d13eecdd1 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -1217,8 +1217,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
- 		strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
- 		state->exit_latency = lpi->wake_latency;
- 		state->target_residency = lpi->min_residency;
--		if (lpi->arch_flags)
--			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
-+		arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
- 		if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
- 			state->flags |= CPUIDLE_FLAG_RCU_IDLE;
- 		state->enter = acpi_idle_lpi_enter;
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index a73246c3c35e..07a825c76bab 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1480,6 +1480,12 @@ static inline int lpit_read_residency_count_address(u64 *address)
- }
- #endif
- 
-+#ifdef CONFIG_ACPI_PROCESSOR_IDLE
-+#ifndef arch_update_idle_state_flags
-+#define arch_update_idle_state_flags(af, sf)	do {} while (0)
-+#endif
-+#endif /* CONFIG_ACPI_PROCESSOR_IDLE */
-+
- #ifdef CONFIG_ACPI_PPTT
- int acpi_pptt_cpu_is_thread(unsigned int cpu);
- int find_acpi_cpu_topology(unsigned int cpu, int level);
--- 
-2.25.1
+> Changes form V6->V7:
+> - x86:
+> - - Modify kconfig about X86_AMD_PSTATE.
+> - cpufreq: amd-pstate:
+> - - modify incorrect comments about scheduler_work().
+> - - convert highest_perf data type.
+> - - modify preferred core init when cpu init and online.
+> - acpi: cppc:
+> - - modify link of CPPC highest performance.
+> - cpufreq:
+> - - modify link of CPPC highest performance changed.
+> 
+> Changes form V5->V6:
+> - cpufreq: amd-pstate:
+> - - modify the wrong tag order.
+> - - modify warning about hw_prefcore sysfs attribute.
+> - - delete duplicate comments.
+> - - modify the variable name cppc_highest_perf to prefcore_ranking.
+> - - modify judgment conditions for setting highest_perf.
+> - - modify sysfs attribute for CPPC highest perf to pr_debug message.
+> - Documentation: amd-pstate:
+> - - modify warning: title underline too short.
+> 
+> Changes form V4->V5:
+> - cpufreq: amd-pstate:
+> - - modify sysfs attribute for CPPC highest perf.
+> - - modify warning about comments
+> - - rebase linux-next
+> - cpufreq:
+> - - Moidfy warning about function declarations.
+> - Documentation: amd-pstate:
+> - - align with ``amd-pstat``
+> 
+> Changes form V3->V4:
+> - Documentation: amd-pstate:
+> - - Modify inappropriate descriptions.
+> 
+> Changes form V2->V3:
+> - x86:
+> - - Modify kconfig and description.
+> - cpufreq: amd-pstate:
+> - - Add Co-developed-by tag in commit message.
+> - cpufreq:
+> - - Modify commit message.
+> - Documentation: amd-pstate:
+> - - Modify inappropriate descriptions.
+> 
+> Changes form V1->V2:
+> - acpi: cppc:
+> - - Add reference link.
+> - cpufreq:
+> - - Moidfy link error.
+> - cpufreq: amd-pstate:
+> - - Init the priorities of all online CPUs
+> - - Use a single variable to represent the status of preferred core.
+> - Documentation:
+> - - Default enabled preferred core.
+> - Documentation: amd-pstate:
+> - - Modify inappropriate descriptions.
+> - - Default enabled preferred core.
+> - - Use a single variable to represent the status of preferred core.
+> 
+> Meng Li (7):
+>    x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for the expansion.
+>    acpi: cppc: Add get the highest performance cppc control
+>    cpufreq: amd-pstate: Enable amd-pstate preferred core supporting.
+>    cpufreq: Add a notification message that the highest perf has changed
+>    cpufreq: amd-pstate: Update amd-pstate preferred core ranking
+>      dynamically
+>    Documentation: amd-pstate: introduce amd-pstate preferred core
+>    Documentation: introduce amd-pstate preferrd core mode kernel command
+>      line options
+> 
+>   .../admin-guide/kernel-parameters.txt         |   5 +
+>   Documentation/admin-guide/pm/amd-pstate.rst   |  58 +++++-
+>   arch/x86/Kconfig                              |   5 +-
+>   drivers/acpi/cppc_acpi.c                      |  13 ++
+>   drivers/acpi/processor_driver.c               |   6 +
+>   drivers/cpufreq/amd-pstate.c                  | 197 ++++++++++++++++--
+>   drivers/cpufreq/cpufreq.c                     |  13 ++
+>   include/acpi/cppc_acpi.h                      |   5 +
+>   include/linux/amd-pstate.h                    |   6 +
+>   include/linux/cpufreq.h                       |   5 +
+>   10 files changed, 291 insertions(+), 22 deletions(-)
+> 
 
