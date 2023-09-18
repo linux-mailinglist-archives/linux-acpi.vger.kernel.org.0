@@ -2,155 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F046C7A4635
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Sep 2023 11:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 738C97A46C9
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Sep 2023 12:19:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240969AbjIRJmE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Sep 2023 05:42:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56890 "EHLO
+        id S237903AbjIRKS1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 18 Sep 2023 06:18:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233492AbjIRJlh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Sep 2023 05:41:37 -0400
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ABB7CCD;
-        Mon, 18 Sep 2023 02:40:03 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046060;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0VsKThJJ_1695029998;
-Received: from 30.240.112.49(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VsKThJJ_1695029998)
-          by smtp.aliyun-inc.com;
-          Mon, 18 Sep 2023 17:40:00 +0800
-Message-ID: <e486db16-d36d-9e14-4f10-dc755c0ef97d@linux.alibaba.com>
-Date:   Mon, 18 Sep 2023 17:39:58 +0800
+        with ESMTP id S236655AbjIRKRz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Sep 2023 06:17:55 -0400
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA890A6;
+        Mon, 18 Sep 2023 03:17:50 -0700 (PDT)
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-573128cd77dso581368eaf.0;
+        Mon, 18 Sep 2023 03:17:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695032270; x=1695637070;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ujoKUEtOXd64dilUqJr56DQH0KgEx9BHmLMjC6p30VE=;
+        b=e6AVsm0xB0U9R92JSHaaXe2Lupj8FSsxLkari0BaBIVfUi/3iYsTgG5Dr3nkF6umBo
+         6fhLRRjBwK7jGJxhojsLbHOW+N1/8wLR5Q/KpzWmGCxK1XUc4zoxf5Qh6DlM1O3B1VyA
+         3nYXZzqahEmh0gXtROrYTSBS1f6eqwf/UAWy8dPNGydBz/th/vj4rkZ4SnCLWT0AoLyX
+         vSfzozwzRZUyLbkVqv0YraXlviQ16kI2OCn2tondmueZfQTRPD4PqDI13wD1rFYUsSsP
+         XZAwB3XszXejH6oaQSpczPE0U9WilrfGDAEuc9vf+De6DKnzw5dW4IOIY9neWhtH/lcQ
+         0UTQ==
+X-Gm-Message-State: AOJu0Yw92F2rrE7vsdmS3tVjrYHQSsBGHj8GKSptrn/oveR7LX87ur8R
+        +Rb5/RCeFRv7+Pr7ndnXpwhyKMF7P+XC9EH0vGY=
+X-Google-Smtp-Source: AGHT+IG3MV+KQ555ea0PzKJil3qPofKljFz7qtLM1LpTYMGqHFsWCayWqHWt83VjNPXLXJY7G5/ASyHu3cie4JY2a9M=
+X-Received: by 2002:a4a:de83:0:b0:56e:94ed:c098 with SMTP id
+ v3-20020a4ade83000000b0056e94edc098mr7683183oou.0.1695032269858; Mon, 18 Sep
+ 2023 03:17:49 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Content-Language: en-US
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-Subject: Questions: Should kernel panic when PCIe fatal error occurs?
-To:     "lenb@kernel.org" <lenb@kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "bp@alien8.de" <bp@alien8.de>, mahesh@linux.ibm.com,
-        bhelgaas@google.com,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        gregkh@linuxfoundation.org
-Cc:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230914222527.3472379-1-michal.wilczynski@intel.com>
+In-Reply-To: <20230914222527.3472379-1-michal.wilczynski@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 18 Sep 2023 12:17:35 +0200
+Message-ID: <CAJZ5v0gCEUmvbPQpJYJw6p_8KB1Jb3-bgcyBKZwdQReimZPw=g@mail.gmail.com>
+Subject: Re: [PATCH v1] ACPI: processor_pdc: Fix uninitialized access of buf
+To:     Michal Wilczynski <michal.wilczynski@intel.com>
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org,
+        linux-kernel@vger.kernel.org, lenb@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, all folks,
+On Fri, Sep 15, 2023 at 12:25 AM Michal Wilczynski
+<michal.wilczynski@intel.com> wrote:
+>
+> Bug was introduced during unification of setting CAP_SMP_T_SWCOORD for
+> _PDC and _OSC methods. Third u32 in buffer is never being zero-ed before
+> setting bits on it. The memory is not guaranteed to be zero as it was
+> allocated by kmalloc() instead of kzalloc(). Fix this by initializing
+> third u32 in buffer to 0.
+>
+> Fixes: b9e8d0168a7a ("ACPI: processor: Set CAP_SMP_T_SWCOORD in arch_acpi_set_proc_cap_bits()")
+> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+> ---
+>  drivers/acpi/processor_pdc.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
+> index 1a8591e9a9bf..994091bd52de 100644
+> --- a/drivers/acpi/processor_pdc.c
+> +++ b/drivers/acpi/processor_pdc.c
+> @@ -19,6 +19,7 @@ static void acpi_set_pdc_bits(u32 *buf)
+>  {
+>         buf[0] = ACPI_PDC_REVISION_ID;
+>         buf[1] = 1;
+> +       buf[2] = 0;
+>
+>         /* Twiddle arch-specific bits needed for _PDC */
+>         arch_acpi_set_proc_cap_bits(&buf[2]);
+> --
 
-Error reporting and recovery are one of the important features of PCIe, and
-the kernel has been supporting them since version 2.6, 17 years ago.
-I am very curious about the expected behavior of the software.
-I first recap the error classification and then list my questions bellow it.
-
-## Recap: Error classification
-
-- Fatal Errors
-
-Fatal errors are uncorrectable error conditions which render the particular
-Link and related hardware unreliable. For Fatal errors, a reset of the
-components on the Link may be required to return to reliable operation.
-Platform handling of Fatal errors, and any efforts to limit the effects of
-these errors, is platform implementation specific. (PCIe 6.0.1, sec
-6.2.2.2.1 Fatal Errors).
-
-- Non-Fatal Errors
-
-Non-fatal errors are uncorrectable errors which cause a particular
-transaction to be unreliable but the Link is otherwise fully functional.
-Isolating Non-fatal from Fatal errors provides Requester/Receiver logic in
-a device or system management software the opportunity to recover from the
-error without resetting the components on the Link and disturbing other
-transactions in progress. Devices not associated with the transaction in
-error are not impacted by the error.  (PCIe 6.0.1, sec 6.2.2.2.1 Non-Fatal
-Errors).
-
-## What the kernel do?
-
-The Linux kernel supports both the OS native and firmware first modes in
-AER and DPC drivers. The error recovery API is defined in `struct
-pci_error_handlers`, and the recovery process is performed in several
-stages in pcie_do_recovery(). One main difference in handling PCIe errors
-is that the kernel only resets the link when a fatal error is detected.
-
-## Questions
-
-1. Should kernel panic when fatal errors occur without AER recovery?
-
-IMHO, the answer is NO. The AER driver handles both fatal and non-fatal
-errors, and I have not found any panic changes in the recovery path in OS
-native mode.
-
-As far as I know, on many X86 platforms, struct `acpi_hest_generic_status::error_severity`
-is set as CPER_SEV_FATAL in firmware first mode. As a result, kernel will
-panic immediately in ghes_proc() when fatal AER errors occur, and there
-is no chance to handle the error and perform recovery in AER driver.
-
-For fatal and non-fatal errors, struct `acpi_hest_generic_status::error_severity`
-should as CPER_SEV_RECOVERABLE, and struct `acpi_hest_generic_data::error_severity`
-should reflect its real severity. Then, the kernel is equivalent to handling
-PCIe errors in Firmware first mode as it does in OS native mode.
-Please correct me if I am wrong.
-
-However, I have changed my mind on this issue as I encounter a case where
-a error propagation is detected due to fatal DLLP (Data Link Protocol
-Error) error. A DLLP error occurred in the Compute node, causing the
-node to panic because `struct acpi_hest_generic_status::error_severity` was
-set as CPER_SEV_FATAL. However, data corruption was still detected in the
-storage node by CRC.
-
-2. Should kernel panic when AER recovery failed?
-
-This question is actually a TODO that was added when the AER driver was
-first upstreamed 17 years ago, and it is still relevant today. The kernel
-does not proactively panic regardless of the error types occurring in OS
-native mode. The DLLP error propagation case indicates that the kernel
-might should panic when recovery failed?
-
-3. Should DPC be enabled by default to contain fatal and non-fatal error?
-
-According to the PCIe specification, DPC halts PCIe traffic below a
-Downstream Port after an unmasked uncorrectable error is detected at or
-below the Port, avoiding the potential spread of any data corruption.
-
-The kernel configures DPC to be triggered only on ERR_FATAL. Literally
-speaking, only fatal error have the potential spread of any data
-corruption? In addition, the AER Severity is programable by the
-Uncorrectable Error Severity Register (Offset 0Ch in PCIe AER cap). If a
-default fatal error, e.g. DLLP, set as non-fatal, DPC will not be
-triggered.
-
-
-Looking forward to any comments and reply :)
-
-Thank you.
-
-Best Regards,
-Shuai
-
-
-[1] https://github.com/torvalds/linux/commit/6c2b374d74857e892080ee726184ec1d15e7d4e4#diff-fea64904d30501b59d2e948189bbedc476fc270ed4c15e4ae29d7f0efd06771aR438
-
-
-
-
-
-
-
-
-
+Applied as 6.6-rc material, thanks!
