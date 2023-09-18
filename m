@@ -2,105 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8A1C7A49D3
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Sep 2023 14:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94E257A49E9
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Sep 2023 14:42:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240412AbjIRMga (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Sep 2023 08:36:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54430 "EHLO
+        id S240253AbjIRMl6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Sep 2023 08:41:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241464AbjIRMgD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Sep 2023 08:36:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB514D1
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Sep 2023 05:34:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1695040488;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=IxFBEQg9b7yDnMf45q5jDLqhs0KEwZwJPO2ZTdtr6EU=;
-        b=cagzNilNjEvqesMQh7H038SBngS7Ws6Vcu1u74HETHbPZH0WUvaidzSzL7gt6oSW57o4QQ
-        QzBKDKGcqwtAx60XNdUID1wi03mDxZ7TKHEUYppTQOij+YFl4/IcCbl/5JnJT61yth80dF
-        O9hWyi7TMqmZ7llxel2mIXGS6oG8ZBM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-265-DzjE0NTnM4SQz73MHepkqQ-1; Mon, 18 Sep 2023 08:34:46 -0400
-X-MC-Unique: DzjE0NTnM4SQz73MHepkqQ-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-404f81fe7cfso8484465e9.1
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Sep 2023 05:34:46 -0700 (PDT)
+        with ESMTP id S241316AbjIRMlc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Sep 2023 08:41:32 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C44A0
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Sep 2023 05:41:24 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id d9443c01a7336-1c39a4f14bcso41367785ad.3
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Sep 2023 05:41:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1695040884; x=1695645684; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i6c9PX8yXabbIMJYwi1Ux2aNFsK9GODhrWCXIJEdmKE=;
+        b=FSCF67QCIeso9UQhXa+f5n6A7lAAt+PhPlGvpkECCVgwQECn0IzCcd11R0abqEJnSa
+         SxPyTNZMMuBIxHYb3UKclZAXm6rKdr55ideJHlqHfufm0lBebnfnPPQvZNdTc+f5uSPk
+         0x0hXVdB2hhGrFYnTjc9za/ZISs6sWuBn3QbLM5J2PZH7qyZmyWBiXJgS1GwJ6TRSzku
+         9MJAX+3vXD46ijmg3mNJ94ePHNClXesgqrfK30e80O7so52VZyuV83BhfSNsFx2EaiMq
+         LLkkd+cE0xJ1MZIIGuGw6s4ivRI4Ru8dX+8ZqwkmVXS1GEY04XuNXLEVPdh8SO+aVvv4
+         6k/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695040485; x=1695645285;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IxFBEQg9b7yDnMf45q5jDLqhs0KEwZwJPO2ZTdtr6EU=;
-        b=Kbt0qYGavH2uoKvoF9dMRR9r/yR4TxCmFDwoQukQNQC/6bDNdYhYPcgtBQO47t88yb
-         0EUkghdixquzq5/ctGHZ5ybL+InwdQLsokU+FgrSgDgxkHHC5qWpNDphACVCcgSyWi1U
-         U1gLMQziDOjSdTpxyS3+gLGqULjulRA/HL9H0LZlaE0VqHDV975hXv9Gs6VxgY4DMjv9
-         IBrlatvyAcjEKwe8PRxSJCe7KFoAdRz+nhV8W5oBM8Rrym2KpGVwFeFZCeH300AdChpF
-         JOmkNuC+fxE4RU2IZ1mOVv8jWuBqh2DxJmLDb4i3tQgvZ306t19QNhdQvN52A8bb7N76
-         MoYA==
-X-Gm-Message-State: AOJu0Yz1Fphyy5V4G1xRt4H52l/fvLr68l8D2nibloZCaxKcYNZaEH0z
-        nWFALBpW5yi7y/sg7q/Yur9HVztrPqOFId2LR3JTs8vE4z3dUKBGONEIPRZLp3F5zg5fMBwuydy
-        L9NNdwAreSZ6x8lsLbOaSkKw0axy6Qw==
-X-Received: by 2002:a05:600c:28f:b0:402:e68f:8a4f with SMTP id 15-20020a05600c028f00b00402e68f8a4fmr6611919wmk.0.1695040485468;
-        Mon, 18 Sep 2023 05:34:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGaeDx1qVaRUmxQ681t+ZPcMtzpakFvnIYiPyEpet9vdJoZO7fGocfGRpPzZdBXcMLYaAhZPg==
-X-Received: by 2002:a05:600c:28f:b0:402:e68f:8a4f with SMTP id 15-20020a05600c028f00b00402e68f8a4fmr6611890wmk.0.1695040485051;
-        Mon, 18 Sep 2023 05:34:45 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c74b:3400:ec51:7a3a:274e:cbee? (p200300cbc74b3400ec517a3a274ecbee.dip0.t-ipconnect.de. [2003:cb:c74b:3400:ec51:7a3a:274e:cbee])
-        by smtp.gmail.com with ESMTPSA id u20-20020a05600c211400b003fe1fe56202sm12327862wml.33.2023.09.18.05.34.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Sep 2023 05:34:44 -0700 (PDT)
-Message-ID: <930acbe1-942f-d10f-f33e-020693b60d6e@redhat.com>
-Date:   Mon, 18 Sep 2023 14:34:43 +0200
+        d=1e100.net; s=20230601; t=1695040884; x=1695645684;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=i6c9PX8yXabbIMJYwi1Ux2aNFsK9GODhrWCXIJEdmKE=;
+        b=ennK/R4PIIeeNHP2a87zNw1AMjwNSmSTkkqGVHy/O3yoPgbW3NUDyeGGtwUZrbsbVr
+         bul67+SahramNs2SFi2uCIrHXAVLGOj43/w1TZTTifMX7eK4aK/l7C61NuySbUDEGqEo
+         w9rGO4HCqdaeJqHGvX+8/AlnT5hr+noI3XGRLCZpWrq2bPDwyPv/aYNJulvxtnjADxw0
+         CKNg0E+IfmUTUDLeSgyJNmRjpowvhDD6A94O/y2Rtii8hEZdVoRqxlDxDIwTcmkxxeob
+         KVVPSGWcBMJdbONTaBi0dp+cbO1K/145zzoDt4HUBZiP6pXAHdLke/k1nB2kDKoaPcc9
+         FPMQ==
+X-Gm-Message-State: AOJu0Yz81pYbZ9mQEd7R0T/Mz9dDQXwQrB0NjbDJzReJS0x45luURvip
+        qFpWIoCjlaciTtSt32o344rImw==
+X-Google-Smtp-Source: AGHT+IGEVMEZGX80dFpMj07WX+94atLU4djAb7dj3TL73bAPqqjZOmqMbE1bMhUQb7AR8A+yw7ClQw==
+X-Received: by 2002:a17:902:ced2:b0:1c3:92de:1b23 with SMTP id d18-20020a170902ced200b001c392de1b23mr10851182plg.59.1695040884228;
+        Mon, 18 Sep 2023 05:41:24 -0700 (PDT)
+Received: from PF2LML5M-SMJ.bytedance.net ([203.208.189.9])
+        by smtp.gmail.com with ESMTPSA id y15-20020a1709027c8f00b001bb99e188fcsm8195639pll.194.2023.09.18.05.41.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Sep 2023 05:41:23 -0700 (PDT)
+From:   Jinhui Guo <guojinhui.liam@bytedance.com>
+To:     rafael@kernel.org
+Cc:     gregkh@linuxfoundation.org, guojinhui.liam@bytedance.com,
+        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lizefan.x@bytedance.com,
+        lkp@intel.com, stable@vger.kernel.org
+Subject: Re: [PATCH] driver core: platform: set numa_node before platform_add_device()
+Date:   Mon, 18 Sep 2023 20:41:17 +0800
+Message-Id: <20230918124117.187-1-guojinhui.liam@bytedance.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <CAJZ5v0j+L=a0UEiCEXUYDtvscaVF29FPro9FNupMkJ7do2eBGw@mail.gmail.com>
+References: <CAJZ5v0j+L=a0UEiCEXUYDtvscaVF29FPro9FNupMkJ7do2eBGw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH 3/9] Documentation/scrub-configure.rst: Add
- documentation for scrub driver
-Content-Language: en-US
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>, linuxarm@huawei.com
-Cc:     Shiju Jose <shiju.jose@huawei.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "jiaqiyan@google.com" <jiaqiyan@google.com>,
-        "jthoughton@google.com" <jthoughton@google.com>,
-        "somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-        "erdemaktas@google.com" <erdemaktas@google.com>,
-        "pgonda@google.com" <pgonda@google.com>,
-        "rientjes@google.com" <rientjes@google.com>,
-        "duenwen@google.com" <duenwen@google.com>,
-        "Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
-        "mike.malvestuto@intel.com" <mike.malvestuto@intel.com>,
-        "gthelen@google.com" <gthelen@google.com>,
-        tanxiaofei <tanxiaofei@huawei.com>,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>
-References: <20230915172818.761-1-shiju.jose@huawei.com>
- <20230915172818.761-4-shiju.jose@huawei.com>
- <887344ee-068d-f78f-d5f8-e816b966d875@redhat.com>
- <946f29d2370c41deb7a7c5a6f2bff0f3@huawei.com>
- <7282d074-15ba-4fe7-bf62-6a4dd6089817@redhat.com>
- <20230918132835.000031b7@huawei.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230918132835.000031b7@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -108,142 +73,157 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 18.09.23 14:28, Jonathan Cameron wrote:
-> On Mon, 18 Sep 2023 14:15:33 +0200
-> David Hildenbrand <david@redhat.com> wrote:
+On Mon, 18 Sep 2023 12:30:58 +0200, Rafael J. Wysocki wrote:
+> On Thu, Sep 14, 2023 at 11:32 PM Jinhui Guo
+> <guojinhui.liam@bytedance.com> wrote:
+> >
+> > platform_add_device()
 > 
->> On 18.09.23 12:25, Shiju Jose wrote:
->>> Hi David,
->>>
->>> Thanks for looking into this.
->>>    
->>>> -----Original Message-----
->>>> From: David Hildenbrand <david@redhat.com>
->>>> Sent: 18 September 2023 08:24
->>>> To: Shiju Jose <shiju.jose@huawei.com>; linux-acpi@vger.kernel.org; linux-
->>>> mm@kvack.org; linux-kernel@vger.kernel.org
->>>> Cc: rafael@kernel.org; lenb@kernel.org; naoya.horiguchi@nec.com;
->>>> tony.luck@intel.com; james.morse@arm.com; dave.hansen@linux.intel.com;
->>>> jiaqiyan@google.com; jthoughton@google.com; somasundaram.a@hpe.com;
->>>> erdemaktas@google.com; pgonda@google.com; rientjes@google.com;
->>>> duenwen@google.com; Vilas.Sridharan@amd.com; mike.malvestuto@intel.com;
->>>> gthelen@google.com; Linuxarm <linuxarm@huawei.com>; Jonathan Cameron
->>>> <jonathan.cameron@huawei.com>; tanxiaofei <tanxiaofei@huawei.com>;
->>>> Zengtao (B) <prime.zeng@hisilicon.com>
->>>> Subject: Re: [RFC PATCH 3/9] Documentation/scrub-configure.rst: Add
->>>> documentation for scrub driver
->>>>
->>>> On 15.09.23 19:28, shiju.jose@huawei.com wrote:
->>>>> From: Shiju Jose <shiju.jose@huawei.com>
->>>>>
->>>>> Add documentation for scrub driver, supports configure scrub
->>>>> parameters, in Documentation/scrub-configure.rst
->>>>>
->>>>> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->>>>> ---
->>>>>     Documentation/scrub-configure.rst | 55
->>>> +++++++++++++++++++++++++++++++
->>>>>     1 file changed, 55 insertions(+)
->>>>>     create mode 100644 Documentation/scrub-configure.rst
->>>>>
->>>>> diff --git a/Documentation/scrub-configure.rst
->>>>> b/Documentation/scrub-configure.rst
->>>>> new file mode 100644
->>>>> index 000000000000..9f8581b88788
->>>>> --- /dev/null
->>>>> +++ b/Documentation/scrub-configure.rst
->>>>> @@ -0,0 +1,55 @@
->>>>> +==========================
->>>>> +Scrub subsystem driver
->>>>> +==========================
->>>>> +
->>>>> +Copyright (c) 2023 HiSilicon Limited.
->>>>> +
->>>>> +:Author:   Shiju Jose <shiju.jose@huawei.com>
->>>>> +:License:  The GNU Free Documentation License, Version 1.2
->>>>> +          (dual licensed under the GPL v2) :Original Reviewers:
->>>>> +
->>>>> +- Written for: 6.7
->>>>> +- Updated for:
->>>>> +
->>>>> +Introduction
->>>>> +------------
->>>>> +The scrub subsystem driver provides the interface for configure the
->>>>
->>>> "... interface for configuring memory scrubbers in the system."
->>>>
->>>> are we only configuring firmware/hw-based memory scrubbing? I assume so.
->>> The scrub control could be used for the SW  based memory scrubbing too.
->>
->> Okay, looks like there is not too much hw/firmware specific in there
->> (besides these weird range changes).
->> [...]
->>
->>>>> +-------
->>>>> +
->>>>> +  The usage takes the form shown in this example::
->>>>> +
->>>>> +    # echo 0x300000 > /sys/class/scrub/scrub0/region0/addr_base
->>>>> +    # echo 0x100000 > /sys/class/scrub/scrub0/region0/addr_size
->>>>> +    # cat /sys/class/scrub/scrub0/region0/speed_available
->>>>> +    # 1-60
->>>>> +    # echo 25 > /sys/class/scrub/scrub0/region0/speed
->>>>> +    # echo 1 > /sys/class/scrub/scrub0/region0/enable
->>>>> +
->>>>> +    # cat /sys/class/scrub/scrub0/region0/speed
->>>>> +    # 0x19
->>>>
->>>> Is it reasonable to return the speed as hex? You set it as dec.
->>> Presently return speed  as hex to reduce the number of callback function needed
->>> for reading the hex/dec data because the values for the address range
->>> need to be in hex.
->>
->> If speed_available returns dec, speed better also return dec IMHO.
->>
->>>    
->>>>   
->>>>> +    # cat /sys/class/scrub/scrub0/region0/addr_base
->>>>> +    # 0x100000
->>>>
->>>> But didn't we set it to 0x300000 ...
->>> This is an emulated example for testing the RASF/RAS2 definition.
->>> According to the RASF & RAS2 definition, the actual address range in the
->>> platform could vary from the requested address range for the patrol scrubbing.
->>> "The platform calculates the nearest patrol scrub boundary address
->>> from where it can start". The platform returns the actual address range
->>> in response to GET_PATROL_PARAMETERS command to the firmware.
->>> Please see section 5.2.21.2.1 Hardware-based Memory Scrubbing ,
->>> Table 5.87: Parameter Block Structure for PATROL_SCRUB in the
->>> ACPI 6.5 specification.
->>>    
->>
->> So you configure [0x300000 - 0x400000] and you get [0x100000 - 0x300000]
->>
->> How does that make any sense? :)
->>
->> Shouldn't we rather return an error when setting a range that is
->> impossible, instead of the hardware deciding to scrub something
->> completely different (as can be seen in the example)?
->>
+> According to "git grep" this function is not present in 6.6-rc2.
 > 
-> A broader scrub is probably reasonable, but agreed that scrubbing narrower
-> is 'interesting' as not scrubbing the memory requeseted.
+> If you mean platform_device_add(), please update the patch subject and
+> changelog accordingly.
+> 
 
-It's not even narrower. Both ranges don't even intersect! (sorry to say, 
-but this configuration interface doesn't make any sense if hardware just 
-does *something* else).
+This is my mistake, the function name was written wrong.
+I will fix it in the next patch.
 
-If you can't configure it properly, fail with an error.
+> > creates the numa_node attribute of sysfs according
+> > to whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
+> > of device before creating numa_node attribute of sysfs.
+> 
+> It would be good to also say that this needs to be done in
+> platform_device_register_full(), because that's where the platform
+> device object is allocated.
+> 
 
-> It's really annoying that neither ACPI table provides any proper
-> discoverability.  Whilst we can fix that long term, we are stuck with
-> a clunky poke it and see interface in the meantime.
+Thaks for your suggestion. I will modify my decription soon.
 
-Can't you set it, briefly enable it, and read the values back? Then, you 
-can complain to the user that the configured range is impossible.
+> However, what about adding the NUMA node information to pdevinfo?  It
+> would be more straightforward to handle it then AFAICS.
+> 
 
--- 
-Cheers,
+I have tried three potential solutions to fix the bug:
+1. The first one is what the current patch do.
 
-David / dhildenb
+2. Add a new function interface only for acpi_create_platform_device() call.
+   But the code will be a bit redundant.
 
+3. Add an member "numa_node" in `struct platform_device_info`, just as what
+   `struct device` done:
+
+```
+struct platform_device_info {
+	...;
+#ifdef CONFIG_NUMA
+	int		numa_node;
+#endif
+```
+
+But not all the call to platform_device_register_full() would set numa_node,
+and many of them use ` memset(&pdevinfo, 0, sizeof(pdevinfo));` to initialize
+`struct platform_device_info`. It could initialize numa_node to zero and
+result in wrong numa_node information in sysfs.
+
+```
+struct platform_device *platform_device_register_full(
+		const struct platform_device_info *pdevinfo) {
+	...;
+	/*
+	 * (1) It will initialize numa_node in `struct device` to NUMA_NO_NODE.
+	 *     NUMA_NO_NODE is -1.
+	 */
+	pdev = platform_device_alloc(pdevinfo->name, pdevinfo->id);
+	...;
+	/*
+	 * (2) If we add set_dev_node() here, we have to make sure pdevinfo->numa_node
+	 *     is correct. But It is difficult to do so, especially drivers don't want to
+	 *     set numa_node. Instead of initializing pdevinfo->numa_node to NUMA_NO_NODE,
+	 *     they are accustomed to memset `struct platform_device_info` to be zero.
+	 */
+	set_dev_node(&pdev->dev, pdevinfo->numa_node);
+	...;
+	/*
+	 * (3) The sysfs attribute numa_node will create here.
+	 */
+	ret = platform_device_add(pdev);
+	...;
+}
+```
+
+> > Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+> > Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+> > ---
+> > V4 -> V5: Add Cc: stable line and changes from the previous submited
+> > patches
+> > V3 -> V4: Refactor code to be an ACPI function call
+> > V2 -> V3: Fix Signed-off name
+> > V1 -> V2: Fix compile error without enabling CONFIG_ACPI
+> >
+> >  drivers/acpi/acpi_platform.c | 4 +---
+> >  drivers/base/platform.c      | 1 +
+> >  include/linux/acpi.h         | 5 +++++
+> >  3 files changed, 7 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+> > index 48d15dd785f6..adcbfbdc343f 100644
+> > --- a/drivers/acpi/acpi_platform.c
+> > +++ b/drivers/acpi/acpi_platform.c
+> > @@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+> >         if (IS_ERR(pdev))
+> >                 dev_err(&adev->dev, "platform device creation failed: %ld\n",
+> >                         PTR_ERR(pdev));
+> > -       else {
+> > -               set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
+> > +       else
+> >                 dev_dbg(&adev->dev, "created platform device %s\n",
+> >                         dev_name(&pdev->dev));
+> > -       }
+> >
+> >         kfree(resources);
+> >
+> > diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+> > index 76bfcba25003..35c891075d95 100644
+> > --- a/drivers/base/platform.c
+> > +++ b/drivers/base/platform.c
+> > @@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
+> >                         goto err;
+> >         }
+> >
+> > +       set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
+> >         ret = platform_device_add(pdev);
+> >         if (ret) {
+> >  err:
+> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> > index a73246c3c35e..6a349d53f19e 100644
+> > --- a/include/linux/acpi.h
+> > +++ b/include/linux/acpi.h
+> > @@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
+> >         return 0;
+> >  }
+> >  #endif
+> > +
+> > +#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
+> > +       acpi_get_node((adev)->handle) : NUMA_NO_NODE)
+> > +
+> >  extern int pnpacpi_disabled;
+> >
+> >  #define PXM_INVAL      (-1)
+> > @@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
+> >  #define ACPI_COMPANION_SET(dev, adev)  do { } while (0)
+> >  #define ACPI_HANDLE(dev)               (NULL)
+> >  #define ACPI_HANDLE_FWNODE(fwnode)     (NULL)
+> > +#define ACPI_NODE_GET(adev)            NUMA_NO_NODE
+> >
+> >  #include <acpi/acpi_numa.h>
+> >
+> > --
+> > 2.20.1
+> >
+
+Thanks,
+
+Jinhui Guo
