@@ -2,152 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E0527A46FD
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Sep 2023 12:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D6D17A4780
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Sep 2023 12:47:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232457AbjIRKbX convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 18 Sep 2023 06:31:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51566 "EHLO
+        id S240944AbjIRKrb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 18 Sep 2023 06:47:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241367AbjIRKbT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Sep 2023 06:31:19 -0400
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA163DB;
-        Mon, 18 Sep 2023 03:31:13 -0700 (PDT)
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5711d5dac14so1115020eaf.0;
-        Mon, 18 Sep 2023 03:31:13 -0700 (PDT)
+        with ESMTP id S241196AbjIRKrJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Sep 2023 06:47:09 -0400
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18EE9B6;
+        Mon, 18 Sep 2023 03:47:04 -0700 (PDT)
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-573128cd77dso586292eaf.0;
+        Mon, 18 Sep 2023 03:47:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695033073; x=1695637873;
+        d=1e100.net; s=20230601; t=1695034023; x=1695638823;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ErCjYPZb5R42qd/bAiuaTdy6BusCKRPj6SWml5/mG+w=;
-        b=kYiCcVp5Qfeq7r0DFhe/6Da+Ib83s9UHWbz6MoSQUpPgbkX+SRhpPukmTwRX+/gMtU
-         kVrfTK6/r4Elb8+JhHKTxDB1un+3RRtVS2lmSjh2gOybBqJQcYARfBHNmbNlQpQjztlq
-         dvlheDfXPZ6ndOpY1RNziS64B4H5i179+CYcIZ6wceOQq+pL6KpPUWFPXnHn9rHnGFLA
-         8tq95clpBE+LtXQQyKUrPqP2qf2Q3AXpxvHYPCjmxwUIXMbWDj5JM8E9iuKWRFE0FeuR
-         wmgd+PqruiacRX8VjJ2SvU8lRgVkYUwIKZV7OnkHcLJM3kZKFa+vZtNN4FgfFbDeiqHD
-         Myag==
-X-Gm-Message-State: AOJu0YzyRIr0QKOsRpkSr5Iv/MAlG9iJQ3t02I89ZVK5hEgmza/6J46r
-        U0C8KgNfzUB8pfRxwOn3a0pb9idPqRmJWbonhbQ=
-X-Google-Smtp-Source: AGHT+IGzicJIqnssObKvtpvoT+dKnNeRslejH1qfRD7ABvvgWon4Kl1kDhUo6Y/cnfvI6Y18Oa+llsz3SLwS5MWYg7g=
-X-Received: by 2002:a4a:b483:0:b0:578:a06a:5d8f with SMTP id
- b3-20020a4ab483000000b00578a06a5d8fmr7599276ooo.1.1695033073091; Mon, 18 Sep
- 2023 03:31:13 -0700 (PDT)
+        bh=VLR2rl0tJf4TvoCKE2Und3t7JkpsVQnKUyFiNGKDeXU=;
+        b=KrVeQBohPWV1FrMOftNvmZySK5EKF3IGfenMSrq+54mN4ZbFhvzaIlnMtrsw5fduXf
+         a+aPfyeIsr6AaCzmG7t/OTqJshQToAahbOUelqWEoWvYe3PCUfWQCjCqxGh8MxGoGAjG
+         n4eSnaLtEFP6w09ILpDLPDRgLN9tG3SN9fvBY7ijLJurbD9rOoZIPB7r2+aChGW3uNYq
+         NuwAu9D1AeoLadRDhcNJfaRi+9yu+LOdgQJl13oeKy/leghuFjCJoNK7okydmVr56JUo
+         rTG2q3MxHZI8iBkL8jIoJ7EuznAAx3e29wrenGNSQIuC2tgQoNAa6KXLRVS3kRbH4Glo
+         VGYQ==
+X-Gm-Message-State: AOJu0YwELEWeK1AvnPaE9tSMgqhPfpYypx3KfcK0Ab1XixH71VIuUdfL
+        nc3Dw2hnad2MPGH3+NmWD44Qm0409tubD7/9Jag=
+X-Google-Smtp-Source: AGHT+IH32KNlt0aehU1kUyg6pQve4X57p60IvGk8JgWlQoxXocjrsbvQ83pxb4qEfaAqIcLuuLK+zOlQC/gpPSro0sE=
+X-Received: by 2002:a4a:de83:0:b0:56e:94ed:c098 with SMTP id
+ v3-20020a4ade83000000b0056e94edc098mr7737511oou.0.1695034023204; Mon, 18 Sep
+ 2023 03:47:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230914213148.3560-1-guojinhui.liam@bytedance.com>
-In-Reply-To: <20230914213148.3560-1-guojinhui.liam@bytedance.com>
+References: <20230915202511.1452091-1-quic_poza@quicinc.com>
+In-Reply-To: <20230915202511.1452091-1-quic_poza@quicinc.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 18 Sep 2023 12:30:58 +0200
-Message-ID: <CAJZ5v0j+L=a0UEiCEXUYDtvscaVF29FPro9FNupMkJ7do2eBGw@mail.gmail.com>
-Subject: Re: [PATCH v5] driver core: platform: set numa_node before platform_add_device()
-To:     Jinhui Guo <guojinhui.liam@bytedance.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org,
-        lizefan.x@bytedance.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel test robot <lkp@intel.com>
+Date:   Mon, 18 Sep 2023 12:46:52 +0200
+Message-ID: <CAJZ5v0h8bD-Cuk+wXiS3F4jm5GdH7yX4jgEqE3-9ho7A27HWzw@mail.gmail.com>
+Subject: Re: [PATCH v7] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast timer
+To:     Oza Pawandeep <quic_poza@quicinc.com>
+Cc:     sudeep.holla@arm.com, catalin.marinas@arm.com, will@kernel.org,
+        rafael@kernel.org, lenb@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 14, 2023 at 11:32 PM Jinhui Guo
-<guojinhui.liam@bytedance.com> wrote:
+On Fri, Sep 15, 2023 at 10:25 PM Oza Pawandeep <quic_poza@quicinc.com> wrote:
 >
-> platform_add_device()
+> Arm® Functional Fixed Hardware Specification defines LPI states,
+> which provide an architectural context loss flags field that can
+> be used to describe the context that might be lost when an LPI
+> state is entered.
+>
+> - Core context Lost
+>         - General purpose registers.
+>         - Floating point and SIMD registers.
+>         - System registers, include the System register based
+>         - generic timer for the core.
+>         - Debug register in the core power domain.
+>         - PMU registers in the core power domain.
+>         - Trace register in the core power domain.
+> - Trace context loss
+> - GICR
+> - GICD
+>
+> Qualcomm's custom CPUs preserves the architectural state,
+> including keeping the power domain for local timers active.
+> when core is power gated, the local timers are sufficient to
+> wake the core up without needing broadcast timer.
+>
+> The patch fixes the evaluation of cpuidle arch_flags, and moves only to
+> broadcast timer if core context lost is defined in ACPI LPI.
+>
+> Fixes: a36a7fecfe607 ("Add support for Low Power Idle(LPI) states")
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
 
-According to "git grep" this function is not present in 6.6-rc2.
+I think that I've already ACKed it and I said that I would prefer it
+to be routed via ARM64, because it essentially is all about ARM64.
 
-If you mean platform_device_add(), please update the patch subject and
-changelog accordingly.
-
-> creates the numa_node attribute of sysfs according
-> to whether dev_to_node(dev) is equal to NUMA_NO_NODE. So set the numa node
-> of device before creating numa_node attribute of sysfs.
-
-It would be good to also say that this needs to be done in
-platform_device_register_full(), because that's where the platform
-device object is allocated.
-
-However, what about adding the NUMA node information to pdevinfo?  It
-would be more straightforward to handle it then AFAICS.
-
-> Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
-> Cc: stable@vger.kernel.org
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
-> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
 > ---
-> V4 -> V5: Add Cc: stable line and changes from the previous submited
-> patches
-> V3 -> V4: Refactor code to be an ACPI function call
-> V2 -> V3: Fix Signed-off name
-> V1 -> V2: Fix compile error without enabling CONFIG_ACPI
 >
->  drivers/acpi/acpi_platform.c | 4 +---
->  drivers/base/platform.c      | 1 +
->  include/linux/acpi.h         | 5 +++++
->  3 files changed, 7 insertions(+), 3 deletions(-)
+> Notes:
+>     Will/Catalin: Rafael has acked and he prefers to take it via arm64 tree
 >
-> diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-> index 48d15dd785f6..adcbfbdc343f 100644
-> --- a/drivers/acpi/acpi_platform.c
-> +++ b/drivers/acpi/acpi_platform.c
-> @@ -178,11 +178,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
->         if (IS_ERR(pdev))
->                 dev_err(&adev->dev, "platform device creation failed: %ld\n",
->                         PTR_ERR(pdev));
-> -       else {
-> -               set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-> +       else
->                 dev_dbg(&adev->dev, "created platform device %s\n",
->                         dev_name(&pdev->dev));
-> -       }
+> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
+> index 4d537d56eb84..269d21209723 100644
+> --- a/arch/arm64/include/asm/acpi.h
+> +++ b/arch/arm64/include/asm/acpi.h
+> @@ -9,6 +9,7 @@
+>  #ifndef _ASM_ACPI_H
+>  #define _ASM_ACPI_H
 >
->         kfree(resources);
+> +#include <linux/cpuidle.h>
+>  #include <linux/efi.h>
+>  #include <linux/memblock.h>
+>  #include <linux/psci.h>
+> @@ -44,6 +45,23 @@
 >
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 76bfcba25003..35c891075d95 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -841,6 +841,7 @@ struct platform_device *platform_device_register_full(
->                         goto err;
->         }
+>  #define ACPI_MADT_GICC_TRBE  (offsetof(struct acpi_madt_generic_interrupt, \
+>         trbe_interrupt) + sizeof(u16))
+> +/*
+> + * Arm® Functional Fixed Hardware Specification Version 1.2.
+> + * Table 2: Arm Architecture context loss flags
+> + */
+> +#define CPUIDLE_CORE_CTXT              BIT(0) /* Core context Lost */
+> +
+> +static __always_inline void _arch_update_idle_state_flags(u32 arch_flags,
+> +                                                       unsigned int *sflags)
+> +{
+> +       if (arch_flags & CPUIDLE_CORE_CTXT)
+> +               *sflags |= CPUIDLE_FLAG_TIMER_STOP;
+> +}
+> +#define arch_update_idle_state_flags _arch_update_idle_state_flags
+> +
+> +#define CPUIDLE_TRACE_CTXT             BIT(1) /* Trace context loss */
+> +#define CPUIDLE_GICR_CTXT              BIT(2) /* GICR */
+> +#define CPUIDLE_GICD_CTXT              BIT(3) /* GICD */
 >
-> +       set_dev_node(&pdev->dev, ACPI_NODE_GET(ACPI_COMPANION(&pdev->dev)));
->         ret = platform_device_add(pdev);
->         if (ret) {
->  err:
+>  /* Basic configuration for ACPI */
+>  #ifdef CONFIG_ACPI
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> index dc615ef6550a..5c1d13eecdd1 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -1217,8 +1217,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
+>                 strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
+>                 state->exit_latency = lpi->wake_latency;
+>                 state->target_residency = lpi->min_residency;
+> -               if (lpi->arch_flags)
+> -                       state->flags |= CPUIDLE_FLAG_TIMER_STOP;
+> +               arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
+>                 if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
+>                         state->flags |= CPUIDLE_FLAG_RCU_IDLE;
+>                 state->enter = acpi_idle_lpi_enter;
 > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index a73246c3c35e..6a349d53f19e 100644
+> index a73246c3c35e..07a825c76bab 100644
 > --- a/include/linux/acpi.h
 > +++ b/include/linux/acpi.h
-> @@ -477,6 +477,10 @@ static inline int acpi_get_node(acpi_handle handle)
->         return 0;
+> @@ -1480,6 +1480,12 @@ static inline int lpit_read_residency_count_address(u64 *address)
 >  }
 >  #endif
+>
+> +#ifdef CONFIG_ACPI_PROCESSOR_IDLE
+> +#ifndef arch_update_idle_state_flags
+> +#define arch_update_idle_state_flags(af, sf)   do {} while (0)
+> +#endif
+> +#endif /* CONFIG_ACPI_PROCESSOR_IDLE */
 > +
-> +#define ACPI_NODE_GET(adev) ((adev) && (adev)->handle ? \
-> +       acpi_get_node((adev)->handle) : NUMA_NO_NODE)
-> +
->  extern int pnpacpi_disabled;
->
->  #define PXM_INVAL      (-1)
-> @@ -770,6 +774,7 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
->  #define ACPI_COMPANION_SET(dev, adev)  do { } while (0)
->  #define ACPI_HANDLE(dev)               (NULL)
->  #define ACPI_HANDLE_FWNODE(fwnode)     (NULL)
-> +#define ACPI_NODE_GET(adev)            NUMA_NO_NODE
->
->  #include <acpi/acpi_numa.h>
->
+>  #ifdef CONFIG_ACPI_PPTT
+>  int acpi_pptt_cpu_is_thread(unsigned int cpu);
+>  int find_acpi_cpu_topology(unsigned int cpu, int level);
 > --
-> 2.20.1
+> 2.25.1
 >
