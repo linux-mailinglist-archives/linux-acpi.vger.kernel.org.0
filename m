@@ -2,63 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64EB27A5AC0
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Sep 2023 09:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1080D7A5B23
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Sep 2023 09:37:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231561AbjISHVr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Sep 2023 03:21:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44958 "EHLO
+        id S231804AbjISHhe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Sep 2023 03:37:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231701AbjISHVq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Sep 2023 03:21:46 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0B9310F;
-        Tue, 19 Sep 2023 00:21:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD47C43391;
-        Tue, 19 Sep 2023 07:21:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695108101;
-        bh=vipQm+ipmzA33o/tVXoUQOyoIDyB3vzAvg4BjLAMbEA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fmsRAu2kb27aX+XIX35tWhi4BzSNGCSrLBvou6vyxgMuf32dc9g98LSk6zickJO+G
-         oGkXXpFYZhEBuAt0iDNTb3YFOeG2Oka69yhTMZLcU92WYBJPKD4YIjek8+v/fdvqWl
-         EbL9wKwWM1kdUgIKZf0quXZ8cVLnvfpNvFKBi6xM=
-Date:   Tue, 19 Sep 2023 09:21:36 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Saravana Kannan <saravanak@google.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v1 1/1] device property: Clarify usage scope of some
- struct fwnode_handle members
-Message-ID: <2023091924-probable-rural-77f2@gregkh>
-References: <20230904104046.1682875-1-andriy.shevchenko@linux.intel.com>
- <ZQiCC9xoCzwc/nEd@smile.fi.intel.com>
+        with ESMTP id S231788AbjISHhd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Sep 2023 03:37:33 -0400
+X-Greylist: delayed 417 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 19 Sep 2023 00:37:24 PDT
+Received: from mail.leeswilly.pl (mail.leeswilly.pl [89.116.26.225])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B86E511C
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Sep 2023 00:37:24 -0700 (PDT)
+Received: by mail.leeswilly.pl (Postfix, from userid 1001)
+        id C9DA5761230; Tue, 19 Sep 2023 09:30:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leeswilly.pl; s=mail;
+        t=1695108625; bh=qCQG4c3C0tvkuSSy6okg6Td4OKi9mrw7rI9pE9SwJ9g=;
+        h=Date:From:To:Subject:From;
+        b=Kwja2JJ3LzB4CIRzRspMA3xHXMmfssVDnLexZdxFxQgmwuXoImNFuFuk7UnYKtpIi
+         4Sq9BEJ5Zq7ctnyQcPtMTngsiY1knjwdGfX1udmCvNzbA88+y7+ocGiiA8LW4OMpxp
+         9WuywZRKyf3I3nxe4UPaSZJ9yzw3Qxg0EOkfPm+/qds1OMxz0YZbkBip6tll3J5UuO
+         9bXYGJa4Ls2NI+rxaq3Fku2s+UymcEKe6nnKUXkStiU46B5Hbah6ZyjmrcjZMzquj/
+         qsdO72oPDFA3GZgMifchZHgg0tpJn1WSegRaGa9Fm9k83B9f6hJfv7PTGa0tctNhx5
+         mcewMaY/AkCwg==
+Received: by mail.leeswilly.pl for <linux-acpi@vger.kernel.org>; Tue, 19 Sep 2023 07:30:18 GMT
+Message-ID: <20230919084500-0.1.3z.bbe2.0.pfa1s8ahxa@leeswilly.pl>
+Date:   Tue, 19 Sep 2023 07:30:18 GMT
+From:   "Jakub Lemczak" <jakub.lemczak@leeswilly.pl>
+To:     <linux-acpi@vger.kernel.org>
+Subject: =?UTF-8?Q?Pytanie_o_samoch=C3=B3d?=
+X-Mailer: mail.leeswilly.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZQiCC9xoCzwc/nEd@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SORBS_DUL,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 18, 2023 at 07:59:55PM +0300, Andy Shevchenko wrote:
-> On Mon, Sep 04, 2023 at 01:40:46PM +0300, Andy Shevchenko wrote:
-> > Most of the struct fwnode_handle members are for exclusive use with
-> > device links framework. Clarify this by adding a respective comment.
-> 
-> Thank you, folks, for the review. Rafael, Greg, who can apply this?
+Dzie=C5=84 dobry,
 
-I will, give me some time to catch up with my pending patch queue.
+Czy interesuje Pa=C5=84stwa rozwi=C4=85zanie umo=C5=BCliwiaj=C4=85ce moni=
+torowanie samochod=C3=B3w firmowych oraz optymalizacj=C4=99 koszt=C3=B3w =
+ich utrzymania?=20
 
-greg k-h
+
+Pozdrawiam
+Jakub Lemczak
