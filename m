@@ -2,66 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42D007A56E9
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Sep 2023 03:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 731A17A56F5
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Sep 2023 03:24:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230416AbjISBRp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Sep 2023 21:17:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34160 "EHLO
+        id S229508AbjISBYD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Sep 2023 21:24:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230365AbjISBRo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Sep 2023 21:17:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7298410D
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Sep 2023 18:16:51 -0700 (PDT)
+        with ESMTP id S230365AbjISBYD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Sep 2023 21:24:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0314E10B
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Sep 2023 18:23:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1695086210;
+        s=mimecast20190719; t=1695086590;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=omPau9d/hvAoI0gDrC/4LG/Ef7KpyIVKvwkkyw1GuWQ=;
-        b=J5gpzRCAWIL8p141j7ZUOPpjiO75/3KorwR0MlJlAe918MnW2Ycc+5ExKhSHF0tkccIGHt
-        Hh9IN/yh7vR5cSDz+DT5rXsBCXvvXTjo43yQgM7JNMhtJcjLzS2c6pu4tPG2COA1QcDuWU
-        Z0/kLZsKxMOEgZG3R11nxZiJTj2T/5o=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=8rZEMBXcWAsOd1JUxhybBTc4j/duZaFTPteC/Fr9lkM=;
+        b=FtA3w0XeVotf1iW5q6N+Vh9jAK/1v7a4TuX3AKoWOCUcCDL2uhzBhdGyTJISJgDXHeK6qt
+        vVjFaQUYkYHCdEU8yyyekNPuAnk9+tqsxJLCW/8Nq1HsMuqFHiFny2GSYIzk/Q2hTEbiA2
+        9EVjvlQ2grEjb8fU3cwn+I3Lf4r+VdY=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-141-IDlIfj0PNUC2tDYz010gbg-1; Mon, 18 Sep 2023 21:16:49 -0400
-X-MC-Unique: IDlIfj0PNUC2tDYz010gbg-1
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-1c395534687so44493995ad.1
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Sep 2023 18:16:49 -0700 (PDT)
+ us-mta-350-p2OsCHCmPyqXOKoopOGf6w-1; Mon, 18 Sep 2023 21:23:08 -0400
+X-MC-Unique: p2OsCHCmPyqXOKoopOGf6w-1
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-1c4588f622aso17474355ad.2
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Sep 2023 18:23:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695086208; x=1695691008;
+        d=1e100.net; s=20230601; t=1695086588; x=1695691388;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=omPau9d/hvAoI0gDrC/4LG/Ef7KpyIVKvwkkyw1GuWQ=;
-        b=SX3ITsml5+GbHANSJ3OpMdyh5V1hhMs7umITYiPPWnEi4Esy12m9RqcpEwdeGbX4cx
-         f2nUBIBi2Zz6OI3Z+lMJOLMe5v+V3KGkDjbB3yB+ZyplxJau4qbKzgYkMywvoUEDT+Ak
-         JX4NX0sbYeG2/f0Isa9L64W+FwqNaDvRZVJPQXLxV/NDLA7P5W82QKL4y7zus/vbdrFY
-         OZ5OGm6lCNAG/XTuFWXJZxPm1zl/r0g528tphQz3Ku8w0urtdsLfNUBbHTADPiRn9EoR
-         y4zQZ+dfg8Xbv0IYfVfiUEcuDp6FThVxsc3zddAhvc81NzjdXqSG18EQMjBu3C6Ry63o
-         kaqg==
-X-Gm-Message-State: AOJu0YxQHcvQsb0LMsj1TOD4T5zHMx7BVr7P/xwjB41FjVtzpS4g/H4d
-        dp7mtxN0tUq2kiHKdewOZbXJVO7leMsGw4FIF7veS/VJKUXZXkImq/serYfnGftsmkvbYE8Y3BO
-        HPHIYgHtdf63vsO90ycPqyQ==
-X-Received: by 2002:a17:903:32ce:b0:1c5:82bb:223b with SMTP id i14-20020a17090332ce00b001c582bb223bmr3093053plr.60.1695086208303;
-        Mon, 18 Sep 2023 18:16:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHE1i0NJ56OK1RSneouzoLKNH0vI25vR0RRcS/LvZ7zADw/YiBXjO0kBQXVFFJFy1l+rs/4UQ==
-X-Received: by 2002:a17:903:32ce:b0:1c5:82bb:223b with SMTP id i14-20020a17090332ce00b001c582bb223bmr3093033plr.60.1695086207927;
-        Mon, 18 Sep 2023 18:16:47 -0700 (PDT)
+        bh=8rZEMBXcWAsOd1JUxhybBTc4j/duZaFTPteC/Fr9lkM=;
+        b=jMIWOl1Tizg1UiXR7tbxigzR1M2wFVi3k5j9VMeQC8R4ZRp3Punc0y3eP6AHASamXI
+         CmoN6YtQKR261m5PBlo0SeDOfTzSWoziyh7KqC8e13XGbiQ279ANCWQo68OdZPsS8Ov2
+         DxY3/djdUluz6DFtDaPomr19mrKEN1Lj8clZVYvY31dVx5DEUqqUyaQe9OfxbcBAHCJq
+         hmuM5ecOwkP9traG9Hq/v3eVwSYtWZiXSncYV5BfI8766524pypLSyRymKQJuKRYxlpc
+         IyW3trJqHMIhfm0nWP/ZfOOhAvtsJe9Lg36WmuCd1hVcrx+Wz44tM2ITWV2ZCKdokCSG
+         Me0A==
+X-Gm-Message-State: AOJu0YyqgQAIBoNDMYpHkxa5Qz7DNRQVm0WyNRzGY2y5mW9s5TbOSR6V
+        rDVxrcWfoLM4WEqdwnECyd62Kf2bgeFjm3nrk3mkf2pAIMHltpefLUXJWVjgov3TdAl16EHW45g
+        T9WoZQ8G03ufZzFm70dLQ4w==
+X-Received: by 2002:a17:902:d4c7:b0:1c3:c687:4793 with SMTP id o7-20020a170902d4c700b001c3c6874793mr10025100plg.63.1695086587821;
+        Mon, 18 Sep 2023 18:23:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHoDFw/kgFjKPQwWTf0Oet8p5HAvy+YamWqASTKA/sRdSVgiuLoUsA4+OwthgzDWlhTMjCURQ==
+X-Received: by 2002:a17:902:d4c7:b0:1c3:c687:4793 with SMTP id o7-20020a170902d4c700b001c3c6874793mr10025086plg.63.1695086587495;
+        Mon, 18 Sep 2023 18:23:07 -0700 (PDT)
 Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5? ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
-        by smtp.gmail.com with ESMTPSA id g1-20020a170902c38100b001bc2831e1a8sm6580180plg.80.2023.09.18.18.16.42
+        by smtp.gmail.com with ESMTPSA id z12-20020a170903018c00b001beef2c9bffsm8873509plg.85.2023.09.18.18.23.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Sep 2023 18:16:47 -0700 (PDT)
-Message-ID: <9ef55959-66f3-0dc3-dec8-e2b673f965a4@redhat.com>
-Date:   Tue, 19 Sep 2023 11:16:40 +1000
+        Mon, 18 Sep 2023 18:23:06 -0700 (PDT)
+Message-ID: <f45820cf-3ea5-6f5a-7702-bb4b14811e56@redhat.com>
+Date:   Tue, 19 Sep 2023 11:23:00 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [RFC PATCH v2 26/35] arm64: acpi: Move get_cpu_for_acpi_id() to a
- header
+Subject: Re: [RFC PATCH v2 28/35] arm64, irqchip/gic-v3, ACPI: Move MADT GICC
+ enabled check into a helper
 Content-Language: en-US
 To:     James Morse <james.morse@arm.com>, linux-pm@vger.kernel.org,
         loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
@@ -73,15 +73,16 @@ Cc:     x86@kernel.org, Salil Mehta <salil.mehta@huawei.com>,
         Jean-Philippe Brucker <jean-philippe@linaro.org>,
         jianyong.wu@arm.com, justin.he@arm.com
 References: <20230913163823.7880-1-james.morse@arm.com>
- <20230913163823.7880-27-james.morse@arm.com>
+ <20230913163823.7880-29-james.morse@arm.com>
 From:   Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20230913163823.7880-27-james.morse@arm.com>
+In-Reply-To: <20230913163823.7880-29-james.morse@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -89,66 +90,114 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
+
 On 9/14/23 02:38, James Morse wrote:
-> ACPI identifies CPUs by UID. get_cpu_for_acpi_id() maps the ACPI UID
-> to the linux CPU number.
+> ACPI, irqchip and the architecture code all inspect the MADT
+> enabled bit for a GICC entry in the MADT.
 > 
-> The helper to retrieve this mapping is only available in arm64's numa
-> code.
+> The addition of an 'online capable' bit means all these sites need
+> updating.
 > 
-> Move it to live next to get_acpi_id_for_cpu().
+> Move the current checks behind a helper to make future updates easier.
 > 
 > Signed-off-by: James Morse <james.morse@arm.com>
 > ---
->   arch/arm64/include/asm/acpi.h | 11 +++++++++++
->   arch/arm64/kernel/acpi_numa.c | 11 -----------
->   2 files changed, 11 insertions(+), 11 deletions(-)
+>   arch/arm64/kernel/smp.c       |  2 +-
+>   drivers/acpi/processor_core.c |  2 +-
+>   drivers/irqchip/irq-gic-v3.c  | 10 ++++------
+>   include/linux/acpi.h          |  5 +++++
+>   4 files changed, 11 insertions(+), 8 deletions(-)
 > 
+
+With Jonathan and Russell's comments addressed:
 
 Reviewed-by: Gavin Shan <gshan@redhat.com>
 
-> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-> index 4d537d56eb84..ce5045038e87 100644
-> --- a/arch/arm64/include/asm/acpi.h
-> +++ b/arch/arm64/include/asm/acpi.h
-> @@ -100,6 +100,17 @@ static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
->   	return	acpi_cpu_get_madt_gicc(cpu)->uid;
->   }
+> diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+> index 960b98b43506..8c8f55721786 100644
+> --- a/arch/arm64/kernel/smp.c
+> +++ b/arch/arm64/kernel/smp.c
+> @@ -520,7 +520,7 @@ acpi_map_gic_cpu_interface(struct acpi_madt_generic_interrupt *processor)
+>   {
+>   	u64 hwid = processor->arm_mpidr;
 >   
-> +static inline int get_cpu_for_acpi_id(u32 uid)
+> -	if (!(processor->flags & ACPI_MADT_ENABLED)) {
+> +	if (!acpi_gicc_is_usable(processor)) {
+>   		pr_debug("skipping disabled CPU entry with 0x%llx MPIDR\n", hwid);
+>   		return;
+>   	}
+> diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
+> index 7dd6dbaa98c3..b203cfe28550 100644
+> --- a/drivers/acpi/processor_core.c
+> +++ b/drivers/acpi/processor_core.c
+> @@ -90,7 +90,7 @@ static int map_gicc_mpidr(struct acpi_subtable_header *entry,
+>   	struct acpi_madt_generic_interrupt *gicc =
+>   	    container_of(entry, struct acpi_madt_generic_interrupt, header);
+>   
+> -	if (!(gicc->flags & ACPI_MADT_ENABLED))
+> +	if (!acpi_gicc_is_usable(gicc))
+>   		return -ENODEV;
+>   
+>   	/* device_declaration means Device object in DSDT, in the
+> diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+> index eedfa8e9f077..72d3cdebdad1 100644
+> --- a/drivers/irqchip/irq-gic-v3.c
+> +++ b/drivers/irqchip/irq-gic-v3.c
+> @@ -2367,8 +2367,7 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_headers *header,
+>   	u32 size = reg == GIC_PIDR2_ARCH_GICv4 ? SZ_64K * 4 : SZ_64K * 2;
+>   	void __iomem *redist_base;
+>   
+> -	/* GICC entry which has !ACPI_MADT_ENABLED is not unusable so skip */
+> -	if (!(gicc->flags & ACPI_MADT_ENABLED))
+> +	if (!acpi_gicc_is_usable(gicc))
+>   		return 0;
+>   
+>   	redist_base = ioremap(gicc->gicr_base_address, size);
+> @@ -2418,7 +2417,7 @@ static int __init gic_acpi_match_gicc(union acpi_subtable_headers *header,
+>   	 * If GICC is enabled and has valid gicr base address, then it means
+>   	 * GICR base is presented via GICC
+>   	 */
+> -	if ((gicc->flags & ACPI_MADT_ENABLED) && gicc->gicr_base_address) {
+> +	if (acpi_gicc_is_usable(gicc) && gicc->gicr_base_address) {
+>   		acpi_data.enabled_rdists++;
+>   		return 0;
+>   	}
+> @@ -2427,7 +2426,7 @@ static int __init gic_acpi_match_gicc(union acpi_subtable_headers *header,
+>   	 * It's perfectly valid firmware can pass disabled GICC entry, driver
+>   	 * should not treat as errors, skip the entry instead of probe fail.
+>   	 */
+> -	if (!(gicc->flags & ACPI_MADT_ENABLED))
+> +	if (!acpi_gicc_is_usable(gicc))
+>   		return 0;
+>   
+>   	return -ENODEV;
+> @@ -2486,8 +2485,7 @@ static int __init gic_acpi_parse_virt_madt_gicc(union acpi_subtable_headers *hea
+>   	int maint_irq_mode;
+>   	static int first_madt = true;
+>   
+> -	/* Skip unusable CPUs */
+> -	if (!(gicc->flags & ACPI_MADT_ENABLED))
+> +	if (!acpi_gicc_is_usable(gicc))
+>   		return 0;
+>   
+>   	maint_irq_mode = (gicc->flags & ACPI_MADT_VGIC_IRQ_MODE) ?
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index b7ab85857bb7..e3265a9eafae 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -256,6 +256,11 @@ acpi_table_parse_cedt(enum acpi_cedt_type id,
+>   int acpi_parse_mcfg (struct acpi_table_header *header);
+>   void acpi_table_print_madt_entry (struct acpi_subtable_header *madt);
+>   
+> +static inline bool acpi_gicc_is_usable(struct acpi_madt_generic_interrupt *gicc)
 > +{
-> +	int cpu;
-> +
-> +	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
-> +		if (uid == get_acpi_id_for_cpu(cpu))
-> +			return cpu;
-> +
-> +	return -EINVAL;
+> +	return (gicc->flags & ACPI_MADT_ENABLED);
 > +}
 > +
->   static inline void arch_fix_phys_package_id(int num, u32 slot) { }
->   void __init acpi_init_cpus(void);
->   int apei_claim_sea(struct pt_regs *regs);
-> diff --git a/arch/arm64/kernel/acpi_numa.c b/arch/arm64/kernel/acpi_numa.c
-> index e51535a5f939..0c036a9a3c33 100644
-> --- a/arch/arm64/kernel/acpi_numa.c
-> +++ b/arch/arm64/kernel/acpi_numa.c
-> @@ -34,17 +34,6 @@ int __init acpi_numa_get_nid(unsigned int cpu)
->   	return acpi_early_node_map[cpu];
->   }
+>   /* the following numa functions are architecture-dependent */
+>   void acpi_numa_slit_init (struct acpi_table_slit *slit);
 >   
-> -static inline int get_cpu_for_acpi_id(u32 uid)
-> -{
-> -	int cpu;
-> -
-> -	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
-> -		if (uid == get_acpi_id_for_cpu(cpu))
-> -			return cpu;
-> -
-> -	return -EINVAL;
-> -}
-> -
->   static int __init acpi_parse_gicc_pxm(union acpi_subtable_headers *header,
->   				      const unsigned long end)
->   {
+
+Thanks,
+Gavin
 
