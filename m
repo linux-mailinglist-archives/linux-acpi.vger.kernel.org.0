@@ -2,182 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 030477A623C
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Sep 2023 14:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 676667A65C3
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Sep 2023 15:54:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231488AbjISMM3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Sep 2023 08:12:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49412 "EHLO
+        id S232390AbjISNy3 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 19 Sep 2023 09:54:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbjISMM3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Sep 2023 08:12:29 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08A3E3;
-        Tue, 19 Sep 2023 05:12:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD00C433C9;
-        Tue, 19 Sep 2023 12:12:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695125543;
-        bh=AFPLIFGXLWjw+0e/AtMKe0zpKJuMhC228OrlJTVOcQc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gp9KXJK4C9ujRIw+cq2kcj4fiAyk6Wt2bWZex8pIQqKeJc/8Y6j1fny3ip6k00TAb
-         L0XgEGURDvrztnTp1aW9mOvmA7mdp9ut9SeM93uwevpZfUDpRhfPGLKryS1Nr+imm1
-         1QNPk2KkEpIV4ufXanEsSA6zbytT4M6vtIcZs5qo=
-Date:   Tue, 19 Sep 2023 14:12:20 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jinhui Guo <guojinhui.liam@bytedance.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, lizefan.x@bytedance.com,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v7] driver core: platform: set numa_node before
- platform_device_add()
-Message-ID: <2023091942-punk-naturist-8028@gregkh>
-References: <20230919120341.533-1-guojinhui.liam@bytedance.com>
+        with ESMTP id S232442AbjISNy2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Sep 2023 09:54:28 -0400
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3691783;
+        Tue, 19 Sep 2023 06:54:22 -0700 (PDT)
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5711d5dac14so1416763eaf.0;
+        Tue, 19 Sep 2023 06:54:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695131661; x=1695736461;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LGZwcNp/BDkTKowBUFhaDEFH4i6kTTCF8Ze198+CeFs=;
+        b=Efu8ZKIsTDMNR/N1Lv0RT8Vcl5iQbu6Dl2s+AETx4tzXfHtpYVfHvUUNi1i/R/26yz
+         ep/pbjbmunLL/V3fnd0Zu16GyBUuirrPN/taMe6KQbeNSm3XAnfSSG5l4B3sCppKEHEF
+         CsGnLokx+ZCZM05iuqoJiMad5DOmQmRLucHcRKAV+9OHVQ1qAUHnHIqd3K729Yo5oMNY
+         tqELaF/81UyCnutj7IE6CRPQ0g0HA7kODdb/4Jd4YD+eiFEMizJRo0DM+NcH1hgj8eJv
+         NPiWC16b+jUb7BznxStM6pPS30r4j5VCaH0LNZ57VTwF2vnjKgIKY+i9fQQcSrgQE52r
+         qNBg==
+X-Gm-Message-State: AOJu0Yws7G6dXw3lHdo/9AomrSBqwHZCC3GaRaGQ1jRy/l6ebOBb2p9K
+        w7ezPkqmExpLn/FvHJsm71f6MrjZzAEYC4PtejqyVgDz
+X-Google-Smtp-Source: AGHT+IFQB7YxuOS88mI54AX4AvOgSEg4or2jItYtcrjeKPDUXY02dmKR/Z7d/TdkCkis8oHfOuq35bTUnaTOZnZphFM=
+X-Received: by 2002:a4a:d88d:0:b0:573:2a32:6567 with SMTP id
+ b13-20020a4ad88d000000b005732a326567mr11216372oov.0.1695131661262; Tue, 19
+ Sep 2023 06:54:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230919120341.533-1-guojinhui.liam@bytedance.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230913164659.9345-3-sumitg@nvidia.com> <202309140915.2J9OzWIZ-lkp@intel.com>
+ <c180c1e9-c15c-b4e2-678a-35a388a4a613@nvidia.com>
+In-Reply-To: <c180c1e9-c15c-b4e2-678a-35a388a4a613@nvidia.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 19 Sep 2023 15:54:09 +0200
+Message-ID: <CAJZ5v0iJYb3cAq6VMY8s+AOmuMdCBY9KvshM8rcGnCT-tn8CmQ@mail.gmail.com>
+Subject: Re: [Patch v2 2/2] ACPI: processor: reduce CPUFREQ thermal reduction
+ pctg for Tegra241
+To:     Sumit Gupta <sumitg@nvidia.com>
+Cc:     kernel test robot <lkp@intel.com>, rafael@kernel.org,
+        rui.zhang@intel.com, lenb@kernel.org, treding@nvidia.com,
+        jonathanh@nvidia.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+        oe-kbuild-all@lists.linux.dev, sanjayc@nvidia.com,
+        ksitaraman@nvidia.com, srikars@nvidia.com, jbrasen@nvidia.com,
+        bbasu@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 19, 2023 at 08:03:41PM +0800, Jinhui Guo wrote:
-> Setting the devices' numa_node needs to be done in
-> platform_device_register_full(), because that's where the
-> platform device object is allocated.
-> 
-> Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
-> Cc: stable@vger.kernel.org
-> Reported-by: kernel test robot <lkp@intel.com>
+On Tue, Sep 19, 2023 at 1:27 PM Sumit Gupta <sumitg@nvidia.com> wrote:
+>
+>
+>
+> > Hi Sumit,
+> >
+> > kernel test robot noticed the following build warnings:
+> >
+> > [auto build test WARNING on rafael-pm/linux-next]
+> > [also build test WARNING on linus/master v6.6-rc1 next-20230913]
+> > [If your patch is applied to the wrong git tree, kindly drop us a note.
+> > And when submitting patch, we suggest to use '--base' as documented in
+> > https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> >
+> > url:    https://github.com/intel-lab-lkp/linux/commits/Sumit-Gupta/ACPI-thermal-Add-Thermal-fast-Sampling-Period-_TFP-support/20230914-004929
+> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+> > patch link:    https://lore.kernel.org/r/20230913164659.9345-3-sumitg%40nvidia.com
+> > patch subject: [Patch v2 2/2] ACPI: processor: reduce CPUFREQ thermal reduction pctg for Tegra241
+> > config: i386-defconfig (https://download.01.org/0day-ci/archive/20230914/202309140915.2J9OzWIZ-lkp@intel.com/config)
+> > compiler: gcc-7 (Ubuntu 7.5.0-6ubuntu2) 7.5.0
+> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230914/202309140915.2J9OzWIZ-lkp@intel.com/reproduce)
+> >
+> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202309140915.2J9OzWIZ-lkp@intel.com/
+> >
+> > All warnings (new ones prefixed by >>):
+> >
+> >>> drivers/acpi/processor_thermal.c:141:6: warning: no previous declaration for 'acpi_thermal_cpufreq_config_nvidia' [-Wmissing-declarations]
+> >      void acpi_thermal_cpufreq_config_nvidia(void)
+> >           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >
+>
+> Thank you for the report.
+> The below change fixes the warning for me.
+>
+>   -void acpi_thermal_cpufreq_config_nvidia(void)
+>   +static void acpi_thermal_cpufreq_config_nvidia(void)
+>
+>
+> Hi Rafael,
+> If there is no other comment. Could you please add the change while
+> applying or you prefer me sending new version ?
 
-The test robot did not report the original problem, that was a problem
-with your potential change.
+Please update.
 
-> Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+Besides, I haven't said that I will apply it without changes yet.
 
-Likewise, this is not a real issue, it was a problem with your previous
-submission.
-
-> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-> ---
-> V6 -> V7
->   1. Fix bug directly by adding numa_node to struct
->      platform_device_info (suggested by Rafael J. Wysocki).
->   2. Remove reviewer name.
-> 
-> V5 -> V6:
->   1. Update subject to correct function name platform_device_add().
->   2. Provide a more clear and accurate description of the changes
->      made in commit (suggested by Rafael J. Wysocki).
->   3. Add reviewer name.
-> 
-> V4 -> V5:
->   Add Cc: stable line and changes from the previous submited patches.
-> 
-> V3 -> V4:
->   Refactor code to be an ACPI function call (suggested by Greg Kroah-Hartman).
-> 
-> V2 -> V3:
->   Fix Signed-off name.
-> 
-> V1 -> V2:
->   Fix compile error without enabling CONFIG_ACPI.
-> ---
-> 
->  drivers/acpi/acpi_platform.c    |  5 ++---
->  drivers/base/platform.c         |  4 ++++
->  include/linux/platform_device.h | 26 ++++++++++++++++++++++++++
->  3 files changed, 32 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-> index 48d15dd785f6..1ae7449f70dc 100644
-> --- a/drivers/acpi/acpi_platform.c
-> +++ b/drivers/acpi/acpi_platform.c
-> @@ -168,6 +168,7 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
->  	pdevinfo.num_res = count;
->  	pdevinfo.fwnode = acpi_fwnode_handle(adev);
->  	pdevinfo.properties = properties;
-> +	platform_devinfo_set_node(&pdevinfo, acpi_get_node(adev->handle));
->  
->  	if (acpi_dma_supported(adev))
->  		pdevinfo.dma_mask = DMA_BIT_MASK(32);
-> @@ -178,11 +179,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
->  	if (IS_ERR(pdev))
->  		dev_err(&adev->dev, "platform device creation failed: %ld\n",
->  			PTR_ERR(pdev));
-> -	else {
-> -		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
-> +	else
->  		dev_dbg(&adev->dev, "created platform device %s\n",
->  			dev_name(&pdev->dev));
-> -	}
->  
->  	kfree(resources);
->  
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 76bfcba25003..c733bfb26149 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -808,6 +808,7 @@ struct platform_device *platform_device_register_full(
->  {
->  	int ret;
->  	struct platform_device *pdev;
-> +	int numa_node = platform_devinfo_get_node(pdevinfo);
->  
->  	pdev = platform_device_alloc(pdevinfo->name, pdevinfo->id);
->  	if (!pdev)
-> @@ -841,6 +842,9 @@ struct platform_device *platform_device_register_full(
->  			goto err;
->  	}
->  
-> +	if (numa_node >= 0)
-> +		set_dev_node(&pdev->dev, numa_node);
-
-Why not just always set it?  Why check?  Would that matter?
-
-
-> +
->  	ret = platform_device_add(pdev);
->  	if (ret) {
->  err:
-> diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
-> index 7a41c72c1959..78e11b79f1af 100644
-> --- a/include/linux/platform_device.h
-> +++ b/include/linux/platform_device.h
-> @@ -132,10 +132,36 @@ struct platform_device_info {
->  		u64 dma_mask;
->  
->  		const struct property_entry *properties;
-> +
-> +#ifdef CONFIG_NUMA
-> +		int numa_node;	/* NUMA node this platform device is close to plus 1 */
-> +#endif
-
-Why #ifdef?
-
-And why an int?
-
-And why +1?
-
-And what do you mean by "close to"?
-
-And why would a platform device care about a numa node?  These are
-devices that should NEVER care about numa things as they are not on a
-real bus, or should care about performance things.  If they are, then
-the device is on the wrong bus, right?
-
-What device are you having numa problems with?  Why would acpi devices
-care?
-
-The node number in the device itself should be all that you need here,
-no need to duplicate it, right?
-
-thanks,
-
-greg k-h
+Thanks!
