@@ -2,330 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D558B7A82E3
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 15:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBA6F7A8641
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 16:11:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236559AbjITNHD convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 20 Sep 2023 09:07:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38524 "EHLO
+        id S235064AbjITOL6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Sep 2023 10:11:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236578AbjITNGh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Sep 2023 09:06:37 -0400
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6072E119;
-        Wed, 20 Sep 2023 06:06:30 -0700 (PDT)
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-57b3e03afa7so61708eaf.1;
-        Wed, 20 Sep 2023 06:06:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695215189; x=1695819989;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n+pSJMMIxWoPf9Ez4RY8fPdFg8lZuFnc7YIxoUqbklQ=;
-        b=EnvDP3N0gNkH1G2gI5AidOI4DCW2rAJP53W10Z4ksG6ftCcXBNwdKVmX6NQZ/NyUml
-         uldxi/QNlQaMMEQiaNwo+IqYR/Y1VK3B9a5TOsnw42uoM1Gdm957xwh08znKoiBVWWd5
-         Ry+rUwo74ECYDMwNVVKBSK+CgANHzVGEQfuyzZxFCJNPNYuU8Lf6XqYfXK3Ns34Wv3qJ
-         Vj5Pk4hVUNMOUel8lYnP7cuWSeTbEY/CxHB01u4JFpSpOXuXGodmMb6qKBAEau5Sb3p8
-         g8hhNXTZfLyyW7FcbWXHB2XFVJ51cdYeXLDLvG6+rB5lA+Kg7BAQiIxxRaa4qbNfPHCg
-         B3zg==
-X-Gm-Message-State: AOJu0Yy0oZFY82UcXriIYzO1YkZiAIGWGO+DnLMZtwR0g7TOr5Dq3jHf
-        rqpMiDyFLClSUZMHI5vyWBgf7gLCmnHClvekh5g8CcGw8yk=
-X-Google-Smtp-Source: AGHT+IEVZPg5Hs7mfyDIpauU/1JDC6TVrCRVHBrnRYNuVjkUooYPGuxoPJueQom/ARY5zgWwVdxqCkiZMHN4ybrVVuk=
-X-Received: by 2002:a4a:2a4e:0:b0:573:3a3b:594b with SMTP id
- x14-20020a4a2a4e000000b005733a3b594bmr2221958oox.1.1695215189281; Wed, 20 Sep
- 2023 06:06:29 -0700 (PDT)
+        with ESMTP id S234889AbjITOL6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Sep 2023 10:11:58 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 388BED9;
+        Wed, 20 Sep 2023 07:11:51 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0EBD11FB;
+        Wed, 20 Sep 2023 07:12:28 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 994813F5A1;
+        Wed, 20 Sep 2023 07:11:49 -0700 (PDT)
+Date:   Wed, 20 Sep 2023 15:11:47 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Huisong Li <lihuisong@huawei.com>
+Cc:     rafael@kernel.org, rafael.j.wysocki@intel.com,
+        xuwei5@hisilicon.com, Sudeep Holla <sudeep.holla@arm.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        soc@kernel.org, linux-arm-kernel@lists.infradead.org,
+        liuyonglong@huawei.com
+Subject: Re: [PATCH v2 2/2] soc: kunpeng_hccs: add the check for PCC subspace
+ type
+Message-ID: <20230920141147.bq7cjiqjk6c36t6d@bogus>
+References: <20230914115753.9064-1-lihuisong@huawei.com>
+ <20230920064703.23543-1-lihuisong@huawei.com>
+ <20230920064703.23543-3-lihuisong@huawei.com>
 MIME-Version: 1.0
-References: <5708760.DvuYhMxLoT@kreacher> <22010294.EfDdHjke4D@kreacher>
-In-Reply-To: <22010294.EfDdHjke4D@kreacher>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 20 Sep 2023 15:06:18 +0200
-Message-ID: <CAJZ5v0gjWhY8AnipzMEgLOp1hsKT6c0PKKKtE+OYSsp0OMxT6w@mail.gmail.com>
-Subject: Re: [PATCH v1 7/9] ACPI: thermal: Untangle initialization and updates
- of active trips
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230920064703.23543-3-lihuisong@huawei.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 12, 2023 at 8:47 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
->
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> Separate the code needed to update active trips (in a response to a
-> notification from the platform firmware) as well as to initialize them
-> from the code that is only necessary for their initialization and
-> cleanly divide it into functions that each carry out a specific action.
->
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Wed, Sep 20, 2023 at 02:47:03PM +0800, Huisong Li wrote:
+> Currently, HCCS driver directly uses Generic Communications Channel Shared
+> Memory Region which is used in type0/1/2 to communicate with platform,
+> but actually doesn't support type3/4/5.
+> So this patch adds the check for PCC subspace type.
+> 
+> Signed-off-by: Huisong Li <lihuisong@huawei.com>
 > ---
->  drivers/acpi/thermal.c |  197 ++++++++++++++++++++++++-------------------------
->  1 file changed, 100 insertions(+), 97 deletions(-)
->
-> Index: linux-pm/drivers/acpi/thermal.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/thermal.c
-> +++ linux-pm/drivers/acpi/thermal.c
-> @@ -184,94 +184,6 @@ static int acpi_thermal_temp(struct acpi
->                                                        tz->kelvin_offset);
+>  drivers/soc/hisilicon/kunpeng_hccs.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/drivers/soc/hisilicon/kunpeng_hccs.c b/drivers/soc/hisilicon/kunpeng_hccs.c
+> index f3810d9d1caa..4ba3bfd45a01 100644
+> --- a/drivers/soc/hisilicon/kunpeng_hccs.c
+> +++ b/drivers/soc/hisilicon/kunpeng_hccs.c
+> @@ -174,6 +174,19 @@ static int hccs_register_pcc_channel(struct hccs_dev *hdev)
+>  	return rc;
 >  }
->
-> -static void __acpi_thermal_trips_update(struct acpi_thermal *tz, int flag)
-> -{
-> -       acpi_status status;
-> -       unsigned long long tmp;
-> -       struct acpi_handle_list devices;
-> -       bool valid = false;
-> -       int i;
-> -
-> -       /* Active (optional) */
-> -       for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
-> -               char name[5] = { '_', 'A', 'C', ('0' + i), '\0' };
-> -               valid = tz->trips.active[i].trip.valid;
-> -
-> -               if (act == -1)
-> -                       break; /* disable all active trip points */
-> -
-> -               if (flag == ACPI_TRIPS_INIT || ((flag & ACPI_TRIPS_ACTIVE) &&
-> -                   tz->trips.active[i].trip.valid)) {
-> -                       status = acpi_evaluate_integer(tz->device->handle,
-> -                                                      name, NULL, &tmp);
-> -                       if (ACPI_FAILURE(status)) {
-> -                               tz->trips.active[i].trip.valid = false;
-> -                               if (i == 0)
-> -                                       break;
-> -
-> -                               if (act <= 0)
-> -                                       break;
-> -
-> -                               if (i == 1)
-> -                                       tz->trips.active[0].trip.temperature =
-> -                                                       celsius_to_deci_kelvin(act);
-> -                               else
-> -                                       /*
-> -                                        * Don't allow override higher than
-> -                                        * the next higher trip point
-> -                                        */
-> -                                       tz->trips.active[i-1].trip.temperature =
-> -                                               min_t(unsigned long,
-> -                                                     tz->trips.active[i-2].trip.temperature,
-> -                                                     celsius_to_deci_kelvin(act));
-> -
-> -                               break;
-> -                       } else {
-> -                               tz->trips.active[i].trip.temperature = tmp;
-> -                               tz->trips.active[i].trip.valid = true;
-> -                       }
-> -               }
-> -
-> -               name[2] = 'L';
-> -               if ((flag & ACPI_TRIPS_DEVICES) && tz->trips.active[i].trip.valid) {
-> -                       memset(&devices, 0, sizeof(struct acpi_handle_list));
-> -                       status = acpi_evaluate_reference(tz->device->handle,
-> -                                                        name, NULL, &devices);
-> -                       if (ACPI_FAILURE(status)) {
-> -                               acpi_handle_info(tz->device->handle,
-> -                                                "Invalid active%d threshold\n", i);
-> -                               tz->trips.active[i].trip.valid = false;
-> -                       } else {
-> -                               tz->trips.active[i].trip.valid = true;
-> -                       }
-> -
-> -                       if (memcmp(&tz->trips.active[i].devices, &devices,
-> -                                  sizeof(struct acpi_handle_list))) {
-> -                               memcpy(&tz->trips.active[i].devices, &devices,
-> -                                      sizeof(struct acpi_handle_list));
-> -                               ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
-> -                       }
-> -               }
-> -               if ((flag & ACPI_TRIPS_ACTIVE) || (flag & ACPI_TRIPS_DEVICES))
-> -                       if (valid != tz->trips.active[i].trip.valid)
-> -                               ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "state");
-> -
-> -               if (!tz->trips.active[i].trip.valid)
-> -                       break;
-> -       }
-> -
-> -       if (flag & ACPI_TRIPS_DEVICES) {
-> -               memset(&devices, 0, sizeof(devices));
-> -               status = acpi_evaluate_reference(tz->device->handle, "_TZD",
-> -                                                NULL, &devices);
-> -               if (ACPI_SUCCESS(status) &&
-> -                   memcmp(&tz->devices, &devices, sizeof(devices))) {
-> -                       tz->devices = devices;
-> -                       ACPI_THERMAL_TRIPS_EXCEPTION(flag, tz, "device");
-> -               }
-> -       }
-> -}
-> -
->  static void update_acpi_thermal_trip_temp(struct acpi_thermal_trip *acpi_trip,
->                                           int temp)
->  {
-> @@ -338,6 +250,78 @@ static void acpi_thermal_update_passive_
->         ACPI_THERMAL_TRIPS_EXCEPTION(ACPI_TRIPS_PASSIVE, tz, "state");
->  }
->
-> +static long get_active_temp(struct acpi_thermal *tz, int index)
+>  
+> +static int hccs_check_pcc_info(struct hccs_dev *hdev)
 > +{
-> +       char method[] = { '_', 'A', 'C', '0' + index, '\0' };
-> +       unsigned long long tmp;
-> +       acpi_status status;
+> +	struct pcc_mbox_chan *pcc_chan = hdev->cl_info.pcc_chan;
 > +
-> +       status = acpi_evaluate_integer(tz->device->handle, method, NULL, &tmp);
-> +       if (ACPI_FAILURE(status))
-> +               return THERMAL_TEMP_INVALID;
-> +
-> +       /*
-> +        * If an override has been provided, apply it so there are no active
-> +        * trips with thresholds greater than the override.
-> +        */
-> +       if (act > 0) {
-> +               unsigned long long override = celsius_to_deci_kelvin(act);
-> +
-> +               if (tmp > override)
-> +                       tmp = override;
-> +       }
-> +       return tmp;
-> +}
-> +
-> +static void acpi_thermal_update_active_trip(struct acpi_thermal *tz, int index)
-> +{
-> +       struct acpi_thermal_trip *acpi_trip = &tz->trips.active[index].trip;
-> +
-> +       if (!acpi_trip->valid)
-> +               return;
-> +
-> +       update_acpi_thermal_trip_temp(acpi_trip, get_active_temp(tz, index));
-> +       if (!acpi_trip->valid)
-> +               ACPI_THERMAL_TRIPS_EXCEPTION(ACPI_TRIPS_ACTIVE, tz, "state");
-> +}
-> +
-> +static bool update_active_devices(struct acpi_thermal *tz, int index, bool compare)
-> +{
-> +       char method[] = { '_', 'A', 'L', '0' + index, '\0' };
-> +       struct acpi_handle_list devices;
-> +       acpi_status status;
-> +
-> +       memset(&devices, 0, sizeof(devices));
-> +
-> +       status = acpi_evaluate_reference(tz->device->handle, method, NULL, &devices);
-> +       if (ACPI_FAILURE(status)) {
-> +               acpi_handle_info(tz->device->handle,
-> +                                "Missing device list for active threshold %d\n",
-> +                                index);
-> +               return false;
-> +       }
-> +
-> +       if (compare && memcmp(&tz->trips.active[index].devices, &devices, sizeof(devices)))
-> +               ACPI_THERMAL_TRIPS_EXCEPTION(ACPI_TRIPS_ACTIVE, tz, "device");
-> +
-> +       memcpy(&tz->trips.active[index].devices, &devices, sizeof(devices));
-> +       return true;
-> +}
-> +
-> +static void acpi_thermal_update_active_devices(struct acpi_thermal *tz, int index)
-> +{
-> +       struct acpi_thermal_trip *acpi_trip = &tz->trips.active[index].trip;
-> +
-> +       if (!acpi_trip->valid)
-> +               return;
-> +
-> +       if (update_active_devices(tz, index, true))
-> +               return;
-> +
-> +       update_acpi_thermal_trip_temp(acpi_trip, THERMAL_TEMP_INVALID);
-> +       ACPI_THERMAL_TRIPS_EXCEPTION(ACPI_TRIPS_ACTIVE, tz, "state");
-> +}
-> +
->  static int acpi_thermal_adjust_trip(struct thermal_trip *trip, void *data)
->  {
->         struct acpi_thermal_trip *acpi_trip = trip->priv;
-> @@ -358,18 +342,18 @@ static void acpi_thermal_adjust_thermal_
->                                              unsigned long data)
->  {
->         struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
-> -       int flag;
-> +       int i;
->
->         if (data == ACPI_THERMAL_NOTIFY_THRESHOLDS) {
->                 acpi_thermal_update_passive_trip(tz);
-> -               flag = ACPI_TRIPS_THRESHOLDS;
-> +               for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++)
-> +                       acpi_thermal_update_active_trip(tz, i);
->         } else {
->                 acpi_thermal_update_passive_devices(tz);
-> -               flag = ACPI_TRIPS_DEVICES;
-> +               for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++)
-> +                       acpi_thermal_update_active_devices(tz, i);
->         }
->
-> -       __acpi_thermal_trips_update(tz, flag);
-> -
->         for_each_thermal_trip(tz->thermal_zone, acpi_thermal_adjust_trip, tz);
->  }
->
-> @@ -498,6 +482,28 @@ fail:
->         return false;
->  }
->
-> +static bool acpi_thermal_init_active_trip(struct acpi_thermal *tz, int index)
-> +{
-> +       long temp;
-> +
-> +       if (act == -1)
-> +               goto fail;
-> +
-> +       temp = get_active_temp(tz, index);
-> +       if (temp == THERMAL_TEMP_INVALID)
-> +               goto fail;
-> +
-> +       if (!update_active_devices(tz, false, index))
+> +	if (pcc_chan->type >= ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE) {
+> +		dev_err(hdev->dev, "unsupport for subspace type%u.\n",
+> +			pcc_chan->type);
+> +		return -EOPNOTSUPP;
+> +	}
+ 
+Is this the only use of the PCC type information you have or do you plan to
+use it for something other than the validation.
 
-This should be
+Just for sake of argument, I can say all users of PCC must then do the
+similar validation. I don't know where to draw the line here.
 
-      if (!update_active_devices(tz, index, false))
+Ideally I would expect the driver to make this transparent and give error
+during transmit if not supported.
 
-and I've already fixed it in the tree.
+The driver must be able to work with different PCC type to support variety
+of platforms TBH. What is the issue exactly here ? Is this to prevent the
+use of Type 4 ? I think we must do something better but I don't know what
+that is yet.
 
-> +               goto fail;
-> +
-> +       update_acpi_thermal_trip_temp(&tz->trips.active[index].trip, temp);
-> +       return true;
-> +
-> +fail:
-> +       update_acpi_thermal_trip_temp(&tz->trips.active[index].trip, THERMAL_TEMP_INVALID);
-> +       return false;
-> +}
-> +
->  static int acpi_thermal_get_trip_points(struct acpi_thermal *tz)
->  {
->         unsigned int count = 0;
-> @@ -506,11 +512,8 @@ static int acpi_thermal_get_trip_points(
->         if (acpi_thermal_init_passive_trip(tz))
->                 count++;
->
-> -       /* Active trip points (optional). */
-> -       __acpi_thermal_trips_update(tz, ACPI_TRIPS_INIT);
-> -
->         for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
-> -               if (tz->trips.active[i].trip.valid)
-> +               if (acpi_thermal_init_active_trip(tz, i))
->                         count++;
->                 else
->                         break;
->
->
->
+-- 
+Regards,
+Sudeep
