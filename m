@@ -2,46 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1235C7A6F71
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 01:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A61D7A6FBE
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 02:02:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229748AbjISXeb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Sep 2023 19:34:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50456 "EHLO
+        id S230152AbjITACw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Sep 2023 20:02:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbjISXea (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Sep 2023 19:34:30 -0400
+        with ESMTP id S229690AbjITACw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Sep 2023 20:02:52 -0400
 Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF03C4;
-        Tue, 19 Sep 2023 16:34:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C213B95;
+        Tue, 19 Sep 2023 17:02:45 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id E916460157;
-        Wed, 20 Sep 2023 01:34:09 +0200 (CEST)
+        by domac.alu.hr (Postfix) with ESMTP id 3E01D60157;
+        Wed, 20 Sep 2023 02:02:44 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1695166449; bh=zaMLddCalyQnI1zjdeSAxREZqo19txmGC6/R4+XOaUY=;
+        t=1695168164; bh=utPA7n7Yd2xyMem/Et4OtLEbYxG/j95VNgIAsibOFp4=;
         h=From:To:Cc:Subject:Date:From;
-        b=ZVFVWdlZmCCHvCNhq27Htp9JVHD8RO3ejZHWuhnmkXEH3LNNkFuSZUO58zgmKaRZO
-         aTQMSKPF36m+F0OQlZLFt+x1/2Sdss+N1yYPRfkgKZtyASgqd397QLXOt+OghmtGlB
-         /2kKaDMYR1Qd1UjrI8KK3vMkJ2JaDoDysKQAfQJotaCDb+nmafU/KgtIGuoWqtiO75
-         DKB1YCM81iYig4ir5zBg6ZNzgnpQUaMKMQgHVcPBMwqomMLd9DL8PD32qLQPXNrgsq
-         P5c0cZe873lyfFq3QcDnPxZ9xLel4bgYFGIeFICWUtOAOa6tlRvnVOn9AKOrryAzNC
-         5zIm5qwCmVMTQ==
+        b=gLn0Ja8cF2t3vVv0+mTfL/TZhVfVDiTO5V8+3Bp7fs9LrbvwBVBNVS1OkOV1tfSB1
+         O4tB3q626hPc8eCr/G426zfo0FkQ8m9GUoL0f4i6rBRoUb+eAJpsSHPb6ysYh/9IaN
+         Ao3Qn3a9GWQDLmoDEN4/OSiXSnl5rBjrbZDpVbpDmleWSEKFStfdm/Chaskean+QJ4
+         z3SmWfQfnKyo78zDg/wERcG+y7LrPCVe8DfElEj+TZbR3fBHneIJJVq+VMVf32oStp
+         38Z2T4U2HvZ/RD+xDiIK9UHgqJPdSh0PLwmjDuIa7V1/oweByN79DdJ2qI6BVW6WHE
+         oCBRIKD0FLCmQ==
 X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
 Received: from domac.alu.hr ([127.0.0.1])
         by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id eMLC9_jQgw-G; Wed, 20 Sep 2023 01:34:07 +0200 (CEST)
-Received: from defiant.home (78-0-136-157.adsl.net.t-com.hr [78.0.136.157])
-        by domac.alu.hr (Postfix) with ESMTPSA id 2A3E460152;
-        Wed, 20 Sep 2023 01:34:06 +0200 (CEST)
+        with ESMTP id 4y_SY_XXPWRI; Wed, 20 Sep 2023 02:02:41 +0200 (CEST)
+Received: from defiant.home (78-2-200-2.adsl.net.t-com.hr [78.2.200.2])
+        by domac.alu.hr (Postfix) with ESMTPSA id 006D660152;
+        Wed, 20 Sep 2023 02:02:40 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1695166447; bh=zaMLddCalyQnI1zjdeSAxREZqo19txmGC6/R4+XOaUY=;
+        t=1695168161; bh=utPA7n7Yd2xyMem/Et4OtLEbYxG/j95VNgIAsibOFp4=;
         h=From:To:Cc:Subject:Date:From;
-        b=CZ66NEpRZc72ipqhL6eK/bKEOkxq8BYOvBkzgzxZVKGRxdiuGUKZEns84WitxJjkh
-         ZNsAWcKhwktBUlCAhJuMqcnxQ0l8V5As9KZ34KnKjsZbXFvlhxC4dWYaux2kEVWdkd
-         Bs0+hMjdUB2FKu7TMgzOHTrAy1W0pX+E12XMso3VInSQRJy6H6KCDCRgztOtwWwzSa
-         qzkj6ZA7K3oYwqzSheVXtgyshm1j3uNPFHXU/Xc4zEHVuIfGQux07jxDINyfYyktba
-         qeCvfK4qOgluH3cGe2yK/h8hpWT8dKcTxcRKdcgLKb+pD8JR8hlX1V78HXKxTCpppp
-         1o4AYNj9nVXIQ==
+        b=eFwQ5jINT4MhN7WjvnbnDTbQ2E7ivLLaGFZ3+aoNrCWdm/EQSLY4XeXDs/eRxTrlv
+         CwCq4AaROOF7VljeOWxpj0HEVqw+xmORSyK5mz+5Z9LVfLOW3+SsqSxhqsFeI1CqiG
+         pHiG6Iu04NQlD0iPbrTDPmqf4chW5GCULwpDVFzikRL+mbvZSCTOFMaqAdmbWGWXga
+         yrWU302jObOn4aiD1Mfi6z+S1mp7BX4AhS/mBerCbsrNbr0/Rv9cULlZaBC06WKnmy
+         yC2l51USwZ5YnV57pXu2UDB65cCFTob4FxtkCnnGJPFB3IOXMME2ztA9Io1yzpzyr6
+         RGJbR6pFLF40Q==
 From:   Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 To:     Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
         linux-acpi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
@@ -52,8 +52,8 @@ Cc:     Robert Moore <robert.moore@intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Erik Kaneda <erik.kaneda@intel.com>
 Subject: [PATCH v1 1/1] acpica: use spinlocks to fix the data-races reported by the KCSAN
-Date:   Wed, 20 Sep 2023 01:33:17 +0200
-Message-Id: <20230919233316.11420-1-mirsad.todorovac@alu.unizg.hr>
+Date:   Wed, 20 Sep 2023 02:01:40 +0200
+Message-Id: <20230920000139.15533-1-mirsad.todorovac@alu.unizg.hr>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -163,7 +163,7 @@ Cc: acpica-devel@lists.linuxfoundation.org
 Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 ---
 v1:
- RFC for the patch.
+ Preliminary RFC version of the patch.
 
  drivers/acpi/acpica/utdebug.c | 40 ++++++++++++++++++++++++++++++-----
  1 file changed, 35 insertions(+), 5 deletions(-)
