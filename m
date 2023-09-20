@@ -1,197 +1,166 @@
-Return-Path: <linux-acpi+bounces-10-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-11-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4F87A8BD5
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 20:33:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BAD7A8DCD
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 22:31:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C2171C20BEC
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 18:33:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C914C1F20F25
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 20:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74F318639
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 18:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B1E41ABC
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 20:31:16 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693021A5A2
-	for <linux-acpi@vger.kernel.org>; Wed, 20 Sep 2023 18:03:53 +0000 (UTC)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7385A94;
-	Wed, 20 Sep 2023 11:03:51 -0700 (PDT)
-Received: from lhrpeml500006.china.huawei.com (unknown [172.18.147.200])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RrR9b1jYgz67hvQ;
-	Thu, 21 Sep 2023 01:58:59 +0800 (CST)
-Received: from SecurePC30232.china.huawei.com (10.122.247.234) by
- lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Wed, 20 Sep 2023 19:03:48 +0100
-From: <shiju.jose@huawei.com>
-To: <helgaas@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
-	<tony.luck@intel.com>, <james.morse@arm.com>, <bp@alien8.de>,
-	<ying.huang@intel.com>, <linux-acpi@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-	<tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>, <shiju.jose@huawei.com>
-Subject: [PATCH v3 1/1] ACPI / APEI: Fix for overwriting AER info when error status data has multiple sections
-Date: Thu, 21 Sep 2023 02:03:36 +0800
-Message-ID: <20230920180337.809-1-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.35.1.windows.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A02E3CCE7
+	for <linux-acpi@vger.kernel.org>; Wed, 20 Sep 2023 19:34:33 +0000 (UTC)
+Received: from vulcan.natalenko.name (vulcan.natalenko.name [104.207.131.136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9D3B9F;
+	Wed, 20 Sep 2023 12:34:31 -0700 (PDT)
+Received: from spock.localnet (unknown [94.142.239.106])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by vulcan.natalenko.name (Postfix) with ESMTPSA id 74E58150A22B;
+	Wed, 20 Sep 2023 21:34:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+	s=dkim-20170712; t=1695238468;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ieFwOXSMXwW5Z1TbA7klO5guFnw5DamdxsZ5CsxGlt0=;
+	b=Wpkll7Je8Gck2iZpd4BOW50eRsftKl4A3iDUArvIOYyke7t3nm5Fli7jg4q5J3dJGqEEVy
+	kEYUkhw7PIY+Cd/WggeAxoELj3T7EBZ741uOX07yatvrGaYUBgLLLU9TUsowp1OuVGQMWj
+	n+h5ufMLaU9YYHTGfcKYISaR6KJC4oc=
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+To: Huang Rui <ray.huang@amd.com>, Meng Li <li.meng@amd.com>,
+ Mario Limonciello <mario.limonciello@amd.com>
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ linux-acpi@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-kselftest@vger.kernel.org, Nathan Fontenot <nathan.fontenot@amd.com>,
+ Deepak Sharma <deepak.sharma@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Shimmer Huang <shimmer.huang@amd.com>, Perry Yuan <Perry.Yuan@amd.com>,
+ Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Borislav Petkov <bp@alien8.de>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH V7 0/7] amd-pstate preferred core
+Date: Wed, 20 Sep 2023 21:34:17 +0200
+Message-ID: <12290212.O9o76ZdvQC@natalenko.name>
+In-Reply-To: <ce377dda-e1ce-4553-b9b8-125620b8b2d7@amd.com>
+References:
+ <20230918081407.756858-1-li.meng@amd.com> <5973628.lOV4Wx5bFT@natalenko.name>
+ <ce377dda-e1ce-4553-b9b8-125620b8b2d7@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.234]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500006.china.huawei.com (7.191.161.198)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+Content-Type: multipart/signed; boundary="nextPart5713749.DvuYhMxLoT";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-From: Shiju Jose <shiju.jose@huawei.com>
+--nextPart5713749.DvuYhMxLoT
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+Subject: Re: [PATCH V7 0/7] amd-pstate preferred core
+Date: Wed, 20 Sep 2023 21:34:17 +0200
+Message-ID: <12290212.O9o76ZdvQC@natalenko.name>
+In-Reply-To: <ce377dda-e1ce-4553-b9b8-125620b8b2d7@amd.com>
+MIME-Version: 1.0
 
-ghes_handle_aer() passes AER data to the PCI core for logging and
-recovery by calling aer_recover_queue() with a pointer to struct
-aer_capability_regs.
+Hello.
 
-The problem was that aer_recover_queue() queues the pointer directly
-without copying the aer_capability_regs data.  The pointer was to
-the ghes->estatus buffer, which could be reused before
-aer_recover_work_func() reads the data.
+On st=C5=99eda 20. z=C3=A1=C5=99=C3=AD 2023 18:56:09 CEST Mario Limonciello=
+ wrote:
+> > When applied on top of v6.5.3 this breaks turbo on my 5950X after suspe=
+nd/resume cycle. Please see the scenario description below.
+> >=20
+> > If I boot v6.5.3 + this patchset, then `turbostat` reports ~4.9 GHz on =
+core 0 where `taskset -c 0 dd if=3D/dev/zero of=3D/dev/null` is being run.
+> >=20
+> > After I suspend the machine and then resume it, and run `dd` again, `tu=
+rbostat` reports the core to be capped to a stock frequency of ~3.4 GHz. Re=
+booting the machine fixes this, and the CPU can boost again.
+> >=20
+> > If this patchset is reverted, then the CPU can turbo after suspend/resu=
+me cycle just fine.
+> >=20
+> > I'm using `amd_pstate=3Dguided`.
+> >=20
+> > Is this behaviour expected?
+>=20
+> To help confirm where the issue is, can I ask you to do three=20
+> experiments with the patch series applied:
+>=20
+> 1) 'amd_pstate=3Dactive' on your kernel command line.
 
-To avoid this problem, allocate a new aer_capability_regs structure
-from the ghes_estatus_pool, copy the AER data from the ghes->estatus
-buffer into it, pass a pointer to the new struct to
-aer_recover_queue(), and free it after aer_recover_work_func() has
-processed it.
+The issue is reproducible. If I toggle the governor in cpupower to `powersa=
+ve` and back to `performance`, boost is restored.
 
-Reported-by: Bjorn Helgaas <helgaas@kernel.org>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
----
-Changes from v2 to v3:
-1. Add stub code for ghes_estatus_pool_region_free() to fix following
-build error, reported by kernel test robot, if CONFIG_ACPI_APEI_GHES
-is not enabled.
-ld: drivers/pci/pcie/aer.o: in function `aer_recover_work_func':
-aer.c:(.text+0xec5): undefined reference to `ghes_estatus_pool_region_free'
+> 2) 'amd_pstate=3Dactive amd_prefcore=3Ddisable' on your kernel command li=
+ne.
 
-Changes from v1 to v2:
-1. Updated patch description with the description Bjorn has suggested.
-2. Add Acked-by: Bjorn Helgaas <bhelgaas@google.com>.
----
- drivers/acpi/apei/ghes.c | 23 ++++++++++++++++++++++-
- drivers/pci/pcie/aer.c   | 10 ++++++++++
- include/acpi/ghes.h      |  4 ++++
- 3 files changed, 36 insertions(+), 1 deletion(-)
+The issue is not reproducible.
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index ef59d6ea16da..63ad0541db38 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -209,6 +209,20 @@ int ghes_estatus_pool_init(unsigned int num_ghes)
- 	return -ENOMEM;
- }
- 
-+/**
-+ * ghes_estatus_pool_region_free - free previously allocated memory
-+ *				   from the ghes_estatus_pool.
-+ * @addr: address of memory to free.
-+ * @size: size of memory to free.
-+ *
-+ * Returns none.
-+ */
-+void ghes_estatus_pool_region_free(unsigned long addr, u32 size)
-+{
-+	gen_pool_free(ghes_estatus_pool, addr, size);
-+}
-+EXPORT_SYMBOL_GPL(ghes_estatus_pool_region_free);
-+
- static int map_gen_v2(struct ghes *ghes)
- {
- 	return apei_map_generic_address(&ghes->generic_v2->read_ack_register);
-@@ -564,6 +578,7 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
- 	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
- 		unsigned int devfn;
- 		int aer_severity;
-+		u8 *aer_info;
- 
- 		devfn = PCI_DEVFN(pcie_err->device_id.device,
- 				  pcie_err->device_id.function);
-@@ -577,11 +592,17 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
- 		if (gdata->flags & CPER_SEC_RESET)
- 			aer_severity = AER_FATAL;
- 
-+		aer_info = (void *)gen_pool_alloc(ghes_estatus_pool,
-+						  sizeof(struct aer_capability_regs));
-+		if (!aer_info)
-+			return;
-+		memcpy(aer_info, pcie_err->aer_info, sizeof(struct aer_capability_regs));
-+
- 		aer_recover_queue(pcie_err->device_id.segment,
- 				  pcie_err->device_id.bus,
- 				  devfn, aer_severity,
- 				  (struct aer_capability_regs *)
--				  pcie_err->aer_info);
-+				  aer_info);
- 	}
- #endif
- }
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index e85ff946e8c8..ba1ce820c141 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -29,6 +29,7 @@
- #include <linux/kfifo.h>
- #include <linux/slab.h>
- #include <acpi/apei.h>
-+#include <acpi/ghes.h>
- #include <ras/ras_event.h>
- 
- #include "../pci.h"
-@@ -996,6 +997,15 @@ static void aer_recover_work_func(struct work_struct *work)
- 			continue;
- 		}
- 		cper_print_aer(pdev, entry.severity, entry.regs);
-+		/*
-+		 * Memory for aer_capability_regs(entry.regs) is being allocated from the
-+		 * ghes_estatus_pool to protect it from overwriting when multiple sections
-+		 * are present in the error status. Thus free the same after processing
-+		 * the data.
-+		 */
-+		ghes_estatus_pool_region_free((unsigned long)entry.regs,
-+					      sizeof(struct aer_capability_regs));
-+
- 		if (entry.severity == AER_NONFATAL)
- 			pcie_do_recovery(pdev, pci_channel_io_normal,
- 					 aer_root_reset);
-diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-index 3c8bba9f1114..be1dd4c1a917 100644
---- a/include/acpi/ghes.h
-+++ b/include/acpi/ghes.h
-@@ -73,8 +73,12 @@ int ghes_register_vendor_record_notifier(struct notifier_block *nb);
- void ghes_unregister_vendor_record_notifier(struct notifier_block *nb);
- 
- struct list_head *ghes_get_devices(void);
-+
-+void ghes_estatus_pool_region_free(unsigned long addr, u32 size);
- #else
- static inline struct list_head *ghes_get_devices(void) { return NULL; }
-+
-+static inline void ghes_estatus_pool_region_free(unsigned long addr, u32 size) { return; }
- #endif
- 
- int ghes_estatus_pool_init(unsigned int num_ghes);
--- 
-2.25.1
+> 3) 'amd_pstate=3Dguided amd_prefcore=3Ddisable' on your kernel command li=
+ne.
+
+The issue is not reproducible.
+
+I should also mention that in my initial configuration I use `amd_pstate=3D=
+guided` and `schedutil`. If I switch to `performance` after suspend-resume =
+cycle, the boost is restored. However, if I switch back to `schedutil`, the=
+ freq is capped.
+
+Does this info help?
+
+> Looking through the code, I anticipate from your report that it=20
+> reproduces on "1" but not "2" and "3".
+>=20
+> Meng,
+>=20
+> Can you try to repro?
+>=20
+> I think that it's probably a call to amd_pstate_init_prefcore() missing
+> from amd_pstate_cpu_resume() and also amd_pstate_epp_resume().
+
+=2D-=20
+Oleksandr Natalenko (post-factum)
+--nextPart5713749.DvuYhMxLoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmULSTkACgkQil/iNcg8
+M0sqsA//eFdiuY7Cxaer5l0lBux1QhGyN0q30uy+zbybTXSfN4BGYulhA/nihp5k
+TRvwAYlSQf1Zhoi40S2xQlpblgLkiSl+a9UtdVju7RKfButrbNhFmQSygIHYQnmc
+kKYu+2079+3GvpFYPxtMJBR5UNbbNZ+dFTmj8SYnQ7Zm0cizbzi+WtIphnNuhubE
+fLs8Dc1XtvrqukGjffefSDjzQ7pd/LIcD1zG4nPbdyUIki52P/Y4TewqqJ8ZePg5
+qw/a/pRHePddz4rnEjCuSswZ98PXfipz7C1R49b1I6E7UlFAPqWnMQbioKYPUsWW
+Eszd8omTV4ejEwZ6kX22zynoCHNRg8O37SMBHxhNbIzIOVXTyGtD+9c4wd6AjAvy
+/+VRk9JJGHoZfh9YOB8tHNvmxzKUEQSW93KKlD8Var5hsqzWHsUxkCn3U74hB7Px
+dWmKRtau/qrarrS068QtM8QOIgfegUzvu0s6DyVFleI9Sx0zjfV1cfzgv02OYY75
+9Zk+/qfNe6opvZMtGLTMUueQGMy1KGYhN55PPMxy5S1LeZPgfXZDHWdBMqQYpz3X
+RyNLvfoUYHGSQJJBKvhuloW0sauhFtVnBG7CF3A8e6t3dvzqBrwem+vdFBZw4uwt
+xuw0b6tGpTkmeRCtz23xGHpH9qE6uIo4Bo2FxenUm3jZHnNbALY=
+=EcDU
+-----END PGP SIGNATURE-----
+
+--nextPart5713749.DvuYhMxLoT--
+
+
 
 
