@@ -1,94 +1,216 @@
-Return-Path: <linux-acpi+bounces-7-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F276A7A8BD2
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 20:33:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F7B7A8BD3
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 20:33:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9DB3281BAE
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 18:33:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC1FBB209F8
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 18:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC0319C
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 18:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689001A59F
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 18:33:10 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0911A580
-	for <linux-acpi@vger.kernel.org>; Wed, 20 Sep 2023 17:17:41 +0000 (UTC)
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC9CAEA
-	for <linux-acpi@vger.kernel.org>; Wed, 20 Sep 2023 10:17:38 -0700 (PDT)
-Received: by mail-qk1-x729.google.com with SMTP id af79cd13be357-773a5bb6fb6so399041785a.3
-        for <linux-acpi@vger.kernel.org>; Wed, 20 Sep 2023 10:17:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1695230257; x=1695835057; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bj6Z0IsZaDjTDUtMG0ioxWXr9an6JP8+5MbbS1uSHxo=;
-        b=PYNhApjAXPB0xvMOsZF1CF8rglZR9Hm3iIHUVU+0lJqgUPAwWorPdb2o3yxrd674HU
-         IPQcqTyo5jpWLxkzHncN5PglfVx7dMyAe4mYL9ZofxuPT3VfOg8qxdkkCexuNt03YrP+
-         nq8Em5Vk5HC/VP6DYms1BiFBy5yO9iFoc5Hds=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DC91A596
+	for <linux-acpi@vger.kernel.org>; Wed, 20 Sep 2023 17:22:44 +0000 (UTC)
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C27AAF;
+	Wed, 20 Sep 2023 10:22:42 -0700 (PDT)
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-57328758a72so19506eaf.1;
+        Wed, 20 Sep 2023 10:22:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695230257; x=1695835057;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bj6Z0IsZaDjTDUtMG0ioxWXr9an6JP8+5MbbS1uSHxo=;
-        b=n7MIl6ELn7EJWRp8YSqSOa96SrEw9R2x8gpAcAz830oeGaN3+OODLhXnlurZ5zSLGu
-         dYCdmJoZ0FqDiPojOfetwzF9QLDeeI3XJCUg48ssUFZHJj+GSklifG8b2H1Wv+xMPgVC
-         xDVcIqe0qvZEgt8rdWNHDQZbxGHdkPvrJOzOC+18SlQiyvRpxWq5KwKY0MMWc5IpGkk1
-         AU0Mrbz6siy63uoxqjHOUjYTEEzCt9hUPaYHqtlQSKmj9BwPev/9ZdOLk5l5JgrXa3DF
-         /lqbrruXINVBpfWle56+A6VeLSzhfK2oyz+TwZkb9i5dlrnfyvXMdFBDsTifysgIY+zk
-         lRCw==
-X-Gm-Message-State: AOJu0Yx40EMcjq5DL8IoSWbsKKoJzKxbTN0rLIds/jC285hMF+1XpAvz
-	PGG2gi9uMwZ48wChlN12gAR2eD4O+GJpQhQg3f0=
-X-Google-Smtp-Source: AGHT+IHQjKHOH8VKOa2/KEcCe+QjPsgKhcmMyO+N6xh5zrrDfSafak17cTwAA9ws10V25OhEP0QwYQ==
-X-Received: by 2002:a05:620a:4556:b0:770:96a1:558b with SMTP id u22-20020a05620a455600b0077096a1558bmr3802979qkp.14.1695230257675;
-        Wed, 20 Sep 2023 10:17:37 -0700 (PDT)
-Received: from meerkat.local ([209.226.106.110])
-        by smtp.gmail.com with ESMTPSA id s17-20020a05620a031100b0076f319acaedsm4955440qkm.48.2023.09.20.10.17.37
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Sep 2023 10:17:37 -0700 (PDT)
-Date: Wed, 20 Sep 2023 13:17:28 -0400
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: linux-acpi@vger.kernel.org
-Subject: Re: This list is being migrated to the new infrastructure
-Message-ID: <20230920-connector-oversleep-0d2b4b@meerkat>
-References: <20230920-dweeb-trowel-49c3bc@meerkat>
+        d=1e100.net; s=20230601; t=1695230562; x=1695835362;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pYehh7LzdQJneqnFsjZ62n8i914se3ySYfcSRbCw+BE=;
+        b=JttLTCjMhMV6DdkNgae6xPeAU6GSReY6hRqeYdoXvPNJf+YfLsNjHF2MSOv/ZH3awG
+         lX7QsFKItgOAWkr9u969NLNaGatPW67QCtxj9aBMA736Mp4muyZunkSZzDzZ8nHvyipL
+         ilijC3F0yJ0vykKto5KCCePgwvrCLKCp55rr44ul0+8ExS7PHg/WhL4O5wFg0fuUJNk+
+         zrDd1ZYentHxub7tOExOqGWV9Bdle2OUyVTHml9j3BckEi2yHd5PVeZtbZHj3YL+XsM3
+         ilbIugZxV8e3iBdj+QF7oOwOm3uVeZfDZLkg7/Nupz+fEK9CD33nmL0UlC+GTOynKW9P
+         ZmlA==
+X-Gm-Message-State: AOJu0YysIooEB31na3i20p54zZL3ZHJ35/Io+XBGUvZAEHTZL3bTCwhQ
+	hMqaeymv2saiilk5YJvKpcv7qRwSL1ZpJ8D3hGs=
+X-Google-Smtp-Source: AGHT+IEb9SMUBcyChlllZAnrubbMNL/iiYyldsK9QHvtjAA1iC4VMOrgwSpu5LpyXqWmUMaFgk+9F2u0K4LRdINEROw=
+X-Received: by 2002:a4a:ea53:0:b0:57b:2ca3:445b with SMTP id
+ j19-20020a4aea53000000b0057b2ca3445bmr2910016ooe.0.1695230561764; Wed, 20 Sep
+ 2023 10:22:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230920-dweeb-trowel-49c3bc@meerkat>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230919091543.794-1-shiju.jose@huawei.com>
+In-Reply-To: <20230919091543.794-1-shiju.jose@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 20 Sep 2023 19:22:30 +0200
+Message-ID: <CAJZ5v0jeeYAtUEoc8C2TkA+dG8hR0S090RNNfs1DfzSkbxFoTg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] ACPI / APEI: Fix for overwriting AER info when
+ error status data has multiple sections
+To: shiju.jose@huawei.com
+Cc: helgaas@kernel.org, rafael@kernel.org, lenb@kernel.org, 
+	tony.luck@intel.com, james.morse@arm.com, bp@alien8.de, ying.huang@intel.com, 
+	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxarm@huawei.com, 
+	jonathan.cameron@huawei.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Sep 20, 2023 at 12:35:17PM -0400, Konstantin Ryabitsev wrote:
-> Hello, all:
-> 
-> This list is being migrated to the new vger infrastructure. This should be a
-> fully transparent process and you don't need to change anything about how you
-> participate with the list or how you receive mail.
-> 
-> There will be a brief 20-minute delay with archives on lore.kernel.org. I will
-> follow up once the archive migration has been completed.
+On Tue, Sep 19, 2023 at 11:16=E2=80=AFAM <shiju.jose@huawei.com> wrote:
+>
+> From: Shiju Jose <shiju.jose@huawei.com>
+>
+> ghes_handle_aer() passes AER data to the PCI core for logging and
+> recovery by calling aer_recover_queue() with a pointer to struct
+> aer_capability_regs.
+>
+> The problem was that aer_recover_queue() queues the pointer directly
+> without copying the aer_capability_regs data.  The pointer was to
+> the ghes->estatus buffer, which could be reused before
+> aer_recover_work_func() reads the data.
+>
+> To avoid this problem, allocate a new aer_capability_regs structure
+> from the ghes_estatus_pool, copy the AER data from the ghes->estatus
+> buffer into it, pass a pointer to the new struct to
+> aer_recover_queue(), and free it after aer_recover_work_func() has
+> processed it.
+>
+> Reported-by: Bjorn Helgaas <helgaas@kernel.org>
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> ---
+> Changes from v1 to v2:
+> 1. Updated patch description with the description Bjorn has suggested.
+> 2. Add Acked-by: Bjorn Helgaas <bhelgaas@google.com>.
+> ---
+>  drivers/acpi/apei/ghes.c | 23 ++++++++++++++++++++++-
+>  drivers/pci/pcie/aer.c   | 10 ++++++++++
+>  include/acpi/ghes.h      |  1 +
+>  3 files changed, 33 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index ef59d6ea16da..63ad0541db38 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -209,6 +209,20 @@ int ghes_estatus_pool_init(unsigned int num_ghes)
+>         return -ENOMEM;
+>  }
+>
+> +/**
+> + * ghes_estatus_pool_region_free - free previously allocated memory
+> + *                                from the ghes_estatus_pool.
+> + * @addr: address of memory to free.
+> + * @size: size of memory to free.
+> + *
+> + * Returns none.
+> + */
+> +void ghes_estatus_pool_region_free(unsigned long addr, u32 size)
+> +{
+> +       gen_pool_free(ghes_estatus_pool, addr, size);
+> +}
+> +EXPORT_SYMBOL_GPL(ghes_estatus_pool_region_free);
+> +
+>  static int map_gen_v2(struct ghes *ghes)
+>  {
+>         return apei_map_generic_address(&ghes->generic_v2->read_ack_regis=
+ter);
+> @@ -564,6 +578,7 @@ static void ghes_handle_aer(struct acpi_hest_generic_=
+data *gdata)
+>             pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
+>                 unsigned int devfn;
+>                 int aer_severity;
+> +               u8 *aer_info;
+>
+>                 devfn =3D PCI_DEVFN(pcie_err->device_id.device,
+>                                   pcie_err->device_id.function);
+> @@ -577,11 +592,17 @@ static void ghes_handle_aer(struct acpi_hest_generi=
+c_data *gdata)
+>                 if (gdata->flags & CPER_SEC_RESET)
+>                         aer_severity =3D AER_FATAL;
+>
+> +               aer_info =3D (void *)gen_pool_alloc(ghes_estatus_pool,
+> +                                                 sizeof(struct aer_capab=
+ility_regs));
+> +               if (!aer_info)
+> +                       return;
+> +               memcpy(aer_info, pcie_err->aer_info, sizeof(struct aer_ca=
+pability_regs));
+> +
+>                 aer_recover_queue(pcie_err->device_id.segment,
+>                                   pcie_err->device_id.bus,
+>                                   devfn, aer_severity,
+>                                   (struct aer_capability_regs *)
+> -                                 pcie_err->aer_info);
+> +                                 aer_info);
+>         }
+>  #endif
+>  }
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index e85ff946e8c8..388b614c11fd 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -29,6 +29,7 @@
+>  #include <linux/kfifo.h>
+>  #include <linux/slab.h>
+>  #include <acpi/apei.h>
+> +#include <acpi/ghes.h>
+>  #include <ras/ras_event.h>
+>
+>  #include "../pci.h"
+> @@ -996,6 +997,15 @@ static void aer_recover_work_func(struct work_struct=
+ *work)
+>                         continue;
+>                 }
+>                 cper_print_aer(pdev, entry.severity, entry.regs);
+> +               /*
+> +                * Memory for aer_capability_regs(entry.regs) is being al=
+located from the
+> +                * ghes_estatus_pool to protect it from overwriting when =
+multiple sections
+> +                * are present in the error status. Thus free the same af=
+ter processing
+> +                * the data.
+> +                */
+> +               ghes_estatus_pool_region_free((unsigned long)entry.regs,
+> +                                             sizeof(struct aer_capabilit=
+y_regs));
+> +
+>                 if (entry.severity =3D=3D AER_NONFATAL)
+>                         pcie_do_recovery(pdev, pci_channel_io_normal,
+>                                          aer_root_reset);
+> diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
+> index 3c8bba9f1114..40d89e161076 100644
+> --- a/include/acpi/ghes.h
+> +++ b/include/acpi/ghes.h
+> @@ -78,6 +78,7 @@ static inline struct list_head *ghes_get_devices(void) =
+{ return NULL; }
+>  #endif
+>
+>  int ghes_estatus_pool_init(unsigned int num_ghes);
+> +void ghes_estatus_pool_region_free(unsigned long addr, u32 size);
 
-This work is now completed. I will monitor the performance to make
-sure that the new infrastructure is still successfully coping with the
-email traffic.
+If I'm not mistaken, this needs to go under #ifdef
+CONFIG_ACPI_APEI_GHES and it needs an empty stub for the case when
+CONFIG_ACPI_APEI_GHES is not set.
 
-If you notice any problems, please report them to helpdesk at kernel.org.
-
--K
+>
+>  static inline int acpi_hest_get_version(struct acpi_hest_generic_data *g=
+data)
+>  {
+> --
+> 2.34.1
+>
 
