@@ -2,127 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FC557A722D
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 07:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A80F7A7321
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 08:50:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232566AbjITFiS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Sep 2023 01:38:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33128 "EHLO
+        id S232228AbjITGub (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Sep 2023 02:50:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbjITFiR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Sep 2023 01:38:17 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 288488F;
-        Tue, 19 Sep 2023 22:38:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695188292; x=1726724292;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FJO6+FSsESzpwq9dG2x+ZpAjL1+/pV+QIsmIVesyPyg=;
-  b=ELpjZ4jepI3TPKPl1ypZydRb9gwQUN/9kfy4Zf+f/EkEuFAIjkyShayc
-   DBtOYz7/bYKx3rI9AtW3QvoyC5fx3oa58nRcJwHTBaMhMvzu3Vvl5aosK
-   /Ro55gMKM1L6GrUYkO2z6zAzi4hYi4MvXWKJGwoooklZK1t44FtHplkuL
-   aDrZSag6z+9n2gE6DL4+gUIH8rAETjN0aGxfYRWzya78Sxr6/mDOKBE+1
-   2Zdhr7D1OCErQbSv1yZ9g/PuYe9nFfiUPfBf1mgQD80fUoX/FzEiCR04o
-   OepQEw2U1fwQdPdszdFXeMDnHvFG5NqahWhkfyTEM9zVlatgCh0rJTRDh
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="360386013"
-X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; 
-   d="scan'208";a="360386013"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2023 22:38:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="775843575"
-X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; 
-   d="scan'208";a="775843575"
-Received: from lkp-server02.sh.intel.com (HELO 9ef86b2655e5) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 19 Sep 2023 22:38:08 -0700
-Received: from kbuild by 9ef86b2655e5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qipuY-0008Lx-1J;
-        Wed, 20 Sep 2023 05:38:06 +0000
-Date:   Wed, 20 Sep 2023 13:37:37 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        linux-acpi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
-        linux-kernel@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Robert Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>, Jung-uk Kim <jkim@freebsd.org>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Subject: Re: [PATCH v1 1/1] acpica: use spinlocks to fix the data-races
- reported by the KCSAN
-Message-ID: <202309201308.5ZBJFbjh-lkp@intel.com>
-References: <20230920000139.15533-1-mirsad.todorovac@alu.unizg.hr>
+        with ESMTP id S232386AbjITGua (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Sep 2023 02:50:30 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 701F183;
+        Tue, 19 Sep 2023 23:50:23 -0700 (PDT)
+Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Rr8Fy2FngzMlhg;
+        Wed, 20 Sep 2023 14:46:46 +0800 (CST)
+Received: from localhost.localdomain (10.69.192.56) by
+ kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Wed, 20 Sep 2023 14:50:20 +0800
+From:   Huisong Li <lihuisong@huawei.com>
+To:     <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
+        <sudeep.holla@arm.com>, <xuwei5@hisilicon.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <soc@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <liuyonglong@huawei.com>, <lihuisong@huawei.com>
+Subject: [PATCH v2 0/2] mailbox: pcc: export the PCC subspace type
+Date:   Wed, 20 Sep 2023 14:47:01 +0800
+Message-ID: <20230920064703.23543-1-lihuisong@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20230914115753.9064-1-lihuisong@huawei.com>
+References: <20230914115753.9064-1-lihuisong@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230920000139.15533-1-mirsad.todorovac@alu.unizg.hr>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.69.192.56]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mirsad,
+Currently, it seems that the subspace type in all drivers used PCC is fixed
+and not obtained from their platform.
+And PCCT is a best natural way to export it.
 
-kernel test robot noticed the following build warnings:
+v1->v2:
+ - add one patch to use PCC subspace type in kunpeng_hccs
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.6-rc2 next-20230920]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Huisong Li (2):
+  mailbox: pcc: export the PCC subspace type
+  soc: kunpeng_hccs: add the check for PCC subspace type
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mirsad-Goran-Todorovac/acpica-use-spinlocks-to-fix-the-data-races-reported-by-the-KCSAN/20230920-080345
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20230920000139.15533-1-mirsad.todorovac%40alu.unizg.hr
-patch subject: [PATCH v1 1/1] acpica: use spinlocks to fix the data-races reported by the KCSAN
-config: i386-randconfig-012-20230920 (https://download.01.org/0day-ci/archive/20230920/202309201308.5ZBJFbjh-lkp@intel.com/config)
-compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230920/202309201308.5ZBJFbjh-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309201308.5ZBJFbjh-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from include/linux/spinlock.h:89,
-                    from include/linux/wait.h:9,
-                    from include/linux/pid.h:6,
-                    from include/linux/sched.h:14,
-                    from include/acpi/platform/aclinux.h:55,
-                    from include/acpi/platform/acenv.h:160,
-                    from include/acpi/acpi.h:22,
-                    from drivers/acpi/acpica/utdebug.c:12:
->> drivers/acpi/acpica/utdebug.c:19:24: warning: 'acpi_utdebug_lock' defined but not used [-Wunused-variable]
-      19 | static DEFINE_SPINLOCK(acpi_utdebug_lock);
-         |                        ^~~~~~~~~~~~~~~~~
-   include/linux/spinlock_types.h:43:39: note: in definition of macro 'DEFINE_SPINLOCK'
-      43 | #define DEFINE_SPINLOCK(x) spinlock_t x = __SPIN_LOCK_UNLOCKED(x)
-         |                                       ^
-
-
-vim +/acpi_utdebug_lock +19 drivers/acpi/acpica/utdebug.c
-
-    11	
-  > 12	#include <acpi/acpi.h>
-    13	#include "accommon.h"
-    14	#include "acinterp.h"
-    15	
-    16	#define _COMPONENT          ACPI_UTILITIES
-    17	ACPI_MODULE_NAME("utdebug")
-    18	
-  > 19	static DEFINE_SPINLOCK(acpi_utdebug_lock);
-    20	
+ drivers/mailbox/pcc.c                | 10 ++++------
+ drivers/soc/hisilicon/kunpeng_hccs.c | 17 +++++++++++++++++
+ include/acpi/pcc.h                   |  1 +
+ 3 files changed, 22 insertions(+), 6 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.33.0
+
