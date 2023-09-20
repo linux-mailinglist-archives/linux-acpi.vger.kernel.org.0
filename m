@@ -2,47 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 721C07A7322
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 08:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C91857A7329
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 08:52:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233413AbjITGuc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Sep 2023 02:50:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37434 "EHLO
+        id S233468AbjITGwI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Sep 2023 02:52:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233321AbjITGua (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Sep 2023 02:50:30 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D58AD;
-        Tue, 19 Sep 2023 23:50:23 -0700 (PDT)
-Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.53])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Rr8Fz1Yb8zMlgF;
-        Wed, 20 Sep 2023 14:46:47 +0800 (CST)
-Received: from localhost.localdomain (10.69.192.56) by
- kwepemm600004.china.huawei.com (7.193.23.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Wed, 20 Sep 2023 14:50:21 +0800
-From:   Huisong Li <lihuisong@huawei.com>
-To:     <rafael@kernel.org>, <rafael.j.wysocki@intel.com>,
-        <sudeep.holla@arm.com>, <xuwei5@hisilicon.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <soc@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <liuyonglong@huawei.com>, <lihuisong@huawei.com>
-Subject: [PATCH v2 2/2] soc: kunpeng_hccs: add the check for PCC subspace type
-Date:   Wed, 20 Sep 2023 14:47:03 +0800
-Message-ID: <20230920064703.23543-3-lihuisong@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20230920064703.23543-1-lihuisong@huawei.com>
-References: <20230914115753.9064-1-lihuisong@huawei.com>
- <20230920064703.23543-1-lihuisong@huawei.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.69.192.56]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemm600004.china.huawei.com (7.193.23.242)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        with ESMTP id S233462AbjITGwH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Sep 2023 02:52:07 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E77FD3;
+        Tue, 19 Sep 2023 23:51:59 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 443211F385;
+        Wed, 20 Sep 2023 06:51:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1695192718; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=j9BV2FsReo3bjFArOmq56b9nQaunFJcbl9Kf+vMrcew=;
+        b=mxDDWZC5pQ85391QKVOI6L/APZo86pstKE8SYQtSqPsEY0oH78XR62ugA+TRGvjZE1m4Di
+        K/v1N4ACSf0I3nIdyJl8ItrqbjTC/abIk3iIjoTWRhCGl1KOlPLz6G7G6nwJQRhbX0oI0W
+        wvVuRf/2GHrrX/Es17yZOZ53LFLrmYM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1695192718;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=j9BV2FsReo3bjFArOmq56b9nQaunFJcbl9Kf+vMrcew=;
+        b=1pSxjxGHqSr4xqiz8ATQRyZo+WqHFi9jEUhz1YCyVeOQyAaT8/99LU9TySlqb53ysOW9vF
+        Dv8w3toVZG1FRACw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 06FB51333E;
+        Wed, 20 Sep 2023 06:51:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 352+AI6WCmX4HwAAMHmgww
+        (envelope-from <tiwai@suse.de>); Wed, 20 Sep 2023 06:51:58 +0000
+Date:   Wed, 20 Sep 2023 08:51:57 +0200
+Message-ID: <874jjpwd4i.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Richard Fitzgerald <rf@opensource.cirrus.com>, tiwai@suse.com,
+        alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 2/2] ALSA: hda: cirrus_scodec: Add KUnit test
+In-Reply-To: <ZQoILN6QCjzosCOs@google.com>
+References: <20230918095129.440-1-rf@opensource.cirrus.com>
+        <20230918095129.440-3-rf@opensource.cirrus.com>
+        <ZQoILN6QCjzosCOs@google.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,51 +75,66 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently, HCCS driver directly uses Generic Communications Channel Shared
-Memory Region which is used in type0/1/2 to communicate with platform,
-but actually doesn't support type3/4/5.
-So this patch adds the check for PCC subspace type.
+On Tue, 19 Sep 2023 22:44:28 +0200,
+Nick Desaulniers wrote:
+> 
+> On Mon, Sep 18, 2023 at 10:51:29AM +0100, Richard Fitzgerald wrote:
+(snip)
+> > +static void cirrus_scodec_test_set_gpio_ref_arg(struct software_node_ref_args *arg,
+> > +						int gpio_num)
+> > +{
+> > +	struct software_node_ref_args template =
+> > +		SOFTWARE_NODE_REFERENCE(&cirrus_scodec_test_gpio_swnode, gpio_num, 0);
+> 
+> I'm observing the following error when building with:
+> 
+> $ make LLVM=1 -j128 allmodconfig sound/pci/hda/cirrus_scodec_test.o
+> 
+> sound/pci/hda/cirrus_scodec_test.c:151:60: error: initializer element is not a compile-time constant
+>   151 |                 SOFTWARE_NODE_REFERENCE(&cirrus_scodec_test_gpio_swnode, gpio_num, 0);
+>       |                                                                          ^~~~~~~~
+> /builds/linux/include/linux/property.h:291:37: note: expanded from macro 'SOFTWARE_NODE_REFERENCE'
+>   291 |         .nargs = ARRAY_SIZE(((u64[]){ 0, ##__VA_ARGS__ })) - 1, \
+>       |                                            ^~~~~~~~~~~
+> /builds/linux/include/linux/kernel.h:57:75: note: expanded from macro 'ARRAY_SIZE'
+>    57 | #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+>       |                                                                           ^~~
+> /builds/linux/include/linux/compiler.h:228:59: note: expanded from macro '__must_be_array'
+>   228 | #define __must_be_array(a)      BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+>       |                                                                ^
+> /builds/linux/include/linux/compiler_types.h:366:63: note: expanded from macro '__same_type'
+>   366 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
+>       |                                                               ^
+> /builds/linux/include/linux/build_bug.h:16:62: note: expanded from macro 'BUILD_BUG_ON_ZERO'
+>    16 | #define BUILD_BUG_ON_ZERO(e) ((int)(sizeof(struct { int:(-!!(e)); })))
+>       |                                                              ^
 
-Signed-off-by: Huisong Li <lihuisong@huawei.com>
----
- drivers/soc/hisilicon/kunpeng_hccs.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+Hm, this looks like some inconsistent handling of the temporary array
+passed to ARRAY_SIZE() in the SOFTWARE_NODE_REFERENCE macro.  LLVM
+can't treat it if it contains a variable in the given array, while GCC
+doesn't care.
 
-diff --git a/drivers/soc/hisilicon/kunpeng_hccs.c b/drivers/soc/hisilicon/kunpeng_hccs.c
-index f3810d9d1caa..4ba3bfd45a01 100644
---- a/drivers/soc/hisilicon/kunpeng_hccs.c
-+++ b/drivers/soc/hisilicon/kunpeng_hccs.c
-@@ -174,6 +174,19 @@ static int hccs_register_pcc_channel(struct hccs_dev *hdev)
- 	return rc;
+A hackish workaround would be the patch like below, but it's really
+ugly.  Ideally speaking, it should be fixed in linux/properties.h, but
+I have no idea how to fix there for LLVM.
+
+Adding more relevant people to Cc.
+
+
+thanks,
+
+Takashi
+
+--- a/sound/pci/hda/cirrus_scodec_test.c
++++ b/sound/pci/hda/cirrus_scodec_test.c
+@@ -148,8 +148,9 @@ static void cirrus_scodec_test_set_gpio_ref_arg(struct software_node_ref_args *a
+ 						int gpio_num)
+ {
+ 	struct software_node_ref_args template =
+-		SOFTWARE_NODE_REFERENCE(&cirrus_scodec_test_gpio_swnode, gpio_num, 0);
++		SOFTWARE_NODE_REFERENCE(&cirrus_scodec_test_gpio_swnode, 0, 0);
+ 
++	template.args[0] = gpio_num;
+ 	*arg = template;
  }
  
-+static int hccs_check_pcc_info(struct hccs_dev *hdev)
-+{
-+	struct pcc_mbox_chan *pcc_chan = hdev->cl_info.pcc_chan;
-+
-+	if (pcc_chan->type >= ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE) {
-+		dev_err(hdev->dev, "unsupport for subspace type%u.\n",
-+			pcc_chan->type);
-+		return -EOPNOTSUPP;
-+	}
-+
-+	return 0;
-+}
-+
- static int hccs_check_chan_cmd_complete(struct hccs_dev *hdev)
- {
- 	struct hccs_mbox_client_info *cl_info = &hdev->cl_info;
-@@ -1224,6 +1237,10 @@ static int hccs_probe(struct platform_device *pdev)
- 	if (rc)
- 		return rc;
- 
-+	rc = hccs_check_pcc_info(hdev);
-+	if (rc)
-+		goto unregister_pcc_chan;
-+
- 	rc = hccs_get_dev_caps(hdev);
- 	if (rc)
- 		goto unregister_pcc_chan;
--- 
-2.33.0
-
