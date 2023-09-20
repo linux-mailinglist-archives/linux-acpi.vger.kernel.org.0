@@ -1,262 +1,94 @@
-Return-Path: <linux-acpi+bounces-6-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2DC67A8BD1
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 20:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F276A7A8BD2
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 20:33:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A58D5281BB0
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 18:33:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9DB3281BAE
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 18:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E7031A85
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 18:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC0319C
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Sep 2023 18:33:05 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380073E48F
-	for <linux-acpi@vger.kernel.org>; Wed, 20 Sep 2023 17:03:34 +0000 (UTC)
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B72B5DE;
-	Wed, 20 Sep 2023 10:03:31 -0700 (PDT)
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-6bc57401cb9so13696a34.0;
-        Wed, 20 Sep 2023 10:03:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0911A580
+	for <linux-acpi@vger.kernel.org>; Wed, 20 Sep 2023 17:17:41 +0000 (UTC)
+Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC9CAEA
+	for <linux-acpi@vger.kernel.org>; Wed, 20 Sep 2023 10:17:38 -0700 (PDT)
+Received: by mail-qk1-x729.google.com with SMTP id af79cd13be357-773a5bb6fb6so399041785a.3
+        for <linux-acpi@vger.kernel.org>; Wed, 20 Sep 2023 10:17:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1695230257; x=1695835057; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bj6Z0IsZaDjTDUtMG0ioxWXr9an6JP8+5MbbS1uSHxo=;
+        b=PYNhApjAXPB0xvMOsZF1CF8rglZR9Hm3iIHUVU+0lJqgUPAwWorPdb2o3yxrd674HU
+         IPQcqTyo5jpWLxkzHncN5PglfVx7dMyAe4mYL9ZofxuPT3VfOg8qxdkkCexuNt03YrP+
+         nq8Em5Vk5HC/VP6DYms1BiFBy5yO9iFoc5Hds=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695229411; x=1695834211;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=frwJafWpVtftBg3p1eNKNriXzlETV5ppzjf7DC98WZM=;
-        b=dlVPAkOEFs8K2mg9tP7WtV19RtoYmLuN+xgLNJW7oVpYfSC2lwDmNDTYELa8gOUjce
-         WNxRvvkpAaer5x/FN5wMhNuGnSnHoJnK/Tp4XeakYxFv/DrjlXs7m4IfBn2NzH1Szna9
-         LeZ+huoM9rbVtVbQmgCP7f3T4JWpq53+2lGF1+MuNcAMhobuHxifi20QnDWtw2pMTFis
-         RYQxZg/k9y0ho78r2ydEOKu9C2sFF7AEuYiQpOHz8N5kPBgiZgM1ny4INRX7TwsQuded
-         zmQsvPJrC4FB5M9Tq3j+UPoNVBklRH/VZ8+4u6zmK/UJ4jWUnmc0E3TEyMT9GOt8/DPt
-         2gDg==
-X-Gm-Message-State: AOJu0YwzC9k1oW2LCRgm/a3AbtwG+A7dXIuFdda650bXUWQ/vCBvI4Z4
-	2a4sXzxrUacG1nSENBq74yH40ha28MfhOCLw2+BGW+TT
-X-Google-Smtp-Source: AGHT+IFjjdGu8FBizMigrdWOdPJsngiIUgzdyjwxbhCkv6zx7OZxeWbBSCgfvJ4bB+HD6B+pmt8j/ywBR8MNX4OYgwM=
-X-Received: by 2002:a05:6808:1512:b0:3ad:f535:7e9a with SMTP id
- u18-20020a056808151200b003adf5357e9amr1995902oiw.5.1695229410891; Wed, 20 Sep
- 2023 10:03:30 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695230257; x=1695835057;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bj6Z0IsZaDjTDUtMG0ioxWXr9an6JP8+5MbbS1uSHxo=;
+        b=n7MIl6ELn7EJWRp8YSqSOa96SrEw9R2x8gpAcAz830oeGaN3+OODLhXnlurZ5zSLGu
+         dYCdmJoZ0FqDiPojOfetwzF9QLDeeI3XJCUg48ssUFZHJj+GSklifG8b2H1Wv+xMPgVC
+         xDVcIqe0qvZEgt8rdWNHDQZbxGHdkPvrJOzOC+18SlQiyvRpxWq5KwKY0MMWc5IpGkk1
+         AU0Mrbz6siy63uoxqjHOUjYTEEzCt9hUPaYHqtlQSKmj9BwPev/9ZdOLk5l5JgrXa3DF
+         /lqbrruXINVBpfWle56+A6VeLSzhfK2oyz+TwZkb9i5dlrnfyvXMdFBDsTifysgIY+zk
+         lRCw==
+X-Gm-Message-State: AOJu0Yx40EMcjq5DL8IoSWbsKKoJzKxbTN0rLIds/jC285hMF+1XpAvz
+	PGG2gi9uMwZ48wChlN12gAR2eD4O+GJpQhQg3f0=
+X-Google-Smtp-Source: AGHT+IHQjKHOH8VKOa2/KEcCe+QjPsgKhcmMyO+N6xh5zrrDfSafak17cTwAA9ws10V25OhEP0QwYQ==
+X-Received: by 2002:a05:620a:4556:b0:770:96a1:558b with SMTP id u22-20020a05620a455600b0077096a1558bmr3802979qkp.14.1695230257675;
+        Wed, 20 Sep 2023 10:17:37 -0700 (PDT)
+Received: from meerkat.local ([209.226.106.110])
+        by smtp.gmail.com with ESMTPSA id s17-20020a05620a031100b0076f319acaedsm4955440qkm.48.2023.09.20.10.17.37
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Sep 2023 10:17:37 -0700 (PDT)
+Date: Wed, 20 Sep 2023 13:17:28 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: linux-acpi@vger.kernel.org
+Subject: Re: This list is being migrated to the new infrastructure
+Message-ID: <20230920-connector-oversleep-0d2b4b@meerkat>
+References: <20230920-dweeb-trowel-49c3bc@meerkat>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230920162222.3614-1-mirsad.todorovac@alu.unizg.hr>
-In-Reply-To: <20230920162222.3614-1-mirsad.todorovac@alu.unizg.hr>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 20 Sep 2023 19:03:19 +0200
-Message-ID: <CAJZ5v0iLjOYBGcANrziRghZTPqHrPhJksB=oV9tRJYctWJ=CvA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/1] ACPICA: utdebug: use spinlocks to fix the
- data-races reported by the KCSAN
-To: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Cc: linux-acpi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, Robert Moore <robert.moore@intel.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, 
-	Jung-uk Kim <jkim@freebsd.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Erik Kaneda <erik.kaneda@intel.com>, kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230920-dweeb-trowel-49c3bc@meerkat>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Sep 20, 2023 at 6:30=E2=80=AFPM Mirsad Goran Todorovac
-<mirsad.todorovac@alu.unizg.hr> wrote:
->
-> KCSAN reported hundreds of instances of data-races in ACPICA like this on=
-e:
->
-> [    6.994149] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [    6.994443] BUG: KCSAN: data-race in acpi_ut_status_exit / acpi_ut_tra=
-ce
->
-> [    6.994795] write to 0xffffffffbae5a884 of 4 bytes by task 0 on cpu 2:
-> [    6.994944] acpi_ut_status_exit (/home/marvin/linux/kernel/torvalds2/d=
-rivers/acpi/acpica/utdebug.c:467)
-> [    6.994957] acpi_hw_register_read (/home/marvin/linux/kernel/torvalds2=
-/drivers/acpi/acpica/hwregs.c:563)
-> [    6.994968] acpi_read_bit_register (/home/marvin/linux/kernel/torvalds=
-2/drivers/acpi/acpica/hwxface.c:171)
-> [    6.994980] acpi_idle_bm_check (/home/marvin/linux/kernel/torvalds2/dr=
-ivers/acpi/processor_idle.c:511)
-> [    6.994990] acpi_idle_enter_bm (/home/marvin/linux/kernel/torvalds2/dr=
-ivers/acpi/processor_idle.c:644 (discriminator 1))
-> [    6.995000] acpi_idle_enter (/home/marvin/linux/kernel/torvalds2/drive=
-rs/acpi/processor_idle.c:695)
-> [    6.995010] cpuidle_enter_state (/home/marvin/linux/kernel/torvalds2/d=
-rivers/cpuidle/cpuidle.c:267)
-> [    6.995019] cpuidle_enter (/home/marvin/linux/kernel/torvalds2/drivers=
-/cpuidle/cpuidle.c:390)
-> [    6.995027] call_cpuidle (/home/marvin/linux/kernel/torvalds2/kernel/s=
-ched/idle.c:135)
-> [    6.995038] do_idle (/home/marvin/linux/kernel/torvalds2/kernel/sched/=
-idle.c:219 /home/marvin/linux/kernel/torvalds2/kernel/sched/idle.c:282)
-> [    6.995046] cpu_startup_entry (/home/marvin/linux/kernel/torvalds2/ker=
-nel/sched/idle.c:378 (discriminator 1))
-> [    6.995055] start_secondary (/home/marvin/linux/kernel/torvalds2/arch/=
-x86/kernel/smpboot.c:210 /home/marvin/linux/kernel/torvalds2/arch/x86/kerne=
-l/smpboot.c:294)
-> [    6.995066] secondary_startup_64_no_verify (/home/marvin/linux/kernel/=
-torvalds2/arch/x86/kernel/head_64.S:433)
->
-> [    6.995121] read to 0xffffffffbae5a884 of 4 bytes by task 0 on cpu 9:
-> [    6.995267] acpi_ut_trace (/home/marvin/linux/kernel/torvalds2/drivers=
-/acpi/acpica/utdebug.c:263)
-> [    6.995279] acpi_hw_validate_io_request (/home/marvin/linux/kernel/tor=
-valds2/drivers/acpi/acpica/hwvalid.c:101)
-> [    6.995291] acpi_hw_read_port (/home/marvin/linux/kernel/torvalds2/dri=
-vers/acpi/acpica/hwvalid.c:202)
-> [    6.995303] acpi_hw_read (/home/marvin/linux/kernel/torvalds2/drivers/=
-acpi/acpica/hwregs.c:251)
-> [    6.995313] acpi_hw_register_read (/home/marvin/linux/kernel/torvalds2=
-/drivers/acpi/acpica/hwregs.c:725 /home/marvin/linux/kernel/torvalds2/drive=
-rs/acpi/acpica/hwregs.c:499)
-> [    6.995325] acpi_read_bit_register (/home/marvin/linux/kernel/torvalds=
-2/drivers/acpi/acpica/hwxface.c:171)
-> [    6.995336] acpi_idle_bm_check (/home/marvin/linux/kernel/torvalds2/dr=
-ivers/acpi/processor_idle.c:511)
-> [    6.995346] acpi_idle_enter_bm (/home/marvin/linux/kernel/torvalds2/dr=
-ivers/acpi/processor_idle.c:644 (discriminator 1))
-> [    6.995356] acpi_idle_enter (/home/marvin/linux/kernel/torvalds2/drive=
-rs/acpi/processor_idle.c:695)
-> [    6.995366] cpuidle_enter_state (/home/marvin/linux/kernel/torvalds2/d=
-rivers/cpuidle/cpuidle.c:267)
-> [    6.995375] cpuidle_enter (/home/marvin/linux/kernel/torvalds2/drivers=
-/cpuidle/cpuidle.c:390)
-> [    6.995383] call_cpuidle (/home/marvin/linux/kernel/torvalds2/kernel/s=
-ched/idle.c:135)
-> [    6.995394] do_idle (/home/marvin/linux/kernel/torvalds2/kernel/sched/=
-idle.c:219 /home/marvin/linux/kernel/torvalds2/kernel/sched/idle.c:282)
-> [    6.995402] cpu_startup_entry (/home/marvin/linux/kernel/torvalds2/ker=
-nel/sched/idle.c:378 (discriminator 1))
-> [    6.995411] start_secondary (/home/marvin/linux/kernel/torvalds2/arch/=
-x86/kernel/smpboot.c:210 /home/marvin/linux/kernel/torvalds2/arch/x86/kerne=
-l/smpboot.c:294)
-> [    6.995422] secondary_startup_64_no_verify (/home/marvin/linux/kernel/=
-torvalds2/arch/x86/kernel/head_64.S:433)
->
-> [    6.995476] value changed: 0x00000004 -> 0x00000002
->
-> [    6.995629] Reported by Kernel Concurrency Sanitizer on:
-> [    6.995748] CPU: 9 PID: 0 Comm: swapper/9 Not tainted 6.6.0-rc2-kcsan-=
-00003-g16819584c239-dirty #21
-> [    6.995758] Hardware name: ASRock X670E PG Lightning/X670E PG Lightnin=
-g, BIOS 1.21 04/26/2023
-> [    6.995765] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> Please find the complete list at: https://domac.alu.unizg.hr/~mtodorov/li=
-nux/patches/acpica_utdebug/acpi_ut_status_exit.log.xz
->
-> A number of unprotected increments:
->
->         acpi_gbl_nesting_level++;
->
-> and conditional statements:
->
->         if (acpi_gbl_nesting_level) {
->                 acpi_gbl_nesting_level--;
->         }
->
-> no longer work in SMP environment.
->
-> Proper locking like
->
->         spin_lock(&acpi_utdebug_lock);
->         acpi_gbl_nesting_level++;
->         spin_unlock(&acpi_utdebug_lock);
->
-> and
->
->         spin_lock(&acpi_utdebug_lock);
->         if (acpi_gbl_nesting_level) {
->                 acpi_gbl_nesting_level--;
->         }
->         spin_unlock(&acpi_utdebug_lock);
->
-> makes these data-races go away.
->
-> Additionally, READ_ONCE() or WRITE_ONCE() is required with the global var=
-iable
-> acpi_gbl_nesting_level to prevent unwanted read or write reordering or ot=
-her funny
-> stuff the optmisers do.
->
-> The patch eliminates KCSAN BUG warnings.
->
-> Reported-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-> Fixes: 6be2d72b18649 ("ACPICA: Update for a few debug output statements")
-> Fixes: bf9b448ef8430 ("ACPICA: Debug output: Do not emit function nesting=
- level for kernel build.")
-> Fixes: 6e875fa0480c1 ("ACPICA: Debugger: fix slight indentation issue")
-> Fixes: ^1da177e4c3f4 ("Initial git repository build.")
-> Cc: Jung-uk Kim <jkim@FreeBSD.org>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> Cc: Erik Kaneda <erik.kaneda@intel.com>
-> Cc: Bob Moore <robert.moore@intel.com>
-> Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> Cc: acpica-devel@lists.linuxfoundation.org
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202309201331.S2c1JL2h-lkp@i=
-ntel.com/
-> Closes: https://lore.kernel.org/oe-kbuild-all/202309201308.5ZBJFbjh-lkp@i=
-ntel.com/
-> Link: https://github.com/acpica/acpica/pull/893
-> Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-> ---
-> v2 -> v3:
->  Made the pull request at the ACPICA github.
->  Fixed DEFINE_SPINLOCK() undefined warning by putting it inside #ifdef AC=
-PI_DEBUG_OUTPUT
->  ... #endif
->  Capitalised ACPICA according to the convention.
->
-> v1 -> v2:
->  Moved the declaration of 'u32 nesting_level' inside #ifdef ACPI_APPLICAT=
-ION ... #endif
->  according to the unused variable warning of the kernel test robot.
->
-> v1:
->  Preliminary RFC version of the patch.
->
->  drivers/acpi/acpica/utdebug.c | 49 +++++++++++++++++++++++++----------
->  1 file changed, 35 insertions(+), 14 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/utdebug.c b/drivers/acpi/acpica/utdebug.=
-c
-> index c5f6c85a3a09..594eee294f0f 100644
-> --- a/drivers/acpi/acpica/utdebug.c
-> +++ b/drivers/acpi/acpica/utdebug.c
-> @@ -15,8 +15,9 @@
->
->  #define _COMPONENT          ACPI_UTILITIES
->  ACPI_MODULE_NAME("utdebug")
-> -
->  #ifdef ACPI_DEBUG_OUTPUT
-> +static DEFINE_SPINLOCK(acpi_utdebug_lock);
+On Wed, Sep 20, 2023 at 12:35:17PM -0400, Konstantin Ryabitsev wrote:
+> Hello, all:
+> 
+> This list is being migrated to the new vger infrastructure. This should be a
+> fully transparent process and you don't need to change anything about how you
+> participate with the list or how you receive mail.
+> 
+> There will be a brief 20-minute delay with archives on lore.kernel.org. I will
+> follow up once the archive migration has been completed.
 
-No, you can't do that in the ACPICA code.  Likewise for other
-Linux-specific pieces of code in the patch below.
+This work is now completed. I will monitor the performance to make
+sure that the new infrastructure is still successfully coping with the
+email traffic.
 
-I'd very much prefer you to send a proper problem report instead of
-sending patches like this.
+If you notice any problems, please report them to helpdesk at kernel.org.
 
-As it stands, I'm not even sure what problem exactly this is
-attempting to address.
-
-Thanks!
+-K
 
