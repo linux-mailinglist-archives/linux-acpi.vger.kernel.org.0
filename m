@@ -1,215 +1,142 @@
-Return-Path: <linux-acpi+bounces-13-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7746E7A9028
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 02:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BA67A90E6
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 04:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0D991C20AC8
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 00:31:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B8671C2098A
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 02:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9138623CC
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 00:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127655229
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 02:30:43 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123421A58E
-	for <linux-acpi@vger.kernel.org>; Wed, 20 Sep 2023 23:02:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AF1C433C8;
-	Wed, 20 Sep 2023 23:02:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695250979;
-	bh=Zk4ujfkFmSNtiTgBEOrvD7R3EsDa5uPjHsUOQXft7vY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=E9/5vRGEsGzKegCu2DninNk52ODyzPtj9qhHx85u3mWzdAHeA20G5Mp9dW87NblaK
-	 0cXnTww3yriMw6vJ6QHjgIqZNNwpNp5HVHGc7ErMbTIyFmFjiClXWC4rm+BRLxKaQi
-	 uu+rfqrd3XpBh9nygaet6ZX/g8SLibnfgi+1K3Ap5W6nK12o3lcxVgXuau0iM8tMgp
-	 3ixA4xKV6Njt1tRobAyf1FGa79OZDdERK0D0s6VU6OM768Ulb6sTbaONRuBJMOWOs8
-	 XPca1/1qBBbCKo78mCbwspK2EqcAKTKRJ13vU8wmPtkvW9apmyCt2hkaOYbb9apZeW
-	 ii2dsu1p0GLGg==
-Date: Wed, 20 Sep 2023 18:02:57 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: "lenb@kernel.org" <lenb@kernel.org>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	"bp@alien8.de" <bp@alien8.de>, mahesh@linux.ibm.com,
-	bhelgaas@google.com, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	gregkh@linuxfoundation.org,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	Linux PCI <linux-pci@vger.kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: Re: Questions: Should kernel panic when PCIe fatal error occurs?
-Message-ID: <20230920230257.GA280837@bhelgaas>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7DA15A4
+	for <linux-acpi@vger.kernel.org>; Thu, 21 Sep 2023 02:27:41 +0000 (UTC)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEC9B99;
+	Wed, 20 Sep 2023 19:27:39 -0700 (PDT)
+Received: from kwepemm600004.china.huawei.com (unknown [172.30.72.54])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RrfNK44YSzMlhR;
+	Thu, 21 Sep 2023 10:24:01 +0800 (CST)
+Received: from [10.67.121.59] (10.67.121.59) by kwepemm600004.china.huawei.com
+ (7.193.23.242) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 21 Sep
+ 2023 10:27:36 +0800
+Message-ID: <1b05f595-b485-5a7e-ad31-b19f462fe43f@huawei.com>
+Date: Thu, 21 Sep 2023 10:27:36 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e486db16-d36d-9e14-4f10-dc755c0ef97d@linux.alibaba.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 2/2] soc: kunpeng_hccs: add the check for PCC subspace
+ type
+To: Sudeep Holla <sudeep.holla@arm.com>
+CC: <rafael@kernel.org>, <rafael.j.wysocki@intel.com>, <xuwei5@hisilicon.com>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<soc@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<liuyonglong@huawei.com>, <lihuisong@huawei.com>
+References: <20230914115753.9064-1-lihuisong@huawei.com>
+ <20230920064703.23543-1-lihuisong@huawei.com>
+ <20230920064703.23543-3-lihuisong@huawei.com>
+ <20230920141147.bq7cjiqjk6c36t6d@bogus>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20230920141147.bq7cjiqjk6c36t6d@bogus>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.121.59]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-On Mon, Sep 18, 2023 at 05:39:58PM +0800, Shuai Xue wrote:
-> Hi, all folks,
-> 
-> Error reporting and recovery are one of the important features of PCIe, and
-> the kernel has been supporting them since version 2.6, 17 years ago.
-> I am very curious about the expected behavior of the software.
-> I first recap the error classification and then list my questions bellow it.
-> 
-> ## Recap: Error classification
-> 
-> - Fatal Errors
-> 
-> Fatal errors are uncorrectable error conditions which render the particular
-> Link and related hardware unreliable. For Fatal errors, a reset of the
-> components on the Link may be required to return to reliable operation.
-> Platform handling of Fatal errors, and any efforts to limit the effects of
-> these errors, is platform implementation specific. (PCIe 6.0.1, sec
-> 6.2.2.2.1 Fatal Errors).
-> 
-> - Non-Fatal Errors
-> 
-> Non-fatal errors are uncorrectable errors which cause a particular
-> transaction to be unreliable but the Link is otherwise fully functional.
-> Isolating Non-fatal from Fatal errors provides Requester/Receiver logic in
-> a device or system management software the opportunity to recover from the
-> error without resetting the components on the Link and disturbing other
-> transactions in progress. Devices not associated with the transaction in
-> error are not impacted by the error.  (PCIe 6.0.1, sec 6.2.2.2.1 Non-Fatal
-> Errors).
-> 
-> ## What the kernel do?
-> 
-> The Linux kernel supports both the OS native and firmware first modes in
-> AER and DPC drivers. The error recovery API is defined in `struct
-> pci_error_handlers`, and the recovery process is performed in several
-> stages in pcie_do_recovery(). One main difference in handling PCIe errors
-> is that the kernel only resets the link when a fatal error is detected.
-> 
-> ## Questions
-> 
-> 1. Should kernel panic when fatal errors occur without AER recovery?
-> 
-> IMHO, the answer is NO. The AER driver handles both fatal and
-> non-fatal errors, and I have not found any panic changes in the
-> recovery path in OS native mode.
-> 
-> As far as I know, on many X86 platforms, struct
-> `acpi_hest_generic_status::error_severity` is set as CPER_SEV_FATAL
-> in firmware first mode. As a result, kernel will panic immediately
-> in ghes_proc() when fatal AER errors occur, and there is no chance
-> to handle the error and perform recovery in AER driver.
 
-UEFI r2.10, sec N.2.1,, defines CPER_SEV_FATAL, and platform firmware
-decides which Error Severity to put in the error record.  I don't see
-anything in UEFI about how the OS should handle fatal errors.
+在 2023/9/20 22:11, Sudeep Holla 写道:
+> On Wed, Sep 20, 2023 at 02:47:03PM +0800, Huisong Li wrote:
+>> Currently, HCCS driver directly uses Generic Communications Channel Shared
+>> Memory Region which is used in type0/1/2 to communicate with platform,
+>> but actually doesn't support type3/4/5.
+>> So this patch adds the check for PCC subspace type.
+>>
+>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>> ---
+>>   drivers/soc/hisilicon/kunpeng_hccs.c | 17 +++++++++++++++++
+>>   1 file changed, 17 insertions(+)
+>>
+>> diff --git a/drivers/soc/hisilicon/kunpeng_hccs.c b/drivers/soc/hisilicon/kunpeng_hccs.c
+>> index f3810d9d1caa..4ba3bfd45a01 100644
+>> --- a/drivers/soc/hisilicon/kunpeng_hccs.c
+>> +++ b/drivers/soc/hisilicon/kunpeng_hccs.c
+>> @@ -174,6 +174,19 @@ static int hccs_register_pcc_channel(struct hccs_dev *hdev)
+>>   	return rc;
+>>   }
+>>   
+>> +static int hccs_check_pcc_info(struct hccs_dev *hdev)
+>> +{
+>> +	struct pcc_mbox_chan *pcc_chan = hdev->cl_info.pcc_chan;
+>> +
+>> +	if (pcc_chan->type >= ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE) {
+>> +		dev_err(hdev->dev, "unsupport for subspace type%u.\n",
+>> +			pcc_chan->type);
+>> +		return -EOPNOTSUPP;
+>> +	}
+>   
+> Is this the only use of the PCC type information you have or do you plan to
+> use it for something other than the validation.
+Yeah, it is just validation now. we want to plan this driver can support 
+more types.
+>
+> Just for sake of argument, I can say all users of PCC must then do the
+> similar validation. I don't know where to draw the line here.
 
-ACPI r6.5, sec 18.1, says on fatal uncorrected error, the system
-should be restarted to prevent propagation of the error.  For
-CPER_SEV_FATAL errors, it looks like ghes_proc() panics even before
-trying AER recovery.
+If export PCC type, it is good for the user of PCC to be more universal 
+and more compatible.
 
-I guess your point is that for CPER_SEV_FATAL errors, the APEI/GHES
-path always panics but the native path never does, and that maybe both
-paths should work the same way?
+>
+> Ideally I would expect the driver to make this transparent and give error
+> during transmit if not supported.
+I understand you.
+I just check this type only once during the initializing phase.
+Otherwise, every once need to verify it when send PCC command.
+>
+> The driver must be able to work with different PCC type to support variety
+> of platforms TBH. What is the issue exactly here ? Is this to prevent the
+Agree more with you.
+IMO, the user of PCC has the ability to support variety of platforms if 
+they can get PCC type.
+In this case, to prevent type 4 is necessary if driver cannot act as a 
+slave.
+on the other hand, If one driver acts as a slave, platform must supply 
+slave subspace for them.
+> use of Type 4 ? I think we must do something better but I don't know what
+> that is yet.
 
-It would be nice if they worked the same, but I suspect that vendors
-may rely on the fact that CPER_SEV_FATAL forces a restart/panic as
-part of their system integrity story.
+Yes, we can try to do it better. I have a concern, like below.
 
-It doesn't seem like the native path should always panic.  If we can
-tell that data was corrupted, we may want to panic, but otherwise I
-don't think we should crash the entire system even if some device is
-permanently broken.
-
-> For fatal and non-fatal errors, struct
-> `acpi_hest_generic_status::error_severity` should as
-> CPER_SEV_RECOVERABLE, and struct
-> `acpi_hest_generic_data::error_severity` should reflect its real
-> severity. Then, the kernel is equivalent to handling PCIe errors in
-> Firmware first mode as it does in OS native mode.  Please correct me
-> if I am wrong.
-
-I don't know enough to comment on how Error Severity should be used in
-the Generic Error Status Block vs the Generic Error Data Entry.
-
-> However, I have changed my mind on this issue as I encounter a case where
-> a error propagation is detected due to fatal DLLP (Data Link Protocol
-> Error) error. A DLLP error occurred in the Compute node, causing the
-> node to panic because `struct acpi_hest_generic_status::error_severity` was
-> set as CPER_SEV_FATAL. However, data corruption was still detected in the
-> storage node by CRC.
-
-The only mention of Data Link Protocol Error that looks relevant is
-PCIe r6.0, sec 3.6.2.2, which basically says a DLLP with an unexpected
-Sequence Number should be discarded:
-
-  For Ack and Nak DLLPs, the following steps are followed (see Figure
-  3-21):
-
-    - If the Sequence Number specified by the AckNak_Seq_Num does not
-      correspond to an unacknowledged TLP, or to the value in
-      ACKD_SEQ, the DLLP is discarded
-
-      - This is a Data Link Protocol Error, which is a reported error
-	associated with the Port (see Section 6.2).
-
-So data from that DLLP should not have made it to memory, although of
-course the DMA may not have been completed.  But it sounds like you
-did see corrupted data written to memory?
-
-I assume it is not reproducible and we have no reason to think the
-receiver of the DLLP has a design defect, e.g., it reported the error
-but failed to drop the DLLP?
-
-> 2. Should kernel panic when AER recovery failed?
-> 
-> This question is actually a TODO that was added when the AER driver was
-> first upstreamed 17 years ago, and it is still relevant today. The kernel
-> does not proactively panic regardless of the error types occurring in OS
-> native mode. The DLLP error propagation case indicates that the kernel
-> might should panic when recovery failed?
-
-I'm not a hardware engineer, but I'm not yet convinced that a Data
-Link Protocol Error should cause a panic because sec 3.6.2.2 suggests
-that this error should not cause data corruption.  Certainly willing
-to be proved wrong!
-
-> 3. Should DPC be enabled by default to contain fatal and non-fatal error?
-> 
-> According to the PCIe specification, DPC halts PCIe traffic below a
-> Downstream Port after an unmasked uncorrectable error is detected at or
-> below the Port, avoiding the potential spread of any data corruption.
-> 
-> The kernel configures DPC to be triggered only on ERR_FATAL. Literally
-> speaking, only fatal error have the potential spread of any data
-> corruption?
-
-Sec 6.2.2.2 talks about fatal vs non-fatal but only in terms of
-whether the error affects a particular transaction (non-fatal) or
-everything related to a Link (fatal).  Unless there's more detail
-elsewhere, I would assume either could corrupt data.
-
-> In addition, the AER Severity is programable by the
-> Uncorrectable Error Severity Register (Offset 0Ch in PCIe AER cap). If a
-> default fatal error, e.g. DLLP, set as non-fatal, DPC will not be
-> triggered.
-
-Sec 6.2.7 and 7.8.4.4 suggest the Data Link Protocol Error should be
-a fatal error by default.
-
-I don't think Linux changes PCI_ERR_UNC_DLP (unless there's an _HPX or
-similar method), so I would expect it to be set as fatal.
-
-Bjorn
-
-> [1] https://github.com/torvalds/linux/commit/6c2b374d74857e892080ee726184ec1d15e7d4e4#diff-fea64904d30501b59d2e948189bbedc476fc270ed4c15e4ae29d7f0efd06771aR438
+You know that the use of PCC can use polling mode and interrupt mode to 
+communicate with platform.
+I'm not sure if the obtaining of the polling mode and interrupt mode is 
+an issue to prevent driver to be more universal.
+But this driver can know if they support interrupt mode based on struct 
+mbox_chan::struct mbox_controller::txdone_irq after requesting PCC channel.
+Because I'm not sure it's a better way.
+You know that drivers used interrupt mode need to fill the rx_callback 
+function into mbx_client when register PCC channel.
+And drivers used polling mode don't do it.
+If we use this way, drivers that both support the two mode have to 
+modify the rx_callback pointer after requesting PCC channel.
+>
 
