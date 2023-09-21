@@ -1,41 +1,41 @@
-Return-Path: <linux-acpi+bounces-37-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-28-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F6A7A9C3E
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 21:13:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC8057A9C62
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 21:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2668282AE5
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 19:13:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4BDFB2302E
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 19:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEFA99E5C
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 18:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A05D968C4
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 18:42:55 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D888718C14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5E518B08
 	for <linux-acpi@vger.kernel.org>; Thu, 21 Sep 2023 18:10:44 +0000 (UTC)
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE22AF6AC;
-	Thu, 21 Sep 2023 11:07:25 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B555DAF6A9;
+	Thu, 21 Sep 2023 11:07:24 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id 7e05a53f9afe0d47; Thu, 21 Sep 2023 20:07:24 +0200
+ id 8de49c409fbac1fc; Thu, 21 Sep 2023 20:07:23 +0200
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by v370.home.net.pl (Postfix) with ESMTPSA id B6180664EBE;
-	Thu, 21 Sep 2023 20:07:23 +0200 (CEST)
+	by v370.home.net.pl (Postfix) with ESMTPSA id B0ABA664EBE;
+	Thu, 21 Sep 2023 20:07:22 +0200 (CEST)
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux PM <linux-pm@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Zhang Rui <rui.zhang@intel.com>, Daniel Lezcano <daniel.lezcano@linaro.org>, Lukasz Luba <lukasz.luba@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: [PATCH v1 10/13] thermal: core: Allow trip pointers to be used for cooling device binding
-Date: Thu, 21 Sep 2023 20:01:43 +0200
-Message-ID: <45837158.fMDQidcC6G@kreacher>
+Subject: [PATCH v1 11/13] ACPI: thermal: Do not use trip indices for cooling device binding
+Date: Thu, 21 Sep 2023 20:02:59 +0200
+Message-ID: <113039009.nniJfEyVGO@kreacher>
 In-Reply-To: <1957441.PYKUYFuaPT@kreacher>
 References: <1957441.PYKUYFuaPT@kreacher>
 Precedence: bulk
@@ -60,157 +60,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Add new helper functions, thermal_bind_cdev_to_trip() and
-thermal_unbind_cdev_from_trip(), to allow a trip pointer to be used for
-binding a cooling device to a trip point and unbinding it, respectively,
-and redefine the existing helpers, thermal_zone_bind_cooling_device()
-and thermal_zone_unbind_cooling_device(), as wrappers around the new
-ones, respectively.
+Rearrange the ACPI thermal driver's callback functions used for cooling
+device binding and unbinding, acpi_thermal_bind_cooling_device() and
+acpi_thermal_unbind_cooling_device(), respectively, so that they use trip
+pointers instead of trip indices which is more straightforward and allows
+the driver to become independent of the ordering of trips in the thermal
+zone structure.
 
-No intentional functional impact.
+The general functionality is not expected to be changed.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/thermal/thermal_core.c |   54 +++++++++++++++++++++++++----------------
- include/linux/thermal.h        |    8 ++++++
- 2 files changed, 42 insertions(+), 20 deletions(-)
+ drivers/acpi/thermal.c |  114 +++++++++++++++++++------------------------------
+ 1 file changed, 46 insertions(+), 68 deletions(-)
 
-Index: linux-pm/drivers/thermal/thermal_core.c
+Index: linux-pm/drivers/acpi/thermal.c
 ===================================================================
---- linux-pm.orig/drivers/thermal/thermal_core.c
-+++ linux-pm/drivers/thermal/thermal_core.c
-@@ -600,10 +600,9 @@ struct thermal_zone_device *thermal_zone
-  */
- 
- /**
-- * thermal_zone_bind_cooling_device() - bind a cooling device to a thermal zone
-+ * thermal_bind_cdev_to_trip - bind a cooling device to a thermal zone
-  * @tz:		pointer to struct thermal_zone_device
-- * @trip_index:	indicates which trip point the cooling devices is
-- *		associated with in this thermal zone.
-+ * @trip:	trip point the cooling devices is associated with in this zone.
-  * @cdev:	pointer to struct thermal_cooling_device
-  * @upper:	the Maximum cooling state for this trip point.
-  *		THERMAL_NO_LIMIT means no upper limit,
-@@ -621,8 +620,8 @@ struct thermal_zone_device *thermal_zone
-  *
-  * Return: 0 on success, the proper error value otherwise.
-  */
--int thermal_zone_bind_cooling_device(struct thermal_zone_device *tz,
--				     int trip_index,
-+int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
-+				     const struct thermal_trip *trip,
- 				     struct thermal_cooling_device *cdev,
- 				     unsigned long upper, unsigned long lower,
- 				     unsigned int weight)
-@@ -631,15 +630,9 @@ int thermal_zone_bind_cooling_device(str
- 	struct thermal_instance *pos;
- 	struct thermal_zone_device *pos1;
- 	struct thermal_cooling_device *pos2;
--	const struct thermal_trip *trip;
- 	bool upper_no_limit;
- 	int result;
- 
--	if (trip_index >= tz->num_trips || trip_index < 0)
--		return -EINVAL;
--
--	trip = &tz->trips[trip_index];
--
- 	list_for_each_entry(pos1, &thermal_tz_list, node) {
- 		if (pos1 == tz)
- 			break;
-@@ -736,14 +729,26 @@ free_mem:
- 	kfree(dev);
- 	return result;
+--- linux-pm.orig/drivers/acpi/thermal.c
++++ linux-pm/drivers/acpi/thermal.c
+@@ -568,94 +568,72 @@ static void acpi_thermal_zone_device_cri
+ 	thermal_zone_device_critical(thermal);
  }
-+EXPORT_SYMBOL_GPL(thermal_bind_cdev_to_trip);
-+
-+int thermal_zone_bind_cooling_device(struct thermal_zone_device *tz,
-+				     int trip_index,
-+				     struct thermal_cooling_device *cdev,
-+				     unsigned long upper, unsigned long lower,
-+				     unsigned int weight)
-+{
-+	if (trip_index < 0 || trip_index >= tz->num_trips)
-+		return -EINVAL;
-+
-+	return thermal_bind_cdev_to_trip(tz, &tz->trips[trip_index], cdev,
-+					 upper, lower, weight);
-+}
- EXPORT_SYMBOL_GPL(thermal_zone_bind_cooling_device);
  
- /**
-- * thermal_zone_unbind_cooling_device() - unbind a cooling device from a
-- *					  thermal zone.
-+ * thermal_unbind_cdev_from_trip - unbind a cooling device from a thermal zone.
-  * @tz:		pointer to a struct thermal_zone_device.
-- * @trip_index:	indicates which trip point the cooling devices is
-- *		associated with in this thermal zone.
-+ * @trip:	trip point the cooling devices is associated with in this zone.
-  * @cdev:	pointer to a struct thermal_cooling_device.
-  *
-  * This interface function unbind a thermal cooling device from the certain
-@@ -752,16 +757,14 @@ EXPORT_SYMBOL_GPL(thermal_zone_bind_cool
-  *
-  * Return: 0 on success, the proper error value otherwise.
-  */
--int thermal_zone_unbind_cooling_device(struct thermal_zone_device *tz,
--				       int trip_index,
--				       struct thermal_cooling_device *cdev)
-+int thermal_unbind_cdev_from_trip(struct thermal_zone_device *tz,
-+				  const struct thermal_trip *trip,
-+				  struct thermal_cooling_device *cdev)
+-static int acpi_thermal_cooling_device_cb(struct thermal_zone_device *thermal,
+-					  struct thermal_cooling_device *cdev,
+-					  bool bind)
++struct acpi_thermal_bind_data {
++	struct thermal_zone_device *thermal;
++	struct thermal_cooling_device *cdev;
++	bool bind;
++};
++
++static int bind_unbind_cdev_cb(struct thermal_trip *trip, void *arg)
  {
- 	struct thermal_instance *pos, *next;
--	const struct thermal_trip *trip;
+-	struct acpi_device *device = cdev->devdata;
+-	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
+-	struct acpi_thermal_trip *acpi_trip;
+-	struct acpi_device *dev;
+-	acpi_handle handle;
++	struct acpi_thermal_trip *acpi_trip = trip->priv;
++	struct acpi_thermal_bind_data *bd = arg;
++	struct thermal_zone_device *thermal = bd->thermal;
++	struct thermal_cooling_device *cdev = bd->cdev;
++	struct acpi_device *cdev_adev = cdev->devdata;
+ 	int i;
+-	int j;
+-	int trip = -1;
+-	int result = 0;
+-
+-	if (tz->trips.critical_valid)
+-		trip++;
+-
+-	if (tz->trips.hot_valid)
+-		trip++;
+-
+-	acpi_trip = &tz->trips.passive.trip;
+-	if (acpi_thermal_trip_valid(acpi_trip)) {
+-		trip++;
+-		for (i = 0; i < acpi_trip->devices.count; i++) {
+-			handle = acpi_trip->devices.handles[i];
+-			dev = acpi_fetch_acpi_dev(handle);
+-			if (dev != device)
+-				continue;
+-
+-			if (bind)
+-				result = thermal_zone_bind_cooling_device(
+-						thermal, trip, cdev,
+-						THERMAL_NO_LIMIT,
+-						THERMAL_NO_LIMIT,
+-						THERMAL_WEIGHT_DEFAULT);
+-			else
+-				result =
+-					thermal_zone_unbind_cooling_device(
+-						thermal, trip, cdev);
  
- 	mutex_lock(&tz->lock);
- 	mutex_lock(&cdev->lock);
--	trip = &tz->trips[trip_index];
- 	list_for_each_entry_safe(pos, next, &tz->thermal_instances, tz_node) {
- 		if (pos->tz == tz && pos->trip == trip && pos->cdev == cdev) {
- 			list_del(&pos->tz_node);
-@@ -784,6 +787,17 @@ unbind:
- 	kfree(pos);
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(thermal_unbind_cdev_from_trip);
+-			if (result)
+-				goto failed;
++	/* Skip critical and hot trips. */
++	if (!acpi_trip)
++		return 0;
 +
-+int thermal_zone_unbind_cooling_device(struct thermal_zone_device *tz,
-+				       int trip_index,
-+				       struct thermal_cooling_device *cdev)
-+{
-+	if (trip_index < 0 || trip_index >= tz->num_trips)
-+		return -EINVAL;
++	for (i = 0; i < acpi_trip->devices.count; i++) {
++		acpi_handle handle = acpi_trip->devices.handles[i];
++		struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
 +
-+	return thermal_unbind_cdev_from_trip(tz, &tz->trips[trip_index], cdev);
++		if (adev != cdev_adev)
++			continue;
++
++		if (bd->bind) {
++			int ret;
++
++			ret = thermal_bind_cdev_to_trip(thermal, trip, cdev,
++							THERMAL_NO_LIMIT,
++							THERMAL_NO_LIMIT,
++							THERMAL_WEIGHT_DEFAULT);
++			if (ret)
++				return ret;
++		} else {
++			thermal_unbind_cdev_from_trip(thermal, trip, cdev);
+ 		}
+ 	}
+ 
+-	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
+-		acpi_trip = &tz->trips.active[i].trip;
+-		if (!acpi_thermal_trip_valid(acpi_trip))
+-			break;
+-
+-		trip++;
+-		for (j = 0; j < acpi_trip->devices.count; j++) {
+-			handle = acpi_trip->devices.handles[j];
+-			dev = acpi_fetch_acpi_dev(handle);
+-			if (dev != device)
+-				continue;
+-
+-			if (bind)
+-				result = thermal_zone_bind_cooling_device(
+-						thermal, trip, cdev,
+-						THERMAL_NO_LIMIT,
+-						THERMAL_NO_LIMIT,
+-						THERMAL_WEIGHT_DEFAULT);
+-			else
+-				result = thermal_zone_unbind_cooling_device(
+-						thermal, trip, cdev);
++	return 0;
 +}
- EXPORT_SYMBOL_GPL(thermal_zone_unbind_cooling_device);
  
- static void thermal_release(struct device *dev)
-Index: linux-pm/include/linux/thermal.h
-===================================================================
---- linux-pm.orig/include/linux/thermal.h
-+++ linux-pm/include/linux/thermal.h
-@@ -320,10 +320,18 @@ const char *thermal_zone_device_type(str
- int thermal_zone_device_id(struct thermal_zone_device *tzd);
- struct device *thermal_zone_device(struct thermal_zone_device *tzd);
+-			if (result)
+-				goto failed;
+-		}
+-	}
++static int acpi_thermal_bind_unbind_cdev(struct thermal_zone_device *thermal,
++					 struct thermal_cooling_device *cdev,
++					 bool bind)
++{
++	struct acpi_thermal_bind_data bd = {
++		.thermal = thermal, .cdev = cdev, .bind = bind
++	};
  
-+int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
-+			      const struct thermal_trip *trip,
-+			      struct thermal_cooling_device *cdev,
-+			      unsigned long upper, unsigned long lower,
-+			      unsigned int weight);
- int thermal_zone_bind_cooling_device(struct thermal_zone_device *, int,
- 				     struct thermal_cooling_device *,
- 				     unsigned long, unsigned long,
- 				     unsigned int);
-+int thermal_unbind_cdev_from_trip(struct thermal_zone_device *tz,
-+				  const struct thermal_trip *trip,
-+				  struct thermal_cooling_device *cdev);
- int thermal_zone_unbind_cooling_device(struct thermal_zone_device *, int,
- 				       struct thermal_cooling_device *);
- void thermal_zone_device_update(struct thermal_zone_device *,
+-failed:
+-	return result;
++	return for_each_thermal_trip(thermal, bind_unbind_cdev_cb, &bd);
+ }
+ 
+ static int
+ acpi_thermal_bind_cooling_device(struct thermal_zone_device *thermal,
+ 				 struct thermal_cooling_device *cdev)
+ {
+-	return acpi_thermal_cooling_device_cb(thermal, cdev, true);
++	return acpi_thermal_bind_unbind_cdev(thermal, cdev, true);
+ }
+ 
+ static int
+ acpi_thermal_unbind_cooling_device(struct thermal_zone_device *thermal,
+ 				   struct thermal_cooling_device *cdev)
+ {
+-	return acpi_thermal_cooling_device_cb(thermal, cdev, false);
++	return acpi_thermal_bind_unbind_cdev(thermal, cdev, false);
+ }
+ 
+ static struct thermal_zone_device_ops acpi_thermal_zone_ops = {
 
 
 
