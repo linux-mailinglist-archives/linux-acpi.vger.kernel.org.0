@@ -1,164 +1,101 @@
-Return-Path: <linux-acpi+bounces-47-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-48-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CE07AA518
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 00:31:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0AC77AA519
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 00:31:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 0C91C28621F
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 22:31:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTP id 31FB71F21A6C
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 22:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CB729404
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 22:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA938182CE
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Sep 2023 22:31:09 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC6E18C38
-	for <linux-acpi@vger.kernel.org>; Thu, 21 Sep 2023 21:52:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F141C433C7;
-	Thu, 21 Sep 2023 21:52:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695333163;
-	bh=NTAFR578UzDwqvs2i4ooBKtvlj/FAAfa/TDohcND/ps=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=tSv58fX4rgoT5MYYQHvquhnl4/cItfTC3vQVAoiE1T5bpAWTEyRuvbOL2+SfjX1To
-	 ym7q3ByyPsVAzzX3Jw1JOr42zULob1th/6f5I8bvMb0d8/MxiaGUGMyjH5KDt/wza2
-	 Y17f+v22fwxB/qdzyqkg027OFSixhJuTZQgFNOGK3j9kc396bMtRILz291YtClj+RZ
-	 TFhyHC84ztlKulj3Gw8GFhX/x8XmAtvf/ItwSLYDK2evIVNr4w10qV4aQb3ZIknvNo
-	 XXeoh1ZwMnf3jc2N2HkjkFUvQGSRE4kJs8QLvA5n/Oj3vjpEfN9lNE9eHd8M/GL2nZ
-	 FfHdGGCbxWnuQ==
-Date: Thu, 21 Sep 2023 16:52:41 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, gregkh@linuxfoundation.org,
-	Linux PCI <linux-pci@vger.kernel.org>, mahesh@linux.ibm.com,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"bp@alien8.de" <bp@alien8.de>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, bhelgaas@google.com,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"lenb@kernel.org" <lenb@kernel.org>
-Subject: Re: Questions: Should kernel panic when PCIe fatal error occurs?
-Message-ID: <20230921215241.GA337765@bhelgaas>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC80F9CA57
+	for <linux-acpi@vger.kernel.org>; Thu, 21 Sep 2023 22:22:27 +0000 (UTC)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D06231FC6
+	for <linux-acpi@vger.kernel.org>; Thu, 21 Sep 2023 15:22:25 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-195-nCruYfTANVavYpk8gD9WoQ-1; Thu, 21 Sep 2023 23:22:12 +0100
+X-MC-Unique: nCruYfTANVavYpk8gD9WoQ-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 21 Sep
+ 2023 23:22:11 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Thu, 21 Sep 2023 23:22:11 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Bjorn Helgaas' <helgaas@kernel.org>, Shuai Xue
+	<xueshuai@linux.alibaba.com>
+CC: "lenb@kernel.org" <lenb@kernel.org>, "james.morse@arm.com"
+	<james.morse@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	"bp@alien8.de" <bp@alien8.de>, "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>,
+	"bhelgaas@google.com" <bhelgaas@google.com>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>, "gregkh@linuxfoundation.org"
+	<gregkh@linuxfoundation.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, Linux PCI <linux-pci@vger.kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: RE: Questions: Should kernel panic when PCIe fatal error occurs?
+Thread-Topic: Questions: Should kernel panic when PCIe fatal error occurs?
+Thread-Index: AQHZ7Bag+I9/7O2gw0aXfXPFoWr8dLAl2OAA
+Date: Thu, 21 Sep 2023 22:22:11 +0000
+Message-ID: <625cdd6c55994bf3a50efd8f79680029@AcuMS.aculab.com>
+References: <e486db16-d36d-9e14-4f10-dc755c0ef97d@linux.alibaba.com>
+ <20230920230257.GA280837@bhelgaas>
+In-Reply-To: <20230920230257.GA280837@bhelgaas>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d84b6d17-7fe9-222a-c874-798af4d9faea@linux.alibaba.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-On Thu, Sep 21, 2023 at 08:10:19PM +0800, Shuai Xue wrote:
-> On 2023/9/21 07:02, Bjorn Helgaas wrote:
-> > On Mon, Sep 18, 2023 at 05:39:58PM +0800, Shuai Xue wrote:
-> ...
+> It would be nice if they worked the same, but I suspect that vendors
+> may rely on the fact that CPER_SEV_FATAL forces a restart/panic as
+> part of their system integrity story.
 
-> > I guess your point is that for CPER_SEV_FATAL errors, the APEI/GHES
-> > path always panics but the native path never does, and that maybe both
-> > paths should work the same way?
-> 
-> Yes, exactly. Both OS native and APEI/GHES firmware first are notifications
-> used to handles PCIe AER errors, and IMHO, they should ideally work in the
-> same way.
+The file system errors created by a panic (especially an NMI panic)
+could easily be more problematic than a failed PCIe data transfer.
+Evan a read that returned ~0u - which can be checked for.
 
-I agree, that would be nice, but the whole point of the APEI/GHES
-functionality is vendor value-add, so I'm not sure we can achieve that
-ideal.
+Panicking a system that is converting TDM telephony to RTP for the
+911 emergency service because a PCIe cable/riser connecting one of the
+TDM board has become loose doesn't seem ideal.
+(Or because the TDM board's fpga has decided it isn't going to respond
+to any accesses until the BARs are setup again...)
 
-> ...
-> As a result, AER driver only does recovery for non-fatal PCIe error.
+The system can carry on with some TDM connections disabled - but that
+is ok because they are all duplicated in case a cable gets cuit.
 
-This is only true for the APEI/GHES path, right?  For *native* AER
-handling, we attempt recovery for both fatal and non-fatal errors.
+(Yes - that is a live system...)
 
-> > It doesn't seem like the native path should always panic.  If we can
-> > tell that data was corrupted, we may want to panic, but otherwise I
-> > don't think we should crash the entire system even if some device is
-> > permanently broken.
-> 
-> Got it. But how can we tell if the data is corrupted with OS native?
+=09David
 
-I naively expect that by PCIe protocol, corrupted DLLPs or TLPs
-detected by CRC, sequence number errors, etc, would be discarded
-before corrupting memory, so I doubt we'd get an uncorrectable error
-that means "sorry, I just corrupted your data."
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
-But DPC is advertised as "avoiding the potential spread of any data
-corruption," so there must be some mechanisms of corruption, and since
-DPC is triggered by either ERR_FATAL or ERR_NONFATAL, I guess maybe
-the errors could tell us something.  I'm going to quit speculating
-because I obviously don't know enough about this area.
-
-> >> However, I have changed my mind on this issue as I encounter a case where
-> >> a error propagation is detected due to fatal DLLP (Data Link Protocol
-> >> Error) error. A DLLP error occurred in the Compute node, causing the
-> >> node to panic because `struct acpi_hest_generic_status::error_severity` was
-> >> set as CPER_SEV_FATAL. However, data corruption was still detected in the
-> >> storage node by CRC.
-> > 
-> > The only mention of Data Link Protocol Error that looks relevant is
-> > PCIe r6.0, sec 3.6.2.2, which basically says a DLLP with an unexpected
-> > Sequence Number should be discarded:
-> > 
-> >   For Ack and Nak DLLPs, the following steps are followed (see Figure
-> >   3-21):
-> > 
-> >     - If the Sequence Number specified by the AckNak_Seq_Num does not
-> >       correspond to an unacknowledged TLP, or to the value in
-> >       ACKD_SEQ, the DLLP is discarded
-> > 
-> >       - This is a Data Link Protocol Error, which is a reported error
-> > 	associated with the Port (see Section 6.2).
-> > 
-> > So data from that DLLP should not have made it to memory, although of
-> > course the DMA may not have been completed.  But it sounds like you
-> > did see corrupted data written to memory?
-> 
-> The storage node use RDMA to directly access remote compute node.
-> And a error detected by CRC in the storage node. So I suspect yes.
-
-When doing the CRC, can you distinguish between corrupted data and
-data that was not written because a DMA was only partially completed?
-
-> ...
-> I tried to inject Data Link Protocol Error on some platform. The mechanism
-> behind is that rootport controls the sequence number of the specific TLPs
-> and ACK/NAK DLLPs. Data Link Protocol Error will be detected at the Rx side
-> of ACK/NAK DLLPs.
-> 
-> In such case, NIC and NVMe recovered on fatal and non-fatal DLLP
-> errors.
-
-I'm guessing this error injection directly writes the AER status bit,
-which would probably only test the reporting (sending an ERR_FATAL
-message), AER interrupt generation, firmware or OS interrupt handling,
-etc.
-
-It probably would not actually generate a DLLP with a bad sequence
-number, so it probably does not test the hardware behavior of
-discarding the DLLP if the sequence number is bad.  Just my guess
-though.
-
-> ...
-> My point is that how kernel could recover from non-fatal and fatal
-> errors in firmware first without DPC? If CPER_SEV_FATAL is used to
-> report fatal PCIe error, kernel will panic in APEI/GHES driver.
-
-The platform decides whether to use CPER_SEV_FATAL, so we can't change
-that.  We *could* change whether Linux panics when the platform says
-an error is CPER_SEV_FATAL.  That happens in drivers/acpi, so it's
-really up to Rafael.
-
-Personally I would want to hear from vendors who use the APEI/GHES
-path.  Poking around the web for logs that mention HEST and related
-things, it looks like at least Dell, HP, and Lenovo use it.  And there
-are drivers/acpi/apei commits from nxp.com, alibaba.com, amd.com,
-arm.com huawei.com, etc., so some of them probably care, too.
-
-Bjorn
 
