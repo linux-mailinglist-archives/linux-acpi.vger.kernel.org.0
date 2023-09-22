@@ -1,127 +1,131 @@
-Return-Path: <linux-acpi+bounces-55-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-56-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804067AB3B7
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 16:31:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D3F7AB933
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 20:34:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 323D5282121
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 14:31:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 7A73A282257
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 18:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7E922F10
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 14:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639B245F63
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 18:34:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACF93D987;
-	Fri, 22 Sep 2023 14:31:16 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EAC41A3;
-	Fri, 22 Sep 2023 07:31:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695393075; x=1726929075;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=RfDOh01dsGLCl9FfwUATjf4cBSql92IKvvisAzVKqmA=;
-  b=XIKS8lxieQRheoxBOUX5sX9uLW4mHmam1GwGe8eeuSyOCC46axJztpcg
-   IEevzENmnscA3hZfNtaE2xpf7CYEf68y0sBMz9bh18UeBZaXpk9KBKztB
-   6Z5FqqIKiwutg7SEFGxM7JoIadRDGzlC3w0YugOB7Yw6AciMcqVCTWSJd
-   2h4T2FBLwPRRMnbKAloqi+5M2x3dVUxZnSnn3agZNUrKitDNDsA22NaTc
-   S2U+CXmLcvnPrpt2wpoXYyyxwPAr/zTt9F2f+Pzdcm0l0ZBrXJ98/CMqZ
-   sqSy06EOkGYSI7docSjeqDuDb5CTwcFmtDU/wNUlDGRHBI5nQ/pbYwFEk
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10841"; a="360220475"
-X-IronPort-AV: E=Sophos;i="6.03,167,1694761200"; 
-   d="scan'208";a="360220475"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2023 07:31:14 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10841"; a="741113412"
-X-IronPort-AV: E=Sophos;i="6.03,167,1694761200"; 
-   d="scan'208";a="741113412"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2023 07:31:10 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC0)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1qjhBT-0000000HCxc-2Wlf;
-	Fri, 22 Sep 2023 17:31:07 +0300
-Date: Fri, 22 Sep 2023 17:31:07 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Rob Herring <robh@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Frank Rowand <frowand.list@gmail.com>, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v1 1/1] amba: bus: balance firmware node reference
- counting
-Message-ID: <ZQ2lKz41zFEX2rbK@smile.fi.intel.com>
-References: <20230824162654.2890992-1-andriy.shevchenko@linux.intel.com>
- <ZQn+IMMuPpwwZGPp@smile.fi.intel.com>
- <ZQn+UVgBTgFco6hT@smile.fi.intel.com>
- <CAL_JsqJAjxoCctHd4Eo+Hq0SBvc0G3RaEbC4P_jPsPq0LZYHzQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED27F4447E
+	for <linux-acpi@vger.kernel.org>; Fri, 22 Sep 2023 17:53:40 +0000 (UTC)
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D01831FE7
+	for <linux-acpi@vger.kernel.org>; Fri, 22 Sep 2023 10:53:17 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-68fe2470d81so2274545b3a.1
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Sep 2023 10:53:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1695405197; x=1696009997; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VcpELJ6V4gzjq4olnmy80BvH10zkQAPgPKh3TzKHvh0=;
+        b=LbbO0vAmasDHpCq/Xn4bin2MV97b+TsooKMyPxpB4qaWuEhipj8jE8kZ7cUvnKD+gW
+         I2Fp30nUBbTSCpG9gGiBNsLpHlP05LXOSSZUGpSVLBYBcJCZTi14tVw3YcJbwFQWBump
+         jgnE3fp4wfXuyB7i6dtstsnKOXqgdX5pwHIAA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695405197; x=1696009997;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VcpELJ6V4gzjq4olnmy80BvH10zkQAPgPKh3TzKHvh0=;
+        b=duVcV3NlxUUTwMpe1TeQ2WIw/YQURGmg40vA6TslcH60cJH4f7lDnIhCsa+qiXA3LG
+         rqr565plPd0vFh1iW0yTQLX985B3JgqZdWKmBDlMv2h/sK1oNKAeE/w4HKfF3dop4yOH
+         tNIh/vM6P13y+3zEA+1DVG3O7BdEpgZSTA53eN3XOQ4JDzGyCkaet3b+pSnmWzowOtw9
+         mwTGmpElmeziiBrgjmKaL3poowFDQa//XFR3alioBKMS+jJsom7XeUC++XcSa868hmGN
+         +wvQtJDjSTayrWRQpRUQUOIEebsqEsR7n1VU8ceYU3RjI8ipuT5GzTGgVCahKXs3rvhW
+         ZAGQ==
+X-Gm-Message-State: AOJu0YxZy4bKQzEN/D+f8Zc5pC+Fkgt4E1Qb+hUbHT77S6qKGO8P0oT3
+	TZx7vlFfTPr6yYvX5HC9aeL9TA==
+X-Google-Smtp-Source: AGHT+IFVTmxlRYKWN+wwokRfxFr+8HhULrMeZ9/GnCZdsqlYKzOrL05eKg41orjRO2IX+YFvbyW4rA==
+X-Received: by 2002:a05:6a00:1a91:b0:68f:c078:b0b6 with SMTP id e17-20020a056a001a9100b0068fc078b0b6mr145564pfv.10.1695405197151;
+        Fri, 22 Sep 2023 10:53:17 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id x22-20020aa79196000000b0068842ebfd10sm3464677pfa.160.2023.09.22.10.53.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Sep 2023 10:53:16 -0700 (PDT)
+From: Kees Cook <keescook@chromium.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Tom Rix <trix@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH] ACPI: PRM: Annotate struct prm_module_info with __counted_by
+Date: Fri, 22 Sep 2023 10:53:15 -0700
+Message-Id: <20230922175315.work.877-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1141; i=keescook@chromium.org;
+ h=from:subject:message-id; bh=4xy8hh2710nXi/x0gtI622DpqaNgXiLZ0l6ncbr16B8=;
+ b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlDdSLMgKD0QiDVZgL6y9jKTQlJU/qmTzhAycS2
+ CXqRf8eZcmJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZQ3UiwAKCRCJcvTf3G3A
+ Jv0yD/wMjoy6/sOr84h0xOw027syYiDYBNxQYJXRgeNq6pyUAb+CGO4TxgUm+9Dv9d9mCnhnKUC
+ DpykKBQVPOPdvKCSfPDozBfQ+blTyrqhnHvpasy/qgBC1fLy+141QegfPqrxT+lXJiKMHrWDCEQ
+ 5v7B0cmKNFaCTcughRb2/odgzuA8p5b6cdZIInVetgDvroCqyOIw1qqGOJn/lQnmt+NapjFzzBw
+ zWLUiUSZOMuMwa46HNlhXJmtg0N/zn9wUSm5U4O6WhitjGPMiJJ+0XKk+RHP4hGFFvs81iGkATN
+ cc4iHAJwf3hfhD5FjxvMRRr4VFQIZ2nd2pBhp4icvLDzdtX3ckojAohlPKZRWLlgxZ5eAxvM6Yc
+ OlqBwoWG9WtFP6gcvpd/v9jBdX59+KIPbRTIfIJC1A7mgwJGQyu+/w1Ropu8rKBmPVK/Mhp1XOR
+ mY57DmUYN0tbmxiex9xY2IZN4wlgBV8MZ+sAB+gXU4l88bO6EusW5f3/hiiyDSQbO3n+FKUC2pE
+ T4zKnz4ixMzPIOvkZ8w78JZfp4py1F6WM4EcmZ0wjopqxsl05/Wo/EJWs0eaQrz9tkefilKp40u
+ ag8fUhMO4G2mHw6XsNzjs3t76z/LKhHrL6L4o7KBOT3pc1WMpEdxoRxJyFyFahBFmkB4gwPj8lm
+ wK+Uws8 mmOV0DRg==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_JsqJAjxoCctHd4Eo+Hq0SBvc0G3RaEbC4P_jPsPq0LZYHzQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Sep 22, 2023 at 09:18:47AM -0500, Rob Herring wrote:
-> On Tue, Sep 19, 2023 at 3:02 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, Sep 19, 2023 at 11:01:37PM +0300, Andy Shevchenko wrote:
-> > > On Thu, Aug 24, 2023 at 07:26:54PM +0300, Andy Shevchenko wrote:
-> > > > Currently the ACPI code doesn't bump the reference count of
-> > > > the firmware node, while OF counter part does. Not that it's
-> > > > a problem right now, since ACPI doesn't really use the reference
-> > > > counting for firmware nodes, it still makes sense to make code
-> > > > robust against any changes done there. For this,
-> > > >  - switch ACPI case to use device_set_node() to be unified with OF
-> > > >  - move reference counting to amba_device_add()
-> > > >  - switch to use firmware nodes instead of OF ones
-> > > >
-> > > > In the result we will have reference counting done in the same module
-> > > > for all callers independently on the nature of firmware node behind.
-> > >
-> > > Any comment on this? I would like to have this applied so I can do something
-> > > similar to the platform driver code.
-> >
-> > Ah, I see, I missed LKP run on this, I'll send a v2 perhaps later on this week.
-> 
-> What's the relationship/dependency with this and the other patches
-> dealing with refcounting? Did the AMBA one land?
+Prepare for the coming implementation by GCC and Clang of the __counted_by
+attribute. Flexible array members annotated with __counted_by can have
+their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
+(for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
+functions).
 
-The OF refcounting is spread over platform code in unexpected places. So, we
-have something like of_foo() bumps it, platform ->release() drops it. It sounds
-to me as weird design to think of and AMBA is part of this mixture as it uses
-platform_bus, BUT has it's own ->release(), besides the fact that it's used in
-OF _and_ ACPI environments.
+As found with Coccinelle[1], add __counted_by for struct prm_module_info.
 
-What I would expect to have is both are really agnostic to the fwnode type
-and take and release reference in one place, but with OF <--> platform is
-kinda more complicated that with AMBA.
+[1] https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci
 
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ drivers/acpi/prmt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index 7020584096bf..c78453c74ef5 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -69,7 +69,7 @@ struct prm_module_info {
+ 	bool updatable;
+ 
+ 	struct list_head module_list;
+-	struct prm_handler_info handlers[];
++	struct prm_handler_info handlers[] __counted_by(handler_count);
+ };
+ 
+ static u64 efi_pa_va_lookup(u64 pa)
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
 
