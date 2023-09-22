@@ -1,219 +1,214 @@
-Return-Path: <linux-acpi+bounces-50-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-51-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA79B7AA7CE
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 06:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 249EA7AA7CF
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 06:31:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 7DD4B281CBF
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 04:31:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id CBDC9281C92
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 04:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611DC5666
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 04:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21DB2100
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 04:31:44 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA30385
-	for <linux-acpi@vger.kernel.org>; Fri, 22 Sep 2023 02:46:45 +0000 (UTC)
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDF25192;
-	Thu, 21 Sep 2023 19:46:42 -0700 (PDT)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046056;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0VsaTkdL_1695350797;
-Received: from 30.240.112.49(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VsaTkdL_1695350797)
-          by smtp.aliyun-inc.com;
-          Fri, 22 Sep 2023 10:46:39 +0800
-Message-ID: <fdc7a4ee-250f-7ec8-ca15-32cbd480bd3e@linux.alibaba.com>
-Date: Fri, 22 Sep 2023 10:46:36 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745BFEB8
+	for <linux-acpi@vger.kernel.org>; Fri, 22 Sep 2023 04:08:23 +0000 (UTC)
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D2F9F1;
+	Thu, 21 Sep 2023 21:08:21 -0700 (PDT)
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-59e77e4f707so20471117b3.0;
+        Thu, 21 Sep 2023 21:08:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695355701; x=1695960501; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pS0vFjLEeynWuo5eyZ4Lt8qmI3NL/UzOQsJs0PGGLxA=;
+        b=IEjCPe5Mgh4mIxvJVE8+v+eAfda7ng13CWoqrjOsRJBuaeX3K4DTqUcVOnRSifEVK2
+         GVwUuO+zq3Idg+Ea8q/XAUMd9W8BeCjWdpsz2orCWLkiBtZavfHf9LTiSxg52dpZVqn8
+         ECtle4SZT2G70DCWez77wpx66xD2eQ+C4APle/9huIe6DNN8N9vViwxN2UPBqesm6TyT
+         6RkJcxocFVFp4sGl8MMpLNiB9EywTD+7bZ73LRan87i38XL348y2TXnPCb57lXEyRIQ/
+         HcYV0zUKvSYcad3HUomD6Q4FH1rT5PbbNWa0PDJbBcLwDt+ATXIPFhHHXxmRwY0JJnGH
+         nwVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695355701; x=1695960501;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pS0vFjLEeynWuo5eyZ4Lt8qmI3NL/UzOQsJs0PGGLxA=;
+        b=aY8gzGPzX+fVsqaWVz2fj2NSLPlYvxSR937PRt4mS2SC3zV7dzlbpwFl46YMwFys4L
+         ngd0Ck9TlBjOnjxunAbB+Xn6gljtytCJopFV+yVLbP3Ln2/Hkn3dTMnagCovq0QaLt5/
+         poaMdKdsfN0xEyzexo4jRZwh6rJwS26XrQRzrJfK5Bebqf6uVVTBusxsFXMQ1VDPuR/v
+         jZCUdzvpsFlEosGOH4PQ5ujnG6IsgjVMC0lGz6XrfOW9QJ6zhmkS3MF1hn5wQ/e4FPqR
+         HnLefweOjkcr/2PlWB+rA4DBI3f1LKslazIcFgS/1+5lgvsZwC8Cclf7kHARgRirC2rr
+         n6qw==
+X-Gm-Message-State: AOJu0YzwRr7Q6IST06j3WAPIza1cLQp7ZMgjIEehGncKGr/MnIaJR+IQ
+	zn8/5uC3ruRWdiub+B4bQmwxQxIVKEgp64RRSTgjKHsK60o=
+X-Google-Smtp-Source: AGHT+IGcGFK3u+XlwUkOXMhFa2xfKD0T5AOAyPtA1kKDncrTwc4zcxQ+bVpMITzb9cwx2hVc4uTerBGLOZNZQY69yAA=
+X-Received: by 2002:a81:4f85:0:b0:589:e7ab:d4e5 with SMTP id
+ d127-20020a814f85000000b00589e7abd4e5mr7459187ywb.0.1695355700724; Thu, 21
+ Sep 2023 21:08:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: Questions: Should kernel panic when PCIe fatal error occurs?
-Content-Language: en-US
-To: Bjorn Helgaas <helgaas@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "tanxiaofei@huawei.com" <tanxiaofei@huawei.com>,
- "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
- Miaohe Lin <linmiaohe@huawei.com>
-Cc: gregkh@linuxfoundation.org, Linux PCI <linux-pci@vger.kernel.org>,
- mahesh@linux.ibm.com,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "bp@alien8.de" <bp@alien8.de>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, bhelgaas@google.com,
- "james.morse@arm.com" <james.morse@arm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "lenb@kernel.org" <lenb@kernel.org>
-References: <20230921215241.GA337765@bhelgaas>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20230921215241.GA337765@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-11.4 required=5.0 tests=BAYES_00,
-	ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-	SPF_PASS,UNPARSEABLE_RELAY,URIBL_BLOCKED,USER_IN_DEF_SPF_WL
+From: Tom Yan <tom.ty89@gmail.com>
+Date: Fri, 22 Sep 2023 12:08:09 +0800
+Message-ID: <CAGnHSE=KP8rArKmNbgo3iG489PXrwjqWXLTmUp+nCOPd4VVRhA@mail.gmail.com>
+Subject: [BUG?] Weird battery detection issue triggered by extra PCIe slot/port
+To: rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org, 
+	linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+	FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
 	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-+ @Rafael for the APEI/GHES part.
+Hi,
 
-On 2023/9/22 05:52, Bjorn Helgaas wrote:
-> On Thu, Sep 21, 2023 at 08:10:19PM +0800, Shuai Xue wrote:
->> On 2023/9/21 07:02, Bjorn Helgaas wrote:
->>> On Mon, Sep 18, 2023 at 05:39:58PM +0800, Shuai Xue wrote:
->> ...
-> 
->>> I guess your point is that for CPER_SEV_FATAL errors, the APEI/GHES
->>> path always panics but the native path never does, and that maybe both
->>> paths should work the same way?
->>
->> Yes, exactly. Both OS native and APEI/GHES firmware first are notifications
->> used to handles PCIe AER errors, and IMHO, they should ideally work in the
->> same way.
-> 
-> I agree, that would be nice, but the whole point of the APEI/GHES
-> functionality is vendor value-add, so I'm not sure we can achieve that
-> ideal.
-> 
->> ...
->> As a result, AER driver only does recovery for non-fatal PCIe error.
-> 
-> This is only true for the APEI/GHES path, right?  For *native* AER
-> handling, we attempt recovery for both fatal and non-fatal errors.
+So I have a laptop with two M.2 slot / PCIe port:
 
-Yes, exactly.
+00:06.0 PCI bridge: Intel Corporation 12th Gen Core Processor PCI
+Express x4 Controller #0 (rev 04)
+00:1d.0 PCI bridge: Intel Corporation Device 51b0 (rev 01)
 
-> 
->>> It doesn't seem like the native path should always panic.  If we can
->>> tell that data was corrupted, we may want to panic, but otherwise I
->>> don't think we should crash the entire system even if some device is
->>> permanently broken.
->>
->> Got it. But how can we tell if the data is corrupted with OS native?
-> 
-> I naively expect that by PCIe protocol, corrupted DLLPs or TLPs
-> detected by CRC, sequence number errors, etc, would be discarded
-> before corrupting memory, so I doubt we'd get an uncorrectable error
-> that means "sorry, I just corrupted your data."
-> 
-> But DPC is advertised as "avoiding the potential spread of any data
-> corruption," so there must be some mechanisms of corruption, and since
-> DPC is triggered by either ERR_FATAL or ERR_NONFATAL, I guess maybe
-> the errors could tell us something.  I'm going to quit speculating
-> because I obviously don't know enough about this area.
-> 
->>>> However, I have changed my mind on this issue as I encounter a case where
->>>> a error propagation is detected due to fatal DLLP (Data Link Protocol
->>>> Error) error. A DLLP error occurred in the Compute node, causing the
->>>> node to panic because `struct acpi_hest_generic_status::error_severity` was
->>>> set as CPER_SEV_FATAL. However, data corruption was still detected in the
->>>> storage node by CRC.
->>>
->>> The only mention of Data Link Protocol Error that looks relevant is
->>> PCIe r6.0, sec 3.6.2.2, which basically says a DLLP with an unexpected
->>> Sequence Number should be discarded:
->>>
->>>   For Ack and Nak DLLPs, the following steps are followed (see Figure
->>>   3-21):
->>>
->>>     - If the Sequence Number specified by the AckNak_Seq_Num does not
->>>       correspond to an unacknowledged TLP, or to the value in
->>>       ACKD_SEQ, the DLLP is discarded
->>>
->>>       - This is a Data Link Protocol Error, which is a reported error
->>> 	associated with the Port (see Section 6.2).
->>>
->>> So data from that DLLP should not have made it to memory, although of
->>> course the DMA may not have been completed.  But it sounds like you
->>> did see corrupted data written to memory?
->>
->> The storage node use RDMA to directly access remote compute node.
->> And a error detected by CRC in the storage node. So I suspect yes.
-> 
-> When doing the CRC, can you distinguish between corrupted data and
-> data that was not written because a DMA was only partially completed?
+Apparently 00:06.0 is wired to the CPU directly and the 00:1d.0 is
+weird to the PCH. Both of them can be disabled independently in UEFI
+settings, and both have an NVMe drive installed.
 
-Yes, the receiving application layer will perform length verification.
-So the data length is definitely correct.
+Currently only the drive on the "CPU slot" is used, with both Windows
+and Linux installed. The other drive has been wiped and remains unused
+for now due to the issue I'm reporting here.
 
-> 
->> ...
->> I tried to inject Data Link Protocol Error on some platform. The mechanism
->> behind is that rootport controls the sequence number of the specific TLPs
->> and ACK/NAK DLLPs. Data Link Protocol Error will be detected at the Rx side
->> of ACK/NAK DLLPs.
->>
->> In such case, NIC and NVMe recovered on fatal and non-fatal DLLP
->> errors.
-> 
-> I'm guessing this error injection directly writes the AER status bit,
-> which would probably only test the reporting (sending an ERR_FATAL
-> message), AER interrupt generation, firmware or OS interrupt handling,
-> etc.
-> 
-> It probably would not actually generate a DLLP with a bad sequence
-> number, so it probably does not test the hardware behavior of
-> discarding the DLLP if the sequence number is bad.  Just my guess
-> though.
+The problem I am having is that for some reason, when the "PCH slot"
+is enabled, Linux has estimatedly only < 50% chance to detect the
+battery. If it has failed to do so, seemingly I have to "cold reboot"
+(I mean like, shutdown normally and power on again, but not just
+reboot or S3 suspend) to get it back, in which case the successful
+rate is the same.
 
-No, we don't touch AER status bit. The Root port controller provides Error
-Injection Function to trigger a real DLLP error. For example,
+I track it down to have the following sysfs findings:
 
-- set a bad Bad sequence number, assuming 3
-- enable error injection
-- send a TLP from the controller's Application Interface, assuming SEQ#5 is
-  given to the TLP
-- the SEQ# is Changed to #2 by the Error Injection Function in Layer2.
+[tom@corebook ~]$ ls -Al '/sys/devices/pci0000:00/0000:00:1f.0/PNP0C09:00/'
+total 0
+-rw-r--r-- 1 root root 4096 Sep 17 11:01 driver_override
+lrwxrwxrwx 1 root root    0 Sep 17 11:01 firmware_node ->
+../../../LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:0b/PNP0C09:00
+drwxr-xr-x 3 root root    0 Sep 17 11:01 INT33D3:00
+drwxr-xr-x 3 root root    0 Sep 17 11:01 INT33D4:00
+drwxr-xr-x 3 root root    0 Sep 17 11:01 INTC1046:01
+drwxr-xr-x 3 root root    0 Sep 17 11:01 INTC1046:02
+drwxr-xr-x 3 root root    0 Sep 17 11:01 INTC1046:03
+drwxr-xr-x 3 root root    0 Sep 17 11:01 INTC1048:00
+-r--r--r-- 1 root root 4096 Sep 17 11:01 modalias
+drwxr-xr-x 3 root root    0 Sep 17 11:01 PNP0C0D:00
+drwxr-xr-x 2 root root    0 Sep 17 11:01 power
+lrwxrwxrwx 1 root root    0 Sep 17 11:01 subsystem -> ../../../../bus/platform
+-rw-r--r-- 1 root root 4096 Sep 17 11:01 uevent
+-r--r--r-- 1 root root 4096 Sep 17 11:01 waiting_for_supplier
+[tom@corebook ~]$ ls -Al
+'/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:0b/PNP0C09:00/PNP0C0A:00/'
+total 0
+-r--r--r-- 1 root root 4096 Sep 17 11:02 hid
+-r--r--r-- 1 root root 4096 Sep 17 11:02 modalias
+-r--r--r-- 1 root root 4096 Sep 17 11:02 path
+drwxr-xr-x 2 root root    0 Sep 17 11:02 power
+-r--r--r-- 1 root root 4096 Sep 17 11:02 status
+lrwxrwxrwx 1 root root    0 Sep 17 11:01 subsystem ->
+../../../../../../../bus/acpi
+-rw-r--r-- 1 root root 4096 Sep 17 11:01 uevent
+-r--r--r-- 1 root root 4096 Sep 17 11:02 uid
 
-> 
->> ...
->> My point is that how kernel could recover from non-fatal and fatal
->> errors in firmware first without DPC? If CPER_SEV_FATAL is used to
->> report fatal PCIe error, kernel will panic in APEI/GHES driver.
-> 
-> The platform decides whether to use CPER_SEV_FATAL, so we can't change
-> that.  We *could* change whether Linux panics when the platform says
-> an error is CPER_SEV_FATAL.  That happens in drivers/acpi, so it's
-> really up to Rafael.
+whereas if the "PCH slot" is disabled, or if it succeeded in the
+"detection trial":
 
-Agreed. Of course, we are talking about and focus on the desired behavior
-of Linux kernel.
+[tom@corebook ~]$ ls -Al '/sys/devices/pci0000:00/0000:00:1f.0/PNP0C09:00/'
+total 0
+-rw-r--r-- 1 root root 4096 Sep 17 11:56 driver_override
+lrwxrwxrwx 1 root root    0 Sep 17 11:56 firmware_node ->
+../../../LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:0b/PNP0C09:00
+drwxr-xr-x 3 root root    0 Sep 17 11:53 INT33D3:00
+drwxr-xr-x 3 root root    0 Sep 17 11:53 INT33D4:00
+drwxr-xr-x 3 root root    0 Sep 17 11:53 INTC1046:01
+drwxr-xr-x 3 root root    0 Sep 17 11:53 INTC1046:02
+drwxr-xr-x 3 root root    0 Sep 17 11:53 INTC1046:03
+drwxr-xr-x 3 root root    0 Sep 17 11:53 INTC1048:00
+-r--r--r-- 1 root root 4096 Sep 17 11:56 modalias
+drwxr-xr-x 3 root root    0 Sep 17 11:53 PNP0C0A:00
+drwxr-xr-x 3 root root    0 Sep 17 11:53 PNP0C0D:00
+drwxr-xr-x 2 root root    0 Sep 17 11:56 power
+lrwxrwxrwx 1 root root    0 Sep 17 11:53 subsystem -> ../../../../bus/platform
+-rw-r--r-- 1 root root 4096 Sep 17 11:53 uevent
+-r--r--r-- 1 root root 4096 Sep 17 11:56 waiting_for_supplier
+[tom@corebook ~]$ ls -Al
+'/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:0b/PNP0C09:00/PNP0C0A:00/'
+total 0
+lrwxrwxrwx 1 root root    0 Sep 17 11:53 driver ->
+../../../../../../../bus/acpi/drivers/battery
+-r--r--r-- 1 root root 4096 Sep 17 11:56 hid
+-r--r--r-- 1 root root 4096 Sep 17 11:56 modalias
+-r--r--r-- 1 root root 4096 Sep 17 11:56 path
+lrwxrwxrwx 1 root root    0 Sep 17 11:56 physical_node ->
+../../../../../../pci0000:00/0000:00:1f.0/PNP0C09:00/PNP0C0A:00
+drwxr-xr-x 2 root root    0 Sep 17 11:56 power
+drwxr-xr-x 3 root root    0 Sep 17 11:53 power_supply
+-r--r--r-- 1 root root 4096 Sep 17 11:56 status
+lrwxrwxrwx 1 root root    0 Sep 17 11:53 subsystem ->
+../../../../../../../bus/acpi
+-rw-r--r-- 1 root root 4096 Sep 17 11:53 uevent
+-r--r--r-- 1 root root 4096 Sep 17 11:56 uid
+drwxr-xr-x 3 root root    0 Sep 17 11:53 wakeup
 
-> 
-> Personally I would want to hear from vendors who use the APEI/GHES
-> path.  Poking around the web for logs that mention HEST and related
-> things, it looks like at least Dell, HP, and Lenovo use it.  And there
-> are drivers/acpi/apei commits from nxp.com, alibaba.com, amd.com,
-> arm.com huawei.com, etc., so some of them probably care, too.
-> 
+As you can see, the "physical node" `PNP0C0A:00` is gone in the
+failing case and the "firmware node" of it hence has nothing to
+"attach"(?) to, so the battery driver will therefore see nothing. (The
+parent device `PNP0C09:00` is managed by the driver `ec`, for the
+record.)
 
-Aha, sure. In OS native mode, kernel controls everything, directly acting
-on the MSI, checking AER status and do recovery for CE, non-fatal and fatal
-errors. While for firmware first, as it name indicates, the kernel and
-firmware co-work together to handle processor, memory, PCIe and
-platform specific errors.
+I don't know if this issue is caused by a certain bug or flaw in the
+UEFI/EC firmware, but the problem does not seem to occur in Windows.
+Either way, I'm writing to see if I can get any insight from you guys
+on what might be the potential reason/rationale here. (Note that as
+mentioned, it does not always occur in Linux either, so it looks like
+some kind of "mapping race"(?) to me.)
 
-Actually, this is a question from my colleague from firmware team.
-The original question is that:
+P.S. While there are some ACPI errors (as it does for most laptops
+these days), I don't see any potentially relevant difference in the
+kernel log between the successful and failing cases. The only
+difference is that in the successful case, there's the extra expected
+line of "battery detected". Anyway, I'm adding the warnings/errors in
+the kernel log that might be remotely relevant, but please do note
+that I see them all in both cases:
 
-    "Should I set CPER_SEV_FATAL for Generic Error Status Block when a
-    PCIe fatal error is detected? If set, kernel will always panic.
-    Otherwise, kernel will always not panic."
+ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PC00.I2C0.TPD0],
+AE_NOT_FOUND (20230331/dswload2-162)
+ACPI Error: AE_NOT_FOUND, During name lookup/catalog (20230331/psobject-220)
+pnp 00:02: disabling [mem 0xc0000000-0xcfffffff] because it overlaps
+0000:00:02.0 BAR 9 [mem 0x00000000-0xdfffffff 64bit pref]
+hpet_acpi_add: no address or irqs in _CRS
+i8042: PNP: PS/2 appears to have AUX port disabled, if this is
+incorrect please boot with i8042.nopnp
+ACPI BIOS Error (bug): Could not resolve symbol
+[\_SB.PC00.LPCB.HEC.TSR1], AE_NOT_FOUND (20230331/psargs-330)
+ACPI Error: Aborting method \_SB.PC00.LPCB.H_EC.SEN1._TMP due to
+previous error (AE_NOT_FOUND) (20230331/psparse-529)
+ACPI BIOS Error (bug): Could not resolve symbol
+[\_SB.PC00.LPCB.HEC.TSR1], AE_NOT_FOUND (20230331/psargs-330)
+ACPI Error: Aborting method \_SB.PC00.LPCB.H_EC.SEN1._TMP due to
+previous error (AE_NOT_FOUND) (20230331/psparse-529)
+intel-hid INTC1070:00: failed to enable HID power button
+resource: resource sanity check: requesting [mem
+0x00000000fedc0000-0x00000000fedcffff], which spans more than pnp
+00:02 [mem 0xfedc0000-0xfedc7fff]
+caller igen6_probe+0x1a0/0x8d0 [igen6_edac] mapping multiple BARs
+i2c i2c-11: Systems with more than 4 memory slots not supported yet,
+not instantiating SPD
 
-So I pull a question about desired behavior of Linux kernel first :)
-From the perspective of the kernel, CPER_SEV_FATAL for Generic Error
-Status Block is not reasonable. The kernel will attempt to recover
-Fatal errors, although recovery may fail.
-
-Best Regards,
-Shuai
-
-
-
-
+Regards,
+Tom
 
