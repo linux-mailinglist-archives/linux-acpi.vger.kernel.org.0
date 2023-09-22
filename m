@@ -1,92 +1,127 @@
-Return-Path: <linux-acpi+bounces-54-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-55-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB2D7AB3B6
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 16:31:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 804067AB3B7
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 16:31:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 259B128142A
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 14:31:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 323D5282121
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 14:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E91A656
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 14:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7E922F10
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 14:31:40 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254C927709;
-	Fri, 22 Sep 2023 14:19:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F660C433CD;
-	Fri, 22 Sep 2023 14:19:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695392341;
-	bh=12oCvWbL7GVkVaF2lDVNNaYc8c3U2x/MoFyMoNfWqd4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ael4AXfQLoALna5lsccFDiscjl2lrWYJmN0RiDUJWLHpMyuex8ErISlcT9vhQIQ4+
-	 ghf42W8cA1Vfbf8ehlhQnId0zEIF+9DNsj/A79HZwkUr5xaSXgDihT5bE+A4YB7Bvs
-	 eTxhWAw70+E1aSxjiTCjphPZOmQ8R73dii5bpX2q/cNVwAgVtLQFwSkXDujD7a89xa
-	 K8LtBhNFyDSUxXUTHBYLmhcR21fPD8v2ndMZd7a9SY4ecXWTNJBUuwRLCGY4+wvdnm
-	 303HVrfn5pfrEc0KUmhp9mrFZNt4svhUT91dgJFztlsxtVbUYYSP43wi/au/wgrDVy
-	 QI5lrYR66etkw==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5042f391153so2656769e87.1;
-        Fri, 22 Sep 2023 07:19:01 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxIa5o+u2Vp3412AGpcFvSxdIHpDeL+ZfZJ1SNNF8OcEOhpvug8
-	dRn/Q/y+5Aid+GImfGhDM/aax2OSQY5H6ofaZA==
-X-Google-Smtp-Source: AGHT+IEG+UVkd2jk9aYQtqYua03sdwlV3Cyq2FPbY/EeX2TU1i3epa418SxNV24CYkFC2r/E9vv86Hgd91/sZRSVRxg=
-X-Received: by 2002:a05:6512:33d0:b0:503:224f:9c55 with SMTP id
- d16-20020a05651233d000b00503224f9c55mr1234508lfg.8.1695392339696; Fri, 22 Sep
- 2023 07:18:59 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACF93D987;
+	Fri, 22 Sep 2023 14:31:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EAC41A3;
+	Fri, 22 Sep 2023 07:31:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695393075; x=1726929075;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=RfDOh01dsGLCl9FfwUATjf4cBSql92IKvvisAzVKqmA=;
+  b=XIKS8lxieQRheoxBOUX5sX9uLW4mHmam1GwGe8eeuSyOCC46axJztpcg
+   IEevzENmnscA3hZfNtaE2xpf7CYEf68y0sBMz9bh18UeBZaXpk9KBKztB
+   6Z5FqqIKiwutg7SEFGxM7JoIadRDGzlC3w0YugOB7Yw6AciMcqVCTWSJd
+   2h4T2FBLwPRRMnbKAloqi+5M2x3dVUxZnSnn3agZNUrKitDNDsA22NaTc
+   S2U+CXmLcvnPrpt2wpoXYyyxwPAr/zTt9F2f+Pzdcm0l0ZBrXJ98/CMqZ
+   sqSy06EOkGYSI7docSjeqDuDb5CTwcFmtDU/wNUlDGRHBI5nQ/pbYwFEk
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10841"; a="360220475"
+X-IronPort-AV: E=Sophos;i="6.03,167,1694761200"; 
+   d="scan'208";a="360220475"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2023 07:31:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10841"; a="741113412"
+X-IronPort-AV: E=Sophos;i="6.03,167,1694761200"; 
+   d="scan'208";a="741113412"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2023 07:31:10 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC0)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1qjhBT-0000000HCxc-2Wlf;
+	Fri, 22 Sep 2023 17:31:07 +0300
+Date: Fri, 22 Sep 2023 17:31:07 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Rob Herring <robh@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Frank Rowand <frowand.list@gmail.com>, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v1 1/1] amba: bus: balance firmware node reference
+ counting
+Message-ID: <ZQ2lKz41zFEX2rbK@smile.fi.intel.com>
+References: <20230824162654.2890992-1-andriy.shevchenko@linux.intel.com>
+ <ZQn+IMMuPpwwZGPp@smile.fi.intel.com>
+ <ZQn+UVgBTgFco6hT@smile.fi.intel.com>
+ <CAL_JsqJAjxoCctHd4Eo+Hq0SBvc0G3RaEbC4P_jPsPq0LZYHzQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230824162654.2890992-1-andriy.shevchenko@linux.intel.com>
- <ZQn+IMMuPpwwZGPp@smile.fi.intel.com> <ZQn+UVgBTgFco6hT@smile.fi.intel.com>
-In-Reply-To: <ZQn+UVgBTgFco6hT@smile.fi.intel.com>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 22 Sep 2023 09:18:47 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJAjxoCctHd4Eo+Hq0SBvc0G3RaEbC4P_jPsPq0LZYHzQ@mail.gmail.com>
-Message-ID: <CAL_JsqJAjxoCctHd4Eo+Hq0SBvc0G3RaEbC4P_jPsPq0LZYHzQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] amba: bus: balance firmware node reference counting
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, Frank Rowand <frowand.list@gmail.com>, 
-	Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL_JsqJAjxoCctHd4Eo+Hq0SBvc0G3RaEbC4P_jPsPq0LZYHzQ@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-On Tue, Sep 19, 2023 at 3:02=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Tue, Sep 19, 2023 at 11:01:37PM +0300, Andy Shevchenko wrote:
-> > On Thu, Aug 24, 2023 at 07:26:54PM +0300, Andy Shevchenko wrote:
-> > > Currently the ACPI code doesn't bump the reference count of
-> > > the firmware node, while OF counter part does. Not that it's
-> > > a problem right now, since ACPI doesn't really use the reference
-> > > counting for firmware nodes, it still makes sense to make code
-> > > robust against any changes done there. For this,
-> > >  - switch ACPI case to use device_set_node() to be unified with OF
-> > >  - move reference counting to amba_device_add()
-> > >  - switch to use firmware nodes instead of OF ones
+On Fri, Sep 22, 2023 at 09:18:47AM -0500, Rob Herring wrote:
+> On Tue, Sep 19, 2023 at 3:02 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Tue, Sep 19, 2023 at 11:01:37PM +0300, Andy Shevchenko wrote:
+> > > On Thu, Aug 24, 2023 at 07:26:54PM +0300, Andy Shevchenko wrote:
+> > > > Currently the ACPI code doesn't bump the reference count of
+> > > > the firmware node, while OF counter part does. Not that it's
+> > > > a problem right now, since ACPI doesn't really use the reference
+> > > > counting for firmware nodes, it still makes sense to make code
+> > > > robust against any changes done there. For this,
+> > > >  - switch ACPI case to use device_set_node() to be unified with OF
+> > > >  - move reference counting to amba_device_add()
+> > > >  - switch to use firmware nodes instead of OF ones
+> > > >
+> > > > In the result we will have reference counting done in the same module
+> > > > for all callers independently on the nature of firmware node behind.
 > > >
-> > > In the result we will have reference counting done in the same module
-> > > for all callers independently on the nature of firmware node behind.
+> > > Any comment on this? I would like to have this applied so I can do something
+> > > similar to the platform driver code.
 > >
-> > Any comment on this? I would like to have this applied so I can do some=
-thing
-> > similar to the platform driver code.
->
-> Ah, I see, I missed LKP run on this, I'll send a v2 perhaps later on this=
- week.
+> > Ah, I see, I missed LKP run on this, I'll send a v2 perhaps later on this week.
+> 
+> What's the relationship/dependency with this and the other patches
+> dealing with refcounting? Did the AMBA one land?
 
-What's the relationship/dependency with this and the other patches
-dealing with refcounting? Did the AMBA one land?
+The OF refcounting is spread over platform code in unexpected places. So, we
+have something like of_foo() bumps it, platform ->release() drops it. It sounds
+to me as weird design to think of and AMBA is part of this mixture as it uses
+platform_bus, BUT has it's own ->release(), besides the fact that it's used in
+OF _and_ ACPI environments.
 
-Rob
+What I would expect to have is both are really agnostic to the fwnode type
+and take and release reference in one place, but with OF <--> platform is
+kinda more complicated that with AMBA.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
