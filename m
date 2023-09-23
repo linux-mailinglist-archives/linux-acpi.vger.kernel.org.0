@@ -1,67 +1,145 @@
-Return-Path: <linux-acpi+bounces-58-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-59-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A6F57ABA8A
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 22:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3951A7AC081
+	for <lists+linux-acpi@lfdr.de>; Sat, 23 Sep 2023 12:30:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id B8081281E84
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 20:30:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id DFE5B281C07
+	for <lists+linux-acpi@lfdr.de>; Sat, 23 Sep 2023 10:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0853436BE
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Sep 2023 20:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99A310A12
+	for <lists+linux-acpi@lfdr.de>; Sat, 23 Sep 2023 10:30:19 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6067D3F4AB
-	for <linux-acpi@vger.kernel.org>; Fri, 22 Sep 2023 20:28:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C772CC433C8;
-	Fri, 22 Sep 2023 20:28:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695414483;
-	bh=4E1DoFpsX4Vhf9ILzR7P7NP9E5YwvJIqnKKyxEeJBNs=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=Moq35vnU8jLwcZdnGFi+ZeyCemh45a01Q2PtlaVzBOwpt+4nx9DiJl5xrlGgyeEwo
-	 xveB6EJ1l6IDEybykCV+DpLSQyIjrV4S5ruO5NsWznVYRmFKA9selxglhSfZ8Q8Ajg
-	 vNwHO14+TrZFVH4xi239jzPBCH9ZS01QnGok3lIHa17i7bDNf7X8hnX4Z5clOhjpwM
-	 mYvKyvf325bVBpFwzVvW2DOj53H/A6Ip3SZf/wng085+gKC/UkQViCxgJlxc1oINvI
-	 OZ6+EDQAKtqbqXNXL4O48l23ADuCLOsPP01dGt0dxGzcCJff4B7zEzeH5UE8rhiqsX
-	 KwQ/ROCAy+efw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id AD3CBC561EE;
-	Fri, 22 Sep 2023 20:28:03 +0000 (UTC)
-Subject: Re: [GIT PULL] ACPI fixes for v6.6-rc3
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0iYLvO6VbzKo0-1sbpuVGF=Y-y2ajoRMMz+wAO0RTUNLw@mail.gmail.com>
-References: <CAJZ5v0iYLvO6VbzKo0-1sbpuVGF=Y-y2ajoRMMz+wAO0RTUNLw@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0iYLvO6VbzKo0-1sbpuVGF=Y-y2ajoRMMz+wAO0RTUNLw@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.6-rc3
-X-PR-Tracked-Commit-Id: a1001c37f83b30a75c17796b453769773b71f9b2
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b184c040dc393296301ee2fa522f44ad61237d68
-Message-Id: <169541448370.12920.15632829553792685525.pr-tracker-bot@kernel.org>
-Date: Fri, 22 Sep 2023 20:28:03 +0000
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Ard Biesheuvel <ardb@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31140DF59;
+	Sat, 23 Sep 2023 09:41:52 +0000 (UTC)
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 039D8CDE;
+	Sat, 23 Sep 2023 02:41:48 -0700 (PDT)
+Received: from eig-obgw-6003a.ext.cloudfilter.net ([10.0.30.151])
+	by cmsmtp with ESMTP
+	id jkvlqYgIGDKaKjz91qHoMH; Sat, 23 Sep 2023 09:41:48 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id jz91qVluL8SgTjz91qMfcc; Sat, 23 Sep 2023 09:41:47 +0000
+X-Authority-Analysis: v=2.4 cv=VLTOIvDX c=1 sm=1 tr=0 ts=650eb2db
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=P7XfKmiOJ4/qXqHZrN7ymg==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=zNV7Rl7Rt7sA:10 a=wYkD_t78qR0A:10 a=NEAV23lmAAAA:8
+ a=VwQbUJbxAAAA:8 a=cm27Pg_UAAAA:8 a=HvF037n1xESchLcPDVoA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=xmb-EsYY8bH0VWELuYED:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=WLm3jjSalaxxsZKpQPDucZInVb0b+gdLEhQLJln64xU=; b=CRbQKFIC5MlYXtZWsJMu4GgTnj
+	qFFQZexgH3Zqi60t3tRAJRQN5ekU7lfWTIE1qMCWXAvzPULMRgruhIBbIevQsniT20SCCWnI5qqml
+	F9N4YSwYLHSbcK1n5UvSkOm5tBATz69rdEHZOBqAl++AG9ZqfFmN9s2Rdiz5Ah37YiuWBYucAWPy/
+	72kpJ7mDG7t963j7zjToquKxntaeyizTJWbfRCBHLLVlOjtil0s+wWuHBCWTRVp5m5SZtYLdYK5x7
+	lMr8cPEOEMVYe5xg3hJppiViwLFusYKG4V5Hy2NYu4PwrtmyHMS1cGJL2fZUbRqmlqwJTrr0VIObG
+	RoglrQIQ==;
+Received: from [94.239.20.48] (port=37942 helo=[192.168.1.98])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1qjy70-003fcY-04;
+	Sat, 23 Sep 2023 03:35:38 -0500
+Message-ID: <728fc315-4761-f56c-cd06-9c907a53b46c@embeddedor.com>
+Date: Sat, 23 Sep 2023 10:36:43 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] ACPI: PRM: Annotate struct prm_module_info with
+ __counted_by
+Content-Language: en-US
+To: Kees Cook <keescook@chromium.org>, "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+ linux-hardening@vger.kernel.org
+References: <20230922175315.work.877-kees@kernel.org>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <20230922175315.work.877-kees@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 94.239.20.48
+X-Source-L: No
+X-Exim-ID: 1qjy70-003fcY-04
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.1.98]) [94.239.20.48]:37942
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 0
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfL77VTBH1YQ81fKSDVwtEhrWxi/5q8CTyuHWMmnqFKNhPIAJ3+9Bh9IXbnu8D1uWtrsxoRhbUyS7XV2UeoCPLlzlSIdZuV7zvNHSs74Wamv9XQtdb6vo
+ xnT4pj3cH/IkL9SDvpDvl9OqFLxJGlJrwSesuXrpU/SWvBAo9yMhyi4LcRBSAtPs4p/lGORt+m7m8EKYBQ/N0ER2Ra1Ip771GskYesBOw3uHk+/quSBGmQL5
+ 96hvWHZAZ89pROV4z8i31sMXP52dHJyRES3DRhtXFR3FG9WnlURzmb0vcEPYegnEhecLNoirUv+fspwfDez2KQ==
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-The pull request you sent on Fri, 22 Sep 2023 20:23:42 +0200:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.6-rc3
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b184c040dc393296301ee2fa522f44ad61237d68
+On 9/22/23 11:53, Kees Cook wrote:
+> Prepare for the coming implementation by GCC and Clang of the __counted_by
+> attribute. Flexible array members annotated with __counted_by can have
+> their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
+> (for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
+> functions).
+> 
+> As found with Coccinelle[1], add __counted_by for struct prm_module_info.
+> 
+> [1] https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci
+> 
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-Thank you!
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
+Thanks
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Gustavo
+
+> ---
+>   drivers/acpi/prmt.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+> index 7020584096bf..c78453c74ef5 100644
+> --- a/drivers/acpi/prmt.c
+> +++ b/drivers/acpi/prmt.c
+> @@ -69,7 +69,7 @@ struct prm_module_info {
+>   	bool updatable;
+>   
+>   	struct list_head module_list;
+> -	struct prm_handler_info handlers[];
+> +	struct prm_handler_info handlers[] __counted_by(handler_count);
+>   };
+>   
+>   static u64 efi_pa_va_lookup(u64 pa)
 
