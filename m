@@ -1,116 +1,62 @@
-Return-Path: <linux-acpi+bounces-80-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-81-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10EA7AD605
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 12:31:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D7F7AD607
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 12:32:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 92ABA282963
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:31:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 97BFE282A0C
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C7B15E9D
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC5015EA2
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:32:00 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB91134DC
-	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 09:15:43 +0000 (UTC)
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCCF0DA;
-	Mon, 25 Sep 2023 02:15:40 -0700 (PDT)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-98377c5d53eso713099866b.0;
-        Mon, 25 Sep 2023 02:15:40 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B86013FFA
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 09:55:15 +0000 (UTC)
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4980A3;
+	Mon, 25 Sep 2023 02:55:13 -0700 (PDT)
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-57b691f0fbfso545167eaf.0;
+        Mon, 25 Sep 2023 02:55:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695633339; x=1696238139;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W6AKz2KDk8YamtjH+UF0/ocp1ZeuM0MrPNPW6QmC46o=;
-        b=Dh6G7Cb0pxJ9mfhOKPLYg0Ua+VWOo6z13IH3ckA09ZL3PVPZ9MrFofrR6RekhYbhhG
-         NVPKUmYNbE0K2um/dj28F6JDeuu+uLQ3bL/tr0KrgUznNuQsVsMHu6mIlpWe32R3zjJq
-         V8zu9u0MQSmwEQP3nSOUS9RgsajJdzLkPUNuaMalhuW8UOTkT8cRFuJl6ealBS+XFUrE
-         il6Sl44RgpwVZ4OcX/wFZ+YHq6UGVG8d2kPn+ZRsoi/a5/xyKsRy8m6zvYm3UwsctrxB
-         Y3KzBC2Ps2gQhMGYQIsOEYFQyHDyeVKkj0+VicdQrJOEXuXJOY40krKCHlb/QH/i/IlZ
-         DuUg==
-X-Gm-Message-State: AOJu0Yw7Yc6Wkpr5zKfb/1wj3Rba0GcgkvejIZRRDZOsPhqgKNu9RMX9
-	Mf1DKTtVAVlr71SYMnfboLs=
-X-Google-Smtp-Source: AGHT+IGvPcr27syYPuAdVJLQOYPoh5YVaOw2y9FEiFJ6msrwbxf2nmjpoGhI5zmBPaMsNM1GqCYUAA==
-X-Received: by 2002:a17:906:25b:b0:9ad:e4e1:1476 with SMTP id 27-20020a170906025b00b009ade4e11476mr4608870ejl.77.1695633339125;
-        Mon, 25 Sep 2023 02:15:39 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id j11-20020a170906278b00b00977eec7b7e8sm6048911ejc.68.2023.09.25.02.15.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Sep 2023 02:15:38 -0700 (PDT)
-Message-ID: <e86b094a-f55a-4bdd-9d98-5710567c54cb@kernel.org>
-Date: Mon, 25 Sep 2023 11:15:37 +0200
+        d=1e100.net; s=20230601; t=1695635713; x=1696240513;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lEzI9WPuDjrFxx8ftRmrx4d1R9NKDCnLQme3cQmWWOY=;
+        b=O0a32u666FYJlJUsNHWf6jOpEwqKBhm6o5rfNZI6c7EaVSU7ntqkKmmJL7B54nPqcy
+         xPu1kg/Um2LknljHcMyA1i7FVWK36su7ZG32Sb2PHgr0DoxG2GeRNJG1FysJ2oKebaUG
+         EaSy7Wmvrl/46/+nYFvTA4pkDzP9nouWXkGlNhsP72PAaKSgwsXWuaEqpWxG9R/TqeHU
+         3bUFBXHE2tfIJk4H2ozLThEfk8e3QUnHF1ZTz977g2r1WrfU88t3awIvhtuE9Nz0hwf6
+         Ihjf3nPeLsAtkt14syWkpowG6O1UL37pUBl7PDkSEOHbKfdm0eVLJ2U2dm699EWNECMe
+         XkkQ==
+X-Gm-Message-State: AOJu0Yyaz04mpuKOZiI1WUdwnXnz2n1hhCTja3bdDClnIze0IIk/DfsV
+	mvLLTKssdrmoRz68ZQUrq8fRfpJfHAEx4Ewhkpk=
+X-Google-Smtp-Source: AGHT+IFQuNgA6Z9e4uCs/Kc8Qas1hrsT6y0DcjsUC0WuJyF4Pwb5ZDueOYhB3sfY7knlsbCeSuiTI4JeLrn8ZXExPR8=
+X-Received: by 2002:a05:6820:1a9f:b0:573:4a72:6ec with SMTP id
+ bt31-20020a0568201a9f00b005734a7206ecmr4733855oob.1.1695635712946; Mon, 25
+ Sep 2023 02:55:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: WARNING at drivers/acpi/platform_profile.c:74 in
- platform_profile_show()
-Content-Language: en-US
-To: Hans de Goede <hdegoede@redhat.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Len Brown <lenb@kernel.org>, hmh@hmh.eng.br,
- Mark Pearson <mpearson-lenovo@squebb.ca>
-Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- ibm-acpi-devel@lists.sourceforge.net, platform-driver-x86@vger.kernel.org,
- Linux kernel mailing list <linux-kernel@vger.kernel.org>
-References: <047d3c51-0a9e-4c3e-beef-625a7aa4f3c3@kernel.org>
- <505264f5-cbbb-4ffe-a3e4-93d2397e80da@kernel.org>
- <beeab87b-820a-475a-b0c6-99b1b8e491ea@kernel.org>
- <207922c7-7a56-499b-bbfd-9e8d6a0a06df@kernel.org>
- <74ad10fa-f0f6-f80f-7db3-fb01aae6f2d5@redhat.com>
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <74ad10fa-f0f6-f80f-7db3-fb01aae6f2d5@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20230925080844.32699-1-dinghao.liu@zju.edu.cn>
+In-Reply-To: <20230925080844.32699-1-dinghao.liu@zju.edu.cn>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 25 Sep 2023 11:54:57 +0200
+Message-ID: <CAJZ5v0imXkvc2WbZtYGwVa3Z2NavhYZ8z=_Z=yZhcnyEeUjw3A@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: video: Fix a null-pointer-dereference in acpi_video_bus_add
+To: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Michal Wilczynski <michal.wilczynski@intel.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
 	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
 	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
@@ -118,22 +64,57 @@ X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Hi,
+On Mon, Sep 25, 2023 at 10:09=E2=80=AFAM Dinghao Liu <dinghao.liu@zju.edu.c=
+n> wrote:
+>
+> acpi_video_bus_add_notify_handler() could free video->input and
+> set it to NULL on failure, but this failure will be missed in its
+> caller acpi_video_bus_add(). As a result, when an error happens in
+> acpi_dev_install_notify_handler(), acpi_video_bus_add() will call
+> acpi_video_bus_remove_notify_handler(), where a potential null pointer
+> video->input is dereferenced in input_unregister_device().
+>
+> Fix this by adding a return value check and adjusting the following
+> error handling code.
+>
+> Fixes: 6f7016819766 ("ACPI: video: Install Notify() handler directly")
+> Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+> ---
+>  drivers/acpi/acpi_video.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+> index 948e31f7ce6e..b411948594ff 100644
+> --- a/drivers/acpi/acpi_video.c
+> +++ b/drivers/acpi/acpi_video.c
+> @@ -2057,7 +2057,9 @@ static int acpi_video_bus_add(struct acpi_device *d=
+evice)
+>             !auto_detect)
+>                 acpi_video_bus_register_backlight(video);
+>
+> -       acpi_video_bus_add_notify_handler(video);
+> +       error =3D acpi_video_bus_add_notify_handler(video);
+> +       if (error)
+> +               goto err_del;
+>
+>         error =3D acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOT=
+IFY,
+>                                                 acpi_video_bus_notify);
+> @@ -2067,10 +2069,11 @@ static int acpi_video_bus_add(struct acpi_device =
+*device)
+>         return 0;
+>
+>  err_remove:
+> +       acpi_video_bus_remove_notify_handler(video);
+> +err_del:
+>         mutex_lock(&video_list_lock);
+>         list_del(&video->entry);
+>         mutex_unlock(&video_list_lock);
+> -       acpi_video_bus_remove_notify_handler(video);
+>         acpi_video_bus_unregister_backlight(video);
+>  err_put_video:
+>         acpi_video_bus_put_devices(video);
+> --
 
-On 25. 09. 23, 10:57, Hans de Goede wrote:
-> Jiri, Thank you for all the debugging you have done on this. Can you please file
-> a bug with the details / summary here:
-> 
-> https://bugzilla.kernel.org/enter_bug.cgi?product=Drivers
-> 
-> Using Platform_x86 as component so that Mark has all the info in one place ?
-
-Done:
-https://bugzilla.kernel.org/show_bug.cgi?id=217947
-
-thanks,
--- 
-js
-suse labs
-
+Applied as 6.6-rc material, thanks!
 
