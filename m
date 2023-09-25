@@ -1,28 +1,28 @@
-Return-Path: <linux-acpi+bounces-69-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-70-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0407E7AD367
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:32:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10CC87AD368
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id AAEEB280EC1
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:32:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id B6B2E2810EA
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904C411CA7
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EAC011CA9
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:32:20 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2969310A16;
-	Mon, 25 Sep 2023 07:44:41 +0000 (UTC)
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD800103;
-	Mon, 25 Sep 2023 00:44:38 -0700 (PDT)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0Vsmvsyw_1695627874;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vsmvsyw_1695627874)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157BA10A16;
+	Mon, 25 Sep 2023 07:44:46 +0000 (UTC)
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90CB2DA;
+	Mon, 25 Sep 2023 00:44:42 -0700 (PDT)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R831e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0Vsmvt-0_1695627876;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vsmvt-0_1695627876)
           by smtp.aliyun-inc.com;
-          Mon, 25 Sep 2023 15:44:35 +0800
+          Mon, 25 Sep 2023 15:44:37 +0800
 From: Shuai Xue <xueshuai@linux.alibaba.com>
 To: keescook@chromium.org,
 	tony.luck@intel.com,
@@ -46,9 +46,9 @@ Cc: linux-hardening@vger.kernel.org,
 	acpica-devel@lists.linuxfoundation.org,
 	xueshuai@linux.alibaba.com,
 	baolin.wang@linux.alibaba.com
-Subject: [RFC PATCH v2 2/9] ACPI: APEI: Use common ERST struct to read/write serialized MCE record
-Date: Mon, 25 Sep 2023 15:44:19 +0800
-Message-Id: <20230925074426.97856-3-xueshuai@linux.alibaba.com>
+Subject: [RFC PATCH v2 3/9] ACPI: APEI: ERST: Emit the mce_record tracepoint
+Date: Mon, 25 Sep 2023 15:44:20 +0800
+Message-Id: <20230925074426.97856-4-xueshuai@linux.alibaba.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230925074426.97856-1-xueshuai@linux.alibaba.com>
 References: <20230925074426.97856-1-xueshuai@linux.alibaba.com>
@@ -66,136 +66,48 @@ X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-It is confusing to define two creator IDs with the same GUID number, and
-unnecessary to define the same data structure twice.
+After /dev/mcelog character device deprecated by commit 5de97c9f6d85
+("x86/mce: Factor out and deprecate the /dev/mcelog driver"), the
+serialized hardware error log, a.k.a MCE record, of previous boot in
+persistent storage is not collected via APEI ERST.
 
-Use common ERST struct to read/write MCE record.
+Emit the mce_record tracepoint so that it can consumed by the new
+generation rasdaemon.
 
 Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 ---
- arch/x86/kernel/cpu/mce/apei.c | 82 +++++++++++++++-------------------
- 1 file changed, 35 insertions(+), 47 deletions(-)
+ drivers/acpi/apei/erst.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/apei.c b/arch/x86/kernel/cpu/mce/apei.c
-index 8ed341714686..f732f8902c86 100644
---- a/arch/x86/kernel/cpu/mce/apei.c
-+++ b/arch/x86/kernel/cpu/mce/apei.c
-@@ -20,6 +20,7 @@
- #include <linux/kernel.h>
- #include <linux/acpi.h>
- #include <linux/cper.h>
-+#include <linux/pstore.h>
+diff --git a/drivers/acpi/apei/erst.c b/drivers/acpi/apei/erst.c
+index 528ac5eb4871..82f57aaf89ad 100644
+--- a/drivers/acpi/apei/erst.c
++++ b/drivers/acpi/apei/erst.c
+@@ -26,6 +26,10 @@
+ #include <linux/vmalloc.h>
+ #include <linux/mm.h> /* kvfree() */
  #include <acpi/apei.h>
- #include <acpi/ghes.h>
- #include <asm/mce.h>
-@@ -124,58 +125,45 @@ int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
- 	return 0;
- }
++#ifdef CONFIG_X86_MCE
++/* only define CREATE_TRACE_POINTS once */
++#include <trace/events/mce.h>
++#endif
  
--#define CPER_CREATOR_MCE						\
--	GUID_INIT(0x75a574e3, 0x5052, 0x4b29, 0x8a, 0x8e, 0xbe, 0x2c,	\
--		  0x64, 0x90, 0xb8, 0x9d)
--#define CPER_SECTION_TYPE_MCE						\
--	GUID_INIT(0xfe08ffbe, 0x95e4, 0x4be7, 0xbc, 0x73, 0x40, 0x96,	\
--		  0x04, 0x4a, 0x38, 0xfc)
--
--/*
-- * CPER specification (in UEFI specification 2.3 appendix N) requires
-- * byte-packed.
-- */
--struct cper_mce_record {
--	struct cper_record_header hdr;
--	struct cper_section_descriptor sec_hdr;
--	struct mce mce;
--} __packed;
--
- int apei_write_mce(struct mce *m)
- {
--	struct cper_mce_record rcd;
--
--	memset(&rcd, 0, sizeof(rcd));
--	memcpy(rcd.hdr.signature, CPER_SIG_RECORD, CPER_SIG_SIZE);
--	rcd.hdr.revision = CPER_RECORD_REV;
--	rcd.hdr.signature_end = CPER_SIG_END;
--	rcd.hdr.section_count = 1;
--	rcd.hdr.error_severity = CPER_SEV_FATAL;
-+	struct cper_pstore_record *rcd;
-+	int record_len = sizeof(*m) + sizeof(*rcd);
-+	int data_len = sizeof(*m);
-+
-+	rcd = kmalloc(record_len, GFP_KERNEL);
-+	memset(rcd, 0, sizeof(*rcd));
-+
-+	memcpy(rcd->hdr.signature, CPER_SIG_RECORD, CPER_SIG_SIZE);
-+	rcd->hdr.revision = CPER_RECORD_REV;
-+	rcd->hdr.signature_end = CPER_SIG_END;
-+	rcd->hdr.section_count = 1;
-+	rcd->hdr.error_severity = CPER_SEV_FATAL;
- 	/* timestamp, platform_id, partition_id are all invalid */
--	rcd.hdr.validation_bits = 0;
--	rcd.hdr.record_length = sizeof(rcd);
--	rcd.hdr.creator_id = CPER_CREATOR_MCE;
--	rcd.hdr.notification_type = CPER_NOTIFY_MCE;
--	rcd.hdr.record_id = cper_next_record_id();
--	rcd.hdr.flags = CPER_HW_ERROR_FLAGS_PREVERR;
--
--	rcd.sec_hdr.section_offset = (void *)&rcd.mce - (void *)&rcd;
--	rcd.sec_hdr.section_length = sizeof(rcd.mce);
--	rcd.sec_hdr.revision = CPER_SEC_REV;
--	/* fru_id and fru_text is invalid */
--	rcd.sec_hdr.validation_bits = 0;
--	rcd.sec_hdr.flags = CPER_SEC_PRIMARY;
--	rcd.sec_hdr.section_type = CPER_SECTION_TYPE_MCE;
--	rcd.sec_hdr.section_severity = CPER_SEV_FATAL;
--
--	memcpy(&rcd.mce, m, sizeof(*m));
--
--	return erst_write(&rcd.hdr);
-+	rcd->hdr.validation_bits = 0;
-+	rcd->hdr.record_length = record_len;
-+	rcd->hdr.creator_id = CPER_CREATOR_PSTORE;
-+	rcd->hdr.notification_type = CPER_NOTIFY_MCE;
-+	rcd->hdr.record_id = cper_next_record_id();
-+	rcd->hdr.flags = CPER_HW_ERROR_FLAGS_PREVERR;
-+
-+	rcd->sec_hdr.section_offset = (void *)&rcd->data - (void *)&rcd;
-+	rcd->sec_hdr.section_length = data_len;
-+	rcd->sec_hdr.revision = CPER_SEC_REV;
-+	/* ->ru_id and fru_text is invalid */
-+	rcd->sec_hdr.validation_bits = 0;
-+	rcd->sec_hdr.flags = CPER_SEC_PRIMARY;
-+	rcd->sec_hdr.section_type = CPER_SECTION_TYPE_MCE;
-+	rcd->sec_hdr.section_severity = CPER_SEV_FATAL;
-+
-+	memcpy(rcd->data, m, data_len);
-+
-+	return erst_write(&rcd->hdr);
- }
+ #include "apei-internal.h"
  
- ssize_t apei_read_mce(struct mce *m, u64 *record_id)
- {
--	struct cper_mce_record rcd;
-+	struct cper_pstore_record rcd;
- 	int rc, pos;
+@@ -1063,8 +1067,12 @@ static ssize_t erst_reader(struct pstore_record *record)
+ 		record->compressed = true;
+ 	} else if (guid_equal(&rcd->sec_hdr.section_type, &CPER_SECTION_TYPE_DMESG))
+ 		record->type = PSTORE_TYPE_DMESG;
+-	else if (guid_equal(&rcd->sec_hdr.section_type, &CPER_SECTION_TYPE_MCE))
++	else if (guid_equal(&rcd->sec_hdr.section_type, &CPER_SECTION_TYPE_MCE)) {
++#ifdef CONFIG_X86_MCE
++		trace_mce_record((struct mce *)rcd->data);
++#endif
+ 		record->type = PSTORE_TYPE_MCE;
++	}
+ 	else
+ 		record->type = PSTORE_TYPE_MAX;
  
- 	rc = erst_get_record_id_begin(&pos);
-@@ -189,14 +177,14 @@ ssize_t apei_read_mce(struct mce *m, u64 *record_id)
- 	if (*record_id == APEI_ERST_INVALID_RECORD_ID)
- 		goto out;
- 	rc = erst_read_record(*record_id, &rcd.hdr, sizeof(rcd), sizeof(rcd),
--			&CPER_CREATOR_MCE);
-+			&CPER_CREATOR_PSTORE);
- 	/* someone else has cleared the record, try next one */
- 	if (rc == -ENOENT)
- 		goto retry;
- 	else if (rc < 0)
- 		goto out;
- 
--	memcpy(m, &rcd.mce, sizeof(*m));
-+	memcpy(m, &rcd.data, sizeof(*m));
- 	rc = sizeof(*m);
- out:
- 	erst_get_record_id_end();
 -- 
 2.41.0
 
