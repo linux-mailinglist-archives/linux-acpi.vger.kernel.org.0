@@ -1,145 +1,114 @@
-Return-Path: <linux-acpi+bounces-59-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-60-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3951A7AC081
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Sep 2023 12:30:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F8237ACE1F
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 04:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id DFE5B281C07
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Sep 2023 10:30:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id D0F89281441
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 02:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99A310A12
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Sep 2023 10:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FF91850
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 02:31:07 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31140DF59;
-	Sat, 23 Sep 2023 09:41:52 +0000 (UTC)
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 039D8CDE;
-	Sat, 23 Sep 2023 02:41:48 -0700 (PDT)
-Received: from eig-obgw-6003a.ext.cloudfilter.net ([10.0.30.151])
-	by cmsmtp with ESMTP
-	id jkvlqYgIGDKaKjz91qHoMH; Sat, 23 Sep 2023 09:41:48 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id jz91qVluL8SgTjz91qMfcc; Sat, 23 Sep 2023 09:41:47 +0000
-X-Authority-Analysis: v=2.4 cv=VLTOIvDX c=1 sm=1 tr=0 ts=650eb2db
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=P7XfKmiOJ4/qXqHZrN7ymg==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=zNV7Rl7Rt7sA:10 a=wYkD_t78qR0A:10 a=NEAV23lmAAAA:8
- a=VwQbUJbxAAAA:8 a=cm27Pg_UAAAA:8 a=HvF037n1xESchLcPDVoA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=xmb-EsYY8bH0VWELuYED:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WLm3jjSalaxxsZKpQPDucZInVb0b+gdLEhQLJln64xU=; b=CRbQKFIC5MlYXtZWsJMu4GgTnj
-	qFFQZexgH3Zqi60t3tRAJRQN5ekU7lfWTIE1qMCWXAvzPULMRgruhIBbIevQsniT20SCCWnI5qqml
-	F9N4YSwYLHSbcK1n5UvSkOm5tBATz69rdEHZOBqAl++AG9ZqfFmN9s2Rdiz5Ah37YiuWBYucAWPy/
-	72kpJ7mDG7t963j7zjToquKxntaeyizTJWbfRCBHLLVlOjtil0s+wWuHBCWTRVp5m5SZtYLdYK5x7
-	lMr8cPEOEMVYe5xg3hJppiViwLFusYKG4V5Hy2NYu4PwrtmyHMS1cGJL2fZUbRqmlqwJTrr0VIObG
-	RoglrQIQ==;
-Received: from [94.239.20.48] (port=37942 helo=[192.168.1.98])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1qjy70-003fcY-04;
-	Sat, 23 Sep 2023 03:35:38 -0500
-Message-ID: <728fc315-4761-f56c-cd06-9c907a53b46c@embeddedor.com>
-Date: Sat, 23 Sep 2023 10:36:43 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C159A2A
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 01:44:01 +0000 (UTC)
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA62CF;
+	Sun, 24 Sep 2023 18:43:57 -0700 (PDT)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046060;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0Vsjl30y_1695606232;
+Received: from 30.240.112.49(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vsjl30y_1695606232)
+          by smtp.aliyun-inc.com;
+          Mon, 25 Sep 2023 09:43:54 +0800
+Message-ID: <f70e93c6-ba5b-a71c-4b82-33b279c76b0e@linux.alibaba.com>
+Date: Mon, 25 Sep 2023 09:43:52 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] ACPI: PRM: Annotate struct prm_module_info with
- __counted_by
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: Questions: Should kernel panic when PCIe fatal error occurs?
 Content-Language: en-US
-To: Kees Cook <keescook@chromium.org>, "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
- Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
- linux-hardening@vger.kernel.org
-References: <20230922175315.work.877-kees@kernel.org>
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20230922175315.work.877-kees@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: David Laight <David.Laight@ACULAB.COM>, Bjorn Helgaas <helgaas@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ Linux PCI <linux-pci@vger.kernel.org>,
+ "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "bp@alien8.de" <bp@alien8.de>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "james.morse@arm.com" <james.morse@arm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "lenb@kernel.org" <lenb@kernel.org>
+References: <20230920230257.GA280837@bhelgaas>
+ <d84b6d17-7fe9-222a-c874-798af4d9faea@linux.alibaba.com>
+ <2e5870e416f84e8fad8340061ec303e2@AcuMS.aculab.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <2e5870e416f84e8fad8340061ec303e2@AcuMS.aculab.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 94.239.20.48
-X-Source-L: No
-X-Exim-ID: 1qjy70-003fcY-04
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.1.98]) [94.239.20.48]:37942
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 0
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfL77VTBH1YQ81fKSDVwtEhrWxi/5q8CTyuHWMmnqFKNhPIAJ3+9Bh9IXbnu8D1uWtrsxoRhbUyS7XV2UeoCPLlzlSIdZuV7zvNHSs74Wamv9XQtdb6vo
- xnT4pj3cH/IkL9SDvpDvl9OqFLxJGlJrwSesuXrpU/SWvBAo9yMhyi4LcRBSAtPs4p/lGORt+m7m8EKYBQ/N0ER2Ra1Ip771GskYesBOw3uHk+/quSBGmQL5
- 96hvWHZAZ89pROV4z8i31sMXP52dHJyRES3DRhtXFR3FG9WnlURzmb0vcEPYegnEhecLNoirUv+fspwfDez2KQ==
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-11.4 required=5.0 tests=BAYES_00,
+	ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
 
 
-On 9/22/23 11:53, Kees Cook wrote:
-> Prepare for the coming implementation by GCC and Clang of the __counted_by
-> attribute. Flexible array members annotated with __counted_by can have
-> their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
-> (for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
-> functions).
-> 
-> As found with Coccinelle[1], add __counted_by for struct prm_module_info.
-> 
-> [1] https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci
-> 
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+On 2023/9/21 21:20, David Laight wrote:
+> ...
+> I've got a target to generate AER errors by generating read cycles
+> that are inside the address range that the bridge forwards but
+> outside of any BAR because there are 2 different sized BARs.
+> (Pretty easy to setup.)
+> On the system I was using they didn't get propagated all the way
+> to the root bridge - but were visible in the lower bridge.
 
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+So how did you observe it? If the error message does not propagate
+to the root bridge, I think no AER interrupt will be trigger.
 
-Thanks
--- 
-Gustavo
+> It would be nice for a driver to be able to detect/clear such
+> a flag if it gets an unexpected ~0u read value.
+> (I'm not sure an error callback helps.)
 
-> ---
->   drivers/acpi/prmt.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+IMHO, a general model is that error detected at endpoint should be
+routed to upstream port for example: RCiEP route error message to RCEC,
+so that the AER port service could handle the error, the device driver
+only have to implement error handler callback.
+
 > 
-> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> index 7020584096bf..c78453c74ef5 100644
-> --- a/drivers/acpi/prmt.c
-> +++ b/drivers/acpi/prmt.c
-> @@ -69,7 +69,7 @@ struct prm_module_info {
->   	bool updatable;
->   
->   	struct list_head module_list;
-> -	struct prm_handler_info handlers[];
-> +	struct prm_handler_info handlers[] __counted_by(handler_count);
->   };
->   
->   static u64 efi_pa_va_lookup(u64 pa)
+> OTOH a 'nebs compliant' server routed any kind of PCIe link error
+> through to some 'system management' logic that then raised an NMI.
+> I'm not sure who thought an NMI was a good idea - they are pretty
+> impossible to handle in the kernel and too late to be of use to
+> the code performing the access.
+
+I think it is the responsibility of the device to prevent the spread of
+errors while reporting that errors have been detected. For example, drop
+the current, (drain submit queue) and report error in completion record.
+Both NMI and MSI are asynchronous interrupts.
+
+> 
+> In any case we were getting one after 'echo 1 >xxx/remove' and
+> then taking the PCIe link down by reprogramming the fpga.
+> So the link going down was entirely expected, but there seemed
+> to be nothing we could do to stop the kernel crashing.
+> 
+> I'm sure 'nebs compliant' ought to contain some requirements for
+> resilience to hardware failures!
+
+How the kernel crash after a link down? Did the system detect a surprise
+down error?
+
+Best Regards,
+Shuai
 
