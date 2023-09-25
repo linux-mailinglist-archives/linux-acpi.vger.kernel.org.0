@@ -1,78 +1,60 @@
-Return-Path: <linux-acpi+bounces-79-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-80-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63507AD602
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 12:31:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10EA7AD605
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 12:31:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 857E1282968
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:31:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 92ABA282963
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F6315E98
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C7B15E9D
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:31:55 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9081097B
-	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 08:58:03 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACCA7101
-	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 01:58:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1695632280;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9jYoDjvuIiF2NPGNNFR7POpOKaph301yFE9PJUJP/aA=;
-	b=fCimPoqy1XdpgxlA7aUyWSK8RSlObGiHYSVJ95Oeecj5+0SATVu9SBVwjKeTXMRWhOLjIp
-	TVeXlNlHPolRsx/3v9ORMdcFEWlBiNryRaVDhZM9ZRmtsNiDRm8YrwmiyfCiAKcdzI01Df
-	pLLmO6VrwIspWdcYiHBmuIOc/xebiXw=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-491-GxITwU3BMiKqLEa9ynsqIw-1; Mon, 25 Sep 2023 04:57:59 -0400
-X-MC-Unique: GxITwU3BMiKqLEa9ynsqIw-1
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-533d8e03793so1904404a12.3
-        for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 01:57:59 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB91134DC
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 09:15:43 +0000 (UTC)
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCCF0DA;
+	Mon, 25 Sep 2023 02:15:40 -0700 (PDT)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-98377c5d53eso713099866b.0;
+        Mon, 25 Sep 2023 02:15:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695632278; x=1696237078;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1695633339; x=1696238139;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9jYoDjvuIiF2NPGNNFR7POpOKaph301yFE9PJUJP/aA=;
-        b=dSUeDq9OumPC1gqhd1wN6NnNGxKdcsDP/gq+xO9onQrPIpYMuvSzyExLMsc3cPYyHa
-         53VRd4dfhLPpNr37B1bEosvdnQ9DJMvKRRNw5AJ20kTvdPrrLiWAtitsMrZUF7ywNppr
-         MK/QhtzhEV2iFE9HNFFh0IN4bvfOeBQ/Cjr1qG4vCBZgIAmcoWCt6cA1aG9Dl8FOkaLj
-         B6UqIiWMJLKkhucu9ofbAjlMvoQ2JvrnqymvmDfqWFB3MwKef+Zg8K867vaHdonBernY
-         b71tZk1861BZuZWLOE03Q1+CpH0fZ+ksHmFRTRtxofDIiTcfmHcIaUm2N4T5K2/8mZHN
-         zJ4w==
-X-Gm-Message-State: AOJu0YxPWlg4FI0U6lnYpxuLymV1mjlHZhcLyQnEA3VHosxMbNZaDPly
-	vIeoycR6qcZ4cismtjpHm8FVU6NsYcyAxHmGa5Vf/e5eWh6Zu6xEkz2FVYZ/GkbCAHvCJ2D6s/t
-	L7LhIYw3bXNWzAG3qjish5Q==
-X-Received: by 2002:aa7:d7d4:0:b0:52f:a42a:85a3 with SMTP id e20-20020aa7d7d4000000b0052fa42a85a3mr5145193eds.0.1695632278258;
-        Mon, 25 Sep 2023 01:57:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEWi9IMy9qmd+fxRBkEfI4zNh3gSWBYXC8dXmPklh/1AUGyK3RZVi4CUBMQfEKDMBdqZ0ZdKg==
-X-Received: by 2002:aa7:d7d4:0:b0:52f:a42a:85a3 with SMTP id e20-20020aa7d7d4000000b0052fa42a85a3mr5145189eds.0.1695632277950;
-        Mon, 25 Sep 2023 01:57:57 -0700 (PDT)
-Received: from [192.168.43.127] ([109.37.149.50])
-        by smtp.gmail.com with ESMTPSA id n18-20020a05640206d200b005224d960e66sm5201641edy.96.2023.09.25.01.57.54
+        bh=W6AKz2KDk8YamtjH+UF0/ocp1ZeuM0MrPNPW6QmC46o=;
+        b=Dh6G7Cb0pxJ9mfhOKPLYg0Ua+VWOo6z13IH3ckA09ZL3PVPZ9MrFofrR6RekhYbhhG
+         NVPKUmYNbE0K2um/dj28F6JDeuu+uLQ3bL/tr0KrgUznNuQsVsMHu6mIlpWe32R3zjJq
+         V8zu9u0MQSmwEQP3nSOUS9RgsajJdzLkPUNuaMalhuW8UOTkT8cRFuJl6ealBS+XFUrE
+         il6Sl44RgpwVZ4OcX/wFZ+YHq6UGVG8d2kPn+ZRsoi/a5/xyKsRy8m6zvYm3UwsctrxB
+         Y3KzBC2Ps2gQhMGYQIsOEYFQyHDyeVKkj0+VicdQrJOEXuXJOY40krKCHlb/QH/i/IlZ
+         DuUg==
+X-Gm-Message-State: AOJu0Yw7Yc6Wkpr5zKfb/1wj3Rba0GcgkvejIZRRDZOsPhqgKNu9RMX9
+	Mf1DKTtVAVlr71SYMnfboLs=
+X-Google-Smtp-Source: AGHT+IGvPcr27syYPuAdVJLQOYPoh5YVaOw2y9FEiFJ6msrwbxf2nmjpoGhI5zmBPaMsNM1GqCYUAA==
+X-Received: by 2002:a17:906:25b:b0:9ad:e4e1:1476 with SMTP id 27-20020a170906025b00b009ade4e11476mr4608870ejl.77.1695633339125;
+        Mon, 25 Sep 2023 02:15:39 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
+        by smtp.gmail.com with ESMTPSA id j11-20020a170906278b00b00977eec7b7e8sm6048911ejc.68.2023.09.25.02.15.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Sep 2023 01:57:55 -0700 (PDT)
-Message-ID: <74ad10fa-f0f6-f80f-7db3-fb01aae6f2d5@redhat.com>
-Date: Mon, 25 Sep 2023 10:57:52 +0200
+        Mon, 25 Sep 2023 02:15:38 -0700 (PDT)
+Message-ID: <e86b094a-f55a-4bdd-9d98-5710567c54cb@kernel.org>
+Date: Mon, 25 Sep 2023 11:15:37 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: WARNING at drivers/acpi/platform_profile.c:74 in
  platform_profile_show()
-To: Jiri Slaby <jirislaby@kernel.org>, "Rafael J. Wysocki"
+Content-Language: en-US
+To: Hans de Goede <hdegoede@redhat.com>, "Rafael J. Wysocki"
  <rafael@kernel.org>, Len Brown <lenb@kernel.org>, hmh@hmh.eng.br,
  Mark Pearson <mpearson-lenovo@squebb.ca>
 Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
@@ -82,55 +64,76 @@ References: <047d3c51-0a9e-4c3e-beef-625a7aa4f3c3@kernel.org>
  <505264f5-cbbb-4ffe-a3e4-93d2397e80da@kernel.org>
  <beeab87b-820a-475a-b0c6-99b1b8e491ea@kernel.org>
  <207922c7-7a56-499b-bbfd-9e8d6a0a06df@kernel.org>
-Content-Language: en-US
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <207922c7-7a56-499b-bbfd-9e8d6a0a06df@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+ <74ad10fa-f0f6-f80f-7db3-fb01aae6f2d5@redhat.com>
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <74ad10fa-f0f6-f80f-7db3-fb01aae6f2d5@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-+Cc Mark Pearson for thinkpad_acpi dytc support
+Hi,
 
-Jiri,
-
-On 9/25/23 09:38, Jiri Slaby wrote:
-> On 25. 09. 23, 9:19, Jiri Slaby wrote:
->> But convert_dytc_to_profile() doesn't handle this at all. Do I have a newer DYTC interface? Or a broken one?
+On 25. 09. 23, 10:57, Hans de Goede wrote:
+> Jiri, Thank you for all the debugging you have done on this. Can you please file
+> a bug with the details / summary here:
 > 
->                 Case (0x00)
->                 {
->                     Local1 = 0x0100
->                     Local1 |= 0x80000000
->                     Local1 |= 0x00
->                     Local1 |= 0x01
->                 }
+> https://bugzilla.kernel.org/enter_bug.cgi?product=Drivers
 > 
-> I.e. version 8.0, it seems.
-> 
-> Full DSDT for reference:
-> https://decibel.fi.muni.cz/~xslaby/n/DSDT.dsl
+> Using Platform_x86 as component so that Mark has all the info in one place ?
 
-Mark, can you please take a look at this (it is a thinkpad_acpi dytc issue)?
+Done:
+https://bugzilla.kernel.org/show_bug.cgi?id=217947
 
-Jiri, Thank you for all the debugging you have done on this. Can you please file
-a bug with the details / summary here:
-
-https://bugzilla.kernel.org/enter_bug.cgi?product=Drivers
-
-Using Platform_x86 as component so that Mark has all the info in one place ?
-
-
-Regards,
-
-Hans
-
-p.s.
-
-Mark, maybe should add you to the MAINTAINERS section for thinkpad_acpi ?
+thanks,
+-- 
+js
+suse labs
 
 
