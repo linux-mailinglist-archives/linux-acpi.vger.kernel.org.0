@@ -1,238 +1,107 @@
-Return-Path: <linux-acpi+bounces-102-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-103-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862197ADD37
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 18:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C437ADD38
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 18:32:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 37869281E62
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 16:32:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 28B64281E63
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 16:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E29E1F17C
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 16:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1D41D6A2
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 16:32:39 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BA3219F4
-	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 15:58:15 +0000 (UTC)
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D62083;
-	Mon, 25 Sep 2023 08:58:12 -0700 (PDT)
-Received: from localhost.localdomain (unknown [IPv6:2001:b07:646b:e2:e4be:399f:af39:e0db])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 40F08660730F;
-	Mon, 25 Sep 2023 16:58:10 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1695657490;
-	bh=EEqhOcRvF/DQtqCs/NvE/9iYGwFlvA+3yXcKw/uNJ1A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDYOjgxLNbXIw54fenrFdcQCvwvGY7mnYuayj2hL4NMTFxgAC0gU14bcb2bVq3ESh
-	 765GV5yygLzr2tVcO/TomhaJbO0nLqmnkGPKxstwoNY7kV4hKvnPsTtgheddykarPR
-	 QTRk8zhDhS9ZUCFn9iXCu+xApzZTRt1NevLLj/0IJLhI8i0EvyfU9YAbsJZB/QlI/P
-	 +TXRNekYaRl2ED+W80EWI+w8fnmQ79OtzkOszhpEefdPkME5qfBGrzfEK6OERUwmAC
-	 N1HnFxbqjjIKUghOr1iOv5GuGNEx48lvkAmwcvuUPne82THfucX8yi90Xvp8j6gl0T
-	 2awAeHU7PJKRA==
-From: Laura Nao <laura.nao@collabora.com>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	shuah@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	groeck@chromium.org,
-	broonie@kernel.org,
-	robh+dt@kernel.org,
-	kernelci@lists.linux.dev,
-	kernel@collabora.com,
-	Laura Nao <laura.nao@collabora.com>
-Subject: [RFC PATCH 2/2] kselftest: Add test to detect unprobed devices on ACPI platforms
-Date: Mon, 25 Sep 2023 17:58:06 +0200
-Message-Id: <20230925155806.1812249-3-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230925155806.1812249-1-laura.nao@collabora.com>
-References: <20230925155806.1812249-1-laura.nao@collabora.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271891F95E
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 15:59:15 +0000 (UTC)
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FD5511F
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 08:59:14 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-3231df68584so2920905f8f.1
+        for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 08:59:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695657552; x=1696262352; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GneicmgZfpXE6hx2WHE29gWRFXhiOHILZTpcrUZlhUs=;
+        b=ez8zszzp8MZEAOmQKi9v6U+nPORDhg+7ctvod5JTCbj+DMiq9qWbvI2+HfaCb1Si5S
+         94NCV/fWHMKQfR4uTU22lCQyM0N5ZfSCUEZmE3aUUN09Y0v6TncwISGW3rwCpa7M0EIr
+         R1DP/ZzlVcMZJRkcZ38RG0fOW1ZIQLv0T8t/WQNeuzOK5UCRRJtV+CUw6qQCQghiX5Jm
+         6sWqKBhn5Kc7887kRujif8WjxJNa/WItZJTp9FCQNxkh7Z3w10tApbqdJhORa8PeAx9j
+         bICj8D7xgNeqbeSCtkJcYTqMVvdoi0wi5tCnO5ZUaqfMG8zyF2efvGEyNiYl9ZRRiNQL
+         dJkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695657552; x=1696262352;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GneicmgZfpXE6hx2WHE29gWRFXhiOHILZTpcrUZlhUs=;
+        b=Fxk7/0/Da0E3R3XSovMaxIY1/1lpbm3hJjSBOefCGXpZl9cIrLM48CA7IlhRzZeGCU
+         vRwW5bXDkDLFcI2I/r73uZM3kOmtcycBWP8ALMMmjRe9LKzV5mjKLHKkSqgbLXFDO1FG
+         8ROYW4pfiXOxAr0dKZmG3/j6PW7SL/auCLzwmyiNGxatsfhjN+F3Nv2aVXC6l8a5O3As
+         oL+K2ggrD9rbuepCjH8BQa6jnjbeTQJDy4lQFE/tRDanjO7WOWgm9M51JyR45idws4lJ
+         d16LjnjOZ1EhyAtgYmRGRmb6nayAhX8GVyRz61+WWGdrdShV8XXSWcORmIJXH0aQzlIx
+         DLYw==
+X-Gm-Message-State: AOJu0Yy7gq/hqNtzIqTaHYDj/04/twbgT4n2VezCWhQkiY1pp5qaCUUY
+	+vtiBqrqi0vzVVMHDTCZVs1nvQ==
+X-Google-Smtp-Source: AGHT+IHaL2nHE+gPfmVIVjPbQh46rGimWfCVGxsyc2a2vOkwGLunOTR0JtGlIvoOswcgNExhEDbq/g==
+X-Received: by 2002:a5d:6084:0:b0:320:7fa:c71e with SMTP id w4-20020a5d6084000000b0032007fac71emr6996682wrt.15.1695657552615;
+        Mon, 25 Sep 2023 08:59:12 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:c0e1:63ab:648b:6287? ([2a05:6e02:1041:c10:c0e1:63ab:648b:6287])
+        by smtp.googlemail.com with ESMTPSA id o13-20020adfeacd000000b00317f3fd21b7sm12307395wrn.80.2023.09.25.08.59.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Sep 2023 08:59:12 -0700 (PDT)
+Message-ID: <9fcd9003-c210-be46-6a25-460ad6c0e53a@linaro.org>
+Date: Mon, 25 Sep 2023 17:59:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1 3/9] ACPI: thermal: Determine the number of trip points
+ earlier
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
+ Zhang Rui <rui.zhang@intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+References: <5708760.DvuYhMxLoT@kreacher> <1863318.tdWV9SEqCh@kreacher>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <1863318.tdWV9SEqCh@kreacher>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Add new kselftest that tests whether devices declared in the ACPI
-namespace and supported by the kernel are correctly bound
-to a driver.
+On 12/09/2023 20:37, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Compute the number of trip points in acpi_thermal_add() so as to allow the
+> driver's data structures to be simplified going forward.
+> 
+> No intentional functional impact.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The test runs the acpi-extract-ids script to generate a list
-of all the ACPI device IDs present in the kernel sources.
-The list is then used as a reference to determine which of the
-devices declared in the ACPI namespace are supported by the kernel
-and therefore expected to bind to a driver.
 
-Signed-off-by: Laura Nao <laura.nao@collabora.com>
----
- MAINTAINERS                                   |  1 +
- tools/testing/selftests/Makefile              |  1 +
- tools/testing/selftests/acpi/.gitignore       |  2 +
- tools/testing/selftests/acpi/Makefile         | 23 ++++++
- .../selftests/acpi/test_unprobed_devices.sh   | 75 +++++++++++++++++++
- 5 files changed, 102 insertions(+)
- create mode 100644 tools/testing/selftests/acpi/.gitignore
- create mode 100644 tools/testing/selftests/acpi/Makefile
- create mode 100755 tools/testing/selftests/acpi/test_unprobed_devices.sh
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7540316d82f5..5c83b36f26ed 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -295,6 +295,7 @@ F:	include/acpi/
- F:	include/linux/acpi.h
- F:	include/linux/fwnode.h
- F:	scripts/acpi/acpi-extract-ids
-+F:	tools/testing/selftests/acpi/
- F:	tools/power/acpi/
- 
- ACPI APEI
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 11aa8a834794..bb95daf9ae91 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
-+TARGETS += acpi
- TARGETS += alsa
- TARGETS += amd-pstate
- TARGETS += arm64
-diff --git a/tools/testing/selftests/acpi/.gitignore b/tools/testing/selftests/acpi/.gitignore
-new file mode 100644
-index 000000000000..2526540468f4
---- /dev/null
-+++ b/tools/testing/selftests/acpi/.gitignore
-@@ -0,0 +1,2 @@
-+supported_id_list
-+ktap_helpers.sh
-\ No newline at end of file
-diff --git a/tools/testing/selftests/acpi/Makefile b/tools/testing/selftests/acpi/Makefile
-new file mode 100644
-index 000000000000..806e75f15824
---- /dev/null
-+++ b/tools/testing/selftests/acpi/Makefile
-@@ -0,0 +1,23 @@
-+PY3 = $(shell which python3 2>/dev/null)
-+
-+ifneq ($(PY3),)
-+
-+TEST_PROGS := test_unprobed_devices.sh
-+TEST_GEN_FILES := supported_id_list ktap_helpers.sh
-+
-+include ../lib.mk
-+
-+$(OUTPUT)/supported_id_list:
-+	$(top_srcdir)/scripts/acpi/acpi-extract-ids $(top_srcdir) > $@
-+
-+$(OUTPUT)/ktap_helpers.sh:
-+	cp $(top_srcdir)/tools/testing/selftests/dt/ktap_helpers.sh $@
-+
-+else
-+
-+all: no_py3_warning
-+
-+no_py3_warning:
-+	@echo "Missing python3. This test will be skipped."
-+
-+endif
-\ No newline at end of file
-diff --git a/tools/testing/selftests/acpi/test_unprobed_devices.sh b/tools/testing/selftests/acpi/test_unprobed_devices.sh
-new file mode 100755
-index 000000000000..aa8c62166b4d
---- /dev/null
-+++ b/tools/testing/selftests/acpi/test_unprobed_devices.sh
-@@ -0,0 +1,75 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2023 Collabora Ltd
-+#
-+# Inspired by the tools/testing/selftests/dt/test_unprobed_devices.sh
-+# script, adapted for the ACPI use case.
-+#
-+# This script checks whether devices declared in the ACPI namespace
-+# and supported by the kernel are correctly bound to a driver.
-+#
-+# A list of all the ACPI device IDs present in the kernel sources
-+# is used as reference to determine which of the devices declared
-+# in the ACPI tables are supported.
-+#
-+
-+DIR="$(dirname "$(readlink -f "$0")")"
-+
-+source "${DIR}"/ktap_helpers.sh
-+
-+ACPI_SYSTEM_DIR="/sys/devices/LNXSYSTM:00"
-+SUPPORTED_ID_LIST="${DIR}"/supported_id_list
-+
-+KSFT_PASS=0
-+KSFT_FAIL=1
-+KSFT_SKIP=4
-+
-+ktap_print_header
-+
-+if [[ ! -d "${ACPI_SYSTEM_DIR}" ]]; then
-+	ktap_skip_all "${ACPI_SYSTEM_DIR} doesn't exist."
-+	exit "${KSFT_SKIP}"
-+fi
-+
-+# The ACPI specification mandates that ACPI objects representing devices on
-+# non-enumerable and enumerable busses contain a _HID or an _ADR identification
-+# object respectively.
-+# Get a list of devices of both types, by searching the ACPI sysfs subtree for
-+# directories containing a hid or adr attribute.
-+supp_dev_paths=$(while IFS=$'\n' read -r dev_path; do
-+	if [ ! -f "${dev_path}"/hid ] && [ ! -f "${dev_path}"/adr ]; then
-+		continue
-+	fi
-+
-+	if [ -f "${dev_path}"/hid ]; then
-+		if ! grep -x -q -i "$(cat "${dev_path}"/hid)" "${SUPPORTED_ID_LIST}"; then
-+			continue
-+		fi
-+	fi
-+
-+	echo "${dev_path}"
-+done < <(find ${ACPI_SYSTEM_DIR} -name uevent -exec dirname {} \;))
-+
-+supp_dev_paths_num=$(echo "${supp_dev_paths}" | wc -w)
-+ktap_set_plan "${supp_dev_paths_num}"
-+
-+ret="${KSFT_PASS}"
-+for dev_path in ${supp_dev_paths}; do
-+	desc="$(cat "${dev_path}"/path)"
-+	[ -f "${dev_path}"/hid ] && desc+=" $(cat "${dev_path}"/hid)"
-+
-+	# ACPI device objects might be linked to other objects in the device
-+	# hierarchy (e.g. devices on the PCI bus).
-+	# In these cases, the driver folder will be in the companion object's sysfs
-+	# directory, linked by physical_node.
-+	if [ -d "${dev_path}"/physical_node/driver ] || [ -d "${dev_path}"/driver ]; then
-+		ktap_test_pass "${desc}"
-+	else
-+		ret="${KSFT_FAIL}"
-+		ktap_test_fail "${desc}"
-+	fi
-+done
-+
-+ktap_print_totals
-+exit "${ret}"
 -- 
-2.30.2
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
 
