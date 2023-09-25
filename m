@@ -1,28 +1,28 @@
-Return-Path: <linux-acpi+bounces-71-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-72-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E83B7AD36B
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:32:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4794C7AD36C
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:32:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id E341C281617
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:32:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id EDD8A2815BF
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA76E11CA1
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60B011CA9
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:32:30 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43E710A0F;
-	Mon, 25 Sep 2023 07:44:45 +0000 (UTC)
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E97B9EE;
-	Mon, 25 Sep 2023 00:44:42 -0700 (PDT)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0Vsmvt.C_1695627878;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vsmvt.C_1695627878)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92ED310A0F;
+	Mon, 25 Sep 2023 07:44:48 +0000 (UTC)
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9C64FC;
+	Mon, 25 Sep 2023 00:44:45 -0700 (PDT)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0Vsmvt.x_1695627880;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vsmvt.x_1695627880)
           by smtp.aliyun-inc.com;
-          Mon, 25 Sep 2023 15:44:39 +0800
+          Mon, 25 Sep 2023 15:44:41 +0800
 From: Shuai Xue <xueshuai@linux.alibaba.com>
 To: keescook@chromium.org,
 	tony.luck@intel.com,
@@ -46,9 +46,9 @@ Cc: linux-hardening@vger.kernel.org,
 	acpica-devel@lists.linuxfoundation.org,
 	xueshuai@linux.alibaba.com,
 	baolin.wang@linux.alibaba.com
-Subject: [RFC PATCH v2 4/9] ACPI: tables: change section_type of generic error data as guid_t
-Date: Mon, 25 Sep 2023 15:44:21 +0800
-Message-Id: <20230925074426.97856-5-xueshuai@linux.alibaba.com>
+Subject: [RFC PATCH v2 5/9] ACPI: APEI: GHES: Use ERST to serialize APEI generic error before panic
+Date: Mon, 25 Sep 2023 15:44:22 +0800
+Message-Id: <20230925074426.97856-6-xueshuai@linux.alibaba.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230925074426.97856-1-xueshuai@linux.alibaba.com>
 References: <20230925074426.97856-1-xueshuai@linux.alibaba.com>
@@ -60,96 +60,99 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-	autolearn=ham autolearn_force=no version=3.4.6
+	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-The section_type of generic error data is now an array of u8. It is a
-burden to perform explicit type casting from u8[] to guid_t, and to copy
-the guid_t values to u8[] using memcpy.
+In certain scenarios (ie. hosts/guests with root filesystems on
+NFS/iSCSI where networking software and/or hardware fails, and thus
+kdump fails), it is necessary to serialize hardware error information
+available for post-mortem debugging.
 
-To alleviate this issue, change the section_type from an array to the
-type guid_t, which is also consistent with the cper_section_descriptor.
+Save the hardware error log into flash via ERST before go panic, the
+hardware error log can be gotten from the flash after system boot
+successful again, which is very useful in production.
 
 Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 ---
- drivers/acpi/acpi_extlog.c  | 2 +-
- drivers/acpi/apei/ghes.c    | 2 +-
- drivers/firmware/efi/cper.c | 2 +-
- include/acpi/actbl1.h       | 5 +++--
- 4 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/acpi/apei/ghes.c | 44 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index e120a96e1eae..d46435792d64 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -170,7 +170,7 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
- 			fru_text = gdata->fru_text;
- 		else
- 			fru_text = "";
--		sec_type = (guid_t *)gdata->section_type;
-+		sec_type = &gdata->section_type;
- 		if (guid_equal(sec_type, &CPER_SEC_PLATFORM_MEM)) {
- 			struct cper_sec_mem_err *mem = acpi_hest_get_payload(gdata);
- 
 diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index ef59d6ea16da..d14e00751161 100644
+index d14e00751161..306bced16884 100644
 --- a/drivers/acpi/apei/ghes.c
 +++ b/drivers/acpi/apei/ghes.c
-@@ -648,7 +648,7 @@ static bool ghes_do_proc(struct ghes *ghes,
+@@ -41,6 +41,7 @@
+ #include <linux/uuid.h>
+ #include <linux/ras.h>
+ #include <linux/task_work.h>
++#include <linux/pstore.h>
  
- 	sev = ghes_severity(estatus->error_severity);
- 	apei_estatus_for_each_section(estatus, gdata) {
--		sec_type = (guid_t *)gdata->section_type;
-+		sec_type = &gdata->section_type;
- 		sec_sev = ghes_severity(gdata->error_severity);
- 		if (gdata->validation_bits & CPER_SEC_VALID_FRU_ID)
- 			fru_id = (guid_t *)gdata->fru_id;
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 35c37f667781..a2ba70aa928f 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -527,7 +527,7 @@ static void
- cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata,
- 			   int sec_no)
+ #include <acpi/actbl1.h>
+ #include <acpi/ghes.h>
+@@ -636,6 +637,43 @@ static void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
+ 	schedule_work(&entry->work);
+ }
+ 
++static int ghes_serialize_estatus(struct acpi_hest_generic_data *gdata, u8 notify_type)
++{
++	void *err = acpi_hest_get_payload(gdata);
++	int data_len = gdata->error_data_length;
++	struct cper_pstore_record *rcd;
++	int record_len = data_len + sizeof(*rcd);
++
++	rcd = kmalloc(record_len, GFP_KERNEL);
++	memset(rcd, 0, sizeof(*rcd));
++
++	memcpy(rcd->hdr.signature, CPER_SIG_RECORD, CPER_SIG_SIZE);
++	rcd->hdr.revision = CPER_RECORD_REV;
++	rcd->hdr.signature_end = CPER_SIG_END;
++	rcd->hdr.section_count = 1;
++	rcd->hdr.error_severity = CPER_SEV_FATAL;
++	/* timestamp, platform_id, partition_id are all invalid */
++	rcd->hdr.validation_bits = 0;
++	rcd->hdr.record_length = record_len;
++	rcd->hdr.creator_id = CPER_CREATOR_PSTORE;
++	rcd->hdr.notification_type = CPER_NOTIFY_MCE;
++	rcd->hdr.record_id = cper_next_record_id();
++	rcd->hdr.flags = CPER_HW_ERROR_FLAGS_PREVERR;
++
++	rcd->sec_hdr.section_offset = (void *)&rcd->data - (void *)&rcd;
++	rcd->sec_hdr.section_length = data_len;
++	rcd->sec_hdr.revision = CPER_SEC_REV;
++	/* ->ru_id and fru_text is invalid */
++	rcd->sec_hdr.validation_bits = 0;
++	rcd->sec_hdr.flags = CPER_SEC_PRIMARY;
++	rcd->sec_hdr.section_type = gdata->section_type;
++	rcd->sec_hdr.section_severity = gdata->error_severity;
++
++	memcpy(&rcd->data, err, data_len);
++
++	return erst_write(&rcd->hdr);
++}
++
+ static bool ghes_do_proc(struct ghes *ghes,
+ 			 const struct acpi_hest_generic_status *estatus)
  {
--	guid_t *sec_type = (guid_t *)gdata->section_type;
-+	guid_t *sec_type = &gdata->section_type;
- 	__u16 severity;
- 	char newpfx[64];
+@@ -861,10 +899,16 @@ static void __ghes_panic(struct ghes *ghes,
+ 			 struct acpi_hest_generic_status *estatus,
+ 			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
+ {
++	struct acpi_hest_generic_data *gdata;
++	u8 notify_type = ghes->generic->notify.type;
++
+ 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
  
-diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-index 8d5572ad48cb..ab25a8495a43 100644
---- a/include/acpi/actbl1.h
-+++ b/include/acpi/actbl1.h
-@@ -19,6 +19,7 @@
-  *
-  ******************************************************************************/
+ 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
  
-+#include <linux/uuid.h>
- /*
-  * Values for description table header signatures for tables defined in this
-  * file. Useful because they make it more difficult to inadvertently type in
-@@ -1637,7 +1638,7 @@ struct acpi_hest_generic_status {
- /* Generic Error Data entry */
- 
- struct acpi_hest_generic_data {
--	u8 section_type[16];
-+	guid_t section_type;
- 	u32 error_severity;
- 	u16 revision;
- 	u8 validation_bits;
-@@ -1650,7 +1651,7 @@ struct acpi_hest_generic_data {
- /* Extension for revision 0x0300 */
- 
- struct acpi_hest_generic_data_v300 {
--	u8 section_type[16];
-+	guid_t section_type;
- 	u32 error_severity;
- 	u16 revision;
- 	u8 validation_bits;
++	apei_estatus_for_each_section(estatus, gdata)
++		ghes_serialize_estatus(gdata, notify_type);
++
+ 	/* reboot to log the error! */
+ 	if (!panic_timeout)
+ 		panic_timeout = ghes_panic_timeout;
 -- 
 2.41.0
 
