@@ -1,49 +1,50 @@
-Return-Path: <linux-acpi+bounces-63-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-64-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697B57AD029
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:30:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4868C7AD02A
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:30:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 0CD87281488
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 06:30:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id EC5922814C3
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 06:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E2E101D1
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 06:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CAA5686
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 06:30:27 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E3463CB
-	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 05:35:30 +0000 (UTC)
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6261E3;
-	Sun, 24 Sep 2023 22:35:28 -0700 (PDT)
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4053d53a1bfso44278465e9.1;
-        Sun, 24 Sep 2023 22:35:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7029E10E4
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 05:42:38 +0000 (UTC)
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D16B9E3;
+	Sun, 24 Sep 2023 22:42:36 -0700 (PDT)
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2c038a1e2e6so85117681fa.2;
+        Sun, 24 Sep 2023 22:42:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695620126; x=1696224926;
-        h=content-transfer-encoding:autocrypt:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ycf6Wya8ID6XmixPWSJ0vO/RRGDPjUVO7FYG5IN3BB4=;
-        b=SWdHUFVPNRfA6hQgaSnVn6lcyQpVp823siaCaS2m86iHRwXX29aK0HFKSD6iP3eZlw
-         tSWE96tz5MZ/Dx1XyeqH9QcN3oW90S+x3+seNwsISLAeBhVOZGvSKYtXfTHelRx4UQ5b
-         H6A3Ha+GqXsCw7yVdfMzWxHwj/qArp6I0JvWi0FGI37Y48UOFmfIiTd3CpdtZSWkZ6z0
-         DIFE6sVGFyEvWzWOJu0YShlsQ40Yh4iDDppdGJP19OuA0Vr3bkNwc7dEknrQkuXkmBry
-         jCJPUcEshX7VoWknOxlkvvAcAAaUfwuLVJrXkqqOUtMjkd04I14EAg5NsBq7CCynP/1b
-         llSw==
-X-Gm-Message-State: AOJu0Yy3THwC0ilwblNhFknH2DSWlBKeHBlDD4NePH9R/Cw/yORa8yAO
-	6agp1YQaYvi0CmmWd6GY3K3eSuMOrys=
-X-Google-Smtp-Source: AGHT+IEBiJpPI3V9L7bnJ0vKKLWADLc2B/KsUYrdQQriv4CldZCKNYGIcVx9fTl7Xu39XOEKuIMZjQ==
-X-Received: by 2002:adf:e288:0:b0:31f:e1b4:583d with SMTP id v8-20020adfe288000000b0031fe1b4583dmr4215607wri.56.1695620126427;
-        Sun, 24 Sep 2023 22:35:26 -0700 (PDT)
-Received: from [192.168.1.58] (185-219-167-24-static.vivo.cz. [185.219.167.24])
-        by smtp.gmail.com with ESMTPSA id sd18-20020a170906ce3200b009a198078c53sm5753897ejb.214.2023.09.24.22.35.25
+        d=1e100.net; s=20230601; t=1695620555; x=1696225355;
+        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AM8xf06ortIoaNZfjeOnh5namlrNCFJtvnAj3OYNhdU=;
+        b=ZIewqxc/SvTISSr+nKIswgRcgX6CzCYdbY67EsMM91io2H8FlvkgnJQQ7iD1JyIrMZ
+         HLTE4D+qfK801B23piwguDoYL+HDP1MNlO3BZzGffkG8HyWNi8jCkj0fZc5TS37JGL4Q
+         3E9r5+FfTBIE3Z62DDNuE6BqGWgoNQK2K3Uppw7+aRGfwZx5hhtd2b198WiLhIUcmAqc
+         j0KdGdBShAZPEIm/sw6HUvPQOBEf25KroXG5r8jNbL+kfpcEr+XGXwpQ60w5zJWkUHm+
+         vfPFlJBuuEaIGs5wn5mv60e7M2b5aILmrzat5VTR1sEJiHKsnm+DP8VdxbMxyazoyzig
+         GGlA==
+X-Gm-Message-State: AOJu0YyO7zpOSwQ3dFa4Rjb9aevbkUs+w2e+DWPleGLopkOXttp41Rht
+	lZL7kF3SGzCzMzPFqGiDJ47NhIsoXfQ=
+X-Google-Smtp-Source: AGHT+IFQnv2r1g0JrzUUzcwW31wl0YJGIg1HRM6mZBO9WAtWqhzoNgZcyZu1BjNWtL23Rhwxl+D3Ew==
+X-Received: by 2002:a2e:3607:0:b0:2bc:dd96:147c with SMTP id d7-20020a2e3607000000b002bcdd96147cmr4918014lja.34.1695620554849;
+        Sun, 24 Sep 2023 22:42:34 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
+        by smtp.gmail.com with ESMTPSA id d12-20020a1709064c4c00b0099bd86f9248sm5829347ejw.63.2023.09.24.22.42.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 24 Sep 2023 22:35:25 -0700 (PDT)
-Message-ID: <047d3c51-0a9e-4c3e-beef-625a7aa4f3c3@kernel.org>
-Date: Mon, 25 Sep 2023 07:35:25 +0200
+        Sun, 24 Sep 2023 22:42:34 -0700 (PDT)
+Message-ID: <505264f5-cbbb-4ffe-a3e4-93d2397e80da@kernel.org>
+Date: Mon, 25 Sep 2023 07:42:33 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -51,15 +52,16 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: WARNING at drivers/acpi/platform_profile.c:74 in
+ platform_profile_show()
 Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  hmh@hmh.eng.br
 Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
  ibm-acpi-devel@lists.sourceforge.net, platform-driver-x86@vger.kernel.org,
  Linux kernel mailing list <linux-kernel@vger.kernel.org>
-From: Jiri Slaby <jirislaby@kernel.org>
-Subject: WARNING at drivers/acpi/platform_profile.c:74 in
- platform_profile_show()
+References: <047d3c51-0a9e-4c3e-beef-625a7aa4f3c3@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
  xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
  rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
@@ -102,75 +104,91 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
+In-Reply-To: <047d3c51-0a9e-4c3e-beef-625a7aa4f3c3@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
 	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Hi,
+On 25. 09. 23, 7:35, Jiri Slaby wrote:
+> Hi,
+> 
+> according to logs, since 6.3 (up to 6.5.4 now), I repeatedly see:
+>  > WARNING: CPU: 14 PID: 962 at drivers/acpi/platform_profile.c:74 
+> platform_profile_show+0xb1/0x100 [platform_profile]
+>  > Modules linked in: ccm michael_mic ...
+>  > CPU: 14 PID: 962 Comm: power-profiles- Kdump: loaded Not tainted 
+> 6.5.4-6-default #1 openSUSE Tumbleweed (unreleased) 
+> dd37106c593be78644bb80e3c1534d801bf4cb36
+>  > Hardware name: LENOVO 21CRS0K83K/21CRS0K83K, BIOS R22ET60W (1.30 ) 
+> 02/09/2023
+>  > RIP: 0010:platform_profile_show+0xb1/0x100 [platform_profile]
+>  > Code: d0 a8 ...
+>  > RSP: 0018:ffff9c1ac0b97db0 EFLAGS: 00010296
+>  > RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000008fc35be0
+>  > RDX: 0000000000000000 RSI: ffff9c1ac0b97db4 RDI: ffffffffc0a8b0a0
+>  > RBP: ffff8955ca540000 R08: ffff895b9f1ed180 R09: ffff895559ea1bc0
+>  > R10: 00000000031a400e R11: 000000000003f680 R12: ffff895b9f1ed180
+>  > R13: ffff9c1ac0b97e50 R14: 0000000000000001 R15: ffff9c1ac0b97ee8
+>  > FS:  00007f71b0e71900(0000) GS:ffff895b9f100000(0000) 
+> knlGS:0000000000000000
+>  > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>  > CR2: 00007fe402ea3400 CR3: 000000012004c000 CR4: 0000000000750ee0
+>  > PKRU: 55555554
+>  > Call Trace:
+>  >  <TASK>
+>  >  sysfs_kf_seq_show+0xab/0x100
+>  >  seq_read_iter+0x123/0x480
+>  >  vfs_read+0x1b8/0x300
+> 
+> It's:
+> WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
+> 
+> So I put there one more print:
+> dev_warn(dev, "profile=%d profile_get=%ps\n",
+>           profile, cur_profile->profile_get);
+> 
+> and I see:
+> : profile=-1883022368 profile_get=dytc_profile_get [thinkpad_acpi]
+> : profile=-1510173440 profile_get=dytc_profile_get [thinkpad_acpi]
+> : profile=-1510173440 profile_get=dytc_profile_get [thinkpad_acpi]
+> : profile=-966231712 profile_get=dytc_profile_get [thinkpad_acpi]
+> : profile=-1578420592 profile_get=dytc_profile_get [thinkpad_acpi]
+> : profile=-1578420592 profile_get=dytc_profile_get [thinkpad_acpi]
+> : profile=-1578420592 profile_get=dytc_profile_get [thinkpad_acpi]
+> 
+> where the profile values in hex are like:
+> ffffffff8fc35be0
+> ffffffffa5fc9500
+> ffffffffc6687960
+> 
+> Looking at simplicity of dytc_profile_get(), I wonder how that can happen.
+> 
+> I also wonder about dev passed to dytc_profile_get() having empty name 
+> (nothing before colon above)? Is that expected?
 
-according to logs, since 6.3 (up to 6.5.4 now), I repeatedly see:
- > WARNING: CPU: 14 PID: 962 at drivers/acpi/platform_profile.c:74 
-platform_profile_show+0xb1/0x100 [platform_profile]
- > Modules linked in: ccm michael_mic ...
- > CPU: 14 PID: 962 Comm: power-profiles- Kdump: loaded Not tainted 
-6.5.4-6-default #1 openSUSE Tumbleweed (unreleased) 
-dd37106c593be78644bb80e3c1534d801bf4cb36
- > Hardware name: LENOVO 21CRS0K83K/21CRS0K83K, BIOS R22ET60W (1.30 ) 
-02/09/2023
- > RIP: 0010:platform_profile_show+0xb1/0x100 [platform_profile]
- > Code: d0 a8 ...
- > RSP: 0018:ffff9c1ac0b97db0 EFLAGS: 00010296
- > RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000008fc35be0
- > RDX: 0000000000000000 RSI: ffff9c1ac0b97db4 RDI: ffffffffc0a8b0a0
- > RBP: ffff8955ca540000 R08: ffff895b9f1ed180 R09: ffff895559ea1bc0
- > R10: 00000000031a400e R11: 000000000003f680 R12: ffff895b9f1ed180
- > R13: ffff9c1ac0b97e50 R14: 0000000000000001 R15: ffff9c1ac0b97ee8
- > FS:  00007f71b0e71900(0000) GS:ffff895b9f100000(0000) 
-knlGS:0000000000000000
- > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- > CR2: 00007fe402ea3400 CR3: 000000012004c000 CR4: 0000000000750ee0
- > PKRU: 55555554
- > Call Trace:
- >  <TASK>
- >  sysfs_kf_seq_show+0xab/0x100
- >  seq_read_iter+0x123/0x480
- >  vfs_read+0x1b8/0x300
+I forgot to add:
+   cat /sys/firmware/acpi/platform_profile
+correctly returns:
+   low-power
 
-It's:
-WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
+without any WARNING. It looks like the warn often (but not exclusively) 
+happens around:
+PM: suspend exit
 
-So I put there one more print:
-dev_warn(dev, "profile=%d profile_get=%ps\n",
-          profile, cur_profile->profile_get);
+> Any ideas?
 
-and I see:
-: profile=-1883022368 profile_get=dytc_profile_get [thinkpad_acpi]
-: profile=-1510173440 profile_get=dytc_profile_get [thinkpad_acpi]
-: profile=-1510173440 profile_get=dytc_profile_get [thinkpad_acpi]
-: profile=-966231712 profile_get=dytc_profile_get [thinkpad_acpi]
-: profile=-1578420592 profile_get=dytc_profile_get [thinkpad_acpi]
-: profile=-1578420592 profile_get=dytc_profile_get [thinkpad_acpi]
-: profile=-1578420592 profile_get=dytc_profile_get [thinkpad_acpi]
+Ah, convert_dytc_to_profile()'s retval is not checked in 
+dytc_profile_refresh(). That's likely it, let me add the check and retry.
 
-where the profile values in hex are like:
-ffffffff8fc35be0
-ffffffffa5fc9500
-ffffffffc6687960
+> thanks,
 
-Looking at simplicity of dytc_profile_get(), I wonder how that can happen.
-
-I also wonder about dev passed to dytc_profile_get() having empty name 
-(nothing before colon above)? Is that expected?
-
-Any ideas?
-
-thanks,
 -- 
 js
 suse labs
+
 
