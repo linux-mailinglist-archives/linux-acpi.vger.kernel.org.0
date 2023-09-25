@@ -1,28 +1,28 @@
-Return-Path: <linux-acpi+bounces-73-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-74-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2110B7AD36D
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23BAF7AD36E
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 10:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id CD41928158D
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:32:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id BE5A8281538
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B553A11CA1
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D7811CA1
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:32:40 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FFA10A22;
-	Mon, 25 Sep 2023 07:44:49 +0000 (UTC)
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A0AC112;
-	Mon, 25 Sep 2023 00:44:46 -0700 (PDT)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0Vsmvt0t_1695627882;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vsmvt0t_1695627882)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3174610A1F;
+	Mon, 25 Sep 2023 07:44:54 +0000 (UTC)
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E69EB196;
+	Mon, 25 Sep 2023 00:44:49 -0700 (PDT)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R451e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0Vsmvt1q_1695627884;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vsmvt1q_1695627884)
           by smtp.aliyun-inc.com;
-          Mon, 25 Sep 2023 15:44:43 +0800
+          Mon, 25 Sep 2023 15:44:45 +0800
 From: Shuai Xue <xueshuai@linux.alibaba.com>
 To: keescook@chromium.org,
 	tony.luck@intel.com,
@@ -46,9 +46,9 @@ Cc: linux-hardening@vger.kernel.org,
 	acpica-devel@lists.linuxfoundation.org,
 	xueshuai@linux.alibaba.com,
 	baolin.wang@linux.alibaba.com
-Subject: [RFC PATCH v2 6/9] ACPI: APEI: GHES: export ghes_report_chain
-Date: Mon, 25 Sep 2023 15:44:23 +0800
-Message-Id: <20230925074426.97856-7-xueshuai@linux.alibaba.com>
+Subject: [RFC PATCH v2 7/9] ACPI: APEI: ESRT: kick ghes_report_chain notifier to report serialized memory errors
+Date: Mon, 25 Sep 2023 15:44:24 +0800
+Message-Id: <20230925074426.97856-8-xueshuai@linux.alibaba.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230925074426.97856-1-xueshuai@linux.alibaba.com>
 References: <20230925074426.97856-1-xueshuai@linux.alibaba.com>
@@ -66,40 +66,67 @@ X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Export ghes_report_chain so that it can be kicked by other drivers.
+Introduce a new pstore_record type, PSTORE_TYPE_CPER_MEM, so that
+serialized memory errors can be retrieved and saved as a file in pstore
+file system. While the serialized errors is retrieved from ERST
+backend, kick ghes_report_chain notifier.
 
 Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 ---
- drivers/acpi/apei/ghes.c | 2 +-
- include/acpi/ghes.h      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/apei/erst.c | 5 +++++
+ fs/pstore/platform.c     | 1 +
+ include/linux/pstore.h   | 3 +++
+ 3 files changed, 9 insertions(+)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 306bced16884..8acd3d56719a 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -95,7 +95,7 @@
- #define FIX_APEI_GHES_SDEI_CRITICAL	__end_of_fixed_addresses
+diff --git a/drivers/acpi/apei/erst.c b/drivers/acpi/apei/erst.c
+index 82f57aaf89ad..786d46c767ee 100644
+--- a/drivers/acpi/apei/erst.c
++++ b/drivers/acpi/apei/erst.c
+@@ -26,6 +26,7 @@
+ #include <linux/vmalloc.h>
+ #include <linux/mm.h> /* kvfree() */
+ #include <acpi/apei.h>
++#include <acpi/ghes.h>
+ #ifdef CONFIG_X86_MCE
+ /* only define CREATE_TRACE_POINTS once */
+ #include <trace/events/mce.h>
+@@ -1072,6 +1073,10 @@ static ssize_t erst_reader(struct pstore_record *record)
+ 		trace_mce_record((struct mce *)rcd->data);
  #endif
+ 		record->type = PSTORE_TYPE_MCE;
++	} else if (guid_equal(&rcd->sec_hdr.section_type, &CPER_SEC_PLATFORM_MEM)) {
++		record->type = PSTORE_TYPE_CPER_MEM;
++		arch_apei_report_mem_error(0x2, (struct cper_sec_mem_err *)rcd->data);
++		atomic_notifier_call_chain(&ghes_report_chain, 0x2, rcd->data);
+ 	}
+ 	else
+ 		record->type = PSTORE_TYPE_MAX;
+diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
+index e5bca9a004cc..4e63ac8be755 100644
+--- a/fs/pstore/platform.c
++++ b/fs/pstore/platform.c
+@@ -51,6 +51,7 @@ static const char * const pstore_type_names[] = {
+ 	"powerpc-common",
+ 	"pmsg",
+ 	"powerpc-opal",
++	"cper-mem",
+ };
  
--static ATOMIC_NOTIFIER_HEAD(ghes_report_chain);
-+ATOMIC_NOTIFIER_HEAD(ghes_report_chain);
+ static int pstore_new_entry;
+diff --git a/include/linux/pstore.h b/include/linux/pstore.h
+index ad44b3baf10e..d18ecaacd1b5 100644
+--- a/include/linux/pstore.h
++++ b/include/linux/pstore.h
+@@ -40,6 +40,9 @@ enum pstore_type_id {
+ 	PSTORE_TYPE_PMSG	= 7,
+ 	PSTORE_TYPE_PPC_OPAL	= 8,
  
- static inline bool is_hest_type_generic_v2(struct ghes *ghes)
- {
-diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-index 3c8bba9f1114..151567353e33 100644
---- a/include/acpi/ghes.h
-+++ b/include/acpi/ghes.h
-@@ -126,7 +126,7 @@ int ghes_notify_sea(void);
- static inline int ghes_notify_sea(void) { return -ENOENT; }
- #endif
- 
--struct notifier_block;
-+extern struct atomic_notifier_head ghes_report_chain;
- extern void ghes_register_report_chain(struct notifier_block *nb);
- extern void ghes_unregister_report_chain(struct notifier_block *nb);
- #endif /* GHES_H */
++	/* APEI section */
++	PSTORE_TYPE_CPER_MEM		= 9,
++
+ 	/* End of the list */
+ 	PSTORE_TYPE_MAX
+ };
 -- 
 2.41.0
 
