@@ -1,115 +1,176 @@
-Return-Path: <linux-acpi+bounces-61-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-63-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D11887ACF1E
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 06:30:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 697B57AD029
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 08:30:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 0875E2813CC
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 04:30:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 0CD87281488
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 06:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7426AA9
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 04:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E2E101D1
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Sep 2023 06:30:22 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95007F
-	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 03:54:21 +0000 (UTC)
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87682DF;
-	Sun, 24 Sep 2023 20:54:20 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-d849df4f1ffso6574700276.0;
-        Sun, 24 Sep 2023 20:54:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695614059; x=1696218859; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ITTBpzczqd4LSWTAD9aZOIvJ8J7Zcd7g95EdndUh4GE=;
-        b=Us4f8NXuy1Pc9HAme2OiaRc+1fSl1RMv5SxecL9lK1hnV1RVf5OXaEpnyB9seZUITm
-         uOEyn6LWbGnipYnqbzwyvLldTu5fuEdQ5q3/68cL6X8GpGQpN0pwdz1eJslI4zcbtbuk
-         yd9BTaCm29nWQ9lCy/+U4aehHN1TKtTIj8EFikKulxxLNC1/2dOM3DfgrzPV0I6L9gMp
-         lzBx9IHuL1Otc9m+8I4UcdjtwkAv0rSk8hKedSmbOQoYQgSzvOpb/ds+wslFiX2YHkvg
-         jsscELyOJ1H8MIFYO0CpkpvjL0nusMUCMSYuxJZMBV4SFZCtvFOhdLfWDUS2s3AhFni9
-         EOaw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E3463CB
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Sep 2023 05:35:30 +0000 (UTC)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6261E3;
+	Sun, 24 Sep 2023 22:35:28 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4053d53a1bfso44278465e9.1;
+        Sun, 24 Sep 2023 22:35:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695614059; x=1696218859;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ITTBpzczqd4LSWTAD9aZOIvJ8J7Zcd7g95EdndUh4GE=;
-        b=wCkDK0oxSnKs6mei2ej8G1KmmSNGBXmoYEnMFTbc78XYzyBZGzbYManfPA5mv04muO
-         xygjfo0kHTAJLO3naOzoHPU7Kdx1wwGvKsgbu7eh9ENlxqvUyLP0lpQ9YbCm1c6812mK
-         mQcjuvIfSnI4CXRUhdiVWpJLF5Z9fFhw8FqoK9G1wm64+9DL6D3rCo/aiyxEHpfEQ47e
-         HeMAQkWpVa6Vjbe1ly/sV4TbUSfESrw3fXHa19OA2qWganRJVlT2ancs5z6L14/+/Bvk
-         yV/8tHcyd1X4ad8G82KTbERGfUZXqn609mFoFF1pCD+sqMt4YoIMd9GJUYZlAQvhpLVb
-         YcPg==
-X-Gm-Message-State: AOJu0YyF3yDs1CrvkTDUZZNndSiRej1Y6tWvatIjYSnFb1mngoiU715A
-	rm0AWf/UgpC4KqLwesWcjq5MRTMJKf01INeycymQwCNR2kI=
-X-Google-Smtp-Source: AGHT+IEPOLAmcobHAk1T8K+we8QFLN4PFzlGhEPu6UIp+fRvfWYf2Xav/jX3C/IYkXWacdxhlKDFU1i+P3s28fkvDpw=
-X-Received: by 2002:a25:4106:0:b0:d78:be:6f02 with SMTP id o6-20020a254106000000b00d7800be6f02mr5161748yba.11.1695614059628;
- Sun, 24 Sep 2023 20:54:19 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695620126; x=1696224926;
+        h=content-transfer-encoding:autocrypt:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ycf6Wya8ID6XmixPWSJ0vO/RRGDPjUVO7FYG5IN3BB4=;
+        b=SWdHUFVPNRfA6hQgaSnVn6lcyQpVp823siaCaS2m86iHRwXX29aK0HFKSD6iP3eZlw
+         tSWE96tz5MZ/Dx1XyeqH9QcN3oW90S+x3+seNwsISLAeBhVOZGvSKYtXfTHelRx4UQ5b
+         H6A3Ha+GqXsCw7yVdfMzWxHwj/qArp6I0JvWi0FGI37Y48UOFmfIiTd3CpdtZSWkZ6z0
+         DIFE6sVGFyEvWzWOJu0YShlsQ40Yh4iDDppdGJP19OuA0Vr3bkNwc7dEknrQkuXkmBry
+         jCJPUcEshX7VoWknOxlkvvAcAAaUfwuLVJrXkqqOUtMjkd04I14EAg5NsBq7CCynP/1b
+         llSw==
+X-Gm-Message-State: AOJu0Yy3THwC0ilwblNhFknH2DSWlBKeHBlDD4NePH9R/Cw/yORa8yAO
+	6agp1YQaYvi0CmmWd6GY3K3eSuMOrys=
+X-Google-Smtp-Source: AGHT+IEBiJpPI3V9L7bnJ0vKKLWADLc2B/KsUYrdQQriv4CldZCKNYGIcVx9fTl7Xu39XOEKuIMZjQ==
+X-Received: by 2002:adf:e288:0:b0:31f:e1b4:583d with SMTP id v8-20020adfe288000000b0031fe1b4583dmr4215607wri.56.1695620126427;
+        Sun, 24 Sep 2023 22:35:26 -0700 (PDT)
+Received: from [192.168.1.58] (185-219-167-24-static.vivo.cz. [185.219.167.24])
+        by smtp.gmail.com with ESMTPSA id sd18-20020a170906ce3200b009a198078c53sm5753897ejb.214.2023.09.24.22.35.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 24 Sep 2023 22:35:25 -0700 (PDT)
+Message-ID: <047d3c51-0a9e-4c3e-beef-625a7aa4f3c3@kernel.org>
+Date: Mon, 25 Sep 2023 07:35:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <e486db16-d36d-9e14-4f10-dc755c0ef97d@linux.alibaba.com>
- <20230920230257.GA280837@bhelgaas> <625cdd6c55994bf3a50efd8f79680029@AcuMS.aculab.com>
-In-Reply-To: <625cdd6c55994bf3a50efd8f79680029@AcuMS.aculab.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Mon, 25 Sep 2023 13:54:08 +1000
-Message-ID: <CAOSf1CEML1s0pOpi92By9Ms4nnq5onSX-d7wCY4jXXAviXO_qg@mail.gmail.com>
-Subject: Re: Questions: Should kernel panic when PCIe fatal error occurs?
-To: David Laight <David.Laight@aculab.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, 
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, Linux PCI <linux-pci@vger.kernel.org>, 
-	"mahesh@linux.ibm.com" <mahesh@linux.ibm.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"james.morse@arm.com" <james.morse@arm.com>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "lenb@kernel.org" <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ hmh@hmh.eng.br
+Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ ibm-acpi-devel@lists.sourceforge.net, platform-driver-x86@vger.kernel.org,
+ Linux kernel mailing list <linux-kernel@vger.kernel.org>
+From: Jiri Slaby <jirislaby@kernel.org>
+Subject: WARNING at drivers/acpi/platform_profile.c:74 in
+ platform_profile_show()
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Sep 22, 2023 at 8:23=E2=80=AFAM David Laight <David.Laight@aculab.c=
-om> wrote:
->
-> > It would be nice if they worked the same, but I suspect that vendors
-> > may rely on the fact that CPER_SEV_FATAL forces a restart/panic as
-> > part of their system integrity story.
->
-> The file system errors created by a panic (especially an NMI panic)
-> could easily be more problematic than a failed PCIe data transfer.
-> Evan a read that returned ~0u - which can be checked for.
->
-> Panicking a system that is converting TDM telephony to RTP for the
-> 911 emergency service because a PCIe cable/riser connecting one of the
-> TDM board has become loose doesn't seem ideal.
+Hi,
 
-For kernel native AER the default reaction to errors is
-reset-and-reinit which probably isn't much better for your case.
-Sounds like you would want a knob to suppress everything except error
-reporting so you can handle it in userspace?
+according to logs, since 6.3 (up to 6.5.4 now), I repeatedly see:
+ > WARNING: CPU: 14 PID: 962 at drivers/acpi/platform_profile.c:74 
+platform_profile_show+0xb1/0x100 [platform_profile]
+ > Modules linked in: ccm michael_mic ...
+ > CPU: 14 PID: 962 Comm: power-profiles- Kdump: loaded Not tainted 
+6.5.4-6-default #1 openSUSE Tumbleweed (unreleased) 
+dd37106c593be78644bb80e3c1534d801bf4cb36
+ > Hardware name: LENOVO 21CRS0K83K/21CRS0K83K, BIOS R22ET60W (1.30 ) 
+02/09/2023
+ > RIP: 0010:platform_profile_show+0xb1/0x100 [platform_profile]
+ > Code: d0 a8 ...
+ > RSP: 0018:ffff9c1ac0b97db0 EFLAGS: 00010296
+ > RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000008fc35be0
+ > RDX: 0000000000000000 RSI: ffff9c1ac0b97db4 RDI: ffffffffc0a8b0a0
+ > RBP: ffff8955ca540000 R08: ffff895b9f1ed180 R09: ffff895559ea1bc0
+ > R10: 00000000031a400e R11: 000000000003f680 R12: ffff895b9f1ed180
+ > R13: ffff9c1ac0b97e50 R14: 0000000000000001 R15: ffff9c1ac0b97ee8
+ > FS:  00007f71b0e71900(0000) GS:ffff895b9f100000(0000) 
+knlGS:0000000000000000
+ > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ > CR2: 00007fe402ea3400 CR3: 000000012004c000 CR4: 0000000000750ee0
+ > PKRU: 55555554
+ > Call Trace:
+ >  <TASK>
+ >  sysfs_kf_seq_show+0xab/0x100
+ >  seq_read_iter+0x123/0x480
+ >  vfs_read+0x1b8/0x300
 
-> (Or because the TDM board's fpga has decided it isn't going to respond
-> to any accesses until the BARs are setup again...)
->
-> The system can carry on with some TDM connections disabled - but that
-> is ok because they are all duplicated in case a cable gets cuit.
+It's:
+WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
 
-Well that's a relief :)
+So I put there one more print:
+dev_warn(dev, "profile=%d profile_get=%ps\n",
+          profile, cur_profile->profile_get);
 
-Oliver
+and I see:
+: profile=-1883022368 profile_get=dytc_profile_get [thinkpad_acpi]
+: profile=-1510173440 profile_get=dytc_profile_get [thinkpad_acpi]
+: profile=-1510173440 profile_get=dytc_profile_get [thinkpad_acpi]
+: profile=-966231712 profile_get=dytc_profile_get [thinkpad_acpi]
+: profile=-1578420592 profile_get=dytc_profile_get [thinkpad_acpi]
+: profile=-1578420592 profile_get=dytc_profile_get [thinkpad_acpi]
+: profile=-1578420592 profile_get=dytc_profile_get [thinkpad_acpi]
+
+where the profile values in hex are like:
+ffffffff8fc35be0
+ffffffffa5fc9500
+ffffffffc6687960
+
+Looking at simplicity of dytc_profile_get(), I wonder how that can happen.
+
+I also wonder about dev passed to dytc_profile_get() having empty name 
+(nothing before colon above)? Is that expected?
+
+Any ideas?
+
+thanks,
+-- 
+js
+suse labs
 
