@@ -1,42 +1,43 @@
-Return-Path: <linux-acpi+bounces-125-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-126-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 364BE7AECEA
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 14:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1513A7AECEB
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 14:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id D00DA2817D4
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 12:33:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id AF6D8280F51
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 12:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BB226E38
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 12:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97EDB27EC8
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 12:33:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835841A5AF
-	for <linux-acpi@vger.kernel.org>; Tue, 26 Sep 2023 10:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12365107B9
+	for <linux-acpi@vger.kernel.org>; Tue, 26 Sep 2023 11:04:24 +0000 (UTC)
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F09DE5;
-	Tue, 26 Sep 2023 03:50:48 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvxMJ4TTkz6K6xv;
-	Tue, 26 Sep 2023 18:49:32 +0800 (CST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB2C195;
+	Tue, 26 Sep 2023 04:04:22 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rvxfx75XZz6K8Kl;
+	Tue, 26 Sep 2023 19:03:05 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 26 Sep
- 2023 11:50:45 +0100
-Date: Tue, 26 Sep 2023 11:50:44 +0100
+ 2023 12:04:19 +0100
+Date: Tue, 26 Sep 2023 12:04:18 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Ben Cheatham <Benjamin.Cheatham@amd.com>
 CC: <rafael@kernel.org>, <dan.j.williams@intel.com>,
 	<linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
 	<bhelgaas@google.com>, <yazen.ghannam@amd.com>
-Subject: Re: [PATCH v5 1/3] CXL, PCIE: Add cxl_rcrb_addr file to dport_dev
-Message-ID: <20230926115044.00006895@Huawei.com>
-In-Reply-To: <20230925200127.504256-2-Benjamin.Cheatham@amd.com>
+Subject: Re: [PATCH v5 2/3] ACPI, APEI, EINJ: Add CXL 1.1 EINJ error type
+ support
+Message-ID: <20230926120418.0000575d@Huawei.com>
+In-Reply-To: <20230925200127.504256-3-Benjamin.Cheatham@amd.com>
 References: <20230925200127.504256-1-Benjamin.Cheatham@amd.com>
-	<20230925200127.504256-2-Benjamin.Cheatham@amd.com>
+	<20230925200127.504256-3-Benjamin.Cheatham@amd.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -57,168 +58,225 @@ X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, 25 Sep 2023 15:01:25 -0500
+On Mon, 25 Sep 2023 15:01:26 -0500
 Ben Cheatham <Benjamin.Cheatham@amd.com> wrote:
 
-> Add cxl_rcrb_addr to the dport_dev (normally represented by a pcie
-> device) for CXL RCH root ports. The file will print the RCRB base
-> MMIO address of the root port when read and will be used by
-> users looking to inject CXL EINJ error types for RCH hosts.
+> Add support for CXL EINJ error types for CXL 1.1 hosts added in ACPI
+> v6.5. Because these error types target memory-mapped CXL 1.1 compliant
+> downstream ports and not physical (normal/persistent) memory, these
+> error types are not currently  allowed through the memory range
+> validation done by the EINJ driver.
+> 
+> The MMIO address of a CXL 1.1 downstream port can be found in the
+> cxl_rcrb_addr file in the corresponding dport directory under
+> /sys/bus/cxl/devices/portX. CXL 1.1 error types follow the same
+> procedure as a memory error type, but with param1 set to the
+> downstream port MMIO address.
+> 
+> Example usage:
+> $ cd /sys/kernel/debug/apei/einj
+> $ cat available_error_type
+>     0x00000008      Memory Correctable
+>     0x00000010      Memory Uncorrectable non-fatal
+>     0x00000020      Memory Uncorrectable fatal
+>     0x00000040      PCI Express Correctable
+>     0x00000080      PCI Express Uncorrectable non-fatal
+>     0x00000100      PCI Express Uncorrectable fatal
+>     0x00008000      CXL.mem Protocol Correctable
+>     0x00020000      CXL.mem Protocol Uncorrectable fatal
+> $ echo 0x8000 > error_type
+> $ echo 0xfffffffffffff000 > param2
+> $ echo 0x2 > flags
+> $ cat /sys/bus/cxl/devices/portX/dportY/cxl_rcrb_addr
+> 0xb2f00000
+> $ echo 0xb2f00000 > param1
+> $ echo 1 > error_inject
 > 
 > Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
-Hi Ben,
+Hi Ben
 
-I'm still not totally convinced that injecting the group via the link
-onto the PCI device is necessarily a good idea, but if Bjorn is fine with
-that I don't mind too much.
+A few trivial things inline.
 
-There is a question on whether this should also be added to the
-sysfs-bus-pci docs given it turns up on a device where people might look there
-first.
-
-So with that in mind
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Jonathan
 
 > ---
->  Documentation/ABI/testing/sysfs-bus-cxl |  9 ++++
->  drivers/cxl/acpi.c                      |  2 +
->  drivers/cxl/core/port.c                 | 58 +++++++++++++++++++++++++
->  drivers/cxl/cxl.h                       |  2 +
->  4 files changed, 71 insertions(+)
+>  drivers/acpi/apei/Kconfig |  2 ++
+>  drivers/acpi/apei/einj.c  | 24 +++++++++++++++++++++++-
+>  drivers/cxl/acpi.c        |  1 +
+>  drivers/cxl/core/port.c   | 17 +++++++++++++++++
+>  drivers/cxl/cxl.h         |  1 +
+>  include/linux/cxl.h       | 11 +++++++++++
+>  6 files changed, 55 insertions(+), 1 deletion(-)
+>  create mode 100644 include/linux/cxl.h
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-cxl b/Documentation/ABI/testing/sysfs-bus-cxl
-> index 087f762ebfd5..85621da69296 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-cxl
-> +++ b/Documentation/ABI/testing/sysfs-bus-cxl
-> @@ -177,6 +177,15 @@ Description:
->  		integer reflects the hardware port unique-id used in the
->  		hardware decoder target list.
+> diff --git a/drivers/acpi/apei/Kconfig b/drivers/acpi/apei/Kconfig
+> index 6b18f8bc7be3..eb9cc7157342 100644
+> --- a/drivers/acpi/apei/Kconfig
+> +++ b/drivers/acpi/apei/Kconfig
+> @@ -55,6 +55,8 @@ config ACPI_APEI_MEMORY_FAILURE
+>  config ACPI_APEI_EINJ
+>  	tristate "APEI Error INJection (EINJ)"
+>  	depends on ACPI_APEI && DEBUG_FS
+> +	imply CXL_BUS
+> +	imply CXL_ACPI
+>  	help
+>  	  EINJ provides a hardware error injection mechanism, it is
+>  	  mainly used for debugging and testing the other parts of
+> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
+> index 013eb621dc92..8000417a5f26 100644
+> --- a/drivers/acpi/apei/einj.c
+> +++ b/drivers/acpi/apei/einj.c
+> @@ -21,6 +21,7 @@
+>  #include <linux/nmi.h>
+>  #include <linux/delay.h>
+>  #include <linux/mm.h>
+> +#include <linux/cxl.h>
+>  #include <asm/unaligned.h>
 >  
-> +What:		/sys/bus/cxl/devices/portX/dportY/cxl_rcrb_addr
-> +What:		/sys/devices/pciX/cxl_rcrb_addr
-> +Date:		August, 2023
-> +KernelVersion:	v6.6
-> +Contact:	linux-cxl@vger.kernel.org
-> +Description:
-> +		(RO) The 'cxl_rcrb_addr' device file gives the MMIO base address
-> +		of the RCRB of the corresponding CXL 1.1 downstream port. Only
-> +		present for CXL 1.1 dports.
+>  #include "apei-internal.h"
+> @@ -36,6 +37,7 @@
+>  #define MEM_ERROR_MASK		(ACPI_EINJ_MEMORY_CORRECTABLE | \
+>  				ACPI_EINJ_MEMORY_UNCORRECTABLE | \
+>  				ACPI_EINJ_MEMORY_FATAL)
+> +#define CXL_ERROR_MASK		GENMASK(17, 12)
 >  
->  What:		/sys/bus/cxl/devices/decoderX.Y
->  Date:		June, 2021
+>  /*
+>   * ACPI version 5 provides a SET_ERROR_TYPE_WITH_ADDRESS action.
+> @@ -512,6 +514,22 @@ static int __einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
+>  	return rc;
+>  }
+>  
+> +static int is_valid_cxl_addr(u64 addr)
+> +{
+> +	struct cxl_dport *dport;
+> +
+> +	if (IS_REACHABLE(CONFIG_CXL_ACPI))
+> +		dport = cxl_find_rch_dport_by_rcrb((resource_size_t) addr);
+> +	else
+> +		return 0;
+Flip this logic probably so the quick exit is the indented path.
+
+	if (!IS_REACHABLE(CONFIG_CXL_ACPI))
+		return 0
+
+	dport = ...
+
+> +
+> +	if (!IS_ERR_OR_NULL(dport))
+> +		return 1;
+> +
+> +	pr_info("Could not find dport with rcrb 0x%llx\n", addr);
+> +	return 0;
+> +}
+> +
+>  /* Inject the specified hardware error */
+>  static int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
+>  			     u64 param3, u64 param4)
+> @@ -537,8 +555,11 @@ static int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
+>  	if (type & ACPI5_VENDOR_BIT) {
+>  		if (vendor_flags != SETWA_FLAGS_MEM)
+>  			goto inject;
+> -	} else if (!(type & MEM_ERROR_MASK) && !(flags & SETWA_FLAGS_MEM))
+> +	} else if (!(type & MEM_ERROR_MASK) && !(flags & SETWA_FLAGS_MEM)) {
+>  		goto inject;
+> +	} else if (type & CXL_ERROR_MASK && is_valid_cxl_addr(param1)) {
+> +		goto inject;
+> +	}
+>  
+>  	/*
+>  	 * Disallow crazy address masks that give BIOS leeway to pick
+> @@ -807,3 +828,4 @@ module_exit(einj_exit);
+>  MODULE_AUTHOR("Huang Ying");
+>  MODULE_DESCRIPTION("APEI Error INJection support");
+>  MODULE_LICENSE("GPL");
+> +MODULE_IMPORT_NS(CXL);
 > diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-> index d1c559879dcc..3e2ca946bf47 100644
+> index 3e2ca946bf47..a7adf3d9814e 100644
 > --- a/drivers/cxl/acpi.c
 > +++ b/drivers/cxl/acpi.c
-> @@ -676,6 +676,8 @@ static int cxl_acpi_probe(struct platform_device *pdev)
->  	if (IS_ERR(root_port))
->  		return PTR_ERR(root_port);
+> @@ -756,6 +756,7 @@ static void __exit cxl_acpi_exit(void)
+>  {
+>  	platform_driver_unregister(&cxl_acpi_driver);
+>  	cxl_bus_drain();
+> +	set_cxl_root(NULL);
+
+Why this patch rather than previous?
+
+>  }
 >  
-> +	set_cxl_root(root_port);
-> +
->  	rc = bus_for_each_dev(adev->dev.bus, NULL, root_port,
->  			      add_host_bridge_dport);
->  	if (rc < 0)
+>  /* load before dax_hmem sees 'Soft Reserved' CXL ranges */
 > diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-> index 724be8448eb4..c3914e73f67e 100644
+> index c3914e73f67e..cb653cb1a1ea 100644
 > --- a/drivers/cxl/core/port.c
 > +++ b/drivers/cxl/core/port.c
-> @@ -875,6 +875,14 @@ struct cxl_port *find_cxl_root(struct cxl_port *port)
+> @@ -1147,6 +1147,23 @@ struct cxl_dport *devm_cxl_add_rch_dport(struct cxl_port *port,
 >  }
->  EXPORT_SYMBOL_NS_GPL(find_cxl_root, CXL);
+>  EXPORT_SYMBOL_NS_GPL(devm_cxl_add_rch_dport, CXL);
 >  
-> +static struct cxl_port *cxl_root;
-> +
-> +void set_cxl_root(struct cxl_port *root_port)
-> +{
-> +	cxl_root = root_port;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(set_cxl_root, CXL);
-> +
->  static struct cxl_dport *find_dport(struct cxl_port *port, int id)
->  {
->  	struct cxl_dport *dport;
-> @@ -930,11 +938,56 @@ static void cond_cxl_root_unlock(struct cxl_port *port)
->  		device_unlock(&port->dev);
->  }
->  
-> +static ssize_t cxl_rcrb_addr_show(struct device *dev,
-> +				  struct device_attribute *attr, char *buf)
+> +struct cxl_dport *cxl_find_rch_dport_by_rcrb(resource_size_t rcrb_base)
 > +{
 > +	struct cxl_dport *dport;
+> +	unsigned long index;
 > +
 > +	if (!cxl_root)
-> +		return -ENODEV;
+> +		return ERR_PTR(-ENODEV);
 > +
-> +	dport = cxl_find_dport_by_dev(cxl_root, dev);
-> +	if (!dport)
-> +		return -ENODEV;
+> +	xa_for_each(&cxl_root->dports, index, dport)
+> +		if ((dport->rch && dport->rcrb.base != CXL_RESOURCE_NONE)
+> +		    && dport->rcrb.base == rcrb_base)
+
+Local style in this file has && at end of line above.
+
+> +			return dport;
 > +
-> +	return sysfs_emit(buf, "0x%llx\n", (u64) dport->rcrb.base);
+> +	return NULL;
 > +}
-> +DEVICE_ATTR_RO(cxl_rcrb_addr);
+> +EXPORT_SYMBOL_NS_GPL(cxl_find_rch_dport_by_rcrb, CXL);
 > +
-> +static umode_t cxl_rcrb_addr_is_visible(struct kobject *kobj,
-> +					struct attribute *a, int n)
-> +{
-> +	struct device *dev = kobj_to_dev(kobj);
-> +	struct cxl_dport *dport;
-> +
-> +	if (!IS_ENABLED(CONFIG_ACPI_APEI_EINJ) || !cxl_root)
-> +		return 0;
-> +
-> +	dport = cxl_find_dport_by_dev(cxl_root, dev);
-> +	if (!dport || !dport->rch || dport->rcrb.base == CXL_RESOURCE_NONE)
-> +		return 0;
-> +
-> +	return a->mode;
-> +}
-> +
-> +static struct attribute *cxl_rcrb_addr_attrs[] = {
-> +	&dev_attr_cxl_rcrb_addr.attr,
-> +	NULL,
-> +};
-> +
-> +static const struct attribute_group cxl_rcrb_addr_group = {
-> +	.attrs = cxl_rcrb_addr_attrs,
-> +	.is_visible = cxl_rcrb_addr_is_visible,
-> +};
-> +
->  static void cxl_dport_remove(void *data)
+>  static int add_ep(struct cxl_ep *new)
 >  {
->  	struct cxl_dport *dport = data;
->  	struct cxl_port *port = dport->port;
->  
-> +	if (dport->rch)
-> +		sysfs_remove_group(&dport->dport_dev->kobj, &cxl_rcrb_addr_group);
-> +
->  	xa_erase(&port->dports, (unsigned long) dport->dport_dev);
->  	put_device(dport->dport_dev);
->  }
-> @@ -1021,6 +1074,11 @@ __devm_cxl_add_dport(struct cxl_port *port, struct device *dport_dev,
->  	if (rc)
->  		return ERR_PTR(rc);
->  
-> +	rc = sysfs_create_group(&dport_dev->kobj, &cxl_rcrb_addr_group);
-> +	if (rc)
-> +		dev_dbg(dport_dev, "Couldn't create cxl_rcrb_addr group: %d\n",
-> +			rc);
-> +
->  	return dport;
->  }
->  
+>  	struct cxl_port *port = new->dport->port;
 > diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> index 76d92561af29..4d5bce4bae7e 100644
+> index 4d5bce4bae7e..3e6779dbcd23 100644
 > --- a/drivers/cxl/cxl.h
 > +++ b/drivers/cxl/cxl.h
-> @@ -690,6 +690,8 @@ struct cxl_port *devm_cxl_add_port(struct device *host,
->  				   resource_size_t component_reg_phys,
->  				   struct cxl_dport *parent_dport);
->  struct cxl_port *find_cxl_root(struct cxl_port *port);
-> +void set_cxl_root(struct cxl_port *root_port);
+> @@ -8,6 +8,7 @@
+>  #include <linux/bitfield.h>
+>  #include <linux/bitops.h>
+>  #include <linux/log2.h>
+> +#include <linux/cxl.h>
+>  #include <linux/io.h>
+>  
+>  /**
+> diff --git a/include/linux/cxl.h b/include/linux/cxl.h
+> new file mode 100644
+> index 000000000000..6702caa78e7a
+> --- /dev/null
+> +++ b/include/linux/cxl.h
+
+We have other code outside drivers/cxl that gets to the
+CXL headers directly (to avoid this include being created before now).
+
+https://elixir.bootlin.com/linux/v6.6-rc3/source/drivers/perf/cxl_pmu.c#L24
+
+There wasn't much enthusiasm for creating a globally visible header hence
+I did that ../cxl stuff for that.
+
+Same probably applies here.
+
+Jonathan
+
+> @@ -0,0 +1,11 @@
+> +#ifndef _LINUX_CXL_H
+> +#define _LINUX_CXL_H
 > +
->  int devm_cxl_enumerate_ports(struct cxl_memdev *cxlmd);
->  void cxl_bus_rescan(void);
->  void cxl_bus_drain(void);
+> +#include <linux/xarray.h>
+> +#include <linux/errno.h>
+> +
+> +struct cxl_dport;
+> +
+> +struct cxl_dport *cxl_find_rch_dport_by_rcrb(resource_size_t rcrb_base);
+> +
+> +#endif
 
 
