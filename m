@@ -1,107 +1,112 @@
-Return-Path: <linux-acpi+bounces-137-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-138-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24497AEE75
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 16:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4697AF0B4
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 18:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 540322817C9
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 14:32:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 10D712816EE
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 16:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9BF2E62A
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 14:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB89934188
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 16:30:46 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A527326E34
-	for <linux-acpi@vger.kernel.org>; Tue, 26 Sep 2023 13:47:31 +0000 (UTC)
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4260F3
-	for <linux-acpi@vger.kernel.org>; Tue, 26 Sep 2023 06:47:29 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-31f71b25a99so8715583f8f.2
-        for <linux-acpi@vger.kernel.org>; Tue, 26 Sep 2023 06:47:29 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C5110EF
+	for <linux-acpi@vger.kernel.org>; Tue, 26 Sep 2023 14:59:54 +0000 (UTC)
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC3FB116
+	for <linux-acpi@vger.kernel.org>; Tue, 26 Sep 2023 07:59:52 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-32167a4adaaso8732732f8f.1
+        for <linux-acpi@vger.kernel.org>; Tue, 26 Sep 2023 07:59:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695736048; x=1696340848; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tUZoMLnKwsOq3aRDz3SQyOis9iaqsJSI3quNHiMxzyw=;
-        b=zzVesboSwQ66H+eSPvGYQlKK+AxGLJu7YJm6g5ArfznDMTAU+lJ8YGkjX90cdKkW2M
-         w6U9amZ+aGUJGAGvxsJZdvpTgLqKVg0N9hi1ynhEQPs8ibOsb8Pu1Ds5DhLeXjoAh6Uz
-         7EgO+k9OxuqjmQ/91Lwd8pg1q8Z8SIeipsqyJCeSHzLv75XsrIOE9NRnThR20gLlwfBp
-         Hcyx2Aa1fOLgEf6jAcCgd6i7BVvCCUXAAM15+5q9pNhX9eXrNZaEBM84AET27+7eKcZL
-         daQ26suBm9JAkM39Un578FepC1Qe0jXIuN+MP3JO2z1gDRGAqkfk4Un0vaSHX/v/yzVW
-         aa9w==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1695740391; x=1696345191; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vfLYtgRnxIhfGIuZ3AuQPnmd6mF7Zk5St0BXq4vGsIQ=;
+        b=TLzw53xlfCA4B2yyekGcmN2Gow3tYsMQZDMag7APmsRKZLKRwPcuPoc7Xfm9pZ1N8A
+         i8XZ6fbmgckGNwnl/tB/4I5ppkDl4KZpStL4Xiv9ChBKbHtPW+I1ipHDcBULsm4XLdE3
+         aBu2drv72zmlMLQSx51xCIobXP2ySCWI7bFE7fqUuQCm41h1B3nTdBqVBLZk+3Wqr9TQ
+         UQcxODnyP08mnU+n1WxUthfrUHGcjCBdV14jAzYfqloN4c3Y2vLkGRyoEGR/WlHc5Kh+
+         TuNVFJ7KMX7DuFMdygi7a54VJGyS0URP4mSdyyDhwbZ4H+ipRDjnQ5o8xw/GHYglb4jt
+         R8xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695736048; x=1696340848;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tUZoMLnKwsOq3aRDz3SQyOis9iaqsJSI3quNHiMxzyw=;
-        b=t8l1By4ML+IzXmC+6dHu5hXJ5XkOhjeKLEtYYDKxKvBB6nyL4c3sT64PO8WJM9ZRY2
-         NCd45Yo2ZgjlCeK0ueR4nNZDE07pYux/3cZdqIGZEODLHbYikTskpSpoeba4275hYW5e
-         A/btaNPdw2r+oXDCFK/JCphts0q03FiZxnJblARc+V+fU8fc93+r2b7ShaflAxPssAIo
-         9K+5+r+/4kYFGZxAr9AcJQ3dy55C8V/CBJ4cGWrcmH4fMwTx8HGoPb+MSg1FAlcDva8n
-         +qPdlhIbCrzYqf2VxsXqWBjLKnlGQxVyqOwYHZahcrlRBiRRSwDOnsx5heDBbmJtW9Dp
-         oQ7A==
-X-Gm-Message-State: AOJu0YyQ9QRu53HFmF9nkP4AU9L0rrRa3OdH6pNviebnt/xvzVV5ovhV
-	iMH5Xk4TSelXXGorS1z3EY840g==
-X-Google-Smtp-Source: AGHT+IFvaxin1673zlwprQP4SWnLVcctslXPms1at5HtCDaXdk2NYjuV3/YZ8ECXZqwv+B7HcAX/nw==
-X-Received: by 2002:a05:6000:1d0:b0:319:7abf:d8e2 with SMTP id t16-20020a05600001d000b003197abfd8e2mr8005672wrx.24.1695736048279;
-        Tue, 26 Sep 2023 06:47:28 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0? ([2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0])
-        by smtp.googlemail.com with ESMTPSA id l24-20020adfa398000000b003232e5de745sm4351819wrb.55.2023.09.26.06.47.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Sep 2023 06:47:27 -0700 (PDT)
-Message-ID: <c5eb5bea-264b-0084-af6c-2d95580c8f33@linaro.org>
-Date: Tue, 26 Sep 2023 15:47:27 +0200
+        d=1e100.net; s=20230601; t=1695740391; x=1696345191;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vfLYtgRnxIhfGIuZ3AuQPnmd6mF7Zk5St0BXq4vGsIQ=;
+        b=GC2dLYSp1YGYOg/Vo0qk3Y0DyNaPzgdUQAIf9yHi1MlzaRR1FO8D828RIHLJoqbJs+
+         qLnJQmbM9PDmTBjB6fDd6uASpOXDIAs4uq1QAdDzGrvESOOsUvki18TZ5YZoCnHTadjg
+         0rZJlvAsNp67b3Xm6p/dKhBh5Qk55XEpvlaodpmSP+SOIXF5sayG8DX45+4COqaN4DGG
+         kzmzF7BHEyT9Txmo5LtrqYN1+XkH2+AVNqaRcObIngyrRqDh9uYtDKdUWJkH+uKRIJFr
+         mIekMkvJNHgg1TI8QsuK1wVXFbs9NTEtFbwtbZshLzIMFgqnzoJgX14xHQyYYvFbg1aO
+         meZw==
+X-Gm-Message-State: AOJu0YwvMp8M4VGSt/2KPZ0Q7K8B20dhkz53D156TjM57avbA62ke/Y1
+	RefIL5n8qutmcn/bBdniEgx+D0aWeJ/jfpVoNtA=
+X-Google-Smtp-Source: AGHT+IHPHclId6kylza566id26/po9Ed756snf6AMpJqfTNPum1ErtRmJjfjJVGvOnVFQwtK5zDvsw==
+X-Received: by 2002:a5d:44ca:0:b0:31f:d52a:82af with SMTP id z10-20020a5d44ca000000b0031fd52a82afmr8678818wrr.49.1695740391015;
+        Tue, 26 Sep 2023 07:59:51 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:334:ac00:686:c497:30b1:d2b9])
+        by smtp.gmail.com with ESMTPSA id s2-20020a5d5102000000b0031f82743e25sm14871634wrt.67.2023.09.26.07.59.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Sep 2023 07:59:50 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Gross <markgross@kernel.org>
+Cc: linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [RFT PATCH 0/4] platform/x86: int3472: don't use gpiod_toggle_active_low()
+Date: Tue, 26 Sep 2023 16:59:39 +0200
+Message-Id: <20230926145943.42814-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 9/9] ACPI: thermal: Drop valid flag from struct
- acpi_thermal_trip
-Content-Language: en-US
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
- Zhang Rui <rui.zhang@intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-References: <5708760.DvuYhMxLoT@kreacher> <9162925.CDJkKcVGEf@kreacher>
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <9162925.CDJkKcVGEf@kreacher>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 12/09/2023 20:47, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Notice that the valid flag in struct acpi_thermal_trip is in fact
-> redundant, because the temperature field of invalid trips is always
-> equal to THERMAL_TEMP_INVALID, so drop it from there and adjust the
-> code accordingly.
-> 
-> No intentional functional impact.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+gpiod_toggle_active_low() is a badly designed API that should have never
+been used elsewhere then in the MMC code. And even there we should find
+a better solution.
+
+Replace the uses of it in the int3472 driver with the good old temporary
+lookup table trick. This is not very pretty either but it's the lesser
+evil.
+
+Bartosz Golaszewski (4):
+  platform/x86: int3472: provide a helper for getting GPIOs from lookups
+  platform/x86: int3472: led: don't use gpiod_toggle_active_low()
+  platform/x86: int3472: clk_and_regulator: use GPIO lookup tables
+  gpio: acpi: remove acpi_get_and_request_gpiod()
+
+ drivers/gpio/gpiolib-acpi.c                   | 28 ------------------
+ .../x86/intel/int3472/clk_and_regulator.c     | 22 ++++++--------
+ drivers/platform/x86/intel/int3472/common.c   | 29 +++++++++++++++++++
+ drivers/platform/x86/intel/int3472/common.h   |  9 ++++++
+ drivers/platform/x86/intel/int3472/led.c      | 12 +++-----
+ include/linux/gpio/consumer.h                 |  8 -----
+ 6 files changed, 51 insertions(+), 57 deletions(-)
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+2.39.2
 
 
