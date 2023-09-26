@@ -1,151 +1,106 @@
-Return-Path: <linux-acpi+bounces-127-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-128-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E1C7AECED
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 14:33:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FC17AECEF
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 14:33:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 85B202817CF
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 12:33:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 5E4FA28179F
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 12:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC44286A6
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 12:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4756C28DA8
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Sep 2023 12:33:43 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6735381
-	for <linux-acpi@vger.kernel.org>; Tue, 26 Sep 2023 11:05:44 +0000 (UTC)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A32DE95;
-	Tue, 26 Sep 2023 04:05:42 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvxhW2RCtz6K9hk;
-	Tue, 26 Sep 2023 19:04:27 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 26 Sep
- 2023 12:05:40 +0100
-Date: Tue, 26 Sep 2023 12:05:39 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Ben Cheatham <Benjamin.Cheatham@amd.com>
-CC: <rafael@kernel.org>, <dan.j.williams@intel.com>,
-	<linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<bhelgaas@google.com>, <yazen.ghannam@amd.com>
-Subject: Re: [PATCH v5 3/3] ACPI, APEI, EINJ: Update EINJ documentation
-Message-ID: <20230926120539.00000a4a@Huawei.com>
-In-Reply-To: <20230925200127.504256-4-Benjamin.Cheatham@amd.com>
-References: <20230925200127.504256-1-Benjamin.Cheatham@amd.com>
-	<20230925200127.504256-4-Benjamin.Cheatham@amd.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EB2525E
+	for <linux-acpi@vger.kernel.org>; Tue, 26 Sep 2023 11:30:58 +0000 (UTC)
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427A4101
+	for <linux-acpi@vger.kernel.org>; Tue, 26 Sep 2023 04:30:54 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-4056ce55e7eso52817465e9.2
+        for <linux-acpi@vger.kernel.org>; Tue, 26 Sep 2023 04:30:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695727853; x=1696332653; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PZ8NWxX3XZ8O0amBBB9fjrfirMGFwy+I6ljBSmFsWZ8=;
+        b=O+p4iHf+mYTPSokCOVLWZBbouNEqzZvpLJUSYs//oCs2QjVgSUYhKIxmOgFCJGfJ1e
+         x9QKfVdnXAAKSNSuIuiajKbL6ypvqMstZHiS9aQXMSKeP3FGoP+POmr1Cgv5VCnd9z1P
+         JWogQISp57s4HqnMv5/Vlt32qN0yIKsi7OMx6W0EvrHw/VILe0dykwTaal8Wm86e1fy8
+         JtBnCZaHdSDD/fETAWftJI1Yz+ayZXP9nCVfCuPNoDdQsUQMVKifLx4YaMCbNGRZB3RE
+         n1KFhOZ/P/p3CItvup0JEwFmKAQWzMD7RFGW74LLM7dIpx6zm2YekiF0Jv312MRPYub1
+         dDgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695727853; x=1696332653;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PZ8NWxX3XZ8O0amBBB9fjrfirMGFwy+I6ljBSmFsWZ8=;
+        b=mUorx7fRBuwi04b6Rhv+kp2NBfSoqmnKKH2B48CLpcpxP4JyZPkD9GFcIC0qGZi1N7
+         h+glFv0MXFQOhJVBLOOx1h6mhZ1NDNZqOT0QTm8fkEYaHOssFrhKHqJHEb3SWWwzTQtx
+         RrCqpZRDWnK6MuxAtsn5ZZlFpo9puHhFG0813hayykAyXacbxzNzi7Wg6AezMB/rbLWd
+         25XMp3tmRrIUFGQEqXhs02P418jQVN/Ve0XaIcQOJdXu/Jp903J7kP2fSyhDQdZH4cl9
+         8PSJAEknnfvCM/IHWQYSX9oK0IcM4PV1nw7uGNJj7DqqzPeHEFhN7aOjvkNdJ1/MQDJ3
+         WhRg==
+X-Gm-Message-State: AOJu0Yx+m47d5bCKiJxyHvssBbu+a/lXOFtms0PAQSM84q3D+Bkw2XJ2
+	6xQleSEtlW6m9zNvhoMB3ttqJQ==
+X-Google-Smtp-Source: AGHT+IFI9K3AxHawduGMPqjVMpMA9N0DyVZyAB8v27F5UVumfSRQyiThJ7rvhwgT6V4mmVLgMuR3LA==
+X-Received: by 2002:a7b:cc85:0:b0:402:ee9e:ed98 with SMTP id p5-20020a7bcc85000000b00402ee9eed98mr8069517wma.34.1695727852468;
+        Tue, 26 Sep 2023 04:30:52 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0? ([2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0])
+        by smtp.googlemail.com with ESMTPSA id z9-20020a05600c114900b004058e6379d8sm6210637wmz.23.2023.09.26.04.30.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Sep 2023 04:30:52 -0700 (PDT)
+Message-ID: <e3dd5e8c-7bdd-8ff5-5f47-3e3b09f2d97c@linaro.org>
+Date: Tue, 26 Sep 2023 13:30:51 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1 6/9] ACPI: thermal: Untangle initialization and updates
+ of the passive trip
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
+ Zhang Rui <rui.zhang@intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+References: <5708760.DvuYhMxLoT@kreacher> <1942063.PYKUYFuaPT@kreacher>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <1942063.PYKUYFuaPT@kreacher>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, 25 Sep 2023 15:01:27 -0500
-Ben Cheatham <Benjamin.Cheatham@amd.com> wrote:
-
-> Update EINJ documentation to include CXL errors in available_error_types
-> table and usage of the types.
+On 12/09/2023 20:43, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Also fix a formatting error in the param4 file description that caused
-> the description to be on the same line as the bullet point.
+> Separate the code needed to update the passive trip (in a response to a
+> notification from the platform firmware) as well as to initialize it
+> from the code that is only necessary for its initialization and cleanly
+> divide it into functions that each carry out a specific action.
 > 
-> Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
-A trivial comment inline.
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-> ---
->  .../firmware-guide/acpi/apei/einj.rst         | 25 ++++++++++++++++---
->  1 file changed, 21 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/firmware-guide/acpi/apei/einj.rst b/Documentation/firmware-guide/acpi/apei/einj.rst
-> index d6b61d22f525..c6f28118c48b 100644
-> --- a/Documentation/firmware-guide/acpi/apei/einj.rst
-> +++ b/Documentation/firmware-guide/acpi/apei/einj.rst
-> @@ -32,6 +32,9 @@ configuration::
->    CONFIG_ACPI_APEI
->    CONFIG_ACPI_APEI_EINJ
->  
-> +To use CXL error types ``CONFIG_CXL_ACPI`` needs to be set to the same
-> +value as ``CONFIG_ACPI_APEI_EINJ`` (either "y" or "m").
-> +
->  The EINJ user interface is in <debugfs mount point>/apei/einj.
->  
->  The following files belong to it:
-> @@ -40,9 +43,9 @@ The following files belong to it:
->  
->    This file shows which error types are supported:
->  
-> -  ================  ===================================
-> +  ================  =========================================
->    Error Type Value	Error Description
-> -  ================  ===================================
-> +  ================  =========================================
->    0x00000001        Processor Correctable
->    0x00000002        Processor Uncorrectable non-fatal
->    0x00000004        Processor Uncorrectable fatal
-> @@ -55,7 +58,13 @@ The following files belong to it:
->    0x00000200        Platform Correctable
->    0x00000400        Platform Uncorrectable non-fatal
->    0x00000800        Platform Uncorrectable fatal
-> -  ================  ===================================
-> +  0x00001000        CXL.cache Protocol Correctable
-> +  0x00002000        CXL.cache Protocol Uncorrectable non-fatal
-> +  0x00004000        CXL.cache Protocol Uncorrectable fatal
-> +  0x00008000        CXL.mem Protocol Correctable
-> +  0x00010000        CXL.mem Protocol Uncorrectable non-fatal
-> +  0x00020000        CXL.mem Protocol Uncorrectable fatal
-> +  ================  =========================================
->  
->    The format of the file contents are as above, except present are only
->    the available error types.
-> @@ -106,6 +115,7 @@ The following files belong to it:
->    Used when the 0x1 bit is set in "flags" to specify the APIC id
->  
->  - param4
-> +
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-#Unrelated change.  Probably reasonable but should be separate patch really.
-
->    Used when the 0x4 bit is set in "flags" to specify target PCIe device
->  
->  - notrigger
-> @@ -159,6 +169,13 @@ and param2 (1 = PROCESSOR, 2 = MEMORY, 4 = PCI). See your BIOS vendor
->  documentation for details (and expect changes to this API if vendors
->  creativity in using this feature expands beyond our expectations).
->  
-> +CXL error types are supported from ACPI 6.5 onwards. To use these error
-> +types you need the MMIO address of a CXL 1.1 downstream port. You can
-> +find the address of dportY in /sys/bus/cxl/devices/portX/dportY/cxl_rcrb_addr
-> +(it's possible that the dport is under the CXL root, in that case the
-> +path would be /sys/us/cxl/devices/rootX/dportY/cxl_rcrb_addr).
-> +From there, write the address to param1 and continue as you would for a
-> +memory error type.
->  
->  An error injection example::
->  
-> @@ -201,4 +218,4 @@ The following sequence can be used:
->    7) Read from the virtual address. This will trigger the error
->  
->  For more information about EINJ, please refer to ACPI specification
-> -version 4.0, section 17.5 and ACPI 5.0, section 18.6.
-> +version 4.0, section 17.5 and ACPI 6.5, section 18.6.
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
 
