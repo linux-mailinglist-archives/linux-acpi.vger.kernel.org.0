@@ -1,58 +1,59 @@
-Return-Path: <linux-acpi+bounces-230-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-231-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4AD7B0A3A
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 18:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CD3B7B0A3B
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 18:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 208AB28174F
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 16:32:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id E3F832810FF
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 16:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BE53C699
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 16:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFB33C684
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 16:32:40 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0041170F
-	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 16:10:03 +0000 (UTC)
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8C7B1B8;
-	Wed, 27 Sep 2023 09:09:56 -0700 (PDT)
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-57bf04841ccso444706eaf.0;
-        Wed, 27 Sep 2023 09:09:56 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF8F26E17
+	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 16:14:19 +0000 (UTC)
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA93A91;
+	Wed, 27 Sep 2023 09:14:18 -0700 (PDT)
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-57bc11c197aso830668eaf.1;
+        Wed, 27 Sep 2023 09:14:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695830996; x=1696435796;
+        d=1e100.net; s=20230601; t=1695831258; x=1696436058;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uoBx4haDwLKQQRn3ZmCIvGY1ND5OJ+IJ+kQUcWjxXZg=;
-        b=tPgQxZ3U4FJh2OB1AmEHhIkB3I9oLbaDeLNHHmFlhKcBEmjaQ7KAHHkMU9EBny2VF3
-         bsQG4Jt5AH94x3AJvzH/11F+xglLGGJlVt5KAUIsyw0/9RntD/gM43R80jXWbkOUQ62W
-         m2p0euFGCWJ14+Pn5581lpO07ebcY6kw6VutC+/BGUIVAemfbfldPDCPuINxIcoaLJOM
-         PQEkkfwsX19xUPJgcwVFuiLNgnISYpKMLwkcjrjddu3P/IJQ/Loq6mJvZ1ABVZI6j/uk
-         cQKRrKvbeBtAU53uGqsYG7I2JWh2n/GmRQDBRmq+lyLJwGlU6NdJ0xdJkRcn2nzvKa/4
-         ezIw==
-X-Gm-Message-State: AOJu0Yyp/uSe8YtzpHEw+58/5sLuzStbuDjtJ+lOJIRC2nVVjTYee074
-	2pnu9y/91HPIVb3pda5CfrAKCGFIAVCOW20d0kc=
-X-Google-Smtp-Source: AGHT+IEi5cA9AxvFYp7fB68YSeYwHe3jVtm4j1rrNlisxxUbOI1nfAfQyHhvuz6Cw8HTl6SXKYe00OcEDINZTFnKZJ8=
-X-Received: by 2002:a4a:c58f:0:b0:57b:7804:9d72 with SMTP id
- x15-20020a4ac58f000000b0057b78049d72mr2771381oop.1.1695830995803; Wed, 27 Sep
- 2023 09:09:55 -0700 (PDT)
+        bh=E1ahmo9waRUqjCTDTV6N3TPA6RbVuxWOLI3ShINewQQ=;
+        b=tR7o3/xpvI3DyNjTFPiwxEmR/RP6ShPh8MNrF2m2WrwLPeupDP47bAaBKN2DRYsVCp
+         s7sBy8uVnlURWsIWpbAN0oH08UOC0W/QDWBmFuuNAcZKx0XAsGPb5Vyo1FdHEYsRKiW2
+         Q+zxyILRYg1IAEyc7ICqsi4zFG2G6cGZ2cXcw2R7r7uHnjEuP2CGEsf0IuPP63DyVzAR
+         zuRyEkawH2OrMMAkYmK5eOOmjt1kTpsOAHBnZPEjWX8NSYa6EAuk16ckz7vi+q+1v4Mg
+         JwDhRABizYe96L4fhdVvbChkGWCwcDMokRYKNg+rcrOiNxrpTCj0f3Gp3mt0wCxA2n7r
+         Nmgw==
+X-Gm-Message-State: AOJu0YysxsXtVmev/kwxdfPBl4vRHmgMtKv+cn1WQ+ssv80Z099NqZnG
+	P0cZJEOlZ9yINQOHWImKdugOIDQYd/szXmeM/lA=
+X-Google-Smtp-Source: AGHT+IFBpFosaX2K+I5sHnXh1LWvPJSn6Sr5sxXngfz5rSCyc+9SiiFyG1qQYhJMi9AUVgv/Q02VhqmrWlAFmv+zlEs=
+X-Received: by 2002:a4a:ee18:0:b0:56e:94ed:c098 with SMTP id
+ bd24-20020a4aee18000000b0056e94edc098mr3051244oob.0.1695831257895; Wed, 27
+ Sep 2023 09:14:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1957441.PYKUYFuaPT@kreacher> <1882755.CQOukoFCf9@kreacher>
- <3c9f7b7d-a9ca-79ae-4e64-367a82f953bc@linaro.org> <CAJZ5v0ifXSWd4QL+j-=8OBr1aQr0WAeMBGYtis_gkHJDBLeWMg@mail.gmail.com>
- <d4bdea97-1e92-6422-01c4-bf7caca4ea45@linaro.org>
-In-Reply-To: <d4bdea97-1e92-6422-01c4-bf7caca4ea45@linaro.org>
+References: <1957441.PYKUYFuaPT@kreacher> <2590280.Lt9SDvczpP@kreacher>
+ <9f1374db-f866-ff52-e86c-99fecee24d1b@linaro.org> <CAJZ5v0hw3LGByW=18tiFEB7JQ9rOVo6TqCGhzxWcrUQYb+VGEw@mail.gmail.com>
+ <f193e4a5-b315-a1bd-7488-7ea0d5e267f8@linaro.org>
+In-Reply-To: <f193e4a5-b315-a1bd-7488-7ea0d5e267f8@linaro.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 27 Sep 2023 18:09:44 +0200
-Message-ID: <CAJZ5v0hOJYuaJ2VXPCrHZspOjj342+NkB=nHXPT6YKvy90XXBA@mail.gmail.com>
-Subject: Re: [PATCH v1 06/13] thermal: gov_fair_share: Rearrange get_trip_level()
+Date: Wed, 27 Sep 2023 18:14:06 +0200
+Message-ID: <CAJZ5v0h_HB6DX3NemyojE8aZrQeH05aAsdKLE-q-gp4UC+NBJQ@mail.gmail.com>
+Subject: Re: [PATCH v1 07/13] thermal: gov_power_allocator: Use trip pointers
+ instead of trip indices
 To: Daniel Lezcano <daniel.lezcano@linaro.org>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, 
 	Linux PM <linux-pm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
@@ -63,78 +64,64 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
 	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Sep 27, 2023 at 5:37=E2=80=AFPM Daniel Lezcano
+On Wed, Sep 27, 2023 at 5:46=E2=80=AFPM Daniel Lezcano
 <daniel.lezcano@linaro.org> wrote:
 >
-> On 27/09/2023 17:06, Rafael J. Wysocki wrote:
-> > On Wed, Sep 27, 2023 at 5:00=E2=80=AFPM Daniel Lezcano
+> On 27/09/2023 17:27, Rafael J. Wysocki wrote:
+> > On Wed, Sep 27, 2023 at 5:10=E2=80=AFPM Daniel Lezcano
 > > <daniel.lezcano@linaro.org> wrote:
 > >>
-> >> On 21/09/2023 19:54, Rafael J. Wysocki wrote:
+> >> On 21/09/2023 19:55, Rafael J. Wysocki wrote:
 > >>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > >>>
-> >>> Make get_trip_level() access the thermal zone's trip table directly
-> >>> instead of using __thermal_zone_get_trip() which adds overhead relate=
-d
-> >>> to the unnecessary bounds checking and copying the trip point data.
-> >>>
-> >>> Also rearrange the code in it to make it somewhat easier to follow.
-> >>>
-> >>> The general functionality is not expected to be changed.
-> >>>
-> >>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >>> ---
-> >>>    drivers/thermal/gov_fair_share.c |   22 ++++++++++------------
-> >>>    1 file changed, 10 insertions(+), 12 deletions(-)
-> >>>
-> >>> Index: linux-pm/drivers/thermal/gov_fair_share.c
-> >>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >>> --- linux-pm.orig/drivers/thermal/gov_fair_share.c
-> >>> +++ linux-pm/drivers/thermal/gov_fair_share.c
-> >>> @@ -21,23 +21,21 @@
-> >>>     */
-> >>>    static int get_trip_level(struct thermal_zone_device *tz)
-> >>>    {
-> >>> -     struct thermal_trip trip;
-> >>> -     int count;
-> >>> +     const struct thermal_trip *trip =3D tz->trips;
-> >>> +     int i;
-> >>>
-> >>> -     for (count =3D 0; count < tz->num_trips; count++) {
-> >>> -             __thermal_zone_get_trip(tz, count, &trip);
-> >>> -             if (tz->temperature < trip.temperature)
-> >>> +     if (tz->temperature < trip->temperature)
-> >>> +             return 0;
-> >>> +
-> >>> +     for (i =3D 0; i < tz->num_trips - 1; i++) {
-> >>> +             trip++;
-> >>> +             if (tz->temperature < trip->temperature)
-> >>>                        break;
-> >>>        }
+> >>> Eliminate the __thermal_zone_get_trip() usage that adds unnecessary
+> >>> overhead (due to pointless bounds checking and copying of trip point
+> >>> data) from the power allocator thermal governor and generally make it
+> >>> use trip pointers instead of trip indices where applicable.
 > >>
-> >> Is it possible to use for_each_thermal_trip() instead ? That would mak=
-e
-> >> the code more self-encapsulate
+> >> Actually the __thermal_zone_get_trip() change was done on purpose to
+> >> replace the 'throttle' callback index parameter by the trip pointer an=
+d
+> >> removing those call to __thermal_zone_get_trip() while the code was
+> >> using the trip pointer.
+> >>
+> >> IMO, the changes should focus on changing the trip_index parameter by
+> >> the trip pointer directly in the throttle ops.
 > >
-> > It is possible in principle, but this is a governor which is regarded
-> > as part of the core, isn't it?
+> > So you would like .throttle() to take a trip pointer argument instead
+> > of an index?
 > >
-> > So is an extra overhead related to using a callback (which may be
-> > subject to retpolines and such) really justified in this case?
+> > The difficulty here is that the user space governor needs to expose
+> > the index to user space anyway, so it would need to find it if it gets
+> > a trip pointer instead.
+> >
+> > Not a big deal I suppose, but a bit of extra overhead.
+> >
+> > Also it is easier to switch the governors over to using trip pointers
+> > internally and then change the .throttle() argument on top of that.
+> >
+> >> The pointer can be
+> >> retrieved in the handle_thermal_trip() function and passed around for
+> >> the rest of the actions on this trip point
+> >
+> > Right, except for the user space governor which needs a trip index.
+> > And the indices are used for tracing too.
 >
->  From my POV, all trip points browsing should be replaced by
-> for_each_thermal_trip() so any change in the future in how we go through
-> the existing thermal trips will impact one place.
->
-> If the routine needs to be optimized, that is something we can do also
-> (may be an inline the callback?)
+> Given the userspace governor is going obsolete and the notifications are
+> for the userspace, which is slow, we can retrieve the index from the
+> throttling ops
 
 OK
+
+Given that patches [01-05/13] are not controversial, I'll respon the
+governor patches into a separate series on top of them.
+
+I would much appreciate it if you could take a look at patch [10/13]
+and the remaining ACPi thermal patches in this series [11-13/13].
+They don't depend on the governor changes.
 
