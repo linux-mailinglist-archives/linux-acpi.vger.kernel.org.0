@@ -1,107 +1,91 @@
-Return-Path: <linux-acpi+bounces-178-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-179-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A607AFE9D
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 10:33:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEFC37AFEA1
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 10:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id BB5452842BA
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 08:33:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id A56CE284305
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 08:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B89522C
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 08:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECE12F93
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 08:33:59 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295901FCC
-	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 07:02:18 +0000 (UTC)
-Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9A3F5
-	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 00:02:16 -0700 (PDT)
-Received: by mail-vs1-xe36.google.com with SMTP id ada2fe7eead31-4526c6579afso6843029137.0
-        for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 00:02:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1695798135; x=1696402935; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PIhw6V2vNvwuHPJdanJymYad1CWCeReXt9hAkVYiSu8=;
-        b=UUgp2qkBRuw7atZO+bq6YhZnv2XP7IXd16nAdUZoFPR6yYKrrje3qoKCG8PWe+lXZA
-         wvB6L/b2+jWifMiFq2LqfScOb5McaPyr2PYzZvk/ALoL6VW2SHkFRXRTaOUvDD1IGoHf
-         ITmQj2ihroFVxBp29v3yyrtt+7r4ErTriCU25/tuGZFctbEV2L4PwyKDhg1o6oBDNOGT
-         HP1HGeGNkUro89LmwjFXv9IxiUI4w2v3dQP6TpVZoFaNzNKjsYz9lDXyuSXIwU0eiwqt
-         Dud/Vjhj74jiZ3HK5VGJR00Uvdcm+B5JEEbgSrmp3KrKxH+4A1JhuTZCA4KDgkZniqJM
-         tmMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695798135; x=1696402935;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PIhw6V2vNvwuHPJdanJymYad1CWCeReXt9hAkVYiSu8=;
-        b=GeWmoiEehTYu/jWUwY6XveALQMDpqIxZQKd4RhhFrOJS6+esrKE2b4buaoiMJEGVR6
-         jTOLZKUHLex5kngbjsw+aU84sIP8QMKpBltS+o87+yHIxNIxKvCWI3JViWXsINrMAuuY
-         4iaGv64e7SCMdsDuZK89z1ECuAQl4zumweLbvwBm7WzHYuBXWh0xfNFA0hvdaKvBM6Zm
-         OKE4KEqpIHFz8lH1/D7qtx77P+Fa+qW54MtqZ7p2iLsg+O9HBxCggSHzi23wq/sPSDr1
-         vmwpaenH/Fppf6JfnO/cdsVZ2DXvspu+29zAZb4+dexdO4tOElW5YnJYXw13oiMw4NUI
-         4xig==
-X-Gm-Message-State: AOJu0YyOXpETNnEoQehIiMaOdy4XvLlTLOiGuVPlortQHat7HXzMQ121
-	MlvSOFzzu52UDIA8Q5k5y4Z0HVgwwsOaEFD4xrv+hU3yA1dkOYos
-X-Google-Smtp-Source: AGHT+IFeBg+cETieioky1nVVQRLBCT9NkB2t+sJgbjsopgLmTzgcBajxJFtqUg5cY06CWtryBPEjDMHEXp1rIT8Co8E=
-X-Received: by 2002:a05:6102:3e0f:b0:450:985f:ef28 with SMTP id
- j15-20020a0561023e0f00b00450985fef28mr2450526vsv.5.1695798135672; Wed, 27 Sep
- 2023 00:02:15 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C4F2F93
+	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 07:55:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A402012A;
+	Wed, 27 Sep 2023 00:55:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695801317; x=1727337317;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=f4PyUwh+YVyTNsxc/+QRSFd54iP09xRqZftgK4fNc8U=;
+  b=fIvNNW/ui7PVlOdTZCBZ1kbS7c9Vw704Q8QRvrd+b9+gHotNUYp1VGuw
+   T/xHF3SRR/HM9YGBKWn8LQ74+TdkK8I+XPiicjrbsp2EJveiJMTHyF0VQ
+   R50/qOlqdjvLApNzCOFCF0OqoF4YudoMxknjiDABEqohMi7xtdidgtKFb
+   Jn7sxX/fBsOe0pJj3aoDae9Xk/g9DQcR1vHXd5J2tEPAx+Iu/TD53N1mu
+   hb827adG11YqvzBddn5LjW4Ueq6/IQO80fH0Ufs2dSvamCzvce+ut4/jc
+   14wlDg09/j3Ovh3F8VN6yfZVk281b8bbF8tiQbNjK9giwA+JCpd+fELwD
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="385613387"
+X-IronPort-AV: E=Sophos;i="6.03,179,1694761200"; 
+   d="scan'208";a="385613387"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2023 00:55:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="819325158"
+X-IronPort-AV: E=Sophos;i="6.03,179,1694761200"; 
+   d="scan'208";a="819325158"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga004.fm.intel.com with ESMTP; 27 Sep 2023 00:55:13 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 5FCBB133D; Wed, 27 Sep 2023 10:55:12 +0300 (EEST)
+Date: Wed, 27 Sep 2023 10:55:12 +0300
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Gross <markgross@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [RFT PATCH 4/4] gpio: acpi: remove acpi_get_and_request_gpiod()
+Message-ID: <20230927075512.GE3208943@black.fi.intel.com>
+References: <20230926145943.42814-1-brgl@bgdev.pl>
+ <20230926145943.42814-5-brgl@bgdev.pl>
+ <ZRL4epTUrDmHCk8K@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230926145943.42814-1-brgl@bgdev.pl> <20230926145943.42814-3-brgl@bgdev.pl>
- <ZRL4PYeX21bwCPR0@smile.fi.intel.com>
-In-Reply-To: <ZRL4PYeX21bwCPR0@smile.fi.intel.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 27 Sep 2023 09:02:04 +0200
-Message-ID: <CAMRc=Mf7P4sWdhgTV+jVD8HEVpxbSuGK8JjJb5Q9djCkKUeUcg@mail.gmail.com>
-Subject: Re: [RFT PATCH 2/4] platform/x86: int3472: led: don't use gpiod_toggle_active_low()
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Daniel Scally <djrscally@gmail.com>, 
-	Hans de Goede <hdegoede@redhat.com>, Mark Gross <markgross@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-	autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZRL4epTUrDmHCk8K@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, Sep 26, 2023 at 5:27=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Tue, Sep 26, 2023 at 04:59:41PM +0200, Bartosz Golaszewski wrote:
+On Tue, Sep 26, 2023 at 06:27:54PM +0300, Andy Shevchenko wrote:
+> On Tue, Sep 26, 2023 at 04:59:43PM +0200, Bartosz Golaszewski wrote:
 > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > Instead of acpi_get_and_request_gpiod() + gpiod_toggle_active_low(), us=
-e
-> > temporary lookup tables with appropriate lookup flags.
->
-> ...
->
-> > +     int3472->pled.gpio =3D skl_int3472_gpiod_get_from_temp_lookup(
-> > +                             int3472->dev, path, agpio->pin_table[0],
-> > +                             "int3472,privacy-led", polarity,
-> > +                             GPIOD_OUT_LOW);
->
-> Personally I found this style weird. I prefer to have longer line over
-> the split on the parentheses.
->
+> > 
+> > With no more users, we can remove acpi_get_and_request_gpiod().
+> 
+> The best patch in the series!
+> Reviewed-by: From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-I in turn prefer this one. Checkpatch doesn't complain either way so
-I'll leave it to the maintainers of this driver to decide.
+Fully agree!
 
-Bart
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
