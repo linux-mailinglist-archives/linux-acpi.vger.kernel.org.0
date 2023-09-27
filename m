@@ -1,59 +1,59 @@
-Return-Path: <linux-acpi+bounces-240-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-241-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F517B0C05
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 20:33:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6497B0C06
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 20:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 5AC972824C7
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 18:33:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 52B4D281579
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 18:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F301A585
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 18:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3521A589
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 18:33:29 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7449E20B15
-	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 17:00:40 +0000 (UTC)
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11B9812A
-	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 10:00:39 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d8198ca891fso12986715276.1
-        for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 10:00:39 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B20420B15
+	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 17:00:46 +0000 (UTC)
+Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F39126
+	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 10:00:44 -0700 (PDT)
+Received: by mail-oo1-xc35.google.com with SMTP id 006d021491bc7-57b8cebf57dso4880520eaf.0
+        for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 10:00:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1695834038; x=1696438838; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1695834043; x=1696438843; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EMRAaYbpAL9AMr/u9386eJc3P6IZIKKW5n+xTVSQNsU=;
-        b=Mh7SszRtl5oB5ZhDY6oUv6VoramUgJr2e6VFqqApdiB7mY3jrbUk0r5giPalv0LK1X
-         BhtZGFJGBG6U8IrVy1k6A0XyGeBFuNK72SnWSZVHcVWac+UwW08PqcN4vXXMhX24MDoC
-         uZU56FE6kvWc7c4GWGhKlpfY9RdY1S+2g4tDmOPiJ50zpGzZQ7siUvK82YvN+vUBjGM+
-         ZnRjDPH8w6ZFx1yUEDKOLq4wUOmmhGaWBQmG4+8Gvd4eJ0646t4ZVEhR7EFoUFTJ/yf8
-         naQPTgTe6+fUsYrtmdoxCPsYu4gAIuIFoMhpepV4AsmZKvoYRjxNI4+XBEvlVzTXJ/VZ
-         vYDQ==
+        bh=pG1tzQTVssTuSgiTai6pnkMjirZbD31EyyHGMhy1at0=;
+        b=oz8YwNkXzxa/AUErObOaWGyGXiDiswFNYN7Fwl9q0a7MfldAH9jO+WT96ROcPmvn6s
+         efXi40i9PnfRhzmjv3P/q53voqkGwj+o6qgCBEPIAs3eLFrfz+XqrTvsPaD+mHQ36iBz
+         8LTMRVWs6xbi3s0No1yJlJPhR9ORfDZ4G9TMoiolkqMiXZeigkdZrukz+XYkuTqAjklt
+         /po9aampApisNVfsIqu9r84988GEy4GFbvrHzsJDce+9SBMTn1/zV+Y5kUL8S0RW6W0H
+         8iWUfhYS/8xrrAwLv3kJMQFA7vx6PgQzBn9w6NkcWZdjTBM9erO0utKDmns/pBWZMnzd
+         gchw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695834038; x=1696438838;
+        d=1e100.net; s=20230601; t=1695834043; x=1696438843;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EMRAaYbpAL9AMr/u9386eJc3P6IZIKKW5n+xTVSQNsU=;
-        b=HZ+jx8K/C2LFMAaoxEO8gIgh1AdItWW+xZ/E9JJNekgNd6okOsmboiMty7vQPMsc3U
-         fCqfAO6J4SRCrLdVQ6xA39q/wMzuXYWVo3Zzxe0KzjkM4k7DUPBwfynO0vQ2FjnuRiMR
-         mtlYuY+hsgdOigDb0STEM4NCXHldW66v+2sAWrE7c22kd2zPQBCzt7zopsh8SdswZuKY
-         3DluIzJQLoSB7Z1NGoP0lT9qnoFlH7vNH0F/Z0zclFSVVOAUyqVVom5NrcyZq39FrtrF
-         qiP9xioteNQmY91mI1qsVPOIMTBhem8t1KpTAP11NuFAclRKZKyZmmOgNKt6OmFjTGYY
-         IY1w==
-X-Gm-Message-State: AOJu0Yx4hDDgAH3x7CJcNNr7dN2GkokwzDd8BIemcfzrRFfoHGmXxRrQ
-	xJCvI6Hys+UqCxffwpxL9CC1bA==
-X-Google-Smtp-Source: AGHT+IGIJjabTi91p7r9FbrKe/nbsuosloqVsE93l/TK2lD4q6KXezQH+Jjl+BXIXV4t5YLkLYlm6A==
-X-Received: by 2002:a25:6b4e:0:b0:d86:a964:a47e with SMTP id o14-20020a256b4e000000b00d86a964a47emr2382069ybm.63.1695834038194;
-        Wed, 27 Sep 2023 10:00:38 -0700 (PDT)
+        bh=pG1tzQTVssTuSgiTai6pnkMjirZbD31EyyHGMhy1at0=;
+        b=KagstFTIczMDgIcGxxH5mc1bhcNldDWDCjLkZ2L84p9S51oYoBngTBWRR6L0eea7Id
+         GRBUdS7OiThf+F0skaH4huNNiay2tN4ztQk5ivqItXuI6uebjFncjV/7/NDExCsqSjLl
+         /oIZPqlNYcH7X6KTeyB72MfGvLgp7UUpm6sjUqOEtGuXNbD+6hYnmvErlVeUpaf6omzE
+         jOXXCPqNKba6WYIpp9J6shPrLSk0blGenf8RYDI0+AprUGMylxbh1Texb7uNXTHX79CG
+         TMSfbUBV+vGdVpEi8sqyowmiqaFcNvdU8ALsRO/vDFJhS7K/i5aERTwFSBF33n50ob4i
+         PyQw==
+X-Gm-Message-State: AOJu0YxsmCJ/JIVY5/Ac7MZc8r8Kmv0e6+uFDS8FV77Es9+XlUYaFHg9
+	oAtveRXRznwnn2S5pwKiN032dg==
+X-Google-Smtp-Source: AGHT+IH2up4xMxljyN4RO8Rex07vnVaVsd5wurJeyXI53/ysue+JrRu8yCN5i5l+jkbhAsdY+6qfwg==
+X-Received: by 2002:a05:6358:7e84:b0:135:47e8:76e2 with SMTP id o4-20020a0563587e8400b0013547e876e2mr2445601rwn.4.1695834043334;
+        Wed, 27 Sep 2023 10:00:43 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.190.42])
-        by smtp.gmail.com with ESMTPSA id u7-20020a637907000000b00584b293d157sm3279396pgc.80.2023.09.27.10.00.33
+        by smtp.gmail.com with ESMTPSA id u7-20020a637907000000b00584b293d157sm3279396pgc.80.2023.09.27.10.00.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Sep 2023 10:00:37 -0700 (PDT)
+        Wed, 27 Sep 2023 10:00:42 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -73,9 +73,9 @@ Cc: Paul Walmsley <paul.walmsley@sifive.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Atish Kumar Patra <atishp@rivosinc.com>,
 	Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH v2 -next 3/4] RISC-V: cacheflush: Initialize CBO variables on ACPI systems
-Date: Wed, 27 Sep 2023 22:30:14 +0530
-Message-Id: <20230927170015.295232-4-sunilvl@ventanamicro.com>
+Subject: [PATCH v2 -next 4/4] clocksource/timer-riscv: ACPI: Add timer_cannot_wakeup_cpu
+Date: Wed, 27 Sep 2023 22:30:15 +0530
+Message-Id: <20230927170015.295232-5-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230927170015.295232-1-sunilvl@ventanamicro.com>
 References: <20230927170015.295232-1-sunilvl@ventanamicro.com>
@@ -92,72 +92,28 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Using new interface to get the CBO block size information in RHCT,
-initialize the variables on ACPI platforms.
+The timer capability to wakeup the cpu irrespective of its idle state is
+provided by the flag in RHCT. Update the timer code to set this flag.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
- arch/riscv/mm/cacheflush.c | 37 +++++++++++++++++++++++++++++++------
- 1 file changed, 31 insertions(+), 6 deletions(-)
+ drivers/clocksource/timer-riscv.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/riscv/mm/cacheflush.c b/arch/riscv/mm/cacheflush.c
-index f1387272a551..8e59644e473c 100644
---- a/arch/riscv/mm/cacheflush.c
-+++ b/arch/riscv/mm/cacheflush.c
-@@ -3,7 +3,9 @@
-  * Copyright (C) 2017 SiFive
-  */
- 
-+#include <linux/acpi.h>
- #include <linux/of.h>
-+#include <asm/acpi.h>
- #include <asm/cacheflush.h>
- 
- #ifdef CONFIG_SMP
-@@ -124,15 +126,38 @@ void __init riscv_init_cbo_blocksizes(void)
- 	unsigned long cbom_hartid, cboz_hartid;
- 	u32 cbom_block_size = 0, cboz_block_size = 0;
- 	struct device_node *node;
-+	struct acpi_table_header *rhct;
-+	acpi_status status;
-+	unsigned int cpu;
+diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
+index 9c8f3e2decc2..06f5bad3c3e0 100644
+--- a/drivers/clocksource/timer-riscv.c
++++ b/drivers/clocksource/timer-riscv.c
+@@ -225,6 +225,10 @@ TIMER_OF_DECLARE(riscv_timer, "riscv", riscv_timer_init_dt);
+ #ifdef CONFIG_ACPI
+ static int __init riscv_timer_acpi_init(struct acpi_table_header *table)
+ {
++	struct acpi_table_rhct *rhct = (struct acpi_table_rhct *)table;
 +
-+	if (!acpi_disabled) {
-+		status = acpi_get_table(ACPI_SIG_RHCT, 0, &rhct);
-+		if (ACPI_FAILURE(status))
-+			return;
-+	}
- 
--	for_each_of_cpu_node(node) {
--		/* set block-size for cbom and/or cboz extension if available */
--		cbo_get_block_size(node, "riscv,cbom-block-size",
--				   &cbom_block_size, &cbom_hartid);
--		cbo_get_block_size(node, "riscv,cboz-block-size",
--				   &cboz_block_size, &cboz_hartid);
-+	for_each_possible_cpu(cpu) {
-+		if (acpi_disabled) {
-+			node = of_cpu_device_node_get(cpu);
-+			if (!node) {
-+				pr_warn("Unable to find cpu node\n");
-+				continue;
-+			}
++	riscv_timer_cannot_wake_cpu = rhct->flags & ACPI_RHCT_TIMER_CANNOT_WAKEUP_CPU;
 +
-+			/* set block-size for cbom and/or cboz extension if available */
-+			cbo_get_block_size(node, "riscv,cbom-block-size",
-+					   &cbom_block_size, &cbom_hartid);
-+			cbo_get_block_size(node, "riscv,cboz-block-size",
-+					   &cboz_block_size, &cboz_hartid);
-+		} else {
-+			acpi_get_cbo_block_size(rhct, cpu, &cbom_block_size,
-+						&cboz_block_size, NULL);
-+		}
- 	}
- 
-+	if (!acpi_disabled && rhct)
-+		acpi_put_table((struct acpi_table_header *)rhct);
-+
- 	if (cbom_block_size)
- 		riscv_cbom_block_size = cbom_block_size;
+ 	return riscv_timer_init_common();
+ }
  
 -- 
 2.39.2
