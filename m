@@ -1,127 +1,106 @@
-Return-Path: <linux-acpi+bounces-231-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-232-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD3B7B0A3B
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 18:32:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A967B0A3C
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 18:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id E3F832810FF
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 16:32:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id BC3E7281DF1
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 16:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFB33C684
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 16:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9639636B04
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 16:32:45 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF8F26E17
-	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 16:14:19 +0000 (UTC)
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA93A91;
-	Wed, 27 Sep 2023 09:14:18 -0700 (PDT)
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-57bc11c197aso830668eaf.1;
-        Wed, 27 Sep 2023 09:14:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695831258; x=1696436058;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E1ahmo9waRUqjCTDTV6N3TPA6RbVuxWOLI3ShINewQQ=;
-        b=tR7o3/xpvI3DyNjTFPiwxEmR/RP6ShPh8MNrF2m2WrwLPeupDP47bAaBKN2DRYsVCp
-         s7sBy8uVnlURWsIWpbAN0oH08UOC0W/QDWBmFuuNAcZKx0XAsGPb5Vyo1FdHEYsRKiW2
-         Q+zxyILRYg1IAEyc7ICqsi4zFG2G6cGZ2cXcw2R7r7uHnjEuP2CGEsf0IuPP63DyVzAR
-         zuRyEkawH2OrMMAkYmK5eOOmjt1kTpsOAHBnZPEjWX8NSYa6EAuk16ckz7vi+q+1v4Mg
-         JwDhRABizYe96L4fhdVvbChkGWCwcDMokRYKNg+rcrOiNxrpTCj0f3Gp3mt0wCxA2n7r
-         Nmgw==
-X-Gm-Message-State: AOJu0YysxsXtVmev/kwxdfPBl4vRHmgMtKv+cn1WQ+ssv80Z099NqZnG
-	P0cZJEOlZ9yINQOHWImKdugOIDQYd/szXmeM/lA=
-X-Google-Smtp-Source: AGHT+IFBpFosaX2K+I5sHnXh1LWvPJSn6Sr5sxXngfz5rSCyc+9SiiFyG1qQYhJMi9AUVgv/Q02VhqmrWlAFmv+zlEs=
-X-Received: by 2002:a4a:ee18:0:b0:56e:94ed:c098 with SMTP id
- bd24-20020a4aee18000000b0056e94edc098mr3051244oob.0.1695831257895; Wed, 27
- Sep 2023 09:14:17 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178E32905
+	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 16:26:42 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 87DCCE6;
+	Wed, 27 Sep 2023 09:26:41 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 707A21FB;
+	Wed, 27 Sep 2023 09:27:19 -0700 (PDT)
+Received: from e103737-lin.cambridge.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1AA363F59C;
+	Wed, 27 Sep 2023 09:26:40 -0700 (PDT)
+From: Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH v2 0/4] ACPI: PCC: Define and use the common PCC shared
+ memory regions related macros
+Date: Wed, 27 Sep 2023 17:26:09 +0100
+Message-Id: <20230927-pcc_defines-v2-0-0b8ffeaef2e5@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1957441.PYKUYFuaPT@kreacher> <2590280.Lt9SDvczpP@kreacher>
- <9f1374db-f866-ff52-e86c-99fecee24d1b@linaro.org> <CAJZ5v0hw3LGByW=18tiFEB7JQ9rOVo6TqCGhzxWcrUQYb+VGEw@mail.gmail.com>
- <f193e4a5-b315-a1bd-7488-7ea0d5e267f8@linaro.org>
-In-Reply-To: <f193e4a5-b315-a1bd-7488-7ea0d5e267f8@linaro.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 27 Sep 2023 18:14:06 +0200
-Message-ID: <CAJZ5v0h_HB6DX3NemyojE8aZrQeH05aAsdKLE-q-gp4UC+NBJQ@mail.gmail.com>
-Subject: Re: [PATCH v1 07/13] thermal: gov_power_allocator: Use trip pointers
- instead of trip indices
-To: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, 
-	Linux PM <linux-pm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Linux ACPI <linux-acpi@vger.kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Lukasz Luba <lukasz.luba@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKJXFGUC/22MwQ7CIBAFf6XZsxgKQqyn/odpDIXF7qHQgCGah
+ n8Xe/Y472Vmh4yJMMOt2yFhoUwxNBCnDuxiwhMZucYguJB8EJpt1j4cegqYmbjMqFDKWXsJzdh
+ SO95H7T41Xii/Yvoc8dL/1v+d0jPOuB+EMr1WV+9Gk9azjStMtdYvP/zP7qQAAAA=
+To: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc: Sudeep Holla <sudeep.holla@arm.com>, 
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+ Andi Shyti <andi.shyti@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, Huisong Li <lihuisong@huawei.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1339; i=sudeep.holla@arm.com;
+ h=from:subject:message-id; bh=lwT8ZnKV+w+WbSm9j2obr3XMxv9qHzx8UZUyVSqGOk4=;
+ b=owEBbQKS/ZANAwAIAQBBurwxfuKYAcsmYgBlFFe/GK8S35+7w73n13E+CWi7SnJXnak49uWZd
+ KPcDX+7sHiJAjMEAAEIAB0WIQS6ceUSBvMeskPdk+EAQbq8MX7imAUCZRRXvwAKCRAAQbq8MX7i
+ mB7PD/9GdBYmtGCqO/u6bYiAspw2Jk7CK5hdy7XxEu3RAaB1ojcdnNS87mc28fF7z+EvCfuYrDO
+ eA2OX2Jpz3XWXmDCVFi0hCHxGjXPUETYwut8AteGPNb0Q4WZHcCPsakFSu5m4WjrCbQ5bcav+7T
+ J/zY5lIyaw+xB+7zu5Lu2+5vTDvUaHlQMPb/VANx8jDahjIK2X/sSP7F1KJqHnC2k0Z/hG6wphs
+ Ro2XfOb0c8Mg3H3jrcWRjvggNoP7plggYwGocwTiJVmqLILnMQW+OVIEf1RcryDCjyIVddtaNUo
+ 8Mjv9DYm35gIMA6rM7GzEoGGCsHEX2p40/Pan33NI6myfdTVnumh2ml+03D5HhZnFrdXpiTpxl0
+ oGv/2abXj+SQD9s0ZzOGdV4jL9IAPsdW+9s8xmJyaRG7JB59+jIrH9qO+6gTkjE4OVu6M7UT4Ir
+ cB67bUJ22oz8ksu8WGZ7esgXnqv4TOcLHIynxcwiQAQWKaXNS9ahwOR/NarGzS8/fsjyVuNxo3N
+ eBypEzKSTHqgrha1KXfq85OGPhsrecXEGsLQtmdiN4ADheoDUyQJQI6GbQdPydzyRz5ymyhfDFu
+ Tj6oHnjhznO1cZeyhRBVvPsHdXsEy5Tgba0dskTMoUs/gmXhRdFdbdk4qaHALTkPJwBWRgT1otc
+ iFOW/9awPLBz/Ew==
+X-Developer-Key: i=sudeep.holla@arm.com; a=openpgp;
+ fpr=7360A21742ADF5A11767C1C139CFD4755FE2D5B4
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Sep 27, 2023 at 5:46=E2=80=AFPM Daniel Lezcano
-<daniel.lezcano@linaro.org> wrote:
->
-> On 27/09/2023 17:27, Rafael J. Wysocki wrote:
-> > On Wed, Sep 27, 2023 at 5:10=E2=80=AFPM Daniel Lezcano
-> > <daniel.lezcano@linaro.org> wrote:
-> >>
-> >> On 21/09/2023 19:55, Rafael J. Wysocki wrote:
-> >>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >>>
-> >>> Eliminate the __thermal_zone_get_trip() usage that adds unnecessary
-> >>> overhead (due to pointless bounds checking and copying of trip point
-> >>> data) from the power allocator thermal governor and generally make it
-> >>> use trip pointers instead of trip indices where applicable.
-> >>
-> >> Actually the __thermal_zone_get_trip() change was done on purpose to
-> >> replace the 'throttle' callback index parameter by the trip pointer an=
-d
-> >> removing those call to __thermal_zone_get_trip() while the code was
-> >> using the trip pointer.
-> >>
-> >> IMO, the changes should focus on changing the trip_index parameter by
-> >> the trip pointer directly in the throttle ops.
-> >
-> > So you would like .throttle() to take a trip pointer argument instead
-> > of an index?
-> >
-> > The difficulty here is that the user space governor needs to expose
-> > the index to user space anyway, so it would need to find it if it gets
-> > a trip pointer instead.
-> >
-> > Not a big deal I suppose, but a bit of extra overhead.
-> >
-> > Also it is easier to switch the governors over to using trip pointers
-> > internally and then change the .throttle() argument on top of that.
-> >
-> >> The pointer can be
-> >> retrieved in the handle_thermal_trip() function and passed around for
-> >> the rest of the actions on this trip point
-> >
-> > Right, except for the user space governor which needs a trip index.
-> > And the indices are used for tracing too.
->
-> Given the userspace governor is going obsolete and the notifications are
-> for the userspace, which is slow, we can retrieve the index from the
-> throttling ops
+This set of 3 small patches intend to consolidate and replace the existing
+locally defined macros within couple of PCC client drivers when accessing
+the command and status bitfields.
 
-OK
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+---
+Changes in v2:
+- Added review/ack tags from Andi Shyti(I2C) and Guenter Roeck(hwmon)
+- Added bitfields for Initiator Responder Communications Channel flags as well
+- Migrated kunpeng_hccs soc driver to use generic PCC shmem related macros
+- Link to v1: https://lore.kernel.org/r/20230926-pcc_defines-v1-0-0f925a1658fd@arm.com
 
-Given that patches [01-05/13] are not controversial, I'll respon the
-governor patches into a separate series on top of them.
+---
+Sudeep Holla (4):
+      ACPI: PCC: Add PCC shared memory region command and status bitfields
+      i2c: xgene-slimpro: Migrate to use generic PCC shmem related macros
+      hwmon: (xgene) Migrate to use generic PCC shmem related macros
+      soc: kunpeng_hccs: Migrate to use generic PCC shmem related macros
 
-I would much appreciate it if you could take a look at patch [10/13]
-and the remaining ACPi thermal patches in this series [11-13/13].
-They don't depend on the governor changes.
+ drivers/hwmon/xgene-hwmon.c            | 16 +++++-----------
+ drivers/i2c/busses/i2c-xgene-slimpro.c | 16 ++++------------
+ drivers/soc/hisilicon/kunpeng_hccs.c   |  8 ++------
+ include/acpi/pcc.h                     | 13 +++++++++++++
+ 4 files changed, 24 insertions(+), 29 deletions(-)
+---
+base-commit: 6465e260f48790807eef06b583b38ca9789b6072
+change-id: 20230926-pcc_defines-24be5e33b6f3
+
+Best regards,
+-- 
+Regards,
+Sudeep
+
 
