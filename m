@@ -1,197 +1,220 @@
-Return-Path: <linux-acpi+bounces-196-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-197-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FD67B06E8
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 16:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D98057B06E9
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 16:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id B761D28262A
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 14:33:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 8A4C72825D0
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 14:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E35B30FA4
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 14:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71AC830FA0
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Sep 2023 14:33:16 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EC227ECE
-	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 13:08:33 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 359B71A5
-	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 06:08:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1695820110;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JMtD8MrtcPfWsI8Pb3A+8DQDJJzlwp0MAo/184E/vuY=;
-	b=bf5fW2PTIP/NgFxejUGz56a+aAktXpIvXHVzdk5vudlGAhcPPb9BPO8yVmxcch6srygJTw
-	O44XDfI44/6/WpfQDwF+zM1i3ocZnWD57yuZxb9+IblZfnp1mxBOrMDa+Ow6XXP4fnIEpb
-	duL6HpC4dlLy+HRmoGB6D9GIa2KHr/U=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-nY25QLkJNca6UJwKDjJQig-1; Wed, 27 Sep 2023 09:08:28 -0400
-X-MC-Unique: nY25QLkJNca6UJwKDjJQig-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-9aa20a75780so948920166b.2
-        for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 06:08:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695820107; x=1696424907;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JMtD8MrtcPfWsI8Pb3A+8DQDJJzlwp0MAo/184E/vuY=;
-        b=u89f9c2NHW9NxpmhWAEkYGRXYzMWHjeV0LVqbY/UfZ9PHFE+Xx2RVrnnofsMEfOcgn
-         2f0GxnnDpWBmboeIkA3aN6cwV2Bbn1HixsxMnIQAHemKiubVmnvphxts0twc+ys5yqNP
-         Ty86CnVrAbfosWhscgJYaN+dHU/5xX/OjTxIJggzrthGdMSjTlymvQkr4bo6h74BHZvZ
-         vo1ptNa2X9ZeYwpR32+iUAJyurlwn/voz3xHlkxddDmQcEO71wncSsG1QeMlmZNv1JAR
-         atOhPlVF6ql/Mxa2u6+MzAu467vw8+VyqOJQHlfIEFT8w9WbdBdva0GtA23LgWw1xgrE
-         hVJA==
-X-Gm-Message-State: AOJu0YyGKG6qIEOgZVD46sY/FJMbz2VbxTQ9InvTF2JqXQJMAE/Mzlx6
-	KoYKoU0xnEXcHhpY9Du9ZgvronPCtW0zouMYLAf6HrEBX0d84BE3w0jK2mulEjaSLPe5/ThH0Gg
-	IYnXFoFRl/UoXa6OTj060kA==
-X-Received: by 2002:a17:906:53ca:b0:9b2:9e44:222e with SMTP id p10-20020a17090653ca00b009b29e44222emr2064217ejo.19.1695820107632;
-        Wed, 27 Sep 2023 06:08:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHW+9nbTuAxmWhlq1Hn8jF2mG0qkV2cmdjMgyzfNIuIJPs5L5uK2mviq3ruQfsUYqOlS0STZg==
-X-Received: by 2002:a17:906:53ca:b0:9b2:9e44:222e with SMTP id p10-20020a17090653ca00b009b29e44222emr2064193ejo.19.1695820107278;
-        Wed, 27 Sep 2023 06:08:27 -0700 (PDT)
-Received: from [192.168.1.217] ([109.36.155.235])
-        by smtp.gmail.com with ESMTPSA id oq19-20020a170906cc9300b0098f99048053sm9355323ejb.148.2023.09.27.06.08.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Sep 2023 06:08:26 -0700 (PDT)
-Message-ID: <3f8760f8-ae8c-c0b0-19d7-76fbbf5d25de@redhat.com>
-Date: Wed, 27 Sep 2023 15:08:24 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AB02AB42
+	for <linux-acpi@vger.kernel.org>; Wed, 27 Sep 2023 13:08:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68217136;
+	Wed, 27 Sep 2023 06:08:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695820124; x=1727356124;
+  h=date:from:to:cc:subject:message-id;
+  bh=1E68ilxUg3c/1HFg+O+opVvY5AXetL+CAWnO5GCsvG8=;
+  b=KupvoPfaTVEc5B8nRIG8TCQeEhsgEJ/fI5PEul0h2h8c2KPZ58GszHzc
+   2kQDlKdzjuZWpmiQOUTX4gWPiLEBNILVi8HvKtoj0i00J3lGpCm8HweiM
+   JY4meeKM6Mm5BOrNlszylCqbdGkVs7Ntf/UhcUqOAz3xrdgeWPQKPmi/e
+   Wz/sTvaH0kLochbvaR7g5XmALw2bKO7aznrBmtAPinLL5ljiuLLbkstIt
+   EfhyTIFnm0b6f3g69Kr5KUs3730HOGWH3SDumSgruZ/gEV181T84Bvw5D
+   YbtTCY7ClYAi309g2+ko8DjHsAyzWv1l55uVSbCkVWDRPpqmVDWAMoBTC
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="361206923"
+X-IronPort-AV: E=Sophos;i="6.03,181,1694761200"; 
+   d="scan'208";a="361206923"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2023 06:08:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="872876091"
+X-IronPort-AV: E=Sophos;i="6.03,181,1694761200"; 
+   d="scan'208";a="872876091"
+Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 27 Sep 2023 06:08:42 -0700
+Received: from kbuild by c3b01524d57c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qlUHP-0000Cz-2B;
+	Wed, 27 Sep 2023 13:08:39 +0000
+Date: Wed, 27 Sep 2023 21:08:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 0b334e02fdc2ca86498f87bd3deb568002de027f
+Message-ID: <202309272135.7UELS5z8-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFT PATCH 2/4] platform/x86: int3472: led: don't use
- gpiod_toggle_active_low()
-Content-Language: en-US
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Linus Walleij <linus.walleij@linaro.org>, Daniel Scally
- <djrscally@gmail.com>, Mark Gross <markgross@kernel.org>,
- linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-References: <20230926145943.42814-1-brgl@bgdev.pl>
- <20230926145943.42814-3-brgl@bgdev.pl>
- <2b5db794-c00f-e9f5-c0c9-4c5fb4df0802@redhat.com>
- <CAMRc=MeSK-ZReyt4556Dik4GwgtitD-NBgVE0swe=4i+5gBLwA@mail.gmail.com>
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAMRc=MeSK-ZReyt4556Dik4GwgtitD-NBgVE0swe=4i+5gBLwA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
 
-Hi Bart,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 0b334e02fdc2ca86498f87bd3deb568002de027f  Merge branch 'pm-sleep' into bleeding-edge
 
-On 9/27/23 12:44, Bartosz Golaszewski wrote:
-> On Wed, Sep 27, 2023 at 11:40 AM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi,
->>
->> On 9/26/23 16:59, Bartosz Golaszewski wrote:
->>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>>
->>> Instead of acpi_get_and_request_gpiod() + gpiod_toggle_active_low(), use
->>> temporary lookup tables with appropriate lookup flags.
->>>
->>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>> ---
->>>  drivers/platform/x86/intel/int3472/led.c | 12 ++++--------
->>>  1 file changed, 4 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/drivers/platform/x86/intel/int3472/led.c b/drivers/platform/x86/intel/int3472/led.c
->>> index bca1ce7d0d0c..62e0cd5207a7 100644
->>> --- a/drivers/platform/x86/intel/int3472/led.c
->>> +++ b/drivers/platform/x86/intel/int3472/led.c
->>> @@ -25,18 +25,14 @@ int skl_int3472_register_pled(struct int3472_discrete_device *int3472,
->>>       if (int3472->pled.classdev.dev)
->>>               return -EBUSY;
->>>
->>> -     int3472->pled.gpio = acpi_get_and_request_gpiod(path, agpio->pin_table[0],
->>> -                                                          "int3472,privacy-led");
->>> +     int3472->pled.gpio = skl_int3472_gpiod_get_from_temp_lookup(
->>> +                             int3472->dev, path, agpio->pin_table[0],
->>> +                             "int3472,privacy-led", polarity,
->>> +                             GPIOD_OUT_LOW);
->>
->> Yeah so this is not going to work, path here is an ACPI device path, e.g.
->> on my laptop (which actually uses the INT3472 glue code) the path-s of
->> the 2 GPIO controllers are: `\_SB_.GPI0` resp `\_SB_.PC00.XHCI.RHUB.HS08.VGPO`
->>
->> Where as skl_int3472_gpiod_get_from_temp_lookup() stores the passed in path
->> in  gpiod_lookup_table.table[0].key, which is the dev_name() of the GPIO
->> controller's parent dev which are `INTC1055:00` resp. `INTC1096:00` .
->>
->> So we are going to need to add some code to INT3472 to go from path to
->> a correct value for gpiod_lookup_table.table[0].key which means partly
->> reproducing most of acpi_get_gpiod:
->>
->>         struct gpio_chip *chip;
->>         acpi_handle handle;
->>         acpi_status status;
->>
->>         status = acpi_get_handle(NULL, path, &handle);
->>         if (ACPI_FAILURE(status))
->>                 return ERR_PTR(-ENODEV);
->>
->>         chip = gpiochip_find(handle, acpi_gpiochip_find);
->>         if (!chip)
->>                 return ERR_PTR(-EPROBE_DEFER);
->>
->> And then get the key from the chip. Which means using gpiochip_find
->> in the int3472 code now, which does not sound like an improvement.
->>
->> I think that was is needed instead is adding an active_low flag
->> to acpi_get_and_request_gpiod() and then have that directly
->> set the active-low flag on the returned desc.
->>
-> 
-> Ultimately I'd like everyone to use gpiod_get() for getting
-> descriptors but for now I get it's enough. Are you find with this
-> being done in a single patch across GPIO and this driver?
+elapsed time: 1064m
 
-Yes doing this in a single patch is fine.
+configs tested: 135
+configs skipped: 2
 
-Also I'm fine with merging such a patch through the gpio tree .
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Regards,
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20230927   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20230927   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20230927   gcc  
+i386         buildonly-randconfig-002-20230927   gcc  
+i386         buildonly-randconfig-003-20230927   gcc  
+i386         buildonly-randconfig-004-20230927   gcc  
+i386         buildonly-randconfig-005-20230927   gcc  
+i386         buildonly-randconfig-006-20230927   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20230927   gcc  
+i386                  randconfig-002-20230927   gcc  
+i386                  randconfig-003-20230927   gcc  
+i386                  randconfig-004-20230927   gcc  
+i386                  randconfig-005-20230927   gcc  
+i386                  randconfig-006-20230927   gcc  
+i386                  randconfig-011-20230927   gcc  
+i386                  randconfig-012-20230927   gcc  
+i386                  randconfig-013-20230927   gcc  
+i386                  randconfig-014-20230927   gcc  
+i386                  randconfig-015-20230927   gcc  
+i386                  randconfig-016-20230927   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20230927   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20230927   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20230927   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20230927   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20230927   gcc  
+x86_64       buildonly-randconfig-002-20230927   gcc  
+x86_64       buildonly-randconfig-003-20230927   gcc  
+x86_64       buildonly-randconfig-004-20230927   gcc  
+x86_64       buildonly-randconfig-005-20230927   gcc  
+x86_64       buildonly-randconfig-006-20230927   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20230927   gcc  
+x86_64                randconfig-002-20230927   gcc  
+x86_64                randconfig-003-20230927   gcc  
+x86_64                randconfig-004-20230927   gcc  
+x86_64                randconfig-005-20230927   gcc  
+x86_64                randconfig-006-20230927   gcc  
+x86_64                randconfig-011-20230927   gcc  
+x86_64                randconfig-012-20230927   gcc  
+x86_64                randconfig-013-20230927   gcc  
+x86_64                randconfig-014-20230927   gcc  
+x86_64                randconfig-015-20230927   gcc  
+x86_64                randconfig-016-20230927   gcc  
+x86_64                randconfig-071-20230927   gcc  
+x86_64                randconfig-072-20230927   gcc  
+x86_64                randconfig-073-20230927   gcc  
+x86_64                randconfig-074-20230927   gcc  
+x86_64                randconfig-075-20230927   gcc  
+x86_64                randconfig-076-20230927   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
 
-Hans
-
-
-
-
-
-
->>>       if (IS_ERR(int3472->pled.gpio))
->>>               return dev_err_probe(int3472->dev, PTR_ERR(int3472->pled.gpio),
->>>                                    "getting privacy LED GPIO\n");
->>>
->>> -     if (polarity == GPIO_ACTIVE_LOW)
->>> -             gpiod_toggle_active_low(int3472->pled.gpio);
->>> -
->>> -     /* Ensure the pin is in output mode and non-active state */
->>> -     gpiod_direction_output(int3472->pled.gpio, 0);
->>> -
->>>       /* Generate the name, replacing the ':' in the ACPI devname with '_' */
->>>       snprintf(int3472->pled.name, sizeof(int3472->pled.name),
->>>                "%s::privacy_led", acpi_dev_name(int3472->sensor));
->>
-> 
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
