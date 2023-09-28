@@ -1,61 +1,61 @@
-Return-Path: <linux-acpi+bounces-248-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-249-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029DA7B1613
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Sep 2023 10:33:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C20037B1616
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Sep 2023 10:33:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 9D8EA28288F
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Sep 2023 08:33:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 6598E2829AB
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Sep 2023 08:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8599433992
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Sep 2023 08:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF003398C
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Sep 2023 08:33:38 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122D32E648
-	for <linux-acpi@vger.kernel.org>; Thu, 28 Sep 2023 07:12:41 +0000 (UTC)
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0779D1BCA
-	for <linux-acpi@vger.kernel.org>; Thu, 28 Sep 2023 00:10:29 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-4064014bca5so42832595e9.3
-        for <linux-acpi@vger.kernel.org>; Thu, 28 Sep 2023 00:10:29 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8BB8495
+	for <linux-acpi@vger.kernel.org>; Thu, 28 Sep 2023 07:24:24 +0000 (UTC)
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DC8891
+	for <linux-acpi@vger.kernel.org>; Thu, 28 Sep 2023 00:24:22 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-40528376459so128938565e9.3
+        for <linux-acpi@vger.kernel.org>; Thu, 28 Sep 2023 00:24:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695885027; x=1696489827; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1695885860; x=1696490660; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=VkIBE+TCRLRjYetF+cyx1hJuGQDYf3kDYmaiNSOiVj8=;
-        b=ToJAxIDp6VFXWlWb9DUZLg5P7nRl9fmM4fKmYEhYvJCfiPil3rk7zNjn1yA8z1WpHc
-         gfT09oiqoHSOsb29kRx0tFs9gDqPCQ7PiR+S7rdgM/+BxJp7W+avKLgHFZ33STC14Q6Z
-         PVZZA/PTN6jS0DC/MCcjgEX5rkPK3YAwmkaT51xs03yu6MZKPxgtBx9mAK8G96voUFGd
-         tSAXJU6Pp8lswGLUf3f7Yhf2UQ+n2DEPz/6N5natsNnZvKF7+Sq7JGzAlJDvSs7bX+k7
-         O73fuvtNp0mNN666XKwMFE3zgV3GFG1JbkqHl3Tgyv6+4LnggB0CJ0rRTSKXpC1Hh7Vo
-         gkuA==
+        bh=+UA9uHWWeYBOdu4MsloFMHQ1l07sPdcS1vaYRXSvUR8=;
+        b=HcKSu2ffDMyf2m/+ZhRD5BKwWRMUnWt3xkFekzABD2LT9XhxMBDlg2E35GXOtsD1mq
+         lR/zYCnbMIeVczvaAz9U2bqgQh+HFyP6z64V3oULZTC2BPjou/pFILeE6cPp/yAnnjnT
+         rcDuXLnSqgOVJOubhK4oC84xKZcImgpZiuzYdJwBsRGIFGED1AUKHiYgLwMpEDveYzMm
+         eocladxAXfHAcHhJzUbN28tUmofGJjOM3hKfqMy978uCsy2RnZFaBvecYH2T/d4H4MXB
+         kKOZ9Ga5XBLGXv7eTOR+O+sytiL0HifPLVWebo0uspYuTSCD8UAuIKC0KANTd03ibWg+
+         Te5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695885027; x=1696489827;
+        d=1e100.net; s=20230601; t=1695885860; x=1696490660;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VkIBE+TCRLRjYetF+cyx1hJuGQDYf3kDYmaiNSOiVj8=;
-        b=gaJYtUvXqBwYA6iJFueFiXomBTgms1kZs10rVmKvsoAP+ZXQh/hplAJ8eZo2jAM4wc
-         lOP+0iA8A4euvERoop87JuhG4jOl4140MgpWwJMCGceODkEeKQy4dqNvGhKn4ddhWP/R
-         l5LoPNKhgqPlB2YpgKxDkuwSx4/PLoMTUwmz/mZpC25DyVnZkSpLa1T1Eb+Ojs4Lec9O
-         csVj7izJZ3zq7dEMTRI6e5iqoWI/sd09E+f2h/G9BeVppvmd6+ixOWZRuxsEWCiUqhhu
-         UP5FurSSpundkURHSHWYX8HMgvvyH/k0Hy1ZSFVb+tWOhHSSidMR5utQoe1K2LIp8VD1
-         +h+g==
-X-Gm-Message-State: AOJu0Yx3HUs3yvFEvNaB06K9SuOkgB/6TnFcANpinkWifT3koXv5QdJA
-	MZmadLYdc+j31FR1tZ6YVYI9ig==
-X-Google-Smtp-Source: AGHT+IGNaZcVgF8TWexpbmorAxSeNepOwNaCRGtwfaC9auOLiO/MLnnmv7ZMk5XMR5I+ZC87mTNoRQ==
-X-Received: by 2002:a05:600c:b4e:b0:402:95a0:b2ae with SMTP id k14-20020a05600c0b4e00b0040295a0b2aemr405295wmr.32.1695885027206;
-        Thu, 28 Sep 2023 00:10:27 -0700 (PDT)
+        bh=+UA9uHWWeYBOdu4MsloFMHQ1l07sPdcS1vaYRXSvUR8=;
+        b=K7Ss6NKg7l3rW0hpPSyWGu73C/k3iGqQ9syHUdOVqaaNrrYXMw4lRy/Mvm5LI4H3vc
+         q3s2Gm7rY5Fa+BCncpYNOX4wlhaxipbw6dkzX5njQlJyNouQVFXDJB09cOOFksxwC8OC
+         Ekxog65I95UELS/v3i7YxpU1W+XGVx7yczCLeRqdClN8+kS4YUW4xY0frofyvbd6lKfj
+         nXdtviQHJ274cSRgT4sRy9uMvsRUDfqh97A+8J3FY11QveGNatM5XUKeoyepPPseTtq4
+         kMCvVmXyKfzaaRmop44B48X6G2bPHXAn9zokCI8jIrZl1UkqgIGpFLy9v5vZm34mr4Zp
+         dyRg==
+X-Gm-Message-State: AOJu0Yy9rl55c7OnYZF4UD5JFG1etxKUkJYykbFpzNzPq5o1mqzVGpXv
+	U2lffo9fCI1+DZuC5bqTnRzLiQ==
+X-Google-Smtp-Source: AGHT+IEcIlXAmdvv9WcCA53AfD+QpBf5eGEwdf+8z26e7iBPCWPvls3jal7oS+TqSFQzP2rJYRmDnQ==
+X-Received: by 2002:a1c:6a09:0:b0:401:b76d:3b8b with SMTP id f9-20020a1c6a09000000b00401b76d3b8bmr406862wmc.16.1695885860422;
+        Thu, 28 Sep 2023 00:24:20 -0700 (PDT)
 Received: from ?IPV6:2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0? ([2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0])
-        by smtp.googlemail.com with ESMTPSA id a24-20020a05600c225800b004063c9f68f2sm5664262wmm.26.2023.09.28.00.10.26
+        by smtp.googlemail.com with ESMTPSA id u17-20020a05600c00d100b00405935b417asm9400467wmm.2.2023.09.28.00.24.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Sep 2023 00:10:26 -0700 (PDT)
-Message-ID: <065636fa-e6ac-4fcb-5d78-b3f281ac4609@linaro.org>
-Date: Thu, 28 Sep 2023 09:10:26 +0200
+        Thu, 28 Sep 2023 00:24:20 -0700 (PDT)
+Message-ID: <87dd2af9-ea1f-7995-2b3b-eaed356c659e@linaro.org>
+Date: Thu, 28 Sep 2023 09:24:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -64,8 +64,8 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v1 10/13] thermal: core: Allow trip pointers to be used
- for cooling device binding
+Subject: Re: [PATCH v1 11/13] ACPI: thermal: Do not use trip indices for
+ cooling device binding
 Content-Language: en-US
 To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
  Linux PM <linux-pm@vger.kernel.org>
@@ -74,34 +74,34 @@ Cc: LKML <linux-kernel@vger.kernel.org>,
  Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
  Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
  "Rafael J. Wysocki" <rafael@kernel.org>
-References: <1957441.PYKUYFuaPT@kreacher> <45837158.fMDQidcC6G@kreacher>
+References: <1957441.PYKUYFuaPT@kreacher> <113039009.nniJfEyVGO@kreacher>
 From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <45837158.fMDQidcC6G@kreacher>
+In-Reply-To: <113039009.nniJfEyVGO@kreacher>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 21/09/2023 20:01, Rafael J. Wysocki wrote:
+On 21/09/2023 20:02, Rafael J. Wysocki wrote:
 > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Add new helper functions, thermal_bind_cdev_to_trip() and
-> thermal_unbind_cdev_from_trip(), to allow a trip pointer to be used for
-> binding a cooling device to a trip point and unbinding it, respectively,
-> and redefine the existing helpers, thermal_zone_bind_cooling_device()
-> and thermal_zone_unbind_cooling_device(), as wrappers around the new
-> ones, respectively.
+> Rearrange the ACPI thermal driver's callback functions used for cooling
+> device binding and unbinding, acpi_thermal_bind_cooling_device() and
+> acpi_thermal_unbind_cooling_device(), respectively, so that they use trip
+> pointers instead of trip indices which is more straightforward and allows
+> the driver to become independent of the ordering of trips in the thermal
+> zone structure.
 > 
-> No intentional functional impact.
+> The general functionality is not expected to be changed.
 > 
 > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
 
 Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-
 
 -- 
 <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
