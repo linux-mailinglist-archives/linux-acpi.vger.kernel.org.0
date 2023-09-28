@@ -1,102 +1,215 @@
-Return-Path: <linux-acpi+bounces-265-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-266-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAEC37B2287
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Sep 2023 18:35:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7A67B2289
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Sep 2023 18:35:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 8D897281516
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Sep 2023 16:35:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 9A390281235
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Sep 2023 16:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681614D8F7
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Sep 2023 16:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829424D8E7
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Sep 2023 16:35:49 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0B23FB01;
-	Thu, 28 Sep 2023 14:44:02 +0000 (UTC)
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB724180;
-	Thu, 28 Sep 2023 07:44:00 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DDC0240E0176;
-	Thu, 28 Sep 2023 14:43:55 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id OWLQHTNbZWTX; Thu, 28 Sep 2023 14:43:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1695912233; bh=h1/LDhE8fzT9yHzOAMn/O1uQcjI/GQRZwIc2SRP75FA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iZ5FRVunRWlEOnzVstKpLgxo9Pq1pLk58HzP++2IaqcTwzO8HrerFTvz+m0xvvPbA
-	 /1OYLbkPTP8O7vAFVM23V3gaF/swxmTcjRGRnDzcX6HKQ60eDJ9lFFmZx8SRyOwt4a
-	 gyyNnqRe+YgkZsoj+PJlVyCRJfSQBhxg8htG0sPi4XPKyx6hQkP8dikTsmct2e3Ifl
-	 UJ5PpeYWN6IbaMlFA2mv5N6SgFZhyMzBJOB702tLvbSQLn0+99W7IZfuPRozvWtxmP
-	 coGgcLA/k7hwojbNnq9oxY6uYA5481XGe2E0cDYK3VIVADW0p6WyVfAX8HuIcB+I2U
-	 OUTKPKDwtS5d8g/bLwq4yVYAm7OcT+lIFK1fKgmdggeKQqkNdKeDSu+7hSork76W1n
-	 B0xOU/+he+a/RqX6UyQyMS+kkfkQx7hIGxIeBZ9YgP8M1qEZJBd6Kl00RhuQRUBFV5
-	 wx2Ec8ZQlHwYd/MA6hQ5QH8u/cCNug+w7aFQVWzPunz/Ay7xqRMpbM+b4qRSHZmN+k
-	 RQig38hcXZ1IoLJa5xR1LXPxDFLcz61ZMbVx2/vem56E/luM49qcnwJQ5n6AMVJm2L
-	 xOIu9TAw8C3ZOTYf4EpvJUp2GAXG7WSB1O0j8IKufzGudrIurXHvYjx4Iijzna35tD
-	 I9qe4vVT+23x0C4PkzqztaUA=
-Received: from nazgul.tnic (unknown [88.128.88.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4AD0D40E00B3;
-	Thu, 28 Sep 2023 14:43:32 +0000 (UTC)
-Date: Thu, 28 Sep 2023 16:43:45 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
-	rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-	tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, ardb@kernel.org,
-	robert.moore@intel.com, linux-hardening@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-edac@vger.kernel.org, linux-efi@vger.kernel.org,
-	acpica-devel@lists.linuxfoundation.org,
-	baolin.wang@linux.alibaba.com
-Subject: Re: [RFC PATCH v2 0/9] Use ERST for persistent storage of MCE and
- APEI errors
-Message-ID: <20230928144345.GAZRWRIXH1Tfgn5EpO@fat_crate.local>
-References: <20230925074426.97856-1-xueshuai@linux.alibaba.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE06F9D1
+	for <linux-acpi@vger.kernel.org>; Thu, 28 Sep 2023 15:04:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 409CD195;
+	Thu, 28 Sep 2023 08:04:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695913486; x=1727449486;
+  h=date:from:to:cc:subject:message-id;
+  bh=c8xmeByehlzm4xT97+/edfv+ipE1HUQoCEC8h7wEWAg=;
+  b=M42m6DkbhtPQu89SEDWnehvZtx69gnYv7WAzLPTqYD/ivS1W43cyGvIl
+   /BkyeOTOzVkHnG+aWk8VuSH1XM/Rw2s1WuzwWFh7QFdfpxldDEYaQCgSX
+   liuHtFUxFeSjU4s4fN0BegM1mqbyOj2JQuGSC1dOJCoK1g1ImscXgd48w
+   SWevJ1YbPhGMUUB/dGqYoRTKJ7V0U11oJjP4eG85xsF6mYsLwrPVRLB2u
+   Ey8BmS3WCYHWiN3iwlY6Kf2p0Vqg7nCVmbOJzMxjWhkEaaRLue29FcajH
+   RzkjBVq8iiP3xbyUrtOfSK5vq4JvTyA25FooF1DCw2w9S+XOU7fLreQ10
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="379352565"
+X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; 
+   d="scan'208";a="379352565"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 08:03:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="784729422"
+X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; 
+   d="scan'208";a="784729422"
+Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 28 Sep 2023 08:03:01 -0700
+Received: from kbuild by c3b01524d57c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qlsXb-0001Zu-1F;
+	Thu, 28 Sep 2023 15:02:59 +0000
+Date: Thu, 28 Sep 2023 23:02:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ a2577d67cb05d6553674e7ddda362d22096a955b
+Message-ID: <202309282308.XXC43w11-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230925074426.97856-1-xueshuai@linux.alibaba.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
 
-On Mon, Sep 25, 2023 at 03:44:17PM +0800, Shuai Xue wrote:
-> After /dev/mcelog character device deprecated by commit 5de97c9f6d85
-> ("x86/mce: Factor out and deprecate the /dev/mcelog driver"), the
-> serialized MCE error record, of previous boot in persistent storage is not
-> collected via APEI ERST.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: a2577d67cb05d6553674e7ddda362d22096a955b  Merge branch 'pm-sleep' into linux-next
 
-You lost me here. /dev/mcelog is deprecated but you can still use it and
-apei_write_mce() still happens.
+elapsed time: 1463m
 
-Looking at your patches, you're adding this to ghes so how about you sit
-down first and explain your exact use case and what exactly you wanna
-do?
+configs tested: 129
+configs skipped: 2
 
-Thx.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20230927   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20230928   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20230928   gcc  
+i386         buildonly-randconfig-002-20230928   gcc  
+i386         buildonly-randconfig-003-20230928   gcc  
+i386         buildonly-randconfig-004-20230928   gcc  
+i386         buildonly-randconfig-005-20230928   gcc  
+i386         buildonly-randconfig-006-20230928   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20230928   gcc  
+i386                  randconfig-002-20230928   gcc  
+i386                  randconfig-003-20230928   gcc  
+i386                  randconfig-004-20230928   gcc  
+i386                  randconfig-005-20230928   gcc  
+i386                  randconfig-006-20230928   gcc  
+i386                  randconfig-011-20230928   gcc  
+i386                  randconfig-012-20230928   gcc  
+i386                  randconfig-013-20230928   gcc  
+i386                  randconfig-014-20230928   gcc  
+i386                  randconfig-015-20230928   gcc  
+i386                  randconfig-016-20230928   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20230927   gcc  
+loongarch             randconfig-001-20230928   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20230928   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20230928   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20230928   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20230928   gcc  
+x86_64       buildonly-randconfig-002-20230928   gcc  
+x86_64       buildonly-randconfig-003-20230928   gcc  
+x86_64       buildonly-randconfig-004-20230928   gcc  
+x86_64       buildonly-randconfig-005-20230928   gcc  
+x86_64       buildonly-randconfig-006-20230928   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20230928   gcc  
+x86_64                randconfig-002-20230928   gcc  
+x86_64                randconfig-003-20230928   gcc  
+x86_64                randconfig-004-20230928   gcc  
+x86_64                randconfig-005-20230928   gcc  
+x86_64                randconfig-006-20230928   gcc  
+x86_64                randconfig-011-20230928   gcc  
+x86_64                randconfig-012-20230928   gcc  
+x86_64                randconfig-013-20230928   gcc  
+x86_64                randconfig-014-20230928   gcc  
+x86_64                randconfig-015-20230928   gcc  
+x86_64                randconfig-016-20230928   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
