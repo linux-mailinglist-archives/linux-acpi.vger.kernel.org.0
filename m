@@ -1,293 +1,179 @@
-Return-Path: <linux-acpi+bounces-290-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-291-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323A87B37FF
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Sep 2023 18:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 251877B3800
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Sep 2023 18:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id D8C2E284789
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Sep 2023 16:32:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id C96FC28543C
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Sep 2023 16:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00663D983
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Sep 2023 16:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1ECD3D972
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Sep 2023 16:32:44 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C521513CE
-	for <linux-acpi@vger.kernel.org>; Fri, 29 Sep 2023 14:40:28 +0000 (UTC)
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2040.outbound.protection.outlook.com [40.107.220.40])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3D991B7;
-	Fri, 29 Sep 2023 07:40:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=noSLYqd+/Fxv4NEwVar0+yQP4uj/GTpZ/S0zKsCrA1mSR01mcsdJPYy+QWPxrOTdS/s73ocPan3jDko91BzywNbsuWOMm95JUOLb6aEYxTazBGorhsF3hvcvJfzPmi+SqnSZ3cKJTw4Y0esjuVnXA1CvlkSd2gw2tWGN6waXq0qJ1hYlAwqIUsR210yqR3+ISlPz/TJEJjl2aD00SoNHtdnwKEWltMBqW0HguQWlvcnymB+rt3inAS2VwZk0GyXKvVa/CFfd17mkIotmKZsV2OjEDVJbW966ufu0qMQYLToHRMBryDIwrIMKurh5WXT36p4pORkp8Xx9HxQ731G5Yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8pbZoM1J4q4p1hHZkwaiqWDGVI6fTnKXw7W7UwwBZ3k=;
- b=Hf3OnizLf7nNAb3D2KIKRK/k1qwV0fYGH05870Sofe4VHhG5Ev3dbO2cnNWBaWqs4BqZR5Ty8Z8iH78el/c1X4/D1Cve4Pmzohiaz3+19SA8uW+ybBVfVQUShokciXnXN5tL6kDGcwsIvIB7SlHJABsgUhxZidIZAmZfHfStGFfhrPMi5ouvMiTX1xdQ0rmdMxgzOAAYnl8GIkV2/8o85wd8OSqXKw5VCBwL1UvA9xnbLZcUgBjr0T5RYtvw20SUfEaJhVetVg2TSIwOp16DKEmX0KiraBlMOfx6TUSE7BWkGZhklue+MP8c5tOR3BZBepQYozpV6fvE1980F0YnRg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8pbZoM1J4q4p1hHZkwaiqWDGVI6fTnKXw7W7UwwBZ3k=;
- b=1lqG7M+bf4zm+1NygQZaEbKGbmiUN3Z9D7nnHyot2gV1YwshHmpan+g1j5V0mMHNBGFvw71c5raJINQ/m1INKY/fYEAbilzLm0LuvC5IgD30b2izwPVamjnGLwvTzNVHac7b2F9swTVZh+u3eVX39H1oX/vF6VfP85yaf0zloXI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BN8PR12MB3108.namprd12.prod.outlook.com (2603:10b6:408:40::20)
- by LV3PR12MB9439.namprd12.prod.outlook.com (2603:10b6:408:20e::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.26; Fri, 29 Sep
- 2023 14:40:21 +0000
-Received: from BN8PR12MB3108.namprd12.prod.outlook.com
- ([fe80::3043:e5d2:42f4:a231]) by BN8PR12MB3108.namprd12.prod.outlook.com
- ([fe80::3043:e5d2:42f4:a231%7]) with mapi id 15.20.6838.024; Fri, 29 Sep 2023
- 14:40:21 +0000
-Message-ID: <b88e1f4f-1e85-46ca-b317-d8e10fe894a3@amd.com>
-Date: Fri, 29 Sep 2023 10:40:19 -0400
-User-Agent: Mozilla Thunderbird
-Cc: yazen.ghannam@amd.com, linux-kernel@vger.kernel.org, avadnaik@amd.com
-Subject: Re: [PATCH] ACPI: APEI: Skip initialization of GHES_ASSIST structures
- for Machine Check Architecture
-To: Avadhut Naik <avadhut.naik@amd.com>, rafael@kernel.org, lenb@kernel.org,
- linux-acpi@vger.kernel.org
-References: <20230928184204.1511111-1-avadhut.naik@amd.com>
-Content-Language: en-US
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-In-Reply-To: <20230928184204.1511111-1-avadhut.naik@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BN1PR13CA0018.namprd13.prod.outlook.com
- (2603:10b6:408:e2::23) To BN8PR12MB3108.namprd12.prod.outlook.com
- (2603:10b6:408:40::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DAC513CC
+	for <linux-acpi@vger.kernel.org>; Fri, 29 Sep 2023 15:05:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709F0C433C7;
+	Fri, 29 Sep 2023 15:05:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1695999905;
+	bh=IvLxKbqu0MJgGbtWdNSigZb9rbYGAOtYXK50iU/aEPs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BFxxC1pPrNlbYvtFzBpbAcD4+6LoMtcr9+nAuoZy0+t0EpMWsm2UhfDbTbzMORVJO
+	 3m2gT+1NH4ebANnLQq4MAACqQIeyHRQDazOZJz39dKaEB+RK9BBAwVjx6gG3Ac7eU3
+	 Qwea7jAO9LOUszza6bK5Pqf3Xz4oK8wNIqmuq2e9PLri8X6xRPufmr0fIYGJzbOc/P
+	 jKVD2ol3IC6jeYDjJTM93XWeu8LlgEe0c+v6yPg3bG2/G5acJAWmDsdizIfpek2Yyw
+	 c/Oo8LfAlGwIEvnZAU1seLIkkVL9oqItcqZpOzgUZMl5Lum2DMvjO/f0CErD/f0xV3
+	 WxR7HHGjB1tkA==
+Date: Fri, 29 Sep 2023 16:04:59 +0100
+From: Will Deacon <will@kernel.org>
+To: Oza Pawandeep <quic_poza@quicinc.com>
+Cc: sudeep.holla@arm.com, catalin.marinas@arm.com, rafael@kernel.org,
+	lenb@kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v8] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast
+ timer
+Message-ID: <20230929150459.GA30623@willie-the-truck>
+References: <20230918172140.2825357-1-quic_poza@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8PR12MB3108:EE_|LV3PR12MB9439:EE_
-X-MS-Office365-Filtering-Correlation-Id: 28c6b9bf-78ea-4422-91d7-08dbc0fa024f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	tnzminP1+y1k+tBtUAdELHHmg6mMRNOnsMyhfJcg+D0oW8dMGrzdMJ1AQzLLj3/aQsYB9weKf4hJBAUEkQnpyyu9dkJ8Lgvdfe3V8K+F3lm7PHkiK+pYjhEMCEKjhwSROMNQ8Mu8/T2p77sx0/+1lzujDJFBlUZ8/QjDvD7nIEvrnpgi+wbMCGJKPotejNZ5yiCD47uuhs1Q7M4zHR8n/up4tKsVyj+6uFTJJncXIZdu7ueoQdbIz4sRmUETYsogK3+zBbX6QFgvYyxMwJE0XdySPHCfcF4gKVFTBfRG5hi6keE4mGNRFrpE6rTcFNXNN/VvAlzI2vSBkN6COn5QqikR6WaVFWziOVs9+CkyOOaEESeHCVPjI1epbLUaMwRThoaaobyBrXCP0HhtjFA+LtzgHQU9KOZ5d9ZZwvybeEFhvoowCxlT8mA+Fbtmi8YXBeQ87Zhmid+iATWXxszJ0342x6I/W0JgNIkHePVco8r2iI1JGRFkh3HhijtrUUV2w+/w5rLxqIOhRDfWz5/Glph1/92Sz1BeU0eB9grokatzgb/m/7W6Q00JsS1qnYQzwU7MIyMFaRbeOXVcQoGQmy8oZLZdHsChIPdueVbvbnG/E663aiF9aQhkiK6IHKjQ9G+gxqhKt/rL9BwobTA42Q==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3108.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(346002)(366004)(39860400002)(396003)(230922051799003)(64100799003)(1800799009)(451199024)(186009)(316002)(66476007)(66946007)(66556008)(4326008)(8936002)(8676002)(41300700001)(26005)(36756003)(2616005)(83380400001)(6486002)(478600001)(53546011)(6506007)(31696002)(6512007)(86362001)(38100700002)(2906002)(31686004)(5660300002)(44832011)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eUVheHc1QUM2LzRTUW1VMHhoZ0xQWmcrRkptQmU2MkJ5czhYRUl5MGJicDNh?=
- =?utf-8?B?VDBDNHVPcEZkbFFCOWE5NzZSSDNZNHE3bjRFUFBDSkhjcHZ4QStmb2lRNCty?=
- =?utf-8?B?SjlBRm5rSDEwU3d5emRIVWtvRUNoUVRqTG1wMzBKM2JZQTl3Mjg1WWhwTjR5?=
- =?utf-8?B?c2tGM0kzNWY2aXBmR0VSOUYvaWpiRTZETGtqektLTVc4YlZMcVBlM1VXbVVY?=
- =?utf-8?B?ajloaWlVVlc5OXYwNDRTNkRxQkdqS0FZenF4Mms2TWVxVlhuTmowVXYrQjFi?=
- =?utf-8?B?RHBPRWZNY1ByRkFOOE14RGZSNjNMRThoNmorcDZLYXBBSzQ4V1lnRG4wV0No?=
- =?utf-8?B?bFNvMnFHM0NOb0xNTmJxUlkycjhYcFY5MnU4Q0R2UnJsL05EWWpUWDYrQVEx?=
- =?utf-8?B?QmVKRm0vQWFqa0lXWjNEcnpDUFRrZmNXZzN3d2ZLSnBGaUtYckcyWmt6VEZy?=
- =?utf-8?B?VldBaWh6LzJSbWpqTnRUTmNGV0JZRDJFVUlGTDhGTmtiNk9raHg5T0NKOTh5?=
- =?utf-8?B?YVFIMkZWSmVjUGJFREpockdIckxkQ0FEUGkxdjZjSXMwdmlBKzZQZlRhbU1W?=
- =?utf-8?B?UHhHbE14RFplSzQzU0VSNjB3dmU5cXZ2Zlh3a3R0SElYN2c4U0NjM0xUejBm?=
- =?utf-8?B?VVFvbFRsczBvaElrblJMNWJXUUx1dGpodWFCaTRoSWMzUVduUEYzYklqZ0lS?=
- =?utf-8?B?LzArSU90U1A5dGFKbDRaNUdiSnFvVWZyK3VtUC9lanJGMnlMK3FVbFF1QmZ0?=
- =?utf-8?B?UWExczMvQ3JjdmR2SkFOMEtoOXozeVF3d1NSL2Jpa0lhTzY5VTVGZGtzeGRF?=
- =?utf-8?B?WnR6c1I0ZEhHMTFGS0c3bnpFTVFwMHZxcTY0amhZVm5qV214ODdjNkxQc0x1?=
- =?utf-8?B?WTduS3RJeVpWQ0xaYUE0bWRrTmkxMlZFdHg0LzdYYWdrWFl3VnQrYTM0c0pC?=
- =?utf-8?B?VHBnb0R3L0d4V3dsNFNLY01aYVV3Ykk4dUdjeG9sdmpDdER0VGVxcmtkTjJN?=
- =?utf-8?B?biszU3RSY0srUy9DV3RHTGFpU3FaWlE1UVV0UG5WYkNiTERGTDYxcTRZMEpZ?=
- =?utf-8?B?OWIxVWsxL202WVQ5aVpPblVGbmpxWXVKaXMvY1l2c0IzY0JnQTRmVHRoTytI?=
- =?utf-8?B?MDZpVmt3UXM2UnlxUkxyU1ZUSDY3eDNJbklEVm0wQ0tsaFNhbUcySTdPVUk0?=
- =?utf-8?B?eWc3MU9lUEtFNURWRmV6UXY2Ukt5NXg2b0dyWVB1eXhIeG1CTWZYeDVjcU9M?=
- =?utf-8?B?SE5XMkt5VDl3bGhvM0FHcGxYUWIwUXdqRXJyc1BEUnc0ZzJKRzQ3VStuUHlG?=
- =?utf-8?B?Q0ZNTmhmNW5wVVdZQjBXTGZRWUdyY25IYUFHbGtrQVR3TXBVWkViNHV1WmJF?=
- =?utf-8?B?Z2ZRTUpsNTNrY21GSnRkdFlINW1CYzFIanB0TUoxeTgxSGt1STdqcXBTcXEw?=
- =?utf-8?B?UFB4TUVjUjdSd3FVYmh6QURFU1BXcStkZ2NFK2MrVVNicnoyUWpJMlhyU2lj?=
- =?utf-8?B?MktHR1dHSHJHRlpMLzh4cjJjb0dVV0VWMW5SY1lMbGJCalRNeVdTVWI0V20y?=
- =?utf-8?B?VlRYRXpVV2wzWDFRUzhMc1V4aWZHNHFESVdiTlg4MlJDN04vMktaVm0wMGJK?=
- =?utf-8?B?NEVDV2MzNmhjM3VLRFhKSjJxYlVlNjVkTFU3bFQyS1lUZlZ6dUFCVUdJT3Bl?=
- =?utf-8?B?bFNDVWxkVDZMYW51MXJ3T0VyRmRDWnl1dUFudVpzL3pvSFZmSWdHTTNlUDNO?=
- =?utf-8?B?MnM2Sm05SGJ6VGZRbmRIZlRZK3ZyZjRVenZ0YlArQUpCQ3cxRkZ1WjBjVEpN?=
- =?utf-8?B?ZDNWZWlveVhsUVVKM0RtWmxXbWV1VW1IbDRlU1A5ZTl5dy9hbm4zTWQrakt4?=
- =?utf-8?B?MFV3WEdqZFdRMjNqalR2OE1idFRkOHc5Uzlkb3lMeXZsMlVHWHRLMlI2YURo?=
- =?utf-8?B?SzR2TUxQUGowdGRRUHgzeHJ3QlEvMFhlanZaOXgvaU5ndS9LL0xpV3ZHSXVE?=
- =?utf-8?B?SFZ4Wm1EaDVFUnNGVG9qb2JxeFRLMWtjcG81a05nQ3RzRzZEMUtQVWEzR05U?=
- =?utf-8?B?blJhNG9KcGJEaVRULzVwUE41WG5wUkVKSkRmaFpQbGF6SHluSy9HZ29vV2o0?=
- =?utf-8?Q?1GCsdtWPLFG5oyzCZ5P0wTxpc?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28c6b9bf-78ea-4422-91d7-08dbc0fa024f
-X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3108.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2023 14:40:21.7909
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EokJdzqeJobvjkxVpJRXJ/KRmWbdLY/fJ6gOrMjqT5vZmx573qTNSsb8OTitkcCVKPK+PsEhpaUper8wrBovdA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9439
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230918172140.2825357-1-quic_poza@quicinc.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On 9/28/23 2:42 PM, Avadhut Naik wrote:
-> To support GHES_ASSIST on Machine Check Architecture (MCA) error sources,
-> a set of GHES structures is provided by the system firmware for each MCA
-> error source. Each of these sets consists of a GHES structure for each MCA
-> bank on each logical CPU, with all structures of a set sharing a common
-> Related Source ID, equal to the Source ID of one of the MCA error source
-> structures.[1] On SOCs with large core counts, this typically equates to
-> tens of thousands of GHES_ASSIST structures for MCA under
-> "/sys/bus/platform/drivers/GHES".
+On Mon, Sep 18, 2023 at 10:21:40AM -0700, Oza Pawandeep wrote:
+> Arm® Functional Fixed Hardware Specification defines LPI states,
+> which provide an architectural context loss flags field that can
+> be used to describe the context that might be lost when an LPI
+> state is entered.
 > 
-> Support for GHES_ASSIST however, hasn't been implemented in the kernel. As
-> such, the information provided through these structures is not consumed by
-> Linux. Moreover, these GHES_ASSIST structures for MCA, which are supposed
-> to provide supplemental information in context of an error reported by
-> hardware, are setup as independent error sources by the kernel during HEST
-> initialization.
+> - Core context Lost
+>         - General purpose registers.
+>         - Floating point and SIMD registers.
+>         - System registers, include the System register based
+>         - generic timer for the core.
+>         - Debug register in the core power domain.
+>         - PMU registers in the core power domain.
+>         - Trace register in the core power domain.
+> - Trace context loss
+> - GICR
+> - GICD
 > 
-> Additionally, if the Type field of the Notification structure, associated
-> with these GHES_ASSIST structures for MCA, is set to Polled, the kernel
-> sets up a timer for each individual structure. The duration of the timer
-> is derived from the Poll Interval field of the Notification structure. On
-> SOCs with high core counts, this will result in tens of thousands of
-> timers expiring periodically causing unnecessary preemptions and wastage
-> of CPU cycles. The problem will particularly intensify if Poll Interval
-> duration is not sufficiently high.
+> Qualcomm's custom CPUs preserves the architectural state,
+> including keeping the power domain for local timers active.
+> when core is power gated, the local timers are sufficient to
+> wake the core up without needing broadcast timer.
 > 
-> Since GHES_ASSIST support is not present in kernel, skip initialization
-> of GHES_ASSIST structures for MCA to eliminate their performance impact.
+> The patch fixes the evaluation of cpuidle arch_flags, and moves only to
+> broadcast timer if core context lost is defined in ACPI LPI.
 > 
-> [1] ACPI specification 6.5, section 18.7
-> 
-> Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+> Fixes: a36a7fecfe607 ("Add support for Low Power Idle(LPI) states")
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+> Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
 > ---
->  drivers/acpi/apei/hest.c | 49 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 49 insertions(+)
 > 
-> diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
-> index 6aef1ee5e1bd..03cb0ece4235 100644
-> --- a/drivers/acpi/apei/hest.c
-> +++ b/drivers/acpi/apei/hest.c
-> @@ -37,6 +37,20 @@ EXPORT_SYMBOL_GPL(hest_disable);
+> Notes:
+>     Will/Catalin: Rafael has acked and he prefers to take it via arm64 tree
+> 
+> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
+> index 4d537d56eb84..269d21209723 100644
+> --- a/arch/arm64/include/asm/acpi.h
+> +++ b/arch/arm64/include/asm/acpi.h
+> @@ -9,6 +9,7 @@
+>  #ifndef _ASM_ACPI_H
+>  #define _ASM_ACPI_H
 >  
->  static struct acpi_table_hest *__read_mostly hest_tab;
+> +#include <linux/cpuidle.h>
+>  #include <linux/efi.h>
+>  #include <linux/memblock.h>
+>  #include <linux/psci.h>
+> @@ -44,6 +45,23 @@
 >  
+>  #define ACPI_MADT_GICC_TRBE  (offsetof(struct acpi_madt_generic_interrupt, \
+>  	trbe_interrupt) + sizeof(u16))
 > +/*
-> + * Since GHES_ASSIST is not supported, skip initialization
-> + * of GHES_ASSIST structures for MCA.
-> + * During HEST parsing, detected MCA error sources are cached.
-> + * Flags and Source Id fields from these cached values are
-> + * then referred to determine if the encountered GHES_ASSIST
-> + * structure should be initialized.
+> + * Arm® Functional Fixed Hardware Specification Version 1.2.
+> + * Table 2: Arm Architecture context loss flags
 > + */
-> +static struct {
-> +	struct acpi_hest_ia_corrected *cmc;
-> +	struct acpi_hest_ia_machine_check *mc;
-> +	struct acpi_hest_ia_deferred_check *dmc;
-> +} mces;
+> +#define CPUIDLE_CORE_CTXT		BIT(0) /* Core context Lost */
 > +
->  static const int hest_esrc_len_tab[ACPI_HEST_TYPE_RESERVED] = {
->  	[ACPI_HEST_TYPE_IA32_CHECK] = -1,	/* need further calculation */
->  	[ACPI_HEST_TYPE_IA32_CORRECTED_CHECK] = -1,
-> @@ -70,22 +84,53 @@ static int hest_esrc_len(struct acpi_hest_header *hest_hdr)
->  		cmc = (struct acpi_hest_ia_corrected *)hest_hdr;
->  		len = sizeof(*cmc) + cmc->num_hardware_banks *
->  			sizeof(struct acpi_hest_ia_error_bank);
-> +		mces.cmc = cmc;
->  	} else if (hest_type == ACPI_HEST_TYPE_IA32_CHECK) {
->  		struct acpi_hest_ia_machine_check *mc;
->  		mc = (struct acpi_hest_ia_machine_check *)hest_hdr;
->  		len = sizeof(*mc) + mc->num_hardware_banks *
->  			sizeof(struct acpi_hest_ia_error_bank);
-> +		mces.mc = mc;
->  	} else if (hest_type == ACPI_HEST_TYPE_IA32_DEFERRED_CHECK) {
->  		struct acpi_hest_ia_deferred_check *mc;
->  		mc = (struct acpi_hest_ia_deferred_check *)hest_hdr;
->  		len = sizeof(*mc) + mc->num_hardware_banks *
->  			sizeof(struct acpi_hest_ia_error_bank);
-> +		mces.dmc = mc;
->  	}
->  	BUG_ON(len == -1);
->  
->  	return len;
->  };
->  
-> +/* GHES and GHESv2 structures share the same format, starting from
+> +static __always_inline void _arch_update_idle_state_flags(u32 arch_flags,
+> +							unsigned int *sflags)
 
-Please follow the general kernel multi-line comment style here.
+Why can't this just be 'static inline'?
 
-> + * Source Id and ending in Error Status Block Length (inclusive).
-> + */
-> +static bool is_ghes_assist_struct(struct acpi_hest_header *hest_hdr)
 > +{
-> +	struct acpi_hest_generic *ghes;
-> +	u16 related_source_id;
-> +
-> +	if (hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR &&
-> +	    hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR_V2)
-> +		return false;
-> +
-> +	ghes = (struct acpi_hest_generic *)hest_hdr;
-> +	related_source_id = ghes->related_source_id;
-> +
-> +	if (mces.cmc && mces.cmc->flags & ACPI_HEST_GHES_ASSIST &&
-> +	    related_source_id == mces.cmc->header.source_id)
-
-IMO, there should be parentheses around statements with multiple terms
-to improve clarity.
-
-	if (mces.cmc && (mces.cmc->flags & ACPI_HEST_GHES_ASSIST) &&
-	    (related_source_id == mces.cmc->header.source_id))
-
-> +		return true;
-> +	else if (mces.dmc && mces.dmc->flags & ACPI_HEST_GHES_ASSIST &&
-
-The "else" is not needed, because of the return.
-
-IOW, use "else if" when you want to skip a check if the previous "if"
-was true. Here the check is already skipped if the previous "if" was
-true and did a return.
-
-Also, the order of the types is "cmc, mc, dmc" in the struct definition
-and hest_esrc_len(). But here it is "cmc, dmc, mc". This is just a minor
-nit about consistency in ordering.
-
-> +		 related_source_id == mces.dmc->header.source_id)
-> +		return true;
-> +	else if (mces.mc && mces.mc->flags & ACPI_HEST_GHES_ASSIST &&
-> +		 related_source_id == mces.mc->header.source_id)
-> +		return true;
-> +
-> +	return false;
+> +	if (arch_flags & CPUIDLE_CORE_CTXT)
+> +		*sflags |= CPUIDLE_FLAG_TIMER_STOP;
 > +}
+> +#define arch_update_idle_state_flags _arch_update_idle_state_flags
+
+Usually, the function and the macro have the same name for this pattern,
+so I think it would be more consistent to drop the leading underscore
+from the C function name.
+
 > +
->  typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
+> +#define CPUIDLE_TRACE_CTXT		BIT(1) /* Trace context loss */
+> +#define CPUIDLE_GICR_CTXT		BIT(2) /* GICR */
+> +#define CPUIDLE_GICD_CTXT		BIT(3) /* GICD */
 >  
->  static int apei_hest_parse(apei_hest_func_t func, void *data)
-> @@ -113,6 +158,10 @@ static int apei_hest_parse(apei_hest_func_t func, void *data)
->  				hest_hdr->source_id);
->  			return -EINVAL;
->  		}
+>  /* Basic configuration for ACPI */
+>  #ifdef	CONFIG_ACPI
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> index dc615ef6550a..5c1d13eecdd1 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -1217,8 +1217,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
+>  		strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
+>  		state->exit_latency = lpi->wake_latency;
+>  		state->target_residency = lpi->min_residency;
+> -		if (lpi->arch_flags)
+> -			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
+> +		arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
 
-Newline here please.
+Hmm, I know Rafael has Acked this, but I think this is pretending to be
+more generic than it really is. While passing in a pointer to the flags
+field allows the arch code to set and clear arbitrary flags, we're calling
+this before we've set CPUIDLE_FLAG_RCU_IDLE, so that cannot be changed.
 
-> +		if (is_ghes_assist_struct(hest_hdr)) {
-> +			hest_hdr = (void *)hest_hdr + len;
-> +			continue;
-> +		}
+Why not just name it like it is and return the arch flags directly:
+
+	state->flags |= arch_get_idle_state_flags(lpi->arch_flags);
+
+?
+
+>  		if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
+>  			state->flags |= CPUIDLE_FLAG_RCU_IDLE;
+>  		state->enter = acpi_idle_lpi_enter;
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index a73246c3c35e..07a825c76bab 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1480,6 +1480,12 @@ static inline int lpit_read_residency_count_address(u64 *address)
+>  }
+>  #endif
 >  
->  		rc = func(hest_hdr, data);
->  		if (rc)
+> +#ifdef CONFIG_ACPI_PROCESSOR_IDLE
+> +#ifndef arch_update_idle_state_flags
+> +#define arch_update_idle_state_flags(af, sf)	do {} while (0)
 
-Besides the minor formatting comments, this looks good to me.
+I'd prefer defining this to point at an empty static inline function so
+that we get evaluation and type-checking of the arguments.
 
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+> +#endif
+> +#endif /* CONFIG_ACPI_PROCESSOR_IDLE */
 
-Thanks,
-Yazen
+Why do you need the outer CONFIG_ guards here?
+
+Will
 
