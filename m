@@ -1,127 +1,173 @@
-Return-Path: <linux-acpi+bounces-285-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-286-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885657B3293
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Sep 2023 14:31:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 671FC7B3294
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Sep 2023 14:31:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by ny.mirrors.kernel.org (Postfix) with ESMTP id AAD751C209F2
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Sep 2023 12:31:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTP id 831F61C209E3
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Sep 2023 12:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8201419BCD
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Sep 2023 12:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6EE1A29F
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Sep 2023 12:31:15 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AEB15AD5
-	for <linux-acpi@vger.kernel.org>; Fri, 29 Sep 2023 10:42:10 +0000 (UTC)
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C10FD11F;
-	Fri, 29 Sep 2023 03:42:08 -0700 (PDT)
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6c0ab18e084so1789313a34.1;
-        Fri, 29 Sep 2023 03:42:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695984128; x=1696588928;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bcUuUTxHE+IHvmXlS2b4MsOM48ntcJUB+u6xduxAjxk=;
-        b=Pihz36Vg2SuozjE+xkx11OuuE6jff1m+mXJrxdAJ2cYFKsNRyHtRwkuFW6RgYnm2pG
-         W9YDPd3rFepM7IGJ65kEpzEdNvSXB3lWZ6Cd0+IHcg8YIRIaPCDSO+cjhoSXJeytmDK9
-         WnoCOJnxdqm2I7vjEke4CRNSsPOHK/8JZBiUR0+lwrEosNILFLeN3kinYyJ1UunWtGlV
-         x3d7vvjl1TCX9Vr7DMHwXoLZ/qSN3Ge7iLk8U+rScrQX63jJOnsqBumz+oskHibEr3ok
-         SenMxKaFcAVmW1UKuNP2j5nVJFPNFeBFOtSJp7HneoLzy/3T+frN8E+qTUsva3yJzPFF
-         uOAg==
-X-Gm-Message-State: AOJu0YyeI+WJT/RA8Z7zc7runSdsLLVRXW6uY6d3YfSyNh0+T8WYF2xG
-	WS/lJDZgNfgDlBC3oOfXT2dLRaz4PyWSKZi9KHc=
-X-Google-Smtp-Source: AGHT+IH2vK2rMsAQcRdorevpcmoViAnxxTToVLEq3vLvwTgXPtBXFnhaeTwdC9FjzGOFjrmTWlk6hcuYHOALG0Grj7k=
-X-Received: by 2002:a05:6808:2029:b0:3a9:e85d:b689 with SMTP id
- q41-20020a056808202900b003a9e85db689mr4974355oiw.0.1695984127991; Fri, 29 Sep
- 2023 03:42:07 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14F1F9CC
+	for <linux-acpi@vger.kernel.org>; Fri, 29 Sep 2023 11:27:46 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4CA7AB7;
+	Fri, 29 Sep 2023 04:27:40 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3BC471FB;
+	Fri, 29 Sep 2023 04:28:18 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8A56D3F59C;
+	Fri, 29 Sep 2023 04:27:38 -0700 (PDT)
+Date: Fri, 29 Sep 2023 12:27:36 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: "lihuisong (C)" <lihuisong@huawei.com>
+Cc: rafael@kernel.org, rafael.j.wysocki@intel.com, xuwei5@hisilicon.com,
+	Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, soc@kernel.org,
+	linux-arm-kernel@lists.infradead.org, liuyonglong@huawei.com
+Subject: Re: [PATCH v2 2/2] soc: kunpeng_hccs: add the check for PCC subspace
+ type
+Message-ID: <20230929112736.iribjiwzk5wszb4k@bogus>
+References: <20230914115753.9064-1-lihuisong@huawei.com>
+ <20230920064703.23543-1-lihuisong@huawei.com>
+ <20230920064703.23543-3-lihuisong@huawei.com>
+ <20230920141147.bq7cjiqjk6c36t6d@bogus>
+ <1b05f595-b485-5a7e-ad31-b19f462fe43f@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <202309290642.18zicoLj-lkp@intel.com>
-In-Reply-To: <202309290642.18zicoLj-lkp@intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 29 Sep 2023 12:41:56 +0200
-Message-ID: <CAJZ5v0gPjD-DiV6yM-vhrdQ-JJU097ErHZv4cAOVcuQMrEg0iw@mail.gmail.com>
-Subject: Re: [rafael-pm:bleeding-edge 86/94] drivers/acpi/utils.c:427:
- warning: Function parameter or member 'list2' not described in 'acpi_handle_list_equal'
-To: kernel test robot <lkp@intel.com>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, oe-kbuild-all@lists.linux.dev, 
-	linux-acpi@vger.kernel.org, devel@acpica.org, linux-pm@vger.kernel.org, 
-	Vicki Pfau <vi@endrift.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1b05f595-b485-5a7e-ad31-b19f462fe43f@huawei.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Sep 29, 2023 at 12:26=E2=80=AFAM kernel test robot <lkp@intel.com> =
-wrote:
->
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.g=
-it bleeding-edge
-> head:   2cff74feed4a2a3a1c220e0ee2838b85b08d4999
-> commit: 2f5042ef239e43d2b02f7724714673e5e604bd6f [86/94] ACPI: utils: Dyn=
-amically determine acpi_handle_list size
-> config: loongarch-allyesconfig (https://download.01.org/0day-ci/archive/2=
-0230929/202309290642.18zicoLj-lkp@intel.com/config)
-> compiler: loongarch64-linux-gcc (GCC) 13.2.0
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20230929/202309290642.18zicoLj-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202309290642.18zicoLj-lkp=
-@intel.com/
->
-> All warnings (new ones prefixed by >>):
->
-> >> drivers/acpi/utils.c:427: warning: Function parameter or member 'list2=
-' not described in 'acpi_handle_list_equal'
-> >> drivers/acpi/utils.c:427: warning: Excess function parameter 'List2' d=
-escription in 'acpi_handle_list_equal'
+On Thu, Sep 21, 2023 at 10:27:36AM +0800, lihuisong (C) wrote:
+> 
+> 在 2023/9/20 22:11, Sudeep Holla 写道:
+> > On Wed, Sep 20, 2023 at 02:47:03PM +0800, Huisong Li wrote:
+> > > Currently, HCCS driver directly uses Generic Communications Channel Shared
+> > > Memory Region which is used in type0/1/2 to communicate with platform,
+> > > but actually doesn't support type3/4/5.
+> > > So this patch adds the check for PCC subspace type.
+> > > 
+> > > Signed-off-by: Huisong Li <lihuisong@huawei.com>
+> > > ---
+> > >   drivers/soc/hisilicon/kunpeng_hccs.c | 17 +++++++++++++++++
+> > >   1 file changed, 17 insertions(+)
+> > > 
+> > > diff --git a/drivers/soc/hisilicon/kunpeng_hccs.c b/drivers/soc/hisilicon/kunpeng_hccs.c
+> > > index f3810d9d1caa..4ba3bfd45a01 100644
+> > > --- a/drivers/soc/hisilicon/kunpeng_hccs.c
+> > > +++ b/drivers/soc/hisilicon/kunpeng_hccs.c
+> > > @@ -174,6 +174,19 @@ static int hccs_register_pcc_channel(struct hccs_dev *hdev)
+> > >   	return rc;
+> > >   }
+> > > +static int hccs_check_pcc_info(struct hccs_dev *hdev)
+> > > +{
+> > > +	struct pcc_mbox_chan *pcc_chan = hdev->cl_info.pcc_chan;
+> > > +
+> > > +	if (pcc_chan->type >= ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE) {
+> > > +		dev_err(hdev->dev, "unsupport for subspace type%u.\n",
+> > > +			pcc_chan->type);
+> > > +		return -EOPNOTSUPP;
+> > > +	}
+> > Is this the only use of the PCC type information you have or do you plan to
+> > use it for something other than the validation.
+> Yeah, it is just validation now. we want to plan this driver can support
+> more types.
 
-Typo in a kerneldoc comment - fixed up in the tree.
+OK
 
-Thanks!
+> > 
+> > Just for sake of argument, I can say all users of PCC must then do the
+> > similar validation. I don't know where to draw the line here.
+> 
+> If export PCC type, it is good for the user of PCC to be more universal and
+> more compatible.
+>
 
-> vim +427 drivers/acpi/utils.c
+I don't think it is a good idea to just export raw ACPI PCC type to the
+client drivers. What if the driver in the future needs to work on a DT
+platform as well and need to work with non-PCC mailbox channel ?
+
+Also pushing the client PCC drivers to have more ACPI knowledge to understand
+what each type means is also something I prefer to avoid. The real information
+you want is whether this is an initiator(previously known master) channel or
+responder(previously known as slave) channel. It boils down to unidirectional
+vs bidirectional and what direction in bidirectional channels.
+
+It would be good if mbox framework can be taught that, or atleast make an
+attempt to see what people think about it. Just patching it the way you are
+proposing is just going to hide real issue here.
+
+> > 
+> > Ideally I would expect the driver to make this transparent and give error
+> > during transmit if not supported.
+> I understand you.
+> I just check this type only once during the initializing phase.
+> Otherwise, every once need to verify it when send PCC command.
+
+Agreed, but refer above for my concern on the solution proposed.
+
+> >
+> > The driver must be able to work with different PCC type to support variety
+> > of platforms TBH. What is the issue exactly here ? Is this to prevent the
+> Agree more with you.
+> IMO, the user of PCC has the ability to support variety of platforms if they
+> can get PCC type.
+> In this case, to prevent type 4 is necessary if driver cannot act as a
+> slave.
+> on the other hand, If one driver acts as a slave, platform must supply slave
+> subspace for them.
+> > use of Type 4 ? I think we must do something better but I don't know what
+> > that is yet.
+> 
+> Yes, we can try to do it better. I have a concern, like below.
 >
->    416
->    417  /**
->    418   * acpi_handle_list_equal - Check if two ACPI handle lists are th=
-e same
->    419   * @list1: First list to compare.
->    420   * @List2: Second list to compare.
->    421   *
->    422   * Return true if the given ACPI handle lists are of the same siz=
-e and
->    423   * contain the same ACPI handles in the same order.  Otherwise, r=
-eturn false.
->    424   */
->    425  bool acpi_handle_list_equal(struct acpi_handle_list *list1,
->    426                              struct acpi_handle_list *list2)
->  > 427  {
->    428          return list1->count =3D=3D list2->count &&
->    429                  !memcmp(list1->handles, list2->handles,
->    430                          list1->count * sizeof(acpi_handle));
->    431  }
->    432  EXPORT_SYMBOL_GPL(acpi_handle_list_equal);
->    433
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+
+Thanks for agreeing.
+
+> You know that the use of PCC can use polling mode and interrupt mode to
+> communicate with platform.
+> I'm not sure if the obtaining of the polling mode and interrupt mode is an
+> issue to prevent driver to be more universal.
+
+Again this must be addressed at mailbox API level.
+
+> But this driver can know if they support interrupt mode based on struct
+> mbox_chan::struct mbox_controller::txdone_irq after requesting PCC channel.
+
+Agreed, I was about to ask the same.
+
+> Because I'm not sure it's a better way.
+
+Again agreed.
+
+> You know that drivers used interrupt mode need to fill the rx_callback
+> function into mbx_client when register PCC channel.
+> And drivers used polling mode don't do it.
+> If we use this way, drivers that both support the two mode have to modify
+> the rx_callback pointer after requesting PCC channel.
+
+I am not sure if I followed all the details here. May be a rough hack helps
+to understand what you are proposing ? Ofcourse not for merging, just to
+understand the issue better.
+
+--
+Regards,
+Sudeep
 
