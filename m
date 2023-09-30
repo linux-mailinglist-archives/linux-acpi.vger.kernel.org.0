@@ -1,127 +1,85 @@
-Return-Path: <linux-acpi+bounces-303-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-304-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 365FC7B3FF4
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Sep 2023 12:30:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E30557B3FF5
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Sep 2023 12:30:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id DCB91281E30
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Sep 2023 10:30:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 9A056281E90
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Sep 2023 10:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A5BBA3A
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Sep 2023 10:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833C4BA3A
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Sep 2023 10:30:36 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8F7138C
-	for <linux-acpi@vger.kernel.org>; Sat, 30 Sep 2023 09:04:58 +0000 (UTC)
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B08BE1A7;
-	Sat, 30 Sep 2023 02:04:57 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-50325ce89e9so24006819e87.0;
-        Sat, 30 Sep 2023 02:04:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696064696; x=1696669496; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xeGbiFzFYK1tREaSWy6nrxTkbPQlphBhH17z/+R52n4=;
-        b=R7POgiQfijlPptE0XKY9gH+g79bLPnXq9ECgwY8b/Hm8bmfSA6Can6fe9l1soSPPff
-         RGEGsZ8Ck6Lzb89YwQsyu4Ze8tRqe7Wl3DzA24lVrPDIdn8CugR2Sy/W/udL1jWZnypa
-         hgQuIL67FRDnSzNziGHTMz1oysebVWyoTB3Js39CasQs01j9XxhDnQ94BOF1yH3qZyv/
-         wVCLEbXjoOE8r76FVueWHLtXN4YKJUWNXJV6Fm6YrU19W8tD0XMSAGqRDWXKbWItHs5P
-         +3hitpkL1R6VRJlui5505xKV2Y5YiAss7UDKyaZIQ3ZY9XrdMrX84+XXVZltXnCBhnE+
-         U6Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696064696; x=1696669496;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xeGbiFzFYK1tREaSWy6nrxTkbPQlphBhH17z/+R52n4=;
-        b=CCIRpMf330V2vjpy6CtOtnIbsMIjg5w2fV3vTTAXUu4NkHwBRLqdM079SGXK9JYkJs
-         ARAFkel4wCbzoX6ugTcS22mu4nYawBG80KdCKh3NSBa7Sbbzc3hkAT+9Rf8ogTBWggs8
-         rlJh0d/yBdysMKwQemhtHaPDwpc0wVvLuieN7N6jlyQbbYQrR1u84SAf1ueXhQ+pSEgw
-         hdoIdt3BHdwZXmWX/XIpuXJpdwncZbmYk5qJImA3nWi0POK2JcyH1LNIa0uAKkX05RJu
-         abzpQ8Dg8Q0DNp3sbbzPKN7nghtDnPj5EeWLylqGRraQHEaz8SI6hLX6UIxhGPOIl2Rc
-         KQyQ==
-X-Gm-Message-State: AOJu0Yy+Hyf9HZSjxZCzBZhInhahweaPzePrJ2OIU/NOSd4O5gT9Y2vi
-	vGPwKlu+jsYIf9LV80uRdzk=
-X-Google-Smtp-Source: AGHT+IGn+nHzoTYiaz/RWNzHb7S15bcM3hpPDOmyfCnU/j2V8HjHf6SKdEBgmZ8fINa26a9TRYjd4w==
-X-Received: by 2002:a05:6512:370a:b0:503:985:92c5 with SMTP id z10-20020a056512370a00b00503098592c5mr4791360lfr.42.1696064695892;
-        Sat, 30 Sep 2023 02:04:55 -0700 (PDT)
-Received: from HP-ENVY-Notebook.lan (81-229-94-10-no68.tbcn.telia.com. [81.229.94.10])
-        by smtp.googlemail.com with ESMTPSA id u26-20020ac248ba000000b004fbb011c9bcsm3818321lfg.161.2023.09.30.02.04.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Sep 2023 02:04:55 -0700 (PDT)
-From: Jonathan Bergh <bergh.jonathan@gmail.com>
-To: rafael@kernel.org,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jonathan Bergh <bergh.jonathan@gmail.com>
-Subject: [PATCH 3/3] drivers: acpi: Fix missing newline after declarations
-Date: Sat, 30 Sep 2023 11:04:36 +0200
-Message-Id: <20230930090436.35851-1-bergh.jonathan@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A3023AA;
+	Sat, 30 Sep 2023 09:38:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E27E9C433C7;
+	Sat, 30 Sep 2023 09:38:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1696066728;
+	bh=IvpiOG/bGE3T67kaLiqC3a217xhno8NefOjxFtDtAkw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WaJVTLBeni9ABYwJGH6p5NdtU/RU11lfOkq4o8gQbfieAj6Xnu0oPttIzCz/pyfLD
+	 zfTdBg1nNBQgV/qTj+JiGRQfkYtvcqEH6wKhSQRy3qHNAswsL8/wJRZIiqy/KwH3qN
+	 XJnhdlMtd5WJtvr9+PF0pxAhe4SXcD3e669r7MFw=
+Date: Sat, 30 Sep 2023 11:38:44 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, tiwai@suse.com,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>, llvm@lists.linux.dev,
+	alsa-devel@alsa-project.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] device property: Replace custom implementation of
+ COUNT_ARGS()
+Message-ID: <2023093029-balmy-shrewdly-3e3d@gregkh>
+References: <20230920153819.2069869-1-andriy.shevchenko@linux.intel.com>
+ <CAKwvOd=7vk2HKOpgVrRd2RtKSF9tXPqbVmN+5teLTNoBy4BWVg@mail.gmail.com>
+ <CAKwvOdkbcUh+tmsNcT4nCzFY37WbAUdjHJ62qNe=p8SetaQNTQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+In-Reply-To: <CAKwvOdkbcUh+tmsNcT4nCzFY37WbAUdjHJ62qNe=p8SetaQNTQ@mail.gmail.com>
 
-Fixed various instances where missing newlines after variable
-declarations were causing checkpatch warnings.
+On Fri, Sep 29, 2023 at 09:10:11AM -0700, Nick Desaulniers wrote:
+> On Wed, Sep 20, 2023 at 9:50 AM Nick Desaulniers
+> <ndesaulniers@google.com> wrote:
+> >
+> > On Wed, Sep 20, 2023 at 8:38 AM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> > >
+> > > Replace custom and non-portable implementation of COUNT_ARGS().
+> > >
+> > > Fixes: e64b674bc9d7 ("software node: implement reference properties")
+> > > Reported-by: Nick Desaulniers <ndesaulniers@google.com>
+> > > Closes: https://lore.kernel.org/r/ZQoILN6QCjzosCOs@google.com
+> >
+> > Thanks for the patch!
+> > Closes: https://github.com/ClangBuiltLinux/linux/issues/1935
+> > Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+> >
+> > Of course Linux would have a macro for this!  I should have known.
+> > Trying to wrap my head around it. Awesome
+> 
+> (resending as text/plain)
+> 
+> Can someone pick this up for linux-next?
+> 
+> CI for linux-next has been red for days over this.
 
-Signed-off-by: Jonathan Bergh <bergh.jonathan@gmail.com>
----
- drivers/acpi/osl.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Will do, give me a chance to catch up...
 
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index dbbccb612277..18a25429274c 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -1067,6 +1067,7 @@ acpi_status acpi_os_execute(acpi_execute_type type,
- 	struct acpi_os_dpc *dpc;
- 	struct workqueue_struct *queue;
- 	int ret;
-+
- 	ACPI_DEBUG_PRINT((ACPI_DB_EXEC,
- 			  "Scheduling function [%p(%p)] for deferred execution.\n",
- 			  function, context));
-@@ -1522,6 +1523,7 @@ acpi_cpu_flags acpi_os_acquire_lock(acpi_spinlock lockp)
- 	__acquires(lockp)
- {
- 	acpi_cpu_flags flags;
-+
- 	spin_lock_irqsave(lockp, flags);
- 	return flags;
- }
-@@ -1708,6 +1710,7 @@ acpi_status acpi_os_prepare_sleep(u8 sleep_state, u32 pm1a_control,
- 				  u32 pm1b_control)
- {
- 	int rc = 0;
-+
- 	if (__acpi_os_prepare_sleep)
- 		rc = __acpi_os_prepare_sleep(sleep_state,
- 					     pm1a_control, pm1b_control);
-@@ -1730,6 +1733,7 @@ acpi_status acpi_os_prepare_extended_sleep(u8 sleep_state, u32 val_a,
- 				  u32 val_b)
- {
- 	int rc = 0;
-+
- 	if (__acpi_os_prepare_extended_sleep)
- 		rc = __acpi_os_prepare_extended_sleep(sleep_state,
- 					     val_a, val_b);
--- 
-2.34.1
-
+greg k-h
 
