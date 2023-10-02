@@ -1,72 +1,60 @@
-Return-Path: <linux-acpi+bounces-326-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-328-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9597B552B
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 16:32:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CCE7B552D
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 16:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 97A87281761
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 14:32:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 8DFCF2830ED
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 14:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF141A5BF
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 14:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768B91A5BE
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 14:32:26 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388F8171AA;
-	Mon,  2 Oct 2023 13:32:33 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B367B91;
-	Mon,  2 Oct 2023 06:32:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4CC2106
+	for <linux-acpi@vger.kernel.org>; Mon,  2 Oct 2023 13:46:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1786DB0;
+	Mon,  2 Oct 2023 06:46:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696253550; x=1727789550;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lDAqfAvJkp0xhbjXWLoPesIG5pkXB+BnJ5EhDi7GpC0=;
-  b=D3/3IJgKV6Xb9p62TCYIQoq/m/4N2FS94/KuTkm2VDhN6S7wlu7tFBxk
-   nVAnAqZpWM/bTMU+ADlgyBELw2esObPDDl1GnuwdodZemfIciGsLp2rsx
-   Dwrw952k/iDApSLvKgrPdgEbmnfl43rKfUklUrNJObAfix9vp/hhdJmyv
-   ekK+NAMtnT0sp2FgiVajAcd8bQfEVQCpXW5ZSVQF5C4dqkcDMyjWAm0Ws
-   tN2+GbfwGmjlgre3Ci/s6RygUlt2vD+I+1s+D4gwQEiqv5FRiCKxeMAVJ
-   Cq/5Qg+ryh+d9Ux6jOvSHQBfA3wkmBB35vaDVgJtKU/Z6I0nPCfBmzYAC
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="379923408"
+  t=1696254395; x=1727790395;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=AwCB0JAqzDDtRO3CENNhM7InAKHdngeC3934G7S/Ok0=;
+  b=XFj33XhlDvoY2MNL2MT37zWTqqrAJ49CwpC+5A3SZGNqP9FwMz/chY3A
+   WkabLVuK81xfVDgrqR7lFJ/gTva31d4vRy12pWLMLBI6pBtOpYdh1tza3
+   IF7mRCYkYqNg+fbJ9dU3Bnl5mdp2E9f0f/rzfEOf8SG5puCuCAo/bphIV
+   DiNlzRHibxAxlFfpkJb+yXFt07QnShctrUMxWWJED53NaMq6Aym6ZbLSV
+   o8T78a28QtWFEeW4+UzHhic4QoeXKnXL19V6E3isf98Kak/B/BTQGb0ls
+   Din0SWfeLOkKd37tBgbfTFMx8apSa8ES92WxO716ck6miFACT3zkYTooD
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="468919050"
 X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
-   d="scan'208";a="379923408"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 06:26:46 -0700
+   d="scan'208";a="468919050"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 06:46:34 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="754048986"
+X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="894138443"
 X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
-   d="scan'208";a="754048986"
+   d="scan'208";a="894138443"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga007.fm.intel.com with ESMTP; 02 Oct 2023 06:26:42 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 02 Oct 2023 06:45:12 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 2F42B1A7; Mon,  2 Oct 2023 16:26:41 +0300 (EEST)
+	id B84ED1A7; Mon,  2 Oct 2023 16:46:31 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rob Herring <robh@kernel.org>,
 	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Rob Herring <robh+dt@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH v2 2/2] amba: bus: Enable compile testing
-Date: Mon,  2 Oct 2023 16:26:35 +0300
-Message-Id: <20231002132635.2595382-2-andriy.shevchenko@linux.intel.com>
+	linux-kernel@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Subject: [PATCH v1 1/2] ACPI: property: Allow _DSD buffer data only for byte accessors
+Date: Mon,  2 Oct 2023 16:46:29 +0300
+Message-Id: <20231002134630.2601294-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20231002132635.2595382-1-andriy.shevchenko@linux.intel.com>
-References: <20231002132635.2595382-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -80,29 +68,60 @@ X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-There is no architecture specific code in the implementation of
-AMBA bus, let's enable compile testing for it.
+In accordance with ACPI specificication and _DSD data buffer
+representation the data there is an array of bytes. Hence,
+accessing it with something longer will create a sparse data
+which is against of how device property APIs work in general
+and also not defined in the ACPI specification (see [1]).
+Fix the code to emit an error if non-byte accessor is used to
+retrieve _DSD buffer data.
 
+Fixes: 369af6bf2c28 ("ACPI: property: Read buffer properties as integers")
+Link: https://uefi.org/specs/ACPI/6.5/19_ASL_Reference.html#buffer-declare-buffer-object [1]
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
+ drivers/acpi/property.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-v2: new patch to make it easier to compile test on non-ARM
-
- drivers/amba/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/amba/Kconfig b/drivers/amba/Kconfig
-index fb6c7e0b4cce..9ff4638550c8 100644
---- a/drivers/amba/Kconfig
-+++ b/drivers/amba/Kconfig
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- config ARM_AMBA
--	bool
-+	bool "AMBA bus support" || if COMPILE_TEST
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 413e4fcadcaf..06550d8c619d 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1102,25 +1102,25 @@ static int acpi_data_prop_read(const struct acpi_device_data *data,
+ 	switch (proptype) {
+ 	case DEV_PROP_STRING:
+ 		break;
+-	case DEV_PROP_U8 ... DEV_PROP_U64:
++	default:
+ 		if (obj->type == ACPI_TYPE_BUFFER) {
+ 			if (nval > obj->buffer.length)
+ 				return -EOVERFLOW;
+-			break;
++		} else {
++			if (nval > obj->package.count)
++				return -EOVERFLOW;
+ 		}
+-		fallthrough;
+-	default:
+-		if (nval > obj->package.count)
+-			return -EOVERFLOW;
+ 		break;
+ 	}
+ 	if (nval == 0)
+ 		return -EINVAL;
  
- if ARM_AMBA
+-	if (obj->type != ACPI_TYPE_BUFFER)
+-		items = obj->package.elements;
+-	else
++	if (obj->type == ACPI_TYPE_BUFFER) {
++		if (proptype != DEV_PROP_U8)
++			return -EPROTO;
+ 		items = obj;
++	} else
++		items = obj->package.elements;
  
+ 	switch (proptype) {
+ 	case DEV_PROP_U8:
 -- 
 2.40.0.1.gaa8946217a0b
 
