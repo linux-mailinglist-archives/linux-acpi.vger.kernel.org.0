@@ -1,246 +1,205 @@
-Return-Path: <linux-acpi+bounces-350-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-351-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F6A7B5C18
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 22:32:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB3E7B5C19
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 22:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id E6ADE282131
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 20:32:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id F021F2820C9
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 20:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8AB2030E
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 20:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74B618E19
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 20:32:46 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65F81F956
-	for <linux-acpi@vger.kernel.org>; Mon,  2 Oct 2023 19:59:46 +0000 (UTC)
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2042.outbound.protection.outlook.com [40.107.243.42])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A662F93;
-	Mon,  2 Oct 2023 12:59:44 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA59220309
+	for <linux-acpi@vger.kernel.org>; Mon,  2 Oct 2023 20:27:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8522AC;
+	Mon,  2 Oct 2023 13:27:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696278450; x=1727814450;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=XpKH4naqzI06ptZLcNPPCybyxialqBNFWhHU+GIhMpQ=;
+  b=mEzlc9UyT1D5i6v363VnaaPrBUtm/L2xgR81RAQQhSTtzNOXHdF0df1v
+   2OMCtsmhgo4u7ZlzWSSkwP/YhsMzb7M1hXTofSmUlP221dPifp9Xg+3q5
+   unt77Rt62TPx7sHHVGrDf8ILy1E+kvYnQCFUt8zt8uKjfpc2Bj7OfZiJ+
+   aa/s0p63igVV03hyQZg0Fxlmtps2StPxbHZblnVk6Sgr26uze/yH564Eb
+   lBqsJVvqRbrN75qXOgzc4Nc6sq8yXI4hiqbal5RvsmqcnBZFxJpe5jzUp
+   2m+XtVY5dI1t7F18hbSHQzSP0dqJG6Y+qmVYgstMirTW5/H6WzHyscluk
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="449219496"
+X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
+   d="scan'208";a="449219496"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 13:27:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="997746081"
+X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
+   d="scan'208";a="997746081"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by fmsmga006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 02 Oct 2023 13:27:13 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Mon, 2 Oct 2023 13:27:12 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Mon, 2 Oct 2023 13:27:12 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.177)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Mon, 2 Oct 2023 13:27:12 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QFKvBtzEwKDO519QF04Fo3p6ExNt/iehZ6Y1HzDMnv5v+sSdZy7590LgDzKGhH7Hsvsz7KKEl0KW/negwJ1NWBqd5GmNnuQSRmh7coaj5SF7HxUOtVvdhMzhwFIMxPFVSUHhjwzVbTd7HUA4Onv0iVXgd1KbA4nPy0ysr8vRn0LchUJpcWb3hVK0VB1RZykE2BwlczAQH7oAmAYWe01BD56+LNBRbBVr9lubm/I4tIJwAgogg5rv5OfbbzepouKqCmmlj03Tkp0/u/CAVsKV04I/S+MP6rjVWRovw5v8bk85bIssM8vOuf9I6qHUo1EAPvWwtu18/vfmF2u9upDoWA==
+ b=em1TEElFty1H3+iBsSx39DdNdxNUwEFvpjzRUQI0S6YojNuycRM/5KVthaah+CGXwGRU9iZIj04AKssEDqczJGSdnad451icj2WISxmmkwzFFR45V2N8k6wSuUoIbeHeJoG2d9ngFUAGjIxaOUiNYHIx2tYtjjqavK6pn/rj9dX3PnYeSTrVKD5WKkVNkRZipggJ1rYMGI2t4ElAchy0fkTGiulaNyWE64RD+AtODtv5Oh0VYZCzJst/3W4D51Jpj0d6HTVdsBz0Jrzv+gkKyb+rKHhAvhtdVvVrz0vm64X0Uit/N49hWwc1gR8z7UYM3eZN2OjbOO+svg+kxc/xGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z5yFwW4bJBzc9wiGkvNlR6JmJ9T+ygeNqKtVaj1/fXw=;
- b=Yr36U87p6iGfvcgnE/HbOKLc4/lYBBTpIWjw4Z9T0rOzwpjwpGYK5iwZ7qchvDIAOP9oVIcIa0UKG3d120Tq0tJa+8qo0NlLKnUBJ5tGlCazmtUbme4zb4ruC7+45ny4zXKSKL7Ze9zKkBgzLftX8ADv3AQy9HckAtXx26OUpVB4B7qZV1J/DKAmH3zulbhkbf0B6maaBi9TZhLIp022yY4OGdDrs4mxCIx3K1emzGhpau/J3qQ31As5i5zmBA/aoxPFEgK0g+Jv4GLNpdSK5B8lGkDiaT8MEa+ktX6ZsdP+gLO1HpA89htnJDf4n4DRCSqB1ucBz1W41BA8kaUDYg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z5yFwW4bJBzc9wiGkvNlR6JmJ9T+ygeNqKtVaj1/fXw=;
- b=FkkcKiBtGbG9XAF4Oq3hRtohQeFQNaiUqzb3uom3/vgpdZ+fYXZehDUvoOmHGWE566XFrLEEpcd4oKAIzRQfG8vFH5yZAOCNfjIF+SfWCdNsM+ngQfFrncyf2DGYRLhEAO1UhT0fr12A52D0+VUSUtgrV6B/+zbV5GTlFIbV9UM=
-Received: from BYAPR21CA0003.namprd21.prod.outlook.com (2603:10b6:a03:114::13)
- by IA1PR12MB6481.namprd12.prod.outlook.com (2603:10b6:208:3aa::20) with
+ bh=lauIrvlP4ipHN3hG9gtRqvVPOhhOi+psp6C4ihlFsdU=;
+ b=oazGcg3Wvm1p7L7mm2XJA48YtX5DJzRYvV72I05JdYXrMeA3ASWLbTrdJ+XWU+AtvP32+fCGYKlHBp2FESEIw9jxtTJvR0+ecYp/FBS1/gkMtpCFCTiReZhmzmdGsfl6T0Hby7DRDInFeD5aC/0gxbnJs9y7gZNGhppDtFWJDpGypU6vX2T3mzol9Oc1ulKvy0ldshvTyDY/TsG7kKgU5HN6fX8zTSlDSwLdpZjQ0qkUV54/z8yY5nAsM+g06QT+a5TWMwNMsrzIBO/8QALGt2Bxa92cxpDUrT0iygiaee5O9YLcKRswbnMaeDGpUH4I/LDSSuemNClsMtvq6eftbQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO6PR11MB5603.namprd11.prod.outlook.com (2603:10b6:5:35c::12)
+ by CH3PR11MB8433.namprd11.prod.outlook.com (2603:10b6:610:168::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.26; Mon, 2 Oct
- 2023 19:59:42 +0000
-Received: from CO1PEPF000042AC.namprd03.prod.outlook.com
- (2603:10b6:a03:114:cafe::73) by BYAPR21CA0003.outlook.office365.com
- (2603:10b6:a03:114::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.2 via Frontend
- Transport; Mon, 2 Oct 2023 19:59:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000042AC.mail.protection.outlook.com (10.167.243.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6838.14 via Frontend Transport; Mon, 2 Oct 2023 19:59:41 +0000
-Received: from titanite-d354host.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 2 Oct 2023 14:59:40 -0500
-From: Avadhut Naik <avadhut.naik@amd.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>, <linux-acpi@vger.kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <yazen.ghannam@amd.com>,
-	<avadnaik@amd.com>
-Subject: [PATCH v2] ACPI: APEI: Skip initialization of GHES_ASSIST structures for Machine Check Architecture
-Date: Mon, 2 Oct 2023 14:59:32 -0500
-Message-ID: <20231002195932.2501674-1-avadhut.naik@amd.com>
-X-Mailer: git-send-email 2.34.1
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.30; Mon, 2 Oct
+ 2023 20:27:10 +0000
+Received: from CO6PR11MB5603.namprd11.prod.outlook.com
+ ([fe80::dbe4:218c:1bdd:510]) by CO6PR11MB5603.namprd11.prod.outlook.com
+ ([fe80::dbe4:218c:1bdd:510%4]) with mapi id 15.20.6838.030; Mon, 2 Oct 2023
+ 20:27:10 +0000
+Message-ID: <ec5029b0-553c-4a6c-b2a9-ef9943e553dc@intel.com>
+Date: Mon, 2 Oct 2023 22:27:02 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/1] ACPI: NFIT: Switch to use
+ acpi_evaluate_dsm_typed()
+Content-Language: en-US
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	<nvdimm@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: Dan Williams <dan.j.williams@intel.com>, Vishal Verma
+	<vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, Ira Weiny
+	<ira.weiny@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
+	<lenb@kernel.org>
+References: <20231002135458.2603293-1-andriy.shevchenko@linux.intel.com>
+From: "Wilczynski, Michal" <michal.wilczynski@intel.com>
+In-Reply-To: <20231002135458.2603293-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BE1P281CA0204.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:89::13) To CO6PR11MB5603.namprd11.prod.outlook.com
+ (2603:10b6:5:35c::12)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042AC:EE_|IA1PR12MB6481:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7fcc1670-909c-4394-e39c-08dbc3821dc8
+X-MS-TrafficTypeDiagnostic: CO6PR11MB5603:EE_|CH3PR11MB8433:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e8237e9-e605-45ce-f788-08dbc385f432
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	F/nMTBaXrbxBYYQojIFXJSqTKr6rqVhPhN4NhQS33YkHv1/FLCnkUDW1XDMvv3MaIPGxcsra3iD2SpJDzvyIsk8lp1VnNedhLvMZi69VhbQSBnWlso9D81PXCF6LLkY5yOiLBUspHbdSJYkYTPMudUSkUTtg/p1uXIZ0FpcZIk29iWUtJ70VR6X4bywUdFZaczRtKpoN46pvDLiDz3ibZ69EHrwVS1Xorq+Wj9GQ94UVplaKXUaQ2mJJqSfLf36FhEPwgUdfJAog47fXMhqsqzVIr0PZ1OJhEUXhlvt1LxAShBOglAkvV1Qsuiasa6hMDAXv5Za1akUfFwAUWi7aZ0zpCxJbKVqkLdndtCZwQUeJfNg8Xcb0ui0VIFU5+0HvXp3ZODpcQ5VQlujXX6nHWtUBv9zrVd+A0bGLMvNleCKfE0uz2r6XcCHJWcC7RS1hGEJRKiWEkQEaBsi6ECxUFjj369aP2iYjXCVvi2KPW4U4GzrCARiyB4kTJfeRAeFAbidxsQICO1bOSRi9CezCXWmls58a5PlvrXtakrxOxMtYelqhKdGT57U8nNvmdRYGl7mlnAp/IlOYDphzmb3mTcOKOiAcU+D+lumKiUP5fT3tsIK8vfU7TNVRXLfluMeZyk2DURFQ1mr2vmo1cKpVVmZxksecA5t8JoeOFYPJjl+XpksiQ8fDY7iD2lcgFQc+V9zCzirALoI1ufYv96P/VqN53pUP7bmYB/xTU9vcKmz3OOrurEPoZ3Rd6mJNfqeJzNLMGQLkr2VgEjn9sG1gBVcElo11zx/hEt6HgDgrKTY=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(376002)(346002)(396003)(136003)(230922051799003)(186009)(451199024)(64100799003)(1800799009)(82310400011)(46966006)(36840700001)(40470700004)(2906002)(44832011)(4326008)(5660300002)(26005)(8936002)(8676002)(1076003)(36756003)(41300700001)(2616005)(40480700001)(316002)(70206006)(54906003)(40460700003)(110136005)(336012)(356005)(70586007)(83380400001)(478600001)(6666004)(16526019)(426003)(47076005)(7696005)(82740400003)(86362001)(81166007)(36860700001)(36900700001)(2101003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2023 19:59:41.4364
+X-Microsoft-Antispam-Message-Info: Eo01Uti3hIWPUJoy/6zMHvp3lLHRcUbD2PoqK4IuPV3d23Mxx/e+dUMTwE1Sj2JAoeRLEfMqXYB2OTlyMzB+THFEG/IWIPNIKvRxslLM1Q8GG/dTD60qFvb4p4ZL7tschK+YLyZTxWntaar3fHOpQ26gRLtVlNg+eVMA8i/DJYtbCIgyuJfgLXJ28I6SLjqd0EhkLinufA/PD/qZS/vh+4Mnyj7bMYiTlmQ8lw+GBk5eTC4/eQfZ822fj3sjAOkNBVXPmfi/oRMf5UDb+MuLtXrhrfnHoBkN4vJxxrumVmsdxue//Ql1TRoM4+Hq7yRLNQ2dz5ANA4Hm+0Mss/j1zIaoNn8xbJPwmNb4fSqeRqsFryGrYzuhq+fqE/qaTkq5XkB6m+Zs5HZghpq30HcfXh2KGEm9o/hxzeuOKVSR//IOWEktRNe+bIXG6BlejlJqmgeayal5M4rwn/kWNyhYLUUkynurGrq6fn+2A9z0LBiuYok/m0xDEScfQVjhIw20DezeeNfZJP/pDA4mpkLYlGDaB+rZfabmFmYGEMmzliqG24tF3UcIRHpkNfeiK6Ii4lYsQv1yNQQQEl7QM6tQM4gbaNzql9FnWxGk//noIgMcNRsnkKxmPJwrZlZmjrIOpAO8lrN6e8GmBG8UJ7IQQg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(366004)(396003)(376002)(136003)(39860400002)(230922051799003)(186009)(1800799009)(451199024)(64100799003)(6486002)(478600001)(36756003)(2616005)(26005)(6512007)(38100700002)(82960400001)(86362001)(83380400001)(31696002)(6666004)(6506007)(53546011)(66946007)(316002)(54906003)(66556008)(66476007)(5660300002)(31686004)(41300700001)(8936002)(4326008)(8676002)(2906002)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QVBYUlFrKzYrS2Nic253QU9xQ2s4K2Z0U2VSaEhQYTRsVjBoWllYQldGZ3hj?=
+ =?utf-8?B?eVl3aHMvU2FyU29hdk9mcFhuNVlwUDZOcHVFdHVlNUtRNEpTb0JRWUFXaFBF?=
+ =?utf-8?B?MEdZMlV3eVRHQ0NkWXVsUWZhbXFIYkNmMTZ4OUthQ1AwWHFYN1M3cU12empS?=
+ =?utf-8?B?bjdWeTF4RFllMk1tMS9IZWt6cGxJZTcxMWkxWmdITUh2U3NOMlM3UVVqTk9F?=
+ =?utf-8?B?YTdLSzRKcy9JeEptV1FSUVB5cUhMQ1VYUFViZmlpdzRac1JRbFF6WFZNa3B6?=
+ =?utf-8?B?NEs0MTh0Wm5sUlh0Y3h0dW5zeTFGcmtYTHMxZnJNL3dSMjhRVzdKb3RWNS9q?=
+ =?utf-8?B?Rk91R29IdUFrMHc1eGdwSEEwd0dTUjRpQjRWVGNobHRsdlBybVBzb1VIVXc1?=
+ =?utf-8?B?YzFzaVJSVTVpQ2NSWnBzTFpCK0JUL1dCVGRLZjNaZUxNSnlyYUlNcTZaeEpH?=
+ =?utf-8?B?VlcySlUyNGpJWnkrUEFlQkk1S0xPcStYTjEwc2xJYWZrcUpnUFI5Y0cxcDJN?=
+ =?utf-8?B?alNzUHFVRTFsaWMrK0FaVktqR3AyQ3I0TG9NMXBuQjk1N04rM09DMkZFT01T?=
+ =?utf-8?B?N1pLdG5tSThHTUFNS0ovb2IyVk9zUTdkV3o4T3ZBeXdZRnJjMlpxT1FwamVu?=
+ =?utf-8?B?WUVkVHpzN0VmWWNGMEVJMXA2ZkVnU2JjNG1WRVVoWXpCRTRYaVloNnczTzRr?=
+ =?utf-8?B?S1FEMUM0dHEyVjRaQjZrRTJ1Nms4KzlvSzlFbGtPMmNCcTd4SDlFdUFQektK?=
+ =?utf-8?B?UFpYVDFOOUptTDU3eWFERFpoOVRJa2M0M2NPblhSM1VOSkRhZTUvTGhBUlVv?=
+ =?utf-8?B?akd2UGh3YmlGVC9XRG5qMy9OQWR5clp2b1VLQ29nR2hDRzFKeVVIZzEvTUEv?=
+ =?utf-8?B?WHNnaW5MbDVNRW5lR0JzSXRtTnpoQVZYek1uNjdPRDYyYXhwR1Q0T2VENnpX?=
+ =?utf-8?B?RlZPT1pDcmh4V1ZoaWQyNFJZUitFRnNUcVdXbkhOblpTUUNCay9aODVWdm80?=
+ =?utf-8?B?YzVGelhwMS9MMWZmT2ZpcndudC9hVEpaa0JRNDhvd3MvLzF1b0ZXUmp3TWE5?=
+ =?utf-8?B?eStVbGJ3ak9jVHkyd0tDSzZ0b1dLZ0R3eENoY3pUNXYzbFVNUlFBdzZjYTZi?=
+ =?utf-8?B?ZitDNUdUbE9xOGF3SEd0WnpPN0MrUVZ4ZmRLYlZDMUdJLzVGRFpKQ1Z1UXlZ?=
+ =?utf-8?B?Q2ZraVRkdUtYODc2eTFjc1JUVDk3M2hVNmI2UDdXSG93OVQ0bEV0VjRhcHdS?=
+ =?utf-8?B?RzRQRTQ0dS9BbDJkT1pkc2pmMHZ2UVJUbitVeEhKdHNBWFIrekdnY0gyWHFI?=
+ =?utf-8?B?MDR1emJLNTVUQURPalp1TGZJOVN4RmRlbFNxT1FkTEJaQTVRSGxOSHV0dkRQ?=
+ =?utf-8?B?c28xY3VvUHhlakRUTTRoVUkvS0x4elRoTEI2ZXQwZnM3bzZrU1Vkakl4L01S?=
+ =?utf-8?B?bW9VV0FNSkJvSVg4TE1USWJHYlVPR3F2dGdGTVNiTUF6T005bWhWbG5EWnV4?=
+ =?utf-8?B?UWFKejFZYU9JajltK28rWWIyVUJWeDcxTnNBak44eGp5R1UzSDVxVXhrRzFx?=
+ =?utf-8?B?UzJTVE5tZnU0cXBXaHM4M1pPVTBwTWl3SVpxRURKU0V4bjBaQlJuZGczdHZw?=
+ =?utf-8?B?UE02NzNESXBGMXJtOTFoL0hHN2VvSTNQTW1BczJqOHBOcWZ2N2RSS2orOXlI?=
+ =?utf-8?B?SGphbzNqTUxIM1VwWHFMZmh4Wm4ybWtEeWJwV1NBcVk1dG1WOHhWTmJGaFFL?=
+ =?utf-8?B?VHEvR2FyOG40b0lFMTVaYnFDeE5SZUdsV2JBcFVFU2Q2QzJaVnBZSmlxOTlC?=
+ =?utf-8?B?enJpOHJZSkVneUxyQmVDZGlIMHMyWW5DcStNVXA1THJRSVpxR1hFK05ITFhG?=
+ =?utf-8?B?Y0gwZEZ2RGE3Ym01VUt3Z1FURlFpVTJEMklSSk0xOCtOWW1nTnJ0bHlLc1Er?=
+ =?utf-8?B?V1Bob0JlZmRQMCtrdHVFT2pnV3JXcUc1dVdlMk12cFplcUhGTDFwMWFXMjVN?=
+ =?utf-8?B?Z0F0Um55SGJkcERaQXFVS2VuVVQxelhRM241RW5OaUt2TkhpTU5DcXp4NGV1?=
+ =?utf-8?B?QTFHQXZYOW93eHNKQVhQUXpLRk10Y1FJZkdLNzRTRHhwSW1Oak0xb0w3Unla?=
+ =?utf-8?B?TTQ1djhpWmNicVJJbjQ0SHhGTnpKNC9vbUg4R2o5ZDBmeXBXUUtpd0xjVjN0?=
+ =?utf-8?B?cGc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e8237e9-e605-45ce-f788-08dbc385f432
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR11MB5603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2023 20:27:10.1021
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7fcc1670-909c-4394-e39c-08dbc3821dc8
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000042AC.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6481
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-	autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tIpVapP7ft/h04x3ydNsrnQPEdpJO5DApFePnYIvB438YrvmJ+2HInXfSRSnPJOS4E/iBmDRccV9G+HBQp7R9inArRxobmHil2h6znJbdC4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8433
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-To support GHES_ASSIST on Machine Check Architecture (MCA) error sources,
-a set of GHES structures is provided by the system firmware for each MCA
-error source. Each of these sets consists of a GHES structure for each MCA
-bank on each logical CPU, with all structures of a set sharing a common
-Related Source ID, equal to the Source ID of one of the MCA error source
-structures.[1] On SOCs with large core counts, this typically equates to
-tens of thousands of GHES_ASSIST structures for MCA under
-"/sys/bus/platform/drivers/GHES".
 
-Support for GHES_ASSIST however, hasn't been implemented in the kernel. As
-such, the information provided through these structures is not consumed by
-Linux. Moreover, these GHES_ASSIST structures for MCA, which are supposed
-to provide supplemental information in context of an error reported by
-hardware, are setup as independent error sources by the kernel during HEST
-initialization.
 
-Additionally, if the Type field of the Notification structure, associated
-with these GHES_ASSIST structures for MCA, is set to Polled, the kernel
-sets up a timer for each individual structure. The duration of the timer
-is derived from the Poll Interval field of the Notification structure. On
-SOCs with high core counts, this will result in tens of thousands of
-timers expiring periodically causing unnecessary preemptions and wastage
-of CPU cycles. The problem will particularly intensify if Poll Interval
-duration is not sufficiently high.
+On 10/2/2023 3:54 PM, Andy Shevchenko wrote:
+> The acpi_evaluate_dsm_typed() provides a way to check the type of the
+> object evaluated by _DSM call. Use it instead of open coded variant.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/acpi/nfit/core.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> index f96bf32cd368..280da408c02c 100644
+> --- a/drivers/acpi/nfit/core.c
+> +++ b/drivers/acpi/nfit/core.c
+> @@ -1737,9 +1737,8 @@ __weak void nfit_intel_shutdown_status(struct nfit_mem *nfit_mem)
+>  	if ((nfit_mem->dsm_mask & (1 << func)) == 0)
+>  		return;
+>  
+> -	out_obj = acpi_evaluate_dsm(handle, guid, revid, func, &in_obj);
+> -	if (!out_obj || out_obj->type != ACPI_TYPE_BUFFER
+> -			|| out_obj->buffer.length < sizeof(smart)) {
+> +	out_obj = acpi_evaluate_dsm_typed(handle, guid, revid, func, &in_obj, ACPI_TYPE_BUFFER);
 
-Since GHES_ASSIST support is not present in kernel, skip initialization
-of GHES_ASSIST structures for MCA to eliminate their performance impact.
+This line is 90 characters long, wouldn't it be better to split it ?
 
-[1] ACPI specification 6.5, section 18.7
+> +	if (!out_obj || out_obj->buffer.length < sizeof(smart)) {
+>  		dev_dbg(dev->parent, "%s: failed to retrieve initial health\n",
+>  				dev_name(dev));
 
-Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
----
-Changes in v2:
-1.	Since is_ghes_assist_struct() returns if any of the conditions is hit
-if-else-if chain is redundant. Replace it with just if statements.
-2.	Fix formatting errors.
-3.	Add Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
----
- drivers/acpi/apei/hest.c | 51 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+While at it maybe fix alignment ? :-)
 
-diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
-index 6aef1ee5e1bd..99db7621adb7 100644
---- a/drivers/acpi/apei/hest.c
-+++ b/drivers/acpi/apei/hest.c
-@@ -37,6 +37,20 @@ EXPORT_SYMBOL_GPL(hest_disable);
- 
- static struct acpi_table_hest *__read_mostly hest_tab;
- 
-+/*
-+ * Since GHES_ASSIST is not supported, skip initialization
-+ * of GHES_ASSIST structures for MCA.
-+ * During HEST parsing, detected MCA error sources are cached.
-+ * Flags and Source Id fields from these cached values are
-+ * then referred to determine if the encountered GHES_ASSIST
-+ * structure should be initialized.
-+ */
-+static struct {
-+	struct acpi_hest_ia_corrected *cmc;
-+	struct acpi_hest_ia_machine_check *mc;
-+	struct acpi_hest_ia_deferred_check *dmc;
-+} mces;
-+
- static const int hest_esrc_len_tab[ACPI_HEST_TYPE_RESERVED] = {
- 	[ACPI_HEST_TYPE_IA32_CHECK] = -1,	/* need further calculation */
- 	[ACPI_HEST_TYPE_IA32_CORRECTED_CHECK] = -1,
-@@ -70,22 +84,54 @@ static int hest_esrc_len(struct acpi_hest_header *hest_hdr)
- 		cmc = (struct acpi_hest_ia_corrected *)hest_hdr;
- 		len = sizeof(*cmc) + cmc->num_hardware_banks *
- 			sizeof(struct acpi_hest_ia_error_bank);
-+		mces.cmc = cmc;
- 	} else if (hest_type == ACPI_HEST_TYPE_IA32_CHECK) {
- 		struct acpi_hest_ia_machine_check *mc;
- 		mc = (struct acpi_hest_ia_machine_check *)hest_hdr;
- 		len = sizeof(*mc) + mc->num_hardware_banks *
- 			sizeof(struct acpi_hest_ia_error_bank);
-+		mces.mc = mc;
- 	} else if (hest_type == ACPI_HEST_TYPE_IA32_DEFERRED_CHECK) {
- 		struct acpi_hest_ia_deferred_check *mc;
- 		mc = (struct acpi_hest_ia_deferred_check *)hest_hdr;
- 		len = sizeof(*mc) + mc->num_hardware_banks *
- 			sizeof(struct acpi_hest_ia_error_bank);
-+		mces.dmc = mc;
- 	}
- 	BUG_ON(len == -1);
- 
- 	return len;
- };
- 
-+/*
-+ * GHES and GHESv2 structures share the same format, starting from
-+ * Source Id and ending in Error Status Block Length (inclusive).
-+ */
-+static bool is_ghes_assist_struct(struct acpi_hest_header *hest_hdr)
-+{
-+	struct acpi_hest_generic *ghes;
-+	u16 related_source_id;
-+
-+	if (hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR &&
-+	    hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR_V2)
-+		return false;
-+
-+	ghes = (struct acpi_hest_generic *)hest_hdr;
-+	related_source_id = ghes->related_source_id;
-+
-+	if (mces.cmc && mces.cmc->flags & ACPI_HEST_GHES_ASSIST &&
-+	    related_source_id == mces.cmc->header.source_id)
-+		return true;
-+	if (mces.mc && mces.mc->flags & ACPI_HEST_GHES_ASSIST &&
-+	    related_source_id == mces.mc->header.source_id)
-+		return true;
-+	if (mces.dmc && mces.dmc->flags & ACPI_HEST_GHES_ASSIST &&
-+	    related_source_id == mces.dmc->header.source_id)
-+		return true;
-+
-+	return false;
-+}
-+
- typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
- 
- static int apei_hest_parse(apei_hest_func_t func, void *data)
-@@ -114,6 +160,11 @@ static int apei_hest_parse(apei_hest_func_t func, void *data)
- 			return -EINVAL;
- 		}
- 
-+		if (is_ghes_assist_struct(hest_hdr)) {
-+			hest_hdr = (void *)hest_hdr + len;
-+			continue;
-+		}
-+
- 		rc = func(hest_hdr, data);
- 		if (rc)
- 			return rc;
--- 
-2.34.1
+>  		ACPI_FREE(out_obj);
 
+Just nitpicks, functionally code seems correct to me.
+Reviewed-by: Michal Wilczynski <michal.wilczynski@intel.com>
 
