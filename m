@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-317-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-318-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC507B5062
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 12:33:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 783B57B5063
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 12:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 5329028229A
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 10:33:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 297DD28229A
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 10:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B6210A02
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 10:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1279A10A02
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 10:33:47 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ED779DD
-	for <linux-acpi@vger.kernel.org>; Mon,  2 Oct 2023 09:42:14 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31BDDA7;
-	Mon,  2 Oct 2023 02:42:13 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4941479DD
+	for <linux-acpi@vger.kernel.org>; Mon,  2 Oct 2023 09:44:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4265791;
+	Mon,  2 Oct 2023 02:44:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696239733; x=1727775733;
+  t=1696239865; x=1727775865;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=SWeFo/AW06duwWAYJncQ5ko3aVNmWFyeSa2D5HzoNmg=;
-  b=P84uRqLFrwsm6iMK7QMMWqP3tK15BgZb6gV7ZF4EnqUaAQfl2jWLcbov
-   EQlD3G9hwiTqEpXOXek/c5L7M2P0btCjSJK84QmlzRJLnomhvs7Fbp/1h
-   4lJ9cbhyrzFN8iuf2LtBKAsrMcxQQGbq05HlRBldb9ZVjaujczZBafcwO
-   0Yt9XUOEghR0i/bvlldYg2fEE2ZDXnXs6a1ACGCB0gfxPN1syaRobkrJQ
-   8K6J+7/1nQ9U1qgJqJHF4sOsQwgWKehRac4l+vhYKswk0u6NGO0a8mxxf
-   w0J79rdDX/ho3KbEOEeXB8jQY1LTcQe4fQB7rFvfLrx5oZL5MqohWdNYI
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="381494535"
+  bh=YjDtKD15C5wYw2UlLbCaVNumylNRVOL/0RAdrwts2Ac=;
+  b=Rtlat9rFf5fF8gUqogLbO6gdg/TuyWuHAjYX6y300hHc9TlONDiduI2r
+   UHxe3FMu/FIuSCXtSbLAs9gThJu74E/7ygs5ahRKd+Hoa+mgZcj8r18ck
+   NjG7yS8UbUWYDZvfzWgHIL2BU5MeYbW9tAG1cDdshu++/zbDaWgX6l2Uw
+   9zWvTzPr72fc2YsVT8L2iENhwhh+UjRA4ZbaV45du43A25rkEsgpdPUSj
+   9mGf0JLfc2rdjulZ6KTRKIQsoqJ6+8rJrVw7KJ56bB3ydnSoS3Lm7c5AB
+   ypK7B4yZqydwjClzrV8Il5r2U1yxSxuQsUSjONwqxLZ37UqYSpN97xkCF
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="382516840"
 X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
-   d="scan'208";a="381494535"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 02:42:12 -0700
+   d="scan'208";a="382516840"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 02:44:25 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="744064474"
+X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="1081592085"
 X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
-   d="scan'208";a="744064474"
+   d="scan'208";a="1081592085"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 02:42:10 -0700
+  by fmsmga005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 02:44:22 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC0)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1qnFRH-000000027d5-2bzu;
-	Mon, 02 Oct 2023 12:42:07 +0300
-Date: Mon, 2 Oct 2023 12:42:07 +0300
+	id 1qnFTQ-000000027eh-1cMI;
+	Mon, 02 Oct 2023 12:44:20 +0300
+Date: Mon, 2 Oct 2023 12:44:20 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: Linus Walleij <linus.walleij@linaro.org>,
@@ -55,10 +55,10 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
 	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v4 03/11] gpiolib: provide gpio_device_find()
-Message-ID: <ZRqQbzbcNHOtJm7z@smile.fi.intel.com>
+Subject: Re: [PATCH v4 04/11] gpiolib: provide gpio_device_find_by_label()
+Message-ID: <ZRqQ9KZe619vx7pz@smile.fi.intel.com>
 References: <20230927142931.19798-1-brgl@bgdev.pl>
- <20230927142931.19798-4-brgl@bgdev.pl>
+ <20230927142931.19798-5-brgl@bgdev.pl>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230927142931.19798-4-brgl@bgdev.pl>
+In-Reply-To: <20230927142931.19798-5-brgl@bgdev.pl>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -75,33 +75,23 @@ X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Sep 27, 2023 at 04:29:23PM +0200, Bartosz Golaszewski wrote:
+On Wed, Sep 27, 2023 at 04:29:24PM +0200, Bartosz Golaszewski wrote:
 > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> gpiochip_find() is wrong and its kernel doc is misleading as the
-> function doesn't return a reference to the gpio_chip but just a raw
-> pointer. The chip itself is not guaranteed to stay alive, in fact it can
-> be deleted at any point. Also: other than GPIO drivers themselves,
-> nobody else has any business accessing gpio_chip structs.
-> 
-> Provide a new gpio_device_find() function that returns a real reference
-> to the opaque gpio_device structure that is guaranteed to stay alive for
-> as long as there are active users of it.
+> By far the most common way of looking up GPIO devices is using their
+> label. Provide a helpers for that to avoid every user implementing their
+> own matching function.
 
 ...
 
->  struct gpio_chip *gpiochip_find(void *data,
->  				int (*match)(struct gpio_chip *gc,
+> +struct gpio_device *gpio_device_find_by_label(const char *label)
+> +{
+> +	return gpio_device_find((void *)label, gpio_chip_match_by_label);
+> +}
 
-> +struct gpio_device *gpio_device_find(void *data,
-> +				     int (*match)(struct gpio_chip *gc,
-> +						  void *data))
-
-Why not
-
-typedef int (*gpio_chip_match_fn)(struct gpio_chip *gc, void *data);
-
-?
+Are we expecting that data referenced by the first parameter to the
+gpio_device_find() can be altered? If not, why not using const void *
+there and here as well?
 
 -- 
 With Best Regards,
