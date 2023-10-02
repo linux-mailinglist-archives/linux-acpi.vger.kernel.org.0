@@ -1,113 +1,162 @@
-Return-Path: <linux-acpi+bounces-325-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-327-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBD07B506A
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 12:34:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2A77B552C
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 16:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 2F4DC2828C6
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 10:34:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 9EA64283095
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 14:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1689510A02
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 10:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804521A5A8
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 14:32:21 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B29AC2EB
-	for <linux-acpi@vger.kernel.org>; Mon,  2 Oct 2023 09:59:46 +0000 (UTC)
-Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09E6583
-	for <linux-acpi@vger.kernel.org>; Mon,  2 Oct 2023 02:59:32 -0700 (PDT)
-Received: by mail-vk1-xa36.google.com with SMTP id 71dfb90a1353d-49abb53648aso1594949e0c.0
-        for <linux-acpi@vger.kernel.org>; Mon, 02 Oct 2023 02:59:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1696240772; x=1696845572; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PpADBQVeHbIRHJaTMsTz7x+KU4g4QU476C8qCet021k=;
-        b=IVKia2CZmJuzXJK1HCE9Z7utPkqt1y9ftUJH6qq36a35Tny2uNiaFKlqG5x16TN/XT
-         +MNK8ZcdDUiL9K6w3/mAIZ7658R94/thvIAAGGVQ1QQ7mYG16JDrLUWezb2GlnK1seXJ
-         P02H+vJD8ZE9Dnt+TvMEOaS/SWhcZTecww3sTUIRHqLUyRCdA6+l/OvupMB3GiL+SbkN
-         yNW++78uCrX7K+wippD91/EM/sZuHEmzHykSg3l8x+m/wW7hQZWCzqrjYsNbMHyhs1D3
-         +ALVohdqvUeBQ7ZalEde+IlM92KX1U96ReR4lNIH+Nlp2dmOjQ3F3/IbVjFdcJAoyN/I
-         9rjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696240772; x=1696845572;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PpADBQVeHbIRHJaTMsTz7x+KU4g4QU476C8qCet021k=;
-        b=UyMLEWdQqFTYrah6DW2gUr0K0tNAZ2yINZrJAFIEemh5CKDI7dnZFwBPvFHhwHMAwI
-         hNcCxyuAsoIB825G15igM87uzdUSbcXEDkvIp0uoky2or8YnoFAIz+T9V8VbA1Y8wr/1
-         aNhPQ1JYiez5EtCjCSqqO/ZcXNARYOrhKSCI9oNaUD0V0PLHOWdEDj0Q2iUCezDhi1v8
-         iFdp2Rju5xemVo3wp10FnNQvsJ334pIlPnXUdi25v7bbWBobJO4WmQyq6x1QU0qgUKKP
-         1h6Ta9XQh3kg8jgEIhXOciJvptlCG8hlunznsLSz78ZZJVX1VxHbp1v1/PS0dxtMrgt9
-         4a/Q==
-X-Gm-Message-State: AOJu0YxEk8uHt0ttoZIJfXyZGOqnKEPfTPi4DJwBwbvOFVjadMpixz0w
-	HizfQSzLx4XgMxKedXHUF5mU7j1uFYUU+rNktljTOw==
-X-Google-Smtp-Source: AGHT+IE8ubq22pILCS8LRc9ka3dzKYLPr2jswA3LPcMeu3jullkr8Z+iIybQQJ2jsplDFL1ZhQ8ANGzAUHGnRKOfLKk=
-X-Received: by 2002:a1f:ec43:0:b0:495:cac2:253b with SMTP id
- k64-20020a1fec43000000b00495cac2253bmr6632247vkh.0.1696240772053; Mon, 02 Oct
- 2023 02:59:32 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3EC179BF;
+	Mon,  2 Oct 2023 13:32:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3F494;
+	Mon,  2 Oct 2023 06:32:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696253553; x=1727789553;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=IAF3ppOCz/aKQLdQ1DG/jiVmbimLG/74kbOGxZWwpS8=;
+  b=JbhMa85JLfTKUbnBkegAt91KAyBCW7SYAHX4/QjGeElPRgVCT4C5xhvg
+   JOe2mv6Yl4Rh5Z30/67AQzrVb8YeVW4U2IGmJ6eZferMwGt8Q+hK4n368
+   krHRLFp90cNLuzuVGs62xRshSURGz5mWDTXAcSvzEFjFHXe/ODzzDJrFa
+   Ls5Fr6HS5AlEF2mhcdd+DYI+5z6zbiTHBAUnrnQxnlDyrYpnt/o+37IcS
+   IYtqoUcpZo8kq86DxgB3dpgvlUiuELcvrZZWiQNnd1HZ99JvpRJv0pd1B
+   C7FUcwgmGj+XoxrQJ6TrI5HlgT9vXh/KEjiR8pizmUOsL2l+GwH5QuxBk
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="379923423"
+X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
+   d="scan'208";a="379923423"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 06:26:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="754048987"
+X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
+   d="scan'208";a="754048987"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga007.fm.intel.com with ESMTP; 02 Oct 2023 06:26:42 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 216472FF; Mon,  2 Oct 2023 16:26:41 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rob Herring <robh@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH v2 1/2] amba: bus: balance firmware node reference counting
+Date: Mon,  2 Oct 2023 16:26:34 +0300
+Message-Id: <20231002132635.2595382-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230927142931.19798-1-brgl@bgdev.pl> <20230927142931.19798-4-brgl@bgdev.pl>
- <ZRqQbzbcNHOtJm7z@smile.fi.intel.com> <CAMRc=MffRnq2ABRGAL9zuQxytfE6E-cJWwUrourgY2k=RNv-Aw@mail.gmail.com>
- <ZRqT+qZ+Xrz4x1IQ@smile.fi.intel.com>
-In-Reply-To: <ZRqT+qZ+Xrz4x1IQ@smile.fi.intel.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 2 Oct 2023 11:59:21 +0200
-Message-ID: <CAMRc=MctV5xEXBARLun7T9jOtptFzfv=thFG29Li=g2V0DBYRA@mail.gmail.com>
-Subject: Re: [PATCH v4 03/11] gpiolib: provide gpio_device_find()
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 2, 2023 at 11:57=E2=80=AFAM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Mon, Oct 02, 2023 at 11:52:52AM +0200, Bartosz Golaszewski wrote:
-> > On Mon, Oct 2, 2023 at 11:42=E2=80=AFAM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > > On Wed, Sep 27, 2023 at 04:29:23PM +0200, Bartosz Golaszewski wrote:
-> > > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> ...
->
-> > > >  struct gpio_chip *gpiochip_find(void *data,
-> > > >                               int (*match)(struct gpio_chip *gc,
-> > >
-> > > > +struct gpio_device *gpio_device_find(void *data,
-> > > > +                                  int (*match)(struct gpio_chip *g=
-c,
-> > > > +                                               void *data))
-> > >
-> > > Why not
-> > >
-> > > typedef int (*gpio_chip_match_fn)(struct gpio_chip *gc, void *data);
-> >
-> > Because gpiochip_find() will go away as soon as we convert all users.
->
-> And gpio_device_find() does not. So, I didn't get this argument.
->
+Currently the ACPI code doesn't bump the reference count of
+the firmware node, while OF counter part does. Not that it's
+a problem right now, since ACPI doesn't really use the reference
+counting for firmware nodes, it still makes sense to make code
+robust against any changes done there. For this,
+ - switch ACPI case to use device_set_node() to be unified with OF
+ - move reference counting to amba_device_add()
+ - switch to use firmware nodes instead of OF ones
 
-This symbol would only be used in a single place. But whatever, I can
-do it as there will be another respin anyway.
+In the result we will have reference counting done in the same module
+for all callers independently on the nature of firmware node behind.
 
-Bart
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+
+v2: fixed compilation error (LKP), all dependencies are in v6.6-rcX (Rob)
+
+ drivers/acpi/arm64/amba.c | 2 +-
+ drivers/amba/bus.c        | 5 ++++-
+ drivers/of/platform.c     | 2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
+index 60be8ee1dbdc..171b5c2c7edd 100644
+--- a/drivers/acpi/arm64/amba.c
++++ b/drivers/acpi/arm64/amba.c
+@@ -101,7 +101,7 @@ static int amba_handler_attach(struct acpi_device *adev,
+ 	if (parent)
+ 		dev->dev.parent = acpi_get_first_physical_node(parent);
+ 
+-	ACPI_COMPANION_SET(&dev->dev, adev);
++	device_set_node(&dev->dev, acpi_fwnode_handle(adev));
+ 
+ 	ret = amba_device_add(dev, &iomem_resource);
+ 	if (ret) {
+diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+index 09e72967b8ab..a24c152bfaac 100644
+--- a/drivers/amba/bus.c
++++ b/drivers/amba/bus.c
+@@ -18,6 +18,7 @@
+ #include <linux/limits.h>
+ #include <linux/clk/clk-conf.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/reset.h>
+ #include <linux/of_irq.h>
+ #include <linux/of_device.h>
+@@ -528,7 +529,7 @@ static void amba_device_release(struct device *dev)
+ {
+ 	struct amba_device *d = to_amba_device(dev);
+ 
+-	of_node_put(d->dev.of_node);
++	fwnode_handle_put(dev_fwnode(&d->dev));
+ 	if (d->res.parent)
+ 		release_resource(&d->res);
+ 	mutex_destroy(&d->periphid_lock);
+@@ -548,6 +549,8 @@ int amba_device_add(struct amba_device *dev, struct resource *parent)
+ {
+ 	int ret;
+ 
++	fwnode_handle_get(dev_fwnode(&dev->dev));
++
+ 	ret = request_resource(parent, &dev->res);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index f235ab55b91e..126d265aa7d8 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -273,7 +273,7 @@ static struct amba_device *of_amba_device_create(struct device_node *node,
+ 	dev->dev.dma_mask = &dev->dev.coherent_dma_mask;
+ 
+ 	/* setup generic device info */
+-	device_set_node(&dev->dev, of_fwnode_handle(of_node_get(node)));
++	device_set_node(&dev->dev, of_fwnode_handle(node));
+ 	dev->dev.parent = parent ? : &platform_bus;
+ 	dev->dev.platform_data = platform_data;
+ 	if (bus_id)
+-- 
+2.40.0.1.gaa8946217a0b
+
 
