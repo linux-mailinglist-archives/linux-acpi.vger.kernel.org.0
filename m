@@ -1,55 +1,57 @@
-Return-Path: <linux-acpi+bounces-337-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-338-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 010FC7B57EC
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 18:34:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2CC67B57ED
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 18:34:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id A930A282347
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 16:34:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 95504281B3A
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 16:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920851DA44
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 16:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4A51DA23
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Oct 2023 16:34:17 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0841F1CFBE
-	for <linux-acpi@vger.kernel.org>; Mon,  2 Oct 2023 15:46:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E29C433CA;
-	Mon,  2 Oct 2023 15:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653E2199B2
+	for <linux-acpi@vger.kernel.org>; Mon,  2 Oct 2023 15:50:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6944AC433C7;
+	Mon,  2 Oct 2023 15:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696261610;
-	bh=CmmG84b/1OBnh9RduBYlaC31PLcl9rWTf7tM7hAt0i4=;
+	s=k20201202; t=1696261828;
+	bh=O72E3ZVNiuEo0RBUJoTwRkR159xNbbJrFOP9dMKbWJA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k/PAwkBadBvbGrpkDaXWNVVBDnVeHkW1OSHNMHBGISuRWXaQT9+M0PS00iAThcFaU
-	 mIpBADPxntPzj9BWoSebDW8KKXItg8G+Xf0IH4smglI1BecONgtU+tws0KE7dmweRr
-	 hi3pi2gHuCjar8xeO4b1UDHk+mz8TQ6b9KAFV7wOukcAk/h66Sk6CGKhp90/qhN2Jz
-	 T8SNYwPq+Euel24AtDA23nefvRHTVuTBXgCTKhPfGpRltqgDX11sM3TwzyOlDK8/TG
-	 YwVnw0ilipHuN/tuLIa6MXzz2UgaWGg5yjLSxQlrI9zEIu2wfDZTjUrft6vgk1EscK
-	 5kFcJYt0aFXBA==
-Date: Mon, 2 Oct 2023 16:46:44 +0100
+	b=tvRWKuVWaj8ZDjW2PP+a9TusRDq1llpPG8Nk7Nsz4ZPHQndBkZSfaUHAPBv3C8zEv
+	 iNleVb7s8tlNmWvnQXBgu+ir00/xLNR8+oI+jrJAoFHUnKIxJOWYBdi18PS6GBsunw
+	 t428Gpxn+T3QYlr8ELm1Gi1HpIouWSoX0gqX0lzzXm8JWomZrQT5xEVyXuKOdmFjd2
+	 7XDDYGiKRpMdbuj8+/EqChEEk0rdxDTWq55vAcJR5HfSUKn/nH2TUAAfiHUUyw1VPQ
+	 BewBCu+ZtGWDYUcV6muQjccMoe5iS5Ak/L6mgpei0hCPILemPrQpwxAxAlVJkaK7JE
+	 yMMqQWpMCydiA==
+Date: Mon, 2 Oct 2023 16:50:23 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Sunil V L <sunilvl@ventanamicro.com>
 Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, Anup Patel <apatel@ventanamicro.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Atish Kumar Patra <atishp@rivosinc.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
+	linux-acpi@vger.kernel.org,
 	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Andrew Jones <ajones@ventanamicro.com>,
-	Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v2 -next 4/4] clocksource/timer-riscv: ACPI: Add
- timer_cannot_wakeup_cpu
-Message-ID: <20231002-doorman-catchy-ff5b9ba14c3a@spud>
+	Conor Dooley <conor.dooley@microchip.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Atish Kumar Patra <atishp@rivosinc.com>
+Subject: Re: [PATCH v2 -next 3/4] RISC-V: cacheflush: Initialize CBO
+ variables on ACPI systems
+Message-ID: <20231002-anyplace-impending-bcb62ca90f79@spud>
 References: <20230927170015.295232-1-sunilvl@ventanamicro.com>
- <20230927170015.295232-5-sunilvl@ventanamicro.com>
+ <20230927170015.295232-4-sunilvl@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -57,68 +59,104 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="aL1TA5F1n3lbU8nP"
+	protocol="application/pgp-signature"; boundary="o8PPxZtlZhU/WX3V"
 Content-Disposition: inline
-In-Reply-To: <20230927170015.295232-5-sunilvl@ventanamicro.com>
+In-Reply-To: <20230927170015.295232-4-sunilvl@ventanamicro.com>
 
 
---aL1TA5F1n3lbU8nP
+--o8PPxZtlZhU/WX3V
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 27, 2023 at 10:30:15PM +0530, Sunil V L wrote:
-> The timer capability to wakeup the cpu irrespective of its idle state is
-> provided by the flag in RHCT. Update the timer code to set this flag.
+On Wed, Sep 27, 2023 at 10:30:14PM +0530, Sunil V L wrote:
+> Using new interface to get the CBO block size information in RHCT,
+> initialize the variables on ACPI platforms.
 >=20
 > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 
+Otherwise,
 Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
 Thanks,
 Conor.
-
 > ---
->  drivers/clocksource/timer-riscv.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  arch/riscv/mm/cacheflush.c | 37 +++++++++++++++++++++++++++++++------
+>  1 file changed, 31 insertions(+), 6 deletions(-)
 >=20
-> diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/time=
-r-riscv.c
-> index 9c8f3e2decc2..06f5bad3c3e0 100644
-> --- a/drivers/clocksource/timer-riscv.c
-> +++ b/drivers/clocksource/timer-riscv.c
-> @@ -225,6 +225,10 @@ TIMER_OF_DECLARE(riscv_timer, "riscv", riscv_timer_i=
-nit_dt);
->  #ifdef CONFIG_ACPI
->  static int __init riscv_timer_acpi_init(struct acpi_table_header *table)
->  {
-> +	struct acpi_table_rhct *rhct =3D (struct acpi_table_rhct *)table;
+> diff --git a/arch/riscv/mm/cacheflush.c b/arch/riscv/mm/cacheflush.c
+> index f1387272a551..8e59644e473c 100644
+> --- a/arch/riscv/mm/cacheflush.c
+> +++ b/arch/riscv/mm/cacheflush.c
+> @@ -3,7 +3,9 @@
+>   * Copyright (C) 2017 SiFive
+>   */
+> =20
+> +#include <linux/acpi.h>
+>  #include <linux/of.h>
+> +#include <asm/acpi.h>
+>  #include <asm/cacheflush.h>
+> =20
+>  #ifdef CONFIG_SMP
+> @@ -124,15 +126,38 @@ void __init riscv_init_cbo_blocksizes(void)
+>  	unsigned long cbom_hartid, cboz_hartid;
+>  	u32 cbom_block_size =3D 0, cboz_block_size =3D 0;
+>  	struct device_node *node;
+> +	struct acpi_table_header *rhct;
+> +	acpi_status status;
+> +	unsigned int cpu;
 > +
-> +	riscv_timer_cannot_wake_cpu =3D rhct->flags & ACPI_RHCT_TIMER_CANNOT_WA=
-KEUP_CPU;
+> +	if (!acpi_disabled) {
+> +		status =3D acpi_get_table(ACPI_SIG_RHCT, 0, &rhct);
+> +		if (ACPI_FAILURE(status))
+> +			return;
+> +	}
+> =20
+> -	for_each_of_cpu_node(node) {
+> -		/* set block-size for cbom and/or cboz extension if available */
+> -		cbo_get_block_size(node, "riscv,cbom-block-size",
+> -				   &cbom_block_size, &cbom_hartid);
+> -		cbo_get_block_size(node, "riscv,cboz-block-size",
+> -				   &cboz_block_size, &cboz_hartid);
+> +	for_each_possible_cpu(cpu) {
+> +		if (acpi_disabled) {
+> +			node =3D of_cpu_device_node_get(cpu);
+> +			if (!node) {
+> +				pr_warn("Unable to find cpu node\n");
+> +				continue;
+> +			}
 > +
->  	return riscv_timer_init_common();
->  }
+> +			/* set block-size for cbom and/or cboz extension if available */
+> +			cbo_get_block_size(node, "riscv,cbom-block-size",
+> +					   &cbom_block_size, &cbom_hartid);
+> +			cbo_get_block_size(node, "riscv,cboz-block-size",
+> +					   &cboz_block_size, &cboz_hartid);
+> +		} else {
+> +			acpi_get_cbo_block_size(rhct, cpu, &cbom_block_size,
+> +						&cboz_block_size, NULL);
+> +		}
+>  	}
+> =20
+> +	if (!acpi_disabled && rhct)
+> +		acpi_put_table((struct acpi_table_header *)rhct);
+> +
+>  	if (cbom_block_size)
+>  		riscv_cbom_block_size =3D cbom_block_size;
 > =20
 > --=20
 > 2.39.2
 >=20
->=20
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
---aL1TA5F1n3lbU8nP
+--o8PPxZtlZhU/WX3V
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZRrl5AAKCRB4tDGHoIJi
-0hIpAP4l78wWWSJgv9GiRYKP3viLL22FMxgc4K5BcjViUuXTFgEA1phiOLRhZJXQ
-5THh1DtDO53ISPllC0QaOhA0ZPUYoAs=
-=6uzF
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZRrmvwAKCRB4tDGHoIJi
+0nf8AQCTxt4VlxBrgtIhfufLcu2yyKEOu8gbSQy5sLNEU03knAD/crKrOne+Xeiz
+FzWiJRzcnFcqSj505sbzYo5m/x8tZQs=
+=z/P5
 -----END PGP SIGNATURE-----
 
---aL1TA5F1n3lbU8nP--
+--o8PPxZtlZhU/WX3V--
 
