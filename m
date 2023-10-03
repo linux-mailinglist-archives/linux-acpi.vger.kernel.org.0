@@ -1,129 +1,192 @@
-Return-Path: <linux-acpi+bounces-384-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-385-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7C47B6E81
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 18:32:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94CDB7B6E82
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 18:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 5AB24280C71
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 16:32:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 4783028124D
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 16:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D5D3AC1F
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 16:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF0130D10
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 16:32:36 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3D831A6E
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 15:06:07 +0000 (UTC)
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E824A1;
-	Tue,  3 Oct 2023 08:06:05 -0700 (PDT)
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3ae473c0bd6so167619b6e.0;
-        Tue, 03 Oct 2023 08:06:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696345563; x=1696950363;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zfoixr3m5U2kSBjb6JlXLVlRiawHL3INUa4p8i7QVO8=;
-        b=EGKiHwssB+3hEl7sR8ziEiP0wm+YTLupvnzkQCvwAkgBUlpX+N5U0YWhYJH1q+frXS
-         X2wsRniSuSqszKP5MJd58HRpz4vuahVOhz018FKh5xOexQa5IESpOZaVs0h+wa4ODJyg
-         /nQwpYyMmYJWXmPaV9dwQtbwfei9TxPLEHQNh4gKuIxXAiWxILwL4wKjTprLh/JibxYg
-         cer6/vfOy3DtGHWkhq96/rElQnMFscDfkW1TiydAWOSBf2/EhQYrXk36t5r5nSkjCQF8
-         JOZTj9zEusFAub7i0JIT99+CO7cl4GVHd142HMaYEX2zQfyw+YNGStbG+NJIZiXP1q5s
-         Y9BA==
-X-Gm-Message-State: AOJu0Yy156lKQfNA5ccMMsD3om797F5kSD1GeilgfohDn9oW8/EvgZcx
-	AkGQZ0DhcQ5+32PV3ObVfcH+OVsquwzao00JOpk=
-X-Google-Smtp-Source: AGHT+IF6yQOv5Bd0Ys7eq6T3EpkgBj6morZBhiV0kVnxnU6R8v7KgN2XWufAjmIYmrWYJW8JCxX6U0NFVRXOcsdo4ls=
-X-Received: by 2002:a05:6808:3c47:b0:3ad:af12:2fe0 with SMTP id
- gl7-20020a0568083c4700b003adaf122fe0mr16914427oib.3.1696345563091; Tue, 03
- Oct 2023 08:06:03 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077EF36B16
+	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 15:59:42 +0000 (UTC)
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49CA3FF;
+	Tue,  3 Oct 2023 08:59:41 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 393BBP3D018834;
+	Tue, 3 Oct 2023 15:59:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=qcppdkim1;
+ bh=GBSM88InbwDK3bTPT0KFlAm3hF10rrJO6ZNeblY1c44=;
+ b=hUd9Sq/R6GdoJZE4qS3pOc5PSXhOITfsBR0/iWQz/HWZmBOTMm2Hnuur9xiko1teF06P
+ NUqrn1SXjo6gf/O/DP6wAFjaO0b06OT6ffPZYDrzHtXVbfh6P5GtseRIwUzwOuR1B0dD
+ bgk2YNlRT4TIKrGZRFJIEGCILZWQOwuB+OeYWrVyWoVR9WkpkvbgwOZVHw1mIVvzIWUl
+ bLFA9eBoXS6+aby6PaQm4k2R4GQOljZ7QLxt5jr/2ikyZpOKx9yTKNadqU84LplxJIdN
+ vhiYTkCi6aMEyT+kb3q2SXII8IUq0kBBu5py6PqMmH4ODR5GSGFR+u1Cnj5w/bAdBYp5 Bw== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tgbjj9fpk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Oct 2023 15:59:32 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 393FxWIT006952
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 3 Oct 2023 15:59:32 GMT
+Received: from localhost (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 3 Oct
+ 2023 08:59:31 -0700
+From: Oza Pawandeep <quic_poza@quicinc.com>
+To: <sudeep.holla@arm.com>, <catalin.marinas@arm.com>, <will@kernel.org>,
+        <rafael@kernel.org>, <lenb@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>
+CC: Oza Pawandeep <quic_poza@quicinc.com>
+Subject: [PATCH v9] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast timer
+Date: Tue, 3 Oct 2023 08:59:30 -0700
+Message-ID: <20231003155930.2829763-1-quic_poza@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230927-pcc_defines-v2-0-0b8ffeaef2e5@arm.com>
- <20230927-pcc_defines-v2-1-0b8ffeaef2e5@arm.com> <CAJZ5v0hG0sDJ4VOY+Gk0Fg1gebNft+z3YK9Jf-7NHb9Ow-C2mg@mail.gmail.com>
- <20231003142916.6nbg5sfwd3tk6ol4@bogus>
-In-Reply-To: <20231003142916.6nbg5sfwd3tk6ol4@bogus>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 3 Oct 2023 17:05:51 +0200
-Message-ID: <CAJZ5v0iH97P=S3rRSKVqJwVadSMsPVfOZswoenaRxpAjwDxeVw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] ACPI: PCC: Add PCC shared memory region command
- and status bitfields
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-hwmon@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Andi Shyti <andi.shyti@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
-	Guenter Roeck <linux@roeck-us.net>, Huisong Li <lihuisong@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,
-	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: H-19d9mMQ3zuB0YjKgwOwadn3YU4-RQp
+X-Proofpoint-ORIG-GUID: H-19d9mMQ3zuB0YjKgwOwadn3YU4-RQp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-03_12,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=6 mlxscore=6 spamscore=6
+ clxscore=1015 impostorscore=0 phishscore=0 malwarescore=0
+ priorityscore=1501 mlxlogscore=123 adultscore=0 suspectscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310030119
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+	SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, Oct 3, 2023 at 4:29=E2=80=AFPM Sudeep Holla <sudeep.holla@arm.com> =
-wrote:
->
-> On Tue, Oct 03, 2023 at 03:29:16PM +0200, Rafael J. Wysocki wrote:
-> > On Wed, Sep 27, 2023 at 6:32=E2=80=AFPM Sudeep Holla <sudeep.holla@arm.=
-com> wrote:
-> > >
-> > > Define the common macros to use when referring to various bitfields i=
-n
-> > > the PCC generic communications channel command and status fields.
-> > >
-> > > Currently different drivers that need to use these bitfields have def=
-ined
-> > > these locally. This common macro is intended to consolidate and repla=
-ce
-> > > those.
-> > >
-> > > Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> > > ---
-> > >  include/acpi/pcc.h | 13 +++++++++++++
-> > >  1 file changed, 13 insertions(+)
-> > >
-> > > diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
-> > > index 73e806fe7ce7..021891a7434f 100644
-> > > --- a/include/acpi/pcc.h
-> > > +++ b/include/acpi/pcc.h
-> > > @@ -18,7 +18,20 @@ struct pcc_mbox_chan {
-> > >         u16 min_turnaround_time;
-> > >  };
-> > >
-> > > +/* Generic Communications Channel Shared Memory Region */
-> > > +#define PCC_SIGNATURE                  0x50424300
-> > > +/* Generic Communications Channel Command Field */
-> > > +#define PCC_CMD_GENERATE_DB_INTR       BIT(15)
-> > > +/* Generic Communications Channel Status Field */
-> > > +#define PCC_STATUS_CMD_COMPLETE                BIT(0)
-> > > +#define PCC_STATUS_SCI_DOORBELL                BIT(1)
-> > > +#define PCC_STATUS_ERROR               BIT(2)
-> > > +#define PCC_STATUS_PLATFORM_NOTIFY     BIT(3)
-> > > +/* Initiator Responder Communications Channel Flags */
-> > > +#define PCC_CMD_COMPLETION_NOTIFY      BIT(0)
-> > > +
-> > >  #define MAX_PCC_SUBSPACES      256
-> > > +
-> > >  #ifdef CONFIG_PCC
-> > >  extern struct pcc_mbox_chan *
-> > >  pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id);
-> > >
-> > > --
-> >
-> > Do you want me to pick up this lot?
->
-> I have applied this to me branch [1]. It also has long pending PCC driver
-> changes. I will send the pull request by end of this week.
+Arm® Functional Fixed Hardware Specification defines LPI states,
+which provide an architectural context loss flags field that can
+be used to describe the context that might be lost when an LPI
+state is entered.
 
-Sounds good, thanks!
+- Core context Lost
+        - General purpose registers.
+        - Floating point and SIMD registers.
+        - System registers, include the System register based
+        - generic timer for the core.
+        - Debug register in the core power domain.
+        - PMU registers in the core power domain.
+        - Trace register in the core power domain.
+- Trace context loss
+- GICR
+- GICD
+
+Qualcomm's custom CPUs preserves the architectural state,
+including keeping the power domain for local timers active.
+when core is power gated, the local timers are sufficient to
+wake the core up without needing broadcast timer.
+
+The patch fixes the evaluation of cpuidle arch_flags, and moves only to
+broadcast timer if core context lost is defined in ACPI LPI.
+
+Fixes: a36a7fecfe607 ("Add support for Low Power Idle(LPI) states")
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
+---
+
+Notes:
+    Will/Catalin: Rafael has acked and he prefers to take it via arm64 tree
+
+diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
+index 4d537d56eb84..6792a1f83f2a 100644
+--- a/arch/arm64/include/asm/acpi.h
++++ b/arch/arm64/include/asm/acpi.h
+@@ -9,6 +9,7 @@
+ #ifndef _ASM_ACPI_H
+ #define _ASM_ACPI_H
+ 
++#include <linux/cpuidle.h>
+ #include <linux/efi.h>
+ #include <linux/memblock.h>
+ #include <linux/psci.h>
+@@ -44,6 +45,24 @@
+ 
+ #define ACPI_MADT_GICC_TRBE  (offsetof(struct acpi_madt_generic_interrupt, \
+ 	trbe_interrupt) + sizeof(u16))
++/*
++ * Arm® Functional Fixed Hardware Specification Version 1.2.
++ * Table 2: Arm Architecture context loss flags
++ */
++#define CPUIDLE_CORE_CTXT		BIT(0) /* Core context Lost */
++
++static inline unsigned int arch_get_idle_state_flags(u32 arch_flags)
++{
++	if (arch_flags & CPUIDLE_CORE_CTXT)
++		return CPUIDLE_FLAG_TIMER_STOP;
++
++	return 0;
++}
++#define arch_get_idle_state_flags arch_get_idle_state_flags
++
++#define CPUIDLE_TRACE_CTXT		BIT(1) /* Trace context loss */
++#define CPUIDLE_GICR_CTXT		BIT(2) /* GICR */
++#define CPUIDLE_GICD_CTXT		BIT(3) /* GICD */
+ 
+ /* Basic configuration for ACPI */
+ #ifdef	CONFIG_ACPI
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index dc615ef6550a..3a34a8c425fe 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -1217,8 +1217,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
+ 		strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
+ 		state->exit_latency = lpi->wake_latency;
+ 		state->target_residency = lpi->min_residency;
+-		if (lpi->arch_flags)
+-			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
++		state->flags |= arch_get_idle_state_flags(lpi->arch_flags);
+ 		if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
+ 			state->flags |= CPUIDLE_FLAG_RCU_IDLE;
+ 		state->enter = acpi_idle_lpi_enter;
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index a73246c3c35e..afd94c9b8b8a 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -1480,6 +1480,15 @@ static inline int lpit_read_residency_count_address(u64 *address)
+ }
+ #endif
+ 
++#ifdef CONFIG_ACPI_PROCESSOR_IDLE
++#ifndef arch_get_idle_state_flags
++static inline unsigned int arch_get_idle_state_flags(u32 arch_flags)
++{
++	return 0;
++}
++#endif
++#endif /* CONFIG_ACPI_PROCESSOR_IDLE */
++
+ #ifdef CONFIG_ACPI_PPTT
+ int acpi_pptt_cpu_is_thread(unsigned int cpu);
+ int find_acpi_cpu_topology(unsigned int cpu, int level);
+-- 
+2.25.1
+
 
