@@ -1,138 +1,150 @@
-Return-Path: <linux-acpi+bounces-357-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-358-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C367D7B667B
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 12:33:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 840647B667D
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 12:33:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 691752816D7
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 10:33:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 2B0B52816E7
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 10:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5032720336
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 10:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E6D208B0
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 10:33:32 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E26CD278
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 09:45:48 +0000 (UTC)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0DD9BB0;
-	Tue,  3 Oct 2023 02:45:47 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2B7AFC15;
-	Tue,  3 Oct 2023 02:46:25 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7FB2D3F5A1;
-	Tue,  3 Oct 2023 02:45:45 -0700 (PDT)
-Date: Tue, 3 Oct 2023 10:45:43 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: "Pawandeep Oza (QUIC)" <quic_poza@quicinc.com>
-Cc: 'Will Deacon' <will@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>,
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v8] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast
- timer
-Message-ID: <20231003094543.oinq2onehefxdrbw@bogus>
-References: <20230918172140.2825357-1-quic_poza@quicinc.com>
- <20230929150459.GA30623@willie-the-truck>
- <CH0PR02MB8073FBB64A196EEEFED11BB7F6C5A@CH0PR02MB8073.namprd02.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F88154A1
+	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 10:15:25 +0000 (UTC)
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC0BFB0;
+	Tue,  3 Oct 2023 03:15:23 -0700 (PDT)
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3ae4bd149d2so49039b6e.0;
+        Tue, 03 Oct 2023 03:15:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696328123; x=1696932923;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=42N1dQ0IHBJ96zQ+ZL7kKoOE6ouFE7HC3GOwtJOKQgo=;
+        b=xIkCkySZWD2RG3u57Wai9V90LxuLzjzH4F3vI/S7Zc9IN89BUc+Q/1tXBjxYXXKDry
+         6N7/QhephuNOk2ImCcchUXXDz5sERL7WTT0kmFVb8gHHADcP4UzHPpjhYw2n1jn2JBG0
+         mn4oj1yp5iVOrnij3vWajN43R86pCTbTE61yMxji06VPNykl9OevT15jgwoHzuvXzNUt
+         fKYE+WunwK3gumxw3KNJmr5u8j2DDbn3nS0SRrFgbxjrfmurTrES7gSeA//KCzH0lQBM
+         7mHHBOXjXfPgzsEF0ljcd5VJo6LjLN/kF0lEwPrqS8+Uy1JV8tb2B37zIZd7umbB4K5Z
+         sIug==
+X-Gm-Message-State: AOJu0Yw6N9Np47KubZBGTosGLGe3xYG+0kYUKoKor3Qr12R45WI0w+Yd
+	qKPgmjgdqm7rnxoXGzvLiCuCmatOKXPoFQUUK3LpB6/SGtA=
+X-Google-Smtp-Source: AGHT+IHfyI+E4QlSUOpO/CLF61g294Nf8YsRulOrEWYrj0TOTxq0DwKZoQBPqEFakrDsIsgb1jA0HljyO0SRBjUxnUo=
+X-Received: by 2002:a05:6808:1997:b0:3ad:f525:52d5 with SMTP id
+ bj23-20020a056808199700b003adf52552d5mr16699126oib.4.1696328122844; Tue, 03
+ Oct 2023 03:15:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CH0PR02MB8073FBB64A196EEEFED11BB7F6C5A@CH0PR02MB8073.namprd02.prod.outlook.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230930122054.3cf727a4@meshulam> <20231003113135.38384a87@meshulam.tesarici.cz>
+In-Reply-To: <20231003113135.38384a87@meshulam.tesarici.cz>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 3 Oct 2023 12:15:10 +0200
+Message-ID: <CAJZ5v0i-FV29TUq8E=FGxB_dRKEJvdoKxzwPGAX0C9vnD7O8eg@mail.gmail.com>
+Subject: Re: Thinkpad E595 system deadlock on resume from S3
+To: =?UTF-8?B?UGV0ciBUZXNhxZnDrWs=?= <petr@tesarici.cz>
+Cc: linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,
+	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 02, 2023 at 07:22:57PM +0000, Pawandeep Oza (QUIC) wrote:
+On Tue, Oct 3, 2023 at 11:31=E2=80=AFAM Petr Tesa=C5=99=C3=ADk <petr@tesari=
+ci.cz> wrote:
 >
+> Hi again (adding more recipients),
 >
-> -----Original Message-----
-> From: Will Deacon <will@kernel.org>
-> Sent: Friday, September 29, 2023 8:05 AM
-> To: Pawandeep Oza (QUIC) <quic_poza@quicinc.com>
-> Cc: sudeep.holla@arm.com; catalin.marinas@arm.com; rafael@kernel.org; lenb@kernel.org; linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; linux-acpi@vger.kernel.org
-> Subject: Re: [PATCH v8] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast timer
+> On Sat, 30 Sep 2023 12:20:54 +0200
+> Petr Tesa=C5=99=C3=ADk <petr@tesarici.cz> wrote:
 >
-> On Mon, Sep 18, 2023 at 10:21:40AM -0700, Oza Pawandeep wrote:
-> > Arm(r) Functional Fixed Hardware Specification defines LPI states, which
-> > provide an architectural context loss flags field that can be used to
-> > describe the context that might be lost when an LPI state is entered.
+> > Hi all,
 > >
-> > - Core context Lost
-> >         - General purpose registers.
-> >         - Floating point and SIMD registers.
-> >         - System registers, include the System register based
-> >         - generic timer for the core.
-> >         - Debug register in the core power domain.
-> >         - PMU registers in the core power domain.
-> >         - Trace register in the core power domain.
-> > - Trace context loss
-> > - GICR
-> > - GICD
+> > this time no patch (yet). In short, my Thinkpad running v6.6-rc3 fails
+> > to resume from S3. It also fails the same way with Tumbleweed v6.5
+> > kernel. I was able to capture a crash dump of the v6.5 kernel, and
+> > here's my analysis:
 > >
-> > Qualcomm's custom CPUs preserves the architectural state, including
-> > keeping the power domain for local timers active.
-> > when core is power gated, the local timers are sufficient to wake the
-> > core up without needing broadcast timer.
+> > The system never gets to waking up my SATA SSD disk:
 > >
-> > The patch fixes the evaluation of cpuidle arch_flags, and moves only
-> > to broadcast timer if core context lost is defined in ACPI LPI.
+> > [0:0:0:0]    disk    ATA      KINGSTON SEDC600 H5.1  /dev/sda
 > >
-> > Fixes: a36a7fecfe607 ("Add support for Low Power Idle(LPI) states")
-> > Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-> > Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-> > Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
-> > ---
-> > diff --git a/drivers/acpi/processor_idle.c
-> > b/drivers/acpi/processor_idle.c index dc615ef6550a..5c1d13eecdd1
-> > 100644
-> > --- a/drivers/acpi/processor_idle.c
-> > +++ b/drivers/acpi/processor_idle.c
-> > @@ -1217,8 +1217,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
-> >  		strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
-> >  		state->exit_latency = lpi->wake_latency;
-> >  		state->target_residency = lpi->min_residency;
-> > -		if (lpi->arch_flags)
-> > -			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
-> > +		arch_update_idle_state_flags(lpi->arch_flags, &state->flags);
+> > There is a pending resume work for kworker/u32:12 (PID 11032), but this
+> > worker is stuck in 'D' state:
+> >
+> > >>> prog.stack_trace(11032)
+> > #0  context_switch (../kernel/sched/core.c:5381:2)
+> > #1  __schedule (../kernel/sched/core.c:6710:8)
+> > #2  schedule (../kernel/sched/core.c:6786:3)
+> > #3  schedule_preempt_disabled (../kernel/sched/core.c:6845:2)
+> > #4  __mutex_lock_common (../kernel/locking/mutex.c:679:3)
+> > #5  __mutex_lock (../kernel/locking/mutex.c:747:9)
+> > #6  acpi_device_hotplug (../drivers/acpi/scan.c:382:2)
+> > #7  acpi_hotplug_work_fn (../drivers/acpi/osl.c:1162:2)
+> > #8  process_one_work (../kernel/workqueue.c:2600:2)
+> > #9  worker_thread (../kernel/workqueue.c:2751:4)
+> > #10 kthread (../kernel/kthread.c:389:9)
+> > #11 ret_from_fork (../arch/x86/kernel/process.c:145:3)
+> > #12 ret_from_fork_asm+0x1b/0x20 (../arch/x86/entry/entry_64.S:304)
+> >
+> > acpi_device_hotplug() tries to acquire acpi_scan_lock, which is held by
+> > systemd-sleep (PID 11002). This task is also in 'D' state:
+> >
+> > >>> prog.stack_trace(11002)
+> > #0  context_switch (../kernel/sched/core.c:5381:2)
+> > #1  __schedule (../kernel/sched/core.c:6710:8)
+> > #2  schedule (../kernel/sched/core.c:6786:3)
+> > #3  schedule_preempt_disabled (../kernel/sched/core.c:6845:2)
+> > #4  __mutex_lock_common (../kernel/locking/mutex.c:679:3)
+> > #5  __mutex_lock (../kernel/locking/mutex.c:747:9)
+> > #6  device_lock (../include/linux/device.h:958:2)
+> > #7  device_complete (../drivers/base/power/main.c:1063:2)
+> > #8  dpm_complete (../drivers/base/power/main.c:1121:3)
+> > #9  suspend_devices_and_enter (../kernel/power/suspend.c:516:2)
 >
-> Hmm, I know Rafael has Acked this, but I think this is pretending to be more
-> generic than it really is. While passing in a pointer to the flags field
-> allows the arch code to set and clear arbitrary flags, we're calling this
-> before we've set CPUIDLE_FLAG_RCU_IDLE, so that cannot be changed.
+> I believe the issue must be somewhere here. The whole suspend and
+> resume logic in suspend_devices_and_enter() is framed by
+> platform_suspend_begin() and platform_resume_end().
 >
-> Why not just name it like it is and return the arch flags directly:
+> My system is an ACPI system, so suspend_ops contains:
 >
-> 	state->flags |= arch_get_idle_state_flags(lpi->arch_flags);
+>         .begin =3D acpi_suspend_begin,
+>         .end =3D acpi_pm_end,
 >
-> Oza:
->
-> ?
+> Now, acpi_suspend_begin() acquires acpi_scan_lock through
+> acpi_pm_start(), and the lock is not released until acpi_pm_end().
+> Since dpm_complete() waits for the completion of a work that tries to
+> acquire acpi_scan_lock, the system will deadlock.
 
-Not sure if this "?" is by mistake or you didn't follow Will's comment.
+So holding acpi_scan_lock across suspend-resume is basically to
+prevent the hotplug from taking place then IIRC.
 
-The point made was that it is cleaner for arch code to just provide the
-flags that needs to be set via some helper like 'arch_get_idle_state_flags()'
-rather than set/update itself via 'arch_update_idle_state_flags()' like
-you have in this patch.
+> AFAICS either:
+>
+> a. the ACPI lock cannot be held while dpm_complete() runs, or
+> b. ata_scsi_dev_rescan() must not be scheduled before the system is
+> resumed, or
+> c. acpi_device_hotplug() must be implemented without taking dev->mutex.
+>
+> My gut feeling is that b. is the right answer.
 
-I completely agree with Will as this is much cleaner and arch code just
-returns the requested flags and the core code is still in charge to update
-the flags.
+It's been a while since I looked at that code last time, but then it
+has not changed for quite some time too.
 
---
-Regards,
-Sudeep
+It looks like the acpi_device_hotplug() path attempts to acquire
+acpi_scan_lock() while holding dev->mutex which is kind of silly.  I
+need to check that, though.
 
