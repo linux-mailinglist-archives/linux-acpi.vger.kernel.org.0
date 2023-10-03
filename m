@@ -1,141 +1,137 @@
-Return-Path: <linux-acpi+bounces-393-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-394-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FCF57B7280
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 22:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 056857B7281
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 22:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id D29612811F5
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id AB0A128105E
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F863D960
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EDB73D964
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:13 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD8936AF5
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 18:36:20 +0000 (UTC)
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5887E95;
-	Tue,  3 Oct 2023 11:36:19 -0700 (PDT)
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6c61dd1c229so263909a34.0;
-        Tue, 03 Oct 2023 11:36:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB013B2B7
+	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 18:39:24 +0000 (UTC)
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBC6890;
+	Tue,  3 Oct 2023 11:39:23 -0700 (PDT)
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-57b68555467so115922eaf.0;
+        Tue, 03 Oct 2023 11:39:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696358178; x=1696962978;
+        d=1e100.net; s=20230601; t=1696358363; x=1696963163;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Xy90cq1kuMyI11xZOKPFY3MxuNUWTItrB3fMlvJOfd4=;
-        b=O9dLGlfaQu9dsp0LkMFVvkMVK9NXoFp9BD2ib+m6UkECPMwgttPL9+hxP1bK0bLuzy
-         Ll/QY+gYRGA5g0chO+WX8vAOiJaAgc12ROBambSLISHZp2GxTr6O/Yyv6pDFMK3OsHW/
-         +Bi99lprj7takUSJnKSn+iUBKB0O1lG2gWC6+VzPoLT3kD9eEKUF8ufYKnP7CHF2eKbO
-         91CF6RVFvIJb4UocHewnnscmiWnvNoyMnqe7DxZ9JEYyjQD195KbvCOqn8SZNaYJyGoo
-         EbfFboOlKix6iDKLaa3IAuY1jGL8FeqVwg8kgpPVgP8qAZvcctJGDkI9bFwfopHWCnpy
-         dtuQ==
-X-Gm-Message-State: AOJu0YwyLxHy/E3OJf7rhHDI1LKLmNSgqTwbF9GpkyP//WJjEfkKjdYb
-	LHoUrFgQRJXKi0srNIdSF9TGpgrfvyBZtObenjU=
-X-Google-Smtp-Source: AGHT+IFOz8NfzaTm+TQNu/A6JnOferW/Rsbvp5a+Se/KmXjyxbJucR7lDLEgD8KYWY1iGfGprX4gu2qrFiskX8eQ040=
-X-Received: by 2002:a05:6808:2286:b0:3ae:100d:5320 with SMTP id
- bo6-20020a056808228600b003ae100d5320mr386644oib.2.1696358178605; Tue, 03 Oct
- 2023 11:36:18 -0700 (PDT)
+        bh=ojh0GlprYqfF4cES3KrVg8rZgISvukWPZ0bGNIr9lsc=;
+        b=en8U3/kHZ14ldFsqt6niKdDBC6pd+EZ8H0cN6Z1ZDTESRKSzWGd1B3WIDOvtOFCVAa
+         ho2xti13uc2unMz3oEHaZiQ1gOG7rbqXUiJxjthDtMEjB9tyrYxnwJ8WTS0MuY6LVyty
+         IzpZF8tQ/27az2Hw085nLJe8jx9wmkQ7f/19g0tp1PaNitBzQFZtT7T/ogiwEqD1LOYL
+         p4XufJomWxDCL/x27xIMhKCdmwBGPFXMwCb9NZHpl31hauZv0nj31LUXpy3v7ERuq2/4
+         wd4uuy7wxGTRMpSLoj14kKCcE7H0O9JktsXAuDkhL/sceHJ8rdR8x8llNDACpajdsZLy
+         vvzw==
+X-Gm-Message-State: AOJu0YzY3PaloRvS7fplaGA7bPZJYjXmzc/hGGMl/oQGJkcKLY/R9V7e
+	FnafjaYiHZCswhsaI8+kFHsnDN9StwdM17M7IqDetZsO
+X-Google-Smtp-Source: AGHT+IGIPULYGzQU1uU2lrfZfjw8XgoLLWATNuwr7it5GWVlqYL9FcAZaNIzPNZ2SUaDhSa0Ts+6j6eYn8cl97w/rPk=
+X-Received: by 2002:a4a:df07:0:b0:57b:73f6:6f80 with SMTP id
+ i7-20020a4adf07000000b0057b73f66f80mr245642oou.0.1696358363021; Tue, 03 Oct
+ 2023 11:39:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230929202055.12724-1-linux@zary.sk>
-In-Reply-To: <20230929202055.12724-1-linux@zary.sk>
+References: <20230929134010.25644-1-wse@tuxedocomputers.com>
+In-Reply-To: <20230929134010.25644-1-wse@tuxedocomputers.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 3 Oct 2023 20:36:07 +0200
-Message-ID: <CAJZ5v0gqywy7o69fD4F4Snjb5Oh1Z44GD=C_WfkiSyW7NrxsGw@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH=5D_ACPI=3A_video=3A_Add_acpi=5Fbacklight=3Dvendor_q?=
-	=?UTF-8?Q?uirk_for_Toshiba_Port=C3=A9g=C3=A9_R100?=
-To: Ondrej Zary <linux@zary.sk>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+Date: Tue, 3 Oct 2023 20:39:11 +0200
+Message-ID: <CAJZ5v0iH4PGaCdSuQ-4Pu7oXbzrw+zLxpEqMjtMgcNFextgfqw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: Do IRQ override on TongFang GMxXGxx
+To: Werner Sembach <wse@tuxedocomputers.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
 	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Sep 29, 2023 at 10:21=E2=80=AFPM Ondrej Zary <linux@zary.sk> wrote:
+On Fri, Sep 29, 2023 at 3:40=E2=80=AFPM Werner Sembach <wse@tuxedocomputers=
+.com> wrote:
 >
-> Toshiba Port=C3=A9g=C3=A9 R100 has both acpi_video and toshiba_acpi vendo=
-r
-> backlight driver working. But none of them gets activated as it has
-> a VGA with no kernel driver (Trident CyberBlade XP4m32).
->
-> The DMI strings are very generic ("Portable PC") so add a custom
-> callback function to check for Trident CyberBlade XP4m32 PCI device
-> before enabling the vendor backlight driver (better than acpi_video
-> as it has more brightness steps).
->
-> Fixes: 5aa9d943e9b6 ("ACPI: video: Don't enable fallback path for creatin=
-g ACPI backlight by default")
-> Signed-off-by: Ondrej Zary <linux@zary.sk>
+> The TongFang GMxXGxx/TUXEDO Stellaris/Pollaris Gen5 needs IRQ overriding
+> for the keyboard to work. Adding an entry for this laptop to the
+> override_table makes the internal keyboard functional again.
+
+You said "again", so it used to work.  Do you know which commit broke it?
+
+> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+> Cc: <stable@vger.kernel.org>
+
+What's the oldest kernel version you want this to be applied to?
+
 > ---
->  drivers/acpi/video_detect.c | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
+>  drivers/acpi/resource.c | 16 ++++++++++++++--
+>  1 file changed, 14 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> index 442396f6ed1f..31205fee59d4 100644
-> --- a/drivers/acpi/video_detect.c
-> +++ b/drivers/acpi/video_detect.c
-> @@ -130,6 +130,16 @@ static int video_detect_force_native(const struct dm=
-i_system_id *d)
->         return 0;
->  }
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 32cfa3f4efd3d..3aff81820e321 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -470,13 +470,25 @@ static const struct dmi_system_id asus_laptop[] =3D=
+ {
+>         { }
+>  };
 >
-> +static int video_detect_portege_r100(const struct dmi_system_id *d)
-> +{
-> +       struct pci_dev *dev;
-> +       /* Search for Trident CyberBlade XP4m32 to confirm Port=C3=A9g=C3=
-=A9 R100 */
-> +       dev =3D pci_get_device(PCI_VENDOR_ID_TRIDENT, 0x2100, NULL);
-> +       if (dev)
-> +               acpi_backlight_dmi =3D acpi_backlight_vendor;
-> +       return 0;
-> +}
-> +
->  static const struct dmi_system_id video_detect_dmi_table[] =3D {
->         /*
->          * Models which should use the vendor backlight interface,
-> @@ -270,6 +280,22 @@ static const struct dmi_system_id video_detect_dmi_t=
-able[] =3D {
+> -static const struct dmi_system_id tongfang_gm_rg[] =3D {
+> +static const struct dmi_system_id tongfang_gm[] =3D {
+>         {
+>                 .ident =3D "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Ste=
+llaris 15 Gen4 AMD",
+>                 .matches =3D {
+>                         DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
 >                 },
 >         },
->
-> +       /*
-> +        * Toshiba Port=C3=A9g=C3=A9 R100 has working both acpi_video and=
- toshiba_acpi
-> +        * vendor driver. But none of them gets activated as it has a VGA=
- with
-> +        * no kernel driver (Trident CyberBlade XP4m32).
-> +        * The DMI strings are generic so check for the VGA chip in callb=
-ack.
-> +        */
 > +       {
-> +        .callback =3D video_detect_portege_r100,
-> +        .matches =3D {
-> +               DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
-> +               DMI_MATCH(DMI_PRODUCT_NAME, "Portable PC"),
-> +               DMI_MATCH(DMI_PRODUCT_VERSION, "Version 1.0"),
-> +               DMI_MATCH(DMI_BOARD_NAME, "Portable PC")
+> +               .ident =3D "TongFang GMxXGxx/TUXEDO Polaris 15 Gen5 AMD",
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
 > +               },
 > +       },
-> +
->         /*
->          * Models which need acpi_video backlight control where the GPU d=
-rivers
->          * do not call acpi_video_register_backlight() because no interna=
-l panel
+> +       {
+> +               .ident =3D "TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD=
+",
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
+> +               },
+> +       },
+>         { }
+>  };
+>
+> @@ -536,7 +548,7 @@ struct irq_override_cmp {
+>  static const struct irq_override_cmp override_table[] =3D {
+>         { medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, fal=
+se },
+>         { asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false=
+ },
+> -       { tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, tru=
+e },
+> +       { tongfang_gm, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true }=
+,
+>         { maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, tr=
+ue },
+>         { pcspecialist_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1=
+, true },
+>         { lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false }=
+,
 > --
-
-Applied as 6.7 material, thanks!
+> 2.34.1
+>
 
