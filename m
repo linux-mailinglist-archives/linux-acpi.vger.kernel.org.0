@@ -1,39 +1,41 @@
-Return-Path: <linux-acpi+bounces-373-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-371-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904F97B6BC0
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 16:35:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8654B7B6BBC
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 16:34:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 41CC42815B1
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 14:35:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 37BE628180E
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 14:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293FC28DCD
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 14:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA4A28DA8
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 14:34:56 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C4A2137C
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 13:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6A82770E
+	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 13:26:53 +0000 (UTC)
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6561CCC;
-	Tue,  3 Oct 2023 06:26:52 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 968F8B7;
+	Tue,  3 Oct 2023 06:26:51 -0700 (PDT)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id 0c737ab238faee0f; Tue, 3 Oct 2023 15:26:50 +0200
+ id 9ed5a880723e25b6; Tue, 3 Oct 2023 15:26:50 +0200
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by v370.home.net.pl (Postfix) with ESMTPSA id 532036659AF;
-	Tue,  3 Oct 2023 15:26:50 +0200 (CEST)
+	by v370.home.net.pl (Postfix) with ESMTPSA id 8DA4F6659AF;
+	Tue,  3 Oct 2023 15:26:49 +0200 (CEST)
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux PM <linux-pm@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: [PATCH v2 0/6] thermal: Improve iteration over trip points
-Date: Tue, 03 Oct 2023 15:15:51 +0200
-Message-ID: <4846448.GXAFRqVoOG@kreacher>
+Subject: [PATCH v2 1/6] thermal: core: Add function to walk trips under zone lock
+Date: Tue, 03 Oct 2023 15:17:24 +0200
+Message-ID: <2169023.irdbgypaU6@kreacher>
+In-Reply-To: <4846448.GXAFRqVoOG@kreacher>
+References: <4846448.GXAFRqVoOG@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -45,8 +47,8 @@ Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 195.136.19.94
 X-CLIENT-HOSTNAME: 195.136.19.94
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrfeeigdeifecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeegfffhudejlefhtdegffekteduhfethffhieettefhkeevgfdvgfefieekiefgheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepjedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghn
- oheslhhinhgrrhhordhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrfeeigdeifecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeejpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghlrdhlvgiitggrnhhosehlihhnrghrohdrohhrghdprhgtphht
+ thhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomh
 X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -54,43 +56,65 @@ X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Hi All,
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-This is a new version of
+Add a wrapper around for_each_thermal_trip(), called
+thermal_zone_for_each_trip(), that will invoke the former under the
+thermal zone lock and pass its return value to the caller.
 
-https://lore.kernel.org/linux-acpi/4871671.31r3eYUQgx@kreacher
+Two drivers will be modified subsequently to use this new function.
 
-which is being posted, because I've realized that the ACPI piece could be
-somewhat simpler.  Namely, it is not really necessary to store the indices of
-active trip points in the ACPI thermal driver (so as to use them to invoke the
-appropriate ACPI methods), because they can be readily computed, but IMO it is
-better to make changes in more steps in order to use this observation.
+No functional impact.
 
-This is still true:
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
 
- It turns out that the notification-handling code in the ACPI thermal driver
- can be rearranged to iterate over trip points once, with the help of
- for_each_thermal_trip() called directly under the zone lock, so patch [1/6]
- adds a helper function for that.
+v1 -> v2: Mo changes
 
-This time, however, more changes are made in order to use this new function in
-the ACPI thermal driver:
- * One function is relocated (so that the subsequent changes look cleaner)
-   in patch [2/6].
- * Two functions are merged into one (so as to prepare the code for the next
-   change) in patch [3/4]
- * Patch [4/6] changes the ACPI thermal driver to use the function introduced
-   in patch [1/6] and to reduce the number of trip point walks after a
-   notification from the platform firmware from 2 to 1.
+---
+ drivers/thermal/thermal_trip.c |   14 ++++++++++++++
+ include/linux/thermal.h        |    3 +++
+ 2 files changed, 17 insertions(+)
 
-Next, patch [5/6] drops thermal_zone_device_exec() that is not used any more
-and patch [6/6] changes the int340x thermal driver to also use the new helper
-to iterate over trip points, so it need not make risky assumptions regarding
-the core functionality.
-
-Please see the individual patch changelogs for details.
-
-Thanks!
+Index: linux-pm/drivers/thermal/thermal_trip.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/thermal_trip.c
++++ linux-pm/drivers/thermal/thermal_trip.c
+@@ -27,6 +27,20 @@ int for_each_thermal_trip(struct thermal
+ }
+ EXPORT_SYMBOL_GPL(for_each_thermal_trip);
+ 
++int thermal_zone_for_each_trip(struct thermal_zone_device *tz,
++			       int (*cb)(struct thermal_trip *, void *),
++			       void *data)
++{
++	int ret;
++
++	mutex_lock(&tz->lock);
++	ret = for_each_thermal_trip(tz, cb, data);
++	mutex_unlock(&tz->lock);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(thermal_zone_for_each_trip);
++
+ int thermal_zone_get_num_trips(struct thermal_zone_device *tz)
+ {
+ 	return tz->num_trips;
+Index: linux-pm/include/linux/thermal.h
+===================================================================
+--- linux-pm.orig/include/linux/thermal.h
++++ linux-pm/include/linux/thermal.h
+@@ -287,6 +287,9 @@ int thermal_zone_set_trip(struct thermal
+ int for_each_thermal_trip(struct thermal_zone_device *tz,
+ 			  int (*cb)(struct thermal_trip *, void *),
+ 			  void *data);
++int thermal_zone_for_each_trip(struct thermal_zone_device *tz,
++			       int (*cb)(struct thermal_trip *, void *),
++			       void *data);
+ int thermal_zone_get_num_trips(struct thermal_zone_device *tz);
+ 
+ int thermal_zone_get_crit_temp(struct thermal_zone_device *tz, int *temp);
 
 
 
