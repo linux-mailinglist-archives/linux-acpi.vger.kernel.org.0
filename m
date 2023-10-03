@@ -1,195 +1,122 @@
-Return-Path: <linux-acpi+bounces-388-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-389-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C75F7B70DC
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7EBB7B70DD
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:31:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id C1BE72808BD
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 18:31:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 8A0F42813AE
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 18:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D603C69A
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 18:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD663C6A5
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 18:31:52 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B932942C
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 17:33:55 +0000 (UTC)
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EF30B7;
-	Tue,  3 Oct 2023 10:33:54 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 393H86cJ015429;
-	Tue, 3 Oct 2023 17:33:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=qcppdkim1;
- bh=nDpqEengbRxz5RC0Z75Mss2eJq10+EgToFnBbT2BOLI=;
- b=CvGfZiAaVWgfiMn4rOzJrtCCaxTRC6gN65U04mcUxL7BSZN4Bx41tapE0mWal9jilbE1
- lE7Y/j2UEcacJkvA3o03mbo7HzslxELswN3WAgYOE8QXxbWDyoprprX8WzHVFMyKljcS
- fRkOnsGCIAsri/m4Q/OjFGeCbCsstt8u7s7iBODFzoVLYJKH6Mhq5gaQzxcCsM7DBQIh
- pY17G9y4oNZCaq2dBTxzkBVkGSfGxUzgOIw3luCvSRDHKSlCon6mki+EU3hnxdlRWkH7
- HQezLbEmMUmLoJUN7VU5ECInj9kUuyh9xhRRuPPUoIn3dgQAe4qfRx/0Jo9EcUeogPu1 1g== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tg77et2w5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Oct 2023 17:33:42 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 393HXfZV025919
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 3 Oct 2023 17:33:41 GMT
-Received: from localhost (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 3 Oct
- 2023 10:33:41 -0700
-From: Oza Pawandeep <quic_poza@quicinc.com>
-To: <sudeep.holla@arm.com>, <catalin.marinas@arm.com>, <will@kernel.org>,
-        <rafael@kernel.org>, <lenb@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>
-CC: Oza Pawandeep <quic_poza@quicinc.com>,
-        "Rafael J . Wysocki"
-	<rafael.j.wysocki@intel.com>
-Subject: [PATCH v10] cpuidle, ACPI: Evaluate LPI arch_flags for broadcast timer
-Date: Tue, 3 Oct 2023 10:33:33 -0700
-Message-ID: <20231003173333.2865323-1-quic_poza@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB888D2EB
+	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 17:40:42 +0000 (UTC)
+Received: from mail.zytor.com (unknown [IPv6:2607:7c80:54:3::138])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E36BDBD;
+	Tue,  3 Oct 2023 10:40:40 -0700 (PDT)
+Received: from [192.168.7.187] ([76.103.185.250])
+	(authenticated bits=0)
+	by mail.zytor.com (8.17.1/8.17.1) with ESMTPSA id 393Hb5dd1691810
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 3 Oct 2023 10:37:05 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 393Hb5dd1691810
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2023091101; t=1696354628;
+	bh=pV/MsKucrKusG2Y/zWi1V+/lmmij2RlMuAhslhwjBGY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ie+iUNG++evbuJJIH4LlVE0y2kO/anm5d/KQwE81BTvjNrZxoKeTGUjvRP94gJyOW
+	 sFFwd0PevILqj6hD6U2qhBArrigpGLpXM8fHjGxeiGT+ars6lZM63/+CSvM7JcI6Ce
+	 i/1trzuvN3L4daAHaFAv1RVz8+foCPfh2Rmolh8QxMA/Xrvn95KJpYWuswaXnnZolW
+	 YcYqO+AG6Y17Wv5Ou8D9OODEB0u/t1bXtlvbsLuz6TiurGl9UM3D82tn97PdzO/W6E
+	 Iv0qGHQNJAC0k8ul3K4pRSLLwEm7lTKyXhJ30LwwQxK+sgBP6hHFmJXb3j2p6StTgX
+	 RDV3jN2oQ7j6A==
+Message-ID: <7aee5021-8bb6-4343-b746-a8417af030a9@zytor.com>
+Date: Tue, 3 Oct 2023 10:37:02 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 6J-64j6TSQI4LzH_O9W-vZJ2iBeLBgGO
-X-Proofpoint-GUID: 6J-64j6TSQI4LzH_O9W-vZJ2iBeLBgGO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-03_15,2023-10-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=16 adultscore=0 impostorscore=0
- mlxscore=16 bulkscore=0 clxscore=1011 malwarescore=0 suspectscore=0
- spamscore=16 priorityscore=1501 mlxlogscore=71 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310030133
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cpu-hotplug: provide prototypes for arch CPU registration
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Gavin Shan <gshan@redhat.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, linux-acpi@vger.kernel.org,
+        James Morse <james.morse@arm.com>, loongarch@lists.linux.dev,
+        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        Ingo Molnar <mingo@redhat.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>, jianyong.wu@arm.com,
+        justin.he@arm.com, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Salil Mehta <salil.mehta@huawei.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        Peter Zijlstra <peterz@infradead.org>, linux-ia64@vger.kernel.org
+References: <E1qkoRr-0088Q8-Da@rmk-PC.armlinux.org.uk>
+ <dd4dee9e-4d75-e1e6-04c8-82d84b28fd35@redhat.com>
+ <ZRIU/yFrbFbIR7zZ@shell.armlinux.org.uk>
+ <ZRwmj/e+jAXFfvCm@shell.armlinux.org.uk>
+Content-Language: en-US
+From: Xin Li <xin@zytor.com>
+Autocrypt: addr=xin@zytor.com; keydata=
+ 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
+ l75w1xInsg==
+In-Reply-To: <ZRwmj/e+jAXFfvCm@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Arm® Functional Fixed Hardware Specification defines LPI states,
-which provide an architectural context loss flags field that can
-be used to describe the context that might be lost when an LPI
-state is entered.
+On 10/3/2023 7:34 AM, Russell King (Oracle) wrote:
+>>>>
+>>>> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+>>>> ---
+>>>> Changes since RFC v2:
+>>>>    - drop ia64 changes, as ia64 has already been removed.
+>>>>
 
-- Core context Lost
-        - General purpose registers.
-        - Floating point and SIMD registers.
-        - System registers, include the System register based
-        - generic timer for the core.
-        - Debug register in the core power domain.
-        - PMU registers in the core power domain.
-        - Trace register in the core power domain.
-- Trace context loss
-- GICR
-- GICD
-
-Qualcomm's custom CPUs preserves the architectural state,
-including keeping the power domain for local timers active.
-when core is power gated, the local timers are sufficient to
-wake the core up without needing broadcast timer.
-
-The patch fixes the evaluation of cpuidle arch_flags, and moves only to
-broadcast timer if core context lost is defined in ACPI LPI.
-
-Fixes: a36a7fecfe607 ("Add support for Low Power Idle(LPI) states")
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Oza Pawandeep <quic_poza@quicinc.com>
----
-
-Notes:
-    Will/Catalin: Rafael has acked and he prefers to take it via arm64 tree
-
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index 4d537d56eb84..6792a1f83f2a 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -9,6 +9,7 @@
- #ifndef _ASM_ACPI_H
- #define _ASM_ACPI_H
- 
-+#include <linux/cpuidle.h>
- #include <linux/efi.h>
- #include <linux/memblock.h>
- #include <linux/psci.h>
-@@ -44,6 +45,24 @@
- 
- #define ACPI_MADT_GICC_TRBE  (offsetof(struct acpi_madt_generic_interrupt, \
- 	trbe_interrupt) + sizeof(u16))
-+/*
-+ * Arm® Functional Fixed Hardware Specification Version 1.2.
-+ * Table 2: Arm Architecture context loss flags
-+ */
-+#define CPUIDLE_CORE_CTXT		BIT(0) /* Core context Lost */
-+
-+static inline unsigned int arch_get_idle_state_flags(u32 arch_flags)
-+{
-+	if (arch_flags & CPUIDLE_CORE_CTXT)
-+		return CPUIDLE_FLAG_TIMER_STOP;
-+
-+	return 0;
-+}
-+#define arch_get_idle_state_flags arch_get_idle_state_flags
-+
-+#define CPUIDLE_TRACE_CTXT		BIT(1) /* Trace context loss */
-+#define CPUIDLE_GICR_CTXT		BIT(2) /* GICR */
-+#define CPUIDLE_GICD_CTXT		BIT(3) /* GICD */
- 
- /* Basic configuration for ACPI */
- #ifdef	CONFIG_ACPI
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index dc615ef6550a..3a34a8c425fe 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -1217,8 +1217,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
- 		strscpy(state->desc, lpi->desc, CPUIDLE_DESC_LEN);
- 		state->exit_latency = lpi->wake_latency;
- 		state->target_residency = lpi->min_residency;
--		if (lpi->arch_flags)
--			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
-+		state->flags |= arch_get_idle_state_flags(lpi->arch_flags);
- 		if (i != 0 && lpi->entry_method == ACPI_CSTATE_FFH)
- 			state->flags |= CPUIDLE_FLAG_RCU_IDLE;
- 		state->enter = acpi_idle_lpi_enter;
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index a73246c3c35e..afd94c9b8b8a 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1480,6 +1480,15 @@ static inline int lpit_read_residency_count_address(u64 *address)
- }
- #endif
- 
-+#ifdef CONFIG_ACPI_PROCESSOR_IDLE
-+#ifndef arch_get_idle_state_flags
-+static inline unsigned int arch_get_idle_state_flags(u32 arch_flags)
-+{
-+	return 0;
-+}
-+#endif
-+#endif /* CONFIG_ACPI_PROCESSOR_IDLE */
-+
- #ifdef CONFIG_ACPI_PPTT
- int acpi_pptt_cpu_is_thread(unsigned int cpu);
- int find_acpi_cpu_topology(unsigned int cpu, int level);
--- 
-2.25.1
+If this is RFC v2, we put "RFC v2" in the subject, then people know you
+are sending a newer version.  People are busy, and your patch could be 
+skipped if it appears the same as a previous one.
 
 
