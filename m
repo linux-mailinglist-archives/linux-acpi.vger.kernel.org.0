@@ -1,59 +1,60 @@
-Return-Path: <linux-acpi+bounces-400-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-401-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC0E7B728C
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 22:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A879F7B728D
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 22:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 8FF542811BC
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 556B12811C6
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776B03D962
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5AC3D960
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:47 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50163B7BC
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 19:21:23 +0000 (UTC)
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E9CF9E;
-	Tue,  3 Oct 2023 12:21:22 -0700 (PDT)
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-57ddba5ba84so110251eaf.0;
-        Tue, 03 Oct 2023 12:21:22 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA71D3CCF9;
+	Tue,  3 Oct 2023 19:26:41 +0000 (UTC)
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71AB99E;
+	Tue,  3 Oct 2023 12:26:40 -0700 (PDT)
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6bf106fb6a0so173618a34.0;
+        Tue, 03 Oct 2023 12:26:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696360881; x=1696965681;
+        d=1e100.net; s=20230601; t=1696361199; x=1696965999;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=J07arKxPhBE5rnWHs+W7EtnjO5FU638RRkKT7+PaWpg=;
-        b=KmU+P0Lz0Kqcb+CNQQoTEtK4pR6aTDrJK+wzSNoPmp1xLrhMUR3/tCvTJ/lK9+w3Hf
-         ke+E/3vwKJqHOYqngeh7oc1J1hdzzSsryJSAEOzxzke5wGOAlhuzk7rn8e6pvX+KbXP0
-         ufWsacyVK2a76CtHEEoHoGCa7YgzXJl9UWbzvAou0sRDNX4iZQQkf0eyrK1PPQIJ/rgc
-         BbjRBhY6B73Gv46AYwDQ7PbUykfxb7dri08b1DOaRQiHC8Um4bf7Fx8hX7O5QBy7yLsE
-         fSOY5xyQXevRWHn8caLhoxTx/UfdKAXGnzUPvC0aeU/VPByoa9OOBqdN4h0mPYdD0a9m
-         kFGQ==
-X-Gm-Message-State: AOJu0Yx/ed/V0yDCZOjrKyfj+jlU9bbzVpROTjsNsS67QCyw8vYAKFLr
-	tXMSpmyuv3Am6UwGgZ7U4DlazkfTaZbQ9LH9POcdeKw8
-X-Google-Smtp-Source: AGHT+IGFaRIXSHi99kNgDcHLm2UMpLuGWM/+wDAn3cApVRn6pa2cCI3SO0+MG4kvHsYCDhyIry2fRFOPz8oC1Tgh6JQ=
-X-Received: by 2002:a4a:b588:0:b0:578:c2af:45b5 with SMTP id
- t8-20020a4ab588000000b00578c2af45b5mr331719ooo.0.1696360881692; Tue, 03 Oct
- 2023 12:21:21 -0700 (PDT)
+        bh=4cJJaH8b1u/qRRvI+ZMuh5sNNJkEekWhJ7wzLow6kXk=;
+        b=ZFPRMPrB8+qDVzbzhwEBGjEIUOWMCenk8XTwxlCmlaftP9pE7JwZUDPeY7nZFh1nB1
+         igCPPQYVSA6w36g3JBawoHXiFBoyY8RlguqMOExb8haRN1h1WMy5Y+WSCxvPZMCyEbfW
+         SKnybNnUHDwYToQMgyTAtJ692+tbjn7Gev4UL0yphhOGz5BcQjPmcIBMrBf0F7GcY0Dx
+         M0bgJlddsG2OtAXgDKGvM/4iXJVCcvfB0oID37CddN+naSoHgoWJ57nrkWdQafKXBfyU
+         Qs71nEDkPOt+iI2LJQ6pNxfxqAeBx1Zm6MNIjb1SjNDgPeWVcfUqae8p3rYOTmodA19g
+         BFSQ==
+X-Gm-Message-State: AOJu0YzmlQLx8G2XGQAVN5gRuvA4axVH/+nhJu8WWKh6REZEso8M+JPt
+	ETMkxNFbuO8yAnSRTu2E3eVq4AUNAuNys1fzjSU=
+X-Google-Smtp-Source: AGHT+IFjyx71PMx2N+wDN30hM/HJ7/ySds49msMYXwi2gb67HIgd8KqAVePwVPPg5Hs9izeUDwaaWPBxodNT4q5lk78=
+X-Received: by 2002:a05:6808:3008:b0:3ad:af12:2fe0 with SMTP id
+ ay8-20020a056808300800b003adaf122fe0mr491609oib.3.1696361199765; Tue, 03 Oct
+ 2023 12:26:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <13c70c43.85d.18ad53580c7.Coremail.chenguohua@jari.cn>
-In-Reply-To: <13c70c43.85d.18ad53580c7.Coremail.chenguohua@jari.cn>
+References: <20230922175315.work.877-kees@kernel.org> <728fc315-4761-f56c-cd06-9c907a53b46c@embeddedor.com>
+In-Reply-To: <728fc315-4761-f56c-cd06-9c907a53b46c@embeddedor.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 3 Oct 2023 21:21:10 +0200
-Message-ID: <CAJZ5v0hwn3AueWnxD37Ar04FAYrKE+MkUMg5MjjLki9nSu=w1g@mail.gmail.com>
-Subject: Re: [PATCH] pnp: Clean up errors in pnp.h
-To: chenguohua@jari.cn
-Cc: rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Tue, 3 Oct 2023 21:26:28 +0200
+Message-ID: <CAJZ5v0haZmhJ6OLNiJHuxLaYRrBschL4Cm7H6acFmGb0Et5_MQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PRM: Annotate struct prm_module_info with __counted_by
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, Kees Cook <keescook@chromium.org>
+Cc: linux-acpi@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -63,66 +64,51 @@ X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Sep 27, 2023 at 8:31=E2=80=AFAM <chenguohua@jari.cn> wrote:
+On Sat, Sep 23, 2023 at 11:41=E2=80=AFAM Gustavo A. R. Silva
+<gustavo@embeddedor.com> wrote:
 >
-> Fix the following errors reported by checkpatch:
 >
-> ERROR: "foo * bar" should be "foo *bar"
-> ERROR: space required after that ';' (ctx:VxV)
 >
-> Signed-off-by: GuoHua Cheng <chenguohua@jari.cn>
-> ---
->  include/linux/pnp.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> On 9/22/23 11:53, Kees Cook wrote:
+> > Prepare for the coming implementation by GCC and Clang of the __counted=
+_by
+> > attribute. Flexible array members annotated with __counted_by can have
+> > their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOU=
+NDS
+> > (for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-famil=
+y
+> > functions).
+> >
+> > As found with Coccinelle[1], add __counted_by for struct prm_module_inf=
+o.
+> >
+> > [1] https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples=
+/counted_by.cocci
+> >
+> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > Cc: Len Brown <lenb@kernel.org>
+> > Cc: linux-acpi@vger.kernel.org
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
 >
-> diff --git a/include/linux/pnp.h b/include/linux/pnp.h
-> index c2a7cfbca713..267fb8a4fb6e 100644
-> --- a/include/linux/pnp.h
-> +++ b/include/linux/pnp.h
-> @@ -291,7 +291,7 @@ static inline void pnp_set_drvdata(struct pnp_dev *pd=
-ev, void *data)
->
->  struct pnp_fixup {
->         char id[7];
-> -       void (*quirk_function) (struct pnp_dev * dev);  /* fixup function=
- */
-> +       void (*quirk_function) (struct pnp_dev *dev);   /* fixup function=
- */
->  };
->
->  /* config parameters */
-> @@ -419,8 +419,8 @@ struct pnp_protocol {
->
->         /* protocol specific suspend/resume */
->         bool (*can_wakeup) (struct pnp_dev *dev);
-> -       int (*suspend) (struct pnp_dev * dev, pm_message_t state);
-> -       int (*resume) (struct pnp_dev * dev);
-> +       int (*suspend) (struct pnp_dev *dev, pm_message_t state);
-> +       int (*resume) (struct pnp_dev *dev);
->
->         /* used by pnp layer only (look but don't touch) */
->         unsigned char number;   /* protocol number */
-> @@ -492,7 +492,7 @@ static inline int pnp_start_dev(struct pnp_dev *dev) =
-{ return -ENODEV; }
->  static inline int pnp_stop_dev(struct pnp_dev *dev) { return -ENODEV; }
->  static inline int pnp_activate_dev(struct pnp_dev *dev) { return -ENODEV=
-; }
->  static inline int pnp_disable_dev(struct pnp_dev *dev) { return -ENODEV;=
- }
-> -static inline int pnp_range_reserved(resource_size_t start, resource_siz=
-e_t end) { return 0;}
-> +static inline int pnp_range_reserved(resource_size_t start, resource_siz=
-e_t end) { return 0; }
->
->  /* protocol helpers */
->  static inline int pnp_is_active(struct pnp_dev *dev) { return 0; }
-> --
+> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Applied as 6.7 material with edited subject and changelog.
+Applied as 6.7 material, thanks!
 
-That said, checkpatch.pl is for checking patches.  Applying it to the
-existing code is questionable and sending patches based on that is
-even more so.
-
-Thanks!
+> > ---
+> >   drivers/acpi/prmt.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+> > index 7020584096bf..c78453c74ef5 100644
+> > --- a/drivers/acpi/prmt.c
+> > +++ b/drivers/acpi/prmt.c
+> > @@ -69,7 +69,7 @@ struct prm_module_info {
+> >       bool updatable;
+> >
+> >       struct list_head module_list;
+> > -     struct prm_handler_info handlers[];
+> > +     struct prm_handler_info handlers[] __counted_by(handler_count);
+> >   };
+> >
+> >   static u64 efi_pa_va_lookup(u64 pa)
 
