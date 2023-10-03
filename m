@@ -1,274 +1,141 @@
-Return-Path: <linux-acpi+bounces-392-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-393-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 613407B727E
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 22:32:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FCF57B7280
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 22:32:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 0C0FC28119D
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id D29612811F5
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80A03D964
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F863D960
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:08 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8D9208D9
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 18:33:09 +0000 (UTC)
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A877683;
-	Tue,  3 Oct 2023 11:33:07 -0700 (PDT)
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-57c0775d4fcso236489eaf.0;
-        Tue, 03 Oct 2023 11:33:07 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD8936AF5
+	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 18:36:20 +0000 (UTC)
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5887E95;
+	Tue,  3 Oct 2023 11:36:19 -0700 (PDT)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6c61dd1c229so263909a34.0;
+        Tue, 03 Oct 2023 11:36:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696357987; x=1696962787;
+        d=1e100.net; s=20230601; t=1696358178; x=1696962978;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eEV1DyG9Qc64Bv5Nj/cVJ3Nlaofe0o2A5B76dhvJOR0=;
-        b=fyvx1VIyKJPzMNqtEWFxn+sceSxEeoNKH09rLT7l4oOeM9kc27ZGnPLJfylUgLCx24
-         RVvzlp9+j2V+lk5b3bXkHLRoJg2/Wl+jj/NqGO1Dh8APilEtIUxCkbRkzEW/XLnFfs5x
-         9peIPWQdRdGx71mkSUxTGxJvhYJkZ1c77L4zD1IHTdnxQWxz7+JQCdeziKI6kkMu8bcp
-         QHrhCKgY7ijGq0bvjtGXpQSKGrz+pFnVGoGNvR0tXfbm7p8QgAzhu516drrAmqd4BURV
-         P4Lxc5mWpFMj2L1UX3I+Wj44oH/ZW/rqSF3l6m0Odpdhr9VUvB/AZbaDfgF0y9UlB9jD
-         11Ew==
-X-Gm-Message-State: AOJu0Yzg+nnmjGplGr70SNVblUwFykZWQ+uUNzQmT2K7dxCKPX7XifSN
-	S9nWK7wHuDFx1nrpygEhixgunBlimPEU8yRmZBxLgtep
-X-Google-Smtp-Source: AGHT+IGgXGqt1HA2YNsmay2fzB7axy43vTxCwdNlq/iCy9H9wp+Amb6dGvxlkRaebr5vYEXXId6F5LasarxZdTLL/m8=
-X-Received: by 2002:a4a:de08:0:b0:56e:94ed:c098 with SMTP id
- y8-20020a4ade08000000b0056e94edc098mr219991oot.0.1696357986930; Tue, 03 Oct
- 2023 11:33:06 -0700 (PDT)
+        bh=Xy90cq1kuMyI11xZOKPFY3MxuNUWTItrB3fMlvJOfd4=;
+        b=O9dLGlfaQu9dsp0LkMFVvkMVK9NXoFp9BD2ib+m6UkECPMwgttPL9+hxP1bK0bLuzy
+         Ll/QY+gYRGA5g0chO+WX8vAOiJaAgc12ROBambSLISHZp2GxTr6O/Yyv6pDFMK3OsHW/
+         +Bi99lprj7takUSJnKSn+iUBKB0O1lG2gWC6+VzPoLT3kD9eEKUF8ufYKnP7CHF2eKbO
+         91CF6RVFvIJb4UocHewnnscmiWnvNoyMnqe7DxZ9JEYyjQD195KbvCOqn8SZNaYJyGoo
+         EbfFboOlKix6iDKLaa3IAuY1jGL8FeqVwg8kgpPVgP8qAZvcctJGDkI9bFwfopHWCnpy
+         dtuQ==
+X-Gm-Message-State: AOJu0YwyLxHy/E3OJf7rhHDI1LKLmNSgqTwbF9GpkyP//WJjEfkKjdYb
+	LHoUrFgQRJXKi0srNIdSF9TGpgrfvyBZtObenjU=
+X-Google-Smtp-Source: AGHT+IFOz8NfzaTm+TQNu/A6JnOferW/Rsbvp5a+Se/KmXjyxbJucR7lDLEgD8KYWY1iGfGprX4gu2qrFiskX8eQ040=
+X-Received: by 2002:a05:6808:2286:b0:3ae:100d:5320 with SMTP id
+ bo6-20020a056808228600b003ae100d5320mr386644oib.2.1696358178605; Tue, 03 Oct
+ 2023 11:36:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230930002036.6491-1-scott@os.amperecomputing.com> <20230930002036.6491-2-scott@os.amperecomputing.com>
-In-Reply-To: <20230930002036.6491-2-scott@os.amperecomputing.com>
+References: <20230929202055.12724-1-linux@zary.sk>
+In-Reply-To: <20230929202055.12724-1-linux@zary.sk>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 3 Oct 2023 20:32:55 +0200
-Message-ID: <CAJZ5v0ggY7r2u26vBARy=WGxh0p_72fa7=mbxz1jJAH9dkDBpg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] PCI: hotplug: Add extension driver for Ampere
- Altra hotplug LED control
-To: D Scott Phillips <scott@os.amperecomputing.com>
-Cc: linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, linux-kernel@vger.kernel.org, 
-	Len Brown <lenb@kernel.org>, Darren Hart <darren@os.amperecomputing.com>, 
-	patches@amperecomputing.com
+Date: Tue, 3 Oct 2023 20:36:07 +0200
+Message-ID: <CAJZ5v0gqywy7o69fD4F4Snjb5Oh1Z44GD=C_WfkiSyW7NrxsGw@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=5BPATCH=5D_ACPI=3A_video=3A_Add_acpi=5Fbacklight=3Dvendor_q?=
+	=?UTF-8?Q?uirk_for_Toshiba_Port=C3=A9g=C3=A9_R100?=
+To: Ondrej Zary <linux@zary.sk>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
 	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, Sep 30, 2023 at 2:20=E2=80=AFAM D Scott Phillips
-<scott@os.amperecomputing.com> wrote:
+On Fri, Sep 29, 2023 at 10:21=E2=80=AFPM Ondrej Zary <linux@zary.sk> wrote:
 >
-> On Ampere Altra, PCIe hotplug is handled through ACPI. A side interface i=
-s
-> also present to request system firmware control of attention LEDs. Add an
-> ACPI PCI Hotplug companion driver to support attention LED control.
+> Toshiba Port=C3=A9g=C3=A9 R100 has both acpi_video and toshiba_acpi vendo=
+r
+> backlight driver working. But none of them gets activated as it has
+> a VGA with no kernel driver (Trident CyberBlade XP4m32).
 >
-> Signed-off-by: D Scott Phillips <scott@os.amperecomputing.com>
-
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-
-for the probing part.
-
+> The DMI strings are very generic ("Portable PC") so add a custom
+> callback function to check for Trident CyberBlade XP4m32 PCI device
+> before enabling the vendor backlight driver (better than acpi_video
+> as it has more brightness steps).
+>
+> Fixes: 5aa9d943e9b6 ("ACPI: video: Don't enable fallback path for creatin=
+g ACPI backlight by default")
+> Signed-off-by: Ondrej Zary <linux@zary.sk>
 > ---
-> Changes since v1:
-> - remove build-as-module restriction
-> - add some more description
-> - don't open code PCI_SLOT()
-> - convert to a platform driver
+>  drivers/acpi/video_detect.c | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
 >
->  drivers/pci/hotplug/Kconfig                |  12 ++
->  drivers/pci/hotplug/Makefile               |   1 +
->  drivers/pci/hotplug/acpiphp_ampere_altra.c | 127 +++++++++++++++++++++
->  3 files changed, 140 insertions(+)
->  create mode 100644 drivers/pci/hotplug/acpiphp_ampere_altra.c
+> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+> index 442396f6ed1f..31205fee59d4 100644
+> --- a/drivers/acpi/video_detect.c
+> +++ b/drivers/acpi/video_detect.c
+> @@ -130,6 +130,16 @@ static int video_detect_force_native(const struct dm=
+i_system_id *d)
+>         return 0;
+>  }
 >
-> diff --git a/drivers/pci/hotplug/Kconfig b/drivers/pci/hotplug/Kconfig
-> index 48113b210cf93..1472aef0fb812 100644
-> --- a/drivers/pci/hotplug/Kconfig
-> +++ b/drivers/pci/hotplug/Kconfig
-> @@ -61,6 +61,18 @@ config HOTPLUG_PCI_ACPI
->
->           When in doubt, say N.
->
-> +config HOTPLUG_PCI_ACPI_AMPERE_ALTRA
-> +       tristate "ACPI PCI Hotplug driver Ampere Altra extensions"
-> +       depends on HOTPLUG_PCI_ACPI
-> +       depends on HAVE_ARM_SMCCC_DISCOVERY
-> +       help
-> +         Say Y here if you have an Ampere Altra system.
-> +
-> +         To compile this driver as a module, choose M here: the
-> +         module will be called acpiphp_ampere_altra.
-> +
-> +         When in doubt, say N.
-> +
->  config HOTPLUG_PCI_ACPI_IBM
->         tristate "ACPI PCI Hotplug driver IBM extensions"
->         depends on HOTPLUG_PCI_ACPI
-> diff --git a/drivers/pci/hotplug/Makefile b/drivers/pci/hotplug/Makefile
-> index 5196983220df6..240c99517d5e9 100644
-> --- a/drivers/pci/hotplug/Makefile
-> +++ b/drivers/pci/hotplug/Makefile
-> @@ -23,6 +23,7 @@ obj-$(CONFIG_HOTPLUG_PCI_S390)                +=3D s390=
-_pci_hpc.o
->
->  # acpiphp_ibm extends acpiphp, so should be linked afterwards.
->
-> +obj-$(CONFIG_HOTPLUG_PCI_ACPI_AMPERE_ALTRA)    +=3D acpiphp_ampere_altra=
-.o
->  obj-$(CONFIG_HOTPLUG_PCI_ACPI_IBM)     +=3D acpiphp_ibm.o
->
->  pci_hotplug-objs       :=3D      pci_hotplug_core.o
-> diff --git a/drivers/pci/hotplug/acpiphp_ampere_altra.c b/drivers/pci/hot=
-plug/acpiphp_ampere_altra.c
-> new file mode 100644
-> index 0000000000000..1b1fe5d6a3fbf
-> --- /dev/null
-> +++ b/drivers/pci/hotplug/acpiphp_ampere_altra.c
-> @@ -0,0 +1,127 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * ACPI PCI Hot Plug Extension for Ampere Altra. Allows control of
-> + * attention LEDs via requests to system firmware.
-> + *
-> + * Copyright (C) 2023 Ampere Computing LLC
-> + */
-> +
-> +#define pr_fmt(fmt) "acpiphp_ampere_altra: " fmt
-> +
-> +#include <linux/init.h>
-> +#include <linux/module.h>
-> +#include <linux/pci.h>
-> +#include <linux/pci_hotplug.h>
-> +#include <linux/platform_device.h>
-> +
-> +#include "acpiphp.h"
-> +
-> +#define HANDLE_OPEN    0xb0200000
-> +#define HANDLE_CLOSE   0xb0300000
-> +#define REQUEST                0xf0700000
-> +#define LED_CMD                0x00000004
-> +#define LED_ATTENTION  0x00000002
-> +#define LED_SET_ON     0x00000001
-> +#define LED_SET_OFF    0x00000002
-> +#define LED_SET_BLINK  0x00000003
-> +
-> +static u32 led_service_id[4];
-> +
-> +static int led_status(u8 status)
+> +static int video_detect_portege_r100(const struct dmi_system_id *d)
 > +{
-> +       switch (status) {
-> +       case 1: return LED_SET_ON;
-> +       case 2: return LED_SET_BLINK;
-> +       default: return LED_SET_OFF;
-> +       }
-> +}
-> +
-> +static int set_attention_status(struct hotplug_slot *slot, u8 status)
-> +{
-> +       struct arm_smccc_res res;
-> +       struct pci_bus *bus;
-> +       struct pci_dev *root_port;
-> +       unsigned long flags;
-> +       u32 handle;
-> +       int ret =3D 0;
-> +
-> +       bus =3D slot->pci_slot->bus;
-> +       root_port =3D pcie_find_root_port(bus->self);
-> +       if (!root_port)
-> +               return -ENODEV;
-> +
-> +       local_irq_save(flags);
-> +       arm_smccc_smc(HANDLE_OPEN, led_service_id[0], led_service_id[1],
-> +                     led_service_id[2], led_service_id[3], 0, 0, 0, &res=
-);
-> +       if (res.a0) {
-> +               ret =3D -ENODEV;
-> +               goto out;
-> +       }
-> +       handle =3D res.a1 & 0xffff0000;
-> +
-> +       arm_smccc_smc(REQUEST, LED_CMD, led_status(status), LED_ATTENTION=
-,
-> +                     pci_domain_nr(bus) | (PCI_SLOT(root_port->devfn) <<=
- 4), 0, 0,
-> +                     handle, &res);
-> +       if (res.a0)
-> +               ret =3D -ENODEV;
-> +
-> +       arm_smccc_smc(HANDLE_CLOSE, handle, 0, 0, 0, 0, 0, 0, &res);
-> +
-> + out:
-> +       local_irq_restore(flags);
-> +       return ret;
-> +}
-> +
-> +static int get_attention_status(struct hotplug_slot *slot, u8 *status)
-> +{
-> +       return -EINVAL;
-> +}
-> +
-> +static struct acpiphp_attention_info ampere_altra_attn =3D {
-> +       .set_attn =3D set_attention_status,
-> +       .get_attn =3D get_attention_status,
-> +       .owner =3D THIS_MODULE,
-> +};
-> +
-> +static int altra_led_probe(struct platform_device *pdev)
-> +{
-> +       struct fwnode_handle *fwnode =3D dev_fwnode(&pdev->dev);
-> +       int ret;
-> +
-> +       ret =3D fwnode_property_read_u32_array(fwnode, "uuid", led_servic=
-e_id, 4);
-> +       if (ret) {
-> +               dev_err(&pdev->dev, "can't find uuid\n");
-> +               return ret;
-> +       }
-> +
-> +       ret =3D acpiphp_register_attention(&ampere_altra_attn);
-> +       if (ret) {
-> +               dev_err(&pdev->dev, "can't register driver\n");
-> +               return ret;
-> +       }
+> +       struct pci_dev *dev;
+> +       /* Search for Trident CyberBlade XP4m32 to confirm Port=C3=A9g=C3=
+=A9 R100 */
+> +       dev =3D pci_get_device(PCI_VENDOR_ID_TRIDENT, 0x2100, NULL);
+> +       if (dev)
+> +               acpi_backlight_dmi =3D acpi_backlight_vendor;
 > +       return 0;
 > +}
 > +
-> +static void altra_led_remove(struct platform_device *pdev)
-> +{
-> +       acpiphp_unregister_attention(&ampere_altra_attn);
-> +}
-> +
-> +static const struct acpi_device_id altra_led_ids[] =3D {
-> +       { "AMPC0008", 0 },
-> +       { }
-> +};
-> +MODULE_DEVICE_TABLE(acpi, altra_led_ids);
-> +
-> +static struct platform_driver altra_led_driver =3D {
-> +       .driver =3D {
-> +               .name =3D "ampere-altra-leds",
-> +               .acpi_match_table =3D altra_led_ids,
-> +       },
-> +       .probe =3D altra_led_probe,
-> +       .remove_new =3D altra_led_remove,
-> +};
-> +module_platform_driver(altra_led_driver);
-> +
-> +MODULE_AUTHOR("D Scott Phillips <scott@os.amperecomputing.com>");
-> +MODULE_LICENSE("GPL");
-> --
-> 2.41.0
+>  static const struct dmi_system_id video_detect_dmi_table[] =3D {
+>         /*
+>          * Models which should use the vendor backlight interface,
+> @@ -270,6 +280,22 @@ static const struct dmi_system_id video_detect_dmi_t=
+able[] =3D {
+>                 },
+>         },
 >
+> +       /*
+> +        * Toshiba Port=C3=A9g=C3=A9 R100 has working both acpi_video and=
+ toshiba_acpi
+> +        * vendor driver. But none of them gets activated as it has a VGA=
+ with
+> +        * no kernel driver (Trident CyberBlade XP4m32).
+> +        * The DMI strings are generic so check for the VGA chip in callb=
+ack.
+> +        */
+> +       {
+> +        .callback =3D video_detect_portege_r100,
+> +        .matches =3D {
+> +               DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
+> +               DMI_MATCH(DMI_PRODUCT_NAME, "Portable PC"),
+> +               DMI_MATCH(DMI_PRODUCT_VERSION, "Version 1.0"),
+> +               DMI_MATCH(DMI_BOARD_NAME, "Portable PC")
+> +               },
+> +       },
+> +
+>         /*
+>          * Models which need acpi_video backlight control where the GPU d=
+rivers
+>          * do not call acpi_video_register_backlight() because no interna=
+l panel
+> --
+
+Applied as 6.7 material, thanks!
 
