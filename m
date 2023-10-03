@@ -1,129 +1,137 @@
-Return-Path: <linux-acpi+bounces-377-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-378-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C707B6BC8
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 16:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4DC7B6BC9
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 16:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 0AD8D280C81
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 14:35:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id D3251281725
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 14:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27B822EE2
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 14:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CA031A89
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 14:35:30 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B6E262AB
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 13:49:17 +0000 (UTC)
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18064A6;
-	Tue,  3 Oct 2023 06:49:16 -0700 (PDT)
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3ae450158ffso44739b6e.0;
-        Tue, 03 Oct 2023 06:49:16 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3426523758
+	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 13:59:40 +0000 (UTC)
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA271AB;
+	Tue,  3 Oct 2023 06:59:38 -0700 (PDT)
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-57b68555467so81057eaf.0;
+        Tue, 03 Oct 2023 06:59:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696340955; x=1696945755;
+        d=1e100.net; s=20230601; t=1696341578; x=1696946378;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5HaeYswf3/CGddqJhCBbnH7fsDO0Zj7YhkCJafH4Z5Q=;
-        b=lrh14wsw4LF8hx4g81Ut4SsvmZ+Hayl4eUPM1MdhVjh+XYTNKXeXql3wvYz1gB0syk
-         b76IZT/qznJt55/wRiI+zZ2TxpsUvvy1JydSVQMmNnW+ugLUs7wqx/WYexCXwrsBz17I
-         5WjMF7Nvy5FS6hns29NzjBMj5Xr9JFVdZt0BePTfmry1W/0OoUS6u1PBThFAeCBBk35E
-         AOmKSEeGTFToZ6QSk46lRVqRqswoPFY4bFn98sj4sEKTFZ9OKqN+TZZmqa0pTDbvegh+
-         dBVxXXiRu7RutN442OM////nCYnCvLSGbGkvMEupV2f4rOplE9itWyt72V4AXqY9LXT9
-         MjIw==
-X-Gm-Message-State: AOJu0YxCF1wnsMBtbQSuivU67yQTMPFp5x30AX8WaoiAwdg5ZYfe7580
-	enixfi6wU8jgd5Vbn0vZsDgJ8AFgE1ljOoIMdGk=
-X-Google-Smtp-Source: AGHT+IEH85kmyJa9HAMrZrBhLb+hu6BEJBQsEQKkqQlycUOa14TnqczEsbO3YL2DskXZh/nfKcCZOU7E+aePI4/vrNM=
-X-Received: by 2002:a05:6808:1a86:b0:3a9:efde:a022 with SMTP id
- bm6-20020a0568081a8600b003a9efdea022mr12874601oib.5.1696340955330; Tue, 03
- Oct 2023 06:49:15 -0700 (PDT)
+        bh=Lq1Clg4a1kKbu7pmXR4HdVffolvp2P+JTuU/UrDnGUQ=;
+        b=EC6wudZeSVJtwtc9NEoz17y3ukbVOOzhosy/qaoVpniclG1P6sLnMtqHcv5B1+21CA
+         BIopuxTnZx/hNOefH02unwlFzYt3cS5EcY70pWyWJM7V9rajCvcznup5GmkuU5aVxk8l
+         t2SqkmsmC7fkJsPCzDI8xkn3xEgQR8IouCUmuYgcsre3ug0DzIDorWM2DF8QVL3nTbC7
+         l6FOJxxQWmUP/1/79T9WBHMqpXzHfWfiuOGuskKAJSzWuXsw7rn60wfE5V8/F1X5fUo+
+         /bF15IiOFvV/p1uSZMlcLiNxuj3Z9sFMvcx+UjafTRZ1frIjnZwNKXDz24hy2PkGIFgf
+         9svg==
+X-Gm-Message-State: AOJu0YxSriwA5aHeTt76azPs59g6PoZAc6hI//h8f4ov7mgQ0eyc5Cdn
+	rmoH7G8Wpixljm6J1QjxHi+MTcHClaOND9qZfZA=
+X-Google-Smtp-Source: AGHT+IFPU3gZRpubYTBPXLnn2ap+DdEYPgfKr0BV5Ro2mPw3Pj481PgTJd+av7mBFohs06B5Vaojab+D16Dgp+FbQf4=
+X-Received: by 2002:a4a:2542:0:b0:57b:3b64:7ea5 with SMTP id
+ v2-20020a4a2542000000b0057b3b647ea5mr12208047ooe.1.1696341578006; Tue, 03 Oct
+ 2023 06:59:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231002135352.2603096-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20231002135352.2603096-1-andriy.shevchenko@linux.intel.com>
+References: <20231002134630.2601294-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20231002134630.2601294-1-andriy.shevchenko@linux.intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 3 Oct 2023 15:49:04 +0200
-Message-ID: <CAJZ5v0jrKP1wWJ=GO8OCkPsjYzn=4DwbP3xeqfdCJ25TmQkWGg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] PCI: ACPI: Switch to use acpi_evaluate_dsm_typed()
+Date: Tue, 3 Oct 2023 15:59:26 +0200
+Message-ID: <CAJZ5v0ib_N_ojhoC_z9YCOgmT7q2zy1jMBAFc=pmBmrX-j5Drg@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] ACPI: property: Allow _DSD buffer data only for
+ byte accessors
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
 	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 2, 2023 at 3:54=E2=80=AFPM Andy Shevchenko
+On Mon, Oct 2, 2023 at 3:46=E2=80=AFPM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> The acpi_evaluate_dsm_typed() provides a way to check the type of the
-> object evaluated by _DSM call. Use it instead of open coded variant.
+> In accordance with ACPI specificication and _DSD data buffer
+> representation the data there is an array of bytes. Hence,
+> accessing it with something longer will create a sparse data
+> which is against of how device property APIs work in general
+> and also not defined in the ACPI specification (see [1]).
+> Fix the code to emit an error if non-byte accessor is used to
+> retrieve _DSD buffer data.
 >
+> Fixes: 369af6bf2c28 ("ACPI: property: Read buffer properties as integers"=
+)
+> Link: https://uefi.org/specs/ACPI/6.5/19_ASL_Reference.html#buffer-declar=
+e-buffer-object [1]
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Applied along with the [2/2] as 6.7 material.
 
 > ---
->  drivers/pci/pci-acpi.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
+>  drivers/acpi/property.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 >
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index a05350a4e49c..cf108259aef6 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -1215,12 +1215,12 @@ void acpi_pci_add_bus(struct pci_bus *bus)
->         if (!pci_is_root_bus(bus))
->                 return;
->
-> -       obj =3D acpi_evaluate_dsm(ACPI_HANDLE(bus->bridge), &pci_acpi_dsm=
-_guid, 3,
-> -                               DSM_PCI_POWER_ON_RESET_DELAY, NULL);
-> +       obj =3D acpi_evaluate_dsm_typed(ACPI_HANDLE(bus->bridge), &pci_ac=
-pi_dsm_guid, 3,
-> +                                     DSM_PCI_POWER_ON_RESET_DELAY, NULL,=
- ACPI_TYPE_INTEGER);
->         if (!obj)
->                 return;
->
-> -       if (obj->type =3D=3D ACPI_TYPE_INTEGER && obj->integer.value =3D=
-=3D 1) {
-> +       if (obj->integer.value =3D=3D 1) {
->                 bridge =3D pci_find_host_bridge(bus);
->                 bridge->ignore_reset_delay =3D 1;
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index 413e4fcadcaf..06550d8c619d 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -1102,25 +1102,25 @@ static int acpi_data_prop_read(const struct acpi_=
+device_data *data,
+>         switch (proptype) {
+>         case DEV_PROP_STRING:
+>                 break;
+> -       case DEV_PROP_U8 ... DEV_PROP_U64:
+> +       default:
+>                 if (obj->type =3D=3D ACPI_TYPE_BUFFER) {
+>                         if (nval > obj->buffer.length)
+>                                 return -EOVERFLOW;
+> -                       break;
+> +               } else {
+> +                       if (nval > obj->package.count)
+> +                               return -EOVERFLOW;
+>                 }
+> -               fallthrough;
+> -       default:
+> -               if (nval > obj->package.count)
+> -                       return -EOVERFLOW;
+>                 break;
 >         }
-> @@ -1376,12 +1376,13 @@ static void pci_acpi_optimize_delay(struct pci_de=
-v *pdev,
->         if (bridge->ignore_reset_delay)
->                 pdev->d3cold_delay =3D 0;
+>         if (nval =3D=3D 0)
+>                 return -EINVAL;
 >
-> -       obj =3D acpi_evaluate_dsm(handle, &pci_acpi_dsm_guid, 3,
-> -                               DSM_PCI_DEVICE_READINESS_DURATIONS, NULL)=
-;
-> +       obj =3D acpi_evaluate_dsm_typed(handle, &pci_acpi_dsm_guid, 3,
-> +                                     DSM_PCI_DEVICE_READINESS_DURATIONS,=
- NULL,
-> +                                     ACPI_TYPE_PACKAGE);
->         if (!obj)
->                 return;
+> -       if (obj->type !=3D ACPI_TYPE_BUFFER)
+> -               items =3D obj->package.elements;
+> -       else
+> +       if (obj->type =3D=3D ACPI_TYPE_BUFFER) {
+> +               if (proptype !=3D DEV_PROP_U8)
+> +                       return -EPROTO;
+>                 items =3D obj;
+> +       } else
+> +               items =3D obj->package.elements;
+
+The braces that are missing here (as per the coding style) were added
+while applying the patch.
+
 >
-> -       if (obj->type =3D=3D ACPI_TYPE_PACKAGE && obj->package.count =3D=
-=3D 5) {
-> +       if (obj->package.count =3D=3D 5) {
->                 elements =3D obj->package.elements;
->                 if (elements[0].type =3D=3D ACPI_TYPE_INTEGER) {
->                         value =3D (int)elements[0].integer.value / 1000;
+>         switch (proptype) {
+>         case DEV_PROP_U8:
 > --
-> 2.40.0.1.gaa8946217a0b
->
+
+Thanks!
 
