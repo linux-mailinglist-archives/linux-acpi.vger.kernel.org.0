@@ -1,63 +1,62 @@
-Return-Path: <linux-acpi+bounces-374-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-375-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A937B6BC1
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 16:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 765227B6BC5
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 16:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 4415E281725
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 14:35:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 28FF6281725
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 14:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C007328B3
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 14:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1100E31A82
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 14:35:16 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E0B2137C
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 13:29:29 +0000 (UTC)
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5EA2AB;
-	Tue,  3 Oct 2023 06:29:28 -0700 (PDT)
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3ae0df6494bso81534b6e.1;
-        Tue, 03 Oct 2023 06:29:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF27266AD
+	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 13:42:42 +0000 (UTC)
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51F44A9;
+	Tue,  3 Oct 2023 06:42:40 -0700 (PDT)
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3ae18567f42so41423b6e.1;
+        Tue, 03 Oct 2023 06:42:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696339768; x=1696944568;
+        d=1e100.net; s=20230601; t=1696340559; x=1696945359;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EgTheVskLJNxwiIux7F+HpZW9rPZyOHwxwNzj7ZHzWs=;
-        b=pTQGlo8F0KaNU1hYktJ01OiTsZ+GSovTdWmWfMuFJWFvnlqxflykx6jSqhuSpEU6lz
-         UjcCgGYrV6TrR3Skssat1+89DDV5tahbcfh2aZFHcsatvcwqGU4qkSl3sofJS3XXo3tw
-         f5lRyJqSvS61PVz31tIt9BT3P3KIZccJR/3rHHhF0XB+yQeC5buCde1RUvgEI/dtVFA2
-         DmBsaZSUoF2CFySwSLs93qGq9EVPJplzn5zjoTp0PDMfTkn1UfxE4m7efXCPeo0LiWgk
-         0MkFwQUx4zvU0htw265NjQ1GIhsE3hYfOv21aX6WQLCpZW8XYX6zl04nprahWXDeo9KY
-         2dZA==
-X-Gm-Message-State: AOJu0YzX7J61IALeh5RL+UPg8V9EPLPG6erdDzHBQ73KRByyje9ex3UR
-	B3XDcO9XyqT10cVErjkFNNUdVl7cTpFMSJUeq60malGi
-X-Google-Smtp-Source: AGHT+IFvgpZtGFxEjqXVRDrG6th4u6a1MW/1xTy8JY7Gv+arPmgxWjCuEpnzmbbNt/DLfD2NoURtROARl1sR/F3p+QU=
-X-Received: by 2002:a05:6808:2029:b0:3a9:e85d:b689 with SMTP id
- q41-20020a056808202900b003a9e85db689mr16893352oiw.0.1696339767998; Tue, 03
- Oct 2023 06:29:27 -0700 (PDT)
+        bh=WyIKspFtMayiapsJ86xU9pdBx1KfreD3J7SC3GNfXTs=;
+        b=mdC0bvp7n8soKi8VbYUpv8yiiht5UEWMnABrn6zjV7tvuEJcydYNE4nDebKHgRfkMw
+         6JWMZgNVgF6/RO+CQvvtuxelOBaP1YAcFxsmyYezjoMgmEfxKHgHrNEXMaqCILZK1kSE
+         943uyXe0za36TzfsiX7cybafvl8cQcfLaCOgGTJ77tdDKEO5VAHmkMnQqfRC+xc08Ee8
+         neCMatpyUmF+0+BDxelpK2meHe/OCUbDl7dBLLBdLYN9kOs9FibDDGNR5CbFboRA5iwx
+         QN/6s9C8aeKvVtwnTY4NjDhidgbWuwANQijBq0u4ygDIEjyYRYLry3cE16vqkjM29dIg
+         c8zQ==
+X-Gm-Message-State: AOJu0Yy6AAx1F+feBSwwRI4uFJAcYJTG7f2+yoALgFxw9pkc7r+RwLdp
+	js6tOWgLb+GtsRZmymxRMIJL3G1eNi4Jcim7RjM=
+X-Google-Smtp-Source: AGHT+IEb8HKbgTJqu07uIJK3FIYlGeaYFo8/xLcyGluWrdgFuwsCMImV5NGlgZocEv1orRPT2/9RZdkdGsNfQWu2j5g=
+X-Received: by 2002:a05:6808:1997:b0:3af:6453:2d83 with SMTP id
+ bj23-20020a056808199700b003af64532d83mr17907420oib.2.1696340559567; Tue, 03
+ Oct 2023 06:42:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230927-pcc_defines-v2-0-0b8ffeaef2e5@arm.com> <20230927-pcc_defines-v2-1-0b8ffeaef2e5@arm.com>
-In-Reply-To: <20230927-pcc_defines-v2-1-0b8ffeaef2e5@arm.com>
+References: <20231003082233.30118-1-raag.jadav@intel.com>
+In-Reply-To: <20231003082233.30118-1-raag.jadav@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 3 Oct 2023 15:29:16 +0200
-Message-ID: <CAJZ5v0hG0sDJ4VOY+Gk0Fg1gebNft+z3YK9Jf-7NHb9Ow-C2mg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] ACPI: PCC: Add PCC shared memory region command
- and status bitfields
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Andi Shyti <andi.shyti@kernel.org>, 
-	Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
-	Huisong Li <lihuisong@huawei.com>
+Date: Tue, 3 Oct 2023 15:42:28 +0200
+Message-ID: <CAJZ5v0ieF8RJu9Fr7QvbuAnXtswDQ49God=cofa3tFBPygXtbQ@mail.gmail.com>
+Subject: Re: [PATCH v1] ACPI: LPSS: drop BayTrail and Lynxpoint pinctrl HIDs
+To: Raag Jadav <raag.jadav@intel.com>
+Cc: rafael@kernel.org, len.brown@intel.com, linus.walleij@linaro.org, 
+	mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com, 
+	linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mallikarjunappa.sangannavar@intel.com, 
+	bala.senthil@intel.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,
@@ -67,49 +66,69 @@ X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Sep 27, 2023 at 6:32=E2=80=AFPM Sudeep Holla <sudeep.holla@arm.com>=
- wrote:
+On Tue, Oct 3, 2023 at 10:22=E2=80=AFAM Raag Jadav <raag.jadav@intel.com> w=
+rote:
 >
-> Define the common macros to use when referring to various bitfields in
-> the PCC generic communications channel command and status fields.
+> Platform devices are now created by ACPI core on device enumeration
+> on acpi_bus_scan() -> acpi_bus_attach() path after commit 48459340b92b
+> ("ACPI / scan: use platform bus type by default for _HID enumeration").
+> No need to create them from LPSS unless we explicitly need to set
+> acpi_lpss_pm_domain for them.
 >
-> Currently different drivers that need to use these bitfields have defined
-> these locally. This common macro is intended to consolidate and replace
-> those.
->
-> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 > ---
->  include/acpi/pcc.h | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  drivers/acpi/acpi_lpss.c | 11 +++--------
+>  1 file changed, 3 insertions(+), 8 deletions(-)
 >
-> diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
-> index 73e806fe7ce7..021891a7434f 100644
-> --- a/include/acpi/pcc.h
-> +++ b/include/acpi/pcc.h
-> @@ -18,7 +18,20 @@ struct pcc_mbox_chan {
->         u16 min_turnaround_time;
->  };
+> diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+> index 539e700de4d2..d54cd42c1280 100644
+> --- a/drivers/acpi/acpi_lpss.c
+> +++ b/drivers/acpi/acpi_lpss.c
+> @@ -368,7 +368,6 @@ static const struct acpi_device_id acpi_lpss_device_i=
+ds[] =3D {
+>         { "INT33C4", LPSS_ADDR(lpt_uart_dev_desc) },
+>         { "INT33C5", LPSS_ADDR(lpt_uart_dev_desc) },
+>         { "INT33C6", LPSS_ADDR(lpt_sdio_dev_desc) },
+> -       { "INT33C7", },
 >
-> +/* Generic Communications Channel Shared Memory Region */
-> +#define PCC_SIGNATURE                  0x50424300
-> +/* Generic Communications Channel Command Field */
-> +#define PCC_CMD_GENERATE_DB_INTR       BIT(15)
-> +/* Generic Communications Channel Status Field */
-> +#define PCC_STATUS_CMD_COMPLETE                BIT(0)
-> +#define PCC_STATUS_SCI_DOORBELL                BIT(1)
-> +#define PCC_STATUS_ERROR               BIT(2)
-> +#define PCC_STATUS_PLATFORM_NOTIFY     BIT(3)
-> +/* Initiator Responder Communications Channel Flags */
-> +#define PCC_CMD_COMPLETION_NOTIFY      BIT(0)
+>         /* BayTrail LPSS devices */
+>         { "80860F09", LPSS_ADDR(byt_pwm_dev_desc) },
+> @@ -376,8 +375,6 @@ static const struct acpi_device_id acpi_lpss_device_i=
+ds[] =3D {
+>         { "80860F0E", LPSS_ADDR(byt_spi_dev_desc) },
+>         { "80860F14", LPSS_ADDR(byt_sdio_dev_desc) },
+>         { "80860F41", LPSS_ADDR(byt_i2c_dev_desc) },
+> -       { "INT33B2", },
+> -       { "INT33FC", },
+>
+>         /* Braswell LPSS devices */
+>         { "80862286", LPSS_ADDR(lpss_dma_desc) },
+> @@ -396,7 +393,6 @@ static const struct acpi_device_id acpi_lpss_device_i=
+ds[] =3D {
+>         { "INT3434", LPSS_ADDR(lpt_uart_dev_desc) },
+>         { "INT3435", LPSS_ADDR(lpt_uart_dev_desc) },
+>         { "INT3436", LPSS_ADDR(lpt_sdio_dev_desc) },
+> -       { "INT3437", },
+>
+>         /* Wildcat Point LPSS devices */
+>         { "INT3438", LPSS_ADDR(lpt_spi_dev_desc) },
+> @@ -657,10 +653,9 @@ static int acpi_lpss_create_device(struct acpi_devic=
+e *adev,
+>         int ret;
+>
+>         dev_desc =3D (const struct lpss_device_desc *)id->driver_data;
+> -       if (!dev_desc) {
+> -               pdev =3D acpi_create_platform_device(adev, NULL);
+> -               return IS_ERR_OR_NULL(pdev) ? PTR_ERR(pdev) : 1;
+> -       }
+> +       if (!dev_desc)
+> +               return -EINVAL;
 > +
->  #define MAX_PCC_SUBSPACES      256
-> +
->  #ifdef CONFIG_PCC
->  extern struct pcc_mbox_chan *
->  pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id);
->
+>         pdata =3D kzalloc(sizeof(*pdata), GFP_KERNEL);
+>         if (!pdata)
+>                 return -ENOMEM;
 > --
 
-Do you want me to pick up this lot?
+Applied as 6.7 material, thanks!
 
