@@ -1,124 +1,175 @@
-Return-Path: <linux-acpi+bounces-390-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-391-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A837B70DF
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C56227B70E0
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 20:32:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 73B2F2813D0
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 18:31:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTP id 777692813BC
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 18:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B75327EC8
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 18:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6AB3C689
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Oct 2023 18:32:02 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E122510C
-	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 18:09:44 +0000 (UTC)
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29461AC;
-	Tue,  3 Oct 2023 11:09:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=SR5hzwt7zM//0GbzM35Ia3E9iKMTwd/DCYDjYKbU5Ig=; b=ZXKjBEaHWD1Qo3XGspilT/vQRg
-	vSh8MKQ9EEVH/Y8NPGTsc3bLicNR1GX1Jk1DWEKyfbjeG15aUpxDe1KkKHvl530pl2NYiKE4Ir8w2
-	51GClqB+aEqMoGDxbnLBVe7YKZ/9eMGcsN8Q20CzqmAyGjBN0jstAUV2RbXZZVGtmK9NajuC8CXG2
-	KQlZ0Yu84WGDTz49172j5CMhbRIPTy0k8zaXqPaYQbR+4imnXzzVcxo+AcTZFeGRoUZ4cObk863xL
-	owQMVuoL6KoYdFSEWkE4I+CsqEDHjnSNO1Oq5mM2gj0xFCZbboiv6n6i89hvPnRfPXxUdNtZbCPnD
-	xo4KshaQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54130)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1qnjpr-00023q-1t;
-	Tue, 03 Oct 2023 19:09:31 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1qnjpm-00087H-G1; Tue, 03 Oct 2023 19:09:26 +0100
-Date: Tue, 3 Oct 2023 19:09:26 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Xin Li <xin@zytor.com>
-Cc: Gavin Shan <gshan@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-acpi@vger.kernel.org,
-	James Morse <james.morse@arm.com>, loongarch@lists.linux.dev,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	Ingo Molnar <mingo@redhat.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	jianyong.wu@arm.com, justin.he@arm.com,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Salil Mehta <salil.mehta@huawei.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Peter Zijlstra <peterz@infradead.org>, linux-ia64@vger.kernel.org
-Subject: Re: [PATCH] cpu-hotplug: provide prototypes for arch CPU registration
-Message-ID: <ZRxY1l+79XqOHZk1@shell.armlinux.org.uk>
-References: <E1qkoRr-0088Q8-Da@rmk-PC.armlinux.org.uk>
- <dd4dee9e-4d75-e1e6-04c8-82d84b28fd35@redhat.com>
- <ZRIU/yFrbFbIR7zZ@shell.armlinux.org.uk>
- <ZRwmj/e+jAXFfvCm@shell.armlinux.org.uk>
- <7aee5021-8bb6-4343-b746-a8417af030a9@zytor.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693CA3C69F
+	for <linux-acpi@vger.kernel.org>; Tue,  3 Oct 2023 18:29:58 +0000 (UTC)
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ACA9AF;
+	Tue,  3 Oct 2023 11:29:57 -0700 (PDT)
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-57ddba5ba84so104083eaf.0;
+        Tue, 03 Oct 2023 11:29:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696357796; x=1696962596;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XKuLyXDaUOfq1uIfw6OusMnl9KqNTsb0JtRvHzmk/hI=;
+        b=qQe3AcuO6rLideDcZTfQ2gt6avF+1WZhWg0sDR2ItXn0hz1IY80PmSSZaSQh/IF/g3
+         VguzuGSEDwTzDCEmtBzZBhonRqSKLvfvQhwCs30zV2yvEmsaq553PmDNb9Jse4edtEfD
+         dWuXxSdTUFBl8RyB0OP1HXi9d8f4q+tmDiR+UDO22bhH+hza/ZRwuniNK77wHFpMJ59Q
+         XpTNrcHKdhCmvQmworzI3XsBjQA7MVaZK33NQbPlApTMe34MTgM0P1nqF59gX24174HN
+         DoYqwQjCxer5EgwFMGxuePjkcLjh/25qHDf9vbv87FWhPU7L54BZ07hRygO930rdB+g4
+         PjCA==
+X-Gm-Message-State: AOJu0Yx9COnjXyfCPLi6ByeeYZthNYYtegFXD5EAV8jM03A+/iip6DQ4
+	4v6wXJB4jrY1U7j9nrahYgSsNC3y8wgnhSklBdw=
+X-Google-Smtp-Source: AGHT+IGfYbL8E3JNC+wKvzaKai74tZwW1E6GU4g6CClDy5JW4gC42y+OnApY8XJwxgpeKFJARKmcdzK14ndUdbcCDDA=
+X-Received: by 2002:a4a:b588:0:b0:578:c2af:45b5 with SMTP id
+ t8-20020a4ab588000000b00578c2af45b5mr209370ooo.0.1696357796460; Tue, 03 Oct
+ 2023 11:29:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7aee5021-8bb6-4343-b746-a8417af030a9@zytor.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230930090248.34759-1-bergh.jonathan@gmail.com>
+In-Reply-To: <20230930090248.34759-1-bergh.jonathan@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 3 Oct 2023 20:29:45 +0200
+Message-ID: <CAJZ5v0gDBNzUP8_9ayHniObOz0LriV0=sg4Kqw5GizMH8Aox0w@mail.gmail.com>
+Subject: Re: [PATCH 1/3] drivers: acpi: Fix pointer declarations in parameter
+ lists which included whitespace spuriously
+To: Jonathan Bergh <bergh.jonathan@gmail.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, Oct 03, 2023 at 10:37:02AM -0700, Xin Li wrote:
-> On 10/3/2023 7:34 AM, Russell King (Oracle) wrote:
-> > > > > 
-> > > > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > > > > ---
-> > > > > Changes since RFC v2:
-> > > > >    - drop ia64 changes, as ia64 has already been removed.
-> > > > > 
-> 
-> If this is RFC v2, we put "RFC v2" in the subject, then people know you
-> are sending a newer version.
+On Sat, Sep 30, 2023 at 11:03=E2=80=AFAM Jonathan Bergh
+<bergh.jonathan@gmail.com> wrote:
+>
+> Fixed issues where pointer declarations in parameter lists included
+> whitespace before the parameter names and should not.
+>
+> Signed-off-by: Jonathan Bergh <bergh.jonathan@gmail.com>
+> ---
+>  drivers/acpi/osl.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+> index f725813d0cce..29e0005c30aa 100644
+> --- a/drivers/acpi/osl.c
+> +++ b/drivers/acpi/osl.c
+> @@ -493,7 +493,7 @@ EXPORT_SYMBOL(acpi_os_unmap_generic_address);
+>
+>  #ifdef ACPI_FUTURE_USAGE
+>  acpi_status
+> -acpi_os_get_physical_address(void *virt, acpi_physical_address * phys)
+> +acpi_os_get_physical_address(void *virt, acpi_physical_address *phys)
+>  {
+>         if (!phys || !virt)
+>                 return AE_BAD_PARAMETER;
+> @@ -784,7 +784,7 @@ acpi_os_write_memory(acpi_physical_address phys_addr,=
+ u64 value, u32 width)
+>
+>  #ifdef CONFIG_PCI
+>  acpi_status
+> -acpi_os_read_pci_configuration(struct acpi_pci_id * pci_id, u32 reg,
+> +acpi_os_read_pci_configuration(struct acpi_pci_id *pci_id, u32 reg,
+>                                u64 *value, u32 width)
+>  {
+>         int result, size;
+> @@ -816,7 +816,7 @@ acpi_os_read_pci_configuration(struct acpi_pci_id * p=
+ci_id, u32 reg,
+>  }
+>
+>  acpi_status
+> -acpi_os_write_pci_configuration(struct acpi_pci_id * pci_id, u32 reg,
+> +acpi_os_write_pci_configuration(struct acpi_pci_id *pci_id, u32 reg,
+>                                 u64 value, u32 width)
+>  {
+>         int result, size;
+> @@ -1197,7 +1197,7 @@ bool acpi_queue_hotplug_work(struct work_struct *wo=
+rk)
+>  }
+>
+>  acpi_status
+> -acpi_os_create_semaphore(u32 max_units, u32 initial_units, acpi_handle *=
+ handle)
+> +acpi_os_create_semaphore(u32 max_units, u32 initial_units, acpi_handle *=
+handle)
+>  {
+>         struct semaphore *sem =3D NULL;
+>
+> @@ -1554,7 +1554,7 @@ void acpi_os_release_lock(acpi_spinlock lockp, acpi=
+_cpu_flags flags)
+>   ***********************************************************************=
+*******/
+>
+>  acpi_status
+> -acpi_os_create_cache(char *name, u16 size, u16 depth, acpi_cache_t ** ca=
+che)
+> +acpi_os_create_cache(char *name, u16 size, u16 depth, acpi_cache_t **cac=
+he)
+>  {
+>         *cache =3D kmem_cache_create(name, size, 0, 0, NULL);
+>         if (*cache =3D=3D NULL)
+> @@ -1575,7 +1575,7 @@ acpi_os_create_cache(char *name, u16 size, u16 dept=
+h, acpi_cache_t ** cache)
+>   *
+>   ***********************************************************************=
+*******/
+>
+> -acpi_status acpi_os_purge_cache(acpi_cache_t * cache)
+> +acpi_status acpi_os_purge_cache(acpi_cache_t *cache)
+>  {
+>         kmem_cache_shrink(cache);
+>         return (AE_OK);
+> @@ -1594,7 +1594,7 @@ acpi_status acpi_os_purge_cache(acpi_cache_t * cach=
+e)
+>   *
+>   ***********************************************************************=
+*******/
+>
+> -acpi_status acpi_os_delete_cache(acpi_cache_t * cache)
+> +acpi_status acpi_os_delete_cache(acpi_cache_t *cache)
+>  {
+>         kmem_cache_destroy(cache);
+>         return (AE_OK);
+> @@ -1614,7 +1614,7 @@ acpi_status acpi_os_delete_cache(acpi_cache_t * cac=
+he)
+>   *
+>   ***********************************************************************=
+*******/
+>
+> -acpi_status acpi_os_release_object(acpi_cache_t * cache, void *object)
+> +acpi_status acpi_os_release_object(acpi_cache_t *cache, void *object)
+>  {
+>         kmem_cache_free(cache, object);
+>         return (AE_OK);
+> --
 
-Sorry, but this is yet another illustration why the kernel process is
-broken. Clearly, people do NOT bother reading what is actually written,
-but instead make up in their minds something completely different.
+Applied along with the [2-3/3] as 6.7 material with edits in the
+subjects and changelogs.
 
-This is *NOT* RFC v2. This is RFC v2:
-
-https://lore.kernel.org/all/E1qgnh2-007ZRZ-WD@rmk-PC.armlinux.org.uk/
-
-And what I wrote was "changes **** SINCE **** RFC v2". For those who
-find English difficult, this means that what follows is the list of
-changes that are in THIS posting that WERE NOT IN THE PREVIOUS POSTING
-which was RFC v2.
-
-Thanks for making me even more frustrated than I was.
-
-> People are busy, and your patch could be
-> skipped if it appears the same as a previous one.
-
-Yet another reason why the kernel process is just completely broken.
-"appears to be". Even when the changes are spelled out. Yes, right,
-people don't have time to read. If that's the case, then it's a
-waste of time adding a change log. It's a waste of time to add a
-commit message. In fact, it's a total waste of time trying to
-contribute to a rotten-to-the-core open source project that Linux
-seems to have turned into.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Thanks!
 
