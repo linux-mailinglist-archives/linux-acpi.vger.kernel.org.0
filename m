@@ -1,54 +1,54 @@
-Return-Path: <linux-acpi+bounces-432-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-433-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 163AB7B994A
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 02:39:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C097B994B
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 02:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by ny.mirrors.kernel.org (Postfix) with ESMTP id 121BE1C20456
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 00:39:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTP id D0AF11C208FB
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 00:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC191EA0
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 00:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97591EA0
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 00:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="t8Kl728P"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Kskh7dnX"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4561BDEE
-	for <linux-acpi@vger.kernel.org>; Wed,  4 Oct 2023 22:54:34 +0000 (UTC)
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2044.outbound.protection.outlook.com [40.107.244.44])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45909EC;
-	Wed,  4 Oct 2023 15:54:32 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72369262BF
+	for <linux-acpi@vger.kernel.org>; Wed,  4 Oct 2023 23:52:08 +0000 (UTC)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06017C0;
+	Wed,  4 Oct 2023 16:52:04 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VxRvR9ChI3azE2iwN6fiAT10vy2otqg1hr+zDE7+4SeocqgXfjQYK6FYWrf6CQYLzeaDtXJPhrCbNMV+nyA+HsJaSe38yEoT5/dY3qWIeId25WVEc0ZIniGqHZAC+6NBmxZ2C3uoyR/y0bRsy0Hyt1B+SxSUsr5+5T4aHrmWoAzN6upgu6ocN/ifeloKPe/IEFfaUdawL5k9ztXw7EJOpldUJPFEbungojMBurro3vDqFNFF5oGu72iiNMEt/ZgfVLJz0nWvnloRMtgEiZrZXT1r8+XZTmwNK9X/7PzERgk9C13oEGjUwwOrOxufYopWNSNeKPZLoTBZbIdoggZSZQ==
+ b=ixsMdNwDR+Y0qA45zMRaOfz44nSm25Mb3tCNceLYrtc3hGqpiDEcm81b+lC5eVKs1aoo69VqIZ1B3Fe5d4i54n/8E3OO4fqVM0vQFo2boQ9Fb73D+1VlVEf+OswuR2UaPYsMCdDKiiEsEfenetIHRxEeUaQt6AGLg1eF861Mbt3ZhTnbOc268uUSP5qJZQl8O/4nmaTVOU86Wcu6CAUsnD6ntE+3HadgwAsSHFkcS+nWMfPHv45juidTdDYFApQitndeEBuHloCBXy09kEN7AJFLaQkuo6R+k6H6Xe7fkvpTx2xysETNT4onO/Sj595RVoFgxuwVXn7wkI1PXq74vw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ekyj/qFCKEpBu5k8BBX37IFz9H7nKhAQBYaxcu2CP4I=;
- b=KV8dNxqn+R2gc0IYb0ZEC9W4DqinDsZj5Tsryo0s8suXnxRUjs/zue7FLJFStYwsM37mql7KMvbirfzzUiQ0NQyb7Q5cGl2rCSbADaYLv65xCThp78waYySR2l1UaWyBD+tkDv6NStQcMHV0N5f9BDjGiq2vAwJIQM9FsywI6I+B9wc+kUw2CBKr3AQNchUqs55G/tctNm4uJPX5LVrCkpOSbM/2WdxIPCQAwrsmlyiyVwPWi8DamFVfj4swwPvdDwhYl8DrxG0Id0bQDUYpiuTSIS/fG6hqbL9eXUtqbY3bA+sDJ2w7uhpq2nHGdTdB9k1JURoNkFe5l8mfQIN/7w==
+ bh=mhW2nzwaPbx9gyYhKYdYgdWAXjmvUI0CUtEw63hclg8=;
+ b=SkIsXmgvbjIjotpijvPuQyYIiI6XkfmI7Mn6XnWuDtnQXJXmgqo1zX4nUA7IegVYQ08NQTkqYze1d+ABRw1xYbrDHDn2ywPGaQa/eUTqZX6D+DY8FAjgglTDZDHh2HB1KJsUhY11AkjErnsdDdLLhPR1L8lGJX0XW0TjaosAkeyOphzia/pajF5oqRyBcEJ2JF0KTufQDL9p7ybHO158LeWEOsjRcBHl9MgKb7SKqQOVSa4bmn6xaXvZJrmev/tn/3J47IColuZslHAmktlE8YCLOdwIibnlIJuxHAqS4blci1oZriyzR/PHwb+CqgtBKPuIgtR92RDhx85M/P+nXw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ekyj/qFCKEpBu5k8BBX37IFz9H7nKhAQBYaxcu2CP4I=;
- b=t8Kl728PDwKxAzzcy83dVLCmuQI+X+6cZOvcHgTWJXFLYvDLobAvQMTNTyR3P6XompTmm+bGhTICa2oKKWJQUfOfi2Q3PQg28y/9qmZ0RCFq7fP9cjibuO10m0/YIdDXcqYgTYTkuN4VLw43zXAxJ5YbNiTL9nE1j/LIpqMK94C9FdBugo/RiFtSeLOSpRrZJqNGTfdATlm3nl3PEuK+9tiNEUKKHHZA8Lgu7ez9fCGsxQpIR+6DwESc1u/KIMBPnI8qRU+M6/hi1orM9vcVFDJ0X8CzNd8T71dUg19ToRx4yYfzsjQYwjf8Rm+K3Ob4F/OReV4tMO7HxiZdpOI4qA==
+ bh=mhW2nzwaPbx9gyYhKYdYgdWAXjmvUI0CUtEw63hclg8=;
+ b=Kskh7dnXaY80LFvj0WOOcZbyE8suogj/Ztqr27w/yMbEZnHf8zP6hIFuI9J0PJB2HVJPW+wxhkoojJaGCvVGT2+5D0VCHAxj4hAB43Ad6RdfTog8lFLqkdLP39Dvamf6B6nHVpJMX2UF73s2v0IEmI+nQhnIbEwoXNtAF6ybW/QHSf40yEG+n0aVlJVlp/SlT+eie3PnC87oFi94R6M2L2GIfYkOXQXjvHkRIBNvkJCfZ7pbSs4m+Qw3dLnagq3fTSEg+tPzsteZCispUaH3IAtAlYD4cXqZlg0gT81o5Hipiw/L4YtxARL3Pkl+xHTHwRTxDtKNw2UXKSOV9QyjgA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from IA1PR12MB6604.namprd12.prod.outlook.com (2603:10b6:208:3a0::7)
- by DM4PR12MB6397.namprd12.prod.outlook.com (2603:10b6:8:b4::10) with
+ by PH8PR12MB6961.namprd12.prod.outlook.com (2603:10b6:510:1bc::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.28; Wed, 4 Oct
- 2023 22:54:30 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.31; Wed, 4 Oct
+ 2023 23:52:01 +0000
 Received: from IA1PR12MB6604.namprd12.prod.outlook.com
  ([fe80::8814:146:e28e:6eea]) by IA1PR12MB6604.namprd12.prod.outlook.com
  ([fe80::8814:146:e28e:6eea%4]) with mapi id 15.20.6838.016; Wed, 4 Oct 2023
- 22:54:29 +0000
-Message-ID: <90b5f887-8af4-a80d-ea4d-cf2199752de4@nvidia.com>
-Date: Wed, 4 Oct 2023 15:54:24 -0700
+ 23:52:01 +0000
+Message-ID: <0e7cae42-0b81-c038-8beb-49102feea8a6@nvidia.com>
+Date: Wed, 4 Oct 2023 16:51:55 -0700
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
 Subject: Re: [RFT PATCH 14/21] hte: tegra194: don't access struct gpio_chip
@@ -75,12 +75,13 @@ References: <20230905185309.131295-1-brgl@bgdev.pl>
  <CAMRc=MdTk1B4MEh9C624Upm_EcaQgJd9OU-AGfU0G-DU1+qk6A@mail.gmail.com>
  <36b17290-c643-8d8e-e82b-49afa6b34fbb@nvidia.com>
  <3624e973-d09a-d211-c6d0-d0ffb8c20c4b@nvidia.com>
+ <90b5f887-8af4-a80d-ea4d-cf2199752de4@nvidia.com>
 X-Nvconfidentiality: public
-In-Reply-To: <3624e973-d09a-d211-c6d0-d0ffb8c20c4b@nvidia.com>
+In-Reply-To: <90b5f887-8af4-a80d-ea4d-cf2199752de4@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR03CA0175.namprd03.prod.outlook.com
- (2603:10b6:a03:338::30) To IA1PR12MB6604.namprd12.prod.outlook.com
+X-ClientProxiedBy: BYAPR04CA0033.namprd04.prod.outlook.com
+ (2603:10b6:a03:40::46) To IA1PR12MB6604.namprd12.prod.outlook.com
  (2603:10b6:208:3a0::7)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -89,64 +90,64 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB6604:EE_|DM4PR12MB6397:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf856291-424e-4ee0-4b24-08dbc52cddf1
+X-MS-TrafficTypeDiagnostic: IA1PR12MB6604:EE_|PH8PR12MB6961:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2e813fcb-3fc9-4a77-6478-08dbc534e6e0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	TOHbppOS4fHFvmZpWyLi4SFEYnQnBbCfoTiSGIutC5470ijOq390aKjnHqr2SNaESyaEpUpwYgSLyhEnZhTEoWySkPakwBceawefwEfTPQ1AYUSHWDPD+ZUJMZe8tF0TiFvFElCNQ1XhBpTtvNUp6Udhg657sPp4pNUZ+5Dj0vrsjtEEVNaOma9hRWVVi3ePTFwQGIaJuNNNXVMpD2PUxR8cROS01PcjC/HrhlAil5LWba8B3tJk0/W3NKNG6lNGc0inTS95tmIF8VWe8glM4THFTz571SlAc5i0ou+nkGKuiQDmd4S31OFDMEw2vW/1LvrICbfbizZEpReUEOtHinoH5/A22wuMP0IAjfUy/laOKx2nsHwwMUmOSi4vxM56lKYyalG1Li+ZG33yIh4MidYviGzdH4YpOxRGb5YYzNKpoGW5zUDC922h12R5TjQylEwHYk/djsDtjRwF04dhphGPTQgt0hhHrLoXqvyMwoNO/UwK0p3imKllMVooEfk3Wd1xSEWbBmmRSA3PL1HnF8Z3Dyd/G2bk+MVQSLZ4eTJfLIjuf/1nFuoYawxqODcCfm8Wc1G+vukAEYwV+Mxun9oVjin7izhx+I+c9Oin1RnGmBdIHOehT++Aja67CTmK386DM826jOI8R0raUcw0/PzlzFa7htefetLr1ugvnXE3Cr1ObFSk/NXPExrO07IQ
+	QDTgwc3tzeOTYKVEPaXpOg03OKVoJSdzaN0tczpOrTYA4mS/jJBQiTkIWpKWC+RrEEfg12P9u8UaAxXBsG8nhNY84oXaQgkIZ45FTXNGD5epftYYl/jz1oqCgfGukON49ZH+7llJdhXq9oQiDPI7FgORSmL40l3GICLassgnEPljdrzCFZx7spgnxB/2DCLOav91LoWujDW1aPu0tm2jCttg929AkH0DRIwEkZordC/C2EnNdm3v4KhHqSfBeQR/LTwhOklJeskDujUkrfLGj29Vy5v3iTwTPB+Zcx8ZYo8TsLlP6PbasLe449DimT7EmvnQDYTI570t4IBjm7IgrLs2WmRVOawXVPTuiu3sOOdXhvAyKhivHGDBWFCCLgIle/o4hhyL/wx92VFeu5h4yyQ0/W6JJkKwTY8P641AC5OuXh/YjDMt8haYoDlPPSvIazliA+Grev3MUcmM+clCTHfSkT4e/3LP33n3P6T/GnnWhYeIPww01ov4DW/UM6yFWsh2Ktcy0Za5j7qjwUuTuWYqVRexujSWdNuC5TfTfjpNhqMZRixQLnjAUDN55H9uNS60my/wMZmdeCPDlFVelE8na5kCg9sKLAM0zCP+GvbVJXJT171MwaNwY0HsF7jpEODjp/u5Omc6XNH1ECLE5OHZ7zdRvK9Q1tjlB9XzYHBPFVr+TQgLWRw/4QlFtsei
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB6604.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(396003)(346002)(366004)(39860400002)(230922051799003)(451199024)(64100799003)(186009)(1800799009)(110136005)(5660300002)(8676002)(8936002)(4326008)(316002)(38100700002)(83380400001)(41300700001)(66476007)(54906003)(7416002)(66946007)(31686004)(26005)(31696002)(86362001)(2616005)(2906002)(6512007)(66556008)(6506007)(53546011)(6486002)(6666004)(36756003)(478600001)(966005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB6604.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(396003)(346002)(376002)(39860400002)(230922051799003)(64100799003)(1800799009)(186009)(451199024)(6486002)(478600001)(53546011)(6666004)(6506007)(966005)(83380400001)(2616005)(26005)(2906002)(6512007)(110136005)(4326008)(7416002)(41300700001)(316002)(8676002)(54906003)(66556008)(5660300002)(66946007)(66476007)(8936002)(36756003)(31696002)(86362001)(38100700002)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ODVVVTFOVW0wYUp0YUJDVXR4R2xJdjFRNUhHeVRXMkNPUjBCZncrZ244Zk9s?=
- =?utf-8?B?RVl3UVlKZUNQU2x5djZ0ZHg0NXJXU2tjNldKNWVvVElrVlFpd2lTUWxqVk1i?=
- =?utf-8?B?Z2VldWVkVmptTG01Mk53MHpwY1hqNWJ6aTduZDFUQUJrOGxsQk9MSkdlS2hT?=
- =?utf-8?B?ZFVZZnphcFZqVUZYcEg0WmltcnVrR2RBUmVlOTBsUkp3aWppMGV3bXJvSmZF?=
- =?utf-8?B?K2FVNThha2NKZkY4aTZPbDljZ2Uvc0MwVThacWVHcno5dXNwOS9BYjg3VWhs?=
- =?utf-8?B?SWtmZWFZYVZKdEh5cEhleGxaYlNGK0cyaEZIalpabG50SDRkUHRiS0FQOWZE?=
- =?utf-8?B?cmtCRDNtMnR1REluUC9vajk0Q24rMEtqczE0KzNQWEppWXZGZk8xUkkwbVly?=
- =?utf-8?B?cnNnTXdqWTI3UHIxTE9mejd1NUIreEgxbHZUSmRkeVFtdE95REFsS2Q3Ymxs?=
- =?utf-8?B?eXdza0VXMXEwd3Z1SVM5ZXB4alhRYmFrUERzWGw2ZHZ6aVpIaHplNEZPOUcr?=
- =?utf-8?B?TVYxQ29Ic2lwd25sNVRDRS9Eb3JBRkcvK200enl1aEt2RUFYNHZHVGVUN2FS?=
- =?utf-8?B?NFEzMlBJNFJ2MU1qZVhzTDA5YldpZlhTQkxGek90ei9XVndwQm5mbHNuRmNn?=
- =?utf-8?B?UjVEeVpqVUp0dmpsa0pDWU1nMGFUTmpxc3JOaytaNTdqVTNiQ0REdmxWSEFs?=
- =?utf-8?B?SEk2QjdMczlIZW1OSjEvWVhJRW9BZ3VaQ3RZVHNOUENBL3p5M1JxWlFGVUtu?=
- =?utf-8?B?bkVCT2podGwxN2xlRGZhS0h0UFBwQmlRZkVmTTdLbHNjMmczaVJSc3hQdkRi?=
- =?utf-8?B?cXE1bmsxaWJKTUcybEVsTHB3NVpIOVIxWlgwZU82RTA1SWc0MWVVSjZQMU4x?=
- =?utf-8?B?RVNHR2w3UDk5MlRKd1QyUEowaUV4eGpVYnlaK3JhS0dMRnRRdGxIa3NJYmlG?=
- =?utf-8?B?bktSblIyenI3NHRHK0JKR09XOXJZZ29FUXhVODJzYnFTUjgycEhhRnJxQXlE?=
- =?utf-8?B?bHRYVWgwbDZWM3hSRlc4eUhLUVR3TjFPMXNLTE9PcHo4bzh1UFNvaFlsdVRB?=
- =?utf-8?B?TjEvUHh0QzEyMSt5OEdZbno5Y3JwUE53OFJPTktVZGtTczJZWlNtYVd1Yk1m?=
- =?utf-8?B?SlRCeENVblg0SW16SzhMOENsZlVzelJQcHhrNTdXT1d4TGRsR3FDeGtZYnUw?=
- =?utf-8?B?M3p6YitmVCtNV2tSSGptelExT1NGVDhIdi9MRUhIWStqeUdRNVdUalEwZXVt?=
- =?utf-8?B?N2tsbHJwd25MWlZmZVA5MGpJMUJudkdIOCtvaU83NmxhQmJZSlhuTlpuQWl2?=
- =?utf-8?B?UEM3T1NBeEZ6enJoQ1NFUkNZM1dTNVkwVEJ4TmtxeXlScHg2N05OcWJ5SDRo?=
- =?utf-8?B?emVtY2oyV3RuOFBsWWw1ekY0RVkxRmZ4THBYcGZKam9tUy8rOWtvdUV3a1dh?=
- =?utf-8?B?ejBUbWVUejFXbjZZV1M3YmRuaEhaNEt4Y1N6akZyWWdMQ3VHT3BvaFliaFpL?=
- =?utf-8?B?VlJ3Y28vdmV6TzB2N25GMURJMkZlUGpmeTRLaVdZNzlSNFZHcjlLeWFUZE52?=
- =?utf-8?B?OEZ4Z0FpMkFpV3JCbVZjTHB1SWtMVGNtMjZHblV2S01hd0RvRmZIb1FDOGJK?=
- =?utf-8?B?M0l5T3dKd2daNnR6anBhYWcyWGtoVGNkQ1kyMUNyWnVpeTNYY2VxMUJ6RGpV?=
- =?utf-8?B?anFXSVlDYlBWU3ZrbkpIdmlvc21TVWFnL2xtMHRLYld1cEM0UWJCN1NObm8r?=
- =?utf-8?B?UzZKOE1LS2NyRC94ZHljRTd2aERmeG1PV0x6YWFEeFg1cHQ1WDcrWDZJNUI3?=
- =?utf-8?B?b1Zqdmk3QlFJRFowdjRXeTZhYWxLZExxUW1pWHRyand4bHp2d2djU0VaRkNj?=
- =?utf-8?B?emEvT3JXdHVPdGQxMjdab2VJWENZbVdkMzlpZk5kb3RqajZvOHFJZnVkVEhy?=
- =?utf-8?B?SnZmUjZkb0I4ZExNQk90QXArQmZEMkFnL1FEZEIxK0hXU3IzWVpzbWRyalFF?=
- =?utf-8?B?N3ZnMTlBVWtGdlFnQnZzaTRRNU1aWTA0MmdUcFdGRGhEK1g5L3pGczhpVXR6?=
- =?utf-8?B?MlZuWS9HblV0cUJkenROZ05zREFGQ0pOSHNpR2RCYkRtRE5ucFJXaWZpZmxp?=
- =?utf-8?Q?fY4WX4MN/AuGah6CvNULMwlvy?=
+	=?utf-8?B?MS9DdEZkOVJIQ1JaUmhmZjUrb3A0MVBtMjR5eTdrTTBIdnArcmdRRVdlS3Vu?=
+ =?utf-8?B?YTh2RlVmTG5RUFpPSnl2ZnJrdmNJeFp5NW40Z0dFRURiZzBuQ2w4b3ljOEh0?=
+ =?utf-8?B?KzEzYlRQR3JieG02OUl1QStmcVphK1AyN3FyUGp2azJiSWRYYklMZm45V2dN?=
+ =?utf-8?B?RDhHckkxbTRtUFduTzVTZ284QWxhWDZTWXdXMFlkNE5KUHFGTldJWjh6SVRo?=
+ =?utf-8?B?SjN0TjhrOUloVmYyQUNkck9nZzlGUExsQVh0ZHhTby9QL0xVc1ZiNHE5Vm9O?=
+ =?utf-8?B?VHpNc0V3OElCdjZCSnBkSjBPUDZCbWdtaXhORjRFUCtKMklWaTJpTWVsWlZS?=
+ =?utf-8?B?bXJxT2ZwVmtVVUkzN1ZZeFN4V0JuSVo2LzFLbVRucU5MMHE0QWpoMXpKOGJW?=
+ =?utf-8?B?d1o4aC8zN1VldHhlemU3QTREcG9CT24zUGVvZVI0OG00VmxVRGhKMmd1TTlK?=
+ =?utf-8?B?VzU1NU53eThoQXhqUmtaczRVbDZmVml1QTFUbjBMMG93V3lwaHNnSWdPRmpw?=
+ =?utf-8?B?alV5bzQwa0hybEZyVEc3Z1cwRTEyUnNQanlUc1EwQUpkV1dxRWsvcXFoL0pT?=
+ =?utf-8?B?eWNzVkpwVHZzTENEeEdPLzlpelJ5SUtoQ2dtK3ArUzRsTWY0WHV4c3dOQlNP?=
+ =?utf-8?B?Rm5reElJQ1ZtUmlWTm5nL0lBV1ROY1QxT3gyV2s0MG0wVXgwRzRtbkpXaks4?=
+ =?utf-8?B?Y3pTbHZCalo0Q0o3VVdmamF6OWprMTh4OG9hMisxZkxYQ2c0RXpIRUNucDZ1?=
+ =?utf-8?B?UnJhT2hPL3dUWk1lTFMvMXF2Q29hUy9BNnhDZmNraitieVE3SkdKWnZkcmJ5?=
+ =?utf-8?B?eGJzU3NtMyt3a2NiNmRBN3JzOTZyTDVUTW9LUU5iN2NUWGdBbEN4V3JWOHh2?=
+ =?utf-8?B?WEVsck8xQzZnNDd5M0pwM2xoUzY5UWx5L3ZpeWN1OFBkZ1NHaDRXdUtYUUJu?=
+ =?utf-8?B?YW80TWVVOHorSGtycDJUNEJqbkkvSmllMHRmSnJON2cyeHcwKzNTWVZsZzlK?=
+ =?utf-8?B?NEJqQU0rd3FiUDZ1QmZqV2NndXEyUUxTSUJXWno3Q3E5VXU4bXlUOXhxTkpF?=
+ =?utf-8?B?LzFTbVBlMndFS0lMSnJvZWRPZ1RzTzkzWjJjWHFoeU92YlQwSGQ2b3EzTjQv?=
+ =?utf-8?B?R1g3SHlPRSs2YU5RbC9ld0RObHdCZEFjRVpOUWpSaDVnWk5ON05HVXZjbE9Y?=
+ =?utf-8?B?ZW5jL3hkcTM4eHM2Z05RNnV2VkIvUjlCQ0MzV3EvWUlZMEtGemNCeEFtTmxj?=
+ =?utf-8?B?ZnJkRlM4UVRtY1JiNmtOaFc2UzNiNUhmSnl0QUI2a1hBZjVCWVpuQzM1WWNG?=
+ =?utf-8?B?QWNIVFM4Wm1sREZjQ3hESVNxZVlSZWJOcVNqUFpVb3B0MHE4MzJzUlZUK04y?=
+ =?utf-8?B?bi9BWThvUDBuVGcrck9vbkhLamZpc1pOY0Viakp3MXdlY1FmeFpoZkpkeGZP?=
+ =?utf-8?B?YkxROG12TTdTRnFKTFV2OW1NdVVEbzFybHpyVGVraFB5UTRKR1A0YXN1Uy9k?=
+ =?utf-8?B?WE04NHE1RThMN0cwK0M2dGxhQW8wQmRMcDFxWDhFQVMzNVNlTCtYWEpLY2p4?=
+ =?utf-8?B?QkloSmFtZ0lRZkRRSmE0ektON3EydzF4UVFpL1NVTm1weEErSnNTOFd6T0RI?=
+ =?utf-8?B?QXNiVU40SE1qSlhoWkVHeXNZM3Zwei9ZQldEeTd2RUdmUnlEa2ZiWHZyUmVh?=
+ =?utf-8?B?dlAvOFhud2dUTTVvUUM1cTc2ZzhNVWFSUGVQUk9HeHlPN2x5RHVNYlU4aTRn?=
+ =?utf-8?B?RDBmZTZOenFJNnJ3ME1FL2I1NFhuUkRYT1FhWkpBYWJkUWV5SFl2cDM5aW9Q?=
+ =?utf-8?B?SkgvZXMwcnl6RkF5WnBUS0VtaytvZGhLNW1LczdZdjcwSHltK3FQTnIvSjc0?=
+ =?utf-8?B?NkN0Wm83OXY2MFBGSWNqRkorVmR3cTlJdGZEd1FYajNNQW5ZaWJUaUJmNlFv?=
+ =?utf-8?B?V3g5RWs0VEJWUitLSnpoaEwwc0I2Tm81TFBOVEM1THVXaUJTckZlT09VSE84?=
+ =?utf-8?B?VDJDNGVXcjIvM2pPYWVGSm9RcnIxQmMwNitFcnVSYllhY0VQUUUrQlE5SDls?=
+ =?utf-8?B?VUhUV3Z1b3JXb2dFazkyRW4vcERrVEdLc3NSWjBObVVodjAyUHRIajVwdHhE?=
+ =?utf-8?Q?PjE5YeHXcPGkKAuUuX86jSEKU?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf856291-424e-4ee0-4b24-08dbc52cddf1
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e813fcb-3fc9-4a77-6478-08dbc534e6e0
 X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6604.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2023 22:54:29.7822
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2023 23:52:01.0596
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: b6Pd6mZ3upP9SSMkuhAEEvMeiE3tV34lEwWm3t5I9CtKARUQa7k9xLa9rfOr+ZUVqpD4+Luuy6L64dz1rn5kjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6397
+X-MS-Exchange-CrossTenant-UserPrincipalName: YKZtb0giJot5ZW6z2Csp0/tkedKig8VH3VW53A/E6oyham793FADvUXmvpwoivGEojjTggfbHbpu7tWRWSbOtQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6961
 X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
 	NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
@@ -154,87 +155,113 @@ X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 10/4/23 1:33 PM, Dipen Patel wrote:
-> On 10/4/23 1:30 PM, Dipen Patel wrote:
->> On 10/4/23 5:00 AM, Bartosz Golaszewski wrote:
->>> On Thu, Sep 7, 2023 at 9:28 AM Linus Walleij <linus.walleij@linaro.org> wrote:
->>>>
->>>> On Tue, Sep 5, 2023 at 8:53 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
->>>>
->>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On 10/4/23 3:54 PM, Dipen Patel wrote:
+> On 10/4/23 1:33 PM, Dipen Patel wrote:
+>> On 10/4/23 1:30 PM, Dipen Patel wrote:
+>>> On 10/4/23 5:00 AM, Bartosz Golaszewski wrote:
+>>>> On Thu, Sep 7, 2023 at 9:28 AM Linus Walleij <linus.walleij@linaro.org> wrote:
 >>>>>
->>>>> Using struct gpio_chip is not safe as it will disappear if the
->>>>> underlying driver is unbound for any reason. Switch to using reference
->>>>> counted struct gpio_device and its dedicated accessors.
+>>>>> On Tue, Sep 5, 2023 at 8:53 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 >>>>>
->>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>>>>
+>>>>>> Using struct gpio_chip is not safe as it will disappear if the
+>>>>>> underlying driver is unbound for any reason. Switch to using reference
+>>>>>> counted struct gpio_device and its dedicated accessors.
+>>>>>>
+>>>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>>>
+>>>>> As Andy points out add <linux/cleanup.h>, with that fixed:
+>>>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>>>>>
+>>>>> I think this can be merged into the gpio tree after leaving some
+>>>>> slack for the HTE maintainer to look at it, things look so much
+>>>>> better after this.
+>>>>>
+>>>>> Yours,
+>>>>> Linus Walleij
 >>>>
->>>> As Andy points out add <linux/cleanup.h>, with that fixed:
->>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>>>> Dipen,
 >>>>
->>>> I think this can be merged into the gpio tree after leaving some
->>>> slack for the HTE maintainer to look at it, things look so much
->>>> better after this.
->>>>
->>>> Yours,
->>>> Linus Walleij
+>>>> if you could give this patch a test and possibly ack it for me to take
+>>>> it through the GPIO tree (or go the immutable tag from HTE route) then
+>>>> it would be great. This is the last user of gpiochip_find() treewide,
+>>>> so with it we could remove it entirely for v6.7.
 >>>
->>> Dipen,
+>>> Progress so far for the RFT...
 >>>
->>> if you could give this patch a test and possibly ack it for me to take
->>> it through the GPIO tree (or go the immutable tag from HTE route) then
->>> it would be great. This is the last user of gpiochip_find() treewide,
->>> so with it we could remove it entirely for v6.7.
+>>> I tried applying the patch series on 6.6-rc1 and it did not apply cleanly,
+>>> some patches I needed to manually apply and correct. With all this, it failed
+>>> compilation at some spi/spi-bcm2835 driver. I disabled that and was able to
+>>> compile. I thought I should let you know this part.
+>>>
+>>> Now, I tried to test the hte and it seems to fail finding the gpio device,
+>>> roughly around this place [1]. I thought it would be your patch series so
+>>> tried to just use 6.6rc1 without your patches and it still failed at the
+>>> same place. I have to trace back now from which kernel version it broke.
 >>
->> Progress so far for the RFT...
+>> [1].
+>> https://git.kernel.org/pub/scm/linux/kernel/git/pateldipen1984/linux.git/tree/drivers/hte/hte-tegra194.c?h=for-next#n781
 >>
->> I tried applying the patch series on 6.6-rc1 and it did not apply cleanly,
->> some patches I needed to manually apply and correct. With all this, it failed
->> compilation at some spi/spi-bcm2835 driver. I disabled that and was able to
->> compile. I thought I should let you know this part.
->>
->> Now, I tried to test the hte and it seems to fail finding the gpio device,
->> roughly around this place [1]. I thought it would be your patch series so
->> tried to just use 6.6rc1 without your patches and it still failed at the
->> same place. I have to trace back now from which kernel version it broke.
+>> of course with your patches it would fail for the gdev instead of the chip.
 > 
-> [1].
-> https://git.kernel.org/pub/scm/linux/kernel/git/pateldipen1984/linux.git/tree/drivers/hte/hte-tegra194.c?h=for-next#n781
+> Small update:
 > 
-> of course with your patches it would fail for the gdev instead of the chip.
+> I put some debugging prints in the gpio match function in the hte-tegra194.c as
+> below:
+> 
+> static int tegra_gpiochip_match(struct gpio_chip *chip, void *data)
+>  {
+> +       struct device_node *node = data;
+> +       struct fwnode_handle *fw = of_node_to_fwnode(data);
+> +       if (!fw || !chip->fwnode)
+> +               pr_err("dipen patel: fw is null\n");
+> 
+> -       pr_err("%s:%d\n", __func__, __LINE__);
+> +       pr_err("dipen patel, %s:%d: %s, %s, %s, match?:%d, fwnode name:%s\n",
+> __func__, __LINE__, chip->label, node->name, node->full_name, (chip->fwnode ==
+> fw), fw->dev->init_name);
+>         return chip->fwnode == of_node_to_fwnode(data);
+>  }
+> 
+> The output of the printfs looks like below:
+> [    3.955194] dipen patel: fw is null -----> this message started appearing
+> when I added !chip->fwnode test in the if condition line.
+> 
+> [    3.958864] dipen patel, tegra_gpiochip_match:689: tegra234-gpio, gpio,
+> gpio@c2f0000, match?:0, fwnode name:(null)
+> 
+> I conclude that chip->fwnode is empty. Any idea in which conditions that node
+> would be empty?
 
-Small update:
+sorry for spamming, one last message before I sign off for the day....
 
-I put some debugging prints in the gpio match function in the hte-tegra194.c as
-below:
+Seems, adding below in the tegra gpio driver resolved the issue I am facing, I
+was able to verify your patch series.
 
-static int tegra_gpiochip_match(struct gpio_chip *chip, void *data)
- {
-+       struct device_node *node = data;
-+       struct fwnode_handle *fw = of_node_to_fwnode(data);
-+       if (!fw || !chip->fwnode)
-+               pr_err("dipen patel: fw is null\n");
+diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra186.c
+index d87dd06db40d..a56c159d7136 100644
+--- a/drivers/gpio/gpio-tegra186.c
++++ b/drivers/gpio/gpio-tegra186.c
+@@ -989,6 +989,8 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
+                offset += port->pins;
+        }
 
--       pr_err("%s:%d\n", __func__, __LINE__);
-+       pr_err("dipen patel, %s:%d: %s, %s, %s, match?:%d, fwnode name:%s\n",
-__func__, __LINE__, chip->label, node->name, node->full_name, (chip->fwnode ==
-fw), fw->dev->init_name);
-        return chip->fwnode == of_node_to_fwnode(data);
++       gpio->gpio.fwnode = of_node_to_fwnode(pdev->dev.of_node);
++
+        return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio, gpio);
  }
 
-The output of the printfs looks like below:
-[    3.955194] dipen patel: fw is null -----> this message started appearing
-when I added !chip->fwnode test in the if condition line.
+Now, few follow up questions:
+1) is this the correct way of setting the chip fwnode in the gpio driver?
+2) Or should I use something else in hte matching function instead of fwnode so
+to avoid adding above line in the gpio driver?
 
-[    3.958864] dipen patel, tegra_gpiochip_match:689: tegra234-gpio, gpio,
-gpio@c2f0000, match?:0, fwnode name:(null)
-
-I conclude that chip->fwnode is empty. Any idea in which conditions that node
-would be empty?
-
->>
+> 
 >>>
->>> Bart
+>>>>
+>>>> Bart
+>>>
 >>
 > 
 
