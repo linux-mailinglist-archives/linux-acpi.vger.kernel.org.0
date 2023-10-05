@@ -1,177 +1,297 @@
-Return-Path: <linux-acpi+bounces-445-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-446-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F397BA938
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 20:38:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 163687BA939
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 20:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by am.mirrors.kernel.org (Postfix) with ESMTP id 554A41F22C38
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 18:38:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTP id 417ACB207A8
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 18:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CF53F4BB
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 18:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576F83FB18
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 18:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EQHq/v5R"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F354A3B795
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Oct 2023 17:57:44 +0000 (UTC)
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3FE790;
-	Thu,  5 Oct 2023 10:57:42 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id d4c20237a6c8e736; Thu, 5 Oct 2023 19:57:41 +0200
-Received: from kreacher.localnet (unknown [195.136.19.94])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by v370.home.net.pl (Postfix) with ESMTPSA id 8E47F665C39;
-	Thu,  5 Oct 2023 19:57:40 +0200 (CEST)
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, Michal Wilczynski <michal.wilczynski@intel.com>
-Cc: rafael.j.wysocki@intel.com, andriy.shevchenko@intel.com, lenb@kernel.org, dan.j.williams@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com, rui.zhang@intel.com, Michal Wilczynski <michal.wilczynski@intel.com>, Elena Reshetova <elena.reshetova@intel.com>
-Subject: Re: [PATCH v1 2/9] docs: firmware-guide: ACPI: Clarify ACPI bus concepts
-Date: Thu, 05 Oct 2023 19:57:40 +0200
-Message-ID: <2725050.mvXUDI8C0e@kreacher>
-In-Reply-To: <20230925144842.586829-3-michal.wilczynski@intel.com>
-References: <20230925144842.586829-1-michal.wilczynski@intel.com> <20230925144842.586829-3-michal.wilczynski@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6B53D38C
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Oct 2023 18:12:49 +0000 (UTC)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2074.outbound.protection.outlook.com [40.107.237.74])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD24CE;
+	Thu,  5 Oct 2023 11:12:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XwuiJqknDlH/QgBUkBuaBjK55Zdc6w1FpTrttT1WP/5nAgnNgTSfn49e00+lJv9kMeSMmT692JFbh8/YAa/Fzldo23X7eJCvSSmkHYfKvgkwhSscWPIt++K54VNbS2bKk1e/FhN8EKqGjuGU0fR62DnJidETUAuSvU3S5yUtc0Lo09agPDorlLUoL9BhTQGGC1HzOx1QSMmD1Pk74U1pknwsV5y8QZizQvzpooCbn283iO/778lwuN41YQX6Fg+3BInhTC3w0wf8LICwuXIFM06lsY6AnmIWs5B+LXDgdOuvGojb47q/ALGWSklyblAOkZ5rWc/tHAMhc23mhMcQog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mOauRLuwCA5+otNQIaiAt1FIorRJ9/iNda9U7+9PPKM=;
+ b=E8EbEstfeE3GMXFTy8xkllVMCpcjit3pTSN2K5d7SkajJ/K/geMY4ihA4wO0Wbi81CBhYqdOdCWuIQpjGL5U/EiRay2/zaomLBAH9Dw3gP9QpSSOz7IcO0a+jAfEwpW4aIkYKbVeYPnZp8R4q4CiDdk5Cg1FiJIf8Q1OKl5BHvUNunNg8RKjdwBQlRIKJOxD2TrArsb/tI6Hh/5nNLD5tXrBAQJlbiCjRLfk0nw7DJidIsFgckkC+sYpEAi8qIJiXLQZ3SvBLo/kjyJdI7UTrK7WjUu9+NX20rsI8RIqbbBm6ZHbbVk/VUk4c5Vvcag44uFpEBdzyWdI7EJEN5xWfw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mOauRLuwCA5+otNQIaiAt1FIorRJ9/iNda9U7+9PPKM=;
+ b=EQHq/v5RKJYFF2nZDYHA5DyALwa5aIqi/LcgvruDEor9HJEOh0Qo5c/4KlEUgSRpJn8DYPuEWP8bn369e0pcqQN+9Kmo51P7Bg6vGTQwCZDatcP6Kvlk0TB5M2TODmGRqCXFuPlpItJXU2PEW+j+kjhT0JiqvHFyYrmvdXAJRVZlpMksV6xB2+4vvldWpPu6P6eRoC+Xw82DT+XYeUCDHCONEH0OweuFA+/xHO6Jj2s/6oXUOaeiz0eoRZjjmn1vLOHyr4ts/Y1ICaaoGV7+td/yiBH+qbMgNwpQPx/Zn0kLMcvJlSakRNoHoQF4OhjXtzwAbFnNePtcN7v4gEg32Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA1PR12MB6604.namprd12.prod.outlook.com (2603:10b6:208:3a0::7)
+ by MN0PR12MB5761.namprd12.prod.outlook.com (2603:10b6:208:374::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.26; Thu, 5 Oct
+ 2023 18:12:42 +0000
+Received: from IA1PR12MB6604.namprd12.prod.outlook.com
+ ([fe80::8814:146:e28e:6eea]) by IA1PR12MB6604.namprd12.prod.outlook.com
+ ([fe80::8814:146:e28e:6eea%4]) with mapi id 15.20.6838.016; Thu, 5 Oct 2023
+ 18:12:41 +0000
+Message-ID: <647d3b52-1daf-175d-d5c2-45653dd2604c@nvidia.com>
+Date: Thu, 5 Oct 2023 11:12:37 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [RFT PATCH 14/21] hte: tegra194: don't access struct gpio_chip
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Hans de Goede <hdegoede@redhat.com>,
+ Mark Gross <markgross@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+ timestamp@lists.linux.dev, linux-tegra@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+References: <20230905185309.131295-1-brgl@bgdev.pl>
+ <20230905185309.131295-15-brgl@bgdev.pl>
+ <CACRpkda9=VULj4Cy_sit-UpUQnVEbS-RJKAeULVCw8ZCRTq1sw@mail.gmail.com>
+ <CAMRc=MdTk1B4MEh9C624Upm_EcaQgJd9OU-AGfU0G-DU1+qk6A@mail.gmail.com>
+ <36b17290-c643-8d8e-e82b-49afa6b34fbb@nvidia.com>
+ <3624e973-d09a-d211-c6d0-d0ffb8c20c4b@nvidia.com>
+ <90b5f887-8af4-a80d-ea4d-cf2199752de4@nvidia.com>
+ <0e7cae42-0b81-c038-8beb-49102feea8a6@nvidia.com>
+ <CAMRc=McSG6qajxt6P3vWQEeT63Pk5tggD05pUoMD1zd5ApZxgA@mail.gmail.com>
+Content-Language: en-US
+X-Nvconfidentiality: public
+From: Dipen Patel <dipenp@nvidia.com>
+In-Reply-To: <CAMRc=McSG6qajxt6P3vWQEeT63Pk5tggD05pUoMD1zd5ApZxgA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR02CA0007.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::20) To IA1PR12MB6604.namprd12.prod.outlook.com
+ (2603:10b6:208:3a0::7)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrgeeggdduudehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepudefpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhhvughimhhmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepmhhitghhrghlrdifihhltgiihihnshhkihesihhnthgvlhdrtghomhdprhgt
- phhtthhopehrrghfrggvlhdrjhdrfiihshhotghkihesihhnthgvlhdrtghomhdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehinhhtvghlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=13 Fuz1=13 Fuz2=13
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-	SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR12MB6604:EE_|MN0PR12MB5761:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3ec7cfcc-4ebe-4eab-610c-08dbc5ceaa66
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	vnyxgrq2YhffzHgft5R9+OmaPWj4bnqQvVxoBBMxAFB6QAxfKJTxPqf78wO9GQEwLGqVvKZU20flSOAAY8oACAERYagphnU2MRQDMg25uMcq1j5ioe0sBz2Y0JOUs5pH0sdN9e04DoAPPZODYB/Fp8L1a+ysA0Ql1dfFW3Lg2AuuHrYjgzLr+4dpAyLu/ntOI3qibe0i87EYvRM5829VWftp5N0CJRO4TpqDMfA3/ATfM02Sz+6o+4e8d4Zq4ykqb5KgrrLEk9aYnGbA1uMO6or5o9ft/Yrs3Pd3NM2pInR3HFK5HjbTe4U7Zdooh7mNKTQeYDeqM2Fb8tZomRmS/V03Y2gfm82udY2KLye8+fjpo5iM7X1t15gaeyTEW2cJFyDut7gV22iTrREVdMgCFtllZPRKdFdaOUVWzM9XmiiOygWwGp2PlE1mDZctLqE+eB7qx8oLOmdPk2gTKjFFxZHC97ADoTXXOGfnpoNQ10hpsXw1zerjqpTrneF4P1OVjpxqUdIJ8s3/DL0s8LiUNRKbbaEpUl9gVV/iJaPBi0L5uHv74D/m21JW/irN76rUGkZLfOwRDesM7AvcuU3JB3g/GapY0F01ferxrk1VCPIacVpHTspayHI0w5Vmtl8GMFj+PbFc4zWFyLlp3LyYFg7Yt+zQ+VWL2PTmsZz6fvH1zbg5I0kLkemNMuceQvuibCvSfzEHvfeE20+gAIW+vzxqvWWhE1r1jxg3AkXmfjA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB6604.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(366004)(376002)(346002)(39860400002)(230922051799003)(186009)(451199024)(1800799009)(64100799003)(83380400001)(7416002)(2906002)(31686004)(5660300002)(8676002)(36756003)(26005)(4326008)(2616005)(6486002)(41300700001)(66476007)(54906003)(8936002)(66946007)(6916009)(316002)(478600001)(53546011)(66556008)(966005)(31696002)(86362001)(6512007)(38100700002)(6666004)(6506007)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MFk2RTBjYVFwRnZUR1d4cG5xaHduWVBtazJhSlFjaDBKTkdNQndnMjk0cURl?=
+ =?utf-8?B?TU5LWm4yWDQ2Z3ljeHZseGVFU0d6VlZHaUg3R1JmSXY1Z21qZ1Y4OU8wRWVD?=
+ =?utf-8?B?anM4aFc0TDhhOEx5YlpmUDBDV2JyZTZ2WHhqTVk5SnNQbGd3d2lvK25WODI4?=
+ =?utf-8?B?ODRmRmpSb2s4UjhNeDRtYytJYXhTbDJabnNuMWtDY2QycU4ySEo1MkwzZm9a?=
+ =?utf-8?B?dEtBZENJY0ErakdPcnNmUC9KRC9QZitwdXVobjJnQlJReXRZL2t6SFBNalVs?=
+ =?utf-8?B?Z21EbmM0NklMZGlOQ25lUnpOeGhXaXg1VCtjWk9rOU9ZcEpGTjBpWmUxZXlT?=
+ =?utf-8?B?dTZJZHlWSjRMVXhvbWhxbEFwQXdRclZLVVpoWFd1YWxQOFAvSjZFdDdWTUFG?=
+ =?utf-8?B?U2NCbHR1TmNQdlZNcjFhakRwREt2SC9uK3p4Y205UkM1dGhlc3dhcTl1ZG9L?=
+ =?utf-8?B?S3hGUEpwV3djdXJ5QUMyaitlR2RuTlpkY2trWVhoSkdTMlI1eTk3TlhKTWJY?=
+ =?utf-8?B?MFJ0Skd0elBmQ3RJZUFUak5lN2M3Nm81ZDRVeTZHQXBuM2ZZL1ZqVmF4SW5V?=
+ =?utf-8?B?R2tkVjU1UWo3MWVmODdFYUttUXFuSklxdHJ5UXBDYlhtbGVCWjF1WkVSaDFG?=
+ =?utf-8?B?Z3JkMFJqd1FPb2pMR1RobjhvVEpERC9sZ01mN2Zjd3VBb1F5MmpINW5pbEVn?=
+ =?utf-8?B?M3ovbHBxZWlrNkt4WDJYZktsYVZmdjRmRThiMjRwc0dDTGtwako0TzVBa3k4?=
+ =?utf-8?B?ZXBGaGJvMTB2bzZhVkU5cXhwQnNScS9tQzhIU2hCR3h6TnFJQ0wzQ0hoeWd4?=
+ =?utf-8?B?SXNXeDZyaEJQRm9HbDJwVnB6QVBvVnFmZFA2MWV1Yno0R3BNY3hYeitYcUlM?=
+ =?utf-8?B?Rjc0ZHlrNGI4bEVBdXlOWXRsbjVuZzVvTWIyRWdvU1lybE4ydUhHNDZDbG5N?=
+ =?utf-8?B?cXpZMkpVZGMwaDAyakkvaWpYajFZOE9pZnZvdXVFVkR0NFBjQlc0ei9KVnNw?=
+ =?utf-8?B?RzRlQmVrMTFpSU1kakJ3Z3ZVakFybFhuMlBDOXA2KzVnMldwRks5Tk11cnJo?=
+ =?utf-8?B?N3NVWXgwTGtqWE5BZjBudEdjMVNBeGwvVy9BZ0N4ZXEvOVhTU1hBRWRDNDZO?=
+ =?utf-8?B?b1plQ0czbHRHNFQzWDJuK0l3dlo1Z292L2FrRk5rR2Q0UGdGdnlzSUtaMC85?=
+ =?utf-8?B?eTRxdlZ6VS9WZ1NrL2lPQjVvMWZ3algvRHpaU0FJYUVFVmdnNnV3RVpoMFhy?=
+ =?utf-8?B?d0JoaUVXQm9PZFllKzVwdXlQdDhvVzZaSVpUdVN1bWcrc0tpUWY1V0RuRlN0?=
+ =?utf-8?B?MVAxZE1hdlIxU3ZoSGJrUE0weGNST3FZc2RjS1k1cXhTWUg2cUJWL1JOTU9l?=
+ =?utf-8?B?anc1UnNDZ2k2d3pyMkJzUlovaE44V0dyWDkxOXRReGdqWjIrU1d4TytIL0d3?=
+ =?utf-8?B?Z0hCVVVOUEhCeTMxL3RlNGVKVER0NDFZUUYxb040eERDZnErYWlUTkY0VVZa?=
+ =?utf-8?B?M2tXQ25JQmRLRFI1bUYzUXZUNWw2ejVIOW5SMDhCcCtZZUUvaHowYUJxRjR6?=
+ =?utf-8?B?alJrdXNMWDlLVUJvWDM5ZlV2RjAyREJJWmZqTXdaZlRCbVRmMkR5NkIvcHgv?=
+ =?utf-8?B?OGdDZmQ3dGhwZ1VjcEFoOVZjTDRQdWU0enJvdldtNmh5OTBTK1kyRXZJTUdG?=
+ =?utf-8?B?TFFJRVlOVkFnUnBhK1ErcjNBS0V3SUEvNDNwRFF4c1F4WVFSRnpwU3lmaGJq?=
+ =?utf-8?B?SkQ0dysxbTM3Q2tBUDFXUHJMTUtrZldMNUZjTVNTNUFZRzRLV3NDKzV1S3o4?=
+ =?utf-8?B?YTBSQXJyOUEyajVMbHhveDRPNHMxVkFKZlN2TjBSWjUzeWdlU1BCS1h2d2Vq?=
+ =?utf-8?B?S2FVSndjdFZZemlrOHZhdlY1RENXVlBoNENNa2taRW9iVWlXWnRtUjhBbUc0?=
+ =?utf-8?B?SHpLVjdER3JkMXZFT2E5aXRlRDVZRldJaTZ3ZVdzaElRNGwxS0ltbFJ6ZGk3?=
+ =?utf-8?B?UG9wMGJXT05GcEdYNUMxdTFDU0lwWTRxcC9Vc1M4MHJLS1d5V0tyWG1FZDdJ?=
+ =?utf-8?B?ZityQzB1ZHgvVGpGNVhhOWxhblJMMm42UVh0Sy9QVWxKZUpQeWFpeEZ0NEpx?=
+ =?utf-8?Q?EBEiHGX1qdC87Jy5C+Wazfaru?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ec7cfcc-4ebe-4eab-610c-08dbc5ceaa66
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6604.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2023 18:12:41.8041
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MeSzoBoSWZ7Y5vjInDGkVlmA1F8yz2ha8eZ296sz/QyMxa4olsl25Utw8BKzj/9ptbi3mer9ab71cKN9fu781w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5761
+X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+	SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Monday, September 25, 2023 4:48:35 PM CEST Michal Wilczynski wrote:
-> Some devices implement ACPI driver as a way to manage devices
-> enumerated by the ACPI. This might be confusing as a preferred way to
-> implement a driver for devices not connected to any bus is a platform
-> driver, as stated in the documentation. Clarify relationships between
-> ACPI device, platform device and ACPI entries.
+On 10/5/23 6:48 AM, Bartosz Golaszewski wrote:
+> On Thu, Oct 5, 2023 at 1:52 AM Dipen Patel <dipenp@nvidia.com> wrote:
+>>
+>> On 10/4/23 3:54 PM, Dipen Patel wrote:
+>>> On 10/4/23 1:33 PM, Dipen Patel wrote:
+>>>> On 10/4/23 1:30 PM, Dipen Patel wrote:
+>>>>> On 10/4/23 5:00 AM, Bartosz Golaszewski wrote:
+>>>>>> On Thu, Sep 7, 2023 at 9:28 AM Linus Walleij <linus.walleij@linaro.org> wrote:
+>>>>>>>
+>>>>>>> On Tue, Sep 5, 2023 at 8:53 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+>>>>>>>
+>>>>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>>>>>>
+>>>>>>>> Using struct gpio_chip is not safe as it will disappear if the
+>>>>>>>> underlying driver is unbound for any reason. Switch to using reference
+>>>>>>>> counted struct gpio_device and its dedicated accessors.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>>>>>
+>>>>>>> As Andy points out add <linux/cleanup.h>, with that fixed:
+>>>>>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>>>>>>>
+>>>>>>> I think this can be merged into the gpio tree after leaving some
+>>>>>>> slack for the HTE maintainer to look at it, things look so much
+>>>>>>> better after this.
+>>>>>>>
+>>>>>>> Yours,
+>>>>>>> Linus Walleij
+>>>>>>
+>>>>>> Dipen,
+>>>>>>
+>>>>>> if you could give this patch a test and possibly ack it for me to take
+>>>>>> it through the GPIO tree (or go the immutable tag from HTE route) then
+>>>>>> it would be great. This is the last user of gpiochip_find() treewide,
+>>>>>> so with it we could remove it entirely for v6.7.
+>>>>>
+>>>>> Progress so far for the RFT...
+>>>>>
+>>>>> I tried applying the patch series on 6.6-rc1 and it did not apply cleanly,
+>>>>> some patches I needed to manually apply and correct. With all this, it failed
+>>>>> compilation at some spi/spi-bcm2835 driver. I disabled that and was able to
+>>>>> compile. I thought I should let you know this part.
+>>>>>
+>>>>> Now, I tried to test the hte and it seems to fail finding the gpio device,
+>>>>> roughly around this place [1]. I thought it would be your patch series so
+>>>>> tried to just use 6.6rc1 without your patches and it still failed at the
+>>>>> same place. I have to trace back now from which kernel version it broke.
+>>>>
+>>>> [1].
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/pateldipen1984/linux.git/tree/drivers/hte/hte-tegra194.c?h=for-next#n781
+>>>>
+>>>> of course with your patches it would fail for the gdev instead of the chip.
+>>>
+>>> Small update:
+>>>
+>>> I put some debugging prints in the gpio match function in the hte-tegra194.c as
+>>> below:
+>>>
+>>> static int tegra_gpiochip_match(struct gpio_chip *chip, void *data)
+>>>  {
+>>> +       struct device_node *node = data;
+>>> +       struct fwnode_handle *fw = of_node_to_fwnode(data);
+>>> +       if (!fw || !chip->fwnode)
+>>> +               pr_err("dipen patel: fw is null\n");
+>>>
+>>> -       pr_err("%s:%d\n", __func__, __LINE__);
+>>> +       pr_err("dipen patel, %s:%d: %s, %s, %s, match?:%d, fwnode name:%s\n",
+>>> __func__, __LINE__, chip->label, node->name, node->full_name, (chip->fwnode ==
+>>> fw), fw->dev->init_name);
+>>>         return chip->fwnode == of_node_to_fwnode(data);
+>>>  }
+>>>
+>>> The output of the printfs looks like below:
+>>> [    3.955194] dipen patel: fw is null -----> this message started appearing
+>>> when I added !chip->fwnode test in the if condition line.
+>>>
+>>> [    3.958864] dipen patel, tegra_gpiochip_match:689: tegra234-gpio, gpio,
+>>> gpio@c2f0000, match?:0, fwnode name:(null)
+>>>
+>>> I conclude that chip->fwnode is empty. Any idea in which conditions that node
+>>> would be empty?
+>>
+>> sorry for spamming, one last message before I sign off for the day....
+>>
+>> Seems, adding below in the tegra gpio driver resolved the issue I am facing, I
+>> was able to verify your patch series.
+>>
+>> diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra186.c
+>> index d87dd06db40d..a56c159d7136 100644
+>> --- a/drivers/gpio/gpio-tegra186.c
+>> +++ b/drivers/gpio/gpio-tegra186.c
+>> @@ -989,6 +989,8 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
+>>                 offset += port->pins;
+>>         }
+>>
+>> +       gpio->gpio.fwnode = of_node_to_fwnode(pdev->dev.of_node);
+>> +
+>>         return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio, gpio);
+>>  }
+>>
+>> Now, few follow up questions:
+>> 1) is this the correct way of setting the chip fwnode in the gpio driver?
 > 
-> Suggested-by: Elena Reshetova <elena.reshetova@intel.com>
-> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
-> ---
->  Documentation/firmware-guide/acpi/enumeration.rst | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+> You shouldn't need this. This driver already does:
 > 
-> diff --git a/Documentation/firmware-guide/acpi/enumeration.rst b/Documentation/firmware-guide/acpi/enumeration.rst
-> index 56d9913a3370..f56cc79a9e83 100644
-> --- a/Documentation/firmware-guide/acpi/enumeration.rst
-> +++ b/Documentation/firmware-guide/acpi/enumeration.rst
-> @@ -64,6 +64,19 @@ If the driver needs to perform more complex initialization like getting and
->  configuring GPIOs it can get its ACPI handle and extract this information
->  from ACPI tables.
->  
-> +ACPI bus
-> +====================
-> +
-> +Historically some devices not connected to any bus were represented as ACPI
-> +devices, and had to implement ACPI driver. This is not a preferred way for new
-> +drivers. As explained above devices not connected to any bus should implement
-> +platform driver. ACPI device would be created during enumeration nonetheless,
-> +and would be accessible through ACPI_COMPANION() macro, and the ACPI handle would
-> +be accessible through ACPI_HANDLE() macro. ACPI device is meant to describe
-> +information related to ACPI entry e.g. handle of the ACPI entry. Think -
-> +ACPI device interfaces with the FW, and the platform device with the rest of
-> +the system.
-> +
->  DMA support
->  ===========
+>     gpio->gpio.parent = &pdev->dev;
+> 
+> so fwnode should be assigned in gpiochip_add_data_with_key(). Can you
+> check why this doesn't happen?
 
-I rewrote the above entirely, so here's a new patch to replace this one:
+I do not see anywhere chip->fwnode being set in the gpiochip_add_* function.
+The only reference I see is here [1]. Does it mean I need to change my match
+function from:
 
----
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Subject: [PATCH v2 2/9] ACPI: docs: enumeration: Clarify ACPI bus concepts
+chip->fwnode == of_node_to_fwnode(data)
 
-In some cases, ACPI drivers are implemented as a way to manage devices
-enumerated with the help of the platform firmware through ACPI.
+to:
+dev_fwnode(chip->parent) == of_node_to_fwnode(data)?
 
-This might be confusing, since the preferred way to implement a driver
-for a device that cannot be enumerated natively, is a platform
-driver, as stated in the documentation.
+[1]:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpio/gpiolib.c?h=v6.6-rc1#n767
 
-Clarify relationships between ACPI device objects, platform devices and
-ACPI Namespace entries.
-
-Suggested-by: Elena Reshetova <elena.reshetova@intel.com>
-Co-developed-by: Michal Wilczynski <michal.wilczynski@intel.com>
-Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- Documentation/firmware-guide/acpi/enumeration.rst |   43 ++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
-
-Index: linux-pm/Documentation/firmware-guide/acpi/enumeration.rst
-===================================================================
---- linux-pm.orig/Documentation/firmware-guide/acpi/enumeration.rst
-+++ linux-pm/Documentation/firmware-guide/acpi/enumeration.rst
-@@ -64,6 +64,49 @@ If the driver needs to perform more comp
- configuring GPIOs it can get its ACPI handle and extract this information
- from ACPI tables.
- 
-+ACPI device objects
-+===================
-+
-+Generally speaking, there are two categories of devices in a system in which
-+ACPI is used as an interface between the platform firmware and the OS: Devices
-+that can be discovered and enumerated natively, through a protocol defined for
-+the specific bus that they are on (for example, configuration space in PCI),
-+without the platform firmware assistance, and devices that need to be described
-+by the platform firmware so that they can be discovered.  Still, for any device
-+known to the platform firmware, regardless of which category it falls into,
-+there can be a corresponding ACPI device object in the ACPI Namespace in which
-+case the Linux kernel will create a struct acpi_device object based on it for
-+that device.
-+
-+Those struct acpi_device objects are never used for binding drivers to natively
-+discoverable devices, because they are represented by other types of device
-+objects (for example, struct pci_dev for PCI devices) that are bound to by
-+device drivers (the corresponding struct acpi_device object is then used as
-+an additional source of information on the configuration of the given device).
-+Moreover, the core ACPI device enumeration code creates struct platform_device
-+objects for the majority of devices that are discovered and enumerated with the
-+help of the platform firmware and those platform device objects can be bound to
-+by platform drivers in direct analogy with the natively enumerable devices
-+case.  Therefore it is logically inconsistent and so generally invalid to bind
-+drivers to struct acpi_device objects, including drivers for devices that are
-+discovered with the help of the platform firmware.
-+
-+Historically, ACPI drivers that bound directly to struct acpi_device objects
-+were implemented for some devices enumerated with the help of the platform
-+firmware, but this is not recommended for any new drivers.  As explained above,
-+platform device objects are created for those devices as a rule (with a few
-+exceptions that are not relevant here) and so platform drivers should be used
-+for handling them, even though the corresponding ACPI device objects are the
-+only source of device configuration information in that case.
-+
-+For every device having a corresponding struct acpi_device object, the pointer
-+to it is returned by the ACPI_COMPANION() macro, so it is always possible to
-+get to the device configuration information stored in the ACPI device object
-+this way.  Accordingly, struct acpi_device can be regarded as a part of the
-+interface between the kernel and the ACPI Namespace, whereas device objects of
-+other types (for example, struct pci_dev or struct platform_device) are used
-+for interacting with the rest of the system.
-+
- DMA support
- ===========
- 
-
-
+> 
+> Bart
+> 
+>> 2) Or should I use something else in hte matching function instead of fwnode so
+>> to avoid adding above line in the gpio driver?
+>>
+>>>
+>>>>>
+>>>>>>
+>>>>>> Bart
+>>>>>
+>>>>
+>>>
+>>
 
 
