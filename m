@@ -1,295 +1,155 @@
-Return-Path: <linux-acpi+bounces-456-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-457-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997457BAB8A
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 22:40:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 144E67BAF96
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 02:32:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sv.mirrors.kernel.org (Postfix) with ESMTP id 4B953281F71
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 20:40:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTP id 4D92FB209A5
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 00:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B3E41E35
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 20:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C7D15B4
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 00:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ksipxG7G"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ClOq/JHe"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4E64176B
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Oct 2023 19:47:20 +0000 (UTC)
-Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF87CE7
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Oct 2023 12:47:17 -0700 (PDT)
-Received: by mail-ua1-x934.google.com with SMTP id a1e0cc1a2514c-7abda795363so584922241.0
-        for <linux-acpi@vger.kernel.org>; Thu, 05 Oct 2023 12:47:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1696535237; x=1697140037; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fLJjywY8LzZjMJ4Ua1HVIFQQKdDKE5FDxSdi//HT1kY=;
-        b=ksipxG7GnTOnJHPTocs8DMa8TTDqe/zqjzlUHoZDTh7o/xP6ti8SfoVP/KqS449Oi+
-         eesDdbM6FsviLCj5O99A5fsw1Y7vXgjWerHoRpBgSSe/5cMkINWDoNfwxTTrX1YFuYs3
-         DBqfPfBbcJrSxvEo94EgRtHOQoY83qsbr5F206p1T2R5QfspgYWvQG0Oci8y+DxZNzej
-         aJmN4hvekDQ33cONcYGoK/g2wJrjlGfjHgz2uFxMYhQZG7DLEyyIp6ZuCCewW1I1G2rh
-         7ZXl39+SlYPgLqq5k0C27L73YNerFgs/cs+GTuX+r7VAXLHQOvHjz/jtIp6ZInH321Mb
-         kIRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696535237; x=1697140037;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fLJjywY8LzZjMJ4Ua1HVIFQQKdDKE5FDxSdi//HT1kY=;
-        b=C1T0FHU4iQobPyoYOQeLOyKNvTKyXW18W1yvT2nJKiOKAVKQDY6Wkp14CbNUrd49jV
-         sQsNoDFDDtcbniqLQUm2l6U8SdpPnFalT5upKrYF5HUia9tEYIu8G/eqEDjwnepKpjP3
-         QWAuxAuKWAyFM/jaJbgmHOP5KCnBs6/rZ340FursmldHD6PrYL1FeruTP+Qu5cguc9od
-         QGreovszxG+nAS4Q5BJFmaH5AqmI8quo3hQWW3uRK2wzqzVWAdANyWEd4EFJxYx5AnbM
-         Ad+Q0EgR0M77w+kXER0zhX+2ABZTjmzqDONum4a4r0m0HREqH9nUBJEuA+L8lflJxuDB
-         x0Pg==
-X-Gm-Message-State: AOJu0YwKnapmwifcqE/BcPR5Ne1tcI2Iwv+XxgQGOGf+SJdn9nG2eTJL
-	dAIVmzmH18vsXuExOTkYwfojcRrTN39HuB2kTPx6Qw==
-X-Google-Smtp-Source: AGHT+IGeCrpg8IFyQIUwf3s5xsWyEwFqrBJpZnT7s4icsTYPD3Db8KtwxkcdehXnz4szYazm/HNmJ5jwZdPOio+yInU=
-X-Received: by 2002:a67:f65a:0:b0:44d:3f96:6c61 with SMTP id
- u26-20020a67f65a000000b0044d3f966c61mr6494546vso.30.1696535235393; Thu, 05
- Oct 2023 12:47:15 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4C341A9B
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Oct 2023 23:00:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE4AD4F;
+	Thu,  5 Oct 2023 16:00:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696546838; x=1728082838;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=YSc5DqPuCbhoQCscHYL5riDMSg61/UNw+XjJOkVlsYk=;
+  b=ClOq/JHenUDs/DEFwcalJZTrpVTEXzdZquRfQfsadWKjZsnZlxF25IjJ
+   Cvti4DllVy/HC6ZL+qVHDs2M2ru0hNT0+RsZK1y7tkZLWg/2gAt4H0Brl
+   9j7m4LE2C+7ieRtCDzkYPnUCjjxH6fwvot1tSyzDwLmC8F9BJ4e00nh75
+   IZj0Jo0/0kqFPN+X/S1R/uaD90tv6AxJqowXXZFmJHl54dkp/5NvdhK1s
+   kZOqjsX4k78BFQSz72pmRXQEWqybfqU+KXg/94Ivv4RcTOLAVSZ6qryQD
+   8QHEHOHG7QNAsNDxMdg4itfX+bYRajI3P60VNsDV6nzmdPM1AcvIzMfvK
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="387516067"
+X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
+   d="scan'208";a="387516067"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 16:00:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="895648208"
+X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
+   d="scan'208";a="895648208"
+Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
+  by fmsmga001.fm.intel.com with ESMTP; 05 Oct 2023 15:59:05 -0700
+Received: from kbuild by c3b01524d57c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qoXKb-000M09-0N;
+	Thu, 05 Oct 2023 23:00:33 +0000
+Date: Fri, 6 Oct 2023 07:00:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+	devel@acpica.org, linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge 127/130]
+ drivers/thermal/gov_power_allocator.c:127:13: warning: unused variable 'ret'
+Message-ID: <202310060618.FJ4z229a-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-15-brgl@bgdev.pl>
- <CACRpkda9=VULj4Cy_sit-UpUQnVEbS-RJKAeULVCw8ZCRTq1sw@mail.gmail.com>
- <CAMRc=MdTk1B4MEh9C624Upm_EcaQgJd9OU-AGfU0G-DU1+qk6A@mail.gmail.com>
- <36b17290-c643-8d8e-e82b-49afa6b34fbb@nvidia.com> <3624e973-d09a-d211-c6d0-d0ffb8c20c4b@nvidia.com>
- <90b5f887-8af4-a80d-ea4d-cf2199752de4@nvidia.com> <0e7cae42-0b81-c038-8beb-49102feea8a6@nvidia.com>
- <CAMRc=McSG6qajxt6P3vWQEeT63Pk5tggD05pUoMD1zd5ApZxgA@mail.gmail.com>
- <647d3b52-1daf-175d-d5c2-45653dd2604c@nvidia.com> <CAMRc=Mc_+LxcbV+=KPwAh4DinJAAetHrK+W3jbNp4AZBzg63TA@mail.gmail.com>
- <b0f37601-39d6-618e-fa16-3b1c9e7c0e2c@nvidia.com>
-In-Reply-To: <b0f37601-39d6-618e-fa16-3b1c9e7c0e2c@nvidia.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 5 Oct 2023 21:47:04 +0200
-Message-ID: <CAMRc=MdKg8cOvNFw3ay-0XVCagWE7ArS7HgPZk-YrmeDJ4c4cw@mail.gmail.com>
-Subject: Re: [RFT PATCH 14/21] hte: tegra194: don't access struct gpio_chip
-To: Dipen Patel <dipenp@nvidia.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Linus Walleij <linus.walleij@linaro.org>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
-	Tony Lindgren <tony@atomide.com>, Russell King <linux@armlinux.org.uk>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Hans de Goede <hdegoede@redhat.com>, 
-	Mark Gross <markgross@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	timestamp@lists.linux.dev, linux-tegra@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, Oct 5, 2023 at 9:43=E2=80=AFPM Dipen Patel <dipenp@nvidia.com> wrot=
-e:
->
-> On 10/5/23 12:05 PM, Bartosz Golaszewski wrote:
-> > On Thu, Oct 5, 2023 at 8:12=E2=80=AFPM Dipen Patel <dipenp@nvidia.com> =
-wrote:
-> >>
-> >> On 10/5/23 6:48 AM, Bartosz Golaszewski wrote:
-> >>> On Thu, Oct 5, 2023 at 1:52=E2=80=AFAM Dipen Patel <dipenp@nvidia.com=
-> wrote:
-> >>>>
-> >>>> On 10/4/23 3:54 PM, Dipen Patel wrote:
-> >>>>> On 10/4/23 1:33 PM, Dipen Patel wrote:
-> >>>>>> On 10/4/23 1:30 PM, Dipen Patel wrote:
-> >>>>>>> On 10/4/23 5:00 AM, Bartosz Golaszewski wrote:
-> >>>>>>>> On Thu, Sep 7, 2023 at 9:28=E2=80=AFAM Linus Walleij <linus.wall=
-eij@linaro.org> wrote:
-> >>>>>>>>>
-> >>>>>>>>> On Tue, Sep 5, 2023 at 8:53=E2=80=AFPM Bartosz Golaszewski <brg=
-l@bgdev.pl> wrote:
-> >>>>>>>>>
-> >>>>>>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >>>>>>>>>>
-> >>>>>>>>>> Using struct gpio_chip is not safe as it will disappear if the
-> >>>>>>>>>> underlying driver is unbound for any reason. Switch to using r=
-eference
-> >>>>>>>>>> counted struct gpio_device and its dedicated accessors.
-> >>>>>>>>>>
-> >>>>>>>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro=
-.org>
-> >>>>>>>>>
-> >>>>>>>>> As Andy points out add <linux/cleanup.h>, with that fixed:
-> >>>>>>>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> >>>>>>>>>
-> >>>>>>>>> I think this can be merged into the gpio tree after leaving som=
-e
-> >>>>>>>>> slack for the HTE maintainer to look at it, things look so much
-> >>>>>>>>> better after this.
-> >>>>>>>>>
-> >>>>>>>>> Yours,
-> >>>>>>>>> Linus Walleij
-> >>>>>>>>
-> >>>>>>>> Dipen,
-> >>>>>>>>
-> >>>>>>>> if you could give this patch a test and possibly ack it for me t=
-o take
-> >>>>>>>> it through the GPIO tree (or go the immutable tag from HTE route=
-) then
-> >>>>>>>> it would be great. This is the last user of gpiochip_find() tree=
-wide,
-> >>>>>>>> so with it we could remove it entirely for v6.7.
-> >>>>>>>
-> >>>>>>> Progress so far for the RFT...
-> >>>>>>>
-> >>>>>>> I tried applying the patch series on 6.6-rc1 and it did not apply=
- cleanly,
-> >>>>>>> some patches I needed to manually apply and correct. With all thi=
-s, it failed
-> >>>>>>> compilation at some spi/spi-bcm2835 driver. I disabled that and w=
-as able to
-> >>>>>>> compile. I thought I should let you know this part.
-> >>>>>>>
-> >>>>>>> Now, I tried to test the hte and it seems to fail finding the gpi=
-o device,
-> >>>>>>> roughly around this place [1]. I thought it would be your patch s=
-eries so
-> >>>>>>> tried to just use 6.6rc1 without your patches and it still failed=
- at the
-> >>>>>>> same place. I have to trace back now from which kernel version it=
- broke.
-> >>>>>>
-> >>>>>> [1].
-> >>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/pateldipen1984/lin=
-ux.git/tree/drivers/hte/hte-tegra194.c?h=3Dfor-next#n781
-> >>>>>>
-> >>>>>> of course with your patches it would fail for the gdev instead of =
-the chip.
-> >>>>>
-> >>>>> Small update:
-> >>>>>
-> >>>>> I put some debugging prints in the gpio match function in the hte-t=
-egra194.c as
-> >>>>> below:
-> >>>>>
-> >>>>> static int tegra_gpiochip_match(struct gpio_chip *chip, void *data)
-> >>>>>  {
-> >>>>> +       struct device_node *node =3D data;
-> >>>>> +       struct fwnode_handle *fw =3D of_node_to_fwnode(data);
-> >>>>> +       if (!fw || !chip->fwnode)
-> >>>>> +               pr_err("dipen patel: fw is null\n");
-> >>>>>
-> >>>>> -       pr_err("%s:%d\n", __func__, __LINE__);
-> >>>>> +       pr_err("dipen patel, %s:%d: %s, %s, %s, match?:%d, fwnode n=
-ame:%s\n",
-> >>>>> __func__, __LINE__, chip->label, node->name, node->full_name, (chip=
-->fwnode =3D=3D
-> >>>>> fw), fw->dev->init_name);
-> >>>>>         return chip->fwnode =3D=3D of_node_to_fwnode(data);
-> >>>>>  }
-> >>>>>
-> >>>>> The output of the printfs looks like below:
-> >>>>> [    3.955194] dipen patel: fw is null -----> this message started =
-appearing
-> >>>>> when I added !chip->fwnode test in the if condition line.
-> >>>>>
-> >>>>> [    3.958864] dipen patel, tegra_gpiochip_match:689: tegra234-gpio=
-, gpio,
-> >>>>> gpio@c2f0000, match?:0, fwnode name:(null)
-> >>>>>
-> >>>>> I conclude that chip->fwnode is empty. Any idea in which conditions=
- that node
-> >>>>> would be empty?
-> >>>>
-> >>>> sorry for spamming, one last message before I sign off for the day..=
-..
-> >>>>
-> >>>> Seems, adding below in the tegra gpio driver resolved the issue I am=
- facing, I
-> >>>> was able to verify your patch series.
-> >>>>
-> >>>> diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra1=
-86.c
-> >>>> index d87dd06db40d..a56c159d7136 100644
-> >>>> --- a/drivers/gpio/gpio-tegra186.c
-> >>>> +++ b/drivers/gpio/gpio-tegra186.c
-> >>>> @@ -989,6 +989,8 @@ static int tegra186_gpio_probe(struct platform_d=
-evice *pdev)
-> >>>>                 offset +=3D port->pins;
-> >>>>         }
-> >>>>
-> >>>> +       gpio->gpio.fwnode =3D of_node_to_fwnode(pdev->dev.of_node);
-> >>>> +
-> >>>>         return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio, gpio)=
-;
-> >>>>  }
-> >>>>
-> >>>> Now, few follow up questions:
-> >>>> 1) is this the correct way of setting the chip fwnode in the gpio dr=
-iver?
-> >>>
-> >>> You shouldn't need this. This driver already does:
-> >>>
-> >>>     gpio->gpio.parent =3D &pdev->dev;
-> >>>
-> >>> so fwnode should be assigned in gpiochip_add_data_with_key(). Can you
-> >>> check why this doesn't happen?
-> >>
-> >> I do not see anywhere chip->fwnode being set in the gpiochip_add_* fun=
-ction.
-> >> The only reference I see is here [1]. Does it mean I need to change my=
- match
-> >> function from:
-> >>
-> >> chip->fwnode =3D=3D of_node_to_fwnode(data)
-> >>
-> >> to:
-> >> dev_fwnode(chip->parent) =3D=3D of_node_to_fwnode(data)?
-> >
-> > No! chip->fwnode is only used to let GPIOLIB know which fwnode to
-> > assign to the GPIO device (struct gpio_device).
-> What do you suggest I should use for the match as I do not see chip->fwno=
-de
-> being set?
->
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   ef7625d78dd079600f642d5875c08e059b002b52
+commit: 9212159685caa222bbe01f9b4d49f6c1f9ddb11a [127/130] thermal: gov_power_allocator: Use trip pointers instead of trip indices
+config: mips-allyesconfig (https://download.01.org/0day-ci/archive/20231006/202310060618.FJ4z229a-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231006/202310060618.FJ4z229a-lkp@intel.com/reproduce)
 
-Andy, Linus,
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310060618.FJ4z229a-lkp@intel.com/
 
-Do you think it makes sense to make gpiochip_add_data_with_key()
-assign the chip's fwnode if it's not set by the caller (and instead
-taken from the parent device) for this particular use-case?
+All warnings (new ones prefixed by >>):
 
-I think it's fine but wanted to run it by you.
+   drivers/thermal/gov_power_allocator.c: In function 'estimate_pid_constants':
+>> drivers/thermal/gov_power_allocator.c:127:13: warning: unused variable 'ret' [-Wunused-variable]
+     127 |         int ret;
+         |             ^~~
 
-Bart
 
-> >
-> > Bart
-> >
-> >>
-> >> [1]:
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
-e/drivers/gpio/gpiolib.c?h=3Dv6.6-rc1#n767
-> >>
-> >>>
-> >>> Bart
-> >>>
-> >>>> 2) Or should I use something else in hte matching function instead o=
-f fwnode so
-> >>>> to avoid adding above line in the gpio driver?
-> >>>>
-> >>>>>
-> >>>>>>>
-> >>>>>>>>
-> >>>>>>>> Bart
-> >>>>>>>
-> >>>>>>
-> >>>>>
-> >>>>
-> >>
->
+vim +/ret +127 drivers/thermal/gov_power_allocator.c
+
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  110  
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  111  /**
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  112   * estimate_pid_constants() - Estimate the constants for the PID controller
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  113   * @tz:		thermal zone for which to estimate the constants
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  114   * @sustainable_power:	sustainable power for the thermal zone
+9212159685caa2 drivers/thermal/gov_power_allocator.c Rafael J. Wysocki 2023-10-05  115   * @trip_switch_on:	trip point for the switch on temperature
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  116   * @control_temp:	target temperature for the power allocator governor
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  117   *
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  118   * This function is used to update the estimation of the PID
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  119   * controller constants in struct thermal_zone_parameters.
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  120   */
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  121  static void estimate_pid_constants(struct thermal_zone_device *tz,
+9212159685caa2 drivers/thermal/gov_power_allocator.c Rafael J. Wysocki 2023-10-05  122  				   u32 sustainable_power,
+9212159685caa2 drivers/thermal/gov_power_allocator.c Rafael J. Wysocki 2023-10-05  123  				   const struct thermal_trip *trip_switch_on,
+90a996544946d1 drivers/thermal/gov_power_allocator.c Lukasz Luba       2020-11-24  124  				   int control_temp)
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  125  {
+7f725a23f2b7bb drivers/thermal/gov_power_allocator.c Daniel Lezcano    2022-10-03  126  	u32 temperature_threshold = control_temp;
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14 @127  	int ret;
+e34a7233896928 drivers/thermal/gov_power_allocator.c Lukasz Luba       2020-11-24  128  	s32 k_i;
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  129  
+9212159685caa2 drivers/thermal/gov_power_allocator.c Rafael J. Wysocki 2023-10-05  130  	if (trip_switch_on)
+9212159685caa2 drivers/thermal/gov_power_allocator.c Rafael J. Wysocki 2023-10-05  131  		temperature_threshold -= trip_switch_on->temperature;
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  132  
+44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  133  	/*
+44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  134  	 * estimate_pid_constants() tries to find appropriate default
+44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  135  	 * values for thermal zones that don't provide them. If a
+44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  136  	 * system integrator has configured a thermal zone with two
+44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  137  	 * passive trip points at the same temperature, that person
+44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  138  	 * hasn't put any effort to set up the thermal zone properly
+44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  139  	 * so just give up.
+44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  140  	 */
+44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  141  	if (!temperature_threshold)
+44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  142  		return;
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  143  
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  144  	tz->tzp->k_po = int_to_frac(sustainable_power) /
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  145  		temperature_threshold;
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  146  
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  147  	tz->tzp->k_pu = int_to_frac(2 * sustainable_power) /
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  148  		temperature_threshold;
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  149  
+e34a7233896928 drivers/thermal/gov_power_allocator.c Lukasz Luba       2020-11-24  150  	k_i = tz->tzp->k_pu / 10;
+e34a7233896928 drivers/thermal/gov_power_allocator.c Lukasz Luba       2020-11-24  151  	tz->tzp->k_i = k_i > 0 ? k_i : 1;
+e34a7233896928 drivers/thermal/gov_power_allocator.c Lukasz Luba       2020-11-24  152  
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  153  	/*
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  154  	 * The default for k_d and integral_cutoff is 0, so we can
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  155  	 * leave them as they are.
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  156  	 */
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  157  }
+e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  158  
+
+:::::: The code at line 127 was first introduced by commit
+:::::: e055bb0f9a6e5c09bedf41c2a5b881edbd7f2ed0 thermal: power_allocator: relax the requirement of a sustainable_power in tzp
+
+:::::: TO: Javi Merino <javi.merino@arm.com>
+:::::: CC: Eduardo Valentin <edubezval@gmail.com>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
