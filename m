@@ -1,90 +1,110 @@
-Return-Path: <linux-acpi+bounces-446-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-447-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 163687BA939
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 20:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 356867BA93A
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 20:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sy.mirrors.kernel.org (Postfix) with ESMTP id 417ACB207A8
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 18:38:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTP id 3EFFCB207A8
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 18:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576F83FB18
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 18:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573213FB18
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 18:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EQHq/v5R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SajfBoKo"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6B53D38C
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Oct 2023 18:12:49 +0000 (UTC)
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2074.outbound.protection.outlook.com [40.107.237.74])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD24CE;
-	Thu,  5 Oct 2023 11:12:45 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12283F4AB
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Oct 2023 18:27:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84A6E90;
+	Thu,  5 Oct 2023 11:27:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696530433; x=1728066433;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=43wPMzDOpv1tweF4egkNqQWFpQWoCT0pc3vyrvr4MZQ=;
+  b=SajfBoKou33yl1Aso2aXxbmkvziklRMSVi7gK+XuiP7rvKuOIEF/CIu2
+   JSnPL3w+t8++1gIET37QsZtZYCpll6brnw+anLYTDSeelvFHXzGgkZ8CK
+   +cUhaqrjGE3DphNxNsNR5chBhk2Ad4ahOpJyykSRm/stZCXBeKrtHGETa
+   LoKh6UZ7WG+vuiX/mKou4CBrPAl/O/BEltGzjJ7BUImv34FXNggvFcuoN
+   Pdhhz+PqWMuY3xZhzuRW62BQXvnsl4YuwFjWS3AVLAAOIag+x+lrzvmno
+   kGDU9+5s5QunK+PYrMf7ewfGjSR2+YmsbKl79QjlGz1UYJCJ7HqXt42N9
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="368658040"
+X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
+   d="scan'208";a="368658040"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 11:27:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="755560936"
+X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
+   d="scan'208";a="755560936"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmsmga007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 05 Oct 2023 11:27:12 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Thu, 5 Oct 2023 11:27:11 -0700
+Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Thu, 5 Oct 2023 11:27:11 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Thu, 5 Oct 2023 11:27:11 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.175)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Thu, 5 Oct 2023 11:27:10 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XwuiJqknDlH/QgBUkBuaBjK55Zdc6w1FpTrttT1WP/5nAgnNgTSfn49e00+lJv9kMeSMmT692JFbh8/YAa/Fzldo23X7eJCvSSmkHYfKvgkwhSscWPIt++K54VNbS2bKk1e/FhN8EKqGjuGU0fR62DnJidETUAuSvU3S5yUtc0Lo09agPDorlLUoL9BhTQGGC1HzOx1QSMmD1Pk74U1pknwsV5y8QZizQvzpooCbn283iO/778lwuN41YQX6Fg+3BInhTC3w0wf8LICwuXIFM06lsY6AnmIWs5B+LXDgdOuvGojb47q/ALGWSklyblAOkZ5rWc/tHAMhc23mhMcQog==
+ b=fcavDyOSGFZiMx1AYlRSx9JzKcV3fkeY6naF0HPljGeYzmzL3con4gAlVV0dxWsbzR6V0uAsia0AjOUL7Hm1/JlO7x4spYXvmgHe6q4BIEbHz3+Z9NKGJyftd9XRO7wesY0Rd2IS7wybaFiB0DT4P31/DMbS84ldbBQ3xntesTQ+G3TyOhheD+ikVNv3UYCaUl8P0dwwT29xq1oJH0WjhdawIxhP2ghjh2kPE3jK5dKljZdHXeCI00QWq6DimlH29kyMkivZV8trrNzXGJAKEIQeohJXMOWm5LygUejr6XbG4SuiRZ/SpGVo8l2fv2Lbpb/F6sOhSMOohn4NqrNJiA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mOauRLuwCA5+otNQIaiAt1FIorRJ9/iNda9U7+9PPKM=;
- b=E8EbEstfeE3GMXFTy8xkllVMCpcjit3pTSN2K5d7SkajJ/K/geMY4ihA4wO0Wbi81CBhYqdOdCWuIQpjGL5U/EiRay2/zaomLBAH9Dw3gP9QpSSOz7IcO0a+jAfEwpW4aIkYKbVeYPnZp8R4q4CiDdk5Cg1FiJIf8Q1OKl5BHvUNunNg8RKjdwBQlRIKJOxD2TrArsb/tI6Hh/5nNLD5tXrBAQJlbiCjRLfk0nw7DJidIsFgckkC+sYpEAi8qIJiXLQZ3SvBLo/kjyJdI7UTrK7WjUu9+NX20rsI8RIqbbBm6ZHbbVk/VUk4c5Vvcag44uFpEBdzyWdI7EJEN5xWfw==
+ bh=MbztuCDA98nvtJDos5BBXEkQOFFH4WdNkU77ZdkyPII=;
+ b=b2wxLqJxq/dcgyQJc18HUOBKP/3ec4Q8yaHnJTRIiaAqSitUuTzKiJFAYQeUUrEHUoSxdREWF+GivPwxNDcMXvoaNV/bm4QF2D/IYhtDbxqiCbmfTNn3AzT4y42v21ngn5lzwhiEfrfYDclRV4E5mzPFk8zSkJor3jzWh5nn9A63+RCtl7DLRW1Sz8w/lR8XoIH8L0kr+/GLy75EOBL39CxOoeXR5qOxmCqTWME1oN03/8iyRXkzQ89vzrfcbxBSuBL9z2qWH0ZLbMO95nB2yF43YsblfAX6E1tMX7KbsHC9ohgIIosuoGBbCMN6/kAYerX3cxxIcLf51y3T7S88Xw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mOauRLuwCA5+otNQIaiAt1FIorRJ9/iNda9U7+9PPKM=;
- b=EQHq/v5RKJYFF2nZDYHA5DyALwa5aIqi/LcgvruDEor9HJEOh0Qo5c/4KlEUgSRpJn8DYPuEWP8bn369e0pcqQN+9Kmo51P7Bg6vGTQwCZDatcP6Kvlk0TB5M2TODmGRqCXFuPlpItJXU2PEW+j+kjhT0JiqvHFyYrmvdXAJRVZlpMksV6xB2+4vvldWpPu6P6eRoC+Xw82DT+XYeUCDHCONEH0OweuFA+/xHO6Jj2s/6oXUOaeiz0eoRZjjmn1vLOHyr4ts/Y1ICaaoGV7+td/yiBH+qbMgNwpQPx/Zn0kLMcvJlSakRNoHoQF4OhjXtzwAbFnNePtcN7v4gEg32Q==
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA1PR12MB6604.namprd12.prod.outlook.com (2603:10b6:208:3a0::7)
- by MN0PR12MB5761.namprd12.prod.outlook.com (2603:10b6:208:374::6) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO6PR11MB5603.namprd11.prod.outlook.com (2603:10b6:5:35c::12)
+ by SA0PR11MB4591.namprd11.prod.outlook.com (2603:10b6:806:9c::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.26; Thu, 5 Oct
- 2023 18:12:42 +0000
-Received: from IA1PR12MB6604.namprd12.prod.outlook.com
- ([fe80::8814:146:e28e:6eea]) by IA1PR12MB6604.namprd12.prod.outlook.com
- ([fe80::8814:146:e28e:6eea%4]) with mapi id 15.20.6838.016; Thu, 5 Oct 2023
- 18:12:41 +0000
-Message-ID: <647d3b52-1daf-175d-d5c2-45653dd2604c@nvidia.com>
-Date: Thu, 5 Oct 2023 11:12:37 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [RFT PATCH 14/21] hte: tegra194: don't access struct gpio_chip
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
- Russell King <linux@armlinux.org.uk>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Hans de Goede <hdegoede@redhat.com>,
- Mark Gross <markgross@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
- timestamp@lists.linux.dev, linux-tegra@vger.kernel.org,
- platform-driver-x86@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-References: <20230905185309.131295-1-brgl@bgdev.pl>
- <20230905185309.131295-15-brgl@bgdev.pl>
- <CACRpkda9=VULj4Cy_sit-UpUQnVEbS-RJKAeULVCw8ZCRTq1sw@mail.gmail.com>
- <CAMRc=MdTk1B4MEh9C624Upm_EcaQgJd9OU-AGfU0G-DU1+qk6A@mail.gmail.com>
- <36b17290-c643-8d8e-e82b-49afa6b34fbb@nvidia.com>
- <3624e973-d09a-d211-c6d0-d0ffb8c20c4b@nvidia.com>
- <90b5f887-8af4-a80d-ea4d-cf2199752de4@nvidia.com>
- <0e7cae42-0b81-c038-8beb-49102feea8a6@nvidia.com>
- <CAMRc=McSG6qajxt6P3vWQEeT63Pk5tggD05pUoMD1zd5ApZxgA@mail.gmail.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.34; Thu, 5 Oct
+ 2023 18:27:08 +0000
+Received: from CO6PR11MB5603.namprd11.prod.outlook.com
+ ([fe80::dbe4:218c:1bdd:510]) by CO6PR11MB5603.namprd11.prod.outlook.com
+ ([fe80::dbe4:218c:1bdd:510%4]) with mapi id 15.20.6838.033; Thu, 5 Oct 2023
+ 18:27:08 +0000
+Message-ID: <f1901763-d63d-4372-8f6f-5322eb8dd76d@intel.com>
+Date: Thu, 5 Oct 2023 20:27:00 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/9] ACPI: bus: Make notify wrappers more generic
 Content-Language: en-US
-X-Nvconfidentiality: public
-From: Dipen Patel <dipenp@nvidia.com>
-In-Reply-To: <CAMRc=McSG6qajxt6P3vWQEeT63Pk5tggD05pUoMD1zd5ApZxgA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>, "Rafael J. Wysocki"
+	<rafael@kernel.org>
+CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<nvdimm@lists.linux.dev>, <rafael.j.wysocki@intel.com>,
+	<andriy.shevchenko@intel.com>, <lenb@kernel.org>, <dan.j.williams@intel.com>,
+	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>, <rui.zhang@intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>
+References: <20230925144842.586829-1-michal.wilczynski@intel.com>
+ <86a68f57-0e5e-4a92-8cfe-93249ba78a72@intel.com>
+ <CAJZ5v0jSa7FpJKsDRAhVMGy=pTi-aD5JPU4K3Rb-G3igrd6WRQ@mail.gmail.com>
+ <12310703.O9o76ZdvQC@kreacher>
+From: "Wilczynski, Michal" <michal.wilczynski@intel.com>
+In-Reply-To: <12310703.O9o76ZdvQC@kreacher>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR02CA0007.namprd02.prod.outlook.com
- (2603:10b6:a02:ee::20) To IA1PR12MB6604.namprd12.prod.outlook.com
- (2603:10b6:208:3a0::7)
+X-ClientProxiedBy: FR3P281CA0195.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a4::7) To CO6PR11MB5603.namprd11.prod.outlook.com
+ (2603:10b6:5:35c::12)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -92,206 +112,396 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB6604:EE_|MN0PR12MB5761:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ec7cfcc-4ebe-4eab-610c-08dbc5ceaa66
+X-MS-TrafficTypeDiagnostic: CO6PR11MB5603:EE_|SA0PR11MB4591:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c14fadf-08a0-44b1-8b16-08dbc5d0aea4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	vnyxgrq2YhffzHgft5R9+OmaPWj4bnqQvVxoBBMxAFB6QAxfKJTxPqf78wO9GQEwLGqVvKZU20flSOAAY8oACAERYagphnU2MRQDMg25uMcq1j5ioe0sBz2Y0JOUs5pH0sdN9e04DoAPPZODYB/Fp8L1a+ysA0Ql1dfFW3Lg2AuuHrYjgzLr+4dpAyLu/ntOI3qibe0i87EYvRM5829VWftp5N0CJRO4TpqDMfA3/ATfM02Sz+6o+4e8d4Zq4ykqb5KgrrLEk9aYnGbA1uMO6or5o9ft/Yrs3Pd3NM2pInR3HFK5HjbTe4U7Zdooh7mNKTQeYDeqM2Fb8tZomRmS/V03Y2gfm82udY2KLye8+fjpo5iM7X1t15gaeyTEW2cJFyDut7gV22iTrREVdMgCFtllZPRKdFdaOUVWzM9XmiiOygWwGp2PlE1mDZctLqE+eB7qx8oLOmdPk2gTKjFFxZHC97ADoTXXOGfnpoNQ10hpsXw1zerjqpTrneF4P1OVjpxqUdIJ8s3/DL0s8LiUNRKbbaEpUl9gVV/iJaPBi0L5uHv74D/m21JW/irN76rUGkZLfOwRDesM7AvcuU3JB3g/GapY0F01ferxrk1VCPIacVpHTspayHI0w5Vmtl8GMFj+PbFc4zWFyLlp3LyYFg7Yt+zQ+VWL2PTmsZz6fvH1zbg5I0kLkemNMuceQvuibCvSfzEHvfeE20+gAIW+vzxqvWWhE1r1jxg3AkXmfjA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB6604.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(366004)(376002)(346002)(39860400002)(230922051799003)(186009)(451199024)(1800799009)(64100799003)(83380400001)(7416002)(2906002)(31686004)(5660300002)(8676002)(36756003)(26005)(4326008)(2616005)(6486002)(41300700001)(66476007)(54906003)(8936002)(66946007)(6916009)(316002)(478600001)(53546011)(66556008)(966005)(31696002)(86362001)(6512007)(38100700002)(6666004)(6506007)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: lZ36CRQyuma5vRLidX840xhJeXDH1zVqWywjWXGRjMnA7uamR/kkXmpTaLcAwg0nxFAfiYAHKbbN5a275XN7ga4LO+dbQxF9wm2gX3a0PXaSHozgObCI9OG91+iZewWSSd097BeHNvFHkRP/A2xO1UGHmj2krC1Ujgh6jUe/i00bdA5AFKzfPHV2STA7bL5M543En7yWJK1u4pEl0l/MfXcDC/1AMAnQHRHYYZYMgixYwwGSR774gOT7ds2s8JQma5pk0GlIYXKMIkf7HFzdCBB7gvbM3NrEDKWoB7EwFt255XA5UniljWCJlGQCTfFJBczZohnfvqtdoWRBkN22wNprfVc+fuAsIXGlCitjSsEPTobaPYVqJIWwfcyI1kEP4epgQOQeCcHWNA+a4W2uKZTL/33iGWqGk1L6//VpD0nq8AEiYBqjLDOCiihBm2q2C/CGnK45PF4I6zybg7MKnI3OndyX7C03bbsMoCdIj1dCEUy6DXw2q8BVGOHCNZLFpTs0XbwmGJcfN+oASFgc1xjxCYcJWH55aLsiP5adKraK1EW4MvMLxZcGh6GpNkofd3EWv5gccN9LwjUeogMFYTyp9m4ZTxds62B8xo8zOQdairS9KUaaET4wuqipzMLjheyQRJnZbKgZYu+qsXhA9BJl8GNgdudL61+EBikKAGYTpOLNQ49q+z4AtlWluY03d8XpM0L3H+97TOT/MagUww==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(39860400002)(136003)(346002)(376002)(230922051799003)(64100799003)(186009)(451199024)(1800799009)(66476007)(478600001)(966005)(6512007)(6486002)(6666004)(53546011)(6506007)(83380400001)(26005)(2616005)(2906002)(30864003)(4326008)(110136005)(8936002)(66556008)(66946007)(8676002)(5660300002)(316002)(41300700001)(36756003)(86362001)(38100700002)(31696002)(82960400001)(66899024)(84970400001)(31686004)(41533002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MFk2RTBjYVFwRnZUR1d4cG5xaHduWVBtazJhSlFjaDBKTkdNQndnMjk0cURl?=
- =?utf-8?B?TU5LWm4yWDQ2Z3ljeHZseGVFU0d6VlZHaUg3R1JmSXY1Z21qZ1Y4OU8wRWVD?=
- =?utf-8?B?anM4aFc0TDhhOEx5YlpmUDBDV2JyZTZ2WHhqTVk5SnNQbGd3d2lvK25WODI4?=
- =?utf-8?B?ODRmRmpSb2s4UjhNeDRtYytJYXhTbDJabnNuMWtDY2QycU4ySEo1MkwzZm9a?=
- =?utf-8?B?dEtBZENJY0ErakdPcnNmUC9KRC9QZitwdXVobjJnQlJReXRZL2t6SFBNalVs?=
- =?utf-8?B?Z21EbmM0NklMZGlOQ25lUnpOeGhXaXg1VCtjWk9rOU9ZcEpGTjBpWmUxZXlT?=
- =?utf-8?B?dTZJZHlWSjRMVXhvbWhxbEFwQXdRclZLVVpoWFd1YWxQOFAvSjZFdDdWTUFG?=
- =?utf-8?B?U2NCbHR1TmNQdlZNcjFhakRwREt2SC9uK3p4Y205UkM1dGhlc3dhcTl1ZG9L?=
- =?utf-8?B?S3hGUEpwV3djdXJ5QUMyaitlR2RuTlpkY2trWVhoSkdTMlI1eTk3TlhKTWJY?=
- =?utf-8?B?MFJ0Skd0elBmQ3RJZUFUak5lN2M3Nm81ZDRVeTZHQXBuM2ZZL1ZqVmF4SW5V?=
- =?utf-8?B?R2tkVjU1UWo3MWVmODdFYUttUXFuSklxdHJ5UXBDYlhtbGVCWjF1WkVSaDFG?=
- =?utf-8?B?Z3JkMFJqd1FPb2pMR1RobjhvVEpERC9sZ01mN2Zjd3VBb1F5MmpINW5pbEVn?=
- =?utf-8?B?M3ovbHBxZWlrNkt4WDJYZktsYVZmdjRmRThiMjRwc0dDTGtwako0TzVBa3k4?=
- =?utf-8?B?ZXBGaGJvMTB2bzZhVkU5cXhwQnNScS9tQzhIU2hCR3h6TnFJQ0wzQ0hoeWd4?=
- =?utf-8?B?SXNXeDZyaEJQRm9HbDJwVnB6QVBvVnFmZFA2MWV1Yno0R3BNY3hYeitYcUlM?=
- =?utf-8?B?Rjc0ZHlrNGI4bEVBdXlOWXRsbjVuZzVvTWIyRWdvU1lybE4ydUhHNDZDbG5N?=
- =?utf-8?B?cXpZMkpVZGMwaDAyakkvaWpYajFZOE9pZnZvdXVFVkR0NFBjQlc0ei9KVnNw?=
- =?utf-8?B?RzRlQmVrMTFpSU1kakJ3Z3ZVakFybFhuMlBDOXA2KzVnMldwRks5Tk11cnJo?=
- =?utf-8?B?N3NVWXgwTGtqWE5BZjBudEdjMVNBeGwvVy9BZ0N4ZXEvOVhTU1hBRWRDNDZO?=
- =?utf-8?B?b1plQ0czbHRHNFQzWDJuK0l3dlo1Z292L2FrRk5rR2Q0UGdGdnlzSUtaMC85?=
- =?utf-8?B?eTRxdlZ6VS9WZ1NrL2lPQjVvMWZ3algvRHpaU0FJYUVFVmdnNnV3RVpoMFhy?=
- =?utf-8?B?d0JoaUVXQm9PZFllKzVwdXlQdDhvVzZaSVpUdVN1bWcrc0tpUWY1V0RuRlN0?=
- =?utf-8?B?MVAxZE1hdlIxU3ZoSGJrUE0weGNST3FZc2RjS1k1cXhTWUg2cUJWL1JOTU9l?=
- =?utf-8?B?anc1UnNDZ2k2d3pyMkJzUlovaE44V0dyWDkxOXRReGdqWjIrU1d4TytIL0d3?=
- =?utf-8?B?Z0hCVVVOUEhCeTMxL3RlNGVKVER0NDFZUUYxb040eERDZnErYWlUTkY0VVZa?=
- =?utf-8?B?M2tXQ25JQmRLRFI1bUYzUXZUNWw2ejVIOW5SMDhCcCtZZUUvaHowYUJxRjR6?=
- =?utf-8?B?alJrdXNMWDlLVUJvWDM5ZlV2RjAyREJJWmZqTXdaZlRCbVRmMkR5NkIvcHgv?=
- =?utf-8?B?OGdDZmQ3dGhwZ1VjcEFoOVZjTDRQdWU0enJvdldtNmh5OTBTK1kyRXZJTUdG?=
- =?utf-8?B?TFFJRVlOVkFnUnBhK1ErcjNBS0V3SUEvNDNwRFF4c1F4WVFSRnpwU3lmaGJq?=
- =?utf-8?B?SkQ0dysxbTM3Q2tBUDFXUHJMTUtrZldMNUZjTVNTNUFZRzRLV3NDKzV1S3o4?=
- =?utf-8?B?YTBSQXJyOUEyajVMbHhveDRPNHMxVkFKZlN2TjBSWjUzeWdlU1BCS1h2d2Vq?=
- =?utf-8?B?S2FVSndjdFZZemlrOHZhdlY1RENXVlBoNENNa2taRW9iVWlXWnRtUjhBbUc0?=
- =?utf-8?B?SHpLVjdER3JkMXZFT2E5aXRlRDVZRldJaTZ3ZVdzaElRNGwxS0ltbFJ6ZGk3?=
- =?utf-8?B?UG9wMGJXT05GcEdYNUMxdTFDU0lwWTRxcC9Vc1M4MHJLS1d5V0tyWG1FZDdJ?=
- =?utf-8?B?ZityQzB1ZHgvVGpGNVhhOWxhblJMMm42UVh0Sy9QVWxKZUpQeWFpeEZ0NEpx?=
- =?utf-8?Q?EBEiHGX1qdC87Jy5C+Wazfaru?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ec7cfcc-4ebe-4eab-610c-08dbc5ceaa66
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6604.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aEJhWFQxck9LRXJuenFzdWkyaElvdERPUHFhS0dTMTBXbTFJQ3JySDlCSkZa?=
+ =?utf-8?B?OTdJSlh3UVNEMGhSZE91Z0VZNDQrdmVHeVlQaGhmSHJqeVdDNnNXWVZTTTQy?=
+ =?utf-8?B?VnN3S0JheE9XWlliZHpJR1R4amJpbXRtRFU0R2FlRXJ4RnQrb1hKQTBCRjhS?=
+ =?utf-8?B?OWZLaTVWUFdEWjUvOEZ3cEdld3BDL3ZVTlVhcWtkMXRXbnp5ZHNmWjRIeEZH?=
+ =?utf-8?B?QWZVT3A3bDdVVmR3dWQrQ0N0Sm5JSThNdzN6akZES3hGTGgxZmpDRWErbzA4?=
+ =?utf-8?B?NmhpRXBzcjJhSjVnWlcxUEdLenhCczF1Q3VTQnRpY09pWlRYWVgxV3g5ZHFT?=
+ =?utf-8?B?Y3JIVTlwVjhheHJpd01wcXhhQWo5UE1oSW9pNjMxVWVOSEQzWUs5NG5LTzJo?=
+ =?utf-8?B?SFM5RFcyUEJlTHRUNjlDK0R6eWNKZTZYa3N3NXR4cnRkQThEVXRiamNnSE93?=
+ =?utf-8?B?bXhUQ1ZQWWNjckN4RktLWEFkelo4ckJORDgvQzlWVDlYSWdzOXhYK2hlbkRU?=
+ =?utf-8?B?TTFjZEo2TmFJQjZucm5HN0Y4UENLNk02aUl2ckdpOWNsR0RkM1VZZjBFM1JP?=
+ =?utf-8?B?Nzc0OXFnMXp4OS9ZaHdIWS9WS0dmUGNJYzNTV2F2aHROc1hrS0ZTMzN6Ui9k?=
+ =?utf-8?B?RVg0RDNaY2dXTHI5aXEwWXpGS3BxREd0QjJaZVp5RnF6bVAvaTV0THRjdUR3?=
+ =?utf-8?B?QTlQSHYyRmI5dE5jM0lEbXlSR3ZrUlhkMXoxVlJzVDBOQXhYY2lpVURlRFQ0?=
+ =?utf-8?B?VVhUd3J6bktTcW9vZDdCcmdUUnh4aWIzMXdkSkJ1dnFrUUhnOW1xWDYvSG13?=
+ =?utf-8?B?ZVB6NDdlNnJQUnVORG81bnAvQ0FITW1mTm03ZlZqWDV4dktmd2o0aTBwMVV2?=
+ =?utf-8?B?MzdNNjRaS05xNEJDVHlJYTdjVkszWE1kQXc3NzZTUVg3dmlGQkVZdU9qRWF2?=
+ =?utf-8?B?VTFQaFYxdk1yd1QyeStRTnlmbUNSeklSVzhFOFN6QjlwUWFiLzVrMlRMbGFL?=
+ =?utf-8?B?cU1Zd1A1cVFNVEN3bGxKaktKQjR2RUJ3dTNvdXUrU2JNeE5jVUxwL1B5Q2g0?=
+ =?utf-8?B?U2hPQUtIbUlKdzVyNkE3bnFCK2M1NVQydXc3ZkpEMk9KcGg5aFZKMS9FTnd4?=
+ =?utf-8?B?YkE1Z0J2TTRmREtSdWJacHBpbUsxNlM5NTNvaDlGZCtOTHl4NDZZQld6b3RE?=
+ =?utf-8?B?dTlXelRIMmF4ZnMvZGQzaW5VSG5iejdqVE90WWVodWRrWlBxS3NnZWZtd0ZD?=
+ =?utf-8?B?Q2o1NGVqUjl5WUZ2dCtBMHNpUzB2eUZPZHN5dThwdHpQVUcyQVA0YUwraElK?=
+ =?utf-8?B?T0wrc0swTlJJdTNreUVPdTlocEUwYnJIbmxtSzQ0akZ6UTYvUzM5YlF1N0JK?=
+ =?utf-8?B?OVV2NUNGc2U3RFpXWUg5d3RxQ0YybUc1cnp3Skk2UmJJMGdVNmVoS0dqTmdP?=
+ =?utf-8?B?cjRWZElsQTRZK1U2UXRCYUVZcW5uNG00M1NDV3pzUlQvYWVBY0NoQ3g3VFV0?=
+ =?utf-8?B?NTRheU5QNEQyQ09uTGE3T09MSVBWMk1sK2cyaTgyU2txYXYxd2x3d1NUYUZ1?=
+ =?utf-8?B?VzhJSTEvdzEwcTBmaytnUjJZZVBtUExCRkd4T2ZVcHNCaktQRUdGTnJ4aGdD?=
+ =?utf-8?B?K0R4eUwzbkYvOXY0c09aT0xEVGdsOG9SMk1pdytwVmo5eEQ4aXlScmpSU0VC?=
+ =?utf-8?B?dG1SQnFtVmI4aW42OStnZTJkZFdCaXBTZEhXNU43cDBCR2JlS3VOejRRaXJJ?=
+ =?utf-8?B?RllFM2NDcHdFUHRVMUsrOWl1SWM5bnNrdjhjWFpFOWkwd2NUMlRwdmN2dkVZ?=
+ =?utf-8?B?cGJvV0ErNmlZbDU4eWdCb3Q5T3M4RkMydVNNZE5tNVB4UkpmSE81KzZtNFRB?=
+ =?utf-8?B?eUx2UW1RYklvaTZiT3Qwak5YRlFBUXdhR3crYXQ1NWRRS3FNRm9TWnJPYTVM?=
+ =?utf-8?B?ZjdCMHJhbXRuRzVjVlNuVzdXVEdSVVoxejJwcXRCZVlQNkttMXQ3RURIakdl?=
+ =?utf-8?B?ckhDdUhVTjllNnd6M1VnUFlBTWhhc2MyM2FCV0pOR3A1a1BQNWxiUVlFSmNO?=
+ =?utf-8?B?aGlHVFlUS0FlQ3BBeVhOT2NhaEZTc3A0K1YybkhaV1Vsa0ViUDhRcitJQXpn?=
+ =?utf-8?B?S0hSM1ZtQ2JjVFB0bnZ1cTNIUlNwc0tpNWtHN2ovaGlqK1JJR3Z6aDJlalhl?=
+ =?utf-8?B?VVE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c14fadf-08a0-44b1-8b16-08dbc5d0aea4
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR11MB5603.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2023 18:12:41.8041
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2023 18:27:07.9864
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MeSzoBoSWZ7Y5vjInDGkVlmA1F8yz2ha8eZ296sz/QyMxa4olsl25Utw8BKzj/9ptbi3mer9ab71cKN9fu781w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5761
-X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-	SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: sWjapKZM9/P3L7bVH0e42/rGVKpjdJN+V7bTKWMsW3D87mhsA4EjbfAckCw/KDYIACyAiX0GVRudh3CGjuEmE1bwDazdJdugg3wus8lTFn0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4591
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 10/5/23 6:48 AM, Bartosz Golaszewski wrote:
-> On Thu, Oct 5, 2023 at 1:52 AM Dipen Patel <dipenp@nvidia.com> wrote:
+
+
+On 10/5/2023 7:03 PM, Rafael J. Wysocki wrote:
+> On Thursday, October 5, 2023 5:30:59 PM CEST Rafael J. Wysocki wrote:
+>> On Thu, Oct 5, 2023 at 2:05 PM Wilczynski, Michal
+>> <michal.wilczynski@intel.com> wrote:
+>>> On 10/5/2023 12:57 PM, Rafael J. Wysocki wrote:
+>>>> On Thu, Oct 5, 2023 at 10:10 AM Wilczynski, Michal
+>>>> <michal.wilczynski@intel.com> wrote:
+>> [cut]
 >>
->> On 10/4/23 3:54 PM, Dipen Patel wrote:
->>> On 10/4/23 1:33 PM, Dipen Patel wrote:
->>>> On 10/4/23 1:30 PM, Dipen Patel wrote:
->>>>> On 10/4/23 5:00 AM, Bartosz Golaszewski wrote:
->>>>>> On Thu, Sep 7, 2023 at 9:28 AM Linus Walleij <linus.walleij@linaro.org> wrote:
->>>>>>>
->>>>>>> On Tue, Sep 5, 2023 at 8:53 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
->>>>>>>
->>>>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>>>>>>>
->>>>>>>> Using struct gpio_chip is not safe as it will disappear if the
->>>>>>>> underlying driver is unbound for any reason. Switch to using reference
->>>>>>>> counted struct gpio_device and its dedicated accessors.
->>>>>>>>
->>>>>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>>>>>>
->>>>>>> As Andy points out add <linux/cleanup.h>, with that fixed:
->>>>>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->>>>>>>
->>>>>>> I think this can be merged into the gpio tree after leaving some
->>>>>>> slack for the HTE maintainer to look at it, things look so much
->>>>>>> better after this.
->>>>>>>
->>>>>>> Yours,
->>>>>>> Linus Walleij
->>>>>>
->>>>>> Dipen,
->>>>>>
->>>>>> if you could give this patch a test and possibly ack it for me to take
->>>>>> it through the GPIO tree (or go the immutable tag from HTE route) then
->>>>>> it would be great. This is the last user of gpiochip_find() treewide,
->>>>>> so with it we could remove it entirely for v6.7.
->>>>>
->>>>> Progress so far for the RFT...
->>>>>
->>>>> I tried applying the patch series on 6.6-rc1 and it did not apply cleanly,
->>>>> some patches I needed to manually apply and correct. With all this, it failed
->>>>> compilation at some spi/spi-bcm2835 driver. I disabled that and was able to
->>>>> compile. I thought I should let you know this part.
->>>>>
->>>>> Now, I tried to test the hte and it seems to fail finding the gpio device,
->>>>> roughly around this place [1]. I thought it would be your patch series so
->>>>> tried to just use 6.6rc1 without your patches and it still failed at the
->>>>> same place. I have to trace back now from which kernel version it broke.
->>>>
->>>> [1].
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/pateldipen1984/linux.git/tree/drivers/hte/hte-tegra194.c?h=for-next#n781
->>>>
->>>> of course with your patches it would fail for the gdev instead of the chip.
->>>
->>> Small update:
->>>
->>> I put some debugging prints in the gpio match function in the hte-tegra194.c as
->>> below:
->>>
->>> static int tegra_gpiochip_match(struct gpio_chip *chip, void *data)
+>>>>>> That said, why exactly is it better to use acpi_handle instead of a
+>>>>>> struct acpi_device pointer?
+>>>>> I wanted to make the wrapper as close as possible to the wrapped function.
+>>>>> This way it would be easier to remove it in the future i.e if we ever deem
+>>>>> extra synchronization not worth it etc. What the ACPICA function need to
+>>>>> install a wrapper is a handle not a pointer to a device.
+>>>>> So there is no need for a middle man.
+>>>> Taking a struct acpi_device pointer as the first argument is part of
+>>>> duplication reduction, however, because in the most common case it
+>>>> saves the users of it the need to dereference the struct acpi_device
+>>>> they get from ACPI_COMPANION() in order to obtain the handle.
+>>> User don't even have to use acpi device anywhere, as he can choose
+>>> to use ACPI_HANDLE() instead on 'struct device*' and never interact
+>>> with acpi device directly.
+>> Have you actually looked at this macro?  It is a wrapper around
+>> ACPI_COMPANION().
+>>
+>> So they may think that they don't use struct acpi_device pointers, but
+>> in fact they do.
+>>
+>>>> Arguably, acpi_handle is an ACPICA concept and it is better to reduce
+>>>> its usage outside ACPICA.
+>>> Use of acpi_handle is deeply entrenched in the kernel. There is even
+>>> a macro ACPI_HANDLE() that returns acpi_handle. I would say it's
+>>> way too late to limit it to ACPICA internal code.
+>> So there is a difference between "limiting to ACPICA" and "reducing".
+>> It cannot be limited to ACPICA, because the code outside ACPICA needs
+>> to evaluate ACPI objects sometimes and ACPI handles are needed for
+>> that.
+>>
+>> And this observation doesn't invalidate the point.
+>>
+>>>>>> Realistically, in a platform driver you'll need the latter to obtain
+>>>>>> the former anyway.
+>>>>> I don't want to introduce arbitrary limitations where they are not necessary.
+>>>> I'm not sure what you mean.  This patch is changing existing functions.
+>>> That's true, but those functions aren't yet deeply entrenched in the
+>>> kernel yet, so in my view how they should look like should still be
+>>> a subject for discussion, as for now they're only used locally in
+>>> drivers/acpi, and my next patchset, that would remove .notify in
+>>> platform directory would spread them more, and would
+>>> make them harder to change. For now we can change how they
+>>> work pretty painlessly.
+>> I see no particular reason to do that, though.
+>>
+>> What specifically is a problem with passing struct acpi_device
+>> pointers to the wrappers?  I don't see any TBH.
+>>
+>>>>> It is often the case that driver allocates it's own private struct using kmalloc
+>>>>> family of functions, and that structure already contains everything that is
+>>>>> needed to remove the handler, so why force ? There are already examples
+>>>>> in the drivers that do that i.e in acpi_video the function
+>>>>> acpi_video_dev_add_notify_handler() uses raw ACPICA handler to install
+>>>>> a notify handler and it passes private structure there.
+>>>>> So there is value in leaving the choice of an actual type to the user of the
+>>>>> API.
+>>>> No, if the user has a pointer to struct acpi_device already, there is
+>>>> no difference between passing this and passing the acpi_handle from it
+>>>> except for the extra dereference in the latter case.
+>>> Dereference would happen anyway in the wrapper, and it doesn't cause
+>>> any harm anyway for readability in my opinion. And of course you don't
+>>> have to use acpi device at all, you can use ACPI_HANDLE() macro.
+>> So one can use ACPI_COMPANION() just as well and it is slightly less overhead.
+>>
+>>>> If the user doesn't have a struct acpi_device pointer, let them use
+>>>> the raw ACPICA handler directly and worry about the synchronization
+>>>> themselves.
+>>> As mentioned acpi_device pointer is not really required to use the wrapper.
+>>> Instead we can use ACPI_HANDLE() macro directly. Look at the usage of
+>>> the wrapper in the AC driver [1].
+>> You don't really have to repeat the same argument  several times and I
+>> know how ACPI_HANDLE() works.  Also I don't like some of the things
+>> done by this patch.
+>>
+>> Whoever uses ACPI_HANDLE(), they also use ACPI_COMPANION() which is
+>> hidden in the former.
+>>
+>> If they don't need to store either the acpi_handle or the struct
+>> acpi_device pointer, there is no reason at all to use the former
+>> instead of the latter.
+>>
+>> If they get an acpi_handle from somewhere else than ACPI_HANDLE(),
+>> then yes, they would need to get the ACPI devices from there (which is
+>> possible still), but they may be better off by using the raw ACPICA
+>> interface for events in that case.
+>>
+>>> -static void acpi_ac_remove(struct acpi_device *device)
+>>> +static void acpi_ac_remove(struct platform_device *pdev)
 >>>  {
->>> +       struct device_node *node = data;
->>> +       struct fwnode_handle *fw = of_node_to_fwnode(data);
->>> +       if (!fw || !chip->fwnode)
->>> +               pr_err("dipen patel: fw is null\n");
+>>> -       struct acpi_ac *ac = acpi_driver_data(device);
+>>> +      struct acpi_ac *ac = platform_get_drvdata(pdev);
 >>>
->>> -       pr_err("%s:%d\n", __func__, __LINE__);
->>> +       pr_err("dipen patel, %s:%d: %s, %s, %s, match?:%d, fwnode name:%s\n",
->>> __func__, __LINE__, chip->label, node->name, node->full_name, (chip->fwnode ==
->>> fw), fw->dev->init_name);
->>>         return chip->fwnode == of_node_to_fwnode(data);
->>>  }
+>>> -       acpi_dev_remove_notify_handler(device->handle, ACPI_ALL_NOTIFY,
+>>> +       acpi_dev_remove_notify_handler(ACPI_HANDLE(ac->dev),
+>>> +                                                                     ACPI_ALL_NOTIFY,
+>>>                                                                        acpi_ac_notify);
 >>>
->>> The output of the printfs looks like below:
->>> [    3.955194] dipen patel: fw is null -----> this message started appearing
->>> when I added !chip->fwnode test in the if condition line.
 >>>
->>> [    3.958864] dipen patel, tegra_gpiochip_match:689: tegra234-gpio, gpio,
->>> gpio@c2f0000, match?:0, fwnode name:(null)
 >>>
->>> I conclude that chip->fwnode is empty. Any idea in which conditions that node
->>> would be empty?
+>>> [1] - https://lore.kernel.org/all/20230925144842.586829-1-michal.wilczynski@intel.com/T/#mff1e8ce1e548b3252d896b56d3be0b1028b7402e
+>>>
+>>>> The wrappers are there to cover the most common case, not to cover all cases.
+>>> In general all drivers that I'm modifying would benefit from not using direct ACPICA
+>>> installers/removers by saving that extra synchronization code that would need to be
+>>> provided otherwise, and not having to deal with acpi_status codes.
+>> Yes, that's the common case.
 >>
->> sorry for spamming, one last message before I sign off for the day....
+>>>>> To summarize:
+>>>>> I would say the wrappers are mostly unnecessary, but they actually save
+>>>>> some duplicate code in the drivers, so I decided to leave them, as I don't
+>>>>> want to introduce duplicate code if I can avoid that.
+>>>> What duplicate code do you mean, exactly?
+>>> I would need to declare extra acpi_status variable and use ACPI_FAILURE macro
+>>> in each usage of the direct ACPICA installer. Also I would need to call
+>>> acpi_os_wait_events_complete() after calling each direct remove.
+>> I thought you meant some code duplication related to passing struct
+>> acpi_device pointers to the wrappers, but we agree that the wrappers
+>> are generally useful.
 >>
->> Seems, adding below in the tegra gpio driver resolved the issue I am facing, I
->> was able to verify your patch series.
+>>>> IMV you haven't really explained why this particular patch is
+>>>> necessary or even useful.
+>>> Maybe using an example would better illustrate my point.
+>>> Consider using NFIT driver modification later in this series as an example:
+>>>
+>>> 1) With old wrapper it would look:
+>>>
+>>>  static void acpi_nfit_notify(acpi_handle handle, u32 event, void *data)
+>>> {
+>>>     struct acpi_device *adev = data;
+>>>     /* Now we need to figure how to get a 'struct device*' from an acpi_device.
+>>>          Mind this we can't just do &adev->dev, as we're not using that device anymore.
+>>>          We need to get a struct device that's embedded in the platform_device that the
+>>>          driver was instantiated with.
+>>>          Not sure how it would look like, but it would require are least one extra line here.
+>>>      */
+>>>     device_lock(dev);
+>>>     __acpi_nfit_notify(dev, handle, event);
+>>>     device_unlock(dev);
+>>> }
+>>>
+>>> 2) With new wrapper:
+>>>
+>>> static void acpi_nfit_notify(acpi_handle handle, u32 event, void *data)
+>>> {
+>>>     struct device *dev = data;
+>>>
+>>>     device_lock(dev);
+>>>     __acpi_nfit_notify(dev, handle, event);
+>>>     device_unlock(dev);
+>>> }
+>>>
+>>>
+>>> So essentially arbitrarily forcing user to use wrapper that takes acpi device
+>>> as an argument may unnecessarily increase drivers complexity, and if we
+>>> can help with then we should. That's why this commit exists.
+>> Well, I know what's going on now.
 >>
->> diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra186.c
->> index d87dd06db40d..a56c159d7136 100644
->> --- a/drivers/gpio/gpio-tegra186.c
->> +++ b/drivers/gpio/gpio-tegra186.c
->> @@ -989,6 +989,8 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
->>                 offset += port->pins;
->>         }
+>> You really want to add a context argument to
+>> acpi_dev_install_notify_handler(), which is quite reasonable, but then
+>> you don't have to change the first argument of it.
 >>
->> +       gpio->gpio.fwnode = of_node_to_fwnode(pdev->dev.of_node);
->> +
->>         return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio, gpio);
->>  }
->>
->> Now, few follow up questions:
->> 1) is this the correct way of setting the chip fwnode in the gpio driver?
-> 
-> You shouldn't need this. This driver already does:
-> 
->     gpio->gpio.parent = &pdev->dev;
-> 
-> so fwnode should be assigned in gpiochip_add_data_with_key(). Can you
-> check why this doesn't happen?
+>> I'll send you my version of this patch later today and we'll see.
+> See below.
+>
+> It just adds a context argument to acpi_dev_install_notify_handler() without
+> making the other changes made by the original patch that are rather pointless
+> IMO.
 
-I do not see anywhere chip->fwnode being set in the gpiochip_add_* function.
-The only reference I see is here [1]. Does it mean I need to change my match
-function from:
+Thank you !
+I think it's fine will include this in next revision.
 
-chip->fwnode == of_node_to_fwnode(data)
+Michał
 
-to:
-dev_fwnode(chip->parent) == of_node_to_fwnode(data)?
-
-[1]:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpio/gpiolib.c?h=v6.6-rc1#n767
-
-> 
-> Bart
-> 
->> 2) Or should I use something else in hte matching function instead of fwnode so
->> to avoid adding above line in the gpio driver?
->>
->>>
->>>>>
->>>>>>
->>>>>> Bart
->>>>>
->>>>
->>>
->>
+>
+> ---
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Subject: [PATCH v1 1/9] ACPI: bus: Add context argument to acpi_dev_install_notify_handler()
+>
+> Add void *context arrgument to the list of arguments of
+> acpi_dev_install_notify_handler() and modify it to pass that argument
+> as context to acpi_install_notify_handler() instead of its first
+> argument which is problematic in general (for example, if platform
+> drivers used it, they would rather get struct platform_device pointers
+> or pointers to their private data from the context arguments of their
+> notify handlers).
+>
+> Make all of the current callers of acpi_dev_install_notify_handler()
+> take this change into account so as to avoid altering the general
+> functionality.
+>
+> Co-developed-by: Michal Wilczynski <michal.wilczynski@intel.com>
+> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>  drivers/acpi/ac.c         |    2 +-
+>  drivers/acpi/acpi_video.c |    2 +-
+>  drivers/acpi/battery.c    |    2 +-
+>  drivers/acpi/bus.c        |    4 ++--
+>  drivers/acpi/hed.c        |    2 +-
+>  drivers/acpi/nfit/core.c  |    2 +-
+>  drivers/acpi/thermal.c    |    2 +-
+>  include/acpi/acpi_bus.h   |    2 +-
+>  8 files changed, 9 insertions(+), 9 deletions(-)
+>
+> Index: linux-pm/drivers/acpi/ac.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/ac.c
+> +++ linux-pm/drivers/acpi/ac.c
+> @@ -257,7 +257,7 @@ static int acpi_ac_add(struct acpi_devic
+>  	register_acpi_notifier(&ac->battery_nb);
+>  
+>  	result = acpi_dev_install_notify_handler(device, ACPI_ALL_NOTIFY,
+> -						 acpi_ac_notify);
+> +						 acpi_ac_notify, device);
+>  	if (result)
+>  		goto err_unregister;
+>  
+> Index: linux-pm/drivers/acpi/acpi_video.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/acpi_video.c
+> +++ linux-pm/drivers/acpi/acpi_video.c
+> @@ -2062,7 +2062,7 @@ static int acpi_video_bus_add(struct acp
+>  		goto err_del;
+>  
+>  	error = acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
+> -						acpi_video_bus_notify);
+> +						acpi_video_bus_notify, device);
+>  	if (error)
+>  		goto err_remove;
+>  
+> Index: linux-pm/drivers/acpi/battery.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/battery.c
+> +++ linux-pm/drivers/acpi/battery.c
+> @@ -1214,7 +1214,7 @@ static int acpi_battery_add(struct acpi_
+>  	device_init_wakeup(&device->dev, 1);
+>  
+>  	result = acpi_dev_install_notify_handler(device, ACPI_ALL_NOTIFY,
+> -						 acpi_battery_notify);
+> +						 acpi_battery_notify, device);
+>  	if (result)
+>  		goto fail_pm;
+>  
+> Index: linux-pm/drivers/acpi/bus.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/bus.c
+> +++ linux-pm/drivers/acpi/bus.c
+> @@ -556,12 +556,12 @@ static void acpi_device_remove_notify_ha
+>  
+>  int acpi_dev_install_notify_handler(struct acpi_device *adev,
+>  				    u32 handler_type,
+> -				    acpi_notify_handler handler)
+> +				    acpi_notify_handler handler, void *context)
+>  {
+>  	acpi_status status;
+>  
+>  	status = acpi_install_notify_handler(adev->handle, handler_type,
+> -					     handler, adev);
+> +					     handler, context);
+>  	if (ACPI_FAILURE(status))
+>  		return -ENODEV;
+>  
+> Index: linux-pm/drivers/acpi/hed.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/hed.c
+> +++ linux-pm/drivers/acpi/hed.c
+> @@ -57,7 +57,7 @@ static int acpi_hed_add(struct acpi_devi
+>  	hed_handle = device->handle;
+>  
+>  	err = acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
+> -					      acpi_hed_notify);
+> +					      acpi_hed_notify, device);
+>  	if (err)
+>  		hed_handle = NULL;
+>  
+> Index: linux-pm/drivers/acpi/nfit/core.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/nfit/core.c
+> +++ linux-pm/drivers/acpi/nfit/core.c
+> @@ -3391,7 +3391,7 @@ static int acpi_nfit_add(struct acpi_dev
+>  		return rc;
+>  
+>  	rc = acpi_dev_install_notify_handler(adev, ACPI_DEVICE_NOTIFY,
+> -					     acpi_nfit_notify);
+> +					     acpi_nfit_notify, adev);
+>  	if (rc)
+>  		return rc;
+>  
+> Index: linux-pm/drivers/acpi/thermal.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/thermal.c
+> +++ linux-pm/drivers/acpi/thermal.c
+> @@ -936,7 +936,7 @@ static int acpi_thermal_add(struct acpi_
+>  		acpi_device_bid(device), deci_kelvin_to_celsius(tz->temp_dk));
+>  
+>  	result = acpi_dev_install_notify_handler(device, ACPI_DEVICE_NOTIFY,
+> -						 acpi_thermal_notify);
+> +						 acpi_thermal_notify, device);
+>  	if (result)
+>  		goto flush_wq;
+>  
+> Index: linux-pm/include/acpi/acpi_bus.h
+> ===================================================================
+> --- linux-pm.orig/include/acpi/acpi_bus.h
+> +++ linux-pm/include/acpi/acpi_bus.h
+> @@ -601,7 +601,7 @@ int acpi_bus_attach_private_data(acpi_ha
+>  void acpi_bus_detach_private_data(acpi_handle);
+>  int acpi_dev_install_notify_handler(struct acpi_device *adev,
+>  				    u32 handler_type,
+> -				    acpi_notify_handler handler);
+> +				    acpi_notify_handler handler, void *context);
+>  void acpi_dev_remove_notify_handler(struct acpi_device *adev,
+>  				    u32 handler_type,
+>  				    acpi_notify_handler handler);
+>
+>
+>
 
 
