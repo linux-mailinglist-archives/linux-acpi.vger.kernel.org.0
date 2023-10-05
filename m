@@ -1,240 +1,293 @@
-Return-Path: <linux-acpi+bounces-441-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-443-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACDA7BA1A7
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 16:54:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E2E7BA66F
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 18:34:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by ny.mirrors.kernel.org (Postfix) with ESMTP id 75BF91C20920
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 14:54:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTP id EBF9C1C2093D
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 16:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4035E2AB28
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 14:54:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="c1xWPf3/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF1634CD7
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Oct 2023 16:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4481250FF
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Oct 2023 13:48:45 +0000 (UTC)
-Received: from mail-vk1-xa2e.google.com (mail-vk1-xa2e.google.com [IPv6:2607:f8b0:4864:20::a2e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C50721721
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Oct 2023 06:48:43 -0700 (PDT)
-Received: by mail-vk1-xa2e.google.com with SMTP id 71dfb90a1353d-49dd647a477so414839e0c.3
-        for <linux-acpi@vger.kernel.org>; Thu, 05 Oct 2023 06:48:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1696513722; x=1697118522; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gHY/ZQQzp7Eh1tubbFWWOn2NxVKU0m/orXkn9/Odof0=;
-        b=c1xWPf3/mvf8/i/TrzUZOuGMDYM91CxU4gozBvzeOu2ANTQu3NigwJHRxAYRlObQqp
-         mGf1s0ZoZDZNFUmlPKqBXHnqYT7LXulZN9+sfdJJmqJCFjEgs92Vk0yBa3G/q8oMJ+QZ
-         Zb9QHMuDZbGpMOJo6qUE14TZZBs7zp8GACSN4MIQ877omaJeiqg49MfpeuVURa5DIQUW
-         hH6U04Vo1CtUk7GClCSandDXKRDybCuxZFCy9bdFwGUHJ4UA8Yjqn71+CRQadgPARLBf
-         +1wfv4PZ3iKh2/U6NgKpv95dm+FfiACztMxZUqS0ZZtENf16EiKUaqeRGxGMO2p+1EHd
-         dc8Q==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF0130CF6
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Oct 2023 15:31:13 +0000 (UTC)
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A969C11E75;
+	Thu,  5 Oct 2023 08:31:11 -0700 (PDT)
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-1dd770d7b5eso172425fac.0;
+        Thu, 05 Oct 2023 08:31:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696513722; x=1697118522;
+        d=1e100.net; s=20230601; t=1696519871; x=1697124671;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gHY/ZQQzp7Eh1tubbFWWOn2NxVKU0m/orXkn9/Odof0=;
-        b=K00ShAjUdkyF24dxfpg75StnCpF+i7vBKWLSiflhEEaw5rJpJ0HBChPKxHrncYXyxV
-         pM7SnLQ/NPmgbbz9SRMupzY5UVh0BclvZyMM1yrpukiBEOYcOlGJN3t0Gd3sjPwnkpm/
-         2skNQ8KJ+VQ7gBqNoQnep6l7RlF/6zpiXJQwhMSO6sh6mmBYip2oFuw8Oc8oW52L00rP
-         ocO8o+qv9QhvQPRBHdLehEkojEsIvUMUMh38W8SUEHqkKhn0eQL1p/I9qFkBPqyJcvDs
-         DUcyZKnvP6E3djbbuko/QPyVmX8/CPBFm7HGD6/RizUyRsu81wLw/LMoLkquBKy+lDVQ
-         Eefg==
-X-Gm-Message-State: AOJu0Yz9YIaHhjd5SbMl8mbb3iHaPpm3Ccu7YyNebScPGkTBkK2Xe74F
-	WLZFK1jWkYWAylHZorujkGvI1l3AmXVDNOlDobB6VQ==
-X-Google-Smtp-Source: AGHT+IEs24zy6ibJecOnCN0EfrO6wFAW3J5eW9qxeqqcBUsb4ootHwEPnzV2453v5/6B/ux1FD3fv13iIIuy1J493K0=
-X-Received: by 2002:a1f:e2c3:0:b0:49c:37a1:2358 with SMTP id
- z186-20020a1fe2c3000000b0049c37a12358mr4560513vkg.14.1696513722632; Thu, 05
- Oct 2023 06:48:42 -0700 (PDT)
+        bh=EIqSfRMSRKJRwJKJLS1bgWTZkIifEaqxcnA16z0GR9w=;
+        b=IUsT6mWEt3RN1eD+3PYNhCu8lHvnUf7Wptw0dHD38SkItQqUfp9T22E+fwAgFzoJPm
+         kGy346iaWaHMdJz9UYNABrTIG5dA4jDz7/c7PE628brY/sBd8e+0RaqMEM8ckwie7WwJ
+         x7C2CF0gpzyF9vrMLlq6HlaMkEdT0qIZQc6MNybEZboLzdwiwWl3i0GQty7whyR5M3UJ
+         dkpnjtV3l3BIrnBsqWMtbDw483J+xvHC9wSf+0GbxYDGBP81kfs3ST2k1Xi07VKMObYg
+         WllNTVyF/ucnsifzVS/y16m75RCld82s7akkPVjXbjzcsYWsE0jPAu6pBL8uKV70JwiE
+         IlUw==
+X-Gm-Message-State: AOJu0YzXCzvQMVjRKrcIdzZtzs2qf938+B6IGG3rIIGYyamX/F0FUcFD
+	eznJWAijhwUuXnt4OWn6OaVc/21XJ9swwdG1ZYc=
+X-Google-Smtp-Source: AGHT+IHDV/XcgF/e3ZMaC9LY+KPzvu5uksCsiPtALvCoi4FvhB2ghcQlvr7hlEj+qWVm8VcQwv/RiLo/W7LFxTxJ7/A=
+X-Received: by 2002:a05:6871:80d:b0:1d0:e371:db33 with SMTP id
+ q13-20020a056871080d00b001d0e371db33mr6312295oap.3.1696519870713; Thu, 05 Oct
+ 2023 08:31:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-15-brgl@bgdev.pl>
- <CACRpkda9=VULj4Cy_sit-UpUQnVEbS-RJKAeULVCw8ZCRTq1sw@mail.gmail.com>
- <CAMRc=MdTk1B4MEh9C624Upm_EcaQgJd9OU-AGfU0G-DU1+qk6A@mail.gmail.com>
- <36b17290-c643-8d8e-e82b-49afa6b34fbb@nvidia.com> <3624e973-d09a-d211-c6d0-d0ffb8c20c4b@nvidia.com>
- <90b5f887-8af4-a80d-ea4d-cf2199752de4@nvidia.com> <0e7cae42-0b81-c038-8beb-49102feea8a6@nvidia.com>
-In-Reply-To: <0e7cae42-0b81-c038-8beb-49102feea8a6@nvidia.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 5 Oct 2023 15:48:31 +0200
-Message-ID: <CAMRc=McSG6qajxt6P3vWQEeT63Pk5tggD05pUoMD1zd5ApZxgA@mail.gmail.com>
-Subject: Re: [RFT PATCH 14/21] hte: tegra194: don't access struct gpio_chip
-To: Dipen Patel <dipenp@nvidia.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, 
-	Russell King <linux@armlinux.org.uk>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Hans de Goede <hdegoede@redhat.com>, Mark Gross <markgross@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, timestamp@lists.linux.dev, 
-	linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+References: <20230925144842.586829-1-michal.wilczynski@intel.com>
+ <20230925144842.586829-2-michal.wilczynski@intel.com> <CAJZ5v0jyjH48XZ6vytncodYhsS6ODYg2yaZBPfRWb_qm99FMuA@mail.gmail.com>
+ <f8b9cfb4-aa0f-44c0-84fe-613f005a2baf@intel.com> <CAJZ5v0jF_okRNkYySRQTSKBohaFk52V7Tcm=a1kVFaY6MWD4Hg@mail.gmail.com>
+ <86a68f57-0e5e-4a92-8cfe-93249ba78a72@intel.com>
+In-Reply-To: <86a68f57-0e5e-4a92-8cfe-93249ba78a72@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 5 Oct 2023 17:30:59 +0200
+Message-ID: <CAJZ5v0jSa7FpJKsDRAhVMGy=pTi-aD5JPU4K3Rb-G3igrd6WRQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/9] ACPI: bus: Make notify wrappers more generic
+To: "Wilczynski, Michal" <michal.wilczynski@intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
+	rafael.j.wysocki@intel.com, andriy.shevchenko@intel.com, lenb@kernel.org, 
+	dan.j.williams@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com, 
+	rui.zhang@intel.com, Andy Shevchenko <andy.shevchenko@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, Oct 5, 2023 at 1:52=E2=80=AFAM Dipen Patel <dipenp@nvidia.com> wrot=
+On Thu, Oct 5, 2023 at 2:05=E2=80=AFPM Wilczynski, Michal
+<michal.wilczynski@intel.com> wrote:
+> On 10/5/2023 12:57 PM, Rafael J. Wysocki wrote:
+> > On Thu, Oct 5, 2023 at 10:10=E2=80=AFAM Wilczynski, Michal
+> > <michal.wilczynski@intel.com> wrote:
+
+[cut]
+
+> >>>
+> >>> That said, why exactly is it better to use acpi_handle instead of a
+> >>> struct acpi_device pointer?
+> >> I wanted to make the wrapper as close as possible to the wrapped funct=
+ion.
+> >> This way it would be easier to remove it in the future i.e if we ever =
+deem
+> >> extra synchronization not worth it etc. What the ACPICA function need =
+to
+> >> install a wrapper is a handle not a pointer to a device.
+> >> So there is no need for a middle man.
+> > Taking a struct acpi_device pointer as the first argument is part of
+> > duplication reduction, however, because in the most common case it
+> > saves the users of it the need to dereference the struct acpi_device
+> > they get from ACPI_COMPANION() in order to obtain the handle.
+>
+> User don't even have to use acpi device anywhere, as he can choose
+> to use ACPI_HANDLE() instead on 'struct device*' and never interact
+> with acpi device directly.
+
+Have you actually looked at this macro?  It is a wrapper around
+ACPI_COMPANION().
+
+So they may think that they don't use struct acpi_device pointers, but
+in fact they do.
+
+> >
+> > Arguably, acpi_handle is an ACPICA concept and it is better to reduce
+> > its usage outside ACPICA.
+>
+> Use of acpi_handle is deeply entrenched in the kernel. There is even
+> a macro ACPI_HANDLE() that returns acpi_handle. I would say it's
+> way too late to limit it to ACPICA internal code.
+
+So there is a difference between "limiting to ACPICA" and "reducing".
+It cannot be limited to ACPICA, because the code outside ACPICA needs
+to evaluate ACPI objects sometimes and ACPI handles are needed for
+that.
+
+And this observation doesn't invalidate the point.
+
+> >
+> >>> Realistically, in a platform driver you'll need the latter to obtain
+> >>> the former anyway.
+> >> I don't want to introduce arbitrary limitations where they are not nec=
+essary.
+> > I'm not sure what you mean.  This patch is changing existing functions.
+>
+> That's true, but those functions aren't yet deeply entrenched in the
+> kernel yet, so in my view how they should look like should still be
+> a subject for discussion, as for now they're only used locally in
+> drivers/acpi, and my next patchset, that would remove .notify in
+> platform directory would spread them more, and would
+> make them harder to change. For now we can change how they
+> work pretty painlessly.
+
+I see no particular reason to do that, though.
+
+What specifically is a problem with passing struct acpi_device
+pointers to the wrappers?  I don't see any TBH.
+
+> >
+> >> It is often the case that driver allocates it's own private struct usi=
+ng kmalloc
+> >> family of functions, and that structure already contains everything th=
+at is
+> >> needed to remove the handler, so why force ? There are already example=
+s
+> >> in the drivers that do that i.e in acpi_video the function
+> >> acpi_video_dev_add_notify_handler() uses raw ACPICA handler to install
+> >> a notify handler and it passes private structure there.
+> >> So there is value in leaving the choice of an actual type to the user =
+of the
+> >> API.
+> > No, if the user has a pointer to struct acpi_device already, there is
+> > no difference between passing this and passing the acpi_handle from it
+> > except for the extra dereference in the latter case.
+>
+> Dereference would happen anyway in the wrapper, and it doesn't cause
+> any harm anyway for readability in my opinion. And of course you don't
+> have to use acpi device at all, you can use ACPI_HANDLE() macro.
+
+So one can use ACPI_COMPANION() just as well and it is slightly less overhe=
+ad.
+
+> >
+> > If the user doesn't have a struct acpi_device pointer, let them use
+> > the raw ACPICA handler directly and worry about the synchronization
+> > themselves.
+>
+> As mentioned acpi_device pointer is not really required to use the wrappe=
+r.
+> Instead we can use ACPI_HANDLE() macro directly. Look at the usage of
+> the wrapper in the AC driver [1].
+
+You don't really have to repeat the same argument  several times and I
+know how ACPI_HANDLE() works.  Also I don't like some of the things
+done by this patch.
+
+Whoever uses ACPI_HANDLE(), they also use ACPI_COMPANION() which is
+hidden in the former.
+
+If they don't need to store either the acpi_handle or the struct
+acpi_device pointer, there is no reason at all to use the former
+instead of the latter.
+
+If they get an acpi_handle from somewhere else than ACPI_HANDLE(),
+then yes, they would need to get the ACPI devices from there (which is
+possible still), but they may be better off by using the raw ACPICA
+interface for events in that case.
+
+> -static void acpi_ac_remove(struct acpi_device *device)
+> +static void acpi_ac_remove(struct platform_device *pdev)
+>  {
+> -       struct acpi_ac *ac =3D acpi_driver_data(device);
+> +      struct acpi_ac *ac =3D platform_get_drvdata(pdev);
+>
+> -       acpi_dev_remove_notify_handler(device->handle, ACPI_ALL_NOTIFY,
+> +       acpi_dev_remove_notify_handler(ACPI_HANDLE(ac->dev),
+> +                                                                     ACP=
+I_ALL_NOTIFY,
+>                                                                        ac=
+pi_ac_notify);
+>
+>
+>
+> [1] - https://lore.kernel.org/all/20230925144842.586829-1-michal.wilczyns=
+ki@intel.com/T/#mff1e8ce1e548b3252d896b56d3be0b1028b7402e
+>
+> >
+> > The wrappers are there to cover the most common case, not to cover all =
+cases.
+>
+> In general all drivers that I'm modifying would benefit from not using di=
+rect ACPICA
+> installers/removers by saving that extra synchronization code that would =
+need to be
+> provided otherwise, and not having to deal with acpi_status codes.
+
+Yes, that's the common case.
+
+>
+> >
+> >> To summarize:
+> >> I would say the wrappers are mostly unnecessary, but they actually sav=
+e
+> >> some duplicate code in the drivers, so I decided to leave them, as I d=
+on't
+> >> want to introduce duplicate code if I can avoid that.
+> > What duplicate code do you mean, exactly?
+>
+> I would need to declare extra acpi_status variable and use ACPI_FAILURE m=
+acro
+> in each usage of the direct ACPICA installer. Also I would need to call
+> acpi_os_wait_events_complete() after calling each direct remove.
+
+I thought you meant some code duplication related to passing struct
+acpi_device pointers to the wrappers, but we agree that the wrappers
+are generally useful.
+
+> >
+> > IMV you haven't really explained why this particular patch is
+> > necessary or even useful.
+>
+> Maybe using an example would better illustrate my point.
+> Consider using NFIT driver modification later in this series as an exampl=
 e:
 >
-> On 10/4/23 3:54 PM, Dipen Patel wrote:
-> > On 10/4/23 1:33 PM, Dipen Patel wrote:
-> >> On 10/4/23 1:30 PM, Dipen Patel wrote:
-> >>> On 10/4/23 5:00 AM, Bartosz Golaszewski wrote:
-> >>>> On Thu, Sep 7, 2023 at 9:28=E2=80=AFAM Linus Walleij <linus.walleij@=
-linaro.org> wrote:
-> >>>>>
-> >>>>> On Tue, Sep 5, 2023 at 8:53=E2=80=AFPM Bartosz Golaszewski <brgl@bg=
-dev.pl> wrote:
-> >>>>>
-> >>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >>>>>>
-> >>>>>> Using struct gpio_chip is not safe as it will disappear if the
-> >>>>>> underlying driver is unbound for any reason. Switch to using refer=
-ence
-> >>>>>> counted struct gpio_device and its dedicated accessors.
-> >>>>>>
-> >>>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org=
+> 1) With old wrapper it would look:
 >
-> >>>>>
-> >>>>> As Andy points out add <linux/cleanup.h>, with that fixed:
-> >>>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> >>>>>
-> >>>>> I think this can be merged into the gpio tree after leaving some
-> >>>>> slack for the HTE maintainer to look at it, things look so much
-> >>>>> better after this.
-> >>>>>
-> >>>>> Yours,
-> >>>>> Linus Walleij
-> >>>>
-> >>>> Dipen,
-> >>>>
-> >>>> if you could give this patch a test and possibly ack it for me to ta=
-ke
-> >>>> it through the GPIO tree (or go the immutable tag from HTE route) th=
-en
-> >>>> it would be great. This is the last user of gpiochip_find() treewide=
-,
-> >>>> so with it we could remove it entirely for v6.7.
-> >>>
-> >>> Progress so far for the RFT...
-> >>>
-> >>> I tried applying the patch series on 6.6-rc1 and it did not apply cle=
-anly,
-> >>> some patches I needed to manually apply and correct. With all this, i=
-t failed
-> >>> compilation at some spi/spi-bcm2835 driver. I disabled that and was a=
-ble to
-> >>> compile. I thought I should let you know this part.
-> >>>
-> >>> Now, I tried to test the hte and it seems to fail finding the gpio de=
-vice,
-> >>> roughly around this place [1]. I thought it would be your patch serie=
-s so
-> >>> tried to just use 6.6rc1 without your patches and it still failed at =
-the
-> >>> same place. I have to trace back now from which kernel version it bro=
-ke.
-> >>
-> >> [1].
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/pateldipen1984/linux.g=
-it/tree/drivers/hte/hte-tegra194.c?h=3Dfor-next#n781
-> >>
-> >> of course with your patches it would fail for the gdev instead of the =
-chip.
-> >
-> > Small update:
-> >
-> > I put some debugging prints in the gpio match function in the hte-tegra=
-194.c as
-> > below:
-> >
-> > static int tegra_gpiochip_match(struct gpio_chip *chip, void *data)
-> >  {
-> > +       struct device_node *node =3D data;
-> > +       struct fwnode_handle *fw =3D of_node_to_fwnode(data);
-> > +       if (!fw || !chip->fwnode)
-> > +               pr_err("dipen patel: fw is null\n");
-> >
-> > -       pr_err("%s:%d\n", __func__, __LINE__);
-> > +       pr_err("dipen patel, %s:%d: %s, %s, %s, match?:%d, fwnode name:=
-%s\n",
-> > __func__, __LINE__, chip->label, node->name, node->full_name, (chip->fw=
-node =3D=3D
-> > fw), fw->dev->init_name);
-> >         return chip->fwnode =3D=3D of_node_to_fwnode(data);
-> >  }
-> >
-> > The output of the printfs looks like below:
-> > [    3.955194] dipen patel: fw is null -----> this message started appe=
-aring
-> > when I added !chip->fwnode test in the if condition line.
-> >
-> > [    3.958864] dipen patel, tegra_gpiochip_match:689: tegra234-gpio, gp=
-io,
-> > gpio@c2f0000, match?:0, fwnode name:(null)
-> >
-> > I conclude that chip->fwnode is empty. Any idea in which conditions tha=
-t node
-> > would be empty?
+>  static void acpi_nfit_notify(acpi_handle handle, u32 event, void *data)
+> {
+>     struct acpi_device *adev =3D data;
+>     /* Now we need to figure how to get a 'struct device*' from an acpi_d=
+evice.
+>          Mind this we can't just do &adev->dev, as we're not using that d=
+evice anymore.
+>          We need to get a struct device that's embedded in the platform_d=
+evice that the
+>          driver was instantiated with.
+>          Not sure how it would look like, but it would require are least =
+one extra line here.
+>      */
+>     device_lock(dev);
+>     __acpi_nfit_notify(dev, handle, event);
+>     device_unlock(dev);
+> }
 >
-> sorry for spamming, one last message before I sign off for the day....
+> 2) With new wrapper:
 >
-> Seems, adding below in the tegra gpio driver resolved the issue I am faci=
-ng, I
-> was able to verify your patch series.
+> static void acpi_nfit_notify(acpi_handle handle, u32 event, void *data)
+> {
+>     struct device *dev =3D data;
 >
-> diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra186.c
-> index d87dd06db40d..a56c159d7136 100644
-> --- a/drivers/gpio/gpio-tegra186.c
-> +++ b/drivers/gpio/gpio-tegra186.c
-> @@ -989,6 +989,8 @@ static int tegra186_gpio_probe(struct platform_device=
- *pdev)
->                 offset +=3D port->pins;
->         }
+>     device_lock(dev);
+>     __acpi_nfit_notify(dev, handle, event);
+>     device_unlock(dev);
+> }
 >
-> +       gpio->gpio.fwnode =3D of_node_to_fwnode(pdev->dev.of_node);
-> +
->         return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio, gpio);
->  }
 >
-> Now, few follow up questions:
-> 1) is this the correct way of setting the chip fwnode in the gpio driver?
+> So essentially arbitrarily forcing user to use wrapper that takes acpi de=
+vice
+> as an argument may unnecessarily increase drivers complexity, and if we
+> can help with then we should. That's why this commit exists.
 
-You shouldn't need this. This driver already does:
+Well, I know what's going on now.
 
-    gpio->gpio.parent =3D &pdev->dev;
+You really want to add a context argument to
+acpi_dev_install_notify_handler(), which is quite reasonable, but then
+you don't have to change the first argument of it.
 
-so fwnode should be assigned in gpiochip_add_data_with_key(). Can you
-check why this doesn't happen?
-
-Bart
-
-> 2) Or should I use something else in hte matching function instead of fwn=
-ode so
-> to avoid adding above line in the gpio driver?
->
-> >
-> >>>
-> >>>>
-> >>>> Bart
-> >>>
-> >>
-> >
->
+I'll send you my version of this patch later today and we'll see.
 
