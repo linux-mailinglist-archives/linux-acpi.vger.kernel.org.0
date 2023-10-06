@@ -1,231 +1,130 @@
-Return-Path: <linux-acpi+bounces-466-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-467-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4B9F7BBA62
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 16:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F00AB7BBA64
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 16:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A9C328209F
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 14:36:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9BA2282103
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 14:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DD220B26
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 14:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mIP+xKCf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E13326E08
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 14:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561ED1F613;
-	Fri,  6 Oct 2023 12:59:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4422FC433D9;
-	Fri,  6 Oct 2023 12:59:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696597194;
-	bh=G/RQSqdHo7lASFBMYlpWo2xm4T11AQkeeRKHxs9lv7M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIP+xKCfRF09WaE97Ss+r3ih7yMoOZmpuQzoMGvh8Beq9Q/CCys6e51B+ou47+uBT
-	 KB1r/5YDUFwExz43PG6Ua0FkPe3qFqkN1zoj9stT+JHWkjI+BI+YuJq8WZ6c40I3sI
-	 a5FL7PCzV8ro4aR9LBMtffrN0mBztkev+e+ICE0ne5JwYGeDnIruNB/EvhCfEXVldj
-	 hl0NSBtRXYe5q06TbHe7C6Gqis7cenpI8FmUSXPYOOHFcNzbfIQaIlT+tVW7dPuj93
-	 2QfUaCfPJhM7PlEr9LKIiNNVnU1C5EE++NwE45PaJ6QlvGWM0Jo3KPUQgGUfWfUeyG
-	 3+P/ANk4+eI4g==
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Rob Herring <robh+dt@kernel.org>,
-	Fang Xiang <fangxiang3@xiaomi.com>
-Subject: [PATCH v3 5/5] irqchip/gic-v3: Enable non-coherent redistributors/ITSes ACPI probing
-Date: Fri,  6 Oct 2023 14:59:29 +0200
-Message-Id: <20231006125929.48591-6-lpieralisi@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231006125929.48591-1-lpieralisi@kernel.org>
-References: <20230905104721.52199-1-lpieralisi@kernel.org>
- <20231006125929.48591-1-lpieralisi@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EA91F613
+	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 13:02:30 +0000 (UTC)
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C58A18B;
+	Fri,  6 Oct 2023 06:02:28 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S27qm2Qp6z6K6wd;
+	Fri,  6 Oct 2023 21:02:12 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 6 Oct
+ 2023 14:02:25 +0100
+Date: Fri, 6 Oct 2023 14:02:24 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: David Rientjes <rientjes@google.com>
+CC: Jiaqi Yan <jiaqiyan@google.com>, "Luck, Tony" <tony.luck@intel.com>,
+	"Grimm, Jon" <jon.grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<vilas.sridharan@amd.com>, <linuxarm@huawei.com>, <shiju.jose@huawei.com>,
+	<linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <david@redhat.com>,
+	<jthoughton@google.com>, <somasundaram.a@hpe.com>, <erdemaktas@google.com>,
+	<pgonda@google.com>, <duenwen@google.com>, <mike.malvestuto@intel.com>,
+	<gthelen@google.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>
+Subject: Re: [RFC PATCH 2/9] memory: scrub: sysfs: Add Documentation entries
+ for set of scrub attributes
+Message-ID: <20231006140224.000018a2@Huawei.com>
+In-Reply-To: <92f48c1c-3235-49b2-aabd-7da87ad3febc@google.com>
+References: <20230915172818.761-1-shiju.jose@huawei.com>
+	<20230915172818.761-3-shiju.jose@huawei.com>
+	<CACw3F50jRzJnr9h7qYyD3t+6h7Uw9QMfkCkgu7a=7Lv0Tpi8Zg@mail.gmail.com>
+	<20230922111740.000046d7@huawei.com>
+	<CACw3F539gZc0FoJLo6VvYSyZmeWZ3Pbec7AzsH+MYUJJNzQbUQ@mail.gmail.com>
+	<92f48c1c-3235-49b2-aabd-7da87ad3febc@google.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-The GIC architecture specification defines a set of registers
-for redistributors and ITSes that control the sharebility and
-cacheability attributes of redistributors/ITSes initiator ports
-on the interconnect (GICR_[V]PROPBASER, GICR_[V]PENDBASER,
-GITS_BASER<n>).
+On Wed, 4 Oct 2023 20:18:12 -0700 (PDT)
+David Rientjes <rientjes@google.com> wrote:
 
-Architecturally the GIC provides a means to drive shareability
-and cacheability attributes signals and related IWB/OWB/ISH barriers
-but it is not mandatory for designs to wire up the corresponding
-interconnect signals that control the cacheability/shareability
-of transactions.
+> On Wed, 27 Sep 2023, Jiaqi Yan wrote:
+> 
+> > > > 1. I am not aware of any chip/platform hardware that implemented the
+> > > > hw ps part defined in ACPI RASF/RAS2 spec. So I am curious what the
+> > > > RAS experts from different hardware vendors think about this. For
+> > > > example, Tony and Dave from Intel, Jon and Vilas from AMD. Is there
+> > > > any hardware platform (if allowed to disclose) that implemented ACPI
+> > > > RASF/RAS2? If so, will vendors continue to support the control of
+> > > > patrol scrubber using the ACPI spec? If not (as Tony said in [1], will
+> > > > the vendor consider starting some future platform?
+> > > >
+> > > > If we are unlikely to get the vendor support, creating this ACPI
+> > > > specific sysfs API (and the driver implementations) in Linux seems to
+> > > > have limited meaning.  
+> > >
+> > > There is a bit of a chicken and egg problem here. Until there is
+> > > reasonable support in kernel (or it looks like there will be),
+> > > BIOS teams push back on a requirement to add the tables.
+> > > I'd encourage no one to bother with RASF - RAS2 is much less
+> > > ambiguous.  
+> > 
+> > Here mainly to re-ping folks from Intel (Tony and Dave)  and AMD (Jon
+> > and Vilas) for your opinion on RAS2.
+> >   
+> 
+> We'll need to know from vendors, ideally at minimum from both Intel and 
+> AMD, whether RAS2 is the long-term vision here.  Nothing is set in stone, 
+> of course, but deciding whether RAS2 is the standard that we should be 
+> rallying around will help to guide future development including in the 
+> kernel.
+> 
+> If RAS2 is insufficient for future use cases or we would need to support 
+> multiple implementations in the kernel for configuring the patrol scrubber 
+> depending on vendor, that's great feedback to have.
+> 
+> I'd much rather focus on implementing something in the kernel that we have 
+> some clarity about the vendors supporting, especially when it comes with 
+> user visible interfaces, as opposed to something that may not be used long 
+> term.  I think that's a fair ask and that vendor feedback is required 
+> here?
 
-Redistributors and ITSes interconnect ports can be connected to
-non-coherent interconnects that are not able to manage the
-shareability/cacheability attributes; this implicitly makes
-the redistributors and ITSes non-coherent observers.
+Agreed and happy to have feedback from Intel and AMD + all the other CPU
+vendors who make use of ACPI + all the OEMs who add stuff well beyond what
+Intel and AMD tell them to :)  I'll just note a lot of the ACPI support in the
+kernel covers stuff not used on mainstream x86 platforms because they are
+doing something custom and we didn't want 2 + X custom implementations...
 
-So far, the GIC driver on probe executes a write to "probe" for
-the redistributors and ITSes registers shareability bitfields
-by writing a value (ie InnerShareable - the shareability domain the
-CPUs are in) and check it back to detect whether the value sticks or
-not; this hinges on a GIC programming model behaviour that predates the
-current specifications, that just define shareability bits as writeable
-but do not guarantee that writing certain shareability values
-enable the expected behaviour for the redistributors/ITSes
-memory interconnect ports.
+Some other interfaces for scrub control (beyond existing embedded ones)
+will surface in the next few months where RAS2 is not appropriate.
 
-To enable non-coherent GIC designs on ACPI based systems, parse the MADT
-GICC/GICR/ITS subtables non-coherent flags to determine whether the
-respective components are non-coherent observers and force the shareability
-attributes to be programmed into the redistributors and ITSes registers.
+Jonathan
 
-An ACPI global function (acpi_get_madt_revision()) is added to retrieve
-the MADT revision, in that it is essential to check the MADT revision
-before checking for flags that were added with MADT revision 7 so that
-if the kernel is booted with ACPI tables (MADT rev < 7) it skips parsing
-the newly added flags (that should be zeroed reserved values for MADT
-versions < 7 but they could turn out to be buggy and should be ignored).
-
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
----
- drivers/acpi/processor_core.c    | 21 +++++++++++++++++++++
- drivers/irqchip/irq-gic-common.h |  8 ++++++++
- drivers/irqchip/irq-gic-v3-its.c |  4 ++++
- drivers/irqchip/irq-gic-v3.c     |  9 +++++++++
- include/linux/acpi.h             |  3 +++
- 5 files changed, 45 insertions(+)
-
-diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
-index 7dd6dbaa98c3..d3c7c6b0bb23 100644
---- a/drivers/acpi/processor_core.c
-+++ b/drivers/acpi/processor_core.c
-@@ -215,6 +215,27 @@ phys_cpuid_t __init acpi_map_madt_entry(u32 acpi_id)
- 	return rv;
- }
- 
-+u8 __init acpi_get_madt_revision(void)
-+{
-+	static u8 madt_revision __initdata;
-+	static bool madt_read __initdata;
-+	struct acpi_table_header *madt = NULL;
-+
-+	if (!madt_read) {
-+		madt_read = true;
-+
-+		acpi_get_table(ACPI_SIG_MADT, 0, &madt);
-+		if (!madt)
-+			return madt_revision;
-+
-+		madt_revision = madt->revision;
-+
-+		acpi_put_table(madt);
-+	}
-+
-+	return madt_revision;
-+}
-+
- static phys_cpuid_t map_mat_entry(acpi_handle handle, int type, u32 acpi_id)
- {
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-diff --git a/drivers/irqchip/irq-gic-common.h b/drivers/irqchip/irq-gic-common.h
-index f407cce9ecaa..8dffee95f7e8 100644
---- a/drivers/irqchip/irq-gic-common.h
-+++ b/drivers/irqchip/irq-gic-common.h
-@@ -6,6 +6,7 @@
- #ifndef _IRQ_GIC_COMMON_H
- #define _IRQ_GIC_COMMON_H
- 
-+#include <linux/acpi.h>
- #include <linux/of.h>
- #include <linux/irqdomain.h>
- #include <linux/irqchip/arm-gic-common.h>
-@@ -29,6 +30,13 @@ void gic_enable_quirks(u32 iidr, const struct gic_quirk *quirks,
- void gic_enable_of_quirks(const struct device_node *np,
- 			  const struct gic_quirk *quirks, void *data);
- 
-+#ifdef CONFIG_ACPI
-+static inline bool gic_acpi_non_coherent_flag(u32 flags, u32 mask)
-+{
-+	return (acpi_get_madt_revision() >= 7) && (flags & mask);
-+}
-+#endif
-+
- #define RDIST_FLAGS_PROPBASE_NEEDS_FLUSHING    (1 << 0)
- #define RDIST_FLAGS_RD_TABLES_PREALLOCATED     (1 << 1)
- #define RDIST_FLAGS_FORCE_NON_SHAREABLE        (1 << 2)
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 75a2dd550625..72ae9422a26f 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -5574,6 +5574,10 @@ static int __init gic_acpi_parse_madt_its(union acpi_subtable_headers *header,
- 		goto node_err;
- 	}
- 
-+	if (gic_acpi_non_coherent_flag(its_entry->flags,
-+				       ACPI_MADT_ITS_NON_COHERENT))
-+		its->flags |= ITS_FLAGS_FORCE_NON_SHAREABLE;
-+
- 	err = its_probe_one(its);
- 	if (!err)
- 		return 0;
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index f59ac9586b7b..720d76790ada 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -2364,6 +2364,11 @@ gic_acpi_parse_madt_redist(union acpi_subtable_headers *header,
- 		pr_err("Couldn't map GICR region @%llx\n", redist->base_address);
- 		return -ENOMEM;
- 	}
-+
-+	if (gic_acpi_non_coherent_flag(redist->flags,
-+				       ACPI_MADT_GICR_NON_COHERENT))
-+		gic_data.rdists.flags |= RDIST_FLAGS_FORCE_NON_SHAREABLE;
-+
- 	gic_request_region(redist->base_address, redist->length, "GICR");
- 
- 	gic_acpi_register_redist(redist->base_address, redist_base);
-@@ -2389,6 +2394,10 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_headers *header,
- 		return -ENOMEM;
- 	gic_request_region(gicc->gicr_base_address, size, "GICR");
- 
-+	if (gic_acpi_non_coherent_flag(gicc->flags,
-+				       ACPI_MADT_GICC_NON_COHERENT))
-+		gic_data.rdists.flags |= RDIST_FLAGS_FORCE_NON_SHAREABLE;
-+
- 	gic_acpi_register_redist(gicc->gicr_base_address, redist_base);
- 	return 0;
- }
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index a73246c3c35e..56e4e5f39a62 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -298,6 +298,9 @@ static inline bool invalid_phys_cpuid(phys_cpuid_t phys_id)
- 	return phys_id == PHYS_CPUID_INVALID;
- }
- 
-+
-+u8 __init acpi_get_madt_revision(void);
-+
- /* Validate the processor object's proc_id */
- bool acpi_duplicate_processor_id(int proc_id);
- /* Processor _CTS control */
--- 
-2.34.1
 
 
