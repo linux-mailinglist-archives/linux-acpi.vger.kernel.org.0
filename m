@@ -1,148 +1,267 @@
-Return-Path: <linux-acpi+bounces-495-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-496-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032067BC067
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 22:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A517BC352
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 02:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33AE21C208F8
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 20:33:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DB6D1C20985
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 00:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995B844462
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 20:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5CC1842
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 00:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k5/VSAnW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC0F405DA
-	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 19:48:10 +0000 (UTC)
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E17683;
-	Fri,  6 Oct 2023 12:48:09 -0700 (PDT)
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-57be74614c0so127028eaf.1;
-        Fri, 06 Oct 2023 12:48:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696621688; x=1697226488;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2qtrIYwt5+xezRUeXv6ZO7TiBtw+EXKB+lTOgWGj6zc=;
-        b=geaaONrtbJLwZrZ7CqUjqXeVvokZ9Lb147ZzF8l33U8qYe1VKrsxhWctoWzXCHxN9m
-         gMonZiHeVkibn47+opHE2p2+8HAdrissYXJjWSgvSXiVnyH3JuTyU8rN69N8NmeLLTqd
-         3fhXeWDCTRdwIvCgV+XWKKvx6mYGrmiJ+YvqgY7CipwVZP6vBuRyQc/LCtXhFvVHHLlf
-         MFbTf6zgLXvCzmirWJCiaxyaDKQiTyPKX67cRvSKzx7e44gKfvPQ/Zt8r2gD2Ayw0mbS
-         8gbT5BgpWBGQ4xuD1hZnuye/8c6JSGewep5KFvqHE5C/GZwX4DFL478HDfKAlw7S9nFD
-         PAng==
-X-Gm-Message-State: AOJu0YyT/8Lu3+cUXkJICvXxzYvBCegrkbOF6qYeZcj8GG4/fELNkleT
-	gHcIJGabXMd8Vui1o7sIw5CQQApvwilrK+t1j+U=
-X-Google-Smtp-Source: AGHT+IEbHKyLXUN+VeQaWG8yOuLIjWf9zRSx8HK/NyYMqdeOBCTAZuxVI14uQ14DfqOzLaioiwUl95A/vx+uEm8kmaE=
-X-Received: by 2002:a4a:b807:0:b0:57b:3b64:7ea5 with SMTP id
- g7-20020a4ab807000000b0057b3b647ea5mr8300446oop.1.1696621688430; Fri, 06 Oct
- 2023 12:48:08 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336E3405CC;
+	Fri,  6 Oct 2023 23:00:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC67DC43395;
+	Fri,  6 Oct 2023 23:00:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1696633210;
+	bh=k8j0XLQXjQQJNDui+0jlFZl+AAfuXhuCpn9vIwWl/cE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=k5/VSAnWHKDBM+aIaW9QONktl0tgBQMkfEMqxBot4G6+wPYt1Z4J99Em95YUTDseY
+	 jGYDjY/mNJfz3h6IDzruMe+TCkQuBvsV+78ssBXvhZDthyjlPQaQJC4AanULx4jJsm
+	 udEBGn5mwgluyt40Cb0H4b9Rt4EoHlwr/4tKhZJkwAG5M6AooiUM+qPWQNcq/S02L0
+	 uXRCHgIoYf95seef8oUkwVjkIy8c3hxlqxiu5kjtgdkWQ1JPziVj7jT/CkmoWqv7dB
+	 MpKq3AWdGdLHCySq4EF227rhl/LTJuItrLWjF986UZOQrfH6sQpospQwPwBkhWTC0/
+	 ohcKg3tNSgdvg==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-50567477b29so3403234e87.3;
+        Fri, 06 Oct 2023 16:00:10 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwLlFCsgFLgCJ0fV+PBHkvECAuehejBgdT5oHVklyGQScRjd3+F
+	6mLcB3EVHZhoXbEzvgqos0W2APpysc9qvqRPCTU=
+X-Google-Smtp-Source: AGHT+IGUwIsnV63UDRYG6J0ZqF0iXQaqHVFbYxtJQSuymsUOMmUxtPl2e5FaMeYVFq286z0ldqJng0iURsW6bIABAWg=
+X-Received: by 2002:a05:6512:68a:b0:502:d743:9fc4 with SMTP id
+ t10-20020a056512068a00b00502d7439fc4mr9541254lfe.37.1696633208839; Fri, 06
+ Oct 2023 16:00:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231006173055.2938160-1-michal.wilczynski@intel.com> <20231006173055.2938160-4-michal.wilczynski@intel.com>
-In-Reply-To: <20231006173055.2938160-4-michal.wilczynski@intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 6 Oct 2023 21:47:57 +0200
-Message-ID: <CAJZ5v0jKJ6iw6Q=uYTf0at+ESkdCF0oWaXRmj7P5VLw+QppKPw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] ACPI: AC: Replace acpi_driver with platform_driver
-To: Michal Wilczynski <michal.wilczynski@intel.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	nvdimm@lists.linux.dev, rafael.j.wysocki@intel.com, 
-	andriy.shevchenko@intel.com, lenb@kernel.org, dan.j.williams@intel.com, 
-	vishal.l.verma@intel.com, ira.weiny@intel.com
+References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
+ <CAPnjgZ0Xf3U1aj32LbU-xiU1AqwnM3JL1F8xX-wZ18oEmg+irw@mail.gmail.com>
+ <CAMj1kXEXcX7BkDyfy-6_5Vnch=N+onza-yfWfsVaGLE93h2c+Q@mail.gmail.com> <CAPnjgZ2SEby-ndrs=W_afBJH56eqc=-mhp1F1nwkvWks+=B54Q@mail.gmail.com>
+In-Reply-To: <CAPnjgZ2SEby-ndrs=W_afBJH56eqc=-mhp1F1nwkvWks+=B54Q@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sat, 7 Oct 2023 00:59:57 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXED3S+0cq+VT7naBrmWrUwT=HZAaZOBRMv8Ui1Pey1QNQ@mail.gmail.com>
+Message-ID: <CAMj1kXED3S+0cq+VT7naBrmWrUwT=HZAaZOBRMv8Ui1Pey1QNQ@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
+To: Simon Glass <sjg@chromium.org>
+Cc: devicetree@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>, 
+	Rob Herring <robh@kernel.org>, Lean Sheng Tan <sheng.tan@9elements.com>, 
+	lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, 
+	Maximilian Brune <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
+	Guo Dong <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, 
+	ron minnich <rminnich@gmail.com>, Gua Guo <gua.guo@intel.com>, 
+	Chiu Chasel <chasel.chiu@intel.com>, linux-acpi@vger.kernel.org, 
+	U-Boot Mailing List <u-boot@lists.denx.de>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
 
-On Fri, Oct 6, 2023 at 8:33=E2=80=AFPM Michal Wilczynski
-<michal.wilczynski@intel.com> wrote:
+On Fri, 6 Oct 2023 at 20:17, Simon Glass <sjg@chromium.org> wrote:
 >
-> AC driver uses struct acpi_driver incorrectly to register itself. This
-> is wrong as the instances of the ACPI devices are not meant to
-> be literal devices, they're supposed to describe ACPI entry of a
-> particular device.
+> Hi Ard,
 >
-> Use platform_driver instead of acpi_driver. In relevant places call
-> platform devices instances pdev to make a distinction with ACPI
-> devices instances.
+> On Fri, 6 Oct 2023 at 11:33, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > On Mon, 2 Oct 2023 at 19:54, Simon Glass <sjg@chromium.org> wrote:
+> > >
+> > > Hi Rob,
+> > >
+> > > On Tue, 26 Sept 2023 at 13:42, Simon Glass <sjg@chromium.org> wrote:
+> > > >
+> > > > It is common to split firmware into 'Platform Init', which does the
+> > > > initial hardware setup and a "Payload" which selects the OS to be booted.
+> > > > Thus an handover interface is required between these two pieces.
+> > > >
+> > > > Where UEFI boot-time services are not available, but UEFI firmware is
+> > > > present on either side of this interface, information about memory usage
+> > > > and attributes must be presented to the "Payload" in some form.
+> > > >
+> > > > This aims to provide an small schema addition for the memory mapping
+> > > > needed to keep these two pieces working together well.
+> > > >
+> > > > Signed-off-by: Simon Glass <sjg@chromium.org>
+> > > > ---
+> > > >
+> > > > Changes in v7:
+> > > > - Rename acpi-reclaim to acpi
+> > > > - Drop individual mention of when memory can be reclaimed
+> > > > - Rewrite the item descriptions
+> > > > - Add back the UEFI text (with trepidation)
+> > >
+> > > I am again checking on this series. Can it be applied, please?
+> > >
+> >
+> > Apologies for the delay in response. I have been away.
 >
-> Drop unnecessary casts from acpi_bus_generate_netlink_event() and
-> acpi_notifier_call_chain().
+> OK, I hope you had a nice trip.
 >
-> Add a blank line to distinguish pdev API vs local ACPI notify function.
->
-> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
-> ---
->  drivers/acpi/ac.c | 70 +++++++++++++++++++++++++----------------------
->  1 file changed, 37 insertions(+), 33 deletions(-)
->
-> diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-> index f809f6889b4a..298defeb5301 100644
-> --- a/drivers/acpi/ac.c
-> +++ b/drivers/acpi/ac.c
-> @@ -33,8 +33,9 @@ MODULE_AUTHOR("Paul Diefenbaugh");
->  MODULE_DESCRIPTION("ACPI AC Adapter Driver");
->  MODULE_LICENSE("GPL");
->
-> -static int acpi_ac_add(struct acpi_device *device);
-> -static void acpi_ac_remove(struct acpi_device *device);
-> +static int acpi_ac_probe(struct platform_device *pdev);
-> +static void acpi_ac_remove(struct platform_device *pdev);
-> +
->  static void acpi_ac_notify(acpi_handle handle, u32 event, void *data);
->
->  static const struct acpi_device_id ac_device_ids[] =3D {
-> @@ -51,21 +52,10 @@ static SIMPLE_DEV_PM_OPS(acpi_ac_pm, NULL, acpi_ac_re=
-sume);
->  static int ac_sleep_before_get_state_ms;
->  static int ac_only;
->
-> -static struct acpi_driver acpi_ac_driver =3D {
-> -       .name =3D "ac",
-> -       .class =3D ACPI_AC_CLASS,
-> -       .ids =3D ac_device_ids,
-> -       .ops =3D {
-> -               .add =3D acpi_ac_add,
-> -               .remove =3D acpi_ac_remove,
-> -               },
-> -       .drv.pm =3D &acpi_ac_pm,
-> -};
-> -
->  struct acpi_ac {
->         struct power_supply *charger;
->         struct power_supply_desc charger_desc;
-> -       struct acpi_device *device;
-> +       struct device *dev;
 
-I'm not convinced about this change.
+Thanks, it was wonderful!
 
-If I'm not mistaken, you only use the dev pointer above to get the
-ACPI_COMPANION() of it, but the latter is already found in _probe(),
-so it can be stored in struct acpi_ac for later use and then the dev
-pointer in there will not be necessary any more.
+> >
+> > >
+> > > >
+> > > > Changes in v6:
+> > > > - Drop mention of UEFI
+> > > > - Use compatible strings instead of node names
+> > > >
+> > > > Changes in v5:
+> > > > - Drop the memory-map node (should have done that in v4)
+> > > > - Tidy up schema a bit
+> > > >
+> > > > Changes in v4:
+> > > > - Make use of the reserved-memory node instead of creating a new one
+> > > >
+> > > > Changes in v3:
+> > > > - Reword commit message again
+> > > > - cc a lot more people, from the FFI patch
+> > > > - Split out the attributes into the /memory nodes
+> > > >
+> > > > Changes in v2:
+> > > > - Reword commit message
+> > > >
+> > > >  .../reserved-memory/common-reserved.yaml      | 71 +++++++++++++++++++
+> > > >  1 file changed, 71 insertions(+)
+> > > >  create mode 100644 dtschema/schemas/reserved-memory/common-reserved.yaml
+> > > >
+> > > > diff --git a/dtschema/schemas/reserved-memory/common-reserved.yaml b/dtschema/schemas/reserved-memory/common-reserved.yaml
+> > > > new file mode 100644
+> > > > index 0000000..f7fbdfd
+> > > > --- /dev/null
+> > > > +++ b/dtschema/schemas/reserved-memory/common-reserved.yaml
+> > > > @@ -0,0 +1,71 @@
+> > > > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/reserved-memory/common-reserved.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Common memory reservations
+> > > > +
+> > > > +description: |
+> > > > +  Specifies that the reserved memory region can be used for the purpose
+> > > > +  indicated by its compatible string.
+> > > > +
+> > > > +  Clients may reuse this reserved memory if they understand what it is for,
+> > > > +  subject to the notes below.
+> > > > +
+> > > > +maintainers:
+> > > > +  - Simon Glass <sjg@chromium.org>
+> > > > +
+> > > > +allOf:
+> > > > +  - $ref: reserved-memory.yaml
+> > > > +
+> > > > +properties:
+> > > > +  compatible:
+> > > > +    description: |
+> > > > +      This describes some common memory reservations, with the compatible
+> > > > +      string indicating what it is used for:
+> > > > +
+> > > > +         acpi: Advanced Configuration and Power Interface (ACPI) tables
+> > > > +         acpi-nvs: ACPI Non-Volatile-Sleeping Memory (NVS). This is reserved by
+> > > > +           the firmware for its use and is required to be saved and restored
+> > > > +           across an NVS sleep
+> > > > +         boot-code: Contains code used for booting which is not needed by the OS
+> > > > +         boot-code: Contains data used for booting which is not needed by the OS
+> > > > +         runtime-code: Contains code used for interacting with the system when
+> > > > +           running the OS
+> > > > +         runtime-data: Contains data used for interacting with the system when
+> > > > +           running the OS
+> > > > +
+> > > > +    enum:
+> > > > +      - acpi
+> > > > +      - acpi-nvs
+> > > > +      - boot-code
+> > > > +      - boot-data
+> > > > +      - runtime-code
+> > > > +      - runtime-data
+> > > > +
+> >
+> > As I mentioned a few times already, I don't think these compatibles
+> > should be introduced here.
+> >
+> > A reserved region has a specific purpose, and the compatible should be
+> > more descriptive than the enum above. If the consumer does not
+> > understand this purpose, it should simply treat the memory as reserved
+> > and not touch it. Alternatively, these regions can be referenced from
+> > other DT nodes using phandles if needed.
+>
+> We still need some description of what these regions are used for, so
+> that the payload can use the correct regions. I do not have any other
+> solution to this problem. We are in v7 at present. At least explain
+> where you want the compatible strings to be introduced.
+>
 
-That will save you a bunch of ACPI_HANDLE() evaluations and there's
-nothing wrong with using ac->device->handle.  The patch will then
-become almost trivial AFAICS and if you really need to get from ac to
-the underlying platform device, a pointer to it can be added to struct
-acpi_ac without removing the ACPI device pointer from it.
+My point is really that by themselves, these regions are not usable by
+either a payload or an OS that consumes this information. Unless there
+is some other information being provided (via DT I imagine) that
+describes how these things are supposed to be used, they are nothing
+more than memory reservations that should be honored, and providing
+this arbitrary set of labels is unnecessary.
 
->         unsigned long long state;
->         struct notifier_block battery_nb;
->  };
+> What sort of extra detail are you looking for? Please be specific and
+> preferably add some suggestions so I can close this out ASAP.
+>
+
+A payload or OS can do nothing with a memory reservation called
+'runtime-code' it it doesn't know what is inside. So there is another
+DT node somewhere that describes this, and that can simply point to
+this region (via a phandle) if it needs to describe the
+correspondence. This is more idiomatic for DT afaik (but I am not the
+expert).  But more importantly, it avoids overloading some vague
+labels with behavior (e.g., executable permissions for code regions)
+that should only be displayed for regions with a particular use,
+rather than for a ill defined class of reservations the purpose of
+which is not clear.
+
+What I am trying to avoid is the OS ending up being forced to consume
+this information in parallel to the EFI memory map, and having to
+reconcile them. I'd be much happier if this gets contributed to a spec
+that only covers firmware-to-firmware, and is prevented from leaking
+into the OS facing interface.
+
+
+
+> >
+> >
+> > > > +  reg:
+> > > > +    description: region of memory that is reserved for the purpose indicated
+> > > > +      by the compatible string.
+> > > > +
+> > > > +required:
+> > > > +  - reg
+> > > > +
+> > > > +unevaluatedProperties: false
+> > > > +
+> > > > +examples:
+> > > > +  - |
+> > > > +    reserved-memory {
+> > > > +        #address-cells = <1>;
+> > > > +        #size-cells = <1>;
+> > > > +
+> > > > +        reserved@12340000 {
+> > > > +            compatible = "boot-code";
+> > > > +            reg = <0x12340000 0x00800000>;
+> > > > +        };
+> > > > +
+> > > > +        reserved@43210000 {
+> > > > +            compatible = "boot-data";
+> > > > +            reg = <0x43210000 0x00800000>;
+> > > > +        };
+> > > > +    };
+> > > > --
+> > > > 2.42.0.515.g380fc7ccd1-goog
+>
+> Regards,
+> Simon
 
