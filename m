@@ -1,249 +1,144 @@
-Return-Path: <linux-acpi+bounces-491-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-492-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647FA7BBECA
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 20:34:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 027A47BC064
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 22:33:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 886A11C2074D
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 18:34:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8EA0281D98
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 20:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92AE38F85
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 18:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="a4xmoO4G"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DD24446A
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 20:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B8A34CF1
-	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 18:17:46 +0000 (UTC)
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C53CA
-	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 11:17:44 -0700 (PDT)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-59f1dff5298so29936397b3.3
-        for <linux-acpi@vger.kernel.org>; Fri, 06 Oct 2023 11:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1696616264; x=1697221064; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=N1kuvdFzr7bMP1IyvjWvGqylFglQ5IsaUBjLbA0R1mM=;
-        b=a4xmoO4GZ73ejvQkrJkOg3duyXBftjR8hPVC6flQ8283gwkdjBcZkLyICnz8Ym9dAp
-         KCm5eLekK93VLj3hl4JdFBMIm0+sCzLDUNVC2uMdn9pSL7/MQQPSMdXAf/syfUFnelEU
-         kVFWZnAib2iyYsijgpmPxEJjnuQ2BIIILo1wQ=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5959834180
+	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 19:20:33 +0000 (UTC)
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF45E95
+	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 12:20:31 -0700 (PDT)
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-57de3096e25so461637eaf.1
+        for <linux-acpi@vger.kernel.org>; Fri, 06 Oct 2023 12:20:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696616264; x=1697221064;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=N1kuvdFzr7bMP1IyvjWvGqylFglQ5IsaUBjLbA0R1mM=;
-        b=tyHe7vgk8oTHh+pzvqZzqc1N/9rz8ZnsHKUEO8i/89pzEiRLQc7BCYEb5q85nCannr
-         e3mbz/9G5GcgNp9mop+sSg7ZLbIH9Al4Y9Ug1/sWl+hhwLZcNrf3vEoTjIIoj2aK14K1
-         L2w24IUbPoUrrIMLv8elAqcluVtKWfv9za3fNKCdNnhffu+1UyVkOU5OmJX8AjgZFehN
-         wUAM7Y8DGhF7tlXrgdXKAmmMlulVfpa/DI0C5YgWEXBIrbfM0zaSLsyaXZuNN6dC4qLC
-         023EE4DIr3UQlU2djK5LslKn/+k32RJH/rqnXEQGcBP9q52e1JhrlV5YDAFWGaOeRTCH
-         CiHQ==
-X-Gm-Message-State: AOJu0YwZif3USJdlEsVYGhrV0rRzH6DouX1mX6YMVHkoRlc8siVsEXLV
-	fGxRMthlNnm1Nw9sFJnVsGZjdXhjYHqXSOanPrY7Hg==
-X-Google-Smtp-Source: AGHT+IGIR7IRjqzwhRUNpXjT8dLojncj3fRT3VJBx9+8GCPm7ydQ54cLXAEYShIToVA6nQy5pwi/6OxP9yHrPkR3CRA=
-X-Received: by 2002:a81:6d47:0:b0:59f:81c4:631a with SMTP id
- i68-20020a816d47000000b0059f81c4631amr11073507ywc.24.1696616263670; Fri, 06
- Oct 2023 11:17:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696620031; x=1697224831;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qOOUvSMOOU9GGN5d6OGDoBPreZPUMrC/Z6udXYN5U9U=;
+        b=a4U6bAaglKigSq/cqvT+igULT6nbo73wB9nJw0Lh6hdlTbG/78w/ewXx1KtavTQzOr
+         LQTbuLedqrO3IB+RVtIlwjUFEorjaCAizBpsip61FgR1458kBbA0ZqOJ2hqqI5mG8YAI
+         MwdGRCcbii4ZY8OML+Z+bOgEoMPSIny4BU1xEVy3yOnnlSY/wSr3SJ0kow+R4kH2KXA2
+         fXpriWkx2N0KBRQdMgx0Q7ZNlM3OAUaQBulJAmzAjtiGU81tb7Nxnl0B/s7e9esgLSYb
+         LV3Cc432Q7tyGY15QyPGavl6z4S+vWCu2Yc/hCNoYIiubhA1NUs1rkPIpHAGW0YoDRDs
+         f86A==
+X-Gm-Message-State: AOJu0Yy9be846UiSaJVeohDoS6Dzv8scPcCXekQqMVIa6TxrlcjdfTy9
+	QdzoFg1L7aAWqnG4xYt2LrqnMbCUp0T53XF0iSU=
+X-Google-Smtp-Source: AGHT+IGUTz+ETdcSbhQvUkmA+BNXFiU/YIqqaiEJLlwRl5pTXxogA54hRQFHIFor3YiRdWlqNT9gQFGUfKw49zK/Zic=
+X-Received: by 2002:a4a:c509:0:b0:57e:c9bf:696e with SMTP id
+ i9-20020a4ac509000000b0057ec9bf696emr9013268ooq.1.1696620030849; Fri, 06 Oct
+ 2023 12:20:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
- <CAPnjgZ0Xf3U1aj32LbU-xiU1AqwnM3JL1F8xX-wZ18oEmg+irw@mail.gmail.com> <CAMj1kXEXcX7BkDyfy-6_5Vnch=N+onza-yfWfsVaGLE93h2c+Q@mail.gmail.com>
-In-Reply-To: <CAMj1kXEXcX7BkDyfy-6_5Vnch=N+onza-yfWfsVaGLE93h2c+Q@mail.gmail.com>
-From: Simon Glass <sjg@chromium.org>
-Date: Fri, 6 Oct 2023 12:17:23 -0600
-Message-ID: <CAPnjgZ2SEby-ndrs=W_afBJH56eqc=-mhp1F1nwkvWks+=B54Q@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: devicetree@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>, 
-	Rob Herring <robh@kernel.org>, Lean Sheng Tan <sheng.tan@9elements.com>, 
-	lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, 
-	Maximilian Brune <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
-	Guo Dong <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, 
-	ron minnich <rminnich@gmail.com>, Gua Guo <gua.guo@intel.com>, 
-	Chiu Chasel <chasel.chiu@intel.com>, linux-acpi@vger.kernel.org, 
-	U-Boot Mailing List <u-boot@lists.denx.de>
+References: <20231006123304.32686-1-hdegoede@redhat.com> <ed4672a7-439c-4240-aadc-7a36858c36b2@augustwikerfors.se>
+ <9a905931-6210-8f6b-92f5-3c863d4a2e86@redhat.com>
+In-Reply-To: <9a905931-6210-8f6b-92f5-3c863d4a2e86@redhat.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 6 Oct 2023 21:20:19 +0200
+Message-ID: <CAJZ5v0gK1Q54sMRJJJBTf+gY5jd-_57jYKvN5ELNSpmaeVVjAw@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: resource: Add TongFang GM6BGEQ, GM6BG5Q and
+ GM6BG0Q to irq1_edge_low_force_override[]
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: August Wikerfors <git@augustwikerfors.se>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Mario Limonciello <Mario.Limonciello@amd.com>, linux-acpi@vger.kernel.org, 
+	Francesco <f.littarru@outlook.com>, regressions@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_SPF_WL
-	autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Hi Ard,
-
-On Fri, 6 Oct 2023 at 11:33, Ard Biesheuvel <ardb@kernel.org> wrote:
+On Fri, Oct 6, 2023 at 5:17=E2=80=AFPM Hans de Goede <hdegoede@redhat.com> =
+wrote:
 >
-> On Mon, 2 Oct 2023 at 19:54, Simon Glass <sjg@chromium.org> wrote:
+> Hi August,
+>
+> On 10/6/23 16:18, August Wikerfors wrote:
+> > Hi Hans,
 > >
-> > Hi Rob,
+> > On 2023-10-06 14:33, Hans de Goede wrote:
+> >> The TongFang GM6BGEQ, GM6BG5Q and GM6BG0Q are 3 GPU variants of a Tong=
+Fang
+> >> barebone design which is sold under various brand names.
+> >>
+> >> The ACPI IRQ override for the keyboard IRQ must be used on these AMD Z=
+en
+> >> laptops in order for the IRQ to work.
+> >>
+> >> Adjust the irq1_edge_low_force_override[] DMI match table for this:
+> >>
+> >> 1. Drop the sys-vendor match from the existing PCSpecialist Elimina Pr=
+o 16
+> >>     entry for the GM6BGEQ (RTX3050 GPU) model so that it will also mat=
+ch
+> >>     the laptop when sold by other vendors such as hyperbook.pl.
+> >>
+> >> 2. Add board-name matches for the GM6BG5Q (RTX4050) and GM6B0Q (RTX406=
+0)
+> >>     models.
+> >>
+> >> Suggested-by: August Wikerfors <git@augustwikerfors.se>
+> >> Reported-by: Francesco <f.littarru@outlook.com>
+> >> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217394
+> >> Link: https://laptopparts4less.frl/index.php?route=3Dproduct/search&fi=
+lter_name=3DGM6BG
+> >> Link: https://hyperbook.pl/en/content/14-hyperbook-drivers
+> >> Link: https://linux-hardware.org/?probe=3Dbfa70344e3
+> >> Link: https://bbs.archlinuxcn.org/viewtopic.php?id=3D13313
+> >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> > Since this is a regression fix for 453b014e2c29 ("ACPI: resource: Fix I=
+RQ override quirk for PCSpecialist Elimina Pro 16 M") (for PCSpecialist sys=
+tems like Francesco's with product name "Elimina Pro 16 M" but not board na=
+me "GM6BGEQ") and 2d331a6ac481 ("ACPI: resource: revert "Remove "Zen" speci=
+fic match and quirks"") (for other vendors using the same TongFang design),=
+ it should have a "Fixes:" tag for at least one of those.
 > >
-> > On Tue, 26 Sept 2023 at 13:42, Simon Glass <sjg@chromium.org> wrote:
-> > >
-> > > It is common to split firmware into 'Platform Init', which does the
-> > > initial hardware setup and a "Payload" which selects the OS to be booted.
-> > > Thus an handover interface is required between these two pieces.
-> > >
-> > > Where UEFI boot-time services are not available, but UEFI firmware is
-> > > present on either side of this interface, information about memory usage
-> > > and attributes must be presented to the "Payload" in some form.
-> > >
-> > > This aims to provide an small schema addition for the memory mapping
-> > > needed to keep these two pieces working together well.
-> > >
-> > > Signed-off-by: Simon Glass <sjg@chromium.org>
-> > > ---
-> > >
-> > > Changes in v7:
-> > > - Rename acpi-reclaim to acpi
-> > > - Drop individual mention of when memory can be reclaimed
-> > > - Rewrite the item descriptions
-> > > - Add back the UEFI text (with trepidation)
-> >
-> > I am again checking on this series. Can it be applied, please?
-> >
+> > Both of those commits are in 6.5 (and 6.6-rc) so this should go into 6.=
+6-rc and be backported to 6.5, but the patch seems to depend on 424009ab203=
+0 ("ACPI: resource: Drop .ident values from dmi_system_id tables") and mayb=
+e also d37273af0e42 ("ACPI: resource: Consolidate IRQ trigger-type override=
+ DMI tables") to apply cleanly, which seem to only be queued for linux-next=
+/6.7? I'm not familiar with what the correct process is for such cases.
 >
-> Apologies for the delay in response. I have been away.
-
-OK, I hope you had a nice trip.
-
+> You are right:
 >
-> >
-> > >
-> > > Changes in v6:
-> > > - Drop mention of UEFI
-> > > - Use compatible strings instead of node names
-> > >
-> > > Changes in v5:
-> > > - Drop the memory-map node (should have done that in v4)
-> > > - Tidy up schema a bit
-> > >
-> > > Changes in v4:
-> > > - Make use of the reserved-memory node instead of creating a new one
-> > >
-> > > Changes in v3:
-> > > - Reword commit message again
-> > > - cc a lot more people, from the FFI patch
-> > > - Split out the attributes into the /memory nodes
-> > >
-> > > Changes in v2:
-> > > - Reword commit message
-> > >
-> > >  .../reserved-memory/common-reserved.yaml      | 71 +++++++++++++++++++
-> > >  1 file changed, 71 insertions(+)
-> > >  create mode 100644 dtschema/schemas/reserved-memory/common-reserved.yaml
-> > >
-> > > diff --git a/dtschema/schemas/reserved-memory/common-reserved.yaml b/dtschema/schemas/reserved-memory/common-reserved.yaml
-> > > new file mode 100644
-> > > index 0000000..f7fbdfd
-> > > --- /dev/null
-> > > +++ b/dtschema/schemas/reserved-memory/common-reserved.yaml
-> > > @@ -0,0 +1,71 @@
-> > > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/reserved-memory/common-reserved.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Common memory reservations
-> > > +
-> > > +description: |
-> > > +  Specifies that the reserved memory region can be used for the purpose
-> > > +  indicated by its compatible string.
-> > > +
-> > > +  Clients may reuse this reserved memory if they understand what it is for,
-> > > +  subject to the notes below.
-> > > +
-> > > +maintainers:
-> > > +  - Simon Glass <sjg@chromium.org>
-> > > +
-> > > +allOf:
-> > > +  - $ref: reserved-memory.yaml
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    description: |
-> > > +      This describes some common memory reservations, with the compatible
-> > > +      string indicating what it is used for:
-> > > +
-> > > +         acpi: Advanced Configuration and Power Interface (ACPI) tables
-> > > +         acpi-nvs: ACPI Non-Volatile-Sleeping Memory (NVS). This is reserved by
-> > > +           the firmware for its use and is required to be saved and restored
-> > > +           across an NVS sleep
-> > > +         boot-code: Contains code used for booting which is not needed by the OS
-> > > +         boot-code: Contains data used for booting which is not needed by the OS
-> > > +         runtime-code: Contains code used for interacting with the system when
-> > > +           running the OS
-> > > +         runtime-data: Contains data used for interacting with the system when
-> > > +           running the OS
-> > > +
-> > > +    enum:
-> > > +      - acpi
-> > > +      - acpi-nvs
-> > > +      - boot-code
-> > > +      - boot-data
-> > > +      - runtime-code
-> > > +      - runtime-data
-> > > +
->
-> As I mentioned a few times already, I don't think these compatibles
-> should be introduced here.
->
-> A reserved region has a specific purpose, and the compatible should be
-> more descriptive than the enum above. If the consumer does not
-> understand this purpose, it should simply treat the memory as reserved
-> and not touch it. Alternatively, these regions can be referenced from
-> other DT nodes using phandles if needed.
+> Fixes: 453b014e2c29 ("ACPI: resource: Fix IRQ override quirk for PCSpecia=
+list Elimina Pro 16 M")
 
-We still need some description of what these regions are used for, so
-that the payload can use the correct regions. I do not have any other
-solution to this problem. We are in v7 at present. At least explain
-where you want the compatible strings to be introduced.
+OK
 
-What sort of extra detail are you looking for? Please be specific and
-preferably add some suggestions so I can close this out ASAP.
-
+> Note likewise this commit should really also be send as a fix
+> for 6.6 and backported to the stable kernels:
 >
->
-> > > +  reg:
-> > > +    description: region of memory that is reserved for the purpose indicated
-> > > +      by the compatible string.
-> > > +
-> > > +required:
-> > > +  - reg
-> > > +
-> > > +unevaluatedProperties: false
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    reserved-memory {
-> > > +        #address-cells = <1>;
-> > > +        #size-cells = <1>;
-> > > +
-> > > +        reserved@12340000 {
-> > > +            compatible = "boot-code";
-> > > +            reg = <0x12340000 0x00800000>;
-> > > +        };
-> > > +
-> > > +        reserved@43210000 {
-> > > +            compatible = "boot-data";
-> > > +            reg = <0x43210000 0x00800000>;
-> > > +        };
-> > > +    };
-> > > --
-> > > 2.42.0.515.g380fc7ccd1-goog
+> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commi=
+t/drivers/acpi/resource.c?h=3Dbleeding-edge&id=3Dc1ed72171ed580fbf159e703b7=
+7685aa4b0d0df5
 
-Regards,
-Simon
+That's harder, because it does depend on commit 424009ab2030 ("ACPI:
+resource: Drop .ident values from dmi_system_id tables") which is not
+6.6-rc material IMV.
+
+So I'm going to queue this up with the Fixes tag above and Cc: stable
+pointing to commit 424009ab2030 as a dependency, but for 6.7.
 
