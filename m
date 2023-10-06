@@ -1,155 +1,134 @@
-Return-Path: <linux-acpi+bounces-457-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-458-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144E67BAF96
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 02:32:50 +0200 (CEST)
-Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sy.mirrors.kernel.org (Postfix) with ESMTP id 4D92FB209A5
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 00:32:47 +0000 (UTC)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBDF27BB7CE
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 14:37:52 +0200 (CEST)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75B952810EF
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 12:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C7D15B4
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 00:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE6B1D545
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 12:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ClOq/JHe"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IXpW6sa8"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4C341A9B
-	for <linux-acpi@vger.kernel.org>; Thu,  5 Oct 2023 23:00:44 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE4AD4F;
-	Thu,  5 Oct 2023 16:00:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696546838; x=1728082838;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=YSc5DqPuCbhoQCscHYL5riDMSg61/UNw+XjJOkVlsYk=;
-  b=ClOq/JHenUDs/DEFwcalJZTrpVTEXzdZquRfQfsadWKjZsnZlxF25IjJ
-   Cvti4DllVy/HC6ZL+qVHDs2M2ru0hNT0+RsZK1y7tkZLWg/2gAt4H0Brl
-   9j7m4LE2C+7ieRtCDzkYPnUCjjxH6fwvot1tSyzDwLmC8F9BJ4e00nh75
-   IZj0Jo0/0kqFPN+X/S1R/uaD90tv6AxJqowXXZFmJHl54dkp/5NvdhK1s
-   kZOqjsX4k78BFQSz72pmRXQEWqybfqU+KXg/94Ivv4RcTOLAVSZ6qryQD
-   8QHEHOHG7QNAsNDxMdg4itfX+bYRajI3P60VNsDV6nzmdPM1AcvIzMfvK
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="387516067"
-X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
-   d="scan'208";a="387516067"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 16:00:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="895648208"
-X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
-   d="scan'208";a="895648208"
-Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
-  by fmsmga001.fm.intel.com with ESMTP; 05 Oct 2023 15:59:05 -0700
-Received: from kbuild by c3b01524d57c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qoXKb-000M09-0N;
-	Thu, 05 Oct 2023 23:00:33 +0000
-Date: Fri, 6 Oct 2023 07:00:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	devel@acpica.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge 127/130]
- drivers/thermal/gov_power_allocator.c:127:13: warning: unused variable 'ret'
-Message-ID: <202310060618.FJ4z229a-lkp@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1EE14F79
+	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 12:19:09 +0000 (UTC)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B307CC6
+	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 05:19:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1696594744;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7uW/C+bEdkApNfSo3CmjDKskXpf4EHmF9TrWX/tbZqY=;
+	b=IXpW6sa8qb99Omjb89Kw3gOd2YNzf/pdCEdzPoOOMWKHhNLF+DLdRG7owhA+bWso18oUbI
+	I1IQ5QoM2P6VlX3Q07/sDzZDd6Tia6hf3avwNZYxcueatSqYxu/GGtbhp7RUegmMcD6igI
+	6HAGtllnaQbaUJF0wv5fIu9zgDzeNKE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-33-7VfTlYxRO9Sr607A9QXBxw-1; Fri, 06 Oct 2023 08:19:02 -0400
+X-MC-Unique: 7VfTlYxRO9Sr607A9QXBxw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E5C881C01735;
+	Fri,  6 Oct 2023 12:19:01 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.193.111])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 4499640D1BE;
+	Fri,  6 Oct 2023 12:19:01 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Mario Limonciello <Mario.Limonciello@amd.com>,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: resource: Add TongFang GM6BGEQ, GM6BG5Q and GM6BG0Q to irq1_edge_low_force_override[]
+Date: Fri,  6 Oct 2023 14:18:52 +0200
+Message-ID: <20231006121852.32165-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.6
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   ef7625d78dd079600f642d5875c08e059b002b52
-commit: 9212159685caa222bbe01f9b4d49f6c1f9ddb11a [127/130] thermal: gov_power_allocator: Use trip pointers instead of trip indices
-config: mips-allyesconfig (https://download.01.org/0day-ci/archive/20231006/202310060618.FJ4z229a-lkp@intel.com/config)
-compiler: mips-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231006/202310060618.FJ4z229a-lkp@intel.com/reproduce)
+The TongFang GM6BGEQ, GM6BG5Q and GM6BG0Q are 3 GPU variants of a TongFang
+barebone design which is sold under various brand names.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310060618.FJ4z229a-lkp@intel.com/
+The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
+laptops in order for the IRQ to work.
 
-All warnings (new ones prefixed by >>):
+Adjust the irq1_edge_low_force_override[] DMI match table for this:
 
-   drivers/thermal/gov_power_allocator.c: In function 'estimate_pid_constants':
->> drivers/thermal/gov_power_allocator.c:127:13: warning: unused variable 'ret' [-Wunused-variable]
-     127 |         int ret;
-         |             ^~~
+1. Drop the sys-vendor match from the existing PCSpecialist Elimina Pro 16
+   entry for the GM6BGEQ (RTX3050 GPU) model so that it will also match
+   the laptop when sold by other vendors such as hyperbook.pl.
 
+2. Add board-name matches for the GM6BG5Q (RTX4050) and GM6B0Q (RTX4060)
+   models.
 
-vim +/ret +127 drivers/thermal/gov_power_allocator.c
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217394
+Link: https://laptopparts4less.frl/index.php?route=product/search&filter_name=GM6BG
+Link: https://hyperbook.pl/en/content/14-hyperbook-drivers
+Link: https://linux-hardware.org/?probe=bfa70344e3
+Link: https://bbs.archlinuxcn.org/viewtopic.php?id=13313
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/resource.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  110  
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  111  /**
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  112   * estimate_pid_constants() - Estimate the constants for the PID controller
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  113   * @tz:		thermal zone for which to estimate the constants
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  114   * @sustainable_power:	sustainable power for the thermal zone
-9212159685caa2 drivers/thermal/gov_power_allocator.c Rafael J. Wysocki 2023-10-05  115   * @trip_switch_on:	trip point for the switch on temperature
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  116   * @control_temp:	target temperature for the power allocator governor
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  117   *
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  118   * This function is used to update the estimation of the PID
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  119   * controller constants in struct thermal_zone_parameters.
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  120   */
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  121  static void estimate_pid_constants(struct thermal_zone_device *tz,
-9212159685caa2 drivers/thermal/gov_power_allocator.c Rafael J. Wysocki 2023-10-05  122  				   u32 sustainable_power,
-9212159685caa2 drivers/thermal/gov_power_allocator.c Rafael J. Wysocki 2023-10-05  123  				   const struct thermal_trip *trip_switch_on,
-90a996544946d1 drivers/thermal/gov_power_allocator.c Lukasz Luba       2020-11-24  124  				   int control_temp)
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  125  {
-7f725a23f2b7bb drivers/thermal/gov_power_allocator.c Daniel Lezcano    2022-10-03  126  	u32 temperature_threshold = control_temp;
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14 @127  	int ret;
-e34a7233896928 drivers/thermal/gov_power_allocator.c Lukasz Luba       2020-11-24  128  	s32 k_i;
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  129  
-9212159685caa2 drivers/thermal/gov_power_allocator.c Rafael J. Wysocki 2023-10-05  130  	if (trip_switch_on)
-9212159685caa2 drivers/thermal/gov_power_allocator.c Rafael J. Wysocki 2023-10-05  131  		temperature_threshold -= trip_switch_on->temperature;
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  132  
-44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  133  	/*
-44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  134  	 * estimate_pid_constants() tries to find appropriate default
-44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  135  	 * values for thermal zones that don't provide them. If a
-44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  136  	 * system integrator has configured a thermal zone with two
-44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  137  	 * passive trip points at the same temperature, that person
-44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  138  	 * hasn't put any effort to set up the thermal zone properly
-44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  139  	 * so just give up.
-44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  140  	 */
-44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  141  	if (!temperature_threshold)
-44241628bb207e drivers/thermal/power_allocator.c     Andrea Arcangeli  2015-10-01  142  		return;
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  143  
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  144  	tz->tzp->k_po = int_to_frac(sustainable_power) /
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  145  		temperature_threshold;
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  146  
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  147  	tz->tzp->k_pu = int_to_frac(2 * sustainable_power) /
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  148  		temperature_threshold;
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  149  
-e34a7233896928 drivers/thermal/gov_power_allocator.c Lukasz Luba       2020-11-24  150  	k_i = tz->tzp->k_pu / 10;
-e34a7233896928 drivers/thermal/gov_power_allocator.c Lukasz Luba       2020-11-24  151  	tz->tzp->k_i = k_i > 0 ? k_i : 1;
-e34a7233896928 drivers/thermal/gov_power_allocator.c Lukasz Luba       2020-11-24  152  
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  153  	/*
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  154  	 * The default for k_d and integral_cutoff is 0, so we can
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  155  	 * leave them as they are.
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  156  	 */
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  157  }
-e055bb0f9a6e5c drivers/thermal/power_allocator.c     Javi Merino       2015-09-14  158  
-
-:::::: The code at line 127 was first introduced by commit
-:::::: e055bb0f9a6e5c09bedf41c2a5b881edbd7f2ed0 thermal: power_allocator: relax the requirement of a sustainable_power in tzp
-
-:::::: TO: Javi Merino <javi.merino@arm.com>
-:::::: CC: Eduardo Valentin <edubezval@gmail.com>
-
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 014a3911381b..18f6353c142e 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -512,17 +512,23 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
+ 		},
+ 	},
+ 	{
+-		/*
+-		 * PCSpecialist Elimina Pro 16 M
+-		 *
+-		 * Some models have product-name "Elimina Pro 16 M",
+-		 * others "GM6BGEQ". Match on board-name to match both.
+-		 */
++		/* TongFang GM6BGEQ / PCSpecialist Elimina Pro 16 M, RTX 3050 */
+ 		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "PCSpecialist"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "GM6BGEQ"),
+ 		},
+ 	},
++	{
++		/* TongFang GM6BG5Q, RTX 4050 */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GM6BG5Q"),
++		},
++	},
++	{
++		/* TongFang GM6BG0Q / PCSpecialist Elimina Pro 16 M, RTX 4060 */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GM6BG0Q"),
++		},
++	},
+ 	{ }
+ };
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.41.0
+
 
