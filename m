@@ -1,144 +1,116 @@
-Return-Path: <linux-acpi+bounces-492-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-493-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027A47BC064
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 22:33:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E6A7BC065
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 22:33:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8EA0281D98
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 20:33:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB5911C208D3
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 20:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DD24446A
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 20:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C40144462
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 20:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5959834180
-	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 19:20:33 +0000 (UTC)
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF45E95
-	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 12:20:31 -0700 (PDT)
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-57de3096e25so461637eaf.1
-        for <linux-acpi@vger.kernel.org>; Fri, 06 Oct 2023 12:20:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5681914017
+	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 19:30:46 +0000 (UTC)
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 764D283;
+	Fri,  6 Oct 2023 12:30:44 -0700 (PDT)
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-57be74614c0so125150eaf.1;
+        Fri, 06 Oct 2023 12:30:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696620031; x=1697224831;
+        d=1e100.net; s=20230601; t=1696620644; x=1697225444;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qOOUvSMOOU9GGN5d6OGDoBPreZPUMrC/Z6udXYN5U9U=;
-        b=a4U6bAaglKigSq/cqvT+igULT6nbo73wB9nJw0Lh6hdlTbG/78w/ewXx1KtavTQzOr
-         LQTbuLedqrO3IB+RVtIlwjUFEorjaCAizBpsip61FgR1458kBbA0ZqOJ2hqqI5mG8YAI
-         MwdGRCcbii4ZY8OML+Z+bOgEoMPSIny4BU1xEVy3yOnnlSY/wSr3SJ0kow+R4kH2KXA2
-         fXpriWkx2N0KBRQdMgx0Q7ZNlM3OAUaQBulJAmzAjtiGU81tb7Nxnl0B/s7e9esgLSYb
-         LV3Cc432Q7tyGY15QyPGavl6z4S+vWCu2Yc/hCNoYIiubhA1NUs1rkPIpHAGW0YoDRDs
-         f86A==
-X-Gm-Message-State: AOJu0Yy9be846UiSaJVeohDoS6Dzv8scPcCXekQqMVIa6TxrlcjdfTy9
-	QdzoFg1L7aAWqnG4xYt2LrqnMbCUp0T53XF0iSU=
-X-Google-Smtp-Source: AGHT+IGUTz+ETdcSbhQvUkmA+BNXFiU/YIqqaiEJLlwRl5pTXxogA54hRQFHIFor3YiRdWlqNT9gQFGUfKw49zK/Zic=
-X-Received: by 2002:a4a:c509:0:b0:57e:c9bf:696e with SMTP id
- i9-20020a4ac509000000b0057ec9bf696emr9013268ooq.1.1696620030849; Fri, 06 Oct
- 2023 12:20:30 -0700 (PDT)
+        bh=TuKl5KaDg+pyNLcIMdUQdNVHBW291e75bQagS3FL0iQ=;
+        b=ASbWo/TUxL0aB2oJd1VTQ9n5S1MqWZjTCthWbkwWIXBNwWEzkc3zciH+s30pY5SrPY
+         DovDg2hyeq5sk245YbVCxsjNITQ1hx1RusP8WK36SBFQjbz5Vr4jT58q96sbFxkdm44+
+         ApD4Y5m++og6u6s9+vP0dLIZNd6agvVdbhf7lyYA57uGmL21mDBKn2pGfWR0yrCxSYPo
+         MwAefdLRgXqbsn0ScNnMC4aitRtn5VN9d5Qy6gPvL2E/xsNJ78trBy7PrvmDlE3pqU5h
+         ryoILnc2EcJXWym+eMdpZH+xqI5Oi/M+EOHVieIcxL+Q1v4EfDo90Jk14FltILvslVZz
+         rIuw==
+X-Gm-Message-State: AOJu0Yy6iUdb92wn+KLlBJpIRLgEoS/k7SaMKOHlneCs2NYvmRHE13II
+	YKfokzlGTqQhxezxMjYZG1Wv1xR7xotAsUGdtNmVsWNhHl0=
+X-Google-Smtp-Source: AGHT+IH9VWGIKHbqmkdamXGHCCSy0uN+1ur6XMncRy4fDozmzedAhMeLXcDN9rZwIxsit1BOxiSi1mxoRRzUath/TKE=
+X-Received: by 2002:a4a:df07:0:b0:57b:73f6:6f80 with SMTP id
+ i7-20020a4adf07000000b0057b73f66f80mr9655668oou.0.1696620643727; Fri, 06 Oct
+ 2023 12:30:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231006123304.32686-1-hdegoede@redhat.com> <ed4672a7-439c-4240-aadc-7a36858c36b2@augustwikerfors.se>
- <9a905931-6210-8f6b-92f5-3c863d4a2e86@redhat.com>
-In-Reply-To: <9a905931-6210-8f6b-92f5-3c863d4a2e86@redhat.com>
+References: <20230929134010.25644-1-wse@tuxedocomputers.com>
+ <CAJZ5v0iH4PGaCdSuQ-4Pu7oXbzrw+zLxpEqMjtMgcNFextgfqw@mail.gmail.com> <5d82fcac-a360-2d8b-8f6a-9b5cecb08ca2@tuxedocomputers.com>
+In-Reply-To: <5d82fcac-a360-2d8b-8f6a-9b5cecb08ca2@tuxedocomputers.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 6 Oct 2023 21:20:19 +0200
-Message-ID: <CAJZ5v0gK1Q54sMRJJJBTf+gY5jd-_57jYKvN5ELNSpmaeVVjAw@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: resource: Add TongFang GM6BGEQ, GM6BG5Q and
- GM6BG0Q to irq1_edge_low_force_override[]
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: August Wikerfors <git@augustwikerfors.se>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Mario Limonciello <Mario.Limonciello@amd.com>, linux-acpi@vger.kernel.org, 
-	Francesco <f.littarru@outlook.com>, regressions@lists.linux.dev
+Date: Fri, 6 Oct 2023 21:30:32 +0200
+Message-ID: <CAJZ5v0gO77ydCfs8m4w3Juwg2B85ZZ=zY-zQptB0UmKvxBnd3w@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: Do IRQ override on TongFang GMxXGxx
+To: Werner Sembach <wse@tuxedocomputers.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
 	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Oct 6, 2023 at 5:17=E2=80=AFPM Hans de Goede <hdegoede@redhat.com> =
-wrote:
+On Wed, Oct 4, 2023 at 11:38=E2=80=AFAM Werner Sembach <wse@tuxedocomputers=
+.com> wrote:
 >
-> Hi August,
+> Hi,
 >
-> On 10/6/23 16:18, August Wikerfors wrote:
-> > Hi Hans,
+> Am 03.10.23 um 20:39 schrieb Rafael J. Wysocki:
+> > On Fri, Sep 29, 2023 at 3:40=E2=80=AFPM Werner Sembach <wse@tuxedocompu=
+ters.com> wrote:
+> >> The TongFang GMxXGxx/TUXEDO Stellaris/Pollaris Gen5 needs IRQ overridi=
+ng
+> >> for the keyboard to work. Adding an entry for this laptop to the
+> >> override_table makes the internal keyboard functional again.
+> > You said "again", so it used to work.  Do you know which commit broke i=
+t?
+>
+> Sorry that "again" is a bit misleading. I Copied it from here:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
+/?id=3D7592b79ba4a9
+>
+> I actually only tested the direct predecessor of this Notebook on older k=
+ernels:
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D216698
+>
+> I suspected that it's the same issue and since the same fix worked I now =
+even
+> more believe so, but I actually never tested a kernel before the breaking=
+ change.
+>
 > >
-> > On 2023-10-06 14:33, Hans de Goede wrote:
-> >> The TongFang GM6BGEQ, GM6BG5Q and GM6BG0Q are 3 GPU variants of a Tong=
-Fang
-> >> barebone design which is sold under various brand names.
-> >>
-> >> The ACPI IRQ override for the keyboard IRQ must be used on these AMD Z=
-en
-> >> laptops in order for the IRQ to work.
-> >>
-> >> Adjust the irq1_edge_low_force_override[] DMI match table for this:
-> >>
-> >> 1. Drop the sys-vendor match from the existing PCSpecialist Elimina Pr=
-o 16
-> >>     entry for the GM6BGEQ (RTX3050 GPU) model so that it will also mat=
-ch
-> >>     the laptop when sold by other vendors such as hyperbook.pl.
-> >>
-> >> 2. Add board-name matches for the GM6BG5Q (RTX4050) and GM6B0Q (RTX406=
-0)
-> >>     models.
-> >>
-> >> Suggested-by: August Wikerfors <git@augustwikerfors.se>
-> >> Reported-by: Francesco <f.littarru@outlook.com>
-> >> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217394
-> >> Link: https://laptopparts4less.frl/index.php?route=3Dproduct/search&fi=
-lter_name=3DGM6BG
-> >> Link: https://hyperbook.pl/en/content/14-hyperbook-drivers
-> >> Link: https://linux-hardware.org/?probe=3Dbfa70344e3
-> >> Link: https://bbs.archlinuxcn.org/viewtopic.php?id=3D13313
-> >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> > Since this is a regression fix for 453b014e2c29 ("ACPI: resource: Fix I=
-RQ override quirk for PCSpecialist Elimina Pro 16 M") (for PCSpecialist sys=
-tems like Francesco's with product name "Elimina Pro 16 M" but not board na=
-me "GM6BGEQ") and 2d331a6ac481 ("ACPI: resource: revert "Remove "Zen" speci=
-fic match and quirks"") (for other vendors using the same TongFang design),=
- it should have a "Fixes:" tag for at least one of those.
-> >
-> > Both of those commits are in 6.5 (and 6.6-rc) so this should go into 6.=
-6-rc and be backported to 6.5, but the patch seems to depend on 424009ab203=
-0 ("ACPI: resource: Drop .ident values from dmi_system_id tables") and mayb=
-e also d37273af0e42 ("ACPI: resource: Consolidate IRQ trigger-type override=
- DMI tables") to apply cleanly, which seem to only be queued for linux-next=
-/6.7? I'm not familiar with what the correct process is for such cases.
+> >> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+> >> Cc: <stable@vger.kernel.org>
+> > What's the oldest kernel version you want this to be applied to?
 >
-> You are right:
->
-> Fixes: 453b014e2c29 ("ACPI: resource: Fix IRQ override quirk for PCSpecia=
-list Elimina Pro 16 M")
+> 5.15 because Ubuntu 22.04
 
-OK
+So first of all Hans posted this:
 
-> Note likewise this commit should really also be send as a fix
-> for 6.6 and backported to the stable kernels:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commi=
-t/drivers/acpi/resource.c?h=3Dbleeding-edge&id=3Dc1ed72171ed580fbf159e703b7=
-7685aa4b0d0df5
+https://patchwork.kernel.org/project/linux-acpi/patch/20231006123304.32686-=
+1-hdegoede@redhat.com/
 
-That's harder, because it does depend on commit 424009ab2030 ("ACPI:
-resource: Drop .ident values from dmi_system_id tables") which is not
-6.6-rc material IMV.
+and I'm wondering if it addresses the problem for you too.
 
-So I'm going to queue this up with the Fixes tag above and Cc: stable
-pointing to commit 424009ab2030 as a dependency, but for 6.7.
+If it doesn't, the patch will need to be rebased on top of the new
+acpi-resource material in linux-next and retested.
+
+Thanks!
 
