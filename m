@@ -1,52 +1,52 @@
-Return-Path: <linux-acpi+bounces-483-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-484-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E1A7BBEC1
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 20:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7237BBEC2
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 20:33:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C9541C2074D
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 18:33:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB0A31C20868
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 18:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E90F273C4
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 18:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3958838F82
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 18:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gicp4+Cn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mkxFS4Fq"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5755B30FBE
-	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 17:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D481D696
+	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 17:31:19 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56BD3C2;
-	Fri,  6 Oct 2023 10:31:11 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E760BF0;
+	Fri,  6 Oct 2023 10:31:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696613471; x=1728149471;
+  t=1696613478; x=1728149478;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=5PKJcHQuGAJasXvUQcWL2vxKmsvzbQLbVutteBr3/jA=;
-  b=Gicp4+CnPPBUApl6gAvC5Gm71MbpjKRDgvwKVs1aKAud3J24UtbMliKK
-   HkpXp5XiijWVqTVlzAlvB580aRC+7wrhOIfecncRJRnnQGSw92Dg34ANr
-   DJG0zN4T8TCtziN1yQfP+cFTw9JRPcHgf95jw82ulWP2181rDNyXjHZU7
-   ByJ8fSW8XNAUKNkJDTKtAZeP9LYLwKVd12E83UmjNjjRm5lDMpOXgcg2O
-   K1b+qclsnqK2c8eMrZzOHKP6g0dpK4B6pcMNcxFxVR5agNt1Aqld4weLO
-   D9L0VOI3GBEyj1f1VfrRrj8bGJ47befzJCeBV5XwAKIIdaHNDnsyaiZUY
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="387676757"
+  bh=9GeUK2SGN9OGtW6dMn16QDj8PfFEO9Do3zKwnp3cbpk=;
+  b=mkxFS4FqaFU/mwRrCohof7MBRrHc7ITK0/tTmp0YeT9Nf+vlkTXNg4kj
+   GBM5xZNGtExr4G5lsNvVRj83oY+Bb8SM3nNxKztAlCp8Hra5ghRmh9/RU
+   no9SM0Yy3uzEqwqSbyjI3A317KIG9LUD8cxKgQWKTzJqrNBL1w9ISBKT1
+   4Obk32z2CSjUniNXrcjYmXrAdvmz4u9jpvuwa2MUFMLuOuAoqowfjg3Qn
+   Ubssm3VqOeXap7ZiBljlzZlAxv+6pXJPNUvw4VaY3wmH9zs9QlrGAT6qo
+   yquK2Rb9hh1XkLOmrdXxH8Zm1NhCk71hcASq6jVukAV0ltpXLvP81KkxS
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="387676794"
 X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="387676757"
+   d="scan'208";a="387676794"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 10:31:11 -0700
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 10:31:14 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="745937353"
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="745937391"
 X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="745937353"
+   d="scan'208";a="745937391"
 Received: from powerlab.fi.intel.com ([10.237.71.25])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 10:31:07 -0700
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 10:31:11 -0700
 From: Michal Wilczynski <michal.wilczynski@intel.com>
 To: linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -57,10 +57,11 @@ Cc: rafael.j.wysocki@intel.com,
 	dan.j.williams@intel.com,
 	vishal.l.verma@intel.com,
 	ira.weiny@intel.com,
-	Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v2 1/6] ACPI: AC: Remove unnecessary checks
-Date: Fri,  6 Oct 2023 20:30:50 +0300
-Message-ID: <20231006173055.2938160-2-michal.wilczynski@intel.com>
+	Michal Wilczynski <michal.wilczynski@intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH v2 2/6] ACPI: AC: Use string_choices API instead of ternary operator
+Date: Fri,  6 Oct 2023 20:30:51 +0300
+Message-ID: <20231006173055.2938160-3-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231006173055.2938160-1-michal.wilczynski@intel.com>
 References: <20231006173055.2938160-1-michal.wilczynski@intel.com>
@@ -78,76 +79,39 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Remove unnecessary checks for NULL for variables that can't be NULL at
-the point they're checked for it. Defensive programming is discouraged
-in the kernel.
+Use modern string_choices API instead of manually determining the
+output using ternary operator.
 
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- drivers/acpi/ac.c | 27 ++++-----------------------
- 1 file changed, 4 insertions(+), 23 deletions(-)
+ drivers/acpi/ac.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-index aac3e561790c..83d45c681121 100644
+index 83d45c681121..f809f6889b4a 100644
 --- a/drivers/acpi/ac.c
 +++ b/drivers/acpi/ac.c
-@@ -131,9 +131,6 @@ static void acpi_ac_notify(acpi_handle handle, u32 event, void *data)
- 	struct acpi_device *device = data;
- 	struct acpi_ac *ac = acpi_driver_data(device);
+@@ -17,6 +17,7 @@
+ #include <linux/delay.h>
+ #include <linux/platform_device.h>
+ #include <linux/power_supply.h>
++#include <linux/string_choices.h>
+ #include <linux/acpi.h>
+ #include <acpi/battery.h>
  
--	if (!ac)
--		return;
--
- 	switch (event) {
- 	default:
- 		acpi_handle_debug(device->handle, "Unsupported event [0x%x]\n",
-@@ -216,12 +213,8 @@ static const struct dmi_system_id ac_dmi_table[]  __initconst = {
- static int acpi_ac_add(struct acpi_device *device)
- {
- 	struct power_supply_config psy_cfg = {};
--	int result = 0;
--	struct acpi_ac *ac = NULL;
--
--
--	if (!device)
--		return -EINVAL;
-+	struct acpi_ac *ac;
-+	int result;
+@@ -243,8 +244,8 @@ static int acpi_ac_add(struct acpi_device *device)
+ 		goto err_release_ac;
+ 	}
  
- 	ac = kzalloc(sizeof(struct acpi_ac), GFP_KERNEL);
- 	if (!ac)
-@@ -275,16 +268,9 @@ static int acpi_ac_add(struct acpi_device *device)
- #ifdef CONFIG_PM_SLEEP
- static int acpi_ac_resume(struct device *dev)
- {
--	struct acpi_ac *ac;
-+	struct acpi_ac *ac = acpi_driver_data(to_acpi_device(dev));
- 	unsigned int old_state;
+-	pr_info("%s [%s] (%s)\n", acpi_device_name(device),
+-		acpi_device_bid(device), ac->state ? "on-line" : "off-line");
++	pr_info("%s [%s] (%s-line)\n", acpi_device_name(device),
++		acpi_device_bid(device), str_on_off(ac->state));
  
--	if (!dev)
--		return -EINVAL;
--
--	ac = acpi_driver_data(to_acpi_device(dev));
--	if (!ac)
--		return -EINVAL;
--
- 	old_state = ac->state;
- 	if (acpi_ac_get_state(ac))
- 		return 0;
-@@ -299,12 +285,7 @@ static int acpi_ac_resume(struct device *dev)
- 
- static void acpi_ac_remove(struct acpi_device *device)
- {
--	struct acpi_ac *ac = NULL;
--
--	if (!device || !acpi_driver_data(device))
--		return;
--
--	ac = acpi_driver_data(device);
-+	struct acpi_ac *ac = acpi_driver_data(device);
- 
- 	acpi_dev_remove_notify_handler(device, ACPI_ALL_NOTIFY,
- 				       acpi_ac_notify);
+ 	ac->battery_nb.notifier_call = acpi_ac_battery_notify;
+ 	register_acpi_notifier(&ac->battery_nb);
 -- 
 2.41.0
 
