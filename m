@@ -1,177 +1,167 @@
-Return-Path: <linux-acpi+bounces-471-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-472-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D95427BBA69
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 16:36:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8B87BBCD6
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 18:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0782F1C202E8
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 14:36:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A50E1C2092A
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 16:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616F126E01
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 14:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3391846
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 16:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=augustwikerfors.se header.i=@augustwikerfors.se header.b="CUiiRAET";
-	dkim=pass (2048-bit key) header.d=arn1.rp.oracleemaildelivery.com header.i=@arn1.rp.oracleemaildelivery.com header.b="Z1Gn40R+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZmeILY5k"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21201F601
-	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 14:23:21 +0000 (UTC)
-X-Greylist: delayed 302 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 Oct 2023 07:23:18 PDT
-Received: from abi149hd125.arn1.oracleemaildelivery.com (abi149hd125.arn1.oracleemaildelivery.com [129.149.84.125])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD835C5
-	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 07:23:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
- d=augustwikerfors.se;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
- bh=aVEtphrFM7XGVmNaoicY2hacQNy6vbztvG/piAN/eGw=;
- b=CUiiRAETlJPa6eghm+trc2N6kjHcKsYbqFnQ1TMz41tjRWkscPELdRUiAgPOemA78Yo16my0XTVl
-   gvaL6mPCBcx8IBg4MGebsyaCE/AQnG7KB9gSdUsNeOeJ+yMX0O4QpYw+a8HcCH35bRWJyDMtStA5
-   BgBSA+v2mByCKUREYi6sUJhosKaISb5kivgs7U6perWpRrsUX0drrBLyBlGRT6akb8o+3vmJe5u2
-   BK4QOWr21fD/9c3XQopuWICXeJlCJVEH0NwfmBH9PPLTqLFLqrmuDFn2tVEASbdiX4PzsWORG6BW
-   r8OxF+fM/ZQhdHT8i4cyYK0aFIQaAfCC5JHIJw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
- d=arn1.rp.oracleemaildelivery.com;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
- bh=aVEtphrFM7XGVmNaoicY2hacQNy6vbztvG/piAN/eGw=;
- b=Z1Gn40R+rkVvU2K3GiBVBk7kPxEQjtjWN1XPDLZf4jcwIYG5xllutOHs0QnuacIP8shDXXgAaK7B
-   KPH4IlnFHITJIx+BTjbOFIAk55mM6i2rERRVsPytH6hZpxnO6+Qs2p0FAEz+R2bBAMZKm/H1AedB
-   zxthRtZHiNGYwhsN+3Wzs7dXkNvoInYDpkCeLyUwA9/XmFW7IlqErW+oMzOgPZ6P1ShFYO/RxD6G
-   nnac6boB2OcWp9VRcCHDsVTFzjUW0v1m2Iy3+X6rQQF7MRzTx/deSrYTNfS/RDKcTSXIACRkg0UF
-   6jrFt/Mwp+AytDl0SvE7aAqvK+q5TrpLbwBZ5w==
-Received: by omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
- (Oracle Communications Messaging Server 8.1.0.1.20230928 64bit (built Sep 28
- 2023))
- with ESMTPS id <0S240022F2ED3320@omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
- for linux-acpi@vger.kernel.org; Fri, 06 Oct 2023 14:18:13 +0000 (GMT)
-Message-id: <ed4672a7-439c-4240-aadc-7a36858c36b2@augustwikerfors.se>
-Date: Fri, 6 Oct 2023 16:18:10 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E2E1CA9A;
+	Fri,  6 Oct 2023 14:57:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73B138F;
+	Fri,  6 Oct 2023 07:57:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696604261; x=1728140261;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=q4C2m1ZeP3/o/tBX987mEihRhp/gFyXcIn4YqEPfmlw=;
+  b=ZmeILY5kiTOV3pkauuNNsBr/8Dovu7CHlKZbs9B19wtxji3XUK4skvgZ
+   RnKSaBMMqDAPIhqQX9gpCiK8ERlnkpplRVh+sAhdzehzUbSwHgL2V1cZY
+   1dv7gsFE4dz/9e2H+SMTxT62C4mrq3c4O1AB04+GL0t7Kj7Tbx5mTRlvx
+   PCVPm8lJF+2kgdxEQVdBEkIaJYKzilwsKvWX196s5oGKc0Jl/oD19ro6o
+   fZB5ItjsVtgvkZ5Z2pdKObyFhQJyNf/AGU+JjfHcs1hCi+SCHvxKl9fYo
+   HTyvOIu8ysnI0h2J6qn9ZLo22wVF86asLRS/konT931HkVy4nKxn604pI
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="368840606"
+X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
+   d="scan'208";a="368840606"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 07:57:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="755880699"
+X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
+   d="scan'208";a="755880699"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga007.fm.intel.com with ESMTP; 06 Oct 2023 07:57:36 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 4A16C430; Fri,  6 Oct 2023 17:57:35 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rob Herring <robh@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH v3 1/2] amba: bus: balance firmware node reference counting
+Date: Fri,  6 Oct 2023 17:57:31 +0300
+Message-Id: <20231006145732.3419115-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-version: 1.0
-Subject: Re: [PATCH v2] ACPI: resource: Add TongFang GM6BGEQ,
- GM6BG5Q and GM6BG0Q to irq1_edge_low_force_override[]
-Content-language: en-US
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
- Mario Limonciello <Mario.Limonciello@amd.com>, linux-acpi@vger.kernel.org,
- Francesco <f.littarru@outlook.com>, regressions@lists.linux.dev
-References: <20231006123304.32686-1-hdegoede@redhat.com>
-From: August Wikerfors <git@augustwikerfors.se>
-In-reply-to: <20231006123304.32686-1-hdegoede@redhat.com>
-Content-type: text/plain; charset=UTF-8; format=flowed
-Content-transfer-encoding: 7bit
-Reporting-Meta:
- AAFxb8QDQo2eFSySz8ItSVTo02kHbz5wF0F7TtCY0dvk7+D7xoQx6o/1MyX7HeB4
- DPJJd2a9Zx4qxX+O+GoXHKLRwEi4r8QlpeZ6DR4Mviu54lslrM/AO8zbeV2Nn1/p
- ZcA4CrpBw1C7+RxuZUIdycDyU6suZZTUR5DsfAuCeW6eXIrCZxfKA4VlzxYg7Wbd
- j+VMuPeFhMV+1yyTdAbvhVnNAlxWXQr4d5T/ozILCUPMoc31qoqNgTuWbliR75yO
- 01wxsN8ERfqP/08Amb/QD6g9O23MBuDFGVCvz1zSECw5K5zHiB1uZI9v1318C0C3
- m2PQaTKpmDfv9/eA0Wqe9paoa6C0WafMvEpgLTwj/HSuED/UcwCTVHkjCa+Q2ikY
- Y1kP6m3hTJxXsn0DSW5yzJ32HGhjqAsIUAr/qeX/km5eGYDDwRmc9aDx85WI8TG9 CwxiPSk=
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-	autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Hi Hans,
+Currently the ACPI code doesn't bump the reference count of
+the firmware node, while OF counter part does. Not that it's
+a problem right now, since ACPI doesn't really use the reference
+counting for firmware nodes, it still makes sense to make code
+robust against any changes done there. For this,
+ - switch ACPI case to use device_set_node() to be unified with OF
+ - move reference counting to amba_device_add()
+ - switch to use firmware nodes instead of OF ones
 
-On 2023-10-06 14:33, Hans de Goede wrote:
-> The TongFang GM6BGEQ, GM6BG5Q and GM6BG0Q are 3 GPU variants of a TongFang
-> barebone design which is sold under various brand names.
-> 
-> The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
-> laptops in order for the IRQ to work.
-> 
-> Adjust the irq1_edge_low_force_override[] DMI match table for this:
-> 
-> 1. Drop the sys-vendor match from the existing PCSpecialist Elimina Pro 16
->     entry for the GM6BGEQ (RTX3050 GPU) model so that it will also match
->     the laptop when sold by other vendors such as hyperbook.pl.
-> 
-> 2. Add board-name matches for the GM6BG5Q (RTX4050) and GM6B0Q (RTX4060)
->     models.
-> 
-> Suggested-by: August Wikerfors <git@augustwikerfors.se>
-> Reported-by: Francesco <f.littarru@outlook.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217394
-> Link: https://laptopparts4less.frl/index.php?route=product/search&filter_name=GM6BG
-> Link: https://hyperbook.pl/en/content/14-hyperbook-drivers
-> Link: https://linux-hardware.org/?probe=bfa70344e3
-> Link: https://bbs.archlinuxcn.org/viewtopic.php?id=13313
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Since this is a regression fix for 453b014e2c29 ("ACPI: resource: Fix 
-IRQ override quirk for PCSpecialist Elimina Pro 16 M") (for PCSpecialist 
-systems like Francesco's with product name "Elimina Pro 16 M" but not 
-board name "GM6BGEQ") and 2d331a6ac481 ("ACPI: resource: revert "Remove 
-"Zen" specific match and quirks"") (for other vendors using the same 
-TongFang design), it should have a "Fixes:" tag for at least one of those.
+In the result we will have reference counting done in the same module
+for all callers independently on the nature of firmware node behind.
 
-Both of those commits are in 6.5 (and 6.6-rc) so this should go into 
-6.6-rc and be backported to 6.5, but the patch seems to depend on 
-424009ab2030 ("ACPI: resource: Drop .ident values from dmi_system_id 
-tables") and maybe also d37273af0e42 ("ACPI: resource: Consolidate IRQ 
-trigger-type override DMI tables") to apply cleanly, which seem to only 
-be queued for linux-next/6.7? I'm not familiar with what the correct 
-process is for such cases.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
 
-> ---
-> Changes in v2:
-> - Add missing reported and suggested by tags
-> ---
->   drivers/acpi/resource.c | 20 +++++++++++++-------
->   1 file changed, 13 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index 014a3911381b..18f6353c142e 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -512,17 +512,23 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
->   		},
->   	},
->   	{
-> -		/*
-> -		 * PCSpecialist Elimina Pro 16 M
-> -		 *
-> -		 * Some models have product-name "Elimina Pro 16 M",
-> -		 * others "GM6BGEQ". Match on board-name to match both.
-> -		 */
-> +		/* TongFang GM6BGEQ / PCSpecialist Elimina Pro 16 M, RTX 3050 */
->   		.matches = {
-> -			DMI_MATCH(DMI_SYS_VENDOR, "PCSpecialist"),
->   			DMI_MATCH(DMI_BOARD_NAME, "GM6BGEQ"),
->   		},
->   	},
-> +	{
-> +		/* TongFang GM6BG5Q, RTX 4050 */
-FWIW the PCSpecialist Elimina Pro 16 M is sold with all three GPU 
-options: https://www.pcspecialist.ie/notebooks/elimina-pro-16-M/
-Presumably the RTX 4050 option has board name "GM6BG5Q" but maybe it's 
-better to leave it out if it's not confirmed.
+v3: no changes
+v2: fixed compilation error (LKP), all dependencies are in v6.6-rcX (Rob)
 
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_NAME, "GM6BG5Q"),
-> +		},
-> +	},
-> +	{
-> +		/* TongFang GM6BG0Q / PCSpecialist Elimina Pro 16 M, RTX 4060 */
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_NAME, "GM6BG0Q"),
-> +		},
-> +	},
->   	{ }
->   };
->   
+ drivers/acpi/arm64/amba.c | 2 +-
+ drivers/amba/bus.c        | 5 ++++-
+ drivers/of/platform.c     | 2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-Regards,
-August Wikerfors
+diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
+index 60be8ee1dbdc..171b5c2c7edd 100644
+--- a/drivers/acpi/arm64/amba.c
++++ b/drivers/acpi/arm64/amba.c
+@@ -101,7 +101,7 @@ static int amba_handler_attach(struct acpi_device *adev,
+ 	if (parent)
+ 		dev->dev.parent = acpi_get_first_physical_node(parent);
+ 
+-	ACPI_COMPANION_SET(&dev->dev, adev);
++	device_set_node(&dev->dev, acpi_fwnode_handle(adev));
+ 
+ 	ret = amba_device_add(dev, &iomem_resource);
+ 	if (ret) {
+diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+index 09e72967b8ab..a24c152bfaac 100644
+--- a/drivers/amba/bus.c
++++ b/drivers/amba/bus.c
+@@ -18,6 +18,7 @@
+ #include <linux/limits.h>
+ #include <linux/clk/clk-conf.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/reset.h>
+ #include <linux/of_irq.h>
+ #include <linux/of_device.h>
+@@ -528,7 +529,7 @@ static void amba_device_release(struct device *dev)
+ {
+ 	struct amba_device *d = to_amba_device(dev);
+ 
+-	of_node_put(d->dev.of_node);
++	fwnode_handle_put(dev_fwnode(&d->dev));
+ 	if (d->res.parent)
+ 		release_resource(&d->res);
+ 	mutex_destroy(&d->periphid_lock);
+@@ -548,6 +549,8 @@ int amba_device_add(struct amba_device *dev, struct resource *parent)
+ {
+ 	int ret;
+ 
++	fwnode_handle_get(dev_fwnode(&dev->dev));
++
+ 	ret = request_resource(parent, &dev->res);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index f235ab55b91e..126d265aa7d8 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -273,7 +273,7 @@ static struct amba_device *of_amba_device_create(struct device_node *node,
+ 	dev->dev.dma_mask = &dev->dev.coherent_dma_mask;
+ 
+ 	/* setup generic device info */
+-	device_set_node(&dev->dev, of_fwnode_handle(of_node_get(node)));
++	device_set_node(&dev->dev, of_fwnode_handle(node));
+ 	dev->dev.parent = parent ? : &platform_bus;
+ 	dev->dev.platform_data = platform_data;
+ 	if (bus_id)
+-- 
+2.40.0.1.gaa8946217a0b
+
 
