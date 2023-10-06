@@ -1,141 +1,177 @@
-Return-Path: <linux-acpi+bounces-470-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-471-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493267BBA68
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 16:36:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D95427BBA69
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 16:36:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 026B828209F
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 14:36:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0782F1C202E8
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 14:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C5426E01
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 14:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616F126E01
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Oct 2023 14:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QB5+Gr8l"
+	dkim=pass (2048-bit key) header.d=augustwikerfors.se header.i=@augustwikerfors.se header.b="CUiiRAET";
+	dkim=pass (2048-bit key) header.d=arn1.rp.oracleemaildelivery.com header.i=@arn1.rp.oracleemaildelivery.com header.b="Z1Gn40R+"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7B614017
-	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 13:27:16 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29372AC;
-	Fri,  6 Oct 2023 06:27:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696598835; x=1728134835;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=2cc26gFKLWV1zohqFQ9a2XIcjoRWt0n03Xemi9o+UVA=;
-  b=QB5+Gr8lpX+N+lwZkP1bGdyfHOl4uvAFIFG2KuouxAQObNXVvo414EHd
-   Kx89qb3T0SGaQO6c4LGGfr6he7Pfx9HMVOY3NnW0RX+2DBxdtpiAOosmY
-   9Kqkt6byhXr90lYIKeOU8/d93+4mP7xlDoguYn4xlR3Pm+Mpd7xZM8bNG
-   hkpcML+nT7y1pbWSfJo9ePVSHlm+7iRIqf08l+Vk3dNqLO3SZwV5NbtBO
-   EH64HgkPDWqBHm60+wj1isIjKGerbgZS4HWflaSL+nNjQl3y5LByc383z
-   /LG8Gvi/K3C37Y2tin6bcoJPf71ZMbuO3TaVKO7PVSUq3kC5EhHFRnqLu
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="383641043"
-X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="383641043"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 06:27:14 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="999328555"
-X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="999328555"
-Received: from srab-mobl1.ger.corp.intel.com ([10.252.43.69])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 06:27:11 -0700
-Date: Fri, 6 Oct 2023 16:27:09 +0300 (EEST)
-From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Hans de Goede <hdegoede@redhat.com>
-cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-    Bartosz Golaszewski <brgl@bgdev.pl>, 
-    Mika Westerberg <mika.westerberg@linux.intel.com>, 
-    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-    Linus Walleij <linus.walleij@linaro.org>, 
-    Daniel Scally <djrscally@gmail.com>, Mark Gross <markgross@kernel.org>, 
-    linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
-    LKML <linux-kernel@vger.kernel.org>, platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] platform/x86: int3472: don't use
- gpiod_toggle_active_low()
-In-Reply-To: <29764d46-8d3d-9794-bbde-d7928a91cbb5@redhat.com>
-Message-ID: <2e9621e7-59e-dc20-71a-9da6f367557e@linux.intel.com>
-References: <20230926145943.42814-1-brgl@bgdev.pl> <e6817d30-b443-1a73-efae-84415604b19f@redhat.com> <CACMJSetWH=Z5ubHb33W0mYvpqkU7vv=nKNBSa9eLmAi94NyrgA@mail.gmail.com> <29764d46-8d3d-9794-bbde-d7928a91cbb5@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21201F601
+	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 14:23:21 +0000 (UTC)
+X-Greylist: delayed 302 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 Oct 2023 07:23:18 PDT
+Received: from abi149hd125.arn1.oracleemaildelivery.com (abi149hd125.arn1.oracleemaildelivery.com [129.149.84.125])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD835C5
+	for <linux-acpi@vger.kernel.org>; Fri,  6 Oct 2023 07:23:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
+ d=augustwikerfors.se;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=aVEtphrFM7XGVmNaoicY2hacQNy6vbztvG/piAN/eGw=;
+ b=CUiiRAETlJPa6eghm+trc2N6kjHcKsYbqFnQ1TMz41tjRWkscPELdRUiAgPOemA78Yo16my0XTVl
+   gvaL6mPCBcx8IBg4MGebsyaCE/AQnG7KB9gSdUsNeOeJ+yMX0O4QpYw+a8HcCH35bRWJyDMtStA5
+   BgBSA+v2mByCKUREYi6sUJhosKaISb5kivgs7U6perWpRrsUX0drrBLyBlGRT6akb8o+3vmJe5u2
+   BK4QOWr21fD/9c3XQopuWICXeJlCJVEH0NwfmBH9PPLTqLFLqrmuDFn2tVEASbdiX4PzsWORG6BW
+   r8OxF+fM/ZQhdHT8i4cyYK0aFIQaAfCC5JHIJw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
+ d=arn1.rp.oracleemaildelivery.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=aVEtphrFM7XGVmNaoicY2hacQNy6vbztvG/piAN/eGw=;
+ b=Z1Gn40R+rkVvU2K3GiBVBk7kPxEQjtjWN1XPDLZf4jcwIYG5xllutOHs0QnuacIP8shDXXgAaK7B
+   KPH4IlnFHITJIx+BTjbOFIAk55mM6i2rERRVsPytH6hZpxnO6+Qs2p0FAEz+R2bBAMZKm/H1AedB
+   zxthRtZHiNGYwhsN+3Wzs7dXkNvoInYDpkCeLyUwA9/XmFW7IlqErW+oMzOgPZ6P1ShFYO/RxD6G
+   nnac6boB2OcWp9VRcCHDsVTFzjUW0v1m2Iy3+X6rQQF7MRzTx/deSrYTNfS/RDKcTSXIACRkg0UF
+   6jrFt/Mwp+AytDl0SvE7aAqvK+q5TrpLbwBZ5w==
+Received: by omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
+ (Oracle Communications Messaging Server 8.1.0.1.20230928 64bit (built Sep 28
+ 2023))
+ with ESMTPS id <0S240022F2ED3320@omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
+ for linux-acpi@vger.kernel.org; Fri, 06 Oct 2023 14:18:13 +0000 (GMT)
+Message-id: <ed4672a7-439c-4240-aadc-7a36858c36b2@augustwikerfors.se>
+Date: Fri, 6 Oct 2023 16:18:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+MIME-version: 1.0
+Subject: Re: [PATCH v2] ACPI: resource: Add TongFang GM6BGEQ,
+ GM6BG5Q and GM6BG0Q to irq1_edge_low_force_override[]
+Content-language: en-US
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+ Mario Limonciello <Mario.Limonciello@amd.com>, linux-acpi@vger.kernel.org,
+ Francesco <f.littarru@outlook.com>, regressions@lists.linux.dev
+References: <20231006123304.32686-1-hdegoede@redhat.com>
+From: August Wikerfors <git@augustwikerfors.se>
+In-reply-to: <20231006123304.32686-1-hdegoede@redhat.com>
+Content-type: text/plain; charset=UTF-8; format=flowed
+Content-transfer-encoding: 7bit
+Reporting-Meta:
+ AAFxb8QDQo2eFSySz8ItSVTo02kHbz5wF0F7TtCY0dvk7+D7xoQx6o/1MyX7HeB4
+ DPJJd2a9Zx4qxX+O+GoXHKLRwEi4r8QlpeZ6DR4Mviu54lslrM/AO8zbeV2Nn1/p
+ ZcA4CrpBw1C7+RxuZUIdycDyU6suZZTUR5DsfAuCeW6eXIrCZxfKA4VlzxYg7Wbd
+ j+VMuPeFhMV+1yyTdAbvhVnNAlxWXQr4d5T/ozILCUPMoc31qoqNgTuWbliR75yO
+ 01wxsN8ERfqP/08Amb/QD6g9O23MBuDFGVCvz1zSECw5K5zHiB1uZI9v1318C0C3
+ m2PQaTKpmDfv9/eA0Wqe9paoa6C0WafMvEpgLTwj/HSuED/UcwCTVHkjCa+Q2ikY
+ Y1kP6m3hTJxXsn0DSW5yzJ32HGhjqAsIUAr/qeX/km5eGYDDwRmc9aDx85WI8TG9 CwxiPSk=
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, 4 Oct 2023, Hans de Goede wrote:
+Hi Hans,
 
-> Hi Bart,
+On 2023-10-06 14:33, Hans de Goede wrote:
+> The TongFang GM6BGEQ, GM6BG5Q and GM6BG0Q are 3 GPU variants of a TongFang
+> barebone design which is sold under various brand names.
 > 
-> On 9/28/23 20:40, Bartosz Golaszewski wrote:
-> > On Thu, 28 Sept 2023 at 14:40, Hans de Goede <hdegoede@redhat.com> wrote:
-> >>
-> >> Hi All,
-> >>
-> >> Here is a v2 of Bartosz' "don't use gpiod_toggle_active_low()" series.
-> >>
-> >> New in v2:
-> >> - Rework to deal with ACPI path vs gpiod_lookup.key differences:
-> >>   acpi_get_handle(path) -> acpi_fetch_acpi_dev(handle) -> acpi_dev_name(adev)
-> >>
-> >> Regards,
-> >>
-> >> Hans
-> >>
-> >>
-> >> Bartosz Golaszewski (2):
-> >>   platform/x86: int3472: Add new
-> >>     skl_int3472_gpiod_get_from_temp_lookup() helper
-> >>   gpio: acpi: remove acpi_get_and_request_gpiod()
-> >>
-> >> Hans de Goede (3):
-> >>   platform/x86: int3472: Add new skl_int3472_fill_gpiod_lookup() helper
-> >>   platform/x86: int3472: Stop using gpiod_toggle_active_low()
-> >>   platform/x86: int3472: Switch to devm_get_gpiod()
-> >>
-> >>  drivers/gpio/gpiolib-acpi.c                   |  28 -----
-> >>  .../x86/intel/int3472/clk_and_regulator.c     |  54 ++--------
-> >>  drivers/platform/x86/intel/int3472/common.h   |   7 +-
-> >>  drivers/platform/x86/intel/int3472/discrete.c | 101 ++++++++++++++----
-> >>  drivers/platform/x86/intel/int3472/led.c      |  24 +----
-> >>  include/linux/gpio/consumer.h                 |   8 --
-> >>  6 files changed, 93 insertions(+), 129 deletions(-)
-> >>
-> >> --
-> >> 2.41.0
-> >>
-> > 
-> > Thanks Hans, this looks good to me. I'd let it sit on the list for a
-> > week. After that, do you want to take patches 1-4 and provide me with
-> > another tag?
+> The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
+> laptops in order for the IRQ to work.
 > 
-> I have just send out a v3 to address Andy's remark about me
-> somehow resetting the authorship to me on 2 patches from Bartosz.
+> Adjust the irq1_edge_low_force_override[] DMI match table for this:
+> 
+> 1. Drop the sys-vendor match from the existing PCSpecialist Elimina Pro 16
+>     entry for the GM6BGEQ (RTX3050 GPU) model so that it will also match
+>     the laptop when sold by other vendors such as hyperbook.pl.
+> 
+> 2. Add board-name matches for the GM6BG5Q (RTX4050) and GM6B0Q (RTX4060)
+>     models.
+> 
+> Suggested-by: August Wikerfors <git@augustwikerfors.se>
+> Reported-by: Francesco <f.littarru@outlook.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217394
+> Link: https://laptopparts4less.frl/index.php?route=product/search&filter_name=GM6BG
+> Link: https://hyperbook.pl/en/content/14-hyperbook-drivers
+> Link: https://linux-hardware.org/?probe=bfa70344e3
+> Link: https://bbs.archlinuxcn.org/viewtopic.php?id=13313
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Since this is a regression fix for 453b014e2c29 ("ACPI: resource: Fix 
+IRQ override quirk for PCSpecialist Elimina Pro 16 M") (for PCSpecialist 
+systems like Francesco's with product name "Elimina Pro 16 M" but not 
+board name "GM6BGEQ") and 2d331a6ac481 ("ACPI: resource: revert "Remove 
+"Zen" specific match and quirks"") (for other vendors using the same 
+TongFang design), it should have a "Fixes:" tag for at least one of those.
 
-> As for your request for a tag for the 4st 4 patches for you to merge
-> into gpiolib. I'll go and work work on that. I need to coordinate
-> this with Ilpo, with whom I now co-maintain pdx86 .
+Both of those commits are in 6.5 (and 6.6-rc) so this should go into 
+6.6-rc and be backported to 6.5, but the patch seems to depend on 
+424009ab2030 ("ACPI: resource: Drop .ident values from dmi_system_id 
+tables") and maybe also d37273af0e42 ("ACPI: resource: Consolidate IRQ 
+trigger-type override DMI tables") to apply cleanly, which seem to only 
+be queued for linux-next/6.7? I'm not familiar with what the correct 
+process is for such cases.
 
-Thanks all. I've applied patches 1-4 into platform-drivers-x86-int3472 and 
-merged that into review-ilpo.
+> ---
+> Changes in v2:
+> - Add missing reported and suggested by tags
+> ---
+>   drivers/acpi/resource.c | 20 +++++++++++++-------
+>   1 file changed, 13 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 014a3911381b..18f6353c142e 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -512,17 +512,23 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
+>   		},
+>   	},
+>   	{
+> -		/*
+> -		 * PCSpecialist Elimina Pro 16 M
+> -		 *
+> -		 * Some models have product-name "Elimina Pro 16 M",
+> -		 * others "GM6BGEQ". Match on board-name to match both.
+> -		 */
+> +		/* TongFang GM6BGEQ / PCSpecialist Elimina Pro 16 M, RTX 3050 */
+>   		.matches = {
+> -			DMI_MATCH(DMI_SYS_VENDOR, "PCSpecialist"),
+>   			DMI_MATCH(DMI_BOARD_NAME, "GM6BGEQ"),
+>   		},
+>   	},
+> +	{
+> +		/* TongFang GM6BG5Q, RTX 4050 */
+FWIW the PCSpecialist Elimina Pro 16 M is sold with all three GPU 
+options: https://www.pcspecialist.ie/notebooks/elimina-pro-16-M/
+Presumably the RTX 4050 option has board name "GM6BG5Q" but maybe it's 
+better to leave it out if it's not confirmed.
 
-I'll send the IB PR once LKP has done its thing for the branch.
+> +		.matches = {
+> +			DMI_MATCH(DMI_BOARD_NAME, "GM6BG5Q"),
+> +		},
+> +	},
+> +	{
+> +		/* TongFang GM6BG0Q / PCSpecialist Elimina Pro 16 M, RTX 4060 */
+> +		.matches = {
+> +			DMI_MATCH(DMI_BOARD_NAME, "GM6BG0Q"),
+> +		},
+> +	},
+>   	{ }
+>   };
+>   
 
-
--- 
- i.
-
+Regards,
+August Wikerfors
 
