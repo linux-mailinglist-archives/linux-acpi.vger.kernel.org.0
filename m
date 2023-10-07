@@ -1,73 +1,74 @@
-Return-Path: <linux-acpi+bounces-504-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-505-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B7417BC614
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 10:34:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B6DE7BC615
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 10:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86ADA1C2093C
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 08:34:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F4ED28218C
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 08:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0A3168BA
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 08:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C816A168BD
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 08:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UVZioiXn"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C7020FC
-	for <linux-acpi@vger.kernel.org>; Sat,  7 Oct 2023 07:28:42 +0000 (UTC)
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7B30C2;
-	Sat,  7 Oct 2023 00:28:38 -0700 (PDT)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046056;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=35;SR=0;TI=SMTPD_---0VtXePUi_1696663712;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VtXePUi_1696663712)
-          by smtp.aliyun-inc.com;
-          Sat, 07 Oct 2023 15:28:35 +0800
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-To: rafael@kernel.org,
-	wangkefeng.wang@huawei.com,
-	tanxiaofei@huawei.com,
-	mawupeng1@huawei.com,
-	tony.luck@intel.com,
-	linmiaohe@huawei.com,
-	naoya.horiguchi@nec.com,
-	james.morse@arm.com,
-	gregkh@linuxfoundation.org,
-	will@kernel.org,
-	jarkko@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	linux-edac@vger.kernel.org,
-	acpica-devel@lists.linuxfoundation.org,
-	stable@vger.kernel.org,
-	x86@kernel.org,
-	xueshuai@linux.alibaba.com,
-	justin.he@arm.com,
-	ardb@kernel.org,
-	ying.huang@intel.com,
-	ashish.kalra@amd.com,
-	baolin.wang@linux.alibaba.com,
-	bp@alien8.de,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	dave.hansen@linux.intel.com,
-	lenb@kernel.org,
-	hpa@zytor.com,
-	robert.moore@intel.com,
-	lvying6@huawei.com,
-	xiexiuqi@huawei.com,
-	zhuo.song@linux.alibaba.com
-Subject: [PATCH v9 2/2] ACPI: APEI: handle synchronous exceptions in task work
-Date: Sat,  7 Oct 2023 15:28:18 +0800
-Message-Id: <20231007072818.58951-3-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937A611C82
+	for <linux-acpi@vger.kernel.org>; Sat,  7 Oct 2023 07:55:38 +0000 (UTC)
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2087.outbound.protection.outlook.com [40.107.243.87])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0678CCA
+	for <linux-acpi@vger.kernel.org>; Sat,  7 Oct 2023 00:55:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dv50VNBltoWMcSbDhT1mpcJEL53onkx1jyXvdf7RExHjrhUkDsb9LDJwJJxwK+hAFaEVl8vz7UNufAAEDVhoyIrp1gORDDGO59UIOyvTxdy4FQ+I+8PLmaeN0KEqVxme/Prz6j4ZeHDSqsa0XtxCBoHxeHIAlcbO8OWrpNGQX7p/RvbF5/pHXgXsJbJgeoSGwjsdDyzxX+kNYCwvt9xOt3218t53ad9JwsiBrBPpE5vSs0NiiYOsytNgLA60Z8uDLWqDya/iTm/GKAkPGZdfeGDlfUr9ZWSNyfQwwsVxaKylRE/Kl68kql4UpOch61tqiytqvCmsWtKOSrRTiLrfAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0kma6cLhT9RtYJiMiV4vkYOEApFbOhlSamhWoyRsxbQ=;
+ b=XAWoA879dF0csszLImZ1IqTfqpciQ/bH5/eYUrsuZ7X+MYalAmkAhkC6fIEmXoUCLCIDzRCwEVPWbNaiNxjEZopq3iGFqIVaP6ItQ9usep/sI2XWKLAGJeH5z6+3ypW/cw8mxuu6oCuWOrM5hQKHB1EMOyCvF5t+CSCz81GapQ9O56D9rqHNcCEIHdig5rwvf66hypUTdq1aP1wRuiXNUz85J9eKSVITQyD2aCslhJUiQfl6eZRnLn+aO3LFlcNI35oitThlZELbCHJnTc9mzkysgg6dx+KCTVGezXDyuxHMiS09eFleBcQBJztdJrO/5O0C2TT7t2gaQulR3MYNng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0kma6cLhT9RtYJiMiV4vkYOEApFbOhlSamhWoyRsxbQ=;
+ b=UVZioiXnVl0k7NvFkgojPMi199H9Kj7c+7oxdOJPD2IoAUCx7WkS7FGMTNUdvWL00f1HTc27+90IDE61i5M4tnk8Pd7Lh8VlDWC1jTx7TRmCgo0263dZQgOjyQvgFC0MEFywg1xCDB3NcAznoCPl9EGA8VEbBPvE/zbn0fTI0yE=
+Received: from SA1P222CA0124.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:3c5::12)
+ by DS0PR12MB6463.namprd12.prod.outlook.com (2603:10b6:8:c5::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.35; Sat, 7 Oct
+ 2023 07:55:32 +0000
+Received: from SN1PEPF0002636A.namprd02.prod.outlook.com
+ (2603:10b6:806:3c5:cafe::d8) by SA1P222CA0124.outlook.office365.com
+ (2603:10b6:806:3c5::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.34 via Frontend
+ Transport; Sat, 7 Oct 2023 07:55:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF0002636A.mail.protection.outlook.com (10.167.241.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6838.14 via Frontend Transport; Sat, 7 Oct 2023 07:55:32 +0000
+Received: from nv14-test.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Sat, 7 Oct
+ 2023 02:55:30 -0500
+From: Ken Xue <Ken.Xue@amd.com>
+To: <andriy.shevchenko@linux.intel.com>, <linux-acpi@vger.kernel.org>
+CC: <rafael@kernel.org>, <cwhuang@linux.org.tw>, Ken Xue <Ken.Xue@amd.com>
+Subject: [PATCH V5] acpi: trigger wakeup key event from power button
+Date: Sat, 7 Oct 2023 15:54:34 +0800
+Message-ID: <20231007075433.555715-1-Ken.Xue@amd.com>
+X-Mailer: git-send-email 2.35.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -75,307 +76,168 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
-	version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002636A:EE_|DS0PR12MB6463:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1fa7a7ab-043d-433e-3563-08dbc70ac7f0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	ThSpb5f06pSQxov/wYLOha5THDJQIu4RDVwWPDAw73Ua7AoNiiHgpF3hDx1Vdyjvh4P9QvGxGfRtCUl3HDmPjVTm0vzSeeLW1RZJYywoa5zYVWV243kjYsj+bVtdj5uDJzOG2tpryLJ5iRdnFaZ+rjQDuZWmGzwK2b3kLrGGnYkVCn83CVbR6YlrJaVze/1PJ9ApR/Uzf5+Q9m6nNUIRQ7571VS1Ium7B2vdSrt950mT9udpYOXLqbFJqr4qkv7HEPEAoVbtzagCPwXMrZxFe1uAm3cfWt8NaZbT6OPetb0UN8ILxnLrANsL7zAdHtksqK7Zje2k2+eIJKsGR3Zgjv/F2nASm4F36LOxqcIMki4Z6vPhZATaP5Q4Motxfh5zfFHHM6tH+zYMZsiAo/hVQPh6nOJWxzb7UQM8NuN77gutt/mUy+yHzOvbyNj7+Uf6dXs8Rk1Jecxyz7bLQLUpmoCTI06NIGJx3r0zOIv+2pE0PVWWw3xlyg1Ay+15BvUOS7gYJrCUd75wSbNuS0gIHCsoALQnJwDb6gIvxIXYbA5jfKQBxboMBIZa3JrQE2GbvM+XwPJuMyj+pyIHNcn6KihGhwESPhEb5N2K7JdWR9iSoNNIV+g+9boJSvPZHfeBNnOfWen+zAH9s3lfLmLY65t+pzx4yByU8/4X2Wyt6ixi5oIkhizDphb1T3K6O0xHJr3fiy0kvKGt/9Y9Oo2iiPaBqExea9qaODeUcSMi++UJ5Sr0KuyhkbUzsRCBRIfzvesC5GUrmdpqfetBQfA1fQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(136003)(376002)(396003)(346002)(230922051799003)(64100799003)(451199024)(1800799009)(186009)(82310400011)(46966006)(40470700004)(36840700001)(40480700001)(36756003)(83380400001)(40460700003)(86362001)(82740400003)(336012)(54906003)(2906002)(8936002)(4326008)(47076005)(8676002)(5660300002)(16526019)(2616005)(316002)(41300700001)(110136005)(36860700001)(26005)(356005)(70586007)(81166007)(478600001)(1076003)(966005)(426003)(70206006)(7696005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2023 07:55:32.0440
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1fa7a7ab-043d-433e-3563-08dbc70ac7f0
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF0002636A.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6463
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+	autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Hardware errors could be signaled by synchronous interrupt, e.g.  when an
-error is detected by a background scrubber, or signaled by synchronous
-exception, e.g. when an uncorrected error is consumed. Both synchronous and
-asynchronous error are queued and handled by a dedicated kthread in
-workqueue.
+Andorid can wakeup from various wakeup sources, but only several wakeup
+sources can wake up screen with right events(POWER, WAKEUP) from input
+device.
 
-commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
-synchronous errors") keep track of whether memory_failure() work was
-queued, and make task_work pending to flush out the workqueue so that the
-work for synchronous error is processed before returning to user-space.
-The trick ensures that the corrupted page is unmapped and poisoned. And
-after returning to user-space, the task starts at current instruction which
-triggering a page fault in which kernel will send SIGBUS to current process
-due to VM_FAULT_HWPOISON.
+Regarding pressing acpi power button, it can resume system and
+ACPI_BITMASK_WAKE_STATUS and ACPI_BITMASK_POWER_BUTTON_STATUS are set in
+pm1a_sts, but kernel does not report any key event to user space during
+resuming by default.
 
-However, the memory failure recovery for hwpoison-aware mechanisms does not
-work as expected. For example, hwpoison-aware user-space processes like
-QEMU register their customized SIGBUS handler and enable early kill mode by
-seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
-the process by sending a SIGBUS signal in memory failure with wrong
-si_code: the actual user-space process accessing the corrupt memory
-location, but its memory failure work is handled in a kthread context, so
-it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
-process instead of BUS_MCEERR_AR in kill_proc().
+So, send wakeup key event to user space during resume from power button.
 
-To this end, separate synchronous and asynchronous error handling into
-different paths like X86 platform does:
+Signed-off-by: Ken Xue <Ken.Xue@amd.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-- valid synchronous errors: queue a task_work to synchronously send SIGBUS
-  before ret_to_user.
-- valid asynchronous errors: queue a work into workqueue to asynchronously
-  handle memory failure.
-- abnormal branches such as invalid PA, unexpected severity, no memory
-  failure config support, invalid GUID section, OOM, etc.
-
-Then for valid synchronous errors, the current context in memory failure is
-exactly belongs to the task consuming poison data and it will send SIBBUS
-with proper si_code.
-
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Tested-by: Ma Wupeng <mawupeng1@huawei.com>
-Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- arch/x86/kernel/cpu/mce/core.c |  9 +---
- drivers/acpi/apei/ghes.c       | 84 +++++++++++++++++++++-------------
- include/acpi/ghes.h            |  3 --
- include/linux/mm.h             |  1 -
- mm/memory-failure.c            | 22 +++------
- 5 files changed, 59 insertions(+), 60 deletions(-)
+V1->V2: fix some compile warning/error caused by lack of
+        "struct acpi_device" declaration by including acpi.h.
+V2->V3: use "forward declaration" to fix compile warning/error.
+V3->V4: refine coding style and commit message
+V4->V5: add "select ACPI_BUTTON" to fix build error if CONFIG_ACPI_BUTTON=m. https://lore.kernel.org/oe-kbuild-all/202309150947.YLjvs2Vv-lkp@intel.com/
+---
+ drivers/acpi/Kconfig  |  1 +
+ drivers/acpi/button.c | 17 +++++++++++++++++
+ drivers/acpi/sleep.c  |  5 +++++
+ include/acpi/button.h |  4 ++++
+ 4 files changed, 27 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 6f35f724cc14..1675ff77033d 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -1334,17 +1334,10 @@ static void kill_me_maybe(struct callback_head *cb)
- 		return;
- 	}
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index 00dd309b6682..001da6233fcd 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -53,6 +53,7 @@ config ACPI_GENERIC_GSI
  
--	/*
--	 * -EHWPOISON from memory_failure() means that it already sent SIGBUS
--	 * to the current process with the proper error info,
--	 * -EOPNOTSUPP means hwpoison_filter() filtered the error event,
--	 *
--	 * In both cases, no further processing is required.
--	 */
- 	if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
- 		return;
+ config ACPI_SYSTEM_POWER_STATES_SUPPORT
+ 	bool
++	select ACPI_BUTTON
  
--	pr_err("Memory error not recovered");
-+	pr_err("Sending SIGBUS to current task due to memory error not recovered");
- 	kill_me_now(cb);
+ config ACPI_CCA_REQUIRED
+ 	bool
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index 1e76a64cce0a..3baddecd66c6 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -363,6 +363,22 @@ static int acpi_button_remove_fs(struct acpi_device *device)
+ 	return 0;
  }
  
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 88178aa6222d..014401a65ed5 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -450,28 +450,41 @@ static void ghes_clear_estatus(struct ghes *ghes,
- }
- 
- /*
-- * Called as task_work before returning to user-space.
-- * Ensure any queued work has been done before we return to the context that
-- * triggered the notification.
-+ * struct sync_task_work - for synchronous RAS event
-+ *
-+ * @twork:                callback_head for task work
-+ * @pfn:                  page frame number of corrupted page
-+ * @flags:                fine tune action taken
-+ *
-+ * Structure to pass task work to be handled before
-+ * ret_to_user via task_work_add().
-  */
--static void ghes_kick_task_work(struct callback_head *head)
-+struct sync_task_work {
-+	struct callback_head twork;
-+	u64 pfn;
-+	int flags;
-+};
++void acpi_power_button_wakeup(struct acpi_device *dev)
++{
++	struct acpi_button *button = acpi_driver_data(dev);
++	struct input_dev *input;
 +
-+static void memory_failure_cb(struct callback_head *twork)
- {
--	struct acpi_hest_generic_status *estatus;
--	struct ghes_estatus_node *estatus_node;
--	u32 node_len;
-+	int ret;
-+	struct sync_task_work *twcb =
-+		container_of(twork, struct sync_task_work, twork);
- 
--	estatus_node = container_of(head, struct ghes_estatus_node, task_work);
--	if (IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
--		memory_failure_queue_kick(estatus_node->task_work_cpu);
-+	ret = memory_failure(twcb->pfn, twcb->flags);
-+	kfree(twcb);
- 
--	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
--	node_len = GHES_ESTATUS_NODE_LEN(cper_estatus_len(estatus));
--	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
-+	if (!ret || ret == -EHWPOISON || ret == -EOPNOTSUPP)
++	if (button->type != ACPI_BUTTON_TYPE_POWER)
 +		return;
 +
-+	pr_err("Sending SIGBUS to current task due to memory error not recovered");
-+	force_sig(SIGBUS);
- }
- 
- static bool ghes_do_memory_failure(u64 physical_addr, int flags)
- {
- 	unsigned long pfn;
-+	struct sync_task_work *twcb;
- 
- 	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
- 		return false;
-@@ -484,6 +497,18 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
- 		return false;
- 	}
- 
-+	if (flags == MF_ACTION_REQUIRED && current->mm) {
-+		twcb = kmalloc(sizeof(*twcb), GFP_ATOMIC);
-+		if (!twcb)
-+			return false;
++	input = button->input;
++	input_report_key(input, KEY_WAKEUP, 1);
++	input_sync(input);
++	input_report_key(input, KEY_WAKEUP, 0);
++	input_sync(input);
++}
++EXPORT_SYMBOL(acpi_power_button_wakeup);
 +
-+		twcb->pfn = pfn;
-+		twcb->flags = flags;
-+		init_task_work(&twcb->twork, memory_failure_cb);
-+		task_work_add(current, &twcb->twork, TWA_RESUME);
-+		return true;
-+	}
-+
- 	memory_failure_queue(pfn, flags);
- 	return true;
- }
-@@ -652,7 +677,7 @@ static void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
- 	schedule_work(&entry->work);
- }
- 
--static bool ghes_do_proc(struct ghes *ghes,
-+static void ghes_do_proc(struct ghes *ghes,
- 			 const struct acpi_hest_generic_status *estatus)
+ /* Driver Interface */
+ int acpi_lid_open(void)
  {
- 	int sev, sec_sev;
-@@ -696,7 +721,14 @@ static bool ghes_do_proc(struct ghes *ghes,
- 		}
- 	}
+@@ -579,6 +595,7 @@ static int acpi_button_add(struct acpi_device *device)
+ 	switch (button->type) {
+ 	case ACPI_BUTTON_TYPE_POWER:
+ 		input_set_capability(input, EV_KEY, KEY_POWER);
++		input_set_capability(input, EV_KEY, KEY_WAKEUP);
+ 		break;
  
--	return queued;
-+	/*
-+	 * If no memory failure work is queued for abnormal synchronous
-+	 * errors, do a force kill.
-+	 */
-+	if (sync && !queued) {
-+		pr_err("Sending SIGBUS to current task due to memory error not recovered");
-+		force_sig(SIGBUS);
-+	}
- }
- 
- static void __ghes_print_estatus(const char *pfx,
-@@ -998,9 +1030,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 	struct ghes_estatus_node *estatus_node;
- 	struct acpi_hest_generic *generic;
- 	struct acpi_hest_generic_status *estatus;
--	bool task_work_pending;
- 	u32 len, node_len;
--	int ret;
- 
- 	llnode = llist_del_all(&ghes_estatus_llist);
- 	/*
-@@ -1015,25 +1045,16 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 		estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
- 		len = cper_estatus_len(estatus);
- 		node_len = GHES_ESTATUS_NODE_LEN(len);
--		task_work_pending = ghes_do_proc(estatus_node->ghes, estatus);
+ 	case ACPI_BUTTON_TYPE_SLEEP:
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 808484d11209..f816606abd71 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -20,9 +20,13 @@
+ #include <linux/acpi.h>
+ #include <linux/module.h>
+ #include <linux/syscore_ops.h>
 +
-+		ghes_do_proc(estatus_node->ghes, estatus);
+ #include <asm/io.h>
 +
- 		if (!ghes_estatus_cached(estatus)) {
- 			generic = estatus_node->generic;
- 			if (ghes_print_estatus(NULL, generic, estatus))
- 				ghes_estatus_cache_add(generic, estatus);
- 		}
--
--		if (task_work_pending && current->mm) {
--			estatus_node->task_work.func = ghes_kick_task_work;
--			estatus_node->task_work_cpu = smp_processor_id();
--			ret = task_work_add(current, &estatus_node->task_work,
--					    TWA_RESUME);
--			if (ret)
--				estatus_node->task_work.func = NULL;
--		}
--
--		if (!estatus_node->task_work.func)
--			gen_pool_free(ghes_estatus_pool,
--				      (unsigned long)estatus_node, node_len);
-+		gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node,
-+			      node_len);
+ #include <trace/events/power.h>
  
- 		llnode = next;
++#include <acpi/button.h>
++
+ #include "internal.h"
+ #include "sleep.h"
+ 
+@@ -507,6 +511,7 @@ static void acpi_pm_finish(void)
+ 	pwr_btn_adev = acpi_dev_get_first_match_dev(ACPI_BUTTON_HID_POWERF,
+ 						    NULL, -1);
+ 	if (pwr_btn_adev) {
++		acpi_power_button_wakeup(pwr_btn_adev);
+ 		pm_wakeup_event(&pwr_btn_adev->dev, 0);
+ 		acpi_dev_put(pwr_btn_adev);
  	}
-@@ -1094,7 +1115,6 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
+diff --git a/include/acpi/button.h b/include/acpi/button.h
+index af2fce5d2ee3..6126d665aa42 100644
+--- a/include/acpi/button.h
++++ b/include/acpi/button.h
+@@ -2,17 +2,21 @@
+ #ifndef ACPI_BUTTON_H
+ #define ACPI_BUTTON_H
  
- 	estatus_node->ghes = ghes;
- 	estatus_node->generic = ghes->generic;
--	estatus_node->task_work.func = NULL;
- 	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
++struct acpi_device;
++
+ #define ACPI_BUTTON_HID_POWER	"PNP0C0C"
+ #define ACPI_BUTTON_HID_LID	"PNP0C0D"
+ #define ACPI_BUTTON_HID_SLEEP	"PNP0C0E"
  
- 	if (__ghes_read_estatus(estatus, buf_paddr, fixmap_idx, len)) {
-diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-index 3c8bba9f1114..e5e0c308d27f 100644
---- a/include/acpi/ghes.h
-+++ b/include/acpi/ghes.h
-@@ -35,9 +35,6 @@ struct ghes_estatus_node {
- 	struct llist_node llnode;
- 	struct acpi_hest_generic *generic;
- 	struct ghes *ghes;
--
--	int task_work_cpu;
--	struct callback_head task_work;
- };
- 
- struct ghes_estatus_cache {
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index bf5d0b1b16f4..3ce9e4371659 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3835,7 +3835,6 @@ enum mf_flags {
- int mf_dax_kill_procs(struct address_space *mapping, pgoff_t index,
- 		      unsigned long count, int mf_flags);
- extern int memory_failure(unsigned long pfn, int flags);
--extern void memory_failure_queue_kick(int cpu);
- extern int unpoison_memory(unsigned long pfn);
- extern void shake_page(struct page *p);
- extern atomic_long_t num_poisoned_pages __read_mostly;
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 4d6e43c88489..0d02f8a0b556 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2161,9 +2161,12 @@ static int memory_failure_dev_pagemap(unsigned long pfn, int flags,
-  * Must run in process context (e.g. a work queue) with interrupts
-  * enabled and no spinlocks held.
-  *
-- * Return: 0 for successfully handled the memory error,
-- *         -EOPNOTSUPP for hwpoison_filter() filtered the error event,
-- *         < 0(except -EOPNOTSUPP) on failure.
-+ * Return values:
-+ *   0             - success
-+ *   -EOPNOTSUPP   - hwpoison_filter() filtered the error event.
-+ *   -EHWPOISON    - sent SIGBUS to the current process with the proper
-+ *                   error info by kill_accessing_process().
-+ *   other negative values - failure
-  */
- int memory_failure(unsigned long pfn, int flags)
+ #if IS_ENABLED(CONFIG_ACPI_BUTTON)
+ extern int acpi_lid_open(void);
++extern void acpi_power_button_wakeup(struct acpi_device *dev);
+ #else
+ static inline int acpi_lid_open(void)
  {
-@@ -2445,19 +2448,6 @@ static void memory_failure_work_func(struct work_struct *work)
- 	}
+ 	return 1;
  }
++static inline void acpi_power_button_wakeup(struct acpi_device *dev) {}
+ #endif /* IS_ENABLED(CONFIG_ACPI_BUTTON) */
  
--/*
-- * Process memory_failure work queued on the specified CPU.
-- * Used to avoid return-to-userspace racing with the memory_failure workqueue.
-- */
--void memory_failure_queue_kick(int cpu)
--{
--	struct memory_failure_cpu *mf_cpu;
--
--	mf_cpu = &per_cpu(memory_failure_cpu, cpu);
--	cancel_work_sync(&mf_cpu->work);
--	memory_failure_work_func(&mf_cpu->work);
--}
--
- static int __init memory_failure_init(void)
- {
- 	struct memory_failure_cpu *mf_cpu;
+ #endif /* ACPI_BUTTON_H */
+
+base-commit: b483d3b8a54a544ab8854ca6dbb8d99c423b3ba4
 -- 
-2.39.3
+2.35.1
 
 
