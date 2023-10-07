@@ -1,191 +1,215 @@
-Return-Path: <linux-acpi+bounces-507-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-508-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D0F7BC6CA
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 12:32:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9255C7BC6CB
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 12:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BE781C208C5
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 10:32:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C386C1C208CF
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 10:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2250182D5
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 10:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3105D7488
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Oct 2023 10:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AXB0+oNQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aWEmqH0B"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B21749B
-	for <linux-acpi@vger.kernel.org>; Sat,  7 Oct 2023 08:51:23 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A045CEA
-	for <linux-acpi@vger.kernel.org>; Sat,  7 Oct 2023 01:51:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1696668679;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oDRM3x+Dbg0HgjsFOZuFQecU4AZd+pusA3mLRKOu+cI=;
-	b=AXB0+oNQ5ysuoB2mVSy5+nBICMBraxj9En4g23KrUGMknWg/pIesFjhdbt69qxHCuUt10D
-	NkR9i09H3gTFhSFmBSd/YHIZD9gWetWYCdNXDe9z8w+rmEhVJH9do39Nu6URozxlC7xfl6
-	IhHODkGRogxq4vaDIKxI5tLp2y0+BCM=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-219-PZqvDVMlNNmdmOoBI5UJNw-1; Sat, 07 Oct 2023 04:51:17 -0400
-X-MC-Unique: PZqvDVMlNNmdmOoBI5UJNw-1
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-9b2cf504e3aso242298266b.2
-        for <linux-acpi@vger.kernel.org>; Sat, 07 Oct 2023 01:51:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696668677; x=1697273477;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oDRM3x+Dbg0HgjsFOZuFQecU4AZd+pusA3mLRKOu+cI=;
-        b=CHCz28HBBjjd5Mai8vJ6gAD+QoMOgdclq9Jbitw5QbNvP3+mcVM+BZmYVpBGu20sgX
-         S36zEsrW0SVRbOivXe3ExNeJS0La5UfFk1qN63ETpvH7UeeKWuqtiwFmaAW5Yl8dRNQp
-         EQUl3EFy3fdVm2L4XaIkfE6RBTzlR0xv17gzYdxYFYDYscPadXuk0HO+FGjPTqhUmtMh
-         OjcMRDxlSMI/FvgouzKp8kHiqTlEMLCNcJOFZTaLh+q1kweiu9N2iTn6GQky3rHXrHBx
-         /rVKnwtNGCjA3fa+NmLHKaNjoDNS6HLE7AfweSAsiiiIk8J6v/U+Oel9nnrA81c0Biej
-         gw4Q==
-X-Gm-Message-State: AOJu0YzB8hFpGQdu2lHRDvh7dGJaI9CXVovLFoQW+a5k40MWZmjJbpVb
-	q46drmuYub6YqIWOlm66R2veDT88ukZ44BwuV+xOZ6h5BMa6UFutysa1QYvEy/+Gruly/2VMOU1
-	dD0RSOiIM08xFMQ1JXUymXA==
-X-Received: by 2002:a17:906:5188:b0:9a5:c9a4:ba1b with SMTP id y8-20020a170906518800b009a5c9a4ba1bmr10482854ejk.8.1696668676805;
-        Sat, 07 Oct 2023 01:51:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH+Yb2r7gN29uw7TiEY3d3JfAvYPX6gsIQq82PCTAtWvTwZvWl3RZzGWb3BpGZ4CyNMEp9pNQ==
-X-Received: by 2002:a17:906:5188:b0:9a5:c9a4:ba1b with SMTP id y8-20020a170906518800b009a5c9a4ba1bmr10482840ejk.8.1696668676423;
-        Sat, 07 Oct 2023 01:51:16 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id qx18-20020a170906fcd200b0099bc8bd9066sm4037437ejb.150.2023.10.07.01.51.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Oct 2023 01:51:15 -0700 (PDT)
-Message-ID: <026f8034-0b0e-9c77-f547-7f883b9b8bc1@redhat.com>
-Date: Sat, 7 Oct 2023 10:51:15 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5CF256A
+	for <linux-acpi@vger.kernel.org>; Sat,  7 Oct 2023 08:55:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F11EB9;
+	Sat,  7 Oct 2023 01:55:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696668954; x=1728204954;
+  h=date:from:to:cc:subject:message-id;
+  bh=kUWYoyzMLGzwDYa9sAEBpf+AT30mW4kpe9/MDdLJthY=;
+  b=aWEmqH0Br0C0ha7x6lK5ts1qP7XR295LVAsKHbSky4n7ZScDa/KfOhoF
+   GCIk9xizbGr2staK0tUtfi8rXgohzyuSXg7Umst6kKil+8cPUcJU8IPd+
+   HitbBpWgybcxrvO07pC21cTM2HWJbftQco2gVsFh5zV4RJdGStkHuNKQ8
+   k9MVPUmOxDiA4Z4EAd9e8ZUkluovN9sBB5LpJZwcf7FvuXsoZjIBNvUJ2
+   0yfiggxAvDtgmHN1NNb9VP9eNJ4DKtkP8pIAanvHWxT3NOo2Ux8+5rj0R
+   Mt0e2ob5HEXuWgphuNqbJ6cx4XX7YQ5RFCJitccCxlbsFH9H27cdwQ5lW
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="414900838"
+X-IronPort-AV: E=Sophos;i="6.03,205,1694761200"; 
+   d="scan'208";a="414900838"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2023 01:55:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="1083759318"
+X-IronPort-AV: E=Sophos;i="6.03,205,1694761200"; 
+   d="scan'208";a="1083759318"
+Received: from lkp-server01.sh.intel.com (HELO 8a3a91ad4240) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 07 Oct 2023 01:55:52 -0700
+Received: from kbuild by 8a3a91ad4240 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qp36E-00049R-1I;
+	Sat, 07 Oct 2023 08:55:50 +0000
+Date: Sat, 07 Oct 2023 16:55:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ c5bc51cba63be6e17e7a60754b01ff3031f38aa1
+Message-ID: <202310071635.AxstJWvS-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+	autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] ACPI: resource: Add TongFang GM6BGEQ, GM6BG5Q and
- GM6BG0Q to irq1_edge_low_force_override[]
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: August Wikerfors <git@augustwikerfors.se>,
- Mario Limonciello <Mario.Limonciello@amd.com>, linux-acpi@vger.kernel.org,
- Francesco <f.littarru@outlook.com>, regressions@lists.linux.dev
-References: <20231006123304.32686-1-hdegoede@redhat.com>
- <ed4672a7-439c-4240-aadc-7a36858c36b2@augustwikerfors.se>
- <9a905931-6210-8f6b-92f5-3c863d4a2e86@redhat.com>
- <CAJZ5v0gK1Q54sMRJJJBTf+gY5jd-_57jYKvN5ELNSpmaeVVjAw@mail.gmail.com>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAJZ5v0gK1Q54sMRJJJBTf+gY5jd-_57jYKvN5ELNSpmaeVVjAw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
 
-Hi Rafael,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: c5bc51cba63be6e17e7a60754b01ff3031f38aa1  Merge branch 'pm-cpufreq' into bleeding-edge
 
-On 10/6/23 21:20, Rafael J. Wysocki wrote:
-> On Fri, Oct 6, 2023 at 5:17 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi August,
->>
->> On 10/6/23 16:18, August Wikerfors wrote:
->>> Hi Hans,
->>>
->>> On 2023-10-06 14:33, Hans de Goede wrote:
->>>> The TongFang GM6BGEQ, GM6BG5Q and GM6BG0Q are 3 GPU variants of a TongFang
->>>> barebone design which is sold under various brand names.
->>>>
->>>> The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
->>>> laptops in order for the IRQ to work.
->>>>
->>>> Adjust the irq1_edge_low_force_override[] DMI match table for this:
->>>>
->>>> 1. Drop the sys-vendor match from the existing PCSpecialist Elimina Pro 16
->>>>     entry for the GM6BGEQ (RTX3050 GPU) model so that it will also match
->>>>     the laptop when sold by other vendors such as hyperbook.pl.
->>>>
->>>> 2. Add board-name matches for the GM6BG5Q (RTX4050) and GM6B0Q (RTX4060)
->>>>     models.
->>>>
->>>> Suggested-by: August Wikerfors <git@augustwikerfors.se>
->>>> Reported-by: Francesco <f.littarru@outlook.com>
->>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217394
->>>> Link: https://laptopparts4less.frl/index.php?route=product/search&filter_name=GM6BG
->>>> Link: https://hyperbook.pl/en/content/14-hyperbook-drivers
->>>> Link: https://linux-hardware.org/?probe=bfa70344e3
->>>> Link: https://bbs.archlinuxcn.org/viewtopic.php?id=13313
->>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>> Since this is a regression fix for 453b014e2c29 ("ACPI: resource: Fix IRQ override quirk for PCSpecialist Elimina Pro 16 M") (for PCSpecialist systems like Francesco's with product name "Elimina Pro 16 M" but not board name "GM6BGEQ") and 2d331a6ac481 ("ACPI: resource: revert "Remove "Zen" specific match and quirks"") (for other vendors using the same TongFang design), it should have a "Fixes:" tag for at least one of those.
->>>
->>> Both of those commits are in 6.5 (and 6.6-rc) so this should go into 6.6-rc and be backported to 6.5, but the patch seems to depend on 424009ab2030 ("ACPI: resource: Drop .ident values from dmi_system_id tables") and maybe also d37273af0e42 ("ACPI: resource: Consolidate IRQ trigger-type override DMI tables") to apply cleanly, which seem to only be queued for linux-next/6.7? I'm not familiar with what the correct process is for such cases.
->>
->> You are right:
->>
->> Fixes: 453b014e2c29 ("ACPI: resource: Fix IRQ override quirk for PCSpecialist Elimina Pro 16 M")
-> 
-> OK
-> 
->> Note likewise this commit should really also be send as a fix
->> for 6.6 and backported to the stable kernels:
->>
->> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/drivers/acpi/resource.c?h=bleeding-edge&id=c1ed72171ed580fbf159e703b77685aa4b0d0df5
-> 
-> That's harder, because it does depend on commit 424009ab2030 ("ACPI:
-> resource: Drop .ident values from dmi_system_id tables") which is not
-> 6.6-rc material IMV.
-> 
-> So I'm going to queue this up with the Fixes tag above and Cc: stable
-> pointing to commit 424009ab2030 as a dependency, but for 6.7.
+elapsed time: 721m
 
-I realize that I'm the architect of this whole mess, but delaying
-these new quirks to 6.7 does not seem like a good idea to me.
+configs tested: 125
+configs skipped: 2
 
-This fixes a serious problem (kbd not working pretty much makes
-the whole laptop unusable under Linux at least on the road). With
-a very small chance of regressions since this is DMI match base.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Maybe we can just take all the resource.c DMI quirk changes
-as fixes to 6.6 ?  I admit the:
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231007   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                       aspeed_g4_defconfig   clang
+arm                       aspeed_g5_defconfig   gcc  
+arm                     davinci_all_defconfig   clang
+arm                                 defconfig   gcc  
+arm                        keystone_defconfig   gcc  
+arm                   randconfig-001-20231007   gcc  
+arm                         s5pv210_defconfig   clang
+arm                           u8500_defconfig   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20231007   gcc  
+i386         buildonly-randconfig-002-20231007   gcc  
+i386         buildonly-randconfig-003-20231007   gcc  
+i386         buildonly-randconfig-004-20231007   gcc  
+i386         buildonly-randconfig-005-20231007   gcc  
+i386         buildonly-randconfig-006-20231007   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231007   gcc  
+i386                  randconfig-002-20231007   gcc  
+i386                  randconfig-003-20231007   gcc  
+i386                  randconfig-004-20231007   gcc  
+i386                  randconfig-005-20231007   gcc  
+i386                  randconfig-006-20231007   gcc  
+loongarch                        alldefconfig   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231007   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                      bmips_stb_defconfig   clang
+mips                      loongson3_defconfig   gcc  
+mips                      malta_kvm_defconfig   clang
+mips                        vocore2_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc                     asp8347_defconfig   gcc  
+powerpc                      ppc6xx_defconfig   gcc  
+powerpc                  storcenter_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                          landisk_defconfig   gcc  
+sh                          lboxre2_defconfig   gcc  
+sh                          rsk7201_defconfig   gcc  
+sh                            titan_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20231007   gcc  
+x86_64                randconfig-002-20231007   gcc  
+x86_64                randconfig-003-20231007   gcc  
+x86_64                randconfig-004-20231007   gcc  
+x86_64                randconfig-005-20231007   gcc  
+x86_64                randconfig-006-20231007   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
 
-"ACPI: resource: Consolidate IRQ trigger-type override DMI tables"
-"ACPI: resource: Drop .ident values from dmi_system_id tables"
-
-patches are not really bugfixes. But they too have a very low
-chance of causing regressions.
-
-Regards,
-
-Hans
-
-
-p.s.
-
-Note that "ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA"
-should probably go as a fix to 6.6 regardless of the discussion since
-that is a pure bugfix which applies cleanly on top of 6.6
-
-And the same goes for this (unrelated) drivers/acpi/ec.c patch:
-
-"ACPI: EC: Add quirk for the HP Pavilion Gaming 15-dk1xxx"
-
-That too is a pure bugfix which IMHO should go to 6.6 as such.
-
-
-
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
