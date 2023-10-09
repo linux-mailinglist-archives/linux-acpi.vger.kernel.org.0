@@ -1,167 +1,98 @@
-Return-Path: <linux-acpi+bounces-536-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-537-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7C37BDC25
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 14:34:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F33D7BE32B
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 16:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4BE01C20445
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 12:34:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8DF51C20843
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 14:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E327199A7
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 12:34:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1731434CC7
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 14:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="TD1KH/s9"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3186E15AF8
-	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 12:29:55 +0000 (UTC)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86692E4
-	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 05:29:52 -0700 (PDT)
-Received: from dggpemm500002.china.huawei.com (unknown [172.30.72.56])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4S3yv33wNrzVlVl;
-	Mon,  9 Oct 2023 20:26:23 +0800 (CST)
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 9 Oct 2023 20:29:50 +0800
-Subject: Re: [PATCH v2] ACPI: bus: Consolidate all arm specific initialisation
- into acpi_arm_init()
-To: D Scott Phillips <scott@os.amperecomputing.com>, Sudeep Holla
-	<sudeep.holla@arm.com>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-CC: Lorenzo Pieralisi <lpieralisi@kernel.org>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Robin
- Murphy <robin.murphy@arm.com>
-References: <20230606093531.2746732-1-sudeep.holla@arm.com>
- <867cnzqojo.fsf@scott-ph-mail.amperecomputing.com>
-From: Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <00dd9623-a131-53ed-5e73-1eccd626d2d7@huawei.com>
-Date: Mon, 9 Oct 2023 20:29:49 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596E0321D
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 12:50:00 +0000 (UTC)
+Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A722199
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 05:49:58 -0700 (PDT)
+Received: by mail-vs1-xe2e.google.com with SMTP id ada2fe7eead31-45260b91a29so1663988137.2
+        for <linux-acpi@vger.kernel.org>; Mon, 09 Oct 2023 05:49:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1696855798; x=1697460598; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rqVHBhsbROUYrkVKqcZNTMEbfx9Kq7hgDbRTjOfBx4Q=;
+        b=TD1KH/s9wbTWECAbs0LvQcLKqYvLAdaDhMYOWGlr5Lzw78IsyGECowME0mMeGM+bxg
+         RX5uYnEykgdNzSkhHv8LuOqrUTK+PNkaUHRa4mHrVMQ3i7ocxk5cDFpuY3ZAuEl66fkp
+         hD1oMEGnodxdBHdpRn6pht/d9oIPiwbyAYmgXtNWuaGSpjnbfbEolP1hSldyXxd+X8Rs
+         lVgiGuLXjOUE5TG/JYc/qrl+5CvsxolVuQ6RE74EMgs1+mW+a+yGjT8r8BW0A9LeQOjn
+         J1ar3Fw7+ct/Q9AeOTUqt+RCwVbrggCpvXwjIqyWIwwOZOHUa0d/XGxn4V8jWfqYVW1d
+         SzkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696855798; x=1697460598;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rqVHBhsbROUYrkVKqcZNTMEbfx9Kq7hgDbRTjOfBx4Q=;
+        b=E/sf7k5CO3fziXlhEmt0hQPKqNTvywt2cMfVbtd2CDtn1WTqptUgeADgS3eFA1NDCQ
+         J56H14y8WTure/t2RgFgvkFmzfnpFezfKbJ9FoaDK7u/hnQcox8d2ncTTa0UN0+aog8n
+         8yk2hbPFWozG/NyYFEgpcRYOJw4/uvAr+KjCZrnIQuYHRDZnJq0eCfR+S6RJJq5yVXKS
+         ZAwWusZ+B+YyHsAqX5foreCTZPx9aXqt3v9QDV+vPjWvsuElZquHAEwjDfI4JzF1FGDr
+         sZrQPjvVvC+yCIHoxk729NH8lEztj52d51odCQCjymj9ul8lfqLWNXb/1Wl6+cecMY80
+         V1qQ==
+X-Gm-Message-State: AOJu0YxWEhtNHfgDA2/ajNNxhyxijQHqTabqar+JnXyj2zVv0NNiusSc
+	3WGyFY10VCdsAlGDdlQinq7iGPGNJW3GVD6f2i/N5g==
+X-Google-Smtp-Source: AGHT+IF8OlnQr0BKaBgObH7+v22TsSrBXBeHAOtNhq4x6SIT97e5mjB7RqcAehoKyOTYt/mv5/OuA3sc2lBTTsdGwGs=
+X-Received: by 2002:a67:f585:0:b0:44e:8e28:2853 with SMTP id
+ i5-20020a67f585000000b0044e8e282853mr11274007vso.35.1696855797782; Mon, 09
+ Oct 2023 05:49:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <867cnzqojo.fsf@scott-ph-mail.amperecomputing.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.247]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500002.china.huawei.com (7.185.36.229)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230926145943.42814-1-brgl@bgdev.pl> <20230926145943.42814-5-brgl@bgdev.pl>
+In-Reply-To: <20230926145943.42814-5-brgl@bgdev.pl>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Mon, 9 Oct 2023 14:49:47 +0200
+Message-ID: <CAMRc=MevHb5pyrcCaGkC7uWChMtzovoP4OA5MZ2Ky7RPT4hn9A@mail.gmail.com>
+Subject: Re: [RFT PATCH 4/4] gpio: acpi: remove acpi_get_and_request_gpiod()
+To: Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Daniel Scally <djrscally@gmail.com>, 
+	Hans de Goede <hdegoede@redhat.com>, Mark Gross <markgross@kernel.org>
+Cc: linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 2023/10/7 8:11, D Scott Phillips wrote:
-> Sudeep Holla <sudeep.holla@arm.com> writes:
-> 
->> Move all of the ARM-specific initialization into one function namely
->> acpi_arm_init(), so it is not necessary to modify/update bus.c every
->> time a new piece of it is added.
->>
->> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
->> Cc: Rafael J. Wysocki <rafael@kernel.org>
->> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->> Reviewed-by: Robin Murphy <robin.murphy@arm.com>
->> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
->> Link: https://lore.kernel.org/r/CAJZ5v0iBZRZmV_oU+VurqxnVMbFN_ttqrL=cLh0sUH+=u0PYsw@mail.gmail.com
->> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
->> ---
->>   drivers/acpi/arm64/Makefile |  2 +-
->>   drivers/acpi/arm64/agdi.c   |  2 +-
->>   drivers/acpi/arm64/apmt.c   |  2 +-
->>   drivers/acpi/arm64/init.c   | 13 +++++++++++++
->>   drivers/acpi/arm64/init.h   |  6 ++++++
->>   drivers/acpi/arm64/iort.c   |  1 +
->>   drivers/acpi/bus.c          |  7 +------
->>   include/linux/acpi.h        |  6 ++++++
->>   include/linux/acpi_agdi.h   | 13 -------------
->>   include/linux/acpi_apmt.h   | 19 -------------------
->>   include/linux/acpi_iort.h   |  2 --
->>   11 files changed, 30 insertions(+), 43 deletions(-)
->>   create mode 100644 drivers/acpi/arm64/init.c
->>   create mode 100644 drivers/acpi/arm64/init.h
->>   delete mode 100644 include/linux/acpi_agdi.h
->>   delete mode 100644 include/linux/acpi_apmt.h
-[...]
->> diff --git a/drivers/acpi/arm64/init.c b/drivers/acpi/arm64/init.c
->> new file mode 100644
->> index 000000000000..d3ce53dda122
->> --- /dev/null
->> +++ b/drivers/acpi/arm64/init.c
->> @@ -0,0 +1,13 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +#include <linux/acpi.h>
->> +#include "init.h"
->> +
->> +void __init acpi_arm_init(void)
->> +{
->> +	if (IS_ENABLED(CONFIG_ACPI_AGDI))
->> +		acpi_agdi_init();
->> +	if (IS_ENABLED(CONFIG_ACPI_APMT))
->> +		acpi_apmt_init();
->> +	if (IS_ENABLED(CONFIG_ACPI_IORT))
->> +		acpi_iort_init();
->> +}
-[...]
->> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
->> index d161ff707de4..7a1eaf8c7bde 100644
->> --- a/drivers/acpi/bus.c
->> +++ b/drivers/acpi/bus.c
->> @@ -26,9 +26,6 @@
->>   #include <asm/mpspec.h>
->>   #include <linux/dmi.h>
->>   #endif
->> -#include <linux/acpi_agdi.h>
->> -#include <linux/acpi_apmt.h>
->> -#include <linux/acpi_iort.h>
->>   #include <linux/acpi_viot.h>
->>   #include <linux/pci.h>
->>   #include <acpi/apei.h>
->> @@ -1408,7 +1405,7 @@ static int __init acpi_init(void)
->>   	acpi_init_ffh();
->>
->>   	pci_mmcfg_late_init();
->> -	acpi_iort_init();
->> +	acpi_arm_init();
->>   	acpi_viot_early_init();
->>   	acpi_hest_init();
->>   	acpi_ghes_init();
->> @@ -1420,8 +1417,6 @@ static int __init acpi_init(void)
->>   	acpi_debugger_init();
->>   	acpi_setup_sb_notify_handler();
->>   	acpi_viot_init();
->> -	acpi_agdi_init();
->> -	acpi_apmt_init();
-> 
-> Hi Sudeep, this moves acpi_agdi_init() before acpi_ghes_init().
-> sdei initialization currently happens from ghes_init, so agdi devices
-> using SDEI can no longer probe:
-> 
-> | [    0.515864] sdei: Failed to create event 1073741825: -5
-> | [    0.515866] agdi agdi.0: Failed to register for SDEI event 1073741825
-> | [    0.515867] agdi: probe of agdi.0 failed with error -5
-> | ...
-> | [    0.516022] sdei: SDEIv1.0 (0x0) detected in firmware.
+On Tue, Sep 26, 2023 at 4:59=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
+>
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> With no more users, we can remove acpi_get_and_request_gpiod().
+>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> ---
 
-How about just move acpi_arm_init() to the place of after
-acpi_ghes_init()?
+With Hans' patches applied, I queued this on top.
 
-I checked the functions in acpi_arm_init(), there are no other
-dependencies except sdei_init().
-
-Thanks
-Hanjun
+Bart
 
