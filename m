@@ -1,225 +1,295 @@
-Return-Path: <linux-acpi+bounces-526-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-527-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC2467BD35E
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 08:30:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D547BD54A
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 10:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 183431C20314
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 06:30:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A176280D4F
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 08:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78908BE4D
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 06:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41918C01
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 08:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0iyNXLmh"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Xrv6PB9y"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29FCBA34
-	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 06:24:11 +0000 (UTC)
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2042.outbound.protection.outlook.com [40.107.102.42])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DE6FA2;
-	Sun,  8 Oct 2023 23:24:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ImejjI24d1Hth2pXWAarnUCstxomRYBYrN131sB/6DfHoZUvbWz9ndjGhS5hq9sMBI7qRbG0Fm8wRtuNhscJHHQNGmzbh1uwiptsykxAasKlLu+l/JPs0IBBUMc70B9NUsmcudgZhymBTc6w3pnjatKUcYmFXMkeA0MoTiLSjNA5mZq6Y1Yc0k+JTCkResNsTMpbP9oio5ad/3bJ3brzl/BAEDnbW2sfDkuKYl4iBz2vDouBgAXwxdgwc62SsqU2QqucDzrxaIwcUH/r1x3JuN9XIW714rCyS4z7mbg5plzM+ruTHSwUMF4CLuGw16gBJIySh3OsMcXzlM/Tbv7fEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aT1Er/rn0mAaHdkWHSlqF0IhSqNQdOXq7TNsL9660rw=;
- b=ELJe4Uh05i1JfJSrsa6+KS89rlj5zfObpvxBwmj4EKhLhZpibYeP7P6wZCqbvQxkp1yLoT4RSoc1sowItUqgR21VTQW1rDEAPI/+QirScFtB1FBevH2p7yVjkMkxvFMdrzgUdiaRkVUkv4F1vO+3VE7V4na8zf9bVSMYwYD+S18ZXTdtzYdmXCABou1wjsz/Vh/EsK7jXEpWqzCvXRHryxkf5uv2FX1gG+st6auocqp0TMiCJIksvwPO0Nx8gbEqJBJWVmlozdbyz+by2e6qTwuly34d8sfPl6nH6Ww+oqoYiK/rxKvZplrMZNUmXwO4ZFWrs1podmXspinlh6B/Hw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aT1Er/rn0mAaHdkWHSlqF0IhSqNQdOXq7TNsL9660rw=;
- b=0iyNXLmh+GmTQ/GuArPOneLnSCWsdIuTGKhKOzdspwcWI3909jSAOuuIKh5XKInKvmWE3A2WmhENmoAImNsTBzViii3RBhyScz4T3rq+MBki6G0PM4tmMXdJfJ/i1Y1rT2CD/4jo9VeDAtQxCwmD9Pb9nRHOdvA5iO35tqcwR/s=
-Received: from DS7PR03CA0145.namprd03.prod.outlook.com (2603:10b6:5:3b4::30)
- by MW6PR12MB8760.namprd12.prod.outlook.com (2603:10b6:303:23a::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.43; Mon, 9 Oct
- 2023 06:24:07 +0000
-Received: from DS1PEPF00017094.namprd03.prod.outlook.com
- (2603:10b6:5:3b4:cafe::7e) by DS7PR03CA0145.outlook.office365.com
- (2603:10b6:5:3b4::30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.36 via Frontend
- Transport; Mon, 9 Oct 2023 06:24:06 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS1PEPF00017094.mail.protection.outlook.com (10.167.17.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6838.14 via Frontend Transport; Mon, 9 Oct 2023 06:24:06 +0000
-Received: from BLR-5CG13462PL.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 9 Oct
- 2023 01:24:00 -0500
-From: Wyes Karny <wyes.karny@amd.com>
-To: Meng Li <li.meng@amd.com>
-CC: Wyes Karny <wyes.karny@amd.com>, "Rafael J . Wysocki"
-	<rafael.j.wysocki@intel.com>, Huang Rui <ray.huang@amd.com>,
-	<linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-	<linux-acpi@vger.kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
-	<linux-kselftest@vger.kernel.org>, Nathan Fontenot <nathan.fontenot@amd.com>,
-	Deepak Sharma <deepak.sharma@amd.com>, Alex Deucher
-	<alexander.deucher@amd.com>, Mario Limonciello <mario.limonciello@amd.com>,
-	Shimmer Huang <shimmer.huang@amd.com>, Perry Yuan <Perry.Yuan@amd.com>,
-	Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar <viresh.kumar@linaro.org>,
-	Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH V8 6/7] Documentation: amd-pstate: introduce amd-pstate preferred core
-Date: Mon, 9 Oct 2023 11:53:48 +0530
-Message-ID: <20231009062310.5zjzg4avv36o4vvg@BLR-5CG13462PL.amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231009024932.2563622-7-li.meng@amd.com>
-References: <20231009024932.2563622-1-li.meng@amd.com> <20231009024932.2563622-7-li.meng@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCC2BE65
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 06:49:10 +0000 (UTC)
+Received: from mail-vk1-xa2d.google.com (mail-vk1-xa2d.google.com [IPv6:2607:f8b0:4864:20::a2d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2442BA
+	for <linux-acpi@vger.kernel.org>; Sun,  8 Oct 2023 23:49:08 -0700 (PDT)
+Received: by mail-vk1-xa2d.google.com with SMTP id 71dfb90a1353d-49a99c43624so1460992e0c.2
+        for <linux-acpi@vger.kernel.org>; Sun, 08 Oct 2023 23:49:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1696834148; x=1697438948; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R8R3SEvkCEq8q6EEM7nd/KgJCNBdPF2LFQh/jnLNGpw=;
+        b=Xrv6PB9ymitTxL57PllfSNTci68Tu/yQTEiDEdwUFAfKouYhfY4JMUBkfmZKkaPY7Q
+         G/14J6e29ve8QF/1jt8Fh8KBwNR3SSIfrSikb35ucraoaFNsZKVHIyey+QJYfmRPUQ7v
+         +iejWkRcm700zJnNDpRg+GtOAOJaP0Ih9BOj05tvT7fZ89rcS+cdxltnuk94swA9xWSA
+         bgv0y89cLuuhGveXTMkY5uHcXYWJeCPGTN8tK2ZRXYpJ2TVDjei0NILja11ke6raeuUF
+         YJc2tBJbw3mcUSZQYnNitUphdgFstPGFHWi/7ylOvd9Nk4okQMtmfJ0QAuffoH/nM+F0
+         Ktlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696834148; x=1697438948;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R8R3SEvkCEq8q6EEM7nd/KgJCNBdPF2LFQh/jnLNGpw=;
+        b=AJ5SLprTUS8qvSpW+jLup8swM/0lHJi9TZ+SR+L44ijDALF6rZRA3iZnLwyNFpYYKB
+         1Unjlklw0hM7aFWM03sou7J8jze2wm6NSm9NY/u+93HNdRHC+um83NpvJ4w/7yyn1PNn
+         us5W39W71P5Fcol53KNEPiS1aryTPQhfe4A5yR2L40UNqFfCYkyc7zvCa6LcqLFJDX9k
+         R7LNXozRtuuxuZy8r86vq8AVOzk21bCuCRB6Kzerq5xO74FzIBRxLzqE8X5bVDpANwFV
+         q45gYZsJ2/3DzYEKLgJnlKlHst1JuRU10kJipvj1UCF4Z5kVCCf/fGcMo+NAWPHNppIX
+         72oA==
+X-Gm-Message-State: AOJu0YxciH+KI8Awa7hkuNCfeAXG4PLk2hfsoA0S5Wr8wNxD6r5AMjDP
+	C4ZoXqwMFIfHWHBBxi+fWNtNulveMq4GOyQyhtL2rg==
+X-Google-Smtp-Source: AGHT+IGLJ/Kir7ut6JZrJcqUdoiq1uSu4D5pTXVqnjxvbtP52e+bm7khorXZzvc3cATfPWACjFwqc/2EjUYFIU5UStE=
+X-Received: by 2002:a1f:4e46:0:b0:4a1:58e0:a0db with SMTP id
+ c67-20020a1f4e46000000b004a158e0a0dbmr988925vkb.11.1696834147762; Sun, 08 Oct
+ 2023 23:49:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017094:EE_|MW6PR12MB8760:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4a7df083-25cb-4c8a-8d19-08dbc8905712
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	Oy7pof0bm7moXO9vxnHR+xeWKfug2GKBtxfS4Qu6/NOgd2tyaqcpq/OOIV8g1OPgrRYzDz+qMk8rlQ5yoSJJQ+9ZXotXxHim8X2yEpod3gw0uXjMXHGJcLw6aGq/eKYj8C1FyxCg2B3APoWJf91wEWTwhEe+RiIXgjUeTJEESCaJlgcjIi5GPoQeuKxuSVxwuSDqSep8MD47icC+B1P1lRFXvsUmfRETvB/KRUa9C7HLVgGsvgXwi8eGmmRt4s2HzmSAC2lwdKHOQsK3Yi9BBw2/KlsIfFQOUl1AdCBVxQyxS1EXeJlSnYlGUnXMn/g92adXaiTYehsxyVTlZ6gJpJ2QsRm5UzO35MritKBDp41tT9RdJbGbWMGVyCm69dMc5toFgt/RK4mkBqd//NveI1xWUbWhGni01/0hYZCgCG7quiraTwerlSV2A2bHQNvPQNb4/V+vdSPV9vSSUCjlxW8A81Tytv7ceRWHjRcVVDf7lm/cjYXRbcdPILzDnlRDxY+0EJOnmudCv3BdmtpqcDBkDv1tSkm6Qlh+mxCj5xKjmu6aprGrEFevh3q7ux4l4j64UZDPhrvFkfQudE5btGD6R61hAc8LWiw8pX2YbcWhD7E7im+yxTjrXBLlYLfa+ZDpHinXTHtWdGBk3pK+Pec5+QCz0T6xvQhiwdcKd7c/DFOLKo5CjUF/eN8RqRrElCjUXKluSioYNW6kF/FjGvLs9v0OVl4uuCvdm23L9HYaMq35OaTHBtNI0NvaJzcB0+98fD0ysVFGjEG6/dgF4g==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(376002)(39860400002)(346002)(396003)(230922051799003)(1800799009)(64100799003)(186009)(82310400011)(451199024)(36840700001)(40470700004)(46966006)(6666004)(1076003)(40460700003)(40480700001)(55016003)(86362001)(36860700001)(81166007)(356005)(82740400003)(26005)(16526019)(47076005)(426003)(336012)(83380400001)(2906002)(7696005)(478600001)(8676002)(6862004)(4326008)(8936002)(70586007)(41300700001)(6636002)(316002)(70206006)(5660300002)(44832011)(54906003)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2023 06:24:06.3955
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4a7df083-25cb-4c8a-8d19-08dbc8905712
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF00017094.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8760
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-	autolearn=no autolearn_force=no version=3.4.6
+References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-15-brgl@bgdev.pl>
+ <CACRpkda9=VULj4Cy_sit-UpUQnVEbS-RJKAeULVCw8ZCRTq1sw@mail.gmail.com>
+ <CAMRc=MdTk1B4MEh9C624Upm_EcaQgJd9OU-AGfU0G-DU1+qk6A@mail.gmail.com>
+ <36b17290-c643-8d8e-e82b-49afa6b34fbb@nvidia.com> <3624e973-d09a-d211-c6d0-d0ffb8c20c4b@nvidia.com>
+ <90b5f887-8af4-a80d-ea4d-cf2199752de4@nvidia.com> <0e7cae42-0b81-c038-8beb-49102feea8a6@nvidia.com>
+ <CAMRc=McSG6qajxt6P3vWQEeT63Pk5tggD05pUoMD1zd5ApZxgA@mail.gmail.com>
+ <647d3b52-1daf-175d-d5c2-45653dd2604c@nvidia.com> <CAMRc=Mc_+LxcbV+=KPwAh4DinJAAetHrK+W3jbNp4AZBzg63TA@mail.gmail.com>
+ <b0f37601-39d6-618e-fa16-3b1c9e7c0e2c@nvidia.com>
+In-Reply-To: <b0f37601-39d6-618e-fa16-3b1c9e7c0e2c@nvidia.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Mon, 9 Oct 2023 08:48:56 +0200
+Message-ID: <CAMRc=MfSGY691-sFhx8GeP43g0xGk1JzNa=9q5oemQoHHAM-5Q@mail.gmail.com>
+Subject: Re: [RFT PATCH 14/21] hte: tegra194: don't access struct gpio_chip
+To: Dipen Patel <dipenp@nvidia.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, 
+	Russell King <linux@armlinux.org.uk>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Hans de Goede <hdegoede@redhat.com>, Mark Gross <markgross@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, timestamp@lists.linux.dev, 
+	linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 09 Oct 10:49, Meng Li wrote:
-> Introduce amd-pstate preferred core.
-> 
-> check preferred core state set by the kernel parameter:
-> $ cat /sys/devices/system/cpu/amd-pstate/prefcore
-> 
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Reviewed-by: Huang Rui <ray.huang@amd.com>
-Reviewed-by: Wyes Karny <wyes.karny@amd.com>
-> Signed-off-by: Meng Li <li.meng@amd.com>
-> ---
->  Documentation/admin-guide/pm/amd-pstate.rst | 59 ++++++++++++++++++++-
->  1 file changed, 57 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/pm/amd-pstate.rst b/Documentation/admin-guide/pm/amd-pstate.rst
-> index 1cf40f69278c..0b832ff529db 100644
-> --- a/Documentation/admin-guide/pm/amd-pstate.rst
-> +++ b/Documentation/admin-guide/pm/amd-pstate.rst
-> @@ -300,8 +300,8 @@ platforms. The AMD P-States mechanism is the more performance and energy
->  efficiency frequency management method on AMD processors.
->  
->  
-> -AMD Pstate Driver Operation Modes
-> -=================================
-> +``amd-pstate`` Driver Operation Modes
-> +======================================
->  
->  ``amd_pstate`` CPPC has 3 operation modes: autonomous (active) mode,
->  non-autonomous (passive) mode and guided autonomous (guided) mode.
-> @@ -353,6 +353,48 @@ is activated.  In this mode, driver requests minimum and maximum performance
->  level and the platform autonomously selects a performance level in this range
->  and appropriate to the current workload.
->  
-> +``amd-pstate`` Preferred Core
-> +=================================
-> +
-> +The core frequency is subjected to the process variation in semiconductors.
-> +Not all cores are able to reach the maximum frequency respecting the
-> +infrastructure limits. Consequently, AMD has redefined the concept of
-> +maximum frequency of a part. This means that a fraction of cores can reach
-> +maximum frequency. To find the best process scheduling policy for a given
-> +scenario, OS needs to know the core ordering informed by the platform through
-> +highest performance capability register of the CPPC interface.
-> +
-> +``amd-pstate`` preferred core enables the scheduler to prefer scheduling on
-> +cores that can achieve a higher frequency with lower voltage. The preferred
-> +core rankings can dynamically change based on the workload, platform conditions,
-> +thermals and ageing.
-> +
-> +The priority metric will be initialized by the ``amd-pstate`` driver. The ``amd-pstate``
-> +driver will also determine whether or not ``amd-pstate`` preferred core is
-> +supported by the platform.
-> +
-> +``amd-pstate`` driver will provide an initial core ordering when the system boots.
-> +The platform uses the CPPC interfaces to communicate the core ranking to the
-> +operating system and scheduler to make sure that OS is choosing the cores
-> +with highest performance firstly for scheduling the process. When ``amd-pstate``
-> +driver receives a message with the highest performance change, it will
-> +update the core ranking and set the cpu's priority.
-> +
-> +``amd-pstate`` Preferred Core Switch
-> +=================================
-> +Kernel Parameters
-> +-----------------
-> +
-> +``amd-pstate`` peferred core`` has two states: enable and disable.
-> +Enable/disable states can be chosen by different kernel parameters.
-> +Default enable ``amd-pstate`` preferred core.
-> +
-> +``amd_prefcore=disable``
-> +
-> +For systems that support ``amd-pstate`` preferred core, the core rankings will
-> +always be advertised by the platform. But OS can choose to ignore that via the
-> +kernel parameter ``amd_prefcore=disable``.
-> +
->  User Space Interface in ``sysfs`` - General
->  ===========================================
->  
-> @@ -385,6 +427,19 @@ control its functionality at the system level.  They are located in the
->          to the operation mode represented by that string - or to be
->          unregistered in the "disable" case.
->  
-> +``prefcore``
-> +	Preferred core state of the driver: "enabled" or "disabled".
-> +
-> +	"enabled"
-> +		Enable the ``amd-pstate`` preferred core.
-> +
-> +	"disabled"
-> +		Disable the ``amd-pstate`` preferred core
-> +
-> +
-> +        This attribute is read-only to check the state of preferred core set
-> +        by the kernel parameter.
-> +
->  ``cpupower`` tool support for ``amd-pstate``
->  ===============================================
->  
-> -- 
-> 2.34.1
-> 
+On Thu, Oct 5, 2023 at 9:43=E2=80=AFPM Dipen Patel <dipenp@nvidia.com> wrot=
+e:
+>
+> On 10/5/23 12:05 PM, Bartosz Golaszewski wrote:
+> > On Thu, Oct 5, 2023 at 8:12=E2=80=AFPM Dipen Patel <dipenp@nvidia.com> =
+wrote:
+> >>
+> >> On 10/5/23 6:48 AM, Bartosz Golaszewski wrote:
+> >>> On Thu, Oct 5, 2023 at 1:52=E2=80=AFAM Dipen Patel <dipenp@nvidia.com=
+> wrote:
+> >>>>
+> >>>> On 10/4/23 3:54 PM, Dipen Patel wrote:
+> >>>>> On 10/4/23 1:33 PM, Dipen Patel wrote:
+> >>>>>> On 10/4/23 1:30 PM, Dipen Patel wrote:
+> >>>>>>> On 10/4/23 5:00 AM, Bartosz Golaszewski wrote:
+> >>>>>>>> On Thu, Sep 7, 2023 at 9:28=E2=80=AFAM Linus Walleij <linus.wall=
+eij@linaro.org> wrote:
+> >>>>>>>>>
+> >>>>>>>>> On Tue, Sep 5, 2023 at 8:53=E2=80=AFPM Bartosz Golaszewski <brg=
+l@bgdev.pl> wrote:
+> >>>>>>>>>
+> >>>>>>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >>>>>>>>>>
+> >>>>>>>>>> Using struct gpio_chip is not safe as it will disappear if the
+> >>>>>>>>>> underlying driver is unbound for any reason. Switch to using r=
+eference
+> >>>>>>>>>> counted struct gpio_device and its dedicated accessors.
+> >>>>>>>>>>
+> >>>>>>>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro=
+.org>
+> >>>>>>>>>
+> >>>>>>>>> As Andy points out add <linux/cleanup.h>, with that fixed:
+> >>>>>>>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> >>>>>>>>>
+> >>>>>>>>> I think this can be merged into the gpio tree after leaving som=
+e
+> >>>>>>>>> slack for the HTE maintainer to look at it, things look so much
+> >>>>>>>>> better after this.
+> >>>>>>>>>
+> >>>>>>>>> Yours,
+> >>>>>>>>> Linus Walleij
+> >>>>>>>>
+> >>>>>>>> Dipen,
+> >>>>>>>>
+> >>>>>>>> if you could give this patch a test and possibly ack it for me t=
+o take
+> >>>>>>>> it through the GPIO tree (or go the immutable tag from HTE route=
+) then
+> >>>>>>>> it would be great. This is the last user of gpiochip_find() tree=
+wide,
+> >>>>>>>> so with it we could remove it entirely for v6.7.
+> >>>>>>>
+> >>>>>>> Progress so far for the RFT...
+> >>>>>>>
+> >>>>>>> I tried applying the patch series on 6.6-rc1 and it did not apply=
+ cleanly,
+> >>>>>>> some patches I needed to manually apply and correct. With all thi=
+s, it failed
+> >>>>>>> compilation at some spi/spi-bcm2835 driver. I disabled that and w=
+as able to
+> >>>>>>> compile. I thought I should let you know this part.
+> >>>>>>>
+> >>>>>>> Now, I tried to test the hte and it seems to fail finding the gpi=
+o device,
+> >>>>>>> roughly around this place [1]. I thought it would be your patch s=
+eries so
+> >>>>>>> tried to just use 6.6rc1 without your patches and it still failed=
+ at the
+> >>>>>>> same place. I have to trace back now from which kernel version it=
+ broke.
+> >>>>>>
+> >>>>>> [1].
+> >>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/pateldipen1984/lin=
+ux.git/tree/drivers/hte/hte-tegra194.c?h=3Dfor-next#n781
+> >>>>>>
+> >>>>>> of course with your patches it would fail for the gdev instead of =
+the chip.
+> >>>>>
+> >>>>> Small update:
+> >>>>>
+> >>>>> I put some debugging prints in the gpio match function in the hte-t=
+egra194.c as
+> >>>>> below:
+> >>>>>
+> >>>>> static int tegra_gpiochip_match(struct gpio_chip *chip, void *data)
+> >>>>>  {
+> >>>>> +       struct device_node *node =3D data;
+> >>>>> +       struct fwnode_handle *fw =3D of_node_to_fwnode(data);
+> >>>>> +       if (!fw || !chip->fwnode)
+> >>>>> +               pr_err("dipen patel: fw is null\n");
+> >>>>>
+> >>>>> -       pr_err("%s:%d\n", __func__, __LINE__);
+> >>>>> +       pr_err("dipen patel, %s:%d: %s, %s, %s, match?:%d, fwnode n=
+ame:%s\n",
+> >>>>> __func__, __LINE__, chip->label, node->name, node->full_name, (chip=
+->fwnode =3D=3D
+> >>>>> fw), fw->dev->init_name);
+> >>>>>         return chip->fwnode =3D=3D of_node_to_fwnode(data);
+> >>>>>  }
+> >>>>>
+> >>>>> The output of the printfs looks like below:
+> >>>>> [    3.955194] dipen patel: fw is null -----> this message started =
+appearing
+> >>>>> when I added !chip->fwnode test in the if condition line.
+> >>>>>
+> >>>>> [    3.958864] dipen patel, tegra_gpiochip_match:689: tegra234-gpio=
+, gpio,
+> >>>>> gpio@c2f0000, match?:0, fwnode name:(null)
+> >>>>>
+> >>>>> I conclude that chip->fwnode is empty. Any idea in which conditions=
+ that node
+> >>>>> would be empty?
+> >>>>
+> >>>> sorry for spamming, one last message before I sign off for the day..=
+..
+> >>>>
+> >>>> Seems, adding below in the tegra gpio driver resolved the issue I am=
+ facing, I
+> >>>> was able to verify your patch series.
+> >>>>
+> >>>> diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra1=
+86.c
+> >>>> index d87dd06db40d..a56c159d7136 100644
+> >>>> --- a/drivers/gpio/gpio-tegra186.c
+> >>>> +++ b/drivers/gpio/gpio-tegra186.c
+> >>>> @@ -989,6 +989,8 @@ static int tegra186_gpio_probe(struct platform_d=
+evice *pdev)
+> >>>>                 offset +=3D port->pins;
+> >>>>         }
+> >>>>
+> >>>> +       gpio->gpio.fwnode =3D of_node_to_fwnode(pdev->dev.of_node);
+> >>>> +
+> >>>>         return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio, gpio)=
+;
+> >>>>  }
+> >>>>
+> >>>> Now, few follow up questions:
+> >>>> 1) is this the correct way of setting the chip fwnode in the gpio dr=
+iver?
+> >>>
+> >>> You shouldn't need this. This driver already does:
+> >>>
+> >>>     gpio->gpio.parent =3D &pdev->dev;
+> >>>
+> >>> so fwnode should be assigned in gpiochip_add_data_with_key(). Can you
+> >>> check why this doesn't happen?
+> >>
+> >> I do not see anywhere chip->fwnode being set in the gpiochip_add_* fun=
+ction.
+> >> The only reference I see is here [1]. Does it mean I need to change my=
+ match
+> >> function from:
+> >>
+> >> chip->fwnode =3D=3D of_node_to_fwnode(data)
+> >>
+> >> to:
+> >> dev_fwnode(chip->parent) =3D=3D of_node_to_fwnode(data)?
+> >
+> > No! chip->fwnode is only used to let GPIOLIB know which fwnode to
+> > assign to the GPIO device (struct gpio_device).
+> What do you suggest I should use for the match as I do not see chip->fwno=
+de
+> being set?
+>
+
+This is most likely going to be a longer discussion. I suggest that in
+the meantime you just assign the gc->fwnode pointer explicitly from
+the platform device in the tegra GPIO driver and use it in the lookup
+function. Note that this is NOT wrong or a hack. It's just that most
+devices don't need to be looked up using gpio_device_find().
+
+Bart
+
+> >
+> > Bart
+> >
+> >>
+> >> [1]:
+> >> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
+e/drivers/gpio/gpiolib.c?h=3Dv6.6-rc1#n767
+> >>
+> >>>
+> >>> Bart
+> >>>
+> >>>> 2) Or should I use something else in hte matching function instead o=
+f fwnode so
+> >>>> to avoid adding above line in the gpio driver?
+> >>>>
+> >>>>>
+> >>>>>>>
+> >>>>>>>>
+> >>>>>>>> Bart
+> >>>>>>>
+> >>>>>>
+> >>>>>
+> >>>>
+> >>
+>
 
