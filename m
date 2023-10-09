@@ -1,335 +1,258 @@
-Return-Path: <linux-acpi+bounces-530-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-531-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5C77BD550
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 10:36:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 785697BD8E0
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 12:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F9B22814E0
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 08:36:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A44741C208E9
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 10:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C623321D
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 08:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B12C4691
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 10:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wAgETxl8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NEVW4h9A"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4324D13FF4
-	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 08:09:01 +0000 (UTC)
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2042.outbound.protection.outlook.com [40.107.94.42])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 092578F;
-	Mon,  9 Oct 2023 01:08:59 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A208D17D1
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 08:40:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 030FC9F;
+	Mon,  9 Oct 2023 01:40:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696840830; x=1728376830;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=/QZ5/EKlHn/SlnptrZeCdEO2is8/89UtABQhdwTJUu4=;
+  b=NEVW4h9AN7TfjCBd7dVIX3joJzEJdFxlW1Vmq1yEYKyKR2b86DukMioi
+   VfVUBzX68DJTii4YzgG3vJaw5Rf6BibukFwsRhQlRaQy/9z1DpXh701lg
+   rmDt8JgXwx8Fp2c7hhmXCcBMzt5q804avY0/6koIyWtLKHKbx6p2bARp5
+   tADB0yfVQeMeGM+81ef6nGtiO1j8OTXMDlZJjLWcp1R2Ls3aiasQt/wVM
+   bJjhIjaHUby+OQe7UYosWHWpUdIBh3gLQzqSm6LF/ZNEJ2StzplatYxzN
+   bbKnm1Y6wCl7e2ZHcb4ReeCj56obkRMCAz2IQGyxGS4+5t8cCkgHwi0O4
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10857"; a="386942861"
+X-IronPort-AV: E=Sophos;i="6.03,209,1694761200"; 
+   d="scan'208";a="386942861"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2023 01:40:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10857"; a="702813030"
+X-IronPort-AV: E=Sophos;i="6.03,209,1694761200"; 
+   d="scan'208";a="702813030"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orsmga003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 09 Oct 2023 01:40:28 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Mon, 9 Oct 2023 01:40:28 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Mon, 9 Oct 2023 01:40:28 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.168)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Mon, 9 Oct 2023 01:40:23 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kaVlp+n/lau14gRPlzJ0/YHnAKh5AhGNZdvjTlRDG+8Jsjo39ISZdr0zBcNB8cjx01Yx14hCmvtVZjCm1qep9TGgxUsdJHkkZJ1D9Eo1BVIFm5BrxJN4AmsViC83GepXILFj/KiSnaLa0aleMWHyO2b+4Nc5Vua6B13lN+o9eLeWPvu5DfqC455hU2iszSZhOV9XlZ/g0xwrDkNOjri1iRdTIq4TGZH3y7TM/5I0Vv1H2ASqrjfIjKEQaEvYSwUAHsSt2/KtJQMGsH585xkBwzJTR7DhdbS7OHI/STxors1qK+58bDiLyU7fGDmSSjrHllR8ppO12vmFNeD6/Q0AKw==
+ b=JzSfkU5WJ8c90qOLvjNy9B9HxFpK0elc/9/7+KgPTfmnAv6g+XrWQXvU6pthEoPBj9i8GV2wckfLxY1WmE6lEK+N+eZu92ZdrL3SR0+KTYtAeoZXZcWAekOpiEppSXOtA7gqn6sAH3k2iUpGWDmn9Wbjm3yDEGW2E7YnwAyH4/WG6Rmioh5OT66OKCoCnYzHnqMG0kAnERwtl0SsODsGWMYpdEbySYVyCENtKBALjbydsuh8CpGeOpZqHEXPLWwOkKXOSSJTwR7OgqnF8h8Rtenzpe885fn7mf6EMKaCH6wBPqCYRg5CoxrIRJk6QxXXpQzidnUaLtK0/sGRvEc4yg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5oggIWsAdXG9VzgB5g+W1DLhLomm0Oop1x+E9gvYhfQ=;
- b=K+6t2d+F7vu2hMyUGhQnnegONChfexiyhLGAwRkgFTQUkLvKQcfYtuJUbh90e7X/pvX98vlK71t7cPWI9H0l3vfMt+whYhk9v+aHCtqPLXnUGAX9OkH20XHluONUzMg9p446te/CmyNO5SIbfO+ZvHsL4JtwnZQQsUMzj5piu5+1OGW8XwwSD2TXvUQFYoELSG+Ld1RuA8VKd44CKHOuD+c4icUOe9cH0AsvIBN+FqOnwO+cq8g27yuB9IY9KjrQRiONeWcVH+Yo/8sSogh/tCQDnWS6u/OojwVaAME53oAiGURQmmP83HASWCx8SNdjClolRaF61Ki9V6Y+PIdp7g==
+ bh=lf0VypmJCElyGvmj49asOlIfnxxQMn/+qazmoRe7eAI=;
+ b=a6oKsR6Q2lEFmVd8s01DXbhcPhOMIWLyPNpjJ5khqGb8+Tx+/29lJzUITDteaon6My9Tuy7llhBguZ81ixVUERdpz8hTvyqo2BPNAqnQlpN82WuHjtGMj4LZFfJ6rErGCKwu4TsXRnNg3CcVfTUr7y4ddGsPkEaXodlGXYDH5qb1rYoemoISpze9zdkrMrn7Oik+SbsSSTtgFH91+XZhTGpdd3U+ZeCC0qfbN+FBRLO9UH1DtO3hyqY5lKkbDsgCaW7DrdosMCNI+5YadLc67f7P/KBPF+f2evzgqoVUK/Cw4LCNncy0BAEpN5eRtjDvk8hI+Ixww75azGA3ZZIcAQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5oggIWsAdXG9VzgB5g+W1DLhLomm0Oop1x+E9gvYhfQ=;
- b=wAgETxl8pHlvGM/d+0WR+768aztlguJjXK2tAUpuX4eFOADrGloJJz22Had3CDCaBN55yKqMciFnto8/rF4ie/MYCdQKca5T/zVD5r8KHIo0pd+uiCnVH7B5QQi+q9RVm0MSqGBhnYn6cZcYjRrMogq5VXgA/wWmbZmw3YMDpbE=
-Received: from DM4PR12MB6351.namprd12.prod.outlook.com (2603:10b6:8:a2::6) by
- DS7PR12MB6023.namprd12.prod.outlook.com (2603:10b6:8:85::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6863.37; Mon, 9 Oct 2023 08:08:56 +0000
-Received: from DM4PR12MB6351.namprd12.prod.outlook.com
- ([fe80::4ead:d69:799a:281e]) by DM4PR12MB6351.namprd12.prod.outlook.com
- ([fe80::4ead:d69:799a:281e%5]) with mapi id 15.20.6863.032; Mon, 9 Oct 2023
- 08:08:55 +0000
-From: "Meng, Li (Jassmine)" <Li.Meng@amd.com>
-To: "Karny, Wyes" <Wyes.Karny@amd.com>
-CC: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, "Huang, Ray"
-	<Ray.Huang@amd.com>, "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>, "Sharma, Deepak"
-	<Deepak.Sharma@amd.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-	"Limonciello, Mario" <Mario.Limonciello@amd.com>, "Huang, Shimmer"
-	<Shimmer.Huang@amd.com>, "Yuan, Perry" <Perry.Yuan@amd.com>, "Du, Xiaojian"
-	<Xiaojian.Du@amd.com>, Viresh Kumar <viresh.kumar@linaro.org>, Borislav
- Petkov <bp@alien8.de>
-Subject: RE: [PATCH V8 5/7] cpufreq: amd-pstate: Update amd-pstate preferred
- core ranking dynamically
-Thread-Topic: [PATCH V8 5/7] cpufreq: amd-pstate: Update amd-pstate preferred
- core ranking dynamically
-Thread-Index: AQHZ+ltr70TOZzLXYkmrkF9CcgKnLLBA/EkAgAAeYIA=
-Date: Mon, 9 Oct 2023 08:08:55 +0000
-Message-ID:
- <DM4PR12MB6351ABFFA54D5D3E243EE369F7CEA@DM4PR12MB6351.namprd12.prod.outlook.com>
-References: <20231009024932.2563622-1-li.meng@amd.com>
- <20231009024932.2563622-6-li.meng@amd.com>
- <20231009061621.vrpzz5aaqiv56grh@BLR-5CG13462PL.amd.com>
-In-Reply-To: <20231009061621.vrpzz5aaqiv56grh@BLR-5CG13462PL.amd.com>
-Accept-Language: en-US
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO6PR11MB5603.namprd11.prod.outlook.com (2603:10b6:5:35c::12)
+ by SA1PR11MB5899.namprd11.prod.outlook.com (2603:10b6:806:22a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.35; Mon, 9 Oct
+ 2023 08:40:21 +0000
+Received: from CO6PR11MB5603.namprd11.prod.outlook.com
+ ([fe80::dbe4:218c:1bdd:510]) by CO6PR11MB5603.namprd11.prod.outlook.com
+ ([fe80::dbe4:218c:1bdd:510%4]) with mapi id 15.20.6863.032; Mon, 9 Oct 2023
+ 08:40:20 +0000
+Message-ID: <f8ff3c4b-376a-4de0-8674-5789bcbe7aa9@intel.com>
+Date: Mon, 9 Oct 2023 10:40:13 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/6] ACPI: AC: Replace acpi_driver with platform_driver
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=01b1bde0-e55b-4574-8118-6c5d2363789f;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=0;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2023-10-09T08:07:46Z;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR12MB6351:EE_|DS7PR12MB6023:EE_
-x-ms-office365-filtering-correlation-id: d1df6638-26e2-44af-abdb-08dbc89efbb0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- GmIXdrr7W18cTRM68opPSEsKIcmn29+HT78WUIrnzdr9p+XIMK6AswYtt4CPnrECnt8TmmNiH5QWvvC2Ksmqq5g8sWRQZp+BOzWizJ4jtRj+XggsEOX1G6qH0wK7wczAh2wM2uhWaldKcRnieffC2nrfTQkJTN2vBlBHHM/CgHfWRt5lAlr+EW61b9yGGxV0hFcfcc5I/lYQWE/YPeEo7hWxsBMNpQUuEino7D2qKl+5M5nXYf1ZlhnnHIeO5GOzViMBMv6c5ML0p93kuY4CfxiO+qB0lbO+7xKfATPVCEfFKqvnsnkgdWdyjqUe+8e7qdvWKYUZ4krXNUQIKVEqcGHVVo9HTSKqdtE3whYe3Sm//iKlMMVGy9R5y4E053go17yrt/aJU+HAep2BKV5hkZo91e+DxI+BF20oxmQJ9K9S+aFMOQ110825uEJE0PriSNK2SF/oMeBaEP7VagLCoNxANRAMvqfFMmXPSz6XPEGn1S328c7fFiQNDze4oG1AwIw+XJauQtkAZ+ER7MFk/moWR8Nd1YAZZoc2Vbc3dr1exNSXqJC1gorS3f7ywLsT//mR959ZuTgjUPcbEvCH1z03zrLC416oXdnS7wGQhC82O5+OH8o6n+5R3d+S2e7/
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6351.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(39860400002)(376002)(136003)(346002)(230922051799003)(451199024)(186009)(64100799003)(1800799009)(122000001)(86362001)(38100700002)(38070700005)(33656002)(66899024)(55016003)(15650500001)(2906002)(9686003)(478600001)(52536014)(5660300002)(41300700001)(8936002)(4326008)(6862004)(8676002)(7696005)(71200400001)(53546011)(6506007)(83380400001)(66556008)(66476007)(6636002)(54906003)(76116006)(64756008)(66446008)(66946007)(316002)(26005);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?tqBm09NFTk9xUUGgGrCGtRg4Z0kocBZD/kpHeTOhAior9TdB4tvTg9edBKfo?=
- =?us-ascii?Q?UitrvD0HvXL9zTceYvNwdvG7adCt7PmvmttjJg2VBoGl5hvAiY4o//1p2cn4?=
- =?us-ascii?Q?uPi7zvlxCmb5t7xN5UVH0DeYwNiRx5s+gW/37Hmr177r/emDMTR6xdEtJQ+j?=
- =?us-ascii?Q?C/BijEzrsgChGMUPMg2wY3e8lHFXypsDb5tzKO5136fu+VSfe6I0xtpCpLQE?=
- =?us-ascii?Q?Hu5oJspd1Dz6x21PLxZAMvV1CZMVguxFNOtTbz9mG1Dvyi1c5ucQX02mSBjZ?=
- =?us-ascii?Q?LY7zlVQ8dwsXFo4/2UmHmEx/Mh7+ROT4bzE3IakBZJG7AZ/GolBqPUmXXHCY?=
- =?us-ascii?Q?pfJaZHjnWoJjFW5g2qdCh98m9mRTdA+ii59huOjCqZ9wcJ91wHmpZhjBTW0r?=
- =?us-ascii?Q?5irI0jo9kYTs8YgzedYuB9rI64Q/SdwmxP1/2u4fTaI7sRVrU4OJJ1Gkaqwz?=
- =?us-ascii?Q?J7i10vmqEV5rfltxkXFqhB1PLL/BYcwNlBN0W+DKIKuiGBGaHCheimmSwxlM?=
- =?us-ascii?Q?sqC8FzZ1wLXYqYAwHdGrzgKeCbe4H43wnnTwxNwAYzQboa5xSEk2gHeePBg9?=
- =?us-ascii?Q?z7zdvRvuZzYQb6Bv4Wt2RC2kl+LJzvYm4QTn7sjlnr1Y60est+4aeLnK8H2h?=
- =?us-ascii?Q?e0Zs/EaDoB4qbN/jiZRrRtLH/kT1/o2mlLfmjSxSfK61QT+Fj9AWyxl/N+/M?=
- =?us-ascii?Q?Hz9xbTT8mkpu3ja/Hh0QxHpM+sh0EI6xMcYmRHzlXzlxFpphph+aLUYP5RZ1?=
- =?us-ascii?Q?DXSE7AfKai57/629baOWA7eULrjRt8UXSfB/HEYCDwuRiUmWoC8RJxuEcrU7?=
- =?us-ascii?Q?UbtkvW0pDNWdToSE01ZX1HTzSr23HafuqNvXplTGEAZji39frUQGcGbdSNzJ?=
- =?us-ascii?Q?zS0qSaP8HSPSFcxeVLn5dUPDnOLJRcFD3QZwf3Y8fRB04qtn0WortTTYP87J?=
- =?us-ascii?Q?J4sr/8EHpaavfukFM8bEQtnKvyuXVJ1BpLJd59Vsob41g9X9B2P3MuXV6YMV?=
- =?us-ascii?Q?UiEQTXcvoP6dLpKehcrxFm6TMBk1zswOsdm+Q6l9J7ilUAbpToYW9e1tXPRC?=
- =?us-ascii?Q?cII8NLMaslX/pD+VRRtxhdiDCLtHqYmknEZ+QqzStaCuT3LMIzWwLBFhLOgg?=
- =?us-ascii?Q?erPtu5yIltt7djmKoXtGW2E9fNAqJxr0m5xlMuwT04mMX2DZEzJYZu3e7DKs?=
- =?us-ascii?Q?fi8jZ1vI/l1/eSedVqmAcDOb3rjYtcE7MPpAWrixX1T3BaWovDpAtYFj1idN?=
- =?us-ascii?Q?+Us0iB2VDiv6aWG8IvzfybYUDvGY2EhfJ7LBX4iDehjK+OhhlsCJLeWA0UOW?=
- =?us-ascii?Q?gOv6UDCx88/sFO6IPSWdqVUWx5nYIVVIagw6y2FWp2tNiQpW5NfQ5s8kb6yw?=
- =?us-ascii?Q?RKRXYsEkteEvqYrT+rDJH55WjP3qpcsbcA8/QkwhVzfsC8SvGbrx8VSKgpzG?=
- =?us-ascii?Q?Q1k1Zt7dCrvK6fk5Imj+wPrvnB5Abp5CMT7T195E0OAe3YDB/vgHcTakV5hR?=
- =?us-ascii?Q?9nOQgOeEuzrfM9sv6mdTsj7iry9seAWBlx60/xY4LZQthzQIkRRovdnslOae?=
- =?us-ascii?Q?50cJ7jilzRjvSKtd8y8=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Andy Shevchenko
+	<andriy.shevchenko@intel.com>
+CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<nvdimm@lists.linux.dev>, <rafael.j.wysocki@intel.com>, <lenb@kernel.org>,
+	<dan.j.williams@intel.com>, <vishal.l.verma@intel.com>, <ira.weiny@intel.com>
+References: <20231006173055.2938160-1-michal.wilczynski@intel.com>
+ <20231006173055.2938160-4-michal.wilczynski@intel.com>
+ <CAJZ5v0jKJ6iw6Q=uYTf0at+ESkdCF0oWaXRmj7P5VLw+QppKPw@mail.gmail.com>
+ <ZSEPGmCyhgSlMGRK@smile.fi.intel.com>
+ <CAJZ5v0gF0O_d1rjOtiNj5ryXv-PURv0NgiRWyQECZZFcaBEsPQ@mail.gmail.com>
+ <CAJZ5v0iDhOFDX=k7xsC_=2jjerWmrP+Na-9PFM=YGA0V-hH2xw@mail.gmail.com>
+From: "Wilczynski, Michal" <michal.wilczynski@intel.com>
+In-Reply-To: <CAJZ5v0iDhOFDX=k7xsC_=2jjerWmrP+Na-9PFM=YGA0V-hH2xw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR3P281CA0041.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:4a::17) To CO6PR11MB5603.namprd11.prod.outlook.com
+ (2603:10b6:5:35c::12)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO6PR11MB5603:EE_|SA1PR11MB5899:EE_
+X-MS-Office365-Filtering-Correlation-Id: 17b9c4bd-68aa-4c1d-cc92-08dbc8a35edf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: alpFWkBpORirrXA7OIx76VV8xJ5Y5ELHbK6erIQ3qZ7vd5LBXMoNMSslTV0P7FD+DK0t0KzQ0xg7V4UHGy6QJ9T4NNUzgdPqmtH6sebvxGv9pkYXQIKXx1Zj7y04RU6Pk1n1+h/TSEaOkb4nftcw0pj6dRGrJrKCuD55UORKwLWoUJPA9oMVF9PkthD1G2bk6t96VA8aYgws9MhvBhuOywFUT4trF0kF4ko2RRudUjGFQOSW//6S09UUeULU+44bpeNc/13T5s79wqLr+gIjrHI8NEUReDLDivC9Cfs6ZEhD+HAQFbHC0wwBKh8iT3MtvU/PooFoPaA4NjzF4QMA0zSyZSCRsIKpqUjc8qgkOAVHMOlazMUZM+MebfnjAZUdqN6iHFt1hEiRNVSW+RdDO3PLGk/JK8Eg5RVlm5lWARGjdyhoxinYyy1qYmrFLjhEZ9gDcgWIaztCnkg0iRiweZk/EGTvZ2eNki4w+1id5WuBtjW0AwH89MfCYlz5Ip2iow/OSz8if2MdH41Nfr2+VQKT8lwZh4KBEuGmlgY5t312GwFR3uqIq3yIThMv1EfANTILW+01XJ39hc376SDaPiq8OA02/y624LbWqcz3T2GhpP1N4uvx2ipuc0uDJD4ccSelxRK5wLB48mniebH6sw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(39860400002)(346002)(396003)(376002)(230922051799003)(1800799009)(451199024)(64100799003)(186009)(86362001)(31696002)(38100700002)(82960400001)(36756003)(31686004)(6486002)(2906002)(6512007)(478600001)(8936002)(5660300002)(4326008)(8676002)(41300700001)(6506007)(53546011)(83380400001)(6666004)(2616005)(107886003)(66556008)(66476007)(66946007)(110136005)(6636002)(316002)(26005)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YURRUGV1TE4zbGpwMWZHZVhqSGt4SkJXbGc2NW4xNmxWdmh0UTVHc0Q0Uk5X?=
+ =?utf-8?B?b2NSenJtVGhJZnNaM2VseEsrQnBRVG1Zc1RVRjZmMUR0Z3BqQmNRS1lpRitz?=
+ =?utf-8?B?NktPemplSWJsYzdjVmlWMytrWkZiQjhKYVRqNFo2aW9JeFpsYzFSb2JiazJs?=
+ =?utf-8?B?dk9icjBPMFdDbEJYcHVSYmxQeW5LNEpha1lNSDBDZi9OQ1FDMU9Wd2dsN0FF?=
+ =?utf-8?B?cHp2VEdQVGwvdEtUVDR4ZVBBa2xiYVU5MnRXcHpmWUpXS2IvMllOOHRBbkU0?=
+ =?utf-8?B?eHhEeU1jT1FOd1I1VUlGS2gwMjJPR1NDcGRMeVE1OUR5ajQ4SUV4dnZIRUNy?=
+ =?utf-8?B?WGpkbm9pNERnTVJLVitDaFBkMWdaSXpkZGpzelRlMlhOQWxpMTQxMmRxVS9W?=
+ =?utf-8?B?NXF4V2pvMk1FdkVOTytIaURYWE0xejdIWGhET25iK2JXdDY3dXRxMmhUaHFW?=
+ =?utf-8?B?R3hPUXJNc1kzakprS3dyUDJYQ1Vuem0xZ2lISS9jZE5NTE9PNE5tL1krNUtT?=
+ =?utf-8?B?VVo2QVBTVU54UlRkUDBLUFhvcUNndFJsZkJOcW8yb2IzUzM2a1hvVFc0dGk2?=
+ =?utf-8?B?TXBDL0NZRndhbUhUY0FYaVc2ZWtnTkJ6aVFCYWhXOHEvSVdTYVNEeHJkRFVh?=
+ =?utf-8?B?OVZIK1dmNkpzSzVGYXREMForQ1NIRFdnQVROOVBDeWtwV1lWTVBIcldXRkJW?=
+ =?utf-8?B?TW8xbHNRNDg5Q1Z6a2kxRC9xMjNCOWdYM0EvRHpRWlV2eWM5dEhjVjd4eHpp?=
+ =?utf-8?B?bVhiZHp0dGJwdWc0U0E3M3F4L05MNXA5QU1ORmNTYmdZcUFKdnB6OTcxelp0?=
+ =?utf-8?B?L2tUZ0ZhMWhFd3B4M3U5M2RIN25KTnJ3ZGV5ZE53QnhWUFZ1YlFxczhOampI?=
+ =?utf-8?B?dWRLUFVNN0VWaHcyVUR3Y3NCZVpWTEdiSFRWOXhDdGlueTBnZmtmOUNsbkRU?=
+ =?utf-8?B?d1REVTR6UEpLeGZaNnJmMitmNHhzdDE5dEo5RnNFY0lmODFYMmkrWnV0Zi96?=
+ =?utf-8?B?enNxaEJENXd3NHpFRVVHY0lJdWgxSi9JNlRKbjlaODRnVTM0VlNhM2NscE04?=
+ =?utf-8?B?MWN2d1NsODF6WWVhaUFjN2U3bERVYS9XZkY0SFl6SVFIT2RHWjJ6UEJ4M29a?=
+ =?utf-8?B?Tkx3VmJzdDVabE9qSnNnNGVVb0YvMzl3VUlFUW1lNElTQlFYZWVVNVEzYXFn?=
+ =?utf-8?B?WUZybFpKN2szWjVsOTBUTk9FKzFQUUJ2akRiNE5BVEVEaUprTnFmL3JxUUg0?=
+ =?utf-8?B?K0dRZHhHRCtLQU9oVUY5OTJ4VG1uNDlmNzIrczZDeTIzcFZvY3M1TVkraGVw?=
+ =?utf-8?B?alNMeCtpeklPTmJwMDNucXI2cUdNc094d3BMVVVNRGw3VFZIT25ZRzROZjha?=
+ =?utf-8?B?QkhMS0hrKzQ4R1RzZzlWaVpkaXRDamJuMm9uS3pEMjVPMEFtQkNJSmtrNWU3?=
+ =?utf-8?B?SjJpcmxybEE4VEZoQTRhaTRsb0d0SnY4dU95MlR6UUQvZzJmUktGNkh5Nzly?=
+ =?utf-8?B?RFFqR1lwTFNRR1g5SDB3RzlpWWdmYXQxWFFOL3NuZWErb29IU3dpdGE4TDBC?=
+ =?utf-8?B?WktIZW5KSXVBSmhuVEFhc1pQWTlNY29mNTlUZ2hHYXRjOFZUM1FIbGExbFpZ?=
+ =?utf-8?B?a0piMWZGeEVLTTVTbHJ4ejRDMG1LQnZDaktERzFvaVY4eGhWSlNCdVo5YnZn?=
+ =?utf-8?B?cElSM3ZCWWQ1N1Y4SFFNTlhaR1JuR1R5bHlBN3k4OVN2MXVNOGM3RzNxR1FS?=
+ =?utf-8?B?NlZDdlBpU29nZzIwVEZocGlLbjBDeG9hUERDakRXY3c4dmo5dnkwcVI2engr?=
+ =?utf-8?B?dDFKMkNYYll3N2xLZUV5QTJaR1RJa0hYUEpiQy9CMzFWQndyUzRVRjI0bEVQ?=
+ =?utf-8?B?eTFCUkV6dXNHL1lYYjBUZnR3Q1o5Yy8rZ3B0dFlQOFRwM0k1QjkzKzVMTmhl?=
+ =?utf-8?B?RjZZYkxocWxFMkJsZ1I5R1NMZUE4L1JoazUya3JjMW1RWmtRa1BVdGdqSm04?=
+ =?utf-8?B?WHRyUWUxVnNnK05rSGhKY1RCMUNvdUlpNFJhbzBaVG9ObFgzQVJ3YXRCeDI1?=
+ =?utf-8?B?c2xPa0F1bEpiOFh6OHZ0ak9MQy8rcGdCUnRYLzl1N01ZY3ZNZkUrdFV6N0N6?=
+ =?utf-8?B?bDV0L2dlamlSU3hTdTlmZUsyVTZjbXJqVGM2Z0xBanZobzRYa0VlYjhuYTBQ?=
+ =?utf-8?B?bmc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17b9c4bd-68aa-4c1d-cc92-08dbc8a35edf
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR11MB5603.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6351.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1df6638-26e2-44af-abdb-08dbc89efbb0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2023 08:08:55.6067
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2023 08:40:20.2634
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rNue0ZOej3bmcsAPglP2jdaa0WDiY/NJsjdWc7uh57u0DGG7dA7pr3BK+C3TOEAOzOEtLTmFzmgwCbjmvckftw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6023
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-	autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OaGoYYAE+xhOwO2QlgV437b1Uwg8MIJRxK7rbetPNHQJ1ZYKtKkzUulMtx3RVVhHxuYmQQTr9nTfNkmmeEvr/TKU6z7mgRUEL1APz9r6n4Q=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB5899
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-[AMD Official Use Only - General]
 
-Hi Wyes:
+Hi !
 
-> -----Original Message-----
-> From: Karny, Wyes <Wyes.Karny@amd.com>
-> Sent: Monday, October 9, 2023 2:19 PM
-> To: Meng, Li (Jassmine) <Li.Meng@amd.com>
-> Cc: Karny, Wyes <Wyes.Karny@amd.com>; Rafael J . Wysocki
-> <rafael.j.wysocki@intel.com>; Huang, Ray <Ray.Huang@amd.com>; linux-
-> pm@vger.kernel.org; linux-kernel@vger.kernel.org; x86@kernel.org; linux-
-> acpi@vger.kernel.org; Shuah Khan <skhan@linuxfoundation.org>; linux-
-> kselftest@vger.kernel.org; Fontenot, Nathan
-> <Nathan.Fontenot@amd.com>; Sharma, Deepak
-> <Deepak.Sharma@amd.com>; Deucher, Alexander
-> <Alexander.Deucher@amd.com>; Limonciello, Mario
-> <Mario.Limonciello@amd.com>; Huang, Shimmer
-> <Shimmer.Huang@amd.com>; Yuan, Perry <Perry.Yuan@amd.com>; Du,
-> Xiaojian <Xiaojian.Du@amd.com>; Viresh Kumar <viresh.kumar@linaro.org>;
-> Borislav Petkov <bp@alien8.de>
-> Subject: Re: [PATCH V8 5/7] cpufreq: amd-pstate: Update amd-pstate
-> preferred core ranking dynamically
->
-> Hi Meng Li,
->
-> On 09 Oct 10:49, Meng Li wrote:
-> > Preferred core rankings can be changed dynamically by the platform
-> > based on the workload and platform conditions and accounting for
-> > thermals and aging.
-> > When this occurs, cpu priority need to be set.
-> >
-> > Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> > Reviewed-by: Wyes Karny <wyes.karny@amd.com>
-> > Reviewed-by: Huang Rui <ray.huang@amd.com>
-> > Signed-off-by: Meng Li <li.meng@amd.com>
-> > ---
-> >  drivers/cpufreq/amd-pstate.c | 34
-> ++++++++++++++++++++++++++++++++--
-> >  include/linux/amd-pstate.h   |  6 ++++++
-> >  2 files changed, 38 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/cpufreq/amd-pstate.c
-> > b/drivers/cpufreq/amd-pstate.c index 6ac8939fce5a..d3369247c6c9 100644
-> > --- a/drivers/cpufreq/amd-pstate.c
-> > +++ b/drivers/cpufreq/amd-pstate.c
-> > @@ -313,6 +313,7 @@ static int pstate_init_perf(struct amd_cpudata
-> *cpudata)
-> >     WRITE_ONCE(cpudata->nominal_perf,
-> AMD_CPPC_NOMINAL_PERF(cap1));
-> >     WRITE_ONCE(cpudata->lowest_nonlinear_perf,
-> AMD_CPPC_LOWNONLIN_PERF(cap1));
-> >     WRITE_ONCE(cpudata->lowest_perf,
-> AMD_CPPC_LOWEST_PERF(cap1));
-> > +   WRITE_ONCE(cpudata->prefcore_ranking,
-> AMD_CPPC_HIGHEST_PERF(cap1));
-> >
-> >     return 0;
-> >  }
-> > @@ -334,6 +335,7 @@ static int cppc_init_perf(struct amd_cpudata
-> *cpudata)
-> >     WRITE_ONCE(cpudata->lowest_nonlinear_perf,
-> >                cppc_perf.lowest_nonlinear_perf);
-> >     WRITE_ONCE(cpudata->lowest_perf, cppc_perf.lowest_perf);
-> > +   WRITE_ONCE(cpudata->prefcore_ranking, cppc_perf.highest_perf);
-> >
-> >     if (cppc_state =3D=3D AMD_PSTATE_ACTIVE)
-> >             return 0;
-> > @@ -540,7 +542,7 @@ static void amd_pstate_adjust_perf(unsigned int
-> cpu,
-> >     if (target_perf < capacity)
-> >             des_perf =3D DIV_ROUND_UP(cap_perf * target_perf,
-> capacity);
-> >
-> > -   min_perf =3D READ_ONCE(cpudata->highest_perf);
-> > +   min_perf =3D READ_ONCE(cpudata->lowest_perf);
->
-> This seems to be a fix. So, this could be a separate patch.
-[Meng, Li (Jassmine)] Thanks, I will modify it.
->
-> >     if (_min_perf < capacity)
-> >             min_perf =3D DIV_ROUND_UP(cap_perf * _min_perf, capacity);
-> >
-> > @@ -760,6 +762,32 @@ static void amd_pstate_init_prefcore(struct
-> amd_cpudata *cpudata)
-> >     }
-> >  }
-> >
-> > +static void amd_pstate_update_highest_perf(unsigned int cpu) {
-> > +   struct cpufreq_policy *policy;
-> > +   struct amd_cpudata *cpudata;
-> > +   u32 prev_high =3D 0, cur_high =3D 0;
-> > +   int ret;
-> > +
-> > +   if ((!amd_pstate_prefcore) || (!cpudata->hw_prefcore))
-> > +           return;
-> > +
-> > +   ret =3D amd_pstate_get_highest_perf(cpu, &cur_high);
-> > +   if (ret)
-> > +           return;
-> > +
-> > +   policy =3D cpufreq_cpu_get(cpu);
-> > +   cpudata =3D policy->driver_data;
-> > +   prev_high =3D READ_ONCE(cpudata->prefcore_ranking);
-> > +
-> > +   if (prev_high !=3D cur_high) {
-> > +           WRITE_ONCE(cpudata->prefcore_ranking, cur_high);
-> > +           sched_set_itmt_core_prio(cur_high, cpu);
-> > +   }
-> > +
-> > +   cpufreq_cpu_put(policy);
-> > +}
-> > +
-> >  static int amd_pstate_cpu_init(struct cpufreq_policy *policy)  {
-> >     int min_freq, max_freq, nominal_freq, lowest_nonlinear_freq, ret;
-> @@
-> > -926,7 +954,7 @@ static ssize_t show_amd_pstate_highest_perf(struct
-> cpufreq_policy *policy,
-> >     u32 perf;
-> >     struct amd_cpudata *cpudata =3D policy->driver_data;
-> >
-> > -   perf =3D READ_ONCE(cpudata->highest_perf);
-> > +   perf =3D READ_ONCE(cpudata->prefcore_ranking);
->
-> I think this should show cpudata->highest_perf.
-[Meng, Li (Jassmine)] Thanks, I will modify it.
-Add a new function for prefcore_ranking.
->
-> Thanks,
-> Wyes
-> >
-> >     return sysfs_emit(buf, "%u\n", perf);  } @@ -1502,6 +1530,7 @@
-> > static struct cpufreq_driver amd_pstate_driver =3D {
-> >     .suspend        =3D amd_pstate_cpu_suspend,
-> >     .resume         =3D amd_pstate_cpu_resume,
-> >     .set_boost      =3D amd_pstate_set_boost,
-> > +   .update_highest_perf    =3D amd_pstate_update_highest_perf,
-> >     .name           =3D "amd-pstate",
-> >     .attr           =3D amd_pstate_attr,
-> >  };
-> > @@ -1516,6 +1545,7 @@ static struct cpufreq_driver
-> amd_pstate_epp_driver =3D {
-> >     .online         =3D amd_pstate_epp_cpu_online,
-> >     .suspend        =3D amd_pstate_epp_suspend,
-> >     .resume         =3D amd_pstate_epp_resume,
-> > +   .update_highest_perf    =3D amd_pstate_update_highest_perf,
-> >     .name           =3D "amd-pstate-epp",
-> >     .attr           =3D amd_pstate_epp_attr,
-> >  };
-> > diff --git a/include/linux/amd-pstate.h b/include/linux/amd-pstate.h
-> > index 87e140e9e6db..426822612373 100644
-> > --- a/include/linux/amd-pstate.h
-> > +++ b/include/linux/amd-pstate.h
-> > @@ -39,11 +39,16 @@ struct amd_aperf_mperf {
-> >   * @cppc_req_cached: cached performance request hints
-> >   * @highest_perf: the maximum performance an individual processor may
-> reach,
-> >   *           assuming ideal conditions
-> > + *           For platforms that do not support the preferred core
-> feature, the
-> > + *           highest_pef may be configured with 166 or 255, to avoid
-> max frequency
-> > + *           calculated wrongly. we take the fixed value as the
-> highest_perf.
-> >   * @nominal_perf: the maximum sustained performance level of the
-> processor,
-> >   *           assuming ideal operating conditions
-> >   * @lowest_nonlinear_perf: the lowest performance level at which
-> nonlinear power
-> >   *                    savings are achieved
-> >   * @lowest_perf: the absolute lowest performance level of the
-> > processor
-> > + * @prefcore_ranking: the preferred core ranking, the higher value
-> indicates a higher
-> > + *                   priority.
-> >   * @max_freq: the frequency that mapped to highest_perf
-> >   * @min_freq: the frequency that mapped to lowest_perf
-> >   * @nominal_freq: the frequency that mapped to nominal_perf @@ -73,6
-> > +78,7 @@ struct amd_cpudata {
-> >     u32     nominal_perf;
-> >     u32     lowest_nonlinear_perf;
-> >     u32     lowest_perf;
-> > +   u32     prefcore_ranking;
-> >
-> >     u32     max_freq;
-> >     u32     min_freq;
-> > --
-> > 2.34.1
-> >
+Thanks a lot for a review, to both of you ! :-)
+
+On 10/7/2023 12:43 PM, Rafael J. Wysocki wrote:
+> On Sat, Oct 7, 2023 at 12:41 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>> On Sat, Oct 7, 2023 at 9:56 AM Andy Shevchenko
+>> <andriy.shevchenko@intel.com> wrote:
+>>> On Fri, Oct 06, 2023 at 09:47:57PM +0200, Rafael J. Wysocki wrote:
+>>>> On Fri, Oct 6, 2023 at 8:33 PM Michal Wilczynski
+>>>> <michal.wilczynski@intel.com> wrote:
+>>> ...
+>>>
+>>>>>  struct acpi_ac {
+>>>>>         struct power_supply *charger;
+>>>>>         struct power_supply_desc charger_desc;
+>>>>> -       struct acpi_device *device;
+>>>>> +       struct device *dev;
+>>>> I'm not convinced about this change.
+>>>>
+>>>> If I'm not mistaken, you only use the dev pointer above to get the
+>>>> ACPI_COMPANION() of it, but the latter is already found in _probe(),
+>>>> so it can be stored in struct acpi_ac for later use and then the dev
+>>>> pointer in there will not be necessary any more.
+>>>>
+>>>> That will save you a bunch of ACPI_HANDLE() evaluations and there's
+>>>> nothing wrong with using ac->device->handle.  The patch will then
+>>>> become almost trivial AFAICS and if you really need to get from ac to
+>>>> the underlying platform device, a pointer to it can be added to struct
+>>>> acpi_ac without removing the ACPI device pointer from it.
+
+Yeah we could add platform device without removing acpi device, and
+yes that would introduce data duplication, like Andy noticed. And yes,
+maybe for this particular driver there is little impact (as struct device is not
+really used), but in my opinion we should adhere to some common coding
+pattern among all acpi drivers in order for the code to be easier to maintain
+and improve readability, also for any newcomer.
+
+>>> The idea behind is to eliminate data duplication.
+>> What data duplication exactly do you mean?
+>>
+>> struct acpi_device *device is replaced with struct device *dev which
+>> is the same size.  The latter is then used to obtain a struct
+>> acpi_device pointer.  Why is it better to do this than to store the
+>> struct acpi_device itself?
+> This should be "store the struct acpi_device pointer itself", sorry.
+
+Hi,
+So let me explain the reasoning here:
+
+1) I've had a pleasure to work with different drivers in ACPI directory. In my
+    opinion the best ones I've seen, were build around the concept of struct
+    device (e.g NFIT). It's a struct that's well understood in the kernel, and
+    it's easier to understand without having to read any ACPI specific code.
+    If I see something like ACPI_HANDLE(dev), I think 'ah-ha -  having a struct
+    device I can easily get struct acpi_device - they're connected'. And I think
+    using a standardized macro, instead of manually dereferencing pointers is
+    also much easier for ACPI newbs reading the code, as it hides a bit complexity
+    of getting acpi device from struct device. And to be honest I don't think there would
+    be any measurable performance change, as those code paths are far from
+    being considered 'hot paths'. So if we can get the code easier to understand
+    from a newcomer perspective, why not do it.
+   
+   
+2) I think it would be good to stick to the convention, and introduce some coding
+     pattern, for now some drivers store the struct device pointer, and other store
+     acpi device pointer . As I'm doing this change acpi device pointer become less
+     relevant, as we're using platform device. So to reflect that loss of relevance
+     we can choose to adhere to a pattern where we use it less and less, and the
+     winning approach would be to use 'struct device' by default everywhere we can
+     so maybe eventually we would be able to lose acpi_device altogether at some point,
+     as most of the usage is to retrieve acpi handle and execute some AML method.
+     So in my understanding acpi device is already obsolete at this point, if we can
+     manage to use it less and less, and eventually wipe it out then why not ;-)
+   
+
+Thanks again !
+
+Michał
+
+
 
