@@ -1,295 +1,257 @@
-Return-Path: <linux-acpi+bounces-527-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-528-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D547BD54A
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 10:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F106A7BD54B
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 10:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A176280D4F
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 08:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A464F280BFE
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 08:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41918C01
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 08:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B57533D5
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 08:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Xrv6PB9y"
+	dkim=pass (1024-bit key) header.d=natalenko.name header.i=@natalenko.name header.b="XJdCdDSJ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCC2BE65
-	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 06:49:10 +0000 (UTC)
-Received: from mail-vk1-xa2d.google.com (mail-vk1-xa2d.google.com [IPv6:2607:f8b0:4864:20::a2d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2442BA
-	for <linux-acpi@vger.kernel.org>; Sun,  8 Oct 2023 23:49:08 -0700 (PDT)
-Received: by mail-vk1-xa2d.google.com with SMTP id 71dfb90a1353d-49a99c43624so1460992e0c.2
-        for <linux-acpi@vger.kernel.org>; Sun, 08 Oct 2023 23:49:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1696834148; x=1697438948; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R8R3SEvkCEq8q6EEM7nd/KgJCNBdPF2LFQh/jnLNGpw=;
-        b=Xrv6PB9ymitTxL57PllfSNTci68Tu/yQTEiDEdwUFAfKouYhfY4JMUBkfmZKkaPY7Q
-         G/14J6e29ve8QF/1jt8Fh8KBwNR3SSIfrSikb35ucraoaFNsZKVHIyey+QJYfmRPUQ7v
-         +iejWkRcm700zJnNDpRg+GtOAOJaP0Ih9BOj05tvT7fZ89rcS+cdxltnuk94swA9xWSA
-         bgv0y89cLuuhGveXTMkY5uHcXYWJeCPGTN8tK2ZRXYpJ2TVDjei0NILja11ke6raeuUF
-         YJc2tBJbw3mcUSZQYnNitUphdgFstPGFHWi/7ylOvd9Nk4okQMtmfJ0QAuffoH/nM+F0
-         Ktlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696834148; x=1697438948;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=R8R3SEvkCEq8q6EEM7nd/KgJCNBdPF2LFQh/jnLNGpw=;
-        b=AJ5SLprTUS8qvSpW+jLup8swM/0lHJi9TZ+SR+L44ijDALF6rZRA3iZnLwyNFpYYKB
-         1Unjlklw0hM7aFWM03sou7J8jze2wm6NSm9NY/u+93HNdRHC+um83NpvJ4w/7yyn1PNn
-         us5W39W71P5Fcol53KNEPiS1aryTPQhfe4A5yR2L40UNqFfCYkyc7zvCa6LcqLFJDX9k
-         R7LNXozRtuuxuZy8r86vq8AVOzk21bCuCRB6Kzerq5xO74FzIBRxLzqE8X5bVDpANwFV
-         q45gYZsJ2/3DzYEKLgJnlKlHst1JuRU10kJipvj1UCF4Z5kVCCf/fGcMo+NAWPHNppIX
-         72oA==
-X-Gm-Message-State: AOJu0YxciH+KI8Awa7hkuNCfeAXG4PLk2hfsoA0S5Wr8wNxD6r5AMjDP
-	C4ZoXqwMFIfHWHBBxi+fWNtNulveMq4GOyQyhtL2rg==
-X-Google-Smtp-Source: AGHT+IGLJ/Kir7ut6JZrJcqUdoiq1uSu4D5pTXVqnjxvbtP52e+bm7khorXZzvc3cATfPWACjFwqc/2EjUYFIU5UStE=
-X-Received: by 2002:a1f:4e46:0:b0:4a1:58e0:a0db with SMTP id
- c67-20020a1f4e46000000b004a158e0a0dbmr988925vkb.11.1696834147762; Sun, 08 Oct
- 2023 23:49:07 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBECBC2C5
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 06:54:53 +0000 (UTC)
+Received: from vulcan.natalenko.name (vulcan.natalenko.name [104.207.131.136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF815C5;
+	Sun,  8 Oct 2023 23:54:51 -0700 (PDT)
+Received: from spock.localnet (unknown [94.142.239.106])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by vulcan.natalenko.name (Postfix) with ESMTPSA id DA4C6153512D;
+	Mon,  9 Oct 2023 08:54:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+	s=dkim-20170712; t=1696834483;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IlzDoOZYiWYPbtk2kBivQRxVSaQo+uOk4lrH8b1jmYc=;
+	b=XJdCdDSJLaJX82srrA7QyGsa9bfQ58KLF9OkPi3xEJi8kqJ9xtUg0teNQqbJSyRQLMktMp
+	xEBWhFfVSs7rft/AVAeAEDPZqxXjYUXYtNHeZni4qQMnY/aXiUhnNSIkb2XHsTjLbS2c/3
+	AKYMFs9JPpyBd3aK1wGWOmDukTVmH3g=
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+To: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Huang Rui <ray.huang@amd.com>, Meng Li <li.meng@amd.com>
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ linux-acpi@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-kselftest@vger.kernel.org, Nathan Fontenot <nathan.fontenot@amd.com>,
+ Deepak Sharma <deepak.sharma@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Shimmer Huang <shimmer.huang@amd.com>, Perry Yuan <Perry.Yuan@amd.com>,
+ Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Borislav Petkov <bp@alien8.de>, Meng Li <li.meng@amd.com>
+Subject: Re: [PATCH V8 0/7] amd-pstate preferred core
+Date: Mon, 09 Oct 2023 08:54:30 +0200
+Message-ID: <12301186.O9o76ZdvQC@natalenko.name>
+In-Reply-To: <20231009024932.2563622-1-li.meng@amd.com>
+References: <20231009024932.2563622-1-li.meng@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230905185309.131295-1-brgl@bgdev.pl> <20230905185309.131295-15-brgl@bgdev.pl>
- <CACRpkda9=VULj4Cy_sit-UpUQnVEbS-RJKAeULVCw8ZCRTq1sw@mail.gmail.com>
- <CAMRc=MdTk1B4MEh9C624Upm_EcaQgJd9OU-AGfU0G-DU1+qk6A@mail.gmail.com>
- <36b17290-c643-8d8e-e82b-49afa6b34fbb@nvidia.com> <3624e973-d09a-d211-c6d0-d0ffb8c20c4b@nvidia.com>
- <90b5f887-8af4-a80d-ea4d-cf2199752de4@nvidia.com> <0e7cae42-0b81-c038-8beb-49102feea8a6@nvidia.com>
- <CAMRc=McSG6qajxt6P3vWQEeT63Pk5tggD05pUoMD1zd5ApZxgA@mail.gmail.com>
- <647d3b52-1daf-175d-d5c2-45653dd2604c@nvidia.com> <CAMRc=Mc_+LxcbV+=KPwAh4DinJAAetHrK+W3jbNp4AZBzg63TA@mail.gmail.com>
- <b0f37601-39d6-618e-fa16-3b1c9e7c0e2c@nvidia.com>
-In-Reply-To: <b0f37601-39d6-618e-fa16-3b1c9e7c0e2c@nvidia.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 9 Oct 2023 08:48:56 +0200
-Message-ID: <CAMRc=MfSGY691-sFhx8GeP43g0xGk1JzNa=9q5oemQoHHAM-5Q@mail.gmail.com>
-Subject: Re: [RFT PATCH 14/21] hte: tegra194: don't access struct gpio_chip
-To: Dipen Patel <dipenp@nvidia.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, 
-	Russell King <linux@armlinux.org.uk>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Hans de Goede <hdegoede@redhat.com>, Mark Gross <markgross@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, timestamp@lists.linux.dev, 
-	linux-tegra@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-	autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="nextPart5718532.DvuYhMxLoT";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, Oct 5, 2023 at 9:43=E2=80=AFPM Dipen Patel <dipenp@nvidia.com> wrot=
-e:
->
-> On 10/5/23 12:05 PM, Bartosz Golaszewski wrote:
-> > On Thu, Oct 5, 2023 at 8:12=E2=80=AFPM Dipen Patel <dipenp@nvidia.com> =
-wrote:
-> >>
-> >> On 10/5/23 6:48 AM, Bartosz Golaszewski wrote:
-> >>> On Thu, Oct 5, 2023 at 1:52=E2=80=AFAM Dipen Patel <dipenp@nvidia.com=
-> wrote:
-> >>>>
-> >>>> On 10/4/23 3:54 PM, Dipen Patel wrote:
-> >>>>> On 10/4/23 1:33 PM, Dipen Patel wrote:
-> >>>>>> On 10/4/23 1:30 PM, Dipen Patel wrote:
-> >>>>>>> On 10/4/23 5:00 AM, Bartosz Golaszewski wrote:
-> >>>>>>>> On Thu, Sep 7, 2023 at 9:28=E2=80=AFAM Linus Walleij <linus.wall=
-eij@linaro.org> wrote:
-> >>>>>>>>>
-> >>>>>>>>> On Tue, Sep 5, 2023 at 8:53=E2=80=AFPM Bartosz Golaszewski <brg=
-l@bgdev.pl> wrote:
-> >>>>>>>>>
-> >>>>>>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >>>>>>>>>>
-> >>>>>>>>>> Using struct gpio_chip is not safe as it will disappear if the
-> >>>>>>>>>> underlying driver is unbound for any reason. Switch to using r=
-eference
-> >>>>>>>>>> counted struct gpio_device and its dedicated accessors.
-> >>>>>>>>>>
-> >>>>>>>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro=
-.org>
-> >>>>>>>>>
-> >>>>>>>>> As Andy points out add <linux/cleanup.h>, with that fixed:
-> >>>>>>>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> >>>>>>>>>
-> >>>>>>>>> I think this can be merged into the gpio tree after leaving som=
-e
-> >>>>>>>>> slack for the HTE maintainer to look at it, things look so much
-> >>>>>>>>> better after this.
-> >>>>>>>>>
-> >>>>>>>>> Yours,
-> >>>>>>>>> Linus Walleij
-> >>>>>>>>
-> >>>>>>>> Dipen,
-> >>>>>>>>
-> >>>>>>>> if you could give this patch a test and possibly ack it for me t=
-o take
-> >>>>>>>> it through the GPIO tree (or go the immutable tag from HTE route=
-) then
-> >>>>>>>> it would be great. This is the last user of gpiochip_find() tree=
-wide,
-> >>>>>>>> so with it we could remove it entirely for v6.7.
-> >>>>>>>
-> >>>>>>> Progress so far for the RFT...
-> >>>>>>>
-> >>>>>>> I tried applying the patch series on 6.6-rc1 and it did not apply=
- cleanly,
-> >>>>>>> some patches I needed to manually apply and correct. With all thi=
-s, it failed
-> >>>>>>> compilation at some spi/spi-bcm2835 driver. I disabled that and w=
-as able to
-> >>>>>>> compile. I thought I should let you know this part.
-> >>>>>>>
-> >>>>>>> Now, I tried to test the hte and it seems to fail finding the gpi=
-o device,
-> >>>>>>> roughly around this place [1]. I thought it would be your patch s=
-eries so
-> >>>>>>> tried to just use 6.6rc1 without your patches and it still failed=
- at the
-> >>>>>>> same place. I have to trace back now from which kernel version it=
- broke.
-> >>>>>>
-> >>>>>> [1].
-> >>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/pateldipen1984/lin=
-ux.git/tree/drivers/hte/hte-tegra194.c?h=3Dfor-next#n781
-> >>>>>>
-> >>>>>> of course with your patches it would fail for the gdev instead of =
-the chip.
-> >>>>>
-> >>>>> Small update:
-> >>>>>
-> >>>>> I put some debugging prints in the gpio match function in the hte-t=
-egra194.c as
-> >>>>> below:
-> >>>>>
-> >>>>> static int tegra_gpiochip_match(struct gpio_chip *chip, void *data)
-> >>>>>  {
-> >>>>> +       struct device_node *node =3D data;
-> >>>>> +       struct fwnode_handle *fw =3D of_node_to_fwnode(data);
-> >>>>> +       if (!fw || !chip->fwnode)
-> >>>>> +               pr_err("dipen patel: fw is null\n");
-> >>>>>
-> >>>>> -       pr_err("%s:%d\n", __func__, __LINE__);
-> >>>>> +       pr_err("dipen patel, %s:%d: %s, %s, %s, match?:%d, fwnode n=
-ame:%s\n",
-> >>>>> __func__, __LINE__, chip->label, node->name, node->full_name, (chip=
-->fwnode =3D=3D
-> >>>>> fw), fw->dev->init_name);
-> >>>>>         return chip->fwnode =3D=3D of_node_to_fwnode(data);
-> >>>>>  }
-> >>>>>
-> >>>>> The output of the printfs looks like below:
-> >>>>> [    3.955194] dipen patel: fw is null -----> this message started =
-appearing
-> >>>>> when I added !chip->fwnode test in the if condition line.
-> >>>>>
-> >>>>> [    3.958864] dipen patel, tegra_gpiochip_match:689: tegra234-gpio=
-, gpio,
-> >>>>> gpio@c2f0000, match?:0, fwnode name:(null)
-> >>>>>
-> >>>>> I conclude that chip->fwnode is empty. Any idea in which conditions=
- that node
-> >>>>> would be empty?
-> >>>>
-> >>>> sorry for spamming, one last message before I sign off for the day..=
-..
-> >>>>
-> >>>> Seems, adding below in the tegra gpio driver resolved the issue I am=
- facing, I
-> >>>> was able to verify your patch series.
-> >>>>
-> >>>> diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra1=
-86.c
-> >>>> index d87dd06db40d..a56c159d7136 100644
-> >>>> --- a/drivers/gpio/gpio-tegra186.c
-> >>>> +++ b/drivers/gpio/gpio-tegra186.c
-> >>>> @@ -989,6 +989,8 @@ static int tegra186_gpio_probe(struct platform_d=
-evice *pdev)
-> >>>>                 offset +=3D port->pins;
-> >>>>         }
-> >>>>
-> >>>> +       gpio->gpio.fwnode =3D of_node_to_fwnode(pdev->dev.of_node);
-> >>>> +
-> >>>>         return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio, gpio)=
-;
-> >>>>  }
-> >>>>
-> >>>> Now, few follow up questions:
-> >>>> 1) is this the correct way of setting the chip fwnode in the gpio dr=
-iver?
-> >>>
-> >>> You shouldn't need this. This driver already does:
-> >>>
-> >>>     gpio->gpio.parent =3D &pdev->dev;
-> >>>
-> >>> so fwnode should be assigned in gpiochip_add_data_with_key(). Can you
-> >>> check why this doesn't happen?
-> >>
-> >> I do not see anywhere chip->fwnode being set in the gpiochip_add_* fun=
-ction.
-> >> The only reference I see is here [1]. Does it mean I need to change my=
- match
-> >> function from:
-> >>
-> >> chip->fwnode =3D=3D of_node_to_fwnode(data)
-> >>
-> >> to:
-> >> dev_fwnode(chip->parent) =3D=3D of_node_to_fwnode(data)?
-> >
-> > No! chip->fwnode is only used to let GPIOLIB know which fwnode to
-> > assign to the GPIO device (struct gpio_device).
-> What do you suggest I should use for the match as I do not see chip->fwno=
-de
-> being set?
->
+--nextPart5718532.DvuYhMxLoT
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+Subject: Re: [PATCH V8 0/7] amd-pstate preferred core
+Date: Mon, 09 Oct 2023 08:54:30 +0200
+Message-ID: <12301186.O9o76ZdvQC@natalenko.name>
+In-Reply-To: <20231009024932.2563622-1-li.meng@amd.com>
+References: <20231009024932.2563622-1-li.meng@amd.com>
+MIME-Version: 1.0
 
-This is most likely going to be a longer discussion. I suggest that in
-the meantime you just assign the gc->fwnode pointer explicitly from
-the platform device in the tegra GPIO driver and use it in the lookup
-function. Note that this is NOT wrong or a hack. It's just that most
-devices don't need to be looked up using gpio_device_find().
+Hello.
 
-Bart
+On pond=C4=9Bl=C3=AD 9. =C5=99=C3=ADjna 2023 4:49:25 CEST Meng Li wrote:
+> Hi all:
+>=20
+> The core frequency is subjected to the process variation in semiconductor=
+s.
+> Not all cores are able to reach the maximum frequency respecting the
+> infrastructure limits. Consequently, AMD has redefined the concept of
+> maximum frequency of a part. This means that a fraction of cores can reach
+> maximum frequency. To find the best process scheduling policy for a given
+> scenario, OS needs to know the core ordering informed by the platform thr=
+ough
+> highest performance capability register of the CPPC interface.
+>=20
+> Earlier implementations of amd-pstate preferred core only support a static
+> core ranking and targeted performance. Now it has the ability to dynamica=
+lly
+> change the preferred core based on the workload and platform conditions a=
+nd
+> accounting for thermals and aging.
+>=20
+> Amd-pstate driver utilizes the functions and data structures provided by
+> the ITMT architecture to enable the scheduler to favor scheduling on cores
+> which can be get a higher frequency with lower voltage.
+> We call it amd-pstate preferred core.
+>=20
+> Here sched_set_itmt_core_prio() is called to set priorities and
+> sched_set_itmt_support() is called to enable ITMT feature.
+> Amd-pstate driver uses the highest performance value to indicate
+> the priority of CPU. The higher value has a higher priority.
+>=20
+> Amd-pstate driver will provide an initial core ordering at boot time.
+> It relies on the CPPC interface to communicate the core ranking to the
+> operating system and scheduler to make sure that OS is choosing the cores
+> with highest performance firstly for scheduling the process. When amd-pst=
+ate
+> driver receives a message with the highest performance change, it will
+> update the core ranking.
+>=20
+> Changes form V7->V8:
+> - all:
+> - - pick up Review-By flag added by Mario and Ray.
+> - cpufreq: amd-pstate:
+> - - use hw_prefcore embeds into cpudata structure.
+> - - delete preferred core init from cpu online/off.
 
-> >
-> > Bart
-> >
-> >>
-> >> [1]:
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
-e/drivers/gpio/gpiolib.c?h=3Dv6.6-rc1#n767
-> >>
-> >>>
-> >>> Bart
-> >>>
-> >>>> 2) Or should I use something else in hte matching function instead o=
-f fwnode so
-> >>>> to avoid adding above line in the gpio driver?
-> >>>>
-> >>>>>
-> >>>>>>>
-> >>>>>>>>
-> >>>>>>>> Bart
-> >>>>>>>
-> >>>>>>
-> >>>>>
-> >>>>
-> >>
->
+Could you please let me know if this change means a fix for the report I've=
+ sent previously? [1]
+
+Would you also be able to Cc me on the next iteration of this patchset?
+
+Thank you!
+
+[1] https://lore.kernel.org/lkml/5973628.lOV4Wx5bFT@natalenko.name/
+
+>=20
+> Changes form V6->V7:
+> - x86:
+> - - Modify kconfig about X86_AMD_PSTATE.
+> - cpufreq: amd-pstate:
+> - - modify incorrect comments about scheduler_work().
+> - - convert highest_perf data type.
+> - - modify preferred core init when cpu init and online.
+> - acpi: cppc:
+> - - modify link of CPPC highest performance.
+> - cpufreq:
+> - - modify link of CPPC highest performance changed.
+>=20
+> Changes form V5->V6:
+> - cpufreq: amd-pstate:
+> - - modify the wrong tag order.
+> - - modify warning about hw_prefcore sysfs attribute.
+> - - delete duplicate comments.
+> - - modify the variable name cppc_highest_perf to prefcore_ranking.
+> - - modify judgment conditions for setting highest_perf.
+> - - modify sysfs attribute for CPPC highest perf to pr_debug message.
+> - Documentation: amd-pstate:
+> - - modify warning: title underline too short.
+>=20
+> Changes form V4->V5:
+> - cpufreq: amd-pstate:
+> - - modify sysfs attribute for CPPC highest perf.
+> - - modify warning about comments
+> - - rebase linux-next
+> - cpufreq:=20
+> - - Moidfy warning about function declarations.
+> - Documentation: amd-pstate:
+> - - align with ``amd-pstat``
+>=20
+> Changes form V3->V4:
+> - Documentation: amd-pstate:
+> - - Modify inappropriate descriptions.
+>=20
+> Changes form V2->V3:
+> - x86:
+> - - Modify kconfig and description.
+> - cpufreq: amd-pstate:=20
+> - - Add Co-developed-by tag in commit message.
+> - cpufreq:
+> - - Modify commit message.
+> - Documentation: amd-pstate:
+> - - Modify inappropriate descriptions.
+>=20
+> Changes form V1->V2:
+> - acpi: cppc:
+> - - Add reference link.
+> - cpufreq:
+> - - Moidfy link error.
+> - cpufreq: amd-pstate:=20
+> - - Init the priorities of all online CPUs
+> - - Use a single variable to represent the status of preferred core.
+> - Documentation:
+> - - Default enabled preferred core.
+> - Documentation: amd-pstate:=20
+> - - Modify inappropriate descriptions.
+> - - Default enabled preferred core.
+> - - Use a single variable to represent the status of preferred core.
+>=20
+> Meng Li (7):
+>   x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for the expansion.
+>   acpi: cppc: Add get the highest performance cppc control
+>   cpufreq: amd-pstate: Enable amd-pstate preferred core supporting.
+>   cpufreq: Add a notification message that the highest perf has changed
+>   cpufreq: amd-pstate: Update amd-pstate preferred core ranking
+>     dynamically
+>   Documentation: amd-pstate: introduce amd-pstate preferred core
+>   Documentation: introduce amd-pstate preferrd core mode kernel command
+>     line options
+>=20
+>  .../admin-guide/kernel-parameters.txt         |   5 +
+>  Documentation/admin-guide/pm/amd-pstate.rst   |  59 +++++-
+>  arch/x86/Kconfig                              |   5 +-
+>  drivers/acpi/cppc_acpi.c                      |  13 ++
+>  drivers/acpi/processor_driver.c               |   6 +
+>  drivers/cpufreq/amd-pstate.c                  | 186 ++++++++++++++++--
+>  drivers/cpufreq/cpufreq.c                     |  13 ++
+>  include/acpi/cppc_acpi.h                      |   5 +
+>  include/linux/amd-pstate.h                    |  10 +
+>  include/linux/cpufreq.h                       |   5 +
+>  10 files changed, 285 insertions(+), 22 deletions(-)
+>=20
+>=20
+
+
+=2D-=20
+Oleksandr Natalenko (post-factum)
+--nextPart5718532.DvuYhMxLoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmUjo6YACgkQil/iNcg8
+M0uuThAA6/ITnXoAzL1TacyVc1hZJ1c+JEC4e9sKiyp107Sf1zeYgYhjpON4bMB0
+f3HJoG1rLdJAFhBRpoqoKVABAzogZmhKnLyJKIbdmcAYDMj2CSMLhBTEl6FJa8xd
+NVUVrBDpq4H0ikEpSsxCbaLVdfdQPON5ok9B6C4PR+Zi4mfIey9an2g4RAUjFaSY
+ZoSVYyr7JLqu0tQNLIaFbPLWZFetjIH0WF4Dobiv0pet8d5oz/XplR5WTwNDKYHT
+KMGI0TTRdZscFUeaYRFGE9GSiT8Q3yZUB+fQZEchORgVrJEcdw+eqhUrNWHSV8KE
+1C12lT8H6xNAoVOFTUWR8JVD7G4513y/rLCbsrqiVvAuac7zVzz0OcaeGz1BB5Q2
+3KGAxfuxEFw7ql9zi0Qr9a62z38/4oTQsIvMuWCVprVwgQE54pP96NOjSdaf6aKo
+N2h9U6MDOxO3qDvZ1WAfUfzQgyIOKkVUVZvt63DOeMNQBmlT2kRfF+ZBK6edZ3rH
+RkH8+/qzr/VWjfNhk2f6NtaSj3juXYXuDRzSsVds1s7c4ApJgfn+369t1/9yzv8g
+7BjHYs9fnyI2eYZgwvGlWMqVICUMkmyFSLl0VjuxAagryZY907wIHU1UmMqMqDOz
+KFpiBZu4mx6cb5nLhFyGKf5krp7RjvkMmVr2K2w1ZulmOLau0p4=
+=a/Od
+-----END PGP SIGNATURE-----
+
+--nextPart5718532.DvuYhMxLoT--
+
+
+
 
