@@ -1,133 +1,114 @@
-Return-Path: <linux-acpi+bounces-548-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-549-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B597BE9A2
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 20:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D3D7BE9A6
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 20:36:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62DF928126A
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 18:36:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7B5B2813FC
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 18:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE443B281
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 18:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9783B294
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 18:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="GObj8nm2"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A76A374F5
-	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 17:51:38 +0000 (UTC)
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BA7C91;
-	Mon,  9 Oct 2023 10:51:37 -0700 (PDT)
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-57c0775d4fcso601809eaf.0;
-        Mon, 09 Oct 2023 10:51:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696873896; x=1697478696;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xQBtcxUEBTteAt95r1bhShJsO6XhiQD8q2TBwfTAy8Y=;
-        b=a27bL+5hUMdadMar1HdOrLQgvXFxc0nCTQXNIwpudT3K+tiDJpqtk2OYpdKlRA7XsN
-         R5ZVLSYodOcYFp/Yx298TpKJvOV6znQ/yzXdDA3YSSthlGBf5v6VRZMbDaBewijbECSM
-         rmCFwGdj6yHuDsvs+lbojVfrRdTkEgBHuNl0J/6VFsBGG6VXW/cjmSht4QldvjCoY2Wp
-         WyxvEbEa5k712Brj5KkJvQ7eWmiGeGAu4FbNzfBdHviKxuz3rhen9UDgwJWlhwWAM20z
-         DjdL263SqP5Y/cjI87PIuChdyQeViSfTfWASjN4wLdd5CKryD7vgzJJurM6Iwh3srZgc
-         LDNA==
-X-Gm-Message-State: AOJu0YxQ+YcEF+pOO2UZMvRrZCFA7EonA7h+EMB31oMd8urCBA17I2m1
-	rcOb4FYzPBvvC1teZDb/a15COOcK8GLSYkKtNWw=
-X-Google-Smtp-Source: AGHT+IGUmF/LVHHrOgPdHxSjp/xIgIZDRO1132XTPnCUXW1CQVgDWzrxUZ1VxL2ND11CHY8bBqQ/04JupLN2zIbwRQs=
-X-Received: by 2002:a4a:de08:0:b0:56e:94ed:c098 with SMTP id
- y8-20020a4ade08000000b0056e94edc098mr14198631oot.0.1696873896270; Mon, 09 Oct
- 2023 10:51:36 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E50335880
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 18:03:16 +0000 (UTC)
+Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24D2994;
+	Mon,  9 Oct 2023 11:03:13 -0700 (PDT)
+Received: from [192.168.42.20] (p5b164245.dip0.t-ipconnect.de [91.22.66.69])
+	(Authenticated sender: wse@tuxedocomputers.com)
+	by mail.tuxedocomputers.com (Postfix) with ESMTPSA id 84E6E2FC004D;
+	Mon,  9 Oct 2023 20:03:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
+	s=default; t=1696874590;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DEQGnVx8hbvZWQkMlmilp4GaBGWuTv5fZMYoAWWF/1o=;
+	b=GObj8nm2EfjBN5NU7qSFcJ0XM3R9Xe0xwV2rZjNPM+AEZEiHdaeBgjU+mjIUm4CGoCeef4
+	XXCvGd071p3rxVA2VbkXgTKIgvicGUWgcK9jsZCYIdusXC4hO1vJmq7lRt+E5SBQfi52GR
+	EHgn1KLG94Q6EJk9dliKa0CatCAGpWo=
+Authentication-Results: mail.tuxedocomputers.com;
+	auth=pass smtp.auth=wse@tuxedocomputers.com smtp.mailfrom=wse@tuxedocomputers.com
+Message-ID: <b12aa1b4-6a68-4403-b9d5-46c179ca4d96@tuxedocomputers.com>
+Date: Mon, 9 Oct 2023 20:03:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231006173055.2938160-1-michal.wilczynski@intel.com>
- <20231006173055.2938160-4-michal.wilczynski@intel.com> <CAJZ5v0jKJ6iw6Q=uYTf0at+ESkdCF0oWaXRmj7P5VLw+QppKPw@mail.gmail.com>
- <ZSEPGmCyhgSlMGRK@smile.fi.intel.com> <CAJZ5v0gF0O_d1rjOtiNj5ryXv-PURv0NgiRWyQECZZFcaBEsPQ@mail.gmail.com>
- <CAJZ5v0iDhOFDX=k7xsC_=2jjerWmrP+Na-9PFM=YGA0V-hH2xw@mail.gmail.com>
- <f8ff3c4b-376a-4de0-8674-5789bcbe7aa9@intel.com> <CAJZ5v0i4in=oyhXKOQ1MeoRP5fAhHdEFgZZp98N0pF8hB6BtbQ@mail.gmail.com>
- <be180b68-d31f-4e7f-aeaa-071be74e2696@intel.com>
-In-Reply-To: <be180b68-d31f-4e7f-aeaa-071be74e2696@intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 9 Oct 2023 19:51:25 +0200
-Message-ID: <CAJZ5v0g=MkRwFQ88SQfRcvwnii5VnXujC7ZUaDsncodNkzdNdQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] ACPI: AC: Replace acpi_driver with platform_driver
-To: "Wilczynski, Michal" <michal.wilczynski@intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Andy Shevchenko <andriy.shevchenko@intel.com>, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	nvdimm@lists.linux.dev, rafael.j.wysocki@intel.com, lenb@kernel.org, 
-	dan.j.williams@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: resource: Do IRQ override on TongFang GMxXGxx
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20230929134010.25644-1-wse@tuxedocomputers.com>
+ <CAJZ5v0iH4PGaCdSuQ-4Pu7oXbzrw+zLxpEqMjtMgcNFextgfqw@mail.gmail.com>
+ <5d82fcac-a360-2d8b-8f6a-9b5cecb08ca2@tuxedocomputers.com>
+ <CAJZ5v0gO77ydCfs8m4w3Juwg2B85ZZ=zY-zQptB0UmKvxBnd3w@mail.gmail.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
+In-Reply-To: <CAJZ5v0gO77ydCfs8m4w3Juwg2B85ZZ=zY-zQptB0UmKvxBnd3w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 9, 2023 at 3:04=E2=80=AFPM Wilczynski, Michal
-<michal.wilczynski@intel.com> wrote:
+Hi
+
+Am 06.10.23 um 21:30 schrieb Rafael J. Wysocki:
+> On Wed, Oct 4, 2023 at 11:38 AM Werner Sembach <wse@tuxedocomputers.com> wrote:
+>> Hi,
+>>
+>> Am 03.10.23 um 20:39 schrieb Rafael J. Wysocki:
+>>> On Fri, Sep 29, 2023 at 3:40 PM Werner Sembach <wse@tuxedocomputers.com> wrote:
+>>>> The TongFang GMxXGxx/TUXEDO Stellaris/Pollaris Gen5 needs IRQ overriding
+>>>> for the keyboard to work. Adding an entry for this laptop to the
+>>>> override_table makes the internal keyboard functional again.
+>>> You said "again", so it used to work.  Do you know which commit broke it?
+>> Sorry that "again" is a bit misleading. I Copied it from here:
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7592b79ba4a9
+>>
+>> I actually only tested the direct predecessor of this Notebook on older kernels:
+>> https://bugzilla.kernel.org/show_bug.cgi?id=216698
+>>
+>> I suspected that it's the same issue and since the same fix worked I now even
+>> more believe so, but I actually never tested a kernel before the breaking change.
+>>
+>>>> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+>>>> Cc: <stable@vger.kernel.org>
+>>> What's the oldest kernel version you want this to be applied to?
+>> 5.15 because Ubuntu 22.04
+> So first of all Hans posted this:
 >
+> https://patchwork.kernel.org/project/linux-acpi/patch/20231006123304.32686-1-hdegoede@redhat.com/
 >
+> and I'm wondering if it addresses the problem for you too.
+Thanks for the link. That patch seems to do the same, but for a different board 
+name so it wont work for the GMxXGxx.
 >
-> On 10/9/2023 2:27 PM, Rafael J. Wysocki wrote:
-> > On Mon, Oct 9, 2023 at 10:40=E2=80=AFAM Wilczynski, Michal
-> > <michal.wilczynski@intel.com> wrote:
-> >>
+> If it doesn't, the patch will need to be rebased on top of the new
+> acpi-resource material in linux-next and retested.
 
-[cut]
+Sure, no problem, v2 incoming soon.
 
-> >> Yeah we could add platform device without removing acpi device, and
-> >> yes that would introduce data duplication, like Andy noticed.
-> > But he hasn't answered my question regarding what data duplication he
-> > meant, exactly.
-> >
-> > So what data duplication do you mean?
+Kind regards,
+
+Werner
+
 >
-> So what I meant was that many drivers would find it useful to have
-> a struct device embedded in their 'private structure', and in that case
-> there would be a duplication of platform_device and acpi_device as
-> both pointers would be needed.
-
-It all depends on how often each of them is going to be used in the
-given driver.
-
-This particular driver only needs a struct acpi_device pointer if I'm
-not mistaken.
-
-> Mind this if you only have struct device
-> it's easy to get acpi device, but it's not the case the other way around.
->
-> So for this driver it's just a matter of sticking to convention,
-
-There is no convention in this respect and there is always a tradeoff
-between using more memory and using more CPU time in computing in
-general, but none of them should be wasted just for the sake of
-following a convention.
-
-> for the others like it would be duplication.
-
-So I'm only talking about the driver modified by the patch at hand.
-
-> In my version of this patch we managed to avoid this duplication, thanks
-> to the contextual argument introduced before, but look at this patch:
-> https://github.com/mwilczy/linux-pm/commit/cc8ef52707341e67a12067d6ead991=
-d56ea017ca
->
-> Author of this patch had to introduce platform_device and acpi_device to =
-the struct ac, so
-> there was some duplication. That is the case for many drivers to come, so=
- I decided it's better
-> to change this and have a pattern with keeping only 'struct device'.
-
-Well, if the only thing you need from a struct device is its
-ACPI_COMPANION(), it is better to store a pointer to the latter.
+> Thanks!
 
