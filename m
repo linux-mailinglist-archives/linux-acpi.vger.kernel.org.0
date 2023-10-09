@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-521-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-522-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1144B7BD293
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 06:33:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605437BD35A
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 08:30:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 344FF1C204FA
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 04:33:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 161D5281351
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 06:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CC7B64A
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 04:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C113C5C9D
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Oct 2023 06:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="kwyuyb65"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="goJ+Ojk1"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D355696
-	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 02:51:05 +0000 (UTC)
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DE8EDB;
-	Sun,  8 Oct 2023 19:51:01 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67111B651
+	for <linux-acpi@vger.kernel.org>; Mon,  9 Oct 2023 06:19:32 +0000 (UTC)
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2070.outbound.protection.outlook.com [40.107.220.70])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CD93A4;
+	Sun,  8 Oct 2023 23:19:31 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kcO88dDW9r5MdvwdyHWHoyK0MaDM/3qMjsWBqOmVOVocqanFi+aNFFjthqWGmXIKLWFN8Oa/YjqAFoACkJuBCH0drN93mt347js2EXCKDn7Q0BbSOcgaFaMf5BxFnmzppA7aM7G0E6hUVeCfZjz8Xkyng6VDasKWsewhe4Dyzc7YV3AElI6U1vv30OiLRJoSLjmVmup2COfiKTQva3hGROkEKjxLhrs/SPcQSRHjCRNQyDoO1ULLKmnLGrsjA/NUrphGqAULEPpzRH3jlyiuOTUBIw1KbljSLl5LSjk7wASyUa4+WivAqMEf/7buQ3pVCH1APqZOLNtXg3y7lMF5ug==
+ b=H/AFXgcJ4NnYcg7QMcarPomnPSqxZ4FD5clZM0O0DKetgZ5FYkFsHXYFy/Llau6+bTwEPf33YobU+ZCDC4UBPr8wbVzfz+4nfEfUQAjhTvJJzjfrNKgDFAx9/DDqDy7JjjEc6Jayze4kfcaG8E0kuGVG99bgKbnrDrZA1xw8o8y5SooTVcdRWGhRuo7AA999snMryjrGPYLGhCiayg64UAXq2gMeWcfiO06M8wuMMjEwGJewkNg1XQ55MZeeeItz3zsJL+BgzrIZp6/0jkowQnxg6nEai2RQLaRWdDt90Vq0AASRGXCMPFNEdTBdsqLuu2okkmtYV+n2AhcdZH9wnw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hneoerr6yrWBbKcNzxSGDk6ANxsTr+qLx51Zn6rqXUA=;
- b=my+ubAc0TU2ZdDfSJu4irmAI+Sot4f2LCyGyXdGy9tbgsMNMtiywBryNBtScRNm/0he11/3uI/XeAc8HQQzyXuWcGuxjBce8u7C6hBQoOMuh2HpZ9ujkupC1ykg74QJcaNaHZ05iCmgaXqenGjDAbBbs5e3Xs5V4/+WiAD8g6DFv/IEeDRNxYAu/NTweO/jA+H04XI+nbxLHtwgdWGE1BtH9extyDnAPfQpE4thmsP3sK6agPbwO+VhTlE8ZF55ahu0bEyHR1gF2FTrvG6kP9JtheF/KJGMtvRsTDsu66+W8ldQdJZ6SFFUNvwYxfMQtONy+LGfjmT/7JmMajTQQ4Q==
+ bh=WqC8VuNGif3oYAT80V9LQKYxosisrbD1HTPgTXKK40Y=;
+ b=JwWXZcS5xvxnzo9qtj79tDmJpfbEmIq9vRmNMkT64h0d0wAAgJO8kuZTAUiy4iSpiRBmKJsbt0qSy5S/qQeKXS8rCgoo2BJl0RAG1UNY/L7XlZ/hKApe+jQrEnjPbsBHic8KJq30mMQwFL9tmlTAoxKbGcDtxSkQMbMLsxYs6h8Sae5i5ENvYKvdJTEJtjMt5yIPfOthCmlMt4wc9knurG8nifW9HLDN2d7r5fNdlAsGcgmGfJAjhiEV1BNF8+A8JoSJumA43RTFWuO2/6jQWdW17H+U2FuHY5e/QvBYGO3bdoacEu+4iHSy7dRE+j9e0kZWl8y+VEg7Pr1Z3tYjKg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hneoerr6yrWBbKcNzxSGDk6ANxsTr+qLx51Zn6rqXUA=;
- b=kwyuyb65zt32N5f2FeNSLr6hVmqYwQeqV1SuD97TStcGaMW9pOqpAidspU3RAu5tuG3hMl8BT3/cBeGtfDp6F5fm0vwJiHtTQlGe48PffqW+iDbIhLraxzdWJe/slhf8WoeZlkdY2wN1FHkkk5pM4LTe45glpQNt+fcar3214fc=
-Received: from MN2PR20CA0019.namprd20.prod.outlook.com (2603:10b6:208:e8::32)
- by CH3PR12MB8483.namprd12.prod.outlook.com (2603:10b6:610:15c::17) with
+ bh=WqC8VuNGif3oYAT80V9LQKYxosisrbD1HTPgTXKK40Y=;
+ b=goJ+Ojk1rHWhba/CJ30VHV2aFwcw9c3wfAoH2Zlf9RqHzLzhSH6EGlKWFmJQ+KPzknd50FWYgwXR6gNfhx+M199qrmHVQQF0kVL9KBvuwWAGxgSeoW5zM7UaXQ/8nUrF2ZNy5Cmaws75I0aj82AzTiPpYuQLDkuQ6SUNmkJ7TIQ=
+Received: from MW2PR16CA0018.namprd16.prod.outlook.com (2603:10b6:907::31) by
+ CH3PR12MB9028.namprd12.prod.outlook.com (2603:10b6:610:123::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.35; Mon, 9 Oct
- 2023 02:50:59 +0000
-Received: from BL6PEPF0001AB4E.namprd04.prod.outlook.com
- (2603:10b6:208:e8:cafe::fb) by MN2PR20CA0019.outlook.office365.com
- (2603:10b6:208:e8::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.37; Mon, 9 Oct
+ 2023 06:19:28 +0000
+Received: from CO1PEPF000044F0.namprd05.prod.outlook.com
+ (2603:10b6:907:0:cafe::31) by MW2PR16CA0018.outlook.office365.com
+ (2603:10b6:907::31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.36 via Frontend
- Transport; Mon, 9 Oct 2023 02:50:59 +0000
+ Transport; Mon, 9 Oct 2023 06:19:28 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -55,101 +55,102 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL6PEPF0001AB4E.mail.protection.outlook.com (10.167.242.72) with Microsoft
+ CO1PEPF000044F0.mail.protection.outlook.com (10.167.241.70) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6838.14 via Frontend Transport; Mon, 9 Oct 2023 02:50:59 +0000
-Received: from jasmine-meng.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ 15.20.6838.22 via Frontend Transport; Mon, 9 Oct 2023 06:19:28 +0000
+Received: from BLR-5CG13462PL.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Sun, 8 Oct
- 2023 21:50:54 -0500
-From: Meng Li <li.meng@amd.com>
-To: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Huang Rui
-	<ray.huang@amd.com>
-CC: <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<x86@kernel.org>, <linux-acpi@vger.kernel.org>, Shuah Khan
-	<skhan@linuxfoundation.org>, <linux-kselftest@vger.kernel.org>, "Nathan
- Fontenot" <nathan.fontenot@amd.com>, Deepak Sharma <deepak.sharma@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>, Mario Limonciello
-	<mario.limonciello@amd.com>, Shimmer Huang <shimmer.huang@amd.com>, "Perry
- Yuan" <Perry.Yuan@amd.com>, Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar
-	<viresh.kumar@linaro.org>, Borislav Petkov <bp@alien8.de>, Meng Li
-	<li.meng@amd.com>, Wyes Karny <wyes.karny@amd.com>
-Subject: [PATCH V8 7/7] Documentation: introduce amd-pstate preferrd core mode kernel command line options
-Date: Mon, 9 Oct 2023 10:49:32 +0800
-Message-ID: <20231009024932.2563622-8-li.meng@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 9 Oct
+ 2023 01:19:22 -0500
+From: Wyes Karny <wyes.karny@amd.com>
+To: Meng Li <li.meng@amd.com>
+CC: Wyes Karny <wyes.karny@amd.com>, "Rafael J . Wysocki"
+	<rafael.j.wysocki@intel.com>, Huang Rui <ray.huang@amd.com>,
+	<linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+	<linux-acpi@vger.kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+	<linux-kselftest@vger.kernel.org>, Nathan Fontenot <nathan.fontenot@amd.com>,
+	Deepak Sharma <deepak.sharma@amd.com>, Alex Deucher
+	<alexander.deucher@amd.com>, Mario Limonciello <mario.limonciello@amd.com>,
+	Shimmer Huang <shimmer.huang@amd.com>, Perry Yuan <Perry.Yuan@amd.com>,
+	Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+	Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH V8 1/7] x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for the expansion.
+Date: Mon, 9 Oct 2023 11:49:03 +0530
+Message-ID: <20231009060917.ayqb2akceu5jf5qa@BLR-5CG13462PL.amd.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231009024932.2563622-1-li.meng@amd.com>
-References: <20231009024932.2563622-1-li.meng@amd.com>
+In-Reply-To: <20231009024932.2563622-2-li.meng@amd.com>
+References: <20231009024932.2563622-1-li.meng@amd.com> <20231009024932.2563622-2-li.meng@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-Originating-IP: [10.180.168.240]
 X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4E:EE_|CH3PR12MB8483:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb4bae77-f719-4c60-2102-08dbc8729148
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F0:EE_|CH3PR12MB9028:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0a12029f-18d4-46b6-db46-08dbc88fb145
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	dPs+KhFcmpizslPneYl4k62+j3RQm0cPBB9/t5cTRrWHRlTpwbOnq6aY91cXXsYAcKT0sHpF++zrrDuhs2FZnB2Ct6QG33SIIX2sWY7IQV3+XVVSXqHK015/O+2pmu77s+rqtcMIkVFHj3vSyrUN6gt8rJSOLky7242Xhcc7tUvbexI+jRxwFwDE7H86Y/6sQX2HxYZ4iJ7/GIBjU4QYA4W4ujIFdgvR4r27HPbxmDoHCEgvPGRdfQgkdSmPL0LMp+4k9ml8sUQ1G+PrKYn1beANMIh5yvK5hqeNYcSnaZcDQc2+SbSt1pIShmK+VBkDTf5/Q04I6/xufCYjSAWBBdda8djtibIWqHA+WfGs7g0sQ0UuS6IU/9nwFfDg5SdSlAcKbpQZZsPInT0+y1pcOgw4YSzUIHigR3bdF3IP2OGSdm0rorPY2eeL4+DPiSybVvcL7rSK3D0newKXe46cSTAjBmY81ZnS7v35rrxjsYtGlra+bTMRYhvIolhkLYUR+PnLn4LayCgtHKD4QIOydFckWwyjJJyJ/79ytCcnspnUAyqPCvw3Qt+ZrVOp+xFIN+GnLYwvHO5Rd/GfP2ZldW4XqyDvoKbWGEoa2mxQfJDdBtapTOGgFUaVMEt4GEr1OfbkIBXe6OmH37WnA6j0+orR76Uxq6Y6EoFLnusAA9hto3ofwHZq2c2V0QLiMGZuRYRS4vYU7qSpkt4YsG7/L4YlEU5RmLFgo7ThE4e8/TbFnZnRf+//YQrr+wUx4Slh23EhCn7yPHofBQTaRjhDFX0sTRBu+KZXYSJQABDk+cYepjrsz0z4oj0e6Kx9B9LJ
+	JUlDFznctJ3dJpSUr24ZXHcuKDMWBgcgNjEabyz0jQ9nisld2ZMGn58A7KdWXv6Hc6XEEarurgP7iorD3S4KxZ9DoCwRCz9VVMhWtiZYi2AEUdj/tLkpmpVtAarLKyc7A86EwEm12MVztpgZqZFCobs3pj7WOslgPogu9ixXL3KyWFtdLT83N/P2mW+h6jajLdBWNs1MRpsSqRMpDkGF2WoahWN+Z6fElr437QourztE9rdN8tsWxW/nvOO0/rqxwCk+Ld0qxnmj7kvRLzUpXRz9lZmIZPRsomnvOkSwEPtrhQCoMTyhFaqN4P2+iwqtMwwZqTFHP8HJsqSv50a4/WZkpti1ALGKetFu0T4QjeZh+5h4UtzjyjFIF7uwPRGA5eT9trZsbgGP0iUwQKTkmHoNFTqWaskfgC0zB/hJmnRVIvCGujE1mQYQQZhrSx1PSp+T3atmLnlC8xYGuEbBhebp9GJ7OOU7lzn/eX67Tq9hhNSRvjkBcpJlJRfgY8ZYx5gOkXHLHAUyVR4CEmw0xAL9JR7bsW07uRcAEohnTSwvaIrLeTWCQPg7oM3e7WN4t6k9fp5FiwfcOJOKkIBM05i2wtPyqRDLyfttPxHBpIgAherFEn7PUoV238+OM+QPQQq09Q9xncg62fRvV2rfLPpAtrHjrBkD0cQr+xg4OPobdmJWRohM8h0kuTo+fnwvfA+oGDOVDR1yAij7j+Xm5kdD1WdkIYJfAIVvRhKG+/hWSlnZ5b+hKt3UIlxUHAsRApCzsmsTczwSPS/KB01xaQ==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(376002)(136003)(346002)(39860400002)(230922051799003)(82310400011)(451199024)(186009)(1800799009)(64100799003)(40470700004)(36840700001)(46966006)(336012)(1076003)(40460700003)(7696005)(478600001)(6666004)(26005)(86362001)(82740400003)(2906002)(356005)(16526019)(81166007)(36860700001)(316002)(110136005)(6636002)(83380400001)(2616005)(426003)(41300700001)(36756003)(8676002)(40480700001)(70586007)(70206006)(8936002)(47076005)(4326008)(5660300002)(54906003)(36900700001)(14943795004);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(39860400002)(136003)(396003)(346002)(230922051799003)(82310400011)(451199024)(186009)(1800799009)(64100799003)(36840700001)(46966006)(40470700004)(55016003)(7696005)(1076003)(478600001)(41300700001)(6666004)(336012)(426003)(47076005)(26005)(16526019)(83380400001)(4744005)(2906002)(44832011)(5660300002)(70586007)(70206006)(54906003)(6636002)(4326008)(6862004)(8676002)(8936002)(316002)(40460700003)(82740400003)(36860700001)(356005)(81166007)(40480700001)(86362001)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2023 02:50:59.1838
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2023 06:19:28.1518
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb4bae77-f719-4c60-2102-08dbc8729148
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a12029f-18d4-46b6-db46-08dbc88fb145
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB4E.namprd04.prod.outlook.com
+	CO1PEPF000044F0.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8483
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9028
 X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
 	autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-amd-pstate driver support enable/disable preferred core.
-Default enabled on platforms supporting amd-pstate preferred core.
-Disable amd-pstate preferred core with
-"amd_prefcore=disable" added to the kernel command line.
-
-Signed-off-by: Meng Li <li.meng@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+On 09 Oct 10:49, Meng Li wrote:
+> amd-pstate driver also uses SCHED_MC_PRIO, so decouple the requirement
+> of CPU_SUP_INTEL from the dependencies to allow compilation in kernels
+> without Intel CPU support.
+> 
+> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+> Reviewed-by: Huang Rui <ray.huang@amd.com>
 Reviewed-by: Wyes Karny <wyes.karny@amd.com>
-Reviewed-by: Huang Rui <ray.huang@amd.com>
----
- Documentation/admin-guide/kernel-parameters.txt | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 0a1731a0f0ef..e35b795aa8aa 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -363,6 +363,11 @@
- 			  selects a performance level in this range and appropriate
- 			  to the current workload.
- 
-+	amd_prefcore=
-+			[X86]
-+			disable
-+			  Disable amd-pstate preferred core.
-+
- 	amijoy.map=	[HW,JOY] Amiga joystick support
- 			Map of devices attached to JOY0DAT and JOY1DAT
- 			Format: <a>,<b>
--- 
-2.34.1
-
+> Signed-off-by: Meng Li <li.meng@amd.com>
+> ---
+>  arch/x86/Kconfig | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 66bfabae8814..a2e163acf623 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -1054,8 +1054,9 @@ config SCHED_MC
+>  
+>  config SCHED_MC_PRIO
+>  	bool "CPU core priorities scheduler support"
+> -	depends on SCHED_MC && CPU_SUP_INTEL
+> -	select X86_INTEL_PSTATE
+> +	depends on SCHED_MC
+> +	select X86_INTEL_PSTATE if CPU_SUP_INTEL
+> +	select X86_AMD_PSTATE if CPU_SUP_AMD && ACPI
+>  	select CPU_FREQ
+>  	default y
+>  	help
+> -- 
+> 2.34.1
+> 
 
