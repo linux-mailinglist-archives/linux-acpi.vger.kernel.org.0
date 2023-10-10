@@ -1,76 +1,67 @@
-Return-Path: <linux-acpi+bounces-567-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-568-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B707BFF68
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Oct 2023 16:36:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F487C01C0
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Oct 2023 18:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8595A1C20BC7
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Oct 2023 14:36:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8507280D99
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Oct 2023 16:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5EDE1428E
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Oct 2023 14:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBC12FE04
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Oct 2023 16:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K2mV4bgm"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="xMY47nv2"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4863124C60
-	for <linux-acpi@vger.kernel.org>; Tue, 10 Oct 2023 14:10:49 +0000 (UTC)
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E720FA9
-	for <linux-acpi@vger.kernel.org>; Tue, 10 Oct 2023 07:10:47 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-4054f790190so55724195e9.2
-        for <linux-acpi@vger.kernel.org>; Tue, 10 Oct 2023 07:10:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696947046; x=1697551846; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9e9qPLTB7aTb33k8UbCxTMNueWeOwcIlIcYVdpYZ3cI=;
-        b=K2mV4bgmYrkb4DoKGCtdrcwfgvvuoBIuPpP/yzkJjaJLvvUnK4C7EASaOOVphQbXd3
-         +jMDlRkhLhKHXHo3OcRzdwQouf5/M3nNrLa4Cj1JEvJ+1PazSLqpfumkH1KqQWCt4LLH
-         FMpkdSQtMJHKLmAz4EQByE+0OEW4wQCUoHGiuMSgKuhBgUiqRwnbCjhCk5tUarfccSzu
-         v3Wawpas2z3AcK1Rezfw1hbYAQ1G0v8Nqz56r33qnahq0KQIrMBk1B/+wVLH+k62lv6B
-         p5tLuvcY0tDmR15AcdxrxJzEenkIBXKloapkGnkc6hWL6BRCzWHFbCymTOamEKxVpJjB
-         SBIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696947046; x=1697551846;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9e9qPLTB7aTb33k8UbCxTMNueWeOwcIlIcYVdpYZ3cI=;
-        b=B8LHalDrDjwCxoBqp3ku8ZWlKy1n4LW8l3NXy6QhEipVStBzuQIzNp0Kg4h9FXA3OS
-         Sb3cgIDj4grRDe/SGXZ87zeRfcmh4u4khUlNPzpIDt6G+ThZxJPF6A6PsykmAQcbD7sq
-         96HXoHSkbbm44/QCaFztbccLplNtnSkRtszQlLtWzQakVDCJixwAVeaYOijmEU/uBWBF
-         FVDBDE9t62V5Nc/8nVbKIhgsu4k7bajhnHTDnfowbeLU9L54zmjm346TtWqUVTA9vT1L
-         DcrZjBZ9RN1AH8J0XodeeMDZl0y8fBd3yD7/2GafLtgJYsUcwheZJq8Osf66kDAYGork
-         xqww==
-X-Gm-Message-State: AOJu0Yxvm7sdwtJQmWatgBEvVETYDRUBkeOfqI1ipHsOsSazhyCBt1bo
-	VENImaj2YF5Bms5vdd1lgTROKQ==
-X-Google-Smtp-Source: AGHT+IF64TnPs4jd+aNGnYlkrrYVkn+PA9w557txyTj+b9RkiQXDiaHv59LSHcuO7lnyVAUeR6HMwA==
-X-Received: by 2002:a05:600c:1c10:b0:407:5adc:4497 with SMTP id j16-20020a05600c1c1000b004075adc4497mr785100wms.9.1696947046314;
-        Tue, 10 Oct 2023 07:10:46 -0700 (PDT)
-Received: from myrica ([2a02:c7c:7290:b00:fd32:2b31:6755:400c])
-        by smtp.gmail.com with ESMTPSA id p20-20020a1c7414000000b0040651505684sm14275256wmc.29.2023.10.10.07.10.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Oct 2023 07:10:45 -0700 (PDT)
-Date: Tue, 10 Oct 2023 15:10:52 +0100
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>, Hanjun Guo <guohanjun@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	D Scott Phillips <scott@os.amperecomputing.com>
-Subject: Re: [PATCH] ACPI: bus: Move acpi_arm_init() to the place of after
- acpi_ghes_init()
-Message-ID: <20231010141052.GB2902909@myrica>
-References: <20231010082123.4167603-1-guohanjun@huawei.com>
- <20231010085012.qkntexfsph333sif@bogus>
- <717a0880-1bc4-461f-bd42-c522d653b3ea@arm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EA52746C
+	for <linux-acpi@vger.kernel.org>; Tue, 10 Oct 2023 16:23:55 +0000 (UTC)
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AFA48E;
+	Tue, 10 Oct 2023 09:23:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=jGruK/JRvPoRUKxXzmvtLrVi9bVZIlNLf9fCJALkLIM=; b=xMY47nv2HdLOE6LlA7OyP2LWey
+	S0evHCbenZWvVgxR4F8rWt5Ho69xVrBJhByY+bW91oJApLmVwsrjGcr2uN7gma91izQR31ewJ7anp
+	v3BAQE2H7edUk4krSzTVY/sH+Z7ymu/VGenzVTiL5Elnk0Ap4xfmeT21t2JGtV3VmipsVKiuqT3j8
+	hXipYGeQSRxOHG2qphtUxXdHpvY6yOS2DnND9IvBkjxwo0AZUxc5ZE05SBTBiStPXltyPdy8jeQJL
+	By2re7ZSo/L7fV9iuSIAB9+n3fnRuJPnSBvKj9LF/Wj5fUgqDIA5uwTJu7lAT7uRoewWW/jjwBR8y
+	ANwieyqA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:37818)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1qqFWH-00028u-29;
+	Tue, 10 Oct 2023 17:23:41 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1qqFWF-0007dT-D4; Tue, 10 Oct 2023 17:23:39 +0100
+Date: Tue, 10 Oct 2023 17:23:39 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-acpi@vger.kernel.org, James Morse <james.morse@arm.com>,
+	loongarch@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Salil Mehta <salil.mehta@huawei.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>, linux-ia64@vger.kernel.org
+Subject: Re: [PATCH] cpu-hotplug: provide prototypes for arch CPU registration
+Message-ID: <ZSV6i4pnjQqvWuKp@shell.armlinux.org.uk>
+References: <E1qkoRr-0088Q8-Da@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -79,74 +70,99 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <717a0880-1bc4-461f-bd42-c522d653b3ea@arm.com>
+In-Reply-To: <E1qkoRr-0088Q8-Da@rmk-PC.armlinux.org.uk>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, Oct 10, 2023 at 10:30:56AM +0100, Robin Murphy wrote:
-> On 2023-10-10 09:50, Sudeep Holla wrote:
-> > On Tue, Oct 10, 2023 at 04:21:23PM +0800, Hanjun Guo wrote:
-> > > acpi_agdi_init() in acpi_arm_init() will register a SDEI event, so
-> > > it needs the SDEI subsystem to be initialized (which is done in
-> > > acpi_ghes_init()) before the AGDI driver probing.
-> > > 
-> > > In commit fcea0ccf4fd7 ("ACPI: bus: Consolidate all arm specific
-> > > initialisation into acpi_arm_init()"), the acpi_agdi_init() was
-> > > called before acpi_ghes_init() and it causes following failure:
-> > > 
-> > > | [    0.515864] sdei: Failed to create event 1073741825: -5
-> > > | [    0.515866] agdi agdi.0: Failed to register for SDEI event 1073741825
-> > > | [    0.515867] agdi: probe of agdi.0 failed with error -5
-> > > | ...
-> > > | [    0.516022] sdei: SDEIv1.0 (0x0) detected in firmware.
-> > > 
-> > > Fix it by moving acpi_arm_init() to the place of after
-> > > acpi_ghes_init().
-> > > 
-> > > Fixes: fcea0ccf4fd7 ("ACPI: bus: Consolidate all arm specific initialisation into acpi_arm_init()")
-> > > Reported-by: D Scott Phillips <scott@os.amperecomputing.com>
-> > > Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
-> > > ---
-> > > 
-> > > I did a test on a ARM server and I didn't see regressions, but
-> > > I don't have a AGDI table firmware, so Scott please give a
-> > > test to see if it fixes your issue.
-> > > 
-> > >   drivers/acpi/bus.c | 2 +-
-> > >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> > > index f41dda2d3493..a4aa53b7e2bb 100644
-> > > --- a/drivers/acpi/bus.c
-> > > +++ b/drivers/acpi/bus.c
-> > > @@ -1410,10 +1410,10 @@ static int __init acpi_init(void)
-> > >   	acpi_init_ffh();
-> > > 
-> > >   	pci_mmcfg_late_init();
-> > > -	acpi_arm_init();
-> > >   	acpi_viot_early_init();
-> > >   	acpi_hest_init();
-> > >   	acpi_ghes_init();
-> > > +	acpi_arm_init();
-> > 
-> > I am fine with the change, but just wanted to check with Robin/Jean-Philippe
-> > if there are any dependency on IORT initialisation for VIOT ? IIUC IORT was
-> > always initialised before VIOT but that changes after this change.
+Okay, I give up. 15 days, still no real progress. I don't see any point
+in submitting any further patches for the kernel outside of those areas
+that I maintain. Clearly no one cares enough to bother (a) properly
+reviewing the patch, (b) applying the patch that Thomas thought
+"makes tons of sense."
+
+If patches that "makes tons of sense" just get ignored, then what does
+the future of the kernel hold? Crap, that's what, utter crap.
+
+As I said, it seems that the Linux kernel process is basically totally
+broken and rotten. If a six line patch that "makes tons of sense" can't
+be applied, then there's basically no hope what so ever.
+
+FFS.
+
+On Mon, Sep 25, 2023 at 05:28:39PM +0100, Russell King (Oracle) wrote:
+> Provide common prototypes for arch_register_cpu() and
+> arch_unregister_cpu(). These are called by acpi_processor.c, with
+> weak versions, so the prototype for this is already set. It is
+> generally not necessary for function prototypes to be conditional
+> on preprocessor macros.
 > 
-> They should be independent, and typically we'd only expect to see one or the
-> other anyway (although strictly a VMM *could* provide virtio-iommu for some
-> devices while also emulating an SMMU for others if it really really wanted
-> to).
+> Some architectures (e.g. Loongarch) are missing the prototype for this,
+> and rather than add it to Loongarch's asm/cpu.h, lets do the job once
+> for everyone.
+> 
+> Since this covers everyone, remove the now unnecessary prototypes in
+> asm/cpu.h, and we also need to remove the 'static' from one of ia64's
+> arch_register_cpu() definitions.
+> 
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> ---
+> Changes since RFC v2:
+>  - drop ia64 changes, as ia64 has already been removed.
+> 
+>  arch/x86/include/asm/cpu.h  | 2 --
+>  arch/x86/kernel/topology.c  | 2 +-
+>  include/linux/cpu.h         | 2 ++
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/cpu.h b/arch/x86/include/asm/cpu.h
+> index 3a233ebff712..25050d953eee 100644
+> --- a/arch/x86/include/asm/cpu.h
+> +++ b/arch/x86/include/asm/cpu.h
+> @@ -28,8 +28,6 @@ struct x86_cpu {
+>  };
+>  
+>  #ifdef CONFIG_HOTPLUG_CPU
+> -extern int arch_register_cpu(int num);
+> -extern void arch_unregister_cpu(int);
+>  extern void soft_restart_cpu(void);
+>  #endif
+>  
+> diff --git a/arch/x86/kernel/topology.c b/arch/x86/kernel/topology.c
+> index ca004e2e4469..0bab03130033 100644
+> --- a/arch/x86/kernel/topology.c
+> +++ b/arch/x86/kernel/topology.c
+> @@ -54,7 +54,7 @@ void arch_unregister_cpu(int num)
+>  EXPORT_SYMBOL(arch_unregister_cpu);
+>  #else /* CONFIG_HOTPLUG_CPU */
+>  
+> -static int __init arch_register_cpu(int num)
+> +int __init arch_register_cpu(int num)
+>  {
+>  	return register_cpu(&per_cpu(cpu_devices, num).cpu, num);
+>  }
+> diff --git a/include/linux/cpu.h b/include/linux/cpu.h
+> index 0abd60a7987b..eb768a866fe3 100644
+> --- a/include/linux/cpu.h
+> +++ b/include/linux/cpu.h
+> @@ -80,6 +80,8 @@ extern __printf(4, 5)
+>  struct device *cpu_device_create(struct device *parent, void *drvdata,
+>  				 const struct attribute_group **groups,
+>  				 const char *fmt, ...);
+> +extern int arch_register_cpu(int cpu);
+> +extern void arch_unregister_cpu(int cpu);
+>  #ifdef CONFIG_HOTPLUG_CPU
+>  extern void unregister_cpu(struct cpu *cpu);
+>  extern ssize_t arch_cpu_probe(const char *, size_t);
+> -- 
+> 2.30.2
+> 
+> 
 
-IORT also describes the GIC ITS topology, so QEMU (and likely
-cloud-hypervisor) do present both tables to a guest. But I don't think the
-order matters in any case, and QEMU still boots fine with this patch.
-
-Thanks,
-Jean
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
