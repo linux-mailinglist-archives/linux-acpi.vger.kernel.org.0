@@ -1,234 +1,152 @@
-Return-Path: <linux-acpi+bounces-566-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-567-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1447BFBA0
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Oct 2023 14:37:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B707BFF68
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Oct 2023 16:36:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F14241C20B08
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Oct 2023 12:37:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8595A1C20BC7
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Oct 2023 14:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1871F170
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Oct 2023 12:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5EDE1428E
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Oct 2023 14:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lu09vo+2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K2mV4bgm"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E847A199BB
-	for <linux-acpi@vger.kernel.org>; Tue, 10 Oct 2023 12:26:11 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00260D7;
-	Tue, 10 Oct 2023 05:26:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696940767; x=1728476767;
-  h=date:from:to:cc:subject:message-id;
-  bh=NqDoUXNW/BIL8w/vzSmJnM9wCQ8mHwEWseVV5y1BKVU=;
-  b=Lu09vo+22febvO+A6WeEGUrUvHyCXp36kxR1rh7RsonQtp/mN/pmrp1F
-   wJcn6crOBsdKAy61eyA07Dw2YzkFTZtPdFchg2+ra4w65DLWj5R3wPEWe
-   7vd7emGl4Yb+2TwADdleM6CYgzT9qPBSyEz8ZHLv45W8qOCUUd3V7hX0j
-   rCcSnK6bM+DW60jwPV+5KOW7OE0FkFo7U/ZFCoV2ARhz7ue8EYrQ3pGcs
-   uTMgzTLHQ9yVCm5E2vZoRl69N2/+AmULPipJm0NhUUxacGmIvK28QXz61
-   y4tceufMszvZCFqZl722oZ6bKaMDjVXFA5gZMdxXROrvyhtNSTNKFFByb
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="5936231"
-X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
-   d="scan'208";a="5936231"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 05:26:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="1084757309"
-X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
-   d="scan'208";a="1084757309"
-Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
-  by fmsmga005.fm.intel.com with ESMTP; 10 Oct 2023 05:26:05 -0700
-Received: from kbuild by f64821696465 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qqBoI-0000Og-2g;
-	Tue, 10 Oct 2023 12:26:02 +0000
-Date: Tue, 10 Oct 2023 20:25:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- d256a6b9698c7bcb778fdc2fc91b2e65a3271cf9
-Message-ID: <202310102016.98qJzXyi-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4863124C60
+	for <linux-acpi@vger.kernel.org>; Tue, 10 Oct 2023 14:10:49 +0000 (UTC)
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E720FA9
+	for <linux-acpi@vger.kernel.org>; Tue, 10 Oct 2023 07:10:47 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-4054f790190so55724195e9.2
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Oct 2023 07:10:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1696947046; x=1697551846; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9e9qPLTB7aTb33k8UbCxTMNueWeOwcIlIcYVdpYZ3cI=;
+        b=K2mV4bgmYrkb4DoKGCtdrcwfgvvuoBIuPpP/yzkJjaJLvvUnK4C7EASaOOVphQbXd3
+         +jMDlRkhLhKHXHo3OcRzdwQouf5/M3nNrLa4Cj1JEvJ+1PazSLqpfumkH1KqQWCt4LLH
+         FMpkdSQtMJHKLmAz4EQByE+0OEW4wQCUoHGiuMSgKuhBgUiqRwnbCjhCk5tUarfccSzu
+         v3Wawpas2z3AcK1Rezfw1hbYAQ1G0v8Nqz56r33qnahq0KQIrMBk1B/+wVLH+k62lv6B
+         p5tLuvcY0tDmR15AcdxrxJzEenkIBXKloapkGnkc6hWL6BRCzWHFbCymTOamEKxVpJjB
+         SBIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696947046; x=1697551846;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9e9qPLTB7aTb33k8UbCxTMNueWeOwcIlIcYVdpYZ3cI=;
+        b=B8LHalDrDjwCxoBqp3ku8ZWlKy1n4LW8l3NXy6QhEipVStBzuQIzNp0Kg4h9FXA3OS
+         Sb3cgIDj4grRDe/SGXZ87zeRfcmh4u4khUlNPzpIDt6G+ThZxJPF6A6PsykmAQcbD7sq
+         96HXoHSkbbm44/QCaFztbccLplNtnSkRtszQlLtWzQakVDCJixwAVeaYOijmEU/uBWBF
+         FVDBDE9t62V5Nc/8nVbKIhgsu4k7bajhnHTDnfowbeLU9L54zmjm346TtWqUVTA9vT1L
+         DcrZjBZ9RN1AH8J0XodeeMDZl0y8fBd3yD7/2GafLtgJYsUcwheZJq8Osf66kDAYGork
+         xqww==
+X-Gm-Message-State: AOJu0Yxvm7sdwtJQmWatgBEvVETYDRUBkeOfqI1ipHsOsSazhyCBt1bo
+	VENImaj2YF5Bms5vdd1lgTROKQ==
+X-Google-Smtp-Source: AGHT+IF64TnPs4jd+aNGnYlkrrYVkn+PA9w557txyTj+b9RkiQXDiaHv59LSHcuO7lnyVAUeR6HMwA==
+X-Received: by 2002:a05:600c:1c10:b0:407:5adc:4497 with SMTP id j16-20020a05600c1c1000b004075adc4497mr785100wms.9.1696947046314;
+        Tue, 10 Oct 2023 07:10:46 -0700 (PDT)
+Received: from myrica ([2a02:c7c:7290:b00:fd32:2b31:6755:400c])
+        by smtp.gmail.com with ESMTPSA id p20-20020a1c7414000000b0040651505684sm14275256wmc.29.2023.10.10.07.10.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Oct 2023 07:10:45 -0700 (PDT)
+Date: Tue, 10 Oct 2023 15:10:52 +0100
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>, Hanjun Guo <guohanjun@huawei.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	D Scott Phillips <scott@os.amperecomputing.com>
+Subject: Re: [PATCH] ACPI: bus: Move acpi_arm_init() to the place of after
+ acpi_ghes_init()
+Message-ID: <20231010141052.GB2902909@myrica>
+References: <20231010082123.4167603-1-guohanjun@huawei.com>
+ <20231010085012.qkntexfsph333sif@bogus>
+ <717a0880-1bc4-461f-bd42-c522d653b3ea@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <717a0880-1bc4-461f-bd42-c522d653b3ea@arm.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: d256a6b9698c7bcb778fdc2fc91b2e65a3271cf9  Merge branch 'thermal-core-next' into bleeding-edge
+On Tue, Oct 10, 2023 at 10:30:56AM +0100, Robin Murphy wrote:
+> On 2023-10-10 09:50, Sudeep Holla wrote:
+> > On Tue, Oct 10, 2023 at 04:21:23PM +0800, Hanjun Guo wrote:
+> > > acpi_agdi_init() in acpi_arm_init() will register a SDEI event, so
+> > > it needs the SDEI subsystem to be initialized (which is done in
+> > > acpi_ghes_init()) before the AGDI driver probing.
+> > > 
+> > > In commit fcea0ccf4fd7 ("ACPI: bus: Consolidate all arm specific
+> > > initialisation into acpi_arm_init()"), the acpi_agdi_init() was
+> > > called before acpi_ghes_init() and it causes following failure:
+> > > 
+> > > | [    0.515864] sdei: Failed to create event 1073741825: -5
+> > > | [    0.515866] agdi agdi.0: Failed to register for SDEI event 1073741825
+> > > | [    0.515867] agdi: probe of agdi.0 failed with error -5
+> > > | ...
+> > > | [    0.516022] sdei: SDEIv1.0 (0x0) detected in firmware.
+> > > 
+> > > Fix it by moving acpi_arm_init() to the place of after
+> > > acpi_ghes_init().
+> > > 
+> > > Fixes: fcea0ccf4fd7 ("ACPI: bus: Consolidate all arm specific initialisation into acpi_arm_init()")
+> > > Reported-by: D Scott Phillips <scott@os.amperecomputing.com>
+> > > Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
+> > > ---
+> > > 
+> > > I did a test on a ARM server and I didn't see regressions, but
+> > > I don't have a AGDI table firmware, so Scott please give a
+> > > test to see if it fixes your issue.
+> > > 
+> > >   drivers/acpi/bus.c | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> > > index f41dda2d3493..a4aa53b7e2bb 100644
+> > > --- a/drivers/acpi/bus.c
+> > > +++ b/drivers/acpi/bus.c
+> > > @@ -1410,10 +1410,10 @@ static int __init acpi_init(void)
+> > >   	acpi_init_ffh();
+> > > 
+> > >   	pci_mmcfg_late_init();
+> > > -	acpi_arm_init();
+> > >   	acpi_viot_early_init();
+> > >   	acpi_hest_init();
+> > >   	acpi_ghes_init();
+> > > +	acpi_arm_init();
+> > 
+> > I am fine with the change, but just wanted to check with Robin/Jean-Philippe
+> > if there are any dependency on IORT initialisation for VIOT ? IIUC IORT was
+> > always initialised before VIOT but that changes after this change.
+> 
+> They should be independent, and typically we'd only expect to see one or the
+> other anyway (although strictly a VMM *could* provide virtio-iommu for some
+> devices while also emulating an SMMU for others if it really really wanted
+> to).
 
-elapsed time: 1006m
+IORT also describes the GIC ITS topology, so QEMU (and likely
+cloud-hypervisor) do present both tables to a guest. But I don't think the
+order matters in any case, and QEMU still boots fine with this patch.
 
-configs tested: 145
-configs skipped: 2
+Thanks,
+Jean
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20231010   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                          collie_defconfig   clang
-arm                                 defconfig   gcc  
-arm                          ep93xx_defconfig   clang
-arm                          ixp4xx_defconfig   clang
-arm                   randconfig-001-20231010   gcc  
-arm                           sama5_defconfig   gcc  
-arm                           sunxi_defconfig   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20231010   gcc  
-i386         buildonly-randconfig-002-20231010   gcc  
-i386         buildonly-randconfig-003-20231010   gcc  
-i386         buildonly-randconfig-004-20231010   gcc  
-i386         buildonly-randconfig-005-20231010   gcc  
-i386         buildonly-randconfig-006-20231010   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231010   gcc  
-i386                  randconfig-002-20231010   gcc  
-i386                  randconfig-003-20231010   gcc  
-i386                  randconfig-004-20231010   gcc  
-i386                  randconfig-005-20231010   gcc  
-i386                  randconfig-006-20231010   gcc  
-i386                  randconfig-011-20231010   gcc  
-i386                  randconfig-012-20231010   gcc  
-i386                  randconfig-013-20231010   gcc  
-i386                  randconfig-014-20231010   gcc  
-i386                  randconfig-015-20231010   gcc  
-i386                  randconfig-016-20231010   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231010   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                            mac_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-openrisc                       virt_defconfig   gcc  
-parisc                           alldefconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc                    amigaone_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20231010   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20231010   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                           se7705_defconfig   gcc  
-sh                           se7751_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                 randconfig-001-20231010   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20231010   gcc  
-x86_64       buildonly-randconfig-002-20231010   gcc  
-x86_64       buildonly-randconfig-003-20231010   gcc  
-x86_64       buildonly-randconfig-004-20231010   gcc  
-x86_64       buildonly-randconfig-005-20231010   gcc  
-x86_64       buildonly-randconfig-006-20231010   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20231010   gcc  
-x86_64                randconfig-002-20231010   gcc  
-x86_64                randconfig-003-20231010   gcc  
-x86_64                randconfig-004-20231010   gcc  
-x86_64                randconfig-005-20231010   gcc  
-x86_64                randconfig-006-20231010   gcc  
-x86_64                randconfig-011-20231010   gcc  
-x86_64                randconfig-012-20231010   gcc  
-x86_64                randconfig-013-20231010   gcc  
-x86_64                randconfig-014-20231010   gcc  
-x86_64                randconfig-015-20231010   gcc  
-x86_64                randconfig-016-20231010   gcc  
-x86_64                randconfig-071-20231010   gcc  
-x86_64                randconfig-072-20231010   gcc  
-x86_64                randconfig-073-20231010   gcc  
-x86_64                randconfig-074-20231010   gcc  
-x86_64                randconfig-075-20231010   gcc  
-x86_64                randconfig-076-20231010   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
