@@ -1,149 +1,102 @@
-Return-Path: <linux-acpi+bounces-594-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-595-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0F07C5944
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 18:35:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F37647C5945
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 18:35:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3312B282256
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 16:35:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2906B1C20BBF
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 16:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC2333F9
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 16:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="afcLE1sE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C06200B6
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 16:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA18208A5
-	for <linux-acpi@vger.kernel.org>; Wed, 11 Oct 2023 15:30:00 +0000 (UTC)
-Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19C4192;
-	Wed, 11 Oct 2023 08:29:59 -0700 (PDT)
-Received: by mail-ua1-x92e.google.com with SMTP id a1e0cc1a2514c-7b102a6565eso2443691241.0;
-        Wed, 11 Oct 2023 08:29:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697038198; x=1697642998; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xv1kYdGHJEu/8xSIHscJQ1hEvpIhACaiAxShcFHXWMo=;
-        b=afcLE1sElITcNKLCuwsYA1jSxA3D2bvlmI4VVckKjW/SaW9pA6EgH7Zw11VmE3sHqz
-         w7OUM7sP/XJ5nT6fyTiVsHKfG4cnSJNSThhsKfUovogYfRrXxYp14pgutuSBHVra84LH
-         TpeLQzPEcnO9MER8AtH9utQSzKQcdPrsVB25NNAWQCPb2czhoxeZV5NNSJyizNl4KX6t
-         wQ4zYePj5AwuNTPLEc5hlNCN84+M3F0uT/A/w2G5FstLUZsDuRH5I1JV65WD57MMckzF
-         ecC2/SQlcKymgP6/nsORTioZRxs597rlqk9KWhqsAQS2MB/gNWxEfZ6FuA7VTtxeEg6e
-         TFbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697038198; x=1697642998;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Xv1kYdGHJEu/8xSIHscJQ1hEvpIhACaiAxShcFHXWMo=;
-        b=eIDQlcrQWwEnbKZpXucUrC+q3NRpgAhAxguql2FgiMFxd7JjhK/iWWrYNLn4vtypsk
-         m4jc/Rj64RSMyMKZTn1R6uFCo9o3IuGaK09tk1iQcQ/SsWw57jZ3a/AbSqk9/enhv39U
-         YswicoeM1iSvL0Wphyw/q4x35erdxZ5vBUpO+nQQerCezMgQCoVsUKBQM82y98n/FYeo
-         kc8jSjFFpStII+sko1H+KwhGdMFuoQnfGneqNw7Ic4eW89/GyYqi5VZtDxgqe4i/16T6
-         QfpSRF0mGY9yrjZfHWb1/1IrOtEqibmC/K3ZttN3HGdsqEtsyxkLzMkZ6tu+WEEWrOWD
-         PlsQ==
-X-Gm-Message-State: AOJu0YxR7OTNaTlMlJc4eFWsBl9xWEsSGp6Bdz9VncitcpvJK5QEXgB9
-	G1go6AZ2FkJ9YQUjK6YqeJDUiXmBAio=
-X-Google-Smtp-Source: AGHT+IFxGuvSUutocYGjgF3CNBIaceI4qqpXL7t01NoCI6VBWU0eV75WwdEkW3KiYkgZpm/Y/a1JFQ==
-X-Received: by 2002:a05:6102:4429:b0:457:6602:497b with SMTP id df41-20020a056102442900b004576602497bmr13079198vsb.0.1697038198089;
-        Wed, 11 Oct 2023 08:29:58 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h18-20020a67cb92000000b0045765b2ec50sm14338vsl.20.2023.10.11.08.29.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Oct 2023 08:29:57 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Wed, 11 Oct 2023 08:29:55 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: "xingtong.wu" <xingtong_wu@163.com>
-Cc: linux-watchdog@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Wu, Xing Tong" <XingTong.Wu@siemens.com>, jan.kiszka@siemens.com,
-	tobias.schaffner@siemens.com, cedric.hombourger@siemens.com,
-	gerd.haeussler.ext@siemens.com
-Subject: Re: wdat_wdt: Problem with WDAT using shared registers
-Message-ID: <df8d53db-0056-434d-953b-991025e6cd34@roeck-us.net>
-References: <bef5a084-9a6c-daaf-dad9-89cb5fc32bf9@163.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E69019BDF
+	for <linux-acpi@vger.kernel.org>; Wed, 11 Oct 2023 15:55:31 +0000 (UTC)
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22047A4;
+	Wed, 11 Oct 2023 08:55:29 -0700 (PDT)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
+ id 5290f4194c2fe648; Wed, 11 Oct 2023 17:55:28 +0200
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id B4602666775;
+	Wed, 11 Oct 2023 17:55:27 +0200 (CEST)
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux PM <linux-pm@vger.kernel.org>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>, Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>
+Subject: [PATCH v1] thermal: trip: Drop lockdep assertion from thermal_zone_trip_id()
+Date: Wed, 11 Oct 2023 17:55:27 +0200
+Message-ID: <12311623.O9o76ZdvQC@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bef5a084-9a6c-daaf-dad9-89cb5fc32bf9@163.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrheekgdelvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffffffkefgheehffelteeiveeffeevhfelteejvddvieejjeelvdeiheeuveeuffenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeekpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghlrdhlvgiitggrnhhosehlihhnrghrohdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
+ pehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=8 Fuz1=8 Fuz2=8
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Aug 28, 2043 at 01:17:41AM +0800, xingtong.wu wrote:
-> Hi
-> 
-> I want to use the wdat_wdt to support a watchdog of SIONCT (a multi-function device
-> (mfd)), and I register instructions for wdat_wdt in BIOS, it need registers 0x2e-0x2f
-> to access the watchdog, then register 0x2e-0x2f will be forever occupied by platform
-> device wdat_wdt, see the code: https://elixir.bootlin.com/linux/v6.6-rc5/source/drivers/acpi/acpi_watchdog.c#L180
-> 
-> but the 0x2e-0x2f are special, they are used for a multi-function device --SIONCT, the
-> device have many pins can not only support features for watchdog, but also other
-> features like leds, fans, temperature monitor... there are drivers for these pins, e.g.
-> gpio-f7188x, nct6775, w83627hf... these driver use the shared register 0x2e-0x2f. 
-> 
-> So the issue happened, the wdat_wdt occupied the shared register 0x2e-0x2f, then
-> the other driver can not load.
-> 
-> Here is the msg I collected from my device:
-> 
-> root@ipc-SIMATIC-IPC-BX-21A:/home/ipc# cat /proc/ioports 
-> 0000-0cf7 : PCI Bus 0000:00
->   0000-001f : dma1
->   0020-0021 : pic1
->   002e-002e : wdat_wdt
->   002f-002f : wdat_wdt
-> 
-> It will cause other SIONCT drivers can not load, e.g.
-> root@ipc-SIMATIC-IPC-BX-21A:/home/ipc# modprobe gpio-f7188x
-> modprobe: ERROR: could not insert 'gpio_f7188x': No such device
-> 
-> And dmesg info is:
-> [  213.559168] gpio-f7188xI/O address 0x002e already in use
-> 
-> Same reason for other drivers:
-> root@ipc-SIMATIC-IPC-BX-21A:/home/ipc# modprobe nct6775
-> modprobe: ERROR: could not insert 'nct6775': No such device
-> 
-> Do you have any idea for the wdat_wdt to add support for multi-function device?
-> 
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-In general, it would need to request the 0x2e-0x2f space temporarily
-and release it when it isn't used. Many other drivers do the same.
-Look for request_muxed_region() and release_region() in, for example,
-drivers/watchdog/w83627hf_wdt.c.
+The lockdep assertion in thermal_zone_trip_id() triggers when the
+trip point sysfs attribute of a thermal instance is read, because
+there is no thermal zone locking in that code path.
 
-However, this is more difficult with ACPI. Device access should either
-be all through ACPI, or all direct. It doesn't really make much if any
-sense to access one of the sub-devices through ACPI and others directly
-because there is no automatic synchronization mechanism between ACPI
-and the rest of the kernel. If ACPI reserves the 0x2e-0x2f space, it
-owns it, period.
+This is not verly useful, though, because there is no mechanism by which
+the location of the trips[] table in a thermal zone or its size can
+change after binding cooling devices to the trips in that thermal
+zone and before those cooling devices are unbound from them.  Thus
+it is not in fact necessary to hold the thermal zone lock when
+thermal_zone_trip_id() is called from trip_point_show() and so the
+lockdep asserion in the former is invalid.
 
-Note: There can only be one device at 0x2e/0x2f. I don't really understand
-the reference to both nct6775 and f7188 because it is simply not possible
-that both reside at that address at the same time. And if there is a nct6775
-or f7188 compatible chip in the system, it would make much more sense to
-use the chip specific watchdog drivers instead of wdat_wdt - again, ACPI
-takes it all, and doesn't like competition.
+Accordingly, drop that lockdep assertion.
 
-Guenter
+Fixes: 2c7b4bfadef0 ("thermal: core: Store trip pointer in struct thermal_instance")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+
+The commit mentioned above is in linux-next at this time.
+
+---
+ drivers/thermal/thermal_trip.c |    2 --
+ 1 file changed, 2 deletions(-)
+
+Index: linux-pm/drivers/thermal/thermal_trip.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/thermal_trip.c
++++ linux-pm/drivers/thermal/thermal_trip.c
+@@ -175,8 +175,6 @@ int thermal_zone_trip_id(struct thermal_
+ {
+ 	int i;
+ 
+-	lockdep_assert_held(&tz->lock);
+-
+ 	for (i = 0; i < tz->num_trips; i++) {
+ 		if (&tz->trips[i] == trip)
+ 			return i;
+
+
+
 
