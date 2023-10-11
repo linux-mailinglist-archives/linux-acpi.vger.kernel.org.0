@@ -1,141 +1,91 @@
-Return-Path: <linux-acpi+bounces-597-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-598-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D7A57C5E72
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 22:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8EFF7C5E78
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 22:36:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 774F81C20A7C
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 20:36:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 157931C2097C
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 20:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D516C219FE
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 20:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753151F5F2
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 20:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R3P1qcKY"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ZyVqHMVf"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B289212E64
-	for <linux-acpi@vger.kernel.org>; Wed, 11 Oct 2023 19:19:33 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A861A92
-	for <linux-acpi@vger.kernel.org>; Wed, 11 Oct 2023 12:19:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697051971; x=1728587971;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UHqMhmNK8/htFSTg2JYqqH8j5mmsDz2UJ5n2D2v/9Ys=;
-  b=R3P1qcKYohXrB34CP+kBCaLn/jLc2N7ohSz9A4KkWB1Lc58vmM/+XbuC
-   WAB5uUSS5MwTjvYJc+8HsRq/cnAzUyOxxD/qGxMqnriescfMCeyxzMWUD
-   7HOUZKWph7fi00Ixuu1JjLbnQzKCfQr/FVd3cataltAvkXllCLA9Up+3T
-   JRpGO5HyTVdYa3wetYC225s+LrjQmOYRzb1XTZOkEEn9k/cCzRC3vNDqU
-   76ahrkUUjz9rVLWFhQe1cKcFBBWff8jU6rkGFV5exKESo5TWZET3U4QX2
-   9kmlJXwNWaxfj8eGY4S6d2Z3KBeGHj0avhSNiA3iV0GQ/q1cdO95ZU/eK
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="384598488"
-X-IronPort-AV: E=Sophos;i="6.03,216,1694761200"; 
-   d="scan'208";a="384598488"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 12:19:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="897769433"
-X-IronPort-AV: E=Sophos;i="6.03,216,1694761200"; 
-   d="scan'208";a="897769433"
-Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
-  by fmsmga001.fm.intel.com with ESMTP; 11 Oct 2023 12:17:43 -0700
-Received: from kbuild by f64821696465 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qqejv-0002cT-0a;
-	Wed, 11 Oct 2023 19:19:27 +0000
-Date: Thu, 12 Oct 2023 03:18:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ken Xue <Ken.Xue@amd.com>, andriy.shevchenko@linux.intel.com,
-	linux-acpi@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, rafael@kernel.org, cwhuang@linux.org.tw,
-	Ken Xue <Ken.Xue@amd.com>
-Subject: Re: [PATCH V5] acpi: trigger wakeup key event from power button
-Message-ID: <202310120000.LkRVKBZN-lkp@intel.com>
-References: <20231007075433.555715-1-Ken.Xue@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AFF12E7F
+	for <linux-acpi@vger.kernel.org>; Wed, 11 Oct 2023 19:56:42 +0000 (UTC)
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1D2CE94;
+	Wed, 11 Oct 2023 12:56:41 -0700 (PDT)
+Received: from [10.192.9.210] (unknown [167.220.81.210])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 988F920B74C0;
+	Wed, 11 Oct 2023 12:56:40 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 988F920B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1697054200;
+	bh=TBZdQQUltpuV9HyLOh65oqRuciUQw/90/g0T1N3ig58=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZyVqHMVfdzF1nHDzGIyQs8vM2aDPTwCds7lZxmqJqjCOERCi0zfxlsR1mjY6tx/mY
+	 3bDqV/Y/TqlTdddJjx62dNjea5bYxAji++z/ZLwt3bu0K7pssZR6JHCjRuYRZAkigi
+	 /B3Rix3JpJCc271GhTucwh8yg626j8LAl5b4ZiJ0=
+Message-ID: <42a5c36d-8b65-418f-9826-2808ab49d67a@linux.microsoft.com>
+Date: Wed, 11 Oct 2023 12:56:40 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231007075433.555715-1-Ken.Xue@amd.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] acpi: Use access_width over register_width for system
+ memory accesses
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>, "open list:ACPI"
+ <linux-acpi@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+References: <20230925180552.76071-1-jarredwhite@linux.microsoft.com>
+ <CAJZ5v0iHJcZzF=hGLRH+tT6uqCrfHbLw_KJD5dSRRTrsbeVMUQ@mail.gmail.com>
+From: Jarred White <jarredwhite@linux.microsoft.com>
+In-Reply-To: <CAJZ5v0iHJcZzF=hGLRH+tT6uqCrfHbLw_KJD5dSRRTrsbeVMUQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Hi Ken,
+On 10/3/2023 11:50 AM, Rafael J. Wysocki wrote:
+ > On Mon, Sep 25, 2023 at 8:06 PM Jarred White
+ > <jarredwhite@linux.microsoft.com> wrote:
+ >> To align with ACPI 6.3+, since bit_width can be any 8-bit value, we 
+cannot
+ >> depend on it being always on a clean 8b boundary. Instead, use 
+access_width
+ >> to determine the size and use the offset and width to shift and mask the
+ >> bit swe want to read/write out. Make sure to add a check for system 
+memory
+ >> since pcc redefines the access_width to subspace id.
+ > This is fine, but what if there are systems in the field where
+ > bit_width is invalid, but they just happen to work because of the way
+ > it is currently handled?
+For the kernel coding style issues, I will clean up for the v2 patch.
 
-kernel test robot noticed the following build errors:
+On the invalid bit_width for systems out there in the field, do you have 
+any suggestions on how to handle this particular scenario? Would it be 
+appropriate to add a kernel parameter flag that can revert back to the 
+previous implementation?
 
-[auto build test ERROR on b483d3b8a54a544ab8854ca6dbb8d99c423b3ba4]
+P.S. Sorry for the HTML email.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ken-Xue/acpi-trigger-wakeup-key-event-from-power-button/20231007-163549
-base:   b483d3b8a54a544ab8854ca6dbb8d99c423b3ba4
-patch link:    https://lore.kernel.org/r/20231007075433.555715-1-Ken.Xue%40amd.com
-patch subject: [PATCH V5] acpi: trigger wakeup key event from power button
-config: loongarch-randconfig-002-20231011 (https://download.01.org/0day-ci/archive/20231012/202310120000.LkRVKBZN-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231012/202310120000.LkRVKBZN-lkp@intel.com/reproduce)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310120000.LkRVKBZN-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   loongarch64-linux-ld: drivers/acpi/button.o: in function `acpi_power_button_wakeup':
->> button.c:(.text+0x44): undefined reference to `input_event'
->> loongarch64-linux-ld: button.c:(.text+0x58): undefined reference to `input_event'
-   loongarch64-linux-ld: button.c:(.text+0x6c): undefined reference to `input_event'
-   loongarch64-linux-ld: button.c:(.text+0x8c): undefined reference to `input_event'
-   loongarch64-linux-ld: drivers/acpi/button.o: in function `acpi_button_notify':
-   button.c:(.text+0x200): undefined reference to `input_event'
-   loongarch64-linux-ld: drivers/acpi/button.o:button.c:(.text+0x214): more undefined references to `input_event' follow
-   loongarch64-linux-ld: drivers/acpi/button.o: in function `.L42':
->> button.c:(.text+0x3ac): undefined reference to `input_allocate_device'
-   loongarch64-linux-ld: drivers/acpi/button.o: in function `.L52':
->> button.c:(.text+0x60c): undefined reference to `input_free_device'
-   loongarch64-linux-ld: drivers/acpi/button.o: in function `.L53':
->> button.c:(.text+0x67c): undefined reference to `input_set_capability'
->> loongarch64-linux-ld: button.c:(.text+0x68c): undefined reference to `input_set_capability'
-   loongarch64-linux-ld: drivers/acpi/button.o: in function `.L58':
-   button.c:(.text+0x6a0): undefined reference to `input_set_capability'
-   loongarch64-linux-ld: drivers/acpi/button.o: in function `.L59':
-   button.c:(.text+0x6b4): undefined reference to `input_set_capability'
-   loongarch64-linux-ld: drivers/acpi/button.o: in function `.L60':
->> button.c:(.text+0x6c0): undefined reference to `input_register_device'
-   loongarch64-linux-ld: drivers/acpi/button.o: in function `.L63':
->> button.c:(.text+0x6e0): undefined reference to `input_unregister_device'
-   loongarch64-linux-ld: drivers/acpi/button.o: in function `.L87':
-   button.c:(.text+0x7f8): undefined reference to `input_unregister_device'
-   loongarch64-linux-ld: drivers/acpi/button.o: in function `.L99':
-   button.c:(.text+0x89c): undefined reference to `input_event'
-   loongarch64-linux-ld: button.c:(.text+0x8b0): undefined reference to `input_event'
-   loongarch64-linux-ld: drivers/acpi/button.o: in function `.L97':
-   button.c:(.text+0x8c4): undefined reference to `input_event'
-   loongarch64-linux-ld: button.c:(.text+0x8d8): undefined reference to `input_event'
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for ACPI_BUTTON
-   Depends on [m]: ACPI [=y] && INPUT [=m]
-   Selected by [y]:
-   - ACPI_SYSTEM_POWER_STATES_SUPPORT [=y] && ACPI [=y]
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Jarred
 
