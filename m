@@ -1,52 +1,52 @@
-Return-Path: <linux-acpi+bounces-582-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-580-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420A77C4D51
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 10:35:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A627C4D4C
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 10:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0517282092
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 08:35:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F16A6282092
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 08:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37581A706
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 08:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B551A5AD
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Oct 2023 08:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EFw91vB4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eT8F8aHS"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5814C1A710
-	for <linux-acpi@vger.kernel.org>; Wed, 11 Oct 2023 08:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550961A706
+	for <linux-acpi@vger.kernel.org>; Wed, 11 Oct 2023 08:34:07 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B09A498;
-	Wed, 11 Oct 2023 01:34:04 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EB439D;
+	Wed, 11 Oct 2023 01:34:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697013244; x=1728549244;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=v8b36hzg0ZJAEO27CltsIvMZPSTrKWI+beze9I7e8Mo=;
-  b=EFw91vB4/xej0KGUSrFs/tX94qbtFBaqHwlOr21M2Bb/5lzUGMfDZExK
-   A7J7EkCKZkwrmCcoEjlE4JenajXsCx8oXQPf1MMrbLcBlgAhjIEbDxOkq
-   lwIWtikjcNYv3o47iwqHUcp8KDyYYCMKe+CmXHCcgVgJE3V6FWZ3QUtjd
-   N5Qd0mb9q7UfwOAXmX3HvpDsNIa0ftYEPEe+dBAaphbkuJFifDD8aOwmo
-   onfG4F2Z3xbWKgpyPiz4KVSqOBPxpAHi/dFNMlC2ynCjl1x9VpUnBn/fy
-   sZy39cQEZQL9nM4Z3uFoHFHEDQ6gJxWMJGpAD+e2YWc22DWs6+3+5ORkt
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="388480155"
+  t=1697013245; x=1728549245;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=5PKJcHQuGAJasXvUQcWL2vxKmsvzbQLbVutteBr3/jA=;
+  b=eT8F8aHSG/PXFeGGCc2Yn6tCOfkhJQL23q+eesxOEkYfTl7MG4KIOQJZ
+   TkMOjbuStWPvDiKTkZpZoV1uqMsX/85+PSGudonB6Az9qE5qXdHEepvPr
+   cX5KLZ+MHmxLbheO3MFzdIgbhbU1LvHDCVt0p64/YXBsbTWTfgirOtl08
+   CL9cb3huQXGGrQMzliadIxDOstLN+75atA6R7U7e6a0qAjiFxuuJnRNPb
+   YQyJnh1SWvxk/FfXcs4NCX5DqO8z25UyF7G3wC4lA7KC6U7lPA8gTj4VC
+   8lRHlov0qtbTIwgFfcSG6Ac+PqsEAVGnJqSnej0uS8rLFcp9Xk2KMoqfR
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="388480159"
 X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="388480155"
+   d="scan'208";a="388480159"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 01:33:58 -0700
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 01:34:00 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="897548169"
+X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="897548177"
 X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="897548169"
+   d="scan'208";a="897548177"
 Received: from powerlab.fi.intel.com ([10.237.71.25])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 01:32:09 -0700
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 01:32:12 -0700
 From: Michal Wilczynski <michal.wilczynski@intel.com>
 To: linux-acpi@vger.kernel.org
 Cc: rafael@kernel.org,
@@ -59,10 +59,12 @@ Cc: rafael@kernel.org,
 	linux-kernel@vger.kernel.org,
 	nvdimm@lists.linux.dev,
 	Michal Wilczynski <michal.wilczynski@intel.com>
-Subject: [PATCH v3 0/6] Replace acpi_driver with platform_driver
-Date: Wed, 11 Oct 2023 11:33:28 +0300
-Message-ID: <20231011083334.3987477-1-michal.wilczynski@intel.com>
+Subject: [PATCH v3 1/6] ACPI: AC: Remove unnecessary checks
+Date: Wed, 11 Oct 2023 11:33:29 +0300
+Message-ID: <20231011083334.3987477-2-michal.wilczynski@intel.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231011083334.3987477-1-michal.wilczynski@intel.com>
+References: <20231011083334.3987477-1-michal.wilczynski@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -77,65 +79,76 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Currently there is a number of drivers that somewhat incorrectly
-register themselves as acpi_driver, while they should be registering as
-platform_drivers. acpi_device was never meant to represent actual
-device, it only represents an entry in the ACPI table and ACPI driver
-should be treated as a driver for the ACPI entry of the particular
-device, not the device itself. Drivers of the devices itself should
-register as platform_drivers. Replace acpi_driver with platform_driver
-for all relevant drivers in drivers/acpi directory. This is just the
-first part of the change, as many acpi_drivers are present in many files
-outside of drivers/acpi directory.
+Remove unnecessary checks for NULL for variables that can't be NULL at
+the point they're checked for it. Defensive programming is discouraged
+in the kernel.
 
-Additionally during internal review we've decided that it's best to send
-the relevant patches sequentially, in order not to overwhelm the reviewers.
-So I'm starting with NFIT and AC drivers.
+Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+---
+ drivers/acpi/ac.c | 27 ++++-----------------------
+ 1 file changed, 4 insertions(+), 23 deletions(-)
 
-This change is possible thanks to recent .notify callback removal in
-drivers/acpi [1]. So flow for the remaining acpi_drivers will look like
-this:
-
-1) Remove .notify callback with separate patchset for drivers/platform
-   and other outstanding places like drivers/hwmon, drivers/iio etc.
-2) Replace acpi_driver with platform_driver, as aside for .notify
-   callback they're mostly functionally compatible.
-
-Most of the patches in this series could be considered independent, and
-could be merged separately, with a notable exception of the very first
-patch in this series that changes notify installer wrappers to be more
-generic. I decided it would be best not to force the user of this
-wrappers to pass any specific structure, like acpi_device or
-platform_device. It makes sense as it is very often the case that
-drivers declare their own private structure which gets allocated during
-the .probe() callback, and become the heart of the driver. In that case
-it makes much more sense to pass this structure to notify handler.
-Additionally some drivers, like acpi_video that already have custom
-notify handlers do that already.
-
-Link: https://lore.kernel.org/linux-acpi/20230703080252.2899090-1-michal.wilczynski@intel.com/ [1]
-
-v3:
- - in AC transformation patch replaced struct device* with
-   struct acpi_device*, as suggested.
-
-v2:
- - dropped first, second and last commit. Last commit was deemed
-   pointless, first and second are already merged.
- - rebased on top of modified first commit (changes in the wrappers)
-
-Michal Wilczynski (6):
-  ACPI: AC: Remove unnecessary checks
-  ACPI: AC: Use string_choices API instead of ternary operator
-  ACPI: AC: Replace acpi_driver with platform_driver
-  ACPI: AC: Rename ACPI device from device to adev
-  ACPI: NFIT: Replace acpi_driver with platform_driver
-  ACPI: NFIT: Remove redundant call to to_acpi_dev()
-
- drivers/acpi/ac.c        | 103 +++++++++++++++++----------------------
- drivers/acpi/nfit/core.c |  38 +++++++--------
- 2 files changed, 64 insertions(+), 77 deletions(-)
-
+diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
+index aac3e561790c..83d45c681121 100644
+--- a/drivers/acpi/ac.c
++++ b/drivers/acpi/ac.c
+@@ -131,9 +131,6 @@ static void acpi_ac_notify(acpi_handle handle, u32 event, void *data)
+ 	struct acpi_device *device = data;
+ 	struct acpi_ac *ac = acpi_driver_data(device);
+ 
+-	if (!ac)
+-		return;
+-
+ 	switch (event) {
+ 	default:
+ 		acpi_handle_debug(device->handle, "Unsupported event [0x%x]\n",
+@@ -216,12 +213,8 @@ static const struct dmi_system_id ac_dmi_table[]  __initconst = {
+ static int acpi_ac_add(struct acpi_device *device)
+ {
+ 	struct power_supply_config psy_cfg = {};
+-	int result = 0;
+-	struct acpi_ac *ac = NULL;
+-
+-
+-	if (!device)
+-		return -EINVAL;
++	struct acpi_ac *ac;
++	int result;
+ 
+ 	ac = kzalloc(sizeof(struct acpi_ac), GFP_KERNEL);
+ 	if (!ac)
+@@ -275,16 +268,9 @@ static int acpi_ac_add(struct acpi_device *device)
+ #ifdef CONFIG_PM_SLEEP
+ static int acpi_ac_resume(struct device *dev)
+ {
+-	struct acpi_ac *ac;
++	struct acpi_ac *ac = acpi_driver_data(to_acpi_device(dev));
+ 	unsigned int old_state;
+ 
+-	if (!dev)
+-		return -EINVAL;
+-
+-	ac = acpi_driver_data(to_acpi_device(dev));
+-	if (!ac)
+-		return -EINVAL;
+-
+ 	old_state = ac->state;
+ 	if (acpi_ac_get_state(ac))
+ 		return 0;
+@@ -299,12 +285,7 @@ static int acpi_ac_resume(struct device *dev)
+ 
+ static void acpi_ac_remove(struct acpi_device *device)
+ {
+-	struct acpi_ac *ac = NULL;
+-
+-	if (!device || !acpi_driver_data(device))
+-		return;
+-
+-	ac = acpi_driver_data(device);
++	struct acpi_ac *ac = acpi_driver_data(device);
+ 
+ 	acpi_dev_remove_notify_handler(device, ACPI_ALL_NOTIFY,
+ 				       acpi_ac_notify);
 -- 
 2.41.0
 
