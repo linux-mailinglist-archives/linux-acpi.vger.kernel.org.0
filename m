@@ -1,122 +1,179 @@
-Return-Path: <linux-acpi+bounces-605-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-606-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0777C79E1
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 00:37:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BE87C7AE7
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 02:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC8851C214C7
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Oct 2023 22:37:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76EEBB20324
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 00:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DE32B5CE
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Oct 2023 22:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9093A2A
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 00:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VIA+h5/n"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k6NYyfmK"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21BE3FB21
-	for <linux-acpi@vger.kernel.org>; Thu, 12 Oct 2023 21:59:12 +0000 (UTC)
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 948D2DA;
-	Thu, 12 Oct 2023 14:59:11 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1c746bc3bceso3979785ad.1;
-        Thu, 12 Oct 2023 14:59:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697147951; x=1697752751; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2bRmsNjujjr87IHjRkMLVF3EP+IER+0qQMW+fpMjLQg=;
-        b=VIA+h5/nZoHUgD3AI0UixqdM6pdd0yjw+UrdxuWekL0/bcwmZ23iPlB9eqHKjSnaiG
-         jfzk1dzBbMVlk+yPvOeNcIO24a0vk949cizdDQQNArl/PIECN3RzFLf5JCQzTid/yV5l
-         gCccI8QiVoTUD8QJXp/wkXR4Viv6qCRX25t1ySGGQNU+UCq21aDwisgvpZBLgdqdZHtn
-         eaUNNpD+2/IY+0oijDHQHnDR3715FoMUor5dcTA5Tboucb14xFR0b2rvJ3rg4nk9Eg2e
-         DNcfNuJ1tDFXEkcqL71fMk9YtfSUsN2PJ/bIZVwqWCWRBvhwscge1WQYBcpynHkHwtwc
-         V+Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697147951; x=1697752751;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2bRmsNjujjr87IHjRkMLVF3EP+IER+0qQMW+fpMjLQg=;
-        b=OHoPGrSN+5tg87wabtpV71E9/i41dKVixVarFHCLkpCZHW5ATsA6kC1yVutKahfsHN
-         9xXB122fqQulj0qLH1jfpLoCucme/fI+dYsBU3NVTc7gqcZET2NDos71fUsoO+Glik5Q
-         xkuR8Huw8x67nS8KspDTOavEiNgvC5MTFFZf5HT/+ZfTXfYHhrtWpfiYw55eh0C1Pa35
-         CcrQ4mDgH4/tvCQk6rqwwZxxYcYE2qPIF9kw7yDJdyMkGdfTufGrZ4dDBpKY5ndPqCCk
-         a5Vrv7p/gfrG58g/W0rKMLVZlC5GiSUw1Xe5OVeUduzcsHlnuqJbb4EyWK6RQg4xAvc8
-         hcBw==
-X-Gm-Message-State: AOJu0YxE3+sz5Z0jFURgvXRfhQ1qHdqTBJRHpY/7utDraomOVqqzBfWV
-	crJ1J21zwe4R9QTMK0n0vqE=
-X-Google-Smtp-Source: AGHT+IEJ5AnfE0+n1T0JHCM+RVwVG1qkIZvLRGfH9TlJVR5npNnpa4dd1sYhMzJW9LCyM0so1ZGDLw==
-X-Received: by 2002:a17:90a:9f83:b0:27c:fbf8:6c43 with SMTP id o3-20020a17090a9f8300b0027cfbf86c43mr7314082pjp.1.1697147950948;
-        Thu, 12 Oct 2023 14:59:10 -0700 (PDT)
-Received: from localhost.localdomain ([140.116.154.65])
-        by smtp.gmail.com with ESMTPSA id 5-20020a17090a198500b0027768125e24sm2489295pji.39.2023.10.12.14.59.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 14:59:10 -0700 (PDT)
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: dan.j.williams@intel.com,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	ira.weiny@intel.com
-Cc: rafael@kernel.org,
-	lenb@kernel.org,
-	nvdimm@lists.linux.dev,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kuan-Wei Chiu <visitorckw@gmail.com>
-Subject: [PATCH] ACPI: NFIT: Optimize nfit_mem_cmp() for efficiency
-Date: Fri, 13 Oct 2023 05:59:03 +0800
-Message-Id: <20231012215903.2104652-1-visitorckw@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201C92B5E5
+	for <linux-acpi@vger.kernel.org>; Thu, 12 Oct 2023 23:40:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E119A9;
+	Thu, 12 Oct 2023 16:40:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697154057; x=1728690057;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=cHawmV/vH8ShZu4lAlyMw+gxQmAHaMjDhh3XDQFc8HQ=;
+  b=k6NYyfmK6uyl5RcNaO40N7wcRR5025AH+F2rwzTJhgCsc4RG2VFAdO1e
+   Tl3TcJhKxZi4+cxmlDxipXyxS3D9a2QLBgUTz6BRyn/cJ1/x1SO1d2ym4
+   gVxNCVmivERl2XYy430Yzq3BbBVY+kNH/6Q5E24nv038mvn4PwyWY7HbO
+   TSCQzWR8psKGPZxuCgwQzo5GaA953Z3WDBmpGGwnJthRGTRBNIpUP9tAE
+   kY6Fq46d2zaL+UmwpUxBPZ8ktsznwA+hBZ3H6VYLySLIbyhtILxFMl1Vr
+   144Yac7ELD2Bg8k7mdSxNzUNuKT44hqZM2QnBwMK5jdTR8spuh6IFOEF2
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="365325254"
+X-IronPort-AV: E=Sophos;i="6.03,219,1694761200"; 
+   d="scan'208";a="365325254"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 16:40:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="748108742"
+X-IronPort-AV: E=Sophos;i="6.03,219,1694761200"; 
+   d="scan'208";a="748108742"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orsmga007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 12 Oct 2023 16:40:56 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Thu, 12 Oct 2023 16:40:55 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Thu, 12 Oct 2023 16:40:55 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Thu, 12 Oct 2023 16:40:55 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jTRUNu0U4AxojDTyGMTrm0mqTVnuk28ZmOdycKQK83ddphHyjuyrVnNGsTCYeYW0AkLCNN1k8nnglWte+1z+hN17PYEL4H+jggMoVITxMEhenE78VqOyaxH4k1IoS1JiB4zir9qbzTY6sn2cx++Y7uZ2ywgmgtgnQAYxS4XKX9gPMtKNibU4Ujd6JPak3LDzSLSOf81n4xr3xFSK60Cs/JI6L2dY1LwN1DOvVeChRQwG7WYY+lcMZiIMbfqU9da1IRPOpD4xBfyFpCYWmC++XYhj9dHTpn4oS3rcwAlzVofReUGcjLlNRKzqmEss5Dz2kT23A07m0qKcfmkpTiaCyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cHawmV/vH8ShZu4lAlyMw+gxQmAHaMjDhh3XDQFc8HQ=;
+ b=oVVb02+zvyjhzAZIbNvm/UY/DBU3BM8JVfnLjer36NdlOp95GPnyBv2vEhZOHD4womzu5DTsruQar3gDZ4p1vcIff6EVf3AraSphvjNmu7e4ovdM63e60YLud56ZGlM5tlThhCuNmHDqgaMXHfN1nfPJP7yuPITDX8QPjSc7r0LRuZ4OC7O7apdu7fu/zW5kD6sPyB20mpJQ320cITMUtS1BgDPeOBGvX3H1GghNmKSBdgG3rnZxlTAUGdMoX1RlDBXnC+fNUv+QA4gjG5T/m8kXiP/tU5R0GWdvwlRBi6lW45IHuA0UP+oUWZ9x2QyeBQdG11dFou87hGN3emHw4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA3PR11MB8118.namprd11.prod.outlook.com (2603:10b6:806:2f1::13)
+ by SN7PR11MB7509.namprd11.prod.outlook.com (2603:10b6:806:346::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.43; Thu, 12 Oct
+ 2023 23:40:49 +0000
+Received: from SA3PR11MB8118.namprd11.prod.outlook.com
+ ([fe80::66b3:c77d:472e:4baa]) by SA3PR11MB8118.namprd11.prod.outlook.com
+ ([fe80::66b3:c77d:472e:4baa%3]) with mapi id 15.20.6863.032; Thu, 12 Oct 2023
+ 23:40:49 +0000
+Date: Thu, 12 Oct 2023 16:40:46 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Michal Wilczynski <michal.wilczynski@intel.com>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<nvdimm@lists.linux.dev>
+CC: <rafael.j.wysocki@intel.com>, <andriy.shevchenko@intel.com>,
+	<lenb@kernel.org>, <dan.j.williams@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, Michal Wilczynski <michal.wilczynski@intel.com>, "Andy
+ Shevchenko" <andy.shevchenko@gmail.com>
+Subject: RE: [PATCH v1 1/2] ACPI: NFIT: Fix memory leak, and local use of
+ devm_*()
+Message-ID: <652883fe10d38_780ef29459@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20230926184520.2239723-1-michal.wilczynski@intel.com>
+ <20230926184520.2239723-2-michal.wilczynski@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230926184520.2239723-2-michal.wilczynski@intel.com>
+X-ClientProxiedBy: MW4PR03CA0144.namprd03.prod.outlook.com
+ (2603:10b6:303:8c::29) To SA3PR11MB8118.namprd11.prod.outlook.com
+ (2603:10b6:806:2f1::13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR11MB8118:EE_|SN7PR11MB7509:EE_
+X-MS-Office365-Filtering-Correlation-Id: 71c028dd-3602-40a1-9bfe-08dbcb7ca9e3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: +MjBa4dElOSe57KC366jXKmWzR31kc1kKyVq2//DdwsMwQ405Xw6Ys0OuawJz31qpX+kC6arrlItsfpo74aSNN6v71OaFnV86I5LdZAtd95j2XXLJbbQbTWco3o/oN2Aviq7yZD9B6w/c6N9c8Vi1tsmrBpSoZYcR9l5TE3h//ATSqrUzzxMiHTLHqmZNFwqA+9j3jfjdkQ6E3ro2aT2AYYs2N0oLZWUdIqMl9mJsY/a2Yg1iYqjg1BCkOpsjW6PkUKOOxKi/dJ0clhYoK1KJUxCRlUGNoxg3Xqf2+dQ3kE1HFValHyZ47FrvMILMbss5EWBPEE/slr9PgSuKvnK5nnLg8ayBL/F2+L4338Su4pWf487omeel2gif1ewPSRkqZJ7E+6foW7WAHXEPCyCdwZXzkR/cOqqa11rNPxtrMtKU52MvkWXhziy+a/5ydmKLBwvG/JYFsZGK8+5U9ydC22Z0WfUqrbV5rxDKlQapdlCF3RmD8jvqGJj2uWlmGIoq64EG6I4UZdF8BYtM8w+A6E3Gnq8huY+iRr7GywZmpHlclMeP0ECIQfyWNAoUvbX
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR11MB8118.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(39860400002)(396003)(366004)(376002)(230922051799003)(186009)(451199024)(1800799009)(64100799003)(54906003)(66556008)(66476007)(66946007)(6506007)(316002)(82960400001)(6666004)(38100700002)(2906002)(8676002)(4744005)(5660300002)(478600001)(4326008)(6486002)(8936002)(86362001)(41300700001)(9686003)(6512007)(83380400001)(26005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+UPtIvrzsGbcrHaT6I2PYfK+Ljw+tLyr4oDw2ETRW1Hkcu663TFtCfgY2JYp?=
+ =?us-ascii?Q?Gkc8PDRztpZxotWK4C8ipCaKhtPT4vR8U0wius+ZP8uKNRjfQ95scCozEj/X?=
+ =?us-ascii?Q?uEtBFuRWKB4PqPttkLUcYaF0MeG4IPqlVEijxLv8g8aefKMCosHW7GQI/Cv7?=
+ =?us-ascii?Q?zMHFG4z92VRAVlGXQQD2jr5MHCk0j0isEWzAJuhbJv/ef984jf+Z+kUWTLuV?=
+ =?us-ascii?Q?40pf/zmPBE2fh32eFifkh37Zuk7SnnGqC/tauU4jLQWFVyfYiRN6XUPMjRcK?=
+ =?us-ascii?Q?N7FwRI5qN/xM7EWMXbt5TfFh19KbTLMiw9d0CfxI46NWCxhABVdbXov18jrC?=
+ =?us-ascii?Q?hSna80EFoqxz+piiXsPPu+4GnquJm7zHY7O2gFdwZbPcUaO0tCImVz7gXXTc?=
+ =?us-ascii?Q?wh0Cs+6aMQ2bW0vABYLbafzk8pd84xmpbgEVLfpeRXOCT115B0VrjUPk8t07?=
+ =?us-ascii?Q?xxw34W+8XzBg8loJtCInGgl2vOZ8cOc8h8ugXv+eHt6xJMB2db/06qkzvtk4?=
+ =?us-ascii?Q?Oa/OH00Vz0FPwURIkehymabEpOk3uovzR/rlWDe9WmkvZUQ1yWcTNf07mhoA?=
+ =?us-ascii?Q?kxVqGOMOzLrPHRD0utJgQ3MeHjaYpKvQAgsVgQI9NujgtNbbp0l08Z4mNAc3?=
+ =?us-ascii?Q?KkhVJTAbzRxa4EHL1A55MT7Il5kOcKI0ipZJlXPJsKpGXeE8+RaiM2iicNU9?=
+ =?us-ascii?Q?ScphirVc1jI1q9SzoDDWk/npFcNTLJwRkFcIqWlhbQGXz14rXvp9neHzwonz?=
+ =?us-ascii?Q?Z+f9wyw19GDyCx7HRaKFaTsDp28IjZZy4ttVWfHPb3A3sSt68VpfLgF/JxOt?=
+ =?us-ascii?Q?c2x/dCCmyBKhTB8Y2Dk8b7vp985hYexkRTMzAmZ/37UjPbqV7FlId8JbNwM/?=
+ =?us-ascii?Q?6HkxyhSM5br+9/glDWxR+OpqqaW4UEWtPHtI8wERyy+YO9zwPF183nBnI+7e?=
+ =?us-ascii?Q?XVOwoGxi8J7qv87HP5jdr5SCgZ7HG/GYvS0fxiPB6xPJC/3NkLu+l3ybY6jy?=
+ =?us-ascii?Q?KUMKj56GH59pDErZsr7xnmMs90WgxWELFHfp66XzV08g/k/cG99hbOCUIzAi?=
+ =?us-ascii?Q?22OIiMWyVVIQGLkc5pAefysLCPpW0SDY33ZIoQaspLpOKf8SVJC4l48S4Rei?=
+ =?us-ascii?Q?IL6ySlTQ9aEvxcVfYj6fMcBKhWC/+70qYLPvd4AM9172f1i5OSt+YPPa2cpq?=
+ =?us-ascii?Q?wZ/eG+dqSAkZtRJqGeTxS+UvqQTg0NPUInFaJ9BDE08GBQurQ+jrd+mcXtOi?=
+ =?us-ascii?Q?fjW0ri5ImTAKsDdysmS+9wseRbmWGjZrrZhbvQA3MVkGWJEffTZxfzA0Ejva?=
+ =?us-ascii?Q?fTs/J9CJcZ8YYZK9rgNsj4xaKDvubvLzfX6KowMutvtmNTF3qQOccWzMebtw?=
+ =?us-ascii?Q?uKHrTz9qOMgclV+85rfUqJY+1hq63lamPDw86gGXjzCrTGlN4MYECmN9qIDZ?=
+ =?us-ascii?Q?/Tv85Ehi01zIWzOeba2Qg2FTz2Nnkhjwz419s8NP29Zv1Qr5dXpuTk1ohbRV?=
+ =?us-ascii?Q?REuvkZW7vC/LQLfTRHHY5UXH9lA1UKepATT0gnq8Vv4+LW1HSrvbFHhL1/K/?=
+ =?us-ascii?Q?g9g4KKBegQ5QJhDqOQQTX49Cab3LRfoKR8LVYVObLuAhQWYQhQSFV/aAf+IN?=
+ =?us-ascii?Q?Pw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 71c028dd-3602-40a1-9bfe-08dbcb7ca9e3
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB8118.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2023 23:40:49.1024
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: l8YwX6+qErjZPfJaDPQAHkHJKYvsVPyNq49p26cfemYon+Valh4aRhzzoSjL2oEKy1+XzacLzXmPPatYG/LZkibyAVde1sPDus6pLKdwSow=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7509
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-The original code used conditional branching in the nfit_mem_cmp
-function to compare two values and return -1, 1, or 0 based on the
-result. However, the list_sort comparison function only needs results
-<0, >0, or =0. This patch optimizes the code to make the comparison
-branchless, improving efficiency and reducing code size. This change
-reduces the number of comparison operations from 1-2 to a single
-subtraction operation, thereby saving the number of instructions.
+Michal Wilczynski wrote:
+> devm_*() family of functions purpose is managing memory attached to a
+> device. So in general it should only be used for allocations that should
+> last for the whole lifecycle of the device. This is not the case for
+> acpi_nfit_init_interleave_set(). There are two allocations that are only
+> used locally in this function. What's more - if the function exits on
+> error path memory is never freed. It's still attached to dev and would
+> be freed on device detach, so this leak could be called a 'local leak'.
 
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
----
- drivers/acpi/nfit/core.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+This analysis is incorrect devm cleans up on driver ->probe() failure in
+addition to ->remove(), and these error returns result in ->probe()
+failures. No leak, i.e. this is not a fix.
 
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index f96bf32cd368..eea827d9af08 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -1138,11 +1138,7 @@ static int nfit_mem_cmp(void *priv, const struct list_head *_a,
- 
- 	handleA = __to_nfit_memdev(a)->device_handle;
- 	handleB = __to_nfit_memdev(b)->device_handle;
--	if (handleA < handleB)
--		return -1;
--	else if (handleA > handleB)
--		return 1;
--	return 0;
-+	return handleA - handleB;
- }
- 
- static int nfit_mem_init(struct acpi_nfit_desc *acpi_desc)
--- 
-2.25.1
-
+The conversion to modern probe is ok if you want to resubmit that one
+without this intervening change.
 
