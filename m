@@ -1,113 +1,102 @@
-Return-Path: <linux-acpi+bounces-628-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-629-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BAE7C8B8B
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 18:45:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0031E7C8B8D
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 18:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58494B20855
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 16:45:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF4AF280D48
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 16:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93891B26A
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 16:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NVcjHByJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FC821A0B
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 16:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1811B286
-	for <linux-acpi@vger.kernel.org>; Fri, 13 Oct 2023 15:25:41 +0000 (UTC)
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2994BB
-	for <linux-acpi@vger.kernel.org>; Fri, 13 Oct 2023 08:25:39 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-32003aae100so2252643f8f.0
-        for <linux-acpi@vger.kernel.org>; Fri, 13 Oct 2023 08:25:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697210738; x=1697815538; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OqiyO5h666WNcMBFY0zx+uO/TZpSzYvmxb3OC1OULWs=;
-        b=NVcjHByJCWtE737XCAW5NyLyfdqhnldEsZQOu9/YQl/p6qrg/NGvoviIzidw2yrAhZ
-         G87giDn0LNzm4Vi9wzkyG/KwiUU/l/mamKP+k8XF0Lp5X2jew+sySe72twBDeeQS296+
-         OvhUpWlLwALfDNZph8sgTGykDtQ1XbyFS4A5eI/7HhpJhoOQdvICXU3XKDNSrrAPmD3f
-         UokZPY5m0iS//GraRTR8FpNsnEWZkhbE9do092dMpUL5aYPkfGOCydu8DM/NAgUws2BS
-         CpylEqzgCC4DCLpbdBh8jiF+e1s8kpBkYKMjzoRHUQZ90X+YBKLkFFXOH+t6+k+EHnsM
-         Us/w==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E208311CBC
+	for <linux-acpi@vger.kernel.org>; Fri, 13 Oct 2023 15:39:43 +0000 (UTC)
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0582DD9;
+	Fri, 13 Oct 2023 08:39:41 -0700 (PDT)
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-57de3096e25so371375eaf.1;
+        Fri, 13 Oct 2023 08:39:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697210738; x=1697815538;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OqiyO5h666WNcMBFY0zx+uO/TZpSzYvmxb3OC1OULWs=;
-        b=ODw+8p/1tMgouRvePWJgKsORMOED+18mz8r80OKlk14GaJ51PsLBT9LGCb+JserXIX
-         swNgIKm/U1eEG9mLgABgNa84JL1oPbBr9ndHk5zLc0RwSgeI5CKX+Lvs2eUDsfbkgs3l
-         cU2+Wmrtu4ZnB8fY7WrRZ6aEomNRpHF7oyoS1nYA7VuN+XKlfzYuKhQixfbYPYJdy3sN
-         ijOcR8CURIe09ch1OVnfe7+eTAAwSFA4RrCvMOJiK2p2kRkE/7N1tStJ86WeBw1mD9wY
-         3b3FLyGh+l2TBL5hqKV4BS9ywnZcCDuMCF6QJ48K0K5D5uOUNUq+nWk9Y8V6ct495q3g
-         Xj0w==
-X-Gm-Message-State: AOJu0Ywyl6PYm19+Qkf5/NmEEKYgGUosvZ6lA9edAkg7soE+YBSbExv7
-	vJaiG0PAf16KKxRpnkAdKQOdLQ==
-X-Google-Smtp-Source: AGHT+IG3Q2dwNrMf0dpK3UfqA9ZkhmleZbTUt/8zaNtFpNTgsYvyfK+j2Ev8RbzmQ/zhSYaCKQzf6A==
-X-Received: by 2002:adf:8b98:0:b0:31f:f95c:dd7f with SMTP id o24-20020adf8b98000000b0031ff95cdd7fmr353980wra.12.1697210738255;
-        Fri, 13 Oct 2023 08:25:38 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0? ([2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0])
-        by smtp.googlemail.com with ESMTPSA id bh6-20020a05600c3d0600b00406408dc788sm391301wmb.44.2023.10.13.08.25.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Oct 2023 08:25:37 -0700 (PDT)
-Message-ID: <1ef28d5e-ae16-4668-8fe0-13b5521ae572@linaro.org>
-Date: Fri, 13 Oct 2023 17:25:37 +0200
+        d=1e100.net; s=20230601; t=1697211580; x=1697816380;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=syMSn9bUGI1mYgk9z5rjv/7N6cpGdLeuuA9bThnQHjE=;
+        b=fHq2b+XJ5tKAlPiS9J/Xcq1sgOxH8i2OZWyxtv2RQyT257OBIwqprv3dzfP3IjX5yE
+         jT7J0PJ+oE2AF5rWqOBcXG2jv/YgQDYpzyTLqfrtuYLhMmwLKztZRqgYBkCCyr9VZBGC
+         RPUd25haEEc2rnRFSoW62HVyc9BuFD8NkRz6T3bUIxKrcCYSqwHu94P76PRdf0NyASQa
+         trMiYylaod0rZknQcd4dwyKAx2X3u4MO8PhSEAF1Q9k6iKfGJorFZTETPLxFhVaYBSr/
+         Ku7QNQfjBgv4+RzzlvYmI7cLsEVZNaxW1tqiyIejQM2Avdj4Cwd0ZMQvdBVyzMFR1eU/
+         oXLw==
+X-Gm-Message-State: AOJu0Yz/lcBopY+RaA2ZOu34PKj7ZNF3+G9e8pXU7T5c8OLbcyU8Sxlb
+	EL67Q6PIqXUMQ1P74F6mA+SybDAOzA0ymY1m2cg=
+X-Google-Smtp-Source: AGHT+IFKVQwLA+paHmJiyVg59OuJh00iVZg+9+X6ncKE6igTumBnt45lx63TZvGa0b73Zv1ta0ASGVjm61l6Y/Y3xwE=
+X-Received: by 2002:a4a:decf:0:b0:581:5990:dbb8 with SMTP id
+ w15-20020a4adecf000000b005815990dbb8mr8396496oou.0.1697211580281; Fri, 13 Oct
+ 2023 08:39:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] thermal: ACPI: Include the right header file
-Content-Language: en-US
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux PM <linux-pm@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Linux ACPI <linux-acpi@vger.kernel.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>
-References: <2721589.mvXUDI8C0e@kreacher>
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <2721589.mvXUDI8C0e@kreacher>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 13 Oct 2023 17:39:29 +0200
+Message-ID: <CAJZ5v0gcP2o_mDOyWP_C3u+6nHqT8gXFhUxGHSC7OgywBXsNMQ@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.6-rc6
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 13/10/2023 17:14, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> It is not necessary to include thermal_core.h into thermal_acpi.c,
-> because none of the code in there depends on anything in the former,
-> except for the linux/thermal.h, but it is better to include that one
-> directly instead of including the entire thermal_core.h, so make that
-> change.
-> 
-> No functional impact.
-> 
-> Fixes: 7a0e39748861 ("thermal: ACPI: Add ACPI trip point routines")
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
+Hi Linus,
 
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Please pull from the tag
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.6-rc6
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+with top-most commit 9bc2fb9a7e41542a193658deff3df572fa24cb68
 
+ Merge branches 'acpi-ec' and 'acpi-resource'
+
+on top of commit 94f6f0550c625fab1f373bb86a6669b45e9748b3
+
+ Linux 6.6-rc5
+
+to receive ACPI fixes for 6.6-rc6.
+
+These add an ACPI EC GPE detection quirk for HP Pavilion Gaming
+15-dk1xxx and ACPI IRQ override quirks for TongFang GM6BGEQ, GM6BG5Q
+and GM6BG0Q, and for ASUS ExpertBook B1402CBA (Hans de Goede).
+
+Thanks!
+
+
+---------------
+
+Hans de Goede (3):
+      ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA
+      ACPI: EC: Add quirk for the HP Pavilion Gaming 15-dk1xxx
+      ACPI: resource: Add TongFang GM6BGEQ, GM6BG5Q and GM6BG0Q to
+irq1_edge_low_force_override[]
+
+---------------
+
+ drivers/acpi/ec.c       | 11 +++++++++++
+ drivers/acpi/resource.c | 26 ++++++++++++++++++++------
+ 2 files changed, 31 insertions(+), 6 deletions(-)
 
