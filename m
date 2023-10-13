@@ -1,86 +1,68 @@
-Return-Path: <linux-acpi+bounces-623-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-624-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D95FF7C7CC8
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 06:34:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA3C7C832C
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 12:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94332282C7F
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 04:34:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3D78B2080E
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 10:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2A0101D4
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 04:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112FF134A6
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 10:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SWppC7lT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QA/UUN8S"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62BB15CA
-	for <linux-acpi@vger.kernel.org>; Fri, 13 Oct 2023 03:32:37 +0000 (UTC)
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2067.outbound.protection.outlook.com [40.107.93.67])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 240FE10B;
-	Thu, 12 Oct 2023 20:32:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lVfRAHGyN7Rn90sTKQEmRm/90AsyznakreBR0tPsJ1jzzaPo89cFTtWqhDqS2gK3/0dZoifv9haVFaGW9Aq1fnkWVSxtTwpeeR0G8rgiaqm9NSMrQoDIVCR6/RFYT83e5A/uF4GbkLKHMjmIp2yVqrnRIVYCSzBZK2L9pRMpIWW5tORWIuVAzdakAa/Xr+2r+bgLgxRUUBSQnaXzZUUIG88e2GyYUMdYtfHHSf6lwusEOzgXuM00YfYhGbpbNDj6VQJMHoacd0YzWi40yVqRQLTDFRM8Z+fApJfb4zVjiXFB6cxHTUJwtoIfyN5JjoTePal28cpmbUJ4J+HEYi3PeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3BATVT8xDKQmxK5ddKWQeikq5vTddHGyEfuh2meRohc=;
- b=dXLhSQezqxVauLgCQBkqTWjOLa4OKQO1rKOLkV+35SDAQWCT4iOzyLfqE03AFBndU09EVcNdCq7A4HYNE4ri2vaSE9FAwLKFRLpyHhbXv4eJeRmnRrD8K92q/ONYxNblHT5Ze/fLV/Z+6usxSRXu5KxaFWWE4fBHrZOeeqzVLLn5JUBubw59GaU9X37TTi75K0n4nwUP1V37+bVoAt0xnVJdpPfuAxRIlhD2nXp0Of5qFrcbY1dUtiJp/k8ZwXjbo+bOK9X7thlULNNmI8jInrDLQpQviDI4G8ua/Q7FUB6pbm0PaTxILS35CjDHvzoj62sIl4+r23soYSUM28XcKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3BATVT8xDKQmxK5ddKWQeikq5vTddHGyEfuh2meRohc=;
- b=SWppC7lTOhJnDtjhz8YBRRposp1J8oT9guV+mjkwYnjp/4mpqUucErzsCjWbST5vo1BWdNLDxCqwByJieaIeKJLXTHAY2z0/ZfzV5VzZARWcSXbjKyM/nNgNOV3y76FgaloOj6iCgvEFfDleY0+mYHVyG7FBuu4s/FNVA//R7FI=
-Received: from MW4PR04CA0046.namprd04.prod.outlook.com (2603:10b6:303:6a::21)
- by PH7PR12MB6444.namprd12.prod.outlook.com (2603:10b6:510:1f8::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.43; Fri, 13 Oct
- 2023 03:32:31 +0000
-Received: from CO1PEPF000042AD.namprd03.prod.outlook.com
- (2603:10b6:303:6a:cafe::52) by MW4PR04CA0046.outlook.office365.com
- (2603:10b6:303:6a::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.28 via Frontend
- Transport; Fri, 13 Oct 2023 03:32:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000042AD.mail.protection.outlook.com (10.167.243.42) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6838.22 via Frontend Transport; Fri, 13 Oct 2023 03:32:30 +0000
-Received: from jasmine-meng.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 12 Oct
- 2023 22:32:25 -0500
-From: Meng Li <li.meng@amd.com>
-To: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Huang Rui
-	<ray.huang@amd.com>
-CC: <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<x86@kernel.org>, <linux-acpi@vger.kernel.org>, Shuah Khan
-	<skhan@linuxfoundation.org>, <linux-kselftest@vger.kernel.org>, "Nathan
- Fontenot" <nathan.fontenot@amd.com>, Deepak Sharma <deepak.sharma@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>, Mario Limonciello
-	<mario.limonciello@amd.com>, Shimmer Huang <shimmer.huang@amd.com>, "Perry
- Yuan" <Perry.Yuan@amd.com>, Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar
-	<viresh.kumar@linaro.org>, Borislav Petkov <bp@alien8.de>, "Oleksandr
- Natalenko" <oleksandr@natalenko.name>, Meng Li <li.meng@amd.com>, Wyes Karny
-	<wyes.karny@amd.com>
-Subject: [RESEND PATCH V9 7/7] Documentation: introduce amd-pstate preferrd core mode kernel command line options
-Date: Fri, 13 Oct 2023 11:31:18 +0800
-Message-ID: <20231013033118.3759311-8-li.meng@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231013033118.3759311-1-li.meng@amd.com>
-References: <20231013033118.3759311-1-li.meng@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BC610946
+	for <linux-acpi@vger.kernel.org>; Fri, 13 Oct 2023 08:57:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE25B8;
+	Fri, 13 Oct 2023 01:57:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697187464; x=1728723464;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=h5m5ctsCvAex9DpLpCjOPM49S/+k402kl9JdKLI4A4U=;
+  b=QA/UUN8S5wYH08BJHW7psYmhtmWTTFNVg3SjGdVRFyct1H2lVh22yl9Y
+   jUvfAsbhdfizBYxZ8pnETztC1vVX9hk1GCvNBau+6PeIsn5FD7EVxvGax
+   j1z+JUuPD8m6OW33CfYFlVGTiBq/vhqeiDoJhqKUMQlVE9OIVvQ8cRPlP
+   /CVJaHP4MFWJBquYfDFcR4XqE9PV58yqrx99n0gx2891VOtIYmDvZcK9G
+   xKWDTBc4x3e6TptaKGefrm9TQPCQFB6ct9+QdMEze+Atckc5M2L3a65E3
+   WZ6+zABeSq4kY9a5EtJVYB9P8C3gCycywxTerChiq5IbUesP19n+VKIxS
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="365397256"
+X-IronPort-AV: E=Sophos;i="6.03,221,1694761200"; 
+   d="scan'208";a="365397256"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2023 01:57:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="1086060791"
+X-IronPort-AV: E=Sophos;i="6.03,221,1694761200"; 
+   d="scan'208";a="1086060791"
+Received: from powerlab.fi.intel.com ([10.237.71.25])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2023 01:57:41 -0700
+From: Michal Wilczynski <michal.wilczynski@intel.com>
+To: nvdimm@lists.linux.dev,
+	linux-acpi@vger.kernel.org,
+	dan.j.williams@intel.com
+Cc: rafael@kernel.org,
+	vishal.l.verma@intel.com,
+	lenb@kernel.org,
+	dave.jiang@intel.com,
+	ira.weiny@intel.com,
+	linux-kernel@vger.kernel.org,
+	Michal Wilczynski <michal.wilczynski@intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH v2] ACPI: NFIT: Fix local use of devm_*()
+Date: Fri, 13 Oct 2023 11:57:22 +0300
+Message-ID: <20231013085722.3031537-1-michal.wilczynski@intel.com>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -88,70 +70,87 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042AD:EE_|PH7PR12MB6444:EE_
-X-MS-Office365-Filtering-Correlation-Id: a3f75f42-f6b0-4d38-58b5-08dbcb9d0814
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	XzLHNGMGu2sbnFNqFpxLFKF2DdXvxtzdC8XouRvXu8+H5U6lYhdCyRMXym9u5RxHNZwL4IEPP6FA35JnlRTPc2uTXAduaFpwsTq1Typ5cz+098cOaur/KEab52OU5szE7vJs+k0HTH4JLTmjKhkqoa45CLFrLORHzqQ3h0s1e0QmeJ/XlKJaoT68KaTVudI5wNkHjAVQ/N/C0hSDLZLg/iFZ9TNwFIlHk8ana9iZyZwlUeg/u8Lax6tvWEAQW1cVCbddCnLOm+e6HDVxHuXPDbtYTO/Xta2xlA6dISZXdvj0061ejCph3/rjJXgQ23RcNjprn8sNNruZPG4CRS+uiNbG4AKWwLM0lFfn2sUZdjMayg1yrc0OOhl7YYgJ1074qlANz+w8kVYyYH1xjrmtGEqr4N0b/lmBj7alVpjErOSdYaLQ8GVlE7yZE8JToY8y7zWZSCvbMdx2SOhqmYv3kDWNAdJAexSuFS2GJeIa2nY2RApk4rYI4+qJsOtohRGMicsoJGSJC8dT7hs42OxbttVzzh9jyHIJEqoUIDfUudicScSBGyAe270TQprBqLwDwK7y36IcwH/gW8zcLGTl0x5+2mkIrHOnKS4rV5rDbgfcJ+qWYDI1PEyRq3v9eiv+PrRt0VYhbofW5+VjrAfvHEZzwoVcTGVPNEK/sVfJWpSXaDaFZfFmjJsPUAJnrNcmQZtr1djPkaU1U2oXrkLMH0+z+7exwJjNCgC/tMDSM0q4x8jCtMZrn4tuS9XddyRHKdWTOVVYFuD4Rz+ghoBq/u554LwaEW5WXudreFpz4QKT8Q/X7sob22up8e6Oxi6B
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(136003)(396003)(39860400002)(376002)(230922051799003)(64100799003)(451199024)(82310400011)(186009)(1800799009)(36840700001)(46966006)(40470700004)(26005)(2616005)(47076005)(16526019)(478600001)(1076003)(7696005)(83380400001)(40480700001)(86362001)(40460700003)(6666004)(41300700001)(36756003)(426003)(336012)(4326008)(8936002)(8676002)(110136005)(54906003)(6636002)(316002)(70206006)(70586007)(2906002)(7416002)(5660300002)(81166007)(36860700001)(356005)(82740400003)(36900700001)(14943795004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2023 03:32:30.7506
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3f75f42-f6b0-4d38-58b5-08dbcb9d0814
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000042AD.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6444
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-	autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-amd-pstate driver support enable/disable preferred core.
-Default enabled on platforms supporting amd-pstate preferred core.
-Disable amd-pstate preferred core with
-"amd_prefcore=disable" added to the kernel command line.
+devm_*() family of functions purpose is managing memory attached to a
+device. So in general it should only be used for allocations that should
+last for the whole lifecycle of the device. This is not the case for
+acpi_nfit_init_interleave_set(). There are two allocations that are only
+used locally in this function.
 
-Signed-off-by: Meng Li <li.meng@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Wyes Karny <wyes.karny@amd.com>
-Reviewed-by: Huang Rui <ray.huang@amd.com>
-Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Fix this by switching from devm_kcalloc() to kcalloc(), and adding
+modern scope based rollback. This is similar to C++ RAII and is
+preferred way for handling local memory allocations.
+
+Reported-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Suggested-by: Dave Jiang <dave.jiang@intel.com>
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 5 +++++
- 1 file changed, 5 insertions(+)
+v2:
+ - removed first commit from the patchset, as the commit couldn't
+   be marked as a fix
+ - squashed those commits together, since the second one were
+   mostly overwriting the previous one
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 0a1731a0f0ef..e35b795aa8aa 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -363,6 +363,11 @@
- 			  selects a performance level in this range and appropriate
- 			  to the current workload.
+ drivers/acpi/nfit/core.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 3826f49d481b..67a844a705c4 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -2257,26 +2257,23 @@ static int acpi_nfit_init_interleave_set(struct acpi_nfit_desc *acpi_desc,
+ 		struct nd_region_desc *ndr_desc,
+ 		struct acpi_nfit_system_address *spa)
+ {
++	u16 nr = ndr_desc->num_mappings;
++	struct nfit_set_info2 *info2 __free(kfree) =
++		kcalloc(nr, sizeof(*info2), GFP_KERNEL);
++	struct nfit_set_info *info __free(kfree) =
++		kcalloc(nr, sizeof(*info), GFP_KERNEL);
+ 	struct device *dev = acpi_desc->dev;
+ 	struct nd_interleave_set *nd_set;
+-	u16 nr = ndr_desc->num_mappings;
+-	struct nfit_set_info2 *info2;
+-	struct nfit_set_info *info;
+ 	int i;
  
-+	amd_prefcore=
-+			[X86]
-+			disable
-+			  Disable amd-pstate preferred core.
++	if (!info || !info2)
++		return -ENOMEM;
 +
- 	amijoy.map=	[HW,JOY] Amiga joystick support
- 			Map of devices attached to JOY0DAT and JOY1DAT
- 			Format: <a>,<b>
+ 	nd_set = devm_kzalloc(dev, sizeof(*nd_set), GFP_KERNEL);
+ 	if (!nd_set)
+ 		return -ENOMEM;
+ 	import_guid(&nd_set->type_guid, spa->range_guid);
+ 
+-	info = devm_kcalloc(dev, nr, sizeof(*info), GFP_KERNEL);
+-	if (!info)
+-		return -ENOMEM;
+-
+-	info2 = devm_kcalloc(dev, nr, sizeof(*info2), GFP_KERNEL);
+-	if (!info2)
+-		return -ENOMEM;
+-
+ 	for (i = 0; i < nr; i++) {
+ 		struct nd_mapping_desc *mapping = &ndr_desc->mapping[i];
+ 		struct nvdimm *nvdimm = mapping->nvdimm;
+@@ -2337,8 +2334,6 @@ static int acpi_nfit_init_interleave_set(struct acpi_nfit_desc *acpi_desc,
+ 	}
+ 
+ 	ndr_desc->nd_set = nd_set;
+-	devm_kfree(dev, info);
+-	devm_kfree(dev, info2);
+ 
+ 	return 0;
+ }
 -- 
-2.34.1
+2.41.0
 
 
