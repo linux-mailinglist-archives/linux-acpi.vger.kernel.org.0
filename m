@@ -1,102 +1,282 @@
-Return-Path: <linux-acpi+bounces-629-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-630-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0031E7C8B8D
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 18:46:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E650E7C8B8E
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 18:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF4AF280D48
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 16:46:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE8071C2011F
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 16:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FC821A0B
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 16:46:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296B9219E1
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Oct 2023 16:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=natalenko.name header.i=@natalenko.name header.b="JD3mEtxL"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E208311CBC
-	for <linux-acpi@vger.kernel.org>; Fri, 13 Oct 2023 15:39:43 +0000 (UTC)
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0582DD9;
-	Fri, 13 Oct 2023 08:39:41 -0700 (PDT)
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-57de3096e25so371375eaf.1;
-        Fri, 13 Oct 2023 08:39:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697211580; x=1697816380;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=syMSn9bUGI1mYgk9z5rjv/7N6cpGdLeuuA9bThnQHjE=;
-        b=fHq2b+XJ5tKAlPiS9J/Xcq1sgOxH8i2OZWyxtv2RQyT257OBIwqprv3dzfP3IjX5yE
-         jT7J0PJ+oE2AF5rWqOBcXG2jv/YgQDYpzyTLqfrtuYLhMmwLKztZRqgYBkCCyr9VZBGC
-         RPUd25haEEc2rnRFSoW62HVyc9BuFD8NkRz6T3bUIxKrcCYSqwHu94P76PRdf0NyASQa
-         trMiYylaod0rZknQcd4dwyKAx2X3u4MO8PhSEAF1Q9k6iKfGJorFZTETPLxFhVaYBSr/
-         Ku7QNQfjBgv4+RzzlvYmI7cLsEVZNaxW1tqiyIejQM2Avdj4Cwd0ZMQvdBVyzMFR1eU/
-         oXLw==
-X-Gm-Message-State: AOJu0Yz/lcBopY+RaA2ZOu34PKj7ZNF3+G9e8pXU7T5c8OLbcyU8Sxlb
-	EL67Q6PIqXUMQ1P74F6mA+SybDAOzA0ymY1m2cg=
-X-Google-Smtp-Source: AGHT+IFKVQwLA+paHmJiyVg59OuJh00iVZg+9+X6ncKE6igTumBnt45lx63TZvGa0b73Zv1ta0ASGVjm61l6Y/Y3xwE=
-X-Received: by 2002:a4a:decf:0:b0:581:5990:dbb8 with SMTP id
- w15-20020a4adecf000000b005815990dbb8mr8396496oou.0.1697211580281; Fri, 13 Oct
- 2023 08:39:40 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DCF1BDDF
+	for <linux-acpi@vger.kernel.org>; Fri, 13 Oct 2023 15:45:36 +0000 (UTC)
+Received: from vulcan.natalenko.name (vulcan.natalenko.name [IPv6:2001:19f0:6c00:8846:5400:ff:fe0c:dfa0])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B34ABCF;
+	Fri, 13 Oct 2023 08:45:33 -0700 (PDT)
+Received: from spock.localnet (unknown [94.142.239.106])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by vulcan.natalenko.name (Postfix) with ESMTPSA id C2C75153EFD9;
+	Fri, 13 Oct 2023 17:45:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+	s=dkim-20170712; t=1697211926;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GF/P3UK58QtWzAMZuYI1b/cNsajjo8+2kJ1HkJvuQz4=;
+	b=JD3mEtxLUQ2J2+Vax0UJsf2QngVA5PWdjV1VljOvAyCGii8cy2yagHAHAi7XWDiTGqWY2k
+	mkMK1Yi5RV8+SVfY7T6h0rcenpAfUiVhBXsWd1q2Ccg7A4GNQXEUz73SfA/02LkLwm70Zg
+	qlmCzCurmIH+zK8G92v+FW1Cs5Iu2L8=
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+To: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Huang Rui <ray.huang@amd.com>, Meng Li <li.meng@amd.com>
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ linux-acpi@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-kselftest@vger.kernel.org, Nathan Fontenot <nathan.fontenot@amd.com>,
+ Deepak Sharma <deepak.sharma@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Shimmer Huang <shimmer.huang@amd.com>, Perry Yuan <Perry.Yuan@amd.com>,
+ Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Borislav Petkov <bp@alien8.de>, Meng Li <li.meng@amd.com>
+Subject: Re: [RESEND PATCH V9 0/7] amd-pstate preferred core
+Date: Fri, 13 Oct 2023 17:45:15 +0200
+Message-ID: <12303526.O9o76ZdvQC@natalenko.name>
+In-Reply-To: <20231013033118.3759311-1-li.meng@amd.com>
+References: <20231013033118.3759311-1-li.meng@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 13 Oct 2023 17:39:29 +0200
-Message-ID: <CAJZ5v0gcP2o_mDOyWP_C3u+6nHqT8gXFhUxGHSC7OgywBXsNMQ@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v6.6-rc6
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="nextPart5719407.DvuYhMxLoT";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Hi Linus,
+--nextPart5719407.DvuYhMxLoT
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+Subject: Re: [RESEND PATCH V9 0/7] amd-pstate preferred core
+Date: Fri, 13 Oct 2023 17:45:15 +0200
+Message-ID: <12303526.O9o76ZdvQC@natalenko.name>
+In-Reply-To: <20231013033118.3759311-1-li.meng@amd.com>
+References: <20231013033118.3759311-1-li.meng@amd.com>
+MIME-Version: 1.0
 
-Please pull from the tag
+Hello.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.6-rc6
+On p=C3=A1tek 13. =C5=99=C3=ADjna 2023 5:31:11 CEST Meng Li wrote:
+> Hi all:
+>=20
+> The core frequency is subjected to the process variation in semiconductor=
+s.
+> Not all cores are able to reach the maximum frequency respecting the
+> infrastructure limits. Consequently, AMD has redefined the concept of
+> maximum frequency of a part. This means that a fraction of cores can reach
+> maximum frequency. To find the best process scheduling policy for a given
+> scenario, OS needs to know the core ordering informed by the platform thr=
+ough
+> highest performance capability register of the CPPC interface.
+>=20
+> Earlier implementations of amd-pstate preferred core only support a static
+> core ranking and targeted performance. Now it has the ability to dynamica=
+lly
+> change the preferred core based on the workload and platform conditions a=
+nd
+> accounting for thermals and aging.
+>=20
+> Amd-pstate driver utilizes the functions and data structures provided by
+> the ITMT architecture to enable the scheduler to favor scheduling on cores
+> which can be get a higher frequency with lower voltage.
+> We call it amd-pstate preferred core.
+>=20
+> Here sched_set_itmt_core_prio() is called to set priorities and
+> sched_set_itmt_support() is called to enable ITMT feature.
+> Amd-pstate driver uses the highest performance value to indicate
+> the priority of CPU. The higher value has a higher priority.
+>=20
+> Amd-pstate driver will provide an initial core ordering at boot time.
+> It relies on the CPPC interface to communicate the core ranking to the
+> operating system and scheduler to make sure that OS is choosing the cores
+> with highest performance firstly for scheduling the process. When amd-pst=
+ate
+> driver receives a message with the highest performance change, it will
+> update the core ranking.
+>=20
+> Changes form V8->V9:
+> - all:
+> - - pick up Tested-By flag added by Oleksandr.
+> - cpufreq: amd-pstate:
+> - - pick up Review-By flag added by Wyes.
+> - - ignore modification of bug.
 
-with top-most commit 9bc2fb9a7e41542a193658deff3df572fa24cb68
+Thanks for this submission.
 
- Merge branches 'acpi-ec' and 'acpi-resource'
+The bug you refer to, I assume it should have been fixed by this hunk:
 
-on top of commit 94f6f0550c625fab1f373bb86a6669b45e9748b3
+```
+=2D-- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -542,7 +542,7 @@ static void amd_pstate_adjust_perf(unsigned int cpu,
+ 	if (target_perf < capacity)
+ 		des_perf =3D DIV_ROUND_UP(cap_perf * target_perf, capacity);
+=20
+=2D	min_perf =3D READ_ONCE(cpudata->highest_perf);
++	min_perf =3D READ_ONCE(cpudata->lowest_perf);
+ 	if (_min_perf < capacity)
+ 		min_perf =3D DIV_ROUND_UP(cap_perf * _min_perf, capacity);
+```
 
- Linux 6.6-rc5
+which is now missing from this patchset as it was suggested to send it as a=
+ separate patch.
 
-to receive ACPI fixes for 6.6-rc6.
+Am I correct? If so, are you going to send it as a separate patch within th=
+e next round of this patchset, or it will be sent separately (if it hasn't =
+yet)?
 
-These add an ACPI EC GPE detection quirk for HP Pavilion Gaming
-15-dk1xxx and ACPI IRQ override quirks for TongFang GM6BGEQ, GM6BG5Q
-and GM6BG0Q, and for ASUS ExpertBook B1402CBA (Hans de Goede).
+> - - add a attribute of prefcore_ranking.
+> - - modify data type conversion from u32 to int.
+> - Documentation: amd-pstate:
+> - - pick up Review-By flag added by Wyes.
+>=20
+> Changes form V7->V8:
+> - all:
+> - - pick up Review-By flag added by Mario and Ray.
+> - cpufreq: amd-pstate:
+> - - use hw_prefcore embeds into cpudata structure.
+> - - delete preferred core init from cpu online/off.
+>=20
+> Changes form V6->V7:
+> - x86:
+> - - Modify kconfig about X86_AMD_PSTATE.
+> - cpufreq: amd-pstate:
+> - - modify incorrect comments about scheduler_work().
+> - - convert highest_perf data type.
+> - - modify preferred core init when cpu init and online.
+> - acpi: cppc:
+> - - modify link of CPPC highest performance.
+> - cpufreq:
+> - - modify link of CPPC highest performance changed.
+>=20
+> Changes form V5->V6:
+> - cpufreq: amd-pstate:
+> - - modify the wrong tag order.
+> - - modify warning about hw_prefcore sysfs attribute.
+> - - delete duplicate comments.
+> - - modify the variable name cppc_highest_perf to prefcore_ranking.
+> - - modify judgment conditions for setting highest_perf.
+> - - modify sysfs attribute for CPPC highest perf to pr_debug message.
+> - Documentation: amd-pstate:
+> - - modify warning: title underline too short.
+>=20
+> Changes form V4->V5:
+> - cpufreq: amd-pstate:
+> - - modify sysfs attribute for CPPC highest perf.
+> - - modify warning about comments
+> - - rebase linux-next
+> - cpufreq:=20
+> - - Moidfy warning about function declarations.
+> - Documentation: amd-pstate:
+> - - align with ``amd-pstat``
+>=20
+> Changes form V3->V4:
+> - Documentation: amd-pstate:
+> - - Modify inappropriate descriptions.
+>=20
+> Changes form V2->V3:
+> - x86:
+> - - Modify kconfig and description.
+> - cpufreq: amd-pstate:=20
+> - - Add Co-developed-by tag in commit message.
+> - cpufreq:
+> - - Modify commit message.
+> - Documentation: amd-pstate:
+> - - Modify inappropriate descriptions.
+>=20
+> Changes form V1->V2:
+> - acpi: cppc:
+> - - Add reference link.
+> - cpufreq:
+> - - Moidfy link error.
+> - cpufreq: amd-pstate:=20
+> - - Init the priorities of all online CPUs
+> - - Use a single variable to represent the status of preferred core.
+> - Documentation:
+> - - Default enabled preferred core.
+> - Documentation: amd-pstate:=20
+> - - Modify inappropriate descriptions.
+> - - Default enabled preferred core.
+> - - Use a single variable to represent the status of preferred core.
+>=20
+> Meng Li (7):
+>   x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for the expansion.
+>   acpi: cppc: Add get the highest performance cppc control
+>   cpufreq: amd-pstate: Enable amd-pstate preferred core supporting.
+>   cpufreq: Add a notification message that the highest perf has changed
+>   cpufreq: amd-pstate: Update amd-pstate preferred core ranking
+>     dynamically
+>   Documentation: amd-pstate: introduce amd-pstate preferred core
+>   Documentation: introduce amd-pstate preferrd core mode kernel command
+>     line options
+>=20
+>  .../admin-guide/kernel-parameters.txt         |   5 +
+>  Documentation/admin-guide/pm/amd-pstate.rst   |  59 ++++-
+>  arch/x86/Kconfig                              |   5 +-
+>  drivers/acpi/cppc_acpi.c                      |  13 ++
+>  drivers/acpi/processor_driver.c               |   6 +
+>  drivers/cpufreq/amd-pstate.c                  | 204 ++++++++++++++++--
+>  drivers/cpufreq/cpufreq.c                     |  13 ++
+>  include/acpi/cppc_acpi.h                      |   5 +
+>  include/linux/amd-pstate.h                    |  10 +
+>  include/linux/cpufreq.h                       |   5 +
+>  10 files changed, 305 insertions(+), 20 deletions(-)
+>=20
+>=20
 
-Thanks!
+
+=2D-=20
+Oleksandr Natalenko (post-factum)
+--nextPart5719407.DvuYhMxLoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmUpZgsACgkQil/iNcg8
+M0saeQ/+ITtu+L9VzE+fm2PU5Ym/icfRCnp0TME5PQY+YNAnWNKMJeeyP+IVIsGK
+mC/Yru7gP4UxbWz8Ex/eKV+J3B7Afe5V7Z5vrVjRyJVAwU5RbuKLYvxZPQSDuy16
+8gK75tCK639bYViG9q0zWgZulc0qtjt7zsS5lRM0m+XRbEbvNR4Sr0gh2c1lHOa+
+nA5DwkUDbEtmCgebyEbBHidtklha9yTuhEVL38BpiNra+KjzC81A+Acc+VyPCTP0
+hgYf/NHtI6jzZo+f/Jvg1Y4bEvjsn8VDruUQ7GHuvAGshunkqLUsHJwAUfUJZbPX
+tjuFyp/ah2861e+Q1/kyjMr2tsfglBu2ISxsM51P5KN2s/bqdws2+mv+CMLj8iph
+6Jrp3aDgPainEwyMXONsyZRcNvMQtFGLZOLosOJOZ7N98B8cN+EnyAoLC02S1VAO
+U31S9O0Xef5bancSf/0VsKQ0opD1Rw9Vn5orSWJIRXm5u+bN+8SFIroz77dHuokZ
++t+bD/3KnmUHzKG8PDaS96yE65Jd9ZS1f460lKQ0Au82rSpdMWCW3AbdJw57TpAa
+9lqMSnbRos75cPc3T455e1XTnwiiIqsygu53x9chZF+mU+w8+SZoMCmeKXhQ5qtk
+M1x9isx4WxZ4M2MJKCVkbIz3gBTflv1YW9laJJ2WrDOU79KuCn8=
+=GFQL
+-----END PGP SIGNATURE-----
+
+--nextPart5719407.DvuYhMxLoT--
 
 
----------------
 
-Hans de Goede (3):
-      ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA
-      ACPI: EC: Add quirk for the HP Pavilion Gaming 15-dk1xxx
-      ACPI: resource: Add TongFang GM6BGEQ, GM6BG5Q and GM6BG0Q to
-irq1_edge_low_force_override[]
-
----------------
-
- drivers/acpi/ec.c       | 11 +++++++++++
- drivers/acpi/resource.c | 26 ++++++++++++++++++++------
- 2 files changed, 31 insertions(+), 6 deletions(-)
 
