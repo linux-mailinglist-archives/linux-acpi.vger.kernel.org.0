@@ -1,224 +1,192 @@
-Return-Path: <linux-acpi+bounces-649-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-651-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A8A7C970E
-	for <lists+linux-acpi@lfdr.de>; Sun, 15 Oct 2023 00:32:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A5677C9766
+	for <lists+linux-acpi@lfdr.de>; Sun, 15 Oct 2023 02:31:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63E02B20B91
-	for <lists+linux-acpi@lfdr.de>; Sat, 14 Oct 2023 22:32:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8406A1C20940
+	for <lists+linux-acpi@lfdr.de>; Sun, 15 Oct 2023 00:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC7326E0F
-	for <lists+linux-acpi@lfdr.de>; Sat, 14 Oct 2023 22:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74A91851
+	for <lists+linux-acpi@lfdr.de>; Sun, 15 Oct 2023 00:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QH/9vuvq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IiUniY/W"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC72241E7
-	for <linux-acpi@vger.kernel.org>; Sat, 14 Oct 2023 20:53:27 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C612DF
-	for <linux-acpi@vger.kernel.org>; Sat, 14 Oct 2023 13:53:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1697316805;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nVXuRZ43Xjf843BgeSpJhYSd1chgRygz5RuSbmD9+7Q=;
-	b=QH/9vuvqbTn2pmFSitz5mSbYk99fvfHBctIzqQUmsZdpQZieMUwVcSA9ISaDar7jtONuED
-	XF/dJbMo2qnK1+qkx7skYEhTgs+rLRjXiAvRXnM5a4yyrGydLpHbIEEOXZnNxjeFk3Pk+M
-	GYDErUAuFNZqWjLIWIvDv+d7YdFO8F4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-581-f_G26kRvMhqO5SmTNSEseQ-1; Sat, 14 Oct 2023 16:53:22 -0400
-X-MC-Unique: f_G26kRvMhqO5SmTNSEseQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DC32C185A78E;
-	Sat, 14 Oct 2023 20:53:21 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.192.6])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id AB1B425C0;
-	Sat, 14 Oct 2023 20:53:20 +0000 (UTC)
-From: Hans de Goede <hdegoede@redhat.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	linux-acpi@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: [PATCH 4/4] platform/x86: x86-android-tablets: Add audio codec info for Lenovo Yoga Tab 3 Pro YT3-X90F
-Date: Sat, 14 Oct 2023 22:53:14 +0200
-Message-ID: <20231014205314.59333-5-hdegoede@redhat.com>
-In-Reply-To: <20231014205314.59333-1-hdegoede@redhat.com>
-References: <20231014205314.59333-1-hdegoede@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD581845
+	for <linux-acpi@vger.kernel.org>; Sat, 14 Oct 2023 22:58:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41A9CCE;
+	Sat, 14 Oct 2023 15:58:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697324281; x=1728860281;
+  h=date:from:to:cc:subject:message-id;
+  bh=I8QU87Z/rCdX+GTJc1A4VcDs4tYPVTA2PevxmkqD2qk=;
+  b=IiUniY/WCF0w8ch2i2h/IOtB4nhC+amPkc+Q+p8WlXV9yCgOguGj4EXo
+   hVR9fjoAKWYSgRpb0OKn9m/qH4Rze9Dmm312gMJAfZmB719wrYnZDmfck
+   ebB6Mv1RznmqOQrP/CM8TXcGadobIMbegieEmHb+l5e2jqqfa7zKbXCNm
+   gKvI6YdDJ/3Dtslv1ceVdVatjErtkiqou00Y63uBa15R4o1u7t7LIA+qQ
+   dKVosrdawJy/sdCgcWuSjUiwsps7mThtkX2hYV/u/cybh/lJq1GHOoxKL
+   zB3ZX4apsvIuXh0Z1EpJJ0WqFGtLr7KCQpwedyUNVtiLdSVGooVEkDCA+
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="6917001"
+X-IronPort-AV: E=Sophos;i="6.03,226,1694761200"; 
+   d="scan'208";a="6917001"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2023 15:57:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="784585328"
+X-IronPort-AV: E=Sophos;i="6.03,226,1694761200"; 
+   d="scan'208";a="784585328"
+Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 14 Oct 2023 15:57:51 -0700
+Received: from kbuild by f64821696465 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qrnZs-0006lt-2h;
+	Sat, 14 Oct 2023 22:57:48 +0000
+Date: Sun, 15 Oct 2023 06:57:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 6169dd7beafef12d6626425e3dd3d72e71c101fb
+Message-ID: <202310150618.LevCvcO3-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NO_DNS_FOR_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,T_SPF_TEMPERROR autolearn=no
+	autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
 
-The SPI attached WM5102 codec on the Lenovo Yoga Tab 3 Pro YT3-X90F
-is not described in the ACPI tables.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 6169dd7beafef12d6626425e3dd3d72e71c101fb  Merge branch 'thermal-core' into bleeding-edge
 
-Add info to instantiate the SPI device for the codec manually.
+elapsed time: 1497m
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- .../platform/x86/x86-android-tablets/lenovo.c | 99 +++++++++++++++++++
- 1 file changed, 99 insertions(+)
+configs tested: 102
+configs skipped: 2
 
-diff --git a/drivers/platform/x86/x86-android-tablets/lenovo.c b/drivers/platform/x86/x86-android-tablets/lenovo.c
-index 585f10a57810..d5d815940ce1 100644
---- a/drivers/platform/x86/x86-android-tablets/lenovo.c
-+++ b/drivers/platform/x86/x86-android-tablets/lenovo.c
-@@ -12,6 +12,8 @@
- 
- #include <linux/efi.h>
- #include <linux/gpio/machine.h>
-+#include <linux/mfd/arizona/pdata.h>
-+#include <linux/mfd/arizona/registers.h>
- #include <linux/mfd/intel_soc_pmic.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/pinctrl/machine.h>
-@@ -677,6 +679,89 @@ static const struct x86_i2c_client_info lenovo_yt3_i2c_clients[] __initconst = {
- 	}
- };
- 
-+/*
-+ * The AOSP 3.5 mm Headset: Accessory Specification gives the following values:
-+ * Function A Play/Pause:           0 ohm
-+ * Function D Voice assistant:    135 ohm
-+ * Function B Volume Up           240 ohm
-+ * Function C Volume Down         470 ohm
-+ * Minimum Mic DC resistance     1000 ohm
-+ * Minimum Ear speaker impedance   16 ohm
-+ * Note the first max value below must be less then the min. speaker impedance,
-+ * to allow CTIA/OMTP detection to work. The other max values are the closest
-+ * value from extcon-arizona.c:arizona_micd_levels halfway 2 button resistances.
-+ */
-+static const struct arizona_micd_range arizona_micd_aosp_ranges[] = {
-+	{ .max =  11, .key = KEY_PLAYPAUSE },
-+	{ .max = 186, .key = KEY_VOICECOMMAND },
-+	{ .max = 348, .key = KEY_VOLUMEUP },
-+	{ .max = 752, .key = KEY_VOLUMEDOWN },
-+};
-+
-+/* YT3 WM5102 arizona_micd_config comes from Android kernel sources */
-+static struct arizona_micd_config lenovo_yt3_wm5102_micd_config[]={
-+	{ 0, 1, 0 },
-+	{ ARIZONA_ACCDET_SRC, 2, 1 },
-+};
-+
-+static struct arizona_pdata lenovo_yt3_wm5102_pdata = {
-+	.irq_flags = IRQF_TRIGGER_LOW,
-+	.micd_detect_debounce = 200,
-+	.micd_ranges = arizona_micd_aosp_ranges,
-+	.num_micd_ranges = ARRAY_SIZE(arizona_micd_aosp_ranges),
-+	.hpdet_channel = ARIZONA_ACCDET_MODE_HPL,
-+
-+	/* Below settings come from Android kernel sources */
-+	.micd_bias_start_time = 1,
-+	.micd_rate = 6,
-+	.micd_force_micbias = 1,
-+	.micd_configs = lenovo_yt3_wm5102_micd_config,
-+	.num_micd_configs = ARRAY_SIZE(lenovo_yt3_wm5102_micd_config),
-+        .micbias={
-+           [0]={ /*MICBIAS1*/
-+                 .mV =2800 ,
-+                 .ext_cap=1,
-+                 .discharge =1 ,
-+                 .soft_start =0,
-+                 .bypass =0,
-+           },
-+           [1]={ /*MICBIAS2*/
-+                 .mV =2800 ,
-+                 .ext_cap=1,
-+                 .discharge =1 ,
-+                 .soft_start =0,
-+                 .bypass =0,
-+           },
-+           [2]={ /*MICBIAS3*/
-+                 .mV =2800 ,
-+                 .ext_cap=1,
-+                 .discharge =1 ,
-+                 .soft_start =0,
-+                 .bypass =0,
-+           },
-+        },
-+};
-+
-+static const struct x86_spi_dev_info lenovo_yt3_spi_devs[] __initconst = {
-+	{
-+		/* WM5102 codec */
-+		.board_info = {
-+			.modalias = "wm5102",
-+			.platform_data = &lenovo_yt3_wm5102_pdata,
-+			.max_speed_hz = 5000000,
-+		},
-+		.ctrl_path = "\\_SB_.PCI0.SPI1",
-+		.irq_data = {
-+			.type = X86_ACPI_IRQ_TYPE_GPIOINT,
-+			.chip = "INT33FF:00",
-+			.index = 91,
-+			.trigger = ACPI_LEVEL_SENSITIVE,
-+			.polarity = ACPI_ACTIVE_LOW,
-+			.con_id = "wm5102_irq",
-+		},
-+	}
-+};
-+
- static int __init lenovo_yt3_init(void)
- {
- 	int ret;
-@@ -720,14 +805,28 @@ static struct gpiod_lookup_table lenovo_yt3_hideep_gpios = {
- 	},
- };
- 
-+static struct gpiod_lookup_table lenovo_yt3_wm5102_gpios = {
-+	.dev_id = "spi1.0",
-+	.table = {
-+		GPIO_LOOKUP("INT33FF:00", 75, "wlf,spkvdd-ena", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("INT33FF:00", 81, "wlf,ldoena", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("INT33FF:00", 82, "reset", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("arizona", 2, "wlf,micd-pol", GPIO_ACTIVE_HIGH),
-+		{ }
-+	},
-+};
-+
- static struct gpiod_lookup_table * const lenovo_yt3_gpios[] = {
- 	&lenovo_yt3_hideep_gpios,
-+	&lenovo_yt3_wm5102_gpios,
- 	NULL
- };
- 
- const struct x86_dev_info lenovo_yt3_info __initconst = {
- 	.i2c_client_info = lenovo_yt3_i2c_clients,
- 	.i2c_client_count = ARRAY_SIZE(lenovo_yt3_i2c_clients),
-+	.spi_dev_info = lenovo_yt3_spi_devs,
-+	.spi_dev_count = ARRAY_SIZE(lenovo_yt3_spi_devs),
- 	.gpiod_lookup_tables = lenovo_yt3_gpios,
- 	.init = lenovo_yt3_init,
- };
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231014   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20231014   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231014   gcc  
+i386                  randconfig-002-20231014   gcc  
+i386                  randconfig-003-20231014   gcc  
+i386                  randconfig-004-20231014   gcc  
+i386                  randconfig-005-20231014   gcc  
+i386                  randconfig-006-20231014   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231014   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20231014   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20231014   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20231014   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20231014   gcc  
+x86_64                randconfig-002-20231014   gcc  
+x86_64                randconfig-003-20231014   gcc  
+x86_64                randconfig-004-20231014   gcc  
+x86_64                randconfig-005-20231014   gcc  
+x86_64                randconfig-006-20231014   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+
 -- 
-2.41.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
