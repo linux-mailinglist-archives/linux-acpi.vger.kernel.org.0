@@ -1,156 +1,181 @@
-Return-Path: <linux-acpi+bounces-679-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-680-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5787CB2CA
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 20:43:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 194A27CB4CC
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 22:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 458B6280F98
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 18:43:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A3501C20975
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 20:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12C134182
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 18:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A769B381A1
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 20:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f+G4IGCX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jhD4+rZJ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6046E34197
-	for <linux-acpi@vger.kernel.org>; Mon, 16 Oct 2023 18:38:32 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8307495
-	for <linux-acpi@vger.kernel.org>; Mon, 16 Oct 2023 11:38:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1697481508;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zs+lHskTeTS1TcsvMpv41AYJj/qLk+4rSlBCHgXCWvc=;
-	b=f+G4IGCX/0LOXDW3SYXXSLJHHVHRRe5+AV5hkBfyWoBEekmWBDWTdwtakwKcXxNUPRZeUM
-	lPXAMrw8Cu2+YAW1Xb3TJIRkzKvTmcVwkhCd1Hansq60rYa2JPGsaqOdRdSwKYUZFsk2A2
-	zDlX7ShmQOJmyeyyF/5msVD6yZl8xXw=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-227-u8bs7r-SN1mT4EIq778ajw-1; Mon, 16 Oct 2023 14:38:22 -0400
-X-MC-Unique: u8bs7r-SN1mT4EIq778ajw-1
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-9ae686dafedso351615966b.3
-        for <linux-acpi@vger.kernel.org>; Mon, 16 Oct 2023 11:38:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697481500; x=1698086300;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zs+lHskTeTS1TcsvMpv41AYJj/qLk+4rSlBCHgXCWvc=;
-        b=hrplXDLlH2Tfobbohk4tLo3uIN1OaSm5GDzZ8UKmCROF210qAW/duZp1un3EStT0oQ
-         JMGfYSn3MjHq4RrrToYG26gqRkeZrK30pxbPgm8sCJEt3mAnIz7glEhHub2YgQnw+CT1
-         uMQOJx/HM8CuL+NSeSfW0BXKnhR3LrOrofGDTPrBVl9nlut6oTHf6BefCG3QbFilYhGy
-         y9l7J92B/7+MUmQTspqmgmoyBiQXbVYhyOzIkqfB5W4ErfOVuWp3QKn8Hq9Yfrc6XLa6
-         O/aExjiOfmd3yjPKVj8RmmBkkU2x3Y/1/0YF5q9ciZYbYIFYnxzDCTAmO/tk1Ae537eo
-         qsag==
-X-Gm-Message-State: AOJu0Yyyh8v71tg2Pc1KDZzfD16iZw7sCk5Kd364s0hmMXdpXXBf2vRa
-	Of5f6dp26BIleKxAdWAWk0snaRYGwmjBvPLKX5kvufLsqBlCm6dy2d5oRBpEGWuzfyju8WiinBg
-	mziyldox+pEAQJjxsSEej01N7P7Kc+Q==
-X-Received: by 2002:a17:907:3e21:b0:9c3:bd63:4245 with SMTP id hp33-20020a1709073e2100b009c3bd634245mr4522960ejc.47.1697481500693;
-        Mon, 16 Oct 2023 11:38:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHH+jj7O1f0tpsiiEeDbkTbIvsIwBY4dqV1bDh+UI49K/oX5NoNQC7BVLjRgvfyHSwPJIczZw==
-X-Received: by 2002:a17:907:3e21:b0:9c3:bd63:4245 with SMTP id hp33-20020a1709073e2100b009c3bd634245mr4522945ejc.47.1697481500498;
-        Mon, 16 Oct 2023 11:38:20 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id nc30-20020a1709071c1e00b009b65a834dd6sm4476471ejc.215.2023.10.16.11.38.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Oct 2023 11:38:19 -0700 (PDT)
-Message-ID: <1c5b051e-8ee2-6f61-dc18-3c6f75b428d5@redhat.com>
-Date: Mon, 16 Oct 2023 20:38:19 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BC830D0E
+	for <linux-acpi@vger.kernel.org>; Mon, 16 Oct 2023 18:50:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E34D95;
+	Mon, 16 Oct 2023 11:50:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697482249; x=1729018249;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=Iulu54IDYUFpU+iC/guD05U9rT3+qcojMqimF0BvD7c=;
+  b=jhD4+rZJQNVsfSUT8UJbDT9HLUwyecBBVj4HRHrMfkfg1XVUwMobtE7g
+   BDbSxTsuduPB3ueu+4/gbXnRR7LiIlQBsM8Kk5DLQL/o+ZIiZ2UkNXJpH
+   E0lmz2GC/CmNWjuizonjcZQzsofBdAzzlVIKTOmsRXUYjaskdYlywWfKM
+   3a1uDfYzdcLPy3hDe4UrQahcYbCygR1spbZ9lOf6OgtTyyAubZUaJii4D
+   Gs8E0g+WbUYpm4AdTxDkxyxm+rS/I98xApjEg3FgqxCiYmCtlFQjrVM3B
+   42gcHaJxs4mJ9ejKau+ZO1M7qGULAUeyvN7/jI8evUwxRtu0hVsqDUH8P
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="7182384"
+X-IronPort-AV: E=Sophos;i="6.03,230,1694761200"; 
+   d="scan'208";a="7182384"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 11:50:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="826131454"
+X-IronPort-AV: E=Sophos;i="6.03,230,1694761200"; 
+   d="scan'208";a="826131454"
+Received: from spandruv-desk1.amr.corp.intel.com ([10.209.124.179])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 11:50:34 -0700
+Message-ID: <eeb77ec34d2002e507c09949aac9110d8b8eff4a.camel@linux.intel.com>
+Subject: Re: [RESEND PATCH V9 3/7] cpufreq: amd-pstate: Enable amd-pstate
+ preferred core supporting.
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>, Peter Zijlstra
+	 <peterz@infradead.org>, "Meng, Li (Jassmine)" <Li.Meng@amd.com>
+Cc: "Huang, Ray" <Ray.Huang@amd.com>, "linux-pm@vger.kernel.org"
+ <linux-pm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, Shuah Khan
+ <skhan@linuxfoundation.org>,  "linux-kselftest@vger.kernel.org"
+ <linux-kselftest@vger.kernel.org>, "Fontenot, Nathan"
+ <Nathan.Fontenot@amd.com>,  "Sharma, Deepak" <Deepak.Sharma@amd.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>, "Limonciello, Mario"
+ <Mario.Limonciello@amd.com>, "Huang, Shimmer" <Shimmer.Huang@amd.com>, 
+ "Yuan, Perry" <Perry.Yuan@amd.com>, "Du, Xiaojian" <Xiaojian.Du@amd.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>,  Borislav Petkov <bp@alien8.de>,
+ Oleksandr Natalenko <oleksandr@natalenko.name>, "Karny, Wyes"
+ <Wyes.Karny@amd.com>
+Date: Mon, 16 Oct 2023 11:50:34 -0700
+In-Reply-To: <e82fc689-5cc3-d799-6e5f-a9e4ac98e26f@intel.com>
+References: <20231013033118.3759311-1-li.meng@amd.com>
+	 <20231013033118.3759311-4-li.meng@amd.com>
+	 <20231013160128.GB36211@noisy.programming.kicks-ass.net>
+	 <DM4PR12MB6351E2E9504B57BD40DAE985F7D7A@DM4PR12MB6351.namprd12.prod.outlook.com>
+	 <20231016105845.GA33217@noisy.programming.kicks-ass.net>
+	 <e82fc689-5cc3-d799-6e5f-a9e4ac98e26f@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] ACPI: resource: Do IRQ override on TongFang GMxXGxx
-Content-Language: en-US, nl
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
- Werner Sembach <wse@tuxedocomputers.com>
-Cc: Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20231016160828.373599-1-wse@tuxedocomputers.com>
- <CAJZ5v0itvrL7ijh07kB6i6o0ShCboWhv+09Gzo299DLK+GkH1w@mail.gmail.com>
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAJZ5v0itvrL7ijh07kB6i6o0ShCboWhv+09Gzo299DLK+GkH1w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Hi,
+On Mon, 2023-10-16 at 19:27 +0200, Wysocki, Rafael J wrote:
+> On 10/16/2023 12:58 PM, Peter Zijlstra wrote:
+> > On Mon, Oct 16, 2023 at 06:20:53AM +0000, Meng, Li (Jassmine)
+> > wrote:
+> > > > > +static void amd_pstate_init_prefcore(struct amd_cpudata
+> > > > > *cpudata) {
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0 int ret, prio;
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0 u32 highest_perf;
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0 static u32 max_highest_perf =3D 0, min_=
+highest_perf =3D
+> > > > > U32_MAX;
+> > > > What serializes these things?
+> > > >=20
+> > > > Also, *why* are you using u32 here, what's wrong with something
+> > > > like:
+> > > >=20
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int max_hp =3D INT=
+_MIN, min_hp =3D INT_MAX;
+> > > >=20
+> > > [Meng, Li (Jassmine)]
+> > > We use ITMT architecture to utilize preferred core features.
+> > > Therefore, we need to try to be consistent with Intel's
+> > > implementation
+> > > as much as possible.=C2=A0 For details, please refer to the
+> > > intel_pstate_set_itmt_prio function in file intel_pstate.c. (Line
+> > > 355)
+> > >=20
+> > > I think using the data type of u32 is consistent with the data
+> > > structures of cppc_perf_ctrls and amd_cpudata etc.
+> > Rafael, should we fix intel_pstate too?
+>=20
+> Srinivas should be more familiar with this code than I am, so adding
+> him.
+>=20
+If we make
+	static u32 max_highest_perf =3D 0, min_highest_perf =3D U32_MAX;
+to
+	static int max_highest_perf =3D INT_MIN, min_highest_perf =3D
+INT_MAX;
 
-On 10/16/23 19:33, Rafael J. Wysocki wrote:
-> On Mon, Oct 16, 2023 at 6:08 PM Werner Sembach <wse@tuxedocomputers.com> wrote:
->>
->> The TongFang GMxXGxx/TUXEDO Stellaris/Pollaris Gen5 needs IRQ overriding
->> for the keyboard to work. Adding an entry for this laptop to the
->> override_table makes the internal keyboard functional.
->>
->> v2: Rebase onto linux-next
-> 
-> Hans, any comments?
-
-No comments, the patch looks good to me:
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
+Then in intel_pstate we will compare signed vs unsigned comparison as
+cppc_perf.highest_perf is u32.
 
 
+In reality this will be fine to change to "int" as we will never reach
+u32 max as performance on any Intel platform.
 
+>=20
+> > The point is, that sched_asym_prefer(), the final consumer of these
+> > values uses int and thus an explicitly signed compare.
+> >=20
+> > Using u32 and U32_MAX anywhere near the setting the priority makes
+> > absolutely no sense.
+> >=20
+> > If you were to have the high bit set, things do not behave as
+> > expected.
+>=20
+> Right, but in practice these values are always between 0 and 255=20
+> inclusive AFAICS.
+>=20
+> It would have been better to use u8 I suppose.
+Should be fine as over clocked parts will set to max 0xff.
 
+>=20
+>=20
+> > Also, same question as to the amd folks; what serializes those
+> > static
+> > variables?
+>=20
+> That's a good one.
 
-> 
->> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
->> Cc: <stable@vger.kernel.org>
->> ---
->>  drivers/acpi/resource.c | 12 ++++++++++++
->>  1 file changed, 12 insertions(+)
->>
->> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
->> index 18f6353c142e..15a3bdbd0755 100644
->> --- a/drivers/acpi/resource.c
->> +++ b/drivers/acpi/resource.c
->> @@ -497,6 +497,18 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
->>                         DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
->>                 },
->>         },
->> +       {
->> +               /* TongFang GMxXGxx/TUXEDO Polaris 15 Gen5 AMD */
->> +               .matches = {
->> +                       DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
->> +               },
->> +       },
->> +       {
->> +               /* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
->> +               .matches = {
->> +                       DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
->> +               },
->> +       },
->>         {
->>                 /* MAINGEAR Vector Pro 2 15 */
->>                 .matches = {
->> --
->> 2.34.1
->>
-> 
+This function which is checking static variables is called from cpufreq
+->init callback. Which in turn is called from a function which is
+passed as startup() function pointer to
+cpuhp_setup_state_nocalls_cpuslocked().
+
+I see that startup() callbacks are called under a mutex
+cpuhp_state_mutex for each present CPUs. So if some tear down happen,
+that is also protected by the same mutex. The assumption is here is
+that cpuhp_invoke_callback() in hotplug state machine is not called in
+parallel on two CPUs by the hotplug state machine. But I see activity
+on parallel bringup, so this is questionable now.
+
+Thanks,
+Srinivas
+
+>=20
+>=20
 
 
