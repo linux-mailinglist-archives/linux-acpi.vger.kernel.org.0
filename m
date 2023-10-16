@@ -1,181 +1,106 @@
-Return-Path: <linux-acpi+bounces-680-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-681-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194A27CB4CC
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 22:37:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D517CB4CD
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 22:37:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A3501C20975
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 20:37:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42089280216
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 20:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A769B381A1
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 20:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jhD4+rZJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FE9381A0
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 20:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BC830D0E
-	for <linux-acpi@vger.kernel.org>; Mon, 16 Oct 2023 18:50:50 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E34D95;
-	Mon, 16 Oct 2023 11:50:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697482249; x=1729018249;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=Iulu54IDYUFpU+iC/guD05U9rT3+qcojMqimF0BvD7c=;
-  b=jhD4+rZJQNVsfSUT8UJbDT9HLUwyecBBVj4HRHrMfkfg1XVUwMobtE7g
-   BDbSxTsuduPB3ueu+4/gbXnRR7LiIlQBsM8Kk5DLQL/o+ZIiZ2UkNXJpH
-   E0lmz2GC/CmNWjuizonjcZQzsofBdAzzlVIKTOmsRXUYjaskdYlywWfKM
-   3a1uDfYzdcLPy3hDe4UrQahcYbCygR1spbZ9lOf6OgtTyyAubZUaJii4D
-   Gs8E0g+WbUYpm4AdTxDkxyxm+rS/I98xApjEg3FgqxCiYmCtlFQjrVM3B
-   42gcHaJxs4mJ9ejKau+ZO1M7qGULAUeyvN7/jI8evUwxRtu0hVsqDUH8P
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="7182384"
-X-IronPort-AV: E=Sophos;i="6.03,230,1694761200"; 
-   d="scan'208";a="7182384"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 11:50:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="826131454"
-X-IronPort-AV: E=Sophos;i="6.03,230,1694761200"; 
-   d="scan'208";a="826131454"
-Received: from spandruv-desk1.amr.corp.intel.com ([10.209.124.179])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 11:50:34 -0700
-Message-ID: <eeb77ec34d2002e507c09949aac9110d8b8eff4a.camel@linux.intel.com>
-Subject: Re: [RESEND PATCH V9 3/7] cpufreq: amd-pstate: Enable amd-pstate
- preferred core supporting.
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>, Peter Zijlstra
-	 <peterz@infradead.org>, "Meng, Li (Jassmine)" <Li.Meng@amd.com>
-Cc: "Huang, Ray" <Ray.Huang@amd.com>, "linux-pm@vger.kernel.org"
- <linux-pm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, Shuah Khan
- <skhan@linuxfoundation.org>,  "linux-kselftest@vger.kernel.org"
- <linux-kselftest@vger.kernel.org>, "Fontenot, Nathan"
- <Nathan.Fontenot@amd.com>,  "Sharma, Deepak" <Deepak.Sharma@amd.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>, "Limonciello, Mario"
- <Mario.Limonciello@amd.com>, "Huang, Shimmer" <Shimmer.Huang@amd.com>, 
- "Yuan, Perry" <Perry.Yuan@amd.com>, "Du, Xiaojian" <Xiaojian.Du@amd.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,  Borislav Petkov <bp@alien8.de>,
- Oleksandr Natalenko <oleksandr@natalenko.name>, "Karny, Wyes"
- <Wyes.Karny@amd.com>
-Date: Mon, 16 Oct 2023 11:50:34 -0700
-In-Reply-To: <e82fc689-5cc3-d799-6e5f-a9e4ac98e26f@intel.com>
-References: <20231013033118.3759311-1-li.meng@amd.com>
-	 <20231013033118.3759311-4-li.meng@amd.com>
-	 <20231013160128.GB36211@noisy.programming.kicks-ass.net>
-	 <DM4PR12MB6351E2E9504B57BD40DAE985F7D7A@DM4PR12MB6351.namprd12.prod.outlook.com>
-	 <20231016105845.GA33217@noisy.programming.kicks-ass.net>
-	 <e82fc689-5cc3-d799-6e5f-a9e4ac98e26f@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF4C29425;
+	Mon, 16 Oct 2023 19:57:34 +0000 (UTC)
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C333EE;
+	Mon, 16 Oct 2023 12:57:31 -0700 (PDT)
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6c496719a9aso2591223a34.0;
+        Mon, 16 Oct 2023 12:57:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697486251; x=1698091051;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XgQIgwOXkE8+0o51RaJzdyOkFFFWSreK0o8H4z9cVpQ=;
+        b=oBP8tHCUNMmU6Y5Dsm7+IRSZcaQXEN/QXztM+NI0yVY4a995zbfQ6Eb8JlOqstrluu
+         nDglt3jQqcTizE1VDxk0E97Ft72G7+CUr6A2+7VcgWk6oArXVu8/BduW4MDlp7Fz3q6x
+         chqM2FUOhRstCSMlCUPA9o7CP6QHTo/sd0hsPgO3B8OUu7DlWuC0mKRsSzAhGVgxvwa9
+         1dudLMmpfqxE1JstV96Dxgg/AgWuPN4EF81ZmMu4VNNmgBF5jdb7hH9TS/5h156uVF97
+         KIac0/6wR1mz9RoTh8xEfyw82idjqWD7jYETlshGwp0wK/DqqSyfI/gEeFGOmo+/amkW
+         D0+w==
+X-Gm-Message-State: AOJu0YytsUTDDiOhx1Wtiji7tTPvXbkHh5xRwa2UBH3DzWIg7VTVdIWz
+	fuRWE9CEP1lG6T0JWiL0uA==
+X-Google-Smtp-Source: AGHT+IGoyMGj6H9sD/fs05ifW6mHn46aUoo5Qt+hMR2U+JvUvpzoojkGcwQxcXOLaOmM0ug4oQUITg==
+X-Received: by 2002:a9d:4d17:0:b0:6b9:cfc3:65d1 with SMTP id n23-20020a9d4d17000000b006b9cfc365d1mr218237otf.17.1697486250789;
+        Mon, 16 Oct 2023 12:57:30 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id d26-20020a0568301b7a00b006b9348b6f51sm1813787ote.54.2023.10.16.12.57.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Oct 2023 12:57:30 -0700 (PDT)
+Received: (nullmailer pid 3575170 invoked by uid 1000);
+	Mon, 16 Oct 2023 19:57:28 -0000
+Date: Mon, 16 Oct 2023 14:57:28 -0500
+From: Rob Herring <robh@kernel.org>
+To: Simon Glass <sjg@chromium.org>
+Cc: devicetree@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>, Lean Sheng Tan <sheng.tan@9elements.com>, lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, Maximilian Brune <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, Guo Dong <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, ron minnich <rminnich@gmail.com>, Gua Guo <gua.guo@intel.com>, Chiu Chasel <chasel.chiu@intel.com>, linux-acpi@vger.kernel.org, U-Boot Mailing List <u-boot@lists.denx.de>, Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v7 1/2] schemas: memory: Add ECC properties
+Message-ID: <20231016195728.GA3574754-robh@kernel.org>
+References: <20230926194242.2732127-1-sjg@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230926194242.2732127-1-sjg@chromium.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
+	FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, 2023-10-16 at 19:27 +0200, Wysocki, Rafael J wrote:
-> On 10/16/2023 12:58 PM, Peter Zijlstra wrote:
-> > On Mon, Oct 16, 2023 at 06:20:53AM +0000, Meng, Li (Jassmine)
-> > wrote:
-> > > > > +static void amd_pstate_init_prefcore(struct amd_cpudata
-> > > > > *cpudata) {
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0 int ret, prio;
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0 u32 highest_perf;
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0 static u32 max_highest_perf =3D 0, min_=
-highest_perf =3D
-> > > > > U32_MAX;
-> > > > What serializes these things?
-> > > >=20
-> > > > Also, *why* are you using u32 here, what's wrong with something
-> > > > like:
-> > > >=20
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int max_hp =3D INT=
-_MIN, min_hp =3D INT_MAX;
-> > > >=20
-> > > [Meng, Li (Jassmine)]
-> > > We use ITMT architecture to utilize preferred core features.
-> > > Therefore, we need to try to be consistent with Intel's
-> > > implementation
-> > > as much as possible.=C2=A0 For details, please refer to the
-> > > intel_pstate_set_itmt_prio function in file intel_pstate.c. (Line
-> > > 355)
-> > >=20
-> > > I think using the data type of u32 is consistent with the data
-> > > structures of cppc_perf_ctrls and amd_cpudata etc.
-> > Rafael, should we fix intel_pstate too?
->=20
-> Srinivas should be more familiar with this code than I am, so adding
-> him.
->=20
-If we make
-	static u32 max_highest_perf =3D 0, min_highest_perf =3D U32_MAX;
-to
-	static int max_highest_perf =3D INT_MIN, min_highest_perf =3D
-INT_MAX;
+On Tue, Sep 26, 2023 at 01:42:38PM -0600, Simon Glass wrote:
+> Some memories provide ECC detection and/or correction. For software which
+> wants to check memory, it is helpful to see which regions provide this
+> feature.
+> 
+> Add this as a property of the /memory nodes, since it presumably follows
+> the hardware-level memory system.
+> 
+> Signed-off-by: Simon Glass <sjg@chromium.org>
+> ---
+> 
+> Changes in v7:
+> - Drop unnecessary |
+> - Add a blank line between properties
+> 
+> Changes in v6:
+> - Use a number of bits instead of a string property
+> - Fix inidcates typo
+> 
+> Changes in v5:
+> - Redo to make this property specific to ECC
+> - Provide properties both for detection and correction
+> 
+> Changes in v3:
+> - Add new patch to update the /memory nodes
+> 
+>  dtschema/schemas/memory.yaml | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 
-Then in intel_pstate we will compare signed vs unsigned comparison as
-cppc_perf.highest_perf is u32.
+Applied this patch.
 
-
-In reality this will be fine to change to "int" as we will never reach
-u32 max as performance on any Intel platform.
-
->=20
-> > The point is, that sched_asym_prefer(), the final consumer of these
-> > values uses int and thus an explicitly signed compare.
-> >=20
-> > Using u32 and U32_MAX anywhere near the setting the priority makes
-> > absolutely no sense.
-> >=20
-> > If you were to have the high bit set, things do not behave as
-> > expected.
->=20
-> Right, but in practice these values are always between 0 and 255=20
-> inclusive AFAICS.
->=20
-> It would have been better to use u8 I suppose.
-Should be fine as over clocked parts will set to max 0xff.
-
->=20
->=20
-> > Also, same question as to the amd folks; what serializes those
-> > static
-> > variables?
->=20
-> That's a good one.
-
-This function which is checking static variables is called from cpufreq
-->init callback. Which in turn is called from a function which is
-passed as startup() function pointer to
-cpuhp_setup_state_nocalls_cpuslocked().
-
-I see that startup() callbacks are called under a mutex
-cpuhp_state_mutex for each present CPUs. So if some tear down happen,
-that is also protected by the same mutex. The assumption is here is
-that cpuhp_invoke_callback() in hotplug state machine is not called in
-parallel on two CPUs by the hotplug state machine. But I see activity
-on parallel bringup, so this is questionable now.
-
-Thanks,
-Srinivas
-
->=20
->=20
-
+Rob
 
