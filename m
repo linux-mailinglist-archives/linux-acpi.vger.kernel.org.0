@@ -1,202 +1,194 @@
-Return-Path: <linux-acpi+bounces-682-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-683-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DAB27CB4CE
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 22:37:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF767CB6A1
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Oct 2023 00:38:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D12DFB2098D
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 20:37:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B6A81C20AB4
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 22:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB6931A80
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 20:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C84038F98
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Oct 2023 22:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YWVEQTkJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J5ua/vht"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2188F29425
-	for <linux-acpi@vger.kernel.org>; Mon, 16 Oct 2023 20:05:55 +0000 (UTC)
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3214583;
-	Mon, 16 Oct 2023 13:05:52 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-53e16f076b3so9063810a12.0;
-        Mon, 16 Oct 2023 13:05:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697486750; x=1698091550; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=4IqfvB7H++yj6LU7WyVnQBYT1ct4eOQQ+UC3kf23M1E=;
-        b=YWVEQTkJDimURFwnzJjK3PQ4BnyHyLIYKoCUtWS9+qiulNzQUIcCJ8rhU2gw5NWF/2
-         cIfS0WTwqGuSiIG5jiosPgk5ZXW7aMo8TLkOwFJsuTsuFIpxou1UgKXx5xi6JBvUeWNN
-         yNQr8/b4WBs2cTEPOgcWqorDnpj0Bc11BsFM02RsTRjnZVzS+R0MzCXyoJ4aIQTy7dmY
-         nptV8D92TExQ68Aci4LUUfpbwqcjFGK3gt8hhoYRRt9cGHTG1Ck0FJEmNL0Ve2QO8tCV
-         M23vSRLbNSH87x7shFQ1ksF0BgJnQI0oynJHuNGS4lmfcTOdFFfGlG+c3A5fnxtVswQ9
-         BCRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697486750; x=1698091550;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4IqfvB7H++yj6LU7WyVnQBYT1ct4eOQQ+UC3kf23M1E=;
-        b=S/FAxBU2tjVbfDOFjXLzNnQzmjGaGr18lYLOJR+cfhUd7j/+yGMtcYCnmRPRVccbUh
-         shgcWsHAf7T2R67VM9tsBoQbyllZd1Cx0u+SHkNJDxBsB/XidhYWss8lneHiPW+MTDT7
-         GL//FY4XTefAAYzuXFDnMXoRL3N5ezU0IzT0tXf3YL+gQ+N6dYTbE0jmNbU/AaZByvkA
-         4XMAO3akHZry72UjXDCnIQu26tKKdtQXkj2YExmcM0xKDEeMJhAnup8eU3I+XVDSecz7
-         zvx+1Yg/7dbeTGp6WaDVQUHR6wzSTKGlL8xN4IRQLMTonqBnJeiuFnWTFxXsNvWMSD1y
-         O06Q==
-X-Gm-Message-State: AOJu0YxlTlgRBK8pPDAfZ8rvRFkU4scuh8LHIDi1xK2C/JF2ZtzbU+oP
-	A2bvsDqgL5XPSuBG90RklN0=
-X-Google-Smtp-Source: AGHT+IH+Q03ZtpFJ3YQHvuJptbQmUzkC1G3i77eefPuM5EgevWhhKmud38F3URRR0+xOo97g+wgWlg==
-X-Received: by 2002:a17:907:7fa8:b0:9aa:206d:b052 with SMTP id qk40-20020a1709077fa800b009aa206db052mr9044737ejc.27.1697486750249;
-        Mon, 16 Oct 2023 13:05:50 -0700 (PDT)
-Received: from ?IPV6:2a01:c23:b992:7400:784b:452:609b:48ee? (dynamic-2a01-0c23-b992-7400-784b-0452-609b-48ee.c23.pool.telefonica.de. [2a01:c23:b992:7400:784b:452:609b:48ee])
-        by smtp.googlemail.com with ESMTPSA id a11-20020a170906670b00b009ae3d711fd9sm4612590ejp.69.2023.10.16.13.05.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Oct 2023 13:05:49 -0700 (PDT)
-Message-ID: <e86fb57b-afc6-478b-9a9d-543b87bc8d3d@gmail.com>
-Date: Mon, 16 Oct 2023 22:05:51 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A9E2770A
+	for <linux-acpi@vger.kernel.org>; Mon, 16 Oct 2023 21:13:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97B56AC;
+	Mon, 16 Oct 2023 14:13:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697490814; x=1729026814;
+  h=date:from:to:cc:subject:message-id;
+  bh=hkl0MePVX3oVeOyEObLyBOxkB/DU/gFcIjzbQ7DN08Y=;
+  b=J5ua/vhtOdGXBXF4zRJiJMyD58ialsX9sNXl95Y877fP2kc9L1wYRqzv
+   v4xoOjG2xdCxV/9/LayhIFxxYyqwTjZWHez4DvM2mb0aL8IXFbSPPtsMZ
+   9f1FkLLjwRnPDDSE6333N7eotMj090Y2LjpqKlG/yX3aKx0Yin3haqttn
+   HryENWOufuU7+mgsvWEWmMW5Bbdda+kAX1lms2tZY98rm35nZ0D5RmMdF
+   Y0auwW65N8UgN7MbVpju2J0/PPpTOShgVHVxRsXDh09z1HH7fmFfmMLxl
+   Awxdq/EdV7tIbnEC2BNVLpspy6XaZOOLbuM/pnNv4RrgltqC7b4ROTl84
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="449861073"
+X-IronPort-AV: E=Sophos;i="6.03,230,1694761200"; 
+   d="scan'208";a="449861073"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 14:13:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="790956382"
+X-IronPort-AV: E=Sophos;i="6.03,230,1694761200"; 
+   d="scan'208";a="790956382"
+Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 16 Oct 2023 14:13:32 -0700
+Received: from kbuild by f64821696465 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qsUu1-0008gV-1C;
+	Mon, 16 Oct 2023 21:13:29 +0000
+Date: Tue, 17 Oct 2023 05:13:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ f4df34d63286e249f531fc07e351c3cafef301ef
+Message-ID: <202310170500.xF8ilsCA-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] i2c: i801: Use new helper acpi_use_parent_companion
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
- "Wilczynski, Michal" <michal.wilczynski@intel.com>
-Cc: Jean Delvare <jdelvare@suse.com>, Andi Shyti <andi.shyti@kernel.org>,
- Len Brown <lenb@kernel.org>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
- linux-acpi@vger.kernel.org
-References: <90bd1071-317e-4dfe-b94b-9bcee15d66c5@gmail.com>
- <6e935761-5b36-411a-ac82-cbc394bba7b6@gmail.com>
- <206f0f25-8a83-4e53-89fd-cbe025e5798d@gmail.com>
- <66418e44-6862-4555-9280-2633ffb34d23@intel.com>
- <CAJZ5v0hfSZCgoW1mq=jeqjMBtsr=6JJaG8OWfUkAW80KF509Nw@mail.gmail.com>
-Content-Language: en-US
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- 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
-In-Reply-To: <CAJZ5v0hfSZCgoW1mq=jeqjMBtsr=6JJaG8OWfUkAW80KF509Nw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-	FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
 
-On 16.10.2023 19:32, Rafael J. Wysocki wrote:
-> On Mon, Oct 16, 2023 at 6:10 PM Wilczynski, Michal
-> <michal.wilczynski@intel.com> wrote:
->>
->> Hi,
->>
->> On 10/15/2023 11:36 PM, Heiner Kallweit wrote:
->>> Use new helper acpi_use_parent_companion to simplify the code.
->>>
->>> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
->>> ---
->>>  drivers/i2c/busses/i2c-i801.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
->>> index a41f5349a..ac223146c 100644
->>> --- a/drivers/i2c/busses/i2c-i801.c
->>> +++ b/drivers/i2c/busses/i2c-i801.c
->>> @@ -1620,7 +1620,7 @@ static int i801_probe(struct pci_dev *dev, const struct pci_device_id *id)
->>>       priv->adapter.class = I2C_CLASS_HWMON;
->>>       priv->adapter.algo = &smbus_algorithm;
->>>       priv->adapter.dev.parent = &dev->dev;
->>> -     ACPI_COMPANION_SET(&priv->adapter.dev, ACPI_COMPANION(&dev->dev));
->>> +     acpi_use_parent_companion(&priv->adapter.dev);
->>
->> I think this case is a bit too trivial for a helper, it's one line before, and
->> one line after, so it doesn't really save much.
-> 
-> If this pattern is repeated in multiple places, the helper makes sense IMO.
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: f4df34d63286e249f531fc07e351c3cafef301ef  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
 
-I didn't check each usage in detail, but this should be the places where the new
-helper can be used.
-Another advantage IMO is that the helper, being a function instead of a macro,
-is type-safe.
+elapsed time: 725m
 
-drivers/usb/common/ulpi.c:      ACPI_COMPANION_SET(&ulpi->dev, ACPI_COMPANION(dev));
-drivers/usb/dwc3/dwc3-pci.c:    ACPI_COMPANION_SET(&dwc->dwc3->dev, ACPI_COMPANION(dev));
-drivers/usb/core/message.c:             ACPI_COMPANION_SET(&intf->dev, ACPI_COMPANION(&dev->dev));
-drivers/tty/serial/8250/8250_exar.c:    ACPI_COMPANION_SET(&pdev->dev, ACPI_COMPANION(&pcidev->dev));
-drivers/i2c/busses/i2c-imx.c:   ACPI_COMPANION_SET(&i2c_imx->adapter.dev, ACPI_COMPANION(&pdev->dev));
-drivers/i2c/busses/i2c-kempld.c:        ACPI_COMPANION_SET(&i2c->adap.dev, ACPI_COMPANION(&pdev->dev));
-drivers/i2c/busses/i2c-virtio.c:        ACPI_COMPANION_SET(&vi->adap.dev, ACPI_COMPANION(vdev->dev.parent));
-drivers/i2c/busses/i2c-dln2.c:  ACPI_COMPANION_SET(&dln2->adapter.dev, ACPI_COMPANION(&pdev->dev));
-drivers/i2c/busses/i2c-i801.c:     ACPI_COMPANION_SET(&priv->adapter.dev, ACPI_COMPANION(&dev->dev));
-drivers/i2c/busses/i2c-ismt.c:  ACPI_COMPANION_SET(&priv->adapter.dev, ACPI_COMPANION(&pdev->dev));
-drivers/i2c/busses/i2c-cros-ec-tunnel.c:        ACPI_COMPANION_SET(&bus->adap.dev, ACPI_COMPANION(&pdev->dev));
-drivers/i2c/busses/i2c-synquacer.c:     ACPI_COMPANION_SET(&i2c->adapter.dev, ACPI_COMPANION(&pdev->dev));
-drivers/i2c/busses/i2c-designware-pcidrv.c:     ACPI_COMPANION_SET(&adap->dev, ACPI_COMPANION(&pdev->dev));
-drivers/i2c/busses/i2c-qup.c:           ACPI_COMPANION_SET(&qup->adap.dev, ACPI_COMPANION(qup->dev));
-drivers/i2c/busses/i2c-designware-platdrv.c:    ACPI_COMPANION_SET(&adap->dev, ACPI_COMPANION(&pdev->dev));
-drivers/i2c/busses/i2c-qcom-geni.c:             ACPI_COMPANION_SET(&gi2c->adap.dev, ACPI_COMPANION(dev));
-drivers/i2c/busses/i2c-amd-mp2-plat.c:  ACPI_COMPANION_SET(&i2c_dev->adap.dev, ACPI_COMPANION(&pdev->dev));
-drivers/i2c/busses/i2c-xgene-slimpro.c: ACPI_COMPANION_SET(&adapter->dev, ACPI_COMPANION(&pdev->dev));
-drivers/i2c/busses/i2c-tegra.c: ACPI_COMPANION_SET(&i2c_dev->adapter.dev, ACPI_COMPANION(&pdev->dev));
-drivers/i2c/busses/i2c-xlp9xx.c:        ACPI_COMPANION_SET(&priv->adapter.dev, ACPI_COMPANION(&pdev->dev));
+configs tested: 104
+configs skipped: 2
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->>
->>>       priv->adapter.retries = 3;
->>>
->>>       priv->pci_dev = dev;
->>
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231016   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20231016   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231016   gcc  
+i386                  randconfig-002-20231016   gcc  
+i386                  randconfig-003-20231016   gcc  
+i386                  randconfig-004-20231016   gcc  
+i386                  randconfig-005-20231016   gcc  
+i386                  randconfig-006-20231016   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231016   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20231016   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20231016   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20231016   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20231016   gcc  
+x86_64                randconfig-002-20231016   gcc  
+x86_64                randconfig-003-20231016   gcc  
+x86_64                randconfig-004-20231016   gcc  
+x86_64                randconfig-005-20231016   gcc  
+x86_64                randconfig-006-20231016   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
