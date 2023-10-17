@@ -1,106 +1,102 @@
-Return-Path: <linux-acpi+bounces-701-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-702-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886CF7CCE2F
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Oct 2023 22:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D867CCE30
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Oct 2023 22:36:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9DDF1C20A44
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Oct 2023 20:36:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D68C91C20C7A
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Oct 2023 20:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E392E3F6
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Oct 2023 20:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353272D055
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Oct 2023 20:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="FyAGsIsc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eQfUATeF"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAE7EBE
-	for <linux-acpi@vger.kernel.org>; Tue, 17 Oct 2023 18:38:43 +0000 (UTC)
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B9C94
-	for <linux-acpi@vger.kernel.org>; Tue, 17 Oct 2023 11:38:42 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id af79cd13be357-77432add7caso350694885a.2
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Oct 2023 11:38:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1697567921; x=1698172721; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YsaRBkXVnZ5gQ0bfD3LH2OWV/lnyvaLOJpA+t9fKpcs=;
-        b=FyAGsIscSHJwVwbXBvGZ7IaysOwZJMwMRzHrOhMsbvq+tFHQvTi5zaWdoNxZjvb3br
-         eXKTmSA/5VcdOuFb9HvaGl1GFauaoIXl6K6R1ut9Gh2Y3mrG8sQfoKlObRCmiUdJlMuh
-         gtGx0BvtL+3YEY+Mwii2RFrAezANHQa2Y60Y5mLLB73q1H8veXugQ1T5wIsLyFi2UPAk
-         5T+pKtsCVF0Tryr7R+p8ZYs1PfjE6P5LTBCsmYrOK06cSxTqUm3mkQ6TBoy+wfvaX6HC
-         fOt1I+lNqzgUIz/12rtJ6MYLQJKr8F2dTRkiec67+5zXDdPtySuEWOakx5Cb4TbELkhP
-         nfZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697567921; x=1698172721;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YsaRBkXVnZ5gQ0bfD3LH2OWV/lnyvaLOJpA+t9fKpcs=;
-        b=iwa8W6CCPLdhsj+HBb7bo69kjCGjbNdnmOaLwWk68mWlHX23PfBUOr/13ZsmpevhZV
-         lM3Jf6Xqraj1eO8AMHwV8bRpTvIC79T0h7bZdrFfbV2ipY9OLDkIVb4jQA2ScPFJlowu
-         n/5cUmhkVEwqcf2JWSoLxRZ287mE5HYbyyaJwD11rf6PNGzL51gMVHyhKSPXCc3Mi2CG
-         y0eMjWxILfP5TtKaxgwixkf8oSqBafkWlkoWZ4XUrVKbOgPkJhobC1152CtvXwApTMry
-         5wTXRD0YMyhmGtrmRckgH5lNoh1wrK4vD06dfhR5qucVtTZQVIMeKF6SrTtDVjngHDi3
-         vCQw==
-X-Gm-Message-State: AOJu0YyHMQOsSGo6Dfgrt0PfgQLgtGkZS1bF6HBVrbA9IubydodbACR0
-	vDcEJfzUSOogBCWFRUBKamjuzw==
-X-Google-Smtp-Source: AGHT+IEb4loGMCpPOVn6Ab+wN9cQ9sYm3udk2P0fPAOn+o3REaidWVnlpV97HdQcRaGqmi3sZ0ab3A==
-X-Received: by 2002:a05:620a:3951:b0:773:c075:a4e7 with SMTP id qs17-20020a05620a395100b00773c075a4e7mr3115161qkn.11.1697567921072;
-        Tue, 17 Oct 2023 11:38:41 -0700 (PDT)
-Received: from ?IPV6:2600:1700:2000:b002:95cc:ccc5:95bc:7d2c? ([2600:1700:2000:b002:95cc:ccc5:95bc:7d2c])
-        by smtp.gmail.com with ESMTPSA id f9-20020a05620a408900b007677347e20asm866377qko.129.2023.10.17.11.38.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Oct 2023 11:38:40 -0700 (PDT)
-Message-ID: <a65fd79f-e0d3-4618-9579-d4a19ba91302@sifive.com>
-Date: Tue, 17 Oct 2023 13:38:39 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA13EBE;
+	Tue, 17 Oct 2023 18:43:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 310BB90;
+	Tue, 17 Oct 2023 11:43:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697568183; x=1729104183;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fvN8JtK1YQPBPAULHsac4WHfv28eYma/gXCpzRF16tM=;
+  b=eQfUATeFDDyaDE1nWuHKO+aXCJ9/SulXoQKfZbi8x0hu5WWFD7cqgegl
+   Eh1f28n+wrXeAdR6XlfjVIMmrX6agBjwf54ZA0bPTl/5L9fWzEn7aKWuJ
+   jSNfVw1tTz+liBKJ6xCvy1xqJl/KRm2CG85SOP6L2MkY/8TK9McQ4yTqL
+   UQa+xQ52P07v2zLyauvKw57yqn7B4rAO2x4rTtR4ZyTz7Dx7hpz63kA22
+   Q61NuRlGYsxMH3SfIyf8MxEeNn189Eu39UqUYm1w4IAN/1JMTGKL/TIAB
+   101GNGmTHAbLhRcGsPyHyyydatspn8lrmp1GZ+5dQFRwKN+hDOUFX0xZ6
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="388720984"
+X-IronPort-AV: E=Sophos;i="6.03,232,1694761200"; 
+   d="scan'208";a="388720984"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 11:43:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="785584710"
+X-IronPort-AV: E=Sophos;i="6.03,232,1694761200"; 
+   d="scan'208";a="785584710"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 11:42:59 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1qsp1r-00000006Ohp-3Usv;
+	Tue, 17 Oct 2023 21:42:55 +0300
+Date: Tue, 17 Oct 2023 21:42:55 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Rob Herring <robh+dt@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Hanjun Guo <guohanjun@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>, Peng Fan <peng.fan@nxp.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, Len Brown <lenb@kernel.org>,
+	devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>
+Subject: Re: [PATCH v3 1/2] amba: bus: balance firmware node reference
+ counting
+Message-ID: <ZS7VrxX6If8Afl5R@smile.fi.intel.com>
+References: <20231006145732.3419115-1-andriy.shevchenko@linux.intel.com>
+ <169756785858.2487391.2620832432762980006.robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 -next 3/3] RISC-V: cacheflush: Initialize CBO variables
- on ACPI systems
-Content-Language: en-US
-To: Sunil V L <sunilvl@ventanamicro.com>, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc: Anup Patel <apatel@ventanamicro.com>, Albert Ou <aou@eecs.berkeley.edu>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- Atish Kumar Patra <atishp@rivosinc.com>,
- Conor Dooley <conor.dooley@microchip.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>
-References: <20231016164958.1191529-1-sunilvl@ventanamicro.com>
- <20231016164958.1191529-4-sunilvl@ventanamicro.com>
-From: Samuel Holland <samuel.holland@sifive.com>
-In-Reply-To: <20231016164958.1191529-4-sunilvl@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-	version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <169756785858.2487391.2620832432762980006.robh@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 2023-10-16 11:49 AM, Sunil V L wrote:
-> Initialize the CBO variables on ACPI based systems using information in
-> RHCT.
-> 
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> ---
->  arch/riscv/mm/cacheflush.c | 25 +++++++++++++++++++------
->  1 file changed, 19 insertions(+), 6 deletions(-)
+On Tue, Oct 17, 2023 at 01:37:43PM -0500, Rob Herring wrote:
+> On Fri, 06 Oct 2023 17:57:31 +0300, Andy Shevchenko wrote:
 
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
+...
+
+> Applied, thanks!
+
+Thanks, I hope w.o. patch 2 as it seems it can't be enabled on non-ARM
+platforms due to some strange MM APIs.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
