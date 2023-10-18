@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-718-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-719-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41047CDBC8
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 14:36:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD19F7CDBD4
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 14:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EBE0280A92
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 12:36:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09DBE1C20E35
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 12:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449D334CD5
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 12:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C99135893
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 12:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EC317753
-	for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 10:47:37 +0000 (UTC)
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A70C1B0;
-	Wed, 18 Oct 2023 03:47:35 -0700 (PDT)
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-57bf04841ccso1372601eaf.0;
-        Wed, 18 Oct 2023 03:47:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA818125D6
+	for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 10:52:33 +0000 (UTC)
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DA00172B;
+	Wed, 18 Oct 2023 03:52:08 -0700 (PDT)
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-57f137dffa5so957209eaf.1;
+        Wed, 18 Oct 2023 03:52:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697626055; x=1698230855;
+        d=1e100.net; s=20230601; t=1697626327; x=1698231127;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=owRD6lMJDku4XSPhJxJ1EXNoQcyNAZKK4phuEs/4T2s=;
-        b=jTt3vTlQEz8nTrOe6JfxzBF4gWWW8QkTcLwycj1aUS6mcRtLlNpOyj4qagRQFU44h+
-         5GdOdPHEGkFoKDTCVtRyB4Jla1IAvscDRkclEwH1E8FdaAjcKgjjoiYTcKMfF1zm9Fb5
-         p09e3VXpZCrVabsQSkd2/YtE7mCLgFVOvrQkN46djJdHpkHAZGBDq+u4hBVFHInIR54Y
-         IUQbT3GjZjs31uQ3Dtfw0ANHE3KVMhvyesL1rd/nZ/rVU+qeI40c6+UmRfekdfKDKnaM
-         B1Tmfmb4ZLK6TZT8tL6amghhwUeISr67d0JGjnd658SufWe1/TBVPLXZNbV2pUvu6hIs
-         AmpQ==
-X-Gm-Message-State: AOJu0YzX9oE1EDxaGp8zUp6MsfvSo851gkLTUgNVrWG0WbTEFPzYyFR1
-	rbhZnU/2L9fOitR5U7pIUInWPZB0IA4RDH6xkivAewkM
-X-Google-Smtp-Source: AGHT+IFtEpXVsN5jFuSpPWCMC/bpVMsjvq2nuGZOajiQq84V25jdp6093L7xb6e9qui47a0H6GP7B5YHUOARljSWBo8=
-X-Received: by 2002:a4a:4f15:0:b0:581:e7b8:dd77 with SMTP id
- c21-20020a4a4f15000000b00581e7b8dd77mr3401978oob.1.1697626054921; Wed, 18 Oct
- 2023 03:47:34 -0700 (PDT)
+        bh=ANkrkOONUD7WAdmVxqIhjrdidbxPHDe3du90f6KFvkY=;
+        b=l5inhv+JTTEaOBPXoebTkP2Dc6v5jvBXmtCuUAwfx0HAP/1DvNLITSjFp9eX8uG0k/
+         6SFjACvAoeIWlerIdXp9whdH7CSmgaKAAcrN7eFzVfy5rvQGIA89U2lSk2o6Ey53yybh
+         JXj6VJa055umqgtgd4eAkCND6iLkh+Ug2HYL10/y7t9//8zQVeLRB13UGwdesDcShnv4
+         8ixpIo8ZsUD9KkFs/IErTgEAaPuFVIXCR1TtY5vWj/Scc6Ypa/b1DOefLJaOqjGmiU+r
+         UAf9RWeSG8dpWyU84jvTNHbSOCO8ESyF//IpHJhzu+/pF5ijLUVJvGvUh8iDC0m3WrBK
+         m1AQ==
+X-Gm-Message-State: AOJu0Yx7uUTrr4w5+2bWbikjsyMcFEjGlOFwwXn0U3ZGOVriKghgAKMG
+	P+IdohFQKaJOk3crXFTZt1tvz5cecertp/4w0pw=
+X-Google-Smtp-Source: AGHT+IG3bzWnIqloArAGqy9HdALld6R6WIUDeRYxWFSz2P1Ed+VQtP4ZPbYcpYkhuF1U44u1xWuBkWFCVRFE2yN8Ugs=
+X-Received: by 2002:a4a:e1cd:0:b0:581:feb5:ac87 with SMTP id
+ n13-20020a4ae1cd000000b00581feb5ac87mr892257oot.1.1697626327586; Wed, 18 Oct
+ 2023 03:52:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231016170125.576159-1-michal.wilczynski@intel.com> <20231016170125.576159-2-michal.wilczynski@intel.com>
-In-Reply-To: <20231016170125.576159-2-michal.wilczynski@intel.com>
+References: <90bd1071-317e-4dfe-b94b-9bcee15d66c5@gmail.com> <6e935761-5b36-411a-ac82-cbc394bba7b6@gmail.com>
+In-Reply-To: <6e935761-5b36-411a-ac82-cbc394bba7b6@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 18 Oct 2023 12:47:24 +0200
-Message-ID: <CAJZ5v0ib86pvMcXFS_TJ+_6JSdJHaWwY-WDGrtDozGvr3j0Pgw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] ACPI: acpi_pad: Replace acpi_driver with platform_driver
-To: Michal Wilczynski <michal.wilczynski@intel.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rafael.j.wysocki@intel.com, andriy.shevchenko@linux.intel.com, 
-	lenb@kernel.org
+Date: Wed, 18 Oct 2023 12:51:56 +0200
+Message-ID: <CAJZ5v0gtH2sVo8Y1rH9SCarkfwJbwCX9BD4n+KpKpy3HRhM2Og@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ACPI: Add helper acpi_use_parent_companion
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Jean Delvare <jdelvare@suse.com>, Andi Shyti <andi.shyti@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -67,153 +67,39 @@ X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Oct 16, 2023 at 8:42=E2=80=AFPM Michal Wilczynski
-<michal.wilczynski@intel.com> wrote:
+On Sun, Oct 15, 2023 at 11:34=E2=80=AFPM Heiner Kallweit <hkallweit1@gmail.=
+com> wrote:
 >
-> The acpi_pad driver uses struct acpi_driver to register itself while it
-> would be more logically consistent to use struct platform_driver for this
-> purpose, because the corresponding platform device is present and the
-> role of struct acpi_device is to amend the other bus types. ACPI devices
-> are not meant to be used as proper representation of hardware entities,
-> but to collect information on those hardware entities provided by the
-> platform firmware.
+> In several drivers devices use the ACPI companion of the parent.
+> Add a helper for this use case to avoid code duplication.
 >
-> Use struct platform_driver for registering the acpi_pad driver.
->
-> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+or do you want me to apply it?
+
 > ---
->  drivers/acpi/acpi_pad.c | 41 ++++++++++++++++++++++++-----------------
->  1 file changed, 24 insertions(+), 17 deletions(-)
+>  include/linux/acpi.h | 5 +++++
+>  1 file changed, 5 insertions(+)
 >
-> diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
-> index 7a453c5ff303..36e1049833a3 100644
-> --- a/drivers/acpi/acpi_pad.c
-> +++ b/drivers/acpi/acpi_pad.c
-> @@ -18,6 +18,7 @@
->  #include <linux/slab.h>
->  #include <linux/acpi.h>
->  #include <linux/perf_event.h>
-> +#include <linux/platform_device.h>
->  #include <asm/mwait.h>
->  #include <xen/xen.h>
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index ba3f601b6..89efb1658 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1541,4 +1541,9 @@ static inline void acpi_device_notify(struct device=
+ *dev) { }
+>  static inline void acpi_device_notify_remove(struct device *dev) { }
+>  #endif
 >
-> @@ -413,16 +414,16 @@ static void acpi_pad_handle_notify(acpi_handle hand=
-le)
->         mutex_unlock(&isolated_cpus_lock);
->  }
->
-> -static void acpi_pad_notify(acpi_handle handle, u32 event,
-> -       void *data)
-> +static void acpi_pad_notify(acpi_handle handle, u32 event, void *data)
->  {
-> -       struct acpi_device *device =3D data;
-> +       struct device *dev =3D data;
-> +       struct acpi_device *device =3D ACPI_COMPANION(dev);
->
->         switch (event) {
->         case ACPI_PROCESSOR_AGGREGATOR_NOTIFY:
->                 acpi_pad_handle_notify(handle);
->                 acpi_bus_generate_netlink_event(device->pnp.device_class,
-> -                       dev_name(&device->dev), event, 0);
-> +                                               dev_name(dev), event, 0);
-
-This is the same mistake as in the analogous AC driver patch, as it
-changes the binary interface between the kernel and user space.
-
-Please leave it as is for now (at least in this patch).
-
->                 break;
->         default:
->                 pr_warn("Unsupported event [0x%x]\n", event);
-> @@ -430,8 +431,10 @@ static void acpi_pad_notify(acpi_handle handle, u32 =
-event,
->         }
->  }
->
-> -static int acpi_pad_add(struct acpi_device *device)
-> +static int acpi_pad_probe(struct platform_device *pdev)
->  {
-> +       struct acpi_device *device =3D ACPI_COMPANION(&pdev->dev);
-> +       struct device *dev =3D &pdev->dev;
->         acpi_status status;
->
->         strcpy(acpi_device_name(device), ACPI_PROCESSOR_AGGREGATOR_DEVICE=
-_NAME);
-> @@ -441,7 +444,9 @@ static int acpi_pad_add(struct acpi_device *device)
->                 return -ENODEV;
->
->         status =3D acpi_install_notify_handler(device->handle,
-> -               ACPI_DEVICE_NOTIFY, acpi_pad_notify, device);
-> +                                            ACPI_DEVICE_NOTIFY,
-> +                                            acpi_pad_notify,
-> +                                            dev);
-
-Passing the struct acpi_device pointer as the last argument here is
-fine, no need to change that.
-
->         if (ACPI_FAILURE(status)) {
->                 acpi_pad_remove_sysfs(device);
->                 return -ENODEV;
-> @@ -450,14 +455,17 @@ static int acpi_pad_add(struct acpi_device *device)
->         return 0;
->  }
->
-> -static void acpi_pad_remove(struct acpi_device *device)
-> +static void acpi_pad_remove(struct platform_device *pdev)
->  {
-> +       struct acpi_device *device =3D ACPI_COMPANION(&pdev->dev);
+> +static inline void acpi_use_parent_companion(struct device *dev)
+> +{
+> +       ACPI_COMPANION_SET(dev, ACPI_COMPANION(dev->parent));
+> +}
 > +
->         mutex_lock(&isolated_cpus_lock);
->         acpi_pad_idle_cpus(0);
->         mutex_unlock(&isolated_cpus_lock);
->
->         acpi_remove_notify_handler(device->handle,
-> -               ACPI_DEVICE_NOTIFY, acpi_pad_notify);
-> +                                  ACPI_DEVICE_NOTIFY,
-> +                                  acpi_pad_notify);
-
-The white space cleanup can be done in a separate patch (here and in
-the other places).
-
->         acpi_pad_remove_sysfs(device);
->  }
->
-> @@ -467,13 +475,12 @@ static const struct acpi_device_id pad_device_ids[]=
- =3D {
->  };
->  MODULE_DEVICE_TABLE(acpi, pad_device_ids);
->
-> -static struct acpi_driver acpi_pad_driver =3D {
-> -       .name =3D "processor_aggregator",
-> -       .class =3D ACPI_PROCESSOR_AGGREGATOR_CLASS,
-> -       .ids =3D pad_device_ids,
-> -       .ops =3D {
-> -               .add =3D acpi_pad_add,
-> -               .remove =3D acpi_pad_remove,
-> +static struct platform_driver acpi_pad_driver =3D {
-> +       .probe =3D acpi_pad_probe,
-> +       .remove_new =3D acpi_pad_remove,
-> +       .driver =3D {
-> +               .name =3D "processor_aggregator",
-> +               .acpi_match_table =3D pad_device_ids,
->         },
->  };
->
-> @@ -487,12 +494,12 @@ static int __init acpi_pad_init(void)
->         if (power_saving_mwait_eax =3D=3D 0)
->                 return -EINVAL;
->
-> -       return acpi_bus_register_driver(&acpi_pad_driver);
-> +       return platform_driver_register(&acpi_pad_driver);
->  }
->
->  static void __exit acpi_pad_exit(void)
->  {
-> -       acpi_bus_unregister_driver(&acpi_pad_driver);
-> +       platform_driver_unregister(&acpi_pad_driver);
->  }
->
->  module_init(acpi_pad_init);
+>  #endif /*_LINUX_ACPI_H*/
 > --
+> 2.42.0
+>
+>
 
