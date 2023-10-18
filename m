@@ -1,176 +1,145 @@
-Return-Path: <linux-acpi+bounces-728-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-729-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C397CDBF0
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 14:37:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AFA67CE022
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 16:37:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0E0D281080
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 12:37:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49C37B20FCB
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 14:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DCE35891
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 12:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFE737C84
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 14:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WRqqhnct"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="f4yws7ud"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99C21F5E7
-	for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 12:19:38 +0000 (UTC)
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08C59112;
-	Wed, 18 Oct 2023 05:19:37 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-9b2f73e3af3so1036250466b.3;
-        Wed, 18 Oct 2023 05:19:36 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB3934CC7
+	for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 12:40:15 +0000 (UTC)
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D498C106
+	for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 05:40:14 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6b44befac59so3867046b3a.0
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 05:40:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697631575; x=1698236375; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=vaxG9BdfDpTJ0J4uCdMqlRiCCbJ9onzj1KKLOh8EEyg=;
-        b=WRqqhnctDMUiKJHTrVeKDdXHcSeYqdBIMthKo+Q/pIrIkDh+Jq3VjfBZPLqTSLreDV
-         UV34cdSiFKBkuGQvh+VuYH+wysSCEXP4DUC6VJz3nXQRy0v3K2AVtKRaRQmGR5VBWfwa
-         01Li9Zp+FQ1faRCnZB9cb1pV2iT8plYoRy9XazY4Cb2qJxksS5YTCbd576xjnRwLtPGm
-         Js7K6mJ8TSbQO5jFpOrPdD7p3tU6L3KDfdGbYOYZfJvi7337ZIbSU1K80ObkODPCEvyd
-         9QSei3APoH9KnObyVZo9Ts+Can5qNwLZaST06xd/HHPA3V07pU57O0LxrvurCf7j+nB9
-         1Ubw==
+        d=ventanamicro.com; s=google; t=1697632814; x=1698237614; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/x3uu9zf3l2rig8KiIUkNU7Cv7Jr5Is7Qpx6yKtZAfw=;
+        b=f4yws7udr4dhiWN6u8KB3P6yF1S5jAVjmD0YQtB+Pmg+Yx5/C7G7qiu3UFdL7gLLDO
+         8NniZKYB5tUg1xGWYzjPaePhQuHmTZvSTJXA8nAkgNyAbb9FbfymuTnIg03u9CqBRI6F
+         2hR2LJe0acpApgLqx2iwRh+F8Kw8ga1Oc8PgE0q0nTbRoK9CuwsUkY6rvcAVWc4hRkO5
+         koFzjfF3i72fYVonL4AZACxzgGNxMmKz1RouwpTZ7eytGWt9rg7W2s1S99mCy2F7/81W
+         SnS28PIiT8iBXz89v4GhnivslotW8moU7S5c9oEHKVGMV9CCLmqsJonU8g68ec1WYqX4
+         O5QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697631575; x=1698236375;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vaxG9BdfDpTJ0J4uCdMqlRiCCbJ9onzj1KKLOh8EEyg=;
-        b=h3u7q+hIHjHoj/ES0SB+FzcGBaORFEI2hU5xO0IppP0TmJaQyliDD8snty2ui+wdrJ
-         u4rgiCgGUAuUE21HEsv1EvDtcGKcyt0HjW+9RXV+mBboiMpQzqtPo94sewSI3re1ctjN
-         P/UVaYY/PfknPsWiaVL699d6OnlflnzF4RK1OaKwrnoWs5oryTwRr6HLPsqMSFwCAXJH
-         qSV6OIvRgmXy9d/Hce4r1KSdnHVRJu5L7/AMk1zNTI8qsrS2beuG7prLERp5zfpRgIlP
-         SufO0083lqKq5MUhxg2JNqowudOFngbDTgipSxg2JARUIFwSBPiWCcaeLffZVbJytdbh
-         mBKw==
-X-Gm-Message-State: AOJu0Yyx6V5jmHH6I9ZbxAThDKsxk+vpDzjQTgFf821LEps46gUDfbvT
-	CxF3SP0thaX/dS8ue51sMls=
-X-Google-Smtp-Source: AGHT+IFaGBVf7Ds4k179/DQW+RGqxhKUSpreNp+jBEe4euWK435N/IponWevhTxEcr/fwY6/5CYKqw==
-X-Received: by 2002:a17:906:4fc8:b0:9ba:fe6:225 with SMTP id i8-20020a1709064fc800b009ba0fe60225mr3742009ejw.55.1697631575180;
-        Wed, 18 Oct 2023 05:19:35 -0700 (PDT)
-Received: from ?IPV6:2a01:c22:7be7:d300:7832:27d2:6e86:87ba? (dynamic-2a01-0c22-7be7-d300-7832-27d2-6e86-87ba.c22.pool.telefonica.de. [2a01:c22:7be7:d300:7832:27d2:6e86:87ba])
-        by smtp.googlemail.com with ESMTPSA id jl9-20020a17090775c900b00985ed2f1584sm1587220ejc.187.2023.10.18.05.19.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Oct 2023 05:19:34 -0700 (PDT)
-Message-ID: <48e2fa55-ae7c-4865-99ef-61d451c02b41@gmail.com>
-Date: Wed, 18 Oct 2023 14:19:35 +0200
+        d=1e100.net; s=20230601; t=1697632814; x=1698237614;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/x3uu9zf3l2rig8KiIUkNU7Cv7Jr5Is7Qpx6yKtZAfw=;
+        b=Y9DtKJL1t84+ZbVtO5s+ots10D586VPujGPqWxgy9FQGjPkby58fMGJIscB/M7nF/1
+         UAcC1f+Ner4PInGma3eai/sH+IvL2nDe5hyTaEOo2rgAX2hHucM3XVJwEwEtViHcyzBB
+         eyWNXvT9tOnou598+Gg6ZIm5+XpZseiizJl6rMyO1W0cxMdk/r7GwE8XHqWuonmVOudL
+         Z2GPE7hJ7eeYps4XJr9tG3VfKAN9TP1UJMjJuvu5YRdGExst1TpFspXnDCz086YVejlU
+         tcJqMG5UEizHzHi+mAVoBG5HfAep8Ap4SyG9WplPzZA2/5AcOX3wkBVrpmGORTh6soIt
+         nLFA==
+X-Gm-Message-State: AOJu0Yx4bBRbHYWshAtMP1Q8bVf1pzGncfsYspLdQyUIkENNhwai6XNJ
+	CkOn7SgTmzSc2Yk2ljnLqN11MQ==
+X-Google-Smtp-Source: AGHT+IGEnGeUGjTrjv2baYtR5a8vWsazPx3pLfK2Zn0Z8uBJVrUEphyrDMbgW79aJUk55uqnYKQ+WA==
+X-Received: by 2002:a05:6a21:190:b0:149:700e:f50a with SMTP id le16-20020a056a21019000b00149700ef50amr8044741pzb.29.1697632813642;
+        Wed, 18 Oct 2023 05:40:13 -0700 (PDT)
+Received: from sunil-pc.Dlink ([106.51.188.78])
+        by smtp.gmail.com with ESMTPSA id w190-20020a6382c7000000b005891f3af36asm1599267pgd.87.2023.10.18.05.40.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Oct 2023 05:40:13 -0700 (PDT)
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Sunil V L <sunilvl@ventanamicro.com>
+Subject: [PATCH v4 -next 0/4] RISC-V: ACPI improvements
+Date: Wed, 18 Oct 2023 18:10:03 +0530
+Message-Id: <20231018124007.1306159-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] ACPI: Add helper acpi_use_parent_companion
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
- Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang <wsa@kernel.org>
-Cc: Jean Delvare <jdelvare@suse.com>, Len Brown <lenb@kernel.org>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
- linux-acpi@vger.kernel.org
-References: <90bd1071-317e-4dfe-b94b-9bcee15d66c5@gmail.com>
- <6e935761-5b36-411a-ac82-cbc394bba7b6@gmail.com>
- <CAJZ5v0gtH2sVo8Y1rH9SCarkfwJbwCX9BD4n+KpKpy3HRhM2Og@mail.gmail.com>
-Content-Language: en-US
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- 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
-In-Reply-To: <CAJZ5v0gtH2sVo8Y1rH9SCarkfwJbwCX9BD4n+KpKpy3HRhM2Og@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-	FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 18.10.2023 12:51, Rafael J. Wysocki wrote:
-> On Sun, Oct 15, 2023 at 11:34 PM Heiner Kallweit <hkallweit1@gmail.com> wrote:
->>
->> In several drivers devices use the ACPI companion of the parent.
->> Add a helper for this use case to avoid code duplication.
->>
->> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> 
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> or do you want me to apply it?
-> 
-Patch 2 of the series will apply cleanly only after the following
-patch that has been reviewed/acked, but not applied yet.
-https://patchwork.ozlabs.org/project/linux-i2c/patch/2192294e-99ab-4c7d-86b1-edff058d82f3@gmail.com/
-So my preference is to apply the series through the i2c tree.
-+Wolfram
+This series is a set of patches which were originally part of RFC v1 series
+[1] to add ACPI support in RISC-V interrupt controllers. Since these
+patches are independent of the interrupt controllers, creating this new
+series which helps to merge instead of waiting for big series.
 
->> ---
->>  include/linux/acpi.h | 5 +++++
->>  1 file changed, 5 insertions(+)
->>
->> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
->> index ba3f601b6..89efb1658 100644
->> --- a/include/linux/acpi.h
->> +++ b/include/linux/acpi.h
->> @@ -1541,4 +1541,9 @@ static inline void acpi_device_notify(struct device *dev) { }
->>  static inline void acpi_device_notify_remove(struct device *dev) { }
->>  #endif
->>
->> +static inline void acpi_use_parent_companion(struct device *dev)
->> +{
->> +       ACPI_COMPANION_SET(dev, ACPI_COMPANION(dev->parent));
->> +}
->> +
->>  #endif /*_LINUX_ACPI_H*/
->> --
->> 2.42.0
->>
->>
+This set of patches primarily adds support below ECR [2] which is approved
+by the ASWG and adds below features.
+
+- Get CBO block sizes from RHCT on ACPI based systems.
+
+Additionally, the series contains a patch to improve acpi_os_ioremap().
+
+[1] - https://lore.kernel.org/lkml/20230803175202.3173957-1-sunilvl@ventanamicro.com/
+[2] - https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view?usp=sharing
+
+Changes since v3:
+	1) Added new patch to update return value of acpi_get_rhct() as suggested by Drew.
+	2) Formatting fixes as suggested by Drew.
+	3) Updated tags.
+
+Changes since v2:
+	1) Modified acpi_get_cbo_block_size() not to take cpu parameter
+	   but follow same pattern as DT (Feedback from Samuel and Drew)
+	2) Dropped timer patch from the series since it is already
+	   applied.
+	3) Selected ARCH_KEEP_MEMBLOCK only if ACPI (Feedback from
+	   Alex).
+	4) Added RB tags received so far except RHCT patch which has
+	   changed quite significantly from previous version.
+
+Changes since RFC v1:
+	1) Separated the patches from interrupt controller support series.
+	2) Addressed feedback from Andy and Drew.
+	3) Rebased to Palmer's for-next tree.
+	4) Added RB tags received on RFC v1.
+
+
+Sunil V L (4):
+  RISC-V: ACPI: Enhance acpi_os_ioremap with MMIO remapping
+  RISC-V: ACPI: Update the return value of acpi_get_rhct()
+  RISC-V: ACPI: RHCT: Add function to get CBO block sizes
+  RISC-V: cacheflush: Initialize CBO variables on ACPI systems
+
+ arch/riscv/Kconfig            |  1 +
+ arch/riscv/include/asm/acpi.h |  6 +++
+ arch/riscv/kernel/acpi.c      | 87 +++++++++++++++++++++++++++++++-
+ arch/riscv/mm/cacheflush.c    | 25 +++++++---
+ drivers/acpi/riscv/rhct.c     | 93 +++++++++++++++++++++++++++++++++--
+ 5 files changed, 201 insertions(+), 11 deletions(-)
+
+-- 
+2.39.2
 
 
