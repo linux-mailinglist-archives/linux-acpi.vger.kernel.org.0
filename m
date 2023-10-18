@@ -1,262 +1,187 @@
-Return-Path: <linux-acpi+bounces-712-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-715-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7C77CCE46
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Oct 2023 22:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 271F17CD2E0
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 06:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C08E61C20A66
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Oct 2023 20:38:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 580741C2094E
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 04:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2785A2E3E5
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Oct 2023 20:38:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB08E8F41
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 04:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JjRnB20w"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83014EBE
-	for <linux-acpi@vger.kernel.org>; Tue, 17 Oct 2023 20:12:47 +0000 (UTC)
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11E4D6FAC;
-	Tue, 17 Oct 2023 13:12:44 -0700 (PDT)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
- id 5ff2401e82b762db; Tue, 17 Oct 2023 22:12:43 +0200
-Received: from kreacher.localnet (unknown [195.136.19.94])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 72FA9666BCD;
-	Tue, 17 Oct 2023 22:12:42 +0200 (CEST)
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: Linux PM <linux-pm@vger.kernel.org>
-Cc: Linux ACPI <linux-acpi@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, LKML <linux-kernel@vger.kernel.org>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>
-Subject: [PATCH v1 3/3] ACPI: thermal: Use library functions to obtain trip point temperature values
-Date: Tue, 17 Oct 2023 22:12:33 +0200
-Message-ID: <2926905.e9J7NaK4W3@kreacher>
-In-Reply-To: <5740803.DvuYhMxLoT@kreacher>
-References: <5740803.DvuYhMxLoT@kreacher>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5FD6137
+	for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 04:28:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FA49C6;
+	Tue, 17 Oct 2023 21:28:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697603300; x=1729139300;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=imUUbQh1eVfEbDG6J2Vt7i4mhD2ZH3x+nJWvmvG8Xmw=;
+  b=JjRnB20whu95B+ofI1slMXb6b70OYQhGw7EPstuw2BUx3zVLF85ySlac
+   BMThyNKANwCE+6EOZ8tF05VqB3LW49iiifLBP3RdYZfniH9MSy+sC7Ly5
+   +a7G6LdP0RjrwVOyJPos9lRPIUNV9xRMLRxEu+HTus35pohBmlBurxHe/
+   eVyfvsTnqZmf89GZ+x8xKk43gimoyP/J6rXpL3GSD7eS2s3RR2vv6g1Ze
+   hwY4LYE3giMiYu2e7ta5SDtNGLphkpkUYzz+NjUm/GSHgDEIv8p7n9Xtl
+   PG2Xo2YIyvWfnVMwDuSt0k/THxQBT/Tn6V/NWCIKr6rswOhflxukDoigL
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="366192314"
+X-IronPort-AV: E=Sophos;i="6.03,234,1694761200"; 
+   d="scan'208";a="366192314"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 21:28:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="822272764"
+X-IronPort-AV: E=Sophos;i="6.03,234,1694761200"; 
+   d="scan'208";a="822272764"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by fmsmga008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 17 Oct 2023 21:28:20 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Tue, 17 Oct 2023 21:28:19 -0700
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Tue, 17 Oct 2023 21:28:19 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Tue, 17 Oct 2023 21:28:19 -0700
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.40) by
+ edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Tue, 17 Oct 2023 21:28:19 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CiqxBM0aBoorPtuYZiRKgHsu45wHZ4kH1etv0wdeExXD5Xyk9jVW88eR92shkVOCFxuecC8Bp/byHt548/OVdFD4Kk+18C0krifTNrO1PAyTxFq98FyPSD4i6rOPiYPaxXTaZTy7tDvtH1+pHRHUSL4yzeAz87KV7DcDAyfeNuVPm2p8guk+f1wmHM+NPxEoHBq91HoxwTaMRbgWsWp+xxVB6Xzu7Ttof/pKwoWOst+Nsp7YDuB9dzDUUGOdsm26OlwOHpQ4BQJhpQX3mf0CkRIQ5IStPzRvTfS482CPsQwTxHlV1qSckrFKhKYV8OL2Cedb9cMw/NCr5zYuuURWqg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AjvsheyUHcVH14QxSBuR6VmX9E7IicjSdwQ/f1TBU+w=;
+ b=mHD0TBB8PEIT0JEwExfODDAHj31YmWdD9Tf0R9V9ayVLtYoTVAQPHHvcpf7yJOkKHs7HHEdrbBh9HOR8lDnS0kA+Z3wI5pdW2EoxfC4y8WhyFvlmS+vEb25AafzoG1uUp2K0fv5X4oCzmGPyTRepYwkU6mY3S0QxGU0YYS1T0DiXc7ScD1agB5iHbOp6dYrptlfJX782p7Fzo4H3k34p2fTKBERqDHji4fuHIe8eXR6reTP8HJ8REyZTy6koZcYK7f8ZIgPEvkrUBiZWk1AdXFAyqwJcap7r/IlcIpzfwFRhuXla6aA7oOkeVEasQiw45N5QsJFpzEQ4yVTLMPssJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by MN2PR11MB4679.namprd11.prod.outlook.com (2603:10b6:208:26b::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.21; Wed, 18 Oct
+ 2023 04:28:17 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::7978:1ba5:6ed0:717d]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::7978:1ba5:6ed0:717d%4]) with mapi id 15.20.6886.034; Wed, 18 Oct 2023
+ 04:28:16 +0000
+Date: Tue, 17 Oct 2023 21:28:13 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Michal Wilczynski <michal.wilczynski@intel.com>, <nvdimm@lists.linux.dev>,
+	<linux-acpi@vger.kernel.org>, <dan.j.williams@intel.com>
+CC: <rafael@kernel.org>, <vishal.l.verma@intel.com>, <lenb@kernel.org>,
+	<dave.jiang@intel.com>, <ira.weiny@intel.com>,
+	<linux-kernel@vger.kernel.org>, Michal Wilczynski
+	<michal.wilczynski@intel.com>, Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v3] ACPI: NFIT: Use cleanup.h helpers instead of devm_*()
+Message-ID: <652f5eddba760_5c0d29449@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <20231017082905.1673316-1-michal.wilczynski@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20231017082905.1673316-1-michal.wilczynski@intel.com>
+X-ClientProxiedBy: MW4PR02CA0019.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::23) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrjedvgddugeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepjedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
- thhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhg
-X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-	SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|MN2PR11MB4679:EE_
+X-MS-Office365-Filtering-Correlation-Id: dd9e7395-d6ac-4eb2-b32d-08dbcf92a62a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: KtCn7OL4gkhn0ZO/p45blFLHXveVfTl3qCMUTkIPJsfe5Veny/zyjdYhcg61G/e+0TIX9lxZA40yFRWHdeTIlGUMbGehApbj0CjLEzh3EggXkkVxRWkxp2eaWq6GazFBHmYScqjg+DCxmlVO4w+AJg+EfEEo+FSzcWwvSzorXOsVLz5kp4nuHGk4vGUoT3HxCL9zP0HDE+D9UXF8W3D7jmSQXlg2E+lvyZ+mVcmPUa+i8FuEvjKqitaTiyka8+v5rYo6En0kpTizOf+kaUi17xi/+uiqLu5KpzJtPCReGDtKgjE0/iArwZDx4Y8+5KQtj9fXKP2hB31P1g2nP8ptno8pckhsdkizUGa+bk5cUWmcTnGcCvR/E5oXgLAlNUX6jqsP5y+BoJ4ea6jT5puMQGL2FfEgjjV30aQuo0z/dNMITbX98CgbUOd6s3AJq3VwXcQMoVCBxBPvkzhYekRA/ld4HdyIVhETfjwpxCwS7CPYeXSlEXVAFzloQ1z0iiO8EOLIHAsdLp7DIR8i7bqtkpPoXMfAMZQc08k9Jch+xsZ4R5iZ5OhWDFgAA18TT4V2
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(39860400002)(376002)(136003)(366004)(346002)(230922051799003)(1800799009)(451199024)(186009)(64100799003)(6512007)(6506007)(2906002)(4744005)(5660300002)(4326008)(8676002)(8936002)(6666004)(41300700001)(66476007)(66946007)(54906003)(66556008)(316002)(6486002)(478600001)(9686003)(26005)(38100700002)(82960400001)(86362001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/X935VZsIRSnz9GtsB1pHKm528WAxyBGGThTVZ94W4a4eXfn2oQaJA1hOaDQ?=
+ =?us-ascii?Q?OUIpNIdNNd42tthSr0ZgZzlXEr0RSjHPcnmhrixb2erxaIZps/Gq6dqW65Il?=
+ =?us-ascii?Q?JLyuAmL2nSInr8GSA9tpby3FFUUuuBWFYysjyA68hYliF0YPYElarCv3Q4zo?=
+ =?us-ascii?Q?IgdyHyBBcTZd0hlcd9ZYXmfH9KSQwiOhd/2uf1pnHGtYO+At8AJB76qWEtVV?=
+ =?us-ascii?Q?o7+NNwcWHGhwhlBJaf1aXjAn+B29i/3zlOp0dAGQSE4ovpB0Zm4Tv8HHw7HV?=
+ =?us-ascii?Q?omQzR7aKG7tmETfDzw/l1uspj7GvuFv3Q+tpd64/VCrp0zZrZss+cgIv1UAU?=
+ =?us-ascii?Q?TxFrn9C35jjDJKHT4fH9840nie55I1/xZKTF3oEc28Y7wbnUQIck7aGAEYyu?=
+ =?us-ascii?Q?/tnrWrODEI6GCurSaQZjPpUyMA1M+HOBd/7GczYQ0WeVmdXBNesoKbWgb6+t?=
+ =?us-ascii?Q?GbpBfSrhMEUkzQ6IT435pDs7y6n7CnDqdhxSMq76nsN7653n534WJULaHOh7?=
+ =?us-ascii?Q?zeKmxmOzhGEWIzXAIlQXswmi/pbyHaUmlATwrW9KSKF+ekmuWV3gLenLy7OW?=
+ =?us-ascii?Q?OoxsGcWO+P6qTXGtaCKpEktMRZv+5+QiEqPUSJ8IoH8YRhDt+JTFZgrZKuba?=
+ =?us-ascii?Q?5zlEzIP6QMHKY/UwjhRDP5JO9FAs1vIbhzcDWdrm7kG5LASr7EcJNgS+qsoZ?=
+ =?us-ascii?Q?3yrDPltMig6+W7qW56lqkVSI+cRaK/RcrOQdoQcNy440S/23bqaVkiRU30V2?=
+ =?us-ascii?Q?lZnFDlw0ndw0V/z/K9/Ejl/fmm3f2/mP2E8vW94ISVAju6q0BzQYtbZQOMN7?=
+ =?us-ascii?Q?Mn6jBt15Gj3ZsK5j9CzwpHfsZV/9sc9xMWu/5yg2F4y1irfovjsZJFH+soLp?=
+ =?us-ascii?Q?G8INtkaDYc3viXX5MHFtOshflvj53q4wc02m9KNChqmLDGsgWbcjANe94zir?=
+ =?us-ascii?Q?1vCl6CDD4wgH7e3i3YcqCtWVW52laK+1yG5ERyp0YvtWtDeFeSVBEfzVRtlC?=
+ =?us-ascii?Q?RNa5K2yA0EOaA+jYYq1VVVWuV8WRBKdI7pVQuyVEYe7PIspVFTBr9YGNfmBu?=
+ =?us-ascii?Q?k3W/q7+5Y+yjuPGQvqbZNjm3Wc/PK/pKCjM+BSI/oJvW0e+cd6lYApDibeDS?=
+ =?us-ascii?Q?xR/gI/BiEUJng+K0ZJQsKCk1TIQU/+UJRDrUKg7a7GMCrsAKn9MkiQ4xMeEC?=
+ =?us-ascii?Q?eRfpKlkxDlpEGX3Tv6cXkZ5BSr0VM737e6yGcKXHOrrTFHxDdgxSP+2N6UMV?=
+ =?us-ascii?Q?Cj08BLUFTkR2bneNcLe6ZqisR6a//cJy0e2OqS4DlXC/FkMO2UuPtnHvgnXY?=
+ =?us-ascii?Q?uDLwfr2m8RDtt3nG1+xaRGbRvVisrhbXUnoRVxM2/UphRz1NPQ+5IpEgyoSs?=
+ =?us-ascii?Q?Qli81y8hQueFpqvRsXMoukUVZjVNOkQs+PdvDs7rCh8FyAZMseFoX1wzoSfo?=
+ =?us-ascii?Q?EeXAlm9BuDhzznezq7WV73UySCaoFBj/VD9XfApG7+ozBlmTJ4DebBuYwCFa?=
+ =?us-ascii?Q?l7D7mbnd3AZecuJpQ6s7EmqRLNE7BII5zY2CqNyCnEVwNMkxBH+E778neDeJ?=
+ =?us-ascii?Q?AGPbWPHA6BSkC7WEKElkNKx8Apu82yK979sMWdJDFgQpxbAhS4g+rpTX6nJq?=
+ =?us-ascii?Q?GA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd9e7395-d6ac-4eb2-b32d-08dbcf92a62a
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2023 04:28:16.4249
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4PwPIFAk2AKCyGKJfhYVL7n+QMj8VFzag+nNz7zWmvraJcUMyN6g4Ch9wIOP5nA9e53ypXqudsNL7mXUYt4MZSIfi7UqI7Nry7PJF+rzosQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4679
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Michal Wilczynski wrote:
+> The new cleanup.h facilities that arrived in v6.5-rc1 can replace the
+> the usage of devm semantics in acpi_nfit_init_interleave_set(). That
+> routine appears to only be using devm to avoid goto statements. The
+> new __free() annotation at variable declaration time can achieve the same
+> effect more efficiently.
+> 
+> There is no end user visible side effects of this patch, I was
+> motivated to send this cleanup to practice using the new helpers.
+> 
+> Suggested-by: Dave Jiang <dave.jiang@intel.com>
+> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+> ---
+> 
+> Dan, would you like me to give you credit for the changelog changes
+> with Co-developed-by tag ?
 
-Modify the ACPI thermal driver to use functions from the ACPI thermal
-library to obtain trip point temperature values instead of duplicating
-them locally.
+Nope, this looks good to me, thanks for fixing it up.
 
-Among other things, this requires the functions in question to be
-exported to it, because it can be built as a module.
-
-It effectively changes the behavior of the driver to treat temperature
-values out of the reasonable range (-55 centigrade to 175 centigrade) as
-invalid, but there is no other expected functional impact.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/internal.h    |    5 +++
- drivers/acpi/thermal.c     |   57 +++++++++++++++++++--------------------------
- drivers/acpi/thermal_lib.c |    4 +++
- 3 files changed, 34 insertions(+), 32 deletions(-)
-
-Index: linux-pm/drivers/acpi/thermal_lib.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal_lib.c
-+++ linux-pm/drivers/acpi/thermal_lib.c
-@@ -52,21 +52,25 @@ int acpi_active_trip_temp(struct acpi_de
- 
- 	return acpi_trip_temp(adev, obj_name, ret_temp);
- }
-+EXPORT_SYMBOL_NS_GPL(acpi_active_trip_temp, ACPI_THERMAL);
- 
- int acpi_passive_trip_temp(struct acpi_device *adev, int *ret_temp)
- {
- 	return acpi_trip_temp(adev, "_PSV", ret_temp);
- }
-+EXPORT_SYMBOL_NS_GPL(acpi_passive_trip_temp, ACPI_THERMAL);
- 
- int acpi_hot_trip_temp(struct acpi_device *adev, int *ret_temp)
- {
- 	return acpi_trip_temp(adev, "_HOT", ret_temp);
- }
-+EXPORT_SYMBOL_NS_GPL(acpi_hot_trip_temp, ACPI_THERMAL);
- 
- int acpi_critical_trip_temp(struct acpi_device *adev, int *ret_temp)
- {
- 	return acpi_trip_temp(adev, "_CRT", ret_temp);
- }
-+EXPORT_SYMBOL_NS_GPL(acpi_critical_trip_temp, ACPI_THERMAL);
- 
- static int thermal_temp(int error, int temp_decik, int *ret_temp)
- {
-Index: linux-pm/drivers/acpi/internal.h
-===================================================================
---- linux-pm.orig/drivers/acpi/internal.h
-+++ linux-pm/drivers/acpi/internal.h
-@@ -85,6 +85,11 @@ bool acpi_scan_is_offline(struct acpi_de
- acpi_status acpi_sysfs_table_handler(u32 event, void *table, void *context);
- void acpi_scan_table_notify(void);
- 
-+int acpi_active_trip_temp(struct acpi_device *adev, int id, int *ret_temp);
-+int acpi_passive_trip_temp(struct acpi_device *adev, int *ret_temp);
-+int acpi_hot_trip_temp(struct acpi_device *adev, int *ret_temp);
-+int acpi_critical_trip_temp(struct acpi_device *adev, int *ret_temp);
-+
- /* --------------------------------------------------------------------------
-                      Device Node Initialization / Removal
-    -------------------------------------------------------------------------- */
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -31,6 +31,8 @@
- #include <linux/uaccess.h>
- #include <linux/units.h>
- 
-+#include "internal.h"
-+
- #define ACPI_THERMAL_CLASS		"thermal_zone"
- #define ACPI_THERMAL_DEVICE_NAME	"Thermal Zone"
- #define ACPI_THERMAL_NOTIFY_TEMPERATURE	0x80
-@@ -188,24 +190,19 @@ static int active_trip_index(struct acpi
- 
- static long get_passive_temp(struct acpi_thermal *tz)
- {
--	unsigned long long tmp;
--	acpi_status status;
-+	int temp;
- 
--	status = acpi_evaluate_integer(tz->device->handle, "_PSV", NULL, &tmp);
--	if (ACPI_FAILURE(status))
-+	if (acpi_passive_trip_temp(tz->device, &temp))
- 		return THERMAL_TEMP_INVALID;
- 
--	return tmp;
-+	return temp;
- }
- 
- static long get_active_temp(struct acpi_thermal *tz, int index)
- {
--	char method[] = { '_', 'A', 'C', '0' + index, '\0' };
--	unsigned long long tmp;
--	acpi_status status;
-+	int temp;
- 
--	status = acpi_evaluate_integer(tz->device->handle, method, NULL, &tmp);
--	if (ACPI_FAILURE(status))
-+	if (acpi_active_trip_temp(tz->device, index, &temp))
- 		return THERMAL_TEMP_INVALID;
- 
- 	/*
-@@ -215,10 +212,10 @@ static long get_active_temp(struct acpi_
- 	if (act > 0) {
- 		unsigned long long override = celsius_to_deci_kelvin(act);
- 
--		if (tmp > override)
--			tmp = override;
-+		if (temp > override)
-+			return override;
- 	}
--	return tmp;
-+	return temp;
- }
- 
- static void acpi_thermal_update_trip(struct acpi_thermal *tz,
-@@ -339,13 +336,12 @@ static void acpi_thermal_trips_update(st
- 					dev_name(&adev->dev), event, 0);
- }
- 
--static long acpi_thermal_get_critical_trip(struct acpi_thermal *tz)
-+static int acpi_thermal_get_critical_trip(struct acpi_thermal *tz)
- {
--	unsigned long long tmp;
--	acpi_status status;
-+	int temp;
- 
- 	if (crt > 0) {
--		tmp = celsius_to_deci_kelvin(crt);
-+		temp = celsius_to_deci_kelvin(crt);
- 		goto set;
- 	}
- 	if (crt == -1) {
-@@ -353,38 +349,34 @@ static long acpi_thermal_get_critical_tr
- 		return THERMAL_TEMP_INVALID;
- 	}
- 
--	status = acpi_evaluate_integer(tz->device->handle, "_CRT", NULL, &tmp);
--	if (ACPI_FAILURE(status)) {
--		acpi_handle_debug(tz->device->handle, "No critical threshold\n");
-+	if (acpi_critical_trip_temp(tz->device, &temp))
- 		return THERMAL_TEMP_INVALID;
--	}
--	if (tmp <= 2732) {
-+
-+	if (temp <= 2732) {
- 		/*
- 		 * Below zero (Celsius) values clearly aren't right for sure,
- 		 * so discard them as invalid.
- 		 */
--		pr_info(FW_BUG "Invalid critical threshold (%llu)\n", tmp);
-+		pr_info(FW_BUG "Invalid critical threshold (%d)\n", temp);
- 		return THERMAL_TEMP_INVALID;
- 	}
- 
- set:
--	acpi_handle_debug(tz->device->handle, "Critical threshold [%llu]\n", tmp);
--	return tmp;
-+	acpi_handle_debug(tz->device->handle, "Critical threshold [%d]\n", temp);
-+	return temp;
- }
- 
--static long acpi_thermal_get_hot_trip(struct acpi_thermal *tz)
-+static int acpi_thermal_get_hot_trip(struct acpi_thermal *tz)
- {
--	unsigned long long tmp;
--	acpi_status status;
-+	int temp;
- 
--	status = acpi_evaluate_integer(tz->device->handle, "_HOT", NULL, &tmp);
--	if (ACPI_FAILURE(status)) {
-+	if (acpi_hot_trip_temp(tz->device, &temp) || temp == THERMAL_TEMP_INVALID) {
- 		acpi_handle_debug(tz->device->handle, "No hot threshold\n");
- 		return THERMAL_TEMP_INVALID;
- 	}
- 
--	acpi_handle_debug(tz->device->handle, "Hot threshold [%llu]\n", tmp);
--	return tmp;
-+	acpi_handle_debug(tz->device->handle, "Hot threshold [%d]\n", temp);
-+	return temp;
- }
- 
- static bool passive_trip_params_init(struct acpi_thermal *tz)
-@@ -1142,6 +1134,7 @@ static void __exit acpi_thermal_exit(voi
- module_init(acpi_thermal_init);
- module_exit(acpi_thermal_exit);
- 
-+MODULE_IMPORT_NS(ACPI_THERMAL);
- MODULE_AUTHOR("Paul Diefenbaugh");
- MODULE_DESCRIPTION("ACPI Thermal Zone Driver");
- MODULE_LICENSE("GPL");
-
-
-
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 
