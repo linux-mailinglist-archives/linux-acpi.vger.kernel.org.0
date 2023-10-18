@@ -1,62 +1,63 @@
-Return-Path: <linux-acpi+bounces-729-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-730-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AFA67CE022
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 16:37:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A45687CE026
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 16:37:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49C37B20FCB
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 14:37:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A1B1B20FFC
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 14:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFE737C84
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 14:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E82937CA2
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 14:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="f4yws7ud"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="QqE5TFO9"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB3934CC7
-	for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 12:40:15 +0000 (UTC)
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D498C106
-	for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 05:40:14 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6b44befac59so3867046b3a.0
-        for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 05:40:14 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9D034CCC
+	for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 12:40:21 +0000 (UTC)
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73447109
+	for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 05:40:18 -0700 (PDT)
+Received: by mail-ot1-x32a.google.com with SMTP id 46e09a7af769-6c63588b554so4461337a34.0
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 05:40:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1697632814; x=1698237614; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/x3uu9zf3l2rig8KiIUkNU7Cv7Jr5Is7Qpx6yKtZAfw=;
-        b=f4yws7udr4dhiWN6u8KB3P6yF1S5jAVjmD0YQtB+Pmg+Yx5/C7G7qiu3UFdL7gLLDO
-         8NniZKYB5tUg1xGWYzjPaePhQuHmTZvSTJXA8nAkgNyAbb9FbfymuTnIg03u9CqBRI6F
-         2hR2LJe0acpApgLqx2iwRh+F8Kw8ga1Oc8PgE0q0nTbRoK9CuwsUkY6rvcAVWc4hRkO5
-         koFzjfF3i72fYVonL4AZACxzgGNxMmKz1RouwpTZ7eytGWt9rg7W2s1S99mCy2F7/81W
-         SnS28PIiT8iBXz89v4GhnivslotW8moU7S5c9oEHKVGMV9CCLmqsJonU8g68ec1WYqX4
-         O5QA==
+        d=ventanamicro.com; s=google; t=1697632818; x=1698237618; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fGpfWXp12h96iIrhrZ9w/4qboCYb79h5kFDLjoFea9A=;
+        b=QqE5TFO96PC0WtHgAhFw2nO4si+ERzJkht630iFczGf+kZHLnwfPU7eLYtxYmsEbDs
+         rFeKX1Ok91eNysNNfTlMG4Hjk4UNSwOOXJZXwkPQ6T7Z4itFXIw5RF86DOHyBUA5m19E
+         SRo9MbROL6EJ9NC/Yboqcxgq43hYqnM9jKaF+07xyMMLJJxmkAweI8MHrQ6Fjjb7+FA/
+         lMsNTiPkgmx/NnUj347t+7Mckdn4+WkASPNii2uMX3YYP3R2lw4zKZE6H9uGl1IxKIYI
+         edWbIbBQeT8yyhXqNvxf0UBLFIhXqXjDicJznsfQF7VyN3RYnhaufx1a2fGSQOZ8MnkX
+         zm/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697632814; x=1698237614;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/x3uu9zf3l2rig8KiIUkNU7Cv7Jr5Is7Qpx6yKtZAfw=;
-        b=Y9DtKJL1t84+ZbVtO5s+ots10D586VPujGPqWxgy9FQGjPkby58fMGJIscB/M7nF/1
-         UAcC1f+Ner4PInGma3eai/sH+IvL2nDe5hyTaEOo2rgAX2hHucM3XVJwEwEtViHcyzBB
-         eyWNXvT9tOnou598+Gg6ZIm5+XpZseiizJl6rMyO1W0cxMdk/r7GwE8XHqWuonmVOudL
-         Z2GPE7hJ7eeYps4XJr9tG3VfKAN9TP1UJMjJuvu5YRdGExst1TpFspXnDCz086YVejlU
-         tcJqMG5UEizHzHi+mAVoBG5HfAep8Ap4SyG9WplPzZA2/5AcOX3wkBVrpmGORTh6soIt
-         nLFA==
-X-Gm-Message-State: AOJu0Yx4bBRbHYWshAtMP1Q8bVf1pzGncfsYspLdQyUIkENNhwai6XNJ
-	CkOn7SgTmzSc2Yk2ljnLqN11MQ==
-X-Google-Smtp-Source: AGHT+IGEnGeUGjTrjv2baYtR5a8vWsazPx3pLfK2Zn0Z8uBJVrUEphyrDMbgW79aJUk55uqnYKQ+WA==
-X-Received: by 2002:a05:6a21:190:b0:149:700e:f50a with SMTP id le16-20020a056a21019000b00149700ef50amr8044741pzb.29.1697632813642;
-        Wed, 18 Oct 2023 05:40:13 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697632818; x=1698237618;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fGpfWXp12h96iIrhrZ9w/4qboCYb79h5kFDLjoFea9A=;
+        b=CtaV9Ca2aKBZsEfUvEuHbwB7f/49BRQm4Esw111cDpZ7Wq3YwhSIffzurCBOpuBsgp
+         eMhSObCW0H6po+XfYAtec5Kyg4XhWDZjGwA860pHvj0X6hlP930Crw0o8eUhDzDwX4cd
+         +A/IqNBhCFKwAFnYa3zJP6P71BIgUvtltonV+8nT/p2HvNoPoM5AQUSEeN+EdVNlJieJ
+         TASfQZ9AwpOywJUisIxYoq6chy5wKQKPR40EzJP823mz9HqbfiML96XOHeGcI/GHqBgm
+         Tb3WJM38CPQe/fG/m7F5PB/YCXYTmFS6KOGK0Ws3HOvQ3MwcUHJJ25gozc5zT67fRaSx
+         Ficw==
+X-Gm-Message-State: AOJu0YzBw60f9zuLgz6x6+Tz6yLOVc7Zp/vKkjWfCzqF/rzT/HMO8spJ
+	pSp+mrNZWr4r+Utmq/t20jBFDg==
+X-Google-Smtp-Source: AGHT+IGX8ITbepEa86pmJl6ivmCbqDw7RpVF9JxtX/HS/jKYyb1ph8OS4i7jyrkr3giv0CgGjzjOGA==
+X-Received: by 2002:a9d:7394:0:b0:6bb:1c21:c52e with SMTP id j20-20020a9d7394000000b006bb1c21c52emr5017805otk.15.1697632817699;
+        Wed, 18 Oct 2023 05:40:17 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.188.78])
-        by smtp.gmail.com with ESMTPSA id w190-20020a6382c7000000b005891f3af36asm1599267pgd.87.2023.10.18.05.40.10
+        by smtp.gmail.com with ESMTPSA id w190-20020a6382c7000000b005891f3af36asm1599267pgd.87.2023.10.18.05.40.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Oct 2023 05:40:13 -0700 (PDT)
+        Wed, 18 Oct 2023 05:40:17 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -69,11 +70,14 @@ Cc: Paul Walmsley <paul.walmsley@sifive.com>,
 	Andrew Jones <ajones@ventanamicro.com>,
 	Conor Dooley <conor.dooley@microchip.com>,
 	Anup Patel <apatel@ventanamicro.com>,
-	Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH v4 -next 0/4] RISC-V: ACPI improvements
-Date: Wed, 18 Oct 2023 18:10:03 +0530
-Message-Id: <20231018124007.1306159-1-sunilvl@ventanamicro.com>
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: [PATCH v4 -next 1/4] RISC-V: ACPI: Enhance acpi_os_ioremap with MMIO remapping
+Date: Wed, 18 Oct 2023 18:10:04 +0530
+Message-Id: <20231018124007.1306159-2-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231018124007.1306159-1-sunilvl@ventanamicro.com>
+References: <20231018124007.1306159-1-sunilvl@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -89,56 +93,138 @@ X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-This series is a set of patches which were originally part of RFC v1 series
-[1] to add ACPI support in RISC-V interrupt controllers. Since these
-patches are independent of the interrupt controllers, creating this new
-series which helps to merge instead of waiting for big series.
+Enhance the acpi_os_ioremap() to support opregions in MMIO space. Also,
+have strict checks using EFI memory map to allow remapping the RAM similar
+to arm64.
 
-This set of patches primarily adds support below ECR [2] which is approved
-by the ASWG and adds below features.
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+---
+ arch/riscv/Kconfig       |  1 +
+ arch/riscv/kernel/acpi.c | 87 +++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 86 insertions(+), 2 deletions(-)
 
-- Get CBO block sizes from RHCT on ACPI based systems.
-
-Additionally, the series contains a patch to improve acpi_os_ioremap().
-
-[1] - https://lore.kernel.org/lkml/20230803175202.3173957-1-sunilvl@ventanamicro.com/
-[2] - https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view?usp=sharing
-
-Changes since v3:
-	1) Added new patch to update return value of acpi_get_rhct() as suggested by Drew.
-	2) Formatting fixes as suggested by Drew.
-	3) Updated tags.
-
-Changes since v2:
-	1) Modified acpi_get_cbo_block_size() not to take cpu parameter
-	   but follow same pattern as DT (Feedback from Samuel and Drew)
-	2) Dropped timer patch from the series since it is already
-	   applied.
-	3) Selected ARCH_KEEP_MEMBLOCK only if ACPI (Feedback from
-	   Alex).
-	4) Added RB tags received so far except RHCT patch which has
-	   changed quite significantly from previous version.
-
-Changes since RFC v1:
-	1) Separated the patches from interrupt controller support series.
-	2) Addressed feedback from Andy and Drew.
-	3) Rebased to Palmer's for-next tree.
-	4) Added RB tags received on RFC v1.
-
-
-Sunil V L (4):
-  RISC-V: ACPI: Enhance acpi_os_ioremap with MMIO remapping
-  RISC-V: ACPI: Update the return value of acpi_get_rhct()
-  RISC-V: ACPI: RHCT: Add function to get CBO block sizes
-  RISC-V: cacheflush: Initialize CBO variables on ACPI systems
-
- arch/riscv/Kconfig            |  1 +
- arch/riscv/include/asm/acpi.h |  6 +++
- arch/riscv/kernel/acpi.c      | 87 +++++++++++++++++++++++++++++++-
- arch/riscv/mm/cacheflush.c    | 25 +++++++---
- drivers/acpi/riscv/rhct.c     | 93 +++++++++++++++++++++++++++++++++--
- 5 files changed, 201 insertions(+), 11 deletions(-)
-
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index d607ab0f7c6d..805c8ab7f23b 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -39,6 +39,7 @@ config RISCV
+ 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select ARCH_HAS_VDSO_DATA
++	select ARCH_KEEP_MEMBLOCK if ACPI
+ 	select ARCH_OPTIONAL_KERNEL_RWX if ARCH_HAS_STRICT_KERNEL_RWX
+ 	select ARCH_OPTIONAL_KERNEL_RWX_DEFAULT
+ 	select ARCH_STACKWALK
+diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
+index 56cb2c986c48..e619edc8b0cc 100644
+--- a/arch/riscv/kernel/acpi.c
++++ b/arch/riscv/kernel/acpi.c
+@@ -14,9 +14,10 @@
+  */
+ 
+ #include <linux/acpi.h>
++#include <linux/efi.h>
+ #include <linux/io.h>
++#include <linux/memblock.h>
+ #include <linux/pci.h>
+-#include <linux/efi.h>
+ 
+ int acpi_noirq = 1;		/* skip ACPI IRQ initialization */
+ int acpi_disabled = 1;
+@@ -217,7 +218,89 @@ void __init __acpi_unmap_table(void __iomem *map, unsigned long size)
+ 
+ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
+ {
+-	return (void __iomem *)memremap(phys, size, MEMREMAP_WB);
++	efi_memory_desc_t *md, *region = NULL;
++	pgprot_t prot;
++
++	if (WARN_ON_ONCE(!efi_enabled(EFI_MEMMAP)))
++		return NULL;
++
++	for_each_efi_memory_desc(md) {
++		u64 end = md->phys_addr + (md->num_pages << EFI_PAGE_SHIFT);
++
++		if (phys < md->phys_addr || phys >= end)
++			continue;
++
++		if (phys + size > end) {
++			pr_warn(FW_BUG "requested region covers multiple EFI memory regions\n");
++			return NULL;
++		}
++		region = md;
++		break;
++	}
++
++	/*
++	 * It is fine for AML to remap regions that are not represented in the
++	 * EFI memory map at all, as it only describes normal memory, and MMIO
++	 * regions that require a virtual mapping to make them accessible to
++	 * the EFI runtime services.
++	 */
++	prot = PAGE_KERNEL_IO;
++	if (region) {
++		switch (region->type) {
++		case EFI_LOADER_CODE:
++		case EFI_LOADER_DATA:
++		case EFI_BOOT_SERVICES_CODE:
++		case EFI_BOOT_SERVICES_DATA:
++		case EFI_CONVENTIONAL_MEMORY:
++		case EFI_PERSISTENT_MEMORY:
++			if (memblock_is_map_memory(phys) ||
++			    !memblock_is_region_memory(phys, size)) {
++				pr_warn(FW_BUG "requested region covers kernel memory\n");
++				return NULL;
++			}
++
++			/*
++			 * Mapping kernel memory is permitted if the region in
++			 * question is covered by a single memblock with the
++			 * NOMAP attribute set: this enables the use of ACPI
++			 * table overrides passed via initramfs.
++			 * This particular use case only requires read access.
++			 */
++			fallthrough;
++
++		case EFI_RUNTIME_SERVICES_CODE:
++			/*
++			 * This would be unusual, but not problematic per se,
++			 * as long as we take care not to create a writable
++			 * mapping for executable code.
++			 */
++			prot = PAGE_KERNEL_RO;
++			break;
++
++		case EFI_ACPI_RECLAIM_MEMORY:
++			/*
++			 * ACPI reclaim memory is used to pass firmware tables
++			 * and other data that is intended for consumption by
++			 * the OS only, which may decide it wants to reclaim
++			 * that memory and use it for something else. We never
++			 * do that, but we usually add it to the linear map
++			 * anyway, in which case we should use the existing
++			 * mapping.
++			 */
++			if (memblock_is_map_memory(phys))
++				return (void __iomem *)__va(phys);
++			fallthrough;
++
++		default:
++			if (region->attribute & EFI_MEMORY_WB)
++				prot = PAGE_KERNEL;
++			else if ((region->attribute & EFI_MEMORY_WC) ||
++				 (region->attribute & EFI_MEMORY_WT))
++				prot = pgprot_writecombine(PAGE_KERNEL);
++		}
++	}
++
++	return ioremap_prot(phys, size, pgprot_val(prot));
+ }
+ 
+ #ifdef CONFIG_PCI
 -- 
 2.39.2
 
