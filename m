@@ -1,127 +1,163 @@
-Return-Path: <linux-acpi+bounces-726-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-727-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABADD7CDBEC
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 14:37:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7ED47CDBED
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 14:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32876B20F18
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 12:37:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 148581C20B8A
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 12:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC3C3588D
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 12:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F0035894
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Oct 2023 12:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98071F5E6
-	for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 11:31:32 +0000 (UTC)
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C01A5111;
-	Wed, 18 Oct 2023 04:31:31 -0700 (PDT)
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6c6591642f2so1577870a34.1;
-        Wed, 18 Oct 2023 04:31:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A1514F8F
+	for <linux-acpi@vger.kernel.org>; Wed, 18 Oct 2023 11:48:40 +0000 (UTC)
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB016F7;
+	Wed, 18 Oct 2023 04:48:38 -0700 (PDT)
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6bf106fb6a0so1341691a34.0;
+        Wed, 18 Oct 2023 04:48:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697628691; x=1698233491;
+        d=1e100.net; s=20230601; t=1697629718; x=1698234518;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hHentBHE/DrtRzr1LJu3KtjR8Xr3ccerMFpUqr2z4BQ=;
-        b=AcWR8OW0qTzDBZze3vH7HoLMm+nd4zo8Rk1QFBqAI1J8oy3NVUCs9ce/rzjP/oA/gk
-         y6XOQWIGDdH7nQbUQMcpE/37kDm50/lbGi7W6U52G7heS2JcqGqYEIZG1zJqQr+YLd6x
-         TDrVlU9MAWuY4BkcBCbb1M2nwB40ND5yguHHwO5Vrp5bLSlR5PrEIH6EOIF+h21IIhbX
-         IT7y4aD+KK6vo4Tb7SbubW8tsJs93o/bdYqrxRi8BTLOTUWCkgNTv7HKyEn+/RPa4qPc
-         S7Or6Qh/iYS7hamQ7ov9oFBCZ1xCttooj3g/s3TwGVbx8gsjwLshqm4SrpqostvYoHft
-         BPqg==
-X-Gm-Message-State: AOJu0Yy4aDDdr+GrufSx0ey9epvrU3kczaJRLLPFzOTOprSEJvw4RUXn
-	xw2tUmrCWTjDwFtsmlG5YgBcFvTPZbOPgaLcSa8=
-X-Google-Smtp-Source: AGHT+IEWNgwxgiAwoitCnD04CiK/3JY1UQabRaWJAqFubO1cNSbJEIp0jD/RkyiUovK6zf16xE5r54Jykv/SNqjTMbU=
-X-Received: by 2002:a4a:b304:0:b0:581:d5df:9cd2 with SMTP id
- m4-20020a4ab304000000b00581d5df9cd2mr4509936ooo.0.1697628691098; Wed, 18 Oct
- 2023 04:31:31 -0700 (PDT)
+        bh=3q/Z+37O+9hSuiBMjYzeMo3yjEqRFNG+vOZC6JSJYCk=;
+        b=rjmXQj+VKCCXNMW6V0kk7Ar+BaUrkWwSvYAa09g1J6ZvS4GfnGnyZ/Zlz2BhHa0pc5
+         V0S1/rFjMz36B91DYk01v5VRFWNr5PmCHdyYEiNCuCKriGP+YnvJSJFCDxKej1UIQox2
+         x6MVhFU4Bl6VirF4NF6auA5SUcwaTpVUfGGE09nxuALVioqcvZOWHUK7/NZaOZLGG9ms
+         dOhOXafpFvUkfNd4P+c1ZbOWoD/BV+4TrZxA1UexObsi7PgrO/17U8wz6ky+FKEDFJNo
+         eZE9+3Pmry4Z0ynQmMVsQ87u/373WP5sFzBjktnwkXCArrWMjvp91MeRwPIt7SqooSeq
+         zvdw==
+X-Gm-Message-State: AOJu0YzGYl4j9yDoCpVj7vwPsqRXkdvqIvPggsSSoXVrgajxPqWWKRdT
+	1tlky4GdNzvHsUab58ZAl652IfsTqBzxoJuXvGA=
+X-Google-Smtp-Source: AGHT+IESrE+6/GTLq2QJSvPquuCaryzdi+XZnUeLv45RGCYYAQTFj7ea1gj6QMAde8TamdCZzR3hvWU7zPLpmSaq9Jw=
+X-Received: by 2002:a4a:ee97:0:b0:57c:6e35:251e with SMTP id
+ dk23-20020a4aee97000000b0057c6e35251emr5173160oob.1.1697629718123; Wed, 18
+ Oct 2023 04:48:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231016170939.1192260-1-sunilvl@ventanamicro.com> <CAJZ5v0hCaXxYSmjWorbM2AEoCJrJk06xCY5Fq-geM945vOE86w@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hCaXxYSmjWorbM2AEoCJrJk06xCY5Fq-geM945vOE86w@mail.gmail.com>
+References: <20231014105426.26389-1-sumitg@nvidia.com> <20231014105426.26389-2-sumitg@nvidia.com>
+In-Reply-To: <20231014105426.26389-2-sumitg@nvidia.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 18 Oct 2023 13:31:20 +0200
-Message-ID: <CAJZ5v0g29Gh4JmKkheqkF5MrnbHefq=KVm=ccxHT4+A99LpVfg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: irq: Fix the incorrect return value in acpi_register_gsi()
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, 
-	Marc Zyngier <maz@kernel.org>, Anup Patel <apatel@ventanamicro.com>
+Date: Wed, 18 Oct 2023 13:48:27 +0200
+Message-ID: <CAJZ5v0jm5h9qeZdnLDp9qUMT-31FOWMBERMzhFzgFsmt9QX78g@mail.gmail.com>
+Subject: Re: [Patch v5 1/2] ACPI: thermal: Add Thermal fast Sampling Period
+ (_TFP) support
+To: Sumit Gupta <sumitg@nvidia.com>
+Cc: rafael@kernel.org, rui.zhang@intel.com, lenb@kernel.org, 
+	linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, treding@nvidia.com, jonathanh@nvidia.com, 
+	bbasu@nvidia.com, sanjayc@nvidia.com, ksitaraman@nvidia.com, 
+	srikars@nvidia.com, jbrasen@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
 	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Oct 18, 2023 at 1:13=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
+On Sat, Oct 14, 2023 at 12:54=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com> wr=
+ote:
 >
-> On Mon, Oct 16, 2023 at 7:09=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.c=
-om> wrote:
-> >
-> > acpi_register_gsi() should return negative value in case of failure.
-> > Currently, it returns the return value from irq_create_fwspec_mapping()=
-.
-> > However, irq_create_fwspec_mapping() returns 0 for failure. Fix the iss=
-ue
-> > by returning -EINVAL if irq_create_fwspec_mapping() returns zero.
-> >
-> > Fixes: d44fa3d46079 ("ACPI: Add support for ResourceSource/IRQ domain m=
-apping")
-> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > ---
-> >  drivers/acpi/irq.c | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-> > index c2c786eb95ab..403f33df66af 100644
-> > --- a/drivers/acpi/irq.c
-> > +++ b/drivers/acpi/irq.c
-> > @@ -57,6 +57,7 @@ int acpi_register_gsi(struct device *dev, u32 gsi, in=
-t trigger,
-> >                       int polarity)
-> >  {
-> >         struct irq_fwspec fwspec;
-> > +       unsigned int rc;
-> >
-> >         fwspec.fwnode =3D acpi_get_gsi_domain_id(gsi);
-> >         if (WARN_ON(!fwspec.fwnode)) {
-> > @@ -68,7 +69,11 @@ int acpi_register_gsi(struct device *dev, u32 gsi, i=
-nt trigger,
-> >         fwspec.param[1] =3D acpi_dev_get_irq_type(trigger, polarity);
-> >         fwspec.param_count =3D 2;
-> >
-> > -       return irq_create_fwspec_mapping(&fwspec);
-> > +       rc =3D irq_create_fwspec_mapping(&fwspec);
-> > +       if (!rc)
-> > +               return -EINVAL;
-> > +
-> > +       return rc;
-> >  }
-> >  EXPORT_SYMBOL_GPL(acpi_register_gsi);
-> >
-> > --
+> From: Jeff Brasen <jbrasen@nvidia.com>
 >
-> Good catch!
+> Add support of "Thermal fast Sampling Period (_TFP)" for Passive cooling.
+> As per [1], _TFP overrides the "Thermal Sampling Period (_TSP)" if both
+> are present in a Thermal zone.
 >
-> Applied as 6.7 material, but I renamed the new rc local variable to irq.
+> [1] ACPI Specification 6.4 - section 11.4.17. _TFP (Thermal fast Sampling
+>     Period)"
 >
-> Thanks!
+> Signed-off-by: Jeff Brasen <jbrasen@nvidia.com>
+> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+> ---
+>  drivers/acpi/thermal.c | 17 +++++++++++------
+>  1 file changed, 11 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+> index d98ff69303b3..a91e3d566858 100644
+> --- a/drivers/acpi/thermal.c
+> +++ b/drivers/acpi/thermal.c
+> @@ -90,7 +90,7 @@ struct acpi_thermal_passive {
+>         struct acpi_thermal_trip trip;
+>         unsigned long tc1;
+>         unsigned long tc2;
+> -       unsigned long tsp;
+> +       unsigned long passive_delay;
 
-Actually, I'm going to push this for -rc7.
+This is a passive trip structure anyway, so the "passive_" prefix is
+redundant here.  "delay" alone would be fine.
+
+>  };
+>
+>  struct acpi_thermal_active {
+> @@ -404,11 +404,16 @@ static bool passive_trip_params_init(struct acpi_th=
+ermal *tz)
+>
+>         tz->trips.passive.tc2 =3D tmp;
+>
+> -       status =3D acpi_evaluate_integer(tz->device->handle, "_TSP", NULL=
+, &tmp);
+> -       if (ACPI_FAILURE(status))
+> -               return false;
+> +       status =3D acpi_evaluate_integer(tz->device->handle, "_TFP", NULL=
+, &tmp);
+> +       if (ACPI_FAILURE(status)) {
+> +               status =3D acpi_evaluate_integer(tz->device->handle, "_TS=
+P", NULL, &tmp);
+> +               if (ACPI_FAILURE(status))
+> +                       return false;
+>
+> -       tz->trips.passive.tsp =3D tmp;
+> +               tz->trips.passive.passive_delay =3D tmp * 100;
+> +       } else {
+> +               tz->trips.passive.passive_delay =3D tmp;
+> +       }
+
+I would prefer the if () statement above to be structured the other
+way around, that is
+
+ status =3D ...
+ if (ACPI_SUCCESS(status)) {
+        tz->trips.passive.delay =3D tmp;
+        return true;
+}
+
+status =3D ...
+if (ACPI_FAILURE(status))
+         return false;
+
+etc.
+
+>
+>         return true;
+>  }
+> @@ -904,7 +909,7 @@ static int acpi_thermal_add(struct acpi_device *devic=
+e)
+>
+>         acpi_trip =3D &tz->trips.passive.trip;
+>         if (acpi_thermal_trip_valid(acpi_trip)) {
+> -               passive_delay =3D tz->trips.passive.tsp * 100;
+> +               passive_delay =3D tz->trips.passive.passive_delay;
+>
+>                 trip->type =3D THERMAL_TRIP_PASSIVE;
+>                 trip->temperature =3D acpi_thermal_temp(tz, acpi_trip->te=
+mp_dk);
+> --
+> 2.17.1
+>
 
