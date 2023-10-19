@@ -1,124 +1,85 @@
-Return-Path: <linux-acpi+bounces-757-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-758-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0EF7CF923
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Oct 2023 14:39:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E07547CF924
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Oct 2023 14:39:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9FB8281397
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Oct 2023 12:39:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DE1E1C209B3
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Oct 2023 12:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD81225AF
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Oct 2023 12:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80323225A4
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Oct 2023 12:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FBuS/3O4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OLrmFEkv"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423491DFF8
-	for <linux-acpi@vger.kernel.org>; Thu, 19 Oct 2023 12:07:36 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D7E335BD;
-	Thu, 19 Oct 2023 05:07:05 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B575C1EB5F
+	for <linux-acpi@vger.kernel.org>; Thu, 19 Oct 2023 12:17:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FA19AB;
+	Thu, 19 Oct 2023 05:17:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697717225; x=1729253225;
+  t=1697717867; x=1729253867;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=cZrpDI17ZMb/Ton/XpJWiGZ39wcbVjXpretuf1XL3Y0=;
-  b=FBuS/3O4hKI2dUyrTn5pPJ3cDchgTXMQ/DWXLfaK9kugYgv78FJx+Fii
-   XIW3kSV47et8wWFnpfIJCYPROtRG3TbFOvmqX+AUYRg2CV34UU/CS4uiw
-   Y1bnGyJ7YfmQ7XP6zbJQvlEYLxjGGpblLpynX8vnzSlg5quHqPm48e8M2
-   d3pBGqgQ8hZgH/BRuzEmnGNSQQObgy6obg9Rj2SUJxi0c2YpRiswpQTJ3
-   2/VTEL5mEtQVUgPoJAusSHPlU2ycvhnQZAos06l2r/kMlziFJOslmzTL9
-   VMwVkkJfx1ilYlNMm1nXnu+QFTbAy/K19ECDMlZjRDvNFyAIkXctgBChh
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="7786902"
+   mime-version:in-reply-to;
+  bh=c+nyLhbjTR1LgRZ98q1rh6aAFetoBlm+WQFuCloYpSM=;
+  b=OLrmFEkvAN1SnH6HHFl5NSzEM1UjS7wITdgM5Gb8x7eVxgukgxjlnRG8
+   DjLjnnXKAknvz5GE5J5RmrwOlXdSL5SO68kKX6DD4FFu0aVWm9PzRIpRR
+   YpTfpgCdEwURslY0elAqcfRdItM6G//kFEonMFqaNKAc/E+id4Hlr+KeZ
+   HKYHnXzY7biF95yrK5EUqWSWJLKvI/UAqxvYI3378kt2YPIA0NvPk65xv
+   xiiXkLOEXNYzDfG4KoVvkkQ4lXcqloyadQ8K0ljDBNViJmsyO+PfVasai
+   HnFxXusENdpUy3q0ltr39G/Y1ev8E47qWDr3V7ys9gQzkecmMiYGuuCvM
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="472466505"
 X-IronPort-AV: E=Sophos;i="6.03,237,1694761200"; 
-   d="scan'208";a="7786902"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 05:05:59 -0700
+   d="scan'208";a="472466505"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 05:17:47 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="1004211901"
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="733540240"
 X-IronPort-AV: E=Sophos;i="6.03,237,1694761200"; 
-   d="scan'208";a="1004211901"
+   d="scan'208";a="733540240"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 05:05:53 -0700
+  by orsmga006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 05:17:45 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC2)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1qtRmf-00000006r6E-12MY;
-	Thu, 19 Oct 2023 15:05:49 +0300
-Date: Thu, 19 Oct 2023 15:05:48 +0300
+	id 1qtRyA-00000006rFB-3Fdy;
+	Thu, 19 Oct 2023 15:17:42 +0300
+Date: Thu, 19 Oct 2023 15:17:42 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Gerald Loacker <gerald.loacker@wolfvision.net>,
-	Gwendal Grignou <gwendal@chromium.org>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v1 2/6] device property: Add
- fwnode_property_match_property_string()
-Message-ID: <ZTEbnIy9fWdez/Ff@smile.fi.intel.com>
-References: <20230808162800.61651-1-andriy.shevchenko@linux.intel.com>
- <20230808162800.61651-3-andriy.shevchenko@linux.intel.com>
- <20230809185944.1ae78e34@jic23-huawei>
- <ZNTlniWf8Ou9hHOT@smile.fi.intel.com>
- <20230828190101.50f70921@jic23-huawei>
- <CAJZ5v0gOXsX98jQTRSwoYmfYBfva1RHTsDaLL++m7c+kLjStVA@mail.gmail.com>
- <ZS7jyHkKJcubVxws@smile.fi.intel.com>
- <20231018203755.06cb1118@jic23-huawei>
+To: Michal Wilczynski <michal.wilczynski@intel.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rafael.j.wysocki@intel.com, lenb@kernel.org
+Subject: Re: [PATCH v2 0/3] Replace acpi_driver with platform_driver
+Message-ID: <ZTEeZt9rGplso1HV@smile.fi.intel.com>
+References: <20231018190945.252428-1-michal.wilczynski@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231018203755.06cb1118@jic23-huawei>
+In-Reply-To: <20231018190945.252428-1-michal.wilczynski@intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Oct 18, 2023 at 08:37:55PM +0100, Jonathan Cameron wrote:
-> On Tue, 17 Oct 2023 22:43:04 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, Oct 17, 2023 at 09:19:30PM +0200, Rafael J. Wysocki wrote:
-> > > On Mon, Aug 28, 2023 at 8:00 PM Jonathan Cameron <jic23@kernel.org> wrote:  
+On Wed, Oct 18, 2023 at 10:09:42PM +0300, Michal Wilczynski wrote:
+> This patchset is a continuation of efforts from [1] aiming to replace
+> acpi_driver with platform_driver. To ease up review effort I'm sending
+> miniseries per driver, with a replacement patch + various improvements
+> that were noticed by me, or during internal review.
+> 
+> This mini-series takes care of acpi_pad driver.
 
-...
-
-> > > Sorry for the delay, I've lost track of this.  
-> > 
-> > NP!
-> > 
-> > > Honestly, I have no strong opinion, but I think that this is going to
-> > > reduce some code duplication which is a valid purpose, so please feel
-> > > free to add
-> > > 
-> > > Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-> > > 
-> > > to this patch.  
-> > 
-> > Thank you!
-> > 
-> > Jonathan, are we all set for applying this series?
-> > 
-> Applied, but it might end up as 6.8 material depending on exactly how
-> timing turns out.  I have one pull request sent and I'm not sure I'll get
-> another one in this cycle. Given I just applied some big drivers I'd like to, but
-> not sure yet...
-
-It's fine, I'm not in hurry with this and thank you!
+All three LGTM, FWIW,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
 -- 
 With Best Regards,
