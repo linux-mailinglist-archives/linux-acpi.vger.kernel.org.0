@@ -1,136 +1,185 @@
-Return-Path: <linux-acpi+bounces-755-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-756-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F4A7CF019
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Oct 2023 08:32:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B3B7CF922
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Oct 2023 14:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF4801F22455
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Oct 2023 06:32:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 540B21C20A02
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Oct 2023 12:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B118F58
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Oct 2023 06:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52AF225B7
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Oct 2023 12:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DhSKf4s9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vut8FnJj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853F72104
-	for <linux-acpi@vger.kernel.org>; Thu, 19 Oct 2023 04:30:32 +0000 (UTC)
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0F49122;
-	Wed, 18 Oct 2023 21:30:30 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-6b390036045so1256908b3a.1;
-        Wed, 18 Oct 2023 21:30:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697689830; x=1698294630; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=07TI5lUHbLHzCbfbAfFgFmfomhDjrV2r0S9w2heQhcw=;
-        b=DhSKf4s94RZLjGuU2CvlxfMReCZI3sFWBSgFB1y8mYYsKsg9gRhB0u1hUUsc6brxCQ
-         JvnWZ7c55B2obn5SebwvdoaJyzOOZbR1MUZorvwJ5qfP5cD02MuIUVg3wylmXu7WeKLf
-         gwz0NdWBsVqI7A9Mg2urmMqu/FGMH7mOO44ZHBU6as0Nv2IEkPjNrlX1khyoNHOMo3g8
-         lx79MC4998mX6+5AK2IA+gSaJ6C0NKKtE+Xg2hGSvrdQ+MFNVauXnXj1OsF6BN8VIy0f
-         RrPvY06GGzuRwo3xZ25Z66bd2jYSJ3cIRBL5tJDRVim3Gw3zyoIEAuvkhP7AoNrImcqD
-         knvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697689830; x=1698294630;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=07TI5lUHbLHzCbfbAfFgFmfomhDjrV2r0S9w2heQhcw=;
-        b=TDaDBsZr1aeA8laRHX6x3vXdP4N/xKU2OXQZ8UEzT+FHfTcc4ysvn1hNVGVGozBx+y
-         lb39MFn2Fyvz0R/KV8KoQrG+lzHEm5HTZMWIxAB+Dkv6PO9CgUXSFMy5IZ4hjx8NvT6z
-         Faccxmbzc+kVeYgdph81CUJctPkvT4CDEE0yG2/pJtBothk7fQhu62pJCcD/rP9ZMWEe
-         +YtR7CzjhdDze2o/UInFL6tOFXUv+xBzNojEbR2ll00UXXGEUmm5scWxCp4aqbBIUH0o
-         hBfPnH8JcrLzwiH69pLtX5f4DWgPfU+socWu1yBIUQbP43hBg1c2ILrxgcJE2hXGCvIP
-         MK3Q==
-X-Gm-Message-State: AOJu0YwLy1tG2OGKGjx3C3ZmSN/F5CjEmM2zCFoiamviF9g+xiY0xyaP
-	itQCiD06SjDu0pmaP/DnolbQ6mjy9qnMOtl/
-X-Google-Smtp-Source: AGHT+IEkWJvFP6rwED1ZbZyuQSYjiy/JNyTa5i4es2xKS+eEA8tiLgNC+CD3rO0KS3qkrixbUcz6ZQ==
-X-Received: by 2002:a05:6a21:3286:b0:17a:e03f:38b7 with SMTP id yt6-20020a056a21328600b0017ae03f38b7mr1137611pzb.6.1697689830046;
-        Wed, 18 Oct 2023 21:30:30 -0700 (PDT)
-Received: from sivslab-System-Product-Name ([140.116.154.65])
-        by smtp.gmail.com with ESMTPSA id d13-20020a170902728d00b001c5eb37e92csm745514pll.305.2023.10.18.21.30.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Oct 2023 21:30:29 -0700 (PDT)
-Date: Thu, 19 Oct 2023 12:30:25 +0800
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: dan.j.williams@intel.com, vishal.l.verma@intel.com,
-	dave.jiang@intel.com, ira.weiny@intel.com, lenb@kernel.org,
-	nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] ACPI: NFIT: Optimize nfit_mem_cmp() for efficiency
-Message-ID: <20231019043025.GA577714@sivslab-System-Product-Name>
-References: <20231012215903.2104652-1-visitorckw@gmail.com>
- <20231013122236.2127269-1-visitorckw@gmail.com>
- <CAJZ5v0gSB_ACBpK1nKu3sbA0HQ1xsk2mn3oc9AjpoFtge9Opdw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5241B18C0A;
+	Thu, 19 Oct 2023 11:12:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B454CC433C8;
+	Thu, 19 Oct 2023 11:12:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1697713969;
+	bh=XTqMeSpKqcuasX9eby3qHv7gedznY2jckAT9FxyMVsI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Vut8FnJjXNgyZ7kXP3YKB2xGB0cR5yJAnVCUOZ1fOr2tcljAAqeR43RMuY7nLjwi+
+	 MEU+dZyNp4FrqVRRObTJYfDii7w3STJTWj0lDBENOtxgc5tUWFXKSw437RKBtdn+Db
+	 dIc5sNGIKpHAL6eN/GCr58GIYa/qsxUVeSs1SzlJ8sKEOv9f428fFmyh2GeoSXoyq2
+	 rj+bTcyst/9KgEgUY9+goPaDOOemGn9te77MCajxs9zJqp2HMnRjnSzsDY0BA79BlU
+	 XnPidvZcWLNwbIbA2Njr0M7hdWon5TFyyW3hpxtCSTXgYFsmSoxT/hg2I+xL2VPAtq
+	 jMdjhFk2XptxQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1qtQxL-005ilA-7y;
+	Thu, 19 Oct 2023 12:12:47 +0100
+Date: Thu, 19 Oct 2023 12:12:45 +0100
+Message-ID: <86lebyn9w2.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	Robin Murphy <robin.murphy@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Rob Herring <robh+dt@kernel.org>,
+	Fang Xiang <fangxiang3@xiaomi.com>
+Subject: Re: [PATCH v3 5/5] irqchip/gic-v3: Enable non-coherent redistributors/ITSes ACPI probing
+In-Reply-To: <ZS+aZnRFkGkJ+vK9@lpieralisi>
+References: <20230905104721.52199-1-lpieralisi@kernel.org>
+	<20231006125929.48591-1-lpieralisi@kernel.org>
+	<20231006125929.48591-6-lpieralisi@kernel.org>
+	<ZS6YAvoz3JApFtOo@lpieralisi>
+	<86v8b5mc5v.wl-maz@kernel.org>
+	<ZS+aZnRFkGkJ+vK9@lpieralisi>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0gSB_ACBpK1nKu3sbA0HQ1xsk2mn3oc9AjpoFtge9Opdw@mail.gmail.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: lpieralisi@kernel.org, linux-kernel@vger.kernel.org, robin.murphy@arm.com, mark.rutland@arm.com, rafael@kernel.org, linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, linux-acpi@vger.kernel.org, robh+dt@kernel.org, fangxiang3@xiaomi.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Oct 18, 2023 at 01:17:31PM +0200, Rafael J. Wysocki wrote:
-> On Fri, Oct 13, 2023 at 2:22 PM Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
-> >
-> > The original code used conditional branching in the nfit_mem_cmp
-> > function to compare two values and return -1, 1, or 0 based on the
-> > result. However, the list_sort comparison function only needs results
-> > <0, >0, or =0. This patch optimizes the code to make the comparison
-> > branchless, improving efficiency and reducing code size. This change
-> > reduces the number of comparison operations from 1-2 to a single
-> > subtraction operation, thereby saving the number of instructions.
-> >
-> > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-> > ---
-> > v1 -> v2:
-> > - Add explicit type cast in case the sizes of u32 and int differ.
-> >
-> >  drivers/acpi/nfit/core.c | 6 +-----
-> >  1 file changed, 1 insertion(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> > index f96bf32cd368..563a32eba888 100644
-> > --- a/drivers/acpi/nfit/core.c
-> > +++ b/drivers/acpi/nfit/core.c
-> > @@ -1138,11 +1138,7 @@ static int nfit_mem_cmp(void *priv, const struct list_head *_a,
-> >
-> >         handleA = __to_nfit_memdev(a)->device_handle;
-> >         handleB = __to_nfit_memdev(b)->device_handle;
-> > -       if (handleA < handleB)
-> > -               return -1;
-> > -       else if (handleA > handleB)
-> > -               return 1;
-> > -       return 0;
-> > +       return (int)handleA - (int)handleB;
+On Wed, 18 Oct 2023 09:42:14 +0100,
+Lorenzo Pieralisi <lpieralisi@kernel.org> wrote:
 > 
-> Are you sure that you are not losing bits in these conversions?
-
-I believe your concerns are valid. Perhaps this was a stupid mistake I
-made. Initially, I proposed this patch because I noticed that other
-parts of the Linux kernel, such as the sram_reserve_cmp() function in
-drivers/misc/sram.c, directly used subtraction for comparisons
-involving u32. However, this approach could potentially lead to issues
-when the size of int is 2 bytes instead of 4 bytes. I think maybe we
-should consider dropping this patch. I apologize for proposing an
-incorrect patch.
-
-Thanks,
-Kuan-Wei Chiu
+> On Tue, Oct 17, 2023 at 05:44:28PM +0100, Marc Zyngier wrote:
+> > On Tue, 17 Oct 2023 15:19:46 +0100,
+> > Lorenzo Pieralisi <lpieralisi@kernel.org> wrote:
+> > > 
+> > > On Fri, Oct 06, 2023 at 02:59:29PM +0200, Lorenzo Pieralisi wrote:
+> > > > The GIC architecture specification defines a set of registers
+> > > > for redistributors and ITSes that control the sharebility and
+> > > > cacheability attributes of redistributors/ITSes initiator ports
+> > > > on the interconnect (GICR_[V]PROPBASER, GICR_[V]PENDBASER,
+> > > > GITS_BASER<n>).
+> > > > 
+> > > > Architecturally the GIC provides a means to drive shareability
+> > > > and cacheability attributes signals and related IWB/OWB/ISH barriers
+> > > > but it is not mandatory for designs to wire up the corresponding
+> > > > interconnect signals that control the cacheability/shareability
+> > > > of transactions.
+> > > > 
+> > > > Redistributors and ITSes interconnect ports can be connected to
+> > > > non-coherent interconnects that are not able to manage the
+> > > > shareability/cacheability attributes; this implicitly makes
+> > > > the redistributors and ITSes non-coherent observers.
+> > > > 
+> > > > So far, the GIC driver on probe executes a write to "probe" for
+> > > > the redistributors and ITSes registers shareability bitfields
+> > > > by writing a value (ie InnerShareable - the shareability domain the
+> > > > CPUs are in) and check it back to detect whether the value sticks or
+> > > > not; this hinges on a GIC programming model behaviour that predates the
+> > > > current specifications, that just define shareability bits as writeable
+> > > > but do not guarantee that writing certain shareability values
+> > > > enable the expected behaviour for the redistributors/ITSes
+> > > > memory interconnect ports.
+> > > > 
+> > > > To enable non-coherent GIC designs on ACPI based systems, parse the MADT
+> > > > GICC/GICR/ITS subtables non-coherent flags to determine whether the
+> > > > respective components are non-coherent observers and force the shareability
+> > > > attributes to be programmed into the redistributors and ITSes registers.
+> > > > 
+> > > > An ACPI global function (acpi_get_madt_revision()) is added to retrieve
+> > > > the MADT revision, in that it is essential to check the MADT revision
+> > > > before checking for flags that were added with MADT revision 7 so that
+> > > > if the kernel is booted with ACPI tables (MADT rev < 7) it skips parsing
+> > > > the newly added flags (that should be zeroed reserved values for MADT
+> > > > versions < 7 but they could turn out to be buggy and should be ignored).
+> > > > 
+> > > > Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> > > > Cc: Robin Murphy <robin.murphy@arm.com>
+> > > > Cc: Mark Rutland <mark.rutland@arm.com>
+> > > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > > > Cc: Marc Zyngier <maz@kernel.org>
+> > > > ---
+> > > >  drivers/acpi/processor_core.c    | 21 +++++++++++++++++++++
+> > > >  drivers/irqchip/irq-gic-common.h |  8 ++++++++
+> > > >  drivers/irqchip/irq-gic-v3-its.c |  4 ++++
+> > > >  drivers/irqchip/irq-gic-v3.c     |  9 +++++++++
+> > > >  include/linux/acpi.h             |  3 +++
+> > > >  5 files changed, 45 insertions(+)
+> > > 
+> > > Hi Marc,
+> > > 
+> > > just a quick note to ask if, from an ACPI binding POW
+> > 
+> > I guess you mean POV. POW has an entirely different meaning... :-/
+> > 
+> > > this patch and related approach make sense to you.
+> > > 
+> > > If so, we can start the process to get the ACPI changes drafted
+> > > in:
+> > > 
+> > > https://bugzilla.tianocore.org/show_bug.cgi?id=4557
+> > > 
+> > > and deployed in this patch into the ACPI specs, I can log
+> > > an "ACK" in the tianocoreBZ entry above (we will be able to
+> > > rework the code as much as we want, this is just for the
+> > > bindings).
+> > 
+> > I'm OK with the overall shape of it. However, I wonder what the
+> > rationale is for spreading the redistributor property all over the map
+> > (in both GICC and GICR structures), while it could be set once and for
+> > all in the core MADT flags (32 bits, of which only one is in use).
+> > 
+> > It is bad enough that there are two ways of getting the GICR regions.
+> > Why can't the properties that apply to all of the be common?
 > 
-> >  }
-> >
-> >  static int nfit_mem_init(struct acpi_nfit_desc *acpi_desc)
-> > --
+> I don't think we are allowed to add arch specific flags to the MADT
+> since those, supposedly, are cross-architecture (and the only one
+> defined is quite old, though x86 specific).
+
+There is nothing that is truly cross-arch in this table. *everything*
+in MADT is arch-specific.
+
+> The reason behind spreading the property is the nature of GICC/GICR
+> subtables themselves - we wanted to apply flags only in subtables
+> relevant to the components in question.
+>
+> We could try to add a global flag to the MADT but I would not be
+> surprised if the ECR would be rejected then for the reason I explained
+> above.
+
+I don't think that's much of a reason, but I really don't care enough
+about this to argue otherwise.
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
