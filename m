@@ -1,214 +1,122 @@
-Return-Path: <linux-acpi+bounces-796-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-797-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8345B7D11AC
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 16:37:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5917D11AD
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 16:37:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14D75B20A54
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 14:36:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BA63B20DDC
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 14:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BF11DA2D
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 14:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF381DA20
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 14:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Y30Q5KtP"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="K8ajnGCN"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300F51BDDA
-	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 13:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C151C688
+	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 13:59:52 +0000 (UTC)
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FA8CA3;
-	Fri, 20 Oct 2023 06:44:43 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9910291;
+	Fri, 20 Oct 2023 06:59:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=EaJhZw0Zk+uukZ21AQLL1Wa3YNXD1P5PVQhDy79M9q0=; b=Y30Q5KtPVsMmfXmbaBaWKFuqkc
-	4bqAUIrotpwascfiGwvAM0YfAx5r4v8d/93HKciObRSjY7n+A0rEs934jpl7SxrlFtDG+3WRlsmNI
-	cNiSD21IKCVlHirpNr5MZGKmaa+Oy5SjiNPjHKJayZV2j9UbMHI/HvaNvluDtNQsUEyK3472J/14p
-	y+c/KUjPdCl7vBQCqJnu+X+2oSn2/Ja8aXwfAC619F6dVJm89BeZF21oAKs4/ZQdyCt7IyfaiOlbe
-	MXK7DC4bnANefohp3DoFA6aUIBc2qDKxDfx+OF9DeG9E3QSyDnqPLLiEvpXyDqZtG3SNsydKOetci
-	0CN/heNg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48962)
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=7LtfXe/DEMD/lHzUFvMa+OWRluqZ+xc9nu0Cirekhm8=; b=K8ajnGCN3VL45r0nzCQRkKqgwa
+	uaygU4jSLCNphjhbsSYH8Mw9uxK5T31L7XeD8pTVWCGk8CcAh92YnB/TfUR7mKBwJS80swJozBKlr
+	eXnE7NkUH2skU9CMUPuNlc9uT+khCy+DZMe8tMiuhfaky/jhewxrmnVNLFl4PLGi3Ts+qGGViLz63
+	RHZ2qOf2UeyCHJH5jmS4hdF1X4lUg8k9JphXTk/Ri3v4uOjEAQbWq7MmvzWNDzpYZwW6Oi1Dkh12g
+	O64D98spVaGRJRVcmlWvEiofQPLj/uLdDB7UiqT7+uWqgU0iJlxN7OV57bjSvVAH/KLob5pF8ud/G
+	uKT/B9gA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:55754 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1qtpno-0000T7-2b;
-	Fri, 20 Oct 2023 14:44:36 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1qtpnn-0001aP-Tx; Fri, 20 Oct 2023 14:44:35 +0100
-Date: Fri, 20 Oct 2023 14:44:35 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: James Morse <james.morse@arm.com>, linux-pm@vger.kernel.org,
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1qtq2V-0000UO-0z;
+	Fri, 20 Oct 2023 14:59:47 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1qtq2W-00AJ8T-Mm; Fri, 20 Oct 2023 14:59:48 +0100
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+To:linux-pm@vger.kernel.org,
 	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
 	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
-	x86@kernel.org, Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	jianyong.wu@arm.com, justin.he@arm.com, gregkh@linuxfoundation.org
-Subject: Re: [RFC PATCH v2 11/35] arch_topology: Make
- register_cpu_capacity_sysctl() tolerant to late CPUs
-Message-ID: <ZTKEQz0DJuv/tqNH@shell.armlinux.org.uk>
-References: <20230913163823.7880-1-james.morse@arm.com>
- <20230913163823.7880-12-james.morse@arm.com>
- <20230914130126.000069db@Huawei.com>
+	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org,
+	kvmarm@lists.linux.dev
+Cc: x86@kernel.org, James Morse <james.morse@arm.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, jianyong.wu@arm.com,
+	justin.he@arm.com, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: Use the acpi_device_is_present() helper in more places
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230914130126.000069db@Huawei.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1qtq2W-00AJ8T-Mm@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Fri, 20 Oct 2023 14:59:48 +0100
 
-On Thu, Sep 14, 2023 at 01:01:26PM +0100, Jonathan Cameron wrote:
-> On Wed, 13 Sep 2023 16:37:59 +0000
-> James Morse <james.morse@arm.com> wrote:
-> 
-> > register_cpu_capacity_sysctl() adds a property to sysfs that describes
-> > the CPUs capacity. This is done from a subsys_initcall() that assumes
-> > all possible CPUs are registered.
-> > 
-> > With CPU hotplug, possible CPUs aren't registered until they become
-> > present, (or for arm64 enabled). This leads to messages during boot:
-> > | register_cpu_capacity_sysctl: too early to get CPU1 device!
-> > and once these CPUs are added to the system, the file is missing.
-> > 
-> > Move this to a cpuhp callback, so that the file is created once
-> > CPUs are brought online. This covers CPUs that are added late by
-> > mechanisms like hotplug.
-> > One observable difference is the file is now missing for offline CPUs.
-> > 
-> > Signed-off-by: James Morse <james.morse@arm.com>
-> > ---
-> > If the offline CPUs thing is a problem for the tools that consume
-> > this value, we'd need to move cpu_capacity to be part of cpu.c's
-> > common_cpu_attr_groups.
-> 
-> I think we should do that anyway and then use an is_visible() if we want to
-> change whether it is visible in offline cpus.
-> 
-> Dynamic sysfs file creation is horrible - particularly when done
-> from an totally different file from where the rest of the attributes
-> are registered.  I'm curious what the history behind that is.
-> 
-> Whilst here, why is there a common_cpu_attr_groups which is
-> identical to the hotpluggable_cpu_attr_groups in base/cpu.c?
+From: James Morse <james.morse@arm.com>
 
-Looking into doing this, the easy bit is adding the attribute group
-with an appropriate .is_visible dependent on cpu_present(), but we
-need to be able to call sysfs_update_groups() when the state of the
-.is_visible() changes.
+acpi_device_is_present() checks the present or functional bits
+from the cached copy of _STA.
 
-Given the comment in sysfs_update_groups() about "if an error occurs",
-rather than making this part of common_cpu_attr_groups, would it be
-better that it's part of its own set of groups, thus limiting the
-damage from a possible error? I suspect, however, that any error at
-that point means that the system is rather fatally wounded.
+A few places open-code this check. Use the helper instead to
+improve readability.
 
-This is what I have so far to implement your idea, less the necessary
-sysfs_update_groups() call when we need to change the visibility of
-the attributes.
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+Jonathan Cameron suggests "Pull this one out and send it upstream in
+advance of the rest" so let's do that. See
+https://lore.kernel.org/r/20230914130455.00004434@Huawei.com/
 
-diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
-index 9ccb7daee78e..06c9fc6620d2 100644
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -215,43 +215,24 @@ static ssize_t cpu_capacity_show(struct device *dev,
- 	return sysfs_emit(buf, "%lu\n", topology_get_cpu_scale(cpu->dev.id));
- }
- 
--static void update_topology_flags_workfn(struct work_struct *work);
--static DECLARE_WORK(update_topology_flags_work, update_topology_flags_workfn);
--
- static DEVICE_ATTR_RO(cpu_capacity);
- 
--static int cpu_capacity_sysctl_add(unsigned int cpu)
--{
--	struct device *cpu_dev = get_cpu_device(cpu);
--
--	if (!cpu_dev)
--		return -ENOENT;
--
--	device_create_file(cpu_dev, &dev_attr_cpu_capacity);
--
--	return 0;
--}
--
--static int cpu_capacity_sysctl_remove(unsigned int cpu)
-+static umode_t cpu_present_attrs_visible(struct kobject *kobi,
-+					 struct attribute *attr, int index)
- {
--	struct device *cpu_dev = get_cpu_device(cpu);
--
--	if (!cpu_dev)
--		return -ENOENT;
--
--	device_remove_file(cpu_dev, &dev_attr_cpu_capacity);
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct cpu *cpu = container_of(dev, struct cpu, dev);
- 
--	return 0;
-+	return cpu_present(cpu->dev.id) ? attr->mode : 0;
- }
- 
--static int register_cpu_capacity_sysctl(void)
--{
--	cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "topology/cpu-capacity",
--			  cpu_capacity_sysctl_add, cpu_capacity_sysctl_remove);
-+const struct attribute_group cpu_capacity_attr_group = {
-+	.is_visible = cpu_present_attrs_visible,
-+	.attrs = cpu_capacity_attrs
-+};
- 
--	return 0;
--}
--subsys_initcall(register_cpu_capacity_sysctl);
-+static void update_topology_flags_workfn(struct work_struct *work);
-+static DECLARE_WORK(update_topology_flags_work, update_topology_flags_workfn);
- 
- static int update_topology;
- 
-diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
-index a19a8be93102..954b045705c2 100644
---- a/drivers/base/cpu.c
-+++ b/drivers/base/cpu.c
-@@ -192,6 +192,9 @@ static const struct attribute_group crash_note_cpu_attr_group = {
- static const struct attribute_group *common_cpu_attr_groups[] = {
- #ifdef CONFIG_KEXEC
- 	&crash_note_cpu_attr_group,
-+#endif
-+#ifdef CONFIG_GENERIC_ARCH_TOPOLOGY
-+	&cpu_capacity_attr_group,
- #endif
- 	NULL
- };
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index e117c06e0c6b..745ad21e3dc8 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -30,6 +30,8 @@ struct cpu {
- 	struct device dev;
- };
- 
-+extern const struct attribute_group cpu_capacity_attr_group;
-+
- extern void boot_cpu_init(void);
- extern void boot_cpu_hotplug_init(void);
- extern void cpu_init(void);
+So, let's get this upstream to reduce the number of outstanding patches
+for aarch64 vcpu hotplug.
 
+ drivers/acpi/scan.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 691d4b7686ee..ed01e19514ef 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -304,7 +304,7 @@ static int acpi_scan_device_check(struct acpi_device *adev)
+ 	int error;
+ 
+ 	acpi_bus_get_status(adev);
+-	if (adev->status.present || adev->status.functional) {
++	if (acpi_device_is_present(adev)) {
+ 		/*
+ 		 * This function is only called for device objects for which
+ 		 * matching scan handlers exist.  The only situation in which
+@@ -338,7 +338,7 @@ static int acpi_scan_bus_check(struct acpi_device *adev, void *not_used)
+ 	int error;
+ 
+ 	acpi_bus_get_status(adev);
+-	if (!(adev->status.present || adev->status.functional)) {
++	if (!acpi_device_is_present(adev)) {
+ 		acpi_scan_device_not_present(adev);
+ 		return 0;
+ 	}
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.30.2
+
 
