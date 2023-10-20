@@ -1,67 +1,73 @@
-Return-Path: <linux-acpi+bounces-794-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-795-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61FC7D0FBF
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 14:36:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F237D7D11AB
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 16:36:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A457FB20B27
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 12:36:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CF1D1C20ABB
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 14:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4511A704
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 12:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD9D1DA34
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 14:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="PHFGq+CD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NAxTgd4r"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34D7199C0
-	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 11:53:40 +0000 (UTC)
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9AA0D41;
-	Fri, 20 Oct 2023 04:53:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ZnH9rsDzGO6weBMybmlTOxejgjbXoW+kfLP/Bw4OXUE=; b=PHFGq+CDzvcu05j4/9OwcnhS+3
-	dniZKELXdzZ7oE3K2oURHH1f7vOrijKdYXMxblKLxLQmksJTA+Mt1qwTWLN0NwzyHRluOQ8lEZtAu
-	HO4GZ8rV19IGOzem3PNfDR9XeB4gH23tXyd21o7vRK9lx96fXGBSWBAanRKe1HlchPKpVvCy6pKZf
-	ca456Hj718geltF8hQwoAYhOiW6BppDwcbxBVUtresfOLi2DSCWYrWw4884RjpK6mccRd8M3wL1IT
-	VVeCBJYEoy1nrzTjZPmVe77zFRN6Luib8s+HX9uw2MImjvcrudZ2J7RK6bffVuxYVtslyuJqU7Adp
-	XMNN3wlA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48178)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1qto4K-0000LD-0H;
-	Fri, 20 Oct 2023 12:53:32 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1qto4H-0001Vh-On; Fri, 20 Oct 2023 12:53:29 +0100
-Date: Fri, 20 Oct 2023 12:53:29 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	gregkh@linuxfoundation.org
-Cc: James Morse <james.morse@arm.com>, linux-pm@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
-	x86@kernel.org, Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	jianyong.wu@arm.com, justin.he@arm.com
-Subject: Re: [RFC PATCH v2 11/35] arch_topology: Make
- register_cpu_capacity_sysctl() tolerant to late CPUs
-Message-ID: <ZTJqOTfDEnL9wgtY@shell.armlinux.org.uk>
-References: <20230913163823.7880-1-james.morse@arm.com>
- <20230913163823.7880-12-james.morse@arm.com>
- <20230914130126.000069db@Huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683EB1BDDA
+	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 13:42:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9688D19E;
+	Fri, 20 Oct 2023 06:42:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697809337; x=1729345337;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5II17EGmJAiyNI3Q5XungjMq7Um49xLUOEDi/+9mSCY=;
+  b=NAxTgd4r9MzpxP1FvLhVXHeY++F9KEy7WTlj0QA4LAYXJ9qfqbdvYjNp
+   mCnO3Xesxv6B6gT2rVv0cejIyb7hgyPy23hbLRNlso4tVlnsqgRZZRS4s
+   kOKMM30rNt+ocOqA7n5YHokg0frBpFHJ0DDQxVeNeGRcPRPHCHFklkCDe
+   JSxFF2EWkaeOk8J4el6MU53xn9pVBNDS/K7wH6o803J5oXjFrSEh2EGAS
+   JfIRiM380K87bc5hFh81CGz6gSA2elratP8xqA0RKzZP455AMEa8dmOPE
+   0YTczm+ANi2TReZH00ZhxftGt6xvzMBN+6ZAD1yvv3FDgkiH0jVGJM8re
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="5107841"
+X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
+   d="scan'208";a="5107841"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 06:42:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="1004612299"
+X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
+   d="scan'208";a="1004612299"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 06:42:12 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1qtplQ-000000079Xz-42iV;
+	Fri, 20 Oct 2023 16:42:08 +0300
+Date: Fri, 20 Oct 2023 16:42:08 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Raag Jadav <raag.jadav@intel.com>
+Cc: rafael@kernel.org, len.brown@intel.com, robert.moore@intel.com,
+	mika.westerberg@linux.intel.com, mark.rutland@arm.com,
+	will@kernel.org, linux@roeck-us.net, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linuxfoundation.org, linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+	mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
+Subject: Re: [PATCH v1 4/8] ACPI: utils: use acpi_dev_uid_match() for
+ matching _UID
+Message-ID: <ZTKDsBPraERaautV@smile.fi.intel.com>
+References: <20231020084732.17130-1-raag.jadav@intel.com>
+ <20231020084732.17130-5-raag.jadav@intel.com>
+ <ZTJYK02w8HZg26eI@smile.fi.intel.com>
+ <ZTJmnv6CsZUt0pIS@black.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -70,54 +76,38 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230914130126.000069db@Huawei.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <ZTJmnv6CsZUt0pIS@black.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Sep 14, 2023 at 01:01:26PM +0100, Jonathan Cameron wrote:
-> On Wed, 13 Sep 2023 16:37:59 +0000
-> James Morse <james.morse@arm.com> wrote:
-> 
-> > register_cpu_capacity_sysctl() adds a property to sysfs that describes
-> > the CPUs capacity. This is done from a subsys_initcall() that assumes
-> > all possible CPUs are registered.
+On Fri, Oct 20, 2023 at 02:38:06PM +0300, Raag Jadav wrote:
+> On Fri, Oct 20, 2023 at 01:36:27PM +0300, Andy Shevchenko wrote:
+> > On Fri, Oct 20, 2023 at 02:17:28PM +0530, Raag Jadav wrote:
+> > > Convert manual _UID references to use standard ACPI helpers.
 > > 
-> > With CPU hotplug, possible CPUs aren't registered until they become
-> > present, (or for arm64 enabled). This leads to messages during boot:
-> > | register_cpu_capacity_sysctl: too early to get CPU1 device!
-> > and once these CPUs are added to the system, the file is missing.
-> > 
-> > Move this to a cpuhp callback, so that the file is created once
-> > CPUs are brought online. This covers CPUs that are added late by
-> > mechanisms like hotplug.
-> > One observable difference is the file is now missing for offline CPUs.
-> > 
-> > Signed-off-by: James Morse <james.morse@arm.com>
-> > ---
-> > If the offline CPUs thing is a problem for the tools that consume
-> > this value, we'd need to move cpu_capacity to be part of cpu.c's
-> > common_cpu_attr_groups.
+> > Yes, while not so obvious this is the correct replacement.
+> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > 
-> I think we should do that anyway and then use an is_visible() if we want to
-> change whether it is visible in offline cpus.
-> 
-> Dynamic sysfs file creation is horrible - particularly when done
-> from an totally different file from where the rest of the attributes
-> are registered.  I'm curious what the history behind that is.
-> 
-> Whilst here, why is there a common_cpu_attr_groups which is
-> identical to the hotpluggable_cpu_attr_groups in base/cpu.c?
-> 
-> 
-> +CC GregKH
-> Given changes in drivers/base/
+> I think this is the only case which would suffer from the more obvious
+> behaviour, i.e.
 
-It would be good to have a comment on this from Greg before I post
-an updated series of James' patches with most of the comments
-addressed, possibly later today.
+No, that's not true. The same with override CPU in the other patch, where the
+check is simply absent, but the result will be the same. So, all with negation
+will suffer from the "obvious" implementation.
 
-Thanks.
+> bool acpi_dev_uid_match(struct acpi_device *adev, const char *uid2)
+> {
+>         const char *uid1 = acpi_device_uid(adev);
+> 
+>         return uid1 && uid2 && !strcmp(uid1, uid2);
+> }
+> 
+> That said, we can't be particularly sure about it's potential future users,
+> especially when the usage will not be limited to just ACPI core since we're
+> exporting it.
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+With Best Regards,
+Andy Shevchenko
+
+
 
