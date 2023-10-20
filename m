@@ -1,141 +1,95 @@
-Return-Path: <linux-acpi+bounces-809-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-810-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D03AB7D141B
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 18:36:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B357C7D141C
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 18:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53FEAB20F66
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 16:36:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DF5D280ECF
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 16:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B4F1EA66
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 16:36:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265591EA85
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 16:36:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="rVOXFIRD"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D7B12E58
-	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 15:49:40 +0000 (UTC)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E2B51A3;
-	Fri, 20 Oct 2023 08:49:37 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SBpsm1khlz67M1H;
-	Fri, 20 Oct 2023 23:49:00 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 20 Oct
- 2023 16:49:34 +0100
-Date: Fri, 20 Oct 2023 16:49:33 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Raag Jadav <raag.jadav@intel.com>
-CC: <rafael@kernel.org>, <len.brown@intel.com>, <robert.moore@intel.com>,
-	<mika.westerberg@linux.intel.com>, <andriy.shevchenko@linux.intel.com>,
-	<mark.rutland@arm.com>, <will@kernel.org>, <linux@roeck-us.net>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<acpica-devel@lists.linuxfoundation.org>, <linux-gpio@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-hwmon@vger.kernel.org>,
-	<mallikarjunappa.sangannavar@intel.com>, <bala.senthil@intel.com>
-Subject: Re: [PATCH v1 1/8] ACPI: utils: Introduce acpi_dev_uid_match() for
- matching _UID
-Message-ID: <20231020164933.00002f53@Huawei.com>
-In-Reply-To: <20231020084732.17130-2-raag.jadav@intel.com>
-References: <20231020084732.17130-1-raag.jadav@intel.com>
-	<20231020084732.17130-2-raag.jadav@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023E71E506
+	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 16:01:35 +0000 (UTC)
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1424B1A8;
+	Fri, 20 Oct 2023 09:01:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=kAvahHHmbmQJg7XXWX7xCp+JsudsIUFw/91YYiCGvlM=; b=rVOXFIRD/drr2GjPguWLWzMDAp
+	VqxWnBsV16VBWYihs86BNVO+T7B1JRk0LuDq5k1AwFkBeKZfTGiSPSvDIlnKn+d+tayywS+N0aK3+
+	Z92FQDj9K92vc5wOkAZuKuKDe4IVAtJVBYILQRSFfjVDVlyQB45harUe/20Nvy/q3q7OSpI1aRkyW
+	aQz/NyaaRRP4uwN1yGv70t+N/3cMSBYZeymJzVwJ+IE1ddu0xYUO0srijRdPkOJeftGhkAq6Ae1Df
+	nC0tNPMF8VjvumpEoCcuai01FUNot72556qR0hgt0JMKMqrT525N7jB+/fhzBaHY7xv55je4raUqe
+	3IqqSIOg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:38038)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1qtrwH-0000d4-1s;
+	Fri, 20 Oct 2023 17:01:29 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1qtrwI-0001fQ-Iw; Fri, 20 Oct 2023 17:01:30 +0100
+Date: Fri, 20 Oct 2023 17:01:30 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: James Morse <james.morse@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com
+Subject: Re: [RFC PATCH v2 13/35] ACPI: Rename acpi_scan_device_not_present()
+ to be about enumeration
+Message-ID: <ZTKkWozjprMYLjay@shell.armlinux.org.uk>
+References: <20230913163823.7880-1-james.morse@arm.com>
+ <20230913163823.7880-14-james.morse@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230913163823.7880-14-james.morse@arm.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Fri, 20 Oct 2023 14:17:25 +0530
-Raag Jadav <raag.jadav@intel.com> wrote:
-
-> Introduce acpi_dev_uid_match() helper that matches the device with
-> supplied _UID string.
+On Wed, Sep 13, 2023 at 04:38:01PM +0000, James Morse wrote:
+> acpi_scan_device_not_present() is called when a device in the
+> hierarchy is not available for enumeration. Historically enumeration
+> was only based on whether the device was present.
 > 
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->  /**
->   * acpi_dev_hid_uid_match - Match device by supplied HID and UID
->   * @adev: ACPI device to match.
->   * @hid2: Hardware ID of the device.
->   * @uid2: Unique ID of the device, pass NULL to not check _UID.
->   *
-> - * Matches HID and UID in @adev with given @hid2 and @uid2.
-> - * Returns true if matches.
-> + * Matches HID and UID in @adev with given @hid2 and @uid2. Absence of @uid2
-> + * will be treated as a match. If user wants to validate @uid2, it should be
-> + * done before calling this function. This behaviour is as needed by most of
-> + * its current users.
+> To add support for only enumerating devices that are both present
+> and enabled, this helper should be renamed. It was only ever about
+> enumeration, rename it acpi_scan_device_not_enumerated().
+> 
+> No change in behaviour is intended.
+> 
+> Signed-off-by: James Morse <james.morse@arm.com>
 
-If there are other other users that need different behavior are they
-buggy?  Also what behavior is this referring to?
+Is this another patch which ought to be submitted without waiting
+for the rest of the series?
 
-I'd just drop the at last sentence as confusing and not adding much.
+Thanks.
 
-> + *
-> + * Returns:
-> + *  - %true if matches or @uid2 is NULL.
-> + *  - %false otherwise.
->   */
->  bool acpi_dev_hid_uid_match(struct acpi_device *adev,
->  			    const char *hid2, const char *uid2)
->  {
->  	const char *hid1 = acpi_device_hid(adev);
-> -	const char *uid1 = acpi_device_uid(adev);
->  
->  	if (strcmp(hid1, hid2))
->  		return false;
->  
-> -	if (!uid2)
-> -		return true;
-> -
-> -	return uid1 && !strcmp(uid1, uid2);
-> +	return acpi_dev_uid_match(adev, uid2);
->  }
->  EXPORT_SYMBOL(acpi_dev_hid_uid_match);
->  
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 254685085c82..d1fe6446ffe0 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -760,6 +760,7 @@ static inline bool acpi_device_can_poweroff(struct acpi_device *adev)
->  		adev->power.states[ACPI_STATE_D3_HOT].flags.explicit_set);
->  }
->  
-> +bool acpi_dev_uid_match(struct acpi_device *adev, const char *uid2);
->  bool acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const char *uid2);
->  int acpi_dev_uid_to_integer(struct acpi_device *adev, u64 *integer);
->  
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index afd94c9b8b8a..db3a33e19c97 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -787,6 +787,11 @@ static inline bool acpi_dev_present(const char *hid, const char *uid, s64 hrv)
->  
->  struct acpi_device;
->  
-> +static inline bool acpi_dev_uid_match(struct acpi_device *adev, const char *uid2)
-> +{
-> +	return false;
-> +}
-> +
->  static inline bool
->  acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const char *uid2)
->  {
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
