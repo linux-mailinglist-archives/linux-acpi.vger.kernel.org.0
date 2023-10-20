@@ -1,98 +1,120 @@
-Return-Path: <linux-acpi+bounces-792-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-793-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4FD7D0FBD
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 14:36:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A49D7D0FBE
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 14:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98AFA28056C
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 12:36:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6A151F23551
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 12:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2941A70E
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 12:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207311A709
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 12:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ksik9nfI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lORszuXI"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CC619440
-	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 11:38:44 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29A41213E;
-	Fri, 20 Oct 2023 04:38:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697801897; x=1729337897;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JePTitzuY0GQtcJN+j6l1yJWlx9JL0zZgTWlbLVx8N8=;
-  b=Ksik9nfIDemqOWvDHAgyjBxp1T2qeJmtINxn/8gEWfZfd7LrdZ5WQqFB
-   g0dN9j/J8IPgoGqzwiQYN7yk/Lr9rDnCHwtfixSU4toI5ZDEfFg3TrE9P
-   lbhTWMZ7V8B2xrU7eGqkNsf1WxREJdeorInhHrgGveMDQftUF4eosUDgL
-   To/mjGOr5S/3koG/YpYXG7FbM14yOimSrMVOOrT/6UOu605+XSru7p76+
-   tKPgvJaWppYxDuPqzBTVfJmcRdO2L+xqjFXypeONYjjWjcNlztYQmRlYf
-   lMHCkYMaA1Y83xuNyFDPOE9GyUp1BC4vKYrwD3kd/BO2dBi8Y75os2N5J
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="450707539"
-X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
-   d="scan'208";a="450707539"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 04:38:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="901121259"
-X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
-   d="scan'208";a="901121259"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 04:35:59 -0700
-Date: Fri, 20 Oct 2023 14:38:06 +0300
-From: Raag Jadav <raag.jadav@intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: rafael@kernel.org, len.brown@intel.com, robert.moore@intel.com,
-	mika.westerberg@linux.intel.com, mark.rutland@arm.com,
-	will@kernel.org, linux@roeck-us.net, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linuxfoundation.org, linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-	mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
-Subject: Re: [PATCH v1 4/8] ACPI: utils: use acpi_dev_uid_match() for
- matching _UID
-Message-ID: <ZTJmnv6CsZUt0pIS@black.fi.intel.com>
-References: <20231020084732.17130-1-raag.jadav@intel.com>
- <20231020084732.17130-5-raag.jadav@intel.com>
- <ZTJYK02w8HZg26eI@smile.fi.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95026199AF
+	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 11:50:50 +0000 (UTC)
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4493C98;
+	Fri, 20 Oct 2023 04:50:45 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-9b96c3b4be4so110211266b.1;
+        Fri, 20 Oct 2023 04:50:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697802644; x=1698407444; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1BXpFmZotobe2WYOp6dHHJadZsngmwLQdTQTaRJwTnA=;
+        b=lORszuXInBVjKXkSeimvp8kScDVhD/ILxZPWILk5pcDCFU1qRtJyPZuMMNvoNxRMjx
+         4eRQne4tPbH7QFqUQCyEhbsbPq/uegqeTgIWc45vrVPtlg0ORIkchWfVlMXZX0frFwDw
+         NyIL5caHlVtprgOt/yyQiArvJ0AZKtNw4ONBM/mi5knM6nuyW0iqQjQZCd3pty9+LiEu
+         VbC57N4Z4s03ycZrIyA/PZgwFWGBsVjqdtv0Dqj0jMeC3lIjd9UaipDwOeCVfO2S2OdS
+         cLT/zvJTJuWP7uaGSx5GNRVMcQdN3AknELzHCJ0Tu5hfRvid+qi5mbxqz7aMZL5ZkMGY
+         5VPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697802644; x=1698407444;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1BXpFmZotobe2WYOp6dHHJadZsngmwLQdTQTaRJwTnA=;
+        b=GiQM5w6uFjmuVWfOkIvEntGuBfYuYg4KyU3SA7NpLLui7c5Apx8mEILYYo7DXwKpOf
+         a0Iy2iy6Xg7DlJeaDsuH1ticB6m6E8DFapEp2e/AnUio6ZByyi869vB+O2lASbpHXsrZ
+         cmO+1orsah7xkGlFHzjGYpOtvzYxb2sT4MQpDAfOBCmGAisDYRU8FqiW/kJNfWgdvFF2
+         O1TJHMAPgsf9MVlyjth2OVeXUJkyi7O/NSc/s5ezwHhBJVBhsrcGB3O54oihxNDIr0DU
+         7iLeScWTyaqhrZk5YuvZqcdCSCX7ClXPcftwQNyNQNziTsw6nUnrNWJbYcnRsNixmtT0
+         9XEg==
+X-Gm-Message-State: AOJu0YyYFbVHyZnMxkz7ysy3amORUET7pv12yHk4G61TdznWtw0hT93m
+	lP+XRlsxcrDEs7wSu4KxkO8=
+X-Google-Smtp-Source: AGHT+IH4SSfPUyyXEXRxntxeV4/0PAyE5eC0Y6HI3UL6kr/sseuOAfWQ9oPrlZX/ARDGNS/RvHZmuw==
+X-Received: by 2002:a17:907:d8d:b0:9b2:df16:851d with SMTP id go13-20020a1709070d8d00b009b2df16851dmr1233141ejc.57.1697802643458;
+        Fri, 20 Oct 2023 04:50:43 -0700 (PDT)
+Received: from ?IPV6:2a02:a466:68ed:1:974d:4d18:38cf:ab0f? (2a02-a466-68ed-1-974d-4d18-38cf-ab0f.fixed6.kpn.net. [2a02:a466:68ed:1:974d:4d18:38cf:ab0f])
+        by smtp.gmail.com with ESMTPSA id i6-20020a17090671c600b009920a690cd9sm1324627ejk.59.2023.10.20.04.50.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Oct 2023 04:50:42 -0700 (PDT)
+Message-ID: <e11ab885-10dc-4efa-8171-ebdb3ca61b24@gmail.com>
+Date: Fri, 20 Oct 2023 13:50:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZTJYK02w8HZg26eI@smile.fi.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/3] gpiolib: acpi: More fixes to the consolidation
+ rework
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Hans de Goede <hdegoede@redhat.com>
+References: <20231019173457.2445119-1-andriy.shevchenko@linux.intel.com>
+Content-Language: en-US
+From: Ferry Toth <fntoth@gmail.com>
+In-Reply-To: <20231019173457.2445119-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 20, 2023 at 01:36:27PM +0300, Andy Shevchenko wrote:
-> On Fri, Oct 20, 2023 at 02:17:28PM +0530, Raag Jadav wrote:
-> > Convert manual _UID references to use standard ACPI helpers.
+Op 19-10-2023 om 19:34 schreef Andy Shevchenko:
+> On top what Hans already fixed, Ferry reported a few bugs that pointed
+> out to the same consolidation rework done in v6.2.
 > 
-> Yes, while not so obvious this is the correct replacement.
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> The first is most serious issue, that needs to be fixed ASAP.
+> 
+> The second is good to have.
+> 
+> And the third one I'm not fully okay with, so open for advice on
+> how to improve.
+> 
+> Note, that long list of parameters to a _find_gpio() functions
+> can be hidden in the specifically crafted a new data structure,
+> but this is out of scope of the _fixes_ series. I'm all ears as
+> well for that one.
+> 
+> Andy Shevchenko (3):
+>    gpiolib: acpi: Add missing memset(0) to acpi_get_gpiod_from_data()
+>    gpiolib: Fix debug messaging in gpiod_find_and_request()
+>    gpiolib: Make debug messages in gpiod_find_by_fwnode() less confusing
 
-I think this is the only case which would suffer from the more obvious
-behaviour, i.e.
+For the series
+Tested-by: Ferry Toth <fntoth@gmail.com>
 
-bool acpi_dev_uid_match(struct acpi_device *adev, const char *uid2)
-{
-        const char *uid1 = acpi_device_uid(adev);
+>   drivers/gpio/gpiolib-acpi.c   | 10 ++++-----
+>   drivers/gpio/gpiolib-acpi.h   | 13 ++++++------
+>   drivers/gpio/gpiolib-of.c     | 13 ++++++------
+>   drivers/gpio/gpiolib-of.h     |  8 ++++----
+>   drivers/gpio/gpiolib-swnode.c |  4 ++--
+>   drivers/gpio/gpiolib-swnode.h |  1 +
+>   drivers/gpio/gpiolib.c        | 38 ++++++++++++++++++++---------------
+>   7 files changed, 48 insertions(+), 39 deletions(-)
+> 
 
-        return uid1 && uid2 && !strcmp(uid1, uid2);
-}
-
-That said, we can't be particularly sure about it's potential future users,
-especially when the usage will not be limited to just ACPI core since we're
-exporting it.
-
-Raag
 
