@@ -1,180 +1,199 @@
-Return-Path: <linux-acpi+bounces-773-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-774-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4097D05D4
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 02:31:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DA67D067D
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 04:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A87ABB21124
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 00:31:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C5B2810F3
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 02:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C226108
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 00:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBEA20E8
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 02:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="SwqLfM5V"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WPhYa8sl"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6309B2F2D
-	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 00:04:21 +0000 (UTC)
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F280130
-	for <linux-acpi@vger.kernel.org>; Thu, 19 Oct 2023 17:04:19 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6be1bc5aa1cso258969b3a.3
-        for <linux-acpi@vger.kernel.org>; Thu, 19 Oct 2023 17:04:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1697760258; x=1698365058; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WyinLtXIDJ/J+W6Ws5k+7hFrel/yPirPuKlAKtlZbkQ=;
-        b=SwqLfM5VRahAzpHfZU/mst5iVfVxp9PMrbBJ/ejbR6VV1D/c6WLYd14N73i4PBZUsr
-         dyzmQKNB1APZuLsyHSplGtnEUdaw1kwkQaZF3zs9biOeauGbVfBzH7vI+dBsnv6GlUzQ
-         bOi8Rc6v3X4bB5qShVaaYgvxY6SVrOjOz2RyE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697760258; x=1698365058;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WyinLtXIDJ/J+W6Ws5k+7hFrel/yPirPuKlAKtlZbkQ=;
-        b=dNlVflwbCzZJ01lGec8qvsEIf0TPioLwl6hAjL4JZo1CzAnMf/w5ILO07KjwBWO1r4
-         UFq1KWVaoO17bDhsJ1HCVugMlioPfZ5Cav82Zs1CJWqx8Vc1VpSkO+WObxB3/iLy8+Gc
-         Hk4BrqmD1dP1tOAVUpLxp8+6ZNMHwKaV7zyjHOwImBVSk71TGKP5xsHarTT+BqrCq6AZ
-         KoxxbJHkmkU6cuZu3SluG7gBXWys5jKtpXrS2XyPftV2y+btUW2l/8ah9dI3pxVPqHvr
-         rEBr+EMO4hD0fSCSEh/pA6GacPJw3IAv0at0jR52ybxRhOZJyZ+6MSIwQV40YUnvv6Zn
-         pcrQ==
-X-Gm-Message-State: AOJu0Yxh6Hpd4I3d390p5eE27GYL5mXbudO6Wb/VK/VnSNLXF3pd6uKg
-	KeHd//jyFbpSA4WAnp+jy8XsVw==
-X-Google-Smtp-Source: AGHT+IGLdbduWG19T1e0Z4j49YgX7FlC4Q5RiYDw4z81sX/pEbOSv8eYtkL1VVbIR3nJtcknqdeW+Q==
-X-Received: by 2002:a05:6a20:2451:b0:158:17e6:7a6 with SMTP id t17-20020a056a20245100b0015817e607a6mr329364pzc.42.1697760258529;
-        Thu, 19 Oct 2023 17:04:18 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id h13-20020a17090ac38d00b0027cbc50b826sm2116506pjt.17.2023.10.19.17.04.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Oct 2023 17:04:17 -0700 (PDT)
-Date: Thu, 19 Oct 2023 17:04:17 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Justin Stitt <justinstitt@google.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] PNP: replace deprecated strncpy with memcpy
-Message-ID: <202310191637.9EBDCC364@keescook>
-References: <20231019-strncpy-drivers-pnp-pnpbios-rsparser-c-v1-1-e47d93b52e3e@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDD2389
+	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 01:02:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A6F115;
+	Thu, 19 Oct 2023 18:02:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697763737; x=1729299737;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=bNpSSDXa3EwDxQPBSMGa12YTqc7iFFFXJzqV5gFGHRM=;
+  b=WPhYa8slNKgn3ENMHr85+5/qeBuc38Q/ltG/8SuePKcHHiXHJO6NETk/
+   TOsAf+w5KF4zhgjp1izWVAV0pyxf/BLa1+QyIntNYDXtiZvfYpCjQpsNX
+   i/+67q/bGng9fD0FEsly9xfGWYzm0/4qNeWwKSyHdwjAiqBRTHjk6mkpV
+   JSeRAq4Y4f6PNUGZeAHg5EyKCGkU91D2SBPMjJpg6D7jcA6EHKvI43d6j
+   B3uEDGA6GkC9BK8rAdPgOqLLGIcdjW2GC96UWpBBQiiz/10oUkHzKAZKe
+   fc3mGuW4l36C+u8XvZ5hSh0HSsxrv8Zdsz58qWE3RQR2BMivt2RUkrQUO
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="450632906"
+X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
+   d="scan'208";a="450632906"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 18:02:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="1088569693"
+X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
+   d="scan'208";a="1088569693"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by fmsmga005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 19 Oct 2023 18:02:16 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Thu, 19 Oct 2023 18:02:16 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Thu, 19 Oct 2023 18:02:15 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Thu, 19 Oct 2023 18:02:15 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Thu, 19 Oct 2023 18:02:15 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KaQx9MW6wUxoSv0vTK/VvgplgGMDTwz2Gh1T1csIxELZ9ylAcHSz8GgHfJX5CWB13ruWj25Iw4xOi48ZjRcXwHs3NtMSFamc5VQfuD6+6iz0cjofrstmEfzHosOkGU3nGH5ZY5VN7ivlVgGa1L1Yn9BPGf1yFqvtsbhIPE2ojpevdEUjUYfKv9Mp+1VV9kRHmAeCAgKmAsOqyamQmYtBQ9OrAxmnWhQH+GhvEIlKNSvjXMll/iRyTiI0/CPsGN0lRW/TVhW7BtyAAVOdZ5jf0QvhfZHiE/NKa5vu6XtJXqUSYFeK53om739zFdXTsxLEChanXWaBR8zxFUpNY0E5vQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Mb5YNoK/txITsvfP+h/AIcesm3VXCfEFOTgC7Z13WOs=;
+ b=XnXPlrKaBca89FZfoRw05iqSS3K3N0bjomMjKQY1i9U9VHO5wK2h3H/wnY/llALDESizJZvW/g6cTRUL3zmtWO0PtPy97STYDvgB7xg2hTT353+uzSUvPtdEXWW51ofBI+NyJH4C0WioRkzL13KiIm4Q6bIrCJ/rXkM9LFcMDSRSSTqivGsqtwByZJFNngUSG/5PQ3NSXvitq1MRYOzUKvTLrc73vBieUXRenElQKfKA5j1iEnbDmB2cbIDNRs8StcP7DLIf2WG+IwjRRwR8yjGx3s6WhB7TmWnzyjsQmAgGKKHP+Y3n2Y78UXY9B+NrqNUCW6NEwWhke+joxBmVsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by DM4PR11MB6263.namprd11.prod.outlook.com (2603:10b6:8:a6::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.21; Fri, 20 Oct
+ 2023 01:02:09 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::7978:1ba5:6ed0:717d]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::7978:1ba5:6ed0:717d%4]) with mapi id 15.20.6886.034; Fri, 20 Oct 2023
+ 01:02:09 +0000
+Date: Thu, 19 Oct 2023 18:02:06 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: "Wilczynski, Michal" <michal.wilczynski@intel.com>, Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>, <nvdimm@lists.linux.dev>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Dan Williams <dan.j.williams@intel.com>, Vishal Verma
+	<vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, Ira Weiny
+	<ira.weiny@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
+	<lenb@kernel.org>
+Subject: Re: [PATCH v1 1/1] ACPI: NFIT: Switch to use
+ acpi_evaluate_dsm_typed()
+Message-ID: <6531d18eb13c4_7258329435@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20231002135458.2603293-1-andriy.shevchenko@linux.intel.com>
+ <ec5029b0-553c-4a6c-b2a9-ef9943e553dc@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ec5029b0-553c-4a6c-b2a9-ef9943e553dc@intel.com>
+X-ClientProxiedBy: MW4PR03CA0226.namprd03.prod.outlook.com
+ (2603:10b6:303:b9::21) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231019-strncpy-drivers-pnp-pnpbios-rsparser-c-v1-1-e47d93b52e3e@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM4PR11MB6263:EE_
+X-MS-Office365-Filtering-Correlation-Id: 75f29c64-1d6f-4676-6113-08dbd1082f5b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: QBUcYi2dPf2bdcA5KIQuvrAyykihYPxaFdBhe8Xn6dUFYbu/pFHQcvRTRU2gjxptZDRPrtPcLQS7Rb1uIuCanIA5Sjhn3lpRHMM4DsfL6iF05H0Jf6EPXLr5k5juMNWmz/StmJNxirXo+W7iBP9wZxEiEaWr2OyBGYzcW6Mb/BBKpnkT6Sqnf3XMrn/FEvJsF6cFPZdxDrXjR+uLqU5HkbftFTE8I6cBhAgHNI2qNtVr1xj+UYGNwegt6nGLkrn1NbdVUwXk6/M+BQUofMsVtQzCEV3tELjZptlKSUleFunL5eB62BDFGG6QQWpo1C0Y7KRJ7CenquQWhvDefsWYWJ0Xzd08TKcrk4XiaRHNEFro8LnMKyfDMu+JUQOOXjXRs17i+voDfrQIlBCWw2NdXMsFzlSc+S+zWPFYqA6HN5zx++Vp3oIQFkT4vuybzurfFZ4SYnzL89jXUEcb+Oc7ruuIisrjsSED1hxcGu8iEigYMG0eNTCfGzTaV/S94TCh1cFrnziPko8lbuZmGva3WgBSjF4gKoYK0h9qe8NehvojVFITqcF7uM4tArfHq035
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(366004)(136003)(346002)(396003)(39860400002)(230922051799003)(1800799009)(64100799003)(186009)(451199024)(4326008)(26005)(316002)(66946007)(66476007)(8936002)(54906003)(110136005)(6666004)(9686003)(53546011)(66556008)(41300700001)(38100700002)(6512007)(2906002)(6506007)(82960400001)(83380400001)(8676002)(478600001)(86362001)(5660300002)(6486002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Xn4mfQGSA6anxwzX0usu33onnMDYA8R/ClGh3rWb/2vebZQsaEDic5g6R6ny?=
+ =?us-ascii?Q?Rvqvx8uCxbfCXRSf+WrXUb7HgTcYPQw4RoUCRbOtBRb2BLgYPB6cLwW9PMG6?=
+ =?us-ascii?Q?5dIohQ8BFexrT0FPQ07iZ/ncYkmkkbWCBqOSKGej3uXhI+0Oz5TtG7VysSyg?=
+ =?us-ascii?Q?EXgqnrkMhM1LZ74NwSisDXXyfVmCHQ2YEtNXIkj/fXJo7MgVFyuMJRwjnU+9?=
+ =?us-ascii?Q?Q4JktaSwXDlcR0/R8o1r0m24FT3TjRnOZUAuHedRTIQtd1WhNNPWn8p/iBrA?=
+ =?us-ascii?Q?+Efh9Vz50bHmN/p5L5RwHRYzoLZkoygKHCmI/VNfAPvydW3PgBhNk1N0A/PA?=
+ =?us-ascii?Q?Bq4aNCmK/dAtXBC1ILyi6T5SskgxeGw/BxJETxF1q6vkaU228XdM8xVG3E7r?=
+ =?us-ascii?Q?OJDVtRRjHDyTXyQ3iHv/AF1dGBtxFh4t4mlg3WoZMyzVZMWgopUiB0dJMS4p?=
+ =?us-ascii?Q?X77E5sv2n+JKk4JNgF7aZEA/rK90B5IG3Sv9l5BFn28n5Ij8blNKvC0bQzkU?=
+ =?us-ascii?Q?mAGrLkfxNx7tDYcc29V0vnP+ILpjYqXSOqFGSqGg8aGxfzHxVwpnzbQV+Rcq?=
+ =?us-ascii?Q?Qmiu88JKOB7OOzbQ3XEycJUEfAkTCOu4khr99CrMgoTntaGDhKVa/xCcSQaS?=
+ =?us-ascii?Q?TdPImOohOrLmayGR0V9VM3Lo0SGZhp6RnT8BlSGI3EO8ilE72aDNsENbpWXx?=
+ =?us-ascii?Q?hyiHUioeq5Z0UlZuR3sqnfzOLLyHMg4csskRBwoZODaXULiCWRTBAgF1iu6Q?=
+ =?us-ascii?Q?MAKIQxH3c3KdF2Xi4LQNE3SktkCQPH7ZgEsGgw7Q7DDW2Hjh4hqJsl3hnUCL?=
+ =?us-ascii?Q?f7HmznbovcDtS7eG/f0Qzm32IbBZBcqMV+yiqhc06c2gYv5/BDy8ehH/PpqV?=
+ =?us-ascii?Q?Azdt3VV7qyPjrFasYcxemW5MKC1pdmr4qg74hKf5GDcxP33PhJaCJvDlEuO+?=
+ =?us-ascii?Q?ygksvtD+jgIby0C2+AL723955QiA2oZ8C+SlFX1aK7HUZ/CUtz7rWxFKVQM4?=
+ =?us-ascii?Q?ePHdifCsFoFb4k/YGuW2bCIqcCJ8m7X3hJ301Bp4ZGOE5Qd0slq88a7lZs6R?=
+ =?us-ascii?Q?kW+WbSniBt3J9zR1nh3JpLGd2E9YcB0NG2+UCsdwsyfH7ByxqiEBMFqb/shf?=
+ =?us-ascii?Q?HVx4McL3gRV/49cXlIho4QD4fz7TndGPm/MyLQm7Ph4MeqTye0N+rtQ11Azk?=
+ =?us-ascii?Q?YGscGsk8fzXp26j54z/z/jH+vN/Kwql8NSzeR/tx55YZtg+88hdqzArzWgj9?=
+ =?us-ascii?Q?4fDqDJQbfXdD6V1tjuejeQeNMjMY+3EL2k7GB3Ae52QuVDawa2D3etGxfQJR?=
+ =?us-ascii?Q?ivDSwzK7u7HdjS1BeRoeU1Kj/rDpRvPuFKTRjCxQDs57iTmf2h2DfPXjsTsL?=
+ =?us-ascii?Q?SwJS//WZzes2GSBP47h2cwU2JAEBwq3KMiQYvUZlH5h05Nmt1WyfpUi4UFdZ?=
+ =?us-ascii?Q?I/EFYO6JchOZ455K6VzzUw8mdjl3u4na/jD/UUtdR270kG5Gl9RYBdzT9RFI?=
+ =?us-ascii?Q?JV+Ju5lNBAWRa/1SUCpcQWYo69oVS5zfLgbbOcHo6woYNv5NBrWJFyxCC6tz?=
+ =?us-ascii?Q?74Rhd2sTCKOwoiUgEKLVDqETFADvriL1U296c/Q7KQjkIwnwQl1/qwKx9Ok9?=
+ =?us-ascii?Q?dg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 75f29c64-1d6f-4676-6113-08dbd1082f5b
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2023 01:02:08.9753
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m2Nxs8+yMVWABzHfVAy0Z66eCGmiEsx+HdQGt3o9TdTb1OL/RW9SeqvPxz04Z9ihItJpCSdBUgsDMsRZ58td4k3o01Djgdw3Jn55VxOova0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6263
+X-OriginatorOrg: intel.com
 
-On Thu, Oct 19, 2023 at 11:28:32PM +0000, Justin Stitt wrote:
-> strncpy() is deprecated for use on NUL-terminated destination strings
-> [1] and as such we should prefer more robust and less ambiguous
-> interfaces.
+Wilczynski, Michal wrote:
 > 
-> After having precisely calculated the lengths and ensuring we don't
-> overflow the buffer, this really decays to just a memcpy. Let's not use
-> a C string api as it makes the intention of the code confusing.
-
-This is another case where we're building a C string from a byte array.
-
-> It'd be nice to use strscpy() in this case (as we clearly want
-> NUL-termination) because it'd clean up the code a bit. However, I don't
-> quite know enough about what is going on here to justify a drop-in
-> replacement -- too much bit magic and why (PNP_NAME_LEN - 2)? I'm afraid
-> using strscpy() may result in copying too many or too few bytes into our
-> dev->name buffer resulting in different behavior. At least using
-> memcpy() we can ensure the behavior is exactly the same.
 > 
-> Side note:
-> NUL-padding is not required because insert_device() calls
-> pnpbios_parse_data_stream() with a zero-allocated `dev`:
-> 299 |  static int __init insert_device(struct pnp_bios_node *node) {
-> ...
-> 312 |  dev = pnp_alloc_dev(&pnpbios_protocol, node->handle, id);
-> ...
-> 316 |  pnpbios_parse_data_stream(dev, node);
+> On 10/2/2023 3:54 PM, Andy Shevchenko wrote:
+> > The acpi_evaluate_dsm_typed() provides a way to check the type of the
+> > object evaluated by _DSM call. Use it instead of open coded variant.
+> >
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > ---
+> >  drivers/acpi/nfit/core.c | 5 ++---
+> >  1 file changed, 2 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> > index f96bf32cd368..280da408c02c 100644
+> > --- a/drivers/acpi/nfit/core.c
+> > +++ b/drivers/acpi/nfit/core.c
+> > @@ -1737,9 +1737,8 @@ __weak void nfit_intel_shutdown_status(struct nfit_mem *nfit_mem)
+> >  	if ((nfit_mem->dsm_mask & (1 << func)) == 0)
+> >  		return;
+> >  
+> > -	out_obj = acpi_evaluate_dsm(handle, guid, revid, func, &in_obj);
+> > -	if (!out_obj || out_obj->type != ACPI_TYPE_BUFFER
+> > -			|| out_obj->buffer.length < sizeof(smart)) {
+> > +	out_obj = acpi_evaluate_dsm_typed(handle, guid, revid, func, &in_obj, ACPI_TYPE_BUFFER);
 > 
-> then pnpbios_parse_data_stream() calls pnpbios_parse_compatible_ids().
+> This line is 90 characters long, wouldn't it be better to split it ?
+
+100 characters is allowed these days.
+
+> > +	if (!out_obj || out_obj->buffer.length < sizeof(smart)) {
+> >  		dev_dbg(dev->parent, "%s: failed to retrieve initial health\n",
+> >  				dev_name(dev));
 > 
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-> Link: https://github.com/KSPP/linux/issues/90
-> Cc: linux-hardening@vger.kernel.org
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
+> While at it maybe fix alignment ? :-)
 
-tl;dr:
-
-Reviewed-by: Kees Cook <keescook@chromium.org>
-
-My ramblings below...
-
-> ---
-> Note: build-tested only.
-> 
-> Found with: $ rg "strncpy\("
-> ---
->  drivers/pnp/pnpbios/rsparser.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pnp/pnpbios/rsparser.c b/drivers/pnp/pnpbios/rsparser.c
-> index 2f31b212b1a5..70af7821d3fa 100644
-> --- a/drivers/pnp/pnpbios/rsparser.c
-> +++ b/drivers/pnp/pnpbios/rsparser.c
-> @@ -454,8 +454,8 @@ static unsigned char *pnpbios_parse_compatible_ids(unsigned char *p,
->  		switch (tag) {
-
-So we've got a fixed-sized C string as a destination:
-
-struct pnp_dev {
-	...
-        char name[PNP_NAME_LEN];        /* contains a human-readable name */
-
-include/linux/pnp.h:#define PNP_NAME_LEN                50
-
-And a funky "source length" calculation, which appears to be effectively
-a u16 (it's either the low 3 bits of a u8, or a full u16);
-
-	int len ...
-
-                /* determine the type of tag */
-                if (p[0] & LARGE_TAG) { /* large tag */
-                        len = (p[2] << 8) | p[1];
-                        tag = p[0];
-                } else {        /* small tag */
-                        len = p[0] & 0x07;
-                        tag = ((p[0] >> 3) & 0x0f);
-                }
-
-The old code was doing:
-
-		case LARGE_TAG_ANSISTR:
-			strncpy(dev->name, p + 3,
-				len >= PNP_NAME_LEN ? PNP_NAME_LEN - 2 : len);
-			dev->name[len >=
-				  PNP_NAME_LEN ? PNP_NAME_LEN - 1 : len] = '\0';
-			break;
-
-The two conditionals are not the same -- the first is -2, the latter is
--1, but only when len >= PNP_NAME_LEN. This smells like a bug? For the
-len >= PNP_NAME_LEN case, it will copy 48 bytes and then write a %NUL to
-index 49 (byte 50). ... ... source byte 49 is ignored for no reason I
-can see.
-
-Regardless, the point is to copy no more than min(len, PNP_NAME_LEN - 1)
-from "p + 3" to not overflow dev->name, and leaving it %NUL terminated.
-
-So, I think what you have is identical behavior, and likely still
-contains the 1 byte short bug, which I think is fine to keep as-is since
-it's been like this forever and it's PNP...
-
--Kees
-
--- 
-Kees Cook
+Life is too short to fiddle with indentation. For old code leave it
+alone, for new code just use clang-format.
 
