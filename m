@@ -1,165 +1,102 @@
-Return-Path: <linux-acpi+bounces-811-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-812-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47A07D1420
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 18:36:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 519747D15D4
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 20:33:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 211691C20F66
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 16:36:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83A141C20F9C
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 18:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851A41EA66
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 16:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88FA2231D
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 18:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFFE1DA32
-	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 16:05:53 +0000 (UTC)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id CA8521BCA;
-	Fri, 20 Oct 2023 09:05:48 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 11851143D;
-	Fri, 20 Oct 2023 09:06:29 -0700 (PDT)
-Received: from [192.168.1.13] (unknown [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5C2C63F5A1;
-	Fri, 20 Oct 2023 09:05:41 -0700 (PDT)
-Message-ID: <60497d6d-dfe3-4edc-9553-311fdd9c63d0@arm.com>
-Date: Fri, 20 Oct 2023 18:05:36 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649E71A73E
+	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 16:39:18 +0000 (UTC)
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DDA5D5A;
+	Fri, 20 Oct 2023 09:39:13 -0700 (PDT)
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-584081ad442so91154eaf.0;
+        Fri, 20 Oct 2023 09:39:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697819952; x=1698424752;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AFN5sba7fAwfQL7XZYasMppuDyc1SAhMhSfxSGiGZ4o=;
+        b=rUaFe/tkxKkWU5403GuOPBGxXfb2EAWIX+DNTyG+rqaTQ2O4IqV91gqOZFBYYhM2Uz
+         Wd6IKV+4lVLJpanaWVgF7P3IBWP4qeV0b1lxfeOykWiiRSevIcysGl/kVPgULAHT3CTq
+         1LO/T5BI4lHdsT/m7QSiNC8uMHhaYP3D9I6iy5YSOJzMnI3rxDudBVmlHhZ+XLTxnycr
+         FV96e5Wwx/QiWVtKuQxE8twkm7ULe0/HJzr2JAyWcCbZXVUfAlQOk9E1IDowS9is4xnh
+         bor6/rQdsE9BptoSUbA1vRCFFpLFwofW9f96KZN9Y3KhVj73gt/bGXOpR3WEv/ARey0A
+         nSwA==
+X-Gm-Message-State: AOJu0YzyR6w00hv9KzqiWVj0U9VHelhjChwEDM9YM/dpfMhiv2yEFXio
+	/gSucMss2coyWka6FU6jtyKqdNuY8a8GEQtFf+AW5dK1v8E=
+X-Google-Smtp-Source: AGHT+IEVBwVrON3rs+Jwwr0IDBEWiarjr0owpS04V9XFgx2fNIVMOWU53kMyS0XRAJO8N4hCF9Ddf6kQIBw6WHyJlDs=
+X-Received: by 2002:a4a:e7d1:0:b0:583:ec88:e0 with SMTP id y17-20020a4ae7d1000000b00583ec8800e0mr2622789oov.0.1697819952128;
+ Fri, 20 Oct 2023 09:39:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/6] cpufreq/cppc: set the frequency used for computing
- the capacity
-To: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
- paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
- sudeep.holla@arm.com, gregkh@linuxfoundation.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, dietmar.eggemann@arm.com,
- rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
- bristot@redhat.com, vschneid@redhat.com, viresh.kumar@linaro.org,
- lenb@kernel.org, robert.moore@intel.com, lukasz.luba@arm.com,
- ionela.voinescu@arm.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- acpica-devel@lists.linuxfoundation.org, conor.dooley@microchip.com,
- suagrfillet@gmail.com, ajones@ventanamicro.com, lftan@kernel.org,
- "Rafael J. Wysocki" <rafael@kernel.org>
-References: <20231018162540.667646-1-vincent.guittot@linaro.org>
- <20231018162540.667646-6-vincent.guittot@linaro.org>
- <CAJZ5v0hS7bdUv=-k4ut2Fw0LYfB7Hb1_rro7UOVTRq4=JLNchg@mail.gmail.com>
-Content-Language: en-US
-From: Pierre Gondois <pierre.gondois@arm.com>
-In-Reply-To: <CAJZ5v0hS7bdUv=-k4ut2Fw0LYfB7Hb1_rro7UOVTRq4=JLNchg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 20 Oct 2023 18:39:01 +0200
+Message-ID: <CAJZ5v0gJZdGLmJQvKcOtVuJr1XX8J_3kH2jg2rUM1=_1XPCknw@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.6-rc7
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hello Vincent,
+Hi Linus,
 
-On 10/18/23 19:26, Rafael J. Wysocki wrote:
-> On Wed, Oct 18, 2023 at 6:25 PM Vincent Guittot
-> <vincent.guittot@linaro.org> wrote:
->>
->> Save the frequency associated to the performance that has been used when
->> initializing the capacity of CPUs.
->> Also, cppc cpufreq driver can register an artificial energy model. In such
->> case, it needs the frequency for this compute capacity.
->> We moved and renamed cppc_perf_to_khz and cppc_perf_to_khz to use them
->> outside cppc_cpufreq in topology_init_cpu_capacity_cppc().
->>
->> Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> 
-> For the changes in drivers/acpi/cppc_acpi.c :
-> 
-> Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-> 
->> ---
->>   drivers/acpi/cppc_acpi.c       |  93 ++++++++++++++++++++++
->>   drivers/base/arch_topology.c   |  15 +++-
->>   drivers/cpufreq/cppc_cpufreq.c | 141 ++++++---------------------------
->>   include/acpi/cppc_acpi.h       |   2 +
->>   4 files changed, 133 insertions(+), 118 deletions(-)
->>
+Please pull from the tag
 
-[snip]
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.6-rc7
 
->> diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
->> index 9a073c2d2086..2372ce791bb4 100644
->> --- a/drivers/base/arch_topology.c
->> +++ b/drivers/base/arch_topology.c
->> @@ -350,6 +350,7 @@ bool __init topology_parse_cpu_capacity(struct device_node *cpu_node, int cpu)
->>   void topology_init_cpu_capacity_cppc(void)
->>   {
->>          struct cppc_perf_caps perf_caps;
->> +       u64 capacity, capacity_scale;
+with top-most commit 9caa3a2de955238df742572812178568fed173f7
 
-I think capacity_scale should be initialized to 0 here,
-since it is used to find the max value of raw_capacity[cpu].
+ Merge branch 'acpi-irq'
 
->>          int cpu;
->>
->>          if (likely(!acpi_cpc_valid()))
->> @@ -365,6 +366,10 @@ void topology_init_cpu_capacity_cppc(void)
->>                      (perf_caps.highest_perf >= perf_caps.nominal_perf) &&
->>                      (perf_caps.highest_perf >= perf_caps.lowest_perf)) {
->>                          raw_capacity[cpu] = perf_caps.highest_perf;
->> +                       capacity_scale = max_t(u64, capacity_scale, raw_capacity[cpu]);
->> +
->> +                       per_cpu(capacity_ref_freq, cpu) = cppc_perf_to_khz(&perf_caps, raw_capacity[cpu]);
+on top of commit 58720809f52779dc0f08e53e54b014209d13eebb
 
-I think capacity_ref_freq in in Hz, so the freq should be multiplied by 1000 .
+ Linux 6.6-rc6
 
-With these two modifications, the patches worked well on a cppc-based platform.
+to receive ACPI fixes for 6.6-rc7.
 
-Sorry I forgot to detail what it was. It's a modified Juno with CPPC enabled. AMUs are not
-enabled, so the CPPC performance counters are not handled correctly and FIE cannot be enabled,
-but it is possible to change frequencies.
+These fix the ACPI initialization ordering on ARM and ACPI IRQ
+management in the cases when irq_create_fwspec_mapping() fails.
 
-The _CPC objects are setup as:
-little CPUs:
-- lowest_freq = 450 (MHz)
-- nominal_freq = 800 (MHz)
-- highest_perf = 383 * 1000
-- nominal_perf = 322 * 1000
-- lowest_perf = 181 * 1000
-- lowest_nonlinear_perf = 181 * 1000
+Specifics:
 
-big CPUs:
-- lowest_freq = 600 (MHz)
-- nominal_freq = 1200 (MHz)
-- highest_perf = 1024 * 1000
-- nominal_perf = 833 * 1000
-- lowest_perf = 512 * 1000
-- lowest_nonlinear_perf = 512 * 1000
+ - Fix ACPI initialization ordering on ARM that was changed incorrectly
+   during the 6.5 development cycle (Hanjun Guo).
 
-As a remainder, available frequencies are:
-- little CPUs: 450, 800, 950 MHz
-- big CPUs: 600, 1000, 1200 Mhz
-So the platform is setup to have the last frequency as a boost frequency (for testing).
+ - Make acpi_register_gsi() return an error code as appropriate when
+   irq_create_fwspec_mapping() returns 0 on failure (Sunil V L).
 
-----
-
-Just to make a note of 2 potential side-issues for later (independent from these patches):
-
-- When testing with boosted/non-bossted frequencies, it didn't seem that cpu_overutilized()
-   was taking the maximum frequency into consideration. This might mean that when lowering the
-   maximum frequency of a policy, the maximum capacity of the CPUs of this policy is used
-   to detect over-utilization.
-   I would have thought that the over-utilization threshold would be lowered at the same time.
-
-- Similarly for EAS, the energy computation doesn't take into account the maximum frequency
-   of the policy. This should mean that EAS is taking into consideration frequencies that
-   are not actually available.
+Thanks!
 
 
-Regards,
-Pierre
+---------------
+
+Hanjun Guo (1):
+      ACPI: bus: Move acpi_arm_init() to the place of after acpi_ghes_init()
+
+Sunil V L (1):
+      ACPI: irq: Fix incorrect return value in acpi_register_gsi()
+
+---------------
+
+ drivers/acpi/bus.c | 2 +-
+ drivers/acpi/irq.c | 7 ++++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
