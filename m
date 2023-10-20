@@ -1,168 +1,313 @@
-Return-Path: <linux-acpi+bounces-775-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-776-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0BFB7D067E
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 04:32:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F83D7D0AA7
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 10:35:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24A05B20FC1
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 02:32:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43EEBB21428
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 08:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842B71376
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 02:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F01010A25
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 08:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bawb4nwy"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="aDfxm37l"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268FA377
-	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 01:04:16 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8830112;
-	Thu, 19 Oct 2023 18:04:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697763854; x=1729299854;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=okEioGFTVPUQQFJOKjADaR5r44nQAIBW+UMs/RktEaY=;
-  b=bawb4nwy4aiO6H2ydU/aHHtCeKsEv/FcYBlDq0EHnz15rts0GQwEpK0k
-   zsI5A5SUaKmce5b3XjRF9D+/vZVsB64mZkxtR5CZCRLNyCSCwzpw12+M4
-   ecA+WjeA/nGtsTLYZMJIyZditMUfiFZpCrN2ESF3JJwlbXbHpaQ8NAP2U
-   S+i4EGUJt3wdKkC5mb9YI+C/OLKosEan4Vtl2PFcnp0mnGe2JGKzbV4bc
-   DgFI9VB1xi1c6ok8Vg3NYB0p5paXxUgytRnmlGyYheQbDhxpGZ9S5olJM
-   cOrd4gtHGqa9gy0ztcOwtZyU+ehU2i5Q8CCopdqst8NRviCcD3QM54+UK
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="376786107"
-X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
-   d="scan'208";a="376786107"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 18:03:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="880904205"
-X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
-   d="scan'208";a="880904205"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orsmga004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 19 Oct 2023 18:03:52 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Thu, 19 Oct 2023 18:03:51 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Thu, 19 Oct 2023 18:03:49 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Thu, 19 Oct 2023 18:03:49 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.32; Thu, 19 Oct 2023 18:03:39 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E211210A0D
+	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 08:31:04 +0000 (UTC)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2079.outbound.protection.outlook.com [40.107.92.79])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB2DF11B;
+	Fri, 20 Oct 2023 01:31:02 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OzSb4I3bdsLAefpMZY28+WPaNswh3m/smmylR/UvQZIj4thuP3NObUnT1r2J5rhwyTIn0dy1L80Qr8bafwy65XXB61KepnI4NjbaqfDu71JJ8lmWO/CG3I/2OnD7xDiP0Gow6xF7WPe6kqsiQr+OOPNIcfgztrknI2/pTookQ7zFW62t6ZS/BzSSlUVbVyo2KEGdUTvCmrpXBKhIUf7dqrnlVpB3ikxtAlkhKtNtqrnAwIbKKirtTeUIrSBrFiyKgki00Xlp8WUV43WElsfGJud1ZKajgl8dh0xB4gg2+9m81dEg7Jl+MTkUSKRg6CjvEJxMdPMMBgABqd8XqwsqaA==
+ b=ixnnFlAQ+8k+UBCCZN3LVXRy5PzlfPEecoFVujI/wG9e9XBWx5LR154mUSDeHnucYySxNHP/oMpffacA0sjquZrL0VrFKBETa37+oz+4oljb/7NFp73/txcDNbkEudfYlRaD7TF0KSZ3StEY215TNhmALbCJ2UHWXT+ZMb6iFTZIT5fSR0YSojudWVMFImBqcxgEu9/XQad7qrlLD7ePY1jfLJmSexgY+UvI52pcCPBIi00gu/el2KjS3C7Bxl7FCu7M/bCppL5apRuzY+mj2E9hooWQgiFKSzyWuSWpqhX1QIRLW+y4nBSp+Q026Ct+iI+hFJ3CZ5RO3s14Unfy5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=okEioGFTVPUQQFJOKjADaR5r44nQAIBW+UMs/RktEaY=;
- b=O28MnfDZ/5jIblixcDADnhCXRpzOjzBZrpKfgO8Fj0e9FBqnUarpe2n0nFwHsPxCyy8WIvlliy7TOykLD1/KuviBMve1BHUUtfZri7tC/mSxAKEpltTTV7AWLDYGI/0JaNmMs45NtIh2fHTKnPKQjjHPqog7JG7bHXtCkivDQF++9fzdjl/D8zhYKNK+V1RdpkjSj0b/ENdF7r8demBfLWVFwRAn77Y2RimSu4EeGW5iNqv1xkGiSEdnYjogh//coBrOTruZL9375ys92M+nSxVudHHMLnwI/4+2u+sKCuTYnFxgYPX4TWXpPtqLZ336TXFGLezSxbZRxtFTF1dR6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by PH7PR11MB6402.namprd11.prod.outlook.com (2603:10b6:510:1fa::15) with
+ bh=snh3cZM/THj9CYNLu+IK+Y1RfKdowuOD3Ek1VU6fXbU=;
+ b=gUH0BP6LCdsC5+0yPVPqiAeEqpjuxf3GSDLjFInwSu6zwAv7jrpqFRx0lL03DiF49V2AN0OxVbnk+StiDlA1GWWKn+zoMGEtDDDK/HMjcEqxkG+Dsqazy+1d1n1FpQXgSvhH69lNKoRim8ALfnP5EQppqGJdAEXyb2uahMdVih0UAFdKF6TxrI0g1kZGJXwgPu0Ymk3Y5bWbfgd9I1ydtnMDU62DABeXzH85Wkr33JTNbLsuY6bIf379gwG5U/nARbSXW6qp2gySm7LSOkheMbat8X5/o3PfPnzS1piBVTRuJmCaIYoFJuC0/ZtQI5m5N3Ug6+I05BTapTjFF5h5Og==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=snh3cZM/THj9CYNLu+IK+Y1RfKdowuOD3Ek1VU6fXbU=;
+ b=aDfxm37l5Gep714DkEZQVNz6Qv13Xc/52UkzmUhtR+j82LeXvdTv/o1BQMOOKqRzVsbJ9+xI1DAtZgEO/nqIDno6ZXbYAiI3fhLIZoHqO1WvXoP1qX0AWwt2FmWp7crZb78XYJn9EU0eDIo4leRH5Cb/Be+F6TwzHo0aseUMyHFXW1CU5INef3+Hq68pyZXvRw1M/jKPSO7a3P6ZhLN49nGc+ORDwiORai1Yczb+TwBgKizqsGj/FJXECD6pCHMcIgYd+Ug9WpJpJ3D75A8K/ITI+IpH3HS6pnniCzjcIWE9uZkzvAPJy56A1PyY68bQzKvkKAV5PtHPjK64m6Nyhw==
+Received: from DS7PR03CA0205.namprd03.prod.outlook.com (2603:10b6:5:3b6::30)
+ by SJ0PR12MB5485.namprd12.prod.outlook.com (2603:10b6:a03:305::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.23; Fri, 20 Oct
- 2023 01:03:30 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::7978:1ba5:6ed0:717d]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::7978:1ba5:6ed0:717d%4]) with mapi id 15.20.6886.034; Fri, 20 Oct 2023
- 01:03:30 +0000
-Date: Thu, 19 Oct 2023 18:03:28 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Michal Wilczynski
-	<michal.wilczynski@intel.com>, <nvdimm@lists.linux.dev>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Dan Williams <dan.j.williams@intel.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, Ira Weiny
-	<ira.weiny@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
-	<lenb@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: RE: [PATCH v1 1/1] ACPI: NFIT: Switch to use
- acpi_evaluate_dsm_typed()
-Message-ID: <6531d1e01d0e1_7258329440@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20231002135458.2603293-1-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231002135458.2603293-1-andriy.shevchenko@linux.intel.com>
-X-ClientProxiedBy: MW4PR04CA0360.namprd04.prod.outlook.com
- (2603:10b6:303:8a::35) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.26; Fri, 20 Oct
+ 2023 08:31:00 +0000
+Received: from CY4PEPF0000EE36.namprd05.prod.outlook.com
+ (2603:10b6:5:3b6:cafe::8f) by DS7PR03CA0205.outlook.office365.com
+ (2603:10b6:5:3b6::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.26 via Frontend
+ Transport; Fri, 20 Oct 2023 08:31:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CY4PEPF0000EE36.mail.protection.outlook.com (10.167.242.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6838.22 via Frontend Transport; Fri, 20 Oct 2023 08:31:00 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Fri, 20 Oct
+ 2023 01:30:41 -0700
+Received: from [10.41.21.79] (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Fri, 20 Oct
+ 2023 01:30:36 -0700
+Message-ID: <4fd879be-ae89-45a7-9607-b55606cfb3ac@nvidia.com>
+Date: Fri, 20 Oct 2023 14:00:33 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [Patch v5 2/2] ACPI: processor: reduce CPUFREQ thermal reduction
+ pctg for Tegra241
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rafael@kernel.org>, <lpieralisi@kernel.org>,
+	<guohanjun@huawei.com>, <sudeep.holla@arm.com>
+CC: <rui.zhang@intel.com>, <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<treding@nvidia.com>, <jonathanh@nvidia.com>, <bbasu@nvidia.com>,
+	<sanjayc@nvidia.com>, <ksitaraman@nvidia.com>, <srikars@nvidia.com>,
+	<jbrasen@nvidia.com>, Sumit Gupta <sumitg@nvidia.com>, Linux ARM
+	<linux-arm-kernel@lists.infradead.org>, Sumit Gupta <sumitg@nvidia.com>
+References: <20231014105426.26389-1-sumitg@nvidia.com>
+ <20231014105426.26389-3-sumitg@nvidia.com>
+ <CAJZ5v0ivZd-+wRtCNE4t1P=SjJSEJmW6s7GyuYELWg-v87Tw2w@mail.gmail.com>
+From: Sumit Gupta <sumitg@nvidia.com>
+In-Reply-To: <CAJZ5v0ivZd-+wRtCNE4t1P=SjJSEJmW6s7GyuYELWg-v87Tw2w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.126.231.35]
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH7PR11MB6402:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ab07686-7647-480c-c4c8-08dbd108600f
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE36:EE_|SJ0PR12MB5485:EE_
+X-MS-Office365-Filtering-Correlation-Id: b2406880-96b2-4309-cf3b-08dbd146e3dd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: KuEThgnq+TUtU6p8N/HSwlqmLW3E1nYRrajKUM84WX29sFkzqDXfOCxmf2rkpHoVINrX5oig06OkXIM1CqDVizrPIzW95pA90gDXDqHXa+DX91pNvzme26yBBjKBUOjni7Nm47TQTPDpju19RAyz0RhbFcNdaGDNBNPvS0t+BgstDx+UzZbTB3bjCcruQs2xI/EvnzZ8MLTfxKoDYFkTiKDSuXUgvfUyVFnRfDH5albbMm7UmsWH5d0ycN+9pJv3txErKCsACvZM5ZC8HriCm73p2cGH5qIyE4UogGi0y8C96pbvkgZ+gT64JXPA0S1qp1YizDTmuhB7U8I42V6C5MYXBNz8PQcwZWWxGv7it0639I0RI4g34UeIORWJCJ6MsLQ8kK/3gYir/l8l05YwJgEDG49Q2NF/qVZApemsBUrSXG8N+2UVKiUnOlLzgb7eheza8U2Zfb/vsPukcdq95SHo0ZgrGtfT3dDQwC0KaA+DjmlNxu14DOS6rA976iT+RO5MU7+HeY2ZrxrMVLZi75uM3pNcz1HKECWMx2GcCPuIm5UYfTMV9kfladB28Mji
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(396003)(136003)(39860400002)(366004)(376002)(230922051799003)(451199024)(64100799003)(186009)(1800799009)(26005)(41300700001)(9686003)(6512007)(6506007)(38100700002)(82960400001)(478600001)(316002)(110136005)(66476007)(66946007)(54906003)(66556008)(2906002)(5660300002)(86362001)(6486002)(8676002)(4326008)(8936002)(558084003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?U+iD/7fpANoqGAC4awyk4lrcZJdtGSJRGLOnwpgImpsqh4qC2e0bwBUGzvRE?=
- =?us-ascii?Q?Oo+Xmo0e3AfqH0kIpvILk6g2zvDYtPcLS+2wr9MGXKoKfHaISRau3jhmS/RB?=
- =?us-ascii?Q?bmwuNiK8dphdnjnpa8uPPdWJcpzu+twzj2O393AKYMcI6xdTmO2yTqwn2a+I?=
- =?us-ascii?Q?nTr7ezgAHWEj2R9KuZnRCOlkSSRx42ggSSAmjWxrulmGqH1BQF+zzBfbzozX?=
- =?us-ascii?Q?mxWjt3QoG6mPKiLrRcQqKpgOcmgAOFf7MsxCnKk4i0UXOYKtema6UHKQYOgT?=
- =?us-ascii?Q?wKzs/w3wy3wTX0OGXiUgl87TF0fcsOO69IN/LkdHjVTm+9qQgFhekU8LCJ/n?=
- =?us-ascii?Q?XFEbWJxfQ38yHBAf9OCq6AfYEmAhIwdLt2rbSayjCU+pTdA4TcvBpbFbDT6l?=
- =?us-ascii?Q?mi5CzCv2kTrhuGU6keY+T80kEJMp7TyAmmwh7WC/tk10zRT+4RTv8Myu27au?=
- =?us-ascii?Q?fjVdfp7bw2NwRrvyNxrn04BhkNV2JKzDiomP9ahjpxH3W/7gmYi98CsMJAEm?=
- =?us-ascii?Q?d41OPOG30/OWPEadH2xoHmt26Mu6oelCV4pU1VoMPI7EQOZhg0o8m98fqPKs?=
- =?us-ascii?Q?802Se/zfre7BrGSwL+Fi8iV7wJm435ZqGC4qUTumEPKMW5tuVWEQjJkksBxU?=
- =?us-ascii?Q?Nk5hZrT3fz2EuPaZb2LV/bv06KqKyxnaBgcnY3ApkPcbEJDVExBEFy0jFvU5?=
- =?us-ascii?Q?oSCPe+6XcJtNTJaGWlzFDC8OseG8Woe2rwbd5zJ+2R6PgVfP6eK91ysEX4GW?=
- =?us-ascii?Q?m2gMs8/xXyef46GfqBjDQRXVby2Z861MeyySjZ9WyGKqMG64nUFcW/5L0e12?=
- =?us-ascii?Q?YIO/LgYx0aTRM7rsa0aDyboCxBUy8RgOVyDhkiipikzu1TAamtZ+dbgeNdfP?=
- =?us-ascii?Q?k3tnuLGcGgzqgQEhvbRc+P8MT3jU90fVHxji72EdUZRnGMlc/zIWWm61weUd?=
- =?us-ascii?Q?0yHxLkdbo2EaHRiWrTIYJh+6WhNc2uv+dh4y9S1gy3UVMSTL5IPOouupcl07?=
- =?us-ascii?Q?fzkjzxU7MNIzDSY09FNDjvmLtda/H3oLTV2mq/E2cl+KM5bGD8TiTRsOK76H?=
- =?us-ascii?Q?v17n5rTUN/AK3GWgpOppYmbicxscdVzL85ruEdCel9XydUnhFCev/xCZ/W4l?=
- =?us-ascii?Q?AHaFR9XunY496AH2FOrwD+uaY3dz6ZpFrqN92NgFxFUVouRX8YjWnXaZNrBR?=
- =?us-ascii?Q?pYgZJiCkHoxJPXSXpiy2ZPbIBtbeb+4ZPXd+GLQqmEtJ3ROIhHNkJORld9Ko?=
- =?us-ascii?Q?/SpVrSGec8STqtV23Ux2AAqMp71SWMaXBl7XS7HuizVVquUxACdeIm+ni1QW?=
- =?us-ascii?Q?IbAgEbWTJL6EIFbtrXo+r2OmGaWo/0D+oxUbDsSWJfqD440i8hMOYB1HGZ2B?=
- =?us-ascii?Q?kYILSYZt9HzFzZi9EwU06dO7JJQ7xhhpes+Qfq72CUC7TaJy2IbRh7WXG1lV?=
- =?us-ascii?Q?wvaKlbu4JWDGjfW65AVkFDVKv8mUb3RTp9CC5RCHv2VEfS0JOhP2iCzw+9l+?=
- =?us-ascii?Q?m5dYPl7cuurNEQJ4KEBBkueOmopHlTN0MfNRoxfmsFKyVZLdc3NwvLZZn3vV?=
- =?us-ascii?Q?GSBCS2PYhvCaKf4p9/p+mj9swPMugRwO+Uyi26jO93XKqEc0nBW6Y4LUMtFS?=
- =?us-ascii?Q?Ig=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ab07686-7647-480c-c4c8-08dbd108600f
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2023 01:03:30.5800
+X-Microsoft-Antispam-Message-Info:
+	ZnyctbFIZb5ckRqNhkrrx0Kgxdyw6hSCNEonZRSyHh9V0L1i6I5RVx3hrhXmzqubsz8BrIX7vC1FhaqdffnPv5qSLFg08MgIBKj5j/C8joWTQShUzjoPACHTttPQavIPT7Y51JxSH8EwYIfXRL773gkLxUZpU3w77EysB3aKaVj60dJlICHxkSIj2ieAxAU5iNw+yLDzL0T1+P7oco5K5z3voVDOhIlrTJGi8xu1iUeyZImDtqMStrr+BGyzvXLjy/TQPZvnd4Xa/zDke61apxZiyBOnRXhzfjtrwLPcTGhkQaThugTeBdk4Di2c652t4qN8kRrJIhxn34fUkS33tPFvZkJ2Z+zWCxKdUY04E8FP2aPUGyOFPTri8hPV360D3WZ69U/lAbkoF1H28qtaSwpLSdFsvoTxYhlx1zm/RHYxYnrYPY5YHzishVCJDdrSxerBXHJWkI1QnTg4ogI1ut+J49sLBhpDmC0ZaBdRsPOqRqc27Q9nqIFCmmtjobJ5L9xKU+JTaA2k9Rbhddhwms/OVnCybo3sjeg3B0/cxZgtogJ3y6rz2Mfge/imvlzZVS2QyZ+I6OsWjAfRUgBdMUUxTa+X0lycnWENZ0ZN5RYzhCWFhv0g1CHXEFKGqWnnXWaAGm2/T4bvdbbPFC3pfED3xqbBDdSKRA8X2+a/kJq6Ta/3rKyN5A/UQ6SxTRylYwA+rrgs6Xmoig4tSEq/izo/zoqOCVhXX/PYVMtb57XLqB/kfTuQMO1KdBVovvDYoBxB3PusbE+IBQEoZwHU7A==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(136003)(39860400002)(376002)(346002)(396003)(230922051799003)(186009)(451199024)(1800799009)(82310400011)(64100799003)(40470700004)(36840700001)(46966006)(40480700001)(8676002)(4326008)(8936002)(5660300002)(40460700003)(2906002)(7416002)(41300700001)(83380400001)(16526019)(107886003)(47076005)(36860700001)(6666004)(2616005)(26005)(426003)(336012)(31686004)(86362001)(31696002)(356005)(7636003)(36756003)(82740400003)(316002)(54906003)(110136005)(70206006)(70586007)(478600001)(16576012)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2023 08:31:00.2375
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D7iIPnkbe+yGP3a9TkFhifyX83V1w0UtzDPclbV4dM5hnxcN356APfvq2cUnLEVT8h6jX3MQYEDF7mAsEocurbPTBhMspSXATtlyjXWN8X4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6402
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2406880-96b2-4309-cf3b-08dbd146e3dd
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE36.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5485
 
-Andy Shevchenko wrote:
-> The acpi_evaluate_dsm_typed() provides a way to check the type of the
-> object evaluated by _DSM call. Use it instead of open coded variant.
 
-Looks good to me.
+>> Current implementation of processor_thermal performs software throttling
+>> in fixed steps of "20%" which can be too coarse for some platforms.
+>> We observed some performance gain after reducing the throttle percentage.
+>> Change the CPUFREQ thermal reduction percentage and maximum thermal steps
+>> to be configurable. Also, update the default values of both for Nvidia
+>> Tegra241 (Grace) SoC. The thermal reduction percentage is reduced to "5%"
+>> and accordingly the maximum number of thermal steps are increased as they
+>> are derived from the reduction percentage.
+>>
+>> Signed-off-by: Srikar Srimath Tirumala <srikars@nvidia.com>
+>> Co-developed-by: Sumit Gupta <sumitg@nvidia.com>
+>> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+>> ---
+>>   drivers/acpi/arm64/Makefile          |  1 +
+>>   drivers/acpi/arm64/thermal_cpufreq.c | 20 ++++++++++++++++
+>>   drivers/acpi/processor_thermal.c     | 35 +++++++++++++++++++++++++---
+>>   include/linux/acpi.h                 |  9 +++++++
+>>   4 files changed, 62 insertions(+), 3 deletions(-)
+>>   create mode 100644 drivers/acpi/arm64/thermal_cpufreq.c
+>>
+>> diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
+>> index 143debc1ba4a..3f181d8156cc 100644
+>> --- a/drivers/acpi/arm64/Makefile
+>> +++ b/drivers/acpi/arm64/Makefile
+>> @@ -5,3 +5,4 @@ obj-$(CONFIG_ACPI_GTDT)         += gtdt.o
+>>   obj-$(CONFIG_ACPI_APMT)        += apmt.o
+>>   obj-$(CONFIG_ARM_AMBA)         += amba.o
+>>   obj-y                          += dma.o init.o
+>> +obj-$(CONFIG_ACPI)             += thermal_cpufreq.o
+>> diff --git a/drivers/acpi/arm64/thermal_cpufreq.c b/drivers/acpi/arm64/thermal_cpufreq.c
+>> new file mode 100644
+>> index 000000000000..de834fb013e7
+>> --- /dev/null
+>> +++ b/drivers/acpi/arm64/thermal_cpufreq.c
+>> @@ -0,0 +1,20 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +#include <linux/acpi.h>
+>> +
+>> +#ifdef CONFIG_HAVE_ARM_SMCCC_DISCOVERY
+>> +#define SMCCC_SOC_ID_T241      0x036b0241
+>> +
+>> +int acpi_thermal_cpufreq_pctg(void)
+>> +{
+>> +       s32 soc_id = arm_smccc_get_soc_id_version();
+>> +
+>> +       /*
+>> +        * Check JEP106 code for NVIDIA Tegra241 chip (036b:0241) and
+>> +        * reduce the CPUFREQ Thermal reduction percentage to 5%.
+>> +        */
+>> +       if (soc_id == SMCCC_SOC_ID_T241)
+>> +               return 5;
+>> +
+>> +       return 0;
+>> +}
+>> +#endif
+> 
+> This part needs an ACK from the ARM folks.
+> 
+Sorry, missed adding 'ACPI arm64' maintainers. Added Lorenzo, Sudeep and 
+Hanjun.
 
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+>> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
+>> index b7c6287eccca..52f316e4e260 100644
+>> --- a/drivers/acpi/processor_thermal.c
+>> +++ b/drivers/acpi/processor_thermal.c
+>> @@ -26,7 +26,16 @@
+>>    */
+>>
+>>   #define CPUFREQ_THERMAL_MIN_STEP 0
+>> -#define CPUFREQ_THERMAL_MAX_STEP 3
+>> +
+>> +static int cpufreq_thermal_max_step __read_mostly = 3;
+>> +
+>> +/*
+>> + * Minimum throttle percentage for processor_thermal cooling device.
+>> + * The processor_thermal driver uses it to calculate the percentage amount by
+>> + * which cpu frequency must be reduced for each cooling state. This is also used
+>> + * to calculate the maximum number of throttling steps or cooling states.
+>> + */
+>> +static int cpufreq_thermal_pctg __read_mostly = 20;
+> 
+> I'd call this cpufreq_thermal_reduction_step, because the value
+> multiplied by it already is in percent.
+> 
+
+This is multiplied with reduction_pctg() which seem to be actually 
+giving the reduction_step and not percentage.
+
+Can we rather rename the existing 'reduction_pctg' to 'reduction_step' 
+and 'cpufreq_thermal_pctg' to 'cpufreq_thermal_reduction_pctg' for more 
+clarity. Please suggest.
+
+>>
+>>   static DEFINE_PER_CPU(unsigned int, cpufreq_thermal_reduction_pctg);
+>>
+>> @@ -71,7 +80,7 @@ static int cpufreq_get_max_state(unsigned int cpu)
+>>          if (!cpu_has_cpufreq(cpu))
+>>                  return 0;
+>>
+>> -       return CPUFREQ_THERMAL_MAX_STEP;
+>> +       return cpufreq_thermal_max_step;
+>>   }
+>>
+>>   static int cpufreq_get_cur_state(unsigned int cpu)
+>> @@ -113,7 +122,8 @@ static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>>                  if (!policy)
+>>                          return -EINVAL;
+>>
+>> -               max_freq = (policy->cpuinfo.max_freq * (100 - reduction_pctg(i) * 20)) / 100;
+>> +               max_freq = (policy->cpuinfo.max_freq *
+>> +                           (100 - reduction_pctg(i) * cpufreq_thermal_pctg)) / 100;
+>>
+>>                  cpufreq_cpu_put(policy);
+>>
+>> @@ -126,10 +136,29 @@ static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>>          return 0;
+>>   }
+>>
+>> +static void acpi_thermal_cpufreq_config(void)
+>> +{
+>> +       int cpufreq_pctg = acpi_thermal_cpufreq_pctg();
+>> +
+>> +       if (!cpufreq_pctg)
+>> +               return;
+>> +
+>> +       cpufreq_thermal_pctg = cpufreq_pctg;
+>> +
+>> +       /*
+>> +        * Derive the MAX_STEP from minimum throttle percentage so that the reduction
+>> +        * percentage doesn't end up becoming negative. Also, cap the MAX_STEP so that
+>> +        * the CPU performance doesn't become 0.
+>> +        */
+>> +       cpufreq_thermal_max_step = (100 / cpufreq_thermal_pctg) - 1;
+> 
+> Why don't you use the local variable in the expression on the right-hand side?
+> 
+Ok.
+
+> Also please note that the formula doesn't allow the default
+> combination of reduction_step and max_step to be produced which is a
+> bit odd.
+> 
+> What would be wrong with max_step = 60 / reduction_step?
+> 
+
+The new formula will be applied only to Tegra241 as this function 
+returns early for other SoC's. If we still want it to provide the 
+default value of max step ('3') if the default pctg ('20') is returned 
+by acpi_thermal_cpufreq_pctg(), then we can change to below.
+
+  cpufreq_thermal_max_step = (100 / cpufreq_thermal_reduction_pctg) - 2;
+
+>> +}
+>> +
+>>   void acpi_thermal_cpufreq_init(struct cpufreq_policy *policy)
+>>   {
+>>          unsigned int cpu;
+>>
+>> +       acpi_thermal_cpufreq_config();
+>> +
+>>          for_each_cpu(cpu, policy->related_cpus) {
+>>                  struct acpi_processor *pr = per_cpu(processors, cpu);
+>>                  int ret;
+>> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+>> index ba3f601b6e3d..407617670221 100644
+>> --- a/include/linux/acpi.h
+>> +++ b/include/linux/acpi.h
+>> @@ -1541,4 +1541,13 @@ static inline void acpi_device_notify(struct device *dev) { }
+>>   static inline void acpi_device_notify_remove(struct device *dev) { }
+>>   #endif
+>>
+>> +#ifdef CONFIG_HAVE_ARM_SMCCC_DISCOVERY
+>> +int acpi_thermal_cpufreq_pctg(void);
+>> +#else
+>> +static inline int acpi_thermal_cpufreq_pctg(void)
+>> +{
+>> +       return 0;
+>> +}
+>> +#endif
+>> +
+> 
+> This can go into drivers/acpi/internal.h as far as I'm concerned.
+> 
+
+Ok. Will move this to 'internal.h' in v6.
+
+>>   #endif /*_LINUX_ACPI_H*/
+>> --
 
