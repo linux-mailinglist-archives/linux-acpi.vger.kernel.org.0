@@ -1,120 +1,110 @@
-Return-Path: <linux-acpi+bounces-827-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-828-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 201357D1BC2
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Oct 2023 10:34:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C3D7D1D28
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Oct 2023 14:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 379321C209CF
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Oct 2023 08:34:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBF97282034
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Oct 2023 12:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C69D513
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Oct 2023 08:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0E712B7C
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Oct 2023 12:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ro889KAK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTcaPIRt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2288E1C3A
-	for <linux-acpi@vger.kernel.org>; Sat, 21 Oct 2023 06:51:28 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7877513E;
-	Fri, 20 Oct 2023 23:51:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697871084; x=1729407084;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=naPtkrzRmbCE7KFu9q04yne3z9WnO3pY8BdWgIrnkMw=;
-  b=Ro889KAKPydIICyjH0jG8hJkDwLF6KkH9enXfby+7MpBK20UpoXlX0r/
-   6j/YHJxcXG0R3vsNYRgGu7loCivmXsMX7ZLgQH3qPf28C8UAMsyb3IZ/r
-   wZG4jRVOCz3KKFj+EJsQGTNjVGWe5iqD/y/AUxLg2bZyLKFVOBKKjRdXA
-   0JZx4j8353Gv+GdAj88vVB74lkkkVr6J8zchzPqxgeB0Uq/rMsXnSVyfi
-   em2eWvtApi5WMvdQuSkmy1SrBYnEJlGhHQYO3thpDZjki0G2mitMCC1uJ
-   2egLcH6yWyF3/68BkiTnq0QRfNFIWH6jZQWjA1KEPtvcs7WEcmb/ELIGj
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="386427172"
-X-IronPort-AV: E=Sophos;i="6.03,240,1694761200"; 
-   d="scan'208";a="386427172"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 23:51:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="751142310"
-X-IronPort-AV: E=Sophos;i="6.03,240,1694761200"; 
-   d="scan'208";a="751142310"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 23:51:19 -0700
-Date: Sat, 21 Oct 2023 09:51:15 +0300
-From: Raag Jadav <raag.jadav@intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	len.brown@intel.com, robert.moore@intel.com,
-	mika.westerberg@linux.intel.com, mark.rutland@arm.com,
-	will@kernel.org, linux@roeck-us.net, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linuxfoundation.org, linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-	mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
-Subject: Re: [PATCH v1 4/8] ACPI: utils: use acpi_dev_uid_match() for
- matching _UID
-Message-ID: <ZTN042OQ4kx1PaQt@black.fi.intel.com>
-References: <20231020084732.17130-1-raag.jadav@intel.com>
- <20231020084732.17130-5-raag.jadav@intel.com>
- <ZTJYK02w8HZg26eI@smile.fi.intel.com>
- <ZTJmnv6CsZUt0pIS@black.fi.intel.com>
- <CAJZ5v0jvAeibnXSq92CBd1uXUgRnvsP0kEqfL8Du552=LT1dog@mail.gmail.com>
- <ZTLC5Jo97gYsL5wX@black.fi.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967E618A;
+	Sat, 21 Oct 2023 10:56:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85359C433C8;
+	Sat, 21 Oct 2023 10:56:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1697885818;
+	bh=lWjx0bstoWSn8O+1+vq3s6PJ4JDA6SyKY8ViX2L7YW0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hTcaPIRtnQmlyxhrbVQzTkIF6yu1dZwfQH0HKzzZf+IdjhhVDBzohjKljAvRxu6ZC
+	 +EK0hYdtjcSMWn6+4ncGofksLqwZ6P5+pfIq4uHxdEPiU2xTLxyhLfke0SYjlmgd4x
+	 HJxhZl7xo4cAk+d9+HLkSGCqfb+thCkty+PvIYNY=
+Date: Sat, 21 Oct 2023 12:56:55 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	James Morse <james.morse@arm.com>, linux-pm@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com
+Subject: Re: [RFC PATCH v2 11/35] arch_topology: Make
+ register_cpu_capacity_sysctl() tolerant to late CPUs
+Message-ID: <2023102128-banter-circular-85a2@gregkh>
+References: <20230913163823.7880-1-james.morse@arm.com>
+ <20230913163823.7880-12-james.morse@arm.com>
+ <20230914130126.000069db@Huawei.com>
+ <ZTJqOTfDEnL9wgtY@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZTLC5Jo97gYsL5wX@black.fi.intel.com>
+In-Reply-To: <ZTJqOTfDEnL9wgtY@shell.armlinux.org.uk>
 
-On Fri, Oct 20, 2023 at 09:11:56PM +0300, Raag Jadav wrote:
-> On Fri, Oct 20, 2023 at 07:11:53PM +0200, Rafael J. Wysocki wrote:
-> > On Fri, Oct 20, 2023 at 1:38 PM Raag Jadav <raag.jadav@intel.com> wrote:
-> > >
-> > > On Fri, Oct 20, 2023 at 01:36:27PM +0300, Andy Shevchenko wrote:
-> > > > On Fri, Oct 20, 2023 at 02:17:28PM +0530, Raag Jadav wrote:
-> > > > > Convert manual _UID references to use standard ACPI helpers.
-> > > >
-> > > > Yes, while not so obvious this is the correct replacement.
-> > > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > >
-> > > I think this is the only case which would suffer from the more obvious
-> > > behaviour, i.e.
-> > >
-> > > bool acpi_dev_uid_match(struct acpi_device *adev, const char *uid2)
-> > > {
-> > >         const char *uid1 = acpi_device_uid(adev);
-> > >
-> > >         return uid1 && uid2 && !strcmp(uid1, uid2);
-> > > }
-> > >
-> > > That said, we can't be particularly sure about it's potential future users,
-> > > especially when the usage will not be limited to just ACPI core since we're
-> > > exporting it.
+On Fri, Oct 20, 2023 at 12:53:29PM +0100, Russell King (Oracle) wrote:
+> On Thu, Sep 14, 2023 at 01:01:26PM +0100, Jonathan Cameron wrote:
+> > On Wed, 13 Sep 2023 16:37:59 +0000
+> > James Morse <james.morse@arm.com> wrote:
 > > 
-> > I actually agree with this, so please switch over to the above.
+> > > register_cpu_capacity_sysctl() adds a property to sysfs that describes
+> > > the CPUs capacity. This is done from a subsys_initcall() that assumes
+> > > all possible CPUs are registered.
+> > > 
+> > > With CPU hotplug, possible CPUs aren't registered until they become
+> > > present, (or for arm64 enabled). This leads to messages during boot:
+> > > | register_cpu_capacity_sysctl: too early to get CPU1 device!
+> > > and once these CPUs are added to the system, the file is missing.
+> > > 
+> > > Move this to a cpuhp callback, so that the file is created once
+> > > CPUs are brought online. This covers CPUs that are added late by
+> > > mechanisms like hotplug.
+> > > One observable difference is the file is now missing for offline CPUs.
+> > > 
+> > > Signed-off-by: James Morse <james.morse@arm.com>
+> > > ---
+> > > If the offline CPUs thing is a problem for the tools that consume
+> > > this value, we'd need to move cpu_capacity to be part of cpu.c's
+> > > common_cpu_attr_groups.
+> > 
+> > I think we should do that anyway and then use an is_visible() if we want to
+> > change whether it is visible in offline cpus.
+> > 
+> > Dynamic sysfs file creation is horrible - particularly when done
+> > from an totally different file from where the rest of the attributes
+> > are registered.  I'm curious what the history behind that is.
+> > 
+> > Whilst here, why is there a common_cpu_attr_groups which is
+> > identical to the hotpluggable_cpu_attr_groups in base/cpu.c?
+> > 
+> > 
+> > +CC GregKH
+> > Given changes in drivers/base/
 > 
-> Will send out a v2, thanks.
-> 
-> Andy, can I add your review for this?
+> It would be good to have a comment on this from Greg before I post
+> an updated series of James' patches with most of the comments
+> addressed, possibly later today.
 
-IIUC you agree with the usage format, but not the actual helper.
-So I'm gonna drop it from the first patch and keep it for the rest,
-except this one.
+Sorry, I don't see what I am supposed to comment on, so please just send
+a new series and I'll look at that.
 
-Let me know if I'm doing this wrong.
+thanks,
 
-Raag
+greg k-h
 
