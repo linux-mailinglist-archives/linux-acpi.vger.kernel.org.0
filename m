@@ -1,71 +1,120 @@
-Return-Path: <linux-acpi+bounces-826-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-827-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844CC7D1937
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Oct 2023 00:36:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 201357D1BC2
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Oct 2023 10:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F2AC282635
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 22:36:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 379321C209CF
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Oct 2023 08:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA4C35502
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Oct 2023 22:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C69D513
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Oct 2023 08:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhMMC7D4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ro889KAK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783E8249E3
-	for <linux-acpi@vger.kernel.org>; Fri, 20 Oct 2023 21:08:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F30F2C433C7;
-	Fri, 20 Oct 2023 21:07:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1697836080;
-	bh=r3v80w6Wcqh/7K95U1NJAWREKtTllxrfj7m6laTXixQ=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=uhMMC7D4348x3m4ODSsAiIg2hNTNXXSM91i8pOWxkcNyAG680wAPYSwi8QnjKme+7
-	 O+3VIsjCdh4rtW0cNIdRI/HT+yb9GpHWQzgoosOIDHUHB51yhHetdB0nSX+vYw1+5o
-	 0su8jKu9XzMqHaOYOEez+U38QD0YnTQMKMxd4ybySzdSMUkfxeyuCESZqt85f4pmm5
-	 6XgnZO19Oj8NvwUz01zY4wyHPjxzizvPaN3n9HTJby+q3ml+zOuEX25dznlgfvs1EO
-	 SnK2zYRZu2u0+pALx25hz908hJrGd8UEdA2tmVVFSXMOMOOvLGAJEplYQzeCkUqofU
-	 GgbhnM6PP3VOw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D6EA6C595CB;
-	Fri, 20 Oct 2023 21:07:59 +0000 (UTC)
-Subject: Re: [GIT PULL] ACPI fixes for v6.6-rc7
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0gJZdGLmJQvKcOtVuJr1XX8J_3kH2jg2rUM1=_1XPCknw@mail.gmail.com>
-References: <CAJZ5v0gJZdGLmJQvKcOtVuJr1XX8J_3kH2jg2rUM1=_1XPCknw@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0gJZdGLmJQvKcOtVuJr1XX8J_3kH2jg2rUM1=_1XPCknw@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.6-rc7
-X-PR-Tracked-Commit-Id: 9caa3a2de955238df742572812178568fed173f7
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: f20f29cbcb438ca37962d22735f74a143cbeb28c
-Message-Id: <169783607987.30992.4792776334030206387.pr-tracker-bot@kernel.org>
-Date: Fri, 20 Oct 2023 21:07:59 +0000
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2288E1C3A
+	for <linux-acpi@vger.kernel.org>; Sat, 21 Oct 2023 06:51:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7877513E;
+	Fri, 20 Oct 2023 23:51:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697871084; x=1729407084;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=naPtkrzRmbCE7KFu9q04yne3z9WnO3pY8BdWgIrnkMw=;
+  b=Ro889KAKPydIICyjH0jG8hJkDwLF6KkH9enXfby+7MpBK20UpoXlX0r/
+   6j/YHJxcXG0R3vsNYRgGu7loCivmXsMX7ZLgQH3qPf28C8UAMsyb3IZ/r
+   wZG4jRVOCz3KKFj+EJsQGTNjVGWe5iqD/y/AUxLg2bZyLKFVOBKKjRdXA
+   0JZx4j8353Gv+GdAj88vVB74lkkkVr6J8zchzPqxgeB0Uq/rMsXnSVyfi
+   em2eWvtApi5WMvdQuSkmy1SrBYnEJlGhHQYO3thpDZjki0G2mitMCC1uJ
+   2egLcH6yWyF3/68BkiTnq0QRfNFIWH6jZQWjA1KEPtvcs7WEcmb/ELIGj
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="386427172"
+X-IronPort-AV: E=Sophos;i="6.03,240,1694761200"; 
+   d="scan'208";a="386427172"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 23:51:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="751142310"
+X-IronPort-AV: E=Sophos;i="6.03,240,1694761200"; 
+   d="scan'208";a="751142310"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 23:51:19 -0700
+Date: Sat, 21 Oct 2023 09:51:15 +0300
+From: Raag Jadav <raag.jadav@intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	len.brown@intel.com, robert.moore@intel.com,
+	mika.westerberg@linux.intel.com, mark.rutland@arm.com,
+	will@kernel.org, linux@roeck-us.net, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linuxfoundation.org, linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+	mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
+Subject: Re: [PATCH v1 4/8] ACPI: utils: use acpi_dev_uid_match() for
+ matching _UID
+Message-ID: <ZTN042OQ4kx1PaQt@black.fi.intel.com>
+References: <20231020084732.17130-1-raag.jadav@intel.com>
+ <20231020084732.17130-5-raag.jadav@intel.com>
+ <ZTJYK02w8HZg26eI@smile.fi.intel.com>
+ <ZTJmnv6CsZUt0pIS@black.fi.intel.com>
+ <CAJZ5v0jvAeibnXSq92CBd1uXUgRnvsP0kEqfL8Du552=LT1dog@mail.gmail.com>
+ <ZTLC5Jo97gYsL5wX@black.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZTLC5Jo97gYsL5wX@black.fi.intel.com>
 
-The pull request you sent on Fri, 20 Oct 2023 18:39:01 +0200:
+On Fri, Oct 20, 2023 at 09:11:56PM +0300, Raag Jadav wrote:
+> On Fri, Oct 20, 2023 at 07:11:53PM +0200, Rafael J. Wysocki wrote:
+> > On Fri, Oct 20, 2023 at 1:38 PM Raag Jadav <raag.jadav@intel.com> wrote:
+> > >
+> > > On Fri, Oct 20, 2023 at 01:36:27PM +0300, Andy Shevchenko wrote:
+> > > > On Fri, Oct 20, 2023 at 02:17:28PM +0530, Raag Jadav wrote:
+> > > > > Convert manual _UID references to use standard ACPI helpers.
+> > > >
+> > > > Yes, while not so obvious this is the correct replacement.
+> > > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > >
+> > > I think this is the only case which would suffer from the more obvious
+> > > behaviour, i.e.
+> > >
+> > > bool acpi_dev_uid_match(struct acpi_device *adev, const char *uid2)
+> > > {
+> > >         const char *uid1 = acpi_device_uid(adev);
+> > >
+> > >         return uid1 && uid2 && !strcmp(uid1, uid2);
+> > > }
+> > >
+> > > That said, we can't be particularly sure about it's potential future users,
+> > > especially when the usage will not be limited to just ACPI core since we're
+> > > exporting it.
+> > 
+> > I actually agree with this, so please switch over to the above.
+> 
+> Will send out a v2, thanks.
+> 
+> Andy, can I add your review for this?
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.6-rc7
+IIUC you agree with the usage format, but not the actual helper.
+So I'm gonna drop it from the first patch and keep it for the rest,
+except this one.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/f20f29cbcb438ca37962d22735f74a143cbeb28c
+Let me know if I'm doing this wrong.
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Raag
 
