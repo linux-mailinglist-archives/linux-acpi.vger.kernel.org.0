@@ -1,106 +1,223 @@
-Return-Path: <linux-acpi+bounces-846-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-847-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2997D3CB2
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Oct 2023 18:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3EF47D3CB4
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Oct 2023 18:37:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 370E92804D1
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Oct 2023 16:37:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88785280AB2
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Oct 2023 16:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E646C2566
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Oct 2023 16:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C083D64
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Oct 2023 16:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fZ1bQVRq"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="T3hiY/Dy"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AA714A84
-	for <linux-acpi@vger.kernel.org>; Mon, 23 Oct 2023 14:43:34 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17F1A19B0;
-	Mon, 23 Oct 2023 07:43:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698072194; x=1729608194;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=c+vwHWtU4SYe45hCSutTEEchOiP/C8YWbfE6MM6PUfQ=;
-  b=fZ1bQVRqMikzcZXly6+WJZ2mg0ZYLxZbXR2sCmPg4i18jIH6nYOfySei
-   MGmuIBtV5LRIvXbUU493dbc30Unrecm0AVIDvGkq1kNU0Q5lE0AeY91ad
-   dzUk1nTatYDkACZJRr+8g6HKkwh/F8idsuqZrVHRFBKIAtG3BdCXGQBcd
-   b6HFW96G4dJGaU5GO9b+2sCcgVWjvHiaXJkjTMD3+eihCDTzP21JNnR3b
-   nY3Po3BSPCk91ameJoBQX9oS4Md2SXaehB/4rzw5O+fXFqPR2blcAn3UT
-   YdZ1EBHhIyl4SsdH+T80mRlHYKz5a0B9MMO5AP4vDnhtDvA08BgO5e5MZ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="417985236"
-X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
-   d="scan'208";a="417985236"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 07:42:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="793150451"
-X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
-   d="scan'208";a="793150451"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 07:42:51 -0700
-Date: Mon, 23 Oct 2023 17:42:48 +0300
-From: Raag Jadav <raag.jadav@intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: rafael@kernel.org, len.brown@intel.com, robert.moore@intel.com,
-	mika.westerberg@linux.intel.com, mark.rutland@arm.com,
-	will@kernel.org, linux@roeck-us.net, Jonathan.Cameron@huawei.com,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linuxfoundation.org, linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-	mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
-Subject: Re: [PATCH v2 2/6] pinctrl: intel: use acpi_dev_uid_match() for
- matching _UID
-Message-ID: <ZTaGaDweYpBlxBez@black.fi.intel.com>
-References: <20231023053530.5525-1-raag.jadav@intel.com>
- <20231023053530.5525-3-raag.jadav@intel.com>
- <ZTZacR86hSmV04M9@smile.fi.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD9D1B29A;
+	Mon, 23 Oct 2023 15:45:20 +0000 (UTC)
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2043.outbound.protection.outlook.com [40.107.93.43])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5BDB127;
+	Mon, 23 Oct 2023 08:45:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iJaX5bXRnfonv2sS/DxMHXPxOIxa9Gxteo+q0N7/Q8AhJZzZw7sNB1BLPHrHU6BV44JF5XL4geKp5+KuCgnv0WXaRZKosnqmgo1SKIV1WimacXiUrTPXtrJOSaWDMm23VuGhChuseU4eY67Lxjolzb4ytA/9Nn4yKQmnU60rQ2bbqdbOlSaOT/2TG2So9bAoENeHUpb/gIVBqFpbnvs6w2UF+GLt8zkiYnwgsA6C7vWT7pKJMLnUwdhvLvDVicGWTj1Ry50m2DRqU3/Fi/cCLRi0WihTyjyB3VbMVztB8iah2Xs9cIkF5HDRRdnrqBZkFJ8PNwX64SHwWen9axjbRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E4JrTrRgsXPIIHVYQMAWcQL3s8fV1xtMYq3B240/gk4=;
+ b=eZ/pgQmKqcv5ZzWvF7gicV+WQZTYbd4ftS7vuvWfWs8+GN+J39Ds3Vy4dfJE/T7FCwffTu1YhB/27JnSs/sI0T5mcgVTDHszI7Vpiy7/EbCZ/8zq4runTDnXLKvK1hySurpBmw5SGJhzLb6JkATs10PqaRVii3sL4UTAANQc8Yh9KnXPLqWQyPQ8/CYNUbJVDccneYNaqoOTl1n6ctN1pcqt5yu7m24/HCDybuP9SNTrnNOv1UfkjELNEzjXaCggGqscOsvwkzCLZgE4H9HuMNBnIOcy1Ulb+x6VJH6fVJKoiDdRYtt9K5ZtpwWo9PJ+F6yAsJd+4y8EoWYuh5rTow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E4JrTrRgsXPIIHVYQMAWcQL3s8fV1xtMYq3B240/gk4=;
+ b=T3hiY/DyiSXcuYt0Xsg4HrjRUIA4K1Pshdgq61ncG7sDqPPR/QqIicPKEH4dS+nhrY0kznnUaxLOVVIYaGs4M0kzoL+/S46KvBO0R4P3o2jyl+AI2pF/TID8+SrB5tzn2l9GQbBp6jG5NFIAVt5uc55xBhDmCM8U0w1gkx0hEDQiJdPL+Kz9bgZzpT4PDgsEqSnXasPaQ8d8pVQAtYIgr18DzevBNBzi6PzePse6Fp5hzQj/fyP2z6/DtvTy5jUcxsaKmjfK/mAZ2bUyr341BngUE1x856yezfGTlcfiZGhPZBbZX/BatADek70tHpAUpdVp70e5/OwtX6Di9L/cmw==
+Received: from DM6PR12MB3371.namprd12.prod.outlook.com (2603:10b6:5:116::27)
+ by PH8PR12MB7109.namprd12.prod.outlook.com (2603:10b6:510:22f::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.24; Mon, 23 Oct
+ 2023 15:45:13 +0000
+Received: from DM6PR12MB3371.namprd12.prod.outlook.com
+ ([fe80::87f1:f2ba:c75d:ef3e]) by DM6PR12MB3371.namprd12.prod.outlook.com
+ ([fe80::87f1:f2ba:c75d:ef3e%4]) with mapi id 15.20.6907.025; Mon, 23 Oct 2023
+ 15:45:13 +0000
+From: Jeshua Smith <jeshuas@nvidia.com>
+To: "Luck, Tony" <tony.luck@intel.com>, "keescook@chromium.org"
+	<keescook@chromium.org>, "gpiccoli@igalia.com" <gpiccoli@igalia.com>,
+	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
+	"james.morse@arm.com" <james.morse@arm.com>, "bp@alien8.de" <bp@alien8.de>
+CC: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>, Thierry Reding
+	<treding@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>
+Subject: RE: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
+Thread-Topic: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
+Thread-Index:
+ AQHZtREytrmSwIEvT06Ibqr95x6guq/abXNggAAKnoCAAI5FkIAVd3TwgCWuaxCAIP94MIAg+dpQ
+Date: Mon, 23 Oct 2023 15:45:13 +0000
+Message-ID:
+ <DM6PR12MB33710C8FE59EB3CB1404ABC0DBD8A@DM6PR12MB3371.namprd12.prod.outlook.com>
+References: <20230712223448.145079-1-jeshuas@nvidia.com>
+ <DM6PR12MB3371BA50E3B76D2266273901DB09A@DM6PR12MB3371.namprd12.prod.outlook.com>
+ <SJ1PR11MB6083426D3C663F47E707CF1AFC09A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <DM6PR12MB3371D86F80417641B8479B28DB0EA@DM6PR12MB3371.namprd12.prod.outlook.com>
+ <DM6PR12MB3371FA3AEEA4D17D94C889D5DB1BA@DM6PR12MB3371.namprd12.prod.outlook.com>
+ <DM6PR12MB337153EE2DDDB427096446F0DBF2A@DM6PR12MB3371.namprd12.prod.outlook.com>
+ <DM6PR12MB3371083F4E6BCE4A8D2389E7DBC5A@DM6PR12MB3371.namprd12.prod.outlook.com>
+In-Reply-To:
+ <DM6PR12MB3371083F4E6BCE4A8D2389E7DBC5A@DM6PR12MB3371.namprd12.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM6PR12MB3371:EE_|PH8PR12MB7109:EE_
+x-ms-office365-filtering-correlation-id: d71d3911-4803-45b4-16a1-08dbd3df0be4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ FjDXrc1NxFn9YEd569QzDnZEXt5UM4OeW+mj7ptW90hMCSXzO+i/u7V+kQ9Fd/RxIotP06AhSLkuaOcpOgZTV7z3YXxF9aqNQOcLTABdsU2bhwdM54HOfhNbm0bgwq8+Ms2deKVUmMlQT58e85mgIXW/JxLIDtYQr+plFiNquFyBgLE23A3A+PtHlCniSdUUpTI/UfKG0CTHPjdiCRnXQGyfNhpccuhqXdNO6I69q3C/jzul27DeHLonuwTi+aencSmrzSwWEphh7snc8dPpXLiVT9cjBLis2/wJkzOV2zSoahduSTzFPDbJ6j3fcTUNe016i0bsxajz5/sQ1ufU7iHHFXc+1yF4TXPuM8XaRSEAE54ASj4E0rQEHgSXWxRXWpUWbAbPc4zJuQHgwFKms3ftV6QYaOm9CV0TdAVEgQ9KnxjhN16YngoAdTktFP2N/1esmf3aswscFwcQ/+X1ru5ICy5c7xyvx0Z9VHgu+nsj4UjOPHyiWAdPavpxzvGiQN8mXbhFcdqQrXO6elyESlEbCBbXRHuLCYJvBU/0KXLgSqzAQTcKMxyws+sZke2ejNxtZMn+oV6ypeBymqcVNGuzswUIIKRbymfDuFSzzOpFNhAiqLzUaLffI/oDbqtTDucOgzAO/jEtxOKn49k3lAfpBDmADCkcjhrH17VkR68=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3371.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(346002)(376002)(136003)(366004)(39860400002)(230922051799003)(186009)(64100799003)(1800799009)(451199024)(66476007)(66556008)(54906003)(76116006)(26005)(64756008)(110136005)(7696005)(2906002)(55016003)(6506007)(71200400001)(316002)(33656002)(66446008)(86362001)(122000001)(66946007)(107886003)(83380400001)(53546011)(38100700002)(9686003)(38070700009)(4326008)(5660300002)(52536014)(478600001)(966005)(8936002)(7416002)(8676002)(41300700001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?AcgGE80JGTW0q+z3fZwYTO6cRyfuWvd9Bt5uGeOz2u41+jjQbcjyIJPMHt+y?=
+ =?us-ascii?Q?bQcsWh0aqWylnzfmIBGOjgJ3P3uKgIyDH9fly9ImSZOSPcHloR/VnYwMEvzt?=
+ =?us-ascii?Q?e0znHSPqyDQNy3eFn8SnzYBnDshDxhmIdfvSufNKjOImp7MuBa6J4dGpOGje?=
+ =?us-ascii?Q?0qwoyot6LlXwC1ZDUTDHK/THiLUqtU6rbjN5wrILv7yQm9PEupxBDpigZ4NR?=
+ =?us-ascii?Q?7wTPN9V4S8a2GQ3soToUvsir5J/3w2YT89VIVhyrlA+e1JlG7GZba9FUkPKc?=
+ =?us-ascii?Q?4GzV4cq/9J1N81141FPI6Zj7N3jXod0N6Cr0pxehNsohozroebYZfWlOS3ff?=
+ =?us-ascii?Q?tDXFTF2n+Zse1hGCoPqqta09hKNwXVNhwN2XOFufXkS09DdkCEP/LLVucFbt?=
+ =?us-ascii?Q?pFheyDPCyxvCXJP2yfttWm68ONAo3xSBgEp277Kzjz0jCeysdXTzQL6mchLb?=
+ =?us-ascii?Q?5ecziBYBnQJtYaUmpZ715TzXyrHwIcJunOeopaHFGgIcLpqgN8oAguvAwa4q?=
+ =?us-ascii?Q?rXPFYMAhQX5VppuqTdIl5KKEX3kvxyr56RJ0Uc0n1ytZqFyaqRXtq4ID3cw/?=
+ =?us-ascii?Q?o/BlkOsX/tauczWi4BrQ0mIrg6oXeLHCnYt7MxTvlt/C0vuCQNWJi9jqHEan?=
+ =?us-ascii?Q?FimVf12nVnCYISNcyFHdYmHKGUpz8OxsyO8+q6x1rJuq2a6ftEUFpP9Q0iqC?=
+ =?us-ascii?Q?+wcYteWaJFSNYPq6OF4DCWQgA62KDGKQ1OMRCmWHiSVV9Ge3E5hiLeFpXAfB?=
+ =?us-ascii?Q?PqdQZlUeSFMOb3rUzxp3BLJSDyeAaujlC52wiEsezMyQohBqT1zAl7rI2kQF?=
+ =?us-ascii?Q?2bzeBbr8ou6C6EvLyR5Ec5osbMi59nNSSVILJ2w5PTMpUowOUQhFi8HMPZnM?=
+ =?us-ascii?Q?3gQgajI30a7qk5YtvPDcYoA53F5BYnlToxfoCoyECR2JthM4NHcPOmCoZlLR?=
+ =?us-ascii?Q?EwhC4BQ6ZYAOPbHJ6U2CAFLTq9r9VTSM+BkzMYg62CpEA8F0gsKesmdihvIJ?=
+ =?us-ascii?Q?o9tkHVFVk2fApP6MNMPiTl6ozFIrwEnOsBfmt7qckM0CCYL3XjeCH8W/qDJb?=
+ =?us-ascii?Q?nAnKonirJnfuLTCwF+PZByxKsQIw+kxMVHlZSiRGiYM0fEBfg89BsY4x0+rL?=
+ =?us-ascii?Q?Ryozyk628xjZvmWYFHt35seQsK3QF91kpkMxjUaYsWmY67X5cNd5lXK8Kg7t?=
+ =?us-ascii?Q?P0ETYTuy2Knjq7x/Lr01dbsC5Cgtktq+41CkteWZn/OsVEOcyd3Dtv+4Yv58?=
+ =?us-ascii?Q?sCodq6VTH/YeHw95E/xIyCRaPlNhJ6qqOccyPdZPsoova3/i05rHSMvIinqj?=
+ =?us-ascii?Q?w9i9v3uRQ0r7qnaE9TgOmms4inHIWy5n+yr7axemah72NL3TvkLGwwr4uztX?=
+ =?us-ascii?Q?rzXAqXsYA3e9+j0PNdEtmLIB6WhB67XnMEVS9yE3aYTPp+n9QOaB+wzF34FX?=
+ =?us-ascii?Q?wa4/jG75d+6N3BrCCXdlCJv4vx8epSVDr4pCz6+icxXlVcVZe98Imd6ECBnL?=
+ =?us-ascii?Q?PewEfr0kYAERSZw87EyyCwUjuprMJ/bTd/mfkFmll5biKCSrpLxjquim/zGI?=
+ =?us-ascii?Q?DrPPgYN9LKzNjIfPBoqYrORPfgDz7ugFAynt26ZZ?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZTZacR86hSmV04M9@smile.fi.intel.com>
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3371.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d71d3911-4803-45b4-16a1-08dbd3df0be4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2023 15:45:13.3190
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: OKOUneETTorE+ajH+FBIW92XgG7Qg7b5vT7Z0jdiiuYpg0KL9eD1+obKVZRk21wciAY1wizSJONmTUuEJO50ug==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7109
 
-On Mon, Oct 23, 2023 at 02:35:13PM +0300, Andy Shevchenko wrote:
-> On Mon, Oct 23, 2023 at 11:05:26AM +0530, Raag Jadav wrote:
-> > Convert manual _UID references to use the standard ACPI helper.
-> 
-> > Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-> It has a hidden logic that is not aligned with acpi_dev_hid_uid_match().
-> Or revert to your v1 I assume.
+Can we get this merged please, or at least instructions for what needs to h=
+appen to get it merged?
 
-I don't see how this has to be aligned with acpi_dev_hid_uid_match() or
-if acpi_dev_hid_uid_match() implementation concerns this specific change,
-since that's not what we intend to do here.
+Thanks.
 
-Also, I think acpi_dev_uid_match() implementation in v2 is actually more
-aligned with the previous logic that we're replacing here, since it gives
-us a guaranteed match result as originally intended with strcmp in this
-case. And the "hidden logic" in v1 implementation (match with @uid2 == NULL)
-is what ends up breaking it in my opinion.
+-----Original Message-----
+From: Jeshua Smith=20
+Sent: Monday, October 2, 2023 10:10 AM
+To: Luck, Tony <tony.luck@intel.com>; keescook@chromium.org; gpiccoli@igali=
+a.com; rafael@kernel.org; lenb@kernel.org; james.morse@arm.com; bp@alien8.d=
+e
+Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org; linux-hardeni=
+ng@vger.kernel.org; linux-tegra@vger.kernel.org; Thierry Reding <treding@nv=
+idia.com>; Jonathan Hunter <jonathanh@nvidia.com>
+Subject: RE: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
 
-Regardless, for any version (v1 or v2) the usage still remains the same
-in this case.
+Resending due to lack of responses.
 
-> As I asked you, please drop this one.
+-----Original Message-----
+From: Jeshua Smith=20
+Sent: Monday, September 11, 2023 10:16 AM
+To: Luck, Tony <tony.luck@intel.com>; keescook@chromium.org; gpiccoli@igali=
+a.com; rafael@kernel.org; lenb@kernel.org; james.morse@arm.com; bp@alien8.d=
+e
+Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org; linux-hardeni=
+ng@vger.kernel.org; linux-tegra@vger.kernel.org; Thierry Reding <treding@nv=
+idia.com>; Jonathan Hunter <jonathanh@nvidia.com>
+Subject: RE: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
 
-But okay, as you wish :(
+Any further questions? Anything else holding up this patch?
 
-Rafael, should I send a v3 with dropped tags?
+-----Original Message-----
+From: Jeshua Smith <jeshuas@nvidia.com>=20
+Sent: Friday, August 4, 2023 7:05 PM
+To: Luck, Tony <tony.luck@intel.com>; keescook@chromium.org; gpiccoli@igali=
+a.com; rafael@kernel.org; lenb@kernel.org; james.morse@arm.com; bp@alien8.d=
+e
+Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org; linux-hardeni=
+ng@vger.kernel.org; linux-tegra@vger.kernel.org; Thierry Reding <treding@nv=
+idia.com>; Jonathan Hunter <jonathanh@nvidia.com>
+Subject: RE: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
 
-Raag
+Thanks for the reply.
+
+It's not very easy to see. It's just a bit down from the link you sent. It'=
+s the last possible action in the Serialization Actions table:
+https://uefi.org/specs/ACPI/6.5/18_Platform_Error_Interfaces.html#serializa=
+tion-actions
+
+18.5.1.1. Serialization Actions
+
+GET_EXECUTE-_OPERATION_TIMINGS
+
+Returns an encoded QWORD:
+[63:32] value in microseconds that the platform expects would be the maximu=
+m amount of time it will take to process and complete an EXECUTE_OPERATION.
+[31:0] value in microseconds that the platform expects would be the nominal=
+ amount of time it will take to process and complete an EXECUTE_OPERATION.
+
+-----Original Message-----
+From: Luck, Tony <tony.luck@intel.com>=20
+Sent: Friday, August 4, 2023 10:31 AM
+To: Jeshua Smith <jeshuas@nvidia.com>; keescook@chromium.org; gpiccoli@igal=
+ia.com; rafael@kernel.org; lenb@kernel.org; james.morse@arm.com; bp@alien8.=
+de
+Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org; linux-hardeni=
+ng@vger.kernel.org; linux-tegra@vger.kernel.org; Thierry Reding <treding@nv=
+idia.com>; Jonathan Hunter <jonathanh@nvidia.com>
+Subject: RE: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
+
+External email: Use caution opening links or attachments
+
+
+> Can the maintainers please respond to my patch?
+
+Can you give a reference to the ACPI spec where this timing information is =
+documented? I'm looking at ACPI 6.5 and don't see anything about this.
+
+https://uefi.org/specs/ACPI/6.5/18_Platform_Error_Interfaces.html#error-ser=
+ialization
+
+-Tony
 
