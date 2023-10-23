@@ -1,93 +1,187 @@
-Return-Path: <linux-acpi+bounces-844-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-845-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBFBD7D36E7
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Oct 2023 14:37:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DA877D3961
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Oct 2023 16:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70589B20BE1
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Oct 2023 12:37:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B950A281090
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Oct 2023 14:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D783018E20
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Oct 2023 12:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A1714011
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Oct 2023 14:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b12uDo+x"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="i/73rVoz"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CE415E83
-	for <linux-acpi@vger.kernel.org>; Mon, 23 Oct 2023 11:36:39 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06EB21A4;
-	Mon, 23 Oct 2023 04:36:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698060997; x=1729596997;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1hNtJkrhOMeQ/kBhDBZ7GUWDWrwRTz6hQAoZ3cKYKLo=;
-  b=b12uDo+xxDFlwb14aPqOdrsOH26FD3/2bC0JvlOiU0VLTsO/WecVCZHN
-   vgn8C0epmY0puDHYeIAk1HxolWCZ0jGoW/MbxvAmFC+ybJP919DpEm6RO
-   mbW4Gey6r4JuHdqQGPsqrBa/IpOTZl/aEG+XLqROfRJDxO4dOmvASeqGR
-   uvh0rC9knaaS+oe8Y+4iF5pXliEafxqG+47OdW2FT8j1/Dx/W4adAWnIa
-   GmpjhxzmFObICcR5auXWEsAngXc3rbBOYNr7IP+PknRT6qpQXvAsS4Oh0
-   x/4V6qvmMh8qqtntADVW2rkQkAfCJZtlQ3w/SgYTNqB4Ta916zsqxGB/c
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="8375803"
-X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
-   d="scan'208";a="8375803"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 04:36:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="758120931"
-X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
-   d="scan'208";a="758120931"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 04:36:13 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1qutE9-00000007vHP-3msa;
-	Mon, 23 Oct 2023 14:36:09 +0300
-Date: Mon, 23 Oct 2023 14:36:09 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Raag Jadav <raag.jadav@intel.com>
-Cc: rafael@kernel.org, len.brown@intel.com, robert.moore@intel.com,
-	mika.westerberg@linux.intel.com, mark.rutland@arm.com,
-	will@kernel.org, linux@roeck-us.net, Jonathan.Cameron@huawei.com,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linuxfoundation.org, linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-	mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
-Subject: Re: [PATCH v2 4/6] ACPI: x86: use acpi_dev_uid_match() for matching
- _UID
-Message-ID: <ZTZaqf6Y+kDJOWK6@smile.fi.intel.com>
-References: <20231023053530.5525-1-raag.jadav@intel.com>
- <20231023053530.5525-5-raag.jadav@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689853D8F
+	for <linux-acpi@vger.kernel.org>; Mon, 23 Oct 2023 13:35:17 +0000 (UTC)
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37898F9
+	for <linux-acpi@vger.kernel.org>; Mon, 23 Oct 2023 06:35:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=EiRlVuX/biCgzkKWInzwaaDEl4kxjHLo7/oAiM3HyJc=; b=i/73rVozGhdJiuyU3j5qdE56Jj
+	h5UoCT9rKzR++PIwVzzITyoVPmdefTP8F7fPnPriRtS0gVAOaUGEmENtj9r8LDnaLwHQqkGCfS3mM
+	lOk3GnsoON090YRZZXN05S9zg3BdNkleFATzC7lTQSphvtOh3W79zTc8AkxmoJt2vKNO7greW5dsw
+	LwnT0t/JoztK0YasRE3sfK0QYx9k67y/Ij/qYtB6jziUz7LHEp/oASqjp+sNQI8tctQarnTXbI6Q0
+	8qxl7BbX6Oi+XE/wF/mNrxKAKTxHjwUBl+9r8JiTOKoPPevL+WaKAu640VLmKaoidhhC1+XL7RRXP
+	ix9O4U3Q==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:35388 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1quv5C-000318-1U;
+	Mon, 23 Oct 2023 14:35:02 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1quv5D-00AeNJ-U8; Mon, 23 Oct 2023 14:35:03 +0100
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH] arm64, irqchip/gic-v3, ACPI: Move MADT GICC enabled check
+ into a helper
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231023053530.5525-5-raag.jadav@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1quv5D-00AeNJ-U8@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Mon, 23 Oct 2023 14:35:03 +0100
 
-On Mon, Oct 23, 2023 at 11:05:28AM +0530, Raag Jadav wrote:
-> Convert manual _UID references to use the standard ACPI helper.
+From: James Morse <james.morse@arm.com>
 
-> Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+ACPI, irqchip and the architecture code all inspect the MADT
+enabled bit for a GICC entry in the MADT.
 
-Please, drop this tag, since I disagree with patch 1 implementation.
+The addition of an 'online capable' bit means all these sites need
+updating.
 
+Move the current checks behind a helper to make future updates easier.
+
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+Changes since RFC v2:
+ * Remove unnecessary parens
+ * Moved earlier in series
+
+Suggestion by Jonathan Cameron that this can be part of a pre-cursor
+series. As it doesn't depend on anything else, sending separately so
+it can be merged into the aarch64 tree.
+---
+ arch/arm64/kernel/smp.c       |  2 +-
+ drivers/acpi/processor_core.c |  2 +-
+ drivers/irqchip/irq-gic-v3.c  | 10 ++++------
+ include/linux/acpi.h          |  5 +++++
+ 4 files changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+index 960b98b43506..8c8f55721786 100644
+--- a/arch/arm64/kernel/smp.c
++++ b/arch/arm64/kernel/smp.c
+@@ -520,7 +520,7 @@ acpi_map_gic_cpu_interface(struct acpi_madt_generic_interrupt *processor)
+ {
+ 	u64 hwid = processor->arm_mpidr;
+ 
+-	if (!(processor->flags & ACPI_MADT_ENABLED)) {
++	if (!acpi_gicc_is_usable(processor)) {
+ 		pr_debug("skipping disabled CPU entry with 0x%llx MPIDR\n", hwid);
+ 		return;
+ 	}
+diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
+index 7dd6dbaa98c3..b203cfe28550 100644
+--- a/drivers/acpi/processor_core.c
++++ b/drivers/acpi/processor_core.c
+@@ -90,7 +90,7 @@ static int map_gicc_mpidr(struct acpi_subtable_header *entry,
+ 	struct acpi_madt_generic_interrupt *gicc =
+ 	    container_of(entry, struct acpi_madt_generic_interrupt, header);
+ 
+-	if (!(gicc->flags & ACPI_MADT_ENABLED))
++	if (!acpi_gicc_is_usable(gicc))
+ 		return -ENODEV;
+ 
+ 	/* device_declaration means Device object in DSDT, in the
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index f59ac9586b7b..d50d9414f471 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -2380,8 +2380,7 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_headers *header,
+ 	u32 size = reg == GIC_PIDR2_ARCH_GICv4 ? SZ_64K * 4 : SZ_64K * 2;
+ 	void __iomem *redist_base;
+ 
+-	/* GICC entry which has !ACPI_MADT_ENABLED is not unusable so skip */
+-	if (!(gicc->flags & ACPI_MADT_ENABLED))
++	if (!acpi_gicc_is_usable(gicc))
+ 		return 0;
+ 
+ 	redist_base = ioremap(gicc->gicr_base_address, size);
+@@ -2431,7 +2430,7 @@ static int __init gic_acpi_match_gicc(union acpi_subtable_headers *header,
+ 	 * If GICC is enabled and has valid gicr base address, then it means
+ 	 * GICR base is presented via GICC
+ 	 */
+-	if ((gicc->flags & ACPI_MADT_ENABLED) && gicc->gicr_base_address) {
++	if (acpi_gicc_is_usable(gicc) && gicc->gicr_base_address) {
+ 		acpi_data.enabled_rdists++;
+ 		return 0;
+ 	}
+@@ -2440,7 +2439,7 @@ static int __init gic_acpi_match_gicc(union acpi_subtable_headers *header,
+ 	 * It's perfectly valid firmware can pass disabled GICC entry, driver
+ 	 * should not treat as errors, skip the entry instead of probe fail.
+ 	 */
+-	if (!(gicc->flags & ACPI_MADT_ENABLED))
++	if (!acpi_gicc_is_usable(gicc))
+ 		return 0;
+ 
+ 	return -ENODEV;
+@@ -2499,8 +2498,7 @@ static int __init gic_acpi_parse_virt_madt_gicc(union acpi_subtable_headers *hea
+ 	int maint_irq_mode;
+ 	static int first_madt = true;
+ 
+-	/* Skip unusable CPUs */
+-	if (!(gicc->flags & ACPI_MADT_ENABLED))
++	if (!acpi_gicc_is_usable(gicc))
+ 		return 0;
+ 
+ 	maint_irq_mode = (gicc->flags & ACPI_MADT_VGIC_IRQ_MODE) ?
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index afd94c9b8b8a..ebfea7bf663d 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -256,6 +256,11 @@ acpi_table_parse_cedt(enum acpi_cedt_type id,
+ int acpi_parse_mcfg (struct acpi_table_header *header);
+ void acpi_table_print_madt_entry (struct acpi_subtable_header *madt);
+ 
++static inline bool acpi_gicc_is_usable(struct acpi_madt_generic_interrupt *gicc)
++{
++	return gicc->flags & ACPI_MADT_ENABLED;
++}
++
+ /* the following numa functions are architecture-dependent */
+ void acpi_numa_slit_init (struct acpi_table_slit *slit);
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.30.2
 
 
