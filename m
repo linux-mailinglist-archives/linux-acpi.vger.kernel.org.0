@@ -1,129 +1,120 @@
-Return-Path: <linux-acpi+bounces-929-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-931-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F0C7D58F6
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 18:42:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664567D58FE
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 18:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A904C1C2032A
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 16:42:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95B181C20326
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 16:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11DCF3B29B
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 16:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0115C3B291
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 16:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="kxVNKjaE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mwVzgn+5"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B987836B16;
-	Tue, 24 Oct 2023 15:27:38 +0000 (UTC)
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C901BFD;
-	Tue, 24 Oct 2023 08:27:35 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BDA5E40E0177;
-	Tue, 24 Oct 2023 15:27:33 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id O_JSFRhFDTp4; Tue, 24 Oct 2023 15:27:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1698161247; bh=/VWdzD9YqeMFT65D6FtCfwIaXeG447+7p1CdxoXwJIM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kxVNKjaESkPKWatKh8WeOOZKJ1ZfuaVgDgM5/UvVCoZlAhb/b4CbP8xsjt1HY2cc6
-	 cPkTwoQYuFxjl+AdYlPC7hESHx+YK3oFQSBcgS+YlbDEQa+h4+0dCMg41ECN13GMYI
-	 nH1Iz6JUmr85Y5GCdr/yhS8It5WFj+yININjan7rHmAbqjNzsbBYpms2MHGTnCcoAQ
-	 BPbLKYuIhv/q0U/L1STtsox8pBhcEdGb8G7QGWTS5j5QUGDYC5I6dUE7AbDp70tAAB
-	 36L1gEGMBqJJyOcSJ0ydPSRMUmH/giseiKlmic3b3803vyKw4XSvlYS8Scj9+kAe6N
-	 7TlyQiZ8oBWEwlbxb67JD/OVMdj1IuaGZhZV+cqNOQjjLpAT1AAmHqo47HgyFL7QwJ
-	 GijTGKb6VRCn1iu769UdbfYFnNL0eLTd1qGzH+Ovz3gYuJrYn71DRCCRkP+lsKUUax
-	 DJ8TYDNQ8gXyo48Yo3pxa1VdknGw7lEcgJp9RdG9K+lvbYmQGs2Gf1RDqiWiLXBJAq
-	 Md5zXKTrrrrqbJAPuGAhHAXm8E+aiv6h+R56fNBVnzLbl0/Lp6MW3skoeQ/lBx7kLE
-	 wdW6TaKOdvztuK78ATMHsCHvQFylhc/OqHpKlMboJlm1GbEixaCMrgnuDCGz1Mp2yd
-	 EjxWAJVMZVEuqWIKanOOmBEs=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 55E4240E014B;
-	Tue, 24 Oct 2023 15:27:14 +0000 (UTC)
-Date: Tue, 24 Oct 2023 17:27:08 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Jeshua Smith <jeshuas@nvidia.com>, "Luck, Tony" <tony.luck@intel.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"keescook@chromium.org" <keescook@chromium.org>,
-	"gpiccoli@igalia.com" <gpiccoli@igalia.com>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-	Thierry Reding <treding@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>
-Subject: Re: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
-Message-ID: <20231024152708.GFZTfiTL9C6onZKn99@fat_crate.local>
-References: <20230712223448.145079-1-jeshuas@nvidia.com>
- <DM6PR12MB3371BA50E3B76D2266273901DB09A@DM6PR12MB3371.namprd12.prod.outlook.com>
- <SJ1PR11MB6083426D3C663F47E707CF1AFC09A@SJ1PR11MB6083.namprd11.prod.outlook.com>
- <DM6PR12MB3371D86F80417641B8479B28DB0EA@DM6PR12MB3371.namprd12.prod.outlook.com>
- <DM6PR12MB3371FA3AEEA4D17D94C889D5DB1BA@DM6PR12MB3371.namprd12.prod.outlook.com>
- <DM6PR12MB337153EE2DDDB427096446F0DBF2A@DM6PR12MB3371.namprd12.prod.outlook.com>
- <DM6PR12MB3371083F4E6BCE4A8D2389E7DBC5A@DM6PR12MB3371.namprd12.prod.outlook.com>
- <DM6PR12MB33710C8FE59EB3CB1404ABC0DBD8A@DM6PR12MB3371.namprd12.prod.outlook.com>
- <CAJZ5v0g2TsBo4hxsJBo5a-ggD2Cj65VS=tokpoRaNwzWbPoeNw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C74A273E1;
+	Tue, 24 Oct 2023 15:43:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77D4BA3;
+	Tue, 24 Oct 2023 08:42:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698162179; x=1729698179;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TR0MsODDCDld/9hD7QPnERhiZ/gxH5leUiM0oaDfwbI=;
+  b=mwVzgn+5pw/LzBLPCXjnMT/FmEnuYa0rlpvb2Q/bvSJS41OQI5FFi5m7
+   30Lm3rSBC9e0FfQpUeRG6c4qMqv/ZMSuzsCqpWt4b5+xTtvF8Zsm7ssby
+   YgV3UmamB4JuZScqA1oKNb2B206VpyeclqpO+jogJuoPDqoZIfw7W6AkR
+   9hGojjKAu8Ul8lM/oIXXNscpb3UGxu51TYb6J1EqFAoBMqq47awDljmGU
+   vwaTo20gJnJPUHvMl3/gZrmAnsc9w/9RcmEUEScs17NH84qaAH6qGl/2P
+   GL6EcdsuJmwYSoo/jDkY1Dv8aDjRjYivDOiRxu53hnDwmC9nDjRjJHQPe
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="389946496"
+X-IronPort-AV: E=Sophos;i="6.03,248,1694761200"; 
+   d="scan'208";a="389946496"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 08:36:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="1089891583"
+X-IronPort-AV: E=Sophos;i="6.03,248,1694761200"; 
+   d="scan'208";a="1089891583"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 08:32:44 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC3)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1qvJOa-00000008Jsh-3eUI;
+	Tue, 24 Oct 2023 18:32:40 +0300
+Date: Tue, 24 Oct 2023 18:32:40 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Russell King <rmk+kernel@armlinux.org.uk>
+Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, linux-csky@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
+	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 38/39] cpumask: Add enabled cpumask for present CPUs that
+ can be brought online
+Message-ID: <ZTfjmM3nmeh+D5w/@smile.fi.intel.com>
+References: <ZTffkAdOqL2pI2la@shell.armlinux.org.uk>
+ <E1qvJBk-00AqSW-R8@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0g2TsBo4hxsJBo5a-ggD2Cj65VS=tokpoRaNwzWbPoeNw@mail.gmail.com>
+In-Reply-To: <E1qvJBk-00AqSW-R8@rmk-PC.armlinux.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Oct 24, 2023 at 04:32:48PM +0200, Rafael J. Wysocki wrote:
-> So there are 3 designated reviewers for APEI: Tony Luck, Borislav
-> Petkov and James Morse.  I need an ACK or Reviewed-by from one of
-> them, so I can proceed with an APEI patch.
+On Tue, Oct 24, 2023 at 04:19:24PM +0100, Russell King wrote:
+> From: James Morse <james.morse@arm.com>
+> 
+> The 'offline' file in sysfs shows all offline CPUs, including those
+> that aren't present. User-space is expected to remove not-present CPUs
+> from this list to learn which CPUs could be brought online.
+> 
+> CPUs can be present but not-enabled. These CPUs can't be brought online
+> until the firmware policy changes, which comes with an ACPI notification
+> that will register the CPUs.
+> 
+> With only the offline and present files, user-space is unable to
+> determine which CPUs it can try to bring online. Add a new CPU mask
+> that shows this based on all the registered CPUs.
 
-Here's what I see:
+...
 
-cat /tmp/patch | ./scripts/get_maintainer.pl
-Kees Cook <keescook@chromium.org> (supporter:PSTORE FILESYSTEM)
-Tony Luck <tony.luck@intel.com> (reviewer:PSTORE FILESYSTEM)
-"Guilherme G. Piccoli" <gpiccoli@igalia.com> (reviewer:PSTORE FILESYSTEM)
-"Rafael J. Wysocki" <rafael@kernel.org> (unknown:ACPI APEI)
-Len Brown <lenb@kernel.org> (reviewer:ACPI APEI)
-James Morse <james.morse@arm.com> (reviewer:ACPI APEI)
-Borislav Petkov <bp@alien8.de> (reviewer:ACPI APEI)
+> +static ssize_t print_cpus_enabled(struct device *dev,
+> +				  struct device_attribute *attr, char *buf)
+> +{
+> +	return sysfs_emit(buf, "%*pbl\n", cpumask_pr_args(cpu_enabled_mask));
+> +}
+> +static DEVICE_ATTR(enabled, 0444, print_cpus_enabled, NULL);
 
-so I'm guessing Kees, Tony, Guilherme ...
-
-From what I can see, the change itself is making me ask more questions:
-
-When I see "may" in commit messages "Slow devices such as flash may not
-meet the default 1ms timeout value" then I wanna know what devices are
-those?
-
-What is the actual use case here?
-
-Upthread there's a question about the ACPI spec. That should be
-explained too. Because I have no clue what "the ERST max execution time
-value" is.
-
-And so on.
-
-HTH.
+Hmm... DEVICE_ATTR_RO() ?
 
 -- 
-Regards/Gruss,
-    Boris.
+With Best Regards,
+Andy Shevchenko
 
-https://people.kernel.org/tglx/notes-about-netiquette
+
 
