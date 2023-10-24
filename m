@@ -1,188 +1,105 @@
-Return-Path: <linux-acpi+bounces-877-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-878-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A02507D4E14
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 12:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 741037D4FDE
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 14:35:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 401E6B20A3C
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 10:38:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12DD1B20D0F
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 12:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F1426287
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 10:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C1E273CE
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 12:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UdTWEH8i"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lnf6reSf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDDE25104;
-	Tue, 24 Oct 2023 10:18:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907B0C433C7;
-	Tue, 24 Oct 2023 10:18:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1698142705;
-	bh=s5cqeaFmg7kTADBcVre28wPksw9MH2Sh+8D1VUrzUCU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UdTWEH8i1A1Tywjs5kmlMInTxc9oXW3OGcY/EgSSVsJdvKFQhEnbpp0bggXvPpyKa
-	 FiRhb7w9bB34pZIMW4BKwEtDhk7vI0WNeePX8R7iPZzSoqbNgTBlcbqid3Iuf38eUI
-	 icgiRf/eGq4R1uNoa459BeB4hZm3DBJoqVEzfN5yJNaG83qKgXpUqRvDDFcfi1PGpa
-	 D+n4Y0y5TjV47fZZzhnPHOg1MB6z64wYLvY9BbHzUYg6GCGi4HEF7w1YTh3GoRjne2
-	 31HwhhbkUzFQ3xDNpq4YFBGYRdu3Ay9lnRJSA1hEL1O8xcDrF0DevP3BVNTQnY8hZu
-	 V1pVFrM2kItqg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1qvEUR-007AIl-75;
-	Tue, 24 Oct 2023 11:18:23 +0100
-Date: Tue, 24 Oct 2023 11:18:21 +0100
-Message-ID: <86lebs493m.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Dominic Rath <dominic.rath@ibv-augsburg.net>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Mark Rutland <mark.rutland@arm.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Fang Xiang <fangxiang3@xiaomi.com>,
-	bahle@ibv-augsburg.de,
-	rath@ibv-augsburg.de
-Subject: Re: [PATCH v3 3/5] irqchip/gic-v3-its: Split allocation from initialisation of its_node
-In-Reply-To: <20231024084831.GA3788@JADEVM-DRA>
-References: <20230905104721.52199-1-lpieralisi@kernel.org>
-	<20231006125929.48591-1-lpieralisi@kernel.org>
-	<20231006125929.48591-4-lpieralisi@kernel.org>
-	<20231024084831.GA3788@JADEVM-DRA>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0503426280
+	for <linux-acpi@vger.kernel.org>; Tue, 24 Oct 2023 10:57:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3676810CE;
+	Tue, 24 Oct 2023 03:57:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698145071; x=1729681071;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rGtYObcuetOYR9kP/9TpGIdMtWpvP56ffO2o63DEo7o=;
+  b=lnf6reSfBpGc/epMkdnfLkcFl4qMDmkP8tthQUnLWIzFH2vKLHc47cvr
+   AUjhNrezJHhp8lmqFFTy7nFQOQUr2zBNHIGhSndh+ammmgkNzWBy7pDUD
+   hyhiGIeZJS19MiS+G4hT6r+4i/tc7Tuk3ZmbjF6QNmR9a3kTI4ujLR26m
+   2+7cBZC4wl9EjqqiDhYY3FLNYVSgWDebrVXedHMwEwlehyU573NvnMDHO
+   PujqNBh9akwUOBLDosLMjvevYSGFUuIY1Z9cM/CYaFm2xWQfbDprsdjFe
+   //E2jNKu+1WsLyLSUJpIx9kY6z57HkntoNm0Fjr34UPY/0rfT9d1vAl2i
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="453490635"
+X-IronPort-AV: E=Sophos;i="6.03,247,1694761200"; 
+   d="scan'208";a="453490635"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 03:57:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="1089803002"
+X-IronPort-AV: E=Sophos;i="6.03,247,1694761200"; 
+   d="scan'208";a="1089803002"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 03:57:46 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1qvF6V-00000008BmT-0LUH;
+	Tue, 24 Oct 2023 13:57:43 +0300
+Date: Tue, 24 Oct 2023 13:57:42 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Raag Jadav <raag.jadav@intel.com>, rafael@kernel.org,
+	len.brown@intel.com, robert.moore@intel.com, mark.rutland@arm.com,
+	will@kernel.org, linux@roeck-us.net, Jonathan.Cameron@huawei.com,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linuxfoundation.org, linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+	mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
+Subject: Re: [PATCH v3 1/6] ACPI: utils: Introduce acpi_dev_uid_match() for
+ matching _UID
+Message-ID: <ZTejJo6io91n7e4H@smile.fi.intel.com>
+References: <20231024062018.23839-1-raag.jadav@intel.com>
+ <20231024062018.23839-2-raag.jadav@intel.com>
+ <20231024092839.GE3208943@black.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: dominic.rath@ibv-augsburg.net, lpieralisi@kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, linux-acpi@vger.kernel.org, mark.rutland@arm.com, robin.murphy@arm.com, rafael@kernel.org, robh+dt@kernel.org, fangxiang3@xiaomi.com, bahle@ibv-augsburg.de, rath@ibv-augsburg.de
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231024092839.GE3208943@black.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, 24 Oct 2023 09:48:31 +0100,
-Dominic Rath <dominic.rath@ibv-augsburg.net> wrote:
->=20
-> Hi,
->=20
-> On Fri, Oct 06, 2023 at 02:59:27PM +0200, Lorenzo Pieralisi wrote:
-> > From: Marc Zyngier <maz@kernel.org>
-> >=20
-> > In order to pave the way for more fancy quirk handling without making
-> > more of a mess of this terrible driver, split the allocation of the
-> > ITS descriptor (its_node) from the actual probing.
->=20
-> it seems that this change breaks MSI-X (MSI?) reception on at least
-> the TI AM64x, probably most/all of TI's recent devices (K3).
->=20
-> These devices rely on a quirk CONFIG_SOCIONEXT_SYNQUACER_PREITS that
-> uses an address from the dts specified e.g. as
->=20
->   socionext,synquacer-pre-its =3D <0x1000000 0x400000>;
->=20
-> to configure a MSI base address that differs from the ARM default.
+On Tue, Oct 24, 2023 at 12:28:39PM +0300, Mika Westerberg wrote:
+> On Tue, Oct 24, 2023 at 11:50:13AM +0530, Raag Jadav wrote:
 
-<rant>
-Why on Earth are people using a property that is specific to another
-implementation? Not only the HW is braindead, but this is now tied to
-whatever additional implementation quirks we find...
+...
 
-This is just dumb.
-</rant>
+> > + * Returns:
+> > + *  - %true if matches.
+> > + *  - %false otherwise.
+> 
+> Nit: these actually do not get formatted like above so you can just
+> write it as
+> 
+> Returns: %true in case UIDs match, %false otherwise.
+> 
+> If it is even needed, I think it is pretty obvious from the function
+> name what it returns.
 
-> With this change, the quirk still sets its->get_msi_base and clears
-> IRQ_DOMAIN_FLAG_ISOLATED_MSI from its->msi_domain_flags during
-> its_of_probe, but both get overwritten again during its_probe_one
-> with the defaults.
->=20
-> Previously the defaults would be set first and then the quirks were
-> applied.
+kernel-doc complains if there is no Return: section in the text.
 
-Yeah, that's clearly a regression, and I've confirmed it on my
-Synquacer (which means the TI folks have accurately copied a dumb
-idea). Can you please give the patch below a go on your system and
-confirm asap whether it works for you?
-
-> I have no idea whether TI's use of this quirk was "correct", but it did
-> work, and since 6.6-rc6 MSI-X has been broken for us.
-
-Just as for bad SW, the worse HW ideas get replicated. Then I write
-bad SW for it.
-
-Thanks,
-
-	M.
-
-=46rom b5571a69f09733ecfa0c944cc48baced6590d024 Mon Sep 17 00:00:00 2001
-From: Marc Zyngier <maz@kernel.org>
-Date: Tue, 24 Oct 2023 11:07:34 +0100
-Subject: [PATCH] irqchip/gic-v3-its: Don't override quirk settings with
- default values
-
-When splitting the allocation of the ITS node from its configuration,
-some of the default settings were kept in the latter instead of
-being moved to the former.
-
-This has the side effect of negating some of the quirk detection that
-have happened in between, amongst which the dreaded Synquacer hack
-(that also affect Dominic's TI platform).
-
-Move the initialisation of these fields early, so that they can
-again be overriden by the Synquacer quirk.
-
-Fixes: 9585a495ac93 ("irqchip/gic-v3-its: Split allocation from initialisat=
-ion of its_node")
-Reported by: Dominic Rath <dominic.rath@ibv-augsburg.net>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20231024084831.GA3788@JADEVM-DRA
----
- drivers/irqchip/irq-gic-v3-its.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-=
-its.c
-index 75a2dd550625..a8c89df1a997 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -5112,8 +5112,6 @@ static int __init its_probe_one(struct its_node *its)
- 	}
- 	its->cmd_base =3D (void *)page_address(page);
- 	its->cmd_write =3D its->cmd_base;
--	its->get_msi_base =3D its_irq_get_msi_base;
--	its->msi_domain_flags =3D IRQ_DOMAIN_FLAG_ISOLATED_MSI;
-=20
- 	err =3D its_alloc_tables(its);
- 	if (err)
-@@ -5362,6 +5360,8 @@ static struct its_node __init *its_node_init(struct r=
-esource *res,
- 	its->typer =3D gic_read_typer(its_base + GITS_TYPER);
- 	its->base =3D its_base;
- 	its->phys_base =3D res->start;
-+	its->get_msi_base =3D its_irq_get_msi_base;
-+	its->msi_domain_flags =3D IRQ_DOMAIN_FLAG_ISOLATED_MSI;
-=20
- 	its->numa_node =3D numa_node;
- 	its->fwnode_handle =3D handle;
---=20
-2.39.2
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
---=20
-Without deviation from the norm, progress is not possible.
 
