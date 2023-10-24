@@ -1,207 +1,162 @@
-Return-Path: <linux-acpi+bounces-883-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-884-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468397D4FE7
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 14:36:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF577D5435
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 16:41:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 952BEB20B10
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 12:36:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7D82280A7C
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 14:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08233273D7
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 12:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE372C841
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 14:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rBZehXn4";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="X48yXCX6"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236E65CBE
-	for <linux-acpi@vger.kernel.org>; Tue, 24 Oct 2023 12:07:09 +0000 (UTC)
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC0F3111
-	for <linux-acpi@vger.kernel.org>; Tue, 24 Oct 2023 05:07:07 -0700 (PDT)
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3b413cc2789so154102b6e.0
-        for <linux-acpi@vger.kernel.org>; Tue, 24 Oct 2023 05:07:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698149227; x=1698754027;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iAHGovCaUDV400ar4Dy5jPHX4+wYzlvwoCWXTsrxaWs=;
-        b=jLrD1CE0AtxkcjiLKfpwsqZRkDepRDbvemlKlsGNgakC8S3RbcW9qRecEufI1U7fKZ
-         ya38O96WiNJ41bczosLQTktOTD4uLgjBlD9utCntL1IFnYmuMlnjnTp0JOWDqUtZy4d5
-         BJQ00GMdF8PuuUikzDnLkN7b4OYG+zs8HEcgeOG10ldqbdZQi3C8o1TCuqA96ge56I/r
-         RQ8tO8hHY8lCGG2J97viNesHdwgE7Mri1/uq0mhGAiCCCQ8MIx9e5dn0Efq7Y4+RCDlf
-         Mcs3s6pcYdrcXGgRXA2+6ztJuTUO8IPqU/dz5C5fmhTjnUSqXuCxkvz+hrz9v13xja6C
-         ChgQ==
-X-Gm-Message-State: AOJu0Ywl2TbaBSy//cyx7Ltekv59z4Uhqlbm8p1Xjn1iUPm41qggyQ0b
-	y3oXjtGTrv2nxM4nkh0tqvXEEJJ/LHdL145dS4NXJCRY
-X-Google-Smtp-Source: AGHT+IHXO+xLofRlyyP/aJbNp16pbaSharLAj/mupsjEAp3UhYFGS+OG76gkHW8oZ7/iU2DLj/o+8gp8Xt1VmcrDGr0=
-X-Received: by 2002:a05:6808:2e8c:b0:3ad:aadd:6cbf with SMTP id
- gt12-20020a0568082e8c00b003adaadd6cbfmr13562256oib.0.1698149226861; Tue, 24
- Oct 2023 05:07:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5563B28E21
+	for <linux-acpi@vger.kernel.org>; Tue, 24 Oct 2023 13:09:23 +0000 (UTC)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 570341707;
+	Tue, 24 Oct 2023 06:09:21 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 554381FE71;
+	Tue, 24 Oct 2023 13:09:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1698152959; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2mgIghIL+k9sM7wUKoTnltFr1Chr7zlpGRP2FGIbTeg=;
+	b=rBZehXn49NF+QLTASoDA+513B8aQQRt430H/SArjtpHvsCWcZJgMKnxXXuBtsmS95zch2t
+	rm7pvs9HqCEbfCGCVvuHRMektDlM85T4v1n7y5guQsnVXn52SMLLgGg8+wFivAecwVM4oi
+	1FOE8hT+eE6+pplcDIV6Dmcy5P8y0eM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1698152959;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2mgIghIL+k9sM7wUKoTnltFr1Chr7zlpGRP2FGIbTeg=;
+	b=X48yXCX6jjwc1caF2fEp9NWeIiolU/t1IWJ0Q7nobF6DGKh/zcHDSpYivLcqxnxhB1JevD
+	sUaXaHV4ssZ9uYBw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 09D891391C;
+	Tue, 24 Oct 2023 13:09:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id FlNaAP/BN2VVewAAMHmgww
+	(envelope-from <jdelvare@suse.de>); Tue, 24 Oct 2023 13:09:19 +0000
+Date: Tue, 24 Oct 2023 15:09:17 +0200
+From: Jean Delvare <jdelvare@suse.de>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Wilczynski, Michal"
+ <michal.wilczynski@intel.com>, Andi Shyti <andi.shyti@kernel.org>, Len
+ Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
+ linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 2/2] i2c: i801: Use new helper acpi_use_parent_companion
+Message-ID: <20231024150917.79736389@endymion.delvare>
+In-Reply-To: <e86fb57b-afc6-478b-9a9d-543b87bc8d3d@gmail.com>
+References: <90bd1071-317e-4dfe-b94b-9bcee15d66c5@gmail.com>
+	<6e935761-5b36-411a-ac82-cbc394bba7b6@gmail.com>
+	<206f0f25-8a83-4e53-89fd-cbe025e5798d@gmail.com>
+	<66418e44-6862-4555-9280-2633ffb34d23@intel.com>
+	<CAJZ5v0hfSZCgoW1mq=jeqjMBtsr=6JJaG8OWfUkAW80KF509Nw@mail.gmail.com>
+	<e86fb57b-afc6-478b-9a9d-543b87bc8d3d@gmail.com>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.34; x86_64-suse-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <E1quv5D-00AeNJ-U8@rmk-PC.armlinux.org.uk>
-In-Reply-To: <E1quv5D-00AeNJ-U8@rmk-PC.armlinux.org.uk>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 24 Oct 2023 14:06:55 +0200
-Message-ID: <CAJZ5v0j+h9M4qhcdRW7_sOxbwdVqjyyrZWw14JsM1h1JoUL5+Q@mail.gmail.com>
-Subject: Re: [PATCH] arm64, irqchip/gic-v3, ACPI: Move MADT GICC enabled check
- into a helper
-To: Russell King <rmk+kernel@armlinux.org.uk>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Marc Zyngier <maz@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, 
-	linux-acpi@vger.kernel.org, Sudeep Holla <sudeep.holla@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: -7.10
+X-Spamd-Result: default: False [-7.10 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-3.00)[-1.000];
+	 HAS_ORG_HEADER(0.00)[];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-1.00)[-1.000];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 FREEMAIL_TO(0.00)[gmail.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_COUNT_TWO(0.00)[2];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%]
 
-On Mon, Oct 23, 2023 at 3:35=E2=80=AFPM Russell King <rmk+kernel@armlinux.o=
-rg.uk> wrote:
->
-> From: James Morse <james.morse@arm.com>
->
-> ACPI, irqchip and the architecture code all inspect the MADT
-> enabled bit for a GICC entry in the MADT.
->
-> The addition of an 'online capable' bit means all these sites need
-> updating.
->
-> Move the current checks behind a helper to make future updates easier.
->
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Hi Heiner and all,
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Mon, 16 Oct 2023 22:05:51 +0200, Heiner Kallweit wrote:
+> On 16.10.2023 19:32, Rafael J. Wysocki wrote:
+> > On Mon, Oct 16, 2023 at 6:10=E2=80=AFPM Wilczynski, Michal
+> > <michal.wilczynski@intel.com> wrote: =20
+> >> On 10/15/2023 11:36 PM, Heiner Kallweit wrote: =20
+> >>> Use new helper acpi_use_parent_companion to simplify the code.
+> >>>
+> >>> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> >>> ---
+> >>>  drivers/i2c/busses/i2c-i801.c | 2 +-
+> >>>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i=
+801.c
+> >>> index a41f5349a..ac223146c 100644
+> >>> --- a/drivers/i2c/busses/i2c-i801.c
+> >>> +++ b/drivers/i2c/busses/i2c-i801.c
+> >>> @@ -1620,7 +1620,7 @@ static int i801_probe(struct pci_dev *dev, cons=
+t struct pci_device_id *id)
+> >>>       priv->adapter.class =3D I2C_CLASS_HWMON;
+> >>>       priv->adapter.algo =3D &smbus_algorithm;
+> >>>       priv->adapter.dev.parent =3D &dev->dev;
+> >>> -     ACPI_COMPANION_SET(&priv->adapter.dev, ACPI_COMPANION(&dev->dev=
+));
+> >>> +     acpi_use_parent_companion(&priv->adapter.dev); =20
+> >>
+> >> I think this case is a bit too trivial for a helper, it's one line bef=
+ore, and
+> >> one line after, so it doesn't really save much. =20
 
-for the generic ACPI changes in this patch, but it is knod of
-ARM-specific, so I'd prefer ARM64 to pick it up (CC Sudeep).
+I must say I share Michal's skepticism.
 
-> ---
-> Changes since RFC v2:
->  * Remove unnecessary parens
->  * Moved earlier in series
->
-> Suggestion by Jonathan Cameron that this can be part of a pre-cursor
-> series. As it doesn't depend on anything else, sending separately so
-> it can be merged into the aarch64 tree.
-> ---
->  arch/arm64/kernel/smp.c       |  2 +-
->  drivers/acpi/processor_core.c |  2 +-
->  drivers/irqchip/irq-gic-v3.c  | 10 ++++------
->  include/linux/acpi.h          |  5 +++++
->  4 files changed, 11 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
-> index 960b98b43506..8c8f55721786 100644
-> --- a/arch/arm64/kernel/smp.c
-> +++ b/arch/arm64/kernel/smp.c
-> @@ -520,7 +520,7 @@ acpi_map_gic_cpu_interface(struct acpi_madt_generic_i=
-nterrupt *processor)
->  {
->         u64 hwid =3D processor->arm_mpidr;
->
-> -       if (!(processor->flags & ACPI_MADT_ENABLED)) {
-> +       if (!acpi_gicc_is_usable(processor)) {
->                 pr_debug("skipping disabled CPU entry with 0x%llx MPIDR\n=
-", hwid);
->                 return;
->         }
-> diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.=
-c
-> index 7dd6dbaa98c3..b203cfe28550 100644
-> --- a/drivers/acpi/processor_core.c
-> +++ b/drivers/acpi/processor_core.c
-> @@ -90,7 +90,7 @@ static int map_gicc_mpidr(struct acpi_subtable_header *=
-entry,
->         struct acpi_madt_generic_interrupt *gicc =3D
->             container_of(entry, struct acpi_madt_generic_interrupt, heade=
-r);
->
-> -       if (!(gicc->flags & ACPI_MADT_ENABLED))
-> +       if (!acpi_gicc_is_usable(gicc))
->                 return -ENODEV;
->
->         /* device_declaration means Device object in DSDT, in the
-> diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-> index f59ac9586b7b..d50d9414f471 100644
-> --- a/drivers/irqchip/irq-gic-v3.c
-> +++ b/drivers/irqchip/irq-gic-v3.c
-> @@ -2380,8 +2380,7 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_header=
-s *header,
->         u32 size =3D reg =3D=3D GIC_PIDR2_ARCH_GICv4 ? SZ_64K * 4 : SZ_64=
-K * 2;
->         void __iomem *redist_base;
->
-> -       /* GICC entry which has !ACPI_MADT_ENABLED is not unusable so ski=
-p */
-> -       if (!(gicc->flags & ACPI_MADT_ENABLED))
-> +       if (!acpi_gicc_is_usable(gicc))
->                 return 0;
->
->         redist_base =3D ioremap(gicc->gicr_base_address, size);
-> @@ -2431,7 +2430,7 @@ static int __init gic_acpi_match_gicc(union acpi_su=
-btable_headers *header,
->          * If GICC is enabled and has valid gicr base address, then it me=
-ans
->          * GICR base is presented via GICC
->          */
-> -       if ((gicc->flags & ACPI_MADT_ENABLED) && gicc->gicr_base_address)=
- {
-> +       if (acpi_gicc_is_usable(gicc) && gicc->gicr_base_address) {
->                 acpi_data.enabled_rdists++;
->                 return 0;
->         }
-> @@ -2440,7 +2439,7 @@ static int __init gic_acpi_match_gicc(union acpi_su=
-btable_headers *header,
->          * It's perfectly valid firmware can pass disabled GICC entry, dr=
-iver
->          * should not treat as errors, skip the entry instead of probe fa=
-il.
->          */
-> -       if (!(gicc->flags & ACPI_MADT_ENABLED))
-> +       if (!acpi_gicc_is_usable(gicc))
->                 return 0;
->
->         return -ENODEV;
-> @@ -2499,8 +2498,7 @@ static int __init gic_acpi_parse_virt_madt_gicc(uni=
-on acpi_subtable_headers *hea
->         int maint_irq_mode;
->         static int first_madt =3D true;
->
-> -       /* Skip unusable CPUs */
-> -       if (!(gicc->flags & ACPI_MADT_ENABLED))
-> +       if (!acpi_gicc_is_usable(gicc))
->                 return 0;
->
->         maint_irq_mode =3D (gicc->flags & ACPI_MADT_VGIC_IRQ_MODE) ?
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index afd94c9b8b8a..ebfea7bf663d 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -256,6 +256,11 @@ acpi_table_parse_cedt(enum acpi_cedt_type id,
->  int acpi_parse_mcfg (struct acpi_table_header *header);
->  void acpi_table_print_madt_entry (struct acpi_subtable_header *madt);
->
-> +static inline bool acpi_gicc_is_usable(struct acpi_madt_generic_interrup=
-t *gicc)
-> +{
-> +       return gicc->flags & ACPI_MADT_ENABLED;
-> +}
-> +
->  /* the following numa functions are architecture-dependent */
->  void acpi_numa_slit_init (struct acpi_table_slit *slit);
->
-> --
-> 2.30.2
->
+> > If this pattern is repeated in multiple places, the helper makes sense =
+IMO.
+>=20
+> I didn't check each usage in detail, but this should be the places where =
+the new
+> helper can be used.
+> Another advantage IMO is that the helper, being a function instead of a m=
+acro,
+> is type-safe.
+
+If type safety is a concern then I'd rather turn ACPI_COMPANION_SET to
+an inline function (which would make more sense than a macro anyway
+IMHO, as it has an intended side effect).
+
+--=20
+Jean Delvare
+SUSE L3 Support
 
