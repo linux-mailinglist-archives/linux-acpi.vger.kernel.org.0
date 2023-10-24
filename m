@@ -1,51 +1,52 @@
-Return-Path: <linux-acpi+bounces-862-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-863-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3DE7D477B
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 08:30:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2197D477C
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 08:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB79C1C20A1D
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 06:30:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC5F21C20A66
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 06:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496AD13FEF
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 06:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A70125B1
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 06:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bqHnj0PK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DyHv4prx"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40821FB5
-	for <linux-acpi@vger.kernel.org>; Tue, 24 Oct 2023 06:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960331FB5
+	for <linux-acpi@vger.kernel.org>; Tue, 24 Oct 2023 06:20:43 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C83AAC0;
-	Mon, 23 Oct 2023 23:20:37 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EC24DD;
+	Mon, 23 Oct 2023 23:20:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698128437; x=1729664437;
-  h=from:to:cc:subject:date:message-id;
-  bh=6u6XekGST951M7tNhGalGj6hn+WiLeARLcL22/cN7BU=;
-  b=bqHnj0PK9wogBVuKcIpeRjgLuKCpc/iwmJ0vRTDztl/4/mAEJ7bJmb3h
-   o3rPadjdlzoAq8pBDLESP1JX1sVI+Mh7ogfIAO1CZ0Z1xiCUE1JtJWBCt
-   TYMMkdjYCpyl0ilAte2xY/huSo8JyQFWWCqnLSVEjncUGEdbuM16O6DUN
-   28JypIGbcCDR89qTHCxzi/s2dNihKatEK0HdGog4nFvzM7MOxiSWjswF6
-   Ry819kn/m+t3s0ePgnn5xWkQ7NW3cFz0HoJHpTdpIGjzpKMKCubIO7H/8
-   YNEOnOV5rwyDApeTdz0oCUhUYxz8ThEXCQGuVm4cb5bDgbc+lHasQrohb
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="386806551"
+  t=1698128442; x=1729664442;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references;
+  bh=Kqxv9LhJ7k/94shFEad9R6LAGCDnjlnqdVEYRK8V/Ro=;
+  b=DyHv4prx10Gih+J7BT8iuKyU6E2AOVdfNksaMjFwy98m+IBN3ZoCbF61
+   T95kLaV6RFoBhhF6ZRx+qISDald57B7Ubl9BkP/asUh8OZRLYD7SMClVY
+   LIHHFmLAWiJDbmkwj8/b6Mdj5RKAW4JFuvw/mnvxkKXtHpdK5tg8WHXkL
+   MKGVuRG+/wQjMeDzZxWUj/y4oQnr+Eh5ie4Rsgjbtpy/3D9mJXuQ6b3oj
+   ip+9DQdLm1FeC7z4nQXZXN7Igp5fpcJM97yGNKdlmZwnOeToOdz694+u8
+   jRIQ9TpAaEW5hn8IDQ73cVlrbdxeJDunewDjpiSEbdekqeL4TXCv4MbtV
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="386806560"
 X-IronPort-AV: E=Sophos;i="6.03,246,1694761200"; 
-   d="scan'208";a="386806551"
+   d="scan'208";a="386806560"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 23:20:37 -0700
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 23:20:42 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="751891289"
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="751891316"
 X-IronPort-AV: E=Sophos;i="6.03,246,1694761200"; 
-   d="scan'208";a="751891289"
+   d="scan'208";a="751891316"
 Received: from inlubt0316.iind.intel.com ([10.191.20.213])
-  by orsmga007.jf.intel.com with ESMTP; 23 Oct 2023 23:20:31 -0700
+  by orsmga007.jf.intel.com with ESMTP; 23 Oct 2023 23:20:37 -0700
 From: Raag Jadav <raag.jadav@intel.com>
 To: rafael@kernel.org,
 	len.brown@intel.com,
@@ -65,51 +66,116 @@ Cc: linux-acpi@vger.kernel.org,
 	mallikarjunappa.sangannavar@intel.com,
 	bala.senthil@intel.com,
 	Raag Jadav <raag.jadav@intel.com>
-Subject: [PATCH v3 0/6] Refine _UID references across kernel
-Date: Tue, 24 Oct 2023 11:50:12 +0530
-Message-Id: <20231024062018.23839-1-raag.jadav@intel.com>
+Subject: [PATCH v3 1/6] ACPI: utils: Introduce acpi_dev_uid_match() for matching _UID
+Date: Tue, 24 Oct 2023 11:50:13 +0530
+Message-Id: <20231024062018.23839-2-raag.jadav@intel.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20231024062018.23839-1-raag.jadav@intel.com>
+References: <20231024062018.23839-1-raag.jadav@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 
-This series refines _UID references across kernel by:
+Introduce acpi_dev_uid_match() helper that matches the device with
+supplied _UID string.
 
-- Extracting _UID matching functionality from acpi_dev_hid_uid_match()
-  helper and introducing it as a separate acpi_dev_uid_match() helper.
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+---
+ drivers/acpi/utils.c    | 31 +++++++++++++++++++++++++++----
+ include/acpi/acpi_bus.h |  1 +
+ include/linux/acpi.h    |  5 +++++
+ 3 files changed, 33 insertions(+), 4 deletions(-)
 
-- Converting manual _UID references to use the standard ACPI helpers.
-
-Changes since v2:
-- Drop review tags as suggested by Andy.
-
-Changes since v1:
-- Change acpi_dev_uid_match() to return false in case of NULL argument.
-- Drop accepted patches.
-
-Raag Jadav (6):
-  ACPI: utils: Introduce acpi_dev_uid_match() for matching _UID
-  pinctrl: intel: use acpi_dev_uid_match() for matching _UID
-  ACPI: utils: use acpi_dev_uid_match() for matching _UID
-  ACPI: x86: use acpi_dev_uid_match() for matching _UID
-  hwmon: nct6775: use acpi_dev_hid_uid_match() for matching _HID and
-    _UID
-  perf: arm_cspmu: use acpi_dev_hid_uid_match() for matching _HID and
-    _UID
-
- drivers/acpi/utils.c                  | 34 ++++++++++++++++++++++-----
- drivers/acpi/x86/utils.c              |  3 +--
- drivers/hwmon/nct6775-platform.c      |  4 +---
- drivers/perf/arm_cspmu/arm_cspmu.c    |  8 +++----
- drivers/pinctrl/intel/pinctrl-intel.c |  2 +-
- include/acpi/acpi_bus.h               |  1 +
- include/linux/acpi.h                  |  5 ++++
- 7 files changed, 40 insertions(+), 17 deletions(-)
-
-
-base-commit: a4ed5bffbeb19cfb7e21ac3b3f09d7bfe39a849b
+diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+index 79915d4a0031..be21b77059af 100644
+--- a/drivers/acpi/utils.c
++++ b/drivers/acpi/utils.c
+@@ -824,20 +824,43 @@ bool acpi_check_dsm(acpi_handle handle, const guid_t *guid, u64 rev, u64 funcs)
+ }
+ EXPORT_SYMBOL(acpi_check_dsm);
+ 
++/**
++ * acpi_dev_uid_match - Match device by supplied UID
++ * @adev: ACPI device to match.
++ * @uid2: Unique ID of the device.
++ *
++ * Matches UID in @adev with given @uid2.
++ *
++ * Returns:
++ *  - %true if matches.
++ *  - %false otherwise.
++ */
++bool acpi_dev_uid_match(struct acpi_device *adev, const char *uid2)
++{
++	const char *uid1 = acpi_device_uid(adev);
++
++	return uid1 && uid2 && !strcmp(uid1, uid2);
++}
++EXPORT_SYMBOL_GPL(acpi_dev_uid_match);
++
+ /**
+  * acpi_dev_hid_uid_match - Match device by supplied HID and UID
+  * @adev: ACPI device to match.
+  * @hid2: Hardware ID of the device.
+  * @uid2: Unique ID of the device, pass NULL to not check _UID.
+  *
+- * Matches HID and UID in @adev with given @hid2 and @uid2.
+- * Returns true if matches.
++ * Matches HID and UID in @adev with given @hid2 and @uid2. Absence of @uid2
++ * will be treated as a match. If user wants to validate @uid2, it should be
++ * done before calling this function.
++ *
++ * Returns:
++ *  - %true if matches or @uid2 is NULL.
++ *  - %false otherwise.
+  */
+ bool acpi_dev_hid_uid_match(struct acpi_device *adev,
+ 			    const char *hid2, const char *uid2)
+ {
+ 	const char *hid1 = acpi_device_hid(adev);
+-	const char *uid1 = acpi_device_uid(adev);
+ 
+ 	if (strcmp(hid1, hid2))
+ 		return false;
+@@ -845,7 +868,7 @@ bool acpi_dev_hid_uid_match(struct acpi_device *adev,
+ 	if (!uid2)
+ 		return true;
+ 
+-	return uid1 && !strcmp(uid1, uid2);
++	return acpi_dev_uid_match(adev, uid2);
+ }
+ EXPORT_SYMBOL(acpi_dev_hid_uid_match);
+ 
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index 756b3f3c2c45..afeed6e72049 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -763,6 +763,7 @@ static inline bool acpi_device_can_poweroff(struct acpi_device *adev)
+ 		adev->power.states[ACPI_STATE_D3_HOT].flags.explicit_set);
+ }
+ 
++bool acpi_dev_uid_match(struct acpi_device *adev, const char *uid2);
+ bool acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const char *uid2);
+ int acpi_dev_uid_to_integer(struct acpi_device *adev, u64 *integer);
+ 
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index afd94c9b8b8a..db3a33e19c97 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -787,6 +787,11 @@ static inline bool acpi_dev_present(const char *hid, const char *uid, s64 hrv)
+ 
+ struct acpi_device;
+ 
++static inline bool acpi_dev_uid_match(struct acpi_device *adev, const char *uid2)
++{
++	return false;
++}
++
+ static inline bool
+ acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const char *uid2)
+ {
 -- 
 2.17.1
 
