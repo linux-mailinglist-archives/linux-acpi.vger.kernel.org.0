@@ -1,117 +1,108 @@
-Return-Path: <linux-acpi+bounces-927-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-930-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F5D7D58F1
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 18:42:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65FCE7D58FC
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 18:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0C9B280F99
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 16:42:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93546B20F97
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 16:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C4C3AC0C
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 16:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032293AC19
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 16:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ZLONfC6W"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cRyadCB2"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F4135884;
-	Tue, 24 Oct 2023 15:19:37 +0000 (UTC)
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70BE619B5;
-	Tue, 24 Oct 2023 08:19:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=IrQZezcTHlwAvEdDZH0HquaGmdYgypjcTSeB2SVxIp8=; b=ZLONfC6WIs7Ij54XVAv7c/QGCA
-	vqH/kxgJ1eh0L7IWmUpkaOGf0QbZl3Z6u31V5GVERfwMxbxrpRMMcIvbkk4zj58w7hHpuuLMujAbB
-	nFipclESZIW3joZ2gmKp58KUZmUlRPnuPWtJUT16jpWJVCt+HB6MCPrdWZB4Xur8kUA50fBDaKIBc
-	vAf2dpyZWdj43dSGgsANyFNqvQUMSr+lIgpcxsmgNdX3IooRH5MLu1ChijgvRcMWiX1UnyP7qE2JD
-	tTtZcOTEl7FdiQpKaZv4ADOKvHZUO8YQGqxDBaiu/fsjiogPoQqV/0W6VyJQvV2PqCKRwWRh9je6W
-	O2GAfj9A==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:44356 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1qvJBo-0004Xf-1h;
-	Tue, 24 Oct 2023 16:19:28 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1qvJBp-00AqSc-W3; Tue, 24 Oct 2023 16:19:30 +0100
-In-Reply-To: <ZTffkAdOqL2pI2la@shell.armlinux.org.uk>
-References: <ZTffkAdOqL2pI2la@shell.armlinux.org.uk>
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-To: linux-pm@vger.kernel.org,
-	 loongarch@lists.linux.dev,
-	 linux-acpi@vger.kernel.org,
-	 linux-arch@vger.kernel.org,
-	 linux-kernel@vger.kernel.org,
-	 linux-arm-kernel@lists.infradead.org,
-	 linux-riscv@lists.infradead.org,
-	 kvmarm@lists.linux.dev,
-	 x86@kernel.org,
-	 linux-csky@vger.kernel.org,
-	 linux-doc@vger.kernel.org,
-	 linux-ia64@vger.kernel.org,
-	 linux-parisc@vger.kernel.org
-Cc: Salil Mehta <salil.mehta@huawei.com>,
-	 Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	 jianyong.wu@arm.com,
-	 justin.he@arm.com,
-	 James Morse <james.morse@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Subject: [PATCH 39/39] ACPI: processor: Only call arch_unregister_cpu() if
- HOTPLUG_CPU is selected
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7420237164;
+	Tue, 24 Oct 2023 15:27:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9CEB1703;
+	Tue, 24 Oct 2023 08:27:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698161267; x=1729697267;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QFA2DdN62232OLAj/aEsT34+urZDgALMxgXqOKHV1s0=;
+  b=cRyadCB2+L3BzeZ1iEy/80ZlB/UiecLmryAiLohfbzlO1QmQuDKNQbww
+   jyfuhMkdCEVDd4IjqEMMlAhSHszPtVa5PtjbpfhO+7glxkIMug41CQ24Q
+   oAmSr9IpAR49Ngw7Fx99WoJqG0Q6tu/yhGgluhBHhU/bBt/A5J7bscWnL
+   4WS2RNFC8Eo7HVurbuJW7adgmpMhlEv4GReeZTnhWC89sOy0QLU8ftSS/
+   RzsrlQe3CKNotq17bpAQB6CM9xhIyqCz+jYVSH0E44+YSZ6Pc+Sl3A1If
+   Ag5HTL9YLxi4WlQlJJ+ZGT+2ghI4RVEpD1q2y/Nh03Nk/+qbOL6ZOx9V5
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="451317466"
+X-IronPort-AV: E=Sophos;i="6.03,248,1694761200"; 
+   d="scan'208";a="451317466"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 08:24:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="762127871"
+X-IronPort-AV: E=Sophos;i="6.03,248,1694761200"; 
+   d="scan'208";a="762127871"
+Received: from agluck-desk3.sc.intel.com (HELO agluck-desk3) ([172.25.222.74])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 08:24:22 -0700
+Date: Tue, 24 Oct 2023 08:24:21 -0700
+From: Tony Luck <tony.luck@intel.com>
+To: Jeshua Smith <jeshuas@nvidia.com>
+Cc: keescook@chromium.org, gpiccoli@igalia.com, rafael@kernel.org,
+	lenb@kernel.org, james.morse@arm.com, bp@alien8.de,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-tegra@vger.kernel.org,
+	treding@nvidia.com, jonathanh@nvidia.com
+Subject: Re: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
+Message-ID: <ZTfhpRRA4bga0qSI@agluck-desk3>
+References: <20230712223448.145079-1-jeshuas@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1qvJBp-00AqSc-W3@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Tue, 24 Oct 2023 16:19:29 +0100
+In-Reply-To: <20230712223448.145079-1-jeshuas@nvidia.com>
 
-From: James Morse <james.morse@arm.com>
+On Wed, Jul 12, 2023 at 10:34:48PM +0000, Jeshua Smith wrote:
+> Slow devices such as flash may not meet the default 1ms timeout value,
+> so use the ERST max execution time value that they provide as the
+> timeout if it is larger.
+> 
+> Signed-off-by: Jeshua Smith <jeshuas@nvidia.com>
 
-The kbuild robot points out that configurations without HOTPLUG_CPU
-selected can try to build acpi_processor_post_eject() without success
-as arch_unregister_cpu() is not defined.
+> +/* ERST Exec max timings */
+> +#define ERST_EXEC_TIMING_MAX_MASK      0xFFFFFFFF00000000
+> +#define ERST_EXEC_TIMING_MAX_SHIFT     32
 
-Check this explicitly. This will be merged into:
-| ACPI: Add post_eject to struct acpi_scan_handler for cpu hotplug
-for any subsequent posting.
+I've recently become a fan of <linux/bitfield.h> I think this would
+be easier on the eyes as:
 
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: James Morse <james.morse@arm.com>
----
- drivers/acpi/acpi_processor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+#define ERST_EXEC_TIMING_MAX	GENMASK_ULL(63, 32)
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 539412ff59a1..5bb207a7a1dd 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -549,7 +549,7 @@ static void acpi_processor_post_eject(struct acpi_device *device)
- 	unsigned long long sta;
- 	acpi_status status;
- 
--	if (!device)
-+	if (!IS_ENABLED(CONFIG_HOTPLUG_CPU) || !device)
- 		return;
- 
- 	pr = acpi_driver_data(device);
--- 
-2.30.2
+> +static inline u64 erst_get_timeout(void)
+> +{
+> +	u64 timeout = FIRMWARE_TIMEOUT;
+> +
+> +	if (erst_erange.attr & ERST_RANGE_SLOW) {
+> +		timeout = ((erst_erange.timings & ERST_EXEC_TIMING_MAX_MASK) >>
+> +			ERST_EXEC_TIMING_MAX_SHIFT) * NSEC_PER_MSEC;
 
+then this becomes:
+
+		timeout = FIELD_GET(ERST_EXEC_TIMING_MAX, erst_erange.timings) *
+			  NSEC_PER_MSEC;
+
+> +		if (timeout < FIRMWARE_TIMEOUT)
+> +			timeout = FIRMWARE_TIMEOUT;
+
+But that's just a matter of style.  Otherwise the patch looks fine.
+
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+
+-Tony
 
