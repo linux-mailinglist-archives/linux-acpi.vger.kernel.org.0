@@ -1,108 +1,159 @@
-Return-Path: <linux-acpi+bounces-940-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-941-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A241C7D5C81
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 22:34:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56FFC7D5C82
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 22:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 596DD2819A5
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 20:34:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 836691C20BA3
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 20:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1404E3D39B
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 20:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87E63E496
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Oct 2023 20:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE78266AD;
-	Tue, 24 Oct 2023 18:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622EC18659
+	for <linux-acpi@vger.kernel.org>; Tue, 24 Oct 2023 19:11:21 +0000 (UTC)
 Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C063BA6;
-	Tue, 24 Oct 2023 11:52:08 -0700 (PDT)
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-1ea1742c1a5so1380458fac.0;
-        Tue, 24 Oct 2023 11:52:08 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15985172D;
+	Tue, 24 Oct 2023 12:11:10 -0700 (PDT)
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-1d542f05b9aso856739fac.1;
+        Tue, 24 Oct 2023 12:11:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698173528; x=1698778328;
+        d=1e100.net; s=20230601; t=1698174670; x=1698779470;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=b47eW1W1ZA3iY9fGQWptMYQkO14e99bJy5u+/oy5i2Y=;
-        b=aZEwBny9h18y3Sexpm1gP6WTOHnyV+grEkCz6WuZVsCCwZ2JVuDM/GR3oH2n2MVgMD
-         LMBQCQfVWdV92nSSvAl2DZXuMIyxyToOV8EuiEVpohVVvZZQs0wIDl6ntkLK/jEWlva3
-         6IaMeyzOO0loI1COrMmRKa6SzTehfiZeOoRb9o6Blu6BNbO8iPIjX1rX81lZ2h/R6yQK
-         /YtksuEUYxoJM3KCIaW9z55oPKD1O5F1Hy8XmzvOgSxXYD/hBxQjZLeZiUqdr5cRlDV6
-         sBWjeBgQgbHpak/qLLWZ+7+6fbhI+pbyo9zyEbPFDDSXtrif6mpxwrR9gEt0qt4GYXSt
-         iVVA==
-X-Gm-Message-State: AOJu0Yw04wr7yV0HId29biuCd9JJWS9GVl7/RWdLVvMRccapd6clWVIQ
-	gL4fvXGmmZnXr4XK5ctYVGhDuJt0pUTfNjcawZg=
-X-Google-Smtp-Source: AGHT+IGEyL46Vaabh0PQgToQaEorF+rTwJ2e/VuAsoUSTFafddKjwzGKWYy/ed+ekhC8GDeNVIsCZEpkTFfXDb/+gKo=
-X-Received: by 2002:a05:6870:9a98:b0:1e9:9e04:1d24 with SMTP id
- hp24-20020a0568709a9800b001e99e041d24mr16645138oab.5.1698173528060; Tue, 24
- Oct 2023 11:52:08 -0700 (PDT)
+        bh=gcA54zDLoesBIrcjaHX+r3abJJ7T9P6KPfRRYuwNMO0=;
+        b=RbwbknzfrdS5GHHa7E4wlY3IjcCDCji4Xv83xaKjfTCxFxywDmUBKI4uSFI4vNYYh9
+         yxIU36tuS9/cxjcdD+i86DPqdFrcHjA/KHPo07YHTB/3xjyvvSx72qrK1uTheYlu/dWT
+         2vTtrJDV4tj/ndL+zuF17uReBF44Qz64q79U6rXZA+wYa8DnlW9b3x1hlBgcZ3OKyINe
+         CpF4bH85/04AMz6ismEQw77euweRVAc6rS7qRpFTJvzhjNjXBAc2q2LRsvKJI3UtOjtg
+         9Hycj0q4DGwVebIecodYZ2tZAloPx9wra9wbTrm/u3UgC4b4GjGWqCiLrV1eH2qQBmyV
+         4zfg==
+X-Gm-Message-State: AOJu0Yx/rIDUzB7KIOxmiEZ+kR8gasnBbGAs3ezBzzmmUetl5sqfJYLj
+	TO8/8HdUaPTMf7qdt+wlmQJYuFD6gkCbSB3wCdH+dWBi
+X-Google-Smtp-Source: AGHT+IH/jIcC8ruGdjXSairRuR8nx6ZRa/785O0bWbKPEGV3/MCmBTQKh0LOqyUw+K2Nykj37IghltPIVBJkSBamaXQ=
+X-Received: by 2002:a05:6871:220e:b0:1e9:adec:bf5e with SMTP id
+ sc14-20020a056871220e00b001e9adecbf5emr13384947oab.2.1698174670028; Tue, 24
+ Oct 2023 12:11:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230712223448.145079-1-jeshuas@nvidia.com> <ZTfhpRRA4bga0qSI@agluck-desk3>
-In-Reply-To: <ZTfhpRRA4bga0qSI@agluck-desk3>
+References: <20231018190945.252428-1-michal.wilczynski@intel.com> <20231018190945.252428-2-michal.wilczynski@intel.com>
+In-Reply-To: <20231018190945.252428-2-michal.wilczynski@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 24 Oct 2023 20:51:57 +0200
-Message-ID: <CAJZ5v0j2mbKOqDaL_31fL9ftTZRhUiURx3nubLmLUo3-R_w3gw@mail.gmail.com>
-Subject: Re: [PATCH V2] ACPI: APEI: Use ERST timeout for slow devices
-To: Tony Luck <tony.luck@intel.com>, Jeshua Smith <jeshuas@nvidia.com>
-Cc: keescook@chromium.org, gpiccoli@igalia.com, rafael@kernel.org, 
-	lenb@kernel.org, james.morse@arm.com, bp@alien8.de, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	treding@nvidia.com, jonathanh@nvidia.com
+Date: Tue, 24 Oct 2023 21:10:58 +0200
+Message-ID: <CAJZ5v0gg=bTK1hKM14x9pE-XPCofr3SEn5Yg1ez8PY8cQ494WA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] ACPI: acpi_pad: Replace acpi_driver with platform_driver
+To: Michal Wilczynski <michal.wilczynski@intel.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rafael.j.wysocki@intel.com, andriy.shevchenko@linux.intel.com, 
+	lenb@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 24, 2023 at 5:27=E2=80=AFPM Tony Luck <tony.luck@intel.com> wro=
-te:
+On Wed, Oct 18, 2023 at 10:37=E2=80=AFPM Michal Wilczynski
+<michal.wilczynski@intel.com> wrote:
 >
-> On Wed, Jul 12, 2023 at 10:34:48PM +0000, Jeshua Smith wrote:
-> > Slow devices such as flash may not meet the default 1ms timeout value,
-> > so use the ERST max execution time value that they provide as the
-> > timeout if it is larger.
-> >
-> > Signed-off-by: Jeshua Smith <jeshuas@nvidia.com>
+> The acpi_pad driver uses struct acpi_driver to register itself while it
+> would be more logically consistent to use struct platform_driver for this
+> purpose, because the corresponding platform device is present and the
+> role of struct acpi_device is to amend the other bus types. ACPI devices
+> are not meant to be used as proper representation of hardware entities,
+> but to collect information on those hardware entities provided by the
+> platform firmware.
 >
-> > +/* ERST Exec max timings */
-> > +#define ERST_EXEC_TIMING_MAX_MASK      0xFFFFFFFF00000000
-> > +#define ERST_EXEC_TIMING_MAX_SHIFT     32
+> Use struct platform_driver for registering the acpi_pad driver.
 >
-> I've recently become a fan of <linux/bitfield.h> I think this would
-> be easier on the eyes as:
+> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+> ---
+>  drivers/acpi/acpi_pad.c | 25 ++++++++++++++-----------
+>  1 file changed, 14 insertions(+), 11 deletions(-)
 >
-> #define ERST_EXEC_TIMING_MAX    GENMASK_ULL(63, 32)
+> diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
+> index 7a453c5ff303..25068f2c5b4d 100644
+> --- a/drivers/acpi/acpi_pad.c
+> +++ b/drivers/acpi/acpi_pad.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/slab.h>
+>  #include <linux/acpi.h>
+>  #include <linux/perf_event.h>
+> +#include <linux/platform_device.h>
+>  #include <asm/mwait.h>
+>  #include <xen/xen.h>
 >
-> > +static inline u64 erst_get_timeout(void)
-> > +{
-> > +     u64 timeout =3D FIRMWARE_TIMEOUT;
-> > +
-> > +     if (erst_erange.attr & ERST_RANGE_SLOW) {
-> > +             timeout =3D ((erst_erange.timings & ERST_EXEC_TIMING_MAX_=
-MASK) >>
-> > +                     ERST_EXEC_TIMING_MAX_SHIFT) * NSEC_PER_MSEC;
+> @@ -430,8 +431,9 @@ static void acpi_pad_notify(acpi_handle handle, u32 e=
+vent,
+>         }
+>  }
 >
-> then this becomes:
+> -static int acpi_pad_add(struct acpi_device *device)
+> +static int acpi_pad_probe(struct platform_device *pdev)
+>  {
+> +       struct acpi_device *device =3D ACPI_COMPANION(&pdev->dev);
+>         acpi_status status;
 >
->                 timeout =3D FIELD_GET(ERST_EXEC_TIMING_MAX, erst_erange.t=
-imings) *
->                           NSEC_PER_MSEC;
+>         strcpy(acpi_device_name(device), ACPI_PROCESSOR_AGGREGATOR_DEVICE=
+_NAME);
+> @@ -450,8 +452,10 @@ static int acpi_pad_add(struct acpi_device *device)
+>         return 0;
+>  }
 >
-> > +             if (timeout < FIRMWARE_TIMEOUT)
-> > +                     timeout =3D FIRMWARE_TIMEOUT;
+> -static void acpi_pad_remove(struct acpi_device *device)
+> +static void acpi_pad_remove(struct platform_device *pdev)
+>  {
+> +       struct acpi_device *device =3D ACPI_COMPANION(&pdev->dev);
+> +
+>         mutex_lock(&isolated_cpus_lock);
+>         acpi_pad_idle_cpus(0);
+>         mutex_unlock(&isolated_cpus_lock);
+> @@ -467,13 +471,12 @@ static const struct acpi_device_id pad_device_ids[]=
+ =3D {
+>  };
+>  MODULE_DEVICE_TABLE(acpi, pad_device_ids);
 >
-> But that's just a matter of style.  Otherwise the patch looks fine.
+> -static struct acpi_driver acpi_pad_driver =3D {
+> -       .name =3D "processor_aggregator",
+> -       .class =3D ACPI_PROCESSOR_AGGREGATOR_CLASS,
+> -       .ids =3D pad_device_ids,
+> -       .ops =3D {
+> -               .add =3D acpi_pad_add,
+> -               .remove =3D acpi_pad_remove,
+> +static struct platform_driver acpi_pad_driver =3D {
+> +       .probe =3D acpi_pad_probe,
+> +       .remove_new =3D acpi_pad_remove,
+> +       .driver =3D {
+> +               .name =3D "processor_aggregator",
+> +               .acpi_match_table =3D pad_device_ids,
+>         },
+>  };
 >
-> Reviewed-by: Tony Luck <tony.luck@intel.com>
+> @@ -487,12 +490,12 @@ static int __init acpi_pad_init(void)
+>         if (power_saving_mwait_eax =3D=3D 0)
+>                 return -EINVAL;
+>
+> -       return acpi_bus_register_driver(&acpi_pad_driver);
+> +       return platform_driver_register(&acpi_pad_driver);
+>  }
+>
+>  static void __exit acpi_pad_exit(void)
+>  {
+> -       acpi_bus_unregister_driver(&acpi_pad_driver);
+> +       platform_driver_unregister(&acpi_pad_driver);
+>  }
+>
+>  module_init(acpi_pad_init);
+> --
 
-Applied as 6.7 material, thanks!
+Applied as 6.7 material along with the rest of the series, thanks!
 
