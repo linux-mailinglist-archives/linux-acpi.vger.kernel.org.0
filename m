@@ -1,90 +1,81 @@
-Return-Path: <linux-acpi+bounces-960-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-961-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B48F7D6BF7
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 14:36:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E38D27D6BF9
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 14:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36D5C2810B8
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 12:36:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B87B281A29
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 12:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AA511730
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 12:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B7C27EDC
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 12:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ShRhgn2D"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1A81CF95
-	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 12:24:51 +0000 (UTC)
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6473C9C;
-	Wed, 25 Oct 2023 05:24:50 -0700 (PDT)
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3b2d9a9c824so1254854b6e.0;
-        Wed, 25 Oct 2023 05:24:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698236689; x=1698841489;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DqrOjLRs28riw/P20lQEQPNQZ15w1j+cN1KPKpYivnA=;
-        b=pyjgYoSsuTFksCGcLkOrD3TI+ID4Hp87AFiVvjcrAZ6xdHUNQ6VHVw1l7HpTrvN0vk
-         AXgSsOxYqttU5yMB45637/86/cwKKNwKdaOA4Lna0uZtNaT+QYjUAi7H0omklqiJFoZ8
-         g4l1jQKdDBMO0rM9ftFubGKtjYQ01pmvSQ8mi+KyfIJ7hqrhANSJP1Qvs0jpvd35ng1l
-         qE201nYiH501Lk4rVHMd8vxLErnXslxEN0uU+5Gtm0O6EPSCVvMlfZX6BPOwZlPXb9Er
-         ZbH+JCBNG46USIozBR9nUFk7a9UoFUOYUNszXP+JmxozT/oi+UUrPoHb6B2LyfzASZ7M
-         HbFA==
-X-Gm-Message-State: AOJu0YwcvUThHcItNrzXcB7IOFk4wdZaVUZvK/7ez6zoXuC213RCJHGP
-	mkV1qnolF7t9MU2SIhU3qhyHD7tvlHcs0tZT2ps=
-X-Google-Smtp-Source: AGHT+IH0abo2IUeh3MMH/ljYPbwfAcLVEOc9S12Py6b46kJ2D0FQnzYE6dwOuGyQPuXQTVW3E358Eq8mZL3ePrf5tJk=
-X-Received: by 2002:a05:6808:2190:b0:3b2:f3c3:3874 with SMTP id
- be16-20020a056808219000b003b2f3c33874mr16080958oib.4.1698236689574; Wed, 25
- Oct 2023 05:24:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAEE1CF95
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 12:25:28 +0000 (UTC)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10174CE;
+	Wed, 25 Oct 2023 05:25:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0wTA7EeJs4xuSZ97h4c5/blM/USRCJ+BXefRyNT99tw=; b=ShRhgn2DXJdLX76dHr3VQxbSf7
+	mFxcr6xwaq+vkA2qJ4ZUZnL34a7vY3YFzTpoz0fjdHWrObng8cbuM+O6oN1SpgVXPubDF9GaOE49X
+	ABcOYCAjzW+xa+GAnD4i1QBOoEVgG3bT/mi8v77iD4ogtuJqnsU7lfxshcuGn8AtnFOigkavn5W5P
+	RRBbGph+s7u2GyOCHWa83RKz5Lm3Zh57K+wv7EYdRDgLNs071NJ0iVIuGgS/+3EslY2YkS41axKjG
+	aD7sA+2ZylxLeimfBn1ZyIhazlnggrizRxKMmfLjf39GjwmD2xZrBeX8WMlpuYVfmekSUJD83BqIA
+	X6gtUFZw==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1qvcwR-008ibE-In; Wed, 25 Oct 2023 12:24:55 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 3C8AE30047C; Wed, 25 Oct 2023 14:24:55 +0200 (CEST)
+Date: Wed, 25 Oct 2023 14:24:55 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	sudeep.holla@arm.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	mingo@redhat.com, juri.lelli@redhat.com, dietmar.eggemann@arm.com,
+	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+	bristot@redhat.com, vschneid@redhat.com, viresh.kumar@linaro.org,
+	lenb@kernel.org, robert.moore@intel.com, lukasz.luba@arm.com,
+	ionela.voinescu@arm.com, pierre.gondois@arm.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-pm@vger.kernel.org,
+	linux-acpi@vger.kernel.org, conor.dooley@microchip.com,
+	suagrfillet@gmail.com, ajones@ventanamicro.com, lftan@kernel.org
+Subject: Re: [PATCH v3 5/6] cpufreq/cppc: set the frequency used for
+ computing the capacity
+Message-ID: <20231025122455.GE31201@noisy.programming.kicks-ass.net>
+References: <20231018162540.667646-1-vincent.guittot@linaro.org>
+ <20231018162540.667646-6-vincent.guittot@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231018162540.667646-1-vincent.guittot@linaro.org>
- <20231018162540.667646-5-vincent.guittot@linaro.org> <20231025115456.GD31201@noisy.programming.kicks-ass.net>
- <20231025121143.GA28289@noisy.programming.kicks-ass.net>
-In-Reply-To: <20231025121143.GA28289@noisy.programming.kicks-ass.net>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 25 Oct 2023 14:24:38 +0200
-Message-ID: <CAJZ5v0hrsC0TPUt8a+1Fqy7RQqsTQpA3K0H2z0twx4Ya6Apa9A@mail.gmail.com>
-Subject: Re: [PATCH v3 4/6] energy_model: use a fixed reference frequency
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>, linux@armlinux.org.uk, 
-	catalin.marinas@arm.com, will@kernel.org, paul.walmsley@sifive.com, 
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, sudeep.holla@arm.com, 
-	gregkh@linuxfoundation.org, rafael@kernel.org, mingo@redhat.com, 
-	juri.lelli@redhat.com, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
-	bsegall@google.com, mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com, 
-	viresh.kumar@linaro.org, lenb@kernel.org, robert.moore@intel.com, 
-	lukasz.luba@arm.com, ionela.voinescu@arm.com, pierre.gondois@arm.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org, 
-	conor.dooley@microchip.com, suagrfillet@gmail.com, ajones@ventanamicro.com, 
-	lftan@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231018162540.667646-6-vincent.guittot@linaro.org>
 
-On Wed, Oct 25, 2023 at 2:11=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> On Wed, Oct 25, 2023 at 01:54:56PM +0200, Peter Zijlstra wrote:
->
-> Also, can we pretty please not cross-post to moderated lists, that's
-> rude.
->
-> Rafael, can you please mark this acpica-devel crap as moderated in
-> MAINTAINERS so that it can be auto-magically excluded from receiving
-> mail?
+On Wed, Oct 18, 2023 at 06:25:39PM +0200, Vincent Guittot wrote:
+> Save the frequency associated to the performance that has been used when
+> initializing the capacity of CPUs.
+> Also, cppc cpufreq driver can register an artificial energy model. In such
+> case, it needs the frequency for this compute capacity.
+> We moved and renamed cppc_perf_to_khz and cppc_perf_to_khz to use them
 
-I'm actually not sure why it is moderated.  I'll see if that can be changed=
-.
+perf_to_khz and khz_to_perf presumably :-)
+
+> outside cppc_cpufreq in topology_init_cpu_capacity_cppc().
 
