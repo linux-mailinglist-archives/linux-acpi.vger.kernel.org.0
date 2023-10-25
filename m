@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-988-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-989-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDAE7D75C4
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 22:35:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AECF87D75C5
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 22:35:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C1631C20A23
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:35:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68440281BB9
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF64634182
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F87230FA3
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="B2QZEsvN"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="IFtzf0U2"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228D8328D5
-	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 20:24:28 +0000 (UTC)
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8743319D
-	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 13:24:26 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6bee11456baso134912b3a.1
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 13:24:26 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB0A328CF
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 20:24:33 +0000 (UTC)
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 413E318B
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 13:24:32 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-6b7f0170d7bso126140b3a.2
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 13:24:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1698265466; x=1698870266; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1698265472; x=1698870272; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=W8oe0TQ1+zZd/3zKJQAEE+us/MvQWSBihayeSKyJW3A=;
-        b=B2QZEsvNG1mckIay9FM37B8+RnbVBxmNlf/31hZqak2JAmMmKKpO3kQ3+QwfNmjTqx
-         WCHcf/DzVJlqsxO6h6FGcQQIB3fQvcGK0Xhm7PP5EI8GSSnFruJdb5VNBMmgZSukgjll
-         hKkTgNdRX9DqS/9NVqSpYuTi8qQkluwSgds8Na3VFhxvltoRNN7JUqh0xw6EkGo37+km
-         keMHZ8eewlPoof4/eNfdheg0AU/D6rS75EXHTf4AOzcv8yobdEXv0yymXFKR3BiSpp61
-         txpZSki5CdlRBVvI4nTwBUCbz1S+qpkkDSvq78M6AgKDV+yzA4w+RdbxsqXehsdzMq2V
-         XcUQ==
+        bh=6XsFHpyMSXpsQo/vHxUfuExbd7P0HKVdbzIKlbRfdpg=;
+        b=IFtzf0U28RD+GSQFbYyzqFLKa6bFdIIzW112ahFh3jc6XjWupq1EfHGncUr3/acJN2
+         xKkmXVXxG7yatZXJkIhLGItwrgVD0Shu6ZTXXUD3qqhwkOdQUdlLTtpvF94vrXozoQ//
+         7vYVru2vVcy5/m8p39WgVLXSfjDQTxXvsOry+mE87DCmz6tmOiX2VGR6bUCogS+y03ht
+         aDoqwfgMZbvOU9gvHx6lvPJie+sezYV/17tHuqIsG3LsWt1nW3LjOC1fi2ZJGbIytPdX
+         Nf49mk5iCdvFgyh9zAOJEnJxrAbxkpp8H3h/bPzVJ1EM9s+nVXXbBH8rkanHNFu/0ibM
+         he6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698265466; x=1698870266;
+        d=1e100.net; s=20230601; t=1698265472; x=1698870272;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=W8oe0TQ1+zZd/3zKJQAEE+us/MvQWSBihayeSKyJW3A=;
-        b=ozqTkGhZ00u9xxgLlIHjx8AsDHNmPznioPi7bMNHQp1sk4YBgyYsd4i48clNES08o+
-         gFYpgxFT2cv5QcREtplIujXoy/iFQqL9rwbhHZm6hs9GiSpjXmVrxuN6LqDtWQwRo9M+
-         Gw2mrPP4RJVqHw6LUBGi3Lqq9lY64wW0bB/fqTh6ABGHV4AcbA5Ch1GLHiTaNHxJciI5
-         50NHQ9NfE5urMpVjAASKJCjy+Y8nEJ/hDgFbE8ffmawFPdE7gst0wg4CWTmQ69PMC2wG
-         NCt+rmt0dDZ0i13h+xbuzeZeMyWPO8hCfwE6/2/CvUXDdl4JPdTrwCIAAsT1LD4XeFAZ
-         GbwA==
-X-Gm-Message-State: AOJu0Yz2/HanJUDsvCZj0XGjFlRAesSWnaVRU2VEC8d7CoyJaWHcWAa/
-	wsYjKFZMEdi7pfOEsKdMCWsC3Q==
-X-Google-Smtp-Source: AGHT+IGK6pQK6oEdjKlIa1mcimdR1pYjb6u2hPifw5U79lxb+nCirP606/eGPYNlPkAaYdn6n6fpUw==
-X-Received: by 2002:a05:6a00:12:b0:6c0:52b9:d448 with SMTP id h18-20020a056a00001200b006c052b9d448mr905573pfk.9.1698265465988;
-        Wed, 25 Oct 2023 13:24:25 -0700 (PDT)
+        bh=6XsFHpyMSXpsQo/vHxUfuExbd7P0HKVdbzIKlbRfdpg=;
+        b=vssMFrVbNIMvaRjsXz+CzgVgQqAhVTq6/yFx9ufsHe7iQzIh8beqr0YxXpB0ctLTEz
+         mMYpRHAH/FgVBYu6PRWtqOBBA2YtL0ntLFDLyPNxUJTjJ5WO02VpMbyHeSiyD7Mli4JO
+         AS7YWYI8RK60JBd6mZqeLidJmaySXUZyWnmgcSlgjCPXCluoRCMT0MY1GY/vG+GUGiaR
+         VmUmlujc4qvbszKWi7x5Zrnlq5Drz7J8C+hrEUXCG32RLv/aVh9G/qEZYsyaNQtLlCRt
+         EdYsKJeyXR5GZJ49v+7Wuk3RLVY4WpSZedu8YRcmYLN9njDmtrr0XdAj9zrNH2nA/iQf
+         NvtA==
+X-Gm-Message-State: AOJu0YzjD689e7oqCdcrXFqi/2/p9t6z5fLHyDNJVnU/aLprLzvUOHBp
+	cwm+wOSGJyi8vQdXklgtGeyXDVTXWH08PTJmhxZSiA==
+X-Google-Smtp-Source: AGHT+IG17/2PVfDmNtmjstcH9/wp6PkDje8IYgLOfv4MBT6NCYwfFeoyShSprXc6RSlzfPVHtacKoA==
+X-Received: by 2002:a05:6a00:2d86:b0:68a:59c6:c0a6 with SMTP id fb6-20020a056a002d8600b0068a59c6c0a6mr18973480pfb.24.1698265471729;
+        Wed, 25 Oct 2023 13:24:31 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.188.78])
-        by smtp.gmail.com with ESMTPSA id y3-20020aa79423000000b006b84ed9371esm10079590pfo.177.2023.10.25.13.24.20
+        by smtp.gmail.com with ESMTPSA id y3-20020aa79423000000b006b84ed9371esm10079590pfo.177.2023.10.25.13.24.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Oct 2023 13:24:25 -0700 (PDT)
+        Wed, 25 Oct 2023 13:24:31 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -82,9 +82,9 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
 	Atish Kumar Patra <atishp@rivosinc.com>,
 	Haibo Xu <haibo1.xu@intel.com>,
 	Sunil V L <sunilvl@ventanamicro.com>
-Subject: [RFC PATCH v2 03/21] ACPI: Kconfig: Introduce new option to support deferred GSI probe
-Date: Thu, 26 Oct 2023 01:53:26 +0530
-Message-Id: <20231025202344.581132-4-sunilvl@ventanamicro.com>
+Subject: [RFC PATCH v2 04/21] ACPI: irq: Add support for deferred probe in acpi_register_gsi()
+Date: Thu, 26 Oct 2023 01:53:27 +0530
+Message-Id: <20231025202344.581132-5-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231025202344.581132-1-sunilvl@ventanamicro.com>
 References: <20231025202344.581132-1-sunilvl@ventanamicro.com>
@@ -97,32 +97,47 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Level: *
 
-On some architectures like RISC-V, the interrupt controllers for Global
-System Interrupts (GSI) are not probed early during boot. So, the
-device drivers which need to register their GSI, need to be deferred
-until the actual interrupt controller driver is probed. To reduce the
-impact of such change, add a new CONFIG option which can be set only by
-the architecture which needs deferred GSI probing.
+The chip which provides the GSI support may not be initialized at the
+time of acpi_register_gsi(). Return -EPROBE_DEFER to support deferred
+probing similar to acpi_irq_get().
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
- drivers/acpi/Kconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/acpi/irq.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index cee82b473dc5..4399e793f1d2 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -51,6 +51,9 @@ config ARCH_MIGHT_HAVE_ACPI_PDC
- config ACPI_GENERIC_GSI
- 	bool
+diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
+index 1687483ff319..c06cfc9725cb 100644
+--- a/drivers/acpi/irq.c
++++ b/drivers/acpi/irq.c
+@@ -51,19 +51,23 @@ EXPORT_SYMBOL_GPL(acpi_gsi_to_irq);
+  * @polarity: polarity of the GSI to be mapped
+  *
+  * Returns: a valid linux IRQ number on success
++ *          -EPROBE_DEFER if irqdomain is not available.
+  *          -EINVAL on failure
+  */
+ int acpi_register_gsi(struct device *dev, u32 gsi, int trigger,
+ 		      int polarity)
+ {
++	struct irq_domain *domain;
+ 	struct irq_fwspec fwspec;
+ 	unsigned int irq;
  
-+config ARCH_ACPI_DEFERRED_GSI
-+	bool
+ 	fwspec.fwnode = acpi_get_gsi_domain_id(gsi);
+-	if (WARN_ON(!fwspec.fwnode)) {
+-		pr_warn("GSI: No registered irqchip, giving up\n");
+-		return -EINVAL;
+-	}
++	if (!fwspec.fwnode)
++		return -EPROBE_DEFER;
 +
- config ACPI_SYSTEM_POWER_STATES_SUPPORT
- 	bool
++	domain = irq_find_matching_fwnode(fwspec.fwnode, DOMAIN_BUS_ANY);
++	if (!domain)
++		return -EPROBE_DEFER;
  
+ 	fwspec.param[0] = gsi;
+ 	fwspec.param[1] = acpi_dev_get_irq_type(trigger, polarity);
 -- 
 2.39.2
 
