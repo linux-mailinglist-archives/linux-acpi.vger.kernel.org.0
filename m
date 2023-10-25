@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-989-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-990-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECF87D75C5
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 22:35:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E257D75C6
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 22:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68440281BB9
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:35:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E00B71C20A1D
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F87230FA3
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E51168BD
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="IFtzf0U2"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="nNqvGjA6"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB0A328CF
-	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 20:24:33 +0000 (UTC)
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 413E318B
-	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 13:24:32 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-6b7f0170d7bso126140b3a.2
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 13:24:32 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C6E328DD
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 20:24:40 +0000 (UTC)
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23BE91A7
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 13:24:38 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-6bd73395bceso116561b3a.0
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 13:24:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1698265472; x=1698870272; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1698265477; x=1698870277; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6XsFHpyMSXpsQo/vHxUfuExbd7P0HKVdbzIKlbRfdpg=;
-        b=IFtzf0U28RD+GSQFbYyzqFLKa6bFdIIzW112ahFh3jc6XjWupq1EfHGncUr3/acJN2
-         xKkmXVXxG7yatZXJkIhLGItwrgVD0Shu6ZTXXUD3qqhwkOdQUdlLTtpvF94vrXozoQ//
-         7vYVru2vVcy5/m8p39WgVLXSfjDQTxXvsOry+mE87DCmz6tmOiX2VGR6bUCogS+y03ht
-         aDoqwfgMZbvOU9gvHx6lvPJie+sezYV/17tHuqIsG3LsWt1nW3LjOC1fi2ZJGbIytPdX
-         Nf49mk5iCdvFgyh9zAOJEnJxrAbxkpp8H3h/bPzVJ1EM9s+nVXXbBH8rkanHNFu/0ibM
-         he6g==
+        bh=J8S/JDCmwBJX/s4tcuif01AJjqTYAtUjVSzvHHCYv3Q=;
+        b=nNqvGjA6QPmPkU0pIK+PisNTyVgj2VgA4U5e51WIi1UAtB68oOcDrAFNkopUNesM5k
+         x5L/8RGmTh7GA0rwpMIDrGTAfFijRQogXgvaxhxfntL7XlcCcztZsFKcL45pLMhuRGcP
+         HDaG3Z2kIzvvvvrPWQh+rvSak5AwjfkNG5+O6B6BLQxWc+MTHPvMxYWttNwgWppF25vJ
+         glcd/sy1FvIwxr7bfe//85NgZBsIJ+qhTJAByTugflLc9l77og8LLV94aKgAb/i72lJx
+         V4qVcEQj5eXnFn3BigSXcUMY7LN3Zr7E5hveMCoS84pk0QvbHq4XbsyfXz85Gezfp/m6
+         Tuvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698265472; x=1698870272;
+        d=1e100.net; s=20230601; t=1698265477; x=1698870277;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6XsFHpyMSXpsQo/vHxUfuExbd7P0HKVdbzIKlbRfdpg=;
-        b=vssMFrVbNIMvaRjsXz+CzgVgQqAhVTq6/yFx9ufsHe7iQzIh8beqr0YxXpB0ctLTEz
-         mMYpRHAH/FgVBYu6PRWtqOBBA2YtL0ntLFDLyPNxUJTjJ5WO02VpMbyHeSiyD7Mli4JO
-         AS7YWYI8RK60JBd6mZqeLidJmaySXUZyWnmgcSlgjCPXCluoRCMT0MY1GY/vG+GUGiaR
-         VmUmlujc4qvbszKWi7x5Zrnlq5Drz7J8C+hrEUXCG32RLv/aVh9G/qEZYsyaNQtLlCRt
-         EdYsKJeyXR5GZJ49v+7Wuk3RLVY4WpSZedu8YRcmYLN9njDmtrr0XdAj9zrNH2nA/iQf
-         NvtA==
-X-Gm-Message-State: AOJu0YzjD689e7oqCdcrXFqi/2/p9t6z5fLHyDNJVnU/aLprLzvUOHBp
-	cwm+wOSGJyi8vQdXklgtGeyXDVTXWH08PTJmhxZSiA==
-X-Google-Smtp-Source: AGHT+IG17/2PVfDmNtmjstcH9/wp6PkDje8IYgLOfv4MBT6NCYwfFeoyShSprXc6RSlzfPVHtacKoA==
-X-Received: by 2002:a05:6a00:2d86:b0:68a:59c6:c0a6 with SMTP id fb6-20020a056a002d8600b0068a59c6c0a6mr18973480pfb.24.1698265471729;
-        Wed, 25 Oct 2023 13:24:31 -0700 (PDT)
+        bh=J8S/JDCmwBJX/s4tcuif01AJjqTYAtUjVSzvHHCYv3Q=;
+        b=HzF9IcRT7vNFMP1Ta0tugjzXXd4NE0bScCx0k0nNC9jg9WFVRR8THV7rYllwDFbvc7
+         5LiWAqa/9KxcefD3r4X8hJQ1Lpee/dC/lV4pbaInLwRShVoAyGaGBvsAG3EjFUckWk7K
+         Wcf4RJsXKlZDLUOa/d4jXvqoLHHlAdqFXib1cM6nQj7nTDWWr6EWZjcGseoKcpkoh4+i
+         +Q4lb5gIK2gcc8p2nzvhjNcpyIbuOxxpmNEw5ZPzPg9F5YgOlvDv4pQYqmv+NfzxUvSZ
+         IpVFigEmvRJLmET7x1yFun5wEtnkmeLPgktKIw52yV2z0PWI+tiD/YigOMjgioo9sdQk
+         n/9Q==
+X-Gm-Message-State: AOJu0YwydxuLQKH/esqS/0v2I43qnliLdp6a4sX2QBYcHdT3nxqRmn2f
+	rWjXN2ljuOh9pqo8yRluDok+Ug==
+X-Google-Smtp-Source: AGHT+IGn0Ntg16V2ATutjBKN8vUehxORe09c59/GsjNsvnPR9Qebb6VfuMhALgVB74e2gHGUr8GJNA==
+X-Received: by 2002:a05:6a00:1396:b0:68f:b015:ea99 with SMTP id t22-20020a056a00139600b0068fb015ea99mr913751pfg.10.1698265477463;
+        Wed, 25 Oct 2023 13:24:37 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.188.78])
-        by smtp.gmail.com with ESMTPSA id y3-20020aa79423000000b006b84ed9371esm10079590pfo.177.2023.10.25.13.24.26
+        by smtp.gmail.com with ESMTPSA id y3-20020aa79423000000b006b84ed9371esm10079590pfo.177.2023.10.25.13.24.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Oct 2023 13:24:31 -0700 (PDT)
+        Wed, 25 Oct 2023 13:24:37 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -82,9 +82,9 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
 	Atish Kumar Patra <atishp@rivosinc.com>,
 	Haibo Xu <haibo1.xu@intel.com>,
 	Sunil V L <sunilvl@ventanamicro.com>
-Subject: [RFC PATCH v2 04/21] ACPI: irq: Add support for deferred probe in acpi_register_gsi()
-Date: Thu, 26 Oct 2023 01:53:27 +0530
-Message-Id: <20231025202344.581132-5-sunilvl@ventanamicro.com>
+Subject: [RFC PATCH v2 05/21] pnp.h: Return -EPROBE_DEFER for disabled IRQ resource in pnp_irq()
+Date: Thu, 26 Oct 2023 01:53:28 +0530
+Message-Id: <20231025202344.581132-6-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231025202344.581132-1-sunilvl@ventanamicro.com>
 References: <20231025202344.581132-1-sunilvl@ventanamicro.com>
@@ -97,47 +97,40 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Level: *
 
-The chip which provides the GSI support may not be initialized at the
-time of acpi_register_gsi(). Return -EPROBE_DEFER to support deferred
-probing similar to acpi_irq_get().
+To support deferred PNP driver probe, pnp_irq() must return -EPROBE_DEFER
+so that the device driver can do deferred probe if the interrupt controller
+is not probed early.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
- drivers/acpi/irq.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ include/linux/pnp.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-index 1687483ff319..c06cfc9725cb 100644
---- a/drivers/acpi/irq.c
-+++ b/drivers/acpi/irq.c
-@@ -51,19 +51,23 @@ EXPORT_SYMBOL_GPL(acpi_gsi_to_irq);
-  * @polarity: polarity of the GSI to be mapped
-  *
-  * Returns: a valid linux IRQ number on success
-+ *          -EPROBE_DEFER if irqdomain is not available.
-  *          -EINVAL on failure
-  */
- int acpi_register_gsi(struct device *dev, u32 gsi, int trigger,
- 		      int polarity)
+diff --git a/include/linux/pnp.h b/include/linux/pnp.h
+index c2a7cfbca713..21cf833789fb 100644
+--- a/include/linux/pnp.h
++++ b/include/linux/pnp.h
+@@ -147,12 +147,18 @@ static inline resource_size_t pnp_mem_len(struct pnp_dev *dev,
+ }
+ 
+ 
+-static inline resource_size_t pnp_irq(struct pnp_dev *dev, unsigned int bar)
++static inline int pnp_irq(struct pnp_dev *dev, unsigned int bar)
  {
-+	struct irq_domain *domain;
- 	struct irq_fwspec fwspec;
- 	unsigned int irq;
+ 	struct resource *res = pnp_get_resource(dev, IORESOURCE_IRQ, bar);
  
- 	fwspec.fwnode = acpi_get_gsi_domain_id(gsi);
--	if (WARN_ON(!fwspec.fwnode)) {
--		pr_warn("GSI: No registered irqchip, giving up\n");
--		return -EINVAL;
--	}
-+	if (!fwspec.fwnode)
-+		return -EPROBE_DEFER;
+-	if (pnp_resource_valid(res))
++	if (pnp_resource_valid(res)) {
++#if IS_ENABLED(CONFIG_ARCH_ACPI_DEFERRED_GSI)
++		if (!pnp_resource_enabled(res))
++			return -EPROBE_DEFER;
++#endif
 +
-+	domain = irq_find_matching_fwnode(fwspec.fwnode, DOMAIN_BUS_ANY);
-+	if (!domain)
-+		return -EPROBE_DEFER;
+ 		return res->start;
++	}
+ 	return -1;
+ }
  
- 	fwspec.param[0] = gsi;
- 	fwspec.param[1] = acpi_dev_get_irq_type(trigger, polarity);
 -- 
 2.39.2
 
