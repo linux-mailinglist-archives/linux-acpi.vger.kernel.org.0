@@ -1,136 +1,95 @@
-Return-Path: <linux-acpi+bounces-981-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-982-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F927D75BC
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 22:34:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECDB27D75BD
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 22:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 105BB1C20CE9
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:34:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 299461C20358
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C2934182
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B32234182
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QP1lsWlI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eWJCIBHz"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13693286B1
-	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 18:51:35 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19D19DC
-	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 11:51:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698259895; x=1729795895;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=DsRoRBNKoqw/Cc7dTmkqie/fv1TrhPx6ZfTLpdADeQM=;
-  b=QP1lsWlIEzIyTZLA3k4MMUQ5D2E2ekDphc61eEvKAGqwNL5Dt471Dk14
-   VX9Y0M5HOyfDlrlxH7sIpFQzqfZam42qbaa5mA6CAXuqGSKYDH4O6f7Ve
-   ocX/Lmg8vS8qY9DnEZ91STlbgCpNX02y3layPrfTyWS3k6mr7Ll8kbCJZ
-   9Or9NpCZypA9tFD0EIKI/WCFOUE4yi85NIunG6pih/pqw2u6xfqQKjKzM
-   0jYaQrYYJ4oKY+Y2j0O0duMN5q6YIYairngSCnu/NscUcOnm/2voW6fw9
-   ASRRhFgkje8+tOCqT36e5m/ULxrWLGFj1zEp8bJEM/jyLYEF3SM9OLd5g
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="176173"
-X-IronPort-AV: E=Sophos;i="6.03,250,1694761200"; 
-   d="scan'208";a="176173"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2023 11:50:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="902642576"
-X-IronPort-AV: E=Sophos;i="6.03,250,1694761200"; 
-   d="scan'208";a="902642576"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 25 Oct 2023 11:48:03 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id EABB12F3; Wed, 25 Oct 2023 21:43:01 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Andy Shevchenko <andy@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH v1 3/3] gpio: mmio: Clean up headers
-Date: Wed, 25 Oct 2023 21:42:59 +0300
-Message-Id: <20231025184259.250588-4-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20231025184259.250588-1-andriy.shevchenko@linux.intel.com>
-References: <20231025184259.250588-1-andriy.shevchenko@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBDA2E652
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 18:59:18 +0000 (UTC)
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0E87123;
+	Wed, 25 Oct 2023 11:59:17 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1cc04494653so39285ad.2;
+        Wed, 25 Oct 2023 11:59:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698260357; x=1698865157; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wT/xmiiSCLh2Y6rSvgnA+8oiaYPyDP9YFnNHMvs/gJ0=;
+        b=eWJCIBHzvGSr9z63EcWSkpu65+T5sAWpoqU1jWhnGkWPfaltRsUfKQErEl0iP644Gv
+         kYQRkMXZQKwJBoP8b733EAU26fv/T3gm8oYBx4vzG60JTAFp6ZR1U3I2FhabA+C35b5B
+         YwFi8sajmf3B20r3Y+82Byo6YeVJsAQ2plAmQ0MsP21CVXc4ZU+XP/hxZGfcgvZViApv
+         99lCM4CnjnbYYi/bO6PKQlO/6WE+0CkPqZpVsLzgLTVGQqr+Qz+qhSshwVtsXfBj6zpB
+         /1sNAMeRWgqTtmswPLnFA+fXADdJtQaYUehFxwR6MpU1sAUX/ByWGIHgvRl7dMexTlag
+         kZRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698260357; x=1698865157;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wT/xmiiSCLh2Y6rSvgnA+8oiaYPyDP9YFnNHMvs/gJ0=;
+        b=pbW5CkKjUgKWVru/E+jnSDLLTEo9XolIP2div3dPf/y08u+3Dmq7e4VT8i4YjzJDha
+         O9EHHtbGXV9eyI2JRfqImCt+8Z6g4wK3QHi5DObtoh7qlkHPfEjZvti5q9ZF/4lzlg14
+         gnweDqozPKfjCHwLahYhvBUVH+5usTHiMgwf6jwxe6A3R7QqBT7pgL5X+lNrL5mYJSZt
+         TXywV+6bbyNu97A/LQxV7DxPRQH0VZ4d96iz4oBfodjSMXD/9KbiyBPWsHKcmI/KBrjX
+         9vzDwZo/kyaLBSqSuVRflX6e6aswS+THQDkYlfb49n0/1zQf8VJuxwYhZJ+VjKlghFZf
+         4l5g==
+X-Gm-Message-State: AOJu0YxVjuLL7+2/E1eWXZbX92TggvsDJkCuv8mpBjFKyWCOddq6/2v5
+	kXk8tu3uPp3DEaK7T2sHPEa7niEDkmI=
+X-Google-Smtp-Source: AGHT+IFhm4YyvzAerma1M6k1s4kSO5X5DGgk6SBjZTke2iY40XTEWUcHPEcDP9BOolEpzhECGXlMAw==
+X-Received: by 2002:a17:903:294f:b0:1ca:5d1a:e77f with SMTP id li15-20020a170903294f00b001ca5d1ae77fmr11322986plb.43.1698260357028;
+        Wed, 25 Oct 2023 11:59:17 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id jf20-20020a170903269400b001ca4c7bee0csm9591441plb.232.2023.10.25.11.59.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Oct 2023 11:59:16 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Wed, 25 Oct 2023 11:59:15 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Raag Jadav <raag.jadav@intel.com>
+Cc: rafael@kernel.org, len.brown@intel.com, robert.moore@intel.com,
+	mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com,
+	mark.rutland@arm.com, will@kernel.org, Jonathan.Cameron@huawei.com,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linuxfoundation.org, linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+	mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
+Subject: Re: [PATCH v3 5/6] hwmon: nct6775: use acpi_dev_hid_uid_match() for
+ matching _HID and _UID
+Message-ID: <1de5bd70-5001-4661-93e5-6135597bd9c1@roeck-us.net>
+References: <20231024062018.23839-1-raag.jadav@intel.com>
+ <20231024062018.23839-6-raag.jadav@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231024062018.23839-6-raag.jadav@intel.com>
 
-There is a few things done:
-- include only the headers we are direct user of
-- add missing headers
-- group generic headers and subsystem headers
-- sort each group alphabetically
+On Tue, Oct 24, 2023 at 11:50:17AM +0530, Raag Jadav wrote:
+> Convert manual _UID references to use the standard ACPI helper.
+> 
+> Signed-off-by: Raag Jadav <raag.jadav@intel.com>
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/gpio/gpio-mmio.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+Applied.
 
-diff --git a/drivers/gpio/gpio-mmio.c b/drivers/gpio/gpio-mmio.c
-index 66308b165a0d..71e1af7c2184 100644
---- a/drivers/gpio/gpio-mmio.c
-+++ b/drivers/gpio/gpio-mmio.c
-@@ -40,24 +40,22 @@ o        `                     ~~~~\___/~~~~    ` controller in FPGA is ,.`
-  *               `.......````.```
-  */
- 
--#include <linux/init.h>
--#include <linux/err.h>
--#include <linux/bug.h>
--#include <linux/kernel.h>
--#include <linux/module.h>
--#include <linux/spinlock.h>
--#include <linux/compiler.h>
--#include <linux/types.h>
--#include <linux/errno.h>
--#include <linux/log2.h>
--#include <linux/ioport.h>
--#include <linux/io.h>
--#include <linux/gpio/driver.h>
--#include <linux/slab.h>
- #include <linux/bitops.h>
-+#include <linux/compiler.h>
-+#include <linux/err.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/ioport.h>
-+#include <linux/log2.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/property.h>
--#include <linux/mod_devicetable.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+#include <linux/types.h>
-+
-+#include <linux/gpio/driver.h>
- 
- #include "gpiolib.h"
- 
--- 
-2.40.0.1.gaa8946217a0b
-
+Guenter
 
