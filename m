@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-990-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-991-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E257D75C6
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 22:35:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 648B07D75C8
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 22:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E00B71C20A1D
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:35:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF174B2092B
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E51168BD
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8AE34186
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Oct 2023 20:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="nNqvGjA6"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="auVS/K/J"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C6E328DD
-	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 20:24:40 +0000 (UTC)
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23BE91A7
-	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 13:24:38 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-6bd73395bceso116561b3a.0
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 13:24:38 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF1833985
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 20:24:45 +0000 (UTC)
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D047F198
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 13:24:43 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id 41be03b00d2f7-577fff1cae6so96828a12.1
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Oct 2023 13:24:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1698265477; x=1698870277; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1698265483; x=1698870283; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=J8S/JDCmwBJX/s4tcuif01AJjqTYAtUjVSzvHHCYv3Q=;
-        b=nNqvGjA6QPmPkU0pIK+PisNTyVgj2VgA4U5e51WIi1UAtB68oOcDrAFNkopUNesM5k
-         x5L/8RGmTh7GA0rwpMIDrGTAfFijRQogXgvaxhxfntL7XlcCcztZsFKcL45pLMhuRGcP
-         HDaG3Z2kIzvvvvrPWQh+rvSak5AwjfkNG5+O6B6BLQxWc+MTHPvMxYWttNwgWppF25vJ
-         glcd/sy1FvIwxr7bfe//85NgZBsIJ+qhTJAByTugflLc9l77og8LLV94aKgAb/i72lJx
-         V4qVcEQj5eXnFn3BigSXcUMY7LN3Zr7E5hveMCoS84pk0QvbHq4XbsyfXz85Gezfp/m6
-         Tuvg==
+        bh=GmA5kOKekb5h3Uw1k+e0LhCWijGnTH8utnJ5szxpch8=;
+        b=auVS/K/Jk7vgky4MjvSPyw3256thHNswIFM0+CHRJfw8cZMbSsKDL7aCq9OiRUFHIn
+         vhqWb1Ba0aPYiVgfisYHsfrxFFdjBfLbOs15MAzbLhPHxuRqT5s81JCMSPHp7u4BnRry
+         2ZPfCe8yqF4CGCh/KyUFfF2HFzYkNOEEm7i8nBl2N857thL2U0IW97wJcK88BIZUrGVV
+         OYTNiUslB8+H3xiH1zs8mwP083VVwgO4yBf3eLBh2Fzc2+Waue+65NOTaD2v8RT8lmcd
+         FXE3K1JffCz/cOrAvDcRniAps0d0N0MF3sseo29l7YXpoM1uetpW//TUo52Ge7kHw90C
+         KoUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698265477; x=1698870277;
+        d=1e100.net; s=20230601; t=1698265483; x=1698870283;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=J8S/JDCmwBJX/s4tcuif01AJjqTYAtUjVSzvHHCYv3Q=;
-        b=HzF9IcRT7vNFMP1Ta0tugjzXXd4NE0bScCx0k0nNC9jg9WFVRR8THV7rYllwDFbvc7
-         5LiWAqa/9KxcefD3r4X8hJQ1Lpee/dC/lV4pbaInLwRShVoAyGaGBvsAG3EjFUckWk7K
-         Wcf4RJsXKlZDLUOa/d4jXvqoLHHlAdqFXib1cM6nQj7nTDWWr6EWZjcGseoKcpkoh4+i
-         +Q4lb5gIK2gcc8p2nzvhjNcpyIbuOxxpmNEw5ZPzPg9F5YgOlvDv4pQYqmv+NfzxUvSZ
-         IpVFigEmvRJLmET7x1yFun5wEtnkmeLPgktKIw52yV2z0PWI+tiD/YigOMjgioo9sdQk
-         n/9Q==
-X-Gm-Message-State: AOJu0YwydxuLQKH/esqS/0v2I43qnliLdp6a4sX2QBYcHdT3nxqRmn2f
-	rWjXN2ljuOh9pqo8yRluDok+Ug==
-X-Google-Smtp-Source: AGHT+IGn0Ntg16V2ATutjBKN8vUehxORe09c59/GsjNsvnPR9Qebb6VfuMhALgVB74e2gHGUr8GJNA==
-X-Received: by 2002:a05:6a00:1396:b0:68f:b015:ea99 with SMTP id t22-20020a056a00139600b0068fb015ea99mr913751pfg.10.1698265477463;
-        Wed, 25 Oct 2023 13:24:37 -0700 (PDT)
+        bh=GmA5kOKekb5h3Uw1k+e0LhCWijGnTH8utnJ5szxpch8=;
+        b=wADGhYu5/aZ1hfHTrpFEcpeRkwirlZ60Ato0Fogok6xlj0LOxogXSAXwFhqPOG1D1G
+         wscN73dV/t+3Q73vCBRICoo/aEAi2hCrjhpJlGFJ9jocCl6opADSpC6NvlvSf3HXKbuV
+         NIT7FGzh5Oux8AN3xq95J03xUs2F6LgMBGBwM6SDGYmhcAjsjRMjAMIpWRY7GOggqE5L
+         DcJJtdO35DGHZvsIMwlNyeCSuiYCNeV3Y3SdaV+pR3Z3bUx6+aLuG9oOoCkqHIALNOIm
+         zvovRoZEH2QLNe9FaiZXs5i6vRVPwLm40Uj0cljMuJ25K/4KWlVrjWKJRabCCKZ04B8C
+         HuXA==
+X-Gm-Message-State: AOJu0YySWljYjgG5ZWoXtIt09kUX3cCcxz70qOvde8luIS/HiQY6R8rZ
+	TRqJ2vJawRKhZB4tvWNpjLh6jA==
+X-Google-Smtp-Source: AGHT+IEWaGrpkEpDFbneFUdLQrgY3wxCJPmh6tSJaEBSJOipB/ao+CEA+asAJLO3X3etojz+m4Eg/g==
+X-Received: by 2002:a05:6a21:999c:b0:17a:f4b6:bf89 with SMTP id ve28-20020a056a21999c00b0017af4b6bf89mr713082pzb.31.1698265483317;
+        Wed, 25 Oct 2023 13:24:43 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.188.78])
-        by smtp.gmail.com with ESMTPSA id y3-20020aa79423000000b006b84ed9371esm10079590pfo.177.2023.10.25.13.24.32
+        by smtp.gmail.com with ESMTPSA id y3-20020aa79423000000b006b84ed9371esm10079590pfo.177.2023.10.25.13.24.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Oct 2023 13:24:37 -0700 (PDT)
+        Wed, 25 Oct 2023 13:24:42 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -82,9 +82,9 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
 	Atish Kumar Patra <atishp@rivosinc.com>,
 	Haibo Xu <haibo1.xu@intel.com>,
 	Sunil V L <sunilvl@ventanamicro.com>
-Subject: [RFC PATCH v2 05/21] pnp.h: Return -EPROBE_DEFER for disabled IRQ resource in pnp_irq()
-Date: Thu, 26 Oct 2023 01:53:28 +0530
-Message-Id: <20231025202344.581132-6-sunilvl@ventanamicro.com>
+Subject: [RFC PATCH v2 06/21] RISC-V: Kconfig: Select deferred GSI probe for ACPI systems
+Date: Thu, 26 Oct 2023 01:53:29 +0530
+Message-Id: <20231025202344.581132-7-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231025202344.581132-1-sunilvl@ventanamicro.com>
 References: <20231025202344.581132-1-sunilvl@ventanamicro.com>
@@ -97,40 +97,29 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Level: *
 
-To support deferred PNP driver probe, pnp_irq() must return -EPROBE_DEFER
-so that the device driver can do deferred probe if the interrupt controller
-is not probed early.
+On RISC-V platforms, apart from root interrupt controllers (which
+provide local interrupts and IPI), other interrupt controllers in the
+hierarchy are probed late. Enable this select this CONFIG option for
+RISC-V platforms so that device drivers which connect to deferred
+interrupt controllers can take appropriate action.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
- include/linux/pnp.h | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/riscv/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/pnp.h b/include/linux/pnp.h
-index c2a7cfbca713..21cf833789fb 100644
---- a/include/linux/pnp.h
-+++ b/include/linux/pnp.h
-@@ -147,12 +147,18 @@ static inline resource_size_t pnp_mem_len(struct pnp_dev *dev,
- }
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 8c105a151e12..b62441aefa6a 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -12,6 +12,7 @@ config 32BIT
  
- 
--static inline resource_size_t pnp_irq(struct pnp_dev *dev, unsigned int bar)
-+static inline int pnp_irq(struct pnp_dev *dev, unsigned int bar)
- {
- 	struct resource *res = pnp_get_resource(dev, IORESOURCE_IRQ, bar);
- 
--	if (pnp_resource_valid(res))
-+	if (pnp_resource_valid(res)) {
-+#if IS_ENABLED(CONFIG_ARCH_ACPI_DEFERRED_GSI)
-+		if (!pnp_resource_enabled(res))
-+			return -EPROBE_DEFER;
-+#endif
-+
- 		return res->start;
-+	}
- 	return -1;
- }
- 
+ config RISCV
+ 	def_bool y
++	select ARCH_ACPI_DEFERRED_GSI if ACPI
+ 	select ACPI_GENERIC_GSI if ACPI
+ 	select ACPI_MCFG if (ACPI && PCI)
+ 	select ACPI_REDUCED_HARDWARE_ONLY if ACPI
 -- 
 2.39.2
 
