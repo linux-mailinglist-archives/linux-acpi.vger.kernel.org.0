@@ -1,123 +1,109 @@
-Return-Path: <linux-acpi+bounces-1015-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1016-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183357D82B5
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Oct 2023 14:33:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E077D82B6
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Oct 2023 14:33:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCEB9280AAC
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Oct 2023 12:33:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81CD81C20AC0
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Oct 2023 12:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E682DF94
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Oct 2023 12:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44BE2DF87
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Oct 2023 12:33:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ItkDswBx"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C6DC154
-	for <linux-acpi@vger.kernel.org>; Thu, 26 Oct 2023 11:19:57 +0000 (UTC)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 169591AE;
-	Thu, 26 Oct 2023 04:19:56 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2B8D12F4;
-	Thu, 26 Oct 2023 04:20:37 -0700 (PDT)
-Received: from [192.168.178.6] (unknown [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8CA653F738;
-	Thu, 26 Oct 2023 04:19:50 -0700 (PDT)
-Message-ID: <c000f7a3-caeb-4d75-8c88-40ed02950ec1@arm.com>
-Date: Thu, 26 Oct 2023 13:19:49 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63D52D04E
+	for <linux-acpi@vger.kernel.org>; Thu, 26 Oct 2023 12:06:33 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51FA71B9;
+	Thu, 26 Oct 2023 05:06:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698321992; x=1729857992;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pfL3s1I3aKOjx8ccqmiD0Okk8hzwOsN0gZvCSpTmYgw=;
+  b=ItkDswBxB91ywWi2rnMe/1Mk86nP/mi25Jp4hPzxFI3iaLW90qQrWGQc
+   Y9f4XxNjtKHfpMQRgH9mxSkieUxGuKXfsD3qh577/oo9Xg2jqwKTZJmwl
+   bijXmXfvyfkvRq+/DUyklnMDBtuUEIxlNBiNA/7te+4j6RJVtK8s4jTYv
+   IBOHEEj29tr3j4HkkuFM1fy/yPI0G1afzDcwFtGIWHpgigRvYOga9egYC
+   JNMPwFkKLB8fZfFcsjMMlgB5Wx7WrKz+YXCjeH6msKtmxA4c3l8iDvuMF
+   6JcGjtSfkrXRMV/TKaqVAB/8SnkKgnx7w3JNWTRdBLhEXWWLamRzIwMOj
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="391393717"
+X-IronPort-AV: E=Sophos;i="6.03,253,1694761200"; 
+   d="scan'208";a="391393717"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 05:06:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10874"; a="794180501"
+X-IronPort-AV: E=Sophos;i="6.03,253,1694761200"; 
+   d="scan'208";a="794180501"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 05:06:12 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC3)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1qvz7p-00000008qdG-2v6I;
+	Thu, 26 Oct 2023 15:06:09 +0300
+Date: Thu, 26 Oct 2023 15:06:09 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Raag Jadav <raag.jadav@intel.com>
+Cc: rafael@kernel.org, len.brown@intel.com, mika.westerberg@linux.intel.com,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
+Subject: Re: [PATCH v1] ACPI: LPSS: use acpi_dev_uid_match() for matching _UID
+Message-ID: <ZTpWMVjti2JpAK4y@smile.fi.intel.com>
+References: <20231025053833.16014-1-raag.jadav@intel.com>
+ <ZTl7pDRypS3ZDIMy@smile.fi.intel.com>
+ <ZTnWSRIr1o7RLcOl@black.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v3 6/6] arm64/amu: use capacity_ref_freq to set AMU ratio
-Content-Language: en-US
-To: Vincent Guittot <vincent.guittot@linaro.org>,
- Ionela Voinescu <ionela.voinescu@arm.com>
-Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
- paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
- sudeep.holla@arm.com, gregkh@linuxfoundation.org, rafael@kernel.org,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
- bristot@redhat.com, vschneid@redhat.com, viresh.kumar@linaro.org,
- lenb@kernel.org, robert.moore@intel.com, lukasz.luba@arm.com,
- pierre.gondois@arm.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- acpica-devel@lists.linuxfoundation.org, conor.dooley@microchip.com,
- suagrfillet@gmail.com, ajones@ventanamicro.com, lftan@kernel.org
-References: <20231018162540.667646-1-vincent.guittot@linaro.org>
- <20231018162540.667646-7-vincent.guittot@linaro.org>
- <ZTbebQrK3K+JwWxR@arm.com>
- <CAKfTPtA0KBE8TFifOEXddF9d_wqDjb4QUvgK8c0DTtyLrX0atA@mail.gmail.com>
-From: Dietmar Eggemann <dietmar.eggemann@arm.com>
-In-Reply-To: <CAKfTPtA0KBE8TFifOEXddF9d_wqDjb4QUvgK8c0DTtyLrX0atA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZTnWSRIr1o7RLcOl@black.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 24/10/2023 11:58, Vincent Guittot wrote:
-> On Mon, 23 Oct 2023 at 22:58, Ionela Voinescu <ionela.voinescu@arm.com> wrote:
->>
->> Hi,
->>
->> On Wednesday 18 Oct 2023 at 18:25:40 (+0200), Vincent Guittot wrote:
->>> Use the new capacity_ref_freq to set the ratio that is used by AMU for
->>> computing the arch_scale_freq_capacity().
->>> This helps to keep everything aligned using the same reference for
->>> computing CPUs capacity.
->>>
->>> The default value of the ratio ensures that arch_scale_freq_capacity()
->>> returns max capacity until it is set to its correct value with the
->>> cpu capacity and capacity_ref_freq.
+On Thu, Oct 26, 2023 at 06:00:25AM +0300, Raag Jadav wrote:
+> On Wed, Oct 25, 2023 at 11:33:40PM +0300, Andy Shevchenko wrote:
+> > On Wed, Oct 25, 2023 at 11:08:33AM +0530, Raag Jadav wrote:
 
-Nitpick: Could you mention that arch_max_freq_scale is the default value
-for this ratio? Took me a while to recreate the (not so simple) story
-for this change, i.e. make the connection between ratio and
-arch_max_freq_scale.
+...
 
-init_cpu_capacity_callback()
+> > >  static void byt_pwm_setup(struct lpss_private_data *pdata)
+> > >  {
+> > > -	u64 uid;
+> > > -
+> > >  	/* Only call pwm_add_table for the first PWM controller */
+> > > -	if (acpi_dev_uid_to_integer(pdata->adev, &uid) || uid != 1)
+> > > +	if (!acpi_dev_uid_match(pdata->adev, "1"))
+> > 
+> > _UID by specification is a type of _string_. Yet, that string may represent an
+> > integer number. Now, how many variants of the strings can you imagine that may
+> > be interpreted as integer 1? I can tell about dozens.
+> > 
+> > With your change you restricted the all possible spectre of the 1
+> > representations to a single one. Have you checked ALL of the DSDTs
+> > for these platforms to say 'hey, all current tables uses "1" and
+> > this is not an issue'?
+> 
+> I'm not sure if I'm following you, this would basically invalidate every
+> usage of acpi_dev_hid_uid_match() helper across the driver.
 
-  freq_inv_set_max_ratio()
+It depends.
 
-    u64 ratio
-    ...
-    per_cpu(arch_max_freq_scale, cpu) = (unsigned long)ratio
-            ^^^^^^^^^^^^^^^^^^^
+-- 
+With Best Regards,
+Andy Shevchenko
 
-
-static struct scale_freq_data amu_sfd = {
-        .set_freq_scale = amu_scale_freq_tick,
-}
-
-#define arch_scale_freq_tick topology_scale_freq_tick
-
-topology_scale_freq_tick()
-
-  sfd->set_freq_scale()
-
-
-amu_scale_freq_tick()
-
-  ...
-  scale *= this_cpu_read(arch_max_freq_scale)
-                         ^^^^^^^^^^^^^^^^^^^
-  ...
-  this_cpu_write(arch_freq_scale, (unsigned long)scale);
-
-
-#define arch_scale_freq_capacity topology_get_freq_scale
-
-topology_get_freq_scale(cpu)
-
-  return per_cpu(arch_freq_scale, cpu)
-
-[...]
 
 
