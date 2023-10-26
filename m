@@ -1,152 +1,174 @@
-Return-Path: <linux-acpi+bounces-1012-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1013-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27657D80E4
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Oct 2023 12:37:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FBC47D82B3
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Oct 2023 14:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F7A01C20E14
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Oct 2023 10:37:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECF1A2804E3
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Oct 2023 12:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7432B2D03C
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Oct 2023 10:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D2F2DF91
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Oct 2023 12:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="h/kI//wp"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E632D02B;
-	Thu, 26 Oct 2023 10:21:34 +0000 (UTC)
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9592199;
-	Thu, 26 Oct 2023 03:21:27 -0700 (PDT)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0Vuxb1G0_1698315681;
-Received: from 30.240.112.233(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vuxb1G0_1698315681)
-          by smtp.aliyun-inc.com;
-          Thu, 26 Oct 2023 18:21:23 +0800
-Message-ID: <8093ceb3-0857-4c36-8856-72a158e47b6c@linux.alibaba.com>
-Date: Thu, 26 Oct 2023 18:21:19 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB042156D9
+	for <linux-acpi@vger.kernel.org>; Thu, 26 Oct 2023 10:47:38 +0000 (UTC)
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC5618D
+	for <linux-acpi@vger.kernel.org>; Thu, 26 Oct 2023 03:47:35 -0700 (PDT)
+Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2c5028e5b88so10048701fa.3
+        for <linux-acpi@vger.kernel.org>; Thu, 26 Oct 2023 03:47:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1698317253; x=1698922053; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zARtYhe8iofTNi9oUIWhel0XKe8pA8fsGQ6TZX749AM=;
+        b=h/kI//wpeIXTKh9Yxbd7z7B3SptYh7FLI7bpeO2DBb+ZRX50IXHgU1nuo7PyozAFma
+         NeRc5NWVI6rJBzLdH3zERIxeaJ0m8jZzX5uILNDaENwXx3DyBL+9ZDzhcPQUO2CVU/JM
+         l2gPXcYizmz7qS7y/kgmVqV/E4tj73kvsieo30eOHvWkKG4h11w1zQgztfEQWH61qmHi
+         eD3/mAulkztQx1ZsgrZKmjqCERq1X1ZCeMVf5KHuEI4EFDy+Pu00qSLAsmbmXPHi89sz
+         q9nSIDSSX2hfIVOAVYQbVynoRjvpqhcGj1iw4SYZddGBy0XcsDOIFYSUeG7oIBboVjOY
+         DPTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698317253; x=1698922053;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zARtYhe8iofTNi9oUIWhel0XKe8pA8fsGQ6TZX749AM=;
+        b=X45gbu5qK/psKSFltGSX3slV9w9/bpo3anv/3PkKm0S3RIT7FnJ4UgNI661cvDHtpZ
+         10qOcYAjyjEX2GC66ZM2OOAiJBiH+dNyAUJp/2yl4PWslarmd2GCQf54aJglOTJDcJWz
+         Hqvji17/aqJszENQladDDW0x5o2kf8pZKuCWOHqCZPEzxqC8CaRW6iw4eOqss3XCvJen
+         N3epMxp0FrA4D6uaG6Fg6skPFHyt8NvtsUlXjuGqhkKxtotV29g2GQvaizqqOlxtEhXW
+         3pOd78WGKA3wmdN0Z13VuOf0R8Jo2jxc6LUdoUju4gtXx+rFG4Y78MewVzfozVP9tGy9
+         XnIQ==
+X-Gm-Message-State: AOJu0YxQADlU3Y9JNpN+MjbYjFUlCQ3yPQy/HvJaLACdNX0qluQVfVcd
+	8yHTqeiRXau5fz26n2wgzPZSoQ==
+X-Google-Smtp-Source: AGHT+IGmxzfDQpaW9n6+VyxCuLkhAmG3EoFq/lPNhAkHV71yn+1V0RyR8hD7hkbdqONXHHeDunN5Vg==
+X-Received: by 2002:a05:651c:1038:b0:2c5:1bd9:f95c with SMTP id w24-20020a05651c103800b002c51bd9f95cmr11798854ljm.53.1698317253615;
+        Thu, 26 Oct 2023 03:47:33 -0700 (PDT)
+Received: from mutt (c-9b0ee555.07-21-73746f28.bbcust.telenor.se. [85.229.14.155])
+        by smtp.gmail.com with ESMTPSA id t13-20020a2e8e6d000000b002c4faf47378sm2822174ljk.28.2023.10.26.03.47.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Oct 2023 03:47:33 -0700 (PDT)
+Date: Thu, 26 Oct 2023 12:47:31 +0200
+From: Anders Roxell <anders.roxell@linaro.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: D Scott Phillips <scott@os.amperecomputing.com>,
+	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org, Len Brown <lenb@kernel.org>,
+	Darren Hart <darren@os.amperecomputing.com>,
+	patches@amperecomputing.com, sfr@canb.auug.org.au,
+	linux-next@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] PCI: hotplug: Add extension driver for Ampere
+ Altra hotplug LED control
+Message-ID: <20231026104731.GA1296512@mutt>
+References: <86ttqe4n1h.fsf@scott-ph-mail.amperecomputing.com>
+ <20231025180627.GA1756475@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 0/9] Use ERST for persistent storage of MCE and
- APEI errors
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
- rafael@kernel.org, lenb@kernel.org, james.morse@arm.com, tglx@linutronix.de,
- mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
- hpa@zytor.com, ardb@kernel.org, robert.moore@intel.com,
- linux-hardening@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
- linux-efi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
- baolin.wang@linux.alibaba.com
-References: <20230925074426.97856-1-xueshuai@linux.alibaba.com>
- <20230928144345.GAZRWRIXH1Tfgn5EpO@fat_crate.local>
- <f654be8f-aa98-1bed-117b-ebdf96d23df1@linux.alibaba.com>
-Content-Language: en-US
-In-Reply-To: <f654be8f-aa98-1bed-117b-ebdf96d23df1@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231025180627.GA1756475@bhelgaas>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
+On 2023-10-25 13:06, Bjorn Helgaas wrote:
+> On Wed, Oct 25, 2023 at 10:41:46AM -0700, D Scott Phillips wrote:
+> > Bjorn Helgaas <helgaas@kernel.org> writes:
+> > 
+> > > On Fri, Sep 29, 2023 at 05:20:36PM -0700, D Scott Phillips wrote:
+> > >> On Ampere Altra, PCIe hotplug is handled through ACPI. A side interface is
+> > >> also present to request system firmware control of attention LEDs. Add an
+> > >> ACPI PCI Hotplug companion driver to support attention LED control.
+> > >> ...
+> > >
+> > >> +	arm_smccc_smc(REQUEST, LED_CMD, led_status(status), LED_ATTENTION,
+> > >> +		      pci_domain_nr(bus) | (PCI_SLOT(root_port->devfn) << 4), 0, 0,
+> > >
+> > > pci_domain_nr() returns "int" (normally 32 bits), but since this is an
+> > > ACPI system, the domain comes from _SEG, which is defined to be 16
+> > > bits (ACPI r6.5, sec 6.5.6).
+> > >
+> > > So it looks like ORing in the "slot << 4" clobbers the upper 12 bits
+> > > of _SEG.
+> > >
+> > > Is this code doing the right thing?
+> > 
+> > Hi Bjorn,
+> > 
+> > on these Altra platforms _SEG is limited within 0-11. I can add an `&
+> > 0xf` to pci_domain_nr() to make it clear that the segment number is
+> > encoded down into 4 bits in the smc request.
+> 
+> If the following looks OK, we're all set.  I put these on pci/hotplug
+> for v6.7, thanks!
+> 
+> +static int set_attention_status(struct hotplug_slot *slot, u8 status)
+> +{
+> +	struct arm_smccc_res res;
+> +	struct pci_bus *bus;
+> +	struct pci_dev *root_port;
+> +	unsigned long flags;
+> +	u32 handle;
+> +	int ret = 0;
+> +
+> +	bus = slot->pci_slot->bus;
+> +	root_port = pcie_find_root_port(bus->self);
+> +	if (!root_port)
+> +		return -ENODEV;
+> +
+> +	local_irq_save(flags);
+> +	arm_smccc_smc(HANDLE_OPEN, led_service_id[0], led_service_id[1],
+> +		      led_service_id[2], led_service_id[3], 0, 0, 0, &res);
+> +	if (res.a0) {
+> +		ret = -ENODEV;
+> +		goto out;
+> +	}
+> +	handle = res.a1 & 0xffff0000;
+> +
+> +	arm_smccc_smc(REQUEST, LED_CMD, led_status(status), LED_ATTENTION,
+> +		     PCI_SLOT(root_port->devfn) << 4 | pci_domain_nr(bus) & 0xf,
+> +		     0, 0, handle, &res);
+> +	if (res.a0)
+> +		ret = -ENODEV;
+> +
+> +	arm_smccc_smc(HANDLE_CLOSE, handle, 0, 0, 0, 0, 0, 0, &res);
+> +
+> + out:
+> +	local_irq_restore(flags);
+> +	return ret;
+> +}
 
+Hi,
 
-On 2023/10/7 15:15, Shuai Xue wrote:
-> 
-> 
-> On 2023/9/28 22:43, Borislav Petkov wrote:
->> On Mon, Sep 25, 2023 at 03:44:17PM +0800, Shuai Xue wrote:
->>> After /dev/mcelog character device deprecated by commit 5de97c9f6d85
->>> ("x86/mce: Factor out and deprecate the /dev/mcelog driver"), the
->>> serialized MCE error record, of previous boot in persistent storage is not
->>> collected via APEI ERST.
->>
->> You lost me here. /dev/mcelog is deprecated but you can still use it and
->> apei_write_mce() still happens.
-> 
-> Yes, you are right. apei_write_mce() still happens so that MCE records are
-> written to persistent storage and the MCE records can be retrieved by
-> apei_read_mce(). Previously, the task was performed by the mcelog package.
-> However, it has been deprecated, some distributions like Arch kernels are
-> not even compiled with the necessary configuration option
-> CONFIG_X86_MCELOG_LEGACY.[1]
-> 
-> So, IMHO, it's better to add a way to retrieve MCE records through switching
-> to the new generation rasdaemon solution.
-> 
->>
->> Looking at your patches, you're adding this to ghes so how about you sit
->> down first and explain your exact use case and what exactly you wanna
->> do?
->>
->> Thx.
->>
-> 
-> Sorry for the poor cover letter. I hope the following response can clarify
-> the matter.
-> 
-> Q1: What is the exact problem?
-> 
-> Traditionally, fatal hardware errors will cause Linux print error log to
-> console, e.g. print_mce() or __ghes_print_estatus(), then reboot. With
-> Linux, the primary method for obtaining debugging information of a serious
-> error or fault is via the kdump mechanism. Kdump captures a wealth of
-> kernel and machine state and writes it to a file for post-mortem debugging.
-> 
-> In certain scenarios, ie. hosts/guests with root filesystems on NFS/iSCSI
-> where networking software and/or hardware fails, and thus kdump fails to
-> collect the hardware error context, leaving us unaware of what actually
-> occurred. In the public cloud scenario, multiple virtual machines run on a
-> single physical server, and if that server experiences a failure, it can
-> potentially impact multiple tenants. It is crucial for us to thoroughly
-> analyze the root causes of each instance failure in order to:
-> 
-> - Provide customers with a detailed explanation of the outage to reassure them.
-> - Collect the characteristics of the failures, such as ECC syndrome, to enable fault prediction.
-> - Explore potential solutions to prevent widespread outages.
-> 
-> In short, it is necessary to serialize hardware error information available
-> for post-mortem debugging.
-> 
-> Q2: What exactly I wanna do:
-> 
-> The MCE handler, do_machine_check(), saves the MCE record to persistent
-> storage and it is retrieved by mcelog. Mcelog has been deprecated when
-> kernel 4.12 released in 2017, and the help of the configuration option
-> CONFIG_X86_MCELOG_LEGACY suggest to consider switching to the new
-> generation rasdaemon solution. The GHES handler does not support APEI error
-> record now.
-> 
-> To serialize hardware error information available for post-mortem
-> debugging:
-> - add support to save APEI error record into flash via ERST before go panic,
-> - add support to retrieve MCE or APEI error record from the flash and emit
-> the related tracepoint after system boot successful again so that rasdaemon
-> can collect them
-> 
-> 
-> Best Regards,
-> Shuai
-> 
-> 
-> [1] https://wiki.archlinux.org/title/Machine-check_exception
+Building todays linux-next tag next-20231026 for arm64 with
+CONFIG_HOTPLUG_PCI_ACPI_AMPERE_ALTRA=m I see the following build error.
 
+drivers/pci/hotplug/acpiphp_ampere_altra.c: In function 'set_attention_status':
+drivers/pci/hotplug/acpiphp_ampere_altra.c:63:75: error: suggest parentheses around arithmetic in operand of '|' [-Werror=parentheses]
+   63 |                      PCI_SLOT(root_port->devfn) << 4 | pci_domain_nr(bus) & 0xf,
+      |                                                        ~~~~~~~~~~~~~~~~~~~^~~~~
+include/linux/arm-smccc.h:382:44: note: in definition of macro 'arm_smccc_smc'
+  382 | #define arm_smccc_smc(...) __arm_smccc_smc(__VA_ARGS__, NULL)
+      |                                            ^~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[6]: *** [scripts/Makefile.build:243: drivers/pci/hotplug/acpiphp_ampere_altra.o] Error 1
 
-Hi, Borislav,
+Looks like this is the problematic patch
+13ba8a09c4f6 ("PCI: hotplug: Add Ampere Altra Attention Indicator extension driver")
 
-I would like to inquire about your satisfaction with the motivation
-provided. If you have no objections, I am prepared to address Kees's
-comments, update the cover letter, and proceed with sending a new version.
-
-Thank you.
-
-Best Regards,
-Shuai
-
+Cheers,
+Anders
 
