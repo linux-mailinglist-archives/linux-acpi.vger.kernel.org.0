@@ -1,117 +1,85 @@
-Return-Path: <linux-acpi+bounces-1072-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1073-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50E7A7DA1D0
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 22:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40BE17DA1D1
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 22:34:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC0092825A3
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 20:34:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED4E228253C
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 20:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661E63FB10
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 20:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34EA3FB02
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 20:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Lm/WGIyR"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fztehdxZ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pv7w3r2F"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EA53AC22
-	for <linux-acpi@vger.kernel.org>; Fri, 27 Oct 2023 19:14:46 +0000 (UTC)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 926E312A;
-	Fri, 27 Oct 2023 12:14:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=s5bWgVKpwmS1KllHLKJH6MgftoWkWiVLZ4YJm3tjFD4=; b=Lm/WGIyRJjJfRsdY53T4rtZXPq
-	WgEnLip1WsWSzW7hPSzoqL3CkCULHfUqtiixPcHU4/Sxv9t6be3iGrvGzZew4mdXYdxefVxVgfguG
-	1Wc4tIvraqp9VyCAIXs6nZAihLnhEB4BS9+nZgnlNTHc8WRZSWBsPM3vGdiW+KDbyEOJF67JqVEED
-	NClrnbYbx/v6G6CiuRkqAqqgHY2C7GJrPGWmPprcbX4CSTgFj2Xkc9tmaQT0DooiOlfp8xPfSC/hs
-	nVBRqo+VDeyPMdkfUHOZ0Gg7l3L1PU7qIhMr404RXKYYXSOFWmEhDYADds/a+zdkJq1RZQQsM/Gy9
-	qceYikrQ==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1qwSHz-0056Vr-SO; Fri, 27 Oct 2023 19:14:35 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 84DA4300392; Fri, 27 Oct 2023 21:14:35 +0200 (CEST)
-Date: Fri, 27 Oct 2023 21:14:35 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: linux-acpi <linux-acpi@vger.kernel.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Juergen Gross <jgross@suse.com>,
-	xen-devel <xen-devel@lists.xenproject.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [PATCH] acpi_idle: use raw_safe_halt() from acpi_idle_play_dead()
-Message-ID: <20231027191435.GF26550@noisy.programming.kicks-ass.net>
-References: <a079bba5a0e47d6534b307553fc3772d26ce911b.camel@infradead.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB263AC22;
+	Fri, 27 Oct 2023 19:24:55 +0000 (UTC)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E036B1A6;
+	Fri, 27 Oct 2023 12:24:53 -0700 (PDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1698434691;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=y6gnZpsQuWc7QehQoZvEcvl+2gz1FD+UGg7ogB7c+Mw=;
+	b=fztehdxZgXdYiuafxUo0BfgKIezeZzAeY128OpSvoDNhdoFlFLazsML0vZRHoiZJ40ArvJ
+	qhAaZCKvSnVJFErH+aU9kf1ojRtZSV2wjicVOm6U+YExMn7l3Dp7PkgY1I4/IVur/tAvgw
+	4qIM+LPr/fO9o0l9VDxjAUlLE46OLJ/0OibI2idTKI4CiDl8PG00saEEwtehr6/wPdUtnx
+	J0xQVNOVZEmKVv9sTYKCWpGuB4UXrYQnO0KQQ4ERF1AztZBKy7w5zBZKEsLcH86cUtvUC6
+	3M9ii5AywCRefRvANIAiT8DKV3Zz1Ox548hXrrjdTYNm7kfsUAZvrrEcTTDt8A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1698434691;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=y6gnZpsQuWc7QehQoZvEcvl+2gz1FD+UGg7ogB7c+Mw=;
+	b=pv7w3r2F7uuzJtN4Rc2L0gETerL1TJKOQDhA0+r2uQg45RN0nmClkiMNs/zJXDADeCU6L2
+	2jym8hNyfoJFKeCA==
+To: Mario Limonciello <mario.limonciello@amd.com>, Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
+ <x86@kernel.org>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, "Rafael
+ J . Wysocki" <rafael@kernel.org>, Len Brown <len.brown@intel.com>, Pavel
+ Machek <pavel@ucw.cz>, David Woodhouse <dwmw@amazon.co.uk>, Sandipan Das
+ <sandipan.das@amd.com>, "open list:PERFORMANCE EVENTS SUBSYSTEM"
+ <linux-perf-users@vger.kernel.org>, "open list:PERFORMANCE EVENTS
+ SUBSYSTEM" <linux-kernel@vger.kernel.org>, "open list:SUSPEND TO RAM"
+ <linux-pm@vger.kernel.org>, "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v2 0/2] Fixes for s3 with parallel bootup
+In-Reply-To: <20231026170330.4657-1-mario.limonciello@amd.com>
+References: <20231026170330.4657-1-mario.limonciello@amd.com>
+Date: Fri, 27 Oct 2023 21:24:51 +0200
+Message-ID: <87zg0327i4.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <a079bba5a0e47d6534b307553fc3772d26ce911b.camel@infradead.org>
+Content-Type: text/plain
 
-On Fri, Oct 27, 2023 at 07:36:51PM +0100, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
->=20
-> Xen HVM guests were observed taking triple-faults when attempting to
-> online a previously offlined vCPU.
->=20
-> Investigation showed that the fault was coming from a failing call
-> to lockdep_assert_irqs_disabled(), in load_current_idt() which was
-> too early in the CPU bringup to actually catch the exception and
-> report the failure cleanly.
->=20
-> This was a false positive, caused by acpi_idle_play_dead() setting
-> the per-cpu hardirqs_enabled flag by calling safe_halt(). Switch it
-> to use raw_safe_halt() instead, which doesn't do so.
->=20
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
-> We might {also,instead} explicitly set the hardirqs_enabled flag to
-> zero when bringing up an AP?
+On Thu, Oct 26 2023 at 12:03, Mario Limonciello wrote:
+> Parallel bootup on systems that use x2apic broke suspend to ram.
+> This series ensures x2apic is re-enabled at startup and fixes an exposed
+> pre-emption issue.
 
-So I fixed up the idle paths the other day (see all that __cpuidle
-stuff) but I've not yet gone through the whole hotplug thing :/
+The PMU issue has absolutely nothing to do with parallel bootup.
 
-This seems right, at this point everything, including RCU is very much
-gone, any instrumentation is undesired.
-
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-
->=20
->  drivers/acpi/processor_idle.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index 3a34a8c425fe..55437f5e0c3a 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -592,7 +592,7 @@ static int acpi_idle_play_dead(struct cpuidle_device =
-*dev, int index)
->  	while (1) {
-> =20
->  		if (cx->entry_method =3D=3D ACPI_CSTATE_HALT)
-> -			safe_halt();
-> +			raw_safe_halt();
->  		else if (cx->entry_method =3D=3D ACPI_CSTATE_SYSTEMIO) {
->  			io_idle(cx->address);
->  		} else
-> --=20
-> 2.41.0
->=20
->=20
-
-
+Can you please describe stuff coherently?
 
