@@ -1,351 +1,272 @@
-Return-Path: <linux-acpi+bounces-1062-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1063-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8975B7D9B82
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 16:34:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D07D87D9B83
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 16:34:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC59F1C20F49
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 14:34:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 326EA281A45
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 14:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DABA241FF
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 14:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0865374C5
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 14:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cdQpGLun"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A2123766
-	for <linux-acpi@vger.kernel.org>; Fri, 27 Oct 2023 13:50:50 +0000 (UTC)
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 221D51AA;
-	Fri, 27 Oct 2023 06:50:48 -0700 (PDT)
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3b413cc2789so179508b6e.0;
-        Fri, 27 Oct 2023 06:50:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698414647; x=1699019447;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TvrgDwXytJvWMSoY+ak1p0VcO5aXnj47/Szk+RjmP7o=;
-        b=pVuHcrekVn0rZTDjsZZhqETbQIvDGMitRjF2qmQX22j3ve7JjShZ8TRS4dUSck+bj6
-         EM7h8LeZT8fD8A6s0pOHdR2dgIPupkHa+qs+IBP085IPY3s+q+wz9RUjHvm9T2co8eAr
-         pOFbxE/tpVqRLVb/o9evmMInxw3OxjRmi2Gawv3BHbXjSEL+T7bpTyMQ3sE8j31SF/UD
-         6VFw6394+2VqpApbDDuD/Scq38n+YEX5hy9AJSH2GY39xkgRZqNm0Pb2iHMrKYnvgmM/
-         zCDDWgUKdnWdJff8kA6EIrWEIxunQcGiBrS62kSiDVSTHdfErX+YH6xBV3MKwoWLr1rz
-         Al7Q==
-X-Gm-Message-State: AOJu0Yyp94mS1DqBNGoLqSzuVJbpYe4YDLuoINmQIpDYrWJ1GEm7TusK
-	KsMcbvG/eD98gl3ku0aj6alhPqJTu7BrX515uC9gqOOhZoo=
-X-Google-Smtp-Source: AGHT+IFLCR1B+THaBavDJmUmrXxnItgpUYlcoSWZ1G4er9GHnljbJ0zsXR4KbfbiPfJiaqsTdg5L7ol8qHDWDR9ZNuU=
-X-Received: by 2002:a05:6808:1a02:b0:3ae:100d:5320 with SMTP id
- bk2-20020a0568081a0200b003ae100d5320mr2998703oib.2.1698414647271; Fri, 27 Oct
- 2023 06:50:47 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EF3358AF
+	for <linux-acpi@vger.kernel.org>; Fri, 27 Oct 2023 13:59:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19C79194;
+	Fri, 27 Oct 2023 06:59:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698415181; x=1729951181;
+  h=date:from:to:cc:subject:message-id;
+  bh=7J1dO21THtFrZ95x/9g0/FrKuB/T5ybQUKomlQySmqA=;
+  b=cdQpGLun7depIsCjCyPq44ZOE5NgG/ZamRRjNS+gYS/BBOMwxDs1mYeF
+   20ocZ5muoeTcL+bgY/2/fbH1Qqbjvw227GaDNrZ0mjnrPE3APCF3D0Oui
+   TIEex8HhBI2WxajJxNmDaA5Y1hUR26VH0ykrcmRjBckyF7IEBp/F0AyWn
+   MX/a/PbmJtbzF9t5tQKFO2Zn0p5X1M4f/A9z2ybwQ896dCD/dI/6PaOzS
+   b7yhUb/tmOBGpBJXX7jx0lD7RS3y/PL8vk78fE63j9X8K61DUUn5Yk5Iq
+   iR88wRc2sB92gxwuKl3ZH26jJFwcRniSlCgrIJWW6tvIrjI0yIFcBpAIo
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="452016450"
+X-IronPort-AV: E=Sophos;i="6.03,256,1694761200"; 
+   d="scan'208";a="452016450"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2023 06:59:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="794583649"
+X-IronPort-AV: E=Sophos;i="6.03,256,1694761200"; 
+   d="scan'208";a="794583649"
+Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 27 Oct 2023 06:59:38 -0700
+Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qwNNA-000AuV-1R;
+	Fri, 27 Oct 2023 13:59:36 +0000
+Date: Fri, 27 Oct 2023 21:59:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 3335ef03ad81e7ec516494af41ee417b630dd843
+Message-ID: <202310272124.ZPP7D7XR-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 27 Oct 2023 15:50:36 +0200
-Message-ID: <CAJZ5v0jT7CKsUtTY3FN=GKBZkCm5naHVEH43vS+jonTrvy4gCg@mail.gmail.com>
-Subject: [GIT PULL] ACPI updates for v6.7-rc1
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Linus,
-
-Please pull from the tag
-
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.7-rc1
-
-with top-most commit f4cb34a75e4a4aee09ff832ea2147cf8322a6a7f
-
- Merge branches 'acpi-ac', 'acpi-pad' and 'pnp'
-
-on top of commit 611da07b89fdd53f140d7b33013f255bf0ed8f34
-
- Merge tag 'acpi-6.6-rc8' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-
-to receive ACPI and PNP updates for 6.7-rc1.
-
-These fix issues, add new quirks, rearrange the IRQ override quirk
-definitions, add new helpers and switch over code to using them,
-rework a couple of interfaces to be more flexible, eliminate
-strncpy() usage from PNP, extend the ACPI PCC mailbox driver and
-clean up code.
-
-This is based on ACPI thermal driver changes that are present in the
-thermal control updates for 6.7-rc1 pull request (they are depended
-on by the ACPI utilities updates).  However, the ACPI thermal driver
-changes are not included in the list of specific ACPI changes below.
-
-Specifics:
-
- - Add symbol definitions related to CDAT to the ACPICA code (Dave
-   Jiang).
-
- - Use the acpi_device_is_present() helper in more places and rename
-   acpi_scan_device_not_present() to be about enumeration (James Morse).
-
- - Add __printf format attribute to acpi_os_vprintf() (Su Hui).
-
- - Clean up departures from kernel coding style in the low-level
-   interface for ACPICA (Jonathan Bergh).
-
- - Replace strncpy() with strscpy() in acpi_osi_setup() (Justin Stitt).
-
- - Fail FPDT parsing on zero length records and add proper handling for
-   fpdt_process_subtable() to acpi_init_fpdt() (Vasily Khoruzhick).
-
- - Rework acpi_handle_list handling so as to manage it dynamically,
-   including size computation (Rafael Wysocki).
-
- - Clean up ACPI utilities code so as to make it follow the kernel
-   coding style (Jonathan Bergh).
-
- - Consolidate IRQ trigger-type override DMI tables and drop .ident
-   values from dmi_system_id tables used for ACPI resources management
-   quirks (Hans de Goede).
-
- - Add ACPI IRQ override for TongFang GMxXGxx (Werner Sembach).
-
- - Allow _DSD buffer data only for byte accessors and document the _DSD
-   data buffer GUID (Andy Shevchenko).
-
- - Drop BayTrail and Lynxpoint pinctrl device IDs from the ACPI LPSS
-   driver, because it does not need them (Raag Jadav).
-
- - Add acpi_backlight=3Dvendor quirk for Toshiba Port=C3=A9g=C3=A9 R100 (On=
-drej
-   Zary).
-
- - Add "vendor" backlight quirks for 3 Lenovo x86 Android tablets (Hans
-   de Goede).
-
- - Move Xiaomi Mi Pad 2 backlight quirk to its own section (Hans de
-   Goede).
-
- - Annotate struct prm_module_info with __counted_by (Kees Cook).
-
- - Fix AER info corruption in aer_recover_queue() when error status data
-   has multiple sections (Shiju Jose).
-
- - Make APEI use ERST maximum execution time for slow devices (Jeshua
-   Smith).
-
- - Add support for platform notification handling to the PCC mailbox
-   driver and modify it to support shared interrupts for multiple
-   subspaces (Huisong Li).
-
- - Define common macros to use when referring to various bitfields in the
-   PCC generic communications channel command and status fields and use
-   them in some drivers (Sudeep Holla).
-
- - Add EC GPE detection quirk for HP 250 G7 Notebook PC (Jonathan
-   Denose).
-
- - Fix and clean up create_pnp_modalias() and create_of_modalias()
-   (Christophe JAILLET).
-
- - Modify 2 pieces of code to use acpi_evaluate_dsm_typed() (Andy
-   Shevchenko).
-
- - Define acpi_dev_uid_match() for matching _UID and use it in several
-   places (Raag Jadav).
-
- - Use acpi_device_uid() for fetching _UID in 2 places (Raag Jadav).
-
- - Add context argument to acpi_dev_install_notify_handler() (Rafael
-   Wysocki).
-
- - Clarify ACPI bus concepts in the ACPI device enumeration
-   documentation (Rafael Wysocki).
-
- - Switch over the ACPI AC and ACPI PAD drivers to using the platform
-   driver interface which, is more logically consistent than binding a
-   driver directly to an ACPI device object, and clean them up (Michal
-   Wilczynski).
-
- - Replace strncpy() in the PNP code with either memcpy() or strscpy()
-   as appropriate (Justin Stitt).
-
- - Clean up coding style in pnp.h (GuoHua Cheng).
-
-Thanks!
-
-
----------------
-
-Andy Shevchenko (4):
-      ACPI: PCI: Switch to use acpi_evaluate_dsm_typed()
-      ACPI: x86: s2idle: Switch to use acpi_evaluate_dsm_typed()
-      ACPI: property: Allow _DSD buffer data only for byte accessors
-      ACPI: property: Document the _DSD data buffer GUID
-
-Christophe JAILLET (2):
-      ACPI: sysfs: Fix create_pnp_modalias() and create_of_modalias()
-      ACPI: sysfs: Clean up create_pnp_modalias() and create_of_modalias()
-
-Dan Carpenter (1):
-      ACPI: thermal: Fix a small leak in acpi_thermal_add()
-
-Dave Jiang (1):
-      ACPICA: Add defines for CDAT SSLBIS
-
-GuoHua Cheng (1):
-      PNP: Clean up coding style in pnp.h
-
-Hans de Goede (4):
-      ACPI: video: Move Xiaomi Mi Pad 2 quirk to its own section
-      ACPI: video: Add "vendor" quirks for 3 Lenovo x86 Android tablets
-      ACPI: resource: Consolidate IRQ trigger-type override DMI tables
-      ACPI: resource: Drop .ident values from dmi_system_id tables
-
-Huisong Li (2):
-      mailbox: pcc: Add support for platform notification handling
-      mailbox: pcc: Support shared interrupt for multiple subspaces
-
-James Morse (2):
-      ACPI: scan: Use the acpi_device_is_present() helper in more places
-      ACPI: scan: Rename acpi_scan_device_not_present() to be about enumera=
-tion
-
-Jeshua Smith (1):
-      ACPI: APEI: Use ERST timeout for slow devices
-
-Jonathan Bergh (5):
-      ACPI: OSL: Fix up white space in parameter lists
-      ACPI: OSL: Remove redundant parentheses in return statements
-      ACPI: OSL: Add empty lines after local variable declarations
-      ACPI: utils: Fix up white space in a few places
-      ACPI: utils: Remove redundant braces around individual statement
-
-Jonathan Denose (1):
-      ACPI: EC: Add quirk for HP 250 G7 Notebook PC
-
-Justin Stitt (3):
-      ACPI: OSI: refactor deprecated strncpy()
-      PNP: ACPI: replace deprecated strncpy() with strscpy()
-      PNP: replace deprecated strncpy() with memcpy()
-
-Kees Cook (1):
-      ACPI: PRM: Annotate struct prm_module_info with __counted_by
-
-Michal Wilczynski (7):
-      ACPI: AC: Remove redundant checks
-      ACPI: AC: Use string_choices API instead of ternary operator
-      ACPI: AC: Replace acpi_driver with platform_driver
-      ACPI: AC: Rename ACPI device from device to adev
-      ACPI: acpi_pad: Replace acpi_driver with platform_driver
-      ACPI: acpi_pad: Use dev groups for sysfs
-      ACPI: acpi_pad: Rename ACPI device from device to adev
-
-Ondrej Zary (1):
-      ACPI: video: Add acpi_backlight=3Dvendor quirk for Toshiba Port=C3=A9=
-g=C3=A9 R100
-
-Raag Jadav (8):
-      ACPI: LPSS: drop BayTrail and Lynxpoint pinctrl HIDs
-      ACPI: sysfs: use acpi_device_uid() for fetching _UID
-      perf: qcom: use acpi_device_uid() for fetching _UID
-      ACPI: utils: Introduce acpi_dev_uid_match() for matching _UID
-      pinctrl: intel: use acpi_dev_uid_match() for matching _UID
-      ACPI: utils: use acpi_dev_uid_match() for matching _UID
-      ACPI: x86: use acpi_dev_uid_match() for matching _UID
-      perf: arm_cspmu: use acpi_dev_hid_uid_match() for matching _HID and _=
-UID
-
-Rafael J. Wysocki (16):
-      ACPI: thermal: Simplify initialization of critical and hot trips
-      ACPI: thermal: Fold acpi_thermal_get_info() into its caller
-      ACPI: thermal: Determine the number of trip points earlier
-      ACPI: thermal: Create and populate trip points table earlier
-      ACPI: thermal: Simplify critical and hot trips representation
-      ACPI: thermal: Untangle initialization and updates of the passive tri=
-p
-      ACPI: thermal: Untangle initialization and updates of active trips
-      ACPI: thermal: Drop redundant trip point flags
-      ACPI: thermal: Drop valid flag from struct acpi_thermal_trip
-      ACPI: thermal: Add device list to struct acpi_thermal_trip
-      ACPI: thermal: Collapse trip devices update functions
-      ACPI: thermal: Collapse trip devices update function wrappers
-      ACPI: thermal: Merge trip initialization functions
-      ACPI: utils: Dynamically determine acpi_handle_list size
-      ACPI: docs: enumeration: Clarify ACPI bus concepts
-      ACPI: bus: Add context argument to acpi_dev_install_notify_handler()
-
-Shiju Jose (1):
-      ACPI: APEI: Fix AER info corruption when error status data has
-multiple sections
-
-Su Hui (1):
-      ACPI: OSL: add __printf format attribute to acpi_os_vprintf()
-
-Sudeep Holla (4):
-      ACPI: PCC: Add PCC shared memory region command and status bitfields
-      i2c: xgene-slimpro: Migrate to use generic PCC shmem related macros
-      hwmon: (xgene) Migrate to use generic PCC shmem related macros
-      soc: kunpeng_hccs: Migrate to use generic PCC shmem related macros
-
-Vasily Khoruzhick (1):
-      ACPI: FPDT: properly handle invalid FPDT subtables
-
-Werner Sembach (1):
-      ACPI: resource: Do IRQ override on TongFang GMxXGxx
-
----------------
-
- Documentation/firmware-guide/acpi/enumeration.rst |  43 ++
- drivers/acpi/ac.c                                 |  98 ++-
- drivers/acpi/acpi_fpdt.c                          |  45 +-
- drivers/acpi/acpi_lpss.c                          |  21 +-
- drivers/acpi/acpi_pad.c                           |  82 +--
- drivers/acpi/acpi_video.c                         |   2 +-
- drivers/acpi/apei/erst.c                          |  41 +-
- drivers/acpi/apei/ghes.c                          |  23 +-
- drivers/acpi/battery.c                            |   2 +-
- drivers/acpi/bus.c                                |   4 +-
- drivers/acpi/device_sysfs.c                       |  24 +-
- drivers/acpi/ec.c                                 |  10 +
- drivers/acpi/hed.c                                |   2 +-
- drivers/acpi/nfit/core.c                          |   2 +-
- drivers/acpi/osi.c                                |   2 +-
- drivers/acpi/osl.c                                |  28 +-
- drivers/acpi/pci_root.c                           |   6 +-
- drivers/acpi/prmt.c                               |   2 +-
- drivers/acpi/property.c                           |  20 +-
- drivers/acpi/resource.c                           |  94 +--
- drivers/acpi/scan.c                               |  13 +-
- drivers/acpi/thermal.c                            | 712 +++++++++++-------=
-----
- drivers/acpi/utils.c                              | 102 +++-
- drivers/acpi/video_detect.c                       |  84 ++-
- drivers/acpi/x86/s2idle.c                         |   5 +-
- drivers/acpi/x86/utils.c                          |   3 +-
- drivers/hwmon/xgene-hwmon.c                       |  16 +-
- drivers/i2c/busses/i2c-xgene-slimpro.c            |  16 +-
- drivers/mailbox/pcc.c                             |  91 ++-
- drivers/pci/pcie/aer.c                            |  10 +
- drivers/perf/arm_cspmu/arm_cspmu.c                |   8 +-
- drivers/perf/qcom_l3_pmu.c                        |   4 +-
- drivers/pinctrl/intel/pinctrl-intel.c             |   2 +-
- drivers/platform/surface/surface_acpi_notify.c    |  10 +-
- drivers/pnp/pnpacpi/core.c                        |   7 +-
- drivers/pnp/pnpbios/rsparser.c                    |   4 +-
- drivers/soc/hisilicon/kunpeng_hccs.c              |   8 +-
- include/acpi/acpi_bus.h                           |  12 +-
- include/acpi/actbl1.h                             |   3 +
- include/acpi/ghes.h                               |   4 +
- include/acpi/pcc.h                                |  13 +
- include/linux/acpi.h                              |   5 +
- include/linux/pnp.h                               |   8 +-
- 43 files changed, 1024 insertions(+), 667 deletions(-)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 3335ef03ad81e7ec516494af41ee417b630dd843  Merge branch 'pm' into linux-next
+
+elapsed time: 1462m
+
+configs tested: 188
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231026   gcc  
+arc                   randconfig-001-20231027   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20231027   gcc  
+arm                       spear13xx_defconfig   clang
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+hexagon                           allnoconfig   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20231026   gcc  
+i386         buildonly-randconfig-001-20231027   gcc  
+i386         buildonly-randconfig-002-20231026   gcc  
+i386         buildonly-randconfig-002-20231027   gcc  
+i386         buildonly-randconfig-003-20231026   gcc  
+i386         buildonly-randconfig-003-20231027   gcc  
+i386         buildonly-randconfig-004-20231026   gcc  
+i386         buildonly-randconfig-004-20231027   gcc  
+i386         buildonly-randconfig-005-20231026   gcc  
+i386         buildonly-randconfig-005-20231027   gcc  
+i386         buildonly-randconfig-006-20231026   gcc  
+i386         buildonly-randconfig-006-20231027   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231026   gcc  
+i386                  randconfig-001-20231027   gcc  
+i386                  randconfig-002-20231026   gcc  
+i386                  randconfig-002-20231027   gcc  
+i386                  randconfig-003-20231026   gcc  
+i386                  randconfig-003-20231027   gcc  
+i386                  randconfig-004-20231026   gcc  
+i386                  randconfig-004-20231027   gcc  
+i386                  randconfig-005-20231026   gcc  
+i386                  randconfig-005-20231027   gcc  
+i386                  randconfig-006-20231026   gcc  
+i386                  randconfig-006-20231027   gcc  
+i386                  randconfig-011-20231027   gcc  
+i386                  randconfig-012-20231027   gcc  
+i386                  randconfig-013-20231027   gcc  
+i386                  randconfig-014-20231027   gcc  
+i386                  randconfig-015-20231027   gcc  
+i386                  randconfig-016-20231027   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231026   gcc  
+loongarch             randconfig-001-20231027   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                         apollo_defconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                          hp300_defconfig   gcc  
+m68k                        mvme147_defconfig   gcc  
+m68k                          sun3x_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                         cobalt_defconfig   gcc  
+mips                     loongson1b_defconfig   gcc  
+mips                      loongson3_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc                      katmai_defconfig   clang
+powerpc                     ksi8560_defconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                    nommu_virt_defconfig   clang
+riscv                 randconfig-001-20231026   gcc  
+riscv                 randconfig-001-20231027   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20231026   gcc  
+s390                  randconfig-001-20231027   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                ecovec24-romimage_defconfig   gcc  
+sh                            hp6xx_defconfig   gcc  
+sh                           se7750_defconfig   gcc  
+sh                           se7780_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20231027   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           alldefconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20231026   gcc  
+x86_64       buildonly-randconfig-001-20231027   gcc  
+x86_64       buildonly-randconfig-002-20231026   gcc  
+x86_64       buildonly-randconfig-002-20231027   gcc  
+x86_64       buildonly-randconfig-003-20231026   gcc  
+x86_64       buildonly-randconfig-003-20231027   gcc  
+x86_64       buildonly-randconfig-004-20231026   gcc  
+x86_64       buildonly-randconfig-004-20231027   gcc  
+x86_64       buildonly-randconfig-005-20231026   gcc  
+x86_64       buildonly-randconfig-005-20231027   gcc  
+x86_64       buildonly-randconfig-006-20231026   gcc  
+x86_64       buildonly-randconfig-006-20231027   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                randconfig-001-20231026   gcc  
+x86_64                randconfig-001-20231027   gcc  
+x86_64                randconfig-002-20231026   gcc  
+x86_64                randconfig-002-20231027   gcc  
+x86_64                randconfig-003-20231026   gcc  
+x86_64                randconfig-003-20231027   gcc  
+x86_64                randconfig-004-20231026   gcc  
+x86_64                randconfig-004-20231027   gcc  
+x86_64                randconfig-005-20231026   gcc  
+x86_64                randconfig-005-20231027   gcc  
+x86_64                randconfig-006-20231026   gcc  
+x86_64                randconfig-006-20231027   gcc  
+x86_64                randconfig-011-20231027   gcc  
+x86_64                randconfig-012-20231027   gcc  
+x86_64                randconfig-013-20231027   gcc  
+x86_64                randconfig-014-20231027   gcc  
+x86_64                randconfig-015-20231027   gcc  
+x86_64                randconfig-016-20231027   gcc  
+x86_64                randconfig-071-20231027   gcc  
+x86_64                randconfig-072-20231027   gcc  
+x86_64                randconfig-073-20231027   gcc  
+x86_64                randconfig-074-20231027   gcc  
+x86_64                randconfig-075-20231027   gcc  
+x86_64                randconfig-076-20231027   gcc  
+x86_64                           rhel-8.3-bpf   gcc  
+x86_64                          rhel-8.3-func   gcc  
+x86_64                    rhel-8.3-kselftests   gcc  
+x86_64                         rhel-8.3-kunit   gcc  
+x86_64                           rhel-8.3-ltp   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+xtensa                          iss_defconfig   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
