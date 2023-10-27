@@ -1,49 +1,49 @@
-Return-Path: <linux-acpi+bounces-1075-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1076-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED57F7DA39E
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 00:38:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D905D7DA39F
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 00:38:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 299611C2114E
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 22:38:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 157691C21159
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 22:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6553FE2A
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 22:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769F8405E9
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 22:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nFlv+Yk1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="k1Rp8X7e"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JeCfrHiP";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6YOjVs+C"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C14F3FB1D;
-	Fri, 27 Oct 2023 21:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBD91772B;
+	Fri, 27 Oct 2023 21:47:18 +0000 (UTC)
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDD431AA;
-	Fri, 27 Oct 2023 14:31:12 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D26791BF;
+	Fri, 27 Oct 2023 14:47:16 -0700 (PDT)
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1698442270;
+	s=2020; t=1698443235;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/3ydkUdxmdu8Q6Xk3rvcibo+LtnkXdHvqYhmoDPKsk0=;
-	b=nFlv+Yk1z3jyLLIFAQyCeF9SWE2sCxPSfuj/MEC+4J6iIOnrUXp45E478PpdIiKQAShYyH
-	qiWbJTMdNqAvI9bF1Sm+VyXNvHuZqReKJAj1X0piZU/jZsjhvmaXuflJNy+nnww75E4BTK
-	8GO4iHybdoqzWBkrjkrIROnID0CDGB9CHRzjqNcB2S+CbK9AlwcEFenUqjpVvT470e1IGu
-	VGvCCxwUlP42vN8rO6AfTyXoeYHZnGUrCSgpoD43/DKPddBtzkbUICdkfY60F/O2STtf8o
-	/9FxpRPa1IZWvDTgyt9U+SsKzd1a7DD/CSSrAPRhJoCws0vKZFQsj9K+vxxu0A==
+	bh=XFlGYGD96K+5LkGjpYByN6tWVT7HSksJ2vFMkU/hCVk=;
+	b=JeCfrHiP2URhMWgqY2LRJ3yKPlrz+LtQdJaiJtOhcev0MmT4dMSpgHagCq9PkzmlifoXfk
+	yEaFKvVFPGg7hmjbM8LGxncodNCdAe6R5E0MXZeDhavYvXjnnEMhjbN1p/U01vq1bH1pcq
+	bCmPepD936IfMqCpeG5xCvPECVbgmZylJtUfz79tz2YIKTAPwzlSVIyyIGvg1BiCz78lKs
+	/R2RDcQNvy31L1mbdIoC5YBs3a6dPscIhhNTGbvO+pla7cdYiOVVqMV4rqZRyhWwUGC5wX
+	JQCwROPkA4uZCmiAnejX+JKGZ+4oqfFZWT1f79agg5bFTC1rBf8J9CGKAqjNvQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1698442270;
+	s=2020e; t=1698443235;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/3ydkUdxmdu8Q6Xk3rvcibo+LtnkXdHvqYhmoDPKsk0=;
-	b=k1Rp8X7eqTciHkSjcLMawHwC8l0e17/+XNPsMe0oHUwLoUOrFYnX+4xCt3ncmOy0sUkbNa
-	oAtD5YRRzDOfKYDg==
+	bh=XFlGYGD96K+5LkGjpYByN6tWVT7HSksJ2vFMkU/hCVk=;
+	b=6YOjVs+CWd3e07l5jHIA3i1LafzO49eA6loOma8U+G7v57V4zNB+fGVi1G/cVvmu5MkAmG
+	p3EsIAo3PwkSeSCQ==
 To: Mario Limonciello <mario.limonciello@amd.com>, Peter Zijlstra
  <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
  <bp@alien8.de>, "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
@@ -63,13 +63,13 @@ Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Mark Rutland
  list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, "open list:ACPI"
  <linux-acpi@vger.kernel.org>, Mario Limonciello
  <mario.limonciello@amd.com>
-Subject: Re: [PATCH v2 1/2] x86: Enable x2apic during resume from suspend if
- used previously
-In-Reply-To: <20231026170330.4657-2-mario.limonciello@amd.com>
+Subject: Re: [PATCH v2 2/2] perf/x86/amd: Stop calling amd_pmu_cpu_reset()
+ from amd_pmu_cpu_dead()
+In-Reply-To: <20231026170330.4657-3-mario.limonciello@amd.com>
 References: <20231026170330.4657-1-mario.limonciello@amd.com>
- <20231026170330.4657-2-mario.limonciello@amd.com>
-Date: Fri, 27 Oct 2023 23:31:09 +0200
-Message-ID: <87wmv721nm.ffs@tglx>
+ <20231026170330.4657-3-mario.limonciello@amd.com>
+Date: Fri, 27 Oct 2023 23:47:15 +0200
+Message-ID: <87ttqb20ws.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -78,195 +78,113 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Mario!
-
 On Thu, Oct 26 2023 at 12:03, Mario Limonciello wrote:
 
-> If x2apic was enabled during boot with parallel startup
-> it will be needed during resume from suspend to ram as well.
+> During suspend testing on a workstation CPU a preemption BUG was
+> reported.
 
-Lacks an explanation why it is needed.
+How is this related to a workstation CPU? Laptop CPUs and server CPUs
+are magically not affected, right?
 
-> Store whether to enable into the smpboot_control global variable
-> and during startup re-enable it if necessary.
+Also how is this related to suspend?
+
+This clearly affects any CPU down operation whether in the context of
+suspend or initiated via sysfs, no?
+
+Just because you observed it during suspend testing does not magically
+make it a suspend related problem....
+
+> BUG: using smp_processor_id() in preemptible [00000000] code: rtcwake/2960
+> caller is amd_pmu_lbr_reset+0x19/0xc0
+> CPU: 104 PID: 2960 Comm: rtcwake Not tainted 6.6.0-rc6-00002-g3e2c7f3ac51f
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0x44/0x60
+>  check_preemption_disabled+0xce/0xf0
+>  ? __pfx_x86_pmu_dead_cpu+0x10/0x10
+>  amd_pmu_lbr_reset+0x19/0xc0
+>  ? __pfx_x86_pmu_dead_cpu+0x10/0x10
+>  amd_pmu_cpu_reset.constprop.0+0x51/0x60
+>  amd_pmu_cpu_dead+0x3e/0x90
+>  x86_pmu_dead_cpu+0x13/0x20
+>  cpuhp_invoke_callback+0x169/0x4b0
+>  ? __pfx_virtnet_cpu_dead+0x10/0x10
+>  __cpuhp_invoke_callback_range+0x76/0xe0
+>  _cpu_down+0x112/0x270
+>  freeze_secondary_cpus+0x8e/0x280
+>  suspend_devices_and_enter+0x342/0x900
+>  pm_suspend+0x2fd/0x690
+>  state_store+0x71/0xd0
+>  kernfs_fop_write_iter+0x128/0x1c0
+>  vfs_write+0x2db/0x400
+>  ksys_write+0x5f/0xe0
+>  do_syscall_64+0x59/0x90
+>  ? srso_alias_return_thunk+0x5/0x7f
+>  ? count_memcg_events.constprop.0+0x1a/0x30
+>  ? srso_alias_return_thunk+0x5/0x7f
+>  ? handle_mm_fault+0x1e9/0x340
+>  ? srso_alias_return_thunk+0x5/0x7f
+>  ? preempt_count_add+0x4d/0xa0
+>  ? srso_alias_return_thunk+0x5/0x7f
+>  ? up_read+0x38/0x70
+>  ? srso_alias_return_thunk+0x5/0x7f
+>  ? do_user_addr_fault+0x343/0x6b0
+>  ? srso_alias_return_thunk+0x5/0x7f
+>  ? exc_page_fault+0x74/0x170
+>  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+> RIP: 0033:0x7f32f8d14a77
+> Code: 10 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa
+> 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff
+> 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
+> RSP: 002b:00007ffdc648de18 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+> RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007f32f8d14a77
+> RDX: 0000000000000004 RSI: 000055b2fc2a5670 RDI: 0000000000000004
+> RBP: 000055b2fc2a5670 R08: 0000000000000000 R09: 000055b2fc2a5670
+> R10: 00007f32f8e1a2f0 R11: 0000000000000246 R12: 0000000000000004
+> R13: 000055b2fc2a2480 R14: 00007f32f8e16600 R15: 00007f32f8e15a00
+>  </TASK>
+
+How much of that backtrace is actually substantial information?
+
+At max 5 lines out of ~50. See:
+
+  https://www.kernel.org/doc/html/latest/process/submitting-patches.html#backtraces
+
+> This bug shows that there is a mistake with the flow used for offlining
+
+This bug shows nothing than a calltrace. Please explain the context and
+the fail in coherent sentences. The bug backtrace is just for
+illustration.
+
+> a CPU.  Calling amd_pmu_cpu_reset() from the dead callback is
+> problematic
+
+It's not problematic. It's simply wrong.
+
+> because this doesn't run on the actual CPU being offlined.  The intent of
+> the function is to reset MSRs local to that CPU.
 >
-> This fixes resume from suspend on workstation CPUs with x2apic
-> enabled.
+> Move the call into the dying callback which is actually run on the local
+> CPU.
 
-You completely fail to describe the failure mode.
+...
 
-> It will also work on systems with one maxcpus=1 but still using
-> x2apic since x2apic is also re-enabled in lapic_resume().
+> +static void amd_pmu_cpu_dying(int cpu)
+> +{
+> +	amd_pmu_cpu_reset(cpu);
+> +}
 
-This sentence makes no sense. What's so special about maxcpus=1?
+You clearly can spare that wrapper which wraps a function with the signature
 
-Absolutely nothing.
+     void fn(int)
 
-lapic_resume() is a syscore op and is always invoked on the CPU which
-handles suspend/resume. The point is that __x2apic_enable() which is
-invoked from there becomes a NOOP because X2APIC is already enabled.
+into a function with the signature
 
-So what are you trying to tell me?
+     void fn(int)
 
-I really appreciate your enthusiasm of chasing and fixing bugs, but your
-change logs and explanations are really making it hard to keep that
-appreciation up.
+by just assigning amd_pmu_cpu_reset() to the cpu_dying callback, no?
 
->  	/*
-> -	 * Ensure the CPU knows which one it is when it comes back, if
-> -	 * it isn't in parallel mode and expected to work that out for
-> -	 * itself.
-> +	 * Ensure x2apic is re-enabled if necessary and the CPU knows which
-> +	 * one it is when it comes back, if it isn't in parallel mode and
-> +	 * expected to work that out for itself.
-
-The x2apic comment is misplaced. It should be above the x2apic
-conditional as it has nothing to do with the initial condition because
-even if X2APIC is enabled then the parallel startup might be disabled.
-
-Go and read this comment 3 month from now and try to make sense of it.
-
->  	 */
-> -	if (!(smpboot_control & STARTUP_PARALLEL_MASK))
-> +	if (smpboot_control & STARTUP_PARALLEL_MASK) {
-> +		if (x2apic_enabled())
-> +			smpboot_control |= STARTUP_ENABLE_X2APIC;
-
-This bit is sticky after resume, so any subsequent CPU hotplug operation
-will see it as well.
-
-This lacks an explanation why this is correct and why this flag is not
-set early during boot before the APs are brought up.
-
-> +	} else {
->  		smpboot_control = smp_processor_id();
-> +	}
->  #endif
->  	initial_code = (unsigned long)wakeup_long64;
->  	saved_magic = 0x123456789abcdef0L;
-> diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-> index ea6995920b7a..300901af9fa3 100644
-> --- a/arch/x86/kernel/head_64.S
-> +++ b/arch/x86/kernel/head_64.S
-> @@ -237,9 +237,14 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
->  	 * CPU number is encoded in smpboot_control.
->  	 *
->  	 * Bit 31	STARTUP_READ_APICID (Read APICID from APIC)
-> +	 * Bit 30	STARTUP_ENABLE_X2APIC (Enable X2APIC mode)
->  	 * Bit 0-23	CPU# if STARTUP_xx flags are not set
->  	 */
->  	movl	smpboot_control(%rip), %ecx
-> +
-> +	testl	$STARTUP_ENABLE_X2APIC, %ecx
-> +	jnz	.Lenable_x2apic
-
-Why is this tested here? The test clearly belongs into .Lread_apicid
-
-> +
->  	testl	$STARTUP_READ_APICID, %ecx
->  	jnz	.Lread_apicid
->  	/*
-> @@ -249,6 +254,16 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
->  	andl	$(~STARTUP_PARALLEL_MASK), %ecx
->  	jmp	.Lsetup_cpu
->  
-> +.Lenable_x2apic:
-> +	/* Enable X2APIC if disabled */
-> +	mov	$MSR_IA32_APICBASE, %ecx
-> +	rdmsr
-> +	testl	$X2APIC_ENABLE, %eax
-> +	jnz	.Lread_apicid_msr
-> +	orl	$X2APIC_ENABLE, %eax
-> +	wrmsr
-> +	jmp	.Lread_apicid_msr
-
-And this part just moves in front of .Lread_apicid_msr and spares
-the jump at the end.
-
->  .Lread_apicid:
->  	/* Check whether X2APIC mode is already enabled */
->  	mov	$MSR_IA32_APICBASE, %ecx
-
-That aside, I'm still failing to see the actual failure scenario due to
-the utter void in the change log.
-
-The kernel has two mechanisms which end up with X2APIC enabled:
-
-    1) BIOS has it enabled already, which is required for any machine
-       which has more than 255 CPUs, but BIOS can decide to enable
-       X2APIC even with less than 256 CPUs.
-
-    2) BIOS has not enabled it, but the kernel enables it because the
-       CPU supports it.
-
-The major difference is:
-
-    #1 prevents the MMIO fixmap for the APIC to be installed
-
-    #2 installs the fixmap but does not use it. It's never torn down.
-
-Let's look at these two cases in the light of resume:
-
-    #1 If the BIOS enabled X2APIC mode then the only way how this can
-       fail on resume is that the BIOS did not enable X2APIC mode in the
-       resume path before going back into the kernel and due to the
-       non-existent MMIO mapping there is no way to read the APIC ID.
-
-    #2 It does not matter whether the BIOS enabled X2APIC mode during
-       resume because the MMIO mapping exists and the APIC ID read via
-       MMIO should be identical to the APIC ID read via the X2APIC MSR.
-
-       If not, then there is something fundamentally wrong.
-
-How is this working during the initial bringup of the APs?
-
-    #1 If the APs do not have X2APIC enabled by the BIOS then they will
-       crash and burn during bringup due to non-existent MMIO mapping.
-
-    #2 The APs can read their APIC ID just fine via MMIO and it
-       obviously is the same as the APIC ID after the bringup enabled
-       X2APIC mode. Otherwise the kernel would not work at all.
-
-So the only reasonable explanation for the failure is that the BIOS
-fails to reenable X2APIC mode on resume either on the CPU which handles
-suspend/resume or on the subsequent AP bringups, which is not clear at
-all due to the bit being sticky and the changelog being full of void in
-that aspect.
-
-That said the sticky bit is wrong for the following case with older CPUs
-where X2APIC requires up to date microcode loaded to work correctly:
-
-    boot maxcpus=4
-      load microcode    // Same sequence applies for AP (CPU1-3)
-      enable x2apic
-    suspend
-       set X2APIC enable bit in smpboot_control
-    resume
-    bringup CPU4
-       enable X2APIC early --> fail due to lack of microcode fix
-
-Whether this affects the APIC ID readout or not, which we don't know and
-even if we consider this case to be academic, it's still fundamentally
-wrong from a correctness point of view.
-
-So without proper information about the failure scenario this "fix" is
-simply going nowhere.
-
-Please provide the following information:
-
-  - dmesg of the initial boot up to 'smp: Bringing up secondary CPUs ...'
-
-  - A proper description of the failure case:
-
-    - Is the CPU which handles suspend/resume failing?
-
-    - Is a subsequent AP bringup failing?
-
-    - Is the failure due to the lack of MMIO mapping ?
-
-    - Is the failure due to a bogus APIC ID retrieved via MMIO ?
-
-Thanks for making me do your homework (again),
+Thanks,
 
         tglx
 
