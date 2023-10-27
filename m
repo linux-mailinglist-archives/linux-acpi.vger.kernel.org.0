@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-1046-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1047-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58EE7D91A7
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 10:36:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E34CA7D91A9
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 10:36:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1207D1C20A8C
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 08:36:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA441C20F61
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 08:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742F8156DC
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 08:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814A6156DC
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 08:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UwG/4VS2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L24RwGMH"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4235D11734
-	for <linux-acpi@vger.kernel.org>; Fri, 27 Oct 2023 08:04:14 +0000 (UTC)
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D8C1B6
-	for <linux-acpi@vger.kernel.org>; Fri, 27 Oct 2023 01:04:11 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b9d07a8d84so23454691fa.3
-        for <linux-acpi@vger.kernel.org>; Fri, 27 Oct 2023 01:04:11 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8DB1173D
+	for <linux-acpi@vger.kernel.org>; Fri, 27 Oct 2023 08:04:15 +0000 (UTC)
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14872D40
+	for <linux-acpi@vger.kernel.org>; Fri, 27 Oct 2023 01:04:13 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-4083dbc43cfso12197825e9.3
+        for <linux-acpi@vger.kernel.org>; Fri, 27 Oct 2023 01:04:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698393849; x=1698998649; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1698393851; x=1698998651; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=r/qdhwYexgC4eelalZMREFYWDVhGmAVpyIy4h5YJd+Y=;
-        b=UwG/4VS2MSxnkHtnsQpx9o/IPbZw1SxCBiaWXkPAhvhzizTMzCCoLnLGF4IHzjENat
-         p41YfyeuOalrUJevD4TBvRf890ua3fFIJoTyZdQDjvv8D3qHL11Ntu/6ji8O9I0mp7zt
-         anztlSB/tAGfuE/cy2m4NgHBbFDhm39MQhI8VLPBWD5W2qjTAfJNX3MP05Aj4SXC2SAS
-         +dCFxr2+vbXfCASS4kYKZoZNlXyQU9TnhvA64gvJV3qmfKdLXvk+vaXI5ZjbAUWy5cMN
-         DS/HtrOHsQ1DBTnsFgr4/qM8B1P5gFIn8msWC/ZrDXdhoMwFttPih9Gy5hZU7d19DQed
-         Sgcg==
+        bh=l8u+U/9u4ohr5MnGNG/ipD+T+tLh/PNcKnY6Yu8ixWw=;
+        b=L24RwGMHA181FTA5H2iJVIE6oJBGLqBWg85c0yDhYhDgZ9Ox9Hc1ORQ7rO0MXisXlL
+         0gDMH/x0sTlJQINhM/UOCAIxOmENsXtaySZKUDbDbWabcZqTlVqEmMywfmSRiuebHLwF
+         4yNZajeH7zjRYQArVx5+D+fHTOTrhCyNHlvarxz5n/o7CFvnPubPdSGuhWViWJ5BKugn
+         E70mGdjeQx2nEWovHP81d3oULXEYupE9mopY2Kzx1YHA7B2EOaxPe8tyBEGLAzjIWmWE
+         RerpeqIsAz94yMRTE3jbOEmJAU4Zz4D0A/lcE5xRtd9ITvtFNhUIFZa0z6W5vI7EWPLy
+         cZTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698393849; x=1698998649;
+        d=1e100.net; s=20230601; t=1698393851; x=1698998651;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=r/qdhwYexgC4eelalZMREFYWDVhGmAVpyIy4h5YJd+Y=;
-        b=AWKFKTbaYL+jdA/7HMGYpGVu7QqO2qwzj6jcUJqbuYUezwctCYvM1VcYw+QRiDO0SO
-         O0qsYTdYuXKK9Kq0SaJlEu6KxKt3ngUFOfGXIEWJU4gbiQQvlTV68khL+68qzxTkJ2Rd
-         N7DGKvqMlxu6yYSIiz5lb8GeQxi9EJu3Ji+KBH7CKZNDNFuV6kszEmiXiVLe6PQ+C4zB
-         w+ppZvgg8jIRpl2xLXQtjh4abjIYDwIzIr7l+DDnIItjbPsFy93LCo+EQZnlofy0DqwQ
-         0shBcPq7NGh9iOdyIAr7FynZIe0mZY0zRXb1tSiyad1yA8pSVhuM2EEc1Q2zWox7Ie2y
-         CcwQ==
-X-Gm-Message-State: AOJu0YzkMzrxTy9gOI8olE2wQKU+rLEdM11v3+qwT1/vYiNsjat0gSVR
-	USUNkrhvWd+tAeugBxWskFSorA==
-X-Google-Smtp-Source: AGHT+IGXugARg3H3+vIzNim0kJhoC4UBCl4/dUe/XX18rWVm78ZhMKD3Vu64iuuup/7qbp3srdsKEQ==
-X-Received: by 2002:a2e:8217:0:b0:2c5:1eb6:bd1e with SMTP id w23-20020a2e8217000000b002c51eb6bd1emr1414040ljg.43.1698393849239;
-        Fri, 27 Oct 2023 01:04:09 -0700 (PDT)
+        bh=l8u+U/9u4ohr5MnGNG/ipD+T+tLh/PNcKnY6Yu8ixWw=;
+        b=pZmIAzacYrHJHcGCGBugWqajrPkm7d7oXZY+D7t7TOrjrRwSF1VDVeGG6/XpJXsaJk
+         Wo9lPkIMcOqod2mfTPOVaHEMAOB3f8Sw5O1YSEKHlgzCulWzDu/oIeUmK5rOEvIWeDfZ
+         XCR2pOvKx8tp4Z8jzS5TWPkPvlm8xYNlZmp4J78rwy0gH70fseuMr9P37L1h9Nu4GY0N
+         N3O+dByK0JHA6NQVAx71bvUcTisYQ6QRn6L4XFXYlE8qF1RB6NhYFXYPmTRpxkpi1Q4l
+         h7WZyfCMug20O95xZ78B2uXTfq+RjIz+w+S2ySdM55eEsvvvRERzwtqwYj5RBthqJ44A
+         rwdw==
+X-Gm-Message-State: AOJu0Yx6d91rhT5LNU4prIXXwXmHee0D+FVrErbWo6ZAonbx3Ppj5Zlk
+	PUQ++/AsIabKWiUHx5BtufQEvg==
+X-Google-Smtp-Source: AGHT+IHHJHw9trOJbFgvgeyKGPFkJl88ylA+IM/8RiCtB8m/EeKXjTdIKw4FH7YnjB4Tz158dwBttg==
+X-Received: by 2002:a05:600c:3594:b0:405:4daa:6e3d with SMTP id p20-20020a05600c359400b004054daa6e3dmr1555522wmq.39.1698393851126;
+        Fri, 27 Oct 2023 01:04:11 -0700 (PDT)
 Received: from vingu-book.. ([2a01:e0a:f:6020:c5e:e24e:ad0b:58c6])
-        by smtp.gmail.com with ESMTPSA id 17-20020a05600c025100b004083729fc14sm4397488wmj.20.2023.10.27.01.04.06
+        by smtp.gmail.com with ESMTPSA id 17-20020a05600c025100b004083729fc14sm4397488wmj.20.2023.10.27.01.04.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Oct 2023 01:04:08 -0700 (PDT)
+        Fri, 27 Oct 2023 01:04:10 -0700 (PDT)
 From: Vincent Guittot <vincent.guittot@linaro.org>
 To: linux@armlinux.org.uk,
 	catalin.marinas@arm.com,
@@ -94,9 +94,9 @@ Cc: conor.dooley@microchip.com,
 	ajones@ventanamicro.com,
 	lftan@kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH v2 2/7] cpufreq: use the fixed and coherent frequency for scaling capacity
-Date: Fri, 27 Oct 2023 10:03:55 +0200
-Message-Id: <20231027080400.56703-3-vincent.guittot@linaro.org>
+Subject: [PATCH v4 3/7] cpufreq/schedutil: use a fixed reference frequency
+Date: Fri, 27 Oct 2023 10:03:56 +0200
+Message-Id: <20231027080400.56703-4-vincent.guittot@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231027080400.56703-1-vincent.guittot@linaro.org>
 References: <20231027080400.56703-1-vincent.guittot@linaro.org>
@@ -109,64 +109,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 cpuinfo.max_freq can change at runtime because of boost as an example. This
-implies that the value could be different from the frequency that has been
-used to compute the capacity of a CPU.
+implies that the value could be different than the one that has been
+used when computing the capacity of a CPU.
 
-The new arch_scale_freq_ref() returns a fixed and coherent frequency
-that can be used to compute the capacity for a given frequency.
+The new arch_scale_freq_ref() returns a fixed and coherent reference
+frequency that can be used when computing a frequency based on utilization.
+
+Use this arch_scale_freq_ref() when available and fallback to
+policy otherwise.
 
 Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
 Tested-by: Lukasz Luba <lukasz.luba@arm.com>
 Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 ---
- drivers/cpufreq/cpufreq.c | 4 ++--
- include/linux/cpufreq.h   | 9 +++++++++
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ kernel/sched/cpufreq_schedutil.c | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 60ed89000e82..8c4f9c2f9c44 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -454,7 +454,7 @@ void cpufreq_freq_transition_end(struct cpufreq_policy *policy,
- 
- 	arch_set_freq_scale(policy->related_cpus,
- 			    policy->cur,
--			    policy->cpuinfo.max_freq);
-+			    arch_scale_freq_ref(policy->cpu));
- 
- 	spin_lock(&policy->transition_lock);
- 	policy->transition_ongoing = false;
-@@ -2174,7 +2174,7 @@ unsigned int cpufreq_driver_fast_switch(struct cpufreq_policy *policy,
- 
- 	policy->cur = freq;
- 	arch_set_freq_scale(policy->related_cpus, freq,
--			    policy->cpuinfo.max_freq);
-+			    arch_scale_freq_ref(policy->cpu));
- 	cpufreq_stats_record_transition(policy, freq);
- 
- 	if (trace_cpu_frequency_enabled()) {
-diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
-index 71d186d6933a..bbc483b4b6e5 100644
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -1211,6 +1211,15 @@ void arch_set_freq_scale(const struct cpumask *cpus,
- {
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index 458d359f5991..f3a87fa16332 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -114,6 +114,28 @@ static void sugov_deferred_update(struct sugov_policy *sg_policy)
+ 	}
  }
- #endif
-+
-+#ifndef arch_scale_freq_ref
+ 
++/**
++ * get_capacity_ref_freq - get the reference frequency that has been used to
++ * correlate frequency and compute capacity for a given cpufreq policy. We use
++ * the CPU managing it for the arch_scale_freq_ref() call in the function.
++ * @policy: the cpufreq policy of the CPU in question.
++ *
++ * Return: the reference CPU frequency to compute a capacity.
++ */
 +static __always_inline
-+unsigned int arch_scale_freq_ref(int cpu)
++unsigned long get_capacity_ref_freq(struct cpufreq_policy *policy)
 +{
-+	return 0;
-+}
-+#endif
++	unsigned int freq = arch_scale_freq_ref(policy->cpu);
 +
- /* the following are really really optional */
- extern struct freq_attr cpufreq_freq_attr_scaling_available_freqs;
- extern struct freq_attr cpufreq_freq_attr_scaling_boost_freqs;
++	if (freq)
++		return freq;
++
++	if (arch_scale_freq_invariant())
++		return policy->cpuinfo.max_freq;
++
++	return policy->cur;
++}
++
+ /**
+  * get_next_freq - Compute a new frequency for a given cpufreq policy.
+  * @sg_policy: schedutil policy object to compute the new frequency for.
+@@ -140,10 +162,10 @@ static unsigned int get_next_freq(struct sugov_policy *sg_policy,
+ 				  unsigned long util, unsigned long max)
+ {
+ 	struct cpufreq_policy *policy = sg_policy->policy;
+-	unsigned int freq = arch_scale_freq_invariant() ?
+-				policy->cpuinfo.max_freq : policy->cur;
++	unsigned int freq;
+ 
+ 	util = map_util_perf(util);
++	freq = get_capacity_ref_freq(policy);
+ 	freq = map_util_freq(util, freq, max);
+ 
+ 	if (freq == sg_policy->cached_raw_freq && !sg_policy->need_freq_update)
 -- 
 2.34.1
 
