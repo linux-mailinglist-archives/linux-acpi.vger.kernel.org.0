@@ -1,160 +1,272 @@
-Return-Path: <linux-acpi+bounces-1074-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1075-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF5D7DA1D3
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 22:34:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED57F7DA39E
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 00:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D7F81C210A0
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 20:34:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 299611C2114E
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 22:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1D83FB01
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 20:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6553FE2A
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Oct 2023 22:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="T2GoiDfU"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nFlv+Yk1";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="k1Rp8X7e"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4795A36AEA;
-	Fri, 27 Oct 2023 19:29:35 +0000 (UTC)
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2082.outbound.protection.outlook.com [40.107.220.82])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAD3AE5;
-	Fri, 27 Oct 2023 12:29:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L1X9hoisDyGuKMd1jesGW8vcnMJ7o/s/nAzH2nxZ0GKVQ8Dsd6J1x9JZWsL+krV8HZ9UodlKfqpiIs3NavhEOnJD6e+keubDM6VdYlpkOZiGMu74mof+oNjfWr+5X4RT5m6NJZVL/KQHbvoZ+7+d800dyggMihlAsQULC7xR52KW9Sj7AMOA7supAN/AoYJHuMkc5fcqFGXP3WRSdN7A2XgfdpG4iQiGdWFXUrolAXgp8ROxSqcagh54xXbzrk++467w2ys1DRMDdtqLFWiehkRddoY0Nw3+eG3g3XRw0XETnNnLPq90/uNTPOBSqHq7pXK2fUJVFoDhKbhfzVlnqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OoVizyMtY2Ru5f5wUScmsX3uS1X1zDrwbb4DoOMZnw0=;
- b=hf4kgwznm5iDkjuU9wysfQrA2L1iA95ZZIPkEwgsnqkymhPf1LmnyRTkftioxLamQI5VD8YyE6xGA51rEKA7tNJZaNS7L3lRRCvCdqtGtU8qReNVqp1NhbVDZ85UeBOQg6j6FTSDVjuWG05aEN8hZCDX4LseuW/b8Jl2UqCFpDucK/WExSsaWZzmSS2m8OPGH/T2ODgkQ8580JsJ0HkObUhmVJJMhnewoohk9C+CrclPej4dGIMmByhNBV4W+XK7upr8F+6hZ9MHuNemzQi3S0IzKSTq2GGtbTCf2pQEsv836FSTSiF31QUPjyl7/8/2zm0RxLrGllAkoBb7GuJ0aw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OoVizyMtY2Ru5f5wUScmsX3uS1X1zDrwbb4DoOMZnw0=;
- b=T2GoiDfUR6VojzxkS83NIyOm+gTA3SUzpxy3RhWLESKxKvuVfT2ElGohMU53HN6ak0ccafELY2G99qxbBq5izwGA8LnrmOKyu9SCbr0gG7LpWiQi3XBRiA0RvBJTj9GLpHDtPpkFpTF8aGH6ZNom6z3ujTXzs2X+Al7CFdky8nw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by MN6PR12MB8514.namprd12.prod.outlook.com (2603:10b6:208:474::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.31; Fri, 27 Oct
- 2023 19:29:30 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::83d7:9c4f:4d9b:1f2a]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::83d7:9c4f:4d9b:1f2a%5]) with mapi id 15.20.6933.024; Fri, 27 Oct 2023
- 19:29:28 +0000
-Message-ID: <de56ddad-ee57-4ff0-b384-522c05e88c91@amd.com>
-Date: Fri, 27 Oct 2023 14:29:24 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] Fixes for s3 with parallel bootup
-Content-Language: en-US
-To: Thomas Gleixner <tglx@linutronix.de>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>,
- "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
- <hpa@zytor.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
- David Woodhouse <dwmw@amazon.co.uk>, Sandipan Das <sandipan.das@amd.com>,
- "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
- "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-kernel@vger.kernel.org>,
- "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>,
- "open list:ACPI" <linux-acpi@vger.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C14F3FB1D;
+	Fri, 27 Oct 2023 21:31:15 +0000 (UTC)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDD431AA;
+	Fri, 27 Oct 2023 14:31:12 -0700 (PDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1698442270;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/3ydkUdxmdu8Q6Xk3rvcibo+LtnkXdHvqYhmoDPKsk0=;
+	b=nFlv+Yk1z3jyLLIFAQyCeF9SWE2sCxPSfuj/MEC+4J6iIOnrUXp45E478PpdIiKQAShYyH
+	qiWbJTMdNqAvI9bF1Sm+VyXNvHuZqReKJAj1X0piZU/jZsjhvmaXuflJNy+nnww75E4BTK
+	8GO4iHybdoqzWBkrjkrIROnID0CDGB9CHRzjqNcB2S+CbK9AlwcEFenUqjpVvT470e1IGu
+	VGvCCxwUlP42vN8rO6AfTyXoeYHZnGUrCSgpoD43/DKPddBtzkbUICdkfY60F/O2STtf8o
+	/9FxpRPa1IZWvDTgyt9U+SsKzd1a7DD/CSSrAPRhJoCws0vKZFQsj9K+vxxu0A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1698442270;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/3ydkUdxmdu8Q6Xk3rvcibo+LtnkXdHvqYhmoDPKsk0=;
+	b=k1Rp8X7eqTciHkSjcLMawHwC8l0e17/+XNPsMe0oHUwLoUOrFYnX+4xCt3ncmOy0sUkbNa
+	oAtD5YRRzDOfKYDg==
+To: Mario Limonciello <mario.limonciello@amd.com>, Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
+ <x86@kernel.org>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>,
+ Namhyung
+ Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>, Adrian Hunter
+ <adrian.hunter@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, "H .
+ Peter Anvin" <hpa@zytor.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Len
+ Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>, David Woodhouse
+ <dwmw@amazon.co.uk>, Sandipan Das <sandipan.das@amd.com>, "open
+ list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
+ "open
+ list:PERFORMANCE EVENTS SUBSYSTEM" <linux-kernel@vger.kernel.org>, "open
+ list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, "open list:ACPI"
+ <linux-acpi@vger.kernel.org>, Mario Limonciello
+ <mario.limonciello@amd.com>
+Subject: Re: [PATCH v2 1/2] x86: Enable x2apic during resume from suspend if
+ used previously
+In-Reply-To: <20231026170330.4657-2-mario.limonciello@amd.com>
 References: <20231026170330.4657-1-mario.limonciello@amd.com>
- <87zg0327i4.ffs@tglx>
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <87zg0327i4.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DM6PR03CA0003.namprd03.prod.outlook.com
- (2603:10b6:5:40::16) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+ <20231026170330.4657-2-mario.limonciello@amd.com>
+Date: Fri, 27 Oct 2023 23:31:09 +0200
+Message-ID: <87wmv721nm.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|MN6PR12MB8514:EE_
-X-MS-Office365-Filtering-Correlation-Id: bf6247f3-c09b-454d-9ae7-08dbd723091a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	LgnB5Id12XBw9iRaNkPZQe0dbZu28flyG5wWPZgB017MH+blTSHQscbf4rEnidgEdm2Mt1iKsgTpyvJAaftLJVtAWP4huROBn/rmP5uZXGRE8Av2XL+gccqLWgs7/aBniL/TliPU+E425KwkYpnmWYrQengKliNGA3diK/ZXfKzme3rlmW0wIzHqrq7lMMkIsfvUqwFYsp1jl2BDoCZjGtQRBN27skTxMbDHP6QGDB+oZZ/Sgqncl6sv5URGPDDMyUrjGmBqiaUXH8frw/D89TswnlFQxV1eM2+WblVZyjd73ttWd28rvmGnX5IVxUzBVqZewdENu5f6sjpReu1qxBfI7PwAw7EqbUJnlmhyYBx6UI3bYG4ArNEuMSZiZCfupcqV/5ILsQ8+sDcwaWyDMSiBtnLi6JggO5GLN9WW7aYWGEWwNXCKFooFsu4VtcXEoPqKnvY+1zUwAcvcV8JbH+mIiGNLaxrapBGeiTDpAR8xUuxoSDQVkfb5JuboV/LtlH3Fnjkri/a5HHY3YghHEMGF/C0mN5yCRk3SpcOMI8Yj01B64BjHOEFJ+z+AgKLF5ZLXw09B3ZxTzvq3xP5H+nuRcFhJhILGcAA7cdhm9fJMvP8InjB6tb3JrlXak4TXzMz5NYgDxtp30jT0Bhoe3Q==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(376002)(346002)(39860400002)(396003)(230922051799003)(451199024)(64100799003)(186009)(1800799009)(8936002)(44832011)(8676002)(2906002)(41300700001)(4326008)(4744005)(7416002)(5660300002)(6486002)(26005)(2616005)(6666004)(36756003)(53546011)(6512007)(6506007)(38100700002)(31686004)(83380400001)(66946007)(31696002)(54906003)(316002)(110136005)(66476007)(86362001)(66556008)(478600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QXE1RGRmaXB0eERRWEU0djhiL3JMRWFXV09GLzlzSUwzMS9uWDhuVkNOTWV1?=
- =?utf-8?B?U1pXT0tVd2dJaW00aFZsQmpNbnJBQTcxUUIwNGRuMVJmYTR0UkZXMkhwT0FY?=
- =?utf-8?B?V1E2UmxhOEFKQkdoOEd5aU14U2M4Z05GZmNvZlAzMEJWWkxwdTBQYjRYWDQ3?=
- =?utf-8?B?Q0ZTRUlBS0VSdFoxbkltZkhPL2VTYnJYdUo0dHA2dElvQS8wR1FicHBHNXE4?=
- =?utf-8?B?Y1hQdWhFS0ZjMTZHT3VDYWtRVFQ5bFVQRm5nR2I0dm9yeUxRbDZFYWdad3pw?=
- =?utf-8?B?MGlZQ01pWFpDeUJ2MFhkbTIxczlpL05zSzNGblo3d0dFYXpQTEdmNFhJSzdI?=
- =?utf-8?B?QnVHYlErMUFrRDJZWFZoOG1YVkUwQ2VtMVlYUEo5d2NkZXBUYzl4NlA2dVFD?=
- =?utf-8?B?QUlqcDQzOVdCUXY1T2pHRWhzeUZZMXpSeWwyS1lMYnJLbEN2TGJJaEpJYTdB?=
- =?utf-8?B?T1k3Z2I1Yko1NWlZdnVxa3ZkZUhFNHNGcFFHTHlhU1ROd3NMMlAxV2dHQnN2?=
- =?utf-8?B?OVplU1FRaEpQeE5mMC84S293YUZLN1l4SEIxYjAycjJjblZJNDB3VG9hVWJT?=
- =?utf-8?B?WkZyc2RTbjdBaUdvQzBqdms0SUR4R29oakkwVEVxNXQyVFJWSmNMc1J3b2Vu?=
- =?utf-8?B?TXJpSGcwWkRkSjZZODNhKzZ0OThCNlRIdy92cURiMndYL3J2b0pXU3pLUXBV?=
- =?utf-8?B?Y0czY1RkUUJEQzVKMTJmZm1YU0doWXBwQkdiTWh4QktsQnVTWnNub3Z6YjZj?=
- =?utf-8?B?NmpObFZDVVRaVW8zcUNxQUVQWVZqYm1tOXpwR2t1SU9vdFlvUDM2NFNUUDNm?=
- =?utf-8?B?LzBlVmd5MXFMcXZ3TUx3TTF2ZFovRE5PSkdmUElEMFRsVVBrRlJiWUpKMGli?=
- =?utf-8?B?Q25xV00rZUtEOTRqSktlUXpMa1Jpc0hDVTgzUGpycEJBRjdEbEUva0h4aGU5?=
- =?utf-8?B?NTJOSEphanh0RUlRdkY4R1A2K1JlWUUyT3hwV0R1d3RwMzdSV1ZMNWNyUWRX?=
- =?utf-8?B?bmk2dXVpS1JWSGx3TVdzTXRHKzE0MUF4VjQ2UVVhTkxiZEdveVhTbTFZUGJJ?=
- =?utf-8?B?c0VpUWQzeFVQNXRMMVdOMGJXQ3JTMjgzRi9WYlNNTGd1a0RDN2RvQlJOL0lk?=
- =?utf-8?B?elYzVDJmdVNXOFpKc2tFQzRpWUsyeFRENU9MMkhCUkRKbExOT2dQeEM4Mkhn?=
- =?utf-8?B?Qlp4QWpiaG5OdE5LWHUxd0swaFhOdDgzTkpOckx5QkhuV2JlcDhCanJ5VFRy?=
- =?utf-8?B?NjJCeExTUkhkYVA4Yzc2a1Z5Vlg5SFg0UjZvdy9VUlNkY2tPbWRRT2czT1pJ?=
- =?utf-8?B?ZHk1Mk1UazIvT1IyV3hpTTJRMThZSVc1YU5aenpnMVA2NUVJcThwaFBBam0w?=
- =?utf-8?B?b3Zsb3kzOGFqK2RzQjU5WmVieEVNRjF0dlY0TDhNbzhtMVA1dHQzTUI2TWNJ?=
- =?utf-8?B?OFVqMVRZMDMvbU5UR2RreUY4T1FoenFTOWpCbXpvbEtHUzQ3UlJocUxMSUdx?=
- =?utf-8?B?cGtKQWoyTGFWVU5CbFpWRzBmVkVaM0d6ZldVYkRjMmFvZ2RoSWp2cDRMYlp0?=
- =?utf-8?B?NjkrOW9LQVZOdUw2eUJ2cjNPKzJZUTNlMUtYd3M5bUJCZjZCT3Q5NXFUeW82?=
- =?utf-8?B?M1R1ZWRJS1ZlSzhSTCt0QlFnaGxZcThENkxMaW9Vd2FaTVpCRkdpdDh1RXlH?=
- =?utf-8?B?Vmc2c2hlSVhFMUFYTFVPOVZyK2N5b0RjQ1ZieDBtT24vSFRJcjFhMWNuLzVN?=
- =?utf-8?B?S3Q5SENEajRwUUhwWExVWUFDYVBXQTY0VkFBblhNNk85c2lZQk1QT3FwR0NV?=
- =?utf-8?B?bUFCeWZYeEZ4dHd4RHdOVU9TWWRDSUFaenAveEZ4TGdyWkhLTUNEZUp0anE3?=
- =?utf-8?B?RVMvSlBQcFFOd25XZ0pXS0UydmxtYWZrMElQUzZNQ2x2czBNVUZLTmFYdFJD?=
- =?utf-8?B?c1JaK0ZsNC9EQWlPWjJ0VDlCNmd4Z1NHUHQ0Mk13SGF4cmFKcy9rTURHUmY1?=
- =?utf-8?B?S3dlSnFMOTQvdXdoVmNaU0dUVVFIV01IOWpYOUc5SVVrVThwM2JSaWpERmR2?=
- =?utf-8?B?TmFsTzFoMGlkRU9NRUNwenJUeFMzYW9FR1lpZVllS1Zha05lZm94dWR4N3F2?=
- =?utf-8?Q?N5Q8VIDipS9dNMp1k+f8ypUEH?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf6247f3-c09b-454d-9ae7-08dbd723091a
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2023 19:29:28.1398
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5hEhsVnVAd1/rfxa5mBaUxxcfeAw3lEPr8i/k/FGNSJuxDXV+hMF30ISLmUx97gGerbO4sPzwa3y3DEDDI/H4g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8514
+Content-Type: text/plain
 
-On 10/27/2023 14:24, Thomas Gleixner wrote:
-> On Thu, Oct 26 2023 at 12:03, Mario Limonciello wrote:
->> Parallel bootup on systems that use x2apic broke suspend to ram.
->> This series ensures x2apic is re-enabled at startup and fixes an exposed
->> pre-emption issue.
-> 
-> The PMU issue has absolutely nothing to do with parallel bootup.
-> 
-> Can you please describe stuff coherently?
+Mario!
 
-They are both issues found with S3 testing.
-The PMU issue wasn't being observed with cpuhp.parallel=0.
+On Thu, Oct 26 2023 at 12:03, Mario Limonciello wrote:
+
+> If x2apic was enabled during boot with parallel startup
+> it will be needed during resume from suspend to ram as well.
+
+Lacks an explanation why it is needed.
+
+> Store whether to enable into the smpboot_control global variable
+> and during startup re-enable it if necessary.
+>
+> This fixes resume from suspend on workstation CPUs with x2apic
+> enabled.
+
+You completely fail to describe the failure mode.
+
+> It will also work on systems with one maxcpus=1 but still using
+> x2apic since x2apic is also re-enabled in lapic_resume().
+
+This sentence makes no sense. What's so special about maxcpus=1?
+
+Absolutely nothing.
+
+lapic_resume() is a syscore op and is always invoked on the CPU which
+handles suspend/resume. The point is that __x2apic_enable() which is
+invoked from there becomes a NOOP because X2APIC is already enabled.
+
+So what are you trying to tell me?
+
+I really appreciate your enthusiasm of chasing and fixing bugs, but your
+change logs and explanations are really making it hard to keep that
+appreciation up.
+
+>  	/*
+> -	 * Ensure the CPU knows which one it is when it comes back, if
+> -	 * it isn't in parallel mode and expected to work that out for
+> -	 * itself.
+> +	 * Ensure x2apic is re-enabled if necessary and the CPU knows which
+> +	 * one it is when it comes back, if it isn't in parallel mode and
+> +	 * expected to work that out for itself.
+
+The x2apic comment is misplaced. It should be above the x2apic
+conditional as it has nothing to do with the initial condition because
+even if X2APIC is enabled then the parallel startup might be disabled.
+
+Go and read this comment 3 month from now and try to make sense of it.
+
+>  	 */
+> -	if (!(smpboot_control & STARTUP_PARALLEL_MASK))
+> +	if (smpboot_control & STARTUP_PARALLEL_MASK) {
+> +		if (x2apic_enabled())
+> +			smpboot_control |= STARTUP_ENABLE_X2APIC;
+
+This bit is sticky after resume, so any subsequent CPU hotplug operation
+will see it as well.
+
+This lacks an explanation why this is correct and why this flag is not
+set early during boot before the APs are brought up.
+
+> +	} else {
+>  		smpboot_control = smp_processor_id();
+> +	}
+>  #endif
+>  	initial_code = (unsigned long)wakeup_long64;
+>  	saved_magic = 0x123456789abcdef0L;
+> diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
+> index ea6995920b7a..300901af9fa3 100644
+> --- a/arch/x86/kernel/head_64.S
+> +++ b/arch/x86/kernel/head_64.S
+> @@ -237,9 +237,14 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
+>  	 * CPU number is encoded in smpboot_control.
+>  	 *
+>  	 * Bit 31	STARTUP_READ_APICID (Read APICID from APIC)
+> +	 * Bit 30	STARTUP_ENABLE_X2APIC (Enable X2APIC mode)
+>  	 * Bit 0-23	CPU# if STARTUP_xx flags are not set
+>  	 */
+>  	movl	smpboot_control(%rip), %ecx
+> +
+> +	testl	$STARTUP_ENABLE_X2APIC, %ecx
+> +	jnz	.Lenable_x2apic
+
+Why is this tested here? The test clearly belongs into .Lread_apicid
+
+> +
+>  	testl	$STARTUP_READ_APICID, %ecx
+>  	jnz	.Lread_apicid
+>  	/*
+> @@ -249,6 +254,16 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
+>  	andl	$(~STARTUP_PARALLEL_MASK), %ecx
+>  	jmp	.Lsetup_cpu
+>  
+> +.Lenable_x2apic:
+> +	/* Enable X2APIC if disabled */
+> +	mov	$MSR_IA32_APICBASE, %ecx
+> +	rdmsr
+> +	testl	$X2APIC_ENABLE, %eax
+> +	jnz	.Lread_apicid_msr
+> +	orl	$X2APIC_ENABLE, %eax
+> +	wrmsr
+> +	jmp	.Lread_apicid_msr
+
+And this part just moves in front of .Lread_apicid_msr and spares
+the jump at the end.
+
+>  .Lread_apicid:
+>  	/* Check whether X2APIC mode is already enabled */
+>  	mov	$MSR_IA32_APICBASE, %ecx
+
+That aside, I'm still failing to see the actual failure scenario due to
+the utter void in the change log.
+
+The kernel has two mechanisms which end up with X2APIC enabled:
+
+    1) BIOS has it enabled already, which is required for any machine
+       which has more than 255 CPUs, but BIOS can decide to enable
+       X2APIC even with less than 256 CPUs.
+
+    2) BIOS has not enabled it, but the kernel enables it because the
+       CPU supports it.
+
+The major difference is:
+
+    #1 prevents the MMIO fixmap for the APIC to be installed
+
+    #2 installs the fixmap but does not use it. It's never torn down.
+
+Let's look at these two cases in the light of resume:
+
+    #1 If the BIOS enabled X2APIC mode then the only way how this can
+       fail on resume is that the BIOS did not enable X2APIC mode in the
+       resume path before going back into the kernel and due to the
+       non-existent MMIO mapping there is no way to read the APIC ID.
+
+    #2 It does not matter whether the BIOS enabled X2APIC mode during
+       resume because the MMIO mapping exists and the APIC ID read via
+       MMIO should be identical to the APIC ID read via the X2APIC MSR.
+
+       If not, then there is something fundamentally wrong.
+
+How is this working during the initial bringup of the APs?
+
+    #1 If the APs do not have X2APIC enabled by the BIOS then they will
+       crash and burn during bringup due to non-existent MMIO mapping.
+
+    #2 The APs can read their APIC ID just fine via MMIO and it
+       obviously is the same as the APIC ID after the bringup enabled
+       X2APIC mode. Otherwise the kernel would not work at all.
+
+So the only reasonable explanation for the failure is that the BIOS
+fails to reenable X2APIC mode on resume either on the CPU which handles
+suspend/resume or on the subsequent AP bringups, which is not clear at
+all due to the bit being sticky and the changelog being full of void in
+that aspect.
+
+That said the sticky bit is wrong for the following case with older CPUs
+where X2APIC requires up to date microcode loaded to work correctly:
+
+    boot maxcpus=4
+      load microcode    // Same sequence applies for AP (CPU1-3)
+      enable x2apic
+    suspend
+       set X2APIC enable bit in smpboot_control
+    resume
+    bringup CPU4
+       enable X2APIC early --> fail due to lack of microcode fix
+
+Whether this affects the APIC ID readout or not, which we don't know and
+even if we consider this case to be academic, it's still fundamentally
+wrong from a correctness point of view.
+
+So without proper information about the failure scenario this "fix" is
+simply going nowhere.
+
+Please provide the following information:
+
+  - dmesg of the initial boot up to 'smp: Bringing up secondary CPUs ...'
+
+  - A proper description of the failure case:
+
+    - Is the CPU which handles suspend/resume failing?
+
+    - Is a subsequent AP bringup failing?
+
+    - Is the failure due to the lack of MMIO mapping ?
+
+    - Is the failure due to a bogus APIC ID retrieved via MMIO ?
+
+Thanks for making me do your homework (again),
+
+        tglx
 
