@@ -1,155 +1,123 @@
-Return-Path: <linux-acpi+bounces-1082-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1083-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E317DA788
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 16:30:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0617DA789
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 16:30:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72E261F21B5D
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 14:30:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D79251C20953
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 14:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F112415AF5
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 14:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4411B15AE0
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 14:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MmLn3CPZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GFDls51T"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7418C14A8B
-	for <linux-acpi@vger.kernel.org>; Sat, 28 Oct 2023 13:22:29 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD630E1;
-	Sat, 28 Oct 2023 06:22:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698499347; x=1730035347;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=AfsX+28wvpVYVI/uJyU0Y1wu5/EAzRfsS6SGbjeDVSE=;
-  b=MmLn3CPZH314QLd5H0S+nHtkAGYEzfAMooxPdq/n89M1s4lHXPuQPbt6
-   0GhCVoMZq12z5LRGZ4Aae0TmvG8PeAzWvzqGwi79+326nngoX9J8fcYvV
-   eV+lpIygDYYLaROTbAvb1afy/iplTEVhoe976H8yaTQHXa5mf9fO+DZ5J
-   7RQaFp+/3LJ6wNkTXusnA1SHiN0HbnBNM3AX/yFW42BHplJB/AzdGuWva
-   Jq2keb1AZ4X/yevuFdplgnOOClaoXhO9KLpIqapEA5VMpFFnxUf5Mb+2A
-   xHVie1e91zK+OxSfMfpBlejk9JAJSo4CiB+XFE3GC9w1MCkyoWAEOWibb
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="368112763"
-X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
-   d="scan'208";a="368112763"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2023 06:22:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="850512765"
-X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
-   d="scan'208";a="850512765"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 28 Oct 2023 06:22:23 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qwjGf-000Blf-0j;
-	Sat, 28 Oct 2023 13:22:21 +0000
-Date: Sat, 28 Oct 2023 21:22:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
-	linux-arm-kernel@lists.infradead.org, suzuki.poulose@arm.com
-Cc: oe-kbuild-all@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@arm.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	coresight@lists.linaro.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 6/7] coresight: stm: Move ACPI support from AMBA driver
- to platform driver
-Message-ID: <202310282130.HCHZyX0e-lkp@intel.com>
-References: <20231027072943.3418997-7-anshuman.khandual@arm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503653C1E
+	for <linux-acpi@vger.kernel.org>; Sat, 28 Oct 2023 13:29:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9D1C433C8;
+	Sat, 28 Oct 2023 13:29:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1698499778;
+	bh=8RXh2aFylTuzoVvc1UQlM5Tnfa7kR2L84Y9RykvcTeU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GFDls51THlOnX8IHTzgerW1wf/WkL5ccDGiCRFxEIxnOefDYWExV6v6vE43SceprT
+	 vz2ZkRTLZqeN8ah18h3wn36L+HTTv0Du7qSXf4rCPxdjaZi+OREcU2sD2Cn2xy/t1M
+	 eHQDlUV6+F8btTr0pQgFXIJQEq9Lc4qsQbL5cNGvaVsaxSRcIk42K8STRWWnCx/w0y
+	 DpjAIpUo2hExtMZ5UUAbJ88xcyCjeKD6VlaF6/NNyzxAsCGBNqqim9M3Cb5FImuvvr
+	 hmVjUy481aRETdi4xsT1Ks7XEuip2QxIrrZuvt82lgDDGnqZlJXv5wCw/awjLHUcNp
+	 f/Xc55RySQ0WQ==
+Date: Sat, 28 Oct 2023 15:29:34 +0200
+From: Wolfram Sang <wsa@kernel.org>
+To: Jean Delvare <jdelvare@suse.de>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	"Wilczynski, Michal" <michal.wilczynski@intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>, Len Brown <lenb@kernel.org>,
+	linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 2/2] i2c: i801: Use new helper acpi_use_parent_companion
+Message-ID: <ZT0MviEHw702E2fG@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+	Jean Delvare <jdelvare@suse.de>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	"Wilczynski, Michal" <michal.wilczynski@intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>, Len Brown <lenb@kernel.org>,
+	linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
+References: <90bd1071-317e-4dfe-b94b-9bcee15d66c5@gmail.com>
+ <6e935761-5b36-411a-ac82-cbc394bba7b6@gmail.com>
+ <206f0f25-8a83-4e53-89fd-cbe025e5798d@gmail.com>
+ <66418e44-6862-4555-9280-2633ffb34d23@intel.com>
+ <CAJZ5v0hfSZCgoW1mq=jeqjMBtsr=6JJaG8OWfUkAW80KF509Nw@mail.gmail.com>
+ <e86fb57b-afc6-478b-9a9d-543b87bc8d3d@gmail.com>
+ <20231024150917.79736389@endymion.delvare>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rbW9D1EQYzCInJLn"
+Content-Disposition: inline
+In-Reply-To: <20231024150917.79736389@endymion.delvare>
+
+
+--rbW9D1EQYzCInJLn
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231027072943.3418997-7-anshuman.khandual@arm.com>
-
-Hi Anshuman,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on rafael-pm/acpi-bus soc/for-next atorgue-stm32/stm32-next linus/master v6.6-rc7 next-20231027]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Anshuman-Khandual/coresight-replicator-Move-ACPI-support-from-AMBA-driver-to-platform-driver/20231027-153540
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20231027072943.3418997-7-anshuman.khandual%40arm.com
-patch subject: [PATCH 6/7] coresight: stm: Move ACPI support from AMBA driver to platform driver
-config: arm-randconfig-003-20231028 (https://download.01.org/0day-ci/archive/20231028/202310282130.HCHZyX0e-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231028/202310282130.HCHZyX0e-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310282130.HCHZyX0e-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/hwtracing/coresight/coresight-stm.c:151: warning: Function parameter or member 'pclk' not described in 'stm_drvdata'
+Content-Transfer-Encoding: quoted-printable
 
 
-vim +151 drivers/hwtracing/coresight/coresight-stm.c
+> > >> I think this case is a bit too trivial for a helper, it's one line b=
+efore, and
+> > >> one line after, so it doesn't really save much. =20
+>=20
+> I must say I share Michal's skepticism.
 
-0f5f9b6ba9e1a7 Suzuki K Poulose  2019-06-19  115  
-237483aa5cf431 Pratik Patel      2016-05-03  116  /**
-237483aa5cf431 Pratik Patel      2016-05-03  117   * struct stm_drvdata - specifics associated to an STM component
-237483aa5cf431 Pratik Patel      2016-05-03  118   * @base:		memory mapped base address for this component.
-237483aa5cf431 Pratik Patel      2016-05-03  119   * @atclk:		optional clock for the core parts of the STM.
-237483aa5cf431 Pratik Patel      2016-05-03  120   * @csdev:		component vitals needed by the framework.
-237483aa5cf431 Pratik Patel      2016-05-03  121   * @spinlock:		only one at a time pls.
-237483aa5cf431 Pratik Patel      2016-05-03  122   * @chs:		the channels accociated to this STM.
-237483aa5cf431 Pratik Patel      2016-05-03  123   * @stm:		structure associated to the generic STM interface.
-9fa3682869d4e1 James Clark       2023-04-25  124   * @mode:		this tracer's mode (enum cs_mode), i.e sysFS, or disabled.
-237483aa5cf431 Pratik Patel      2016-05-03  125   * @traceid:		value of the current ID for this component.
-237483aa5cf431 Pratik Patel      2016-05-03  126   * @write_bytes:	Maximus bytes this STM can write at a time.
-237483aa5cf431 Pratik Patel      2016-05-03  127   * @stmsper:		settings for register STMSPER.
-237483aa5cf431 Pratik Patel      2016-05-03  128   * @stmspscr:		settings for register STMSPSCR.
-237483aa5cf431 Pratik Patel      2016-05-03  129   * @numsp:		the total number of stimulus port support by this STM.
-237483aa5cf431 Pratik Patel      2016-05-03  130   * @stmheer:		settings for register STMHEER.
-237483aa5cf431 Pratik Patel      2016-05-03  131   * @stmheter:		settings for register STMHETER.
-237483aa5cf431 Pratik Patel      2016-05-03  132   * @stmhebsr:		settings for register STMHEBSR.
-237483aa5cf431 Pratik Patel      2016-05-03  133   */
-237483aa5cf431 Pratik Patel      2016-05-03  134  struct stm_drvdata {
-237483aa5cf431 Pratik Patel      2016-05-03  135  	void __iomem		*base;
-237483aa5cf431 Pratik Patel      2016-05-03  136  	struct clk		*atclk;
-ec77ffb6c05951 Anshuman Khandual 2023-10-27  137  	struct clk		*pclk;
-237483aa5cf431 Pratik Patel      2016-05-03  138  	struct coresight_device	*csdev;
-237483aa5cf431 Pratik Patel      2016-05-03  139  	spinlock_t		spinlock;
-237483aa5cf431 Pratik Patel      2016-05-03  140  	struct channel_space	chs;
-237483aa5cf431 Pratik Patel      2016-05-03  141  	struct stm_data		stm;
-237483aa5cf431 Pratik Patel      2016-05-03  142  	local_t			mode;
-237483aa5cf431 Pratik Patel      2016-05-03  143  	u8			traceid;
-237483aa5cf431 Pratik Patel      2016-05-03  144  	u32			write_bytes;
-237483aa5cf431 Pratik Patel      2016-05-03  145  	u32			stmsper;
-237483aa5cf431 Pratik Patel      2016-05-03  146  	u32			stmspscr;
-237483aa5cf431 Pratik Patel      2016-05-03  147  	u32			numsp;
-237483aa5cf431 Pratik Patel      2016-05-03  148  	u32			stmheer;
-237483aa5cf431 Pratik Patel      2016-05-03  149  	u32			stmheter;
-237483aa5cf431 Pratik Patel      2016-05-03  150  	u32			stmhebsr;
-237483aa5cf431 Pratik Patel      2016-05-03 @151  };
-237483aa5cf431 Pratik Patel      2016-05-03  152  
+Because Rafael likes it, I will pick it up.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> > > If this pattern is repeated in multiple places, the helper makes sens=
+e IMO.
+> >=20
+> > I didn't check each usage in detail, but this should be the places wher=
+e the new
+> > helper can be used.
+> > Another advantage IMO is that the helper, being a function instead of a=
+ macro,
+> > is type-safe.
+>=20
+> If type safety is a concern then I'd rather turn ACPI_COMPANION_SET to
+> an inline function (which would make more sense than a macro anyway
+> IMHO, as it has an intended side effect).
+
+I guess this can still be done seperately?
+
+
+--rbW9D1EQYzCInJLn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmU9DLoACgkQFA3kzBSg
+KbYLSw//aDHPIhFN2A1ShKh+UNGEHL1X7IQelssgW8wVosgJM080LegzsAT9vTV4
+KG6krX2uo0oRHzV38LnN6sjNDUsJZWTO+822lO1QMyN1pK4q8fb3Z2+lIKDCada2
+FTLVdVKL8vEep7G4iL22n2KDGsRng3l65J6UB34yBXXAsHB+J7d4p0EOrR99Yq6r
+GrTACc3yfpUo9V1tdnbmnaIeS0A35DnN2eufR5vc2wnChhoGYt8cjBrwsswgWDBQ
+S4t7zaRY1PDvEQ4RadUWoCql0CNpCLrqXvFC+sv39BmGaVd5e2ixwE7wibHHDMok
+hMBKYJvNI7YO2U1Ttz4ELCnKiBgr3SaE89qhQLyPVh18MMPV9Qcc4UCg8ZyjMKBA
+648GR+RnYAeLuHSE6bEbL6QU/PkKCW9HFGklHTotfB8LyeIBKKjo3NsWQxjsE9G5
+EbOZN6LsUXuhFovuoAtReXsfPSJYsHkqBhgzO8wHBVW0vJJulDxdJYjS8OG8RuO7
+MXv8PvFQrgzMZRjhMjOziVr0a5cbIxFZW4AL5eiPMafFVqH9C/Gipro6fqe9hnJQ
+1o0thMM4Ch2kcKTtwPh0I5nzWnq8hkV5SxH2NP0kFDsdFLX8ZKzijw+nV0OwFrdl
+NMBCbS3/fbUhZxsF2tkCsbn5K5f+O5Czwwt2sWZUupoctuzLqyA=
+=M2U9
+-----END PGP SIGNATURE-----
+
+--rbW9D1EQYzCInJLn--
 
