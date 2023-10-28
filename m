@@ -1,103 +1,155 @@
-Return-Path: <linux-acpi+bounces-1081-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1082-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462117DA6FA
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 14:31:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E317DA788
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 16:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FF5C1C20978
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 12:31:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72E261F21B5D
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 14:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91C38C1F
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 12:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F112415AF5
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 14:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="VtY4ftls"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MmLn3CPZ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C297FBF8;
-	Sat, 28 Oct 2023 11:06:30 +0000 (UTC)
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC960C0;
-	Sat, 28 Oct 2023 04:06:28 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6F82140E0171;
-	Sat, 28 Oct 2023 11:06:26 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id kPqXeTtDDo9z; Sat, 28 Oct 2023 11:06:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1698491183; bh=EHjBb96lcMnmWWDcbNaD4wXBmqS+NphkqDuHPnHecec=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VtY4ftls8QE2bTI6UlkII5vgHpZDr946Z5wLzVI4b+EqGpZX0QOrAdqXl6GuXlsoR
-	 xYA9/F6VbaKNNhUnuKA1aI6JSePqlZrm5v9k5xoGAm40uKreUPU6WM4VTxT5Ee2nz2
-	 hFmaeo0wKpYxzoE1o3/beUTixBnskz0v+rbE6cbUAsmVFWouQ3bEykTm3MXuxGFBVG
-	 iLyHGhsQMDgS9oJ+LQ6B38Hj6iGJMM/s5LiDescjhj0kn1F+ChxNjskhu4jKjtbDnl
-	 oDoAtjt6/vvF8qPRU/NgZ7ctWREEX+OcHY3U44MbzFxDHX/0MW8I2RIVsQElTIqLju
-	 zljXPpWDJS3fRMGSkFA8MBxCpJuji8yaWvRuwHR3fByzDda2UmesgxA8DAwc0fck7J
-	 /9rs62sWTn6AsGQ4914uT3dHZP2j+KLbNCDyf2P8wtvev2Ibn1hrnP9g5GcOr6l7f8
-	 MUAYbyh0JNdr7HaREza30ZChjyVNUAI+cBWa5zFWPxsjuLgOoEqfvCa/pj/BHkXJNW
-	 CYJuySDFXF3Pk1grJBBoxYWgfTqA0aIOtfTqi5fE2Pka6Jv5Z0S0X5xElWXqG6bCPY
-	 M6en9OhQ8CAntqGN9GEorQrtCV8JovYdU6uBIHc5Wl899IK+vuILYrFLVh2ugmzfIk
-	 72ZKBG9OsUn4VrOTbzVR0Fis=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5F7E640E018F;
-	Sat, 28 Oct 2023 11:06:10 +0000 (UTC)
-Date: Sat, 28 Oct 2023 13:06:04 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Jeshua Smith <jeshuas@nvidia.com>
-Cc: keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
-	rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7418C14A8B
+	for <linux-acpi@vger.kernel.org>; Sat, 28 Oct 2023 13:22:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD630E1;
+	Sat, 28 Oct 2023 06:22:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698499347; x=1730035347;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=AfsX+28wvpVYVI/uJyU0Y1wu5/EAzRfsS6SGbjeDVSE=;
+  b=MmLn3CPZH314QLd5H0S+nHtkAGYEzfAMooxPdq/n89M1s4lHXPuQPbt6
+   0GhCVoMZq12z5LRGZ4Aae0TmvG8PeAzWvzqGwi79+326nngoX9J8fcYvV
+   eV+lpIygDYYLaROTbAvb1afy/iplTEVhoe976H8yaTQHXa5mf9fO+DZ5J
+   7RQaFp+/3LJ6wNkTXusnA1SHiN0HbnBNM3AX/yFW42BHplJB/AzdGuWva
+   Jq2keb1AZ4X/yevuFdplgnOOClaoXhO9KLpIqapEA5VMpFFnxUf5Mb+2A
+   xHVie1e91zK+OxSfMfpBlejk9JAJSo4CiB+XFE3GC9w1MCkyoWAEOWibb
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="368112763"
+X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
+   d="scan'208";a="368112763"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2023 06:22:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="850512765"
+X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
+   d="scan'208";a="850512765"
+Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 28 Oct 2023 06:22:23 -0700
+Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qwjGf-000Blf-0j;
+	Sat, 28 Oct 2023 13:22:21 +0000
+Date: Sat, 28 Oct 2023 21:22:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+	linux-arm-kernel@lists.infradead.org, suzuki.poulose@arm.com
+Cc: oe-kbuild-all@lists.linux.dev,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@arm.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-tegra@vger.kernel.org,
-	treding@nvidia.com, jonathanh@nvidia.com
-Subject: Re: [PATCH V3] ACPI: APEI: Use ERST timeout for slow devices
-Message-ID: <20231028110604.GCZTzrHKnsDB+Dmljr@fat_crate.local>
-References: <20231027223309.22883-1-jeshuas@nvidia.com>
+	coresight@lists.linaro.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 6/7] coresight: stm: Move ACPI support from AMBA driver
+ to platform driver
+Message-ID: <202310282130.HCHZyX0e-lkp@intel.com>
+References: <20231027072943.3418997-7-anshuman.khandual@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231027223309.22883-1-jeshuas@nvidia.com>
+In-Reply-To: <20231027072943.3418997-7-anshuman.khandual@arm.com>
 
-On Fri, Oct 27, 2023 at 10:33:09PM +0000, Jeshua Smith wrote:
-> Slow devices such as flash may not meet the default 1ms timeout value,
-> so use the ERST max execution time value as the timeout if it is larger
-> and if the ERST has the "slow" attribute set.
-> 
-> Example:
-> A NOR flash spec lists "Page program time (256 bytes)" as 120us typical,
-> and 1800us max. A 32KB error log would be (32K/256) = 128 nor-flash
-> pages. Writing those 128 nor-flash pages would then take
-> 120us * 128 = 15ms typical, or 1800us * 128 = 230.4ms max.
-> 
-> Without this change, when pstore calls APEI's ERST code to write a 32KB
-> error log to the NOR flash in the example, the code will flag a timeout
-> after 1ms and return an error to pstore. With this change, unless the
-> max time value from the ERST table is exceeded, the code will not flag a
-> timeout and will return success to pstore after the operation completes.
-> 
-> Signed-off-by: Jeshua Smith <jeshuas@nvidia.com>
-> ---
+Hi Anshuman,
 
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on rafael-pm/acpi-bus soc/for-next atorgue-stm32/stm32-next linus/master v6.6-rc7 next-20231027]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Anshuman-Khandual/coresight-replicator-Move-ACPI-support-from-AMBA-driver-to-platform-driver/20231027-153540
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20231027072943.3418997-7-anshuman.khandual%40arm.com
+patch subject: [PATCH 6/7] coresight: stm: Move ACPI support from AMBA driver to platform driver
+config: arm-randconfig-003-20231028 (https://download.01.org/0day-ci/archive/20231028/202310282130.HCHZyX0e-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231028/202310282130.HCHZyX0e-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310282130.HCHZyX0e-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/hwtracing/coresight/coresight-stm.c:151: warning: Function parameter or member 'pclk' not described in 'stm_drvdata'
+
+
+vim +151 drivers/hwtracing/coresight/coresight-stm.c
+
+0f5f9b6ba9e1a7 Suzuki K Poulose  2019-06-19  115  
+237483aa5cf431 Pratik Patel      2016-05-03  116  /**
+237483aa5cf431 Pratik Patel      2016-05-03  117   * struct stm_drvdata - specifics associated to an STM component
+237483aa5cf431 Pratik Patel      2016-05-03  118   * @base:		memory mapped base address for this component.
+237483aa5cf431 Pratik Patel      2016-05-03  119   * @atclk:		optional clock for the core parts of the STM.
+237483aa5cf431 Pratik Patel      2016-05-03  120   * @csdev:		component vitals needed by the framework.
+237483aa5cf431 Pratik Patel      2016-05-03  121   * @spinlock:		only one at a time pls.
+237483aa5cf431 Pratik Patel      2016-05-03  122   * @chs:		the channels accociated to this STM.
+237483aa5cf431 Pratik Patel      2016-05-03  123   * @stm:		structure associated to the generic STM interface.
+9fa3682869d4e1 James Clark       2023-04-25  124   * @mode:		this tracer's mode (enum cs_mode), i.e sysFS, or disabled.
+237483aa5cf431 Pratik Patel      2016-05-03  125   * @traceid:		value of the current ID for this component.
+237483aa5cf431 Pratik Patel      2016-05-03  126   * @write_bytes:	Maximus bytes this STM can write at a time.
+237483aa5cf431 Pratik Patel      2016-05-03  127   * @stmsper:		settings for register STMSPER.
+237483aa5cf431 Pratik Patel      2016-05-03  128   * @stmspscr:		settings for register STMSPSCR.
+237483aa5cf431 Pratik Patel      2016-05-03  129   * @numsp:		the total number of stimulus port support by this STM.
+237483aa5cf431 Pratik Patel      2016-05-03  130   * @stmheer:		settings for register STMHEER.
+237483aa5cf431 Pratik Patel      2016-05-03  131   * @stmheter:		settings for register STMHETER.
+237483aa5cf431 Pratik Patel      2016-05-03  132   * @stmhebsr:		settings for register STMHEBSR.
+237483aa5cf431 Pratik Patel      2016-05-03  133   */
+237483aa5cf431 Pratik Patel      2016-05-03  134  struct stm_drvdata {
+237483aa5cf431 Pratik Patel      2016-05-03  135  	void __iomem		*base;
+237483aa5cf431 Pratik Patel      2016-05-03  136  	struct clk		*atclk;
+ec77ffb6c05951 Anshuman Khandual 2023-10-27  137  	struct clk		*pclk;
+237483aa5cf431 Pratik Patel      2016-05-03  138  	struct coresight_device	*csdev;
+237483aa5cf431 Pratik Patel      2016-05-03  139  	spinlock_t		spinlock;
+237483aa5cf431 Pratik Patel      2016-05-03  140  	struct channel_space	chs;
+237483aa5cf431 Pratik Patel      2016-05-03  141  	struct stm_data		stm;
+237483aa5cf431 Pratik Patel      2016-05-03  142  	local_t			mode;
+237483aa5cf431 Pratik Patel      2016-05-03  143  	u8			traceid;
+237483aa5cf431 Pratik Patel      2016-05-03  144  	u32			write_bytes;
+237483aa5cf431 Pratik Patel      2016-05-03  145  	u32			stmsper;
+237483aa5cf431 Pratik Patel      2016-05-03  146  	u32			stmspscr;
+237483aa5cf431 Pratik Patel      2016-05-03  147  	u32			numsp;
+237483aa5cf431 Pratik Patel      2016-05-03  148  	u32			stmheer;
+237483aa5cf431 Pratik Patel      2016-05-03  149  	u32			stmheter;
+237483aa5cf431 Pratik Patel      2016-05-03  150  	u32			stmhebsr;
+237483aa5cf431 Pratik Patel      2016-05-03 @151  };
+237483aa5cf431 Pratik Patel      2016-05-03  152  
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
