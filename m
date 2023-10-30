@@ -1,136 +1,260 @@
-Return-Path: <linux-acpi+bounces-1087-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1088-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B767DA78D
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 16:31:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA1C7DB533
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Oct 2023 09:35:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F079A282081
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 14:30:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CDE4B20C90
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Oct 2023 08:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD7D15AE0
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Oct 2023 14:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1585610C
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Oct 2023 08:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UgSJU0Ai"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="dElRPVjt"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99568156E3
-	for <linux-acpi@vger.kernel.org>; Sat, 28 Oct 2023 14:04:31 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 769349C;
-	Sat, 28 Oct 2023 07:04:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698501869; x=1730037869;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SOaWX51maDQCrLVl5or5Zw+K/QttpP/7VXGhY2cK+wI=;
-  b=UgSJU0AiQ/WwEbVUHadAzfxGwyGdKJVfnBJ+iGMQ23wUo/AM7jYTCBvl
-   3yCXdksBmTpXfoIihQFwrHxmGYHXzbLbGAzyc9XoEQ1XT9lZANNeR2I8k
-   j64BVcHzPV2WzMI7iBshz3DiEjSB3sqRQ7AK9h+2BXtb2PoqGKbGvdkBJ
-   wzAdsQSRTxWHm8UOLfPFTICxOio9b+A4vrTuUDZwrL40XdDCDKy+2TB2p
-   jBT8cYBesClxWKYY+Tpf1Tha6LdXhiSBELUaPv0aslH3CRhKYGLAEjwog
-   SgZPaxhFvfuDC8Mm2R/y2wwAVsX40TKwujhVUZZ7VBsXoOyBvduvqsqmx
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="454368160"
-X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
-   d="scan'208";a="454368160"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2023 07:04:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="763501664"
-X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
-   d="scan'208";a="763501664"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 28 Oct 2023 07:04:24 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qwjvK-000Bnf-0r;
-	Sat, 28 Oct 2023 14:04:22 +0000
-Date: Sat, 28 Oct 2023 22:03:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
-	linux-arm-kernel@lists.infradead.org, suzuki.poulose@arm.com
-Cc: oe-kbuild-all@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@arm.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	coresight@lists.linaro.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 1/7] coresight: replicator: Move ACPI support from AMBA
- driver to platform driver
-Message-ID: <202310282118.A4PM0Rdg-lkp@intel.com>
-References: <20231027072943.3418997-2-anshuman.khandual@arm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4588817
+	for <linux-acpi@vger.kernel.org>; Mon, 30 Oct 2023 06:34:54 +0000 (UTC)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2082.outbound.protection.outlook.com [40.107.92.82])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12AE4A7;
+	Sun, 29 Oct 2023 23:34:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hjs5exTgzBfHuV5+faTNgFTPfntwn9CS/Uv6o/fnXUYkDs0YO48uMLBcs+tc2TBBI4uQ5NEngDC2nTWZeVhdpCjP0aRbLRYiTv/HTURb47j2Ip4DtVOUIZOfmCiRvSXN2Cri3GVnAtdU8j2GKjDVJipXDPtUv+VTuTwhrKtemX0riKNELQxv5WoQvND4CSm9C6Pk4Oy60yqzvYBHy/LcqV5ccVjuQ0pqGSCbUSisx1rGB68G2XctLTljvZdorXs7Qpl8uufDOEjfJnCIMziybYfQs2q1eRwtiiscpu5GsJ2n/6s0b8aJw1DO3FaqvyXwCtpHsg0AJsz2dOZQKIOqNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mWW3xn6If36pYqgPGKypcbtKbqciRvqtlNV/5LHVWH8=;
+ b=M12hC7Xm/HO5MAxSLa/i7YYUj36KJtM/7e6hE9vL3ATch9VH9PwVhJNVNWmAE1BbdcieWp8OBZax/aFRtUrw9t1e2Ob+X0txlAbpeQavP8wXIfvlJOpAsECAhCjrZ891ubgpGJdaRYxzqRpcVJvEqNtozF/lSApy0rl39yO9eG7SNVbp+5YvsEiAfHDnOQUnLhZmVGsdTckfox75XlO+683zVvWKSo/4Vj2tKEEFvQ0CyPlMIkspavUDzZXp2TIBOTWPfOCpO0pnAHm4xiVf6aUq6Z7fUNqxJE7WOhikBqWQ93/rS3VnMkrWnpruU/lOZE+NA5kYcMsQkzF57EieYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mWW3xn6If36pYqgPGKypcbtKbqciRvqtlNV/5LHVWH8=;
+ b=dElRPVjtpoo93NIo+8dI1y9wPtcrAxufsIqSfJ/ING/TICwZtPhZ2b+3oBYsS8q+VJs8Wmp5vkjSr68aGryVC3X+qSUSD4BLGoFX0mu1Toc8VhaQBcbjGibTEpNien56PtVRfSUNaYZhWC116OH6YMvg3TnksXlGgptJkNpdheQ=
+Received: from BL1PR13CA0071.namprd13.prod.outlook.com (2603:10b6:208:2b8::16)
+ by CYYPR12MB8963.namprd12.prod.outlook.com (2603:10b6:930:c3::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.28; Mon, 30 Oct
+ 2023 06:34:50 +0000
+Received: from BL6PEPF0001AB78.namprd02.prod.outlook.com
+ (2603:10b6:208:2b8:cafe::8) by BL1PR13CA0071.outlook.office365.com
+ (2603:10b6:208:2b8::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.14 via Frontend
+ Transport; Mon, 30 Oct 2023 06:34:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL6PEPF0001AB78.mail.protection.outlook.com (10.167.242.171) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6933.15 via Frontend Transport; Mon, 30 Oct 2023 06:34:50 +0000
+Received: from jasmine-meng.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Mon, 30 Oct
+ 2023 01:34:37 -0500
+From: Meng Li <li.meng@amd.com>
+To: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Huang Rui
+	<ray.huang@amd.com>
+CC: <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<x86@kernel.org>, <linux-acpi@vger.kernel.org>, Shuah Khan
+	<skhan@linuxfoundation.org>, <linux-kselftest@vger.kernel.org>, "Nathan
+ Fontenot" <nathan.fontenot@amd.com>, Deepak Sharma <deepak.sharma@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>, Mario Limonciello
+	<mario.limonciello@amd.com>, Shimmer Huang <shimmer.huang@amd.com>, "Perry
+ Yuan" <Perry.Yuan@amd.com>, Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar
+	<viresh.kumar@linaro.org>, Borislav Petkov <bp@alien8.de>, "Oleksandr
+ Natalenko" <oleksandr@natalenko.name>, Meng Li <li.meng@amd.com>
+Subject: [PATCH V10 0/7] amd-pstate preferred core
+Date: Mon, 30 Oct 2023 14:33:56 +0800
+Message-ID: <20231030063403.3502816-1-li.meng@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231027072943.3418997-2-anshuman.khandual@arm.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB78:EE_|CYYPR12MB8963:EE_
+X-MS-Office365-Filtering-Correlation-Id: b578659c-867b-4efb-04b5-08dbd91251af
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	2fsOsjhzEKQK1KTYaxidoPswNiWIeTjkOCO6rQF2QCvjGK20dcgmtUtUgraXD0bMCgjD9loxhjJGjaoaY1b+M1AAYxtdeFQKK5tEpZut7vuzjaX0+LdEFTyKNdPe0racUQgrMb2HmD9dMuNuY/K6Wvkiy6gPC0/B7qdB5sD9A/7Lgs2/3F8fE+7MGlD4Sc8z0NadkdwepLaNRNSogODzv4RBeaXmtryAqiIT6CdEmJlgTIur5xLVkuqVxJJafMi5JbUA0siokarWoHL/iFslyPa0EzbDqswDW+AGk+JmBv5dpA8r3zl/eZaY1H21lgHtieZkMrzyBhKEKHwzAcB3dOry9T3eG2n02RQOVzA4yNKN+7PjhyppaabV3aBgCuQTqREZCd9iCip6QBpbFN+550t6XDPhu1JCD2yVyEc7C5CM49lrgj4pIq61xnMZvoUpiLWd10HPbCps+KQke4ZZ0XkwlqXrcsy4+oP+mAwlxjtaJ5wrZQ7KsJmfSVng2UVgGa+pWgr8NlA9TyT5nzhETqBJbNC04/wj2GnvmwpLIt9iY0zDswXvrvq12rHllZGN9m+7eE+VviITKk7L7RRKNDH77AgVJqQU3AJ51hktzgtOXF6TJKhjknW9iVehZCTvu2fTQoueGBb/pcwqlKk7+ekSczZXKEZLxH63TndB86MukNwX5/rFhX+H1OaFIRAjfRqe/6gAOZscgcintEf9y/n7DVx0mcGvW/kufIeSvOVA9N9ocHXRDyh12ZasA21PkBClHCKCxZ6fuu57dfhzVK5J5FmxB9tpKLEEKfTHHfleWv8wIKIqAeVlX+xGoD3D
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(396003)(39860400002)(136003)(346002)(230273577357003)(230922051799003)(230173577357003)(64100799003)(82310400011)(186009)(1800799009)(451199024)(46966006)(36840700001)(40470700004)(7696005)(6666004)(478600001)(83380400001)(16526019)(47076005)(26005)(2616005)(1076003)(336012)(426003)(2906002)(5660300002)(7416002)(41300700001)(54906003)(316002)(6636002)(70206006)(110136005)(4326008)(8676002)(8936002)(70586007)(36860700001)(86362001)(36756003)(81166007)(356005)(82740400003)(40480700001)(40460700003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2023 06:34:50.5651
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b578659c-867b-4efb-04b5-08dbd91251af
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB78.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8963
 
-Hi Anshuman,
+Hi all:
 
-kernel test robot noticed the following build warnings:
+The core frequency is subjected to the process variation in semiconductors.
+Not all cores are able to reach the maximum frequency respecting the
+infrastructure limits. Consequently, AMD has redefined the concept of
+maximum frequency of a part. This means that a fraction of cores can reach
+maximum frequency. To find the best process scheduling policy for a given
+scenario, OS needs to know the core ordering informed by the platform through
+highest performance capability register of the CPPC interface.
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on rafael-pm/acpi-bus soc/for-next atorgue-stm32/stm32-next linus/master v6.6-rc7 next-20231027]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Earlier implementations of amd-pstate preferred core only support a static
+core ranking and targeted performance. Now it has the ability to dynamically
+change the preferred core based on the workload and platform conditions and
+accounting for thermals and aging.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Anshuman-Khandual/coresight-replicator-Move-ACPI-support-from-AMBA-driver-to-platform-driver/20231027-153540
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20231027072943.3418997-2-anshuman.khandual%40arm.com
-patch subject: [PATCH 1/7] coresight: replicator: Move ACPI support from AMBA driver to platform driver
-config: arm-randconfig-002-20231028 (https://download.01.org/0day-ci/archive/20231028/202310282118.A4PM0Rdg-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231028/202310282118.A4PM0Rdg-lkp@intel.com/reproduce)
+Amd-pstate driver utilizes the functions and data structures provided by
+the ITMT architecture to enable the scheduler to favor scheduling on cores
+which can be get a higher frequency with lower voltage.
+We call it amd-pstate preferred core.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310282118.A4PM0Rdg-lkp@intel.com/
+Here sched_set_itmt_core_prio() is called to set priorities and
+sched_set_itmt_support() is called to enable ITMT feature.
+Amd-pstate driver uses the highest performance value to indicate
+the priority of CPU. The higher value has a higher priority.
 
-All warnings (new ones prefixed by >>):
+Amd-pstate driver will provide an initial core ordering at boot time.
+It relies on the CPPC interface to communicate the core ranking to the
+operating system and scheduler to make sure that OS is choosing the cores
+with highest performance firstly for scheduling the process. When amd-pstate
+driver receives a message with the highest performance change, it will
+update the core ranking.
 
->> drivers/hwtracing/coresight/coresight-replicator.c:45: warning: Function parameter or member 'pclk' not described in 'replicator_drvdata'
+Changes from V9->V10:
+- cpufreq: amd-pstate:
+- - add judgement for highest_perf. When it is less than 255, the
+  preferred core feature is enabled. And it will set the priority.
+- - deleset "static u32 max_highest_perf" etc, because amd p-state
+  perferred coe does not require specail process for hotpulg.
 
+Changes form V8->V9:
+- all:
+- - pick up Tested-By flag added by Oleksandr.
+- cpufreq: amd-pstate:
+- - pick up Review-By flag added by Wyes.
+- - ignore modification of bug.
+- - add a attribute of prefcore_ranking.
+- - modify data type conversion from u32 to int.
+- Documentation: amd-pstate:
+- - pick up Review-By flag added by Wyes.
 
-vim +45 drivers/hwtracing/coresight/coresight-replicator.c
+Changes form V7->V8:
+- all:
+- - pick up Review-By flag added by Mario and Ray.
+- cpufreq: amd-pstate:
+- - use hw_prefcore embeds into cpudata structure.
+- - delete preferred core init from cpu online/off.
 
-0f5f9b6ba9e1a7 drivers/hwtracing/coresight/coresight-replicator.c Suzuki K Poulose   2019-06-19  28  
-ceacc1d9b7ae41 drivers/coresight/coresight-replicator.c           Pratik Patel       2014-11-03  29  /**
-ceacc1d9b7ae41 drivers/coresight/coresight-replicator.c           Pratik Patel       2014-11-03  30   * struct replicator_drvdata - specifics associated to a replicator component
-455328b1772a19 drivers/hwtracing/coresight/coresight-replicator.c Suzuki K Poulose   2019-04-25  31   * @base:	memory mapped base address for this component. Also indicates
-455328b1772a19 drivers/hwtracing/coresight/coresight-replicator.c Suzuki K Poulose   2019-04-25  32   *		whether this one is programmable or not.
-9875cd9ce2b536 drivers/hwtracing/coresight/coresight-replicator.c Linus Walleij      2015-05-19  33   * @atclk:	optional clock for the core parts of the replicator.
-ceacc1d9b7ae41 drivers/coresight/coresight-replicator.c           Pratik Patel       2014-11-03  34   * @csdev:	component vitals needed by the framework
-edda32dabedb01 drivers/hwtracing/coresight/coresight-replicator.c Yabin Cui          2019-11-04  35   * @spinlock:	serialize enable/disable operations.
-8f3ce74c20f21e drivers/hwtracing/coresight/coresight-replicator.c Sai Prakash Ranjan 2020-07-16  36   * @check_idfilter_val: check if the context is lost upon clock removal.
-ceacc1d9b7ae41 drivers/coresight/coresight-replicator.c           Pratik Patel       2014-11-03  37   */
-ceacc1d9b7ae41 drivers/coresight/coresight-replicator.c           Pratik Patel       2014-11-03  38  struct replicator_drvdata {
-455328b1772a19 drivers/hwtracing/coresight/coresight-replicator.c Suzuki K Poulose   2019-04-25  39  	void __iomem		*base;
-9875cd9ce2b536 drivers/hwtracing/coresight/coresight-replicator.c Linus Walleij      2015-05-19  40  	struct clk		*atclk;
-bed4866511371a drivers/hwtracing/coresight/coresight-replicator.c Anshuman Khandual  2023-10-27  41  	struct clk		*pclk;
-ceacc1d9b7ae41 drivers/coresight/coresight-replicator.c           Pratik Patel       2014-11-03  42  	struct coresight_device	*csdev;
-edda32dabedb01 drivers/hwtracing/coresight/coresight-replicator.c Yabin Cui          2019-11-04  43  	spinlock_t		spinlock;
-8f3ce74c20f21e drivers/hwtracing/coresight/coresight-replicator.c Sai Prakash Ranjan 2020-07-16  44  	bool			check_idfilter_val;
-ceacc1d9b7ae41 drivers/coresight/coresight-replicator.c           Pratik Patel       2014-11-03 @45  };
-ceacc1d9b7ae41 drivers/coresight/coresight-replicator.c           Pratik Patel       2014-11-03  46  
+Changes form V6->V7:
+- x86:
+- - Modify kconfig about X86_AMD_PSTATE.
+- cpufreq: amd-pstate:
+- - modify incorrect comments about scheduler_work().
+- - convert highest_perf data type.
+- - modify preferred core init when cpu init and online.
+- acpi: cppc:
+- - modify link of CPPC highest performance.
+- cpufreq:
+- - modify link of CPPC highest performance changed.
+
+Changes form V5->V6:
+- cpufreq: amd-pstate:
+- - modify the wrong tag order.
+- - modify warning about hw_prefcore sysfs attribute.
+- - delete duplicate comments.
+- - modify the variable name cppc_highest_perf to prefcore_ranking.
+- - modify judgment conditions for setting highest_perf.
+- - modify sysfs attribute for CPPC highest perf to pr_debug message.
+- Documentation: amd-pstate:
+- - modify warning: title underline too short.
+
+Changes form V4->V5:
+- cpufreq: amd-pstate:
+- - modify sysfs attribute for CPPC highest perf.
+- - modify warning about comments
+- - rebase linux-next
+- cpufreq: 
+- - Moidfy warning about function declarations.
+- Documentation: amd-pstate:
+- - align with ``amd-pstat``
+
+Changes form V3->V4:
+- Documentation: amd-pstate:
+- - Modify inappropriate descriptions.
+
+Changes form V2->V3:
+- x86:
+- - Modify kconfig and description.
+- cpufreq: amd-pstate: 
+- - Add Co-developed-by tag in commit message.
+- cpufreq:
+- - Modify commit message.
+- Documentation: amd-pstate:
+- - Modify inappropriate descriptions.
+
+Changes form V1->V2:
+- acpi: cppc:
+- - Add reference link.
+- cpufreq:
+- - Moidfy link error.
+- cpufreq: amd-pstate: 
+- - Init the priorities of all online CPUs
+- - Use a single variable to represent the status of preferred core.
+- Documentation:
+- - Default enabled preferred core.
+- Documentation: amd-pstate: 
+- - Modify inappropriate descriptions.
+- - Default enabled preferred core.
+- - Use a single variable to represent the status of preferred core.
+
+Meng Li (7):
+  x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for the expansion.
+  acpi: cppc: Add get the highest performance cppc control
+  cpufreq: amd-pstate: Enable amd-pstate preferred core supporting.
+  cpufreq: Add a notification message that the highest perf has changed
+  cpufreq: amd-pstate: Update amd-pstate preferred core ranking
+    dynamically
+  Documentation: amd-pstate: introduce amd-pstate preferred core
+  Documentation: introduce amd-pstate preferrd core mode kernel command
+    line options
+
+ .../admin-guide/kernel-parameters.txt         |   5 +
+ Documentation/admin-guide/pm/amd-pstate.rst   |  59 +++++-
+ arch/x86/Kconfig                              |   5 +-
+ drivers/acpi/cppc_acpi.c                      |  13 ++
+ drivers/acpi/processor_driver.c               |   6 +
+ drivers/cpufreq/amd-pstate.c                  | 187 ++++++++++++++++--
+ drivers/cpufreq/cpufreq.c                     |  13 ++
+ include/acpi/cppc_acpi.h                      |   5 +
+ include/linux/amd-pstate.h                    |  10 +
+ include/linux/cpufreq.h                       |   5 +
+ 10 files changed, 288 insertions(+), 20 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
