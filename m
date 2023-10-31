@@ -1,163 +1,165 @@
-Return-Path: <linux-acpi+bounces-1113-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1114-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A64EB7DCF41
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Oct 2023 15:32:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD287DD1AE
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Oct 2023 17:34:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59AC4281294
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Oct 2023 14:32:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47D4B2810FC
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Oct 2023 16:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120D71DFCB
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Oct 2023 14:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="je0ejQ5o"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0137A20312
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Oct 2023 16:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801B9179B9
-	for <linux-acpi@vger.kernel.org>; Tue, 31 Oct 2023 14:00:24 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B308F1;
-	Tue, 31 Oct 2023 07:00:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698760822; x=1730296822;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=BZtdB+YuiWI031gK4fsYrU57cmwezQDYcGMWaSImpTU=;
-  b=je0ejQ5oa1KDqOEztqIuSngaEFfvBGjwWQ6KXMkj/HBoLmN/r+dXWNWv
-   7/paRUdBiDf4tzGOhvociuI5DxcBE+TVR7oZshB+hxWeppz42AHF0GMSv
-   zDBtmI7XJi10UsqsobkcAuOljHiqTcjYbWdrhpEghIKlYFWuEsbhZQAOl
-   6XkRAhAW8qJIFYvKtpkhPsXQkkQDo5u4LimJiRkG+dOms6Pvv3zr/vcac
-   MzYt2vIqgjuJcdRVw9Wn1PiqKIHOr9EEVV1GpLzJhOT5EY7aTTdOyDp23
-   sGsQz/gbvSPOFhv2EQj8KBpR7gy6mupfOLgZCWt/w2stQQ5QnQ7Ed9oLN
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10880"; a="373341782"
-X-IronPort-AV: E=Sophos;i="6.03,265,1694761200"; 
-   d="scan'208";a="373341782"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2023 07:00:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10880"; a="934118568"
-X-IronPort-AV: E=Sophos;i="6.03,265,1694761200"; 
-   d="scan'208";a="934118568"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2023 07:00:18 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 9A8DB12033A;
-	Tue, 31 Oct 2023 16:00:15 +0200 (EET)
-Date: Tue, 31 Oct 2023 14:00:15 +0000
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Linux ACPI <linux-acpi@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 5/6] ACPI: scan: Extract MIPI DiSco for Imaging data
- into swnodes
-Message-ID: <ZUEIb81Bbzgvf2Uf@kekkonen.localdomain>
-References: <2187487.irdbgypaU6@kreacher>
- <7609686.EvYhyI6sBW@kreacher>
- <ZUDBnEJ41tc7nnka@kekkonen.localdomain>
- <CAJZ5v0j_Uv=qVo6eFdz-Q7Ne7W7aTf9ThN128Ust+YEQQ9Gy+Q@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B401119BD7
+	for <linux-acpi@vger.kernel.org>; Tue, 31 Oct 2023 15:21:46 +0000 (UTC)
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75A4619B4;
+	Tue, 31 Oct 2023 08:19:32 -0700 (PDT)
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5845b7ee438so529064eaf.1;
+        Tue, 31 Oct 2023 08:19:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698765571; x=1699370371;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O5I+wv0AwpA/9AOWmahw4PTxgF8CLhlJBYtL+4HP13M=;
+        b=q5lcjTaUfNRTDUUChtGFLJj0bfnqlHepZan3oHV8kVyyF73fQg1qAEo9HxcLzEMhJQ
+         baYMTR463G3TiUQUavYDQmjaxBJADW128PxDvVb2vjhk/xe1jMk8MPxcGNBoHXtqfNxW
+         IW50sdVMRh5IEVx7T73g1Jg6eSK6m2MnQRagBBcs9URFRrfCOqVZoGEKNcQBrERC5lmq
+         Nj+IxsbG5CSnqeHFlQk7UtDSwjOPigKFUEcLhEWBXIhe2Ftt9D99VhnYoM0dWh3X5oEZ
+         fKaaAIE+/HFrDA2O+UTUGNXwN0e+ZqWof6dUbSSRiWLc0/uT+lnMgUCO1WRmewaY2du2
+         mIvA==
+X-Gm-Message-State: AOJu0Yy2A8csQX0kRyGVZoXdsWhOEQjzCbjxJvkPjnKWiZQNR/F6QdWb
+	xJOnF22yr9sFQfA+eb7rrOnPb1w1Ix3Y1bQwMUDrpq+r
+X-Google-Smtp-Source: AGHT+IE6LyUsaOXfzrieA+BC3Hq2CDu5XgoUWpofSBhMa9N78AWkzjZij/4PCAITia/6mIl0Zp9EYN0mFRk83sGF5Mo=
+X-Received: by 2002:a4a:d8d1:0:b0:586:abc4:2c18 with SMTP id
+ c17-20020a4ad8d1000000b00586abc42c18mr13046062oov.0.1698765569924; Tue, 31
+ Oct 2023 08:19:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0j_Uv=qVo6eFdz-Q7Ne7W7aTf9ThN128Ust+YEQQ9Gy+Q@mail.gmail.com>
+References: <2187487.irdbgypaU6@kreacher> <7609686.EvYhyI6sBW@kreacher>
+ <ZUDBnEJ41tc7nnka@kekkonen.localdomain> <CAJZ5v0j_Uv=qVo6eFdz-Q7Ne7W7aTf9ThN128Ust+YEQQ9Gy+Q@mail.gmail.com>
+ <ZUEIb81Bbzgvf2Uf@kekkonen.localdomain>
+In-Reply-To: <ZUEIb81Bbzgvf2Uf@kekkonen.localdomain>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 31 Oct 2023 16:19:18 +0100
+Message-ID: <CAJZ5v0ioy7n3ts9L6FQZcjngEU8qazXCdNKVXShpNL7+7hRtJg@mail.gmail.com>
+Subject: Re: [PATCH v2 5/6] ACPI: scan: Extract MIPI DiSco for Imaging data
+ into swnodes
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, 
+	Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Rafael,
+Hi Sakari,
 
-On Tue, Oct 31, 2023 at 02:46:51PM +0100, Rafael J. Wysocki wrote:
-> Hi Sakari,
-> 
-> On Tue, Oct 31, 2023 at 11:33 AM Sakari Ailus
-> <sakari.ailus@linux.intel.com> wrote:
+On Tue, Oct 31, 2023 at 3:00=E2=80=AFPM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> Hi Rafael,
+>
+> On Tue, Oct 31, 2023 at 02:46:51PM +0100, Rafael J. Wysocki wrote:
+> > Hi Sakari,
 > >
-> > Hi Rafael,
-> >
-> > On subject:
-> >
-> > s/DiSco/DisCo/
-> 
-> Huh
-> 
-> Thanks for catching this!
-> 
-> > On Fri, Oct 20, 2023 at 04:39:27PM +0200, Rafael J. Wysocki wrote:
-> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > On Tue, Oct 31, 2023 at 11:33=E2=80=AFAM Sakari Ailus
+> > <sakari.ailus@linux.intel.com> wrote:
 > > >
-> > > Add information extracted from the MIPI DiSco for Imaging device
-> >
-> > Ditto.
-> >
-> > > properties to software nodes created during the CSI-2 connection graph
-> > > discovery.
+> > > Hi Rafael,
 > > >
-> > > Link: https://www.mipi.org/specifications/mipi-di
+> > > On subject:
+> > >
+> > > s/DiSco/DisCo/
 > >
-> > This URL is broken. The correct URL is:
+> > Huh
 > >
-> >         https://www.mipi.org/specifications/mipi-disco-imaging
-> 
-> OK
-> 
-> > > Co-developed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > ---
-> > >  drivers/acpi/internal.h |    1
-> > >  drivers/acpi/mipi-di.c  |  240 +++++++++++++++++++++++++++++++++++++++++++++++-
+> > Thanks for catching this!
 > >
-> > How about mipi-disco.c? I wouldn't mind having mipi-disco-imaging.c either.
-> 
-> Well, mipi-disco-imaging is a bit too long and the meaning of
-> mipi-disco would not be clear IMO.
-> 
-> What about mipi-disco-img?
-
-Seems fine to me.
-
-> 
-> [cut]
-> 
-> > > +     ret = fwnode_property_count_u8(port_fwnode, "mipi-img-lane-polarities");
-> > > +     if (ret > 0) {
-> > > +             unsigned long mask;
-> > > +             unsigned int i;
-> > > +
-> > > +             /*
-> > > +              * Total number of lanes here is clock lane + data lanes.
-> > > +              * Require that number to be low enough so they all can be
-> > > +              * covered by the bits in one byte.
-> > > +              */
-> > > +             BUILD_BUG_ON(BITS_PER_TYPE(u8) <= ARRAY_SIZE(port->data_lanes));
-> > > +
-> > > +             fwnode_property_read_u8_array(port_fwnode,
-> > > +                                           "mipi-img-lane-polarities",
-> > > +                                           val, 1);
-> > > +
-> > > +             for (mask = val[0], i = 0; i < num_lanes + 1; i++)
-> > > +                     port->lane_polarities[i] = test_bit(i, &mask);
+> > > On Fri, Oct 20, 2023 at 04:39:27PM +0200, Rafael J. Wysocki wrote:
+> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > >
+> > > > Add information extracted from the MIPI DiSco for Imaging device
+> > >
+> > > Ditto.
+> > >
+> > > > properties to software nodes created during the CSI-2 connection gr=
+aph
+> > > > discovery.
+> > > >
+> > > > Link: https://www.mipi.org/specifications/mipi-di
+> > >
+> > > This URL is broken. The correct URL is:
+> > >
+> > >         https://www.mipi.org/specifications/mipi-disco-imaging
 > >
-> > This works only up to seven lanes.
-> 
-> True, but then ACPI_DEVICE_CSI2_DATA_LANES is defined as 4.
+> > OK
+> >
+> > > > Co-developed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > > ---
+> > > >  drivers/acpi/internal.h |    1
+> > > >  drivers/acpi/mipi-di.c  |  240 +++++++++++++++++++++++++++++++++++=
+++++++++++++-
+> > >
+> > > How about mipi-disco.c? I wouldn't mind having mipi-disco-imaging.c e=
+ither.
+> >
+> > Well, mipi-disco-imaging is a bit too long and the meaning of
+> > mipi-disco would not be clear IMO.
+> >
+> > What about mipi-disco-img?
+>
+> Seems fine to me.
+>
+> >
+> > [cut]
+> >
+> > > > +     ret =3D fwnode_property_count_u8(port_fwnode, "mipi-img-lane-=
+polarities");
+> > > > +     if (ret > 0) {
+> > > > +             unsigned long mask;
+> > > > +             unsigned int i;
+> > > > +
+> > > > +             /*
+> > > > +              * Total number of lanes here is clock lane + data la=
+nes.
+> > > > +              * Require that number to be low enough so they all c=
+an be
+> > > > +              * covered by the bits in one byte.
+> > > > +              */
+> > > > +             BUILD_BUG_ON(BITS_PER_TYPE(u8) <=3D ARRAY_SIZE(port->=
+data_lanes));
+> > > > +
+> > > > +             fwnode_property_read_u8_array(port_fwnode,
+> > > > +                                           "mipi-img-lane-polariti=
+es",
+> > > > +                                           val, 1);
+> > > > +
+> > > > +             for (mask =3D val[0], i =3D 0; i < num_lanes + 1; i++=
+)
+> > > > +                     port->lane_polarities[i] =3D test_bit(i, &mas=
+k);
+> > >
+> > > This works only up to seven lanes.
+> >
+> > True, but then ACPI_DEVICE_CSI2_DATA_LANES is defined as 4.
+>
+> The spec has no limit and in practice 4 is relatively common while 8 exis=
+ts
+> (but is somewhat rare). I actually think it'd be a good idea to bump this
+> to 8 already.
 
-The spec has no limit and in practice 4 is relatively common while 8 exists
-(but is somewhat rare). I actually think it'd be a good idea to bump this
-to 8 already.
-
--- 
-Regards,
-
-Sakari Ailus
+OK
 
