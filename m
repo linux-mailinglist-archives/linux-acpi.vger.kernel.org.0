@@ -1,89 +1,99 @@
-Return-Path: <linux-acpi+bounces-1137-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1138-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997F77DDF7B
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Nov 2023 11:32:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00FFD7DE0CD
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Nov 2023 13:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51A802804DD
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Nov 2023 10:32:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 318B71C20BA1
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Nov 2023 12:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06121111A0
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Nov 2023 10:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D08125B9
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Nov 2023 12:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hj1rc27W"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Go2aKu5n"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6510629AB
-	for <linux-acpi@vger.kernel.org>; Wed,  1 Nov 2023 10:11:16 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149EDE4
-	for <linux-acpi@vger.kernel.org>; Wed,  1 Nov 2023 03:11:12 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B8C79E6
+	for <linux-acpi@vger.kernel.org>; Wed,  1 Nov 2023 10:51:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBC30E8
+	for <linux-acpi@vger.kernel.org>; Wed,  1 Nov 2023 03:51:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698833472; x=1730369472;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1HikYpY5bDw6J9sTp/tKibCTtaIii/z95pWn/L9EKtk=;
-  b=Hj1rc27W9rg+RyprpjnqvxsEJW5iOnoksMy8pKo10UXbaxiUsSoj9yh+
-   HtHiil9VyXpQESsaMfVVN+ogz/s9z7QDsgWsOPzZmiye3zFQWVu+u035N
-   ms0iEUy9mB+bNKTJoF+ZW5h2WW1MCFfSho8u0xdGfZVd4eFcJjCctgaLJ
-   RK//q+HqgWLTXjoNQkF1rNHr0QjMunUMshxbFaGP+JmkHtahK9TtU5CLB
-   N8pIUFPTBz2X7vLk6N3lpECE6ADNoiEv8nve9p2YMasLDOgQyMcYg2OZv
-   XARs8BbOs1InQUTYkdlB0RmoHFSE1Jxqs2rF1RJJVnLzelRFIXbiTQV77
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10880"; a="367815905"
-X-IronPort-AV: E=Sophos;i="6.03,267,1694761200"; 
-   d="scan'208";a="367815905"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2023 03:11:11 -0700
+  t=1698835867; x=1730371867;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=sAfFTWXIBKBCrtJ60sQ5ZFWEm7FGUgivqH1k+4WAJk8=;
+  b=Go2aKu5nMkyajIETv15zq+uCXP9guQtVMD+R49D68zjRsZHV+hE4firC
+   zwBqUIW3NPYZm121/5e+EZg5G4eLqnHVueSYPm0B867Cfljgr6ezFSTG1
+   VUV6DlPhFBZ0j6nquBhYCFoNz/jxAmhQd5qKZBsrEvjqUCSLnISb/0ttM
+   Yn1av/Bdvg8wbd+YHsFFkiv6vvZbQiZkk35k/jjuED6ecX8J9cJn2C5v5
+   cLUntg8qHPicqHUPsAMS3MyoE04KEfo48GJcwv+vxlYNiei4LQcuXu0Mm
+   3lSDu6g82fTKyVSso1cXSBrmkqMyPfd8bTjVR8nWx7/TvLWfpRHXL0I8G
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10880"; a="368682689"
+X-IronPort-AV: E=Sophos;i="6.03,268,1694761200"; 
+   d="scan'208";a="368682689"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2023 03:51:07 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10880"; a="884517540"
-X-IronPort-AV: E=Sophos;i="6.03,267,1694761200"; 
-   d="scan'208";a="884517540"
+X-IronPort-AV: E=McAfee;i="6600,9927,10880"; a="760902859"
+X-IronPort-AV: E=Sophos;i="6.03,268,1694761200"; 
+   d="scan'208";a="760902859"
 Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2023 03:11:09 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id F0A6C1207A3;
-	Wed,  1 Nov 2023 12:11:06 +0200 (EET)
-Date: Wed, 1 Nov 2023 10:11:06 +0000
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2023 03:51:05 -0700
+Received: from svinhufvud.ger.corp.intel.com (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 6B40F1207A3;
+	Wed,  1 Nov 2023 12:51:02 +0200 (EET)
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-acpi@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
+To: linux-acpi@vger.kernel.org
+Cc: andriy.shevchenko@linux.intel.com,
+	Daniel Scally <djrscally@gmail.com>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH 0/3] Make fwnode_property_get_reference_args accept NULL
- args
-Message-ID: <ZUIkOov2eykf0n1v@kekkonen.localdomain>
-References: <20231101090737.1148303-1-sakari.ailus@linux.intel.com>
- <ZUIfp43KYDvpdife@smile.fi.intel.com>
+Subject: [PATCH v2 0/3] Make fwnode_property_get_reference_args accept NULL args
+Date: Wed,  1 Nov 2023 12:50:59 +0200
+Message-Id: <20231101105102.1154620-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZUIfp43KYDvpdife@smile.fi.intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 01, 2023 at 11:51:35AM +0200, Andy Shevchenko wrote:
-> On Wed, Nov 01, 2023 at 11:07:34AM +0200, Sakari Ailus wrote:
-> > Hi all,
-> > 
-> > The of_parse_phandle_with_args() accepts NULL args but
-> > fwnode_property_get_reference_args() does not currently, in its ACPI or
-> > software node implementations. Fix this.
-> 
-> The last sentence assumes Fixes tag(s) which I can't see.
+Hi all,
 
-Oops. I realised this is actually changing code added in DisCo for Imaging
-patches. It'd be better to address this before those.
+The of_parse_phandle_with_args() accepts NULL args but
+fwnode_property_get_reference_args() does not currently, in its ACPI or
+software node implementations. Fix this.
+
+since v1:
+
+- Applies to Rafael's devprop branch now (i.e. not on top of DisCo for
+  Imaging set).
+
+- Add Fixes: tags.
+
+- Small documentation line wrap change in the first patch.
+
+Sakari Ailus (3):
+  acpi: property: Let args be NULL in __acpi_node_get_property_reference
+  software node: Let args be NULL in software_node_get_reference_args
+  device property: fwnode_property_get_reference allows NULL args now
+
+ drivers/acpi/property.c | 7 +++++--
+ drivers/base/property.c | 1 +
+ drivers/base/swnode.c   | 3 +++
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
 -- 
-Sakari Ailus
+2.39.2
+
 
