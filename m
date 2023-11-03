@@ -1,159 +1,129 @@
-Return-Path: <linux-acpi+bounces-1178-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1179-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B5D7E02EC
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 13:32:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EABB37E02ED
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 13:32:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D736281D88
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 12:32:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 265591C20910
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 12:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC4D2F2F
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 12:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8785117737
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 12:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jWC6Ktl3"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="biXWhoSA"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186762D632
-	for <linux-acpi@vger.kernel.org>; Fri,  3 Nov 2023 10:49:24 +0000 (UTC)
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47149D7;
-	Fri,  3 Nov 2023 03:49:22 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-50939d39d0fso2464128e87.1;
-        Fri, 03 Nov 2023 03:49:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699008560; x=1699613360; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=169suXpT7VRk77RVMMxsU7CLDbBWKNlomsFKTGqmE1I=;
-        b=jWC6Ktl3EVp/8CBJtltpllVDllp3F+6M0HHwJ0sMNSxc21enJbyqaJLvJJ54gQ9qvC
-         OoEtl8QTmEGytyNEocR+2KA6hskzxsQw2R2O/p718RzPPvNyq92cng/EMq0SUeWT7Wsj
-         DCtG49VfKJVMC+znHJZ8TI5QPlzemCHQbWSyNlTsDiDDHmc9lEfFux6nRlSWpC3Lo/mI
-         eRrg6cElVXpMO7Hlr/s8xQpO32j9QZYZdS2GwttLD1xjhgPyCnLpV7mcWw0YY93FVB93
-         tAmMpzzHV4deFygzBOgBoE3KNeLFVH7BdBq0E0VEoSELf6SzTEZqZmpid8x6WxfWszWe
-         fmXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699008560; x=1699613360;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=169suXpT7VRk77RVMMxsU7CLDbBWKNlomsFKTGqmE1I=;
-        b=uf1fxZnvnGg/Cxf7UHiqqlRqTLBgKna3tqp/TPIn9mptR/8q5EB1aM9S+db2shMtxP
-         cHaQYsBj6d3T92+mgJQCz0gbCWxw4G2yR61C+nI2G1vONXCB1BxDBb72cN07Vj2PU8LR
-         LWfNqzXoRqUoSjDntdBtl8INTMtnvM6YUOOn/P06tWLIf+jsgwcOyosC5mUyZHKzvbOI
-         25iZfVlrm92nITjoudPmHGPKjKrudCFm9xj6kfxKtD1wnDAGxWtwb98o9/pffx94kQa1
-         rCSztsvtKrJj9dV9E9yIwfa25+KyZ5r4ugaoAizDG/2a3Z32KIA0uLLX/BbehXpAeHOD
-         8+Hg==
-X-Gm-Message-State: AOJu0YxAJJLUosNXF2ePzQiTBvUwderV4E8FEwDbQJyeO3fUkNmT363M
-	euwxDdPipAcwi27RwqRwuU0=
-X-Google-Smtp-Source: AGHT+IEeabyMF3vRQYMn5EqbLcLU3WxqQqNwp4yyFq1/XAL4nlRyOlm3C+YkCQAucC83J48/UHyXuA==
-X-Received: by 2002:a05:6512:3b91:b0:503:9eb:d277 with SMTP id g17-20020a0565123b9100b0050309ebd277mr22314584lfv.49.1699008560046;
-        Fri, 03 Nov 2023 03:49:20 -0700 (PDT)
-Received: from localhost.localdomain ([46.248.82.114])
-        by smtp.gmail.com with ESMTPSA id g17-20020a5d4891000000b0032dbf32bd56sm1549322wrq.37.2023.11.03.03.49.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Nov 2023 03:49:19 -0700 (PDT)
-From: Uros Bizjak <ubizjak@gmail.com>
-To: x86@kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Uros Bizjak <ubizjak@gmail.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <len.brown@intel.com>,
-	Pavel Machek <pavel@ucw.cz>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH] x86/acpi: Use %rip-relative addressing in wakeup_64.S
-Date: Fri,  3 Nov 2023 11:48:22 +0100
-Message-ID: <20231103104900.409470-1-ubizjak@gmail.com>
-X-Mailer: git-send-email 2.41.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0801B14276
+	for <linux-acpi@vger.kernel.org>; Fri,  3 Nov 2023 10:55:04 +0000 (UTC)
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9BA4187;
+	Fri,  3 Nov 2023 03:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Um8xrYpMdBObopBnzerBAfI2E5OpRpvtMoUTBQ8de/k=; b=biXWhoSA7RtRlMm4H8bTZkOGpu
+	VCIAeKrLBRWO4+pK0QhXJWI99kBjB6fc/wAUsF/tAwtrKNXBevQKHGX626hnZ6X7y0f6FcbV5XYJK
+	8dvM5fW0ABhIGGjEns7PCZis9nIpcj+ZBIDTxuFwX2cuBn0JMrYn3E1fGkb2/BgchWNW7OemtET7s
+	DGWDDMxcFKs0nMB8nnLr5Dn5k5TClKxV/mR++dVwpp9vc5RxsMy2EFCNf6fbQyjQsdZY1+IKTNDDO
+	mJcygAudTSh9qFVs4VZiErGDAKvXunOArZhc34Y+i8pL+CvmXRJfRcxNGsrP1+zuuMzxnoeRgR2wU
+	ttfAoolA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43298)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1qyrpH-0005SE-0p;
+	Fri, 03 Nov 2023 10:54:55 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1qyrpI-0008Kv-8X; Fri, 03 Nov 2023 10:54:56 +0000
+Date: Fri, 3 Nov 2023 10:54:56 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Gavin Shan <gshan@redhat.com>
+Cc: James Morse <james.morse@arm.com>, linux-pm@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com
+Subject: Re: [RFC PATCH v2 15/35] ACPI: processor: Add support for processors
+ described as container packages
+Message-ID: <ZUTRgNtpcVtcMFqJ@shell.armlinux.org.uk>
+References: <20230913163823.7880-1-james.morse@arm.com>
+ <20230913163823.7880-16-james.morse@arm.com>
+ <50571c2f-aa3c-baeb-3add-cd59e0eddc02@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <50571c2f-aa3c-baeb-3add-cd59e0eddc02@redhat.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Instruction with %rip-relative address operand is one byte shorter than
-its absolute address counterpart and is also compatible with position
-independent executable (-fpie) build.
+On Mon, Sep 18, 2023 at 03:02:53PM +1000, Gavin Shan wrote:
+> 
+> On 9/14/23 02:38, James Morse wrote:
+> > ACPI has two ways of describing processors in the DSDT. Either as a device
+> > object with HID ACPI0007, or as a type 'C' package inside a Processor
+> > Container. The ACPI processor driver probes CPUs described as devices, but
+> > not those described as packages.
+> > 
+> > Duplicate descriptions are not allowed, the ACPI processor driver already
+> > parses the UID from both devices and containers. acpi_processor_get_info()
+> > returns an error if the UID exists twice in the DSDT.
+> > 
+> > The missing probe for CPUs described as packages creates a problem for
+> > moving the cpu_register() calls into the acpi_processor driver, as CPUs
+> > described like this don't get registered, leading to errors from other
+> > subsystems when they try to add new sysfs entries to the CPU node.
+> > (e.g. topology_sysfs_init()'s use of topology_add_dev() via cpuhp)
+> > 
+> > To fix this, parse the processor container and call acpi_processor_add()
+> > for each processor that is discovered like this. The processor container
+> > handler is added with acpi_scan_add_handler(), so no detach call will
+> > arrive.
+> > 
+> > Qemu TCG describes CPUs using packages in a processor container.
+> > 
+> > Signed-off-by: James Morse <james.morse@arm.com>
+> > ---
+> >   drivers/acpi/acpi_processor.c | 22 ++++++++++++++++++++++
+> >   1 file changed, 22 insertions(+)
+> > 
+> 
+> I don't understand the last sentence of the commit log. QEMU
+> always have "ACPI0007" for the processor devices.
 
-No functional changes intended.
+I think what James is referring to is the use of Processor Containers
+(see
+https://uefi.org/specs/ACPI/6.5/08_Processor_Configuration_and_Control.html#processor-container-device)
 
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <len.brown@intel.com>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
----
- arch/x86/kernel/acpi/wakeup_64.S | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+which are defined using HID ACPI0010. This seems to be what
+build_cpus_aml() is doing. It creates:
 
-diff --git a/arch/x86/kernel/acpi/wakeup_64.S b/arch/x86/kernel/acpi/wakeup_64.S
-index d5d8a352eafa..94ff83f3d3fe 100644
---- a/arch/x86/kernel/acpi/wakeup_64.S
-+++ b/arch/x86/kernel/acpi/wakeup_64.S
-@@ -17,7 +17,7 @@
- 	 * Hooray, we are in Long 64-bit mode (but still running in low memory)
- 	 */
- SYM_FUNC_START(wakeup_long64)
--	movq	saved_magic, %rax
-+	movq	saved_magic(%rip), %rax
- 	movq	$0x123456789abcdef0, %rdx
- 	cmpq	%rdx, %rax
- 	je	2f
-@@ -33,14 +33,14 @@ SYM_FUNC_START(wakeup_long64)
- 	movw	%ax, %es
- 	movw	%ax, %fs
- 	movw	%ax, %gs
--	movq	saved_rsp, %rsp
-+	movq	saved_rsp(%rip), %rsp
- 
--	movq	saved_rbx, %rbx
--	movq	saved_rdi, %rdi
--	movq	saved_rsi, %rsi
--	movq	saved_rbp, %rbp
-+	movq	saved_rbx(%rip), %rbx
-+	movq	saved_rdi(%rip), %rdi
-+	movq	saved_rsi(%rip), %rsi
-+	movq	saved_rbp(%rip), %rbp
- 
--	movq	saved_rip, %rax
-+	movq	saved_rip(%rip), %rax
- 	ANNOTATE_RETPOLINE_SAFE
- 	jmp	*%rax
- SYM_FUNC_END(wakeup_long64)
-@@ -72,11 +72,11 @@ SYM_FUNC_START(do_suspend_lowlevel)
- 
- 	movq	$.Lresume_point, saved_rip(%rip)
- 
--	movq	%rsp, saved_rsp
--	movq	%rbp, saved_rbp
--	movq	%rbx, saved_rbx
--	movq	%rdi, saved_rdi
--	movq	%rsi, saved_rsi
-+	movq	%rsp, saved_rsp(%rip)
-+	movq	%rbp, saved_rbp(%rip)
-+	movq	%rbx, saved_rbx(%rip)
-+	movq	%rdi, saved_rdi(%rip)
-+	movq	%rsi, saved_rsi(%rip)
- 
- 	addq	$8, %rsp
- 	movl	$3, %edi
+	\_SB.CPUS - processor container with ACPI0010
+
+and then builds the processor devices underneath that object using
+ACPI0007.
+
+I think the use of "packages" there is wrong, it should be "processor
+devices" - taking the terminology from the above specification link.
+As far as I can see, QEMU does not (yet) use the option of embedding
+child processor containers beneath a parent.
+
 -- 
-2.41.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
