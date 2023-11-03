@@ -1,169 +1,133 @@
-Return-Path: <linux-acpi+bounces-1215-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1216-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E01E7E0A61
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 21:35:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 553F57E0A62
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 21:35:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2ECF7B20BE1
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 20:35:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2874281F5F
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 20:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC0323759
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 20:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0DA23759
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 20:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Jc0A8ugI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ATOS90CQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104A0225CC;
-	Fri,  3 Nov 2023 19:08:53 +0000 (UTC)
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2056.outbound.protection.outlook.com [40.107.220.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A9DAD59;
-	Fri,  3 Nov 2023 12:08:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RHsZrfp7WQNjz+J9I/444tKaWInicMD/ZPpZbkzMAP1irWS9Q47MdAWEv4nng9FhVbH+JYx8qb3O9EGGxF+7+hb4KLizqQ/izjpWiHzu/gOCVfPoS2LbjyjneFKQX9L66QASTQ0X/u+2RUuIWdFaPPML5CVNbnaRXOtc/LTdKIVJ/V5WvwA7OWzqI+6rTtTaCiOwY1R6hyhhBgKz/27PQJFtApo0pUaNUgmcftOiEQHx9aAUiXKPbExoXqF5WHXBHJ6WQ5+GAkHZpxgNnxEPW8xW/S32nsWzKASkSFsOewsm7YsiNedmyYo2aQPQK7U26upkms8ZzgD+XH3EL++kSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9bm6CvuPszQdPXt5Zsc6/nH1F3rQtl/A2wuDDypGcGk=;
- b=MOr/Iq/sk0lYyeJfRLo4LUHtO95iqkW7uUpmoV0WOarEnqgNhVxCwIX8G3oaYA3YvSMmT6EN/sF9fuP6Fw+UM+wXikR7bzgeJIG2DddEM4/P9Ir049NCUFbxHOGRAgHOizR3AjodfxLsqtXH5b7epa+FfFSgurCIRXNDX8T0fUC7PpBLeUHz8vfG7srFdVxQqxJGKoryQa4xHgvqQtkEG7bl8WRSPUkkplUxsFUBbNXSD7JFsuBqBKPAB9zxA2JcTo+uEOaHQcAFaftbl5/e5H2xRW8kYGjkq4vaEKPssPeU8CuRxmFKcXaiqERuti0zo4rSbTLLMenTzEt1ZYO9bg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9bm6CvuPszQdPXt5Zsc6/nH1F3rQtl/A2wuDDypGcGk=;
- b=Jc0A8ugIcvY3nY1ksEuQVqNtqx3jY1/eckxO8CLf8hp0X/l8Vpi71s7YCRuyq19iuhVljfR4iNbuBiizkUoED7FuHkxNnANcRc1+NBU+YGeG7pv5a+KHfv2qFWymRnkZgjgpJSFnhGs8hjpHGdSehoKHOSQBTbzBQpw0Ss2KeEg=
-Received: from MW4P221CA0008.NAMP221.PROD.OUTLOOK.COM (2603:10b6:303:8b::13)
- by SN7PR12MB8146.namprd12.prod.outlook.com (2603:10b6:806:323::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.24; Fri, 3 Nov
- 2023 19:08:45 +0000
-Received: from CO1PEPF000044F0.namprd05.prod.outlook.com
- (2603:10b6:303:8b:cafe::26) by MW4P221CA0008.outlook.office365.com
- (2603:10b6:303:8b::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.22 via Frontend
- Transport; Fri, 3 Nov 2023 19:08:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000044F0.mail.protection.outlook.com (10.167.241.70) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6954.19 via Frontend Transport; Fri, 3 Nov 2023 19:08:44 +0000
-Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Fri, 3 Nov
- 2023 14:08:41 -0500
-From: Mario Limonciello <mario.limonciello@amd.com>
-To: Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>, "Alex
- Deucher" <alexander.deucher@amd.com>, =?UTF-8?q?Christian=20K=C3=B6nig?=
-	<christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, "Hans de
- Goede" <hdegoede@redhat.com>, =?UTF-8?q?Ilpo=20J=C3=A4rvinen?=
-	<ilpo.jarvinen@linux.intel.com>, Mika Westerberg
-	<mika.westerberg@linux.intel.com>, Lukas Wunner <lukas@wunner.de>
-CC: Danilo Krummrich <dakr@redhat.com>, David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>, Xinhui Pan <Xinhui.Pan@amd.com>, "Rafael J .
- Wysocki" <rafael@kernel.org>, Mark Gross <markgross@kernel.org>, "Andreas
- Noever" <andreas.noever@gmail.com>, Michael Jamet <michael.jamet@intel.com>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>, =?UTF-8?q?Pali=20Roh=C3=A1r?=
-	<pali@kernel.org>, =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>, "Maciej
- W . Rozycki" <macro@orcam.me.uk>, Manivannan Sadhasivam <mani@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>, "open list:DRM DRIVER FOR
- NVIDIA GEFORCE/QUADRO GPUS" <dri-devel@lists.freedesktop.org>, "open list:DRM
- DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS" <nouveau@lists.freedesktop.org>, "open
- list" <linux-kernel@vger.kernel.org>, "open list:RADEON and AMDGPU DRM
- DRIVERS" <amd-gfx@lists.freedesktop.org>, "open list:PCI SUBSYSTEM"
-	<linux-pci@vger.kernel.org>, "open list:ACPI" <linux-acpi@vger.kernel.org>,
-	"open list:X86 PLATFORM DRIVERS" <platform-driver-x86@vger.kernel.org>, "open
- list:THUNDERBOLT DRIVER" <linux-usb@vger.kernel.org>
-Subject: [PATCH v2 9/9] PCI: Add a quirk to mark 0x8086 : 0x9a23 as supporting PCIe tunneling
-Date: Fri, 3 Nov 2023 14:07:58 -0500
-Message-ID: <20231103190758.82911-10-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231103190758.82911-1-mario.limonciello@amd.com>
-References: <20231103190758.82911-1-mario.limonciello@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B711EF508;
+	Fri,  3 Nov 2023 19:21:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E611AC433C8;
+	Fri,  3 Nov 2023 19:20:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1699039260;
+	bh=7MN/U949LXBUJuxhHGoevzr7GxH9ANzavjzuKeHmEFI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ATOS90CQjIPKFdQUNME1YOl/ZNO2l4vdA/tAPEX5FuZ7YB0AZw3Rg48H9VhtnnOA7
+	 VtX7UDME19I2utp0+HF+lTQWr1D2hH09nX463+1I6RWUaNBEbWhgPk6cHDBxOANA2/
+	 GbhdCLcNRwLIWfdX1Sj8XI23fCuZmPAunNQ+ynphpjxhJc317uikh3sxlMhff1fqtK
+	 FCtukqW5Kj1gGpk6aAglpD5Efco/VWlsxThbznSAwnIfQu5rtd4/zabCMIAZ5h2wrN
+	 d43JcoHYz09h5jLLSCD3wjOJ1MfFJa73nnUnofNlVsP2Q8bxmAm1uiL68bvht0+bEj
+	 icfdgBagHldvQ==
+Date: Fri, 3 Nov 2023 14:20:58 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	"open list:THUNDERBOLT DRIVER" <linux-usb@vger.kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	"open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
+	"open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS" <dri-devel@lists.freedesktop.org>,
+	"open list:X86 PLATFORM DRIVERS" <platform-driver-x86@vger.kernel.org>,
+	Andreas Noever <andreas.noever@gmail.com>,
+	David Airlie <airlied@gmail.com>,
+	Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
+	"open list:RADEON and AMDGPU DRM DRIVERS" <amd-gfx@lists.freedesktop.org>,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>,
+	Danilo Krummrich <dakr@redhat.com>,
+	"open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS" <nouveau@lists.freedesktop.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Michael Jamet <michael.jamet@intel.com>,
+	Mark Gross <markgross@kernel.org>, Xinhui Pan <Xinhui.Pan@amd.com>,
+	open list <linux-kernel@vger.kernel.org>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
+	"Maciej W . Rozycki" <macro@orcam.me.uk>
+Subject: Re: [PATCH v2 0/9] Improvements to pcie_bandwidth_available() for
+ eGPUs
+Message-ID: <20231103192058.GA164718@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044F0:EE_|SN7PR12MB8146:EE_
-X-MS-Office365-Filtering-Correlation-Id: af307a45-915a-42fa-0ab9-08dbdca04ce3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	RFPYuBVsqfBHmJXlBnNiy1k/QcZUag5y1aEzneMp8T7RXa09nxgtEHw12USPTpKsC1J8RF/7tszj4l8FExfwYeUHXgm8w8eRHBKdBDJbWf9GVRnIqwluq/5ItSvgQCwdCANqGJUW9mgsYwXUiQ9y4pCM9VFKqR5nLZrFQdORomem6R6Jwz0kIikyiCimcm2wriyQWrn/8N3x8TkjaH1F+Ecv9sOUzioaUkShCOczD9IndWHwvksjEEZMt+dXp3BpMFc6oJw4SOMTzrg7PAqBRJ7DKlvHZSZZSiE3+6E7dXMoFKHroe0d+MRnhAnW0dFUTg/wiiVQnNhXhpLkWY7hB8CAx4+rMTUeSDW+bX/Ynk4D1xhZIhGnM0wRCFWOVXQqhTLpOhOTLJahzqlWSVYvcQqTtUFJ1mjhJb+tgOEp+wy9/O2NOmBksD8ceeFN2sQTSUwTZAsmrkb4oTLtLACNwnJr6OZhGqK9NL31WqWJLTzDkCH2W8aHcHEvmoBOGZMu1TDQS/O7NrmYb+L8+t+sQdPl8CkbB60CP6eeRe+doRIzCmkmSRiM2f0SdSvb7ype2TD1etQU5Fx9nkslpRiCPm9pHiDWGbvTYn6Hn0xg22DavCTinLgdp6XWaKkNOynNkuU5/g8Id7Q//wMgNlZXhvWZ9PSm0egFZwdtnWv1Pc389yifDKt2cMyls9CMI/a2Cyb/QZ6ZTb5wpEEOh1Y2i9M1HbB+EdG6jdJOf2UqtfBXOhF7cxhuDNGV1EMkN8LG
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(346002)(136003)(376002)(39860400002)(230922051799003)(451199024)(1800799009)(186009)(82310400011)(64100799003)(46966006)(40470700004)(36840700001)(47076005)(70206006)(70586007)(86362001)(110136005)(26005)(336012)(82740400003)(81166007)(426003)(2616005)(16526019)(1076003)(316002)(54906003)(478600001)(966005)(7696005)(6666004)(8936002)(8676002)(356005)(40480700001)(40460700003)(4326008)(44832011)(36756003)(2906002)(83380400001)(7416002)(36860700001)(5660300002)(41300700001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2023 19:08:44.4476
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: af307a45-915a-42fa-0ab9-08dbdca04ce3
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000044F0.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8146
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231103190758.82911-1-mario.limonciello@amd.com>
 
-The PCI root port used for tunneling USB4 traffic on Tiger Lake is
-is not marked as tunneling but has the same limitations as other
-PCIe root ports used for tunneling.
+On Fri, Nov 03, 2023 at 02:07:49PM -0500, Mario Limonciello wrote:
+> Downstream drivers are getting the wrong values from
+> pcie_bandwidth_available() which is causing problems for performance
+> of eGPUs.
+> 
+> This series overhauls Thunderbolt related device detection and uses
+> the changes to change the behavior of pcie_bandwidth_available().
+> 
+> NOTE: This series is currently based on top of v6.6 + this change that
+>       will be merged for 6.7:
+> Link: https://patchwork.freedesktop.org/patch/564738/
 
-This causes pcie_bandwidth_available() to treat it as the limiting
-device in the PCI hierarchy and downstream driver to program devices
-incorrectly as a result.
+Thanks, Mario, I'll look at this soon after v6.7-rc1 (probably Nov
+12), so the amdgpu patch should be in mainline by then.
 
-Add a quirk to mark the device as tunneling so that it will be skipped
-in pcie_bandwidth_available() like other TBT3/USB4 root ports and bridges.
-
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2885
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/pci/quirks.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 4bbf6e33ca11..0f124e075834 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3827,6 +3827,17 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CACTUS_RIDGE_2C
- 			quirk_thunderbolt_command_complete);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_PORT_RIDGE,
- 			quirk_thunderbolt_command_complete);
-+
-+/*
-+ * PCIe root port associated with the integrated controller is used for PCIe
-+ * tunneling but can't be detected using ACPI.
-+ */
-+static void quirk_thunderbolt_tunneling(struct pci_dev *pdev)
-+{
-+	pdev->is_tunneled = 1;
-+}
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x9a23,
-+			quirk_thunderbolt_tunneling);
- #ifdef CONFIG_ACPI
- /*
-  * Apple: Shutdown Cactus Ridge Thunderbolt controller.
--- 
-2.34.1
-
+> v1->v2:
+>  * Rename is_thunderbolt
+>  * Look for _DSD instead of link
+>  * Drop pci_is_thunderbolt_attached() from all drivers
+>  * Adjust links
+>  * Adjust commit messages
+>  * Add quirk for Tiger Lake
+> 
+> Mario Limonciello (9):
+>   drm/nouveau: Switch from pci_is_thunderbolt_attached() to
+>     dev_is_removable()
+>   drm/radeon: Switch from pci_is_thunderbolt_attached() to
+>     dev_is_removable()
+>   PCI: Drop pci_is_thunderbolt_attached()
+>   PCI: Move the `PCI_CLASS_SERIAL_USB_USB4` definition to common header
+>   PCI: pciehp: Move check for is_thunderbolt into a quirk
+>   PCI: Rename is_thunderbolt to is_tunneled
+>   PCI: ACPI: Detect PCIe root ports that are used for tunneling
+>   PCI: Exclude PCIe ports used for tunneling in
+>     pcie_bandwidth_available()
+>   PCI: Add a quirk to mark 0x8086 : 0x9a23 as supporting PCIe tunneling
+> 
+>  drivers/gpu/drm/nouveau/nouveau_vga.c  |  6 +-
+>  drivers/gpu/drm/radeon/radeon_device.c |  4 +-
+>  drivers/gpu/drm/radeon/radeon_kms.c    |  2 +-
+>  drivers/pci/hotplug/pciehp_hpc.c       |  6 +-
+>  drivers/pci/pci-acpi.c                 | 16 ++++++
+>  drivers/pci/pci.c                      | 76 +++++++++++++++++---------
+>  drivers/pci/probe.c                    |  2 +-
+>  drivers/pci/quirks.c                   | 31 +++++++++++
+>  drivers/platform/x86/apple-gmux.c      |  2 +-
+>  drivers/thunderbolt/nhi.h              |  2 -
+>  include/linux/pci.h                    | 25 +--------
+>  include/linux/pci_ids.h                |  1 +
+>  12 files changed, 109 insertions(+), 64 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
 
