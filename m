@@ -1,129 +1,153 @@
-Return-Path: <linux-acpi+bounces-1170-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1171-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31607DFF30
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 07:33:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19BC07DFFC3
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 09:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11630281741
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 06:33:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CC021F2296A
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 08:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDE779C6
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 06:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15178111AB
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Nov 2023 08:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nurVtYuD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JI28po6Y"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098141FCE
-	for <linux-acpi@vger.kernel.org>; Fri,  3 Nov 2023 06:19:34 +0000 (UTC)
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7E431AD
-	for <linux-acpi@vger.kernel.org>; Thu,  2 Nov 2023 23:19:30 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-9adb9fa7200so343684566b.0
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Nov 2023 23:19:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698992369; x=1699597169; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=doFmS+NCdefv1+ceez2+893UX2T0fe3mmg0dF9v1al4=;
-        b=nurVtYuDUvf0qjhPpJ2PInK82ocvaKN9Z2jemMlQza4eqpaKUibhRx6RenZtzn4/Nf
-         uVp57SlMkzjVA5G1YMTuDKQ1K/JsdZvprIjK1BG27nEx+5QOWi1wBn0HxB3+I+vWojjI
-         JpmNlGFKGY9tiIf69GNRuHUrCHc+aGvvt/Dl5AOznPo2Y+TVhuciUHNoW8QE2HCsjODI
-         pAgrHIKE86cYewdcPTiaTeYATh7vS4K51iH58YDoNHb6MtZvcle4a0WXCNQH8F6GOLwq
-         Phc5VAHCfDTQRkZq5UGNAU5VCcs7pOUc9eOqhg13MWF4FLEJXPtz1J3miAZ+RQYwE8CQ
-         JV5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698992369; x=1699597169;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=doFmS+NCdefv1+ceez2+893UX2T0fe3mmg0dF9v1al4=;
-        b=GPE7OX1LaFS8ELEdU5/zXmjZpOreaGtYgUgr/539jfQekHKHXuB5RRhHeYtEkrtIw9
-         15papR+StMN9swGUCRpVgoua1d7zcNSWoc7jjWeP2SbrMUunJmZOzU8XAMlHYslPrJHX
-         7eQ8bnH/7HZDxXpiByeEwZZQVaIQO3HB/Yjqq5XTQv6rhiPcUU793Uktdlkv8wkfcKon
-         K39n/2Wkhi7g2x7bGvWcxhqS7WTm5/OZA/yFxPQ+a7+Kk2iFXDorCc2g8/LunTS/vQ/3
-         tNCaeTG9TqNU/1ot62B+g1WF3WV2I1D5kguYjrL4Bm3d9GcMkRMYb2s3FyQixg2jpxwD
-         A6IA==
-X-Gm-Message-State: AOJu0Yw8eoyIABHFCNohqtT+tokjLEATDhhazbeDeDI1+9fq77SlKdQf
-	6ALYPmBs/1Zqsm/6NF4RQKLFeaJ+veCK6EQdkcM=
-X-Google-Smtp-Source: AGHT+IEKf5FnbRgEi87NDHGprgQgoxo4ulJ1oMt9NB8eglusxgPkKfKH6/eITi+O3K6diUMRGSvjoQ==
-X-Received: by 2002:a17:906:c107:b0:9a2:295a:9bbc with SMTP id do7-20020a170906c10700b009a2295a9bbcmr1501736ejc.37.1698992369302;
-        Thu, 02 Nov 2023 23:19:29 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id z9-20020a1709060ac900b009c751e41ebasm531644ejf.141.2023.11.02.23.19.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Nov 2023 23:19:29 -0700 (PDT)
-Date: Fri, 3 Nov 2023 09:19:25 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: andersson@kernel.org
-Cc: linux-acpi@vger.kernel.org
-Subject: [bug report] device property: Add helper to match multiple
- connections
-Message-ID: <2bf7d32d-0684-4e4c-a310-b3c3d4a5cb85@moroto.mountain>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349377E;
+	Fri,  3 Nov 2023 07:06:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 460E9E3;
+	Fri,  3 Nov 2023 00:06:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698995201; x=1730531201;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1ofqAl7afRyOSUQplGsgdUrTix8X8Am0OmSUM8fC2wk=;
+  b=JI28po6YPtVEAJ4pLslXR3CWozrQG4hCSuDrASgbO4YY0gf9PdBLUqFg
+   S4WGPxJpUzg81/HNGJVeK/XSSCjwh1gxtTHf0AsXYjCVov/vSiW692tjI
+   oEViQncn7Gp8y49aRI60axdnX+4zr629oGCgAYt0+T8ldnizAwPn7ib85
+   /OQE0vAs7Rp+STFX7k/VbdxSyPgyroJC6hJOs7l6nk9idJPJjZzGQwJ+7
+   qCnEXywaIfKaGmpdclK2oZZCpt8z6WGL5O5YamBAeWqdLZsW1mb2IlAKX
+   7MEV6b6nsdtw1SFIzr+aAarGve0sSCFyKubI7vBLAEEO5HECXLXFr5ld1
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10882"; a="368238912"
+X-IronPort-AV: E=Sophos;i="6.03,273,1694761200"; 
+   d="scan'208";a="368238912"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2023 00:06:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10882"; a="755063681"
+X-IronPort-AV: E=Sophos;i="6.03,273,1694761200"; 
+   d="scan'208";a="755063681"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2023 00:06:35 -0700
+Received: from svinhufvud.ger.corp.intel.com (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 40960120F5B;
+	Fri,  3 Nov 2023 09:06:32 +0200 (EET)
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: linux-acpi@vger.kernel.org,
+	rafael@kernel.org
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-media@vger.kernel.org,
+	Paul Elder <paul.elder@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Julien Stephan <jstephan@baylibre.com>,
+	devicetree@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH v4 1/1] device property: Add fwnode_name_eq()
+Date: Fri,  3 Nov 2023 09:06:31 +0200
+Message-Id: <20231103070631.1223643-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Hello Bjorn Andersson,
+Add fwnode_name_eq() to implement the functionality of of_node_name_eq()
+on fwnode property API. The same convention of ending the comparison at
+'@' (besides NUL) is applied on also both ACPI and swnode. The function
+is intended for comparing unit address-less node names on DT and firmware
+or swnodes compliant with DT bindings.
 
-The patch 7a20917d30fb: "device property: Add helper to match
-multiple connections" from Apr 22, 2022 (linux-next), leads to the
-following Smatch static checker warning:
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Tested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+---
+since v3:
 
-	drivers/base/property.c:1374 fwnode_devcon_matches()
-	warn: 'ret' is an error pointer or valid
+- Use ptrdiff_t type for len.
 
-drivers/base/property.c
-    1353 static unsigned int fwnode_devcon_matches(const struct fwnode_handle *fwnode,
-    1354                                           const char *con_id, void *data,
-    1355                                           devcon_match_fn_t match,
-    1356                                           void **matches,
-    1357                                           unsigned int matches_len)
-    1358 {
-    1359         struct fwnode_handle *node;
-    1360         unsigned int count = 0;
-    1361         unsigned int i;
-    1362         void *ret;
-    1363 
-    1364         for (i = 0; ; i++) {
-    1365                 if (matches && count >= matches_len)
-    1366                         break;
-    1367 
-    1368                 node = fwnode_find_reference(fwnode, con_id, i);
-    1369                 if (IS_ERR(node))
-    1370                         break;
-    1371 
-    1372                 ret = match(node, NULL, data);
+ drivers/base/property.c  | 28 ++++++++++++++++++++++++++++
+ include/linux/property.h |  1 +
+ 2 files changed, 29 insertions(+)
 
-This is hard to analyze.  Smatch is doing something wrong but it still
-ends up looking basically like Smatch is right?
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 8667b13639d2..f20379c9a5c9 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -595,6 +595,34 @@ const char *fwnode_get_name_prefix(const struct fwnode_handle *fwnode)
+ 	return fwnode_call_ptr_op(fwnode, get_name_prefix);
+ }
+ 
++/**
++ * fwnode_name_eq - Return true if node name is equal
++ * @fwnode: The firmware node
++ * @name: The name to which to compare the node name
++ *
++ * Compare the name provided as an argument to the name of the node, stopping
++ * the comparison at either NUL or '@' character, whichever comes first. This
++ * function is generally used for comparing node names while ignoring the
++ * possible unit address of the node.
++ *
++ * Return: true if the node name matches with the name provided in the @name
++ * argument, false otherwise.
++ */
++bool fwnode_name_eq(const struct fwnode_handle *fwnode, const char *name)
++{
++	const char *node_name;
++	ptrdiff_t len;
++
++	node_name = fwnode_get_name(fwnode);
++	if (!node_name)
++		return false;
++
++	len = strchrnul(node_name, '@') - node_name;
++
++	return str_has_prefix(node_name, name) == len;
++}
++EXPORT_SYMBOL_GPL(fwnode_name_eq);
++
+ /**
+  * fwnode_get_parent - Return parent firwmare node
+  * @fwnode: Firmware whose parent is retrieved
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 083a1f41364b..096ade186601 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -108,6 +108,7 @@ struct fwnode_handle *fwnode_find_reference(const struct fwnode_handle *fwnode,
+ 
+ const char *fwnode_get_name(const struct fwnode_handle *fwnode);
+ const char *fwnode_get_name_prefix(const struct fwnode_handle *fwnode);
++bool fwnode_name_eq(const struct fwnode_handle *fwnode, const char *name);
+ 
+ struct fwnode_handle *fwnode_get_parent(const struct fwnode_handle *fwnode);
+ struct fwnode_handle *fwnode_get_next_parent(struct fwnode_handle *fwnode);
+-- 
+2.39.2
 
-According to Smatch on my config these are the match() functions
-usb_role_switch_match(), typec_retimer_match(), typec_switch_match()
-and typec_mux_match().  They can all return ERR_PTR(-EPROBE_DEFER).
-
-    1373                 fwnode_handle_put(node);
---> 1374                 if (ret) {
-    1375                         if (matches)
-    1376                                 matches[count] = ret;
-                                         ^^^^^^^^^^^^^^^^^^^^^
-Do we want to record that here or treat it as an error?
-
-    1377                         count++;
-    1378                 }
-    1379         }
-    1380 
-    1381         return count;
-    1382 }
-
-regards,
-dan carpenter
 
