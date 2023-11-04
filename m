@@ -1,245 +1,454 @@
-Return-Path: <linux-acpi+bounces-1232-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1233-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 211017E0F5F
-	for <lists+linux-acpi@lfdr.de>; Sat,  4 Nov 2023 13:32:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 608EF7E105C
+	for <lists+linux-acpi@lfdr.de>; Sat,  4 Nov 2023 17:32:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4F7DB20995
-	for <lists+linux-acpi@lfdr.de>; Sat,  4 Nov 2023 12:32:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 371661C2090B
+	for <lists+linux-acpi@lfdr.de>; Sat,  4 Nov 2023 16:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170A61A581
-	for <lists+linux-acpi@lfdr.de>; Sat,  4 Nov 2023 12:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9679622305
+	for <lists+linux-acpi@lfdr.de>; Sat,  4 Nov 2023 16:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rU6Sct9d"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lz5P2KbV"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0211D11C9E
-	for <linux-acpi@vger.kernel.org>; Sat,  4 Nov 2023 10:59:26 +0000 (UTC)
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78543D52
-	for <linux-acpi@vger.kernel.org>; Sat,  4 Nov 2023 03:59:24 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2c50305c5c4so41135431fa.1
-        for <linux-acpi@vger.kernel.org>; Sat, 04 Nov 2023 03:59:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699095562; x=1699700362; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=puBr9Yi+x/uGsFwHwq4a0yYN/Ns1a0YGcW8YSLOPxLY=;
-        b=rU6Sct9dQ3KOhotIAC5vJ9DeXMWPD7ytPGmb3vvlHTF09c4XEYF4+KnouTq+M58lWt
-         0iptqEdcOf8iA/m2pTU9Wkb8YMngQVIa88cfrg3StBiP4t3NY5PPmd+OPJ3K63+gXUTQ
-         zEzdbNBWeo1G8AE5Yh/nzp+N6nMrHlfmaw8Aa73sC4qRtJ/4KMi5eGuJndDNCPOIpL2K
-         d10PAkUQVdSHVpozsRG7JjC3R7AeHXN3E1X13OUHGvfUxpzbhknelY0+xWH9edCEbZSo
-         5PfluqzrRdQK9mBFlLnCZyLA+EXdmQ5H5Z5RdqRA0aU61vKQzgCSSRyncv+iho4kYckX
-         spew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699095562; x=1699700362;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=puBr9Yi+x/uGsFwHwq4a0yYN/Ns1a0YGcW8YSLOPxLY=;
-        b=GHYIuYxduz+CjAj410djYxokJ37FTdpU/He+c962EIYwNJ7It5EZ9JO6MalWOzcouq
-         rpUKKCLpVwXrvajDZIMIOOs58THDzdR4yaeAGN0jzSHQhZnK5DJOCuJqa7KnqF93suLG
-         67hjy+5wqT4U9sXE3eGRRtuHRllZDKBaa3gBJ1IBMc1wg1ieep4vp2JIrLE+E82A5B9F
-         GBE6JIGbX54Y0ysrGSw8bYKLTkgnqcweIgLRTU1lzi5Wf6/nS6Pvo8uPO9+cegZXfUO9
-         Ung4ru99cgZ+AwR6txKdhvDxe5/gn6u/V1svc3o2K8MnqsLheiHrRgb0+YDxsOSv5nst
-         dZtA==
-X-Gm-Message-State: AOJu0YyTLUhp/WSL9VRwO57HAkPV2O3XPx2hXsNf8sGKujWkonXofUs7
-	Gn5dqUwurD/V+2h29gn3PHoMWQ==
-X-Google-Smtp-Source: AGHT+IEk3sTFfQuHQKw0m3Mw4hvWfZEgdZ+z4UdSyOUZS5HQSWjuNsjHdiJp1Ig/quZGDOQeGEFaig==
-X-Received: by 2002:a2e:8796:0:b0:2bc:f5a0:cc25 with SMTP id n22-20020a2e8796000000b002bcf5a0cc25mr18906281lji.2.1699095562622;
-        Sat, 04 Nov 2023 03:59:22 -0700 (PDT)
-Received: from vingu-book.. ([2a01:e0a:f:6020:3172:eb13:5bac:126a])
-        by smtp.gmail.com with ESMTPSA id p6-20020a05600c358600b004053a6b8c41sm5315809wmq.12.2023.11.04.03.59.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Nov 2023 03:59:22 -0700 (PDT)
-From: Vincent Guittot <vincent.guittot@linaro.org>
-To: linux@armlinux.org.uk,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	sudeep.holla@arm.com,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	bristot@redhat.com,
-	vschneid@redhat.com,
-	viresh.kumar@linaro.org,
-	lenb@kernel.org,
-	robert.moore@intel.com,
-	lukasz.luba@arm.com,
-	ionela.voinescu@arm.com,
-	pierre.gondois@arm.com,
-	beata.michalska@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-pm@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: conor.dooley@microchip.com,
-	suagrfillet@gmail.com,
-	ajones@ventanamicro.com,
-	lftan@kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH v5 7/7] arm64/amu: Use capacity_ref_freq to set AMU ratio
-Date: Sat,  4 Nov 2023 11:59:07 +0100
-Message-Id: <20231104105907.1365392-8-vincent.guittot@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231104105907.1365392-1-vincent.guittot@linaro.org>
-References: <20231104105907.1365392-1-vincent.guittot@linaro.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DAC016414
+	for <linux-acpi@vger.kernel.org>; Sat,  4 Nov 2023 15:51:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54DAFD4E;
+	Sat,  4 Nov 2023 08:50:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699113059; x=1730649059;
+  h=date:from:to:cc:subject:message-id;
+  bh=Cu6Q+DOWau4zLogEACm8X/WCT+ene9aEnSSzDyNhGE4=;
+  b=lz5P2KbVP/YkAu4l2HlKbQ38SkXVh0QWVCQvAeB9hiyNK+9mFUhqseBT
+   BmrVnV8Rjzwyr1igPEoqdbSiq5mZU5YZ+KwBTuwyd6M+dlB/MggdNJCot
+   2KDTWb90EmZlmTvQIQM7DNeX9o516SaP8YaTyC+YwG0Uh5sDK6LGmOqK6
+   W+8Ta+SWjrzpTVYlMKyjbMAeLzk8wN0sUbaFbLqhfP1XzjeQF+6foIcJi
+   ZEkvc2hc82LrPB3LcKT2y1sZ8f4q+zWAzY4n+8HUH2Z6CxYf2AEZRvIme
+   yAJbuhLnNLHF5wJVW6cRLtuGpf4ne6HVtxs41/fqXoGS+3UcURj2U+V/7
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10884"; a="420212767"
+X-IronPort-AV: E=Sophos;i="6.03,277,1694761200"; 
+   d="scan'208";a="420212767"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2023 08:50:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10884"; a="1009103145"
+X-IronPort-AV: E=Sophos;i="6.03,277,1694761200"; 
+   d="scan'208";a="1009103145"
+Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 04 Nov 2023 08:50:57 -0700
+Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qzIvH-0004WK-0i;
+	Sat, 04 Nov 2023 15:50:55 +0000
+Date: Sat, 04 Nov 2023 23:49:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 742513f48261e9dd7c74e179f96afa1674acfe37
+Message-ID: <202311042341.nftbFzf5-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Use the new capacity_ref_freq to set the ratio that is used by AMU for
-computing the arch_scale_freq_capacity().
-This helps to keep everything aligned using the same reference for
-computing CPUs capacity.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 742513f48261e9dd7c74e179f96afa1674acfe37  Merge branch 'pm-cpufreq' into linux-next
 
-The default value of the ratio (stored in per_cpu(arch_max_freq_scale))
-ensures that arch_scale_freq_capacity() returns max capacity until it is
-set to its correct value with the cpu capacity and capacity_ref_freq.
+Warning ids grouped by kconfigs:
 
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
----
- arch/arm64/kernel/topology.c  | 26 ++++++++++++++------------
- drivers/base/arch_topology.c  | 12 +++++++++++-
- include/linux/arch_topology.h |  1 +
- 3 files changed, 26 insertions(+), 13 deletions(-)
+gcc_recent_errors
+|-- i386-defconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- mips-allmodconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- mips-allyesconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- powerpc-allmodconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- powerpc-allyesconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- powerpc-randconfig-002-20231104
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- powerpc64-randconfig-002-20231104
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- sparc-allmodconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- sparc-allyesconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- sparc64-allmodconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- sparc64-allyesconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- sparc64-randconfig-002-20231104
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+`-- x86_64-defconfig
+    |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+    |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+    `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+clang_recent_errors
+`-- x86_64-rhel-8.3-rust
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+    `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
 
-diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-index 817d788cd866..615c1a20129f 100644
---- a/arch/arm64/kernel/topology.c
-+++ b/arch/arm64/kernel/topology.c
-@@ -82,7 +82,12 @@ int __init parse_acpi_topology(void)
- #undef pr_fmt
- #define pr_fmt(fmt) "AMU: " fmt
- 
--static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale);
-+/*
-+ * Ensure that amu_scale_freq_tick() will return SCHED_CAPACITY_SCALE until
-+ * the CPU capacity and its associated frequency have been correctly
-+ * initialized.
-+ */
-+static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale) =  1UL << (2 * SCHED_CAPACITY_SHIFT);
- static DEFINE_PER_CPU(u64, arch_const_cycles_prev);
- static DEFINE_PER_CPU(u64, arch_core_cycles_prev);
- static cpumask_var_t amu_fie_cpus;
-@@ -112,14 +117,14 @@ static inline bool freq_counters_valid(int cpu)
- 	return true;
- }
- 
--static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
-+void freq_inv_set_max_ratio(int cpu, u64 max_rate)
- {
--	u64 ratio;
-+	u64 ratio, ref_rate = arch_timer_get_rate();
- 
- 	if (unlikely(!max_rate || !ref_rate)) {
--		pr_debug("CPU%d: invalid maximum or reference frequency.\n",
-+		WARN_ONCE(1, "CPU%d: invalid maximum or reference frequency.\n",
- 			 cpu);
--		return -EINVAL;
-+		return;
- 	}
- 
- 	/*
-@@ -139,12 +144,12 @@ static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
- 	ratio = div64_u64(ratio, max_rate);
- 	if (!ratio) {
- 		WARN_ONCE(1, "Reference frequency too low.\n");
--		return -EINVAL;
-+		return;
- 	}
- 
--	per_cpu(arch_max_freq_scale, cpu) = (unsigned long)ratio;
-+	WRITE_ONCE(per_cpu(arch_max_freq_scale, cpu), (unsigned long)ratio);
- 
--	return 0;
-+	return;
- }
- 
- static void amu_scale_freq_tick(void)
-@@ -195,10 +200,7 @@ static void amu_fie_setup(const struct cpumask *cpus)
- 		return;
- 
- 	for_each_cpu(cpu, cpus) {
--		if (!freq_counters_valid(cpu) ||
--		    freq_inv_set_max_ratio(cpu,
--					   cpufreq_get_hw_max_freq(cpu) * 1000ULL,
--					   arch_timer_get_rate()))
-+		if (!freq_counters_valid(cpu))
- 			return;
- 	}
- 
-diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
-index 0a2e43728286..0906114963ff 100644
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -344,6 +344,10 @@ bool __init topology_parse_cpu_capacity(struct device_node *cpu_node, int cpu)
- 	return !ret;
- }
- 
-+void __weak freq_inv_set_max_ratio(int cpu, u64 max_rate)
-+{
-+}
-+
- #ifdef CONFIG_ACPI_CPPC_LIB
- #include <acpi/cppc_acpi.h>
- 
-@@ -381,6 +385,9 @@ void topology_init_cpu_capacity_cppc(void)
- 	}
- 
- 	for_each_possible_cpu(cpu) {
-+		freq_inv_set_max_ratio(cpu,
-+				       per_cpu(capacity_freq_ref, cpu) * HZ_PER_KHZ);
-+
- 		capacity = raw_capacity[cpu];
- 		capacity = div64_u64(capacity << SCHED_CAPACITY_SHIFT,
- 				     capacity_scale);
-@@ -422,8 +429,11 @@ init_cpu_capacity_callback(struct notifier_block *nb,
- 
- 	cpumask_andnot(cpus_to_visit, cpus_to_visit, policy->related_cpus);
- 
--	for_each_cpu(cpu, policy->related_cpus)
-+	for_each_cpu(cpu, policy->related_cpus) {
- 		per_cpu(capacity_freq_ref, cpu) = policy->cpuinfo.max_freq;
-+		freq_inv_set_max_ratio(cpu,
-+				       per_cpu(capacity_freq_ref, cpu) * HZ_PER_KHZ);
-+	}
- 
- 	if (cpumask_empty(cpus_to_visit)) {
- 		topology_normalize_cpu_scale();
-diff --git a/include/linux/arch_topology.h b/include/linux/arch_topology.h
-index 32c24ff4f2a8..a63d61ca55af 100644
---- a/include/linux/arch_topology.h
-+++ b/include/linux/arch_topology.h
-@@ -99,6 +99,7 @@ void update_siblings_masks(unsigned int cpu);
- void remove_cpu_topology(unsigned int cpuid);
- void reset_cpu_topology(void);
- int parse_acpi_topology(void);
-+void freq_inv_set_max_ratio(int cpu, u64 max_rate);
- #endif
- 
- #endif /* _LINUX_ARCH_TOPOLOGY_H_ */
+elapsed time: 1451m
+
+configs tested: 191
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                     haps_hs_smp_defconfig   gcc  
+arc                        nsim_700_defconfig   gcc  
+arc                   randconfig-001-20231104   gcc  
+arc                   randconfig-002-20231104   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                          collie_defconfig   clang
+arm                                 defconfig   gcc  
+arm                          gemini_defconfig   gcc  
+arm                           omap1_defconfig   clang
+arm                         orion5x_defconfig   clang
+arm                   randconfig-001-20231104   gcc  
+arm                   randconfig-002-20231104   gcc  
+arm                   randconfig-003-20231104   gcc  
+arm                   randconfig-004-20231104   gcc  
+arm                         s3c6400_defconfig   gcc  
+arm                           u8500_defconfig   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20231104   gcc  
+arm64                 randconfig-002-20231104   gcc  
+arm64                 randconfig-003-20231104   gcc  
+arm64                 randconfig-004-20231104   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20231104   gcc  
+csky                  randconfig-002-20231104   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20231104   gcc  
+i386         buildonly-randconfig-002-20231104   gcc  
+i386         buildonly-randconfig-003-20231104   gcc  
+i386         buildonly-randconfig-004-20231104   gcc  
+i386         buildonly-randconfig-005-20231104   gcc  
+i386         buildonly-randconfig-006-20231104   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231104   gcc  
+i386                  randconfig-002-20231104   gcc  
+i386                  randconfig-003-20231104   gcc  
+i386                  randconfig-004-20231104   gcc  
+i386                  randconfig-005-20231104   gcc  
+i386                  randconfig-006-20231104   gcc  
+i386                  randconfig-011-20231104   gcc  
+i386                  randconfig-012-20231104   gcc  
+i386                  randconfig-013-20231104   gcc  
+i386                  randconfig-014-20231104   gcc  
+i386                  randconfig-015-20231104   gcc  
+i386                  randconfig-016-20231104   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231104   gcc  
+loongarch             randconfig-002-20231104   gcc  
+m68k                             alldefconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                        m5272c3_defconfig   gcc  
+m68k                       m5275evb_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                  decstation_64_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20231104   gcc  
+nios2                 randconfig-002-20231104   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20231104   gcc  
+parisc                randconfig-002-20231104   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc                      cm5200_defconfig   gcc  
+powerpc               randconfig-001-20231104   gcc  
+powerpc               randconfig-002-20231104   gcc  
+powerpc               randconfig-003-20231104   gcc  
+powerpc                     stx_gp3_defconfig   gcc  
+powerpc64             randconfig-001-20231104   gcc  
+powerpc64             randconfig-002-20231104   gcc  
+powerpc64             randconfig-003-20231104   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv             nommu_k210_sdcard_defconfig   gcc  
+riscv                 randconfig-001-20231104   gcc  
+riscv                 randconfig-002-20231104   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20231104   gcc  
+s390                  randconfig-002-20231104   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                          r7780mp_defconfig   gcc  
+sh                    randconfig-001-20231104   gcc  
+sh                    randconfig-002-20231104   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20231104   gcc  
+sparc                 randconfig-002-20231104   gcc  
+sparc64                          alldefconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20231104   gcc  
+sparc64               randconfig-002-20231104   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20231104   gcc  
+um                    randconfig-002-20231104   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20231104   gcc  
+x86_64       buildonly-randconfig-002-20231104   gcc  
+x86_64       buildonly-randconfig-003-20231104   gcc  
+x86_64       buildonly-randconfig-004-20231104   gcc  
+x86_64       buildonly-randconfig-005-20231104   gcc  
+x86_64       buildonly-randconfig-006-20231104   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                randconfig-001-20231104   gcc  
+x86_64                randconfig-002-20231104   gcc  
+x86_64                randconfig-003-20231104   gcc  
+x86_64                randconfig-004-20231104   gcc  
+x86_64                randconfig-005-20231104   gcc  
+x86_64                randconfig-006-20231104   gcc  
+x86_64                randconfig-011-20231104   gcc  
+x86_64                randconfig-012-20231104   gcc  
+x86_64                randconfig-013-20231104   gcc  
+x86_64                randconfig-014-20231104   gcc  
+x86_64                randconfig-015-20231104   gcc  
+x86_64                randconfig-016-20231104   gcc  
+x86_64                randconfig-071-20231104   gcc  
+x86_64                randconfig-072-20231104   gcc  
+x86_64                randconfig-073-20231104   gcc  
+x86_64                randconfig-074-20231104   gcc  
+x86_64                randconfig-075-20231104   gcc  
+x86_64                randconfig-076-20231104   gcc  
+x86_64                           rhel-8.3-bpf   gcc  
+x86_64                          rhel-8.3-func   gcc  
+x86_64                    rhel-8.3-kselftests   gcc  
+x86_64                         rhel-8.3-kunit   gcc  
+x86_64                           rhel-8.3-ltp   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+xtensa                randconfig-001-20231104   gcc  
+xtensa                randconfig-002-20231104   gcc  
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
