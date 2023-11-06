@@ -1,99 +1,149 @@
-Return-Path: <linux-acpi+bounces-1252-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1253-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EAAA7E219B
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Nov 2023 13:32:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3EE7E219D
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Nov 2023 13:32:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58BD2280D9D
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Nov 2023 12:32:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 482B728146F
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Nov 2023 12:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117E4200B2
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Nov 2023 12:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0265119BA3
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Nov 2023 12:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LNFB0DSQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cRiY+eu6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F3F199A1;
-	Mon,  6 Nov 2023 11:29:31 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3043BB;
-	Mon,  6 Nov 2023 03:29:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699270170; x=1730806170;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dVbgGjQlfi/ag2GwhO/7mrluIesj2NDfOw+Ao81CCzM=;
-  b=LNFB0DSQAY5z8PBu1ya2aw1pjbI3+BXOrd/i4jmjgm+CgbGcZ/UPHGf4
-   2xmsADEfoolGvIKzoPNFwWRnxx38AeZhV4ETJ6Y97498ienrjmU8YIO+s
-   78D+JCde5iqKNsqvaXt7TGVCpuABNTkmGPsgMLSC/z36zLqxiZj14CB8L
-   csIn95LzcuU5kodBqsVIpsXO1GIMcp5Uw+vmsgR1theE/NXGlQK3LiWM/
-   zTEp+0MXwUkOk0aPMuCkEVROweNNZ7WdC/Gu7b5+5lrCasPZGQggTrxrj
-   3MU/VeaTVHA8NMIFnZgR1VkNRzBrlANowkvnWCmByvOivvW+KUN8XNaYY
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10885"; a="386431930"
-X-IronPort-AV: E=Sophos;i="6.03,281,1694761200"; 
-   d="scan'208";a="386431930"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2023 03:29:30 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10885"; a="762294686"
-X-IronPort-AV: E=Sophos;i="6.03,281,1694761200"; 
-   d="scan'208";a="762294686"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2023 03:29:26 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC3)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1qzxnH-0000000BmAW-0nCG;
-	Mon, 06 Nov 2023 13:29:23 +0200
-Date: Mon, 6 Nov 2023 13:29:22 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: linux-acpi@vger.kernel.org, rafael@kernel.org,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	linux-media@vger.kernel.org,
-	Paul Elder <paul.elder@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Julien Stephan <jstephan@baylibre.com>, devicetree@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH v4 1/1] device property: Add fwnode_name_eq()
-Message-ID: <ZUjOEsQSjom4SdOg@smile.fi.intel.com>
-References: <20231103070631.1223643-1-sakari.ailus@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118BF18044
+	for <linux-acpi@vger.kernel.org>; Mon,  6 Nov 2023 11:35:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832BAC433C7;
+	Mon,  6 Nov 2023 11:35:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1699270531;
+	bh=fI4NKuZ1uY8mqL9yZ9YNJndkjv1j7nVGFqh2pflGyYI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cRiY+eu6yXREipoxzeem9UkMf7DbKLyTEsBhihxAIIk9nQ7OhutANlrX0EN63aFg8
+	 ZSOLFibjhi2PMsmJgXzpwOvA3yqj+aXKhPs5qY42O3Uubyo3b9ra3w1ryHOdHG+HiZ
+	 lHOvlA1VxBzJlQ/bT8UqOpfVLA184ZKyXm6dfKOVjFk5US/uhLcvJeH9TagyH2mwcu
+	 9b39ZbgDKTEhKmjrt0MJvhXN1mZbmQCjYEQL13faJBplEzfT8BihvSFWhGl8cQUWBC
+	 bWSHz+fQSNq7mqI8jiAcEbQjHnTmI/qTbh4GYesnI1QXEQSU6GqcBjGWWa/rNB3tBe
+	 ESW6CSQ0mYtcg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1qzxtA-00AkGy-HO;
+	Mon, 06 Nov 2023 11:35:28 +0000
+Date: Mon, 06 Nov 2023 11:35:27 +0000
+Message-ID: <86fs1j15ds.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <helgaas@kernel.org>
+Cc: 	Sunil V L <sunilvl@ventanamicro.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	Catalin Marinas
+ <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paul Walmsley
+ <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou
+ <aou@eecs.berkeley.edu>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len
+ Brown <lenb@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Anup Patel
+ <anup@brainfault.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Conor Dooley
+ <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Atish Kumar Patra <atishp@rivosinc.com>,
+	Haibo Xu <haibo1.xu@intel.com>
+Subject: Re: [RFC PATCH v2 13/21] irqchip: riscv-intc: Add ACPI support for AIA
+In-Reply-To: <87jzr82c3h.ffs@tglx>
+References: <20231026165150.GA1825130@bhelgaas>
+	<87jzr82c3h.ffs@tglx>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231103070631.1223643-1-sakari.ailus@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: tglx@linutronix.de, helgaas@kernel.org, sunilvl@ventanamicro.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org, linux-serial@vger.kernel.org, catalin.marinas@arm.com, will@kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com, anup@brainfault.org, gregkh@linuxfoundation.org, jirislaby@kernel.org, conor.dooley@microchip.com, ajones@ventanamicro.com, atishp@rivosinc.com, haibo1.xu@intel.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, Nov 03, 2023 at 09:06:31AM +0200, Sakari Ailus wrote:
-> Add fwnode_name_eq() to implement the functionality of of_node_name_eq()
-> on fwnode property API. The same convention of ending the comparison at
-> '@' (besides NUL) is applied on also both ACPI and swnode. The function
-> is intended for comparing unit address-less node names on DT and firmware
-> or swnodes compliant with DT bindings.
+On Fri, 27 Oct 2023 18:45:38 +0100,
+Thomas Gleixner <tglx@linutronix.de> wrote:
+> 
+> On Thu, Oct 26 2023 at 11:51, Bjorn Helgaas wrote:
+> > On Thu, Oct 26, 2023 at 01:53:36AM +0530, Sunil V L wrote:
+> >> The RINTC subtype structure in MADT also has information about other
+> >> interrupt controllers like MMIO. So, save those information and provide
+> >> interfaces to retrieve them when required by corresponding drivers.
+> >
+> >> @@ -218,7 +306,19 @@ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
+> >
+> >> +	 * MSI controller (IMSIC) in RISC-V is optional. So, unless
+> >> +	 * IMSIC is discovered, set system wide MSI support as
+> >> +	 * unsupported. Once IMSIC is probed, MSI support will be set.
+> >> +	 */
+> >> +	pci_no_msi();
+> >
+> > It doesn't seem like we should have to tell the PCI core about
+> > functionality we *don't* have.
+> >
+> > I would think IMSIC would be detected before enumerating PCI devices
+> > that might use it, and if we *haven't* found an IMSIC by the time we
+> > get to pci_register_host_bridge(), would/should we set
+> > PCI_BUS_FLAGS_NO_MSI there?
+> >
+> > I see Thomas is cc'd; he'd have better insight.
+> 
+> I was not really involved with this bus and MSI domain logic. Marc
+> should know. CC'ed.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+The canonical way of doing this is by the platform expressing that
+there is no linkage between the PCIe RC and the MSI controller.  If
+there is no MSI domain associated with the RC, then by extension the
+endpoints don't get one either.
 
-I believe I gave already the tag...
+There are additional quirks linked to the msi_domain host bridge
+property, allowing the host bridge driver to indicate that it isn't in
+charge of MSIs, but that a third party may provide it (in which case a
+MSI irq domain will be associated with it).
+
+In any case, slapping a pci_no_msi() call in an irqchip driver is
+gross and most probably a sign that this is going in the wrong
+direction, specially as this is platform-wide.
+
+The only cases I'd expect this function to be called are:
+
+- Platform or firmware explicitly disallowing MSIs
+- pci=nomsi on the command line
+
+none of which are the business of an irqchip driver.
+
+HTH,
+
+	M.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Without deviation from the norm, progress is not possible.
 
