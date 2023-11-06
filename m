@@ -1,240 +1,109 @@
-Return-Path: <linux-acpi+bounces-1260-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1261-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27DCD7E26E7
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Nov 2023 15:34:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AAB97E26E8
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Nov 2023 15:34:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0B43B20DE1
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Nov 2023 14:34:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43125281471
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Nov 2023 14:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1767728DA7
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Nov 2023 14:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AFC28DAA
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Nov 2023 14:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EeqJmeW0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TbmUsbAW"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEB92FB3;
-	Mon,  6 Nov 2023 12:52:42 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 555C8B6;
-	Mon,  6 Nov 2023 04:52:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699275161; x=1730811161;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=ksjO7REBXQEKPi1wlrbUj9HrMuDV2WJEcaQRc/T5UtQ=;
-  b=EeqJmeW0NpYB3Dhhp7Kqa4mlWCI2b9N/SKDf2e3jyXSXYrWWvqduxbLJ
-   sJgrueSb+hi8FAI7G4VnEI/YcJpxHEnTvLM5MIXw6tXJmiF6oScVKORoL
-   m9LzvyYc7VMsCyxfdczsLngrUro0OBY2ApyeRZHcCc5z5qny2FOFRKVbV
-   mtX5f8vIvzl64PPkQaTcm98ScquMwyAW9lJ4zHxJIzUFw2oN0Pdc4b68K
-   PK6/E90PBz+IvuauWBqmwtUdoaZ9JeaGA1D5aEzLDV0fS59LFW/idbuHB
-   4jbCMWz5QGvyW72JBIB93ryQSS2NjGMKNGd8g0sygu1fo3Gitlh8oBNTh
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10885"; a="2176887"
-X-IronPort-AV: E=Sophos;i="6.03,281,1694761200"; 
-   d="scan'208";a="2176887"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2023 04:52:41 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10885"; a="852989745"
-X-IronPort-AV: E=Sophos;i="6.03,281,1694761200"; 
-   d="scan'208";a="852989745"
-Received: from rmstoi-mobl.ger.corp.intel.com ([10.251.216.76])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2023 04:52:33 -0800
-Date: Mon, 6 Nov 2023 14:52:31 +0200 (EET)
-From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Mario Limonciello <mario.limonciello@amd.com>
-cc: Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>, 
-    Alex Deucher <alexander.deucher@amd.com>, 
-    =?ISO-8859-15?Q?Christian_K=F6nig?= <christian.koenig@amd.com>, 
-    Bjorn Helgaas <bhelgaas@google.com>, Hans de Goede <hdegoede@redhat.com>, 
-    Mika Westerberg <mika.westerberg@linux.intel.com>, 
-    Lukas Wunner <lukas@wunner.de>, Danilo Krummrich <dakr@redhat.com>, 
-    David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-    Xinhui Pan <Xinhui.Pan@amd.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-    Mark Gross <markgross@kernel.org>, 
-    Andreas Noever <andreas.noever@gmail.com>, 
-    Michael Jamet <michael.jamet@intel.com>, 
-    Yehezkel Bernat <YehezkelShB@gmail.com>, 
-    =?ISO-8859-15?Q?Pali_Roh=E1r?= <pali@kernel.org>, 
-    =?ISO-8859-15?Q?Marek_Beh=FAn?= <kabel@kernel.org>, 
-    "Maciej W . Rozycki" <macro@orcam.me.uk>, 
-    Manivannan Sadhasivam <mani@kernel.org>, 
-    "open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS" <dri-devel@lists.freedesktop.org>, 
-    "open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS" <nouveau@lists.freedesktop.org>, 
-    open list <linux-kernel@vger.kernel.org>, 
-    "open list:RADEON and AMDGPU DRM DRIVERS" <amd-gfx@lists.freedesktop.org>, 
-    "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>, 
-    "open list:ACPI" <linux-acpi@vger.kernel.org>, 
-    "open list:X86 PLATFORM DRIVERS" <platform-driver-x86@vger.kernel.org>, 
-    "open list:THUNDERBOLT DRIVER" <linux-usb@vger.kernel.org>
-Subject: Re: [PATCH v2 8/9] PCI: Exclude PCIe ports used for tunneling in
- pcie_bandwidth_available()
-In-Reply-To: <20231103190758.82911-9-mario.limonciello@amd.com>
-Message-ID: <bdae1a8-d62-6af6-316d-1e3a5ac15bc@linux.intel.com>
-References: <20231103190758.82911-1-mario.limonciello@amd.com> <20231103190758.82911-9-mario.limonciello@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0482374A
+	for <linux-acpi@vger.kernel.org>; Mon,  6 Nov 2023 13:32:21 +0000 (UTC)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E827A9;
+	Mon,  6 Nov 2023 05:32:20 -0800 (PST)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1cc30bf9e22so35329045ad.1;
+        Mon, 06 Nov 2023 05:32:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699277539; x=1699882339; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2jT3DhaF8Ow4N6+nNljPzGs8H83Pa4BYmAvFBXlx8Fg=;
+        b=TbmUsbAWRlNfkC1x9pOsblUmGVoPpR4PKbaG9ty64PYZWJ2+x5JTQprk0vBP3K4Ibm
+         DhPNbZaqFCgzsqGl+uafBtFt7LIgyQXpQmjkCsUqc5yDPw+54k6ROg19xRHtxwME8QEc
+         6IhMPZthWLi9+pfNoVvMVp0iAAer4+DAaOk7+xCce3VTVZkg1SlKPvR4Io86iSQNLoWS
+         qm7l7DdauJtYBjmwmh2KZ1d3hlYjc37NHU3OhaiUxgn177Yx3b//QAoD+Fin9tS1+8KR
+         mEiUlKe0LGSKUBYuI2Pfc1RvcaCK7YIKnruuBTurAxgd1JIXsQjsy+3KW7OMzxCNGaP/
+         nsxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699277539; x=1699882339;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=2jT3DhaF8Ow4N6+nNljPzGs8H83Pa4BYmAvFBXlx8Fg=;
+        b=aPdpyGOIWCL738BCjoh3TCndl+96WZNV6zRDJ/XxTRSjfk3P/A5LouamqAZ5sTia34
+         OIrVgzPz22RaMk+6TaYmmjXPfITXBaXwb0oE2KshRfIilBU2f0st1u0qDB96d/pVnA4n
+         Fcnlm6zy11j5H+dPcREGoVDn9websvLrl6aaRowvkFygVFyvs6sMmO2NR7QxkMheJP7H
+         19EcGAya1t1Fc/iA/Ulh9feHzmGikz9X/842uvtXwe0vYLKWqC3qFJ7L05ER/jukX5KZ
+         dkkeS4uYCbAgUOWRksqOsS8PFl5jv7ye1F1E40AE1f6TKeCuHGv1EugnaTQjrGUF2i4y
+         zTMg==
+X-Gm-Message-State: AOJu0YxvK2CapWe6bwWwTanyEn9+ND09g1oMTLGl8CwRvA4POmrW39W9
+	DY09tx6l06yPdpVolwBpel++YIWDt50=
+X-Google-Smtp-Source: AGHT+IGYQPQZCO7Y0BbQi2FCxldaowhoIpLH2JFRRCS/iqdrKuQPfEORKmwOCvdGc5luKXoHWxbkWQ==
+X-Received: by 2002:a17:902:f548:b0:1cb:fcfb:61af with SMTP id h8-20020a170902f54800b001cbfcfb61afmr14275911plf.30.1699277539333;
+        Mon, 06 Nov 2023 05:32:19 -0800 (PST)
+Received: from [192.168.0.106] ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id g23-20020a1709029f9700b001c625d6ffccsm5891886plq.129.2023.11.06.05.32.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Nov 2023 05:32:17 -0800 (PST)
+Message-ID: <bcf9def4-67e9-4939-a065-2eed2884b97d@gmail.com>
+Date: Mon, 6 Nov 2023 20:32:05 +0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Ingo Molnar <mingo@kernel.org>, Lan Tianyu <tianyu.lan@intel.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, yofail2@gmail.com
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Fwd: System will crash when trying to wake up from second suspend
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, 3 Nov 2023, Mario Limonciello wrote:
+Hi,
 
-> The USB4 spec specifies that PCIe ports that are used for tunneling
-> PCIe traffic over USB4 fabric will be hardcoded to advertise 2.5GT/s and
-> behave as a PCIe Gen1 device. The actual performance of these ports is
-> controlled by the fabric implementation.
-> 
-> Downstream drivers such as amdgpu which utilize pcie_bandwidth_available()
-> to program the device will always find the PCIe ports used for
-> tunneling as a limiting factor potentially leading to incorrect
-> performance decisions.
-> 
-> To prevent problems in downstream drivers check explicitly for ports
-> being used for PCIe tunneling and skip them when looking for bandwidth
-> limitations of the hierarchy. If the only device connected is a root port
-> used for tunneling then report that device.
-> 
-> Downstream drivers could make this change on their own but then they
-> wouldn't be able to detect other potential speed bottlenecks from the
-> hierarchy without duplicating pcie_bandwidth_available() logic.
-> 
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2925#note_2145860
-> Link: https://www.usb.org/document-library/usb4r-specification-v20
->       USB4 V2 with Errata and ECN through June 2023
->       Section 11.2.1
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/pci/pci.c | 74 +++++++++++++++++++++++++++++++----------------
->  1 file changed, 49 insertions(+), 25 deletions(-)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index d9aa5a39f585..15e37164ce56 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -6223,6 +6223,35 @@ int pcie_set_mps(struct pci_dev *dev, int mps)
->  }
->  EXPORT_SYMBOL(pcie_set_mps);
->  
-> +static u32 pcie_calc_bw_limits(struct pci_dev *dev, u32 bw,
-> +			       struct pci_dev **limiting_dev,
-> +			       enum pci_bus_speed *speed,
-> +			       enum pcie_link_width *width)
-> +{
-> +	enum pcie_link_width next_width;
-> +	enum pci_bus_speed next_speed;
-> +	u32 next_bw;
-> +	u16 lnksta;
-> +
-> +	pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
-> +	next_speed = pcie_link_speed[lnksta & PCI_EXP_LNKSTA_CLS];
-> +	next_width = (lnksta & PCI_EXP_LNKSTA_NLW) >> PCI_EXP_LNKSTA_NLW_SHIFT;
-> +	next_bw = next_width * PCIE_SPEED2MBS_ENC(next_speed);
-> +
-> +	/* Check if current device limits the total bandwidth */
-> +	if (!bw || next_bw <= bw) {
-> +		bw = next_bw;
-> +		if (limiting_dev)
-> +			*limiting_dev = dev;
-> +		if (speed)
-> +			*speed = next_speed;
-> +		if (width)
-> +			*width = next_width;
-> +	}
-> +
-> +	return bw;
-> +}
-> +
->  /**
->   * pcie_bandwidth_available - determine minimum link settings of a PCIe
->   *			      device and its bandwidth limitation
-> @@ -6236,47 +6265,42 @@ EXPORT_SYMBOL(pcie_set_mps);
->   * limiting_dev, speed, and width pointers are supplied) information about
->   * that point.  The bandwidth returned is in Mb/s, i.e., megabits/second of
->   * raw bandwidth.
-> + *
-> + * This excludes the bandwidth calculation that has been returned from a
-> + * PCIe device used for transmitting tunneled PCIe traffic over a Thunderbolt
-> + * or USB4 link that is part of larger hierarchy. The calculation is excluded
-> + * because the USB4 specification specifies that the max speed returned from
-> + * PCIe configuration registers for the tunneling link is always PCI 1x 2.5 GT/s.
-> + * When only tunneled devices are present, the bandwidth returned is the
-> + * bandwidth available from the first tunneled device.
->   */
->  u32 pcie_bandwidth_available(struct pci_dev *dev, struct pci_dev **limiting_dev,
->  			     enum pci_bus_speed *speed,
->  			     enum pcie_link_width *width)
->  {
-> -	u16 lnksta;
-> -	enum pci_bus_speed next_speed;
-> -	enum pcie_link_width next_width;
-> -	u32 bw, next_bw;
-> +	struct pci_dev *tdev = NULL;
-> +	u32 bw = 0;
->  
->  	if (speed)
->  		*speed = PCI_SPEED_UNKNOWN;
->  	if (width)
->  		*width = PCIE_LNK_WIDTH_UNKNOWN;
->  
-> -	bw = 0;
-> -
->  	while (dev) {
-> -		pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
-> -
-> -		next_speed = pcie_link_speed[lnksta & PCI_EXP_LNKSTA_CLS];
-> -		next_width = (lnksta & PCI_EXP_LNKSTA_NLW) >>
-> -			PCI_EXP_LNKSTA_NLW_SHIFT;
-> -
-> -		next_bw = next_width * PCIE_SPEED2MBS_ENC(next_speed);
-> -
-> -		/* Check if current device limits the total bandwidth */
-> -		if (!bw || next_bw <= bw) {
-> -			bw = next_bw;
-> -
-> -			if (limiting_dev)
-> -				*limiting_dev = dev;
-> -			if (speed)
-> -				*speed = next_speed;
-> -			if (width)
-> -				*width = next_width;
-> +		if (dev->is_tunneled) {
-> +			if (!tdev)
-> +				tdev = dev;
-> +			goto skip;
->  		}
-> -
-> +		bw = pcie_calc_bw_limits(dev, bw, limiting_dev, speed, width);
-> +skip:
->  		dev = pci_upstream_bridge(dev);
->  	}
->  
-> +	/* If nothing "faster" found on link, limit to first tunneled device */
-> +	if (tdev && !bw)
-> +		bw = pcie_calc_bw_limits(tdev, bw, limiting_dev, speed, width);
-> +
->  	return bw;
->  }
->  EXPORT_SYMBOL(pcie_bandwidth_available);
-> 
+I notice a bug report on Bugzilla [1]. Quoting from it:
 
-This patch should be split into two, where one just moves the code to the 
-new function.
+> Total carbon copy of the following bug in terms of symptoms described, warning displayed after needing to hard restart after failed second suspend, and solution, but with a different laptop vendor and an A10-5745m APU instead of the A6-6310: https://bugzilla.kernel.org/show_bug.cgi?id=189431
+> 
+> The problem occurred on the latest stable patch of Debian 12 at the time of writing, as well as Arch Linux using the latest lts kernel at the time of writing, mainline Arch kernel 6.5.9 as well as the testing Arch 6.6 kernel.
+>  
+> changing linux/drivers/acpi/sleep.c
+> 
+> by removing
+> 
+> if (dmi_get_bios_year() >= 2012)
+>    acpi_nvs_nosave_s3();
+> 
+> from the acpi_sleep_dmi_check() method
+> as a kludge to enable nvs memory during s3 for my laptop and building + installing completely fixed the issue after several days of failed attempts at fixes. Evidentially, the HP envy m6 sleekbook needs nvs memory despite being manufactured after 2012. Bios is at the latest available version provided by HP.
+> 
+> I'll include part of my dmidecode to help better identify my exact laptop model.
 
-Also note that this will conflict with the FIELD_GET() changes (try to 
-not reintroduce non-FIELD_GET() code when you rebase this on top of 
-v6.7-rc1 :-)).
+See Bugzilla for the full thread and proposed fix patch.
+
+Thanks.
+
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=218106
 
 -- 
- i.
-
+An old man doll... just what I always wanted! - Clara
 
