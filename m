@@ -1,138 +1,144 @@
-Return-Path: <linux-acpi+bounces-1296-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1297-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2EB7E3536
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 07:31:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84CB7E3995
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 11:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CF5F280AAF
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 06:31:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1116F1C20A30
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 10:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BF6CA62
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 06:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1B628E39
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 10:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IGCMk8ZZ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Xvbg8rVw"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F55C947A;
-	Tue,  7 Nov 2023 06:24:16 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AD9C101;
-	Mon,  6 Nov 2023 22:24:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699338255; x=1730874255;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xMd2rVgz/0nCDHGO5G5Cgmns963Fjfa40nHUcD2LIxI=;
-  b=IGCMk8ZZpOLcTsOgycxyY4TH3dQ/eEP5ApYP7g3QYG2nqGBUAliuOluS
-   5q0Nz+BKL2CeVuwhRrIK8vN1mQEN37rWnUNnI1BxvrXCo+05EWGnNTi1a
-   v0CS1yb/0h97f5ax1fmFs62RLrv9b8S/jp6ZWJnJBMIpQNvLbykJfLf2g
-   rNGe2YlKqBXrWEN561Ln0J9ZPIlalDjgXgkN7YnreOfgI5XG4VSa6AX7F
-   vArXh463zL2b9g2BwG+UkgLqjUbL1QWzwUxvGEE1WFQ3ROxRSdHNFEo9H
-   S5O6TpHxQWi8cqEM+Y1t2t7jqE0j+jbZLdSqqwa251uJAq1k49tAaNClj
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10886"; a="475682216"
-X-IronPort-AV: E=Sophos;i="6.03,282,1694761200"; 
-   d="scan'208";a="475682216"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2023 22:24:15 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10886"; a="1094047505"
-X-IronPort-AV: E=Sophos;i="6.03,282,1694761200"; 
-   d="scan'208";a="1094047505"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 06 Nov 2023 22:24:07 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 15A0E3CC; Tue,  7 Nov 2023 08:24:05 +0200 (EET)
-Date: Tue, 7 Nov 2023 08:24:05 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Xinhui Pan <Xinhui.Pan@amd.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Mark Gross <markgross@kernel.org>,
-	Andreas Noever <andreas.noever@gmail.com>,
-	Michael Jamet <michael.jamet@intel.com>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
-	Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
-	"Maciej W . Rozycki" <macro@orcam.me.uk>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	"open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS" <dri-devel@lists.freedesktop.org>,
-	"open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS" <nouveau@lists.freedesktop.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:RADEON and AMDGPU DRM DRIVERS" <amd-gfx@lists.freedesktop.org>,
-	"open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
-	"open list:ACPI" <linux-acpi@vger.kernel.org>,
-	"open list:X86 PLATFORM DRIVERS" <platform-driver-x86@vger.kernel.org>,
-	"open list:THUNDERBOLT DRIVER" <linux-usb@vger.kernel.org>
-Subject: Re: [PATCH v2 8/9] PCI: Exclude PCIe ports used for tunneling in
- pcie_bandwidth_available()
-Message-ID: <20231107062405.GU17433@black.fi.intel.com>
-References: <20231103190758.82911-1-mario.limonciello@amd.com>
- <20231103190758.82911-9-mario.limonciello@amd.com>
- <20231106181022.GA18564@wunner.de>
- <712ebb25-3fc0-49b5-96a1-a13c3c4c4921@amd.com>
- <20231106185652.GA3360@wunner.de>
- <20231107054526.GT17433@black.fi.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3829012E67;
+	Tue,  7 Nov 2023 10:29:08 +0000 (UTC)
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA3DEF7;
+	Tue,  7 Nov 2023 02:29:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=mnU5AkoHae2A4t/6hUnkAeF1QeR2fa8gldl6fabdpys=; b=Xvbg8rVwQvptDasFluB1GivJJR
+	lkmYK9tHPkK3vfKg66aLbO07r9lL+qDWdsMtP1fVlOa8E6KTkOYoEs2lwy4BuATJgRxBHul9tXxli
+	QGqH/a1GwQbXH4Ty2qge3vzSS6Lc2LavAFmQ5ENfzpAimPTrAHwq4g364DPRdQkTj0tDP0qjcdxfK
+	STyjqt1AJWeyZh74VX0SvsNhUiKdGJQ5F9Q8X2OntVFa17qD+omT8nLqUX52QnKNsc7MXWynhIz17
+	xiLH8jwcSjSqGdcRk8+6xspJu1Yko/6rlvG1nsItzUsrSafRMYvzk7lo3JLicVij5zIccje25TllF
+	GUWgjCdw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:37708)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1r0JKK-0000DJ-2j;
+	Tue, 07 Nov 2023 10:28:56 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1r0JKF-0006qX-KE; Tue, 07 Nov 2023 10:28:51 +0000
+Date: Tue, 7 Nov 2023 10:28:51 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, linux-csky@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
+	linux-parisc@vger.kernel.org
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	James Morse <james.morse@arm.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com, Len Brown <lenb@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>
+Subject: [PATCH RFC 00/22] Initial cleanups for vCPU hotplug
+Message-ID: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231107054526.GT17433@black.fi.intel.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Nov 07, 2023 at 07:45:26AM +0200, Mika Westerberg wrote:
-> Hi,
-> 
-> On Mon, Nov 06, 2023 at 07:56:52PM +0100, Lukas Wunner wrote:
-> > On Mon, Nov 06, 2023 at 12:44:25PM -0600, Mario Limonciello wrote:
-> > > Tangentially related; the link speed is currently symmetric but there are
-> > > two sysfs files.  Mika left a comment in drivers/thunderbolt/switch.c it may
-> > > be asymmetric in the future. So we may need to keep that in mind on any
-> > > design that builds on top of them.
-> > 
-> > Aren't asymmetric Thunderbolt speeds just a DisplayPort thing?
-> 
-> No, they affect the whole fabric. We have the initial code for
-> asymmetric switching in v6.7-rc1.
-> 
-> > > As 'thunderbolt' can be a module or built in, we need to bring code into PCI
-> > > core so that it works in early boot before it loads.
-> > 
-> > tb_switch_get_generation() is small enough that it could be moved to the
-> > PCI core.  I doubt that we need to make thunderbolt built-in only
-> > or move a large amount of code to the PCI core.
-> 
-> If at all possible I would like to avoid this and littering PCI side
-> with non-PCI stuff. There could be other similar "mediums" in the future
-> where you can transfer packets of "native" protocols such as PCIe so
-> instead of making it Thunderbolt/USB4 specific it should be generic
-> enough to support future extensions.
-> 
-> In case of Thunderbolt/USB4 there is no real way to figure out how much
-> bandwidth each PCIe tunnel gets (it is kind of bulk traffic that gets
-> what is left from isochronous protocols) so I would not even try that
-> and instead use the real PCIe links in pcie_bandwidth_available() and
-> skip all the "virtual" ones.
+Hi,
 
-Actually can we call the new function something like pci_link_is_virtual()
-instead and make pcie_bandwidth_available() call it? That would be more
-future proof IMHO.
+Rather than posting the entire set of vCPU kernel patches, this is a
+subset of those patches which I hope will be able to be appropriately
+queued for the next merge window. I am also hoping that nothing here
+is covered by Rafael's concerns he alluded to in his response to the
+RFC v3 series.
+
+This series aims to switch most architectures over to using generic CPU
+devices rather than arch specific implementations, which I think is
+worthwhile doing even if the vCPU hotplug series needs further work.
+
+Since this series changes the init order (node_dev_init() vs
+cpu_dev_init()) and later on in the vCPU hotplug series move the
+location that CPUs are registered, the first two patches head off
+problems with register_cpu_capacity_sysctl() and the intel_epb code.
+These two were ordered later in the original series.
+
+The next pair of patches are new and remove the exports of
+arch_*register_cpu() which are not necessary - these functions are only
+called from non-modular code - drivers/base/cpu.c and acpi_processor.c
+both of which can only be built-in.
+
+The majority of the other patches come from the vCPU hotplug RFC v3
+series I posted earlier, rebased on Linus' current tip, but with some
+new patches adding arch_cpu_is_hotpluggable() as the remaining
+arch_register_cpu() functions only differ in the setting of the
+hotpluggable member of the CPU device - so let's get generic code
+doing that and provide a way for an architecture to specify whether a
+CPU is hotpluggable.
+
+I would appreciate testing reports on loongarch, riscv and x86
+platforms please.
+
+Thanks!
+
+ arch/arm64/Kconfig               |  1 +
+ arch/arm64/include/asm/cpu.h     |  1 -
+ arch/arm64/kernel/setup.c        | 13 ++-----------
+ arch/loongarch/Kconfig           |  2 ++
+ arch/loongarch/kernel/topology.c | 42 ++--------------------------------------
+ arch/riscv/Kconfig               |  1 +
+ arch/riscv/kernel/setup.c        | 18 ++---------------
+ arch/x86/Kconfig                 |  2 ++
+ arch/x86/include/asm/cpu.h       |  4 ----
+ arch/x86/kernel/cpu/intel_epb.c  |  2 +-
+ arch/x86/kernel/topology.c       | 33 ++-----------------------------
+ drivers/acpi/Kconfig             |  1 -
+ drivers/acpi/acpi_processor.c    | 18 -----------------
+ drivers/base/arch_topology.c     | 38 ++++++++++++++++++++++++------------
+ drivers/base/cpu.c               | 39 +++++++++++++++++++++++++++++--------
+ drivers/base/init.c              |  2 +-
+ drivers/base/node.c              |  7 -------
+ include/linux/cpu.h              |  5 +++++
+ 18 files changed, 78 insertions(+), 151 deletions(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
