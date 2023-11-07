@@ -1,113 +1,409 @@
-Return-Path: <linux-acpi+bounces-1334-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1335-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE987E4848
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 19:32:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 643F67E4849
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 19:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8487228102F
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 18:32:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFBBFB20B0D
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 18:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7A8358A9
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 18:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8EF358AF
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 18:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="HousSzc/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZM27deGC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606DD3588B
-	for <linux-acpi@vger.kernel.org>; Tue,  7 Nov 2023 17:48:13 +0000 (UTC)
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE2A10DC
-	for <linux-acpi@vger.kernel.org>; Tue,  7 Nov 2023 09:48:10 -0800 (PST)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1cc9784dbc1so36210005ad.2
-        for <linux-acpi@vger.kernel.org>; Tue, 07 Nov 2023 09:48:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1699379290; x=1699984090; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TY15kIau+eDARAHjRIt1BbGYq8C7hJS6gitrNXYnQoM=;
-        b=HousSzc/TjsP9QqgcvSIDoufRgk897tprX2D8mQ95adj1B/2RgSgyZNdoHXOAi4POE
-         RyGSeJv4XJeNzp1qJCFnJQQdRkoq56vsC4XirAWI7snyChYAVnTwpS3fa+wBy9WrqElS
-         9R2e8WFkuuqV43XkSuhbARRfsELb92BgB/q37zaN2ZiYWtYUWAt96mKJdUdjhiN0/0FP
-         o4hxVnfu24k/VrGRdQn2TDq9wXbKSdRoTirQs8urvQaLa+An1fTZu6enivRYHA9IM7Yb
-         c87zXju/6oae3/n4iaoZqgW34MushccCIy0qF6RXIroGfOWMsOEZEH+xsciQFGCCFpP0
-         jVmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699379290; x=1699984090;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TY15kIau+eDARAHjRIt1BbGYq8C7hJS6gitrNXYnQoM=;
-        b=W0EEy0cne/gHOl8M7WjLMMQ6PUZyF2OH9vBx+93GjFvVomnSxYeOf/Z47aGSdXnWKV
-         RPe0IMU90Zf3ozv279Y23CjJoZuaPsFqAPzw2OwwAW7iv/TPHfSXNDTHyHsiDC+7Bcjx
-         HWiUKmei5qHTByni9YmNKFSzcQ93WK4Q6s+bvmbqjlnAbSd35QQjKGmFNFZctJPewlM2
-         vV5QANq2RiblaaOOtWrgxHcvebwbytNsH74tPHoufaZzY9D689c1lOyrHPfwyS1jivDA
-         Y8uU/HLStqnNL/FSVr21xCAyEYY5ex/pKujjaoBdjY9ylKsLKPEkY5MqZ/wBVjpUjNC5
-         jzQA==
-X-Gm-Message-State: AOJu0YxwX5IvExi3rOmbaKmsz/0SCrLh6WuOr3nOkxecNO8WA6SF1Azx
-	XamUgezo0vCQ2vTdDJt+t4OkCw==
-X-Google-Smtp-Source: AGHT+IE1uUN1bCnM0e+Ov1l1naTtElUtLA3DgMMTfPPCXEEwKaTGd4dv0hVEl36p8Py1780zIW4h7w==
-X-Received: by 2002:a17:902:ccca:b0:1bd:c7e2:462 with SMTP id z10-20020a170902ccca00b001bdc7e20462mr31928892ple.11.1699379290316;
-        Tue, 07 Nov 2023 09:48:10 -0800 (PST)
-Received: from localhost ([192.184.165.199])
-        by smtp.gmail.com with ESMTPSA id l12-20020a170903244c00b001b9be3b94d3sm102654pls.140.2023.11.07.09.48.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Nov 2023 09:48:09 -0800 (PST)
-Date: Tue, 07 Nov 2023 09:48:09 -0800 (PST)
-X-Google-Original-Date: Tue, 07 Nov 2023 09:48:06 PST (-0800)
-Subject:     Re: [PATCH RFC 22/22] riscv: convert to use arch_cpu_is_hotpluggable()
-In-Reply-To: <E1r0JMV-00CTyh-It@rmk-PC.armlinux.org.uk>
-CC: linux-pm@vger.kernel.org, loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
-  linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-  linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, linux-csky@vger.kernel.org,
-  linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-  salil.mehta@huawei.com, jean-philippe@linaro.org, jianyong.wu@arm.com, justin.he@arm.com,
-  james.morse@arm.com, Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: rmk+kernel@armlinux.org.uk
-Message-ID: <mhng-b535d186-b241-4fe8-a6b5-b06aff516d1c@palmer-ri-x1c9>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC693588D;
+	Tue,  7 Nov 2023 18:07:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71BFC433A9;
+	Tue,  7 Nov 2023 18:07:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1699380453;
+	bh=N4rlLB7z0cOpmpZ/BL47aepJIVFWZKyXA+rtWoCv60w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZM27deGCx+o8H6YUVL55r5q8aUEBMsTc7nhR4mdmHHNy6/eF27PP9TboKKe+d+edk
+	 UjgX9W/Vv3oUM0mEFsURZ79HnO+q+KHBaMhW1Y1EDydagf+HNR4vCaWCXJ12pqjx79
+	 70ty0soXF5YwV+dXnusUVL+RExSyP0zsqTXqaXAZVons9GBrOoHnX9UrkaMrrJizzn
+	 AVQZpHpIEPEFsNNdKiuQ0clYlJvXv1CZMM05pxjmLvpJibtrnRloMDZvWiU+J0ewAP
+	 LV/2+9tcR/G4+/PkZ3WAmIrHB+45Mw5bfBFTTHa5zAFTENfg6+XmU+5egd0pKf0ZWV
+	 PrZ3Tc7qvcgwA==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-50797cf5b69so7882545e87.2;
+        Tue, 07 Nov 2023 10:07:32 -0800 (PST)
+X-Gm-Message-State: AOJu0Yzw6IvCI0r8GXCarCVkTbpFvNKJOEYxHZH9mcky90qLkiOfOVX7
+	tugrXeEOTYaaw92NdT5Jq820fAk16tsnpkye4w==
+X-Google-Smtp-Source: AGHT+IEkUVYvX0YzvXzJFUleQKdN0GE9vRVxqaXq3qMhrMlB77Pbme7h7KcKJjsSIgU5e9Jsi4+ATC2DZumGeHvPbdQ=
+X-Received: by 2002:a05:6512:557:b0:503:24c7:df34 with SMTP id
+ h23-20020a056512055700b0050324c7df34mr24961177lfl.11.1699380450811; Tue, 07
+ Nov 2023 10:07:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
+ <CAPnjgZ0Xf3U1aj32LbU-xiU1AqwnM3JL1F8xX-wZ18oEmg+irw@mail.gmail.com>
+ <CAMj1kXEXcX7BkDyfy-6_5Vnch=N+onza-yfWfsVaGLE93h2c+Q@mail.gmail.com>
+ <CAPnjgZ2SEby-ndrs=W_afBJH56eqc=-mhp1F1nwkvWks+=B54Q@mail.gmail.com>
+ <CAMj1kXED3S+0cq+VT7naBrmWrUwT=HZAaZOBRMv8Ui1Pey1QNQ@mail.gmail.com>
+ <CAPnjgZ0LrsJ2_ENTYoBrnyFaH3UKdHs3D2XWY=TzBuBpBoTXZA@mail.gmail.com>
+ <CAL_Jsq+DQugkEDESW5wySFbLLN8HNqGDJCio8Wpi6fe0LeHKUA@mail.gmail.com>
+ <CAPnjgZ0cmKP5hoGCyQ_Rp8ZQXUVwaPYJMWyidXuOOjMVkDoMDw@mail.gmail.com>
+ <CAL_JsqJH=vJ40PNTg_i0LoKA-c0hhMJkL8zCC3_bB-tOkFWWsw@mail.gmail.com>
+ <CAPnjgZ1FrdGKjGAxUbkQoL2vHwhC_2Oa2KT+0cm25dQAuAjxAQ@mail.gmail.com> <CAPnjgZ19-xR6QxS=fR53skz0VuAty2Z2w2vQTjP7g=tbTFpaqw@mail.gmail.com>
+In-Reply-To: <CAPnjgZ19-xR6QxS=fR53skz0VuAty2Z2w2vQTjP7g=tbTFpaqw@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 7 Nov 2023 12:07:17 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqL+X1DatsGk_Cn1HsbG2GV9AngFWXVysWTiNRu_d9tDqw@mail.gmail.com>
+Message-ID: <CAL_JsqL+X1DatsGk_Cn1HsbG2GV9AngFWXVysWTiNRu_d9tDqw@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
+To: Simon Glass <sjg@chromium.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, devicetree@vger.kernel.org, 
+	Mark Rutland <mark.rutland@arm.com>, Lean Sheng Tan <sheng.tan@9elements.com>, 
+	lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, 
+	Maximilian Brune <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
+	Guo Dong <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, 
+	ron minnich <rminnich@gmail.com>, Gua Guo <gua.guo@intel.com>, 
+	Chiu Chasel <chasel.chiu@intel.com>, linux-acpi@vger.kernel.org, 
+	U-Boot Mailing List <u-boot@lists.denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 07 Nov 2023 02:31:11 PST (-0800), rmk+kernel@armlinux.org.uk wrote:
-> Convert riscv to use the arch_cpu_is_hotpluggable() helper rather than
-> arch_register_cpu().
+On Tue, Oct 31, 2023 at 10:56=E2=80=AFAM Simon Glass <sjg@chromium.org> wro=
+te:
 >
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
->  arch/riscv/kernel/setup.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+> Hi Rob,
 >
-> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-> index f8875ae1b0aa..168f0db63d53 100644
-> --- a/arch/riscv/kernel/setup.c
-> +++ b/arch/riscv/kernel/setup.c
-> @@ -294,12 +294,9 @@ void __init setup_arch(char **cmdline_p)
->  	riscv_set_dma_cache_alignment();
->  }
->
-> -int arch_register_cpu(int cpu)
-> +bool arch_cpu_is_hotpluggable(int cpu)
->  {
-> -	struct cpu *c = &per_cpu(cpu_devices, cpu);
-> -
-> -	c->hotpluggable = cpu_has_hotplug(cpu);
-> -	return register_cpu(c, cpu);
-> +	return cpu_has_hotplug(cpu);
->  }
->
->  void free_initmem(void)
+> On Mon, 16 Oct 2023 at 15:54, Simon Glass <sjg@chromium.org> wrote:
+> >
+> > Hi Rob,
+> >
+> > On Mon, 16 Oct 2023 at 10:50, Rob Herring <robh@kernel.org> wrote:
+> > >
+> > > On Fri, Oct 13, 2023 at 4:09=E2=80=AFPM Simon Glass <sjg@chromium.org=
+> wrote:
+> > > >
+> > > > Hi Rob,
+> > > >
+> > > > On Fri, 13 Oct 2023 at 13:42, Rob Herring <robh@kernel.org> wrote:
+> > > > >
+> > > > > On Fri, Oct 6, 2023 at 7:03=E2=80=AFPM Simon Glass <sjg@chromium.=
+org> wrote:
+> > > > > >
+> > > > > > Hi Ard,
+> > > > > >
+> > > > > > On Fri, 6 Oct 2023 at 17:00, Ard Biesheuvel <ardb@kernel.org> w=
+rote:
+> > > > > > >
+> > > > > > > On Fri, 6 Oct 2023 at 20:17, Simon Glass <sjg@chromium.org> w=
+rote:
+> > > > > > > >
+> > > > > > > > Hi Ard,
+> > > > > > > >
+> > > > > > > > On Fri, 6 Oct 2023 at 11:33, Ard Biesheuvel <ardb@kernel.or=
+g> wrote:
+> > > > > > > > >
+> > > > > > > > > On Mon, 2 Oct 2023 at 19:54, Simon Glass <sjg@chromium.or=
+g> wrote:
+> > > > > > > > > >
+> > > > > > > > > > Hi Rob,
+> > > > > > > > > >
+> > > > > > > > > > On Tue, 26 Sept 2023 at 13:42, Simon Glass <sjg@chromiu=
+m.org> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > It is common to split firmware into 'Platform Init', =
+which does the
+> > > > > > > > > > > initial hardware setup and a "Payload" which selects =
+the OS to be booted.
+> > > > > > > > > > > Thus an handover interface is required between these =
+two pieces.
+> > > > > > > > > > >
+> > > > > > > > > > > Where UEFI boot-time services are not available, but =
+UEFI firmware is
+> > > > > > > > > > > present on either side of this interface, information=
+ about memory usage
+> > > > > > > > > > > and attributes must be presented to the "Payload" in =
+some form.
+> > > > > > > > > > >
+> > > > > > > > > > > This aims to provide an small schema addition for the=
+ memory mapping
+> > > > > > > > > > > needed to keep these two pieces working together well=
+.
+> > > > > > > > > > >
+> > > > > > > > > > > Signed-off-by: Simon Glass <sjg@chromium.org>
+> > > > > > > > > > > ---
+> > > > > > > > > > >
+> > > > > > > > > > > Changes in v7:
+> > > > > > > > > > > - Rename acpi-reclaim to acpi
+> > > > > > > > > > > - Drop individual mention of when memory can be recla=
+imed
+> > > > > > > > > > > - Rewrite the item descriptions
+> > > > > > > > > > > - Add back the UEFI text (with trepidation)
+> > > > > > > > > >
+> > > > > > > > > > I am again checking on this series. Can it be applied, =
+please?
+> > > > > > > > > >
+> > > > > > > > >
+> > > > > > > > > Apologies for the delay in response. I have been away.
+> > > > > > > >
+> > > > > > > > OK, I hope you had a nice trip.
+> > > > > > > >
+> > > > > > >
+> > > > > > > Thanks, it was wonderful!
+> > > > > > >
+> > > > > > > > >
+> > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > > Changes in v6:
+> > > > > > > > > > > - Drop mention of UEFI
+> > > > > > > > > > > - Use compatible strings instead of node names
+> > > > > > > > > > >
+> > > > > > > > > > > Changes in v5:
+> > > > > > > > > > > - Drop the memory-map node (should have done that in =
+v4)
+> > > > > > > > > > > - Tidy up schema a bit
+> > > > > > > > > > >
+> > > > > > > > > > > Changes in v4:
+> > > > > > > > > > > - Make use of the reserved-memory node instead of cre=
+ating a new one
+> > > > > > > > > > >
+> > > > > > > > > > > Changes in v3:
+> > > > > > > > > > > - Reword commit message again
+> > > > > > > > > > > - cc a lot more people, from the FFI patch
+> > > > > > > > > > > - Split out the attributes into the /memory nodes
+> > > > > > > > > > >
+> > > > > > > > > > > Changes in v2:
+> > > > > > > > > > > - Reword commit message
+> > > > > > > > > > >
+> > > > > > > > > > >  .../reserved-memory/common-reserved.yaml      | 71 +=
+++++++++++++++++++
+> > > > > > > > > > >  1 file changed, 71 insertions(+)
+> > > > > > > > > > >  create mode 100644 dtschema/schemas/reserved-memory/=
+common-reserved.yaml
+> > > > > > > > > > >
+> > > > > > > > > > > diff --git a/dtschema/schemas/reserved-memory/common-=
+reserved.yaml b/dtschema/schemas/reserved-memory/common-reserved.yaml
+> > > > > > > > > > > new file mode 100644
+> > > > > > > > > > > index 0000000..f7fbdfd
+> > > > > > > > > > > --- /dev/null
+> > > > > > > > > > > +++ b/dtschema/schemas/reserved-memory/common-reserve=
+d.yaml
+> > > > > > > > > > > @@ -0,0 +1,71 @@
+> > > > > > > > > > > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Cla=
+use
+> > > > > > > > > > > +%YAML 1.2
+> > > > > > > > > > > +---
+> > > > > > > > > > > +$id: http://devicetree.org/schemas/reserved-memory/c=
+ommon-reserved.yaml#
+> > > > > > > > > > > +$schema: http://devicetree.org/meta-schemas/core.yam=
+l#
+> > > > > > > > > > > +
+> > > > > > > > > > > +title: Common memory reservations
+> > > > > > > > > > > +
+> > > > > > > > > > > +description: |
+> > > > > > > > > > > +  Specifies that the reserved memory region can be u=
+sed for the purpose
+> > > > > > > > > > > +  indicated by its compatible string.
+> > > > > > > > > > > +
+> > > > > > > > > > > +  Clients may reuse this reserved memory if they und=
+erstand what it is for,
+> > > > > > > > > > > +  subject to the notes below.
+> > > > > > > > > > > +
+> > > > > > > > > > > +maintainers:
+> > > > > > > > > > > +  - Simon Glass <sjg@chromium.org>
+> > > > > > > > > > > +
+> > > > > > > > > > > +allOf:
+> > > > > > > > > > > +  - $ref: reserved-memory.yaml
+> > > > > > > > > > > +
+> > > > > > > > > > > +properties:
+> > > > > > > > > > > +  compatible:
+> > > > > > > > > > > +    description: |
+> > > > > > > > > > > +      This describes some common memory reservations=
+, with the compatible
+> > > > > > > > > > > +      string indicating what it is used for:
+> > > > > > > > > > > +
+> > > > > > > > > > > +         acpi: Advanced Configuration and Power Inte=
+rface (ACPI) tables
+> > > > > > > > > > > +         acpi-nvs: ACPI Non-Volatile-Sleeping Memory=
+ (NVS). This is reserved by
+> > > > > > > > > > > +           the firmware for its use and is required =
+to be saved and restored
+> > > > > > > > > > > +           across an NVS sleep
+> > > > > > > > > > > +         boot-code: Contains code used for booting w=
+hich is not needed by the OS
+> > > > > > > > > > > +         boot-code: Contains data used for booting w=
+hich is not needed by the OS
+> > > > > > > > > > > +         runtime-code: Contains code used for intera=
+cting with the system when
+> > > > > > > > > > > +           running the OS
+> > > > > > > > > > > +         runtime-data: Contains data used for intera=
+cting with the system when
+> > > > > > > > > > > +           running the OS
+> > > > > > > > > > > +
+> > > > > > > > > > > +    enum:
+> > > > > > > > > > > +      - acpi
+> > > > > > > > > > > +      - acpi-nvs
+> > > > > > > > > > > +      - boot-code
+> > > > > > > > > > > +      - boot-data
+> > > > > > > > > > > +      - runtime-code
+> > > > > > > > > > > +      - runtime-data
+> > > > > > > > > > > +
+> > > > > > > > >
+> > > > > > > > > As I mentioned a few times already, I don't think these c=
+ompatibles
+> > > > > > > > > should be introduced here.
+> > > > > > > > >
+> > > > > > > > > A reserved region has a specific purpose, and the compati=
+ble should be
+> > > > > > > > > more descriptive than the enum above. If the consumer doe=
+s not
+> > > > > > > > > understand this purpose, it should simply treat the memor=
+y as reserved
+> > > > > > > > > and not touch it. Alternatively, these regions can be ref=
+erenced from
+> > > > > > > > > other DT nodes using phandles if needed.
+> > > > > > > >
+> > > > > > > > We still need some description of what these regions are us=
+ed for, so
+> > > > > > > > that the payload can use the correct regions. I do not have=
+ any other
+> > > > > > > > solution to this problem. We are in v7 at present. At least=
+ explain
+> > > > > > > > where you want the compatible strings to be introduced.
+> > > > > > > >
+> > > > > > >
+> > > > > > > My point is really that by themselves, these regions are not =
+usable by
+> > > > > > > either a payload or an OS that consumes this information. Unl=
+ess there
+> > > > > > > is some other information being provided (via DT I imagine) t=
+hat
+> > > > > > > describes how these things are supposed to be used, they are =
+nothing
+> > > > > > > more than memory reservations that should be honored, and pro=
+viding
+> > > > > > > this arbitrary set of labels is unnecessary.
+> > > > > > >
+> > > > > > > > What sort of extra detail are you looking for? Please be sp=
+ecific and
+> > > > > > > > preferably add some suggestions so I can close this out ASA=
+P.
+> > > > > > > >
+> > > > > > >
+> > > > > > > A payload or OS can do nothing with a memory reservation call=
+ed
+> > > > > > > 'runtime-code' it it doesn't know what is inside.
+> > > > >
+> > > > > Agreed. The question is WHAT runtime-code? The compatible needs t=
+o answer that.
+> > > > >
+> > > > > For example, we have 'ramoops' as a compatible in reserved memory=
+.
+> > > > > That tells us *exactly* what's there. We know how to parse it. If=
+ we
+> > > > > know ramoops is not supported, then we know we can toss it out an=
+d
+> > > > > reclaim the memory.
+> > > >
+> > > > So if we said:
+> > > >
+> > > >    compatible =3D "runtime-code-efi"
+> > > >
+> > > > would that be OK? We seem to be in catch 22 here, because if I don'=
+t
+> > > > mention EFI unhappy, but if I do, Ard is unhappy.
+> > >
+> > > Better yes, because then it is for something specific. However, AIUI,
+> > > that's setup for the OS and defining that region is already defined b=
+y
+> > > the EFI memory map. That's Ard's issue. If there's a need outside of
+> > > the EFI to OS handoff,
+> >
+> > There is a need. Here is part of the commit message again. If there is
+> > something else you need to know, please ask.
+> >
+> > >>>>
+> > It is common to split firmware into 'Platform Init', which does the
+> > initial hardware setup and a "Payload" which selects the OS to be boote=
+d.
+> > Thus an handover interface is required between these two pieces.
+> >
+> > Where UEFI boot-time services are not available, but UEFI firmware is
+> > present on either side of this interface, information about memory usag=
+e
+> > and attributes must be presented to the "Payload" in some form.
+> > <<<
+> >
+> > > then you need to define what that usecase looks
+> > > like. Describe the problem rather than present your solution.
+> > >
+> > > If this is all specific to EDK2 then it should say that rather than
+> > > 'efi'. I imagine Ard would be happier with something tied to EDK2 tha=
+n
+> > > *all* UEFI. Though maybe the problem could be any implementation? IDK=
+.
+> > > Maybe it's TF-A that needs to define where the EFI runtime services
+> > > region is and that needs to be passed all the way thru to the EFI
+> > > implementation? So again, define the problem.
+> >
 
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+All of this:
+
+> > It is not specific to EDK2. Imagine this boot sequence:
+> >
+> > - Platform Init (U-Boot) starts up
+> > - U-Boot uses its platform knowledge to sets some ACPI tables and put
+> > various things in memory
+> > - U-Boot sets up some runtime code and data for the OS
+> > - U-Boot jumps to the Tianocore payload **
+> > - Payload (Tianocore) wants to know where the ACPI tables are, for exam=
+ple
+> > - Tianocore needs to provide boot services to the OS, so needs to know
+> > the memory map, etc.
+> >
+> > ** At this point we want to use DT to pass the required information.
+> >
+> > Of course, Platform Init could be coreboot or Tianocore or some
+> > strange private binary. Payload could be U-Boot or something else.
+> > That is the point of this effort, to build interoperability.
+
+[...]
+
+> > Perhaps the problem here is that Linux has tied itself up in knots
+> > with its EFI stuff and DT fixups and what-not. But this is not that.
+> > It is a simple handoff between two pieces of firmware, Platform Init
+> > and Payload. It has nothing to do with the OS. With Tianocore they are
+> > typically combined, but with this usage they are split, and we can
+> > swap out one project for another on either side of the DT interface.
+
+Is perhaps the clearest description of the problem you want to solve.
+It's clearly related to EFI though not the interface to the OS. IIRC,
+"platform init" and "payload" are terms in the UEFI spec, right? I
+don't recall how well defined those are vs. just abstract concepts.
+
+Is it only for this interface or any firmware to firmware handoff. If
+the former, then I'm looking for folks involved with EFI/Tianocore to
+have some buy-in. If the latter, then this should be part of the
+firmware handoff efforts and have buy-in there.
+
+> > I do have views on the 'EFI' opt-out with reserved-memory, if you are
+> > interested, but that relates to the OS. If you are wanting to place
+> > some constraints on /reserved-memory and /memory we could do that
+> > e.g. that the DT and the map returned by EFI boot services must be
+> > consistent. But as it is, the nodes are ignored by the OS when booting
+> > with EFI, aren't they?
+>
+> Can this be applied, please? If there are further comments, please let me=
+ know.
+
+I really have limited knowledge and interest in this. I don't mind
+hosting something like this in dtschema, but I'm not taking it without
+buy-in from multiple parties which I haven't seen.
+
+Rob
 
