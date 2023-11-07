@@ -1,41 +1,44 @@
-Return-Path: <linux-acpi+bounces-1322-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1323-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACF67E3E82
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 13:39:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00AEB7E3E83
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 13:39:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AED4DB20C1E
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 12:39:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23F691C203C1
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 12:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E88E30CE0
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 12:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870F02D05E
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 12:39:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBqe9XvB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8B51FA6
-	for <linux-acpi@vger.kernel.org>; Tue,  7 Nov 2023 11:47:01 +0000 (UTC)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id D7527C6;
-	Tue,  7 Nov 2023 03:47:00 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 08FE613D5;
-	Tue,  7 Nov 2023 03:47:45 -0800 (PST)
-Received: from bogus (unknown [10.57.82.249])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B8933F6C4;
-	Tue,  7 Nov 2023 03:46:54 -0800 (PST)
-Date: Tue, 7 Nov 2023 11:45:21 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CD5651
+	for <linux-acpi@vger.kernel.org>; Tue,  7 Nov 2023 12:01:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6A0C433C7;
+	Tue,  7 Nov 2023 12:01:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1699358473;
+	bh=tVWRGGc71sN6ZG4ZOL5Bnx/rxUu20LoXAci7bQ26qpg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dBqe9XvBR+ZlWTzfjrZfXvXyM+zZdPEKwwYg2CIlyTrOS/DKjxejuSgEEgf2H37TG
+	 edaV5smRAEYnefcZu2Zh3/co1ONyekPN6FOgy4RVpmXzB9sg8+X2tc/jCd2ZPr/jAE
+	 5lbbkGIf+rZk4850UpmwarrbeFDoY0KoZuw2awLB7p/y76Vtz0nDPQRC87LGtQmZIb
+	 Kj/EFJdN01iL4vLvgSu7N/XPyxOt97yKXs7t/YTkzGGE5zOzc5S41woEsklqRwZWDG
+	 qhmZiD22GJicMnFQ+HtBXkmq8ad33U0E7TrpVDebamqOp/DN6qrPez5725c61DBlFx
+	 z7FTxjR8WbDsQ==
+Date: Tue, 7 Nov 2023 12:01:03 +0000
+From: Will Deacon <will@kernel.org>
 To: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
-	Sudeep Holla <sudeep.holla@arm.com>, paul.walmsley@sifive.com,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	gregkh@linuxfoundation.org, rafael@kernel.org, mingo@redhat.com,
-	peterz@infradead.org, juri.lelli@redhat.com,
+Cc: linux@armlinux.org.uk, catalin.marinas@arm.com,
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	sudeep.holla@arm.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
 	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
 	mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
 	viresh.kumar@linaro.org, lenb@kernel.org, robert.moore@intel.com,
@@ -45,45 +48,119 @@ Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
 	linux-riscv@lists.infradead.org, linux-pm@vger.kernel.org,
 	linux-acpi@vger.kernel.org, conor.dooley@microchip.com,
 	suagrfillet@gmail.com, ajones@ventanamicro.com, lftan@kernel.org
-Subject: Re: [PATCH v5 1/7] topology: Add a new arch_scale_freq_reference
-Message-ID: <20231107114521.GD954129@bogus>
+Subject: Re: [PATCH v5 7/7] arm64/amu: Use capacity_ref_freq to set AMU ratio
+Message-ID: <20231107120103.GA19367@willie-the-truck>
 References: <20231104105907.1365392-1-vincent.guittot@linaro.org>
- <20231104105907.1365392-2-vincent.guittot@linaro.org>
+ <20231104105907.1365392-8-vincent.guittot@linaro.org>
+ <20231107103808.GF18944@willie-the-truck>
+ <CAKfTPtBb+qea61OH-B0L=MHJWnQMLL80EBR-nSHZtoWTbYeHhw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20231104105907.1365392-2-vincent.guittot@linaro.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKfTPtBb+qea61OH-B0L=MHJWnQMLL80EBR-nSHZtoWTbYeHhw@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Sat, Nov 04, 2023 at 11:59:01AM +0100, Vincent Guittot wrote:
-> Create a new method to get a unique and fixed max frequency. Currently
-> cpuinfo.max_freq or the highest (or last) state of performance domain are
-> used as the max frequency when computing the frequency for a level of
-> utilization but:
-> - cpuinfo_max_freq can change at runtime. boost is one example of
->   such change.
-> - cpuinfo.max_freq and last item of the PD can be different leading to
->   different results between cpufreq and energy model.
+On Tue, Nov 07, 2023 at 12:18:20PM +0100, Vincent Guittot wrote:
+> On Tue, 7 Nov 2023 at 11:38, Will Deacon <will@kernel.org> wrote:
+> >
+> > On Sat, Nov 04, 2023 at 11:59:07AM +0100, Vincent Guittot wrote:
+> > > Use the new capacity_ref_freq to set the ratio that is used by AMU for
+> > > computing the arch_scale_freq_capacity().
+> > > This helps to keep everything aligned using the same reference for
+> > > computing CPUs capacity.
+> > >
+> > > The default value of the ratio (stored in per_cpu(arch_max_freq_scale))
+> > > ensures that arch_scale_freq_capacity() returns max capacity until it is
+> > > set to its correct value with the cpu capacity and capacity_ref_freq.
+> > >
+> > > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> > > ---
+> > >  arch/arm64/kernel/topology.c  | 26 ++++++++++++++------------
+> > >  drivers/base/arch_topology.c  | 12 +++++++++++-
+> > >  include/linux/arch_topology.h |  1 +
+> > >  3 files changed, 26 insertions(+), 13 deletions(-)
+> > >
+> > > diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+> > > index 817d788cd866..615c1a20129f 100644
+> > > --- a/arch/arm64/kernel/topology.c
+> > > +++ b/arch/arm64/kernel/topology.c
+> > > @@ -82,7 +82,12 @@ int __init parse_acpi_topology(void)
+> > >  #undef pr_fmt
+> > >  #define pr_fmt(fmt) "AMU: " fmt
+> > >
+> > > -static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale);
+> > > +/*
+> > > + * Ensure that amu_scale_freq_tick() will return SCHED_CAPACITY_SCALE until
+> > > + * the CPU capacity and its associated frequency have been correctly
+> > > + * initialized.
+> > > + */
+> > > +static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale) =  1UL << (2 * SCHED_CAPACITY_SHIFT);
+> >
+> > This doesn't seem to match the comment? SCHED_CAPACITY_SCALE doesn't have
+> > the '2 *' multiplier.
 > 
-> We need to save the reference frequency that has been used when computing
-> the CPUs capacity and use this fixed and coherent value to convert between
-> frequency and CPU's capacity.
+> The comment in freq_inv_set_max_ratio() says:
 > 
-> In fact, we already save the frequency that has been used when computing
-> the capacity of each CPU. We extend the precision to save kHz instead of
-> MHz currently and we modify the type to be aligned with other variables
-> used when converting frequency to capacity and the other way.
+> * We use a factor of 2 * SCHED_CAPACITY_SHIFT -> SCHED_CAPACITY_SCALE²
+> * in order to ensure a good resolution for arch_max_freq_scale for
+> * very low reference frequencies (down to the KHz range which should
+> * be unlikely).
 > 
+> Then there is a  "  * arch_max_freq_scale) >> SCHED_CAPACITY_SHIFT"
+> when computing the scale which brings the result back to
+> SCHED_CAPACITY_SHIFT
 
-For all the topology related changes here and patch 6/7 and 7/7:
+Ah, I see; I'd not spotted that amu_scale_freq_tick() is doing some
+arithmetic on the value (it doesn't return anything because it's 'void').
+It's slightly confusing because the comment talks about SCHED_CAPACITY_SCALE
+whereas all the code works on the shift, but I get it now.
 
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+> > >  static DEFINE_PER_CPU(u64, arch_const_cycles_prev);
+> > >  static DEFINE_PER_CPU(u64, arch_core_cycles_prev);
+> > >  static cpumask_var_t amu_fie_cpus;
+> > > @@ -112,14 +117,14 @@ static inline bool freq_counters_valid(int cpu)
+> > >       return true;
+> > >  }
+> > >
+> > > -static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
+> > > +void freq_inv_set_max_ratio(int cpu, u64 max_rate)
+> > >  {
+> > > -     u64 ratio;
+> > > +     u64 ratio, ref_rate = arch_timer_get_rate();
+> > >
+> > >       if (unlikely(!max_rate || !ref_rate)) {
+> > > -             pr_debug("CPU%d: invalid maximum or reference frequency.\n",
+> > > +             WARN_ONCE(1, "CPU%d: invalid maximum or reference frequency.\n",
+> > >                        cpu);
+> > > -             return -EINVAL;
+> > > +             return;
+> > >       }
+> > >
+> > >       /*
+> > > @@ -139,12 +144,12 @@ static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
+> > >       ratio = div64_u64(ratio, max_rate);
+> > >       if (!ratio) {
+> > >               WARN_ONCE(1, "Reference frequency too low.\n");
+> > > -             return -EINVAL;
+> > > +             return;
+> > >       }
+> > >
+> > > -     per_cpu(arch_max_freq_scale, cpu) = (unsigned long)ratio;
+> > > +     WRITE_ONCE(per_cpu(arch_max_freq_scale, cpu), (unsigned long)ratio);
+> >
+> > Why is WRITE_ONCE() now needed?
+> 
+> the tick can already use it. We want to make sure to use either the
+> old or the new one but not an intermediate value
 
--- 
-Regards,
-Sudeep
+Isn't that already the case without this patch? In other words, this should
+be a separate change.
+
+Will
 
