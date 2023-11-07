@@ -1,166 +1,203 @@
-Return-Path: <linux-acpi+bounces-1323-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1324-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00AEB7E3E83
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 13:39:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C507E3E8C
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 13:39:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23F691C203C1
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 12:39:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCBF3B20BC2
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 12:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870F02D05E
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 12:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5313330CE4
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 12:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBqe9XvB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I1pkrHzS"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CD5651
-	for <linux-acpi@vger.kernel.org>; Tue,  7 Nov 2023 12:01:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6A0C433C7;
-	Tue,  7 Nov 2023 12:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBA82DF65
+	for <linux-acpi@vger.kernel.org>; Tue,  7 Nov 2023 12:07:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192C8C433CA;
+	Tue,  7 Nov 2023 12:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699358473;
-	bh=tVWRGGc71sN6ZG4ZOL5Bnx/rxUu20LoXAci7bQ26qpg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dBqe9XvBR+ZlWTzfjrZfXvXyM+zZdPEKwwYg2CIlyTrOS/DKjxejuSgEEgf2H37TG
-	 edaV5smRAEYnefcZu2Zh3/co1ONyekPN6FOgy4RVpmXzB9sg8+X2tc/jCd2ZPr/jAE
-	 5lbbkGIf+rZk4850UpmwarrbeFDoY0KoZuw2awLB7p/y76Vtz0nDPQRC87LGtQmZIb
-	 Kj/EFJdN01iL4vLvgSu7N/XPyxOt97yKXs7t/YTkzGGE5zOzc5S41woEsklqRwZWDG
-	 qhmZiD22GJicMnFQ+HtBXkmq8ad33U0E7TrpVDebamqOp/DN6qrPez5725c61DBlFx
-	 z7FTxjR8WbDsQ==
-Date: Tue, 7 Nov 2023 12:01:03 +0000
-From: Will Deacon <will@kernel.org>
-To: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: linux@armlinux.org.uk, catalin.marinas@arm.com,
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	sudeep.holla@arm.com, gregkh@linuxfoundation.org, rafael@kernel.org,
-	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-	mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
-	viresh.kumar@linaro.org, lenb@kernel.org, robert.moore@intel.com,
-	lukasz.luba@arm.com, ionela.voinescu@arm.com,
-	pierre.gondois@arm.com, beata.michalska@arm.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-pm@vger.kernel.org,
-	linux-acpi@vger.kernel.org, conor.dooley@microchip.com,
-	suagrfillet@gmail.com, ajones@ventanamicro.com, lftan@kernel.org
-Subject: Re: [PATCH v5 7/7] arm64/amu: Use capacity_ref_freq to set AMU ratio
-Message-ID: <20231107120103.GA19367@willie-the-truck>
-References: <20231104105907.1365392-1-vincent.guittot@linaro.org>
- <20231104105907.1365392-8-vincent.guittot@linaro.org>
- <20231107103808.GF18944@willie-the-truck>
- <CAKfTPtBb+qea61OH-B0L=MHJWnQMLL80EBR-nSHZtoWTbYeHhw@mail.gmail.com>
+	s=k20201202; t=1699358851;
+	bh=IRBKkKgv5aR88byIZ6Re2E0UvtxYIrRtCbz9MOSX40g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=I1pkrHzSP0vFV+JJD7NtKgcQPP+JjC9OWdPQkkPv2aKVjBigVIqzt6l1e43229GIT
+	 H7Se785jE467lbpE+MdZ6Q2blOlTpr15gpRjfziVNnThWWV6wYUmXwSj7otTtAJYOb
+	 o/dskAUygHHRHznqO8hrFFYNbP6m826dZPjFOBlKmGqO5YBogbeJcgunGxq/X48iq9
+	 ssTd2FpWukR3sPHY1ggpLSrKYFRTuCCONX2NIvBD/NSxr5LTyuF3adIRWHBkIY+dOl
+	 ptwap3F/V/oNIR7JdMDlYzCUey1n0E2KlRxrnp8twiWJRU10xk3oNSGzll/w6Xq37o
+	 S4nYtGmhAZIOQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Shiju Jose <shiju.jose@huawei.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	mahesh@linux.ibm.com,
+	robert.moore@intel.com,
+	kvalo@kernel.org,
+	tony.luck@intel.com,
+	leoyang.li@nxp.com,
+	linmiaohe@huawei.com,
+	rostedt@goodmis.org,
+	linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org,
+	acpica-devel@lists.linuxfoundation.org
+Subject: [PATCH AUTOSEL 6.6 11/31] ACPI: APEI: Fix AER info corruption when error status data has multiple sections
+Date: Tue,  7 Nov 2023 07:05:58 -0500
+Message-ID: <20231107120704.3756327-11-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231107120704.3756327-1-sashal@kernel.org>
+References: <20231107120704.3756327-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKfTPtBb+qea61OH-B0L=MHJWnQMLL80EBR-nSHZtoWTbYeHhw@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Tue, Nov 07, 2023 at 12:18:20PM +0100, Vincent Guittot wrote:
-> On Tue, 7 Nov 2023 at 11:38, Will Deacon <will@kernel.org> wrote:
-> >
-> > On Sat, Nov 04, 2023 at 11:59:07AM +0100, Vincent Guittot wrote:
-> > > Use the new capacity_ref_freq to set the ratio that is used by AMU for
-> > > computing the arch_scale_freq_capacity().
-> > > This helps to keep everything aligned using the same reference for
-> > > computing CPUs capacity.
-> > >
-> > > The default value of the ratio (stored in per_cpu(arch_max_freq_scale))
-> > > ensures that arch_scale_freq_capacity() returns max capacity until it is
-> > > set to its correct value with the cpu capacity and capacity_ref_freq.
-> > >
-> > > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> > > ---
-> > >  arch/arm64/kernel/topology.c  | 26 ++++++++++++++------------
-> > >  drivers/base/arch_topology.c  | 12 +++++++++++-
-> > >  include/linux/arch_topology.h |  1 +
-> > >  3 files changed, 26 insertions(+), 13 deletions(-)
-> > >
-> > > diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-> > > index 817d788cd866..615c1a20129f 100644
-> > > --- a/arch/arm64/kernel/topology.c
-> > > +++ b/arch/arm64/kernel/topology.c
-> > > @@ -82,7 +82,12 @@ int __init parse_acpi_topology(void)
-> > >  #undef pr_fmt
-> > >  #define pr_fmt(fmt) "AMU: " fmt
-> > >
-> > > -static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale);
-> > > +/*
-> > > + * Ensure that amu_scale_freq_tick() will return SCHED_CAPACITY_SCALE until
-> > > + * the CPU capacity and its associated frequency have been correctly
-> > > + * initialized.
-> > > + */
-> > > +static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale) =  1UL << (2 * SCHED_CAPACITY_SHIFT);
-> >
-> > This doesn't seem to match the comment? SCHED_CAPACITY_SCALE doesn't have
-> > the '2 *' multiplier.
-> 
-> The comment in freq_inv_set_max_ratio() says:
-> 
-> * We use a factor of 2 * SCHED_CAPACITY_SHIFT -> SCHED_CAPACITY_SCALE²
-> * in order to ensure a good resolution for arch_max_freq_scale for
-> * very low reference frequencies (down to the KHz range which should
-> * be unlikely).
-> 
-> Then there is a  "  * arch_max_freq_scale) >> SCHED_CAPACITY_SHIFT"
-> when computing the scale which brings the result back to
-> SCHED_CAPACITY_SHIFT
+From: Shiju Jose <shiju.jose@huawei.com>
 
-Ah, I see; I'd not spotted that amu_scale_freq_tick() is doing some
-arithmetic on the value (it doesn't return anything because it's 'void').
-It's slightly confusing because the comment talks about SCHED_CAPACITY_SCALE
-whereas all the code works on the shift, but I get it now.
+[ Upstream commit e2abc47a5a1a9f641e7cacdca643fdd40729bf6e ]
 
-> > >  static DEFINE_PER_CPU(u64, arch_const_cycles_prev);
-> > >  static DEFINE_PER_CPU(u64, arch_core_cycles_prev);
-> > >  static cpumask_var_t amu_fie_cpus;
-> > > @@ -112,14 +117,14 @@ static inline bool freq_counters_valid(int cpu)
-> > >       return true;
-> > >  }
-> > >
-> > > -static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
-> > > +void freq_inv_set_max_ratio(int cpu, u64 max_rate)
-> > >  {
-> > > -     u64 ratio;
-> > > +     u64 ratio, ref_rate = arch_timer_get_rate();
-> > >
-> > >       if (unlikely(!max_rate || !ref_rate)) {
-> > > -             pr_debug("CPU%d: invalid maximum or reference frequency.\n",
-> > > +             WARN_ONCE(1, "CPU%d: invalid maximum or reference frequency.\n",
-> > >                        cpu);
-> > > -             return -EINVAL;
-> > > +             return;
-> > >       }
-> > >
-> > >       /*
-> > > @@ -139,12 +144,12 @@ static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
-> > >       ratio = div64_u64(ratio, max_rate);
-> > >       if (!ratio) {
-> > >               WARN_ONCE(1, "Reference frequency too low.\n");
-> > > -             return -EINVAL;
-> > > +             return;
-> > >       }
-> > >
-> > > -     per_cpu(arch_max_freq_scale, cpu) = (unsigned long)ratio;
-> > > +     WRITE_ONCE(per_cpu(arch_max_freq_scale, cpu), (unsigned long)ratio);
-> >
-> > Why is WRITE_ONCE() now needed?
-> 
-> the tick can already use it. We want to make sure to use either the
-> old or the new one but not an intermediate value
+ghes_handle_aer() passes AER data to the PCI core for logging and
+recovery by calling aer_recover_queue() with a pointer to struct
+aer_capability_regs.
 
-Isn't that already the case without this patch? In other words, this should
-be a separate change.
+The problem was that aer_recover_queue() queues the pointer directly
+without copying the aer_capability_regs data.  The pointer was to
+the ghes->estatus buffer, which could be reused before
+aer_recover_work_func() reads the data.
 
-Will
+To avoid this problem, allocate a new aer_capability_regs structure
+from the ghes_estatus_pool, copy the AER data from the ghes->estatus
+buffer into it, pass a pointer to the new struct to
+aer_recover_queue(), and free it after aer_recover_work_func() has
+processed it.
+
+Reported-by: Bjorn Helgaas <helgaas@kernel.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+[ rjw: Subject edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/apei/ghes.c | 23 ++++++++++++++++++++++-
+ drivers/pci/pcie/aer.c   | 10 ++++++++++
+ include/acpi/ghes.h      |  4 ++++
+ 3 files changed, 36 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index ef59d6ea16da0..63ad0541db381 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -209,6 +209,20 @@ int ghes_estatus_pool_init(unsigned int num_ghes)
+ 	return -ENOMEM;
+ }
+ 
++/**
++ * ghes_estatus_pool_region_free - free previously allocated memory
++ *				   from the ghes_estatus_pool.
++ * @addr: address of memory to free.
++ * @size: size of memory to free.
++ *
++ * Returns none.
++ */
++void ghes_estatus_pool_region_free(unsigned long addr, u32 size)
++{
++	gen_pool_free(ghes_estatus_pool, addr, size);
++}
++EXPORT_SYMBOL_GPL(ghes_estatus_pool_region_free);
++
+ static int map_gen_v2(struct ghes *ghes)
+ {
+ 	return apei_map_generic_address(&ghes->generic_v2->read_ack_register);
+@@ -564,6 +578,7 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
+ 	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
+ 		unsigned int devfn;
+ 		int aer_severity;
++		u8 *aer_info;
+ 
+ 		devfn = PCI_DEVFN(pcie_err->device_id.device,
+ 				  pcie_err->device_id.function);
+@@ -577,11 +592,17 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
+ 		if (gdata->flags & CPER_SEC_RESET)
+ 			aer_severity = AER_FATAL;
+ 
++		aer_info = (void *)gen_pool_alloc(ghes_estatus_pool,
++						  sizeof(struct aer_capability_regs));
++		if (!aer_info)
++			return;
++		memcpy(aer_info, pcie_err->aer_info, sizeof(struct aer_capability_regs));
++
+ 		aer_recover_queue(pcie_err->device_id.segment,
+ 				  pcie_err->device_id.bus,
+ 				  devfn, aer_severity,
+ 				  (struct aer_capability_regs *)
+-				  pcie_err->aer_info);
++				  aer_info);
+ 	}
+ #endif
+ }
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 9c8fd69ae5ad8..40d84cb0c601e 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -29,6 +29,7 @@
+ #include <linux/kfifo.h>
+ #include <linux/slab.h>
+ #include <acpi/apei.h>
++#include <acpi/ghes.h>
+ #include <ras/ras_event.h>
+ 
+ #include "../pci.h"
+@@ -997,6 +998,15 @@ static void aer_recover_work_func(struct work_struct *work)
+ 			continue;
+ 		}
+ 		cper_print_aer(pdev, entry.severity, entry.regs);
++		/*
++		 * Memory for aer_capability_regs(entry.regs) is being allocated from the
++		 * ghes_estatus_pool to protect it from overwriting when multiple sections
++		 * are present in the error status. Thus free the same after processing
++		 * the data.
++		 */
++		ghes_estatus_pool_region_free((unsigned long)entry.regs,
++					      sizeof(struct aer_capability_regs));
++
+ 		if (entry.severity == AER_NONFATAL)
+ 			pcie_do_recovery(pdev, pci_channel_io_normal,
+ 					 aer_root_reset);
+diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
+index 3c8bba9f1114a..be1dd4c1a9174 100644
+--- a/include/acpi/ghes.h
++++ b/include/acpi/ghes.h
+@@ -73,8 +73,12 @@ int ghes_register_vendor_record_notifier(struct notifier_block *nb);
+ void ghes_unregister_vendor_record_notifier(struct notifier_block *nb);
+ 
+ struct list_head *ghes_get_devices(void);
++
++void ghes_estatus_pool_region_free(unsigned long addr, u32 size);
+ #else
+ static inline struct list_head *ghes_get_devices(void) { return NULL; }
++
++static inline void ghes_estatus_pool_region_free(unsigned long addr, u32 size) { return; }
+ #endif
+ 
+ int ghes_estatus_pool_init(unsigned int num_ghes);
+-- 
+2.42.0
+
 
