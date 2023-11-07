@@ -1,409 +1,462 @@
-Return-Path: <linux-acpi+bounces-1335-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1336-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643F67E4849
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 19:32:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A45447E49D9
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 21:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFBBFB20B0D
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 18:32:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75F281C20C4F
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 20:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8EF358AF
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 18:32:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZM27deGC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DC637142
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Nov 2023 20:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC693588D;
-	Tue,  7 Nov 2023 18:07:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71BFC433A9;
-	Tue,  7 Nov 2023 18:07:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699380453;
-	bh=N4rlLB7z0cOpmpZ/BL47aepJIVFWZKyXA+rtWoCv60w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ZM27deGCx+o8H6YUVL55r5q8aUEBMsTc7nhR4mdmHHNy6/eF27PP9TboKKe+d+edk
-	 UjgX9W/Vv3oUM0mEFsURZ79HnO+q+KHBaMhW1Y1EDydagf+HNR4vCaWCXJ12pqjx79
-	 70ty0soXF5YwV+dXnusUVL+RExSyP0zsqTXqaXAZVons9GBrOoHnX9UrkaMrrJizzn
-	 AVQZpHpIEPEFsNNdKiuQ0clYlJvXv1CZMM05pxjmLvpJibtrnRloMDZvWiU+J0ewAP
-	 LV/2+9tcR/G4+/PkZ3WAmIrHB+45Mw5bfBFTTHa5zAFTENfg6+XmU+5egd0pKf0ZWV
-	 PrZ3Tc7qvcgwA==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-50797cf5b69so7882545e87.2;
-        Tue, 07 Nov 2023 10:07:32 -0800 (PST)
-X-Gm-Message-State: AOJu0Yzw6IvCI0r8GXCarCVkTbpFvNKJOEYxHZH9mcky90qLkiOfOVX7
-	tugrXeEOTYaaw92NdT5Jq820fAk16tsnpkye4w==
-X-Google-Smtp-Source: AGHT+IEkUVYvX0YzvXzJFUleQKdN0GE9vRVxqaXq3qMhrMlB77Pbme7h7KcKJjsSIgU5e9Jsi4+ATC2DZumGeHvPbdQ=
-X-Received: by 2002:a05:6512:557:b0:503:24c7:df34 with SMTP id
- h23-20020a056512055700b0050324c7df34mr24961177lfl.11.1699380450811; Tue, 07
- Nov 2023 10:07:30 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB31358BF
+	for <linux-acpi@vger.kernel.org>; Tue,  7 Nov 2023 19:19:46 +0000 (UTC)
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AB5110CC;
+	Tue,  7 Nov 2023 11:19:45 -0800 (PST)
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.2.0)
+ id 6658b2aaae48dc69; Tue, 7 Nov 2023 20:19:43 +0100
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id C4130667B16;
+	Tue,  7 Nov 2023 20:19:42 +0100 (CET)
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux ACPI <linux-acpi@vger.kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: LKML <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3.1 5/7] ACPI: scan: Extract MIPI DisCo for Imaging data into swnodes
+Date: Tue, 07 Nov 2023 20:19:42 +0100
+Message-ID: <5749680.DvuYhMxLoT@kreacher>
+In-Reply-To: <4542595.LvFx2qVVIh@kreacher>
+References: <4542595.LvFx2qVVIh@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
- <CAPnjgZ0Xf3U1aj32LbU-xiU1AqwnM3JL1F8xX-wZ18oEmg+irw@mail.gmail.com>
- <CAMj1kXEXcX7BkDyfy-6_5Vnch=N+onza-yfWfsVaGLE93h2c+Q@mail.gmail.com>
- <CAPnjgZ2SEby-ndrs=W_afBJH56eqc=-mhp1F1nwkvWks+=B54Q@mail.gmail.com>
- <CAMj1kXED3S+0cq+VT7naBrmWrUwT=HZAaZOBRMv8Ui1Pey1QNQ@mail.gmail.com>
- <CAPnjgZ0LrsJ2_ENTYoBrnyFaH3UKdHs3D2XWY=TzBuBpBoTXZA@mail.gmail.com>
- <CAL_Jsq+DQugkEDESW5wySFbLLN8HNqGDJCio8Wpi6fe0LeHKUA@mail.gmail.com>
- <CAPnjgZ0cmKP5hoGCyQ_Rp8ZQXUVwaPYJMWyidXuOOjMVkDoMDw@mail.gmail.com>
- <CAL_JsqJH=vJ40PNTg_i0LoKA-c0hhMJkL8zCC3_bB-tOkFWWsw@mail.gmail.com>
- <CAPnjgZ1FrdGKjGAxUbkQoL2vHwhC_2Oa2KT+0cm25dQAuAjxAQ@mail.gmail.com> <CAPnjgZ19-xR6QxS=fR53skz0VuAty2Z2w2vQTjP7g=tbTFpaqw@mail.gmail.com>
-In-Reply-To: <CAPnjgZ19-xR6QxS=fR53skz0VuAty2Z2w2vQTjP7g=tbTFpaqw@mail.gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 7 Nov 2023 12:07:17 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqL+X1DatsGk_Cn1HsbG2GV9AngFWXVysWTiNRu_d9tDqw@mail.gmail.com>
-Message-ID: <CAL_JsqL+X1DatsGk_Cn1HsbG2GV9AngFWXVysWTiNRu_d9tDqw@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
-To: Simon Glass <sjg@chromium.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, devicetree@vger.kernel.org, 
-	Mark Rutland <mark.rutland@arm.com>, Lean Sheng Tan <sheng.tan@9elements.com>, 
-	lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, 
-	Maximilian Brune <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
-	Guo Dong <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, 
-	ron minnich <rminnich@gmail.com>, Gua Guo <gua.guo@intel.com>, 
-	Chiu Chasel <chasel.chiu@intel.com>, linux-acpi@vger.kernel.org, 
-	U-Boot Mailing List <u-boot@lists.denx.de>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedruddujedgfedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepjeehvdelteekjeelffffudfhffejveetffdtveeuffegffeujeethfeutdefgfeknecuffhomhgrihhnpehmihhpihdrohhrghenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeefpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgrkhgrrhhirdgrihhluhhssehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=3 Fuz1=3 Fuz2=3
 
-On Tue, Oct 31, 2023 at 10:56=E2=80=AFAM Simon Glass <sjg@chromium.org> wro=
-te:
->
-> Hi Rob,
->
-> On Mon, 16 Oct 2023 at 15:54, Simon Glass <sjg@chromium.org> wrote:
-> >
-> > Hi Rob,
-> >
-> > On Mon, 16 Oct 2023 at 10:50, Rob Herring <robh@kernel.org> wrote:
-> > >
-> > > On Fri, Oct 13, 2023 at 4:09=E2=80=AFPM Simon Glass <sjg@chromium.org=
-> wrote:
-> > > >
-> > > > Hi Rob,
-> > > >
-> > > > On Fri, 13 Oct 2023 at 13:42, Rob Herring <robh@kernel.org> wrote:
-> > > > >
-> > > > > On Fri, Oct 6, 2023 at 7:03=E2=80=AFPM Simon Glass <sjg@chromium.=
-org> wrote:
-> > > > > >
-> > > > > > Hi Ard,
-> > > > > >
-> > > > > > On Fri, 6 Oct 2023 at 17:00, Ard Biesheuvel <ardb@kernel.org> w=
-rote:
-> > > > > > >
-> > > > > > > On Fri, 6 Oct 2023 at 20:17, Simon Glass <sjg@chromium.org> w=
-rote:
-> > > > > > > >
-> > > > > > > > Hi Ard,
-> > > > > > > >
-> > > > > > > > On Fri, 6 Oct 2023 at 11:33, Ard Biesheuvel <ardb@kernel.or=
-g> wrote:
-> > > > > > > > >
-> > > > > > > > > On Mon, 2 Oct 2023 at 19:54, Simon Glass <sjg@chromium.or=
-g> wrote:
-> > > > > > > > > >
-> > > > > > > > > > Hi Rob,
-> > > > > > > > > >
-> > > > > > > > > > On Tue, 26 Sept 2023 at 13:42, Simon Glass <sjg@chromiu=
-m.org> wrote:
-> > > > > > > > > > >
-> > > > > > > > > > > It is common to split firmware into 'Platform Init', =
-which does the
-> > > > > > > > > > > initial hardware setup and a "Payload" which selects =
-the OS to be booted.
-> > > > > > > > > > > Thus an handover interface is required between these =
-two pieces.
-> > > > > > > > > > >
-> > > > > > > > > > > Where UEFI boot-time services are not available, but =
-UEFI firmware is
-> > > > > > > > > > > present on either side of this interface, information=
- about memory usage
-> > > > > > > > > > > and attributes must be presented to the "Payload" in =
-some form.
-> > > > > > > > > > >
-> > > > > > > > > > > This aims to provide an small schema addition for the=
- memory mapping
-> > > > > > > > > > > needed to keep these two pieces working together well=
-.
-> > > > > > > > > > >
-> > > > > > > > > > > Signed-off-by: Simon Glass <sjg@chromium.org>
-> > > > > > > > > > > ---
-> > > > > > > > > > >
-> > > > > > > > > > > Changes in v7:
-> > > > > > > > > > > - Rename acpi-reclaim to acpi
-> > > > > > > > > > > - Drop individual mention of when memory can be recla=
-imed
-> > > > > > > > > > > - Rewrite the item descriptions
-> > > > > > > > > > > - Add back the UEFI text (with trepidation)
-> > > > > > > > > >
-> > > > > > > > > > I am again checking on this series. Can it be applied, =
-please?
-> > > > > > > > > >
-> > > > > > > > >
-> > > > > > > > > Apologies for the delay in response. I have been away.
-> > > > > > > >
-> > > > > > > > OK, I hope you had a nice trip.
-> > > > > > > >
-> > > > > > >
-> > > > > > > Thanks, it was wonderful!
-> > > > > > >
-> > > > > > > > >
-> > > > > > > > > >
-> > > > > > > > > > >
-> > > > > > > > > > > Changes in v6:
-> > > > > > > > > > > - Drop mention of UEFI
-> > > > > > > > > > > - Use compatible strings instead of node names
-> > > > > > > > > > >
-> > > > > > > > > > > Changes in v5:
-> > > > > > > > > > > - Drop the memory-map node (should have done that in =
-v4)
-> > > > > > > > > > > - Tidy up schema a bit
-> > > > > > > > > > >
-> > > > > > > > > > > Changes in v4:
-> > > > > > > > > > > - Make use of the reserved-memory node instead of cre=
-ating a new one
-> > > > > > > > > > >
-> > > > > > > > > > > Changes in v3:
-> > > > > > > > > > > - Reword commit message again
-> > > > > > > > > > > - cc a lot more people, from the FFI patch
-> > > > > > > > > > > - Split out the attributes into the /memory nodes
-> > > > > > > > > > >
-> > > > > > > > > > > Changes in v2:
-> > > > > > > > > > > - Reword commit message
-> > > > > > > > > > >
-> > > > > > > > > > >  .../reserved-memory/common-reserved.yaml      | 71 +=
-++++++++++++++++++
-> > > > > > > > > > >  1 file changed, 71 insertions(+)
-> > > > > > > > > > >  create mode 100644 dtschema/schemas/reserved-memory/=
-common-reserved.yaml
-> > > > > > > > > > >
-> > > > > > > > > > > diff --git a/dtschema/schemas/reserved-memory/common-=
-reserved.yaml b/dtschema/schemas/reserved-memory/common-reserved.yaml
-> > > > > > > > > > > new file mode 100644
-> > > > > > > > > > > index 0000000..f7fbdfd
-> > > > > > > > > > > --- /dev/null
-> > > > > > > > > > > +++ b/dtschema/schemas/reserved-memory/common-reserve=
-d.yaml
-> > > > > > > > > > > @@ -0,0 +1,71 @@
-> > > > > > > > > > > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Cla=
-use
-> > > > > > > > > > > +%YAML 1.2
-> > > > > > > > > > > +---
-> > > > > > > > > > > +$id: http://devicetree.org/schemas/reserved-memory/c=
-ommon-reserved.yaml#
-> > > > > > > > > > > +$schema: http://devicetree.org/meta-schemas/core.yam=
-l#
-> > > > > > > > > > > +
-> > > > > > > > > > > +title: Common memory reservations
-> > > > > > > > > > > +
-> > > > > > > > > > > +description: |
-> > > > > > > > > > > +  Specifies that the reserved memory region can be u=
-sed for the purpose
-> > > > > > > > > > > +  indicated by its compatible string.
-> > > > > > > > > > > +
-> > > > > > > > > > > +  Clients may reuse this reserved memory if they und=
-erstand what it is for,
-> > > > > > > > > > > +  subject to the notes below.
-> > > > > > > > > > > +
-> > > > > > > > > > > +maintainers:
-> > > > > > > > > > > +  - Simon Glass <sjg@chromium.org>
-> > > > > > > > > > > +
-> > > > > > > > > > > +allOf:
-> > > > > > > > > > > +  - $ref: reserved-memory.yaml
-> > > > > > > > > > > +
-> > > > > > > > > > > +properties:
-> > > > > > > > > > > +  compatible:
-> > > > > > > > > > > +    description: |
-> > > > > > > > > > > +      This describes some common memory reservations=
-, with the compatible
-> > > > > > > > > > > +      string indicating what it is used for:
-> > > > > > > > > > > +
-> > > > > > > > > > > +         acpi: Advanced Configuration and Power Inte=
-rface (ACPI) tables
-> > > > > > > > > > > +         acpi-nvs: ACPI Non-Volatile-Sleeping Memory=
- (NVS). This is reserved by
-> > > > > > > > > > > +           the firmware for its use and is required =
-to be saved and restored
-> > > > > > > > > > > +           across an NVS sleep
-> > > > > > > > > > > +         boot-code: Contains code used for booting w=
-hich is not needed by the OS
-> > > > > > > > > > > +         boot-code: Contains data used for booting w=
-hich is not needed by the OS
-> > > > > > > > > > > +         runtime-code: Contains code used for intera=
-cting with the system when
-> > > > > > > > > > > +           running the OS
-> > > > > > > > > > > +         runtime-data: Contains data used for intera=
-cting with the system when
-> > > > > > > > > > > +           running the OS
-> > > > > > > > > > > +
-> > > > > > > > > > > +    enum:
-> > > > > > > > > > > +      - acpi
-> > > > > > > > > > > +      - acpi-nvs
-> > > > > > > > > > > +      - boot-code
-> > > > > > > > > > > +      - boot-data
-> > > > > > > > > > > +      - runtime-code
-> > > > > > > > > > > +      - runtime-data
-> > > > > > > > > > > +
-> > > > > > > > >
-> > > > > > > > > As I mentioned a few times already, I don't think these c=
-ompatibles
-> > > > > > > > > should be introduced here.
-> > > > > > > > >
-> > > > > > > > > A reserved region has a specific purpose, and the compati=
-ble should be
-> > > > > > > > > more descriptive than the enum above. If the consumer doe=
-s not
-> > > > > > > > > understand this purpose, it should simply treat the memor=
-y as reserved
-> > > > > > > > > and not touch it. Alternatively, these regions can be ref=
-erenced from
-> > > > > > > > > other DT nodes using phandles if needed.
-> > > > > > > >
-> > > > > > > > We still need some description of what these regions are us=
-ed for, so
-> > > > > > > > that the payload can use the correct regions. I do not have=
- any other
-> > > > > > > > solution to this problem. We are in v7 at present. At least=
- explain
-> > > > > > > > where you want the compatible strings to be introduced.
-> > > > > > > >
-> > > > > > >
-> > > > > > > My point is really that by themselves, these regions are not =
-usable by
-> > > > > > > either a payload or an OS that consumes this information. Unl=
-ess there
-> > > > > > > is some other information being provided (via DT I imagine) t=
-hat
-> > > > > > > describes how these things are supposed to be used, they are =
-nothing
-> > > > > > > more than memory reservations that should be honored, and pro=
-viding
-> > > > > > > this arbitrary set of labels is unnecessary.
-> > > > > > >
-> > > > > > > > What sort of extra detail are you looking for? Please be sp=
-ecific and
-> > > > > > > > preferably add some suggestions so I can close this out ASA=
-P.
-> > > > > > > >
-> > > > > > >
-> > > > > > > A payload or OS can do nothing with a memory reservation call=
-ed
-> > > > > > > 'runtime-code' it it doesn't know what is inside.
-> > > > >
-> > > > > Agreed. The question is WHAT runtime-code? The compatible needs t=
-o answer that.
-> > > > >
-> > > > > For example, we have 'ramoops' as a compatible in reserved memory=
-.
-> > > > > That tells us *exactly* what's there. We know how to parse it. If=
- we
-> > > > > know ramoops is not supported, then we know we can toss it out an=
-d
-> > > > > reclaim the memory.
-> > > >
-> > > > So if we said:
-> > > >
-> > > >    compatible =3D "runtime-code-efi"
-> > > >
-> > > > would that be OK? We seem to be in catch 22 here, because if I don'=
-t
-> > > > mention EFI unhappy, but if I do, Ard is unhappy.
-> > >
-> > > Better yes, because then it is for something specific. However, AIUI,
-> > > that's setup for the OS and defining that region is already defined b=
-y
-> > > the EFI memory map. That's Ard's issue. If there's a need outside of
-> > > the EFI to OS handoff,
-> >
-> > There is a need. Here is part of the commit message again. If there is
-> > something else you need to know, please ask.
-> >
-> > >>>>
-> > It is common to split firmware into 'Platform Init', which does the
-> > initial hardware setup and a "Payload" which selects the OS to be boote=
-d.
-> > Thus an handover interface is required between these two pieces.
-> >
-> > Where UEFI boot-time services are not available, but UEFI firmware is
-> > present on either side of this interface, information about memory usag=
-e
-> > and attributes must be presented to the "Payload" in some form.
-> > <<<
-> >
-> > > then you need to define what that usecase looks
-> > > like. Describe the problem rather than present your solution.
-> > >
-> > > If this is all specific to EDK2 then it should say that rather than
-> > > 'efi'. I imagine Ard would be happier with something tied to EDK2 tha=
-n
-> > > *all* UEFI. Though maybe the problem could be any implementation? IDK=
-.
-> > > Maybe it's TF-A that needs to define where the EFI runtime services
-> > > region is and that needs to be passed all the way thru to the EFI
-> > > implementation? So again, define the problem.
-> >
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-All of this:
+Add information extracted from the MIPI DisCo for Imaging device
+properties to software nodes created during the CSI-2 connection graph
+discovery.
 
-> > It is not specific to EDK2. Imagine this boot sequence:
-> >
-> > - Platform Init (U-Boot) starts up
-> > - U-Boot uses its platform knowledge to sets some ACPI tables and put
-> > various things in memory
-> > - U-Boot sets up some runtime code and data for the OS
-> > - U-Boot jumps to the Tianocore payload **
-> > - Payload (Tianocore) wants to know where the ACPI tables are, for exam=
-ple
-> > - Tianocore needs to provide boot services to the OS, so needs to know
-> > the memory map, etc.
-> >
-> > ** At this point we want to use DT to pass the required information.
-> >
-> > Of course, Platform Init could be coreboot or Tianocore or some
-> > strange private binary. Payload could be U-Boot or something else.
-> > That is the point of this effort, to build interoperability.
+Link: https://www.mipi.org/specifications/mipi-disco-imaging
+Co-developed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+---
 
-[...]
+v3 -> v3.1:
+   * Merge lane-polarities property parsing fix from Sakari
+   * Add Tested-by: tag from Sakari
 
-> > Perhaps the problem here is that Linux has tied itself up in knots
-> > with its EFI stuff and DT fixups and what-not. But this is not that.
-> > It is a simple handoff between two pieces of firmware, Platform Init
-> > and Payload. It has nothing to do with the OS. With Tianocore they are
-> > typically combined, but with this usage they are split, and we can
-> > swap out one project for another on either side of the DT interface.
+v2 -> v3:
+   * Change the name of the new file to mipi-disco-img.c
+   * "DiSco" -> "DisCo" in multiple places
+   * Fix the link in the Link: tag
+   * Change the number of data lanes limit and add a comment regarding it
+   * Use ACPI_DEVICE_CSI2_DATA_LANES directly in several places instead
+     of array sizes equal to it
 
-Is perhaps the clearest description of the problem you want to solve.
-It's clearly related to EFI though not the interface to the OS. IIRC,
-"platform init" and "payload" are terms in the UEFI spec, right? I
-don't recall how well defined those are vs. just abstract concepts.
+---
+ drivers/acpi/internal.h       |    1 
+ drivers/acpi/mipi-disco-img.c |  252 +++++++++++++++++++++++++++++++++++++++++-
+ drivers/acpi/scan.c           |   12 +-
+ include/acpi/acpi_bus.h       |   17 ++
+ 4 files changed, 278 insertions(+), 4 deletions(-)
 
-Is it only for this interface or any firmware to firmware handoff. If
-the former, then I'm looking for folks involved with EFI/Tianocore to
-have some buy-in. If the latter, then this should be part of the
-firmware handoff efforts and have buy-in there.
+Index: linux-pm/drivers/acpi/mipi-disco-img.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/mipi-disco-img.c
++++ linux-pm/drivers/acpi/mipi-disco-img.c
+@@ -6,12 +6,16 @@
+  *
+  * Support MIPI DisCo for Imaging by parsing ACPI _CRS CSI-2 records defined in
+  * Section 6.4.3.8.2.4 "Camera Serial Interface (CSI-2) Connection Resource
+- * Descriptor" of ACPI 6.5.
++ * Descriptor" of ACPI 6.5 and using device properties defined by the MIPI DisCo
++ * for Imaging specification.
+  *
+  * The implementation looks for the information in the ACPI namespace (CSI-2
+  * resource descriptors in _CRS) and constructs software nodes compatible with
+  * Documentation/firmware-guide/acpi/dsd/graph.rst to represent the CSI-2
+- * connection graph.
++ * connection graph.  The software nodes are then populated with the data
++ * extracted from the _CRS CSI-2 resource descriptors and the MIPI DisCo
++ * for Imaging device properties present in _DSD for the ACPI device objects
++ * with CSI-2 connections.
+  */
+ 
+ #include <linux/acpi.h>
+@@ -431,6 +435,250 @@ void acpi_mipi_scan_crs_csi2(void)
+ 		prepare_crs_csi2_swnodes(csi2);
+ }
+ 
++/*
++ * Get the index of the next property in the property array, with a given
++ * maximum value.
++ */
++#define NEXT_PROPERTY(index, max)			\
++	(WARN_ON((index) > ACPI_DEVICE_SWNODE_##max) ?	\
++	 ACPI_DEVICE_SWNODE_##max : (index)++)
++
++static void init_csi2_port_local(struct acpi_device *adev,
++				 struct acpi_device_software_node_port *port,
++				 struct fwnode_handle *port_fwnode,
++				 unsigned int index)
++{
++	acpi_handle handle = acpi_device_handle(adev);
++	unsigned int num_link_freqs;
++	int ret;
++
++	ret = fwnode_property_count_u64(port_fwnode, "mipi-img-link-frequencies");
++	if (ret <= 0)
++		return;
++
++	num_link_freqs = ret;
++	if (num_link_freqs > ACPI_DEVICE_CSI2_DATA_LANES) {
++		acpi_handle_info(handle, "Too many link frequencies: %u\n",
++				 num_link_freqs);
++		num_link_freqs = ACPI_DEVICE_CSI2_DATA_LANES;
++	}
++
++	ret = fwnode_property_read_u64_array(port_fwnode,
++					     "mipi-img-link-frequencies",
++					     port->link_frequencies,
++					     num_link_freqs);
++	if (ret) {
++		acpi_handle_info(handle, "Unable to get link frequencies (%d)\n",
++				 ret);
++		return;
++	}
++
++	port->ep_props[NEXT_PROPERTY(index, EP_LINK_FREQUENCIES)] =
++				PROPERTY_ENTRY_U64_ARRAY_LEN("link-frequencies",
++							     port->link_frequencies,
++							     num_link_freqs);
++}
++
++static void init_csi2_port(struct acpi_device *adev,
++			   struct acpi_device_software_nodes *swnodes,
++			   struct acpi_device_software_node_port *port,
++			   struct fwnode_handle *port_fwnode,
++			   unsigned int port_index)
++{
++	unsigned int ep_prop_index = ACPI_DEVICE_SWNODE_EP_CLOCK_LANES;
++	acpi_handle handle = acpi_device_handle(adev);
++	u8 val[ACPI_DEVICE_CSI2_DATA_LANES];
++	int num_lanes = 0;
++	int ret;
++
++	if (GRAPH_PORT_NAME(port->port_name, port->port_nr))
++		return;
++
++	swnodes->nodes[ACPI_DEVICE_SWNODE_PORT(port_index)] =
++			SOFTWARE_NODE(port->port_name, port->port_props,
++				      &swnodes->nodes[ACPI_DEVICE_SWNODE_ROOT]);
++
++	ret = fwnode_property_read_u8(port_fwnode, "mipi-img-clock-lane", val);
++	if (!ret)
++		port->ep_props[NEXT_PROPERTY(ep_prop_index, EP_CLOCK_LANES)] =
++			PROPERTY_ENTRY_U32("clock-lanes", val[0]);
++
++	ret = fwnode_property_count_u8(port_fwnode, "mipi-img-data-lanes");
++	if (ret > 0) {
++		num_lanes = ret;
++
++		if (num_lanes > ACPI_DEVICE_CSI2_DATA_LANES) {
++			acpi_handle_info(handle, "Too many data lanes: %u\n",
++					 num_lanes);
++			num_lanes = ACPI_DEVICE_CSI2_DATA_LANES;
++		}
++
++		ret = fwnode_property_read_u8_array(port_fwnode,
++						    "mipi-img-data-lanes",
++						    val, num_lanes);
++		if (!ret) {
++			unsigned int i;
++
++			for (i = 0; i < num_lanes; i++)
++				port->data_lanes[i] = val[i];
++
++			port->ep_props[NEXT_PROPERTY(ep_prop_index, EP_DATA_LANES)] =
++				PROPERTY_ENTRY_U32_ARRAY_LEN("data-lanes",
++							     port->data_lanes,
++							     num_lanes);
++		}
++	}
++
++	ret = fwnode_property_count_u8(port_fwnode, "mipi-img-lane-polarities");
++	if (ret < 0) {
++		acpi_handle_debug(handle, "Lane polarity bytes missing\n");
++	} else if (ret * BITS_PER_TYPE(u8) < num_lanes + 1) {
++		acpi_handle_info(handle, "Too few lane polarity bytes (%lu vs. %d)\n",
++				 ret * BITS_PER_TYPE(u8), num_lanes + 1);
++	} else {
++		unsigned long mask = 0;
++		int byte_count = ret;
++		unsigned int i;
++
++		/*
++		 * The total number of lanes is ACPI_DEVICE_CSI2_DATA_LANES + 1
++		 * (data lanes + clock lane).  It is not expected to ever be
++		 * greater than the number of bits in an unsigned long
++		 * variable, but ensure that this is the case.
++		 */
++		BUILD_BUG_ON(BITS_PER_TYPE(unsigned long) <= ACPI_DEVICE_CSI2_DATA_LANES);
++
++		if (byte_count > sizeof(mask)) {
++			acpi_handle_info(handle, "Too many lane polarities: %d\n",
++					 byte_count);
++			byte_count = sizeof(mask);
++		}
++		fwnode_property_read_u8_array(port_fwnode, "mipi-img-lane-polarities",
++					      val, byte_count);
++
++		for (i = 0; i < byte_count; i++)
++			mask |= (unsigned long)val[i] << BITS_PER_TYPE(u8) * i;
++
++		for (i = 0; i <= num_lanes; i++)
++			port->lane_polarities[i] = test_bit(i, &mask);
++
++		port->ep_props[NEXT_PROPERTY(ep_prop_index, EP_LANE_POLARITIES)] =
++				PROPERTY_ENTRY_U32_ARRAY_LEN("lane-polarities",
++							     port->lane_polarities,
++							     num_lanes + 1);
++	}
++
++	swnodes->nodes[ACPI_DEVICE_SWNODE_EP(port_index)] =
++		SOFTWARE_NODE("endpoint@0", swnodes->ports[port_index].ep_props,
++			      &swnodes->nodes[ACPI_DEVICE_SWNODE_PORT(port_index)]);
++
++	if (port->crs_csi2_local)
++		init_csi2_port_local(adev, port, port_fwnode, ep_prop_index);
++}
++
++#define MIPI_IMG_PORT_PREFIX "mipi-img-port-"
++
++static struct fwnode_handle *get_mipi_port_handle(struct fwnode_handle *adev_fwnode,
++						  unsigned int port_nr)
++{
++	char port_name[sizeof(MIPI_IMG_PORT_PREFIX) + 2];
++
++	if (snprintf(port_name, sizeof(port_name), "%s%u",
++		     MIPI_IMG_PORT_PREFIX, port_nr) >= sizeof(port_name))
++		return NULL;
++
++	return fwnode_get_named_child_node(adev_fwnode, port_name);
++}
++
++static void init_crs_csi2_swnodes(struct crs_csi2 *csi2)
++{
++	struct acpi_buffer buffer = { .length = ACPI_ALLOCATE_BUFFER };
++	struct acpi_device_software_nodes *swnodes = csi2->swnodes;
++	acpi_handle handle = csi2->handle;
++	struct fwnode_handle *adev_fwnode;
++	struct acpi_device *adev;
++	acpi_status status;
++	unsigned int i;
++	int ret;
++
++	/*
++	 * Bail out if the swnodes are not available (either they have not been
++	 * allocated or they have been assigned to the device already).
++	 */
++	if (!swnodes)
++		return;
++
++	adev = acpi_fetch_acpi_dev(handle);
++	if (!adev)
++		return;
++
++	adev_fwnode = acpi_fwnode_handle(adev);
++
++	status = acpi_get_name(handle, ACPI_FULL_PATHNAME, &buffer);
++	if (ACPI_FAILURE(status)) {
++		acpi_handle_info(handle, "Unable to get the path name\n");
++		return;
++	}
++
++	swnodes->nodes[ACPI_DEVICE_SWNODE_ROOT] =
++			SOFTWARE_NODE(buffer.pointer, swnodes->dev_props, NULL);
++
++	for (i = 0; i < swnodes->num_ports; i++) {
++		struct acpi_device_software_node_port *port = &swnodes->ports[i];
++		struct fwnode_handle *port_fwnode;
++
++		/*
++		 * The MIPI DisCo for Imaging specification defines _DSD device
++		 * properties for providing CSI-2 port parameters that can be
++		 * accessed through the generic device properties framework.  To
++		 * access them, it is first necessary to find the data node
++		 * representing the port under the given ACPI device object.
++		 */
++		port_fwnode = get_mipi_port_handle(adev_fwnode, port->port_nr);
++		if (!port_fwnode) {
++			acpi_handle_info(handle,
++					 "MIPI port name too long for port %u\n",
++					 port->port_nr);
++			continue;
++		}
++
++		init_csi2_port(adev, swnodes, port, port_fwnode, i);
++
++		fwnode_handle_put(port_fwnode);
++	}
++
++	ret = software_node_register_node_group(swnodes->nodeptrs);
++	if (ret < 0) {
++		acpi_handle_info(handle,
++				 "Unable to register software nodes (%d)\n", ret);
++		return;
++	}
++
++	adev->swnodes = swnodes;
++	adev_fwnode->secondary = software_node_fwnode(swnodes->nodes);
++
++	/*
++	 * Prevents the swnodes from this csi2 entry from being assigned again
++	 * or freed prematurely.
++	 */
++	csi2->swnodes = NULL;
++}
++
++/**
++ * acpi_mipi_init_crs_csi2_swnodes - Initialize _CRS CSI-2 software nodes
++ *
++ * Use MIPI DisCo for Imaging device properties to finalize the initialization
++ * of CSI-2 software nodes for all ACPI device objects that have been already
++ * enumerated.
++ */
++void acpi_mipi_init_crs_csi2_swnodes(void)
++{
++	struct crs_csi2 *csi2, *csi2_tmp;
++
++	list_for_each_entry_safe(csi2, csi2_tmp, &acpi_mipi_crs_csi2_list, entry)
++		init_crs_csi2_swnodes(csi2);
++}
++
+ /**
+  * acpi_mipi_crs_csi2_cleanup - Free _CRS CSI-2 temporary data
+  */
+Index: linux-pm/drivers/acpi/internal.h
+===================================================================
+--- linux-pm.orig/drivers/acpi/internal.h
++++ linux-pm/drivers/acpi/internal.h
+@@ -287,6 +287,7 @@ static inline void acpi_init_lpit(void)
+ 
+ void acpi_mipi_check_crs_csi2(acpi_handle handle);
+ void acpi_mipi_scan_crs_csi2(void);
++void acpi_mipi_init_crs_csi2_swnodes(void);
+ void acpi_mipi_crs_csi2_cleanup(void);
+ 
+ #endif /* _ACPI_INTERNAL_H_ */
+Index: linux-pm/drivers/acpi/scan.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/scan.c
++++ linux-pm/drivers/acpi/scan.c
+@@ -2447,6 +2447,13 @@ static void acpi_scan_postponed_branch(a
+ 
+ 	acpi_walk_namespace(ACPI_TYPE_ANY, handle, ACPI_UINT32_MAX,
+ 			    acpi_bus_check_add_2, NULL, NULL, (void **)&adev);
++
++	/*
++	 * Populate the ACPI _CRS CSI-2 software nodes for the ACPI devices that
++	 * have been added above.
++	 */
++	acpi_mipi_init_crs_csi2_swnodes();
++
+ 	acpi_bus_attach(adev, NULL);
+ }
+ 
+@@ -2516,11 +2523,12 @@ int acpi_bus_scan(acpi_handle handle)
+ 		return -ENODEV;
+ 
+ 	/*
+-	 * Allocate ACPI _CRS CSI-2 software nodes using information extracted
++	 * Set up ACPI _CRS CSI-2 software nodes using information extracted
+ 	 * from the _CRS CSI-2 resource descriptors during the ACPI namespace
+-	 * walk above.
++	 * walk above and MIPI DisCo for Imaging device properties.
+ 	 */
+ 	acpi_mipi_scan_crs_csi2();
++	acpi_mipi_init_crs_csi2_swnodes();
+ 
+ 	acpi_bus_attach(device, (void *)true);
+ 
+Index: linux-pm/include/acpi/acpi_bus.h
+===================================================================
+--- linux-pm.orig/include/acpi/acpi_bus.h
++++ linux-pm/include/acpi/acpi_bus.h
+@@ -366,10 +366,24 @@ struct acpi_device_data {
+ 
+ struct acpi_gpio_mapping;
+ 
++#define ACPI_DEVICE_SWNODE_ROOT			0
++
++/*
++ * The maximum expected number of CSI-2 data lanes.
++ *
++ * This number is not expected to ever have to be equal to or greater than the
++ * number of bits in an unsigned long variable, but if it needs to be increased
++ * above that limit, code will need to be adjusted accordingly.
++ */
+ #define ACPI_DEVICE_CSI2_DATA_LANES		8
+ 
+ #define ACPI_DEVICE_SWNODE_PORT_NAME_LENGTH	8
+ 
++enum acpi_device_swnode_dev_props {
++	ACPI_DEVICE_SWNODE_DEV_NUM_OF,
++	ACPI_DEVICE_SWNODE_DEV_NUM_ENTRIES
++};
++
+ enum acpi_device_swnode_port_props {
+ 	ACPI_DEVICE_SWNODE_PORT_REG,
+ 	ACPI_DEVICE_SWNODE_PORT_NUM_OF,
+@@ -425,12 +439,14 @@ struct acpi_device_software_node_port {
+ 
+ /**
+  * struct acpi_device_software_nodes - Software nodes for an ACPI device
++ * @dev_props: Device properties.
+  * @nodes: Software nodes for root as well as ports and endpoints.
+  * @nodeprts: Array of software node pointers, for (un)registering them.
+  * @ports: Information related to each port and endpoint within a port.
+  * @num_ports: The number of ports.
+  */
+ struct acpi_device_software_nodes {
++	struct property_entry dev_props[ACPI_DEVICE_SWNODE_DEV_NUM_ENTRIES];
+ 	struct software_node *nodes;
+ 	const struct software_node **nodeptrs;
+ 	struct acpi_device_software_node_port *ports;
+@@ -455,6 +471,7 @@ struct acpi_device {
+ 	struct acpi_device_data data;
+ 	struct acpi_scan_handler *handler;
+ 	struct acpi_hotplug_context *hp;
++	struct acpi_device_software_nodes *swnodes;
+ 	const struct acpi_gpio_mapping *driver_gpios;
+ 	void *driver_data;
+ 	struct device dev;
 
-> > I do have views on the 'EFI' opt-out with reserved-memory, if you are
-> > interested, but that relates to the OS. If you are wanting to place
-> > some constraints on /reserved-memory and /memory we could do that
-> > e.g. that the DT and the map returned by EFI boot services must be
-> > consistent. But as it is, the nodes are ignored by the OS when booting
-> > with EFI, aren't they?
->
-> Can this be applied, please? If there are further comments, please let me=
- know.
 
-I really have limited knowledge and interest in this. I don't mind
-hosting something like this in dtschema, but I'm not taking it without
-buy-in from multiple parties which I haven't seen.
 
-Rob
 
