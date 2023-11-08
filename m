@@ -1,206 +1,140 @@
-Return-Path: <linux-acpi+bounces-1354-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1355-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275867E592F
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 15:36:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0957E5930
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 15:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56B851C20A1D
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 14:36:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B60CB20F39
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 14:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEF917724
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 14:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64D92A1AB
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 14:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KgjhsghS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TLLvN3zb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F13D19469
-	for <linux-acpi@vger.kernel.org>; Wed,  8 Nov 2023 13:41:40 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8927F19B3;
-	Wed,  8 Nov 2023 05:41:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699450900; x=1730986900;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=AT8hjiGPauw9kcojSFEvtJncen66YJM6TycBQYs0wVE=;
-  b=KgjhsghSvxszpgBmZKQQrGKbDfvTj02P2Adqy8gm9gXzJzVnJsN5wFrG
-   laVkxtlfmedRtZXMgIxWggL30s1/eDzmfAzLBBhS9p1iojtnJo+5pfg/y
-   OUGuC6qEdn3O+v+8hwDiWITSvWYXyuOA850N8PNjYD0mdu4SpauaP+oB8
-   dFmoZupc0/7jiwrvQ9Oxw3nZA9NLgGs2e2NOCVHKTxRwZ8TUdgXi3nulT
-   8yOP/S03FkLUwV71PSybBBEAWkrPN8D2Pw1F7M75YzZKMeMfqUznbutbH
-   fzjar7JBxaHB7D79Z0xM45yXE3fBthfLy/q3JsyY1WAp1nbNd4SBG5RgO
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="2710098"
-X-IronPort-AV: E=Sophos;i="6.03,286,1694761200"; 
-   d="scan'208";a="2710098"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2023 05:41:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="936511306"
-X-IronPort-AV: E=Sophos;i="6.03,286,1694761200"; 
-   d="scan'208";a="936511306"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 08 Nov 2023 05:41:31 -0800
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r0ioC-0007xM-2D;
-	Wed, 08 Nov 2023 13:41:28 +0000
-Date: Wed, 8 Nov 2023 21:41:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	devel@acpica.org, linux-pm@vger.kernel.org,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [rafael-pm:acpi-mipi-disco-img 5/7]
- drivers/acpi/mipi-disco-img.c:536:42: warning: format '%lu' expects argument
- of type 'long unsigned int', but argument 4 has type 'unsigned int'
-Message-ID: <202311082134.Yy1Faou5-lkp@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CA3199A5;
+	Wed,  8 Nov 2023 13:57:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E97CC43391;
+	Wed,  8 Nov 2023 13:57:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1699451849;
+	bh=oAMyGLNvlEk2Z3kcyrMLZHtZ2K7CmXV47NgxDhyFDAI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=TLLvN3zbeCodFityx/4ypnt/Ii/fLaigJHu+596F82grUSxrOKhUp5VnJ10ovHhGv
+	 TQVt+OifIzv1INb3RTscv+PKfnTR/VZ8VqSq7/ZL66e4nDpmbbBAPs7YOBrYmZnGlO
+	 qF/ZUayfqAma1ZWC5m63Ga58DPZ99AmzuijezXivJABvO1R0GUBdOomF7mVGJ5DcPD
+	 SatYDtXoRSRvA2oZRCgQjl+dEgpfDW1nV+g1uZLgS2hEEu8CerEmr+rFNBtjpTaqsv
+	 XzS65rJj1xOOVKWSPvaaJUKjsWRz/XhhvcYjMSAefJnHMH/E/5ioxrSdzr1Td/5o/U
+	 AmTn32Jy6Wjfg==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-507ad511315so9991958e87.0;
+        Wed, 08 Nov 2023 05:57:29 -0800 (PST)
+X-Gm-Message-State: AOJu0YwHrkJ5csqhd4zb3ihEruA5yGxTE5EufmxkrNjMbvsscjqt2ms7
+	3tpZxYznzF8FEarKSW2IStkf1vUk1rc6Wtq9Cw==
+X-Google-Smtp-Source: AGHT+IGuwHUp+aEG6CZkAVv9OagCbfM3Ciyh9iJ50ppoxMFJJ3ItGNnVmTiHOsiB5o//EA7YPSpGzVzEkTMc7343V6w=
+X-Received: by 2002:ac2:5397:0:b0:507:b9db:61dc with SMTP id
+ g23-20020ac25397000000b00507b9db61dcmr1259652lfh.48.1699451847501; Wed, 08
+ Nov 2023 05:57:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
+ <CAPnjgZ0Xf3U1aj32LbU-xiU1AqwnM3JL1F8xX-wZ18oEmg+irw@mail.gmail.com>
+ <CAMj1kXEXcX7BkDyfy-6_5Vnch=N+onza-yfWfsVaGLE93h2c+Q@mail.gmail.com>
+ <CAPnjgZ2SEby-ndrs=W_afBJH56eqc=-mhp1F1nwkvWks+=B54Q@mail.gmail.com>
+ <CAMj1kXED3S+0cq+VT7naBrmWrUwT=HZAaZOBRMv8Ui1Pey1QNQ@mail.gmail.com>
+ <CAPnjgZ0LrsJ2_ENTYoBrnyFaH3UKdHs3D2XWY=TzBuBpBoTXZA@mail.gmail.com>
+ <CAL_Jsq+DQugkEDESW5wySFbLLN8HNqGDJCio8Wpi6fe0LeHKUA@mail.gmail.com>
+ <CAPnjgZ0cmKP5hoGCyQ_Rp8ZQXUVwaPYJMWyidXuOOjMVkDoMDw@mail.gmail.com>
+ <CAL_JsqJH=vJ40PNTg_i0LoKA-c0hhMJkL8zCC3_bB-tOkFWWsw@mail.gmail.com>
+ <CAPnjgZ1FrdGKjGAxUbkQoL2vHwhC_2Oa2KT+0cm25dQAuAjxAQ@mail.gmail.com>
+ <CAPnjgZ19-xR6QxS=fR53skz0VuAty2Z2w2vQTjP7g=tbTFpaqw@mail.gmail.com>
+ <CAL_JsqL+X1DatsGk_Cn1HsbG2GV9AngFWXVysWTiNRu_d9tDqw@mail.gmail.com> <CAMj1kXHfh40wxerZGjOn2JJ5Skm5C--Rz2jy8p3XZ2UXKGjw+g@mail.gmail.com>
+In-Reply-To: <CAMj1kXHfh40wxerZGjOn2JJ5Skm5C--Rz2jy8p3XZ2UXKGjw+g@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 8 Nov 2023 07:57:15 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLpea+FU4gXpaSUSeBP70szJ+mRjJtFei=QW2VoHCFOuA@mail.gmail.com>
+Message-ID: <CAL_JsqLpea+FU4gXpaSUSeBP70szJ+mRjJtFei=QW2VoHCFOuA@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Simon Glass <sjg@chromium.org>, devicetree@vger.kernel.org, 
+	Mark Rutland <mark.rutland@arm.com>, Lean Sheng Tan <sheng.tan@9elements.com>, 
+	lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, 
+	Maximilian Brune <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
+	Guo Dong <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, 
+	ron minnich <rminnich@gmail.com>, Gua Guo <gua.guo@intel.com>, 
+	Chiu Chasel <chasel.chiu@intel.com>, linux-acpi@vger.kernel.org, 
+	U-Boot Mailing List <u-boot@lists.denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-mipi-disco-img
-head:   c095a2289931c9f939547ee380f1cedb1a6eec7c
-commit: 1fc74bb24045e4ef5edbba60956b98df5c9e5f0d [5/7] ACPI: scan: Extract MIPI DisCo for Imaging data into swnodes
-config: i386-randconfig-002-20231108 (https://download.01.org/0day-ci/archive/20231108/202311082134.Yy1Faou5-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231108/202311082134.Yy1Faou5-lkp@intel.com/reproduce)
+On Wed, Nov 8, 2023 at 5:38=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wro=
+te:
+>
+> On Tue, 7 Nov 2023 at 19:07, Rob Herring <robh@kernel.org> wrote:
+> >
+> >
+> > All of this:
+> >
+>
+> > > On Mon, 16 Oct 2023 at 15:54, Simon Glass <sjg@chromium.org> wrote:
+> > > >
+> > > > It is not specific to EDK2. Imagine this boot sequence:
+> > > >
+> > > > - Platform Init (U-Boot) starts up
+> > > > - U-Boot uses its platform knowledge to sets some ACPI tables and p=
+ut
+> > > > various things in memory
+> > > > - U-Boot sets up some runtime code and data for the OS
+> > > > - U-Boot jumps to the Tianocore payload **
+> > > > - Payload (Tianocore) wants to know where the ACPI tables are, for =
+example
+> > > > - Tianocore needs to provide boot services to the OS, so needs to k=
+now
+> > > > the memory map, etc.
+> > > >
+> > > > ** At this point we want to use DT to pass the required information=
+.
+> > > >
+> > > > Of course, Platform Init could be coreboot or Tianocore or some
+> > > > strange private binary. Payload could be U-Boot or something else.
+> > > > That is the point of this effort, to build interoperability.
+> >
+> > [...]
+> >
+> > > > Perhaps the problem here is that Linux has tied itself up in knots
+> > > > with its EFI stuff and DT fixups and what-not. But this is not that=
+.
+> > > > It is a simple handoff between two pieces of firmware, Platform Ini=
+t
+> > > > and Payload. It has nothing to do with the OS. With Tianocore they =
+are
+> > > > typically combined, but with this usage they are split, and we can
+> > > > swap out one project for another on either side of the DT interface=
+.
+> >
+> > Is perhaps the clearest description of the problem you want to solve.
+> > It's clearly related to EFI though not the interface to the OS. IIRC,
+> > "platform init" and "payload" are terms in the UEFI spec, right?
+>
+> No they are not. This is from the universal payload specification that
+> is being drafted here
+>
+> https://universalpayload.github.io/spec/index.html
+>
+> but the UEFI specification does not use this terminology.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311082134.Yy1Faou5-lkp@intel.com/
+Then I'm confused as to what this is:
 
-All warnings (new ones prefixed by >>):
+https://uefi.org/specs/PI/1.8/index.html
 
-   In file included from drivers/acpi/mipi-disco-img.c:21:
-   drivers/acpi/mipi-disco-img.c: In function 'init_csi2_port':
->> drivers/acpi/mipi-disco-img.c:536:42: warning: format '%lu' expects argument of type 'long unsigned int', but argument 4 has type 'unsigned int' [-Wformat=]
-     536 |                 acpi_handle_info(handle, "Too few lane polarity bytes (%lu vs. %d)\n",
-         |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/acpi.h:1216:47: note: in definition of macro 'acpi_handle_info'
-    1216 |         acpi_handle_printk(KERN_INFO, handle, fmt, ##__VA_ARGS__)
-         |                                               ^~~
-   drivers/acpi/mipi-disco-img.c:536:74: note: format string is defined here
-     536 |                 acpi_handle_info(handle, "Too few lane polarity bytes (%lu vs. %d)\n",
-         |                                                                        ~~^
-         |                                                                          |
-         |                                                                          long unsigned int
-         |                                                                        %u
-
-
-vim +536 drivers/acpi/mipi-disco-img.c
-
-   481	
-   482	static void init_csi2_port(struct acpi_device *adev,
-   483				   struct acpi_device_software_nodes *swnodes,
-   484				   struct acpi_device_software_node_port *port,
-   485				   struct fwnode_handle *port_fwnode,
-   486				   unsigned int port_index)
-   487	{
-   488		unsigned int ep_prop_index = ACPI_DEVICE_SWNODE_EP_CLOCK_LANES;
-   489		acpi_handle handle = acpi_device_handle(adev);
-   490		u8 val[ACPI_DEVICE_CSI2_DATA_LANES];
-   491		int num_lanes = 0;
-   492		int ret;
-   493	
-   494		if (GRAPH_PORT_NAME(port->port_name, port->port_nr))
-   495			return;
-   496	
-   497		swnodes->nodes[ACPI_DEVICE_SWNODE_PORT(port_index)] =
-   498				SOFTWARE_NODE(port->port_name, port->port_props,
-   499					      &swnodes->nodes[ACPI_DEVICE_SWNODE_ROOT]);
-   500	
-   501		ret = fwnode_property_read_u8(port_fwnode, "mipi-img-clock-lane", val);
-   502		if (!ret)
-   503			port->ep_props[NEXT_PROPERTY(ep_prop_index, EP_CLOCK_LANES)] =
-   504				PROPERTY_ENTRY_U32("clock-lanes", val[0]);
-   505	
-   506		ret = fwnode_property_count_u8(port_fwnode, "mipi-img-data-lanes");
-   507		if (ret > 0) {
-   508			num_lanes = ret;
-   509	
-   510			if (num_lanes > ACPI_DEVICE_CSI2_DATA_LANES) {
-   511				acpi_handle_info(handle, "Too many data lanes: %u\n",
-   512						 num_lanes);
-   513				num_lanes = ACPI_DEVICE_CSI2_DATA_LANES;
-   514			}
-   515	
-   516			ret = fwnode_property_read_u8_array(port_fwnode,
-   517							    "mipi-img-data-lanes",
-   518							    val, num_lanes);
-   519			if (!ret) {
-   520				unsigned int i;
-   521	
-   522				for (i = 0; i < num_lanes; i++)
-   523					port->data_lanes[i] = val[i];
-   524	
-   525				port->ep_props[NEXT_PROPERTY(ep_prop_index, EP_DATA_LANES)] =
-   526					PROPERTY_ENTRY_U32_ARRAY_LEN("data-lanes",
-   527								     port->data_lanes,
-   528								     num_lanes);
-   529			}
-   530		}
-   531	
-   532		ret = fwnode_property_count_u8(port_fwnode, "mipi-img-lane-polarities");
-   533		if (ret < 0) {
-   534			acpi_handle_debug(handle, "Lane polarity bytes missing\n");
-   535		} else if (ret * BITS_PER_TYPE(u8) < num_lanes + 1) {
- > 536			acpi_handle_info(handle, "Too few lane polarity bytes (%lu vs. %d)\n",
-   537					 ret * BITS_PER_TYPE(u8), num_lanes + 1);
-   538		} else {
-   539			unsigned long mask = 0;
-   540			int byte_count = ret;
-   541			unsigned int i;
-   542	
-   543			/*
-   544			 * The total number of lanes is ACPI_DEVICE_CSI2_DATA_LANES + 1
-   545			 * (data lanes + clock lane).  It is not expected to ever be
-   546			 * greater than the number of bits in an unsigned long
-   547			 * variable, but ensure that this is the case.
-   548			 */
-   549			BUILD_BUG_ON(BITS_PER_TYPE(unsigned long) <= ACPI_DEVICE_CSI2_DATA_LANES);
-   550	
-   551			if (byte_count > sizeof(mask)) {
-   552				acpi_handle_info(handle, "Too many lane polarities: %d\n",
-   553						 byte_count);
-   554				byte_count = sizeof(mask);
-   555			}
-   556			fwnode_property_read_u8_array(port_fwnode, "mipi-img-lane-polarities",
-   557						      val, byte_count);
-   558	
-   559			for (i = 0; i < byte_count; i++)
-   560				mask |= (unsigned long)val[i] << BITS_PER_TYPE(u8) * i;
-   561	
-   562			for (i = 0; i <= num_lanes; i++)
-   563				port->lane_polarities[i] = test_bit(i, &mask);
-   564	
-   565			port->ep_props[NEXT_PROPERTY(ep_prop_index, EP_LANE_POLARITIES)] =
-   566					PROPERTY_ENTRY_U32_ARRAY_LEN("lane-polarities",
-   567								     port->lane_polarities,
-   568								     num_lanes + 1);
-   569		}
-   570	
-   571		swnodes->nodes[ACPI_DEVICE_SWNODE_EP(port_index)] =
-   572			SOFTWARE_NODE("endpoint@0", swnodes->ports[port_index].ep_props,
-   573				      &swnodes->nodes[ACPI_DEVICE_SWNODE_PORT(port_index)]);
-   574	
-   575		if (port->crs_csi2_local)
-   576			init_csi2_port_local(adev, port, port_fwnode, ep_prop_index);
-   577	}
-   578	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Rob
 
