@@ -1,132 +1,147 @@
-Return-Path: <linux-acpi+bounces-1363-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1364-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F487E5F37
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 21:32:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39447E5F39
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 21:32:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A71B4B20CC5
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 20:32:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D5571C20AC3
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 20:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B2A374C0
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 20:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E849374C7
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 20:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ag/sekfg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GPHv4Dti"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC0F30340
-	for <linux-acpi@vger.kernel.org>; Wed,  8 Nov 2023 18:35:04 +0000 (UTC)
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B6242107
-	for <linux-acpi@vger.kernel.org>; Wed,  8 Nov 2023 10:35:03 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-4094301d505so53584285e9.2
-        for <linux-acpi@vger.kernel.org>; Wed, 08 Nov 2023 10:35:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699468502; x=1700073302; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=n9ZiV2Esj98CTfgH59OBDcgahkXqDMdEC5lhTkmlSa0=;
-        b=Ag/sekfgYdN+QO2qNzC+r6BzqCMo9dzcsxvOu4xJN0ribyHewu9zogJx6FWNSomfI9
-         4Sjlt/qA4mplNZMnvot6/g+6cmnze23j+AP62wX8o67Qahuu0IX9K7PX266zjkQY/wRe
-         hNpOh576uhk6o2F1atbxeeQelw6dBU2ObOSQ9yQGCGBdBys3mjvoiuXA1WEspYXM7dqL
-         8or59NUpDHRURUG6WDvo92ajLicd3w5fF4NJHO6NtHIf4rNDQeB2t6EQLDVDKgiNAp4S
-         f8GgfhkHm4K6E2W6wIdOxZzpJIJC9NgohDiD7zD6auJ87yEubapy07YfOPudCdJ85XuR
-         nD9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699468502; x=1700073302;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=n9ZiV2Esj98CTfgH59OBDcgahkXqDMdEC5lhTkmlSa0=;
-        b=m3aGag7ge0VYoHcYOfsduXtluvDgnM2TcdI3BCuUeYPaRypiTmzBAewMOfv0tf8Vky
-         vNpScwdLeFddSGhd57pTv3IiJtYQAI+Z/C51U0UlkyprFkLSEVSIMbHvjZhw3Xs35zgr
-         NeBnBJ7bOFgiuXuT49n85QorKHomS3o1DV1yPmuUGtYiN3HuUh/OIRLivAY3WgQUBk8J
-         q+/yim9+XsIgK9y79tly6Cuka2y7qi1ZAyC3jUQNmUbRdh2ClDKJS6U2+oehY1WuuVd8
-         jjiaIpf5hMbusel8DBIEEC/kzpzihTVlMrwR49PQQHwYBRHMlkZTpiGrK6CMsjYYZeB4
-         6DiA==
-X-Gm-Message-State: AOJu0YxMKzdzpUlBdIVo9p/UO6Yh7n9QRIYk8Olf2a929FVHE/p5xhzd
-	tUNUHUoKDYkNXPlfLnqXAGR6TA==
-X-Google-Smtp-Source: AGHT+IEerzRoblFu8LqWqAyQVzl32Dow78v7sZDoe2sPpmQgBWRRfSrEcftCpyNmsXV1yimnvtHQ6A==
-X-Received: by 2002:a05:600c:190e:b0:405:1c19:b747 with SMTP id j14-20020a05600c190e00b004051c19b747mr2262734wmq.15.1699468501866;
-        Wed, 08 Nov 2023 10:35:01 -0800 (PST)
-Received: from salami.lan ([80.111.64.44])
-        by smtp.gmail.com with ESMTPSA id g4-20020a05600c310400b004068e09a70bsm20156528wmo.31.2023.11.08.10.34.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Nov 2023 10:35:00 -0800 (PST)
-Message-ID: <d6664edcccd81edc5caa54e8da43b5c571a3ea76.camel@linaro.org>
-Subject: Re: [PATCH RFC 00/17] Solve iommu probe races around iommu_fwspec
-From: =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Zhenhua Huang <quic_zhenhuah@quicinc.com>, 
- acpica-devel@lists.linuxfoundation.org, Alyssa Rosenzweig
- <alyssa@rosenzweig.io>,  Albert Ou <aou@eecs.berkeley.edu>,
- asahi@lists.linux.dev, Lu Baolu <baolu.lu@linux.intel.com>,  Catalin
- Marinas <catalin.marinas@arm.com>, Dexuan Cui <decui@microsoft.com>,
- devicetree@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>, Frank
- Rowand <frowand.list@gmail.com>, Hanjun Guo <guohanjun@huawei.com>, Haiyang
- Zhang <haiyangz@microsoft.com>, Christoph Hellwig <hch@lst.de>,
- iommu@lists.linux.dev, Jean-Philippe Brucker <jean-philippe@linaro.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>, "K.
- Y. Srinivasan" <kys@microsoft.com>,  Len Brown <lenb@kernel.org>,
- linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org, 
- linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org, 
- linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Lorenzo
- Pieralisi <lpieralisi@kernel.org>, Marek Szyprowski
- <m.szyprowski@samsung.com>, Hector Martin <marcan@marcan.st>, Palmer
- Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Robert Moore
- <robert.moore@intel.com>, Rob Herring <robh+dt@kernel.org>, Robin Murphy
- <robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, Suravee
- Suthikulpanit <suravee.suthikulpanit@amd.com>, Sven Peter
- <sven@svenpeter.dev>, Thierry Reding <thierry.reding@gmail.com>, Thomas
- Bogendoerfer <tsbogend@alpha.franken.de>,  Krishna Reddy
- <vdumpa@nvidia.com>, Vineet Gupta <vgupta@kernel.org>, 
- virtualization@lists.linux-foundation.org, Wei Liu <wei.liu@kernel.org>,
- Will Deacon <will@kernel.org>
-Date: Wed, 08 Nov 2023 18:34:58 +0000
-In-Reply-To: <0-v1-5f734af130a3+34f-iommu_fwspec_jgg@nvidia.com>
-References: <0-v1-5f734af130a3+34f-iommu_fwspec_jgg@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.1-1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D64C3457E
+	for <linux-acpi@vger.kernel.org>; Wed,  8 Nov 2023 18:37:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E37C433C7;
+	Wed,  8 Nov 2023 18:37:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1699468625;
+	bh=EoZDLxwmLFbEEIkyOEmztWMHpHCSGiYEo4ayX1PT9GY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GPHv4DtiTNP/0xV1Zk9vqsAbNJUeKn0ZJKyBIpObozF5wckFlaJGMe4CNBfdiOI8d
+	 gFRKV7FHCWQYH9IN+bD+8yBXzmTkcCNIkd7ietT4ZSPSBAgDkVqh4s6HVLzl+zmRRc
+	 HhYwTYSI0dS7lXRzfwNnkZE19FBS/IVOt7h385+r+XZyWMYGXr2Z+bDlLLp/FjclZ0
+	 94Rqnp7IPuCKVgysW/jZttyZQGjUUQJsHtmuOSZpUG4YoOsvs7s/LtgntArPAEj6I+
+	 w9kLmzAcyhCLPFYdnwf9g4iudvMu0qn4Gb8KHiTb7Z4HypxrLZl2z2Ij/lL2k4hm3X
+	 dzhS2/GBDPGGw==
+Received: from [185.201.63.253] (helo=wait-a-minute.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1r0nQD-00BW1k-GG;
+	Wed, 08 Nov 2023 18:37:02 +0000
+Date: Wed, 08 Nov 2023 18:36:13 +0000
+Message-ID: <87leb85bz6.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Anup Patel <anup@brainfault.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Atish Kumar Patra <atishp@rivosinc.com>,
+	Haibo Xu <haibo1.xu@intel.com>
+Subject: Re: [RFC PATCH v2 06/21] RISC-V: Kconfig: Select deferred GSI probe for ACPI systems
+In-Reply-To: <ZUtailOcozI9xIou@sunil-laptop>
+References: <ZTuzJ1nsicZYp+uh@sunil-laptop>
+	<20231106221606.GA264641@bhelgaas>
+	<ZUtailOcozI9xIou@sunil-laptop>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.201.63.253
+X-SA-Exim-Rcpt-To: sunilvl@ventanamicro.com, helgaas@kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org, linux-serial@vger.kernel.org, catalin.marinas@arm.com, will@kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com, anup@brainfault.org, tglx@linutronix.de, gregkh@linuxfoundation.org, jirislaby@kernel.org, conor.dooley@microchip.com, ajones@ventanamicro.com, atishp@rivosinc.com, haibo1.xu@intel.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi Jason,
+On Wed, 08 Nov 2023 09:53:14 +0000,
+Sunil V L <sunilvl@ventanamicro.com> wrote:
+> 
+> That's partly correct. APLIC platform devices are created prior to PCI
+> host bridges added. But the actual APLIC driver which creates the
+> irqdomain will be probed as a regular platform driver for the APLIC
+> device. The platform driver probe will happen using DD framework and
+> devices don't have any dependency on APLIC which can cause device probe
+> prior to APLIC driver probe.
+> 
+> DT supports fw_devlink framework which makes it easier for IRQ devices
+> to use regular platform drivers and produces-consumers are probed in the
+> order without requiring drivers to do deferred probe. But I don't see
+> that supported for ACPI framework.  Also, the way PNP devices get added
+> there is an assumption that interrupt controller is already setup fully.
+> 
+> With this new use case in RISC-V, here are the alternatives I am aware of.
+> 
+> 1) Use core_initcall() in the APLIC drivers which makes APLIC driver to
+> be probed prior to PNP or PCI INTx devices. But this was ruled out in
+> the context of DT from Marc.
+>
+> 2) Like the approach tried in this series, add support for deferred
+> probe in drivers. This will be invasive change requiring many drivers to
+> change like you pointed.
+> 
+> I don't know which is less evil or if there is any other alternative
+> which I am not aware of.
+> 
+> Thomas/Marc, could you allow APLIC (and PLIC) irqchip drivers to use
+> core_initcall() for ACPI?
 
-On Fri, 2023-11-03 at 13:44 -0300, Jason Gunthorpe wrote:
-> This is a more complete solution that the first attempt here:
-> https://lore.kernel.org/r/1698825902-10685-1-git-send-email-quic_zhenhuah=
-@quicinc.com
->=20
-> I haven't been able to test this on any HW that touches these paths, so i=
-f
-> some people with HW can help get it in shape it can become non-RFC.
+I don't have a say about this anymore, so this is only a passing
+comment, which you are free to cast aside.
 
-Thank you for this series.
+My personal view is that if you need to rely on core_initcall() for a
+particular firmware interface, then your architecture will end-up
+being an unmaintainable ball of hacks, with conflicting requirements
+and increasingly diverging behaviours. Those who had the 'privilege'
+to deal with the 32bit ARM transition to DT will understand what I
+mean.
 
-Please note that we're also observing this issue on 6.1.
-I think this series is a good candidate for a back port (slightly complicat=
-ed by
-the fact that various refactors have happened since).
+Having to rely on initcalls can only mean two things:
 
-For me, it's working fine so far on master, and I've also done my own back =
-port
-to 6.1 and am currently testing both. An official back port once finalised
-could be useful, though :-)
+- you're missing crucial topology information that will eventually
+  bite you where it hurts, and you're better off going back to the
+  drawing board to fix it before any HW ships,
 
+- you're not making use of the kernel's dependency management
+  infrastructure, which is pretty sad. Yes, it is DT specific for now,
+  but nothing prevents you from improving it to make it grok another
+  firmware interface.
 
-Cheers,
-Andre'
+But as I said, I don't have much skin in that game anymore.
 
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
