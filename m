@@ -1,182 +1,173 @@
-Return-Path: <linux-acpi+bounces-1361-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1362-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0AB7E5D42
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 19:32:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E057E5D43
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 19:32:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B6F9B20B8F
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 18:32:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82B6CB20AB4
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 18:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B1F358B3
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 18:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56CE36B06
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 18:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1j1VH3h6"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Lz2Jw7AN"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D4632C89;
-	Wed,  8 Nov 2023 18:11:06 +0000 (UTC)
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2049.outbound.protection.outlook.com [40.107.220.49])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D03051FEB;
-	Wed,  8 Nov 2023 10:11:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oP6hbzKEt94RF91qr7yEKUZPGtID03YCFc2DGMZXW4f1GFx/NfMlVgAt/KvXS9pdGZ4wWn7AqMrK1I08teeGvaJCkV3RZR9aCNlFEs4URp4gfJE37siXDR384E1inO7VIlJQwQtAY1hR/Ngyh/TIoZDHrM5KPWJQmJMP77MbE4LiVFYB1O0PPtRZdL9T1cOfYl2nVBwG6TWCtP8b7wAtqHXbjXy4OCQ85R16TzW4IUnUTWZoZl3hyPOpp1C1dP0gdgBDzMC96xz3YPGCwVEprHG+bMBxARThB3iUHw4GArIeFqxSX3PmTwciWx8COwazfa6pVtmRgiymblPGmum9iQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3NGUrDccQkRFpTCihMotrCkJcwQY68NbYQwV4BJgL0I=;
- b=NQMP1qHQY46cl4Pr8gyVjBLgjALisXnimcFXjC3yGzyNcFx23MXwYL4Zg5q8Sgn703Bz5+xBKBpCQgHlBIlXh/EAaj3RxCB5MrPcR5mzgoymasR9d7df6jDgTCalTqY+N+U1Z1eHLdbMrYcdXU1XBxqdk4g5aF+2CSXVWgXdbmO7Uhzzf7xYOODVORvpPSP+RwcKKQlgeeUcpLGTxoT6kZJn7pJA1V4hOxvckfkr8NStEBfnjJV9zlTsez8EOsmXPLl4rXfDuml2WX6i4nbGkn1vEcOtoPN9G1/Lb4Gd+XOWYysMBBzPHG/Du52q3bInzekw4fteH4UV2U25bmG+6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3NGUrDccQkRFpTCihMotrCkJcwQY68NbYQwV4BJgL0I=;
- b=1j1VH3h64Ryre+ulj5cjGzIzjvZ6ghcckjcHTR2Rw14GsueDSgN0gXX/BtXU1c3l4hckXMaXmoLl1oEmvlOOmcQeQxR6w+keAfBBHgI5kh01SJXS4fE8elNcXfWFbF0pu53EaWEkpuRgEteCc/awhIBcAykeTv4yWemeE+9Dv+c=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB8403.namprd12.prod.outlook.com (2603:10b6:610:133::14)
- by PH7PR12MB7986.namprd12.prod.outlook.com (2603:10b6:510:27d::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.25; Wed, 8 Nov
- 2023 18:11:03 +0000
-Received: from CH3PR12MB8403.namprd12.prod.outlook.com
- ([fe80::51d7:e9ef:b57b:f4f2]) by CH3PR12MB8403.namprd12.prod.outlook.com
- ([fe80::51d7:e9ef:b57b:f4f2%3]) with mapi id 15.20.6954.028; Wed, 8 Nov 2023
- 18:11:03 +0000
-Message-ID: <02d731da-5012-43ca-9b79-cbb7b5a55e8d@amd.com>
-Date: Wed, 8 Nov 2023 12:11:02 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v5 3/4] platform/chrome: cros_ec_debugfs: Fix permissions
- for panicinfo
-Content-Language: en-US
-To: "Luck, Tony" <tony.luck@intel.com>, Avadhut Naik <avadhut.naik@amd.com>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Cc: "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
- <lenb@kernel.org>, "james.morse@arm.com" <james.morse@arm.com>,
- "bp@alien8.de" <bp@alien8.de>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "alexey.kardashevskiy@amd.com" <alexey.kardashevskiy@amd.com>,
- "yazen.ghannam@amd.com" <yazen.ghannam@amd.com>
-References: <20231107213647.1405493-1-avadhut.naik@amd.com>
- <20231107213647.1405493-4-avadhut.naik@amd.com>
- <SJ1PR11MB60835765F536429966023B01FCA9A@SJ1PR11MB6083.namprd11.prod.outlook.com>
-From: Avadhut Naik <avadnaik@amd.com>
-In-Reply-To: <SJ1PR11MB60835765F536429966023B01FCA9A@SJ1PR11MB6083.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0158.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c3::18) To CH3PR12MB8403.namprd12.prod.outlook.com
- (2603:10b6:610:133::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35F532C89
+	for <linux-acpi@vger.kernel.org>; Wed,  8 Nov 2023 18:13:02 +0000 (UTC)
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F459171B
+	for <linux-acpi@vger.kernel.org>; Wed,  8 Nov 2023 10:13:01 -0800 (PST)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c7369df9d6so19520561fa.1
+        for <linux-acpi@vger.kernel.org>; Wed, 08 Nov 2023 10:13:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1699467180; x=1700071980; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XyM6VQ+HEN7IzJJ5bMoPN5/yYHnG+EAx9sBxv2Z/Ai8=;
+        b=Lz2Jw7ANw1o+YV6f3bPla8aS+dt3X553EcMsu2E/HGveSuIdvE7kFjv0RrsL0+vTD2
+         UOJkqS7fZHlMfpIs1EbsGSvS/0fMeYSUq0Q1hySCAQm5KwiQAQWbiFbh/8q7+yxCZGAf
+         hmHaHlFrOTNRtov3lrUAmGRSX6iBucGrmgD5OrzOpdqSeIyTl2K9gXBncsNTMkBMELcf
+         IOwmLlQz6a7xq1pqmRDx/PrC5yoUKMb7992TuLvtkN5k6pEc6r6Y65ITy/5VC9bmE5nv
+         GxwRCumKBjLstfKXxfljTPuFQQZopeD+vMVwkAxls8LP44k18WSWpagZkr3pC4Hss4Lf
+         6bmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699467180; x=1700071980;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XyM6VQ+HEN7IzJJ5bMoPN5/yYHnG+EAx9sBxv2Z/Ai8=;
+        b=sLlZ2qzzH5K3tY9ieCNBoDbrBJy0ti+E+fhBBVNamqTfO2VPS9i6Hc0YKayzLGKLv4
+         SR1IMV6y1idGiPHdw99Z7f4TGkhyuf63a9OI6FFJA72qoojXMjcYHZjEC2hPNOrEXaws
+         /aYMXQkC0jr8Nh6LW0XjCp5n5RTekR4nZuYFKNuHBrkqpKy1BGSjFr4IcYH0ggMZib6p
+         Ky5ScSe+jlhmu0MnCZI1+gdpkvvIA3h+EhgJdXOB+gHQJv3AI9LmGtqPhkIZDXI+sqo2
+         cHqWN2ho/9eWuB+Tkwn8DpV9pzqiBiLMYcYaClHn2BEJbYTIm04DkWJDc+4dGeHYHlKF
+         r3vA==
+X-Gm-Message-State: AOJu0Yyja9oWF5+auWcGVoretCq7ImvHjH/RATLBjPJ3yYzVkYezInjK
+	XIqG+iHPOiIE1AWL83KKHt9DSw==
+X-Google-Smtp-Source: AGHT+IEAPIM/7orU2/kUz+9e+TY8CYDTNJKLdVzPi+Pze4e6FKjzPA1Tq2W37LpeXm1IyotL7oPMlg==
+X-Received: by 2002:a2e:8e7b:0:b0:2c5:582:fd8d with SMTP id t27-20020a2e8e7b000000b002c50582fd8dmr2179335ljk.30.1699467179768;
+        Wed, 08 Nov 2023 10:12:59 -0800 (PST)
+Received: from [10.1.1.118] ([80.111.64.44])
+        by smtp.gmail.com with ESMTPSA id d20-20020a05600c4c1400b003fd2d3462fcsm739766wmp.1.2023.11.08.10.12.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Nov 2023 10:12:58 -0800 (PST)
+Message-ID: <e57f11915745674521b8c73d88a198a0b9c32c21.camel@linaro.org>
+Subject: Re: [PATCH RFC 12/17] iommu: Make iommu_ops_from_fwnode() static
+From: =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
+To: Jason Gunthorpe <jgg@nvidia.com>,
+ acpica-devel@lists.linuxfoundation.org,  Alyssa Rosenzweig
+ <alyssa@rosenzweig.io>, Albert Ou <aou@eecs.berkeley.edu>,
+ asahi@lists.linux.dev, Lu Baolu <baolu.lu@linux.intel.com>, Catalin Marinas
+ <catalin.marinas@arm.com>,  Dexuan Cui <decui@microsoft.com>,
+ devicetree@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,  Frank
+ Rowand <frowand.list@gmail.com>, Hanjun Guo <guohanjun@huawei.com>, Haiyang
+ Zhang <haiyangz@microsoft.com>, Christoph Hellwig <hch@lst.de>,
+ iommu@lists.linux.dev,  Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>, 
+ "K. Y. Srinivasan" <kys@microsoft.com>, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org,  linux-arm-kernel@lists.infradead.org,
+ linux-hyperv@vger.kernel.org,  linux-mips@vger.kernel.org,
+ linux-riscv@lists.infradead.org,  linux-snps-arc@lists.infradead.org,
+ linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Lorenzo
+ Pieralisi <lpieralisi@kernel.org>, Marek Szyprowski
+ <m.szyprowski@samsung.com>, Hector Martin <marcan@marcan.st>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Robert Moore
+ <robert.moore@intel.com>, Rob Herring <robh+dt@kernel.org>,  Robin Murphy
+ <robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, Suravee
+ Suthikulpanit <suravee.suthikulpanit@amd.com>, Sven Peter
+ <sven@svenpeter.dev>, Thierry Reding <thierry.reding@gmail.com>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Krishna Reddy
+ <vdumpa@nvidia.com>, Vineet Gupta <vgupta@kernel.org>, 
+ virtualization@lists.linux-foundation.org, Wei Liu <wei.liu@kernel.org>,
+ Will Deacon <will@kernel.org>
+Cc: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Date: Wed, 08 Nov 2023 18:12:56 +0000
+In-Reply-To: <12-v1-5f734af130a3+34f-iommu_fwspec_jgg@nvidia.com>
+References: <12-v1-5f734af130a3+34f-iommu_fwspec_jgg@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4-1 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8403:EE_|PH7PR12MB7986:EE_
-X-MS-Office365-Filtering-Correlation-Id: 556287ed-7123-4c33-1cbe-08dbe08611c3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	O2YBwMRcFVz88OK1pVpG/a70uSrmdsg+9OmTospsM7j7PhdXbwzHUEMupUoaAnTV5xeI18g+/4/VwqAAK/SVaE6iaIJaF8y52XwGkWWVbD5JXo3zOkWev54oSHG45h3ApqIFhjuY9ajRYaUiJeXVXg5sixdFoY34lSNPUsm/8R6Pux3d0R1aU/Z2xK5h/YV7GUyeP72v1jQ78+qDQwXkflPFDrdHGSs9TAzQA0tbCP8EidJBS0WLi/RJKFnl8PjX7L3QDI+drSUoD35cZGCVN63bnmjnUWCOw8FwhTGgx8hLuFrCteAgR9RzMo01yJpVLNQUwf6f0dIqd7mho4Gs8ZuSnTFmVNpYLzrmpPIY3tEwh2VqcLdbQxTPgTLr+q1Cv99jkoilLxuGC+ysWUwW3RZ+MpwtTFpJxVOWuJSV8k7IvZ74Z+j+uyp7ReKPVwvir1cYMzBxyTXXugjva9Rowf6MpCUIlCaNjyNTRPOKl4JC8NSa53TzpaR19AI72/8MN/zZQLiYFHIqFpdTlMSvnVbSDohumHfSeEYOwTvrrQa9OMCOLBTqdKHmZXKnjpu7N2CIEf9yslxj7uG1vftMyIre1QxnsqQ4nVIoWkFbtcaAvg2Dx42dolgYsXqH8LdT+OugTOC/XHjnGmyKlIor2Q==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8403.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(366004)(136003)(396003)(376002)(230922051799003)(1800799009)(451199024)(64100799003)(186009)(2616005)(6506007)(6486002)(6512007)(478600001)(66946007)(4744005)(5660300002)(2906002)(316002)(110136005)(8676002)(66556008)(66476007)(4326008)(8936002)(36756003)(53546011)(38100700002)(31696002)(54906003)(41300700001)(26005)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Qm11YWJER24zRG9DSStUTGY2aUMzd2QwRG1TVDgrTnpERzAzVklaU1pjYUd5?=
- =?utf-8?B?eEFSeGRidTQzZDZ2emYrSVVnMXpGOVl1amFldWZjSHBrdlcwcmd0c3lFWlJh?=
- =?utf-8?B?SzNJbWExM0dNRkgzdW94ZE9KTVJMWUNRTmtWL1pEVXVsKzJrRy83SU0wQjRF?=
- =?utf-8?B?QTJBZnA2dWxMUW5UUlpQSjlSMTFPZkNPSnhIdEhGNUEzakV2U2JmeE9RZXhV?=
- =?utf-8?B?MktjZEFOakY3SS9NK0Jma2Q3cHdrYTFnTGl2d0NyYVdqc05OK05ncmtqQ3lF?=
- =?utf-8?B?a0NTSWVQaEZ6U2RveVFFbXo4RGp0NjhhMWxzY2laenFHZStuRVBqU0Eyd3Z5?=
- =?utf-8?B?N2Z4NGNraEw2SVNObDZxSXB4T0NNZWRDYlJYbmN5bnZzM21yTkFnN0g5S1l6?=
- =?utf-8?B?QmRSVmFkMkRCV2ZMeUd3Z2YxbUZya1FzU0hTaTRZNFMzeXdCMFp6NXlCSTNZ?=
- =?utf-8?B?bUF4QUh5YWZxeUhFQlV6d2kyMzhrWW1MVm5OTUhST0ZEWTRCZnVtMUI0VjNy?=
- =?utf-8?B?YlU3bGlRMkt6UWd5c0FtYUovU2R6RFF4YmpIaEpiZnB3eU9sdE1DTkQ3bm9Y?=
- =?utf-8?B?OE94bjhNaHdTZlY2eGVsOGhZRmtLQnNPdlZGUFZlY2hNcU1hU1hFVkczZ0VI?=
- =?utf-8?B?eGFZd2Vtb1gxaGhDdWxCckEwV25XS1hoc2NlOVdsM2ViT2QvaklIUlJxV0xw?=
- =?utf-8?B?cGc1VjBnTEk3cTEvMDlCL3RjeXZaMkFvVnVmSkZhMEExZGxVaVBMZXRBU0Iy?=
- =?utf-8?B?RHpHVS9waEE2Yzg1SWFjNTFRUmxabWJtSllQb1k5NTBhVjB6VEZpZDlENGxB?=
- =?utf-8?B?RDRqd1J3SWNWSUVYZFFveTc2QXRQUmowaTVRamVpVjV2ejlXUTA2N0JjajdY?=
- =?utf-8?B?cGRmaHhGQUVsRVR1OGx5UXlRaUY2dTFmYU9maW1QZTQwdVlqanZsVW15SVZO?=
- =?utf-8?B?RUlKT0g1MHFtbWVZczBXOFMvMEpCRGoxd1plV2VsekNJQ0dBaWM1SERXa1d4?=
- =?utf-8?B?L3JCUEVjRkhXTFVMcGZZYi9uR0ViY2pxNGJSU091QVRaaUZEL3RTOHVMNjJE?=
- =?utf-8?B?ajN6NnQ0azJxSnk3c2g0WVFwWmhHak90NHBjN0JSTWUwU25vd1lCVXN6czNL?=
- =?utf-8?B?dzM0eEFkeXE1VGxlZVZkaGFISGVuVHVtYnNtRjNMRkhzUGlwQTdOVjVBaTBM?=
- =?utf-8?B?U3ozWXB0T3dzMnlRNm9sUEFweWFtMlVIam9DRWZxaGxWRmhFdjNrWXVBSENj?=
- =?utf-8?B?QjVLOHdCYi9uK0x0YXBmZGtDN2E4S0U4L3lWc1J0alRHZGVJcEZIbjY4VXhI?=
- =?utf-8?B?VXRuSkd0SWV0b09zck9sbm5hTDZjbjlSc1NzSVZ3NFh3azN3NmxycHJxUjVU?=
- =?utf-8?B?bHBjNm4zd2IwQ0xYNVNTY1BZeTlDZ1BlcmRtak5wOHZINHNnbi9ubUNDRE4y?=
- =?utf-8?B?ZndISE5nSUlMV0tzQXhJV0wwa090TXVLMTU2b1VmY2V5ZHJMWmZkaE1TZXUv?=
- =?utf-8?B?aDFpZnFzRU1jK0VyYUc5ZUt5cGZJUU9WcXV6NU8veFZNT005Q1JzV1JhWVZV?=
- =?utf-8?B?TXhiSm54OGQ5MFJyQjkrRFdQeHk4c0RkbEdKd3pVbmF2WEl3MEdlb2x5S3Rm?=
- =?utf-8?B?LzFIbFN2L1U2QjVJTWxSaHI2QkxaSVdYbHdzMjE5SXBTMDNpejF0c3lYT09w?=
- =?utf-8?B?cW1LL1RHb3VyenZWQmc2YUF6dzJzY3Q4bkRaaE13ZHVyeFhnZnVaVElXa3RQ?=
- =?utf-8?B?K2lrQVB6a3lVWTJaUlJxZWhYTXN1bW5hSERpODFWVHJROTBObnFhZGN0alY0?=
- =?utf-8?B?VEtjSjFVTnROWFFUWEw3ZzFyc0dlOFJYeTg5L0YvNkFocG5xNUFQZmtkNUlZ?=
- =?utf-8?B?dGhaZlFybmEyTU00VjVFU2dVSTkvQS8zVFplR3cwSXEzRGd3eFNPR3NJWkdt?=
- =?utf-8?B?bzRURGdOejBIYnNkUno4QW5CUVNEeWlUQU4zb0pNUXV3WmttcE1neGp0bmFm?=
- =?utf-8?B?RWtuV1ZleE9DSzZueG9aNkhKZVBPWlRWWkVUYmpJWklxRXFDU3BSRzVvejlZ?=
- =?utf-8?B?RXc5aFc2aS80aGZRVnJ4dDNBM0kxR1R3OThCN3FsUlpIZGk4ajJxK0EzblZs?=
- =?utf-8?Q?xJKiItyNyCcgZxu/sqPkx/Y/q?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 556287ed-7123-4c33-1cbe-08dbe08611c3
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8403.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2023 18:11:03.3263
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L0BQGMubiOCfknt814UthS8PES7xSCyhZnf9GrhtoB+U2eeV1HkY9T1WdD+9JnPxwVn3WO2rwaXJYtFEFuJDZg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7986
 
-Hi,
+Hi Jason,
 
-On 11/7/2023 16:35, Luck, Tony wrote:
->> @@ -454,7 +454,7 @@ static int cros_ec_create_panicinfo(struct cros_ec_debugfs *debug_info)
->>       debug_info->panicinfo_blob.data = data;
->>       debug_info->panicinfo_blob.size = ret;
->>
->> -     debugfs_create_blob("panicinfo", S_IFREG | 0444, debug_info->dir,
->> +     debugfs_create_blob("panicinfo", 0444, debug_info->dir,
->>                           &debug_info->panicinfo_blob);
->>
-> 
-> This just looks like a bug that S_IFREG was passed in the "mode" argument.
-> 
-> Your change in part 2 doesn't really affect much here.
-> 
->   debugfs_create_blob()
->     debugfs_create_file_unsafe()
->       __debugfs_create_file()
-> 
-> which does:
-> 
-> 	if (!(mode & S_IFMT))
->                 	mode |= S_IFREG;
->         	BUG_ON(!S_ISREG(mode));
-> 
-> So this is a fine cleanup. But your patch description about ensuring that
-> the file remains read-only isn't accurate. Your change didn't affect the mode
-> of this file.
-> 
-Noted. Thanks for the explanation. Will change the patch description accordingly.
+On Fri, 2023-11-03 at 13:44 -0300, Jason Gunthorpe wrote:
+> There are no external callers now.
+>=20
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+> =C2=A0drivers/iommu/iommu.c | 3 ++-
+> =C2=A0include/linux/iommu.h | 6 ------
+> =C2=A02 files changed, 2 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+> index 62c82a28cd5db3..becd1b881e62dc 100644
+> --- a/drivers/iommu/iommu.c
+> +++ b/drivers/iommu/iommu.c
+> @@ -2945,7 +2945,8 @@ bool iommu_default_passthrough(void)
+> =C2=A0}
+> =C2=A0EXPORT_SYMBOL_GPL(iommu_default_passthrough);
+> =C2=A0
+> -const struct iommu_ops *iommu_ops_from_fwnode(struct fwnode_handle
+> *fwnode)
+> +static const struct iommu_ops *
+> +iommu_ops_from_fwnode(struct fwnode_handle *fwnode)
+> =C2=A0{
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct iommu_ops *o=
+ps =3D NULL;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iommu_device *iomm=
+u;
+> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+> index 27e4605d498850..37948eee8d7394 100644
+> --- a/include/linux/iommu.h
+> +++ b/include/linux/iommu.h
+> @@ -701,7 +701,6 @@ static inline void iommu_fwspec_free(struct
+> device *dev)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dev->iommu->fwspec =3D NU=
+LL;
+> =C2=A0}
+> =C2=A0int iommu_fwspec_add_ids(struct device *dev, u32 *ids, int num_ids)=
+;
+> -const struct iommu_ops *iommu_ops_from_fwnode(struct fwnode_handle
+> *fwnode);
+> =C2=A0int iommu_fwspec_append_ids(struct iommu_fwspec *fwspec, u32 *ids,
+> int num_ids);
+> =C2=A0
+> =C2=A0static inline struct iommu_fwspec *dev_iommu_fwspec_get(struct
+> device *dev)
+> @@ -1044,11 +1043,6 @@ static inline int iommu_fwspec_add_ids(struct
+> device *dev, u32 *ids,
+> =C2=A0}
+> =C2=A0
+> =C2=A0static inline
+> -const struct iommu_ops *iommu_ops_from_fwnode(struct fwnode_handle
+> *fwnode)
+> -{
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return NULL;
+> -}
+> -
+> =C2=A0static inline int
+> =C2=A0iommu_dev_enable_feature(struct device *dev, enum iommu_dev_feature=
+s
+> feat)
 
-> -Tony
-> 
-> 	
+This leaves the extra line with 'static inline', it should also be
+removed.
 
--- 
-Thanks,
-Avadhut Naik
+Cheers,
+Andre'
+
 
