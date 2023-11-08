@@ -1,176 +1,108 @@
-Return-Path: <linux-acpi+bounces-1356-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1357-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A3B57E5931
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 15:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D647E5B4D
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 17:34:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BEA41C208E5
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 14:36:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1467F1C209DD
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 16:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF9D2A1A0
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 14:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rWV9Xw8N"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7413218C3A
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Nov 2023 16:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E6B1C2D;
-	Wed,  8 Nov 2023 14:20:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9BCC43397;
-	Wed,  8 Nov 2023 14:20:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699453252;
-	bh=E82DmwfH2dcxbs9xwMmLiAaOTn5D4Ow/0Cpeotwv8Tc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rWV9Xw8NQwgrRa5bh7nxobt3EqPIBdZysZTWWrerABqOhIeuc1Jnby1BN2RDe6jSo
-	 wMC3krMIgAV9h8cHBuiFMh3OnoC3PvFNYfXcFr8asqoC8PUIh9NLWF0HfK/5X9PJna
-	 FtNp1qyXtzlxe51KM8v9HXKo949wd8TvzBYHFjWrIpr/fJT718UUvyZZYNHdr9Gz87
-	 lpBiEXfyw04EV1dbr6WISFxIDQcdQfSpYgg7s8OXdUzU7Wl5EHf9NVIujRA8jtvOAS
-	 4hYRkewHrL2b9sIIiuVIjloxGRyoSp0Rqw3Z1EVhordXWA9/lMH6d3wK30okromWFX
-	 DblWljL7w3jaw==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2c594196344so92025811fa.3;
-        Wed, 08 Nov 2023 06:20:51 -0800 (PST)
-X-Gm-Message-State: AOJu0YxNzAwn+kyozMipu4tA12kmdCNAdHxh7r8QxGe5Sh4I3n4PM3Zb
-	qugjZEhxUfrsFar4RObmLehup1eEX7JbHoVBkGQ=
-X-Google-Smtp-Source: AGHT+IF3AlqJpBLUhu1DTarhTz6FDwvlN0RLFjtbhZO/9hXihKmHvPiQC4/ncAP2kR3ROp5UFGC31vCUAe8Gj7r8AZQ=
-X-Received: by 2002:a2e:8e3c:0:b0:2c6:eaf8:49ff with SMTP id
- r28-20020a2e8e3c000000b002c6eaf849ffmr1584451ljk.37.1699453250122; Wed, 08
- Nov 2023 06:20:50 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0F830CE4;
+	Wed,  8 Nov 2023 16:11:42 +0000 (UTC)
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F18519A5;
+	Wed,  8 Nov 2023 08:11:42 -0800 (PST)
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3b6a837a2e1so1343991b6e.0;
+        Wed, 08 Nov 2023 08:11:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699459901; x=1700064701;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=egO/3A8usR47pYsFMHy7at49a3WUUkqONQqbQuU8j7Y=;
+        b=uQod2uDabayaXs6n7pwKDCysCHgfTd9wESlvdVVu/fkWxQyzZ9A7WLlQiagmCnXVy/
+         MNk/dfTd9iTDPTgBL00944LlP6QON7nPmmuq6LNrkUX7/e4U9gzyWnp1z3GAR2zMWrmT
+         zI52HfydorbUqrEvI2Zgor+S7ZfCLWBUWUY0Ksgfq4m88rsSgp6NtcbyASZOpWQrHTx8
+         XWvZUvMZgA7Oul39qQeb+WAVbH8PdIBbD458O6GhsqXkAqrOnAmj02lMwbJnSREPqkH4
+         Fp61PR25gxnM72SeSV4M7hSutG/7if41F9ZPNLUfw8egVvxrZK6hiXb7mHCoKprIVKQz
+         /bOw==
+X-Gm-Message-State: AOJu0YzG5Ll5iELF/d99pw9llmLPrWJhhm49rzpE2822eRK/aVpabPXv
+	lumrtbvPV7jeErhKVyjQjA==
+X-Google-Smtp-Source: AGHT+IFG1ydbraxTf3qUlkUHE402Zq2u5RjAY4fdhcYCPQiBAZE+mNt+Ni+JkQlZMBRuNIEkL2d3Ow==
+X-Received: by 2002:a05:6808:15a8:b0:3a9:cfb5:4641 with SMTP id t40-20020a05680815a800b003a9cfb54641mr3241896oiw.48.1699459901513;
+        Wed, 08 Nov 2023 08:11:41 -0800 (PST)
+Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id bg42-20020a05680817aa00b003afc33bf048sm1959000oib.2.2023.11.08.08.11.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Nov 2023 08:11:40 -0800 (PST)
+Received: (nullmailer pid 2284755 invoked by uid 1000);
+	Wed, 08 Nov 2023 16:11:38 -0000
+Date: Wed, 8 Nov 2023 10:11:38 -0600
+From: Rob Herring <robh@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: acpica-devel@lists.linuxfoundation.org, 
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>, Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Dexuan Cui <decui@microsoft.com>, devicetree@vger.kernel.org, 
+	David Woodhouse <dwmw2@infradead.org>, Frank Rowand <frowand.list@gmail.com>, 
+	Hanjun Guo <guohanjun@huawei.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
+	Christoph Hellwig <hch@lst.de>, iommu@lists.linux.dev, 
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Joerg Roedel <joro@8bytes.org>, "K. Y. Srinivasan" <kys@microsoft.com>, Len Brown <lenb@kernel.org>, 
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org, 
+	linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Hector Martin <marcan@marcan.st>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Sudeep Holla <sudeep.holla@arm.com>, 
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, Sven Peter <sven@svenpeter.dev>, 
+	Thierry Reding <thierry.reding@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Krishna Reddy <vdumpa@nvidia.com>, Vineet Gupta <vgupta@kernel.org>, 
+	virtualization@lists.linux-foundation.org, Wei Liu <wei.liu@kernel.org>, 
+	Will Deacon <will@kernel.org>, Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Subject: Re: [PATCH RFC 03/17] of: Use -ENODEV consistently in
+ of_iommu_configure()
+Message-ID: <20231108161138.GA2254211-robh@kernel.org>
+References: <0-v1-5f734af130a3+34f-iommu_fwspec_jgg@nvidia.com>
+ <3-v1-5f734af130a3+34f-iommu_fwspec_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
- <CAPnjgZ0Xf3U1aj32LbU-xiU1AqwnM3JL1F8xX-wZ18oEmg+irw@mail.gmail.com>
- <CAMj1kXEXcX7BkDyfy-6_5Vnch=N+onza-yfWfsVaGLE93h2c+Q@mail.gmail.com>
- <CAPnjgZ2SEby-ndrs=W_afBJH56eqc=-mhp1F1nwkvWks+=B54Q@mail.gmail.com>
- <CAMj1kXED3S+0cq+VT7naBrmWrUwT=HZAaZOBRMv8Ui1Pey1QNQ@mail.gmail.com>
- <CAPnjgZ0LrsJ2_ENTYoBrnyFaH3UKdHs3D2XWY=TzBuBpBoTXZA@mail.gmail.com>
- <CAL_Jsq+DQugkEDESW5wySFbLLN8HNqGDJCio8Wpi6fe0LeHKUA@mail.gmail.com>
- <CAPnjgZ0cmKP5hoGCyQ_Rp8ZQXUVwaPYJMWyidXuOOjMVkDoMDw@mail.gmail.com>
- <CAL_JsqJH=vJ40PNTg_i0LoKA-c0hhMJkL8zCC3_bB-tOkFWWsw@mail.gmail.com>
- <CAPnjgZ1FrdGKjGAxUbkQoL2vHwhC_2Oa2KT+0cm25dQAuAjxAQ@mail.gmail.com>
- <CAPnjgZ19-xR6QxS=fR53skz0VuAty2Z2w2vQTjP7g=tbTFpaqw@mail.gmail.com>
- <CAL_JsqL+X1DatsGk_Cn1HsbG2GV9AngFWXVysWTiNRu_d9tDqw@mail.gmail.com>
- <CAMj1kXHfh40wxerZGjOn2JJ5Skm5C--Rz2jy8p3XZ2UXKGjw+g@mail.gmail.com> <CAL_JsqLpea+FU4gXpaSUSeBP70szJ+mRjJtFei=QW2VoHCFOuA@mail.gmail.com>
-In-Reply-To: <CAL_JsqLpea+FU4gXpaSUSeBP70szJ+mRjJtFei=QW2VoHCFOuA@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 8 Nov 2023 15:20:38 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHPVXB2ojzhKbAO47+EDMDzODqjLZ+iOKw=u=Bc7=HPCQ@mail.gmail.com>
-Message-ID: <CAMj1kXHPVXB2ojzhKbAO47+EDMDzODqjLZ+iOKw=u=Bc7=HPCQ@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
-To: Rob Herring <robh@kernel.org>
-Cc: Simon Glass <sjg@chromium.org>, devicetree@vger.kernel.org, 
-	Mark Rutland <mark.rutland@arm.com>, Lean Sheng Tan <sheng.tan@9elements.com>, 
-	lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, 
-	Maximilian Brune <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
-	Guo Dong <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, 
-	ron minnich <rminnich@gmail.com>, Gua Guo <gua.guo@intel.com>, 
-	Chiu Chasel <chasel.chiu@intel.com>, linux-acpi@vger.kernel.org, 
-	U-Boot Mailing List <u-boot@lists.denx.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3-v1-5f734af130a3+34f-iommu_fwspec_jgg@nvidia.com>
 
-On Wed, 8 Nov 2023 at 14:57, Rob Herring <robh@kernel.org> wrote:
->
-> On Wed, Nov 8, 2023 at 5:38=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> w=
-rote:
-> >
-> > On Tue, 7 Nov 2023 at 19:07, Rob Herring <robh@kernel.org> wrote:
-> > >
-> > >
-> > > All of this:
-> > >
-> >
-> > > > On Mon, 16 Oct 2023 at 15:54, Simon Glass <sjg@chromium.org> wrote:
-> > > > >
-> > > > > It is not specific to EDK2. Imagine this boot sequence:
-> > > > >
-> > > > > - Platform Init (U-Boot) starts up
-> > > > > - U-Boot uses its platform knowledge to sets some ACPI tables and=
- put
-> > > > > various things in memory
-> > > > > - U-Boot sets up some runtime code and data for the OS
-> > > > > - U-Boot jumps to the Tianocore payload **
-> > > > > - Payload (Tianocore) wants to know where the ACPI tables are, fo=
-r example
-> > > > > - Tianocore needs to provide boot services to the OS, so needs to=
- know
-> > > > > the memory map, etc.
-> > > > >
-> > > > > ** At this point we want to use DT to pass the required informati=
-on.
-> > > > >
-> > > > > Of course, Platform Init could be coreboot or Tianocore or some
-> > > > > strange private binary. Payload could be U-Boot or something else=
-.
-> > > > > That is the point of this effort, to build interoperability.
-> > >
-> > > [...]
-> > >
-> > > > > Perhaps the problem here is that Linux has tied itself up in knot=
-s
-> > > > > with its EFI stuff and DT fixups and what-not. But this is not th=
-at.
-> > > > > It is a simple handoff between two pieces of firmware, Platform I=
-nit
-> > > > > and Payload. It has nothing to do with the OS. With Tianocore the=
-y are
-> > > > > typically combined, but with this usage they are split, and we ca=
-n
-> > > > > swap out one project for another on either side of the DT interfa=
-ce.
-> > >
-> > > Is perhaps the clearest description of the problem you want to solve.
-> > > It's clearly related to EFI though not the interface to the OS. IIRC,
-> > > "platform init" and "payload" are terms in the UEFI spec, right?
-> >
-> > No they are not. This is from the universal payload specification that
-> > is being drafted here
-> >
-> > https://universalpayload.github.io/spec/index.html
-> >
-> > but the UEFI specification does not use this terminology.
->
-> Then I'm confused as to what this is:
->
-> https://uefi.org/specs/PI/1.8/index.html
->
+On Fri, Nov 03, 2023 at 01:44:48PM -0300, Jason Gunthorpe wrote:
+> Instead of returning 1 and trying to handle positive error codes just
+> stick to the convention of returning -ENODEV. Remove references to ops
+> from of_iommu_configure(), a NULL ops will already generate an error code.
 
-The PI and UEFI specifications are both maintained by the UEFI forum.
+nit: "iommu: of: ..." or "iommu/of: " for the subject. "of: ..." is 
+generally drivers/of/.
 
-The UEFI specification covers external APIs for firmware
-implementations, i.e., the OS visible interface and the public API for
-UEFI device drivers that are not tightly integrated with system
-firmware (for example, the GPU boot time driver in the ROM of an
-add-in card)
-
-The UEFI forum's PI spec describes system firmware internals, and
-defines the SEC, PEI DXE and BDS boot phases, among other things.
-
-It is possible to implement UEFI without PI (which is what uboot does,
-for instance), but Tianocore/EDK2 is the reference implementation for
-both PI and UEFI, and sadly, there is no discernible distinction
-between the two (e.g., both PI and UEFI use identifiers with EFI_ type
-and enum identifier prefixes)
-
-'platform init' in the context of this discussion is something
-completely separate, and has zero bearing on the PI<->UEFI handover in
-Tianocore (which is not really a handover to begin with).
-
-There is code in Tianocore which allows it to run as a 'payload',
-which means [presumably] that only the DXE and subsequent phases are
-launched from a 'platform init' component that describes the platform
-using some of the DT bindings that are under discussion here. In this
-case, I can see how some of the ACPI descriptions provided by the
-'platform init' might be inherited by the 'payload'. However, I don't
-see how such a Tianocore payload would make meaningful use of
-boot/runtime code/data described in general terms using this proposed
-binding, which is why I keep asking for an example scenario.
+> 
+> There is no reason to check dev->bus, if err=0 at this point then the
+> called configure functions thought there was an iommu and we should try to
+> probe it. Remove it.
+> 
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  drivers/iommu/of_iommu.c | 42 +++++++++++++---------------------------
+>  1 file changed, 13 insertions(+), 29 deletions(-)
 
