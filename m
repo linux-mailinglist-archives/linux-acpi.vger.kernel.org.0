@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-1380-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1381-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC2F7E6854
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 11:37:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9D57E6856
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 11:37:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 363E51C2048F
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 10:37:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A6B01C208EA
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 10:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9668B199A6
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 10:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7917D199B5
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 10:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PpSbnRMV"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="B2XoNOc/"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23FB168AA
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 10:14:54 +0000 (UTC)
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05FD22D7B
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 02:14:53 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-4084e49a5e5so4710045e9.3
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Nov 2023 02:14:53 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7763168AA
+	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 10:14:56 +0000 (UTC)
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8314930C4
+	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 02:14:55 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-4083f613275so4555835e9.2
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Nov 2023 02:14:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699524892; x=1700129692; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1699524894; x=1700129694; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=l8u+U/9u4ohr5MnGNG/ipD+T+tLh/PNcKnY6Yu8ixWw=;
-        b=PpSbnRMVClcVCq7PxMg71+AnKN7hK0FrYIohngsI4P6PFOOh1MqbWWwQKkFPvt8XWi
-         g2qDWb8opx5p+U7mtBOtiMHX3VWz5X9qugns5VaH+noBdExOA76oWa26tGHV7XtWa4rF
-         epu7BVSF9Lew6K/jC8vFe2kZ9o/sMwwPFyq8TpFIAwob5uDkz/pk/GZ33QZ0GtSQeKO/
-         /Nv9P7VWzBeyAqNuPUKfrIFtQbAiA3+k8Q4pZqES2p3nAQLrzRzMvtB6UKrAjfSkTjJ5
-         zPO7pzg3wrMsO3NKMmThfuRrz8GX/u2EpHmR9V5yX08tOBFXUcFF4xBiXqhRH7hukxrS
-         Rwvg==
+        bh=aduCSyHEYIhu+IO52anhhUtjmJcDS68d0TTkBLTxAgE=;
+        b=B2XoNOc/UvEkRo9hxP5p1Y+/rylqTlP3mpJpsnqcRVhqXeUBHOrpDAr/QbiG4v0gac
+         KbITUVpfPRbT7B2PCPJpKJ44jFCcIwxQr6IiwXs2MLAScSMyildYvBopvyezCP1E0q9m
+         BGDj7nYrYa+dWF7na8dtTgGOBic5lJpmdxpY2oDmjYv7l7W4GYLUMZ0nd6mqII+t7GZi
+         yIzwyAnQHmLIqZ88AuJvLuyknLFegie3phbl4pVTE7JKnCIqhFUZ0y3hb+ckUwyzt1h8
+         Ip6Fwb5153oFvDGCmBa03thse64naSSLLxF2YV5nZdxlcK+vOqBZNZKAvAMgXK4a2JyP
+         xNwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699524892; x=1700129692;
+        d=1e100.net; s=20230601; t=1699524894; x=1700129694;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=l8u+U/9u4ohr5MnGNG/ipD+T+tLh/PNcKnY6Yu8ixWw=;
-        b=jO1XPudLqDiP49h//bSxyrB/tZPXwP9QdxpzM4AADwZgPsoWIu3WC1o9mKEzKTcjt7
-         2rDBSkBqbQ5jupurBOqn7UKGPaGb4qljMubABeMQZFbLvm6A+3er0c+lQI2XiNrIKon9
-         XGBOqGrAMNGiJSLaWS856AxFUhWCSYIy4xgtUBA6TwEK+wbchehGjP7tmfo3es1F+nF2
-         iyLQZ7DsT++ipMK84ZeVJQfj6eSMEiLmCEpaMUdB8T1CNZYnuv0dIRR/VtPJjw/iE63x
-         PjLrZfWKCd7fO5VD8HeKWlR1JL66j5KxoJqrORUUPv+TC8noo0O351VM6vAIExnyUHdX
-         GWsQ==
-X-Gm-Message-State: AOJu0YzdxmCh/MCv4jWQQz1vbAvpzAfiewlk7qr7/+7/X6jXda4s9mQj
-	XjxC15cMwg0jLlngW2EGcpMVcw==
-X-Google-Smtp-Source: AGHT+IHnOiUcy8JXKcoEvGEFJjBuKV8KQLk7xv3UY4lyz6ACLBnBr+ZIXmzvc3YVmB2uAO7FfkCoEw==
-X-Received: by 2002:a05:600c:a49:b0:409:5d7d:b26d with SMTP id c9-20020a05600c0a4900b004095d7db26dmr3556372wmq.15.1699524892326;
-        Thu, 09 Nov 2023 02:14:52 -0800 (PST)
+        bh=aduCSyHEYIhu+IO52anhhUtjmJcDS68d0TTkBLTxAgE=;
+        b=P3zIYl64DXfAW6J1f3zzhkT04/PJMQt70v0JYqvMYbwLVJ3qJLNMtPwJbjgUG7CSpP
+         ASxO96qiWcdVGg4AOXqE2C4quyWQggQomVP/muyQavAKjyug0kseu+eCR3iGTjaevHeH
+         4GTHFcUcBE0HrexDfDxxfFodzW7AE1SIyuOEkQVtsvyE+dng+cT3gQElJk2hKvNI8wbX
+         3hcSxvHEph5YXJ0S6di6+h3g+QASK77WZRHQKHtnyT8I4zsmpZCIEfHLUFA4nl3gwf1m
+         wEZdGlNWN9KO+swxT0spShETjGHRy+ELxjuzTs5P9csMeYp39Oa8BE1kT0Nu8RRIUsQn
+         /d6g==
+X-Gm-Message-State: AOJu0Yw+zTw0ok2nj3f6nlj+mDdDZLrMvgW5MsA3NJRtM89egeImA+ht
+	ExI4HGVSXp39cldhp7DkjzQBbQ==
+X-Google-Smtp-Source: AGHT+IEYIB6ScZWDEgpcZ/S2cHjVchJEeCFHQxgRNVNplqpr7l/I6Xe67qLyHn6zzj6QW+TyS8tvqg==
+X-Received: by 2002:a1c:7516:0:b0:40a:28b1:70f8 with SMTP id o22-20020a1c7516000000b0040a28b170f8mr3876852wmc.21.1699524893988;
+        Thu, 09 Nov 2023 02:14:53 -0800 (PST)
 Received: from vingu-book.. ([2a01:e0a:f:6020:26e5:c6da:63bc:dd99])
-        by smtp.gmail.com with ESMTPSA id m17-20020a05600c4f5100b003fefb94ccc9sm1611816wmq.11.2023.11.09.02.14.50
+        by smtp.gmail.com with ESMTPSA id m17-20020a05600c4f5100b003fefb94ccc9sm1611816wmq.11.2023.11.09.02.14.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Nov 2023 02:14:51 -0800 (PST)
+        Thu, 09 Nov 2023 02:14:53 -0800 (PST)
 From: Vincent Guittot <vincent.guittot@linaro.org>
 To: linux@armlinux.org.uk,
 	catalin.marinas@arm.com,
@@ -94,9 +94,9 @@ Cc: conor.dooley@microchip.com,
 	ajones@ventanamicro.com,
 	lftan@kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH v6 3/7] cpufreq/schedutil: Use a fixed reference frequency
-Date: Thu,  9 Nov 2023 11:14:34 +0100
-Message-Id: <20231109101438.1139696-4-vincent.guittot@linaro.org>
+Subject: [PATCH v6 4/7] energy_model: Use a fixed reference frequency
+Date: Thu,  9 Nov 2023 11:14:35 +0100
+Message-Id: <20231109101438.1139696-5-vincent.guittot@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231109101438.1139696-1-vincent.guittot@linaro.org>
 References: <20231109101438.1139696-1-vincent.guittot@linaro.org>
@@ -108,71 +108,54 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-cpuinfo.max_freq can change at runtime because of boost as an example. This
-implies that the value could be different than the one that has been
-used when computing the capacity of a CPU.
+The last item of a performance domain is not always the performance point
+that has been used to compute CPU's capacity. This can lead to different
+target frequency compared with other part of the system like schedutil and
+would result in wrong energy estimation.
 
-The new arch_scale_freq_ref() returns a fixed and coherent reference
-frequency that can be used when computing a frequency based on utilization.
+A new arch_scale_freq_ref() is available to return a fixed and coherent
+frequency reference that can be used when computing the CPU's frequency
+for an level of utilization. Use this function to get this reference
+frequency.
 
-Use this arch_scale_freq_ref() when available and fallback to
-policy otherwise.
+Energy model is never used without defining arch_scale_freq_ref() but
+can be compiled. Define a default arch_scale_freq_ref() returning 0
+in such case.
 
 Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
 Tested-by: Lukasz Luba <lukasz.luba@arm.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 ---
- kernel/sched/cpufreq_schedutil.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ include/linux/energy_model.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 458d359f5991..f3a87fa16332 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -114,6 +114,28 @@ static void sugov_deferred_update(struct sugov_policy *sg_policy)
- 	}
- }
- 
-+/**
-+ * get_capacity_ref_freq - get the reference frequency that has been used to
-+ * correlate frequency and compute capacity for a given cpufreq policy. We use
-+ * the CPU managing it for the arch_scale_freq_ref() call in the function.
-+ * @policy: the cpufreq policy of the CPU in question.
-+ *
-+ * Return: the reference CPU frequency to compute a capacity.
-+ */
-+static __always_inline
-+unsigned long get_capacity_ref_freq(struct cpufreq_policy *policy)
-+{
-+	unsigned int freq = arch_scale_freq_ref(policy->cpu);
-+
-+	if (freq)
-+		return freq;
-+
-+	if (arch_scale_freq_invariant())
-+		return policy->cpuinfo.max_freq;
-+
-+	return policy->cur;
-+}
-+
- /**
-  * get_next_freq - Compute a new frequency for a given cpufreq policy.
-  * @sg_policy: schedutil policy object to compute the new frequency for.
-@@ -140,10 +162,10 @@ static unsigned int get_next_freq(struct sugov_policy *sg_policy,
- 				  unsigned long util, unsigned long max)
+diff --git a/include/linux/energy_model.h b/include/linux/energy_model.h
+index b9caa01dfac4..c19e7effe764 100644
+--- a/include/linux/energy_model.h
++++ b/include/linux/energy_model.h
+@@ -224,7 +224,7 @@ static inline unsigned long em_cpu_energy(struct em_perf_domain *pd,
+ 				unsigned long max_util, unsigned long sum_util,
+ 				unsigned long allowed_cpu_cap)
  {
- 	struct cpufreq_policy *policy = sg_policy->policy;
--	unsigned int freq = arch_scale_freq_invariant() ?
--				policy->cpuinfo.max_freq : policy->cur;
-+	unsigned int freq;
+-	unsigned long freq, scale_cpu;
++	unsigned long freq, ref_freq, scale_cpu;
+ 	struct em_perf_state *ps;
+ 	int cpu;
  
- 	util = map_util_perf(util);
-+	freq = get_capacity_ref_freq(policy);
- 	freq = map_util_freq(util, freq, max);
+@@ -241,11 +241,11 @@ static inline unsigned long em_cpu_energy(struct em_perf_domain *pd,
+ 	 */
+ 	cpu = cpumask_first(to_cpumask(pd->cpus));
+ 	scale_cpu = arch_scale_cpu_capacity(cpu);
+-	ps = &pd->table[pd->nr_perf_states - 1];
++	ref_freq = arch_scale_freq_ref(cpu);
  
- 	if (freq == sg_policy->cached_raw_freq && !sg_policy->need_freq_update)
+ 	max_util = map_util_perf(max_util);
+ 	max_util = min(max_util, allowed_cpu_cap);
+-	freq = map_util_freq(max_util, ps->frequency, scale_cpu);
++	freq = map_util_freq(max_util, ref_freq, scale_cpu);
+ 
+ 	/*
+ 	 * Find the lowest performance state of the Energy Model above the
 -- 
 2.34.1
 
