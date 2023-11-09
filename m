@@ -1,71 +1,74 @@
-Return-Path: <linux-acpi+bounces-1387-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1388-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7729D7E6AB2
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 13:37:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 616E47E6AB3
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 13:38:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9B73280FB7
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 12:37:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D83B1C208AF
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 12:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918521C3F
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 12:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E866D1DDC5
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 12:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jVy/SlMh"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ks0cy16y"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6314156FD
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 10:59:25 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A8E92702
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 02:59:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1699527564;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K9U5ygdZjpdfSXw60j6OXFMXdIu25vL99MHEH+w5Ks4=;
-	b=jVy/SlMhSHjD6q6aV9Ap3fm4YrSbHCBJuGMlwIxkRGhTxXFafvo/83GnXruI2pw1RBVPF+
-	p6PhAhxdNtIxj55psyskVCPoyJq3eOKzxEz85NzyKcNF+v4yCd/4gIXhy1muvkf8oA3evO
-	xFovnDKoC4GwcDxmoTR16Adu5tDfg1M=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-Ec5XfXnENLW_pNedIZMJuw-1; Thu, 09 Nov 2023 05:59:23 -0500
-X-MC-Unique: Ec5XfXnENLW_pNedIZMJuw-1
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-6bdc140103bso222911b3a.1
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Nov 2023 02:59:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699527562; x=1700132362;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K9U5ygdZjpdfSXw60j6OXFMXdIu25vL99MHEH+w5Ks4=;
-        b=STZ8mp8m1S9WPvuQnCNw8coOFFXvfmtYPuFRgFmnJIxKoxjDpyfkFenlKdHNOJsIvC
-         8XZ6cI3vu181LOVpoE/EqMqy4v2lNwQkqooRq9JRPLe/kQipJthHgZcQcfm113/NlLP7
-         RyLiPT3rnyeO+b+U0dqvKaCbaht64jenWRJmWhaLX0OGDsJuYcXsEjTs3hEpEPhwICqo
-         XyZ7BAmi9GdsGaS2Jf+adt61xH2+WLx2SUrbOK9iyZR7i+BC4T4otfJEHfdotY1xZpnL
-         Qrje2pEYcnAKx9FKHxKcHzWuvW8pGermwsqX+oRhLxWxzx0MEvvqicoKVEfYzr/RmTe+
-         DQbw==
-X-Gm-Message-State: AOJu0YzLk89ApjV92ZFoMzIrEC5HBpumYar9q7bWD09heyWPNyxWU8Hy
-	DBObihZv++Xl/rA8MKfWFb/tNrZeLF/hgorHw8YGNvh9PZauv3NrVVVBlcSLJb299ZUSEQUtMu9
-	QEHmc3OaAyK+5g2+ImglYpA==
-X-Received: by 2002:a05:6a20:8e14:b0:181:7d6d:c0ee with SMTP id y20-20020a056a208e1400b001817d6dc0eemr5336310pzj.0.1699527562363;
-        Thu, 09 Nov 2023 02:59:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHVGk/5hgPxq0+SsSph+84k4BFGhqdcMPg+KMAt0nXFoQGQf7FXvvQcKVOfijjQlbVGmLH/fA==
-X-Received: by 2002:a05:6a20:8e14:b0:181:7d6d:c0ee with SMTP id y20-20020a056a208e1400b001817d6dc0eemr5336293pzj.0.1699527562066;
-        Thu, 09 Nov 2023 02:59:22 -0800 (PST)
-Received: from [10.66.61.39] ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id x16-20020aa793b0000000b006c344c9f8bfsm10417140pff.87.2023.11.09.02.59.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Nov 2023 02:59:21 -0800 (PST)
-Message-ID: <6c27c39a-a851-52f5-1156-354487bb2821@redhat.com>
-Date: Thu, 9 Nov 2023 18:59:14 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24D51A72B
+	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 11:37:10 +0000 (UTC)
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2072.outbound.protection.outlook.com [40.107.243.72])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E93A269A;
+	Thu,  9 Nov 2023 03:37:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Xpkf9wfZJVZLOnbAzVNvBXONphp7J3v6xSu+RIhl8+po41TOKf25YQ3dKiHdGFT2QNT0Be6u8F+0i/Wj7HjYWkSHV/ZwCPY3QlJARXjXoVbZRlHBfBWOzpec09142wDiESlCbzbW3mU8AkikzMJhnu+17LryyBkycQTcDBQNihG5cGNqJ48/gmIV3+hwSM6Obxf7v42UMA5o7rENDZDVi7X6NsLg/q7Q8hcVVOdBnj0lVCkuFCqFOsoI5tPwLg769Go1WVbQfsd3joqKDFcNYvm9bc54tbRFQG3vRn6SNzpDNbhWcWIrtrQCbQNnfSdwegPDiTQYYxSpAIZVqjVB5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/Na2msQSAmWfxUs73SyYJLFCD+NzFcs8CqrH+Jt1fMA=;
+ b=WXuMshcXTXH2WWQqdqF7gJ/Nwnk4MzQWT3d5yoE0ez7yYX2m12JX4+Kw34KWNUn6QYET+mRIbYlFYcsVOswZYa1wlMSk6BhUm41LU21xEYXDlmsVjuga0MJiC4n2okqRDPvs1QQo3xWWzIRz7qk/PUCVnw8cixAvIwJslTAZwh6pwt6w2iAmgKI3EOYYCOJ8hG56VGA+HCH2ijh3b7hB3bgVKYB8xwTjTPpHsw7Z+Z9JJSaA907ZECm8r2CSk2JmWH1Paj6GxMRJ59qE/UsKudBO1d+nPRTBG38R3nGRDly2YciYExdEJ9DtvMTGKR73tFXvRgK8gl8A5QpWv3lZSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/Na2msQSAmWfxUs73SyYJLFCD+NzFcs8CqrH+Jt1fMA=;
+ b=Ks0cy16yLtU6LQ5ONQji2e5kHoNzH9VXNnzP4hKkqD/WQbljq6G3BRziIsIZUVoO1rvr+ag712Ue02O5K8Rp+Hy+G5aJMas4/qF25nQass2s2RXezrRj/sUFw/W5oAxQpXbo+MgUUdTPeo3r8jcEU9OY2LEf0eRq828YNM40c4BYBM4ytM/HCVo8+afT2Hcxb/xLjql+ZYwoyIr+6NjVcbN0RxVE+mtVvRnLFislUjvDyEc5d2EE/WXm/DzItQYZOUWb0W69Tx2/Nd/uoBm14RwHi/rQJOibQzkhVb1XAZZLuH/qUrP2qsNAO7DaRcaP3nZK42RnY64AeL6//N4UWg==
+Received: from CH2PR18CA0038.namprd18.prod.outlook.com (2603:10b6:610:55::18)
+ by PH7PR12MB5951.namprd12.prod.outlook.com (2603:10b6:510:1da::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.19; Thu, 9 Nov
+ 2023 11:37:06 +0000
+Received: from DS2PEPF00003441.namprd04.prod.outlook.com
+ (2603:10b6:610:55:cafe::16) by CH2PR18CA0038.outlook.office365.com
+ (2603:10b6:610:55::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.19 via Frontend
+ Transport; Thu, 9 Nov 2023 11:37:05 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS2PEPF00003441.mail.protection.outlook.com (10.167.17.68) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6977.16 via Frontend Transport; Thu, 9 Nov 2023 11:37:04 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 9 Nov 2023
+ 03:36:52 -0800
+Received: from [10.41.21.79] (10.126.230.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 9 Nov 2023
+ 03:36:47 -0800
+Message-ID: <94a329fe-52d2-eb8d-9c6f-c1bdf59ffe44@nvidia.com>
+Date: Thu, 9 Nov 2023 17:06:43 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -73,120 +76,140 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH RFC 06/22] drivers: base: Use present CPUs in
- GENERIC_CPU_DEVICES
+ Thunderbird/102.11.0
+Subject: Re: [Patch v5 2/2] ACPI: processor: reduce CPUFREQ thermal reduction
+ pctg for Tegra241
 Content-Language: en-US
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org,
- linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
- Salil Mehta <salil.mehta@huawei.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>, jianyong.wu@arm.com,
- justin.he@arm.com, James Morse <james.morse@arm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Guo Ren <guoren@kernel.org>
-References: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
- <E1r0JLB-00CTwy-7y@rmk-PC.armlinux.org.uk>
- <f00dd1cf-5b4c-38a8-a337-817d474d53d1@redhat.com>
- <ZUy0h/lc3QCPsuU8@shell.armlinux.org.uk>
-From: Shaoqin Huang <shahuang@redhat.com>
-In-Reply-To: <ZUy0h/lc3QCPsuU8@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: Hanjun Guo <guohanjun@huawei.com>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, <lpieralisi@kernel.org>, <sudeep.holla@arm.com>
+CC: <rui.zhang@intel.com>, <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<treding@nvidia.com>, <jonathanh@nvidia.com>, <bbasu@nvidia.com>,
+	<sanjayc@nvidia.com>, <ksitaraman@nvidia.com>, <srikars@nvidia.com>,
+	<jbrasen@nvidia.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>,
+	"Sumit Gupta" <sumitg@nvidia.com>
+References: <20231014105426.26389-1-sumitg@nvidia.com>
+ <20231014105426.26389-3-sumitg@nvidia.com>
+ <CAJZ5v0ivZd-+wRtCNE4t1P=SjJSEJmW6s7GyuYELWg-v87Tw2w@mail.gmail.com>
+ <4fd879be-ae89-45a7-9607-b55606cfb3ac@nvidia.com>
+ <7f17a560-f26a-eae5-f8d5-1f6602ed8f7c@huawei.com>
+From: Sumit Gupta <sumitg@nvidia.com>
+In-Reply-To: <7f17a560-f26a-eae5-f8d5-1f6602ed8f7c@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.126.230.35]
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003441:EE_|PH7PR12MB5951:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1713bb87-4df2-4dd5-8472-08dbe11832ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	aersys4RWAzOKRnl8cuLwZROXniqu2Q71LGdg3E/xLtbNFh0DRnQSNz/1RB5HdKqC+G5TjzhPZ5uQ22H08154ZwKPGXIbemX1JS2fLfNbY6LXa6LFCwSvevTbiToww3a85zVT8PS+kzCpthRK7fFrkuUnQz+6zepJjCMeXD06FAp2CegL1l+d5UTTZCwODsWauOuWb7Ys+iipg37c+fAxjABlhACGZeqST5S8aSZo+chDuisGkTk4kaxO197f+qQFqwc+G0vzKRJjnczji1r8dLyp6Ro8xUMjGYaPblF9qNPnw6T5mCqbGwqzy8tYCKRnsdbBbXZUmv5W89fzh/aLJr3ZbnkHBpyBICjbw+0svfUB5tMsxioCJfe1HtTvngre8J1P5qctDJ+xTJbmifaZsQRvrN1n4DG2OFLgdYMgLOQ3lJMXcSF8v9dGR10UyOhYZPcByB4XByL2LpPRxf3BE9JKUOWrywMD3NEZegn1tsaN0rEeBigAZQk9VCjM1mSnmonugtMgEmUHHXvGaUZdmSsIfRmRBx3jvRRFNmD9k3DqxwxISoOoI9T9JMV4pC93/O0qfHQH+RqljKvCdAXN+OI9aNe7D1Ykn+XFN6XzHv7hDth5HHw8ghiYU99B+b38K1US4TRFgWSZAfxjVstfEXmTIwChn5oNTl8kj6zJGkbobOxQtyaI6UgQ09ojSwahHR5Hk+TPy16wg/LBNNz74qCsCBOWjBSu+DFxBG3fSfgECywHd7Rx/MMrLS4u7KwG+Td8ILq4E1ayTmh1vykgN/5a5uKzX1V8vhXwysQYRZQErMlLpH8BmVjzf7JcZMnBM5kAQvEOcoJWT6qc2NJoEaHd8/oX3ta9tScq+uPv/o=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(376002)(136003)(396003)(39860400002)(346002)(230922051799003)(230273577357003)(230173577357003)(1800799009)(186009)(64100799003)(451199024)(82310400011)(36840700001)(46966006)(40470700004)(36756003)(41300700001)(82740400003)(8676002)(4326008)(8936002)(356005)(7636003)(40460700003)(2906002)(7416002)(5660300002)(86362001)(31696002)(16526019)(26005)(6666004)(36860700001)(2616005)(107886003)(53546011)(478600001)(966005)(47076005)(83380400001)(110136005)(54906003)(40480700001)(70206006)(70586007)(16576012)(31686004)(316002)(336012)(426003)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2023 11:37:04.8936
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1713bb87-4df2-4dd5-8472-08dbe11832ca
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF00003441.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5951
 
 
 
-On 11/9/23 18:29, Russell King (Oracle) wrote:
-> On Thu, Nov 09, 2023 at 06:09:32PM +0800, Shaoqin Huang wrote:
->> Hi Russell,
+On 09/11/23 13:20, Hanjun Guo wrote:
+> External email: Use caution opening links or attachments
+> 
+> 
+> On 2023/10/20 16:30, Sumit Gupta wrote:
 >>
->> On 11/7/23 18:29, Russell King (Oracle) wrote:
->>> From: James Morse <james.morse@arm.com>
+>>>> Current implementation of processor_thermal performs software 
+>>>> throttling
+>>>> in fixed steps of "20%" which can be too coarse for some platforms.
+>>>> We observed some performance gain after reducing the throttle
+>>>> percentage.
+>>>> Change the CPUFREQ thermal reduction percentage and maximum thermal
+>>>> steps
+>>>> to be configurable. Also, update the default values of both for Nvidia
+>>>> Tegra241 (Grace) SoC. The thermal reduction percentage is reduced to
+>>>> "5%"
+>>>> and accordingly the maximum number of thermal steps are increased as
+>>>> they
+>>>> are derived from the reduction percentage.
+>>>>
+>>>> Signed-off-by: Srikar Srimath Tirumala <srikars@nvidia.com>
+>>>> Co-developed-by: Sumit Gupta <sumitg@nvidia.com>
+>>>> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+>>>> ---
+>>>>   drivers/acpi/arm64/Makefile          |  1 +
+>>>>   drivers/acpi/arm64/thermal_cpufreq.c | 20 ++++++++++++++++
+>>>>   drivers/acpi/processor_thermal.c     | 35 
+>>>> +++++++++++++++++++++++++---
+>>>>   include/linux/acpi.h                 |  9 +++++++
+>>>>   4 files changed, 62 insertions(+), 3 deletions(-)
+>>>>   create mode 100644 drivers/acpi/arm64/thermal_cpufreq.c
+>>>>
+>>>> diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
+>>>> index 143debc1ba4a..3f181d8156cc 100644
+>>>> --- a/drivers/acpi/arm64/Makefile
+>>>> +++ b/drivers/acpi/arm64/Makefile
+>>>> @@ -5,3 +5,4 @@ obj-$(CONFIG_ACPI_GTDT)         += gtdt.o
+>>>>   obj-$(CONFIG_ACPI_APMT)        += apmt.o
+>>>>   obj-$(CONFIG_ARM_AMBA)         += amba.o
+>>>>   obj-y                          += dma.o init.o
+>>>> +obj-$(CONFIG_ACPI)             += thermal_cpufreq.o
+>>>> diff --git a/drivers/acpi/arm64/thermal_cpufreq.c
+>>>> b/drivers/acpi/arm64/thermal_cpufreq.c
+>>>> new file mode 100644
+>>>> index 000000000000..de834fb013e7
+>>>> --- /dev/null
+>>>> +++ b/drivers/acpi/arm64/thermal_cpufreq.c
+>>>> @@ -0,0 +1,20 @@
+>>>> +// SPDX-License-Identifier: GPL-2.0-only
+>>>> +#include <linux/acpi.h>
+>>>> +
+>>>> +#ifdef CONFIG_HAVE_ARM_SMCCC_DISCOVERY
+>>>> +#define SMCCC_SOC_ID_T241      0x036b0241
+>>>> +
+>>>> +int acpi_thermal_cpufreq_pctg(void)
+>>>> +{
+>>>> +       s32 soc_id = arm_smccc_get_soc_id_version();
+>>>> +
+>>>> +       /*
+>>>> +        * Check JEP106 code for NVIDIA Tegra241 chip (036b:0241) and
+>>>> +        * reduce the CPUFREQ Thermal reduction percentage to 5%.
+>>>> +        */
+>>>> +       if (soc_id == SMCCC_SOC_ID_T241)
+>>>> +               return 5;
+>>>> +
+>>>> +       return 0;
+>>>> +}
+>>>> +#endif
 >>>
->>> Three of the five ACPI architectures create sysfs entries using
->>> register_cpu() for present CPUs, whereas arm64, riscv and all
->>> GENERIC_CPU_DEVICES do this for possible CPUs.
+>>> This part needs an ACK from the ARM folks.
 >>>
->>> Registering a CPU is what causes them to show up in sysfs.
->>>
->>> It makes very little sense to register all possible CPUs. Registering
->>> a CPU is what triggers the udev notifications allowing user-space to
->>> react to newly added CPUs.
->>>
->>> To allow all five ACPI architectures to use GENERIC_CPU_DEVICES, change
->>> it to use for_each_present_cpu(). Making the ACPI architectures use
->>> GENERIC_CPU_DEVICES is a pre-requisite step to centralise their
->>> cpu_register() logic, before moving it into the ACPI processor driver.
->>> When ACPI is disabled this work would be done by
->>> cpu_dev_register_generic().
->>
->> What do you actually mean about when ACPI is disabled this work would be
+>> Sorry, missed adding 'ACPI arm64' maintainers. Added Lorenzo, Sudeep and
+>> Hanjun.
 > 
-> Firstly, please note that "you" is not appropriate here. This is James'
-> commit message, not mine.
+> Sorry for the late reply, would mind giving me the link which the ID
+> (SMCCC_SOC_ID_T241) is documented?
 > 
+> Thanks
+> Hanjun
 
-Oh, Sorry for that.
+The ID is already used in file 'irq-gic-v3.c'. Please refer change [1].
 
->> done by cpu_dev_register_generic()? Is the work means register the cpu?
-> 
-> When ACPI is disabled _and_ CONFIG_GENERIC_CPU_DEVICES is enabled, then
-> cpu_dev_register_generic() will call arch_register_cpu() for each present
-> CPU after this commit, rather than for each _possible_ CPU (which is the
-> actual code change here.)
-> 
->> I'm not quite understand that, and how about when ACPI is enabled, which
->> function do this work?
-> 
-> This is what happens later in the series.
-> 
-> "drivers: base: Allow parts of GENERIC_CPU_DEVICES to be overridden"
-> adds a test for CONFIG_GENERIC_CPU_DEVICES, so this will only be used
-> with architectures using GENERIC_CPU_DEVICES. Then in:
-> 
-> "ACPI: processor: Register all CPUs from acpi_processor_get_info()"
-> which is not part of this series, this adds a call to arch_register_cpu()
-> in the ACPI code, and disables this path via a test for !acpi_disabled.
-> 
-> Essentially, this path gets used to register the present CPUs when
-> firmware (ACPI) isn't going to be registering the present CPUs.
-> 
-> I've changed this to:
-> 
-> "It makes very little sense to register all possible CPUs. Registering
-> a CPU is what triggers the udev notifications allowing user-space to
-> react to newly added CPUs.
-> 
-> "To allow all five ACPI architectures to use GENERIC_CPU_DEVICES, change
-> it to use for_each_present_cpu().
-> 
-> "Making the ACPI architectures use GENERIC_CPU_DEVICES is a pre-requisite
-> step to centralise their register_cpu() logic, before moving it into the
-> ACPI processor driver. When we add support for register CPUs from ACPI
-> in a later patch, we will avoid registering CPUs in this path."
-> 
-> which I hope makes it clearer.
-> 
+[1] 
+https://lore.kernel.org/linux-arm-kernel/20230319024314.3540573-2-sdonthineni@nvidia.com/
 
-Thanks for your great explanation. Change commit message to this makes 
-me understand well.
-
-Thanks,
-Shaoqin
-
->>> After this change, openrisc and hexagon systems that use the max_cpus
->>> command line argument would not see the other CPUs present in sysfs.
->>> This should not be a problem as these CPUs can't bre brought online as
->>                                               ^ nit: can't be
-> 
-> Thanks, I'll fix that.
-> 
-
+Best Regards,
+Sumit Gupta
 
