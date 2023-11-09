@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-1383-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1384-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E907E685C
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 11:38:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345D27E6861
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 11:38:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22C51B20AC2
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 10:38:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64E541C20366
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 10:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9427D199A3
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 10:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34C8199C5
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 10:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gBsWdZ++"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r4t1ibiO"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C5316426
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 10:15:00 +0000 (UTC)
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26DA330E5
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 02:14:59 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-4083f613272so4798535e9.1
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Nov 2023 02:14:59 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E13C1804D
+	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 10:15:01 +0000 (UTC)
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8E6B30F7
+	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 02:15:00 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-40806e4106dso3943475e9.1
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Nov 2023 02:15:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699524897; x=1700129697; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1699524899; x=1700129699; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PRZuGgttIdjMzTtOY1KLieaDHjYgH97fC7jzr+fvVqo=;
-        b=gBsWdZ++s0+LbDVr6pkTEDUcxoNovypRYVpvgDcsB2PaAFhT4bGmgI866JjQnZbZqL
-         kXIdaKl1KymtebNa3pakFi5d5BDfcB0BW4wtCL8C+6wkV1VbKgNWhbhbQYaI+F2zEKoi
-         FNuODtaNQ9p9sLxo1EhL/UdusZfedmzToInJ9JDcq8c87vRtd3mmilrQFB7U5Yg3ltjF
-         xWF6NhOopvSjKhiVV4GzU3bMHctjkZe1xabLr6duAJUj8Ch05mz3gBT+dcL8uWJ4MK8W
-         /5eHFmXq7GWJ1Q/8UtmT1HBQ4s7x6QqkfS0VQoRXjfcdtp5n7trE55apN+XJvRtPLlfm
-         6Zvw==
+        bh=Yeh/ejHIslK7GUpigz7eOxRJ5nIZNkForzOfukaDKm0=;
+        b=r4t1ibiOa66uJtVLUNjZ3X3zQsZ+Awg425wX7LcAY4Gp69+CEFUXdMvAXkATcWePZV
+         z6QefD6qL6CVN1gv+m98Iv3uI7FrDkQvkitUMY0DFCOH3E+S6+7/5emJ6AbU2dmizGJQ
+         MsqwOrxVLF5txOevqS3x6rUch5ueEQQX4bL68f2BJTbrkktV780i1vHpnDXXF3kTEBS5
+         U0T0Mnps+4l7tUy42gS+cjQJupK3LXlcLTvDtkJnjW2WoH/hsRQN9bfuuorncUFZFWt9
+         vRnx/cblg67XdV08PQJuqCGUCB7ZwR9sGxOFZqV/3Y4zk/C6vJya22lvSWapEgwIeraN
+         mPNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699524897; x=1700129697;
+        d=1e100.net; s=20230601; t=1699524899; x=1700129699;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PRZuGgttIdjMzTtOY1KLieaDHjYgH97fC7jzr+fvVqo=;
-        b=Awu86PSYq522pngDsK0AX1zNVckVOZtwQ4Ct+CkdwPu2GGPEnhvmPPwqSYGdjJk6Pd
-         bzhCEaMnxl6SLowWhlVDLOohYbRdTTntHUVNUHTUVwRpvsybDYedOkd/fqZYdmmY/r6P
-         Q1ocQlrzxBja3EFMZBnsoiLu25ts74qgi8eW9PTKd4EPhnpfO5lSVQiXrD5O43Lqmwrh
-         NnPQc1/qbGNDBdLJ+9UQ5f80jBzn0x/Zs48EDWM8fgLY7vOA71fuB0H3Jb9mYhaltLkS
-         BhIm5JX/BF7SN4skIKkqXVOkJ4pKq7da18Hup6aDJNgG707Id2kh55qY97kIEaFv3oJy
-         MybQ==
-X-Gm-Message-State: AOJu0Yw6q2R0lIjFYMoo0p3gnNHjzRoZyxZBqtHi2P2c5lh6wlsRGQwU
-	OxOb+EY0pnAhpHWGYLFDZRzj8g==
-X-Google-Smtp-Source: AGHT+IFErHhK3dv93vXA3skdZjBc12KSv8yFV05cQNNZGn5wIgqPMa1zCHFgcuaqbLUWzLMBHHtZSA==
-X-Received: by 2002:a05:600c:138b:b0:407:5b7c:2f6a with SMTP id u11-20020a05600c138b00b004075b7c2f6amr3739930wmf.0.1699524897543;
-        Thu, 09 Nov 2023 02:14:57 -0800 (PST)
+        bh=Yeh/ejHIslK7GUpigz7eOxRJ5nIZNkForzOfukaDKm0=;
+        b=UX5EAkIhhwoP6IGH4Mg87soGPPM8u++L4vj3xRcftU2OcT5S9OQ/gox7LRdkxo1TIr
+         XGsEFVgPk6da8Bbt/L5hUhWBz+xNQJWX6fKWmpVrh5fnMl/wMtvs6+XFsonwgzg8BRBU
+         sbFGkjr9LMWoi03GIfgS7yBdvUq7tFncWnE+hjuS4MTfR551P84yq9XH/LsmAJNw43iP
+         H/JcNm5E5G7o8e6lL90PPfiVkDXX8u0/OiUfGYYohWveyPtiDk3SZsxjk8xuCKf17i3U
+         H4bY5ghAjCga2BTR+idRvIqRLGBJlQAfqwsycTsNXPNbZnWBsmKhBECqJr8xMuqx7bty
+         3OzA==
+X-Gm-Message-State: AOJu0YwYoki3/rek+4dyhpjs58Z3TovRWVUTFLfezp09HzI456MPWyzW
+	F2nm61aUfhccuqGTKx7GzOr50g==
+X-Google-Smtp-Source: AGHT+IGlIQP4ExpYKEcJPouG3NAgRbcbvugwDfKHk5La7RKyXTFl7Z52+KMescuL7ihHOYDKBftYUA==
+X-Received: by 2002:a05:600c:3c97:b0:406:5a14:5c1e with SMTP id bg23-20020a05600c3c9700b004065a145c1emr10570874wmb.1.1699524899315;
+        Thu, 09 Nov 2023 02:14:59 -0800 (PST)
 Received: from vingu-book.. ([2a01:e0a:f:6020:26e5:c6da:63bc:dd99])
-        by smtp.gmail.com with ESMTPSA id m17-20020a05600c4f5100b003fefb94ccc9sm1611816wmq.11.2023.11.09.02.14.55
+        by smtp.gmail.com with ESMTPSA id m17-20020a05600c4f5100b003fefb94ccc9sm1611816wmq.11.2023.11.09.02.14.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Nov 2023 02:14:57 -0800 (PST)
+        Thu, 09 Nov 2023 02:14:58 -0800 (PST)
 From: Vincent Guittot <vincent.guittot@linaro.org>
 To: linux@armlinux.org.uk,
 	catalin.marinas@arm.com,
@@ -94,9 +94,9 @@ Cc: conor.dooley@microchip.com,
 	ajones@ventanamicro.com,
 	lftan@kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH v6 6/7] cpufreq/cppc: Set the frequency used for computing the capacity
-Date: Thu,  9 Nov 2023 11:14:37 +0100
-Message-Id: <20231109101438.1139696-7-vincent.guittot@linaro.org>
+Subject: [PATCH v6 7/7] arm64/amu: Use capacity_ref_freq to set AMU ratio
+Date: Thu,  9 Nov 2023 11:14:38 +0100
+Message-Id: <20231109101438.1139696-8-vincent.guittot@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231109101438.1139696-1-vincent.guittot@linaro.org>
 References: <20231109101438.1139696-1-vincent.guittot@linaro.org>
@@ -108,57 +108,137 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Save the frequency associated to the performance that has been used when
-initializing the capacity of CPUs.
-Also, cppc cpufreq driver can register an artificial energy model. In such
-case, it needs the frequency for this compute capacity.
+Use the new capacity_ref_freq to set the ratio that is used by AMU for
+computing the arch_scale_freq_capacity().
+This helps to keep everything aligned using the same reference for
+computing CPUs capacity.
+
+The default value of the ratio (stored in per_cpu(arch_max_freq_scale))
+ensures that arch_scale_freq_capacity() returns max capacity until it is
+set to its correct value with the cpu capacity and capacity_ref_freq.
 
 Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Acked-by: Sudeep Holla <sudeep.holla@arm.com>
 ---
- drivers/base/arch_topology.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/topology.c  | 26 +++++++++++++-------------
+ drivers/base/arch_topology.c  | 12 +++++++++++-
+ include/linux/arch_topology.h |  1 +
+ 3 files changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
-index e8d1cdf1f761..0a2e43728286 100644
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -349,6 +349,7 @@ bool __init topology_parse_cpu_capacity(struct device_node *cpu_node, int cpu)
+diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+index 817d788cd866..1a2c72f3e7f8 100644
+--- a/arch/arm64/kernel/topology.c
++++ b/arch/arm64/kernel/topology.c
+@@ -82,7 +82,12 @@ int __init parse_acpi_topology(void)
+ #undef pr_fmt
+ #define pr_fmt(fmt) "AMU: " fmt
  
- void topology_init_cpu_capacity_cppc(void)
+-static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale);
++/*
++ * Ensure that amu_scale_freq_tick() will return SCHED_CAPACITY_SCALE until
++ * the CPU capacity and its associated frequency have been correctly
++ * initialized.
++ */
++static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale) =  1UL << (2 * SCHED_CAPACITY_SHIFT);
+ static DEFINE_PER_CPU(u64, arch_const_cycles_prev);
+ static DEFINE_PER_CPU(u64, arch_core_cycles_prev);
+ static cpumask_var_t amu_fie_cpus;
+@@ -112,14 +117,14 @@ static inline bool freq_counters_valid(int cpu)
+ 	return true;
+ }
+ 
+-static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
++void freq_inv_set_max_ratio(int cpu, u64 max_rate)
  {
-+	u64 capacity, capacity_scale = 0;
- 	struct cppc_perf_caps perf_caps;
- 	int cpu;
+-	u64 ratio;
++	u64 ratio, ref_rate = arch_timer_get_rate();
  
-@@ -365,6 +366,10 @@ void topology_init_cpu_capacity_cppc(void)
- 		    (perf_caps.highest_perf >= perf_caps.nominal_perf) &&
- 		    (perf_caps.highest_perf >= perf_caps.lowest_perf)) {
- 			raw_capacity[cpu] = perf_caps.highest_perf;
-+			capacity_scale = max_t(u64, capacity_scale, raw_capacity[cpu]);
-+
-+			per_cpu(capacity_freq_ref, cpu) = cppc_perf_to_khz(&perf_caps, raw_capacity[cpu]);
-+
- 			pr_debug("cpu_capacity: CPU%d cpu_capacity=%u (raw).\n",
- 				 cpu, raw_capacity[cpu]);
- 			continue;
-@@ -375,7 +380,15 @@ void topology_init_cpu_capacity_cppc(void)
- 		goto exit;
+ 	if (unlikely(!max_rate || !ref_rate)) {
+-		pr_debug("CPU%d: invalid maximum or reference frequency.\n",
++		WARN_ONCE(1, "CPU%d: invalid maximum or reference frequency.\n",
+ 			 cpu);
+-		return -EINVAL;
++		return;
  	}
  
--	topology_normalize_cpu_scale();
-+	for_each_possible_cpu(cpu) {
-+		capacity = raw_capacity[cpu];
-+		capacity = div64_u64(capacity << SCHED_CAPACITY_SHIFT,
-+				     capacity_scale);
-+		topology_set_cpu_scale(cpu, capacity);
-+		pr_debug("cpu_capacity: CPU%d cpu_capacity=%lu\n",
-+			cpu, topology_get_cpu_scale(cpu));
-+	}
-+
- 	schedule_work(&update_topology_flags_work);
- 	pr_debug("cpu_capacity: cpu_capacity initialization done\n");
+ 	/*
+@@ -139,12 +144,10 @@ static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
+ 	ratio = div64_u64(ratio, max_rate);
+ 	if (!ratio) {
+ 		WARN_ONCE(1, "Reference frequency too low.\n");
+-		return -EINVAL;
++		return;
+ 	}
  
+-	per_cpu(arch_max_freq_scale, cpu) = (unsigned long)ratio;
+-
+-	return 0;
++	WRITE_ONCE(per_cpu(arch_max_freq_scale, cpu), (unsigned long)ratio);
+ }
+ 
+ static void amu_scale_freq_tick(void)
+@@ -195,10 +198,7 @@ static void amu_fie_setup(const struct cpumask *cpus)
+ 		return;
+ 
+ 	for_each_cpu(cpu, cpus) {
+-		if (!freq_counters_valid(cpu) ||
+-		    freq_inv_set_max_ratio(cpu,
+-					   cpufreq_get_hw_max_freq(cpu) * 1000ULL,
+-					   arch_timer_get_rate()))
++		if (!freq_counters_valid(cpu))
+ 			return;
+ 	}
+ 
+diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
+index 0a2e43728286..0906114963ff 100644
+--- a/drivers/base/arch_topology.c
++++ b/drivers/base/arch_topology.c
+@@ -344,6 +344,10 @@ bool __init topology_parse_cpu_capacity(struct device_node *cpu_node, int cpu)
+ 	return !ret;
+ }
+ 
++void __weak freq_inv_set_max_ratio(int cpu, u64 max_rate)
++{
++}
++
+ #ifdef CONFIG_ACPI_CPPC_LIB
+ #include <acpi/cppc_acpi.h>
+ 
+@@ -381,6 +385,9 @@ void topology_init_cpu_capacity_cppc(void)
+ 	}
+ 
+ 	for_each_possible_cpu(cpu) {
++		freq_inv_set_max_ratio(cpu,
++				       per_cpu(capacity_freq_ref, cpu) * HZ_PER_KHZ);
++
+ 		capacity = raw_capacity[cpu];
+ 		capacity = div64_u64(capacity << SCHED_CAPACITY_SHIFT,
+ 				     capacity_scale);
+@@ -422,8 +429,11 @@ init_cpu_capacity_callback(struct notifier_block *nb,
+ 
+ 	cpumask_andnot(cpus_to_visit, cpus_to_visit, policy->related_cpus);
+ 
+-	for_each_cpu(cpu, policy->related_cpus)
++	for_each_cpu(cpu, policy->related_cpus) {
+ 		per_cpu(capacity_freq_ref, cpu) = policy->cpuinfo.max_freq;
++		freq_inv_set_max_ratio(cpu,
++				       per_cpu(capacity_freq_ref, cpu) * HZ_PER_KHZ);
++	}
+ 
+ 	if (cpumask_empty(cpus_to_visit)) {
+ 		topology_normalize_cpu_scale();
+diff --git a/include/linux/arch_topology.h b/include/linux/arch_topology.h
+index 32c24ff4f2a8..a63d61ca55af 100644
+--- a/include/linux/arch_topology.h
++++ b/include/linux/arch_topology.h
+@@ -99,6 +99,7 @@ void update_siblings_masks(unsigned int cpu);
+ void remove_cpu_topology(unsigned int cpuid);
+ void reset_cpu_topology(void);
+ int parse_acpi_topology(void);
++void freq_inv_set_max_ratio(int cpu, u64 max_rate);
+ #endif
+ 
+ #endif /* _LINUX_ARCH_TOPOLOGY_H_ */
 -- 
 2.34.1
 
