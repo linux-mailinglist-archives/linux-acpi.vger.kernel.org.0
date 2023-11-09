@@ -1,181 +1,194 @@
-Return-Path: <linux-acpi+bounces-1376-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1377-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1AA7E684A
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 11:36:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0377E684B
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 11:37:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7384A1F22044
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 10:36:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 472651F21F35
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 10:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EE8199A0
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 10:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6D6199C0
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Nov 2023 10:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wo5zWc1+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wjI3aL7w"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14728182A4
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 10:13:42 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F1182D77
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 02:13:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1699524820;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3rYhpoB4lYmS4MLIzZUo4ZMf6R8bUZVPeYV6RdLZieo=;
-	b=Wo5zWc1+sKgjzw0KZWhbxfSfluCqVfgIEb95VVoIK9ObgHxA94SDhtUpxlU8Rft52QrGbq
-	ETq+IfyoXC1DfUnUK/QBTOYVx0jyAWXjPzgqsRZJY8mk5mEp2GulPXYpYg6gcsO0hrmyK7
-	MupxXabI9wDNCHxZxddY+rUHrBrBkSM=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-ecjOOy8-Mv2Ne_eylBzfKw-1; Thu, 09 Nov 2023 05:13:39 -0500
-X-MC-Unique: ecjOOy8-Mv2Ne_eylBzfKw-1
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2800be2d781so188014a91.1
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Nov 2023 02:13:39 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27293179B1
+	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 10:14:49 +0000 (UTC)
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67B012D70
+	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 02:14:48 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-4094301d505so4323025e9.2
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Nov 2023 02:14:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1699524887; x=1700129687; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4oi3jXI7vrHdw4Az1EYDzA4Gdmd91pOzyx51udMAAeQ=;
+        b=wjI3aL7we4IRiPtB+26llD3AWM9EwxK8+G400/9pCEgdB3JPQy8H00AwqmEAxoOIKK
+         Z2sDS04rPIhcCGhWv2hPfq2jkeju0TDQ6KifZ8djti/MqKpv5cFoDPfilLUNA/cpyasq
+         hJH/ahUO8qRSkMr44NrogArcgqDGvCsqWLgcpBn0vmcKSKHML1VV8kIg57qB/MhASOJD
+         UEMWj1saPS/kcBz5u4w/noU0CRVqIIkp/6kjrbUF4XRkW4uL+DAuOlPTfGeEzz1kNY3N
+         XqwiNCnQ28TphdYd7533kBS30gyC8PJeJ/t5TtAfPrRXY7GXylqUvGQdR19Dwd5a7R66
+         DbSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699524814; x=1700129614;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3rYhpoB4lYmS4MLIzZUo4ZMf6R8bUZVPeYV6RdLZieo=;
-        b=NNptwSIUt5mCMlSLGVHlyD9D0I3UKghLFmtHgvibcP0MsHekQWEhiVR7Z1pxWHx4Pf
-         h10dyONqU/XAZMDZKonZFUl6RLgF1rYwEkBR1pyQ9//6DaxSurPfVQbT+v/WbE+IeGRi
-         PNr0hCHUeZlbCp+uVVanZpf7THLUPbroQ4Oo9wS2e41yFOqKqtkB8coicnXbSG4YUY0C
-         aRbRq7tQzU8Op2vWXQglHwsELj8jm//m4zdcvoAhrgZdGWEUzuK2+8rkkrGmR3NRLKd8
-         6yoq6VyazbmtuiKigOi6MkgcyTfGMONUAv1aCi+PM1yjj8RDzvr8GjOUaFviFjdS5mef
-         llMA==
-X-Gm-Message-State: AOJu0Yx2c0XjU0eQMxPOCK34+fAiSavC3iOvrTbwwplUJOyZkdxtNBta
-	Q8/8fxC2CezITGxulQ4w1k7gnw13XqcnuFnTM1G4gf3YxMRveTZN75TKQkOid/TZRuSb6y55NdR
-	ywE1bTI2Ue8xlsBH0cgxnuQ==
-X-Received: by 2002:a17:903:120e:b0:1cc:ebe:5547 with SMTP id l14-20020a170903120e00b001cc0ebe5547mr5043350plh.0.1699524813758;
-        Thu, 09 Nov 2023 02:13:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGMYccyPUYXdRLbiWAt/Rrr2lff8DkVfjHrlmnPr9rVOEThxcSXfzeRdAMTZ0+vEY8CCgW5xw==
-X-Received: by 2002:a17:903:120e:b0:1cc:ebe:5547 with SMTP id l14-20020a170903120e00b001cc0ebe5547mr5043330plh.0.1699524813447;
-        Thu, 09 Nov 2023 02:13:33 -0800 (PST)
-Received: from [10.66.61.39] ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id p2-20020a170902e74200b001c60a2b5c61sm3165370plf.134.2023.11.09.02.13.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Nov 2023 02:13:33 -0800 (PST)
-Message-ID: <6341a77d-ba42-3f3a-4a2a-b598fb5c0e20@redhat.com>
-Date: Thu, 9 Nov 2023 18:13:26 +0800
+        d=1e100.net; s=20230601; t=1699524887; x=1700129687;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4oi3jXI7vrHdw4Az1EYDzA4Gdmd91pOzyx51udMAAeQ=;
+        b=FgHZ4mTYYYNTZO2OnystyiyIy+PZxDKuveNFpD3ChptodgN0UgdPoav60JpX4dL0vb
+         GMe5ei7+lF4ogMR64K2QzFryxM8v6YzJ9pB7zdZHKhRbHWfOEv/WhCAilkj983Zv9XY3
+         ca2ep1H94aQaOEQOMICl5eqz/YrFItM5ZZSvX82a86px6QcQ/ZITthZG3Xzn3HbhYueG
+         kfFhIG7Uq3msnOr1jna9ZNHz9JFODbdjEWcTj0bi9T5JR6mxQB4e9tamlJ5ASFAelPfE
+         7pDU7viYJhSWp2GR6QZaIpG1jxVYldgiRbkTScAijZsIovGL/ZmLnxah/8PLZMNH0stk
+         Zfxg==
+X-Gm-Message-State: AOJu0YzmvLkIBldhzihOu78MytLiWBRLYda9947ckiuQh8g9IqflR5NJ
+	ZhYNgHKNTlGKiH9ADGAjr3oD8g==
+X-Google-Smtp-Source: AGHT+IGLiZmuTGbMYyyqS0Ud9k4f2BHvLpElKnJiu++mYwxV1ds6E0Yux6gLdmYe3xpB+kvAcq0ZeA==
+X-Received: by 2002:a05:600c:20d:b0:408:fba2:f4bc with SMTP id 13-20020a05600c020d00b00408fba2f4bcmr4093547wmi.24.1699524886779;
+        Thu, 09 Nov 2023 02:14:46 -0800 (PST)
+Received: from vingu-book.. ([2a01:e0a:f:6020:26e5:c6da:63bc:dd99])
+        by smtp.gmail.com with ESMTPSA id m17-20020a05600c4f5100b003fefb94ccc9sm1611816wmq.11.2023.11.09.02.14.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Nov 2023 02:14:46 -0800 (PST)
+From: Vincent Guittot <vincent.guittot@linaro.org>
+To: linux@armlinux.org.uk,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	sudeep.holla@arm.com,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	bristot@redhat.com,
+	vschneid@redhat.com,
+	viresh.kumar@linaro.org,
+	lenb@kernel.org,
+	robert.moore@intel.com,
+	lukasz.luba@arm.com,
+	ionela.voinescu@arm.com,
+	pierre.gondois@arm.com,
+	beata.michalska@arm.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-pm@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: conor.dooley@microchip.com,
+	suagrfillet@gmail.com,
+	ajones@ventanamicro.com,
+	lftan@kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: [PATCH v6 0/7] consolidate and cleanup CPU capacity
+Date: Thu,  9 Nov 2023 11:14:31 +0100
+Message-Id: <20231109101438.1139696-1-vincent.guittot@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH RFC 07/22] drivers: base: Allow parts of
- GENERIC_CPU_DEVICES to be overridden
-Content-Language: en-US
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org,
- linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org
-Cc: Salil Mehta <salil.mehta@huawei.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>, jianyong.wu@arm.com,
- justin.he@arm.com, James Morse <james.morse@arm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner
- <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>
-References: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
- <E1r0JLG-00CTx8-CG@rmk-PC.armlinux.org.uk>
-From: Shaoqin Huang <shahuang@redhat.com>
-In-Reply-To: <E1r0JLG-00CTx8-CG@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+This is the 1st part of consolidating how the max compute capacity is
+used in the scheduler and how we calculate the frequency for a level of
+utilization.
 
+Fix some unconsistancy when computing frequency for an utilization. There
+can be a mismatch between energy model and schedutil.
 
-On 11/7/23 18:29, Russell King (Oracle) wrote:
-> From: James Morse <james.morse@arm.com>
-> 
-> Architectures often have extra per-cpu work that needs doing
-> before a CPU is registered, often to determine if a CPU is
-> hotpluggable.
-> 
-> To allow the ACPI architectures to use GENERIC_CPU_DEVICES, move
-> the cpu_register() call into arch_register_cpu(), which is made __weak
-> so architectures with extra work can override it.
-> This aligns with the way x86, ia64 and loongarch register hotplug CPUs
-> when they become present.
-> 
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
-> ---
-> Changes since RFC:
->   * Dropped __init from x86/ia64 arch_register_cpu()
-> Changes since RFC v2:
->   * Dropped unnecessary Loongarch asm/cpu.h changes
-> ---
->   drivers/base/cpu.c  | 14 ++++++++++----
->   include/linux/cpu.h |  4 ++++
->   2 files changed, 14 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
-> index 34b48f660b6b..579064fda97b 100644
-> --- a/drivers/base/cpu.c
-> +++ b/drivers/base/cpu.c
-> @@ -525,19 +525,25 @@ bool cpu_is_hotpluggable(unsigned int cpu)
->   EXPORT_SYMBOL_GPL(cpu_is_hotpluggable);
->   
->   #ifdef CONFIG_GENERIC_CPU_DEVICES
-> -static DEFINE_PER_CPU(struct cpu, cpu_devices);
-> +DEFINE_PER_CPU(struct cpu, cpu_devices);
-> +
-> +int __weak arch_register_cpu(int cpu)
-> +{
-> +	return register_cpu(&per_cpu(cpu_devices, cpu), cpu);
-> +}
->   #endif
->   
->   static void __init cpu_dev_register_generic(void)
->   {
-> -#ifdef CONFIG_GENERIC_CPU_DEVICES
->   	int i;
->   
-> +	if (!IS_ENABLED(CONFIG_GENERIC_CPU_DEVICES))
-> +		return;
-> +
->   	for_each_present_cpu(i) {
-> -		if (register_cpu(&per_cpu(cpu_devices, i), i))
-> +		if (arch_register_cpu(i))
->   			panic("Failed to register CPU device");
->   	}
-> -#endif
->   }
->   
->   #ifdef CONFIG_GENERIC_CPU_VULNERABILITIES
-> diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-> index fc8094419084..1e982d63eae8 100644
-> --- a/include/linux/cpu.h
-> +++ b/include/linux/cpu.h
-> @@ -88,6 +88,10 @@ extern ssize_t arch_cpu_probe(const char *, size_t);
->   extern ssize_t arch_cpu_release(const char *, size_t);
->   #endif
->   
-> +#ifdef CONFIG_GENERIC_CPU_DEVICES
-> +DECLARE_PER_CPU(struct cpu, cpu_devices);
-> +#endif
-> +
->   /*
->    * These states are not related to the core CPU hotplug mechanism. They are
->    * used by various (sub)architectures to track internal state
+Next step will be to make a difference between the original
+max compute capacity of a CPU and what is currently available when
+there is a capping applying forever (i.e. seconds or more).
+
+Changes since v5:
+- remove useless return in freq_inv_set_max_ratio()
+- Add tags
+
+Changes since v4:
+- Capitalize the verb in subject
+- Remove usless parentheses in cppc_get_dmi_max_khz()
+- Use freq_ref pattern everywhere
+- Fix MHz / kHz units conversion for cppc_cpufreq
+- Move default definition of arch_scale_freq_ref() in
+  include/linux/sched/topology.h beside arch_scale_cpu_capacity
+  which faces similar default declaration behavior. This location covers
+  all cases with arch and CONFIG_* which was not the case with previous
+  attempts.
+
+Changes since v3:
+- Split patch 5 cpufreq/cppc
+- Fix topology_init_cpu_capacity_cppc() 
+- Fix init if AMU ratio
+- Added some tags
+
+Changes since v2:
+- Remove the 1st patch which has been queued in tip
+- Rework how to initialize the reference frequency for cppc_cpufreq and
+  change topology_init_cpu_capacity_cppc() to also set capacity_ref_freq
+- Add a RFC to convert AMU to use arch_scale_freq_ref and move the config
+  of the AMU ratio to be done when intializing cpu capacity and
+  capacity_ref_freq
+- Added some tags
+
+Changes since v1:
+- Fix typos
+- Added changes in cpufreq to use arch_scale_freq_ref() when calling
+  arch_set_freq_scale (patch 3).
+- arch_scale_freq_ref() is always defined and returns 0 (as proposed
+  by Ionela) when not defined by the arch. This simplifies the code with
+  the addition of patch 3.
+- Simplify Energy Model which always uses arch_scale_freq_ref(). The
+  latter returns 0 when not defined by arch instead of last item of the 
+  perf domain. This is not a problem because the function is only defined
+  for compilation purpose in this case and we don't care about the
+  returned value. (patch 5)
+- Added changes in cppc cpufreq to set capacity_ref_freq (patch 6)
+- Added reviewed tag for patch 1 which got a minor change but not for
+  others as I did some changes which could make previous reviewed tag
+  no more relevant.
+
+Vincent Guittot (7):
+  topology: Add a new arch_scale_freq_reference
+  cpufreq: Use the fixed and coherent frequency for scaling capacity
+  cpufreq/schedutil: Use a fixed reference frequency
+  energy_model: Use a fixed reference frequency
+  cpufreq/cppc: Move and rename cppc_cpufreq_{perf_to_khz|khz_to_perf}
+  cpufreq/cppc: Set the frequency used for computing the capacity
+  arm64/amu: Use capacity_ref_freq to set AMU ratio
+
+ arch/arm/include/asm/topology.h   |   1 +
+ arch/arm64/include/asm/topology.h |   1 +
+ arch/arm64/kernel/topology.c      |  26 +++---
+ arch/riscv/include/asm/topology.h |   1 +
+ drivers/acpi/cppc_acpi.c          | 104 ++++++++++++++++++++++
+ drivers/base/arch_topology.c      |  56 ++++++++----
+ drivers/cpufreq/cppc_cpufreq.c    | 139 ++++--------------------------
+ drivers/cpufreq/cpufreq.c         |   4 +-
+ include/acpi/cppc_acpi.h          |   2 +
+ include/linux/arch_topology.h     |   8 ++
+ include/linux/cpufreq.h           |   1 +
+ include/linux/energy_model.h      |   6 +-
+ include/linux/sched/topology.h    |   8 ++
+ kernel/sched/cpufreq_schedutil.c  |  26 +++++-
+ 14 files changed, 224 insertions(+), 159 deletions(-)
 
 -- 
-Shaoqin
+2.34.1
 
 
