@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-1401-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1402-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD847E7B6C
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Nov 2023 11:39:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2187E7B6D
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Nov 2023 11:40:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 076F81C204F6
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Nov 2023 10:39:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08731B20A04
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Nov 2023 10:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F4D14280
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Nov 2023 10:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7572A14A8A
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Nov 2023 10:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kD6KlBtS"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="esARizgs"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DE510950
-	for <linux-acpi@vger.kernel.org>; Fri, 10 Nov 2023 09:17:06 +0000 (UTC)
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D05A52B7F2
-	for <linux-acpi@vger.kernel.org>; Fri, 10 Nov 2023 01:17:05 -0800 (PST)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1cc3542e328so15158965ad.1
-        for <linux-acpi@vger.kernel.org>; Fri, 10 Nov 2023 01:17:05 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2E610950
+	for <linux-acpi@vger.kernel.org>; Fri, 10 Nov 2023 09:17:35 +0000 (UTC)
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5175B2B7F9
+	for <linux-acpi@vger.kernel.org>; Fri, 10 Nov 2023 01:17:32 -0800 (PST)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6b709048f32so1692387b3a.0
+        for <linux-acpi@vger.kernel.org>; Fri, 10 Nov 2023 01:17:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699607825; x=1700212625; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1699607852; x=1700212652; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JNAKGQcfwtX1sEelGFUcCMMKPbFCHvv7FrRIow0M5oA=;
-        b=kD6KlBtSOJVn76Un+S+8+g470XuA8EJZrddiREBhESrNY0fbt/Y1vffed70qYBc588
-         h7ZLU8TTYLzI1PR/Kldxv93K7V7U3tBYCWroM/DbGWbLN3v1EkNt9Wm/Bd6IG7Cq1wHz
-         nZn6pg1ha6XLBUOpohzb49L0Bh1dcuBH8mCzdahf00F9mffrOT0n9RLBtWNrRxlGfbZ8
-         RISoGBcRIR/3S+2uOzYRbKcwx/1Li34xeCNi2r95xhyz7LjZgK/D5yhDSct7XcQbtqKv
-         RoT9XDxdKbkitmXVrUwbuF4uWkRLRu5mbflxDvc5fjlRN1tnlfxWaChRXZ9u+KU5xowm
-         HSag==
+        bh=9qMFA/4LVo9MaNuOmPJbDYsQ8leCjxXQe4RXEqsi7Vk=;
+        b=esARizgsre9kqI3zGeoLlST7/KVBkc09g1O66V8dft3tiL0cdPjQXa3/eEpBNtrjMl
+         9g57WteRLr177S2wGvOmavsFhopumQGUNMyhnFQZhmDZc6SjyaFqYByMWoe3Wp9q/OHJ
+         alsEFXvJrXZbXz8Z7MBEXyeOF6p70Q/9tBPnJkvD1pNreWgKtj4dTD0Q6GLyAQG8evmK
+         vvPpOM+6qr9361SziZG1CcmUi+sap15huml2Mu56zIoQSxUlxL9/wV/h4fPbJRSQnLS+
+         aYwoZf0Jb9EgehdeM/LphyuRJU1h9xY0dNlCLRRD24EfeC54slXfiedr4/it0W6uu5dd
+         z/0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699607825; x=1700212625;
+        d=1e100.net; s=20230601; t=1699607852; x=1700212652;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JNAKGQcfwtX1sEelGFUcCMMKPbFCHvv7FrRIow0M5oA=;
-        b=V0/XB//8D9SkNdO0JXNgHbUYBPELY746W9F868cYKFiD0C9+OaTvzP0sa1ZSdMHucw
-         dX01naWsCaA/ge7sUx4+oSVyiuPgFsZya2tAh59yekd3dPACpKM++OQCwmz70nhzNv8b
-         7ueAg0rMQ9nWuYaJEXFISQqN1B/Arke8jbROfrNjZ/xHl4Re2rQ2DW80mQdUNxYLBIe8
-         EJZVLjnefW31LlMaahBYeWTlme6IyNuupWjxS/tIdpEuR/FuhcgsjgsJtOmmRFsWbiCl
-         3yXPTJMWcRLXEt2AWxLzs1vrFZU2Afccq3VsgsBT+iQKIXZHoejkQFzlC/eDK1EsG2M+
-         fY4w==
-X-Gm-Message-State: AOJu0YwE/SCqaA/Fo/3yxqhtOXD8hxT8qrz95xsZ65BnuHB+lwyErclf
-	OKpZkguAprz5C7fMr9XiA6ioLw==
-X-Google-Smtp-Source: AGHT+IEex3kLeiwKyEz2es872zjMNmrevn40/2l4PbaRjQ1owa57zfxwzE3YTcFU8WWcXat6tXWPLw==
-X-Received: by 2002:a17:90b:4b82:b0:280:74fc:ac2c with SMTP id lr2-20020a17090b4b8200b0028074fcac2cmr4523903pjb.13.1699607825201;
-        Fri, 10 Nov 2023 01:17:05 -0800 (PST)
+        bh=9qMFA/4LVo9MaNuOmPJbDYsQ8leCjxXQe4RXEqsi7Vk=;
+        b=hk2uCJL11hDY3FmsNJgLWn6VXIWkGK/okAgepTziYDkkK0AApUfSmX9KvfCVSNBjvA
+         9IZiCd3kErQsT4B3zkh6HNbT8nR9P0pNZmsxVsogGCGFaq//JSzbQz1t3dvLW8zf8pQ0
+         d5WkMfduO11IcwUU8sX+5N58YbGx0r2JzhpgQUJ5/9ufWmN7g6f6Qc/50zTo32Hz21Om
+         vfyK5IiAzPqx/Bqs65cZKH7KT2h5z1Q2j63cREIHUDPzO1G72PSv9fLjaueUfE56UIbp
+         nTHDkqAFlR/OcGABuZIOqcgGQH0tEtNwLD9X+g/gOJeeXMzBoOZpF6HF36P/gi2c2LrG
+         E76w==
+X-Gm-Message-State: AOJu0Yzu65LMRNDuBeXzMdnwzsX7/H3LzJNYWye2djDqXatF6tAxV2LC
+	serSj5a6Yy7qbW41WYy3RTmSzQ==
+X-Google-Smtp-Source: AGHT+IEf6ivgAkw6yVi3FBgNRxGS3TsVvGiByXO2mRhR+nd07TngiWoOOOYFgaeien5HK7d1Y0M7oA==
+X-Received: by 2002:a05:6a20:f3af:b0:153:353e:5e39 with SMTP id qr47-20020a056a20f3af00b00153353e5e39mr5947121pzb.51.1699607851729;
+        Fri, 10 Nov 2023 01:17:31 -0800 (PST)
 Received: from localhost ([122.172.82.6])
-        by smtp.gmail.com with ESMTPSA id m17-20020a17090a7f9100b0027ce254fed8sm5666457pjl.0.2023.11.10.01.17.04
+        by smtp.gmail.com with ESMTPSA id g8-20020a1709026b4800b001c771740da4sm4889837plt.195.2023.11.10.01.17.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Nov 2023 01:17:04 -0800 (PST)
-Date: Fri, 10 Nov 2023 14:47:02 +0530
+        Fri, 10 Nov 2023 01:17:31 -0800 (PST)
+Date: Fri, 10 Nov 2023 14:47:29 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: Vincent Guittot <vincent.guittot@linaro.org>
 Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
@@ -73,10 +73,11 @@ Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
 	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
 	conor.dooley@microchip.com, suagrfillet@gmail.com,
 	ajones@ventanamicro.com, lftan@kernel.org
-Subject: Re: [PATCH v6 3/7] cpufreq/schedutil: Use a fixed reference frequency
-Message-ID: <20231110091702.z3phucnffoe44kxy@vireshk-i7>
+Subject: Re: [PATCH v6 5/7] cpufreq/cppc: Move and rename
+ cppc_cpufreq_{perf_to_khz|khz_to_perf}
+Message-ID: <20231110091729.jssgofhlcye4juev@vireshk-i7>
 References: <20231109101438.1139696-1-vincent.guittot@linaro.org>
- <20231109101438.1139696-4-vincent.guittot@linaro.org>
+ <20231109101438.1139696-6-vincent.guittot@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -85,27 +86,28 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231109101438.1139696-4-vincent.guittot@linaro.org>
+In-Reply-To: <20231109101438.1139696-6-vincent.guittot@linaro.org>
 
 On 09-11-23, 11:14, Vincent Guittot wrote:
-> cpuinfo.max_freq can change at runtime because of boost as an example. This
-> implies that the value could be different than the one that has been
-> used when computing the capacity of a CPU.
+> Move and rename cppc_cpufreq_perf_to_khz and cppc_cpufreq_khz_to_perf to
+> use them outside cppc_cpufreq in topology_init_cpu_capacity_cppc().
 > 
-> The new arch_scale_freq_ref() returns a fixed and coherent reference
-> frequency that can be used when computing a frequency based on utilization.
+> Modify the interface to use struct cppc_perf_caps *caps instead of
+> struct cppc_cpudata *cpu_data as we only use the fields of cppc_perf_caps.
 > 
-> Use this arch_scale_freq_ref() when available and fallback to
-> policy otherwise.
+> cppc_cpufreq was converting the lowest and nominal freq from MHz to kHz
+> before using them. We move this conversion inside cppc_perf_to_khz and
+> cppc_khz_to_perf to make them generic and usable outside cppc_cpufreq.
+> 
+> No functional change
 > 
 > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-> Tested-by: Lukasz Luba <lukasz.luba@arm.com>
 > Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-> Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 > ---
->  kernel/sched/cpufreq_schedutil.c | 26 ++++++++++++++++++++++++--
->  1 file changed, 24 insertions(+), 2 deletions(-)
+>  drivers/acpi/cppc_acpi.c       | 104 ++++++++++++++++++++++++
+>  drivers/cpufreq/cppc_cpufreq.c | 139 ++++-----------------------------
+>  include/acpi/cppc_acpi.h       |   2 +
+>  3 files changed, 123 insertions(+), 122 deletions(-)
 
 Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
