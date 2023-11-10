@@ -1,147 +1,149 @@
-Return-Path: <linux-acpi+bounces-1398-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1400-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D137E7956
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Nov 2023 07:32:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 473BA7E7A1E
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Nov 2023 09:32:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FDB1B20841
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Nov 2023 06:31:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 786DF1C20968
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Nov 2023 08:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E226FB7
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Nov 2023 06:31:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="KZM9uTxe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE611383
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Nov 2023 08:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DE553BF
-	for <linux-acpi@vger.kernel.org>; Fri, 10 Nov 2023 06:19:17 +0000 (UTC)
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A522161AC
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Nov 2023 22:19:15 -0800 (PST)
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id A2E4B40C53
-	for <linux-acpi@vger.kernel.org>; Fri, 10 Nov 2023 06:09:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1699596585;
-	bh=dbMwBXBmEotT6dk1rDXulRhL3RKiFgxFvFzDuEEcJx8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=KZM9uTxedJKiGXsELffIS/EpGGq5PCy6sEcg7yGMzuYDs7q2U3LhdT0a2xYjwo4Q0
-	 qysXrhOCgaDgXqyVAOM3oonLI5lCPq2Q/Zr6c5DLdHv15OnvFmEEmxTfGJlj3RVCt1
-	 UCeb7chPeGX4ugVH1xtOmr+sIfevvV4QOtsJjxcIAteoiEHZA8e1tPFUQwD2Bvd/Sg
-	 9QS5EE/NpPOY3jlf02EdiSNYk43mLJQJIwIaFACL9LOrjRVsiARyUurdPCo8nrvSdC
-	 LRozsIJGj16Ay1HdAr8eraT6N/v0Kv/d8dQPw6zsTRWmArDVOgHbVLfDf1iRLgZkj1
-	 WlOrssekXx8pA==
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-280184b2741so1704808a91.0
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Nov 2023 22:09:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699596584; x=1700201384;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dbMwBXBmEotT6dk1rDXulRhL3RKiFgxFvFzDuEEcJx8=;
-        b=Ns4rjDWtlPkhijkTeSslR8Td4yHt1CWU1kC+EloZ/eQ4LL1gNNAnMuaD5YJbWrDiI8
-         xMFbLounvGMTAa5FKXzpLkD3jczAFMF4Sauyz1nF80RfW3FXQvvF6qG+ATDmdqn1c3uK
-         Q0oRSSpT3p2VsAqo3z5JWOaX1MGCrjkCHBqpmVBEC/t7OXG75vITlKbMA1N777PXV9Ie
-         5zMs3MNefDgkIwk2zK0dFIVz6REwKuijYzL4QLGzYjA5/F/X3EcPUPbPIV/mwQFK5RCk
-         ovzorKVXmgvzr+lEyAam3wjuaCgQXNrnW9S22sr8F7u9exl6xTr+K8WDAttmcLs7Wiyz
-         H1bQ==
-X-Gm-Message-State: AOJu0Yy9XPCsMLNEjTT4PzXE0w0wWB2UuK6z+TRvJRhlOPEQuuwEubN0
-	K7yBh4QksAKJSJXyVzNGDmWq4cRu1iI4OH5fj8snCxnifGs3Cx8k5k8yxWEkcbFYN8/4MWkYsWJ
-	3tyxB3BQYheetd2ljSH/s4VbGRUDCLunbFGb2gZUKk/Ilqj2/EgvczMc=
-X-Received: by 2002:a17:90b:4c85:b0:280:6296:3d96 with SMTP id my5-20020a17090b4c8500b0028062963d96mr3622959pjb.41.1699596583971;
-        Thu, 09 Nov 2023 22:09:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG1wROyFVtufgqw/ZeSGGAbm8xifOocKozGCKWAhapxnMtc++Zwn+hYm7Zub9ci/y6pKeOOqpv3+EKkV4NfDoY=
-X-Received: by 2002:a17:90b:4c85:b0:280:6296:3d96 with SMTP id
- my5-20020a17090b4c8500b0028062963d96mr3622942pjb.41.1699596583634; Thu, 09
- Nov 2023 22:09:43 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C82810A1B
+	for <linux-acpi@vger.kernel.org>; Fri, 10 Nov 2023 08:31:01 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id B0E0A9EE0;
+	Fri, 10 Nov 2023 00:30:59 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 73B9B106F;
+	Fri, 10 Nov 2023 00:31:43 -0800 (PST)
+Received: from [192.168.1.25] (unknown [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 221603F6C4;
+	Fri, 10 Nov 2023 00:30:51 -0800 (PST)
+Message-ID: <00ce01bf-1612-46cd-926d-ac283cfddff9@arm.com>
+Date: Fri, 10 Nov 2023 09:30:47 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <9f36fb06-64c4-4264-aaeb-4e1289e764c4@owenh.net>
-In-Reply-To: <9f36fb06-64c4-4264-aaeb-4e1289e764c4@owenh.net>
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date: Fri, 10 Nov 2023 08:09:11 +0200
-Message-ID: <CAAd53p7BSesx=a1igTohoSkxrW+Hq8O7ArONFCK7uoDi12-T4A@mail.gmail.com>
-Subject: Re: [REGRESSION]: acpi/nouveau: Hardware unavailable upon resume or
- suspend fails
-To: "Owen T. Heisler" <writer@owenh.net>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>, 
-	Danilo Krummrich <dakr@redhat.com>, dri-devel@lists.freedesktop.org, 
-	nouveau@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/7] consolidate and cleanup CPU capacity
+To: Vincent Guittot <vincent.guittot@linaro.org>, linux@armlinux.org.uk,
+ catalin.marinas@arm.com, will@kernel.org, paul.walmsley@sifive.com,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, sudeep.holla@arm.com,
+ gregkh@linuxfoundation.org, rafael@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, dietmar.eggemann@arm.com,
+ rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+ bristot@redhat.com, vschneid@redhat.com, viresh.kumar@linaro.org,
+ lenb@kernel.org, robert.moore@intel.com, lukasz.luba@arm.com,
+ ionela.voinescu@arm.com, beata.michalska@arm.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-acpi@vger.kernel.org
+Cc: conor.dooley@microchip.com, suagrfillet@gmail.com,
+ ajones@ventanamicro.com, lftan@kernel.org
+References: <20231109101438.1139696-1-vincent.guittot@linaro.org>
+Content-Language: en-US
+From: Pierre Gondois <pierre.gondois@arm.com>
+In-Reply-To: <20231109101438.1139696-1-vincent.guittot@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Owen,
+For a CPPC platform + EM/EAS (but without AMU):
+Tested-by: Pierre Gondois <pierre.gondois@arm.com>
 
-On Fri, Nov 10, 2023 at 5:55=E2=80=AFAM Owen T. Heisler <writer@owenh.net> =
-wrote:
->
-> #regzbot introduced: 89c290ea758911e660878e26270e084d862c03b0
-> #regzbot link: https://gitlab.freedesktop.org/drm/nouveau/-/issues/273
-> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=3D218124
-
-Thanks for the bug report. Do you prefer to continue the discussion
-here, on gitlab or on bugzilla?
-
->
-> ## Reproducing
->
-> 1. Boot system to framebuffer console.
-> 2. Run `systemctl suspend`. If undocked without secondary display,
-> suspend fails. If docked with secondary display, suspend succeeds.
-> 3. Resume from suspend if applicable.
-> 4. System is now in a broken state.
-
-So I guess we need to put those devices to ACPI D3 for suspend. Let's
-discuss this on your preferred platform.
-
-Kai-Heng
-
->
-> ## Testing
->
-> - culprit commit is 89c290ea758911e660878e26270e084d862c03b0
-> - v6.6 fails
-> - v6.6 with culprit commit reverted does not fail
-> - Compiled with
-> <https://gitlab.freedesktop.org/drm/nouveau/uploads/788d7faf22ba2884dcc09=
-d7be931e813/v6.6-config1>
->
-> ## Hardware
->
-> - ThinkPad W530 2438-52U
-> - Dock with Nvidia-connected DVI ports
-> - Secondary display connected via DVI
-> - Nvidia Optimus GPU switching system
->
-> ```console
-> $ lspci | grep -i vga
-> 00:02.0 VGA compatible controller: Intel Corporation 3rd Gen Core
-> processor Graphics Controller (rev 09)
-> 01:00.0 VGA compatible controller: NVIDIA Corporation GK107GLM [Quadro
-> K2000M] (rev a1)
-> ```
->
-> ## Decoded logs from v6.6
->
-> - System is not docked and fails to suspend:
-> <https://gitlab.freedesktop.org/drm/nouveau/uploads/fb8fdf5a6bed1b1491d25=
-44ab67fa257/undocked.log>
-> - System is docked and fails after resume:
-> <https://gitlab.freedesktop.org/drm/nouveau/uploads/cb3d5ac55c01f663cd80f=
-a000cd6a3b5/docked.log>
+On 11/9/23 11:14, Vincent Guittot wrote:
+> This is the 1st part of consolidating how the max compute capacity is
+> used in the scheduler and how we calculate the frequency for a level of
+> utilization.
+> 
+> Fix some unconsistancy when computing frequency for an utilization. There
+> can be a mismatch between energy model and schedutil.
+> 
+> Next step will be to make a difference between the original
+> max compute capacity of a CPU and what is currently available when
+> there is a capping applying forever (i.e. seconds or more).
+> 
+> Changes since v5:
+> - remove useless return in freq_inv_set_max_ratio()
+> - Add tags
+> 
+> Changes since v4:
+> - Capitalize the verb in subject
+> - Remove usless parentheses in cppc_get_dmi_max_khz()
+> - Use freq_ref pattern everywhere
+> - Fix MHz / kHz units conversion for cppc_cpufreq
+> - Move default definition of arch_scale_freq_ref() in
+>    include/linux/sched/topology.h beside arch_scale_cpu_capacity
+>    which faces similar default declaration behavior. This location covers
+>    all cases with arch and CONFIG_* which was not the case with previous
+>    attempts.
+> 
+> Changes since v3:
+> - Split patch 5 cpufreq/cppc
+> - Fix topology_init_cpu_capacity_cppc()
+> - Fix init if AMU ratio
+> - Added some tags
+> 
+> Changes since v2:
+> - Remove the 1st patch which has been queued in tip
+> - Rework how to initialize the reference frequency for cppc_cpufreq and
+>    change topology_init_cpu_capacity_cppc() to also set capacity_ref_freq
+> - Add a RFC to convert AMU to use arch_scale_freq_ref and move the config
+>    of the AMU ratio to be done when intializing cpu capacity and
+>    capacity_ref_freq
+> - Added some tags
+> 
+> Changes since v1:
+> - Fix typos
+> - Added changes in cpufreq to use arch_scale_freq_ref() when calling
+>    arch_set_freq_scale (patch 3).
+> - arch_scale_freq_ref() is always defined and returns 0 (as proposed
+>    by Ionela) when not defined by the arch. This simplifies the code with
+>    the addition of patch 3.
+> - Simplify Energy Model which always uses arch_scale_freq_ref(). The
+>    latter returns 0 when not defined by arch instead of last item of the
+>    perf domain. This is not a problem because the function is only defined
+>    for compilation purpose in this case and we don't care about the
+>    returned value. (patch 5)
+> - Added changes in cppc cpufreq to set capacity_ref_freq (patch 6)
+> - Added reviewed tag for patch 1 which got a minor change but not for
+>    others as I did some changes which could make previous reviewed tag
+>    no more relevant.
+> 
+> Vincent Guittot (7):
+>    topology: Add a new arch_scale_freq_reference
+>    cpufreq: Use the fixed and coherent frequency for scaling capacity
+>    cpufreq/schedutil: Use a fixed reference frequency
+>    energy_model: Use a fixed reference frequency
+>    cpufreq/cppc: Move and rename cppc_cpufreq_{perf_to_khz|khz_to_perf}
+>    cpufreq/cppc: Set the frequency used for computing the capacity
+>    arm64/amu: Use capacity_ref_freq to set AMU ratio
+> 
+>   arch/arm/include/asm/topology.h   |   1 +
+>   arch/arm64/include/asm/topology.h |   1 +
+>   arch/arm64/kernel/topology.c      |  26 +++---
+>   arch/riscv/include/asm/topology.h |   1 +
+>   drivers/acpi/cppc_acpi.c          | 104 ++++++++++++++++++++++
+>   drivers/base/arch_topology.c      |  56 ++++++++----
+>   drivers/cpufreq/cppc_cpufreq.c    | 139 ++++--------------------------
+>   drivers/cpufreq/cpufreq.c         |   4 +-
+>   include/acpi/cppc_acpi.h          |   2 +
+>   include/linux/arch_topology.h     |   8 ++
+>   include/linux/cpufreq.h           |   1 +
+>   include/linux/energy_model.h      |   6 +-
+>   include/linux/sched/topology.h    |   8 ++
+>   kernel/sched/cpufreq_schedutil.c  |  26 +++++-
+>   14 files changed, 224 insertions(+), 159 deletions(-)
+> 
 
