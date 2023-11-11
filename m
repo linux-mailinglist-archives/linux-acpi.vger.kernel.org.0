@@ -1,72 +1,56 @@
-Return-Path: <linux-acpi+bounces-1416-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1417-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E267E8B36
-	for <lists+linux-acpi@lfdr.de>; Sat, 11 Nov 2023 15:30:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C43AB7E8B37
+	for <lists+linux-acpi@lfdr.de>; Sat, 11 Nov 2023 15:30:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F01AB1C20431
-	for <lists+linux-acpi@lfdr.de>; Sat, 11 Nov 2023 14:30:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1D1B1C2074F
+	for <lists+linux-acpi@lfdr.de>; Sat, 11 Nov 2023 14:30:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3A018E06
-	for <lists+linux-acpi@lfdr.de>; Sat, 11 Nov 2023 14:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305DD17740
+	for <lists+linux-acpi@lfdr.de>; Sat, 11 Nov 2023 14:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kdWSE9MM"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="jXlV0bfr"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6355C14A89
-	for <linux-acpi@vger.kernel.org>; Sat, 11 Nov 2023 13:25:35 +0000 (UTC)
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA1273860;
-	Sat, 11 Nov 2023 05:25:33 -0800 (PST)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-6c431b91b2aso2626626b3a.1;
-        Sat, 11 Nov 2023 05:25:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699709133; x=1700313933; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nwtFYnbCixJ5Fw6NUaR3fegQwEm8FPc3qFzpDeBrueY=;
-        b=kdWSE9MMxcI+tm+OdKDxN3Q05fvAQCS/PFX7XRYa5BSL8StKy3avy29o7FbVBlFWzp
-         8+K/0d6/e2g9J0f59Th8iHd26xr6Y+QsNKQ+83Sy2nPYH4VPHghuiN8NZR1/aBrJ9hC+
-         VbPmU9FlybJbay6PZg0X1lGVUh5Nd5SPmU7gluc+DEBbZ6E45qpaS/n0mMFITeAwx/nJ
-         aWAdhP54pXR95R/QykPwIA88vkPeaq50KIBcgpNlbq4qoxXanyASDLU6ehC90L+CN9hD
-         p/r29Kq07jz+4EFyDtNKig1rCFKBlmYI8EDSyju7YAYb+izVFE6j4q1Mi0POAQkOCXKw
-         n9cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699709133; x=1700313933;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nwtFYnbCixJ5Fw6NUaR3fegQwEm8FPc3qFzpDeBrueY=;
-        b=hDyuL8gOBy4ntqveMFxthT/jCVdvQLcqwcnZnsB6DfdAZvKsHQpgo19S9T8PLYWbq8
-         s/HEO96hY3IYPFR5zEIu7ACrosradZMfPV0ZdHIbzLNiAQ8WihfHA3meOrqo0ui3i+v9
-         FJFFsv5xQMBHpQdcstCb1FizbMNA+MDqKK9WmJzsyke+Brtc+exvvtSOqQRDC+OsF1oO
-         Xj8bpJmPtojk8XpE7vgZz5xnJqq/kEAfqDMLwbK+4tq+sbr+yTa8INg8stbt9FfiJauL
-         nPx01HbOiiVBcVQwTq7MPZGWIcEtOGz07fOVlqW4ZmddjZ2xAADFpVEQKhxAWGfLEJwS
-         KHCA==
-X-Gm-Message-State: AOJu0YyCC/NoHJyobx06SJg2evMDGv2PnH9X2j39ULtz9w3vHWhutvFc
-	t0dULoXV5FqervuzhyTRl38=
-X-Google-Smtp-Source: AGHT+IHzPYtkMKz6ouq/FZCD4NwGSwnTHf+SSme6Hnr+Nv2gUfZx1e8fPlKl8X1fv5+5mGe5ARLPYQ==
-X-Received: by 2002:a05:6a20:8e27:b0:13d:17cc:5bca with SMTP id y39-20020a056a208e2700b0013d17cc5bcamr1333545pzj.18.1699709133206;
-        Sat, 11 Nov 2023 05:25:33 -0800 (PST)
-Received: from localhost.localdomain ([112.96.225.120])
-        by smtp.gmail.com with ESMTPSA id ka16-20020a056a00939000b006c4d2479bf8sm1265616pfb.51.2023.11.11.05.25.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Nov 2023 05:25:32 -0800 (PST)
-From: "shiqiang.deng" <shiqiang.deng213@gmail.com>
-To: rafael@kernel.org,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889BB14ABF
+	for <linux-acpi@vger.kernel.org>; Sat, 11 Nov 2023 13:48:34 +0000 (UTC)
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 682003A9D;
+	Sat, 11 Nov 2023 05:48:31 -0800 (PST)
+Received: from LT2ubnt.fritz.box (ip-178-202-040-247.um47.pools.vodafone-ip.de [178.202.40.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 81E533F66F;
+	Sat, 11 Nov 2023 13:48:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1699710509;
+	bh=lP4YnLK406Oh78dHgIFdBe0DQkFdIy6q256xnJqXUJg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+	b=jXlV0bfrtyG/viewh3F6JofLzBzG5iQNPrui0+u0dNvPV32UNht5POgl1n6pwoy2T
+	 KZB+4NDPNDrfCkpGqCNJsFWZdz6IyF5W6Bxae5oTTqKFaXZKfNhw6HFtZAyFxg58/a
+	 yVbbtRo8IgY2qbM3XRBgSkr6I5FMqHmFwDawOH7chRIPZkgFXn3xLQQsxQulm7kolk
+	 ZG/muAJK3GU4HLGYhcr970+/U+apNC4nFvkq7Kvc+VLlmzASZQXNU7yGACunxxVT5r
+	 NtUnesC2aOS2tWz7Kg/XLfZuBITM7Gpl44ND7kgdRBUDnrXUip6fgp4qNLDLje4JL0
+	 Z56S0NeRW0FKQ==
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+To: Robert Moore <robert.moore@intel.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	"shiqiang.deng" <shiqiang.deng213@gmail.com>
-Subject: [PATCH] ACPI: custom_method: fix a possible memory leak
-Date: Sat, 11 Nov 2023 21:24:02 +0800
-Message-Id: <20231111132402.4142-1-shiqiang.deng213@gmail.com>
-X-Mailer: git-send-email 2.30.0
+	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Subject: [PATCH 1/1] ACPI: XSDT: struct acpi_table_xsdt must be packed
+Date: Sat, 11 Nov 2023 14:48:27 +0100
+Message-Id: <20231111134827.174908-1-heinrich.schuchardt@canonical.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -75,31 +59,33 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In the cm_write() function, memory is allocated,
-and at the end of the function when uncopied_bytes is 0,
-the memory is freed. If uncopied_bytes is not equal to 0,
-a memory leak occurs.
+According to the ACPI 6.5 specification the component Entry starts at
+offset 36 in the XSDT table which is not a multiple of 8. Hence we must
+mark the structure as packed.
 
-Signed-off-by: shiqiang.deng <shiqiang.deng213@gmail.com>
+We did not see an error due to the incorrect packing yet as in
+acpi_tb_parse_root_table() we use ACPI_ADD_PTR() to find the address of
+Entry.
+
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 ---
- drivers/acpi/custom_method.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/acpi/actbl.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
-index d39a9b474727..5103c7c3a6ce 100644
---- a/drivers/acpi/custom_method.c
-+++ b/drivers/acpi/custom_method.c
-@@ -77,6 +77,9 @@ static ssize_t cm_write(struct file *file, const char __user *user_buf,
- 		if (ACPI_FAILURE(status))
- 			return -EINVAL;
- 		add_taint(TAINT_OVERRIDDEN_ACPI_TABLE, LOCKDEP_NOW_UNRELIABLE);
-+	} else {
-+		kfree(buf);
-+		buf = NULL;
- 	}
+diff --git a/include/acpi/actbl.h b/include/acpi/actbl.h
+index 451f6276da49..1a37ac378765 100644
+--- a/include/acpi/actbl.h
++++ b/include/acpi/actbl.h
+@@ -148,7 +148,7 @@ struct acpi_table_rsdt {
+ struct acpi_table_xsdt {
+ 	struct acpi_table_header header;	/* Common ACPI table header */
+ 	u64 table_offset_entry[1];	/* Array of pointers to ACPI tables */
+-};
++} __packed;
  
- 	return count;
+ #define ACPI_RSDT_ENTRY_SIZE        (sizeof (u32))
+ #define ACPI_XSDT_ENTRY_SIZE        (sizeof (u64))
 -- 
-2.30.0
+2.40.1
 
 
