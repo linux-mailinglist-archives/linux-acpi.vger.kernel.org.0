@@ -1,71 +1,37 @@
-Return-Path: <linux-acpi+bounces-1448-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1449-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097617E9A5B
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Nov 2023 11:35:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B72F7E9EE1
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Nov 2023 15:37:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31C081C208D9
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Nov 2023 10:35:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 880DB280DBE
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Nov 2023 14:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BD51CA8F
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Nov 2023 10:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U69dgpQ7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426F9210FB
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Nov 2023 14:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2CB1C2A2
-	for <linux-acpi@vger.kernel.org>; Mon, 13 Nov 2023 10:01:52 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE84510C3
-	for <linux-acpi@vger.kernel.org>; Mon, 13 Nov 2023 02:01:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1699869709;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BAMalQgNM0C7HuKoU35TO9KZ8bUeH1IJgfZxeS8F7ZM=;
-	b=U69dgpQ7EZyItc6N9BCvkuVQGLcL1px63FpFVzG8w4dCckFeWJ4cdf5A1p7Ctd4fOLP5QV
-	ic0yZy3gWiQz37sv7ZeLY5OwNejXGCti8c/sMbBI3DLbAfqdLbchJJ98wq0+GhaVO4Vc9g
-	jiqnXeU3CPu8UX5LoyM+87ezV4GglLk=
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com
- [209.85.166.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-356-R41VsW5TP8uz2iKUc8TP2w-1; Mon, 13 Nov 2023 05:01:47 -0500
-X-MC-Unique: R41VsW5TP8uz2iKUc8TP2w-1
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3574a6330c3so36853425ab.1
-        for <linux-acpi@vger.kernel.org>; Mon, 13 Nov 2023 02:01:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699869707; x=1700474507;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BAMalQgNM0C7HuKoU35TO9KZ8bUeH1IJgfZxeS8F7ZM=;
-        b=kJgNCkcxwneUXu9mIi55V00DuoxjVV8F6KdbuCfw/PX76bR8VGdD81z+zhMPkRJ5VZ
-         fIiFVSC3cwMmRx2WFOyaqzZ0HbG9lQF3KhXXMEL+VH4s3WxiFImC9s7lImmn68BO4r38
-         oubTvTvJnWDCDn6tT4iuLMPnsTGc0/7k+npP+DfzNZ0jWTumjqfvMxAHcnWUl2Vb2v/Y
-         gtTSyKNWdtJ9ctfSH+yvbIgTK/mDO4YbikvvLDYhcsDecL9CUwgtJ/KH0RbQS59KzBZx
-         Vo7eCZxIg1ann9NuDKmMP7aIVp2YrTWNxkLa/85JcTvLwSMqilUNm0Nn81eIkiWgU8TA
-         eXlw==
-X-Gm-Message-State: AOJu0YyBuuCro0krnwzfEMWth2c+k1mKkiFxJwNIbm/qn5N3Op5sIjO/
-	1P/KQq0PM/BOxUGY979/JNIRsmG8UWM/jgB09sOl21xmPi9s7SfLevLFzBt2gzoT8JFynqxZBuX
-	vb9CnR3tuSeYFKLIM02FaSw==
-X-Received: by 2002:a05:6e02:1bc7:b0:359:56d2:aa19 with SMTP id x7-20020a056e021bc700b0035956d2aa19mr7258853ilv.6.1699869706810;
-        Mon, 13 Nov 2023 02:01:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH7tmXC6qf2sfNPHtOUIMeBRO/dIRdXhrQyw4Al19wk8aveBy1a/L2HugzHzm+0XUXK3jdUog==
-X-Received: by 2002:a05:6e02:1bc7:b0:359:56d2:aa19 with SMTP id x7-20020a056e021bc700b0035956d2aa19mr7258823ilv.6.1699869706458;
-        Mon, 13 Nov 2023 02:01:46 -0800 (PST)
-Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15? ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
-        by smtp.gmail.com with ESMTPSA id c9-20020a62e809000000b006c306943730sm3652442pfi.91.2023.11.13.02.01.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Nov 2023 02:01:46 -0800 (PST)
-Message-ID: <29090279-a682-43ff-9710-181cb91bbf91@redhat.com>
-Date: Mon, 13 Nov 2023 20:01:27 +1000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB5B1DFE4
+	for <linux-acpi@vger.kernel.org>; Mon, 13 Nov 2023 13:15:21 +0000 (UTC)
+Received: from relay161.nicmail.ru (relay161.nicmail.ru [91.189.117.5])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86755D6C;
+	Mon, 13 Nov 2023 05:15:17 -0800 (PST)
+Received: from [10.28.138.149] (port=17042 helo=[192.168.95.111])
+	by relay.hosting.mail.nic.ru with esmtp (Exim 5.55)
+	(envelope-from <kiryushin@ancud.ru>)
+	id 1r2WmW-0000gj-5s; Mon, 13 Nov 2023 16:15:13 +0300
+Received: from [87.245.155.195] (account kiryushin@ancud.ru HELO [192.168.95.111])
+	by incarp1102.mail.hosting.nic.ru (Exim 5.55)
+	with id 1r2WmW-00A2aA-2O;
+	Mon, 13 Nov 2023 16:15:12 +0300
+Message-ID: <b8c5f018-4883-4c14-84ab-0514edac2770@ancud.ru>
+Date: Mon, 13 Nov 2023 16:15:11 +0300
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -73,161 +39,54 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 05/22] ACPI: Move ACPI_HOTPLUG_CPU to be disabled on
- arm64 and riscv
+From: Nikita Kiryushin <kiryushin@ancud.ru>
+Subject: [PATCH] ACPICA: debugger: check status of acpi_evaluate_object in
+ acpi_db_walk_for_fields
+To: Robert Moore <robert.moore@intel.com>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Len Brown <lenb@kernel.org>, Erik Kaneda <erik.kaneda@intel.com>,
+ linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
 Content-Language: en-US
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org,
- linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
- Salil Mehta <salil.mehta@huawei.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>, jianyong.wu@arm.com,
- justin.he@arm.com, James Morse <james.morse@arm.com>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
-References: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
- <E1r0JL6-00CTws-3z@rmk-PC.armlinux.org.uk>
- <8e288692-7460-4aa4-86f3-500327256bc3@redhat.com>
- <ZVHkykFMp+CMUqyf@shell.armlinux.org.uk>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <ZVHkykFMp+CMUqyf@shell.armlinux.org.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-MS-Exchange-Organization-SCL: -1
 
+Errors in acpi_evaluate_object can lead to incorrect state of buffer.
+This can lead to access to data in previously ACPI_FREEd buffer and
+secondary ACPI_FREE to the same buffer later.
 
-On 11/13/23 18:56, Russell King (Oracle) wrote:
-> On Mon, Nov 13, 2023 at 10:29:39AM +1000, Gavin Shan wrote:
->> On 11/7/23 20:29, Russell King (Oracle) wrote:
->>> From: James Morse <james.morse@arm.com>
->>>
->>> Neither arm64 nor riscv support physical hotadd of CPUs that were not
->>> present at boot. For arm64 much of the platform description is in static
->>> tables which do not have update methods. arm64 does support HOTPLUG_CPU,
->>> which is backed by a firmware interface to turn CPUs on and off.
->>>
->>> acpi_processor_hotadd_init() and acpi_processor_remove() are for adding
->>> and removing CPUs that were not present at boot. arm64 systems that do this
->>> are not supported as there is currently insufficient information in the
->>> platform description. (e.g. did the GICR get removed too?)
->>>
->>> arm64 currently relies on the MADT enabled flag check in map_gicc_mpidr()
->>> to prevent CPUs that were not described as present at boot from being
->>> added to the system. Similarly, riscv relies on the same check in
->>> map_rintc_hartid(). Both architectures also rely on the weak 'always fails'
->>> definitions of acpi_map_cpu() and arch_register_cpu().
->>>
->>> Subsequent changes will redefine ACPI_HOTPLUG_CPU as making possible
->>> CPUs present. Neither arm64 nor riscv support this.
->>>
->>> Disable ACPI_HOTPLUG_CPU for arm64 and riscv by removing 'default y' and
->>> selecting it on the other three ACPI architectures. This allows the weak
->>> definitions of some symbols to be removed.
->>>
->>> Signed-off-by: James Morse <james.morse@arm.com>
->>> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
->>> ---
->>> Changes since RFC:
->>>    * Expanded conditions to avoid ACPI_HOTPLUG_CPU being enabled when
->>>      HOTPLUG_CPU isn't.
->>> Changes since RFC v3:
->>>    * Dropped ia64 changes
->>> ---
->>>    arch/loongarch/Kconfig        |  1 +
->>>    arch/x86/Kconfig              |  1 +
->>>    drivers/acpi/Kconfig          |  1 -
->>>    drivers/acpi/acpi_processor.c | 18 ------------------
->>>    4 files changed, 2 insertions(+), 19 deletions(-)
->>>
->>
->> With the following nits addressed:
->>
->> Reviewed-by: Gavin Shan <gshan@redhat.com>
->>
->>> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
->>> index d889a0b97bc1..64620e90c12c 100644
->>> --- a/arch/loongarch/Kconfig
->>> +++ b/arch/loongarch/Kconfig
->>> @@ -5,6 +5,7 @@ config LOONGARCH
->>>    	select ACPI
->>>    	select ACPI_GENERIC_GSI if ACPI
->>>    	select ACPI_MCFG if ACPI
->>> +	select ACPI_HOTPLUG_CPU if ACPI_PROCESSOR && HOTPLUG_CPU
->>>    	select ACPI_PPTT if ACPI
->>>    	select ACPI_SYSTEM_POWER_STATES_SUPPORT	if ACPI
->>>    	select ARCH_BINFMT_ELF_STATE
->>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->>> index 3762f41bb092..dbdcfc708369 100644
->>> --- a/arch/x86/Kconfig
->>> +++ b/arch/x86/Kconfig
->>> @@ -59,6 +59,7 @@ config X86
->>>    	#
->>>    	select ACPI_LEGACY_TABLES_LOOKUP	if ACPI
->>>    	select ACPI_SYSTEM_POWER_STATES_SUPPORT	if ACPI
->>> +	select ACPI_HOTPLUG_CPU			if ACPI_PROCESSOR && HOTPLUG_CPU
->>>    	select ARCH_32BIT_OFF_T			if X86_32
->>>    	select ARCH_CLOCKSOURCE_INIT
->>>    	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
->>> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
->>> index f819e760ff19..a3acfc750fce 100644
->>> --- a/drivers/acpi/Kconfig
->>> +++ b/drivers/acpi/Kconfig
->>> @@ -310,7 +310,6 @@ config ACPI_HOTPLUG_CPU
->>>    	bool
->>>    	depends on ACPI_PROCESSOR && HOTPLUG_CPU
->>>    	select ACPI_CONTAINER
->>> -	default y
->>>    config ACPI_PROCESSOR_AGGREGATOR
->>>    	tristate "Processor Aggregator"
->>> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
->>> index 0f5218e361df..4fe2ef54088c 100644
->>> --- a/drivers/acpi/acpi_processor.c
->>> +++ b/drivers/acpi/acpi_processor.c
->>> @@ -184,24 +184,6 @@ static void __init acpi_pcc_cpufreq_init(void) {}
->>>    /* Initialization */
->>>    #ifdef CONFIG_ACPI_HOTPLUG_CPU
->>> -int __weak acpi_map_cpu(acpi_handle handle,
->>> -		phys_cpuid_t physid, u32 acpi_id, int *pcpu)
->>> -{
->>> -	return -ENODEV;
->>> -}
->>> -
->>> -int __weak acpi_unmap_cpu(int cpu)
->>> -{
->>> -	return -ENODEV;
->>> -}
->>> -
->>> -int __weak arch_register_cpu(int cpu)
->>> -{
->>> -	return -ENODEV;
->>> -}
->>> -
->>> -void __weak arch_unregister_cpu(int cpu) {}
->>> -
->>
->> Since we're here, EXPORT_SYMBOL() can be dropped for these functions on
->> x86 and loongarch because they're not called from a module?
-> 
-> I'm confused, and don't understand your comment. You've r-b the
-> previous two patches that remove the EXPORT_SYMBOL()s for
-> arch_register_cpu() and arch_unregister_cpu() from x86 and loongarch.
-> So it seems your comment is already addressed, and thus makes no
-> sense.
-> 
-> Please clarify.
-> 
+Handle errors in acpi_evaluate_object the same way it is done earlier
+with acpi_ns_handle_to_pathname.
 
-Exactly, I must be looking into wrong code when reviewing this patch.
-Please ignore my comments and my r-b still valid. Sorry for the
-unnecessary confusion.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Thanks,
-Gavin
+Fixes: 5fd033288a86 ("ACPICA: debugger: add command to dump all fields 
+of particular subtype")
+Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+---
+  drivers/acpi/acpica/dbnames.c | 8 ++++++--
+  1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
+index b91155ea9c34..c9131259f717 100644
+--- a/drivers/acpi/acpica/dbnames.c
++++ b/drivers/acpi/acpica/dbnames.c
+@@ -550,8 +550,12 @@ acpi_db_walk_for_fields(acpi_handle obj_handle,
+  	ACPI_FREE(buffer.pointer);
+   	buffer.length = ACPI_ALLOCATE_LOCAL_BUFFER;
+-	acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
+-
++	status = acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
++	if (ACPI_FAILURE(status)) {
++		acpi_os_printf("Could Not evaluate object %p\n",
++			       obj_handle);
++		return (AE_OK);
++	}
+  	/*
+  	 * Since this is a field unit, surround the output in braces
+  	 */
+-- 
+2.34.1
 
 
