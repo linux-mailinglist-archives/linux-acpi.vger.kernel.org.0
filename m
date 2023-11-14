@@ -1,223 +1,209 @@
-Return-Path: <linux-acpi+bounces-1476-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1478-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE467EB28D
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Nov 2023 15:39:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C6F7EB296
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Nov 2023 15:40:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E46EE281265
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Nov 2023 14:39:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78BAA2812C4
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Nov 2023 14:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5B141742
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Nov 2023 14:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D40E41741
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Nov 2023 14:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3533FB3C;
-	Tue, 14 Nov 2023 12:57:12 +0000 (UTC)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A307A19E;
-	Tue, 14 Nov 2023 04:57:09 -0800 (PST)
-Received: from lhrpeml500006.china.huawei.com (unknown [172.18.147.206])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SV5rW3Jxqz6K9LJ;
-	Tue, 14 Nov 2023 20:55:55 +0800 (CST)
-Received: from SecurePC30232.china.huawei.com (10.122.247.234) by
- lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 14 Nov 2023 12:57:07 +0000
-From: <shiju.jose@huawei.com>
-To: <linux-cxl@vger.kernel.org>
-CC: <jonathan.cameron@huawei.com>, <Vilas.Sridharan@amd.com>,
-	<leo.duran@amd.com>, <Yazen.Ghannam@amd.com>, <rientjes@google.com>,
-	<jiaqiyan@google.com>, <tony.luck@intel.com>, <Jon.Grimm@amd.com>,
-	<dave.hansen@linux.intel.com>, <linux-acpi@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<rafael@kernel.org>, <lenb@kernel.org>, <naoya.horiguchi@nec.com>,
-	<james.morse@arm.com>, <david@redhat.com>, <jthoughton@google.com>,
-	<somasundaram.a@hpe.com>, <erdemaktas@google.com>,
-	<"pgonda@pgonda"@google.com>, <duenwen@google.com>,
-	<mike.malvestuto@intel.com>, <gthelen@google.com>,
-	<tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
-	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
-	<linuxarm@huawei.com>, <shiju.jose@huawei.com>
-Subject: [RFC PATCH 6/6] cxl: scrub: sysfs: Add Documentation for CXL memory device scrub control attributes
-Date: Tue, 14 Nov 2023 20:56:47 +0800
-Message-ID: <20231114125648.1146-7-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.35.1.windows.2
-In-Reply-To: <20231114125648.1146-1-shiju.jose@huawei.com>
-References: <20231114125648.1146-1-shiju.jose@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF88D154B4
+	for <linux-acpi@vger.kernel.org>; Tue, 14 Nov 2023 13:07:46 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id C6978FD;
+	Tue, 14 Nov 2023 05:07:44 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A7F2C15;
+	Tue, 14 Nov 2023 05:08:29 -0800 (PST)
+Received: from e129154.nice.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 20B293F6C4;
+	Tue, 14 Nov 2023 05:07:36 -0800 (PST)
+Date: Tue, 14 Nov 2023 14:06:44 +0100
+From: Beata Michalska <beata.michalska@arm.com>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	sudeep.holla@arm.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+	mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
+	viresh.kumar@linaro.org, lenb@kernel.org, robert.moore@intel.com,
+	lukasz.luba@arm.com, ionela.voinescu@arm.com,
+	pierre.gondois@arm.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+	conor.dooley@microchip.com, suagrfillet@gmail.com,
+	ajones@ventanamicro.com, lftan@kernel.org
+Subject: Re: [PATCH v6 7/7] arm64/amu: Use capacity_ref_freq to set AMU ratio
+Message-ID: <ZVNw5Ci9kCPMqV67@e129154.nice.arm.com>
+References: <20231109101438.1139696-1-vincent.guittot@linaro.org>
+ <20231109101438.1139696-8-vincent.guittot@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.234]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500006.china.huawei.com (7.191.161.198)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231109101438.1139696-8-vincent.guittot@linaro.org>
 
-From: Shiju Jose <shiju.jose@huawei.com>
+On Thu, Nov 09, 2023 at 11:14:38AM +0100, Vincent Guittot wrote:
+> Use the new capacity_ref_freq to set the ratio that is used by AMU for
+> computing the arch_scale_freq_capacity().
+> This helps to keep everything aligned using the same reference for
+> computing CPUs capacity.
+> 
+> The default value of the ratio (stored in per_cpu(arch_max_freq_scale))
+> ensures that arch_scale_freq_capacity() returns max capacity until it is
+> set to its correct value with the cpu capacity and capacity_ref_freq.
+> 
+> Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+> ---
+>  arch/arm64/kernel/topology.c  | 26 +++++++++++++-------------
+>  drivers/base/arch_topology.c  | 12 +++++++++++-
+>  include/linux/arch_topology.h |  1 +
+>  3 files changed, 25 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+> index 817d788cd866..1a2c72f3e7f8 100644
+> --- a/arch/arm64/kernel/topology.c
+> +++ b/arch/arm64/kernel/topology.c
+> @@ -82,7 +82,12 @@ int __init parse_acpi_topology(void)
+>  #undef pr_fmt
+>  #define pr_fmt(fmt) "AMU: " fmt
+>  
+> -static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale);
+> +/*
+> + * Ensure that amu_scale_freq_tick() will return SCHED_CAPACITY_SCALE until
+> + * the CPU capacity and its associated frequency have been correctly
+> + * initialized.
+> + */
+> +static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale) =  1UL << (2 * SCHED_CAPACITY_SHIFT);
+>  static DEFINE_PER_CPU(u64, arch_const_cycles_prev);
+>  static DEFINE_PER_CPU(u64, arch_core_cycles_prev);
+>  static cpumask_var_t amu_fie_cpus;
+> @@ -112,14 +117,14 @@ static inline bool freq_counters_valid(int cpu)
+>  	return true;
+>  }
+>  
+> -static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
+> +void freq_inv_set_max_ratio(int cpu, u64 max_rate)
+>  {
+> -	u64 ratio;
+> +	u64 ratio, ref_rate = arch_timer_get_rate();
+>  
+>  	if (unlikely(!max_rate || !ref_rate)) {
+> -		pr_debug("CPU%d: invalid maximum or reference frequency.\n",
+> +		WARN_ONCE(1, "CPU%d: invalid maximum or reference frequency.\n",
+>  			 cpu);
+> -		return -EINVAL;
+> +		return;
+>  	}
+>  
+>  	/*
+> @@ -139,12 +144,10 @@ static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
+>  	ratio = div64_u64(ratio, max_rate);
+>  	if (!ratio) {
+>  		WARN_ONCE(1, "Reference frequency too low.\n");
+> -		return -EINVAL;
+> +		return;
+>  	}
+>  
+> -	per_cpu(arch_max_freq_scale, cpu) = (unsigned long)ratio;
+> -
+> -	return 0;
+> +	WRITE_ONCE(per_cpu(arch_max_freq_scale, cpu), (unsigned long)ratio);
+>  }
+>  
+>  static void amu_scale_freq_tick(void)
+> @@ -195,10 +198,7 @@ static void amu_fie_setup(const struct cpumask *cpus)
+>  		return;
+>  
+>  	for_each_cpu(cpu, cpus) {
+> -		if (!freq_counters_valid(cpu) ||
+> -		    freq_inv_set_max_ratio(cpu,
+> -					   cpufreq_get_hw_max_freq(cpu) * 1000ULL,
+> -					   arch_timer_get_rate()))
+> +		if (!freq_counters_valid(cpu))
 
-Add sysfs documentation entries for the CXL memory device scrub
-control attributes those are exposed in /sys/class/scrub/ by the
-scrub driver. These attributes support configuring a CXL memory
-device scrub.
+>  			return;
+>  	}
+>  
+> diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
+> index 0a2e43728286..0906114963ff 100644
+> --- a/drivers/base/arch_topology.c
+> +++ b/drivers/base/arch_topology.c
+> @@ -344,6 +344,10 @@ bool __init topology_parse_cpu_capacity(struct device_node *cpu_node, int cpu)
+>  	return !ret;
+>  }
+>  
+> +void __weak freq_inv_set_max_ratio(int cpu, u64 max_rate)
+> +{
+> +}
+> +
+>  #ifdef CONFIG_ACPI_CPPC_LIB
+>  #include <acpi/cppc_acpi.h>
+>  
+> @@ -381,6 +385,9 @@ void topology_init_cpu_capacity_cppc(void)
+>  	}
+>  
+>  	for_each_possible_cpu(cpu) {
+> +		freq_inv_set_max_ratio(cpu,
+> +				       per_cpu(capacity_freq_ref, cpu) * HZ_PER_KHZ);
+> +
+>  		capacity = raw_capacity[cpu];
+>  		capacity = div64_u64(capacity << SCHED_CAPACITY_SHIFT,
+>  				     capacity_scale);
+> @@ -422,8 +429,11 @@ init_cpu_capacity_callback(struct notifier_block *nb,
+>  
+>  	cpumask_andnot(cpus_to_visit, cpus_to_visit, policy->related_cpus);
+>  
+> -	for_each_cpu(cpu, policy->related_cpus)
+> +	for_each_cpu(cpu, policy->related_cpus) {
+>  		per_cpu(capacity_freq_ref, cpu) = policy->cpuinfo.max_freq;
+> +		freq_inv_set_max_ratio(cpu,
+> +				       per_cpu(capacity_freq_ref, cpu) * HZ_PER_KHZ);
+> +	}
+Just wondering if this is really necessary as freq_inv_set_max_ratio will
+originally be called upon cpufreq notification being triggered (with
+CPUFREQ_CREATE_POLICY event) which should happen after the newly introduced
+capacity_freq_ref gets properly set up, so wouldn't the change of flipping
+cpufreq_get_hw_max_freq(cpu) to capacity_freq_ref do just fine ?
+Then pushing AMU specific call to generic arch code  would not be necessary.
+Or did I miss smth on the way ?
 
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
 ---
- .../testing/sysfs-class-cxl-scrub-configure   | 135 ++++++++++++++++++
- 1 file changed, 135 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-class-cxl-scrub-configure
+BR
+B.
 
-diff --git a/Documentation/ABI/testing/sysfs-class-cxl-scrub-configure b/Documentation/ABI/testing/sysfs-class-cxl-scrub-configure
-new file mode 100644
-index 000000000000..9dd0c18451aa
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-class-cxl-scrub-configure
-@@ -0,0 +1,135 @@
-+What:		/sys/class/scrub/
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		The scrub/ class subdirectory belongs to the scrub
-+		subsystem.
-+
-+What:		/sys/class/scrub/scrubX/
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		The /sys/class/scrub/scrub{0,1,2,3,...} directories
-+		correspond to each scrub device.
-+
-+What:		/sys/class/scrub/scrubX/name
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(RO) name of the memory scrub device
-+
-+What:		/sys/class/scrub/scrubX/regionY/
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		The /sys/class/scrub/scrubX/region{0,1,2,3,...}
-+		directories correspond to each scrub region under a scrub device.
-+		Scrub region is a physical address range or for example
-+		memory media FRU of DDR5 ECS feature for which scrub may be
-+		separately controlled.
-+
-+What:		/sys/class/scrub/scrubX/regionY/enable
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(WO) Start/Stop CXL memory patrol scrub.
-+		1 - enable the CXL memory patrol scrub.
-+		0 - disable the CXL memory patrol scrub.
-+
-+What:		/sys/class/scrub/scrubX/regionY/speed
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(RW) The scrub cycle to set for the CXL memory
-+		patrol scrub and it must be within the supported
-+		range. The unit of the scrub cycle is hour.
-+
-+What:		/sys/class/scrub/scrubX/regionY/speed_available
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(RO) Supported range of the scrub cycle by the
-+		CXL memory patrol scrub.
-+		The unit of the scrub cycle is hour.
-+
-+What:		/sys/class/scrub/scrubX/regionY/ecs_log_entry_type
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(RW) The log entry type of how the DDR5 ECS log is
-+		reported.
-+		00b - per DRAM.
-+		01b - per memory media FRU.
-+
-+What:		/sys/class/scrub/scrubX/regionY/ecs_log_entry_type_per_dram
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(RO) Returns true if current log entry type of DDR5 ECS
-+		region is per DRAM.
-+
-+What:		/sys/class/scrub/scrubX/regionY/ecs_log_entry_type_per_memory_media
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(RO) Returns true if current log entry type of DDR5 ECS
-+		region is per memory media FRU.
-+
-+What:		/sys/class/scrub/scrubX/regionY/mode
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(RW) The mode of how the DDR5 ECS counts the errors.
-+		0 - ECS counts rows with errors.
-+		1 - ECS counts codewords with errors.
-+
-+What:		/sys/class/scrub/scrubX/regionY/mode_counts_rows
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(RO) Returns true if current mode of DDR5 ECS region
-+		is counts rows with errors.
-+
-+What:		/sys/class/scrub/scrubX/regionY/mode_counts_codewords
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(RO) Returns true if current mode of DDR5 ECS region
-+		is counts codewords with errors.
-+
-+What:		/sys/class/scrub/scrubX/regionY/reset_counter
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(WO) DDR5 ECS reset ECC counter.
-+		0 - normal, ECC counter running actively.
-+		1 - reset ECC counter to the default value.
-+
-+What:		/sys/class/scrub/scrubX/regionY/threshold
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(RW) DDR5 ECS threshold count per GB of memory cells.
-+
-+What:		/sys/class/scrub/scrubX/regionY/threshold_available
-+Date:		November 2023
-+KernelVersion:	6.8
-+Contact:	linux-kernel@vger.kernel.org
-+Description:
-+		(RO) Supported list of DDR5 ECS threshold count per GB of
-+		memory cells.
--- 
-2.34.1
-
+>  
+>  	if (cpumask_empty(cpus_to_visit)) {
+>  		topology_normalize_cpu_scale();
+> diff --git a/include/linux/arch_topology.h b/include/linux/arch_topology.h
+> index 32c24ff4f2a8..a63d61ca55af 100644
+> --- a/include/linux/arch_topology.h
+> +++ b/include/linux/arch_topology.h
+> @@ -99,6 +99,7 @@ void update_siblings_masks(unsigned int cpu);
+>  void remove_cpu_topology(unsigned int cpuid);
+>  void reset_cpu_topology(void);
+>  int parse_acpi_topology(void);
+> +void freq_inv_set_max_ratio(int cpu, u64 max_rate);
+>  #endif
+>  
+>  #endif /* _LINUX_ARCH_TOPOLOGY_H_ */
+> -- 
+> 2.34.1
+> 
 
