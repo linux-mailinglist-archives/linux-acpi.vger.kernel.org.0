@@ -1,213 +1,218 @@
-Return-Path: <linux-acpi+bounces-1497-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1500-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3AD67EC0C7
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 11:34:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 556EA7EC0CA
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 11:34:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72AE2B2095C
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 10:34:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC3941F26A86
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 10:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4997FBE9
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 10:34:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="t1yyerzs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574127E
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 10:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F4B6119
-	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 09:27:49 +0000 (UTC)
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2047.outbound.protection.outlook.com [40.107.244.47])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B599F;
-	Wed, 15 Nov 2023 01:27:48 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KB4jXWaMHQocntYZYp4+TiuX4tQAFA4GUgw9ALQBvDliUvqSXrt84dGFNkg3wTHIsxmGklB4V54TOFQ3hACH/meww69hVUcLWCbz767bQtsU6xlzNKt6WBhkGybxHwp6JTLtrYQRCAfwX+YLzrbZedvP0ioGcEUqFBNOKAbEfdGRLH7OjOvzFLiPa3pZO1eVmBrzq4xNkMDeQg+CexpiEuDxlTvGTnfxYnx9wGKCy6iNHmWgTZH4QTiwJgWpRPM5GTelf0m9cwse7N7sKN0Og4fls+Uau17rr2Fn2Px2nOEMplaGUgy3hw4pvD+zKKq1ideWIc9YyLxXow9PR69Jtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BZPyNGxoeVgDtj8QVEiAyklHT19cFxs3qEW/nOdus/o=;
- b=cuWge0SW8jQS4tld9IZLoWqGAF1E/9ckLNmB8TFRdNxrr32IyhSJl0ePfi9zgRZtPT+ggPUGlwvjBn6rFBbBgH7hD/nlMvty91iEKoEf7PCyt8g/JXKgWLFuGkq9fNVtd20MvNxvlL7JVZFBuUndSqp5a8XJtdd6WdXWYvdsJTvm3iyjmhLaZ9hoMxumFpi5qsdH33uhpDdwM2VIQJCNaFXKuQz9ntwEWaj8Ja2S4JYWP3wIlpfLf3ew1UfoCYNF4CX45Q9WONPXqBRQ5ajusw2GQ9Aw88iSr1G0oubgU0D5lRtG1o/ZmjsT25dRd20PBi2TBNMukeGr0Na/+QOjyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BZPyNGxoeVgDtj8QVEiAyklHT19cFxs3qEW/nOdus/o=;
- b=t1yyerzs38ZUckQVafeEfpDapJNb3rsGau2B6i4ne91LNcd8rWgXQDcycWAhZTuzNtWOYClxXHTMizSfGjlDR/7H8XKFvYOHQtM45Mx2tF0nONoKztjWyn+myf9Sx3Yg5o2xQPGkTXl2mjBk5m0JfBJrXKl5TlF7cuB1G3THp70=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BN8PR12MB3587.namprd12.prod.outlook.com (2603:10b6:408:43::13)
- by CY5PR12MB6406.namprd12.prod.outlook.com (2603:10b6:930:3d::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.31; Wed, 15 Nov
- 2023 09:27:41 +0000
-Received: from BN8PR12MB3587.namprd12.prod.outlook.com
- ([fe80::ca80:8f1c:c11:ded3]) by BN8PR12MB3587.namprd12.prod.outlook.com
- ([fe80::ca80:8f1c:c11:ded3%7]) with mapi id 15.20.6977.033; Wed, 15 Nov 2023
- 09:27:41 +0000
-Message-ID: <5fa7aab7-3bf9-4491-a822-fd686efa5376@amd.com>
-Date: Wed, 15 Nov 2023 10:27:31 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/7] drm/radeon: Switch from
- pci_is_thunderbolt_attached() to dev_is_removable()
-To: Mario Limonciello <mario.limonciello@amd.com>,
- Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>,
- Alex Deucher <alexander.deucher@amd.com>, Bjorn Helgaas
- <bhelgaas@google.com>, Mika Westerberg <mika.westerberg@linux.intel.com>,
- Lukas Wunner <lukas@wunner.de>
-Cc: Danilo Krummrich <dakr@redhat.com>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, Xinhui Pan <Xinhui.Pan@amd.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, =?UTF-8?Q?Marek_Beh=C3=BAn?=
- <kabel@kernel.org>, "Maciej W . Rozycki" <macro@orcam.me.uk>,
- Manivannan Sadhasivam <mani@kernel.org>,
- "open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS"
- <dri-devel@lists.freedesktop.org>,
- "open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS"
- <nouveau@lists.freedesktop.org>, open list <linux-kernel@vger.kernel.org>,
- "open list:RADEON and AMDGPU DRM DRIVERS" <amd-gfx@lists.freedesktop.org>,
- "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
- "open list:ACPI" <linux-acpi@vger.kernel.org>
-References: <20231114200755.14911-1-mario.limonciello@amd.com>
- <20231114200755.14911-3-mario.limonciello@amd.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20231114200755.14911-3-mario.limonciello@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0030.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c9::7) To BN8PR12MB3587.namprd12.prod.outlook.com
- (2603:10b6:408:43::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A7C7E
+	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 09:43:07 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id B4F99D8;
+	Wed, 15 Nov 2023 01:43:05 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E28E9DA7;
+	Wed, 15 Nov 2023 01:43:50 -0800 (PST)
+Received: from e129154.nice.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 974BA3F7B4;
+	Wed, 15 Nov 2023 01:42:58 -0800 (PST)
+Date: Wed, 15 Nov 2023 10:42:08 +0100
+From: Beata Michalska <beata.michalska@arm.com>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	sudeep.holla@arm.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+	mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
+	viresh.kumar@linaro.org, lenb@kernel.org, robert.moore@intel.com,
+	lukasz.luba@arm.com, ionela.voinescu@arm.com,
+	pierre.gondois@arm.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+	conor.dooley@microchip.com, suagrfillet@gmail.com,
+	ajones@ventanamicro.com, lftan@kernel.org
+Subject: Re: [PATCH v6 7/7] arm64/amu: Use capacity_ref_freq to set AMU ratio
+Message-ID: <ZVSSSi8sGSI8IREe@e129154.nice.arm.com>
+References: <20231109101438.1139696-1-vincent.guittot@linaro.org>
+ <20231109101438.1139696-8-vincent.guittot@linaro.org>
+ <ZVNw5Ci9kCPMqV67@e129154.nice.arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8PR12MB3587:EE_|CY5PR12MB6406:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9838de35-dc39-486e-96b5-08dbe5bd1d7f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	LK3jqHBnRo450t+gkHEjXGxCcJQUQgLWMQ0+JMk5b6KIVgVwNSHwoZvk2a4isChY5PZyYS0kOV7JUqbddO5WbWWcac+qT9z5b1d9VoMJqrAn1DbjDRdZNedAc7kE1IUdetsm9tPke7shKLaKfYefSR0YRSBGDX40nisy3HrKyspyuaQ2CY4Gcgr5hCaMrCbaLuPWD6jXiP9GBIYuLcw+QE8N0HXwBMaZt8WE7J3p6P+N5UzeJGkJnUsbDcYON7R2lZBVsJa2MOm2AFalSxoU2+IRH6U2Tq4VjIFyam0eiix0/k5vKSMuLy8tTeodeOgvNleL2P5WhDTErLPk/Jsran4guktZ3tYHLI2BNm9gq5j1ZkQxah36XJgpBIdOMPp8Xv779OJeDkeAx8+h/lhUK7R6zdQmv75BXw5zYkvsEED4JQpvjkSSBFPCuZmPwgqaCtRqQc29zmN40zfOok4EcanGJ1Drx6c3B+bDAX+GEmPOb9hNy/g0Zj4Z+Sb9N9djwt0HyYZVcmR7twC8cdq0KOhmUG+BfvN/z0O+NNyT9bSiLFmgs+9+UtuSuRPD1dBGlWGjukkY6U5Hxa/8Xw38+/ZPvtzgeh8qdF4W2jcIxPRdPIKX4RUaG+JhapCzUoedzyzf82RiXYvNfWzJxnC8oLUxD+ko2bYU4r5D7zR5mv+f0dzJRM3ag/PrcOycih3a
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3587.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(396003)(366004)(136003)(39860400002)(230273577357003)(230173577357003)(230922051799003)(451199024)(1800799009)(186009)(64100799003)(66556008)(66476007)(6506007)(41300700001)(26005)(2616005)(6666004)(66574015)(6512007)(83380400001)(4326008)(8676002)(7416002)(5660300002)(8936002)(2906002)(6486002)(316002)(478600001)(110136005)(66946007)(54906003)(36756003)(86362001)(31696002)(38100700002)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NXJYdjRlODYwQkFaN253QkNlRUVmWEtrd1dGenQ3V3JGbXhhN216dm9UTUMz?=
- =?utf-8?B?MDN6eGsrZlhockZOREQ3eUJ6OE9ueE83NnVUZ29Camp0eWlWSFpxa2hXM0tr?=
- =?utf-8?B?YUFxdjg3c3hrRmEvVTBta0licXljQzA1M21TL2IvczRSN3NYNXVucWI2UTQy?=
- =?utf-8?B?YTNiYVdzV3dOeDNqUnNwRXB0eER0ZFI3WlNYcGxtQUpwdy81bHgyeHFrUjRZ?=
- =?utf-8?B?bE1VT085dGRudlNXOVdwVVdRZDB5TGlTTlowR1JjQVEzdEZKZkc1dFFWZDB6?=
- =?utf-8?B?dEFHUHpucGZkcGc5MXFOVHR5OVdnRzhIckZSQzBlVFVFd0ZYUzNBcFltWkEx?=
- =?utf-8?B?NldlTVduVWZrWHFaUmNWT0EwTVArNTJnTkdGYmVhY3pEOG5aWFJGa0puRmdw?=
- =?utf-8?B?dHM1eTc2VlFPTitHRWNrZkEvNDRhWFNwZFgzUE42cFhKYUlXVUxIVjVnOEw0?=
- =?utf-8?B?RmxaVGNyMmk4Rk1IZlZjcldkQmhZU3RmL3RWc0VmRGpxbmc2UStSYjRaYTNx?=
- =?utf-8?B?c0N3K3ZGdFhZemxac2tSQmQ0eC9VNXh5cER3SjFMTVFMaEc2ZG10bE9IOUsv?=
- =?utf-8?B?dnJZVUhTckhjM3pUQ0EzUEZLSmZzcnhtZXRXNTdsbGMwRm8ybEYxRVkrQXhp?=
- =?utf-8?B?ZVJTWDN6SHBsRzJjQXBjR3d6MkowZnFveVdIRVgxTWt2TEFscWluWUJKb25C?=
- =?utf-8?B?cWNmZ0hnMDR4T0tFaDk3cjRBclBTN01jZ2RjalowUXZmVFlaM1dOYWJtQVpP?=
- =?utf-8?B?NnQ1YzRsd2llQ0pvc2RrNjd3ODk0VmhaMm1BeGMrQTBhVExWVzM1MXhYcUt0?=
- =?utf-8?B?TlJqeDlEbGdyNldoQTlPWFpnTkdEb2NYZVJjRTZadERTeWw2Ny9FN0pTcDFq?=
- =?utf-8?B?ejVPSHBJdGVva0I3WUQ3R0tidHU2RHUwd2V2WVJnYlYvc3Z3Yk54N1lickN2?=
- =?utf-8?B?SVBQR3pIR2w3ZlA2eVd5K1JJYlppazVNbWNvYlhaVC85VDdVRmtiUnNxNXNi?=
- =?utf-8?B?ZXZtK044RElrRi9FS0RFUTV3MEtxTExCRkszc1FoRUptZVBPYkNBVk5pdkZU?=
- =?utf-8?B?Vm1Od1F2UVhmQjBtWmkreHRZQUV5cUxmUGtSOXRMbFBZKzYyYWpvRlA5WjRC?=
- =?utf-8?B?eVVibGU5eldyYXJ2UEwrSUpnZHZnOE9FUDYyZ2ROM0k5RGRZL1lsTTRtTXFG?=
- =?utf-8?B?ZTdUVjB2Y3JvRTB1NU5QaXB6RUlENm5jbVNqbDRZQ2RxKzM2Y01hZEFaUEJa?=
- =?utf-8?B?aDQ1b3RPamdjakRicDNPeWJCQlRsamRCbGFlYWhUQ0RreUZ3dG9Cd29UZTlI?=
- =?utf-8?B?Z29meHVPZmNBMStxait2TVFXMUxwQzdRK0F0S2hPY0IzeHhmcmJPRzh2THpw?=
- =?utf-8?B?NGoybHJCMXZpNjhTT1JxdTY0c2x0Y3lJS0ZTWFpSNTVmYW5YK0kvYjR2a0xS?=
- =?utf-8?B?dm9aeERDbXp6dE9Pd25DZVlMenRCeGVBbmtOSnlURnE4MXNzRGRWcGRiUFZv?=
- =?utf-8?B?VVlFVU04anUycFhZUnA5LzY1TjZjQ0NFRGZjYTROb3FjYVNiNExqVHV0UEVE?=
- =?utf-8?B?aGx6bHpyOEF4dk0zUmdzVWtGK0tpMUwyN1VOaDhVUStwYXYxUlJ3Uk9FZ0M4?=
- =?utf-8?B?T1Z0Uk03ZzZUSTc1a1ZxQ3NEZ2Y5Mzg0OVowZk1BNTA3YjhpQzBTenRTS0hO?=
- =?utf-8?B?T0pBVllhcTRJU01OdkR3ZnAvUWNCVXhvNGlFWWlEVEVyVGNKcndaR01GVkFa?=
- =?utf-8?B?U1hBSzJ4cllaQWNpNk1YYWVLMkRhQVZrbERBaHdFSCtSTkpLT0RBakQ2MG81?=
- =?utf-8?B?TGZBTXFLTnpmNEJ3Rysra3VlQWo3YkUxL09LeVpuTkg4RkR3WE1IakZrcW9v?=
- =?utf-8?B?Z1JjRkJnWHQ1YVlETVhFS3BMNEFQVWcvSkNLcEpiRDYvMTlPcEIzVm1PNU9z?=
- =?utf-8?B?a1RocTBJMnJxN2dSWnRrcElJdmNWVkJnUmNwcHFDb2xDakRTdmdqTDZjMzNn?=
- =?utf-8?B?YllReWl2N1NlK0ZoWG8zRXNoYUNJYjRVcUtjOGF2ZFI1ZUlYTFhrN1lINEYy?=
- =?utf-8?B?SDBGa2FBYmxFcGE4dkEva0pXTFhyR1d5cElZTlArSUhteHB1K3A2dmlIQkp5?=
- =?utf-8?Q?OjVY=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9838de35-dc39-486e-96b5-08dbe5bd1d7f
-X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3587.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2023 09:27:41.1544
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dvgEbFTAbdDZz3cgVD6DopAkmg9xa5k20G41pCVcC3cF2DRqBDrj/tbP0cPLQhcl
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6406
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZVNw5Ci9kCPMqV67@e129154.nice.arm.com>
 
-Am 14.11.23 um 21:07 schrieb Mario Limonciello:
-> pci_is_thunderbolt_attached() looks at the hierarchy of the PCIe device
-> to determine if any bridge along the way has the is_thunderbolt bit set.
-> This bit will only be set when one of the devices in the hierarchy is an
-> Intel Thunderbolt device.
->
-> However PCIe devices can be connected to USB4 hubs and routers which won't
-> necessarily set the is_thunderbolt bit. These devices will however be
-> marked as externally facing which means they are marked removable by
-> pci_set_removable().
->
-> Look whether the device is marked removable to determine it's
-> connected to a Thunderbolt controller or USB4 router.
->
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-
-Acked-by: Christian König <christian.koenig@amd.com> for this one.
+On Tue, Nov 14, 2023 at 02:07:01PM +0100, Beata Michalska wrote:
+> On Thu, Nov 09, 2023 at 11:14:38AM +0100, Vincent Guittot wrote:
+> > Use the new capacity_ref_freq to set the ratio that is used by AMU for
+> > computing the arch_scale_freq_capacity().
+> > This helps to keep everything aligned using the same reference for
+> > computing CPUs capacity.
+> > 
+> > The default value of the ratio (stored in per_cpu(arch_max_freq_scale))
+> > ensures that arch_scale_freq_capacity() returns max capacity until it is
+> > set to its correct value with the cpu capacity and capacity_ref_freq.
+> > 
+> > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> > Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+> > ---
+> >  arch/arm64/kernel/topology.c  | 26 +++++++++++++-------------
+> >  drivers/base/arch_topology.c  | 12 +++++++++++-
+> >  include/linux/arch_topology.h |  1 +
+> >  3 files changed, 25 insertions(+), 14 deletions(-)
+> > 
+> > diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+> > index 817d788cd866..1a2c72f3e7f8 100644
+> > --- a/arch/arm64/kernel/topology.c
+> > +++ b/arch/arm64/kernel/topology.c
+> > @@ -82,7 +82,12 @@ int __init parse_acpi_topology(void)
+> >  #undef pr_fmt
+> >  #define pr_fmt(fmt) "AMU: " fmt
+> >  
+> > -static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale);
+> > +/*
+> > + * Ensure that amu_scale_freq_tick() will return SCHED_CAPACITY_SCALE until
+> > + * the CPU capacity and its associated frequency have been correctly
+> > + * initialized.
+> > + */
+> > +static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale) =  1UL << (2 * SCHED_CAPACITY_SHIFT);
+> >  static DEFINE_PER_CPU(u64, arch_const_cycles_prev);
+> >  static DEFINE_PER_CPU(u64, arch_core_cycles_prev);
+> >  static cpumask_var_t amu_fie_cpus;
+> > @@ -112,14 +117,14 @@ static inline bool freq_counters_valid(int cpu)
+> >  	return true;
+> >  }
+> >  
+> > -static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
+> > +void freq_inv_set_max_ratio(int cpu, u64 max_rate)
+> >  {
+> > -	u64 ratio;
+> > +	u64 ratio, ref_rate = arch_timer_get_rate();
+> >  
+> >  	if (unlikely(!max_rate || !ref_rate)) {
+> > -		pr_debug("CPU%d: invalid maximum or reference frequency.\n",
+> > +		WARN_ONCE(1, "CPU%d: invalid maximum or reference frequency.\n",
+> >  			 cpu);
+> > -		return -EINVAL;
+> > +		return;
+> >  	}
+> >  
+> >  	/*
+> > @@ -139,12 +144,10 @@ static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
+> >  	ratio = div64_u64(ratio, max_rate);
+> >  	if (!ratio) {
+> >  		WARN_ONCE(1, "Reference frequency too low.\n");
+> > -		return -EINVAL;
+> > +		return;
+> >  	}
+> >  
+> > -	per_cpu(arch_max_freq_scale, cpu) = (unsigned long)ratio;
+> > -
+> > -	return 0;
+> > +	WRITE_ONCE(per_cpu(arch_max_freq_scale, cpu), (unsigned long)ratio);
+> >  }
+> >  
+> >  static void amu_scale_freq_tick(void)
+> > @@ -195,10 +198,7 @@ static void amu_fie_setup(const struct cpumask *cpus)
+> >  		return;
+> >  
+> >  	for_each_cpu(cpu, cpus) {
+> > -		if (!freq_counters_valid(cpu) ||
+> > -		    freq_inv_set_max_ratio(cpu,
+> > -					   cpufreq_get_hw_max_freq(cpu) * 1000ULL,
+> > -					   arch_timer_get_rate()))
+> > +		if (!freq_counters_valid(cpu))
+> 
+> >  			return;
+> >  	}
+> >  
+> > diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
+> > index 0a2e43728286..0906114963ff 100644
+> > --- a/drivers/base/arch_topology.c
+> > +++ b/drivers/base/arch_topology.c
+> > @@ -344,6 +344,10 @@ bool __init topology_parse_cpu_capacity(struct device_node *cpu_node, int cpu)
+> >  	return !ret;
+> >  }
+> >  
+> > +void __weak freq_inv_set_max_ratio(int cpu, u64 max_rate)
+> > +{
+> > +}
+> > +
+> >  #ifdef CONFIG_ACPI_CPPC_LIB
+> >  #include <acpi/cppc_acpi.h>
+> >  
+> > @@ -381,6 +385,9 @@ void topology_init_cpu_capacity_cppc(void)
+> >  	}
+> >  
+> >  	for_each_possible_cpu(cpu) {
+> > +		freq_inv_set_max_ratio(cpu,
+> > +				       per_cpu(capacity_freq_ref, cpu) * HZ_PER_KHZ);
+> > +
+> >  		capacity = raw_capacity[cpu];
+> >  		capacity = div64_u64(capacity << SCHED_CAPACITY_SHIFT,
+> >  				     capacity_scale);
+> > @@ -422,8 +429,11 @@ init_cpu_capacity_callback(struct notifier_block *nb,
+> >  
+> >  	cpumask_andnot(cpus_to_visit, cpus_to_visit, policy->related_cpus);
+> >  
+> > -	for_each_cpu(cpu, policy->related_cpus)
+> > +	for_each_cpu(cpu, policy->related_cpus) {
+> >  		per_cpu(capacity_freq_ref, cpu) = policy->cpuinfo.max_freq;
+> > +		freq_inv_set_max_ratio(cpu,
+> > +				       per_cpu(capacity_freq_ref, cpu) * HZ_PER_KHZ);
+> > +	}
+> Just wondering if this is really necessary as freq_inv_set_max_ratio will
+> originally be called upon cpufreq notification being triggered (with
+> CPUFREQ_CREATE_POLICY event) which should happen after the newly introduced
+> capacity_freq_ref gets properly set up, so wouldn't the change of flipping
+> cpufreq_get_hw_max_freq(cpu) to capacity_freq_ref do just fine ?
+> Then pushing AMU specific call to generic arch code  would not be necessary.
+> Or did I miss smth on the way ?
+> 
+I guess you can ignore my comment as init_cpu_capacity_callback (where we now
+set the capacity_freq_ref) works on the same basis so there is no guarantee it
+will be triggered before AMU callback.
+Still having the freq_inv_set_max_ratio sitting in arch_topology.c somehow
+doesn't sit well with me. We could potentially check capacity_freq_ref against
+its init value and act accordingly but that is gruesome as well.
 
 > ---
-> v2->v3:
->   * Update commit message
-> ---
->   drivers/gpu/drm/radeon/radeon_device.c | 4 ++--
->   drivers/gpu/drm/radeon/radeon_kms.c    | 2 +-
->   2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeon/radeon_device.c
-> index afbb3a80c0c6..ba0ca0694d18 100644
-> --- a/drivers/gpu/drm/radeon/radeon_device.c
-> +++ b/drivers/gpu/drm/radeon/radeon_device.c
-> @@ -1429,7 +1429,7 @@ int radeon_device_init(struct radeon_device *rdev,
->   
->   	if (rdev->flags & RADEON_IS_PX)
->   		runtime = true;
-> -	if (!pci_is_thunderbolt_attached(rdev->pdev))
-> +	if (!dev_is_removable(&rdev->pdev->dev))
->   		vga_switcheroo_register_client(rdev->pdev,
->   					       &radeon_switcheroo_ops, runtime);
->   	if (runtime)
-> @@ -1519,7 +1519,7 @@ void radeon_device_fini(struct radeon_device *rdev)
->   	radeon_bo_evict_vram(rdev);
->   	radeon_audio_component_fini(rdev);
->   	radeon_fini(rdev);
-> -	if (!pci_is_thunderbolt_attached(rdev->pdev))
-> +	if (!dev_is_removable(&rdev->pdev->dev))
->   		vga_switcheroo_unregister_client(rdev->pdev);
->   	if (rdev->flags & RADEON_IS_PX)
->   		vga_switcheroo_fini_domain_pm_ops(rdev->dev);
-> diff --git a/drivers/gpu/drm/radeon/radeon_kms.c b/drivers/gpu/drm/radeon/radeon_kms.c
-> index a16590c6247f..ead912a58ab8 100644
-> --- a/drivers/gpu/drm/radeon/radeon_kms.c
-> +++ b/drivers/gpu/drm/radeon/radeon_kms.c
-> @@ -138,7 +138,7 @@ int radeon_driver_load_kms(struct drm_device *dev, unsigned long flags)
->   	if ((radeon_runtime_pm != 0) &&
->   	    radeon_has_atpx() &&
->   	    ((flags & RADEON_IS_IGP) == 0) &&
-> -	    !pci_is_thunderbolt_attached(pdev))
-> +	    !dev_is_removable(&pdev->dev))
->   		flags |= RADEON_IS_PX;
->   
->   	/* radeon_device_init should report only fatal error
-
+> BR
+> B.
+> 
+> >  
+> >  	if (cpumask_empty(cpus_to_visit)) {
+> >  		topology_normalize_cpu_scale();
+> > diff --git a/include/linux/arch_topology.h b/include/linux/arch_topology.h
+> > index 32c24ff4f2a8..a63d61ca55af 100644
+> > --- a/include/linux/arch_topology.h
+> > +++ b/include/linux/arch_topology.h
+> > @@ -99,6 +99,7 @@ void update_siblings_masks(unsigned int cpu);
+> >  void remove_cpu_topology(unsigned int cpuid);
+> >  void reset_cpu_topology(void);
+> >  int parse_acpi_topology(void);
+> > +void freq_inv_set_max_ratio(int cpu, u64 max_rate);
+> >  #endif
+> >  
+> >  #endif /* _LINUX_ARCH_TOPOLOGY_H_ */
+> > -- 
+> > 2.34.1
+> > 
 
