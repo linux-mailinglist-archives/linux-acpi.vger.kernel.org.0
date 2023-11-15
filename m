@@ -1,98 +1,83 @@
-Return-Path: <linux-acpi+bounces-1524-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1525-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC3D7EC8D3
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 17:44:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE7C37EC8E2
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 17:44:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4BAA1C20A47
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 16:44:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93F572814BD
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 16:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F62D39FCA
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 16:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D9C28E27
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 16:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RbrA9WVk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ob9dOLFN"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C942EB1D
-	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 14:54:11 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD9878E
-	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 06:54:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700060050;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1FlIYAXhM/ERDubCadB5WwuUe+5s0MuhfY1IPTS1Qc0=;
-	b=RbrA9WVkY0CxPT8naGjvvd1vu31JvoCBWu+MIy/tYtB18MVxvYiLSV+y8/sv7/qWNmKtxG
-	XKHQuqB6Sty+HZ9xG+RSxMx1hWGmQsmSJBTg4yUWuEqN6N6GwBEkArn2r3JitHht2KzkO8
-	svdxq5X6FeAkUmqbfpHNZLL2GYVQOeM=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-CPKTjaIyPPSIqeIQze0U6w-1; Wed, 15 Nov 2023 09:54:09 -0500
-X-MC-Unique: CPKTjaIyPPSIqeIQze0U6w-1
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7789a691086so807351685a.0
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 06:54:07 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B002EB09;
+	Wed, 15 Nov 2023 14:57:11 +0000 (UTC)
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A04F8121;
+	Wed, 15 Nov 2023 06:57:10 -0800 (PST)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1ea82246069so3900964fac.3;
+        Wed, 15 Nov 2023 06:57:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700060230; x=1700665030; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7UFCXikobOe7NagckS+Ldfl/huzC/GDUL1xICL6pThc=;
+        b=Ob9dOLFN3IkvHzW89q6WU/2MX97+8EAGiBlCS3UHbtbtAgAVKoGTNILZnrSNcw/s1C
+         ids7J9KFsOiKMzMh7CIt9zMsMs52hBdWR9+eHhJzgcJDOsHuNrMVDefGjUmM40hJ8H50
+         yGWFG+Mylr++hHbxVvE2UXQClAAxmTjeYrlemV/yUnn2uvek8REryXBs0RqSezRyIuny
+         Hk2RlgPrX0IX6XpQdX4i94pVB6/4cS3ZpEDk00bMg2ffKaGmAy4WUNPuEHNDkmmxwcq7
+         f6GKmGhO6G8An1ElMemz79MtJLUv0uC7zxb8vnRbz4/25h7QzNz3kcocgKLZy5BC6dXT
+         qm1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700060047; x=1700664847;
+        d=1e100.net; s=20230601; t=1700060230; x=1700665030;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1FlIYAXhM/ERDubCadB5WwuUe+5s0MuhfY1IPTS1Qc0=;
-        b=pVnSBa0/KVqvAnTlYxGtL3o9ryupgXKURZR86xzOE7z7K2HaHZqUY3Xa083VzzL1VK
-         MpOr5eDjqnNLk+LW0RRCdvHq45BqZihpDHiar4ub5UCeqes+C24Cf+/kHSR+dznnyCKr
-         hZs4UkJ8rO4OvZcx1lIvB26gt+YM1HEaRWzDTVTM9EP5lp+N096r3sTK9NY1SEbsuKS1
-         PPeZN7MBSlJcq7sE/Q+RVnt7LPDIrbRfh1Exu4W9x+1NJewc/7CAxn6v6/4WGU4AaFim
-         VTAdLzGLAdWh8mHzgc8r/LcAK+Jq8hT11GlnPLIgEDEFF9NfIg2WOp1UklpJVdx4PAwZ
-         +PWQ==
-X-Gm-Message-State: AOJu0Yw1NFxH+lT7ecJlQd3bm2rYkwCXRwgDThAyOAUmGUbxMNLmkSOr
-	6k9/BLiCuTwiLh/oG5eIci7obn3S1wX71DMfXXftprbIuGzuXTByhSw4E6QBTMetLh9hawGPL0F
-	JFZWZ4h8MtzmaM0eUMcMMhg==
-X-Received: by 2002:a05:620a:560b:b0:77b:b34e:6262 with SMTP id vu11-20020a05620a560b00b0077bb34e6262mr6700755qkn.46.1700060047604;
-        Wed, 15 Nov 2023 06:54:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE8Q+hB6LwGEOpBjf0tTy48HeUIb95APpcQR8cIO4M7kaLSCpN0/vvs5U/8Y5mL2TRIxjAUaQ==
-X-Received: by 2002:a05:620a:560b:b0:77b:b34e:6262 with SMTP id vu11-20020a05620a560b00b0077bb34e6262mr6700714qkn.46.1700060047365;
-        Wed, 15 Nov 2023 06:54:07 -0800 (PST)
-Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
-        by smtp.gmail.com with ESMTPSA id dx8-20020a05620a608800b0076cc0a6e127sm3521399qkb.116.2023.11.15.06.54.06
+        bh=7UFCXikobOe7NagckS+Ldfl/huzC/GDUL1xICL6pThc=;
+        b=TLQEDsjg1CpSviev9UcLWnkLZ+i0jfi38Xd01NN9W+Lff7VSXvt9jXRAjM1kUcZHmi
+         8xJ/FuDJFxk6ZlD7mL+vzrmDprrShJlwGbNAXGSgU+OJ1Y9CZTPxlAcsMQk+Mo/I4QcX
+         ucBf5hdPN/5ckLE7112Wssr+0tzk1ssNJn4Ok57RixmUKiS8dOr9qgFJ75Y3f0Lu2apT
+         77umM/gwW6S0vo6aN9HAcDkREwhCTq4s9z1tQSZyU9FHqMULpqGjm26pk8zfoVX/W5N6
+         llenJrxnhWGZ7ZKr9jyBmPW7Rl10G/Ro5jPnS86nJGH133cV3DCY1raH0Cs1RjpgteZG
+         Q51Q==
+X-Gm-Message-State: AOJu0YwJQJWxIcqJ1iUL1FgBMG1/64OBXo+ERIDsQYts0WzJmnnXCI7c
+	P4pzDfbo7DmQGhQaAWh9WKo=
+X-Google-Smtp-Source: AGHT+IH5PjGIk7Gl8ToTDM34GQejboIXLEbjtzvTB7suLwByRDhW/R42bKPWOaZmzCVOft/K9b90iA==
+X-Received: by 2002:a05:6871:5c7:b0:1e9:9aa5:997b with SMTP id v7-20020a05687105c700b001e99aa5997bmr16236707oan.20.1700060229566;
+        Wed, 15 Nov 2023 06:57:09 -0800 (PST)
+Received: from google.com ([12.186.190.2])
+        by smtp.gmail.com with ESMTPSA id x4-20020a05620a14a400b0077438383a07sm3525383qkj.80.2023.11.15.06.57.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Nov 2023 06:54:07 -0800 (PST)
-Date: Wed, 15 Nov 2023 07:54:05 -0700
-From: Jerry Snitselaar <jsnitsel@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: acpica-devel@lists.linux.dev, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
-	Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, 
-	Dexuan Cui <decui@microsoft.com>, devicetree@vger.kernel.org, 
-	David Woodhouse <dwmw2@infradead.org>, Frank Rowand <frowand.list@gmail.com>, 
-	Hanjun Guo <guohanjun@huawei.com>, Haiyang Zhang <haiyangz@microsoft.com>, iommu@lists.linux.dev, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Joerg Roedel <joro@8bytes.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-snps-arc@lists.infradead.org, linux-tegra@vger.kernel.org, 
-	Russell King <linux@armlinux.org.uk>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Hector Martin <marcan@marcan.st>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, patches@lists.linux.dev, 
-	Paul Walmsley <paul.walmsley@sifive.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, Rob Herring <robh+dt@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, Sven Peter <sven@svenpeter.dev>, 
-	Thierry Reding <thierry.reding@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Krishna Reddy <vdumpa@nvidia.com>, Vineet Gupta <vgupta@kernel.org>, virtualization@lists.linux.dev, 
-	Wei Liu <wei.liu@kernel.org>, Will Deacon <will@kernel.org>, 
-	=?utf-8?B?QW5kcsOp?= Draszik <andre.draszik@linaro.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
-	Christoph Hellwig <hch@lst.de>, Moritz Fischer <mdf@kernel.org>, 
-	Zhenhua Huang <quic_zhenhuah@quicinc.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2 00/17] Solve iommu probe races around iommu_fwspec
-Message-ID: <ah7jh6pi5o3s47mz5y4tms46fvpbmaisw6orom6tke2vdsqejm@qvjnxhejqs5i>
-References: <0-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
+        Wed, 15 Nov 2023 06:57:09 -0800 (PST)
+Date: Wed, 15 Nov 2023 14:57:06 +0000
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: andy.shevchenko@gmail.com
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ferry Toth <ftoth@exalondelft.nl>
+Subject: Re: [PATCH v1 2/3] gpiolib: Fix debug messaging in
+ gpiod_find_and_request()
+Message-ID: <ZVTcQnH_BEEFJ2Ut@google.com>
+References: <20231019173457.2445119-1-andriy.shevchenko@linux.intel.com>
+ <20231019173457.2445119-3-andriy.shevchenko@linux.intel.com>
+ <ZTGBqEUzgGCcZP1B@google.com>
+ <ZVOSd62yCz4lFIP1@smile.fi.intel.com>
+ <ZVPkIOk6gvnwkp9F@google.com>
+ <ZVQg9hTQwGtNwIhv@surfacebook.localdomain>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -101,11 +86,103 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
+In-Reply-To: <ZVQg9hTQwGtNwIhv@surfacebook.localdomain>
 
-Did patch 12 v2 get sent? I'm not seeing it locally, nor in lore, and b4 doesn't find it when pulling then thread.
+On Wed, Nov 15, 2023 at 03:37:58AM +0200, andy.shevchenko@gmail.com wrote:
+> Tue, Nov 14, 2023 at 09:18:24PM +0000, Dmitry Torokhov kirjoitti:
+> > On Tue, Nov 14, 2023 at 05:29:59PM +0200, Andy Shevchenko wrote:
+> > > On Thu, Oct 19, 2023 at 12:21:12PM -0700, Dmitry Torokhov wrote:
+> > > > On Thu, Oct 19, 2023 at 08:34:56PM +0300, Andy Shevchenko wrote:
+> 
+> 
+> > > > > When consolidating GPIO lookups in ACPI code, the debug messaging
+> > > > > had been broken and hence lost a bit of sense. Restore debug
+> > > > > messaging in gpiod_find_and_request() when configuring the GPIO
+> > > > > line via gpiod_configure_flags().
+> > > > 
+> > > > Could you give an example of the before/after messages to show exavtly
+> > > > what is being improved?
+> > > 
+> > > Before your patch:
+> > > 
+> > > [    5.266823] gpio-96 (ACPI:OpRegion): no flags found for ACPI:OpRegion
+> > > [   14.182994] gpio-40 (?): no flags found for gpios
+> > > 
+> > > After your patch:
+> > > 
+> > > [    5.085048] gpio-96 (ACPI:OpRegion): no flags found for ACPI:OpRegion
+> > > [   13.401402] gpio-40 (?): no flags found for (null)
+> > > 
+> > > After this patch:
+> > > 
+> > > [    3.871185] gpio-96 (ACPI:OpRegion): no flags found for ACPI:OpRegion
+> > > [   12.491998] gpio-40 (?): no flags found for gpios
+> > > 
+> > > ...
+> > > 
+> > > Looking at this it's definitely a fix.
+> > 
+> > If this ("(null)" vs static "gpios" string) is important, can we reduce
+> > the patch to:
+> > 
+> > diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> > index 76e0c38026c3..b868c016a9be 100644
+> > --- a/drivers/gpio/gpiolib.c
+> > +++ b/drivers/gpio/gpiolib.c
+> > @@ -4151,7 +4151,7 @@ int gpiod_configure_flags(struct gpio_desc *desc, const char *con_id,
+> >  
+> >  	/* No particular flag request, return here... */
+> >  	if (!(dflags & GPIOD_FLAGS_BIT_DIR_SET)) {
+> > -		gpiod_dbg(desc, "no flags found for %s\n", con_id);
+> > +		gpiod_dbg(desc, "no flags found for %s\n", con_id ?: "gpios");
+> >  		return 0;
+> >  	}
+> >  
+> > 
+> > instead of plumbing the names through?
+> 
+> Definitely no, because how can you guess that this is "gpios" and not "gpio"?
+> 
+> > Although this (and the original fix patch) are losing information, in
+> > the sense that "(null)" explicitly communicates that caller used
+> > default/NULL conn_id, and not something like "gpios-gpios".
+> 
+> This is not true, there was no such information before your patch and NULL
+> pointer printing is simply a bad style programming. We already had the cases
+> when users were scary by "NULL device *" and other similar stuff when it's
+> practically no problems in the flow. This has to be fixed anyway.
+> 
+> And what's the practical meaning of gpios-gpios / gpio-gpios / gpios-gpio /
+> gpio-gpio? I believe they are so weird that thinking about them would be lowest
+> priority over the issues with the messaging there.
 
-Regards,
-Jerry
+Well, I think we should try to communicate better what it is that we are
+printing. Consider your example:
 
+	"gpio-40 (?): no flags found for gpios"
+
+what gpios mean here? You need to go into the code to figure out that it
+is connection id (whatever it is for a person who is not ultimately
+familiar with gpio subsystem) and not "gpios" in a generic sense. Plus
+with your patch you need to ascend a couple of layers up to figure out
+that it is connection id and not something else. With "(null)" we at
+least did not obfuscate things just so they are visually pleasing to a
+random user.
+
+How about we change a message a bit:
+
+	gpiod_dbg(desc, "no flags found for %s gpios\n",
+		  con_id ?: "default");
+
+We can argue if "default" should be "unnamed" or "unspecified" or
+something else.
+
+And finally what would help most is having a consumer device for which
+we are carrying out the operation. You can figure it out from the
+sequence of debug messages, but having it right here would be better.
+
+Thanks.
+
+-- 
+Dmitry
 
