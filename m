@@ -1,69 +1,69 @@
-Return-Path: <linux-acpi+bounces-1522-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1523-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44DF7EC8CB
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 17:43:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B91677EC8CC
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 17:44:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A4121F27E9A
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 16:43:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73CB328099A
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 16:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEA93BB34
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 16:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3FE28E27
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 16:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GDDrK/IU"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eMisUO8G"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5B51804E
-	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 14:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69E92C85A
+	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 14:45:47 +0000 (UTC)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEB3D211F
-	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 06:43:04 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D6441AC
+	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 06:45:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700059383;
+	s=mimecast20190719; t=1700059545;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
 	bh=sqWGwV812/CXYndzj2W50PA7KOMPm+tHC+e+xjD2/M0=;
-	b=GDDrK/IUxJxyaD9Eesf2xMM34fW5yMAURIvUv5FeWryyArZuABKnsc08VlSvE/LsL5ov3M
-	eOIxokebuzQpJYfcIRFoDSh0grb1Y2UFS1ZiiEhnIv2pCEfMHiKv0O/zGGuax4GABgeBF/
-	io3r2J3JvVfANMV4AbK41AWfNGr+3tI=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	b=eMisUO8GETcoW33XgbVvGFoZSGvcs6sr8qGR7HdNuy6l7n+3b1r3cCgVaaTc4rmVnvIdFs
+	esAP0rORkrKtXky+DkVYgB6FJ4yK+vA/nAux7Gys3mK38+iEZ1SFTozp/AS0YvkuyBj+qC
+	QN055SZdG2DH06ofT8KRCvBNYieATAE=
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
+ [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-161-_KWwR8pPMyqIJzCNEWsRvQ-1; Wed, 15 Nov 2023 09:43:01 -0500
-X-MC-Unique: _KWwR8pPMyqIJzCNEWsRvQ-1
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-77bc625a8a2so717355385a.0
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 06:43:01 -0800 (PST)
+ us-mta-605-XI3F96_fNo2UT8g2L2F6rg-1; Wed, 15 Nov 2023 09:45:44 -0500
+X-MC-Unique: XI3F96_fNo2UT8g2L2F6rg-1
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-3b3447c72c4so8004198b6e.1
+        for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 06:45:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700059381; x=1700664181;
+        d=1e100.net; s=20230601; t=1700059543; x=1700664343;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
         bh=sqWGwV812/CXYndzj2W50PA7KOMPm+tHC+e+xjD2/M0=;
-        b=hvOLF4WOQvG76MbYGW56HLdXctrWri5zx3bvxNZN32hjqW3fRQdYM5zjwSKLyW0gCB
-         jhauyL0MO8bReILnzTvcXCGWAG9UY9vfQQKMXjWZVYEf1+08E3BA6kj+JMPhE/uhVP12
-         2/INr2nXT/2m4S692RDhuI//qOCJkVGn1DVqOGPG6CLJjT0/6TeAOOeQI7v8WYHJeJYg
-         0c6Q43gCgoVcJTxdA4ri7DCYgP3hCADHGy3c7I3z4/Iv2qXFJ45+uNiyF9FNtrbBctP1
-         YvepAUlMAUq6CHotGWUVeoFq0t+ipolgOBujvm6SzvRQnrNSQYZ3JWdIbchirvkYdOKi
-         Q7pQ==
-X-Gm-Message-State: AOJu0YzFwRjEFBRXr5Mr5GAaiBQfz4Jhd5vxR3bwbqosvPDyUxUteZHw
-	tvOHKxdkKhboo45EpoWpz41OfAM3kph/JeR26wrMfG5AZCS4mJ4sN/3QvsZvM+qyTSAeuu7EkIb
-	XUScR9oorLo0fEXRn8xrCag==
-X-Received: by 2002:a0c:c3cf:0:b0:66d:1100:7b81 with SMTP id p15-20020a0cc3cf000000b0066d11007b81mr5491019qvi.18.1700059380970;
-        Wed, 15 Nov 2023 06:43:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF0jpQrK9oJO86ojMSo1dc0KOCSp7+RBS164Fh6GwHlgBAjmWNWgSHBdIgtMHXFSNVSzkNNdA==
-X-Received: by 2002:a0c:c3cf:0:b0:66d:1100:7b81 with SMTP id p15-20020a0cc3cf000000b0066d11007b81mr5491005qvi.18.1700059380669;
-        Wed, 15 Nov 2023 06:43:00 -0800 (PST)
+        b=J9evgLZP0FZ07a2/AzBuqILDBwchhsfCOJO0vbGJYSS6wc8NLJfc/HuYnW1LGcFk3U
+         0mUzFa/xCdkNmreUXS98y1TfTNFVz/xBS+8+K4PtFx1AMotCnqA1X142Z4SCY3jbKnyK
+         FCpwEl8XQUM5Nex2XFRhT+jFURm7+TrqNETjTlgQ5P5vprVnUsBVrZ7DJkOCjJ4XGoBk
+         j+AMvP21y5LmJIRldtU8Z3ZpRZRj720U//m75EhYuwGd/EcO2Lv4dUyf7tgbr+dWdmaT
+         wD8X6ZXOrh/TVxf6Ikz8XIm3DPlZHrP6Rk8XNFIXucAnX/eLbEANZTNfHkfS174tempO
+         0Z1g==
+X-Gm-Message-State: AOJu0YzuRAGDEbIvQHV6BmQOlSSC3xbVy3GGi41O/OxM4XWJ+xijUbiC
+	2m2QZAITIDoherxgBUWexeezQDJ8u3ud3fX860tCRFDRMpQ8Y0BW3NaxzPDWGrtnHq4rNVa/Nbc
+	2Y3kM1b3N7Rxbxco370QHAQ==
+X-Received: by 2002:a05:6358:919a:b0:16b:c64b:5dad with SMTP id j26-20020a056358919a00b0016bc64b5dadmr7077900rwa.10.1700059543254;
+        Wed, 15 Nov 2023 06:45:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHcJVORPEWxErQUmTJ/FpxcV4QjvJjDEY7Ir6ZH3gFB8P/4S+/kGnZXTGDIbciHJXITaJ6Zhw==
+X-Received: by 2002:a05:6358:919a:b0:16b:c64b:5dad with SMTP id j26-20020a056358919a00b0016bc64b5dadmr7077772rwa.10.1700059540988;
+        Wed, 15 Nov 2023 06:45:40 -0800 (PST)
 Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
-        by smtp.gmail.com with ESMTPSA id u2-20020a05621411a200b00674a45499dcsm578681qvv.88.2023.11.15.06.42.59
+        by smtp.gmail.com with ESMTPSA id v10-20020a0cf90a000000b00655d6d31470sm577985qvn.43.2023.11.15.06.45.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Nov 2023 06:43:00 -0800 (PST)
-Date: Wed, 15 Nov 2023 07:42:58 -0700
+        Wed, 15 Nov 2023 06:45:40 -0800 (PST)
+Date: Wed, 15 Nov 2023 07:45:39 -0700
 From: Jerry Snitselaar <jsnitsel@redhat.com>
 To: Jason Gunthorpe <jgg@nvidia.com>
 Cc: acpica-devel@lists.linux.dev, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
@@ -90,11 +90,11 @@ Cc: acpica-devel@lists.linux.dev, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
 	Christoph Hellwig <hch@lst.de>, Moritz Fischer <mdf@kernel.org>, 
 	Zhenhua Huang <quic_zhenhuah@quicinc.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
 	Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2 03/17] iommu/of: Use -ENODEV consistently in
- of_iommu_configure()
-Message-ID: <jtgj4qfpqzj5zowqwmcniaxd77kqvirspm2a7jkgg6vgmo2scy@5jpoatxkrkid>
+Subject: Re: [PATCH v2 04/17] acpi: Do not return struct iommu_ops from
+ acpi_iommu_configure_id()
+Message-ID: <qmb2wshxcq75o43xikgw3ks6d72yyiranapupkwmwcm5b4vkgp@mgm36neokikv>
 References: <0-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
- <3-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
+ <4-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -103,7 +103,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
+In-Reply-To: <4-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
 
 Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 
