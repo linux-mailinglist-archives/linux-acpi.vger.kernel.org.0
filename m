@@ -1,232 +1,106 @@
-Return-Path: <linux-acpi+bounces-1543-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1544-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396527ECAA5
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 19:40:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28EE57ED259
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 21:36:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67BB01C2028E
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 18:40:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59F021C208CE
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 20:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DB2364BD
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 18:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7E3446B8
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 20:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdL+QufB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 900EC1B8;
-	Wed, 15 Nov 2023 10:25:54 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E4D47DA7;
-	Wed, 15 Nov 2023 10:26:39 -0800 (PST)
-Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CC0653F641;
-	Wed, 15 Nov 2023 10:25:52 -0800 (PST)
-From: Robin Murphy <robin.murphy@arm.com>
-To: joro@8bytes.org,
-	will@kernel.org
-Cc: iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336D0433BA;
+	Wed, 15 Nov 2023 20:23:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50021C433C8;
+	Wed, 15 Nov 2023 20:23:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700079809;
+	bh=gabJ5os+xjeNpC+/5fAtNZcqD3iV33NQ/cAdC59SDeQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UdL+QufB/iE97IKDDSJZF2KstB/Lpihw4KL0t2gZlNHJ+b2qANVNv2SCKm2esd5z1
+	 E20NuEUjVbyvsn2OeGfXqvN0KkC5nErJW6Q+G/fGULJPWJQc4xn1F02D23nDlEQvZU
+	 Cz2z7YoFN3r58FYxQ5JHOSWLkUHWGUQoafT8ohEU=
+Date: Wed, 15 Nov 2023 15:21:29 -0500
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	lpieralisi@kernel.org,
-	andre.draszik@linaro.org,
-	quic_zhenhuah@quicinc.com,
-	jgg@nvidia.com
-Subject: [PATCH] iommu: Avoid more races around device probe
-Date: Wed, 15 Nov 2023 18:25:44 +0000
-Message-Id: <16f433658661d7cadfea51e7c65da95826112a2b.1700071477.git.robin.murphy@arm.com>
-X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
+	Linus Walleij <linus.walleij@linaro.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v1 1/3] device property: Implement device_is_big_endian()
+Message-ID: <2023111513-stinky-doorframe-8cd1@gregkh>
+References: <20231025184259.250588-1-andriy.shevchenko@linux.intel.com>
+ <20231025184259.250588-2-andriy.shevchenko@linux.intel.com>
+ <2023102624-moonshine-duller-3043@gregkh>
+ <ZTpbMVSdKlOgLbwv@smile.fi.intel.com>
+ <ZUPBVMdi3hcTyW2n@smile.fi.intel.com>
+ <CAMRc=MeV9ZyOzuQFEE_duPTHYgfmr6UZU6bpjDPhrczZX4PHpg@mail.gmail.com>
+ <CAMRc=MdSpk_OszeDCyA5_Sp-w=sL9DHB2gGCOFP+FCiobm2cbA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MdSpk_OszeDCyA5_Sp-w=sL9DHB2gGCOFP+FCiobm2cbA@mail.gmail.com>
 
-It turns out there are more subtle races beyond just the main part of
-__iommu_probe_device() itself running in parallel - the dev_iommu_free()
-on the way out of an unsuccessful probe can still manage to trip up
-concurrent accesses to a device's fwspec. Thus, extend the scope of
-iommu_probe_device_lock() to also serialise fwspec creation and initial
-retrieval.
+On Wed, Nov 15, 2023 at 03:58:54PM +0100, Bartosz Golaszewski wrote:
+> On Fri, Nov 3, 2023 at 10:08 AM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> >
+> > On Thu, Nov 2, 2023 at 4:33 PM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> > >
+> > > On Thu, Oct 26, 2023 at 03:27:30PM +0300, Andy Shevchenko wrote:
+> > > > On Thu, Oct 26, 2023 at 07:25:35AM +0200, Greg Kroah-Hartman wrote:
+> > > > > On Wed, Oct 25, 2023 at 09:42:57PM +0300, Andy Shevchenko wrote:
+> > > > > > Some users want to use the struct device pointer to see if the
+> > > > > > device is big endian in terms of Open Firmware specifications,
+> > > > > > i.e. if it has a "big-endian" property, or if the kernel was
+> > > > > > compiled for BE *and* the device has a "native-endian" property.
+> > > > > >
+> > > > > > Provide inline helper for the users.
+> > > > >
+> > > > > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > >
+> > > > Thank you, Greg.
+> > > >
+> > > > Bart, would it be still possible to take this into next?
+> > > > I would like to have at least this patch applied (with the first user)
+> > > > to allow conversion of others (I have some more users of new API).
+> > >
+> > > Okay, seems we missed v6.7 with this, can you then prepare an immutable
+> > > branch / tag with this, so other maintainers can pull in case it's needed?
+> > > (I have something against tty already and perhaps something else, let's
+> > >  see.)
+> > >
+> >
+> > It arrived too late in the cycle, I needed to send my PR earlier this
+> > time as I was OoO this week.
+> >
+> > Bart
+> 
+> Greg, will you take this patch through your tree and provide me with
+> an immutable tag for this cycle?
 
-Reported-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Link: https://lore.kernel.org/linux-iommu/e2e20e1c-6450-4ac5-9804-b0000acdf7de@quicinc.com/
-Fixes: 01657bc14a39 ("iommu: Avoid races around device probe")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
----
+Sure, let me catch up with patches after I return from Plumbers next
+week.
 
-This is my idea of a viable fix, since it does not need a 700-line
-diffstat to make the code do what it was already *trying* to do anyway.
-This stuff should fundamentally not be hanging off driver probe in the
-first place, so I'd rather get on with removing the underlying
-brokenness than waste time and effort polishing it any further.
-
- drivers/acpi/scan.c      |  7 ++++++-
- drivers/iommu/iommu.c    | 20 ++++++++++----------
- drivers/iommu/of_iommu.c | 12 +++++++++---
- include/linux/iommu.h    |  1 +
- 4 files changed, 26 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index fa5dd71a80fa..02bb2cce423f 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1568,17 +1568,22 @@ static const struct iommu_ops *acpi_iommu_configure_id(struct device *dev,
- 	int err;
- 	const struct iommu_ops *ops;
- 
-+	/* Serialise to make dev->iommu stable under our potential fwspec */
-+	mutex_lock(&iommu_probe_device_lock);
- 	/*
- 	 * If we already translated the fwspec there is nothing left to do,
- 	 * return the iommu_ops.
- 	 */
- 	ops = acpi_iommu_fwspec_ops(dev);
--	if (ops)
-+	if (ops) {
-+		mutex_unlock(&iommu_probe_device_lock);
- 		return ops;
-+	}
- 
- 	err = iort_iommu_configure_id(dev, id_in);
- 	if (err && err != -EPROBE_DEFER)
- 		err = viot_iommu_configure(dev);
-+	mutex_unlock(&iommu_probe_device_lock);
- 
- 	/*
- 	 * If we have reason to believe the IOMMU driver missed the initial
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index f17a1113f3d6..e0c962648dde 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -485,11 +485,12 @@ static void iommu_deinit_device(struct device *dev)
- 	dev_iommu_free(dev);
- }
- 
-+DEFINE_MUTEX(iommu_probe_device_lock);
-+
- static int __iommu_probe_device(struct device *dev, struct list_head *group_list)
- {
- 	const struct iommu_ops *ops = dev->bus->iommu_ops;
- 	struct iommu_group *group;
--	static DEFINE_MUTEX(iommu_probe_device_lock);
- 	struct group_device *gdev;
- 	int ret;
- 
-@@ -502,17 +503,15 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
- 	 * probably be able to use device_lock() here to minimise the scope,
- 	 * but for now enforcing a simple global ordering is fine.
- 	 */
--	mutex_lock(&iommu_probe_device_lock);
-+	lockdep_assert_held(&iommu_probe_device_lock);
- 
- 	/* Device is probed already if in a group */
--	if (dev->iommu_group) {
--		ret = 0;
--		goto out_unlock;
--	}
-+	if (dev->iommu_group)
-+		return 0;
- 
- 	ret = iommu_init_device(dev, ops);
- 	if (ret)
--		goto out_unlock;
-+		return ret;
- 
- 	group = dev->iommu_group;
- 	gdev = iommu_group_alloc_device(group, dev);
-@@ -548,7 +547,6 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
- 			list_add_tail(&group->entry, group_list);
- 	}
- 	mutex_unlock(&group->mutex);
--	mutex_unlock(&iommu_probe_device_lock);
- 
- 	if (dev_is_pci(dev))
- 		iommu_dma_set_pci_32bit_workaround(dev);
-@@ -562,8 +560,6 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
- 	iommu_deinit_device(dev);
- 	mutex_unlock(&group->mutex);
- 	iommu_group_put(group);
--out_unlock:
--	mutex_unlock(&iommu_probe_device_lock);
- 
- 	return ret;
- }
-@@ -573,7 +569,9 @@ int iommu_probe_device(struct device *dev)
- 	const struct iommu_ops *ops;
- 	int ret;
- 
-+	mutex_lock(&iommu_probe_device_lock);
- 	ret = __iommu_probe_device(dev, NULL);
-+	mutex_unlock(&iommu_probe_device_lock);
- 	if (ret)
- 		return ret;
- 
-@@ -1822,7 +1820,9 @@ static int probe_iommu_group(struct device *dev, void *data)
- 	struct list_head *group_list = data;
- 	int ret;
- 
-+	mutex_lock(&iommu_probe_device_lock);
- 	ret = __iommu_probe_device(dev, group_list);
-+	mutex_unlock(&iommu_probe_device_lock);
- 	if (ret == -ENODEV)
- 		ret = 0;
- 
-diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-index 157b286e36bf..c25b4ae6aeee 100644
---- a/drivers/iommu/of_iommu.c
-+++ b/drivers/iommu/of_iommu.c
-@@ -112,16 +112,20 @@ const struct iommu_ops *of_iommu_configure(struct device *dev,
- 					   const u32 *id)
- {
- 	const struct iommu_ops *ops = NULL;
--	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-+	struct iommu_fwspec *fwspec;
- 	int err = NO_IOMMU;
- 
- 	if (!master_np)
- 		return NULL;
- 
-+	/* Serialise to make dev->iommu stable under our potential fwspec */
-+	mutex_lock(&iommu_probe_device_lock);
-+	fwspec = dev_iommu_fwspec_get(dev);
- 	if (fwspec) {
--		if (fwspec->ops)
-+		if (fwspec->ops) {
-+			mutex_unlock(&iommu_probe_device_lock);
- 			return fwspec->ops;
--
-+		}
- 		/* In the deferred case, start again from scratch */
- 		iommu_fwspec_free(dev);
- 	}
-@@ -155,6 +159,8 @@ const struct iommu_ops *of_iommu_configure(struct device *dev,
- 		fwspec = dev_iommu_fwspec_get(dev);
- 		ops    = fwspec->ops;
- 	}
-+	mutex_unlock(&iommu_probe_device_lock);
-+
- 	/*
- 	 * If we have reason to believe the IOMMU driver missed the initial
- 	 * probe for dev, replay it to get things in order.
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index ec289c1016f5..6291aa7b079b 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -845,6 +845,7 @@ static inline void dev_iommu_priv_set(struct device *dev, void *priv)
- 	dev->iommu->priv = priv;
- }
- 
-+extern struct mutex iommu_probe_device_lock;
- int iommu_probe_device(struct device *dev);
- 
- int iommu_dev_enable_feature(struct device *dev, enum iommu_dev_features f);
--- 
-2.39.2.101.g768bb238c484.dirty
-
+greg k-h
 
