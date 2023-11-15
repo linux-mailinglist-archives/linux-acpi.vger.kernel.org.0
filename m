@@ -1,123 +1,98 @@
-Return-Path: <linux-acpi+bounces-1503-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1504-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1139B7EC27D
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 13:37:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BC97EC56A
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 15:37:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACBF2B20A16
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 12:37:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0C88280E56
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 14:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079AD199A7
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 12:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="COo4qct5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9002D042
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 14:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5207156F3;
-	Wed, 15 Nov 2023 12:34:17 +0000 (UTC)
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AC5BC7;
-	Wed, 15 Nov 2023 04:34:16 -0800 (PST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 00CDF40E0030;
-	Wed, 15 Nov 2023 12:34:14 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id JAL49dTD3Lvc; Wed, 15 Nov 2023 12:34:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1700051651; bh=KifOVDlMp/2ycw5mH0oTXzCLORPNzCMwO+1bbYkzOw0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=COo4qct5KW0h1D+oINnaVz0DL8zmHPebfPPBxZnUP8cJkXf+aI6O6eBk+RXi1bcR8
-	 ZdLJHxKAJHQbzr70NhHkXe7dleR8epuhN7JUzA0s1xfBrNlga8ETET4qiSg+ONHDEC
-	 zCdnB99unmXHLxSydJoE8kROe7B05Sv2yL9cFrD5MV9N3hHLkgk7+tZYw/CtClepRy
-	 y4FQ/5ryU/7dsrAa2V2a6OKtkEpDkR08TPeCLHfC3pjkqFFtlqumroytPWKRebPkH5
-	 wBDv0JjoRXfGgHzJHveMc4lb5DD8v0kpbouuPWzh1mpmQencCGhBr/MldZDofX8D2i
-	 4YCCUH9zfgl5iqyfH53SLYLJeb9S63KRqKhfCLMHemNUlNl3b9caXqahvn2DaTgcYv
-	 Jhnooza2EpX07rCqCWwQaRtnvcZiIpPCiYhcBjAYuFM4uSCx+M7B+8sRVtzlDhPjR8
-	 r46NlZGyL+bpMtmEscKRQkz7JRFnM6DH4jSQE6bMJpB1bnpI3bSEEAnD7yJ3d6O3vf
-	 mHLOaBKASztaJnxFYTVkJjGf7d/H4uwcB+rUNVFgyQhhfsw5KjH/88VqXUgj7tejnj
-	 C2Q2LXt9Of0BO8lY8XiAUlrzR+MLjc1XH0GoRnAD8Nt72bI0Wx3c56ICCywKvvTsnJ
-	 cTbaK/x/EqjIiQdeBhOFOYNE=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CF20140E0032;
-	Wed, 15 Nov 2023 12:33:58 +0000 (UTC)
-Date: Wed, 15 Nov 2023 13:33:54 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Avadhut Naik <avadhut.naik@amd.com>
-Cc: linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-	james.morse@arm.com, tony.luck@intel.com,
-	gregkh@linuxfoundation.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, alexey.kardashevskiy@amd.com,
-	yazen.ghannam@amd.com, avadnaik@amd.com
-Subject: Re: [RESEND v5 4/4] ACPI: APEI: EINJ: Add support for vendor defined
- error types
-Message-ID: <20231115123354.GDZVS6suUf0ZIVqlh6@fat_crate.local>
-References: <20231107213647.1405493-1-avadhut.naik@amd.com>
- <20231107213647.1405493-5-avadhut.naik@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812241EB42
+	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 13:54:03 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id B231EAF;
+	Wed, 15 Nov 2023 05:54:02 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 12847DA7;
+	Wed, 15 Nov 2023 05:54:48 -0800 (PST)
+Received: from [192.168.1.3] (unknown [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EBC473F641;
+	Wed, 15 Nov 2023 05:54:00 -0800 (PST)
+Message-ID: <92d6a66d-3270-3378-2ab9-9214c004d5c7@arm.com>
+Date: Wed, 15 Nov 2023 13:53:59 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231107213647.1405493-5-avadhut.naik@amd.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 4/7] coresight: tpiu: Move ACPI support from AMBA driver
+ to platform driver
+Content-Language: en-US
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org, suzuki.poulose@arm.com
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20231027072943.3418997-1-anshuman.khandual@arm.com>
+ <20231027072943.3418997-5-anshuman.khandual@arm.com>
+From: James Clark <james.clark@arm.com>
+In-Reply-To: <20231027072943.3418997-5-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 07, 2023 at 03:36:47PM -0600, Avadhut Naik wrote:
-> From: Avadhut Naik <Avadhut.Naik@amd.com>
-> 
-> Vendor-Defined Error types are supported by the platform apart from
-> standard error types if bit 31 is set in the output of GET_ERROR_TYPE
-> Error Injection Action.[1] While the errors themselves and the length
-> of their associated "OEM Defined data structure" might vary between
-> vendors, the physical address of this structure can be computed through
-> vendor_extension and length fields of "SET_ERROR_TYPE_WITH_ADDRESS" and
-> "Vendor Error Type Extension" Structures respectively.[2][3]
-> 
-> Currently, however, the einj module only computes the physical address of
-> Vendor Error Type Extension Structure. Neither does it compute the physical
-> address of OEM Defined structure nor does it establish the memory mapping
-> required for injecting Vendor-defined errors. Consequently, userspace
-> tools have to establish the very mapping through /dev/mem, nopat kernel
-> parameter and system calls like mmap/munmap initially before injecting
-> Vendor-defined errors.
-> 
-> Circumvent the issue by computing the physical address of OEM Defined data
-> structure and establishing the required mapping with the structure. Create
-> a new file "oem_error", if the system supports Vendor-defined errors, to
-> export this mapping, through debugfs_create_blob(). Userspace tools can
-> then populate their respective OEM Defined structure instances and just
-> write to the file as part of injecting Vendor-defined Errors. Similarly,
-> the tools can also read from the file if the system firmware provides some
-> information through the OEM defined structure after error injection.
-> 
-> [1] ACPI specification 6.5, section 18.6.4
-> [2] ACPI specification 6.5, Table 18.31
-> [3] ACPI specification 6.5, Table 18.32
-> 
-> Suggested-by: Yazen Ghannam <yazen.ghannam@amd.com>
-> Signed-off-by: Avadhut Naik <Avadhut.Naik@amd.com>
-> ---
->  drivers/acpi/apei/einj.c | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
 
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
 
--- 
-Regards/Gruss,
-    Boris.
+On 27/10/2023 08:29, Anshuman Khandual wrote:
+> Add support for the tpiu device in the platform driver, which can then be
+> used on ACPI based platforms. This change would now allow runtime power
+> management for ACPI based systems. The driver would try to enable the APB
+> clock if available.
+> 
+[...]
+> +#ifdef CONFIG_ACPI
+> +static const struct acpi_device_id tpiu_acpi_ids[] = {
+> +	{"ARMHC979", 0}, /* ARM CoreSight TPIU */
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(acpi, tpiu_acpi_ids);
+> +#endif
+> +
+> +static struct platform_driver tpiu_platform_driver = {
+> +	.probe	= tpiu_platform_probe,
+> +	.remove	= tpiu_platform_remove,
+> +	.driver = {
+> +		.name			= "coresight-tpiu-platform",
+> +		.acpi_match_table	= ACPI_PTR(tpiu_acpi_ids),
+> +		.suppress_bind_attrs	= true,
+> +		.pm			= &tpiu_dev_pm_ops,
+> +	},
+> +};
+> +module_platform_driver(tpiu_platform_driver);
+> +
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Is there a special build config where this works? I get an error here
+because module_platform_driver() redefines things that are in
+module_amba_driver() which is defined above:
+
+  module_amba_driver(tpiu_driver);
+
+This isn't a W=1 build or anything, just a normal one. And it applies to
+most of the patches in this set.
+
 
