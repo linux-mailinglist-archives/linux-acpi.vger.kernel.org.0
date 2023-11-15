@@ -1,54 +1,70 @@
-Return-Path: <linux-acpi+bounces-1500-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1501-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 556EA7EC0CA
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 11:34:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571607EC0CC
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 11:34:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC3941F26A86
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 10:34:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11B87280D68
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 10:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574127E
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 10:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB842FBF8
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 10:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="WMk7AaLV"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A7C7E
-	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 09:43:07 +0000 (UTC)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id B4F99D8;
-	Wed, 15 Nov 2023 01:43:05 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E28E9DA7;
-	Wed, 15 Nov 2023 01:43:50 -0800 (PST)
-Received: from e129154.nice.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 974BA3F7B4;
-	Wed, 15 Nov 2023 01:42:58 -0800 (PST)
-Date: Wed, 15 Nov 2023 10:42:08 +0100
-From: Beata Michalska <beata.michalska@arm.com>
-To: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	sudeep.holla@arm.com, gregkh@linuxfoundation.org, rafael@kernel.org,
-	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-	mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
-	viresh.kumar@linaro.org, lenb@kernel.org, robert.moore@intel.com,
-	lukasz.luba@arm.com, ionela.voinescu@arm.com,
-	pierre.gondois@arm.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-	conor.dooley@microchip.com, suagrfillet@gmail.com,
-	ajones@ventanamicro.com, lftan@kernel.org
-Subject: Re: [PATCH v6 7/7] arm64/amu: Use capacity_ref_freq to set AMU ratio
-Message-ID: <ZVSSSi8sGSI8IREe@e129154.nice.arm.com>
-References: <20231109101438.1139696-1-vincent.guittot@linaro.org>
- <20231109101438.1139696-8-vincent.guittot@linaro.org>
- <ZVNw5Ci9kCPMqV67@e129154.nice.arm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD965C8CB;
+	Wed, 15 Nov 2023 10:11:46 +0000 (UTC)
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 252539C;
+	Wed, 15 Nov 2023 02:11:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=J+m5Wux4gCeZ5VbKE22zSD3h2vqCToIPoOglMpcMB98=; b=WMk7AaLVtN5GRy7VHSplvABKOr
+	OXRc47CE5LjYfVL1I4G9BmL9nkSst8Vh0ERKHmS8MJxRSPLKDFvaYbEeA1sMiDIYtcRhNQa/pnlI8
+	PkqOB9knMX2YL+uvuraKATTscnDpMYKl3cLLR36pzK4yKmNHGHEjAw7PZ395B53vvUhyuWvtelDyB
+	r5XhCGNIJB9iBgYQiuOIDQBOPCIGnr+az2tu1OpmA6+1stGbOEb7mZfrcCgopQw9ZYDmB/DHKIyAH
+	MGihds8I0ekCwC2YQuqoXNHvkOJ31Wt+yTJ713pnOPmQLGMyMGfLqHWpB6tvMEThA4WWseIPd1uBc
+	ry+LnBrA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56952)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1r3Crx-0000WK-1q;
+	Wed, 15 Nov 2023 10:11:37 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1r3Crw-0006Uz-QI; Wed, 15 Nov 2023 10:11:36 +0000
+Date: Wed, 15 Nov 2023 10:11:36 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Gavin Shan <gshan@redhat.com>
+Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, linux-csky@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
+	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH RFC 11/22] drivers: base: remove unnecessary call to
+ register_cpu_under_node()
+Message-ID: <ZVSZWK+OmZWEce33@shell.armlinux.org.uk>
+References: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
+ <E1r0JLa-00CTxY-Uv@rmk-PC.armlinux.org.uk>
+ <955f2b95-76e4-4e68-830b-e6dd9f122dc1@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -57,162 +73,68 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZVNw5Ci9kCPMqV67@e129154.nice.arm.com>
+In-Reply-To: <955f2b95-76e4-4e68-830b-e6dd9f122dc1@redhat.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Nov 14, 2023 at 02:07:01PM +0100, Beata Michalska wrote:
-> On Thu, Nov 09, 2023 at 11:14:38AM +0100, Vincent Guittot wrote:
-> > Use the new capacity_ref_freq to set the ratio that is used by AMU for
-> > computing the arch_scale_freq_capacity().
-> > This helps to keep everything aligned using the same reference for
-> > computing CPUs capacity.
+On Mon, Nov 13, 2023 at 02:04:32PM +1000, Gavin Shan wrote:
+> On 11/7/23 20:30, Russell King (Oracle) wrote:
+> > Since "drivers: base: Move cpu_dev_init() after node_dev_init()", we
+> > can remove some redundant code.
 > > 
-> > The default value of the ratio (stored in per_cpu(arch_max_freq_scale))
-> > ensures that arch_scale_freq_capacity() returns max capacity until it is
-> > set to its correct value with the cpu capacity and capacity_ref_freq.
+> > node_dev_init() will walk through the nodes calling register_one_node()
+> > on each. This will trickle down to __register_one_node() which walks
+> > all present CPUs, calling register_cpu_under_node() on each.
 > > 
-> > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> > Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+> > register_cpu_under_node() will call get_cpu_device(cpu) for each, which
+> > will return NULL until the CPU is registered using register_cpu(). This
+> > now happens _after_ node_dev_init().
+> > 
+> > Therefore, calling register_cpu_under_node() from __register_one_node()
+> > becomes a no-op, and can be removed.
+> > 
+> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 > > ---
-> >  arch/arm64/kernel/topology.c  | 26 +++++++++++++-------------
-> >  drivers/base/arch_topology.c  | 12 +++++++++++-
-> >  include/linux/arch_topology.h |  1 +
-> >  3 files changed, 25 insertions(+), 14 deletions(-)
+> >   drivers/base/node.c | 7 -------
+> >   1 file changed, 7 deletions(-)
 > > 
-> > diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-> > index 817d788cd866..1a2c72f3e7f8 100644
-> > --- a/arch/arm64/kernel/topology.c
-> > +++ b/arch/arm64/kernel/topology.c
-> > @@ -82,7 +82,12 @@ int __init parse_acpi_topology(void)
-> >  #undef pr_fmt
-> >  #define pr_fmt(fmt) "AMU: " fmt
-> >  
-> > -static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale);
-> > +/*
-> > + * Ensure that amu_scale_freq_tick() will return SCHED_CAPACITY_SCALE until
-> > + * the CPU capacity and its associated frequency have been correctly
-> > + * initialized.
-> > + */
-> > +static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale) =  1UL << (2 * SCHED_CAPACITY_SHIFT);
-> >  static DEFINE_PER_CPU(u64, arch_const_cycles_prev);
-> >  static DEFINE_PER_CPU(u64, arch_core_cycles_prev);
-> >  static cpumask_var_t amu_fie_cpus;
-> > @@ -112,14 +117,14 @@ static inline bool freq_counters_valid(int cpu)
-> >  	return true;
-> >  }
-> >  
-> > -static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
-> > +void freq_inv_set_max_ratio(int cpu, u64 max_rate)
-> >  {
-> > -	u64 ratio;
-> > +	u64 ratio, ref_rate = arch_timer_get_rate();
-> >  
-> >  	if (unlikely(!max_rate || !ref_rate)) {
-> > -		pr_debug("CPU%d: invalid maximum or reference frequency.\n",
-> > +		WARN_ONCE(1, "CPU%d: invalid maximum or reference frequency.\n",
-> >  			 cpu);
-> > -		return -EINVAL;
-> > +		return;
-> >  	}
-> >  
-> >  	/*
-> > @@ -139,12 +144,10 @@ static int freq_inv_set_max_ratio(int cpu, u64 max_rate, u64 ref_rate)
-> >  	ratio = div64_u64(ratio, max_rate);
-> >  	if (!ratio) {
-> >  		WARN_ONCE(1, "Reference frequency too low.\n");
-> > -		return -EINVAL;
-> > +		return;
-> >  	}
-> >  
-> > -	per_cpu(arch_max_freq_scale, cpu) = (unsigned long)ratio;
-> > -
-> > -	return 0;
-> > +	WRITE_ONCE(per_cpu(arch_max_freq_scale, cpu), (unsigned long)ratio);
-> >  }
-> >  
-> >  static void amu_scale_freq_tick(void)
-> > @@ -195,10 +198,7 @@ static void amu_fie_setup(const struct cpumask *cpus)
-> >  		return;
-> >  
-> >  	for_each_cpu(cpu, cpus) {
-> > -		if (!freq_counters_valid(cpu) ||
-> > -		    freq_inv_set_max_ratio(cpu,
-> > -					   cpufreq_get_hw_max_freq(cpu) * 1000ULL,
-> > -					   arch_timer_get_rate()))
-> > +		if (!freq_counters_valid(cpu))
 > 
-> >  			return;
-> >  	}
-> >  
-> > diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
-> > index 0a2e43728286..0906114963ff 100644
-> > --- a/drivers/base/arch_topology.c
-> > +++ b/drivers/base/arch_topology.c
-> > @@ -344,6 +344,10 @@ bool __init topology_parse_cpu_capacity(struct device_node *cpu_node, int cpu)
-> >  	return !ret;
-> >  }
-> >  
-> > +void __weak freq_inv_set_max_ratio(int cpu, u64 max_rate)
-> > +{
-> > +}
-> > +
-> >  #ifdef CONFIG_ACPI_CPPC_LIB
-> >  #include <acpi/cppc_acpi.h>
-> >  
-> > @@ -381,6 +385,9 @@ void topology_init_cpu_capacity_cppc(void)
-> >  	}
-> >  
-> >  	for_each_possible_cpu(cpu) {
-> > +		freq_inv_set_max_ratio(cpu,
-> > +				       per_cpu(capacity_freq_ref, cpu) * HZ_PER_KHZ);
-> > +
-> >  		capacity = raw_capacity[cpu];
-> >  		capacity = div64_u64(capacity << SCHED_CAPACITY_SHIFT,
-> >  				     capacity_scale);
-> > @@ -422,8 +429,11 @@ init_cpu_capacity_callback(struct notifier_block *nb,
-> >  
-> >  	cpumask_andnot(cpus_to_visit, cpus_to_visit, policy->related_cpus);
-> >  
-> > -	for_each_cpu(cpu, policy->related_cpus)
-> > +	for_each_cpu(cpu, policy->related_cpus) {
-> >  		per_cpu(capacity_freq_ref, cpu) = policy->cpuinfo.max_freq;
-> > +		freq_inv_set_max_ratio(cpu,
-> > +				       per_cpu(capacity_freq_ref, cpu) * HZ_PER_KHZ);
-> > +	}
-> Just wondering if this is really necessary as freq_inv_set_max_ratio will
-> originally be called upon cpufreq notification being triggered (with
-> CPUFREQ_CREATE_POLICY event) which should happen after the newly introduced
-> capacity_freq_ref gets properly set up, so wouldn't the change of flipping
-> cpufreq_get_hw_max_freq(cpu) to capacity_freq_ref do just fine ?
-> Then pushing AMU specific call to generic arch code  would not be necessary.
-> Or did I miss smth on the way ?
-> 
-I guess you can ignore my comment as init_cpu_capacity_callback (where we now
-set the capacity_freq_ref) works on the same basis so there is no guarantee it
-will be triggered before AMU callback.
-Still having the freq_inv_set_max_ratio sitting in arch_topology.c somehow
-doesn't sit well with me. We could potentially check capacity_freq_ref against
-its init value and act accordingly but that is gruesome as well.
+> __register_one_node() can be called in memory hot add path either. In that path,
+> a new NUMA node can be presented and becomes online. Does this become a problem
+> after the logic of associating CPU with newly added NUMA node?
 
-> ---
-> BR
-> B.
-> 
-> >  
-> >  	if (cpumask_empty(cpus_to_visit)) {
-> >  		topology_normalize_cpu_scale();
-> > diff --git a/include/linux/arch_topology.h b/include/linux/arch_topology.h
-> > index 32c24ff4f2a8..a63d61ca55af 100644
-> > --- a/include/linux/arch_topology.h
-> > +++ b/include/linux/arch_topology.h
-> > @@ -99,6 +99,7 @@ void update_siblings_masks(unsigned int cpu);
-> >  void remove_cpu_topology(unsigned int cpuid);
-> >  void reset_cpu_topology(void);
-> >  int parse_acpi_topology(void);
-> > +void freq_inv_set_max_ratio(int cpu, u64 max_rate);
-> >  #endif
-> >  
-> >  #endif /* _LINUX_ARCH_TOPOLOGY_H_ */
-> > -- 
-> > 2.34.1
-> > 
+I guess this is where ordering matters.
+
+As mentioned in the commit message, register_cpu_under_node() does
+this:
+
+        if (!node_online(nid))
+                return 0;
+
+        obj = get_cpu_device(cpu);
+        if (!obj)
+                return 0;
+
+get_cpu_device() will return NULL if the CPU is not possible or is out
+of range, or register_cpu() has not yet been called for this CPU, and
+register_cpu() will call register_cpu_under_node().
+
+I guess it is possible for a CPU it be present, but the node its
+associated with would not be online, which means we end up with
+register_cpu_under_node() returning on !node_online(nid) but we've
+populated the CPU devices (thus get_cpu_device(cpu) would return
+non-NULL).
+
+Then when the numa node comes online, we do still need to call this
+path, so this change is incorrect.
+
+It came about trying to address Jonathan's comment for this patch:
+
+https://lore.kernel.org/r/20230913163823.7880-7-james.morse@arm.com
+
+I think my response to Jonathan is still correct - but didn't need
+a code change. I'm dropping this patch.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
