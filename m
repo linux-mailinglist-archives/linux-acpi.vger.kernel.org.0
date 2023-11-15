@@ -1,245 +1,104 @@
-Return-Path: <linux-acpi+bounces-1494-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1495-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EA87EBCA0
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 05:34:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 531DD7EC0C2
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 11:34:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0E041F26301
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 04:34:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F23ED1F26A64
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 10:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19AB23D92
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 04:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="JlJnyZVW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E13FBEA
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 10:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF8464C
-	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 03:23:21 +0000 (UTC)
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2070.outbound.protection.outlook.com [40.107.212.70])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F399D7;
-	Tue, 14 Nov 2023 19:23:19 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZeiSE9rI38MZG4U03PIXdS7LiAGYUk6gG96pKK9qizHctB6SwIf4G/D3BMAMRdIPrQhTJsCSNGQfX5ZBzhsLfzcUA2nDr788u3EAyoh9XHlcIMWG1PPhuxTG1fBj17rsbhDumRZX/Pxt6XIXbafQM3BeEve+k5PyxiAfT6nd9Wp/ILSXEpURaNehRX6YMj/k3nSQ/GI93PnrvrxxFTVs2DVYzsS3M7fu+tXn7PAIwwJQBdMBs57Ru8UH8oM39v5D4Tqvz3a6pVj6JV/H/T1GtoLOlcHwCyYH2uIfAinrL+y/SuqtjQzqoG722g06N6QA+H4NgE5f6CtX7wUsma52JA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7duwcchnGJmsBPzCJAX3XXVi+GgUmWqwevm8DZZwzSE=;
- b=WVFaNa6qqkjjJTq+uE8cOiuZsl6KgRi5az/Km8E/OvPAdVTY4yIdMatxWC0YlVahCxXMOS0m3ex0TX6ej9Zdda/juBXeDTTI9xPUeLs+Bfa5aXMvt4LT9vuRO8JFA4TtHUJtJss/kJ4fFJkdxOPXhEX/MjLW+duwBNo1o5E+xEwMVWwcFMQGjEdkhl9VA9cpDrelJNivPfQXgjhJsFf2VL9b9RcXJKxGjQNJjs7i0cnkqr/HT0V7qByfgkVSS0CjY0T8QFbwnnt2aagJZXNyBKIEVnzHO1i3ONLiwUiZbunUuuNPQ3dg4xhpFH0njFeIL+FPFt2fkUfkakwozoQZ+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7duwcchnGJmsBPzCJAX3XXVi+GgUmWqwevm8DZZwzSE=;
- b=JlJnyZVWb9LT7xLcEfpr6qzeeKuLKJvoCVf/OyN0hjEKYR3Xi3COerolknYe9Slr21hkksLmLGymwQkeI0kdP4fyWZj+DAuTgDoewBIcG8PJiZRLJRvJQwEzpzxXsWDe+R5KT8g5bAo2WqcyK5MFJQXCfnlCASIgr8UnPIk4gfY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BYAPR12MB4614.namprd12.prod.outlook.com (2603:10b6:a03:a6::22)
- by PH7PR12MB6467.namprd12.prod.outlook.com (2603:10b6:510:1f5::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.19; Wed, 15 Nov
- 2023 03:23:17 +0000
-Received: from BYAPR12MB4614.namprd12.prod.outlook.com
- ([fe80::c258:1e94:a85b:1510]) by BYAPR12MB4614.namprd12.prod.outlook.com
- ([fe80::c258:1e94:a85b:1510%4]) with mapi id 15.20.6977.032; Wed, 15 Nov 2023
- 03:23:17 +0000
-Message-ID: <e0e76948-a0a8-b6c2-163b-1d00afb6650c@amd.com>
-Date: Wed, 15 Nov 2023 08:53:00 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [PATCH v3 7/7] PCI: Exclude PCIe ports used for virtual links in
- pcie_bandwidth_available()
-Content-Language: en-US
-To: Mario Limonciello <mario.limonciello@amd.com>,
- Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Lukas Wunner <lukas@wunner.de>
-Cc: =?UTF-8?Q?Marek_Beh=c3=ban?= <kabel@kernel.org>,
- "open list:RADEON and AMDGPU DRM DRIVERS" <amd-gfx@lists.freedesktop.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
- =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
- Xinhui Pan <Xinhui.Pan@amd.com>, Manivannan Sadhasivam <mani@kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS"
- <dri-devel@lists.freedesktop.org>,
- "open list:ACPI" <linux-acpi@vger.kernel.org>,
- Danilo Krummrich <dakr@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
- "open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS"
- <nouveau@lists.freedesktop.org>,
- =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- David Airlie <airlied@gmail.com>, "Maciej W . Rozycki" <macro@orcam.me.uk>
-References: <20231114200755.14911-1-mario.limonciello@amd.com>
- <20231114200755.14911-8-mario.limonciello@amd.com>
-From: "Lazar, Lijo" <lijo.lazar@amd.com>
-In-Reply-To: <20231114200755.14911-8-mario.limonciello@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BM1PR01CA0145.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:b00:68::15) To BYAPR12MB4614.namprd12.prod.outlook.com
- (2603:10b6:a03:a6::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE757E
+	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 09:16:43 +0000 (UTC)
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01F53127
+	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 01:16:39 -0800 (PST)
+X-ASG-Debug-ID: 1700039775-1eb14e538e15da0001-I98ny2
+Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx2.zhaoxin.com with ESMTP id NCSNkDLaKjybgSav (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 15 Nov 2023 17:16:15 +0800 (CST)
+X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX2.zhaoxin.com
+ (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 15 Nov
+ 2023 17:16:15 +0800
+Received: from xin.lan (10.32.64.1) by ZXBJMBX03.zhaoxin.com (10.29.252.7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 15 Nov
+ 2023 17:16:13 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+From: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.7
+To: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
+	<tony.luck@intel.com>, <bp@alien8.de>, <bhelgaas@google.com>,
+	<robert.moore@intel.com>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<acpica-devel@lists.linux.dev>
+CC: <CobeChen@zhaoxin.com>, <TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>,
+	<LeoLiu@zhaoxin.com>, LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+Subject: [PATCH 0/3] Parse the HEST PCIe AER and set to relevant registers
+Date: Wed, 15 Nov 2023 17:16:09 +0800
+X-ASG-Orig-Subj: [PATCH 0/3] Parse the HEST PCIe AER and set to relevant registers
+Message-ID: <20231115091612.580685-1-LeoLiu-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR12MB4614:EE_|PH7PR12MB6467:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb127c4d-ecb1-47cb-a3fd-08dbe58a353c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	Bh7gLHm32YpcvljvyyJpfmIuEnVdOCZIz/sL4Woh+nkDlAmpGpC5WG5FCj7qtrB8ocxO4C9z+eKW4c7VWuHOZqp/8MoW6Dm6e/PZzCJcnDQzMdENxjGIpq6F1WpD9RAfSIg7ty8iJ1nxSCawDTMRe/UWlKXBIEaFBcG+VGo774zVA3zUBjLhbfJ738BWqa3GpFhdPdPd1rjCiKfrJXdjFw+HluEqi/UfQKD8u2c1I2QmexKZvC1VFvXvCrvF5IS0ap4p0ekgkFI3tK9Zc+8pdScAuCO93jFyMJgUvLaXRcXNnVX97rjjSWQvxNJYjN43oYSzKGKBz6lwyPCbzHDzOdLOmUbCWSeLGqLDmCe0FRCokKJvhkmeZv9KX5D6RiPK68SDMqBNc00c/BQwNIqgOxAPIlhA25nhoUyAQ6U1ye/JQ6/y9ocgDptKntQ2bsCYS7K2XchijGGzl4yoTLCwOrO9Hq5utcdoD/LfvCp/6vFQj4PQP6k7lkDw+ttavvJL+11UhojOnzR14/t4OibGXwjIw4NpszFSVRBiYtFMtOIDfRAd3lcuCOH6cayGj2u9N2xVs6jrYewJlRaRLiG1sD72ZVYjGMDuKLjLhFwE+eEdhmhszUQ+7k8wbs/TtQrp
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB4614.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(376002)(396003)(366004)(136003)(230922051799003)(451199024)(186009)(1800799009)(64100799003)(31696002)(38100700002)(6506007)(53546011)(6512007)(7416002)(2616005)(2906002)(26005)(5660300002)(4326008)(8676002)(8936002)(54906003)(66476007)(66556008)(66946007)(36756003)(316002)(110136005)(83380400001)(41300700001)(6666004)(478600001)(31686004)(6486002)(966005)(86362001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UzFzYVVOd3FMbDhlNUNvRDN1RzhWY25MWnBLbFpRd0JJSWkwSUtaZVZkQis2?=
- =?utf-8?B?djZvMzN5Tlk0OE1MWFpDVWV1bDVBMlRTRkFBNU9CT1dUK2xyQnpSbFIxR3Av?=
- =?utf-8?B?cnRsaEk2QlNRTnhQRll1YVhKWVFEOFdVWFNwWlJCcVFGWlVYcUhvNTlSTjdD?=
- =?utf-8?B?L3hzQlpqc2FobXdURGJFRW5hZEp1STU3dFNlM21DYUNMNmVnSjNjTnNQcW5X?=
- =?utf-8?B?R0RTeXlVM2Rob2UvMzg0dGRPdzZIOHJlcXluR2oyUmV5TEFhNG80a0pwVTgw?=
- =?utf-8?B?ekY3MFFmK1FNUEhXWmVZLzdaSXlWbUdiazV6NmQzTlRPcERWbXZmV3NXSi9z?=
- =?utf-8?B?RWNpM21HREdFa0JmUEVTVXdMRXZETS9GdDZKQWdHTk5aVTR6b1lFZkh6bHRx?=
- =?utf-8?B?eERwaU1ybTFSU1dxUXB2NmFSc3NGU0VxMTZjN0R5OHpPUmVWa0cyeHhvbC9L?=
- =?utf-8?B?aloxVFFrdldwMnV5a2hzeTlUcCt6T3ZYYi9Fa2RuTjV1eTByTkQ0TkluRWc2?=
- =?utf-8?B?STFPZGVjTEFmd2dOdklTWVNxUTMwaktqZGRNNXVScXJWdjdvL0xBSHNRUlV4?=
- =?utf-8?B?UUg5ZldLR2xnQUdxQkdhdmRMelkyTlFsVldYWERUNFdIcXZMdFdCbXVXeEFk?=
- =?utf-8?B?YTA0YitzQ25lOHpURkJDYWx3T3llSnE2d0k5L3hTYVh5UEVIMjJ0VE1MOTMx?=
- =?utf-8?B?K1hma0FUc0FGKys3M2JDbk83dWRlcWpPQmczQmtoV0gzMEFub3Z1aUZEQWNP?=
- =?utf-8?B?MTFMaHNOUDFtS2xTbERjQ2R4a3NxanF0YmV2dnlwU3YwTnBvejllUU9PSkxo?=
- =?utf-8?B?TGRFaFk0VE9mRVBZbG9CbUZSNlpJZTg1RFk3TW84amQ1Z01sMDI0d0RRSzJ4?=
- =?utf-8?B?SkVtOGxET0tUNitpS3dBRGJQZUE2NHhPb3duL25HRzZwcmpFdVQrdEdQckpY?=
- =?utf-8?B?Mmh3dmNGdVNtTHZZd216VUJBZE9GT1ZyZVJzK2VqVG12YkpJNTRkVGtHZWlU?=
- =?utf-8?B?SUVYa1lUZnoyQzdSUitRejNBRjRRbURRekR4dTNVcSt2WXltT0ZrRHc2RW52?=
- =?utf-8?B?RUlNNll3RnhacVhaQjVxM3luZG82enNyV1BMRFl6ZjJKSlNEYnMrMmxyOUVG?=
- =?utf-8?B?UjZPZnRxMm45Z2dSR0lzNmdYbVVsUWhtUDZJdUdKK1ZvRFlvSGR1MGZQUEp1?=
- =?utf-8?B?NUMvT2M4QTNnOG4ydlZabHVqanpKeEU1QW1FUHo3d3MycWN0T043SFNjbEJN?=
- =?utf-8?B?RGV3UU02enFRd2hIRk55U3MyVExOOGRxVXMwZTNtOEZvUDBWUGxRRm1KMld5?=
- =?utf-8?B?Y0R5WVhFT25VMzBVRGR5VkhwSWRPRVBHU2h6bTBUa3NqZElsRnRxbXdqOEx6?=
- =?utf-8?B?VmVFbmpNeEFmOXYyY0NMWFIycVhCdXJxRWVXWHpseVBHeUtLZE9mSEpLQlFO?=
- =?utf-8?B?Z1NsOEZ2MUhSK0w3VjdPVG1LMTAxNTQ2cm9XUmpXeTB2R1NmdE9sTFpKQllw?=
- =?utf-8?B?OWVMNlFpVC9mbWpJKy9mb3ZDSCtsZThmVDdnTStqTU11U2dWaVBBUlJMWkJY?=
- =?utf-8?B?NnphdTNIOFZVYk5ydHZ2cXdvclprWDVrNUVST1RjTzlJeGFlYktZK3IvQnlo?=
- =?utf-8?B?Y1FlMkN2c0pNYjh6WlBTUGpId0FPa0I3NjBnV0d0Q1NBczRXK3FqSGNGNTk5?=
- =?utf-8?B?L2xQZy9seXNibHR2Szc1aUZJdzlyQXF3TEdZMWIzL3RzNUorb3J0NVBxK2hQ?=
- =?utf-8?B?cUlMdlc4UnNPSmoxVUEweWlkMW5kZitwOHRLbm8wQzZzaU1aY2kyeXRmamU4?=
- =?utf-8?B?ZHRRSjhnUE96aS9mejdkNXhqbnZvc3lMWkYwSWhyY3ZGYUFlSDA0czdyaDFn?=
- =?utf-8?B?clY1TlBZeTFzWEMvZ3hzTWU5ZGFmSXczN0hWWGdpMURjVFczRm5SZVJEUjlE?=
- =?utf-8?B?NklPV256eGFxMis5ZUY0K0VTWFB5cUtNalJjbGJLSVRBV0wvQzc3UmhRcWZl?=
- =?utf-8?B?a1p3S2srL3VHTUQyd2tacTA0Z0JiMjJIdE1ISFBuUXFIaHArV050S2pnMVpx?=
- =?utf-8?B?dG1qSHdyRTZxSGJoQktMUzdJSjR4dGluSkk5am5Da2hCVkE1cDZYZ2p4M1RP?=
- =?utf-8?Q?7vYuXPtVYlUoPGGLT1gtg4BQz?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb127c4d-ecb1-47cb-a3fd-08dbe58a353c
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB4614.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2023 03:23:16.8701
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x3JnXrgk1GsJj1tuaIhVpHAmQSBisTGpxkVJCWLXcaABYAf/OfZyiaxU4saO/ZUo
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6467
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.32.64.1]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ ZXBJMBX03.zhaoxin.com (10.29.252.7)
+X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
+X-Barracuda-Start-Time: 1700039775
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 1038
+X-Barracuda-BRTS-Status: 0
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.116774
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
 
+From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
 
+According to the Section 18.3.2.4, 18.3.2.5 and 18.3.2.6 in ACPI SPEC r6.5,
+the register value form HEST PCI Express AER Structure should be written to
+relevant PCIe Device's AER Capabilities. So the purpose of the patch set is
+to extract register value from HEST PCI Express AER structures and program
+them into PCIe Device's AER registers. Refer to the ACPI SPEC r6.5 for the
+more detailed description.
 
-On 11/15/2023 1:37 AM, Mario Limonciello wrote:
-> The USB4 spec specifies that PCIe ports that are used for tunneling
-> PCIe traffic over USB4 fabric will be hardcoded to advertise 2.5GT/s and
-> behave as a PCIe Gen1 device. The actual performance of these ports is
-> controlled by the fabric implementation.
-> 
-> Callers for pcie_bandwidth_available() will always find the PCIe ports
-> used for tunneling as a limiting factor potentially leading to incorrect
-> performance decisions.
-> 
-> To prevent such problems check explicitly for ports that are marked as
-> virtual links or as thunderbolt controllers and skip them when looking
-> for bandwidth limitations of the hierarchy. If the only device connected
-> is a port used for tunneling then report that device.
-> 
-> Callers to pcie_bandwidth_available() could make this change on their
-> own as well but then they wouldn't be able to detect other potential
-> speed bottlenecks from the hierarchy without duplicating
-> pcie_bandwidth_available() logic.
-> 
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2925#note_2145860
-> Link: https://www.usb.org/document-library/usb4r-specification-v20
->        USB4 V2 with Errata and ECN through June 2023
->        Section 11.2.1
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
-> v2->v3:
->   * Split from previous patch version
->   * Look for thunderbolt or virtual link
-> ---
->   drivers/pci/pci.c | 19 +++++++++++++++++++
->   1 file changed, 19 insertions(+)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 0ff7883cc774..b1fb2258b211 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -6269,11 +6269,20 @@ static u32 pcie_calc_bw_limits(struct pci_dev *dev, u32 bw,
->    * limiting_dev, speed, and width pointers are supplied) information about
->    * that point.  The bandwidth returned is in Mb/s, i.e., megabits/second of
->    * raw bandwidth.
-> + *
-> + * This excludes the bandwidth calculation that has been returned from a
-> + * PCIe device that is used for transmitting tunneled PCIe traffic over a virtual
-> + * link part of larger hierarchy. Examples include Thunderbolt3 and USB4 links.
-> + * The calculation is excluded because the USB4 specification specifies that the
-> + * max speed returned from PCIe configuration registers for the tunneling link is
-> + * always PCI 1x 2.5 GT/s.  When only tunneled devices are present, the bandwidth
-> + * returned is the bandwidth available from the first tunneled device.
->    */
->   u32 pcie_bandwidth_available(struct pci_dev *dev, struct pci_dev **limiting_dev,
->   			     enum pci_bus_speed *speed,
->   			     enum pcie_link_width *width)
->   {
-> +	struct pci_dev *vdev = NULL;
->   	u32 bw = 0;
->   
->   	if (speed)
-> @@ -6282,10 +6291,20 @@ u32 pcie_bandwidth_available(struct pci_dev *dev, struct pci_dev **limiting_dev,
->   		*width = PCIE_LNK_WIDTH_UNKNOWN;
->   
->   	while (dev) {
-> +		if (dev->is_virtual_link || dev->is_thunderbolt) {
-> +			if (!vdev)
-> +				vdev = dev;
-> +			goto skip;
-> +		}
+leoliu-oc (3):
+  ACPI/APEI: Add hest_parse_pcie_aer()
+  PCI: Add AER bits #defines for PCIe to PCI/PCI-X Bridge
+  PCI/ACPI: Add pci_acpi_program_hest_aer_params()
 
-One problem with this is it *silently* ignores the bandwidth limiting 
-device - the bandwidth may not be really available if there are virtual 
-links in between. That is a change in behavior from the messages shown 
-in __pcie_print_link_status.
+ drivers/acpi/apei/hest.c      |  77 +++++++++++++++++++++++++-
+ drivers/pci/pci-acpi.c        | 100 ++++++++++++++++++++++++++++++++++
+ drivers/pci/pci.h             |   9 +++
+ drivers/pci/probe.c           |   1 +
+ include/acpi/actbl1.h         |   7 +++
+ include/acpi/apei.h           |   8 +++
+ include/uapi/linux/pci_regs.h |   3 +
+ 7 files changed, 203 insertions(+), 2 deletions(-)
 
-Thanks,
-Lijo
+-- 
+2.34.1
 
->   		bw = pcie_calc_bw_limits(dev, bw, limiting_dev, speed, width);
-> +skip:
->   		dev = pci_upstream_bridge(dev);
->   	}
->   
-> +	/* If nothing "faster" found on hierarchy, limit to first virtual link */
-> +	if (vdev && !bw)
-> +		bw = pcie_calc_bw_limits(vdev, bw, limiting_dev, speed, width);
-> +
->   	return bw;
->   }
->   EXPORT_SYMBOL(pcie_bandwidth_available);
 
