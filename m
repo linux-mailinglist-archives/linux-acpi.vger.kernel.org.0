@@ -1,140 +1,120 @@
-Return-Path: <linux-acpi+bounces-1501-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1502-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 571607EC0CC
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 11:34:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFACF7EC27B
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 13:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11B87280D68
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 10:34:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9810C28132E
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 12:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB842FBF8
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 10:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FAF91A707
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Nov 2023 12:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="WMk7AaLV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DqAHXMex"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD965C8CB;
-	Wed, 15 Nov 2023 10:11:46 +0000 (UTC)
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 252539C;
-	Wed, 15 Nov 2023 02:11:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=J+m5Wux4gCeZ5VbKE22zSD3h2vqCToIPoOglMpcMB98=; b=WMk7AaLVtN5GRy7VHSplvABKOr
-	OXRc47CE5LjYfVL1I4G9BmL9nkSst8Vh0ERKHmS8MJxRSPLKDFvaYbEeA1sMiDIYtcRhNQa/pnlI8
-	PkqOB9knMX2YL+uvuraKATTscnDpMYKl3cLLR36pzK4yKmNHGHEjAw7PZ395B53vvUhyuWvtelDyB
-	r5XhCGNIJB9iBgYQiuOIDQBOPCIGnr+az2tu1OpmA6+1stGbOEb7mZfrcCgopQw9ZYDmB/DHKIyAH
-	MGihds8I0ekCwC2YQuqoXNHvkOJ31Wt+yTJ713pnOPmQLGMyMGfLqHWpB6tvMEThA4WWseIPd1uBc
-	ry+LnBrA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56952)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1r3Crx-0000WK-1q;
-	Wed, 15 Nov 2023 10:11:37 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1r3Crw-0006Uz-QI; Wed, 15 Nov 2023 10:11:36 +0000
-Date: Wed, 15 Nov 2023 10:11:36 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Gavin Shan <gshan@redhat.com>
-Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
-	x86@kernel.org, linux-csky@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
-	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	jianyong.wu@arm.com, justin.he@arm.com,
-	James Morse <james.morse@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH RFC 11/22] drivers: base: remove unnecessary call to
- register_cpu_under_node()
-Message-ID: <ZVSZWK+OmZWEce33@shell.armlinux.org.uk>
-References: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
- <E1r0JLa-00CTxY-Uv@rmk-PC.armlinux.org.uk>
- <955f2b95-76e4-4e68-830b-e6dd9f122dc1@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135AE6AD6
+	for <linux-acpi@vger.kernel.org>; Wed, 15 Nov 2023 10:40:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05C54C2;
+	Wed, 15 Nov 2023 02:40:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700044827; x=1731580827;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WhUgLMg4fPuk0HcHV6kkPoQlTphUx0dqokHvR43C3OQ=;
+  b=DqAHXMexfBurmC/XzfmKuCx86GMZeLwTWhfh6NI1Tue8xJikvQ7WDI89
+   wAG/2auxIdgZPwXiA8iVWjCLl4Um1GYfWi+mU+0XB5kSch6/j4K7o9F2Q
+   OQvQhIAH+oPHGjZ74xA9a24VC6FNFPWAQ1n50MLMJHGBOr55lq2P0x4hG
+   ABaqOeKqvss2uxIGxwUw2HLM0LSU2YkO+XOn4cyEfLEIPRAES+4/Ro/SC
+   5BeHcepThfV/0eplCInxvOE5MYVykHvkibXqcdNSjIy28MO2gkG+CuJ1k
+   Nzu5ta5iot4ir+IU67QyIHFBPRysT4V/TCNNH6tA9Br/NXawTD8JsaVCo
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="393711582"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; 
+   d="scan'208";a="393711582"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 02:40:26 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="768552987"
+X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; 
+   d="scan'208";a="768552987"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga007.fm.intel.com with ESMTP; 15 Nov 2023 02:40:20 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 3653C305; Wed, 15 Nov 2023 12:40:19 +0200 (EET)
+Date: Wed, 15 Nov 2023 12:40:19 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Lukas Wunner <lukas@wunner.de>,
+	Danilo Krummrich <dakr@redhat.com>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Xinhui Pan <Xinhui.Pan@amd.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
+	Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
+	"Maciej W . Rozycki" <macro@orcam.me.uk>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	"open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS" <dri-devel@lists.freedesktop.org>,
+	"open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS" <nouveau@lists.freedesktop.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:RADEON and AMDGPU DRM DRIVERS" <amd-gfx@lists.freedesktop.org>,
+	"open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v3 5/7] PCI: ACPI: Detect PCIe root ports that are used
+ for tunneling
+Message-ID: <20231115104019.GY17433@black.fi.intel.com>
+References: <20231114200755.14911-1-mario.limonciello@amd.com>
+ <20231114200755.14911-6-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <955f2b95-76e4-4e68-830b-e6dd9f122dc1@redhat.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20231114200755.14911-6-mario.limonciello@amd.com>
 
-On Mon, Nov 13, 2023 at 02:04:32PM +1000, Gavin Shan wrote:
-> On 11/7/23 20:30, Russell King (Oracle) wrote:
-> > Since "drivers: base: Move cpu_dev_init() after node_dev_init()", we
-> > can remove some redundant code.
-> > 
-> > node_dev_init() will walk through the nodes calling register_one_node()
-> > on each. This will trickle down to __register_one_node() which walks
-> > all present CPUs, calling register_cpu_under_node() on each.
-> > 
-> > register_cpu_under_node() will call get_cpu_device(cpu) for each, which
-> > will return NULL until the CPU is registered using register_cpu(). This
-> > now happens _after_ node_dev_init().
-> > 
-> > Therefore, calling register_cpu_under_node() from __register_one_node()
-> > becomes a no-op, and can be removed.
-> > 
-> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > ---
-> >   drivers/base/node.c | 7 -------
-> >   1 file changed, 7 deletions(-)
-> > 
+Hi Mario,
+
+On Tue, Nov 14, 2023 at 02:07:53PM -0600, Mario Limonciello wrote:
+> USB4 routers support a feature called "PCIe tunneling". This
+> allows PCIe traffic to be transmitted over USB4 fabric.
 > 
-> __register_one_node() can be called in memory hot add path either. In that path,
-> a new NUMA node can be presented and becomes online. Does this become a problem
-> after the logic of associating CPU with newly added NUMA node?
+> PCIe root ports that are used in this fashion can be discovered
+> by device specific data that specifies the USB4 router they are
+> connected to. For the PCI core, the specific connection information
+> doesn't matter, but it's interesting to know that this root port is
+> used for tunneling traffic. This will allow other decisions to be
+> made based upon it.
+> 
+> Detect the `usb4-host-interface` _DSD and if it's found save it
+> into a new `is_virtual_link` bit in `struct pci_device`.
 
-I guess this is where ordering matters.
+While this is fine for the "first" tunneled link, this does not take
+into account possible other "virtual" links that lead to the endpoint in
+question. Typically for eGPU it only makes sense to plug it directly to
+the host but say there is a USB4 hub (with PCIe tunneling capabilities)
+in the middle. Now the link from the hub to the eGPU that is also
+"virtual" is not marked as such and the bandwidth calculations may not
+get what is expected.
 
-As mentioned in the commit message, register_cpu_under_node() does
-this:
-
-        if (!node_online(nid))
-                return 0;
-
-        obj = get_cpu_device(cpu);
-        if (!obj)
-                return 0;
-
-get_cpu_device() will return NULL if the CPU is not possible or is out
-of range, or register_cpu() has not yet been called for this CPU, and
-register_cpu() will call register_cpu_under_node().
-
-I guess it is possible for a CPU it be present, but the node its
-associated with would not be online, which means we end up with
-register_cpu_under_node() returning on !node_online(nid) but we've
-populated the CPU devices (thus get_cpu_device(cpu) would return
-non-NULL).
-
-Then when the numa node comes online, we do still need to call this
-path, so this change is incorrect.
-
-It came about trying to address Jonathan's comment for this patch:
-
-https://lore.kernel.org/r/20230913163823.7880-7-james.morse@arm.com
-
-I think my response to Jonathan is still correct - but didn't need
-a code change. I'm dropping this patch.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+It should be possible to map the PCIe ports that go over USB4 links
+through router port operation "Get PCIe Downstream Entry Mapping" and
+for the Thunderbolt 3 there is the DROM entries (I believe Lukas has
+patches for this part already) but I guess it is outside of the scope of
+this series. Out of curiosity I tried to look in Windows documentation
+if there is such interface for GPUs as we have in Linux but could not
+find (which does not mean it does not exist, though).
 
