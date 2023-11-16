@@ -1,200 +1,152 @@
-Return-Path: <linux-acpi+bounces-1560-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1561-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0567EE30E
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Nov 2023 15:39:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA48C7EE310
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Nov 2023 15:40:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B85ACB20BDC
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Nov 2023 14:39:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47164B20975
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Nov 2023 14:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2036031A77
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Nov 2023 14:39:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QolO64CJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9A3328BA
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Nov 2023 14:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 799C0AD;
-	Thu, 16 Nov 2023 05:02:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700139740; x=1731675740;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=qni4q+MCRq+nAUIb30fVBT62T2fPU22iNzyXzheWpdg=;
-  b=QolO64CJe2TCEWToxUrLxK29Vbq4OR1al+Dv5dFGWH1zo4lKZMfAcIfV
-   FuPwkYNSzt/or0oTtZMqjVYsIvREVP9VQ3gApCCT56in/lyVF4DDpNux7
-   l5aNIkJgRyVJb8w+YECRMTQMCa5o8HkyBLqhMhZb0kw1eopgACZWw/44q
-   icTe4i7d7AQIVLy4fwhWiGdxPcbg+x/CdJphtBnMnoEW6OqCHd3k7nXVk
-   u7gs8T1T1ZIG/GqaIb9UgYSRjQBP9FSzkoogSH/W48bHhrGYR2ljrusqe
-   B7TKniPK50hOeOEw5noyIc79JFR9VSgIhZvU7OIaMvlJBiULJFpOKnLjF
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10895"; a="388247928"
-X-IronPort-AV: E=Sophos;i="6.04,308,1695711600"; 
-   d="scan'208";a="388247928"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2023 05:02:19 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.04,308,1695711600"; 
-   d="scan'208";a="13550045"
-Received: from jhsteyn-mobl1.ger.corp.intel.com ([10.252.40.9])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2023 05:02:14 -0800
-Date: Thu, 16 Nov 2023 15:02:11 +0200 (EET)
-From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Mario Limonciello <mario.limonciello@amd.com>
-cc: Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>, 
-    Alex Deucher <alexander.deucher@amd.com>, 
-    =?ISO-8859-15?Q?Christian_K=F6nig?= <christian.koenig@amd.com>, 
-    Bjorn Helgaas <bhelgaas@google.com>, 
-    Mika Westerberg <mika.westerberg@linux.intel.com>, 
-    Lukas Wunner <lukas@wunner.de>, Danilo Krummrich <dakr@redhat.com>, 
-    David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-    Xinhui Pan <Xinhui.Pan@amd.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-    =?ISO-8859-15?Q?Pali_Roh=E1r?= <pali@kernel.org>, 
-    =?ISO-8859-15?Q?Marek_Beh=FAn?= <kabel@kernel.org>, 
-    "Maciej W . Rozycki" <macro@orcam.me.uk>, 
-    Manivannan Sadhasivam <mani@kernel.org>, 
-    "open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS" <dri-devel@lists.freedesktop.org>, 
-    "open list:DRM DRIVER FOR NVIDIA GEFORCE/QUADRO GPUS" <nouveau@lists.freedesktop.org>, 
-    open list <linux-kernel@vger.kernel.org>, 
-    "open list:RADEON and AMDGPU DRM DRIVERS" <amd-gfx@lists.freedesktop.org>, 
-    "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>, 
-    "open list:ACPI" <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v3 6/7] PCI: Split up some logic in pcie_bandwidth_available()
- to separate function
-In-Reply-To: <20231114200755.14911-7-mario.limonciello@amd.com>
-Message-ID: <671f5c3b-fd24-7d24-c848-1ae31cea82ff@linux.intel.com>
-References: <20231114200755.14911-1-mario.limonciello@amd.com> <20231114200755.14911-7-mario.limonciello@amd.com>
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E8C7D4B;
+	Thu, 16 Nov 2023 06:36:33 -0800 (PST)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6d67d32adc2so453120a34.2;
+        Thu, 16 Nov 2023 06:36:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700145392; x=1700750192;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hQe83AHexfh3GazMLDTY5AyEL167MohegfRBMKLl7I8=;
+        b=gNgC8dPRqLpw2x9mM5EFEyinbYSiySY+yTYN5Cu0s8Bap4S+L5cfNbYGyTh9YixSso
+         sLdKjQOqZyNphUb5EAIJSkEOtBu37K7JkAeBUcZB92nPzMXLT3dm3enWGxXQeixZXGyN
+         PiKol+kvyAtt0NmCupHw4grxx7aizpbEdPIEbiuSei039njKHok+Ja1oWK9o17bom+2m
+         bfVMzzzOLVb7invMry6VkDlmfZZff0C22pFj7INoJ1vibbfj5FrrE9FxeDZieAJcbyId
+         5aPr5n2jAU1325SdWHLtxbT6BW/ZqsXtpD2h41lhNPJdA+M73cmUdh/pKdKn023c7EDV
+         YGcA==
+X-Gm-Message-State: AOJu0YzZwOPeuoAheeJhryleNtZZTA97BCQnndpTQNQJXCW5s/WXFjLo
+	DIDdY19R4xTkyCrZ39zLw8M=
+X-Google-Smtp-Source: AGHT+IHU4Lxx+/myT+H5YB5iQwSXHLDIA41zmD2u+pjBktk3mb+GPBhIH+yVJJ2/AO7NCTzQtZy56A==
+X-Received: by 2002:a05:6830:10c7:b0:6c4:ae52:9599 with SMTP id z7-20020a05683010c700b006c4ae529599mr9476568oto.7.1700145392505;
+        Thu, 16 Nov 2023 06:36:32 -0800 (PST)
+Received: from localhost ([2600:380:7a60:430d:7a98:972a:884d:31ff])
+        by smtp.gmail.com with ESMTPSA id l2-20020a9d7082000000b006cd099bb052sm912460otj.1.2023.11.16.06.36.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Nov 2023 06:36:32 -0800 (PST)
+Date: Thu, 16 Nov 2023 06:36:30 -0800
+From: Moritz Fischer <mdf@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: acpica-devel@lists.linux.dev, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dexuan Cui <decui@microsoft.com>, devicetree@vger.kernel.org,
+	David Woodhouse <dwmw2@infradead.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, iommu@lists.linux.dev,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>, Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+	linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Hector Martin <marcan@marcan.st>,
+	Palmer Dabbelt <palmer@dabbelt.com>, patches@lists.linux.dev,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Sven Peter <sven@svenpeter.dev>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Krishna Reddy <vdumpa@nvidia.com>, Vineet Gupta <vgupta@kernel.org>,
+	virtualization@lists.linux.dev, Wei Liu <wei.liu@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Christoph Hellwig <hch@lst.de>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Moritz Fischer <mdf@kernel.org>,
+	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v2 12/17] iommu: Make iommu_ops_from_fwnode() static
+Message-ID: <ZVYo7s_dV9HDm1qU@archbook>
+References: <0-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
+ <12-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-761469376-1700139739=:1886"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <12-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323329-761469376-1700139739=:1886
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-
-On Tue, 14 Nov 2023, Mario Limonciello wrote:
-
-> The logic to calculate bandwidth limits may be used at multiple call sites
-> so split it up into its own static function instead.
+On Wed, Nov 15, 2023 at 10:06:03AM -0400, Jason Gunthorpe wrote:
+> There are no external callers now.
 > 
-> No intended functional changes.
-> 
-> Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Moritz Fischer <mdf@kernel.org>
 > ---
-> v2->v3:
->  * Split from previous patch version
-> ---
->  drivers/pci/pci.c | 60 +++++++++++++++++++++++++++--------------------
->  1 file changed, 34 insertions(+), 26 deletions(-)
+>  drivers/iommu/iommu.c | 3 ++-
+>  include/linux/iommu.h | 7 -------
+>  2 files changed, 2 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 55bc3576a985..0ff7883cc774 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -6224,6 +6224,38 @@ int pcie_set_mps(struct pci_dev *dev, int mps)
+> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+> index 5af98cad06f9ef..ea6aede326131e 100644
+> --- a/drivers/iommu/iommu.c
+> +++ b/drivers/iommu/iommu.c
+> @@ -2928,7 +2928,8 @@ bool iommu_default_passthrough(void)
 >  }
->  EXPORT_SYMBOL(pcie_set_mps);
+>  EXPORT_SYMBOL_GPL(iommu_default_passthrough);
 >  
-> +static u32 pcie_calc_bw_limits(struct pci_dev *dev, u32 bw,
-> +			       struct pci_dev **limiting_dev,
-> +			       enum pci_bus_speed *speed,
-> +			       enum pcie_link_width *width)
-> +{
-> +	enum pcie_link_width next_width;
-> +	enum pci_bus_speed next_speed;
-> +	u32 next_bw;
-> +	u16 lnksta;
-> +
-> +	pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
-> +
-> +	next_speed = pcie_link_speed[FIELD_GET(PCI_EXP_LNKSTA_CLS, lnksta)];
-> +	next_width = FIELD_GET(PCI_EXP_LNKSTA_NLW, lnksta);
-> +
-> +	next_bw = next_width * PCIE_SPEED2MBS_ENC(next_speed);
-> +
-> +	/* Check if current device limits the total bandwidth */
-
-I'd make this a function comment instead and say:
-
-/* Check if @dev limits the total bandwidth. */
-
-Other than that,
-
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-
--- 
- i.
-
-> +	if (!bw || next_bw <= bw) {
-> +		bw = next_bw;
-> +
-> +		if (limiting_dev)
-> +			*limiting_dev = dev;
-> +		if (speed)
-> +			*speed = next_speed;
-> +		if (width)
-> +			*width = next_width;
-> +	}
-> +
-> +	return bw;
-> +}
-> +
->  /**
->   * pcie_bandwidth_available - determine minimum link settings of a PCIe
->   *			      device and its bandwidth limitation
-> @@ -6242,39 +6274,15 @@ u32 pcie_bandwidth_available(struct pci_dev *dev, struct pci_dev **limiting_dev,
->  			     enum pci_bus_speed *speed,
->  			     enum pcie_link_width *width)
+> -const struct iommu_ops *iommu_ops_from_fwnode(struct fwnode_handle *fwnode)
+> +static const struct iommu_ops *
+> +iommu_ops_from_fwnode(struct fwnode_handle *fwnode)
 >  {
-> -	u16 lnksta;
-> -	enum pci_bus_speed next_speed;
-> -	enum pcie_link_width next_width;
-> -	u32 bw, next_bw;
-> +	u32 bw = 0;
+>  	const struct iommu_ops *ops = NULL;
+>  	struct iommu_device *iommu;
+> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+> index 72ec71bd31a376..05c5ad6bad6339 100644
+> --- a/include/linux/iommu.h
+> +++ b/include/linux/iommu.h
+> @@ -831,7 +831,6 @@ static inline void iommu_fwspec_free(struct device *dev)
+>  	dev->iommu->fwspec = NULL;
+>  }
+>  int iommu_fwspec_add_ids(struct device *dev, u32 *ids, int num_ids);
+> -const struct iommu_ops *iommu_ops_from_fwnode(struct fwnode_handle *fwnode);
+>  int iommu_fwspec_append_ids(struct iommu_fwspec *fwspec, u32 *ids, int num_ids);
 >  
->  	if (speed)
->  		*speed = PCI_SPEED_UNKNOWN;
->  	if (width)
->  		*width = PCIE_LNK_WIDTH_UNKNOWN;
+>  static inline struct iommu_fwspec *dev_iommu_fwspec_get(struct device *dev)
+> @@ -1187,12 +1186,6 @@ static inline int iommu_fwspec_add_ids(struct device *dev, u32 *ids,
+>  	return -ENODEV;
+>  }
 >  
-> -	bw = 0;
+> -static inline
+> -const struct iommu_ops *iommu_ops_from_fwnode(struct fwnode_handle *fwnode)
+> -{
+> -	return NULL;
+> -}
 > -
->  	while (dev) {
-> -		pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
-> -
-> -		next_speed = pcie_link_speed[FIELD_GET(PCI_EXP_LNKSTA_CLS,
-> -						       lnksta)];
-> -		next_width = FIELD_GET(PCI_EXP_LNKSTA_NLW, lnksta);
-> -
-> -		next_bw = next_width * PCIE_SPEED2MBS_ENC(next_speed);
-> -
-> -		/* Check if current device limits the total bandwidth */
-> -		if (!bw || next_bw <= bw) {
-> -			bw = next_bw;
-> -
-> -			if (limiting_dev)
-> -				*limiting_dev = dev;
-> -			if (speed)
-> -				*speed = next_speed;
-> -			if (width)
-> -				*width = next_width;
-> -		}
-> -
-> +		bw = pcie_calc_bw_limits(dev, bw, limiting_dev, speed, width);
->  		dev = pci_upstream_bridge(dev);
->  	}
->  
+>  static inline int
+>  iommu_dev_enable_feature(struct device *dev, enum iommu_dev_features feat)
+>  {
+> -- 
+> 2.42.0
 > 
---8323329-761469376-1700139739=:1886--
 
