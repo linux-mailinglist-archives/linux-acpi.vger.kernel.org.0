@@ -1,59 +1,59 @@
-Return-Path: <linux-acpi+bounces-1578-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1580-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B417EF2AF
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 13:36:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CB07EF2B4
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 13:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE024280A73
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 12:36:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 702F7B207DB
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 12:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6839330F80
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 12:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D364718E07
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 12:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sg2bd+Wu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O7fzctNC"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93170194;
-	Fri, 17 Nov 2023 03:14:41 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E13FD4B;
+	Fri, 17 Nov 2023 03:14:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700219682; x=1731755682;
+  t=1700219683; x=1731755683;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=E51JwvVc+WS4nt6BjqwLo96XXpb3Un3sSEB2K+/Lpqo=;
-  b=Sg2bd+WujtCjJCKaK94Bo/1IyjJkWb1tnDwQAeAGeTHluVIszsgzt/dN
-   SRkpxB+9do/5m3Jc4mnIlGi04/RQPf3c2YJY1J8vNCYve1+48VEJI2omP
-   fkNZpbGQJDx9wc/PZ8cT26hFi1/CuyvOYc1TLityYFIsw3dBQuJZynNVP
-   g8L4OtzeeomPhkxf9ocdpwNHM5OKbZTJlqkQoFlwhkyxVFaFtMBDVjaO+
-   zXQP85wFcvBReeJZugcHkhcsEM8iE4i0DKTo3kH0LVxSRhAMGUlK2PRup
-   64A3BuwTBo2Q0ruRDfDRxLmSsuyL1EO6dXbytTN4mBV54ZbMjJlRzQ4fY
+  bh=Nl2Dsw+dPH2fUNbgA5kZPDoI4Q44DM8znc3EQjvjalA=;
+  b=O7fzctNCFA+Sg6r5l96ARM2UpVU0LysS6H5HNxW/p//CYqqUR2gQ5bBY
+   lZJNZ9AaMGBndblYwGYFKtA5Q9tKyaChtxkRO9eFoetkMVANBaLwsR+84
+   qe2Se2QMOcfN6PCX1GiyXkisSeyx4uiHJirLhBveZBrxDoD07fwtGdvb/
+   6F0VpXs4oJJzY/pCxYLO3vDoKFEV4ijH5smjXY3HgCvHYhgmpB852T6Nu
+   HY3s7Ak2ET2lCOpnkaAssUZiKMz6WHmVtYd/TDEh83R9n9BkwiciIXeHv
+   xL2vOMuUXdQm7epcZrL4EU4yu43xcUJ91iARudfjaLKOMgYxP3bATVmL8
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="9941633"
+X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="9941636"
 X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; 
-   d="scan'208";a="9941633"
+   d="scan'208";a="9941636"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
   by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2023 03:14:41 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="769201196"
+X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="769201197"
 X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; 
-   d="scan'208";a="769201196"
+   d="scan'208";a="769201197"
 Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
   by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2023 03:14:38 -0800
 Received: from svinhufvud.ger.corp.intel.com (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 2D916120ED2;
-	Fri, 17 Nov 2023 13:14:35 +0200 (EET)
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 16409120F14;
+	Fri, 17 Nov 2023 13:14:36 +0200 (EET)
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
 To: linux-acpi@vger.kernel.org
 Cc: linux-media@vger.kernel.org,
 	rafael@kernel.org,
 	jacopo.mondi@ideasonboard.com,
 	laurent.pinchart@ideasonboard.com
-Subject: [PATCH v2 2/7] pm: runtime: Add pm_runtime_put_mark_busy_autosusp() helper
-Date: Fri, 17 Nov 2023 13:14:28 +0200
-Message-Id: <20231117111433.1561669-3-sakari.ailus@linux.intel.com>
+Subject: [PATCH v2 3/7] ACPI: Documentation: Document acpi_dev_state_d0()
+Date: Fri, 17 Nov 2023 13:14:29 +0200
+Message-Id: <20231117111433.1561669-4-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231117111433.1561669-1-sakari.ailus@linux.intel.com>
 References: <20231117111433.1561669-1-sakari.ailus@linux.intel.com>
@@ -63,49 +63,36 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add pm_runtime_put_mark_busy_autosusp() helper function for users that
-wish to set the last_busy timestamp to current time and put the
-usage_count of the device and set the autosuspend timer.
-
-Essentially calling pm_runtime_suspend_mark_busy_autosusp() equal to
-calling first pm_runtime_mark_last_busy() and then
-pm_runtime_put_autosuspend().
+Document that acpi_dev_state_d0() can be used to tell if the device was
+powered on for probe.
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 ---
- include/linux/pm_runtime.h | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ Documentation/firmware-guide/acpi/non-d0-probe.rst | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-index 13cd526634c1..4afe7b0b9d7e 100644
---- a/include/linux/pm_runtime.h
-+++ b/include/linux/pm_runtime.h
-@@ -495,6 +495,23 @@ static inline int pm_runtime_put_autosuspend(struct device *dev)
- 	    RPM_GET_PUT | RPM_ASYNC | RPM_AUTO);
- }
+diff --git a/Documentation/firmware-guide/acpi/non-d0-probe.rst b/Documentation/firmware-guide/acpi/non-d0-probe.rst
+index 7afd16701a02..815bcc8db69f 100644
+--- a/Documentation/firmware-guide/acpi/non-d0-probe.rst
++++ b/Documentation/firmware-guide/acpi/non-d0-probe.rst
+@@ -24,6 +24,14 @@ there's a problem with the device, the driver likely probes just fine but the
+ first user will find out the device doesn't work, instead of a failure at probe
+ time. This feature should thus be used sparingly.
  
-+/**
-+ * pm_runtime_put_mark_busy_autosusp - Update the last access time of a device
-+ *				       and drop device usage counter and queue
-+ *				       autosuspend if 0.
-+ * @dev: Target device.
-+ *
-+ * Update the last access time of @dev using pm_runtime_mark_last_busy(), then
-+ * decrement the runtime PM usage counter of @dev and if it turns out to be
-+ * equal to 0, queue up a work item for @dev like in pm_request_autosuspend().
-+ */
-+static inline int pm_runtime_put_mark_busy_autosusp(struct device *dev)
-+{
-+	pm_runtime_mark_last_busy(dev);
++ACPI framework
++--------------
 +
-+	return pm_runtime_autosuspend(dev);
-+}
++Use the Linux ACPI framework function :c:func:`acpi_dev_state_d0()` to tell
++whether the device was powered on for probe. :c:func:`acpi_dev_state_d0()`
++returns true if the device is powered on, false otherwise. For non-ACPI backed
++devices it returns true always.
 +
- /**
-  * pm_runtime_put_sync - Drop device usage counter and run "idle check" if 0.
-  * @dev: Target device.
+ I²C
+ ---
+ 
 -- 
 2.39.2
 
