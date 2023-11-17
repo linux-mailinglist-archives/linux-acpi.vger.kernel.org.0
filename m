@@ -1,122 +1,114 @@
-Return-Path: <linux-acpi+bounces-1584-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1585-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0235E7EF491
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 15:34:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A98E27EF64E
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 17:37:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A5451C20864
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 14:34:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07AA6B209DD
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 16:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A35D30659
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 14:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681606AB6
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 16:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="I6/MqjFi"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="blLMrax6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC44AD5B
-	for <linux-acpi@vger.kernel.org>; Fri, 17 Nov 2023 06:20:46 -0800 (PST)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-dafe04717baso1883194276.1
-        for <linux-acpi@vger.kernel.org>; Fri, 17 Nov 2023 06:20:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1700230846; x=1700835646; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=QqfRrOmqkNnMsc+4XeEiKj5UgmTdWogQhQ0SioHxUrk=;
-        b=I6/MqjFimjRQLYoq1CjxgLCmuXfvoBw6KpC0Cd1Uo7eWhxhh8Dn031rBQ3KlmHj6gT
-         ISMmQazkU0ZtvFXp2VAqXVlO5MyENYTo7fP05ABynpszWT6KP9HmpFXPhqrF/29Pj4/y
-         zjXQqDQtYwrGc1ydZYhrzLiwDw5MT37YKLqEtEOq7mB7rRKE8WJ3RMePKqPluP0gCrBi
-         u09moqsPcRwYC634a+AQwN1QqBaAsigCoomVwLM7z3k10mPq179ekQcDRjdlZ9t6ANsh
-         J1gDS84Prmsb26yILtJD8Tg2xQQnvw+5lY6w3F97ow97DUffhgl5ODuMjoPcEJegZVZV
-         WAjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700230846; x=1700835646;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QqfRrOmqkNnMsc+4XeEiKj5UgmTdWogQhQ0SioHxUrk=;
-        b=wMvxgOwxNJ1o7esPoGkmQA+w8aK9J/zAw0CUqPba4fYJi7azURvevgjJ9epB7/J9dq
-         onztMwQT5QZl+9RjWFANuaipufmitRS0DACm8UYeIvSdZCn77OmW7GCj0512cBbLEUVn
-         z18uT8OUWeGBh+sNVkPGn2k8wIf/2TK1Nc8zK6ECVIvFRqzljnPuGjQFCyOxPtDgOCpd
-         6vSeiLFDU4pTQUCSl8anRglDDCXZnFHVaDMO4dwEU8T14cbCfgrN02gUENxN8zsHTnYC
-         UT66b1PA/v3sF+FcIm1+AE59mzrSIqWhe+P2n0K6CDlpZO6QhGw5WbOZJK2frf8U/+3s
-         ybtQ==
-X-Gm-Message-State: AOJu0Yw4k60UhPNtqM/xmpD3hKQ2QWRs/A4orWDRAmxd7UbNlDvcQLhX
-	QNHCFIu6G1zuV+UUi78QB5ZDJod71Mk7RTZaa/58qg==
-X-Google-Smtp-Source: AGHT+IHMnrHXK4dmqlaEzqJtFeu5L7T2FUQK7w8EIWeDpCtXSts/6xCjGig3pZzHXNzOQVvQNXrMcVKIUuJ/FWN6Plg=
-X-Received: by 2002:a05:6902:1243:b0:da0:c744:3211 with SMTP id
- t3-20020a056902124300b00da0c7443211mr21609926ybu.2.1700230845947; Fri, 17 Nov
- 2023 06:20:45 -0800 (PST)
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69E4BD67;
+	Fri, 17 Nov 2023 07:30:21 -0800 (PST)
+Received: from ideasonboard.com (unknown [IPv6:2001:b07:5d2e:52c9:cc1e:e404:491f:e6ea])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id DDFA4922;
+	Fri, 17 Nov 2023 16:29:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1700234991;
+	bh=utT3/dTTeL7oLW2POSo7P38xjokH9LBGVLKIoVrvtng=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=blLMrax6OMTC2IRDTmb5SxQ/cJnbEia45xWI+FoO7My0uNMDBdfii/xJRinwJfBIt
+	 xLYvQjnjN/H0CSwUdOri6ZYHBYnAhfn2tvxKUh+BqOSIs4dvJQEPS1TmPUzPEPZp7J
+	 Pvgh6yr65wxwO75A6DgyuRGx1O/bSD21FUpKhcXg=
+Date: Fri, 17 Nov 2023 16:30:15 +0100
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org, linux-media@vger.kernel.org, 
+	rafael@kernel.org, jacopo.mondi@ideasonboard.com, laurent.pinchart@ideasonboard.com
+Subject: Re: [PATCH v2 5/7] media: ov8858: Use pm_runtime_get_if_active(),
+ put usage_count correctly
+Message-ID: <ledwhthyoc6h5ccmwdvyl7cqrp3kdwijcpkzxpp4jvemd6iz2a@na2elf7674a5>
+References: <20231117111433.1561669-1-sakari.ailus@linux.intel.com>
+ <20231117111433.1561669-6-sakari.ailus@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231117111433.1561669-1-sakari.ailus@linux.intel.com> <20231117111433.1561669-8-sakari.ailus@linux.intel.com>
-In-Reply-To: <20231117111433.1561669-8-sakari.ailus@linux.intel.com>
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Date: Fri, 17 Nov 2023 14:20:29 +0000
-Message-ID: <CAPY8ntA+J=TvW-89p6nwFjGUvJGy8VmqZSHO9PmuBqhn4VgfTQ@mail.gmail.com>
-Subject: Re: [PATCH v2 7/7] media: imx219: Put usage_count correctly in s_ctrl callback
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: linux-acpi@vger.kernel.org, linux-media@vger.kernel.org, rafael@kernel.org, 
-	jacopo.mondi@ideasonboard.com, laurent.pinchart@ideasonboard.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231117111433.1561669-6-sakari.ailus@linux.intel.com>
 
-On Fri, 17 Nov 2023 at 11:15, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
->
-> pm_runtime_get_if_in_use() returns an error if Runtime PM is disabled for
-> the device, in which case it won't increment the use count.
-> pm_runtime_put() does that unconditionally however. Only call
-> pm_runtime_put() in case pm_runtime_get_if_in_use() has returned a value >
-> 0.
+Hi Sakari
+
+On Fri, Nov 17, 2023 at 01:14:31PM +0200, Sakari Ailus wrote:
+> Use pm_runtime_get_if_active() to get the device's runtime PM usage_count
+> and set controls, then use runtime PM autosuspend once the controls have
+> been set (instead of likely transitioning to suspended state immediately).
 >
 > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-
 > ---
->  drivers/media/i2c/imx219.c | 8 +++++---
+>  drivers/media/i2c/ov8858.c | 8 +++++---
 >  1 file changed, 5 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
-> index 8436880dcf7a..9865d0b41244 100644
-> --- a/drivers/media/i2c/imx219.c
-> +++ b/drivers/media/i2c/imx219.c
-> @@ -371,7 +371,7 @@ static int imx219_set_ctrl(struct v4l2_ctrl *ctrl)
->         struct i2c_client *client = v4l2_get_subdevdata(&imx219->sd);
->         const struct v4l2_mbus_framefmt *format;
->         struct v4l2_subdev_state *state;
-> -       int ret = 0;
-> +       int ret = 0, pm_status;
+> diff --git a/drivers/media/i2c/ov8858.c b/drivers/media/i2c/ov8858.c
+> index 3af6125a2eee..a99b91700a8d 100644
+> --- a/drivers/media/i2c/ov8858.c
+> +++ b/drivers/media/i2c/ov8858.c
+> @@ -1538,7 +1538,7 @@ static int ov8858_set_ctrl(struct v4l2_ctrl *ctrl)
+>  	struct v4l2_subdev_state *state;
+>  	u16 digi_gain;
+>  	s64 max_exp;
+> -	int ret;
+> +	int ret, pm_status;
 >
->         state = v4l2_subdev_get_locked_active_state(&imx219->sd);
->         format = v4l2_subdev_get_pad_format(&imx219->sd, state, 0);
-> @@ -393,7 +393,8 @@ static int imx219_set_ctrl(struct v4l2_ctrl *ctrl)
->          * Applying V4L2 control value only happens
->          * when power is up for streaming
->          */
-> -       if (pm_runtime_get_if_in_use(&client->dev) == 0)
-> +       pm_status = pm_runtime_get_if_in_use(&client->dev);
-> +       if (!pm_status)
->                 return 0;
+>  	/*
+>  	 * The control handler and the subdev state use the same mutex and the
+> @@ -1561,7 +1561,8 @@ static int ov8858_set_ctrl(struct v4l2_ctrl *ctrl)
+>  		break;
+>  	}
 >
->         switch (ctrl->id) {
-> @@ -446,7 +447,8 @@ static int imx219_set_ctrl(struct v4l2_ctrl *ctrl)
->                 break;
->         }
+> -	if (!pm_runtime_get_if_in_use(&client->dev))
+> +	pm_status = pm_runtime_get_if_active(&client->dev);
+> +	if (!pm_status)
+>  		return 0;
 >
-> -       pm_runtime_put(&client->dev);
-> +       if (pm_status > 0)
-> +               pm_runtime_put(&client->dev);
+>  	switch (ctrl->id) {
+> @@ -1601,7 +1602,8 @@ static int ov8858_set_ctrl(struct v4l2_ctrl *ctrl)
+>  		break;
+>  	}
 >
->         return ret;
+> -	pm_runtime_put(&client->dev);
+> +	if (pm_status > 0)
+
+I'm not 100% sure I get this bit.
+
+If we get here it means pm_status is either -EINVAL or > 0, otherwise
+we would have exited earlier.
+
+What's the point of checking for > 0 here ?
+
+There are two cases where pm_status is -EINVAL, either !CONFIG_PM and
+the the below call is a nop, or if pm_runtime has not been enabled by
+the driver, which means the driver doesn't use pm_runtime at all.
+
+Are there other cases I have missed that require checking here for
+pm_status > 0 ?
+
+> +		pm_runtime_mark_busy_autosusp(&client->dev);
+>
+>  	return ret;
 >  }
 > --
 > 2.39.2
->
 >
 
