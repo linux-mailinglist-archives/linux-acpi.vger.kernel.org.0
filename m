@@ -1,196 +1,215 @@
-Return-Path: <linux-acpi+bounces-1574-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1575-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08ED67EEA60
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 01:33:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64267EF0C3
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 11:42:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A224FB20A7D
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 00:33:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 381A31F287AB
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 10:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A93CA48
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 00:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8E31A5B4
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Nov 2023 10:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YR8xBOVU"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ogThwPXg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E048130;
-	Thu, 16 Nov 2023 14:55:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700175349; x=1731711349;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=88gut+MznrujhGIoLqFKtUJmjOVHQCn19uWIWn0/xE8=;
-  b=YR8xBOVUOUoVPlsQyq41ENsFfkup1RcLh6491VCMChpSkcK5CCYH1Df5
-   S4iEIunxeMV/yIKLqoVjcnpmAtgq/IYPFlmgRKLQHuJKfGzLqQG2vLpwI
-   6lHw7Picz52O22lYY3JP5QJ0qk5XbYGM/H5/UEasiHwCle5GoTYxYAVt4
-   vtCg8GzG/Q+yPd2XzsR/ccEzcoPbOVuzIRIpnWjfcrl+ZeW15iUllK4Bx
-   +X+eiV1qfTrX0trA3ITGCMiT6uUWuhFQJVkQGgc0++39Ud4j+Xmp+G0ij
-   C2xJT1TWN7RQMatDCi9mLe/h5Zbj4XLZTXcnt/LDT8UhPNcECcgQQGTOa
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="457695963"
-X-IronPort-AV: E=Sophos;i="6.04,205,1695711600"; 
-   d="scan'208";a="457695963"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2023 14:55:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="909265985"
-X-IronPort-AV: E=Sophos;i="6.04,205,1695711600"; 
-   d="scan'208";a="909265985"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmsmga001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 16 Nov 2023 14:55:48 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Thu, 16 Nov 2023 14:55:47 -0800
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Thu, 16 Nov 2023 14:55:47 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Thu, 16 Nov 2023 14:55:47 -0800
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Thu, 16 Nov 2023 14:55:47 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E80ACD4D;
+	Fri, 17 Nov 2023 02:38:31 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q8HYnb1cL+PkR8P93lQbisiYtvwywQWLG5kebGNZf5jNm0RISiNASQLEPN4McFH3JzJrQAXRaENCnAvl/r3lCPo69jPWUBqnogZhVVhT/ddIDaDqX396OvccCwO7Df9EQ/5rkeWwGCJp6wcv0deKzXIIQGpTUlJuVF5LWyG/odmT96SfYkB8K7KuxTrFXAuAPFjBR4uL9CH+HSr3IWkXae2j1pSulJdnRSB/rMjJiH1V5t6aNQU2UTcOcVf967s8VpN7U6Cgs1cS4fWTLaAQeJRObxT9DVKKBXcmdl5xMbTyS89Kbf5EFcCt6m0sVXNjsR/mTGlIjlPsBEqJwb8pJQ==
+ b=FOvqTZHVa4lix9syKPt4shcH6LhMRPDZw1e0+ylWsTrxINMD0nTLyRF58kM2Q5De3VRP+RKs6Q3CKWUZZoGyL6D+okUujGwZ0zvIb4SV76R32K/rwHly0u9zDA/8dnukBvf9Q6Gga3hYsuNRT+qpdEeUqodNLPsdOTpXteHQ8b5E7LkHcJYwxjpqS2CLwfMAkYgC64mub2BYnJJWjHh+uxNfdHIjQZgbqaOSoq8luVIe9zRY9LIliHYPvqVB9iV9F9zDpLwB/TIFVMOAQ0jCFVI701eia1/EiqhERLmazcGbJuatO8UOEr0Tph+FoUuPiTM0eJkDc7wYRacx2yYyag==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=88gut+MznrujhGIoLqFKtUJmjOVHQCn19uWIWn0/xE8=;
- b=DCkDz+Wo6uoyEWAf+9217Lszz8TibIM/Kded0WE+h9/gXLL0Ko0bP2+84YeCm8r488yLmPiv6SURsJPah3hkNtbF2R4xgQH/gXSbq0lAE551wjjP37UsgO8sO4R4CHzH6qEJ8MDAvi9VF92zvTeD03nMeNHHsaRUkMCEredRQPdvhrwpTisIr58xiRaQ+0fmffUYlQMA9ouvQAjXh0g+Xw0IkBmH2bQslDpn8Qh+c4QQwyJ28pQB6xfsqmkM5gLiKBr2NbSCW/gZ//zqHi350IY+QiVV+J+0JPNdUABHjKm1RFR6qiY0TWUF7AZ/coSc7I8hMCTVIGOD4TFBDsr4Yg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ1PR11MB6083.namprd11.prod.outlook.com (2603:10b6:a03:48a::9)
- by CH0PR11MB5361.namprd11.prod.outlook.com (2603:10b6:610:b8::20) with
+ bh=Y4J6mzjOC51bHlnWkNkFsK9sqod8LcIKsIgJMP2rilM=;
+ b=U5pPLPj4ppN7lrn6A8NFt2LpiYDzFWW/R2fV3diODXYkTzqYDH9P70lUNpRLNJXYk5mC+AXhWPGF9WvN3fm0QQrtrQazZZKcSR862H4VNKTTkS+x799WVy55lD8Tdt/rlbIAxKu8lMXLKhTHwCdSCcvObUNxmZjnYIlneHj3wHlpeRjE5ziSl209J9vlmWxycCKsyGQ8JOZIreL+Bve6OW9NNg7YmUtQZsDIJYc9SMm2jmMS+Z/hEMVIbKGQmtAC08W6v9r53plmU1mk4X8eHj88o1iDJkdBgsb88OIJfFOVL97qvGLwM51bnUtIuMiN1kwVSNF6Ewjs9P6zuLLbWg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=arm.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y4J6mzjOC51bHlnWkNkFsK9sqod8LcIKsIgJMP2rilM=;
+ b=ogThwPXgWw3SQEATS0Surun68KUaGVHcNRflO0fhazsmuHOtDC59os6EyO3dmfoqievs2YBgE0xNTq2VDAgETj6dJreaCATq47uIsUV2yTpPIjXlhurlSLnTXZeyVa1XHoG5vnG7arpTWH2ZnSoVtTzD2OeODQ0Ctb4mmViuwEKqGLEMntBj10EJYgCVSemMvH5Pkxye0a4Wtkq1fi2ouH2U80HCzEfdPX2sA5fJYAeqVYGBDEShdrfPsSbfXz08A8bZnqOqglzmDJ1TZUTBk2InAYoaCrBwagEmYQ3pySEtLJCH2qKf5RoXAg/Z8GaSB1ySHkOZdLIOWnyWD38Tdg==
+Received: from PA7P264CA0009.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:2d3::7)
+ by SJ0PR12MB6759.namprd12.prod.outlook.com (2603:10b6:a03:44b::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.23; Thu, 16 Nov
- 2023 22:55:45 +0000
-Received: from SJ1PR11MB6083.namprd11.prod.outlook.com
- ([fe80::2b58:930f:feba:8848]) by SJ1PR11MB6083.namprd11.prod.outlook.com
- ([fe80::2b58:930f:feba:8848%6]) with mapi id 15.20.7002.021; Thu, 16 Nov 2023
- 22:55:45 +0000
-From: "Luck, Tony" <tony.luck@intel.com>
-To: Avadhut Naik <avadhut.naik@amd.com>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>
-CC: "rafael@kernel.org" <rafael@kernel.org>, "gregkh@linuxfoundation.org"
-	<gregkh@linuxfoundation.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"james.morse@arm.com" <james.morse@arm.com>, "bp@alien8.de" <bp@alien8.de>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"alexey.kardashevskiy@amd.com" <alexey.kardashevskiy@amd.com>,
-	"yazen.ghannam@amd.com" <yazen.ghannam@amd.com>, "avadnaik@amd.com"
-	<avadnaik@amd.com>
-Subject: RE: [PATCH v6 1/4] ACPI: APEI: EINJ: Refactor
- available_error_type_show()
-Thread-Topic: [PATCH v6 1/4] ACPI: APEI: EINJ: Refactor
- available_error_type_show()
-Thread-Index: AQHaGN74xSOLtQ8hMkyb4EchiBhjfrB9jflg
-Date: Thu, 16 Nov 2023 22:55:44 +0000
-Message-ID: <SJ1PR11MB6083540990D4929381FD3358FCB0A@SJ1PR11MB6083.namprd11.prod.outlook.com>
-References: <20231116224725.3695952-1-avadhut.naik@amd.com>
- <20231116224725.3695952-2-avadhut.naik@amd.com>
-In-Reply-To: <20231116224725.3695952-2-avadhut.naik@amd.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ1PR11MB6083:EE_|CH0PR11MB5361:EE_
-x-ms-office365-filtering-correlation-id: ebfd6992-2c3d-4528-4fdb-08dbe6f72a65
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: iXrq2yutGqq57wIFjCgQeOScTdo1UJxf4YYIv5s+gZ1IjroQdcsj/7IUw1gLVW+RK+FhDR0FF9/FmBk0x+8sMab9+GbQVNSq0yrl6x25pKXayE31DA1DXMCw2AMPay7O17LiO1lX16MKYvBqkgCdkrNkBhSaD0YM49Zj26hwUd63TGgK9MPj6wvDv+bYkuXbty/2uxYlCOYfhPHlPonMb1R49odP4dl9P8pAd6TnE4Wr1d5/g9hUAQ/8Ymv1OD5yUC0dQy2QDyGoeKi+/hrSba3bBXJHnu7Q/KQogo5kiQoO90bFsz/sE4VzY6gkoHVR/9p2dH5bltSruLgdCyFHVMqAKde6QstlAFKtPdsC1dy+aPyAMTL31bXiVVbKtCijZL5dlqaoOOtS/QmGGTOPa34CsQP9mBPxPsoGkbQyt3OfAh51qsddbi37Fu6Y0GNPCnAqp3RyamUwbIxQjQ6CLjVQp6WtXc7QYXHOKGaua99wOLbWJ6itCZzaIGuAcXiSDnvIR4rvScFRumjrmqJvSpRNFLKHso1Sl8JxP+OZbkmN55T7szwVuTgth530bStoFegGw/Eu3xooX/ADX3r0wBVEzB9EeMS6OQviIXeZzexSQb20RBy8WZ1FwFKa2hl4
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6083.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(376002)(366004)(396003)(136003)(230922051799003)(451199024)(186009)(1800799009)(64100799003)(82960400001)(9686003)(122000001)(6506007)(7696005)(55016003)(478600001)(71200400001)(41300700001)(38100700002)(26005)(110136005)(66556008)(64756008)(66946007)(86362001)(76116006)(66446008)(66476007)(316002)(54906003)(4326008)(5660300002)(33656002)(38070700009)(8936002)(8676002)(2906002)(52536014)(7416002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?jVs6HJqajTqedBJTwoh+DzbPS9ZzRlcKQKtsLmqEGdUDUIkgSShvb/aEUiEL?=
- =?us-ascii?Q?y6tDYFGQVH5oDthTzIPq4wN7Mo7XSYBapi2hD/pE3JeSav0DT04I7iKTFwUn?=
- =?us-ascii?Q?/wd6GFWH3UNY60jQgAnfgGYUMS5g3bDiBY8eBIZUNPp888U0h6vXVFuj5Fu7?=
- =?us-ascii?Q?Ov7JWK7OVVjYLBVvWcCRu4d1mGHcqrzixc/2AiFERE10NGLrhH4ulqRQmcv1?=
- =?us-ascii?Q?6/kVix0O5jx04edDJx8fxVOlvlgaiNSY+jasCn2cCiXbWe4EQxfAC3Kf6/cu?=
- =?us-ascii?Q?O4gH3XLhjwdDA1rybTVlaCO0N8NxEEu4EUgXUdrxk9Pm3BzkDCoZu/i6FoJ3?=
- =?us-ascii?Q?A9YquegD47s14Ve3y8lQ+bwdbMmR7+1zd4gFcPguF1kM5vso+kk5YW34Q2sn?=
- =?us-ascii?Q?MnWF8iO5Kw40seOVJ1joVsu5bVFzzHiVFoD9n/FiI+Edg/khSj6+MqjKli/D?=
- =?us-ascii?Q?TIDi1L67whgMhabL8S4r11+Ffn+MB/gN5gEr8CCRbs8D5V4DrgpKWhQrLrmE?=
- =?us-ascii?Q?V4hFzTupIHkgW2egtsxpzoeH8aWCYKPUivxew/XEsWFpI+HFNVCKVuyAYdPX?=
- =?us-ascii?Q?HS79DfDfH2Ur5bEES5l3JPHjxG+AKWiMFLgE3fohbyVzl9EPzS3jHv0rl0Jr?=
- =?us-ascii?Q?ZKugUZa1vcb8zlwb0kAE1AekF3Z+7LwEGbrtNtG+zr4kkvUKjOMWLI44h0lF?=
- =?us-ascii?Q?bOvlMpBhwzjU9YPTXkK1N32bWjSIAcvAj+PKThw7CV/0SVSiwlU4ITze5LBB?=
- =?us-ascii?Q?ofIY6fwkutwiVcSjvONzvuOkCaFZCg9m8u0JpYl5qHvZQSbksk5HORSg5IEn?=
- =?us-ascii?Q?Y0lnFfiJ65dkQOIflo0LCn4pL6lnnLfqYi/dreacdR9J/CgtskKeBA+90Q9u?=
- =?us-ascii?Q?85NJBcSQN75sac4c5kankmPFxiqDZZTIg908Nd4jj0BIaIsIXhnAdzQNk2EL?=
- =?us-ascii?Q?P7X0VqTVOyVI4qrHCHxa/sYN3lrBxaW0rsSTLjI7T3WgxRNVdGsoymA+mkBE?=
- =?us-ascii?Q?OAjbSHyL2CsBbDSL9bQm6XUUgoo2J0eCjJjgeNosVDMmqMXraUiMlS5bx/ik?=
- =?us-ascii?Q?xNRP3+3PK6fxI2zX1JZzJD29DwtL91m1z5xvkHKVVxWVA0bSrfzJ5fm73fHZ?=
- =?us-ascii?Q?VZKS5F82jAn68HGWgGddnnepKydPijfL7QdtPw4riUCs4Gx9lwHX8JTq22IE?=
- =?us-ascii?Q?Jb/9UNuRb7W6Zu1Pk3DueVq+r0GC+iuKMPsN1gOC/YhocNFk1dN0zFk4xI+B?=
- =?us-ascii?Q?y2clRMt0dsofXMl4QbnI4/PX+Y7JVNz/YhrJ3QTIay08jK4SP2L6U9y6wjaX?=
- =?us-ascii?Q?gsxyNV5qoh4WUoZnEg+JUf8g8vaZn3eVoEIgdAq4WYOBGqs4FtSgx76VZfYT?=
- =?us-ascii?Q?jhGzFZF4vN48JU9xYkCJWzF4WwyINgDRGgCgaC/5VUoCC+9WE3ChXyr6x96C?=
- =?us-ascii?Q?JlYFbq9iISeDDhVQB3mxo2URtfR9ADqULabu5+tMRFKlEE28a1fcCyqAMyxw?=
- =?us-ascii?Q?vqLmanPRwjtTyney0bb9TFoFeGL4OMIum3MJ5eTggDqGGraPwj2aMda8z33V?=
- =?us-ascii?Q?3pGCWwYWdgfMCssA8vjL5MV1znD1RUZpMbG18Ogu?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.18; Fri, 17 Nov
+ 2023 10:38:26 +0000
+Received: from SN1PEPF0002BA4F.namprd03.prod.outlook.com
+ (2603:10a6:102:2d3:cafe::25) by PA7P264CA0009.outlook.office365.com
+ (2603:10a6:102:2d3::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.21 via Frontend
+ Transport; Fri, 17 Nov 2023 10:38:24 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SN1PEPF0002BA4F.mail.protection.outlook.com (10.167.242.72) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7025.12 via Frontend Transport; Fri, 17 Nov 2023 10:38:24 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Fri, 17 Nov
+ 2023 02:38:10 -0800
+Received: from [10.41.21.79] (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Fri, 17 Nov
+ 2023 02:38:05 -0800
+Message-ID: <027b049d-28ad-fd13-d581-cda86041f7b6@nvidia.com>
+Date: Fri, 17 Nov 2023 16:08:02 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6083.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ebfd6992-2c3d-4528-4fdb-08dbe6f72a65
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Nov 2023 22:55:44.5303
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [Patch v6 2/2] ACPI: processor: reduce CPUFREQ thermal reduction
+ pctg for Tegra241
+Content-Language: en-US
+To: Sudeep Holla <sudeep.holla@arm.com>
+CC: <rafael@kernel.org>, <rui.zhang@intel.com>, <lenb@kernel.org>,
+	<lpieralisi@kernel.org>, <guohanjun@huawei.com>,
+	<linux-acpi@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<treding@nvidia.com>, <jonathanh@nvidia.com>, <bbasu@nvidia.com>,
+	<sanjayc@nvidia.com>, <ksitaraman@nvidia.com>, <srikars@nvidia.com>,
+	<jbrasen@nvidia.com>, Sumit Gupta <sumitg@nvidia.com>
+References: <20231109183322.28039-1-sumitg@nvidia.com>
+ <20231109183322.28039-3-sumitg@nvidia.com> <20231110101507.GB1505974@bogus>
+From: Sumit Gupta <sumitg@nvidia.com>
+In-Reply-To: <20231110101507.GB1505974@bogus>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.126.231.35]
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA4F:EE_|SJ0PR12MB6759:EE_
+X-MS-Office365-Filtering-Correlation-Id: 638cfd6e-01e9-4762-62fa-08dbe7595396
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	NMFSR15VS7sZh6mSZ5NK3XHbqYMLI3oQ1WPDXgsPNZTPkmKdYuilEPNUOlGd+GnxKJBgJ2NAeYkMIPo4JMeB963jrHN68DOQA/Tt9Hs26B/ETj5PYP5hnsE5M/vRrnZPqijnue4xElocWBx/OD2bLtLyW32fftMw4bDw2mEInVa4XNBdPEp3f4gw5Ea7WYlCOhuUGavzqN0B6ky2ihVoImWJgskQkYb4oEqsLej+ZpvV9W3qdHxhsWagQN8q1nuywURI2Xf2iy4II6qu5o2jWUBsGzIllh7qWxC9QDK3cwxiaIIjpUrR5c0mn+vpLehzCOV9KWviQ+YxeZ6LQFNB+CE2C6k+JeZkLx0BhpOeAfq1lcZ9D10Bf065kcBkOxHpY9vqasty5DU0wkGX69DSJhU0VoqPZOVZBOAeA8wQ2wE2S/oKD/8AVCAcNigkWW1+jUZ57lYQbwsWEQozHS0KzS99rX4JP7mV6dXSGp/fUJCDcMX7+sDxhkrOrZQLYfNCEpSPk5EltPX7b3mzB2m2Ab+Y7FZbHJO7dIOIwt07bPBraqLVFnDBLMsPVMt+1ti13ajYQQz4n248J7CR0dYDu1lyqO9oteTY/BSH/FSd+tVE1f80gfuFSNCfEwo30+Kxmjwe1xAFPSz9cylaG2qOOR10y0CqYw6kPx/DASNk9ihIcd0zvshMHUu47ofKvGoMTXjK1NmZ6vuaa+Nn0PBFUYApwhhrMTYu2Y24Z+lzuEca9LroKS7V+cH8cDexfjyNLeol9bPkONHPhaY2T6ChHw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(346002)(376002)(39860400002)(396003)(136003)(230922051799003)(64100799003)(186009)(1800799009)(82310400011)(451199024)(40470700004)(36840700001)(46966006)(2616005)(36756003)(36860700001)(40480700001)(107886003)(8676002)(2906002)(4326008)(8936002)(31686004)(82740400003)(16526019)(26005)(83380400001)(41300700001)(426003)(356005)(47076005)(7636003)(336012)(6666004)(6916009)(316002)(16576012)(54906003)(70206006)(70586007)(86362001)(7416002)(40460700003)(5660300002)(478600001)(31696002)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2023 10:38:24.2121
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: QQsD+/3GygOxIsV8qbhIFMAwAlgmjq/84Ox1GxpCA/k9uOYic77Wn2yV6rvqDcXMDMk3lQKliuJ73pFMPUrN2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5361
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 638cfd6e-01e9-4762-62fa-08dbe7595396
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF0002BA4F.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6759
 
-> From: Avadhut Naik <Avadhut.Naik@amd.com>
->
-> OSPM can discover the error injection capabilities of the platform by
-> executing GET_ERROR_TYPE error injection action.[1] The action returns
-> a DWORD representing a bitmap of platform supported error injections.[2]
->
-> The available_error_type_show() function determines the bits set within
-> this DWORD and provides a verbose output, from einj_error_type_string
-> array, through /sys/kernel/debug/apei/einj/available_error_type file.
->
-> The function however, assumes one to one correspondence between an error'=
-s
-> position in the bitmap and its array entry offset. Consequently, some
-> errors like Vendor Defined Error Type fail this assumption and will
-> incorrectly be shown as not supported, even if their corresponding bit is
-> set in the bitmap and they have an entry in the array.
->
-> Navigate around the issue by converting einj_error_type_string into an
-> array of structures with a predetermined mask for all error types
-> corresponding to their bit position in the DWORD returned by GET_ERROR_TY=
-PE
-> action. The same breaks the aforementioned assumption resulting in all
-> supported error types by a platform being outputted through the above
-> available_error_type file.
->
-> [1] ACPI specification 6.5, Table 18.25
-> [2] ACPI specification 6.5, Table 18.30
->
-> Suggested-by: Alexey Kardashevskiy <alexey.kardashevskiy@amd.com>
-> Signed-off-by: Avadhut Naik <Avadhut.Naik@amd.com>
-> Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
 
-Reviewed-by: Tony Luck <tony.luck@intel.com>
+>> Current implementation of processor_thermal performs software throttling
+>> in fixed steps of "20%" which can be too coarse for some platforms.
+>> We observed some performance gain after reducing the throttle percentage.
+>> Change the CPUFREQ thermal reduction percentage and maximum thermal steps
+>> to be configurable. Also, update the default values of both for Nvidia
+>> Tegra241 (Grace) SoC. The thermal reduction percentage is reduced to "5%"
+>> and accordingly the maximum number of thermal steps are increased as they
+>> are derived from the reduction percentage.
+>>
+>> Signed-off-by: Srikar Srimath Tirumala <srikars@nvidia.com>
+>> Co-developed-by: Sumit Gupta <sumitg@nvidia.com>
+>> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+>> ---
+>>   drivers/acpi/arm64/Makefile          |  1 +
+>>   drivers/acpi/arm64/thermal_cpufreq.c | 22 +++++++++++++
+>>   drivers/acpi/internal.h              |  9 +++++
+>>   drivers/acpi/processor_thermal.c     | 49 +++++++++++++++++++++++-----
+>>   4 files changed, 72 insertions(+), 9 deletions(-)
+>>   create mode 100644 drivers/acpi/arm64/thermal_cpufreq.c
+>>
+>> diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
+>> index 143debc1ba4a..726944648c9b 100644
+>> --- a/drivers/acpi/arm64/Makefile
+>> +++ b/drivers/acpi/arm64/Makefile
+>> @@ -5,3 +5,4 @@ obj-$(CONFIG_ACPI_GTDT)       += gtdt.o
+>>   obj-$(CONFIG_ACPI_APMT)      += apmt.o
+>>   obj-$(CONFIG_ARM_AMBA)               += amba.o
+>>   obj-y                                += dma.o init.o
+>> +obj-y                                += thermal_cpufreq.o
+>> diff --git a/drivers/acpi/arm64/thermal_cpufreq.c b/drivers/acpi/arm64/thermal_cpufreq.c
+>> new file mode 100644
+>> index 000000000000..40d5806ed528
+>> --- /dev/null
+>> +++ b/drivers/acpi/arm64/thermal_cpufreq.c
+>> @@ -0,0 +1,22 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +#include <linux/acpi.h>
+>> +
+>> +#include "../internal.h"
+>> +
+>> +#ifdef CONFIG_HAVE_ARM_SMCCC_DISCOVERY
+>> +#define SMCCC_SOC_ID_T241      0x036b0241
+> 
+> Sorry for missing this earlier. Not sure if the above define needs to be
+> conditional. Even if it has to be, CONFIG_ARM_SMCCC_SOC_ID is more
+> appropriate.
+> 
+
+Will remove the ifdef.
+
+>> +
+>> +int acpi_arch_thermal_cpufreq_pctg(void)
+>> +{
+>> +     s32 soc_id = arm_smccc_get_soc_id_version();
+>> +
+>> +     /*
+>> +      * Check JEP106 code for NVIDIA Tegra241 chip (036b:0241) and
+>> +      * reduce the CPUFREQ Thermal reduction percentage to 5%.
+>> +      */
+>> +     if (soc_id == SMCCC_SOC_ID_T241)
+>> +             return 5;
+>> +
+>> +     return 0;
+>> +}
+>> +#endif
+>> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+>> index 866c7c4ed233..ee213a8cddc5 100644
+>> --- a/drivers/acpi/internal.h
+>> +++ b/drivers/acpi/internal.h
+>> @@ -85,6 +85,15 @@ bool acpi_scan_is_offline(struct acpi_device *adev, bool uevent);
+>>   acpi_status acpi_sysfs_table_handler(u32 event, void *table, void *context);
+>>   void acpi_scan_table_notify(void);
+>>
+>> +#ifdef CONFIG_HAVE_ARM_SMCCC_DISCOVERY
+> 
+> It looks weird to add a such specific ARM config option in generic ACPI
+> code/header.
+> 
+> Does it make sense to add some new config this new feature you are adding
+> or just use ARM64 and have CONFIG_HAVE_ARM_SMCCC_DISCOVERY check internally
+> in the arch specific call.
+> 
+> --
+> Regards,
+> Sudeep
+
+Ok, will use CONFIG_ARM64 instead.
+I think we don't need to check for CONFIG_HAVE_ARM_SMCCC_DISCOVERY 
+inside the arch call as it returns zero if the soc_id value is different 
+from Tegra241.
+
+Best Regards,
+Sumit Gupta
+
+
+
 
