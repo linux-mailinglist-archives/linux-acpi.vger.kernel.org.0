@@ -1,158 +1,159 @@
-Return-Path: <linux-acpi+bounces-1598-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1599-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7507F06DE
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Nov 2023 15:32:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E87BA7F0DA0
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 09:34:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1924F1C203BA
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Nov 2023 14:32:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C3E21C2115A
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 08:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78706D272
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Nov 2023 14:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7F47486
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 08:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vw7FD2tg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jzyyzV7J"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47472D8;
-	Sun, 19 Nov 2023 06:16:43 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6cb66fbc63dso437344b3a.0;
-        Sun, 19 Nov 2023 06:16:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700403402; x=1701008202; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D5YMdSJ+DNHbcNIRlOywcDm3j9WNKn1Pp1oJN74vpQo=;
-        b=Vw7FD2tgK4Z8xiw4KOuYbCOvEL+l3CTXca7XYjAn3rdPaydbH9qsEYo+gIOPAFNXkY
-         3ivvljBnngXo9NtypR61CYlBZDOY5oMxdD+OwR6Xd2qFIUWg0JvOPehraCx5qcMTOsUT
-         T0RlVMvJ/Y15gES9CbdW41wOApnRGsWE/Io7p8EMwGiSZEwKxvIHwbToAcBdvIalJN1Z
-         S6eYxkRaVEZib/2X07gsKPup14TWWIwYO8zE52Y2JK6IbiOgfJk7XhtNt3tsdMfngrKi
-         W2mQPMJeUWnsC08ZnkKD+HLPKHKihI+jeQ456LuT6SD09rw9inTpbb0cl05duDeukkhf
-         tFzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700403402; x=1701008202;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=D5YMdSJ+DNHbcNIRlOywcDm3j9WNKn1Pp1oJN74vpQo=;
-        b=L6mhLUSbDmMT9fcX2SiHA4ASEP4MiJ4T69t6HmIi/zYnr2vv7zvJCeyphBwP/LksYr
-         Ez28T3Kfu/YHzCpnixHPvpU34zgDjqzNZ7CuRq2ig7Mw84oVuiKzBWPlDd/sPid1KA7C
-         uWZWZ2pyypmOult+vmrpJ8Y6ihZIVUMQy4k5jcejlLBCQarZ9Fr98ayJnSm/c8xRghDd
-         tOd4CuaLiGamnT0IbukS84m5aj+oZTnaLDJ6KhMhl3dB5TrRO7n52/2PvKJj9RTvBQZk
-         sM5Kp8jU+/A8GpHAGs7E27r0Ckgguhx2IQ4qbUqm4mBoD6GUMiS+IfI/XcyokvIfite0
-         4vgQ==
-X-Gm-Message-State: AOJu0YwG8ZCBBlrNSiA5anJ1bLASTyQ442Gu6Fy6jc5Gtm63lMrur4zq
-	BN5nllhG7GFTtqzBk/PwBcpg7IytYRc80g==
-X-Google-Smtp-Source: AGHT+IF6byi9ymN4DR72v6SwaZ7fg1ETCkw4C37szrVsW7+y/f5lsYg20gWNhM9MeNk2sZLcRmN0kw==
-X-Received: by 2002:a05:6a20:6a10:b0:187:b2cb:2b0f with SMTP id p16-20020a056a206a1000b00187b2cb2b0fmr6631658pzk.8.1700403402435;
-        Sun, 19 Nov 2023 06:16:42 -0800 (PST)
-Received: from [192.168.0.106] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id p18-20020a63fe12000000b0058988954686sm4360457pgh.90.2023.11.19.06.16.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 19 Nov 2023 06:16:41 -0800 (PST)
-Message-ID: <0fd91726-942d-40dd-adef-5b43e25ec49c@gmail.com>
-Date: Sun, 19 Nov 2023 21:16:35 +0700
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 625A2137;
+	Mon, 20 Nov 2023 00:31:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700469075; x=1732005075;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xSqxMouuJFaVnVg+4nvXMXYc/b/CnBPtnslafhZwyjQ=;
+  b=jzyyzV7JGIfYVwXgkuwNFKLQzrE+9xqe7WcaRUc5Tg7EpNk5ZxfRq2Uc
+   hhPgmEKkMrY5Nx6avp0XGGuzaNwSv+cMtefwzcDrmieVSPDj2OVTaAcUM
+   9YH63JvQVG+1V7zDjQeU9TVgXTsjhD77SG5Kh81v539sb+RA3OMhJmFGZ
+   MKwaFJGnKLh2gkRfuOv+0O8hVkB/be/IfED3VySBlHx04lObcwOaNaTkn
+   gjdQLUhSRxGhgOt9E4jEcWGT9QLVefQca3STuHFvC7DDZ87v3XZKUllc8
+   tyahSAgIG4uKn+IE5plZCSX/M+IpeqGv/GAe7vvzTbRTtc0FBUiOvNzxP
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="13128819"
+X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
+   d="scan'208";a="13128819"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 00:31:14 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="795401503"
+X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
+   d="scan'208";a="795401503"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 00:31:12 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 35DC7120A59;
+	Mon, 20 Nov 2023 10:31:09 +0200 (EET)
+Date: Mon, 20 Nov 2023 08:31:09 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
+	rafael@kernel.org
+Subject: Re: [PATCH v2 5/7] media: ov8858: Use pm_runtime_get_if_active(),
+ put usage_count correctly
+Message-ID: <ZVsZTbd2U4IX2v1j@kekkonen.localdomain>
+References: <20231117111433.1561669-1-sakari.ailus@linux.intel.com>
+ <20231117111433.1561669-6-sakari.ailus@linux.intel.com>
+ <ledwhthyoc6h5ccmwdvyl7cqrp3kdwijcpkzxpp4jvemd6iz2a@na2elf7674a5>
+ <ZVicKX8kw94TuOxA@kekkonen.localdomain>
+ <20231118173315.GD20846@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Regressions <regressions@lists.linux.dev>,
- Linux ACPI <linux-acpi@vger.kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Linux Common Internet File System & SMB3 <linux-cifs@vger.kernel.org>
-Cc: Hugh Dickins <hughd@google.com>, Chuck Lever <chuck.lever@oracle.com>,
- Christian Brauner <brauner@kernel.org>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Steve French <sfrench@samba.org>, Namjae Jeon <linkinjeon@kernel.org>,
- Tom Talpey <tom@talpey.com>, Sergey Senozhatsky <senozhatsky@chromium.org>,
- walter59 <walter.moeller@moeller-it.net>, Fabio Rossi <rossi.f@inwind.it>
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Fwd: kernel 6.6.x and higher , apci reboot problems
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231118173315.GD20846@pendragon.ideasonboard.com>
 
-Hi,
+Hi Laurent,
 
-I notice a regression report on Bugzilla [1] (albeit terse). Quoting
-from it:
-
-> since kernel 6.6 problems , reboot fails or me muss use double enter key .
-> under xfce4 it jumps on console and hangs.
+On Sat, Nov 18, 2023 at 07:33:15PM +0200, Laurent Pinchart wrote:
+> Hi Sakari
 > 
-> restart under xfce4 fails shutdown also --- 6.5.11 it works all fine 
+> On Sat, Nov 18, 2023 at 11:12:41AM +0000, Sakari Ailus wrote:
+> > On Fri, Nov 17, 2023 at 04:30:15PM +0100, Jacopo Mondi wrote:
+> > > On Fri, Nov 17, 2023 at 01:14:31PM +0200, Sakari Ailus wrote:
+> > > > Use pm_runtime_get_if_active() to get the device's runtime PM usage_count
+> > > > and set controls, then use runtime PM autosuspend once the controls have
+> > > > been set (instead of likely transitioning to suspended state immediately).
+> > > >
+> > > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > > ---
+> > > >  drivers/media/i2c/ov8858.c | 8 +++++---
+> > > >  1 file changed, 5 insertions(+), 3 deletions(-)
+> > > >
+> > > > diff --git a/drivers/media/i2c/ov8858.c b/drivers/media/i2c/ov8858.c
+> > > > index 3af6125a2eee..a99b91700a8d 100644
+> > > > --- a/drivers/media/i2c/ov8858.c
+> > > > +++ b/drivers/media/i2c/ov8858.c
+> > > > @@ -1538,7 +1538,7 @@ static int ov8858_set_ctrl(struct v4l2_ctrl *ctrl)
+> > > >  	struct v4l2_subdev_state *state;
+> > > >  	u16 digi_gain;
+> > > >  	s64 max_exp;
+> > > > -	int ret;
+> > > > +	int ret, pm_status;
+> > > >
+> > > >  	/*
+> > > >  	 * The control handler and the subdev state use the same mutex and the
+> > > > @@ -1561,7 +1561,8 @@ static int ov8858_set_ctrl(struct v4l2_ctrl *ctrl)
+> > > >  		break;
+> > > >  	}
+> > > >
+> > > > -	if (!pm_runtime_get_if_in_use(&client->dev))
+> > > > +	pm_status = pm_runtime_get_if_active(&client->dev);
+> > > > +	if (!pm_status)
+> > > >  		return 0;
+> > > >
+> > > >  	switch (ctrl->id) {
+> > > > @@ -1601,7 +1602,8 @@ static int ov8858_set_ctrl(struct v4l2_ctrl *ctrl)
+> > > >  		break;
+> > > >  	}
+> > > >
+> > > > -	pm_runtime_put(&client->dev);
+> > > > +	if (pm_status > 0)
+> > > 
+> > > I'm not 100% sure I get this bit.
+> > > 
+> > > If we get here it means pm_status is either -EINVAL or > 0, otherwise
+> > > we would have exited earlier.
+> > > 
+> > > What's the point of checking for > 0 here ?
+> > > 
+> > > There are two cases where pm_status is -EINVAL, either !CONFIG_PM and
+> > > the the below call is a nop, or if pm_runtime has not been enabled by
+> > > the driver, which means the driver doesn't use pm_runtime at all.
+> > > 
+> > > Are there other cases I have missed that require checking here for
+> > > pm_status > 0 ?
+> > 
+> > Other than Runtime PM being disabled, I don't think that should happen.
+> > 
+> > So as such this patch does not fix a bug. I just prefer to be extra
+> > cautious when it comes to use counts.
 > 
-> regards 
+> What happened to the old motto of "if it's not broken, don't fix it" ?
+
+People tend to take patterns used in drivers and this indeed works here,
+but only when taken with the rest of the Runtime PM API usage.
+
+> :-) I like how this series (slightly) simplifies the runtime PM API by
+> giving pm_runtime_get_if_active() the right behaviour for the most
+> common use cases. Let's continue in that direction, and evolve the API
+> to simplify driver, not render them more complex.
 > 
-> ps: all pcs . notebooks , nucs, workstation
+> I would prefer refactoring this series to first switch drivers to
+> pm_runtime_get_if_active(), and then use autosuspend at the end of the
+> .s_ctrl() handler. That can be two patches, each modifying all relevant
+> sensor driver.
 
-Then another reporter can reproduce the regression with bisection:
-
-> I have found a similar problem but in my case I don't think it's related to ACPI. In fact the problem is still there after adding the kernel option acpi=off. @walter59, can you test on your system by disabling ACPI too?
-> 
-> During system shutdown, started by "shutdown -h now", the process hangs (but the system is still working) during stopping of samba service. Instead the reboot still works.
-> 
-> My problem appeared with the upgrade 6.5.11 -> 6.6-rc1 so I have bisected until I have found the first bad commit:
-> 
-> $ git bisect log
-> 
-> git bisect start
-> # status: waiting for both good and bad commits
-> # good: [799441832db16b99e400ccbec55db801e6992819] Linux 6.5.11
-> git bisect good 799441832db16b99e400ccbec55db801e6992819
-> # status: waiting for bad commit, 1 good commit known
-> # bad: [0bb80ecc33a8fb5a682236443c1e740d5c917d1d] Linux 6.6-rc1
-> git bisect bad 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
-> # good: [2dde18cd1d8fac735875f2e4987f11817cc0bc2c] Linux 6.5
-> git bisect good 2dde18cd1d8fac735875f2e4987f11817cc0bc2c
-> # bad: [461f35f014466c4e26dca6be0f431f57297df3f2] Merge tag 'drm-next-2023-08-30' of git://anongit.freedesktop.org/drm/drm
-> git bisect bad 461f35f014466c4e26dca6be0f431f57297df3f2
-> # bad: [bd6c11bc43c496cddfc6cf603b5d45365606dbd5] Merge tag 'net-next-6.6' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
-> git bisect bad bd6c11bc43c496cddfc6cf603b5d45365606dbd5
-> # good: [6c9cfb853063f317b2953c5e852b6bac1eb0cade] net: ethernet: mtk_wed: minor change in wed_{tx,rx}info_show
-> git bisect good 6c9cfb853063f317b2953c5e852b6bac1eb0cade
-> # bad: [ccc5e9817719f59b3dea7b7a168861b4bf0b4ff4] Merge tag 'pm-6.6-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-> git bisect bad ccc5e9817719f59b3dea7b7a168861b4bf0b4ff4
-> # bad: [68cadad11fe2ddd126b37a8fba3726be7fa0f5c6] Merge tag 'rcu.2023.08.21a' of git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu
-> git bisect bad 68cadad11fe2ddd126b37a8fba3726be7fa0f5c6
-> # bad: [dd2c0198a8365dcc3bb6aed22313d56088e3af55] Merge tag 'erofs-for-6.6-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs
-> git bisect bad dd2c0198a8365dcc3bb6aed22313d56088e3af55
-> # bad: [ecd7db20474c3859d4d01f34aaabf41bd28c7d84] Merge tag 'v6.6-vfs.tmpfs' of git://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs
-> git bisect bad ecd7db20474c3859d4d01f34aaabf41bd28c7d84
-> # good: [e9d7d3cb9fb3f142df574664507ac0ee4a26365a] procfs: convert to ctime accessor functions
-> git bisect good e9d7d3cb9fb3f142df574664507ac0ee4a26365a
-> # good: [6f4aaee3faa84f00d38bfaba88a9f75d8c78e7e0] fat: make fat_update_time get its own timestamp
-> git bisect good 6f4aaee3faa84f00d38bfaba88a9f75d8c78e7e0
-> # bad: [2daf18a7884dc03d5164ab9c7dc3f2ea70638469] tmpfs,xattr: enable limited user extended attributes
-> git bisect bad 2daf18a7884dc03d5164ab9c7dc3f2ea70638469
-> # good: [6faddda69f623d38bb097640689901a4b5ff881a] libfs: Add directory operations for stable offsets
-> git bisect good 6faddda69f623d38bb097640689901a4b5ff881a
-> # bad: [2be4f05af71bb2a9958c5680c19e5a489636ff42] libfs: Remove parent dentry locking in offset_iterate_dir()
-> git bisect bad 2be4f05af71bb2a9958c5680c19e5a489636ff42
-> # bad: [a2e459555c5f9da3e619b7e47a63f98574dc75f1] shmem: stable directory offsets
-> git bisect bad a2e459555c5f9da3e619b7e47a63f98574dc75f1
-> # good: [23a31d87645c652734f89f477f69ddac9aa402cb] shmem: Refactor shmem_symlink()
-> git bisect good 23a31d87645c652734f89f477f69ddac9aa402cb
-> # first bad commit: [a2e459555c5f9da3e619b7e47a63f98574dc75f1] shmem: stable directory offsets
-
-See Bugzilla for the full thread.
-
-Anyway, I'm adding this regression to regzbot:
-
-#regzbot introduced: a2e459555c5f9d https://bugzilla.kernel.org/show_bug.cgi?id=218147
-#regzbot title: shmem's stable directory offsets hangs samba shutdown
-
-Thanks.
-
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=218147
+I think it should be fine to do both in the same patch indeed.
 
 -- 
-An old man doll... just what I always wanted! - Clara
+Regards,
+
+Sakari Ailus
 
