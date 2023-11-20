@@ -1,127 +1,101 @@
-Return-Path: <linux-acpi+bounces-1619-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1620-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4DF17F15DB
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 15:38:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B45F47F15DC
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 15:38:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FA06281F5D
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 14:38:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1BB4B20BD0
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 14:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D746FAE
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 14:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F111C6BA
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 14:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F060CC4;
-	Mon, 20 Nov 2023 04:52:50 -0800 (PST)
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6d64d8ce2c3so671043a34.0;
-        Mon, 20 Nov 2023 04:52:50 -0800 (PST)
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 854709C;
+	Mon, 20 Nov 2023 04:57:58 -0800 (PST)
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-6d32ce135c4so536478a34.0;
+        Mon, 20 Nov 2023 04:57:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700484770; x=1701089570;
+        d=1e100.net; s=20230601; t=1700485078; x=1701089878;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HoRlunjQDW1HaYq2fn2UmPJYBNEsQabm2JAfQKAH8Bc=;
-        b=w742G6luZl3RqCBpPr/wj1VFw6drbpuyCvmJhKa1kGQZm4tMdtRy9guStWlczXbxFH
-         /KchlljqeINzcXptjdN/BhkieC7WcXnYxLyh5I7lDsu95gTzs98TTVgoG+UqVzCXUAkZ
-         XCxhXA0yQ08XqM2+bxUWloV8lUtiN+ntJI5uLvMAQzIp/8Plb6O6J7LxveLFqsjBWLu4
-         OF8bd9luAKwmpegTFxLJipj9BUgGUVFbkEwdn+nTY/tbs5UqOYycNZPMVKDeh/viV9pK
-         0ILEEAJOcclBbUNXgut9XD5phApZKLAWv34CJT/N20TAHQUxcDz9RzxTJOQsxqu0pDHX
-         KA3g==
-X-Gm-Message-State: AOJu0YwU8hpuB+gwtGSAQp4iNJm8BMzHdOYcLXtlu0UZS6XLG9HIvkaN
-	MZkB5koC66NGnS5QLL5vs4LTdCaL6b1pUaHi4JyFck+o
-X-Google-Smtp-Source: AGHT+IEEkTqrIIVE0w2gmfejJ/N0PXHlj2deOG662ZwVJEj+dP9SM00fE42X0Td0Nygh4Pe+18jtAZI6KPG1R/0hsgI=
-X-Received: by 2002:a05:6820:290e:b0:58a:7cff:2406 with SMTP id
- dp14-20020a056820290e00b0058a7cff2406mr9437734oob.0.1700484770278; Mon, 20
- Nov 2023 04:52:50 -0800 (PST)
+        bh=WRmWYnun+H8N6YfHDxRkcl1OdXmrpY1OVWguGUrRMHw=;
+        b=caqh4zh26kGCCi6+xbjkTn/LNvDALT2bki1d570bDb53aJGplWuXrS51M2YJNH4o+2
+         atnT9ARSGDxCsllZ8wYXd/BOUBoYyq72O9xieAFgM77j6exkuqMTvFBeiI4Wr9K58JFk
+         moYRj/RQPryEsEeih54Sw88e4BuWWhmUY326IJAshoeKeXs19xspaa60pZyemNpf5JQ/
+         X3RefuPIrX1BvvkmYpwFboOJNqq05VCmkVo8fNJuFBKvE7zpUIL5ey3fiyxTk6o4pXWd
+         +zNf/QRBTuYeJOjUvzXhmQgw0mVr1/W+ryPHLZJmPQLrFOK/rlJH8EeXj4L6gJ7iF/+c
+         /qnQ==
+X-Gm-Message-State: AOJu0YyG+6oMap4/TUW+gNWSzJn4DQr1H5mFTOewl7d/tw2aI1uvNMJF
+	3/PhDIe3hCch+WBCWmzmseAk2KymKPFk+h7YVPVXyw5d
+X-Google-Smtp-Source: AGHT+IH4DqzxN5gzKls1477E5UEmNarpobq+egq12hb2R4tSdspyOE8ms35n4o0BxLppvIHPFohx9qyv0KiJRw9tOUQ=
+X-Received: by 2002:a4a:e783:0:b0:589:daaf:44a1 with SMTP id
+ x3-20020a4ae783000000b00589daaf44a1mr6702974oov.0.1700485077850; Mon, 20 Nov
+ 2023 04:57:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231117111433.1561669-1-sakari.ailus@linux.intel.com>
- <20231117111433.1561669-4-sakari.ailus@linux.intel.com> <20231118185049.GH20846@pendragon.ideasonboard.com>
- <ZVsnYjjWAiNPdHPG@kekkonen.localdomain>
-In-Reply-To: <ZVsnYjjWAiNPdHPG@kekkonen.localdomain>
+References: <a079bba5a0e47d6534b307553fc3772d26ce911b.camel@infradead.org>
+ <20231027191435.GF26550@noisy.programming.kicks-ass.net> <da465baf0ebcfa3c31e5be7e70319b0796ac59da.camel@infradead.org>
+In-Reply-To: <da465baf0ebcfa3c31e5be7e70319b0796ac59da.camel@infradead.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 20 Nov 2023 13:52:39 +0100
-Message-ID: <CAJZ5v0h+tP1=PW4C44LCfyJcDXhcUQ4+BHPP9vBM19rtfqukWA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/7] ACPI: Documentation: Document acpi_dev_state_d0()
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-acpi@vger.kernel.org, 
-	linux-media@vger.kernel.org, rafael@kernel.org, jacopo.mondi@ideasonboard.com
+Date: Mon, 20 Nov 2023 13:57:46 +0100
+Message-ID: <CAJZ5v0hfkoZM==qobzgzxAvTBDO6yP3w37K=EdHVGFr7WuJTaQ@mail.gmail.com>
+Subject: Re: [PATCH] acpi_idle: use raw_safe_halt() from acpi_idle_play_dead()
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, linux-acpi <linux-acpi@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Len Brown <lenb@kernel.org>, Juergen Gross <jgross@suse.com>, 
+	xen-devel <xen-devel@lists.xenproject.org>, Ingo Molnar <mingo@redhat.com>, 
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 20, 2023 at 10:31=E2=80=AFAM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
+On Mon, Nov 20, 2023 at 1:20=E2=80=AFPM David Woodhouse <dwmw2@infradead.or=
+g> wrote:
 >
-> Hi Laurent,
->
-> On Sat, Nov 18, 2023 at 08:50:49PM +0200, Laurent Pinchart wrote:
-> > Hi Sakari,
-> >
-> > Thank you for the patch.
-> >
-> > On Fri, Nov 17, 2023 at 01:14:29PM +0200, Sakari Ailus wrote:
-> > > Document that acpi_dev_state_d0() can be used to tell if the device w=
-as
-> > > powered on for probe.
+> On Fri, 2023-10-27 at 21:14 +0200, Peter Zijlstra wrote:
+> > On Fri, Oct 27, 2023 at 07:36:51PM +0100, David Woodhouse wrote:
+> > > From: David Woodhouse <dwmw@amazon.co.uk>
 > > >
-> > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > Xen HVM guests were observed taking triple-faults when attempting to
+> > > online a previously offlined vCPU.
+> > >
+> > > Investigation showed that the fault was coming from a failing call
+> > > to lockdep_assert_irqs_disabled(), in load_current_idt() which was
+> > > too early in the CPU bringup to actually catch the exception and
+> > > report the failure cleanly.
+> > >
+> > > This was a false positive, caused by acpi_idle_play_dead() setting
+> > > the per-cpu hardirqs_enabled flag by calling safe_halt(). Switch it
+> > > to use raw_safe_halt() instead, which doesn't do so.
+> > >
+> > > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > > > ---
-> > >  Documentation/firmware-guide/acpi/non-d0-probe.rst | 8 ++++++++
-> > >  1 file changed, 8 insertions(+)
-> > >
-> > > diff --git a/Documentation/firmware-guide/acpi/non-d0-probe.rst b/Doc=
-umentation/firmware-guide/acpi/non-d0-probe.rst
-> > > index 7afd16701a02..815bcc8db69f 100644
-> > > --- a/Documentation/firmware-guide/acpi/non-d0-probe.rst
-> > > +++ b/Documentation/firmware-guide/acpi/non-d0-probe.rst
-> > > @@ -24,6 +24,14 @@ there's a problem with the device, the driver like=
-ly probes just fine but the
-> > >  first user will find out the device doesn't work, instead of a failu=
-re at probe
-> > >  time. This feature should thus be used sparingly.
-> > >
-> > > +ACPI framework
-> > > +--------------
-> > > +
-> > > +Use the Linux ACPI framework function :c:func:`acpi_dev_state_d0()` =
-to tell
-> > > +whether the device was powered on for probe. :c:func:`acpi_dev_state=
-_d0()`
-> > > +returns true if the device is powered on, false otherwise. For non-A=
-CPI backed
-> > > +devices it returns true always.
-> > > +
+> > > We might {also,instead} explicitly set the hardirqs_enabled flag to
+> > > zero when bringing up an AP?
 > >
-> > While this is true, I don't want to see drivers having to call
-> > ACPI-specific functions, the same way you dislike OF-specific functions
-> > in drivers. Please find a better way to handle this.
+> > So I fixed up the idle paths the other day (see all that __cpuidle
+> > stuff) but I've not yet gone through the whole hotplug thing :/
+> >
+> > This seems right, at this point everything, including RCU is very much
+> > gone, any instrumentation is undesired.
+> >
+> > Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 >
-> The functionality is only available on ACPI and the function does the rig=
-ht
-> thing on non-ACPI platforms. I don't see an issue here.
+> Ping? Who's taking this?
 
-The issue would be calling an ACPI-specific function from code that's
-otherwise firmware-agnostic, AFAICS.
+I'm going to apply it.
 
-It would be good to have a more generic way of checking whether or not
-a device is operational.
+> Needs a Cc:stable@vger.kernel.org now too, to fix 6.6.x.
 
-> Feel free to post DT binding patches on suggested device power state duri=
-ng
-> probe. :-) I think DT would benefit from this as well: the at24 driver is
-> widely used and suddenly making probe() not talk to the chip (or even pow=
-er
-> it up) at all would probably be seen as a regression.
-
-In the DT case it is more complicated, though, at least in general,
-because there may be multiple clocks and regulators the device depends
-on and you may need to toggle a GPIO line too.
+Sure.
 
