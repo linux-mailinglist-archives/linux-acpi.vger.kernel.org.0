@@ -1,139 +1,127 @@
-Return-Path: <linux-acpi+bounces-1618-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1619-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC207F139E
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 13:39:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4DF17F15DB
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 15:38:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58956281DFB
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 12:39:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FA06281F5D
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 14:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129BE1B26C
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 12:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RvQx42ED"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D746FAE
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 14:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3443EF5
-	for <linux-acpi@vger.kernel.org>; Mon, 20 Nov 2023 04:25:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700483122;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SBUze4Br3/h3ENFWEagU3cqYBL/h55Cp7994NDkXm2g=;
-	b=RvQx42EDKsq3CsUFU9LbaKyDmIQr55EPfipWf6GrwxOszCugaQgc19HJdghpcXkBGydKB4
-	v99qXTZZXI0LI+/L//H/q3rPCQe7EE2KIoZduXh7AYH+wG1WTvtMFN2Dq7plDEITJUVOhG
-	WiYCHl4OyOdhim5aRZV7d4OivMRYr8s=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-412-J3_mWsJuOd6596nxGmp68g-1; Mon, 20 Nov 2023 07:25:21 -0500
-X-MC-Unique: J3_mWsJuOd6596nxGmp68g-1
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5444a9232a9so3275194a12.3
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Nov 2023 04:25:20 -0800 (PST)
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F060CC4;
+	Mon, 20 Nov 2023 04:52:50 -0800 (PST)
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6d64d8ce2c3so671043a34.0;
+        Mon, 20 Nov 2023 04:52:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700483119; x=1701087919;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SBUze4Br3/h3ENFWEagU3cqYBL/h55Cp7994NDkXm2g=;
-        b=tOdhn0iOe6KRg1HazcxFFoI2qYSGAX4VhPi3+MnLyHgE+OVSHfs5KKEmxLkzet1hT9
-         bRORU1AYSLkB4z4WfkWC7N4YKf5nEtF0nqH4D0BS9r+uPZBZY6RbsaAfoMnr2Yf8BTVN
-         bYgtvcu2QIpcntbPqdQ0ftTOvMCDOhXgW1xKPqWs+oONMLZaUuLdy4u67UYk18LOC0sw
-         3qhXq8x0RsqwvScitPG1Lw50lPg+YJgUyX1BGNkWTyXZdVwJ9fxzYkpc1RVJKVWi9SJY
-         DtJp800ZQ3AewZcUkg9r3XEk7fYKN/NScuzKFjl3DppG9JpfCBYmGPvk1uMlGu3MSr3N
-         ed+w==
-X-Gm-Message-State: AOJu0YyTnYLFnn3joZhZEYGHsYCQkuRluN34AXaSYpfFuyC6sVl2sziN
-	mrfEWhVuISkIFP1/b02gWdPKvmgN2ViUhG80y1nQNpmyY2QX2mdqghdh+uLKO6U01gb6TiLAONH
-	wXA73w3Ju7XP2JoeSpMmQs/ECStJUWg==
-X-Received: by 2002:a05:6402:42c7:b0:53f:bab5:1949 with SMTP id i7-20020a05640242c700b0053fbab51949mr6286469edc.12.1700483119307;
-        Mon, 20 Nov 2023 04:25:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHKFrVIwqRbrGAZFq9EclcZRxWlr5WL2EMV/hTWmOrYYQF5I7StcjCYVKlVy0rGTPS6aIs3fA==
-X-Received: by 2002:a05:6402:42c7:b0:53f:bab5:1949 with SMTP id i7-20020a05640242c700b0053fbab51949mr6286455edc.12.1700483118901;
-        Mon, 20 Nov 2023 04:25:18 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id j19-20020aa7ca53000000b005488ae52752sm1921822edt.18.2023.11.20.04.25.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Nov 2023 04:25:18 -0800 (PST)
-Message-ID: <e2448c2c-db08-47d4-b859-d1f063b1cc7a@redhat.com>
-Date: Mon, 20 Nov 2023 13:25:17 +0100
+        d=1e100.net; s=20230601; t=1700484770; x=1701089570;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HoRlunjQDW1HaYq2fn2UmPJYBNEsQabm2JAfQKAH8Bc=;
+        b=w742G6luZl3RqCBpPr/wj1VFw6drbpuyCvmJhKa1kGQZm4tMdtRy9guStWlczXbxFH
+         /KchlljqeINzcXptjdN/BhkieC7WcXnYxLyh5I7lDsu95gTzs98TTVgoG+UqVzCXUAkZ
+         XCxhXA0yQ08XqM2+bxUWloV8lUtiN+ntJI5uLvMAQzIp/8Plb6O6J7LxveLFqsjBWLu4
+         OF8bd9luAKwmpegTFxLJipj9BUgGUVFbkEwdn+nTY/tbs5UqOYycNZPMVKDeh/viV9pK
+         0ILEEAJOcclBbUNXgut9XD5phApZKLAWv34CJT/N20TAHQUxcDz9RzxTJOQsxqu0pDHX
+         KA3g==
+X-Gm-Message-State: AOJu0YwU8hpuB+gwtGSAQp4iNJm8BMzHdOYcLXtlu0UZS6XLG9HIvkaN
+	MZkB5koC66NGnS5QLL5vs4LTdCaL6b1pUaHi4JyFck+o
+X-Google-Smtp-Source: AGHT+IEEkTqrIIVE0w2gmfejJ/N0PXHlj2deOG662ZwVJEj+dP9SM00fE42X0Td0Nygh4Pe+18jtAZI6KPG1R/0hsgI=
+X-Received: by 2002:a05:6820:290e:b0:58a:7cff:2406 with SMTP id
+ dp14-20020a056820290e00b0058a7cff2406mr9437734oob.0.1700484770278; Mon, 20
+ Nov 2023 04:52:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] ACPI: scan: Add LNXVIDEO HID to
- ignore_serial_bus_ids[]
-Content-Language: en-US, nl
-To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-References: <20231104205828.63139-1-hdegoede@redhat.com>
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20231104205828.63139-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20231117111433.1561669-1-sakari.ailus@linux.intel.com>
+ <20231117111433.1561669-4-sakari.ailus@linux.intel.com> <20231118185049.GH20846@pendragon.ideasonboard.com>
+ <ZVsnYjjWAiNPdHPG@kekkonen.localdomain>
+In-Reply-To: <ZVsnYjjWAiNPdHPG@kekkonen.localdomain>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 20 Nov 2023 13:52:39 +0100
+Message-ID: <CAJZ5v0h+tP1=PW4C44LCfyJcDXhcUQ4+BHPP9vBM19rtfqukWA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/7] ACPI: Documentation: Document acpi_dev_state_d0()
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-acpi@vger.kernel.org, 
+	linux-media@vger.kernel.org, rafael@kernel.org, jacopo.mondi@ideasonboard.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi All,
+On Mon, Nov 20, 2023 at 10:31=E2=80=AFAM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> Hi Laurent,
+>
+> On Sat, Nov 18, 2023 at 08:50:49PM +0200, Laurent Pinchart wrote:
+> > Hi Sakari,
+> >
+> > Thank you for the patch.
+> >
+> > On Fri, Nov 17, 2023 at 01:14:29PM +0200, Sakari Ailus wrote:
+> > > Document that acpi_dev_state_d0() can be used to tell if the device w=
+as
+> > > powered on for probe.
+> > >
+> > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > ---
+> > >  Documentation/firmware-guide/acpi/non-d0-probe.rst | 8 ++++++++
+> > >  1 file changed, 8 insertions(+)
+> > >
+> > > diff --git a/Documentation/firmware-guide/acpi/non-d0-probe.rst b/Doc=
+umentation/firmware-guide/acpi/non-d0-probe.rst
+> > > index 7afd16701a02..815bcc8db69f 100644
+> > > --- a/Documentation/firmware-guide/acpi/non-d0-probe.rst
+> > > +++ b/Documentation/firmware-guide/acpi/non-d0-probe.rst
+> > > @@ -24,6 +24,14 @@ there's a problem with the device, the driver like=
+ly probes just fine but the
+> > >  first user will find out the device doesn't work, instead of a failu=
+re at probe
+> > >  time. This feature should thus be used sparingly.
+> > >
+> > > +ACPI framework
+> > > +--------------
+> > > +
+> > > +Use the Linux ACPI framework function :c:func:`acpi_dev_state_d0()` =
+to tell
+> > > +whether the device was powered on for probe. :c:func:`acpi_dev_state=
+_d0()`
+> > > +returns true if the device is powered on, false otherwise. For non-A=
+CPI backed
+> > > +devices it returns true always.
+> > > +
+> >
+> > While this is true, I don't want to see drivers having to call
+> > ACPI-specific functions, the same way you dislike OF-specific functions
+> > in drivers. Please find a better way to handle this.
+>
+> The functionality is only available on ACPI and the function does the rig=
+ht
+> thing on non-ACPI platforms. I don't see an issue here.
 
-On 11/4/23 21:58, Hans de Goede wrote:
-> The I2C-core already has filtering to skip i2c_client instantiation for
-> LNXVIDEO acpi_device-s with I2cSerialBus resources, since LNXVIDEO devices
-> are not i2c_client-s and are handled by the acpi_video driver.
-> 
-> This filtering was added to i2c-core-acpi.c in commit 3a4991a9864c ("i2c:
-> acpi: Do not create i2c-clients for LNXVIDEO ACPI devices").
-> 
-> Now a similar problem has shown up where the SPI-core is instantiating
-> an unwanted SPI-device for a SpiSerialBus resource under a LNXVIDEO
-> acpi_device. On a Lenovo Yoga Tab 3 YT3-X90F this unwanted SPI-device
-> instanstantiation causes the SPI-device instanstantiation for the WM5102
-> audio codec to fail with:
-> 
-> [   21.988441] pxa2xx-spi 8086228E:00: chipselect 0 already in use
-> 
-> Instead of duplicating the I2C-core filtering in the SPI-core code, push
-> the filtering of SerialBus resources under LNXVIDEO acpi_device-s up into
-> the ACPI-core by adding the LNXVIDEO HID to ignore_serial_bus_ids[].
-> 
-> Note the filtering in the I2C-core i2c_acpi_do_lookup() function is still
-> necessary because this not only impacts i2c_client instantiation but it
-> also makes the I2C-core ignore the I2cSerialBus resource when checking what
-> the maximum speed is the I2C bus supports, which is still necessary.
-> 
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+The issue would be calling an ACPI-specific function from code that's
+otherwise firmware-agnostic, AFAICS.
 
-I've added this series to my review-hans (soon to be for-next) branch now.
+It would be good to have a more generic way of checking whether or not
+a device is operational.
 
-Regards,
+> Feel free to post DT binding patches on suggested device power state duri=
+ng
+> probe. :-) I think DT would benefit from this as well: the at24 driver is
+> widely used and suddenly making probe() not talk to the chip (or even pow=
+er
+> it up) at all would probably be seen as a regression.
 
-Hans
-
-
-
-> ---
->  drivers/acpi/scan.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 691d4b7686ee..4b6faa2350f5 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -1727,6 +1727,7 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
->  	 * Some ACPI devs contain SerialBus resources even though they are not
->  	 * attached to a serial bus at all.
->  	 */
-> +		{ACPI_VIDEO_HID, },
->  		{"MSHW0028", },
->  	/*
->  	 * HIDs of device with an UartSerialBusV2 resource for which userspace
-
+In the DT case it is more complicated, though, at least in general,
+because there may be multiple clocks and regulators the device depends
+on and you may need to toggle a GPIO line too.
 
