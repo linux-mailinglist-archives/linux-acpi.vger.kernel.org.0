@@ -1,296 +1,184 @@
-Return-Path: <linux-acpi+bounces-1608-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1609-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5567F137F
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 13:38:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E87B57F1388
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 13:38:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D54831F241C8
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 12:38:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93D381F241B6
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 12:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4593A14AA7
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 12:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A3B1A5A9
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 12:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xSYdx8aD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gIFZwA0K"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 563809D
-	for <linux-acpi@vger.kernel.org>; Mon, 20 Nov 2023 03:26:43 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-40b23aeb9d9so4842065e9.3
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Nov 2023 03:26:43 -0800 (PST)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE119C;
+	Mon, 20 Nov 2023 03:42:19 -0800 (PST)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1cc68c1fac2so37381845ad.0;
+        Mon, 20 Nov 2023 03:42:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700479602; x=1701084402; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=81y0BUjxhYX0m+rbPWqRJ0OIC+UNbPoSMg340RJn51Q=;
-        b=xSYdx8aDPPoFP0KdeeBaXe3zk0Un0+zUveMKx0hhCYgqWEkoUC/pGNG+9Dl1wYdW6U
-         MfhfPrXd51u3HNZ6hbhAe1Ry58B/llAq7xdzeMh6/WUBj7rE8iuF40q6e/Gec5LFcrBF
-         iYy8ElWKCglHB58RmSv41UsHJr878XlC+8hDrPaUDeDEB1KzyY6Q0oZK5Jzc6/g+VwzC
-         OToXYEQrg/JsLh7Vkrvu8klXXe+p91T7vFnhx1X/cLAkhaypILFLvXpisJmQ63eX+eR6
-         QK3dP/b2CQlKH5f66KQWJsi/gmTtSA065KWPgVD78985bnw9zWu0dyOU/AKO2qR6kTop
-         Yvzg==
+        d=gmail.com; s=20230601; t=1700480539; x=1701085339; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=V1guMx9hj3Dnab92EYIslORuUgAICHvH5VtGffdWtLk=;
+        b=gIFZwA0K5/MKAb7JICdh1SolFlR47t9EKgWqcM7cUTLt3GvLsdUhOMj1NqA5ph/5XC
+         Ith7vnud1hAaHuU09S0pfHYSh3/r/DWNaN4VwIFTMurRkhddgIEzobMwo8CQpZOYm3Il
+         ZAALo2qK01nOohng+0zEsZ8xQuQd8dbJja6V3eXpaCw+ENjxElmOyMpgvQ1IjsWbCRRT
+         lBq/XAV9OXm4uH4BR5pVzAHugfpVkbbDHtw1oNNqS1ZHZZZhTo08Wz67ys0gfloj6VM5
+         eqAFLyr7mwNGGhHSYFS9Ljcef70lMTYfREAViHocifGI2VBCKe6tDi7MKu7AyiParKJh
+         SH5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700479602; x=1701084402;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=81y0BUjxhYX0m+rbPWqRJ0OIC+UNbPoSMg340RJn51Q=;
-        b=DiGi+8B/8HWVAVkEKCeYdlp9GvX3VvVzYJww/QrClt0VNRC1mR4ZmgHkPiorpC13ao
-         0V+nN80KnkZmcw5i88rbbg25u90wjT0+8xmHcfXY0Y4SFy9OvHLLiXRrC7vM8sih8wUm
-         GcWBOyLJwXdGYt3YdJHKFRUwVkgGw5vZOTbJUxmgfoLLAuyuB2E0/HfzS7vdCTxRsg74
-         Ws0mLVXWWDHI6Req1+3Oc1F2cHqIr4hUfIM/zOv5vow0fLCUtuwYT5JESznLkVINSx+c
-         UL+vI7riyMYyd/rpNxsXVk2K+xdXKAWtSkUgvn9deGIIZKymQaWyzYDwkXnjjAZK4vrT
-         yqaQ==
-X-Gm-Message-State: AOJu0YzzSKgGkn12UWOfWckbQ5tssy+ZfzaL5179QiALbTJZ/ZsZJ64A
-	/d+vR+pJAMTyoKO7pdGoxJF0BQ==
-X-Google-Smtp-Source: AGHT+IH4w9GJxepzA7mbaASTzS/ffTp4zkm3iulaLsADbJXdCuK2ssYTf1uaq15/ecJlepInY14KZQ==
-X-Received: by 2002:a05:600c:1394:b0:409:5d7d:b26d with SMTP id u20-20020a05600c139400b004095d7db26dmr4930617wmf.15.1700479601654;
-        Mon, 20 Nov 2023 03:26:41 -0800 (PST)
-Received: from [10.1.1.118] ([80.111.64.44])
-        by smtp.gmail.com with ESMTPSA id 1-20020a05600c230100b003fefb94ccc9sm12860464wmo.11.2023.11.20.03.26.40
+        d=1e100.net; s=20230601; t=1700480539; x=1701085339;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V1guMx9hj3Dnab92EYIslORuUgAICHvH5VtGffdWtLk=;
+        b=WyGngqxauHllOPKsHEcTSfbkbplB9f+LJZ4uEUW7fdWwJ3sM27SEe9bCryvCaL1IFR
+         vtlEbVPHCAdH5rOIX07M9tHNH6c/l70sMi7tmx6SJOiBncjM6RlwoU5iHugymD05OZDh
+         fVBMPW8GwYK1kr4jQaIABFHs7zG79Buy1+bWE6B1uU/NSsFHoC51IaO0yC5/lsQwDjWX
+         EEGfvxB8kBhzigvWq55/RR6st5t6B75Gj4q1lDyD4Ie12zCYgePMaHBv3ma1c3beWJo5
+         oq4jYy3V1H5Z9VdKa0YCAxg+JUxcW8sezpsYdFHVT5/j4lumknyz33a3cWa8lF4kvHJj
+         9q3w==
+X-Gm-Message-State: AOJu0YwT7NNkA5bTzTk6l35eA4SHTnEscjyzrTOp59yz4jSs/AwFrz91
+	zrP1cJoz1zDN0Bt8DxFUbCw=
+X-Google-Smtp-Source: AGHT+IHnFn0gexQ4iJb2xsKsrldOEdmuTbLbqDJD82pzS1/M00ua6MO0mkTjSdTGeEHzD535ggVjcA==
+X-Received: by 2002:a17:902:d4cb:b0:1cc:29b5:a2b7 with SMTP id o11-20020a170902d4cb00b001cc29b5a2b7mr10115355plg.51.1700480539081;
+        Mon, 20 Nov 2023 03:42:19 -0800 (PST)
+Received: from code.. ([144.202.108.46])
+        by smtp.gmail.com with ESMTPSA id q15-20020a170902dacf00b001cf57827d69sm3024922plx.87.2023.11.20.03.42.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Nov 2023 03:26:40 -0800 (PST)
-Message-ID: <08e0126f8075711e7bd59ca4110c2817c905d5a9.camel@linaro.org>
-Subject: Re: [PATCH] iommu: Avoid more races around device probe
-From: =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-To: Robin Murphy <robin.murphy@arm.com>, joro@8bytes.org, will@kernel.org
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org, 
-	lpieralisi@kernel.org, quic_zhenhuah@quicinc.com, jgg@nvidia.com
-Date: Mon, 20 Nov 2023 11:26:39 +0000
-In-Reply-To: <16f433658661d7cadfea51e7c65da95826112a2b.1700071477.git.robin.murphy@arm.com>
-References: 
-	<16f433658661d7cadfea51e7c65da95826112a2b.1700071477.git.robin.murphy@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.49.2-2 
+        Mon, 20 Nov 2023 03:42:18 -0800 (PST)
+From: Yuntao Wang <ytcoode@gmail.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuntao Wang <ytcoode@gmail.com>
+Subject: [PATCH] ACPI: Correct and clean up the logic of acpi_parse_entries_array()
+Date: Mon, 20 Nov 2023 19:41:43 +0800
+Message-ID: <20231120114143.95305-1-ytcoode@gmail.com>
+X-Mailer: git-send-email 2.42.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Robin,
+The original intention of acpi_parse_entries_array() is to return the
+number of all matching entries on success. This number may be greater than
+the value of the max_entries parameter. When this happens, the function
+will output a warning message, indicating that `count - max_entries`
+matching entries remain unprocessed and have been ignored.
 
-On Wed, 2023-11-15 at 18:25 +0000, Robin Murphy wrote:
-> It turns out there are more subtle races beyond just the main part of
-> __iommu_probe_device() itself running in parallel - the
-> dev_iommu_free()
-> on the way out of an unsuccessful probe can still manage to trip up
-> concurrent accesses to a device's fwspec. Thus, extend the scope of
-> iommu_probe_device_lock() to also serialise fwspec creation and
-> initial
-> retrieval.
->=20
-> Reported-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-> Link:
-> https://lore.kernel.org/linux-iommu/e2e20e1c-6450-4ac5-9804-b0000acdf7de@=
-quicinc.com/
-> Fixes: 01657bc14a39 ("iommu: Avoid races around device probe")
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+However, commit 4ceacd02f5a1 ("ACPI / table: Always count matched and
+successfully parsed entries") changed this logic to return the number of
+entries successfully processed by the handler. In this case, when the
+max_entries parameter is not zero, the number of entries successfully
+processed can never be greater than the value of max_entries. In other
+words, the expression `count > max_entries` will always evaluate to false.
+This means that the logic in the final if statement will never be executed.
 
-Reviewed-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
-Tested-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org> (using continuous
-boot test loop)
+Commit 99b0efd7c886 ("ACPI / tables: do not report the number of entries
+ignored by acpi_parse_entries()") mentioned this issue, but it tried to fix
+it by removing part of the warning message. This is meaningless because the
+pr_warn statement will never be executed in the first place.
 
-I like that this is easily back-portable to 6.1, thanks for this patch
-:-)
+Commit 8726d4f44150 ("ACPI / tables: fix acpi_parse_entries_array() so it
+traverses all subtables") introduced an errs variable, which is intended to
+make acpi_parse_entries_array() always traverse all of the subtables,
+calling as many of the callbacks as possible. However, it seems that the
+commit does not achieve this goal. For example, when a handler returns an
+error, none of the handlers will be called again in the subsequent
+iterations. This result appears to be no different from before the change.
 
-Cheers,
-Andr=C3=A9
+This patch corrects and cleans up the logic of acpi_parse_entries_array(),
+making it return the number of all matching entries, rather than the number
+of entries successfully processed by handlers. Additionally, if an error
+occurs when executing a handler, the function will return -EINVAL immediately.
 
+This patch should not affect existing users of acpi_parse_entries_array().
 
-> ---
->=20
-> This is my idea of a viable fix, since it does not need a 700-line
-> diffstat to make the code do what it was already *trying* to do
-> anyway.
-> This stuff should fundamentally not be hanging off driver probe in
-> the
-> first place, so I'd rather get on with removing the underlying
-> brokenness than waste time and effort polishing it any further.
->=20
-> =C2=A0drivers/acpi/scan.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 7 ++++++-
-> =C2=A0drivers/iommu/iommu.c=C2=A0=C2=A0=C2=A0 | 20 ++++++++++----------
-> =C2=A0drivers/iommu/of_iommu.c | 12 +++++++++---
-> =C2=A0include/linux/iommu.h=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
-> =C2=A04 files changed, 26 insertions(+), 14 deletions(-)
->=20
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index fa5dd71a80fa..02bb2cce423f 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -1568,17 +1568,22 @@ static const struct iommu_ops
-> *acpi_iommu_configure_id(struct device *dev,
-> =C2=A0	int err;
-> =C2=A0	const struct iommu_ops *ops;
-> =C2=A0
-> +	/* Serialise to make dev->iommu stable under our potential
-> fwspec */
-> +	mutex_lock(&iommu_probe_device_lock);
-> =C2=A0	/*
-> =C2=A0	 * If we already translated the fwspec there is nothing left
-> to do,
-> =C2=A0	 * return the iommu_ops.
-> =C2=A0	 */
-> =C2=A0	ops =3D acpi_iommu_fwspec_ops(dev);
-> -	if (ops)
-> +	if (ops) {
-> +		mutex_unlock(&iommu_probe_device_lock);
-> =C2=A0		return ops;
-> +	}
-> =C2=A0
-> =C2=A0	err =3D iort_iommu_configure_id(dev, id_in);
-> =C2=A0	if (err && err !=3D -EPROBE_DEFER)
-> =C2=A0		err =3D viot_iommu_configure(dev);
-> +	mutex_unlock(&iommu_probe_device_lock);
-> =C2=A0
-> =C2=A0	/*
-> =C2=A0	 * If we have reason to believe the IOMMU driver missed the
-> initial
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index f17a1113f3d6..e0c962648dde 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -485,11 +485,12 @@ static void iommu_deinit_device(struct device
-> *dev)
-> =C2=A0	dev_iommu_free(dev);
-> =C2=A0}
-> =C2=A0
-> +DEFINE_MUTEX(iommu_probe_device_lock);
-> +
-> =C2=A0static int __iommu_probe_device(struct device *dev, struct list_hea=
-d
-> *group_list)
-> =C2=A0{
-> =C2=A0	const struct iommu_ops *ops =3D dev->bus->iommu_ops;
-> =C2=A0	struct iommu_group *group;
-> -	static DEFINE_MUTEX(iommu_probe_device_lock);
-> =C2=A0	struct group_device *gdev;
-> =C2=A0	int ret;
-> =C2=A0
-> @@ -502,17 +503,15 @@ static int __iommu_probe_device(struct device
-> *dev, struct list_head *group_list
-> =C2=A0	 * probably be able to use device_lock() here to minimise
-> the scope,
-> =C2=A0	 * but for now enforcing a simple global ordering is fine.
-> =C2=A0	 */
-> -	mutex_lock(&iommu_probe_device_lock);
-> +	lockdep_assert_held(&iommu_probe_device_lock);
-> =C2=A0
-> =C2=A0	/* Device is probed already if in a group */
-> -	if (dev->iommu_group) {
-> -		ret =3D 0;
-> -		goto out_unlock;
-> -	}
-> +	if (dev->iommu_group)
-> +		return 0;
-> =C2=A0
-> =C2=A0	ret =3D iommu_init_device(dev, ops);
-> =C2=A0	if (ret)
-> -		goto out_unlock;
-> +		return ret;
-> =C2=A0
-> =C2=A0	group =3D dev->iommu_group;
-> =C2=A0	gdev =3D iommu_group_alloc_device(group, dev);
-> @@ -548,7 +547,6 @@ static int __iommu_probe_device(struct device
-> *dev, struct list_head *group_list
-> =C2=A0			list_add_tail(&group->entry, group_list);
-> =C2=A0	}
-> =C2=A0	mutex_unlock(&group->mutex);
-> -	mutex_unlock(&iommu_probe_device_lock);
-> =C2=A0
-> =C2=A0	if (dev_is_pci(dev))
-> =C2=A0		iommu_dma_set_pci_32bit_workaround(dev);
-> @@ -562,8 +560,6 @@ static int __iommu_probe_device(struct device
-> *dev, struct list_head *group_list
-> =C2=A0	iommu_deinit_device(dev);
-> =C2=A0	mutex_unlock(&group->mutex);
-> =C2=A0	iommu_group_put(group);
-> -out_unlock:
-> -	mutex_unlock(&iommu_probe_device_lock);
-> =C2=A0
-> =C2=A0	return ret;
-> =C2=A0}
-> @@ -573,7 +569,9 @@ int iommu_probe_device(struct device *dev)
-> =C2=A0	const struct iommu_ops *ops;
-> =C2=A0	int ret;
-> =C2=A0
-> +	mutex_lock(&iommu_probe_device_lock);
-> =C2=A0	ret =3D __iommu_probe_device(dev, NULL);
-> +	mutex_unlock(&iommu_probe_device_lock);
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> @@ -1822,7 +1820,9 @@ static int probe_iommu_group(struct device
-> *dev, void *data)
-> =C2=A0	struct list_head *group_list =3D data;
-> =C2=A0	int ret;
-> =C2=A0
-> +	mutex_lock(&iommu_probe_device_lock);
-> =C2=A0	ret =3D __iommu_probe_device(dev, group_list);
-> +	mutex_unlock(&iommu_probe_device_lock);
-> =C2=A0	if (ret =3D=3D -ENODEV)
-> =C2=A0		ret =3D 0;
-> =C2=A0
-> diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-> index 157b286e36bf..c25b4ae6aeee 100644
-> --- a/drivers/iommu/of_iommu.c
-> +++ b/drivers/iommu/of_iommu.c
-> @@ -112,16 +112,20 @@ const struct iommu_ops
-> *of_iommu_configure(struct device *dev,
-> =C2=A0					=C2=A0=C2=A0 const u32 *id)
-> =C2=A0{
-> =C2=A0	const struct iommu_ops *ops =3D NULL;
-> -	struct iommu_fwspec *fwspec =3D dev_iommu_fwspec_get(dev);
-> +	struct iommu_fwspec *fwspec;
-> =C2=A0	int err =3D NO_IOMMU;
-> =C2=A0
-> =C2=A0	if (!master_np)
-> =C2=A0		return NULL;
-> =C2=A0
-> +	/* Serialise to make dev->iommu stable under our potential
-> fwspec */
-> +	mutex_lock(&iommu_probe_device_lock);
-> +	fwspec =3D dev_iommu_fwspec_get(dev);
-> =C2=A0	if (fwspec) {
-> -		if (fwspec->ops)
-> +		if (fwspec->ops) {
-> +			mutex_unlock(&iommu_probe_device_lock);
-> =C2=A0			return fwspec->ops;
-> -
-> +		}
-> =C2=A0		/* In the deferred case, start again from scratch */
-> =C2=A0		iommu_fwspec_free(dev);
-> =C2=A0	}
-> @@ -155,6 +159,8 @@ const struct iommu_ops *of_iommu_configure(struct
-> device *dev,
-> =C2=A0		fwspec =3D dev_iommu_fwspec_get(dev);
-> =C2=A0		ops=C2=A0=C2=A0=C2=A0 =3D fwspec->ops;
-> =C2=A0	}
-> +	mutex_unlock(&iommu_probe_device_lock);
-> +
-> =C2=A0	/*
-> =C2=A0	 * If we have reason to believe the IOMMU driver missed the
-> initial
-> =C2=A0	 * probe for dev, replay it to get things in order.
-> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-> index ec289c1016f5..6291aa7b079b 100644
-> --- a/include/linux/iommu.h
-> +++ b/include/linux/iommu.h
-> @@ -845,6 +845,7 @@ static inline void dev_iommu_priv_set(struct
-> device *dev, void *priv)
-> =C2=A0	dev->iommu->priv =3D priv;
-> =C2=A0}
-> =C2=A0
-> +extern struct mutex iommu_probe_device_lock;
-> =C2=A0int iommu_probe_device(struct device *dev);
-> =C2=A0
-> =C2=A0int iommu_dev_enable_feature(struct device *dev, enum
-> iommu_dev_features f);
+Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
+---
+ lib/fw_table.c | 30 +++++++++---------------------
+ 1 file changed, 9 insertions(+), 21 deletions(-)
+
+diff --git a/lib/fw_table.c b/lib/fw_table.c
+index b51f30a28e47..b655e6f4b647 100644
+--- a/lib/fw_table.c
++++ b/lib/fw_table.c
+@@ -85,11 +85,6 @@ acpi_get_subtable_type(char *id)
+ 	return ACPI_SUBTABLE_COMMON;
+ }
+ 
+-static __init_or_acpilib bool has_handler(struct acpi_subtable_proc *proc)
+-{
+-	return proc->handler || proc->handler_arg;
+-}
+-
+ static __init_or_acpilib int call_handler(struct acpi_subtable_proc *proc,
+ 					  union acpi_subtable_headers *hdr,
+ 					  unsigned long end)
+@@ -133,7 +128,6 @@ acpi_parse_entries_array(char *id, unsigned long table_size,
+ 	unsigned long table_end, subtable_len, entry_len;
+ 	struct acpi_subtable_entry entry;
+ 	int count = 0;
+-	int errs = 0;
+ 	int i;
+ 
+ 	table_end = (unsigned long)table_header + table_header->length;
+@@ -145,25 +139,19 @@ acpi_parse_entries_array(char *id, unsigned long table_size,
+ 	    ((unsigned long)table_header + table_size);
+ 	subtable_len = acpi_get_subtable_header_length(&entry);
+ 
+-	while (((unsigned long)entry.hdr) + subtable_len  < table_end) {
+-		if (max_entries && count >= max_entries)
+-			break;
+-
++	while (((unsigned long)entry.hdr) + subtable_len < table_end) {
+ 		for (i = 0; i < proc_num; i++) {
+ 			if (acpi_get_entry_type(&entry) != proc[i].id)
+ 				continue;
+-			if (!has_handler(&proc[i]) ||
+-			    (!errs &&
+-			     call_handler(&proc[i], entry.hdr, table_end))) {
+-				errs++;
+-				continue;
+-			}
++
++			if (!max_entries || count < max_entries)
++				if (call_handler(&proc[i], entry.hdr, table_end))
++					return -EINVAL;
+ 
+ 			proc[i].count++;
++			count++;
+ 			break;
+ 		}
+-		if (i != proc_num)
+-			count++;
+ 
+ 		/*
+ 		 * If entry->length is 0, break from this loop to avoid
+@@ -180,9 +168,9 @@ acpi_parse_entries_array(char *id, unsigned long table_size,
+ 	}
+ 
+ 	if (max_entries && count > max_entries) {
+-		pr_warn("[%4.4s:0x%02x] found the maximum %i entries\n",
+-			id, proc->id, count);
++		pr_warn("[%4.4s:0x%02x] ignored %i entries of %i found\n",
++			id, proc->id, count - max_entries, count);
+ 	}
+ 
+-	return errs ? -EINVAL : count;
++	return count;
+ }
+-- 
+2.42.1
 
 
