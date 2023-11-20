@@ -1,108 +1,137 @@
-Return-Path: <linux-acpi+bounces-1623-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1624-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEBF97F18B4
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 17:35:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92DBF7F18B5
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 17:35:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C84451C20B71
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 16:35:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B1D0282099
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 16:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34ED51DFCC
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 16:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TNEPf+HK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCA81E508
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Nov 2023 16:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E603A4
-	for <linux-acpi@vger.kernel.org>; Mon, 20 Nov 2023 07:25:46 -0800 (PST)
-Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-2802c41b716so3459538a91.1
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Nov 2023 07:25:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700493946; x=1701098746; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ST028Kw+5opFnctTC026fdT6iYVhh3htW2mHBCbv3rM=;
-        b=TNEPf+HKlYZ8A7VjdjLqlMf50cwFlug5NQnOQ72H+1lcrh/Mzc453QDWCbeYVia7bf
-         LhfbKopGZeNT1AbTvXj25RGYoa+C56y+KbjGqnh0YrqyNVyoEu+C0xS4KEeq6YXMgXm7
-         2nDS7y7U0AVRPU6idh06HdpJh/6qag5NBqYSQ/gz1GW6IyaW4o4/JeX+voc1vVV6JkZq
-         RThnJ2I/LxA8FiVS5SNj8jehwLhuoS/eF/QSSBKExYrSHN9+7Vl4oQJr8O4uRIgS6UoZ
-         mAU/Kr7xhcy2qGbr7JCJSEaAoOaNxj87Zk4TCxfoZj6bU3dBLEk4NkOYMmLyRO7yQ0B+
-         RanQ==
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E139610E;
+	Mon, 20 Nov 2023 07:46:58 -0800 (PST)
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-58a106dd421so165476eaf.0;
+        Mon, 20 Nov 2023 07:46:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700493946; x=1701098746;
+        d=1e100.net; s=20230601; t=1700495218; x=1701100018;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ST028Kw+5opFnctTC026fdT6iYVhh3htW2mHBCbv3rM=;
-        b=dTT6kcxaqA/GdP6cWCOh1RF/GYByaP1+zKyP9RPcJgWG4pxq0Oat72cJA7WcIOLIeP
-         8BbX6T7jUi+SsitWhHmNXfVUxIOtwT52TF5PhIKVnzQk03QybUJve3tDT/argjUbIDEh
-         YFfME16oVmLE4a+q6+v9q2TY8I5bA9mJdHMitm4TxBPl+5Sg2fHug9nIzlq4EM13FnTe
-         lZrmI+HzTW49WTZ1TpZkh2cAlcWKxzNSQlGLTWSEbu+3Hp43erLhN5s8ZKGVRjkgRyD7
-         kcT8ZMSsMZsl6sncJrHtFR6ltmV5A+t2A+7pl+msmhAPHPXEftXkjpPZA8DaEurJ9syo
-         eptg==
-X-Gm-Message-State: AOJu0Yyx2qv4RBBAEqjmqdO4j3MwHI/r2IhjBZySi+iV1S5fiL9zFrep
-	WY4ZO0sebWB6cgKgpOJT0K6oCASut3p5cD+bZryxfw==
-X-Google-Smtp-Source: AGHT+IGZ24BmTxFlV8ARS0eiBOVZL6XuY7FDIhzbJcGWCamZieGWAK8UG+n6P3hSBpS7YfkOpYF8HB8uorYNx0Elgz8=
-X-Received: by 2002:a17:90b:4f81:b0:27d:d36:763b with SMTP id
- qe1-20020a17090b4f8100b0027d0d36763bmr5505892pjb.31.1700493946018; Mon, 20
- Nov 2023 07:25:46 -0800 (PST)
+        bh=TjSE7oP7NG2cczV9fpstRxmalzuxbmeoxKfXPkfwwRE=;
+        b=OO67O2u0QRy5L986+KQCK8sHljYDSrLHkxaYLPlHgUcDHhudtMxqC6ZDx84TIURC1x
+         C9X1C/f3H2qE9iJVWfCl+46JTRlQxwar24iofwC0XdGStOxXJIEPSlkZYb0C5Ifeo/1G
+         iJ4bvfXfZrMGVyhonACl7dGgGW8Qe/lcvj/tYH0jy+f0S7CHHT/k0j5XlDekvlNAI/ob
+         12PO4DJYd+sAYT3LmJseFgcSAsQHrSBpsVjyA8Q1ERvt8Hu4/8Vtb9NrLXBclcWC9O+6
+         G8tnuhh0pS3GRQRMhVHH9cFlpb05RLM4zl8sLOsWdotBQu3xzmSnj/YYCaoRtvKD/XWM
+         0zrg==
+X-Gm-Message-State: AOJu0YxwlEhdwrcrPQaAeX2tpVOUAIKNEOivxIlY9fORosRqYAuejhTa
+	GbDgNUHicLNO7ndqeBvJly7grhvMmiaROfBKEvU=
+X-Google-Smtp-Source: AGHT+IF0w8dT0dsQcke/RI/ugTr4jkyMaBThGYEFkJM/nDqNjScokn4kspjDiPX/DaycLn0KeXjKH1ZjcAW/f8oWkKw=
+X-Received: by 2002:a4a:e783:0:b0:589:daaf:44a1 with SMTP id
+ x3-20020a4ae783000000b00589daaf44a1mr7217546oov.0.1700495218082; Mon, 20 Nov
+ 2023 07:46:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231114-arm-build-bug-v1-1-458745fe32a4@linaro.org>
- <b2354c21-3a1a-c446-fee0-db0c78d05c71@gmail.com> <CACRpkdYUzYxV+NY=mymXP59mt9msTUvSXM__f+4qRM+_xjX0Nw@mail.gmail.com>
-In-Reply-To: <CACRpkdYUzYxV+NY=mymXP59mt9msTUvSXM__f+4qRM+_xjX0Nw@mail.gmail.com>
-From: Sam Protsenko <semen.protsenko@linaro.org>
-Date: Mon, 20 Nov 2023 09:25:34 -0600
-Message-ID: <CAPLW+4mT5Qpo+B7fSfiG1qRVr4cSvuWhArpu-3kbFtSukSV8_w@mail.gmail.com>
+References: <20231114-arm-build-bug-v1-1-458745fe32a4@linaro.org> <b2354c21-3a1a-c446-fee0-db0c78d05c71@gmail.com>
+In-Reply-To: <b2354c21-3a1a-c446-fee0-db0c78d05c71@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 20 Nov 2023 16:46:46 +0100
+Message-ID: <CAJZ5v0idWdJq3JSqQWLG5q+b+b=zkEdWR55rGYEoxh7R6N8kFQ@mail.gmail.com>
 Subject: Re: [PATCH] ACPI: acenv: Permit compilation from within the kernel
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Sam Edwards <cfsworks@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
+To: Sam Edwards <cfsworks@gmail.com>, Dave Jiang <dave.jiang@intel.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>, 
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Dan Williams <dan.j.williams@intel.com>, 
 	Hanjun Guo <guohanjun@huawei.com>, Arnd Bergmann <arnd@arndb.de>, 
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Linus,
-
-On Tue, Nov 14, 2023 at 2:20=E2=80=AFPM Linus Walleij <linus.walleij@linaro=
-.org> wrote:
+On Tue, Nov 14, 2023 at 7:09=E2=80=AFPM Sam Edwards <cfsworks@gmail.com> wr=
+ote:
 >
-> On Tue, Nov 14, 2023 at 7:09=E2=80=AFPM Sam Edwards <cfsworks@gmail.com> =
-wrote:
+> On 11/13/23 16:08, Linus Walleij wrote:
+> > After commit a103f46633fd the kernel stopped compiling for
+> > several ARM32 platforms that I am building with a bare metal
+> > compiler. Bare metal compilers (arm-none-eabi-) don't
+> > define __linux__.
 >
-> > I am not an ACPI subsystem maintainer, but my understanding is that the
-> > files in include/acpi/ are copied verbatim from ACPICA, so any change t=
-o
-> > those files will have to be sent to the ACPICA project and wouldn't be
-> > accepted here.
+> Hi Linus,
+>
+> I saw the same baremetal-compiler error here on the ARM64 side of the
+> fence, and narrowed the problem to the same commit as you.
+>
 > >
-> > More likely, we'd want to do something about the circular-include
-> > situation between linux/fw_table.h<->linux/acpi.h.
+> > This is because the header <acpi/platform/acenv.h> is now
+> > in the include path for <linux/irq.h>:
 >
-> I agree but I have no idea how to fix that really, should I just send
-> a revert instead so the authors can get some time to figure it out?
+> More generally, I think it's because of this addition to linux/acpi.h:
+> +#include <linux/fw_table.h>
 >
+> linux/acpi.h is supposed to ensure _LINUX is defined (if it isn't
+> already done by a non-baremetal compiler) before we start pulling in
+> ACPICA includes, so that ACPICA knows the platform. But because
+> fw_table.h contains:
+> #include <linux/acpi.h>
+> #include <acpi/acpi.h>
+>
+> ...the circular include does nothing (linux/acpi.h's include guard stops
+> the include before _LINUX is defined) and we end up pulling in
+> acpi/acpi.h before we're ready.
 
-Just want to confirm that linux-mainline and linux-next builds are
-broken for my ARM64 board as well, because of the commit you
-pin-pointed. I vote for reverting it and letting the author rework it
-properly. On a side note: I'm surprised there are no bots or automatic
-CI builds out there testing the kernel builds with baremetal
-toolchains. Can't believe everyone's using Linux toolchain, the kernel
-is supposed to be baremetal project.
+Yes, that's the problem AFAICS.  Dave?
 
-> Yours,
-> Linus Walleij
+What about moving the fw_table.h include in linux/acpi.h below the
+mutex.h one, along with the EXPORT_SYMBOL_ACPI_LIB-related
+definitions?
+
+BTW, I'm not really sure why fw_table.h needs to include both
+linux/acpi.h and acpi/acpi.h, because it should get the latter through
+the former anyway.
+
+> >
+> >    CC      arch/arm/kernel/irq.o
+> >    CC      kernel/sysctl.o
+> >    CC      crypto/api.o
+> > In file included from ../include/acpi/acpi.h:22,
+> >                   from ../include/linux/fw_table.h:29,
+> >                   from ../include/linux/acpi.h:18,
+> >                   from ../include/linux/irqchip.h:14,
+> >                   from ../arch/arm/kernel/irq.c:25:
+> > ../include/acpi/platform/acenv.h:218:2: error: #error Unknown target en=
+vironment
+> >    218 | #error Unknown target environment
+> >        |  ^~~~~
+> >
+> > One solution to make compilation with a bare metal compiler
+> > work again is to say the file is used with Linux from within
+> > the kernel if __KERNEL__ is defined so I did that.
+>
+> I am not an ACPI subsystem maintainer, but my understanding is that the
+> files in include/acpi/ are copied verbatim from ACPICA, so any change to
+> those files will have to be sent to the ACPICA project and wouldn't be
+> accepted here.
+
+There are exceptions, but generally you are right.
+
+> More likely, we'd want to do something about the circular-include
+> situation between linux/fw_table.h<->linux/acpi.h. That may have further
+> consequences down the road than just our problem here. Perhaps just
+> dropping both #includes from fw_table.h, and lowering the fw_table.h
+> include from within linux/acpi.h to be below <acpi/acpi.h>, is the way
+> to go?
+
+Something like that.
 
