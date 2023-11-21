@@ -1,189 +1,236 @@
-Return-Path: <linux-acpi+bounces-1703-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1704-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B55C7F33F8
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 17:39:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A8D7F33F9
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 17:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15404282F4D
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 16:39:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DED31C21B4C
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 16:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA12F56749
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 16:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GwbI14aa"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9915A0EF
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 16:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 963BC139;
-	Tue, 21 Nov 2023 08:01:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700582489; x=1732118489;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=NwfLgIUEByt32YXeIHorNQ+rG57UYeDHaEg3UFLQlI4=;
-  b=GwbI14aaXEkM1ZHXb4AISorL0oESI+FNjPVB1bxnTTLDyXQzWXJNPGPw
-   Hv6Q78fhTOsjHGT+OzprHJcEbXkNzDrMAdwW14WYFMlZj9R5qNLVXmkVV
-   j6Vcs+b0PMiqRU0x3vgGpUls2sbu38Gru8wNz99RZA6UKRC0VTuhZptL8
-   0RWzy81974UifQES4bR8rKx3Tmksq6isYykziIs030QOvhC+wDV5nuhv4
-   pbnpfbDc/9z7XPNd709BPIPO55ujWP7SGU+NsYZoaXnANM/wDjgTKVrIz
-   XFqe8Wh4BcjDDm3b7VGrsrfwmyNKpm8YuG8h0DzR3B9Fqe4bSYdr4b8ck
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="5063781"
-X-IronPort-AV: E=Sophos;i="6.04,216,1695711600"; 
-   d="scan'208";a="5063781"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 08:01:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="890287571"
-X-IronPort-AV: E=Sophos;i="6.04,216,1695711600"; 
-   d="scan'208";a="890287571"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by orsmga004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 21 Nov 2023 08:01:27 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Tue, 21 Nov 2023 08:01:27 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Tue, 21 Nov 2023 08:01:26 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Tue, 21 Nov 2023 08:01:26 -0800
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.168)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Tue, 21 Nov 2023 08:01:26 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RM0ZZfTEWr2syxqhESwjynCz1UmMZ4z833g9cvJw4UL/acQJL+F0MmPYiJ4xp/SzsH9p7/rcQtwmrjuGg+eRpYQQO/VBLUBdOZBVgicQTiyuTECbljGMuJmEHzMCo6QrfsE+J/ZarPU7uUcZVGm+EAfSYymIzYkL77lnQTad/CsZLxLU2PZjc+f14VUsFjoO+7qGHQ8E14ZOGjbQ3PVrp/izkv7MNlRKkhvefTBc2U+HEix0RFl0U03eBAVxptx6fY6KU5jiB1eZx4q6/HqBntzKsl6SCUBqcF5SwdHCUd8K+ayDGJ57Q4bGmHCjGd0yP2bSp4coG209A+cP4d2QSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6faMDCxXzs9myphiHwM8wcVrapjaqeLDD6gmn4/owGs=;
- b=F2c8JUkiiPCqvmoVdu1NwvqcBpobRIixFADRTco4RLicdO+GR3u55fQ8BALNUeBcMToDKw7k/c8rKBvXs/7WOEEItyRAmFZCyxVuzgptnCoVORfVybWQMiYo4UnxaJUxpK5oxYfnoHA3dNaj/iKY0oB2YtiO0f5rW+dQMrxS4JMhwOfzrFy2Qu1n+qA0gtG33wavO5hxmX4udnxfF1m92IGPXfBg3ZaneFOvQdsIFIRYI7R3yIFeQ3v3B8pic5PIX8tElZfMP006twmTy3kv72X3XfIbxETHvZ8yJPCJJMeJbuTWeu9uVfdqXBJ3jrRb72XbORvz0P+bK45dxlkvdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB5984.namprd11.prod.outlook.com (2603:10b6:510:1e3::15)
- by MW4PR11MB6740.namprd11.prod.outlook.com (2603:10b6:303:209::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.27; Tue, 21 Nov
- 2023 16:01:23 +0000
-Received: from PH7PR11MB5984.namprd11.prod.outlook.com
- ([fe80::6f7b:337d:383c:7ad1]) by PH7PR11MB5984.namprd11.prod.outlook.com
- ([fe80::6f7b:337d:383c:7ad1%4]) with mapi id 15.20.7002.028; Tue, 21 Nov 2023
- 16:01:23 +0000
-Message-ID: <36a3693c-0dae-4ea2-8b7d-f1a0f5148202@intel.com>
-Date: Tue, 21 Nov 2023 09:01:19 -0700
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH] ACPI: acenv: Permit compilation from within the kernel
-To: Linus Walleij <linus.walleij@linaro.org>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, Sam Edwards <cfsworks@gmail.com>,
-	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>, Dan Williams
-	<dan.j.williams@intel.com>, Hanjun Guo <guohanjun@huawei.com>, Arnd Bergmann
-	<arnd@arndb.de>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-References: <20231114-arm-build-bug-v1-1-458745fe32a4@linaro.org>
- <b2354c21-3a1a-c446-fee0-db0c78d05c71@gmail.com>
- <CAJZ5v0idWdJq3JSqQWLG5q+b+b=zkEdWR55rGYEoxh7R6N8kFQ@mail.gmail.com>
- <41160dbf-d8c8-4dc0-9fda-42cc97df5b77@intel.com>
- <CAJZ5v0jNOXKv2fHNGUDjDvvg6FGbXuahhH9dBhWiAwiPv3fH8A@mail.gmail.com>
- <736fcad7-f440-4bcd-86fb-4cc73d1b8f37@intel.com>
- <CACRpkdbz=a7yoJdBOrgJXth53d=F7+eQCu7KofUW8s1rBY=Veg@mail.gmail.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <CACRpkdbz=a7yoJdBOrgJXth53d=F7+eQCu7KofUW8s1rBY=Veg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR13CA0134.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::19) To PH7PR11MB5984.namprd11.prod.outlook.com
- (2603:10b6:510:1e3::15)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 56D2E12E;
+	Tue, 21 Nov 2023 08:06:25 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B1B6B1FB;
+	Tue, 21 Nov 2023 08:07:11 -0800 (PST)
+Received: from [10.1.32.63] (010265703453.arm.com [10.1.32.63])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3BD693F6C4;
+	Tue, 21 Nov 2023 08:06:17 -0800 (PST)
+Message-ID: <e926d2d8-8209-4c0f-a0cb-dcea4edf839e@arm.com>
+Date: Tue, 21 Nov 2023 16:06:15 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB5984:EE_|MW4PR11MB6740:EE_
-X-MS-Office365-Filtering-Correlation-Id: 86db7df5-098c-4ad4-d851-08dbeaab1bda
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sM+QVdGNzqnb+by7TuZBWFRW68bD4lXZT35oM3aQLCrhM4ICampGNgrBebG/s8kkQlQgVhwY8PEJnodfFNa/EcdQ3XsKD+oE9Z8Kn+zNWBeQFbx967pV4hjUQR5p4Q7jPh/KJKk3/KUOlDBiOZLP5nHTrVAdKIbzwnw1Twe3RelPGWHTyaOFkJY/WZzQkkUx8ZknPxkWO9YSmZwswkM41oMyijcwCMKO8P6490t5quZgzL81vhC1IucMP0raF7A5rxI+kCSFeUNVMrYE3ajb65Oo5tpu14olZwWIV4lkO80YIj0KcLC19PsBIJw98n6nZdDhkA3UVHuX/AwgbTHuwhPcAWI2juKgXC6uh5jfo/RLYUYUgJFBih8HPsJ8yQM5vZFEDNAur3mXUhNr6wGIXOErtEA6Sb26N0bm8bzC89S3AWZhJ01aQfzpBjHO/m/BdOWzZ+Q3WbjRcnieBGuDI6YnA9zUulFGV0PUL3vmRN2R7S09Z58Ha8rg5TxlLvOthjIdS133OeoJTo7/kSBIeuZbVv0PzTgJG4z5EA7ASNZ0EnzBlXcrhIlQ5E/hcR2asL6wj/k9bXzrNW7KYHQX5zx9/DLdX2/Ko5cCETuyeJk=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB5984.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(396003)(366004)(376002)(136003)(39860400002)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(41300700001)(36756003)(86362001)(5660300002)(7416002)(31696002)(4744005)(44832011)(2906002)(6486002)(966005)(82960400001)(26005)(53546011)(6666004)(478600001)(6506007)(2616005)(6512007)(38100700002)(8676002)(8936002)(4326008)(316002)(54906003)(66946007)(66556008)(66476007)(6916009)(31686004)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OE1hS2F1bGs1Y213MGVtblZaR1F1L1docWVEdFJiU1Jsdnc4TGRJSjRnNE1l?=
- =?utf-8?B?K1kzWEoyRmVVaU1Wc3dmRGNhbWV4ZC9ESDhpUERsRkw5SVR0L0sxRXNUQVU3?=
- =?utf-8?B?U1paUk1wa0dEdnc2ajJ2M3J6QW9mNFNkMmZRYmo2WGtXeVJKb0lRL3lLOWhu?=
- =?utf-8?B?Mmhub2UzWUZwUWNjbm9RR0ZwelA4a2syMUhudW9WZXMrTm94dzhQR1N3d2Er?=
- =?utf-8?B?TVZXMHBxcFRkZGJUSGlVZ1dxQ3N5eWxJOFBackEyMmhzblhrSVdRVWUwbXdu?=
- =?utf-8?B?eXZjRHpMUjZTVjdEWUpmYy83c2FLMVhaeVVncWZqUU1jRjFjYmJGT2Zrd1FQ?=
- =?utf-8?B?dm1jSnNoMjdkOVdtakhNa3FHNy9GOGNITkZ3VXI4K2dvZXh4bFNxbms3akdB?=
- =?utf-8?B?aUdsQzJkTTZEYUJFR0dTdUNCRks2clQ3eUZWTXBkZ3p6RERyaDlvQ0Y0b3cw?=
- =?utf-8?B?NUMyZXU4U294VWxVMHNncVZBT2M2KzhXUERwUlE2ODUwaFNxSHp5S3JHSFkw?=
- =?utf-8?B?NjVWOG45MnRDRWx6RDBnQzN2Z0UyOXBXZWJkaElzQ203RWtJNVdSR2J2TkpY?=
- =?utf-8?B?TU44S1NTTEYzUkRKNlZOdjFuVWhESHliL3dpenNhdWhpb3RnVXR0N3dRbmZY?=
- =?utf-8?B?TzlnWmJZWlVhMXV4dUR4akoyTnIzcFFKaktsY1lLM1FvYW9kV0VQTThZN3o1?=
- =?utf-8?B?clNqek8za092ZnhRRHVkcWxaVEdHeVJGVGVGNXF4b3Rha2lReXErQ2JYMlRG?=
- =?utf-8?B?TDQ3b3dVK0o3YXdPeFVmR1RyZ2FkaFZKeWVURHBCVmxreWFKellKNWpPcWs0?=
- =?utf-8?B?UnFKSWtpUkJqWEdqRDd5d2xYdm5pUnZvWmFaSkp6NDhXVGNsTFk0RWdHWTdO?=
- =?utf-8?B?RjhnYkczYWYxTjN5UkhhMUllSTEvSmZEMnUxNlZ6UnB1Rm1LV0lkZGRnSEly?=
- =?utf-8?B?VDJ6bDRTV3p1dUJTSGRVOStLOE1MMnRqWS9wNy9naHBERm16Vm91dTRrYm1J?=
- =?utf-8?B?Q2tzd1R2SW82amhtMUZ0djBRdWVET0FOQ2VoWXVRM0U2a2lmY1pBWWxnS0xD?=
- =?utf-8?B?aUFVVmJJOXVnenJCTWlKMkZmcGtiU29MMW9BdG8yQmV3clkwUUttaENHMkl6?=
- =?utf-8?B?NUtPczdHdmNkQTJ4ZDBaRDJuY2ZZK3FKL0p5UVlEOEF0WFBwSEJqMEEwTmFR?=
- =?utf-8?B?Y1ZtOUJiOGxWNldrS2J1QkJzT2ljdUNBWGRoV0Z3UG1zaXA3WFpTcEU0T0E4?=
- =?utf-8?B?TXMyMFRRMjQzZnJmS2FaZTBEc0ZDWHIrMGVvMW9JL0xQRWxTUmlEUXJTUDAv?=
- =?utf-8?B?QUw5SnZEWXNVY2lyaDZaamFyeXlWZ3pyREZ4b1J0VlV2NUdZN0c0ZDdOb0wz?=
- =?utf-8?B?Vi9JdnFtbi9Kb2tJUjBHM3Z4ZGFEZVBGZFpQUXFHQ0hiUXd0WUxrMnRXMHF6?=
- =?utf-8?B?RStUeDE3Mm9QbVpSL0pMb2JSMTNEQ1kyYUlLMGk1UjFFTm9ESjVxb1VUNHpN?=
- =?utf-8?B?Zkd0SXFDVUQ4d2VIcythWERZak1RL1pQOFY5NVRmTExya0pSSEgvWUQrVEND?=
- =?utf-8?B?dWE4cys4ZXBJSXU5YmZVdkxQazY1SlppT2tFV2hwbE9sMXdrM3gwekxnRTU1?=
- =?utf-8?B?M25HVm11Kzl0cE01Nkg4cXUzaDk3Wis1Y282V1Qvam5yMldTY1pORXNVcnRo?=
- =?utf-8?B?c2UwYmtOL3lQS3ZSaUVUZWttM3dUTThsR01CakJhejBSNEphYUZoUHhMamN5?=
- =?utf-8?B?RUJQcU5Pekg3eHV0WGp0YUZSUitrL2dod2REQ2dveUNRN0RFMzQ3K1pDMlVC?=
- =?utf-8?B?ZUpFZEhmTVB6a0c0dmRvVnE2a1U3MFlweUlDdmpRUlJ4QUVsa2FoN0kvMTJT?=
- =?utf-8?B?QTFpVzNXbU1PT0JtQzZLUm5HN00zUTZGRlIyWjVnV2l2czJrQVZMWUxsUmFx?=
- =?utf-8?B?N0F1SlVPaDU3a0ttUTh3WkJQaElGWUlwZnYrZWhTZElQZU9FY0o1WnZIQml1?=
- =?utf-8?B?b3dyOGNnNkVJclJJME1WUytUUmpoVk9pbnRQQ0MrQzZDUXhIUEdkZVoxSnlN?=
- =?utf-8?B?RmlaVTFCaHk0anRxVyt2Z0tKcFBMNnRwVk83eWhyaiszcEErNGJoUEZjYWVy?=
- =?utf-8?Q?K6rvoqOfvBYKdBpwIzE8s5P8j?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86db7df5-098c-4ad4-d851-08dbeaab1bda
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB5984.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2023 16:01:23.3563
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T00ViX21HrbheH1N/nIYVMUpMsUvO/vDT7GuNfFEpBLrBbgzrMLuY8lrNriwPeYhgVwMxvb6Sml7o6C3Ll9xYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6740
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/17] Solve iommu probe races around iommu_fwspec
+Content-Language: en-GB
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: acpica-devel@lists.linux.dev, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+ Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Dexuan Cui <decui@microsoft.com>,
+ devicetree@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+ Frank Rowand <frowand.list@gmail.com>, Hanjun Guo <guohanjun@huawei.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, iommu@lists.linux.dev,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+ linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Hector Martin
+ <marcan@marcan.st>, Palmer Dabbelt <palmer@dabbelt.com>,
+ patches@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Robert Moore <robert.moore@intel.com>, Rob Herring <robh+dt@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Sven Peter <sven@svenpeter.dev>, Thierry Reding <thierry.reding@gmail.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Krishna Reddy <vdumpa@nvidia.com>, Vineet Gupta <vgupta@kernel.org>,
+ virtualization@lists.linux.dev, Wei Liu <wei.liu@kernel.org>,
+ Will Deacon <will@kernel.org>, =?UTF-8?Q?Andr=C3=A9_Draszik?=
+ <andre.draszik@linaro.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Christoph Hellwig <hch@lst.de>, Jerry Snitselaar <jsnitsel@redhat.com>,
+ Moritz Fischer <mdf@kernel.org>, Zhenhua Huang <quic_zhenhuah@quicinc.com>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Rob Herring <robh@kernel.org>
+References: <0-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
+ <1316b55e-8074-4b2f-99df-585df2f3dd06@arm.com> <ZVTlYqnnHQUKG6T8@nvidia.com>
+ <6442d24b-6352-46e9-89e0-72d4a493f77c@arm.com> <ZVWXvqQbZrwyEgrL@nvidia.com>
+From: Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <ZVWXvqQbZrwyEgrL@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-
-On 11/21/23 06:32, Linus Walleij wrote:
-> On Mon, Nov 20, 2023 at 5:53 PM Dave Jiang <dave.jiang@intel.com> wrote:
+On 2023-11-16 4:17 am, Jason Gunthorpe wrote:
+> On Wed, Nov 15, 2023 at 08:23:54PM +0000, Robin Murphy wrote:
+>> On 2023-11-15 3:36 pm, Jason Gunthorpe wrote:
+>>> On Wed, Nov 15, 2023 at 03:22:09PM +0000, Robin Murphy wrote:
+>>>> On 2023-11-15 2:05 pm, Jason Gunthorpe wrote:
+>>>>> [Several people have tested this now, so it is something that should sit in
+>>>>> linux-next for a while]
+>>>>
+>>>> What's the aim here? This is obviously far, far too much for a
+>>>> stable fix,
+>>>
+>>> To fix the locking bug and ugly abuse of dev->iommu?
+>>
+>> Fixing the locking can be achieved by fixing the locking, as I have now
+>> demonstrated.
 > 
->> However, if I move fw_table.h in linux/acpi.h below include of asm/acpi.h, then we
->> can build successfully w/o including acpi/acpi.h in fw_table.h.
+> Obviously. I rejected that right away because of how incredibly
+> wrongly layered and hacky it is to do something like that.
+
+What, and dressing up the fundamental layering violation by baking it 
+even further into the API flow, while still not actually fixing it or 
+any of its *other* symptoms, is somehow better?
+
+Ultimately, this series is still basically doing the same thing my patch 
+does - extending the scope of the existing iommu_probe_device_lock hack 
+to cover fwspec creation. A hack is a hack, so frankly I'd rather it be 
+simple and obvious and look like one, and being easy to remove again is 
+an obvious bonus too.
+
+>>> I haven't seen patches or an outline on what you have in mind though?
+>>>
+>>> In my view I would like to get rid of of_xlate(), at a minimum. It is
+>>> a micro-optimization I don't think we need. I see a pretty
+>>> straightforward path to get there from here.
+>>
+>> Micro-optimisation!? OK, I think I have to say it. Please stop trying to
+>> rewrite code you don't understand.
 > 
-> This looks reasonable to me, can you send a formal patch so I can test?
-
-https://lore.kernel.org/linux-acpi/170058229266.2356592.11579977558324549374.stgit@djiang5-mobl3/
-
-Thanks!
-
+> I understand it fine. The list of (fwnode_handle, of_phandle_args)
+> tuples doesn't change between when of_xlate is callled and when probe
+> is called. Probe can have the same list. As best I can tell the extra
+> ops avoids maybe some memory allocation, maybe an extra iteration.
 > 
-> Yours,
-> Linus Walleij
+> What it does do is screw up alot of the drivers that seem to want to
+> allocate the per-device data in of_xlate and make it convoluted and
+> memory leaking buggy on error paths.
+> 
+> So, I would move toward having the driver's probe invoke a helper like:
+> 
+>     iommu_of_xlate(dev, fwspec, &per_fwnode_function, &args);
+> 
+> Which generates the same list of (fwnode_handle, of_phandle_args) that
+> was passed to of_xlate today, but is ordered sensibly within the
+> sequence of probe for what many drivers seem to want to do.
+
+Grep for of_xlate. It is a standard and well-understood callback pattern 
+for a subsystem to parse a common DT binding and pass a driver-specific 
+specifier to a driver to interpret. Or maybe you just have a peculiar 
+definition of what you think "micro-optimisation" means? :/
+
+> So, it is not so much that that the idea of of_xlate goes away, but
+> the specific op->of_xlate does, it gets shifted into a helper that
+> invokes the same function in a more logical spot.
+
+I'm curious how you imagine an IOMMU driver's ->probe function could be 
+called *before* parsing the firmware to work out what, if any, IOMMU, 
+and thus driver, a device is associated with. Unless you think we should 
+have the horrible perf model of passing the device to *every* registered 
+->probe callback in turn until someone claims it. And then every driver 
+has to have identical boilerplate to go off and parse the generic 
+"iommus" binding... which is the whole damn reason for *not* going down 
+that route and instead using an of_xlate mechanism in the first place.
+
+> The per-device data can be allocated at the top of probe and passed
+> through args to fix the lifetime bugs.
+> 
+> It is pretty simple to do.
+
+I believe the kids these days would say "Say you don't understand the 
+code without saying you don't understand the code."
+
+>> Most of this series constitutes a giant sweeping redesign of a whole bunch
+>> of internal machinery to permit it to be used concurrently, where that
+>> concurrency should still not exist in the first place because the thing that
+>> allows it to happen also causes other problems like groups being broken.
+>> Once the real problem is fixed there will be no need for any of this, and at
+>> worst some of it will then actually get in the way.
+> 
+> Not quite. This decouples two unrelated things into seperate
+> concerns. It is not so much about the concurrency but removing the
+> abuse of dev->iommu by code that has no need to touch it at all.
+
+Sorry, the "abuse" of storing IOMMU-API-specific data in the place we 
+intentionally created to consolidate all the IOMMU-API-specific data 
+into? Yes, there is an issue with the circumstances in which this data 
+is sometimes accessed, but as I'm starting to tire of repeating, that 
+issue fundamentally dates back to 2017, and the implications were 
+unfortunately overlooked when dev->iommu was later introduced and fwspec 
+moved into it (since the non-DT probing paths still worked as originally 
+designed). Pretending that dev->iommu is the issue here is missing the 
+point.
+
+> Decoupling makes moving code around easier since the relationships are
+> easier to reason about.
+
+Again with the odd definitions of "easier". You know what I think is 
+easy? Having a thing be in the obvious place where it should be (but 
+used in the way that was intended). What I would consider objectively 
+less easy is having a thing sometimes be there but sometimes be 
+somewhere else with loads more API machinery to juggle between the two. 
+Especially when once again, that machinery is itself prone to new bugs.
+
+Once again you've got hung up on one particular detail of one symptom of 
+the *real* issue, so although I can see and follow your chain of 
+reasoning, the fact that it starts from the wrong place makes it not 
+particularly useful in the bigger picture.
+
+> You can still allocated a fwnode, populate it, and do the rest of the
+> flow under a probe function just fine.
+>   
+>> I feel like I've explained it many times already, but what needs to happen
+>> is for the firmware parsing and of_xlate stage to be initiated by
+>> __iommu_probe_device() itself.
+> 
+> Yes, OK I see. I don't see a problem, I think this still a good
+> improvement even in that world it is undesirable to use dev->iommu as
+> a temporary, even if the locking can work.
+> 
+>> ever allowed to get it landed...) which gets to the state of
+>> expecting to
+> 
+> Repost it? Rc1 is out and you need to add one hunk to the new user
+> domain creation in iommufd.
+
+Well yeah, I'm trying to get that rebase finished (hence why I'm finding 
+broken IOMMUFD selftests), but as always I'm also busy with a lot of 
+other non-upstream things, and every time I have managed to do it so far 
+this year it's ended up being blocked by conflicting changes, so I 
+reserve my optimism...
+
+>> start from a fwspec. Then it's a case of shuffling around what's currently
+>> in the bus_type dma_configure methods such that point is where the fwspec is
+>> created as well, and the driver-probe-time work is almost removed except for
+>> still deferring if a device is waiting for its IOMMU instance (since that
+>> instance turning up and registering will retrigger the rest itself). And
+>> there at last, a trivial lifecycle and access pattern for dev->iommu (with
+>> the overlapping bits of iommu_fwspec finally able to be squashed as well),
+>> and finally an end to 8 long and unfortunate years of calling things in the
+>> wrong order in ways they were never supposed to be.
+> 
+> Having just gone through this all in detail I don't think it is as
+> entirely straightforward as this, the open coded callers to
+> of_dma_configure() are not going to be so nice to unravel.
+
+I've only had this turning over in the back of my mind for about the 
+last 4 years now, so I think I have a good understanding of what to 
+expect, thanks.
+
+Robin.
 
