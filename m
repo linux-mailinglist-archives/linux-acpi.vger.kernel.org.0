@@ -1,88 +1,126 @@
-Return-Path: <linux-acpi+bounces-1674-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1675-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D1F7F3101
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 15:35:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904647F3109
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 15:35:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A52F0B20C1F
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 14:35:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 661E4B21D9E
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 14:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071D64A9BD
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 14:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC34154FBD
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 14:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o1gYLyN7"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="kY5cEp8x"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81426D6D
-	for <linux-acpi@vger.kernel.org>; Tue, 21 Nov 2023 05:32:21 -0800 (PST)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-5c9169300caso32372937b3.2
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Nov 2023 05:32:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700573540; x=1701178340; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hhGZv1Nv08MvRW2DJYjs+d3sOa+HumQD0w2cfdSjlYU=;
-        b=o1gYLyN7nepNx9mjc188FdMxaA/2ONPzvIHKI5fpxkddLVUjPTjn65ZJGM+RNe+0rV
-         AgceHBBzOy0c3EHEDVDv3Dbf+2iX5thOtT9KQZK6DHP3x4unuWL4ge+czeQcqyLq9ts3
-         HGOBjdF76wVvKqR0oJYw96hcFG2CHTQwGRUcPybljtcl+UBwnij3jXSTq2YPR3kuyEnM
-         drqRv7WrNNIfdAIoCIbQEq4/f5GO7ihEtZsQ4fqI0go1VsGG4XgDhFfHIHwLBg+kuifV
-         DbPzikbC7Rz4oHPMjM6A9p1+u7t/ZmRziYNp2roP+I8m8lMvPbN65pvZplMKC8g74n6Z
-         3b4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700573540; x=1701178340;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hhGZv1Nv08MvRW2DJYjs+d3sOa+HumQD0w2cfdSjlYU=;
-        b=bwBtIT25KJRQwOv9N86wezsfQK0cBjUn4TSdfnjwPnUfZLCal4CDrMxWjDRbnkHUIW
-         kOH2Ig/oI4jDPpShOSjKl9sIpaKMKQjq+hibLIr6C8qVjVysZdVTYBDwawLX3R9gOC66
-         ZjcPZ4IAfBw45j9pSsGXfma0ObcPaksPmsEOv2Hm6p9uJTV7wl3AjRU/mI+/g5Z+Lksc
-         g5efV+N0+B8onyGoRDelY8WRDgMLemzycNi1a7mMQIlX30uKNSw1IMWpi+zj0pgKDC7e
-         xFJbd5QWbpPu5DY4ena8q7UVU+7aG2aV15rKI3z6rTpDERRkcyHLx4JJ33dBUCRd05Vf
-         4Ajg==
-X-Gm-Message-State: AOJu0YxTAonaPS34Ry3oiJSuNvb6wrS0lZhKMlsvyaG6011Ul6ZLOotU
-	bsoRNcu/OJQAOS1zuaNofCk7C+euq5K7iF5wbaaV86L28AlYfmj8
-X-Google-Smtp-Source: AGHT+IG5fMKPSUUlBQk/9z9KQDvVshTXZ/yb2JO2VCDadLEWCNWZCTpRysGdod7EeVu9BQ2Pr8mBjhdK5xSfgbEhxcM=
-X-Received: by 2002:a81:b606:0:b0:5c9:70b9:84d5 with SMTP id
- u6-20020a81b606000000b005c970b984d5mr8331718ywh.8.1700573540642; Tue, 21 Nov
- 2023 05:32:20 -0800 (PST)
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5373D52;
+	Tue, 21 Nov 2023 05:33:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=jVVGFvUYMz4XS+12ONkU+6fJSyRI8izrxLMtrbuvIP0=; b=kY5cEp8xCY9jLDgh/xFp6cSuy2
+	Jz+RL6eU+iPaAzt9qIKWRj6yqyviyOhB1z7dy2+vtQP50sWKI0Vo1nx6VtaheqE6cZm80bSiMXeVf
+	FtCABkjqw7Mq+I4pdZgV29XwSrD/q5N1YePzz0dnXidk6+Sg6w/Y3tlbzZ03VWOdiCgf5RjpUx21u
+	UWT+tXSPBOJFKU/6bm4HHOJiDZEbNoCWfjAGQuIHqKEAhEWk7GyIa+p4CSMtlFCimVQmcBnkShinV
+	W+1396JlMfCb5i1bc/V0iKk53XzoWqswkq/u0dlc7cSJ+bZyvX5+4xOFhEPVzUBUzQkBJFqQw9BEJ
+	hAqkSFHg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:36490)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1r5Qsc-00074Y-16;
+	Tue, 21 Nov 2023 13:33:30 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1r5Qsc-0004DM-VQ; Tue, 21 Nov 2023 13:33:30 +0000
+Date: Tue, 21 Nov 2023 13:33:30 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, linux-csky@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
+	linux-parisc@vger.kernel.org
+Cc: Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>
+Subject: Re: [PATCH RFC 08/22] drivers: base: Implement weak
+ arch_unregister_cpu()
+Message-ID: <ZVyxqoKBL8LsxXW+@shell.armlinux.org.uk>
+References: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
+ <E1r0JLL-00CTxD-Gc@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231114-arm-build-bug-v1-1-458745fe32a4@linaro.org>
- <b2354c21-3a1a-c446-fee0-db0c78d05c71@gmail.com> <CAJZ5v0idWdJq3JSqQWLG5q+b+b=zkEdWR55rGYEoxh7R6N8kFQ@mail.gmail.com>
- <41160dbf-d8c8-4dc0-9fda-42cc97df5b77@intel.com> <CAJZ5v0jNOXKv2fHNGUDjDvvg6FGbXuahhH9dBhWiAwiPv3fH8A@mail.gmail.com>
- <736fcad7-f440-4bcd-86fb-4cc73d1b8f37@intel.com>
-In-Reply-To: <736fcad7-f440-4bcd-86fb-4cc73d1b8f37@intel.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 21 Nov 2023 14:32:08 +0100
-Message-ID: <CACRpkdbz=a7yoJdBOrgJXth53d=F7+eQCu7KofUW8s1rBY=Veg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: acenv: Permit compilation from within the kernel
-To: Dave Jiang <dave.jiang@intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Sam Edwards <cfsworks@gmail.com>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Hanjun Guo <guohanjun@huawei.com>, 
-	Arnd Bergmann <arnd@arndb.de>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E1r0JLL-00CTxD-Gc@rmk-PC.armlinux.org.uk>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Mon, Nov 20, 2023 at 5:53=E2=80=AFPM Dave Jiang <dave.jiang@intel.com> w=
-rote:
+On Tue, Nov 07, 2023 at 10:29:59AM +0000, Russell King wrote:
+> From: James Morse <james.morse@arm.com>
+> 
+> Add arch_unregister_cpu() to allow the ACPI machinery to call
+> unregister_cpu(). This is enough for arm64, riscv and loongarch, but
+> needs to be overridden by x86 and ia64 who need to do more work.
+> 
+> CC: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> ---
+> Changes since v1:
+>  * Added CONFIG_HOTPLUG_CPU ifdeffery around unregister_cpu
+> Changes since RFC v2:
+>  * Move earlier in the series
+> ---
+>  drivers/base/cpu.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
+> index 579064fda97b..58bb86091b34 100644
+> --- a/drivers/base/cpu.c
+> +++ b/drivers/base/cpu.c
+> @@ -531,7 +531,14 @@ int __weak arch_register_cpu(int cpu)
+>  {
+>  	return register_cpu(&per_cpu(cpu_devices, cpu), cpu);
+>  }
+> -#endif
+> +
+> +#ifdef CONFIG_HOTPLUG_CPU
+> +void __weak arch_unregister_cpu(int num)
+> +{
+> +	unregister_cpu(&per_cpu(cpu_devices, num));
+> +}
+> +#endif /* CONFIG_HOTPLUG_CPU */
 
-> However, if I move fw_table.h in linux/acpi.h below include of asm/acpi.h=
-, then we
-> can build successfully w/o including acpi/acpi.h in fw_table.h.
+I have previously asked the question whether we should provide a
+stub weak function for the !HOTPLUG_CPU case for this, which would
+alleviate the concerns around if (IS_ENABLED()) in some of the later
+hotplug vCPU patches... which failed to get _any_ responses.
 
-This looks reasonable to me, can you send a formal patch so I can test?
+So, I'm now going to deem the comment I received about if (IS_ENABLED())
+potentially causing issues to be unimportant, and thus there's no
+need for a stub weak function. If we start getting compile errors,
+then we can address the issue at that point. So far, however, the
+kernel build bot has not identified that this as an issue... and it's
+been chewing on this entire patch set for well over a month now.
 
-Yours,
-Linus Walleij
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
