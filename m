@@ -1,117 +1,88 @@
-Return-Path: <linux-acpi+bounces-1673-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1674-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E357F3100
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 15:35:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D1F7F3101
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 15:35:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5659283598
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 14:35:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A52F0B20C1F
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 14:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2C013AF7
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 14:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071D64A9BD
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 14:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="GptbOpha"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o1gYLyN7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91AC11A3;
-	Tue, 21 Nov 2023 05:27:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=rH4XXg0XG5JBDQqriE53B4ksPcxyNMkV8utydydYqlE=; b=GptbOphakDgWkgtVyn9kVmSZut
-	2zdws9QRSTONl2GEr2a+OIBZrE3jJeI0D17zlWvHurC71V/x0OEPF6ffv784k7DLlc2aBOLE19Z4o
-	c0tv6/9S+iTe2UkhfYWBVaiamG9EJTPv9gb0UnQ2E+mlufTRS4ZpZA3hqA7HZlRX89aSKzHu3MJ1l
-	WcQbFRHumzI7PayZveu3slicUkYT4CsYU60SPqpcv75Ku2ucJtsjbZP45akWiW287IkZ3VbUy79a4
-	0dZN0gESalrlMs8ThicaN1EXR0io2uxwvg6b/yBrH8ePzb7FDP5MvhbzHS0L7bDI0qET3jb0ExwyI
-	bdYgIQPw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33300)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1r5QmU-00073r-1c;
-	Tue, 21 Nov 2023 13:27:10 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1r5QmS-0004DC-UA; Tue, 21 Nov 2023 13:27:08 +0000
-Date: Tue, 21 Nov 2023 13:27:08 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Gavin Shan <gshan@redhat.com>
-Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
-	x86@kernel.org, linux-csky@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
-	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	jianyong.wu@arm.com, justin.he@arm.com,
-	James Morse <james.morse@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH RFC 10/22] drivers: base: Move cpu_dev_init() after
- node_dev_init()
-Message-ID: <ZVywLPwhILp083Jk@shell.armlinux.org.uk>
-References: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
- <E1r0JLV-00CTxS-QB@rmk-PC.armlinux.org.uk>
- <095c2d24-735b-4ce2-ba2e-9ec2164f2237@redhat.com>
- <ZVHXk9JG7gUjtERt@shell.armlinux.org.uk>
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81426D6D
+	for <linux-acpi@vger.kernel.org>; Tue, 21 Nov 2023 05:32:21 -0800 (PST)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-5c9169300caso32372937b3.2
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Nov 2023 05:32:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1700573540; x=1701178340; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hhGZv1Nv08MvRW2DJYjs+d3sOa+HumQD0w2cfdSjlYU=;
+        b=o1gYLyN7nepNx9mjc188FdMxaA/2ONPzvIHKI5fpxkddLVUjPTjn65ZJGM+RNe+0rV
+         AgceHBBzOy0c3EHEDVDv3Dbf+2iX5thOtT9KQZK6DHP3x4unuWL4ge+czeQcqyLq9ts3
+         HGOBjdF76wVvKqR0oJYw96hcFG2CHTQwGRUcPybljtcl+UBwnij3jXSTq2YPR3kuyEnM
+         drqRv7WrNNIfdAIoCIbQEq4/f5GO7ihEtZsQ4fqI0go1VsGG4XgDhFfHIHwLBg+kuifV
+         DbPzikbC7Rz4oHPMjM6A9p1+u7t/ZmRziYNp2roP+I8m8lMvPbN65pvZplMKC8g74n6Z
+         3b4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700573540; x=1701178340;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hhGZv1Nv08MvRW2DJYjs+d3sOa+HumQD0w2cfdSjlYU=;
+        b=bwBtIT25KJRQwOv9N86wezsfQK0cBjUn4TSdfnjwPnUfZLCal4CDrMxWjDRbnkHUIW
+         kOH2Ig/oI4jDPpShOSjKl9sIpaKMKQjq+hibLIr6C8qVjVysZdVTYBDwawLX3R9gOC66
+         ZjcPZ4IAfBw45j9pSsGXfma0ObcPaksPmsEOv2Hm6p9uJTV7wl3AjRU/mI+/g5Z+Lksc
+         g5efV+N0+B8onyGoRDelY8WRDgMLemzycNi1a7mMQIlX30uKNSw1IMWpi+zj0pgKDC7e
+         xFJbd5QWbpPu5DY4ena8q7UVU+7aG2aV15rKI3z6rTpDERRkcyHLx4JJ33dBUCRd05Vf
+         4Ajg==
+X-Gm-Message-State: AOJu0YxTAonaPS34Ry3oiJSuNvb6wrS0lZhKMlsvyaG6011Ul6ZLOotU
+	bsoRNcu/OJQAOS1zuaNofCk7C+euq5K7iF5wbaaV86L28AlYfmj8
+X-Google-Smtp-Source: AGHT+IG5fMKPSUUlBQk/9z9KQDvVshTXZ/yb2JO2VCDadLEWCNWZCTpRysGdod7EeVu9BQ2Pr8mBjhdK5xSfgbEhxcM=
+X-Received: by 2002:a81:b606:0:b0:5c9:70b9:84d5 with SMTP id
+ u6-20020a81b606000000b005c970b984d5mr8331718ywh.8.1700573540642; Tue, 21 Nov
+ 2023 05:32:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZVHXk9JG7gUjtERt@shell.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+References: <20231114-arm-build-bug-v1-1-458745fe32a4@linaro.org>
+ <b2354c21-3a1a-c446-fee0-db0c78d05c71@gmail.com> <CAJZ5v0idWdJq3JSqQWLG5q+b+b=zkEdWR55rGYEoxh7R6N8kFQ@mail.gmail.com>
+ <41160dbf-d8c8-4dc0-9fda-42cc97df5b77@intel.com> <CAJZ5v0jNOXKv2fHNGUDjDvvg6FGbXuahhH9dBhWiAwiPv3fH8A@mail.gmail.com>
+ <736fcad7-f440-4bcd-86fb-4cc73d1b8f37@intel.com>
+In-Reply-To: <736fcad7-f440-4bcd-86fb-4cc73d1b8f37@intel.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 21 Nov 2023 14:32:08 +0100
+Message-ID: <CACRpkdbz=a7yoJdBOrgJXth53d=F7+eQCu7KofUW8s1rBY=Veg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: acenv: Permit compilation from within the kernel
+To: Dave Jiang <dave.jiang@intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Sam Edwards <cfsworks@gmail.com>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Hanjun Guo <guohanjun@huawei.com>, 
+	Arnd Bergmann <arnd@arndb.de>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 13, 2023 at 08:00:19AM +0000, Russell King (Oracle) wrote:
-> On Mon, Nov 13, 2023 at 10:58:46AM +1000, Gavin Shan wrote:
-> > 
-> > 
-> > On 11/7/23 20:30, Russell King (Oracle) wrote:
-> > > From: James Morse <james.morse@arm.com>
-> > > 
-> > > NUMA systems require the node descriptions to be ready before CPUs are
-> > > registered. This is so that the node symlinks can be created in sysfs.
-> > > 
-> > > Currently no NUMA platform uses GENERIC_CPU_DEVICES, meaning that CPUs
-> > > are registered by arch code, instead of cpu_dev_init().
-> > > 
-> > > Move cpu_dev_init() after node_dev_init() so that NUMA architectures
-> > > can use GENERIC_CPU_DEVICES.
-> > > 
-> > > Signed-off-by: James Morse <james.morse@arm.com>
-> > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > > ---
-> > > Note: Jonathan's comment still needs addressing - see
-> > >    https://lore.kernel.org/r/20230914121612.00006ac7@Huawei.com
-> > > ---
-> > >   drivers/base/init.c | 2 +-
-> > >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > 
-> > With Jonathan's comments addressed:
-> 
-> That needs James' input, which is why I made the note on the patch.
+On Mon, Nov 20, 2023 at 5:53=E2=80=AFPM Dave Jiang <dave.jiang@intel.com> w=
+rote:
 
-I'm going to be posting the series without RFC soon, and it will be
-with Jonathan's comment unaddressed - because as I've said several
-times it needs James' input and we have sadly not yet received that.
+> However, if I move fw_table.h in linux/acpi.h below include of asm/acpi.h=
+, then we
+> can build successfully w/o including acpi/acpi.h in fw_table.h.
 
-Short of waiting until James can respond, I don't think there are
-any other alternatives.
+This looks reasonable to me, can you send a formal patch so I can test?
 
-I do hope we can get this queued up for v6.8 though.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Yours,
+Linus Walleij
 
