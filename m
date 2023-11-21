@@ -1,158 +1,182 @@
-Return-Path: <linux-acpi+bounces-1646-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1647-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01917F25BE
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 07:32:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B797F2787
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 09:33:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F34AE1C2145D
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 06:32:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85A171C21841
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 08:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613482D602
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 06:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34621CA95
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 08:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X2zhSnz7"
+	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="yBZ7Udel"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B605F9
-	for <linux-acpi@vger.kernel.org>; Mon, 20 Nov 2023 21:48:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700545735; x=1732081735;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=JwKUvCe4kQ8RzH5NcY2TxXZi8FdLTy3xoBa5e7IPXxE=;
-  b=X2zhSnz7xJWB+EvL4iYDMM6jFm77lxNCtAqFrgawdKMfX8FSKxSjzIpx
-   CBkPxGraOpm6OWJGYAGvf+aFTgxZD3O+LrewJ+RE4zX8S+RufMweMrsBd
-   TZUKf+r3AtT1HutpsSFD8a435Nm2+W6UGj+RA2cj0KX9t7MOMKhrnLQet
-   CynzdnS+lDcwvCTrM0T1GZXa1OjkvESsJHyy2rjUavQ3O3dGhju1VwQUQ
-   SuenKc6G0D4Sa4eydBEk5pP3Faqt1uIAYn2OjQquVtFnCUGmVDSoO3MRk
-   iXuuRxlTghDWH0vVlBEhN7Fgg9mrYnr6368ALPjvhX5IgKPCFRvMyFRsx
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="13317206"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; 
-   d="scan'208";a="13317206"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 21:48:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10900"; a="742933760"
-X-IronPort-AV: E=Sophos;i="6.04,215,1695711600"; 
-   d="scan'208";a="742933760"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga006.jf.intel.com with ESMTP; 20 Nov 2023 21:48:53 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id ED7AA13A; Tue, 21 Nov 2023 07:48:51 +0200 (EET)
-Date: Tue, 21 Nov 2023 07:48:51 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>, NaamaX Shachar <naamax.shachar@intel.com>,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] ACPI: Run USB4 _OSC() first with query bit set
-Message-ID: <20231121054851.GC1074920@black.fi.intel.com>
-References: <20231114120611.128054-1-mika.westerberg@linux.intel.com>
- <CAJZ5v0iEt=GqEkVPp5iuBzKjKGxq9i7=W_L+NiOBk4oGiwyHdg@mail.gmail.com>
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BEDF90;
+	Mon, 20 Nov 2023 22:48:03 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: marcan@marcan.st)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id EDDAF42137;
+	Tue, 21 Nov 2023 06:47:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+	t=1700549281; bh=ujaYq3QQkb3U4N6JNFFQq4uH4QKQpO8RJp9aJVbB0w0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=yBZ7Udel893+M2pzDMgdTushmaUgXq0nIf/5xxASROF107adcyenfoQIJKpJop3QE
+	 1+yTIUhVbWxOP7swSXHE/1waIz+ytnfqIeOR+pXsrjnxJ9YDy9OcehudknnZZfDU0W
+	 yBoxtsLq/eITHB2A8C7zHMk/QpuQDhn54/ueeppNZr5bacp1NBly8id6vI/+HcZLF9
+	 Y3o89xan9Av9novKYwloiJeRxCXK4RdvbSm3KrREtUx62PnuC+h7WkJf1goRn4PDd/
+	 8BaauSYV42Ok4T8UBbrfnw8aItI789XfEb5enuqF6bZ2I7QNWWCAUkdCy2CTlvEfD+
+	 wJAB4I2ql495A==
+Message-ID: <90855bbf-e845-4e4d-a713-df71d1e477d2@marcan.st>
+Date: Tue, 21 Nov 2023 15:47:48 +0900
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0iEt=GqEkVPp5iuBzKjKGxq9i7=W_L+NiOBk4oGiwyHdg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/17] iommu: Add iommu_fwspec_alloc/dealloc()
+Content-Language: en-US
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: acpica-devel@lists.linux.dev, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+ Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Dexuan Cui <decui@microsoft.com>,
+ devicetree@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+ Frank Rowand <frowand.list@gmail.com>, Hanjun Guo <guohanjun@huawei.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, iommu@lists.linux.dev,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+ linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, patches@lists.linux.dev,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Robert Moore <robert.moore@intel.com>, Rob Herring <robh+dt@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Sven Peter <sven@svenpeter.dev>, Thierry Reding <thierry.reding@gmail.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Krishna Reddy <vdumpa@nvidia.com>, Vineet Gupta <vgupta@kernel.org>,
+ virtualization@lists.linux.dev, Wei Liu <wei.liu@kernel.org>,
+ Will Deacon <will@kernel.org>
+References: <6-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
+ <20a7ef6d-a8ca-4bd8-ad7e-11856db617a2@marcan.st>
+ <1eb12c35-e64e-4c32-af99-8743dc2ec266@marcan.st>
+ <20231119141329.GA6083@nvidia.com>
+From: Hector Martin <marcan@marcan.st>
+In-Reply-To: <20231119141329.GA6083@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 20, 2023 at 05:54:28PM +0100, Rafael J. Wysocki wrote:
-> On Tue, Nov 14, 2023 at 1:06 PM Mika Westerberg
-> <mika.westerberg@linux.intel.com> wrote:
-> >
-> > The platform can deny certain tunneling from the OS and it does that by
-> > clearing the control bits it does not want the OS to get and returning
-> > with OSC_CAPABILITIES_MASK_ERROR bit set. Currently we do not handle
-> > this properly so if this happens, for example when the platform denies
-> > PCIe tunneling, we just fail the whole negotiation and revert back to
-> > what the Thunderbolt driver is doing to figure out whether the
-> > controller is running firmware connection manager or not. However, we
-> > should honor what the platform returns.
-> >
-> > For this reason run the USB4 _OSC() first with query bit set, and then
-> > use the returned control double word (that may contain some of the bits
-> > cleared by the platform) and run it second time with query bit clear.
-> >
-> > While there, remove an extra space from the assignment of the control
-> > double word.
-> >
-> > Reported-by: NaamaX Shachar <naamax.shachar@intel.com>
-> > Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > ---
-> >  drivers/acpi/bus.c | 32 +++++++++++++++++++++++++++++---
-> >  1 file changed, 29 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> > index 72e64c0718c9..569bd15f211b 100644
-> > --- a/drivers/acpi/bus.c
-> > +++ b/drivers/acpi/bus.c
-> > @@ -408,7 +408,7 @@ static void acpi_bus_decode_usb_osc(const char *msg, u32 bits)
-> >  static u8 sb_usb_uuid_str[] = "23A0D13A-26AB-486C-9C5F-0FFA525A575A";
-> >  static void acpi_bus_osc_negotiate_usb_control(void)
-> >  {
-> > -       u32 capbuf[3];
-> > +       u32 capbuf[3], *capbuf_ret;
-> >         struct acpi_osc_context context = {
-> >                 .uuid_str = sb_usb_uuid_str,
-> >                 .rev = 1,
-> > @@ -428,7 +428,12 @@ static void acpi_bus_osc_negotiate_usb_control(void)
-> >         control = OSC_USB_USB3_TUNNELING | OSC_USB_DP_TUNNELING |
-> >                   OSC_USB_PCIE_TUNNELING | OSC_USB_XDOMAIN;
-> >
-> > -       capbuf[OSC_QUERY_DWORD] = 0;
-> > +       /*
-> > +        * Run _OSC first with query bit set, trying to get control over
-> > +        * all tunneling. The platform can then clear out bits in the
-> > +        * control dword that it does not want to grant to the OS.
-> > +        */
-> > +       capbuf[OSC_QUERY_DWORD] = OSC_QUERY_ENABLE;
-> >         capbuf[OSC_SUPPORT_DWORD] = 0;
-> >         capbuf[OSC_CONTROL_DWORD] = control;
-> >
-> > @@ -441,8 +446,29 @@ static void acpi_bus_osc_negotiate_usb_control(void)
-> >                 goto out_free;
-> >         }
-> >
-> > +       /*
-> > +        * Run _OSC again now with query bit clear and the control dword
-> > +        * matching what the platform granted (which may not have all
-> > +        * the control bits set).
-> > +        */
-> > +       capbuf_ret = context.ret.pointer;
-> > +
-> > +       capbuf[OSC_QUERY_DWORD] = 0;
-> > +       capbuf[OSC_CONTROL_DWORD] = capbuf_ret[OSC_CONTROL_DWORD];
-> > +
-> > +       kfree(context.ret.pointer);
-> > +
-> > +       status = acpi_run_osc(handle, &context);
-> > +       if (ACPI_FAILURE(status))
-> > +               return;
-> > +
-> > +       if (context.ret.length != sizeof(capbuf)) {
-> > +               pr_info("USB4 _OSC: returned invalid length buffer\n");
-> > +               goto out_free;
-> > +       }
-> > +
-> >         osc_sb_native_usb4_control =
-> > -               control &  acpi_osc_ctx_get_pci_control(&context);
-> > +               control & acpi_osc_ctx_get_pci_control(&context);
-> >
-> >         acpi_bus_decode_usb_osc("USB4 _OSC: OS supports", control);
-> >         acpi_bus_decode_usb_osc("USB4 _OSC: OS controls",
-> > --
+
+
+On 2023/11/19 23:13, Jason Gunthorpe wrote:
+> On Sun, Nov 19, 2023 at 06:19:43PM +0900, Hector Martin wrote:
+>>>> +static int iommu_fwspec_assign_iommu(struct iommu_fwspec *fwspec,
+>>>> +				     struct device *dev,
+>>>> +				     struct fwnode_handle *iommu_fwnode)
+>>>> +{
+>>>> +	const struct iommu_ops *ops;
+>>>> +
+>>>> +	if (fwspec->iommu_fwnode) {
+>>>> +		/*
+>>>> +		 * fwspec->iommu_fwnode is the first iommu's fwnode. In the rare
+>>>> +		 * case of multiple iommus for one device they must point to the
+>>>> +		 * same driver, checked via same ops.
+>>>> +		 */
+>>>> +		ops = iommu_ops_from_fwnode(iommu_fwnode);
+>>>
+>>> This carries over a related bug from the original code: If a device has
+>>> two IOMMUs and the first one probes but the second one defers, ops will
+>>> be NULL here and the check will fail with EINVAL.
+>>>
+>>> Adding a check for that case here fixes it:
+>>>
+>>> 		if (!ops)
+>>> 			return driver_deferred_probe_check_state(dev);
 > 
-> Applied as 6.8 material, but if you want me to push this for 6.7-rc,
-> please let me know (in which case it would be nice to have a Fixes:
-> tag to put on it).
+> Yes!
+> 
+>>> With that, for the whole series:
+>>>
+>>> Tested-by: Hector Martin <marcan@marcan.st>
+>>>
+>>> I can't specifically test for the probe races the series intends to fix
+>>> though, since that bug we only hit extremely rarely. I'm just testing
+>>> that nothing breaks.
+>>
+>> Actually no, this fix is not sufficient. If the first IOMMU is ready
+>> then the xlate path allocates dev->iommu, which then
+>> __iommu_probe_device takes as a sign that all IOMMUs are ready and does
+>> the device init.
+> 
+> It doesn't.. The code there is:
+> 
+> 	if (!fwspec && dev->iommu)
+> 		fwspec = dev->iommu->fwspec;
+> 	if (fwspec)
+> 		ops = fwspec->ops;
+> 	else
+> 		ops = dev->bus->iommu_ops;
+> 	if (!ops) {
+> 		ret = -ENODEV;
+> 		goto out_unlock;
+> 	}
+> 
+> Which is sensitive only to !NULL fwspec, and if EPROBE_DEFER is
+> returned fwspec will be freed and dev->iommu->fwspec will be NULL
+> here.
+> 
+> In the NULL case it does a 'bus probe' with a NULL fwspec and all the
+> fwspec drivers return immediately from their probe functions.
+> 
+> Did I miss something?
 
-Thanks! I think v6.8 is fine.
+apple_dart is not a fwspec driver and doesn't do that :-)
+
+> 
+>> Then when the xlate comes along again after suceeding
+>> with the second IOMMU, __iommu_probe_device sees the device is already
+>> in a group and never initializes the second IOMMU, leaving the device
+>> with only one IOMMU.
+> 
+> This should be fixed by the first hunk to check every iommu and fail?
+> 
+> BTW, do you have a systems with same device attached to multiple
+> iommus?
+
+Yes, Apple ARM64 machines all have multiple ganged IOMMUs for certain
+devices (USB and ISP). We also attach all display IOMMUs to the global
+virtual display-subsystem device to handle framebuffer mappings, instead
+of trying to dynamically map them to a bunch of individual display
+controllers (which is a lot more painful). That last one is what
+reliably reproduces this problem, display breaks without both previous
+patches ever since we started supporting more than one display output.
+The first one is not enough.
+
+> I've noticed another bug here, many drivers don't actually support
+> differing iommu instances and nothing seems to check it..
+
+apple-dart does (as long as all the IOMMUs are using that driver).
+
+> 
+> Thanks,
+> Jason
+> 
+> 
+
+- Hector
 
