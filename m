@@ -1,97 +1,134 @@
-Return-Path: <linux-acpi+bounces-1716-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1717-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314C37F378E
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 21:36:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD1B7F3790
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 21:36:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60D1F1C20431
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 20:36:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68BA3B203D8
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 20:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64D75101B
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 20:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13A554667
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Nov 2023 20:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C344D19B;
-	Tue, 21 Nov 2023 11:56:47 -0800 (PST)
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6d7e4e61bedso61948a34.1;
-        Tue, 21 Nov 2023 11:56:47 -0800 (PST)
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E1ACD51;
+	Tue, 21 Nov 2023 12:00:06 -0800 (PST)
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-58cf7d3b4deso41807eaf.0;
+        Tue, 21 Nov 2023 12:00:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700596606; x=1701201406;
+        d=1e100.net; s=20230601; t=1700596806; x=1701201606;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2ZOeqvRu3LxXiXrSd8uRhoWsi+0XXhfdsm4I1VLjf3E=;
-        b=rJIJzUrRnpbYgZK6BkjlbrWcfpssqPzIHQB3LBNOHypWzREeicTzqfu7ffvU0EbpPp
-         1PhyBExusenPeV3CVQinpZxJc62ZOem5jBi7BOqB/KzRXGkqOJ2rWHsYQ45Q0HoVS8Hn
-         79N6ayKJpPXLcAhQ2l687o2ajBpRlXbUkJZhDmhEE8MsLC8TTQ/LepMYrH0aXHIuSK4s
-         HPizehaAJPd5OU/Kzag0NLTYMZs8kRg0BqlmOWQwrBPa5zg4BvdQjOFbfjn/JUaP2Qfq
-         3NzX4buu/zfcn5hyHShX+s/02l59ZauC4H1QE+VMHBeJaWaKphbSyoGANyQr8sXalaDP
-         wTOA==
-X-Gm-Message-State: AOJu0YzDJjk2tBzKjKjoHkIL9qZY4XWRanEowdD/I61Tq64VjF2SXUa+
-	PnrAE37E4FsbVeK3dIY1YzaOC7luafdBuWGh7g0=
-X-Google-Smtp-Source: AGHT+IGfoh2AoQ1+r30cMz7Wi8VaxFkshXC+ngX/S9+JfPwwxHfOaJ4eH6D9XO8XC+cmqNdq15Zv1NpUwr2qAfyohqM=
-X-Received: by 2002:a05:6820:311:b0:58c:e80a:537d with SMTP id
- l17-20020a056820031100b0058ce80a537dmr411410ooe.1.1700596606357; Tue, 21 Nov
- 2023 11:56:46 -0800 (PST)
+        bh=/mLj5rstumdH3YxR5Ngi8wRMMBkTHdU3Odp76NDyzSg=;
+        b=ocFo9lOTYhx5h4X53UHA5PJuwCbc1dFCnLBOjv/OcOddFe8OZeUh5uf52g4y2Zuzln
+         hHejTtsPvGcZwmEq4jW9r4g+9jGDMdf5VSJWdJ8WGfLSmNtYFLYuXjnz7LwS3Y88XshM
+         Bzgner6SzLDrFA3QaJE0nqIq86YjLLhzcMp2xwZEu4Rfi5if6tq4m4rCSQTOWe8n18xn
+         oy1Jx5UB6/V0C1HgDO0LLmFUKGwLGv+yHLcVoZIafNINSw+SKIug7Eo8fmS7cUx8A/+v
+         m32637BuwDefu/+rirZL9rQqgU53/hpTfTx4bewwgF/0u5ttl21mNJuwGOj/tQdrmdl0
+         LzeQ==
+X-Gm-Message-State: AOJu0Yzy+i7wvMAhTeDw8Iwt3oJcVVp9yi//48G+ITq+Zdzm5kAh3ExY
+	wtFFNRO9H3RzJR3aq38VXue+shjqqL0HRttr/Aw=
+X-Google-Smtp-Source: AGHT+IGrYrkrbENwV/Uasb7GDGFQpjIl709++hpNYB35CN+zoWa0hRU7RuwdBWZkmBBrIqL3ZRVXAvX8Wl7maPSXxxA=
+X-Received: by 2002:a4a:d087:0:b0:584:17d0:de3d with SMTP id
+ i7-20020a4ad087000000b0058417d0de3dmr433216oor.1.1700596805818; Tue, 21 Nov
+ 2023 12:00:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <430a1271-a45c-4f5a-90c7-a62703ac7cf4@ancud.ru>
-In-Reply-To: <430a1271-a45c-4f5a-90c7-a62703ac7cf4@ancud.ru>
+References: <20231109183322.28039-1-sumitg@nvidia.com> <20231109183322.28039-2-sumitg@nvidia.com>
+In-Reply-To: <20231109183322.28039-2-sumitg@nvidia.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 21 Nov 2023 20:56:35 +0100
-Message-ID: <CAJZ5v0gHgfscDCGo3P5JVn73uUTBkpfCqRJV3QcOnFt8FP7FhQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: LPIT: fix u32 multiplication overflow
-To: Nikita Kiryushin <kiryushin@ancud.ru>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
+Date: Tue, 21 Nov 2023 20:59:54 +0100
+Message-ID: <CAJZ5v0jEXYP-V93XJ02cZ8UbMwKei2E27Sc0He0WnKvNXpUECg@mail.gmail.com>
+Subject: Re: [Patch v6 1/2] ACPI: thermal: Add Thermal fast Sampling Period
+ (_TFP) support
+To: Sumit Gupta <sumitg@nvidia.com>
+Cc: rafael@kernel.org, rui.zhang@intel.com, lenb@kernel.org, 
+	lpieralisi@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com, 
+	linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	treding@nvidia.com, jonathanh@nvidia.com, bbasu@nvidia.com, 
+	sanjayc@nvidia.com, ksitaraman@nvidia.com, srikars@nvidia.com, 
+	jbrasen@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 9, 2023 at 7:09=E2=80=AFPM Nikita Kiryushin <kiryushin@ancud.ru=
-> wrote:
+On Thu, Nov 9, 2023 at 7:34=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com> wrot=
+e:
 >
-> In lpit_update_residency there is a possibility of overflow
-> in multiplication, if tsc_khz is large enough (> UINT_MAX/1000).
-
-That would be a TSC ticking at hundreds of millions of kHz if I'm not
-mistaken.  Why is it really a concern?
-
-> Change multiplication to mul_u32_u32.
-
-So why is this better?
-
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> From: Jeff Brasen <jbrasen@nvidia.com>
 >
-> Fixes: eeb2d80d502a ("ACPI / LPIT: Add Low Power Idle Table (LPIT) suppor=
-t")
-> Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+> Add support of "Thermal fast Sampling Period (_TFP)" for Passive cooling.
+> As per [1], _TFP overrides the "Thermal Sampling Period (_TSP)" if both
+> are present in a Thermal zone.
+>
+> [1] ACPI Specification 6.4 - section 11.4.17. _TFP (Thermal fast Sampling
+>     Period)"
+>
+> Signed-off-by: Jeff Brasen <jbrasen@nvidia.com>
+> Co-developed-by: Sumit Gupta <sumitg@nvidia.com>
+> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
 > ---
->   drivers/acpi/acpi_lpit.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/thermal.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
-> index c5598b6d5db8..794962c5c88e 100644
-> --- a/drivers/acpi/acpi_lpit.c
-> +++ b/drivers/acpi/acpi_lpit.c
-> @@ -105,7 +105,7 @@ static void lpit_update_residency(struct
-> lpit_residency_info *info,
->                 return;
->         info->frequency =3D lpit_native->counter_frequency ?
-> -                               lpit_native->counter_frequency : tsc_khz =
-* 1000;
-> +                               lpit_native->counter_frequency : mul_u32_=
-u32(tsc_khz, 1000U);
->         if (!info->frequency)
->                 info->frequency =3D 1;
->   -- 2.34.1
+> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+> index f74d81abdbfc..3b75eb2260d7 100644
+> --- a/drivers/acpi/thermal.c
+> +++ b/drivers/acpi/thermal.c
+> @@ -90,7 +90,7 @@ struct acpi_thermal_passive {
+>         struct acpi_thermal_trip trip;
+>         unsigned long tc1;
+>         unsigned long tc2;
+> -       unsigned long tsp;
+> +       unsigned long delay;
+>  };
 >
+>  struct acpi_thermal_active {
+> @@ -404,11 +404,17 @@ static bool passive_trip_params_init(struct acpi_th=
+ermal *tz)
+>
+>         tz->trips.passive.tc2 =3D tmp;
+>
+> +       status =3D acpi_evaluate_integer(tz->device->handle, "_TFP", NULL=
+, &tmp);
+> +       if (ACPI_SUCCESS(status)) {
+> +               tz->trips.passive.delay =3D tmp;
+> +               return true;
+> +       }
+> +
+>         status =3D acpi_evaluate_integer(tz->device->handle, "_TSP", NULL=
+, &tmp);
+>         if (ACPI_FAILURE(status))
+>                 return false;
+>
+> -       tz->trips.passive.tsp =3D tmp;
+> +       tz->trips.passive.delay =3D tmp * 100;
+>
+>         return true;
+>  }
+> @@ -904,7 +910,7 @@ static int acpi_thermal_add(struct acpi_device *devic=
+e)
+>
+>         acpi_trip =3D &tz->trips.passive.trip;
+>         if (acpi_thermal_trip_valid(acpi_trip)) {
+> -               passive_delay =3D tz->trips.passive.tsp * 100;
+> +               passive_delay =3D tz->trips.passive.delay;
+>
+>                 trip->type =3D THERMAL_TRIP_PASSIVE;
+>                 trip->temperature =3D acpi_thermal_temp(tz, acpi_trip->te=
+mp_dk);
+> --
+
+So does the second patch in the series really depend on this one?
+
+If not, I can apply it I think.
 
