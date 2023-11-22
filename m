@@ -1,229 +1,114 @@
-Return-Path: <linux-acpi+bounces-1732-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1733-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30EC7F3E23
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 07:32:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AA47F4029
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 09:33:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 181521C209BB
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 06:32:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 317672810EB
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 08:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE42D2E6
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 06:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mTC07sXe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5432E41A
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 08:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A802CF4;
-	Tue, 21 Nov 2023 20:58:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700629099; x=1732165099;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=6OOZDIt/V+EllWbRkUq5IJR0w5aDlkstgw6hwmoGvqE=;
-  b=mTC07sXeg8tAtvXZ9wSuttiPjjV93Clf0qxwoAvyMmW4mVYbJAK/J9ZL
-   +e6G0yModyqbodDTpL3bhxbIuDNyPqGvGdWSbEI2EES+a8UoipDWReb7T
-   2SCYPkrkX157omCWheTVd+IjNSWAQWrqZRltbwiwKaKwacBlo6DQJaoKP
-   u6ULLASiziBZu3SJfudenafKnswDuO/lofb339cXc/ilRFwgdcvbYaa0D
-   2y45zSL4uVqCLbm+4bttBCMnshx+N8GtkZn8zwlJWdS7wyUW9K9PT13Ds
-   hXP5/14bWr0XTvdjynBu8bvoo9FtfDov8rKAZrQ+6rssRjocBR6nXCSCe
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="10650220"
-X-IronPort-AV: E=Sophos;i="6.04,217,1695711600"; 
-   d="scan'208";a="10650220"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 20:58:18 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="795971891"
-X-IronPort-AV: E=Sophos;i="6.04,217,1695711600"; 
-   d="scan'208";a="795971891"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 20:58:13 -0800
-Date: Wed, 22 Nov 2023 06:58:10 +0200
-From: Raag Jadav <raag.jadav@intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com,
-	lenb@kernel.org, robert.moore@intel.com, ardb@kernel.org,
-	will@kernel.org, mark.rutland@arm.com, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linuxfoundation.org, linux-efi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
-Subject: Re: [PATCH v2 2/6] ACPI: bus: update acpi_dev_uid_match() to support
- multiple types
-Message-ID: <ZV2KYqah4FHH4tnz@black.fi.intel.com>
-References: <20231121103829.10027-1-raag.jadav@intel.com>
- <20231121103829.10027-3-raag.jadav@intel.com>
- <CAJZ5v0jmaRQWfO_mM4GZ8mEFftuSNgt36=tJ5vC2Uw7MAcpYJg@mail.gmail.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id B2D97110;
+	Tue, 21 Nov 2023 23:02:40 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 34E521595;
+	Tue, 21 Nov 2023 23:03:27 -0800 (PST)
+Received: from [10.162.41.8] (a077893.blr.arm.com [10.162.41.8])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E6C223F73F;
+	Tue, 21 Nov 2023 23:02:36 -0800 (PST)
+Message-ID: <268e1605-fe3f-4aa0-92e3-36ddfc8aacb3@arm.com>
+Date: Wed, 22 Nov 2023 12:32:33 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0jmaRQWfO_mM4GZ8mEFftuSNgt36=tJ5vC2Uw7MAcpYJg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/7] coresight: tpiu: Move ACPI support from AMBA driver
+ to platform driver
+Content-Language: en-US
+To: James Clark <james.clark@arm.com>, linux-arm-kernel@lists.infradead.org,
+ suzuki.poulose@arm.com
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20231027072943.3418997-1-anshuman.khandual@arm.com>
+ <20231027072943.3418997-5-anshuman.khandual@arm.com>
+ <92d6a66d-3270-3378-2ab9-9214c004d5c7@arm.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <92d6a66d-3270-3378-2ab9-9214c004d5c7@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 21, 2023 at 08:25:20PM +0100, Rafael J. Wysocki wrote:
-> On Tue, Nov 21, 2023 at 11:38 AM Raag Jadav <raag.jadav@intel.com> wrote:
-> >
-> > According to ACPI specification, a _UID object can evaluate to either
-> > a numeric value or a string. Update acpi_dev_uid_match() helper to
-> > support _UID matching for both integer and string types.
-> >
-> > Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+
+On 11/15/23 19:23, James Clark wrote:
 > 
-> You need to be careful with using this.  There are some things below
-> that go beyond what I have suggested.
-
-I think we all suggested some bits and pieces so I included everyone.
-We can drop if there are any objections.
-
-> > Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-> > ---
-> >  drivers/acpi/utils.c    | 19 -------------------
-> >  include/acpi/acpi_bus.h | 35 ++++++++++++++++++++++++++++++++++-
-> >  include/linux/acpi.h    |  8 +++-----
-> >  3 files changed, 37 insertions(+), 25 deletions(-)
-> >
-> > diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
-> > index 28c75242fca9..fe7e850c6479 100644
-> > --- a/drivers/acpi/utils.c
-> > +++ b/drivers/acpi/utils.c
-> > @@ -824,25 +824,6 @@ bool acpi_check_dsm(acpi_handle handle, const guid_t *guid, u64 rev, u64 funcs)
-> >  }
-> >  EXPORT_SYMBOL(acpi_check_dsm);
-> >
-> > -/**
-> > - * acpi_dev_uid_match - Match device by supplied UID
-> > - * @adev: ACPI device to match.
-> > - * @uid2: Unique ID of the device.
-> > - *
-> > - * Matches UID in @adev with given @uid2.
-> > - *
-> > - * Returns:
-> > - *  - %true if matches.
-> > - *  - %false otherwise.
-> > - */
-> > -bool acpi_dev_uid_match(struct acpi_device *adev, const char *uid2)
-> > -{
-> > -       const char *uid1 = acpi_device_uid(adev);
-> > -
-> > -       return uid1 && uid2 && !strcmp(uid1, uid2);
-> > -}
-> > -EXPORT_SYMBOL_GPL(acpi_dev_uid_match);
-> > -
-> >  /**
-> >   * acpi_dev_hid_uid_match - Match device by supplied HID and UID
-> >   * @adev: ACPI device to match.
-> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> > index ec6a673dcb95..bcd78939bab4 100644
-> > --- a/include/acpi/acpi_bus.h
-> > +++ b/include/acpi/acpi_bus.h
-> > @@ -9,6 +9,7 @@
-> >  #ifndef __ACPI_BUS_H__
-> >  #define __ACPI_BUS_H__
-> >
-> > +#include <linux/compiler.h>
-> >  #include <linux/device.h>
-> >  #include <linux/property.h>
-> >
-> > @@ -857,10 +858,42 @@ static inline bool acpi_device_can_poweroff(struct acpi_device *adev)
-> >                 adev->power.states[ACPI_STATE_D3_HOT].flags.explicit_set);
-> >  }
-> >
-> > -bool acpi_dev_uid_match(struct acpi_device *adev, const char *uid2);
-> >  bool acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const char *uid2);
-> >  int acpi_dev_uid_to_integer(struct acpi_device *adev, u64 *integer);
-> >
-> > +static inline bool acpi_str_uid_match(struct acpi_device *adev, const char *uid2)
-> > +{
-> > +       const char *uid1 = acpi_device_uid(adev);
-> > +
-> > +       return uid1 && uid2 && !strcmp(uid1, uid2);
-> > +}
-> > +
-> > +static inline bool acpi_int_uid_match(struct acpi_device *adev, u64 uid2)
-> > +{
-> > +       u64 uid1;
-> > +
-> > +       return !acpi_dev_uid_to_integer(adev, &uid1) && uid1 == uid2;
-> > +}
-> > +
 > 
-> Up to this point it is all fine IMV.
+> On 27/10/2023 08:29, Anshuman Khandual wrote:
+>> Add support for the tpiu device in the platform driver, which can then be
+>> used on ACPI based platforms. This change would now allow runtime power
+>> management for ACPI based systems. The driver would try to enable the APB
+>> clock if available.
+>>
+> [...]
+>> +#ifdef CONFIG_ACPI
+>> +static const struct acpi_device_id tpiu_acpi_ids[] = {
+>> +	{"ARMHC979", 0}, /* ARM CoreSight TPIU */
+>> +	{}
+>> +};
+>> +MODULE_DEVICE_TABLE(acpi, tpiu_acpi_ids);
+>> +#endif
+>> +
+>> +static struct platform_driver tpiu_platform_driver = {
+>> +	.probe	= tpiu_platform_probe,
+>> +	.remove	= tpiu_platform_remove,
+>> +	.driver = {
+>> +		.name			= "coresight-tpiu-platform",
+>> +		.acpi_match_table	= ACPI_PTR(tpiu_acpi_ids),
+>> +		.suppress_bind_attrs	= true,
+>> +		.pm			= &tpiu_dev_pm_ops,
+>> +	},
+>> +};
+>> +module_platform_driver(tpiu_platform_driver);
+>> +
 > 
-> > +/**
-> > + * acpi_dev_uid_match - Match device by supplied UID
-> > + * @adev: ACPI device to match.
-> > + * @uid2: Unique ID of the device.
-> > + *
-> > + * Matches UID in @adev with given @uid2.
-> > + *
-> > + * Returns: %true if matches, %false otherwise.
-> > + */
-> > +
-> > +/* Treat uid as a string for array and pointer types, treat as an integer otherwise */
-> > +#define get_uid_type(x) \
-> > +       (__builtin_choose_expr(is_array_or_pointer_type(x), (const char *)0, (u64)0))
+> Is there a special build config where this works? I get an error here
+
+I have been testing this with a config known to work on RB5 board.
+
+> because module_platform_driver() redefines things that are in
+> module_amba_driver() which is defined above:
 > 
-> But I wouldn't use the above.
+>   module_amba_driver(tpiu_driver);
 > 
-> It is far more elaborate than needed for this use case and may not
-> actually work as expected.  For instance, why would a pointer to a
-> random struct type be a good candidate for a string?
+> This isn't a W=1 build or anything, just a normal one. And it applies to
+> most of the patches in this set.
 
-Such case will not compile, since its data type will not match with
-acpi_str_uid_match() prototype. The compiler does a very good job of
-qualifing only the compatible string types here, which is exactly what
-we want.
+You are right, I am able to recreate this problem with defconfig on
+6.7-rc2 as well. The problem here seems to be caused by having both
+module_amba_driver() and module_platform_driver() in the same file.
 
-error: passing argument 2 of 'acpi_str_uid_match' from incompatible pointer type [-Werror=incompatible-pointer-types]
-    if (acpi_dev_uid_match(adev, adev)) {
-                                 ^
-./include/acpi/acpi_bus.h:870:20: note: expected 'const char *' but argument is of type 'struct acpi_device *'
- static inline bool acpi_str_uid_match(struct acpi_device *adev, const char *uid2)
+#define module_amba_driver(__amba_drv) \
+        module_driver(__amba_drv, amba_driver_register, amba_driver_unregister)
 
-> > +
-> > +#define acpi_dev_uid_match(adev, uid2)                         \
-> > +       _Generic(get_uid_type(uid2),                            \
-> > +                const char *: acpi_str_uid_match,              \
-> > +                u64: acpi_int_uid_match)(adev, uid2)
-> > +
-> 
-> Personally, I would just do something like the following
-> 
-> #define acpi_dev_uid_match(adev, uid2) \
->         _Generic((uid2), \
->                 const char *: acpi_str_uid_match, \
->                 char *: acpi_str_uid_match, \
->                 const void *: acpi_str_uid_match, \
->                 void *: acpi_str_uid_match, \
->                 default: acpi_int_uid_match)(adev, uid2)
-> 
-> which doesn't require compiler.h to be fiddled with and is rather
-> straightforward to follow.
-> 
-> If I'm to apply the patches, this is about the level of complexity you
-> need to target.
+#define module_platform_driver(__platform_driver) \
+        module_driver(__platform_driver, platform_driver_register, \
+                        platform_driver_unregister)
 
-Understood, however this will limit the type support to only a handful
-of types and will not satisfy a few of the existing users, which, for
-example are passing signed or unsigned pointer or an array of u8.
-
-Listing every possible type manually for _Generic() looks a bit verbose
-for something that can be simply achieved by __builtin functions in my
-opinion.
-
-I can still send out a v3 to see if it really works. However, I prefer the
-v2 approach, as it covers all possible scenarios without any corner cases.
-
-Raag
+Although, AFAICT, have not seen these before - even on the defconfig.
+Just to work around this problem, there can be a common module_init()
+/module_exit() to register/unregister both AMBA and platform drivers,
+similar to etm4x_init()/etm4x_exit() setup in coresight-etm4x-core.c.
 
