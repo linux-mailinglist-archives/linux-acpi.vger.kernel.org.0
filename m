@@ -1,124 +1,193 @@
-Return-Path: <linux-acpi+bounces-1742-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1743-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419BB7F4919
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 15:39:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 311F17F491A
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 15:39:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88B2CB21040
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:39:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80298B209D2
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3BE4E600
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CFD1D543
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GcgFzAgs"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Cwc4M1iy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A3FDE7;
-	Wed, 22 Nov 2023 04:42:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700656965; x=1732192965;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5hLJrOV+mAip0x+2PM8ZuUHmD9zS7dhAzUTqBe3VWrg=;
-  b=GcgFzAgsZIHfg0GpdwbzBm1KuT5Tuj778U2XG0LjHAhqJMMOreYoZlGX
-   mGlCoVLXPEzkRUx24T5xUCST8irL8/8g6HiJGcfGRNy4SF60F6+RawO4o
-   2hAZB7uuKi148MXLFtkZi/7F1cQ1kyzWF847af7/WbLV9mBTm1LHuJ8my
-   d2dxqOS8zGs/5Dcg6agBU+D+m49d2QiARkcaWAKrCFOc7myPd2wrhg1QU
-   rQSgGH8ZXEA0p6EP15t1L+5sqgORW2iEMH6jTXdOggb5j1vO7yAQs43t5
-   lISNSy/Vaw1GiMax4Xo1RyMb54aRYX4Sqjkcn+gcnwQMaHu9WZCoiKCWl
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="5186789"
-X-IronPort-AV: E=Sophos;i="6.04,218,1695711600"; 
-   d="scan'208";a="5186789"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2023 04:42:45 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="1014221335"
-X-IronPort-AV: E=Sophos;i="6.04,218,1695711600"; 
-   d="scan'208";a="1014221335"
-Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 22 Nov 2023 04:42:38 -0800
-Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r5mYt-0000Sy-1t;
-	Wed, 22 Nov 2023 12:42:35 +0000
-Date: Wed, 22 Nov 2023 20:40:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: shiju.jose@huawei.com, linux-cxl@vger.kernel.org, linux-mm@kvack.org,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, david@redhat.com,
-	Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
-	rientjes@google.com, jiaqiyan@google.com, tony.luck@intel.com,
-	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, rafael@kernel.org,
-	lenb@kernel.org, naoya.horiguchi@nec.com, james.morse@arm.com,
-	jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	mike.malvestuto@intel.com
-Subject: Re: [PATCH v2 04/10] cxl/memscrub: Add CXL device patrol scrub
- control feature
-Message-ID: <202311221736.XNNZPX0U-lkp@intel.com>
-References: <20231121101844.1161-5-shiju.jose@huawei.com>
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2053.outbound.protection.outlook.com [40.107.223.53])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31533D7A;
+	Wed, 22 Nov 2023 04:55:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=m+R6KrFTsec6eYZBP87jvW6+8mrY/S6W8DNC8UutDE1ewXXmPxR7NMt1Fl3p+M224NYQerOtHUKbV6Z2M3/VICxrnFlOTuA16X9B+QoyBVC6opqsnhDpnHndnde1iEh4HRK3dOPsQOtbdH+lu9erkAPYT3S0/0Fm2dMcRgR5UvM4h5ehUVVO1W4JOM6GxsXlOMmpW08/XfVxJzbxynemKEN5UaonGOKKMd8QaaUoMWkKQthjE1XQos1tbkBzE3zwYQ1CD23+YW7bqDKeUjo2VBql7ymtkwWWP7Cp5iAVcNa3KW1+e6pxbl5Uy3XBnpGucQDza0AQcYLzz0hXxBtPbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MmO4T8d7DZEX8iTwukvKw6VvBoyloUQuRlLhBuYaWek=;
+ b=XRSbExyt9ydV9tSqKClew/ua5p9c9yBMOYmHpbqDvdGG06dpKRb64F9aPy0rphGwGq+4VUfgwis6TKz3k6KhYmxlax0EnvIg33EqSINpFFEWF+aA2Tm54rEVkpMr+QXNa4ThSuh/oOIzx92hG42jzpM1lC74XKSsS1dhnZmelOhZep/UXEx/5XJqrv5U+po7LzztSzouj8lvHj0HUTiGqxzyeQoGVNyZ7kynfmZ32tbismlfVFF2D6UOa+W0hjNDb5yc7VSH3Mtct/WhJBdFX7pcFsDfBbhwBLPI7VTolTLqQ+HLUqF+XNTq6WA+xtEGA8hC7iIExRfG/6Km++Vpqg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MmO4T8d7DZEX8iTwukvKw6VvBoyloUQuRlLhBuYaWek=;
+ b=Cwc4M1iym/zi4zAWjc75z1cvRpXl9mIO01cBLOn3D36uprJ2Mvxvd0pzV0j/VcYFyeVzyqbs30lZIDC9XfFSDz8tDD+YtorHMIHY1ETmZ4Wf7sAbGuzTggFvYPP8/T6rpyS81Zy9nFuUjH/Qm1dDhSe+SmyfCfx+i4OOuyFzv8pS5mPkGkIvJx21JTnygJcNkznmGSZPq97d5/xw6GCHdOKWzIEu8mKbB81CCoawC1Q//5TbLLBXc/r/8kZU0plzRnI8g6iwUFFrxl8EdhluUHbEn+bCpbvVyUJcB9XHLB6WlFI7ml0m0I4jZ1jICnKYU+e0Anh4eKn5T9YwTWIjEQ==
+Received: from BL0PR1501CA0027.namprd15.prod.outlook.com
+ (2603:10b6:207:17::40) by MW4PR12MB6682.namprd12.prod.outlook.com
+ (2603:10b6:303:1e3::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.19; Wed, 22 Nov
+ 2023 12:55:31 +0000
+Received: from MN1PEPF0000ECD4.namprd02.prod.outlook.com
+ (2603:10b6:207:17:cafe::b7) by BL0PR1501CA0027.outlook.office365.com
+ (2603:10b6:207:17::40) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.30 via Frontend
+ Transport; Wed, 22 Nov 2023 12:55:31 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ MN1PEPF0000ECD4.mail.protection.outlook.com (10.167.242.132) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7025.12 via Frontend Transport; Wed, 22 Nov 2023 12:55:31 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Wed, 22 Nov
+ 2023 04:55:17 -0800
+Received: from [10.41.21.79] (10.126.230.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Wed, 22 Nov
+ 2023 04:55:13 -0800
+Message-ID: <7b4f8911-90ef-8419-78dc-c2bffe9b9a3f@nvidia.com>
+Date: Wed, 22 Nov 2023 18:25:10 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231121101844.1161-5-shiju.jose@huawei.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [Patch v6 1/2] ACPI: thermal: Add Thermal fast Sampling Period
+ (_TFP) support
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <rui.zhang@intel.com>, <lenb@kernel.org>, <lpieralisi@kernel.org>,
+	<guohanjun@huawei.com>, <sudeep.holla@arm.com>, <linux-acpi@vger.kernel.org>,
+	<linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <treding@nvidia.com>,
+	<jonathanh@nvidia.com>, <bbasu@nvidia.com>, <sanjayc@nvidia.com>,
+	<ksitaraman@nvidia.com>, <srikars@nvidia.com>, <jbrasen@nvidia.com>, "Sumit
+ Gupta" <sumitg@nvidia.com>
+References: <20231109183322.28039-1-sumitg@nvidia.com>
+ <20231109183322.28039-2-sumitg@nvidia.com>
+ <CAJZ5v0jEXYP-V93XJ02cZ8UbMwKei2E27Sc0He0WnKvNXpUECg@mail.gmail.com>
+Content-Language: en-US
+From: Sumit Gupta <sumitg@nvidia.com>
+In-Reply-To: <CAJZ5v0jEXYP-V93XJ02cZ8UbMwKei2E27Sc0He0WnKvNXpUECg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD4:EE_|MW4PR12MB6682:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1284d936-787c-4e02-9728-08dbeb5a4f86
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	XndK1z4wpVWxhCVO50RS8J2dbL1dCQBU3W68mDm1KX0l7mIhr5QaXcmlrPDvdk6xjLKovb++lRDGwRNF8muQoDR4aMo0IkBLtEL/i795XHo3FdGDSoa8APnBwodGyrpvzpUE3V45dyAd3vLl0PsagjoJNZLrhr49srb3kaNIo7Hragzu9jluCjry/masf80bZONPClOQc1gM+ufmsMkSsU9ERty0KGr66SwFSpu+e11fIO7W1KurqQJwPtsRXd45US7PIDBApJYw2MyFaz7YvAmB53hEZudDvhP7zbyDcYhM2NWFq4oVUQmXRuD9DQmc+E6dPvi47CG71E6E8uAb4cs0UHuslmPEZwpNrrsSB2Fh5JYv8Iyg80Ge1HxhoRYSF3/aJLnIxGMago2zXzDt5J6GlALyqgUWkIJuRxwfUMHt6HlE/HpBalNDqVQf2GR2H4VrVF4S+vEGL4Fsg9ED8AFlwz+Ib4zLZrbAsw9H58zoRoBixsvCJCtDrPgFLQcBZ6N1HCCBkcQBNcj6goRyMTIMYSpfvoDxXbO0zWutSiRGsucz8w/Cst5Dmay2WnqAwP0feYNVdrLtpKF0LAdWdriQQHwBJOH8z5zrV6AmriMVYAZIbBUW5EiNhpxYO8y2ZiQMwzVrPKdWnW9Eem9JpBBIoUMIztnv9G8wuFYI2MEf4K/y4KZ6aiuCbfHqq/wIHOczki9PUSno9QKxxA3dcncktq3brKxJMeqAZ2ajIqltSF2p9b004QROYIN6mY0/4U7YrVMyzHnMLNgSqP45toSKaJR+eprzrklN+K3SI5SET6Vs5suDahJRa3F152Ac
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(376002)(136003)(346002)(39860400002)(396003)(230173577357003)(230922051799003)(230273577357003)(451199024)(82310400011)(1800799012)(64100799003)(186009)(36840700001)(46966006)(40470700004)(40460700003)(7416002)(2906002)(31696002)(86362001)(2616005)(478600001)(8676002)(16526019)(26005)(107886003)(53546011)(54906003)(16576012)(6916009)(316002)(4326008)(36756003)(70586007)(8936002)(70206006)(36860700001)(47076005)(82740400003)(426003)(336012)(7636003)(83380400001)(356005)(5660300002)(41300700001)(31686004)(40480700001)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2023 12:55:31.4986
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1284d936-787c-4e02-9728-08dbeb5a4f86
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000ECD4.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6682
 
-Hi,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.7-rc2 next-20231122]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/shiju-jose-huawei-com/cxl-mbox-Add-GET_SUPPORTED_FEATURES-mailbox-command/20231121-182247
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20231121101844.1161-5-shiju.jose%40huawei.com
-patch subject: [PATCH v2 04/10] cxl/memscrub: Add CXL device patrol scrub control feature
-config: arc-allmodconfig (https://download.01.org/0day-ci/archive/20231122/202311221736.XNNZPX0U-lkp@intel.com/config)
-compiler: arceb-elf-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231122/202311221736.XNNZPX0U-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311221736.XNNZPX0U-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/cxl/core/memscrub.c:241:5: error: redefinition of 'cxl_mem_patrol_scrub_init'
-     241 | int cxl_mem_patrol_scrub_init(struct cxl_memdev *cxlmd)
-         |     ^~~~~~~~~~~~~~~~~~~~~~~~~
-   In file included from drivers/cxl/core/memscrub.c:13:
-   drivers/cxl/cxlmem.h:990:19: note: previous definition of 'cxl_mem_patrol_scrub_init' with type 'int(struct cxl_memdev *)'
-     990 | static inline int cxl_mem_patrol_scrub_init(struct cxl_memdev *cxlmd)
-         |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/cxl/core/memscrub.c:169:12: warning: 'cxl_mem_ps_set_attrbs' defined but not used [-Wunused-function]
-     169 | static int cxl_mem_ps_set_attrbs(struct device *dev,
-         |            ^~~~~~~~~~~~~~~~~~~~~
 
 
-vim +/cxl_mem_patrol_scrub_init +241 drivers/cxl/core/memscrub.c
+On 22/11/23 01:29, Rafael J. Wysocki wrote:
+> External email: Use caution opening links or attachments
+> 
+> 
+> On Thu, Nov 9, 2023 at 7:34 PM Sumit Gupta <sumitg@nvidia.com> wrote:
+>>
+>> From: Jeff Brasen <jbrasen@nvidia.com>
+>>
+>> Add support of "Thermal fast Sampling Period (_TFP)" for Passive cooling.
+>> As per [1], _TFP overrides the "Thermal Sampling Period (_TSP)" if both
+>> are present in a Thermal zone.
+>>
+>> [1] ACPI Specification 6.4 - section 11.4.17. _TFP (Thermal fast Sampling
+>>      Period)"
+>>
+>> Signed-off-by: Jeff Brasen <jbrasen@nvidia.com>
+>> Co-developed-by: Sumit Gupta <sumitg@nvidia.com>
+>> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+>> ---
+>>   drivers/acpi/thermal.c | 12 +++++++++---
+>>   1 file changed, 9 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+>> index f74d81abdbfc..3b75eb2260d7 100644
+>> --- a/drivers/acpi/thermal.c
+>> +++ b/drivers/acpi/thermal.c
+>> @@ -90,7 +90,7 @@ struct acpi_thermal_passive {
+>>          struct acpi_thermal_trip trip;
+>>          unsigned long tc1;
+>>          unsigned long tc2;
+>> -       unsigned long tsp;
+>> +       unsigned long delay;
+>>   };
+>>
+>>   struct acpi_thermal_active {
+>> @@ -404,11 +404,17 @@ static bool passive_trip_params_init(struct acpi_thermal *tz)
+>>
+>>          tz->trips.passive.tc2 = tmp;
+>>
+>> +       status = acpi_evaluate_integer(tz->device->handle, "_TFP", NULL, &tmp);
+>> +       if (ACPI_SUCCESS(status)) {
+>> +               tz->trips.passive.delay = tmp;
+>> +               return true;
+>> +       }
+>> +
+>>          status = acpi_evaluate_integer(tz->device->handle, "_TSP", NULL, &tmp);
+>>          if (ACPI_FAILURE(status))
+>>                  return false;
+>>
+>> -       tz->trips.passive.tsp = tmp;
+>> +       tz->trips.passive.delay = tmp * 100;
+>>
+>>          return true;
+>>   }
+>> @@ -904,7 +910,7 @@ static int acpi_thermal_add(struct acpi_device *device)
+>>
+>>          acpi_trip = &tz->trips.passive.trip;
+>>          if (acpi_thermal_trip_valid(acpi_trip)) {
+>> -               passive_delay = tz->trips.passive.tsp * 100;
+>> +               passive_delay = tz->trips.passive.delay;
+>>
+>>                  trip->type = THERMAL_TRIP_PASSIVE;
+>>                  trip->temperature = acpi_thermal_temp(tz, acpi_trip->temp_dk);
+>> --
+> 
+> So does the second patch in the series really depend on this one?
+> 
+> If not, I can apply it I think.
 
-   240	
- > 241	int cxl_mem_patrol_scrub_init(struct cxl_memdev *cxlmd)
+Yes, this patch can be applied independently. Thank you!
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best Regards,
+Sumit Gupta
 
