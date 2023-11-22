@@ -1,152 +1,129 @@
-Return-Path: <linux-acpi+bounces-1759-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1760-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733917F4FC7
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 19:40:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 766737F4FC9
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 19:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3D641C203BC
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 18:40:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6E931C204BF
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 18:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1506A5CD0B
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 18:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FAE85CD0D
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 18:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="DSr5HBce"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8EB901A5;
-	Wed, 22 Nov 2023 09:15:14 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 230001FB;
-	Wed, 22 Nov 2023 09:16:01 -0800 (PST)
-Received: from [10.57.42.32] (unknown [10.57.42.32])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ABA273F73F;
-	Wed, 22 Nov 2023 09:15:12 -0800 (PST)
-Message-ID: <4de2b664-b7c8-4216-bb57-6f887bd751d2@arm.com>
-Date: Wed, 22 Nov 2023 17:15:11 +0000
+Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C9501A8
+	for <linux-acpi@vger.kernel.org>; Wed, 22 Nov 2023 09:49:32 -0800 (PST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 529E540E0257;
+	Wed, 22 Nov 2023 17:49:30 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Ye2hmHk8fjTu; Wed, 22 Nov 2023 17:49:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1700675367; bh=j4OvileRdiB72WaS5f8RnKgaglxFLtA5UwsHsPaO2l0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DSr5HBceaoG5XUaaSWwdU98GTCEVLdchOz25TUBSUj9bx2wGrn1f5NIWytZXobI0E
+	 YH+EZDeSwhqS+iBSOsQvDI5dQv0/EDj2w/H2jeJbH2rlBSVvb5vJXqBA/sMs3B17lc
+	 tggyHqU00KhICgYAXqbOPPMPS036yeKrweVF+b40MlH5d59Pqe3IDD9vGNWZLE6DS3
+	 xIGKMQ7YiSjz5OltprseCB42sC/A8CceoUNH1Nz857e17TJ7iPyZ839c13K92nbBtA
+	 Hip3eHepvvr5WrpHMWeYGRW23/nOiSyScQ2vVQQ7oO25Br33n668vliREObuX8ZOj5
+	 pI6wElyx9kx31fA8fjkh90SHQhV+/9ueQuEisu+DI9kpPeGtprqjlp4bZoJHdDtXn/
+	 l+sJH9yMQLnwi2vaZpFTvtDw+Nc5VxGEvQUZqzLfMycvC/blyZpyO5/RHU5P0eyzo1
+	 WPcYQ+nI+mjJFKwYqkg1TNELfMvo/8b599+N0Y54UxosMHa4GLnu26+SVKXLpzAmpi
+	 iauHoEjsofPRR6HGtIucYfbu1teErRC2whr220Dg9DJ7QDFkjxYArtI08eC1hFnro8
+	 ZPcnKh4Spaoml1dzuvbG8cT+gyzO/jFdl9OfPC10d8c1aglBmOxjxGpz2es9jc2DJa
+	 8k7CO8aqAZvkMm70V/qenD9E=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9FD1340E024E;
+	Wed, 22 Nov 2023 17:49:19 +0000 (UTC)
+Date: Wed, 22 Nov 2023 18:49:13 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	James Morse <james.morse@arm.com>
+Cc: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Tony Luck <tony.luck@intel.com>, Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	kernel@pengutronix.de
+Subject: Re: [PATCH] ACPI: APEI: GHES: Convert to platform remove callback
+ returning void
+Message-ID: <20231122174913.GFZV4/GUKci24sp1oj@fat_crate.local>
+References: <20231120173053.49597-1-u.kleine-koenig@pengutronix.de>
+ <CAJZ5v0iW_B72o8EMbZaH_x2SOHOvqnieP8EsK2A6d93GRDYtBA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] coresight: tmc: Move ACPI support from AMBA driver to
- platform driver
-Content-Language: en-GB
-To: Sudeep Holla <sudeep.holla@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Mike Leach
- <mike.leach@linaro.org>, James Clark <james.clark@arm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20231027072943.3418997-1-anshuman.khandual@arm.com>
- <20231027072943.3418997-6-anshuman.khandual@arm.com> <ZV40itsgT5OSJmdC@bogus>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <ZV40itsgT5OSJmdC@bogus>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0iW_B72o8EMbZaH_x2SOHOvqnieP8EsK2A6d93GRDYtBA@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
 
-On 22/11/2023 17:04, Sudeep Holla wrote:
-> On Fri, Oct 27, 2023 at 12:59:41PM +0530, Anshuman Khandual wrote:
->> Add support for the tmc devices in the platform driver, which can then be
->> used on ACPI based platforms. This change would now allow runtime power
->> management for ACPI based systems. The driver would try to enable the APB
->> clock if available.
->>
->> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
->> Cc: Sudeep Holla <sudeep.holla@arm.com>
->> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Cc: Mike Leach <mike.leach@linaro.org>
->> Cc: James Clark <james.clark@arm.com>
->> Cc: linux-acpi@vger.kernel.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Cc: coresight@lists.linaro.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>   drivers/acpi/arm64/amba.c                     |   2 -
->>   .../hwtracing/coresight/coresight-tmc-core.c  | 127 +++++++++++++++---
->>   drivers/hwtracing/coresight/coresight-tmc.h   |   1 +
->>   3 files changed, 113 insertions(+), 17 deletions(-)
-> 
-> [...]
-> 
->> diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
->> index 7ec5365e2b64..618bc0b7a1a5 100644
->> --- a/drivers/hwtracing/coresight/coresight-tmc-core.c
->> +++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
-> 
-> [...]
-> 
->> @@ -573,9 +579,9 @@ static void tmc_shutdown(struct amba_device *adev)
->>   	spin_unlock_irqrestore(&drvdata->spinlock, flags);
->>   }
->>   
->> -static void tmc_remove(struct amba_device *adev)
->> +static void __tmc_remove(struct device *dev)
->>   {
->> -	struct tmc_drvdata *drvdata = dev_get_drvdata(&adev->dev);
->> +	struct tmc_drvdata *drvdata = dev_get_drvdata(dev);
->>   
->>   	/*
->>   	 * Since misc_open() holds a refcount on the f_ops, which is
->> @@ -586,6 +592,11 @@ static void tmc_remove(struct amba_device *adev)
->>   	coresight_unregister(drvdata->csdev);
->>   }
->>   
->> +static void tmc_remove(struct amba_device *adev)
->> +{
->> +	__tmc_remove(&adev->dev);
->> +}
->> +
->>   static const struct amba_id tmc_ids[] = {
->>   	CS_AMBA_ID(0x000bb961),
->>   	/* Coresight SoC 600 TMC-ETR/ETS */
->> @@ -613,6 +624,92 @@ static struct amba_driver tmc_driver = {
->>   
->>   module_amba_driver(tmc_driver);
->>   
->> +static int tmc_platform_probe(struct platform_device *pdev)
->> +{
->> +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->> +	struct tmc_drvdata *drvdata;
->> +	int ret = 0;
->> +
->> +	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
->> +	if (!drvdata)
->> +		return -ENOMEM;
->> +
->> +	drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
->> +	if (IS_ERR(drvdata->pclk))
->> +		return -ENODEV;
->> +
-> 
-> --->8
->> +	if (res) {
->> +		drvdata->base = devm_ioremap_resource(&pdev->dev, res);
->> +		if (IS_ERR(drvdata->base)) {
->> +			clk_put(drvdata->pclk);
->> +			return PTR_ERR(drvdata->base);
->> +		}
->> +	}
->> +
-> ---
-> 
-> You need drop the above hunk as _tmc_probe() already takes care of that.
-> This is the root cause for the issue I reported in the other thread. Also
-> sorry for the confusion, I had to refer to coresight-tmc-core.c and post
-> the patch to unify module_init/exit but completely mixed up the file/patch
-> and referred coresight-tpiu-core.c instead as that patch was dealing with
-> it.
+On Wed, Nov 22, 2023 at 04:25:30PM +0100, Rafael J. Wysocki wrote:
+> On Mon, Nov 20, 2023 at 6:31=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+> <u.kleine-koenig@pengutronix.de> wrote:
+> >
+> > The .remove() callback for a platform driver returns an int which mak=
+es
+> > many driver authors wrongly assume it's possible to do error handling=
+ by
+> > returning an error code. However the value returned is ignored (apart
+> > from emitting a warning) and this typically results in resource leaks=
+.
+> >
+> > To improve here there is a quest to make the remove callback return
+> > void. In the first step of this quest all drivers are converted to
+> > .remove_new(), which already returns void. Eventually after all drive=
+rs
+> > are converted, .remove_new() will be renamed to .remove().
+> >
+> > Instead of returning an error code, emit a better error message than =
+the
+> > core. Apart from the improved error message this patch has no effects
+> > for the driver.
+> >
+> > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> > ---
+> > Hello,
+> >
+> > I tried to improve this driver before, see
+> >
+> >         https://lore.kernel.org/linux-acpi/CAJZ5v0ifb-wvyp0JRq_4c1L6v=
+Ti_qEeXJ6P=3DPmmq_56xRL74_A@mail.gmail.com
+> >         https://lore.kernel.org/linux-arm-kernel/20221219221439.16817=
+70-1-u.kleine-koenig@pengutronix.de
+> >         https://lore.kernel.org/linux-arm-kernel/20221220154447.12341=
+-1-u.kleine-koenig@pengutronix.de
+> >
+> > but this didn't result in any patch being applied.
+> >
+> > I think it's inarguable that there is a problem that wants to be fixe=
+d.
+> > My tries to fix this problem fixxled out, so here comes a minimal cha=
+nge
+> > that just points out the problem and otherwise makes ghes_remove()
+> > return void without further side effects to allow me to continue my
+> > quest to make platform_driver remove callbacks return no error.
+>=20
+> Tony, Boris, any objections against this patch?
 
-Thank you Sudeep for getting to the bottom of the problem !
+SDEI is James. Moving him to To:
 
-Suzuki
-> 
+--=20
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
