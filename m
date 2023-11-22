@@ -1,129 +1,179 @@
-Return-Path: <linux-acpi+bounces-1760-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1761-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766737F4FC9
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 19:41:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CA67F51BC
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 21:35:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6E931C204BF
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 18:41:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D22E1B20BEA
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 20:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FAE85CD0D
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 18:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F15B1CA8F
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 20:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="DSr5HBce"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OW6xettQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C9501A8
-	for <linux-acpi@vger.kernel.org>; Wed, 22 Nov 2023 09:49:32 -0800 (PST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 529E540E0257;
-	Wed, 22 Nov 2023 17:49:30 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Ye2hmHk8fjTu; Wed, 22 Nov 2023 17:49:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1700675367; bh=j4OvileRdiB72WaS5f8RnKgaglxFLtA5UwsHsPaO2l0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DSr5HBceaoG5XUaaSWwdU98GTCEVLdchOz25TUBSUj9bx2wGrn1f5NIWytZXobI0E
-	 YH+EZDeSwhqS+iBSOsQvDI5dQv0/EDj2w/H2jeJbH2rlBSVvb5vJXqBA/sMs3B17lc
-	 tggyHqU00KhICgYAXqbOPPMPS036yeKrweVF+b40MlH5d59Pqe3IDD9vGNWZLE6DS3
-	 xIGKMQ7YiSjz5OltprseCB42sC/A8CceoUNH1Nz857e17TJ7iPyZ839c13K92nbBtA
-	 Hip3eHepvvr5WrpHMWeYGRW23/nOiSyScQ2vVQQ7oO25Br33n668vliREObuX8ZOj5
-	 pI6wElyx9kx31fA8fjkh90SHQhV+/9ueQuEisu+DI9kpPeGtprqjlp4bZoJHdDtXn/
-	 l+sJH9yMQLnwi2vaZpFTvtDw+Nc5VxGEvQUZqzLfMycvC/blyZpyO5/RHU5P0eyzo1
-	 WPcYQ+nI+mjJFKwYqkg1TNELfMvo/8b599+N0Y54UxosMHa4GLnu26+SVKXLpzAmpi
-	 iauHoEjsofPRR6HGtIucYfbu1teErRC2whr220Dg9DJ7QDFkjxYArtI08eC1hFnro8
-	 ZPcnKh4Spaoml1dzuvbG8cT+gyzO/jFdl9OfPC10d8c1aglBmOxjxGpz2es9jc2DJa
-	 8k7CO8aqAZvkMm70V/qenD9E=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9FD1340E024E;
-	Wed, 22 Nov 2023 17:49:19 +0000 (UTC)
-Date: Wed, 22 Nov 2023 18:49:13 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	James Morse <james.morse@arm.com>
-Cc: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Tony Luck <tony.luck@intel.com>, Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	kernel@pengutronix.de
-Subject: Re: [PATCH] ACPI: APEI: GHES: Convert to platform remove callback
- returning void
-Message-ID: <20231122174913.GFZV4/GUKci24sp1oj@fat_crate.local>
-References: <20231120173053.49597-1-u.kleine-koenig@pengutronix.de>
- <CAJZ5v0iW_B72o8EMbZaH_x2SOHOvqnieP8EsK2A6d93GRDYtBA@mail.gmail.com>
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CF35C1;
+	Wed, 22 Nov 2023 11:22:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WpkqDqNVFjLLoIoGdeudqbe6F+3xbkm6CsLOJRkoX7pvFJlUhgtKa5Su+2PAH+lLf12ufyL7jdNiXICG5urqkePwHDi36L0uUn35oRq68vHTku8zeQDMqVqvpxuhIbeGc3Dv2pe7JLNHzgOF/99+tVvqY3cmh8J1/JCvMLdTa97YU/qn6FXZ29/EB04nMxw4ShghaLe8kn2cs+ZS0eBXDcl/JOFCVL4aJlzDrsGYuh2C197GyjZUtoCyCG/1ZrwDxOBjpIL49j3lbXAnQ5Y7QGbhtqYj9HKGm7csaro2S6GAbtrrRV5sMbaEeugB6Pb7AW7Vy4qe0G90I3zd3JuWXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oJJQOVXO+7jjhb8I4eHUI+figkBgp21XwARtBsqsr+g=;
+ b=dHZC2koXBBL399dQBf0j33Rll1n7tMTkjEZXao661yTDHDNUa81t29vJP7ST48X4FbYCa/rIJOMND2++v4BIoDn2jEKGLxsT3Yvs7u3Ut4WY3cIyoFRHyfu+ml8f41IwOhGqQnsoDhF2mUQlkJEBvnXiOvIp57JOJWI6xlvN1XjelhZBWToYjkuw7APmsGB8ZbYNDvuHzxh7w4yo8A5y1GChPuHlZUxaaHHULSrE+t9xub+wBwBxQEUwslZ5zoxYwiTb0iJHt4ZPoiP0kOgHp1vQaLa1jIwZisAjxPEBU1NAdI3+4m/6yKt4iStCCklVWcXhY2k4fhBhRJuDVd5xMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oJJQOVXO+7jjhb8I4eHUI+figkBgp21XwARtBsqsr+g=;
+ b=OW6xettQICzT08FE9ZfsxVBOP0YCKulFnXdKIbgzjtWsD5IW8ycXqBMjQWMKVxZD7YxTjw+nTt0SpnC03fWKpLEaMJ2V1ActbzoXp5U29UU5nmbzY1NE/vtTMe4HZCI8B+07AkxS6DYaFZJEOVqHBZ+BMU3/Bk4wGWHoDnqqCP0HFmzumCLjV1NhPyGUG8MT6l30eekIAtVEUyXlgGOl9+Cky3VJvX5XqjgQSv7fhqoSPyN/lz6LWuBS3wfpXDPBE3AevfiI0ATJjSuQKE65fdD7Hr5AbAKGul06sI5/o7BWTTuRTv8hHuoJcsDkwMJDg8FOxaK6gS6P+CTP9Ze0RA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by IA1PR12MB6652.namprd12.prod.outlook.com (2603:10b6:208:38a::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.28; Wed, 22 Nov
+ 2023 19:22:51 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::60d4:c1e3:e1aa:8f93]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::60d4:c1e3:e1aa:8f93%4]) with mapi id 15.20.7002.027; Wed, 22 Nov 2023
+ 19:22:51 +0000
+Date: Wed, 22 Nov 2023 15:22:49 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Robin Murphy <robin.murphy@arm.com>, joro@8bytes.org, will@kernel.org,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+	lpieralisi@kernel.org, andre.draszik@linaro.org,
+	quic_zhenhuah@quicinc.com
+Subject: Re: [PATCH] iommu: Avoid more races around device probe
+Message-ID: <20231122192249.GA399352@nvidia.com>
+References: <16f433658661d7cadfea51e7c65da95826112a2b.1700071477.git.robin.murphy@arm.com>
+ <ZVZL9kZuVsb9VPnM@nvidia.com>
+ <2023112238-sierra-chewable-86fc@gregkh>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2023112238-sierra-chewable-86fc@gregkh>
+X-ClientProxiedBy: DS7PR03CA0057.namprd03.prod.outlook.com
+ (2603:10b6:5:3b5::32) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0iW_B72o8EMbZaH_x2SOHOvqnieP8EsK2A6d93GRDYtBA@mail.gmail.com>
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|IA1PR12MB6652:EE_
+X-MS-Office365-Filtering-Correlation-Id: 02916b17-a80b-48b1-df09-08dbeb906b47
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	KtsKvXH5kQKYO4BTcZIONJtHMIIGeEekhomv77sdvIQksMyLEp3KKV/bay6gbpmfcBQGDiq2lj/+R0t42Y2i7hn/PaDKUfSMrp6bA/gIg0V3Lfyy5ISn8YU9tqoErwSkwhB0J7fww2V4vd/Lx3BMRaRU9U1P2DvYy/7kE5Pv4tSQwglxU9dL9Ec/SIKqhy7H3xJ0sOAmpztxF5ca8Y5hxVJ0dDcRoi/zBpHIBQzVFGYTBp5WW4L1b/sNKmOOaZCEZBP5pLXYwK3hS9CKW4pT0dxaBLOjJYUSc1Djtsah26WN6yiJIyfv2pZ7rJnEdLbV9l4FIW+Ykgbsq991aE70vpHVUTXsrBrGZQQFM9lguYsoqf10DATNA+82ybEvmF8dUyai4eQqcsiWCUOSz5CHxGcUGymL/IPPFUlBdOWef/XO1R4qH5AVys3ZyOQDbGcn5uvDkxLjWw/AMLZqWkQXyzUzps92m02DcVVdfSq8hfEpO4b+mTko4SgXgl3IksZpZom99XKnty5awAxbdZnUbXtATWNv1TDsfKqeVg4I76wLhJA6TxfPQ45pgO3odCh++du+2Kd/FbXTHPBHB/tYIYWZDVZM8KhRw2Frd+TuMkja0NL2VK1ePvgejf9dT00t3amUhJjrD3TC0Ox/LD2++iqJCo/pWFfr5ALaSRiyLr43Hni3xaZdrwikkv/0yI++
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(346002)(39860400002)(396003)(376002)(230922051799003)(451199024)(186009)(1800799012)(64100799003)(86362001)(38100700002)(33656002)(36756003)(6916009)(66556008)(316002)(66476007)(66946007)(966005)(2616005)(1076003)(41300700001)(478600001)(6506007)(5660300002)(26005)(6512007)(7416002)(2906002)(8676002)(4326008)(8936002)(6486002)(83380400001)(27376004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?EPZD3qzJ7DYFvyfskpBc5dDD0GiPQtd7xpb0bbfO6G7i28np4WODqmdPKwgs?=
+ =?us-ascii?Q?nzrjDSxxo+W7Ie4hpKWqLMbuh2z0/vImLZTvY+xZxjDvCpklqvh6qnT16/R0?=
+ =?us-ascii?Q?auIX70k9qr3031EGoiqA4X2W3RnLvmNxWjc0vzzpGaMGqm1nquW33ZX/NYIK?=
+ =?us-ascii?Q?gYnIXoT9r0F2wtJeimbiFMzUG3RCaFQtKUcVa/LSUNTr53QKHShMkAgBtGy0?=
+ =?us-ascii?Q?u5i3KxRB21ujv0lnVcXsaOFFh93ia8+9EP+iL7QyUpVl3Vyq/hadc3ISPd+h?=
+ =?us-ascii?Q?YXLPgYrlHAOKY7jSpU3a8uLOX+86Ei9wz/bXkBIF+JBIY82qeJgTzye6isoe?=
+ =?us-ascii?Q?ovQZL6UlPOMpUZcZ8BZzmIUJ2olIMHRKPHQmTlDkf/sbatRuO7sJxNHXsfrs?=
+ =?us-ascii?Q?eb09hBSw0eWRIla2Bg+qv+AY2wlpvT40g6JHf/T+iUHl+tfaWSzk1jb3D+QE?=
+ =?us-ascii?Q?J6WylsCVd3t0hA1x3FXhtkmVCZUMSIjOELE2Hg1dcJL8r1p3GOx0nXOsGVF4?=
+ =?us-ascii?Q?ozEHrSn3Wv0pbsZPkgBBKgnIHcN9F+jQ0UEjhfST8Pj+Adxkl+BMR2ihaG0w?=
+ =?us-ascii?Q?H+t7NxyhwXsXGug4+Wa6dsVewks4mrgJCkrVsGp83NrEQt+WqZbpaDyZQb41?=
+ =?us-ascii?Q?0gJwbPSJ1B54oTpzg19w53E6L37dPMD0BM1/dLDgOK73s6qIvn20/xRIDvds?=
+ =?us-ascii?Q?i/9QQ/S4MzCJ8Svw+4dm4YlpjgzLLCFQxzlMLemk/v2WvJq2QmjUpJGHDRDK?=
+ =?us-ascii?Q?VXE5mu555ur2j/L+cGf5uFIiEg8iuUtNPJ0W4LapG9/M931hjMQ/BphYPlRu?=
+ =?us-ascii?Q?KMxFqx9wXrKYw6hFzYDNOLF93UTL7hoq4vrYMu4F29VtPTTb5KZTFZAILAU/?=
+ =?us-ascii?Q?5m65/t3KrIaqaCYQbaImjuYhrBREFFs+HSTwZ1c2wFC1eAhRHi574/fWNv+1?=
+ =?us-ascii?Q?BaXo/iwx84lL+z3VVnSAsJyU4YTUpUoQbhBgFka+YUIuG4dlYlVWN7Y5oUkk?=
+ =?us-ascii?Q?K4ujryuFpvjaaK2F53UU6VBK2tdzL4tQPClTRKUpJ82PTASyOzzjVtzDLyMx?=
+ =?us-ascii?Q?4Ssb2ZSzdulkby1xSwB1cetktFRN8KiPj8oJ0CZIb9YI8fpNYCmF0KPTTwC0?=
+ =?us-ascii?Q?aD0DpLws1HXmZ9mkc1bam6s6gIqCa6KXgCWsEmOL96vuCAVKJzY73HMlB39/?=
+ =?us-ascii?Q?Y69yG2S1hQSbSwsHSdWVy/Qmq/Wd6WKUHCheyTFwi5hKknV60qFGCSBmbehB?=
+ =?us-ascii?Q?b0QSbyHW35M2oW1lYaIkn3aFQslBO0OYovRCAJ6rsqXTaFG18Sp4W4glG3xE?=
+ =?us-ascii?Q?hvkb4PNVNmlxfGuA1E5eXAUvQD6dX3UVdt4iKugtQblb/IcIaRESdm6SBXO0?=
+ =?us-ascii?Q?LuAKN66JUZRy2A5MS+iye84TNcAW4g+zlnGjJVjC5BXiKTd0bzNt+7ajLFOP?=
+ =?us-ascii?Q?U2cMS9+tmq9GlTgDr4ZjZ43ge7jEVSVrcjq3EK87xcrxCN8jHfr9D4d7J3jU?=
+ =?us-ascii?Q?7XyR8TFNcVDOwd0pSRKcVjLezIxXyUqS1fcfLn2DuQdDjmYTJdqQPTN7jCVp?=
+ =?us-ascii?Q?m8TY8w7oj3tdhGRycn4iGaZwNLWNh6TjByVJP0J8?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02916b17-a80b-48b1-df09-08dbeb906b47
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2023 19:22:51.2621
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /ZEcaEc6bvk0w+WJcWzPB6yOH190+KpJwxfzUfNnsEJzUsw7NSdhn8RezrUh4yJ9
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6652
 
-On Wed, Nov 22, 2023 at 04:25:30PM +0100, Rafael J. Wysocki wrote:
-> On Mon, Nov 20, 2023 at 6:31=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-> <u.kleine-koenig@pengutronix.de> wrote:
-> >
-> > The .remove() callback for a platform driver returns an int which mak=
-es
-> > many driver authors wrongly assume it's possible to do error handling=
- by
-> > returning an error code. However the value returned is ignored (apart
-> > from emitting a warning) and this typically results in resource leaks=
-.
-> >
-> > To improve here there is a quest to make the remove callback return
-> > void. In the first step of this quest all drivers are converted to
-> > .remove_new(), which already returns void. Eventually after all drive=
-rs
-> > are converted, .remove_new() will be renamed to .remove().
-> >
-> > Instead of returning an error code, emit a better error message than =
-the
-> > core. Apart from the improved error message this patch has no effects
-> > for the driver.
-> >
-> > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> > Hello,
-> >
-> > I tried to improve this driver before, see
-> >
-> >         https://lore.kernel.org/linux-acpi/CAJZ5v0ifb-wvyp0JRq_4c1L6v=
-Ti_qEeXJ6P=3DPmmq_56xRL74_A@mail.gmail.com
-> >         https://lore.kernel.org/linux-arm-kernel/20221219221439.16817=
-70-1-u.kleine-koenig@pengutronix.de
-> >         https://lore.kernel.org/linux-arm-kernel/20221220154447.12341=
--1-u.kleine-koenig@pengutronix.de
-> >
-> > but this didn't result in any patch being applied.
-> >
-> > I think it's inarguable that there is a problem that wants to be fixe=
-d.
-> > My tries to fix this problem fixxled out, so here comes a minimal cha=
-nge
-> > that just points out the problem and otherwise makes ghes_remove()
-> > return void without further side effects to allow me to continue my
-> > quest to make platform_driver remove callbacks return no error.
->=20
-> Tony, Boris, any objections against this patch?
+On Wed, Nov 22, 2023 at 02:44:53PM +0000, Greg KH wrote:
+> On Thu, Nov 16, 2023 at 01:05:58PM -0400, Jason Gunthorpe wrote:
+> > On Wed, Nov 15, 2023 at 06:25:44PM +0000, Robin Murphy wrote:
+> > > It turns out there are more subtle races beyond just the main part of
+> > > __iommu_probe_device() itself running in parallel - the dev_iommu_free()
+> > > on the way out of an unsuccessful probe can still manage to trip up
+> > > concurrent accesses to a device's fwspec. Thus, extend the scope of
+> > > iommu_probe_device_lock() to also serialise fwspec creation and initial
+> > > retrieval.
+> > > 
+> > > Reported-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+> > > Link: https://lore.kernel.org/linux-iommu/e2e20e1c-6450-4ac5-9804-b0000acdf7de@quicinc.com/
+> > > Fixes: 01657bc14a39 ("iommu: Avoid races around device probe")
+> > > Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> > > ---
+> > > 
+> > > This is my idea of a viable fix, since it does not need a 700-line
+> > > diffstat to make the code do what it was already *trying* to do anyway.
+> > > This stuff should fundamentally not be hanging off driver probe in the
+> > > first place, so I'd rather get on with removing the underlying
+> > > brokenness than waste time and effort polishing it any further.
+> > 
+> > I'm fine with this as some hacky backport, but I don't want to see
+> > this cross-layer leakage left in the next merge window.
+> > 
+> > ie we should still do my other series on top of and reverting this.
+> > 
+> > I've poked at moving parts of it under probe and I think we can do
+> > substantial amounts in about two more series and a tidy a bunch of
+> > other stuff too.
+> 
+> I agree, it's messy and acpi should not need this, BUT at the moment, I
+> can't see any other way to resolve this simply.
+> 
+> So here's a begrudged ack:
+> 
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> and hopefully the larger series should resolve this correctly?  Can that
+> be rebased on top of this?
 
-SDEI is James. Moving him to To:
+Yeah, I'm working on something more along the lines of Robin's desire
+for a full reorganization.
 
---=20
-Regards/Gruss,
-    Boris.
+The existing series has been tested by a few people now. We can decide
+which order to put things in maybe next week if I get the new approach
+done..
 
-https://people.kernel.org/tglx/notes-about-netiquette
+> Also, cc: stable on this for whomever applies it?
+
+Also please update the commit message, the text from here does
+describe the race:
+
+https://lore.kernel.org/linux-iommu/11-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com/
+
+Jason
 
