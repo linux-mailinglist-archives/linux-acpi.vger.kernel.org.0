@@ -1,114 +1,237 @@
-Return-Path: <linux-acpi+bounces-1733-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1734-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AA47F4029
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 09:33:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A967F402A
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 09:33:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 317672810EB
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 08:33:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C07292810EB
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 08:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5432E41A
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 08:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6E48BFC
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 08:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LUWY748k"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id B2D97110;
-	Tue, 21 Nov 2023 23:02:40 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 34E521595;
-	Tue, 21 Nov 2023 23:03:27 -0800 (PST)
-Received: from [10.162.41.8] (a077893.blr.arm.com [10.162.41.8])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E6C223F73F;
-	Tue, 21 Nov 2023 23:02:36 -0800 (PST)
-Message-ID: <268e1605-fe3f-4aa0-92e3-36ddfc8aacb3@arm.com>
-Date: Wed, 22 Nov 2023 12:32:33 +0530
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25FEED4F;
+	Tue, 21 Nov 2023 23:19:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700637595; x=1732173595;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KvIjd3WcQUTAQZL0HXjLGHIwhv87e45Kod3du9RH8i4=;
+  b=LUWY748kgBXpFbtJLpZdZLz2TANBeyYyNjIdKJVGxHr4KkQeSGUbWTTk
+   gL+8hPT4V2Vc0TXxkr7Zf34AxdcsHESMJpj4CnSH4m9/NCY1Yx86IUide
+   Cxhy04QvQgWlwmW1Diaez+BkjZvH3ZOQEYvG9zngH1JkVu8qgm5FseASA
+   Ybuw8LSUYMcJaAaKgdDMM/MjxPirubiuiRRqMoWt0qW5Kr8lohYHtIMJ2
+   i3tPlgS/Bn4i34F7OGpDIluj4Ac5pe8XFjZmCKlnSRIUIS2gzJJRNeDN6
+   yXPMYn9aUWmBCWikcg4gnXvs069qomFP71lSW5VKc00rlsI0zB+nhKsP6
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="371350507"
+X-IronPort-AV: E=Sophos;i="6.04,218,1695711600"; 
+   d="scan'208";a="371350507"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 23:19:54 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="795997236"
+X-IronPort-AV: E=Sophos;i="6.04,218,1695711600"; 
+   d="scan'208";a="795997236"
+Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 21 Nov 2023 23:19:46 -0800
+Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r5hWR-0000Bf-2l;
+	Wed, 22 Nov 2023 07:19:43 +0000
+Date: Wed, 22 Nov 2023 15:19:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: shiju.jose@huawei.com, linux-cxl@vger.kernel.org, linux-mm@kvack.org,
+	dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com,
+	dan.j.williams@intel.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	david@redhat.com, Vilas.Sridharan@amd.com, leo.duran@amd.com,
+	Yazen.Ghannam@amd.com, rientjes@google.com, jiaqiyan@google.com,
+	tony.luck@intel.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	rafael@kernel.org, lenb@kernel.org, naoya.horiguchi@nec.com,
+	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
+	mike.malvestuto@intel.com
+Subject: Re: [PATCH v2 07/10] cxl/memscrub: Register CXL device patrol scrub
+ with scrub configure driver
+Message-ID: <202311221316.CqzLVodA-lkp@intel.com>
+References: <20231121101844.1161-8-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] coresight: tpiu: Move ACPI support from AMBA driver
- to platform driver
-Content-Language: en-US
-To: James Clark <james.clark@arm.com>, linux-arm-kernel@lists.infradead.org,
- suzuki.poulose@arm.com
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20231027072943.3418997-1-anshuman.khandual@arm.com>
- <20231027072943.3418997-5-anshuman.khandual@arm.com>
- <92d6a66d-3270-3378-2ab9-9214c004d5c7@arm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <92d6a66d-3270-3378-2ab9-9214c004d5c7@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231121101844.1161-8-shiju.jose@huawei.com>
+
+Hi,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.7-rc2 next-20231121]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/shiju-jose-huawei-com/cxl-mbox-Add-GET_SUPPORTED_FEATURES-mailbox-command/20231121-182247
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20231121101844.1161-8-shiju.jose%40huawei.com
+patch subject: [PATCH v2 07/10] cxl/memscrub: Register CXL device patrol scrub with scrub configure driver
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20231122/202311221316.CqzLVodA-lkp@intel.com/config)
+compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231122/202311221316.CqzLVodA-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311221316.CqzLVodA-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/cxl/core/memscrub.c:330:9: warning: no previous prototype for function 'cxl_mem_patrol_scrub_is_visible' [-Wmissing-prototypes]
+   umode_t cxl_mem_patrol_scrub_is_visible(const void *drv_data, u32 attr, int region_id)
+           ^
+   drivers/cxl/core/memscrub.c:330:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+   umode_t cxl_mem_patrol_scrub_is_visible(const void *drv_data, u32 attr, int region_id)
+   ^
+   static 
+>> drivers/cxl/core/memscrub.c:361:5: warning: no previous prototype for function 'cxl_mem_patrol_scrub_read' [-Wmissing-prototypes]
+   int cxl_mem_patrol_scrub_read(struct device *dev, u32 attr, int region_id, u64 *val)
+       ^
+   drivers/cxl/core/memscrub.c:361:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+   int cxl_mem_patrol_scrub_read(struct device *dev, u32 attr, int region_id, u64 *val)
+   ^
+   static 
+>> drivers/cxl/core/memscrub.c:381:5: warning: no previous prototype for function 'cxl_mem_patrol_scrub_write' [-Wmissing-prototypes]
+   int cxl_mem_patrol_scrub_write(struct device *dev, u32 attr, int region_id, u64 val)
+       ^
+   drivers/cxl/core/memscrub.c:381:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+   int cxl_mem_patrol_scrub_write(struct device *dev, u32 attr, int region_id, u64 val)
+   ^
+   static 
+>> drivers/cxl/core/memscrub.c:402:5: warning: no previous prototype for function 'cxl_mem_patrol_scrub_read_strings' [-Wmissing-prototypes]
+   int cxl_mem_patrol_scrub_read_strings(struct device *dev, u32 attr, int region_id,
+       ^
+   drivers/cxl/core/memscrub.c:402:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+   int cxl_mem_patrol_scrub_read_strings(struct device *dev, u32 attr, int region_id,
+   ^
+   static 
+   drivers/cxl/core/memscrub.c:584:12: warning: unused function 'cxl_mem_ecs_set_attrbs' [-Wunused-function]
+   static int cxl_mem_ecs_set_attrbs(struct device *dev, int fru_id,
+              ^
+   5 warnings generated.
 
 
+vim +/cxl_mem_patrol_scrub_is_visible +330 drivers/cxl/core/memscrub.c
 
-On 11/15/23 19:23, James Clark wrote:
-> 
-> 
-> On 27/10/2023 08:29, Anshuman Khandual wrote:
->> Add support for the tpiu device in the platform driver, which can then be
->> used on ACPI based platforms. This change would now allow runtime power
->> management for ACPI based systems. The driver would try to enable the APB
->> clock if available.
->>
-> [...]
->> +#ifdef CONFIG_ACPI
->> +static const struct acpi_device_id tpiu_acpi_ids[] = {
->> +	{"ARMHC979", 0}, /* ARM CoreSight TPIU */
->> +	{}
->> +};
->> +MODULE_DEVICE_TABLE(acpi, tpiu_acpi_ids);
->> +#endif
->> +
->> +static struct platform_driver tpiu_platform_driver = {
->> +	.probe	= tpiu_platform_probe,
->> +	.remove	= tpiu_platform_remove,
->> +	.driver = {
->> +		.name			= "coresight-tpiu-platform",
->> +		.acpi_match_table	= ACPI_PTR(tpiu_acpi_ids),
->> +		.suppress_bind_attrs	= true,
->> +		.pm			= &tpiu_dev_pm_ops,
->> +	},
->> +};
->> +module_platform_driver(tpiu_platform_driver);
->> +
-> 
-> Is there a special build config where this works? I get an error here
+   320	
+   321	/**
+   322	 * cxl_mem_patrol_scrub_is_visible() - Callback to return attribute visibility
+   323	 * @drv_data: Pointer to driver-private data structure passed
+   324	 *	      as argument to devm_scrub_device_register().
+   325	 * @attr: Scrub attribute
+   326	 * @region_id: ID of the memory region
+   327	 *
+   328	 * Returns: 0 on success, an error otherwise
+   329	 */
+ > 330	umode_t cxl_mem_patrol_scrub_is_visible(const void *drv_data, u32 attr, int region_id)
+   331	{
+   332		const struct cxl_patrol_scrub_context *cxl_ps_ctx = drv_data;
+   333	
+   334		if (attr == scrub_speed_available ||
+   335		    attr == scrub_speed) {
+   336			if (!cxl_ps_ctx->scrub_cycle_changable)
+   337				return 0;
+   338		}
+   339	
+   340		switch (attr) {
+   341		case scrub_speed_available:
+   342			return 0444;
+   343		case scrub_enable:
+   344			return 0200;
+   345		case scrub_speed:
+   346			return 0644;
+   347		default:
+   348			return 0;
+   349		}
+   350	}
+   351	
+   352	/**
+   353	 * cxl_mem_patrol_scrub_read() - Read callback for data attributes
+   354	 * @dev: Pointer to scrub device
+   355	 * @attr: Scrub attribute
+   356	 * @region_id: ID of the memory region
+   357	 * @val: Pointer to the returned data
+   358	 *
+   359	 * Returns: 0 on success, an error otherwise
+   360	 */
+ > 361	int cxl_mem_patrol_scrub_read(struct device *dev, u32 attr, int region_id, u64 *val)
+   362	{
+   363	
+   364		switch (attr) {
+   365		case scrub_speed:
+   366			return cxl_mem_ps_speed_read(dev->parent, val);
+   367		default:
+   368			return -ENOTSUPP;
+   369		}
+   370	}
+   371	
+   372	/**
+   373	 * cxl_mem_patrol_scrub_write() - Write callback for data attributes
+   374	 * @dev: Pointer to scrub device
+   375	 * @attr: Scrub attribute
+   376	 * @region_id: ID of the memory region
+   377	 * @val: Value to write
+   378	 *
+   379	 * Returns: 0 on success, an error otherwise
+   380	 */
+ > 381	int cxl_mem_patrol_scrub_write(struct device *dev, u32 attr, int region_id, u64 val)
+   382	{
+   383		switch (attr) {
+   384		case scrub_enable:
+   385			return cxl_mem_ps_enable_write(dev->parent, val);
+   386		case scrub_speed:
+   387			return cxl_mem_ps_speed_write(dev->parent, val);
+   388		default:
+   389			return -ENOTSUPP;
+   390		}
+   391	}
+   392	
+   393	/**
+   394	 * cxl_mem_patrol_scrub_read_strings() - Read callback for string attributes
+   395	 * @dev: Pointer to scrub device
+   396	 * @attr: Scrub attribute
+   397	 * @region_id: ID of the memory region
+   398	 * @buf: Pointer to the buffer for copying returned string
+   399	 *
+   400	 * Returns: 0 on success, an error otherwise
+   401	 */
+ > 402	int cxl_mem_patrol_scrub_read_strings(struct device *dev, u32 attr, int region_id,
+   403					      char *buf)
+   404	{
+   405		switch (attr) {
+   406		case scrub_speed_available:
+   407			return cxl_mem_ps_speed_available_read(dev->parent, buf);
+   408		default:
+   409			return -ENOTSUPP;
+   410		}
+   411	}
+   412	
 
-I have been testing this with a config known to work on RB5 board.
-
-> because module_platform_driver() redefines things that are in
-> module_amba_driver() which is defined above:
-> 
->   module_amba_driver(tpiu_driver);
-> 
-> This isn't a W=1 build or anything, just a normal one. And it applies to
-> most of the patches in this set.
-
-You are right, I am able to recreate this problem with defconfig on
-6.7-rc2 as well. The problem here seems to be caused by having both
-module_amba_driver() and module_platform_driver() in the same file.
-
-#define module_amba_driver(__amba_drv) \
-        module_driver(__amba_drv, amba_driver_register, amba_driver_unregister)
-
-#define module_platform_driver(__platform_driver) \
-        module_driver(__platform_driver, platform_driver_register, \
-                        platform_driver_unregister)
-
-Although, AFAICT, have not seen these before - even on the defconfig.
-Just to work around this problem, there can be a common module_init()
-/module_exit() to register/unregister both AMBA and platform drivers,
-similar to etm4x_init()/etm4x_exit() setup in coresight-etm4x-core.c.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
