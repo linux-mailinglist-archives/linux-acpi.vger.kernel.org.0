@@ -1,237 +1,556 @@
-Return-Path: <linux-acpi+bounces-1734-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1735-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A967F402A
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 09:33:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1A8D7F4413
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 11:41:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C07292810EB
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 08:33:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97DAD281031
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 10:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6E48BFC
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 08:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LUWY748k"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53FDF584F0
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 10:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25FEED4F;
-	Tue, 21 Nov 2023 23:19:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700637595; x=1732173595;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KvIjd3WcQUTAQZL0HXjLGHIwhv87e45Kod3du9RH8i4=;
-  b=LUWY748kgBXpFbtJLpZdZLz2TANBeyYyNjIdKJVGxHr4KkQeSGUbWTTk
-   gL+8hPT4V2Vc0TXxkr7Zf34AxdcsHESMJpj4CnSH4m9/NCY1Yx86IUide
-   Cxhy04QvQgWlwmW1Diaez+BkjZvH3ZOQEYvG9zngH1JkVu8qgm5FseASA
-   Ybuw8LSUYMcJaAaKgdDMM/MjxPirubiuiRRqMoWt0qW5Kr8lohYHtIMJ2
-   i3tPlgS/Bn4i34F7OGpDIluj4Ac5pe8XFjZmCKlnSRIUIS2gzJJRNeDN6
-   yXPMYn9aUWmBCWikcg4gnXvs069qomFP71lSW5VKc00rlsI0zB+nhKsP6
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="371350507"
-X-IronPort-AV: E=Sophos;i="6.04,218,1695711600"; 
-   d="scan'208";a="371350507"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 23:19:54 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="795997236"
-X-IronPort-AV: E=Sophos;i="6.04,218,1695711600"; 
-   d="scan'208";a="795997236"
-Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 21 Nov 2023 23:19:46 -0800
-Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r5hWR-0000Bf-2l;
-	Wed, 22 Nov 2023 07:19:43 +0000
-Date: Wed, 22 Nov 2023 15:19:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: shiju.jose@huawei.com, linux-cxl@vger.kernel.org, linux-mm@kvack.org,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	david@redhat.com, Vilas.Sridharan@amd.com, leo.duran@amd.com,
-	Yazen.Ghannam@amd.com, rientjes@google.com, jiaqiyan@google.com,
-	tony.luck@intel.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	rafael@kernel.org, lenb@kernel.org, naoya.horiguchi@nec.com,
-	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	mike.malvestuto@intel.com
-Subject: Re: [PATCH v2 07/10] cxl/memscrub: Register CXL device patrol scrub
- with scrub configure driver
-Message-ID: <202311221316.CqzLVodA-lkp@intel.com>
-References: <20231121101844.1161-8-shiju.jose@huawei.com>
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D420D30EC;
+	Wed, 22 Nov 2023 01:48:25 -0800 (PST)
+Received: from lhrpeml100003.china.huawei.com (unknown [172.18.147.200])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SZxGp53VVz6K9KG;
+	Wed, 22 Nov 2023 17:46:58 +0800 (CST)
+Received: from lhrpeml500006.china.huawei.com (7.191.161.198) by
+ lhrpeml100003.china.huawei.com (7.191.160.210) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 22 Nov 2023 09:48:22 +0000
+Received: from lhrpeml500006.china.huawei.com ([7.191.161.198]) by
+ lhrpeml500006.china.huawei.com ([7.191.161.198]) with mapi id 15.01.2507.035;
+ Wed, 22 Nov 2023 09:48:22 +0000
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Davidlohr Bueso <dave@stgolabs.net>
+CC: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
+	<ira.weiny@intel.com>, "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
+	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
+	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"tony.luck@intel.com" <tony.luck@intel.com>, "Jon.Grimm@amd.com"
+	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "mike.malvestuto@intel.com"
+	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
+	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>,
+	"fan.ni@samsung.com" <fan.ni@samsung.com>, "a.manzanares@samsung.com"
+	<a.manzanares@samsung.com>
+Subject: RE: [PATCH v2 04/10] cxl/memscrub: Add CXL device patrol scrub
+ control feature
+Thread-Topic: [PATCH v2 04/10] cxl/memscrub: Add CXL device patrol scrub
+ control feature
+Thread-Index: AQHaHGQm+f12dB/QmESGe8bgLCgbEbCFevEAgACXaXA=
+Date: Wed, 22 Nov 2023 09:48:21 +0000
+Message-ID: <c145a386822e442d881de34f39ae0835@huawei.com>
+References: <20231121101844.1161-1-shiju.jose@huawei.com>
+ <20231121101844.1161-5-shiju.jose@huawei.com>
+ <fly4asgsjv7xnpp5dwgvqfh6y6vvk2z5sdffhqqt66vyctcgzi@jvbgar7fz2bn>
+In-Reply-To: <fly4asgsjv7xnpp5dwgvqfh6y6vvk2z5sdffhqqt66vyctcgzi@jvbgar7fz2bn>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231121101844.1161-8-shiju.jose@huawei.com>
+X-CFilter-Loop: Reflected
 
-Hi,
+Hi Davidlohr,
 
-kernel test robot noticed the following build warnings:
+Thanks for reviewing and comments.
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.7-rc2 next-20231121]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>-----Original Message-----
+>From: Davidlohr Bueso <dave@stgolabs.net>
+>Sent: 22 November 2023 00:22
+>To: Shiju Jose <shiju.jose@huawei.com>
+>Cc: linux-cxl@vger.kernel.org; linux-mm@kvack.org; Jonathan Cameron
+><jonathan.cameron@huawei.com>; dave.jiang@intel.com;
+>alison.schofield@intel.com; vishal.l.verma@intel.com; ira.weiny@intel.com;
+>dan.j.williams@intel.com; linux-acpi@vger.kernel.org; linux-
+>kernel@vger.kernel.org; david@redhat.com; Vilas.Sridharan@amd.com;
+>leo.duran@amd.com; Yazen.Ghannam@amd.com; rientjes@google.com;
+>jiaqiyan@google.com; tony.luck@intel.com; Jon.Grimm@amd.com;
+>dave.hansen@linux.intel.com; rafael@kernel.org; lenb@kernel.org;
+>naoya.horiguchi@nec.com; james.morse@arm.com; jthoughton@google.com;
+>somasundaram.a@hpe.com; erdemaktas@google.com; pgonda@google.com;
+>duenwen@google.com; mike.malvestuto@intel.com; gthelen@google.com;
+>wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
+>tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>=
+;
+>kangkang.shen@futurewei.com; wanghuiqiang <wanghuiqiang@huawei.com>;
+>Linuxarm <linuxarm@huawei.com>; fan.ni@samsung.com;
+>a.manzanares@samsung.com
+>Subject: Re: [PATCH v2 04/10] cxl/memscrub: Add CXL device patrol scrub
+>control feature
+>
+>On Tue, 21 Nov 2023, shiju.jose@huawei.com wrote:
+>
+>>From: Shiju Jose <shiju.jose@huawei.com>
+>>
+>>CXL spec 3.1 section 8.2.9.9.11.1 describes the device patrol scrub
+>>control feature. The device patrol scrub proactively locates and makes
+>>corrections to errors in regular cycle. The patrol scrub control allows
+>>the request to configure patrol scrub input configurations.
+>>
+>>The patrol scrub control allows the requester to specify the number of
+>>hours for which the patrol scrub cycles must be completed, provided
+>>that the requested number is not less than the minimum number of hours
+>>for the patrol scrub cycle that the device is capable of. In addition,
+>>the patrol scrub controls allow the host to disable and enable the
+>>feature in case disabling of the feature is needed for other purposes
+>>such as performance-aware operations which require the background
+>>operations to be turned off.
+>>
+>>Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+>>---
+>> drivers/cxl/Kconfig         |  17 +++
+>> drivers/cxl/core/Makefile   |   1 +
+>> drivers/cxl/core/memscrub.c | 272
+>++++++++++++++++++++++++++++++++++++
+>> drivers/cxl/cxlmem.h        |   8 ++
+>> drivers/cxl/pci.c           |   6 +
+>> 5 files changed, 304 insertions(+)
+>> create mode 100644 drivers/cxl/core/memscrub.c
+>>
+>>diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig index
+>>8ea1d340e438..e91f5acc94f2 100644
+>>--- a/drivers/cxl/Kconfig
+>>+++ b/drivers/cxl/Kconfig
+>>@@ -154,4 +154,21 @@ config CXL_PMU
+>> 	  monitoring units and provide standard perf based interfaces.
+>>
+>> 	  If unsure say 'm'.
+>>+
+>>+config CXL_SCRUB
+>>+	tristate "CXL: Memory scrub feature"
+>>+	depends on CXL_PCI
+>>+	depends on CXL_MEM
+>>+	help
+>>+	  The CXL memory scrub control is an optional feature allows host to
+>>+	  control the scrub configurations of CXL Type 3 devices, which
+>>+	  support patrol scrub and/or DDR5 ECS(Error Check Scrub).
+>>+
+>>+	  Say 'y/m' to enable the CXL memory scrub driver that will attach to
+>>+	  CXL.mem devices for memory scrub control feature. See sections
+>>+	  8.2.9.9.11.1 and 8.2.9.9.11.2 in the CXL 3.1 specification for a
+>>+	  detailed description of CXL memory scrub control features.
+>>+
+>>+	  If unsure say 'm'.
+>
+>Does this really warrant yet another kconfig option?
+I missed to change   'm' -> 'n' and tristate->bool.
+ =20
+>
+>>+
+>> endif
+>>diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
+>>index 1f66b5d4d935..99e3202f868f 100644
+>>--- a/drivers/cxl/core/Makefile
+>>+++ b/drivers/cxl/core/Makefile
+>>@@ -15,3 +15,4 @@ cxl_core-y +=3D hdm.o
+>> cxl_core-y +=3D pmu.o
+>> cxl_core-$(CONFIG_TRACING) +=3D trace.o
+>> cxl_core-$(CONFIG_CXL_REGION) +=3D region.o
+>>+cxl_core-$(CONFIG_CXL_SCRUB) +=3D memscrub.o
+>>diff --git a/drivers/cxl/core/memscrub.c b/drivers/cxl/core/memscrub.c
+>>new file mode 100644 index 000000000000..7d98a1593abe
+>>--- /dev/null
+>>+++ b/drivers/cxl/core/memscrub.c
+>>@@ -0,0 +1,272 @@
+>>+// SPDX-License-Identifier: GPL-2.0-or-later
+>>+/*
+>>+ * cxl_memscrub.c - CXL memory scrub driver
+>>+ *
+>>+ * Copyright (c) 2023 HiSilicon Limited.
+>>+ *
+>>+ *  - Provides functions to configure patrol scrub
+>>+ *    feature of the CXL memory devices.
+>>+ */
+>>+
+>>+#define pr_fmt(fmt)	"CXL_MEM_SCRUB: " fmt
+>>+
+>>+#include <cxlmem.h>
+>>+
+>>+/* CXL memory scrub feature common definitions */
+>>+#define CXL_SCRUB_MAX_ATTRB_RANGE_LENGTH	128
+>>+
+>>+static int cxl_mem_get_supported_feature_entry(struct cxl_memdev *cxlmd,
+>const uuid_t *feat_uuid,
+>>+					       struct cxl_mbox_supp_feat_entry
+>*feat_entry_out)
+>
+>It would be nicer if the feat_entry_out pointer was returned instead of pa=
+ssed by
+>parameter.
+The memory for the feats_out would be freed when exit cxl_mem_get_supported=
+_feature_entry(),
+thus feats_out->feat_entries is invalid outside. Hence copying the requeste=
+d feat_entry  data to the=20
+feat_entry_out pointer passed.
+=20
+>
+>>+{
+>>+	struct cxl_mbox_get_supp_feats_out *feats_out __free(kvfree) =3D NULL;
+>>+	struct cxl_mbox_supp_feat_entry *feat_entry;
+>>+	struct cxl_dev_state *cxlds =3D cxlmd->cxlds;
+>>+	struct cxl_memdev_state *mds =3D to_cxl_memdev_state(cxlds);
+>>+	struct cxl_mbox_get_supp_feats_in pi;
+>>+	bool is_support_feature =3D false;
+>>+	int feat_index, count;
+>>+	int nentries;
+>>+	int ret;
+>>+
+>>+	feat_index =3D 0;
+>>+	pi.count =3D sizeof(struct cxl_mbox_get_supp_feats_out) +
+>>+			  sizeof(struct cxl_mbox_supp_feat_entry);
+>>+	feats_out =3D kvmalloc(pi.count, GFP_KERNEL);
+>>+	if (!feats_out)
+>>+		return -ENOMEM;
+>>+
+>>+	do {
+>>+		pi.start_index =3D feat_index;
+>>+		memset(feats_out, 0, pi.count);
+>>+		ret =3D cxl_get_supported_features(mds, &pi, feats_out);
+>>+		if (ret)
+>>+			return ret;
+>>+
+>>+		nentries =3D feats_out->entries;
+>>+		if (!nentries)
+>>+			break;
+>>+
+>>+		/* Check CXL memdev supports the feature */
+>>+		feat_entry =3D (void *)feats_out->feat_entries;
+>>+		for (count =3D 0; count < nentries; count++, feat_entry++) {
+>>+			if (uuid_equal(&feat_entry->uuid, feat_uuid)) {
+>>+				is_support_feature =3D true;
+>>+				memcpy(feat_entry_out, feat_entry,
+>sizeof(*feat_entry_out));
+>>+				break;
+>
+>Just return 0 in this case, and then you can do without the is_supported_f=
+eature
+>flag.
+Sure.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/shiju-jose-huawei-com/cxl-mbox-Add-GET_SUPPORTED_FEATURES-mailbox-command/20231121-182247
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20231121101844.1161-8-shiju.jose%40huawei.com
-patch subject: [PATCH v2 07/10] cxl/memscrub: Register CXL device patrol scrub with scrub configure driver
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20231122/202311221316.CqzLVodA-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231122/202311221316.CqzLVodA-lkp@intel.com/reproduce)
+>
+>>+			}
+>>+		}
+>>+		if (is_support_feature)
+>>+			break;
+>>+		feat_index +=3D nentries;
+>>+	} while (nentries);
+>>+
+>>+	if (!is_support_feature)
+>>+		return -ENOTSUPP;
+>>+
+>>+	return 0;
+>>+}
+>>+
+>>+/* CXL memory patrol scrub control definitions */
+>>+#define CXL_MEMDEV_PS_GET_FEAT_VERSION	0x01
+>>+#define CXL_MEMDEV_PS_SET_FEAT_VERSION	0x01
+>>+
+>>+static const uuid_t cxl_patrol_scrub_uuid =3D
+>>+	UUID_INIT(0x96dad7d6, 0xfde8, 0x482b, 0xa7, 0x33, 0x75, 0x77, 0x4e,
+>\
+>>+		  0x06, 0xdb, 0x8a);
+>>+
+>>+/* CXL memory patrol scrub control functions */ struct
+>>+cxl_patrol_scrub_context {
+>>+	struct device *dev;
+>>+	u16 get_feat_size;
+>>+	u16 set_feat_size;
+>>+	bool scrub_cycle_changable;
+>
+>s/changable/changeable
+Ok.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311221316.CqzLVodA-lkp@intel.com/
+>
+>>+};
+>>+
+>>+/**
+>>+ * struct cxl_memdev_ps_params - CXL memory patrol scrub parameter data
+>structure.
+>>+ * @enable:     [IN] enable(1)/disable(0) patrol scrub.
+>>+ * @scrub_cycle_changable: [OUT] scrub cycle attribute of patrol scrub i=
+s
+>changeable.
+>>+ * @speed:      [IN] Requested patrol scrub cycle in hours.
+>>+ *              [OUT] Current patrol scrub cycle in hours.
+>>+ * @min_speed:[OUT] minimum patrol scrub cycle, in hours, supported.
+>>+ * @speed_avail:[OUT] Supported patrol scrub cycle in hours.
+>>+ */
+>>+struct cxl_memdev_ps_params {
+>>+	bool enable;
+>>+	bool scrub_cycle_changable;
+>>+	u16 speed;
+>>+	u16 min_speed;
+>>+	char speed_avail[CXL_SCRUB_MAX_ATTRB_RANGE_LENGTH];
+>>+};
+>>+
+>>+enum {
+>>+	CXL_MEMDEV_PS_PARAM_ENABLE =3D 0,
+>>+	CXL_MEMDEV_PS_PARAM_SPEED,
+>>+};
+>>+
+>>+#define	CXL_MEMDEV_PS_SCRUB_CYCLE_CHANGE_CAP_MASK	BIT(0)
+>>+#define
+>	CXL_MEMDEV_PS_SCRUB_CYCLE_REALTIME_REPORT_CAP_MASK
+>	BIT(1)
+>>+#define	CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK	GENMASK(7, 0)
+>>+#define	CXL_MEMDEV_PS_MIN_SCRUB_CYCLE_MASK	GENMASK(15,
+>8)
+>>+#define	CXL_MEMDEV_PS_FLAG_ENABLED_MASK	BIT(0)
+>>+
+>>+struct cxl_memdev_ps_feat_read_attrbs {
+>>+	u8 scrub_cycle_cap;
+>>+	__le16 scrub_cycle;
+>>+	u8 scrub_flags;
+>>+}  __packed;
+>>+
+>>+struct cxl_memdev_ps_set_feat_pi {
+>>+	struct cxl_mbox_set_feat_in pi;
+>>+	u8 scrub_cycle_hr;
+>>+	u8 scrub_flags;
+>>+}  __packed;
+>>+
+>>+static int cxl_mem_ps_get_attrbs(struct device *dev,
+>>+				 struct cxl_memdev_ps_params *params) {
+>>+	struct cxl_memdev_ps_feat_read_attrbs *rd_attrbs __free(kvfree) =3D
+>NULL;
+>>+	struct cxl_mbox_get_feat_in pi =3D {
+>>+		.uuid =3D cxl_patrol_scrub_uuid,
+>>+		.offset =3D 0,
+>>+		.count =3D sizeof(struct cxl_memdev_ps_feat_read_attrbs),
+>>+		.selection =3D CXL_GET_FEAT_SEL_CURRENT_VALUE,
+>>+	};
+>>+	struct cxl_memdev *cxlmd =3D to_cxl_memdev(dev);
+>>+	struct cxl_dev_state *cxlds =3D cxlmd->cxlds;
+>>+	struct cxl_memdev_state *mds =3D to_cxl_memdev_state(cxlds);
+>>+	int ret;
+>>+
+>>+	if (!mds)
+>>+		return -EFAULT;
+>>+
+>>+	rd_attrbs =3D kvmalloc(pi.count, GFP_KERNEL);
+>>+	if (!rd_attrbs)
+>>+		return -ENOMEM;
+>>+
+>>+	ret =3D cxl_get_feature(mds, &pi, rd_attrbs);
+>>+	if (ret) {
+>>+		params->enable =3D 0;
+>>+		params->speed =3D 0;
+>>+		snprintf(params->speed_avail,
+>CXL_SCRUB_MAX_ATTRB_RANGE_LENGTH,
+>>+			"Unavailable");
+>>+		return ret;
+>>+	}
+>>+	params->scrub_cycle_changable =3D
+>FIELD_GET(CXL_MEMDEV_PS_SCRUB_CYCLE_CHANGE_CAP_MASK,
+>>+						  rd_attrbs->scrub_cycle_cap);
+>>+	params->enable =3D
+>FIELD_GET(CXL_MEMDEV_PS_FLAG_ENABLED_MASK,
+>>+				   rd_attrbs->scrub_flags);
+>>+	params->speed =3D
+>FIELD_GET(CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK,
+>>+				  rd_attrbs->scrub_cycle);
+>>+	params->min_speed  =3D
+>FIELD_GET(CXL_MEMDEV_PS_MIN_SCRUB_CYCLE_MASK,
+>>+				       rd_attrbs->scrub_cycle);
+>>+	snprintf(params->speed_avail,
+>CXL_SCRUB_MAX_ATTRB_RANGE_LENGTH,
+>>+		 "Minimum scrub cycle =3D %d hour", params->min_speed);
+>>+
+>>+	return 0;
+>>+}
+>>+
+>>+static int cxl_mem_ps_set_attrbs(struct device *dev,
+>>+				 struct cxl_memdev_ps_params *params, u8
+>param_type) {
+>>+	struct cxl_memdev_ps_set_feat_pi set_pi =3D {
+>>+		.pi.uuid =3D cxl_patrol_scrub_uuid,
+>>+		.pi.flags =3D
+>CXL_SET_FEAT_FLAG_MOD_VALUE_SAVED_ACROSS_RESET |
+>>+			    CXL_SET_FEAT_FLAG_FULL_DATA_TRANSFER,
+>>+		.pi.offset =3D 0,
+>>+		.pi.version =3D CXL_MEMDEV_PS_SET_FEAT_VERSION,
+>>+	};
+>>+	struct cxl_memdev *cxlmd =3D to_cxl_memdev(dev);
+>>+	struct cxl_dev_state *cxlds =3D cxlmd->cxlds;
+>>+	struct cxl_memdev_state *mds =3D to_cxl_memdev_state(cxlds);
+>>+	struct cxl_memdev_ps_params rd_params;
+>>+	int ret;
+>>+
+>>+	if (!mds)
+>>+		return -EFAULT;
+>>+
+>>+	ret =3D cxl_mem_ps_get_attrbs(dev, &rd_params);
+>>+	if (ret) {
+>>+		dev_err(dev, "Get cxlmemdev patrol scrub params fail
+>ret=3D%d\n",
+>>+			ret);
+>>+		return ret;
+>>+	}
+>>+
+>>+	switch (param_type) {
+>>+	case CXL_MEMDEV_PS_PARAM_ENABLE:
+>>+		set_pi.scrub_flags =3D
+>FIELD_PREP(CXL_MEMDEV_PS_FLAG_ENABLED_MASK,
+>>+						   params->enable);
+>>+		set_pi.scrub_cycle_hr =3D
+>FIELD_PREP(CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK,
+>>+						      rd_params.speed);
+>>+		break;
+>>+	case CXL_MEMDEV_PS_PARAM_SPEED:
+>>+		if (params->speed < rd_params.min_speed) {
+>>+			dev_err(dev, "Invalid CXL patrol scrub cycle(%d) to
+>set\n",
+>>+				params->speed);
+>>+			dev_err(dev, "Minimum supported CXL patrol scrub
+>cycle in hour %d\n",
+>>+			       params->min_speed);
+>>+			return -EINVAL;
+>>+		}
+>>+		set_pi.scrub_cycle_hr =3D
+>FIELD_PREP(CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK,
+>>+						      params->speed);
+>>+		set_pi.scrub_flags =3D
+>FIELD_PREP(CXL_MEMDEV_PS_FLAG_ENABLED_MASK,
+>>+						   rd_params.enable);
+>>+		break;
+>>+	default:
+>>+		dev_err(dev, "Invalid CXL patrol scrub parameter to set\n");
+>>+		return -EINVAL;
+>>+	}
+>>+
+>>+	ret =3D cxl_set_feature(mds, &set_pi, sizeof(set_pi));
+>>+	if (ret) {
+>>+		dev_err(dev, "CXL patrol scrub set feature fail ret=3D%d\n",
+>>+			ret);
+>>+		return ret;
+>>+	}
+>>+
+>>+	/* Verify attribute set successfully */
+>>+	if (param_type =3D=3D CXL_MEMDEV_PS_PARAM_SPEED) {
+>>+		ret =3D cxl_mem_ps_get_attrbs(dev, &rd_params);
+>>+		if (ret) {
+>>+			dev_err(dev, "Get cxlmemdev patrol scrub params fail
+>ret=3D%d\n", ret);
+>>+			return ret;
+>>+		}
+>>+		if (rd_params.speed !=3D params->speed)
+>>+			return -EFAULT;
+>>+	}
+>>+
+>>+	return 0;
+>>+}
+>>+
+>>+int cxl_mem_patrol_scrub_init(struct cxl_memdev *cxlmd) {
+>>+	struct cxl_patrol_scrub_context *cxl_ps_ctx;
+>>+	struct cxl_mbox_supp_feat_entry feat_entry;
+>>+	struct cxl_memdev_ps_params params;
+>>+	int ret;
+>>+
+>>+	ret =3D cxl_mem_get_supported_feature_entry(cxlmd,
+>&cxl_patrol_scrub_uuid,
+>>+						  &feat_entry);
+>>+	if (ret < 0)
+>>+		return ret;
+>>+
+>>+	if (!(feat_entry.attrb_flags & CXL_FEAT_ENTRY_FLAG_CHANGABLE))
+>>+		return -ENOTSUPP;
+>>+
+>>+	cxl_ps_ctx =3D devm_kzalloc(&cxlmd->dev, sizeof(*cxl_ps_ctx),
+>GFP_KERNEL);
+>>+	if (!cxl_ps_ctx)
+>>+		return -ENOMEM;
+>>+
+>>+	cxl_ps_ctx->get_feat_size =3D feat_entry.get_feat_size;
+>>+	cxl_ps_ctx->set_feat_size =3D feat_entry.set_feat_size;
+>>+	ret =3D cxl_mem_ps_get_attrbs(&cxlmd->dev, &params);
+>>+	if (ret) {
+>>+		dev_err(&cxlmd->dev, "Get CXL patrol scrub params fail
+>ret=3D%d\n",
+>>+			ret);
+>>+		return ret;
+>>+	}
+>>+	cxl_ps_ctx->scrub_cycle_changable =3D  params.scrub_cycle_changable;
+>>+
+>>+	return 0;
+>>+}
+>>+EXPORT_SYMBOL_NS_GPL(cxl_mem_patrol_scrub_init, CXL);
+>>diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h index
+>>46131dcd0900..25c46e72af16 100644
+>>--- a/drivers/cxl/cxlmem.h
+>>+++ b/drivers/cxl/cxlmem.h
+>>@@ -983,6 +983,14 @@ int cxl_trigger_poison_list(struct cxl_memdev
+>>*cxlmd);  int cxl_inject_poison(struct cxl_memdev *cxlmd, u64 dpa);
+>>int cxl_clear_poison(struct cxl_memdev *cxlmd, u64 dpa);
+>>
+>>+/* cxl memory scrub functions */
+>>+#ifdef CONFIG_CXL_SCRUB
+>>+int cxl_mem_patrol_scrub_init(struct cxl_memdev *cxlmd); #else static
+>>+inline int cxl_mem_patrol_scrub_init(struct cxl_memdev *cxlmd) {
+>>+return -ENOTSUPP; } #endif
+>>+
+>> #ifdef CONFIG_CXL_SUSPEND
+>> void cxl_mem_active_inc(void);
+>> void cxl_mem_active_dec(void);
+>>diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c index
+>>0155fb66b580..86bba8794bb4 100644
+>>--- a/drivers/cxl/pci.c
+>>+++ b/drivers/cxl/pci.c
+>>@@ -881,6 +881,12 @@ static int cxl_pci_probe(struct pci_dev *pdev, const
+>struct pci_device_id *id)
+>> 	if (rc)
+>> 		return rc;
+>>
+>>+	/*
+>>+	 * Initialize optional CXL scrub features
+>>+	 */
+>>+	if (cxl_mem_patrol_scrub_init(cxlmd))
+>>+		dev_dbg(&pdev->dev, "cxl_mem_patrol_scrub_init failed\n");
+>
+>Unnecessary debug msg.
+Will remove.
 
-All warnings (new ones prefixed by >>):
+>
+>>+
+>> 	rc =3D devm_cxl_sanitize_setup_notifier(&pdev->dev, cxlmd);
+>> 	if (rc)
+>> 		return rc;
+>>--
+>>2.34.1
+>>
 
->> drivers/cxl/core/memscrub.c:330:9: warning: no previous prototype for function 'cxl_mem_patrol_scrub_is_visible' [-Wmissing-prototypes]
-   umode_t cxl_mem_patrol_scrub_is_visible(const void *drv_data, u32 attr, int region_id)
-           ^
-   drivers/cxl/core/memscrub.c:330:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   umode_t cxl_mem_patrol_scrub_is_visible(const void *drv_data, u32 attr, int region_id)
-   ^
-   static 
->> drivers/cxl/core/memscrub.c:361:5: warning: no previous prototype for function 'cxl_mem_patrol_scrub_read' [-Wmissing-prototypes]
-   int cxl_mem_patrol_scrub_read(struct device *dev, u32 attr, int region_id, u64 *val)
-       ^
-   drivers/cxl/core/memscrub.c:361:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   int cxl_mem_patrol_scrub_read(struct device *dev, u32 attr, int region_id, u64 *val)
-   ^
-   static 
->> drivers/cxl/core/memscrub.c:381:5: warning: no previous prototype for function 'cxl_mem_patrol_scrub_write' [-Wmissing-prototypes]
-   int cxl_mem_patrol_scrub_write(struct device *dev, u32 attr, int region_id, u64 val)
-       ^
-   drivers/cxl/core/memscrub.c:381:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   int cxl_mem_patrol_scrub_write(struct device *dev, u32 attr, int region_id, u64 val)
-   ^
-   static 
->> drivers/cxl/core/memscrub.c:402:5: warning: no previous prototype for function 'cxl_mem_patrol_scrub_read_strings' [-Wmissing-prototypes]
-   int cxl_mem_patrol_scrub_read_strings(struct device *dev, u32 attr, int region_id,
-       ^
-   drivers/cxl/core/memscrub.c:402:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   int cxl_mem_patrol_scrub_read_strings(struct device *dev, u32 attr, int region_id,
-   ^
-   static 
-   drivers/cxl/core/memscrub.c:584:12: warning: unused function 'cxl_mem_ecs_set_attrbs' [-Wunused-function]
-   static int cxl_mem_ecs_set_attrbs(struct device *dev, int fru_id,
-              ^
-   5 warnings generated.
-
-
-vim +/cxl_mem_patrol_scrub_is_visible +330 drivers/cxl/core/memscrub.c
-
-   320	
-   321	/**
-   322	 * cxl_mem_patrol_scrub_is_visible() - Callback to return attribute visibility
-   323	 * @drv_data: Pointer to driver-private data structure passed
-   324	 *	      as argument to devm_scrub_device_register().
-   325	 * @attr: Scrub attribute
-   326	 * @region_id: ID of the memory region
-   327	 *
-   328	 * Returns: 0 on success, an error otherwise
-   329	 */
- > 330	umode_t cxl_mem_patrol_scrub_is_visible(const void *drv_data, u32 attr, int region_id)
-   331	{
-   332		const struct cxl_patrol_scrub_context *cxl_ps_ctx = drv_data;
-   333	
-   334		if (attr == scrub_speed_available ||
-   335		    attr == scrub_speed) {
-   336			if (!cxl_ps_ctx->scrub_cycle_changable)
-   337				return 0;
-   338		}
-   339	
-   340		switch (attr) {
-   341		case scrub_speed_available:
-   342			return 0444;
-   343		case scrub_enable:
-   344			return 0200;
-   345		case scrub_speed:
-   346			return 0644;
-   347		default:
-   348			return 0;
-   349		}
-   350	}
-   351	
-   352	/**
-   353	 * cxl_mem_patrol_scrub_read() - Read callback for data attributes
-   354	 * @dev: Pointer to scrub device
-   355	 * @attr: Scrub attribute
-   356	 * @region_id: ID of the memory region
-   357	 * @val: Pointer to the returned data
-   358	 *
-   359	 * Returns: 0 on success, an error otherwise
-   360	 */
- > 361	int cxl_mem_patrol_scrub_read(struct device *dev, u32 attr, int region_id, u64 *val)
-   362	{
-   363	
-   364		switch (attr) {
-   365		case scrub_speed:
-   366			return cxl_mem_ps_speed_read(dev->parent, val);
-   367		default:
-   368			return -ENOTSUPP;
-   369		}
-   370	}
-   371	
-   372	/**
-   373	 * cxl_mem_patrol_scrub_write() - Write callback for data attributes
-   374	 * @dev: Pointer to scrub device
-   375	 * @attr: Scrub attribute
-   376	 * @region_id: ID of the memory region
-   377	 * @val: Value to write
-   378	 *
-   379	 * Returns: 0 on success, an error otherwise
-   380	 */
- > 381	int cxl_mem_patrol_scrub_write(struct device *dev, u32 attr, int region_id, u64 val)
-   382	{
-   383		switch (attr) {
-   384		case scrub_enable:
-   385			return cxl_mem_ps_enable_write(dev->parent, val);
-   386		case scrub_speed:
-   387			return cxl_mem_ps_speed_write(dev->parent, val);
-   388		default:
-   389			return -ENOTSUPP;
-   390		}
-   391	}
-   392	
-   393	/**
-   394	 * cxl_mem_patrol_scrub_read_strings() - Read callback for string attributes
-   395	 * @dev: Pointer to scrub device
-   396	 * @attr: Scrub attribute
-   397	 * @region_id: ID of the memory region
-   398	 * @buf: Pointer to the buffer for copying returned string
-   399	 *
-   400	 * Returns: 0 on success, an error otherwise
-   401	 */
- > 402	int cxl_mem_patrol_scrub_read_strings(struct device *dev, u32 attr, int region_id,
-   403					      char *buf)
-   404	{
-   405		switch (attr) {
-   406		case scrub_speed_available:
-   407			return cxl_mem_ps_speed_available_read(dev->parent, buf);
-   408		default:
-   409			return -ENOTSUPP;
-   410		}
-   411	}
-   412	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Shiju
 
