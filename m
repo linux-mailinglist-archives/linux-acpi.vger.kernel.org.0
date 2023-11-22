@@ -1,151 +1,99 @@
-Return-Path: <linux-acpi+bounces-1746-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1747-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788027F491E
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 15:40:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6289E7F4D13
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 17:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7218BB21044
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:40:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C1EA1F21B22
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 16:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D864C4E619
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4171A5B1
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 16:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQN/Apdw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E76E219D;
-	Wed, 22 Nov 2023 05:34:35 -0800 (PST)
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-1d542f05b9aso1068626fac.1;
-        Wed, 22 Nov 2023 05:34:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700660075; x=1701264875;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rIuQT6P2ZqLebzsy5/CEWAZOpDUd4LYipSd432nJBas=;
-        b=FfhaYFQb2E5MCtLx7LDJhGNFPfXZmjfWe88ovaU+BFKOraA+hvBskXgxJdcmBEGRzr
-         +RIj3FP2Pw84NWm653ilJC5N1fUTcoEIj9EtSd6tW720AQmDkzGw5cc+4MdM9nBXQpRV
-         d7eh8P+RLuG+hc0GRPuNY55P1TF09IFl8SMUmOQRJZXd4PKJeBfZf7CtZJ88EkUVlz4O
-         GSQad33xq3BJ+yjJ2+CiOM+VkKmbE6cEsqS9aDQFOVBWyuLZbKJQc9oRpu+4vQcAgHhG
-         n1NsBAxnpM6Gk+aupmLj0j0RY7dUwCOK6HiCHYiSfKWo8bYnbdbQGcbC8hOMV6FN7jDO
-         WWfQ==
-X-Gm-Message-State: AOJu0YwjUWrd2FKp/HQlJo9SyG8460y3/Uk6V4VE04nRc9neg6RHc8hM
-	k45z34kdW4IUGaaaTP5/0Fi61MiKUR+nMzGGYTc=
-X-Google-Smtp-Source: AGHT+IHO4Xc/rF2fQLAzIZemKE6Z8t/9X8s1KCk8lA4m3Pr02O8bIkVAxEJWoFXpmxzQdjnG7AHL7y/Vw4yarOuAN4M=
-X-Received: by 2002:a05:6871:724a:b0:1e9:8ab9:11ca with SMTP id
- ml10-20020a056871724a00b001e98ab911camr3149747oac.3.1700660075045; Wed, 22
- Nov 2023 05:34:35 -0800 (PST)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E75F4AF9E;
+	Wed, 22 Nov 2023 14:44:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FAC0C433C7;
+	Wed, 22 Nov 2023 14:44:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700664295;
+	bh=h5w3izkPOTDID1ezFWef52/xpayVyQG+sKxK2opBXic=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tQN/ApdwId0YZXaPIOrYdYglm5uofDpV92WPDX9Oea02vjC+1xvKsc0ECsUP2pSb/
+	 q7ugkyRzFQ8Hij4vHm/bfs6SZ/og9LQjuGE6TFB2rHqbR4eCv4p49bbrwEr5RJjsPl
+	 TEzrcBuanxqqk4aZPZ/FHbiAwDl87d2tZMcc0XtU=
+Date: Wed, 22 Nov 2023 14:44:53 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Robin Murphy <robin.murphy@arm.com>, joro@8bytes.org, will@kernel.org,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+	lpieralisi@kernel.org, andre.draszik@linaro.org,
+	quic_zhenhuah@quicinc.com
+Subject: Re: [PATCH] iommu: Avoid more races around device probe
+Message-ID: <2023112238-sierra-chewable-86fc@gregkh>
+References: <16f433658661d7cadfea51e7c65da95826112a2b.1700071477.git.robin.murphy@arm.com>
+ <ZVZL9kZuVsb9VPnM@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231109183322.28039-1-sumitg@nvidia.com> <20231109183322.28039-2-sumitg@nvidia.com>
- <CAJZ5v0jEXYP-V93XJ02cZ8UbMwKei2E27Sc0He0WnKvNXpUECg@mail.gmail.com> <7b4f8911-90ef-8419-78dc-c2bffe9b9a3f@nvidia.com>
-In-Reply-To: <7b4f8911-90ef-8419-78dc-c2bffe9b9a3f@nvidia.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 22 Nov 2023 14:34:24 +0100
-Message-ID: <CAJZ5v0g-f8MSyu5Y83c7WvdpAjq9mWBBD9XqMKzZ1rUGmML-+w@mail.gmail.com>
-Subject: Re: [Patch v6 1/2] ACPI: thermal: Add Thermal fast Sampling Period
- (_TFP) support
-To: Sumit Gupta <sumitg@nvidia.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, rui.zhang@intel.com, lenb@kernel.org, 
-	lpieralisi@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com, 
-	linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	treding@nvidia.com, jonathanh@nvidia.com, bbasu@nvidia.com, 
-	sanjayc@nvidia.com, ksitaraman@nvidia.com, srikars@nvidia.com, 
-	jbrasen@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZVZL9kZuVsb9VPnM@nvidia.com>
 
-On Wed, Nov 22, 2023 at 1:55=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com> wro=
-te:
->
->
->
-> On 22/11/23 01:29, Rafael J. Wysocki wrote:
-> > External email: Use caution opening links or attachments
-> >
-> >
-> > On Thu, Nov 9, 2023 at 7:34=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com> =
-wrote:
-> >>
-> >> From: Jeff Brasen <jbrasen@nvidia.com>
-> >>
-> >> Add support of "Thermal fast Sampling Period (_TFP)" for Passive cooli=
-ng.
-> >> As per [1], _TFP overrides the "Thermal Sampling Period (_TSP)" if bot=
-h
-> >> are present in a Thermal zone.
-> >>
-> >> [1] ACPI Specification 6.4 - section 11.4.17. _TFP (Thermal fast Sampl=
-ing
-> >>      Period)"
-> >>
-> >> Signed-off-by: Jeff Brasen <jbrasen@nvidia.com>
-> >> Co-developed-by: Sumit Gupta <sumitg@nvidia.com>
-> >> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-> >> ---
-> >>   drivers/acpi/thermal.c | 12 +++++++++---
-> >>   1 file changed, 9 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-> >> index f74d81abdbfc..3b75eb2260d7 100644
-> >> --- a/drivers/acpi/thermal.c
-> >> +++ b/drivers/acpi/thermal.c
-> >> @@ -90,7 +90,7 @@ struct acpi_thermal_passive {
-> >>          struct acpi_thermal_trip trip;
-> >>          unsigned long tc1;
-> >>          unsigned long tc2;
-> >> -       unsigned long tsp;
-> >> +       unsigned long delay;
-> >>   };
-> >>
-> >>   struct acpi_thermal_active {
-> >> @@ -404,11 +404,17 @@ static bool passive_trip_params_init(struct acpi=
-_thermal *tz)
-> >>
-> >>          tz->trips.passive.tc2 =3D tmp;
-> >>
-> >> +       status =3D acpi_evaluate_integer(tz->device->handle, "_TFP", N=
-ULL, &tmp);
-> >> +       if (ACPI_SUCCESS(status)) {
-> >> +               tz->trips.passive.delay =3D tmp;
-> >> +               return true;
-> >> +       }
-> >> +
-> >>          status =3D acpi_evaluate_integer(tz->device->handle, "_TSP", =
-NULL, &tmp);
-> >>          if (ACPI_FAILURE(status))
-> >>                  return false;
-> >>
-> >> -       tz->trips.passive.tsp =3D tmp;
-> >> +       tz->trips.passive.delay =3D tmp * 100;
-> >>
-> >>          return true;
-> >>   }
-> >> @@ -904,7 +910,7 @@ static int acpi_thermal_add(struct acpi_device *de=
-vice)
-> >>
-> >>          acpi_trip =3D &tz->trips.passive.trip;
-> >>          if (acpi_thermal_trip_valid(acpi_trip)) {
-> >> -               passive_delay =3D tz->trips.passive.tsp * 100;
-> >> +               passive_delay =3D tz->trips.passive.delay;
-> >>
-> >>                  trip->type =3D THERMAL_TRIP_PASSIVE;
-> >>                  trip->temperature =3D acpi_thermal_temp(tz, acpi_trip=
-->temp_dk);
-> >> --
-> >
-> > So does the second patch in the series really depend on this one?
-> >
-> > If not, I can apply it I think.
->
-> Yes, this patch can be applied independently. Thank you!
+On Thu, Nov 16, 2023 at 01:05:58PM -0400, Jason Gunthorpe wrote:
+> On Wed, Nov 15, 2023 at 06:25:44PM +0000, Robin Murphy wrote:
+> > It turns out there are more subtle races beyond just the main part of
+> > __iommu_probe_device() itself running in parallel - the dev_iommu_free()
+> > on the way out of an unsuccessful probe can still manage to trip up
+> > concurrent accesses to a device's fwspec. Thus, extend the scope of
+> > iommu_probe_device_lock() to also serialise fwspec creation and initial
+> > retrieval.
+> > 
+> > Reported-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+> > Link: https://lore.kernel.org/linux-iommu/e2e20e1c-6450-4ac5-9804-b0000acdf7de@quicinc.com/
+> > Fixes: 01657bc14a39 ("iommu: Avoid races around device probe")
+> > Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> > ---
+> > 
+> > This is my idea of a viable fix, since it does not need a 700-line
+> > diffstat to make the code do what it was already *trying* to do anyway.
+> > This stuff should fundamentally not be hanging off driver probe in the
+> > first place, so I'd rather get on with removing the underlying
+> > brokenness than waste time and effort polishing it any further.
+> 
+> I'm fine with this as some hacky backport, but I don't want to see
+> this cross-layer leakage left in the next merge window.
+> 
+> ie we should still do my other series on top of and reverting this.
+> 
+> I've poked at moving parts of it under probe and I think we can do
+> substantial amounts in about two more series and a tidy a bunch of
+> other stuff too.
 
-OK, applied as 6.8 material (with some changelog edits), thanks!
+I agree, it's messy and acpi should not need this, BUT at the moment, I
+can't see any other way to resolve this simply.
+
+So here's a begrudged ack:
+
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+and hopefully the larger series should resolve this correctly?  Can that
+be rebased on top of this?
+
+Also, cc: stable on this for whomever applies it?
+
+thanks,
+
+greg k-h
 
