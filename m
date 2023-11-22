@@ -1,198 +1,172 @@
-Return-Path: <linux-acpi+bounces-1744-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1745-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36BB7F491B
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 15:39:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9100B7F491C
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 15:39:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9C0F1C209D0
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:39:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18A64B20D64
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276EE4E60C
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9114E608
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iqnMr9O5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36988D40;
-	Wed, 22 Nov 2023 05:14:53 -0800 (PST)
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-6d7e6a08299so209112a34.0;
-        Wed, 22 Nov 2023 05:14:53 -0800 (PST)
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3602810C;
+	Wed, 22 Nov 2023 05:21:08 -0800 (PST)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-5c206572eedso3927008a12.0;
+        Wed, 22 Nov 2023 05:21:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700659267; x=1701264067; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8KuAtq2wuwd7uRsWWYBZ0mULd3F8IzS2XEFfePOf2ZA=;
+        b=iqnMr9O5eVF1I2OBbzzZQB3o8C2yqjNcIX86HXScm39WdL3nJa7KgKQJuY1YEvJ9JM
+         nlMm+0CyV7UmXiKKdFQ0JI1dUkvDMuMLJf0J3WuMiiC287v4PjTk/4GFfJc6+nmgukPp
+         ssOVNxY2xmQhL1hAeR2r1HhXOQNg266gNcXo0yibmsm5y545585iQ5qaHnYmjRCM2s1O
+         BM852pTUWrpVsF/H8wDb98JUpHxB4+JL5e6AXz/qeDGJ5y7aUBxnDar3AGi0MENrKGX2
+         AeZG/g1gN2MF5RRHNvm+6XPF9PWQ73Qt6prAs1KfeNAw4oSQqkMHgp8B01LR6t2kCDSg
+         sd8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700658892; x=1701263692;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oYp1qA6Rj8R+cs9YseE9JWdxZsiJT+korOEyoXcPVv4=;
-        b=cpoJKCW32sfBaIcuv+DIDy/AFCJhiLlz+9Mz7klBm3ixt7e8e+hlOPt475RJM+hLY1
-         NR/iKnsDxYEM93LootEmX5VeBucsuWi5YoYvnvuk3cHuDFR1OUjRHZ97JNvnCVCzmXHL
-         jzsjUbjPixN+30u9eieYUJWSasutNab/KQpLOwApLGEYkVHWri7g/pyPvIDe24C372ER
-         rkpw0arMevY/ASziZa9HETMeZfCZVGlpW/+VbfJgEQMi3pb0FrfEzSz4e8zD1BykWLM6
-         Rtf3Ydr4FaDLf979/ftC2hGwYZchCHAhxs1aUfyLSYDgnTrQbLz7JnzeZEtG1a3uL8uh
-         3P3g==
-X-Gm-Message-State: AOJu0Yzi+mDL/Kn6+r4W12Bty7hXoqdZAQNAgM+nbNO6AVi1jIzJYc5E
-	w2TwMXlWTcEelHiPk4eXYVYQZw1qwbqOTURkvf4=
-X-Google-Smtp-Source: AGHT+IGLaqddtZJrV7cWRhrcczCAU1dJlp3v3FkD9l6DHotgDfOqpiCeWd08F8MrY56cvJDLtFQNUfFZGkEEJfDGWyo=
-X-Received: by 2002:a05:6870:2401:b0:1f9:5d11:cc7a with SMTP id
- n1-20020a056870240100b001f95d11cc7amr2688101oap.3.1700658892377; Wed, 22 Nov
- 2023 05:14:52 -0800 (PST)
+        d=1e100.net; s=20230601; t=1700659267; x=1701264067;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8KuAtq2wuwd7uRsWWYBZ0mULd3F8IzS2XEFfePOf2ZA=;
+        b=gE6s2qrxQfgpRoARGE3m3VVZLI2xQJ6H6tu7KoUy6AUiD/ktmYC4Z/Ng8yP1R0Wia3
+         7c+G7YV4TgAPIKdBHljFVGmXWWMegWzLBcLJyYYCTbRUx9JAY6zrf5Uy6kKbH8x5B06K
+         UDb5iL2W1p6MyXGKmzcmqbh1535g1USfN1j/dT/U3k+F2MgS117MCmEIuxi4OiX2t32A
+         vLNf4oS8ZgewwxDEOjdHqYWUJxBUbN0S0cWLCvjUSH3C+bWLIp2A1eVvEU0KmQ6Ojp1s
+         STflksjIP6YFbxuBhFWgAmxdJQhKQyv6TldNG0+L9PkUdXCuo9A6EKD/DHmAqNHN2W3/
+         NsGQ==
+X-Gm-Message-State: AOJu0YyH/0tGWrUAdVwgWOfU8YKMKcnxja/Go5/EoQY+LoMHXL80zkRd
+	jACcYBLuQicwGO2luI6MF/E=
+X-Google-Smtp-Source: AGHT+IHMJmWJO62QizpKqXBJpkRvDmAKFCnqM9s6SVoAVqZ+23esDzGNsZhTZ+8ts5QHY0nOg2jcBQ==
+X-Received: by 2002:a05:6a21:3288:b0:186:736f:7798 with SMTP id yt8-20020a056a21328800b00186736f7798mr2447858pzb.11.1700659267413;
+        Wed, 22 Nov 2023 05:21:07 -0800 (PST)
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id w14-20020aa7858e000000b006cbb71186f7sm4008491pfn.29.2023.11.22.05.21.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Nov 2023 05:21:06 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id 1EB3210207134; Wed, 22 Nov 2023 20:21:04 +0700 (WIB)
+Date: Wed, 22 Nov 2023 20:21:03 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Regressions <regressions@lists.linux.dev>,
+	Linux ACPI <linux-acpi@vger.kernel.org>,
+	Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Borislav Petkov <bp@alien8.de>, Arnas <arnasz616@gmail.com>
+Subject: Re: Fwd: [Regression] S3 Sleep Mode failures since Linux 6.x on Dell
+ Inspiron 15 5593
+Message-ID: <ZV4AP1GY3fHAxmtx@archie.me>
+References: <585dcc9e-7e72-473a-98ec-4f06018d542f@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <170060515641.2447486.11798332619205301829.stgit@djiang5-mobl3>
-In-Reply-To: <170060515641.2447486.11798332619205301829.stgit@djiang5-mobl3>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 22 Nov 2023 14:14:41 +0100
-Message-ID: <CAJZ5v0hkGfqzHwmhBKqwhcEchncM6kEgx_TJgJGgjiR5yMZkLg@mail.gmail.com>
-Subject: Re: [PATCH v2] acpi: Fix ARM32 platforms compile issue introduced by
- fw_table changes
-To: Dave Jiang <dave.jiang@intel.com>
-Cc: linus.walleij@linaro.org, rafael@kernel.org, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, lenb@kernel.org, robert.moore@intel.com, 
-	Jonathan.Cameron@huawei.com, dan.j.williams@intel.com, guohanjun@huawei.com, 
-	arnd@arndb.de, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	cfsworks@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="LKCzLPBSKEZk9tIu"
+Content-Disposition: inline
+In-Reply-To: <585dcc9e-7e72-473a-98ec-4f06018d542f@gmail.com>
+
+
+--LKCzLPBSKEZk9tIu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 21, 2023 at 11:19=E2=80=AFPM Dave Jiang <dave.jiang@intel.com> =
-wrote:
->
-> Linus reported that:
-> After commit a103f46633fd the kernel stopped compiling for
-> several ARM32 platforms that I am building with a bare metal
-> compiler. Bare metal compilers (arm-none-eabi-) don't
-> define __linux__.
->
-> This is because the header <acpi/platform/acenv.h> is now
-> in the include path for <linux/irq.h>:
->
->   CC      arch/arm/kernel/irq.o
->   CC      kernel/sysctl.o
->   CC      crypto/api.o
-> In file included from ../include/acpi/acpi.h:22,
->                  from ../include/linux/fw_table.h:29,
->                  from ../include/linux/acpi.h:18,
->                  from ../include/linux/irqchip.h:14,
->                  from ../arch/arm/kernel/irq.c:25:
-> ../include/acpi/platform/acenv.h:218:2: error: #error Unknown target envi=
-ronment
->   218 | #error Unknown target environment
->       |  ^~~~~
->
-> The issue is caused by the introducing of splitting out the ACPI code to
-> support the new generic fw_table code.
->
-> Rafael suggested [1] moving the fw_table.h include in linux/acpi.h to bel=
-ow
-> the linux/mutex.h. Remove the two includes in fw_table.h. Add include of
-> linux/acpi.h in fw_table.c before the fw_table.h include.
->
-> Link: https://lore.kernel.org/linux-acpi/CAJZ5v0idWdJq3JSqQWLG5q+b+b=3Dzk=
-EdWR55rGYEoxh7R6N8kFQ@mail.gmail.com/
-> Fixes: a103f46633fd ("acpi: Move common tables helper functions to common=
- lib")
-> Reported-by: Linus Walleij <linus.walleij@linaro.org>
-> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> ---
-> v2:
-> - Remove linux/acpi.h include as well in fw_table.h. (Sam)
-> ---
->  include/linux/acpi.h     |   22 +++++++++++-----------
->  include/linux/fw_table.h |    3 ---
->  lib/fw_table.c           |    1 +
->  3 files changed, 12 insertions(+), 14 deletions(-)
->
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 54189e0e5f41..4db54e928b36 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -15,7 +15,6 @@
->  #include <linux/mod_devicetable.h>
->  #include <linux/property.h>
->  #include <linux/uuid.h>
-> -#include <linux/fw_table.h>
->
->  struct irq_domain;
->  struct irq_domain_ops;
-> @@ -25,22 +24,13 @@ struct irq_domain_ops;
->  #endif
->  #include <acpi/acpi.h>
->
-> -#ifdef CONFIG_ACPI_TABLE_LIB
-> -#define EXPORT_SYMBOL_ACPI_LIB(x) EXPORT_SYMBOL_NS_GPL(x, ACPI)
-> -#define __init_or_acpilib
-> -#define __initdata_or_acpilib
-> -#else
-> -#define EXPORT_SYMBOL_ACPI_LIB(x)
-> -#define __init_or_acpilib __init
-> -#define __initdata_or_acpilib __initdata
-> -#endif
-> -
->  #ifdef CONFIG_ACPI
->
->  #include <linux/list.h>
->  #include <linux/dynamic_debug.h>
->  #include <linux/module.h>
->  #include <linux/mutex.h>
-> +#include <linux/fw_table.h>
->
->  #include <acpi/acpi_bus.h>
->  #include <acpi/acpi_drivers.h>
-> @@ -48,6 +38,16 @@ struct irq_domain_ops;
->  #include <acpi/acpi_io.h>
->  #include <asm/acpi.h>
->
-> +#ifdef CONFIG_ACPI_TABLE_LIB
-> +#define EXPORT_SYMBOL_ACPI_LIB(x) EXPORT_SYMBOL_NS_GPL(x, ACPI)
-> +#define __init_or_acpilib
-> +#define __initdata_or_acpilib
-> +#else
-> +#define EXPORT_SYMBOL_ACPI_LIB(x)
-> +#define __init_or_acpilib __init
-> +#define __initdata_or_acpilib __initdata
-> +#endif
-> +
->  static inline acpi_handle acpi_device_handle(struct acpi_device *adev)
->  {
->         return adev ? adev->handle : NULL;
-> diff --git a/include/linux/fw_table.h b/include/linux/fw_table.h
-> index ff8fa58d5818..ca49947f0a77 100644
-> --- a/include/linux/fw_table.h
-> +++ b/include/linux/fw_table.h
-> @@ -25,9 +25,6 @@ struct acpi_subtable_proc {
->         int count;
->  };
->
-> -#include <linux/acpi.h>
-> -#include <acpi/acpi.h>
-> -
->  union acpi_subtable_headers {
->         struct acpi_subtable_header common;
->         struct acpi_hmat_structure hmat;
-> diff --git a/lib/fw_table.c b/lib/fw_table.c
-> index b51f30a28e47..c4831f3378be 100644
-> --- a/lib/fw_table.c
-> +++ b/lib/fw_table.c
-> @@ -7,6 +7,7 @@
->   *  Copyright (C) 2023 Intel Corp.
->   */
->  #include <linux/errno.h>
-> +#include <linux/acpi.h>
->  #include <linux/fw_table.h>
+On Tue, Sep 26, 2023 at 07:25:48AM +0700, Bagas Sanjaya wrote:
+> Hi,
+>=20
+> I notice a regression report on Bugzilla [1]. Quoting from it:
+>=20
+> > I'm having some weird issues with sleep mode on any 6.x Linux kernel ve=
+rsion - it's a toss-up when I close the lid as to whether it will sleep pro=
+perly or not - when it fails, the screen will lock, but it will not actuall=
+y enter S3 sleep - it just blanks the screen, but the laptop stays on (and =
+fan does too).
+> >=20
+> > Opening the lid after a failed sleep attempt turns on the screen instan=
+taneously, and it doesn't even need to reconnect to WiFi - this doesn't hap=
+pen when actually resuming from sleep, it takes a couple seconds for the sc=
+reen to come on, and it then needs to reconnect the network.
+> >=20
+> > Following the failed attempt to enter sleep mode (closing the lid), the=
+ following entries appear in the system log -
+> >=20
+> > arkiron kernel: ACPI Error: Thread 3233415168 cannot release Mutex [ECM=
+X] acquired by thread 3268191936 (20221020/exmutex-378)
+> > arkiron kernel: ACPI Error: Aborting method \_SB.PCI0.LPCB.ECDV._Q66 du=
+e to previous error (AE_AML_NOT_OWNER) (20221020/psparse-529)
+> > arkiron kernel: Non-boot CPUs are not disabled
+> >=20
+> > Now, the "Non-boot CPUs are not disabled" line stands out the most to m=
+e here, because successful sleep attempts won't have this line in the log.
+> >=20
+> > After the failed attempt above to sleep, I now close the lid again, and=
+ it seemingly goes to sleep successfully. After checking the log following =
+this, I find two new error lines in the log -
+> >=20
+> > arkiron kernel: ACPI Error: Thread 3233415168 cannot release Mutex [ECM=
+X] acquired by thread 3268191936 (20221020/exmutex-378)
+> > arkiron kernel: ACPI Error: Aborting method \_SB.PCI0.LPCB.ECDV._Q66 du=
+e to previous error (AE_AML_NOT_OWNER) (20221020/psparse-529)
+> >=20
+> > Note that this time the CPU line is missing, as expected for a successf=
+ul sleep attempt.
+> >=20
+> > This happens on both latest stable Linux kernel 6.5 as well as the late=
+st Linux LTS 6.1 kernel. The last kernel that this didn't happen on was Lin=
+ux LTS 5.15 (any version), which is what I was running up until the Linux L=
+TS 6.1 upgrade. At that point I tried switching back to mainline (6.5) to s=
+ee if it would fix sleep issues, but it didn't help. Downgrading to Linux L=
+TS 5.15 did fix the sleep issues and the laptop seems to sleep reliably now=
+=2E Running LTS 5.15.131-1 without issue as I am making this report.
+> >=20
+> > I'm on a Dell Inspiron 15 5593 using BIOS ver 1.27.0 (latest as of now)=
+, running Arch Linux x86_64
+>=20
+> See Bugzilla for the full thread.
+>=20
+> Anyway, I'm adding it to regzbot:
+>=20
+> #regzbot introduced: v5.15..v6.1 https://bugzilla.kernel.org/show_bug.cgi=
+?id=3D217950
+>=20
+> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=3D217950
+>=20
 
-Because fw_table.h is included via acpi.h, do you still need to
-include it directly here?
+Hi Thorsten and all,
 
->  #include <linux/init.h>
->  #include <linux/kernel.h>
->
->
->
+It seems like the BZ reporter is really busy with his college life; IOW
+he can only bisect in the winter break [1]. Should I mark this regression
+as inconclusive for now?
+
+Thanks.
+
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=3D217950#c5
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--LKCzLPBSKEZk9tIu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZV4APwAKCRD2uYlJVVFO
+o2AAAQDTwCOQWHhQjO5u0rqiRHxr5UzfJelTwcYdlfrqvbmiUgD/Zsh+FP3jNO3S
+gRMaJaeLR5+9J9TbWbtkSOkrGF4AUAw=
+=vXvH
+-----END PGP SIGNATURE-----
+
+--LKCzLPBSKEZk9tIu--
 
