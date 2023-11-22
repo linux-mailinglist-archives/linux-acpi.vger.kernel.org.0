@@ -1,188 +1,210 @@
-Return-Path: <linux-acpi+bounces-1754-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1755-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E1E7F4D1E
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 17:47:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693517F4D1F
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 17:47:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2A251C209A8
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 16:47:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C28F528116B
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 16:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3359D4D103
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 16:47:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ofb0cSwW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4F159B6A
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 16:47:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3408B4CDEA
-	for <linux-acpi@vger.kernel.org>; Wed, 22 Nov 2023 15:34:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A5DC433A9;
-	Wed, 22 Nov 2023 15:34:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700667287;
-	bh=ApWZ3asiJZxmCLPaFMSAJuCUuvsOI/gQJG1FVuql0Z4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Ofb0cSwWedHXtlYbQVZtfiSthcmdvjrho1371f+XwhlEne5t/HukIVT7RgwYH7pUG
-	 RJygkEoM/veILdgC4PFZ2OURDUm1Mw+CpQECjkrVDGtDmQg8yLNEoEo80r+CXkvzlg
-	 2aS8NE9mIEhPWqBeSWePn6tVhpUEfkxyJ4XqhS0KrRz9yTTpHCGczjkyHIl5ypsYbZ
-	 nCduawf9Pzb00dJ8r7HVUZVO1FnJc/3eGjjZ3Q0rSklxFT8z2rY3/mdvil95VTePX7
-	 SJ7YvwN4t8E5S+H2vMIRcchLcw1YHJIZmKocGvrvoT2O97V7njuQWp9a/5C3FYp1LB
-	 SRNMY9Ce8KLvw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Zhang Rui <rui.zhang@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 1/9] x86/acpi: Ignore invalid x2APIC entries
-Date: Wed, 22 Nov 2023 10:34:25 -0500
-Message-ID: <20231122153440.852807-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.42.0
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75E0B49FA;
+	Wed, 22 Nov 2023 07:37:27 -0800 (PST)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6d7e6a08299so229201a34.0;
+        Wed, 22 Nov 2023 07:37:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700667446; x=1701272246;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/Axuz+35EuK//V55jI0luW/JRmpf/RhvJBWT8L3iWiA=;
+        b=qP4Ve6wHz+J5Ptx5GnnfHFospatxSd47pu+pcFBu3LDYZk5GgBM1Pl1T2Nz8LZM287
+         bqAEdv41F7RfAyJ0o14+C+bpmhrXn4enAjbxeOSz2Kjnr0L1V7drV5MW8/5BTHz3LnFz
+         Pt/prkIb/xkSdDNhWn4hbbgbIo4JiMSIvTCv9tdjorbvPnul4ICbi0vGHUwR4xS0TwER
+         i4fawXbQTzVJVutOuO0GT2xH7H3VfAw4zDCzBLjjr6GGx6trqP+qS0tR8Uq7tHUuSgcd
+         TpVm0anx7vRn9ALksCSCRGhcpsnVWH2GdvXM/MZHrMABesMp2u8w2c9tqVkdZng6m/jL
+         0k1Q==
+X-Gm-Message-State: AOJu0Yzm3RBZjpk+9muauX8FvqR1/BTkcxHZ6BEGWDxXh1xQctMgwRcC
+	2wVDZ79F8xPe084p1M2KAK8YZ7i61tY/Wjf00VgqMtYh
+X-Google-Smtp-Source: AGHT+IGvTsFTy1Gu660SNigi19IvWsZLQFjXCW6ElAeXjNJ76kyEm2NA5mv4nEj/5nM/0of5A1U7zG0UvHvNv/e/z/Q=
+X-Received: by 2002:a05:6870:2401:b0:1f9:5d11:cc7a with SMTP id
+ n1-20020a056870240100b001f95d11cc7amr3211659oap.3.1700667446561; Wed, 22 Nov
+ 2023 07:37:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.63
-Content-Transfer-Encoding: 8bit
+References: <170066723324.2477261.2506149141979712937.stgit@djiang5-mobl3>
+In-Reply-To: <170066723324.2477261.2506149141979712937.stgit@djiang5-mobl3>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 22 Nov 2023 16:37:15 +0100
+Message-ID: <CAJZ5v0giyyhZdkXW7AvZtZZHFNaFxrYKtdZkvthtuB_bXGqt1A@mail.gmail.com>
+Subject: Re: [PATCH v3] acpi: Fix ARM32 platforms compile issue introduced by
+ fw_table changes
+To: Dave Jiang <dave.jiang@intel.com>
+Cc: linus.walleij@linaro.org, rafael@kernel.org, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, lenb@kernel.org, robert.moore@intel.com, 
+	Jonathan.Cameron@huawei.com, dan.j.williams@intel.com, guohanjun@huawei.com, 
+	arnd@arndb.de, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	cfsworks@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Zhang Rui <rui.zhang@intel.com>
+On Wed, Nov 22, 2023 at 4:34=E2=80=AFPM Dave Jiang <dave.jiang@intel.com> w=
+rote:
+>
+> Linus reported that:
+> After commit a103f46633fd the kernel stopped compiling for
+> several ARM32 platforms that I am building with a bare metal
+> compiler. Bare metal compilers (arm-none-eabi-) don't
+> define __linux__.
+>
+> This is because the header <acpi/platform/acenv.h> is now
+> in the include path for <linux/irq.h>:
+>
+>   CC      arch/arm/kernel/irq.o
+>   CC      kernel/sysctl.o
+>   CC      crypto/api.o
+> In file included from ../include/acpi/acpi.h:22,
+>                  from ../include/linux/fw_table.h:29,
+>                  from ../include/linux/acpi.h:18,
+>                  from ../include/linux/irqchip.h:14,
+>                  from ../arch/arm/kernel/irq.c:25:
+> ../include/acpi/platform/acenv.h:218:2: error: #error Unknown target envi=
+ronment
+>   218 | #error Unknown target environment
+>       |  ^~~~~
+>
+> The issue is caused by the introducing of splitting out the ACPI code to
+> support the new generic fw_table code.
+>
+> Rafael suggested [1] moving the fw_table.h include in linux/acpi.h to bel=
+ow
+> the linux/mutex.h. Remove the two includes in fw_table.h. Replace
+> linux/fw_table.h include in fw_table.c with linux/acpi.h.
+>
+> Link: https://lore.kernel.org/linux-acpi/CAJZ5v0idWdJq3JSqQWLG5q+b+b=3Dzk=
+EdWR55rGYEoxh7R6N8kFQ@mail.gmail.com/
+> Fixes: a103f46633fd ("acpi: Move common tables helper functions to common=
+ lib")
+> Closes: https://lore.kernel.org/linux-acpi/20231114-arm-build-bug-v1-1-45=
+8745fe32a4@linaro.org/
+> Reported-by: Linus Walleij <linus.walleij@linaro.org>
+> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Tested-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+> v3:
+> - Drop fw_table.h in fw_table.c since acpi.h already included. (Rafael)
 
-[ Upstream commit ec9aedb2aa1ab7ac420c00b31f5edc5be15ec167 ]
+Do you want me to apply this, or do you prefer to route it in a different w=
+ay?
 
-Currently, the kernel enumerates the possible CPUs by parsing both ACPI
-MADT Local APIC entries and x2APIC entries. So CPUs with "valid" APIC IDs,
-even if they have duplicated APIC IDs in Local APIC and x2APIC, are always
-enumerated.
+In the latter case, please feel free to add
 
-Below is what ACPI MADT Local APIC and x2APIC describes on an
-Ivebridge-EP system,
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[02Ch 0044   1]                Subtable Type : 00 [Processor Local APIC]
-[02Fh 0047   1]                Local Apic ID : 00
-...
-[164h 0356   1]                Subtable Type : 00 [Processor Local APIC]
-[167h 0359   1]                Local Apic ID : 39
-[16Ch 0364   1]                Subtable Type : 00 [Processor Local APIC]
-[16Fh 0367   1]                Local Apic ID : FF
-...
-[3ECh 1004   1]                Subtable Type : 09 [Processor Local x2APIC]
-[3F0h 1008   4]                Processor x2Apic ID : 00000000
-...
-[B5Ch 2908   1]                Subtable Type : 09 [Processor Local x2APIC]
-[B60h 2912   4]                Processor x2Apic ID : 00000077
+to it.
 
-As a result, kernel shows "smpboot: Allowing 168 CPUs, 120 hotplug CPUs".
-And this wastes significant amount of memory for the per-cpu data.
-Plus this also breaks https://lore.kernel.org/all/87edm36qqb.ffs@tglx/,
-because __max_logical_packages is over-estimated by the APIC IDs in
-the x2APIC entries.
-
-According to https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#processor-local-x2apic-structure:
-
-  "[Compatibility note] On some legacy OSes, Logical processors with APIC
-   ID values less than 255 (whether in XAPIC or X2APIC mode) must use the
-   Processor Local APIC structure to convey their APIC information to OSPM,
-   and those processors must be declared in the DSDT using the Processor()
-   keyword. Logical processors with APIC ID values 255 and greater must use
-   the Processor Local x2APIC structure and be declared using the Device()
-   keyword."
-
-Therefore prevent the registration of x2APIC entries with an APIC ID less
-than 255 if the local APIC table enumerates valid APIC IDs.
-
-[ tglx: Simplify the logic ]
-
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230702162802.344176-1-rui.zhang@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/kernel/acpi/boot.c | 34 +++++++++++++++-------------------
- 1 file changed, 15 insertions(+), 19 deletions(-)
-
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 2252340b2133e..14af7fbdc6b5e 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -62,6 +62,7 @@ int acpi_fix_pin2_polarity __initdata;
- 
- #ifdef CONFIG_X86_LOCAL_APIC
- static u64 acpi_lapic_addr __initdata = APIC_DEFAULT_PHYS_BASE;
-+static bool has_lapic_cpus __initdata;
- static bool acpi_support_online_capable;
- #endif
- 
-@@ -235,6 +236,14 @@ acpi_parse_x2apic(union acpi_subtable_headers *header, const unsigned long end)
- 	if (!acpi_is_processor_usable(processor->lapic_flags))
- 		return 0;
- 
-+	/*
-+	 * According to https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#processor-local-x2apic-structure
-+	 * when MADT provides both valid LAPIC and x2APIC entries, the APIC ID
-+	 * in x2APIC must be equal or greater than 0xff.
-+	 */
-+	if (has_lapic_cpus && apic_id < 0xff)
-+		return 0;
-+
- 	/*
- 	 * We need to register disabled CPU as well to permit
- 	 * counting disabled CPUs. This allows us to size
-@@ -1114,10 +1123,7 @@ static int __init early_acpi_parse_madt_lapic_addr_ovr(void)
- 
- static int __init acpi_parse_madt_lapic_entries(void)
- {
--	int count;
--	int x2count = 0;
--	int ret;
--	struct acpi_subtable_proc madt_proc[2];
-+	int count, x2count = 0;
- 
- 	if (!boot_cpu_has(X86_FEATURE_APIC))
- 		return -ENODEV;
-@@ -1126,21 +1132,11 @@ static int __init acpi_parse_madt_lapic_entries(void)
- 				      acpi_parse_sapic, MAX_LOCAL_APIC);
- 
- 	if (!count) {
--		memset(madt_proc, 0, sizeof(madt_proc));
--		madt_proc[0].id = ACPI_MADT_TYPE_LOCAL_APIC;
--		madt_proc[0].handler = acpi_parse_lapic;
--		madt_proc[1].id = ACPI_MADT_TYPE_LOCAL_X2APIC;
--		madt_proc[1].handler = acpi_parse_x2apic;
--		ret = acpi_table_parse_entries_array(ACPI_SIG_MADT,
--				sizeof(struct acpi_table_madt),
--				madt_proc, ARRAY_SIZE(madt_proc), MAX_LOCAL_APIC);
--		if (ret < 0) {
--			pr_err("Error parsing LAPIC/X2APIC entries\n");
--			return ret;
--		}
--
--		count = madt_proc[0].count;
--		x2count = madt_proc[1].count;
-+		count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_APIC,
-+					acpi_parse_lapic, MAX_LOCAL_APIC);
-+		has_lapic_cpus = count > 0;
-+		x2count = acpi_table_parse_madt(ACPI_MADT_TYPE_LOCAL_X2APIC,
-+					acpi_parse_x2apic, MAX_LOCAL_APIC);
- 	}
- 	if (!count && !x2count) {
- 		pr_err("No LAPIC entries present\n");
--- 
-2.42.0
-
+> v2:
+> - Remove linux/acpi.h include as well in fw_table.h. (Sam)
+> ---
+>  include/linux/acpi.h     |   22 +++++++++++-----------
+>  include/linux/fw_table.h |    3 ---
+>  lib/fw_table.c           |    2 +-
+>  3 files changed, 12 insertions(+), 15 deletions(-)
+>
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 54189e0e5f41..4db54e928b36 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -15,7 +15,6 @@
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/property.h>
+>  #include <linux/uuid.h>
+> -#include <linux/fw_table.h>
+>
+>  struct irq_domain;
+>  struct irq_domain_ops;
+> @@ -25,22 +24,13 @@ struct irq_domain_ops;
+>  #endif
+>  #include <acpi/acpi.h>
+>
+> -#ifdef CONFIG_ACPI_TABLE_LIB
+> -#define EXPORT_SYMBOL_ACPI_LIB(x) EXPORT_SYMBOL_NS_GPL(x, ACPI)
+> -#define __init_or_acpilib
+> -#define __initdata_or_acpilib
+> -#else
+> -#define EXPORT_SYMBOL_ACPI_LIB(x)
+> -#define __init_or_acpilib __init
+> -#define __initdata_or_acpilib __initdata
+> -#endif
+> -
+>  #ifdef CONFIG_ACPI
+>
+>  #include <linux/list.h>
+>  #include <linux/dynamic_debug.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+> +#include <linux/fw_table.h>
+>
+>  #include <acpi/acpi_bus.h>
+>  #include <acpi/acpi_drivers.h>
+> @@ -48,6 +38,16 @@ struct irq_domain_ops;
+>  #include <acpi/acpi_io.h>
+>  #include <asm/acpi.h>
+>
+> +#ifdef CONFIG_ACPI_TABLE_LIB
+> +#define EXPORT_SYMBOL_ACPI_LIB(x) EXPORT_SYMBOL_NS_GPL(x, ACPI)
+> +#define __init_or_acpilib
+> +#define __initdata_or_acpilib
+> +#else
+> +#define EXPORT_SYMBOL_ACPI_LIB(x)
+> +#define __init_or_acpilib __init
+> +#define __initdata_or_acpilib __initdata
+> +#endif
+> +
+>  static inline acpi_handle acpi_device_handle(struct acpi_device *adev)
+>  {
+>         return adev ? adev->handle : NULL;
+> diff --git a/include/linux/fw_table.h b/include/linux/fw_table.h
+> index ff8fa58d5818..ca49947f0a77 100644
+> --- a/include/linux/fw_table.h
+> +++ b/include/linux/fw_table.h
+> @@ -25,9 +25,6 @@ struct acpi_subtable_proc {
+>         int count;
+>  };
+>
+> -#include <linux/acpi.h>
+> -#include <acpi/acpi.h>
+> -
+>  union acpi_subtable_headers {
+>         struct acpi_subtable_header common;
+>         struct acpi_hmat_structure hmat;
+> diff --git a/lib/fw_table.c b/lib/fw_table.c
+> index b51f30a28e47..294df54e33b6 100644
+> --- a/lib/fw_table.c
+> +++ b/lib/fw_table.c
+> @@ -7,7 +7,7 @@
+>   *  Copyright (C) 2023 Intel Corp.
+>   */
+>  #include <linux/errno.h>
+> -#include <linux/fw_table.h>
+> +#include <linux/acpi.h>
+>  #include <linux/init.h>
+>  #include <linux/kernel.h>
+>  #include <linux/string.h>
+>
+>
+>
 
