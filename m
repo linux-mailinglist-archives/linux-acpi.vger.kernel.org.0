@@ -1,164 +1,302 @@
-Return-Path: <linux-acpi+bounces-1749-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1750-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBAA7F4D15
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 17:46:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89AF47F4D16
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 17:46:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED1191C204F5
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 16:46:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E815281064
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 16:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593A056B75
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 16:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82B757877
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 16:46:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DFEqovOn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36214109
-	for <linux-acpi@vger.kernel.org>; Wed, 22 Nov 2023 07:25:42 -0800 (PST)
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-58a106dd421so306451eaf.0
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Nov 2023 07:25:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700666741; x=1701271541;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GMOxtFY6vWKRRv66xbvZdMMKO7h5vSyrulsXjVdSHlk=;
-        b=XF5LV7Rx5SgYNBbhkW6nj0K/w0siyvRARhZji9TRCblVmXNEaSNE34hXHUI4bileYN
-         TAN3Of1UrP/jJMqC+G7k7k+9FznGLxacscYwlP6ZjuOgij82xl33QZ8CFGt+EY2L6myA
-         coZ0AGKukNomHaUopj77urw6f0+pFAtDgYAY6xRB38IWIHKZLjIZpDQNK1pSm1TO6KMV
-         aYyNJ1yRuI899waCv3xxg+viOk0g9zTvPNdED36mLhwonRCyUrvNRejDhLdgB6IJRjX+
-         N3psv9cMQ8n+0K+s0UTRCurPfx0Sk+UDyJxYZCFaqx33N5FlmcHjfjfNElljkSc1Gfl3
-         K7Fw==
-X-Gm-Message-State: AOJu0YwuOnv4rod5xXKgasIX3upumaMIDTtYJ0dyR3Q1s4cOkuZzwh2B
-	D0nxtT2AlqX8scXSJJ9ped1NCcf+zyu/Ra/ca9Y=
-X-Google-Smtp-Source: AGHT+IGNJOCwSbTb4tJr/fGWGiDnIqVd+ebxw/eAN+BSfCiNiMoYU8LM0mI8Z1alPVn6sdFg2RBPACSXZSq/vcIjs+s=
-X-Received: by 2002:a4a:a604:0:b0:589:daaf:44a1 with SMTP id
- e4-20020a4aa604000000b00589daaf44a1mr2916605oom.0.1700666741336; Wed, 22 Nov
- 2023 07:25:41 -0800 (PST)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1FDB100;
+	Wed, 22 Nov 2023 07:29:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700666970; x=1732202970;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=IUVhPChgD+18ZXF6gOlX9SuawTWJlVN8fjL7Ah7crBw=;
+  b=DFEqovOnZIeP04gmncMuvgTK1XagdBlesTOD7lzf4Oq01UBlKnHEqJ/Z
+   ka3yNQfnjSKM9RRhq9r+3HrgeGQsadBwP4wIGy2OWq9uo0lMO8lzpClMp
+   zijVb/m2sr2AJeNfehZJIF1iAd6vZAhvJTWqxsPIVA1tUpNh4aPQioDk0
+   nvwVoMWK+9c6cwydoW3MCfImYTkAk8TpaI1Mrl510hXAvtAUW9oae0Dba
+   4kPk7Bxgrutfut0wzjKfoRixXCCDoxF78RbCquFV5JCjRVEn0qgK0JbrI
+   XPAlWdB6mphnpzKztN5AQKuAMOoaluspPnA8GM0W7SRy1g+gxVitZcftR
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="13619571"
+X-IronPort-AV: E=Sophos;i="6.04,219,1695711600"; 
+   d="scan'208";a="13619571"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2023 07:29:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,219,1695711600"; 
+   d="scan'208";a="8500717"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 22 Nov 2023 07:29:29 -0800
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Wed, 22 Nov 2023 07:29:28 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Wed, 22 Nov 2023 07:29:28 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34 via Frontend Transport; Wed, 22 Nov 2023 07:29:28 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.34; Wed, 22 Nov 2023 07:29:27 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fd3YQgnxPo01RTqyPK5MiHfNPOHHelM76BqlFFRJ509s84sdJc9JD6+rvvgjnZX8X1qKTu69DcssMnrGtM9gf1CMQIrATx1+arpjy9YdUywVsljQO6h+M0DU4Nt4IxVK1549mUgZyNiXbqf7NIvmXbDWzqlSl/TPYQz/ftHiYNJBItLbmKTMKu/4HqPa0prvWVK/oBg1iYw9yrc15ljm4uUg+TDMKx1HRehEHVyqGCSgETgq043VbAyT44YTTyHYs+YetImkGcyQLzE6krO/sDWr9IAEmhb+TH+9Z1zzS8F70s3GgOYnC/SmjiOlFbkntX/kvxy6Kg0uaCrhOdDLBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iUEE80e1UpAC9R3r4Bh6TVG8oO5K0g3L50Rx9WRGhSU=;
+ b=Hr/7G76tIkPAllcmOaAzRmkqIZKshlqr5EyU0xoFyUPxp7u8vqs4Sd4wCG11va0Ddmbis/jSMR/5+W1dUyj4f6IMgpns1GoIpoj3+pnUhg+RFwbxjo/c+0ns+2yg54dCR/m/fbryoTfSCKIdRL7zTRmJTK+yT56e1SpfSoUQ7F1y0IEqpYrGMy7qpoMvp09LXUhyZ9bTBgGZpwhoH0Fu1xNQsf+PQ4+sjYhpVTH00UT7Cjz29iQgqXQe65VRMf3dPnMdKj5XEUUCM+Y5pHTb2zSiYU4/Eoc0LuUGGwA6KLxPK4bxUlIRe5S5CLxtBQL39ElhRmF8Zxqrqp77oNko5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB5984.namprd11.prod.outlook.com (2603:10b6:510:1e3::15)
+ by SJ2PR11MB8472.namprd11.prod.outlook.com (2603:10b6:a03:574::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.26; Wed, 22 Nov
+ 2023 15:29:25 +0000
+Received: from PH7PR11MB5984.namprd11.prod.outlook.com
+ ([fe80::6f7b:337d:383c:7ad1]) by PH7PR11MB5984.namprd11.prod.outlook.com
+ ([fe80::6f7b:337d:383c:7ad1%4]) with mapi id 15.20.7002.028; Wed, 22 Nov 2023
+ 15:29:25 +0000
+Message-ID: <1a52cedc-ca72-4237-b038-f0cfd0db8b29@intel.com>
+Date: Wed, 22 Nov 2023 08:29:21 -0700
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH v2] acpi: Fix ARM32 platforms compile issue introduced by
+ fw_table changes
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <linus.walleij@linaro.org>, "Rafael J. Wysocki"
+	<rafael.j.wysocki@intel.com>, <lenb@kernel.org>, <robert.moore@intel.com>,
+	<Jonathan.Cameron@huawei.com>, <dan.j.williams@intel.com>,
+	<guohanjun@huawei.com>, <arnd@arndb.de>, <linux-acpi@vger.kernel.org>,
+	<acpica-devel@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <cfsworks@gmail.com>
+References: <170060515641.2447486.11798332619205301829.stgit@djiang5-mobl3>
+ <CAJZ5v0hkGfqzHwmhBKqwhcEchncM6kEgx_TJgJGgjiR5yMZkLg@mail.gmail.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <CAJZ5v0hkGfqzHwmhBKqwhcEchncM6kEgx_TJgJGgjiR5yMZkLg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR13CA0136.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c6::21) To PH7PR11MB5984.namprd11.prod.outlook.com
+ (2603:10b6:510:1e3::15)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231120173053.49597-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20231120173053.49597-1-u.kleine-koenig@pengutronix.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 22 Nov 2023 16:25:30 +0100
-Message-ID: <CAJZ5v0iW_B72o8EMbZaH_x2SOHOvqnieP8EsK2A6d93GRDYtBA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: APEI: GHES: Convert to platform remove callback
- returning void
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB5984:EE_|SJ2PR11MB8472:EE_
+X-MS-Office365-Filtering-Correlation-Id: 79440ab2-7320-455e-3741-08dbeb6fcf21
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: VxjMka/yyZyhDv2Xs+6I+2QYoxa2+dU6WVnATTZueFA4gzrlSwiSzVDr0jwvtW5CsySvwcY2TO41KvlsYR9e6C/BtPXB7IPNsD2foSD7Rf7mMKBPMRxLD2/xGNZdYshUoxa1bhplYxj28UiP2qu/M7TGjeqNSS7ehB+EG4dJXAjBJOLnWIkQcPQAF422e4edLbt9G8U99syUGtSmjfB747l/1KbG+hKJF+kDUNvZa2XKX3M2jZdBWmkw/09ZGW28STBAcaDlSLQzsLFuRP4GZ6bByred2TAAFlIO37vaLRMfQlCpTfkyL51aV1E2ybjTybvfoLjI+pCKZ6pUVKfe6CutvOalJCph73aThs3lEFkHnkbHxopCg4l14DAL2a+5VI+i/33xLRyNhrwW1wAghQ2BP0jMGRrOy+BEErOBQeUARKjFMoK8rlesCremsB0pXtU1Mzob3ACxs1Gk3/9RkGzgV5aS8Nr3JAV2K7TkbxsBlsDM/Ej1o+Rcxs16AvkH3ySdrTr4atzcFmQl2V+5VtzZg2WrHZDPOJ/VVpcxJDl1LIg+IGDFBrWCWDTlvntLJ/re99rF/AtLkIaxVwB7HOeau0Ehz945n7RHryRsTdc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB5984.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(396003)(346002)(376002)(136003)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(5660300002)(7416002)(6666004)(966005)(38100700002)(478600001)(4326008)(6486002)(8936002)(31696002)(8676002)(86362001)(44832011)(2906002)(66556008)(66946007)(6916009)(316002)(26005)(2616005)(82960400001)(66476007)(36756003)(53546011)(31686004)(41300700001)(83380400001)(6506007)(6512007)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Sm93L2xrYWEzWlNadUY3WU5SY21HQTFOWXFSWlBFeFpTUnllYzZycE9SQlYy?=
+ =?utf-8?B?V01WQmxiSjlkVUZsT1BuazA0cUtyY3NaeWRvRTZRd1d5WEZHODRXQWhrM1or?=
+ =?utf-8?B?MzdISWF5dzd6ZmlIbjkzd2JVK1FLakowK1M0VU1QUExlREJHN1JISFdBVnU2?=
+ =?utf-8?B?UlNmMG9uUXZ0amxLMnlEbzJIYjJGb0JsalZPTE1wcEg2T3RHWUR5aXU2RStS?=
+ =?utf-8?B?eHJiaTcrYWdjRk9aYWYwbGdaWkdmSGhEN0E4VDl4U1dZRk5XeW9GL0MvRWR3?=
+ =?utf-8?B?THFVR0VXUWVIRlNQdEllZ0tiZVBkMFQzV0lFTVhHV2tOd2k5UkU4U1daZkJ0?=
+ =?utf-8?B?ZllpVUQ3U2Q2SEhtZHllSW1FeEtPVHMxNFdtT29xRXlMK21ZaVV6dzhYbWNy?=
+ =?utf-8?B?WmpKdGhLRXpQb1JOa3J4a1d3ajB2S3NXZWNsYWNCaXEzN2JJR3FUM0V5SWp5?=
+ =?utf-8?B?MlI4UVc1TU1jcG9KUEI4bHdWajNSanMrZE10OENtN0VYVlBBektuOVVMVUVS?=
+ =?utf-8?B?aGxZRXpwMTFScmVJTTZSaGxleGZOWFBtQk43Qm1QcFdiZ2E4T2Q2TjlheDB2?=
+ =?utf-8?B?ZGhNVjdmdWFOb2puQlRnWXYzenF3WFY0UnR3c2Zwd3pkVlFsK2w5c1pXS0Vh?=
+ =?utf-8?B?MEllMW9XWUZRNWlNUXVLQ2puT1JlVVZGbzJDZjk5WncyTzFBMzhIY0ovV3dr?=
+ =?utf-8?B?QVkrdXV3T243TS9aTFAxUm1xSDF2TldKUlJ6LzdPS0VrTlE5TUpSME1HRm1U?=
+ =?utf-8?B?MDRReEZ0YTNTcjJ1a1hobHJOOSs1TjUxeWROV0RxVWs2RS91SERYWXJJMTdD?=
+ =?utf-8?B?VVNFQXJHTEJmZ2p1cUJwZmV6c0RJQlZOYWJ4YlEreTRoRDFTQW96MC82OFR5?=
+ =?utf-8?B?RVRIblh3UGIrSVpCRXJQSTE3S0lBRzJMUjlwbExrRkhvTENjaFp4WnN2a2Mv?=
+ =?utf-8?B?TS8xMVpsaFR1cmF3THZXQU54dzVhMmxHN0J6WkxIbFRtcTUzdkFmTWpHZnFU?=
+ =?utf-8?B?VUlEYnM0YTRvL0piMWo4cUNUbkh4bmxlWWtTbzlFWWlwQXFDem02ck01b1Ji?=
+ =?utf-8?B?OGZNbzVJd0p0d3BlVGljNzBTd21vdjkvc1ZSQ3IzNCtrTkFoaFlLdzNvZkxV?=
+ =?utf-8?B?VG45dXF3U2tjLzZYbXp1aGhpMU5UeWdJc1JrZ2FhQVRTSkt4cFBWYmRlcWxl?=
+ =?utf-8?B?RUF0a2xWd3AwazFCWS81alRCcFlBa3dWaEppWnliUzI4RlhnYk9YNTM4U2Na?=
+ =?utf-8?B?TEMzb2FPNkw0ZmFSYmYybTYrSVhCVFZoYzFjckZ6Y1ZTOTMzbHdiWDBiU2ZP?=
+ =?utf-8?B?dTI2eVJtSnQ1VkNTSm4wT2QvdWxuNm5KeXNNSk9ReDVvTklkQ2szS1VQSktC?=
+ =?utf-8?B?b1ZEWndEa3RSUWd4V1V5QkcxTjlwWitvOFNEdVd3M0lFZVhzaXRFMzNLY1dm?=
+ =?utf-8?B?Vlp2aHQ2bU5KQVMvZWtNbmYwenp0TDVhSGlEN3VGdXBZQS9BWXR1V2Nndzdy?=
+ =?utf-8?B?L2RsaGwxdDNvU3hrcFJ4ajE0bm1YbmVvbmtjSXE2WkV3NzhscDYrYjhCK1VX?=
+ =?utf-8?B?R1JsYjF4QVE4RE5HV2VJVUNuTE0yQVBQN2FrM3MvSTdVelFEdjQrU29lM1Rx?=
+ =?utf-8?B?Tm55QVU0ak5yMFlQSFFFT1p4VGVIVVFvcjF2MWMyd1FaTEN1eTRIeHgwSTUz?=
+ =?utf-8?B?dHkrVWpEa2hLQkdQTyt6TmhwWloxSTlxWmQwaEpScTgxbkhMek5odnJzNnZP?=
+ =?utf-8?B?QndnaUxFWTFvRHVXMTgrYW5QTjYzdTJqaUhLRHN4djYrRktwa1JxVUxrOVJE?=
+ =?utf-8?B?QkJlOHpmUWVSbmIxTTkwellxdTdmMnlGdEtOQnRZb3BxR3JnVGtTSXg0K05H?=
+ =?utf-8?B?M0xJYSt6bU1kUU1JbmszNW9VWHpETi80S3M2UW96T3dEM1Q4b045RlpESlRZ?=
+ =?utf-8?B?WjNtS2dGeVRWWnZhRTJ6Q1g3VERXYzRkL1pwamxCMFpjQWV4ZzFiK2N1cFBa?=
+ =?utf-8?B?alpKTWFURnA0VEdiU2MzWjJyVjVSQkx6L1ZQQ1dVRVk1SkNzNWVwTkE5NFFQ?=
+ =?utf-8?B?NHp2T29oenBxVk9VdE8vemlBYlZUTnBNeE5Ydktwd2VxMnFOZDlkb2JMRzBn?=
+ =?utf-8?Q?mbZTWNO82LC1gHUCoff1FjAP/?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 79440ab2-7320-455e-3741-08dbeb6fcf21
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB5984.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2023 15:29:25.3579
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8wZsQw3A9kQGwC8CfbARan73ZYG1Y8hDmygHLbp14aWGCvZswOBJicfdq4u6r4QXgX7AnX8uZiKzitarxeOBCg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8472
+X-OriginatorOrg: intel.com
 
-On Mon, Nov 20, 2023 at 6:31=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
->
-> The .remove() callback for a platform driver returns an int which makes
-> many driver authors wrongly assume it's possible to do error handling by
-> returning an error code. However the value returned is ignored (apart
-> from emitting a warning) and this typically results in resource leaks.
->
-> To improve here there is a quest to make the remove callback return
-> void. In the first step of this quest all drivers are converted to
-> .remove_new(), which already returns void. Eventually after all drivers
-> are converted, .remove_new() will be renamed to .remove().
->
-> Instead of returning an error code, emit a better error message than the
-> core. Apart from the improved error message this patch has no effects
-> for the driver.
->
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> ---
-> Hello,
->
-> I tried to improve this driver before, see
->
->         https://lore.kernel.org/linux-acpi/CAJZ5v0ifb-wvyp0JRq_4c1L6vTi_q=
-EeXJ6P=3DPmmq_56xRL74_A@mail.gmail.com
->         https://lore.kernel.org/linux-arm-kernel/20221219221439.1681770-1=
--u.kleine-koenig@pengutronix.de
->         https://lore.kernel.org/linux-arm-kernel/20221220154447.12341-1-u=
-.kleine-koenig@pengutronix.de
->
-> but this didn't result in any patch being applied.
->
-> I think it's inarguable that there is a problem that wants to be fixed.
-> My tries to fix this problem fixxled out, so here comes a minimal change
-> that just points out the problem and otherwise makes ghes_remove()
-> return void without further side effects to allow me to continue my
-> quest to make platform_driver remove callbacks return no error.
 
-Tony, Boris, any objections against this patch?
 
->  drivers/acpi/apei/ghes.c | 17 +++++++++++------
->  1 file changed, 11 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 63ad0541db38..dd8cd10b7809 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -1438,7 +1438,7 @@ static int ghes_probe(struct platform_device *ghes_=
-dev)
->         return rc;
->  }
->
-> -static int ghes_remove(struct platform_device *ghes_dev)
-> +static void ghes_remove(struct platform_device *ghes_dev)
->  {
->         int rc;
->         struct ghes *ghes;
-> @@ -1475,8 +1475,15 @@ static int ghes_remove(struct platform_device *ghe=
-s_dev)
->                 break;
->         case ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED:
->                 rc =3D apei_sdei_unregister_ghes(ghes);
-> -               if (rc)
-> -                       return rc;
-> +               if (rc) {
-> +                       /*
-> +                        * Returning early results in a resource leak, bu=
-t we're
-> +                        * only here if stopping the hardware failed.
-> +                        */
-> +                       dev_err(&ghes_dev->dev, "Failed to unregister ghe=
-s (%pe)\n",
-> +                               ERR_PTR(rc));
-> +                       return;
-> +               }
->                 break;
->         default:
->                 BUG();
-> @@ -1490,8 +1497,6 @@ static int ghes_remove(struct platform_device *ghes=
-_dev)
->         mutex_unlock(&ghes_devs_mutex);
->
->         kfree(ghes);
-> -
-> -       return 0;
->  }
->
->  static struct platform_driver ghes_platform_driver =3D {
-> @@ -1499,7 +1504,7 @@ static struct platform_driver ghes_platform_driver =
-=3D {
->                 .name   =3D "GHES",
->         },
->         .probe          =3D ghes_probe,
-> -       .remove         =3D ghes_remove,
-> +       .remove_new     =3D ghes_remove,
->  };
->
->  void __init acpi_ghes_init(void)
->
-> base-commit: 5a82d69d48c82e89aef44483d2a129f869f3506a
-> --
-> 2.42.0
->
+On 11/22/23 06:14, Rafael J. Wysocki wrote:
+> On Tue, Nov 21, 2023 at 11:19 PM Dave Jiang <dave.jiang@intel.com> wrote:
+>>
+>> Linus reported that:
+>> After commit a103f46633fd the kernel stopped compiling for
+>> several ARM32 platforms that I am building with a bare metal
+>> compiler. Bare metal compilers (arm-none-eabi-) don't
+>> define __linux__.
+>>
+>> This is because the header <acpi/platform/acenv.h> is now
+>> in the include path for <linux/irq.h>:
+>>
+>>   CC      arch/arm/kernel/irq.o
+>>   CC      kernel/sysctl.o
+>>   CC      crypto/api.o
+>> In file included from ../include/acpi/acpi.h:22,
+>>                  from ../include/linux/fw_table.h:29,
+>>                  from ../include/linux/acpi.h:18,
+>>                  from ../include/linux/irqchip.h:14,
+>>                  from ../arch/arm/kernel/irq.c:25:
+>> ../include/acpi/platform/acenv.h:218:2: error: #error Unknown target environment
+>>   218 | #error Unknown target environment
+>>       |  ^~~~~
+>>
+>> The issue is caused by the introducing of splitting out the ACPI code to
+>> support the new generic fw_table code.
+>>
+>> Rafael suggested [1] moving the fw_table.h include in linux/acpi.h to below
+>> the linux/mutex.h. Remove the two includes in fw_table.h. Add include of
+>> linux/acpi.h in fw_table.c before the fw_table.h include.
+>>
+>> Link: https://lore.kernel.org/linux-acpi/CAJZ5v0idWdJq3JSqQWLG5q+b+b=zkEdWR55rGYEoxh7R6N8kFQ@mail.gmail.com/
+>> Fixes: a103f46633fd ("acpi: Move common tables helper functions to common lib")
+>> Reported-by: Linus Walleij <linus.walleij@linaro.org>
+>> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+>> ---
+>> v2:
+>> - Remove linux/acpi.h include as well in fw_table.h. (Sam)
+>> ---
+>>  include/linux/acpi.h     |   22 +++++++++++-----------
+>>  include/linux/fw_table.h |    3 ---
+>>  lib/fw_table.c           |    1 +
+>>  3 files changed, 12 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+>> index 54189e0e5f41..4db54e928b36 100644
+>> --- a/include/linux/acpi.h
+>> +++ b/include/linux/acpi.h
+>> @@ -15,7 +15,6 @@
+>>  #include <linux/mod_devicetable.h>
+>>  #include <linux/property.h>
+>>  #include <linux/uuid.h>
+>> -#include <linux/fw_table.h>
+>>
+>>  struct irq_domain;
+>>  struct irq_domain_ops;
+>> @@ -25,22 +24,13 @@ struct irq_domain_ops;
+>>  #endif
+>>  #include <acpi/acpi.h>
+>>
+>> -#ifdef CONFIG_ACPI_TABLE_LIB
+>> -#define EXPORT_SYMBOL_ACPI_LIB(x) EXPORT_SYMBOL_NS_GPL(x, ACPI)
+>> -#define __init_or_acpilib
+>> -#define __initdata_or_acpilib
+>> -#else
+>> -#define EXPORT_SYMBOL_ACPI_LIB(x)
+>> -#define __init_or_acpilib __init
+>> -#define __initdata_or_acpilib __initdata
+>> -#endif
+>> -
+>>  #ifdef CONFIG_ACPI
+>>
+>>  #include <linux/list.h>
+>>  #include <linux/dynamic_debug.h>
+>>  #include <linux/module.h>
+>>  #include <linux/mutex.h>
+>> +#include <linux/fw_table.h>
+>>
+>>  #include <acpi/acpi_bus.h>
+>>  #include <acpi/acpi_drivers.h>
+>> @@ -48,6 +38,16 @@ struct irq_domain_ops;
+>>  #include <acpi/acpi_io.h>
+>>  #include <asm/acpi.h>
+>>
+>> +#ifdef CONFIG_ACPI_TABLE_LIB
+>> +#define EXPORT_SYMBOL_ACPI_LIB(x) EXPORT_SYMBOL_NS_GPL(x, ACPI)
+>> +#define __init_or_acpilib
+>> +#define __initdata_or_acpilib
+>> +#else
+>> +#define EXPORT_SYMBOL_ACPI_LIB(x)
+>> +#define __init_or_acpilib __init
+>> +#define __initdata_or_acpilib __initdata
+>> +#endif
+>> +
+>>  static inline acpi_handle acpi_device_handle(struct acpi_device *adev)
+>>  {
+>>         return adev ? adev->handle : NULL;
+>> diff --git a/include/linux/fw_table.h b/include/linux/fw_table.h
+>> index ff8fa58d5818..ca49947f0a77 100644
+>> --- a/include/linux/fw_table.h
+>> +++ b/include/linux/fw_table.h
+>> @@ -25,9 +25,6 @@ struct acpi_subtable_proc {
+>>         int count;
+>>  };
+>>
+>> -#include <linux/acpi.h>
+>> -#include <acpi/acpi.h>
+>> -
+>>  union acpi_subtable_headers {
+>>         struct acpi_subtable_header common;
+>>         struct acpi_hmat_structure hmat;
+>> diff --git a/lib/fw_table.c b/lib/fw_table.c
+>> index b51f30a28e47..c4831f3378be 100644
+>> --- a/lib/fw_table.c
+>> +++ b/lib/fw_table.c
+>> @@ -7,6 +7,7 @@
+>>   *  Copyright (C) 2023 Intel Corp.
+>>   */
+>>  #include <linux/errno.h>
+>> +#include <linux/acpi.h>
+>>  #include <linux/fw_table.h>
+> 
+> Because fw_table.h is included via acpi.h, do you still need to
+> include it directly here?
+
+No. I'll drop.
+
+> 
+>>  #include <linux/init.h>
+>>  #include <linux/kernel.h>
+>>
+>>
+>>
 
