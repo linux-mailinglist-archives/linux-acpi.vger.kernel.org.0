@@ -1,117 +1,197 @@
-Return-Path: <linux-acpi+bounces-1769-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1770-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616EE7F5373
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 23:33:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D562B7F5374
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 23:33:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C56D2815B1
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 22:33:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E5972815B1
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 22:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8261CABA
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 22:33:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447C1848E
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 22:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TgP7ZJbM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB4C11A4
-	for <linux-acpi@vger.kernel.org>; Wed, 22 Nov 2023 13:15:46 -0800 (PST)
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-58787a6583aso11474eaf.1
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Nov 2023 13:15:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700687746; x=1701292546;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XIViwE8ngJeWAb0j3Ms81yXwzjL0kaPTkMVaFWZjjIw=;
-        b=qe01TRrleugcy29UvVMy0YR0p7leIo8PIR6iS3oKtA7CQeNimdcxOz30C1f74Llckt
-         O5UmhdNZPIoWctarLuJu16GvCfwNIiNQpvNGQgRPuDPGtNxv8p8cRq2MpzdUepxoI+QU
-         3e+Xb1GYblZFOte5RLug/28CeeAul5A4/BaPpjnUpyyk12dnLVn9rUgirWGsijJdjEAr
-         c8vQ2KaDog0PlmWv3JS4fWNKS1g3Jn8v+V8PMobNX5ZGMTakiARPBoqpMS9NTgMzS+Hd
-         C1ZPKlHZO7l6S7uCkSD8tI1+egbMW0aQJekkbVhVrElzjAI7d46cjDzpt8/CV13Q2eRu
-         NfvQ==
-X-Gm-Message-State: AOJu0YwH2pFIbsMpsjTTBXU9qPHeVEjUnS1B0EogmT8oTsEil8EUkSJU
-	zS2bAfOgEoFIHjUO06Zr8t/C5aEARD9MPoydVmSqdBvf
-X-Google-Smtp-Source: AGHT+IF1HUmXiVCJ6fPYme01keG8iuqJbnlzImD3Kr/4Lgx8CaFbQZGjTZMyuOh+i6z0yqDloBzvLCStEYUcoB4tGfc=
-X-Received: by 2002:a4a:d087:0:b0:584:17d0:de3d with SMTP id
- i7-20020a4ad087000000b0058417d0de3dmr4134275oor.1.1700687745915; Wed, 22 Nov
- 2023 13:15:45 -0800 (PST)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4F62101;
+	Wed, 22 Nov 2023 13:32:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700688743; x=1732224743;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=H/Sr2PUsoitanwqIKc8J29ushpHKfdibDYkRT/pe11s=;
+  b=TgP7ZJbMyyL/hJ7F4DRHBjRe+FOcD92X69kGfsAU3kXrPszLTB09FHpz
+   QW0sba8VJg1QtbPHuy1t1d8XYUy9Qm75YCCLDuqO+iPNiWUiCmVZrHarf
+   RRzCBKPt4UuKaIVFFE1fa45V5lq+pV3RjCuY3z2CLqnn7HrSD+DAsZShO
+   tzp58dJkbKKsl/ptjCoLY6vorKpfba7/QJRBrlLq2TqtMIAIXMv8l1YKK
+   gz49r85akTpCXdgvt389TzlM2N0Aq2blt+EyaXXM6e8SD/4cpGsAzL+DO
+   buqTw9i2Xr5pUeGaIC4bYUV3y80MTNl6fRqC1JwtwLyAkSZu6f3JfCfGj
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="396062506"
+X-IronPort-AV: E=Sophos;i="6.04,219,1695711600"; 
+   d="scan'208";a="396062506"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2023 13:32:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="833201708"
+X-IronPort-AV: E=Sophos;i="6.04,219,1695711600"; 
+   d="scan'208";a="833201708"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmsmga008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 22 Nov 2023 13:32:22 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Wed, 22 Nov 2023 13:32:21 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34 via Frontend Transport; Wed, 22 Nov 2023 13:32:21 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.34; Wed, 22 Nov 2023 13:32:21 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Mn011Ycj1Gym3D8GQmnm1ne+xT1KuMpdjgmVU+N7t4e8LBNHZAe/LA+CJc8nQI+WeMg4Wzx/5qHFZyqrXy3bGTe+eBCfYD5ESkSktlvW/PUtsmwW0+J1bYCS2iq8tpRSX5yn1S8+pOhHKOWLP755yCtOvKfUECZmR7Zk+jytiPb174t1uo0guc2PrR3ujgCxxKFFf3hPFCeGwajfpm5/4ESYsockKHmZ9jDHnh6577kNBrT3ZmWDogeWc2uj6XS4RPYt1bXpuO8KT0phvxokWFCzba7KtO6McKenEGIvG739ALQ+AmErNHachBuoV8SAsWplEHKyo/Lowyf0CaPLug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=N1ey0hFO0QrTyK9JJA5qy64vPs+TGVTnAxssB1gMKbY=;
+ b=C2f6LHTSuN1sv5fkYx4NMHq1ArX6XKOFNKbQWuRpO082IGkwWeUja0uxnLoeBF1ntvsuX+CJHyxx4w57ynNC++iGi/ZXYCIAeEEufIehbEgCoRB0eGLDEZEApRjoEW+8TdIj58VHpzRZmulCTmlLY9wd/KxP0GCve71R//N2hlX80DlV+yuZTymfPkcI+VZpLbzSn1Bszss48kG8j8Gns2UIzRvmKliLkoBUMR8aLxykGZLIB2UDS9ZAd6Rqwx3u+ifBuYwtIn7mqermp/Sa/XS2nwKCZUJxfPL0k3diBQMmI5X8hpjnMDt2/LROmV5isYykB8IjEujtI7CThzJbXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SJ0PR11MB5677.namprd11.prod.outlook.com (2603:10b6:a03:37e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.19; Wed, 22 Nov
+ 2023 21:32:19 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6362:763e:f84b:4169]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6362:763e:f84b:4169%5]) with mapi id 15.20.7025.019; Wed, 22 Nov 2023
+ 21:32:19 +0000
+Date: Wed, 22 Nov 2023 13:32:17 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Dave Jiang <dave.jiang@intel.com>, <linus.walleij@linaro.org>,
+	<rafael@kernel.org>
+CC: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, <lenb@kernel.org>,
+	<robert.moore@intel.com>, <Jonathan.Cameron@huawei.com>,
+	<dan.j.williams@intel.com>, <guohanjun@huawei.com>, <arnd@arndb.de>,
+	<linux-acpi@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<cfsworks@gmail.com>
+Subject: RE: [PATCH v3] acpi: Fix ARM32 platforms compile issue introduced by
+ fw_table changes
+Message-ID: <655e7361d6ce_b2e8294b9@dwillia2-xfh.jf.intel.com.notmuch>
+References: <170066723324.2477261.2506149141979712937.stgit@djiang5-mobl3>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <170066723324.2477261.2506149141979712937.stgit@djiang5-mobl3>
+X-ClientProxiedBy: MW4PR03CA0290.namprd03.prod.outlook.com
+ (2603:10b6:303:b5::25) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231103083625.1229008-1-sakari.ailus@linux.intel.com>
- <20231103083625.1229008-2-sakari.ailus@linux.intel.com> <CAJZ5v0hB=6mLp3ZKOoF=_+wJ-crraXtMaZ7ZNhZ_Gfg2SU08Ww@mail.gmail.com>
- <ZV0h7rfvyTX4tG3t@kekkonen.localdomain>
-In-Reply-To: <ZV0h7rfvyTX4tG3t@kekkonen.localdomain>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 22 Nov 2023 22:15:34 +0100
-Message-ID: <CAJZ5v0it5QeNZqJGzYQz-sa52DwjNTaaftLkzGHQZVwXCjJ+Yg@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] acpi: property: Let args be NULL in __acpi_node_get_property_reference
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org, 
-	andriy.shevchenko@linux.intel.com, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ0PR11MB5677:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1b1133de-cf29-43df-c2fd-08dbeba28173
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Yn7/ujIUv9awNIKLRYbDe7OTjDy5dGu4LPrMI7Zhtdsl2zgieAs4IEppvtJpPe7XgnJgek18+iCQz1hznffOWOAZJYIe0C8roSWmdeUL1Ou1Yjn1qs8IOzfWa1fXk+vRN4Dxh4og+2XzWWK/eKpFObjKVpwH4+PH/a13aIQXTgpuUK4RscLNIrzPz2C4S5/jU5C8CqGD3k8CG383dh6i+H/XCdIQWF97yTRyGxwdYXsdFF95yeJ8sHEWQZiQAAYgn18tW8rUDWoOB+MqGqs+RQtBsTWZuZvbBj7zHLFQzA7UiIFGHK0c/C5h8aG9YCM6DgxPvwJG8ZbutxrdcU/oDVuTpu3VGMa20tRC98zhoN+aLxUq+SaDD50iXpPDEqxgyrbyuRyVOAr6PLlVddZeFog9kOqdLlG4Czpm4+1C1R608AzSxKp3/jr+TaVzMZ93v/iofeMqXhamwDL51ggUGkWliOF7yIuUukROOT+Al3T5hM77tkny3TfSCSWIwv34Zk//YlEIMxi5Q+hQftgzcqtQrTVV0MTT/BbD5DLWKKmCNt33nUhpYH+XTAoezifIpmY8ls+WZD9Q7o3A9JMBQw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(39860400002)(376002)(136003)(346002)(230922051799003)(186009)(64100799003)(451199024)(1800799012)(2906002)(41300700001)(7416002)(5660300002)(6512007)(9686003)(82960400001)(26005)(6506007)(4326008)(8936002)(8676002)(66946007)(83380400001)(6486002)(478600001)(86362001)(316002)(66556008)(66476007)(966005)(38100700002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?09Gd9wU+uqX0jlocPTw4fY7I3N8JWJT5Y2EMb2AONELibiOFrzA3W3+aWOnb?=
+ =?us-ascii?Q?QziMJDak1k6jkOCG2l+HVeaGsAOwSfEPkAPRjYEz+glMRMiHZP19zFV0JGDV?=
+ =?us-ascii?Q?gTLLnQkDZlKkcGwZSRhkseLJbUIfYIRDNsBN6CQC2PBOQ/asMfFmrWbwawm/?=
+ =?us-ascii?Q?g0wo1GAlHR++ilR4e5S6fVD6EjeFk1Tszqbl8ieFrhK0A5yI4LOgUvu13LNi?=
+ =?us-ascii?Q?nF6R8qlkUT8yXgTBrrfV2LXB8Vf/is6Iv/OkA96LtuQYvUaPk4Wb0a+zHXZs?=
+ =?us-ascii?Q?LUbg+3ZRAdm9AiFLTMghmU0ODeDSBaiugwoBYskDMo53d5CYmEaTSZWU0zIK?=
+ =?us-ascii?Q?VInRw019jbmPskUNQKrIa8lW/MORzLWhp7SuV1W+PRkmhsWHUoGI3LQEMelA?=
+ =?us-ascii?Q?rePEXwM21HdSQaYbQP1DZoth0By7wdQtoTIV769x2P93EkQfwv1fNTCApz+v?=
+ =?us-ascii?Q?tWueLaIXduEGECfRBGosnBca4QOrEVtGoHLZuUdPKaOMPsx21rSrQ0Ff19tT?=
+ =?us-ascii?Q?hqOlUt2U+SOB64VpEtl0f/wvFOkeLu+smUVvP9HhoGvdFwzeW27s1OVH1Xaw?=
+ =?us-ascii?Q?07d/ijLV7Y51rbDMbDd9akVwweS3shahGW2kVXOMJzXA/HDx3OwQhSuLnAWc?=
+ =?us-ascii?Q?irNZw2FAQefelPgVqDhwqnkHQAcnHgoiquzcMW2ZpgZZiHnyixWEeOHVJgMg?=
+ =?us-ascii?Q?8fo88l7fbMv5jhI7NKoeqleP+D4tsYs8ADKfV9dug0spdQMuxro0Y80oMcvB?=
+ =?us-ascii?Q?12rR1pU4asyzUqLaOGgSbVRsaxyHobDx8kIMyD7nTWkLTF2pj9TfGEswUyBw?=
+ =?us-ascii?Q?rWOlvqXziL66CsV60a7h8La0ZcX23Ur+QHAfVrqLCtDAyja9K2dMXieIRc38?=
+ =?us-ascii?Q?erAwZj7Gb04tNStzLDXikXidpRe9O4BPGFl5z+Eaxiif28cP94WjspCQdMXP?=
+ =?us-ascii?Q?B2iqn3ha1UuJt65vhuB8Fbel/C4D97Ck9rRbCeD1NlebGnpxGAv+IkhRxfkA?=
+ =?us-ascii?Q?9b7qwjnNUCFo75+jYXVKvBPSJGVCgXdzY0lXXnFYvmxkGJq3QT0yde059KiA?=
+ =?us-ascii?Q?CgUMYlceh0vTA/pjVSFNPmQMXg9NyVUlXKs9RL+otDY0GJklJDlsTqXXhSek?=
+ =?us-ascii?Q?2r15JJnaO8ziHryHg8kqXSaN6RIO10NvATcqTUmxdYcPGKVp9xGRiP7y4tmM?=
+ =?us-ascii?Q?D2BEgD0/STkYqmg9UK2xDRoVjqaRMd8uNuoUu0iCCT7BMUPurCmV5Wr8TCRI?=
+ =?us-ascii?Q?8GnCYmmKd4aUrJOJb4gH2Bc5POKkxL8GMfNt42YMcMODJNYanKVC34QDBfje?=
+ =?us-ascii?Q?T/9zAqW5RZaoPptQPMgFcunn6gi7jSLAd/qOUqp4ggsAWJ89/y684IOIzsBp?=
+ =?us-ascii?Q?365xOnjeVCda3iQHs08OO3rywoq49xuGXsH6FCy1pcrzZFMwsRxezoAMjNhY?=
+ =?us-ascii?Q?0AFBxv54WQ/ZsYoBeCNIZQ1p1AP21azsOuHAkPRsHBP9EzzROoDUYPpnCODW?=
+ =?us-ascii?Q?FOJaiwI7XsaeLcUlJCtFG1s/TprnATkXuYCAaLMCsCw8TyzukelsVb3hGQZC?=
+ =?us-ascii?Q?ef7jSCmgDuM7mhjDYFVOa7EAnfYnsz1Z5DyJbJwwXGJNyHxLtu5Kw1tynxX/?=
+ =?us-ascii?Q?gw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b1133de-cf29-43df-c2fd-08dbeba28173
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2023 21:32:19.3904
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4XAb1t8nV9Jt8nA1R5NjkP1tDOlBaDtI9V97UGmtfy9rJaV7i4+t/VTZjEifM6sZNHzAbt//Q2v1xR79uAfiZuLwEN4nJgn5QkRFoDzqMNw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5677
+X-OriginatorOrg: intel.com
 
-On Tue, Nov 21, 2023 at 10:32=E2=80=AFPM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> On Tue, Nov 21, 2023 at 08:36:08PM +0100, Rafael J. Wysocki wrote:
-> > On Fri, Nov 3, 2023 at 9:36=E2=80=AFAM Sakari Ailus
-> > <sakari.ailus@linux.intel.com> wrote:
-> > >
-> > > fwnode_get_property_reference_args() may not be called with args argu=
-ment
-> > > NULL on ACPI, OF already supports this. Add the missing NULL checks a=
-nd
-> > > document this.
-> > >
-> > > The purpose is to be able to count the references.
-> > >
-> > > Fixes: 977d5ad39f3e ("ACPI: Convert ACPI reference args to generic fw=
-node reference args")
-> > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > ---
-> > >  drivers/acpi/property.c | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > >
-> > > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> > > index 413e4fcadcaf..93608714b652 100644
-> > > --- a/drivers/acpi/property.c
-> > > +++ b/drivers/acpi/property.c
-> > > @@ -851,6 +851,7 @@ static int acpi_get_ref_args(struct fwnode_refere=
-nce_args *args,
-> > >   * @index: Index of the reference to return
-> > >   * @num_args: Maximum number of arguments after each reference
-> > >   * @args: Location to store the returned reference with optional arg=
-uments
-> > > + *       (may be NULL)
-> > >   *
-> > >   * Find property with @name, verifify that it is a package containin=
-g at least
-> > >   * one object reference and if so, store the ACPI device object poin=
-ter to the
-> > > @@ -907,6 +908,9 @@ int __acpi_node_get_property_reference(const stru=
-ct fwnode_handle *fwnode,
-> > >                 if (!device)
-> > >                         return -EINVAL;
-> > >
-> > > +               if (!args)
-> > > +                       return 0;
-> > > +
-> > >                 args->fwnode =3D acpi_fwnode_handle(device);
-> > >                 args->nargs =3D 0;
-> > >                 return 0;
-> > > --
-> >
-> > Is this series waiting for me to pick it up or am I confused?
->
-> Yes, please!
+Dave Jiang wrote:
+> Linus reported that:
+> After commit a103f46633fd the kernel stopped compiling for
+> several ARM32 platforms that I am building with a bare metal
+> compiler. Bare metal compilers (arm-none-eabi-) don't
+> define __linux__.
+> 
+> This is because the header <acpi/platform/acenv.h> is now
+> in the include path for <linux/irq.h>:
+> 
+>   CC      arch/arm/kernel/irq.o
+>   CC      kernel/sysctl.o
+>   CC      crypto/api.o
+> In file included from ../include/acpi/acpi.h:22,
+>                  from ../include/linux/fw_table.h:29,
+>                  from ../include/linux/acpi.h:18,
+>                  from ../include/linux/irqchip.h:14,
+>                  from ../arch/arm/kernel/irq.c:25:
+> ../include/acpi/platform/acenv.h:218:2: error: #error Unknown target environment
+>   218 | #error Unknown target environment
+>       |  ^~~~~
+> 
+> The issue is caused by the introducing of splitting out the ACPI code to
+> support the new generic fw_table code.
+> 
+> Rafael suggested [1] moving the fw_table.h include in linux/acpi.h to below
+> the linux/mutex.h. Remove the two includes in fw_table.h. Replace
+> linux/fw_table.h include in fw_table.c with linux/acpi.h.
+> 
+> Link: https://lore.kernel.org/linux-acpi/CAJZ5v0idWdJq3JSqQWLG5q+b+b=zkEdWR55rGYEoxh7R6N8kFQ@mail.gmail.com/
+> Fixes: a103f46633fd ("acpi: Move common tables helper functions to common lib")
+> Closes: https://lore.kernel.org/linux-acpi/20231114-arm-build-bug-v1-1-458745fe32a4@linaro.org/
+> Reported-by: Linus Walleij <linus.walleij@linaro.org>
+> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Tested-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 
-OK, applied as 6.8 material, thanks!
+Acked-by: Dan Williams <dan.j.williams@intel.com>
+
+It concerns me that neither linux-next nor 0day robot exposure reported
+this problem.
+
+Does ARM32 require manual compilation coverage these days or was this
+just a series of unfortunate events that the build bots missed this?
 
