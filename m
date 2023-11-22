@@ -1,172 +1,151 @@
-Return-Path: <linux-acpi+bounces-1745-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1746-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9100B7F491C
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 15:39:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 788027F491E
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 15:40:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18A64B20D64
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:39:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7218BB21044
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9114E608
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iqnMr9O5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D864C4E619
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 14:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3602810C;
-	Wed, 22 Nov 2023 05:21:08 -0800 (PST)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-5c206572eedso3927008a12.0;
-        Wed, 22 Nov 2023 05:21:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700659267; x=1701264067; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8KuAtq2wuwd7uRsWWYBZ0mULd3F8IzS2XEFfePOf2ZA=;
-        b=iqnMr9O5eVF1I2OBbzzZQB3o8C2yqjNcIX86HXScm39WdL3nJa7KgKQJuY1YEvJ9JM
-         nlMm+0CyV7UmXiKKdFQ0JI1dUkvDMuMLJf0J3WuMiiC287v4PjTk/4GFfJc6+nmgukPp
-         ssOVNxY2xmQhL1hAeR2r1HhXOQNg266gNcXo0yibmsm5y545585iQ5qaHnYmjRCM2s1O
-         BM852pTUWrpVsF/H8wDb98JUpHxB4+JL5e6AXz/qeDGJ5y7aUBxnDar3AGi0MENrKGX2
-         AeZG/g1gN2MF5RRHNvm+6XPF9PWQ73Qt6prAs1KfeNAw4oSQqkMHgp8B01LR6t2kCDSg
-         sd8Q==
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E76E219D;
+	Wed, 22 Nov 2023 05:34:35 -0800 (PST)
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-1d542f05b9aso1068626fac.1;
+        Wed, 22 Nov 2023 05:34:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700659267; x=1701264067;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8KuAtq2wuwd7uRsWWYBZ0mULd3F8IzS2XEFfePOf2ZA=;
-        b=gE6s2qrxQfgpRoARGE3m3VVZLI2xQJ6H6tu7KoUy6AUiD/ktmYC4Z/Ng8yP1R0Wia3
-         7c+G7YV4TgAPIKdBHljFVGmXWWMegWzLBcLJyYYCTbRUx9JAY6zrf5Uy6kKbH8x5B06K
-         UDb5iL2W1p6MyXGKmzcmqbh1535g1USfN1j/dT/U3k+F2MgS117MCmEIuxi4OiX2t32A
-         vLNf4oS8ZgewwxDEOjdHqYWUJxBUbN0S0cWLCvjUSH3C+bWLIp2A1eVvEU0KmQ6Ojp1s
-         STflksjIP6YFbxuBhFWgAmxdJQhKQyv6TldNG0+L9PkUdXCuo9A6EKD/DHmAqNHN2W3/
-         NsGQ==
-X-Gm-Message-State: AOJu0YyH/0tGWrUAdVwgWOfU8YKMKcnxja/Go5/EoQY+LoMHXL80zkRd
-	jACcYBLuQicwGO2luI6MF/E=
-X-Google-Smtp-Source: AGHT+IHMJmWJO62QizpKqXBJpkRvDmAKFCnqM9s6SVoAVqZ+23esDzGNsZhTZ+8ts5QHY0nOg2jcBQ==
-X-Received: by 2002:a05:6a21:3288:b0:186:736f:7798 with SMTP id yt8-20020a056a21328800b00186736f7798mr2447858pzb.11.1700659267413;
-        Wed, 22 Nov 2023 05:21:07 -0800 (PST)
-Received: from archie.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id w14-20020aa7858e000000b006cbb71186f7sm4008491pfn.29.2023.11.22.05.21.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Nov 2023 05:21:06 -0800 (PST)
-Received: by archie.me (Postfix, from userid 1000)
-	id 1EB3210207134; Wed, 22 Nov 2023 20:21:04 +0700 (WIB)
-Date: Wed, 22 Nov 2023 20:21:03 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Regressions <regressions@lists.linux.dev>,
-	Linux ACPI <linux-acpi@vger.kernel.org>,
-	Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Borislav Petkov <bp@alien8.de>, Arnas <arnasz616@gmail.com>
-Subject: Re: Fwd: [Regression] S3 Sleep Mode failures since Linux 6.x on Dell
- Inspiron 15 5593
-Message-ID: <ZV4AP1GY3fHAxmtx@archie.me>
-References: <585dcc9e-7e72-473a-98ec-4f06018d542f@gmail.com>
+        d=1e100.net; s=20230601; t=1700660075; x=1701264875;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rIuQT6P2ZqLebzsy5/CEWAZOpDUd4LYipSd432nJBas=;
+        b=FfhaYFQb2E5MCtLx7LDJhGNFPfXZmjfWe88ovaU+BFKOraA+hvBskXgxJdcmBEGRzr
+         +RIj3FP2Pw84NWm653ilJC5N1fUTcoEIj9EtSd6tW720AQmDkzGw5cc+4MdM9nBXQpRV
+         d7eh8P+RLuG+hc0GRPuNY55P1TF09IFl8SMUmOQRJZXd4PKJeBfZf7CtZJ88EkUVlz4O
+         GSQad33xq3BJ+yjJ2+CiOM+VkKmbE6cEsqS9aDQFOVBWyuLZbKJQc9oRpu+4vQcAgHhG
+         n1NsBAxnpM6Gk+aupmLj0j0RY7dUwCOK6HiCHYiSfKWo8bYnbdbQGcbC8hOMV6FN7jDO
+         WWfQ==
+X-Gm-Message-State: AOJu0YwjUWrd2FKp/HQlJo9SyG8460y3/Uk6V4VE04nRc9neg6RHc8hM
+	k45z34kdW4IUGaaaTP5/0Fi61MiKUR+nMzGGYTc=
+X-Google-Smtp-Source: AGHT+IHO4Xc/rF2fQLAzIZemKE6Z8t/9X8s1KCk8lA4m3Pr02O8bIkVAxEJWoFXpmxzQdjnG7AHL7y/Vw4yarOuAN4M=
+X-Received: by 2002:a05:6871:724a:b0:1e9:8ab9:11ca with SMTP id
+ ml10-20020a056871724a00b001e98ab911camr3149747oac.3.1700660075045; Wed, 22
+ Nov 2023 05:34:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="LKCzLPBSKEZk9tIu"
-Content-Disposition: inline
-In-Reply-To: <585dcc9e-7e72-473a-98ec-4f06018d542f@gmail.com>
-
-
---LKCzLPBSKEZk9tIu
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20231109183322.28039-1-sumitg@nvidia.com> <20231109183322.28039-2-sumitg@nvidia.com>
+ <CAJZ5v0jEXYP-V93XJ02cZ8UbMwKei2E27Sc0He0WnKvNXpUECg@mail.gmail.com> <7b4f8911-90ef-8419-78dc-c2bffe9b9a3f@nvidia.com>
+In-Reply-To: <7b4f8911-90ef-8419-78dc-c2bffe9b9a3f@nvidia.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 22 Nov 2023 14:34:24 +0100
+Message-ID: <CAJZ5v0g-f8MSyu5Y83c7WvdpAjq9mWBBD9XqMKzZ1rUGmML-+w@mail.gmail.com>
+Subject: Re: [Patch v6 1/2] ACPI: thermal: Add Thermal fast Sampling Period
+ (_TFP) support
+To: Sumit Gupta <sumitg@nvidia.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, rui.zhang@intel.com, lenb@kernel.org, 
+	lpieralisi@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com, 
+	linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	treding@nvidia.com, jonathanh@nvidia.com, bbasu@nvidia.com, 
+	sanjayc@nvidia.com, ksitaraman@nvidia.com, srikars@nvidia.com, 
+	jbrasen@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 26, 2023 at 07:25:48AM +0700, Bagas Sanjaya wrote:
-> Hi,
->=20
-> I notice a regression report on Bugzilla [1]. Quoting from it:
->=20
-> > I'm having some weird issues with sleep mode on any 6.x Linux kernel ve=
-rsion - it's a toss-up when I close the lid as to whether it will sleep pro=
-perly or not - when it fails, the screen will lock, but it will not actuall=
-y enter S3 sleep - it just blanks the screen, but the laptop stays on (and =
-fan does too).
-> >=20
-> > Opening the lid after a failed sleep attempt turns on the screen instan=
-taneously, and it doesn't even need to reconnect to WiFi - this doesn't hap=
-pen when actually resuming from sleep, it takes a couple seconds for the sc=
-reen to come on, and it then needs to reconnect the network.
-> >=20
-> > Following the failed attempt to enter sleep mode (closing the lid), the=
- following entries appear in the system log -
-> >=20
-> > arkiron kernel: ACPI Error: Thread 3233415168 cannot release Mutex [ECM=
-X] acquired by thread 3268191936 (20221020/exmutex-378)
-> > arkiron kernel: ACPI Error: Aborting method \_SB.PCI0.LPCB.ECDV._Q66 du=
-e to previous error (AE_AML_NOT_OWNER) (20221020/psparse-529)
-> > arkiron kernel: Non-boot CPUs are not disabled
-> >=20
-> > Now, the "Non-boot CPUs are not disabled" line stands out the most to m=
-e here, because successful sleep attempts won't have this line in the log.
-> >=20
-> > After the failed attempt above to sleep, I now close the lid again, and=
- it seemingly goes to sleep successfully. After checking the log following =
-this, I find two new error lines in the log -
-> >=20
-> > arkiron kernel: ACPI Error: Thread 3233415168 cannot release Mutex [ECM=
-X] acquired by thread 3268191936 (20221020/exmutex-378)
-> > arkiron kernel: ACPI Error: Aborting method \_SB.PCI0.LPCB.ECDV._Q66 du=
-e to previous error (AE_AML_NOT_OWNER) (20221020/psparse-529)
-> >=20
-> > Note that this time the CPU line is missing, as expected for a successf=
-ul sleep attempt.
-> >=20
-> > This happens on both latest stable Linux kernel 6.5 as well as the late=
-st Linux LTS 6.1 kernel. The last kernel that this didn't happen on was Lin=
-ux LTS 5.15 (any version), which is what I was running up until the Linux L=
-TS 6.1 upgrade. At that point I tried switching back to mainline (6.5) to s=
-ee if it would fix sleep issues, but it didn't help. Downgrading to Linux L=
-TS 5.15 did fix the sleep issues and the laptop seems to sleep reliably now=
-=2E Running LTS 5.15.131-1 without issue as I am making this report.
-> >=20
-> > I'm on a Dell Inspiron 15 5593 using BIOS ver 1.27.0 (latest as of now)=
-, running Arch Linux x86_64
->=20
-> See Bugzilla for the full thread.
->=20
-> Anyway, I'm adding it to regzbot:
->=20
-> #regzbot introduced: v5.15..v6.1 https://bugzilla.kernel.org/show_bug.cgi=
-?id=3D217950
->=20
-> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=3D217950
->=20
+On Wed, Nov 22, 2023 at 1:55=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com> wro=
+te:
+>
+>
+>
+> On 22/11/23 01:29, Rafael J. Wysocki wrote:
+> > External email: Use caution opening links or attachments
+> >
+> >
+> > On Thu, Nov 9, 2023 at 7:34=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com> =
+wrote:
+> >>
+> >> From: Jeff Brasen <jbrasen@nvidia.com>
+> >>
+> >> Add support of "Thermal fast Sampling Period (_TFP)" for Passive cooli=
+ng.
+> >> As per [1], _TFP overrides the "Thermal Sampling Period (_TSP)" if bot=
+h
+> >> are present in a Thermal zone.
+> >>
+> >> [1] ACPI Specification 6.4 - section 11.4.17. _TFP (Thermal fast Sampl=
+ing
+> >>      Period)"
+> >>
+> >> Signed-off-by: Jeff Brasen <jbrasen@nvidia.com>
+> >> Co-developed-by: Sumit Gupta <sumitg@nvidia.com>
+> >> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+> >> ---
+> >>   drivers/acpi/thermal.c | 12 +++++++++---
+> >>   1 file changed, 9 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+> >> index f74d81abdbfc..3b75eb2260d7 100644
+> >> --- a/drivers/acpi/thermal.c
+> >> +++ b/drivers/acpi/thermal.c
+> >> @@ -90,7 +90,7 @@ struct acpi_thermal_passive {
+> >>          struct acpi_thermal_trip trip;
+> >>          unsigned long tc1;
+> >>          unsigned long tc2;
+> >> -       unsigned long tsp;
+> >> +       unsigned long delay;
+> >>   };
+> >>
+> >>   struct acpi_thermal_active {
+> >> @@ -404,11 +404,17 @@ static bool passive_trip_params_init(struct acpi=
+_thermal *tz)
+> >>
+> >>          tz->trips.passive.tc2 =3D tmp;
+> >>
+> >> +       status =3D acpi_evaluate_integer(tz->device->handle, "_TFP", N=
+ULL, &tmp);
+> >> +       if (ACPI_SUCCESS(status)) {
+> >> +               tz->trips.passive.delay =3D tmp;
+> >> +               return true;
+> >> +       }
+> >> +
+> >>          status =3D acpi_evaluate_integer(tz->device->handle, "_TSP", =
+NULL, &tmp);
+> >>          if (ACPI_FAILURE(status))
+> >>                  return false;
+> >>
+> >> -       tz->trips.passive.tsp =3D tmp;
+> >> +       tz->trips.passive.delay =3D tmp * 100;
+> >>
+> >>          return true;
+> >>   }
+> >> @@ -904,7 +910,7 @@ static int acpi_thermal_add(struct acpi_device *de=
+vice)
+> >>
+> >>          acpi_trip =3D &tz->trips.passive.trip;
+> >>          if (acpi_thermal_trip_valid(acpi_trip)) {
+> >> -               passive_delay =3D tz->trips.passive.tsp * 100;
+> >> +               passive_delay =3D tz->trips.passive.delay;
+> >>
+> >>                  trip->type =3D THERMAL_TRIP_PASSIVE;
+> >>                  trip->temperature =3D acpi_thermal_temp(tz, acpi_trip=
+->temp_dk);
+> >> --
+> >
+> > So does the second patch in the series really depend on this one?
+> >
+> > If not, I can apply it I think.
+>
+> Yes, this patch can be applied independently. Thank you!
 
-Hi Thorsten and all,
-
-It seems like the BZ reporter is really busy with his college life; IOW
-he can only bisect in the winter break [1]. Should I mark this regression
-as inconclusive for now?
-
-Thanks.
-
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=3D217950#c5
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---LKCzLPBSKEZk9tIu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZV4APwAKCRD2uYlJVVFO
-o2AAAQDTwCOQWHhQjO5u0rqiRHxr5UzfJelTwcYdlfrqvbmiUgD/Zsh+FP3jNO3S
-gRMaJaeLR5+9J9TbWbtkSOkrGF4AUAw=
-=vXvH
------END PGP SIGNATURE-----
-
---LKCzLPBSKEZk9tIu--
+OK, applied as 6.8 material (with some changelog edits), thanks!
 
