@@ -1,197 +1,179 @@
-Return-Path: <linux-acpi+bounces-1770-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1771-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D562B7F5374
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 23:33:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4307B7F5675
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 03:36:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E5972815B1
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 22:33:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7556CB20BF9
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 02:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447C1848E
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Nov 2023 22:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8128567C
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 02:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TgP7ZJbM"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WTL5f8CR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4F62101;
-	Wed, 22 Nov 2023 13:32:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700688743; x=1732224743;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=H/Sr2PUsoitanwqIKc8J29ushpHKfdibDYkRT/pe11s=;
-  b=TgP7ZJbMyyL/hJ7F4DRHBjRe+FOcD92X69kGfsAU3kXrPszLTB09FHpz
-   QW0sba8VJg1QtbPHuy1t1d8XYUy9Qm75YCCLDuqO+iPNiWUiCmVZrHarf
-   RRzCBKPt4UuKaIVFFE1fa45V5lq+pV3RjCuY3z2CLqnn7HrSD+DAsZShO
-   tzp58dJkbKKsl/ptjCoLY6vorKpfba7/QJRBrlLq2TqtMIAIXMv8l1YKK
-   gz49r85akTpCXdgvt389TzlM2N0Aq2blt+EyaXXM6e8SD/4cpGsAzL+DO
-   buqTw9i2Xr5pUeGaIC4bYUV3y80MTNl6fRqC1JwtwLyAkSZu6f3JfCfGj
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="396062506"
-X-IronPort-AV: E=Sophos;i="6.04,219,1695711600"; 
-   d="scan'208";a="396062506"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2023 13:32:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="833201708"
-X-IronPort-AV: E=Sophos;i="6.04,219,1695711600"; 
-   d="scan'208";a="833201708"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by fmsmga008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 22 Nov 2023 13:32:22 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Wed, 22 Nov 2023 13:32:21 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Wed, 22 Nov 2023 13:32:21 -0800
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Wed, 22 Nov 2023 13:32:21 -0800
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2072.outbound.protection.outlook.com [40.107.237.72])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A0EC10E;
+	Wed, 22 Nov 2023 16:35:42 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Mn011Ycj1Gym3D8GQmnm1ne+xT1KuMpdjgmVU+N7t4e8LBNHZAe/LA+CJc8nQI+WeMg4Wzx/5qHFZyqrXy3bGTe+eBCfYD5ESkSktlvW/PUtsmwW0+J1bYCS2iq8tpRSX5yn1S8+pOhHKOWLP755yCtOvKfUECZmR7Zk+jytiPb174t1uo0guc2PrR3ujgCxxKFFf3hPFCeGwajfpm5/4ESYsockKHmZ9jDHnh6577kNBrT3ZmWDogeWc2uj6XS4RPYt1bXpuO8KT0phvxokWFCzba7KtO6McKenEGIvG739ALQ+AmErNHachBuoV8SAsWplEHKyo/Lowyf0CaPLug==
+ b=NLp7Cz5ZDbBVe+exxUeRznxzGDG3R5qqHQ4+8tCzgA94noZLy8kA56i5nji6TBf2LJtchLWSfqV2NDVIck74jcp6jt9k3cHsAdcLAZmHY8ZJ9axDKseQlg0APL09BSjswVrK26zjsCPMv+JIQeEEQWKR3e1/pLDWUcF3Xri8rjOvxMdap+PAH/eT07N5J7G5/Wml4Iz41HkDUISto/QC5/dNmB1akDUTabd0pdxBUo00QMmvJpxrRuyl6+IHmE+RWZS3h+ZyPjQvNg6oHOhhXup7YdrJ0xwFEg5PVJPitHDHpIciYxdhnTauM2dLOt18miL6VchoHELF5+9brIbrZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=N1ey0hFO0QrTyK9JJA5qy64vPs+TGVTnAxssB1gMKbY=;
- b=C2f6LHTSuN1sv5fkYx4NMHq1ArX6XKOFNKbQWuRpO082IGkwWeUja0uxnLoeBF1ntvsuX+CJHyxx4w57ynNC++iGi/ZXYCIAeEEufIehbEgCoRB0eGLDEZEApRjoEW+8TdIj58VHpzRZmulCTmlLY9wd/KxP0GCve71R//N2hlX80DlV+yuZTymfPkcI+VZpLbzSn1Bszss48kG8j8Gns2UIzRvmKliLkoBUMR8aLxykGZLIB2UDS9ZAd6Rqwx3u+ifBuYwtIn7mqermp/Sa/XS2nwKCZUJxfPL0k3diBQMmI5X8hpjnMDt2/LROmV5isYykB8IjEujtI7CThzJbXg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SJ0PR11MB5677.namprd11.prod.outlook.com (2603:10b6:a03:37e::22) with
+ bh=23Pup1BZOXr14VgsOTv5ghhA2i92yDAHGFFn5oXh4Ak=;
+ b=gzttpUV2/G8EcnvwTr4z5GcIkEQbaFBWLa0tjWOopIz5+ElCOLzUI2pwz3ouDH7PsEYp3yFXjE8UrbT0G7T1if8n8StYfVri/YAkCAeJCsiHHdpGU+RszYS3575Y5dHj6WU1Yfhz5+Lq91VlNQYDE7gXMnjc6cI8tWMUNjb7q5FltkAmdM/b4mZ2qyW34LpTzICY2muvysDESqXO3gtHU0Lzg9ewaWRQBQ59b/YKRaJRdT3N8C3VdABxDqWku0Colm69GgDQWgFy28LOWiZ/8Xt6OUp3CKqj4JEqPv7FMuqyRnPy+mQpjH2Z9v3pRDKjlhzsqwuUbAQweQUjCYO7rA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kvack.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=23Pup1BZOXr14VgsOTv5ghhA2i92yDAHGFFn5oXh4Ak=;
+ b=WTL5f8CR1IKZ4gxcXO8XEtbNJfMzEmrwXP4lI9iAPfU2mW0NZZ3RP6UUvaa4sKJO2UlRZKP8urgJx+bEt5mt84dEVWUVmzOf1IEQPze3emb8sO1nueNYu3TTVPqsB4+qV6ioHfn1ayW/17f8Q3jTQ2DTt4MWwIavPPjmIU6cEYCX4JyP/tLLDAG+tN+UKomoX7bEFwd88H47IxvCLGIPIPr2JZhsYPqZ//jqFuIU86LgkFxFXsmgob2DXtd498POutaj1EnKmNK4qnLo2qimtR0J48bNOvoS0WoeKXiVwpSzB6jfwZggeeZqVo3N4uy3X+Qo9RBdjwnX6BnCKyLocg==
+Received: from DM6PR02CA0107.namprd02.prod.outlook.com (2603:10b6:5:1f4::48)
+ by CYXPR12MB9425.namprd12.prod.outlook.com (2603:10b6:930:dc::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.19; Wed, 22 Nov
- 2023 21:32:19 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6362:763e:f84b:4169]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6362:763e:f84b:4169%5]) with mapi id 15.20.7025.019; Wed, 22 Nov 2023
- 21:32:19 +0000
-Date: Wed, 22 Nov 2023 13:32:17 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: Dave Jiang <dave.jiang@intel.com>, <linus.walleij@linaro.org>,
-	<rafael@kernel.org>
-CC: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, <lenb@kernel.org>,
-	<robert.moore@intel.com>, <Jonathan.Cameron@huawei.com>,
-	<dan.j.williams@intel.com>, <guohanjun@huawei.com>, <arnd@arndb.de>,
-	<linux-acpi@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.18; Thu, 23 Nov
+ 2023 00:35:39 +0000
+Received: from DS3PEPF000099D5.namprd04.prod.outlook.com
+ (2603:10b6:5:1f4:cafe::4c) by DM6PR02CA0107.outlook.office365.com
+ (2603:10b6:5:1f4::48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.19 via Frontend
+ Transport; Thu, 23 Nov 2023 00:35:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS3PEPF000099D5.mail.protection.outlook.com (10.167.17.6) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7025.12 via Frontend Transport; Thu, 23 Nov 2023 00:35:39 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Wed, 22 Nov
+ 2023 16:35:24 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Wed, 22 Nov
+ 2023 16:35:23 -0800
+Received: from sgarnayak-dt.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
+ Transport; Wed, 22 Nov 2023 16:35:15 -0800
+From: <ankita@nvidia.com>
+To: <ankita@nvidia.com>, <jgg@nvidia.com>, <alex.williamson@redhat.com>,
+	<naoya.horiguchi@nec.com>, <akpm@linux-foundation.org>,
+	<tony.luck@intel.com>, <bp@alien8.de>, <linmiaohe@huawei.com>,
+	<rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
+	<shiju.jose@huawei.com>, <bhelgaas@google.com>, <pabeni@redhat.com>,
+	<yishaih@nvidia.com>, <shameerali.kolothum.thodi@huawei.com>,
+	<kevin.tian@intel.com>
+CC: <aniketa@nvidia.com>, <cjia@nvidia.com>, <kwankhede@nvidia.com>,
+	<targupta@nvidia.com>, <vsethi@nvidia.com>, <acurrid@nvidia.com>,
+	<apopple@nvidia.com>, <anuaggarwal@nvidia.com>, <jhubbard@nvidia.com>,
+	<danw@nvidia.com>, <mochs@nvidia.com>, <kvm@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<cfsworks@gmail.com>
-Subject: RE: [PATCH v3] acpi: Fix ARM32 platforms compile issue introduced by
- fw_table changes
-Message-ID: <655e7361d6ce_b2e8294b9@dwillia2-xfh.jf.intel.com.notmuch>
-References: <170066723324.2477261.2506149141979712937.stgit@djiang5-mobl3>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <170066723324.2477261.2506149141979712937.stgit@djiang5-mobl3>
-X-ClientProxiedBy: MW4PR03CA0290.namprd03.prod.outlook.com
- (2603:10b6:303:b5::25) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	<linux-mm@kvack.org>, <linux-edac@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>
+Subject: [PATCH v2 0/4] mm: Implement ECC handling for pfn with no struct page
+Date: Thu, 23 Nov 2023 06:05:08 +0530
+Message-ID: <20231123003513.24292-1-ankita@nvidia.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ0PR11MB5677:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1b1133de-cf29-43df-c2fd-08dbeba28173
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099D5:EE_|CYXPR12MB9425:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f79c1bd-d6e5-40fd-b01e-08dbebbc1e22
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Yn7/ujIUv9awNIKLRYbDe7OTjDy5dGu4LPrMI7Zhtdsl2zgieAs4IEppvtJpPe7XgnJgek18+iCQz1hznffOWOAZJYIe0C8roSWmdeUL1Ou1Yjn1qs8IOzfWa1fXk+vRN4Dxh4og+2XzWWK/eKpFObjKVpwH4+PH/a13aIQXTgpuUK4RscLNIrzPz2C4S5/jU5C8CqGD3k8CG383dh6i+H/XCdIQWF97yTRyGxwdYXsdFF95yeJ8sHEWQZiQAAYgn18tW8rUDWoOB+MqGqs+RQtBsTWZuZvbBj7zHLFQzA7UiIFGHK0c/C5h8aG9YCM6DgxPvwJG8ZbutxrdcU/oDVuTpu3VGMa20tRC98zhoN+aLxUq+SaDD50iXpPDEqxgyrbyuRyVOAr6PLlVddZeFog9kOqdLlG4Czpm4+1C1R608AzSxKp3/jr+TaVzMZ93v/iofeMqXhamwDL51ggUGkWliOF7yIuUukROOT+Al3T5hM77tkny3TfSCSWIwv34Zk//YlEIMxi5Q+hQftgzcqtQrTVV0MTT/BbD5DLWKKmCNt33nUhpYH+XTAoezifIpmY8ls+WZD9Q7o3A9JMBQw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(39860400002)(376002)(136003)(346002)(230922051799003)(186009)(64100799003)(451199024)(1800799012)(2906002)(41300700001)(7416002)(5660300002)(6512007)(9686003)(82960400001)(26005)(6506007)(4326008)(8936002)(8676002)(66946007)(83380400001)(6486002)(478600001)(86362001)(316002)(66556008)(66476007)(966005)(38100700002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?09Gd9wU+uqX0jlocPTw4fY7I3N8JWJT5Y2EMb2AONELibiOFrzA3W3+aWOnb?=
- =?us-ascii?Q?QziMJDak1k6jkOCG2l+HVeaGsAOwSfEPkAPRjYEz+glMRMiHZP19zFV0JGDV?=
- =?us-ascii?Q?gTLLnQkDZlKkcGwZSRhkseLJbUIfYIRDNsBN6CQC2PBOQ/asMfFmrWbwawm/?=
- =?us-ascii?Q?g0wo1GAlHR++ilR4e5S6fVD6EjeFk1Tszqbl8ieFrhK0A5yI4LOgUvu13LNi?=
- =?us-ascii?Q?nF6R8qlkUT8yXgTBrrfV2LXB8Vf/is6Iv/OkA96LtuQYvUaPk4Wb0a+zHXZs?=
- =?us-ascii?Q?LUbg+3ZRAdm9AiFLTMghmU0ODeDSBaiugwoBYskDMo53d5CYmEaTSZWU0zIK?=
- =?us-ascii?Q?VInRw019jbmPskUNQKrIa8lW/MORzLWhp7SuV1W+PRkmhsWHUoGI3LQEMelA?=
- =?us-ascii?Q?rePEXwM21HdSQaYbQP1DZoth0By7wdQtoTIV769x2P93EkQfwv1fNTCApz+v?=
- =?us-ascii?Q?tWueLaIXduEGECfRBGosnBca4QOrEVtGoHLZuUdPKaOMPsx21rSrQ0Ff19tT?=
- =?us-ascii?Q?hqOlUt2U+SOB64VpEtl0f/wvFOkeLu+smUVvP9HhoGvdFwzeW27s1OVH1Xaw?=
- =?us-ascii?Q?07d/ijLV7Y51rbDMbDd9akVwweS3shahGW2kVXOMJzXA/HDx3OwQhSuLnAWc?=
- =?us-ascii?Q?irNZw2FAQefelPgVqDhwqnkHQAcnHgoiquzcMW2ZpgZZiHnyixWEeOHVJgMg?=
- =?us-ascii?Q?8fo88l7fbMv5jhI7NKoeqleP+D4tsYs8ADKfV9dug0spdQMuxro0Y80oMcvB?=
- =?us-ascii?Q?12rR1pU4asyzUqLaOGgSbVRsaxyHobDx8kIMyD7nTWkLTF2pj9TfGEswUyBw?=
- =?us-ascii?Q?rWOlvqXziL66CsV60a7h8La0ZcX23Ur+QHAfVrqLCtDAyja9K2dMXieIRc38?=
- =?us-ascii?Q?erAwZj7Gb04tNStzLDXikXidpRe9O4BPGFl5z+Eaxiif28cP94WjspCQdMXP?=
- =?us-ascii?Q?B2iqn3ha1UuJt65vhuB8Fbel/C4D97Ck9rRbCeD1NlebGnpxGAv+IkhRxfkA?=
- =?us-ascii?Q?9b7qwjnNUCFo75+jYXVKvBPSJGVCgXdzY0lXXnFYvmxkGJq3QT0yde059KiA?=
- =?us-ascii?Q?CgUMYlceh0vTA/pjVSFNPmQMXg9NyVUlXKs9RL+otDY0GJklJDlsTqXXhSek?=
- =?us-ascii?Q?2r15JJnaO8ziHryHg8kqXSaN6RIO10NvATcqTUmxdYcPGKVp9xGRiP7y4tmM?=
- =?us-ascii?Q?D2BEgD0/STkYqmg9UK2xDRoVjqaRMd8uNuoUu0iCCT7BMUPurCmV5Wr8TCRI?=
- =?us-ascii?Q?8GnCYmmKd4aUrJOJb4gH2Bc5POKkxL8GMfNt42YMcMODJNYanKVC34QDBfje?=
- =?us-ascii?Q?T/9zAqW5RZaoPptQPMgFcunn6gi7jSLAd/qOUqp4ggsAWJ89/y684IOIzsBp?=
- =?us-ascii?Q?365xOnjeVCda3iQHs08OO3rywoq49xuGXsH6FCy1pcrzZFMwsRxezoAMjNhY?=
- =?us-ascii?Q?0AFBxv54WQ/ZsYoBeCNIZQ1p1AP21azsOuHAkPRsHBP9EzzROoDUYPpnCODW?=
- =?us-ascii?Q?FOJaiwI7XsaeLcUlJCtFG1s/TprnATkXuYCAaLMCsCw8TyzukelsVb3hGQZC?=
- =?us-ascii?Q?ef7jSCmgDuM7mhjDYFVOa7EAnfYnsz1Z5DyJbJwwXGJNyHxLtu5Kw1tynxX/?=
- =?us-ascii?Q?gw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b1133de-cf29-43df-c2fd-08dbeba28173
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2023 21:32:19.3904
+X-Microsoft-Antispam-Message-Info:
+	hficySGJ2VGgmAhYpJp+uhyYJCOrTqdq6K6EMSUqRTb/3tYF8fJ69XYvM7KHUbzaiHGC1RpakFvJhCoFeDekxKU6UT/SlEe+RaGO4MBxRCh9X08S3Fy14ElgWrNhN/imUGFMzPsbWhjcqNhYhXJFmsRTbm0X3xexs7GEqb3Spa4owEBHwH7efFxcTLTj+hgmZ8UB2MaLqanLWYdk045pkr4WChiICV35WEvRu8vBNNyydY2wa2pt3envhOITOvCMWEpyJwSHdaksHgb2+ZoJJ5QAwVESylsX1DbaLh4C76+Ivg9ncvgMCy8hVTTwgA6Rm4AVT1qRlgIrf4ZTeONepPEnUxone2BKV139qFWCDOxOKW+OJwettD6HwKsEeeR9J7aM3JSgwN5sG3o6lTNtGe0XdCrf4UwkC/7uuvEDgovPR6Zuksk5JQLsA7lgJZzvqy/crrooUPiOlPQaQ5MZsruy4ohWMS4JATe4xe345lasEWixTnyXm/BRVWzXYa9FoVIoEJMr5VjsEogpYwsoTlyIq4ucHLiCOAbQZqUOUBySOLzfZXMPRwGhv7MrHbtgsEeL7AEPtSup7IY6IBwa6XVY/fNliZYa1hnvWX9ejRFaXYhk9sAl0wQ7ILxR2BJ4uuEfdJoEoUApywMJLd6DZjP4OeMUwawzQPwts/n/aco0xHFABhCBJqGMFonAioozBID1v3mKEOrbWny8sH0P644woEDd3pUHtR4eMdvveOW96YgDifVkbWcLmh3xMj59u9+CqhvaPV63m6+F1G4CKv6YXl3bgrlHIWFBFnD80vFCwbFiUjCc11imGQfU95fE3QYbz0Uba6RkGDoOLTZDfQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(346002)(136003)(396003)(376002)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(82310400011)(36840700001)(46966006)(40470700004)(40460700003)(70586007)(110136005)(70206006)(54906003)(316002)(6666004)(36860700001)(82740400003)(426003)(36756003)(356005)(966005)(336012)(1076003)(47076005)(7636003)(83380400001)(921008)(478600001)(86362001)(2616005)(26005)(7696005)(5660300002)(7416002)(2876002)(40480700001)(2906002)(41300700001)(8676002)(8936002)(4326008);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2023 00:35:39.3463
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4XAb1t8nV9Jt8nA1R5NjkP1tDOlBaDtI9V97UGmtfy9rJaV7i4+t/VTZjEifM6sZNHzAbt//Q2v1xR79uAfiZuLwEN4nJgn5QkRFoDzqMNw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5677
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f79c1bd-d6e5-40fd-b01e-08dbebbc1e22
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF000099D5.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9425
 
-Dave Jiang wrote:
-> Linus reported that:
-> After commit a103f46633fd the kernel stopped compiling for
-> several ARM32 platforms that I am building with a bare metal
-> compiler. Bare metal compilers (arm-none-eabi-) don't
-> define __linux__.
-> 
-> This is because the header <acpi/platform/acenv.h> is now
-> in the include path for <linux/irq.h>:
-> 
->   CC      arch/arm/kernel/irq.o
->   CC      kernel/sysctl.o
->   CC      crypto/api.o
-> In file included from ../include/acpi/acpi.h:22,
->                  from ../include/linux/fw_table.h:29,
->                  from ../include/linux/acpi.h:18,
->                  from ../include/linux/irqchip.h:14,
->                  from ../arch/arm/kernel/irq.c:25:
-> ../include/acpi/platform/acenv.h:218:2: error: #error Unknown target environment
->   218 | #error Unknown target environment
->       |  ^~~~~
-> 
-> The issue is caused by the introducing of splitting out the ACPI code to
-> support the new generic fw_table code.
-> 
-> Rafael suggested [1] moving the fw_table.h include in linux/acpi.h to below
-> the linux/mutex.h. Remove the two includes in fw_table.h. Replace
-> linux/fw_table.h include in fw_table.c with linux/acpi.h.
-> 
-> Link: https://lore.kernel.org/linux-acpi/CAJZ5v0idWdJq3JSqQWLG5q+b+b=zkEdWR55rGYEoxh7R6N8kFQ@mail.gmail.com/
-> Fixes: a103f46633fd ("acpi: Move common tables helper functions to common lib")
-> Closes: https://lore.kernel.org/linux-acpi/20231114-arm-build-bug-v1-1-458745fe32a4@linaro.org/
-> Reported-by: Linus Walleij <linus.walleij@linaro.org>
-> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Tested-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+From: Ankit Agrawal <ankita@nvidia.com>
 
-Acked-by: Dan Williams <dan.j.williams@intel.com>
+The kernel MM currently handles ECC errors / poison only on memory page
+backed by struct page. As part of [1], the nvgrace-gpu-vfio-pci module
+maps the device memory to user VA (Qemu) using remap_pfn_range without
+being added to the kernel. These pages are not backed by struct page.
 
-It concerns me that neither linux-next nor 0day robot exposure reported
-this problem.
+Implement a new ECC handling for memory without struct pages. Kernel MM
+expose registration APIs to allow modules that are managing the device
+to register its memory region and a callback function. MM then tracks
+such regions using interval tree.
 
-Does ARM32 require manual compilation coverage these days or was this
-just a series of unfortunate events that the build bots missed this?
+The mechanism is largely similar to that of ECC on pfn with struct pages.
+If there is an ECC error on a pfn, MM uses the registered memory failure
+callback function to notify the module of the faulty PFN, so that the
+module may take any required action. The pfn is then unmapped in Stage-2.
+When the VM tries to access the page, it gets trapped in KVM, which calls
+the vm ops fault function. If the module fault function returns
+VM_FAULT_HWPOISON, KVM sends a BUS_MCEERR_AR to the usermode (Qemu) mapped
+to the poisoned page.
+
+Lastly, nvgrace-gpu-vfio-pci module make use of the new mechanism to get
+poison handling support on the device memory.
+
+Patch generated over v6.7-rc2 and with [1] applied. [1] is currently under
+review.
+
+[1] https://lore.kernel.org/all/20231114081611.30550-1-ankita@nvidia.com/
+
+Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+---
+
+Link for v1: https://lore.kernel.org/all/20230920140210.12663-1-ankita@nvidia.com/
+
+v1 -> v2
+- Change poisoned page tracking from bitmap to hashtable.
+- Addressed miscellaneous comments in v1.
+
+Ankit Agrawal (4):
+  mm: handle poisoning of pfn without struct pages
+  mm: Add poison error check in fixup_user_fault() for mapped pfn
+  mm: Change ghes code to allow poison of non-struct pfn
+  vfio/nvgpu: register device memory for poison handling
+
+ drivers/acpi/apei/ghes.c            |  12 +--
+ drivers/vfio/pci/nvgrace-gpu/main.c | 123 ++++++++++++++++++++++-
+ drivers/vfio/vfio_main.c            |   3 +-
+ include/linux/memory-failure.h      |  22 +++++
+ include/linux/mm.h                  |   1 +
+ include/ras/ras_event.h             |   1 +
+ mm/Kconfig                          |   1 +
+ mm/gup.c                            |   2 +-
+ mm/memory-failure.c                 | 146 +++++++++++++++++++++++-----
+ virt/kvm/kvm_main.c                 |   6 ++
+ 10 files changed, 278 insertions(+), 39 deletions(-)
+ create mode 100644 include/linux/memory-failure.h
+
+-- 
+2.17.1
+
 
