@@ -1,116 +1,158 @@
-Return-Path: <linux-acpi+bounces-1791-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1792-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD3BF7F61BF
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 15:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC9C7F6405
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 17:36:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A03FB213A7
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 14:41:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C673B20EF8
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 16:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE52F33CD0
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 14:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE2F3E463
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 16:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SM/6TxLm"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA081B3;
-	Thu, 23 Nov 2023 06:32:51 -0800 (PST)
-Received: from dggpemm500002.china.huawei.com (unknown [172.30.72.56])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4SbgV61xj0zsR57;
-	Thu, 23 Nov 2023 22:29:18 +0800 (CST)
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 23 Nov 2023 22:32:48 +0800
-Subject: Re: [Patch v7] ACPI: processor: reduce CPUFREQ thermal reduction pctg
- for Tegra241
-To: Sudeep Holla <sudeep.holla@arm.com>, Sumit Gupta <sumitg@nvidia.com>
-CC: <rafael@kernel.org>, <rui.zhang@intel.com>, <lenb@kernel.org>,
-	<lpieralisi@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <treding@nvidia.com>,
-	<jonathanh@nvidia.com>, <bbasu@nvidia.com>, <sanjayc@nvidia.com>,
-	<ksitaraman@nvidia.com>, <srikars@nvidia.com>, <jbrasen@nvidia.com>
-References: <20231123121433.12089-1-sumitg@nvidia.com>
- <ZV9bGtUsjF1v1oIW@bogus>
-From: Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <6ccd1598-3c8b-1290-9494-01a3cdbb3003@huawei.com>
-Date: Thu, 23 Nov 2023 22:32:48 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BDD1D64;
+	Thu, 23 Nov 2023 07:07:53 -0800 (PST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id F2CDC40E0257;
+	Thu, 23 Nov 2023 15:07:50 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id m5sjdodFMcPV; Thu, 23 Nov 2023 15:07:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1700752069; bh=GZioNhBqPoaVW6r9VNgUDTxDc/9WQFahtmtDcDv1jQk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SM/6TxLmCLeeCMJ4E7eAn6aIauEZQYDF368OVQdaxtJMkCf3CvIxti5slID2BVG8T
+	 7vlw2LVVbk1bS3DnCn8J6Tm8te6+efi6FDcjzlIjoC5+f+QG27JxLjHfBHheYGcQut
+	 bcOXtX8ftoC4YUDrQFAKRPkmwTfJpRrkbI/0OTy7nU2hjzvU4t6tY69JbHucTrYPhW
+	 8wP8EdCI9dHTom0ATgsb5RTUjJiC/9JbjriV6R+OowpPSQCgBYWZzYiUbUXaXXGBTV
+	 Lnp1aVp6+K9DwYxKXo/kCkQMMAl0tSwCDo0vI+gV7IYDVnOj/tgn58Qmck734jvle8
+	 s1qX7K27uPhTo8tutx/KBwdLgam7VR46wBo204py/FLWXvyjkS5KbwYeqcRf4ds/vv
+	 189WaejXxC4zyMAngHPMVWdfiH/srNz8tUIUbyYdk5Sw02kWFghaX6yseQsJKvSDmy
+	 n7CbsMRUZtQ/55hbbKcNiSVnH6BwIDxaRfmIxV2EURLNtKr/8PjKsI4/oozYuoREDy
+	 WYRCFGP/z/hq+4RWfu0JFOyZywYRt0OoPMUhYmMyFHV0v7q+T4g8v19Ulkm8Kfu1Gn
+	 n5kP3VMwL0iPvOkOfUoEqDF875T1CllORUq1wJebvge1tYzhwHHP8sFcRsrR3YZ3oE
+	 ej22VW8rwDIqG1Ea0/a5GaHE=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9922540E0195;
+	Thu, 23 Nov 2023 15:07:14 +0000 (UTC)
+Date: Thu, 23 Nov 2023 16:07:10 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
+	mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com,
+	gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+	stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
+	ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
+	baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
+	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+	zhuo.song@linux.alibaba.com
+Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task
+ work with proper si_code
+Message-ID: <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20231007072818.58951-1-xueshuai@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <ZV9bGtUsjF1v1oIW@bogus>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500002.china.huawei.com (7.185.36.229)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231007072818.58951-1-xueshuai@linux.alibaba.com>
 
-On 2023/11/23 22:00, Sudeep Holla wrote:
-> On Thu, Nov 23, 2023 at 05:44:33PM +0530, Sumit Gupta wrote:
->> From: Srikar Srimath Tirumala <srikars@nvidia.com>
->>
->> Current implementation of processor_thermal performs software throttling
->> in fixed steps of "20%" which can be too coarse for some platforms.
->> We observed some performance gain after reducing the throttle percentage.
->> Change the CPUFREQ thermal reduction percentage and maximum thermal steps
->> to be configurable. Also, update the default values of both for Nvidia
->> Tegra241 (Grace) SoC. The thermal reduction percentage is reduced to "5%"
->> and accordingly the maximum number of thermal steps are increased as they
->> are derived from the reduction percentage.
->>
->> Signed-off-by: Srikar Srimath Tirumala <srikars@nvidia.com>
->> Co-developed-by: Sumit Gupta <sumitg@nvidia.com>
->> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
->> ---
->>
->> Sending this patch separately as the other patch in the series is
->> applied by Rafael in v6[1]. Revision history before this version is
->> in the cover letter of v6[1].
->>
->> Please review and provide ACK if looks fine.
->>
-> 
-> For arm64 specific changes(a minor nit below though),
-> 
-> Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-> 
-> 
-> [...]
-> 
->> diff --git a/drivers/acpi/arm64/thermal_cpufreq.c b/drivers/acpi/arm64/thermal_cpufreq.c
->> new file mode 100644
->> index 000000000000..d524f2cd6044
->> --- /dev/null
->> +++ b/drivers/acpi/arm64/thermal_cpufreq.c
->> @@ -0,0 +1,20 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +#include <linux/acpi.h>
->> +
->> +#include "../internal.h"
->> +
->> +#define SMCCC_SOC_ID_T241      0x036b0241
->> +
-> 
-> [nit] We really need to find better place to define this globally and not
-> locally at each usage site like this. We already have it in GICv3 driver.
-> But that can come as a cleanup later if it causes issue for merging this
-> change.
+On Sat, Oct 07, 2023 at 03:28:16PM +0800, Shuai Xue wrote:
+> However, this trick is not always be effective
 
-Agreed.
+So far so good.
 
-Looks good to me as well.
+What's missing here is why "this trick" is not always effective.
 
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Basically to explain what exactly the problem is.
 
-Thanks
-Hanjun
+> For example, hwpoison-aware user-space processes use the si_code:
+> BUS_MCEERR_AO for 'action optional' early notifications, and BUS_MCEERR_AR
+> for 'action required' synchronous/late notifications. Specifically, when a
+> signal with SIGBUS_MCEERR_AR is delivered to QEMU, it will inject a vSEA to
+> Guest kernel. In contrast, a signal with SIGBUS_MCEERR_AO will be ignored
+> by QEMU.[1]
+> 
+> Fix it by seting memory failure flags as MF_ACTION_REQUIRED on synchronous events. (PATCH 1)
+
+So you're fixing qemu by "fixing" the kernel?
+
+This doesn't make any sense.
+
+Make errors which are ACPI_HEST_NOTIFY_SEA type return
+MF_ACTION_REQUIRED so that it *happens* to fix your use case.
+
+Sounds like a lot of nonsense to me.
+
+What is the issue here you're trying to solve?
+
+> 2. Handle memory_failure() abnormal fails to avoid a unnecessary reboot
+> 
+> If process mapping fault page, but memory_failure() abnormal return before
+> try_to_unmap(), for example, the fault page process mapping is KSM page.
+> In this case, arm64 cannot use the page fault process to terminate the
+> synchronous exception loop.[4]
+> 
+> This loop can potentially exceed the platform firmware threshold or even trigger
+> a kernel hard lockup, leading to a system reboot. However, kernel has the
+> capability to recover from this error.
+> 
+> Fix it by performing a force kill when memory_failure() abnormal fails or when
+> other abnormal synchronous errors occur.
+
+Just like that?
+
+Without giving the process the opportunity to even save its other data?
+
+So this all is still very confusing, patches definitely need splitting
+and this whole thing needs restraint.
+
+You go and do this: you split *each* issue you're addressing into
+a separate patch and explain it like this:
+
+---
+1. Prepare the context for the explanation briefly.
+
+2. Explain the problem at hand.
+
+3. "It happens because of <...>"
+
+4. "Fix it by doing X"
+
+5. "(Potentially do Y)."
+---
+
+and each patch explains *exactly* *one* issue, what happens, why it
+happens and just the fix for it and *why* it is needed.
+
+Otherwise, this is unreviewable.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
