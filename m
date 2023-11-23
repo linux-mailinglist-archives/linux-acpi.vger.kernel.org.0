@@ -1,95 +1,88 @@
-Return-Path: <linux-acpi+bounces-1776-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1777-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFEF7F5A0F
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 09:33:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A242F7F5A10
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 09:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99F9228109E
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 08:33:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2F661C209E4
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 08:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBA48BE3
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 08:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408861A595
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 08:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O8dtWN9v"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o4L739+A"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A7711C90
-	for <linux-acpi@vger.kernel.org>; Thu, 23 Nov 2023 07:00:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F59C433C8;
-	Thu, 23 Nov 2023 07:00:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700722816;
-	bh=gtU+Ip4vBdqkXNcVYMAHTdA7Yf0OaFIdHF1c43xiML0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=O8dtWN9vYKsRY/QVCQnJOZQMygs9qZR3wKEwAqgHsbtp3o9Uz8TuFWQhWw85jtvUI
-	 XXAGrFMsnzJ2LKoaVjLqUGMYPMMJ/jNPe5VrslWFx9QWIUoKSVlyURITZdFufAyv45
-	 mGY/lb0py1rl6lxM52ZFUn46m6W3AbHjnrhG0Dr84YSj8Prx+c4z9zbTgAIkwFYR9U
-	 O69VHy8DBgf6FPoL4o40OT8DuBtUFqJ+4m2zBa4n9ZhEW1h9ZBb5xDmCVqh/KINU9J
-	 HWsGLxOsUuBs6vCzxdLvGl8YkcF4RY4l9GkjVpBZktIRdFMDhvxH348Fxs5uPFQPiU
-	 IIShg0B1Izf6A==
-From: Arnd Bergmann <arnd@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Len Brown <lenb@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI: thermal_lib: include "internal.h" for function prototypes
-Date: Thu, 23 Nov 2023 07:59:57 +0100
-Message-Id: <20231123070010.4013969-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA8619D
+	for <linux-acpi@vger.kernel.org>; Wed, 22 Nov 2023 23:42:54 -0800 (PST)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-507e85ebf50so680102e87.1
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Nov 2023 23:42:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1700725372; x=1701330172; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=At+FPC018DKf09p2RSe89eFy4wA5oTJyOpytMU4kgIU=;
+        b=o4L739+AmdJB64pyw+JMVRlGSpYRDtjp4sEo1+fokZdYxGG6Ugx4r4h0pk8tYRGRt9
+         sOe1tHl4eK7GwGenYZ+0aTUFhSE1c8IHMBLwPJfOHIBqSN1XN+/hKliWgZHf8oaa6424
+         iRWI5F7Qzg7eC48YAtuqueSXIBRra7WD3qXQhNiMLo7WJmNHQGn2Cr1WSsXR/oPztWIg
+         QK0TJ+kWa6xOShyxtgxmEIZZiXclhlbbf/jDHDNF/r2YHek5BqQM6L/x5T+ucLFN6E0S
+         iWx1DFSrOaTumi6bf2rbibi03bKOfXlV77te2SJkSZDsoQa59ZSaQSQz8J0XRPwEoQdB
+         torA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700725372; x=1701330172;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=At+FPC018DKf09p2RSe89eFy4wA5oTJyOpytMU4kgIU=;
+        b=vYzwjD564HjlMLv+Ato6NlsAlP6ZfzHDhcKcR+GAuVf7IPCIxjXMeA+iEog9RdzVSf
+         tVDdRVnsGRneHGZC5P+pjvjj0pIAAEOTXWsOy0N3reIbx2DVebY9Vw3lUB1axqasGkGc
+         Vg095PxFl369PAHnbv9Pzoaz1jk+2sHr07llIkuLwXcMckOlLIvG/oBBWMYaxReqA+Bw
+         tHjNhzxXx1X1glHDc7EO1xCGkNg8ASP9Q7G1Pczf5/r4i73E9eWYjnjNa1liiEQWTxZf
+         ME3F8X4yuMtVGHHGYPMTH2PCYweuwCcfct+cQQP/QaWTuVLhoiVOm9ubMIHADk9zVntn
+         vxOw==
+X-Gm-Message-State: AOJu0Yw1Hekpcxz16/pUs3DLfhQIoWue0zRSB376+00bqR7e+ZT6fw17
+	+kEGTwDvw59SwZu2fo1x98onmg==
+X-Google-Smtp-Source: AGHT+IEmrDJrP/QqVvs9kKyFOG8bQT6cUA0NY7xxSAVNu7mEpFpDXFlPuh7l4xd1U28wFHj3LaJjTA==
+X-Received: by 2002:ac2:5f43:0:b0:50a:a82c:a5f2 with SMTP id 3-20020ac25f43000000b0050aa82ca5f2mr2678724lfz.66.1700725372471;
+        Wed, 22 Nov 2023 23:42:52 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id p18-20020a05600c359200b0040b360cc65csm1062105wmq.0.2023.11.22.23.42.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Nov 2023 23:42:52 -0800 (PST)
+Date: Thu, 23 Nov 2023 10:42:48 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Laura Nao <laura.nao@collabora.com>
+Cc: rafael@kernel.org, lenb@kernel.org, shuah@kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, groeck@chromium.org,
+	broonie@kernel.org, robh+dt@kernel.org, kernelci@lists.linux.dev,
+	kernel@collabora.com
+Subject: Re: [RFC PATCH 0/2]  Add a test to verify device probing on ACPI
+ platforms
+Message-ID: <4f1283d4-1c50-4aba-ba54-b9ea975bf61d@moroto.mountain>
+References: <20230925155806.1812249-1-laura.nao@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230925155806.1812249-1-laura.nao@collabora.com>
 
-From: Arnd Bergmann <arnd@arndb.de>
+Your talk was interesting at Linux Plumbers.
 
-The newly added functions are declared in a header that is not included
-before the definition:
+https://www.youtube.com/watch?v=oE73eVSyFXQ [time +2:35]
 
-drivers/acpi/thermal_lib.c:46:5: error: no previous prototype for 'acpi_active_trip_temp' [-Werror=missing-prototypes]
-   46 | int acpi_active_trip_temp(struct acpi_device *adev, int id, int *ret_temp)
-      |     ^~~~~~~~~~~~~~~~~~~~~
-drivers/acpi/thermal_lib.c:57:5: error: no previous prototype for 'acpi_passive_trip_temp' [-Werror=missing-prototypes]
-   57 | int acpi_passive_trip_temp(struct acpi_device *adev, int *ret_temp)
-      |     ^~~~~~~~~~~~~~~~~~~~~~
-drivers/acpi/thermal_lib.c:63:5: error: no previous prototype for 'acpi_hot_trip_temp' [-Werror=missing-prototypes]
-   63 | int acpi_hot_trip_temp(struct acpi_device *adev, int *ret_temp)
-      |     ^~~~~~~~~~~~~~~~~~
-drivers/acpi/thermal_lib.c:69:5: error: no previous prototype for 'acpi_critical_trip_temp' [-Werror=missing-prototypes]
-   69 | int acpi_critical_trip_temp(struct acpi_device *adev, int *ret_temp)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~
+This is probably a stupid question, but why not just add something to
+call_driver_probe() which creates a sysfs directory tree with all the
+driver information?
 
-Fixes: 6908097aa5a7 ("ACPI: thermal_lib: Add functions returning temperature in deci-Kelvin")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/acpi/thermal_lib.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/acpi/thermal_lib.c b/drivers/acpi/thermal_lib.c
-index 646ff6bda6dd..4e0519ca9739 100644
---- a/drivers/acpi/thermal_lib.c
-+++ b/drivers/acpi/thermal_lib.c
-@@ -9,6 +9,7 @@
- #include <linux/acpi.h>
- #include <linux/units.h>
- #include <linux/thermal.h>
-+#include "internal.h"
- 
- /*
-  * Minimum temperature for full military grade is 218°K (-55°C) and
--- 
-2.39.2
+regards,
+dan carpenter
 
 
