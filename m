@@ -1,141 +1,103 @@
-Return-Path: <linux-acpi+bounces-1788-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1789-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BEC67F61B8
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 15:40:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAD17F61BC
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 15:41:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 466951C20ED6
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 14:40:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86CCEB209B9
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 14:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B8225764
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 14:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mnc7UROO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5FBF2FC4E
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 14:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 927631A8;
-	Thu, 23 Nov 2023 04:51:29 -0800 (PST)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6cbe68095a3so472680b3a.3;
-        Thu, 23 Nov 2023 04:51:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700743889; x=1701348689; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lua/407sLR7U5g7Ynk/F+LhzLi2h/XJEhubjfBRyzWM=;
-        b=Mnc7UROOhWvLQSEPUeJ+YFi9OKXv/e+PO6Ic2xiVyQeZSevJE17+3Bsl/Xl84F4K9r
-         xR1woIhMAHnCiQbkTwZuymrq7TZYouo6/5MsZB5WvEXQjmy+YV/vMGHc4dIbH+LaBLCr
-         muUnJcNXkmbHOk04hW8IgX6O2ra7NA0/6u8zaVFrRqSt7bn7nXUhK8IuRWlNI/VhgPCu
-         Kt6feXDQ8CYC8wLETiUxdW1VLCTDa0V0mnijz51lu5WwYMo0fEzJSW8QLqERTUyxp92Q
-         KFRumfhe+YqGMzyxs8RpC4dlQWHH8t5zzELl1XiX5O1PNsXURIex2KrJ+SWT5faIif+g
-         w4VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700743889; x=1701348689;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lua/407sLR7U5g7Ynk/F+LhzLi2h/XJEhubjfBRyzWM=;
-        b=SQah+YOcZd/gp5gTQF2cpYrmK5FzFarR9gfPaJDYEgNDiDo4iJJsVG04T6bDsqqjsp
-         v8dGYJFUOEIwd+Ueu7RjwV3GEPa3Hv5M7vUMMqmiYgR2GXO0nttSXAd1rcxHNQ34KL6/
-         4aatx1Sasx7bfWHICONwxhPxufV3B7TG5t4zf61JLxLBn8QfPOAJLusjusn+85usoE9c
-         GLrA6+6o/sliaikoj7Q3WdGVR5l5HeLQYnmLyRRgi32hhHofLiGoGIyFsTERF7anXxPT
-         0oVdXjsvoaYgyFP/lwKrx/pQH4JShWXhEEG/DeeuK7onh0+7D8BNOLSWYpcp0lNnT7mg
-         pbpw==
-X-Gm-Message-State: AOJu0Yxz4y3mo+zQsNcfSkjXedSHWFUMSMdduEbeJS4SW2KrT5Ddr6MX
-	0vdkthYuq9HngB4hOj4PRGA=
-X-Google-Smtp-Source: AGHT+IHPjfg2D7ucdRYYUKQc6MDSWRv+kQYYT7mIt1RvV6aQz7kIkjD5Y2nMDmRJHpUcwd6d13d8bw==
-X-Received: by 2002:a05:6a00:180e:b0:6cb:8c91:682 with SMTP id y14-20020a056a00180e00b006cb8c910682mr6205845pfa.29.1700743888923;
-        Thu, 23 Nov 2023 04:51:28 -0800 (PST)
-Received: from archie.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id p126-20020a634284000000b005b9288d51f0sm1285107pga.48.2023.11.23.04.51.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Nov 2023 04:51:28 -0800 (PST)
-Received: by archie.me (Postfix, from userid 1000)
-	id 46F561015D896; Thu, 23 Nov 2023 19:51:24 +0700 (WIB)
-Date: Thu, 23 Nov 2023 19:51:24 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: "Linux regression tracking #update (Thorsten Leemhuis)" <regressions@leemhuis.info>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Regressions <regressions@lists.linux.dev>,
-	Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Borislav Petkov <bp@alien8.de>, Arnas <arnasz616@gmail.com>
-Subject: Re: Fwd: [Regression] S3 Sleep Mode failures since Linux 6.x on Dell
- Inspiron 15 5593
-Message-ID: <ZV9KzFGSqFsJl4YA@archie.me>
-References: <585dcc9e-7e72-473a-98ec-4f06018d542f@gmail.com>
- <ZV4AP1GY3fHAxmtx@archie.me>
- <bbeb662d-78d0-4157-b062-b061eab66088@leemhuis.info>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 551C3B9;
+	Thu, 23 Nov 2023 06:01:03 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7BE811063;
+	Thu, 23 Nov 2023 06:01:49 -0800 (PST)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B64253F6C4;
+	Thu, 23 Nov 2023 06:01:00 -0800 (PST)
+Date: Thu, 23 Nov 2023 14:00:58 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Sumit Gupta <sumitg@nvidia.com>
+Cc: <rafael@kernel.org>, <rui.zhang@intel.com>, <lenb@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>, <lpieralisi@kernel.org>,
+	<guohanjun@huawei.com>, <linux-acpi@vger.kernel.org>,
+	<linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <treding@nvidia.com>,
+	<jonathanh@nvidia.com>, <bbasu@nvidia.com>, <sanjayc@nvidia.com>,
+	<ksitaraman@nvidia.com>, <srikars@nvidia.com>, <jbrasen@nvidia.com>
+Subject: Re: [Patch v7] ACPI: processor: reduce CPUFREQ thermal reduction
+ pctg for Tegra241
+Message-ID: <ZV9bGtUsjF1v1oIW@bogus>
+References: <20231123121433.12089-1-sumitg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0roWu1Dj6Rps07pF"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bbeb662d-78d0-4157-b062-b061eab66088@leemhuis.info>
+In-Reply-To: <20231123121433.12089-1-sumitg@nvidia.com>
+
+On Thu, Nov 23, 2023 at 05:44:33PM +0530, Sumit Gupta wrote:
+> From: Srikar Srimath Tirumala <srikars@nvidia.com>
+> 
+> Current implementation of processor_thermal performs software throttling
+> in fixed steps of "20%" which can be too coarse for some platforms.
+> We observed some performance gain after reducing the throttle percentage.
+> Change the CPUFREQ thermal reduction percentage and maximum thermal steps
+> to be configurable. Also, update the default values of both for Nvidia
+> Tegra241 (Grace) SoC. The thermal reduction percentage is reduced to "5%"
+> and accordingly the maximum number of thermal steps are increased as they
+> are derived from the reduction percentage.
+> 
+> Signed-off-by: Srikar Srimath Tirumala <srikars@nvidia.com>
+> Co-developed-by: Sumit Gupta <sumitg@nvidia.com>
+> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+> ---
+> 
+> Sending this patch separately as the other patch in the series is
+> applied by Rafael in v6[1]. Revision history before this version is
+> in the cover letter of v6[1].
+> 
+> Please review and provide ACK if looks fine.
+>
+
+For arm64 specific changes(a minor nit below though),
+
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
 
 
---0roWu1Dj6Rps07pF
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[...]
 
-On Wed, Nov 22, 2023 at 05:55:20PM +0100, Linux regression tracking #update=
- (Thorsten Leemhuis) wrote:
-> On 22.11.23 14:21, Bagas Sanjaya wrote:
-> > On Tue, Sep 26, 2023 at 07:25:48AM +0700, Bagas Sanjaya wrote:
-> >> I notice a regression report on Bugzilla [1]. Quoting from it:
-> >>> I'm having some weird issues with sleep mode on any 6.x Linux kernel =
-version - it's a toss-up when I close the lid as to whether it will sleep p=
-roperly or not - when it fails, the screen will lock, but it will not actua=
-lly enter S3 sleep - it just blanks the screen, but the laptop stays on (an=
-d fan does too).
-> > [...]
-> >> #regzbot introduced: v5.15..v6.1 https://bugzilla.kernel.org/show_bug.=
-cgi?id=3D217950
-> >>
-> >> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=3D217950
-> >=20
-> > Hi Thorsten and all,
->=20
-> Bagas, please ask me things like this in private. Developers get enough
-> mail already, we should try our best to not increase the amount too much
-> with stuff that is just there for regression tracking stuff.
+> diff --git a/drivers/acpi/arm64/thermal_cpufreq.c b/drivers/acpi/arm64/thermal_cpufreq.c
+> new file mode 100644
+> index 000000000000..d524f2cd6044
+> --- /dev/null
+> +++ b/drivers/acpi/arm64/thermal_cpufreq.c
+> @@ -0,0 +1,20 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +#include <linux/acpi.h>
+> +
+> +#include "../internal.h"
+> +
+> +#define SMCCC_SOC_ID_T241      0x036b0241
+> +
 
-Thanks for the pro tip.
+[nit] We really need to find better place to define this globally and not
+locally at each usage site like this. We already have it in GICv3 driver.
+But that can come as a cleanup later if it causes issue for merging this
+change.
 
->=20
-> > It seems like the BZ reporter is really busy with his college life; IOW
-> > he can only bisect in the winter break [1]. Should I mark this regressi=
-on
-> > as inconclusive for now?
->=20
-> Let's put it on regzbot's back-burner.
->=20
-> #regzbot backburner: will take a while until this is bisected
-> #regzbot ignore-activity
->=20
-
-Thanks for the handling!
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---0roWu1Dj6Rps07pF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZV9KwwAKCRD2uYlJVVFO
-o35oAQDoFPGsSeS0PpX/PIJJXi1UPNnPCUCfsAgPSjHS5ehV8QD/ezxLrWj+jpxC
-r3pi76SjlUG3gRAWA6s84IJVjT9oPgA=
-=mjAB
------END PGP SIGNATURE-----
-
---0roWu1Dj6Rps07pF--
+-- 
+Regards,
+Sudeep
 
