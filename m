@@ -1,158 +1,130 @@
-Return-Path: <linux-acpi+bounces-1792-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1793-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC9C7F6405
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 17:36:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 875E87F6406
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 17:36:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C673B20EF8
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 16:36:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8CE81C20A8F
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 16:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE2F3E463
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 16:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254413FB1F
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 16:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SM/6TxLm"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WiA/xWos"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BDD1D64;
-	Thu, 23 Nov 2023 07:07:53 -0800 (PST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id F2CDC40E0257;
-	Thu, 23 Nov 2023 15:07:50 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id m5sjdodFMcPV; Thu, 23 Nov 2023 15:07:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1700752069; bh=GZioNhBqPoaVW6r9VNgUDTxDc/9WQFahtmtDcDv1jQk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SM/6TxLmCLeeCMJ4E7eAn6aIauEZQYDF368OVQdaxtJMkCf3CvIxti5slID2BVG8T
-	 7vlw2LVVbk1bS3DnCn8J6Tm8te6+efi6FDcjzlIjoC5+f+QG27JxLjHfBHheYGcQut
-	 bcOXtX8ftoC4YUDrQFAKRPkmwTfJpRrkbI/0OTy7nU2hjzvU4t6tY69JbHucTrYPhW
-	 8wP8EdCI9dHTom0ATgsb5RTUjJiC/9JbjriV6R+OowpPSQCgBYWZzYiUbUXaXXGBTV
-	 Lnp1aVp6+K9DwYxKXo/kCkQMMAl0tSwCDo0vI+gV7IYDVnOj/tgn58Qmck734jvle8
-	 s1qX7K27uPhTo8tutx/KBwdLgam7VR46wBo204py/FLWXvyjkS5KbwYeqcRf4ds/vv
-	 189WaejXxC4zyMAngHPMVWdfiH/srNz8tUIUbyYdk5Sw02kWFghaX6yseQsJKvSDmy
-	 n7CbsMRUZtQ/55hbbKcNiSVnH6BwIDxaRfmIxV2EURLNtKr/8PjKsI4/oozYuoREDy
-	 WYRCFGP/z/hq+4RWfu0JFOyZywYRt0OoPMUhYmMyFHV0v7q+T4g8v19Ulkm8Kfu1Gn
-	 n5kP3VMwL0iPvOkOfUoEqDF875T1CllORUq1wJebvge1tYzhwHHP8sFcRsrR3YZ3oE
-	 ej22VW8rwDIqG1Ea0/a5GaHE=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9922540E0195;
-	Thu, 23 Nov 2023 15:07:14 +0000 (UTC)
-Date: Thu, 23 Nov 2023 16:07:10 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
-	mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com,
-	gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
-	stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
-	ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
-	baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
-	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
-	zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task
- work with proper si_code
-Message-ID: <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20231007072818.58951-1-xueshuai@linux.alibaba.com>
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 557ACD50
+	for <linux-acpi@vger.kernel.org>; Thu, 23 Nov 2023 07:14:26 -0800 (PST)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-40b2ad4953cso11913985e9.0
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Nov 2023 07:14:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1700752465; x=1701357265; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tjyPqzCzon3lA2/wGIkgy85tEm0FY1v7eXqgEj2Jgbw=;
+        b=WiA/xWosHCbpnM5PANQs4pRib25WvssyrHNjC/PZ5UYAixdrxh0ty+x849nZEKesyK
+         bVUCUuosxZeY1uscujwmZosMBgFtHnCTHPK7ixeWAR1vjrbRVt/Jqlw9GE4iNVJ0zkWM
+         iW9DdRzs8JmI80u8DdxwTkITqu6cC7AuLWvycEt21+33wh7bo/7WoS9ntxvSOvjUFSsX
+         kWgJOa7OV/n+alDI5kkJZfG0nxZ7G+gfd1sluvmJmXC6miQtbalmxW00jCE1Htk7Ovyk
+         jER4t0Y9L/L3og9z0Qw9E6DXFPkWDim3emXaxP9cH7qC69Em5qOKIr7TZA7UIWZtMnOW
+         Fs9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700752465; x=1701357265;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tjyPqzCzon3lA2/wGIkgy85tEm0FY1v7eXqgEj2Jgbw=;
+        b=e9z5tiwnI8xETEO4eOauGtewSdnLMq15eXy0O6Uxdpl5Gj1bz1ukwgBwf4yOrAd+nN
+         fY9vKHb0tMZXoax/nV6n3XlD89qYRSFHVcd4iZTWWcYmKk1pyVhieNmnqSdwIFw18UOV
+         nwlgLcjMcEM6SDYgboYvjktWn7YZi79tlLMCOb2lrC8m3xA9n2m4PxGBM66rVhGOuzJe
+         jhowcuOK3B3sxaU3w2eYZgW5wNdsh7XFNcO5BnSZ3Zw6qAF1jQcxmAns4DkRx5f2uNOa
+         MDbz98SDJmIzwlS4w3hgI0QoPRFGvh8hndSQyEYxYewSH3Jy6QCcBgEGr+SAXELCwE2U
+         dS+A==
+X-Gm-Message-State: AOJu0YyzxlYrooHzzXfAA7UxnuAk6jWDb2uUI8u+GNI2wiitqtogXNAd
+	Y+cv1krzd49FYKGfn8XKGg0ahg==
+X-Google-Smtp-Source: AGHT+IHf4X9kOPNLBvb+cQF0eU1GVLECoR0p7qeQBdJlVd8Ofw73ikXA6WgImA4gKazzoRDSK4jg8Q==
+X-Received: by 2002:a05:600c:32af:b0:408:36bb:5b0c with SMTP id t47-20020a05600c32af00b0040836bb5b0cmr2567488wmp.7.1700752464653;
+        Thu, 23 Nov 2023 07:14:24 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id d8-20020adfef88000000b003258934a4bcsm1953036wro.42.2023.11.23.07.14.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Nov 2023 07:14:23 -0800 (PST)
+Date: Thu, 23 Nov 2023 18:14:18 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Laura Nao <laura.nao@collabora.com>
+Cc: broonie@kernel.org, groeck@chromium.org, kernel@collabora.com,
+	kernelci@lists.linux.dev, lenb@kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, rafael@kernel.org,
+	robh+dt@kernel.org, shuah@kernel.org
+Subject: Re: [RFC PATCH 0/2] Add a test to verify device probing on ACPI
+ platforms
+Message-ID: <431009f0-56e7-46e8-a3a0-a8070554b727@suswa.mountain>
+References: <4f1283d4-1c50-4aba-ba54-b9ea975bf61d@moroto.mountain>
+ <20231123120942.33222-1-laura.nao@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231007072818.58951-1-xueshuai@linux.alibaba.com>
+In-Reply-To: <20231123120942.33222-1-laura.nao@collabora.com>
 
-On Sat, Oct 07, 2023 at 03:28:16PM +0800, Shuai Xue wrote:
-> However, this trick is not always be effective
-
-So far so good.
-
-What's missing here is why "this trick" is not always effective.
-
-Basically to explain what exactly the problem is.
-
-> For example, hwpoison-aware user-space processes use the si_code:
-> BUS_MCEERR_AO for 'action optional' early notifications, and BUS_MCEERR_AR
-> for 'action required' synchronous/late notifications. Specifically, when a
-> signal with SIGBUS_MCEERR_AR is delivered to QEMU, it will inject a vSEA to
-> Guest kernel. In contrast, a signal with SIGBUS_MCEERR_AO will be ignored
-> by QEMU.[1]
+On Thu, Nov 23, 2023 at 01:09:42PM +0100, Laura Nao wrote:
+> > Your talk was interesting at Linux Plumbers.
+> > 
+> > https://www.youtube.com/watch?v=oE73eVSyFXQ [time +2:35]
+> > 
+> > This is probably a stupid question, but why not just add something to
+> > call_driver_probe() which creates a sysfs directory tree with all the
+> > driver information?
+> > 
 > 
-> Fix it by seting memory failure flags as MF_ACTION_REQUIRED on synchronous events. (PATCH 1)
-
-So you're fixing qemu by "fixing" the kernel?
-
-This doesn't make any sense.
-
-Make errors which are ACPI_HEST_NOTIFY_SEA type return
-MF_ACTION_REQUIRED so that it *happens* to fix your use case.
-
-Sounds like a lot of nonsense to me.
-
-What is the issue here you're trying to solve?
-
-> 2. Handle memory_failure() abnormal fails to avoid a unnecessary reboot
+> Thanks for the feedback! 
 > 
-> If process mapping fault page, but memory_failure() abnormal return before
-> try_to_unmap(), for example, the fault page process mapping is KSM page.
-> In this case, arm64 cannot use the page fault process to terminate the
-> synchronous exception loop.[4]
+> Improving the device driver model to publish driver and devices info
+> was indeed another option we considered. We could have a debugfs entry
+> storing this kind of information, similar to what devices_deferred
+> does and in a standardized format. This would provide an interface
+> that is easier to query at runtime for getting a list of devices that
+> were probed correctly.
+> This would cover devices with a driver that's built into the kernel or
+> as a module; in view of catching also those cases where a device is
+> not probed because the relevant config is not enabled, I think we'd
+> still need another way of building a list of devices present on the
+> platform to be used as reference.
+
+Yeah.  So we'd still need patch #1 as-is and but patch #2 would probably
+be simpler if we had this information in sysfs.  Or a different solution
+would be to do what someone said in the LPC talk and just save the
+output of the previous boot and complain if there was a regression where
+something didn't probe.
+
 > 
-> This loop can potentially exceed the platform firmware threshold or even trigger
-> a kernel hard lockup, leading to a system reboot. However, kernel has the
-> capability to recover from this error.
-> 
-> Fix it by performing a force kill when memory_failure() abnormal fails or when
-> other abnormal synchronous errors occur.
+> The solution proposed in this RFC follows the same approach used for
+> dt based platforms for simplicity. But if adding a new sysfs entry
+> storing devices and driver info proves to be a viable option for
+> upstream, we can surely explore it and improve the probe test to
+> leverage that.
 
-Just like that?
+You're saying "simplicity" but I think you mean easiest from a political
+point of view.  It's not the most simple format at all.  It's like
+massive detective work to find the information and then you'll have to
+redo it for DT and for USB.  Are there other kinds of devices which can
+be probed?
 
-Without giving the process the opportunity to even save its other data?
+I feel like you're not valuing your stuff at the right level.  This
+shouldn't be in debugfs.  It should be a first class citizen in sysfs.
 
-So this all is still very confusing, patches definitely need splitting
-and this whole thing needs restraint.
+The exact format for this information is slightly tricky and people will
+probably debate that.  But I think most people will agree that it's
+super useful.
 
-You go and do this: you split *each* issue you're addressing into
-a separate patch and explain it like this:
-
----
-1. Prepare the context for the explanation briefly.
-
-2. Explain the problem at hand.
-
-3. "It happens because of <...>"
-
-4. "Fix it by doing X"
-
-5. "(Potentially do Y)."
----
-
-and each patch explains *exactly* *one* issue, what happens, why it
-happens and just the fix for it and *why* it is needed.
-
-Otherwise, this is unreviewable.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+regards,
+dan carpenter
 
