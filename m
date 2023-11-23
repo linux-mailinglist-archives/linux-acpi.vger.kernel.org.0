@@ -1,103 +1,144 @@
-Return-Path: <linux-acpi+bounces-1778-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1779-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA097F5A13
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 09:33:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41D57F5C63
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 11:34:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7E97B20D61
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 08:33:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E3392818BB
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 10:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1181CF8C
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 08:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C3A224D8
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 10:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ywYR/1HX"
+	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="bEylMheX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 632BE1BF
-	for <linux-acpi@vger.kernel.org>; Thu, 23 Nov 2023 00:18:03 -0800 (PST)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-5cd2f1a198cso4380677b3.0
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Nov 2023 00:18:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700727482; x=1701332282; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WvQyz8WUbCXXcHlGWxMEoDuZxvoCOtrHTLLemanVJpw=;
-        b=ywYR/1HXWq4++wDj5eemMv/6QtWRWPoqX9MM6XzyU0G4LrwZ1Fsvlz7iw04FroAMLR
-         +/5bpq/ZR4zRxG5l0Jed9gsT1AdGk0FNNDiXpM+hxrWgA30ciDNBVzE1tsrcF37vrFTO
-         Gm00lmlKs/g7i5/KsyCZz+RvVhaxPbBoSGSA0pQ7wbTDJgrFFu5ttBNKI65aJORL35RQ
-         6q+uN5V+LqstUGbeZ8nqYJpV8j3Uln6cU8E4JLUQUg583LYTZoGOJmkkv4OJeJ+idlIS
-         Jh3y5fuFc/oC5QHaEAtc7Ba0gtpXPqZxafEUH4WVBy9EAI1QNDRK4Rr2xNc1Pav2Xh/Z
-         r6zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700727482; x=1701332282;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WvQyz8WUbCXXcHlGWxMEoDuZxvoCOtrHTLLemanVJpw=;
-        b=WKNLjehPbADSIyhYmqy76RdUw488An2ITtyO3wvUAgHYoPFqSPyNY+lJRd1/YelClX
-         SsWdA1ePIMcPerZSeYFr8IyvnYLsQna9DEIlqB0jAZvZMxyASjKkELXHHJ10YJwObhHp
-         +85mHgXTUQrwSxUNBd8L/i0ejUT7tm77pWGS4bijEQqvFcPI4TH/nyuJwwpuwU7AdAbj
-         luHK/+0kLPRmXoFhKWRNxdt4+oGcbG1A9FzN8hb3K4QWwZ2y7Y3thLkwxh7ox2x9QCCa
-         /Z4y+smXIJdwHsYjGBrQ/iTwDJTAOQ7KIGfqS6AT1YsSgk+5l9wRFAiEy9UGRibmvia/
-         jX/w==
-X-Gm-Message-State: AOJu0YxNV/HnKq74DaBZqDhFmCOCvdacfAVRxPQP7oVnbsNFqchO5keJ
-	HAICsgJJP2wzaKnCfOhyb28ExF4kr/WcspPsrOyH6w==
-X-Google-Smtp-Source: AGHT+IEwql/FgZ2i8ySsNVBR/Nowgs8VsmzDvaDcvugx+PF9f25ta/GIkylxpBoLVtMa8WZ+CpZvXGDmbeZBOafDiZ8=
-X-Received: by 2002:a0d:df0d:0:b0:5c9:e7f8:ba03 with SMTP id
- i13-20020a0ddf0d000000b005c9e7f8ba03mr4532566ywe.4.1700727482614; Thu, 23 Nov
- 2023 00:18:02 -0800 (PST)
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1015610E;
+	Thu, 23 Nov 2023 01:08:49 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: marcan@marcan.st)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id 9BDB241EF0;
+	Thu, 23 Nov 2023 09:08:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+	t=1700730528; bh=tKvmM8VauJ2SKlC76Ts+IMS9Y0f1D93gbN6PS2aS1RQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bEylMheXkP1AY7uDhyUgpvOvmafAgnH8kYOyGsGvzSEm3AG0TuKGO12XpHG7pIpPk
+	 7DWjDpQ/2UVGkEBlWmpkMsK+kkFSTbFl2mNZf+evyauyJJjLkxYiIMvQnQZccc7GYl
+	 eyA+fRFKB/4nH2lfKLFZ7jOWf+ZnhEEAdxplIRYiCSC8oH9YCENIvFOPHr97tQOVpS
+	 vFMyIE8sCHGbUWmMQTW6+kNNQZA2kAYPQ/d2k1mzDzQUzP4vU581SpL8b4NQXqoDyL
+	 Nq2SuV6KB6PtAtBepsn6kZamgJlbVvwi56sMxTDqNBWGfHkerXitbj24KAHWAlJH6q
+	 nnb+VrbjJRB5A==
+Message-ID: <ab23469f-19ce-4681-afc9-65518730b51b@marcan.st>
+Date: Thu, 23 Nov 2023 18:08:33 +0900
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <170066723324.2477261.2506149141979712937.stgit@djiang5-mobl3> <655e7361d6ce_b2e8294b9@dwillia2-xfh.jf.intel.com.notmuch>
-In-Reply-To: <655e7361d6ce_b2e8294b9@dwillia2-xfh.jf.intel.com.notmuch>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 23 Nov 2023 09:17:49 +0100
-Message-ID: <CACRpkdYjEgsyCznNwkSaStk+DMtjH3_oGeX4f4BJzpo5eXHm2g@mail.gmail.com>
-Subject: Re: [PATCH v3] acpi: Fix ARM32 platforms compile issue introduced by
- fw_table changes
-To: Dan Williams <dan.j.williams@intel.com>, Arnd Bergmann <arnd@arndb.de>
-Cc: Dave Jiang <dave.jiang@intel.com>, rafael@kernel.org, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, lenb@kernel.org, robert.moore@intel.com, 
-	Jonathan.Cameron@huawei.com, guohanjun@huawei.com, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, cfsworks@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/17] iommu: Add iommu_fwspec_alloc/dealloc()
+Content-Language: en-US
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: acpica-devel@lists.linux.dev, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+ Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Dexuan Cui <decui@microsoft.com>,
+ devicetree@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+ Frank Rowand <frowand.list@gmail.com>, Hanjun Guo <guohanjun@huawei.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, iommu@lists.linux.dev,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+ linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, patches@lists.linux.dev,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Robert Moore <robert.moore@intel.com>, Rob Herring <robh+dt@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Sven Peter <sven@svenpeter.dev>, Thierry Reding <thierry.reding@gmail.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Krishna Reddy <vdumpa@nvidia.com>, Vineet Gupta <vgupta@kernel.org>,
+ virtualization@lists.linux.dev, Wei Liu <wei.liu@kernel.org>,
+ Will Deacon <will@kernel.org>
+References: <6-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
+ <20a7ef6d-a8ca-4bd8-ad7e-11856db617a2@marcan.st>
+ <1eb12c35-e64e-4c32-af99-8743dc2ec266@marcan.st>
+ <20231119141329.GA6083@nvidia.com>
+ <90855bbf-e845-4e4d-a713-df71d1e477d2@marcan.st>
+ <20231121160058.GG6083@nvidia.com>
+From: Hector Martin <marcan@marcan.st>
+In-Reply-To: <20231121160058.GG6083@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 22, 2023 at 10:32=E2=80=AFPM Dan Williams <dan.j.williams@intel=
-.com> wrote:
+On 2023/11/22 1:00, Jason Gunthorpe wrote:
+> On Tue, Nov 21, 2023 at 03:47:48PM +0900, Hector Martin wrote:
+>>> Which is sensitive only to !NULL fwspec, and if EPROBE_DEFER is
+>>> returned fwspec will be freed and dev->iommu->fwspec will be NULL
+>>> here.
+>>>
+>>> In the NULL case it does a 'bus probe' with a NULL fwspec and all the
+>>> fwspec drivers return immediately from their probe functions.
+>>>
+>>> Did I miss something?
+>>
+>> apple_dart is not a fwspec driver and doesn't do that :-)
+> 
+> It implements of_xlate that makes it a driver using the fwspec probe
+> path.
+> 
+> The issue is in apple-dart. Its logic for avoiding bus probe vs
+> fwspec probe is not correct.
+> 
+> It does:
+> 
+> static int apple_dart_of_xlate(struct device *dev, struct of_phandle_args *args)
+> {
+>  [..]
+>  	dev_iommu_priv_set(dev, cfg);
+> 
+> 
+> Then:
+> 
+> static struct iommu_device *apple_dart_probe_device(struct device *dev)
+> {
+> 	struct apple_dart_master_cfg *cfg = dev_iommu_priv_get(dev);
+> 	struct apple_dart_stream_map *stream_map;
+> 	int i;
+> 
+> 	if (!cfg)
+> 		return ERR_PTR(-ENODEV);
+> 
+> Which leaks the cfg memory on rare error cases and wrongly allows the
+> driver to probe without a fwspec, which I think is what you are
+> hitting.
+> 
+> It should be
+> 
+>        if (!dev_iommu_fwspec_get(dev) || !cfg)
+> 		return ERR_PTR(-ENODEV);
+> 
+> To ensure the driver never probes on the bus path.
+> 
+> Clearing the dev->iommu in the core code has the side effect of
+> clearing (and leaking) the cfg which would hide this issue.
 
-> It concerns me that neither linux-next nor 0day robot exposure reported
-> this problem.
->
-> Does ARM32 require manual compilation coverage these days or was this
-> just a series of unfortunate events that the build bots missed this?
+Aha! Yes, that makes it work with only the first change. I'll throw the
+apple-dart fix into our tree (and submit it once I get to clearing out
+the branch; the affected consumer driver isn't upstream yet so this
+isn't particularly urgent).
 
-It's not just ARM32, I saw it on ARM64 as well and I'm pretty
-sure it appears on any bare metal "none" compiler.
-
-kernel.org host "nolibc" cross compilers (Arnd makes these):
-https://mirrors.edge.kernel.org/pub/tools/crosstool/
-and those WORK, because they use the kernel minimal
-libc which defines __linux__.
-
-So a "nolibc" compiler works but not "none" compilers.
-
-I think the test robots all use Arnds nolibc compilers or the
-compilers from distributions so they don't see this.
-
-A typical example of breaking compilers: ARMs supported
-"none" compilers:
-https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads
-
-Yours,
-Linus Walleij
+- Hector
 
