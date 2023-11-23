@@ -1,130 +1,150 @@
-Return-Path: <linux-acpi+bounces-1793-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1794-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875E87F6406
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 17:36:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E14DB7F6664
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 19:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8CE81C20A8F
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 16:36:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E1751C20D00
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 18:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254413FB1F
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 16:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WiA/xWos"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822CD33CC1
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 18:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 557ACD50
-	for <linux-acpi@vger.kernel.org>; Thu, 23 Nov 2023 07:14:26 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-40b2ad4953cso11913985e9.0
-        for <linux-acpi@vger.kernel.org>; Thu, 23 Nov 2023 07:14:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700752465; x=1701357265; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tjyPqzCzon3lA2/wGIkgy85tEm0FY1v7eXqgEj2Jgbw=;
-        b=WiA/xWosHCbpnM5PANQs4pRib25WvssyrHNjC/PZ5UYAixdrxh0ty+x849nZEKesyK
-         bVUCUuosxZeY1uscujwmZosMBgFtHnCTHPK7ixeWAR1vjrbRVt/Jqlw9GE4iNVJ0zkWM
-         iW9DdRzs8JmI80u8DdxwTkITqu6cC7AuLWvycEt21+33wh7bo/7WoS9ntxvSOvjUFSsX
-         kWgJOa7OV/n+alDI5kkJZfG0nxZ7G+gfd1sluvmJmXC6miQtbalmxW00jCE1Htk7Ovyk
-         jER4t0Y9L/L3og9z0Qw9E6DXFPkWDim3emXaxP9cH7qC69Em5qOKIr7TZA7UIWZtMnOW
-         Fs9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700752465; x=1701357265;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tjyPqzCzon3lA2/wGIkgy85tEm0FY1v7eXqgEj2Jgbw=;
-        b=e9z5tiwnI8xETEO4eOauGtewSdnLMq15eXy0O6Uxdpl5Gj1bz1ukwgBwf4yOrAd+nN
-         fY9vKHb0tMZXoax/nV6n3XlD89qYRSFHVcd4iZTWWcYmKk1pyVhieNmnqSdwIFw18UOV
-         nwlgLcjMcEM6SDYgboYvjktWn7YZi79tlLMCOb2lrC8m3xA9n2m4PxGBM66rVhGOuzJe
-         jhowcuOK3B3sxaU3w2eYZgW5wNdsh7XFNcO5BnSZ3Zw6qAF1jQcxmAns4DkRx5f2uNOa
-         MDbz98SDJmIzwlS4w3hgI0QoPRFGvh8hndSQyEYxYewSH3Jy6QCcBgEGr+SAXELCwE2U
-         dS+A==
-X-Gm-Message-State: AOJu0YyzxlYrooHzzXfAA7UxnuAk6jWDb2uUI8u+GNI2wiitqtogXNAd
-	Y+cv1krzd49FYKGfn8XKGg0ahg==
-X-Google-Smtp-Source: AGHT+IHf4X9kOPNLBvb+cQF0eU1GVLECoR0p7qeQBdJlVd8Ofw73ikXA6WgImA4gKazzoRDSK4jg8Q==
-X-Received: by 2002:a05:600c:32af:b0:408:36bb:5b0c with SMTP id t47-20020a05600c32af00b0040836bb5b0cmr2567488wmp.7.1700752464653;
-        Thu, 23 Nov 2023 07:14:24 -0800 (PST)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id d8-20020adfef88000000b003258934a4bcsm1953036wro.42.2023.11.23.07.14.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Nov 2023 07:14:23 -0800 (PST)
-Date: Thu, 23 Nov 2023 18:14:18 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Laura Nao <laura.nao@collabora.com>
-Cc: broonie@kernel.org, groeck@chromium.org, kernel@collabora.com,
-	kernelci@lists.linux.dev, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, rafael@kernel.org,
-	robh+dt@kernel.org, shuah@kernel.org
-Subject: Re: [RFC PATCH 0/2] Add a test to verify device probing on ACPI
- platforms
-Message-ID: <431009f0-56e7-46e8-a3a0-a8070554b727@suswa.mountain>
-References: <4f1283d4-1c50-4aba-ba54-b9ea975bf61d@moroto.mountain>
- <20231123120942.33222-1-laura.nao@collabora.com>
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BC3710D0;
+	Thu, 23 Nov 2023 09:44:06 -0800 (PST)
+Received: from lhrpeml500006.china.huawei.com (unknown [172.18.147.207])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Sbln958xWz6875y;
+	Fri, 24 Nov 2023 01:42:37 +0800 (CST)
+Received: from SecurePC30232.china.huawei.com (10.122.247.234) by
+ lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 23 Nov 2023 17:44:02 +0000
+From: <shiju.jose@huawei.com>
+To: <linux-cxl@vger.kernel.org>, <linux-mm@kvack.org>, <dave@stgolabs.net>,
+	<jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <dan.j.williams@intel.com>
+CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<david@redhat.com>, <Vilas.Sridharan@amd.com>, <leo.duran@amd.com>,
+	<Yazen.Ghannam@amd.com>, <rientjes@google.com>, <jiaqiyan@google.com>,
+	<tony.luck@intel.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<rafael@kernel.org>, <lenb@kernel.org>, <naoya.horiguchi@nec.com>,
+	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
+	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
+	<mike.malvestuto@intel.com>, <gthelen@google.com>,
+	<wschwartz@amperecomputing.com>, <dferguson@amperecomputing.com>,
+	<tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
+	<linuxarm@huawei.com>, <shiju.jose@huawei.com>
+Subject: [PATCH v3 00/11] cxl: Add support for CXL feature commands, CXL device patrol scrub control and DDR5 ECS control features
+Date: Fri, 24 Nov 2023 01:43:43 +0800
+Message-ID: <20231123174355.1176-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.35.1.windows.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231123120942.33222-1-laura.nao@collabora.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ lhrpeml500006.china.huawei.com (7.191.161.198)
+X-CFilter-Loop: Reflected
 
-On Thu, Nov 23, 2023 at 01:09:42PM +0100, Laura Nao wrote:
-> > Your talk was interesting at Linux Plumbers.
-> > 
-> > https://www.youtube.com/watch?v=oE73eVSyFXQ [time +2:35]
-> > 
-> > This is probably a stupid question, but why not just add something to
-> > call_driver_probe() which creates a sysfs directory tree with all the
-> > driver information?
-> > 
-> 
-> Thanks for the feedback! 
-> 
-> Improving the device driver model to publish driver and devices info
-> was indeed another option we considered. We could have a debugfs entry
-> storing this kind of information, similar to what devices_deferred
-> does and in a standardized format. This would provide an interface
-> that is easier to query at runtime for getting a list of devices that
-> were probed correctly.
-> This would cover devices with a driver that's built into the kernel or
-> as a module; in view of catching also those cases where a device is
-> not probed because the relevant config is not enabled, I think we'd
-> still need another way of building a list of devices present on the
-> platform to be used as reference.
+From: Shiju Jose <shiju.jose@huawei.com>
 
-Yeah.  So we'd still need patch #1 as-is and but patch #2 would probably
-be simpler if we had this information in sysfs.  Or a different solution
-would be to do what someone said in the LPC talk and just save the
-output of the previous boot and complain if there was a regression where
-something didn't probe.
+1. Add support for CXL feature mailbox commands.
+2. Add CXL device scrub driver supporting patrol scrub control and DDR5 ECS
+control features.
+3. Add scrub driver supports configuring memory scrubs in the system.
+4. Add scrub attributes for DDR5 ECS control to the memory scrub driver.
+5. Register CXL device patrol scrub and ECS with scrub control driver.
+6. Add documentation for CXL memory device scrub control attributes.
 
-> 
-> The solution proposed in this RFC follows the same approach used for
-> dt based platforms for simplicity. But if adding a new sysfs entry
-> storing devices and driver info proves to be a viable option for
-> upstream, we can surely explore it and improve the probe test to
-> leverage that.
+The QEMU series to support these features is available here,
+https://lore.kernel.org/qemu-devel/20231114124711.1128-1-shiju.jose@huawei.com/T/#t
 
-You're saying "simplicity" but I think you mean easiest from a political
-point of view.  It's not the most simple format at all.  It's like
-massive detective work to find the information and then you'll have to
-redo it for DT and for USB.  Are there other kinds of devices which can
-be probed?
+Changes
+v2 -> v3:
+1. Changes for comments from Davidlohr, Thanks.
+ - Updated cxl scrub kconfig
+ - removed usage of the flag is_support_feature from
+   the function cxl_mem_get_supported_feature_entry().
+ - corrected spelling error.
+ - removed unnecessary debug message.
+ - removed export feature commands to the userspace.
+2. Possible fix for the warnings/errors reported by kernel
+   test robot.
+3. Add documentation for the common scrub configure atrributes.
 
-I feel like you're not valuing your stuff at the right level.  This
-shouldn't be in debugfs.  It should be a first class citizen in sysfs.
+v1 -> v2:
+1. Changes for comments from Dave Jiang, Thanks.
+ - Split patches.
+ - reversed xmas tree declarations.
+ - declared flags as enums.
+ - removed few unnecessary variable initializations.
+ - replaced PTR_ERR_OR_ZERO() with IS_ERR() and PTR_ERR().
+ - add auto clean declarations.
+ - replaced while loop with for loop.
+ - Removed allocation from cxl_get_supported_features() and
+   cxl_get_feature() and make change to take allocated memory
+   pointer from the caller.
+ - replaced if/else with switch case.
+ - replaced sprintf() with sysfs_emit() in 2 places.
+ - replaced goto label with return in few functions.
+2. removed unused code for supported attributes from ecs.
+3. Included following common patch for scrub configure driver
+   to this series.
+   "memory: scrub: Add scrub driver supports configuring memory scrubbers
+    in the system"
 
-The exact format for this information is slightly tricky and people will
-probably debate that.  But I think most people will agree that it's
-super useful.
+Shiju Jose (11):
+  cxl/mbox: Add GET_SUPPORTED_FEATURES mailbox command
+  cxl/mbox: Add GET_FEATURE mailbox command
+  cxl/mbox: Add SET_FEATURE mailbox command
+  cxl/memscrub: Add CXL device patrol scrub control feature
+  cxl/memscrub: Add CXL device DDR5 ECS control feature
+  memory: scrub: Add scrub driver supports configuring memory scrubs in
+    the system
+  cxl/memscrub: Register CXL device patrol scrub with scrub configure
+    driver
+  memory: scrub: Add scrub control attributes for the DDR5 ECS
+  cxl/memscrub: Register CXL device DDR5 ECS with scrub configure driver
+  memory: scrub: sysfs: Add Documentation for set of common scrub
+    attributes
+  cxl: scrub: sysfs: Add Documentation for CXL memory device scrub
+    control attributes
 
-regards,
-dan carpenter
+ .../testing/sysfs-class-cxl-scrub-configure   | 135 +++
+ .../ABI/testing/sysfs-class-scrub-configure   |  82 ++
+ drivers/cxl/Kconfig                           |  23 +
+ drivers/cxl/core/Makefile                     |   1 +
+ drivers/cxl/core/mbox.c                       |  59 ++
+ drivers/cxl/core/memscrub.c                   | 989 ++++++++++++++++++
+ drivers/cxl/cxlmem.h                          | 120 +++
+ drivers/cxl/pci.c                             |   6 +
+ drivers/memory/Kconfig                        |   1 +
+ drivers/memory/Makefile                       |   1 +
+ drivers/memory/scrub/Kconfig                  |  11 +
+ drivers/memory/scrub/Makefile                 |   6 +
+ drivers/memory/scrub/memory-scrub.c           | 481 +++++++++
+ include/memory/memory-scrub.h                 |  90 ++
+ 14 files changed, 2005 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-cxl-scrub-configure
+ create mode 100644 Documentation/ABI/testing/sysfs-class-scrub-configure
+ create mode 100644 drivers/cxl/core/memscrub.c
+ create mode 100644 drivers/memory/scrub/Kconfig
+ create mode 100644 drivers/memory/scrub/Makefile
+ create mode 100755 drivers/memory/scrub/memory-scrub.c
+ create mode 100755 include/memory/memory-scrub.h
+
+-- 
+2.34.1
+
 
