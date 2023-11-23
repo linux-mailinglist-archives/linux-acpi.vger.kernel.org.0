@@ -1,144 +1,101 @@
-Return-Path: <linux-acpi+bounces-1779-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1780-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41D57F5C63
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 11:34:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 309727F5C65
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 11:34:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E3392818BB
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 10:34:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEF3C2818A9
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 10:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C3A224D8
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 10:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9493722321
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 10:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="bEylMheX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DqPTqpN5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1015610E;
-	Thu, 23 Nov 2023 01:08:49 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: marcan@marcan.st)
-	by mail.marcansoft.com (Postfix) with ESMTPSA id 9BDB241EF0;
-	Thu, 23 Nov 2023 09:08:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
-	t=1700730528; bh=tKvmM8VauJ2SKlC76Ts+IMS9Y0f1D93gbN6PS2aS1RQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bEylMheXkP1AY7uDhyUgpvOvmafAgnH8kYOyGsGvzSEm3AG0TuKGO12XpHG7pIpPk
-	 7DWjDpQ/2UVGkEBlWmpkMsK+kkFSTbFl2mNZf+evyauyJJjLkxYiIMvQnQZccc7GYl
-	 eyA+fRFKB/4nH2lfKLFZ7jOWf+ZnhEEAdxplIRYiCSC8oH9YCENIvFOPHr97tQOVpS
-	 vFMyIE8sCHGbUWmMQTW6+kNNQZA2kAYPQ/d2k1mzDzQUzP4vU581SpL8b4NQXqoDyL
-	 Nq2SuV6KB6PtAtBepsn6kZamgJlbVvwi56sMxTDqNBWGfHkerXitbj24KAHWAlJH6q
-	 nnb+VrbjJRB5A==
-Message-ID: <ab23469f-19ce-4681-afc9-65518730b51b@marcan.st>
-Date: Thu, 23 Nov 2023 18:08:33 +0900
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEEDB10F2;
+	Thu, 23 Nov 2023 02:07:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700734028; x=1732270028;
+  h=from:to:cc:subject:date:message-id;
+  bh=E/GNlBnsRoIGgHD6OlYnLt2vW4tbci5Zhdk7KhH8jlc=;
+  b=DqPTqpN51taxpHBWLAjn5Q5xdMcAmbohYBp/IgpQkPc59q4b3lTERgBR
+   vtyTdDmBJIY0ndMnydDKLX04vdJJ17+Ymgt4OExv4uBDKMSvyHHJ8SJxp
+   xHAQCsdjMpscYAS+aQiCxp/0CtWbm1WradtlLH2hFHEAs4/zAbn6bgYcX
+   b2XmdGPuFl89kqK90BZ1EtT6g113XYLua8Ybmt1LEtETH2zYRbFK+wV/k
+   8GsV92RYn8KgqLrg/xu9y0cL2KJVC0ct6WJTA0Boj3xOYVRc/OnKp6HPV
+   RIPd9yzrhE50IyLK4kHMjWpGllKtktl+5ROJCKS2kG447FWGdqS8nyE/u
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="456576372"
+X-IronPort-AV: E=Sophos;i="6.04,221,1695711600"; 
+   d="scan'208";a="456576372"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2023 02:07:07 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="767160407"
+X-IronPort-AV: E=Sophos;i="6.04,221,1695711600"; 
+   d="scan'208";a="767160407"
+Received: from inlubt0316.iind.intel.com ([10.191.20.213])
+  by orsmga002.jf.intel.com with ESMTP; 23 Nov 2023 02:07:02 -0800
+From: Raag Jadav <raag.jadav@intel.com>
+To: mika.westerberg@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	robert.moore@intel.com,
+	ardb@kernel.org,
+	will@kernel.org,
+	mark.rutland@arm.com
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linuxfoundation.org,
+	linux-efi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	mallikarjunappa.sangannavar@intel.com,
+	bala.senthil@intel.com,
+	Raag Jadav <raag.jadav@intel.com>
+Subject: [PATCH v3 0/5] Support _UID matching for integer types
+Date: Thu, 23 Nov 2023 15:36:12 +0530
+Message-Id: <20231123100617.28020-1-raag.jadav@intel.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/17] iommu: Add iommu_fwspec_alloc/dealloc()
-Content-Language: en-US
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: acpica-devel@lists.linux.dev, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Dexuan Cui <decui@microsoft.com>,
- devicetree@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
- Frank Rowand <frowand.list@gmail.com>, Hanjun Guo <guohanjun@huawei.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, iommu@lists.linux.dev,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Jonathan Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Len Brown <lenb@kernel.org>,
- linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, patches@lists.linux.dev,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Robert Moore <robert.moore@intel.com>, Rob Herring <robh+dt@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Sven Peter <sven@svenpeter.dev>, Thierry Reding <thierry.reding@gmail.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Krishna Reddy <vdumpa@nvidia.com>, Vineet Gupta <vgupta@kernel.org>,
- virtualization@lists.linux.dev, Wei Liu <wei.liu@kernel.org>,
- Will Deacon <will@kernel.org>
-References: <6-v2-36a0088ecaa7+22c6e-iommu_fwspec_jgg@nvidia.com>
- <20a7ef6d-a8ca-4bd8-ad7e-11856db617a2@marcan.st>
- <1eb12c35-e64e-4c32-af99-8743dc2ec266@marcan.st>
- <20231119141329.GA6083@nvidia.com>
- <90855bbf-e845-4e4d-a713-df71d1e477d2@marcan.st>
- <20231121160058.GG6083@nvidia.com>
-From: Hector Martin <marcan@marcan.st>
-In-Reply-To: <20231121160058.GG6083@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 2023/11/22 1:00, Jason Gunthorpe wrote:
-> On Tue, Nov 21, 2023 at 03:47:48PM +0900, Hector Martin wrote:
->>> Which is sensitive only to !NULL fwspec, and if EPROBE_DEFER is
->>> returned fwspec will be freed and dev->iommu->fwspec will be NULL
->>> here.
->>>
->>> In the NULL case it does a 'bus probe' with a NULL fwspec and all the
->>> fwspec drivers return immediately from their probe functions.
->>>
->>> Did I miss something?
->>
->> apple_dart is not a fwspec driver and doesn't do that :-)
-> 
-> It implements of_xlate that makes it a driver using the fwspec probe
-> path.
-> 
-> The issue is in apple-dart. Its logic for avoiding bus probe vs
-> fwspec probe is not correct.
-> 
-> It does:
-> 
-> static int apple_dart_of_xlate(struct device *dev, struct of_phandle_args *args)
-> {
->  [..]
->  	dev_iommu_priv_set(dev, cfg);
-> 
-> 
-> Then:
-> 
-> static struct iommu_device *apple_dart_probe_device(struct device *dev)
-> {
-> 	struct apple_dart_master_cfg *cfg = dev_iommu_priv_get(dev);
-> 	struct apple_dart_stream_map *stream_map;
-> 	int i;
-> 
-> 	if (!cfg)
-> 		return ERR_PTR(-ENODEV);
-> 
-> Which leaks the cfg memory on rare error cases and wrongly allows the
-> driver to probe without a fwspec, which I think is what you are
-> hitting.
-> 
-> It should be
-> 
->        if (!dev_iommu_fwspec_get(dev) || !cfg)
-> 		return ERR_PTR(-ENODEV);
-> 
-> To ensure the driver never probes on the bus path.
-> 
-> Clearing the dev->iommu in the core code has the side effect of
-> clearing (and leaking) the cfg which would hide this issue.
+This series updates the standard ACPI helpers to support _UID matching
+for both integer and string types, and uses them in a couple of places.
 
-Aha! Yes, that makes it work with only the first change. I'll throw the
-apple-dart fix into our tree (and submit it once I get to clearing out
-the branch; the affected consumer driver isn't upstream yet so this
-isn't particularly urgent).
+Changes since v2:
+- Drop __builtin functions to reduce complexity (Rafael)
+- Update tags
 
-- Hector
+Changes since v1:
+- Fix build errors
+
+Raag Jadav (5):
+  ACPI: bus: update acpi_dev_uid_match() to support multiple types
+  ACPI: bus: update acpi_dev_hid_uid_match() to support multiple types
+  ACPI: LPSS: use acpi_dev_uid_match() for matching _UID
+  efi: dev-path-parser: use acpi_dev_uid_match() for matching _UID
+  perf: arm_cspmu: drop redundant acpi_dev_uid_to_integer()
+
+ drivers/acpi/acpi_lpss.c               | 16 ++-----
+ drivers/acpi/utils.c                   | 48 -------------------
+ drivers/firmware/efi/dev-path-parser.c |  7 +--
+ drivers/perf/arm_cspmu/arm_cspmu.c     |  4 +-
+ include/acpi/acpi_bus.h                | 65 +++++++++++++++++++++++++-
+ include/linux/acpi.h                   | 15 ++----
+ 6 files changed, 74 insertions(+), 81 deletions(-)
+
+
+base-commit: accf6bb711d6819cce89a122ccde4811c58c160e
+-- 
+2.17.1
+
 
