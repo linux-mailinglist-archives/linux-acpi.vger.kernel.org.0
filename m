@@ -1,108 +1,86 @@
-Return-Path: <linux-acpi+bounces-1784-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1786-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BEAF7F5C6D
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 11:35:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C407F5F22
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 13:39:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92F94B20EF8
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 10:35:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 016E9281C95
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 12:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01831225A6
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 10:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8CB224D9
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Nov 2023 12:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fySHu95r"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="PoaVghDc"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0956D10EB;
-	Thu, 23 Nov 2023 02:07:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700734051; x=1732270051;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references;
-  bh=eGrPJB71BQqPQgzBxdkMDsK/ebN3t2PqlY8XYy9ELos=;
-  b=fySHu95rX65pKTF/wNvbOZ170G5WL0GKZQKbQWukKyWG2dbMqd8TxFPR
-   gPQ2FtFwLy1Qmn0OkciwDjwcCQXBdpdZ7zofhQFLJSad9WvS+YdeG7IPp
-   KCXTH7b32BSbiejOu2MQREjp9eLz+Q4yO7Gh0r7PtJdJT+LIhoPyYVWEQ
-   8GVAb9Oiuuikd9Xcdye/JbXotxWItfhbhXPW9eVsQDmoDtxC6E632AiKg
-   gnezJnIRBTrjhv58ASiAis4Gl95xGSOV71xgOdDaFmO772acVp1lGiVhN
-   UttWsbHr3ls06V8NKSaIYrjCQtrid5/s9Qwuw1dzU5t/VvGuPieGSJG86
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="456576447"
-X-IronPort-AV: E=Sophos;i="6.04,221,1695711600"; 
-   d="scan'208";a="456576447"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2023 02:07:30 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="767160544"
-X-IronPort-AV: E=Sophos;i="6.04,221,1695711600"; 
-   d="scan'208";a="767160544"
-Received: from inlubt0316.iind.intel.com ([10.191.20.213])
-  by orsmga002.jf.intel.com with ESMTP; 23 Nov 2023 02:07:26 -0800
-From: Raag Jadav <raag.jadav@intel.com>
-To: mika.westerberg@linux.intel.com,
-	andriy.shevchenko@linux.intel.com,
-	rafael@kernel.org,
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F706B2;
+	Thu, 23 Nov 2023 04:09:34 -0800 (PST)
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laura.nao)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 1AB2866073A6;
+	Thu, 23 Nov 2023 12:09:32 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1700741373;
+	bh=YgxjoufhsvGqDqaZ2rAtBAbV9cjW8P3dw29HVw8u0y0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PoaVghDckL+d+hpKi62Z+OmLgjKqyQ7uJoVeV20xyXVmZ227HQCKD/v1hZLefB+Ph
+	 wlPy5eIiPjgkYXd/W2YZZzFTHf+c3ihGYQN3QYCmDqxqfwS69khvdVi0DdvAQMxnMi
+	 6/PDtfY5K6zdHmwbi0BFbZctgpstIBjiue9CS5K7nPW+BQaw6NKcF48qiH/PHGsW1g
+	 mIZWlqwllvH7+CEUoYAcCFzoHeW+qhEgQ4dGcsifaswB3hMx1NeUVkylgwCg1yqnxX
+	 tdI1H6dqdJ4MiT6+fHY6HKkRbeSdlaAr6PMQ4RKAgkySaMTCZ4JnMZK61yTRt5F/nq
+	 5YbJOssjrklhw==
+From: Laura Nao <laura.nao@collabora.com>
+To: dan.carpenter@linaro.org
+Cc: broonie@kernel.org,
+	groeck@chromium.org,
+	kernel@collabora.com,
+	kernelci@lists.linux.dev,
+	laura.nao@collabora.com,
 	lenb@kernel.org,
-	robert.moore@intel.com,
-	ardb@kernel.org,
-	will@kernel.org,
-	mark.rutland@arm.com
-Cc: linux-acpi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linuxfoundation.org,
-	linux-efi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	mallikarjunappa.sangannavar@intel.com,
-	bala.senthil@intel.com,
-	Raag Jadav <raag.jadav@intel.com>
-Subject: [PATCH v3 5/5] perf: arm_cspmu: drop redundant acpi_dev_uid_to_integer()
-Date: Thu, 23 Nov 2023 15:36:17 +0530
-Message-Id: <20231123100617.28020-6-raag.jadav@intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20231123100617.28020-1-raag.jadav@intel.com>
-References: <20231123100617.28020-1-raag.jadav@intel.com>
+	linux-kselftest@vger.kernel.org,
+	rafael@kernel.org,
+	robh+dt@kernel.org,
+	shuah@kernel.org
+Subject: Re: [RFC PATCH 0/2] Add a test to verify device probing on ACPI platforms
+Date: Thu, 23 Nov 2023 13:09:42 +0100
+Message-Id: <20231123120942.33222-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <4f1283d4-1c50-4aba-ba54-b9ea975bf61d@moroto.mountain>
+References: <4f1283d4-1c50-4aba-ba54-b9ea975bf61d@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Now that we have _UID matching support for integer types, we can use
-acpi_dev_hid_uid_match() for it.
+> Your talk was interesting at Linux Plumbers.
+> 
+> https://www.youtube.com/watch?v=oE73eVSyFXQ [time +2:35]
+> 
+> This is probably a stupid question, but why not just add something to
+> call_driver_probe() which creates a sysfs directory tree with all the
+> driver information?
+> 
 
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Acked-by: Will Deacon <will@kernel.org>
----
- drivers/perf/arm_cspmu/arm_cspmu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Thanks for the feedback! 
 
-diff --git a/drivers/perf/arm_cspmu/arm_cspmu.c b/drivers/perf/arm_cspmu/arm_cspmu.c
-index 2cc35dded007..50b89b989ce7 100644
---- a/drivers/perf/arm_cspmu/arm_cspmu.c
-+++ b/drivers/perf/arm_cspmu/arm_cspmu.c
-@@ -1108,7 +1108,6 @@ static int arm_cspmu_request_irq(struct arm_cspmu *cspmu)
- 
- static inline int arm_cspmu_find_cpu_container(int cpu, u32 container_uid)
- {
--	u64 acpi_uid;
- 	struct device *cpu_dev;
- 	struct acpi_device *acpi_dev;
- 
-@@ -1118,8 +1117,7 @@ static inline int arm_cspmu_find_cpu_container(int cpu, u32 container_uid)
- 
- 	acpi_dev = ACPI_COMPANION(cpu_dev);
- 	while (acpi_dev) {
--		if (acpi_dev_hid_uid_match(acpi_dev, ACPI_PROCESSOR_CONTAINER_HID, NULL) &&
--		    !acpi_dev_uid_to_integer(acpi_dev, &acpi_uid) && acpi_uid == container_uid)
-+		if (acpi_dev_hid_uid_match(acpi_dev, ACPI_PROCESSOR_CONTAINER_HID, container_uid))
- 			return 0;
- 
- 		acpi_dev = acpi_dev_parent(acpi_dev);
--- 
-2.17.1
+Improving the device driver model to publish driver and devices info was indeed another option we considered. We could have a debugfs entry storing this kind of information, similar to what devices_deferred does and in a standardized format. This would provide an interface that is easier to query at runtime for getting a list of devices that were probed correctly.
+This would cover devices with a driver that's built into the kernel or as a module; in view of catching also those cases where a device is not probed because the relevant config is not enabled, I think we'd still need another way of building a list of devices present on the platform to be used as reference.
 
+The solution proposed in this RFC follows the same approach used for dt
+based platforms for simplicity. But if adding a new sysfs entry storing devices and driver info proves to be a viable option for upstream, we can surely explore it and improve the probe test to leverage that.
+
+Best,
+
+Laura
 
