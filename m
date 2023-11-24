@@ -1,149 +1,121 @@
-Return-Path: <linux-acpi+bounces-1816-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1817-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EE37F798C
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 17:41:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DFCC7F798F
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 17:41:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C031280CBE
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 16:41:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C026A1C20864
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 16:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F875364A5
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 16:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F019364AC
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 16:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ogcdb8XN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rrFw/dw5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2056.outbound.protection.outlook.com [40.107.93.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59E45199A;
-	Fri, 24 Nov 2023 07:35:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KssHfeUrBgnk0k/B9F+2/fhd0DD3vX503EacQVohNNwuRmfF5b9njHpje1Nel968tv1jMgJ2KO+5JVawwwP/SyJE7VG1f9DLHFuz7QWM+gnHR9lD6/3e24qRkoIj2ds2X6uOIkNg+4Y0xvhVXn7xDVon2epxTZKBjwcMdrGeerEDL3Du6kTjZtqYR6akq6PB5St35UFQahC2S7/D7we/uHT8M8FRxfWaYLYMRIgj8OoR1yJrUy7sm5KXL1Oggs47I07yp9ouyoAzed8V/WNIMRijrHguQFYDHV2r9WZud3COFkNZK3pq0UypSeIq9rcqXZvlL6eC3he7tTo6x8cEog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=28FYHT2Sw9QobHVYU08OcWvAnUNMG7iYHtCHvLIoW5k=;
- b=UjvY3gvg0woDHjrwDP6l20eQiTB/fdXX3IwvCB4IilLoFGmytG0sb4mb0lOUlaJREVQPgzbs7Xm9v6Yz8iIHSZ0wLC9tpDEnlL+WatyjGIkqaiwxCHPXh9dhIZ6oM500nt6ri22JA+9p1nRVlSMw+3RX5KFcxdqNx/Jrf3tauNO4CoIFWvXtMFb7KsD97QVH1A8adNRHU3hdRs2FtIjoxt5EoDm6Z2K41ozR2WS+l/9Z1peoZc/vBKAoyrQ2efCLHPT/K6KhwrH/ZQsPHcZZbyovqYWK7O6AGit0QaxXMj3KnGMFZS6/uukKCgPHjvCBpcjwneKRrqBqwrHzUUyibg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=28FYHT2Sw9QobHVYU08OcWvAnUNMG7iYHtCHvLIoW5k=;
- b=Ogcdb8XNAX3+JsMxriAm7s2gCRejB9yd0Eoc9a9ZKNf0wRSuCmnjqSXIlCOYB5iViOBv+5meJHHnwrasX9pjhj7r6WgIznpt1uffXMYXZ6bKtHrjiShSTqIAaUBjKfs+UTGcljY71o5p6+6nZkAXQ2YGmhkH3VzSQAJBjdOiwYi+eW4O1rkdRCQflF3qoXoSkvtB5faoEtO2expQQnE6zGolD19m1jFC+guuaZ3xvF2yC6U/L7YPhLLOzrhwgPegvvxeXdqQdFGz2/Gi6AiUgUxkZjbs3hKLsOTf/7Q12uOkDeHXT5ZwObFiQ1gIsDpA7sFI5Od5c9nDyi4tdyKbKg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
- by CY8PR12MB7707.namprd12.prod.outlook.com (2603:10b6:930:86::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.21; Fri, 24 Nov
- 2023 15:35:23 +0000
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::60d4:c1e3:e1aa:8f93]) by LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::60d4:c1e3:e1aa:8f93%4]) with mapi id 15.20.7025.020; Fri, 24 Nov 2023
- 15:35:22 +0000
-Date: Fri, 24 Nov 2023 11:35:20 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: joro@8bytes.org, will@kernel.org, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	rafael@kernel.org, lenb@kernel.org, lpieralisi@kernel.org,
-	andre.draszik@linaro.org, quic_zhenhuah@quicinc.com
-Subject: Re: [PATCH] iommu: Avoid more races around device probe
-Message-ID: <20231124153520.GA558245@nvidia.com>
-References: <16f433658661d7cadfea51e7c65da95826112a2b.1700071477.git.robin.murphy@arm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16f433658661d7cadfea51e7c65da95826112a2b.1700071477.git.robin.murphy@arm.com>
-X-ClientProxiedBy: DM6PR02CA0113.namprd02.prod.outlook.com
- (2603:10b6:5:1b4::15) To LV2PR12MB5869.namprd12.prod.outlook.com
- (2603:10b6:408:176::16)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C5B2FE25
+	for <linux-acpi@vger.kernel.org>; Fri, 24 Nov 2023 15:54:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E57C433CA;
+	Fri, 24 Nov 2023 15:54:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700841279;
+	bh=HSUtuUG3dDjCbWMPNmFm21ZEHdtclUUifKkpgTT5yE8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rrFw/dw5ip/zqV5GjzcL/t5aMj+AndZ3mxtQzkqLdM3KbqPumL4xKLGkmU2lx99+g
+	 q+sqA6/jZl8Tr+l8CbtlI4tAPRlGdBqQPqXAOOYXN3O5N4gbZWAKZK/rtuk9PBy2RY
+	 6ZrCWyWAjzu/RrltCXdm8+6Bs2psimfBuicrmLltoGYJ2y8uXEeN0uwjj9z0kkI8Sv
+	 RPtt9ycr+xDR7D1XNlw3ibPlK90lIBQMF4G8l+dxytINZRx8dXoVaWMCw69bWb6grW
+	 61Pz37I7x5pqW98qMTstF4XMHx/fIW1AyWjNfD/MhTDWOP9x495BsAdOdV8QNKmN8x
+	 3I2FvDFuB0cAQ==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2c878e228b4so26153291fa.1;
+        Fri, 24 Nov 2023 07:54:38 -0800 (PST)
+X-Gm-Message-State: AOJu0YzOMb9S/jmedPNY5PzGR42ka7p4xgTOXjRuWj5vbZZdGa/qWwJ7
+	6tRWL2Iv5jtnNChU6vORwB4OfBm6y+Rb4vAMXt4=
+X-Google-Smtp-Source: AGHT+IEO6hzqnk+/EB0u2DykEu4CRlWVrIPl2vHrqt6bNxr5C0CBj4EcS7ice6ugF6Vx89pIH3u9pPzqBy+2EGPNIC4=
+X-Received: by 2002:a2e:b523:0:b0:2c9:8f6b:3d9a with SMTP id
+ z3-20020a2eb523000000b002c98f6b3d9amr1609781ljm.16.1700841277253; Fri, 24 Nov
+ 2023 07:54:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|CY8PR12MB7707:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23c59bf0-76d8-42c9-a8f9-08dbed02f898
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	bP2xlG9KnMJrsVdXYUy/CZOj2kFDmi/9Drc3SlRrTIlgxEHMAeQ8K/f3fjYcVqqhlugXaFYAssj5L/fS7cn+st5Ff1N7zFNfLzTaTCJRlubjgB3/cbi9uY/wepzq+ydXf5eWWUU7og6kQZyPLaEeS7rTWsVLTLhQbeGqK+9lQT8M/BQ+NAXOsk+kEC3fhGlrHaZUsQNiRV+y7TDUxIXAFEbqYsmxXpK2ctS9IIqaUyAZR9EDR5gFjxt9jHQS0JR8w4YkqVqGEsRJze9xA8C/F9dDtf16d5j8XgMD93VeiF6mfaBR8XKpNL6pXMYwNX9+RLbUNWTdZdUOXoKmG+o2CtS1RO04jxAGlfDqPEQo8C7reWbsXYjVE7Gr2zARcA2wLqZl/XI1RoiTMtRlgBu3oF4D29OJaOMA9XRdJSIyitCOoE9EvjmVa822UZwle60Hz9wY0/b/TubCOV9bKec5ecMJoUBbRn7k27RxOyHZgnTVVO8bnL4eX3+oL+H/fQjpaygzGmGLHzV+6G7MB08kDd+5Rp35eMWpTBHAtcMuox+JwQq4kn/75FO4rds57QlYT8QRebVMinA6fm7eaaRp+fkYGWtadRtGEMG1RRrZyY1UewJihfmiQ9xaZSgVHpkfsuByZx+G7gmoCYCOI4rIpQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(39860400002)(136003)(376002)(346002)(230922051799003)(1800799012)(186009)(451199024)(64100799003)(66946007)(38100700002)(83380400001)(6486002)(966005)(478600001)(66476007)(6916009)(316002)(66556008)(6512007)(6506007)(2906002)(33656002)(36756003)(4326008)(8936002)(8676002)(5660300002)(7416002)(26005)(2616005)(1076003)(41300700001)(86362001)(27376004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?EQEK8Xba3Mpsd6v9+QGyFg7z5YQFNEbg2vpHOhXuv++EyISewaE0OfvkDgqZ?=
- =?us-ascii?Q?Ods007LfKHTAPlSQmnDzNYwWvAztNUCZ93Cg51M0JM+J4zUp5Rqi89Il2qa6?=
- =?us-ascii?Q?MQ1N9GmMnBKSWOKbL+9U3oCT3awS1fK/bdC+MRkAvM+BbuXGhx41RK74xw1o?=
- =?us-ascii?Q?fun2i5fb7xBO54YaMthCPqOtB6tz2J0D8PLj3CDZh/YP6j3leiiy4/bwzN8T?=
- =?us-ascii?Q?b339Tg3DbjXi0hlqd8dDpzUPIpcHOnp2I4hJmPrpwhPHrSYdnCn3HN1BFh4y?=
- =?us-ascii?Q?CXvpsUIpnvct4joEhhyn1e/n9z+eOKvt7CgBstNcBNYpvdT89I8nzOmVwY7b?=
- =?us-ascii?Q?McyitDd6rqqKQYM4dmBqP0SovSYaMKXtYFNR7wQA7lNswBwP+6ANNTm4CbYD?=
- =?us-ascii?Q?nnwAPSqeMSL0AslkpvNVCP7w0VsEy42MFoR8gSJmt+wXW7T7m8w9p51hI4uy?=
- =?us-ascii?Q?WozEBAkY2LdxVXIfoazfarfhqgDogbH3IrgTJv14afzEZ1UnqR2Tk82HlqjA?=
- =?us-ascii?Q?V4pkeJ2RIICXrTBtGbduUHYQYOT2y7oMndEwNZ9ZCUr1CdlWrFiNVk1PU8zz?=
- =?us-ascii?Q?r5vLWgYqBeF9B4FomLCjiucESudipiioSNsLr3gc0/a36QyhvDhMwQAx/dbO?=
- =?us-ascii?Q?jKSBjp4x80vK4bFt5uaU1jIYsySPKitZtZo9IRgVneGi9EmFWjSdor+oMjHN?=
- =?us-ascii?Q?xcgQgPX63IVXeYxXOIMrplnpgBUt4dlWwB+WZTnlSQOPdeYcUxz9ZHtJtU+S?=
- =?us-ascii?Q?RvatPPfBu6P3wc0o/LogjnSlENH0tzEps7w5eLxPCzYeaRva8jroNRMVKP4O?=
- =?us-ascii?Q?9a+596wrlpgxO+4UlaUTUxQCbs7TNVE2VElMeAVApL1azlPYzrrnIPx2FuJd?=
- =?us-ascii?Q?4RE94/CK2V7yMyJkfTT0v1QeujY2lTCe1cvtR8YDy1kQOX4Rd62VCeulDJwH?=
- =?us-ascii?Q?MdA4vFrKNp2L3ltwrvuIGIIMaYrjBk4TYon1lGqwfPA0MtH0NtUFTKcYgmvl?=
- =?us-ascii?Q?HjTNeP8HtXXFHmRuNCid2FNvSfFDzNvwm9BfOoDFtH1NSVHmVcwzsMd1pDV6?=
- =?us-ascii?Q?4P9ZxiiRuJYyBSl8UaXwPB+0jQncCqmkY7rF44FvPs5D3S6+oW9YV8XTuM4y?=
- =?us-ascii?Q?tvrWxH1bKRVwVfJ6fQ1eCssLwAgymMxBjAXHJvY5nBpmW9MPlgf1Wao1aynh?=
- =?us-ascii?Q?5itIPZ6UUmH4i+aFGCSB1bK8ZwuKVYKeEqXESo3hITHlZob9tvTpZUbJ/RVa?=
- =?us-ascii?Q?C/Px9FpHsUfCyw7GgA6CLPkEo5DqKHyBcrzBkxNYm4z7iigsk+I73jjvjLKX?=
- =?us-ascii?Q?AUat5n7weoGsegmrhqBpgGjmCLyFHBQoZAmoJcf865WdZfcFMMbK2S9DnYGn?=
- =?us-ascii?Q?Fl0yR4cE5/aqnlyTxkAoFkZS4cLOUt2U7PuJdV/op2TrDumrMd+Sr6GO79nC?=
- =?us-ascii?Q?1rE8Z2iaL0F1rXCtzfGhxfkodNs51owgMFQg2OtrX0krT8UnivOrL2ZOIAzs?=
- =?us-ascii?Q?jaxKFLIIMZhWtmQHXDohzjsS+MssqF+bI+lciakqKnh+lYwJ7jx8VNP1aRSt?=
- =?us-ascii?Q?NF8g4YaCAUPZEBaW4IwGKCVKZFTmfvsGW91/a4Bl?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23c59bf0-76d8-42c9-a8f9-08dbed02f898
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2023 15:35:22.1051
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lL6e2eHMcHzLTjjAeYwUY2OQek3O00vkEUYw0QLzl/fQzgqODL8gA3S2oD3cyTji
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7707
+References: <12299447.O9o76ZdvQC@kreacher> <CAMj1kXHpVroVqXxH72XNJP5=dYDcfBiZex2wE2jOsSFNEAYqxg@mail.gmail.com>
+ <5724231.DvuYhMxLoT@kreacher> <CAJZ5v0gMw3xsKuvS0Q26D=DPdQFtDxAMfscufMZMPVFmYC2ZhA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gMw3xsKuvS0Q26D=DPdQFtDxAMfscufMZMPVFmYC2ZhA@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 24 Nov 2023 16:54:25 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGT1c7aj4F7bnjkZG2aR+C6p1AYVbxLqNVg0DvXBLezjQ@mail.gmail.com>
+Message-ID: <CAMj1kXGT1c7aj4F7bnjkZG2aR+C6p1AYVbxLqNVg0DvXBLezjQ@mail.gmail.com>
+Subject: Re: [PATCH v1] ACPI: processor: Provide empty stub of acpi_proc_quirk_mwait_check()
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux ACPI <linux-acpi@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, 
+	Michal Wilczynski <michal.wilczynski@intel.com>, Guenter Roeck <linux@roeck-us.net>, 
+	Frank Scheiner <frank.scheiner@web.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 15, 2023 at 06:25:44PM +0000, Robin Murphy wrote:
-> It turns out there are more subtle races beyond just the main part of
-> __iommu_probe_device() itself running in parallel - the dev_iommu_free()
-> on the way out of an unsuccessful probe can still manage to trip up
-> concurrent accesses to a device's fwspec. Thus, extend the scope of
-> iommu_probe_device_lock() to also serialise fwspec creation and initial
-> retrieval.
-> 
-> Reported-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-> Link: https://lore.kernel.org/linux-iommu/e2e20e1c-6450-4ac5-9804-b0000acdf7de@quicinc.com/
+On Wed, 22 Nov 2023 at 20:39, Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Thu, Sep 21, 2023 at 4:00=E2=80=AFPM Rafael J. Wysocki <rjw@rjwysocki.=
+net> wrote:
+> >
+> > On Thursday, September 21, 2023 3:09:04 PM CEST Ard Biesheuvel wrote:
+> > > On Thu, 21 Sept 2023 at 13:04, Rafael J. Wysocki <rjw@rjwysocki.net> =
+wrote:
+> > > >
+> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > >
+> > > > Commit 0a0e2ea642f6 ("ACPI: processor: Move MWAIT quirk out of
+> > > > acpi_processor.c") added acpi_proc_quirk_mwait_check() that is
+> > > > only defined for x86 and is unlikely to be defined for any other
+> > > > architectures, so put it under #ifdef CONFIG_X86 and provide
+> > > > an empty stub implementation of it for the other cases.
+> > > >
+> > > > Link: https://lore.kernel.org/lkml/c7a05a44-c0be-46c2-a21d-b242524d=
+482b@roeck-us.net
+> > > > Link: https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.gi=
+t/commit/?h=3Dremove-ia64&id=3Da0334bf78b95532cec54f56b53e8ae1bfe7e1ca1
+> > > > Fixes: 0a0e2ea642f6 ("ACPI: processor: Move MWAIT quirk out of acpi=
+_processor.c")
+> > > > Reported-by: Guenter Roeck <linux@roeck-us.net>
+> > > > Reported-by: Frank Scheiner <frank.scheiner@web.de>
+> > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > > ---
+> > > >
+> > > > This is kind of orthogonal to
+> > > >
+> > > > https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/comm=
+it/?h=3Dremove-ia64&id=3Da0334bf78b95532cec54f56b53e8ae1bfe7e1ca1
+> > > >
+> > > > because if any architectures other than x86 and ia64 decide to use =
+the
+> > > > processor _OSC, they will see the reported build error.
+> > > >
+> > >
+> > > You mean when other arches #define CONFIG_ARCH_MIGHT_HAVE_ACPI_PDC to=
+o, right?
+> > >
+> > > In any case, this is going to conflict with my change, which is
+> > > already in linux-next (you were cc'ed on the PR to asm-generic). What
+> > > do you propose here?
+> >
+> > IIUC, the conflict is that the empty stub will be defined twice if this=
+ is
+> > applied before removing ia64.
+> >
+> > But if it is applied on top of the ia64 removal, all should be fine, so=
+ that's
+> > what I would do (and tell the -stable people to ignore it).
+>
+> And ia64 is gone now, so applied.
 
-Apparently this is "Closes:" nowadays
-
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index f17a1113f3d6..e0c962648dde 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -485,11 +485,12 @@ static void iommu_deinit_device(struct device *dev)
->  	dev_iommu_free(dev);
->  }
->  
-> +DEFINE_MUTEX(iommu_probe_device_lock);
-> +
-
-Please put this at the top of the file with the other declarations, I
-will rebase the lockdep annotations from the other series
-
-Thanks,
-Jason
+Excellent.
 
