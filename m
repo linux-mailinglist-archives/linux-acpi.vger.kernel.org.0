@@ -1,144 +1,110 @@
-Return-Path: <linux-acpi+bounces-1820-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1821-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C44CE7F7E8D
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 19:34:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B06A7F7E92
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 19:34:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E7D62820F1
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 18:34:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA0542821D8
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 18:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B2433E9
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 18:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7144733CC2
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 18:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3ADB819AD;
-	Fri, 24 Nov 2023 10:10:09 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2CC141007;
-	Fri, 24 Nov 2023 10:10:55 -0800 (PST)
-Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 800793F73F;
-	Fri, 24 Nov 2023 10:10:07 -0800 (PST)
-From: Robin Murphy <robin.murphy@arm.com>
-To: hch@lst.de
-Cc: rafael@kernel.org,
-	lenb@kernel.org,
-	robh+dt@kernel.org,
-	frowand.list@gmail.com,
-	m.szyprowski@samsung.com,
-	james.quinlan@broadcom.com,
-	iommu@lists.linux.dev,
-	linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] dma-mapping: Don't store redundant offsets
-Date: Fri, 24 Nov 2023 18:10:03 +0000
-Message-Id: <94e0cec15546ef2be61d90869e499e40e2a55308.1700849106.git.robin.murphy@arm.com>
-X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F34301FD5;
+	Fri, 24 Nov 2023 10:24:50 -0800 (PST)
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-1efba24b038so560215fac.1;
+        Fri, 24 Nov 2023 10:24:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700850290; x=1701455090;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ar+ThvUpj7eV+zdMuBiTJvuCDtNf2SG+hNoODxv3v1w=;
+        b=hg3fZrfz7Fq3tBm4HKrW8VEF6pnpwWla5rs8NSUOxXMNLy7bVvvDu1rEe7XdV13wLk
+         ponOBPTb0/GV2bTI3VhN94n9AOp/pOIgz1/LJbRC52w3ZOEo7d69vJe0AfdGDifJmJ04
+         8XTDDK7VEp1EpFaniPNy3ZXlt0FGwp/7HKcqSt4O2khhjfYiG+AVqptR5+rsO7PMS9Qm
+         L6QrNUT67jHi88s5w9/U0IqV+3WLX9N3fsJ/mSRCQea/IMBot7lGl0NtYqx4k8H7Q/fo
+         sDGES2PRP/AuH6FeA0IeIaMHcDXedTMnSaz/trWObamu998upMUbvH1Pcb7OUf8NsP1i
+         N5+g==
+X-Gm-Message-State: AOJu0Yz13V5RkYIeNVaN8BPeL4AbsCGy1WHY12dzWAznPxWrEnpkheCh
+	jdbNVC59YBWRCo9LRS1fHJ700vaU8hShn9wavgjKtSpMss0=
+X-Google-Smtp-Source: AGHT+IFoDHMU8QraPdePpGYPcbBSRSp8GngdfE13t9o6t1sh46HSOvIACAeBwowK0F9HefziLEYy8kF7q474RxKZjM4=
+X-Received: by 2002:a05:6870:f78f:b0:1e9:9440:fe4a with SMTP id
+ fs15-20020a056870f78f00b001e99440fe4amr4926193oab.3.1700850290144; Fri, 24
+ Nov 2023 10:24:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 24 Nov 2023 19:24:39 +0100
+Message-ID: <CAJZ5v0ikr8Z8KJxqfVzEmCwW4FTg+xLgVKO33D8vqd1XA8+58w@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.7-rc3
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-A bus_dma_region necessarily stores both CPU and DMA base addresses for
-a range, so there's no need to also store the difference between them.
+Hi Linus,
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
----
- drivers/acpi/scan.c        |  1 -
- drivers/of/address.c       |  1 -
- include/linux/dma-direct.h | 19 ++++++++++++-------
- kernel/dma/direct.c        |  1 -
- 4 files changed, 12 insertions(+), 10 deletions(-)
+Please pull from the tag
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 026130b37967..c72155606550 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1532,7 +1532,6 @@ int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
- 			r->cpu_start = rentry->res->start;
- 			r->dma_start = rentry->res->start - rentry->offset;
- 			r->size = resource_size(rentry->res);
--			r->offset = rentry->offset;
- 			r++;
- 		}
- 	}
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index b59956310f66..ae46a3605904 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -955,7 +955,6 @@ int of_dma_get_range(struct device_node *np, const struct bus_dma_region **map)
- 		r->cpu_start = range.cpu_addr;
- 		r->dma_start = range.bus_addr;
- 		r->size = range.size;
--		r->offset = range.cpu_addr - range.bus_addr;
- 		r++;
- 	}
- out:
-diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
-index 18aade195884..3eb3589ff43e 100644
---- a/include/linux/dma-direct.h
-+++ b/include/linux/dma-direct.h
-@@ -21,7 +21,6 @@ struct bus_dma_region {
- 	phys_addr_t	cpu_start;
- 	dma_addr_t	dma_start;
- 	u64		size;
--	u64		offset;
- };
- 
- static inline dma_addr_t translate_phys_to_dma(struct device *dev,
-@@ -29,9 +28,12 @@ static inline dma_addr_t translate_phys_to_dma(struct device *dev,
- {
- 	const struct bus_dma_region *m;
- 
--	for (m = dev->dma_range_map; m->size; m++)
--		if (paddr >= m->cpu_start && paddr - m->cpu_start < m->size)
--			return (dma_addr_t)paddr - m->offset;
-+	for (m = dev->dma_range_map; m->size; m++) {
-+		u64 offset = paddr - m->cpu_start;
-+
-+		if (paddr >= m->cpu_start && offset < m->size)
-+			return m->dma_start + offset;
-+	}
- 
- 	/* make sure dma_capable fails when no translation is available */
- 	return DMA_MAPPING_ERROR;
-@@ -42,9 +44,12 @@ static inline phys_addr_t translate_dma_to_phys(struct device *dev,
- {
- 	const struct bus_dma_region *m;
- 
--	for (m = dev->dma_range_map; m->size; m++)
--		if (dma_addr >= m->dma_start && dma_addr - m->dma_start < m->size)
--			return (phys_addr_t)dma_addr + m->offset;
-+	for (m = dev->dma_range_map; m->size; m++) {
-+		u64 offset = dma_addr - m->dma_start;
-+
-+		if (dma_addr >= m->dma_start && offset < m->size)
-+			return m->cpu_start + offset;
-+	}
- 
- 	return (phys_addr_t)-1;
- }
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 73c95815789a..98b2e192fd69 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -677,7 +677,6 @@ int dma_direct_set_offset(struct device *dev, phys_addr_t cpu_start,
- 		return -ENOMEM;
- 	map[0].cpu_start = cpu_start;
- 	map[0].dma_start = dma_start;
--	map[0].offset = offset;
- 	map[0].size = size;
- 	dev->dma_range_map = map;
- 	return 0;
--- 
-2.39.2.101.g768bb238c484.dirty
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.7-rc3
 
+with top-most commit e37470624e008579fec020c6be062dd200877129
+
+ Merge branches 'acpi-video' and 'acpi-processor' into acpi
+
+on top of commit 98b1cc82c4affc16f5598d4fa14b1858671b2263
+
+ Linux 6.7-rc2
+
+to receive ACPI fixes for 6.7-rc3.
+
+These add an ACPI IRQ override quirk for ASUS ExpertBook B1402CVA
+and fix an ACPI processor idle issue leading to triple-faults in Xen
+HVM guests and an ACPI backlight driver issue that causes GPUs to
+misbehave while their children power is being fixed up.
+
+Specifics:
+
+ - Avoid powering up GPUs while attempting to fix up power for their
+   children (Hans de Goede).
+
+ - Use raw_safe_halt() instead of safe_halt() in acpi_idle_play_dead()
+   so as to avoid triple-falts during CPU online in Xen HVM guests due
+   to the setting of the hardirqs_enabled flag in safe_halt() (David
+   Woodhouse).
+
+ - Add an ACPI IRQ override quirk for ASUS ExpertBook B1402CVA (Hans
+   de Goede).
+
+Thanks!
+
+
+---------------
+
+David Woodhouse (1):
+      ACPI: processor_idle: use raw_safe_halt() in acpi_idle_play_dead()
+
+Hans de Goede (3):
+      ACPI: PM: Add acpi_device_fix_up_power_children() function
+      ACPI: video: Use acpi_device_fix_up_power_children()
+      ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CVA
+
+---------------
+
+ drivers/acpi/acpi_video.c     |  2 +-
+ drivers/acpi/device_pm.c      | 13 +++++++++++++
+ drivers/acpi/processor_idle.c |  2 +-
+ drivers/acpi/resource.c       |  7 +++++++
+ include/acpi/acpi_bus.h       |  1 +
+ 5 files changed, 23 insertions(+), 2 deletions(-)
 
