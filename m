@@ -1,110 +1,110 @@
-Return-Path: <linux-acpi+bounces-1821-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1822-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B06A7F7E92
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 19:34:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4EB7F7E98
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 19:34:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA0542821D8
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 18:34:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7495B213F1
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 18:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7144733CC2
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 18:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1142E655
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 18:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F34301FD5;
-	Fri, 24 Nov 2023 10:24:50 -0800 (PST)
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-1efba24b038so560215fac.1;
-        Fri, 24 Nov 2023 10:24:50 -0800 (PST)
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 019251BDA;
+	Fri, 24 Nov 2023 10:28:51 -0800 (PST)
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-1f947682bfdso249027fac.0;
+        Fri, 24 Nov 2023 10:28:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700850290; x=1701455090;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ar+ThvUpj7eV+zdMuBiTJvuCDtNf2SG+hNoODxv3v1w=;
-        b=hg3fZrfz7Fq3tBm4HKrW8VEF6pnpwWla5rs8NSUOxXMNLy7bVvvDu1rEe7XdV13wLk
-         ponOBPTb0/GV2bTI3VhN94n9AOp/pOIgz1/LJbRC52w3ZOEo7d69vJe0AfdGDifJmJ04
-         8XTDDK7VEp1EpFaniPNy3ZXlt0FGwp/7HKcqSt4O2khhjfYiG+AVqptR5+rsO7PMS9Qm
-         L6QrNUT67jHi88s5w9/U0IqV+3WLX9N3fsJ/mSRCQea/IMBot7lGl0NtYqx4k8H7Q/fo
-         sDGES2PRP/AuH6FeA0IeIaMHcDXedTMnSaz/trWObamu998upMUbvH1Pcb7OUf8NsP1i
-         N5+g==
-X-Gm-Message-State: AOJu0Yz13V5RkYIeNVaN8BPeL4AbsCGy1WHY12dzWAznPxWrEnpkheCh
-	jdbNVC59YBWRCo9LRS1fHJ700vaU8hShn9wavgjKtSpMss0=
-X-Google-Smtp-Source: AGHT+IFoDHMU8QraPdePpGYPcbBSRSp8GngdfE13t9o6t1sh46HSOvIACAeBwowK0F9HefziLEYy8kF7q474RxKZjM4=
-X-Received: by 2002:a05:6870:f78f:b0:1e9:9440:fe4a with SMTP id
- fs15-20020a056870f78f00b001e99440fe4amr4926193oab.3.1700850290144; Fri, 24
- Nov 2023 10:24:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1700850530; x=1701455330;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oLMFfODH5jS5YDFDQszChNMcGREuaPeTgi8qOTAaUV4=;
+        b=Dud0luotF7MeDx3pnMruQU57XyPHns2evqyITZ3plpa0J26zuCXq4X1nGCt5wS3ddu
+         QDvSl1EeNo1/H/M2g1YwLedzjqQGMzcyi9CfNvz6qW2zrBs3O7nJe4kX1ztEYLWnn5be
+         zvCQ9Q2jkUUup3NcYDDwHM0mamgp3B0liKA5sVAHfOrrz8yNA6AB0zcxqeKjuz2rYW1G
+         95dxlWAbNrw55lNtVvznaxtQgyOuhs6DxuQcbM5H0EtLOjwKG4GwqJTSdBjAF9TSJCUt
+         nlF2cE5XlJwfe5PhRt1nBIiFQ10lZ+XytLtdEh6beu1zJ4cWh4GqrtTDGSZBHNHUzzmp
+         eCmQ==
+X-Gm-Message-State: AOJu0YwnhntB6fZObdO/xLo3rop38pGun5wKZ/Vvzfk+VRkr6bYuz7Tz
+	V+RThvFgFKuEmJIccsAg+hjhRwqtdgzmkqiq0DQ=
+X-Google-Smtp-Source: AGHT+IFA23KXKUtBvwZXL0qoxd/H2xL519xL2sSsV0wJ/6Bp+k3CisKabYhut6LpNi87nfOtk/l9p04HId0O/+d5TrU=
+X-Received: by 2002:a05:6870:d914:b0:1f9:602e:7b0d with SMTP id
+ gq20-20020a056870d91400b001f9602e7b0dmr5597329oab.2.1700850530254; Fri, 24
+ Nov 2023 10:28:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20231123070010.4013969-1-arnd@kernel.org>
+In-Reply-To: <20231123070010.4013969-1-arnd@kernel.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 24 Nov 2023 19:24:39 +0100
-Message-ID: <CAJZ5v0ikr8Z8KJxqfVzEmCwW4FTg+xLgVKO33D8vqd1XA8+58w@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v6.7-rc3
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date: Fri, 24 Nov 2023 19:28:39 +0100
+Message-ID: <CAJZ5v0gNE8expsADwoTgDEoTa_5G-R_sBobFEiqLOh0VS5yVug@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: thermal_lib: include "internal.h" for function prototypes
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Zhang Rui <rui.zhang@intel.com>, 
+	Len Brown <lenb@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Linus,
+On Thu, Nov 23, 2023 at 8:00=E2=80=AFAM Arnd Bergmann <arnd@kernel.org> wro=
+te:
+>
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The newly added functions are declared in a header that is not included
+> before the definition:
+>
+> drivers/acpi/thermal_lib.c:46:5: error: no previous prototype for 'acpi_a=
+ctive_trip_temp' [-Werror=3Dmissing-prototypes]
+>    46 | int acpi_active_trip_temp(struct acpi_device *adev, int id, int *=
+ret_temp)
+>       |     ^~~~~~~~~~~~~~~~~~~~~
+> drivers/acpi/thermal_lib.c:57:5: error: no previous prototype for 'acpi_p=
+assive_trip_temp' [-Werror=3Dmissing-prototypes]
+>    57 | int acpi_passive_trip_temp(struct acpi_device *adev, int *ret_tem=
+p)
+>       |     ^~~~~~~~~~~~~~~~~~~~~~
+> drivers/acpi/thermal_lib.c:63:5: error: no previous prototype for 'acpi_h=
+ot_trip_temp' [-Werror=3Dmissing-prototypes]
+>    63 | int acpi_hot_trip_temp(struct acpi_device *adev, int *ret_temp)
+>       |     ^~~~~~~~~~~~~~~~~~
+> drivers/acpi/thermal_lib.c:69:5: error: no previous prototype for 'acpi_c=
+ritical_trip_temp' [-Werror=3Dmissing-prototypes]
+>    69 | int acpi_critical_trip_temp(struct acpi_device *adev, int *ret_te=
+mp)
+>       |     ^~~~~~~~~~~~~~~~~~~~~~~
+>
+> Fixes: 6908097aa5a7 ("ACPI: thermal_lib: Add functions returning temperat=
+ure in deci-Kelvin")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/acpi/thermal_lib.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/acpi/thermal_lib.c b/drivers/acpi/thermal_lib.c
+> index 646ff6bda6dd..4e0519ca9739 100644
+> --- a/drivers/acpi/thermal_lib.c
+> +++ b/drivers/acpi/thermal_lib.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/acpi.h>
+>  #include <linux/units.h>
+>  #include <linux/thermal.h>
+> +#include "internal.h"
+>
+>  /*
+>   * Minimum temperature for full military grade is 218=C2=B0K (-55=C2=B0C=
+) and
+> --
 
-Please pull from the tag
-
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.7-rc3
-
-with top-most commit e37470624e008579fec020c6be062dd200877129
-
- Merge branches 'acpi-video' and 'acpi-processor' into acpi
-
-on top of commit 98b1cc82c4affc16f5598d4fa14b1858671b2263
-
- Linux 6.7-rc2
-
-to receive ACPI fixes for 6.7-rc3.
-
-These add an ACPI IRQ override quirk for ASUS ExpertBook B1402CVA
-and fix an ACPI processor idle issue leading to triple-faults in Xen
-HVM guests and an ACPI backlight driver issue that causes GPUs to
-misbehave while their children power is being fixed up.
-
-Specifics:
-
- - Avoid powering up GPUs while attempting to fix up power for their
-   children (Hans de Goede).
-
- - Use raw_safe_halt() instead of safe_halt() in acpi_idle_play_dead()
-   so as to avoid triple-falts during CPU online in Xen HVM guests due
-   to the setting of the hardirqs_enabled flag in safe_halt() (David
-   Woodhouse).
-
- - Add an ACPI IRQ override quirk for ASUS ExpertBook B1402CVA (Hans
-   de Goede).
-
-Thanks!
-
-
----------------
-
-David Woodhouse (1):
-      ACPI: processor_idle: use raw_safe_halt() in acpi_idle_play_dead()
-
-Hans de Goede (3):
-      ACPI: PM: Add acpi_device_fix_up_power_children() function
-      ACPI: video: Use acpi_device_fix_up_power_children()
-      ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CVA
-
----------------
-
- drivers/acpi/acpi_video.c     |  2 +-
- drivers/acpi/device_pm.c      | 13 +++++++++++++
- drivers/acpi/processor_idle.c |  2 +-
- drivers/acpi/resource.c       |  7 +++++++
- include/acpi/acpi_bus.h       |  1 +
- 5 files changed, 23 insertions(+), 2 deletions(-)
+Applied, thanks!
 
