@@ -1,391 +1,932 @@
-Return-Path: <linux-acpi+bounces-1811-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1812-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DDC7F71BC
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 11:40:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA8A7F73ED
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 13:38:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75E741C20873
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 10:40:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB90BB209F8
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 12:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0ACA1A715
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 10:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6D42420D
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Nov 2023 12:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="msTqFvnR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KMuzJsfd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2061.outbound.protection.outlook.com [40.107.96.61])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B449C1BD;
-	Fri, 24 Nov 2023 02:33:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mgTjMI1DDRivQcdWBDMnin9cWH1Si2VOfk06dmQa35bskeTB5/FlvQ1RT9tTQNrHycU2fSDmk3nHFEf2zed6FMUDON8FxQq3Tey7nupl34bVpTlTCwak/csHALGGv4sgeJIrb6AsPOv0Z8Q/zrCHUjh2yFRYhZpdjfM1zpysk+okaZSTtgt62BQmbTRfB+UExepKcNuP0c+HAAfGNUAv5WZBBTKiBFoGRCmDn5LrkawoVLsgdAcfDZxDBqhwBXrvgjCrsmOK9qNlOcl5hBSRCCuYY5hSjew+p8ZyjXCDG2llp3DX3f7K0eakvYSi/tb2BB5cDBR3OeK246KR0ge8NA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CxiFRDtp5qqk6Bo0ku32SWQukLFTF8Compi0RCGR9bw=;
- b=KB9YWq/9lGG2S6be55uerEVZLcnL5tLTdb1swsh+B6Thdr0r+sn3BCgE+9e/Gz1BVREz+O1Lf6MDfGdmdOrjRt4ZiUXWQhxXqf2G7kxoqc9qD/Cz6seM/F5mJmWDtinLM5ba35i9o2J96B58ljGqPHf1T26HadKuAqCm6KDh7YsgpH+xXU2/9MEXLkOF+MNkbWoIyiIqXcalYdT1R8dkF2KcKZNV/iSeBkj64ws91O6H7Nxq3kNpNBS7ILzHEhJFVTraW/U4l+SMA1WOjU6aEwBlBvHExZPlpmMjeW4wgZzw4oq1IbnkkC3ctBrYoNkei1t1jW4JcmF/ODewpfWulg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=suse.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CxiFRDtp5qqk6Bo0ku32SWQukLFTF8Compi0RCGR9bw=;
- b=msTqFvnRpN8xjA7liweI1Ed94Es5KNBUKc1CKyr4iSeG4zW85JbUYetwPKqz1NI6r/x8UlHZLuLWkeZtxQuGUAfktNApZnbztFXgKXDXpHTdwvocOVGcaFg12vETgAVyP/ztrasBt+WQg5jlrDkYE+SqncGDnTIzS3/z5Aus6E0=
-Received: from DM6PR03CA0011.namprd03.prod.outlook.com (2603:10b6:5:40::24) by
- CH3PR12MB9196.namprd12.prod.outlook.com (2603:10b6:610:197::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7025.21; Fri, 24 Nov 2023 10:33:11 +0000
-Received: from CY4PEPF0000EDD1.namprd03.prod.outlook.com
- (2603:10b6:5:40:cafe::1d) by DM6PR03CA0011.outlook.office365.com
- (2603:10b6:5:40::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.21 via Frontend
- Transport; Fri, 24 Nov 2023 10:33:11 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EDD1.mail.protection.outlook.com (10.167.241.205) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7025.12 via Frontend Transport; Fri, 24 Nov 2023 10:33:11 +0000
-Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 24 Nov
- 2023 04:33:04 -0600
-From: Jiqian Chen <Jiqian.Chen@amd.com>
-To: Juergen Gross <jgross@suse.com>, Stefano Stabellini
-	<sstabellini@kernel.org>, Oleksandr Tyshchenko
-	<oleksandr_tyshchenko@epam.com>, Thomas Gleixner <tglx@linutronix.de>, "Boris
- Ostrovsky" <boris.ostrovsky@oracle.com>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, Bjorn Helgaas
-	<bhelgaas@google.com>, =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?=
-	<roger.pau@citrix.com>, <xen-devel@lists.xenproject.org>,
-	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-CC: Stefano Stabellini <stefano.stabellini@amd.com>, Alex Deucher
-	<Alexander.Deucher@amd.com>, Christian Koenig <Christian.Koenig@amd.com>,
-	Stewart Hildebrand <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou
-	<xenia.ragiadakou@amd.com>, Honglei Huang <Honglei1.Huang@amd.com>, "Julia
- Zhang" <Julia.Zhang@amd.com>, Huang Rui <Ray.Huang@amd.com>, Jiqian Chen
-	<Jiqian.Chen@amd.com>, Huang Rui <ray.huang@amd.com>
-Subject: [RFC KERNEL PATCH v2 3/3] xen/privcmd: Add new syscall to get gsi from irq
-Date: Fri, 24 Nov 2023 18:31:23 +0800
-Message-ID: <20231124103123.3263471-4-Jiqian.Chen@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231124103123.3263471-1-Jiqian.Chen@amd.com>
-References: <20231124103123.3263471-1-Jiqian.Chen@amd.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AFB5D6F;
+	Fri, 24 Nov 2023 02:45:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700822730; x=1732358730;
+  h=date:from:to:cc:subject:message-id;
+  bh=li6aOqwYoWNJHaUmHNwJUFp3HROihw/cRRCtxjgvTNY=;
+  b=KMuzJsfdxcOIUaReC9OU7imjn1vVEqH1kBKqpMR0SRGbgwuNRJy9j1iv
+   kslH8MzDutltYViJ9+vTBsGOUDmxYSMOcyImsRWhkgRTTnBdeIOqJ+EpT
+   jWmiN8LaaJ3fvMjt04Oi9WO/G7Ir9MdvaexGXvsBI+LVkhl453DC9I4Ft
+   2MHzUOTxQRJR+ch4ZfreQFFmyLHe0zluaHDs03GTMNcSBcd+C5FTaiCJI
+   2PJ3eThSaLSYBrwJ+7HcKgD2BdJ2MlM5itEkDxLwndXubelNcO4ZCoxQf
+   N7ti4PuS+E3wGyIcWtim92BL6xvpCt+VYhCsCLQ2/CthjvZi4HeafFoB4
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="456743754"
+X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; 
+   d="scan'208";a="456743754"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2023 02:45:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="717334869"
+X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; 
+   d="scan'208";a="717334869"
+Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 24 Nov 2023 02:45:23 -0800
+Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r6TgX-0002Qs-1D;
+	Fri, 24 Nov 2023 10:45:21 +0000
+Date: Fri, 24 Nov 2023 18:45:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS WITH WARNING
+ accf6bb711d6819cce89a122ccde4811c58c160e
+Message-ID: <202311241802.8WWz80fF-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD1:EE_|CH3PR12MB9196:EE_
-X-MS-Office365-Filtering-Correlation-Id: 80ea1451-a9bb-427e-cf1a-08dbecd8c1e5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	qNlkV3KqrC0RcB1olsj+8U2+ITAJfIdDp+h2cntHYuQMWOmB+0cxyXJ+14LBLnvlJrIvGAv5IVYEf8PXuuzQnj9B1jGYso0DxwYAFLnBMykDWt9p7cQVB6W9sCBxsC0pyCJLQkBC5YjHmBJzBEPx7pXFPbKiK5+weT2SskjYhPY31DrwEXrCzNbVRMcbkxsLyr9g422xYvxUhcduWLHGhGcfxh8Gp5K7Hue+9ETbvLCiddAmodXERWNO4QC3E1BhZI4EtJfyyqyL+3+SkmOicm1TwHwEMV+zehY3b7aAoj24/LfqCZni2oLoyshCzp2vjb7tpWgGoPz+4iZQ4wME+Opl1a59MmpmulPMhWG1jbyv+bApVDnJb58HGH4jzUAPmUljfJ0xGufEF35KT4ZoEcv3RkgxuLxIG3tAuWV1fb4Ky6Lk3k0WSCUyc2L+jbakE27Uy+53WCEzVp+U1aE0hcOzLg93WeM4FJDeDCZ9OeUR2QU77p/neNVXxIzJT0hnmgrPenbMOFEgqwtGzjCK0pzu3uSyLg4Dwr+bxwOdVJP+dTMbeYxUoUuYW1OYuiu3pOn98o3svHDYYeLHlW5DUK3UidG1TsbuIgnt5GQyuJzcjW6nZVYabHQ1QuinxoPHI070uaeHGBjB3glGYETXQhvHudGS3OLDaRBMSxmTQs3/KN/8PCsKW/PpksjznNiE8VbvXXz5t12gmHhN7W88L5gGloncafAY6QVcIbpmgpB2KAwHPVsyXDhsCJGH0Dd2bGriAD+pbf0EGVZRQKhj9tT/2JljvRc1860UlRQynpQ=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(346002)(396003)(39860400002)(376002)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(82310400011)(36840700001)(40470700004)(46966006)(36756003)(41300700001)(36860700001)(2616005)(356005)(47076005)(16526019)(426003)(336012)(26005)(40480700001)(7696005)(81166007)(1076003)(83380400001)(82740400003)(40460700003)(478600001)(6666004)(110136005)(316002)(70206006)(70586007)(54906003)(2906002)(921008)(8936002)(8676002)(4326008)(86362001)(7416002)(5660300002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2023 10:33:11.2117
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 80ea1451-a9bb-427e-cf1a-08dbecd8c1e5
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EDD1.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9196
 
-In PVH dom0, it uses the linux local interrupt mechanism,
-when it allocs irq for a gsi, it is dynamic, and follow
-the principle of applying first, distributing first. And
-if you debug the codes, you will find the irq number is
-alloced from small to large, but the applying gsi number
-is not, may gsi 38 comes before gsi 28, it causes the irq
-number is not equal with the gsi number.
-And when we passthrough a device, QEMU will use device's gsi
-number to do mapping actions, see xen_pt_realize->
-xc_physdev_map_pirq, but the gsi number is got from file
-/sys/bus/pci/devices/xxxx:xx:xx.x/irq, irq!= gsi, so it will
-fail when mapping.
-And in current linux codes, there is no method to translate
-irq to gsi for userspace.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: accf6bb711d6819cce89a122ccde4811c58c160e  Merge branch 'acpi-property' into bleeding-edge
 
-For above purpose, this patch record the relationship of gsi
-and irq when PVH dom0 do acpi_register_gsi_ioapic for devices
-and adds a new syscall into privcmd to let userspace can get
-that translation when they have a need.
+Warning reports:
 
-Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
-Signed-off-by: Huang Rui <ray.huang@amd.com>
----
- arch/x86/include/asm/apic.h      |  7 ++++++
- arch/x86/include/asm/xen/pci.h   |  5 ++++
- arch/x86/kernel/acpi/boot.c      |  2 +-
- arch/x86/pci/xen.c               | 21 +++++++++++++++++
- drivers/xen/events/events_base.c | 39 ++++++++++++++++++++++++++++++++
- drivers/xen/privcmd.c            | 20 ++++++++++++++++
- include/uapi/xen/privcmd.h       |  7 ++++++
- include/xen/events.h             |  5 ++++
- 8 files changed, 105 insertions(+), 1 deletion(-)
+https://lore.kernel.org/oe-kbuild-all/202311210522.8Y0cnwJ2-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202311210725.tPlWJipc-lkp@intel.com
 
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index d21f48f1c242..5646444285ac 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -169,6 +169,8 @@ extern bool apic_needs_pit(void);
- 
- extern void apic_send_IPI_allbutself(unsigned int vector);
- 
-+extern int acpi_register_gsi_ioapic(struct device *dev, u32 gsi,
-+				    int trigger, int polarity);
- #else /* !CONFIG_X86_LOCAL_APIC */
- static inline void lapic_shutdown(void) { }
- #define local_apic_timer_c2_ok		1
-@@ -183,6 +185,11 @@ static inline void apic_intr_mode_init(void) { }
- static inline void lapic_assign_system_vectors(void) { }
- static inline void lapic_assign_legacy_vector(unsigned int i, bool r) { }
- static inline bool apic_needs_pit(void) { return true; }
-+static inline int acpi_register_gsi_ioapic(struct device *dev, u32 gsi,
-+				    int trigger, int polarity)
-+{
-+	return (int)gsi;
-+}
- #endif /* !CONFIG_X86_LOCAL_APIC */
- 
- #ifdef CONFIG_X86_X2APIC
-diff --git a/arch/x86/include/asm/xen/pci.h b/arch/x86/include/asm/xen/pci.h
-index 9015b888edd6..aa8ded61fc2d 100644
---- a/arch/x86/include/asm/xen/pci.h
-+++ b/arch/x86/include/asm/xen/pci.h
-@@ -5,6 +5,7 @@
- #if defined(CONFIG_PCI_XEN)
- extern int __init pci_xen_init(void);
- extern int __init pci_xen_hvm_init(void);
-+extern int __init pci_xen_pvh_init(void);
- #define pci_xen 1
- #else
- #define pci_xen 0
-@@ -13,6 +14,10 @@ static inline int pci_xen_hvm_init(void)
- {
- 	return -1;
- }
-+static inline int pci_xen_pvh_init(void)
-+{
-+	return -1;
-+}
- #endif
- #ifdef CONFIG_XEN_PV_DOM0
- int __init pci_xen_initial_domain(void);
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index d0918a75cb00..45b157e18c0b 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -739,7 +739,7 @@ static int acpi_register_gsi_pic(struct device *dev, u32 gsi,
- }
- 
- #ifdef CONFIG_X86_LOCAL_APIC
--static int acpi_register_gsi_ioapic(struct device *dev, u32 gsi,
-+int acpi_register_gsi_ioapic(struct device *dev, u32 gsi,
- 				    int trigger, int polarity)
- {
- 	int irq = gsi;
-diff --git a/arch/x86/pci/xen.c b/arch/x86/pci/xen.c
-index 652cd53e77f6..f056ab5c0a06 100644
---- a/arch/x86/pci/xen.c
-+++ b/arch/x86/pci/xen.c
-@@ -114,6 +114,21 @@ static int acpi_register_gsi_xen_hvm(struct device *dev, u32 gsi,
- 				 false /* no mapping of GSI to PIRQ */);
- }
- 
-+static int acpi_register_gsi_xen_pvh(struct device *dev, u32 gsi,
-+				    int trigger, int polarity)
-+{
-+	int irq;
-+
-+	irq = acpi_register_gsi_ioapic(dev, gsi, trigger, polarity);
-+	if (irq < 0)
-+		return irq;
-+
-+	if (xen_pvh_add_gsi_irq_map(gsi, irq) == -EEXIST)
-+		printk(KERN_INFO "Already map the GSI :%u and IRQ: %d\n", gsi, irq);
-+
-+	return irq;
-+}
-+
- #ifdef CONFIG_XEN_PV_DOM0
- static int xen_register_gsi(u32 gsi, int triggering, int polarity)
- {
-@@ -558,6 +573,12 @@ int __init pci_xen_hvm_init(void)
- 	return 0;
- }
- 
-+int __init pci_xen_pvh_init(void)
-+{
-+	__acpi_register_gsi = acpi_register_gsi_xen_pvh;
-+	return 0;
-+}
-+
- #ifdef CONFIG_XEN_PV_DOM0
- int __init pci_xen_initial_domain(void)
- {
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index 6de6b084ea60..a02d62955509 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -957,6 +957,43 @@ int xen_irq_from_gsi(unsigned gsi)
- }
- EXPORT_SYMBOL_GPL(xen_irq_from_gsi);
- 
-+int xen_gsi_from_irq(unsigned irq)
-+{
-+	struct irq_info *info;
-+
-+	list_for_each_entry(info, &xen_irq_list_head, list) {
-+		if (info->type != IRQT_PIRQ)
-+			continue;
-+
-+		if (info->irq == irq)
-+			return info->u.pirq.gsi;
-+	}
-+
-+	return -1;
-+}
-+EXPORT_SYMBOL_GPL(xen_gsi_from_irq);
-+
-+int xen_pvh_add_gsi_irq_map(unsigned gsi, unsigned irq)
-+{
-+	int tmp_irq;
-+	struct irq_info *info;
-+
-+	tmp_irq = xen_irq_from_gsi(gsi);
-+	if (tmp_irq != -1)
-+		return -EEXIST;
-+
-+	info = kzalloc(sizeof(*info), GFP_KERNEL);
-+	if (info == NULL)
-+		panic("Unable to allocate metadata for GSI%d\n", gsi);
-+
-+	info->type = IRQT_PIRQ;
-+	info->irq = irq;
-+	info->u.pirq.gsi = gsi;
-+	list_add_tail(&info->list, &xen_irq_list_head);
-+
-+	return 0;
-+}
-+
- static void __unbind_from_irq(unsigned int irq)
- {
- 	evtchn_port_t evtchn = evtchn_from_irq(irq);
-@@ -2303,6 +2340,8 @@ void __init xen_init_IRQ(void)
- 	xen_init_setup_upcall_vector();
- 	xen_alloc_callback_vector();
- 
-+	if (xen_pvh_domain())
-+		pci_xen_pvh_init();
- 
- 	if (xen_hvm_domain()) {
- 		native_init_IRQ();
-diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
-index 1ce7f3c7a950..6fa8a01d8ae6 100644
---- a/drivers/xen/privcmd.c
-+++ b/drivers/xen/privcmd.c
-@@ -45,6 +45,7 @@
- #include <xen/page.h>
- #include <xen/xen-ops.h>
- #include <xen/balloon.h>
-+#include <xen/events.h>
- 
- #include "privcmd.h"
- 
-@@ -842,6 +843,21 @@ static long privcmd_ioctl_mmap_resource(struct file *file,
- 	return rc;
- }
- 
-+static long privcmd_ioctl_gsi_from_irq(struct file *file, void __user *udata)
-+{
-+	struct privcmd_gsi_from_irq kdata;
-+
-+	if (copy_from_user(&kdata, udata, sizeof(kdata)))
-+		return -EFAULT;
-+
-+	kdata.gsi = xen_gsi_from_irq(kdata.irq);
-+
-+	if (copy_to_user(udata, &kdata, sizeof(kdata)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
- #ifdef CONFIG_XEN_PRIVCMD_EVENTFD
- /* Irqfd support */
- static struct workqueue_struct *irqfd_cleanup_wq;
-@@ -1534,6 +1550,10 @@ static long privcmd_ioctl(struct file *file,
- 		ret = privcmd_ioctl_ioeventfd(file, udata);
- 		break;
- 
-+	case IOCTL_PRIVCMD_GSI_FROM_IRQ:
-+		ret = privcmd_ioctl_gsi_from_irq(file, udata);
-+		break;
-+
- 	default:
- 		break;
- 	}
-diff --git a/include/uapi/xen/privcmd.h b/include/uapi/xen/privcmd.h
-index 8b8c5d1420fe..61f0ffbec077 100644
---- a/include/uapi/xen/privcmd.h
-+++ b/include/uapi/xen/privcmd.h
-@@ -126,6 +126,11 @@ struct privcmd_ioeventfd {
- 	__u8 pad[2];
- };
- 
-+struct privcmd_gsi_from_irq {
-+	__u32 irq;
-+	__u32 gsi;
-+};
-+
- /*
-  * @cmd: IOCTL_PRIVCMD_HYPERCALL
-  * @arg: &privcmd_hypercall_t
-@@ -157,5 +162,7 @@ struct privcmd_ioeventfd {
- 	_IOW('P', 8, struct privcmd_irqfd)
- #define IOCTL_PRIVCMD_IOEVENTFD					\
- 	_IOW('P', 9, struct privcmd_ioeventfd)
-+#define IOCTL_PRIVCMD_GSI_FROM_IRQ				\
-+	_IOC(_IOC_NONE, 'P', 10, sizeof(struct privcmd_gsi_from_irq))
- 
- #endif /* __LINUX_PUBLIC_PRIVCMD_H__ */
-diff --git a/include/xen/events.h b/include/xen/events.h
-index 23932b0673dc..78377c936efe 100644
---- a/include/xen/events.h
-+++ b/include/xen/events.h
-@@ -131,6 +131,11 @@ int xen_pirq_from_irq(unsigned irq);
- /* Return the irq allocated to the gsi */
- int xen_irq_from_gsi(unsigned gsi);
- 
-+/* Return the gsi from irq */
-+int xen_gsi_from_irq(unsigned irq);
-+
-+int xen_pvh_add_gsi_irq_map(unsigned gsi, unsigned irq);
-+
- /* Determine whether to ignore this IRQ if it is passed to a guest. */
- int xen_test_irq_shared(int irq);
- 
+Warning: (recently discovered and may have been fixed)
+
+drivers/acpi/thermal_lib.c:46:5: warning: no previous prototype for 'acpi_active_trip_temp' [-Wmissing-prototypes]
+drivers/acpi/thermal_lib.c:46:5: warning: no previous prototype for function 'acpi_active_trip_temp' [-Wmissing-prototypes]
+drivers/acpi/thermal_lib.c:57:5: warning: no previous prototype for 'acpi_passive_trip_temp' [-Wmissing-prototypes]
+drivers/acpi/thermal_lib.c:57:5: warning: no previous prototype for function 'acpi_passive_trip_temp' [-Wmissing-prototypes]
+drivers/acpi/thermal_lib.c:63:5: warning: no previous prototype for 'acpi_hot_trip_temp' [-Wmissing-prototypes]
+drivers/acpi/thermal_lib.c:63:5: warning: no previous prototype for function 'acpi_hot_trip_temp' [-Wmissing-prototypes]
+drivers/acpi/thermal_lib.c:69:5: warning: no previous prototype for 'acpi_critical_trip_temp' [-Wmissing-prototypes]
+drivers/acpi/thermal_lib.c:69:5: warning: no previous prototype for function 'acpi_critical_trip_temp' [-Wmissing-prototypes]
+
+Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- arm-keystone_defconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- arm-randconfig-002-20231123
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- arm64-defconfig
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- arm64-randconfig-004-20231123
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- csky-randconfig-001-20231123
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- i386-buildonly-randconfig-002-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|-- i386-buildonly-randconfig-003-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- i386-buildonly-randconfig-005-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|-- i386-buildonly-randconfig-006-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|-- i386-defconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- i386-randconfig-001-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|-- i386-randconfig-003-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|-- i386-randconfig-004-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- i386-randconfig-141-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- loongarch-allmodconfig
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- loongarch-allyesconfig
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- loongarch-defconfig
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- loongarch-randconfig-001-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- loongarch-randconfig-002-20231123
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- microblaze-allmodconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- microblaze-allyesconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- mips-allmodconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- mips-allyesconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- mips-fuloong2e_defconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- openrisc-allmodconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- openrisc-allyesconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- parisc-allmodconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- parisc-allyesconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- parisc-defconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- parisc64-defconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- powerpc-chrp32_defconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- powerpc-randconfig-001-20231123
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- powerpc-randconfig-002-20231123
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- powerpc-randconfig-003-20231123
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- powerpc64-randconfig-001-20231123
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- powerpc64-randconfig-002-20231123
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- powerpc64-randconfig-003-20231123
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- riscv-allmodconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- riscv-allyesconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- riscv-defconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- riscv-randconfig-001-20231123
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- riscv-randconfig-002-20231123
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- s390-allmodconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- s390-allyesconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- sh-sh7724_generic_defconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- sparc-allmodconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- sparc-randconfig-002-20231123
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- sparc64-allmodconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- sparc64-allyesconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- sparc64-defconfig
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- sparc64-randconfig-002-20231123
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- x86_64-buildonly-randconfig-004-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|-- x86_64-defconfig
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- x86_64-randconfig-011-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|-- x86_64-randconfig-012-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|-- x86_64-randconfig-013-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- x86_64-randconfig-014-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- x86_64-randconfig-015-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- x86_64-randconfig-016-20231123
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- x86_64-randconfig-071-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|-- x86_64-randconfig-072-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|-- x86_64-randconfig-073-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|-- x86_64-randconfig-074-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|-- x86_64-randconfig-075-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+|   |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+|   |-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+`-- x86_64-randconfig-161-20231123
+    |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_active_trip_temp
+    |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_critical_trip_temp
+    |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_hot_trip_temp
+    |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-acpi_passive_trip_temp
+    |-- drivers-usb-core-hcd.c:warning:s-directive-output-may-be-truncated-writing-up-to-bytes-into-a-region-of-size-between-and
+    `-- drivers-usb-core-usb.c:warning:d-directive-output-may-be-truncated-writing-between-and-bytes-into-a-region-of-size-between-and
+clang_recent_errors
+|-- i386-allmodconfig
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_passive_trip_temp
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- i386-allyesconfig
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_passive_trip_temp
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- i386-randconfig-014-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_passive_trip_temp
+|-- i386-randconfig-015-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_passive_trip_temp
+|-- i386-randconfig-016-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_passive_trip_temp
+|-- powerpc-allmodconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- powerpc-allyesconfig
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- x86_64-allyesconfig
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_passive_trip_temp
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- x86_64-randconfig-001-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_passive_trip_temp
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- x86_64-randconfig-002-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_hot_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_passive_trip_temp
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+|   |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+|   `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+|-- x86_64-randconfig-004-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_passive_trip_temp
+|-- x86_64-randconfig-006-20231123
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_active_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_critical_trip_temp
+|   |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_hot_trip_temp
+|   `-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_passive_trip_temp
+`-- x86_64-rhel-8.3-rust
+    |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_active_trip_temp
+    |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_critical_trip_temp
+    |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_hot_trip_temp
+    |-- drivers-acpi-thermal_lib.c:warning:no-previous-prototype-for-function-acpi_passive_trip_temp
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-addr-not-described-in-memory_bm_find_bit
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-base-not-described-in-__fraction
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-multiplier-not-described-in-__fraction
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_highmem-not-described-in-enough_free_mem
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-nr_pages-not-described-in-enough_free_mem
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_highmem_page
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-pfn-not-described-in-saveable_page
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-safe_needed-not-described-in-get_highmem_buffer
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-start_pfn-not-described-in-register_nosave_region
+    |-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_highmem_page
+    `-- kernel-power-snapshot.c:warning:Function-parameter-or-member-zone-not-described-in-saveable_page
+
+elapsed time: 2227m
+
+configs tested: 171
+configs skipped: 2
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                               defconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231123   gcc  
+arc                   randconfig-002-20231123   gcc  
+arc                           tb10x_defconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                                 defconfig   clang
+arm                      jornada720_defconfig   gcc  
+arm                        keystone_defconfig   gcc  
+arm                           omap1_defconfig   clang
+arm                   randconfig-001-20231123   gcc  
+arm                   randconfig-002-20231123   gcc  
+arm                   randconfig-003-20231123   gcc  
+arm                   randconfig-004-20231123   gcc  
+arm                           stm32_defconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20231123   gcc  
+arm64                 randconfig-002-20231123   gcc  
+arm64                 randconfig-003-20231123   gcc  
+arm64                 randconfig-004-20231123   gcc  
+csky                              allnoconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20231123   gcc  
+csky                  randconfig-002-20231123   gcc  
+hexagon                           allnoconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20231123   clang
+hexagon               randconfig-002-20231123   clang
+i386                             allmodconfig   clang
+i386                              allnoconfig   clang
+i386                             allyesconfig   clang
+i386         buildonly-randconfig-001-20231123   gcc  
+i386         buildonly-randconfig-002-20231123   gcc  
+i386         buildonly-randconfig-003-20231123   gcc  
+i386         buildonly-randconfig-004-20231123   gcc  
+i386         buildonly-randconfig-005-20231123   gcc  
+i386         buildonly-randconfig-006-20231123   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231123   gcc  
+i386                  randconfig-002-20231123   gcc  
+i386                  randconfig-003-20231123   gcc  
+i386                  randconfig-004-20231123   gcc  
+i386                  randconfig-005-20231123   gcc  
+i386                  randconfig-006-20231123   gcc  
+i386                  randconfig-011-20231123   clang
+i386                  randconfig-012-20231123   clang
+i386                  randconfig-013-20231123   clang
+i386                  randconfig-014-20231123   clang
+i386                  randconfig-015-20231123   clang
+i386                  randconfig-016-20231123   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231123   gcc  
+loongarch             randconfig-002-20231123   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   clang
+mips                             allyesconfig   gcc  
+mips                  decstation_64_defconfig   gcc  
+mips                      fuloong2e_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20231123   gcc  
+nios2                 randconfig-002-20231123   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20231123   gcc  
+parisc                randconfig-002-20231123   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   clang
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                      chrp32_defconfig   gcc  
+powerpc                      mgcoge_defconfig   gcc  
+powerpc               randconfig-001-20231123   gcc  
+powerpc               randconfig-002-20231123   gcc  
+powerpc               randconfig-003-20231123   gcc  
+powerpc64             randconfig-001-20231123   gcc  
+powerpc64             randconfig-002-20231123   gcc  
+powerpc64             randconfig-003-20231123   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   clang
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                    nommu_virt_defconfig   clang
+riscv                 randconfig-001-20231123   gcc  
+riscv                 randconfig-002-20231123   gcc  
+riscv                          rv32_defconfig   clang
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20231123   clang
+s390                  randconfig-002-20231123   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20231123   gcc  
+sh                    randconfig-002-20231123   gcc  
+sh                          sdk7780_defconfig   gcc  
+sh                   sh7724_generic_defconfig   gcc  
+sh                            shmin_defconfig   gcc  
+sh                          urquell_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20231123   gcc  
+sparc64               randconfig-002-20231123   gcc  
+um                               alldefconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20231123   gcc  
+um                    randconfig-002-20231123   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20231123   gcc  
+x86_64       buildonly-randconfig-002-20231123   gcc  
+x86_64       buildonly-randconfig-003-20231123   gcc  
+x86_64       buildonly-randconfig-004-20231123   gcc  
+x86_64       buildonly-randconfig-005-20231123   gcc  
+x86_64       buildonly-randconfig-006-20231123   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20231123   clang
+x86_64                randconfig-002-20231123   clang
+x86_64                randconfig-003-20231123   clang
+x86_64                randconfig-004-20231123   clang
+x86_64                randconfig-005-20231123   clang
+x86_64                randconfig-006-20231123   clang
+x86_64                randconfig-011-20231123   gcc  
+x86_64                randconfig-012-20231123   gcc  
+x86_64                randconfig-013-20231123   gcc  
+x86_64                randconfig-014-20231123   gcc  
+x86_64                randconfig-015-20231123   gcc  
+x86_64                randconfig-016-20231123   gcc  
+x86_64                randconfig-071-20231123   gcc  
+x86_64                randconfig-072-20231123   gcc  
+x86_64                randconfig-073-20231123   gcc  
+x86_64                randconfig-074-20231123   gcc  
+x86_64                randconfig-075-20231123   gcc  
+x86_64                randconfig-076-20231123   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20231123   gcc  
+xtensa                randconfig-002-20231123   gcc  
+xtensa                    xip_kc705_defconfig   gcc  
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
