@@ -1,257 +1,152 @@
-Return-Path: <linux-acpi+bounces-1827-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1828-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F807F9294
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Nov 2023 13:30:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DA37F9321
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Nov 2023 15:30:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CBD61C20899
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Nov 2023 12:30:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0739AB20DBF
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Nov 2023 14:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE607D274
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Nov 2023 12:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8085DD2E9
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Nov 2023 14:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="O7SctXCc"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0436DDE;
-	Sun, 26 Nov 2023 04:25:48 -0800 (PST)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0Vx6Gb4W_1701001542;
-Received: from 30.27.123.85(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vx6Gb4W_1701001542)
-          by smtp.aliyun-inc.com;
-          Sun, 26 Nov 2023 20:25:45 +0800
-Message-ID: <1048123e-b608-4db1-8d5f-456dd113d06f@linux.alibaba.com>
-Date: Sun, 26 Nov 2023 20:25:38 +0800
+Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01olkn2076.outbound.protection.outlook.com [40.92.99.76])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D5EDFC;
+	Sun, 26 Nov 2023 06:00:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=m23pFYmO7USYkTzqMOlr3nbT891uo7pcJL3LCrUfC6jKtIRQk8q8E7sFNEOIi2DboWD4bublGppstDWVv+0cgWjABsGTKx+/sr1ajHM4l7U+pLPQ5AfFWZ7iJiQhbUsGLU1y0f/eo0174zhniwzyrWKW4P6cR+lgMrkZMIzvdy8NIVqxI046gciGqq6kOuJ3EePXR+FAs1KjQzfsiuDxNqS+aVbgPL9GzcMvsApoHYoW6+LXa27eVcqu1SeZJ7M/o19Af/30Hm+pOPPNh4eLzZMbHGQYU+cqWVKhoSFD+FqPeVw/bD1AX9H7Ck9wso8dsKS9InwKZ95fAeEaar3W3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LQuQIQSi4fdfjdG1mPI5nQAv1bsCQvkrIvzZUt3OfyY=;
+ b=HbvWrtDehaLwOz5+wOkNoSsjHrDf9NE6bzzVdP++uoBPpE05QKTM/sHtnFwfmaGeDHgLFghnPAb4Jim0vutjZ+S1RqM9jjtLo9AeXNy780TVL6iFRbnude0VMEe0eel01U2USnKDcpv/OS46Wo74jyoX7KhSgqxg26jXvUOejYjFXXTeNTRUt5lCuFhDUdyIg8CyVd+zyR0fHmFxWGSWDQMMDOrST6Te+LWT+vMiV4bsX8noWmU6Xn3BbfCc7e84Hlv7xVrGSgRm/g/1pTRw3qP3UNrr9oGMi/WBydLlgYUXfRt9zcxoq30em2a1N5ASWEOMz25yahLeTkNsuNXgmg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LQuQIQSi4fdfjdG1mPI5nQAv1bsCQvkrIvzZUt3OfyY=;
+ b=O7SctXCcLK4cQ1M65w0PP3b+MCPm5ZdQiyI2xboP0LH7z8i1OQ0d55q+ByI5DxyIrGh/4E20VYnLpvmfgq5ksVFflSc/FHzPpcSKp9/kUOOBNLF2wxQ2ek8L5djsjcRTWlhDJ1eZ8jPC5fuQW+b1KcnowvYa0qWmuPQrz6/NE8YG8rix43s0YsD2bECJApzIgrMveYt0porRMcZ0byqx3+9ahIoSACR2YCG4Lbx+gXTKOznONOHTDxPlIq7BVcD5NeAuuv2RW5J4xKEnqYKbeafj5oyclHs+68vwX0qssjP+/t60Z7qA9DlLha5VyQZF3X5boBmVlZGKucbb1hb65A==
+Received: from OS3P286MB1951.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:175::7)
+ by TY3P286MB3761.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:40b::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.27; Sun, 26 Nov
+ 2023 14:00:06 +0000
+Received: from OS3P286MB1951.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::3264:1deb:5bc:df48]) by OS3P286MB1951.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::3264:1deb:5bc:df48%5]) with mapi id 15.20.7025.022; Sun, 26 Nov 2023
+ 14:00:06 +0000
+From: Yuluo Qiu <qyl27@outlook.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuluo Qiu <qyl27@outlook.com>,
+	Celeste Liu <CoelacanthusHex@gmail.com>
+Subject: [PATCH] acpi/video: Add quirk for the Colorful X15 AT 23 Laptop
+Date: Sun, 26 Nov 2023 21:59:13 +0800
+Message-ID:
+ <OS3P286MB1951B46E88AB4A91E47A2696BDBEA@OS3P286MB1951.JPNP286.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [edH36FDc4LLzyz3Ir6rgMOuz6ConkrDB]
+X-ClientProxiedBy: TYCP301CA0082.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:7b::20) To OS3P286MB1951.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:604:175::7)
+X-Microsoft-Original-Message-ID: <20231126135914.47279-1-qyl27@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task work
- with proper si_code
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>
-Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
- mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
- naoya.horiguchi@nec.com, james.morse@arm.com, gregkh@linuxfoundation.org,
- will@kernel.org, jarkko@kernel.org, linux-acpi@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
- stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
- ying.huang@intel.com, ashish.kalra@amd.com, baolin.wang@linux.alibaba.com,
- tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
- lenb@kernel.org, hpa@zytor.com, robert.moore@intel.com, lvying6@huawei.com,
- xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20231007072818.58951-1-xueshuai@linux.alibaba.com>
- <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
- <9e92e600-86a4-4456-9de4-b597854b107c@linux.alibaba.com>
- <20231125121059.GAZWHkU27odMLns7TZ@fat_crate.local>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20231125121059.GAZWHkU27odMLns7TZ@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OS3P286MB1951:EE_|TY3P286MB3761:EE_
+X-MS-Office365-Filtering-Correlation-Id: 563cf157-a409-4f72-2536-08dbee87fec1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	A7PPjXqFxAHbC/kmluE3Y5UF7CTxD5PBx7aKfuOBFGNTl5CImW71JiExeghISn0M6pAPzGtaOkCbvDId9WMsrRjIdP/MTFIMFU23/aYKARXfpXCMhoHA6RhqP0boYEr6x8hGpRvoorVI8810LWG6hRhjFwKg0LrHOPbq3Eofmkte9+/OAEWw+z6Qp86vEePTJ8OA7fwxlY51gBihlBAinv6PRx+GG+3QWMO83sdUtBOcPgRRY0mUrrBJXWSYDHPKNzdCwn2IrOyoqcYIAngrk0EKAY2yDODxYVphR5YFLwqGzQQ7/8eo9+RIdJnh7tMhthAo29HpqxuC+ISU5oj7Nwh+7tzRg6in3HB6W/fzItoBGQv/+i2SyMi4JfmU1lA8+hOIv8NbKszdKom0wmokQrY9zVxkhza3c9ZjtfTi1MxqLiM79CyPN5gfvWbM9ONEvVRldGgBV0giIsMUKqB+GecBUlpdgEO6qXDxCS0sKtmShRcOg4GyC7KIunyCuziZlhiQLiNvroNNSygnq1t7ORCXHV2St7WNEuhdd2N7JaalZiobQiNIT9KKPUxzmVg4gGZCrNCITV4Ky+tUhrNRNWmtS7EWeSDaa9uOSlcS5sldZwbyHXI73R3Ggz/NdOb9
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?b5NpekuyGPHR1y5lV4p0WkclO4crZeO9YAOU0Rl6ZSTTgxlvilLY6jsee8PT?=
+ =?us-ascii?Q?r7bN3FjKg6UhsKA9+gpJjD0yI2/+rWs8NF9u3kfT0EAIBpw044fU1zAA8lqq?=
+ =?us-ascii?Q?IIPKEfT0RXf1sF1ySCULhAOkpAxumxICvwG4ToTUM/P9PecvT5BW7f0pyNFb?=
+ =?us-ascii?Q?TZtZ8BzQlCmfYtZ44AZFhEqexyfxnr+1CF3QA5HcmI8ABCVQzzpf0Maa67gV?=
+ =?us-ascii?Q?SX+BiQ399BpDkoBBAXDiI/CKzKkMfwIP8+AJrY+tx2ptJHQbnBV1NqyVSnjF?=
+ =?us-ascii?Q?C17ZAfvVM9O3NHfKEWfXgp077jiDK1XF84K500EIZIxVekpgySryPLUV66wY?=
+ =?us-ascii?Q?zfucedVSon6s7fn8RX9m70mBZwN+8bkFbHv4b785sEOo3IFVTfX5R9oYSluj?=
+ =?us-ascii?Q?ieKuhQ/mqRAmhdw0glWzrCWZc5ubo9FZWVBNh2CRD7s1igMEFti1rBRegVtt?=
+ =?us-ascii?Q?r4464hjMEFaaPmLIbnbNlPqh4fIskqKzr0l175Exj/G8cw7Odt5mAOq7N46d?=
+ =?us-ascii?Q?dbr9DCvqKV/y3Xp4RkcpQ5+QUtHhVvCGEyukk9zyIOyqGCCR5UQhhC/54UMw?=
+ =?us-ascii?Q?uBKUx6+qwLAUXRjgQl7pDPTsQm4+A3UktgwOdS/T9oynPrpCb7jmUVoRNDZk?=
+ =?us-ascii?Q?eMUrdPv7wc/EHgwhfPldBqSh18vV+Il10i8UP1GuAZYMQEzZWl3qQFRBdshf?=
+ =?us-ascii?Q?f0guuj4JgenFIAivBBwGRRZtcLIPEm1LlutSLAr9JPl2hqc2a+hKhqn7WHcV?=
+ =?us-ascii?Q?COV9V+jiRSZmf6NZFvvhInEJy4SIK9040xNKeNToZDGXvvpraebC1E6WjTLM?=
+ =?us-ascii?Q?boOwMtyIuiDUPemMHf4EqO0tRK9diNpI41iCcOtOLBkLJODOABn8gmb/qYeH?=
+ =?us-ascii?Q?N1IBrhTEhW5eFpfXAmezatFnzJ0WYsr+XdgRgh6wtpRVaNJv39iyLSsaYudM?=
+ =?us-ascii?Q?gPRRCKtXPq3TGHwKkpl+fhSFOMo6ymuS6PMdj9Up4+CII7NBtp6Y3GHeEndK?=
+ =?us-ascii?Q?4ykCiNB842qVzn79IekamRyhSzQR2itG2GapI4b1HNJGnt6x1vjdTJVlqFSn?=
+ =?us-ascii?Q?8dDA8xKHj8XOaIXu5FiBTv90ZexwgBVCjbv4v1eE6FmskuGWywpqhcT/BzyP?=
+ =?us-ascii?Q?iY5foz9iBoAf/A8BuZCX9vovNnfwVCKZE/T6lxXQtZCde9eMx2dv3Z6db9Rh?=
+ =?us-ascii?Q?Wk8LtOFC7bol4eu8ToOFXTXCj++n+2h2Ov5tViQro4mvbeDqrNORkNgnWEE?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 563cf157-a409-4f72-2536-08dbee87fec1
+X-MS-Exchange-CrossTenant-AuthSource: OS3P286MB1951.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2023 14:00:06.8459
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3P286MB3761
 
+The Colorful X15 AT 23 ACIP video-bus device report spurious
+ACPI_VIDEO_NOTIFY_CYCLE events resulting in spurious KEY_SWITCHVIDEOMODE
+events being reported to userspace (and causing trouble there) when
+an external screen plugged in.
 
+Add a quirk setting the report_key_events mask to
+REPORT_BRIGHTNESS_KEY_EVENTS so that the ACPI_VIDEO_NOTIFY_CYCLE
+events will be ignored, while still reporting brightness up/down
+hotkey-presses to userspace normally.
 
-On 2023/11/25 20:10, Borislav Petkov wrote:
+Signed-off-by: Yuluo Qiu <qyl27@outlook.com>
+Co-developed-by: Celeste Liu <CoelacanthusHex@gmail.com>
+Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
+---
+ drivers/acpi/acpi_video.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Hi, Borislav,
-
-Thank you for your reply, and sorry for the confusion I made. Please see my rely
-inline.
-
-Best Regards,
-Shuai
-
-> On Sat, Nov 25, 2023 at 02:44:52PM +0800, Shuai Xue wrote:
->> - an AR error consumed by current process is deferred to handle in a
->>   dedicated kernel thread, but memory_failure() assumes that it runs in the
->>   current context
-> 
-> On x86? ARM?
-> 
-> Pease point to the exact code flow.
-
-An AR error consumed by current process is deferred to handle in a
-dedicated kernel thread on ARM platform. The AR error is handled in bellow
-flow:
-
------------------------------------------------------------------------------
-[usr space task einj_mem_uc consumd data poison, CPU 3]         STEP 0
-
------------------------------------------------------------------------------
-[ghes_sdei_critical_callback: current einj_mem_uc, CPU 3]		STEP 1
-ghes_sdei_critical_callback
-    => __ghes_sdei_callback
-        => ghes_in_nmi_queue_one_entry 		// peak and read estatus
-        => irq_work_queue(&ghes_proc_irq_work) <=> ghes_proc_in_irq // irq_work
-[ghes_sdei_critical_callback: return]
------------------------------------------------------------------------------
-[ghes_proc_in_irq: current einj_mem_uc, CPU 3]			        STEP 2
-            => ghes_do_proc
-                => ghes_handle_memory_failure
-                    => ghes_do_memory_failure
-                        => memory_failure_queue	 // put work task on current CPU
-                            => if (kfifo_put(&mf_cpu->fifo, entry))
-                                  schedule_work_on(smp_processor_id(), &mf_cpu->work);
-            => task_work_add(current, &estatus_node->task_work, TWA_RESUME);
-[ghes_proc_in_irq: return]
------------------------------------------------------------------------------
-// kworker preempts einj_mem_uc on CPU 3 due to RESCHED flag	STEP 3
-[memory_failure_work_func: current kworker, CPU 3]	
-     => memory_failure_work_func(&mf_cpu->work)
-        => while kfifo_get(&mf_cpu->fifo, &entry);	// until get no work
-            => memory_failure(entry.pfn, entry.flags);
------------------------------------------------------------------------------
-[ghes_kick_task_work: current einj_mem_uc, other cpu]           STEP 4
-                => memory_failure_queue_kick
-                    => cancel_work_sync - waiting memory_failure_work_func finish
-                    => memory_failure_work_func(&mf_cpu->work)
-                        => kfifo_get(&mf_cpu->fifo, &entry); // no work
------------------------------------------------------------------------------
-[einj_mem_uc resume at the same PC, trigger a page fault        STEP 5
-
-STEP 0: A user space task, named einj_mem_uc consume a poison. The firmware
-notifies hardware error to kernel through is SDEI
-(ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED).
-
-STEP 1: The swapper running on CPU 3 is interrupted. irq_work_queue() rasie
-a irq_work to handle hardware errors in IRQ context
-
-STEP2: In IRQ context, ghes_proc_in_irq() queues memory failure work on
-current CPU in workqueue and add task work to sync with the workqueue.
-
-STEP3: The kworker preempts the current running thread and get CPU 3. Then
-memory_failure() is processed in kworker.
-
-STEP4: ghes_kick_task_work() is called as task_work to ensure any queued
-workqueue has been done before returning to user-space.
-
-STEP5: Upon returning to user-space, the task einj_mem_uc resumes at the
-current instruction, because the poison page is unmapped by
-memory_failure() in step 3, so a page fault will be triggered.
-
-memory_failure() assumes that it runs in the current context on both x86
-and ARM platform.
-
-
-for example:
-	memory_failure() in mm/memory-failure.c:
-
-		if (flags & MF_ACTION_REQUIRED) {
-			folio = page_folio(p);
-			res = kill_accessing_process(current, folio_pfn(folio), flags);
-		}
-
-> 
->> - another page fault is not unnecessary, we can send sigbus to current
->>   process in the first Synchronous External Abort SEA on arm64 (analogy
->>   Machine Check Exception on x86)
-> 
-> I have no clue what that means. What page fault?
-
-I mean page fault in step 5. We can simplify the above flow by queuing
-memory_failure() as a task work for AR errors in step 3 directly.
-
-> 
->> I just give an example that the user space process *really* relys on the
->> si_code of signal to handle hardware errors
-> 
-> No, don't give examples.
-> 
-> Explain what the exact problem is you're seeing, in your use case, point
-> to the code and then state how you think it should be fixed and why.
-> 
-> Right now your text is "all over the place" and I have no clue what you
-> even want.
-
-Ok, got it. Thank you.
-
-> 
->> The SIGBUS si_codes defined in include/uapi/asm-generic/siginfo.h says:
->>
->>     /* hardware memory error consumed on a machine check: action required */
->>     #define BUS_MCEERR_AR	4
->>     /* hardware memory error detected in process but not consumed: action optional*/
->>     #define BUS_MCEERR_AO	5
->>
->> When a synchronous error is consumed by Guest, the kernel should send a
->> signal with BUS_MCEERR_AR instead of BUS_MCEERR_AO.
-> 
-> Can you drop this "synchronous" bla and concentrate on the error
-> *severity*?
-> 
-> I think you want to say that there are some types of errors for which
-> error handling needs to happen immediately and for some reason that
-> doesn't happen.
-> 
-> Which errors are those? Types?
-> 
-> Why do you need them to be handled immediately?
-
-Well, the severity defined on x86 and ARM platform is quite different. I
-guess you mean taxonomy of producer error types.
-
-- X86: Software recoverable action required (SRAR)
-
-    A UCR error that *requires* system software to take a recovery action on
-    this processor *before scheduling another stream of execution on this
-    processor*.
-    (15.6.3 UCR Error Classification in Intel® 64 and IA-32 Architectures
-    Software Developer’s Manual Volume 3)
-
-- ARM: Recoverable state (UER)
-
-    The PE determines that software *must* take action to locate and repair
-    the error to successfully recover execution. This might be because the
-    exception was taken before the error was architecturally consumed by
-    the PE, at the point when the PE was not be able to make correct
-    progress without either consuming the error or *otherwise making the
-    state of the PE unrecoverable*.
-    (2.3.2 PE error state classification in Arm RAS Supplement
-    https://documentation-service.arm.com/static/63185614f72fad1903828eda)
-
-I think above two types of error need to be handled immediately.
-
-> 
->> Exactly.
-> 
-> No, not exactly. Why is it ok to do that? What are the implications of
-> this?
-> 
-> Is immediate killing the right decision?
-> 
-> Is this ok for *every* possible kernel running out there - not only for
-> your use case?
-> 
-> And so on and so on...
-> 
-
-I don't have a clear answer here. I guess the poison data only effects the
-user space task which triggers exception. A panic is not necessary.
-
-On x86 platform, the current error handling of memory_failure() in
-kill_me_maybe() is just send a sigbus forcely.
-
-    kill_me_maybe():
-
-        ret = memory_failure(pfn, flags);
-        if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
-        return;
-
-        pr_err("Memory error not recovered");
-        kill_me_now(cb);
-
-Do you have any comments or suggestion about this? I don't change x86
-behavior.
-
-For arm64 platform, step 3 in above flow, memory_failure_work_func(), the
-call site of memory_failure(), does not handle the return code of
-memory_failure(). I just add the same behavior.
-
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index d321ca7160d9..c54a364ffff3 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -503,6 +503,15 @@ static const struct dmi_system_id video_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 3350"),
+ 		},
+ 	},
++	{
++	 .callback = video_set_report_key_events,
++	 .driver_data = (void *)((uintptr_t)REPORT_BRIGHTNESS_KEY_EVENTS),
++	 .ident = "COLORFUL X15 AT 23",
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "COLORFUL"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "X15 AT 23"),
++		},
++	},
+ 	/*
+ 	 * Some machines change the brightness themselves when a brightness
+ 	 * hotkey gets pressed, despite us telling them not to. In this case
+-- 
+2.43.0
 
 
