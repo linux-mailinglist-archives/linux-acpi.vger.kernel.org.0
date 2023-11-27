@@ -1,151 +1,118 @@
-Return-Path: <linux-acpi+bounces-1828-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1829-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67DA37F9321
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Nov 2023 15:30:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45827F99D9
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 07:32:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0739AB20DBF
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Nov 2023 14:30:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E99280CDA
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 06:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8085DD2E9
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Nov 2023 14:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ADACA7D
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 06:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="O7SctXCc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="duYudwbb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01olkn2076.outbound.protection.outlook.com [40.92.99.76])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D5EDFC;
-	Sun, 26 Nov 2023 06:00:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=m23pFYmO7USYkTzqMOlr3nbT891uo7pcJL3LCrUfC6jKtIRQk8q8E7sFNEOIi2DboWD4bublGppstDWVv+0cgWjABsGTKx+/sr1ajHM4l7U+pLPQ5AfFWZ7iJiQhbUsGLU1y0f/eo0174zhniwzyrWKW4P6cR+lgMrkZMIzvdy8NIVqxI046gciGqq6kOuJ3EePXR+FAs1KjQzfsiuDxNqS+aVbgPL9GzcMvsApoHYoW6+LXa27eVcqu1SeZJ7M/o19Af/30Hm+pOPPNh4eLzZMbHGQYU+cqWVKhoSFD+FqPeVw/bD1AX9H7Ck9wso8dsKS9InwKZ95fAeEaar3W3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LQuQIQSi4fdfjdG1mPI5nQAv1bsCQvkrIvzZUt3OfyY=;
- b=HbvWrtDehaLwOz5+wOkNoSsjHrDf9NE6bzzVdP++uoBPpE05QKTM/sHtnFwfmaGeDHgLFghnPAb4Jim0vutjZ+S1RqM9jjtLo9AeXNy780TVL6iFRbnude0VMEe0eel01U2USnKDcpv/OS46Wo74jyoX7KhSgqxg26jXvUOejYjFXXTeNTRUt5lCuFhDUdyIg8CyVd+zyR0fHmFxWGSWDQMMDOrST6Te+LWT+vMiV4bsX8noWmU6Xn3BbfCc7e84Hlv7xVrGSgRm/g/1pTRw3qP3UNrr9oGMi/WBydLlgYUXfRt9zcxoq30em2a1N5ASWEOMz25yahLeTkNsuNXgmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LQuQIQSi4fdfjdG1mPI5nQAv1bsCQvkrIvzZUt3OfyY=;
- b=O7SctXCcLK4cQ1M65w0PP3b+MCPm5ZdQiyI2xboP0LH7z8i1OQ0d55q+ByI5DxyIrGh/4E20VYnLpvmfgq5ksVFflSc/FHzPpcSKp9/kUOOBNLF2wxQ2ek8L5djsjcRTWlhDJ1eZ8jPC5fuQW+b1KcnowvYa0qWmuPQrz6/NE8YG8rix43s0YsD2bECJApzIgrMveYt0porRMcZ0byqx3+9ahIoSACR2YCG4Lbx+gXTKOznONOHTDxPlIq7BVcD5NeAuuv2RW5J4xKEnqYKbeafj5oyclHs+68vwX0qssjP+/t60Z7qA9DlLha5VyQZF3X5boBmVlZGKucbb1hb65A==
-Received: from OS3P286MB1951.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:175::7)
- by TY3P286MB3761.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:40b::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.27; Sun, 26 Nov
- 2023 14:00:06 +0000
-Received: from OS3P286MB1951.JPNP286.PROD.OUTLOOK.COM
- ([fe80::3264:1deb:5bc:df48]) by OS3P286MB1951.JPNP286.PROD.OUTLOOK.COM
- ([fe80::3264:1deb:5bc:df48%5]) with mapi id 15.20.7025.022; Sun, 26 Nov 2023
- 14:00:06 +0000
-From: Yuluo Qiu <qyl27@outlook.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0BF1135;
+	Sun, 26 Nov 2023 21:59:23 -0800 (PST)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-5bd33a450fdso2740616a12.0;
+        Sun, 26 Nov 2023 21:59:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701064763; x=1701669563; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=T+lkPxpcGV4ulENWtL8UIKN/+j2CNZhdMfJlWPRbNbU=;
+        b=duYudwbbeqcH+XWtSQ8mUZK/37sVW4InUWrAVTGMKUMECoWmFOIgn7JMyOOuX4qQ7z
+         gEiCRMqBKJr9Ed3FTU+cmLvsvoS2ycl50RlFEyNqniiI42I7jX+lBQKirLvmbgI6XD4X
+         5qd5x4rq3gM7GkRK0ItmNzGL2Nc9dWIi8nSP5igxtU0kUeN9gpK2/PndnY+WRd4HGxBA
+         fwX+7xIe5GNb6Agpj4x1nk1iuwf3VxWYESxOWJsoFGRlyyAaOiYLp7gfwDd+5ybx7fsJ
+         hGBqSgj64cTi648BzCd1RgpDMN3x5WFVTADLTFVSIhWOHCQcTnXaRX3N9T5EaDXHOLOz
+         r7XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701064763; x=1701669563;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=T+lkPxpcGV4ulENWtL8UIKN/+j2CNZhdMfJlWPRbNbU=;
+        b=hCbmxNGxKbjOC5FDxNcHBfoaVLv2X8em1o0PWCGWGThlAwN8kuJ8eSmcj6CtojXDrA
+         rWS1RwlagHkIC1pJWMu6dUE+GA91D9NTQfBpV5gHGCcLowaAeEkak8/a9+9pQAb7eOvJ
+         m+M3iUid3IiLUuxShrfUcnm2vsEZj/cUvEsh2jh2H6DQSvv/BhH1dQ1RwEjit8wpdeya
+         0Uk5wWpCU4geR777peRCWr/VIsmbHmMlKodN958L8j+EZFEXXods9d59S8nN3+FjbpOf
+         FVtEnD7dVOeUzbMxsppxuO1mdA9KDEDsJbj5HGeqtT1do6RYXg6JTRbeHVmTxmj8uGIL
+         /6RA==
+X-Gm-Message-State: AOJu0Yw8BYT7Vp2vVD/ChZ/D5EXPxK816/vEoTUaPLa+h8nC0ee2PGrT
+	zdNH2a+cF178UHgXeAca5tlWTdCzIfY=
+X-Google-Smtp-Source: AGHT+IGHtZK0Vns6BWzZHgVZD1B5+jmOlfvtT8e9meE4tDaoDr2RuIg/boyy2Iqn/QGqgmbdATfAiA==
+X-Received: by 2002:a17:90a:1904:b0:27d:1f9f:a57f with SMTP id 4-20020a17090a190400b0027d1f9fa57fmr13232816pjg.32.1701064763065;
+        Sun, 26 Nov 2023 21:59:23 -0800 (PST)
+Received: from code.. ([144.202.108.46])
+        by smtp.gmail.com with ESMTPSA id gm3-20020a17090b100300b0026f39c90111sm6599692pjb.20.2023.11.26.21.59.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Nov 2023 21:59:22 -0800 (PST)
+From: Yuntao Wang <ytcoode@gmail.com>
+To: Robert Moore <robert.moore@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Len Brown <lenb@kernel.org>
 Cc: linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Yuluo Qiu <qyl27@outlook.com>,
-	Celeste Liu <CoelacanthusHex@gmail.com>
-Subject: [PATCH] acpi/video: Add quirk for the Colorful X15 AT 23 Laptop
-Date: Sun, 26 Nov 2023 21:59:13 +0800
-Message-ID:
- <OS3P286MB1951B46E88AB4A91E47A2696BDBEA@OS3P286MB1951.JPNP286.PROD.OUTLOOK.COM>
+	Yuntao Wang <ytcoode@gmail.com>
+Subject: [PATCH] ACPICA: Remove unused struct field and incorrect comments
+Date: Mon, 27 Nov 2023 13:58:58 +0800
+Message-ID: <20231127055858.41004-1-ytcoode@gmail.com>
 X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN: [edH36FDc4LLzyz3Ir6rgMOuz6ConkrDB]
-X-ClientProxiedBy: TYCP301CA0082.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:7b::20) To OS3P286MB1951.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:175::7)
-X-Microsoft-Original-Message-ID: <20231126135914.47279-1-qyl27@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OS3P286MB1951:EE_|TY3P286MB3761:EE_
-X-MS-Office365-Filtering-Correlation-Id: 563cf157-a409-4f72-2536-08dbee87fec1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	A7PPjXqFxAHbC/kmluE3Y5UF7CTxD5PBx7aKfuOBFGNTl5CImW71JiExeghISn0M6pAPzGtaOkCbvDId9WMsrRjIdP/MTFIMFU23/aYKARXfpXCMhoHA6RhqP0boYEr6x8hGpRvoorVI8810LWG6hRhjFwKg0LrHOPbq3Eofmkte9+/OAEWw+z6Qp86vEePTJ8OA7fwxlY51gBihlBAinv6PRx+GG+3QWMO83sdUtBOcPgRRY0mUrrBJXWSYDHPKNzdCwn2IrOyoqcYIAngrk0EKAY2yDODxYVphR5YFLwqGzQQ7/8eo9+RIdJnh7tMhthAo29HpqxuC+ISU5oj7Nwh+7tzRg6in3HB6W/fzItoBGQv/+i2SyMi4JfmU1lA8+hOIv8NbKszdKom0wmokQrY9zVxkhza3c9ZjtfTi1MxqLiM79CyPN5gfvWbM9ONEvVRldGgBV0giIsMUKqB+GecBUlpdgEO6qXDxCS0sKtmShRcOg4GyC7KIunyCuziZlhiQLiNvroNNSygnq1t7ORCXHV2St7WNEuhdd2N7JaalZiobQiNIT9KKPUxzmVg4gGZCrNCITV4Ky+tUhrNRNWmtS7EWeSDaa9uOSlcS5sldZwbyHXI73R3Ggz/NdOb9
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?b5NpekuyGPHR1y5lV4p0WkclO4crZeO9YAOU0Rl6ZSTTgxlvilLY6jsee8PT?=
- =?us-ascii?Q?r7bN3FjKg6UhsKA9+gpJjD0yI2/+rWs8NF9u3kfT0EAIBpw044fU1zAA8lqq?=
- =?us-ascii?Q?IIPKEfT0RXf1sF1ySCULhAOkpAxumxICvwG4ToTUM/P9PecvT5BW7f0pyNFb?=
- =?us-ascii?Q?TZtZ8BzQlCmfYtZ44AZFhEqexyfxnr+1CF3QA5HcmI8ABCVQzzpf0Maa67gV?=
- =?us-ascii?Q?SX+BiQ399BpDkoBBAXDiI/CKzKkMfwIP8+AJrY+tx2ptJHQbnBV1NqyVSnjF?=
- =?us-ascii?Q?C17ZAfvVM9O3NHfKEWfXgp077jiDK1XF84K500EIZIxVekpgySryPLUV66wY?=
- =?us-ascii?Q?zfucedVSon6s7fn8RX9m70mBZwN+8bkFbHv4b785sEOo3IFVTfX5R9oYSluj?=
- =?us-ascii?Q?ieKuhQ/mqRAmhdw0glWzrCWZc5ubo9FZWVBNh2CRD7s1igMEFti1rBRegVtt?=
- =?us-ascii?Q?r4464hjMEFaaPmLIbnbNlPqh4fIskqKzr0l175Exj/G8cw7Odt5mAOq7N46d?=
- =?us-ascii?Q?dbr9DCvqKV/y3Xp4RkcpQ5+QUtHhVvCGEyukk9zyIOyqGCCR5UQhhC/54UMw?=
- =?us-ascii?Q?uBKUx6+qwLAUXRjgQl7pDPTsQm4+A3UktgwOdS/T9oynPrpCb7jmUVoRNDZk?=
- =?us-ascii?Q?eMUrdPv7wc/EHgwhfPldBqSh18vV+Il10i8UP1GuAZYMQEzZWl3qQFRBdshf?=
- =?us-ascii?Q?f0guuj4JgenFIAivBBwGRRZtcLIPEm1LlutSLAr9JPl2hqc2a+hKhqn7WHcV?=
- =?us-ascii?Q?COV9V+jiRSZmf6NZFvvhInEJy4SIK9040xNKeNToZDGXvvpraebC1E6WjTLM?=
- =?us-ascii?Q?boOwMtyIuiDUPemMHf4EqO0tRK9diNpI41iCcOtOLBkLJODOABn8gmb/qYeH?=
- =?us-ascii?Q?N1IBrhTEhW5eFpfXAmezatFnzJ0WYsr+XdgRgh6wtpRVaNJv39iyLSsaYudM?=
- =?us-ascii?Q?gPRRCKtXPq3TGHwKkpl+fhSFOMo6ymuS6PMdj9Up4+CII7NBtp6Y3GHeEndK?=
- =?us-ascii?Q?4ykCiNB842qVzn79IekamRyhSzQR2itG2GapI4b1HNJGnt6x1vjdTJVlqFSn?=
- =?us-ascii?Q?8dDA8xKHj8XOaIXu5FiBTv90ZexwgBVCjbv4v1eE6FmskuGWywpqhcT/BzyP?=
- =?us-ascii?Q?iY5foz9iBoAf/A8BuZCX9vovNnfwVCKZE/T6lxXQtZCde9eMx2dv3Z6db9Rh?=
- =?us-ascii?Q?Wk8LtOFC7bol4eu8ToOFXTXCj++n+2h2Ov5tViQro4mvbeDqrNORkNgnWEE?=
- =?us-ascii?Q?=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 563cf157-a409-4f72-2536-08dbee87fec1
-X-MS-Exchange-CrossTenant-AuthSource: OS3P286MB1951.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2023 14:00:06.8459
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3P286MB3761
+Content-Transfer-Encoding: 8bit
 
-The Colorful X15 AT 23 ACIP video-bus device report spurious
-ACPI_VIDEO_NOTIFY_CYCLE events resulting in spurious KEY_SWITCHVIDEOMODE
-events being reported to userspace (and causing trouble there) when
-an external screen plugged in.
+The return_object_type field in `struct acpi_evaluate_info` is unused,
+so remove it.
 
-Add a quirk setting the report_key_events mask to
-REPORT_BRIGHTNESS_KEY_EVENTS so that the ACPI_VIDEO_NOTIFY_CYCLE
-events will be ignored, while still reporting brightness up/down
-hotkey-presses to userspace normally.
+There are also some issues in the comments of acpi_ps_execute_method().
+First, the parameter_type field has already been removed from
+`struct acpi_evaluate_info`, so the corresponding field description in
+the comments should also be removed. Second, the return_object field
+description in the comments is duplicated. Remove these incorrect comments.
 
-Signed-off-by: Yuluo Qiu <qyl27@outlook.com>
-Co-developed-by: Celeste Liu <CoelacanthusHex@gmail.com>
-Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
+Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
 ---
- drivers/acpi/acpi_video.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/acpi/acpica/acstruct.h | 1 -
+ drivers/acpi/acpica/psxface.c  | 3 ---
+ 2 files changed, 4 deletions(-)
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index d321ca7160d9..c54a364ffff3 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -503,6 +503,15 @@ static const struct dmi_system_id video_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 3350"),
- 		},
- 	},
-+	{
-+	 .callback = video_set_report_key_events,
-+	 .driver_data = (void *)((uintptr_t)REPORT_BRIGHTNESS_KEY_EVENTS),
-+	 .ident = "COLORFUL X15 AT 23",
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "COLORFUL"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "X15 AT 23"),
-+		},
-+	},
- 	/*
- 	 * Some machines change the brightness themselves when a brightness
- 	 * hotkey gets pressed, despite us telling them not to. In this case
+diff --git a/drivers/acpi/acpica/acstruct.h b/drivers/acpi/acpica/acstruct.h
+index f8fee94ba708..fe57c3a16e59 100644
+--- a/drivers/acpi/acpica/acstruct.h
++++ b/drivers/acpi/acpica/acstruct.h
+@@ -169,7 +169,6 @@ struct acpi_evaluate_info {
+ 	u16 param_count;	/* Count of the input argument list */
+ 	u16 node_flags;		/* Same as Node->Flags */
+ 	u8 pass_number;		/* Parser pass number */
+-	u8 return_object_type;	/* Object type of the returned object */
+ 	u8 flags;		/* General flags */
+ };
+ 
+diff --git a/drivers/acpi/acpica/psxface.c b/drivers/acpi/acpica/psxface.c
+index 6f4eace0ba69..df5679bbc510 100644
+--- a/drivers/acpi/acpica/psxface.c
++++ b/drivers/acpi/acpica/psxface.c
+@@ -70,9 +70,6 @@ acpi_debug_trace(const char *name, u32 debug_level, u32 debug_layer, u32 flags)
+  *                                    NULL if no parameters are being passed.
+  *                  return_object   - Where to put method's return value (if
+  *                                    any). If NULL, no value is returned.
+- *                  parameter_type  - Type of Parameter list
+- *                  return_object   - Where to put method's return value (if
+- *                                    any). If NULL, no value is returned.
+  *                  pass_number     - Parse or execute pass
+  *
+  * RETURN:      Status
 -- 
 2.43.0
 
