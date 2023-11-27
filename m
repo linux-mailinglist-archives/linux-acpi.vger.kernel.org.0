@@ -1,124 +1,130 @@
-Return-Path: <linux-acpi+bounces-1835-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1836-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB71E7FA69A
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 17:37:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE68B7FA69B
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 17:37:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CF35B20EEB
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 16:37:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E9ABB20EE3
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 16:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E3031A60
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 16:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03E936AF3
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 16:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="wb5OPor9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JUlSKWKW"
 X-Original-To: linux-acpi@vger.kernel.org
-X-Greylist: delayed 320 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Nov 2023 07:05:23 PST
-Received: from forward200a.mail.yandex.net (forward200a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d200])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85FF6BB
-	for <linux-acpi@vger.kernel.org>; Mon, 27 Nov 2023 07:05:23 -0800 (PST)
-Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d102])
-	by forward200a.mail.yandex.net (Yandex) with ESMTP id C9C4667DF5
-	for <linux-acpi@vger.kernel.org>; Mon, 27 Nov 2023 18:00:05 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:1492:0:640:cd24:0])
-	by forward102a.mail.yandex.net (Yandex) with ESMTP id 628F1608F6;
-	Mon, 27 Nov 2023 18:00:00 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id xxUYkABcsa60-j97w3XwR;
-	Mon, 27 Nov 2023 18:00:00 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1701097200; bh=vJObKaWIE7oscY8SvaCxBGhWiswWq6kWoCCmp134KWU=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=wb5OPor979+hNvRwVMjpkkkxBIjL5VbaAfkhCffq0TwECanOQS71KNEO3+vlbWr3o
-	 kQOiIStdVRqYeM6dBJAHgyjKJQGHjC1j0LnTvMstzCwGbIAgjGXaiqijQrY76t0dmV
-	 amQkjLsgqR3wdkwwcd3ewhq0+QzXeJhaP38rO/rk=
-Authentication-Results: mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	linux-acpi@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] pnp: acpi: fix fortify warning
-Date: Mon, 27 Nov 2023 17:58:50 +0300
-Message-ID: <20231127145907.131160-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.43.0
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA9759B;
+	Mon, 27 Nov 2023 07:23:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701098612; x=1732634612;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0Wqod83dtCrso4isvNiZ+Vk/m33qzkX26zuYmvK9EBY=;
+  b=JUlSKWKWrPcUoounMT7SITj2dmGhFtko4PZZRCyeYNnsRAouHG7sQDZ1
+   yCNWUPQ+bN1miPOfgPoIMQehhrj/Z8uOj+AKQVvROlDA+STJ8gYg5rtcD
+   McQe026kwEmVre89rLH/4QL5zXhplamyj9zR6SQugNnE+skXL/Bpx69aW
+   QBtVV1Vt3Xa1cWygrNIfhSaMGYBednCsg5GSTj85zgcW4NF1tcNrY2mZ6
+   wVyTPtpnUj1oLYyzkeuGXkZLTEmije4rRAhuZ6vTJe+2Qa6MM5g+OJcc/
+   oVvp7vG3GDoyr7lICRHMKM60lE7fzO13ITZPw65O2NVk580FazJlovruU
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="383111037"
+X-IronPort-AV: E=Sophos;i="6.04,231,1695711600"; 
+   d="scan'208";a="383111037"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2023 07:23:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="797269356"
+X-IronPort-AV: E=Sophos;i="6.04,231,1695711600"; 
+   d="scan'208";a="797269356"
+Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 27 Nov 2023 07:23:28 -0800
+Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r7dSI-0006MV-0Y;
+	Mon, 27 Nov 2023 15:23:26 +0000
+Date: Mon, 27 Nov 2023 23:22:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: wangdong28 <wangdong202303@163.com>, nirmal.patel@linux.intel.com,
+	jonathan.derrick@linux.dev, lpieralisi@kernel.org, kw@linux.com,
+	robh@kernel.org, bhelgaas@google.com, rafael@kernel.org,
+	lenb@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org, wangdong202303@163.com,
+	ahuang12@lenovo.com, Dong Wang <wangdong28@lenovo.com>
+Subject: Re: [PATCH] PCI/ACPI: Add extra slot register check for non-ACPI
+ device
+Message-ID: <202311272056.KtldqGiA-lkp@intel.com>
+References: <1701065447-13963-1-git-send-email-wangdong202303@163.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1701065447-13963-1-git-send-email-wangdong202303@163.com>
 
-When compiling with gcc version 14.0.0 20231126 (experimental)
-and CONFIG_FORTIFY_SOURCE=y, I've noticed the following:
+Hi wangdong28,
 
-In file included from ./include/linux/string.h:295,
-                 from ./include/linux/bitmap.h:12,
-                 from ./include/linux/cpumask.h:12,
-                 from ./arch/x86/include/asm/paravirt.h:17,
-                 from ./arch/x86/include/asm/cpuid.h:62,
-                 from ./arch/x86/include/asm/processor.h:19,
-                 from ./arch/x86/include/asm/cpufeature.h:5,
-                 from ./arch/x86/include/asm/thread_info.h:53,
-                 from ./include/linux/thread_info.h:60,
-                 from ./arch/x86/include/asm/preempt.h:9,
-                 from ./include/linux/preempt.h:79,
-                 from ./include/linux/spinlock.h:56,
-                 from ./include/linux/mmzone.h:8,
-                 from ./include/linux/gfp.h:7,
-                 from ./include/linux/slab.h:16,
-                 from ./include/linux/resource_ext.h:11,
-                 from ./include/linux/acpi.h:13,
-                 from drivers/pnp/pnpacpi/rsparser.c:11:
-In function 'fortify_memcpy_chk',
-    inlined from 'pnpacpi_parse_allocated_vendor' at drivers/pnp/pnpacpi/rsparser.c:158:3,
-    inlined from 'pnpacpi_allocated_resource' at drivers/pnp/pnpacpi/rsparser.c:249:3:
-./include/linux/fortify-string.h:588:25: warning: call to '__read_overflow2_field'
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Wattribute-warning]
-  588 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+kernel test robot noticed the following build errors:
 
-According to the comments in include/linux/fortify-string.h, 'memcpy()',
-'memmove()' and 'memset()' must not be used beyond individual struct
-members to ensure that the compiler can enforce protection against
-buffer overflows, and, IIUC, this also applies to partial copies from
-the particular member ('vendor->byte_data' in this case). So it should
-be better (and safer) to do both copies at once (and 'byte_data' of
-'struct acpi_resource_vendor_typed' seems to be a good candidate for
-'__counted_by(byte_length)' as well).
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on rafael-pm/acpi-bus rafael-pm/devprop linus/master v6.7-rc3 next-20231127]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/pnp/pnpacpi/rsparser.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/wangdong28/PCI-ACPI-Add-extra-slot-register-check-for-non-ACPI-device/20231127-141554
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/1701065447-13963-1-git-send-email-wangdong202303%40163.com
+patch subject: [PATCH] PCI/ACPI: Add extra slot register check for non-ACPI device
+config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20231127/202311272056.KtldqGiA-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231127/202311272056.KtldqGiA-lkp@intel.com/reproduce)
 
-diff --git a/drivers/pnp/pnpacpi/rsparser.c b/drivers/pnp/pnpacpi/rsparser.c
-index 4f05f610391b..af51f893525e 100644
---- a/drivers/pnp/pnpacpi/rsparser.c
-+++ b/drivers/pnp/pnpacpi/rsparser.c
-@@ -152,12 +152,12 @@ static void pnpacpi_parse_allocated_vendor(struct pnp_dev *dev,
- 				    struct acpi_resource_vendor_typed *vendor)
- {
- 	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid, 16)) {
--		u64 start, length;
-+		struct { u64 start, length; } range;
- 
--		memcpy(&start, vendor->byte_data, sizeof(start));
--		memcpy(&length, vendor->byte_data + 8, sizeof(length));
-+		memcpy(&range, vendor->byte_data, 16);
- 
--		pnp_add_mem_resource(dev, start, start + length - 1, 0);
-+		pnp_add_mem_resource(dev, range.start, range.start +
-+				     range.length - 1, 0);
- 	}
- }
- 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311272056.KtldqGiA-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/pci/pci-acpi.c: In function 'pci_check_extra_slot_register':
+>> drivers/pci/pci-acpi.c:896:14: error: implicit declaration of function 'is_vmd' [-Werror=implicit-function-declaration]
+     896 |         if (!is_vmd(bus) || !pdev || pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &slot_cap))
+         |              ^~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +/is_vmd +896 drivers/pci/pci-acpi.c
+
+   888	
+   889	static void pci_check_extra_slot_register(struct pci_bus *bus)
+   890	{
+   891		struct pci_dev *pdev = bus->self;
+   892		char slot_name[SLOT_NAME_SIZE];
+   893		struct pci_slot *pci_slot;
+   894		u32 slot_cap, slot_nr;
+   895	
+ > 896		if (!is_vmd(bus) || !pdev || pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &slot_cap))
+   897			return;
+   898	
+   899		if (!(slot_cap & PCI_EXP_SLTCAP_HPC)) {
+   900			slot_nr = (slot_cap & PCI_EXP_SLTCAP_PSN) >> 19;
+   901			snprintf(slot_name, SLOT_NAME_SIZE, "%u", slot_nr);
+   902			pci_slot = pci_create_slot(bus, 0, slot_name, NULL);
+   903			if (IS_ERR(pci_slot))
+   904				pr_err("pci_create_slot returned %ld\n", PTR_ERR(pci_slot));
+   905		}
+   906	}
+   907	
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
