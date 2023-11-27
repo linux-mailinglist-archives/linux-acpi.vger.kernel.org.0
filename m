@@ -1,76 +1,89 @@
-Return-Path: <linux-acpi+bounces-1832-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1833-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A9F7F9DA5
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 11:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D05C37FA698
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 17:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AC9EB20DD5
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 10:36:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C866B20DBC
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 16:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A14B18C15
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 10:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5973456F
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 16:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="Zz3X/iBi"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DBHjoG9y"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.8bytes.org (mail.8bytes.org [IPv6:2a01:238:42d9:3f00:e505:6202:4f0c:f051])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id D4004F0;
-	Mon, 27 Nov 2023 01:57:10 -0800 (PST)
-Received: from 8bytes.org (p4ffe1e67.dip0.t-ipconnect.de [79.254.30.103])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA16EA
+	for <linux-acpi@vger.kernel.org>; Mon, 27 Nov 2023 06:37:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701095866;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aW0YOCJul7xs+/KZ1mmsyul1gC4BX9IvFOK2PTRgq/Y=;
+	b=DBHjoG9yPMtbdESVFiqPsBM98eoDx+UznDRu3AUz8gKzlV0amnv7xUl9QfoZJxihLOfGX3
+	eCX3MUtadj0crPBAdvnHUipHdOekVmNHgenDzdiXCJpU5F1PdrZ6LkFWbjbqdOA/1JTFsn
+	C9BW6JQSXnJxdty58IVdlQvz9zCz1KI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-470-Jfv4_HhmML6oIfViXM4COw-1; Mon, 27 Nov 2023 09:37:43 -0500
+X-MC-Unique: Jfv4_HhmML6oIfViXM4COw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 2BC441A4799;
-	Mon, 27 Nov 2023 10:57:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1701079029;
-	bh=CHHOkEMTPlg6Xp1XqOEpVungIbDgk3x5eaYRFc6OMvA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zz3X/iBiBVM3gKoGzcPRKsUrKzGKvDDxddIItBGIrI9aqPyU/yKP2kaAn5hQux0XS
-	 JrGbXWO93UFSecEJJPItKQCoLPlqLJKODxmzQq2CxV0v5EB+UMbDItB/LOuFI1M9ib
-	 z+Gi8Z2yssva5mirEt3Hj9QyfmvAxPMoPvl3swdWsmpi9h6A7qY3fXWvBIOVpb+HTX
-	 r95P85qXK0wfnz2uG+IFAsmHPCYNs/7j/sHzCAHsd8rv35jiZbiFp+3nYeQIcn670e
-	 bZm8zYouky0yAKTY4eTcWL+se5W9w03k9+hGmn+QElmPFJ6NYMKymmQztvlugfbQ6J
-	 fwBa0QYmVCNag==
-Date: Mon, 27 Nov 2023 10:57:08 +0100
-From: Joerg Roedel <joro@8bytes.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Robin Murphy <robin.murphy@arm.com>, will@kernel.org,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-	lpieralisi@kernel.org, andre.draszik@linaro.org,
-	quic_zhenhuah@quicinc.com
-Subject: Re: [PATCH] iommu: Avoid more races around device probe
-Message-ID: <ZWRn9G2Fzyibzn0X@8bytes.org>
-References: <16f433658661d7cadfea51e7c65da95826112a2b.1700071477.git.robin.murphy@arm.com>
- <ZVZL9kZuVsb9VPnM@nvidia.com>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 095A288D016;
+	Mon, 27 Nov 2023 14:37:43 +0000 (UTC)
+Received: from x1.localdomain.com (unknown [10.39.192.45])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 2711F20268D2;
+	Mon, 27 Nov 2023 14:37:42 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Michal Wilczynski <michal.wilczynski@intel.com>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	linux-acpi@vger.kernel.org
+Subject: [6.6 regression-fix 0/1] ACPI: video: Use acpi_video_device for cooling-dev driver data
+Date: Mon, 27 Nov 2023 15:37:40 +0100
+Message-ID: <20231127143741.5229-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZVZL9kZuVsb9VPnM@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-On Thu, Nov 16, 2023 at 01:05:58PM -0400, Jason Gunthorpe wrote:
-> I'm fine with this as some hacky backport, but I don't want to see
-> this cross-layer leakage left in the next merge window.
-> 
-> ie we should still do my other series on top of and reverting this.
-> 
-> I've poked at moving parts of it under probe and I think we can do
-> substantial amounts in about two more series and a tidy a bunch of
-> other stuff too.
+Hi Rafael,
 
-Applied this for v6.7. Before I am going to apply any series on-top I
-want to see you and Robin agree on a general direction for this moving
-forward.
+Here is a fix for a regression in 6.6 caused by:
+
+0d16710146a1 ("ACPI: bus: Set driver_data to NULL every time .add() fails")
+
+the root cause here is the acpi_video.c code abusing the driver_data
+of a device for which it is not the driver, this fix addresses
+the root cause.
+
+This issue is being tracked here:
+https://gitlab.freedesktop.org/drm/intel/-/issues/9718
 
 Regards,
 
-	Joerg
+Hans
+
+
+Hans de Goede (1):
+  ACPI: video: Use acpi_video_device for cooling-dev driver data
+
+ drivers/acpi/acpi_video.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
+
+-- 
+2.43.0
+
 
