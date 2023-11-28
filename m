@@ -1,128 +1,151 @@
-Return-Path: <linux-acpi+bounces-1841-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1842-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C48827FB0F0
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 05:35:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20F317FB43A
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 09:34:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59D03B2031D
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 04:35:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5291C1C20F53
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 08:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CE210792
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 04:35:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="WhZgWzAB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B368D199B4
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 08:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-X-Greylist: delayed 42879 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Nov 2023 18:54:44 PST
-Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [178.154.239.211])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 479731A3
-	for <linux-acpi@vger.kernel.org>; Mon, 27 Nov 2023 18:54:44 -0800 (PST)
-Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:6e01:0:640:627f:0])
-	by forward100c.mail.yandex.net (Yandex) with ESMTP id D06F560036;
-	Tue, 28 Nov 2023 05:54:38 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id bsJ7oIfa5mI0-dqbKgZ5Y;
-	Tue, 28 Nov 2023 05:54:38 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1701140078; bh=UPZl9BoNVOAZEiJrDswC4P0KrglEEZsHXCCZRP5h/ME=;
-	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=WhZgWzABcAz5yzzxPW43YWa/MiUFX1c0HdFyLQShVGDuOiL3j2NgIWjZbVfiM6rvp
-	 apx1aZcBHHdPmHhfLWB7KwsyuCdkbja5hkzL1cpFnwWOCx4aP74Yjq4PHzeGf1Euos
-	 SyQQnmxCSLS65OgnWDvE7u+MFPVS3DB/ynGIaZ7Y=
-Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	linux-acpi@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] [v2] pnp: acpi: fix fortify warning
-Date: Tue, 28 Nov 2023 05:52:10 +0300
-Message-ID: <20231128025411.141602-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAJZ5v0hrMy8c_eA+TxBb=gFF5tS147v3wORrQq=YTpuBDp5hKg@mail.gmail.com>
-References: <CAJZ5v0hrMy8c_eA+TxBb=gFF5tS147v3wORrQq=YTpuBDp5hKg@mail.gmail.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2696F197;
+	Mon, 27 Nov 2023 23:09:48 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F9F5C15;
+	Mon, 27 Nov 2023 23:10:35 -0800 (PST)
+Received: from [10.163.33.60] (unknown [10.163.33.60])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5221B3F5A1;
+	Mon, 27 Nov 2023 23:09:44 -0800 (PST)
+Message-ID: <8305dee1-6668-4011-aaf7-68d072a1251c@arm.com>
+Date: Tue, 28 Nov 2023 12:39:42 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/7] coresight: tmc: Move ACPI support from AMBA driver to
+ platform driver
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, suzuki.poulose@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Mike Leach
+ <mike.leach@linaro.org>, James Clark <james.clark@arm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20231027072943.3418997-1-anshuman.khandual@arm.com>
+ <20231027072943.3418997-6-anshuman.khandual@arm.com> <ZV40itsgT5OSJmdC@bogus>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <ZV40itsgT5OSJmdC@bogus>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-When compiling with gcc version 14.0.0 20231126 (experimental)
-and CONFIG_FORTIFY_SOURCE=y, I've noticed the following:
 
-In file included from ./include/linux/string.h:295,
-                 from ./include/linux/bitmap.h:12,
-                 from ./include/linux/cpumask.h:12,
-                 from ./arch/x86/include/asm/paravirt.h:17,
-                 from ./arch/x86/include/asm/cpuid.h:62,
-                 from ./arch/x86/include/asm/processor.h:19,
-                 from ./arch/x86/include/asm/cpufeature.h:5,
-                 from ./arch/x86/include/asm/thread_info.h:53,
-                 from ./include/linux/thread_info.h:60,
-                 from ./arch/x86/include/asm/preempt.h:9,
-                 from ./include/linux/preempt.h:79,
-                 from ./include/linux/spinlock.h:56,
-                 from ./include/linux/mmzone.h:8,
-                 from ./include/linux/gfp.h:7,
-                 from ./include/linux/slab.h:16,
-                 from ./include/linux/resource_ext.h:11,
-                 from ./include/linux/acpi.h:13,
-                 from drivers/pnp/pnpacpi/rsparser.c:11:
-In function 'fortify_memcpy_chk',
-    inlined from 'pnpacpi_parse_allocated_vendor' at drivers/pnp/pnpacpi/rsparser.c:158:3,
-    inlined from 'pnpacpi_allocated_resource' at drivers/pnp/pnpacpi/rsparser.c:249:3:
-./include/linux/fortify-string.h:588:25: warning: call to '__read_overflow2_field'
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Wattribute-warning]
-  588 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-According to the comments in include/linux/fortify-string.h, 'memcpy()',
-'memmove()' and 'memset()' must not be used beyond individual struct
-members to ensure that the compiler can enforce protection against
-buffer overflows, and, IIUC, this also applies to partial copies from
-the particular member ('vendor->byte_data' in this case). So it should
-be better (and safer) to do both copies at once (and 'byte_data' of
-'struct acpi_resource_vendor_typed' seems to be a good candidate for
-'__counted_by(byte_length)' as well).
+On 11/22/23 22:34, Sudeep Holla wrote:
+> On Fri, Oct 27, 2023 at 12:59:41PM +0530, Anshuman Khandual wrote:
+>> Add support for the tmc devices in the platform driver, which can then be
+>> used on ACPI based platforms. This change would now allow runtime power
+>> management for ACPI based systems. The driver would try to enable the APB
+>> clock if available.
+>>
+>> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+>> Cc: Sudeep Holla <sudeep.holla@arm.com>
+>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Cc: Mike Leach <mike.leach@linaro.org>
+>> Cc: James Clark <james.clark@arm.com>
+>> Cc: linux-acpi@vger.kernel.org
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: coresight@lists.linaro.org
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>>  drivers/acpi/arm64/amba.c                     |   2 -
+>>  .../hwtracing/coresight/coresight-tmc-core.c  | 127 +++++++++++++++---
+>>  drivers/hwtracing/coresight/coresight-tmc.h   |   1 +
+>>  3 files changed, 113 insertions(+), 17 deletions(-)
+> 
+> [...]
+> 
+>> diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
+>> index 7ec5365e2b64..618bc0b7a1a5 100644
+>> --- a/drivers/hwtracing/coresight/coresight-tmc-core.c
+>> +++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
+> 
+> [...]
+> 
+>> @@ -573,9 +579,9 @@ static void tmc_shutdown(struct amba_device *adev)
+>>  	spin_unlock_irqrestore(&drvdata->spinlock, flags);
+>>  }
+>>  
+>> -static void tmc_remove(struct amba_device *adev)
+>> +static void __tmc_remove(struct device *dev)
+>>  {
+>> -	struct tmc_drvdata *drvdata = dev_get_drvdata(&adev->dev);
+>> +	struct tmc_drvdata *drvdata = dev_get_drvdata(dev);
+>>  
+>>  	/*
+>>  	 * Since misc_open() holds a refcount on the f_ops, which is
+>> @@ -586,6 +592,11 @@ static void tmc_remove(struct amba_device *adev)
+>>  	coresight_unregister(drvdata->csdev);
+>>  }
+>>  
+>> +static void tmc_remove(struct amba_device *adev)
+>> +{
+>> +	__tmc_remove(&adev->dev);
+>> +}
+>> +
+>>  static const struct amba_id tmc_ids[] = {
+>>  	CS_AMBA_ID(0x000bb961),
+>>  	/* Coresight SoC 600 TMC-ETR/ETS */
+>> @@ -613,6 +624,92 @@ static struct amba_driver tmc_driver = {
+>>  
+>>  module_amba_driver(tmc_driver);
+>>  
+>> +static int tmc_platform_probe(struct platform_device *pdev)
+>> +{
+>> +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>> +	struct tmc_drvdata *drvdata;
+>> +	int ret = 0;
+>> +
+>> +	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
+>> +	if (!drvdata)
+>> +		return -ENOMEM;
+>> +
+>> +	drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
+>> +	if (IS_ERR(drvdata->pclk))
+>> +		return -ENODEV;
+>> +
+> 
+> --->8
+>> +	if (res) {
+>> +		drvdata->base = devm_ioremap_resource(&pdev->dev, res);
+>> +		if (IS_ERR(drvdata->base)) {
+>> +			clk_put(drvdata->pclk);
+>> +			return PTR_ERR(drvdata->base);
+>> +		}
+>> +	}
+>> +
+> ---
+> 
+> You need drop the above hunk as _tmc_probe() already takes care of that.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
-v2: prefer sizeof(range) over hardcoded constant (Rafael J. Wysocki)
----
- drivers/pnp/pnpacpi/rsparser.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Dropped.
 
-diff --git a/drivers/pnp/pnpacpi/rsparser.c b/drivers/pnp/pnpacpi/rsparser.c
-index 4f05f610391b..c02ce0834c2c 100644
---- a/drivers/pnp/pnpacpi/rsparser.c
-+++ b/drivers/pnp/pnpacpi/rsparser.c
-@@ -151,13 +151,13 @@ static int vendor_resource_matches(struct pnp_dev *dev,
- static void pnpacpi_parse_allocated_vendor(struct pnp_dev *dev,
- 				    struct acpi_resource_vendor_typed *vendor)
- {
--	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid, 16)) {
--		u64 start, length;
-+	struct { u64 start, length; } range;
- 
--		memcpy(&start, vendor->byte_data, sizeof(start));
--		memcpy(&length, vendor->byte_data + 8, sizeof(length));
--
--		pnp_add_mem_resource(dev, start, start + length - 1, 0);
-+	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid,
-+				    sizeof(range))) {
-+		memcpy(&range, vendor->byte_data, sizeof(range));
-+		pnp_add_mem_resource(dev, range.start, range.start +
-+				     range.length - 1, 0);
- 	}
- }
- 
--- 
-2.43.0
-
+> This is the root cause for the issue I reported in the other thread. Also
+> sorry for the confusion, I had to refer to coresight-tmc-core.c and post
+> the patch to unify module_init/exit but completely mixed up the file/patch
+> and referred coresight-tpiu-core.c instead as that patch was dealing with
+> it.
+> 
 
