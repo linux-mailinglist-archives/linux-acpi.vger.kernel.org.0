@@ -1,35 +1,35 @@
-Return-Path: <linux-acpi+bounces-1861-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1862-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002527FBF65
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 17:43:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E54A27FBF66
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 17:44:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 314AF1C20A37
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 16:43:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2196B1C20ACC
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 16:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9350C49F89
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 16:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820FE5D4BC
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 16:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCA2710D4;
-	Tue, 28 Nov 2023 07:18:30 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F520D64;
+	Tue, 28 Nov 2023 07:19:40 -0800 (PST)
 Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SfmLD0Yx2z6D8YZ;
-	Tue, 28 Nov 2023 23:18:12 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SfmMY4dJZz6D8YK;
+	Tue, 28 Nov 2023 23:19:21 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 171B2140D30;
-	Tue, 28 Nov 2023 23:18:29 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 99D61140A9C;
+	Tue, 28 Nov 2023 23:19:38 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 28 Nov
- 2023 15:18:28 +0000
-Date: Tue, 28 Nov 2023 15:18:27 +0000
+ 2023 15:19:37 +0000
+Date: Tue, 28 Nov 2023 15:19:37 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Russell King <rmk+kernel@armlinux.org.uk>
 CC: <linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
 	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
@@ -38,15 +38,13 @@ CC: <linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
 	<linux-ia64@vger.kernel.org>, <linux-parisc@vger.kernel.org>, Salil Mehta
 	<salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
 	<jianyong.wu@arm.com>, <justin.he@arm.com>, James Morse
-	<james.morse@arm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
-	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH RFC 17/22] x86/topology: convert to use
- arch_cpu_is_hotpluggable()
-Message-ID: <20231128151827.0000689e@Huawei.com>
-In-Reply-To: <E1r0JM5-00CTyD-Ri@rmk-PC.armlinux.org.uk>
+	<james.morse@arm.com>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
+	<kernel@xen0n.name>
+Subject: Re: [PATCH RFC 18/22] LoongArch: Switch over to GENERIC_CPU_DEVICES
+Message-ID: <20231128151937.000003f3@Huawei.com>
+In-Reply-To: <E1r0JMB-00CTyJ-08@rmk-PC.armlinux.org.uk>
 References: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
-	<E1r0JM5-00CTyD-Ri@rmk-PC.armlinux.org.uk>
+	<E1r0JMB-00CTyJ-08@rmk-PC.armlinux.org.uk>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -60,41 +58,35 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Tue, 07 Nov 2023 10:30:45 +0000
-"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk> wrote:
+On Tue, 07 Nov 2023 10:30:51 +0000
+Russell King <rmk+kernel@armlinux.org.uk> wrote:
 
-> Convert x86 to use the arch_cpu_is_hotpluggable() helper rather than
-> arch_register_cpu().
+> From: James Morse <james.morse@arm.com>
 > 
+> Now that GENERIC_CPU_DEVICES calls arch_register_cpu(), which can be
+> overridden by the arch code, switch over to this to allow common code
+> to choose when the register_cpu() call is made.
+> 
+> This allows topology_init() to be removed.
+> 
+> This is an intermediate step to the logic being moved to drivers/acpi,
+> where GENERIC_CPU_DEVICES will do the work when booting with acpi=off.
+> 
+> This is a subtle change. Originally:
+> - on boot, topology_init() would have marked present CPUs that
+>   io_master() is true for as hotplug-incapable.
+> - if a CPU is hotplugged that is an io_master(), it can later be
+>   hot-unplugged.
+> 
+> The new behaviour is that any CPU that io_master() is true for will
+> now always be marked as hotplug-incapable, thus even if it was
+> hotplugged, it can no longer be hot-unplugged.
+> 
+> This patch also has the effect of moving the registration of CPUs from
+> subsys to driver core initialisation, prior to any initcalls running.
+> 
+> Signed-off-by: James Morse <james.morse@arm.com>
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-As with earlier set of related changes, could squash this down to avoid
-churn and use Co-developed or similar. Up to you though.
-
-Maybe a forwards reference to this being a later change in the patch 15
-description might be good though!
-> ---
->  arch/x86/kernel/topology.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/topology.c b/arch/x86/kernel/topology.c
-> index 211863cb5b81..d42c28b8bfd8 100644
-> --- a/arch/x86/kernel/topology.c
-> +++ b/arch/x86/kernel/topology.c
-> @@ -36,11 +36,8 @@
->  #include <asm/cpu.h>
->  
->  #ifdef CONFIG_HOTPLUG_CPU
-> -int arch_register_cpu(int cpu)
-> +bool arch_cpu_is_hotpluggable(int cpu)
->  {
-> -	struct cpu *c = per_cpu_ptr(&cpu_devices, cpu);
-> -
-> -	c->hotpluggable = cpu > 0;
-> -	return register_cpu(c, cpu);
-> +	return cpu > 0;
->  }
->  #endif /* CONFIG_HOTPLUG_CPU */
 
 
