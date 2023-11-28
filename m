@@ -1,78 +1,128 @@
-Return-Path: <linux-acpi+bounces-1840-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1841-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3557FAD78
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 23:32:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C48827FB0F0
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 05:35:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD768B20FBB
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 22:32:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59D03B2031D
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 04:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F42B3C46F
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Nov 2023 22:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CE210792
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 04:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="WhZgWzAB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F2E131;
-	Mon, 27 Nov 2023 13:41:14 -0800 (PST)
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-1f9efd5303cso2476927fac.0;
-        Mon, 27 Nov 2023 13:41:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701121274; x=1701726074;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pI2M+j6ioFcb4GQHCuGwFJdfm9icuD7b8LXD5YDuNJg=;
-        b=ruXGmity9u8iNcq4s2Fu+4PczWS3t5PJZVDV3xTRDH0MgCl7uv0HrVSMsnTD/C+att
-         oo8t8/esSu0wfJ965ibKeFcNrjPbc/qDOwyNNO9uoeDEa2wAWbRYRzwliw5G1kyYswnk
-         dA69puYXQ3OgH7hBvK/vv3nsrWvgw0EvjVM62b/JkXF4k/zN+nTwY24jFZgQuNH8TLDi
-         HBZktOK+ZKb+arjd91eRp7c6p4h46fUi3nTChoUMd8YLrddtZ8PFb0ec+WYxci55jMNc
-         ej7t6TDX+0O5ERiUB61wg3MaXkK3xsMYGbcRHFNonFPEbJOZZjyRcNrFh3JzKMmbPtZy
-         zPMg==
-X-Gm-Message-State: AOJu0YzI3OQarTFcBlLgjfge5w3HanntNUNIWouJKZDSj9WJdIIL+Qq+
-	BULaP3EPN7EFDlSHV+U19A==
-X-Google-Smtp-Source: AGHT+IGFvSz34MKUy/WxsVB8cBQNpehhrzjKecPe0agYQUZpudaSX6ZWR8xRNmcDqWBXrxt6W+KwRA==
-X-Received: by 2002:a05:6870:e0cb:b0:1f9:385a:f6ef with SMTP id a11-20020a056870e0cb00b001f9385af6efmr14434582oab.19.1701121274068;
-        Mon, 27 Nov 2023 13:41:14 -0800 (PST)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id mm23-20020a056871729700b001eaf486140asm2190758oac.28.2023.11.27.13.41.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Nov 2023 13:41:13 -0800 (PST)
-Received: (nullmailer pid 3795972 invoked by uid 1000);
-	Mon, 27 Nov 2023 21:41:12 -0000
-Date: Mon, 27 Nov 2023 15:41:12 -0600
-From: Rob Herring <robh@kernel.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, frowand.list@gmail.com, james.quinlan@broadcom.com, m.szyprowski@samsung.com, hch@lst.de, devicetree@vger.kernel.org, lenb@kernel.org, robh+dt@kernel.org, rafael@kernel.org, iommu@lists.linux.dev
-Subject: Re: [PATCH] dma-mapping: Don't store redundant offsets
-Message-ID: <170112126999.3795360.2028083328309296729.robh@kernel.org>
-References: <94e0cec15546ef2be61d90869e499e40e2a55308.1700849106.git.robin.murphy@arm.com>
+X-Greylist: delayed 42879 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Nov 2023 18:54:44 PST
+Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [178.154.239.211])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 479731A3
+	for <linux-acpi@vger.kernel.org>; Mon, 27 Nov 2023 18:54:44 -0800 (PST)
+Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:6e01:0:640:627f:0])
+	by forward100c.mail.yandex.net (Yandex) with ESMTP id D06F560036;
+	Tue, 28 Nov 2023 05:54:38 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id bsJ7oIfa5mI0-dqbKgZ5Y;
+	Tue, 28 Nov 2023 05:54:38 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1701140078; bh=UPZl9BoNVOAZEiJrDswC4P0KrglEEZsHXCCZRP5h/ME=;
+	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+	b=WhZgWzABcAz5yzzxPW43YWa/MiUFX1c0HdFyLQShVGDuOiL3j2NgIWjZbVfiM6rvp
+	 apx1aZcBHHdPmHhfLWB7KwsyuCdkbja5hkzL1cpFnwWOCx4aP74Yjq4PHzeGf1Euos
+	 SyQQnmxCSLS65OgnWDvE7u+MFPVS3DB/ynGIaZ7Y=
+Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	linux-acpi@vger.kernel.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] [v2] pnp: acpi: fix fortify warning
+Date: Tue, 28 Nov 2023 05:52:10 +0300
+Message-ID: <20231128025411.141602-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAJZ5v0hrMy8c_eA+TxBb=gFF5tS147v3wORrQq=YTpuBDp5hKg@mail.gmail.com>
+References: <CAJZ5v0hrMy8c_eA+TxBb=gFF5tS147v3wORrQq=YTpuBDp5hKg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <94e0cec15546ef2be61d90869e499e40e2a55308.1700849106.git.robin.murphy@arm.com>
+Content-Transfer-Encoding: 8bit
 
+When compiling with gcc version 14.0.0 20231126 (experimental)
+and CONFIG_FORTIFY_SOURCE=y, I've noticed the following:
 
-On Fri, 24 Nov 2023 18:10:03 +0000, Robin Murphy wrote:
-> A bus_dma_region necessarily stores both CPU and DMA base addresses for
-> a range, so there's no need to also store the difference between them.
-> 
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> ---
->  drivers/acpi/scan.c        |  1 -
->  drivers/of/address.c       |  1 -
->  include/linux/dma-direct.h | 19 ++++++++++++-------
->  kernel/dma/direct.c        |  1 -
->  4 files changed, 12 insertions(+), 10 deletions(-)
-> 
+In file included from ./include/linux/string.h:295,
+                 from ./include/linux/bitmap.h:12,
+                 from ./include/linux/cpumask.h:12,
+                 from ./arch/x86/include/asm/paravirt.h:17,
+                 from ./arch/x86/include/asm/cpuid.h:62,
+                 from ./arch/x86/include/asm/processor.h:19,
+                 from ./arch/x86/include/asm/cpufeature.h:5,
+                 from ./arch/x86/include/asm/thread_info.h:53,
+                 from ./include/linux/thread_info.h:60,
+                 from ./arch/x86/include/asm/preempt.h:9,
+                 from ./include/linux/preempt.h:79,
+                 from ./include/linux/spinlock.h:56,
+                 from ./include/linux/mmzone.h:8,
+                 from ./include/linux/gfp.h:7,
+                 from ./include/linux/slab.h:16,
+                 from ./include/linux/resource_ext.h:11,
+                 from ./include/linux/acpi.h:13,
+                 from drivers/pnp/pnpacpi/rsparser.c:11:
+In function 'fortify_memcpy_chk',
+    inlined from 'pnpacpi_parse_allocated_vendor' at drivers/pnp/pnpacpi/rsparser.c:158:3,
+    inlined from 'pnpacpi_allocated_resource' at drivers/pnp/pnpacpi/rsparser.c:249:3:
+./include/linux/fortify-string.h:588:25: warning: call to '__read_overflow2_field'
+declared with attribute warning: detected read beyond size of field (2nd parameter);
+maybe use struct_group()? [-Wattribute-warning]
+  588 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Acked-by: Rob Herring <robh@kernel.org>
+According to the comments in include/linux/fortify-string.h, 'memcpy()',
+'memmove()' and 'memset()' must not be used beyond individual struct
+members to ensure that the compiler can enforce protection against
+buffer overflows, and, IIUC, this also applies to partial copies from
+the particular member ('vendor->byte_data' in this case). So it should
+be better (and safer) to do both copies at once (and 'byte_data' of
+'struct acpi_resource_vendor_typed' seems to be a good candidate for
+'__counted_by(byte_length)' as well).
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+v2: prefer sizeof(range) over hardcoded constant (Rafael J. Wysocki)
+---
+ drivers/pnp/pnpacpi/rsparser.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/pnp/pnpacpi/rsparser.c b/drivers/pnp/pnpacpi/rsparser.c
+index 4f05f610391b..c02ce0834c2c 100644
+--- a/drivers/pnp/pnpacpi/rsparser.c
++++ b/drivers/pnp/pnpacpi/rsparser.c
+@@ -151,13 +151,13 @@ static int vendor_resource_matches(struct pnp_dev *dev,
+ static void pnpacpi_parse_allocated_vendor(struct pnp_dev *dev,
+ 				    struct acpi_resource_vendor_typed *vendor)
+ {
+-	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid, 16)) {
+-		u64 start, length;
++	struct { u64 start, length; } range;
+ 
+-		memcpy(&start, vendor->byte_data, sizeof(start));
+-		memcpy(&length, vendor->byte_data + 8, sizeof(length));
+-
+-		pnp_add_mem_resource(dev, start, start + length - 1, 0);
++	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid,
++				    sizeof(range))) {
++		memcpy(&range, vendor->byte_data, sizeof(range));
++		pnp_add_mem_resource(dev, range.start, range.start +
++				     range.length - 1, 0);
+ 	}
+ }
+ 
+-- 
+2.43.0
 
 
