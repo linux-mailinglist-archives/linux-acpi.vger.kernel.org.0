@@ -1,151 +1,244 @@
-Return-Path: <linux-acpi+bounces-1842-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1843-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F317FB43A
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 09:34:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A737FBA36
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 13:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5291C1C20F53
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 08:34:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2D0A28150D
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 12:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B368D199B4
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 08:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB764F611
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 12:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="eAs2Q100"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2696F197;
-	Mon, 27 Nov 2023 23:09:48 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F9F5C15;
-	Mon, 27 Nov 2023 23:10:35 -0800 (PST)
-Received: from [10.163.33.60] (unknown [10.163.33.60])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5221B3F5A1;
-	Mon, 27 Nov 2023 23:09:44 -0800 (PST)
-Message-ID: <8305dee1-6668-4011-aaf7-68d072a1251c@arm.com>
-Date: Tue, 28 Nov 2023 12:39:42 +0530
+Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.219])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 809721BE;
+	Tue, 28 Nov 2023 04:26:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id; bh=d34IiTMyydsAU1Z9eO
+	NPBXN/Ty8c7WVY1SNdn4hy2gk=; b=eAs2Q100ZucG/3Ry9AdXB2oYB+n/dCSEbs
+	I4msTs53N7WZ3zOZ7p15ib/nlz+D2CCRL7lWBXkHD1AnJW5xsYWiudys5kZ7N9i+
+	duExv9o+XkfZfKH+xvv2JbkEMXSBWMP6OOzV3T+M5AF6WIq4TBVrF1125sj86N1n
+	VcfdMdjzE=
+Received: from localhost.localdomain.localdomain (unknown [111.205.43.234])
+	by zwqz-smtp-mta-g0-3 (Coremail) with SMTP id _____wBnLBsu3GVlp+bDEA--.36749S2;
+	Tue, 28 Nov 2023 20:25:18 +0800 (CST)
+From: wangdong28 <wangdong202303@163.com>
+To: nirmal.patel@linux.intel.com,
+	jonathan.derrick@linux.dev,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	rafael@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	tglx@linutronix.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	lenb@kernel.org
+Cc: linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	wangdong202303@163.com,
+	ahuang12@lenovo.com,
+	Dong Wang <wangdong28@lenovo.com>
+Subject: [PATCH v2] PCI/ACPI: Add extra slot register check for non-ACPI device
+Date: Tue, 28 Nov 2023 20:25:16 +0800
+Message-Id: <1701174316-14149-1-git-send-email-wangdong202303@163.com>
+X-Mailer: git-send-email 1.8.3.1
+X-CM-TRANSID:_____wBnLBsu3GVlp+bDEA--.36749S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3XFy5KFW5Xr43Zr1DZw1UKFg_yoWxGFWxpF
+	4a93Wftr95Gr12g39Fv3yUur1rtrWv93yfGrWxG34DZ3Waga4SqFyvyFyjk3W7Jrs8Wa43
+	Za1YvrWkuF48AaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR8OzxUUUUU=
+X-CM-SenderInfo: pzdqwvhrqjjiistqjqqrwthudrp/1tbiXAo2YVXl8GgY6AAAsZ
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] coresight: tmc: Move ACPI support from AMBA driver to
- platform driver
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, suzuki.poulose@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Mike Leach
- <mike.leach@linaro.org>, James Clark <james.clark@arm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20231027072943.3418997-1-anshuman.khandual@arm.com>
- <20231027072943.3418997-6-anshuman.khandual@arm.com> <ZV40itsgT5OSJmdC@bogus>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <ZV40itsgT5OSJmdC@bogus>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
+From: Dong Wang <wangdong28@lenovo.com>
 
+When enabling VMD function in UEFI setup, the physical slot of the M.2
+NVMe device connected to the VMD device cannot be detected. Here is
+the result from lspci ("Physical Slot" field is NOT shown):
 
-On 11/22/23 22:34, Sudeep Holla wrote:
-> On Fri, Oct 27, 2023 at 12:59:41PM +0530, Anshuman Khandual wrote:
->> Add support for the tmc devices in the platform driver, which can then be
->> used on ACPI based platforms. This change would now allow runtime power
->> management for ACPI based systems. The driver would try to enable the APB
->> clock if available.
->>
->> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
->> Cc: Sudeep Holla <sudeep.holla@arm.com>
->> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Cc: Mike Leach <mike.leach@linaro.org>
->> Cc: James Clark <james.clark@arm.com>
->> Cc: linux-acpi@vger.kernel.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Cc: coresight@lists.linaro.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>  drivers/acpi/arm64/amba.c                     |   2 -
->>  .../hwtracing/coresight/coresight-tmc-core.c  | 127 +++++++++++++++---
->>  drivers/hwtracing/coresight/coresight-tmc.h   |   1 +
->>  3 files changed, 113 insertions(+), 17 deletions(-)
-> 
-> [...]
-> 
->> diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
->> index 7ec5365e2b64..618bc0b7a1a5 100644
->> --- a/drivers/hwtracing/coresight/coresight-tmc-core.c
->> +++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
-> 
-> [...]
-> 
->> @@ -573,9 +579,9 @@ static void tmc_shutdown(struct amba_device *adev)
->>  	spin_unlock_irqrestore(&drvdata->spinlock, flags);
->>  }
->>  
->> -static void tmc_remove(struct amba_device *adev)
->> +static void __tmc_remove(struct device *dev)
->>  {
->> -	struct tmc_drvdata *drvdata = dev_get_drvdata(&adev->dev);
->> +	struct tmc_drvdata *drvdata = dev_get_drvdata(dev);
->>  
->>  	/*
->>  	 * Since misc_open() holds a refcount on the f_ops, which is
->> @@ -586,6 +592,11 @@ static void tmc_remove(struct amba_device *adev)
->>  	coresight_unregister(drvdata->csdev);
->>  }
->>  
->> +static void tmc_remove(struct amba_device *adev)
->> +{
->> +	__tmc_remove(&adev->dev);
->> +}
->> +
->>  static const struct amba_id tmc_ids[] = {
->>  	CS_AMBA_ID(0x000bb961),
->>  	/* Coresight SoC 600 TMC-ETR/ETS */
->> @@ -613,6 +624,92 @@ static struct amba_driver tmc_driver = {
->>  
->>  module_amba_driver(tmc_driver);
->>  
->> +static int tmc_platform_probe(struct platform_device *pdev)
->> +{
->> +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->> +	struct tmc_drvdata *drvdata;
->> +	int ret = 0;
->> +
->> +	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
->> +	if (!drvdata)
->> +		return -ENOMEM;
->> +
->> +	drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
->> +	if (IS_ERR(drvdata->pclk))
->> +		return -ENODEV;
->> +
-> 
-> --->8
->> +	if (res) {
->> +		drvdata->base = devm_ioremap_resource(&pdev->dev, res);
->> +		if (IS_ERR(drvdata->base)) {
->> +			clk_put(drvdata->pclk);
->> +			return PTR_ERR(drvdata->base);
->> +		}
->> +	}
->> +
-> ---
-> 
-> You need drop the above hunk as _tmc_probe() already takes care of that.
+ 10001:01:00.0 Non-Volatile memory controller: Intel Corporation NVMe
+ Datacenter SSD [3DNAND, Beta Rock Controller] (prog-if 02 [NVM Express])
+   Subsystem: Intel Corporation NVMe Datacenter SSD [3DNAND] SE M.2 (P4511)
 
-Dropped.
+Generally, the physical slot (/sys/bus/pci/slots) will be created via
+either ACPI walking path during kernel init or hotplug path:
 
-> This is the root cause for the issue I reported in the other thread. Also
-> sorry for the confusion, I had to refer to coresight-tmc-core.c and post
-> the patch to unify module_init/exit but completely mixed up the file/patch
-> and referred coresight-tpiu-core.c instead as that patch was dealing with
-> it.
-> 
+ACPI walking path:
+  pcibios_add_bus
+    acpi_pci_add_bus
+      acpi_pci_slot_enumerate
+        acpi_walk_namespace
+          register_slot
+            pci_create_slot
+
+hotplug path:
+  __pci_hp_initialize
+    pci_create_slot
+
+[M.2 NVMe Device]
+A. VMD disabled
+When VMD is disabled, NVMe will be discovered during bus scanning and
+recognized as acpi device. In this case, the physical slot is created
+via the ACPI walking path.
+
+B. VMD enabled
+vmd_enable_domain() invokes pcibios_add_bus(). This means that it goes
+through the ACPI walking path. However, acpi_pci_add_bus() returns
+directly becase the statment "!ACPI_HANDLE(bus->bridge)" is true.
+See the following code snippet:
+
+  void acpi_pci_add_bus(struct pci_bus *bus)
+  {
+      ...
+      if (acpi_pci_disabled || !bus->bridge || !ACPI_HANDLE(bus->bridge))
+		return;
+      ...
+  }
+
+Since VMD creates its own root bus and devices of VMD are attached to
+the bus, those devices are non-ACPI devices. That's why
+"!ACPI_HANDLE(bus->bridge)" returns true.
+
+In addition, M.2 NVMe devices does not have the hotplug capability.
+Here is the quote from PCI Express M.2 Specification (Revision 5.0,
+Version 1.0):
+
+  CAUTION: M.2 Add-in Cards are not designed or intended to support
+  Hot-Swap or Hot-Plug connections. Performing Hot-Swap or Hot-Plug
+  may pose danger to the M.2 Add-in Card, to the system Platform,
+  and to the person performing this act.
+
+M.2 NVMe devices (non-ACPI devices and no hotplug capability) connected
+to the VMD device cannot meet the above-mentioned paths. The corresponding
+slot info of the M.2 NVMe controller cannot be created in
+/sys/bus/pci/slots.
+
+Fix this issue by checking the available physical slot number in
+slot capabilities register. If the physical slot number is available,
+create the slot info accordingly. The following lspci output shows the
+available slot info with applying this patch:
+
+ 10001:01:00.0 Non-Volatile memory controller: Intel Corporation NVMe
+ Datacenter SSD [3DNAND, Beta Rock Controller] (prog-if 02 [NVM Express])
+   Subsystem: Intel Corporation NVMe Datacenter SSD [3DNAND] SE M.2 (P4511)
+   Physical Slot: 16
+
+[U.2 NVMe device]
+A. VMD disabled
+Same as M.2 NVMe Device case "A".
+
+B. VMD enabled
+Same as M.2 NVMe Device case "B".
+
+The hotplug of the U.2 device is optional (See "PCI Express SFF-8639 Module
+Specification" for detail). The U.2 NVMe controller with hotplug capability
+connected to the VMD device can meet the hotplug path, so the slot info can
+be shown correctly via the lspci utility (without this patch):
+
+ 10000:82:00.0 Non-Volatile memory controller: Intel Corporation NVMe
+ Datacenter SSD [3DNAND, Beta Rock Controller] (prog-if 02 [NVM Express])
+   Subsystem: Lenovo Thinksystem U.2 P4610 NVMe SSD
+   Physical Slot: 64
+
+For U.2 NVMe controller without hotplug capability, this patch is needed
+to fix the missing slot info.
+
+Suggested-and-reviewed-by: Adrian Huang <ahuang12@lenovo.com>
+Signed-off-by: Dong Wang <wangdong28@lenovo.com>
+---
+v2:
+  * Fix the build error for non-x86 arch
+
+---
+ arch/x86/pci/common.c  | 21 +++++++++++++++++++++
+ drivers/pci/pci-acpi.c |  9 ++++++++-
+ include/linux/pci.h    |  1 +
+ 3 files changed, 30 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/pci/common.c b/arch/x86/pci/common.c
+index ddb7986..b657b07 100644
+--- a/arch/x86/pci/common.c
++++ b/arch/x86/pci/common.c
+@@ -731,4 +731,25 @@ struct pci_dev *pci_real_dma_dev(struct pci_dev *dev)
+ 
+ 	return dev;
+ }
++
++#define SLOT_NAME_SIZE  5
++
++void pci_check_extra_slot_register(struct pci_bus *bus)
++{
++	struct pci_dev *pdev = bus->self;
++	char slot_name[SLOT_NAME_SIZE];
++	struct pci_slot *pci_slot;
++	u32 slot_cap, slot_nr;
++
++	if (!is_vmd(bus) || !pdev || pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &slot_cap))
++		return;
++
++	if (!(slot_cap & PCI_EXP_SLTCAP_HPC)) {
++		slot_nr = (slot_cap & PCI_EXP_SLTCAP_PSN) >> 19;
++		snprintf(slot_name, SLOT_NAME_SIZE, "%u", slot_nr);
++		pci_slot = pci_create_slot(bus, 0, slot_name, NULL);
++		if (IS_ERR(pci_slot))
++			pr_err("pci_create_slot returned %ld\n", PTR_ERR(pci_slot));
++	}
++}
+ #endif
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index 0045750..e2f2ba8 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -884,6 +884,8 @@ acpi_status pci_acpi_add_pm_notifier(struct acpi_device *dev,
+ 	return acpi_add_pm_notifier(dev, &pci_dev->dev, pci_acpi_wake_dev);
+ }
+ 
++void __weak pci_check_extra_slot_register(struct pci_bus *bus) { }
++
+ /*
+  * _SxD returns the D-state with the highest power
+  * (lowest D-state number) supported in the S-state "x".
+@@ -1202,9 +1204,14 @@ void acpi_pci_add_bus(struct pci_bus *bus)
+ 	union acpi_object *obj;
+ 	struct pci_host_bridge *bridge;
+ 
+-	if (acpi_pci_disabled || !bus->bridge || !ACPI_HANDLE(bus->bridge))
++	if (acpi_pci_disabled || !bus->bridge)
+ 		return;
+ 
++	if (!ACPI_HANDLE(bus->bridge)) {
++		pci_check_extra_slot_register(bus);
++		return;
++	}
++
+ 	acpi_pci_slot_enumerate(bus);
+ 	acpiphp_enumerate_slots(bus);
+ 
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 60ca768..b9bb447 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1394,6 +1394,7 @@ static inline int pci_rebar_bytes_to_size(u64 bytes)
+ bool pci_device_is_present(struct pci_dev *pdev);
+ void pci_ignore_hotplug(struct pci_dev *dev);
+ struct pci_dev *pci_real_dma_dev(struct pci_dev *dev);
++void pci_check_extra_slot_register(struct pci_bus *bus);
+ int pci_status_get_and_clear_errors(struct pci_dev *pdev);
+ 
+ int __printf(6, 7) pci_request_irq(struct pci_dev *dev, unsigned int nr,
+-- 
+1.8.3.1
+
 
