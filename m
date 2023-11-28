@@ -1,141 +1,290 @@
-Return-Path: <linux-acpi+bounces-1874-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1875-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8825C7FBF75
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 17:46:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8EC87FC35F
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 19:35:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D34028267D
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 16:46:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CC852825A4
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 18:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66DB59149
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 16:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10EFC30347
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Nov 2023 18:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="La+tLA2H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XWiG9o0D"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2057.outbound.protection.outlook.com [40.107.220.57])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E33F2127;
-	Tue, 28 Nov 2023 08:08:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hdBrRKwOlnB3QboGJwCel8hjV4ocbbSsu+PE/0mBgF4dFFE5/ElKYi/08sr1WurdNnkHGx43ePwDl5pEl4z/0xeOrv3RMZ/aEu0nFCVHhHerB5rkOfr1BMZgAzyL9FmbLiGx7h/T5sqvnttXcLqAO1/Xph+uVj81vZh58AkVzm3faviCbeFNr1qMSuMPOU68rVNVoIkY4qBymb7n/sVDIjL9zOs7S6QSmLgn4ezhp6TrrtqhnBcLAe7xsdI1JQ+YZTwvAIOW0WBXJda6Ut3Fy1hGq6O6IvFPi9t9+VKeoFoLZmnfCsVgR9wfpMjhncffi6WLax2c8rdPFJ1367cujQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7+maicyosk4giRcMRKR/SpjdeKPypkM5HpxIzjVaYC4=;
- b=aP6VLp8prNfMChQYvSX4r2mxv75kTHbD3DNOTLRcjYEKaMoOQBOXPcfUiwx+8ZIsus7ecCbGZdSJz8Gpn0KeAuPGLcY3YjfdtAh2b9SnRzCx6fiU4ZajFJXDLuHQI2RvfdnXbeE8V1Awn7GOcU0TFgZbCVxsYyEj5Gc44utki2PQWluzAPztJMqxQ16pnaAf3ObkeSuTe1bSgXq8JlTUUO7luViMHnjX9YIlzPtESH6tFPQ9YcSIaLUpMUx5ZAzBEPc4lTu1CuZr54j8S0iwP9NEbhyYtrxaGFA9icVf3KydGf4OHErYa9KzYC+xsxXnbPZihC9rwSavtRS5Yc/Eag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=stgolabs.net smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7+maicyosk4giRcMRKR/SpjdeKPypkM5HpxIzjVaYC4=;
- b=La+tLA2HFnsf17lGi4V2hREEPS+E8L8z71E/5DnLUwovxo5jYcrkWcnE6iSWaKUOLEe+WOTaOJ3BE0glH+xLG1Jd0dosOPA3qDNAdMT/okquQFuhTpD7EQ8FL77duxEogi/HhXQ183IVtbNn1W/v28Kjn/xsfiKHbE/fVdPIRfY=
-Received: from CH0PR03CA0275.namprd03.prod.outlook.com (2603:10b6:610:e6::10)
- by DM4PR12MB6230.namprd12.prod.outlook.com (2603:10b6:8:a7::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.29; Tue, 28 Nov
- 2023 16:08:40 +0000
-Received: from DS1PEPF0001709B.namprd05.prod.outlook.com
- (2603:10b6:610:e6:cafe::ea) by CH0PR03CA0275.outlook.office365.com
- (2603:10b6:610:e6::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.29 via Frontend
- Transport; Tue, 28 Nov 2023 16:08:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS1PEPF0001709B.mail.protection.outlook.com (10.167.18.105) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7046.17 via Frontend Transport; Tue, 28 Nov 2023 16:08:39 +0000
-Received: from bcheatha-HP-EliteBook-845-G8-Notebook-PC.amd.com
- (10.180.168.240) by SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Tue, 28 Nov 2023 10:08:36 -0600
-From: Ben Cheatham <Benjamin.Cheatham@amd.com>
-To: <dave@stgolabs.net>, <jonathan.cameron@huawei.com>,
-	<dave.jiang@intel.com>, <alison.schofield@intel.com>,
-	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
-	<dan.j.williams@intel.com>, <rafael@kernel.org>
-CC: <benjamin.cheatham@amd.com>, <yazen.ghannam@amd.com>,
-	<linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-Subject: [PATCH v7 5/5] EINJ: Update EINJ documentation
-Date: Tue, 28 Nov 2023 10:06:56 -0600
-Message-ID: <20231128160656.166609-6-Benjamin.Cheatham@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231128160656.166609-1-Benjamin.Cheatham@amd.com>
-References: <20231128160656.166609-1-Benjamin.Cheatham@amd.com>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3D841C90;
+	Tue, 28 Nov 2023 18:08:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADF9C433CD;
+	Tue, 28 Nov 2023 18:08:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701194883;
+	bh=4DwB38wbaKFqe7hUkjoK0KTOX2HU0BmeTqXJcyORlu4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=XWiG9o0Dtq787TusZ2eK1KJKrxDR6ZWsvWOUs1UhQwi/EqTGjSVzPy1M+BcivIXz8
+	 nKM4NnDzVmlPy4d56Q2UCesllUtMPZGL/0QkX7IMNeaphkjFm2UDe7x33QM08aSyNg
+	 HT+7MRyZ5Ty1ggpvUZ0/+5D4vejZIgr5QVPyS7fPyIAE7W8mxdCvLJL9bT57/U9ZSM
+	 5KfMaTnpcjctst3YM+476nbFzErxYqznvVsXBJ+2Ovg6wsBotr7yBLXpwoWP9LvQci
+	 glX1WDuLypxtZc6NAtIkU+q16SZ7p4PwqSyOVYlSslQcaGx7xyqM26ZGNPB+3i2to5
+	 XGQqVb9QkNvWQ==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2c9b8363683so9606181fa.3;
+        Tue, 28 Nov 2023 10:08:03 -0800 (PST)
+X-Gm-Message-State: AOJu0YykdBSVQZeJ/uQbgEdgEgpTbvgOz+fxikU1OYw7/ewtiK8U7EUo
+	0Rm4X68zssgfIvKV8SzzOjwwz8QJ5jE4w3mIjgY=
+X-Google-Smtp-Source: AGHT+IEMmvfyq0v5/2oBeBE/oqLc1Eu+CJpsjOxQOhU1mp+t/ys+FzWHNt4xUEoc92KVGBiOkt8B0IacbD0oqbAchGI=
+X-Received: by 2002:a2e:b0e1:0:b0:2c9:b9db:73 with SMTP id h1-20020a2eb0e1000000b002c9b9db0073mr988987ljl.20.1701194881929;
+ Tue, 28 Nov 2023 10:08:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF0001709B:EE_|DM4PR12MB6230:EE_
-X-MS-Office365-Filtering-Correlation-Id: 68f7ca55-d69d-4f25-1b02-08dbf02c4922
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	wl1RDF3wO1CxnNQUAn5W+Al+FKOSLjmaRVbTB+QX6znnwGId1vUUiwa2khsQgPxB66dZBGziHSlB/XZ2eisIhBlu6ha5MwFSHbdUW5HHibqaQjB+yjlUHO1EkGRyWssMtICCg6Enq13jmIzABJkXGKbKVZ0hFF6cG3yutXWcnZJs0yokyr8mBsfsyLEivho6a9/cjJ2AQ2yIpnfKLTrsqaz9QHurbOnt3J1LMEdwPsw7zr62AW1sDzZO1v03RwExSd0XowsXwPg0wUuuTH4UlukN3c44SjuEPCnYTOGJAtA/sLkzvLNqnw7rSjIG5Gn1a7YD6m0y8PVZvVqtdLN5LAXP3zuu32qmikbRFrcMUIkjsul0qCSWkqkfztscp+MU+Z3lHIaE8q1pV0dpPkP+fcWGCAPIqaLvctvUrdYoMAbZbgRRliDVOYTlwqXN3B5wEB4vXQLFpVDt7+FTFYdavir7oEi9cquIXzOLocwqZXMqX318A5p611k3lys8fzDYjOZTprfzo9CTiC+rHhaK76x2E7trv58kSnckWLFkOdjJmWIDwlk7s7UUT2FiI2HURRDCbDMNFJBxeykJkVb2k55McWfLeFR3iohVbEY6GVnbXEa1E6cR5HjRBEyQ9VyB/chM8fNBKkbO/Q8hra8GszMw5QVI6G37u+6yJprm3CQRWoliNVm20bG4/yE0RVr9wqyJtRpXXEjbp/o22mdbrkenlDPqVA55ay/ZOP8/s1RbWxWGDSRR7ZbRal6vvJDFhDSPX5ryiY9UGfezI3QLeQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(346002)(136003)(39860400002)(376002)(230922051799003)(186009)(82310400011)(1800799012)(64100799003)(451199024)(46966006)(40470700004)(36840700001)(15650500001)(2906002)(7416002)(70206006)(70586007)(478600001)(54906003)(316002)(110136005)(8676002)(41300700001)(8936002)(7696005)(6666004)(5660300002)(4326008)(19627235002)(2616005)(426003)(16526019)(1076003)(336012)(26005)(83380400001)(47076005)(40480700001)(36860700001)(86362001)(40460700003)(356005)(81166007)(36756003)(82740400003)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2023 16:08:39.8475
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68f7ca55-d69d-4f25-1b02-08dbf02c4922
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF0001709B.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6230
+References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
+ <BN9PR11MB5483FF3039913334C7EA83E1E6AEA@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAMj1kXFG92NpL7T7YocOup0xLKyopt3MnSCp0RL8cLzozzJz7A@mail.gmail.com>
+ <BN9PR11MB548303B09536EB1577472029E6B3A@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAPnjgZ36t8g7E=0MSJyaV8-QKv9RVYe47Jd5E=NU-mFM4LWBQA@mail.gmail.com>
+ <CAMj1kXHAEeK7x2f13k_JV3Xcw61nNLasyvXQf+mKwKekQ48EpQ@mail.gmail.com>
+ <BN9PR11MB548334E0DA6495C438FBFDE1E6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <BN9PR11MB548314DDE8D4C9503103D51CE6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
+In-Reply-To: <BN9PR11MB548314DDE8D4C9503103D51CE6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 28 Nov 2023 19:07:50 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHbM+ArLgNZgnmiok4gOfv6QLYxzyB9OCwfhEkJ2xGK_g@mail.gmail.com>
+Message-ID: <CAMj1kXHbM+ArLgNZgnmiok4gOfv6QLYxzyB9OCwfhEkJ2xGK_g@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
+To: "Chiu, Chasel" <chasel.chiu@intel.com>
+Cc: Simon Glass <sjg@chromium.org>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rob Herring <robh@kernel.org>, "Tan, Lean Sheng" <sheng.tan@9elements.com>, 
+	lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, 
+	"Brune, Maximilian" <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
+	"Dong, Guo" <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, 
+	ron minnich <rminnich@gmail.com>, "Guo, Gua" <gua.guo@intel.com>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, U-Boot Mailing List <u-boot@lists.denx.de>
+Content-Type: text/plain; charset="UTF-8"
 
-Update EINJ documentation with build requirements for CXL error types
-and how to inject CXL error types.
+You are referring to a 2000 line patch so it is not 100% clear where
+to look tbh.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
----
- Documentation/firmware-guide/acpi/apei/einj.rst | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
 
-diff --git a/Documentation/firmware-guide/acpi/apei/einj.rst b/Documentation/firmware-guide/acpi/apei/einj.rst
-index d6b61d22f525..83afe3bac793 100644
---- a/Documentation/firmware-guide/acpi/apei/einj.rst
-+++ b/Documentation/firmware-guide/acpi/apei/einj.rst
-@@ -181,6 +181,18 @@ You should see something like this in dmesg::
-   [22715.834759] EDAC sbridge MC3: PROCESSOR 0:306e7 TIME 1422553404 SOCKET 0 APIC 0
-   [22716.616173] EDAC MC3: 1 CE memory read error on CPU_SrcID#0_Channel#0_DIMM#0 (channel:0 slot:0 page:0x12345 offset:0x0 grain:32 syndrome:0x0 -  area:DRAM err_code:0001:0090 socket:0 channel_mask:1 rank:0)
- 
-+CXL error types are supported from ACPI 6.5 onwards. These error types
-+are not available in the legacy interface at /sys/kernel/debug/apei/einj,
-+but are instead at /sys/kernel/debug/cxl/portX/dportY. Inside the dportY
-+directory are two files, einj_types and einj_inject. These files work the
-+same as the available_error_type and error_inject files (read the error
-+types from einj_types and write the type to inject to einj_inject).
-+
-+To use these error types one of (or both) ``CONFIG_CXL_ACPI`` or
-+``CONFIG_CXL_PORT`` must be reachable by the EINJ module; if
-+``CONFIG_ACPI_APEI_EINJ`` == y/m, then at least one of ``CONFIG_CXL_ACPI``
-+or ``CONFIG_CXL_PORT`` must also be set to y/m.
-+
- Special notes for injection into SGX enclaves:
- 
- There may be a separate BIOS setup option to enable SGX injection.
--- 
-2.34.1
+On Tue, 21 Nov 2023 at 19:37, Chiu, Chasel <chasel.chiu@intel.com> wrote:
+>
+>
+> In PR, UefiPayloadPkg/Library/FdtParserLib/FdtParserLib.c, line 268 is for related example code.
+>
 
+That refers to a 'memory-allocation' node, right? How does that relate
+to the 'reserved-memory' node?
+
+And crucially, how does this clarify in which way "runtime-code" and
+"runtime-data" reservations are being used?
+
+Since the very beginning of this discussion, I have been asking
+repeatedly for examples that describe the wider context in which these
+reservations are used. The "runtime" into runtime-code and
+runtime-data means that these regions have a special significance to
+the operating system, not just to the next bootloader stage. So I want
+to understand exactly why it is necessary to describe these regions in
+a way where the operating system might be expected to interpret this
+information and act upon it.
+
+
+>
+> > -----Original Message-----
+> > From: Chiu, Chasel
+> > Sent: Tuesday, November 21, 2023 10:34 AM
+> > To: Ard Biesheuvel <ardb@kernel.org>; Simon Glass <sjg@chromium.org>
+> > Cc: devicetree@vger.kernel.org; Mark Rutland <mark.rutland@arm.com>; Rob
+> > Herring <robh@kernel.org>; Tan, Lean Sheng <sheng.tan@9elements.com>; lkml
+> > <linux-kernel@vger.kernel.org>; Dhaval Sharma <dhaval@rivosinc.com>; Brune,
+> > Maximilian <maximilian.brune@9elements.com>; Yunhui Cui
+> > <cuiyunhui@bytedance.com>; Dong, Guo <guo.dong@intel.com>; Tom Rini
+> > <trini@konsulko.com>; ron minnich <rminnich@gmail.com>; Guo, Gua
+> > <gua.guo@intel.com>; linux-acpi@vger.kernel.org; U-Boot Mailing List <u-
+> > boot@lists.denx.de>; Chiu, Chasel <chasel.chiu@intel.com>
+> > Subject: RE: [PATCH v7 2/2] schemas: Add some common reserved-memory
+> > usages
+> >
+> >
+> > Hi Ard,
+> >
+> > Here is the POC PR for your reference:
+> > https://github.com/tianocore/edk2/pull/4969/files#diff-
+> > ccebabae5274b21634723a2111ee0de11bed6cfe8cb206ef9e263d9c5f926a9cR26
+> > 8
+> > Please note that this PR is still in early phase and expected to have significant
+> > changes.
+> >
+> > The idea is that payload entry will create gEfiMemoryTypeInformationGuid HOB
+> > with payload default memory types and allow FDT to override if correspond node
+> > present.
+> > Please let me know if you have questions or suggestions.
+> >
+> > Thanks,
+> > Chasel
+> >
+> >
+> > > -----Original Message-----
+> > > From: Ard Biesheuvel <ardb@kernel.org>
+> > > Sent: Tuesday, November 21, 2023 8:42 AM
+> > > To: Simon Glass <sjg@chromium.org>
+> > > Cc: Chiu, Chasel <chasel.chiu@intel.com>; devicetree@vger.kernel.org;
+> > > Mark Rutland <mark.rutland@arm.com>; Rob Herring <robh@kernel.org>;
+> > > Tan, Lean Sheng <sheng.tan@9elements.com>; lkml
+> > > <linux-kernel@vger.kernel.org>; Dhaval Sharma <dhaval@rivosinc.com>;
+> > > Brune, Maximilian <maximilian.brune@9elements.com>; Yunhui Cui
+> > > <cuiyunhui@bytedance.com>; Dong, Guo <guo.dong@intel.com>; Tom Rini
+> > > <trini@konsulko.com>; ron minnich <rminnich@gmail.com>; Guo, Gua
+> > > <gua.guo@intel.com>; linux- acpi@vger.kernel.org; U-Boot Mailing List
+> > > <u-boot@lists.denx.de>
+> > > Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory
+> > > usages
+> > >
+> > > On Mon, 20 Nov 2023 at 21:12, Simon Glass <sjg@chromium.org> wrote:
+> > > >
+> > > > Hi,
+> > > >
+> > > > On Mon, 13 Nov 2023 at 11:09, Chiu, Chasel <chasel.chiu@intel.com> wrote:
+> > > > >
+> > > > >
+> > > > > Hi Ard,
+> > > > >
+> > > > > Please see my reply below inline.
+> > > > >
+> > > > > Thanks,
+> > > > > Chasel
+> > > > >
+> > > > >
+> > > > > > -----Original Message-----
+> > > > > > From: Ard Biesheuvel <ardb@kernel.org>
+> > > > > > Sent: Saturday, November 11, 2023 3:04 AM
+> > > > > > To: Chiu, Chasel <chasel.chiu@intel.com>
+> > > > > > Cc: Simon Glass <sjg@chromium.org>; devicetree@vger.kernel.org;
+> > > > > > Mark Rutland <mark.rutland@arm.com>; Rob Herring
+> > > > > > <robh@kernel.org>; Tan, Lean Sheng <sheng.tan@9elements.com>;
+> > > > > > lkml <linux-kernel@vger.kernel.org>; Dhaval Sharma
+> > > > > > <dhaval@rivosinc.com>; Brune, Maximilian
+> > > > > > <maximilian.brune@9elements.com>; Yunhui Cui
+> > > > > > <cuiyunhui@bytedance.com>; Dong, Guo <guo.dong@intel.com>; Tom
+> > > > > > Rini <trini@konsulko.com>; ron minnich <rminnich@gmail.com>;
+> > > > > > Guo, Gua <gua.guo@intel.com>; linux- acpi@vger.kernel.org;
+> > > > > > U-Boot Mailing List <u-boot@lists.denx.de>
+> > > > > > Subject: Re: [PATCH v7 2/2] schemas: Add some common
+> > > > > > reserved-memory usages
+> > > > > >
+> > > > > > On Sat, 11 Nov 2023 at 04:20, Chiu, Chasel <chasel.chiu@intel.com>
+> > wrote:
+> > > > > > >
+> > > > > > >
+> > > > > > > Just sharing some usage examples from UEFI/EDK2 scenario.
+> > > > > > > To support ACPI S4/Hibernation, memory map must be consistent
+> > > > > > > before entering and after resuming from S4, in this case
+> > > > > > > payload may need to know previous memory map from bootloader
+> > > > > > > (currently generic payload cannot access platform/bootloader
+> > > > > > > specific non-volatile data, thus could not save/restore memory
+> > > > > > > map
+> > > > > > > information)
+> > > > > >
+> > > > > > So how would EDK2 reconstruct the entire EFI memory map from
+> > > > > > just these unannotated /reserved-memory nodes? The EFI memory
+> > > > > > map contains much more information than that, and all of it has
+> > > > > > to match the pre-hibernate situation, right? Can you given an example?
+> > > > >
+> > > > >
+> > > > > Here we listed only typically memory types that may change cross
+> > > > > different
+> > > platforms.
+> > > > > Reserved memory type already can be handled by reserved-memory
+> > > > > node,
+> > > and rest of the types usually no need to change cross platforms thus
+> > > currently we could rely on default in generic payload.
+> > > > > In the future if we see a need to add new memory types we will
+> > > > > discuss and
+> > > add it to FDT schema.
+> > > > >
+> > > > >
+> > > > >
+> > > > > >
+> > > > > > > Another usage is to support binary model which generic payload
+> > > > > > > is a prebuilt
+> > > > > > binary compatible for all platforms/configurations, however the
+> > > > > > payload default memory map might not always work for all the
+> > > > > > configurations and we want to allow bootloader to override
+> > > > > > payload default
+> > > memory map without recompiling.
+> > > > > > >
+> > > > > >
+> > > > > > Agreed. But can you explain how a EDK2 payload might make
+> > > > > > meaningful use of 'runtime-code' regions provided via DT  by the
+> > > > > > non-EDK2 platform init? Can you give an example?
+> > > > >
+> > > > >
+> > > > > Runtime-code/data is used by UEFI payload for booting UEFI OS
+> > > > > which
+> > > required UEFI runtime services.
+> > > > > Platform Init will select some regions from the usable memory and
+> > > > > assign it to
+> > > runtime-code/data for UPL to consume. Or assign same runtime-code/data
+> > > from previous boot.
+> > > > > If UEFI OS is not supported, PlatformInit may not need to provide
+> > > > > runtime-code/data regions to payload. (always providing
+> > > > > runtime-code/data should be supported too)
+> > > > >
+> > > > >
+> > > > > >
+> > > > > > > Under below assumption:
+> > > > > > >         FDT OS impact has been evaluated and taken care by
+> > > > > > > relevant
+> > > > > > experts/stakeholders.
+> > > > > > > Reviewed-by: Chasel Chiu <chasel.chiu@intel.com>
+> > > > > > >
+> > > > > >
+> > > > > > I am sorry but I don't know what 'FDT OS impact' means. We are
+> > > > > > talking about a firmware-to-firmware abstraction that has the
+> > > > > > potential to leak into the OS visible interface.
+> > > > > >
+> > > > > > I am a maintainer in the Tianocore project myself, so it would
+> > > > > > help if you could explain who these relevant experts and
+> > > > > > stakeholders are. Was this discussed on the edk2-devel mailing
+> > > > > > list? If so, apologies for missing it but I may not have been cc'ed perhaps?
+> > > > >
+> > > > >
+> > > > >
+> > > > >
+> > > > > I'm not familiar with FDT OS, also I do not know if who from
+> > > > > edk2-devel were
+> > > supporting FDT OS, I think Simon might be able to connect FDT OS
+> > > experts/stakeholders.
+> > > > > We are mostly focusing on payload firmware phase implementation in
+> > > > > edk2 (and other payloads too), however, since we have aligned the
+> > > > > payload FDT and OS FDT months ago, I'm assuming FDT OS impact must
+> > > > > be there and we need (or already done?) FDT OS experts to support
+> > > > > it. (again, maybe Simon could share more information about FDT OS)
+> > > > >
+> > > > > In edk2 such FDT schema is UefiPayloadPkg internal usage only and
+> > > > > payload
+> > > entry will convert FDT into HOB thus we expected the most of the edk2
+> > > generic code are no-touch/no impact, that's why we only had small
+> > > group
+> > > (UefiPayloadPkg) discussion.
+> > > > > Ard, if you are aware of any edk2 code that's for supporting FDT
+> > > > > OS, please let
+> > > us know and we can discuss if those code were impacted or not.
+> > > >
+> > > > We discussed this and just to clarify, 'FDT OS' is not a special OS,
+> > > > it is just Linux.
+> > > >
+> > > > So, with the above, are we all on the same page? Can the patch be
+> > > > applied, perhaps? If not, what other discussion is needed?
+> > > >
+> > >
+> > > An example of how a platform-init/payload combination would make
+> > > meaningful use of such runtime-code/data regions.
 
