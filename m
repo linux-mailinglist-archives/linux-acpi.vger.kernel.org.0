@@ -1,177 +1,258 @@
-Return-Path: <linux-acpi+bounces-1895-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1896-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E19D7FCF23
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 07:32:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE3D7FD0E8
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 09:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A985A2810CF
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 06:32:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCB812827B6
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 08:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61ED8101C0
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 06:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92431125A1
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 08:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ENCvaz6v"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="S6TF5Sco"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A70091BC0
-	for <linux-acpi@vger.kernel.org>; Tue, 28 Nov 2023 22:20:37 -0800 (PST)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5ccf44b0423so85157607b3.0
-        for <linux-acpi@vger.kernel.org>; Tue, 28 Nov 2023 22:20:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701238837; x=1701843637; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0+OWUPjfBbVNUCejaH4Zx1SnJx7h3HvWotJzN/ystxs=;
-        b=ENCvaz6vmKNnpN8JeDyj6KRrvSaIk2zih68iHw/7QpW8wY5/hVioYV3uQIIMT5hUmT
-         dFZLSPLb929WaerrePedmOLu+a5YRG9HiUs2HK73KrAcIOx5fiJjTdBm2K92HGLb4nTC
-         jI8IKALxKvLGwZkJwkygbMMn/Cya1eQLuGDMjNMvGiUcow1oFxMh+FapPlxbYIEcG/J+
-         FlRCunM1Da2RultEQHFwWJmfWlJrcfTJ7zh1ftWpZ07xG1V1naxHa/13Rwi0g81BUCf2
-         3Z9yAKpOCiaxC95RmOWOy8A/sidsNkfeYHXa8S2RgU3j0pouov8h+7QWu/fCirG9c5gI
-         M1OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701238837; x=1701843637;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0+OWUPjfBbVNUCejaH4Zx1SnJx7h3HvWotJzN/ystxs=;
-        b=BzvDdgC4d2uwD4G86V9XAQF534ZKIPW9VkX99lC2LvlbRo2zqpfCaaWEU8JDwFbpxt
-         8C5DuQvWsNTct1NQFDAYe7TDOBK7+oaEPRhfOv2RBgt6TLPC5XTizNF/R1eighDAXUo6
-         wRvxrxc24DIKPMArkyPy6dU45lRRfscbbxCpHdcDzaT3d3uJ2hxflelRXsO6/U1Xgc8a
-         eak3egutp9EtsJrQyU/5FhUMCZCLzvQhttA7nWXPvJgrb3fpX6t3VVIQj/ikotkpiXQi
-         aoeeOTVkOpGoJ3P8vW2IqdOzMCw2wQXhr/jIqWx38JIs5gv3bmW7p75yEXcgyN9McNk9
-         N6aw==
-X-Gm-Message-State: AOJu0Yx6kySMl8LAn7c0cXyUN5vfczKc2+FbNVUWYRx3UTvcodRQMVFu
-	WJbi3jRwtXGW1DYAg804m2Xjwg3lqCoz
-X-Google-Smtp-Source: AGHT+IGl2m8o4vcxyKfaevYjBuf0ZzzfYYiBjYjYyoamKSyXXxyRdZkkwSrexsSNRUrkDVXuH7e+Nb5/Bf9p
-X-Received: from morats.c.googlers.com ([fda3:e722:ac3:cc00:14:4d90:c0a8:d9e])
- (user=moritzf job=sendgmr) by 2002:a05:690c:4041:b0:5ce:550:685b with SMTP id
- ga1-20020a05690c404100b005ce0550685bmr480488ywb.5.1701238836860; Tue, 28 Nov
- 2023 22:20:36 -0800 (PST)
-Date: Wed, 29 Nov 2023 06:20:36 +0000
-In-Reply-To: <10-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945D3170B;
+	Tue, 28 Nov 2023 22:55:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KIQbIqTYWSVSec0VsnT6QhJPTZqCSIWR8kpGO/172YGV9NlX0IQrbgDDMRQSMYJL5FJARHqHbsb072uEyJ3OGEt1dMM4AD2alu2O0Oys5dhvyoU/88HiA3JsxjceO6u4Lf41FS2YpYl/KS/V9E8pHUZ6J6Lp57hMoj6/kD4V6MHT8bYZ3COh8hvQ7DZ7A6tCwBOgluUSte29ZMs7Y83J0Gw6MC/YV8H5S/xaHTuQsysMKqQK93gnWgJ5ZQvtnqIB8qxgbdBb8FioTqiDqTY2NCg+Uie2HELaCrIzt/KBIYIULwzw9Z58VOgWS7kjscnxm5ZJ4BXrDQUDiJVcJy0GWA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RWl/tvKCUGPPwMLXwkXZfnSLt4Ct+NNkFb6YW2X/jGM=;
+ b=ds7ko7xn/MbhDtz4UuF1zIrzh8w4tSTB7UC4dLS67q+84o+ayrtQV6v6vkVI9qfwch9UmsgaMbiheyJKuHSwENIytkdyV2Ho7MLPRjDxrxzVSAtkiF26tCCFdFaCTHsFqBOHTNS79sWOVBlG5hf5jGmt0DORcn7X2fwk06EGe7Up7tCkrPaNdRYrY7LZWGWmOulk1Ara/wLpIdVivCQ2LsYXVurXmo5griEBOPJ4+lNi1acJdkMufoDSHRHtLhrelHvPZj2To+Jq6arCYHvoo5SHCGEVsUMlYl/S4CYXgd0MCWJjJilpH6OZk6ZVjQWAZHXfWEjZ+YPyzpqhoKASZw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RWl/tvKCUGPPwMLXwkXZfnSLt4Ct+NNkFb6YW2X/jGM=;
+ b=S6TF5ScoIRiQzm8ZQx0JaHkaYa5e+xhwX7WB6EGY1f+SWBlqqH/SDIYuyV9sYS3V81UXOUOBeVhbGXXLVvTSR67or54o/oeCA12yFoaZivU7a5wPN80YLPkMpID1l6KOOp29b66sgOrOVVQQtWTE+8ZQq1ykFPVNmUS+gfLuhWg=
+Received: from PR3P192CA0024.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:56::29)
+ by MW4PR12MB6950.namprd12.prod.outlook.com (2603:10b6:303:207::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.28; Wed, 29 Nov
+ 2023 06:55:03 +0000
+Received: from SN1PEPF0002BA51.namprd03.prod.outlook.com
+ (2603:10a6:102:56:cafe::2) by PR3P192CA0024.outlook.office365.com
+ (2603:10a6:102:56::29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.27 via Frontend
+ Transport; Wed, 29 Nov 2023 06:55:02 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF0002BA51.mail.protection.outlook.com (10.167.242.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7046.17 via Frontend Transport; Wed, 29 Nov 2023 06:55:01 +0000
+Received: from jasmine-meng.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 29 Nov
+ 2023 00:54:55 -0600
+From: Meng Li <li.meng@amd.com>
+To: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Huang Rui
+	<ray.huang@amd.com>
+CC: <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<x86@kernel.org>, <linux-acpi@vger.kernel.org>, Shuah Khan
+	<skhan@linuxfoundation.org>, <linux-kselftest@vger.kernel.org>, "Nathan
+ Fontenot" <nathan.fontenot@amd.com>, Deepak Sharma <deepak.sharma@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>, Mario Limonciello
+	<mario.limonciello@amd.com>, Shimmer Huang <shimmer.huang@amd.com>, "Perry
+ Yuan" <Perry.Yuan@amd.com>, Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar
+	<viresh.kumar@linaro.org>, Borislav Petkov <bp@alien8.de>, "Oleksandr
+ Natalenko" <oleksandr@natalenko.name>, Meng Li <li.meng@amd.com>
+Subject: [PATCH V11 0/7] amd-pstate preferred core
+Date: Wed, 29 Nov 2023 14:54:30 +0800
+Message-ID: <20231129065437.290183-1-li.meng@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <0-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com> <10-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
-Message-ID: <20231129062036.urdezihvds2pkuyo@google.com>
-Subject: Re: [PATCH 10/10] ACPI: IORT: Allow COMPILE_TEST of IORT
-From: Moritz Fischer <moritzf@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: David Airlie <airlied@gmail.com>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
-	Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich <dakr@redhat.com>, 
-	Daniel Vetter <daniel@ffwll.ch>, Dexuan Cui <decui@microsoft.com>, devicetree@vger.kernel.org, 
-	dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	David Woodhouse <dwmw2@infradead.org>, Frank Rowand <frowand.list@gmail.com>, 
-	Hanjun Guo <guohanjun@huawei.com>, Haiyang Zhang <haiyangz@microsoft.com>, iommu@lists.linux.dev, 
-	Jon Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>, 
-	Karol Herbst <kherbst@redhat.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Laxman Dewangan <ldewangan@nvidia.com>, Len Brown <lenb@kernel.org>, 
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org, 
-	linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Lyude Paul <lyude@redhat.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, nouveau@lists.freedesktop.org, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, Sven Peter <sven@svenpeter.dev>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Vineet Gupta <vgupta@kernel.org>, 
-	Vinod Koul <vkoul@kernel.org>, Wei Liu <wei.liu@kernel.org>, Will Deacon <will@kernel.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Christoph Hellwig <hch@lst.de>, 
-	Jerry Snitselaar <jsnitsel@redhat.com>, Hector Martin <marcan@marcan.st>, Moritz Fischer <mdf@kernel.org>, 
-	patches@lists.linux.dev, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Rob Herring <robh@kernel.org>, Thierry Reding <thierry.reding@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA51:EE_|MW4PR12MB6950:EE_
+X-MS-Office365-Filtering-Correlation-Id: 77946fd5-45f9-4d34-e90b-08dbf0a81c1e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	juMCpmu6LcviVCIXhcFwH2DoRtRAFxtQ1nsKvhxJd4GJbuboc0qklW+PgXOIEKR5jz8URiES1ZPU3an27UO3suRl/2sVuKwjpPZS90pWW+lHzsFtw/tctdsFTo0ek6Xdc/WRPFMRZJcrsdIc1q7ye0MXF7NxBI0br6dFz8eyw7QJv640qmL1QWD8Eh8Luoxe76HYhxw0gO46tKJHcTnzi23N7P2ehlP0JdOkdfMkN5qYu+/FhL+65eS0tUve2z6mF8DCEAg6umJTO5mkTiUGDg0JiNUvhnfSNyXz7GcwbFBv/Qc/TVOl4ccDJaueCRGt5u6AVw+KDV+jxsf4B/kWwv953nkrxhuO7G4iBYcjrrHoxdl549AywC6Vgnzu0SZkHO2Sh6UqmQhygi7b+i+aM7vrOv09Oq9od7eqQ9g9x/w+b1563qZm1w6JZJ+cENZzdgOy+d5tdJUpSQzZ3pijNKvoSAs4On9LHDfy6R4rcw64RHQNoNOQVDbLinKn3KxmjTgc4L68j96gnEIP269ubpVvRDlsEoods3B/vNryXTxgqk0lLPo9GsB8JSUoDoFfhj1IdsSHL13enNDN/oacptTxYGRItZebMWvASyWuyvrnXOaVT/sE+83l/QoFtYaw6fMe9GIwI+lpmPsVXrMUB2zpQ/Es+9+2vy5MOBItGYPQ65eMoihYwpaHPorppIvokOmgUMqMTUR4EA2i0z74Ziq8lIm1MS1ctec8glTY/D7JkhWbpE9auD8Cc3281Vkre5VnsQAQ0U+FM9Xn9j2nrukNMFpwA+ypLWACVwYhZDzAbPMLA0/lbBhED/V4Wvab
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(376002)(136003)(346002)(39860400002)(230922051799003)(230273577357003)(230173577357003)(64100799003)(1800799012)(451199024)(186009)(82310400011)(46966006)(36840700001)(40470700004)(5660300002)(7416002)(2906002)(8936002)(4326008)(8676002)(70586007)(54906003)(110136005)(40480700001)(16526019)(26005)(478600001)(6666004)(2616005)(1076003)(316002)(7696005)(83380400001)(41300700001)(70206006)(426003)(336012)(6636002)(40460700003)(47076005)(36860700001)(86362001)(81166007)(356005)(36756003)(82740400003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2023 06:55:01.9391
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77946fd5-45f9-4d34-e90b-08dbf0a81c1e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF0002BA51.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6950
 
-On Tue, Nov 28, 2023 at 08:48:06PM -0400, Jason Gunthorpe wrote:
-> The arm-smmu driver can COMPILE_TEST on x86, so expand this to also
-> enable the IORT code so it can be COMPILE_TEST'd too.
+Hi all:
 
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->   drivers/acpi/Kconfig        | 2 --
->   drivers/acpi/Makefile       | 2 +-
->   drivers/acpi/arm64/Kconfig  | 1 +
->   drivers/acpi/arm64/Makefile | 2 +-
->   drivers/iommu/Kconfig       | 1 +
->   5 files changed, 4 insertions(+), 4 deletions(-)
+The core frequency is subjected to the process variation in semiconductors.
+Not all cores are able to reach the maximum frequency respecting the
+infrastructure limits. Consequently, AMD has redefined the concept of
+maximum frequency of a part. This means that a fraction of cores can reach
+maximum frequency. To find the best process scheduling policy for a given
+scenario, OS needs to know the core ordering informed by the platform through
+highest performance capability register of the CPPC interface.
 
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index f819e760ff195a..3b7f77b227d13a 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -541,9 +541,7 @@ config ACPI_PFRUT
->   	  To compile the drivers as modules, choose M here:
->   	  the modules will be called pfr_update and pfr_telemetry.
+Earlier implementations of amd-pstate preferred core only support a static
+core ranking and targeted performance. Now it has the ability to dynamically
+change the preferred core based on the workload and platform conditions and
+accounting for thermals and aging.
 
-> -if ARM64
->   source "drivers/acpi/arm64/Kconfig"
-> -endif
+Amd-pstate driver utilizes the functions and data structures provided by
+the ITMT architecture to enable the scheduler to favor scheduling on cores
+which can be get a higher frequency with lower voltage.
+We call it amd-pstate preferred core.
 
->   config ACPI_PPTT
->   	bool
-> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-> index eaa09bf52f1760..4e77ae37b80726 100644
-> --- a/drivers/acpi/Makefile
-> +++ b/drivers/acpi/Makefile
-> @@ -127,7 +127,7 @@ obj-y				+= pmic/
->   video-objs			+= acpi_video.o video_detect.o
->   obj-y				+= dptf/
+Here sched_set_itmt_core_prio() is called to set priorities and
+sched_set_itmt_support() is called to enable ITMT feature.
+Amd-pstate driver uses the highest performance value to indicate
+the priority of CPU. The higher value has a higher priority.
 
-> -obj-$(CONFIG_ARM64)		+= arm64/
-> +obj-y				+= arm64/
+Amd-pstate driver will provide an initial core ordering at boot time.
+It relies on the CPPC interface to communicate the core ranking to the
+operating system and scheduler to make sure that OS is choosing the cores
+with highest performance firstly for scheduling the process. When amd-pstate
+driver receives a message with the highest performance change, it will
+update the core ranking.
 
->   obj-$(CONFIG_ACPI_VIOT)		+= viot.o
+Changes from V10->V11:
+- cpufreq: amd-pstate:
+- - according Perry's commnts, I replace the string with str_enabled_disable().
 
-> diff --git a/drivers/acpi/arm64/Kconfig b/drivers/acpi/arm64/Kconfig
-> index b3ed6212244c1e..537d49d8ace69e 100644
-> --- a/drivers/acpi/arm64/Kconfig
-> +++ b/drivers/acpi/arm64/Kconfig
-> @@ -11,6 +11,7 @@ config ACPI_GTDT
+Changes from V9->V10:
+- cpufreq: amd-pstate:
+- - add judgement for highest_perf. When it is less than 255, the
+  preferred core feature is enabled. And it will set the priority.
+- - deleset "static u32 max_highest_perf" etc, because amd p-state
+  perferred coe does not require specail process for hotpulg.
 
->   config ACPI_AGDI
->   	bool "Arm Generic Diagnostic Dump and Reset Device Interface"
-> +	depends on ARM64
->   	depends on ARM_SDE_INTERFACE
->   	help
->   	  Arm Generic Diagnostic Dump and Reset Device Interface (AGDI) is
-> diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
-> index 143debc1ba4a9d..71d0e635599390 100644
-> --- a/drivers/acpi/arm64/Makefile
-> +++ b/drivers/acpi/arm64/Makefile
-> @@ -4,4 +4,4 @@ obj-$(CONFIG_ACPI_IORT) 	+= iort.o
->   obj-$(CONFIG_ACPI_GTDT) 	+= gtdt.o
->   obj-$(CONFIG_ACPI_APMT) 	+= apmt.o
->   obj-$(CONFIG_ARM_AMBA)		+= amba.o
-> -obj-y				+= dma.o init.o
-> +obj-$(CONFIG_ARM64)		+= dma.o init.o
-> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
-> index 7673bb82945b6c..309378e76a9bc9 100644
-> --- a/drivers/iommu/Kconfig
-> +++ b/drivers/iommu/Kconfig
-> @@ -318,6 +318,7 @@ config ARM_SMMU
->   	select IOMMU_API
->   	select IOMMU_IO_PGTABLE_LPAE
->   	select ARM_DMA_USE_IOMMU if ARM
-> +	select ACPI_IORT if ACPI
->   	help
->   	  Support for implementations of the ARM System MMU architecture
->   	  versions 1 and 2.
-> --
-> 2.42.0
+Changes form V8->V9:
+- all:
+- - pick up Tested-By flag added by Oleksandr.
+- cpufreq: amd-pstate:
+- - pick up Review-By flag added by Wyes.
+- - ignore modification of bug.
+- - add a attribute of prefcore_ranking.
+- - modify data type conversion from u32 to int.
+- Documentation: amd-pstate:
+- - pick up Review-By flag added by Wyes.
 
+Changes form V7->V8:
+- all:
+- - pick up Review-By flag added by Mario and Ray.
+- cpufreq: amd-pstate:
+- - use hw_prefcore embeds into cpudata structure.
+- - delete preferred core init from cpu online/off.
 
-Reviewed-by: Moritz Fischer <moritzf@google.com>
+Changes form V6->V7:
+- x86:
+- - Modify kconfig about X86_AMD_PSTATE.
+- cpufreq: amd-pstate:
+- - modify incorrect comments about scheduler_work().
+- - convert highest_perf data type.
+- - modify preferred core init when cpu init and online.
+- acpi: cppc:
+- - modify link of CPPC highest performance.
+- cpufreq:
+- - modify link of CPPC highest performance changed.
 
-Ok, now the previous patch makes sense :)
+Changes form V5->V6:
+- cpufreq: amd-pstate:
+- - modify the wrong tag order.
+- - modify warning about hw_prefcore sysfs attribute.
+- - delete duplicate comments.
+- - modify the variable name cppc_highest_perf to prefcore_ranking.
+- - modify judgment conditions for setting highest_perf.
+- - modify sysfs attribute for CPPC highest perf to pr_debug message.
+- Documentation: amd-pstate:
+- - modify warning: title underline too short.
 
-Cheers,
-Moritz
+Changes form V4->V5:
+- cpufreq: amd-pstate:
+- - modify sysfs attribute for CPPC highest perf.
+- - modify warning about comments
+- - rebase linux-next
+- cpufreq: 
+- - Moidfy warning about function declarations.
+- Documentation: amd-pstate:
+- - align with ``amd-pstat``
+
+Changes form V3->V4:
+- Documentation: amd-pstate:
+- - Modify inappropriate descriptions.
+
+Changes form V2->V3:
+- x86:
+- - Modify kconfig and description.
+- cpufreq: amd-pstate: 
+- - Add Co-developed-by tag in commit message.
+- cpufreq:
+- - Modify commit message.
+- Documentation: amd-pstate:
+- - Modify inappropriate descriptions.
+
+Changes form V1->V2:
+- acpi: cppc:
+- - Add reference link.
+- cpufreq:
+- - Moidfy link error.
+- cpufreq: amd-pstate: 
+- - Init the priorities of all online CPUs
+- - Use a single variable to represent the status of preferred core.
+- Documentation:
+- - Default enabled preferred core.
+- Documentation: amd-pstate: 
+- - Modify inappropriate descriptions.
+- - Default enabled preferred core.
+- - Use a single variable to represent the status of preferred core.
+
+Meng Li (7):
+  x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for the expansion.
+  acpi: cppc: Add get the highest performance cppc control
+  cpufreq: amd-pstate: Enable amd-pstate preferred core supporting.
+  cpufreq: Add a notification message that the highest perf has changed
+  cpufreq: amd-pstate: Update amd-pstate preferred core ranking
+    dynamically
+  Documentation: amd-pstate: introduce amd-pstate preferred core
+  Documentation: introduce amd-pstate preferrd core mode kernel command
+    line options
+
+ .../admin-guide/kernel-parameters.txt         |   5 +
+ Documentation/admin-guide/pm/amd-pstate.rst   |  59 +++++-
+ arch/x86/Kconfig                              |   5 +-
+ drivers/acpi/cppc_acpi.c                      |  13 ++
+ drivers/acpi/processor_driver.c               |   6 +
+ drivers/cpufreq/amd-pstate.c                  | 187 ++++++++++++++++--
+ drivers/cpufreq/cpufreq.c                     |  13 ++
+ include/acpi/cppc_acpi.h                      |   5 +
+ include/linux/amd-pstate.h                    |  10 +
+ include/linux/cpufreq.h                       |   5 +
+ 10 files changed, 288 insertions(+), 20 deletions(-)
+
+-- 
+2.34.1
+
 
