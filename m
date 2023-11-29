@@ -1,28 +1,28 @@
-Return-Path: <linux-acpi+bounces-1923-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1925-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E807FDF63
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 19:39:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0B57FDF65
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 19:40:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E67E92830D3
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 18:39:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7AB6283097
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 18:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FBE3D0AA
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 18:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4F05DF06
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 18:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 32D39F4;
-	Wed, 29 Nov 2023 09:43:17 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id EF0B5112;
+	Wed, 29 Nov 2023 09:43:20 -0800 (PST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8BBFBC15;
-	Wed, 29 Nov 2023 09:44:03 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC0E9143D;
+	Wed, 29 Nov 2023 09:44:07 -0800 (PST)
 Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 81BF13F73F;
-	Wed, 29 Nov 2023 09:43:12 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AC2023F73F;
+	Wed, 29 Nov 2023 09:43:16 -0800 (PST)
 From: Robin Murphy <robin.murphy@arm.com>
 To: Joerg Roedel <joro@8bytes.org>,
 	Christoph Hellwig <hch@lst.de>
@@ -59,10 +59,12 @@ Cc: Vineet Gupta <vgupta@kernel.org>,
 	linux-acpi@vger.kernel.org,
 	iommu@lists.linux.dev,
 	devicetree@vger.kernel.org
-Subject: [PATCH 0/7] dma-mapping: Clean up arch_setup_dma_ops()
-Date: Wed, 29 Nov 2023 17:42:57 +0000
-Message-Id: <cover.1701268753.git.robin.murphy@arm.com>
+Subject: [PATCH 1/7] OF: Retire dma-ranges mask workaround
+Date: Wed, 29 Nov 2023 17:42:58 +0000
+Message-Id: <950378c6f39270a255452733ff2305e56fb05cc5.1701268753.git.robin.murphy@arm.com>
 X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
+In-Reply-To: <cover.1701268753.git.robin.murphy@arm.com>
+References: <cover.1701268753.git.robin.murphy@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -71,66 +73,45 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi all,
+From what I remember, the fixup adding 1 to the dma-ranges size was for
+the benefit of some early AMD Seattle DTs. Those are likely extinct by
+now, and anyone else who might have deserved to get the message has
+hopefully seen the warning in the 9 years we've had it there. The modern
+dma_range_map mechanism should happily handle odd-sized ranges with no
+ill effect, so there's little need to care anyway now. Clean it up.
 
-Prompted by Jason's proposal[1], here's a first step towards truly
-unpicking the dma_configure vs. IOMMU mess. As I commented before, we
-have an awful lot of accumulated cruft and technical debt here making
-things more complicated than they need to be, and we already have hacks
-on top of hacks trying to work around it, so polishing those hacks even
-further is really not a desirable direction of travel. And I do know
-they're hacks, because I wrote most of them and still remember enough of
-the context of the time ;)
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+---
+ drivers/of/device.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-I'm taking a methodical bottom-up approach here, so step 1 is cleaning
-*all* the out-of-date stuff from arch_setup_dma_ops() and simplifying
-that interface, which gets it right out of the way for the next step of
-pulling apart {of,acpi}_dma_configure(). This part is really a
-dma-mapping series, but I'm not sure yet if would need to target the
-IOMMU tree - nothing here should strictly depend on the pending IOMMU
-change, but the follow-up patches might. Still working on those, so
-hopefully I'll know soon...
-
-Thanks,
-Robin.
-
-[1] https://lore.kernel.org/linux-iommu/0-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com/
-
-
-Robin Murphy (7):
-  OF: Retire dma-ranges mask workaround
-  OF: Simplify DMA range calculations
-  ACPI/IORT: Handle memory address size limits as limits
-  dma-mapping: Add helpers for dma_range_map bounds
-  iommu/dma: Make limit checks self-contained
-  iommu/dma: Centralise iommu_setup_dma_ops()
-  dma-mapping: Simplify arch_setup_dma_ops()
-
- arch/arc/mm/dma.c               |  3 +--
- arch/arm/mm/dma-mapping-nommu.c |  3 +--
- arch/arm/mm/dma-mapping.c       | 12 ++++++----
- arch/arm64/mm/dma-mapping.c     |  5 +---
- arch/loongarch/kernel/dma.c     |  9 ++-----
- arch/mips/mm/dma-noncoherent.c  |  3 +--
- arch/riscv/mm/dma-noncoherent.c |  3 +--
- drivers/acpi/arm64/dma.c        | 17 ++++---------
- drivers/acpi/arm64/iort.c       | 18 +++++++-------
- drivers/acpi/scan.c             |  3 +--
- drivers/hv/hv_common.c          |  6 +----
- drivers/iommu/amd/iommu.c       |  8 -------
- drivers/iommu/dma-iommu.c       | 35 ++++++++++-----------------
- drivers/iommu/dma-iommu.h       |  6 +++++
- drivers/iommu/intel/iommu.c     |  7 ------
- drivers/iommu/iommu.c           |  2 ++
- drivers/iommu/s390-iommu.c      |  6 -----
- drivers/iommu/virtio-iommu.c    | 10 --------
- drivers/of/device.c             | 42 ++++++---------------------------
- include/linux/acpi_iort.h       |  4 ++--
- include/linux/dma-direct.h      | 18 ++++++++++++++
- include/linux/dma-map-ops.h     |  6 ++---
- include/linux/iommu.h           |  7 ------
- 23 files changed, 78 insertions(+), 155 deletions(-)
-
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index 1ca42ad9dd15..526a42cdf66e 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -129,22 +129,6 @@ int of_dma_configure_id(struct device *dev, struct device_node *np,
+ 				dma_end = r->dma_start + r->size;
+ 		}
+ 		size = dma_end - dma_start;
+-
+-		/*
+-		 * Add a work around to treat the size as mask + 1 in case
+-		 * it is defined in DT as a mask.
+-		 */
+-		if (size & 1) {
+-			dev_warn(dev, "Invalid size 0x%llx for dma-range(s)\n",
+-				 size);
+-			size = size + 1;
+-		}
+-
+-		if (!size) {
+-			dev_err(dev, "Adjusted size 0x%llx invalid\n", size);
+-			kfree(map);
+-			return -EINVAL;
+-		}
+ 	}
+ 
+ 	/*
 -- 
 2.39.2.101.g768bb238c484.dirty
 
