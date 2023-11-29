@@ -1,115 +1,186 @@
-Return-Path: <linux-acpi+bounces-1907-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1908-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4FA7FD471
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 11:39:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E8F7FD974
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 15:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D8371C20FD0
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 10:39:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A243A28214B
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 14:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F660199A5
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 10:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF48328DB
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 14:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K+bFL8qf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B7LzFukE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 314E2F5;
-	Wed, 29 Nov 2023 01:01:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701248512; x=1732784512;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jUfEMJcGPk/pC7rsEa3j89yXra3uK2XLsI3C0myADGQ=;
-  b=K+bFL8qfFmlKh1ttGEsFUEZAFiFY9d04DIw8qK6wpWJgus4rMeXk39zJ
-   GqPPTawDDUPx/ocm8YUxOA7p0ue7x5k/Oc//IYEiuTSzHzn45VLCsGm85
-   vxZQvCTgBmrG8hD8GIMQP1ehZ7mYmQctXG9pCl5idyOiDxzGwEEy9KSrN
-   uWzjrey9zrswmXIcRoqzkIoSUcjAN58OMowJjkCdLWkmbuPJp8gngsEEV
-   P9Bi0ZI8ML0JRwRnnL48YGNViIkxM+goUq8H/DLh3vxpm8Gwuxs8C7sKh
-   3RNGxUnULO3y1MGcQHg7HjVrT5h5sRbxc1gtcl2WBD20Dw54bP+CvqLib
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="479328165"
-X-IronPort-AV: E=Sophos;i="6.04,235,1695711600"; 
-   d="scan'208";a="479328165"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2023 00:56:04 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="942247871"
-X-IronPort-AV: E=Sophos;i="6.04,235,1695711600"; 
-   d="scan'208";a="942247871"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 29 Nov 2023 00:56:01 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 9036B23A; Wed, 29 Nov 2023 10:56:00 +0200 (EET)
-Date: Wed, 29 Nov 2023 10:56:00 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Michal Wilczynski <michal.wilczynski@intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [RFT][PATCH v1] ACPI: OSL: Use a threaded interrupt handler for
- SCI
-Message-ID: <20231129085600.GQ1074920@black.fi.intel.com>
-References: <5745568.DvuYhMxLoT@kreacher>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0067CED0;
+	Wed, 29 Nov 2023 12:55:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E359C433C8;
+	Wed, 29 Nov 2023 12:55:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701262523;
+	bh=EjcKHBcdIRPeS1Jr3Xl1RByJy2jdZRnaeHgtLca5xvw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B7LzFukE5dLDnjFimKjS9MzsDlyjw2TystsfEqKZQoF3X0ypDR27ShYPrtl8a4hDA
+	 NJpjxQGGyxZWEsXW8iuNcZhKohbcA/aqSnTm0M4FaNA2iGO+NYSrUn6Py4Nri/ePlp
+	 6q+xpqSCX/D4UrdrxiaqNtzCTiHavix0EiBQCRhmLqMpgR0ZYgs/JzAEoWb+9i5JTB
+	 Oe+1+75v5eXMmJzgFHrdDl81TfuAg+2NbIX93el81U7iGTeg6IV4SGN5q4PuHW91Kd
+	 ubXJDdo+ZPM5cWSGL7AsbHeYdmv+aYCsKzrJkAOks6DDY5k/SnNe6msZhjyp96wYb4
+	 GEiHLnbD5cmcA==
+Date: Wed, 29 Nov 2023 13:55:04 +0100
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: David Airlie <airlied@gmail.com>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Danilo Krummrich <dakr@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Dexuan Cui <decui@microsoft.com>, devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	David Woodhouse <dwmw2@infradead.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, iommu@lists.linux.dev,
+	Jon Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
+	Karol Herbst <kherbst@redhat.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>, Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+	linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+	Lyude Paul <lyude@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	nouveau@lists.freedesktop.org, Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Sven Peter <sven@svenpeter.dev>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Vineet Gupta <vgupta@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Wei Liu <wei.liu@kernel.org>, Will Deacon <will@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Christoph Hellwig <hch@lst.de>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Hector Martin <marcan@marcan.st>, Moritz Fischer <mdf@kernel.org>,
+	patches@lists.linux.dev,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Rob Herring <robh@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>
+Subject: Re: [PATCH 10/10] ACPI: IORT: Allow COMPILE_TEST of IORT
+Message-ID: <ZWc0qPWzNWPkL8vt@lpieralisi>
+References: <0-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
+ <10-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5745568.DvuYhMxLoT@kreacher>
+In-Reply-To: <10-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
 
-Hi Rafael,
-
-On Mon, Nov 27, 2023 at 08:57:43PM +0100, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Tue, Nov 28, 2023 at 08:48:06PM -0400, Jason Gunthorpe wrote:
+> The arm-smmu driver can COMPILE_TEST on x86, so expand this to also
+> enable the IORT code so it can be COMPILE_TEST'd too.
 > 
-> In the current arrangement, all of the acpi_ev_sci_xrupt_handler() code
-> is run as an interrupt handler for the SCI, in interrupt context.  Among
-> other things, this causes it to run with local interrupts off which
-> can be problematic if many GPEs are enabled and they are located in the
-> I/O address space, for example (because in that case local interrupts
-> will be off for the duration of all of the GPE hardware accesses carried
-> out while handling an SCI combined and that may be quite a bit of time
-> in extreme scenarios).
-> 
-> However, there is no particular reason why the code in question really
-> needs to run in interrupt context and in particular, it has no specific
-> reason to run with local interrupts off.  The only real requirement is
-> to prevent multiple instences of it from running in parallel with each
-> other, but that can be achieved regardless.
-> 
-> For this reason, use request_threaded_irq() instead of request_irq() for
-> the ACPI SCI and pass IRQF_ONESHOT to it in flags to indicate that the
-> interrupt needs to be masked while its handling thread is running so as
-> to prevent it from re-triggering while it is being handled (and in
-> particular until the final handled/not handled outcome is determined).
-> 
-> While at it, drop a redundant local variable from acpi_irq().
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 > ---
+>  drivers/acpi/Kconfig        | 2 --
+>  drivers/acpi/Makefile       | 2 +-
+>  drivers/acpi/arm64/Kconfig  | 1 +
+>  drivers/acpi/arm64/Makefile | 2 +-
+>  drivers/iommu/Kconfig       | 1 +
+>  5 files changed, 4 insertions(+), 4 deletions(-)
 > 
-> The code inspection and (necessarily limited) testing carried out by me
-> are good indications that this should just always work, but there may
-> be still some really odd platform configurations I'm overlooking, so if
-> you have a way to give it a go, please do so.
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index f819e760ff195a..3b7f77b227d13a 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -541,9 +541,7 @@ config ACPI_PFRUT
+>  	  To compile the drivers as modules, choose M here:
+>  	  the modules will be called pfr_update and pfr_telemetry.
+>  
+> -if ARM64
+>  source "drivers/acpi/arm64/Kconfig"
+> -endif
+>  
+>  config ACPI_PPTT
+>  	bool
+> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> index eaa09bf52f1760..4e77ae37b80726 100644
+> --- a/drivers/acpi/Makefile
+> +++ b/drivers/acpi/Makefile
+> @@ -127,7 +127,7 @@ obj-y				+= pmic/
+>  video-objs			+= acpi_video.o video_detect.o
+>  obj-y				+= dptf/
+>  
+> -obj-$(CONFIG_ARM64)		+= arm64/
+> +obj-y				+= arm64/
+>  
+>  obj-$(CONFIG_ACPI_VIOT)		+= viot.o
+>  
+> diff --git a/drivers/acpi/arm64/Kconfig b/drivers/acpi/arm64/Kconfig
+> index b3ed6212244c1e..537d49d8ace69e 100644
+> --- a/drivers/acpi/arm64/Kconfig
+> +++ b/drivers/acpi/arm64/Kconfig
+> @@ -11,6 +11,7 @@ config ACPI_GTDT
+>  
+>  config ACPI_AGDI
+>  	bool "Arm Generic Diagnostic Dump and Reset Device Interface"
+> +	depends on ARM64
+>  	depends on ARM_SDE_INTERFACE
+>  	help
+>  	  Arm Generic Diagnostic Dump and Reset Device Interface (AGDI) is
+> diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
+> index 143debc1ba4a9d..71d0e635599390 100644
+> --- a/drivers/acpi/arm64/Makefile
+> +++ b/drivers/acpi/arm64/Makefile
+> @@ -4,4 +4,4 @@ obj-$(CONFIG_ACPI_IORT) 	+= iort.o
+>  obj-$(CONFIG_ACPI_GTDT) 	+= gtdt.o
+>  obj-$(CONFIG_ACPI_APMT) 	+= apmt.o
+>  obj-$(CONFIG_ARM_AMBA)		+= amba.o
+> -obj-y				+= dma.o init.o
+> +obj-$(CONFIG_ARM64)		+= dma.o init.o
+> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+> index 7673bb82945b6c..309378e76a9bc9 100644
+> --- a/drivers/iommu/Kconfig
+> +++ b/drivers/iommu/Kconfig
+> @@ -318,6 +318,7 @@ config ARM_SMMU
+>  	select IOMMU_API
+>  	select IOMMU_IO_PGTABLE_LPAE
+>  	select ARM_DMA_USE_IOMMU if ARM
+> +	select ACPI_IORT if ACPI
+>  	help
+>  	  Support for implementations of the ARM System MMU architecture
+>  	  versions 1 and 2.
+> -- 
 
-Tried this on ADL-S and ADL-P systems that I have here and both work
-just fine with the patch applied. I can see SCI interrupt count
-increases in /proc/interrupts as expected. Did a couple of s2idle cycles
-too, all good.
+I don't think it should be done this way. Is the goal compile testing
+IORT code ? If so, why are we forcing it through the SMMU (only because
+it can be compile tested while eg SMMUv3 driver can't ?) menu entry ?
 
-Tested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+This looks a bit artificial (and it is unclear from the Kconfig
+file why only that driver selects IORT, it looks like eg the SMMUv3
+does not have the same dependency - there is also the SMMUv3 perf
+driver to consider).
+
+Maybe we can move IORT code into drivers/acpi and add a silent config
+option there with a dependency on ARM64 || COMPILE_TEST.
+
+Don't know but at least it is clearer. As for the benefits of compile
+testing IORT code - yes the previous patch is a warning to fix but
+I am not so sure about the actual benefits.
+
+Thanks,
+Lorenzo
 
