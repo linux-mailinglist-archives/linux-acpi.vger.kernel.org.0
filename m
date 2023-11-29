@@ -1,232 +1,227 @@
-Return-Path: <linux-acpi+bounces-1933-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1934-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F757FE117
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 21:33:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20F037FE118
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 21:33:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA69E282348
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 20:33:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D3471C20A6C
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 20:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D663BB47
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 20:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E9C60EE0
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 20:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nQmo3yJi"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="c0wfr6cu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B03C12A;
-	Wed, 29 Nov 2023 10:52:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701283961; x=1732819961;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jb00QUCUfnkNo5XLpr7mA45wNEUA/9Y9QPTCp4lOcAI=;
-  b=nQmo3yJiBO1nZ6AWiBsGHp0H3UwzpFXdZrUuS5/Qe4G4VUhInzXo4GjI
-   EuKtZdPo6P5eWWwFqs2jxbC68AIG+K7sNG4UEadeOP41nrWAsodcTQ+K7
-   Mql6CBPsVit+imIpX4DRL4NJLMjYpTs363WPVCd2ADSCtat20+0XX/fOw
-   0/wUkC6pbzEXtHiPJBvG0Dj68UftUnMxM9IoHXlzPmQ6uFFkOTzgkTrp0
-   u6A/HoL9UkbPfV817/PCuLMaqeBIGngY4rKKAtbdNi+ZeRH/wJ4NkC1B/
-   n3sX2c61Zk5Ay3FoNZ9KQskUNURsOyxfngyx6XBK4fc3qUIu+kKM35MRY
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10909"; a="383604020"
-X-IronPort-AV: E=Sophos;i="6.04,237,1695711600"; 
-   d="scan'208";a="383604020"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2023 10:52:40 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10909"; a="942423252"
-X-IronPort-AV: E=Sophos;i="6.04,237,1695711600"; 
-   d="scan'208";a="942423252"
-Received: from agluck-desk3.sc.intel.com (HELO agluck-desk3) ([172.25.222.74])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2023 10:52:40 -0800
-Date: Wed, 29 Nov 2023 10:52:39 -0800
-From: Tony Luck <tony.luck@intel.com>
-To: Avadhut Naik <avadnaik@amd.com>
-Cc: linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-	james.morse@arm.com, bp@alien8.de, linux-kernel@vger.kernel.org,
-	yazen.ghannam@amd.com, Avadhut Naik <avadhut.naik@amd.com>
-Subject: Re: [RESEND v2] ACPI: APEI: Skip initialization of GHES_ASSIST
- structures for Machine Check Architecture
-Message-ID: <ZWeId332wmrdLycH@agluck-desk3>
-References: <20231106201340.434878-1-avadhut.naik@amd.com>
- <c09243d9-b725-49b0-a6ac-163d015ff441@amd.com>
+Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C8EA0;
+	Wed, 29 Nov 2023 10:54:50 -0800 (PST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3790B40E0173;
+	Wed, 29 Nov 2023 18:54:48 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id o_QRVbiiKrpG; Wed, 29 Nov 2023 18:54:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1701284086; bh=wkXF0McmkxLPOnNWE7KBeTjPtQypJV7rcm8UGbBFHQg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c0wfr6cuFBnDVihD/dvDSJNrlQKegnEWbgut3ay6FbTEVf8pOBDQA7A21e7W6Eu9X
+	 RJ3gmg2pnf3YR3pOexA+cr5lzeqlmDIPLm1pJXLfF2wvBzqcfDx+71wLohdZbJjcpl
+	 0ipmtaNWI98bNqv5eTQJHvR+NOz7zku4YegeEEdFl5iCw/QkIijc1foP1vrTuvbt0t
+	 1BXXWlIdIrXrWMgqseJdj6abP82BTtG5HhiUBaL9MG1t51yZPGz9fJWSlMX3c4ohun
+	 BQJrBNdQEiKFpTSXlWunveDYGGKgo5moDbKAU36vAJ4n8M7dsMQkNTJMiINQuIrOLy
+	 gWWXooakpHbleHq8KpbM4YnwQO3pkafLmbMBIBuz22vxr/3CEjQDJ8KBBHS+FkHmCM
+	 JnBUwie7eF+Xu9sxpx2vNunpj18HPXRF+buMTYb5379auLhD/iTGrKjBcuJC2priqZ
+	 rJF0b0DrwDablHdggGsz8sofvfOqGgyqWYbemM+VxTH7qyEv7WKJ43H1oYdEU09Odh
+	 rkbVkVWdwHnIvi9LIJNH9umLTb8Quw70i9E44fbxp1z2iBqkLxrZTi/VOS7ZVA55sg
+	 /x7ZE9sG3Mp4ZbPM8LGQXXCLD4zwSX1kjQyAZlW+hMYuqSMhdK0Wxj4fgxigSvLaMs
+	 pQtwktS4Zp3O01aT3svrZaRY=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8FA0340E014B;
+	Wed, 29 Nov 2023 18:54:11 +0000 (UTC)
+Date: Wed, 29 Nov 2023 19:54:06 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Shuai Xue <xueshuai@linux.alibaba.com>, james.morse@arm.com
+Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
+	mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
+	naoya.horiguchi@nec.com, gregkh@linuxfoundation.org,
+	will@kernel.org, jarkko@kernel.org, linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, linux-edac@vger.kernel.org,
+	acpica-devel@lists.linuxfoundation.org, stable@vger.kernel.org,
+	x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
+	ying.huang@intel.com, ashish.kalra@amd.com,
+	baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
+	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+	zhuo.song@linux.alibaba.com
+Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task
+ work with proper si_code
+Message-ID: <20231129185406.GBZWeIzqwgRQe7XDo/@fat_crate.local>
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20231007072818.58951-1-xueshuai@linux.alibaba.com>
+ <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
+ <9e92e600-86a4-4456-9de4-b597854b107c@linux.alibaba.com>
+ <20231125121059.GAZWHkU27odMLns7TZ@fat_crate.local>
+ <1048123e-b608-4db1-8d5f-456dd113d06f@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <c09243d9-b725-49b0-a6ac-163d015ff441@amd.com>
+In-Reply-To: <1048123e-b608-4db1-8d5f-456dd113d06f@linux.alibaba.com>
 
-On Wed, Nov 29, 2023 at 12:29:16PM -0600, Avadhut Naik wrote:
-> Hi,
+Moving James to To:
+
+On Sun, Nov 26, 2023 at 08:25:38PM +0800, Shuai Xue wrote:
+> > On Sat, Nov 25, 2023 at 02:44:52PM +0800, Shuai Xue wrote:
+> >> - an AR error consumed by current process is deferred to handle in a
+> >>   dedicated kernel thread, but memory_failure() assumes that it runs in the
+> >>   current context
+> > 
+> > On x86? ARM?
+> > 
+> > Pease point to the exact code flow.
 > 
-> Any further feedback on this patch?
-
-Yes. See below.
+> An AR error consumed by current process is deferred to handle in a
+> dedicated kernel thread on ARM platform. The AR error is handled in bellow
+> flow:
 > 
-> On 11/6/2023 14:13, Avadhut Naik wrote:
-> > To support GHES_ASSIST on Machine Check Architecture (MCA) error sources,
-> > a set of GHES structures is provided by the system firmware for each MCA
-> > error source. Each of these sets consists of a GHES structure for each MCA
-> > bank on each logical CPU, with all structures of a set sharing a common
-> > Related Source ID, equal to the Source ID of one of the MCA error source
-> > structures.[1] On SOCs with large core counts, this typically equates to
-> > tens of thousands of GHES_ASSIST structures for MCA under
-> > "/sys/bus/platform/drivers/GHES".
-> > 
-> > Support for GHES_ASSIST however, hasn't been implemented in the kernel. As
-> > such, the information provided through these structures is not consumed by
-> > Linux. Moreover, these GHES_ASSIST structures for MCA, which are supposed
-> > to provide supplemental information in context of an error reported by
-> > hardware, are setup as independent error sources by the kernel during HEST
-> > initialization.
-> > 
-> > Additionally, if the Type field of the Notification structure, associated
-> > with these GHES_ASSIST structures for MCA, is set to Polled, the kernel
-> > sets up a timer for each individual structure. The duration of the timer
-> > is derived from the Poll Interval field of the Notification structure. On
-> > SOCs with high core counts, this will result in tens of thousands of
-> > timers expiring periodically causing unnecessary preemptions and wastage
-> > of CPU cycles. The problem will particularly intensify if Poll Interval
-> > duration is not sufficiently high.
-> > 
-> > Since GHES_ASSIST support is not present in kernel, skip initialization
-> > of GHES_ASSIST structures for MCA to eliminate their performance impact.
-> > 
-> > [1] ACPI specification 6.5, section 18.7
-> > 
-> > Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-> > Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-> > ---
-> > Changes in v2:
-> > 1.	Since is_ghes_assist_struct() returns if any of the conditions is hit
-> > if-else-if chain is redundant. Replace it with just if statements.
-> > 2.	Fix formatting errors.
-> > 3.	Add Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-> > ---
-> >  drivers/acpi/apei/hest.c | 51 ++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 51 insertions(+)
-> > 
-> > diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
-> > index 6aef1ee5e1bd..99db7621adb7 100644
-> > --- a/drivers/acpi/apei/hest.c
-> > +++ b/drivers/acpi/apei/hest.c
-> > @@ -37,6 +37,20 @@ EXPORT_SYMBOL_GPL(hest_disable);
-> >  
-> >  static struct acpi_table_hest *__read_mostly hest_tab;
-> >  
-> > +/*
-> > + * Since GHES_ASSIST is not supported, skip initialization
-> > + * of GHES_ASSIST structures for MCA.
-> > + * During HEST parsing, detected MCA error sources are cached.
-> > + * Flags and Source Id fields from these cached values are
-> > + * then referred to determine if the encountered GHES_ASSIST
-> > + * structure should be initialized.
-> > + */
-> > +static struct {
-> > +	struct acpi_hest_ia_corrected *cmc;
-> > +	struct acpi_hest_ia_machine_check *mc;
-> > +	struct acpi_hest_ia_deferred_check *dmc;
-> > +} mces;
-
-You are using this static structure to save values while computing
-the length of the HEST structure in hest_esrc_len() to be used later
-when is_ghes_assist_struct() checks to see if it should be skipped.
-
-But you don't clear it between iterations in apei_hest_parse(). So if
-the assist structure was early in the array of HEST structures, your
-is_ghes_assist_struct() will keep looking at stale mces.{cmc,mc,dmc}
-values.
-
-It may not break because the related_source_id in the subsequent
-structures won't match the one you saved. But this seems wrong.
-
-On the other hand, if this caching of values from some structures
-to be compared against values in later structures is intended. Then
-you need a comment on this structure to say that's what you are
-doing.
-
-> > +
-> >  static const int hest_esrc_len_tab[ACPI_HEST_TYPE_RESERVED] = {
-> >  	[ACPI_HEST_TYPE_IA32_CHECK] = -1,	/* need further calculation */
-> >  	[ACPI_HEST_TYPE_IA32_CORRECTED_CHECK] = -1,
-> > @@ -70,22 +84,54 @@ static int hest_esrc_len(struct acpi_hest_header *hest_hdr)
-> >  		cmc = (struct acpi_hest_ia_corrected *)hest_hdr;
-> >  		len = sizeof(*cmc) + cmc->num_hardware_banks *
-> >  			sizeof(struct acpi_hest_ia_error_bank);
-> > +		mces.cmc = cmc;
-> >  	} else if (hest_type == ACPI_HEST_TYPE_IA32_CHECK) {
-> >  		struct acpi_hest_ia_machine_check *mc;
-> >  		mc = (struct acpi_hest_ia_machine_check *)hest_hdr;
-> >  		len = sizeof(*mc) + mc->num_hardware_banks *
-> >  			sizeof(struct acpi_hest_ia_error_bank);
-> > +		mces.mc = mc;
-> >  	} else if (hest_type == ACPI_HEST_TYPE_IA32_DEFERRED_CHECK) {
-> >  		struct acpi_hest_ia_deferred_check *mc;
-> >  		mc = (struct acpi_hest_ia_deferred_check *)hest_hdr;
-> >  		len = sizeof(*mc) + mc->num_hardware_banks *
-> >  			sizeof(struct acpi_hest_ia_error_bank);
-> > +		mces.dmc = mc;
-> >  	}
-> >  	BUG_ON(len == -1);
-> >  
-> >  	return len;
-> >  };
-> >  
-> > +/*
-> > + * GHES and GHESv2 structures share the same format, starting from
-> > + * Source Id and ending in Error Status Block Length (inclusive).
-> > + */
-> > +static bool is_ghes_assist_struct(struct acpi_hest_header *hest_hdr)
-> > +{
-> > +	struct acpi_hest_generic *ghes;
-> > +	u16 related_source_id;
-> > +
-> > +	if (hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR &&
-> > +	    hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR_V2)
-> > +		return false;
-> > +
-> > +	ghes = (struct acpi_hest_generic *)hest_hdr;
-> > +	related_source_id = ghes->related_source_id;
-> > +
-> > +	if (mces.cmc && mces.cmc->flags & ACPI_HEST_GHES_ASSIST &&
-> > +	    related_source_id == mces.cmc->header.source_id)
-> > +		return true;
-> > +	if (mces.mc && mces.mc->flags & ACPI_HEST_GHES_ASSIST &&
-> > +	    related_source_id == mces.mc->header.source_id)
-> > +		return true;
-> > +	if (mces.dmc && mces.dmc->flags & ACPI_HEST_GHES_ASSIST &&
-> > +	    related_source_id == mces.dmc->header.source_id)
-> > +		return true;
-> > +
-> > +	return false;
-> > +}
-> > +
-> >  typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
-> >  
-> >  static int apei_hest_parse(apei_hest_func_t func, void *data)
-> > @@ -114,6 +160,11 @@ static int apei_hest_parse(apei_hest_func_t func, void *data)
-> >  			return -EINVAL;
-> >  		}
-> >  
-> > +		if (is_ghes_assist_struct(hest_hdr)) {
-> > +			hest_hdr = (void *)hest_hdr + len;
-> > +			continue;
-> > +		}
-> > +
-> >  		rc = func(hest_hdr, data);
-> >  		if (rc)
-> >  			return rc;
+> -----------------------------------------------------------------------------
+> [usr space task einj_mem_uc consumd data poison, CPU 3]         STEP 0
 > 
-> -- 
-> Thanks,
-> Avadhut Naik
+> -----------------------------------------------------------------------------
+> [ghes_sdei_critical_callback: current einj_mem_uc, CPU 3]		STEP 1
+> ghes_sdei_critical_callback
+>     => __ghes_sdei_callback
+>         => ghes_in_nmi_queue_one_entry 		// peak and read estatus
+>         => irq_work_queue(&ghes_proc_irq_work) <=> ghes_proc_in_irq // irq_work
+> [ghes_sdei_critical_callback: return]
+> -----------------------------------------------------------------------------
+> [ghes_proc_in_irq: current einj_mem_uc, CPU 3]			        STEP 2
+>             => ghes_do_proc
+>                 => ghes_handle_memory_failure
+>                     => ghes_do_memory_failure
+>                         => memory_failure_queue	 // put work task on current CPU
+>                             => if (kfifo_put(&mf_cpu->fifo, entry))
+>                                   schedule_work_on(smp_processor_id(), &mf_cpu->work);
+>             => task_work_add(current, &estatus_node->task_work, TWA_RESUME);
+> [ghes_proc_in_irq: return]
+> -----------------------------------------------------------------------------
+> // kworker preempts einj_mem_uc on CPU 3 due to RESCHED flag	STEP 3
+> [memory_failure_work_func: current kworker, CPU 3]	
+>      => memory_failure_work_func(&mf_cpu->work)
+>         => while kfifo_get(&mf_cpu->fifo, &entry);	// until get no work
+>             => memory_failure(entry.pfn, entry.flags);
 
--Tony
+From the comment above that function:
+
+ * The function is primarily of use for corruptions that
+ * happen outside the current execution context (e.g. when
+ * detected by a background scrubber)
+ *
+ * Must run in process context (e.g. a work queue) with interrupts
+ * enabled and no spinlocks held.
+
+> -----------------------------------------------------------------------------
+> [ghes_kick_task_work: current einj_mem_uc, other cpu]           STEP 4
+>                 => memory_failure_queue_kick
+>                     => cancel_work_sync - waiting memory_failure_work_func finish
+>                     => memory_failure_work_func(&mf_cpu->work)
+>                         => kfifo_get(&mf_cpu->fifo, &entry); // no work
+> -----------------------------------------------------------------------------
+> [einj_mem_uc resume at the same PC, trigger a page fault        STEP 5
+> 
+> STEP 0: A user space task, named einj_mem_uc consume a poison. The firmware
+> notifies hardware error to kernel through is SDEI
+> (ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED).
+> 
+> STEP 1: The swapper running on CPU 3 is interrupted. irq_work_queue() rasie
+> a irq_work to handle hardware errors in IRQ context
+> 
+> STEP2: In IRQ context, ghes_proc_in_irq() queues memory failure work on
+> current CPU in workqueue and add task work to sync with the workqueue.
+> 
+> STEP3: The kworker preempts the current running thread and get CPU 3. Then
+> memory_failure() is processed in kworker.
+
+See above.
+
+> STEP4: ghes_kick_task_work() is called as task_work to ensure any queued
+> workqueue has been done before returning to user-space.
+> 
+> STEP5: Upon returning to user-space, the task einj_mem_uc resumes at the
+> current instruction, because the poison page is unmapped by
+> memory_failure() in step 3, so a page fault will be triggered.
+> 
+> memory_failure() assumes that it runs in the current context on both x86
+> and ARM platform.
+> 
+> 
+> for example:
+> 	memory_failure() in mm/memory-failure.c:
+> 
+> 		if (flags & MF_ACTION_REQUIRED) {
+> 			folio = page_folio(p);
+> 			res = kill_accessing_process(current, folio_pfn(folio), flags);
+> 		}
+
+And?
+
+Do you see the check above it?
+
+	if (TestSetPageHWPoison(p)) {
+
+test_and_set_bit() returns true only when the page was poisoned already.
+
+ * This function is intended to handle "Action Required" MCEs on already
+ * hardware poisoned pages. They could happen, for example, when
+ * memory_failure() failed to unmap the error page at the first call, or
+ * when multiple local machine checks happened on different CPUs.
+
+And that's kill_accessing_process().
+
+So AFAIU, the kworker running memory_failure() would only mark the page
+as poison.
+
+The killing happens when memory_failure() runs again and the process
+touches the page again.
+
+But I'd let James confirm here.
+
+I still don't know what you're fixing here.
+
+Is this something you're encountering on some machine or you simply
+stared at code?
+
+What does that
+
+"Both Alibaba and Huawei met the same issue in products, and we hope it
+could be fixed ASAP."
+
+mean?
+
+What did you meet?
+
+What was the problem?
+
+I still note that you're avoiding answering the question what the issue
+is and if you keep avoiding it, I'll ignore this whole thread.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
