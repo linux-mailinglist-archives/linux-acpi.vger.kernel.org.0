@@ -1,236 +1,249 @@
-Return-Path: <linux-acpi+bounces-1921-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1922-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B297A7FDD31
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 17:36:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1327FDD34
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 17:36:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D50AB1C20925
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 16:36:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AF31B20A5F
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 16:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4581C3B781
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 16:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DABF53A285
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 16:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O4cmTLl6"
 X-Original-To: linux-acpi@vger.kernel.org
-X-Greylist: delayed 437 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 29 Nov 2023 07:30:01 PST
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B88D43;
-	Wed, 29 Nov 2023 07:30:01 -0800 (PST)
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 1C7AD40F03;
-	Wed, 29 Nov 2023 16:22:43 +0100 (CET)
-Message-ID: <9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com>
-Date: Wed, 29 Nov 2023 16:22:41 +0100
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 674D0D6E;
+	Wed, 29 Nov 2023 08:23:19 -0800 (PST)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2c9b5e50c1fso25831781fa.0;
+        Wed, 29 Nov 2023 08:23:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701274997; x=1701879797; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BE4DN2NIJid+M8TUF/vMVc9hXeYzBXdHSi7xojD4wk4=;
+        b=O4cmTLl6QBc6pJNGiHjiiSuJ4biDjlMAMFUhGxxNCtex+BDHhQG1eUHWXl3DOfZbLi
+         Y8PzIeyy9VonlB6G6qR1GZ/RscEKyWoWPHbvrNRNF1ldR4QKOKaf43nVBhv8fJ6Rzu8z
+         JJWRW6D4ROLQQyXhGzavjFwxEU7cOFjFnGu0sTG6BbJ4YP0aFo7AH8WF2nCFqFeS7of6
+         /hpbklK5QJbEfpj8W7r/7NN2fito64byko1KpPBC0UYcqo+y6JdpXQa5Z/zKoaFEgXpw
+         2I2I+YnAYF1nM07IgxY0nM5lPA6VUsAQyTZVHnG17OyYuLQHCub3oVKOVQeDVytQ6M+u
+         dUhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701274997; x=1701879797;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BE4DN2NIJid+M8TUF/vMVc9hXeYzBXdHSi7xojD4wk4=;
+        b=qxtVNo8AJxsZOiREvpQAVr8VQISaK/lTfRTrH4Hn3zUC/pk71SsMH72RptecNiGNh3
+         0USDm7B3Lnpn6Yx1CasBhasVOfmZLXhVbeYrUU2mphtCrNiAQRF1XNuxrbDMwoMJ6JE6
+         KM2nlKFzCSrlpysz7PrJy9UmIPTdYUtBhQYt1yMLLaXu9ROEJ64D6214rQJbygMCItB3
+         h8+TvsAEjyocupguonxWLI2X1GZfv2PEcZq3h1ghZQTxcXjLhduAvLEpcM1yxU47ipAe
+         6X5Lqh08riu/ts+HhMLxlh/NkE2/ahz5kbWV/Ahy2T3c3ByQz0Gnr/zpKdJsorju24jr
+         mOdw==
+X-Gm-Message-State: AOJu0YyW5huD//ZIKJD71/qQi0XL1D4yJMeBbXWuELg68uQwTOJX5xWX
+	AAPcqcFJMvGXOOXx8T0ID6o=
+X-Google-Smtp-Source: AGHT+IFpkXFRA9JtjkMulyQU+vE6lllIuj8DaTvHOgPc7kkDjVJCH1EZdgBzk/x+Nxw/nDpm1ZgC3Q==
+X-Received: by 2002:a2e:9557:0:b0:2c9:b623:ddf1 with SMTP id t23-20020a2e9557000000b002c9b623ddf1mr3708530ljh.51.1701274997225;
+        Wed, 29 Nov 2023 08:23:17 -0800 (PST)
+Received: from orome.fritz.box (p200300e41f0fa600f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f0f:a600:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id n16-20020a05600c501000b00407b93d8085sm2743768wmr.27.2023.11.29.08.23.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Nov 2023 08:23:16 -0800 (PST)
+Date: Wed, 29 Nov 2023 17:23:13 +0100
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: David Airlie <airlied@gmail.com>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Danilo Krummrich <dakr@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Dexuan Cui <decui@microsoft.com>, devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	David Woodhouse <dwmw2@infradead.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, iommu@lists.linux.dev,
+	Jon Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
+	Karol Herbst <kherbst@redhat.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>, Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+	linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Lyude Paul <lyude@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	nouveau@lists.freedesktop.org, Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Sven Peter <sven@svenpeter.dev>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Vineet Gupta <vgupta@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Wei Liu <wei.liu@kernel.org>, Will Deacon <will@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Christoph Hellwig <hch@lst.de>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Hector Martin <marcan@marcan.st>, Moritz Fischer <mdf@kernel.org>,
+	patches@lists.linux.dev,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 08/10] iommu/tegra: Use tegra_dev_iommu_get_stream_id()
+ in the remaining places
+Message-ID: <ZWdlcboM4Xzs38NI@orome.fritz.box>
+References: <0-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
+ <8-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Fiona Ebner <f.ebner@proxmox.com>
-Subject: SCSI hotplug issues with UEFI VM with guest kernel >= 6.5
-To: linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
- Igor Mammedov <imammedo@redhat.com>
-Cc: linux-kernel@vger.kernel.org, bhelgaas@google.com, lenb@kernel.org,
- rafael@kernel.org, Thomas Lamprecht <t.lamprecht@proxmox.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="OR6CuieIvqboqm08"
+Content-Disposition: inline
+In-Reply-To: <8-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-Hi,
-it seems that hot-plugging SCSI disks for QEMU virtual machines booting
-with UEFI and with guest kernels >= 6.5 might be broken. It's not
-consistently broken, hinting there might be a race somewhere.
 
-Reverting the following two commits seems to make it work reliably again:
+--OR6CuieIvqboqm08
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-cc22522fd55e2 ("PCI: acpiphp: Use
-pci_assign_unassigned_bridge_resources() only for non-root bus")
-40613da52b13f ("PCI: acpiphp: Reassign resources on bridge if necessary"
+On Tue, Nov 28, 2023 at 08:48:04PM -0400, Jason Gunthorpe wrote:
+> This API was defined to formalize the access to internal iommu details on
+> some Tegra SOCs, but a few callers got missed. Add them.
+>=20
+> The helper already masks by 0xFFFF so remove this code from the callers.
+>=20
+> Suggested-by: Thierry Reding <thierry.reding@gmail.com>
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  drivers/dma/tegra186-gpc-dma.c                  |  8 +++-----
+>  drivers/gpu/drm/nouveau/nvkm/subdev/ltc/gp10b.c |  7 ++-----
+>  drivers/memory/tegra/tegra186.c                 | 12 ++++++------
+>  3 files changed, 11 insertions(+), 16 deletions(-)
+>=20
+> diff --git a/drivers/dma/tegra186-gpc-dma.c b/drivers/dma/tegra186-gpc-dm=
+a.c
+> index fa4d4142a68a21..88547a23825b18 100644
+> --- a/drivers/dma/tegra186-gpc-dma.c
+> +++ b/drivers/dma/tegra186-gpc-dma.c
+> @@ -1348,8 +1348,8 @@ static int tegra_dma_program_sid(struct tegra_dma_c=
+hannel *tdc, int stream_id)
+>  static int tegra_dma_probe(struct platform_device *pdev)
+>  {
+>  	const struct tegra_dma_chip_data *cdata =3D NULL;
+> -	struct iommu_fwspec *iommu_spec;
+> -	unsigned int stream_id, i;
+> +	unsigned int i;
+> +	u32 stream_id;
+>  	struct tegra_dma *tdma;
+>  	int ret;
+> =20
+> @@ -1378,12 +1378,10 @@ static int tegra_dma_probe(struct platform_device=
+ *pdev)
+> =20
+>  	tdma->dma_dev.dev =3D &pdev->dev;
+> =20
+> -	iommu_spec =3D dev_iommu_fwspec_get(&pdev->dev);
+> -	if (!iommu_spec) {
+> +	if (!tegra_dev_iommu_get_stream_id(&pdev->dev, &stream_id)) {
+>  		dev_err(&pdev->dev, "Missing iommu stream-id\n");
+>  		return -EINVAL;
+>  	}
+> -	stream_id =3D iommu_spec->ids[0] & 0xffff;
+> =20
+>  	ret =3D device_property_read_u32(&pdev->dev, "dma-channel-mask",
+>  				       &tdma->chan_mask);
+> diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/ltc/gp10b.c b/drivers/gp=
+u/drm/nouveau/nvkm/subdev/ltc/gp10b.c
+> index e7e8fdf3adab7a..b40fd1dbb21617 100644
+> --- a/drivers/gpu/drm/nouveau/nvkm/subdev/ltc/gp10b.c
+> +++ b/drivers/gpu/drm/nouveau/nvkm/subdev/ltc/gp10b.c
+> @@ -28,16 +28,13 @@ static void
+>  gp10b_ltc_init(struct nvkm_ltc *ltc)
+>  {
+>  	struct nvkm_device *device =3D ltc->subdev.device;
+> -	struct iommu_fwspec *spec;
+> +	u32 sid;
+> =20
+>  	nvkm_wr32(device, 0x17e27c, ltc->ltc_nr);
+>  	nvkm_wr32(device, 0x17e000, ltc->ltc_nr);
+>  	nvkm_wr32(device, 0x100800, ltc->ltc_nr);
+> =20
+> -	spec =3D dev_iommu_fwspec_get(device->dev);
+> -	if (spec) {
+> -		u32 sid =3D spec->ids[0] & 0xffff;
+> -
+> +	if (tegra_dev_iommu_get_stream_id(device->dev, &sid)) {
+>  		/* stream ID */
+>  		nvkm_wr32(device, 0x160000, sid << 2);
 
-Of course, they might only expose some pre-existing issue, but this is
-my best lead. See below for some logs and details about an affected
-virtual machine. Happy to provide more information and to debug/test
-further.
+We could probably also remove the comment now since the function and
+variable names make it obvious what's being written here.
 
-Best Regards,
-Fiona
+>  	}
+> diff --git a/drivers/memory/tegra/tegra186.c b/drivers/memory/tegra/tegra=
+186.c
+> index 533f85a4b2bdb7..3e4fbe94dd666e 100644
+> --- a/drivers/memory/tegra/tegra186.c
+> +++ b/drivers/memory/tegra/tegra186.c
+> @@ -111,21 +111,21 @@ static void tegra186_mc_client_sid_override(struct =
+tegra_mc *mc,
+>  static int tegra186_mc_probe_device(struct tegra_mc *mc, struct device *=
+dev)
+>  {
+>  #if IS_ENABLED(CONFIG_IOMMU_API)
+> -	struct iommu_fwspec *fwspec =3D dev_iommu_fwspec_get(dev);
+>  	struct of_phandle_args args;
+>  	unsigned int i, index =3D 0;
+> +	u32 sid;
+> =20
+> +	WARN_ON(!tegra_dev_iommu_get_stream_id(dev, &sid));
 
-Host kernel: 6.5.11-4-pve which is based on the one from Ubuntu
-Guest kernel: 6.7.0-rc3 and 6.7.0-rc3 with above commits reverted
-QEMU version: v8.1.0 built from source
-EDK2 version: submodule in the QEMU v8.1 repository: edk2-stable202302
+I know the code previously didn't check for any errors, but we may want
+to do so now. If tegra_dev_iommu_get_stream_id() ever fails we may end
+up writing some undefined value into the override register.
 
-QEMU command line:
+I'm also unsure if WARN_ON() is appropriate here. I vaguely recall that
+->probe_device() was called for all devices on the bus and not all of
+them may have been associated with the IOMMU. Not all of them may in
+fact access memory in the first place.
 
-> ./qemu-system-x86_64 \
->   -accel 'kvm' \
->   -chardev 'socket,id=qmp,path=/var/run/qemu-server/104.qmp,server=on,wait=off' \
->   -mon 'chardev=qmp,mode=control' \
->   -chardev 'socket,id=qmp-event,path=/var/run/qmeventd.sock,reconnect=5' \
->   -mon 'chardev=qmp-event,mode=control' \
->   -pidfile /var/run/qemu-server/104.pid \
->   -drive 'if=pflash,unit=0,format=raw,readonly=on,file=./pc-bios/edk2-x86_64-code.fd' \
->   -drive 'if=pflash,unit=1,id=drive-efidisk0,format=raw,file=/dev/u2nvme/vm-104-disk-0,size=540672' \
->   -smp '4,sockets=1,cores=4,maxcpus=4' \
->   -nodefaults \
->   -vnc 'unix:/var/run/qemu-server/104.vnc,password=on' \
->   -m 4096 \
->   -device 'pci-bridge,id=pci.1,chassis_nr=1,bus=pci.0,addr=0x1e' \
->   -device 'pci-bridge,id=pci.2,chassis_nr=2,bus=pci.0,addr=0x1f' \
->   -device 'pci-bridge,id=pci.3,chassis_nr=3,bus=pci.0,addr=0x5' \
->   -device 'VGA,id=vga,bus=pci.0,addr=0x2' \
->   -device 'virtio-scsi-pci,id=virtioscsi0,bus=pci.3,addr=0x1' \
->   -drive 'file=/dev/u2nvme/vm-104-disk-1,if=none,id=drive-scsi0,format=raw' \
->   -blockdev 'raw,file.driver=file,file.filename=/home/febner/plug.raw,node-name=drive-scsi1' \
->   -device 'scsi-hd,bus=virtioscsi0.0,channel=0,scsi-id=0,lun=0,drive=drive-scsi0,id=scsi0,bootindex=100' \
->   -netdev 'type=tap,id=net0,ifname=tap104i0,script=/var/lib/qemu-server/pve-bridge,downscript=/var/lib/qemu-server/pve-bridgedown,vhost=on' \
->   -device 'virtio-net-pci,mac=BC:24:11:89:6A:E6,netdev=net0,bus=pci.0,addr=0x12,id=net0,rx_queue_size=1024,tx_queue_size=256,bootindex=102' \
->   -bios './pc-bios/edk2-x86_64-code.fd'
+Perhaps I'm misremembering and the IOMMU core now takes care of only
+calling this when fwspec is indeed valid?
 
-Script to issue hotplug command via QEMU monitor protocol (QMP):
+Thierry
 
-> #!/bin/sh
-> 
-> ID=$1
-> CMD=$2
-> 
-> if [ -z "$ID" ]; then
->     echo "need to specify ID";
->     exit 1;
-> fi
-> 
-> if [ -z "$CMD" ]; then
->     echo "need to specify command (plug or unplug)";
->     exit 1;
-> fi
-> 
-> 
-> if [ "$CMD" = "plug" ]; then
->     socat - /var/run/qemu-server/"$ID".qmp << END
->     {"execute": "qmp_capabilities"}
->     {"arguments":{"driver":"virtio-scsi-pci","bus":"pci.3","addr":"0x2","id":"virtioscsi1"},"execute":"device_add"}
->     {"arguments":{"bus":"virtioscsi1.0","channel":"0","driver":"scsi-hd","id":"scsi1","drive":"drive-scsi1","scsi-id":"0","lun":"1"},"execute":"device_add"}
-> END
-> elif [ "$CMD" = "unplug" ]; then
->     socat - /var/run/qemu-server/"$ID".qmp << END
->     {"execute": "qmp_capabilities"}
->     {"arguments":{"id":"scsi1"},"execute":"device_del"}
->     {"arguments":{"id":"virtioscsi1"},"execute":"device_del"}
-> END
-> fi
+--OR6CuieIvqboqm08
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I've also tired and added 10 second sleep between the two device_add
-commands just to be sure, but that didn't make a difference. (Our
-management stack does query via QMP and wait for the device to show up
-and is also affected, I was just too lazy to do that for the reproducer
-here).
+-----BEGIN PGP SIGNATURE-----
 
-I've attached some logs for guest using kernel 6.7.0-rc3 where hotplug
-works rarely and guest using kernel 6.7.0-rc3 with the previously
-mentioned commits reverted where hotplug works reliably:
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmVnZW8ACgkQ3SOs138+
+s6H3xA/+PnJPzNAATgGeEaxpY8VPfo7h0kY98vc1QYnUCiV46yzQPUq+/nVkkq24
+ybBtQ8hr0vl4ZxtflekHYxb0WsXO560ODmmckXEYPWRfVyxckFz+CRyvDx+zxyxJ
+d/TtD8p0l6DGFlZGume2h/cDafF5+3td2JEJ2vEfu0tMmRLIFC7L+Pj2IB4/Fz21
+2M6M6T0Al7obecinfW9jzg00G20RybQSrdPq+H9z3BNhOXGKy+1fjIzCsnr4H0gD
+kE4WooU9uLbMdpEYYZ8idqC1OieIr6p2IF802/4/TAvWHreHlH7uPcDRry8rxkwQ
+j0CAwBlcvLLtLj2pw7kYgxMpXwahgXSuhxX42CXDWsUUW4mxiZkvG0o8Cv2EGtSD
+emTIMrC3w1R2MSemI8+RQdOHhOnTNC0sADGo9EyurPrYC9TzwqTOPI35kNqJ8ZAw
+zCmhDKieZM9dxlOdFrpC+eLz8eVEjo5oV+OchMT6k8nw7TkD6dGHBOJlDhQeJNWZ
+tZBnlBamoEmlD5Kz/Oe90S47MnYtx8EX7o9bpEV6/ZO13P+F07rasP3l6hCJuybO
+c2YAeCxY8cuwHLnIJZTm3hR7UU9PQwPn4utolLuSqaXkL5wSdVr+1eZyTye25W0J
+CSzMCL3SkMgfKaZ7L6ptSRFtOWxiH6943ahvYpDBXlgEp/R9aVg=
+=ORi/
+-----END PGP SIGNATURE-----
 
-6.7.0-rc3:
-
-> Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xc000004000-0xc000007fff 64bit pref]
-> Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
-> Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-> Nov 29 15:12:02 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> Nov 29 15:12:02 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> Nov 29 15:12:02 hotplug kernel: scsi host3: Virtio SCSI HBA
-> Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> Nov 29 15:12:02 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref] 
-
-Reboot
-
-> Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xc000004000-0xc000007fff 64bit pref]
-> Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
-> Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-> Nov 29 15:12:52 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> Nov 29 15:12:52 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> Nov 29 15:12:52 hotplug kernel: scsi host3: Virtio SCSI HBA
-> Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> Nov 29 15:12:52 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-
-RebootThe one time it did work. Note that the line with "QEMU HARDDISK"
-comes after all lines with "bridge window":
-
-> Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xc000004000-0xc000007fff 64bit pref]
-> Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
-> Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-> Nov 29 15:13:51 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> Nov 29 15:13:51 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> Nov 29 15:13:51 hotplug kernel: scsi host3: Virtio SCSI HBA
-> Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-> Nov 29 15:13:51 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: Attached scsi generic sg1 type 0
-> Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: Power-on or device reset occurred
-> Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] 2048 512-byte logical blocks: (1.05 MB/1.00 MiB)
-> Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] Write Protect is off
-> Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] Mode Sense: 63 00 00 08
-> Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
-> Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] Attached SCSI disk
-> Nov 29 15:14:08 hotplug systemd[1]: systemd-fsckd.service: Deactivated successfully.
-
-6.7.0-rc3 with the following reverted:
-cc22522fd55e2 ("PCI: acpiphp: Use
-pci_assign_unassigned_bridge_resources() only for non-root bus")
-40613da52b13f ("PCI: acpiphp: Reassign resources on bridge if necessary")
-
-> Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xc000004000-0xc000007fff 64bit pref]
-> Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
-> Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> Nov 29 15:15:37 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> Nov 29 15:15:37 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> Nov 29 15:15:37 hotplug kernel: scsi host3: Virtio SCSI HBA
-> Nov 29 15:15:37 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: Attached scsi generic sg1 type 0
-> Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: Power-on or device reset occurred
-> Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] 2048 512-byte logical blocks: (1.05 MB/1.00 MiB)
-> Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] Write Protect is off
-> Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] Mode Sense: 63 00 00 08
-> Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
-> Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] Attached SCSI disk
-> Nov 29 15:15:38 hotplug systemd[1]: systemd-fsckd.service: Deactivated successfully.
-
+--OR6CuieIvqboqm08--
 
