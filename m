@@ -1,28 +1,28 @@
-Return-Path: <linux-acpi+bounces-1926-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1927-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5E447FDF66
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 19:40:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3935B7FDF67
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 19:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D8B8B20988
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 18:40:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EE3B1C208C5
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 18:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D3C5DF04
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 18:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AC7374C8
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 18:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 44E5B198;
-	Wed, 29 Nov 2023 09:43:29 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 828D613E;
+	Wed, 29 Nov 2023 09:43:33 -0800 (PST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 18CF8C15;
-	Wed, 29 Nov 2023 09:44:16 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 410FD1595;
+	Wed, 29 Nov 2023 09:44:20 -0800 (PST)
 Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 123D23F73F;
-	Wed, 29 Nov 2023 09:43:24 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3A6DA3F73F;
+	Wed, 29 Nov 2023 09:43:29 -0800 (PST)
 From: Robin Murphy <robin.murphy@arm.com>
 To: Joerg Roedel <joro@8bytes.org>,
 	Christoph Hellwig <hch@lst.de>
@@ -59,9 +59,9 @@ Cc: Vineet Gupta <vgupta@kernel.org>,
 	linux-acpi@vger.kernel.org,
 	iommu@lists.linux.dev,
 	devicetree@vger.kernel.org
-Subject: [PATCH 3/7] ACPI/IORT: Handle memory address size limits as limits
-Date: Wed, 29 Nov 2023 17:43:00 +0000
-Message-Id: <2ae6199a9cf035c1defd42e48675b827f41cdc95.1701268753.git.robin.murphy@arm.com>
+Subject: [PATCH 4/7] dma-mapping: Add helpers for dma_range_map bounds
+Date: Wed, 29 Nov 2023 17:43:01 +0000
+Message-Id: <b6626985d97ddc33a23b4b9fafa881b35001547e.1701268753.git.robin.murphy@arm.com>
 X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
 In-Reply-To: <cover.1701268753.git.robin.murphy@arm.com>
 References: <cover.1701268753.git.robin.murphy@arm.com>
@@ -73,143 +73,112 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Return the Root Complex/Named Component memory address size limit as an
-inclusive limit value, rather than an exclusive size.  This saves us
-having to special-case 64-bit overflow, and simplifies our caller too.
+Several places want to compute the lower and/or upper bounds of a
+dma_range_map, so let's factor that out into reusable helpers.
 
 Signed-off-by: Robin Murphy <robin.murphy@arm.com>
 ---
- drivers/acpi/arm64/dma.c  |  9 +++------
- drivers/acpi/arm64/iort.c | 18 ++++++++----------
- include/linux/acpi_iort.h |  4 ++--
- 3 files changed, 13 insertions(+), 18 deletions(-)
+ arch/loongarch/kernel/dma.c |  9 ++-------
+ drivers/acpi/arm64/dma.c    |  8 +-------
+ drivers/of/device.c         | 11 ++---------
+ include/linux/dma-direct.h  | 18 ++++++++++++++++++
+ 4 files changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/acpi/arm64/dma.c b/drivers/acpi/arm64/dma.c
-index 93d796531af3..b98a149f8d50 100644
---- a/drivers/acpi/arm64/dma.c
-+++ b/drivers/acpi/arm64/dma.c
-@@ -8,7 +8,6 @@ void acpi_arch_dma_setup(struct device *dev)
+diff --git a/arch/loongarch/kernel/dma.c b/arch/loongarch/kernel/dma.c
+index 7a9c6a9dd2d0..429555fb4e13 100644
+--- a/arch/loongarch/kernel/dma.c
++++ b/arch/loongarch/kernel/dma.c
+@@ -8,17 +8,12 @@
+ void acpi_arch_dma_setup(struct device *dev)
  {
  	int ret;
- 	u64 end, mask;
--	u64 size = 0;
+-	u64 mask, end = 0;
++	u64 mask, end;
  	const struct bus_dma_region *map = NULL;
- 
- 	/*
-@@ -23,9 +22,9 @@ void acpi_arch_dma_setup(struct device *dev)
- 	}
- 
- 	if (dev->coherent_dma_mask)
--		size = max(dev->coherent_dma_mask, dev->coherent_dma_mask + 1);
-+		end = dev->coherent_dma_mask;
- 	else
--		size = 1ULL << 32;
-+		end = (1ULL << 32) - 1;
  
  	ret = acpi_dma_get_range(dev, &map);
  	if (!ret && map) {
-@@ -36,18 +35,16 @@ void acpi_arch_dma_setup(struct device *dev)
- 				end = r->dma_start + r->size - 1;
- 		}
+-		const struct bus_dma_region *r = map;
+-
+-		for (end = 0; r->size; r++) {
+-			if (r->dma_start + r->size - 1 > end)
+-				end = r->dma_start + r->size - 1;
+-		}
++		end = dma_range_map_max(map);
  
--		size = end + 1;
+ 		mask = DMA_BIT_MASK(ilog2(end) + 1);
+ 		dev->bus_dma_limit = end;
+diff --git a/drivers/acpi/arm64/dma.c b/drivers/acpi/arm64/dma.c
+index b98a149f8d50..52b2abf88689 100644
+--- a/drivers/acpi/arm64/dma.c
++++ b/drivers/acpi/arm64/dma.c
+@@ -28,13 +28,7 @@ void acpi_arch_dma_setup(struct device *dev)
+ 
+ 	ret = acpi_dma_get_range(dev, &map);
+ 	if (!ret && map) {
+-		const struct bus_dma_region *r = map;
+-
+-		for (end = 0; r->size; r++) {
+-			if (r->dma_start + r->size - 1 > end)
+-				end = r->dma_start + r->size - 1;
+-		}
+-
++		end = dma_range_map_max(map);
  		dev->dma_range_map = map;
  	}
  
- 	if (ret == -ENODEV)
--		ret = iort_dma_get_ranges(dev, &size);
-+		ret = iort_dma_get_ranges(dev, &end);
- 	if (!ret) {
- 		/*
- 		 * Limit coherent and dma mask based on size retrieved from
- 		 * firmware.
- 		 */
--		end = size - 1;
- 		mask = DMA_BIT_MASK(ilog2(end) + 1);
- 		dev->bus_dma_limit = end;
- 		dev->coherent_dma_mask = min(dev->coherent_dma_mask, mask);
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 6496ff5a6ba2..eb64d8e17dd1 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1367,7 +1367,7 @@ int iort_iommu_configure_id(struct device *dev, const u32 *input_id)
- { return -ENODEV; }
- #endif
- 
--static int nc_dma_get_range(struct device *dev, u64 *size)
-+static int nc_dma_get_range(struct device *dev, u64 *limit)
- {
- 	struct acpi_iort_node *node;
- 	struct acpi_iort_named_component *ncomp;
-@@ -1384,13 +1384,12 @@ static int nc_dma_get_range(struct device *dev, u64 *size)
- 		return -EINVAL;
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index 51062a831970..66879edb4a61 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -117,16 +117,9 @@ int of_dma_configure_id(struct device *dev, struct device_node *np,
+ 		if (!force_dma)
+ 			return ret == -ENODEV ? 0 : ret;
+ 	} else {
+-		const struct bus_dma_region *r = map;
+-
+ 		/* Determine the overall bounds of all DMA regions */
+-		for (dma_start = ~0; r->size; r++) {
+-			/* Take lower and upper limits */
+-			if (r->dma_start < dma_start)
+-				dma_start = r->dma_start;
+-			if (r->dma_start + r->size > end)
+-				end = r->dma_start + r->size;
+-		}
++		dma_start = dma_range_map_min(map);
++		end = dma_range_map_max(map);
  	}
  
--	*size = ncomp->memory_address_limit >= 64 ? U64_MAX :
--			1ULL<<ncomp->memory_address_limit;
-+	*limit = (1ULL << ncomp->memory_address_limit) - 1;
- 
- 	return 0;
+ 	/*
+diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
+index 3eb3589ff43e..b77e3863daab 100644
+--- a/include/linux/dma-direct.h
++++ b/include/linux/dma-direct.h
+@@ -54,6 +54,24 @@ static inline phys_addr_t translate_dma_to_phys(struct device *dev,
+ 	return (phys_addr_t)-1;
  }
  
--static int rc_dma_get_range(struct device *dev, u64 *size)
-+static int rc_dma_get_range(struct device *dev, u64 *limit)
- {
- 	struct acpi_iort_node *node;
- 	struct acpi_iort_root_complex *rc;
-@@ -1408,8 +1407,7 @@ static int rc_dma_get_range(struct device *dev, u64 *size)
- 		return -EINVAL;
- 	}
- 
--	*size = rc->memory_address_limit >= 64 ? U64_MAX :
--			1ULL<<rc->memory_address_limit;
-+	*limit = (1ULL << rc->memory_address_limit) - 1;
- 
- 	return 0;
- }
-@@ -1417,16 +1415,16 @@ static int rc_dma_get_range(struct device *dev, u64 *size)
- /**
-  * iort_dma_get_ranges() - Look up DMA addressing limit for the device
-  * @dev: device to lookup
-- * @size: DMA range size result pointer
-+ * @limit: DMA limit result pointer
-  *
-  * Return: 0 on success, an error otherwise.
-  */
--int iort_dma_get_ranges(struct device *dev, u64 *size)
-+int iort_dma_get_ranges(struct device *dev, u64 *limit)
- {
- 	if (dev_is_pci(dev))
--		return rc_dma_get_range(dev, size);
-+		return rc_dma_get_range(dev, limit);
- 	else
--		return nc_dma_get_range(dev, size);
-+		return nc_dma_get_range(dev, limit);
- }
- 
- static void __init acpi_iort_register_irq(int hwirq, const char *name,
-diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
-index 1cb65592c95d..d4ed5622cf2b 100644
---- a/include/linux/acpi_iort.h
-+++ b/include/linux/acpi_iort.h
-@@ -39,7 +39,7 @@ void iort_get_rmr_sids(struct fwnode_handle *iommu_fwnode,
- void iort_put_rmr_sids(struct fwnode_handle *iommu_fwnode,
- 		       struct list_head *head);
- /* IOMMU interface */
--int iort_dma_get_ranges(struct device *dev, u64 *size);
-+int iort_dma_get_ranges(struct device *dev, u64 *limit);
- int iort_iommu_configure_id(struct device *dev, const u32 *id_in);
- void iort_iommu_get_resv_regions(struct device *dev, struct list_head *head);
- phys_addr_t acpi_iort_dma_get_max_cpu_address(void);
-@@ -55,7 +55,7 @@ void iort_get_rmr_sids(struct fwnode_handle *iommu_fwnode, struct list_head *hea
- static inline
- void iort_put_rmr_sids(struct fwnode_handle *iommu_fwnode, struct list_head *head) { }
- /* IOMMU interface */
--static inline int iort_dma_get_ranges(struct device *dev, u64 *size)
-+static inline int iort_dma_get_ranges(struct device *dev, u64 *limit)
- { return -ENODEV; }
- static inline int iort_iommu_configure_id(struct device *dev, const u32 *id_in)
- { return -ENODEV; }
++static inline dma_addr_t dma_range_map_min(const struct bus_dma_region *map)
++{
++	dma_addr_t ret = U64_MAX;
++
++	for (; map->size; map++)
++		ret = min(ret, map->dma_start);
++	return ret;
++}
++
++static inline dma_addr_t dma_range_map_max(const struct bus_dma_region *map)
++{
++	dma_addr_t ret = 0;
++
++	for (; map->size; map++)
++		ret = max(ret, map->dma_start + map->size - 1);
++	return ret;
++}
++
+ #ifdef CONFIG_ARCH_HAS_PHYS_TO_DMA
+ #include <asm/dma-direct.h>
+ #ifndef phys_to_dma_unencrypted
 -- 
 2.39.2.101.g768bb238c484.dirty
 
