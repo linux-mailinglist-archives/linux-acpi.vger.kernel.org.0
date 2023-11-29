@@ -1,227 +1,195 @@
-Return-Path: <linux-acpi+bounces-1934-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1935-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F037FE118
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 21:33:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 094CF7FE119
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 21:34:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D3471C20A6C
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 20:33:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B60C1C20A99
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 20:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E9C60EE0
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 20:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8637060EEA
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 20:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="c0wfr6cu"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QrGFMQA4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C8EA0;
-	Wed, 29 Nov 2023 10:54:50 -0800 (PST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3790B40E0173;
-	Wed, 29 Nov 2023 18:54:48 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id o_QRVbiiKrpG; Wed, 29 Nov 2023 18:54:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1701284086; bh=wkXF0McmkxLPOnNWE7KBeTjPtQypJV7rcm8UGbBFHQg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c0wfr6cuFBnDVihD/dvDSJNrlQKegnEWbgut3ay6FbTEVf8pOBDQA7A21e7W6Eu9X
-	 RJ3gmg2pnf3YR3pOexA+cr5lzeqlmDIPLm1pJXLfF2wvBzqcfDx+71wLohdZbJjcpl
-	 0ipmtaNWI98bNqv5eTQJHvR+NOz7zku4YegeEEdFl5iCw/QkIijc1foP1vrTuvbt0t
-	 1BXXWlIdIrXrWMgqseJdj6abP82BTtG5HhiUBaL9MG1t51yZPGz9fJWSlMX3c4ohun
-	 BQJrBNdQEiKFpTSXlWunveDYGGKgo5moDbKAU36vAJ4n8M7dsMQkNTJMiINQuIrOLy
-	 gWWXooakpHbleHq8KpbM4YnwQO3pkafLmbMBIBuz22vxr/3CEjQDJ8KBBHS+FkHmCM
-	 JnBUwie7eF+Xu9sxpx2vNunpj18HPXRF+buMTYb5379auLhD/iTGrKjBcuJC2priqZ
-	 rJF0b0DrwDablHdggGsz8sofvfOqGgyqWYbemM+VxTH7qyEv7WKJ43H1oYdEU09Odh
-	 rkbVkVWdwHnIvi9LIJNH9umLTb8Quw70i9E44fbxp1z2iBqkLxrZTi/VOS7ZVA55sg
-	 /x7ZE9sG3Mp4ZbPM8LGQXXCLD4zwSX1kjQyAZlW+hMYuqSMhdK0Wxj4fgxigSvLaMs
-	 pQtwktS4Zp3O01aT3svrZaRY=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8FA0340E014B;
-	Wed, 29 Nov 2023 18:54:11 +0000 (UTC)
-Date: Wed, 29 Nov 2023 19:54:06 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Shuai Xue <xueshuai@linux.alibaba.com>, james.morse@arm.com
-Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
-	mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
-	naoya.horiguchi@nec.com, gregkh@linuxfoundation.org,
-	will@kernel.org, jarkko@kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, linux-edac@vger.kernel.org,
-	acpica-devel@lists.linuxfoundation.org, stable@vger.kernel.org,
-	x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
-	ying.huang@intel.com, ashish.kalra@amd.com,
-	baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
-	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
-	zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task
- work with proper si_code
-Message-ID: <20231129185406.GBZWeIzqwgRQe7XDo/@fat_crate.local>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20231007072818.58951-1-xueshuai@linux.alibaba.com>
- <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
- <9e92e600-86a4-4456-9de4-b597854b107c@linux.alibaba.com>
- <20231125121059.GAZWHkU27odMLns7TZ@fat_crate.local>
- <1048123e-b608-4db1-8d5f-456dd113d06f@linux.alibaba.com>
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2058.outbound.protection.outlook.com [40.107.244.58])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D57FA10C8;
+	Wed, 29 Nov 2023 11:04:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nQn+n75YyQqwgtUyJN4Z7tqwUm2afev+zaDmQV4YvYiF3e25rDyjXDHyrXokDxP6buOsZTthZrwqWkuFwiTKAljWQIof6hquzOCSlI3tn09CYVW/JSgWg5aVnCQ+1IQiecGZLJ/pS7VyCBR1eSY4PuTOY98McS96FiQdYGHGK3ueuKrH4/HTZgr0AN8GgkmZFELxFgRNl2DHzgDLsgqAERnhzvaKWICp6Ie2k0hNIu12a9TqhpCxJsKljLPPlwDvWKSnhbfoAWg7FR9JvaSehripW/wyJIADsBsMH3LYtmA1kJe+NzvsesRwPW7OCtTC/4NrKn0gRn6ohaVLdY48gA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UnJz3rd9akWljR03xoJWxhQ9viEtvd0BRZBs/NFeJvo=;
+ b=T28tlhhz0cb+am/Y6oRCEEOYrYesdtQW8BZucCSmvm4Gf6hzYxlyy0C3qSSkpvZkk36u3ObMhVudYa5AwZpAhioskM7f0ZFdKDHwIwrENABpDt8kqiobOVKSgj3VDo6ZTUW2yCUWlB4rtaztLOyhASMqMpjA1s3JX2nfi0ffvEk3+osdm7qfwEMxS3ovQOVKrVM4YReWD9RsOQEdBEhh89JjOuGsisyDkhXyFclK12+z8mVF2AkYy+1QVNlpEkwzWBd2qbfb7iclbxPNC0sUaF6ng/GUKGLVCFkilLCMRXCV1RDxNO8CeqBQVkgYAe5SnBL9LTF1TDbskVWC6ox78A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UnJz3rd9akWljR03xoJWxhQ9viEtvd0BRZBs/NFeJvo=;
+ b=QrGFMQA4iMP8Wck1b/iPqzTcGcmS4t5rBcAlzK711TkvJwwHidjAG5EPQROoKQ70wwIgOb4lGilrvEPl9YDagGaB9Ik3rgqCR6KpIDCc3esCEkvNuUdOc1Pg1OohfjiwECiT933iyU0DL0vP8wcBm9fjdBcnvoftgLyfsgHJkdumaZhgA0XUFzMObh7VeQuCcsp+pAZH1wXrd3g9yH3OaNRaDsLfB1MRAb6/HI5PWN4tqqjgIWN4yVdRgG4BoDmG+TiuhJXqARJQS7E9/8iRbL1VSXziSe+41HkZuYUf+PAITAke5T/mluRYaxLuaxrzTG9nNRgNPO8L7H+pW4rkhw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by CH2PR12MB4875.namprd12.prod.outlook.com (2603:10b6:610:35::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.29; Wed, 29 Nov
+ 2023 19:04:24 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::60d4:c1e3:e1aa:8f93]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::60d4:c1e3:e1aa:8f93%4]) with mapi id 15.20.7046.015; Wed, 29 Nov 2023
+ 19:04:24 +0000
+Date: Wed, 29 Nov 2023 15:04:23 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: David Airlie <airlied@gmail.com>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Danilo Krummrich <dakr@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Dexuan Cui <decui@microsoft.com>, devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	David Woodhouse <dwmw2@infradead.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, iommu@lists.linux.dev,
+	Jon Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
+	Karol Herbst <kherbst@redhat.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>, Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+	linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Lyude Paul <lyude@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	nouveau@lists.freedesktop.org, Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Sven Peter <sven@svenpeter.dev>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Vineet Gupta <vgupta@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Wei Liu <wei.liu@kernel.org>, Will Deacon <will@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Christoph Hellwig <hch@lst.de>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Hector Martin <marcan@marcan.st>, Moritz Fischer <mdf@kernel.org>,
+	patches@lists.linux.dev,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Rob Herring <robh@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>
+Subject: Re: [PATCH 06/10] iommu: Replace iommu_device_lock with
+ iommu_probe_device_lock
+Message-ID: <20231129190423.GY436702@nvidia.com>
+References: <6-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
+ <788519ac-9ad7-459c-a57d-bfe1ec96db3e@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <788519ac-9ad7-459c-a57d-bfe1ec96db3e@arm.com>
+X-ClientProxiedBy: DM6PR13CA0033.namprd13.prod.outlook.com
+ (2603:10b6:5:bc::46) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1048123e-b608-4db1-8d5f-456dd113d06f@linux.alibaba.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|CH2PR12MB4875:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0a526538-107f-4943-f967-08dbf10e0069
+X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	VVmDavWiyQxxlsJUv56RzJ2UQIyjdgSyookmaLSqP8AGbnModIyi0BvWZIM5nyvAtassCobmSjERp1HP0AuY+CV3k3e2e3RusTU+0ExlxBPCkTJjumTmBNyzUASsEJ1KFkiAEdGSG7yEEbwjx1nt8Y9YUTuUoZiH7KMEr5b3GiWj2begTA1RiUN9YGutkZC1tDbkIaDIvJYm48K4pt/I0dzewwBJ9Q71CH+zdsN4Xm+7be2z5wza+D0ZwhTtGTD3BW11O2jdm6yDo7053btxMZ4zKzvtPjUIrOCWBdWbML4W+SADDL/mJcPY1KM4mZV24VCre4yEJ+jR3az3keqkfR4rpILYEB5uOGdhRqlXM2rEJDIVklDMdWmOKtVdYPEfINkbinA6qwfZKWG4Oo7NbDTX9IRZX2MdMQ0k8wM9Q6RsyCxuBfMSU6///bGbzin7c2AAd3mpWoNkVPmhUxH/7wWEOkUfCu9Yjbm+W49i8o6ES4DFUYo2yAWpRyE35w2cNVhPIQn2yhAM01gUNEuKe7ufO8aMR7boPjZAm3duMaHjoobsl3JHr1oZgbnJ2PvVGN4tDXtc9dKkUXHia+dJ5+QDqdJSzNlkCM2uWt+vCsn2BHJoCgEqv0P6FsZXc1r8
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(366004)(376002)(39860400002)(396003)(136003)(230922051799003)(64100799003)(186009)(1800799012)(451199024)(26005)(1076003)(2616005)(8676002)(6506007)(7366002)(7406005)(8936002)(86362001)(5660300002)(53546011)(4326008)(478600001)(6486002)(66476007)(6916009)(66946007)(54906003)(316002)(66556008)(7416002)(38100700002)(83380400001)(2906002)(6512007)(41300700001)(33656002)(36756003)(27376004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JvDSgHIZJl9L23pkRsSE8MXrYjjlQg4+8vOE3HMOQTe8eACJscZ5o2vkDp+R?=
+ =?us-ascii?Q?XQ/GBD59Qvp9iT0g394o40HCZ7iyatkSx2FTD76fu7yhdxyf4vttn6Bcduvm?=
+ =?us-ascii?Q?PPCjnUbMWO1wRV49vaRkZsT3ZenGlkaRLO11hJO3priALurDqmDitjATau+B?=
+ =?us-ascii?Q?LOPl2YiWZRcwgB+X+CH33G1HGGr6kILVO6HhqQvTUkV0p+o8h5ZxryFpCUS/?=
+ =?us-ascii?Q?8hOOIO1AuEhCwvyIIh3A0nXrQqFhw1o4TjSI6HVwtNHI5VjHME7uWlEVgYoW?=
+ =?us-ascii?Q?/+9OkNjnmirIxnWGCpgMTqjkteq4loUOYQpiRW3UMwBxbMmbUWVdaSh5y3/V?=
+ =?us-ascii?Q?pgyPorR+IdD7GNBHBhuO+5PuRFY+Ru6GZp/a4FiErCeh6Z5VOG4czpy4bRFb?=
+ =?us-ascii?Q?CZK3F2bCzyqfsu2AiOIAkRqyQgtmKS5ne0bgcDOuCtETQ00k8f6X6CW+qmzR?=
+ =?us-ascii?Q?RWPrN0/qnGZo6EdI9hvIuA3jsJ3cr3gcT7bk/cQh7jlwaReFFDuq/tCr+D56?=
+ =?us-ascii?Q?EGMt4m6Izyl1dZUn5T1NlPhC1KJAmQuibyrV/L3oWQ5A67b/glJLQYZyi2wS?=
+ =?us-ascii?Q?Ywjk0foY+LnrHituiv6+PWi6anvoH6t8bBkzkbGanZRNuj4U60ha9kLLw9QM?=
+ =?us-ascii?Q?bCU9TZrDn5MQRPTXGQyleVwTMwx8scjFsx007APtZGgOczIJG0CnPwzCl6c7?=
+ =?us-ascii?Q?WeEe/sKjre/mNs51kHyHxMSy8w3gF1DxjYCxoCv2XdngxPZJHsXFsd9hvj7p?=
+ =?us-ascii?Q?e8qpEzcrYmbiXAHvMWy4FDUWb40/skd3KSINg6r8rnkPkCFFrNt9xkSShpv5?=
+ =?us-ascii?Q?fFxwjNvV5ANW9uKT4wV5SLs1JmZHDi57oKyn3Lzip/T7GYiFhRvFnc+fd+uN?=
+ =?us-ascii?Q?3bqrOE/YXpJ0DicCpXJd6c4bdAhO/YkrsGrlFzIgBFBk7TAYWsm9Ng+svZ01?=
+ =?us-ascii?Q?aQlIwqk15XEVo81C4xKzQ5aPp5YEcesT1mBAwZCLio1lMbAU8zONrIfPQzgz?=
+ =?us-ascii?Q?yqNVx6hGJnVOkkCT5aMgKKw/Pg2eAOIuUrTpbPYXYmnIS6qYuwvhV9s+EBJS?=
+ =?us-ascii?Q?gsVon+tPplThuubGQppTLAJ4xMhNwW8zZLV4C2GgA6HA5isrZQvoMecE8n00?=
+ =?us-ascii?Q?B2i+uf86enF0OQISjRrYe12299UAS46M/VpY3XE7HGh+dyEe8CzjjtFndM7S?=
+ =?us-ascii?Q?d/SNzjCO+q+TOv5aGlqRAjHIMSge9FvgSRIeU0ITCweonxYJ1VEQxJ0Xdp9U?=
+ =?us-ascii?Q?UmGKCZTfNNqn9bunpcR/uwKecn8y7bpt5nXuswu3m8T6LKEJ/ZK2SZZdBmV2?=
+ =?us-ascii?Q?A+7ULBrU3Qy+5YqwhVIekPHSBbf4rC8NTKavIoa9CkwS0ZmQjp4ZlTFpcRPu?=
+ =?us-ascii?Q?OZmbMo1zLmYfz8KD4Q+Vh3G+6FlzP3KN19eneWsqjqz+Zto6Af+yl1fmNwvE?=
+ =?us-ascii?Q?hnQ9tvvpMLy2QFFC3psZCskM+zpfZ2cF0i6sKAfNFppevBftAcatEvIRXCM0?=
+ =?us-ascii?Q?B5C3BR+NRZHwtLp/zCJof3QgEHO2/hz2Nz+d4hhzoNT+gjxWE016hvCUgSyS?=
+ =?us-ascii?Q?isGgNNck2OsNEuCO4FWAv8pf+BjBDqOefL5ApNRb?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a526538-107f-4943-f967-08dbf10e0069
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2023 19:04:24.3875
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oOzgwny9Glf/bwrIspiQt3TeF+85jcAvrLkFqH0+YnEgg/8/kROnD1ILWM7/gA8A
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4875
 
-Moving James to To:
-
-On Sun, Nov 26, 2023 at 08:25:38PM +0800, Shuai Xue wrote:
-> > On Sat, Nov 25, 2023 at 02:44:52PM +0800, Shuai Xue wrote:
-> >> - an AR error consumed by current process is deferred to handle in a
-> >>   dedicated kernel thread, but memory_failure() assumes that it runs in the
-> >>   current context
+On Wed, Nov 29, 2023 at 05:58:08PM +0000, Robin Murphy wrote:
+> On 29/11/2023 12:48 am, Jason Gunthorpe wrote:
+> > The iommu_device_lock protects the iommu_device_list which is only read by
+> > iommu_ops_from_fwnode().
 > > 
-> > On x86? ARM?
-> > 
-> > Pease point to the exact code flow.
+> > This is now always called under the iommu_probe_device_lock, so we don't
+> > need to double lock the linked list. Use the iommu_probe_device_lock on
+> > the write side too.
 > 
-> An AR error consumed by current process is deferred to handle in a
-> dedicated kernel thread on ARM platform. The AR error is handled in bellow
-> flow:
-> 
-> -----------------------------------------------------------------------------
-> [usr space task einj_mem_uc consumd data poison, CPU 3]         STEP 0
-> 
-> -----------------------------------------------------------------------------
-> [ghes_sdei_critical_callback: current einj_mem_uc, CPU 3]		STEP 1
-> ghes_sdei_critical_callback
->     => __ghes_sdei_callback
->         => ghes_in_nmi_queue_one_entry 		// peak and read estatus
->         => irq_work_queue(&ghes_proc_irq_work) <=> ghes_proc_in_irq // irq_work
-> [ghes_sdei_critical_callback: return]
-> -----------------------------------------------------------------------------
-> [ghes_proc_in_irq: current einj_mem_uc, CPU 3]			        STEP 2
->             => ghes_do_proc
->                 => ghes_handle_memory_failure
->                     => ghes_do_memory_failure
->                         => memory_failure_queue	 // put work task on current CPU
->                             => if (kfifo_put(&mf_cpu->fifo, entry))
->                                   schedule_work_on(smp_processor_id(), &mf_cpu->work);
->             => task_work_add(current, &estatus_node->task_work, TWA_RESUME);
-> [ghes_proc_in_irq: return]
-> -----------------------------------------------------------------------------
-> // kworker preempts einj_mem_uc on CPU 3 due to RESCHED flag	STEP 3
-> [memory_failure_work_func: current kworker, CPU 3]	
->      => memory_failure_work_func(&mf_cpu->work)
->         => while kfifo_get(&mf_cpu->fifo, &entry);	// until get no work
->             => memory_failure(entry.pfn, entry.flags);
+> Please no, iommu_probe_device_lock() is a hack and we need to remove the
+> *reason* it exists at all.
 
-From the comment above that function:
+Yes, I agree that goal is good
 
- * The function is primarily of use for corruptions that
- * happen outside the current execution context (e.g. when
- * detected by a background scrubber)
- *
- * Must run in process context (e.g. a work queue) with interrupts
- * enabled and no spinlocks held.
+However, it is doing a lot of things, removing it is not so easy.
 
-> -----------------------------------------------------------------------------
-> [ghes_kick_task_work: current einj_mem_uc, other cpu]           STEP 4
->                 => memory_failure_queue_kick
->                     => cancel_work_sync - waiting memory_failure_work_func finish
->                     => memory_failure_work_func(&mf_cpu->work)
->                         => kfifo_get(&mf_cpu->fifo, &entry); // no work
-> -----------------------------------------------------------------------------
-> [einj_mem_uc resume at the same PC, trigger a page fault        STEP 5
-> 
-> STEP 0: A user space task, named einj_mem_uc consume a poison. The firmware
-> notifies hardware error to kernel through is SDEI
-> (ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED).
-> 
-> STEP 1: The swapper running on CPU 3 is interrupted. irq_work_queue() rasie
-> a irq_work to handle hardware errors in IRQ context
-> 
-> STEP2: In IRQ context, ghes_proc_in_irq() queues memory failure work on
-> current CPU in workqueue and add task work to sync with the workqueue.
-> 
-> STEP3: The kworker preempts the current running thread and get CPU 3. Then
-> memory_failure() is processed in kworker.
+One thing it is quietly doing is keeping the ops and iommu_device
+pointers alive during the entire probe process against(deeply broken,
+but whatever) concurrent iommu driver removal.
 
-See above.
+It is also protecting access to dev->iommu_group during the group
+formation process.
 
-> STEP4: ghes_kick_task_work() is called as task_work to ensure any queued
-> workqueue has been done before returning to user-space.
-> 
-> STEP5: Upon returning to user-space, the task einj_mem_uc resumes at the
-> current instruction, because the poison page is unmapped by
-> memory_failure() in step 3, so a page fault will be triggered.
-> 
-> memory_failure() assumes that it runs in the current context on both x86
-> and ARM platform.
-> 
-> 
-> for example:
-> 	memory_failure() in mm/memory-failure.c:
-> 
-> 		if (flags & MF_ACTION_REQUIRED) {
-> 			folio = page_folio(p);
-> 			res = kill_accessing_process(current, folio_pfn(folio), flags);
-> 		}
+So, it is a little more complex. My specific interest was to make it
+not a spinlock.
 
-And?
+> And IMO just because iommu_present() is
+> deprecated doesn't justify making it look utterly nonsensical - in no way
+> does that have any relationship with probe_device, much less need to
+> serialise against it!
 
-Do you see the check above it?
+The naming is poor now, I agree, but it is not nonsensical since it
+still holds the correct lock for the data it is accessing.
 
-	if (TestSetPageHWPoison(p)) {
-
-test_and_set_bit() returns true only when the page was poisoned already.
-
- * This function is intended to handle "Action Required" MCEs on already
- * hardware poisoned pages. They could happen, for example, when
- * memory_failure() failed to unmap the error page at the first call, or
- * when multiple local machine checks happened on different CPUs.
-
-And that's kill_accessing_process().
-
-So AFAIU, the kworker running memory_failure() would only mark the page
-as poison.
-
-The killing happens when memory_failure() runs again and the process
-touches the page again.
-
-But I'd let James confirm here.
-
-I still don't know what you're fixing here.
-
-Is this something you're encountering on some machine or you simply
-stared at code?
-
-What does that
-
-"Both Alibaba and Huawei met the same issue in products, and we hope it
-could be fixed ASAP."
-
-mean?
-
-What did you meet?
-
-What was the problem?
-
-I still note that you're avoiding answering the question what the issue
-is and if you keep avoiding it, I'll ignore this whole thread.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+Jason
 
