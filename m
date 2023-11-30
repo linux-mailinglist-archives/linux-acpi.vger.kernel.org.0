@@ -1,276 +1,164 @@
-Return-Path: <linux-acpi+bounces-1986-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1987-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36837FEABC
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 09:33:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ECF67FEF34
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 13:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D684C1C20E31
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 08:33:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFFFA1C203A5
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 12:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410273218A
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 08:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C49F4778D
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 12:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="P9Oeq6jo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hS29cAae"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C616C12C
-	for <linux-acpi@vger.kernel.org>; Wed, 29 Nov 2023 23:26:21 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-285afc7d53aso697934a91.0
-        for <linux-acpi@vger.kernel.org>; Wed, 29 Nov 2023 23:26:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1701329181; x=1701933981; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=/vaR9Py/1wlD3zkHO4kH1K6KgzRNK2LkfyWPObJ0DwQ=;
-        b=P9Oeq6joT9emA9oNnU89wkt56f/6q+TWP3vv961Xz/j4Nk8BHfOYKhdfyyojrV4QIx
-         ZZJ8yL3YeYSJKMPzwfZuanExbb5nphk+lpaOmuu/F4fF7pr7IISvqhhuEAAgpsLvNdK8
-         wQRrBSMVDtPqglMKLGZaOeKTF5Ja67s8h9dI+GAqJ0+G4Ez//+AowBQHzZqx//XVXk+w
-         EyWB507znPQ8FiK42+zC99YX3+ODASI1RON4vSVYo0jT36p9jBNQviCbD4eF6b/at2CV
-         hH9cOdWi7h2f4v+eXG5V/vbGdmYHcqyV9y4OObw9PGiwzDPke31u7fw8Y0d2wCQQEcDM
-         SWwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701329181; x=1701933981;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/vaR9Py/1wlD3zkHO4kH1K6KgzRNK2LkfyWPObJ0DwQ=;
-        b=HSrCkkQuzP8ihn3sqv5xJjFSeNomIR6OJYQKgR2hmMkUZDmH/+kKXY34n+SJ0vpNON
-         AcXkTI6jbbRSroZJj4H1kGlOQeVMscToo2QaR+8quaLB6kEY6rT4ahvHDptF7cMUGtN8
-         aFQmGasp9oAmtgHnBFYYLW40OixZ6wKNO2ySDNTVMrI5cq7/DlZFyTlmyq9Lp0b3IBY8
-         xHMZEtJDLHTJdZNzxhoDvQt4ai84H+Vsp2LXS7RFlryEoyksa8M9kJhHEJfc9eSCIumT
-         9UhaEZx9hZzzddZW0GidDGBBlsrUatLdDbcYFBNQqOdAq2zlldcKayjGOtnGDbPBc+Wj
-         nyuQ==
-X-Gm-Message-State: AOJu0Yy1W8pzmGpUCvd2rn4c/6XoE/eZ1SIH3LEbYrmGoa0qwQ/9IHgw
-	i3GQ6iwoBSXz7vJxmiuZ+XAHAA==
-X-Google-Smtp-Source: AGHT+IH2on3YHau4m4WDZtSzS0WzaeUBhPmKYsoqjQK6MFS9wCuSki2QkCdwcnsk3EBBXK/13hpGLA==
-X-Received: by 2002:a17:90b:1811:b0:285:b69c:a725 with SMTP id lw17-20020a17090b181100b00285b69ca725mr15602862pjb.12.1701329181182;
-        Wed, 29 Nov 2023 23:26:21 -0800 (PST)
-Received: from sunil-laptop ([106.51.188.200])
-        by smtp.gmail.com with ESMTPSA id ip1-20020a17090b314100b00285d330ae8bsm2503694pjb.57.2023.11.29.23.26.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Nov 2023 23:26:20 -0800 (PST)
-Date: Thu, 30 Nov 2023 12:56:09 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Cc: Bjorn Helgaas <helgaas@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-serial@vger.kernel.org,
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8B118E01;
+	Thu, 30 Nov 2023 11:12:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC73C433C7;
+	Thu, 30 Nov 2023 11:12:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701342762;
+	bh=GGfXE9jnMr/28RJ1AbOcy/7HFYYF7xL3m95Mfm15Tps=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hS29cAaeUtXdeK+kiZWZ8qW3M4rlyGHM7IrFWTDxn8Nt0aXiAvnbAmRc/aoZ3Gp0j
+	 V7SRDf/8hQJMNOEslGbmVEQwuQ3v/n0aab4QU6apKhqRzbBW1fGVCc4o5+lNiYt0iI
+	 /7/amZz6HtQ5TNJ7z/1iEkJX2GzxXQ/d0Y8W3VVN2EeZqpbt6InWklo12ZeEHk9H/Z
+	 dLnoiGTasJF7l2Ws/GUmhIMMkZ/lsrZ8w7RC7r6TB1mn3zon1xzXFqjFmv6WUa2sKK
+	 u5jJfB5MNcKrcJC5o7DP2m9wYEaZRsNjXWMH0W1KpYnQMkdMULlFup8a//0ud2c0XX
+	 Dh6gxHxqd0DdA==
+Date: Thu, 30 Nov 2023 12:12:26 +0100
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: linux-hyperv@vger.kernel.org, Karol Herbst <kherbst@redhat.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	dri-devel@lists.freedesktop.org, patches@lists.linux.dev,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Hanjun Guo <guohanjun@huawei.com>, linux-riscv@lists.infradead.org,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Wei Liu <wei.liu@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jon Hunter <jonathanh@nvidia.com>, linux-acpi@vger.kernel.org,
+	iommu@lists.linux.dev, Danilo Krummrich <dakr@redhat.com>,
+	nouveau@lists.freedesktop.org, linux-snps-arc@lists.infradead.org,
+	Len Brown <lenb@kernel.org>, devicetree@vger.kernel.org,
 	Albert Ou <aou@eecs.berkeley.edu>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Anup Patel <anup@brainfault.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Atish Kumar Patra <atishp@rivosinc.com>,
-	Haibo Xu <haibo1.xu@intel.com>, Marc Zyngier <maz@kernel.org>
-Subject: Re: [RFC PATCH v2 06/21] RISC-V: Kconfig: Select deferred GSI probe
- for ACPI systems
-Message-ID: <ZWg5ETNkcXuceDFY@sunil-laptop>
-References: <ZTuzJ1nsicZYp+uh@sunil-laptop>
- <20231106221606.GA264641@bhelgaas>
- <ZUtailOcozI9xIou@sunil-laptop>
- <87a5r6rn8f.fsf@all.your.base.are.belong.to.us>
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Will Deacon <will@kernel.org>, Sven Peter <sven@svenpeter.dev>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Vineet Gupta <vgupta@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+	Moritz Fischer <mdf@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	linux-tegra@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Vinod Koul <vkoul@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Hector Martin <marcan@marcan.st>, linux-mips@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>, asahi@lists.linux.dev,
+	Sudeep Holla <sudeep.holla@arm.com>, dmaengine@vger.kernel.org,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>
+Subject: Re: [PATCH 10/10] ACPI: IORT: Allow COMPILE_TEST of IORT
+Message-ID: <ZWhuGl1l5V5b+w4P@lpieralisi>
+References: <0-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
+ <10-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
+ <ZWc0qPWzNWPkL8vt@lpieralisi>
+ <20231129191240.GZ436702@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87a5r6rn8f.fsf@all.your.base.are.belong.to.us>
-X-Spam-Level: *
+In-Reply-To: <20231129191240.GZ436702@nvidia.com>
 
-Hi Björn!,
+On Wed, Nov 29, 2023 at 03:12:40PM -0400, Jason Gunthorpe wrote:
+> On Wed, Nov 29, 2023 at 01:55:04PM +0100, Lorenzo Pieralisi wrote:
+> 
+> > I don't think it should be done this way. Is the goal compile testing
+> > IORT code ? 
+> 
+> Yes
+> 
+> > If so, why are we forcing it through the SMMU (only because
+> > it can be compile tested while eg SMMUv3 driver can't ?) menu entry ?
+> 
+> Because something needs to select it, and SMMU is one of the places
+> that are implicitly using it.
+> 
+> It isn't (and shouldn't be) a user selectable kconfig. Currently the
+> only thing that selects it is the ARM64 master kconfig.
 
-Apologies for the delay in response. Held up with something else.
+I never said it should be a user selectable kconfig. I said that
+I don't like using the SMMU entry (only) to select it just because
+that entry allows COMPILE_TEST.
 
-On Wed, Nov 22, 2023 at 01:22:56PM +0100, Björn Töpel wrote:
-> Hi Sunil!
+> > This looks a bit artificial (and it is unclear from the Kconfig
+> > file why only that driver selects IORT, it looks like eg the SMMUv3
+> > does not have the same dependency - there is also the SMMUv3 perf
+> > driver to consider).
 > 
-> I'm trying to decipher this thread, so apologies in advance for the
-> stupid questions! :-P
->
-Appreciate your help to review the patch and suggesting solutions.
-Thank you very much!.
+> SMMUv3 doesn't COMPILE_TEST so it picks up the dependency transitivity
+> through ARM64. I'm not sure why IORT was put as a global ARM64 kconfig
+> dependency and not put in the places that directly need it.
 
-> Sunil V L <sunilvl@ventanamicro.com> writes:
-> 
-> > Hi Bjorn,
-> >
-> > On Mon, Nov 06, 2023 at 04:16:06PM -0600, Bjorn Helgaas wrote:
-> >> On Fri, Oct 27, 2023 at 06:25:03PM +0530, Sunil V L wrote:
-> >> > On Thu, Oct 26, 2023 at 12:04:08PM -0500, Bjorn Helgaas wrote:
-> >> > > On Thu, Oct 26, 2023 at 01:53:29AM +0530, Sunil V L wrote:
-> >> > > > On RISC-V platforms, apart from root interrupt controllers (which
-> >> > > > provide local interrupts and IPI), other interrupt controllers in the
-> >> > > > hierarchy are probed late. Enable this select this CONFIG option for
-> >> > > > RISC-V platforms so that device drivers which connect to deferred
-> >> > > > interrupt controllers can take appropriate action.
-> >> > > 
-> >> > > Quite a bit of this series seems related to the question of interrupt
-> >> > > controllers being probed "late".
-> >> > > 
-> >> > > I don't see anything specific about *how* late this might be, but from
-> >> > > the use of -EPROBE_DEFER in individual drivers (8250_pnp explicitly,
-> >> > > and acpi_register_gsi() and pnp_irq() and acpi_pci_irq_enable(), which
-> >> > > are called from driver .probe() paths) it seems like interrupt
-> >> > > controllers might be detected even after devices that use them.
-> >> > > 
-> >> > > That seems like a fairly invasive change to the driver probe flow.
-> >> > > If we really need to do that, I think it might merit a little more
-> >> > > background as justification since we haven't had to do it for any
-> >> > > other arch yet.
-> >> > 
-> >> > In RISC-V, the APLIC can be a converter from wired (GSI) to MSI interrupts.
-> >> > Hence, especially in this mode, it has to be a platform device to use
-> >> > device MSI domain. Also, according to Marc Zyngier there is no reason to
-> >> > probe interrupt controllers early apart from root controller. So, the
-> >> > device drivers which use wired interrupts need to be probed after APLIC.
-> >> > 
-> >> > The PNP devices and PCI INTx GSI links use either
-> >> > acpi_dev_resource_interrupt() (PNP) or acpi_register_gsi() directly
-> >> > (PCI). The approach taken here is to follow the example of
-> >> > acpi_irq_get() which is enhanced to return EPROBE_DEFER and several
-> >> > platform device drivers which use platform_get_irq() seem to be handling
-> >> > this already.
-> >> 
-> >> This series (patch 04/21 "ACPI: irq: Add support for deferred probe in
-> >> acpi_register_gsi()" [1]) makes acpi_register_gsi() return
-> >> -EPROBE_DEFER, which percolates up through pci_enable_device().
-> >> 
-> >> Maybe that's ok, but this affects *all* PCI drivers, and it's a new
-> >> case that did not occur before.  Many drivers emit warning or error
-> >> messages for any pci_enable_device() failure, which you probably don't
-> >> want in this case, since -EPROBE_DEFER is not really a "failure";
-> >> IIUC, it just means "probe again later."
-> >>
-> > Yeah, I think all the drivers which need to be supported on RISC-V
-> > ACPI based systems will have to support deferred probe with this scheme.
-> >
-> >> > Using ResourceSource dependency (mbigen uses) in the namespace as part of
-> >> > Extended Interrupt Descriptor will not ensure the order since PNP/INTx
-> >> > GSI devices don't work with that.
-> >> 
-> >> Are these PNP/INTx GSI devices described in ACPI?  In the namespace?
-> >> Or in a static table?
-> >> 
-> > Yes, these are standard devices in the namespace. For ex: PNP0501(16550)
-> > or PNP0C0F (PCI interrupt link devices) are in the namespace.
-> >
-> >> > Is there any other better way to create dependency between IO devices
-> >> > and the interrupt controllers when interrupt controller itself is a
-> >> > platform device? While using core_initcall() for interrupt controllers
-> >> > seem to work which forces the interrupt controller to be probed first,
-> >> > Marc is not in favor of that approach since it is fragile.
-> >> 
-> >> I guess PCI interrupts from the PCI host bridges (PNP0A03 devices)
-> >> feed into the APLIC?  And APLIC is described via MADT?  Based on this
-> >> series, it looks like this:
-> >> 
-> >>     acpi_init
-> >>   +   acpi_riscv_init
-> >>   +     riscv_acpi_aplic_platform_init
-> >>   +       acpi_table_parse_madt(ACPI_MADT_TYPE_APLIC, aplic_parse_madt, 0)
-> >>       acpi_scan_init
-> >>         acpi_pci_root_init
-> >>         acpi_pci_link_init
-> >> 	acpi_bus_scan             # add PCI host bridges, etc
-> >> 
-> >> If that's the sequence, it looks like aplic_parse_madt() should be
-> >> called before the PCI host bridges are added.
-> >> 
-> >> Or maybe this isn't how the APLICs are enumerated?
-> >> 
-> > That's partly correct. APLIC platform devices are created prior to PCI
-> > host bridges added. But the actual APLIC driver which creates the
-> > irqdomain will be probed as a regular platform driver for the APLIC
-> > device. The platform driver probe will happen using DD framework and
-> > devices don't have any dependency on APLIC which can cause device probe
-> > prior to APLIC driver probe.
-> >
-> > DT supports fw_devlink framework which makes it easier for IRQ devices
-> > to use regular platform drivers and produces-consumers are probed in the
-> > order without requiring drivers to do deferred probe. But I don't see
-> > that supported for ACPI framework.  Also, the way PNP devices get added
-> > there is an assumption that interrupt controller is already setup fully.
-> 
-> AFAIU, the -EPROBE_DEFER changes are needed for GSIs (and the way the
-> IMSIC/APLIC irqchip series is structured), right?
-> 
-Yes, It is only for GSI's.
+Because IORT is used by few ARM64 system IPs (that are enabled by
+default, eg GIC), it makes sense to have a generic ARM64 select (if ACPI).
 
-> There's a couple of separate pieces in play here:
-> 1. IMSIC-IPI (MADT init)
-> 2. IMSIC-MSI (MADT init, imsic_platform_acpi_probe() patch 14)
-> 3. APLIC-wired (platform)
-> 4. APLIC-MSI-bridge (platform)
-> 
-> APLIC-MSI-bridge is pretty much a RISC-V mbigen.
-> 
-> Some devices do not have ResourceSource parsing implemented yet. The PNP
-> devices that cannot use ResourceSource (you mention PNP0501 (16550) and
-> PNP0C0F (PCI interrupt link devices), do we really need to care about
-> them for the RISC-V platforms using ACPI? If that would change, the
-> kernel drivers can be adjusted (d44fa3d46079 ("ACPI: Add support for
-> ResourceSource/IRQ domain mapping"))?
-> 
-> I guess my question is we need to care about GSIs w/o explicit
-> ResourceSource, so that APLIC-MSI-bridge can be used.
-> 
-> GED works nicely with ResourceSource, and covers a lot of the GSI
-> use-cases, no?
-> 
-> And if we do care, then *both* 3 and 4 would need at MADT scan
-> point/init, and not be a platform device (late init).
-> 
-I am not sure it is a good idea not to support PCI link devices. Not
-allowing them removes the flexibility in _PRT. Also, is there a standard
-16550 UART apart from PNP0501? ACPI platform devices already support
-deferred probe as per the series you mentioned. IMO, PNP also should
-support it. So, I am not sure it is a good idea to prohibit all PnP
-devices on RISC-V platforms. Other OS's might be able to handle them.
+> "perf driver" ? There is a bunch of GIC stuff that uses this too but I
+> don't know if it compile tests.
 
-> From my, probably naive perspective, it's a bit weird *not* to create
-> the irq domains at MADT scan time.
-> 
-> > With this new use case in RISC-V, here are the alternatives I am aware of.
-> >
-> > 1) Use core_initcall() in the APLIC drivers which makes APLIC driver to
-> > be probed prior to PNP or PCI INTx devices. But this was ruled out in
-> > the context of DT from Marc.
-> >
-> > 2) Like the approach tried in this series, add support for deferred
-> > probe in drivers. This will be invasive change requiring many drivers to
-> > change like you pointed.
-> 
-> Again is this only for GSIs? Patch 14 moves the IMSIC-MSI init to MADT
-> for PCIe devices (which is different from DT), so it's not for PCIe
-> devices. I wonder if it's a lot of churn for something that will not be
-> used for RISC-V ACPI systems...
-> 
-> A quick look at what Arm's GICv3 does, all irq domains are created at
-> MADT init.
-> 
-The issue is primarily with APLIC-MSI. Since it needs MSI device domain,
-it has to be a platform device.
+"SMMUv3 perf driver" drivers/perf/arm_smmuv3_pmu.c
 
-I am investigating fw-devlink like Marc suggested atleast for IRQ
-dependencies. If that works, it would be the best solution.
+> > Maybe we can move IORT code into drivers/acpi and add a silent config
+> > option there with a dependency on ARM64 || COMPILE_TEST.
+> 
+> That seems pretty weird to me, this is the right way to approach it,
+> IMHO. Making an entire directory condition is pretty incompatible with
+> COMPILE_TEST as a philosophy.
+
+That's not what I was suggesting. I was suggesting to move iort.c (or
+some portions of it) into drivers/acpi if we care enough to compile test
+it on arches !ARM64.
+
+It is also weird to have a file in drivers/acpi/arm64 that you want
+to compile test on other arches IMO (and I don't think it is very useful
+to compile test it either).
+
+> > Don't know but at least it is clearer. As for the benefits of compile
+> > testing IORT code - yes the previous patch is a warning to fix but
+> > I am not so sure about the actual benefits.
+> 
+> IMHO COMPILE_TEST is an inherently good thing. It makes development
+> easier for everyone because you have a less fractured code base to
+> work with.
+
+I am talking about IORT code, not COMPILE_TEST as a whole.
+
+I am not sure what "less fractured" means in this context.
+
+Anyway - it is not a big deal either way but I don't like selecting
+ACPI_IORT only on kconfig entries that allow COMPILE_TEST to implicitly
+compile test it so *if* we want to do it we will have to do it
+differently.
 
 Thanks,
-Sunil
+Lorenzo
 
