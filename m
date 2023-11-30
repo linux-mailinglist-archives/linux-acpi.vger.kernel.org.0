@@ -1,289 +1,187 @@
-Return-Path: <linux-acpi+bounces-1975-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1976-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA577FE84A
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 05:36:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50FE77FE84B
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 05:37:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A3F0281D63
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 04:36:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B178281D63
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 04:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A71168DD
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 04:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78321B290
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 04:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dMU82C4Z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3CE0CC;
-	Wed, 29 Nov 2023 18:59:03 -0800 (PST)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0VxQ.im6_1701313137;
-Received: from 30.240.112.131(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VxQ.im6_1701313137)
-          by smtp.aliyun-inc.com;
-          Thu, 30 Nov 2023 10:59:00 +0800
-Message-ID: <a3cd9b79-4be5-4f77-b32a-51a624a65ec0@linux.alibaba.com>
-Date: Thu, 30 Nov 2023 10:58:53 +0800
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72964CB2D
+	for <linux-acpi@vger.kernel.org>; Thu, 30 Nov 2023 03:46:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1247C433C8;
+	Thu, 30 Nov 2023 03:46:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701315975;
+	bh=ImiOiQhvhKUUm5oVJgUSz68972qeSMdz2GSy/eO9yLU=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=dMU82C4ZeK1W24ImseHcnSX0eL44pgYFISp5T440Je2Vd4TeXkzuVRypQvfXrKPsd
+	 /0FMytuxWOCgVYRvEYAVtske8klm2NTIA2bGF7Tx6CqN3EriCImp1Ji7IsGMmrPp1y
+	 UOkZBMLNF2jl60vh6uyUw4BwYoOVoBfd/QqQSFORM52fnvrNgBje020OVD8yFZAaJr
+	 nHXBZX/ZJxahbdCW/IMPHnP/F4yA/Bvr9ZZjpjUiJTpQOIl9aJS3XHY88xdAAlIn0v
+	 kfHoDg2K/N/V1W2aSIqJ1+NUCiVnrzpM6F+0m12/vvOOTXXkmfC1q4vbljJKxBzetP
+	 PrL+7oqIEFKTA==
+Date: Wed, 29 Nov 2023 19:46:11 -0800 (PST)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: Jiqian Chen <Jiqian.Chen@amd.com>
+cc: Juergen Gross <jgross@suse.com>, 
+    Stefano Stabellini <sstabellini@kernel.org>, 
+    Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
+    Thomas Gleixner <tglx@linutronix.de>, 
+    Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+    "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+    Bjorn Helgaas <bhelgaas@google.com>, 
+    =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
+    xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org, 
+    linux-acpi@vger.kernel.org, 
+    Stefano Stabellini <stefano.stabellini@amd.com>, 
+    Alex Deucher <Alexander.Deucher@amd.com>, 
+    Christian Koenig <Christian.Koenig@amd.com>, 
+    Stewart Hildebrand <Stewart.Hildebrand@amd.com>, 
+    Xenia Ragiadakou <xenia.ragiadakou@amd.com>, 
+    Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>, 
+    Huang Rui <Ray.Huang@amd.com>, Huang Rui <ray.huang@amd.com>
+Subject: Re: [RFC KERNEL PATCH v2 1/3] xen/pci: Add xen_reset_device_state
+ function
+In-Reply-To: <20231124103123.3263471-2-Jiqian.Chen@amd.com>
+Message-ID: <alpine.DEB.2.22.394.2311291943260.3533093@ubuntu-linux-20-04-desktop>
+References: <20231124103123.3263471-1-Jiqian.Chen@amd.com> <20231124103123.3263471-2-Jiqian.Chen@amd.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task work
- with proper si_code
-To: Borislav Petkov <bp@alien8.de>, james.morse@arm.com
-Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
- mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
- naoya.horiguchi@nec.com, gregkh@linuxfoundation.org, will@kernel.org,
- jarkko@kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
- stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
- ying.huang@intel.com, ashish.kalra@amd.com, baolin.wang@linux.alibaba.com,
- tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
- lenb@kernel.org, hpa@zytor.com, robert.moore@intel.com, lvying6@huawei.com,
- xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20231007072818.58951-1-xueshuai@linux.alibaba.com>
- <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
- <9e92e600-86a4-4456-9de4-b597854b107c@linux.alibaba.com>
- <20231125121059.GAZWHkU27odMLns7TZ@fat_crate.local>
- <1048123e-b608-4db1-8d5f-456dd113d06f@linux.alibaba.com>
- <20231129185406.GBZWeIzqwgRQe7XDo/@fat_crate.local>
-Content-Language: en-US
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20231129185406.GBZWeIzqwgRQe7XDo/@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 
-
-
-On 2023/11/30 02:54, Borislav Petkov wrote:
-> Moving James to To:
+On Fri, 24 Nov 2023, Jiqian Chen wrote:
+> When device on dom0 side has been reset, the vpci on Xen side
+> won't get notification, so that the cached state in vpci is
+> all out of date with the real device state.
+> To solve that problem, this patch add a function to clear all
+> vpci device state when device is reset on dom0 side.
 > 
-> On Sun, Nov 26, 2023 at 08:25:38PM +0800, Shuai Xue wrote:
->>> On Sat, Nov 25, 2023 at 02:44:52PM +0800, Shuai Xue wrote:
->>>> - an AR error consumed by current process is deferred to handle in a
->>>>   dedicated kernel thread, but memory_failure() assumes that it runs in the
->>>>   current context
->>>
->>> On x86? ARM?
->>>
->>> Pease point to the exact code flow.
->>
->> An AR error consumed by current process is deferred to handle in a
->> dedicated kernel thread on ARM platform. The AR error is handled in bellow
->> flow:
->>
->> -----------------------------------------------------------------------------
->> [usr space task einj_mem_uc consumd data poison, CPU 3]         STEP 0
->>
->> -----------------------------------------------------------------------------
->> [ghes_sdei_critical_callback: current einj_mem_uc, CPU 3]		STEP 1
->> ghes_sdei_critical_callback
->>     => __ghes_sdei_callback
->>         => ghes_in_nmi_queue_one_entry 		// peak and read estatus
->>         => irq_work_queue(&ghes_proc_irq_work) <=> ghes_proc_in_irq // irq_work
->> [ghes_sdei_critical_callback: return]
->> -----------------------------------------------------------------------------
->> [ghes_proc_in_irq: current einj_mem_uc, CPU 3]			        STEP 2
->>             => ghes_do_proc
->>                 => ghes_handle_memory_failure
->>                     => ghes_do_memory_failure
->>                         => memory_failure_queue	 // put work task on current CPU
->>                             => if (kfifo_put(&mf_cpu->fifo, entry))
->>                                   schedule_work_on(smp_processor_id(), &mf_cpu->work);
->>             => task_work_add(current, &estatus_node->task_work, TWA_RESUME);
->> [ghes_proc_in_irq: return]
->> -----------------------------------------------------------------------------
->> // kworker preempts einj_mem_uc on CPU 3 due to RESCHED flag	STEP 3
->> [memory_failure_work_func: current kworker, CPU 3]	
->>      => memory_failure_work_func(&mf_cpu->work)
->>         => while kfifo_get(&mf_cpu->fifo, &entry);	// until get no work
->>             => memory_failure(entry.pfn, entry.flags);
+> And call that function in pcistub_init_device. Because when
+> we use "pci-assignable-add" to assign a passthrough device in
+> Xen, it will reset passthrough device and the vpci state will
+> out of date, and then device will fail to restore bar state.
 > 
-> From the comment above that function:
+> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> ---
+>  drivers/xen/pci.c                  | 12 ++++++++++++
+>  drivers/xen/xen-pciback/pci_stub.c |  3 +++
+>  include/xen/interface/physdev.h    |  2 ++
+>  include/xen/pci.h                  |  6 ++++++
+>  4 files changed, 23 insertions(+)
 > 
->  * The function is primarily of use for corruptions that
->  * happen outside the current execution context (e.g. when
->  * detected by a background scrubber)
->  *
->  * Must run in process context (e.g. a work queue) with interrupts
->  * enabled and no spinlocks held.
+> diff --git a/drivers/xen/pci.c b/drivers/xen/pci.c
+> index 72d4e3f193af..e9b30bc09139 100644
+> --- a/drivers/xen/pci.c
+> +++ b/drivers/xen/pci.c
+> @@ -177,6 +177,18 @@ static int xen_remove_device(struct device *dev)
+>  	return r;
+>  }
+>  
+> +int xen_reset_device_state(const struct pci_dev *dev)
+> +{
+> +	struct physdev_pci_device device = {
+> +		.seg = pci_domain_nr(dev->bus),
+> +		.bus = dev->bus->number,
+> +		.devfn = dev->devfn
+> +	};
+> +
+> +	return HYPERVISOR_physdev_op(PHYSDEVOP_pci_device_state_reset, &device);
+> +}
+> +EXPORT_SYMBOL_GPL(xen_reset_device_state);
+> +
+>  static int xen_pci_notifier(struct notifier_block *nb,
+>  			    unsigned long action, void *data)
+>  {
+> diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/pci_stub.c
+> index e34b623e4b41..5a96b6c66c07 100644
+> --- a/drivers/xen/xen-pciback/pci_stub.c
+> +++ b/drivers/xen/xen-pciback/pci_stub.c
+> @@ -421,6 +421,9 @@ static int pcistub_init_device(struct pci_dev *dev)
+>  	else {
+>  		dev_dbg(&dev->dev, "resetting (FLR, D3, etc) the device\n");
+>  		__pci_reset_function_locked(dev);
+> +		err = xen_reset_device_state(dev);
+> +		if (err)
+> +			goto config_release;
 
-Hi, Borislav,
+Older versions of Xen won't have the hypercall
+PHYSDEVOP_pci_device_state_reset implemented. I think we should do
+something like:
 
-Thank you for your comments.
+if (err && xen_pvh_domain())
+    goto config_release;
 
-But we are talking about Action Required error, it does happen *inside the
-current execution context*.  The Action Required error does not meet the
-function comments.
 
+Or even:
+
+if (xen_pvh_domain()) {
+    err = xen_reset_device_state(dev);
+    if (err)
+        goto config_release;
+}
+
+depending on whether we want to call xen_reset_device_state also for PV
+guests or not. I am assuming we don't want to error out on failure such
+as -ENOENT for PV guests.
+
+
+>  		pci_restore_state(dev);
+>  	}
+>  	/* Now disable the device (this also ensures some private device
+> diff --git a/include/xen/interface/physdev.h b/include/xen/interface/physdev.h
+> index a237af867873..231526f80f6c 100644
+> --- a/include/xen/interface/physdev.h
+> +++ b/include/xen/interface/physdev.h
+> @@ -263,6 +263,8 @@ struct physdev_pci_device {
+>      uint8_t devfn;
+>  };
+>  
+> +#define PHYSDEVOP_pci_device_state_reset     32
+> +
+>  #define PHYSDEVOP_DBGP_RESET_PREPARE    1
+>  #define PHYSDEVOP_DBGP_RESET_DONE       2
+>  
+> diff --git a/include/xen/pci.h b/include/xen/pci.h
+> index b8337cf85fd1..b2e2e856efd6 100644
+> --- a/include/xen/pci.h
+> +++ b/include/xen/pci.h
+> @@ -4,10 +4,16 @@
+>  #define __XEN_PCI_H__
+>  
+>  #if defined(CONFIG_XEN_DOM0)
+> +int xen_reset_device_state(const struct pci_dev *dev);
+>  int xen_find_device_domain_owner(struct pci_dev *dev);
+>  int xen_register_device_domain_owner(struct pci_dev *dev, uint16_t domain);
+>  int xen_unregister_device_domain_owner(struct pci_dev *dev);
+>  #else
+> +static inline int xen_reset_device_state(const struct pci_dev *dev)
+> +{
+> +	return -1;
+> +}
+> +
+>  static inline int xen_find_device_domain_owner(struct pci_dev *dev)
+>  {
+>  	return -1;
+> -- 
+> 2.34.1
 > 
->> -----------------------------------------------------------------------------
->> [ghes_kick_task_work: current einj_mem_uc, other cpu]           STEP 4
->>                 => memory_failure_queue_kick
->>                     => cancel_work_sync - waiting memory_failure_work_func finish
->>                     => memory_failure_work_func(&mf_cpu->work)
->>                         => kfifo_get(&mf_cpu->fifo, &entry); // no work
->> -----------------------------------------------------------------------------
->> [einj_mem_uc resume at the same PC, trigger a page fault        STEP 5
->>
->> STEP 0: A user space task, named einj_mem_uc consume a poison. The firmware
->> notifies hardware error to kernel through is SDEI
->> (ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED).
->>
->> STEP 1: The swapper running on CPU 3 is interrupted. irq_work_queue() rasie
->> a irq_work to handle hardware errors in IRQ context
->>
->> STEP2: In IRQ context, ghes_proc_in_irq() queues memory failure work on
->> current CPU in workqueue and add task work to sync with the workqueue.
->>
->> STEP3: The kworker preempts the current running thread and get CPU 3. Then
->> memory_failure() is processed in kworker.
-> 
-> See above.
-> 
->> STEP4: ghes_kick_task_work() is called as task_work to ensure any queued
->> workqueue has been done before returning to user-space.
->>
->> STEP5: Upon returning to user-space, the task einj_mem_uc resumes at the
->> current instruction, because the poison page is unmapped by
->> memory_failure() in step 3, so a page fault will be triggered.
->>
->> memory_failure() assumes that it runs in the current context on both x86
->> and ARM platform.
->>
->>
->> for example:
->> 	memory_failure() in mm/memory-failure.c:
->>
->> 		if (flags & MF_ACTION_REQUIRED) {
->> 			folio = page_folio(p);
->> 			res = kill_accessing_process(current, folio_pfn(folio), flags);
->> 		}
-> 
-> And?
-> 
-> Do you see the check above it?
-> 
-> 	if (TestSetPageHWPoison(p)) {
-> 
-> test_and_set_bit() returns true only when the page was poisoned already.
-> 
->  * This function is intended to handle "Action Required" MCEs on already
->  * hardware poisoned pages. They could happen, for example, when
->  * memory_failure() failed to unmap the error page at the first call, or
->  * when multiple local machine checks happened on different CPUs.
-> 
-> And that's kill_accessing_process().
-> 
-> So AFAIU, the kworker running memory_failure() would only mark the page
-> as poison.
-> 
-> The killing happens when memory_failure() runs again and the process
-> touches the page again.
-
-When a Action Required error occurs, it triggers a MCE-like exception
-(SEA).  In the first call of memory_failure(), it will poison the page. If
-it failed to unmap the error page, the user space task resumes at the
-current PC and triggers another SEA exception, then the second call of
-memory_failure() will run into kill_accessing_process() which do nothing
-and just return -EFAULT. As a result, a third SEA exception will be
-triggered.  Finally, a exception loop happens resulting a hard lockup
-panic.
-
-> 
-> But I'd let James confirm here.
->
-> 
-> I still don't know what you're fixing here.
-
-In ARM64 platform, when a Action Required error occurs, the kernel should
-send SIGBUS with si_code BUS_MCEERR_AR instead of BUS_MCEERR_AO. (It is
-also the subject of this thread)
-
-> 
-> Is this something you're encountering on some machine or you simply
-> stared at code?
-
-I met the wrong si_code problem on Yitian 710 machine which is based on
-ARM64 platform. And I think it is gernel on ARM64 platfrom.
-
-To reproduce this problem:
-
-	# STEP1: enable early kill mode
-	#sysctl -w vm.memory_failure_early_kill=1
-	vm.memory_failure_early_kill = 1
-
-	# STEP2: inject an UCE error and consume it to trigger a synchronous error
-	#einj_mem_uc single
-	0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
-	injecting ...
-	triggering ...
-	signal 7 code 5 addr 0xffffb0d75000
-	page not present
-	Test passed
-
-The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO error
-and it is not fact.
-
-After this patch set:
-
-	# STEP1: enable early kill mode
-	#sysctl -w vm.memory_failure_early_kill=1
-	vm.memory_failure_early_kill = 1
-
-	# STEP2: inject an UCE error and consume it to trigger a synchronous error
-	#einj_mem_uc single
-	0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
-	injecting ...
-	triggering ...
-	signal 7 code 4 addr 0xffffb0d75000
-	page not present
-	Test passed
-
-The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR error
-as we expected.
-
-
-> 
-> What does that
-> 
-> "Both Alibaba and Huawei met the same issue in products, and we hope it
-> could be fixed ASAP."
-> 
-> mean?
-> 
-> What did you meet?
-> 
-> What was the problem?
-
-We both got wrong si_code of SIGBUS from kernel side on ARM64 platform.
-
-The VMM in our product relies on the si_code of SIGBUS to handle memory
-failure in userspace.
-
-- For BUS_MCEERR_AO, we regard that the corruptions happen *outside the
-  current execution context* e.g. detected by a background scrubber, the
-  VMM will ignore the error and the VM will not be killed immediately.
-- For BUS_MCEERR_AR, we regard that the corruptions happen *insdie the
-  current execution context*, e.g. when a data poison is consumed, the VMM
-  will kill the VM immediately to avoid any further potential data
-  propagation.
-
-> 
-> I still note that you're avoiding answering the question what the issue
-> is and if you keep avoiding it, I'll ignore this whole thread.
-> 
-
-Sorry, Borislav, thank you for your patient and time. I really appreciate
-that you are involving in to review this patchset. But I have to say it is
-not the truth, I am avoiding anything. I tried my best to answer every comments
-you raised, give the details of ARM RAS specific and code flow.
-
-Best Regards,
-Shuai
-
 
