@@ -1,84 +1,64 @@
-Return-Path: <linux-acpi+bounces-1987-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1988-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ECF67FEF34
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 13:37:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E66747FEF35
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 13:38:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFFFA1C203A5
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 12:37:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FE62B20CFD
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 12:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C49F4778D
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 12:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05933D384
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 12:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hS29cAae"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="GbSXqQ+v"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8B118E01;
-	Thu, 30 Nov 2023 11:12:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC73C433C7;
-	Thu, 30 Nov 2023 11:12:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701342762;
-	bh=GGfXE9jnMr/28RJ1AbOcy/7HFYYF7xL3m95Mfm15Tps=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hS29cAaeUtXdeK+kiZWZ8qW3M4rlyGHM7IrFWTDxn8Nt0aXiAvnbAmRc/aoZ3Gp0j
-	 V7SRDf/8hQJMNOEslGbmVEQwuQ3v/n0aab4QU6apKhqRzbBW1fGVCc4o5+lNiYt0iI
-	 /7/amZz6HtQ5TNJ7z/1iEkJX2GzxXQ/d0Y8W3VVN2EeZqpbt6InWklo12ZeEHk9H/Z
-	 dLnoiGTasJF7l2Ws/GUmhIMMkZ/lsrZ8w7RC7r6TB1mn3zon1xzXFqjFmv6WUa2sKK
-	 u5jJfB5MNcKrcJC5o7DP2m9wYEaZRsNjXWMH0W1KpYnQMkdMULlFup8a//0ud2c0XX
-	 Dh6gxHxqd0DdA==
-Date: Thu, 30 Nov 2023 12:12:26 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-hyperv@vger.kernel.org, Karol Herbst <kherbst@redhat.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 152D3C1;
+	Thu, 30 Nov 2023 04:10:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=2TjoRav92l6lGBHcgQ1IFwrVpqblxm0gDdEjjO9i59E=; b=GbSXqQ+vl+tK08waHI4y515wqP
+	Q86qDI1AgJw1pLC5ZapIOzsHoJpbnsFqID0QXfxFNjS8NE1MxyGJvaPAqP8UXgXPG+OkIiwqvFlE5
+	DgMw0T2oet8bb4vL8QGSd9PVtRm2H4WDDGvigxdO5dtwqWYIgGY2ZdIGbI4X/r0gW1UEzOMr2Dmde
+	viBSuF8wOnZothwOKj7mlCWoQjHiCqAqz6lM/4ThVWLIR5o09TLvAb3QvQ8+pRelrxSE2XAmAfbqe
+	GcIF1ksl2SBgzx/SYAZ9ZHOSd1E0v1qAotFN0UA7XzmyxTTFDemZpu8Qw++hpXqEzqrc9ikD4vd5b
+	kcwkIMUQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51064)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1r8frh-0001gG-1i;
+	Thu, 30 Nov 2023 12:09:57 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1r8frg-00050Q-P4; Thu, 30 Nov 2023 12:09:56 +0000
+Date: Thu, 30 Nov 2023 12:09:56 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, linux-csky@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
+	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
-	Jerry Snitselaar <jsnitsel@redhat.com>,
-	dri-devel@lists.freedesktop.org, patches@lists.linux.dev,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Hanjun Guo <guohanjun@huawei.com>, linux-riscv@lists.infradead.org,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Wei Liu <wei.liu@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Jon Hunter <jonathanh@nvidia.com>, linux-acpi@vger.kernel.org,
-	iommu@lists.linux.dev, Danilo Krummrich <dakr@redhat.com>,
-	nouveau@lists.freedesktop.org, linux-snps-arc@lists.infradead.org,
-	Len Brown <lenb@kernel.org>, devicetree@vger.kernel.org,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Will Deacon <will@kernel.org>, Sven Peter <sven@svenpeter.dev>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Vineet Gupta <vgupta@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-	Moritz Fischer <mdf@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	linux-tegra@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Vinod Koul <vkoul@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Hector Martin <marcan@marcan.st>, linux-mips@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, asahi@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@arm.com>, dmaengine@vger.kernel.org,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>
-Subject: Re: [PATCH 10/10] ACPI: IORT: Allow COMPILE_TEST of IORT
-Message-ID: <ZWhuGl1l5V5b+w4P@lpieralisi>
-References: <0-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
- <10-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
- <ZWc0qPWzNWPkL8vt@lpieralisi>
- <20231129191240.GZ436702@nvidia.com>
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH RFC 14/22] arm64: convert to arch_cpu_is_hotpluggable()
+Message-ID: <ZWh7lA9+goBzAprN@shell.armlinux.org.uk>
+References: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
+ <E1r0JLq-00CTxq-CF@rmk-PC.armlinux.org.uk>
+ <20231128151115.00007726@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -87,78 +67,26 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231129191240.GZ436702@nvidia.com>
+In-Reply-To: <20231128151115.00007726@Huawei.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, Nov 29, 2023 at 03:12:40PM -0400, Jason Gunthorpe wrote:
-> On Wed, Nov 29, 2023 at 01:55:04PM +0100, Lorenzo Pieralisi wrote:
+On Tue, Nov 28, 2023 at 03:11:15PM +0000, Jonathan Cameron wrote:
+> On Tue, 07 Nov 2023 10:30:30 +0000
+> "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk> wrote:
 > 
-> > I don't think it should be done this way. Is the goal compile testing
-> > IORT code ? 
+> > Convert arm64 to use the arch_cpu_is_hotpluggable() helper rather than
+> > arch_register_cpu().
+> > 
+> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Ah. Or previous patch needs a forwards reference to the tweaking
+> of it it here.
 > 
-> Yes
-> 
-> > If so, why are we forcing it through the SMMU (only because
-> > it can be compile tested while eg SMMUv3 driver can't ?) menu entry ?
-> 
-> Because something needs to select it, and SMMU is one of the places
-> that are implicitly using it.
-> 
-> It isn't (and shouldn't be) a user selectable kconfig. Currently the
-> only thing that selects it is the ARM64 master kconfig.
+> Maybe just smash the 2 together with a Co-developed: ?
 
-I never said it should be a user selectable kconfig. I said that
-I don't like using the SMMU entry (only) to select it just because
-that entry allows COMPILE_TEST.
+I wanted to keep the two separate to preserve the authorship of the
+individual patches, so I'll take the former. Thanks.
 
-> > This looks a bit artificial (and it is unclear from the Kconfig
-> > file why only that driver selects IORT, it looks like eg the SMMUv3
-> > does not have the same dependency - there is also the SMMUv3 perf
-> > driver to consider).
-> 
-> SMMUv3 doesn't COMPILE_TEST so it picks up the dependency transitivity
-> through ARM64. I'm not sure why IORT was put as a global ARM64 kconfig
-> dependency and not put in the places that directly need it.
-
-Because IORT is used by few ARM64 system IPs (that are enabled by
-default, eg GIC), it makes sense to have a generic ARM64 select (if ACPI).
-
-> "perf driver" ? There is a bunch of GIC stuff that uses this too but I
-> don't know if it compile tests.
-
-"SMMUv3 perf driver" drivers/perf/arm_smmuv3_pmu.c
-
-> > Maybe we can move IORT code into drivers/acpi and add a silent config
-> > option there with a dependency on ARM64 || COMPILE_TEST.
-> 
-> That seems pretty weird to me, this is the right way to approach it,
-> IMHO. Making an entire directory condition is pretty incompatible with
-> COMPILE_TEST as a philosophy.
-
-That's not what I was suggesting. I was suggesting to move iort.c (or
-some portions of it) into drivers/acpi if we care enough to compile test
-it on arches !ARM64.
-
-It is also weird to have a file in drivers/acpi/arm64 that you want
-to compile test on other arches IMO (and I don't think it is very useful
-to compile test it either).
-
-> > Don't know but at least it is clearer. As for the benefits of compile
-> > testing IORT code - yes the previous patch is a warning to fix but
-> > I am not so sure about the actual benefits.
-> 
-> IMHO COMPILE_TEST is an inherently good thing. It makes development
-> easier for everyone because you have a less fractured code base to
-> work with.
-
-I am talking about IORT code, not COMPILE_TEST as a whole.
-
-I am not sure what "less fractured" means in this context.
-
-Anyway - it is not a big deal either way but I don't like selecting
-ACPI_IORT only on kconfig entries that allow COMPILE_TEST to implicitly
-compile test it so *if* we want to do it we will have to do it
-differently.
-
-Thanks,
-Lorenzo
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
