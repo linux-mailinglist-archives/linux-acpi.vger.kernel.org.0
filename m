@@ -1,227 +1,276 @@
-Return-Path: <linux-acpi+bounces-1985-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1986-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42E87FEAB7
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 09:33:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B36837FEABC
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 09:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49024B20D49
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 08:33:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D684C1C20E31
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 08:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6DB430FA9
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 08:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410273218A
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 08:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SykLGCHX"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="P9Oeq6jo"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2071.outbound.protection.outlook.com [40.107.244.71])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C2FA10D1;
-	Wed, 29 Nov 2023 23:03:35 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JdMu/QxQ+wtXpmOPYrgCL9Gad2GXtVoUiQh7xfm8yViqn6g4woFlh4TWSqCII/1P1SqGmUlyVeEsmFN7Itlu1GP4kAeuUk3TR0PIonDfQKFJOwiUtVb8ACH4GPPpTwfr0KuLcFSLA0jhdl6BYoQew+Jw5/Ggx9fFLisB90jMWTYCZ4RIxNdNEnqN7lKqiSg+SUcZlDe5Jnnvfv3UoYu4VKPY0qvEF6lYzccZfJxykAzIGxlMH5H0cebcePPSHUDH88N5yRYKkw/71ge+7WYshzCIrfcBuJDoaEnOXN92PlfG+8mD9sZko+LyKBQOfHP4Rv06rzZDq1Z7HTVQ0xPOAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=btFGlaLFcCSHxu/Vewv7AMybhRwhB7CQTim3lzsxeG0=;
- b=G5MWRBQFWpEMcDhHoS0NdEWux7aARkQHOc1kUYPbZjUGLRscmo0Tk9vlPaAphZzcVoWS6D3WD8LIDAwNKYwRURdYT81c1y4FBi4VQg8va3Vf7F5v0+ynphb1kaKWaw0qvcDv7wcGFV5BoxrC3iMxpuHRhYNjtOEghQPrkqMgfHulgYTO9RlTfE/eYO28ljaW6zO4Drgm/lO2LccZGpz2Xw6c/Zew/qW3oro7f/PxfLg3hX+EIgflpyrg1OkCmxuhtpIUXJZeUBMdoXqAaQkCLp7sv0rjK/Es7iL7UAyYFabUQJtHcue4tZlkp0EOut6RQvzwT4ulOToNFYDJaJ+abA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=btFGlaLFcCSHxu/Vewv7AMybhRwhB7CQTim3lzsxeG0=;
- b=SykLGCHX+93xzaVT/J+ahq76isg+KoHs9JfUhHLrj0dOpoDZu+tXTq8QjTwTa1v59dTk8b9CLXjIB8yaGzkocdMM4W6RX/N6F3L7ItD9YuAtY+FiVgVt+FL+x4wjb4BJKrkslaKejvcqOU05PNr5Qqw0ze6HmRg53wfC2JIsn4I=
-Received: from BL1PR12MB5849.namprd12.prod.outlook.com (2603:10b6:208:384::18)
- by PH7PR12MB8056.namprd12.prod.outlook.com (2603:10b6:510:269::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.24; Thu, 30 Nov
- 2023 07:03:30 +0000
-Received: from BL1PR12MB5849.namprd12.prod.outlook.com
- ([fe80::969f:11b3:5ec2:3aa1]) by BL1PR12MB5849.namprd12.prod.outlook.com
- ([fe80::969f:11b3:5ec2:3aa1%3]) with mapi id 15.20.7046.024; Thu, 30 Nov 2023
- 07:03:29 +0000
-From: "Chen, Jiqian" <Jiqian.Chen@amd.com>
-To: Stefano Stabellini <sstabellini@kernel.org>
-CC: Juergen Gross <jgross@suse.com>, Oleksandr Tyshchenko
-	<oleksandr_tyshchenko@epam.com>, Thomas Gleixner <tglx@linutronix.de>, Boris
- Ostrovsky <boris.ostrovsky@oracle.com>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, Bjorn Helgaas
-	<bhelgaas@google.com>, =?utf-8?B?Um9nZXIgUGF1IE1vbm7DqQ==?=
-	<roger.pau@citrix.com>, "xen-devel@lists.xenproject.org"
-	<xen-devel@lists.xenproject.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "Stabellini, Stefano"
-	<stefano.stabellini@amd.com>, "Deucher, Alexander"
-	<Alexander.Deucher@amd.com>, "Koenig, Christian" <Christian.Koenig@amd.com>,
-	"Hildebrand, Stewart" <Stewart.Hildebrand@amd.com>, "Ragiadakou, Xenia"
-	<Xenia.Ragiadakou@amd.com>, "Huang, Honglei1" <Honglei1.Huang@amd.com>,
-	"Zhang, Julia" <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>,
-	"Chen, Jiqian" <Jiqian.Chen@amd.com>
-Subject: Re: [RFC KERNEL PATCH v2 1/3] xen/pci: Add xen_reset_device_state
- function
-Thread-Topic: [RFC KERNEL PATCH v2 1/3] xen/pci: Add xen_reset_device_state
- function
-Thread-Index: AQHaHsGaWb8EJvAynUiF4JhdQXSstLCSQgGAgAC8QwA=
-Date: Thu, 30 Nov 2023 07:03:29 +0000
-Message-ID:
- <BL1PR12MB58490EB260D226500141557EE782A@BL1PR12MB5849.namprd12.prod.outlook.com>
-References: <20231124103123.3263471-1-Jiqian.Chen@amd.com>
- <20231124103123.3263471-2-Jiqian.Chen@amd.com>
- <alpine.DEB.2.22.394.2311291943260.3533093@ubuntu-linux-20-04-desktop>
-In-Reply-To:
- <alpine.DEB.2.22.394.2311291943260.3533093@ubuntu-linux-20-04-desktop>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-exchange-imapappendstamp: MN0PR12MB6054.namprd12.prod.outlook.com
- (15.20.7068.000)
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR12MB5849:EE_|PH7PR12MB8056:EE_
-x-ms-office365-filtering-correlation-id: 6c273887-ff37-45aa-65c7-08dbf17274fc
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- rg9k9wM3t/20mmvXlBg4b5Qb/9EnHX/s8RHb/FEULme/FFmcC+sLuq7nLaxoOJ97Rp8DqkJNUKxe6jP3onRPEDqQYrublnAzsUzd9+kFErxJsGsKXI/7FsD5pD7dfGvdVt7T7A4n518M7BQ0FlXBrmTdrQB+oyvalOEymggfd7wtfi9dvNPuDe5+vZa6mvFHUK4G/XRvEY4+G4WqDzeHF3emVpjZhQj9H+liw+MnKtbh1XLsaNQO0FTYIY45U2Ln538Df4BNu/lVXXWYRfpKJ3FTZatOlnpZr4VMw5GwGySsZyADdJtvVlTTnR+Q5hSKu+BKvtZgrMUF3J2+1CDT0NyCFTfHuoUMPeGF1WBda/eCdWkEDOEmlyI3qK5+QxfjwB5qyK78ajq8mYld4A3KmqprZ+KU/DFNTZZg2gu6aBPaXCZinXng0TaamXSi68QezrsOKnNOoec+d5y9IBXkkVcx2w6qFbIPh6Wu+PfGmL28E+M0SlM5El0ZZha1kE8EH5QcethSIINM6GPxar1CjaQaMWYdgiN9k+wpshq51mMBwkoBggR1N5vGBzXABWYWS8sopg9jD6iV84tJV2VWZAlPb/zMNXmhpOIbXhsAdiyCTufmEKDXCHRXRnFUTaF7h6ym3F+b0mqrw7tNaTi8/Wk2DUik9QGHFNFtqjuyjrM=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(366004)(39860400002)(376002)(346002)(230922051799003)(64100799003)(186009)(1800799012)(451199024)(202311291699003)(55016003)(26005)(122000001)(33656002)(38070700009)(38100700002)(83380400001)(52536014)(7416002)(5660300002)(9686003)(6506007)(53546011)(7696005)(71200400001)(8936002)(4326008)(76116006)(66946007)(66556008)(66476007)(8676002)(66446008)(316002)(54906003)(64756008)(6916009)(41300700001)(2906002)(478600001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?WXp6QzBHRTZKN1VwQlNudWd6Y1d5NE5EaFZ2MC9lMlBuTFBLdzRTRy96azBH?=
- =?utf-8?B?RVlxUUY5SFkzYU5aOFR3dDk2UUNNNWpETEdmWGZJdjBtc0paaGpIbHJ2VEFo?=
- =?utf-8?B?SHhjRlFkdnBydnIxeGZKUWNlVFNDK29VUXYzNlh5ZnZ3eFpKVWZsZ0V2cU1k?=
- =?utf-8?B?Q29mWUlXeFA3SWtld0pMbWJGMnhCT3Ewc2RycHNrM3R5SXZLeFoyWmFYbS9a?=
- =?utf-8?B?dGw4Qlc2bW5EVDJuWGlhbk50TFFybW9XSEs5VWY1Z2o2TmlZRHNEdy9SbG1k?=
- =?utf-8?B?STViNUNWTlJXZm9wcmxaYjVDUmNPc1hVZTRaa3NiUzJnelJYMnl0NXhEeWFH?=
- =?utf-8?B?V3FJaHpsMFNkQ01QUVNGRm5FcjdvYTJLTEI0ZVNuRFQ2Vmx3T1dsbDN3NWZS?=
- =?utf-8?B?bHVxTmVFZnQ2VmRLNCthOXNiZXB3UTFUa09MdjI5NEs1RnBUWi9Cb2JXWGp4?=
- =?utf-8?B?NVAwYVZWZXRUK3pHK1Z2M29nU3pIOVF3cGVrN1QzQ3orNVJzdEMzd1dTQVJI?=
- =?utf-8?B?VE5Lc3lzOVlLWGVxcEpxUDhEVi9uZHRxWlIwWnlyMEtiS2YrWGw2RzdNRkQ0?=
- =?utf-8?B?amxzSmFSSlkxdnZtRXgyV3Z0WFZETWNNVEpHd1BQWVRTa0ZtZWFLQ3d3YXlS?=
- =?utf-8?B?NDZ1bXdOeUpmU1FaUG9HZVpxRmp4M0Q1Ris0blVuNlBtaVMwSXhsclNSdnhH?=
- =?utf-8?B?UkYrdCt3elQ2Wm95Wmp1OHpCbVpMYitkUUhrNEI0Zno4WkFkNHBqMlVSSkto?=
- =?utf-8?B?OW9GZlNoOUdYNlFGREFpQktPVk1rMERHVFFQN1RVekhPZXRvb1d2MmZmalE5?=
- =?utf-8?B?VjNPNVJHSjM4OWhUdlVGT3MvVkVTNXJpL1pEUkJoVlVwMXZRelZiaEhGemcr?=
- =?utf-8?B?c25JcFg3ODBhMUhXUzN1NWpwcEROYkhkd1QyZDFYY3RHUDRoaFRFdkZXRlcx?=
- =?utf-8?B?bFZrNFV2RlZCMUFGa2x2Uk9HUFFwVDJJMVc3bnZFUFk4MmtxY3dmMnM5YTZs?=
- =?utf-8?B?UjBsMVhMQU5BbXBaK3dtc2lmZFFPVW9pVVZ4dUtxNkNTS2RVbFVmM3ZPMmpo?=
- =?utf-8?B?cGFhYVNpZG85MTJJNTE2QlF5em5EZ3B1ZW9CdXRXZ1U4UXc3RnJnMGlRMlZQ?=
- =?utf-8?B?RUtYSEZTUmd6aEs4ZGhhVld0bVRUdnR3N2d6LzNkbWpFOUdQZS9iOGlOMTh0?=
- =?utf-8?B?cUJlY0l2cVNLdlo2MEcrSGxOeHdMVHExUDB1VlNxUGJCUEQvRjk5alJjUzh2?=
- =?utf-8?B?bGRsNFBPUXZMTVFNS1RVWHF1Zk0yd0FMUk5NZ3RhS2xDTnRGSlE4bHVzdVlt?=
- =?utf-8?B?ZU40MGpZMEhRaENlbEF6WGpCdzcyLzkxVG1NeHJZSW5nczZvcnlYSW5xQUlx?=
- =?utf-8?B?UmcvL0E4OGdtcDlmZHhsTSsxQ0JGaGdjV1EzeEJxYkJIQkxUV3hlTVllak91?=
- =?utf-8?B?Q1dBWTQ4UjBrbXZzNWRIUzJQeVhRUDQ2ZTJJU2pWYWZPcC9Sb05DY1FUU0cr?=
- =?utf-8?B?aU1mRzFJZDAxTStLRzRWMmFxT1VFNmx0aVhxNU4wMjRuS0NtY3FkdFdLUHpr?=
- =?utf-8?B?Q0lXWHFOSkE1RWY3UTJPMjRvbFpKZmlPT3lTUlJsSzVpZzBGMytFbnpkaGVr?=
- =?utf-8?B?b2J1Q3JjeHlEZ3k4ZldFY21IT1hlZEF5czduZWVUVHNEL05MVW1qSHRNQTVL?=
- =?utf-8?B?dWRlNDE3SmNwVnhEZ3JoY3pUQTQ2SVhJWktsVjN5cFp0TUxOY2NWQ0t4VDBD?=
- =?utf-8?B?MXlZZlNFUzRTK0d0UitrUFAzZEtvOHNjU3ZCamVRRkJHUHl5UU5sSmQ5Sm5m?=
- =?utf-8?B?bnZoR1RrNC8zdDE0Rk1nelhmdGV1bjhKWGhaSzY4TTB1RUE4SWJrc0FxRkFN?=
- =?utf-8?B?N0tQQWM4Sm55Y1RCNmxMcUJHVWcyVzRmWklhczlFVVBsTlhDVm1XSzVmYTVB?=
- =?utf-8?B?US9uc255Mm5iL1R5Ky9LamVXNks2UTNBU1JSUS9laDJzcHB5U2diTCtaQ1FG?=
- =?utf-8?B?L1o0TnFmNXVxU3lwK2lzS3lCVkRFeDRURGFBY0V4Vk5UdWxjeXJjTGpVWUg0?=
- =?utf-8?B?OEZtSkl5Ly9XZHhVTEhmWmlZYXRwcWZ4d1FGbHZnY0RKaGRCME9VTC8weVI0?=
- =?utf-8?Q?P7Wo=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F144D27B800B574295802F12BD199560@amdcloud.onmicrosoft.com>
-Content-Transfer-Encoding: base64
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C616C12C
+	for <linux-acpi@vger.kernel.org>; Wed, 29 Nov 2023 23:26:21 -0800 (PST)
+Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-285afc7d53aso697934a91.0
+        for <linux-acpi@vger.kernel.org>; Wed, 29 Nov 2023 23:26:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1701329181; x=1701933981; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/vaR9Py/1wlD3zkHO4kH1K6KgzRNK2LkfyWPObJ0DwQ=;
+        b=P9Oeq6joT9emA9oNnU89wkt56f/6q+TWP3vv961Xz/j4Nk8BHfOYKhdfyyojrV4QIx
+         ZZJ8yL3YeYSJKMPzwfZuanExbb5nphk+lpaOmuu/F4fF7pr7IISvqhhuEAAgpsLvNdK8
+         wQRrBSMVDtPqglMKLGZaOeKTF5Ja67s8h9dI+GAqJ0+G4Ez//+AowBQHzZqx//XVXk+w
+         EyWB507znPQ8FiK42+zC99YX3+ODASI1RON4vSVYo0jT36p9jBNQviCbD4eF6b/at2CV
+         hH9cOdWi7h2f4v+eXG5V/vbGdmYHcqyV9y4OObw9PGiwzDPke31u7fw8Y0d2wCQQEcDM
+         SWwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701329181; x=1701933981;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/vaR9Py/1wlD3zkHO4kH1K6KgzRNK2LkfyWPObJ0DwQ=;
+        b=HSrCkkQuzP8ihn3sqv5xJjFSeNomIR6OJYQKgR2hmMkUZDmH/+kKXY34n+SJ0vpNON
+         AcXkTI6jbbRSroZJj4H1kGlOQeVMscToo2QaR+8quaLB6kEY6rT4ahvHDptF7cMUGtN8
+         aFQmGasp9oAmtgHnBFYYLW40OixZ6wKNO2ySDNTVMrI5cq7/DlZFyTlmyq9Lp0b3IBY8
+         xHMZEtJDLHTJdZNzxhoDvQt4ai84H+Vsp2LXS7RFlryEoyksa8M9kJhHEJfc9eSCIumT
+         9UhaEZx9hZzzddZW0GidDGBBlsrUatLdDbcYFBNQqOdAq2zlldcKayjGOtnGDbPBc+Wj
+         nyuQ==
+X-Gm-Message-State: AOJu0Yy1W8pzmGpUCvd2rn4c/6XoE/eZ1SIH3LEbYrmGoa0qwQ/9IHgw
+	i3GQ6iwoBSXz7vJxmiuZ+XAHAA==
+X-Google-Smtp-Source: AGHT+IH2on3YHau4m4WDZtSzS0WzaeUBhPmKYsoqjQK6MFS9wCuSki2QkCdwcnsk3EBBXK/13hpGLA==
+X-Received: by 2002:a17:90b:1811:b0:285:b69c:a725 with SMTP id lw17-20020a17090b181100b00285b69ca725mr15602862pjb.12.1701329181182;
+        Wed, 29 Nov 2023 23:26:21 -0800 (PST)
+Received: from sunil-laptop ([106.51.188.200])
+        by smtp.gmail.com with ESMTPSA id ip1-20020a17090b314100b00285d330ae8bsm2503694pjb.57.2023.11.29.23.26.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Nov 2023 23:26:20 -0800 (PST)
+Date: Thu, 30 Nov 2023 12:56:09 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-serial@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Anup Patel <anup@brainfault.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Atish Kumar Patra <atishp@rivosinc.com>,
+	Haibo Xu <haibo1.xu@intel.com>, Marc Zyngier <maz@kernel.org>
+Subject: Re: [RFC PATCH v2 06/21] RISC-V: Kconfig: Select deferred GSI probe
+ for ACPI systems
+Message-ID: <ZWg5ETNkcXuceDFY@sunil-laptop>
+References: <ZTuzJ1nsicZYp+uh@sunil-laptop>
+ <20231106221606.GA264641@bhelgaas>
+ <ZUtailOcozI9xIou@sunil-laptop>
+ <87a5r6rn8f.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5849.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c273887-ff37-45aa-65c7-08dbf17274fc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Nov 2023 07:03:29.4135
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PW+5Wsp/0WSInSV589OiCcT41gOT/zsYa3RjH/WecdZ/sXpSjqvBsEyZ7rGq8lKnRHJ8QTRI/Wz+SIE6lqtg9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8056
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87a5r6rn8f.fsf@all.your.base.are.belong.to.us>
+X-Spam-Level: *
 
-DQpPbiAyMDIzLzExLzMwIDExOjQ2LCBTdGVmYW5vIFN0YWJlbGxpbmkgd3JvdGU6DQo+IE9uIEZy
-aSwgMjQgTm92IDIwMjMsIEppcWlhbiBDaGVuIHdyb3RlOg0KPj4gV2hlbiBkZXZpY2Ugb24gZG9t
-MCBzaWRlIGhhcyBiZWVuIHJlc2V0LCB0aGUgdnBjaSBvbiBYZW4gc2lkZQ0KPj4gd29uJ3QgZ2V0
-IG5vdGlmaWNhdGlvbiwgc28gdGhhdCB0aGUgY2FjaGVkIHN0YXRlIGluIHZwY2kgaXMNCj4+IGFs
-bCBvdXQgb2YgZGF0ZSB3aXRoIHRoZSByZWFsIGRldmljZSBzdGF0ZS4NCj4+IFRvIHNvbHZlIHRo
-YXQgcHJvYmxlbSwgdGhpcyBwYXRjaCBhZGQgYSBmdW5jdGlvbiB0byBjbGVhciBhbGwNCj4+IHZw
-Y2kgZGV2aWNlIHN0YXRlIHdoZW4gZGV2aWNlIGlzIHJlc2V0IG9uIGRvbTAgc2lkZS4NCj4+DQo+
-PiBBbmQgY2FsbCB0aGF0IGZ1bmN0aW9uIGluIHBjaXN0dWJfaW5pdF9kZXZpY2UuIEJlY2F1c2Ug
-d2hlbg0KPj4gd2UgdXNlICJwY2ktYXNzaWduYWJsZS1hZGQiIHRvIGFzc2lnbiBhIHBhc3N0aHJv
-dWdoIGRldmljZSBpbg0KPj4gWGVuLCBpdCB3aWxsIHJlc2V0IHBhc3N0aHJvdWdoIGRldmljZSBh
-bmQgdGhlIHZwY2kgc3RhdGUgd2lsbA0KPj4gb3V0IG9mIGRhdGUsIGFuZCB0aGVuIGRldmljZSB3
-aWxsIGZhaWwgdG8gcmVzdG9yZSBiYXIgc3RhdGUuDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogSmlx
-aWFuIENoZW4gPEppcWlhbi5DaGVuQGFtZC5jb20+DQo+PiBTaWduZWQtb2ZmLWJ5OiBIdWFuZyBS
-dWkgPHJheS5odWFuZ0BhbWQuY29tPg0KPj4gLS0tDQo+PiAgZHJpdmVycy94ZW4vcGNpLmMgICAg
-ICAgICAgICAgICAgICB8IDEyICsrKysrKysrKysrKw0KPj4gIGRyaXZlcnMveGVuL3hlbi1wY2li
-YWNrL3BjaV9zdHViLmMgfCAgMyArKysNCj4+ICBpbmNsdWRlL3hlbi9pbnRlcmZhY2UvcGh5c2Rl
-di5oICAgIHwgIDIgKysNCj4+ICBpbmNsdWRlL3hlbi9wY2kuaCAgICAgICAgICAgICAgICAgIHwg
-IDYgKysrKysrDQo+PiAgNCBmaWxlcyBjaGFuZ2VkLCAyMyBpbnNlcnRpb25zKCspDQo+Pg0KPj4g
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMveGVuL3BjaS5jIGIvZHJpdmVycy94ZW4vcGNpLmMNCj4+IGlu
-ZGV4IDcyZDRlM2YxOTNhZi4uZTliMzBiYzA5MTM5IDEwMDY0NA0KPj4gLS0tIGEvZHJpdmVycy94
-ZW4vcGNpLmMNCj4+ICsrKyBiL2RyaXZlcnMveGVuL3BjaS5jDQo+PiBAQCAtMTc3LDYgKzE3Nywx
-OCBAQCBzdGF0aWMgaW50IHhlbl9yZW1vdmVfZGV2aWNlKHN0cnVjdCBkZXZpY2UgKmRldikNCj4+
-ICAJcmV0dXJuIHI7DQo+PiAgfQ0KPj4gIA0KPj4gK2ludCB4ZW5fcmVzZXRfZGV2aWNlX3N0YXRl
-KGNvbnN0IHN0cnVjdCBwY2lfZGV2ICpkZXYpDQo+PiArew0KPj4gKwlzdHJ1Y3QgcGh5c2Rldl9w
-Y2lfZGV2aWNlIGRldmljZSA9IHsNCj4+ICsJCS5zZWcgPSBwY2lfZG9tYWluX25yKGRldi0+YnVz
-KSwNCj4+ICsJCS5idXMgPSBkZXYtPmJ1cy0+bnVtYmVyLA0KPj4gKwkJLmRldmZuID0gZGV2LT5k
-ZXZmbg0KPj4gKwl9Ow0KPj4gKw0KPj4gKwlyZXR1cm4gSFlQRVJWSVNPUl9waHlzZGV2X29wKFBI
-WVNERVZPUF9wY2lfZGV2aWNlX3N0YXRlX3Jlc2V0LCAmZGV2aWNlKTsNCj4+ICt9DQo+PiArRVhQ
-T1JUX1NZTUJPTF9HUEwoeGVuX3Jlc2V0X2RldmljZV9zdGF0ZSk7DQo+PiArDQo+PiAgc3RhdGlj
-IGludCB4ZW5fcGNpX25vdGlmaWVyKHN0cnVjdCBub3RpZmllcl9ibG9jayAqbmIsDQo+PiAgCQkJ
-ICAgIHVuc2lnbmVkIGxvbmcgYWN0aW9uLCB2b2lkICpkYXRhKQ0KPj4gIHsNCj4+IGRpZmYgLS1n
-aXQgYS9kcml2ZXJzL3hlbi94ZW4tcGNpYmFjay9wY2lfc3R1Yi5jIGIvZHJpdmVycy94ZW4veGVu
-LXBjaWJhY2svcGNpX3N0dWIuYw0KPj4gaW5kZXggZTM0YjYyM2U0YjQxLi41YTk2YjZjNjZjMDcg
-MTAwNjQ0DQo+PiAtLS0gYS9kcml2ZXJzL3hlbi94ZW4tcGNpYmFjay9wY2lfc3R1Yi5jDQo+PiAr
-KysgYi9kcml2ZXJzL3hlbi94ZW4tcGNpYmFjay9wY2lfc3R1Yi5jDQo+PiBAQCAtNDIxLDYgKzQy
-MSw5IEBAIHN0YXRpYyBpbnQgcGNpc3R1Yl9pbml0X2RldmljZShzdHJ1Y3QgcGNpX2RldiAqZGV2
-KQ0KPj4gIAllbHNlIHsNCj4+ICAJCWRldl9kYmcoJmRldi0+ZGV2LCAicmVzZXR0aW5nIChGTFIs
-IEQzLCBldGMpIHRoZSBkZXZpY2VcbiIpOw0KPj4gIAkJX19wY2lfcmVzZXRfZnVuY3Rpb25fbG9j
-a2VkKGRldik7DQo+PiArCQllcnIgPSB4ZW5fcmVzZXRfZGV2aWNlX3N0YXRlKGRldik7DQo+PiAr
-CQlpZiAoZXJyKQ0KPj4gKwkJCWdvdG8gY29uZmlnX3JlbGVhc2U7DQo+IA0KPiBPbGRlciB2ZXJz
-aW9ucyBvZiBYZW4gd29uJ3QgaGF2ZSB0aGUgaHlwZXJjYWxsDQo+IFBIWVNERVZPUF9wY2lfZGV2
-aWNlX3N0YXRlX3Jlc2V0IGltcGxlbWVudGVkLiBJIHRoaW5rIHdlIHNob3VsZCBkbw0KPiBzb21l
-dGhpbmcgbGlrZToNCj4gDQo+IGlmIChlcnIgJiYgeGVuX3B2aF9kb21haW4oKSkNCj4gICAgIGdv
-dG8gY29uZmlnX3JlbGVhc2U7DQo+IA0KPiANCj4gT3IgZXZlbjoNCj4gDQo+IGlmICh4ZW5fcHZo
-X2RvbWFpbigpKSB7DQo+ICAgICBlcnIgPSB4ZW5fcmVzZXRfZGV2aWNlX3N0YXRlKGRldik7DQo+
-ICAgICBpZiAoZXJyKQ0KPiAgICAgICAgIGdvdG8gY29uZmlnX3JlbGVhc2U7DQo+IH0NCj4gDQo+
-IGRlcGVuZGluZyBvbiB3aGV0aGVyIHdlIHdhbnQgdG8gY2FsbCB4ZW5fcmVzZXRfZGV2aWNlX3N0
-YXRlIGFsc28gZm9yIFBWDQo+IGd1ZXN0cyBvciBub3QuIEkgYW0gYXNzdW1pbmcgd2UgZG9uJ3Qg
-d2FudCB0byBlcnJvciBvdXQgb24gZmFpbHVyZSBzdWNoDQo+IGFzIC1FTk9FTlQgZm9yIFBWIGd1
-ZXN0cy4NClllcywgb25seSBmb3IgUFZIIGRvbTAsIEkgd2lsbCBhZGQgdGhlIGNvbmRpdGlvbiBp
-biBuZXh0IHZlcnNpb24uIFRoYW5rIHlvdSENCg0KPiANCj4gDQo+PiAgCQlwY2lfcmVzdG9yZV9z
-dGF0ZShkZXYpOw0KPj4gIAl9DQo+PiAgCS8qIE5vdyBkaXNhYmxlIHRoZSBkZXZpY2UgKHRoaXMg
-YWxzbyBlbnN1cmVzIHNvbWUgcHJpdmF0ZSBkZXZpY2UNCj4+IGRpZmYgLS1naXQgYS9pbmNsdWRl
-L3hlbi9pbnRlcmZhY2UvcGh5c2Rldi5oIGIvaW5jbHVkZS94ZW4vaW50ZXJmYWNlL3BoeXNkZXYu
-aA0KPj4gaW5kZXggYTIzN2FmODY3ODczLi4yMzE1MjZmODBmNmMgMTAwNjQ0DQo+PiAtLS0gYS9p
-bmNsdWRlL3hlbi9pbnRlcmZhY2UvcGh5c2Rldi5oDQo+PiArKysgYi9pbmNsdWRlL3hlbi9pbnRl
-cmZhY2UvcGh5c2Rldi5oDQo+PiBAQCAtMjYzLDYgKzI2Myw4IEBAIHN0cnVjdCBwaHlzZGV2X3Bj
-aV9kZXZpY2Ugew0KPj4gICAgICB1aW50OF90IGRldmZuOw0KPj4gIH07DQo+PiAgDQo+PiArI2Rl
-ZmluZSBQSFlTREVWT1BfcGNpX2RldmljZV9zdGF0ZV9yZXNldCAgICAgMzINCj4+ICsNCj4+ICAj
-ZGVmaW5lIFBIWVNERVZPUF9EQkdQX1JFU0VUX1BSRVBBUkUgICAgMQ0KPj4gICNkZWZpbmUgUEhZ
-U0RFVk9QX0RCR1BfUkVTRVRfRE9ORSAgICAgICAyDQo+PiAgDQo+PiBkaWZmIC0tZ2l0IGEvaW5j
-bHVkZS94ZW4vcGNpLmggYi9pbmNsdWRlL3hlbi9wY2kuaA0KPj4gaW5kZXggYjgzMzdjZjg1ZmQx
-Li5iMmUyZTg1NmVmZDYgMTAwNjQ0DQo+PiAtLS0gYS9pbmNsdWRlL3hlbi9wY2kuaA0KPj4gKysr
-IGIvaW5jbHVkZS94ZW4vcGNpLmgNCj4+IEBAIC00LDEwICs0LDE2IEBADQo+PiAgI2RlZmluZSBf
-X1hFTl9QQ0lfSF9fDQo+PiAgDQo+PiAgI2lmIGRlZmluZWQoQ09ORklHX1hFTl9ET00wKQ0KPj4g
-K2ludCB4ZW5fcmVzZXRfZGV2aWNlX3N0YXRlKGNvbnN0IHN0cnVjdCBwY2lfZGV2ICpkZXYpOw0K
-Pj4gIGludCB4ZW5fZmluZF9kZXZpY2VfZG9tYWluX293bmVyKHN0cnVjdCBwY2lfZGV2ICpkZXYp
-Ow0KPj4gIGludCB4ZW5fcmVnaXN0ZXJfZGV2aWNlX2RvbWFpbl9vd25lcihzdHJ1Y3QgcGNpX2Rl
-diAqZGV2LCB1aW50MTZfdCBkb21haW4pOw0KPj4gIGludCB4ZW5fdW5yZWdpc3Rlcl9kZXZpY2Vf
-ZG9tYWluX293bmVyKHN0cnVjdCBwY2lfZGV2ICpkZXYpOw0KPj4gICNlbHNlDQo+PiArc3RhdGlj
-IGlubGluZSBpbnQgeGVuX3Jlc2V0X2RldmljZV9zdGF0ZShjb25zdCBzdHJ1Y3QgcGNpX2RldiAq
-ZGV2KQ0KPj4gK3sNCj4+ICsJcmV0dXJuIC0xOw0KPj4gK30NCj4+ICsNCj4+ICBzdGF0aWMgaW5s
-aW5lIGludCB4ZW5fZmluZF9kZXZpY2VfZG9tYWluX293bmVyKHN0cnVjdCBwY2lfZGV2ICpkZXYp
-DQo+PiAgew0KPj4gIAlyZXR1cm4gLTE7DQo+PiAtLSANCj4+IDIuMzQuMQ0KPj4NCg0KLS0gDQpC
-ZXN0IHJlZ2FyZHMsDQpKaXFpYW4gQ2hlbi4NCg==
+Hi Björn!,
+
+Apologies for the delay in response. Held up with something else.
+
+On Wed, Nov 22, 2023 at 01:22:56PM +0100, Björn Töpel wrote:
+> Hi Sunil!
+> 
+> I'm trying to decipher this thread, so apologies in advance for the
+> stupid questions! :-P
+>
+Appreciate your help to review the patch and suggesting solutions.
+Thank you very much!.
+
+> Sunil V L <sunilvl@ventanamicro.com> writes:
+> 
+> > Hi Bjorn,
+> >
+> > On Mon, Nov 06, 2023 at 04:16:06PM -0600, Bjorn Helgaas wrote:
+> >> On Fri, Oct 27, 2023 at 06:25:03PM +0530, Sunil V L wrote:
+> >> > On Thu, Oct 26, 2023 at 12:04:08PM -0500, Bjorn Helgaas wrote:
+> >> > > On Thu, Oct 26, 2023 at 01:53:29AM +0530, Sunil V L wrote:
+> >> > > > On RISC-V platforms, apart from root interrupt controllers (which
+> >> > > > provide local interrupts and IPI), other interrupt controllers in the
+> >> > > > hierarchy are probed late. Enable this select this CONFIG option for
+> >> > > > RISC-V platforms so that device drivers which connect to deferred
+> >> > > > interrupt controllers can take appropriate action.
+> >> > > 
+> >> > > Quite a bit of this series seems related to the question of interrupt
+> >> > > controllers being probed "late".
+> >> > > 
+> >> > > I don't see anything specific about *how* late this might be, but from
+> >> > > the use of -EPROBE_DEFER in individual drivers (8250_pnp explicitly,
+> >> > > and acpi_register_gsi() and pnp_irq() and acpi_pci_irq_enable(), which
+> >> > > are called from driver .probe() paths) it seems like interrupt
+> >> > > controllers might be detected even after devices that use them.
+> >> > > 
+> >> > > That seems like a fairly invasive change to the driver probe flow.
+> >> > > If we really need to do that, I think it might merit a little more
+> >> > > background as justification since we haven't had to do it for any
+> >> > > other arch yet.
+> >> > 
+> >> > In RISC-V, the APLIC can be a converter from wired (GSI) to MSI interrupts.
+> >> > Hence, especially in this mode, it has to be a platform device to use
+> >> > device MSI domain. Also, according to Marc Zyngier there is no reason to
+> >> > probe interrupt controllers early apart from root controller. So, the
+> >> > device drivers which use wired interrupts need to be probed after APLIC.
+> >> > 
+> >> > The PNP devices and PCI INTx GSI links use either
+> >> > acpi_dev_resource_interrupt() (PNP) or acpi_register_gsi() directly
+> >> > (PCI). The approach taken here is to follow the example of
+> >> > acpi_irq_get() which is enhanced to return EPROBE_DEFER and several
+> >> > platform device drivers which use platform_get_irq() seem to be handling
+> >> > this already.
+> >> 
+> >> This series (patch 04/21 "ACPI: irq: Add support for deferred probe in
+> >> acpi_register_gsi()" [1]) makes acpi_register_gsi() return
+> >> -EPROBE_DEFER, which percolates up through pci_enable_device().
+> >> 
+> >> Maybe that's ok, but this affects *all* PCI drivers, and it's a new
+> >> case that did not occur before.  Many drivers emit warning or error
+> >> messages for any pci_enable_device() failure, which you probably don't
+> >> want in this case, since -EPROBE_DEFER is not really a "failure";
+> >> IIUC, it just means "probe again later."
+> >>
+> > Yeah, I think all the drivers which need to be supported on RISC-V
+> > ACPI based systems will have to support deferred probe with this scheme.
+> >
+> >> > Using ResourceSource dependency (mbigen uses) in the namespace as part of
+> >> > Extended Interrupt Descriptor will not ensure the order since PNP/INTx
+> >> > GSI devices don't work with that.
+> >> 
+> >> Are these PNP/INTx GSI devices described in ACPI?  In the namespace?
+> >> Or in a static table?
+> >> 
+> > Yes, these are standard devices in the namespace. For ex: PNP0501(16550)
+> > or PNP0C0F (PCI interrupt link devices) are in the namespace.
+> >
+> >> > Is there any other better way to create dependency between IO devices
+> >> > and the interrupt controllers when interrupt controller itself is a
+> >> > platform device? While using core_initcall() for interrupt controllers
+> >> > seem to work which forces the interrupt controller to be probed first,
+> >> > Marc is not in favor of that approach since it is fragile.
+> >> 
+> >> I guess PCI interrupts from the PCI host bridges (PNP0A03 devices)
+> >> feed into the APLIC?  And APLIC is described via MADT?  Based on this
+> >> series, it looks like this:
+> >> 
+> >>     acpi_init
+> >>   +   acpi_riscv_init
+> >>   +     riscv_acpi_aplic_platform_init
+> >>   +       acpi_table_parse_madt(ACPI_MADT_TYPE_APLIC, aplic_parse_madt, 0)
+> >>       acpi_scan_init
+> >>         acpi_pci_root_init
+> >>         acpi_pci_link_init
+> >> 	acpi_bus_scan             # add PCI host bridges, etc
+> >> 
+> >> If that's the sequence, it looks like aplic_parse_madt() should be
+> >> called before the PCI host bridges are added.
+> >> 
+> >> Or maybe this isn't how the APLICs are enumerated?
+> >> 
+> > That's partly correct. APLIC platform devices are created prior to PCI
+> > host bridges added. But the actual APLIC driver which creates the
+> > irqdomain will be probed as a regular platform driver for the APLIC
+> > device. The platform driver probe will happen using DD framework and
+> > devices don't have any dependency on APLIC which can cause device probe
+> > prior to APLIC driver probe.
+> >
+> > DT supports fw_devlink framework which makes it easier for IRQ devices
+> > to use regular platform drivers and produces-consumers are probed in the
+> > order without requiring drivers to do deferred probe. But I don't see
+> > that supported for ACPI framework.  Also, the way PNP devices get added
+> > there is an assumption that interrupt controller is already setup fully.
+> 
+> AFAIU, the -EPROBE_DEFER changes are needed for GSIs (and the way the
+> IMSIC/APLIC irqchip series is structured), right?
+> 
+Yes, It is only for GSI's.
+
+> There's a couple of separate pieces in play here:
+> 1. IMSIC-IPI (MADT init)
+> 2. IMSIC-MSI (MADT init, imsic_platform_acpi_probe() patch 14)
+> 3. APLIC-wired (platform)
+> 4. APLIC-MSI-bridge (platform)
+> 
+> APLIC-MSI-bridge is pretty much a RISC-V mbigen.
+> 
+> Some devices do not have ResourceSource parsing implemented yet. The PNP
+> devices that cannot use ResourceSource (you mention PNP0501 (16550) and
+> PNP0C0F (PCI interrupt link devices), do we really need to care about
+> them for the RISC-V platforms using ACPI? If that would change, the
+> kernel drivers can be adjusted (d44fa3d46079 ("ACPI: Add support for
+> ResourceSource/IRQ domain mapping"))?
+> 
+> I guess my question is we need to care about GSIs w/o explicit
+> ResourceSource, so that APLIC-MSI-bridge can be used.
+> 
+> GED works nicely with ResourceSource, and covers a lot of the GSI
+> use-cases, no?
+> 
+> And if we do care, then *both* 3 and 4 would need at MADT scan
+> point/init, and not be a platform device (late init).
+> 
+I am not sure it is a good idea not to support PCI link devices. Not
+allowing them removes the flexibility in _PRT. Also, is there a standard
+16550 UART apart from PNP0501? ACPI platform devices already support
+deferred probe as per the series you mentioned. IMO, PNP also should
+support it. So, I am not sure it is a good idea to prohibit all PnP
+devices on RISC-V platforms. Other OS's might be able to handle them.
+
+> From my, probably naive perspective, it's a bit weird *not* to create
+> the irq domains at MADT scan time.
+> 
+> > With this new use case in RISC-V, here are the alternatives I am aware of.
+> >
+> > 1) Use core_initcall() in the APLIC drivers which makes APLIC driver to
+> > be probed prior to PNP or PCI INTx devices. But this was ruled out in
+> > the context of DT from Marc.
+> >
+> > 2) Like the approach tried in this series, add support for deferred
+> > probe in drivers. This will be invasive change requiring many drivers to
+> > change like you pointed.
+> 
+> Again is this only for GSIs? Patch 14 moves the IMSIC-MSI init to MADT
+> for PCIe devices (which is different from DT), so it's not for PCIe
+> devices. I wonder if it's a lot of churn for something that will not be
+> used for RISC-V ACPI systems...
+> 
+> A quick look at what Arm's GICv3 does, all irq domains are created at
+> MADT init.
+> 
+The issue is primarily with APLIC-MSI. Since it needs MSI device domain,
+it has to be a platform device.
+
+I am investigating fw-devlink like Marc suggested atleast for IRQ
+dependencies. If that works, it would be the best solution.
+
+Thanks,
+Sunil
 
