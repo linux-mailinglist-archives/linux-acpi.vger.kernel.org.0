@@ -1,149 +1,220 @@
-Return-Path: <linux-acpi+bounces-2003-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2004-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D61A7FF64E
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 17:39:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD4A17FF991
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 19:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0183B20A2E
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 16:39:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FE901F20FF1
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 18:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F4654FA8
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 16:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="tLtM5mNq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC78F584C7
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 18:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 759C5170D
-	for <linux-acpi@vger.kernel.org>; Thu, 30 Nov 2023 08:02:15 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-332e56363adso754449f8f.3
-        for <linux-acpi@vger.kernel.org>; Thu, 30 Nov 2023 08:02:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citrix.com; s=google; t=1701360134; x=1701964934; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J8Q31kwOWiBDXnwlbMX0bPU/+i+b5UwJll/wjEONC1U=;
-        b=tLtM5mNqCSrVHP8edXgwL+BALAypuISUQH5BPMPHcwH7KjkZZhZOAN76wJhq6Ot0ua
-         o53pOhdtPWueREFkxpn2Og0Ai7sMYyjpf12qFxwU9gSklGIxWCVrsJM4MiIxExdFMnME
-         Zt8S5T1TVRelAtTxJ5rspA0NqwSag5kxOcH3c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701360134; x=1701964934;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J8Q31kwOWiBDXnwlbMX0bPU/+i+b5UwJll/wjEONC1U=;
-        b=fciMVWHj/3cbswUS4sq+6Un7Dc/OXGh5ZXqwkaZaLGjevwplauVAnsjS1Wom9ZwfxH
-         lnKDomXWyoIPPv3MeDDk8MZ+goGQ/AqcxflRjMXL3DaGRGIsTSA/Zg+gfmrEu2LEMf4/
-         NJvMcQPqN6QEEZLL/uKglbAhg7WQKGveOi1UucbyybGMX4V6Hdga1Hm8L9x9Ev+cZzCQ
-         z/B4r+vJe5er4xypJgtFI+Ax6L3bpGaf79oD7oIJJgzMbjta+QNf6qfUJGGnl8Ykg1kW
-         l46C83Is9C/E0OOLruMEWK3VgYRrVSKAT3Dkyjn/wry3MwDRMYeVWvnRf++6GCbXjxyj
-         q7iQ==
-X-Gm-Message-State: AOJu0YxrcHaYL3p88ZUwUOx5xO01RYZDEKlIwmoETfhhTInuQluwuvDt
-	GHnODH7+4YJxS4d/m/vM9t5RXg==
-X-Google-Smtp-Source: AGHT+IG7CHrQYHgQi9oJz5npE820tArdqo6WytLhF5GonusjbfiVhyI2nc1i0dbHiq1MLAlBCrQniA==
-X-Received: by 2002:a5d:458b:0:b0:332:ffaf:d217 with SMTP id p11-20020a5d458b000000b00332ffafd217mr9790796wrq.27.1701360133280;
-        Thu, 30 Nov 2023 08:02:13 -0800 (PST)
-Received: from localhost ([213.195.113.99])
-        by smtp.gmail.com with ESMTPSA id f12-20020adfdb4c000000b00332d3b89561sm1873646wrj.97.2023.11.30.08.02.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Nov 2023 08:02:13 -0800 (PST)
-Date: Thu, 30 Nov 2023 17:02:12 +0100
-From: Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>
-To: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Jiqian Chen <Jiqian.Chen@amd.com>, Juergen Gross <jgross@suse.com>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Stefano Stabellini <stefano.stabellini@amd.com>,
-	Alex Deucher <Alexander.Deucher@amd.com>,
-	Christian Koenig <Christian.Koenig@amd.com>,
-	Stewart Hildebrand <Stewart.Hildebrand@amd.com>,
-	Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
-	Honglei Huang <Honglei1.Huang@amd.com>,
-	Julia Zhang <Julia.Zhang@amd.com>, Huang Rui <Ray.Huang@amd.com>
-Subject: Re: [RFC KERNEL PATCH v2 2/3] xen/pvh: Unmask irq for passthrough
- device in PVH dom0
-Message-ID: <ZWiyBP4Lzz5lXraP@macbook>
-References: <20231124103123.3263471-1-Jiqian.Chen@amd.com>
- <20231124103123.3263471-3-Jiqian.Chen@amd.com>
- <alpine.DEB.2.22.394.2311291950350.3533093@ubuntu-linux-20-04-desktop>
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D496D10DF;
+	Thu, 30 Nov 2023 08:46:13 -0800 (PST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Sh25S5Wz5z6K5lf;
+	Fri,  1 Dec 2023 00:41:32 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8C3F214058E;
+	Fri,  1 Dec 2023 00:46:11 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 30 Nov
+ 2023 16:46:10 +0000
+Date: Thu, 30 Nov 2023 16:46:09 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+CC: James Morse <james.morse@arm.com>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
+	<kvmarm@lists.linux.dev>, <x86@kernel.org>, Salil Mehta
+	<salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	<jianyong.wu@arm.com>, <justin.he@arm.com>, <gregkh@linuxfoundation.org>
+Subject: Re: [RFC PATCH v2 11/35] arch_topology: Make
+ register_cpu_capacity_sysctl() tolerant to late CPUs
+Message-ID: <20231130164609.00000b4a@Huawei.com>
+In-Reply-To: <ZTKEQz0DJuv/tqNH@shell.armlinux.org.uk>
+References: <20230913163823.7880-1-james.morse@arm.com>
+	<20230913163823.7880-12-james.morse@arm.com>
+	<20230914130126.000069db@Huawei.com>
+	<ZTKEQz0DJuv/tqNH@shell.armlinux.org.uk>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.22.394.2311291950350.3533093@ubuntu-linux-20-04-desktop>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, Nov 29, 2023 at 07:53:59PM -0800, Stefano Stabellini wrote:
-> On Fri, 24 Nov 2023, Jiqian Chen wrote:
-> > This patch is to solve two problems we encountered when we try to
-> > passthrough a device to hvm domU base on Xen PVH dom0.
+On Fri, 20 Oct 2023 14:44:35 +0100
+"Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+
+> On Thu, Sep 14, 2023 at 01:01:26PM +0100, Jonathan Cameron wrote:
+> > On Wed, 13 Sep 2023 16:37:59 +0000
+> > James Morse <james.morse@arm.com> wrote:
+> >   
+> > > register_cpu_capacity_sysctl() adds a property to sysfs that describes
+> > > the CPUs capacity. This is done from a subsys_initcall() that assumes
+> > > all possible CPUs are registered.
+> > > 
+> > > With CPU hotplug, possible CPUs aren't registered until they become
+> > > present, (or for arm64 enabled). This leads to messages during boot:
+> > > | register_cpu_capacity_sysctl: too early to get CPU1 device!
+> > > and once these CPUs are added to the system, the file is missing.
+> > > 
+> > > Move this to a cpuhp callback, so that the file is created once
+> > > CPUs are brought online. This covers CPUs that are added late by
+> > > mechanisms like hotplug.
+> > > One observable difference is the file is now missing for offline CPUs.
+> > > 
+> > > Signed-off-by: James Morse <james.morse@arm.com>
+> > > ---
+> > > If the offline CPUs thing is a problem for the tools that consume
+> > > this value, we'd need to move cpu_capacity to be part of cpu.c's
+> > > common_cpu_attr_groups.  
 > > 
-> > First, hvm guest will alloc a pirq and irq for a passthrough device
-> > by using gsi, before that, the gsi must first has a mapping in dom0,
-> > see Xen code pci_add_dm_done->xc_domain_irq_permission, it will call
-> > into Xen and check whether dom0 has the mapping. See
-> > XEN_DOMCTL_irq_permission->pirq_access_permitted, "current" is PVH
-> > dom0 and it return irq is 0, and then return -EPERM.
-> > This is because the passthrough device doesn't do PHYSDEVOP_map_pirq
-> > when thay are enabled.
+> > I think we should do that anyway and then use an is_visible() if we want to
+> > change whether it is visible in offline cpus.
 > > 
-> > Second, in PVH dom0, the gsi of a passthrough device doesn't get
-> > registered, but gsi must be configured for it to be able to be
-> > mapped into a domU.
+> > Dynamic sysfs file creation is horrible - particularly when done
+> > from an totally different file from where the rest of the attributes
+> > are registered.  I'm curious what the history behind that is.
 > > 
-> > After searching codes, we can find map_pirq and register_gsi will be
-> > done in function vioapic_write_redirent->vioapic_hwdom_map_gsi when
-> > the gsi(aka ioapic's pin) is unmasked in PVH dom0. So the problems
-> > can be conclude to that the gsi of a passthrough device doesn't be
-> > unmasked.
-> > 
-> > To solve the unmaske problem, this patch call the unmask_irq when we
-> > assign a device to be passthrough. So that the gsi can get registered
-> > and mapped in PVH dom0.
+> > Whilst here, why is there a common_cpu_attr_groups which is
+> > identical to the hotpluggable_cpu_attr_groups in base/cpu.c?  
 > 
+> Looking into doing this, the easy bit is adding the attribute group
+> with an appropriate .is_visible dependent on cpu_present(), but we
+> need to be able to call sysfs_update_groups() when the state of the
+> .is_visible() changes.
+Hi Russell,
+
+Sorry, somehow I missed this completely until you referred back to it :(
+
+This is pretty much what I was thinking so thanks for doing it.
+
 > 
-> Roger, this seems to be more of a Xen issue than a Linux issue. Why do
-> we need the unmask check in Xen? Couldn't we just do:
+> Given the comment in sysfs_update_groups() about "if an error occurs",
+> rather than making this part of common_cpu_attr_groups, would it be
+> better that it's part of its own set of groups, thus limiting the
+> damage from a possible error? I suspect, however, that any error at
+> that point means that the system is rather fatally wounded.
 > 
+> This is what I have so far to implement your idea, less the necessary
+> sysfs_update_groups() call when we need to change the visibility of
+> the attributes.
+
+Fwiw (and I think you shouldn't add this to the critical path for your
+main series for obvious reasons), I think you are right that it makes
+sense to do this in a separate group, but that if we were going to see
+an error I'd 'hope' we shouldn't see anything that hasn't occurred
+when groups were originally added. Maybe that's overly optimistic.
+
+Sorry again for lack of reply before now and thanks for pointing this
+out.  I'd love to see this posted after the ARM vCPU HP stuff is in.
+
+Jonathan
+
+
 > 
-> diff --git a/xen/arch/x86/hvm/vioapic.c b/xen/arch/x86/hvm/vioapic.c
-> index 4e40d3609a..df262a4a18 100644
-> --- a/xen/arch/x86/hvm/vioapic.c
-> +++ b/xen/arch/x86/hvm/vioapic.c
-> @@ -287,7 +287,7 @@ static void vioapic_write_redirent(
->              hvm_dpci_eoi(d, gsi);
->      }
+> diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
+> index 9ccb7daee78e..06c9fc6620d2 100644
+> --- a/drivers/base/arch_topology.c
+> +++ b/drivers/base/arch_topology.c
+> @@ -215,43 +215,24 @@ static ssize_t cpu_capacity_show(struct device *dev,
+>  	return sysfs_emit(buf, "%lu\n", topology_get_cpu_scale(cpu->dev.id));
+>  }
 >  
-> -    if ( is_hardware_domain(d) && unmasked )
-> +    if ( is_hardware_domain(d) )
->      {
->          /*
->           * NB: don't call vioapic_hwdom_map_gsi while holding hvm.irq_lock
+> -static void update_topology_flags_workfn(struct work_struct *work);
+> -static DECLARE_WORK(update_topology_flags_work, update_topology_flags_workfn);
+> -
+>  static DEVICE_ATTR_RO(cpu_capacity);
+>  
+> -static int cpu_capacity_sysctl_add(unsigned int cpu)
+> -{
+> -	struct device *cpu_dev = get_cpu_device(cpu);
+> -
+> -	if (!cpu_dev)
+> -		return -ENOENT;
+> -
+> -	device_create_file(cpu_dev, &dev_attr_cpu_capacity);
+> -
+> -	return 0;
+> -}
+> -
+> -static int cpu_capacity_sysctl_remove(unsigned int cpu)
+> +static umode_t cpu_present_attrs_visible(struct kobject *kobi,
+> +					 struct attribute *attr, int index)
+>  {
+> -	struct device *cpu_dev = get_cpu_device(cpu);
+> -
+> -	if (!cpu_dev)
+> -		return -ENOENT;
+> -
+> -	device_remove_file(cpu_dev, &dev_attr_cpu_capacity);
+> +	struct device *dev = kobj_to_dev(kobj);
+> +	struct cpu *cpu = container_of(dev, struct cpu, dev);
+>  
+> -	return 0;
+> +	return cpu_present(cpu->dev.id) ? attr->mode : 0;
+>  }
+>  
+> -static int register_cpu_capacity_sysctl(void)
+> -{
+> -	cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "topology/cpu-capacity",
+> -			  cpu_capacity_sysctl_add, cpu_capacity_sysctl_remove);
+> +const struct attribute_group cpu_capacity_attr_group = {
+> +	.is_visible = cpu_present_attrs_visible,
+> +	.attrs = cpu_capacity_attrs
+> +};
+>  
+> -	return 0;
+> -}
+> -subsys_initcall(register_cpu_capacity_sysctl);
+> +static void update_topology_flags_workfn(struct work_struct *work);
+> +static DECLARE_WORK(update_topology_flags_work, update_topology_flags_workfn);
+>  
+>  static int update_topology;
+>  
+> diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
+> index a19a8be93102..954b045705c2 100644
+> --- a/drivers/base/cpu.c
+> +++ b/drivers/base/cpu.c
+> @@ -192,6 +192,9 @@ static const struct attribute_group crash_note_cpu_attr_group = {
+>  static const struct attribute_group *common_cpu_attr_groups[] = {
+>  #ifdef CONFIG_KEXEC
+>  	&crash_note_cpu_attr_group,
+> +#endif
+> +#ifdef CONFIG_GENERIC_ARCH_TOPOLOGY
+> +	&cpu_capacity_attr_group,
+>  #endif
+>  	NULL
+>  };
+> diff --git a/include/linux/cpu.h b/include/linux/cpu.h
+> index e117c06e0c6b..745ad21e3dc8 100644
+> --- a/include/linux/cpu.h
+> +++ b/include/linux/cpu.h
+> @@ -30,6 +30,8 @@ struct cpu {
+>  	struct device dev;
+>  };
+>  
+> +extern const struct attribute_group cpu_capacity_attr_group;
+> +
+>  extern void boot_cpu_init(void);
+>  extern void boot_cpu_hotplug_init(void);
+>  extern void cpu_init(void);
+> 
 
-There are some issues with this approach.
-
-mp_register_gsi() will only setup the trigger and polarity of the
-IO-APIC pin once, so we do so once the guest unmask the pin in order
-to assert that the configuration is the intended one.  A guest is
-allowed to write all kind of nonsense stuff to the IO-APIC RTE, but
-that doesn't take effect unless the pin is unmasked.
-
-Overall the question would be whether we have any guarantees that
-the hardware domain has properly configured the pin, even if it's not
-using it itself (as it hasn't been unmasked).
-
-IIRC PCI legacy interrupts are level triggered and low polarity, so we
-could configure any pins that are not setup at bind time?
-
-Thanks, Roger.
 
