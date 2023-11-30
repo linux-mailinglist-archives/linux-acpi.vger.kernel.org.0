@@ -1,117 +1,111 @@
-Return-Path: <linux-acpi+bounces-1998-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1999-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19C37FF646
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 17:38:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E76037FF647
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 17:38:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9B1BB20C4D
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 16:38:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0B36281745
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 16:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F4047A54
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 16:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583CF54FB1
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 16:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="GWzzjqgr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z07Tt3+J"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B46BE93;
-	Thu, 30 Nov 2023 06:40:44 -0800 (PST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 308F540E0030;
-	Thu, 30 Nov 2023 14:40:42 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id zijeYWMRN7vv; Thu, 30 Nov 2023 14:40:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1701355240; bh=h0qwow19NdKO2+/XrBUXodPBR9R3/3gl99cArdMrp3w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GWzzjqgrfLnSQPKE0qba0s7RZ54I13eojfslwg0fAcYdiA12TK8XDBQkvoWks8ifV
-	 I/yj7qWWWt/1cAXrL47wvl7R8T+q92wFeUxThqrGyBhZR/nOY+C4kOdocjFX8QDPW9
-	 5pMzCLDVv0Eo4mV2tmNgKzmW4FS3wVIJY/N9UFnqGkBC+jGDUr4zOdTcIjf3gdkvY6
-	 jwwLd9C8220jj6W2G2Or6BPmSgHfieZDFr3c1ty9L5wT8DQGy7Zx3QzMrGG4L2AXTq
-	 nhPgnFKeBSmw07LAqri0Nb1tVmz61+BFWIzv7cJdR+hMneNc0P4mLwnpa4UHUCt/Iw
-	 MuyOazyjjadjifxvdSTZh8eoneG99HjiXzyKutoeeJbx3QAGmbmwhpN3vIXekbloO6
-	 BlgMN+uq7i5R/MspJgGDqd3kiZef3NPj+AsB3belkSCDi9JCWZDFjsPf2V3sibVtsL
-	 GZ7VzV0khKEj8Hv9onSX8M/mxE5V5JBLDG2bmVsrftboqiwmJ4Poz8G6nHCRFwGHhe
-	 IRhefBSFLNt0Gi07+wz3ZUdQZGbPzhi7AMQSBrstDjHh6AL+qdkQAKzBBAST3zvqSb
-	 F/9pY96ebjtRJNzPjBLqh+C8bNUgF03g7PFxxytDL6OYAEc6gaiU7pq/ubtpmHMs4D
-	 1ueM1ZNR66s0O69R14YftBV4=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9862640E0239;
-	Thu, 30 Nov 2023 14:40:05 +0000 (UTC)
-Date: Thu, 30 Nov 2023 15:40:01 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: james.morse@arm.com, rafael@kernel.org, wangkefeng.wang@huawei.com,
-	tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
-	linmiaohe@huawei.com, naoya.horiguchi@nec.com,
-	gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
-	stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
-	ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
-	baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
-	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
-	zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task
- work with proper si_code
-Message-ID: <20231130144001.GGZWiewYtvMSJir62f@fat_crate.local>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20231007072818.58951-1-xueshuai@linux.alibaba.com>
- <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
- <9e92e600-86a4-4456-9de4-b597854b107c@linux.alibaba.com>
- <20231125121059.GAZWHkU27odMLns7TZ@fat_crate.local>
- <1048123e-b608-4db1-8d5f-456dd113d06f@linux.alibaba.com>
- <20231129185406.GBZWeIzqwgRQe7XDo/@fat_crate.local>
- <a3cd9b79-4be5-4f77-b32a-51a624a65ec0@linux.alibaba.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA9B51C38;
+	Thu, 30 Nov 2023 14:47:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5E9C433C9;
+	Thu, 30 Nov 2023 14:47:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701355631;
+	bh=dNJWSo8E6GQ4fVWyXjpzy+fiTadQolXDNmtZRzZe2RQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Z07Tt3+J1NH+TmhZzsMsKbN95ezIMx9gO6IVPWDmheCO7/DZ4cIc3mKfBZkYG+mk8
+	 DNjfF191aWJFzXt0tFERiWHMAhCgsUjIMtj0QjSyiYuScgky6GROZfN8oFVsLLV8Fh
+	 kqUsT5L/F04a2czctAFDaowp8TqZT5l2nFUBoQckD9o2xcx7hAQrMFTy0fQMeVc0TG
+	 Lx4Qsr+T9b7kqpyawUYdIeCbTpQdjuheHKqbeEr8vpcuV9DSItgV6Fp5A54853lPov
+	 QO6cnUqaX+qLgfYjV6oNryejUGgDSHhBDXDVii8gxX9wkIly2gFjzYAnGFkm8fnsP1
+	 fNhXSojcCqUQw==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a19067009d2so66573366b.3;
+        Thu, 30 Nov 2023 06:47:11 -0800 (PST)
+X-Gm-Message-State: AOJu0YwdDh55HylaVCV88VA6iW8d8GpOlRpPiMXw1/9mt9ipMujcw6xg
+	rR4SWYooanPfwOPEXuSsW0u4ULMcIWqKyPzaXg==
+X-Google-Smtp-Source: AGHT+IHSmMEE+qYvPFQMyf7A7mr7f1220m4lfUsZ3/p1781IxEAccKr7vlPfmbnUSIcpUxea8isNLTGiW3bfb0ZEQ0w=
+X-Received: by 2002:a05:6512:2102:b0:50b:c543:c4cf with SMTP id
+ q2-20020a056512210200b0050bc543c4cfmr3437536lfr.6.1701355609063; Thu, 30 Nov
+ 2023 06:46:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a3cd9b79-4be5-4f77-b32a-51a624a65ec0@linux.alibaba.com>
+References: <cover.1701268753.git.robin.murphy@arm.com> <950378c6f39270a255452733ff2305e56fb05cc5.1701268753.git.robin.murphy@arm.com>
+In-Reply-To: <950378c6f39270a255452733ff2305e56fb05cc5.1701268753.git.robin.murphy@arm.com>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Thu, 30 Nov 2023 08:46:36 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqK_StOWTOBCR6OaAqu63_kyVKsA46qJ4ky9iSyB-yKZ2g@mail.gmail.com>
+Message-ID: <CAL_JsqK_StOWTOBCR6OaAqu63_kyVKsA46qJ4ky9iSyB-yKZ2g@mail.gmail.com>
+Subject: Re: [PATCH 1/7] OF: Retire dma-ranges mask workaround
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>, Vineet Gupta <vgupta@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, 
+	Sudeep Holla <sudeep.holla@arm.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
+	Niklas Schnelle <schnelle@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, Frank Rowand <frowand.list@gmail.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, 
+	iommu@lists.linux.dev, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-FTR, this is starting to make sense, thanks for explaining.
+On Wed, Nov 29, 2023 at 11:43=E2=80=AFAM Robin Murphy <robin.murphy@arm.com=
+> wrote:
+>
+> From what I remember, the fixup adding 1 to the dma-ranges size was for
+> the benefit of some early AMD Seattle DTs. Those are likely extinct by
+> now, and anyone else who might have deserved to get the message has
+> hopefully seen the warning in the 9 years we've had it there. The modern
+> dma_range_map mechanism should happily handle odd-sized ranges with no
+> ill effect, so there's little need to care anyway now. Clean it up.
 
-Replying only to this one for now:
+The commit has a tested by for Seattle, but the series adding this was
+for an issue on TI Keystone[1]. Looks like the patch adding this fixup
+and warning did 2 things. It added 1 to the default mask when
+'dma-ranges' was not present (which keystone needed) and added 1 if
+the DT value was a mask along with the warning. It's not clear what
+Seattle needed, but there was a fix to dma-ranges about a year
+later[2].
 
-On Thu, Nov 30, 2023 at 10:58:53AM +0800, Shuai Xue wrote:
-> To reproduce this problem:
-> 
-> 	# STEP1: enable early kill mode
-> 	#sysctl -w vm.memory_failure_early_kill=1
-> 	vm.memory_failure_early_kill = 1
-> 
-> 	# STEP2: inject an UCE error and consume it to trigger a synchronous error
+I thought at some point we allowed 32-bit DTs to specify a ~0 size to
+avoid having to use 2 cells to express 4G size which wouldn't have
+been a warning, but I can't find any discussion on that. It would have
+been earlier than 2015 I think... Anyways, there is no upstream dts
+with that either, so I think we're good.
 
-So this is for ARM folks to deal with, BUT:
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> ---
+>  drivers/of/device.c | 16 ----------------
+>  1 file changed, 16 deletions(-)
 
-A consumed uncorrectable error on x86 means panic. On some hw like on
-AMD, that error doesn't even get seen by the OS but the hw does
-something called syncflood to prevent further error propagation. So
-there's no any action required - the hw does that.
+Acked-by: Rob Herring <robh@kernel.org>
 
-But I'd like to hear from ARM folks whether consuming an uncorrectable
-error even lets software run. Dunno.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+[1] https://lore.kernel.org/all/1425405134-24707-1-git-send-email-m-kariche=
+ri2@ti.com/
+[2] https://lore.kernel.org/all/1455162671-16044-4-git-send-email-Suravee.S=
+uthikulpanit@amd.com/
 
