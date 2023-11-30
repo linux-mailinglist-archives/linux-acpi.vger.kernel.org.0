@@ -1,168 +1,128 @@
-Return-Path: <linux-acpi+bounces-1996-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1997-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6AFC7FF239
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 15:37:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 190C97FF23B
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 15:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FFFE1F20D4B
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 14:37:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 488191C202D5
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 14:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C315100B
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 14:37:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F8A51001
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 14:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="IwgDhQC3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1662383;
-	Thu, 30 Nov 2023 06:10:57 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1940F143D;
-	Thu, 30 Nov 2023 06:11:43 -0800 (PST)
-Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 107D53F5A1;
-	Thu, 30 Nov 2023 06:10:49 -0800 (PST)
-Message-ID: <2e0f0aac-6287-45d1-ae96-6549c15a8418@arm.com>
-Date: Thu, 30 Nov 2023 14:10:48 +0000
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050:0:465::201])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFB9B1B4;
+	Thu, 30 Nov 2023 06:35:36 -0800 (PST)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4SgzJ34hSZz9shK;
+	Thu, 30 Nov 2023 15:35:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1701354931;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t/Bp7ZCE4LoczhLnxXNT+HgjRVKsaP8cit12SuScveU=;
+	b=IwgDhQC3pNSAI+5O9d6vw5OMFBCN8vCCPBS3/BjLjdRO2wi+NECUrHc9PJUrPxL0ew/SVM
+	8BVdgvtDDCQnDaJmzua+/obBej3X6+PObowN6U0z/hwU50bkkCaBfKYcF3kR9RpeVAsjuZ
+	5LkjXeOJT12xXgArkViPQgeKlmKDL7FWtgQSp+i/pJ7VfmA1D5LYJ8mdO7Y6A9R9XFxlLi
+	3CEjthucfRGoWOJy5xOMMeK1ncNIX/cwu9kFFSY4l3eAGBZpdo+olpbN/3ccqmWoNGxzgU
+	HmM755zOvyj0qBK9xIisA85TmRipAvoOAtXeB4AbmUs1Z76nBPr25LxrP70Qtg==
+Message-ID: <09ea3d40-e8f6-4cba-a576-ffeda8c02734@mailbox.org>
+Date: Thu, 30 Nov 2023 15:35:20 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/10] ACPI: IORT: Allow COMPILE_TEST of IORT
-Content-Language: en-GB
-To: Jason Gunthorpe <jgg@nvidia.com>, David Airlie <airlied@gmail.com>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>, Albert Ou <aou@eecs.berkeley.edu>,
- asahi@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
- Danilo Krummrich <dakr@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
- Dexuan Cui <decui@microsoft.com>, devicetree@vger.kernel.org,
- dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
- David Woodhouse <dwmw2@infradead.org>, Frank Rowand
- <frowand.list@gmail.com>, Hanjun Guo <guohanjun@huawei.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, iommu@lists.linux.dev,
- Jon Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
- Karol Herbst <kherbst@redhat.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Laxman Dewangan <ldewangan@nvidia.com>, Len Brown <lenb@kernel.org>,
- linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, nouveau@lists.freedesktop.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Rob Herring <robh+dt@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Sven Peter <sven@svenpeter.dev>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Vineet Gupta <vgupta@kernel.org>, Vinod Koul <vkoul@kernel.org>,
- Wei Liu <wei.liu@kernel.org>, Will Deacon <will@kernel.org>
-Cc: Lu Baolu <baolu.lu@linux.intel.com>, Christoph Hellwig <hch@lst.de>,
- Jerry Snitselaar <jsnitsel@redhat.com>, Hector Martin <marcan@marcan.st>,
- Moritz Fischer <mdf@kernel.org>, patches@lists.linux.dev,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Rob Herring <robh@kernel.org>, Thierry Reding <thierry.reding@gmail.com>
-References: <10-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
-From: Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <10-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
+Subject: Re: [PATCH V11 0/7] amd-pstate preferred core
+To: Meng Li <li.meng@amd.com>, "Rafael J . Wysocki"
+ <rafael.j.wysocki@intel.com>, Huang Rui <ray.huang@amd.com>
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ linux-acpi@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-kselftest@vger.kernel.org, Nathan Fontenot <nathan.fontenot@amd.com>,
+ Deepak Sharma <deepak.sharma@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Shimmer Huang <shimmer.huang@amd.com>, Perry Yuan <Perry.Yuan@amd.com>,
+ Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Borislav Petkov <bp@alien8.de>,
+ Oleksandr Natalenko <oleksandr@natalenko.name>
+References: <20231129065437.290183-1-li.meng@amd.com>
+Content-Language: en-US
+From: Tor Vic <torvic9@mailbox.org>
+In-Reply-To: <20231129065437.290183-1-li.meng@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: d85b6956544caf01d74
+X-MBO-RS-META: x9mtin3t79h93gzyxr6bfmadcnbujkqq
 
-On 29/11/2023 12:48 am, Jason Gunthorpe wrote:
-> The arm-smmu driver can COMPILE_TEST on x86, so expand this to also
-> enable the IORT code so it can be COMPILE_TEST'd too.
+
+
+On 11/29/23 07:54, Meng Li wrote:
+> Hi all:
 > 
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->   drivers/acpi/Kconfig        | 2 --
->   drivers/acpi/Makefile       | 2 +-
->   drivers/acpi/arm64/Kconfig  | 1 +
->   drivers/acpi/arm64/Makefile | 2 +-
->   drivers/iommu/Kconfig       | 1 +
->   5 files changed, 4 insertions(+), 4 deletions(-)
+> The core frequency is subjected to the process variation in semiconductors.
+> Not all cores are able to reach the maximum frequency respecting the
+> infrastructure limits. Consequently, AMD has redefined the concept of
+> maximum frequency of a part. This means that a fraction of cores can reach
+> maximum frequency. To find the best process scheduling policy for a given
+> scenario, OS needs to know the core ordering informed by the platform through
+> highest performance capability register of the CPPC interface.
 > 
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index f819e760ff195a..3b7f77b227d13a 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -541,9 +541,7 @@ config ACPI_PFRUT
->   	  To compile the drivers as modules, choose M here:
->   	  the modules will be called pfr_update and pfr_telemetry.
->   
-> -if ARM64
->   source "drivers/acpi/arm64/Kconfig"
-> -endif
->   
->   config ACPI_PPTT
->   	bool
-> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-> index eaa09bf52f1760..4e77ae37b80726 100644
-> --- a/drivers/acpi/Makefile
-> +++ b/drivers/acpi/Makefile
-> @@ -127,7 +127,7 @@ obj-y				+= pmic/
->   video-objs			+= acpi_video.o video_detect.o
->   obj-y				+= dptf/
->   
-> -obj-$(CONFIG_ARM64)		+= arm64/
-> +obj-y				+= arm64/
->   
->   obj-$(CONFIG_ACPI_VIOT)		+= viot.o
->   
-> diff --git a/drivers/acpi/arm64/Kconfig b/drivers/acpi/arm64/Kconfig
-> index b3ed6212244c1e..537d49d8ace69e 100644
-> --- a/drivers/acpi/arm64/Kconfig
-> +++ b/drivers/acpi/arm64/Kconfig
-> @@ -11,6 +11,7 @@ config ACPI_GTDT
->   
->   config ACPI_AGDI
->   	bool "Arm Generic Diagnostic Dump and Reset Device Interface"
-> +	depends on ARM64
->   	depends on ARM_SDE_INTERFACE
->   	help
->   	  Arm Generic Diagnostic Dump and Reset Device Interface (AGDI) is
-> diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
-> index 143debc1ba4a9d..71d0e635599390 100644
-> --- a/drivers/acpi/arm64/Makefile
-> +++ b/drivers/acpi/arm64/Makefile
-> @@ -4,4 +4,4 @@ obj-$(CONFIG_ACPI_IORT) 	+= iort.o
->   obj-$(CONFIG_ACPI_GTDT) 	+= gtdt.o
->   obj-$(CONFIG_ACPI_APMT) 	+= apmt.o
->   obj-$(CONFIG_ARM_AMBA)		+= amba.o
-> -obj-y				+= dma.o init.o
-> +obj-$(CONFIG_ARM64)		+= dma.o init.o
-> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
-> index 7673bb82945b6c..309378e76a9bc9 100644
-> --- a/drivers/iommu/Kconfig
-> +++ b/drivers/iommu/Kconfig
-> @@ -318,6 +318,7 @@ config ARM_SMMU
->   	select IOMMU_API
->   	select IOMMU_IO_PGTABLE_LPAE
->   	select ARM_DMA_USE_IOMMU if ARM
-> +	select ACPI_IORT if ACPI
+> Earlier implementations of amd-pstate preferred core only support a static
+> core ranking and targeted performance. Now it has the ability to dynamically
+> change the preferred core based on the workload and platform conditions and
+> accounting for thermals and aging.
+> 
+> Amd-pstate driver utilizes the functions and data structures provided by
+> the ITMT architecture to enable the scheduler to favor scheduling on cores
+> which can be get a higher frequency with lower voltage.
+> We call it amd-pstate preferred core.
+> 
+> Here sched_set_itmt_core_prio() is called to set priorities and
+> sched_set_itmt_support() is called to enable ITMT feature.
+> Amd-pstate driver uses the highest performance value to indicate
+> the priority of CPU. The higher value has a higher priority.
+> 
+> Amd-pstate driver will provide an initial core ordering at boot time.
+> It relies on the CPPC interface to communicate the core ranking to the
+> operating system and scheduler to make sure that OS is choosing the cores
+> with highest performance firstly for scheduling the process. When amd-pstate
+> driver receives a message with the highest performance change, it will
+> update the core ranking.
+> 
+> Changes from V10->V11:
+> - cpufreq: amd-pstate:
+> - - according Perry's commnts, I replace the string with str_enabled_disable().
+> 
 
-This is incomplete. If you want the driver to be responsible for 
-enabling its own probing mechanisms then you need to select OF and ACPI 
-too. And all the other drivers which probe from IORT should surely also 
-select ACPI_IORT, and thus ACPI as well. And maybe the PCI core should 
-as well because there are general properties of PCI host bridges and 
-devices described in there?
+Hi,
 
-But of course that's clearly backwards nonsense, because drivers do not 
-and should not do that, so this change is not appropriate either. The 
-IORT code may not be *functionally* arm64-specific, but logically it 
-very much is - it serves a specification which is tied to the Arm 
-architecture and describes Arm-architecture-specific concepts, within 
-the wider context of ACPI on Arm itself only supporting AArch64, and not 
-AArch32. It's also not like it's driver code that someone might use as 
-an example and copy to a similar driver which could then run on 
-different architectures where a latent theoretical bug becomes real. 
-There's really no practical value to be had from compile-testing IORT.
+Using clang-17, I get the following warning:
 
-Thanks,
-Robin.
+----
+   drivers/cpufreq/amd-pstate.c:793:34: warning: variable 'cpudata' is 
+uninitialized when used here [-Wuninitialized]
+     793 |         if ((!amd_pstate_prefcore) || (!cpudata->hw_prefcore))
+         |                                         ^~~~~~~
+   drivers/cpufreq/amd-pstate.c:789:29: note: initialize the variable 
+'cpudata' to silence this warning
+     789 |         struct amd_cpudata *cpudata;
+         |                                    ^
+         |                                     = NULL
+   1 warning generated.
+----
+
+Cheers,
+Tor
 
