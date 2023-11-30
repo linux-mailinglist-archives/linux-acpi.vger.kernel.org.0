@@ -1,62 +1,62 @@
-Return-Path: <linux-acpi+bounces-1941-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-1942-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A6C7FE33E
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 23:37:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D947FE6B5
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 03:31:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0002AB20DBE
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 22:37:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28894B20E85
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 02:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615F947A56
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Nov 2023 22:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1940F9CE
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Nov 2023 02:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="F1EcOt6i"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="gJeX5uHA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 239BDD67
-	for <linux-acpi@vger.kernel.org>; Wed, 29 Nov 2023 12:50:12 -0800 (PST)
-Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-1fa37df6da8so71663fac.2
-        for <linux-acpi@vger.kernel.org>; Wed, 29 Nov 2023 12:50:12 -0800 (PST)
+Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70ECBD5E
+	for <linux-acpi@vger.kernel.org>; Wed, 29 Nov 2023 16:39:53 -0800 (PST)
+Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-58d439e3e15so179401eaf.1
+        for <linux-acpi@vger.kernel.org>; Wed, 29 Nov 2023 16:39:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1701291010; x=1701895810; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1701304792; x=1701909592; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z14ncuPizPQTpz34E/qdK1zleu0e7/OH8lwfu0qFocg=;
-        b=F1EcOt6iBj3aQN+agExfUCk/6FwHrRczkDc9gi5HGDtGGVBgJb4EnxfUHew+kXbVp3
-         pMMxJYd9hjXsd4HXBksuJAAuBs82etU0bVSeCNi9pzptcOtzWiZrGdcqgh96MDiMqF5E
-         oo3pcNWSAQmHD7aYzQeJExoHKAG+asGv6NmsYusKPuj8lxyOf25tg6nUGRz8/IPqfNF4
-         kr4KEQP9O1hgZWdT87ce2gnhOxHs0eejEOyNcKUtbtD8y8Rz2MMZIx9pNx2rBxpvcSce
-         n6UR427PMpcEnV6hDui5Q0wjY4TaJ18T0fnuh+oHD3EWKrSTRpLjIjkpjz+m9v977NZe
-         DC+A==
+        bh=dqKTf6r/9DX5X0G9N0YPszfAss74aB4UlJwKc4ipXlY=;
+        b=gJeX5uHA1xRqlJ/NiA8klcilclFAkpTYoxKBf2ye+8qryZEh2tC6Ns0dAY8FdjXziV
+         ZUDnlI8kYjSxCj9nAOh37pJd+ErExStgh7MgF5jPSpwIg0JcOyZ/+wKLRKoWBSCMbT1F
+         PxL0Jom0KbNcioSagO/WECnaxufHktzDqUznGVUXUlp7hXviyKPQPc7F9p7kwjQRN9zl
+         XKd1RWv6bCXpJ+fHMPYZLSUnKVtgMsPyq5ypXQvxsU7o7Q/0gqU2Oex6U1sjV1jpOPFs
+         AvdabnAch/SxZjfHaDOZXkcy4ooJrMuH/piV/3/s5PI3fB5FQnZc4oN/Uwuh/k/7GBQz
+         EU2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701291010; x=1701895810;
+        d=1e100.net; s=20230601; t=1701304792; x=1701909592;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Z14ncuPizPQTpz34E/qdK1zleu0e7/OH8lwfu0qFocg=;
-        b=tKtFZ9zkXGReOG+5m1wY8cHIfMjO1AfgTlpivjeM9MRpS5JB/tHG74on6VrhJymSGt
-         0MnDyaD29fYQRCdNgdtF6mGkROsV7r6JD2n9wjrzp5btuFK2wj7RtcLXIklvvqVHDvsy
-         K5Aw+GCqMVLIYQhc8/RFD2kQE8VLJif6p1VAhBcpx26p+L82d1XGdcA7dDgLqneRVKYU
-         hydEHxLXyh4q3iEO07iKG4oq++TwMxNL6i6DHSlp/3pzzNTauak3M2/Xq1R1a5vleVuE
-         aKL1kT4AlY13DISl7KNVoYzgEgha/jtAxg9hs5sOcc4/Hy4y0+/mR7u6UKrcjIS2AFb4
-         veKw==
-X-Gm-Message-State: AOJu0YzyQzPqILOVmuZi7/uiKgKlywATSakBpshyKjIGwfKkFTtLn3Yr
-	i3T32B8RosTH8Cegly1aTDIcSA==
-X-Google-Smtp-Source: AGHT+IGgKdfE8YcFNMWNxw13U7YpCs8rnHcqlluxJCfOn0tU84fkZFp4MzoV02U2Np+AMlZvjw1IBA==
-X-Received: by 2002:a05:6870:d622:b0:1fa:ca3:7069 with SMTP id a34-20020a056870d62200b001fa0ca37069mr20658402oaq.16.1701291009170;
-        Wed, 29 Nov 2023 12:50:09 -0800 (PST)
+        bh=dqKTf6r/9DX5X0G9N0YPszfAss74aB4UlJwKc4ipXlY=;
+        b=GaeQ+VK10guQw/HuvoLCDw5lssQcSZfJXqK3DIoVBBzbLHNbcD+PMnK+AZlXQpVeU/
+         FY6gkjccggdDuP3VFX3P7WXkolrEnV0U7lNwmHBJZqMa9cMszjQOUybgE3BodS4GIXiE
+         Vkp8wlW2rS2M/vEs7BFzfIxCOnMTmHimvAuzU5QcXhNzuG+aB5/hAnGtqCgi4pMPL/Ki
+         NDBkqeEIx8U/zNtxSqw/AosW7ityeM6GhEkH0Nletpcgwlxchw2b10v6aaw2tX715oHX
+         XHKXqgweM28ifiEs2tOpqMQT2NhO0KEf+DrnTAK10tX1s9sFUL9y3GUNZ1s+l3E2ENn0
+         jHrg==
+X-Gm-Message-State: AOJu0Yw9upB+XJ+67r3dAfTkHCeY4ohNdyxWxhc1hs+KncdLhzWQSd6X
+	we1lr5lxo+TGvxvws3kULbarXw==
+X-Google-Smtp-Source: AGHT+IG4kpqJkp5MuGe0QWOyJQ+HDuDWisfSFN2LiYZ3lNwDJg400B3FZHlbHx5WpKar2Jc43DZwNA==
+X-Received: by 2002:a4a:a645:0:b0:58d:6bf6:4daf with SMTP id j5-20020a4aa645000000b0058d6bf64dafmr7941560oom.2.1701304792652;
+        Wed, 29 Nov 2023 16:39:52 -0800 (PST)
 Received: from ziepe.ca (hlfxns017vw-142-134-23-187.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.134.23.187])
-        by smtp.gmail.com with ESMTPSA id yu6-20020a05687c224600b001fa6ba84054sm1349572oab.55.2023.11.29.12.50.08
+        by smtp.gmail.com with ESMTPSA id i14-20020a4aab0e000000b0057327cecdd8sm2410792oon.10.2023.11.29.16.39.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Nov 2023 12:50:08 -0800 (PST)
+        Wed, 29 Nov 2023 16:39:52 -0800 (PST)
 Received: from jgg by wakko with local (Exim 4.95)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1r8RVX-005pjC-Mb;
-	Wed, 29 Nov 2023 16:50:07 -0400
-Date: Wed, 29 Nov 2023 16:50:07 -0400
+	id 1r8V5r-005qzk-3H;
+	Wed, 29 Nov 2023 20:39:51 -0400
+Date: Wed, 29 Nov 2023 20:39:51 -0400
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Robin Murphy <robin.murphy@arm.com>
 Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
@@ -88,10 +88,11 @@ Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-acpi@vger.kernel.org, iommu@lists.linux.dev,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH 6/7] iommu/dma: Centralise iommu_setup_dma_ops()
-Message-ID: <20231129205007.GR1312390@ziepe.ca>
+Subject: Re: [PATCH 3/7] ACPI/IORT: Handle memory address size limits as
+ limits
+Message-ID: <20231130003951.GA1394392@ziepe.ca>
 References: <cover.1701268753.git.robin.murphy@arm.com>
- <7fe5a0d2bc855ac38dff326f3e64ba394bc262d4.1701268753.git.robin.murphy@arm.com>
+ <2ae6199a9cf035c1defd42e48675b827f41cdc95.1701268753.git.robin.murphy@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -100,56 +101,21 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7fe5a0d2bc855ac38dff326f3e64ba394bc262d4.1701268753.git.robin.murphy@arm.com>
+In-Reply-To: <2ae6199a9cf035c1defd42e48675b827f41cdc95.1701268753.git.robin.murphy@arm.com>
 
-On Wed, Nov 29, 2023 at 05:43:03PM +0000, Robin Murphy wrote:
-> It's somewhat hard to see, but arm64's arch_setup_dma_ops() should only
-> ever call iommu_setup_dma_ops() after a successful iommu_probe_device(),
-> which means there should be no harm in instead running it off the back
-> of iommu_probe_device() itself, as is currently done for x86 and s390
-> with .probe_finalize bodges. Pull it all into the main flow properly.
+On Wed, Nov 29, 2023 at 05:43:00PM +0000, Robin Murphy wrote:
+> Return the Root Complex/Named Component memory address size limit as an
+> inclusive limit value, rather than an exclusive size.  This saves us
+> having to special-case 64-bit overflow, and simplifies our caller too.
 > 
 > Signed-off-by: Robin Murphy <robin.murphy@arm.com>
 > ---
->  arch/arm64/mm/dma-mapping.c  |  2 --
->  drivers/iommu/amd/iommu.c    |  8 --------
->  drivers/iommu/dma-iommu.c    | 17 ++++-------------
->  drivers/iommu/dma-iommu.h    |  6 ++++++
->  drivers/iommu/intel/iommu.c  |  7 -------
->  drivers/iommu/iommu.c        |  2 ++
->  drivers/iommu/s390-iommu.c   |  6 ------
->  drivers/iommu/virtio-iommu.c | 10 ----------
->  include/linux/iommu.h        |  7 -------
->  9 files changed, 12 insertions(+), 53 deletions(-)
+>  drivers/acpi/arm64/dma.c  |  9 +++------
+>  drivers/acpi/arm64/iort.c | 18 ++++++++----------
+>  include/linux/acpi_iort.h |  4 ++--
+>  3 files changed, 13 insertions(+), 18 deletions(-)
 
-Yes! That probe_finalize() stuff is not nice
-
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index 824989874dee..3a0901165b69 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -589,6 +589,8 @@ int iommu_probe_device(struct device *dev)
->  	if (ret)
->  		return ret;
->  
-> +	iommu_setup_dma_ops(dev);
-> +
-
-I'm pretty sure this should be inside the group mutex lock.
-
-The setting of dev->dma_ops should exactly follow the setting of
-group->domain, and all transitions, including from the sysfs override
-file should update it, right?
-
-Thus to avoid races agsinst concurrent sysfs this should be locked.
-
-I think you can just put this in iommu_setup_default_domain() and it
-will take care of all the cases?
-
-Once in iommu_setup_default_domain() it is easy to call it with the
-domain argument and it can know the domain type without using
-iommu_is_dma_domain() which is one of the very last few places
-checking for the DMA domain type.
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
 Jason
 
