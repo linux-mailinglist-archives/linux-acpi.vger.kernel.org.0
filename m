@@ -1,153 +1,143 @@
-Return-Path: <linux-acpi+bounces-2045-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2046-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5136A800288
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 05:31:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AC3800289
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 05:31:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB4C3B20EF5
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 04:31:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A71011C20A86
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 04:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27CFAB659
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 04:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A08882A
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 04:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QXRXIIGk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6DBB1717;
-	Thu, 30 Nov 2023 18:58:50 -0800 (PST)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046050;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0VxTrXdf_1701399524;
-Received: from 30.240.114.121(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VxTrXdf_1701399524)
-          by smtp.aliyun-inc.com;
-          Fri, 01 Dec 2023 10:58:47 +0800
-Message-ID: <8cefd789-36da-4208-9511-f826a4508612@linux.alibaba.com>
-Date: Fri, 1 Dec 2023 10:58:42 +0800
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0014759555
+	for <linux-acpi@vger.kernel.org>; Fri,  1 Dec 2023 03:15:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03048C433C8;
+	Fri,  1 Dec 2023 03:15:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701400521;
+	bh=Dp7B5vd2hVcODH9a2EoW3LvQCYVBsy+Yg/mVTlE9inU=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=QXRXIIGk3RVLPsM4TCRp2cn2iBCqITDx3AWfqYRl3Lln3cRggUuDlXWdreqcykGsL
+	 W946LuhkL2qPLsf3/raIlDTPk3Drc5irqHJGg+oPby4lLnrTsYhV2sUc0Izv52YpnF
+	 MRqsfAVPlzx8Bdl426zUVsiMIKfPvPR+8o0LbOwEsfebODMAxZ1AkXV6gzv5WvMGnE
+	 vdvaGhSthObuKzxmpx6yuRcmH+6r9KHtlZT407gtbyKQMPFQvGGS8oyqREfhVDDmUp
+	 wLcJikr7LGhwsoJ199+0r9HNU5FRwIsMBGlQY0omccS71m+/4uYUdIB17v3shmvoVW
+	 FYAxePMeaTQbw==
+Date: Thu, 30 Nov 2023 19:15:17 -0800 (PST)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
+cc: Stefano Stabellini <sstabellini@kernel.org>, 
+    Jiqian Chen <Jiqian.Chen@amd.com>, Juergen Gross <jgross@suse.com>, 
+    Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
+    Thomas Gleixner <tglx@linutronix.de>, 
+    Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+    "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+    Bjorn Helgaas <bhelgaas@google.com>, xen-devel@lists.xenproject.org, 
+    linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+    Stefano Stabellini <stefano.stabellini@amd.com>, 
+    Alex Deucher <Alexander.Deucher@amd.com>, 
+    Christian Koenig <Christian.Koenig@amd.com>, 
+    Stewart Hildebrand <Stewart.Hildebrand@amd.com>, 
+    Xenia Ragiadakou <xenia.ragiadakou@amd.com>, 
+    Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>, 
+    Huang Rui <Ray.Huang@amd.com>
+Subject: Re: [RFC KERNEL PATCH v2 2/3] xen/pvh: Unmask irq for passthrough
+ device in PVH dom0
+In-Reply-To: <ZWiyBP4Lzz5lXraP@macbook>
+Message-ID: <alpine.DEB.2.22.394.2311301912350.110490@ubuntu-linux-20-04-desktop>
+References: <20231124103123.3263471-1-Jiqian.Chen@amd.com> <20231124103123.3263471-3-Jiqian.Chen@amd.com> <alpine.DEB.2.22.394.2311291950350.3533093@ubuntu-linux-20-04-desktop> <ZWiyBP4Lzz5lXraP@macbook>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task work
- with proper si_code
-Content-Language: en-US
-To: James Morse <james.morse@arm.com>, Borislav Petkov <bp@alien8.de>
-Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
- mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
- naoya.horiguchi@nec.com, gregkh@linuxfoundation.org, will@kernel.org,
- jarkko@kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
- stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
- ying.huang@intel.com, ashish.kalra@amd.com, baolin.wang@linux.alibaba.com,
- tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
- lenb@kernel.org, hpa@zytor.com, robert.moore@intel.com, lvying6@huawei.com,
- xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20231007072818.58951-1-xueshuai@linux.alibaba.com>
- <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
- <9e92e600-86a4-4456-9de4-b597854b107c@linux.alibaba.com>
- <20231125121059.GAZWHkU27odMLns7TZ@fat_crate.local>
- <1048123e-b608-4db1-8d5f-456dd113d06f@linux.alibaba.com>
- <20231129185406.GBZWeIzqwgRQe7XDo/@fat_crate.local>
- <a3cd9b79-4be5-4f77-b32a-51a624a65ec0@linux.alibaba.com>
- <20231130144001.GGZWiewYtvMSJir62f@fat_crate.local>
- <d83545f0-af15-10bc-0f5d-9b531b54b9dd@arm.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <d83545f0-af15-10bc-0f5d-9b531b54b9dd@arm.com>
+Content-Type: multipart/mixed; boundary="8323329-351411740-1701400521=:110490"
+
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323329-351411740-1701400521=:110490
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 
-
-
-On 2023/12/1 01:43, James Morse wrote:
-> Hi Boris,
+On Thu, 30 Nov 2023, Roger Pau Monné wrote:
+> On Wed, Nov 29, 2023 at 07:53:59PM -0800, Stefano Stabellini wrote:
+> > On Fri, 24 Nov 2023, Jiqian Chen wrote:
+> > > This patch is to solve two problems we encountered when we try to
+> > > passthrough a device to hvm domU base on Xen PVH dom0.
+> > > 
+> > > First, hvm guest will alloc a pirq and irq for a passthrough device
+> > > by using gsi, before that, the gsi must first has a mapping in dom0,
+> > > see Xen code pci_add_dm_done->xc_domain_irq_permission, it will call
+> > > into Xen and check whether dom0 has the mapping. See
+> > > XEN_DOMCTL_irq_permission->pirq_access_permitted, "current" is PVH
+> > > dom0 and it return irq is 0, and then return -EPERM.
+> > > This is because the passthrough device doesn't do PHYSDEVOP_map_pirq
+> > > when thay are enabled.
+> > > 
+> > > Second, in PVH dom0, the gsi of a passthrough device doesn't get
+> > > registered, but gsi must be configured for it to be able to be
+> > > mapped into a domU.
+> > > 
+> > > After searching codes, we can find map_pirq and register_gsi will be
+> > > done in function vioapic_write_redirent->vioapic_hwdom_map_gsi when
+> > > the gsi(aka ioapic's pin) is unmasked in PVH dom0. So the problems
+> > > can be conclude to that the gsi of a passthrough device doesn't be
+> > > unmasked.
+> > > 
+> > > To solve the unmaske problem, this patch call the unmask_irq when we
+> > > assign a device to be passthrough. So that the gsi can get registered
+> > > and mapped in PVH dom0.
+> > 
+> > 
+> > Roger, this seems to be more of a Xen issue than a Linux issue. Why do
+> > we need the unmask check in Xen? Couldn't we just do:
+> > 
+> > 
+> > diff --git a/xen/arch/x86/hvm/vioapic.c b/xen/arch/x86/hvm/vioapic.c
+> > index 4e40d3609a..df262a4a18 100644
+> > --- a/xen/arch/x86/hvm/vioapic.c
+> > +++ b/xen/arch/x86/hvm/vioapic.c
+> > @@ -287,7 +287,7 @@ static void vioapic_write_redirent(
+> >              hvm_dpci_eoi(d, gsi);
+> >      }
+> >  
+> > -    if ( is_hardware_domain(d) && unmasked )
+> > +    if ( is_hardware_domain(d) )
+> >      {
+> >          /*
+> >           * NB: don't call vioapic_hwdom_map_gsi while holding hvm.irq_lock
 > 
-> On 30/11/2023 14:40, Borislav Petkov wrote:
->> FTR, this is starting to make sense, thanks for explaining.
->>
->> Replying only to this one for now:
->>
->> On Thu, Nov 30, 2023 at 10:58:53AM +0800, Shuai Xue wrote:
->>> To reproduce this problem:
->>>
->>> 	# STEP1: enable early kill mode
->>> 	#sysctl -w vm.memory_failure_early_kill=1
->>> 	vm.memory_failure_early_kill = 1
->>>
->>> 	# STEP2: inject an UCE error and consume it to trigger a synchronous error
->>
->> So this is for ARM folks to deal with, BUT:
->>
->> A consumed uncorrectable error on x86 means panic. On some hw like on
->> AMD, that error doesn't even get seen by the OS but the hw does
->> something called syncflood to prevent further error propagation. So
->> there's no any action required - the hw does that.
-
-The "consume" is at the application point of view, e.g. a memory read. If
-poison is enable, then a SRAR error will be detected and a MCE raised
-at the point of the consumption in the execution flow.
-
-A generic Intel x86 hw behaves like below:
-
-1. UE Error Inject at a known Physical Address. (by einj_mem_uc through EINJ interface)
-2. Core Issue a Memory Read to the same Physical Address (by a singe memory read)
-3. iMC Detects the error.
-4. HA logs UCA error and signals CMCI if enabled
-5. HA Forward data with poison indication bit set.
-6. CBo detects the Poison data. Does not log any error.
-7. MLC detects the Poison data.
-8. DCU detects the Poison data, logs SRAR error and trigger MCERR if recoverable
-9. OS/VMM takes corresponding recovery action based on affected state.
-
-In our example:
--  step 2 is triggered by a singe memory read.
--  step 8: UCR errors detected on data load, MCACOD 134H, triggering MCERR
--  step 9: the kernel is excepted to send sigbus with si_code BUS_MCEERR_AR (code 4)
-
-I also run the same test  in AMD EPYC platform, e.g. Milan, Genoa, which
-behaves the same as Intel Xeon platform, e.g. Icelake, SPR.
-
-The ARMv8.2 RAS extension support similar data poison mechanism, a
-Synchronous External Abort on arm64 (analogy Machine Check Exception on
-x86) will be trigger in setp 8. See James comments for details.  But the
-kernel sends sigbus with si_code BUS_MCEERR_AO (code 5) , tested on
-Alibaba Yitian710 and Huawei Kunepng 920.
-
-
->>
->> But I'd like to hear from ARM folks whether consuming an uncorrectable
->> error even lets software run. Dunno.
+> There are some issues with this approach.
 > 
-> I think we mean different things by 'consume' here.
+> mp_register_gsi() will only setup the trigger and polarity of the
+> IO-APIC pin once, so we do so once the guest unmask the pin in order
+> to assert that the configuration is the intended one.  A guest is
+> allowed to write all kind of nonsense stuff to the IO-APIC RTE, but
+> that doesn't take effect unless the pin is unmasked.
 > 
-> I'd assume Shuai's test is poisoning a cache-line. When the CPU tries to access that
-> cache-line it will get an 'external abort' signal back from the memory system. Shuai - is
-> this what you mean by 'consume' - the CPU received external abort from the poisoned cache
-> line?
+> Overall the question would be whether we have any guarantees that
+> the hardware domain has properly configured the pin, even if it's not
+> using it itself (as it hasn't been unmasked).
 > 
+> IIRC PCI legacy interrupts are level triggered and low polarity, so we
+> could configure any pins that are not setup at bind time?
 
-Yes, exactly. Thank you for point it out. We are talking about synchronous errors.
+That could work.
 
-> It's then up to the CPU whether it can put the world back in order to take this as
-> synchronous-external-abort or asynchronous-external-abort, which for arm64 are two
-> different interrupt/exception types.
-> The synchronous exceptions can't be masked, but the asynchronous one can.
-> If by the time the asynchronous-external-abort interrupt/exception has been unmasked, the
-> CPU has used the poisoned value in some calculation (which is what we usually mean by
-> consume) which has resulted in a memory access - it will report the error as 'uncontained'
-> because the error has been silently propagated. APEI should always report those a 'fatal',
-> and there is little point getting the OS involved at this point. Also in this category are
-> things like 'tag ram corruption', where you can no longer trust anything about memory.
-> 
-> Everything in this thread is about synchronous errors where this can't happen. The CPU
-> stops and does takes an interrupt/exception instead.
-> 
-> 
-
-Thank you for explaining.
-
-Best Regards,
-Shuai
+Another idea is to move only the call to allocate_and_map_gsi_pirq at
+bind time? That might be enough to pass a pirq_access_permitted check.
+--8323329-351411740-1701400521=:110490--
 
