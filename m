@@ -1,64 +1,45 @@
-Return-Path: <linux-acpi+bounces-2069-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2070-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B3B800B01
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 13:35:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A672C800D38
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 15:34:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1DFC1F204E1
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 12:35:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60401281AEB
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 14:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3162A2554C
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 12:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ8jDacF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A523E470
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 14:34:56 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF0724B58;
-	Fri,  1 Dec 2023 12:29:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FD1C433C9;
-	Fri,  1 Dec 2023 12:29:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701433742;
-	bh=2msErawXU1FtCRCS5sg1Q8l3QB+7X8g5Q4ahABRE7v8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dJ8jDacFlSnfz6vHti2Hqo/yYnjTmAowPHXSHHs/ZVAyHKK3vqYmj15fWpmlFSwyK
-	 oDGOQXI0cD4TOPugWR4XLWNsKEWov5ibPPHMGBZmtzjTJjHNBvU0cN9CgmbjjZoerF
-	 FiLiZFU4qf9MaXbefoLTcFW9iipaY39QNIHlh/Ag=
-Date: Fri, 1 Dec 2023 12:28:59 +0000
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
-	linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
-	x86@kernel.org, linux-csky@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
-	linux-parisc@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>,
-	Borislav Petkov <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	James Morse <james.morse@arm.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	jianyong.wu@arm.com, justin.he@arm.com, Len Brown <lenb@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Salil Mehta <salil.mehta@huawei.com>,
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9283513E;
+	Fri,  1 Dec 2023 04:37:19 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C0B9A1007;
+	Fri,  1 Dec 2023 04:38:05 -0800 (PST)
+Received: from bogus (unknown [10.57.42.162])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0C17D3F5A1;
+	Fri,  1 Dec 2023 04:37:16 -0800 (PST)
+Date: Fri, 1 Dec 2023 12:35:15 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, suzuki.poulose@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
 	Sudeep Holla <sudeep.holla@arm.com>,
-	WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 00/21] Initial cleanups for vCPU hotplug
-Message-ID: <2023120131-leotard-deprecate-4e27@gregkh>
-References: <ZVyz/Ve5pPu8AWoA@shell.armlinux.org.uk>
- <87plzqxiyl.ffs@tglx>
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@arm.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	coresight@lists.linaro.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH V2 1/7] coresight: replicator: Move ACPI support from
+ AMBA driver to platform driver
+Message-ID: <20231201123515.gntwvhsxd5nzojn7@bogus>
+References: <20231201062053.1268492-1-anshuman.khandual@arm.com>
+ <20231201062053.1268492-2-anshuman.khandual@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,32 +48,41 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87plzqxiyl.ffs@tglx>
+In-Reply-To: <20231201062053.1268492-2-anshuman.khandual@arm.com>
 
-On Fri, Dec 01, 2023 at 12:25:54PM +0100, Thomas Gleixner wrote:
-> Russell!
+On Fri, Dec 01, 2023 at 11:50:47AM +0530, Anshuman Khandual wrote:
+> Add support for the dynamic replicator device in the platform driver, which
+> can then be used on ACPI based platforms. This change would now allow
+> runtime power management for repliacator devices on ACPI based systems.
 > 
-> On Tue, Nov 21 2023 at 13:43, Russell King wrote:
-> > This series aims to switch most architectures over to using generic CPU
-> > devices rather than arch specific implementations, which I think is
-> > worthwhile doing even if the vCPU hotplug series needs further work.
+> The driver would try to enable the APB clock if available. Also, rename the
+> code to reflect the fact that it now handles both static and dynamic
+> replicators.
 > 
-> I went through the whole series and I can't find anything
-> objectionable.
-> 
-> Vs. merging: It does not make sense to split this up and route
-> individual patches.
-> 
-> So I can pick the whole pile up and route it through tip smp/core unless
-> Rafael or Greg prefer to take it through one of their trees. For the
-> latter case:
-> 
->        Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-> 
-> Greg, Rafael?
+> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
 
-I can take them, will do so this weekend when I catch up on patches on a
-14+ hour flight...
+Except the minor nit below which may apply also for few other patches
+in the series
 
-greg k-h
+Acked-by: Sudeep Holla <sudeep.holla@arm.com> # For ACPI related changes
+Tested-by: Sudeep Holla <sudeep.holla@arm.com> # Boot and driver probe only
+
+[...]
+
+> diff --git a/drivers/hwtracing/coresight/coresight-replicator.c b/drivers/hwtracing/coresight/coresight-replicator.c
+> index b6be73034996..64de0bee02ec 100644
+> --- a/drivers/hwtracing/coresight/coresight-replicator.c
+> +++ b/drivers/hwtracing/coresight/coresight-replicator.c
+> @@ -38,6 +38,7 @@ DEFINE_CORESIGHT_DEVLIST(replicator_devs, "replicator");
+>  struct replicator_drvdata {
+>  	void __iomem		*base;
+>  	struct clk		*atclk;
+> +	struct clk		*pclk;
+
+[minor nit] Perhaps can be documented as well ?
+
+-- 
+Regards,
+Sudeep
 
