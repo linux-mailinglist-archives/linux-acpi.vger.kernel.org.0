@@ -1,143 +1,236 @@
-Return-Path: <linux-acpi+bounces-2046-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2047-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AC3800289
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 05:31:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B105E80028A
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 05:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A71011C20A86
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 04:31:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51ADFB20EFD
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 04:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A08882A
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 04:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QXRXIIGk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C04E0BE69
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 04:31:46 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0014759555
-	for <linux-acpi@vger.kernel.org>; Fri,  1 Dec 2023 03:15:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03048C433C8;
-	Fri,  1 Dec 2023 03:15:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701400521;
-	bh=Dp7B5vd2hVcODH9a2EoW3LvQCYVBsy+Yg/mVTlE9inU=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=QXRXIIGk3RVLPsM4TCRp2cn2iBCqITDx3AWfqYRl3Lln3cRggUuDlXWdreqcykGsL
-	 W946LuhkL2qPLsf3/raIlDTPk3Drc5irqHJGg+oPby4lLnrTsYhV2sUc0Izv52YpnF
-	 MRqsfAVPlzx8Bdl426zUVsiMIKfPvPR+8o0LbOwEsfebODMAxZ1AkXV6gzv5WvMGnE
-	 vdvaGhSthObuKzxmpx6yuRcmH+6r9KHtlZT407gtbyKQMPFQvGGS8oyqREfhVDDmUp
-	 wLcJikr7LGhwsoJ199+0r9HNU5FRwIsMBGlQY0omccS71m+/4uYUdIB17v3shmvoVW
-	 FYAxePMeaTQbw==
-Date: Thu, 30 Nov 2023 19:15:17 -0800 (PST)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
-cc: Stefano Stabellini <sstabellini@kernel.org>, 
-    Jiqian Chen <Jiqian.Chen@amd.com>, Juergen Gross <jgross@suse.com>, 
-    Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-    Thomas Gleixner <tglx@linutronix.de>, 
-    Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-    "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-    Bjorn Helgaas <bhelgaas@google.com>, xen-devel@lists.xenproject.org, 
-    linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-    Stefano Stabellini <stefano.stabellini@amd.com>, 
-    Alex Deucher <Alexander.Deucher@amd.com>, 
-    Christian Koenig <Christian.Koenig@amd.com>, 
-    Stewart Hildebrand <Stewart.Hildebrand@amd.com>, 
-    Xenia Ragiadakou <xenia.ragiadakou@amd.com>, 
-    Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>, 
-    Huang Rui <Ray.Huang@amd.com>
-Subject: Re: [RFC KERNEL PATCH v2 2/3] xen/pvh: Unmask irq for passthrough
- device in PVH dom0
-In-Reply-To: <ZWiyBP4Lzz5lXraP@macbook>
-Message-ID: <alpine.DEB.2.22.394.2311301912350.110490@ubuntu-linux-20-04-desktop>
-References: <20231124103123.3263471-1-Jiqian.Chen@amd.com> <20231124103123.3263471-3-Jiqian.Chen@amd.com> <alpine.DEB.2.22.394.2311291950350.3533093@ubuntu-linux-20-04-desktop> <ZWiyBP4Lzz5lXraP@macbook>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A380110DE;
+	Thu, 30 Nov 2023 19:37:56 -0800 (PST)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0VxUmUab_1701401869;
+Received: from 30.240.114.121(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VxUmUab_1701401869)
+          by smtp.aliyun-inc.com;
+          Fri, 01 Dec 2023 11:37:53 +0800
+Message-ID: <e7d55b9b-9819-434e-b642-8325728b638b@linux.alibaba.com>
+Date: Fri, 1 Dec 2023 11:37:47 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-351411740-1701400521=:110490"
-
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323329-351411740-1701400521=:110490
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task work
+ with proper si_code
+Content-Language: en-US
+To: James Morse <james.morse@arm.com>, Borislav Petkov <bp@alien8.de>
+Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
+ mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
+ naoya.horiguchi@nec.com, gregkh@linuxfoundation.org, will@kernel.org,
+ jarkko@kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+ stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
+ ying.huang@intel.com, ashish.kalra@amd.com, baolin.wang@linux.alibaba.com,
+ tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+ lenb@kernel.org, hpa@zytor.com, robert.moore@intel.com, lvying6@huawei.com,
+ xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20231007072818.58951-1-xueshuai@linux.alibaba.com>
+ <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
+ <9e92e600-86a4-4456-9de4-b597854b107c@linux.alibaba.com>
+ <20231125121059.GAZWHkU27odMLns7TZ@fat_crate.local>
+ <1048123e-b608-4db1-8d5f-456dd113d06f@linux.alibaba.com>
+ <20231129185406.GBZWeIzqwgRQe7XDo/@fat_crate.local>
+ <1758585c-219b-c5df-a3cd-35be8b020fd2@arm.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <1758585c-219b-c5df-a3cd-35be8b020fd2@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 
-On Thu, 30 Nov 2023, Roger Pau Monné wrote:
-> On Wed, Nov 29, 2023 at 07:53:59PM -0800, Stefano Stabellini wrote:
-> > On Fri, 24 Nov 2023, Jiqian Chen wrote:
-> > > This patch is to solve two problems we encountered when we try to
-> > > passthrough a device to hvm domU base on Xen PVH dom0.
-> > > 
-> > > First, hvm guest will alloc a pirq and irq for a passthrough device
-> > > by using gsi, before that, the gsi must first has a mapping in dom0,
-> > > see Xen code pci_add_dm_done->xc_domain_irq_permission, it will call
-> > > into Xen and check whether dom0 has the mapping. See
-> > > XEN_DOMCTL_irq_permission->pirq_access_permitted, "current" is PVH
-> > > dom0 and it return irq is 0, and then return -EPERM.
-> > > This is because the passthrough device doesn't do PHYSDEVOP_map_pirq
-> > > when thay are enabled.
-> > > 
-> > > Second, in PVH dom0, the gsi of a passthrough device doesn't get
-> > > registered, but gsi must be configured for it to be able to be
-> > > mapped into a domU.
-> > > 
-> > > After searching codes, we can find map_pirq and register_gsi will be
-> > > done in function vioapic_write_redirent->vioapic_hwdom_map_gsi when
-> > > the gsi(aka ioapic's pin) is unmasked in PVH dom0. So the problems
-> > > can be conclude to that the gsi of a passthrough device doesn't be
-> > > unmasked.
-> > > 
-> > > To solve the unmaske problem, this patch call the unmask_irq when we
-> > > assign a device to be passthrough. So that the gsi can get registered
-> > > and mapped in PVH dom0.
-> > 
-> > 
-> > Roger, this seems to be more of a Xen issue than a Linux issue. Why do
-> > we need the unmask check in Xen? Couldn't we just do:
-> > 
-> > 
-> > diff --git a/xen/arch/x86/hvm/vioapic.c b/xen/arch/x86/hvm/vioapic.c
-> > index 4e40d3609a..df262a4a18 100644
-> > --- a/xen/arch/x86/hvm/vioapic.c
-> > +++ b/xen/arch/x86/hvm/vioapic.c
-> > @@ -287,7 +287,7 @@ static void vioapic_write_redirent(
-> >              hvm_dpci_eoi(d, gsi);
-> >      }
-> >  
-> > -    if ( is_hardware_domain(d) && unmasked )
-> > +    if ( is_hardware_domain(d) )
-> >      {
-> >          /*
-> >           * NB: don't call vioapic_hwdom_map_gsi while holding hvm.irq_lock
-> 
-> There are some issues with this approach.
-> 
-> mp_register_gsi() will only setup the trigger and polarity of the
-> IO-APIC pin once, so we do so once the guest unmask the pin in order
-> to assert that the configuration is the intended one.  A guest is
-> allowed to write all kind of nonsense stuff to the IO-APIC RTE, but
-> that doesn't take effect unless the pin is unmasked.
-> 
-> Overall the question would be whether we have any guarantees that
-> the hardware domain has properly configured the pin, even if it's not
-> using it itself (as it hasn't been unmasked).
-> 
-> IIRC PCI legacy interrupts are level triggered and low polarity, so we
-> could configure any pins that are not setup at bind time?
 
-That could work.
 
-Another idea is to move only the call to allocate_and_map_gsi_pirq at
-bind time? That might be enough to pass a pirq_access_permitted check.
---8323329-351411740-1701400521=:110490--
+On 2023/12/1 01:39, James Morse wrote:
+> Hi Boris, Shuai,
+> 
+> On 29/11/2023 18:54, Borislav Petkov wrote:
+>> On Sun, Nov 26, 2023 at 08:25:38PM +0800, Shuai Xue wrote:
+>>>> On Sat, Nov 25, 2023 at 02:44:52PM +0800, Shuai Xue wrote:
+>>>>> - an AR error consumed by current process is deferred to handle in a
+>>>>>   dedicated kernel thread, but memory_failure() assumes that it runs in the
+>>>>>   current context
+>>>>
+>>>> On x86? ARM?
+>>>>
+>>>> Pease point to the exact code flow.
+> 
+> 
+>>> An AR error consumed by current process is deferred to handle in a
+>>> dedicated kernel thread on ARM platform. The AR error is handled in bellow
+>>> flow:
+> 
+> Please don't think of errors as "action required" - that's a user-space signal code. If
+> the page could be fixed by memory-failure(), you may never get a signal. (all this was the
+> fix for always sending an action-required signal)
+> 
+> I assume you mean the CPU accessed a poisoned location and took a synchronous error.
+
+Yes, I mean that CPU accessed a poisoned location and took a synchronous error.
+> 
+> 
+>>> -----------------------------------------------------------------------------
+>>> [usr space task einj_mem_uc consumd data poison, CPU 3]         STEP 0
+>>>
+>>> -----------------------------------------------------------------------------
+>>> [ghes_sdei_critical_callback: current einj_mem_uc, CPU 3]		STEP 1
+>>> ghes_sdei_critical_callback
+>>>     => __ghes_sdei_callback
+>>>         => ghes_in_nmi_queue_one_entry 		// peak and read estatus
+>>>         => irq_work_queue(&ghes_proc_irq_work) <=> ghes_proc_in_irq // irq_work
+>>> [ghes_sdei_critical_callback: return]
+>>> -----------------------------------------------------------------------------
+>>> [ghes_proc_in_irq: current einj_mem_uc, CPU 3]			        STEP 2
+>>>             => ghes_do_proc
+>>>                 => ghes_handle_memory_failure
+>>>                     => ghes_do_memory_failure
+>>>                         => memory_failure_queue	 // put work task on current CPU
+>>>                             => if (kfifo_put(&mf_cpu->fifo, entry))
+>>>                                   schedule_work_on(smp_processor_id(), &mf_cpu->work);
+>>>             => task_work_add(current, &estatus_node->task_work, TWA_RESUME);
+>>> [ghes_proc_in_irq: return]
+>>> -----------------------------------------------------------------------------
+>>> // kworker preempts einj_mem_uc on CPU 3 due to RESCHED flag	STEP 3
+>>> [memory_failure_work_func: current kworker, CPU 3]	
+>>>      => memory_failure_work_func(&mf_cpu->work)
+>>>         => while kfifo_get(&mf_cpu->fifo, &entry);	// until get no work
+>>>             => memory_failure(entry.pfn, entry.flags);
+>>
+>> From the comment above that function:
+>>
+>>  * The function is primarily of use for corruptions that
+>>  * happen outside the current execution context (e.g. when
+>>  * detected by a background scrubber)
+>>  *
+>>  * Must run in process context (e.g. a work queue) with interrupts
+>>  * enabled and no spinlocks held.
+>>
+>>> -----------------------------------------------------------------------------
+>>> [ghes_kick_task_work: current einj_mem_uc, other cpu]           STEP 4
+>>>                 => memory_failure_queue_kick
+>>>                     => cancel_work_sync - waiting memory_failure_work_func finish
+>>>                     => memory_failure_work_func(&mf_cpu->work)
+>>>                         => kfifo_get(&mf_cpu->fifo, &entry); // no work
+>>> -----------------------------------------------------------------------------
+>>> [einj_mem_uc resume at the same PC, trigger a page fault        STEP 5
+>>>
+>>> STEP 0: A user space task, named einj_mem_uc consume a poison. The firmware
+>>> notifies hardware error to kernel through is SDEI
+>>> (ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED).
+>>>
+>>> STEP 1: The swapper running on CPU 3 is interrupted. irq_work_queue() rasie
+>>> a irq_work to handle hardware errors in IRQ context
+>>>
+>>> STEP2: In IRQ context, ghes_proc_in_irq() queues memory failure work on
+>>> current CPU in workqueue and add task work to sync with the workqueue.
+>>>
+>>> STEP3: The kworker preempts the current running thread and get CPU 3. Then
+>>> memory_failure() is processed in kworker.
+>>
+>> See above.
+>>
+>>> STEP4: ghes_kick_task_work() is called as task_work to ensure any queued
+>>> workqueue has been done before returning to user-space.
+>>>
+>>> STEP5: Upon returning to user-space, the task einj_mem_uc resumes at the
+>>> current instruction, because the poison page is unmapped by
+>>> memory_failure() in step 3, so a page fault will be triggered.
+>>>
+>>> memory_failure() assumes that it runs in the current context on both x86
+>>> and ARM platform.
+>>>
+>>>
+>>> for example:
+>>> 	memory_failure() in mm/memory-failure.c:
+>>>
+>>> 		if (flags & MF_ACTION_REQUIRED) {
+>>> 			folio = page_folio(p);
+>>> 			res = kill_accessing_process(current, folio_pfn(folio), flags);
+>>> 		}
+>>
+>> And?
+>>
+>> Do you see the check above it?
+>>
+>> 	if (TestSetPageHWPoison(p)) {
+>>
+>> test_and_set_bit() returns true only when the page was poisoned already.
+>>
+>>  * This function is intended to handle "Action Required" MCEs on already
+>>  * hardware poisoned pages. They could happen, for example, when
+>>  * memory_failure() failed to unmap the error page at the first call, or
+>>  * when multiple local machine checks happened on different CPUs.
+>>
+>> And that's kill_accessing_process().
+>>
+>> So AFAIU, the kworker running memory_failure() would only mark the page
+>> as poison.
+>>
+>> The killing happens when memory_failure() runs again and the process
+>> touches the page again.
+>>
+>> But I'd let James confirm here.
+> 
+> Yes, this is what is expected to happen with the existing code.
+> 
+> The first pass will remove the pages from all processes that have it mapped before this
+> user-space task can restart. Restarting the task will make it access a poisoned page,
+> kicking off the second path which delivers the signal.
+> 
+> The reason for two passes is send_sig_mceerr() likes to clear_siginfo(), so even if you
+> queued action-required before leaving GHES, memory-failure() would stomp on it.
+> 
+> 
+>> I still don't know what you're fixing here.
+> 
+> The problem is if the user-space process registered for early messages, it gets a signal
+> on the first pass. If it returns from that signal, it will access the poisoned page and
+> get the action-required signal.
+> 
+> How is this making Qemu go wrong?
+
+The problem here is that we need to assume, the first pass memory failure
+handle and unmap the poisoned page successfully.
+
+- If so, it may work by the second pass action-requried signal because it
+  access an unmapped page. But IMHO, we can improve by just sending one
+  pass signal, so that the Guest will vmexit only once, right?
+
+- If not, there is no second pass signal. The exist code does not handle
+  the error code from memory_failure(), so a exception loop happens
+  resulting a hard lockup panic.
+
+Besides, in production environment, a second access to an already known
+poison page will introduce more risk of error propagation.
+
+> 
+> 
+> As to how this works for you given Boris' comments above: kill_procs() is also called from
+> hwpoison_user_mappings(), which takes the flags given to memory-failure(). This is where
+> the action-optional signals come from.
+> 
+> 
+
+Thank you very much for involving to review and comment.
+
+Best Regards,
+Shuai
 
