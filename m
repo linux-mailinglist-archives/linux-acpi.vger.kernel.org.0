@@ -1,116 +1,78 @@
-Return-Path: <linux-acpi+bounces-2064-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2065-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0BD80084F
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 11:35:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2016800AF9
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 13:35:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79BCB2813FF
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 10:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CD6D2812EA
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 12:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3292020B18
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 10:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22EA2EAC9
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 12:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T3NEQtyO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5ivKSLWo"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C50C171B;
-	Fri,  1 Dec 2023 01:24:53 -0800 (PST)
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id A8F5643546;
-	Fri,  1 Dec 2023 10:24:51 +0100 (CET)
-Message-ID: <4dbc72ba-8edb-4ff5-b95d-b601189e4415@proxmox.com>
-Date: Fri, 1 Dec 2023 10:24:41 +0100
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB8110D7;
+	Fri,  1 Dec 2023 02:45:08 -0800 (PST)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1701427507;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qEECtfSCuNJnYbbSSxaa7Yhx563AZhnbYIPY9oqxOFE=;
+	b=T3NEQtyO3UjVNcOPdRfDLPqBbceTA/S3RG5pLrN/U1R54Q2+LC7E1qyZMq6Qdr2Lwq04Q7
+	o3RbMWPKuiDtnTWhcOihAwr10MgQL4MPJzwPuXjSE8T6gp+VGjfk6u/Ymyla3VOKfAsmmc
+	Ccc1ZPp7aRV0WvqXtoVD6atSILRTlOYC+gmZcP1quvkiE5ooEnP1dGy3CQhMQmnhHkyoNi
+	fjrSBFLZgwtCeutL0TuwQN8B6ZHMA2t6ITEqL89vyADio0MnrI5DVfPUnv3HUa3tTRDL7e
+	+EhhGYzs843vvIZov1ZEMz4EArysm5xib9rklBXUl6z6IburTOa1nE4pPpkQBA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1701427507;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qEECtfSCuNJnYbbSSxaa7Yhx563AZhnbYIPY9oqxOFE=;
+	b=5ivKSLWokv5u4EWLeFetTD8/zTFsnE28leOpFAM1uIFAuW0E1rMX60gedKhj/gj0RQebhI
+	nzpCyFo1nVj5NNDA==
+To: Russell King <rmk+kernel@armlinux.org.uk>, linux-pm@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org,
+ kvmarm@lists.linux.dev, x86@kernel.org, linux-csky@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org
+Cc: Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe Brucker
+ <jean-philippe@linaro.org>, jianyong.wu@arm.com, justin.he@arm.com, James
+ Morse <james.morse@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>
+Subject: Re: [PATCH 01/21] arch_topology: Make
+ register_cpu_capacity_sysctl() tolerant to late CPUs
+In-Reply-To: <E1r5R2g-00CsyV-Ss@rmk-PC.armlinux.org.uk>
+References: <ZVyz/Ve5pPu8AWoA@shell.armlinux.org.uk>
+ <E1r5R2g-00CsyV-Ss@rmk-PC.armlinux.org.uk>
+Date: Fri, 01 Dec 2023 11:45:06 +0100
+Message-ID: <87v89ixkul.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: SCSI hotplug issues with UEFI VM with guest kernel >= 6.5
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
- Igor Mammedov <imammedo@redhat.com>, linux-kernel@vger.kernel.org,
- bhelgaas@google.com, lenb@kernel.org, rafael@kernel.org,
- Thomas Lamprecht <t.lamprecht@proxmox.com>
-References: <20231130231802.GA498017@bhelgaas>
-Content-Language: en-US
-From: Fiona Ebner <f.ebner@proxmox.com>
-In-Reply-To: <20231130231802.GA498017@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Am 01.12.23 um 00:18 schrieb Bjorn Helgaas:
-> On Wed, Nov 29, 2023 at 04:22:41PM +0100, Fiona Ebner wrote:
->> Hi,
->> it seems that hot-plugging SCSI disks for QEMU virtual machines booting
->> with UEFI and with guest kernels >= 6.5 might be broken. It's not
->> consistently broken, hinting there might be a race somewhere.
->>
->> Reverting the following two commits seems to make it work reliably again:
->>
->> cc22522fd55e2 ("PCI: acpiphp: Use
->> pci_assign_unassigned_bridge_resources() only for non-root bus")
->> 40613da52b13f ("PCI: acpiphp: Reassign resources on bridge if necessary"
->>
->> Of course, they might only expose some pre-existing issue, but this is
->> my best lead. See below for some logs and details about an affected
->> virtual machine. Happy to provide more information and to debug/test
->> further.
-> 
-> Shoot.  Thanks very much for the report and your debugging.  I'm
-> hoping Igor will chime in with some ideas.
-> 
-> Both of those commits appeard in v6.5 and fixed legit issues, so I
-> hate to revert them, but this does appear to be a regression.
-> 
-> #regzbot introduced: cc22522fd55e2 ^
-> #regzbot introduced: 40613da52b13f ^
-> 
->> Host kernel: 6.5.11-4-pve which is based on the one from Ubuntu
->> Guest kernel: 6.7.0-rc3 and 6.7.0-rc3 with above commits reverted
->> QEMU version: v8.1.0 built from source
->> EDK2 version: submodule in the QEMU v8.1 repository: edk2-stable202302
->>
+On Tue, Nov 21 2023 at 13:43, Russell King wrote:
+> ---
+> If the offline CPUs thing is a problem for the tools that consume
+> this value, we'd need to move cpu_capacity to be part of cpu.c's
+> common_cpu_attr_groups. However, attempts to discuss this just end
+> up in a black hole, so this is a non-starter. Thus, if this needs
+> to be done, it can be done as a separate patch.
 
-I should mention that I haven't run into the issue when booting the VM
-with SeaBIOS yet.
-
-Log for 6.7.0-rc3 + SeaBIOS (bundled with QEMU 8.1):
-
-> Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xfd404000-0xfd407fff 64bit pref]
-> Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xfe801000-0xfe801fff]
-> Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xfe800000-0xfe9fffff]
-> Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xfd400000-0xfd5fffff 64bit pref]
-> Dec 01 10:08:08 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> Dec 01 10:08:08 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> Dec 01 10:08:08 hotplug kernel: scsi host3: Virtio SCSI HBA
-> Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xfe800000-0xfe9fffff]
-> Dec 01 10:08:08 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xfd400000-0xfd5fffff 64bit pref]
-> Dec 01 10:08:08 hotplug kernel: scsi 3:0:0:1: Attached scsi generic sg1 type 0
-> Dec 01 10:08:08 hotplug kernel: sd 3:0:0:1: Power-on or device reset occurred
-> Dec 01 10:08:08 hotplug kernel: sd 3:0:0:1: [sdb] 2048 512-byte logical blocks: (1.05 MB/1.00 MiB)
-> Dec 01 10:08:08 hotplug kernel: sd 3:0:0:1: [sdb] Write Protect is off
-> Dec 01 10:08:08 hotplug kernel: sd 3:0:0:1: [sdb] Mode Sense: 63 00 00 08
-> Dec 01 10:08:08 hotplug kernel: sd 3:0:0:1: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
-> Dec 01 10:08:08 hotplug kernel: sd 3:0:0:1: [sdb] Attached SCSI disk
-
-Interestingly, the line with "QEMU HARDDISK" does not come after all
-lines with "bridge window" like was the case for the one time it did
-work with UEFI. So maybe that was just a red herring.
-
-Best Regards,
-Fiona
-
+Offline CPUs have 0 capacity by definition....
 
