@@ -1,382 +1,175 @@
-Return-Path: <linux-acpi+bounces-2078-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2079-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC05800D41
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 15:35:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D485800D42
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 15:35:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27114B20C98
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 14:35:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE6391C2099D
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 14:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982BC4A985
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 14:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383BD4A990
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 14:35:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="ZHDIx3O3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 61B0A10E2;
-	Fri,  1 Dec 2023 05:41:12 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2DA291007;
-	Fri,  1 Dec 2023 05:41:58 -0800 (PST)
-Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1AEC93F73F;
-	Fri,  1 Dec 2023 05:41:09 -0800 (PST)
-Message-ID: <56e9bc16-7962-46c6-858d-53aa7a6c8555@arm.com>
-Date: Fri, 1 Dec 2023 13:41:08 +0000
+Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75215BC
+	for <linux-acpi@vger.kernel.org>; Fri,  1 Dec 2023 05:57:46 -0800 (PST)
+Received: by mail-qk1-x72f.google.com with SMTP id af79cd13be357-77d66c7af31so263247585a.1
+        for <linux-acpi@vger.kernel.org>; Fri, 01 Dec 2023 05:57:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1701439065; x=1702043865; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=w5RfSzjMMhEGY5HPP+VV7KP4PAnFpwToiPE40rmIjTE=;
+        b=ZHDIx3O3JFtKtmYM0wtN1DhovriW2rtgBX/vtkFKLmqvfTNp9tAhcOoybeJPJXY29q
+         kv2+USLr9TWBWMUCZTXiOq9MSCmaoj1j75l+f5l0yMAcUkPt6/1/LY4hcAkVZv/XBb/w
+         hVVjtNPUtURPYvYPS2l/igt4v4Z2MavAYa6U8PLUA2dzR3h7vHSs+80xTEXYfG1Ar0e0
+         5bgBF3cf9CLPoNdMk1iQb76z7opiGIMUGMqqkVERcf3mtcOiaTso86/ddgs33hazprbT
+         7c5EgMR3w/dPJyKZzyWQkbi8T59/eL3EJs91shCTNqXp7XkhbmLWyR/I+5NlFw+SoCq/
+         sCPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701439065; x=1702043865;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w5RfSzjMMhEGY5HPP+VV7KP4PAnFpwToiPE40rmIjTE=;
+        b=UUXw198cLNd1wVA7/5NGfhQCk9kaId0QdVbF5dmLbFdbVNv14m4iQBvJBhuxFfo3nj
+         AKQowVnWkeKv8NmskVwEpBdnkCY/uHg67FdhcKT6lMZYnDvmrFmIFfiZZ5+t0tCFErdo
+         o5TgvbOSqkV5Z6osjJLs60camTGCdHLlegXP+paL8q9xTr1oLX7myAGlSAH0961zf04q
+         YjToaEIXA6nlhwk60GEbzcu41Ho8yRnvzppTK6+5OvnBM6oyCmCxmkQ5QG2UA2t96SQ7
+         8/3Y2ofe3ZYY945w+HIkNJ1gfF+v9o/eRI0wJwD0TPElVP8H6EJ5N7AxAR8iu25pCBZp
+         Z7Aw==
+X-Gm-Message-State: AOJu0Yw5oDhvUroyK7MOTtM9nFiWDacsWitQcQm1w5xKczGNkK6BEuBe
+	VrDn5x7uqPLgkNsUQRj2N9P0VQ==
+X-Google-Smtp-Source: AGHT+IGiHfUB0BG86D+k/H8bgXmfkHHxfAODJ1IDqy5rd6EVUw0TGcCvkgnXizQa+DzIHgV9yCckKw==
+X-Received: by 2002:a05:620a:29c9:b0:773:c43e:5e73 with SMTP id s9-20020a05620a29c900b00773c43e5e73mr47263709qkp.25.1701439065500;
+        Fri, 01 Dec 2023 05:57:45 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-134-23-187.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.134.23.187])
+        by smtp.gmail.com with ESMTPSA id vy13-20020a05620a490d00b0077da601f06csm1508858qkn.10.2023.12.01.05.57.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Dec 2023 05:57:44 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1r941X-006F8M-UN;
+	Fri, 01 Dec 2023 09:57:43 -0400
+Date: Fri, 1 Dec 2023 09:57:43 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
+	Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org, iommu@lists.linux.dev,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH 0/7] dma-mapping: Clean up arch_setup_dma_ops()
+Message-ID: <20231201135743.GI1394392@ziepe.ca>
+References: <cover.1701268753.git.robin.murphy@arm.com>
+ <20231129203642.GO1312390@ziepe.ca>
+ <ae27768f-a6fa-4971-b44c-92899a81a2b7@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 3/7] coresight: catu: Move ACPI support from AMBA
- driver to platform driver
-Content-Language: en-US
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
- James Clark <james.clark@arm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20231201062053.1268492-1-anshuman.khandual@arm.com>
- <20231201062053.1268492-4-anshuman.khandual@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20231201062053.1268492-4-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ae27768f-a6fa-4971-b44c-92899a81a2b7@arm.com>
 
-Hi Anshuman,
-
-On 01/12/2023 06:20, Anshuman Khandual wrote:
-> Add support for the catu devices in a new platform driver, which can then
-> be used on ACPI based platforms. This change would now allow runtime power
-> management for ACPI based systems. The driver would try to enable the APB
-> clock if available.
-
-This doesn't talk about the new helper. As such I would prefer that to 
-be a separate preparatory patch. See below.
-
+On Fri, Dec 01, 2023 at 01:07:36PM +0000, Robin Murphy wrote:
+> On 29/11/2023 8:36 pm, Jason Gunthorpe wrote:
+> > On Wed, Nov 29, 2023 at 05:42:57PM +0000, Robin Murphy wrote:
+> > > Hi all,
+> > > 
+> > > Prompted by Jason's proposal[1], here's a first step towards truly
+> > > unpicking the dma_configure vs. IOMMU mess. As I commented before, we
+> > > have an awful lot of accumulated cruft and technical debt here making
+> > > things more complicated than they need to be, and we already have hacks
+> > > on top of hacks trying to work around it, so polishing those hacks even
+> > > further is really not a desirable direction of travel. And I do know
+> > > they're hacks, because I wrote most of them and still remember enough of
+> > > the context of the time ;)
+> > 
+> > I quite like this, I was also looking at getting rid of those other
+> > parameters.
+> > 
+> > I wanted to take smaller steps because it is all pretty hairy.
+> > 
+> > One thing that still concerns me is if the FW data restricts the valid
+> > IOVA window that really should be reflected into the reserved ranges
+> > and not just dumped into the struct device for use by the DMA API.
+> > 
+> > Or, perhaps, viof/iommufd should be using the struct device data to
+> > generate some additional reserved ranges?
+> > 
+> > Either way, I would like to see the dma_iommu and the rest of the
+> > subsystem agree on what the valid IOVA ranges actually are.
 > 
-> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Cc: Mike Leach <mike.leach@linaro.org>
-> Cc: James Clark <james.clark@arm.com>
-> Cc: linux-acpi@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: coresight@lists.linaro.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->   drivers/acpi/arm64/amba.c                    |   1 -
->   drivers/hwtracing/coresight/coresight-catu.c | 130 ++++++++++++++++---
->   drivers/hwtracing/coresight/coresight-catu.h |   1 +
->   drivers/hwtracing/coresight/coresight-core.c |  29 +++++
->   include/linux/coresight.h                    |   7 +
->   5 files changed, 149 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
-> index afb6afb66967..587061b0fd2f 100644
-> --- a/drivers/acpi/arm64/amba.c
-> +++ b/drivers/acpi/arm64/amba.c
-> @@ -27,7 +27,6 @@ static const struct acpi_device_id amba_id_list[] = {
->   	{"ARMHC503", 0}, /* ARM CoreSight Debug */
->   	{"ARMHC979", 0}, /* ARM CoreSight TPIU */
->   	{"ARMHC97C", 0}, /* ARM CoreSight SoC-400 TMC, SoC-600 ETF/ETB */
-> -	{"ARMHC9CA", 0}, /* ARM CoreSight CATU */
->   	{"", 0},
->   };
->   
-> diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
-> index 3949ded0d4fa..ba5ee7d158dd 100644
-> --- a/drivers/hwtracing/coresight/coresight-catu.c
-> +++ b/drivers/hwtracing/coresight/coresight-catu.c
-> @@ -7,6 +7,8 @@
->    * Author: Suzuki K Poulose <suzuki.poulose@arm.com>
->    */
->   
-> +#include <linux/platform_device.h>
-> +#include <linux/acpi.h>
->   #include <linux/amba/bus.h>
->   #include <linux/device.h>
->   #include <linux/dma-mapping.h>
-> @@ -502,28 +504,20 @@ static const struct coresight_ops catu_ops = {
->   	.helper_ops = &catu_helper_ops,
->   };
->   
-> -static int catu_probe(struct amba_device *adev, const struct amba_id *id)
-> +static int __catu_probe(struct device *dev, struct resource *res)
->   {
->   	int ret = 0;
->   	u32 dma_mask;
-> -	struct catu_drvdata *drvdata;
-> +	struct catu_drvdata *drvdata = dev_get_drvdata(dev);
->   	struct coresight_desc catu_desc;
->   	struct coresight_platform_data *pdata = NULL;
-> -	struct device *dev = &adev->dev;
->   	void __iomem *base;
->   
->   	catu_desc.name = coresight_alloc_device_name(&catu_devs, dev);
->   	if (!catu_desc.name)
->   		return -ENOMEM;
->   
-> -	drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
-> -	if (!drvdata) {
-> -		ret = -ENOMEM;
-> -		goto out;
-> -	}
-> -
-> -	dev_set_drvdata(dev, drvdata);
-> -	base = devm_ioremap_resource(dev, &adev->res);
-> +	base = devm_ioremap_resource(dev, res);
->   	if (IS_ERR(base)) {
->   		ret = PTR_ERR(base);
->   		goto out;
-> @@ -568,18 +562,35 @@ static int catu_probe(struct amba_device *adev, const struct amba_id *id)
->   	if (IS_ERR(drvdata->csdev))
->   		ret = PTR_ERR(drvdata->csdev);
->   	else
-> -		pm_runtime_put(&adev->dev);
-> +		pm_runtime_put(dev);
->   out:
->   	return ret;
->   }
->   
-> -static void catu_remove(struct amba_device *adev)
-> +static int catu_probe(struct amba_device *adev, const struct amba_id *id)
-> +{
-> +	struct catu_drvdata *drvdata;
-> +
-> +	drvdata = devm_kzalloc(&adev->dev, sizeof(*drvdata), GFP_KERNEL);
-> +	if (!drvdata)
-> +		return -ENOMEM;
-> +
-> +	amba_set_drvdata(adev, drvdata);
-> +	return __catu_probe(&adev->dev, &adev->res);
-> +}
-> +
-> +static void __catu_remove(struct device *dev)
->   {
-> -	struct catu_drvdata *drvdata = dev_get_drvdata(&adev->dev);
-> +	struct catu_drvdata *drvdata = dev_get_drvdata(dev);
->   
->   	coresight_unregister(drvdata->csdev);
->   }
->   
-> +static void catu_remove(struct amba_device *adev)
-> +{
-> +	__catu_remove(&adev->dev);
-> +}
-> +
->   static struct amba_id catu_ids[] = {
->   	CS_AMBA_ID(0x000bb9ee),
->   	{},
-> @@ -598,13 +609,96 @@ static struct amba_driver catu_driver = {
->   	.id_table			= catu_ids,
->   };
->   
-> +static int catu_platform_probe(struct platform_device *pdev)
-> +{
-> +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	struct catu_drvdata *drvdata;
-> +	int ret = 0;
-> +
-> +	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
-> +	if (!drvdata)
-> +		return -ENOMEM;
-> +
-> +	drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
-> +	if (IS_ERR(drvdata->pclk))
-> +		return -ENODEV;
-> +
-> +	if (res) {
-> +		drvdata->base = devm_ioremap_resource(&pdev->dev, res);
-> +		if (IS_ERR(drvdata->base)) {
-> +			clk_put(drvdata->pclk);
-> +			return PTR_ERR(drvdata->base);
-> +		}
-> +	}
-> +
-> +	pm_runtime_get_noresume(&pdev->dev);
-> +	pm_runtime_set_active(&pdev->dev);
-> +	pm_runtime_enable(&pdev->dev);
-> +
-> +	dev_set_drvdata(&pdev->dev, drvdata);
-> +	ret = __catu_probe(&pdev->dev, res);
-> +	if (ret) {
-> +		pm_runtime_put_noidle(&pdev->dev);
-> +		pm_runtime_disable(&pdev->dev);
-> +	}
-> +	return ret;
-> +}
-> +
-> +static int catu_platform_remove(struct platform_device *pdev)
-> +{
-> +	__catu_remove(&pdev->dev);
-> +	return 0;
-> +}
-> +
-> +#ifdef CONFIG_PM
-> +static int catu_runtime_suspend(struct device *dev)
-> +{
-> +	struct catu_drvdata *drvdata = dev_get_drvdata(dev);
-> +
-> +	if (drvdata->pclk && !IS_ERR_OR_NULL(drvdata->pclk))
+> Note that there is some intentional divergence where iommu-dma reserves
+> IOVAs matching PCI outbound windows because it knows it wants to avoid
+> clashing with potential peer-to-peer addresses and doesn't want to have to
+> get into the details of ACS redirect etc., but we don't expose those as
+> generic reserved regions because they're firmly a property of the PCI host
+> bridge, not of the IOMMU group (and more practically, because we did do so
+> briefly and it made QEMU unhappy). I think there may also have been some
+> degree of conclusion that it's not the IOMMU API's place to get in the way
+> of other domain users trying to do weird P2P stuff if they really want to.
 
-Only the second part is needed. IS_ERR_OR_NULL() already checks for NULL.
+I'm not sure this is the fully correct conclusion - eg if today we
+take a NIC device on a non-ACS topology and run DPDK through VFIO it
+has a chance of failure because some IOVA simply cannot be used by
+DPDK for DMA at all.
 
-> +		clk_disable_unprepare(drvdata->pclk);
-> +	return 0;
-> +}
-> +
-> +static int catu_runtime_resume(struct device *dev)
-> +{
-> +	struct catu_drvdata *drvdata = dev_get_drvdata(dev);
-> +
-> +	if (drvdata->pclk && !IS_ERR_OR_NULL(drvdata->pclk))
+qemu and kvm are a different situation that want different things. Eg
+it would want to identity map the PCI BAR spaces to the IOVA they are
+claiming.
 
-Same here.
+It should still somehow carve out any other IOVA that is unusable due
+to guest-invisible ACS and reflect it through FW tables into the VM.
 
-> +		clk_prepare_enable(drvdata->pclk);
-> +	return 0;
-> +}
-> +#endif
-> +
-> +static const struct dev_pm_ops catu_dev_pm_ops = {
-> +	SET_RUNTIME_PM_OPS(catu_runtime_suspend, catu_runtime_resume, NULL)
-> +};
-> +
-> +#ifdef CONFIG_ACPI
-> +static const struct acpi_device_id catu_acpi_ids[] = {
-> +	{"ARMHC9CA", 0}, /* ARM CoreSight CATU */
-> +	{},
-> +};
-> +
-> +MODULE_DEVICE_TABLE(acpi, catu_acpi_ids);
-> +#endif
-> +
-> +static struct platform_driver catu_platform_driver = {
-> +	.probe	= catu_platform_probe,
-> +	.remove	= catu_platform_remove,
-> +	.driver	= {
-> +		.name			= "coresight-catu-platform",
-> +		.acpi_match_table	= ACPI_PTR(catu_acpi_ids),
-> +		.suppress_bind_attrs	= true,
-> +		.pm			= &catu_dev_pm_ops,
-> +	},
-> +};
-> +
->   static int __init catu_init(void)
->   {
->   	int ret;
->   
-> -	ret = amba_driver_register(&catu_driver);
-> -	if (ret)
-> -		pr_info("Error registering catu driver\n");
-> +	ret = coresight_init_driver("catu", &catu_driver, &catu_platform_driver);
->   	tmc_etr_set_catu_ops(&etr_catu_buf_ops);
->   	return ret;
->   }
-> @@ -612,7 +706,7 @@ static int __init catu_init(void)
->   static void __exit catu_exit(void)
->   {
->   	tmc_etr_remove_catu_ops();
-> -	amba_driver_unregister(&catu_driver);
-> +	coresight_remove_driver(&catu_driver, &catu_platform_driver);
->   }
->   
->   module_init(catu_init);
-> diff --git a/drivers/hwtracing/coresight/coresight-catu.h b/drivers/hwtracing/coresight/coresight-catu.h
-> index 442e034bbfba..141feac1c14b 100644
-> --- a/drivers/hwtracing/coresight/coresight-catu.h
-> +++ b/drivers/hwtracing/coresight/coresight-catu.h
-> @@ -61,6 +61,7 @@
->   #define CATU_IRQEN_OFF		0x0
->   
->   struct catu_drvdata {
-> +	struct clk *pclk;
->   	void __iomem *base;
->   	struct coresight_device *csdev;
->   	int irq;
-> diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
-> index 9fabe00a40d6..ede9b0723f95 100644
-> --- a/drivers/hwtracing/coresight/coresight-core.c
-> +++ b/drivers/hwtracing/coresight/coresight-core.c
-> @@ -1833,6 +1833,35 @@ static void __exit coresight_exit(void)
->   module_init(coresight_init);
->   module_exit(coresight_exit);
->   
+I'm starting to see people build non-ACS systems and want it to work
+with VFIO and I'm a little worried we have been too loose here.
 
----8>---
+> bridge and so inherits its restrictions. However I don't recall any
+> conscious decision for inbound windows to only be considered for DMA domain
+> reservations rather than for proper reserved regions - pretty sure that's
+> just a case of that code being added in the place where it seemed to fit
+> best at the time (because hey it's more host bridge windows and we already
+> have a thing for host bridge windows...)
 
-> +int coresight_init_driver(const char *drv, struct amba_driver *amba_drv,
-> +			  struct platform_driver *pdev_drv)
-> +{
-> +	int ret;
-> +
-> +	ret = amba_driver_register(amba_drv);
-> +	if (ret) {
-> +		pr_err("%s: error registering AMBA driver\n", drv);
-> +		return ret;
-> +	}
-> +
-> +	ret = platform_driver_register(pdev_drv);
-> +	if (!ret)
-> +		return 0;
-> +
-> +	pr_err("%s: error registering platform driver\n", drv);
-> +	amba_driver_unregister(amba_drv);
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(coresight_init_driver);
-> +
-> +void coresight_remove_driver(struct amba_driver *amba_drv,
-> +			     struct platform_driver *pdev_drv)
-> +{
-> +	amba_driver_unregister(amba_drv);
-> +	platform_driver_unregister(pdev_drv);
-> +}
-> +EXPORT_SYMBOL_GPL(coresight_remove_driver);
+Yeah, and I don't think anyone actually cared much..
 
-Please could we split this into a separate patch itself ? Also, can we 
-not use them for the other components ? funnel, replicator ?
+At least as a step it would be nice if the DMA API only restrictions
+can come out as a special type of reserved region. Then the caller
+could decide if they want to follow them or not. iommufd could provide
+an opt-in API to DPDK that matches DMA API's safe IOVA allocator.
 
-
-> +
->   MODULE_LICENSE("GPL v2");
->   MODULE_AUTHOR("Pratik Patel <pratikp@codeaurora.org>");
->   MODULE_AUTHOR("Mathieu Poirier <mathieu.poirier@linaro.org>");
-> diff --git a/include/linux/coresight.h b/include/linux/coresight.h
-> index a269fffaf991..be7fe3793763 100644
-> --- a/include/linux/coresight.h
-> +++ b/include/linux/coresight.h
-> @@ -12,6 +12,8 @@
->   #include <linux/io.h>
->   #include <linux/perf_event.h>
->   #include <linux/sched.h>
-> +#include <linux/amba/bus.h>
-> +#include <linux/platform_device.h>
->   
->   /* Peripheral id registers (0xFD0-0xFEC) */
->   #define CORESIGHT_PERIPHIDR4	0xfd0
-> @@ -597,6 +599,11 @@ void coresight_relaxed_write64(struct coresight_device *csdev,
->   			       u64 val, u32 offset);
->   void coresight_write64(struct coresight_device *csdev, u64 val, u32 offset);
->   
-> +int coresight_init_driver(const char *drv, struct amba_driver *amba_drv,
-> +			  struct platform_driver *pdev_drv);
-> +
-> +void coresight_remove_driver(struct amba_driver *amba_drv,
-> +			     struct platform_driver *pdev_drv);
->   #else
->   static inline struct coresight_device *
->   coresight_register(struct coresight_desc *desc) { return NULL; }
-
-
-Suzuki
+Jason
 
