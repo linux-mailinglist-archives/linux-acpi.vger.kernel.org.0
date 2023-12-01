@@ -1,88 +1,225 @@
-Return-Path: <linux-acpi+bounces-2066-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2067-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 026B4800AFE
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 13:35:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F2F800AFF
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 13:35:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87A79B212BC
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 12:35:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01EBB1C203B6
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 12:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1383025545
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 12:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E802554E
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Dec 2023 12:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gVfDLjU5";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="supcOG+E"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Un7nKMLr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BFB2197;
-	Fri,  1 Dec 2023 03:06:33 -0800 (PST)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1701428792;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HEhlj+ipjqr4tEgJOcMvjQsGJg7PSMW3Lo0ITUjqyJ8=;
-	b=gVfDLjU5umc+p3JXfSXFKIMVGVVvh/YAfNpBHT1q4t9H27RaW8vqhGxIzPvK5LwXvQwvdF
-	/JYPTDKNgMJUwy1VQmekKDtiuw9J5MRT8kLobRdLxKlvOUfGx43e57Db2Cd7dAx9syetOZ
-	BU7cmbjv5BmHUc0EAy6VO+z0aR26jT/u8M8FH2BQ6+zo9e37Okp4KeSLznfNh/tj+3D+nn
-	JUnzrC6xa7Oy2ZtOmEpsPXJWO6wneo3/X5sumqAOekkfTiY5vVbLzAykjFEs+lfH/gjvHp
-	2hQwTTxf7jJz2QGhGaXroHm9dcH/i6GePiLaIo9jyy0ijxHr/8RoxXDlbrf0jw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1701428792;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HEhlj+ipjqr4tEgJOcMvjQsGJg7PSMW3Lo0ITUjqyJ8=;
-	b=supcOG+ERH+rcQKMhNStZbjQi0qWHuaxf3SWtVLs0rM9jaVZ7Iy5x6/vAzCqSSHennIM26
-	dvRnrytMPd0gRKCA==
-To: Russell King <rmk+kernel@armlinux.org.uk>, linux-pm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org,
- kvmarm@lists.linux.dev, x86@kernel.org, linux-csky@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org
-Cc: Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe Brucker
- <jean-philippe@linaro.org>, jianyong.wu@arm.com, justin.he@arm.com, James
- Morse <james.morse@arm.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
-Subject: Re: [PATCH 08/21] drivers: base: Implement weak arch_unregister_cpu()
-In-Reply-To: <E1r5R3H-00CszC-2n@rmk-PC.armlinux.org.uk>
-References: <ZVyz/Ve5pPu8AWoA@shell.armlinux.org.uk>
- <E1r5R3H-00CszC-2n@rmk-PC.armlinux.org.uk>
-Date: Fri, 01 Dec 2023 12:06:31 +0100
-Message-ID: <87sf4mxjuw.ffs@tglx>
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 834DD1B2;
+	Fri,  1 Dec 2023 03:22:50 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-50bc8b7d8ffso2926492e87.0;
+        Fri, 01 Dec 2023 03:22:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701429769; x=1702034569; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tDYTbMEHTA+PA+CkrLL7nufZCEtkNLGajLlCGSCmAZE=;
+        b=Un7nKMLrcWy2uoCJqpOaLDss3Gj3abCXvwCyxffhHx9GDYO+j9ePTjXbu4pFkaQORM
+         LXi9HyxhRm4+q7VGqWDRZMSsX/2ze/oGgf/5Gv86fIGfMfFsIOnU1tyjJ4EycWdVfQlj
+         wgMgnbRZPvj8bw2eb3ozTjNiWYmkIc6wYKNCOP2BO7i3vuG6PVlDucY566r03ZqOPGbO
+         HvZ302HZMOoBJZlFrSjiHgqfCOCoPoUZ6CCRRCqfu8bn2ZtK93uTqip3jgKTRQWrllQG
+         xHXkJPe9/FSvNWv++e035ZDuwREYrTXdY+jnhaD1lKNsz0JhDQoCmTsu2swKPo7O1tqH
+         dxyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701429769; x=1702034569;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tDYTbMEHTA+PA+CkrLL7nufZCEtkNLGajLlCGSCmAZE=;
+        b=wdDnDy22GLa5poh3lkIOQ2VemzBMP2cj6bQ0YdYDhhiPJP9Oba4osf8ju8Pw+rKXfl
+         jMBpNTehQ4UISS6/V9NvZ4BJaGbjC+US1GkrZ3avyPFlT+niZGEW4tkd3IxguIJNJbf7
+         oBodZA92Md2Zu07e7BgNEPzTjEOOZt4qrxKIiaKBhPkrlIQwPVRwDo9c22YEexmbiY/N
+         2NJKaKpylbeznPrRCq/F2NsDYbKR4gKnAhXnnBBYBarRd1HhyfXShCRILlHB9Yi6oZ6R
+         /1GFNdcm25Rw4ITM9mNn6tmCqwRyTQhxJOducshou6hDUKrea4LO2oVxvhYU3S042kDB
+         SLLQ==
+X-Gm-Message-State: AOJu0Yw3al5atToZz6/xlhI23G9V436hkux2E0ZVUV4UjvBa2sszEq7t
+	TdZNAV5Lo4HS3oRVLAmbQec=
+X-Google-Smtp-Source: AGHT+IF/kNTDoQQTbuA8uVZADKdRmi7YjxqAP2WFPIMlihKsslpNF/yUJ1acTPp4hs3YLYpCcnqKnw==
+X-Received: by 2002:a05:6512:488:b0:50b:d764:2916 with SMTP id v8-20020a056512048800b0050bd7642916mr403101lfq.174.1701429768197;
+        Fri, 01 Dec 2023 03:22:48 -0800 (PST)
+Received: from orome.fritz.box (p200300e41f0fa600f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f0f:a600:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id r3-20020aa7d143000000b0053de19620b9sm1523779edo.2.2023.12.01.03.22.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Dec 2023 03:22:47 -0800 (PST)
+Date: Fri, 1 Dec 2023 12:22:45 +0100
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: David Airlie <airlied@gmail.com>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Albert Ou <aou@eecs.berkeley.edu>, asahi@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Danilo Krummrich <dakr@redhat.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Dexuan Cui <decui@microsoft.com>, devicetree@vger.kernel.org,
+	dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	David Woodhouse <dwmw2@infradead.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, iommu@lists.linux.dev,
+	Jon Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
+	Karol Herbst <kherbst@redhat.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>, Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+	linux-tegra@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Lyude Paul <lyude@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	nouveau@lists.freedesktop.org, Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Sven Peter <sven@svenpeter.dev>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Vineet Gupta <vgupta@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Wei Liu <wei.liu@kernel.org>, Will Deacon <will@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Christoph Hellwig <hch@lst.de>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Hector Martin <marcan@marcan.st>, Moritz Fischer <mdf@kernel.org>,
+	patches@lists.linux.dev,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 08/10] iommu/tegra: Use tegra_dev_iommu_get_stream_id()
+ in the remaining places
+Message-ID: <ZWnCBTWcxqJfemvR@orome.fritz.box>
+References: <0-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
+ <8-v1-720585788a7d+811b-iommu_fwspec_p1_jgg@nvidia.com>
+ <ZWdlcboM4Xzs38NI@orome.fritz.box>
+ <20231129192603.GA1387263@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="TpTVMO/RkXn9/fAN"
+Content-Disposition: inline
+In-Reply-To: <20231129192603.GA1387263@nvidia.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-On Tue, Nov 21 2023 at 13:44, Russell King wrote:
-> ---
-> An open question remains from the RFC v2 posting: should we provide a
-> __weak stub for !HOTPLUG_CPU as well, since in later patches ACPI may
-> reference this if the compiler doesn't optimise as we expect?
 
-You mean:
+--TpTVMO/RkXn9/fAN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-extern void foo(void);
+On Wed, Nov 29, 2023 at 03:26:03PM -0400, Jason Gunthorpe wrote:
+> On Wed, Nov 29, 2023 at 05:23:13PM +0100, Thierry Reding wrote:
+> > > diff --git a/drivers/memory/tegra/tegra186.c b/drivers/memory/tegra/t=
+egra186.c
+> > > index 533f85a4b2bdb7..3e4fbe94dd666e 100644
+> > > --- a/drivers/memory/tegra/tegra186.c
+> > > +++ b/drivers/memory/tegra/tegra186.c
+> > > @@ -111,21 +111,21 @@ static void tegra186_mc_client_sid_override(str=
+uct tegra_mc *mc,
+> > >  static int tegra186_mc_probe_device(struct tegra_mc *mc, struct devi=
+ce *dev)
+> > >  {
+> > >  #if IS_ENABLED(CONFIG_IOMMU_API)
+> > > -	struct iommu_fwspec *fwspec =3D dev_iommu_fwspec_get(dev);
+> > >  	struct of_phandle_args args;
+> > >  	unsigned int i, index =3D 0;
+> > > +	u32 sid;
+> > > =20
+> > > +	WARN_ON(!tegra_dev_iommu_get_stream_id(dev, &sid));
+> >=20
+> > I know the code previously didn't check for any errors, but we may want
+> > to do so now. If tegra_dev_iommu_get_stream_id() ever fails we may end
+> > up writing some undefined value into the override register.
+>=20
+> My assumption was it never fails otherwise this probably already
+> doesn't work?
 
-    if (!IS_ENABLED(CONFIG_FOO))
-    	foo();
+I guess the point I was trying to make is that previously we would not
+have written anything to the stream ID register and so ignoring the
+error here might end up writing to a register that previously we would
+not have written to. Looking at the current code more closely I see now
+that the reason why we wouldn't have written to the register is because
+we would've crashed before.
 
-The kernel uses this pattern for years and if someday a compiler starts
-to fail to eliminate the call to 'foo()' for CONFIG_FOO=n then you
-already get hundreds linkage fails today.
+So I think this okay.
 
-So adding one more in later patches won't matter much :)
+>=20
+> > I'm also unsure if WARN_ON() is appropriate here. I vaguely recall that
+> > ->probe_device() was called for all devices on the bus and not all of
+> > them may have been associated with the IOMMU. Not all of them may in
+> > fact access memory in the first place.
+>=20
+> So you are thinkin that of_parse_phandle_with_args() is a NOP
+> sometimes so it will tolerate the failure?
+>=20
+> Seems like the best thing to do is just continue to ignore it then?
 
+Yeah, exactly. It would've just skipped over everything, basically.
+
+> > Perhaps I'm misremembering and the IOMMU core now takes care of only
+> > calling this when fwspec is indeed valid?
+>=20
+> Can't advise, I have no idea what tegra_mc_ops is for :)
+
+In a nutshell, it's a hook that allows us to configure the memory
+controller when a device is attached to the IOMMU. The memory controller
+contains a set of registers that specify which memory client uses which
+stream ID by default. For some devices this can be overridden (which is
+where tegra_dev_iommu_get_stream_id() comes into play in those drivers)
+and for other devices we can't override, which is when the memory
+controller defaults come into play.
+
+Anyway, I took a closer look at this and ran some tests. Turns out that
+tegra186_mc_probe_device() really only gets called for devices that have
+their fwspec properly initialized anyway, so I don't think there's
+anything special we need to do here.
+
+Strictly from a static analysis point of view I suppose we could now
+have a situation that sid is uninitialized when the call to
+tegra_dev_iommu_get_stream_id() fails and so using it in the loop is not
+correct, theoretically, but I think that's just not a case that we'll
+ever hit in practice.
+
+So either way is fine with me. I have a slight preference for just
+returning 0 in case tegra_dev_iommu_get_stream_id() fails, because it's
+simple to do and avoids any of these (theoretical) ambiguities. So
+whichever way you decide:
+
+Reviewed-by: Thierry Reding <treding@nvidia.com>
+
+--TpTVMO/RkXn9/fAN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmVpwgIACgkQ3SOs138+
+s6HXLg/9HWFRkWBCsjCmwhdNLy/49eLCajrcOU069eBFBS0YM+rhIa4d/XwXv96C
+WEC1AzUuDGAVKvfWbkjzCOtBKr+o0psunt8sHYRX+PtyekOF270j3ud+7Ny/6dQk
+Ca9GevvG0yyYfEcSiowRZXKSzrhj4OSDS83QJbmBiyw3+VyA25+zO/C+Lzib1mG9
+2Kn+od5hqOQFqylwazJAZy358DzVSmyF6iSR0kbmS5mvNrtWS/dT4Zeh2raYJgRn
+MF+f0u+1M8i7Iv65/I5sG83I086p9ictlV1qkMGHY01q7uCAo5p2EM6KlP8Qv/N1
+W+DZQpciP9+ENmkcYjEiNEnNw4efMQThCtXbB4VYxb8Jo/To8eV2/sOGUoLdhwWV
+H8tPPCBfzYtSAsSNXpYK8gWQXCfaHjuO3SFe0itosbSHYw4x+SoECXTVi8L6GBwV
+jDEYuyrcakUhR+vsxuOXlP4TzcIiNoCf1lO8LnfWVjoHcA/1dG1uA6Bup6CtNe+A
+lS3xMmMXDVdZS49hw5EvUTd7Liu+si9RzLkmv4IGWBXlL01VTFYRygKZ1lZLKgPP
+lZWUFLZPunTK7Mlew7PLW7GJg1MzsEkM3htQmVfWzPL7D95RKk3ufiOimGdzknro
+ZaxbslDQOTUAoqgnKVnmzMJbfR+HTasb+X8EuoCb4G9dHDEPq1g=
+=hKzE
+-----END PGP SIGNATURE-----
+
+--TpTVMO/RkXn9/fAN--
 
