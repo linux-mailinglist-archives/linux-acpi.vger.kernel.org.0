@@ -1,216 +1,117 @@
-Return-Path: <linux-acpi+bounces-2087-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2088-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E72C801AAA
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 Dec 2023 05:32:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2ED801D45
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Dec 2023 15:31:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E69E1F2112C
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 Dec 2023 04:32:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9969A1F2117B
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Dec 2023 14:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE8EBA2B
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 Dec 2023 04:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194DF18B19
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Dec 2023 14:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oiQndPNG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OKEHYoXS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B785C23AF
-	for <linux-acpi@vger.kernel.org>; Sat,  2 Dec 2023 03:37:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87EFC433C7;
-	Sat,  2 Dec 2023 03:37:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701488279;
-	bh=NarBwsDGf+urCkR+0KsD6NtO/pJjqSgUz4O5m4o8FXo=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=oiQndPNGfYaJ8uCgjjmlyJLqQ7AVNalarc+HVopht2uw+VBhjq9W4AVOdQgnF5Cwt
-	 RszsMvfslq5zMX47pvgUJIl20b/wYQz4LMr7VR6waH+WRNKghSlzm4+5RkNLuVqw6V
-	 dS01VAIPXzSKDnUDF+ufr1GbldmBmCJaoqaU/XBY9bIlWlqmrt5jDFWgkhhANCvIUh
-	 /ul7L7hrFzaapLfSZ2qM3S/gPYyMOdzT/F3qrcXsjxrjy1FBVDw/gQVM8QcEsJ5Ww+
-	 oFDstsugb2RJVa0mgqX2n5v+0ukvXsvJUqw9zkdksPihZm5vfmoVJ7PWI3YgX27AIV
-	 fv31RAN9zZpXw==
-Date: Fri, 1 Dec 2023 19:37:55 -0800 (PST)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
-cc: Stefano Stabellini <sstabellini@kernel.org>, 
-    Jiqian Chen <Jiqian.Chen@amd.com>, Juergen Gross <jgross@suse.com>, 
-    Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-    Thomas Gleixner <tglx@linutronix.de>, 
-    Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-    "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-    Bjorn Helgaas <bhelgaas@google.com>, xen-devel@lists.xenproject.org, 
-    linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-    Stefano Stabellini <stefano.stabellini@amd.com>, 
-    Alex Deucher <Alexander.Deucher@amd.com>, 
-    Christian Koenig <Christian.Koenig@amd.com>, 
-    Stewart Hildebrand <Stewart.Hildebrand@amd.com>, 
-    Xenia Ragiadakou <xenia.ragiadakou@amd.com>, 
-    Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>, 
-    Huang Rui <Ray.Huang@amd.com>
-Subject: Re: [RFC KERNEL PATCH v2 2/3] xen/pvh: Unmask irq for passthrough
- device in PVH dom0
-In-Reply-To: <ZWmgJNidFsfkDp7q@macbook>
-Message-ID: <alpine.DEB.2.22.394.2312011857260.110490@ubuntu-linux-20-04-desktop>
-References: <20231124103123.3263471-1-Jiqian.Chen@amd.com> <20231124103123.3263471-3-Jiqian.Chen@amd.com> <alpine.DEB.2.22.394.2311291950350.3533093@ubuntu-linux-20-04-desktop> <ZWiyBP4Lzz5lXraP@macbook> <alpine.DEB.2.22.394.2311301912350.110490@ubuntu-linux-20-04-desktop>
- <ZWmgJNidFsfkDp7q@macbook>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C39A9C
+	for <linux-acpi@vger.kernel.org>; Sat,  2 Dec 2023 04:43:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701520998;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h4DJq4T+U4J3l6LPK0uojmAyF6LfoimHRqrF4QgIogY=;
+	b=OKEHYoXSRhDkPNBwOtE/s+9Cez9NGZIjpKPk/7dvosdaftNhFGbWiJ5nxkQmet94Q8783E
+	Yn1hc35P++Z7CWksuPxwPqD0BvMNHIKnCHfJ5XDKlSnaLrXd+M52IMc+6bvgm+c1jfzPPn
+	eIOmiyuEseT+sopcbhoHuKTzfdNOnwc=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-73-tl7W2rPjOAK6_1eUU2ktdw-1; Sat, 02 Dec 2023 07:43:15 -0500
+X-MC-Unique: tl7W2rPjOAK6_1eUU2ktdw-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a114f099bebso271446366b.2
+        for <linux-acpi@vger.kernel.org>; Sat, 02 Dec 2023 04:43:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701520994; x=1702125794;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=h4DJq4T+U4J3l6LPK0uojmAyF6LfoimHRqrF4QgIogY=;
+        b=qdISrhkVMkW1krGFbchCEssVyE3HSbcHd3xtH9dQ4clbMS7DIpE7cCbT8ilgZLIasg
+         hTDao9rKK+4TOHnsamq3A1qk7lkdGOmg8CDkUDbtgxzSiNLTR37Vs1sGUAXbLFS/JSKm
+         D8rx11nuVPOQ+vxSGszFe/pFDGx80HUIO0DR3/DJMyCt8rBx7mCH8iQr5ZvkO7Xub9NE
+         fD05SSu2X9Rv6MHUGl4IBcDH+zYNANxFLNQmbH8qC9UcSWzJj91MttJV6b1Y8WiqCq7o
+         di6YNW++aU2nvah/V3fdprMwtlRX29aBLW+EFKgtLMbbjdTfDve6PFRUbFeGXR5Zwz5L
+         b//Q==
+X-Gm-Message-State: AOJu0Yz6woipnOedy+PvCMyro6duerNdzuxpB7ZZz6/zIV4ng5XkLtPc
+	D+4L6Mlm87/GmyPmuuotOWMD/bUWhhj1z55W9clnXEIddV0M3d8Vd0x2Jy0Qn3iQk/SFEDDsTXL
+	OjtkoewlbDCkHdSaYvnTVRA==
+X-Received: by 2002:a17:906:d295:b0:a19:a19b:55f6 with SMTP id ay21-20020a170906d29500b00a19a19b55f6mr1716432ejb.134.1701520994694;
+        Sat, 02 Dec 2023 04:43:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEkw8ECvyYB005RuSFu+FKenCisiOosr0lIXRvYlHHyXKgGxBCWlDX8Hlv33kA9TEyha+zm5A==
+X-Received: by 2002:a17:906:d295:b0:a19:a19b:55f6 with SMTP id ay21-20020a170906d29500b00a19a19b55f6mr1716421ejb.134.1701520994397;
+        Sat, 02 Dec 2023 04:43:14 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id m25-20020a170906235900b009fcb10eecb2sm2985850eja.84.2023.12.02.04.43.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 02 Dec 2023 04:43:13 -0800 (PST)
+Message-ID: <61ef73e6-e633-47e1-b599-ee66aa179227@redhat.com>
+Date: Sat, 2 Dec 2023 13:43:13 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-579185399-1701486027=:110490"
-Content-ID: <alpine.DEB.2.22.394.2312011923070.110490@ubuntu-linux-20-04-desktop>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/4] ACPI: OSL: acpi_os_execute() improvements
+Content-Language: en-US, nl
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michal Wilczynski <michal.wilczynski@intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Mario Limonciello <mario.limonciello@amd.com>
+References: <3281896.aeNJFYEL58@kreacher>
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <3281896.aeNJFYEL58@kreacher>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi,
 
---8323329-579185399-1701486027=:110490
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: 8BIT
-Content-ID: <alpine.DEB.2.22.394.2312011923071.110490@ubuntu-linux-20-04-desktop>
-
-On Fri, 1 Dec 2023, Roger Pau Monné wrote:
-> On Thu, Nov 30, 2023 at 07:15:17PM -0800, Stefano Stabellini wrote:
-> > On Thu, 30 Nov 2023, Roger Pau Monné wrote:
-> > > On Wed, Nov 29, 2023 at 07:53:59PM -0800, Stefano Stabellini wrote:
-> > > > On Fri, 24 Nov 2023, Jiqian Chen wrote:
-> > > > > This patch is to solve two problems we encountered when we try to
-> > > > > passthrough a device to hvm domU base on Xen PVH dom0.
-> > > > > 
-> > > > > First, hvm guest will alloc a pirq and irq for a passthrough device
-> > > > > by using gsi, before that, the gsi must first has a mapping in dom0,
-> > > > > see Xen code pci_add_dm_done->xc_domain_irq_permission, it will call
-> > > > > into Xen and check whether dom0 has the mapping. See
-> > > > > XEN_DOMCTL_irq_permission->pirq_access_permitted, "current" is PVH
-> > > > > dom0 and it return irq is 0, and then return -EPERM.
-> > > > > This is because the passthrough device doesn't do PHYSDEVOP_map_pirq
-> > > > > when thay are enabled.
-> > > > > 
-> > > > > Second, in PVH dom0, the gsi of a passthrough device doesn't get
-> > > > > registered, but gsi must be configured for it to be able to be
-> > > > > mapped into a domU.
-> > > > > 
-> > > > > After searching codes, we can find map_pirq and register_gsi will be
-> > > > > done in function vioapic_write_redirent->vioapic_hwdom_map_gsi when
-> > > > > the gsi(aka ioapic's pin) is unmasked in PVH dom0. So the problems
-> > > > > can be conclude to that the gsi of a passthrough device doesn't be
-> > > > > unmasked.
-> > > > > 
-> > > > > To solve the unmaske problem, this patch call the unmask_irq when we
-> > > > > assign a device to be passthrough. So that the gsi can get registered
-> > > > > and mapped in PVH dom0.
-> > > > 
-> > > > 
-> > > > Roger, this seems to be more of a Xen issue than a Linux issue. Why do
-> > > > we need the unmask check in Xen? Couldn't we just do:
-> > > > 
-> > > > 
-> > > > diff --git a/xen/arch/x86/hvm/vioapic.c b/xen/arch/x86/hvm/vioapic.c
-> > > > index 4e40d3609a..df262a4a18 100644
-> > > > --- a/xen/arch/x86/hvm/vioapic.c
-> > > > +++ b/xen/arch/x86/hvm/vioapic.c
-> > > > @@ -287,7 +287,7 @@ static void vioapic_write_redirent(
-> > > >              hvm_dpci_eoi(d, gsi);
-> > > >      }
-> > > >  
-> > > > -    if ( is_hardware_domain(d) && unmasked )
-> > > > +    if ( is_hardware_domain(d) )
-> > > >      {
-> > > >          /*
-> > > >           * NB: don't call vioapic_hwdom_map_gsi while holding hvm.irq_lock
-> > > 
-> > > There are some issues with this approach.
-> > > 
-> > > mp_register_gsi() will only setup the trigger and polarity of the
-> > > IO-APIC pin once, so we do so once the guest unmask the pin in order
-> > > to assert that the configuration is the intended one.  A guest is
-> > > allowed to write all kind of nonsense stuff to the IO-APIC RTE, but
-> > > that doesn't take effect unless the pin is unmasked.
-> > > 
-> > > Overall the question would be whether we have any guarantees that
-> > > the hardware domain has properly configured the pin, even if it's not
-> > > using it itself (as it hasn't been unmasked).
-> > > 
-> > > IIRC PCI legacy interrupts are level triggered and low polarity, so we
-> > > could configure any pins that are not setup at bind time?
-> > 
-> > That could work.
-> > 
-> > Another idea is to move only the call to allocate_and_map_gsi_pirq at
-> > bind time? That might be enough to pass a pirq_access_permitted check.
+On 11/29/23 14:45, Rafael J. Wysocki wrote:
+> Hi Everyone,
 > 
-> Maybe, albeit that would change the behavior of XEN_DOMCTL_bind_pt_irq
-> just for PT_IRQ_TYPE_PCI and only when called from a PVH dom0 (as the
-> parameter would be a GSI instead of a previously mapped IRQ).  Such
-> difference just for PT_IRQ_TYPE_PCI is slightly weird - if we go that
-> route I would recommend that we instead introduce a new dmop that has
-> this syntax regardless of the domain type it's called from.
+> This series improves acpi_os_execute() on top of
+> 
+> https://patchwork.kernel.org/project/linux-acpi/patch/5745568.DvuYhMxLoT@kreacher/
+> 
+> but only the last patch really depends on it.
+> 
+> The first two patches clean up the code somewhat and the third one modifies
+> the function to allow Notify () handlers to run on all CPUs (not on CPU0 only).
+> 
+> The last patch changes it to use GFP_KERNEL for memory allocations, as it does
+> not run in interrupt context any more after the change linked above.
 
-Looking at the code it is certainly a bit confusing. My point was that
-we don't need to wait until polarity and trigger are set appropriately
-to allow Dom0 to pass successfully a pirq_access_permitted() check. Xen
-should be able to figure out that Dom0 is permitted pirq access.
+I have added this series, as well as the preceding
+"ACPI: OSL: Use a threaded interrupt handler for SCI"
+patch to my personal tree now, so that it will get tested on various
+devices when I run my personal tree on them.
 
-So the idea was to move the call to allocate_and_map_gsi_pirq() earlier
-somewhere because allocate_and_map_gsi_pirq doesn't require trigger or
-polarity to be configured to work. But the suggestion of doing it a
-"bind time" (meaning: XEN_DOMCTL_bind_pt_irq) was a bad idea.
+I'll let you know if I hit any issues caused by this series.
 
-But maybe we can find another location, maybe within
-xen/arch/x86/hvm/vioapic.c, to call allocate_and_map_gsi_pirq() before
-trigger and polarity are set and before the interrupt is unmasked.
+Regards,
 
-Then we change the implementation of vioapic_hwdom_map_gsi to skip the
-call to allocate_and_map_gsi_pirq, because by the time
-vioapic_hwdom_map_gsi we assume that allocate_and_map_gsi_pirq had
-already been done.
-
-I am not familiar with vioapic.c but to give you an idea of what I was
-thinking:
+Hans
 
 
-diff --git a/xen/arch/x86/hvm/vioapic.c b/xen/arch/x86/hvm/vioapic.c
-index 4e40d3609a..16d56fe851 100644
---- a/xen/arch/x86/hvm/vioapic.c
-+++ b/xen/arch/x86/hvm/vioapic.c
-@@ -189,14 +189,6 @@ static int vioapic_hwdom_map_gsi(unsigned int gsi, unsigned int trig,
-         return ret;
-     }
- 
--    ret = allocate_and_map_gsi_pirq(currd, pirq, &pirq);
--    if ( ret )
--    {
--        gprintk(XENLOG_WARNING, "vioapic: error mapping GSI %u: %d\n",
--                 gsi, ret);
--        return ret;
--    }
--
-     pcidevs_lock();
-     ret = pt_irq_create_bind(currd, &pt_irq_bind);
-     if ( ret )
-@@ -287,6 +279,17 @@ static void vioapic_write_redirent(
-             hvm_dpci_eoi(d, gsi);
-     }
- 
-+    if ( is_hardware_domain(d) ) 
-+    {
-+        int pirq = gsi, ret;
-+        ret = allocate_and_map_gsi_pirq(currd, pirq, &pirq);
-+        if ( ret )
-+        {
-+            gprintk(XENLOG_WARNING, "vioapic: error mapping GSI %u: %d\n",
-+                    gsi, ret);
-+            return ret;
-+        }
-+    }
-     if ( is_hardware_domain(d) && unmasked )
-     {
-         /*
---8323329-579185399-1701486027=:110490--
 
