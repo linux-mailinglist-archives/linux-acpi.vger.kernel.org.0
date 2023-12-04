@@ -1,67 +1,29 @@
-Return-Path: <linux-acpi+bounces-2093-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2094-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A775802ADA
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 05:31:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 578C1802ADB
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 05:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8B5E28035F
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 04:31:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 873701C20850
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 04:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F5063CF
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 04:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="E9TG+hEs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038AA8F70
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 04:31:18 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2083.outbound.protection.outlook.com [40.107.92.83])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F346B6;
-	Sun,  3 Dec 2023 19:45:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Z8yjozKDYYgAtYu82XyvXrhBToASlpy+QAdgHvzUv93BSJS9moa7KDDOVDHGyRNJaoGxezIlMti3MzjcXXTqkUCVmh4Du4uOCTIUgS+GF/+bzZ4uux72GB+btPgN7ydaOzD8rSOeYsLnifzIv0fSFdMgAEVrMe6lQQZPxx2kADk/RxRZ7ROA4SkmMYucuRZfKDJ3cyNVNUw0cAPwJybVDLtMFpom6qvUGPbGsq20nBEepzcRD7ZfmSw01GbpBFNjKnMf/7cQto2/l78aWGrsQk+325D/nnTh0+OoAHOfxM3uaH2j7NO5TtUzlskLVxGys0pPWuTCwTBw7H6xivPhXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JaQ2MMiy6Jn8wfLuIiDszGFIPaf1JoUCtKXHgC9Kw8g=;
- b=VK6y6stcpGnHD7LT5dZrTWm3q9C/DFec7VSl3qOoPSOZxNbEUotDW+MRCNjUNTfwDfnB7OekDm3htM/3aPsV8bukviJTaNsJwjO11PatG+Ke5rotSZQHKHCPYJX2EmHjfPTtEO8GRSfseXjEbjJQXLT+NbnTjKl3AsjZ2vBFDPW1YviwzJebV1WQ46L1OUGAUnOgLHErEQUSgwXmq/sXwX7yNRzfYr+IInbbY7N+4+9D4NlEy5+JjKyPbDRjYALnWqFjFIwRZaPD5pUM/9Xypy6txqeBHjxDQGpCs7iiAmrjRmIrLJgYoBKUKB3uVmnmu005F0KxS0rQXldm3IV4JA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JaQ2MMiy6Jn8wfLuIiDszGFIPaf1JoUCtKXHgC9Kw8g=;
- b=E9TG+hEs6fkpO3w8MYQCmOD7N3YvATN6wl+5M1KHM8aLhEHYDzhNgJte0RzNlWZ6FtGYfuQW7o47nij8HCmQCteHpqQk0AaVok4TfzFRWK3KT11bjM0kmlHREfyE6FjvzRFyaZxz6VVXzj/dWU1axaBpKmO+IasGDTD0LZm9Cdk=
-Received: from BL1PR13CA0189.namprd13.prod.outlook.com (2603:10b6:208:2be::14)
- by SN7PR12MB7347.namprd12.prod.outlook.com (2603:10b6:806:29a::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.27; Mon, 4 Dec
- 2023 03:45:38 +0000
-Received: from MN1PEPF0000F0E5.namprd04.prod.outlook.com
- (2603:10b6:208:2be:cafe::30) by BL1PR13CA0189.outlook.office365.com
- (2603:10b6:208:2be::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.22 via Frontend
- Transport; Mon, 4 Dec 2023 03:45:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MN1PEPF0000F0E5.mail.protection.outlook.com (10.167.242.43) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7068.20 via Frontend Transport; Mon, 4 Dec 2023 03:45:38 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Sun, 3 Dec
- 2023 21:45:35 -0600
-Received: from [172.27.137.28] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.34 via Frontend
- Transport; Sun, 3 Dec 2023 21:45:31 -0600
-Message-ID: <4f21ce4f-7b79-47cb-baad-e31702b8887e@amd.com>
-Date: Sun, 3 Dec 2023 22:45:30 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 41506DF;
+	Sun,  3 Dec 2023 20:26:52 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 265A1165C;
+	Sun,  3 Dec 2023 20:27:39 -0800 (PST)
+Received: from [10.162.41.8] (a077893.blr.arm.com [10.162.41.8])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 63D513F762;
+	Sun,  3 Dec 2023 20:26:48 -0800 (PST)
+Message-ID: <58882cab-89ce-4554-aee4-24e70d82fc09@arm.com>
+Date: Mon, 4 Dec 2023 09:56:45 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -69,192 +31,61 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC KERNEL PATCH v2 1/3] xen/pci: Add xen_reset_device_state
- function
+Subject: Re: [PATCH V2 1/7] coresight: replicator: Move ACPI support from AMBA
+ driver to platform driver
 Content-Language: en-US
-To: "Chen, Jiqian" <Jiqian.Chen@amd.com>, Stefano Stabellini
-	<sstabellini@kernel.org>
-CC: Juergen Gross <jgross@suse.com>, Oleksandr Tyshchenko
-	<oleksandr_tyshchenko@epam.com>, Thomas Gleixner <tglx@linutronix.de>, "Boris
- Ostrovsky" <boris.ostrovsky@oracle.com>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, Bjorn Helgaas
-	<bhelgaas@google.com>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
-	<roger.pau@citrix.com>, "xen-devel@lists.xenproject.org"
-	<xen-devel@lists.xenproject.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "Stabellini, Stefano"
-	<stefano.stabellini@amd.com>, "Deucher, Alexander"
-	<Alexander.Deucher@amd.com>, "Koenig, Christian" <Christian.Koenig@amd.com>,
-	"Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>, "Huang, Honglei1"
-	<Honglei1.Huang@amd.com>, "Zhang, Julia" <Julia.Zhang@amd.com>, "Huang, Ray"
-	<Ray.Huang@amd.com>
-References: <20231124103123.3263471-1-Jiqian.Chen@amd.com>
- <20231124103123.3263471-2-Jiqian.Chen@amd.com>
- <alpine.DEB.2.22.394.2311291943260.3533093@ubuntu-linux-20-04-desktop>
- <BL1PR12MB58490EB260D226500141557EE782A@BL1PR12MB5849.namprd12.prod.outlook.com>
- <f78395f3-6588-4bc9-8612-3450a8f44be7@amd.com>
- <BL1PR12MB5849C9BFEBECAF3C5BCBB09DE786A@BL1PR12MB5849.namprd12.prod.outlook.com>
-From: Stewart Hildebrand <stewart.hildebrand@amd.com>
-In-Reply-To: <BL1PR12MB5849C9BFEBECAF3C5BCBB09DE786A@BL1PR12MB5849.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, suzuki.poulose@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Mike Leach
+ <mike.leach@linaro.org>, James Clark <james.clark@arm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20231201062053.1268492-1-anshuman.khandual@arm.com>
+ <20231201062053.1268492-2-anshuman.khandual@arm.com>
+ <20231201123515.gntwvhsxd5nzojn7@bogus>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20231201123515.gntwvhsxd5nzojn7@bogus>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E5:EE_|SN7PR12MB7347:EE_
-X-MS-Office365-Filtering-Correlation-Id: 99e09e39-a133-4033-c156-08dbf47b7abf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	lH/1UGWZqIYIT8cQNn0ECF798tKZc7ufZzvhS/qFwNvMoQ/LwasxCZJSsG+1SYlSB0sV//1EYVemHcUjiLdSMtAOoefCHxCA+DcAHxVp1ypHAFPPJliFQ1Js+WkCJZ4UxGoHa8ms4qPkdxHEzU4XvzaMes3Dzb16vKEu1KJnk+2epmAFI3Xm0WtazaQgX53DvMItphU+x1QNMU2JFNZ+D3JEpq8OrW88Ljgd6RGl30amwgGkd4Ce1Ds5bItOFaeMsIEo17aSOaJ7SvVBhhTL7wWjC+48C/gqLjJ0eMoeD9tfjdOoHfP7jSDcTvFZGNRTFdxHdQat+vx+IrdJTVaY++uxka8J2Gag5IRPnCmHOeOL8cUbGpx+TBUtIHGYe/zDzmaySKhyyKur2UOjVJTjrNPh5EoLzAjC/g1SGeDbk5KzngBKK+5yQ3zCBcAwYeLBDqQCWjvciT7JerIvBAPU7GIa3A2OnVInJA7pZCSznvAclxy+brY0ZJ+xfYkPdO7ce3laCq6d0oHX35wLnCPxv3GX4w1FyVJ7mKsFHvrfRQtIayzqJuxZVF/VhtIiYPtraZLi8YqF3Z8lzNJR2RgmG4Udjp2wEexI/lDuEDsrLo5yZUq9gXujJilCNNW1sohPtJHf2VYIPmD776Tqdk9wYXhNLC1SWTKeKbGBuzkfG3j2WpGBj84+XZvWXma3tz/kfzgdm0yjpYGarhRozYOFJmIxZAKc0TfKO7EXGAulMHbFrbto4sqpa8W4FL6elNgzGw+JXQQjUCFiGREt/tLnx2/PScefqMIC7fSzKZGgM9a70BwBkmrUoQtJkYTrcVwk
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(136003)(376002)(346002)(396003)(230922051799003)(451199024)(186009)(64100799003)(82310400011)(1800799012)(36840700001)(40470700004)(46966006)(4326008)(8936002)(8676002)(31696002)(478600001)(53546011)(40460700003)(110136005)(316002)(16576012)(54906003)(31686004)(36860700001)(86362001)(47076005)(356005)(26005)(36756003)(40480700001)(2616005)(41300700001)(44832011)(70586007)(81166007)(2906002)(7416002)(82740400003)(70206006)(426003)(83380400001)(336012)(5660300002)(36900700001)(43740500002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2023 03:45:38.0130
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99e09e39-a133-4033-c156-08dbf47b7abf
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000F0E5.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7347
 
-On 12/3/23 22:25, Chen, Jiqian wrote:
-> Hi Stewart,
-> 
-> On 2023/11/30 23:03, Stewart Hildebrand wrote:
->> On 11/30/23 02:03, Chen, Jiqian wrote:
->>>
->>> On 2023/11/30 11:46, Stefano Stabellini wrote:
->>>> On Fri, 24 Nov 2023, Jiqian Chen wrote:
->>>>> When device on dom0 side has been reset, the vpci on Xen side
->>>>> won't get notification, so that the cached state in vpci is
->>>>> all out of date with the real device state.
->>>>> To solve that problem, this patch add a function to clear all
->>>>> vpci device state when device is reset on dom0 side.
->>>>>
->>>>> And call that function in pcistub_init_device. Because when
->>>>> we use "pci-assignable-add" to assign a passthrough device in
->>>>> Xen, it will reset passthrough device and the vpci state will
->>>>> out of date, and then device will fail to restore bar state.
->>>>>
->>>>> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
->>>>> Signed-off-by: Huang Rui <ray.huang@amd.com>
->>>>> ---
->>>>>  drivers/xen/pci.c                  | 12 ++++++++++++
->>>>>  drivers/xen/xen-pciback/pci_stub.c |  3 +++
->>>>>  include/xen/interface/physdev.h    |  2 ++
->>>>>  include/xen/pci.h                  |  6 ++++++
->>>>>  4 files changed, 23 insertions(+)
->>>>>
->>>>> diff --git a/drivers/xen/pci.c b/drivers/xen/pci.c
->>>>> index 72d4e3f193af..e9b30bc09139 100644
->>>>> --- a/drivers/xen/pci.c
->>>>> +++ b/drivers/xen/pci.c
->>>>> @@ -177,6 +177,18 @@ static int xen_remove_device(struct device *dev)
->>>>>  	return r;
->>>>>  }
->>>>>  
->>>>> +int xen_reset_device_state(const struct pci_dev *dev)
->>>>> +{
->>>>> +	struct physdev_pci_device device = {
->>>>> +		.seg = pci_domain_nr(dev->bus),
->>>>> +		.bus = dev->bus->number,
->>>>> +		.devfn = dev->devfn
->>>>> +	};
->>>>> +
->>>>> +	return HYPERVISOR_physdev_op(PHYSDEVOP_pci_device_state_reset, &device);
->>>>> +}
->>>>> +EXPORT_SYMBOL_GPL(xen_reset_device_state);
->>>>> +
->>>>>  static int xen_pci_notifier(struct notifier_block *nb,
->>>>>  			    unsigned long action, void *data)
->>>>>  {
->>>>> diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/pci_stub.c
->>>>> index e34b623e4b41..5a96b6c66c07 100644
->>>>> --- a/drivers/xen/xen-pciback/pci_stub.c
->>>>> +++ b/drivers/xen/xen-pciback/pci_stub.c
->>>>> @@ -421,6 +421,9 @@ static int pcistub_init_device(struct pci_dev *dev)
->>>>>  	else {
->>>>>  		dev_dbg(&dev->dev, "resetting (FLR, D3, etc) the device\n");
->>>>>  		__pci_reset_function_locked(dev);
->>>>> +		err = xen_reset_device_state(dev);
->>>>> +		if (err)
->>>>> +			goto config_release;
->>>>
->>>> Older versions of Xen won't have the hypercall
->>>> PHYSDEVOP_pci_device_state_reset implemented. I think we should do
->>>> something like:
->>>>
->>>> if (err && xen_pvh_domain())
->>>>     goto config_release;
->>>>
->>>>
->>>> Or even:
->>>>
->>>> if (xen_pvh_domain()) {
->>>>     err = xen_reset_device_state(dev);
->>>>     if (err)
->>>>         goto config_release;
->>>> }
->>>>
->>>> depending on whether we want to call xen_reset_device_state also for PV
->>>> guests or not. I am assuming we don't want to error out on failure such
->>>> as -ENOENT for PV guests.
->>> Yes, only for PVH dom0, I will add the condition in next version. Thank you!
+
+
+On 12/1/23 18:05, Sudeep Holla wrote:
+> On Fri, Dec 01, 2023 at 11:50:47AM +0530, Anshuman Khandual wrote:
+>> Add support for the dynamic replicator device in the platform driver, which
+>> can then be used on ACPI based platforms. This change would now allow
+>> runtime power management for repliacator devices on ACPI based systems.
 >>
->> We will want to call xen_reset_device_state() for Arm dom0, too, so checking xen_pvh_domain() alone is not sufficient. I suggest instead to check !xen_pv_domain().
-> I am not using Arm. But is Arm dom0 not a PVH type dom0?
-
-Apparently not, Arm dom0 appears to be a xen_hvm_domain() from the kernel's perspective.
-
-> 
+>> The driver would try to enable the APB clock if available. Also, rename the
+>> code to reflect the fact that it now handles both static and dynamic
+>> replicators.
 >>
->>>
->>>>
->>>>
->>>>>  		pci_restore_state(dev);
->>>>>  	}
->>>>>  	/* Now disable the device (this also ensures some private device
->>>>> diff --git a/include/xen/interface/physdev.h b/include/xen/interface/physdev.h
->>>>> index a237af867873..231526f80f6c 100644
->>>>> --- a/include/xen/interface/physdev.h
->>>>> +++ b/include/xen/interface/physdev.h
->>>>> @@ -263,6 +263,8 @@ struct physdev_pci_device {
->>>>>      uint8_t devfn;
->>>>>  };
->>>>>  
->>>>> +#define PHYSDEVOP_pci_device_state_reset     32
->>>>> +
->>>>>  #define PHYSDEVOP_DBGP_RESET_PREPARE    1
->>>>>  #define PHYSDEVOP_DBGP_RESET_DONE       2
->>>>>  
->>>>> diff --git a/include/xen/pci.h b/include/xen/pci.h
->>>>> index b8337cf85fd1..b2e2e856efd6 100644
->>>>> --- a/include/xen/pci.h
->>>>> +++ b/include/xen/pci.h
->>>>> @@ -4,10 +4,16 @@
->>>>>  #define __XEN_PCI_H__
->>>>>  
->>>>>  #if defined(CONFIG_XEN_DOM0)
->>>>> +int xen_reset_device_state(const struct pci_dev *dev);
->>>>>  int xen_find_device_domain_owner(struct pci_dev *dev);
->>>>>  int xen_register_device_domain_owner(struct pci_dev *dev, uint16_t domain);
->>>>>  int xen_unregister_device_domain_owner(struct pci_dev *dev);
->>>>>  #else
->>>>> +static inline int xen_reset_device_state(const struct pci_dev *dev)
->>>>> +{
->>>>> +	return -1;
->>>>> +}
->>>>> +
->>>>>  static inline int xen_find_device_domain_owner(struct pci_dev *dev)
->>>>>  {
->>>>>  	return -1;
->>>>> -- 
->>>>> 2.34.1
->>>>>
->>>
+>> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+>> Cc: Sudeep Holla <sudeep.holla@arm.com>
 > 
+> Except the minor nit below which may apply also for few other patches
+> in the series
+> 
+> Acked-by: Sudeep Holla <sudeep.holla@arm.com> # For ACPI related changes
+> Tested-by: Sudeep Holla <sudeep.holla@arm.com> # Boot and driver probe only
+> 
+> [...]
+> 
+>> diff --git a/drivers/hwtracing/coresight/coresight-replicator.c b/drivers/hwtracing/coresight/coresight-replicator.c
+>> index b6be73034996..64de0bee02ec 100644
+>> --- a/drivers/hwtracing/coresight/coresight-replicator.c
+>> +++ b/drivers/hwtracing/coresight/coresight-replicator.c
+>> @@ -38,6 +38,7 @@ DEFINE_CORESIGHT_DEVLIST(replicator_devs, "replicator");
+>>  struct replicator_drvdata {
+>>  	void __iomem		*base;
+>>  	struct clk		*atclk;
+>> +	struct clk		*pclk;
+> 
+> [minor nit] Perhaps can be documented as well ?
+
+Sure, will add the following comment above the structure.
+
+@pclk:    optional clock for the core parts of the replicator.
 
