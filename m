@@ -1,245 +1,90 @@
-Return-Path: <linux-acpi+bounces-2131-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2132-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C6F804006
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 21:37:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2618041C0
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 23:40:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71DDB1F20D38
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 20:37:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 079A71F212FC
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 22:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1F035EF8
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 20:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E9C3BB21
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 22:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WEJT/iY/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yu51sE3v"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2082.outbound.protection.outlook.com [40.107.93.82])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 418ACAC;
-	Mon,  4 Dec 2023 11:25:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IWASpv4QpB0JBj4i6m901JgCLSMt6SIfCK0ImXCKnW6NHaY9lbHCqH9wUzorJi8k5HiAa89ZuQLmGLPe6WfgCSRj9VATJxpfkuLQkJXDP5kxMxe2T1+sBDnGnr/o0Mzyrav+CtV0z/EX9D0V2xjmIPErl39TaN3zSbzztuuDZMq745e/J9FFIYinv/YXvfk8tntY1fOA7lqbHHmq9/wg5EmFrYgJSSn/0dEj1jDwxi/+s3LPX3WpzKSv1lRDorCSu0MnIas51+5LVBBSg5t8FLFuqwboRaLgEgkrMLNYLy7gUfMB45w4y/7rzJe10SD/JqvW9f+VaxwyZtMaKP7D9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lIIrVQD7Blcxal0v1wSCdlsgvbsn/rgELU4GEZoQM2s=;
- b=lvLJrmdogDIoPHlYcG3KHlIW1lJg+PFdw+uLoZkR75n0/Rcq8+MIfJ+Q1oNhOmEUyaixQNymiuvRX4Y6maS9iPLUPWCX2QQWST+40WlrWdBm8zDn85w7Gn58m59PLccLgznOR7HhcQWRUeTYpUt4XQxNzCNgVEMTKYHmCYhpbBtdQF+fF0QI3EZcSgH4+vTkfqVshd471GRCngEozq2HJs+/dJgoXL35LD7qMyUHLKO9YMA/ltIGB4aXsS3MZ3VIiKXRhZypug6fUGmblM74uE39fQU2d0yReF9KTt9iJ/UvOu/wfXNCy90RutIOiqWm7jQi5+KdsE780aqcSfFO9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lIIrVQD7Blcxal0v1wSCdlsgvbsn/rgELU4GEZoQM2s=;
- b=WEJT/iY/7sWVcpS1lR3B40kqZkXpHFheETskJxUpcvl/AJW6Rk+HXL85ZZOuizjLUK0mq52YjqD4j7lGJbgVHcCJK81FRMqUMc0VxOB/cLkuoJk2+S0Qeule7tiWnh6XFHF16GPr3qL5rHU7/XJEJhefn/C5UjrTIdZbCxCxwFw=
-Received: from CYZPR12CA0018.namprd12.prod.outlook.com (2603:10b6:930:8b::10)
- by DM6PR12MB4073.namprd12.prod.outlook.com (2603:10b6:5:217::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.33; Mon, 4 Dec
- 2023 19:25:56 +0000
-Received: from CY4PEPF0000FCC0.namprd03.prod.outlook.com
- (2603:10b6:930:8b:cafe::db) by CYZPR12CA0018.outlook.office365.com
- (2603:10b6:930:8b::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34 via Frontend
- Transport; Mon, 4 Dec 2023 19:25:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000FCC0.mail.protection.outlook.com (10.167.242.102) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7068.20 via Frontend Transport; Mon, 4 Dec 2023 19:25:56 +0000
-Received: from titanite-d354host.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Mon, 4 Dec 2023 13:25:55 -0600
-From: Avadhut Naik <avadhut.naik@amd.com>
-To: <linux-acpi@vger.kernel.org>
-CC: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
-	<tony.luck@intel.com>, <bp@alien8.de>, <linux-kernel@vger.kernel.org>,
-	<yazen.ghannam@amd.com>, <avadnaik@amd.com>
-Subject: [PATCH v3] ACPI: APEI: Skip initialization of GHES_ASSIST structures for Machine Check Architecture
-Date: Mon, 4 Dec 2023 13:25:49 -0600
-Message-ID: <20231204192549.1953029-1-avadhut.naik@amd.com>
-X-Mailer: git-send-email 2.34.1
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512B0364A9
+	for <linux-acpi@vger.kernel.org>; Mon,  4 Dec 2023 21:31:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87769C433C8;
+	Mon,  4 Dec 2023 21:31:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701725491;
+	bh=jZE8WhQFFk5OHFb1w+ll7JB5KoaZRmBWaeDlAuQbU04=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=Yu51sE3vS37G/VqsMHOxqKss2H9lLc4fVXXc5Sswc7TWVZjCgeKTO9ir8aGro4AeS
+	 K+Mdx7AbXDvIaTiNM7EJLY6Kz13WkF/5sEcmT2/1rFAokfwoKLWJKZstos9WHut7bE
+	 JUZ8TcEAGE9K+XFxplS2TnChfCNABEy0P3SsvlGMr6qu5da3hWCuc9PiDaees+tkhp
+	 7dV2Ee3diB7OkvxVY3U043mJCUsBP7aejaGnpmqJ7SAF4M0ZuZgbdwi/xNEgdLu73w
+	 cgXGTviVpjT7CtDCU3eeWQ1JePKAjfPB5FI2JU+ySDBuAobRBAcQ46WkQzOwDXXi8q
+	 g5naLxareX1NQ==
+Date: Mon, 4 Dec 2023 13:31:27 -0800 (PST)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: "Chen, Jiqian" <Jiqian.Chen@amd.com>
+cc: Thomas Gleixner <tglx@linutronix.de>, Juergen Gross <jgross@suse.com>, 
+    Stefano Stabellini <sstabellini@kernel.org>, 
+    Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
+    Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+    "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+    Bjorn Helgaas <bhelgaas@google.com>, 
+    =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
+    "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
+    "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+    "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
+    "Stabellini, Stefano" <stefano.stabellini@amd.com>, 
+    "Deucher, Alexander" <Alexander.Deucher@amd.com>, 
+    "Koenig, Christian" <Christian.Koenig@amd.com>, 
+    "Hildebrand, Stewart" <Stewart.Hildebrand@amd.com>, 
+    "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>, 
+    "Huang, Honglei1" <Honglei1.Huang@amd.com>, 
+    "Zhang, Julia" <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>
+Subject: Re: [RFC KERNEL PATCH v2 1/3] xen/pci: Add xen_reset_device_state
+ function
+In-Reply-To: <BL1PR12MB5849F2E24E00BF7B20A0B4A6E786A@BL1PR12MB5849.namprd12.prod.outlook.com>
+Message-ID: <alpine.DEB.2.22.394.2312041331210.110490@ubuntu-linux-20-04-desktop>
+References: <20231124103123.3263471-1-Jiqian.Chen@amd.com> <20231124103123.3263471-2-Jiqian.Chen@amd.com> <87edg2xuu9.ffs@tglx> <BL1PR12MB5849F2E24E00BF7B20A0B4A6E786A@BL1PR12MB5849.namprd12.prod.outlook.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC0:EE_|DM6PR12MB4073:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7938f70b-bb42-48a8-71b0-08dbf4fed6f3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	38htsoyyW5tMgKhqQ5o8btHLOKBbdPQCUtxkp/OBpCSdmd1rQuj1IFL21pri1tpZ0pGS5qPRN1486Ug0k/Z/2sdM4V2nwe37EpKWcK0HnlUnmy2whIrhTcFN6rWBCmRJbuhJjN0OALmmD7lC9+quKaMfMTCGcgJOiMEzOJi7zy175vbG/hu2CY0gvgBhiJY1QThnAeQKSrzrHCsBowweRWC0ZaclvCiOWpKJ+4+ggKrH36FNJEnZGM3Q19zkAqwahKMwuJcqfm0tPGtSwg1fI6yqZR6+GDocsFprWCcYsnoIWAg0qu3266EWPDPNidJT9B3/6Yy23z9dEHDIsAHno0LxMo1P1aOfDUEr4FQEQjFfXw3sGmlEwnX+2m/zY7gL5XyD42J0FydzFHJZbwAGbkR11eoIm7TzHftE99zWqp+Q4aczjMbxC3Ng2YFNRvNEe6iHPIy5xtIirNA+RHv7e+HFyO0//bBSMo+GF8pEpxrHB8KLFACg49YhvJtq6D7LC3KM7OVlPXAbCJbx9wzsK6TT6YDAgQ8sVOz3ZvJ52dO7qE00HGe6coQgZwmJbNaPglufODv1XFUiD+B7jF/Ctf6BWt3k6V2znIq10ubCWB2WtB11+tir7YB1qWh1iUtLzaegqO6zTvT62DO+jqHIT2k+MOcmkd/qLC6QAtq/ktx7sIJqGa7rQ/JtSEQXnPIsN3L+UdfpeHViVHdrYXzT/xxlWKh2YHE/AiQNS20L6UDhEfiR89vx0hOw19G9XI/zQoMX3CJusIhlC6SgMOgFZQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(346002)(39860400002)(396003)(136003)(230922051799003)(82310400011)(1800799012)(64100799003)(451199024)(186009)(40470700004)(46966006)(36840700001)(26005)(336012)(478600001)(83380400001)(16526019)(47076005)(7696005)(6666004)(81166007)(356005)(426003)(1076003)(40480700001)(82740400003)(36756003)(2616005)(316002)(6916009)(54906003)(70586007)(70206006)(36860700001)(5660300002)(4326008)(86362001)(8936002)(8676002)(2906002)(40460700003)(44832011)(41300700001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2023 19:25:56.6643
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7938f70b-bb42-48a8-71b0-08dbf4fed6f3
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000FCC0.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4073
+Content-Type: text/plain; charset=US-ASCII
 
-To support GHES_ASSIST on Machine Check Architecture (MCA) error sources,
-a set of GHES structures is provided by the system firmware for each MCA
-error source. Each of these sets consists of a GHES structure for each MCA
-bank on each logical CPU, with all structures of a set sharing a common
-Related Source ID, equal to the Source ID of one of the MCA error source
-structures.[1] On SOCs with large core counts, this typically equates to
-tens of thousands of GHES_ASSIST structures for MCA under
-"/sys/bus/platform/drivers/GHES".
+On Mon, 3 Dec 2023, Chen, Jiqian wrote:
+> >> vpci device state when device is reset on dom0 side.
+> >>
+> >> And call that function in pcistub_init_device. Because when
+> >> we use "pci-assignable-add" to assign a passthrough device in
+> >> Xen, it will reset passthrough device and the vpci state will
+> >> out of date, and then device will fail to restore bar state.
+> >>
+> >> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+> >> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> > 
+> > This Signed-off-by chain is incorrect.
+> > 
+> > Documentation/process/submitting-patches.rst has a full chapter about
+> > S-O-B and the correct usage.
+> I am the author of this series of patches, and Huang Rui transported the v1 to upstream. And now I transport v2. I am not aware that the SOB chain is incorrect.
+> Do you have any suggestions?
 
-Support for GHES_ASSIST however, hasn't been implemented in the kernel. As
-such, the information provided through these structures is not consumed by
-Linux. Moreover, these GHES_ASSIST structures for MCA, which are supposed
-to provide supplemental information in context of an error reported by
-hardware, are setup as independent error sources by the kernel during HEST
-initialization.
-
-Additionally, if the Type field of the Notification structure, associated
-with these GHES_ASSIST structures for MCA, is set to Polled, the kernel
-sets up a timer for each individual structure. The duration of the timer
-is derived from the Poll Interval field of the Notification structure. On
-SOCs with high core counts, this will result in tens of thousands of
-timers expiring periodically causing unnecessary preemptions and wastage
-of CPU cycles. The problem will particularly intensify if Poll Interval
-duration is not sufficiently high.
-
-Since GHES_ASSIST support is not present in kernel, skip initialization
-of GHES_ASSIST structures for MCA to eliminate their performance impact.
-
-[1] ACPI specification 6.5, section 18.7
-
-Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
----
-Changes in v2:
-1.	Since is_ghes_assist_struct() returns if any of the conditions is hit
-if-else-if chain is redundant. Replace it with just if statements.
-2.	Fix formatting errors.
-3.	Add Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-
-Changes in v3:
-1. Modify structure (mces) comment, per Tony's recommendation, to better
-reflect the structure's usage.
----
- drivers/acpi/apei/hest.c | 51 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
-
-diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
-index 6aef1ee5e1bd..20d757687e3d 100644
---- a/drivers/acpi/apei/hest.c
-+++ b/drivers/acpi/apei/hest.c
-@@ -37,6 +37,20 @@ EXPORT_SYMBOL_GPL(hest_disable);
- 
- static struct acpi_table_hest *__read_mostly hest_tab;
- 
-+/*
-+ * Since GHES_ASSIST is not supported, skip initialization of GHES_ASSIST
-+ * structures for MCA.
-+ * During HEST parsing, detected MCA error sources are cached from early
-+ * table entries so that the Flags and Source Id fields from these cached
-+ * values are then referred to in later table entries to determine if the
-+ * encountered GHES_ASSIST structure should be initialized.
-+ */
-+static struct {
-+	struct acpi_hest_ia_corrected *cmc;
-+	struct acpi_hest_ia_machine_check *mc;
-+	struct acpi_hest_ia_deferred_check *dmc;
-+} mces;
-+
- static const int hest_esrc_len_tab[ACPI_HEST_TYPE_RESERVED] = {
- 	[ACPI_HEST_TYPE_IA32_CHECK] = -1,	/* need further calculation */
- 	[ACPI_HEST_TYPE_IA32_CORRECTED_CHECK] = -1,
-@@ -70,22 +84,54 @@ static int hest_esrc_len(struct acpi_hest_header *hest_hdr)
- 		cmc = (struct acpi_hest_ia_corrected *)hest_hdr;
- 		len = sizeof(*cmc) + cmc->num_hardware_banks *
- 			sizeof(struct acpi_hest_ia_error_bank);
-+		mces.cmc = cmc;
- 	} else if (hest_type == ACPI_HEST_TYPE_IA32_CHECK) {
- 		struct acpi_hest_ia_machine_check *mc;
- 		mc = (struct acpi_hest_ia_machine_check *)hest_hdr;
- 		len = sizeof(*mc) + mc->num_hardware_banks *
- 			sizeof(struct acpi_hest_ia_error_bank);
-+		mces.mc = mc;
- 	} else if (hest_type == ACPI_HEST_TYPE_IA32_DEFERRED_CHECK) {
- 		struct acpi_hest_ia_deferred_check *mc;
- 		mc = (struct acpi_hest_ia_deferred_check *)hest_hdr;
- 		len = sizeof(*mc) + mc->num_hardware_banks *
- 			sizeof(struct acpi_hest_ia_error_bank);
-+		mces.dmc = mc;
- 	}
- 	BUG_ON(len == -1);
- 
- 	return len;
- };
- 
-+/*
-+ * GHES and GHESv2 structures share the same format, starting from
-+ * Source Id and ending in Error Status Block Length (inclusive).
-+ */
-+static bool is_ghes_assist_struct(struct acpi_hest_header *hest_hdr)
-+{
-+	struct acpi_hest_generic *ghes;
-+	u16 related_source_id;
-+
-+	if (hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR &&
-+	    hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR_V2)
-+		return false;
-+
-+	ghes = (struct acpi_hest_generic *)hest_hdr;
-+	related_source_id = ghes->related_source_id;
-+
-+	if (mces.cmc && mces.cmc->flags & ACPI_HEST_GHES_ASSIST &&
-+	    related_source_id == mces.cmc->header.source_id)
-+		return true;
-+	if (mces.mc && mces.mc->flags & ACPI_HEST_GHES_ASSIST &&
-+	    related_source_id == mces.mc->header.source_id)
-+		return true;
-+	if (mces.dmc && mces.dmc->flags & ACPI_HEST_GHES_ASSIST &&
-+	    related_source_id == mces.dmc->header.source_id)
-+		return true;
-+
-+	return false;
-+}
-+
- typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
- 
- static int apei_hest_parse(apei_hest_func_t func, void *data)
-@@ -114,6 +160,11 @@ static int apei_hest_parse(apei_hest_func_t func, void *data)
- 			return -EINVAL;
- 		}
- 
-+		if (is_ghes_assist_struct(hest_hdr)) {
-+			hest_hdr = (void *)hest_hdr + len;
-+			continue;
-+		}
-+
- 		rc = func(hest_hdr, data);
- 		if (rc)
- 			return rc;
-
-base-commit: 629a3b49f3f957e975253c54846090b8d5ed2e9b
--- 
-2.34.1
-
+I think he means that your Signed-off-by should be the second one of the
+two as you are the one submitting the patch to the LKML
 
