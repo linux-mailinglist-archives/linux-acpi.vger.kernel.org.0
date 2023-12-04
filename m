@@ -1,24 +1,24 @@
-Return-Path: <linux-acpi+bounces-2104-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2105-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B617803089
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 11:38:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC0C80308C
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 11:38:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB5D21C20A70
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 10:38:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8151B20ABC
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 10:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123AB22F08
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 10:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A12A22F0B
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 10:38:50 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81A511733;
-	Mon,  4 Dec 2023 00:43:26 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4467D184;
+	Mon,  4 Dec 2023 00:44:44 -0800 (PST)
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id D793368AFE; Mon,  4 Dec 2023 09:43:19 +0100 (CET)
-Date: Mon, 4 Dec 2023 09:43:19 +0100
+	id E167F68AFE; Mon,  4 Dec 2023 09:44:40 +0100 (CET)
+Date: Mon, 4 Dec 2023 09:44:40 +0100
 From: Christoph Hellwig <hch@lst.de>
 To: Robin Murphy <robin.murphy@arm.com>
 Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
@@ -50,9 +50,9 @@ Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
 	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
 	iommu@lists.linux.dev, devicetree@vger.kernel.org
-Subject: Re: [PATCH 4/7] dma-mapping: Add helpers for dma_range_map bounds
-Message-ID: <20231204084319.GA919@lst.de>
-References: <cover.1701268753.git.robin.murphy@arm.com> <b6626985d97ddc33a23b4b9fafa881b35001547e.1701268753.git.robin.murphy@arm.com>
+Subject: Re: [PATCH 7/7] dma-mapping: Simplify arch_setup_dma_ops()
+Message-ID: <20231204084440.GB919@lst.de>
+References: <cover.1701268753.git.robin.murphy@arm.com> <590a4a1b7d10fb9bb1c42ca6cd438e98e6cc94a7.1701268753.git.robin.murphy@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -61,16 +61,22 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b6626985d97ddc33a23b4b9fafa881b35001547e.1701268753.git.robin.murphy@arm.com>
+In-Reply-To: <590a4a1b7d10fb9bb1c42ca6cd438e98e6cc94a7.1701268753.git.robin.murphy@arm.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On Wed, Nov 29, 2023 at 05:43:01PM +0000, Robin Murphy wrote:
-> Several places want to compute the lower and/or upper bounds of a
-> dma_range_map, so let's factor that out into reusable helpers.
+On Wed, Nov 29, 2023 at 05:43:04PM +0000, Robin Murphy wrote:
+> The dma_base, size and iommu arguments are only used by ARM, and can
+> now easily be deduced from the device itself, so there's no need to pass
+> them through the callchain as well.
 
-As the build bot pointed out this will need a fix for the initialization
-all-Fs for a 32-bit dma_addr_t, e.g. by using (dma_addr_t)-1, but
-otherwise looks good:
+This looks even better than the patch form Jason that only removed the
+iommu argument:
 
 Reviewed-by: Christoph Hellwig <hch@lst.de>
+
+I wonder if it makes sense to also remove the coherent argument
+by setting up dev->dma_coherent in the caller.  That would require
+a pretty careful audit as we're doing a few weird things in that
+area, though.
+
 
