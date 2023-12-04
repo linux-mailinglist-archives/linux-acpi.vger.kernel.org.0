@@ -1,106 +1,95 @@
-Return-Path: <linux-acpi+bounces-2122-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2123-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10456803A66
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 17:35:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69967803A69
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 17:36:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF43C28071F
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 16:35:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AFB21F212BB
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 16:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855172583
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 16:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2DC2E620
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 16:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UCrLi1yp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95A2B198;
-	Mon,  4 Dec 2023 07:26:19 -0800 (PST)
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-1fb1620a00eso552542fac.1;
-        Mon, 04 Dec 2023 07:26:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701703579; x=1702308379;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UIUtVPpyS8fYPGpGVIiSGAPMUKiBnO1J7wrsfSDkQ8w=;
-        b=uoAskszJc7PrAdQub6c2RdQFtDovUjznT6B4V9tFf3a6fwC4QaQ18EI/ABNAje/y5N
-         yK+GBorjK/w675u7m7ZcgpqPNJs+CLqdFoey6XuVEU/zV+JRbVnYdZVyLEVOecGGefjG
-         fO2DYvAfm3rp0x7u3VHhy1upqzU4iNYcinexfBgAHEperZKYRertgzdTmSB83mA9Cy1c
-         YJhpK4GYHDDBpAgQFeeMXlPzDWl21Qz5nCx3A4ODTqOlbetliTZ5SaH6QShGk6auZjhI
-         qZM43+0V2NHg0FkpUans5zJvpxCSR0HFpZMmx1s7UwNhomqqAwulvv+2+WrCMaFBTiJU
-         YfMg==
-X-Gm-Message-State: AOJu0YxW9pX+8dlDoXIaGiPLfzw9PeMe+ap4coigtO8Hh6pXHgToiW8K
-	dwHEW8eL7unFZhQNYlSYDL7Hj8iyL4kRwsUWt5E=
-X-Google-Smtp-Source: AGHT+IFwRKdE6quLrQ8usAvmvfukiG7/emkxnLDLXtzCuNE4oiv6TjvNZ1qHrFHd/ntBRYj5JCmvp3F/FTWIrUaO9oM=
-X-Received: by 2002:a05:6870:e38a:b0:1fb:25fb:fabc with SMTP id
- x10-20020a056870e38a00b001fb25fbfabcmr5889457oad.5.1701703578877; Mon, 04 Dec
- 2023 07:26:18 -0800 (PST)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 116DFB6;
+	Mon,  4 Dec 2023 07:37:25 -0800 (PST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A2B7240E024E;
+	Mon,  4 Dec 2023 15:37:22 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 57rtjTuPDXSa; Mon,  4 Dec 2023 15:37:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1701704240; bh=kaO/sau2mcBySd1FCm7TU34cOIPXB62AwClHCJS5wzY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UCrLi1ypAd/XYvkwQQ7YfPFOXIME9Y6BGRO4HnAzbbz65mfnQXnZaBmWF/hyaLdhW
+	 2eiNCRdqtuV75pLDUKfY/l3q2H3N/Sf0KB6TXR54l909KX0ylb3zytv8fjC8TLpRT/
+	 0/K6Hv+U2u2g7HCZe/cluFhbJmsoxfYAf8UxhP2y9/KLk7QOTEAPwD7JXWUzzLPGl1
+	 qKdFwAKTI24kGWKd6QCCQlUt1RhxmfCrWXgS7G/45YtAtFBg0+QGzl9Ps4YFqF/XkK
+	 dsYGlV7VakK8U+my8ej9eDAsGEaifng25JOfzRPJdL0uZmj7PjrqYOVofipMoOweXs
+	 dgvT2XWzGviloH8Lv66OREJDar/Tihdjc9hk7Jw6ID9+Pd+iWJJsGWbFKfoC8SItxi
+	 kJdSI6MuPboMy+lBY5sr8Yz6VsuQy5sdeKmu1tNA45WF0l4tXE2jeKMHAyV3KEKLfK
+	 +RJA3woPFCKAIu7b8afKztce7d5+Z7uTDXG/ZbTw0SqJylXoTNcbKUAollqo+sT6kX
+	 fQLRNNdljwROMZ57Ss0sJyRhFLqdL3HCIEHSzVBAxeQqy+KavbKiuIkEOp538fIveD
+	 wYoht3bG9RXpSHBQVwF9x42yiy6vj+MPjSFPsx6FDeXDyETHM8/O7FAinpw3PFnIEI
+	 8TAQRWTaONKRLKtz+8wCgNGI=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6DA2840E0195;
+	Mon,  4 Dec 2023 15:36:47 +0000 (UTC)
+Date: Mon, 4 Dec 2023 16:36:46 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: ankita@nvidia.com, alex.williamson@redhat.com, naoya.horiguchi@nec.com,
+	akpm@linux-foundation.org, tony.luck@intel.com,
+	linmiaohe@huawei.com, rafael@kernel.org, lenb@kernel.org,
+	james.morse@arm.com, shiju.jose@huawei.com, bhelgaas@google.com,
+	pabeni@redhat.com, yishaih@nvidia.com,
+	shameerali.kolothum.thodi@huawei.com, kevin.tian@intel.com,
+	aniketa@nvidia.com, cjia@nvidia.com, kwankhede@nvidia.com,
+	targupta@nvidia.com, vsethi@nvidia.com, acurrid@nvidia.com,
+	apopple@nvidia.com, anuaggarwal@nvidia.com, jhubbard@nvidia.com,
+	danw@nvidia.com, mochs@nvidia.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, linux-edac@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] mm: Change ghes code to allow poison of
+ non-struct pfn
+Message-ID: <20231204153646.GCZW3yDgal3gztpDRY@fat_crate.local>
+References: <20231123003513.24292-1-ankita@nvidia.com>
+ <20231123003513.24292-4-ankita@nvidia.com>
+ <20231202232319.GAZWu8Z6gsLp1kI5Dw@fat_crate.local>
+ <20231204143650.GB1493156@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <3281896.aeNJFYEL58@kreacher> <3552364.iIbC2pHGDl@kreacher>
-In-Reply-To: <3552364.iIbC2pHGDl@kreacher>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 4 Dec 2023 16:26:02 +0100
-Message-ID: <CAJZ5v0jkHLGa2XxB4TMqzrBBdZYXY79+sh1Z0ZF6keYdLDyfkg@mail.gmail.com>
-Subject: Re: [PATCH v1 4/4] ACPI: OSL: Use GFP_KERNEL for work item allocations
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Zhang Rui <rui.zhang@intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
-	Michal Wilczynski <michal.wilczynski@intel.com>, Hans de Goede <hdegoede@redhat.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Mario Limonciello <mario.limonciello@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231204143650.GB1493156@nvidia.com>
 
-On Wed, Nov 29, 2023 at 3:33=E2=80=AFPM Rafael J. Wysocki <rjw@rjwysocki.ne=
-t> wrote:
->
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> After the recent modification changing the ACPI SCI interrupt handler
-> into a threaded one, the SCI interrupt handler code does not run in
-> interrupt context any more and acpi_os_execute(), that may be invoked
-> by it, need not use GFP_ATOMIC for allocating work items.
->
-> Make it use GFP_KERNEL instead.
+On Mon, Dec 04, 2023 at 10:36:50AM -0400, Jason Gunthorpe wrote:
+> It wasn't removed. patch 1 moved it to memory_failure() where it makes
+> a lot more sense.
 
-This change is premature, because acpi_ev_detect_gpe() still disables
-local interrupts around acpi_os_execute() calls, even though it runs
-from a kernel thread now.
+Why is this a separate patch then?
 
-Withdrawing.
 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->  drivers/acpi/osl.c |    3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> Index: linux-pm/drivers/acpi/osl.c
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- linux-pm.orig/drivers/acpi/osl.c
-> +++ linux-pm/drivers/acpi/osl.c
-> @@ -1084,8 +1084,7 @@ acpi_status acpi_os_execute(acpi_execute
->          * parameters we can't use the approach some kernel code uses of
->          * having a static work_struct.
->          */
-> -
-> -       dpc =3D kzalloc(sizeof(struct acpi_os_dpc), GFP_ATOMIC);
-> +       dpc =3D kzalloc(sizeof(struct acpi_os_dpc), GFP_KERNEL);
->         if (!dpc)
->                 return AE_NO_MEMORY;
->
->
->
->
->
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
