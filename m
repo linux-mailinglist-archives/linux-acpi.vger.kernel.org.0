@@ -1,132 +1,156 @@
-Return-Path: <linux-acpi+bounces-2129-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2130-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22E1803D2D
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 19:36:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE467803D30
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 19:36:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00DFC1C208DB
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 18:36:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 894B41F21218
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 18:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605E22FC24
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 18:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5EF2FC22
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 18:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NXLZgYIr"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="yocSKJDC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BBCAFF
-	for <linux-acpi@vger.kernel.org>; Mon,  4 Dec 2023 10:01:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1701712912;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bgk9x1S32YbyFYXGxABkNOgzyytMxhu0dcjiBukmT2Y=;
-	b=NXLZgYIru64MZ+CZk0R2R/wn3ozfRE4c+Xutq2k0wX6sZdVRFtrLUtt4edN4KbWXCdi57p
-	O5CEhYq/bjxt8PMaH0OQE1tMwKd3sYUFbU8+CSawyjZ3bRV1jXfcnt6yCJWu/2uC0UDeCr
-	swwBCJ/rLD9AQWIsN9GTDwvvbSy6rfY=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-M17fxDznNiexjEakFuC7Ew-1; Mon, 04 Dec 2023 13:01:51 -0500
-X-MC-Unique: M17fxDznNiexjEakFuC7Ew-1
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-77de7dacb57so428454385a.3
-        for <linux-acpi@vger.kernel.org>; Mon, 04 Dec 2023 10:01:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701712910; x=1702317710;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bgk9x1S32YbyFYXGxABkNOgzyytMxhu0dcjiBukmT2Y=;
-        b=LdeKCnHI6llseMsImShgznY9EsYVsmVPlRPWAn/w1rjN/JipdqzbUBSE+DVXnog0cV
-         zYc7ki7ZRtUNbAnvEYuslVLIH97N5HDicujuD6r9tnWOdJ4KY7tVLjkOx+tKnnXgsN98
-         xt9/rG8sYAR9NYUuQPUNrq9gXzZZb7xSP0TOBSuz9i+Svvx7hmU6GZKOFmEQZ5lt54WB
-         /X6dgG0lNRhWcWb35hX+fx59Z6/y84QUgLqyBlagGGn+JdHmrtplL6U+Sfelqk/FLH2s
-         cwgAfo2gS7NOtpZYKYfFCgyHoQ6d9WTDKoQHda9uKNlyByQK5p2308eZGaYAvaE5qjYL
-         z7Xw==
-X-Gm-Message-State: AOJu0YwM3Ejg8rm4sqkcs8ZsW7pk+fRcWuWPe1tSE5l95FTQ0sF3hXPV
-	O5RiJ9bo4knynoiey8j9ICWGNggXt8884kq0HmgVskCMTjdh+6fex83eIqXMA8OON7PYN+dnmOF
-	pDy+LhJQX5ZuoEOv5YHofAA==
-X-Received: by 2002:a05:620a:1d08:b0:76f:d65:af24 with SMTP id dl8-20020a05620a1d0800b0076f0d65af24mr6184518qkb.27.1701712910556;
-        Mon, 04 Dec 2023 10:01:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHQb6iGQRFDsjsW47QtTUSChPuX7AEzvmrR3xoj2Dr2YRJaCUeHyzkIKktc/Mz92zwG+o7y7Q==
-X-Received: by 2002:a05:620a:1d08:b0:76f:d65:af24 with SMTP id dl8-20020a05620a1d0800b0076f0d65af24mr6184503qkb.27.1701712910247;
-        Mon, 04 Dec 2023 10:01:50 -0800 (PST)
-Received: from [10.16.200.42] (nat-pool-bos-t.redhat.com. [66.187.233.206])
-        by smtp.gmail.com with ESMTPSA id j5-20020a05620a288500b0077d8526bcdesm4421229qkp.86.2023.12.04.10.01.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Dec 2023 10:01:49 -0800 (PST)
-Message-ID: <61b5e9bd-3b09-4580-ace1-01d3d361c79d@redhat.com>
-Date: Mon, 4 Dec 2023 13:01:48 -0500
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32F7DD5;
+	Mon,  4 Dec 2023 10:23:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=OVfC8HmVSUtxQSExvUxbBU1pNZlzr2LJhw+rAKbX5PE=; b=yocSKJDCG9Uq3lu3L6Vrl+Aa1r
+	hRWP9mRlH8sq12iLzchSEn00N5gmtrXOrFxLBNbR5mZygwpfm35B6cyE+GVr+/PzVFYlmkHqrAwvr
+	iIE5YHq2YvOTv8yWAuDG1g2luAQ9ig0vVnSn7XLSMu+D7/SPDmP2V78Fe3cj5XQug/dcyZ2X+MlNr
+	pLAJlYa5DIv3yhIoRvY18doA0PBzavkAmkkl8VLUKq+nG7ker/GZ8/nnZqdFecoAx0X10dVEH0AW0
+	6cGst5/hVpu9tiNV+37ht5O02SqHfmN5alCAKSWBmod/hT3V7vYe9wq3qzhqKiISEDdpBQBQZbYTI
+	w96wF+BQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49384)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1rADay-0005sX-2j;
+	Mon, 04 Dec 2023 18:23:06 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1rADaw-0000tZ-LP; Mon, 04 Dec 2023 18:23:02 +0000
+Date: Mon, 4 Dec 2023 18:23:02 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>
+Subject: Re: [RFC PATCH v3 00/39] ACPI/arm64: add support for virtual
+ cpuhotplug
+Message-ID: <ZW4ZBkj2oCmxv55T@shell.armlinux.org.uk>
+References: <ZTffkAdOqL2pI2la@shell.armlinux.org.uk>
+ <CAJZ5v0j-73_+9U3ngDAf9w1ADDhBTKctJdWboqUk-okH2TQGyg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: extlog fix null dereference check
-Content-Language: en-US
-To: linux-kernel@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- linux-acpi@vger.kernel.org, David Arcari <darcari@redhat.com>,
- Don Zickus <dzickus@redhat.com>, David Malcolm <dmalcolm@redhat.com>
-References: <20231204180037.383583-1-prarit@redhat.com>
-From: Prarit Bhargava <prarit@redhat.com>
-In-Reply-To: <20231204180037.383583-1-prarit@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0j-73_+9U3ngDAf9w1ADDhBTKctJdWboqUk-okH2TQGyg@mail.gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Top posting and just adding a few interested parties ...
+On Tue, Oct 24, 2023 at 08:26:58PM +0200, Rafael J. Wysocki wrote:
+> On Tue, Oct 24, 2023 at 5:15 PM Russell King (Oracle)
+> <linux@armlinux.org.uk> wrote:
+> >
+> > Hi,
+> >
+> > I'm posting James' patch set updated with most of the review comments
+> > from his RFC v2 series back in September. Individual patches have a
+> > changelog attached at the bottom of the commit message. Those which
+> > I have finished updating have my S-o-b on them, those which still have
+> > outstanding review comments from RFC v2 do not. In some of these cases
+> > I've asked questions and am waiting for responses.
+> >
+> > I'm posting this as RFC v3 because there's still some unaddressed
+> > comments and it's clearly not ready for merging. Even if it was ready
+> > to be merged, it is too late in this development cycle to be taking
+> > this change in, so there would be little point posting it non-RFC.
+> > Also James stated that he's waiting for confirmation from the
+> > Kubernetes/Kata folk - I have no idea what the status is there.
+> >
+> > I will be sending each patch individually to a wider audience
+> > appropriate for that patch - apologies to those missing out on this
+> > cover message. I have added more mailing lists to the series with the
+> > exception of the acpica list in a hope of this cover message also
+> > reaching those folk.
+> >
+> > The changes that aren't included are:
+> >
+> > 1. Updates for my patch that was merged via Thomas (thanks!):
+> >    c4dd854f740c cpu-hotplug: Provide prototypes for arch CPU registration
+> >    rather than having this change spread through James' patches.
+> >
+> > 2. New patch - simplification of PA-RISC's smp_prepare_boot_cpu()
+> >
+> > 3. Moved "ACPI: Use the acpi_device_is_present() helper in more places"
+> >    and "ACPI: Rename acpi_scan_device_not_present() to be about
+> >    enumeration" to the beginning of the series - these two patches are
+> >    already queued up for merging into 6.7.
+> >
+> > 4. Moved "arm64, irqchip/gic-v3, ACPI: Move MADT GICC enabled check into
+> >    a helper" to the beginning of the series, which has been submitted,
+> >    but as yet the fate of that posting isn't known.
+> >
+> > The first four patches in this series are provided for completness only.
+> >
+> > There is an additional patch in James' git tree that isn't in the set
+> > of patches that James posted: "ACPI: processor: Only call
+> > arch_unregister_cpu() if HOTPLUG_CPU is selected" which looks to me to
+> > be a workaround for arch_unregister_cpu() being under the ifdef. I've
+> > commented on this on the RFC v2 posting making a suggestion, but as yet
+> > haven't had any response.
+> >
+> > I've included almost all of James' original covering body below the
+> > diffstat.
+> >
+> > The reason that I'm doing this is to help move this code forward so
+> > hopefully it can be merged - which is why I have been keen to dig out
+> > from James' patches anything that can be merged and submit it
+> > separately, since this is a feature for which some users have a
+> > definite need for.
+> 
+> I've gone through the series and there is at least one thing in it
+> that concerns me a lot and some others that at least appear to be
+> really questionable.
+> 
+> I need more time to send comments which I'm not going to do before the
+> 6.7 merge window (sorry), but from what I can say right now, this is
+> not looking good.
 
-On 12/4/23 13:00, Prarit Bhargava wrote:
-> The gcc plugin -fanalyzer [1] tries to detect various
-> patterns of incorrect behaviour.  The tool reports
-> 
-> drivers/acpi/acpi_extlog.c: In function ‘extlog_exit’:
-> drivers/acpi/acpi_extlog.c:307:12: warning: check of ‘extlog_l1_addr’ for NULL after already dereferencing it [-Wanalyzer-deref-before-check]
->      |
->      |  306 |         ((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
->      |      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
->      |      |                                                  |
->      |      |                                                  (1) pointer ‘extlog_l1_addr’ is dereferenced here
->      |  307 |         if (extlog_l1_addr)
->      |      |            ~
->      |      |            |
->      |      |            (2) pointer ‘extlog_l1_addr’ is checked for NULL here but it was already dereferenced at (1)
->      |
-> 
-> Fix the null dereference check in extlog_exit().
-> 
-> [1] https://gcc.gnu.org/onlinedocs/gcc-10.1.0/gcc/Static-Analyzer-Options.html
-> 
-> CC: "Rafael J. Wysocki" <rafael@kernel.org>
-> CC: Len Brown <lenb@kernel.org>
-> CC: linux-acpi@vger.kernel.org
-> Signed-off-by: Prarit Bhargava <prarit@redhat.com>
-> ---
->   drivers/acpi/acpi_extlog.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> index e120a96e1eae..193147769146 100644
-> --- a/drivers/acpi/acpi_extlog.c
-> +++ b/drivers/acpi/acpi_extlog.c
-> @@ -303,9 +303,10 @@ static int __init extlog_init(void)
->   static void __exit extlog_exit(void)
->   {
->   	mce_unregister_decode_chain(&extlog_mce_dec);
-> -	((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
-> -	if (extlog_l1_addr)
-> +	if (extlog_l1_addr) {
-> +		((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
->   		acpi_os_unmap_iomem(extlog_l1_addr, l1_size);
-> +	}
->   	if (elog_addr)
->   		acpi_os_unmap_iomem(elog_addr, elog_size);
->   	release_mem_region(elog_base, elog_size);
+Hi Rafael,
 
+Will you be able to send your comments, so that we can find out what
+your other concerns are please? I'm getting questions from interested
+parties who want to know what your concerns are.
+
+Nothing much has changed to the ACPI changes, so I think it's still
+valid to have the comments back for this.
+
+Thanks.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
