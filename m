@@ -1,273 +1,167 @@
-Return-Path: <linux-acpi+bounces-2133-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2134-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF008041C1
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 23:40:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6239B804895
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Dec 2023 05:33:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4462F1F212FC
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 22:40:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA353281443
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Dec 2023 04:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB22338F9C
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Dec 2023 22:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nl2Zobp4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E77D28A
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Dec 2023 04:33:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1345F364A0
-	for <linux-acpi@vger.kernel.org>; Mon,  4 Dec 2023 22:19:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B907CC433C8;
-	Mon,  4 Dec 2023 22:19:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701728377;
-	bh=0hNiw7to/yO9/NIok2V2cBm5rPlBjCyUvP5ni95GaCo=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=nl2Zobp4xA5MMX0jOv7fSNJ3LZ7p6u6rrTEfJqV3NaH9iLF5TGS+8W1XJ3DSaXp7I
-	 CfnzIX09PeJ0dI7Av/hlmk2xlYT41Yw96jdH2Bcr6fKBtqrA6TAU37MNT6UXUFKLLG
-	 fLkP9o2Xk+xEk2uSax32m1PuJESDhZvvI4rWklxEflp5JVXPwfMwVF+3C/559d9gz+
-	 D7uyDJeh0fCJ1ceOAruTXFN8PHTXP9ZB4KrZOPEjy4TEc1CbdQJkPQqT/tvJGGXGbB
-	 cGRTgfnABxD9Rtj9nn7YKUUjZVPCtprOMd0dvkekZCY3J/VlKBdRig+5FFznGyg0HQ
-	 VfR2Qofk/fH3g==
-Date: Mon, 4 Dec 2023 14:19:33 -0800 (PST)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
-cc: Stefano Stabellini <sstabellini@kernel.org>, 
-    Jiqian Chen <Jiqian.Chen@amd.com>, Juergen Gross <jgross@suse.com>, 
-    Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-    Thomas Gleixner <tglx@linutronix.de>, 
-    Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-    "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-    Bjorn Helgaas <bhelgaas@google.com>, xen-devel@lists.xenproject.org, 
-    linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-    Stefano Stabellini <stefano.stabellini@amd.com>, 
-    Alex Deucher <Alexander.Deucher@amd.com>, 
-    Christian Koenig <Christian.Koenig@amd.com>, 
-    Stewart Hildebrand <Stewart.Hildebrand@amd.com>, 
-    Xenia Ragiadakou <xenia.ragiadakou@amd.com>, 
-    Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>, 
-    Huang Rui <Ray.Huang@amd.com>
-Subject: Re: [RFC KERNEL PATCH v2 2/3] xen/pvh: Unmask irq for passthrough
- device in PVH dom0
-In-Reply-To: <ZW2ptexPQXrWBiOS@macbook>
-Message-ID: <alpine.DEB.2.22.394.2312041413000.110490@ubuntu-linux-20-04-desktop>
-References: <20231124103123.3263471-1-Jiqian.Chen@amd.com> <20231124103123.3263471-3-Jiqian.Chen@amd.com> <alpine.DEB.2.22.394.2311291950350.3533093@ubuntu-linux-20-04-desktop> <ZWiyBP4Lzz5lXraP@macbook> <alpine.DEB.2.22.394.2311301912350.110490@ubuntu-linux-20-04-desktop>
- <ZWmgJNidFsfkDp7q@macbook> <alpine.DEB.2.22.394.2312011857260.110490@ubuntu-linux-20-04-desktop> <ZW2ptexPQXrWBiOS@macbook>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 83D5D120;
+	Mon,  4 Dec 2023 19:56:41 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C30B31474;
+	Mon,  4 Dec 2023 19:57:27 -0800 (PST)
+Received: from [10.163.35.139] (unknown [10.163.35.139])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 890513F5A1;
+	Mon,  4 Dec 2023 19:56:35 -0800 (PST)
+Message-ID: <604b5b56-9f48-434e-b328-0b9616b47ec8@arm.com>
+Date: Tue, 5 Dec 2023 09:26:30 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-1207504391-1701728057=:110490"
-Content-ID: <alpine.DEB.2.22.394.2312041414460.110490@ubuntu-linux-20-04-desktop>
+User-Agent: Mozilla Thunderbird
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V2 5/7] coresight: tmc: Move ACPI support from AMBA driver
+ to platform driver
+To: James Clark <james.clark@arm.com>, linux-arm-kernel@lists.infradead.org,
+ suzuki.poulose@arm.com
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20231201062053.1268492-1-anshuman.khandual@arm.com>
+ <20231201062053.1268492-6-anshuman.khandual@arm.com>
+ <fe5c82d1-8b7d-6701-4e19-9019f23d9c7b@arm.com>
+Content-Language: en-US
+In-Reply-To: <fe5c82d1-8b7d-6701-4e19-9019f23d9c7b@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 12/4/23 16:24, James Clark wrote:
+> 
+> 
+> On 01/12/2023 06:20, Anshuman Khandual wrote:
+>> Add support for the tmc devices in the platform driver, which can then be
+>> used on ACPI based platforms. This change would now allow runtime power
+>> management for ACPI based systems. The driver would try to enable the APB
+>> clock if available.
+>>
+> [...]
+>> -module_amba_driver(tmc_driver);
+>> +static int tmc_platform_probe(struct platform_device *pdev)
+>> +{
+>> +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>> +	struct tmc_drvdata *drvdata;
+>> +	int ret = 0;
+>> +
+>> +	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
+>> +	if (!drvdata)
+>> +		return -ENOMEM;
+>> +
+>> +	drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
+>> +	if (IS_ERR(drvdata->pclk))
+>> +		return -ENODEV;
+>> +
+>> +	dev_set_drvdata(&pdev->dev, drvdata);
+>> +	pm_runtime_get_noresume(&pdev->dev);
+>> +	pm_runtime_set_active(&pdev->dev);
+>> +	pm_runtime_enable(&pdev->dev);
+>> +
+>> +	ret = __tmc_probe(&pdev->dev, res, NULL);
+>> +	if (ret) {
+>> +		pm_runtime_put_noidle(&pdev->dev);
+>> +		pm_runtime_disable(&pdev->dev);
+>> +	}
+> 
+> I'm not sure if these pm_runtime()s are right because there is already a
+> put inside of __tmc_probe() if it fails. If you unload and then reload
 
---8323329-1207504391-1701728057=:110490
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: 8BIT
-Content-ID: <alpine.DEB.2.22.394.2312041414461.110490@ubuntu-linux-20-04-desktop>
+Actually there is a pm_runtime_put() on the success path, not when it
+fails. So pm_runtime_put() gets called when __tmc_probe() returns 0.
 
-On Mon, 4 Dec 2023, Roger Pau Monné wrote:
-> On Fri, Dec 01, 2023 at 07:37:55PM -0800, Stefano Stabellini wrote:
-> > On Fri, 1 Dec 2023, Roger Pau Monné wrote:
-> > > On Thu, Nov 30, 2023 at 07:15:17PM -0800, Stefano Stabellini wrote:
-> > > > On Thu, 30 Nov 2023, Roger Pau Monné wrote:
-> > > > > On Wed, Nov 29, 2023 at 07:53:59PM -0800, Stefano Stabellini wrote:
-> > > > > > On Fri, 24 Nov 2023, Jiqian Chen wrote:
-> > > > > > > This patch is to solve two problems we encountered when we try to
-> > > > > > > passthrough a device to hvm domU base on Xen PVH dom0.
-> > > > > > > 
-> > > > > > > First, hvm guest will alloc a pirq and irq for a passthrough device
-> > > > > > > by using gsi, before that, the gsi must first has a mapping in dom0,
-> > > > > > > see Xen code pci_add_dm_done->xc_domain_irq_permission, it will call
-> > > > > > > into Xen and check whether dom0 has the mapping. See
-> > > > > > > XEN_DOMCTL_irq_permission->pirq_access_permitted, "current" is PVH
-> > > > > > > dom0 and it return irq is 0, and then return -EPERM.
-> > > > > > > This is because the passthrough device doesn't do PHYSDEVOP_map_pirq
-> > > > > > > when thay are enabled.
-> > > > > > > 
-> > > > > > > Second, in PVH dom0, the gsi of a passthrough device doesn't get
-> > > > > > > registered, but gsi must be configured for it to be able to be
-> > > > > > > mapped into a domU.
-> > > > > > > 
-> > > > > > > After searching codes, we can find map_pirq and register_gsi will be
-> > > > > > > done in function vioapic_write_redirent->vioapic_hwdom_map_gsi when
-> > > > > > > the gsi(aka ioapic's pin) is unmasked in PVH dom0. So the problems
-> > > > > > > can be conclude to that the gsi of a passthrough device doesn't be
-> > > > > > > unmasked.
-> > > > > > > 
-> > > > > > > To solve the unmaske problem, this patch call the unmask_irq when we
-> > > > > > > assign a device to be passthrough. So that the gsi can get registered
-> > > > > > > and mapped in PVH dom0.
-> > > > > > 
-> > > > > > 
-> > > > > > Roger, this seems to be more of a Xen issue than a Linux issue. Why do
-> > > > > > we need the unmask check in Xen? Couldn't we just do:
-> > > > > > 
-> > > > > > 
-> > > > > > diff --git a/xen/arch/x86/hvm/vioapic.c b/xen/arch/x86/hvm/vioapic.c
-> > > > > > index 4e40d3609a..df262a4a18 100644
-> > > > > > --- a/xen/arch/x86/hvm/vioapic.c
-> > > > > > +++ b/xen/arch/x86/hvm/vioapic.c
-> > > > > > @@ -287,7 +287,7 @@ static void vioapic_write_redirent(
-> > > > > >              hvm_dpci_eoi(d, gsi);
-> > > > > >      }
-> > > > > >  
-> > > > > > -    if ( is_hardware_domain(d) && unmasked )
-> > > > > > +    if ( is_hardware_domain(d) )
-> > > > > >      {
-> > > > > >          /*
-> > > > > >           * NB: don't call vioapic_hwdom_map_gsi while holding hvm.irq_lock
-> > > > > 
-> > > > > There are some issues with this approach.
-> > > > > 
-> > > > > mp_register_gsi() will only setup the trigger and polarity of the
-> > > > > IO-APIC pin once, so we do so once the guest unmask the pin in order
-> > > > > to assert that the configuration is the intended one.  A guest is
-> > > > > allowed to write all kind of nonsense stuff to the IO-APIC RTE, but
-> > > > > that doesn't take effect unless the pin is unmasked.
-> > > > > 
-> > > > > Overall the question would be whether we have any guarantees that
-> > > > > the hardware domain has properly configured the pin, even if it's not
-> > > > > using it itself (as it hasn't been unmasked).
-> > > > > 
-> > > > > IIRC PCI legacy interrupts are level triggered and low polarity, so we
-> > > > > could configure any pins that are not setup at bind time?
-> > > > 
-> > > > That could work.
-> > > > 
-> > > > Another idea is to move only the call to allocate_and_map_gsi_pirq at
-> > > > bind time? That might be enough to pass a pirq_access_permitted check.
-> > > 
-> > > Maybe, albeit that would change the behavior of XEN_DOMCTL_bind_pt_irq
-> > > just for PT_IRQ_TYPE_PCI and only when called from a PVH dom0 (as the
-> > > parameter would be a GSI instead of a previously mapped IRQ).  Such
-> > > difference just for PT_IRQ_TYPE_PCI is slightly weird - if we go that
-> > > route I would recommend that we instead introduce a new dmop that has
-> > > this syntax regardless of the domain type it's called from.
-> > 
-> > Looking at the code it is certainly a bit confusing. My point was that
-> > we don't need to wait until polarity and trigger are set appropriately
-> > to allow Dom0 to pass successfully a pirq_access_permitted() check. Xen
-> > should be able to figure out that Dom0 is permitted pirq access.
-> 
-> The logic is certainly not straightforward, and it could benefit from
-> some comments.
-> 
-> The irq permissions are a bit special, in that they get setup when the
-> IRQ is mapped.
-> 
-> The problem however is not so much with IRQ permissions, that we can
-> indeed sort out internally in Xen.  Such check in dom0 has the side
-> effect of preventing the IRQ from being assigned to a domU without the
-> hardware source being properly configured AFAICT.
+__tmc_probe()
+{
+	....
+        ret = misc_register(&drvdata->miscdev);
+        if (ret)
+                coresight_unregister(drvdata->csdev);
+        else
+                pm_runtime_put(dev);
+out:
+        return ret;
+}
 
-Now I understand why you made a comment previously about Xen having to
-configure trigger and polarity for these interrupts on its own.
+tmc_platform_probe()
+{
+	....
+        pm_runtime_get_noresume(&pdev->dev);
+        pm_runtime_set_active(&pdev->dev);
+        pm_runtime_enable(&pdev->dev);
 
+        ret = __tmc_probe(&pdev->dev, res, NULL);
+        if (ret) {
+                pm_runtime_put_noidle(&pdev->dev);
+                pm_runtime_disable(&pdev->dev);
+        }
+        return ret;
+}
 
-> > So the idea was to move the call to allocate_and_map_gsi_pirq() earlier
-> > somewhere because allocate_and_map_gsi_pirq doesn't require trigger or
-> > polarity to be configured to work. But the suggestion of doing it a
-> > "bind time" (meaning: XEN_DOMCTL_bind_pt_irq) was a bad idea.
-> > 
-> > But maybe we can find another location, maybe within
-> > xen/arch/x86/hvm/vioapic.c, to call allocate_and_map_gsi_pirq() before
-> > trigger and polarity are set and before the interrupt is unmasked.
-> > 
-> > Then we change the implementation of vioapic_hwdom_map_gsi to skip the
-> > call to allocate_and_map_gsi_pirq, because by the time
-> > vioapic_hwdom_map_gsi we assume that allocate_and_map_gsi_pirq had
-> > already been done.
-> 
-> But then we would end up in a situation where the
-> pirq_access_permitted() check will pass, but the IO-APIC pin won't be
-> configured, which I think it's not what we want.
-> 
-> One option would be to allow mp_register_gsi() to be called multiple
-> times, and update the IO-APIC pin configuration as long as the pin is
-> not unmasked.  That would propagate each dom0 RTE update to the
-> underlying IO-APIC.  However such approach relies on dom0 configuring
-> all possible IO-APIC pins, even if no device on dom0 is using them, I
-> think it's not a very reliable option.
-> 
-> Another option would be to modify the toolstack to setup the GSI
-> itself using the PHYSDEVOP_setup_gsi hypercall.  As said in a previous
-> email, since we only care about PCI device passthrough the legacy INTx
-> should always be level triggered and low polarity.
-> 
-> > I am not familiar with vioapic.c but to give you an idea of what I was
-> > thinking:
-> > 
-> > 
-> > diff --git a/xen/arch/x86/hvm/vioapic.c b/xen/arch/x86/hvm/vioapic.c
-> > index 4e40d3609a..16d56fe851 100644
-> > --- a/xen/arch/x86/hvm/vioapic.c
-> > +++ b/xen/arch/x86/hvm/vioapic.c
-> > @@ -189,14 +189,6 @@ static int vioapic_hwdom_map_gsi(unsigned int gsi, unsigned int trig,
-> >          return ret;
-> >      }
-> >  
-> > -    ret = allocate_and_map_gsi_pirq(currd, pirq, &pirq);
-> > -    if ( ret )
-> > -    {
-> > -        gprintk(XENLOG_WARNING, "vioapic: error mapping GSI %u: %d\n",
-> > -                 gsi, ret);
-> > -        return ret;
-> > -    }
-> > -
-> >      pcidevs_lock();
-> >      ret = pt_irq_create_bind(currd, &pt_irq_bind);
-> >      if ( ret )
-> > @@ -287,6 +279,17 @@ static void vioapic_write_redirent(
-> >              hvm_dpci_eoi(d, gsi);
-> >      }
-> >  
-> > +    if ( is_hardware_domain(d) ) 
-> > +    {
-> > +        int pirq = gsi, ret;
-> > +        ret = allocate_and_map_gsi_pirq(currd, pirq, &pirq);
-> > +        if ( ret )
-> > +        {
-> > +            gprintk(XENLOG_WARNING, "vioapic: error mapping GSI %u: %d\n",
-> > +                    gsi, ret);
-> > +            return ret;
-> > +        }
-> > +    }
-> >      if ( is_hardware_domain(d) && unmasked )
-> >      {
-> >          /*
-> 
-> As said above, such approach relies on dom0 writing to the IO-APIC RTE
-> of likely each IO-APIC pin, which is IMO not quite reliable.  In there
-> are two different issues here that need to be fixed for PVH dom0:
-> 
->  - Fix the XEN_DOMCTL_irq_permission pirq_access_permitted() call to
->    succeed for a PVH dom0, even if dom0 is not using the GSI itself.
+tmc_probe()
+{
+	....
+	return __tmc_probe(&adev->dev, &adev->res, coresight_get_uci_data(id));
+}
 
-Yes makes sense
+Currently pm_runtime_put() gets called
 
+- In success path both for AMBA and platform drivers
+- In error path only for platform driver
 
->  - Configure IO-APIC pins for PCI interrupts even if dom0 is not using
->    the IO-APIC pin itself.
+Although the problem might be with pm_runtime_disable() instead
+
+- pm_runtime_disable() is not required in the platform driver probe() path
+- But might be required in tmc_platform_remove() along with a clk_put()
+
+> all the coresight modules with these patches you get these errors which
+> are new:
 > 
-> First one needs to be fixed internally in Xen, second one will require
-> the toolstack to issue an extra hypercall in order to ensure the
-> IO-APIC pin is properly configured.
- 
-On ARM, Xen doesn't need to wait for dom0 to configure interrupts
-correctly. Xen configures them all on its own at boot based on Device
-Tree information. I guess it is not possible to do the same on x86? If
-not, then I can see why we would need 1 extra toolstack hypercall for
-that (or to bundle the operation of configuring IO-APIC pins together
-with an existing toolstack hypercall).
---8323329-1207504391-1701728057=:110490--
+>   coresight-tpiu-platform ARMHC979:00: Unbalanced pm_runtime_enable!
+
+The code is similar in TPIU platform driver as well.
+
+>   CSCFG registered etm0
+>   coresight etm0: CPU0: etm v4.2 initialized
+>   CSCFG registered etm1
+>   coresight etm1: CPU1: etm v4.2 initialized
+>   CSCFG registered etm2
+>   coresight etm2: CPU2: etm v4.2 initialized
+>   CSCFG registered etm3
+>   coresight etm3: CPU3: etm v4.2 initialized
+>   coresight-tmc-platform ARMHC97C:00: Unbalanced pm_runtime_enable!
+>   coresight-tmc-platform ARMHC97C:01: Unbalanced pm_runtime_enable!
+>   coresight-tmc-platform ARMHC97C:02: Unbalanced pm_runtime_enable!
+>   coresight-tmc-platform ARMHC97C:03: Unbalanced pm_runtime_enable!
+> 
+> It might be worth testing all of these pm_runtime()s, including the
+> error case ones, because loading and unloading the modules doesn't even
+> include the error scenarios, so there are probably more bad ones in
+> there too.
+The code is very similar in CATU, STM as well but debug_platform_remove()
+seems to be doing this right.
+
+I am not very familiar with all the power management aspects in coresight,
+please do let me know if I missing something here.
 
