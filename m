@@ -1,128 +1,154 @@
-Return-Path: <linux-acpi+bounces-2194-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2195-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB49807B60
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 23:36:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 156A0807D4A
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Dec 2023 01:39:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48F4B1F212CA
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 22:36:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEAA2282302
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Dec 2023 00:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C4B563B8
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 22:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AB61DFF0
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Dec 2023 00:39:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vQHPkvqZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 760AFD5B;
-	Wed,  6 Dec 2023 13:13:12 -0800 (PST)
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-1fae54afb66so36735fac.1;
-        Wed, 06 Dec 2023 13:13:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701897191; x=1702501991;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oFsoZNpkyJn47ZwKMdi9sP3iJ2LR9kBDxH0bVwrrCjc=;
-        b=maRjG98B8KQRJS70V1MajVCuW0Kh0srSeE2lVBEp0ET2q27fLzvNUX1AU3Y+u3WwF5
-         dzHwB5ratd61/MkBLpqmxX21BUPmCU4XG+ERGVpO5Om+NqVjxYOc3/c+dW+NIDck04TX
-         u0yV6TbIEG6/gTj+PmHtUv5kaoKS8YTXF2qMAbYhnkdPuteVZrRgUNkpZjCjDIc5NsVd
-         QiZbz4rwdTLbs8PCJEhPBKBhO+S05Hkr9QARsHsi3CJ5FNZ3O/oCWFceHDhiMFxV1ReR
-         Vhx35BVSIUYeBf+SkT24IPucb4rBhYQhFBFULJUEtgObu3GSQn7pCEDv8dNioKvEf42g
-         w+UQ==
-X-Gm-Message-State: AOJu0YyAvDBV4FGEHE1WcudOEWHrWe6Abxbl6ibqAzCM7dp5C701WxFX
-	i4Dhl2JYHZp1foBV+hI4tSSA1JwE4uKglxAz29g=
-X-Google-Smtp-Source: AGHT+IEOX8vI91Uo/xk0HohK4105WhBHzaTXQyrb9EaDx76RReLo4RomS8An2VWI2SUe0jhfQIceSuilyjwuCIl73TQ=
-X-Received: by 2002:a05:6870:944d:b0:1fa:df87:4eba with SMTP id
- e13-20020a056870944d00b001fadf874ebamr2694804oal.5.1701897191604; Wed, 06 Dec
- 2023 13:13:11 -0800 (PST)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F07D7096A;
+	Wed,  6 Dec 2023 23:04:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3F3C433C7;
+	Wed,  6 Dec 2023 23:04:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701903860;
+	bh=LEvFvYjL9I1XGOhYY//WRx9a8Ko8atL6psfa0q6AHSU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=vQHPkvqZkT29dSrhEYJIQF2Z80fyRW9u1Mniww+y/eeaQgrF7XYqrhvA6qEIfIyk+
+	 MQ0OzrmHyyBV5+PDXq6Lz3umXqEfb5DT6NHqH+c+dfrF/ZJbnvNri+JxlxcEoK7nxn
+	 bEI6QKZOXK/XH1ArsJKJG3vn2h3Ym/A0+vafS+WTU6ftlXUQN9PSyBb+9qzfk9xODU
+	 kvIxSsj2sje9p3v9uLp5yYjEceCAxc8BE35tomUa4rQofu+1QWuKPZDPmiBAm8v+tP
+	 Gee9sZcuy1zQiCKCtOLZwHcIP2zkwXcSmhVYKYCLveKLXAtI+nWVQOBol7YtZCxGB6
+	 VylZsaR2aaS1A==
+Date: Wed, 6 Dec 2023 17:04:19 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J . Wysocki" <rjw@rjwysocki.net>,
+	"open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] PCI: Call PCI ACPI _DSM with consistent revision
+ argument
+Message-ID: <20231206230419.GA733407@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231205063537.872834-1-li.meng@amd.com> <20231205063537.872834-5-li.meng@amd.com>
- <CAJZ5v0ju-Thhz2_rQVbTosTsBaRoyQW2kjtPWWTsiT_Yi2DbsQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0ju-Thhz2_rQVbTosTsBaRoyQW2kjtPWWTsiT_Yi2DbsQ@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 6 Dec 2023 22:13:00 +0100
-Message-ID: <CAJZ5v0hMAZxvuMWK3dNeOL9FRTrVW7j7PzCFwcp9+0K87y-L0A@mail.gmail.com>
-Subject: Re: [PATCH V12 4/7] cpufreq: Add a notification message that the
- highest perf has changed
-To: Meng Li <li.meng@amd.com>
-Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Huang Rui <ray.huang@amd.com>, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	linux-acpi@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>, 
-	linux-kselftest@vger.kernel.org, Nathan Fontenot <nathan.fontenot@amd.com>, 
-	Deepak Sharma <deepak.sharma@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	Mario Limonciello <mario.limonciello@amd.com>, Shimmer Huang <shimmer.huang@amd.com>, 
-	Perry Yuan <Perry.Yuan@amd.com>, Xiaojian Du <Xiaojian.Du@amd.com>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Borislav Petkov <bp@alien8.de>, 
-	Oleksandr Natalenko <oleksandr@natalenko.name>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <73628abc-dbb8-4dac-b83d-a78462b327b8@amd.com>
 
-On Wed, Dec 6, 2023 at 9:58=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.org=
-> wrote:
->
-> On Tue, Dec 5, 2023 at 7:38=E2=80=AFAM Meng Li <li.meng@amd.com> wrote:
-> >
-> > ACPI 6.5 section 8.4.6.1.1.1 specifies that Notify event 0x85 can be
-> > emmitted to cause the the OSPM to re-evaluate the highest performance
->
-> Typos above.  Given the number of iterations of this patch, this is
-> kind of disappointing.
->
-> > register. Add support for this event.
->
-> Also it would be nice to describe how this is supposed to work at
-> least roughly, so it is not necessary to reverse-engineer the patch to
-> find out that.
->
-> > Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-> > Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> > Reviewed-by: Huang Rui <ray.huang@amd.com>
-> > Reviewed-by: Perry Yuan <perry.yuan@amd.com>
-> > Signed-off-by: Meng Li <li.meng@amd.com>
-> > Link: https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Mode=
-l.html#processor-device-notification-values
-> > ---
-> >  drivers/acpi/processor_driver.c |  6 ++++++
-> >  drivers/cpufreq/cpufreq.c       | 13 +++++++++++++
-> >  include/linux/cpufreq.h         |  5 +++++
-> >  3 files changed, 24 insertions(+)
-> >
-> > diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_d=
-river.c
-> > index 4bd16b3f0781..29b2fb68a35d 100644
-> > --- a/drivers/acpi/processor_driver.c
-> > +++ b/drivers/acpi/processor_driver.c
-> > @@ -27,6 +27,7 @@
-> >  #define ACPI_PROCESSOR_NOTIFY_PERFORMANCE 0x80
-> >  #define ACPI_PROCESSOR_NOTIFY_POWER    0x81
-> >  #define ACPI_PROCESSOR_NOTIFY_THROTTLING       0x82
-> > +#define ACPI_PROCESSOR_NOTIFY_HIGEST_PERF_CHANGED      0x85
-> >
-> >  MODULE_AUTHOR("Paul Diefenbaugh");
-> >  MODULE_DESCRIPTION("ACPI Processor Driver");
-> > @@ -83,6 +84,11 @@ static void acpi_processor_notify(acpi_handle handle=
-, u32 event, void *data)
-> >                 acpi_bus_generate_netlink_event(device->pnp.device_clas=
-s,
-> >                                                   dev_name(&device->dev=
-), event, 0);
-> >                 break;
-> > +       case ACPI_PROCESSOR_NOTIFY_HIGEST_PERF_CHANGED:
-> > +               cpufreq_update_highest_perf(pr->id);
->
-> And the design appears to be a bit ad-hoc here.
->
-> Because why does it have anything to do with cpufreq?
+On Tue, Dec 05, 2023 at 02:12:54PM -0600, Mario Limonciello wrote:
+> On 11/30/2023 16:29, Bjorn Helgaas wrote:
+> > On Fri, Nov 10, 2023 at 12:55:01PM -0600, Mario Limonciello wrote:
+> > > The PCI ACPI _DSM is called across multiple places in the PCI core
+> > > with different arguments for the revision.
+> > > 
+> > > The PCI firmware specification specifies that this is an incorrect
+> > > behavior.
+> > > "OSPM must invoke all Functions other than Function 0 with the
+> > >   same Revision ID value"
+> > 
+> > This patch passes the same or a larger Revision ID than before, so
+> > everything should work the same because the spec requires backwards
+> > compatibility.  But it's conceivable that it could break on firmware
+> > that does the revision check incorrectly.
+> > 
+> > Is this fixing a problem other than the spec compliance issue?
+> 
+> It was just a spec compliance issue I noticed when implementing the other
+> two patches.
+> 
+> > I agree the PCI FW spec says this.  It was added in r3.3 by the ECN at
+> > https://members.pcisig.com/wg/Firmware/document/previewpdf/13988, but
+> > I don't quite understand that ECN.
+> > 
+> > ACPI r6.5, sec 9.1.1, doesn't include the "must invoke all Functions
+> > with same Revision ID" language, and the ASL example there clearly
+> > treats revisions higher than those implemented by firmware as valid,
+> > although new Functions added by those higher revisions are obviously
+> > not supported.
+> > 
+> > PCI FW also says OSPM should not use a fixed Revision ID, but should
+> > start with the highest known revision and "successively invoke
+> > Function 0 with decremented values of Revision ID until system
+> > firmware returns a value indicating support for more than Function 0"
+> > (added by the same ECN), and I don't think Linux does this part.
+> > 
+> > So I think the fixed "pci_acpi_dsm_rev" value as in your patch works
+> > fine with the ACPI ASL example, but it doesn't track the "successively
+> > decrement" part of PCI FW.  I don't know the reason for that part of
+> > the ECN.
+> 
+> Do you think it's better to respin to take this into account and be more
+> stringent or "do nothing"?
 
-Well, clearly, cpufreq can be affected by this, but why would it be
-not affected the same way as in the ACPI_PROCESSOR_NOTIFY_PERFORMANCE
-case?
+To me, it seems better to do nothing unless a change would solve a
+problem.  I raised it as a question to the PCI Firmware workgroup
+(https://members.pcisig.com/wg/Firmware/mail/thread/32031), but I
+haven't heard anything.
 
-That is, why isn't cpufreq_update_limits() the right thing to do?
+Regrettably, that link only works for PCI-SIG members; here's the text
+of my question:
+
+  Sorry to reopen this old topic.  This ECN was approved and appears
+  in r3.3.  We're contemplating Linux changes to conform to it.
+
+  I think I understand the ACPI requirement for OSPM to invoke _DSM
+  Function 0 to learn whether a Function is supported (because a
+  non-zero Function may have completely arbitrary return values, so
+  invoking that Function has no way to return "this Function Index
+  isn't supported").
+
+  I don't understand why it's important for OSPM to "invoke all
+  Functions other than Function 0 with the same Revision ID."  That
+  idea doesn't appear in ACPI r6.5, sec 9.1.1 or in the sample ASL
+  there.  Is there a benefit to using the same Revision ID for all
+  Functions?  (Of course OSPM must invoke Function 0 with Revision ID
+  N to learn whether Function X is supported for Revision ID N.)
+
+  I also don't understand why "OSPM should successively invoke
+  Function 0 with decremented values of Revision ID until system
+  firmware returns a value indicating support for more than Function
+  0."  ACPI r6.5 doesn't suggest that, and the sample ASL returns
+  different bitmasks depending on the Revision ID supplied by OSPM,
+  including a default case that returns a bitmask including all
+  Functions implemented by the firmware if OSPM supplied a higher
+  Revision ID from the future.  What is the benefit of probing with
+  decremented Revision IDs?
+
+  Is there something PCI-specific here, or should these requirements
+  be in the ACPI spec instead of the PCI Firmware spec?
+
+> > Unrelated to this patch, I think it's a bug that Linux fails to invoke
+> > Function 0 in a few cases, e.g., DSM_PCI_PRESERVE_BOOT_CONFIG,
+> > DSM_PCI_POWER_ON_RESET_DELAY, and DSM_PCI_DEVICE_READINESS_DURATIONS.
+> > 
+> > Per spec, OSPM must invoke Function 0 to learn which other Functions
+> > are supported.  It's not explicitly stated, but I think this is
+> > required because a supported non-zero Function may return "any data
+> > object", so there's no return value that would mean "this Function
+> > Index is not supported."
+> 
+> What are your thoughts on the other two patches in the series?
+> Should they wait for a consumer or prepare the API to match the spec.
+
+I'd prefer to wait until there are users of the new functions.
+There's no real benefit to adding functions that are never called.
+
+Bjorn
 
