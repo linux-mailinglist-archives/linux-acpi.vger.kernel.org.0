@@ -1,143 +1,246 @@
-Return-Path: <linux-acpi+bounces-2173-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2174-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22ABB8072A3
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 15:40:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B39168072A4
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 15:40:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B48F1F211D2
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 14:40:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3E8BB20C14
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 14:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0991A2D61F
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 14:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40895182C3
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 14:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XknO4s2c"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RenhSSUW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE1B112
-	for <linux-acpi@vger.kernel.org>; Wed,  6 Dec 2023 04:43:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=lQNfvPCw3j/wOYSAPm81sd4y0Q9870OtK1TcsteLT1M=; b=XknO4s2cpEiUCyKxHTQK+HS9wP
-	XRRMD593tlwhzLg2rI/iEr3n7zohlFsWg2pI2WePRqmmfWJ8SORKPLJczwZ+REnFLNv5zxJvlXfWs
-	oUI6L8iDqoFR0Ri+/9zc0zk5nIqARO1vgXBXg7Kaymx2J9axP1ktP/ROK7FbT6ad9unSiLGFT4cwp
-	KSzczsZLOkXUIHF3vPGnnjRQGB7/L2Y0VDcYdyXtJm8nBHeolDCu3RB/hJFiAmTwaHAPXax5sxc92
-	Y5KKBfZRhpViiKvyXgmQPKYgZ6zsDVP0XAzZD3Bx08H02Na5TeFF2hE+1PFLKDRa+YOpOAS9dqTbG
-	L3NHGUcQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1rArF6-00AIZL-2W;
-	Wed, 06 Dec 2023 12:43:08 +0000
-Date: Wed, 6 Dec 2023 04:43:08 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: warning in drivers/acpi/platform_profile.c, line 74
-Message-ID: <ZXBsXCY2hP5vp9El@infradead.org>
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3C7FD44
+	for <linux-acpi@vger.kernel.org>; Wed,  6 Dec 2023 06:38:53 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-3316a4bc37dso786491f8f.2
+        for <linux-acpi@vger.kernel.org>; Wed, 06 Dec 2023 06:38:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701873532; x=1702478332; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Gy0xfaNC3TmuUx7S3psA+A+EQOiJknmpliCDJOGmCGs=;
+        b=RenhSSUWfvBNUjxN5b2nV8o0NZ7vKK+axTC+Ik7JwyQzohJi256+FuosE0gGG26V2p
+         pMHihYmNZs7+GQ33eBmxNOK7mWMBq7iF+kMjhCecLLIehmp8YqrkYYiR9XBn6GjU26jj
+         45d4XGFYG50hJGlZQwOKaSSl7C9DN5XTlAfz4/afxFxQQed3z0T5N1TkMO85u9DT/w9J
+         7uSqpDVEPtKX12tluI1BiIU+VKIJY8LTTLHBLXuLM+i8I/kGTMQ91vuq9y+j5SUZW2aK
+         UddJwWP19Kn6NvstbJzOt2afA0hxdpNouJP0NPgWjGQGFHpXpQfvQr0VAJY/T9q/aMw6
+         afvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701873532; x=1702478332;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gy0xfaNC3TmuUx7S3psA+A+EQOiJknmpliCDJOGmCGs=;
+        b=t5rjLUzpizNWIPEdgS0eRCfepYNiaImwsMMlYqMx8x4yK9aLc625sQdastFg5h5OUa
+         HRMsDsjCk2PfHRqZQldZ8bS5Img34zI6wuUAYImq/bhsXbUVGngJfh53xvggLYR4EHmF
+         bga4SbpcU8+nP4FJsg/VaoXn1cgvMTb8AA7nnF+9OvzeS5g9dR9vaul8UBNQeqwQb6D0
+         hDujthNcsyyvaFfjkKM3LP/yp8Hu3QKBr8Ttsb1F+2fxbGz37Ur8oyNcjwjhVJSX5Qhb
+         InLPAGBjxK+ry11GwsrWDS12YgaLjhFiwOWxblkjoPpRyuS9kTNWQTH361sAkcc3DtN7
+         kmfg==
+X-Gm-Message-State: AOJu0Yyy6fYqY8BQ2WFpiYATbQb0BvA/qD+K2lnp3DT/bTrzjsIGdeA9
+	+OlFulNB5BndaEOyqC9YtBhrHq5BklWzTeSILsg=
+X-Google-Smtp-Source: AGHT+IHm7G/pgyKDeywjonXsUi1DVYn8l75DnmHejkL/8m44kWNZG0s+vcDFJM1/BPBUwwRVGf8Ytw==
+X-Received: by 2002:a05:600c:252:b0:40c:23c7:8cf7 with SMTP id 18-20020a05600c025200b0040c23c78cf7mr364518wmj.167.1701873531976;
+        Wed, 06 Dec 2023 06:38:51 -0800 (PST)
+Received: from ?IPV6:2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0? ([2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0])
+        by smtp.googlemail.com with ESMTPSA id q3-20020adff783000000b003332febec90sm15062021wrp.7.2023.12.06.06.38.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Dec 2023 06:38:51 -0800 (PST)
+Message-ID: <cf055d45-8970-4657-ab86-d28636645c81@linaro.org>
+Date: Wed, 6 Dec 2023 15:38:50 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] thermal: trip: Send trip change notifications on all
+ trip updates
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux PM <linux-pm@vger.kernel.org>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Zhang Rui <rui.zhang@intel.com>, Linux ACPI <linux-acpi@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>
+References: <5737811.DvuYhMxLoT@kreacher>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <5737811.DvuYhMxLoT@kreacher>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi all,
 
-on my AMD-based Thinkapd T14s get the warning below very frequently
-in the kernel log:
+Hi Rafael,
 
-Something seems to be out of bounds for the platform profiles, what
-is the best ay to figure out what is going on here?
+On 05/12/2023 20:18, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The _store callbacks of the trip point temperature and hysteresis sysfs
+> attributes invoke thermal_notify_tz_trip_change() to send a notification
+> regarding the trip point change, but when trip points are updated by the
+> platform firmware, trip point change notifications are not sent.
+> 
+> To make the behavior after a trip point change more consistent,
+> modify all of the 3 places where trip point temperature is updated
+> to use a new function called thermal_zone_set_trip_temp() for this
+> purpose and make that function call thermal_notify_tz_trip_change().
+> 
+> Note that trip point hysteresis can only be updated via sysfs and
+> trip_point_hyst_store() calls thermal_notify_tz_trip_change() already,
+> so this code path need not be changed.
+
+Why the ACPI driver is not calling thermal_zone_device_update() after 
+changing the trip point like the other drivers?
+
+It would make sense to have the thermal framework to be notified about 
+this change and check if there is a trip violation, no ?
 
 
-[64338.910509] WARNING: CPU: 0 PID: 867 at drivers/acpi/platform_profile.c:=
-74 platform_profile_show+0xa2/0xd0 [platform_profile]
-[64338.910593] Modules linked in: usbkbd(E) usbhid(E) ctr(E) ccm(E) cmac(E)=
- rfcomm(E) qrtr_mhi(E) bnep(E) btusb(E) btrtl(E) btintel(E) btbcm(E) blueto=
-oth(E) ath11k_pci(E) ath11k(E) qmi_helpers(E) joydev(E) sha3_generic(E) jit=
-terentropy_rng(E) sha512_generic(E) nls_iso8859_1(E) mac80211(E) vfat(E) dr=
-bg(E) fat(E) ansi_cprng(E) ecdh_generic(E) ecc(E) crc16(E) libarc4(E) snd_c=
-tl_led(E) intel_rapl_msr(E) snd_acp6x_pdm_dma(E) snd_soc_acp6x_mach(E) snd_=
-soc_dmic(E) snd_hda_codec_realtek(E) intel_rapl_common(E) thinkpad_acpi(E) =
-snd_hda_codec_hdmi(E) snd_soc_core(E) snd_hda_codec_generic(E) crc32_pclmul=
-(E) nvram(E) ghash_clmulni_intel(E) ledtrig_audio(E) cfg80211(E) platform_p=
-rofile(E) snd_hda_intel(E) tpm_crb(E) snd_intel_dspcfg(E) snd_hda_codec(E) =
-snd_hwdep(E) snd_pci_acp6x(E) aesni_intel(E) snd_acp_config(E) libaes(E) sn=
-d_hda_core(E) snd_soc_acpi(E) crypto_simd(E) cryptd(E) pcspkr(E) snd_pcm(E)=
- tpm_tis(E) wmi_bmof(E) tpm_tis_core(E) ucsi_acpi(E) snd_timer(E) tpm(E) sn=
-d(E) typec_ucsi(E) mhi(E) soundcore(E) rfkill(E) typec(E)
-[64338.911365]  rng_core(E) ac(E) battery(E) amd_pmc(E) hid_multitouch(E) e=
-vdev(E) serio_raw(E) loop(E) efi_pstore(E) ip_tables(E) x_tables(E) autofs4=
-(E) efivarfs(E) hid_generic(E) i2c_hid_acpi(E) i2c_hid(E) xhci_pci(E) hid(E=
-) nvme(E) nvme_core(E) xhci_hcd(E) t10_pi(E) crc32c_intel(E) psmouse(E) thu=
-nderbolt(E) usbcore(E) crc64_rocksoft(E) crc64(E) crc_t10dif(E) usb_common(=
-E) crct10dif_generic(E) crct10dif_pclmul(E) crct10dif_common(E) fan(E) i2c_=
-designware_platform(E) i2c_designware_core(E)
-[64338.911762] CPU: 0 PID: 867 Comm: power-profiles- Tainted: G        W   =
-E      6.6.2 #1946
-[64338.911794] Hardware name: LENOVO 21CQCTO1WW/21CQCTO1WW, BIOS R22ET65W (=
-1.35 ) 08/08/2023
-[64338.911810] RIP: 0010:platform_profile_show+0xa2/0xd0 [platform_profile]
-[64338.911871] Code: c6 08 e1 b8 c0 48 89 ef e8 bb bf f1 ef 48 98 48 8b 54 =
-24 08 65 48 2b 14 25 28 00 00 00 75 2b 48 83 c4 10 5b 5d e9 5e eb bb f0 <0f=
-> 0b 48 c7 c0 fb ff ff ff eb da 48 c7 c7 a0 c0 b8 c0 e8 d7 78 bb
-[64338.911894] RSP: 0018:ffffa4efc251fdd8 EFLAGS: 00010296
-[64338.911925] RAX: 0000000088b3abe0 RBX: 0000000000000000 RCX: ffffffffc0b=
-8c060
-[64338.911947] RDX: 0000000000000000 RSI: ffffa4efc251fddc RDI: ffffffffc0b=
-8c0a0
-[64338.911966] RBP: ffff9325f19ca000 R08: ffff932280e383c0 R09: ffff9322977=
-43b00
-[64338.911984] R10: ffffa4efc251fe70 R11: ffff93228243a498 R12: ffffa4efc25=
-1fe98
-[64338.912002] R13: ffffa4efc251fe70 R14: 0000000000000001 R15: 00000000000=
-00001
-[64338.912021] FS:  00007fe1030dd680(0000) GS:ffff93299ee00000(0000) knlGS:=
-0000000000000000
-[64338.912046] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[64338.912067] CR2: 0000000002afa040 CR3: 00000001417bc000 CR4: 00000000007=
-50ef0
-[64338.912088] PKRU: 55555554
-[64338.912102] Call Trace:
-[64338.912122]  <TASK>
-[64338.912139]  ? platform_profile_show+0xa2/0xd0 [platform_profile]
-[64338.912188]  ? __warn+0x7d/0x130
-[64338.912238]  ? platform_profile_show+0xa2/0xd0 [platform_profile]
-[64338.912290]  ? report_bug+0x18d/0x1c0
-[64338.912345]  ? handle_bug+0x3c/0x70
-[64338.912384]  ? exc_invalid_op+0x13/0x60
-[64338.912420]  ? asm_exc_invalid_op+0x16/0x20
-[64338.912487]  ? platform_profile_show+0xa2/0xd0 [platform_profile]
-[64338.912541]  ? platform_profile_show+0x5e/0xd0 [platform_profile]
-[64338.912592]  sysfs_kf_seq_show+0xa3/0xf0
-[64338.912636]  seq_read_iter+0x122/0x470
-[64338.912687]  vfs_read+0x1b4/0x300
-[64338.912755]  ksys_read+0x63/0xe0
-[64338.912799]  do_syscall_64+0x3a/0x90
-[64338.912841]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[64338.912876] RIP: 0033:0x7fe1037f80dc
-[64338.912904] Code: ec 28 48 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 e9 =
-d5 f8 ff 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 31 c0 0f 05 <48=
-> 3d 00 f0 ff ff 77 34 44 89 c7 48 89 44 24 08 e8 3f d6 f8 ff 48
-[64338.912927] RSP: 002b:00007fff32cec810 EFLAGS: 00000246 ORIG_RAX: 000000=
-0000000000
-[64338.912962] RAX: ffffffffffffffda RBX: 0000559ba59fb9b0 RCX: 00007fe1037=
-f80dc
-[64338.912983] RDX: 0000000000001000 RSI: 0000559ba5a15960 RDI: 00000000000=
-00009
-[64338.913002] RBP: 00007fff32cec948 R08: 0000000000000000 R09: 00007fe1038=
-d2df0
-[64338.913021] R10: 0000000000000000 R11: 0000000000000246 R12: 00000000000=
-00000
-[64338.913040] R13: 00007fff32cec950 R14: 0000000000000000 R15: 00000000000=
-00009
-[64338.913098]  </TASK>
-[64338.913112] ---[ end trace 0000000000000000 ]---
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+> 
+> Depends on https://lore.kernel.org/linux-pm/12337662.O9o76ZdvQC@kreacher/
+> 
+> ---
+>   drivers/acpi/thermal.c                                       |    7 +++--
+>   drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c |    8 +++---
+>   drivers/thermal/thermal_sysfs.c                              |    4 +--
+>   drivers/thermal/thermal_trip.c                               |   14 ++++++++++-
+>   include/linux/thermal.h                                      |    2 +
+>   5 files changed, 27 insertions(+), 8 deletions(-)
+> 
+> Index: linux-pm/drivers/thermal/thermal_sysfs.c
+> ===================================================================
+> --- linux-pm.orig/drivers/thermal/thermal_sysfs.c
+> +++ linux-pm/drivers/thermal/thermal_sysfs.c
+> @@ -146,9 +146,9 @@ trip_point_temp_store(struct device *dev
+>   				goto unlock;
+>   		}
+>   
+> -		trip->temperature = temp;
+> +		thermal_zone_set_trip_temp(tz, trip, temp);
+>   
+> -		thermal_zone_trip_updated(tz, trip);
+> +		__thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
+>   	}
+>   
+>   unlock:
+> Index: linux-pm/drivers/thermal/thermal_trip.c
+> ===================================================================
+> --- linux-pm.orig/drivers/thermal/thermal_trip.c
+> +++ linux-pm/drivers/thermal/thermal_trip.c
+> @@ -152,7 +152,6 @@ int thermal_zone_trip_id(struct thermal_
+>   	 */
+>   	return trip - tz->trips;
+>   }
+> -
+>   void thermal_zone_trip_updated(struct thermal_zone_device *tz,
+>   			       const struct thermal_trip *trip)
+>   {
+> @@ -161,3 +160,16 @@ void thermal_zone_trip_updated(struct th
+>   				      trip->hysteresis);
+>   	__thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
+>   }
+> +
+> +void thermal_zone_set_trip_temp(struct thermal_zone_device *tz,
+> +				struct thermal_trip *trip, int temp)
+> +{
+> +	if (trip->temperature == temp)
+> +		return;
+> +
+> +	trip->temperature = temp;
+> +	thermal_notify_tz_trip_change(tz->id, thermal_zone_trip_id(tz, trip),
+> +				      trip->type, trip->temperature,
+> +				      trip->hysteresis);
+> +}
+> +EXPORT_SYMBOL_GPL(thermal_zone_set_trip_temp);
+> Index: linux-pm/include/linux/thermal.h
+> ===================================================================
+> --- linux-pm.orig/include/linux/thermal.h
+> +++ linux-pm/include/linux/thermal.h
+> @@ -289,6 +289,8 @@ int thermal_zone_for_each_trip(struct th
+>   			       int (*cb)(struct thermal_trip *, void *),
+>   			       void *data);
+>   int thermal_zone_get_num_trips(struct thermal_zone_device *tz);
+> +void thermal_zone_set_trip_temp(struct thermal_zone_device *tz,
+> +				struct thermal_trip *trip, int temp);
+>   
+>   int thermal_zone_get_crit_temp(struct thermal_zone_device *tz, int *temp);
+>   
+> Index: linux-pm/drivers/acpi/thermal.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/thermal.c
+> +++ linux-pm/drivers/acpi/thermal.c
+> @@ -294,6 +294,7 @@ static int acpi_thermal_adjust_trip(stru
+>   	struct acpi_thermal_trip *acpi_trip = trip->priv;
+>   	struct adjust_trip_data *atd = data;
+>   	struct acpi_thermal *tz = atd->tz;
+> +	int temp;
+>   
+>   	if (!acpi_trip || !acpi_thermal_trip_valid(acpi_trip))
+>   		return 0;
+> @@ -304,9 +305,11 @@ static int acpi_thermal_adjust_trip(stru
+>   		acpi_thermal_update_trip_devices(tz, trip);
+>   
+>   	if (acpi_thermal_trip_valid(acpi_trip))
+> -		trip->temperature = acpi_thermal_temp(tz, acpi_trip->temp_dk);
+> +		temp = acpi_thermal_temp(tz, acpi_trip->temp_dk);
+>   	else
+> -		trip->temperature = THERMAL_TEMP_INVALID;
+> +		temp = THERMAL_TEMP_INVALID;
+> +
+> +	thermal_zone_set_trip_temp(tz->thermal_zone, trip, temp);
+>   
+>   	return 0;
+>   }
+> Index: linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
+> ===================================================================
+> --- linux-pm.orig/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
+> +++ linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
+> @@ -225,7 +225,8 @@ EXPORT_SYMBOL_GPL(int340x_thermal_zone_r
+>   
+>   static int int340x_update_one_trip(struct thermal_trip *trip, void *arg)
+>   {
+> -	struct acpi_device *zone_adev = arg;
+> +	struct int34x_thermal_zone *int34x_zone = arg;
+> +	struct acpi_device *zone_adev = int34x_zone->adev;
+>   	int temp, err;
+>   
+>   	switch (trip->type) {
+> @@ -249,14 +250,15 @@ static int int340x_update_one_trip(struc
+>   	if (err)
+>   		temp = THERMAL_TEMP_INVALID;
+>   
+> -	trip->temperature = temp;
+> +	thermal_zone_set_trip_temp(int34x_zone->zone, trip, temp);
+> +
+>   	return 0;
+>   }
+>   
+>   void int340x_thermal_update_trips(struct int34x_thermal_zone *int34x_zone)
+>   {
+>   	thermal_zone_for_each_trip(int34x_zone->zone, int340x_update_one_trip,
+> -				   int34x_zone->adev);
+> +				   int34x_zone);
+>   }
+>   EXPORT_SYMBOL_GPL(int340x_thermal_update_trips);
+>   
+> 
+> 
+> 
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
 
