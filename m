@@ -1,86 +1,126 @@
-Return-Path: <linux-acpi+bounces-2183-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2184-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4497F807966
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 21:34:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1561807967
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 21:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2DBE1F21666
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 20:34:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A856F2821B0
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 20:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2CC46558
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 20:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC5D48784
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 20:34:40 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1B4FD3;
-	Wed,  6 Dec 2023 11:44:29 -0800 (PST)
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-1faf1ba2219so29983fac.0;
-        Wed, 06 Dec 2023 11:44:29 -0800 (PST)
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ED5D122;
+	Wed,  6 Dec 2023 11:47:32 -0800 (PST)
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-1fb2b83986cso34897fac.0;
+        Wed, 06 Dec 2023 11:47:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701891869; x=1702496669;
+        d=1e100.net; s=20230601; t=1701892052; x=1702496852;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=INtr6ESdMmvwrLweqn4CnFa4mFOayDNocnS5JvYQDSU=;
-        b=wlvDl2haPexeZEg8a6XMFZqY1lF7qOraFwEXtF/+uScFtCGnjMl+KD2eRjnBz0xZoj
-         xzVaDJRf/1J4Pu89Sm8BRm+C0isaaGl9rwb6oWkAoZ5s5FZXpWnTL/A0DaPyBYxItVVa
-         G0DJZ4LN73//nKSqtySyaZTRRGYT8p/jhrHuSFXpwbRowYjckaM/qGAFxEM3dXwk9iIs
-         Es6K2X5EOwezt2c/eeCqU/Rt/MQriwIfqtgy/AxijJpsaju5ejJ73B6ea4F1xTtv05eW
-         U0ybzQ4JRVXDYKqo1myXkgdY4KAo4LIh4ivKAWfRBstoaUELoraJhct+EtVv3J11gQXB
-         Nbqg==
-X-Gm-Message-State: AOJu0YxpDI6R1iMtbMBMmzj5MOBOzmC9In5uiBz59u2sdA9uqEMDf/fE
-	HRePGz3sKL1b9XQo2BiJmlMymHjErkFwpWQxd2I=
-X-Google-Smtp-Source: AGHT+IGfcNJZtvj9DnCjBMcbliiTnXjZvfx3KHgLDpGuqa+yvHvI5/TJ3VSssAQcSufAtX868tsRqdDp0XR0PnA3RQE=
-X-Received: by 2002:a05:6871:d30c:b0:1fa:db26:78a6 with SMTP id
- pn12-20020a056871d30c00b001fadb2678a6mr2734246oac.1.1701891868973; Wed, 06
- Dec 2023 11:44:28 -0800 (PST)
+        bh=5Eye1pIVAzvd8vmh6Sf9HoBroJHBM9TBK6FZNnnZG10=;
+        b=gaWEWd0w8/eDrKR4JQtRo8HKUbpPb+8W4YcS7t+8JjwTOoL+gkq3+L1H3sZk/Cl690
+         TrURp9laYUua5tBqsDrv/vMNCQ0JalgX7Hq+4XgjuhBcZRxFII/5LyVgBz904SUYbzWO
+         q5FyzB4Z6TN6wesZxzt+LqEM7dajL8a8lweL9oPD9ydvLE81rTklmIzC3hncbr+ltK8C
+         3sY3eK3vvB03SMWsFgqn7BoszpZ/nd7vzBkDeXN+W8oO4a7W+hd+/7D5x7YqC9R9/yMm
+         Y0g+L/XqPHePSfZx5DyNYfp7KtLheLoQqCOXDICC0YsWevu4VWdxaWvpKmfRJSZimXnj
+         N4hQ==
+X-Gm-Message-State: AOJu0YzC7T8rIu/9Zby0w0L2z8U2XYHB9ust3YFN9FNp9N40x9w+flb7
+	dUNZBHLgUhU/EkqIOpWv2wXkivRDiBJ10D/5GRY=
+X-Google-Smtp-Source: AGHT+IHo/L1CPdCP43tGzl06TrRk3U5YvZ+Z9eWKpqVkyvdNdAOdh9PH9K46tvxbm2gvrJFY/cDjEP/aDJy2zTpMhx0=
+X-Received: by 2002:a05:6871:5d1:b0:1fb:30b8:bb5c with SMTP id
+ v17-20020a05687105d100b001fb30b8bb5cmr2696263oan.3.1701892051808; Wed, 06 Dec
+ 2023 11:47:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231123100617.28020-1-raag.jadav@intel.com>
-In-Reply-To: <20231123100617.28020-1-raag.jadav@intel.com>
+References: <20231120114143.95305-1-ytcoode@gmail.com> <CAJZ5v0ijJeOLJo=ooru9raj0n=iiGybFCud42Z+EEtncgNk47A@mail.gmail.com>
+ <575e4395-dfe1-4399-9706-cc02f56d7ebe@intel.com>
+In-Reply-To: <575e4395-dfe1-4399-9706-cc02f56d7ebe@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 6 Dec 2023 20:44:18 +0100
-Message-ID: <CAJZ5v0h7rSY7cD18pGTy9GuNB5s5EvVCNWngPKBtCCXrrNNW5A@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] Support _UID matching for integer types
-To: Raag Jadav <raag.jadav@intel.com>
-Cc: mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com, 
-	rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com, ardb@kernel.org, 
-	will@kernel.org, mark.rutland@arm.com, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, acpica-devel@lists.linuxfoundation.org, 
-	linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
+Date: Wed, 6 Dec 2023 20:47:20 +0100
+Message-ID: <CAJZ5v0gRbPBij961wTgCzVZL3ie6ru4niQzYip8a9p64BaSKjQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: Correct and clean up the logic of acpi_parse_entries_array()
+To: Dave Jiang <dave.jiang@intel.com>, Yuntao Wang <ytcoode@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Dan Williams <dan.j.williams@intel.com>, 
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 23, 2023 at 11:07=E2=80=AFAM Raag Jadav <raag.jadav@intel.com> =
-wrote:
+On Wed, Dec 6, 2023 at 6:02=E2=80=AFPM Dave Jiang <dave.jiang@intel.com> wr=
+ote:
 >
-> This series updates the standard ACPI helpers to support _UID matching
-> for both integer and string types, and uses them in a couple of places.
 >
-> Changes since v2:
-> - Drop __builtin functions to reduce complexity (Rafael)
-> - Update tags
 >
-> Changes since v1:
-> - Fix build errors
+> On 12/6/23 09:42, Rafael J. Wysocki wrote:
+> > On Mon, Nov 20, 2023 at 12:42=E2=80=AFPM Yuntao Wang <ytcoode@gmail.com=
+> wrote:
+> >>
+> >> The original intention of acpi_parse_entries_array() is to return the
+> >> number of all matching entries on success. This number may be greater =
+than
+> >> the value of the max_entries parameter. When this happens, the functio=
+n
+> >> will output a warning message, indicating that `count - max_entries`
+> >> matching entries remain unprocessed and have been ignored.
+> >>
+> >> However, commit 4ceacd02f5a1 ("ACPI / table: Always count matched and
+> >> successfully parsed entries") changed this logic to return the number =
+of
+> >> entries successfully processed by the handler. In this case, when the
+> >> max_entries parameter is not zero, the number of entries successfully
+> >> processed can never be greater than the value of max_entries. In other
+> >> words, the expression `count > max_entries` will always evaluate to fa=
+lse.
+> >> This means that the logic in the final if statement will never be exec=
+uted.
+> >>
+> >> Commit 99b0efd7c886 ("ACPI / tables: do not report the number of entri=
+es
+> >> ignored by acpi_parse_entries()") mentioned this issue, but it tried t=
+o fix
+> >> it by removing part of the warning message. This is meaningless becaus=
+e the
+> >> pr_warn statement will never be executed in the first place.
+> >>
+> >> Commit 8726d4f44150 ("ACPI / tables: fix acpi_parse_entries_array() so=
+ it
+> >> traverses all subtables") introduced an errs variable, which is intend=
+ed to
+> >> make acpi_parse_entries_array() always traverse all of the subtables,
+> >> calling as many of the callbacks as possible. However, it seems that t=
+he
+> >> commit does not achieve this goal. For example, when a handler returns=
+ an
+> >> error, none of the handlers will be called again in the subsequent
+> >> iterations. This result appears to be no different from before the cha=
+nge.
+> >>
+> >> This patch corrects and cleans up the logic of acpi_parse_entries_arra=
+y(),
+> >> making it return the number of all matching entries, rather than the n=
+umber
+> >> of entries successfully processed by handlers. Additionally, if an err=
+or
+> >> occurs when executing a handler, the function will return -EINVAL imme=
+diately.
+> >>
+> >> This patch should not affect existing users of acpi_parse_entries_arra=
+y().
+> >>
+> >> Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
+> >
+> > This needs to be ACKed by Dave Jiang or Dan Williams.
 >
-> Raag Jadav (5):
->   ACPI: bus: update acpi_dev_uid_match() to support multiple types
->   ACPI: bus: update acpi_dev_hid_uid_match() to support multiple types
->   ACPI: LPSS: use acpi_dev_uid_match() for matching _UID
->   efi: dev-path-parser: use acpi_dev_uid_match() for matching _UID
->   perf: arm_cspmu: drop redundant acpi_dev_uid_to_integer()
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-All applied as 6.8 material, but I renamed the auxiliary macros in the
-first patch and moved the kerneldoc comment below them.
-
-TBH, I'm not entirely sure about the value of the second of those
-auxiliary macros, but then I don't particularly dislike it either.
+Applied as 6.8 material, thanks!
 
