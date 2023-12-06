@@ -1,58 +1,58 @@
-Return-Path: <linux-acpi+bounces-2171-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2172-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30E3806FDF
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 13:37:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E91F806FE0
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 13:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EAAF1F211DE
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 12:37:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 984CC1C208B5
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 12:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0316E36AE8
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 12:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04FC736B07
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Dec 2023 12:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b/OKQCGg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IFaFwG6/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D4EE12B;
-	Wed,  6 Dec 2023 02:44:49 -0800 (PST)
-Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-286e05d9408so572440a91.1;
-        Wed, 06 Dec 2023 02:44:49 -0800 (PST)
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0674F1A2;
+	Wed,  6 Dec 2023 02:44:57 -0800 (PST)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-6ce32821a53so2303569b3a.0;
+        Wed, 06 Dec 2023 02:44:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701859488; x=1702464288; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1701859496; x=1702464296; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=M5B5d2/8qxaPjHZlns3KcRSngp7JdBdKI506/CONwgk=;
-        b=b/OKQCGgwQc8Hr3M5I2qojbEa8HFx3XHxyKmhoZ4X/KPRU5EwcZLmJKyjrUeXIvUev
-         Blp5XdZztB4+9Ssap+UqLnOfqzYTBkkkAjqt1L5crraCb3i8q1JMY0qn0ai5+k/a4BKL
-         7kgV29bsfZ3meTLAqw4I6IRhi97I1W2u+rVFb3tOLvMjddoQaXq4fYh9kbMaoMYAwveu
-         T8MPYydJ36VSy1pp1UYFKWRcSqpCj9PasE/vvFcipn4K+R3aDX12pMZLF+GqFQAtlKie
-         WpN8cH9mCXToJrgqilLRH+ngAFzBIxXFm92HbVRdABnBb5UmTT2cJGplMSLxrn1MUIyc
-         3tKA==
+        bh=yUbG7u0jbaZMkf4gI0vKWjEkxNyQgQiNc/X6JTyz4gI=;
+        b=IFaFwG6/45k4eNk0ftGX+GZyObRX9W4aaF7P6ZeNPvKSAP1+YgD8Ge2a7PTlEw8XeI
+         70H+VX5FxmrtKZhMtvnS7elnI0+ptxmmAk90FJ9xyssluED29Z+RMSkviJp5+6eMxu63
+         Qhpei5nZRoa2sG5fwdHuwB6L0X/QlSifehePKUi/EuXLtor82KV1/PtHzgTQibUFuOfC
+         QwgDcyavJkl8I3oFUDLmRiVrbhcVmjLa4r4dhhw9flJDlM2U3E2kPyGl6D8x4SA8L0db
+         hQZ0UKpYENt7Kq3p5CUZ8DLzvu6v6d70yvzqG44Xt3dTPcyktWrZBimijObyo8D+Gkl9
+         Ocpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701859488; x=1702464288;
+        d=1e100.net; s=20230601; t=1701859496; x=1702464296;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=M5B5d2/8qxaPjHZlns3KcRSngp7JdBdKI506/CONwgk=;
-        b=dQbdiQL+ozzqXDdKlHL8DgSlcaBvAuM/Q6o+CSiCoF3n6C/25ICs+66CGRfp2K270E
-         I/wox4vhLeeguMgGuauasIq155AHHDzI3uMZfY1HnWV7/RDWPsooWYzXAwug2mGOUAAT
-         WTvRi+EL3TYpEXa8Q8rZJurwU7nmLY2WlxELO4nNdIfRXnr/EedVpcQJibO+2Tv1vH2O
-         qYV3aWBLnGgiJUGbdWVKopNoEYKEl7D1So/I4RsmlZflr71kMJQn9Wzukcf7UQONp+0b
-         rutAL87dEqqhC8kRfw6fD3B2nex9xnstHbulhGdyEXpty1UJEizVu4Bg7kePj5CdLVyU
-         s0pQ==
-X-Gm-Message-State: AOJu0YyBEspCftUK6MgzM2KJGqQviTi/TQFv2KVWpieMjo8s9zTa+FvE
-	XPEP4W5iDL++XPEmtw2SbKT9347or4c=
-X-Google-Smtp-Source: AGHT+IGWci80b+s+FKtQ0vgvKG11CNyQku53N4VrBf95PjPh+wFgPvrb0biGtdgc5OxF8oGoNIzP5w==
-X-Received: by 2002:a17:90b:3e8c:b0:286:975f:7e36 with SMTP id rj12-20020a17090b3e8c00b00286975f7e36mr996284pjb.12.1701859488348;
-        Wed, 06 Dec 2023 02:44:48 -0800 (PST)
+        bh=yUbG7u0jbaZMkf4gI0vKWjEkxNyQgQiNc/X6JTyz4gI=;
+        b=H4atiZXlv6Gu7Z0H4LRZDZDpECgihT9Jb+MbUlK5CwKdi8cyLw/lZtg1sYJ3+/xaCF
+         ZpOuwFOudxEXcXowdxzjgeTPJh+M31PYbjpS/mnqxV5UoAzKe9itSTstXL1gcO5MIDjF
+         fPJ23QXgO+aT5KNNPXTRi3ml/qYWOTfH21otu3phHkTbRBOvK3/URGUnWmlIA5AvOZCy
+         JS7ipoywqkQD7up1503+5gFLnuwS1aa37E32XMI78CVVj25xqz/3USNWT479eu9dNT3k
+         ZN1PmyuejTMGZJc+bNevAsiJn050BmjWsnbt8EtUscwhSYOCJqUZbjVUnqR1bLh/1+ed
+         uXnA==
+X-Gm-Message-State: AOJu0YxTmr3Sum1QlVU1+CpP15Pw9OkQJNAP/e8otPsUfZAF6JeDORvR
+	C7mtBhoTdIon3wItySP8vetgJ1gmUg4=
+X-Google-Smtp-Source: AGHT+IEOvnRPONAZ08KIyNsSU3q0UEwbfqeKstt/+KCr2hQhuCEy/WZh5KH+oIOiJ56oeNICNJZnig==
+X-Received: by 2002:a05:6a20:c1a6:b0:18c:23b0:39bd with SMTP id bg38-20020a056a20c1a600b0018c23b039bdmr529458pzb.16.1701859496131;
+        Wed, 06 Dec 2023 02:44:56 -0800 (PST)
 Received: from code.. ([144.202.108.46])
-        by smtp.gmail.com with ESMTPSA id d11-20020a17090a2a4b00b00286596548bcsm10020811pjg.37.2023.12.06.02.44.44
+        by smtp.gmail.com with ESMTPSA id d11-20020a17090a2a4b00b00286596548bcsm10020811pjg.37.2023.12.06.02.44.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Dec 2023 02:44:48 -0800 (PST)
+        Wed, 06 Dec 2023 02:44:55 -0800 (PST)
 From: Yuntao Wang <ytcoode@gmail.com>
 To: linux-kernel@vger.kernel.org,
 	linux-acpi@vger.kernel.org
@@ -62,9 +62,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Alison Schofield <alison.schofield@intel.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Yuntao Wang <ytcoode@gmail.com>
-Subject: [PATCH 2/3] ACPI/NUMA: Optimize the check for the availability of node values
-Date: Wed,  6 Dec 2023 18:43:17 +0800
-Message-ID: <20231206104318.182759-3-ytcoode@gmail.com>
+Subject: [PATCH 3/3] ACPI/NUMA: Fix the logic of getting the fake_pxm value
+Date: Wed,  6 Dec 2023 18:43:18 +0800
+Message-ID: <20231206104318.182759-4-ytcoode@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231206104318.182759-1-ytcoode@gmail.com>
 References: <20231206104318.182759-1-ytcoode@gmail.com>
@@ -76,11 +76,10 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The first_unset_node() function returns the first unused node in
-nodes_found_map. If all nodes are in use, the function returns
-MAX_NUMNODES. We can use this return value to determine whether there are
-any available node values in nodes_found_map, eliminating the need to use
-the nodes_weight() function to perform this check.
+The for loop does not iterate over the last element of the node_to_pxm_map
+array. This could lead to a conflict between the final fake_pxm value and
+the existing pxm values. That is, the final fake_pxm value can not be
+guaranteed to be an unused pxm value.
 
 Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
 ---
@@ -88,20 +87,26 @@ Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 9d2d0deb256e..d58e5ef424f2 100644
+index d58e5ef424f2..0214518fc582 100644
 --- a/drivers/acpi/numa/srat.c
 +++ b/drivers/acpi/numa/srat.c
-@@ -67,9 +67,9 @@ int acpi_map_pxm_to_node(int pxm)
- 	node = pxm_to_node_map[pxm];
+@@ -183,7 +183,7 @@ static int __init slit_valid(struct acpi_table_slit *slit)
+ 	int i, j;
+ 	int d = slit->locality_count;
+ 	for (i = 0; i < d; i++) {
+-		for (j = 0; j < d; j++)  {
++		for (j = 0; j < d; j++) {
+ 			u8 val = slit->entry[d*i + j];
+ 			if (i == j) {
+ 				if (val != LOCAL_DISTANCE)
+@@ -532,7 +532,7 @@ int __init acpi_numa_init(void)
+ 	 */
  
- 	if (node == NUMA_NO_NODE) {
--		if (nodes_weight(nodes_found_map) >= MAX_NUMNODES)
--			return NUMA_NO_NODE;
- 		node = first_unset_node(nodes_found_map);
-+		if (node >= MAX_NUMNODES)
-+			return NUMA_NO_NODE;
- 		__acpi_map_pxm_to_node(pxm, node);
- 		node_set(node, nodes_found_map);
+ 	/* fake_pxm is the next unused PXM value after SRAT parsing */
+-	for (i = 0, fake_pxm = -1; i < MAX_NUMNODES - 1; i++) {
++	for (i = 0, fake_pxm = -1; i < MAX_NUMNODES; i++) {
+ 		if (node_to_pxm_map[i] > fake_pxm)
+ 			fake_pxm = node_to_pxm_map[i];
  	}
 -- 
 2.43.0
