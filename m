@@ -1,126 +1,164 @@
-Return-Path: <linux-acpi+bounces-2201-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2202-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B0B808AB2
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Dec 2023 15:35:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A12D4808D6A
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Dec 2023 17:32:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 364EF1C2083E
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Dec 2023 14:35:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54EF11F211AF
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Dec 2023 16:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C8044368
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Dec 2023 14:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB88D46B9F
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Dec 2023 16:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jg3pFRMA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XVI0H/Qj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF6783A9F;
-	Thu,  7 Dec 2023 06:20:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701958841; x=1733494841;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Rq1Spfo4eAwUy7VqgGqcIE7ynbMB75kkNh01WzthsyI=;
-  b=Jg3pFRMAvIiuGymZAqO/Lb9HClCN08w9BMsi67od4TRwBcIgqpP9NLx0
-   J4qtWx1j7YP6iCiJu7M8gzI/Xnu5fugodoOeAnNpaN2IkIBuBKiElA3CA
-   8OYMWhxysTLktTtra0wEgtQh2nLYjSmbfu3T4bXNFP4tuMi5SORck5skt
-   +/eZuBUN+trBFiL1Y5uKUKwW6V0QZa2SRrIM8+Tdr1d66Z9oywP4hOP8C
-   MhICxGeyZvjqVNzARhuMcYJQMGKW+wv06uf7JhakI/6Iv5ugBISA2LF64
-   iQaQfFF5/OxAGCturQc+6GDWafiT3BWOajxJ0RtjIltPZ0l2RIC9z7dAn
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="384643799"
-X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
-   d="scan'208";a="384643799"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 06:19:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="747979224"
-X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
-   d="scan'208";a="747979224"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 06:19:26 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rBFDm-00000002cV0-2UAJ;
-	Thu, 07 Dec 2023 16:19:22 +0200
-Date: Thu, 7 Dec 2023 16:19:22 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v1 1/3] device property: Implement device_is_big_endian()
-Message-ID: <ZXHUat2Xo1VcAxN2@smile.fi.intel.com>
-References: <20231025184259.250588-1-andriy.shevchenko@linux.intel.com>
- <20231025184259.250588-2-andriy.shevchenko@linux.intel.com>
- <2023102624-moonshine-duller-3043@gregkh>
- <ZTpbMVSdKlOgLbwv@smile.fi.intel.com>
- <ZUPBVMdi3hcTyW2n@smile.fi.intel.com>
- <CAMRc=MeV9ZyOzuQFEE_duPTHYgfmr6UZU6bpjDPhrczZX4PHpg@mail.gmail.com>
- <CAMRc=MdSpk_OszeDCyA5_Sp-w=sL9DHB2gGCOFP+FCiobm2cbA@mail.gmail.com>
- <2023111513-stinky-doorframe-8cd1@gregkh>
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ABDD128
+	for <linux-acpi@vger.kernel.org>; Thu,  7 Dec 2023 06:55:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701960946;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tz6X+bifKo7AdaGetM0WimZ3DgQEAXtIAzsWo7qdtOo=;
+	b=XVI0H/QjyfVRqYDiLCS0RgsVwL/uooZJjU2lJ7DzMkQtDm9TW7AavEM6VM/4mdCcmwFJfF
+	pHsBskW+UqiyHqDGX7H8AbF12LrDi9maSU56bwdzgfc6qxA4UMar826+lFgj6likufeRqB
+	R5bhWh/yFksFsG7Py9+7MERA1elcIsQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-61-_VdegiGzNrW5VXUrSIYJfA-1; Thu, 07 Dec 2023 09:55:45 -0500
+X-MC-Unique: _VdegiGzNrW5VXUrSIYJfA-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-40c0f21a649so9312285e9.2
+        for <linux-acpi@vger.kernel.org>; Thu, 07 Dec 2023 06:55:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701960944; x=1702565744;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tz6X+bifKo7AdaGetM0WimZ3DgQEAXtIAzsWo7qdtOo=;
+        b=MNFoJgRkwEMopGYTYTEtAknOm22rlrmNCMvrvR/tOOHWnwbCEINjEKSnrzz/ox+P99
+         +ND+AJo1MJitYf7hVOicTQ0B2vaOrAndLkUw0eWTdbx/fvHKgIUjwNzeFkR7AghA5Vwg
+         8OGTaAX6jhAxdmbUvyzeLdjkadIfwmgL0LWKF+xQRE8uXLZryLpwNO0IsH4IYCV4jNTZ
+         9rRJqoqaTJmYXloJ87n3jP0ei9EgsgEaTLPFVcdxkidRAiTQVrR7jnph8D2jbJQkyL1w
+         dTyZ+CAbCZxSKtAeRr3IZ+qDWac+a+OTAyXNSlRsac42BR8ouEOmxhqGRBFEGBXzsC0z
+         VOUg==
+X-Gm-Message-State: AOJu0YzeZuPjjKm2Cxm4tVlikXq5nm9jyUZyF047n/F/MK7cbChhSU2o
+	T1CV3CCk5mJqHvRrYE3ZkLKTtOXY4SCw9SpJQc+saBXgF/T1njH88xwDFTaGoOWGAbMJ5FH2rWw
+	mL/anx2Od48dkVbqZ3sxAlA==
+X-Received: by 2002:a05:600c:198b:b0:40b:5e21:dd34 with SMTP id t11-20020a05600c198b00b0040b5e21dd34mr2068542wmq.98.1701960943983;
+        Thu, 07 Dec 2023 06:55:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEqPu0jtkLU9hMN3uH/bMY5VhR71AQ+5SLWqCAxzRD+0Q/xUOdmx8munOvaO4iPnv+olLoNZQ==
+X-Received: by 2002:a05:600c:198b:b0:40b:5e21:dd34 with SMTP id t11-20020a05600c198b00b0040b5e21dd34mr2068529wmq.98.1701960943567;
+        Thu, 07 Dec 2023 06:55:43 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id 3-20020a170906208300b00a1e04f24df1sm918499ejq.223.2023.12.07.06.55.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Dec 2023 06:55:43 -0800 (PST)
+Date: Thu, 7 Dec 2023 15:55:41 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bhelgaas@google.com, lenb@kernel.org, rafael@kernel.org, Thomas Lamprecht
+ <t.lamprecht@proxmox.com>
+Subject: Re: SCSI hotplug issues with UEFI VM with guest kernel >= 6.5
+Message-ID: <20231207155541.735e0055@imammedo.users.ipa.redhat.com>
+In-Reply-To: <4dbc72ba-8edb-4ff5-b95d-b601189e4415@proxmox.com>
+References: <20231130231802.GA498017@bhelgaas>
+	<4dbc72ba-8edb-4ff5-b95d-b601189e4415@proxmox.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023111513-stinky-doorframe-8cd1@gregkh>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 15, 2023 at 03:21:29PM -0500, Greg Kroah-Hartman wrote:
-> On Wed, Nov 15, 2023 at 03:58:54PM +0100, Bartosz Golaszewski wrote:
-> > On Fri, Nov 3, 2023 at 10:08 AM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> > > On Thu, Nov 2, 2023 at 4:33 PM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > On Thu, Oct 26, 2023 at 03:27:30PM +0300, Andy Shevchenko wrote:
-> > > > > On Thu, Oct 26, 2023 at 07:25:35AM +0200, Greg Kroah-Hartman wrote:
-> > > > > > On Wed, Oct 25, 2023 at 09:42:57PM +0300, Andy Shevchenko wrote:
-> > > > > > > Some users want to use the struct device pointer to see if the
-> > > > > > > device is big endian in terms of Open Firmware specifications,
-> > > > > > > i.e. if it has a "big-endian" property, or if the kernel was
-> > > > > > > compiled for BE *and* the device has a "native-endian" property.
-> > > > > > >
-> > > > > > > Provide inline helper for the users.
-> > > > > >
-> > > > > > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > >
-> > > > > Thank you, Greg.
-> > > > >
-> > > > > Bart, would it be still possible to take this into next?
-> > > > > I would like to have at least this patch applied (with the first user)
-> > > > > to allow conversion of others (I have some more users of new API).
-> > > >
-> > > > Okay, seems we missed v6.7 with this, can you then prepare an immutable
-> > > > branch / tag with this, so other maintainers can pull in case it's needed?
-> > > > (I have something against tty already and perhaps something else, let's
-> > > >  see.)
-> > >
-> > > It arrived too late in the cycle, I needed to send my PR earlier this
-> > > time as I was OoO this week.
-> >
-> > Greg, will you take this patch through your tree and provide me with
-> > an immutable tag for this cycle?
+On Fri, 1 Dec 2023 10:24:41 +0100
+Fiona Ebner <f.ebner@proxmox.com> wrote:
+
+> Am 01.12.23 um 00:18 schrieb Bjorn Helgaas:
+> > On Wed, Nov 29, 2023 at 04:22:41PM +0100, Fiona Ebner wrote:  
+> >> Hi,
+> >> it seems that hot-plugging SCSI disks for QEMU virtual machines booting
+> >> with UEFI and with guest kernels >= 6.5 might be broken. It's not
+> >> consistently broken, hinting there might be a race somewhere.
+> >>
+> >> Reverting the following two commits seems to make it work reliably again:
+> >>
+> >> cc22522fd55e2 ("PCI: acpiphp: Use
+> >> pci_assign_unassigned_bridge_resources() only for non-root bus")
+> >> 40613da52b13f ("PCI: acpiphp: Reassign resources on bridge if necessary"
+> >>
+> >> Of course, they might only expose some pre-existing issue, but this is
+> >> my best lead. See below for some logs and details about an affected
+> >> virtual machine. Happy to provide more information and to debug/test
+> >> further.  
+> > 
+> > Shoot.  Thanks very much for the report and your debugging.  I'm
+> > hoping Igor will chime in with some ideas.
+> > 
+> > Both of those commits appeard in v6.5 and fixed legit issues, so I
+> > hate to revert them, but this does appear to be a regression.
+> > 
+> > #regzbot introduced: cc22522fd55e2 ^
+> > #regzbot introduced: 40613da52b13f ^
+> >   
+> >> Host kernel: 6.5.11-4-pve which is based on the one from Ubuntu
+> >> Guest kernel: 6.7.0-rc3 and 6.7.0-rc3 with above commits reverted
+> >> QEMU version: v8.1.0 built from source
+> >> EDK2 version: submodule in the QEMU v8.1 repository: edk2-stable202302
+> >>  
 > 
-> Sure, let me catch up with patches after I return from Plumbers next
-> week.
+> I should mention that I haven't run into the issue when booting the VM
+> with SeaBIOS yet.
+> 
+> Log for 6.7.0-rc3 + SeaBIOS (bundled with QEMU 8.1):
+> 
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xfd404000-0xfd407fff 64bit pref]
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xfe801000-0xfe801fff]
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xfe800000-0xfe9fffff]
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xfd400000-0xfd5fffff 64bit pref]
+> > Dec 01 10:08:08 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
+> > Dec 01 10:08:08 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
+> > Dec 01 10:08:08 hotplug kernel: scsi host3: Virtio SCSI HBA
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xfe800000-0xfe9fffff]
+> > Dec 01 10:08:08 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
+> > Dec 01 10:08:08 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xfd400000-0xfd5fffff 64bit pref]
+> > Dec 01 10:08:08 hotplug kernel: scsi 3:0:0:1: Attached scsi generic sg1 type 0
+> > Dec 01 10:08:08 hotplug kernel: sd 3:0:0:1: Power-on or device reset occurred
+> > Dec 01 10:08:08 hotplug kernel: sd 3:0:0:1: [sdb] 2048 512-byte logical blocks: (1.05 MB/1.00 MiB)
+> > Dec 01 10:08:08 hotplug kernel: sd 3:0:0:1: [sdb] Write Protect is off
+> > Dec 01 10:08:08 hotplug kernel: sd 3:0:0:1: [sdb] Mode Sense: 63 00 00 08
+> > Dec 01 10:08:08 hotplug kernel: sd 3:0:0:1: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+> > Dec 01 10:08:08 hotplug kernel: sd 3:0:0:1: [sdb] Attached SCSI disk  
+> 
+> Interestingly, the line with "QEMU HARDDISK" does not come after all
+> lines with "bridge window" like was the case for the one time it did
+> work with UEFI. So maybe that was just a red herring.
 
-Hope Plumbers went well!
+I've just seen this,
+let me try to reproduce and see what can be done with it.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+> 
+> Best Regards,
+> Fiona
+> 
 
 
