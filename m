@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-2234-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2235-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFE380A938
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 17:36:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 548CC80A939
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 17:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DFC91F20F09
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 16:36:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C89F21F2101A
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 16:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A805F38DE6
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 16:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B06438DE6
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 16:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="M1ZGAHKv"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="taR1rxRj"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2076.outbound.protection.outlook.com [40.107.237.76])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E958123;
-	Fri,  8 Dec 2023 08:22:30 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7640910D8;
+	Fri,  8 Dec 2023 08:22:32 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BodccBeqAH28iqlWsU2sjj5eNbAmzZ7UDFYgkTEd0v8AUn9C55ZbNk3n2oByitUL3L2NcV37H67ZZSWMVqpIwCDE9B7IU2dNGHELZbZ/x0edeNeCwxyk9YpUkPSJXNZWLwpblg++sQv4X+8UV/G/2IFl6TLyeWdEkxSGKPl06L25qAYGOUdptnQBuYGQV2pGNhBkP90naLNcY1t5vB00QMQgToUWoIfhUQlES3MuKIah5FPs4VYa+J/OQ10eNJBlL5HRYNCkl/Owus1+T9ovWGuH1uA5gbmLDHR+v26TGFyTZzzHH6QmaplOFVEeSVsy4EVEH+3DHNJ7gdicx1Nvrg==
+ b=aSD+/CiVEMyJqHMFKwyA4giVUjT+mZZWmerXJx5/d17zCDb72pyEHKGZ7QwTHJ2D5mMUlrdAvF1XCe6MDH95tknTSpteOVuZEbVjMbtQg/y0Ra1L1QfEAVIfHLDPKVs2wb2TIHr0k72drc77gQndziqfoFmZ8PROZfx8TpYHp8a7TEZrbDbr20rm4LVlE1L6Wol4LjG4wC6u/0EHnXuYmocqiXrzNX6o76xD/oE/hWBD2dS12FX/m8PQhLRgdeHo1F6dAupSQiZLrEihAS9rfSq4TLzMVmiSj7czUld/Y4a+jinkE+0bRr1ovFbvxIy1htuQBYYNR4HPusjU9ZJAKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vk3mBh9BdWe6r126zEs/5SwjFDjk3AMq29LThutm82I=;
- b=Mr24J9I8niA+EASHbkAkBScPvjjUWAylZLCa/tdowOqJkm5q90Ie49HdG9R+58kQYW7X7wN+UGmRiuJrHFTYZFZty+ENtFcULyQIZrGssXoy3JyZDjZ8KeYns+kRO6o6Y56S6IumpnVJ8HtxzARQPRk8TaJ7T4uI5bcz07sMdCoqxvB7ExUkrvFhsUmK6M5+jowSBMx4m7u/31PkTvVk9V2qby8SkbGiRmlZHCyAyU1Ax0u2LNL395TDT1alWNyjrDVjHG8gYdyrFe40l1hI81e/Nv6doD4E/vaMcdJj+lWjuyNPHNTmPMbqbgjrvIbAXfYF5i5VxN3FnNFSrBI9gg==
+ bh=QxOvxGB7sRZcBL/FaPQyCf2RCiMoW8hcupAn4FNPT54=;
+ b=ZdL+1n05jOpffMXSaQkEAy66E5VuyWI1rcvzAslLkvu2UGWDzT8coF9IGM3GqMsPseegKVHq4oJl7D6SDZg0F7XK8ttic3CAuNE1LnZQ2TpFs7sYFNjiGGS0Q/BoQNqjp5+4of3MCczUh+QmP9kAiQlDrxBwdsudHUWjvJio5mfNgzgWXltGmMrIMeI1D5lPMVT1yvINBG7ToMePCgDzcVZOkREbmZ3qsHwk26zW2ltEPf7zbXH+X+P1xDz8tCwGDocXfz0Lbxrj6B9hgIrcw7NAqxTRR4oXQdHWOyei9GZoQeraACnntgWOzMZyqYbc3o9w0oqfTqCa817Pz+sjYg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vk3mBh9BdWe6r126zEs/5SwjFDjk3AMq29LThutm82I=;
- b=M1ZGAHKvEsUUgX37PFSGwvrMMjF0YkCJpnv/KhYde5/q90Lz0RDQ9MT8OAgJtBI9M6vhcjRDG4PVDDJaC4qnAYNRf6Jud6+rlQTAufKnsGxAFBmGYc6rM3vkuM2QeysUUquWT6P3aBG/tRKLa9MoEl8CkgBeAkUF0cGDAaFeeAo=
+ bh=QxOvxGB7sRZcBL/FaPQyCf2RCiMoW8hcupAn4FNPT54=;
+ b=taR1rxRjnB7Ii0LulKEMr42sie5AEV29EvzouXgENDfFdrLAUPOo+w2kfqVMMwFqjTcR4OvPTlJhpOdHa7+Q8LUuRUagp1C/squ+BNbTs6R48qkRsksCkZRtu8O8ZZmN0fsUUGBXoZ6W0vzYy0otxL6g8gZuXlx89tMQ3IEJVc8=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from BN8PR12MB3268.namprd12.prod.outlook.com (2603:10b6:408:6c::18)
  by SA0PR12MB4525.namprd12.prod.outlook.com (2603:10b6:806:92::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.28; Fri, 8 Dec
- 2023 16:22:27 +0000
+ 2023 16:22:28 +0000
 Received: from BN8PR12MB3268.namprd12.prod.outlook.com
  ([fe80::ff1a:dd7c:4c93:d8bf]) by BN8PR12MB3268.namprd12.prod.outlook.com
  ([fe80::ff1a:dd7c:4c93:d8bf%7]) with mapi id 15.20.7068.028; Fri, 8 Dec 2023
- 16:22:27 +0000
-Message-ID: <359bacbf-94d9-47b8-915f-dbf321cf0a9e@amd.com>
-Date: Fri, 8 Dec 2023 10:22:22 -0600
+ 16:22:28 +0000
+Message-ID: <634ead4f-f87c-439f-a685-f7c1dc5527d1@amd.com>
+Date: Fri, 8 Dec 2023 10:22:26 -0600
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/5] cxl/port: Add EINJ debugfs files and callback
- support
+Subject: Re: [PATCH v7 4/5] cxl/port, EINJ: Add CXL EINJ callback functions
+Content-Language: en-US
 To: Dan Williams <dan.j.williams@intel.com>, dave@stgolabs.net,
  jonathan.cameron@huawei.com, dave.jiang@intel.com,
  alison.schofield@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com,
@@ -55,11 +55,10 @@ To: Dan Williams <dan.j.williams@intel.com>, dave@stgolabs.net,
 Cc: yazen.ghannam@amd.com, linux-cxl@vger.kernel.org,
  linux-acpi@vger.kernel.org
 References: <20231128160656.166609-1-Benjamin.Cheatham@amd.com>
- <20231128160656.166609-2-Benjamin.Cheatham@amd.com>
- <657251b0517bc_45e0129418@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Language: en-US
+ <20231128160656.166609-5-Benjamin.Cheatham@amd.com>
+ <65725d405abf3_45e01294f2@dwillia2-xfh.jf.intel.com.notmuch>
 From: Ben Cheatham <benjamin.cheatham@amd.com>
-In-Reply-To: <657251b0517bc_45e0129418@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <65725d405abf3_45e01294f2@dwillia2-xfh.jf.intel.com.notmuch>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: BN0PR04CA0068.namprd04.prod.outlook.com
@@ -73,413 +72,290 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BN8PR12MB3268:EE_|SA0PR12MB4525:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6359652d-7253-4724-78e3-08dbf809de77
+X-MS-Office365-Filtering-Correlation-Id: 91a1f29c-3c8c-4575-acfc-08dbf809df0d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	SgUZjTo39xE7mXMkeoECyV+V6vhWPEQ9P4XUA0lfFDuDBjXbBumrQbRjraFVVs0cicMymgFdjHXJP6BRiHwWhivVtfpg74byCKmcD41GGyhjY+l3fJN9NJQBNLtuqPmK5HkKwxh0M73remnxfb63un5xsopbV3WDWbdDoEgRXVCMKZccji59PiVwdCaD+NKCvOYENtC4P4mlnIfPYSGS6IrXwesCLwQDVECV6JQRUapAioLg3VnlRv0db1QLMJ59TuvvDkxEUOf1LPlrjV8w9CC3cWx9H0j53xt0LzXb+FPNCc7Ju2+5uqrCHJ6X8n7Qy+qFWQJsjTqFFOkmZNiWUh/RuS/r2RgLtfUFJ233U+3VSbJ7aWupXJWpY624xQjXC+3wNFw+xt/n8aNeK40U5o+3feTwM42H/abkAvIfAh8UzfiTzIYrvZCEiW28n5PECrFIM0Ur+qU/17HumD40jcQDQLO67M6eea8OocSJyNzwxqmB8ZKGz+gMxZyABK9K+QuR16k9l8HuVLDnzxofr5fmmSvjkBi6cUvGlUrBWRDlt4bGEUkPEMerlR83BDaqmu4QLL14z7IrTmwJqO2vj7jkij/l0QSqz4C2MDe4oZxqrbkyAPaZd8aZ+RPjVk08X+fB5swJESDJxCB3WrKbFA==
+	WEl5piuuHNs7jFGXTE7uknWdhwdtTl0IZqUhbe2EjBFMP4vSMH2HmgwiXvSgPOBRrtTpNl98drSz1DSdbC9E1IkJRc80xn/EMVriWBQR79X1TxnlcHmRgQ8/yjeFvg0ks/yWcUk68qW5NDRpmTLrAz9uU0/rQD+E7BY6Emp3eldmHNUkKK08rhaByZuXsQdCj/tDYmHmcm4CBr7/VBE1gjhZMUlgkSmHzspWGlA46auAwegZQ6HiWvMjr5CAcraiztU0MvLvPQI0ojtGMw7qb2tQNzYzcJYKi7hosVJmp/tzfqPyUSC+o+/ttQ+A7uqf/gbor75dzU2Ha0IpE3ZGvnhayQhFIP8Ck5acMUo2hq9T9QBFX23tnwKPlr3lr6NK9PwpoXv08HeFk93MyImkjpi1nQEwc7+FQXyEMW2ep/ue4Xp9hCXplO7j7eFdC6bphiNgrx3ux4ltQWrcT020G6KFQrUeBB1ZoLdTk1BvAnbyzt/96rBTfA7fZMz0erRk1KPPgg90cHCAXYvXBX5hTIjG2EG5V6tmtZ/ZfSuNcL8J66TtHQ2TSz7ji+XrfYrRvR77UOBFVHNIKor9Hm/od4U/cZ7xEVOH8d/EgwynTcidduWBe0rlPhXVo4POIK9htPuCSuJ8UPBfC/ug7ZwYsg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3268.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(136003)(346002)(376002)(396003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(31686004)(26005)(6506007)(6512007)(53546011)(2616005)(38100700002)(86362001)(31696002)(36756003)(30864003)(2906002)(8936002)(478600001)(7416002)(5660300002)(41300700001)(8676002)(4326008)(83380400001)(6486002)(966005)(66946007)(66476007)(316002)(66556008)(6666004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3268.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(136003)(346002)(376002)(396003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(31686004)(26005)(6506007)(6512007)(53546011)(2616005)(38100700002)(86362001)(31696002)(36756003)(2906002)(8936002)(478600001)(7416002)(5660300002)(41300700001)(8676002)(4326008)(83380400001)(6486002)(66946007)(66476007)(316002)(66556008)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K25UKytpTlpMNEg2MG1oaktmc0hJQ3M4M2MwWFZpNTNUQjd1N1ppZjY1bzNY?=
- =?utf-8?B?LzJzbTZhQVJ1Q3VualFSL3g1NkVOa3FINlhmejdLUjAxQUZxWC9CQUtobHRz?=
- =?utf-8?B?NmRnL1Z2ZjQ1TE9YU1FKdFU1MkswMURKR3dzRlVTSmRseTNNdDBESXZyWHR4?=
- =?utf-8?B?QmxWTUpXeWN5eDZzd3lIemYvM05mL2hmRnh0MEM1dllJY2VIY0JISklCV3du?=
- =?utf-8?B?amhtbEQ0eHJkVkFMY1B2anpOQ0lXYkg0UC94VUlvRzNpY3JNbTV3QjBBUXpo?=
- =?utf-8?B?TVZHRVF0OUZqYy9NcUVPeVFBaXVCVlZiNTRDY3hydC9IWnBtOGpya0ZZa1FF?=
- =?utf-8?B?eEt1Z3pBYW01blRIZkNzdkFkWWRyZmpVRStWa1Y2OXV2dU1yNnNIMGluRHJn?=
- =?utf-8?B?NVpLWVFDaE1UOHZqOFIrbVNyQXV1cldJRURDNEw0eEdkVDdqWjJzQ3ZuNGNM?=
- =?utf-8?B?OTMzNTJOclM0dEdSN2RzOHdQS2dLdlhaU2F1RGR5ZExnTFhheWZtdkFWN3A4?=
- =?utf-8?B?OHp1N3pTMzJHSS9YM2ZQV2t1bnFxOTZoOXRtYnptMGIrclhiMnoyVXZwa2oy?=
- =?utf-8?B?aCszanpCMHFPOVAxTjkxZ3pxVjZtaGkyNmxYU2R4WDdyWmZ1cjhEZ1NpQStx?=
- =?utf-8?B?U0lyZUwxTVJLNGY3S3FhalZBdVhOQWlyb3JlM2ErOE5PVTA4NmZKVFJYSG9y?=
- =?utf-8?B?RDZwRW1MTjBXS0NpMjBZTkUwTEQwWGVJb0YvVGEydGg2R3lqbnZwYzA5Uk5N?=
- =?utf-8?B?L2xJUFZtK1NPS2VaNllPK2JFcS92VnArcFlXUGczSElOV21KQzBOMGF3U2ov?=
- =?utf-8?B?d1M1KzFPQU5Ua2djUVZPbmgxbkpHakpGSVZQVEdsdC9kNlpZWXRsYzVSS3JR?=
- =?utf-8?B?TVZEMkl6SWtGU0FReU9FM28rTGFYODhnaVRKaE9ZcnA1WlUrNkZ5SG03YXoz?=
- =?utf-8?B?OVBHZnRJVGdKRklHSUlNWmdaRmJzOHV4L3F4WDNMUDlpSVlLUWRHQUtjVVpa?=
- =?utf-8?B?Y25hSFFHTXBvUDcxNXQrb3Z2OUIvTlNHMWRxT2U4NVJxTTRNdXZ6dGl3eWYy?=
- =?utf-8?B?am4wVDdYU29DY2JPdDdOcFhKelVsMjNKcnFlcXFUay9kdzVqMXNselJDRld1?=
- =?utf-8?B?Q2NhckU2YTJ2ZU1sVmtRMkhIdFk5OXJDUmZUSVVGdDZkVG55aXk1NUo3OWpF?=
- =?utf-8?B?YWtUNmRReGQ0WWhGSzVIQng5cFI5VU9QOXBKY0ZoSDR3cWM0VEYzTm1wTHpu?=
- =?utf-8?B?QU5WZVIwcVY3cWlVVDdBeU5XV1MveHFyWjhhNzRESmNOTVZKYnFzQ2NsMllu?=
- =?utf-8?B?VzZ3cnBvUTdwQS96VnNlLzJnTWI5aFVMWjladjUyUWxZbVlpZC9PbDZIRnZO?=
- =?utf-8?B?Z2lNeVdqYjhwUmFVbXZUSmUzdGtUK0ZPLzlUM2Vtb1dkcllhelN5QjFKMXNr?=
- =?utf-8?B?L3owcjVzN21CUERZUEM5cWkvckFVMk1KRDhZYkE5cVBGN2NzY1F2TnRoRGsx?=
- =?utf-8?B?M3lwVTBTQUNaSnFOQUdmREREejdMUFpTV0xoQVhBdEZTdW1xRldjejVZNkNL?=
- =?utf-8?B?QklEUy9aRGZtU0RSanlKcDlxb0k4SGthTjczS2djeFBRaFNNRnhKNnl1cmhQ?=
- =?utf-8?B?d2M1dDI1R21ramphNmQrN21WMEUrVzRxWVh5Sk84eUcyS1ozUnBRMWpNL0Fv?=
- =?utf-8?B?dlM4Q0puL05RSUlJdFFqQ2VQQ1dXL1ViSGhaQXhWbklEODRxOUhYWWZhZ0k1?=
- =?utf-8?B?YzZyMEcwbzdLWkpkUjc5SXNTRDZHbDB0WnRFL3paQ1R5dG9QdW5HeG0zY1JE?=
- =?utf-8?B?clVYeHdwK2lwU3ZRS2p3ZGRrOXBWNkRmYjEwSW5DalY5UVI3cTZsWGtxelRR?=
- =?utf-8?B?aVkvbWhBL1NKODNoa0hGNEUyMEdFMG1nOWo4dFhqK2prL1VoOWFoYU9qOTJN?=
- =?utf-8?B?MWxmd3hpUXNLTC9idHR6UGRYcnRCODJWQ0c3TC80dnMzRnZTRmpnS3lrV1FB?=
- =?utf-8?B?Um9DeVdNS2hGN25uYmY0b0Qydkl3R2ZhMlh6TTJiN2RwS21iajFkN0lIaHZZ?=
- =?utf-8?B?ODJLZEJkYlpKb3dmVXNTMjU5SXZnTjhWMlpvMlArTVZxYk8zanRsY1FaSG1U?=
- =?utf-8?Q?gR5KV9xtnm8zrF0WHRd0DZw3m?=
+	=?utf-8?B?cmZoenVQUG05YURxU1lGNWk2ZVFDMW9Ibk9TTVkyV3J5UGpqcXBuNmorMTd6?=
+ =?utf-8?B?Tk5KZ1B6YVE2TllWZVQ3bzlvR0tHZlNRbUQwQWo3VDRmL1VIZnlCOHF4eUkv?=
+ =?utf-8?B?UldzRVFHTXcvdTlIUEI5bGRvRysyTzV2ZkdGSkljOW13QWxDNzBaQ0RIRW11?=
+ =?utf-8?B?WFozZGQxdnFOMFJxeExOZXpycythUHlGeEEyNUJEMDJkakdCcFUwWHVkRWFC?=
+ =?utf-8?B?Y1VwVlQ4dnM3Tk9BakRPQStBQzNxd2dqMUxabm5jeGVjRjgyZlJZNFBOQTN4?=
+ =?utf-8?B?aWxtVHRJbGd5eUhBUmRtVkVQVFAxNWFzdzZrTmZCanFhQ3RDS3N5aFhEWEd1?=
+ =?utf-8?B?dUNEdVVSY09KbUx4azUyVWlGY3VETm81ZlJWVEx1MG4xcTh5ZEJEMGxmYnp5?=
+ =?utf-8?B?RWZWd1NkSHY5SUQ4TWgwS0NnWmovOVBXYXluSVRMKzM2ZW8wQjlkZVllS2Ro?=
+ =?utf-8?B?TCtMcTBuaHczNTA0elE0NCtUN3FiYndGcXF1bk50RVYxcm0xNDdhSjhrKytZ?=
+ =?utf-8?B?ODl0bS9LVFRaOTRDUmoyYmxoanJkbU4xN2lxN2FsTjdhcm9qRGdYTzdQWGxN?=
+ =?utf-8?B?ZGdXb243YUt0cWtlSXRseG1SbVVLaUV4Q2JFZmlIbVhZRmt6c1kxYk9reGov?=
+ =?utf-8?B?SjVDcXBtNW1CRWF3dXBnOWxWV1JPdncxT0JUTEJWeGhuMGtkNHlxaTJGSERw?=
+ =?utf-8?B?YnNCVmJaNnZOSlNFVjB0UXh4R3dsMC9oeCtMQWl2d1BzcE9uMG9CRVRMTkJh?=
+ =?utf-8?B?bkRmMzk5TXYzY0NqUnFyd1ZVaGZPN2dZNU00WFBBczNONitrb0lRTE1LVFc1?=
+ =?utf-8?B?Y01yQ3M1aS82V04yZWQ5RlNieDJFTE5HeGhFRUo4VmRwVldka0hIU1kwSHJp?=
+ =?utf-8?B?ejhiTzc4L0pvVTJvZkNMWDV1eldNRmZoWCt2blgya0NWUFdBbldNN0kxYkNS?=
+ =?utf-8?B?b3lSaTByQllWcjdmdGpKUWpGVWcvWmFjN1dYME9pSFVCNGNWN1lFRFFGNnFk?=
+ =?utf-8?B?dmZLd0tYRmRZamdoNmhYQ0J2NHc5TWgvM0pIa0JIbmRmL01xQk13d1VMeGtz?=
+ =?utf-8?B?dkZPZGx3M2g1anRBaGwyZUI1eVAxQ1pLc0VhTzVQQy96WVF1dlcyeS9obVZi?=
+ =?utf-8?B?anBYZmZPcVYyNlZIc0g2UU9lMmUrTGVvb3duaDRDR2dTeGFXWHBJRE83U1hS?=
+ =?utf-8?B?SmtMdVprZmRVNk9TckhpU1V5eGZFQkVRY1NXOG1zRjcySHBqUEIxUGdzczZL?=
+ =?utf-8?B?WC9DTUw1ZjlMSUNHenN1M0E0NXluM1Z3bzUxek12YWhDUENNMUZUd2s0Mmo4?=
+ =?utf-8?B?UDUvMFBnMUpVQ1M0SjlySUJZRWxmMC8zMmkrRHd5MFRDZ2VnM1pieDVNM0pM?=
+ =?utf-8?B?b1FURjhYcXlrYUNMS0hHTm1ib0NrZDU0NTZIYVphZHp6Slh5bXdhNW5DbTRl?=
+ =?utf-8?B?eGx3d1E5R2MwTms0NnhYSG9GR2Y4cWw0UFZRcnFnaTZkU0JML3krQXpycWIv?=
+ =?utf-8?B?b3k0ZVNjTGErU1ZiNlRmdVZRMFVKb1hNYVJkdTBraUhFR3VETGd1eG9hVmY5?=
+ =?utf-8?B?MXZjWUJmTmtteExMZVdlSnBhRERLNjgvVElvWklEbHNHWGZIb1I5ekk5VjQz?=
+ =?utf-8?B?MnVEeUZ0WUVySFVRc2I0Q1pMZHNxYmh3WHZ4a3hGb25QczYyZ1k3amtPRCs1?=
+ =?utf-8?B?dDBmclJGd0E5NGtjNnFsYkIxUkwzU0lwb21hWHFsc3RneE44SmZXVFJoN2Rv?=
+ =?utf-8?B?Q1k2aGJSVU5Kc1I4ME5XOFpHVGh0MUZWYW9PaHY3T243Sk41YXJGR3kyOHdp?=
+ =?utf-8?B?MnpndzdNeWtLcEdaSjBEMEdJZnBIVnI5K1hxNDJqUXBYbjZ0SzdoNU5SVU5X?=
+ =?utf-8?B?SHo3ckZUYXp5dTlyajhuOThIQ2k5b2pHSGQ1aW9rR2tOYTQ4aTRmaEpuTU03?=
+ =?utf-8?B?NEV1a0I3cEIwZnk5VnhhUldqWnlIbk96cjBwQllwM1RNUDdOUnBUS1FTUUN6?=
+ =?utf-8?B?dk00V1JMbDhOcXlRTU1lRHdlS29rcEc1OUFGMUp5YmJiTGJ3TW1XdmJPa29H?=
+ =?utf-8?B?VTkwRmdYOUVlQnhyQ2UxQ2VOUW9qS3AxaGEwZmpHaDFCdjR5WjdMWGZHa0pl?=
+ =?utf-8?Q?Cq1oUYc1EHIgNUk4q198cQG9f?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6359652d-7253-4724-78e3-08dbf809de77
+X-MS-Exchange-CrossTenant-Network-Message-Id: 91a1f29c-3c8c-4575-acfc-08dbf809df0d
 X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3268.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2023 16:22:27.5295
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2023 16:22:28.4875
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bEBk5GYw/uXDfLePIAbgtf9ZKqSpjPIjzdN57BBFlp4jBnBmnel9OxtcQTMYgCpyPoc7pdhLQS/xfLPZFyaZmw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 298TcHD7+wV5eSsKEYPNkTMIzqKU+DQORhZdJmiF2AQf36jk9hA5i8MQtURfO00qvAks8jpiGv6bKJ6So9SYpQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4525
 
-Thanks for taking a look Dan! Replies inline.
 
-On 12/7/23 5:13 PM, Dan Williams wrote:
+
+On 12/7/23 6:03 PM, Dan Williams wrote:
 > Ben Cheatham wrote:
->> Add creation of debugfs directories for ports and dports under
->> /sys/kernel/debug/cxl when EINJ support is enabled. The dport
->> directories will contain files for injecting CXL protocol errors.
->> These files are only usable once the EINJ module has loaded and
->> registered callback functions with the CXL core module, before that
->> occurs (or if the EINJ module isn't loaded) the files will do nothing
->> and return an ENODEV error.
+>> Add functions to the EINJ module to be used in the CXL module for CXL
+>> protocol error injection. The callbacks implement the einj_types and
+>> einj_inject files under /sys/kernel/debug/cxl/portX/dportY. These two
+>> files work in the same way as the available_error_types and error_inject
+>> files under /sys/kernel/debug/apei/einj, but only for CXL error types.
+>> If the dport is enumerated in RCH (CXL 1.1) mode, a CXL 1.1 error is
+>> injected into the dport; a CXL 2.0 error is injected otherwise.
 >>
 >> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >> Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
 >> ---
->>  Documentation/ABI/testing/debugfs-cxl | 27 +++++++++
->>  drivers/cxl/core/port.c               | 84 +++++++++++++++++++++++++++
->>  drivers/cxl/cxl.h                     | 10 ++++
->>  3 files changed, 121 insertions(+)
+>>  drivers/acpi/apei/Kconfig |   3 ++
+>>  drivers/acpi/apei/einj.c  | 105 ++++++++++++++++++++++++++++++++++++++
+>>  2 files changed, 108 insertions(+)
 >>
->> diff --git a/Documentation/ABI/testing/debugfs-cxl b/Documentation/ABI/testing/debugfs-cxl
->> index fe61d372e3fa..782a1bb78884 100644
->> --- a/Documentation/ABI/testing/debugfs-cxl
->> +++ b/Documentation/ABI/testing/debugfs-cxl
->> @@ -33,3 +33,30 @@ Description:
->>  		device cannot clear poison from the address, -ENXIO is returned.
->>  		The clear_poison attribute is only visible for devices
->>  		supporting the capability.
->> +
->> +What:		/sys/kernel/debug/cxl/portX/dportY/einj_types
+>> diff --git a/drivers/acpi/apei/Kconfig b/drivers/acpi/apei/Kconfig
+>> index 6b18f8bc7be3..100c27beb581 100644
+>> --- a/drivers/acpi/apei/Kconfig
+>> +++ b/drivers/acpi/apei/Kconfig
+>> @@ -11,6 +11,9 @@ config ACPI_APEI
+>>  	select PSTORE
+>>  	select UEFI_CPER
+>>  	depends on HAVE_ACPI_APEI
+>> +	imply CXL_BUS
+>> +	imply CXL_ACPI
+>> +	imply CXL_PORT
 > 
-> Given this file is identical contents for all dports it only needs to
-> exist in one common location
+> This goes away with the CONFIG_CXL_EINJ scheme proposed on patch1.
 > 
-> /sys/kernel/debug/cxl/einj_types
-> 
-
-Good point, I'll make that change.
-
-> 
->> +Date:		November, 2023
->> +KernelVersion:	v6.8
->> +Contact:	linux-cxl@vger.kernel.org
->> +Description:
->> +		(RO) Prints the CXL protocol error types made available by
->> +		the platform in the format "0x<error number>	<error type>".
->> +		The <error number> can be written to einj_inject to inject
->> +		<error type> into dportY. This file is only visible if
->> +		CONFIG_ACPI_APEI_EINJ is enabled, and the EINJ module must
->> +		be able to reach one (or both) of the CXL_ACPI or CXL_PORT
->> +		modules to be functional.
-> 
-> This can be simplified. Have something like:
-> 
-> config CXL_EINJ
-> 	default CXL_BUS
-> 	depends on ACPI_APEI_EINJ && ACPI_APEI_EINJ=CXL_BUS
-> 	...
-> 
-> Then the documentation moves to Kconfig for how to enable this and the
-> CXL code can directly call into the EINJ module without worry.
-> 
-> It would of course need stubs like these in a shared header:
-> 
-> #ifdef CONFIG_CXL_EINJ
-> int cxl_einj_available_error_type(struct seq_file *m, void *v);
-> int cxl_einj_inject_error(struct cxl_dport *dport, u64 type);
-> #else
-> static inline int cxl_einj_available_error_type(struct seq_file *m, void *v)
-> {
-> 	return -ENXIO;
-> }
-> 
-> int cxl_einj_inject_error(struct cxl_dport *dport, u64 type)
-> {
-> 	return -ENXIO;
-> }
-> #endif
-> 
-
-I had to go back and take a look, but I had a shared header in v5 (link: https://lore.kernel.org/linux-cxl/20230926120418.0000575d@Huawei.com/). 
-Jonathan recommended that I instead include cxl.h directly, but that was pretty much a completely different patch set
-at the time (and the header was under include/linux/). That being said, I agree that a header under drivers/cxl would
-make much more sense here.
-
->> +
->> +What:		/sys/kernel/debug/cxl/portX/dportY/einj_inject
-> 
-> See my comments on cxl_debugfs_create_dport_dir() later on, but I think
-> the "portX" directory can be eliminated.
-> 
->> +Date:		November, 2023
->> +KernelVersion:	v6.8
->> +Contact:	linux-cxl@vger.kernel.org
->> +Description:
->> +		(WO) Writing an integer to this file injects the corresponding
->> +		CXL protocol error into dportY (integer to type mapping is
->> +		available by reading from einj_types). If the dport was
->> +		enumerated in RCH mode, a CXL 1.1 error is injected, otherwise
->> +		a CXL 2.0 error is injected. This file is only visible if
->> +		CONFIG_ACPI_APEI_EINJ is enabled, and the EINJ module must
->> +		be able to reach one (or both) of the CXL_ACPI or CXL_PORT
->> +		modules to be functional.
-> 
-> Similar comments about dropping these details that can just be solved in
-> Kconfig.
-> 
-> This is next comment is on EINJ ABI, but you can skip it just to
-> maintain momentum with the status quo. Why require the user to do the
-> string to integer conversion? Seems like a small matter of programming
-> to allow:
-> 
-> echo "CXL.cache Protocol Correctable" > einj_inject
-> 
-> ...to do the right thing. That probably makes scripts more readable as
-> well.
-> 
-
-That's a good point. I can do that, but I think it may be better to keep the
-consistency with the EINJ module to simplify things for end users. If you feel
-that isn't a big enough concern I can go ahead and modify it.
-
->> diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
->> index 38441634e4c6..acf10415a174 100644
->> --- a/drivers/cxl/core/port.c
->> +++ b/drivers/cxl/core/port.c
->> @@ -783,6 +783,72 @@ static int cxl_dport_setup_regs(struct device *host, struct cxl_dport *dport,
->>  	return rc;
->>  }
+>>  	help
+>>  	  APEI allows to report errors (for example from the chipset)
+>>  	  to the operating system. This improves NMI handling
+>> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
+>> index 330329ac2f1f..98d5e6d60a02 100644
+>> --- a/drivers/acpi/apei/einj.c
+>> +++ b/drivers/acpi/apei/einj.c
+>> @@ -21,9 +21,11 @@
+>>  #include <linux/nmi.h>
+>>  #include <linux/delay.h>
+>>  #include <linux/mm.h>
+>> +#include <linux/pci.h>
+>>  #include <asm/unaligned.h>
 >>  
->> +static struct cxl_einj_ops einj_ops;
->> +void cxl_einj_set_ops_cbs(struct cxl_einj_ops *ops)
+>>  #include "apei-internal.h"
+>> +#include "../../cxl/cxl.h"
+> 
+> EINJ has no business knowing all of the details in cxl.h. In fact all
+> EINJ cares about is dport->dport_dev and dport->rch. I think just add
+> those to the calling convention, see below:
+> 
+>>  #undef pr_fmt
+>>  #define pr_fmt(fmt) "EINJ: " fmt
+>> @@ -627,6 +629,25 @@ static int available_error_type_show(struct seq_file *m, void *v)
+>>  
+>>  DEFINE_SHOW_ATTRIBUTE(available_error_type);
+>>  
+>> +static int cxl_einj_available_error_type(struct seq_file *m, void *v)
 >> +{
->> +	if (!IS_REACHABLE(CONFIG_ACPI_APEI_EINJ) || !ops)
->> +		return;
+>> +	int cxl_err, rc;
+>> +	u32 available_error_type = 0;
 >> +
->> +	einj_ops = *ops;
->> +}
->> +EXPORT_SYMBOL_NS_GPL(cxl_einj_set_ops_cbs, CXL);
-> 
-> einj_ops goes away when the CXL code can just call the EINJ module
-> directly.
-> 
+>> +	rc = einj_get_available_error_type(&available_error_type);
+>> +	if (rc)
+>> +		return rc;
 >> +
->> +static int cxl_einj_type_show(struct seq_file *f, void *data)
->> +{
->> +	if (!einj_ops.einj_type)
->> +		return -ENODEV;
+>> +	for (int pos = 0; pos < ARRAY_SIZE(einj_cxl_error_type_string); pos++) {
+>> +		cxl_err = ACPI_EINJ_CXL_CACHE_CORRECTABLE << pos;
 >> +
->> +	return einj_ops.einj_type(f, data);
->> +}
->> +
->> +static int cxl_einj_inject(void *data, u64 type)
->> +{
->> +	struct cxl_dport *dport = data;
->> +
->> +	if (!einj_ops.einj_inject)
->> +		return -ENODEV;
->> +
->> +	return einj_ops.einj_inject(dport, type);
->> +}
->> +DEFINE_DEBUGFS_ATTRIBUTE(cxl_einj_inject_fops, NULL, cxl_einj_inject, "%llx\n");
-> 
-> The wrappers go away and DEFINE_DEBUGFS_ATTRIBUTE() can reference the
-> EINJ symbols directly.
-> 
->> +
->> +static int cxl_debugfs_create_dport_dir(struct dentry *port_dir,
->> +						   struct cxl_dport *dport)
->> +{
->> +	struct dentry *dir;
->> +	char dir_name[32];
->> +
->> +	snprintf(dir_name, 31, "dport%d", dport->port_id);
-> 
-> How about dev_name(dport->dport_dev) rather than the dynamic name?
-> 
-> The other benefit of this is that the dport_dev names are unique, so you
-> can move the einj_inject file to:
-> 
-> /sys/kernel/debug/cxl/$dport_dev/einj_inject
-> 
-
-I didn't realize the dport names were also unique. I'll go ahead and do that instead.
-
->> +	dir = debugfs_create_dir(dir_name, port_dir);
->> +	if (IS_ERR(dir))
->> +		return PTR_ERR(dir);
->> +
->> +	debugfs_create_devm_seqfile(dport->dport_dev, "einj_types", dir,
->> +				    cxl_einj_type_show);
-> 
-> Per above, move this to be a top-level file.
-> 
-
-Will do.
-
->> +
->> +	debugfs_create_file("einj_inject", 0200, dir, dport,
->> +			    &cxl_einj_inject_fops);
->> +	return 0;
-> 
-> debugfs is good about failing gracefully when pre-requisites are not
-> present. This is why none of the debugfs creation helpers have return
-> codes because failing to setup debugfs is never fatal.
-> 
-> In other words, it is ok to take the output of debugfs_create_dir()
-> without checking, and this function should not be returning an error.
-> 
-
-Will do.
-
->> +}
->> +
->> +static struct dentry *cxl_debugfs_create_port_dir(struct cxl_port *port)
->> +{
->> +	const char *dir_name = dev_name(&port->dev);
->> +	struct dentry *dir;
->> +
->> +	if (!IS_ENABLED(CONFIG_ACPI_APEI_EINJ))
->> +		return ERR_PTR(-ENODEV);
->> +
->> +	dir = cxl_debugfs_create_dir(dir_name);
->> +	if (IS_ERR(dir)) {
->> +		dev_dbg(&port->dev, "Failed to create port debugfs dir: %ld\n",
->> +			PTR_ERR(dir));
->> +		return dir;
+>> +		if (available_error_type & cxl_err)
+>> +			seq_puts(m, einj_cxl_error_type_string[pos]);
 >> +	}
 >> +
->> +	return dir;
+>> +	return 0;
 >> +}
 >> +
->>  static struct cxl_port *__devm_cxl_add_port(struct device *host,
->>  					    struct device *uport_dev,
->>  					    resource_size_t component_reg_phys,
->> @@ -861,6 +927,7 @@ struct cxl_port *devm_cxl_add_port(struct device *host,
->>  				   struct cxl_dport *parent_dport)
+>>  static int validate_error_type(u64 type)
 >>  {
->>  	struct cxl_port *port, *parent_port;
->> +	struct dentry *dir;
+>>  	u32 tval, vendor, available_error_type = 0;
+>> @@ -657,6 +678,68 @@ static int validate_error_type(u64 type)
+>>  	return 0;
+>>  }
 >>  
->>  	port = __devm_cxl_add_port(host, uport_dev, component_reg_phys,
->>  				   parent_dport);
->> @@ -878,6 +945,10 @@ struct cxl_port *devm_cxl_add_port(struct device *host,
->>  			parent_port ? " to " : "",
->>  			parent_port ? dev_name(&parent_port->dev) : "",
->>  			parent_port ? "" : " (root port)");
+>> +static int cxl_dport_get_sbdf(struct cxl_dport *dport, u64 *sbdf)
+>> +{
+>> +	struct pci_dev *pdev;
+>> +	struct pci_bus *pbus;
+>> +	struct pci_host_bridge *bridge;
+>> +	u64 seg = 0, bus;
 >> +
->> +		dir = cxl_debugfs_create_port_dir(port);
->> +		if (!IS_ERR(dir))
->> +			port->debug_dir = dir;
->>  	}
->>  
->>  	return port;
->> @@ -1127,6 +1198,7 @@ struct cxl_dport *devm_cxl_add_dport(struct cxl_port *port,
->>  				     resource_size_t component_reg_phys)
->>  {
->>  	struct cxl_dport *dport;
+>> +	if (!dev_is_pci(dport->dport_dev))
+>> +		return -EINVAL;
+>> +
+>> +	pdev = to_pci_dev(dport->dport_dev);
+>> +	pbus = pdev->bus;
+>> +	bridge = pci_find_host_bridge(pbus);
+>> +
+>> +	if (!bridge)
+>> +		return -ENODEV;
+>> +
+>> +	if (bridge->domain_nr != PCI_DOMAIN_NR_NOT_SET)
+>> +		seg = bridge->domain_nr << 24;
+>> +
+>> +	bus = pbus->number << 16;
+>> +	*sbdf = seg | bus | pdev->devfn;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int cxl_einj_inject_error(struct cxl_dport *dport, u64 type)
+> 
+> If you split this into cxl_einj_inject_error() and
+> cxl_einj_inject_rch_error() with following prototypes:
+> 
+> static int cxl_einj_inject_error(struct pci_dev *dport_dev, u64 type)
+> static int cxl_einj_inject_rch_error(u64 rcrb, u64 type)
+> 
+> ...then you don't need any of the cxl.h definitions. The dev_is_pci()
+> and rch determination details can remain private to CXL.
+> 
+
+Good suggestion. Will do!
+
+Thanks,
+Ben
+
+>> +{
+>> +	u64 param1 = 0, param2 = 0, param4 = 0;
+>> +	u32 flags;
 >> +	int rc;
->>  
->>  	dport = __devm_cxl_add_dport(port, dport_dev, port_id,
->>  				     component_reg_phys, CXL_RESOURCE_NONE);
->> @@ -1136,6 +1208,11 @@ struct cxl_dport *devm_cxl_add_dport(struct cxl_port *port,
->>  	} else {
->>  		dev_dbg(dport_dev, "dport added to %s\n",
->>  			dev_name(&port->dev));
 >> +
->> +		rc = cxl_debugfs_create_dport_dir(port->debug_dir, dport);
+>> +	/* Only CXL error types can be specified */
+>> +	if (type & ~CXL_ERROR_MASK || (type & ACPI5_VENDOR_BIT))
+>> +		return -EINVAL;
+>> +
+>> +	rc = validate_error_type(type);
+>> +	if (rc)
+>> +		return rc;
+>> +
+>> +	/*
+>> +	 * If dport is in restricted mode, inject a CXL 1.1 error,
+>> +	 * otherwise inject a CXL 2.0 error
+>> +	 */
+>> +	if (dport->rch) {
+>> +		if (dport->rcrb.base == CXL_RESOURCE_NONE)
+>> +			return -EINVAL;
+>> +
+>> +		param1 = (u64) dport->rcrb.base;
+>> +		param2 = 0xfffffffffffff000;
+>> +		flags = 0x2;
+>> +	} else {
+>> +		rc = cxl_dport_get_sbdf(dport, &param4);
 >> +		if (rc)
->> +			dev_dbg(dport_dev,
->> +				"Failed to create dport debugfs dir: %d\n", rc);
-> 
-> Drop the debug messages about failing to setup debugfs. This follows the
-> lead of other debugfs setup in CXL.
-> 
-
-Will do.
-
->>  	}
->>  
->>  	return dport;
->> @@ -1156,6 +1233,7 @@ struct cxl_dport *devm_cxl_add_rch_dport(struct cxl_port *port,
->>  					 resource_size_t rcrb)
+>> +			return rc;
+>> +
+>> +		flags = 0x4;
+>> +	}
+>> +
+>> +	return einj_error_inject(type, flags, param1, param2, 0, param4);
+>> +}
+>> +
+>>  static int error_type_get(void *data, u64 *val)
 >>  {
->>  	struct cxl_dport *dport;
->> +	int rc;
+>>  	*val = error_type;
+>> @@ -668,6 +751,7 @@ static int error_type_set(void *data, u64 val)
+>>  {
+>>  	int rc;
 >>  
->>  	if (rcrb == CXL_RESOURCE_NONE) {
->>  		dev_dbg(&port->dev, "failed to add RCH dport, missing RCRB\n");
->> @@ -1170,6 +1248,12 @@ struct cxl_dport *devm_cxl_add_rch_dport(struct cxl_port *port,
->>  	} else {
->>  		dev_dbg(dport_dev, "RCH dport added to %s\n",
->>  			dev_name(&port->dev));
->> +
->> +		rc = cxl_debugfs_create_dport_dir(port->debug_dir, dport);
->> +		if (rc)
->> +			dev_dbg(dport_dev,
->> +				"Failed to create rch dport debugfs dir: %d\n",
->> +				rc);
+>> +	/* CXL error types have to be injected from cxl debugfs */
+>>  	if (val & CXL_ERROR_MASK && !(val & ACPI5_VENDOR_BIT))
+>>  		return -EINVAL;
+>>  
+>> @@ -714,6 +798,7 @@ static int __init einj_init(void)
+>>  {
+>>  	int rc;
+>>  	acpi_status status;
+>> +	struct cxl_einj_ops cxl_ops;
+>>  	struct apei_exec_context ctx;
+>>  
+>>  	if (acpi_disabled) {
+>> @@ -793,6 +878,15 @@ static int __init einj_init(void)
+>>  				   einj_debug_dir, &vendor_flags);
 >>  	}
 >>  
->>  	return dport;
->> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
->> index 687043ece101..3c7744fc3106 100644
->> --- a/drivers/cxl/cxl.h
->> +++ b/drivers/cxl/cxl.h
->> @@ -590,6 +590,7 @@ struct cxl_dax_region {
->>   * @depth: How deep this port is relative to the root. depth 0 is the root.
->>   * @cdat: Cached CDAT data
->>   * @cdat_available: Should a CDAT attribute be available in sysfs
->> + * @debug_dir: dentry for port in cxl debugfs (optional)
->>   */
->>  struct cxl_port {
->>  	struct device dev;
->> @@ -612,6 +613,7 @@ struct cxl_port {
->>  		size_t length;
->>  	} cdat;
->>  	bool cdat_available;
->> +	struct dentry *debug_dir;
+>> +	if (IS_REACHABLE(CONFIG_CXL_ACPI) || IS_REACHABLE(CONFIG_CXL_PORT)) {
+>> +		cxl_ops = (struct cxl_einj_ops) {
+>> +			.einj_type = cxl_einj_available_error_type,
+>> +			.einj_inject = cxl_einj_inject_error,
+>> +		};
+>> +
+>> +		cxl_einj_set_ops_cbs(&cxl_ops);
+>> +	}
 > 
-> Part of why I asked for the debugfs file rename was to eliminate this
-> wart on the data structure.
+> This goes away with the new Kconfig dependency scheme.
 > 
-
-Yeah I wasn't that happy about adding it, so I'd be happy to remove it!
-
->>  };
+>> +
+>>  	pr_info("Error INJection is initialized.\n");
 >>  
->>  static inline struct cxl_dport *
->> @@ -813,6 +815,14 @@ bool is_cxl_nvdimm_bridge(struct device *dev);
->>  int devm_cxl_add_nvdimm(struct cxl_memdev *cxlmd);
->>  struct cxl_nvdimm_bridge *cxl_find_nvdimm_bridge(struct cxl_memdev *cxlmd);
+>>  	return 0;
+>> @@ -810,8 +904,18 @@ static int __init einj_init(void)
 >>  
->> +struct cxl_einj_ops {
->> +	int (*einj_type)(struct seq_file *f, void *data);
->> +	int (*einj_inject)(struct cxl_dport *dport, u64 type);
->> +};
+>>  static void __exit einj_exit(void)
+>>  {
+>> +	struct cxl_einj_ops cxl_ops;
+>>  	struct apei_exec_context ctx;
+>>  
+>> +	if (IS_REACHABLE(CONFIG_CXL_ACPI) || IS_REACHABLE(CONFIG_CXL_PORT)) {
+>> +		cxl_ops = (struct cxl_einj_ops) {
+>> +			.einj_type = NULL,
+>> +			.einj_inject = NULL,
+>> +		};
 >> +
->> +void cxl_einj_set_ops_cbs(struct cxl_einj_ops *ops);
+>> +		cxl_einj_set_ops_cbs(&cxl_ops);
+>> +	}
 >> +
->> +
->>  #ifdef CONFIG_CXL_REGION
->>  bool is_cxl_pmem_region(struct device *dev);
->>  struct cxl_pmem_region *to_cxl_pmem_region(struct device *dev);
->> -- 
->> 2.34.1
->>
->>
+>>  	if (einj_param) {
+>>  		acpi_size size = (acpi5) ?
+>>  			sizeof(struct set_error_type_with_address) :
+>> @@ -832,4 +936,5 @@ module_exit(einj_exit);
+>>  
+>>  MODULE_AUTHOR("Huang Ying");
+>>  MODULE_DESCRIPTION("APEI Error INJection support");
+>> +MODULE_IMPORT_NS(CXL);
 > 
-> 
-> 
+> EINJ never references a CXL symbol in the new proposed scheme.
 
