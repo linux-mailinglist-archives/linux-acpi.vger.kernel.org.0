@@ -1,26 +1,26 @@
-Return-Path: <linux-acpi+bounces-2243-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2242-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C8480AE02
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 21:37:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC97C80AE01
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 21:36:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F994280F88
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 20:37:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A4E61C20311
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 20:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D6D57889
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 20:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1A95787E
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 20:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
 	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cxJ35/V0"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D5F51C27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CF050242
 	for <linux-acpi@vger.kernel.org>; Fri,  8 Dec 2023 20:00:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5C886C433B9;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4DE6CC433C8;
 	Fri,  8 Dec 2023 20:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1702065615;
@@ -33,7 +33,7 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	 pK+k9Po+S3E/MR2fFrqwpxXaDxPG/Jeiyf8It/DuHeO6psKgsItyTqUAbL41ad4Acy
 	 mV+SDos8A/NWw==
 Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 390F2C04E24;
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 2C380C04DD9;
 	Fri,  8 Dec 2023 20:00:15 +0000 (UTC)
 Subject: Re: [GIT PULL] ACPI fix for v6.7-rc5
 From: pr-tracker-bot@kernel.org
@@ -46,7 +46,7 @@ X-PR-Tracked-Commit-Id: 8f0b960a42badda7a2781e8a33564624200debc9
 X-PR-Merge-Tree: torvalds/linux.git
 X-PR-Merge-Refname: refs/heads/master
 X-PR-Merge-Commit-Id: c3e2f9bda2ffa2dd7dcaf2b45604db08c6ab0579
-Message-Id: <170206561522.12654.8671400626734986914.pr-tracker-bot@kernel.org>
+Message-Id: <170206561517.13365.4217672733381363438.pr-tracker-bot@kernel.org>
 Date: Fri, 08 Dec 2023 20:00:15 +0000
 To: "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
