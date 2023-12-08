@@ -1,275 +1,485 @@
-Return-Path: <linux-acpi+bounces-2233-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2234-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51D680A937
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 17:35:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFE380A938
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 17:36:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A4E6281276
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 16:35:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DFC91F20F09
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 16:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248AE35289
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 16:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A805F38DE6
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 16:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WBi5vSOL"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="M1ZGAHKv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 678CF10EB
-	for <linux-acpi@vger.kernel.org>; Fri,  8 Dec 2023 07:47:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702050449;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xnSFlC/zBOY0Wp1wxKdNslxmaFigAVsOLyWoBkCEP2I=;
-	b=WBi5vSOLyFSg4bB3z+j98lmZyCPp8/nCUoaX6R8dTMFleZyCKqrTkJws3MKfaVECnVusWC
-	gopJOvqaYbiLlX4GhJOBOu0LryGKJq2eyXERjtut56SmAwOlT+3EmeZnpf9UC2rW5t8jPg
-	aKwSi3yWOIaayhx/LcpHCfrmPqtrk5Q=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-77-qQ-AizArMV2x8vG9pPRGtA-1; Fri, 08 Dec 2023 10:47:28 -0500
-X-MC-Unique: qQ-AizArMV2x8vG9pPRGtA-1
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a1b760c23b6so114811266b.0
-        for <linux-acpi@vger.kernel.org>; Fri, 08 Dec 2023 07:47:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702050447; x=1702655247;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xnSFlC/zBOY0Wp1wxKdNslxmaFigAVsOLyWoBkCEP2I=;
-        b=KWKH5wJXNSGHqYUiwV/9T7I5FmI2GFaw+f3+HErVYX0LDyiyajUCeOhARv9JAAsCyq
-         d0dOAJhxvp3ppTvMrf9bkCawZN0WwFdRD/uOk9yLXT0dK97YPa3exkq1RsoodJrXSUHi
-         ncIjsG8XAp43WEY6FowrcCfWQ+efkuYh2hU6w5XYZmNAjvQ1KaE08uZrK6bdOVTBBYYm
-         naj/nZN145SDAFACPzFePOKbpwCfKjS8r9lI2IEltwy9TgLeXI8G39LmLqTdaZWOe9M2
-         bjTXzHOm2yB3S48G6XA52s2uPTVgTHYkHuKHUzoQRWXsF62YpE3mVLL+k+K6jz45ufeG
-         HAzw==
-X-Gm-Message-State: AOJu0Yww8izVq+fh7OLRcnbPDWfvclaa3LSnDhHGc2eWcfrFwEickKod
-	IO6012fLJnu8ODzHMbbZZ4WQl/T70rQzdvC+1ZihGxv/wc6qHa7pGP9959TcUMEFEoAcsE6MCbq
-	i/o6EdAL72vKuxQfRt8iGLQ==
-X-Received: by 2002:a17:906:2a84:b0:a1e:2c27:8916 with SMTP id l4-20020a1709062a8400b00a1e2c278916mr89946eje.97.1702050446754;
-        Fri, 08 Dec 2023 07:47:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEu1CtX7w3L1Y91RfeO1h9prw/djM3VduGR6xxFoShmg0Y/So4y297AFZysBoAmCn3xElee5Q==
-X-Received: by 2002:a17:906:2a84:b0:a1e:2c27:8916 with SMTP id l4-20020a1709062a8400b00a1e2c278916mr89930eje.97.1702050446338;
-        Fri, 08 Dec 2023 07:47:26 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id ti4-20020a170907c20400b00a1e377ea78asm1142226ejc.50.2023.12.08.07.47.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Dec 2023 07:47:24 -0800 (PST)
-Date: Fri, 8 Dec 2023 16:47:23 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Fiona Ebner <f.ebner@proxmox.com>, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- bhelgaas@google.com, lenb@kernel.org, rafael@kernel.org, Thomas Lamprecht
- <t.lamprecht@proxmox.com>
-Subject: Re: SCSI hotplug issues with UEFI VM with guest kernel >= 6.5
-Message-ID: <20231208164723.12828a96@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231207232815.GA771837@bhelgaas>
-References: <9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com>
-	<20231207232815.GA771837@bhelgaas>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2076.outbound.protection.outlook.com [40.107.237.76])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E958123;
+	Fri,  8 Dec 2023 08:22:30 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BodccBeqAH28iqlWsU2sjj5eNbAmzZ7UDFYgkTEd0v8AUn9C55ZbNk3n2oByitUL3L2NcV37H67ZZSWMVqpIwCDE9B7IU2dNGHELZbZ/x0edeNeCwxyk9YpUkPSJXNZWLwpblg++sQv4X+8UV/G/2IFl6TLyeWdEkxSGKPl06L25qAYGOUdptnQBuYGQV2pGNhBkP90naLNcY1t5vB00QMQgToUWoIfhUQlES3MuKIah5FPs4VYa+J/OQ10eNJBlL5HRYNCkl/Owus1+T9ovWGuH1uA5gbmLDHR+v26TGFyTZzzHH6QmaplOFVEeSVsy4EVEH+3DHNJ7gdicx1Nvrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vk3mBh9BdWe6r126zEs/5SwjFDjk3AMq29LThutm82I=;
+ b=Mr24J9I8niA+EASHbkAkBScPvjjUWAylZLCa/tdowOqJkm5q90Ie49HdG9R+58kQYW7X7wN+UGmRiuJrHFTYZFZty+ENtFcULyQIZrGssXoy3JyZDjZ8KeYns+kRO6o6Y56S6IumpnVJ8HtxzARQPRk8TaJ7T4uI5bcz07sMdCoqxvB7ExUkrvFhsUmK6M5+jowSBMx4m7u/31PkTvVk9V2qby8SkbGiRmlZHCyAyU1Ax0u2LNL395TDT1alWNyjrDVjHG8gYdyrFe40l1hI81e/Nv6doD4E/vaMcdJj+lWjuyNPHNTmPMbqbgjrvIbAXfYF5i5VxN3FnNFSrBI9gg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vk3mBh9BdWe6r126zEs/5SwjFDjk3AMq29LThutm82I=;
+ b=M1ZGAHKvEsUUgX37PFSGwvrMMjF0YkCJpnv/KhYde5/q90Lz0RDQ9MT8OAgJtBI9M6vhcjRDG4PVDDJaC4qnAYNRf6Jud6+rlQTAufKnsGxAFBmGYc6rM3vkuM2QeysUUquWT6P3aBG/tRKLa9MoEl8CkgBeAkUF0cGDAaFeeAo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BN8PR12MB3268.namprd12.prod.outlook.com (2603:10b6:408:6c::18)
+ by SA0PR12MB4525.namprd12.prod.outlook.com (2603:10b6:806:92::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.28; Fri, 8 Dec
+ 2023 16:22:27 +0000
+Received: from BN8PR12MB3268.namprd12.prod.outlook.com
+ ([fe80::ff1a:dd7c:4c93:d8bf]) by BN8PR12MB3268.namprd12.prod.outlook.com
+ ([fe80::ff1a:dd7c:4c93:d8bf%7]) with mapi id 15.20.7068.028; Fri, 8 Dec 2023
+ 16:22:27 +0000
+Message-ID: <359bacbf-94d9-47b8-915f-dbf321cf0a9e@amd.com>
+Date: Fri, 8 Dec 2023 10:22:22 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/5] cxl/port: Add EINJ debugfs files and callback
+ support
+To: Dan Williams <dan.j.williams@intel.com>, dave@stgolabs.net,
+ jonathan.cameron@huawei.com, dave.jiang@intel.com,
+ alison.schofield@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com,
+ rafael@kernel.org
+Cc: yazen.ghannam@amd.com, linux-cxl@vger.kernel.org,
+ linux-acpi@vger.kernel.org
+References: <20231128160656.166609-1-Benjamin.Cheatham@amd.com>
+ <20231128160656.166609-2-Benjamin.Cheatham@amd.com>
+ <657251b0517bc_45e0129418@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Language: en-US
+From: Ben Cheatham <benjamin.cheatham@amd.com>
+In-Reply-To: <657251b0517bc_45e0129418@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN0PR04CA0068.namprd04.prod.outlook.com
+ (2603:10b6:408:ea::13) To BN8PR12MB3268.namprd12.prod.outlook.com
+ (2603:10b6:408:6c::18)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8PR12MB3268:EE_|SA0PR12MB4525:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6359652d-7253-4724-78e3-08dbf809de77
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	SgUZjTo39xE7mXMkeoECyV+V6vhWPEQ9P4XUA0lfFDuDBjXbBumrQbRjraFVVs0cicMymgFdjHXJP6BRiHwWhivVtfpg74byCKmcD41GGyhjY+l3fJN9NJQBNLtuqPmK5HkKwxh0M73remnxfb63un5xsopbV3WDWbdDoEgRXVCMKZccji59PiVwdCaD+NKCvOYENtC4P4mlnIfPYSGS6IrXwesCLwQDVECV6JQRUapAioLg3VnlRv0db1QLMJ59TuvvDkxEUOf1LPlrjV8w9CC3cWx9H0j53xt0LzXb+FPNCc7Ju2+5uqrCHJ6X8n7Qy+qFWQJsjTqFFOkmZNiWUh/RuS/r2RgLtfUFJ233U+3VSbJ7aWupXJWpY624xQjXC+3wNFw+xt/n8aNeK40U5o+3feTwM42H/abkAvIfAh8UzfiTzIYrvZCEiW28n5PECrFIM0Ur+qU/17HumD40jcQDQLO67M6eea8OocSJyNzwxqmB8ZKGz+gMxZyABK9K+QuR16k9l8HuVLDnzxofr5fmmSvjkBi6cUvGlUrBWRDlt4bGEUkPEMerlR83BDaqmu4QLL14z7IrTmwJqO2vj7jkij/l0QSqz4C2MDe4oZxqrbkyAPaZd8aZ+RPjVk08X+fB5swJESDJxCB3WrKbFA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3268.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(136003)(346002)(376002)(396003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(31686004)(26005)(6506007)(6512007)(53546011)(2616005)(38100700002)(86362001)(31696002)(36756003)(30864003)(2906002)(8936002)(478600001)(7416002)(5660300002)(41300700001)(8676002)(4326008)(83380400001)(6486002)(966005)(66946007)(66476007)(316002)(66556008)(6666004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K25UKytpTlpMNEg2MG1oaktmc0hJQ3M4M2MwWFZpNTNUQjd1N1ppZjY1bzNY?=
+ =?utf-8?B?LzJzbTZhQVJ1Q3VualFSL3g1NkVOa3FINlhmejdLUjAxQUZxWC9CQUtobHRz?=
+ =?utf-8?B?NmRnL1Z2ZjQ1TE9YU1FKdFU1MkswMURKR3dzRlVTSmRseTNNdDBESXZyWHR4?=
+ =?utf-8?B?QmxWTUpXeWN5eDZzd3lIemYvM05mL2hmRnh0MEM1dllJY2VIY0JISklCV3du?=
+ =?utf-8?B?amhtbEQ0eHJkVkFMY1B2anpOQ0lXYkg0UC94VUlvRzNpY3JNbTV3QjBBUXpo?=
+ =?utf-8?B?TVZHRVF0OUZqYy9NcUVPeVFBaXVCVlZiNTRDY3hydC9IWnBtOGpya0ZZa1FF?=
+ =?utf-8?B?eEt1Z3pBYW01blRIZkNzdkFkWWRyZmpVRStWa1Y2OXV2dU1yNnNIMGluRHJn?=
+ =?utf-8?B?NVpLWVFDaE1UOHZqOFIrbVNyQXV1cldJRURDNEw0eEdkVDdqWjJzQ3ZuNGNM?=
+ =?utf-8?B?OTMzNTJOclM0dEdSN2RzOHdQS2dLdlhaU2F1RGR5ZExnTFhheWZtdkFWN3A4?=
+ =?utf-8?B?OHp1N3pTMzJHSS9YM2ZQV2t1bnFxOTZoOXRtYnptMGIrclhiMnoyVXZwa2oy?=
+ =?utf-8?B?aCszanpCMHFPOVAxTjkxZ3pxVjZtaGkyNmxYU2R4WDdyWmZ1cjhEZ1NpQStx?=
+ =?utf-8?B?U0lyZUwxTVJLNGY3S3FhalZBdVhOQWlyb3JlM2ErOE5PVTA4NmZKVFJYSG9y?=
+ =?utf-8?B?RDZwRW1MTjBXS0NpMjBZTkUwTEQwWGVJb0YvVGEydGg2R3lqbnZwYzA5Uk5N?=
+ =?utf-8?B?L2xJUFZtK1NPS2VaNllPK2JFcS92VnArcFlXUGczSElOV21KQzBOMGF3U2ov?=
+ =?utf-8?B?d1M1KzFPQU5Ua2djUVZPbmgxbkpHakpGSVZQVEdsdC9kNlpZWXRsYzVSS3JR?=
+ =?utf-8?B?TVZEMkl6SWtGU0FReU9FM28rTGFYODhnaVRKaE9ZcnA1WlUrNkZ5SG03YXoz?=
+ =?utf-8?B?OVBHZnRJVGdKRklHSUlNWmdaRmJzOHV4L3F4WDNMUDlpSVlLUWRHQUtjVVpa?=
+ =?utf-8?B?Y25hSFFHTXBvUDcxNXQrb3Z2OUIvTlNHMWRxT2U4NVJxTTRNdXZ6dGl3eWYy?=
+ =?utf-8?B?am4wVDdYU29DY2JPdDdOcFhKelVsMjNKcnFlcXFUay9kdzVqMXNselJDRld1?=
+ =?utf-8?B?Q2NhckU2YTJ2ZU1sVmtRMkhIdFk5OXJDUmZUSVVGdDZkVG55aXk1NUo3OWpF?=
+ =?utf-8?B?YWtUNmRReGQ0WWhGSzVIQng5cFI5VU9QOXBKY0ZoSDR3cWM0VEYzTm1wTHpu?=
+ =?utf-8?B?QU5WZVIwcVY3cWlVVDdBeU5XV1MveHFyWjhhNzRESmNOTVZKYnFzQ2NsMllu?=
+ =?utf-8?B?VzZ3cnBvUTdwQS96VnNlLzJnTWI5aFVMWjladjUyUWxZbVlpZC9PbDZIRnZO?=
+ =?utf-8?B?Z2lNeVdqYjhwUmFVbXZUSmUzdGtUK0ZPLzlUM2Vtb1dkcllhelN5QjFKMXNr?=
+ =?utf-8?B?L3owcjVzN21CUERZUEM5cWkvckFVMk1KRDhZYkE5cVBGN2NzY1F2TnRoRGsx?=
+ =?utf-8?B?M3lwVTBTQUNaSnFOQUdmREREejdMUFpTV0xoQVhBdEZTdW1xRldjejVZNkNL?=
+ =?utf-8?B?QklEUy9aRGZtU0RSanlKcDlxb0k4SGthTjczS2djeFBRaFNNRnhKNnl1cmhQ?=
+ =?utf-8?B?d2M1dDI1R21ramphNmQrN21WMEUrVzRxWVh5Sk84eUcyS1ozUnBRMWpNL0Fv?=
+ =?utf-8?B?dlM4Q0puL05RSUlJdFFqQ2VQQ1dXL1ViSGhaQXhWbklEODRxOUhYWWZhZ0k1?=
+ =?utf-8?B?YzZyMEcwbzdLWkpkUjc5SXNTRDZHbDB0WnRFL3paQ1R5dG9QdW5HeG0zY1JE?=
+ =?utf-8?B?clVYeHdwK2lwU3ZRS2p3ZGRrOXBWNkRmYjEwSW5DalY5UVI3cTZsWGtxelRR?=
+ =?utf-8?B?aVkvbWhBL1NKODNoa0hGNEUyMEdFMG1nOWo4dFhqK2prL1VoOWFoYU9qOTJN?=
+ =?utf-8?B?MWxmd3hpUXNLTC9idHR6UGRYcnRCODJWQ0c3TC80dnMzRnZTRmpnS3lrV1FB?=
+ =?utf-8?B?Um9DeVdNS2hGN25uYmY0b0Qydkl3R2ZhMlh6TTJiN2RwS21iajFkN0lIaHZZ?=
+ =?utf-8?B?ODJLZEJkYlpKb3dmVXNTMjU5SXZnTjhWMlpvMlArTVZxYk8zanRsY1FaSG1U?=
+ =?utf-8?Q?gR5KV9xtnm8zrF0WHRd0DZw3m?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6359652d-7253-4724-78e3-08dbf809de77
+X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3268.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2023 16:22:27.5295
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bEBk5GYw/uXDfLePIAbgtf9ZKqSpjPIjzdN57BBFlp4jBnBmnel9OxtcQTMYgCpyPoc7pdhLQS/xfLPZFyaZmw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4525
 
-On Thu, 7 Dec 2023 17:28:15 -0600
-Bjorn Helgaas <helgaas@kernel.org> wrote:
+Thanks for taking a look Dan! Replies inline.
 
-> On Wed, Nov 29, 2023 at 04:22:41PM +0100, Fiona Ebner wrote:
-> > Hi,
-> > it seems that hot-plugging SCSI disks for QEMU virtual machines booting
-> > with UEFI and with guest kernels >= 6.5 might be broken. It's not
-> > consistently broken, hinting there might be a race somewhere.
-> > 
-> > Reverting the following two commits seems to make it work reliably again:
-> > 
-> > cc22522fd55e2 ("PCI: acpiphp: Use
-> > pci_assign_unassigned_bridge_resources() only for non-root bus")
-> > 40613da52b13f ("PCI: acpiphp: Reassign resources on bridge if necessary"
-> > 
-> > Of course, they might only expose some pre-existing issue, but this is
-> > my best lead. See below for some logs and details about an affected
-> > virtual machine. Happy to provide more information and to debug/test
-> > further.
-> > ...  
+On 12/7/23 5:13 PM, Dan Williams wrote:
+> Ben Cheatham wrote:
+>> Add creation of debugfs directories for ports and dports under
+>> /sys/kernel/debug/cxl when EINJ support is enabled. The dport
+>> directories will contain files for injecting CXL protocol errors.
+>> These files are only usable once the EINJ module has loaded and
+>> registered callback functions with the CXL core module, before that
+>> occurs (or if the EINJ module isn't loaded) the files will do nothing
+>> and return an ENODEV error.
+>>
+>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
+>> ---
+>>  Documentation/ABI/testing/debugfs-cxl | 27 +++++++++
+>>  drivers/cxl/core/port.c               | 84 +++++++++++++++++++++++++++
+>>  drivers/cxl/cxl.h                     | 10 ++++
+>>  3 files changed, 121 insertions(+)
+>>
+>> diff --git a/Documentation/ABI/testing/debugfs-cxl b/Documentation/ABI/testing/debugfs-cxl
+>> index fe61d372e3fa..782a1bb78884 100644
+>> --- a/Documentation/ABI/testing/debugfs-cxl
+>> +++ b/Documentation/ABI/testing/debugfs-cxl
+>> @@ -33,3 +33,30 @@ Description:
+>>  		device cannot clear poison from the address, -ENXIO is returned.
+>>  		The clear_poison attribute is only visible for devices
+>>  		supporting the capability.
+>> +
+>> +What:		/sys/kernel/debug/cxl/portX/dportY/einj_types
 > 
-> > I've attached some logs for guest using kernel 6.7.0-rc3 where hotplug
-> > works rarely and guest using kernel 6.7.0-rc3 with the previously
-> > mentioned commits reverted where hotplug works reliably:
-> > 
-> > 6.7.0-rc3:
-> >   
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xc000004000-0xc000007fff 64bit pref]
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-> > > Nov 29 15:12:02 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> > > Nov 29 15:12:02 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> > > Nov 29 15:12:02 hotplug kernel: scsi host3: Virtio SCSI HBA
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> > > Nov 29 15:12:02 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]   
+> Given this file is identical contents for all dports it only needs to
+> exist in one common location
 > 
-> What's the actual symptom that this is broken?  All these log
-> fragments show the exact same assignments for BARs 0, 1, 4 and for the
-> bridge windows.
-> 
-> I assume 0000:01:02.0 is the hot-added SCSI HBA, and 00:05.0 is a
-> bridge leading to it?
-> 
-> Can you put the complete dmesg logs somewhere?  There's a lot of
-> context missing here.
-> 
-> Do you have to revert both cc22522fd55e2 and 40613da52b13f to make it
-> work reliably?  If we have to revert something, reverting one would be
-> better than reverting both.
-
-here is simplified reproducer:
-./qemu-system-x86_64 -enable-kvm -m 4G -smp 4 -cpu host                        \
-    /dev/lvmpool/fedora-rawhide                                                \
-    -device pci-bridge,id=pci.3,chassis_nr=3,bus=pci.0,addr=0x5                \
-    -device virtio-scsi-pci,id=virtioscsi0,bus=pci.3,addr=0x1                  \
-    -blockdev raw,file.driver=file,file.filename=Fedora-Server-dvd-x86_64-Rawhide-20231127.n.0.iso,node-name=drive-scsi1 \
-    -monitor stdio -serial file:/tmp/console_log
-
-then once booted at monitor prompt:
-
-(qemu) device_add virtio-scsi-pci,bus=pci.3,addr=2,id=virtioscsi1
-(qemu) device_add scsi-hd,id=scsi1,drive=drive-scsi1,bus=virtioscsi1.0
-
-with distro shipped 6.7.0-0.rc2.20231125git0f5cc96c367f.26.fc40.x86_64 kernel
-hotplugged HBA is visible but a disk hotplugged into it is not (like Fiona has reported).
-
-Problem happens when hotpluged virtio-scsi-pci is the 2nd HBA on the same bridge,
-an attempt to rescan HBA (any on the bridge) causes guest hang.
-
-
-However with the same 0f5cc96c367f commit, upstream kernel (without initrd and some minimal config):
-
- -kernel ./linux-2.6/arch/x86_64/boot/bzImage -append 'root=/dev/sda3 console=ttyS0 console=tty0'
-
-works as expected (aka disk is visible after hotplug)
-
-[   75.636170] pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-[   75.636178] pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-[   75.637193] pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-[   75.638441] pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-[   75.647035] pci 0000:01:02.0: BAR 4: assigned [mem 0x380800004000-0x380800007fff 64bit pref]
-[   75.649461] pci 0000:01:02.0: BAR 1: assigned [mem 0xfe801000-0xfe801fff]
-[   75.650793] pci 0000:01:02.0: BAR 0: assigned [io  0xc040-0xc07f]
-[   75.652109] pci 0000:00:05.0: PCI bridge to [bus 01]
-[   75.653181] pci 0000:00:05.0:   bridge window [io  0xc000-0xcfff]
-[   75.656971] pci 0000:00:05.0:   bridge window [mem 0xfe800000-0xfe9fffff]
-[   75.659970] pci 0000:00:05.0:   bridge window [mem 0x380800000000-0x380fffffffff 64bit pref]
-[   75.664990] virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-[   75.695505] scsi host3: Virtio SCSI HBA
-[   75.698099] pci 0000:00:05.0: PCI bridge to [bus 01]
-[   75.735840] pci 0000:00:05.0:   bridge window [io  0xc000-0xcfff]
-[   75.740361] pci 0000:00:05.0:   bridge window [mem 0xfe800000-0xfe9fffff]
-[   75.744088] pci 0000:00:05.0:   bridge window [mem 0x380800000000-0x380fffffffff 64bit pref]
-
-
-So, I'm still looking at where/why it goes wrong
-
-
-> Bjorn
-> 
-> > Reboot
-> >   
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xc000004000-0xc000007fff 64bit pref]
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-> > > Nov 29 15:12:52 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> > > Nov 29 15:12:52 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> > > Nov 29 15:12:52 hotplug kernel: scsi host3: Virtio SCSI HBA
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> > > Nov 29 15:12:52 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]  
-> > 
-> > RebootThe one time it did work. Note that the line with "QEMU HARDDISK"
-> > comes after all lines with "bridge window":
-> >   
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xc000004000-0xc000007fff 64bit pref]
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-> > > Nov 29 15:13:51 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> > > Nov 29 15:13:51 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> > > Nov 29 15:13:51 hotplug kernel: scsi host3: Virtio SCSI HBA
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-> > > Nov 29 15:13:51 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: Attached scsi generic sg1 type 0
-> > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: Power-on or device reset occurred
-> > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] 2048 512-byte logical blocks: (1.05 MB/1.00 MiB)
-> > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] Write Protect is off
-> > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] Mode Sense: 63 00 00 08
-> > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
-> > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] Attached SCSI disk
-> > > Nov 29 15:14:08 hotplug systemd[1]: systemd-fsckd.service: Deactivated successfully.  
-> > 
-> > 6.7.0-rc3 with the following reverted:
-> > cc22522fd55e2 ("PCI: acpiphp: Use
-> > pci_assign_unassigned_bridge_resources() only for non-root bus")
-> > 40613da52b13f ("PCI: acpiphp: Reassign resources on bridge if necessary")
-> >   
-> > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xc000004000-0xc000007fff 64bit pref]
-> > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
-> > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> > > Nov 29 15:15:37 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> > > Nov 29 15:15:37 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> > > Nov 29 15:15:37 hotplug kernel: scsi host3: Virtio SCSI HBA
-> > > Nov 29 15:15:37 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: Attached scsi generic sg1 type 0
-> > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: Power-on or device reset occurred
-> > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] 2048 512-byte logical blocks: (1.05 MB/1.00 MiB)
-> > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] Write Protect is off
-> > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] Mode Sense: 63 00 00 08
-> > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
-> > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] Attached SCSI disk
-> > > Nov 29 15:15:38 hotplug systemd[1]: systemd-fsckd.service: Deactivated successfully.  
-> >   
+> /sys/kernel/debug/cxl/einj_types
 > 
 
+Good point, I'll make that change.
+
+> 
+>> +Date:		November, 2023
+>> +KernelVersion:	v6.8
+>> +Contact:	linux-cxl@vger.kernel.org
+>> +Description:
+>> +		(RO) Prints the CXL protocol error types made available by
+>> +		the platform in the format "0x<error number>	<error type>".
+>> +		The <error number> can be written to einj_inject to inject
+>> +		<error type> into dportY. This file is only visible if
+>> +		CONFIG_ACPI_APEI_EINJ is enabled, and the EINJ module must
+>> +		be able to reach one (or both) of the CXL_ACPI or CXL_PORT
+>> +		modules to be functional.
+> 
+> This can be simplified. Have something like:
+> 
+> config CXL_EINJ
+> 	default CXL_BUS
+> 	depends on ACPI_APEI_EINJ && ACPI_APEI_EINJ=CXL_BUS
+> 	...
+> 
+> Then the documentation moves to Kconfig for how to enable this and the
+> CXL code can directly call into the EINJ module without worry.
+> 
+> It would of course need stubs like these in a shared header:
+> 
+> #ifdef CONFIG_CXL_EINJ
+> int cxl_einj_available_error_type(struct seq_file *m, void *v);
+> int cxl_einj_inject_error(struct cxl_dport *dport, u64 type);
+> #else
+> static inline int cxl_einj_available_error_type(struct seq_file *m, void *v)
+> {
+> 	return -ENXIO;
+> }
+> 
+> int cxl_einj_inject_error(struct cxl_dport *dport, u64 type)
+> {
+> 	return -ENXIO;
+> }
+> #endif
+> 
+
+I had to go back and take a look, but I had a shared header in v5 (link: https://lore.kernel.org/linux-cxl/20230926120418.0000575d@Huawei.com/). 
+Jonathan recommended that I instead include cxl.h directly, but that was pretty much a completely different patch set
+at the time (and the header was under include/linux/). That being said, I agree that a header under drivers/cxl would
+make much more sense here.
+
+>> +
+>> +What:		/sys/kernel/debug/cxl/portX/dportY/einj_inject
+> 
+> See my comments on cxl_debugfs_create_dport_dir() later on, but I think
+> the "portX" directory can be eliminated.
+> 
+>> +Date:		November, 2023
+>> +KernelVersion:	v6.8
+>> +Contact:	linux-cxl@vger.kernel.org
+>> +Description:
+>> +		(WO) Writing an integer to this file injects the corresponding
+>> +		CXL protocol error into dportY (integer to type mapping is
+>> +		available by reading from einj_types). If the dport was
+>> +		enumerated in RCH mode, a CXL 1.1 error is injected, otherwise
+>> +		a CXL 2.0 error is injected. This file is only visible if
+>> +		CONFIG_ACPI_APEI_EINJ is enabled, and the EINJ module must
+>> +		be able to reach one (or both) of the CXL_ACPI or CXL_PORT
+>> +		modules to be functional.
+> 
+> Similar comments about dropping these details that can just be solved in
+> Kconfig.
+> 
+> This is next comment is on EINJ ABI, but you can skip it just to
+> maintain momentum with the status quo. Why require the user to do the
+> string to integer conversion? Seems like a small matter of programming
+> to allow:
+> 
+> echo "CXL.cache Protocol Correctable" > einj_inject
+> 
+> ...to do the right thing. That probably makes scripts more readable as
+> well.
+> 
+
+That's a good point. I can do that, but I think it may be better to keep the
+consistency with the EINJ module to simplify things for end users. If you feel
+that isn't a big enough concern I can go ahead and modify it.
+
+>> diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+>> index 38441634e4c6..acf10415a174 100644
+>> --- a/drivers/cxl/core/port.c
+>> +++ b/drivers/cxl/core/port.c
+>> @@ -783,6 +783,72 @@ static int cxl_dport_setup_regs(struct device *host, struct cxl_dport *dport,
+>>  	return rc;
+>>  }
+>>  
+>> +static struct cxl_einj_ops einj_ops;
+>> +void cxl_einj_set_ops_cbs(struct cxl_einj_ops *ops)
+>> +{
+>> +	if (!IS_REACHABLE(CONFIG_ACPI_APEI_EINJ) || !ops)
+>> +		return;
+>> +
+>> +	einj_ops = *ops;
+>> +}
+>> +EXPORT_SYMBOL_NS_GPL(cxl_einj_set_ops_cbs, CXL);
+> 
+> einj_ops goes away when the CXL code can just call the EINJ module
+> directly.
+> 
+>> +
+>> +static int cxl_einj_type_show(struct seq_file *f, void *data)
+>> +{
+>> +	if (!einj_ops.einj_type)
+>> +		return -ENODEV;
+>> +
+>> +	return einj_ops.einj_type(f, data);
+>> +}
+>> +
+>> +static int cxl_einj_inject(void *data, u64 type)
+>> +{
+>> +	struct cxl_dport *dport = data;
+>> +
+>> +	if (!einj_ops.einj_inject)
+>> +		return -ENODEV;
+>> +
+>> +	return einj_ops.einj_inject(dport, type);
+>> +}
+>> +DEFINE_DEBUGFS_ATTRIBUTE(cxl_einj_inject_fops, NULL, cxl_einj_inject, "%llx\n");
+> 
+> The wrappers go away and DEFINE_DEBUGFS_ATTRIBUTE() can reference the
+> EINJ symbols directly.
+> 
+>> +
+>> +static int cxl_debugfs_create_dport_dir(struct dentry *port_dir,
+>> +						   struct cxl_dport *dport)
+>> +{
+>> +	struct dentry *dir;
+>> +	char dir_name[32];
+>> +
+>> +	snprintf(dir_name, 31, "dport%d", dport->port_id);
+> 
+> How about dev_name(dport->dport_dev) rather than the dynamic name?
+> 
+> The other benefit of this is that the dport_dev names are unique, so you
+> can move the einj_inject file to:
+> 
+> /sys/kernel/debug/cxl/$dport_dev/einj_inject
+> 
+
+I didn't realize the dport names were also unique. I'll go ahead and do that instead.
+
+>> +	dir = debugfs_create_dir(dir_name, port_dir);
+>> +	if (IS_ERR(dir))
+>> +		return PTR_ERR(dir);
+>> +
+>> +	debugfs_create_devm_seqfile(dport->dport_dev, "einj_types", dir,
+>> +				    cxl_einj_type_show);
+> 
+> Per above, move this to be a top-level file.
+> 
+
+Will do.
+
+>> +
+>> +	debugfs_create_file("einj_inject", 0200, dir, dport,
+>> +			    &cxl_einj_inject_fops);
+>> +	return 0;
+> 
+> debugfs is good about failing gracefully when pre-requisites are not
+> present. This is why none of the debugfs creation helpers have return
+> codes because failing to setup debugfs is never fatal.
+> 
+> In other words, it is ok to take the output of debugfs_create_dir()
+> without checking, and this function should not be returning an error.
+> 
+
+Will do.
+
+>> +}
+>> +
+>> +static struct dentry *cxl_debugfs_create_port_dir(struct cxl_port *port)
+>> +{
+>> +	const char *dir_name = dev_name(&port->dev);
+>> +	struct dentry *dir;
+>> +
+>> +	if (!IS_ENABLED(CONFIG_ACPI_APEI_EINJ))
+>> +		return ERR_PTR(-ENODEV);
+>> +
+>> +	dir = cxl_debugfs_create_dir(dir_name);
+>> +	if (IS_ERR(dir)) {
+>> +		dev_dbg(&port->dev, "Failed to create port debugfs dir: %ld\n",
+>> +			PTR_ERR(dir));
+>> +		return dir;
+>> +	}
+>> +
+>> +	return dir;
+>> +}
+>> +
+>>  static struct cxl_port *__devm_cxl_add_port(struct device *host,
+>>  					    struct device *uport_dev,
+>>  					    resource_size_t component_reg_phys,
+>> @@ -861,6 +927,7 @@ struct cxl_port *devm_cxl_add_port(struct device *host,
+>>  				   struct cxl_dport *parent_dport)
+>>  {
+>>  	struct cxl_port *port, *parent_port;
+>> +	struct dentry *dir;
+>>  
+>>  	port = __devm_cxl_add_port(host, uport_dev, component_reg_phys,
+>>  				   parent_dport);
+>> @@ -878,6 +945,10 @@ struct cxl_port *devm_cxl_add_port(struct device *host,
+>>  			parent_port ? " to " : "",
+>>  			parent_port ? dev_name(&parent_port->dev) : "",
+>>  			parent_port ? "" : " (root port)");
+>> +
+>> +		dir = cxl_debugfs_create_port_dir(port);
+>> +		if (!IS_ERR(dir))
+>> +			port->debug_dir = dir;
+>>  	}
+>>  
+>>  	return port;
+>> @@ -1127,6 +1198,7 @@ struct cxl_dport *devm_cxl_add_dport(struct cxl_port *port,
+>>  				     resource_size_t component_reg_phys)
+>>  {
+>>  	struct cxl_dport *dport;
+>> +	int rc;
+>>  
+>>  	dport = __devm_cxl_add_dport(port, dport_dev, port_id,
+>>  				     component_reg_phys, CXL_RESOURCE_NONE);
+>> @@ -1136,6 +1208,11 @@ struct cxl_dport *devm_cxl_add_dport(struct cxl_port *port,
+>>  	} else {
+>>  		dev_dbg(dport_dev, "dport added to %s\n",
+>>  			dev_name(&port->dev));
+>> +
+>> +		rc = cxl_debugfs_create_dport_dir(port->debug_dir, dport);
+>> +		if (rc)
+>> +			dev_dbg(dport_dev,
+>> +				"Failed to create dport debugfs dir: %d\n", rc);
+> 
+> Drop the debug messages about failing to setup debugfs. This follows the
+> lead of other debugfs setup in CXL.
+> 
+
+Will do.
+
+>>  	}
+>>  
+>>  	return dport;
+>> @@ -1156,6 +1233,7 @@ struct cxl_dport *devm_cxl_add_rch_dport(struct cxl_port *port,
+>>  					 resource_size_t rcrb)
+>>  {
+>>  	struct cxl_dport *dport;
+>> +	int rc;
+>>  
+>>  	if (rcrb == CXL_RESOURCE_NONE) {
+>>  		dev_dbg(&port->dev, "failed to add RCH dport, missing RCRB\n");
+>> @@ -1170,6 +1248,12 @@ struct cxl_dport *devm_cxl_add_rch_dport(struct cxl_port *port,
+>>  	} else {
+>>  		dev_dbg(dport_dev, "RCH dport added to %s\n",
+>>  			dev_name(&port->dev));
+>> +
+>> +		rc = cxl_debugfs_create_dport_dir(port->debug_dir, dport);
+>> +		if (rc)
+>> +			dev_dbg(dport_dev,
+>> +				"Failed to create rch dport debugfs dir: %d\n",
+>> +				rc);
+>>  	}
+>>  
+>>  	return dport;
+>> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+>> index 687043ece101..3c7744fc3106 100644
+>> --- a/drivers/cxl/cxl.h
+>> +++ b/drivers/cxl/cxl.h
+>> @@ -590,6 +590,7 @@ struct cxl_dax_region {
+>>   * @depth: How deep this port is relative to the root. depth 0 is the root.
+>>   * @cdat: Cached CDAT data
+>>   * @cdat_available: Should a CDAT attribute be available in sysfs
+>> + * @debug_dir: dentry for port in cxl debugfs (optional)
+>>   */
+>>  struct cxl_port {
+>>  	struct device dev;
+>> @@ -612,6 +613,7 @@ struct cxl_port {
+>>  		size_t length;
+>>  	} cdat;
+>>  	bool cdat_available;
+>> +	struct dentry *debug_dir;
+> 
+> Part of why I asked for the debugfs file rename was to eliminate this
+> wart on the data structure.
+> 
+
+Yeah I wasn't that happy about adding it, so I'd be happy to remove it!
+
+>>  };
+>>  
+>>  static inline struct cxl_dport *
+>> @@ -813,6 +815,14 @@ bool is_cxl_nvdimm_bridge(struct device *dev);
+>>  int devm_cxl_add_nvdimm(struct cxl_memdev *cxlmd);
+>>  struct cxl_nvdimm_bridge *cxl_find_nvdimm_bridge(struct cxl_memdev *cxlmd);
+>>  
+>> +struct cxl_einj_ops {
+>> +	int (*einj_type)(struct seq_file *f, void *data);
+>> +	int (*einj_inject)(struct cxl_dport *dport, u64 type);
+>> +};
+>> +
+>> +void cxl_einj_set_ops_cbs(struct cxl_einj_ops *ops);
+>> +
+>> +
+>>  #ifdef CONFIG_CXL_REGION
+>>  bool is_cxl_pmem_region(struct device *dev);
+>>  struct cxl_pmem_region *to_cxl_pmem_region(struct device *dev);
+>> -- 
+>> 2.34.1
+>>
+>>
+> 
+> 
+> 
 
