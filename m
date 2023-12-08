@@ -1,36 +1,36 @@
-Return-Path: <linux-acpi+bounces-2239-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2238-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0791580ADFE
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 21:36:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B5780ADFD
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 21:36:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B54D92810FC
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 20:36:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B41C02810FC
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 20:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0274EB27
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 20:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A91C3B78A
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 20:36:31 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67B3510F8;
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B70C10E7;
 	Fri,  8 Dec 2023 11:20:45 -0800 (PST)
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
- id f217744729342198; Fri, 8 Dec 2023 20:20:43 +0100
+ id 150833a18591e4b8; Fri, 8 Dec 2023 20:20:43 +0100
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 5FC206688FC;
-	Fri,  8 Dec 2023 20:20:43 +0100 (CET)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 9A3BF6688FC;
+	Fri,  8 Dec 2023 20:20:42 +0100 (CET)
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux PM <linux-pm@vger.kernel.org>
 Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>
-Subject: [PATCH v1 2/3] thermal: Drop redundant and confusing device_is_registered() checks
-Date: Fri, 08 Dec 2023 20:19:03 +0100
-Message-ID: <8315317.T7Z3S40VBb@kreacher>
+Subject: [PATCH v1 3/3] thermal: core: Rework thermal zone availability check
+Date: Fri, 08 Dec 2023 20:20:00 +0100
+Message-ID: <2258035.iZASKD2KPV@kreacher>
 In-Reply-To: <1880915.tdWV9SEqCh@kreacher>
 References: <1880915.tdWV9SEqCh@kreacher>
 Precedence: bulk
@@ -50,213 +50,97 @@ X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Multiple places in the thermal subsystem (most importantly, sysfs
-attribute callback functions) check if the given thermal zone device is
-still registered in order to return early in case the device_del() in
-thermal_zone_device_unregister() has run already.
+In order to avoid running __thermal_zone_device_update() for thermal
+zones going away, the thermal zone lock is held around device_del()
+in thermal_zone_device_unregister() and thermal_zone_device_update()
+passes the given thermal zone device to device_is_registered().
+This allows thermal_zone_device_update() to skip the
+__thermal_zone_device_update() if device_del() has already run for
+the thermal zone at hand.
 
-However, after thermal_zone_device_unregister() has been made wait for
-all of the zone-related activity to complete before returning, it is
-not necessary to do that any more, because all of the code holding a
-reference to the thermal zone device object will be waited for even if
-it does not do anything special to enforce this.
+However, instead of looking at driver core internals, the thermal
+subsystem may as well rely on its own data structures for this
+purpose.  Namely, if the thermal zone is not present in
+thermal_tz_list, it can be regarded as unavailable, which in fact is
+already the case in thermal_zone_device_unregister().  Accordingly,
+the device_is_registered() check in thermal_zone_device_update() can
+be replaced with checking whether or not the node list_head in struct
+thermal_zone_device is empty, in which case it is not there in
+thermal_tz_list.
 
-Accordingly, drop all of the device_is_registered() checks that are now
-redundant and get rid of the zone locking that is not necessary any more
-after dropping them.
+To make this work, though, it is necessary to initialize tz->node
+in thermal_zone_device_register_with_trips() before registering the
+thermal zone device and it needs to be added to thermal_tz_list and
+deleted from it under its zone lock.
+
+After the above modifications, the zone lock does not need to be
+held around device_del() in thermal_zone_device_unregister() any more.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/thermal/thermal_core.c    |    9 -----
- drivers/thermal/thermal_helpers.c |    5 ---
- drivers/thermal/thermal_hwmon.c   |    5 ---
- drivers/thermal/thermal_sysfs.c   |   60 +++-----------------------------------
- 4 files changed, 7 insertions(+), 72 deletions(-)
+ drivers/thermal/thermal_core.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-Index: linux-pm/drivers/thermal/thermal_sysfs.c
-===================================================================
---- linux-pm.orig/drivers/thermal/thermal_sysfs.c
-+++ linux-pm/drivers/thermal/thermal_sysfs.c
-@@ -83,24 +83,12 @@ trip_point_type_show(struct device *dev,
- 		     char *buf)
- {
- 	struct thermal_zone_device *tz = to_thermal_zone(dev);
--	enum thermal_trip_type type;
- 	int trip_id;
- 
- 	if (sscanf(attr->attr.name, "trip_point_%d_type", &trip_id) != 1)
- 		return -EINVAL;
- 
--	mutex_lock(&tz->lock);
--
--	if (!device_is_registered(dev)) {
--		mutex_unlock(&tz->lock);
--		return -ENODEV;
--	}
--
--	type = tz->trips[trip_id].type;
--
--	mutex_unlock(&tz->lock);
--
--	switch (type) {
-+	switch (tz->trips[trip_id].type) {
- 	case THERMAL_TRIP_CRITICAL:
- 		return sprintf(buf, "critical\n");
- 	case THERMAL_TRIP_HOT:
-@@ -132,11 +120,6 @@ trip_point_temp_store(struct device *dev
- 
- 	mutex_lock(&tz->lock);
- 
--	if (!device_is_registered(dev)) {
--		ret = -ENODEV;
--		goto unlock;
--	}
--
- 	trip = &tz->trips[trip_id];
- 
- 	if (temp != trip->temperature) {
-@@ -162,23 +145,12 @@ trip_point_temp_show(struct device *dev,
- 		     char *buf)
- {
- 	struct thermal_zone_device *tz = to_thermal_zone(dev);
--	int trip_id, temp;
-+	int trip_id;
- 
- 	if (sscanf(attr->attr.name, "trip_point_%d_temp", &trip_id) != 1)
- 		return -EINVAL;
- 
--	mutex_lock(&tz->lock);
--
--	if (!device_is_registered(dev)) {
--		mutex_unlock(&tz->lock);
--		return -ENODEV;
--	}
--
--	temp = tz->trips[trip_id].temperature;
--
--	mutex_unlock(&tz->lock);
--
--	return sprintf(buf, "%d\n", temp);
-+	return sprintf(buf, "%d\n", tz->trips[trip_id].temperature);
- }
- 
- static ssize_t
-@@ -199,11 +171,6 @@ trip_point_hyst_store(struct device *dev
- 
- 	mutex_lock(&tz->lock);
- 
--	if (!device_is_registered(dev)) {
--		ret = -ENODEV;
--		goto unlock;
--	}
--
- 	trip = &tz->trips[trip_id];
- 
- 	if (hyst != trip->hysteresis) {
-@@ -229,23 +196,12 @@ trip_point_hyst_show(struct device *dev,
- 		     char *buf)
- {
- 	struct thermal_zone_device *tz = to_thermal_zone(dev);
--	int trip_id, hyst;
-+	int trip_id;
- 
- 	if (sscanf(attr->attr.name, "trip_point_%d_hyst", &trip_id) != 1)
- 		return -EINVAL;
- 
--	mutex_lock(&tz->lock);
--
--	if (!device_is_registered(dev)) {
--		mutex_unlock(&tz->lock);
--		return -ENODEV;
--	}
--
--	hyst = tz->trips[trip_id].hysteresis;
--
--	mutex_unlock(&tz->lock);
--
--	return sprintf(buf, "%d\n", hyst);
-+	return sprintf(buf, "%d\n", tz->trips[trip_id].hysteresis);
- }
- 
- static ssize_t
-@@ -294,11 +250,6 @@ emul_temp_store(struct device *dev, stru
- 
- 	mutex_lock(&tz->lock);
- 
--	if (!device_is_registered(dev)) {
--		ret = -ENODEV;
--		goto unlock;
--	}
--
- 	if (!tz->ops->set_emul_temp)
- 		tz->emul_temperature = temperature;
- 	else
-@@ -307,7 +258,6 @@ emul_temp_store(struct device *dev, stru
- 	if (!ret)
- 		__thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
- 
--unlock:
- 	mutex_unlock(&tz->lock);
- 
- 	return ret ? ret : count;
 Index: linux-pm/drivers/thermal/thermal_core.c
 ===================================================================
 --- linux-pm.orig/drivers/thermal/thermal_core.c
 +++ linux-pm/drivers/thermal/thermal_core.c
-@@ -203,9 +203,6 @@ int thermal_zone_device_set_policy(struc
- 	mutex_lock(&thermal_governor_lock);
- 	mutex_lock(&tz->lock);
+@@ -505,11 +505,16 @@ int thermal_zone_device_is_enabled(struc
+ 	return tz->mode == THERMAL_DEVICE_ENABLED;
+ }
  
--	if (!device_is_registered(&tz->device))
--		goto exit;
--
- 	gov = __find_governor(strim(policy));
- 	if (!gov)
- 		goto exit;
-@@ -471,12 +468,6 @@ static int thermal_zone_device_set_mode(
- 		return ret;
++static bool thermal_zone_is_present(struct thermal_zone_device *tz)
++{
++	return !list_empty(&tz->node);
++}
++
+ void thermal_zone_device_update(struct thermal_zone_device *tz,
+ 				enum thermal_notify_event event)
+ {
+ 	mutex_lock(&tz->lock);
+-	if (device_is_registered(&tz->device))
++	if (thermal_zone_is_present(tz))
+ 		__thermal_zone_device_update(tz, event);
+ 	mutex_unlock(&tz->lock);
+ }
+@@ -1304,6 +1309,7 @@ thermal_zone_device_register_with_trips(
  	}
  
--	if (!device_is_registered(&tz->device)) {
--		mutex_unlock(&tz->lock);
--
--		return -ENODEV;
--	}
--
- 	if (tz->ops->change_mode)
- 		ret = tz->ops->change_mode(tz, mode);
- 
-Index: linux-pm/drivers/thermal/thermal_helpers.c
-===================================================================
---- linux-pm.orig/drivers/thermal/thermal_helpers.c
-+++ linux-pm/drivers/thermal/thermal_helpers.c
-@@ -137,10 +137,7 @@ int thermal_zone_get_temp(struct thermal
- 		goto unlock;
+ 	INIT_LIST_HEAD(&tz->thermal_instances);
++	INIT_LIST_HEAD(&tz->node);
+ 	ida_init(&tz->ida);
+ 	mutex_init(&tz->lock);
+ 	init_completion(&tz->removal);
+@@ -1369,7 +1375,9 @@ thermal_zone_device_register_with_trips(
  	}
  
--	if (device_is_registered(&tz->device))
--		ret = __thermal_zone_get_temp(tz, temp);
--	else
--		ret = -ENODEV;
-+	ret = __thermal_zone_get_temp(tz, temp);
+ 	mutex_lock(&thermal_list_lock);
++	mutex_lock(&tz->lock);
+ 	list_add_tail(&tz->node, &thermal_tz_list);
++	mutex_unlock(&tz->lock);
+ 	mutex_unlock(&thermal_list_lock);
  
- unlock:
- 	mutex_unlock(&tz->lock);
-Index: linux-pm/drivers/thermal/thermal_hwmon.c
-===================================================================
---- linux-pm.orig/drivers/thermal/thermal_hwmon.c
-+++ linux-pm/drivers/thermal/thermal_hwmon.c
-@@ -80,10 +80,7 @@ temp_crit_show(struct device *dev, struc
+ 	/* Bind cooling devices for this zone */
+@@ -1460,7 +1468,10 @@ void thermal_zone_device_unregister(stru
+ 		mutex_unlock(&thermal_list_lock);
+ 		return;
+ 	}
++
++	mutex_lock(&tz->lock);
+ 	list_del(&tz->node);
++	mutex_unlock(&tz->lock);
  
- 	mutex_lock(&tz->lock);
+ 	/* Unbind all cdevs associated with 'this' thermal zone */
+ 	list_for_each_entry(cdev, &thermal_cdev_list, node)
+@@ -1477,9 +1488,7 @@ void thermal_zone_device_unregister(stru
+ 	ida_free(&thermal_tz_ida, tz->id);
+ 	ida_destroy(&tz->ida);
  
--	if (device_is_registered(&tz->device))
--		ret = tz->ops->get_crit_temp(tz, &temperature);
--	else
--		ret = -ENODEV;
-+	ret = tz->ops->get_crit_temp(tz, &temperature);
+-	mutex_lock(&tz->lock);
+ 	device_del(&tz->device);
+-	mutex_unlock(&tz->lock);
  
- 	mutex_unlock(&tz->lock);
+ 	kfree(tz->tzp);
  
 
 
