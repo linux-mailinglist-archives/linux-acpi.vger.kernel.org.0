@@ -1,230 +1,125 @@
-Return-Path: <linux-acpi+bounces-2230-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2231-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 401F380A582
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 15:32:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F3C580A92E
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 17:35:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 386811C20CD5
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 14:32:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4861F1F210DD
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 16:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78A41E534
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 14:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBCE838DF7
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Dec 2023 16:35:40 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3157D172B;
-	Fri,  8 Dec 2023 05:48:33 -0800 (PST)
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SmssF151cz6JB1X;
-	Fri,  8 Dec 2023 21:47:45 +0800 (CST)
-Received: from lhrpeml500002.china.huawei.com (unknown [7.191.160.78])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9394D14011D;
-	Fri,  8 Dec 2023 21:48:30 +0800 (CST)
-Received: from lhrpeml500006.china.huawei.com (7.191.161.198) by
- lhrpeml500002.china.huawei.com (7.191.160.78) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 8 Dec 2023 13:48:30 +0000
-Received: from lhrpeml500006.china.huawei.com ([7.191.161.198]) by
- lhrpeml500006.china.huawei.com ([7.191.161.198]) with mapi id 15.01.2507.035;
- Fri, 8 Dec 2023 13:48:30 +0000
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"dave@stgolabs.net" <dave@stgolabs.net>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
-	<ira.weiny@intel.com>
-CC: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "Jon.Grimm@amd.com"
-	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "mike.malvestuto@intel.com"
-	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
-	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH v4 00/11] cxl: Add support for CXL feature commands, CXL
- device patrol scrub control and DDR5 ECS control features
-Thread-Topic: [PATCH v4 00/11] cxl: Add support for CXL feature commands, CXL
- device patrol scrub control and DDR5 ECS control features
-Thread-Index: AQHaI8KwgMGD3E1NJkm1EO0u0hTVFbCcsBMAgAJ2I3A=
-Date: Fri, 8 Dec 2023 13:48:30 +0000
-Message-ID: <9bc4b5fac46d4f37b675de4e0f65931b@huawei.com>
-References: <20231130192314.1220-1-shiju.jose@huawei.com>
- <6570cdbaa96e0_45e01294e0@dwillia2-xfh.jf.intel.com.notmuch>
-In-Reply-To: <6570cdbaa96e0_45e01294e0@dwillia2-xfh.jf.intel.com.notmuch>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 493E41732;
+	Fri,  8 Dec 2023 07:31:36 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6CE9D106F;
+	Fri,  8 Dec 2023 07:32:21 -0800 (PST)
+Received: from [192.168.1.3] (unknown [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 527983F6C4;
+	Fri,  8 Dec 2023 07:31:34 -0800 (PST)
+Message-ID: <22cfb197-b8bd-46c5-f3cb-ea04b95c0792@arm.com>
+Date: Fri, 8 Dec 2023 15:31:32 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH V3 08/10] coresight: tmc: Move ACPI support from AMBA
+ driver to platform driver
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org, suzuki.poulose@arm.com
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20231208053939.42901-1-anshuman.khandual@arm.com>
+ <20231208053939.42901-9-anshuman.khandual@arm.com>
+Content-Language: en-US
+From: James Clark <james.clark@arm.com>
+In-Reply-To: <20231208053939.42901-9-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Dan,
 
-Thanks  for the feedbacks.
 
->-----Original Message-----
->From: Dan Williams <dan.j.williams@intel.com>
->Sent: 06 December 2023 19:39
->To: Shiju Jose <shiju.jose@huawei.com>; linux-cxl@vger.kernel.org; linux-
->mm@kvack.org; dave@stgolabs.net; Jonathan Cameron
-><jonathan.cameron@huawei.com>; dave.jiang@intel.com;
->alison.schofield@intel.com; vishal.l.verma@intel.com; ira.weiny@intel.com;
->dan.j.williams@intel.com
->Cc: linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org;
->david@redhat.com; Vilas.Sridharan@amd.com; leo.duran@amd.com;
->Yazen.Ghannam@amd.com; rientjes@google.com; jiaqiyan@google.com;
->tony.luck@intel.com; Jon.Grimm@amd.com; dave.hansen@linux.intel.com;
->rafael@kernel.org; lenb@kernel.org; naoya.horiguchi@nec.com;
->james.morse@arm.com; jthoughton@google.com; somasundaram.a@hpe.com;
->erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
->mike.malvestuto@intel.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>=
-;
->kangkang.shen@futurewei.com; wanghuiqiang <wanghuiqiang@huawei.com>;
->Linuxarm <linuxarm@huawei.com>; Shiju Jose <shiju.jose@huawei.com>
->Subject: RE: [PATCH v4 00/11] cxl: Add support for CXL feature commands, C=
-XL
->device patrol scrub control and DDR5 ECS control features
->
->Hi Shiju,
->
->I have some general feedback at this point before digging too deep into th=
-e
->details:
->
->shiju.jose@ wrote:
->> From: Shiju Jose <shiju.jose@huawei.com>
->>
->> 1. Add support for CXL feature mailbox commands.
->> 2. Add CXL device scrub driver supporting patrol scrub control and
->> DDR5 ECS control features.
->> 3. Add scrub driver supports configuring memory scrubs in the system.
->> 4. Add scrub attributes for DDR5 ECS control to the memory scrub driver.
->
->For a new a subsystem that is meant to generically abstract a "memory scru=
-b"
->facility the "DDR5 ECS" naming has too much precision. How much of this
->interface is DDR5 ECS specific and how much of it is applicable to a theor=
-etical
->DDR6 scrub implementation?
->
->My primary reaction is to boil down this interface so that only generic sc=
-rub
->details are visible in the ABI, and DDR5 specifics are invisible in the sy=
-sfs ABI.
-Sure. I will check this.
+On 08/12/2023 05:39, Anshuman Khandual wrote:
+> Add support for the tmc devices in the platform driver, which can then be
+> used on ACPI based platforms. This change would now allow runtime power
+> management for ACPI based systems. The driver would try to enable the APB
+> clock if available.
+> 
+> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Cc: Mike Leach <mike.leach@linaro.org>
+> Cc: James Clark <james.clark@arm.com>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: coresight@lists.linaro.org
+> Tested-by: Sudeep Holla <sudeep.holla@arm.com> # Boot and driver probe only
+> Acked-by: Sudeep Holla <sudeep.holla@arm.com> # For ACPI related changes
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+> Changes in V3:
+> 
+> - Added commnets for 'drvdata->pclk'
+> - Used coresight_init_driver()/coresight_remove_driver() helpers instead
+> - Dropped pm_runtime_put() from __tmc_probe()
+> - Added pm_runtime_put() on success path in tmc_probe()
+> - Added pm_runtime_put() on success/error paths in tmc_platform_probe()
+> - Check for drvdata instead of drvdata->pclk in suspend and resume paths
+> 
+>  drivers/acpi/arm64/amba.c                     |   2 -
+>  .../hwtracing/coresight/coresight-tmc-core.c  | 137 ++++++++++++++++--
+>  drivers/hwtracing/coresight/coresight-tmc.h   |   2 +
+>  3 files changed, 124 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
+> index 6d24a8f7914b..d3c1defa7bc8 100644
+> --- a/drivers/acpi/arm64/amba.c
+> +++ b/drivers/acpi/arm64/amba.c
+> @@ -22,10 +22,8 @@
+>  static const struct acpi_device_id amba_id_list[] = {
+>  	{"ARMH0061", 0}, /* PL061 GPIO Device */
+>  	{"ARMH0330", 0}, /* ARM DMA Controller DMA-330 */
+> -	{"ARMHC501", 0}, /* ARM CoreSight ETR */
+>  	{"ARMHC502", 0}, /* ARM CoreSight STM */
+>  	{"ARMHC503", 0}, /* ARM CoreSight Debug */
+> -	{"ARMHC97C", 0}, /* ARM CoreSight SoC-400 TMC, SoC-600 ETF/ETB */
+>  	{"", 0},
+>  };
+>  
+> diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
+> index ad61d02f5f75..8482830d73ef 100644
+> --- a/drivers/hwtracing/coresight/coresight-tmc-core.c
+> +++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
+> @@ -23,6 +23,8 @@
+>  #include <linux/of.h>
+>  #include <linux/coresight.h>
+>  #include <linux/amba/bus.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/acpi.h>
+>  
+>  #include "coresight-priv.h"
+>  #include "coresight-tmc.h"
+> @@ -437,24 +439,17 @@ static u32 tmc_etr_get_max_burst_size(struct device *dev)
+>  	return burst_size;
+>  }
+>  
+> -static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
+> +static int __tmc_probe(struct device *dev, struct resource *res, void *dev_caps)
 
->
->For example the Linux NVDIMM subsystem has an address-range-scrub facility
->that is independent of the specific memory technology scrub mechanism. Tha=
-t
->one is based on ACPI NFIT, but I realize you also looked at enabling the A=
-CPI
->RASF scrub interface. It would be useful if this patchset could plausibly =
-enable
->one non-CXL scrubber along with the CXL one.
-Sure. I will do this. I will add ACPI RASF scrub patches to this patch set.
+I don't think the dev_caps argument is used anymore since the v3 changes.
 
->
->> 5. Register CXL device patrol scrub and ECS with scrub control driver.
->> 6. Add documentation for common attributes in the scrub configure driver=
-.
->
->Going forward, please include the Documentation in the patch that adds the=
- new
->ABI, it improves the readability / story-telling of the patches.
->It also makes it easier to analyze which code is needed for which ABI, and
->whether a given ABI is justified.
-I will do.
-
->
->The regionY nomenclature in the sysfs ABI looks like a potential opportuni=
-ty to
->align with the "memregion" id scheme. See all the callers of memregion_all=
-oc()
->where those are tagging device-backed physical address ranges with a commo=
-n
->id namespace. It would be great if the memory-scrub ABI reported failures =
-in
->terms of region-ids that correlate with CXL, DAX, or NVDIMM regions.
-For the CXL DDR5 ECS feature, presently the regionY  corresponds to the IDs=
- of the
-memory media FRUs (1 to N),  defined in the DDR5 ECS Control Feature tables=
- Table 8-210 and  Table 8-211.=20
-=20
->
->> 7. Add documentation for CXL memory device scrub control attributes.
->
->Do the CXL specifics need to be in the ABI? One thing I missed was how the
-Ok. I will remove. Should these DDR5 ECS specifics consider as generic and=
-=20
-be part of the memory scrub ABI?     =20
->series of log entries are conveyed. For CXL in contrast to what NVDIMM did=
- for
->address range scrub is that CXL makes use of trace-events to emit log reco=
-rds.
->That allows the sysfs ABI to remain relatively simple, but the various tra=
-ce-
->events can get into more protocol specific details. For example, see
->cxl_trigger_poison_list() and
->trace_cxl_poison() as a way to genericly trigger the listing of a flow of =
-device-
->specific details. In other words put the DDR5 ECS specifics in the trace-e=
-vent, not
->the sysfs ABI if possible.
-Did you mean remove the readable attributes for DDR5 ECS from the sysfs?
-For example the "ECS Threshold Count per Gb of Memory Cells" and "Codeword/=
-Row Count Mode"
-in the Table 8-78 DDR5 ECS log  of  section 8.2.9.5.2.4 DDR5 Error Check Sc=
-rub (ECS) Log.
- =20
->
->Lastly, dynamically defined sysfs groups are less palatable than staticall=
-y
->defined. See cxl_region_target_visible() for a scheme for statically defin=
-ing a
->runtime variable number of attributes.
->Specifically I would like to see a way to define this new subsystem withou=
-t
->scrub_create_attrs() and all the runtime attribute definition.
->
-Sure. I will check this.
-
->Overall, I like the general approach to define a common subsystem for this=
-, and
->get off the treadmill of reinventing custom scrub interfaces per bus, but =
-that
->also requires that it be generic enough to subsume a number of those per-b=
-us-
->scrub-types.
-This is the challenging part to make the scrub interface generic because th=
-e scrub control
-varies between the scrub types, for example as seen in the CXL ECS.
-
-Thanks,
-Shiju
 
