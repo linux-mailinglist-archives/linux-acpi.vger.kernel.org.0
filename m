@@ -1,288 +1,182 @@
-Return-Path: <linux-acpi+bounces-2260-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2261-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A5F80C24F
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 08:46:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A6B80C264
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 08:51:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58505B207AC
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 07:46:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37A2E280D1B
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 07:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F12B208C2;
-	Mon, 11 Dec 2023 07:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YUYCMBob"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E4A208D4;
+	Mon, 11 Dec 2023 07:51:50 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 974B5F4
-	for <linux-acpi@vger.kernel.org>; Sun, 10 Dec 2023 23:46:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702280769;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Kb2G5ThzzWRRNxoJx1wPYdWgMGJEMgQ7aW1sjvtsM5M=;
-	b=YUYCMBobrdlAzrIgzb7SYDQEM0i+E/naHRHARL+eSgdV+aWq6mc0nohgOE+zZLGelBhUCK
-	r2iCzCLHMxWUkI3Dg4nfeXxiVpfWp9DIAv6/a0EU+kewURYS7CG6FHH8G5nZ1vlptnqMYt
-	oS2HXthe6cgFa/WXZpxcXOSo+zDdfT8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-Cf2WL_6rOEyvulhkywpuEA-1; Mon, 11 Dec 2023 02:46:07 -0500
-X-MC-Unique: Cf2WL_6rOEyvulhkywpuEA-1
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a1fa0ed205fso48353066b.2
-        for <linux-acpi@vger.kernel.org>; Sun, 10 Dec 2023 23:46:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702280767; x=1702885567;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Kb2G5ThzzWRRNxoJx1wPYdWgMGJEMgQ7aW1sjvtsM5M=;
-        b=PHzhZwgsX7l6tQxgu9eOInLYOjhMgGyMrFZ4bxHfqnbw6r+kLA4I2d8JnOxGbUDK1h
-         XWW4rw9q1A8SMTojWM2t5CXPFwOWp1AMPlh3lJzxqPttMCiW5mZ3liBjxW5Vx/TzEFDH
-         s8XG2mdUnM+V9AJTjTBwOtPJCdRebIngxwyqzDt3BNct5TSzSyqgeFaO6zuFpihD6j+t
-         MwkmI4xJjJ36F/q3OTV8n3ZoSfZ7aAxmg4KoLCJAv/6j3yukFY/B2I755vPyrF7Bp8z3
-         bgdGipexbeE6pn484r9MNRGKWXFG044DMpmBcfpgH1JDUyzv1G/2ryRRJxWy3tw5REKO
-         xPbA==
-X-Gm-Message-State: AOJu0Yxx3vWRyX6ecepiRPmw5HLA2A+HaNz+Lmf188ORycI4nsINhnG/
-	ooqr6NnZ5Aq56A7onddB6ZeeILwGxXyVhwYKMePfuQQVusYuCEEE3oiDC9n12mj9Pwa8fEtLDZK
-	tq1q1zCzXVCWxi8erYneAvA==
-X-Received: by 2002:a17:907:7d8c:b0:a1d:932f:9096 with SMTP id oz12-20020a1709077d8c00b00a1d932f9096mr2714149ejc.37.1702280766710;
-        Sun, 10 Dec 2023 23:46:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHiFLo2x3B0I+p84u5YoFV3gwWPB1BrQ6SIzI5rLIjw8yKVrVzX8mslJsav4Q55iGMfOk8npw==
-X-Received: by 2002:a17:907:7d8c:b0:a1d:932f:9096 with SMTP id oz12-20020a1709077d8c00b00a1d932f9096mr2714144ejc.37.1702280766375;
-        Sun, 10 Dec 2023 23:46:06 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id mj20-20020a170906af9400b00a1b73154eacsm4387489ejb.194.2023.12.10.23.46.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Dec 2023 23:46:05 -0800 (PST)
-Date: Mon, 11 Dec 2023 08:46:04 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Fiona Ebner <f.ebner@proxmox.com>, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- bhelgaas@google.com, lenb@kernel.org, rafael@kernel.org, Thomas Lamprecht
- <t.lamprecht@proxmox.com>
-Subject: Re: SCSI hotplug issues with UEFI VM with guest kernel >= 6.5
-Message-ID: <20231211084604.25e209af@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231208164723.12828a96@imammedo.users.ipa.redhat.com>
-References: <9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com>
-	<20231207232815.GA771837@bhelgaas>
-	<20231208164723.12828a96@imammedo.users.ipa.redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id E50DAFC;
+	Sun, 10 Dec 2023 23:51:46 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 170881007;
+	Sun, 10 Dec 2023 23:52:33 -0800 (PST)
+Received: from [10.162.41.8] (a077893.blr.arm.com [10.162.41.8])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2E31B3F7C5;
+	Sun, 10 Dec 2023 23:51:42 -0800 (PST)
+Message-ID: <862afccb-e9c5-4fcb-abdf-45a5eb9aa6d8@arm.com>
+Date: Mon, 11 Dec 2023 13:21:40 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3 04/10] coresight: replicator: Move ACPI support from
+ AMBA driver to platform driver
+Content-Language: en-US
+To: linux-arm-kernel@lists.infradead.org, suzuki.poulose@arm.com
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
+ James Clark <james.clark@arm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20231208053939.42901-1-anshuman.khandual@arm.com>
+ <20231208053939.42901-5-anshuman.khandual@arm.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20231208053939.42901-5-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Fri, 8 Dec 2023 16:47:23 +0100
-Igor Mammedov <imammedo@redhat.com> wrote:
 
-> On Thu, 7 Dec 2023 17:28:15 -0600
-> Bjorn Helgaas <helgaas@kernel.org> wrote:
-> 
-> > On Wed, Nov 29, 2023 at 04:22:41PM +0100, Fiona Ebner wrote:  
-> > > Hi,
-> > > it seems that hot-plugging SCSI disks for QEMU virtual machines booting
-> > > with UEFI and with guest kernels >= 6.5 might be broken. It's not
-> > > consistently broken, hinting there might be a race somewhere.
-> > > 
-> > > Reverting the following two commits seems to make it work reliably again:
-> > > 
-> > > cc22522fd55e2 ("PCI: acpiphp: Use
-> > > pci_assign_unassigned_bridge_resources() only for non-root bus")
-> > > 40613da52b13f ("PCI: acpiphp: Reassign resources on bridge if necessary"
-> > > 
-> > > Of course, they might only expose some pre-existing issue, but this is
-> > > my best lead. See below for some logs and details about an affected
-> > > virtual machine. Happy to provide more information and to debug/test
-> > > further.
-> > > ...    
-> >   
-> > > I've attached some logs for guest using kernel 6.7.0-rc3 where hotplug
-> > > works rarely and guest using kernel 6.7.0-rc3 with the previously
-> > > mentioned commits reverted where hotplug works reliably:
-> > > 
-> > > 6.7.0-rc3:
-> > >     
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xc000004000-0xc000007fff 64bit pref]
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-> > > > Nov 29 15:12:02 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> > > > Nov 29 15:12:02 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> > > > Nov 29 15:12:02 hotplug kernel: scsi host3: Virtio SCSI HBA
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> > > > Nov 29 15:12:02 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> > > > Nov 29 15:12:02 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]     
-> > 
-> > What's the actual symptom that this is broken?  All these log
-> > fragments show the exact same assignments for BARs 0, 1, 4 and for the
-> > bridge windows.
-> > 
-> > I assume 0000:01:02.0 is the hot-added SCSI HBA, and 00:05.0 is a
-> > bridge leading to it?
-> > 
-> > Can you put the complete dmesg logs somewhere?  There's a lot of
-> > context missing here.
-> > 
-> > Do you have to revert both cc22522fd55e2 and 40613da52b13f to make it
-> > work reliably?  If we have to revert something, reverting one would be
-> > better than reverting both.  
-> 
-> here is simplified reproducer:
-> ./qemu-system-x86_64 -enable-kvm -m 4G -smp 4 -cpu host                        \
->     /dev/lvmpool/fedora-rawhide                                                \
->     -device pci-bridge,id=pci.3,chassis_nr=3,bus=pci.0,addr=0x5                \
->     -device virtio-scsi-pci,id=virtioscsi0,bus=pci.3,addr=0x1                  \
->     -blockdev raw,file.driver=file,file.filename=Fedora-Server-dvd-x86_64-Rawhide-20231127.n.0.iso,node-name=drive-scsi1 \
->     -monitor stdio -serial file:/tmp/console_log
-> 
-> then once booted at monitor prompt:
-> 
-> (qemu) device_add virtio-scsi-pci,bus=pci.3,addr=2,id=virtioscsi1
-> (qemu) device_add scsi-hd,id=scsi1,drive=drive-scsi1,bus=virtioscsi1.0
-> 
-> with distro shipped 6.7.0-0.rc2.20231125git0f5cc96c367f.26.fc40.x86_64 kernel
-> hotplugged HBA is visible but a disk hotplugged into it is not (like Fiona has reported).
-> 
-> Problem happens when hotpluged virtio-scsi-pci is the 2nd HBA on the same bridge,
-> an attempt to rescan HBA (any on the bridge) causes guest hang.
-> 
-> 
-> However with the same 0f5cc96c367f commit, upstream kernel (without initrd and some minimal config):
-> 
->  -kernel ./linux-2.6/arch/x86_64/boot/bzImage -append 'root=/dev/sda3 console=ttyS0 console=tty0'
-> 
-> works as expected (aka disk is visible after hotplug)
-> 
-> [   75.636170] pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> [   75.636178] pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> [   75.637193] pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> [   75.638441] pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> [   75.647035] pci 0000:01:02.0: BAR 4: assigned [mem 0x380800004000-0x380800007fff 64bit pref]
-> [   75.649461] pci 0000:01:02.0: BAR 1: assigned [mem 0xfe801000-0xfe801fff]
-> [   75.650793] pci 0000:01:02.0: BAR 0: assigned [io  0xc040-0xc07f]
-> [   75.652109] pci 0000:00:05.0: PCI bridge to [bus 01]
-> [   75.653181] pci 0000:00:05.0:   bridge window [io  0xc000-0xcfff]
-> [   75.656971] pci 0000:00:05.0:   bridge window [mem 0xfe800000-0xfe9fffff]
-> [   75.659970] pci 0000:00:05.0:   bridge window [mem 0x380800000000-0x380fffffffff 64bit pref]
-> [   75.664990] virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> [   75.695505] scsi host3: Virtio SCSI HBA
-> [   75.698099] pci 0000:00:05.0: PCI bridge to [bus 01]
-> [   75.735840] pci 0000:00:05.0:   bridge window [io  0xc000-0xcfff]
-> [   75.740361] pci 0000:00:05.0:   bridge window [mem 0xfe800000-0xfe9fffff]
-> [   75.744088] pci 0000:00:05.0:   bridge window [mem 0x380800000000-0x380fffffffff 64bit pref]
-> 
-> 
-> So, I'm still looking at where/why it goes wrong
 
-I've narrowed it down to ACPI PCI hotpug, (i.e. it works fine with SHPC and Fedora's kernel).
-Though I still can't reproduce with upstream kernel (even with Fedora config (mod=yes)).
-So far I was testing Seabios variant, next thing to try is UEFI setup (perhaps upstream will fail there)
-
-Fiona,
-
-Does it help if you use q35 machine with '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off' option?
-
+On 12/8/23 11:09, Anshuman Khandual wrote:
+> Add support for the dynamic replicator device in the platform driver, which
+> can then be used on ACPI based platforms. This change would now allow
+> runtime power management for repliacator devices on ACPI based systems.
 > 
-> > Bjorn
-> >   
-> > > Reboot
-> > >     
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xc000004000-0xc000007fff 64bit pref]
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-> > > > Nov 29 15:12:52 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> > > > Nov 29 15:12:52 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> > > > Nov 29 15:12:52 hotplug kernel: scsi host3: Virtio SCSI HBA
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> > > > Nov 29 15:12:52 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> > > > Nov 29 15:12:52 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]    
-> > > 
-> > > RebootThe one time it did work. Note that the line with "QEMU HARDDISK"
-> > > comes after all lines with "bridge window":
-> > >     
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xc000004000-0xc000007fff 64bit pref]
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-> > > > Nov 29 15:13:51 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> > > > Nov 29 15:13:51 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> > > > Nov 29 15:13:51 hotplug kernel: scsi host3: Virtio SCSI HBA
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0: PCI bridge to [bus 01]
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [io  0xe000-0xefff]
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
-> > > > Nov 29 15:13:51 hotplug kernel: pci 0000:00:05.0:   bridge window [mem 0xc000000000-0xc01fffffff 64bit pref]
-> > > > Nov 29 15:13:51 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> > > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: Attached scsi generic sg1 type 0
-> > > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: Power-on or device reset occurred
-> > > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] 2048 512-byte logical blocks: (1.05 MB/1.00 MiB)
-> > > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] Write Protect is off
-> > > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] Mode Sense: 63 00 00 08
-> > > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
-> > > > Nov 29 15:13:51 hotplug kernel: sd 3:0:0:1: [sdb] Attached SCSI disk
-> > > > Nov 29 15:14:08 hotplug systemd[1]: systemd-fsckd.service: Deactivated successfully.    
-> > > 
-> > > 6.7.0-rc3 with the following reverted:
-> > > cc22522fd55e2 ("PCI: acpiphp: Use
-> > > pci_assign_unassigned_bridge_resources() only for non-root bus")
-> > > 40613da52b13f ("PCI: acpiphp: Reassign resources on bridge if necessary")
-> > >     
-> > > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-> > > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-> > > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> > > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> > > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: BAR 4: assigned [mem 0xc000004000-0xc000007fff 64bit pref]
-> > > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
-> > > > Nov 29 15:15:37 hotplug kernel: pci 0000:01:02.0: BAR 0: assigned [io  0xe040-0xe07f]
-> > > > Nov 29 15:15:37 hotplug kernel: virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-> > > > Nov 29 15:15:37 hotplug kernel: ACPI: \_SB_.LNKC: Enabled at IRQ 11
-> > > > Nov 29 15:15:37 hotplug kernel: scsi host3: Virtio SCSI HBA
-> > > > Nov 29 15:15:37 hotplug kernel: scsi 3:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> > > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: Attached scsi generic sg1 type 0
-> > > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: Power-on or device reset occurred
-> > > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] 2048 512-byte logical blocks: (1.05 MB/1.00 MiB)
-> > > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] Write Protect is off
-> > > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] Mode Sense: 63 00 00 08
-> > > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
-> > > > Nov 29 15:15:37 hotplug kernel: sd 3:0:0:1: [sdb] Attached SCSI disk
-> > > > Nov 29 15:15:38 hotplug systemd[1]: systemd-fsckd.service: Deactivated successfully.    
-> > >     
-> >   
+> The driver would try to enable the APB clock if available. Also, rename the
+> code to reflect the fact that it now handles both static and dynamic
+> replicators.
 > 
+> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Cc: Mike Leach <mike.leach@linaro.org>
+> Cc: James Clark <james.clark@arm.com>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: coresight@lists.linaro.org
+> Tested-by: Sudeep Holla <sudeep.holla@arm.com> # Boot and driver probe only
+> Acked-by: Sudeep Holla <sudeep.holla@arm.com> # For ACPI related changes
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+> Changes in V3:
+> 
+> - Added commnets for 'drvdata->pclk'
+> - Used coresight_init_driver()/coresight_remove_driver() helpers instead
+> - Dropped pm_runtime_put() from replicator_probe()
+> - Added pm_runtime_put() on success path in dynamic_replicator_probe()
+> - Added pm_runtime_put() on success/error paths in
+>   replicator_platform_probe()
+> 
+>  drivers/acpi/arm64/amba.c                     |  1 -
+>  .../coresight/coresight-replicator.c          | 81 ++++++++++---------
+>  2 files changed, 42 insertions(+), 40 deletions(-)
+> 
+> diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
+> index 171b5c2c7edd..270f4e3819a2 100644
+> --- a/drivers/acpi/arm64/amba.c
+> +++ b/drivers/acpi/arm64/amba.c
+> @@ -27,7 +27,6 @@ static const struct acpi_device_id amba_id_list[] = {
+>  	{"ARMHC503", 0}, /* ARM CoreSight Debug */
+>  	{"ARMHC979", 0}, /* ARM CoreSight TPIU */
+>  	{"ARMHC97C", 0}, /* ARM CoreSight SoC-400 TMC, SoC-600 ETF/ETB */
+> -	{"ARMHC98D", 0}, /* ARM CoreSight Dynamic Replicator */
+>  	{"ARMHC9CA", 0}, /* ARM CoreSight CATU */
+>  	{"ARMHC9FF", 0}, /* ARM CoreSight Dynamic Funnel */
+>  	{"", 0},
+> diff --git a/drivers/hwtracing/coresight/coresight-replicator.c b/drivers/hwtracing/coresight/coresight-replicator.c
+> index b6be73034996..125b256cb8db 100644
+> --- a/drivers/hwtracing/coresight/coresight-replicator.c
+> +++ b/drivers/hwtracing/coresight/coresight-replicator.c
+> @@ -31,6 +31,7 @@ DEFINE_CORESIGHT_DEVLIST(replicator_devs, "replicator");
+>   * @base:	memory mapped base address for this component. Also indicates
+>   *		whether this one is programmable or not.
+>   * @atclk:	optional clock for the core parts of the replicator.
+> + * @pclk:	APB clock if present, otherwise NULL
+>   * @csdev:	component vitals needed by the framework
+>   * @spinlock:	serialize enable/disable operations.
+>   * @check_idfilter_val: check if the context is lost upon clock removal.
+> @@ -38,6 +39,7 @@ DEFINE_CORESIGHT_DEVLIST(replicator_devs, "replicator");
+>  struct replicator_drvdata {
+>  	void __iomem		*base;
+>  	struct clk		*atclk;
+> +	struct clk		*pclk;
+>  	struct coresight_device	*csdev;
+>  	spinlock_t		spinlock;
+>  	bool			check_idfilter_val;
+> @@ -243,6 +245,10 @@ static int replicator_probe(struct device *dev, struct resource *res)
+>  			return ret;
+>  	}
+>  
+> +	drvdata->pclk = coresight_get_enable_apb_pclk(dev);
+> +	if (IS_ERR(drvdata->pclk))
+> +		return -ENODEV;
+> +
+>  	/*
+>  	 * Map the device base for dynamic-replicator, which has been
+>  	 * validated by AMBA core
+> @@ -285,7 +291,6 @@ static int replicator_probe(struct device *dev, struct resource *res)
+>  	}
+>  
+>  	replicator_reset(drvdata);
+> -	pm_runtime_put(dev);
+>  
+>  out_disable_clk:
+>  	if (ret && !IS_ERR_OR_NULL(drvdata->atclk))
+> @@ -301,29 +306,31 @@ static int replicator_remove(struct device *dev)
+>  	return 0;
+>  }
+>  
+> -static int static_replicator_probe(struct platform_device *pdev)
+> +static int replicator_platform_probe(struct platform_device *pdev)
+>  {
+> +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>  	int ret;
+>  
+>  	pm_runtime_get_noresume(&pdev->dev);
+>  	pm_runtime_set_active(&pdev->dev);
+>  	pm_runtime_enable(&pdev->dev);
+>  
+> -	/* Static replicators do not have programming base */
+> -	ret = replicator_probe(&pdev->dev, NULL);
+> -
+> -	if (ret) {
+> -		pm_runtime_put_noidle(&pdev->dev);
+> -		pm_runtime_disable(&pdev->dev);
+> -	}
+> +	ret = replicator_probe(&pdev->dev, res);
+> +	pm_runtime_put(&pdev->dev);
 
+I believe pm_runtime_disable() would still be needed on the error path. Otherwise
+pm_runtime_enable() will remain unbalanced on this error path when the replicator
+module could not be loaded.
+
+--- a/drivers/hwtracing/coresight/coresight-replicator.c
++++ b/drivers/hwtracing/coresight/coresight-replicator.c
+@@ -317,6 +317,8 @@ static int replicator_platform_probe(struct platform_device *pdev)
+ 
+        ret = replicator_probe(&pdev->dev, res);
+        pm_runtime_put(&pdev->dev);
++       if (ret)
++               pm_runtime_disable(&pdev->dev);
+ 
+        return ret;
+ }
+
+Similar constructs in this error path are also required in all other drivers (except
+cpu debug) as well.
 
