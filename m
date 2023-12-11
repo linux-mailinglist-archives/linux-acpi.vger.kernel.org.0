@@ -1,133 +1,124 @@
-Return-Path: <linux-acpi+bounces-2276-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2277-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF12780CB4C
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 14:45:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8795580CB89
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 14:53:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79E72281D63
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 13:45:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B6DE281C74
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 13:53:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828DC3FE2E;
-	Mon, 11 Dec 2023 13:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D198947A42;
+	Mon, 11 Dec 2023 13:52:53 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8288AD;
-	Mon, 11 Dec 2023 05:45:08 -0800 (PST)
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6da06c505ccso470126a34.1;
-        Mon, 11 Dec 2023 05:45:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702302308; x=1702907108;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JuMgu00NLAwah5dEifMlDlKfcOMiONZuqYgJcIiGOM8=;
-        b=i+iRV5V6qyTFUIOc4PMslxyJAy+OSs2yBAcLez0WBYLvDItzVs79T3W36VxNe0jOXw
-         Xls/vjH+aqV+e/LGYQJO6C3afCf3rg6TaUNmT7BaETe4oHH3KxPnoIQGWLq6qyg7qzTt
-         vOcsb1ygdjozEDkpuc73lFzisQUfqqgA0Eb7rhhYhf9v80aLtgTJyQKY60loI0r0sLQ2
-         63magvwBUUm7N8BxeJ4AMnTP2AUs0Tc2bAgreEWaS74jSsQenYBooig2qkwVnaNLF4mO
-         OCk6I8lpYO4QOMzp6pAVdqXgcwPi3RYDxhTD27bqL/S2h0GsUX6/yKz3RZfo3xdhA9jc
-         fXbA==
-X-Gm-Message-State: AOJu0Yxaubv0EP4fZ8nxcdAVhoDmk8qCBbdYfrGYtXjMBSaADU83ApgR
-	dtUIMYWCU5Dnugnzq51ZbKOZQhn9mRhE4kKBIIA=
-X-Google-Smtp-Source: AGHT+IGpVo/RGKXFZCViZPQ7IBpVlFW6xo6IlTjrh3Sd3P8kFOK+vhAun4TccGy7fygLfPuC+ozfhofEy7Ae0nR8fXs=
-X-Received: by 2002:a05:6870:9607:b0:1fb:23ec:3318 with SMTP id
- d7-20020a056870960700b001fb23ec3318mr8409458oaq.0.1702302308012; Mon, 11 Dec
- 2023 05:45:08 -0800 (PST)
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE97A1BC0;
+	Mon, 11 Dec 2023 05:52:47 -0800 (PST)
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 512AF453EF;
+	Mon, 11 Dec 2023 14:52:43 +0100 (CET)
+Message-ID: <c6233df5-01d8-498f-8235-ce4b102a2e91@proxmox.com>
+Date: Mon, 11 Dec 2023 14:52:42 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1880915.tdWV9SEqCh@kreacher> <a317fd5b-85df-409f-96e2-8123eea6ca73@arm.com>
-In-Reply-To: <a317fd5b-85df-409f-96e2-8123eea6ca73@arm.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 11 Dec 2023 14:44:51 +0100
-Message-ID: <CAJZ5v0g3exHkX6FLsmbYUcOJHstWOfVf_QnEnm8KmqoYCYwdjA@mail.gmail.com>
-Subject: Re: [PATCH v1 0/3] thermal: core: Remove thermal zones during unregistration
-To: Lukasz Luba <lukasz.luba@arm.com>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Linux PM <linux-pm@vger.kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
-	Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: SCSI hotplug issues with UEFI VM with guest kernel >= 6.5
+Content-Language: en-US
+To: Igor Mammedov <imammedo@redhat.com>, Bjorn Helgaas <helgaas@kernel.org>
+Cc: linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bhelgaas@google.com, lenb@kernel.org,
+ rafael@kernel.org, Thomas Lamprecht <t.lamprecht@proxmox.com>
+References: <9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com>
+ <20231207232815.GA771837@bhelgaas>
+ <20231208164723.12828a96@imammedo.users.ipa.redhat.com>
+ <20231211084604.25e209af@imammedo.users.ipa.redhat.com>
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <20231211084604.25e209af@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Lukasz,
+Am 11.12.23 um 08:46 schrieb Igor Mammedov:
+> On Fri, 8 Dec 2023 16:47:23 +0100
+> Igor Mammedov <imammedo@redhat.com> wrote:
+> 
+>> On Thu, 7 Dec 2023 17:28:15 -0600
+>> Bjorn Helgaas <helgaas@kernel.org> wrote:
+>>
+>>>
+>>> What's the actual symptom that this is broken?  All these log
+>>> fragments show the exact same assignments for BARs 0, 1, 4 and for the
+>>> bridge windows.
+>>>
 
-On Mon, Dec 11, 2023 at 2:37=E2=80=AFPM Lukasz Luba <lukasz.luba@arm.com> w=
-rote:
->
-> Hi Rafael,
->
-> On 12/8/23 19:11, Rafael J. Wysocki wrote:
-> > Hi All,
-> >
-> > This patch series adds a mechanism to guarantee that
-> > thermal_zone_device_unregister() will not return until all of the activ=
-e
-> > references to the thermal zone device object in question have been drop=
-ped
-> > and it has been deleted (patch [1/3]).
-> >
-> > This supersedes the approach used so far in which all thermal zone sysf=
-s
-> > attribute callbacks check if the zone device is still registered under =
-the
-> > zone lock, so as to return early if that is not the case, as it means t=
-hat
-> > device_del() has been called for the thermal zone in question (and retu=
-rned).
-> > It is not necessary to do that any more after patch [1/3], so patch [2/=
-3]
-> > removes those checks from the code and drops zone locking that is not
-> > necessary any more either.
-> >
-> > Patch [3/3] uses the observation that the thermal subsystem does not ne=
-ed to
-> > check if a thermal zone device is registered at all, because it can use=
- its
-> > own data to determine whether or not the thermal zone is going away and=
- so
-> > it may not be worth updating it, for example.
-> >
-> > Please refer to the patch changelogs for details.
-> >
-> > The series depends on new thermal material in linux-next, but it should=
- not
-> > substantially depend on any changes that have not made it into linux-ne=
-xt yet.
-> >
-> > Thanks!
-> >
-> >
-> >
->
-> I like the concept with completion thing for this.
-> I have tired to stress test these patches with my mock
-> thermal zone module load/unload and it works good.
->
-> The test was doing the these bits:
-> for i in $(seq 1 1000000) ; do cat
-> /sys/class/thermal/thermal_zone2/trip_point_0_temp > /dev/null 2>&1 ; don=
-e &
-> for i in $(seq 1 10000) ; do insmod /data/selftest_ipa.ko ; rmmod
-> selftest_ipa ; done &
->
-> I couldn't trigger any issues in reading from this
-> trip temp file in background, which should go now w/o the
-> locking. I thought it would be nice test, since we have
-> direct call to trips array 'tz->trips[trip_id].temperature'.
-> Let me know if you think about other scenario for stress testing it.
-> (I have also checked the 'temp' sysfs read, where the mutex for
-> tz is used - also no issues).
->
-> Feel free to add to all patches:
->
-> Reviewed-and-tested-by: Lukasz Luba <lukasz.luba@arm.com>
+The disk never shows up in /dev
 
-Thank you!
+>>> I assume 0000:01:02.0 is the hot-added SCSI HBA, and 00:05.0 is a
+>>> bridge leading to it?
+>>>
+>>> Can you put the complete dmesg logs somewhere?  There's a lot of
+>>> context missing here.
+>>>
+
+Is this still necessary with Igor being able to reproduce the issue?
+
+>>> Do you have to revert both cc22522fd55e2 and 40613da52b13f to make it
+>>> work reliably?  If we have to revert something, reverting one would be
+>>> better than reverting both.  
+>>
+
+Just reverting cc22522fd55e2 is not enough (and cc22522fd55e2 fixes
+40613da52b13f so I can't revert just 40613da52b13f).
+
+> 
+> Fiona,
+> 
+> Does it help if you use q35 machine with '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off' option?
+> 
+
+Yes, it does :)
+
+I added the following to my QEMU commandline (first line, because there
+wouldn't be a "pci.0" otherwise):
+
+> -device 'pci-bridge,id=pci.0,chassis_nr=4' \
+> -machine 'q35' \
+> -global 'ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off' \
+
+and while it takes a few seconds, the disk does show up successfully:
+
+> Dec 11 13:07:32 hotplug kernel: shpchp 0000:01:05.0: Latch close on Slot(2-1)
+> Dec 11 13:07:32 hotplug kernel: shpchp 0000:01:05.0: Button pressed on Slot(2-1)
+> Dec 11 13:07:32 hotplug kernel: shpchp 0000:01:05.0: Card present on Slot(2-1)
+> Dec 11 13:07:32 hotplug kernel: shpchp 0000:01:05.0: PCI slot #2-1 - powering on due to button press
+> Dec 11 13:07:38 hotplug kernel: pci 0000:02:02.0: [1af4:1004] type 00 class 0x010000
+> Dec 11 13:07:38 hotplug kernel: pci 0000:02:02.0: reg 0x10: [io  0x0000-0x003f]
+> Dec 11 13:07:38 hotplug kernel: pci 0000:02:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
+> Dec 11 13:07:38 hotplug kernel: pci 0000:02:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
+> Dec 11 13:07:38 hotplug kernel: pci 0000:02:02.0: BAR 4: assigned [mem 0xc040004000-0xc040007fff 64bit pref]
+> Dec 11 13:07:38 hotplug kernel: pci 0000:02:02.0: BAR 1: assigned [mem 0xc1401000-0xc1401fff]
+> Dec 11 13:07:38 hotplug kernel: pci 0000:02:02.0: BAR 0: assigned [io  0x8040-0x807f]
+> Dec 11 13:07:38 hotplug kernel: shpchp 0000:01:05.0: PCI bridge to [bus 02]
+> Dec 11 13:07:38 hotplug kernel: shpchp 0000:01:05.0:   bridge window [io  0x8000-0x8fff]
+> Dec 11 13:07:38 hotplug kernel: shpchp 0000:01:05.0:   bridge window [mem 0xc1400000-0xc15fffff]
+> Dec 11 13:07:38 hotplug kernel: shpchp 0000:01:05.0:   bridge window [mem 0xc040000000-0xc05fffffff 64bit pref]
+> Dec 11 13:07:38 hotplug kernel: virtio-pci 0000:02:02.0: enabling device (0000 -> 0003)
+> Dec 11 13:07:38 hotplug kernel: scsi host7: Virtio SCSI HBA
+> Dec 11 13:07:38 hotplug kernel: scsi 7:0:0:1: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
+> Dec 11 13:07:38 hotplug kernel: sd 7:0:0:1: Attached scsi generic sg1 type 0
+> Dec 11 13:07:38 hotplug kernel: sd 7:0:0:1: Power-on or device reset occurred
+> Dec 11 13:07:38 hotplug kernel: sd 7:0:0:1: [sdb] 2048 512-byte logical blocks: (1.05 MB/1.00 MiB)
+> Dec 11 13:07:38 hotplug kernel: sd 7:0:0:1: [sdb] Write Protect is off
+> Dec 11 13:07:38 hotplug kernel: sd 7:0:0:1: [sdb] Mode Sense: 63 00 00 08
+> Dec 11 13:07:38 hotplug kernel: sd 7:0:0:1: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+> Dec 11 13:07:38 hotplug kernel: sd 7:0:0:1: [sdb] Attached SCSI disk
+
+Best Regards,
+Fiona
+
 
