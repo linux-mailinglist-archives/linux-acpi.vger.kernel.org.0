@@ -1,142 +1,105 @@
-Return-Path: <linux-acpi+bounces-2274-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2275-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAAD980CAF9
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 14:28:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 255DF80CB23
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 14:37:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32FF0B20E29
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 13:28:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EC96B20E8E
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 13:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4643E482;
-	Mon, 11 Dec 2023 13:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LAu0byBI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB2E3F8D4;
+	Mon, 11 Dec 2023 13:37:17 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3C33D964;
-	Mon, 11 Dec 2023 13:28:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D407C433C9;
-	Mon, 11 Dec 2023 13:28:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702301287;
-	bh=Uh28siBgKPrRx4R97NHRHFSutMUu3voxmGrI4tHwqJY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LAu0byBI6RS1NorYku2b05EMpa2te/9yWVIdkVVhc3v0B2IUobjYl5G4y/bzWa9pJ
-	 JjIUc0L5jQy3+vJf3iSPZ9w7NHWJVeveZ8Hwjs82eBFchAAU/z+AI2ET4sBi5zgaos
-	 Y0BeQpqkgtzEVa5x6sxs4Sp3r9IZJ5Rm+nk8ZGcx906z+EgRGwrnEybDL8FBes+JOD
-	 A3vFUH1fc1/B2QPP2C8HpmJtX19M50Ti3rcMizOlJoN3msljQPC6btRRBnBhEx7nid
-	 Mv90l0Dd4s6KBcpO77xaQlgW6DEuntN8+hgoFozymI86YA8qy5G89c76Za3gkok+AX
-	 LP/+5T3W8DdeA==
-Date: Mon, 11 Dec 2023 13:27:57 +0000
-From: Will Deacon <will@kernel.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-	iommu@lists.linux.dev, devicetree@vger.kernel.org
-Subject: Re: [PATCH 3/7] ACPI/IORT: Handle memory address size limits as
- limits
-Message-ID: <20231211132757.GE25681@willie-the-truck>
-References: <cover.1701268753.git.robin.murphy@arm.com>
- <2ae6199a9cf035c1defd42e48675b827f41cdc95.1701268753.git.robin.murphy@arm.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id B0854CF;
+	Mon, 11 Dec 2023 05:37:14 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D3116FEC;
+	Mon, 11 Dec 2023 05:38:00 -0800 (PST)
+Received: from [10.57.84.143] (unknown [10.57.84.143])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 21ECB3F762;
+	Mon, 11 Dec 2023 05:37:12 -0800 (PST)
+Message-ID: <a317fd5b-85df-409f-96e2-8123eea6ca73@arm.com>
+Date: Mon, 11 Dec 2023 13:38:16 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2ae6199a9cf035c1defd42e48675b827f41cdc95.1701268753.git.robin.murphy@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/3] thermal: core: Remove thermal zones during
+ unregistration
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Linux PM <linux-pm@vger.kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
+ Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
+References: <1880915.tdWV9SEqCh@kreacher>
+From: Lukasz Luba <lukasz.luba@arm.com>
+In-Reply-To: <1880915.tdWV9SEqCh@kreacher>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 29, 2023 at 05:43:00PM +0000, Robin Murphy wrote:
-> Return the Root Complex/Named Component memory address size limit as an
-> inclusive limit value, rather than an exclusive size.  This saves us
-> having to special-case 64-bit overflow, and simplifies our caller too.
+Hi Rafael,
+
+On 12/8/23 19:11, Rafael J. Wysocki wrote:
+> Hi All,
 > 
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> ---
->  drivers/acpi/arm64/dma.c  |  9 +++------
->  drivers/acpi/arm64/iort.c | 18 ++++++++----------
->  include/linux/acpi_iort.h |  4 ++--
->  3 files changed, 13 insertions(+), 18 deletions(-)
+> This patch series adds a mechanism to guarantee that
+> thermal_zone_device_unregister() will not return until all of the active
+> references to the thermal zone device object in question have been dropped
+> and it has been deleted (patch [1/3]).
+> 
+> This supersedes the approach used so far in which all thermal zone sysfs
+> attribute callbacks check if the zone device is still registered under the
+> zone lock, so as to return early if that is not the case, as it means that
+> device_del() has been called for the thermal zone in question (and returned).
+> It is not necessary to do that any more after patch [1/3], so patch [2/3]
+> removes those checks from the code and drops zone locking that is not
+> necessary any more either.
+> 
+> Patch [3/3] uses the observation that the thermal subsystem does not need to
+> check if a thermal zone device is registered at all, because it can use its
+> own data to determine whether or not the thermal zone is going away and so
+> it may not be worth updating it, for example.
+> 
+> Please refer to the patch changelogs for details.
+> 
+> The series depends on new thermal material in linux-next, but it should not
+> substantially depend on any changes that have not made it into linux-next yet.
+> 
+> Thanks!
+> 
+> 
+> 
 
-[...]
+I like the concept with completion thing for this.
+I have tired to stress test these patches with my mock
+thermal zone module load/unload and it works good.
 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index 6496ff5a6ba2..eb64d8e17dd1 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -1367,7 +1367,7 @@ int iort_iommu_configure_id(struct device *dev, const u32 *input_id)
->  { return -ENODEV; }
->  #endif
->  
-> -static int nc_dma_get_range(struct device *dev, u64 *size)
-> +static int nc_dma_get_range(struct device *dev, u64 *limit)
->  {
->  	struct acpi_iort_node *node;
->  	struct acpi_iort_named_component *ncomp;
-> @@ -1384,13 +1384,12 @@ static int nc_dma_get_range(struct device *dev, u64 *size)
->  		return -EINVAL;
->  	}
->  
-> -	*size = ncomp->memory_address_limit >= 64 ? U64_MAX :
-> -			1ULL<<ncomp->memory_address_limit;
-> +	*limit = (1ULL << ncomp->memory_address_limit) - 1;
+The test was doing the these bits:
+for i in $(seq 1 1000000) ; do cat 
+/sys/class/thermal/thermal_zone2/trip_point_0_temp > /dev/null 2>&1 ; done &
+for i in $(seq 1 10000) ; do insmod /data/selftest_ipa.ko ; rmmod 
+selftest_ipa ; done &
 
-The old code handled 'ncomp->memory_address_limit >= 64' -- why is it safe
-to drop that? You mention it in the cover letter, so clearly I'm missing
-something!
+I couldn't trigger any issues in reading from this
+trip temp file in background, which should go now w/o the
+locking. I thought it would be nice test, since we have
+direct call to trips array 'tz->trips[trip_id].temperature'.
+Let me know if you think about other scenario for stress testing it.
+(I have also checked the 'temp' sysfs read, where the mutex for
+tz is used - also no issues).
 
->  
->  	return 0;
->  }
->  
-> -static int rc_dma_get_range(struct device *dev, u64 *size)
-> +static int rc_dma_get_range(struct device *dev, u64 *limit)
->  {
->  	struct acpi_iort_node *node;
->  	struct acpi_iort_root_complex *rc;
-> @@ -1408,8 +1407,7 @@ static int rc_dma_get_range(struct device *dev, u64 *size)
->  		return -EINVAL;
->  	}
->  
-> -	*size = rc->memory_address_limit >= 64 ? U64_MAX :
-> -			1ULL<<rc->memory_address_limit;
-> +	*limit = (1ULL << rc->memory_address_limit) - 1;
+Feel free to add to all patches:
 
-Same thing here.
+Reviewed-and-tested-by: Lukasz Luba <lukasz.luba@arm.com>
 
-Will
+Regards,
+Lukasz
 
