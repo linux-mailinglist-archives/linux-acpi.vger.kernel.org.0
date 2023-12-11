@@ -1,60 +1,60 @@
-Return-Path: <linux-acpi+bounces-2291-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2292-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4398E80D3F0
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 18:35:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBA180D42C
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 18:39:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3256282048
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 17:35:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD841282106
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 17:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2660B4E616;
-	Mon, 11 Dec 2023 17:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A774E633;
+	Mon, 11 Dec 2023 17:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q99BuM+Y"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kxUlaD6M"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC10DFF
-	for <linux-acpi@vger.kernel.org>; Mon, 11 Dec 2023 09:34:59 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-3334254cfa3so2665114f8f.1
-        for <linux-acpi@vger.kernel.org>; Mon, 11 Dec 2023 09:34:59 -0800 (PST)
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 604B69B
+	for <linux-acpi@vger.kernel.org>; Mon, 11 Dec 2023 09:39:29 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-3360ae2392eso3027382f8f.2
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Dec 2023 09:39:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702316098; x=1702920898; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1702316368; x=1702921168; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=gstntUJJhuUruQ6CLNsepakisEqtUTeEbOuI9lM82/A=;
-        b=q99BuM+YhGN4lKfpf3MGaomsJifhCbtczimCixr3f6qWNcTug2KRXhqiZgm4qKk1pm
-         D6lUOVIyjQYDL6chdWBNsYypi1PRs41p/26LtIeR5zqa3l2xEIDRyoU9HgPOVaptvyt6
-         +e73dW48t7eyConI/pXcdcm7VnxO3L+/liSPNb/o6pAVJqL/g21LEoo306UgBn+CsKB0
-         58wxMYb4PxUH1s690OLgIbo7UVquXJ+uj38Fk6gGJrxJlrR05MXMlSlNnv1uipwC2KF4
-         aY5/FbIfRoXOvbHfkZFzdWX11P3R7eNDVO5z4QcvciMilv5E+yuJ0Tv7fgllNi9gzL0i
-         mYOg==
+        bh=yy7vRtXjcFGxV/6rqekBGURy24lF8v5udfGSmbUqfVE=;
+        b=kxUlaD6MHALeF0TXjcg/MsmXW6BqiUE3f19p/0t5ZQvt8fMTYlJrIq8F6QXyAIFg4U
+         ZH3EiUSKp7ZcVaEGL/GCHInNvE8MJubUOJ9g5jmYjULWfITvgg0TDhkhctvq4zTVkpQX
+         uLC4GgwWIds3s+uOKw9CLDvIM1NHeaCXlNRQ7GIwJou24Pd8JqRYxJPjt+yhTBt9kXNS
+         3u93ui9giAsyuLmXTUQmzqZK9mfUPzfyd65LJSW8A0orwIsY846p/zohLYjLkrscds9H
+         /Ep+IfgLoPpQYr9ZssAqSA2AmoavqVXKKajydT1yjP6jrNa9Ltw/NOVZmj5/rwnFhQ0f
+         ERXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702316098; x=1702920898;
+        d=1e100.net; s=20230601; t=1702316368; x=1702921168;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gstntUJJhuUruQ6CLNsepakisEqtUTeEbOuI9lM82/A=;
-        b=qQ86kMkCrbs3bP3YmMVHPe2orgFfKNeM8t9LnaUrG1zwOdJA7fwbcwpwNzjhsXCV+v
-         JUcspxzXJ+9cROVJ5Z7q5fv35hjl+TlSe0mK5DqKNj8y6BxcFqjCqorFBaUFFzmuhWtz
-         D3iBxttts43m7+SVd6jpYT4rUWmc7tKU+RKsSuiiFY1KNfHozFe3ALckJci1wTLEooOc
-         d2RxgirdnWxdrLCWzf1gh0117WfVwthOf8jBmXxI4qbFVvLIDA0sTVRTgitebs20Y0iZ
-         +dkLTXrZimjQ4/ZafiKNiLSmNVyCfYHIk2w3Tz1bf7g3YjkxhT7ESjNmp6Dq+a0Z+dJI
-         P5Nw==
-X-Gm-Message-State: AOJu0Yx7q/yo6oR4qKAZK5nbX2y7NsB6JgSSHgzD40wHxaTbbqsJ7+KU
-	j7IX1+hrnXKgPZr1mwZFIRggGA==
-X-Google-Smtp-Source: AGHT+IE1Y4VjQWuMP84YdtKDSoXd37/lYS2QFZAq/+DEf2E0klWmPSB2zntnCZYi2oLFGBPADo4Fqg==
-X-Received: by 2002:a5d:4712:0:b0:332:f501:8b56 with SMTP id y18-20020a5d4712000000b00332f5018b56mr2572878wrq.23.1702316098228;
-        Mon, 11 Dec 2023 09:34:58 -0800 (PST)
+        bh=yy7vRtXjcFGxV/6rqekBGURy24lF8v5udfGSmbUqfVE=;
+        b=XWbCutNTXjSEFhmWPmPcwuK2FxLw4xgj6Hp7JqvupHpj+pJzgPYl8V0evqjTsHeWGs
+         4t8FDJfeUxpoIE0TweyNU3ZUq4qhYdnUm0J1a06VzObmdHq/rDbnPLrsFwIViUfy5UN+
+         XKFZ0h4hfFYO2ar6ruJ1PuO1SynLtYAoZ8GWNMe83bM+8lqaj99hCKPiOjazWRssCffZ
+         YWWd8hOjfkryiQC6/I/sMt56No4QoqtxgnlAjKJCCrypJb/pialMy0id8Y/pR175Im4y
+         8G9hM9QbX/rCmulXHquZKEo6utJThZWTDAKFG/exDpbcyc02xvpp1vCy3MGcOzvrZ2ss
+         mPdA==
+X-Gm-Message-State: AOJu0YwMymjPAhN1qLw29J3oh/8qfZIRXQM/e5iir6rUD+zex0LbT4ZX
+	LJtWGnQ+2YXhv92U3gkfGoVdOo6QfnIepoNQbVY=
+X-Google-Smtp-Source: AGHT+IFKKn02YZnDQaXPtO1z5yFKVke+da9MLmnSbQKfW/EzVDLPVXpfXt9JqlrR/nH7qZ06w8nOzQ==
+X-Received: by 2002:a05:600c:4f11:b0:40b:5e21:cc29 with SMTP id l17-20020a05600c4f1100b0040b5e21cc29mr2351948wmq.84.1702316367804;
+        Mon, 11 Dec 2023 09:39:27 -0800 (PST)
 Received: from ?IPV6:2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0? ([2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0])
-        by smtp.googlemail.com with ESMTPSA id g3-20020adff403000000b003335ddce799sm9046899wro.103.2023.12.11.09.34.57
+        by smtp.googlemail.com with ESMTPSA id a19-20020a05600c349300b004064cd71aa8sm13606491wmq.34.2023.12.11.09.39.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Dec 2023 09:34:57 -0800 (PST)
-Message-ID: <535558f8-096b-4917-92d2-b0defed42b15@linaro.org>
-Date: Mon, 11 Dec 2023 18:34:57 +0100
+        Mon, 11 Dec 2023 09:39:27 -0800 (PST)
+Message-ID: <03944e4e-d57d-4442-b38d-e36e20cb5ae3@linaro.org>
+Date: Mon, 11 Dec 2023 18:39:26 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -62,57 +62,83 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] thermal: core: Make
- thermal_zone_device_unregister() return after freeing the zone
+Subject: Re: [PATCH v1 2/3] thermal: Drop redundant and confusing
+ device_is_registered() checks
 Content-Language: en-US
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux PM <linux-pm@vger.kernel.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux PM <linux-pm@vger.kernel.org>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
  Zhang Rui <rui.zhang@intel.com>, Linux ACPI <linux-acpi@vger.kernel.org>,
  LKML <linux-kernel@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>
-References: <1880915.tdWV9SEqCh@kreacher> <13414639.uLZWGnKmhe@kreacher>
- <0a0d5dd4-6b7a-428b-8ef1-bb6aff76fb51@linaro.org>
- <CAJZ5v0jebeWzUb-q-_xThRwZgUzaUfqS4YTGmsvbsOPrqFcYTQ@mail.gmail.com>
+References: <1880915.tdWV9SEqCh@kreacher> <8315317.T7Z3S40VBb@kreacher>
 From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <CAJZ5v0jebeWzUb-q-_xThRwZgUzaUfqS4YTGmsvbsOPrqFcYTQ@mail.gmail.com>
+In-Reply-To: <8315317.T7Z3S40VBb@kreacher>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 11/12/2023 17:42, Rafael J. Wysocki wrote:
-> On Mon, Dec 11, 2023 at 5:28 PM Daniel Lezcano
-> <daniel.lezcano@linaro.org> wrote:
->>
->> On 08/12/2023 20:13, Rafael J. Wysocki wrote:
->>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>>
->>> Make thermal_zone_device_unregister() wait until all of the references
->>> to the given thermal zone object have been dropped and free it before
->>> returning.
->>>
->>> This guarantees that when thermal_zone_device_unregister() returns,
->>> there is no leftover activity regarding the thermal zone in question
->>> which is required by some of its callers (for instance, modular driver
->>> code that wants to know when it is safe to let the module go away).
->>>
->>> Subsequently, this will allow some confusing device_is_registered()
->>> checks to be dropped from the thermal sysfs and core code.
->>>
->>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>> ---
->>
->> Definitively agree on the change
->>
->> Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+On 08/12/2023 20:19, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Thanks!
+> Multiple places in the thermal subsystem (most importantly, sysfs
+> attribute callback functions) check if the given thermal zone device is
+> still registered in order to return early in case the device_del() in
+> thermal_zone_device_unregister() has run already.
 > 
->> Would it make sense to use kref_get/put ?
+> However, after thermal_zone_device_unregister() has been made wait for
+> all of the zone-related activity to complete before returning, it is
+> not necessary to do that any more, because all of the code holding a
+> reference to the thermal zone device object will be waited for even if
+> it does not do anything special to enforce this.
 > 
-> Why and where?
+> Accordingly, drop all of the device_is_registered() checks that are now
+> redundant and get rid of the zone locking that is not necessary any more
+> after dropping them.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
 
-Well it is a general question. Usually this kind of removal is tied with 
-a refcount
+[ ... ]
+
+> @@ -132,11 +120,6 @@ trip_point_temp_store(struct device *dev
+>   
+>   	mutex_lock(&tz->lock);
+>   
+> -	if (!device_is_registered(dev)) {
+> -		ret = -ENODEV;
+> -		goto unlock;
+> -	}
+> -
+>   	trip = &tz->trips[trip_id];
+>   
+>   	if (temp != trip->temperature) {
+> @@ -162,23 +145,12 @@ trip_point_temp_show(struct device *dev,
+>   		     char *buf)
+>   {
+>   	struct thermal_zone_device *tz = to_thermal_zone(dev);
+> -	int trip_id, temp;
+> +	int trip_id;
+>   
+>   	if (sscanf(attr->attr.name, "trip_point_%d_temp", &trip_id) != 1)
+>   		return -EINVAL;
+>   
+> -	mutex_lock(&tz->lock);
+> -
+> -	if (!device_is_registered(dev)) {
+> -		mutex_unlock(&tz->lock);
+> -		return -ENODEV;
+> -	}
+> -
+> -	temp = tz->trips[trip_id].temperature;
+> -
+> -	mutex_unlock(&tz->lock);
+> -
+> -	return sprintf(buf, "%d\n", temp);
+> +	return sprintf(buf, "%d\n", tz->trips[trip_id].temperature);
+
+Without the lock, could the trip_temp_store() make the value change 
+while we read it?
+
+[ ... ]
 
 -- 
 <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
