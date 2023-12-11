@@ -1,130 +1,143 @@
-Return-Path: <linux-acpi+bounces-2296-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2297-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E19B980D4CC
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 18:58:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E05D80DB21
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 20:52:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C692B214DE
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 17:58:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D1C928239F
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 19:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133724F1E5;
-	Mon, 11 Dec 2023 17:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8733537EE;
+	Mon, 11 Dec 2023 19:52:51 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BB5193;
-	Mon, 11 Dec 2023 09:58:12 -0800 (PST)
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-6d9db92bd71so600219a34.1;
-        Mon, 11 Dec 2023 09:58:12 -0800 (PST)
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CD73D2;
+	Mon, 11 Dec 2023 11:52:49 -0800 (PST)
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6d9f4682c7bso404565a34.1;
+        Mon, 11 Dec 2023 11:52:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702317491; x=1702922291;
+        d=1e100.net; s=20230601; t=1702324368; x=1702929168;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OXbiTpVzJfHRl7QZFMGmf1sW13oDT9FBF5f3B7KPSvc=;
-        b=AZLuqQHAZbxrleryKoiCa7ycnnmw1g7zBi3m56KgedN562h66X4iIHoeDHcreTH3L7
-         naAPTlkORp5uZxqi3KijuaFI1dJbRokHtO70Rom/mxKxEyJUgrZSxcejxdkvPbFDfeC/
-         uz78wbaPSfHc+vWdFt1ZMlHyT/eOX6aIhN3lxPeTHNBImwxclVlcyT+eL5NfHTsl2+pM
-         Ky8KUIHhkPwsoS0wOi98seZFvjSSs/hAkb1I9Rwwgf5EKMUmRGbn6ICITAtZdRsIzsAH
-         p3Dikz61fe51hM8p2RSBkKmpzeZt7R23po+EPt/biQXQpP5fsY04xkLkKXssXdxmJ+7C
-         tFLA==
-X-Gm-Message-State: AOJu0YzZLDV5C6xY0Y7FwDaYknR0tqSxHkxWjFKi9Q6Qok9pNTnnkvDY
-	fRK5sO4z9OM2gqNRNHeDUamcI27p6wynd3wRBlE=
-X-Google-Smtp-Source: AGHT+IEB8tbPHG0hpmSXtZbQPu9rCKTmgzM9oTofWHtCzQfwuRW4mAEhOhvFbMf7e2/laCNphcPlfM/B7FB2AK0pBlo=
-X-Received: by 2002:a05:6871:2284:b0:1fb:648:5207 with SMTP id
- sd4-20020a056871228400b001fb06485207mr9545202oab.2.1702317491331; Mon, 11 Dec
- 2023 09:58:11 -0800 (PST)
+        bh=shxc1fqYRYQGn0MQr4gOJAnY5PC0ECh8gGcd5gbYepM=;
+        b=PjbSw0vv51/y19nexWN70ndxFKOOMoNqhRLg65WjyFTVfQ+/CL4WYXiajnEBHKt8Pa
+         kOhzOFdT8XuFhJuYArj0x0fOjb6qiH1lakXlq81W/BdbmH7x0QGzzPp2+wS/9jduUQFx
+         1UeW0E7UhRKei+vqYIVEd+ofXdsh8wj3eHQmQDKvYGMB0UdkqF0n965RfWrMIsdhpiXc
+         PFlerj41b4zHNFxdgSGmAca9MjOsOX+x2aYvQ8finIZjy0uQ1VgVO+KO6oFeWkLmImVr
+         qXtSETW0C8G8rEVxC0QjxjYtBx/iOp5TVFwCRtsPLqpFXoD7i64qLC3eEdmoQdzMAksn
+         PINg==
+X-Gm-Message-State: AOJu0Yxu/abKvJmzQJUv6KQ7P1t3O5cqc6hN2M825dGUj3ARI8r4XDs4
+	TlUUANmcxIRCFtio8cpVQVN28xuDsgmum3imxeg=
+X-Google-Smtp-Source: AGHT+IGjJ9dqMdEvqbPS4C+aNBObN65m/Uv+AIgbHvjx5d2sI4uQBJx39nF2HMC2W+Wq43gY2UcNwwiDLRyn45Z6BNI=
+X-Received: by 2002:a05:6820:2a18:b0:590:9027:7ab0 with SMTP id
+ dr24-20020a0568202a1800b0059090277ab0mr7447038oob.0.1702324368365; Mon, 11
+ Dec 2023 11:52:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1880915.tdWV9SEqCh@kreacher> <8315317.T7Z3S40VBb@kreacher> <03944e4e-d57d-4442-b38d-e36e20cb5ae3@linaro.org>
-In-Reply-To: <03944e4e-d57d-4442-b38d-e36e20cb5ae3@linaro.org>
+References: <20231211104855.558096-1-vincent.guittot@linaro.org>
+In-Reply-To: <20231211104855.558096-1-vincent.guittot@linaro.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 11 Dec 2023 18:58:00 +0100
-Message-ID: <CAJZ5v0hwLcL9UKQs7WA=hb2v31eEY83rv-bQVgSv_EV9AidYZA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/3] thermal: Drop redundant and confusing
- device_is_registered() checks
-To: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM <linux-pm@vger.kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Lukasz Luba <lukasz.luba@arm.com>
+Date: Mon, 11 Dec 2023 20:52:37 +0100
+Message-ID: <CAJZ5v0i37gGqt=oGC4BxJ4hT5pxhAdL7dPxGf7w3D8THqwAOwQ@mail.gmail.com>
+Subject: Re: [PATCH v7 0/7] consolidate and cleanup CPU capacity
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, 
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	sudeep.holla@arm.com, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
+	mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com, 
+	viresh.kumar@linaro.org, lenb@kernel.org, robert.moore@intel.com, 
+	lukasz.luba@arm.com, ionela.voinescu@arm.com, pierre.gondois@arm.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, conor.dooley@microchip.com, suagrfillet@gmail.com, 
+	ajones@ventanamicro.com, lftan@kernel.org, beata.michalska@arm.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 11, 2023 at 6:39=E2=80=AFPM Daniel Lezcano
-<daniel.lezcano@linaro.org> wrote:
+On Mon, Dec 11, 2023 at 11:49=E2=80=AFAM Vincent Guittot
+<vincent.guittot@linaro.org> wrote:
 >
-> On 08/12/2023 20:19, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Multiple places in the thermal subsystem (most importantly, sysfs
-> > attribute callback functions) check if the given thermal zone device is
-> > still registered in order to return early in case the device_del() in
-> > thermal_zone_device_unregister() has run already.
-> >
-> > However, after thermal_zone_device_unregister() has been made wait for
-> > all of the zone-related activity to complete before returning, it is
-> > not necessary to do that any more, because all of the code holding a
-> > reference to the thermal zone device object will be waited for even if
-> > it does not do anything special to enforce this.
-> >
-> > Accordingly, drop all of the device_is_registered() checks that are now
-> > redundant and get rid of the zone locking that is not necessary any mor=
-e
-> > after dropping them.
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
+> This is the 1st part of consolidating how the max compute capacity is
+> used in the scheduler and how we calculate the frequency for a level of
+> utilization.
 >
-> [ ... ]
+> Fix some unconsistancy when computing frequency for an utilization. There
+> can be a mismatch between energy model and schedutil.
 >
-> > @@ -132,11 +120,6 @@ trip_point_temp_store(struct device *dev
-> >
-> >       mutex_lock(&tz->lock);
-> >
-> > -     if (!device_is_registered(dev)) {
-> > -             ret =3D -ENODEV;
-> > -             goto unlock;
-> > -     }
-> > -
-> >       trip =3D &tz->trips[trip_id];
-> >
-> >       if (temp !=3D trip->temperature) {
-> > @@ -162,23 +145,12 @@ trip_point_temp_show(struct device *dev,
-> >                    char *buf)
-> >   {
-> >       struct thermal_zone_device *tz =3D to_thermal_zone(dev);
-> > -     int trip_id, temp;
-> > +     int trip_id;
-> >
-> >       if (sscanf(attr->attr.name, "trip_point_%d_temp", &trip_id) !=3D =
-1)
-> >               return -EINVAL;
-> >
-> > -     mutex_lock(&tz->lock);
-> > -
-> > -     if (!device_is_registered(dev)) {
-> > -             mutex_unlock(&tz->lock);
-> > -             return -ENODEV;
-> > -     }
-> > -
-> > -     temp =3D tz->trips[trip_id].temperature;
-> > -
-> > -     mutex_unlock(&tz->lock);
-> > -
-> > -     return sprintf(buf, "%d\n", temp);
-> > +     return sprintf(buf, "%d\n", tz->trips[trip_id].temperature);
+> Next step will be to make a difference between the original
+> max compute capacity of a CPU and what is currently available when
+> there is a capping applying forever (i.e. seconds or more).
 >
-> Without the lock, could the trip_temp_store() make the value change
-> while we read it?
+> Changes since v6:
+> - Rebase on tip/sched/core and fix a conflict
+> - Add tags
+>
+> Changes since v5:
+> - Remove useless return in freq_inv_set_max_ratio()
+> - Add tags
+>
+> Changes since v4:
+> - Capitalize the verb in subject
+> - Remove usless parentheses in cppc_get_dmi_max_khz()
+> - Use freq_ref pattern everywhere
+> - Fix MHz / kHz units conversion for cppc_cpufreq
+> - Move default definition of arch_scale_freq_ref() in
+>   include/linux/sched/topology.h beside arch_scale_cpu_capacity
+>   which faces similar default declaration behavior. This location covers
+>   all cases with arch and CONFIG_* which was not the case with previous
+>   attempts.
+>
+> Changes since v3:
+> - Split patch 5 cpufreq/cppc
+> - Fix topology_init_cpu_capacity_cppc()
+> - Fix init if AMU ratio
+> - Added some tags
+>
+> Changes since v2:
+> - Remove the 1st patch which has been queued in tip
+> - Rework how to initialize the reference frequency for cppc_cpufreq and
+>   change topology_init_cpu_capacity_cppc() to also set capacity_ref_freq
+> - Add a RFC to convert AMU to use arch_scale_freq_ref and move the config
+>   of the AMU ratio to be done when intializing cpu capacity and
+>   capacity_ref_freq
+> - Added some tags
+>
+> Changes since v1:
+> - Fix typos
+> - Added changes in cpufreq to use arch_scale_freq_ref() when calling
+>   arch_set_freq_scale (patch 3).
+> - arch_scale_freq_ref() is always defined and returns 0 (as proposed
+>   by Ionela) when not defined by the arch. This simplifies the code with
+>   the addition of patch 3.
+> - Simplify Energy Model which always uses arch_scale_freq_ref(). The
+>   latter returns 0 when not defined by arch instead of last item of the
+>   perf domain. This is not a problem because the function is only defined
+>   for compilation purpose in this case and we don't care about the
+>   returned value. (patch 5)
+> - Added changes in cppc cpufreq to set capacity_ref_freq (patch 6)
+> - Added reviewed tag for patch 1 which got a minor change but not for
+>   others as I did some changes which could make previous reviewed tag
+>   no more relevant.
+>
+> Vincent Guittot (7):
+>   topology: Add a new arch_scale_freq_reference
+>   cpufreq: Use the fixed and coherent frequency for scaling capacity
+>   cpufreq/schedutil: Use a fixed reference frequency
+>   energy_model: Use a fixed reference frequency
+>   cpufreq/cppc: Move and rename cppc_cpufreq_{perf_to_khz|khz_to_perf}
+>   cpufreq/cppc: Set the frequency used for computing the capacity
+>   arm64/amu: Use capacity_ref_freq to set AMU ratio
 
-The lock doesn't change that, because the write can occur before
-dropping the lock and the printf() and reading an int is atomic on all
-architectures supported by Linux.
+This series touches multiple places, but mostly schedutil, cpufreq and
+the EM, so please let me know if you want me to pick it up.
 
