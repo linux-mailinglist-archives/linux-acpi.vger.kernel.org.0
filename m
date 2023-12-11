@@ -1,58 +1,58 @@
-Return-Path: <linux-acpi+bounces-2267-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2268-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A5A80C723
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A2180C724
 	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 11:49:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD5D8B21045
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 10:49:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 522821F210EC
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Dec 2023 10:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F65D2D61A;
-	Mon, 11 Dec 2023 10:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949982CCB4;
+	Mon, 11 Dec 2023 10:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="caxgzVPW"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="O9aMoQgF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DE3BED
-	for <linux-acpi@vger.kernel.org>; Mon, 11 Dec 2023 02:49:07 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-336121f93e3so980266f8f.0
-        for <linux-acpi@vger.kernel.org>; Mon, 11 Dec 2023 02:49:07 -0800 (PST)
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A146D2
+	for <linux-acpi@vger.kernel.org>; Mon, 11 Dec 2023 02:49:09 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-40c2d50bfbfso19131085e9.0
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Dec 2023 02:49:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702291746; x=1702896546; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1702291747; x=1702896547; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=19YdKXep2h2XKs9tI+n1uE2b2ri9zL5T7djiTxR5FZs=;
-        b=caxgzVPWvGkUC4/QPdofkQlRsb5EcFWebyQalIeP2tPQI7TEDFpFgOIFHE2bL4QdGk
-         w/q+KH3lrWW0RdMxQ4eQ79Wh8VrIWWLOiHm+KLYn/zMNNBmbrMMrhH3Z3CZyEAPUhOtm
-         H80WTj4mj3crsdN807njsgqWOP2i5e1z33UXPOZ9by2x6/AnLvo3CFoHDg4MjKXWkG5U
-         xuqH5LZ5+5r8J9p058PxhoKi+dMN1BgaMgdkTfgFx9s0/Sxn3sqwN+/I11je7OIMnMq8
-         GPsbWD1zX42XvWVsYFnvLwLhivPAPt2GzNBB3DQw1arXlSUp2OmXtsLWSoNsI6lSy0cO
-         KyLg==
+        bh=oR/Xu5fTcECbdcK404Iu//SCIUa9yAdfMDLNdpuWudM=;
+        b=O9aMoQgFs8YJPmMazbjVdws8BrKD5PyjesiLWUggPjLf2P75k5zAAkpvLhzVmDZGie
+         uLyeREgrxrUtTBfMr9GsXyewBN2Ejfv8NsJmSgJrYxDQIDVrc+pJ4DDSPPGTfGBNOio5
+         COEpdOPrqOAbOREwCW2HaoLWdq7AKJYckgyV9njHbF9tLd/9HglCALvt0zik9Q0KqiwN
+         2/XM9J3tGSwz91uRRGB/wGrXIyqya/ba8e126DrY0uewbXvbLobYlVSRV3IHoq868PWz
+         F1kG7Y5COTQ/3KMTDKBFUpUqOz9wDLJJL+BPHEPpz5W1/8mHzKKjnPXbCmXe1TVAN3Xf
+         SnJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702291746; x=1702896546;
+        d=1e100.net; s=20230601; t=1702291747; x=1702896547;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=19YdKXep2h2XKs9tI+n1uE2b2ri9zL5T7djiTxR5FZs=;
-        b=dpyb+Ycax0YL34qto7HGw+SRDdXQvDeFSH7d2cpKqaa9PUWwuWLyALaHx1vNBF9obp
-         nrVy2Kgi6SF4CluSy650U68qG4CgBNDdyipy27nwhIqbpjeSRQ3tJf5y3HaztgSYaIqt
-         Ms5RK83G+P8FW1tw4i90DSoURDd5G9EEz05NrPqtpSL8ruvUnTqtOUZTzb01dxzx91Hl
-         UPvdBl41cprEryodWupNeT+GJnc0CtXrAUAygNNX7K0P1lHqp//mb0HDRHI1mhdn1qY/
-         jJeapM8hLczjc2/ySsCmE/S2tUBe2zZqyh76t71dOrGTPJ8AqTdbqi+yjWwCKSABg5O2
-         6v4Q==
-X-Gm-Message-State: AOJu0YyuzyPjH0+ndQpNVZU0UDzISHb0tLx7h4ZTj8bGPO2km3jOOHOc
-	3kxct5InLtwbaEtgcdYF7wUtcQ==
-X-Google-Smtp-Source: AGHT+IE6XqYGAPzyGfJojSMGYv4TCKNLa8KTkknwn96//z5+sFb+KJ1vbQvECdNkL4zdYu7uN7TYyg==
-X-Received: by 2002:adf:f3cf:0:b0:333:3d26:7b01 with SMTP id g15-20020adff3cf000000b003333d267b01mr3106219wrp.13.1702291745981;
-        Mon, 11 Dec 2023 02:49:05 -0800 (PST)
+        bh=oR/Xu5fTcECbdcK404Iu//SCIUa9yAdfMDLNdpuWudM=;
+        b=s/nERzKgikl9mOTQ9207kKoa33xdqcaYrdaDBHN87b+Z48mwLW6MK4V8893bSt0nA7
+         l75kog8HBeByBNLQYRlhCh4UpEsfEHzbcLfgepp5/lUBcHcQMJUmnp9mApUTD1cf1otK
+         Ts+4X2dJUof//B8hLVT1btf+oAb1f3/FG3IgpnWn5zrjy+KQQ9wEh/WaC4C5EDlSwWt3
+         K0RgAojg17vQMlgErqWQagVgB0nByzogJHIbUjk9QP/7gMZSPMmigwJQyNLFrvFqFq3h
+         UC0+qegVo5QhhBwh+iceJK1SfTjI+fiQm2nzR/c7oM3YbskWop3Pa9UllKbL4zOOZtM7
+         rbug==
+X-Gm-Message-State: AOJu0YwxS61p/23/7OZwt96fXYg17S+HpJyk1Vs/i+9X/oaQQqDCM+vB
+	ZBbQ7vB5z0x8opklUy0OhCjB0A==
+X-Google-Smtp-Source: AGHT+IE4mVViWniH3iIvIso/TtrWVkEw8yZqHt7Gq8RgECo9dfFH0UTnM4W6yFiy3y2CbsKWlCfU2g==
+X-Received: by 2002:a05:600c:4e0c:b0:40c:3dac:817f with SMTP id b12-20020a05600c4e0c00b0040c3dac817fmr1505924wmq.73.1702291747348;
+        Mon, 11 Dec 2023 02:49:07 -0800 (PST)
 Received: from vingu-book.. ([2a01:e0a:f:6020:a8d:abc:f0ae:3066])
-        by smtp.gmail.com with ESMTPSA id e16-20020adffd10000000b003346db01263sm8232579wrr.104.2023.12.11.02.49.04
+        by smtp.gmail.com with ESMTPSA id e16-20020adffd10000000b003346db01263sm8232579wrr.104.2023.12.11.02.49.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Dec 2023 02:49:05 -0800 (PST)
+        Mon, 11 Dec 2023 02:49:06 -0800 (PST)
 From: Vincent Guittot <vincent.guittot@linaro.org>
 To: linux@armlinux.org.uk,
 	catalin.marinas@arm.com,
@@ -89,9 +89,9 @@ Cc: conor.dooley@microchip.com,
 	lftan@kernel.org,
 	beata.michalska@arm.com,
 	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH v7 4/7] energy_model: Use a fixed reference frequency
-Date: Mon, 11 Dec 2023 11:48:52 +0100
-Message-Id: <20231211104855.558096-5-vincent.guittot@linaro.org>
+Subject: [PATCH v7 5/7] cpufreq/cppc: Move and rename cppc_cpufreq_{perf_to_khz|khz_to_perf}
+Date: Mon, 11 Dec 2023 11:48:53 +0100
+Message-Id: <20231211104855.558096-6-vincent.guittot@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231211104855.558096-1-vincent.guittot@linaro.org>
 References: <20231211104855.558096-1-vincent.guittot@linaro.org>
@@ -103,53 +103,418 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The last item of a performance domain is not always the performance point
-that has been used to compute CPU's capacity. This can lead to different
-target frequency compared with other part of the system like schedutil and
-would result in wrong energy estimation.
+Move and rename cppc_cpufreq_perf_to_khz and cppc_cpufreq_khz_to_perf to
+use them outside cppc_cpufreq in topology_init_cpu_capacity_cppc().
 
-A new arch_scale_freq_ref() is available to return a fixed and coherent
-frequency reference that can be used when computing the CPU's frequency
-for an level of utilization. Use this function to get this reference
-frequency.
+Modify the interface to use struct cppc_perf_caps *caps instead of
+struct cppc_cpudata *cpu_data as we only use the fields of cppc_perf_caps.
 
-Energy model is never used without defining arch_scale_freq_ref() but
-can be compiled. Define a default arch_scale_freq_ref() returning 0
-in such case.
+cppc_cpufreq was converting the lowest and nominal freq from MHz to kHz
+before using them. We move this conversion inside cppc_perf_to_khz and
+cppc_khz_to_perf to make them generic and usable outside cppc_cpufreq.
+
+No functional change
 
 Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Tested-by: Lukasz Luba <lukasz.luba@arm.com>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Tested-by: Pierre Gondois <pierre.gondois@arm.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
- include/linux/energy_model.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/cppc_acpi.c       | 104 ++++++++++++++++++++++++
+ drivers/cpufreq/cppc_cpufreq.c | 139 ++++-----------------------------
+ include/acpi/cppc_acpi.h       |   2 +
+ 3 files changed, 123 insertions(+), 122 deletions(-)
 
-diff --git a/include/linux/energy_model.h b/include/linux/energy_model.h
-index adec808b371a..88d91e087471 100644
---- a/include/linux/energy_model.h
-+++ b/include/linux/energy_model.h
-@@ -224,7 +224,7 @@ static inline unsigned long em_cpu_energy(struct em_perf_domain *pd,
- 				unsigned long max_util, unsigned long sum_util,
- 				unsigned long allowed_cpu_cap)
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 7ff269a78c20..d155a86a8614 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -39,6 +39,9 @@
+ #include <linux/rwsem.h>
+ #include <linux/wait.h>
+ #include <linux/topology.h>
++#include <linux/dmi.h>
++#include <linux/units.h>
++#include <asm/unaligned.h>
+ 
+ #include <acpi/cppc_acpi.h>
+ 
+@@ -1760,3 +1763,104 @@ unsigned int cppc_get_transition_latency(int cpu_num)
+ 	return latency_ns;
+ }
+ EXPORT_SYMBOL_GPL(cppc_get_transition_latency);
++
++/* Minimum struct length needed for the DMI processor entry we want */
++#define DMI_ENTRY_PROCESSOR_MIN_LENGTH	48
++
++/* Offset in the DMI processor structure for the max frequency */
++#define DMI_PROCESSOR_MAX_SPEED		0x14
++
++/* Callback function used to retrieve the max frequency from DMI */
++static void cppc_find_dmi_mhz(const struct dmi_header *dm, void *private)
++{
++	const u8 *dmi_data = (const u8 *)dm;
++	u16 *mhz = (u16 *)private;
++
++	if (dm->type == DMI_ENTRY_PROCESSOR &&
++	    dm->length >= DMI_ENTRY_PROCESSOR_MIN_LENGTH) {
++		u16 val = (u16)get_unaligned((const u16 *)
++				(dmi_data + DMI_PROCESSOR_MAX_SPEED));
++		*mhz = val > *mhz ? val : *mhz;
++	}
++}
++
++/* Look up the max frequency in DMI */
++static u64 cppc_get_dmi_max_khz(void)
++{
++	u16 mhz = 0;
++
++	dmi_walk(cppc_find_dmi_mhz, &mhz);
++
++	/*
++	 * Real stupid fallback value, just in case there is no
++	 * actual value set.
++	 */
++	mhz = mhz ? mhz : 1;
++
++	return KHZ_PER_MHZ * mhz;
++}
++
++/*
++ * If CPPC lowest_freq and nominal_freq registers are exposed then we can
++ * use them to convert perf to freq and vice versa. The conversion is
++ * extrapolated as an affine function passing by the 2 points:
++ *  - (Low perf, Low freq)
++ *  - (Nominal perf, Nominal freq)
++ */
++unsigned int cppc_perf_to_khz(struct cppc_perf_caps *caps, unsigned int perf)
++{
++	s64 retval, offset = 0;
++	static u64 max_khz;
++	u64 mul, div;
++
++	if (caps->lowest_freq && caps->nominal_freq) {
++		mul = caps->nominal_freq - caps->lowest_freq;
++		mul *= KHZ_PER_MHZ;
++		div = caps->nominal_perf - caps->lowest_perf;
++		offset = caps->nominal_freq * KHZ_PER_MHZ -
++			 div64_u64(caps->nominal_perf * mul, div);
++	} else {
++		if (!max_khz)
++			max_khz = cppc_get_dmi_max_khz();
++		mul = max_khz;
++		div = caps->highest_perf;
++	}
++
++	retval = offset + div64_u64(perf * mul, div);
++	if (retval >= 0)
++		return retval;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(cppc_perf_to_khz);
++
++unsigned int cppc_khz_to_perf(struct cppc_perf_caps *caps, unsigned int freq)
++{
++	s64 retval, offset = 0;
++	static u64 max_khz;
++	u64  mul, div;
++
++	if (caps->lowest_freq && caps->nominal_freq) {
++		mul = caps->nominal_perf - caps->lowest_perf;
++		div = caps->nominal_freq - caps->lowest_freq;
++		/*
++		 * We don't need to convert to kHz for computing offset and can
++		 * directly use nominal_freq and lowest_freq as the div64_u64
++		 * will remove the frequency unit.
++		 */
++		offset = caps->nominal_perf -
++			 div64_u64(caps->nominal_freq * mul, div);
++		/* But we need it for computing the perf level. */
++		div *= KHZ_PER_MHZ;
++	} else {
++		if (!max_khz)
++			max_khz = cppc_get_dmi_max_khz();
++		mul = caps->highest_perf;
++		div = max_khz;
++	}
++
++	retval = offset + div64_u64(freq * mul, div);
++	if (retval >= 0)
++		return retval;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(cppc_khz_to_perf);
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index fe08ca419b3d..64420d9cfd1e 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -16,7 +16,6 @@
+ #include <linux/delay.h>
+ #include <linux/cpu.h>
+ #include <linux/cpufreq.h>
+-#include <linux/dmi.h>
+ #include <linux/irq_work.h>
+ #include <linux/kthread.h>
+ #include <linux/time.h>
+@@ -27,12 +26,6 @@
+ 
+ #include <acpi/cppc_acpi.h>
+ 
+-/* Minimum struct length needed for the DMI processor entry we want */
+-#define DMI_ENTRY_PROCESSOR_MIN_LENGTH	48
+-
+-/* Offset in the DMI processor structure for the max frequency */
+-#define DMI_PROCESSOR_MAX_SPEED		0x14
+-
+ /*
+  * This list contains information parsed from per CPU ACPI _CPC and _PSD
+  * structures: e.g. the highest and lowest supported performance, capabilities,
+@@ -291,97 +284,9 @@ static inline void cppc_freq_invariance_exit(void)
+ }
+ #endif /* CONFIG_ACPI_CPPC_CPUFREQ_FIE */
+ 
+-/* Callback function used to retrieve the max frequency from DMI */
+-static void cppc_find_dmi_mhz(const struct dmi_header *dm, void *private)
+-{
+-	const u8 *dmi_data = (const u8 *)dm;
+-	u16 *mhz = (u16 *)private;
+-
+-	if (dm->type == DMI_ENTRY_PROCESSOR &&
+-	    dm->length >= DMI_ENTRY_PROCESSOR_MIN_LENGTH) {
+-		u16 val = (u16)get_unaligned((const u16 *)
+-				(dmi_data + DMI_PROCESSOR_MAX_SPEED));
+-		*mhz = val > *mhz ? val : *mhz;
+-	}
+-}
+-
+-/* Look up the max frequency in DMI */
+-static u64 cppc_get_dmi_max_khz(void)
+-{
+-	u16 mhz = 0;
+-
+-	dmi_walk(cppc_find_dmi_mhz, &mhz);
+-
+-	/*
+-	 * Real stupid fallback value, just in case there is no
+-	 * actual value set.
+-	 */
+-	mhz = mhz ? mhz : 1;
+-
+-	return (1000 * mhz);
+-}
+-
+-/*
+- * If CPPC lowest_freq and nominal_freq registers are exposed then we can
+- * use them to convert perf to freq and vice versa. The conversion is
+- * extrapolated as an affine function passing by the 2 points:
+- *  - (Low perf, Low freq)
+- *  - (Nominal perf, Nominal perf)
+- */
+-static unsigned int cppc_cpufreq_perf_to_khz(struct cppc_cpudata *cpu_data,
+-					     unsigned int perf)
+-{
+-	struct cppc_perf_caps *caps = &cpu_data->perf_caps;
+-	s64 retval, offset = 0;
+-	static u64 max_khz;
+-	u64 mul, div;
+-
+-	if (caps->lowest_freq && caps->nominal_freq) {
+-		mul = caps->nominal_freq - caps->lowest_freq;
+-		div = caps->nominal_perf - caps->lowest_perf;
+-		offset = caps->nominal_freq - div64_u64(caps->nominal_perf * mul, div);
+-	} else {
+-		if (!max_khz)
+-			max_khz = cppc_get_dmi_max_khz();
+-		mul = max_khz;
+-		div = caps->highest_perf;
+-	}
+-
+-	retval = offset + div64_u64(perf * mul, div);
+-	if (retval >= 0)
+-		return retval;
+-	return 0;
+-}
+-
+-static unsigned int cppc_cpufreq_khz_to_perf(struct cppc_cpudata *cpu_data,
+-					     unsigned int freq)
+-{
+-	struct cppc_perf_caps *caps = &cpu_data->perf_caps;
+-	s64 retval, offset = 0;
+-	static u64 max_khz;
+-	u64  mul, div;
+-
+-	if (caps->lowest_freq && caps->nominal_freq) {
+-		mul = caps->nominal_perf - caps->lowest_perf;
+-		div = caps->nominal_freq - caps->lowest_freq;
+-		offset = caps->nominal_perf - div64_u64(caps->nominal_freq * mul, div);
+-	} else {
+-		if (!max_khz)
+-			max_khz = cppc_get_dmi_max_khz();
+-		mul = caps->highest_perf;
+-		div = max_khz;
+-	}
+-
+-	retval = offset + div64_u64(freq * mul, div);
+-	if (retval >= 0)
+-		return retval;
+-	return 0;
+-}
+-
+ static int cppc_cpufreq_set_target(struct cpufreq_policy *policy,
+ 				   unsigned int target_freq,
+ 				   unsigned int relation)
+-
  {
--	unsigned long freq, scale_cpu;
-+	unsigned long freq, ref_freq, scale_cpu;
- 	struct em_perf_state *ps;
- 	int cpu;
+ 	struct cppc_cpudata *cpu_data = policy->driver_data;
+ 	unsigned int cpu = policy->cpu;
+@@ -389,7 +294,7 @@ static int cppc_cpufreq_set_target(struct cpufreq_policy *policy,
+ 	u32 desired_perf;
+ 	int ret = 0;
  
-@@ -241,10 +241,10 @@ static inline unsigned long em_cpu_energy(struct em_perf_domain *pd,
- 	 */
- 	cpu = cpumask_first(to_cpumask(pd->cpus));
- 	scale_cpu = arch_scale_cpu_capacity(cpu);
--	ps = &pd->table[pd->nr_perf_states - 1];
-+	ref_freq = arch_scale_freq_ref(cpu);
+-	desired_perf = cppc_cpufreq_khz_to_perf(cpu_data, target_freq);
++	desired_perf = cppc_khz_to_perf(&cpu_data->perf_caps, target_freq);
+ 	/* Return if it is exactly the same perf */
+ 	if (desired_perf == cpu_data->perf_ctrls.desired_perf)
+ 		return ret;
+@@ -417,7 +322,7 @@ static unsigned int cppc_cpufreq_fast_switch(struct cpufreq_policy *policy,
+ 	u32 desired_perf;
+ 	int ret;
  
- 	max_util = min(max_util, allowed_cpu_cap);
--	freq = map_util_freq(max_util, ps->frequency, scale_cpu);
-+	freq = map_util_freq(max_util, ref_freq, scale_cpu);
+-	desired_perf = cppc_cpufreq_khz_to_perf(cpu_data, target_freq);
++	desired_perf = cppc_khz_to_perf(&cpu_data->perf_caps, target_freq);
+ 	cpu_data->perf_ctrls.desired_perf = desired_perf;
+ 	ret = cppc_set_perf(cpu, &cpu_data->perf_ctrls);
+ 
+@@ -530,7 +435,7 @@ static int cppc_get_cpu_power(struct device *cpu_dev,
+ 	min_step = min_cap / CPPC_EM_CAP_STEP;
+ 	max_step = max_cap / CPPC_EM_CAP_STEP;
+ 
+-	perf_prev = cppc_cpufreq_khz_to_perf(cpu_data, *KHz);
++	perf_prev = cppc_khz_to_perf(perf_caps, *KHz);
+ 	step = perf_prev / perf_step;
+ 
+ 	if (step > max_step)
+@@ -550,8 +455,8 @@ static int cppc_get_cpu_power(struct device *cpu_dev,
+ 			perf = step * perf_step;
+ 	}
+ 
+-	*KHz = cppc_cpufreq_perf_to_khz(cpu_data, perf);
+-	perf_check = cppc_cpufreq_khz_to_perf(cpu_data, *KHz);
++	*KHz = cppc_perf_to_khz(perf_caps, perf);
++	perf_check = cppc_khz_to_perf(perf_caps, *KHz);
+ 	step_check = perf_check / perf_step;
  
  	/*
- 	 * Find the lowest performance state of the Energy Model above the
+@@ -561,8 +466,8 @@ static int cppc_get_cpu_power(struct device *cpu_dev,
+ 	 */
+ 	while ((*KHz == prev_freq) || (step_check != step)) {
+ 		perf++;
+-		*KHz = cppc_cpufreq_perf_to_khz(cpu_data, perf);
+-		perf_check = cppc_cpufreq_khz_to_perf(cpu_data, *KHz);
++		*KHz = cppc_perf_to_khz(perf_caps, perf);
++		perf_check = cppc_khz_to_perf(perf_caps, *KHz);
+ 		step_check = perf_check / perf_step;
+ 	}
+ 
+@@ -591,7 +496,7 @@ static int cppc_get_cpu_cost(struct device *cpu_dev, unsigned long KHz,
+ 	perf_caps = &cpu_data->perf_caps;
+ 	max_cap = arch_scale_cpu_capacity(cpu_dev->id);
+ 
+-	perf_prev = cppc_cpufreq_khz_to_perf(cpu_data, KHz);
++	perf_prev = cppc_khz_to_perf(perf_caps, KHz);
+ 	perf_step = CPPC_EM_CAP_STEP * perf_caps->highest_perf / max_cap;
+ 	step = perf_prev / perf_step;
+ 
+@@ -679,10 +584,6 @@ static struct cppc_cpudata *cppc_cpufreq_get_cpu_data(unsigned int cpu)
+ 		goto free_mask;
+ 	}
+ 
+-	/* Convert the lowest and nominal freq from MHz to KHz */
+-	cpu_data->perf_caps.lowest_freq *= 1000;
+-	cpu_data->perf_caps.nominal_freq *= 1000;
+-
+ 	list_add(&cpu_data->node, &cpu_data_list);
+ 
+ 	return cpu_data;
+@@ -724,20 +625,16 @@ static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	 * Set min to lowest nonlinear perf to avoid any efficiency penalty (see
+ 	 * Section 8.4.7.1.1.5 of ACPI 6.1 spec)
+ 	 */
+-	policy->min = cppc_cpufreq_perf_to_khz(cpu_data,
+-					       caps->lowest_nonlinear_perf);
+-	policy->max = cppc_cpufreq_perf_to_khz(cpu_data,
+-					       caps->nominal_perf);
++	policy->min = cppc_perf_to_khz(caps, caps->lowest_nonlinear_perf);
++	policy->max = cppc_perf_to_khz(caps, caps->nominal_perf);
+ 
+ 	/*
+ 	 * Set cpuinfo.min_freq to Lowest to make the full range of performance
+ 	 * available if userspace wants to use any perf between lowest & lowest
+ 	 * nonlinear perf
+ 	 */
+-	policy->cpuinfo.min_freq = cppc_cpufreq_perf_to_khz(cpu_data,
+-							    caps->lowest_perf);
+-	policy->cpuinfo.max_freq = cppc_cpufreq_perf_to_khz(cpu_data,
+-							    caps->nominal_perf);
++	policy->cpuinfo.min_freq = cppc_perf_to_khz(caps, caps->lowest_perf);
++	policy->cpuinfo.max_freq = cppc_perf_to_khz(caps, caps->nominal_perf);
+ 
+ 	policy->transition_delay_us = cppc_cpufreq_get_transition_delay_us(cpu);
+ 	policy->shared_type = cpu_data->shared_type;
+@@ -773,7 +670,7 @@ static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 		boost_supported = true;
+ 
+ 	/* Set policy->cur to max now. The governors will adjust later. */
+-	policy->cur = cppc_cpufreq_perf_to_khz(cpu_data, caps->highest_perf);
++	policy->cur = cppc_perf_to_khz(caps, caps->highest_perf);
+ 	cpu_data->perf_ctrls.desired_perf =  caps->highest_perf;
+ 
+ 	ret = cppc_set_perf(cpu, &cpu_data->perf_ctrls);
+@@ -863,7 +760,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+ 	delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
+ 					       &fb_ctrs_t1);
+ 
+-	return cppc_cpufreq_perf_to_khz(cpu_data, delivered_perf);
++	return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
+ }
+ 
+ static int cppc_cpufreq_set_boost(struct cpufreq_policy *policy, int state)
+@@ -878,11 +775,9 @@ static int cppc_cpufreq_set_boost(struct cpufreq_policy *policy, int state)
+ 	}
+ 
+ 	if (state)
+-		policy->max = cppc_cpufreq_perf_to_khz(cpu_data,
+-						       caps->highest_perf);
++		policy->max = cppc_perf_to_khz(caps, caps->highest_perf);
+ 	else
+-		policy->max = cppc_cpufreq_perf_to_khz(cpu_data,
+-						       caps->nominal_perf);
++		policy->max = cppc_perf_to_khz(caps, caps->nominal_perf);
+ 	policy->cpuinfo.max_freq = policy->max;
+ 
+ 	ret = freq_qos_update_request(policy->max_freq_req, policy->max);
+@@ -937,7 +832,7 @@ static unsigned int hisi_cppc_cpufreq_get_rate(unsigned int cpu)
+ 	if (ret < 0)
+ 		return -EIO;
+ 
+-	return cppc_cpufreq_perf_to_khz(cpu_data, desired_perf);
++	return cppc_perf_to_khz(&cpu_data->perf_caps, desired_perf);
+ }
+ 
+ static void cppc_check_hisi_workaround(void)
+diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+index 6126c977ece0..3a0995f8bce8 100644
+--- a/include/acpi/cppc_acpi.h
++++ b/include/acpi/cppc_acpi.h
+@@ -144,6 +144,8 @@ extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
+ extern int cppc_set_enable(int cpu, bool enable);
+ extern int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps);
+ extern bool cppc_perf_ctrs_in_pcc(void);
++extern unsigned int cppc_perf_to_khz(struct cppc_perf_caps *caps, unsigned int perf);
++extern unsigned int cppc_khz_to_perf(struct cppc_perf_caps *caps, unsigned int freq);
+ extern bool acpi_cpc_valid(void);
+ extern bool cppc_allow_fast_switch(void);
+ extern int acpi_get_psd_map(unsigned int cpu, struct cppc_cpudata *cpu_data);
 -- 
 2.34.1
 
