@@ -1,95 +1,134 @@
-Return-Path: <linux-acpi+bounces-2319-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2320-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7251780EC87
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 13:50:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE36A80EDE2
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 14:44:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8037B20D0C
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 12:50:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B23628183C
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 13:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F8360EC4;
-	Tue, 12 Dec 2023 12:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B706ABAD;
+	Tue, 12 Dec 2023 13:43:56 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B2DF7;
-	Tue, 12 Dec 2023 04:50:24 -0800 (PST)
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id BF6D5469C0;
-	Tue, 12 Dec 2023 13:50:21 +0100 (CET)
-Message-ID: <62363899-d7aa-4f1c-abfa-1f87f0b6b43f@proxmox.com>
-Date: Tue, 12 Dec 2023 13:50:20 +0100
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6CAAFD;
+	Tue, 12 Dec 2023 05:43:53 -0800 (PST)
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-590a21e977aso139156eaf.1;
+        Tue, 12 Dec 2023 05:43:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702388633; x=1702993433;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9+kkVTreOL3w+OZGcOfK3FYPANHbgoXJuOH1K8tFH4g=;
+        b=iigb1OZrH2QZ9p4i4fu9i9YQBUVcZHlB5z0g6vpa5kAGmppjJ/D3EVslvujVKVcpgq
+         HzE7AXULnv2rQ6ELFzjdHW1lzspj3Ael8VzPB1ARA7nxzaxEr76SliB9SCVuqaOPw/Qv
+         L5r6QGYhdxRVXbfL5FwTI+kZcOv1qTzXtdh9UQUIRnzhLyZMO8x1FT1DtseBxAtjbVp4
+         LPSPLsRYf9KAq/H4dUm2s3PcYTMbP0YqhEHESdl8vR4rHf8bNhWe0n67TrrMfUxwt5vy
+         gadOxtpsrT8gBXVNccXvCfRVck7Q1Pc1SWUST/pTfG7zZLippDCZe4EuxU0LgA36cOaB
+         t6nw==
+X-Gm-Message-State: AOJu0YzA4dT3h8N9PHw8q7Lro/KxOB04OD1Vjeds4KQsQOAkC9eIOoma
+	pAa/HZMAo3jVGxXa55lxjmmQQqYVzB2xxs6jzE4=
+X-Google-Smtp-Source: AGHT+IGUqXNEdQXxBJDrx70lgBxugTVgc/vHxJshrpTuCUW1HytFQm132e4bZb55zISGfBUjiTzP1pULdprZDX/oFgo=
+X-Received: by 2002:a4a:c487:0:b0:58d:ddcb:db1a with SMTP id
+ f7-20020a4ac487000000b0058dddcbdb1amr10175400ooq.1.1702388633020; Tue, 12 Dec
+ 2023 05:43:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: SCSI hotplug issues with UEFI VM with guest kernel >= 6.5
-Content-Language: en-US
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- bhelgaas@google.com, lenb@kernel.org, rafael@kernel.org,
- Thomas Lamprecht <t.lamprecht@proxmox.com>
-References: <9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com>
- <20231207232815.GA771837@bhelgaas>
- <20231208164723.12828a96@imammedo.users.ipa.redhat.com>
- <20231211084604.25e209af@imammedo.users.ipa.redhat.com>
- <c6233df5-01d8-498f-8235-ce4b102a2e91@proxmox.com>
- <20231212122608.1b4f75ce@imammedo.users.ipa.redhat.com>
-From: Fiona Ebner <f.ebner@proxmox.com>
-In-Reply-To: <20231212122608.1b4f75ce@imammedo.users.ipa.redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20231205063537.872834-1-li.meng@amd.com> <20231205063537.872834-5-li.meng@amd.com>
+ <CAJZ5v0ju-Thhz2_rQVbTosTsBaRoyQW2kjtPWWTsiT_Yi2DbsQ@mail.gmail.com> <CAJZ5v0hMAZxvuMWK3dNeOL9FRTrVW7j7PzCFwcp9+0K87y-L0A@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hMAZxvuMWK3dNeOL9FRTrVW7j7PzCFwcp9+0K87y-L0A@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 12 Dec 2023 14:43:42 +0100
+Message-ID: <CAJZ5v0gYj6C_-m7dD_aN-FWiuLn6bG9MRTe_c7SryTtJJN7FKA@mail.gmail.com>
+Subject: Re: [PATCH V12 4/7] cpufreq: Add a notification message that the
+ highest perf has changed
+To: Meng Li <li.meng@amd.com>
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Huang Rui <ray.huang@amd.com>, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	linux-acpi@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>, 
+	linux-kselftest@vger.kernel.org, Nathan Fontenot <nathan.fontenot@amd.com>, 
+	Deepak Sharma <deepak.sharma@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
+	Mario Limonciello <mario.limonciello@amd.com>, Shimmer Huang <shimmer.huang@amd.com>, 
+	Perry Yuan <Perry.Yuan@amd.com>, Xiaojian Du <Xiaojian.Du@amd.com>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Borislav Petkov <bp@alien8.de>, 
+	Oleksandr Natalenko <oleksandr@natalenko.name>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am 12.12.23 um 12:26 schrieb Igor Mammedov:
-> 
-> it's not necessary, but it would help to find out what's going wrong faster.
-> Otherwise we would need to fallback to debugging over email.
-> Are you willing to help with testing/providing debug logs to track down
-> the cause?.
-> 
+On Wed, Dec 6, 2023 at 10:13=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
+g> wrote:
+>
+> On Wed, Dec 6, 2023 at 9:58=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.o=
+rg> wrote:
+> >
+> > On Tue, Dec 5, 2023 at 7:38=E2=80=AFAM Meng Li <li.meng@amd.com> wrote:
+> > >
+> > > ACPI 6.5 section 8.4.6.1.1.1 specifies that Notify event 0x85 can be
+> > > emmitted to cause the the OSPM to re-evaluate the highest performance
+> >
+> > Typos above.  Given the number of iterations of this patch, this is
+> > kind of disappointing.
+> >
+> > > register. Add support for this event.
+> >
+> > Also it would be nice to describe how this is supposed to work at
+> > least roughly, so it is not necessary to reverse-engineer the patch to
+> > find out that.
+> >
+> > > Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+> > > Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+> > > Reviewed-by: Huang Rui <ray.huang@amd.com>
+> > > Reviewed-by: Perry Yuan <perry.yuan@amd.com>
+> > > Signed-off-by: Meng Li <li.meng@amd.com>
+> > > Link: https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Mo=
+del.html#processor-device-notification-values
+> > > ---
+> > >  drivers/acpi/processor_driver.c |  6 ++++++
+> > >  drivers/cpufreq/cpufreq.c       | 13 +++++++++++++
+> > >  include/linux/cpufreq.h         |  5 +++++
+> > >  3 files changed, 24 insertions(+)
+> > >
+> > > diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor=
+_driver.c
+> > > index 4bd16b3f0781..29b2fb68a35d 100644
+> > > --- a/drivers/acpi/processor_driver.c
+> > > +++ b/drivers/acpi/processor_driver.c
+> > > @@ -27,6 +27,7 @@
+> > >  #define ACPI_PROCESSOR_NOTIFY_PERFORMANCE 0x80
+> > >  #define ACPI_PROCESSOR_NOTIFY_POWER    0x81
+> > >  #define ACPI_PROCESSOR_NOTIFY_THROTTLING       0x82
+> > > +#define ACPI_PROCESSOR_NOTIFY_HIGEST_PERF_CHANGED      0x85
+> > >
+> > >  MODULE_AUTHOR("Paul Diefenbaugh");
+> > >  MODULE_DESCRIPTION("ACPI Processor Driver");
+> > > @@ -83,6 +84,11 @@ static void acpi_processor_notify(acpi_handle hand=
+le, u32 event, void *data)
+> > >                 acpi_bus_generate_netlink_event(device->pnp.device_cl=
+ass,
+> > >                                                   dev_name(&device->d=
+ev), event, 0);
+> > >                 break;
+> > > +       case ACPI_PROCESSOR_NOTIFY_HIGEST_PERF_CHANGED:
+> > > +               cpufreq_update_highest_perf(pr->id);
+> >
+> > And the design appears to be a bit ad-hoc here.
+> >
+> > Because why does it have anything to do with cpufreq?
+>
+> Well, clearly, cpufreq can be affected by this, but why would it be
+> not affected the same way as in the ACPI_PROCESSOR_NOTIFY_PERFORMANCE
+> case?
+>
+> That is, why isn't cpufreq_update_limits() the right thing to do?
 
-I submitted the dmesg logs in bugzilla:
-https://bugzilla.kernel.org/show_bug.cgi?id=218255
-
-> Though debug over email would be slow, so our best option is to revert
-> offending patches until the cause if found/fixed.
-> 
->>>>> Do you have to revert both cc22522fd55e2 and 40613da52b13f to make it
->>>>> work reliably?  If we have to revert something, reverting one would be
->>>>> better than reverting both.    
->>>>  
->>
->> Just reverting cc22522fd55e2 is not enough (and cc22522fd55e2 fixes
->> 40613da52b13f so I can't revert just 40613da52b13f).
-> 
-> With UEFI setup, it still works for me fine with current master.
-> 
-> Kernel 6.7.0-rc5-00014-g26aff849438c on an x86_64 (ttyS0)
-> 
-
-I also built from current master (still 26aff849438c) to verify and it's
-still broken for me.
-
-> 
-> it still doesn't work with Fedora's 6.7.0-0.rc2.20231125git0f5cc96c367f.26.fc40.x86_64 kernel.
-> However it's necessary to have -smp 4 for it to break,
-> with -smp 1 it works fine as well.
-> 
-
-For me it's (always with build from current master):
-
--smp 1 -> it worked 5 times out of 5
--smp 2 -> it worked 3 times out of 5
--smp 4 -> it worked 0 times out of 5
--smp 8 -> it worked 0 times out of 5
-
-Best Regards,
-Fiona
-
+Seriously, I'm not going to apply this patch so long as my comments
+above are not addressed.
 
