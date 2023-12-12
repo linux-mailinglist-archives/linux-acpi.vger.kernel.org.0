@@ -1,195 +1,110 @@
-Return-Path: <linux-acpi+bounces-2315-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2316-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8700480EA53
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 12:26:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC7A80EA72
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 12:33:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CFCC1F2100E
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 11:26:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16D921F21D1D
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 11:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59075D483;
-	Tue, 12 Dec 2023 11:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0CC5D4BD;
+	Tue, 12 Dec 2023 11:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bBWFVO8a"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="EAbRdmqa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BD83C3
-	for <linux-acpi@vger.kernel.org>; Tue, 12 Dec 2023 03:26:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702380373;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3VCPhUza2WDSv0OPfffTIRcwZLYS7Z9nqJ6x5U/LS9Q=;
-	b=bBWFVO8abE1MvoGAUmIw1tpkU4b+auH2Tz+G/5gbEN25GIK/O8Gz6GqDejs6+LD3Whq2Wm
-	QRm6/JIxD18iwR8rbTwxdNUHgDaZjAtSSFRL4fadlnb4cqlXD4VsTvmOaPK2udke6YU35b
-	X7LEKVR0I78CbSW1l3JNBa2/pfWu8bA=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-331-1sVN8HCZN-iNrkJzOz_ljA-1; Tue, 12 Dec 2023 06:26:12 -0500
-X-MC-Unique: 1sVN8HCZN-iNrkJzOz_ljA-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a1cf9768255so297605866b.3
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Dec 2023 03:26:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702380371; x=1702985171;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3VCPhUza2WDSv0OPfffTIRcwZLYS7Z9nqJ6x5U/LS9Q=;
-        b=LNlyjLu8gLbJzZjHrjJjypPuCT25G/f3mynhzc7gJb4heBw+lcIwkL6XgkA2MHoGkp
-         aceSoG7YuJQe9xCAKwzZ2evTpg6MrjTUK6sArCCrlBCb4fK1nur1Jax/m/pHC57zM+7X
-         fXXBGb5jneQtdZJ6a3Hx0ZdU5lX7WO9PZK+pdYifZcp4HREpYHPO460QS6XKDUi4cV9n
-         eAyRUeu4RlMoiYZ+MJE1b7WCqewBRtPcYPD8//7FmC5TED9/9rov4ZQMq34nrHGDbZ/y
-         DnsX0SeCn9EeYWL7Jbiv+Jhb5jMSqFShb0QR8hLm9ohqeW00sKAy35m8HRMin0xojgsk
-         L56A==
-X-Gm-Message-State: AOJu0YwZ/Mh+F2TaFF8Ctd6Dw9c0ff9EiQXUuuHuHH5zNMQOgYDKaxXM
-	8DNoSMhJmnQlstar56Ue4di3edtC/BpsGOkRijRGT1rb46wBJf7X52NbBewHuY70ttvzmvgzD1D
-	7JZloYnMsxE87GIRnyl7tAw==
-X-Received: by 2002:a17:907:8688:b0:a19:a19b:55eb with SMTP id qa8-20020a170907868800b00a19a19b55ebmr3739491ejc.123.1702380370800;
-        Tue, 12 Dec 2023 03:26:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFAky8UR7GX5tqJ0wl3aJCEUtp3YuSWksklCWQP+DbM0tyL1tcOWxOzYYJaJEyigKEG4GjJEQ==
-X-Received: by 2002:a17:907:8688:b0:a19:a19b:55eb with SMTP id qa8-20020a170907868800b00a19a19b55ebmr3739481ejc.123.1702380370419;
-        Tue, 12 Dec 2023 03:26:10 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id rf20-20020a1709076a1400b00a1d1b8a088esm6121282ejc.92.2023.12.12.03.26.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Dec 2023 03:26:09 -0800 (PST)
-Date: Tue, 12 Dec 2023 12:26:08 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- bhelgaas@google.com, lenb@kernel.org, rafael@kernel.org, Thomas Lamprecht
- <t.lamprecht@proxmox.com>
-Subject: Re: SCSI hotplug issues with UEFI VM with guest kernel >= 6.5
-Message-ID: <20231212122608.1b4f75ce@imammedo.users.ipa.redhat.com>
-In-Reply-To: <c6233df5-01d8-498f-8235-ce4b102a2e91@proxmox.com>
-References: <9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com>
-	<20231207232815.GA771837@bhelgaas>
-	<20231208164723.12828a96@imammedo.users.ipa.redhat.com>
-	<20231211084604.25e209af@imammedo.users.ipa.redhat.com>
-	<c6233df5-01d8-498f-8235-ce4b102a2e91@proxmox.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AC5BD3;
+	Tue, 12 Dec 2023 03:33:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1702380775; x=1702985575; i=w_armin@gmx.de;
+	bh=xPGk5VnPnUwvPLpm6IAhcnnK/GipENIGWxMGcKHWdws=;
+	h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+	b=EAbRdmqaI8ve8OvZ5qDTIz1sn8Rj1lto+utMAP9Y7O4wfYWlwpnWlrlMeXyoaUVo
+	 NltY2C8yYLnrKgWpskXoutDaSVp6dNR5kf2mXoOgHAVp0+NzDKOM3f7SAFErl4b1M
+	 UygGd1dha9IScTXsY70YHZ2az1XbWrfoH2X1X1GE/d85gNRvGrzunFBG8xgHAQ9ff
+	 I6cZ3cd/xz/1nloIYcxrLgq2m/oJGqqbBVwSZWpykHs00ySAGRRyFbCAcbqwWduPu
+	 jJjFHpaaBJCJbRmR6VREifB3bHz7ODIMsbeVqyovLkytU8xyebI17pTJ2OiRQCH9L
+	 Dhj6I3XvQEdHJ5NWrw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [172.16.61.40] ([141.76.179.210]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MYeMj-1qj1mu1RbP-00VdyG; Tue, 12
+ Dec 2023 12:32:55 +0100
+Message-ID: <a96ae23e-3c48-44c5-ba4b-dee2c40f3b76@gmx.de>
+Date: Tue, 12 Dec 2023 12:32:52 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: Deterministic device paths for ACPI instantiated hwmon devices
+Content-Language: en-US
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+ "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+References: <9d52cc19-062b-4b8d-a9a0-bc2101dccab4@alliedtelesis.co.nz>
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <9d52cc19-062b-4b8d-a9a0-bc2101dccab4@alliedtelesis.co.nz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:HYm+jii7thqSibYajAGvq0koYgGW6NLKP6OZW38AGOrqbPajaMg
+ Us475e6IQUkVE6Mw3QR2DyioTv5JQCeSV7ZRpWeDrHalyxuSKT3B8E7i/f8jeuPY9nwuZ7N
+ dpJQWnEI1PmeaNBGoaVg48Hru7NuQukXBIcwsjEz94iiuueOczRQdtGnYmclQFGQBNcXSUO
+ st+I5xAVuyHOUrNBatCdw==
+UI-OutboundReport: notjunk:1;M01:P0:QuE+5+yKgcU=;7MHyOkXwq0pd7dYzf4JUerZKkRW
+ Gj0PeN4rKNkWPRd/CY1o1sItBgfgobdYjXEpbELH7duMPZ0YHrVVRxLMWqqvUvy91suBtHUSm
+ k7Tcln9JlW2PK+P34jDrV1Q+jnYS3qnQm8Cr5RndNXPaANxx8JE9HNqZ0rPmdjf1LvhWHfnZV
+ OdPC/vLpPFWwlQ5YvyqBh3sn/8ijeG8z4SygBfa8VukR62WLPnUSIT9UTJVY45NPCIiTKL7AU
+ i3n7QM1o+X14qS8LUBqKMJxNoZY568lZFk6slwrWvxeWalKWQqAKzg/vJD6HHVrwAbATa7dal
+ WpDyIeHFn2QgOWRs/o0IPJJaHfnMhjQtcnO8yDY3q+bAU4Se8QqMeFuZ/Zium/B5dUu9quFDu
+ 4H2+sgOsDqDrxnS6t8Kla6DEpketla0UTD6AdI1xBZSX0g1ixYIOf/6n0h6Qi8kBgOmzX9oq2
+ KdHCTaIonf5B2u4LS/aI/5FqNw/7UQeteb4si7Ks1R4pDEZgTE3XKrhw62OrsBJEKFh0rM8XC
+ DEfXM6M7zxcw0WzzBgZCjPafaTuihxVlOEJDoFQK1H90K3HtgaQNVldLiVUDpWLgVePm4oF6y
+ nCXxrccDz6kHkuEWkRlz9ihRORhWY6yosaK5GfqXRaIJGrZQUyjtu9eZQAwiSog3WjIMzApux
+ SgrLVKiY/b5/dBcbdID6ZY0tCVHPW89Lxs1dWuZ+OWfInjS9zSiochjnBBw1kh3AZ8C74SzHw
+ jwRLzSYa3gTsB7u7AD9rPgEOJTZAyGZp4ZR3XDhBjcYM2UkSZLw1K6r5or39kE5fFsi/mtVt5
+ fiiBYiDOZmb/5/mOXRR40C2W4YMg8a4Gzfe1vjc5P3oJapHcpgLxFWeiQj9ZRuicmakboJBfZ
+ nMiNhQ9tNT9EZVU2LY+b6pZQZa1AmFrPIemsx6TmhdR20LdyIuKkLZ1Rj9noOCVKrfZogr0w5
+ d20+O7eIR8ITEv/bPsNvH7Hyt7U=
 
-On Mon, 11 Dec 2023 14:52:42 +0100
-Fiona Ebner <f.ebner@proxmox.com> wrote:
+Am 12.12.23 um 03:52 schrieb Chris Packham:
 
-> Am 11.12.23 um 08:46 schrieb Igor Mammedov:
-> > On Fri, 8 Dec 2023 16:47:23 +0100
-> > Igor Mammedov <imammedo@redhat.com> wrote:
-> >   
-> >> On Thu, 7 Dec 2023 17:28:15 -0600
-> >> Bjorn Helgaas <helgaas@kernel.org> wrote:
-> >>  
-> >>>
-> >>> What's the actual symptom that this is broken?  All these log
-> >>> fragments show the exact same assignments for BARs 0, 1, 4 and for the
-> >>> bridge windows.
-> >>>  
-> 
-> The disk never shows up in /dev
-> 
-> >>> I assume 0000:01:02.0 is the hot-added SCSI HBA, and 00:05.0 is a
-> >>> bridge leading to it?
-> >>>
-> >>> Can you put the complete dmesg logs somewhere?  There's a lot of
-> >>> context missing here.
-> >>>  
-> 
-> Is this still necessary with Igor being able to reproduce the issue?
+> Hi,
+>
+> We're looking at our first in-house modular product using an x86_64 CPU.
+> Previously we've done other products using other various embedded CPU
+> architectures which make use of a device tree for describing the hardware.
+>
+> We've got some userspace code which tries to present end-user consumable
+> names for various hardware monitors on removable modules (e.g.
+> "temperature sensor 1 on the card in bay 3").
+>
+> We do this based on knowing the deterministic path of the device in
+> sysfs (e.g. /sys/devices/platform/soc/i2c0/lm75@2e) that works fine for
+> devices instantiated on a device tree aware system (using device-tree
+> overlays). However we've yet to find any way of getting a deterministic
+> path out of devices instantiated via ACPI overlays. For now we've been
+> using the `/sys/class/hwmon/hwmonN/device` paths but the N depends on
+> the order the hardware was discovered which may not be the order the
+> end-user expects.
+>
+> Is there a way of inferring/influencing the numbering that gets used in
+> the `/sys/devices/LNXSYSTM:00/LNXSYBUS:00/AMDI0010:00/` paths that
+> appear when the devices get instantiated?
 
-it's not necessary, but it would help to find out what's going wrong faster.
-Otherwise we would need to fallback to debugging over email.
-Are you willing to help with testing/providing debug logs to track down
-the cause?.
+Hello,
 
-Though debug over email would be slow, so our best option is to revert
-offending patches until the cause if found/fixed.
+if all you want is a way of attaching a label to an ACPI device, then maybe you could
+implement the _STR or _MLS ACPI method for the device in question, see
+https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/06_Device_Configuration/Device_Configuration.html
+for details.
 
-> >>> Do you have to revert both cc22522fd55e2 and 40613da52b13f to make it
-> >>> work reliably?  If we have to revert something, reverting one would be
-> >>> better than reverting both.    
-> >>  
-> 
-> Just reverting cc22522fd55e2 is not enough (and cc22522fd55e2 fixes
-> 40613da52b13f so I can't revert just 40613da52b13f).
+Armin Wolf
 
-With UEFI setup, it still works for me fine with current master.
-
-Kernel 6.7.0-rc5-00014-g26aff849438c on an x86_64 (ttyS0)
-
-ibm-p8-kvm-03-guest-02 login: pci 0000:01:02.0: [1af4:1004] type 00 class 0x010000
-pci 0000:01:02.0: reg 0x10: [io  0x0000-0x003f]
-pci 0000:01:02.0: reg 0x14: [mem 0x00000000-0x00000fff]
-pci 0000:01:02.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-pci 0000:01:02.0: BAR 4: assigned [mem 0x380000004000-0x380000007fff 64bit pref]
-pci 0000:01:02.0: BAR 1: assigned [mem 0xc1001000-0xc1001fff]
-pci 0000:01:02.0: BAR 0: assigned [io  0xc040-0xc07f]
-pci 0000:00:05.0: PCI bridge to [bus 01]
-pci 0000:00:05.0:   bridge window [io  0xc000-0xcfff]
-pci 0000:00:05.0:   bridge window [mem 0xc1000000-0xc11fffff]
-pci 0000:00:05.0:   bridge window [mem 0x380000000000-0x3807ffffffff 64bit pref]
-virtio-pci 0000:01:02.0: enabling device (0000 -> 0003)
-scsi host3: Virtio SCSI HBA
-pci 0000:00:05.0: PCI bridge to [bus 01]
-pci 0000:00:05.0:   bridge window [io  0xc000-0xcfff]
-pci 0000:00:05.0:   bridge window [mem 0xc1000000-0xc11fffff]
-pci 0000:00:05.0:   bridge window [mem 0x380000000000-0x3807ffffffff 64bit pref]
-scsi 3:0:0:0: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-sd 3:0:0:0: Power-on or device reset occurred
-sd 3:0:0:0: Attached scsi generic sg2 type 0
-sd 3:0:0:0: LUN assignments on this target have changed. The Linux SCSI layer does not automatically remap LUN assignments.
-sd 3:0:0:0: [sdb] 5190784 512-byte logical blocks: (2.66 GB/2.47 GiB)
-sd 3:0:0:0: [sdb] Write Protect is off
-sd 3:0:0:0: [sdb] Mode Sense: 63 00 00 08
-sd 3:0:0:0: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
-GPT:Primary header thinks Alt. header is not at the end of the disk.
-GPT:5190099 != 5190783
-GPT:Alternate GPT header not at the end of the disk.
-GPT:5190099 != 5190783
-GPT: Use GNU Parted to correct GPT errors.
- sdb: sdb1 sdb2
-sd 3:0:0:0: [sdb] Attached SCSI disk
-
-it still doesn't work with Fedora's 6.7.0-0.rc2.20231125git0f5cc96c367f.26.fc40.x86_64 kernel.
-However it's necessary to have -smp 4 for it to break,
-with -smp 1 it works fine as well.
-
- 
-> > Fiona,
-> > 
-> > Does it help if you use q35 machine with '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off' option?
-> >   
-> 
-> Yes, it does :)
-> 
-> I added the following to my QEMU commandline (first line, because there
-> wouldn't be a "pci.0" otherwise):
-> 
-> > -device 'pci-bridge,id=pci.0,chassis_nr=4' \
-> > -machine 'q35' \
-> > -global 'ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off' \  
-> 
-> and while it takes a few seconds, the disk does show up successfully:
-
-delay is normal for SHPC
-
-> 
-> Best Regards,
-> Fiona
-> 
-
+> Thanks,
+> Chris
 
