@@ -1,54 +1,53 @@
-Return-Path: <linux-acpi+bounces-2321-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2322-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7DD480EDE7
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 14:45:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 012FD80EDFB
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 14:47:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72FE6281684
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 13:45:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60479B20A50
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 13:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046EA6D1D5;
-	Tue, 12 Dec 2023 13:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0AC6EB6E;
+	Tue, 12 Dec 2023 13:47:51 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E237ED;
-	Tue, 12 Dec 2023 05:44:56 -0800 (PST)
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6d9db2f1ddfso768771a34.0;
-        Tue, 12 Dec 2023 05:44:56 -0800 (PST)
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 277E1A1;
+	Tue, 12 Dec 2023 05:47:48 -0800 (PST)
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6d9db92bd71so769625a34.1;
+        Tue, 12 Dec 2023 05:47:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702388695; x=1702993495;
+        d=1e100.net; s=20230601; t=1702388867; x=1702993667;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0FHgQG76vAAELXoJjrX/NTMafjPLo+txhiRxr9Qp8Mo=;
-        b=auhaQSOmRO15IqW30H7nLcbtcNzirH7c7LM9JZWZbNOIdBLSvE8GAWFh/FqwUOnFB9
-         342Uy9vG3KAL0PnE7JTTj0cdHurd1S6Cs9SZ4mUWA+AwFE7H2cWYeGcs1feVip8UR5ZV
-         qCfzFUoSeK/C9AXBTq8ItriCkswolLVyx3BYzb72hoO68ZFyS1INq/IFchzrGZ1gAINJ
-         Gh5k2z6pYEVueosbPQxVqUoN6MzVjCqj/3iJoV6DPwsoHqw9cclrvDCXX1dLANTVHGYj
-         WQzqmZEXuLNgZmUcy9SDpzRr1Rw32yd5emKKKzulfwSHJlMLnoKjftF3CqM4NLu1JBc2
-         wfqw==
-X-Gm-Message-State: AOJu0YxMJ+Ls/1W5H3xs9cFefrJ36Ny/SoXs/rruCRXMqVRuALmPRQY4
-	U4o0ypEmYV0g1Zbj+fuapSpWBxjpnsICxtY5P2I=
-X-Google-Smtp-Source: AGHT+IEzBbu/99tixq8ymUICcMSaSMKmg0Twe94v+HrxDZ2VEwW2ix33qAtmHtCK1VxE9WDQ5bojxqSgFWZLD/UZGWY=
-X-Received: by 2002:a05:6820:220d:b0:58d:5302:5b18 with SMTP id
- cj13-20020a056820220d00b0058d53025b18mr12613201oob.1.1702388695286; Tue, 12
- Dec 2023 05:44:55 -0800 (PST)
+        bh=C/X6R0HR+xbXGN5qRhO2As3RreYVAwdxii2KLmKVXIM=;
+        b=Rkhj3hXQDzoRFr4vvAVaxTx7RzPnw16rqj8UMh4FHUqntPxjMt6iwQQ6tCgoQktUfm
+         y7rW6YOmn2JXyocc5Y0qUnQ9yJEsI1UbB2K/ytZzlC3ZkBekIc76uxCc7jw/9vdb/Iaw
+         GUgUn3ZxdFuxaJGRZZWaZIlmYJhhXiqjWHARy4edRxo/RPE8QumFJc+HzST3WNMNwaFc
+         vmCkLcfysfxHJs2gYF0e1lBERWPm0yTYnLrkW0343E+cZ5oWUa3cys0Euz2LjjmtbQHH
+         ZwTqq4mctDhFfW+wwQsFROzHEaQnwcul+xpmfo9Vr2TtP4KV/AINzJhqsCue7PeSaqNp
+         PS7Q==
+X-Gm-Message-State: AOJu0YwUIew1EEw7PsdYpO2rGd0AS9b6qmqYOcjXBlhdtdx1Pf8SOUBR
+	EiVeWKYuYUTxr8Wy2ybbC27DIxNUecNSRcD+KyeT7G88
+X-Google-Smtp-Source: AGHT+IEJhakpYW3S8EY4DMqvhznErmMox7oe1ZX5qPrH5Xkhs4aGDo5Bbnh5X9aUH+1+IG1hagao25A13pcgEloq/4s=
+X-Received: by 2002:a05:6870:b028:b0:1fb:e5f:c530 with SMTP id
+ y40-20020a056870b02800b001fb0e5fc530mr11532372oae.4.1702388867382; Tue, 12
+ Dec 2023 05:47:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231205063537.872834-1-li.meng@amd.com> <20231205063537.872834-2-li.meng@amd.com>
-In-Reply-To: <20231205063537.872834-2-li.meng@amd.com>
+References: <20231205063537.872834-1-li.meng@amd.com> <20231205063537.872834-3-li.meng@amd.com>
+In-Reply-To: <20231205063537.872834-3-li.meng@amd.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 12 Dec 2023 14:44:44 +0100
-Message-ID: <CAJZ5v0gz4HKPFjKRaP_2aiCLrx8BDqOa_6W_B3PmU8x7ejsZhg@mail.gmail.com>
-Subject: Re: [PATCH V12 1/7] x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for
- the expansion.
+Date: Tue, 12 Dec 2023 14:47:36 +0100
+Message-ID: <CAJZ5v0ghO8A2co6tK6-kM-1NdjVggM-_26hj+oiv8hTGQGg1mw@mail.gmail.com>
+Subject: Re: [PATCH V12 2/7] acpi: cppc: Add get the highest performance cppc control
 To: Meng Li <li.meng@amd.com>
 Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Huang Rui <ray.huang@amd.com>, 
 	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
@@ -58,42 +57,86 @@ Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Huang Rui <ray.huang@amd.
 	Mario Limonciello <mario.limonciello@amd.com>, Shimmer Huang <shimmer.huang@amd.com>, 
 	Perry Yuan <Perry.Yuan@amd.com>, Xiaojian Du <Xiaojian.Du@amd.com>, 
 	Viresh Kumar <viresh.kumar@linaro.org>, Borislav Petkov <bp@alien8.de>, 
-	Oleksandr Natalenko <oleksandr@natalenko.name>
+	Oleksandr Natalenko <oleksandr@natalenko.name>, Wyes Karny <wyes.karny@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
+Please spell ACPI and CPPC in capitals in the subject.
+
 On Tue, Dec 5, 2023 at 7:38=E2=80=AFAM Meng Li <li.meng@amd.com> wrote:
 >
-> amd-pstate driver also uses SCHED_MC_PRIO, so decouple the requirement
-> of CPU_SUP_INTEL from the dependencies to allow compilation in kernels
-> without Intel CPU support.
+> Add support for getting the highest performance to the
+> generic CPPC driver. This enables downstream drivers
+> such as amd-pstate to discover and use these values.
 >
+> Please refer to the ACPI_Spec for details on continuous
+> performance control of CPPC.
+
+So which section of the spec is the reader supposed to refer to?
+
 > Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
 > Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Reviewed-by: Huang Rui <ray.huang@amd.com>
+> Reviewed-by: Wyes Karny <wyes.karny@amd.com>
 > Reviewed-by: Perry Yuan <perry.yuan@amd.com>
+> Acked-by: Huang Rui <ray.huang@amd.com>
 > Signed-off-by: Meng Li <li.meng@amd.com>
+> Link: https://uefi.org/specs/ACPI/6.5/08_Processor_Configuration_and_Cont=
+rol.html?highlight=3Dcppc#highest-performance
 > ---
->  arch/x86/Kconfig | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  drivers/acpi/cppc_acpi.c | 13 +++++++++++++
+>  include/acpi/cppc_acpi.h |  5 +++++
+>  2 files changed, 18 insertions(+)
 >
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 3762f41bb092..3e57773f946a 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -1054,8 +1054,9 @@ config SCHED_MC
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 7ff269a78c20..ad388a0e8484 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1154,6 +1154,19 @@ int cppc_get_nominal_perf(int cpunum, u64 *nominal=
+_perf)
+>         return cppc_get_perf(cpunum, NOMINAL_PERF, nominal_perf);
+>  }
 >
->  config SCHED_MC_PRIO
->         bool "CPU core priorities scheduler support"
-> -       depends on SCHED_MC && CPU_SUP_INTEL
-> -       select X86_INTEL_PSTATE
-> +       depends on SCHED_MC
-> +       select X86_INTEL_PSTATE if CPU_SUP_INTEL
-> +       select X86_AMD_PSTATE if CPU_SUP_AMD && ACPI
->         select CPU_FREQ
->         default y
->         help
+> +/**
+> + * cppc_get_highest_perf - Get the highest performance register value.
+> + * @cpunum: CPU from which to get highest performance.
+> + * @highest_perf: Return address.
+> + *
+> + * Return: 0 for success, -EIO otherwise.
+> + */
+> +int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
+> +{
+> +       return cppc_get_perf(cpunum, HIGHEST_PERF, highest_perf);
+> +}
+> +EXPORT_SYMBOL_GPL(cppc_get_highest_perf);
+> +
+>  /**
+>   * cppc_get_epp_perf - Get the epp register value.
+>   * @cpunum: CPU from which to get epp preference value.
+> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+> index 6126c977ece0..c0b69ffe7bdb 100644
+> --- a/include/acpi/cppc_acpi.h
+> +++ b/include/acpi/cppc_acpi.h
+> @@ -139,6 +139,7 @@ struct cppc_cpudata {
+>  #ifdef CONFIG_ACPI_CPPC_LIB
+>  extern int cppc_get_desired_perf(int cpunum, u64 *desired_perf);
+>  extern int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf);
+> +extern int cppc_get_highest_perf(int cpunum, u64 *highest_perf);
+>  extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb=
+_ctrs);
+>  extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
+>  extern int cppc_set_enable(int cpu, bool enable);
+> @@ -165,6 +166,10 @@ static inline int cppc_get_nominal_perf(int cpunum, =
+u64 *nominal_perf)
+>  {
+>         return -ENOTSUPP;
+>  }
+> +static inline int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
+> +{
+> +       return -ENOTSUPP;
+> +}
+>  static inline int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *=
+perf_fb_ctrs)
+>  {
+>         return -ENOTSUPP;
 > --
-
-This needs an ACK from the x86 maintainers.
 
