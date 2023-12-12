@@ -1,160 +1,173 @@
-Return-Path: <linux-acpi+bounces-2335-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2336-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2353980F764
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 21:03:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3974080F772
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 21:05:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE7B81F2172D
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 20:03:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6B2B1F2171F
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 20:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812D252775;
-	Tue, 12 Dec 2023 20:03:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SMZnxkZV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3981D52773;
+	Tue, 12 Dec 2023 20:05:29 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1D37BD
-	for <linux-acpi@vger.kernel.org>; Tue, 12 Dec 2023 12:03:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702411386;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nLTa2dYRrf09pJMNBsngii2VsJyLNKDZosllwS5YIfQ=;
-	b=SMZnxkZVVZVQcXO0StnG4Hq4kNy+4c1Pu9jVFAFNd0mbshsya64DtsQs2KY7XWA6+lB/X0
-	Edy8tmyXqirgnWUGHiF62ObKBWq20KVu4qiwi0Ke9HwFthPzaZVp5JqvJ+OQurczHtid4R
-	30eX79qMvVnF8urx5+J21pFzqHYELuQ=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-198-LtklpIUTNyut3xiNzPV73A-1; Tue, 12 Dec 2023 15:03:02 -0500
-X-MC-Unique: LtklpIUTNyut3xiNzPV73A-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a1cfd84b473so681186666b.1
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Dec 2023 12:03:01 -0800 (PST)
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C201AF;
+	Tue, 12 Dec 2023 12:05:26 -0800 (PST)
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5907b9c3fd6so533792eaf.0;
+        Tue, 12 Dec 2023 12:05:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702411380; x=1703016180;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1702411525; x=1703016325;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nLTa2dYRrf09pJMNBsngii2VsJyLNKDZosllwS5YIfQ=;
-        b=MoFqhCKMWzIgtWPhcHYznZuTpq21ZdDqQV1vJQ90Nwl6dHaZq5pyiiA3FxcaBCCcW+
-         +mlwxYqgFyKOeK+U2DphDLkxgkvFbtfcPWpMiqwjclHYTYjb79BFfyvx+SMUu1GIhYNU
-         5kmS/bCvk5MAck92ARGY375AlG5m3OznmBVpSXSYT/EjZmuMSYZFj13mO/TplTNyXo5/
-         ARQmh6WJLjvDpdI2LP9AZSdW0YaRpzs3GHdlq6DDaj8mbXisCrcxeTgYSe3AwrKnEBYo
-         94t1sZTNBUOCsINhUwW+TdDF4TK/+/hiETSPkQtoceUUiz1+cA1+eK6Mp8OceTs1kA2q
-         didQ==
-X-Gm-Message-State: AOJu0YxVcLK0iHFGNJi1Qg5uGRJ3WsWW3Rdaj7iHBjnLs3C5lZonuDz5
-	eFTW7t2XNybd5dzfAFMql5j5OwZJHnbvQo6PzGMJl1VHCPP+oEO6/zaWMP7TVJNlzzmyJO9cwQw
-	ZBgLzIDJbZ5Qjk0OoYX4E1mGpFBpg1g==
-X-Received: by 2002:a17:906:9588:b0:a1c:c2f9:980d with SMTP id r8-20020a170906958800b00a1cc2f9980dmr6331020ejx.27.1702411380001;
-        Tue, 12 Dec 2023 12:03:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHRYpIZTRZBTE4WcrlyktfS653hxvSiRGlBv7+Y1axU2HeESlSi0L3nguCi3mJ4p5t6evrUkA==
-X-Received: by 2002:a17:906:9588:b0:a1c:c2f9:980d with SMTP id r8-20020a170906958800b00a1cc2f9980dmr6331007ejx.27.1702411379730;
-        Tue, 12 Dec 2023 12:02:59 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com ([185.140.112.229])
-        by smtp.gmail.com with ESMTPSA id tl18-20020a170907c31200b00a1da2c9b06asm6698148ejc.42.2023.12.12.12.02.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Dec 2023 12:02:58 -0800 (PST)
-Date: Tue, 12 Dec 2023 21:02:57 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- bhelgaas@google.com, lenb@kernel.org, rafael@kernel.org, Thomas Lamprecht
- <t.lamprecht@proxmox.com>, mst@redhat.com, Dongli Zhang
- <dongli.zhang@oracle.com>
-Subject: Re: SCSI hotplug issues with UEFI VM with guest kernel >= 6.5
-Message-ID: <20231212210257.5ddbff0d@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231212162529.09c27fdf@imammedo.users.ipa.redhat.com>
-References: <9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com>
-	<20231207232815.GA771837@bhelgaas>
-	<20231208164723.12828a96@imammedo.users.ipa.redhat.com>
-	<20231211084604.25e209af@imammedo.users.ipa.redhat.com>
-	<c6233df5-01d8-498f-8235-ce4b102a2e91@proxmox.com>
-	<20231212122608.1b4f75ce@imammedo.users.ipa.redhat.com>
-	<62363899-d7aa-4f1c-abfa-1f87f0b6b43f@proxmox.com>
-	<20231212162529.09c27fdf@imammedo.users.ipa.redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+        bh=+BOtCilKMUNbBasgq0UMjLFqZa8aCDvdPUV0gfbYhOc=;
+        b=sVUXX4IxtcwSB5JASMrBQk41fA6hU8d6vJjrJaMjfDUalK6IIKDBO5evbIbulOYgJ6
+         7lIch6sZnUkZmcfmOgvq/4DwqHLxcHT52VQOx7q0uXFYADlxGqfuv47bFGIoSPRwKrGF
+         zWW8iVQOUnTn5N8mUYTG6866YHG5be/VCYejuXJ2zFufPZile5qZvfnzEwiEHp7KtzUh
+         JiW1oaTMRNoPMhYOFvGdEkY+VKh/xvFRBfmgP5mC/z0k+D/nHhDEGzfM66rQ1a9NCPUg
+         O+kh82HzDbAeE6jH4z9VhBooVOliu3L4JA/kgHPwLF+2ndsIAWWWSfO3YoU7o9P5jUnM
+         sAeg==
+X-Gm-Message-State: AOJu0YwLcLwa0cCT7iEzeA9QsU/kIcRm6KwBQ6LlWQGQi6/U1vMQmpQD
+	VVB7nQwJHpZzajXux2+msNTc/BZ5y5LRyNbUYNs=
+X-Google-Smtp-Source: AGHT+IG/zOKPoXX+KUgHRd1YwPymLrSadLIsRID5FYaIOT9/r8DyzvG7YUYiYl28l7KFo0FotJK25IwKa9Ys4XqQUjg=
+X-Received: by 2002:a05:6820:220d:b0:58d:5302:5b18 with SMTP id
+ cj13-20020a056820220d00b0058d53025b18mr13982416oob.1.1702411525380; Tue, 12
+ Dec 2023 12:05:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <ZTffkAdOqL2pI2la@shell.armlinux.org.uk> <CAJZ5v0j-73_+9U3ngDAf9w1ADDhBTKctJdWboqUk-okH2TQGyg@mail.gmail.com>
+ <ZW4ZBkj2oCmxv55T@shell.armlinux.org.uk> <ZXi7do4mVfdsz/k0@shell.armlinux.org.uk>
+In-Reply-To: <ZXi7do4mVfdsz/k0@shell.armlinux.org.uk>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 12 Dec 2023 21:05:14 +0100
+Message-ID: <CAJZ5v0jOU4Re2g5QtxpG0RjP3MYBxqz5Z+TtfXq2dz8HTq9A0A@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 00/39] ACPI/arm64: add support for virtual cpuhotplug
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, 
+	acpica-devel@lists.linuxfoundation.org, linux-csky@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>, 
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, jianyong.wu@arm.com, justin.he@arm.com, 
+	James Morse <james.morse@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 12 Dec 2023 16:25:29 +0100
-Igor Mammedov <imammedo@redhat.com> wrote:
+On Tue, Dec 12, 2023 at 8:58=E2=80=AFPM Russell King (Oracle)
+<linux@armlinux.org.uk> wrote:
+>
+> On Mon, Dec 04, 2023 at 06:23:02PM +0000, Russell King (Oracle) wrote:
+> > On Tue, Oct 24, 2023 at 08:26:58PM +0200, Rafael J. Wysocki wrote:
+> > > On Tue, Oct 24, 2023 at 5:15=E2=80=AFPM Russell King (Oracle)
+> > > <linux@armlinux.org.uk> wrote:
+> > > >
+> > > > Hi,
+> > > >
+> > > > I'm posting James' patch set updated with most of the review commen=
+ts
+> > > > from his RFC v2 series back in September. Individual patches have a
+> > > > changelog attached at the bottom of the commit message. Those which
+> > > > I have finished updating have my S-o-b on them, those which still h=
+ave
+> > > > outstanding review comments from RFC v2 do not. In some of these ca=
+ses
+> > > > I've asked questions and am waiting for responses.
+> > > >
+> > > > I'm posting this as RFC v3 because there's still some unaddressed
+> > > > comments and it's clearly not ready for merging. Even if it was rea=
+dy
+> > > > to be merged, it is too late in this development cycle to be taking
+> > > > this change in, so there would be little point posting it non-RFC.
+> > > > Also James stated that he's waiting for confirmation from the
+> > > > Kubernetes/Kata folk - I have no idea what the status is there.
+> > > >
+> > > > I will be sending each patch individually to a wider audience
+> > > > appropriate for that patch - apologies to those missing out on this
+> > > > cover message. I have added more mailing lists to the series with t=
+he
+> > > > exception of the acpica list in a hope of this cover message also
+> > > > reaching those folk.
+> > > >
+> > > > The changes that aren't included are:
+> > > >
+> > > > 1. Updates for my patch that was merged via Thomas (thanks!):
+> > > >    c4dd854f740c cpu-hotplug: Provide prototypes for arch CPU regist=
+ration
+> > > >    rather than having this change spread through James' patches.
+> > > >
+> > > > 2. New patch - simplification of PA-RISC's smp_prepare_boot_cpu()
+> > > >
+> > > > 3. Moved "ACPI: Use the acpi_device_is_present() helper in more pla=
+ces"
+> > > >    and "ACPI: Rename acpi_scan_device_not_present() to be about
+> > > >    enumeration" to the beginning of the series - these two patches =
+are
+> > > >    already queued up for merging into 6.7.
+> > > >
+> > > > 4. Moved "arm64, irqchip/gic-v3, ACPI: Move MADT GICC enabled check=
+ into
+> > > >    a helper" to the beginning of the series, which has been submitt=
+ed,
+> > > >    but as yet the fate of that posting isn't known.
+> > > >
+> > > > The first four patches in this series are provided for completness =
+only.
+> > > >
+> > > > There is an additional patch in James' git tree that isn't in the s=
+et
+> > > > of patches that James posted: "ACPI: processor: Only call
+> > > > arch_unregister_cpu() if HOTPLUG_CPU is selected" which looks to me=
+ to
+> > > > be a workaround for arch_unregister_cpu() being under the ifdef. I'=
+ve
+> > > > commented on this on the RFC v2 posting making a suggestion, but as=
+ yet
+> > > > haven't had any response.
+> > > >
+> > > > I've included almost all of James' original covering body below the
+> > > > diffstat.
+> > > >
+> > > > The reason that I'm doing this is to help move this code forward so
+> > > > hopefully it can be merged - which is why I have been keen to dig o=
+ut
+> > > > from James' patches anything that can be merged and submit it
+> > > > separately, since this is a feature for which some users have a
+> > > > definite need for.
+> > >
+> > > I've gone through the series and there is at least one thing in it
+> > > that concerns me a lot and some others that at least appear to be
+> > > really questionable.
+> > >
+> > > I need more time to send comments which I'm not going to do before th=
+e
+> > > 6.7 merge window (sorry), but from what I can say right now, this is
+> > > not looking good.
+> >
+> > Hi Rafael,
+> >
+> > Will you be able to send your comments, so that we can find out what
+> > your other concerns are please? I'm getting questions from interested
+> > parties who want to know what your concerns are.
+> >
+> > Nothing much has changed to the ACPI changes, so I think it's still
+> > valid to have the comments back for this.
+>
+> Hi Rafael,
+>
+> Another gentle prod on this...
 
-> On Tue, 12 Dec 2023 13:50:20 +0100
-> Fiona Ebner <f.ebner@proxmox.com> wrote:
-> 
-> > Am 12.12.23 um 12:26 schrieb Igor Mammedov:  
-> > > 
-> > > it's not necessary, but it would help to find out what's going wrong faster.
-> > > Otherwise we would need to fallback to debugging over email.
-> > > Are you willing to help with testing/providing debug logs to track down
-> > > the cause?.
-> > >     
-> > 
-> > I submitted the dmesg logs in bugzilla:
-> > https://bugzilla.kernel.org/show_bug.cgi?id=218255
-> >   
-> > > Though debug over email would be slow, so our best option is to revert
-> > > offending patches until the cause if found/fixed.
-> > >     
-> > >>>>> Do you have to revert both cc22522fd55e2 and 40613da52b13f to make it
-> > >>>>> work reliably?  If we have to revert something, reverting one would be
-> > >>>>> better than reverting both.        
-> > >>>>      
-> > >>
-> > >> Just reverting cc22522fd55e2 is not enough (and cc22522fd55e2 fixes
-> > >> 40613da52b13f so I can't revert just 40613da52b13f).    
-> > > 
-> > > With UEFI setup, it still works for me fine with current master.
-> > > 
-> > > Kernel 6.7.0-rc5-00014-g26aff849438c on an x86_64 (ttyS0)
-> > >     
-> > 
-> > I also built from current master (still 26aff849438c) to verify and it's
-> > still broken for me.
-> >   
-> > > 
-> > > it still doesn't work with Fedora's 6.7.0-0.rc2.20231125git0f5cc96c367f.26.fc40.x86_64 kernel.
-> > > However it's necessary to have -smp 4 for it to break,
-> > > with -smp 1 it works fine as well.
-> > >     
-> > 
-> > For me it's (always with build from current master):
-> > 
-> > -smp 1 -> it worked 5 times out of 5
-> > -smp 2 -> it worked 3 times out of 5
-> > -smp 4 -> it worked 0 times out of 5
-> > -smp 8 -> it worked 0 times out of 5  
-> 
-> 
-> I managed to reproduce it with upstream using fedora 40 config as is
-> (without converting it to mod2yesconfig).
-> So give me a couple of days to debug it before reverting.
+There was a selection of the patches in the series sent separately and
+I believe that some of them have been applied already.
 
-Actually here is another report + analysis explaining where the race is happening:
-https://www.spinics.net/lists/kernel/msg5033061.html
-
-That's the reason why my minimal config worked
-(based on defconfig where CONFIG_SCSI_SCAN_ASYNC in not enabled by default for x86)
-
-While distros (at least some) do enable it.
-
-> 
-> > 
-> > Best Regards,
-> > Fiona
-> >   
-> 
-
+Can you please send the remaining patches again so it is clear what's
+still outstanding?
 
