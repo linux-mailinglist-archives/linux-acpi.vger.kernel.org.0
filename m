@@ -1,95 +1,116 @@
-Return-Path: <linux-acpi+bounces-2342-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2345-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF92280FB9D
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 00:55:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2248106A8
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 01:36:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84D85280D68
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Dec 2023 23:55:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFE511C20E19
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 00:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1CB77F2F;
-	Tue, 12 Dec 2023 23:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865C1A31;
+	Wed, 13 Dec 2023 00:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="CnIU0dTw"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JkMeF1I9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E14A892;
-	Tue, 12 Dec 2023 15:55:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=kvcZNEP58ugqv20Pm1mONv8BuiUHlOHp24bA+swL/RE=; b=CnIU0dTwkYZLeCDDAl7dUkETmw
-	mXDyZZWZ0erdOyMV6hr212MWbfRA8D/Qk7N02Vf6D96nE0J3QoKq/qsrwU967k+WgcKliYYmsG0ZV
-	o7h6bOsx1UNX+Vf98XwJv9VYPg9P6YpbgxRvkokaCgysiGlOWrCejBj2QyUrV/nCxcKCWV5KZArBh
-	i8u4SkGvNIu3Hv4Qok7wd8zUuh0j0RCB1xU30xinXmmkZPv/ugtQxqqYArOgowwgJu70W8GHmxcOh
-	PnaJlj8kyd3Fmix9b5MmMOy1ajiK8vYij+CLHyA8Kkl9o06R4Hfd3rjwyXm3pGZ2XwJ8mq8w7Lh6D
-	SHLgpM7w==;
-Received: from [50.53.46.231] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rDCbG-00D5YC-1v;
-	Tue, 12 Dec 2023 23:55:42 +0000
-Message-ID: <fd5e2d54-1309-48a9-8458-ee5f2ebb039e@infradead.org>
-Date: Tue, 12 Dec 2023 15:55:41 -0800
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0059BCF
+	for <linux-acpi@vger.kernel.org>; Tue, 12 Dec 2023 16:36:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1702427786;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=RJN1x0PpbDfzaXjRksok/XhqhYBzo5gWu/iFT+Gwn1A=;
+	b=JkMeF1I96WqyVslVvwpWSZ9Rsm5X9044eJIKDH9o74coRETsXUUpIJmb9aO72dPZFj2P5I
+	5Asau8RhXyUZ7X0H48I+y2pLU7toRK3+e7tuu6UAMZ7o17q10nBnYqwhd+KUOjW+r08puL
+	mQsTGNwdNcKd41QFMkB14AUF6GfQsUM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-330-Beyvy5vgNBWaG3HruKRyLg-1; Tue, 12 Dec 2023 19:36:21 -0500
+X-MC-Unique: Beyvy5vgNBWaG3HruKRyLg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A17D0185A782;
+	Wed, 13 Dec 2023 00:36:18 +0000 (UTC)
+Received: from dell-r430-03.lab.eng.brq2.redhat.com (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 7BBFE1121306;
+	Wed, 13 Dec 2023 00:36:16 +0000 (UTC)
+From: Igor Mammedov <imammedo@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Dongli Zhang <dongli.zhang@oracle.com>,
+	linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	imammedo@redhat.com,
+	mst@redhat.com,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	bhelgaas@google.com,
+	mika.westerberg@linux.intel.com,
+	boris.ostrovsky@oracle.com,
+	joe.jin@oracle.com,
+	stable@vger.kernel.org,
+	Fiona Ebner <f.ebner@proxmox.com>,
+	Thomas Lamprecht <t.lamprecht@proxmox.com>
+Subject: [RFC 0/2] PCI: acpiphp: workaround race between hotplug and SCSI_SCAN_ASYNC job
+Date: Wed, 13 Dec 2023 01:36:12 +0100
+Message-Id: <20231213003614.1648343-1-imammedo@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] parse_phat: Add support for ACPI PHAT Table parsing
-Content-Language: en-US
-To: Avadhut Naik <avadhut.naik@amd.com>, linux-acpi@vger.kernel.org,
- linux-edac@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, yazen.ghannam@amd.com, avadnaik@amd.com
-References: <20231212195219.2348858-1-avadhut.naik@amd.com>
- <20231212195219.2348858-2-avadhut.naik@amd.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20231212195219.2348858-2-avadhut.naik@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-Hi--
+Hacks to mask a race between HBA scan job and bridge re-configuration(s)
+during hotplug. 
 
-On 12/12/23 11:52, Avadhut Naik wrote:
-> ACPI Platform Health Assessment Table (PHAT) enables a platform to expose
-> an extensible set of platform health-related telemetry. The telemetry is
-> exposed through Firmware Version and Firmware Health Data Records which
-> provide version data and health-related information of their associated
-> components respectively.
-> 
-> Additionally, the platform also provides Reset Reason Health Record
-> in the table highlighting the cause of the last system reset in case
-> of expected and unexpected events. Vendor-specific data capturing the
-> underlying state of the system during reset can also be optionally
-> provided through the record.[1]
-> 
-> Introduce support for parsing, decoding, and logging the PHAT table, if
-> supported by the system. By default, the table will be logged to stdout.
-> The same, however, can be changed through the "-o" command line parameter.
-> Additionally, the tool also provides a hexdump of the entire table, if
-> needed, through the "-x" parameter.
-> 
-> Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-> ---
->  Makefile     |  12 ++
->  parse_phat.c | 516 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 528 insertions(+)
->  create mode 100644 Makefile
->  create mode 100644 parse_phat.c
-> 
+I don't like it a bit but it something that could be done quickly
+and solves problems that were reported.
 
-Does acpidump not parse the PHAT table?
-Could it?  Should it?
+Other options to discuss/possibly more invasive:
+ 1: make sure pci_assign_unassigned_bridge_resources() doesn't reconfigure
+    bridge if it's not necessary.
+ 2. make SCSI_SCAN_ASYNC job wait till hotplug is finished for all slots on
+    the bridge or somehow restart the job if it fails
+ 3. any other ideas?
 
 
-thanks.
+1st reported: https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
+
+CC: Dongli Zhang <dongli.zhang@oracle.com>
+CC: linux-acpi@vger.kernel.org
+CC: linux-pci@vger.kernel.org
+CC: imammedo@redhat.com
+CC: mst@redhat.com
+CC: rafael@kernel.org
+CC: lenb@kernel.org
+CC: bhelgaas@google.com
+CC: mika.westerberg@linux.intel.com
+CC: boris.ostrovsky@oracle.com
+CC: joe.jin@oracle.com
+CC: stable@vger.kernel.org
+CC: linux-kernel@vger.kernel.org
+CC: Fiona Ebner <f.ebner@proxmox.com>
+CC: Thomas Lamprecht <t.lamprecht@proxmox.com>
+
+Igor Mammedov (2):
+  PCI: acpiphp: enable slot only if it hasn't been enabled already
+  PCI: acpiphp: slowdown hotplug if hotplugging multiple devices at a
+    time
+
+ drivers/pci/hotplug/acpiphp_glue.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
 -- 
-#Randy
-https://people.kernel.org/tglx/notes-about-netiquette
-https://subspace.kernel.org/etiquette.html
+2.39.3
+
 
