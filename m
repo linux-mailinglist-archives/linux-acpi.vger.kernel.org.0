@@ -1,133 +1,217 @@
-Return-Path: <linux-acpi+bounces-2406-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2407-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8EB5811D38
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 19:46:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FED0811D63
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 19:51:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAD501C210D9
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 18:46:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80E732824CD
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 18:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD5F5FF00;
-	Wed, 13 Dec 2023 18:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB905FF08;
+	Wed, 13 Dec 2023 18:51:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="huLjng6M"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE83DD0;
-	Wed, 13 Dec 2023 10:46:30 -0800 (PST)
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-6d9db2f1ddfso1100933a34.0;
-        Wed, 13 Dec 2023 10:46:30 -0800 (PST)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62ADEF3
+	for <linux-acpi@vger.kernel.org>; Wed, 13 Dec 2023 10:51:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1702493465;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3bz2PFKioWO39O1b/K33auuuNG1O5t2+2CTYPmaCsuU=;
+	b=huLjng6M0lT5cFR5IuQkkKWhaCOxozjCvQtkb/hAZyzGivhEWCDX13d/OZ2Il1v6b3tptc
+	YX+JaTEu+g6zCmPad5Mmti6N6MVm7PgzsLOM/AcHzkIVoEinUefGQMx9RnkybFquAp2Yct
+	jqc2w4qNGwUP/Qu1Ju8ngysCr9Fgq2Y=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-391-kMGgJdTTN06Rl9cEKzDKGw-1; Wed, 13 Dec 2023 13:51:02 -0500
+X-MC-Unique: kMGgJdTTN06Rl9cEKzDKGw-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-33334e370d3so6216546f8f.2
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Dec 2023 10:51:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702493190; x=1703097990;
+        d=1e100.net; s=20230601; t=1702493460; x=1703098260;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Eqe4Mh3qR58kwRD8SpcpKlRGfJ7NRdTpc3KPCByCcM4=;
-        b=PU925o7+mPwLStQbjQSKkq2sR+OtxwHto5CDmNUjIDzJb0MLdMrvc4o1VCUOvbIcWa
-         uSehxvM3cz7wFkT7LFYw51KfewON2xScOdinnQefWRrLUgNQt/ZQyVepRRXglAVdd6H6
-         uWmLHp7EphJqHy0Klzez7Zo07z0Tk0BMFtnepb5J+edf4Vr9v/+y4zQLZgy0/ZaZXT4A
-         bqJcGgzVy4P50t/w3+QRMzo88lF6s/lnEs/bBWseTtMMywIcMsyQNTRjp2ljkns9svFO
-         MwBuOAXPFS9snFv7jMxl0cjx+0ZqI0OEgP0tW53RYqjgKJ7v6WqwrtvjhSSEg+D/v7Qm
-         b/jA==
-X-Gm-Message-State: AOJu0Yxlt8ezSeK/ZRJTRNU8aG3WgIh7CgBeVQb07+GxunX4sK8U5/xa
-	4KLtPxsa+UoiVIwZT29sDGS5NsEWI3qR5FpdPaA=
-X-Google-Smtp-Source: AGHT+IGU8FPJkW9jgsuuJcY9YfNkpue7mAJKpZYttJycAVz8Nh9LhTV5zHtMszZAi3NZPOmPuy0VR7UUkJBLWKXWE/w=
-X-Received: by 2002:a05:6870:f6aa:b0:1e9:8ab9:11ca with SMTP id
- el42-20020a056870f6aa00b001e98ab911camr14648275oab.3.1702493190158; Wed, 13
- Dec 2023 10:46:30 -0800 (PST)
+        bh=3bz2PFKioWO39O1b/K33auuuNG1O5t2+2CTYPmaCsuU=;
+        b=tdLJQQrf5im3hQlNAlIVM278kXplE9q9SdJuA3k4xeAvQ/mmAvxsFwr8F9zV5uD5ij
+         50oE+qWrfqdqD1ypxH9PCOEC9/EdwESWqeTN3Ba+513YnI6nqvObOuB/C2vcE3cfe9PG
+         HWBG/oEdJRk5eyJdOwq3pNPwXMy7LYfhcmhMogGmUeIY4YelbPYGqyrtMJ7TPWPiXxFb
+         6JuxQhmbDNVTiCRMS+cHi+o44sVakCXI1InMEF6A7vBu/kL3OpzYlKHu60tpxxJj9XNr
+         /XG4DoVKdiZoeGzCkNOB7WkdaCWcSxjmoZjVFypf/mvdlDsTX8a5zb3RfgVzlhK08LSx
+         YA1g==
+X-Gm-Message-State: AOJu0YykXXWWB8bEfARvt+bnXen5uv/88rc0Kj5GuCgF6T+zEl59Cnbe
+	Stqzi1FWBetaL6Wie5KKkdk49p5Bn0xJuGZXiP0F24tQWAomieZwM4wIROQwJiB9wxabsn+n7q9
+	ezRlsE0ZtxLlAJfzUsX4IaO4jBrPLD5MzFhjmWLQb5n6Ezg==
+X-Received: by 2002:adf:fb03:0:b0:336:81b:7b3e with SMTP id c3-20020adffb03000000b00336081b7b3emr4694814wrr.84.1702493460716;
+        Wed, 13 Dec 2023 10:51:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHrOqThvRO3wtBz0WPYYTaM1hs7Q8Qv3LHMthbrTRo6wldeHDuIrDcx4q8TA6SBkLf72CI9CplVyd0Z267kaPY=
+X-Received: by 2002:adf:fb03:0:b0:336:81b:7b3e with SMTP id
+ c3-20020adffb03000000b00336081b7b3emr4694811wrr.84.1702493460440; Wed, 13 Dec
+ 2023 10:51:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231213182656.6165-1-mario.limonciello@amd.com>
- <20231213182656.6165-3-mario.limonciello@amd.com> <CAJZ5v0gDjwEpx-WNSY0=qchoSGxizsD3XM7Bgq=i0xufBm=Cag@mail.gmail.com>
- <766d621c-695d-4ae7-87cf-690cb8d066df@amd.com>
-In-Reply-To: <766d621c-695d-4ae7-87cf-690cb8d066df@amd.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 13 Dec 2023 19:46:19 +0100
-Message-ID: <CAJZ5v0i95EeS40pzkBH=jgB1wbMP6SNO_s=pNZ8FPOtcMywgAA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] PCI/portdrv: Place PCIe port hierarchy into D3cold at shutdown
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	"Rafael J . Wysocki" <rjw@rjwysocki.net>, linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mpearson-lenovo@squebb.ca
+References: <20231213003614.1648343-1-imammedo@redhat.com> <20231213003614.1648343-3-imammedo@redhat.com>
+ <CAJZ5v0gowV0WJd8pjwrDyHSJPvwgkCXYu9bDG7HHfcyzkSSY6w@mail.gmail.com>
+ <CAMLWh55dr2e_R+TYVj=8cFfV==D-DfOZvAeq9JEehYs3nw6-OQ@mail.gmail.com> <20231213115248-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20231213115248-mutt-send-email-mst@kernel.org>
+From: Igor Mammedov <imammedo@redhat.com>
+Date: Wed, 13 Dec 2023 19:50:48 +0100
+Message-ID: <CAMLWh56qLpe8PsndvzKv5WB_-qeOUPt1vEumTC3tW8M-9bGU-w@mail.gmail.com>
+Subject: Re: [RFC 2/2] PCI: acpiphp: slowdown hotplug if hotplugging multiple
+ devices at a time
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, 
+	Dongli Zhang <dongli.zhang@oracle.com>, linux-acpi@vger.kernel.org, 
+	linux-pci@vger.kernel.org, lenb@kernel.org, bhelgaas@google.com, 
+	mika.westerberg@linux.intel.com, boris.ostrovsky@oracle.com, 
+	joe.jin@oracle.com, stable@vger.kernel.org, Fiona Ebner <f.ebner@proxmox.com>, 
+	Thomas Lamprecht <t.lamprecht@proxmox.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 13, 2023 at 7:42=E2=80=AFPM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Wed, Dec 13, 2023 at 5:54=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
+ wrote:
 >
-> On 12/13/2023 12:38, Rafael J. Wysocki wrote:
-> > On Wed, Dec 13, 2023 at 7:27=E2=80=AFPM Mario Limonciello
-> > <mario.limonciello@amd.com> wrote:
-> >>
-> >> When a system is being powered off it's important that PCIe ports
-> >> have been put into D3cold as there is no other software to turn
-> >> off the devices at S5.
-> >>
-> >> If PCIe ports are left in D0 then any GPIOs toggled by the ACPI
-> >> power resources may be left enabled and devices may consume excess
-> >> power.
+> On Wed, Dec 13, 2023 at 05:49:39PM +0100, Igor Mammedov wrote:
+> > On Wed, Dec 13, 2023 at 2:08=E2=80=AFPM Rafael J. Wysocki <rafael@kerne=
+l.org> wrote:
+> > >
+> > > On Wed, Dec 13, 2023 at 1:36=E2=80=AFAM Igor Mammedov <imammedo@redha=
+t.com> wrote:
+> > > >
+> > > > previous commit ("PCI: acpiphp: enable slot only if it hasn't been =
+enabled already"
+> > > > introduced a workaround to avoid a race between SCSI_SCAN_ASYNC job=
+ and
+> > > > bridge reconfiguration in case of single HBA hotplug.
+> > > > However in virt environment it's possible to pause machine hotplug =
+several
+> > > > HBAs and let machine run. That can hit the same race when 2nd hotpl=
+ugged
+> > > > HBA will start re-configuring bridge.
+> > > > Do the same thing as SHPC and throttle down hotplug of 2nd and up
+> > > > devices within single hotplug event.
+> > > >
+> > > > Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> > > > ---
+> > > >  drivers/pci/hotplug/acpiphp_glue.c | 6 ++++++
+> > > >  1 file changed, 6 insertions(+)
+> > > >
+> > > > diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotpl=
+ug/acpiphp_glue.c
+> > > > index 6b11609927d6..30bca2086b24 100644
+> > > > --- a/drivers/pci/hotplug/acpiphp_glue.c
+> > > > +++ b/drivers/pci/hotplug/acpiphp_glue.c
+> > > > @@ -37,6 +37,7 @@
+> > > >  #include <linux/mutex.h>
+> > > >  #include <linux/slab.h>
+> > > >  #include <linux/acpi.h>
+> > > > +#include <linux/delay.h>
+> > > >
+> > > >  #include "../pci.h"
+> > > >  #include "acpiphp.h"
+> > > > @@ -700,6 +701,7 @@ static void trim_stale_devices(struct pci_dev *=
+dev)
+> > > >  static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
+> > > >  {
+> > > >         struct acpiphp_slot *slot;
+> > > > +        int nr_hp_slots =3D 0;
+> > > >
+> > > >         /* Bail out if the bridge is going away. */
+> > > >         if (bridge->is_going_away)
+> > > > @@ -723,6 +725,10 @@ static void acpiphp_check_bridge(struct acpiph=
+p_bridge *bridge)
+> > > >
+> > > >                         /* configure all functions */
+> > > >                         if (slot->flags !=3D SLOT_ENABLED) {
+> > > > +                               if (nr_hp_slots)
+> > > > +                                       msleep(1000);
+> > >
+> > > Why is 1000 considered the most suitable number here?  Any chance to
+> > > define a symbol for it?
 > >
-> > Isn't that a platform firmware issue?
+> > Timeout was borrowed from SHPC hotplug workflow where it apparently
+> > makes race harder to reproduce.
+> > (though it's not excuse to add more timeouts elsewhere)
 > >
-> > It is the responsibility of the platform firmware to properly put the
-> > platform into S5, including power removal from devices that are not
-> > armed for power-on.
+> > > And won't this affect the cases when the race in question is not a co=
+ncern?
+> >
+> > In practice it's not likely, since even in virt scenario hypervisor won=
+'t
+> > stop VM to hotplug device (which beats whole purpose of hotplug).
+> >
+> > But in case of a very slow VM (overcommit case) it's possible for
+> > several HBA's to be hotplugged by the time acpiphp gets a chance
+> > to handle the 1st hotplug event. SHPC is more or less 'safe' with its
+> > 1sec delay.
+> >
+> > > Also, adding arbitrary timeouts is not the most robust way of
+> > > addressing race conditions IMV.  Wouldn't it be better to add some
+> > > proper synchronization between the pieces of code that can race with
+> > > each other?
+> >
+> > I don't like it either, it's a stop gap measure to hide regression on
+> > short notice,
+> > which I can fixup without much risk in short time left, before folks
+> > leave on holidays.
+> > It's fine to drop the patch as chances of this happening are small.
+> > [1/2] should cover reported cases.
+> >
+> > Since it's RFC, I basically ask for opinions on a proper way to fix
+> > SCSI_ASYNC_SCAN
+> > running wild while the hotplug is in progress (and maybe SCSI is not
+> > the only user that
+> > schedules async job from device probe).
 >
-> The specific issues that triggered this series were tied to the PCIe
-> ports for dGPUs.  There is a GPIO that is toggled by _ON or _OFF.
->
-> Windows calls _OFF as part of S5..
+> Of course not. And things don't have to be scheduled from probe right?
+> Can be triggered by an interrupt or userspace activity.
 
-I see.
+Maybe, but it would probably depend on driver/device.
 
+For HBA case, we probably can't depend on iqr or a userspace activity.
+Current expectations are that after hotplug HBA will show up along with
+drives attached to it. I suppose udev can kick off scan on HBA after device
+appears but it is still postponing the same race just elsewhere.
+Not to mention making the whole system more complicated/fragile.
+
+Also async scan during hotplug begs a question, it does speed up
+boot process with several HBA. But how much sense it makes to do so
+at hotplug time where resources are plugged on demand
+(synchronous scan might even be better).
+
+
+> > So adding synchronisation and testing
+> > would take time (not something I'd do this late in the cycle).
 > >
-> >> Cc: mpearson-lenovo@squebb.ca
-> >> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> >> ---
-> >>   drivers/pci/pcie/portdrv.c | 11 ++++++++---
-> >>   1 file changed, 8 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/drivers/pci/pcie/portdrv.c b/drivers/pci/pcie/portdrv.c
-> >> index 14a4b89a3b83..08238680c481 100644
-> >> --- a/drivers/pci/pcie/portdrv.c
-> >> +++ b/drivers/pci/pcie/portdrv.c
-> >> @@ -734,9 +734,14 @@ static void pcie_portdrv_remove(struct pci_dev *d=
-ev)
-> >>   static void pcie_portdrv_shutdown(struct pci_dev *dev)
-> >>   {
-> >>          if (pci_bridge_d3_possible(dev)) {
-> >> -               pm_runtime_forbid(&dev->dev);
-> >> -               pm_runtime_get_noresume(&dev->dev);
-> >> -               pm_runtime_dont_use_autosuspend(&dev->dev);
-> >> +               /* whole hierarchy goes into a low power state for S5 =
-*/
-> >> +               if (system_state =3D=3D SYSTEM_POWER_OFF) {
-> >> +                       pci_set_power_state(dev, PCI_D3cold);
-> >> +               } else {
-> >> +                       pm_runtime_forbid(&dev->dev);
-> >> +                       pm_runtime_get_noresume(&dev->dev);
-> >> +                       pm_runtime_dont_use_autosuspend(&dev->dev);
-> >> +               }
-> >>          }
-> >
-> > Wouldn't it be better to remove power from the port after running the
-> > code below?
-> >
+> > So far I'm thinking about adding rw mutex to bridge with the PCI
+> > hotplug subsystem
+> > being a writer while scsi scan jobs would be readers and wait till hotp=
+lug code
+> > says it's safe to proceed.
+> > I plan to work in this direction and give it some testing, unless
+> > someone has a better idea.
 >
-> Yes; I think you're right.  I'll do some more testing with this.
+> > >
+> > > > +
+> > > > +                                ++nr_hp_slots;
+> > > >                                 enable_slot(slot, true);
+> > > >                         }
+> > > >                 } else {
+> > > > --
+> > >
 >
-> >>          pcie_port_device_remove(dev);
-> >> --
 
-IIRC, to do this all properly, you'd need to rework the shutdown path
-to look like the hibernation power-off one.  Or even use the latter
-for shutdown?
-
-There was no reason to do that till now, so it has not been done, but
-it looks like you have one.
 
