@@ -1,126 +1,168 @@
-Return-Path: <linux-acpi+bounces-2381-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2382-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83EAE811289
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 14:08:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D82428118B2
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 17:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B61A31C20A0D
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 13:08:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6CDD281D00
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 16:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F75A2C856;
-	Wed, 13 Dec 2023 13:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D06831A8C;
+	Wed, 13 Dec 2023 16:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GwTlcLbF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55AF3B2;
-	Wed, 13 Dec 2023 05:08:11 -0800 (PST)
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-59158202d22so58389eaf.0;
-        Wed, 13 Dec 2023 05:08:11 -0800 (PST)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50FE9BD
+	for <linux-acpi@vger.kernel.org>; Wed, 13 Dec 2023 08:06:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1702483607;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q106s0gS4HpONPoouMQtCupD8VBOdms/F16NVa2ymO4=;
+	b=GwTlcLbFDRGZLVbkMxCovNqnFjxqqUmcqzmnU0N7L1V6gCBpDW+X/8ofXN/YkjUaFgwojn
+	0wbM2SIp+Qk3nkE24aR2a7q4QlZQ7uXOflLn6Tk4pGpi0Q8B2mUK/w4YoKErnxgNL3Sr1+
+	dO7gLNclXqsjCgNaYrXxpdNoJk0Xh+M=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-418-Bv4m_o_JNSS3ToWOELq7_A-1; Wed, 13 Dec 2023 11:06:44 -0500
+X-MC-Unique: Bv4m_o_JNSS3ToWOELq7_A-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-50bf87fcb29so6012443e87.1
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Dec 2023 08:06:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702472890; x=1703077690;
+        d=1e100.net; s=20230601; t=1702483603; x=1703088403;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dfzhlsnoq9Ysoezun43pMBPmJAkFvJFC0eB1jMYm89g=;
-        b=LLSJ6rosSw0zGs1doQW5MzW1mS2bWTmK+S29GsQkQNM+ma2nfzKcj/UaaACJoRA5pk
-         4nrkPN+Xp2/NXZk4UoOcO36Eq95buwJWC6qlmI8zZSApH4ftqx2pHYkVUvCe0DF8VOVV
-         +HOWZp7/kgunTBIntjL7Ngh7O0xPqruUx4Zjw0LojUUJTe3zsosTLdeVlDsakrmiXl2t
-         P2Ds+qwXH816LRDucarCJyfATuYMc0EU1ovclGcAew009zUeLQdoK9i0amrbencM2pZ4
-         58NYDIegCsDoVw1HS5YARNE0aFYfYzc3VVj8aEtp4fVlf5qnmt7EuwZk2RR7x+Dj3VYK
-         2vgw==
-X-Gm-Message-State: AOJu0Yyaywyq6fLLDllCRHOVFiHKjkWaTU7BYP1iRlCp5n8QLmvMx+Uq
-	E4/1SiSJ/x7w84JbFe/FICVcF5RKjPEVl6J/PxA=
-X-Google-Smtp-Source: AGHT+IEksZOaTrdaIJm4lcb85oyK5X2mMVWwsxlOxVmkTgEU6wD3nKcf13Ky+z3N80hZuRCQiIgW0WBLZWxvZNYNM94=
-X-Received: by 2002:a05:6871:892:b0:203:1727:c6b with SMTP id
- r18-20020a056871089200b0020317270c6bmr2841209oaq.5.1702472890600; Wed, 13 Dec
- 2023 05:08:10 -0800 (PST)
+        bh=q106s0gS4HpONPoouMQtCupD8VBOdms/F16NVa2ymO4=;
+        b=ls+fvebE+qojGO2AATF+Psno1erM40p6gkztIknU1RiwCN6hUMD38FqpSyWaSUVLQo
+         XOommz/+UVeW1GFQ+HoblhF9mgb4Y/UalIKvA9DYFU2tCyOfMUaoa1jXjERleO029rxW
+         To9xR22hBAYHmqWPM8Vi8McJP4ehaMtjyrrgl2YazLY+KocaIur2FuBpKDWZ8ad0GQ0q
+         UdeNpIJNBOx3cg6sqbqBiU8yDCp33koCo4SdkkyE32uy4Kmo0Q0PwDdUhZaAs4IxibXj
+         JD58VJ/LM4Dx9/K9h6KBdFcDGWJyzYTHIskKNXS/DhorA8N+EOB7MTw+TrMacv7zEQjx
+         gkAQ==
+X-Gm-Message-State: AOJu0Yxq60UCBoEzog+aDxmA7bNuMe+2vjkGflkebQVRuDdEMVj05DhH
+	oxiTIvn78zHWnapfUf4BU5jAU0NTH3mhtFk06USiFAjQBImCjgRaStFIYGX1Boeo55TDifleGNb
+	Et6gcetHbIg2wid7X4WPdBJVOaE1RzwHeq/K4Xg==
+X-Received: by 2002:a05:6512:110d:b0:50b:f858:f138 with SMTP id l13-20020a056512110d00b0050bf858f138mr4609490lfg.89.1702483603158;
+        Wed, 13 Dec 2023 08:06:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFw3Ljc3eklHpFpuSFf+Z9BjZ7uARG614C+AsLZ+jCD1co83tLSpAVEHTYy81SLTprROZdRDO3ZqT6G3CREyFU=
+X-Received: by 2002:a05:6512:110d:b0:50b:f858:f138 with SMTP id
+ l13-20020a056512110d00b0050bf858f138mr4609474lfg.89.1702483602853; Wed, 13
+ Dec 2023 08:06:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231213003614.1648343-1-imammedo@redhat.com> <20231213003614.1648343-3-imammedo@redhat.com>
-In-Reply-To: <20231213003614.1648343-3-imammedo@redhat.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 13 Dec 2023 14:07:59 +0100
-Message-ID: <CAJZ5v0gowV0WJd8pjwrDyHSJPvwgkCXYu9bDG7HHfcyzkSSY6w@mail.gmail.com>
-Subject: Re: [RFC 2/2] PCI: acpiphp: slowdown hotplug if hotplugging multiple
- devices at a time
-To: Igor Mammedov <imammedo@redhat.com>
+References: <20231213003614.1648343-1-imammedo@redhat.com> <20231213003614.1648343-2-imammedo@redhat.com>
+ <CAJZ5v0jQTiLqbBQ+xMord2apaQcdXNWumZPbHqu0GOxJ3apPFQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jQTiLqbBQ+xMord2apaQcdXNWumZPbHqu0GOxJ3apPFQ@mail.gmail.com>
+From: Igor Mammedov <imammedo@redhat.com>
+Date: Wed, 13 Dec 2023 17:06:30 +0100
+Message-ID: <CAMLWh55+GkpBOqihsM8Nry310GQh1f5mT=3_2yxCnfiWbFg2JA@mail.gmail.com>
+Subject: Re: [RFC 1/2] PCI: acpiphp: enable slot only if it hasn't been
+ enabled already
+To: "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: linux-kernel@vger.kernel.org, Dongli Zhang <dongli.zhang@oracle.com>, 
 	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org, mst@redhat.com, 
-	rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com, 
-	mika.westerberg@linux.intel.com, boris.ostrovsky@oracle.com, 
-	joe.jin@oracle.com, stable@vger.kernel.org, Fiona Ebner <f.ebner@proxmox.com>, 
-	Thomas Lamprecht <t.lamprecht@proxmox.com>
+	lenb@kernel.org, bhelgaas@google.com, mika.westerberg@linux.intel.com, 
+	boris.ostrovsky@oracle.com, joe.jin@oracle.com, stable@vger.kernel.org, 
+	Fiona Ebner <f.ebner@proxmox.com>, Thomas Lamprecht <t.lamprecht@proxmox.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 13, 2023 at 1:36=E2=80=AFAM Igor Mammedov <imammedo@redhat.com>=
- wrote:
+On Wed, Dec 13, 2023 at 2:01=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
+g> wrote:
 >
-> previous commit ("PCI: acpiphp: enable slot only if it hasn't been enable=
-d already"
-> introduced a workaround to avoid a race between SCSI_SCAN_ASYNC job and
-> bridge reconfiguration in case of single HBA hotplug.
-> However in virt environment it's possible to pause machine hotplug severa=
-l
-> HBAs and let machine run. That can hit the same race when 2nd hotplugged
-> HBA will start re-configuring bridge.
-> Do the same thing as SHPC and throttle down hotplug of 2nd and up
-> devices within single hotplug event.
+> On Wed, Dec 13, 2023 at 1:36=E2=80=AFAM Igor Mammedov <imammedo@redhat.co=
+m> wrote:
+> >
+> > When SCSI_SCAN_ASYNC is enabled (either via config or via cmd line),
+> > adding device to bus and enabling it will kick in async host scan
+> >
+> >  scsi_scan_host+0x21/0x1f0
+> >  virtscsi_probe+0x2dd/0x350
+> >  ..
+> >  driver_probe_device+0x19/0x80
+> >  ...
+> >  driver_probe_device+0x19/0x80
+> >  pci_bus_add_device+0x53/0x80
+> >  pci_bus_add_devices+0x2b/0x70
+> >  ...
+> >
+> > which will schedule a job for async scan. That however breaks
+> > if there are more than one SCSI host behind bridge, since
+> > acpiphp_check_bridge() will walk over all slots and try to
+> > enable each of them regardless of whether they were already
+> > enabled.
+> > As result the bridge might be reconfigured several times
+> > and trigger following sequence:
+> >
+> >   [cpu 0] acpiphp_check_bridge()
+> >   [cpu 0]   enable_slot(a)
+> >   [cpu 0]     configure bridge
+> >   [cpu 0]     pci_bus_add_devices() -> scsi_scan_host(a1)
+> >   [cpu 0]   enable_slot(b)
+> >   ...
+> >   [cpu 1] do_scsi_scan_host(a1) <- async jib scheduled for slot a
+> >   ...
+> >   [cpu 0]     configure bridge <- temporaly disables bridge
+> >
+> > and cause do_scsi_scan_host() failure.
+> > The same race affects SHPC (but it manages to avoid hitting the race du=
+e to
+> > 1sec delay when enabling slot).
+> > To cover case of single device hotplug (at a time) do not attempt to
+> > enable slot that have already been enabled.
+> >
+> > Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if nec=
+essary")
+> > Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
+> > Reported-by: iona Ebner <f.ebner@proxmox.com>
+> > Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> > ---
+> >  drivers/pci/hotplug/acpiphp_glue.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/a=
+cpiphp_glue.c
+> > index 601129772b2d..6b11609927d6 100644
+> > --- a/drivers/pci/hotplug/acpiphp_glue.c
+> > +++ b/drivers/pci/hotplug/acpiphp_glue.c
+> > @@ -722,7 +722,9 @@ static void acpiphp_check_bridge(struct acpiphp_bri=
+dge *bridge)
+> >                                         trim_stale_devices(dev);
+> >
+> >                         /* configure all functions */
+> > -                       enable_slot(slot, true);
+> > +                       if (slot->flags !=3D SLOT_ENABLED) {
+> > +                               enable_slot(slot, true);
+> > +                       }
 >
-> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> ---
->  drivers/pci/hotplug/acpiphp_glue.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> Shouldn't this be following the acpiphp_enable_slot() pattern, that is
 >
-> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acp=
-iphp_glue.c
-> index 6b11609927d6..30bca2086b24 100644
-> --- a/drivers/pci/hotplug/acpiphp_glue.c
-> +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> @@ -37,6 +37,7 @@
->  #include <linux/mutex.h>
->  #include <linux/slab.h>
->  #include <linux/acpi.h>
-> +#include <linux/delay.h>
+> if (!(slot->flags & SLOT_ENABLED))
+>          enable_slot(slot, true);
 >
->  #include "../pci.h"
->  #include "acpiphp.h"
-> @@ -700,6 +701,7 @@ static void trim_stale_devices(struct pci_dev *dev)
->  static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
->  {
->         struct acpiphp_slot *slot;
-> +        int nr_hp_slots =3D 0;
->
->         /* Bail out if the bridge is going away. */
->         if (bridge->is_going_away)
-> @@ -723,6 +725,10 @@ static void acpiphp_check_bridge(struct acpiphp_brid=
-ge *bridge)
->
->                         /* configure all functions */
->                         if (slot->flags !=3D SLOT_ENABLED) {
-> +                               if (nr_hp_slots)
-> +                                       msleep(1000);
+> Also the braces are redundant.
 
-Why is 1000 considered the most suitable number here?  Any chance to
-define a symbol for it?
+I'll fix up on respin if Bjorn is fine with the approach in general.
 
-And won't this affect the cases when the race in question is not a concern?
+Patches need respin anyways to fix botched up white spacing.
 
-Also, adding arbitrary timeouts is not the most robust way of
-addressing race conditions IMV.  Wouldn't it be better to add some
-proper synchronization between the pieces of code that can race with
-each other?
+>
+> >                 } else {
+> >                         disable_slot(slot);
+> >                 }
+> > --
+>
 
-> +
-> +                                ++nr_hp_slots;
->                                 enable_slot(slot, true);
->                         }
->                 } else {
-> --
 
