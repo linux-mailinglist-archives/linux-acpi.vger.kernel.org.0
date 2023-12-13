@@ -1,98 +1,138 @@
-Return-Path: <linux-acpi+bounces-2379-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2380-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E19811224
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 13:54:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C349281124D
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 14:01:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E86441C208ED
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 12:54:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6829A1F213EE
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 13:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D8829D11;
-	Wed, 13 Dec 2023 12:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25CD2C1BC;
+	Wed, 13 Dec 2023 13:01:50 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF111135;
-	Wed, 13 Dec 2023 04:54:20 -0800 (PST)
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-6d9d6f8485eso881268a34.0;
-        Wed, 13 Dec 2023 04:54:20 -0800 (PST)
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC046F2;
+	Wed, 13 Dec 2023 05:01:47 -0800 (PST)
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2033578d5e0so6200fac.0;
+        Wed, 13 Dec 2023 05:01:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702472060; x=1703076860;
+        d=1e100.net; s=20230601; t=1702472507; x=1703077307;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=crfJNz0NkMSgeWJLA+8VmC2tAn5+LLBTeE17x+YD3zU=;
-        b=IBfaxsTw1YAxxZVBiqYcWshZomsbKgyB/093BsgmmFo3aSm3CxLFSqG9oO8qBJ3rkO
-         MuKhx0VSrbaYFzpptWInZmJ6pLAsawC/VH3SSaKK8jTCqrL3fqk0eCNzCrZNm5C3Avbz
-         rOUkxmZNHTcVUsZ3jdBh293I0NWddVpmsczN5opoCjZ4ySMHiHtE9VkqSLM4qvgc3I2f
-         oIXG6dFks8qCYeuni41Yl5pU5Z2k0D8v3GJsHnkJPUjA+yn2oeCgtHcpOeVJp3a8M9YB
-         KWOlYs7lANBs2RTzzog/+oyRpiZ1JYfhCrdwup8URtYVSV8MmDrgAPV7/x1ybqRJBZJd
-         d5pQ==
-X-Gm-Message-State: AOJu0YyFcVLxd84gLOQygcy3aPg6CY1E9UWjHsFdc+wREMSxaPMD1aCk
-	vy6eZLw0H70QSwdzpVZpGzi5Z0KGKst7TDVBUWA=
-X-Google-Smtp-Source: AGHT+IGTjq/sWv6/5ezFagRPcm/+m5+0/03bDruODCWo4EA6LeQXWlw8BBuzZ1wmN8iH4LPg+xKop62digTZ8Cldh6g=
-X-Received: by 2002:a05:6870:1484:b0:1fa:f0ee:ba9c with SMTP id
- k4-20020a056870148400b001faf0eeba9cmr15174841oab.2.1702472059801; Wed, 13 Dec
- 2023 04:54:19 -0800 (PST)
+        bh=Jg66vlrCUJ5caH3ipTFUdmcb6mbPBA/2vfEVtGjIuXI=;
+        b=CQuRlJ0DBv3/8dPCNf72jH9yZJLQnawyrQteUJOqA4OjmbyvpZBoxiHiJc4YIS+KPo
+         1nz7WfDIAqaVsec/dArJRK2uHu4JtwIhkw+Ruz6WXbAGjpr7lq7ukhi5ZXz44pb6xNY2
+         Eq0wP9JtLcuEDjaWza+bDscOPtjEibeOE++StqXITAL6dTxbAyUCbkephqMsHValGZrh
+         oahpBwVQ32eo5CzD5MxluCRjgMTEladxlS1WoayD635C6caBG1RJ1qLPQJsaxXFfxCcT
+         4RCQ0f3SmFzVnZA6l+TOjjmiPM5lASWjFoOWFTYbt29297xclShTQ2NxSbNPm2hPeaGe
+         L6aw==
+X-Gm-Message-State: AOJu0YwkWFTH6JB139dsGDxNSps5iAVP5cOLng9rzoZDUtuv4W4PfvTX
+	0PYMz5FrhmDx0KJlUa2q2xVQhs79z4DbdCFF93A=
+X-Google-Smtp-Source: AGHT+IGN1RQXc5S1lW2Z1iuPftBz430GliyRNOQ/FrfR1o/t5CAfoExAW38rqTKi8eT364HVJEvngQqJo/Pf/FeY5ss=
+X-Received: by 2002:a05:6870:9a8a:b0:203:36fc:6c8a with SMTP id
+ hp10-20020a0568709a8a00b0020336fc6c8amr153643oab.4.1702472507203; Wed, 13 Dec
+ 2023 05:01:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231212214843.256622-1-arnd@kernel.org>
-In-Reply-To: <20231212214843.256622-1-arnd@kernel.org>
+References: <20231213003614.1648343-1-imammedo@redhat.com> <20231213003614.1648343-2-imammedo@redhat.com>
+In-Reply-To: <20231213003614.1648343-2-imammedo@redhat.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 13 Dec 2023 13:54:09 +0100
-Message-ID: <CAJZ5v0jMcHCJpDBFO90217Q264JN1LLtc215oP5YQhBk8s1wVA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: arm64: export acpi_arch_thermal_cpufreq_pctg
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, 
-	Sudeep Holla <sudeep.holla@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Sumit Gupta <sumitg@nvidia.com>, Srikar Srimath Tirumala <srikars@nvidia.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Wed, 13 Dec 2023 14:01:36 +0100
+Message-ID: <CAJZ5v0jQTiLqbBQ+xMord2apaQcdXNWumZPbHqu0GOxJ3apPFQ@mail.gmail.com>
+Subject: Re: [RFC 1/2] PCI: acpiphp: enable slot only if it hasn't been
+ enabled already
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Dongli Zhang <dongli.zhang@oracle.com>, 
+	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org, mst@redhat.com, 
+	rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com, 
+	mika.westerberg@linux.intel.com, boris.ostrovsky@oracle.com, 
+	joe.jin@oracle.com, stable@vger.kernel.org, Fiona Ebner <f.ebner@proxmox.com>, 
+	Thomas Lamprecht <t.lamprecht@proxmox.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 12, 2023 at 10:48=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wr=
-ote:
+On Wed, Dec 13, 2023 at 1:36=E2=80=AFAM Igor Mammedov <imammedo@redhat.com>=
+ wrote:
 >
-> From: Arnd Bergmann <arnd@arndb.de>
+> When SCSI_SCAN_ASYNC is enabled (either via config or via cmd line),
+> adding device to bus and enabling it will kick in async host scan
 >
-> The cpufreq code can be in a loadable module, so the architecture support
-> for it has to be exported:
+>  scsi_scan_host+0x21/0x1f0
+>  virtscsi_probe+0x2dd/0x350
+>  ..
+>  driver_probe_device+0x19/0x80
+>  ...
+>  driver_probe_device+0x19/0x80
+>  pci_bus_add_device+0x53/0x80
+>  pci_bus_add_devices+0x2b/0x70
+>  ...
 >
-> ERROR: modpost: "acpi_arch_thermal_cpufreq_pctg" [drivers/acpi/processor.=
-ko] undefined!
+> which will schedule a job for async scan. That however breaks
+> if there are more than one SCSI host behind bridge, since
+> acpiphp_check_bridge() will walk over all slots and try to
+> enable each of them regardless of whether they were already
+> enabled.
+> As result the bridge might be reconfigured several times
+> and trigger following sequence:
 >
-> Fixes: 310293a2b941 ("ACPI: processor: reduce CPUFREQ thermal reduction p=
-ctg for Tegra241")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>   [cpu 0] acpiphp_check_bridge()
+>   [cpu 0]   enable_slot(a)
+>   [cpu 0]     configure bridge
+>   [cpu 0]     pci_bus_add_devices() -> scsi_scan_host(a1)
+>   [cpu 0]   enable_slot(b)
+>   ...
+>   [cpu 1] do_scsi_scan_host(a1) <- async jib scheduled for slot a
+>   ...
+>   [cpu 0]     configure bridge <- temporaly disables bridge
+>
+> and cause do_scsi_scan_host() failure.
+> The same race affects SHPC (but it manages to avoid hitting the race due =
+to
+> 1sec delay when enabling slot).
+> To cover case of single device hotplug (at a time) do not attempt to
+> enable slot that have already been enabled.
+>
+> Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if neces=
+sary")
+> Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
+> Reported-by: iona Ebner <f.ebner@proxmox.com>
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 > ---
->  drivers/acpi/arm64/thermal_cpufreq.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/pci/hotplug/acpiphp_glue.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/arm64/thermal_cpufreq.c b/drivers/acpi/arm64/th=
-ermal_cpufreq.c
-> index d524f2cd6044..582854914c5c 100644
-> --- a/drivers/acpi/arm64/thermal_cpufreq.c
-> +++ b/drivers/acpi/arm64/thermal_cpufreq.c
-> @@ -1,5 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  #include <linux/acpi.h>
-> +#include <linux/export.h>
+> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acp=
+iphp_glue.c
+> index 601129772b2d..6b11609927d6 100644
+> --- a/drivers/pci/hotplug/acpiphp_glue.c
+> +++ b/drivers/pci/hotplug/acpiphp_glue.c
+> @@ -722,7 +722,9 @@ static void acpiphp_check_bridge(struct acpiphp_bridg=
+e *bridge)
+>                                         trim_stale_devices(dev);
 >
->  #include "../internal.h"
->
-> @@ -18,3 +19,4 @@ int acpi_arch_thermal_cpufreq_pctg(void)
->
->         return 0;
->  }
-> +EXPORT_SYMBOL_GPL(acpi_arch_thermal_cpufreq_pctg);
-> --
+>                         /* configure all functions */
+> -                       enable_slot(slot, true);
+> +                       if (slot->flags !=3D SLOT_ENABLED) {
+> +                               enable_slot(slot, true);
+> +                       }
 
-Applied, thanks!
+Shouldn't this be following the acpiphp_enable_slot() pattern, that is
+
+if (!(slot->flags & SLOT_ENABLED))
+         enable_slot(slot, true);
+
+Also the braces are redundant.
+
+>                 } else {
+>                         disable_slot(slot);
+>                 }
+> --
 
