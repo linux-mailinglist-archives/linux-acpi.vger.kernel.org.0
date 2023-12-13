@@ -1,124 +1,179 @@
-Return-Path: <linux-acpi+bounces-2343-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2346-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B00C8106A3
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 01:36:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0CE8106F1
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 01:48:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C95DE1F21800
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 00:36:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECABEB20EC4
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Dec 2023 00:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E292CEB8;
-	Wed, 13 Dec 2023 00:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BE319C;
+	Wed, 13 Dec 2023 00:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RQHitFp8"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="XHccyqPl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 507DFBC
-	for <linux-acpi@vger.kernel.org>; Tue, 12 Dec 2023 16:36:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702427786;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4J3yyMVT0Ck6UqVMMggnyCj20M3aIOGukmt1/w28WlA=;
-	b=RQHitFp8fXhxUD5EP4EHvhV7gBSpQZ/SN/nJmxzB4ZpvfKBWIA2F2/c/NhrhtCHAG4GLY1
-	fY3Hrz+XtTfBxwuezsT4LxEvWnlpgViJ++VBZbAeQGVyAROQvcIGa4ixo5a3ef8n8SMKy2
-	NQF7nm2XeQOnAuuhTsdy5d1RjpEQSpA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-496-nIPG_mAZOtSj-ICft5S-pQ-1; Tue,
- 12 Dec 2023 19:36:23 -0500
-X-MC-Unique: nIPG_mAZOtSj-ICft5S-pQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A3BE53833343;
-	Wed, 13 Dec 2023 00:36:22 +0000 (UTC)
-Received: from dell-r430-03.lab.eng.brq2.redhat.com (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id D2C821121306;
-	Wed, 13 Dec 2023 00:36:20 +0000 (UTC)
-From: Igor Mammedov <imammedo@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: Dongli Zhang <dongli.zhang@oracle.com>,
-	linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	imammedo@redhat.com,
-	mst@redhat.com,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	bhelgaas@google.com,
-	mika.westerberg@linux.intel.com,
-	boris.ostrovsky@oracle.com,
-	joe.jin@oracle.com,
-	stable@vger.kernel.org,
-	Fiona Ebner <f.ebner@proxmox.com>,
-	Thomas Lamprecht <t.lamprecht@proxmox.com>
-Subject: [RFC 2/2] PCI: acpiphp: slowdown hotplug if hotplugging multiple devices at a time
-Date: Wed, 13 Dec 2023 01:36:14 +0100
-Message-Id: <20231213003614.1648343-3-imammedo@redhat.com>
-In-Reply-To: <20231213003614.1648343-1-imammedo@redhat.com>
-References: <20231213003614.1648343-1-imammedo@redhat.com>
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2048.outbound.protection.outlook.com [40.107.96.48])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 174F1F4;
+	Tue, 12 Dec 2023 16:48:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Fh6T+KiA+VcZ5wyWgxl4GDGI2p0IFI7hB8j25HPn3HFBw95IH9r0gBIM8BMMkSYGStkq+G1M9DioDjbJgxIUxa/eDP3jhOyhGp5Hia+BMu4gFz+hSDT96tEmJR/zrwFrv6UQzPm8hT1QoRhue0WR6wBS6y4tnOWpiecXCTTriDzyDq1j5j8+twEtEkvT0mj9MEQ8wxRcApcat8ifJ1MM1CVwYZMS/qbpfXI5Yp/yRW9pLwTsRZrDf9BiJA6jZecSsXv356xa6slIgRhRnKYTBQszNgmR62SQqkc00XKSJO6DUtVzPCS2PKlGLuo/yGrOlu/mZ0ZURl3fUS+r5nDsnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sW1vTIPSxvBYyBJVEQTKTX4weWuKtkgplEeksV1EM/w=;
+ b=nPZDI7jQAQ/yeZgkfnA559jb6oSSjWcCjlOZUXKBTr63+5XR3blcnppRrU1b8pkOfRx6aOaXo4lyy1hZRctI5ymhfTMeKN68uGt9nGETSYU6PVQfvk40hCsfw+YNmtFMnTLKYKv1N5bBC4JiPcnJyb3+K0v4fjv8dLRsWruFAizVoXyNJNf5OePLBRiQPfKF542kP8KimkkMjhJz/j33tKL2LGVriCccvs/WwDNiU18p+08UdLuCILFkPNUjMSChMEEbDak+nW0E1q97BhfIf4BTeByw5INhmDYBnkZrEuYKjwckQKSOGUEvZhUPMgsGBF+Ld0LZJXIJ0g2a3Btbow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sW1vTIPSxvBYyBJVEQTKTX4weWuKtkgplEeksV1EM/w=;
+ b=XHccyqPlKvKYqQpsezVStuPVJVcO3dIDrHaLsbA2DVKa+UgnSDNwCY6KY01KOlHrvspV7xt3R9boLnC+tYL0OW0iV/zVyBCOxMFmchi+1sWl0PNtVSeDZjf77XX8igmm5/NvJZpiFMs80mHsKU7KPjtinyFvZctDdNlTpiYduxo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB8403.namprd12.prod.outlook.com (2603:10b6:610:133::14)
+ by DM4PR12MB5392.namprd12.prod.outlook.com (2603:10b6:5:39f::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.26; Wed, 13 Dec
+ 2023 00:48:28 +0000
+Received: from CH3PR12MB8403.namprd12.prod.outlook.com
+ ([fe80::e2:9f06:b82e:9a0f]) by CH3PR12MB8403.namprd12.prod.outlook.com
+ ([fe80::e2:9f06:b82e:9a0f%3]) with mapi id 15.20.7068.033; Wed, 13 Dec 2023
+ 00:48:28 +0000
+Message-ID: <333bf7dc-7a87-438f-a4dc-fc5e254ae049@amd.com>
+Date: Tue, 12 Dec 2023 18:48:25 -0600
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH 1/1] parse_phat: Add support for ACPI PHAT Table parsing
+Content-Language: en-US
+To: Randy Dunlap <rdunlap@infradead.org>, linux-acpi@vger.kernel.org,
+ linux-edac@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, yazen.ghannam@amd.com,
+ Avadhut Naik <avadhut.naik@amd.com>
+References: <20231212195219.2348858-1-avadhut.naik@amd.com>
+ <20231212195219.2348858-2-avadhut.naik@amd.com>
+ <fd5e2d54-1309-48a9-8458-ee5f2ebb039e@infradead.org>
+From: Avadhut Naik <avadnaik@amd.com>
+In-Reply-To: <fd5e2d54-1309-48a9-8458-ee5f2ebb039e@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9PR13CA0126.namprd13.prod.outlook.com
+ (2603:10b6:806:27::11) To CH3PR12MB8403.namprd12.prod.outlook.com
+ (2603:10b6:610:133::14)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8403:EE_|DM4PR12MB5392:EE_
+X-MS-Office365-Filtering-Correlation-Id: fdad2992-c602-4ce5-7702-08dbfb753848
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	kGZ7u90OOp3o5X8abpE11uoqgv5UxRVogNFy8Sdr5X7aaSup7kxsOKC+QgyKhE0iRer3vO0oyvIup+ULGDR4OkrDdlLaylZl3xjRz1whVEsi6m0ANCDku6t6UoHQaitmgCUsrK49B2D8zdDc5XqdSLc8jDbsp4Fbi6t/tod5dl/mp3XfwbVWEzHjKo5XlFE7nR23AhsZifKmRtpyVHT854Cnbd18Y1AEqvxyG2/npy7QWwRUrVKW7s9XhnSSYrDB0VXI4RlIHZrqVikXFHNACkFrJaXf9TQSHkFyMfvgqeLW7c6O/BPMo3seTcw7dcgO2XeSvas+ZifLy/uBF42ikn3dKtnTg8N0LcHi93TkJEbSUnrN4dXKbkBOBGOVkpnEwEYimG1BlGH3duFw9oY4j1G+LTseKlXki+oU6xeAHrjBRqHz/namNTnTj0/x9JoM3vxz63mfte7xjIrTczqajp5G6o+HlS2Ev9kALRn7J7tPCcAvPqpHF7SjctBfwBaGVIO8fRYJxKAXdKOspXOJGi/YuAQM9ddDn3RcjJ+lR2jEYdikz+E/3dDxSTA5wXWSNtJqp1o3+LVPA3DlwZNgxp5+DjvgG2rIZwLwKronLsxyhMzzUnE5xwjkqY1aezYtok6Vl7JM+al+L5YwTuyWxA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8403.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(136003)(366004)(396003)(376002)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(53546011)(6506007)(6512007)(2616005)(6486002)(5660300002)(4326008)(8936002)(8676002)(41300700001)(6666004)(2906002)(478600001)(26005)(38100700002)(316002)(66476007)(66556008)(66946007)(36756003)(31696002)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QlZ0R2RXSmtxOWk0VUh4SWl4MUVScGVwNWxyQjFmcDRaVGNKRk8rMGNIclQ1?=
+ =?utf-8?B?K1JKSzgvbnUyVVhlY3VOUnI0OU5yU2JlMGJNQW8zOWFuWkJlUG0vQU5ETUlR?=
+ =?utf-8?B?eTdZVjRjVkhLY0w5aWZvcENzdlJnRkVVQUloUzNTdVNlYWNzZHlBRmVRMVdH?=
+ =?utf-8?B?M29VMlFPalF3VDJuUmNrZlU1eU5rUUV5ZHpjVjM4WHRiR09uZklUODdxOXl6?=
+ =?utf-8?B?V2pUbEpabEdkYUtDNnRTVSsrSmtuNVRJK2JTMGQzdXI4SDQvSS96UTdSbGFH?=
+ =?utf-8?B?bWlDNE9pQlBxVm52Yk9PREYxNXB6RGEvL1F1N1NwM3FZQ3ZwbjZlY2Q1alQz?=
+ =?utf-8?B?aGc3WDV3RVRLM29KWGVDVWkvaWEyU3pQcVMxWEo2M0JuNXlzRll1VVd1U2o2?=
+ =?utf-8?B?RENSUzZqV2JVVVY1UUVkTDBIbGo2YzZDTzRFNmlvQ1lja2RobUtOUkl0dWVh?=
+ =?utf-8?B?ekVPNHpnMXJLYWJVWDgzTysrUUU2bHgydWRUdjhpSjBpTE1Ga1A5ZWFnWjJ3?=
+ =?utf-8?B?OFAzOE80TlJjMWJwWXgzMGp3Rjlyam1aRVFIL0QrWUZQZFhrdkd0Z2FVUHNC?=
+ =?utf-8?B?MTNNWWcwckVkR1NVTXRqdHE2cy9xeUZkS0FGVCtGTlBFc2hHdVVycitlQ3pm?=
+ =?utf-8?B?UitzWE4zNlZob0dSeXI5Z0t0UW9NdUpRSnpEbndhbGY2MXN2TWVwSTIydUla?=
+ =?utf-8?B?UnFTdm9tUUpWalAydlREM0NPTGozaG5YQTBPQmFvT1ljY05MQTF0YlcvcWlN?=
+ =?utf-8?B?cS8vVkh4V21mY1MrWVdoQkMvaW5GTXJyVzJXWU81NHNHMkN1UHZBYm5yV0F4?=
+ =?utf-8?B?b0xrZTFhY05uaWVXbGtqcG5WSk94S0FOanVSSkgrUlJ4ZkdubVJoaGNlY1hh?=
+ =?utf-8?B?RkpURGVLM2VtWE5udUs0RnZSdUFKU3ZHeUQvMUE3WFU0RFgySkl0a0UyemJa?=
+ =?utf-8?B?a0grbDl4eFdXbzZsekQxbk1pWStOeXBTQktIM1RVVWxGTnRUNDR5TktWc1k4?=
+ =?utf-8?B?aFE0cXhuT3R1dkpad21DRDd5RkZTYlE2WU9XUFVodTdtQlVzNHZLUDZZdmE1?=
+ =?utf-8?B?QnUwbkx6bDVreGZsSm9jYTZPekx3UXpKcld1dHJ4VnpYd29TQkdXR0pTKzV5?=
+ =?utf-8?B?K2xMMnY1WDRITEFycGliWndBbGt6RGlCN2hUK0swdngySGlPc0tha0dSMFJ5?=
+ =?utf-8?B?TXBtR3U3TThUSlF1cmRQR2VpQTdhdUt3RFhDK05XT0xkTnJtSE93dmNlODVT?=
+ =?utf-8?B?Vm1MakhNMTFDT09YM3BtU1JXdHJycWlRTXp0bnJiTkJGZU52TjNOOWZEVXBJ?=
+ =?utf-8?B?Q1J4dUNvQ1FkT1pRMGhkQnJwTGdFZzRmYjZDWXJkN3hMY0pyRGplR3ByTW56?=
+ =?utf-8?B?NVNpR2djZFNzSjJJM09YRG45bElVWTJTTEp0OUJOUVpleG1Oc0w5SmJUM1ZK?=
+ =?utf-8?B?TDY0Ujc0NkZWN2JveXhvVTFOQTBXdEFKWWRkR080aGp0ZUdDOW1sVk1YWmdm?=
+ =?utf-8?B?MUFYejQwMXdxU1hHcVRLWlUvSWxFZlRzUEhaVitTcmszZ0VhT3h3alhVYXhX?=
+ =?utf-8?B?OS9JTmwxdU5jcDRsNG91SURvVFZSNlh0clhrRmkrMzFVMHFORWZleW1nOTBC?=
+ =?utf-8?B?aHc1Q21ORjNERmt3a2F2TEphc09rR05kZ2IxaGp2YnZvNjZnRzhUVUgxNDNp?=
+ =?utf-8?B?bnJCQm1NL3krTjl6K0dwZGs2THA0UkRaQmtlbGJWUFQzL2dITFBiRkhBblFV?=
+ =?utf-8?B?YjQyZkVOdXZ6NjR4OTVUdGppU2l4aU5sb1pGUzJTUFJUY0doLzJPRTlJL05G?=
+ =?utf-8?B?M2wrekxYa0o3ZytLUUU4Z3YzSWFrcVNpYjdZSDVnSnhBK1hwdURiOG15aDJJ?=
+ =?utf-8?B?Tmc5dC9PK0YrQVpKYnRUYUJKRS8xR09NRG9FUmJSMHNQcmVUaEZMK1NlYXpp?=
+ =?utf-8?B?V2tzUFBPRDZndWF5OVBGdnlKSG5UWkZRTEQyMm5RUmVVc29zTFJqR2RMOVlo?=
+ =?utf-8?B?L0NzTkZ5WTFlTkxDOXFjNVc4OWY1VVlQc1FJZ1BPT0hBYWxPck9OcTU4RVE0?=
+ =?utf-8?B?V21iSnBHazJZSElEUnZIS3NQb2x1MndLb2NISjdIMElJR2hmbWRKaTJmbTd5?=
+ =?utf-8?Q?HalXraVk/Jd0lgY0K4y5dbONa?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fdad2992-c602-4ce5-7702-08dbfb753848
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8403.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2023 00:48:27.8828
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0tykn0l1TapuyqI7mBsPvIRa0PtqgP9wmp+IZQixx3vIiVgvuw9ucASZwzdg1B9dCSdEFAGV6fgshANxr2MAiA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5392
 
-previous commit ("PCI: acpiphp: enable slot only if it hasn't been enabled already"
-introduced a workaround to avoid a race between SCSI_SCAN_ASYNC job and
-bridge reconfiguration in case of single HBA hotplug.
-However in virt environment it's possible to pause machine hotplug several
-HBAs and let machine run. That can hit the same race when 2nd hotplugged
-HBA will start re-configuring bridge.
-Do the same thing as SHPC and throttle down hotplug of 2nd and up
-devices within single hotplug event.
+Hi,
 
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
----
- drivers/pci/hotplug/acpiphp_glue.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+On 12/12/2023 17:55, Randy Dunlap wrote:
+> Hi--
+> 
+> On 12/12/23 11:52, Avadhut Naik wrote:
+>> ACPI Platform Health Assessment Table (PHAT) enables a platform to expose
+>> an extensible set of platform health-related telemetry. The telemetry is
+>> exposed through Firmware Version and Firmware Health Data Records which
+>> provide version data and health-related information of their associated
+>> components respectively.
+>>
+>> Additionally, the platform also provides Reset Reason Health Record
+>> in the table highlighting the cause of the last system reset in case
+>> of expected and unexpected events. Vendor-specific data capturing the
+>> underlying state of the system during reset can also be optionally
+>> provided through the record.[1]
+>>
+>> Introduce support for parsing, decoding, and logging the PHAT table, if
+>> supported by the system. By default, the table will be logged to stdout.
+>> The same, however, can be changed through the "-o" command line parameter.
+>> Additionally, the tool also provides a hexdump of the entire table, if
+>> needed, through the "-x" parameter.
+>>
+>> Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+>> ---
+>>  Makefile     |  12 ++
+>>  parse_phat.c | 516 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>>  2 files changed, 528 insertions(+)
+>>  create mode 100644 Makefile
+>>  create mode 100644 parse_phat.c
+>>
+> 
+> Does acpidump not parse the PHAT table?
+> Could it?  Should it?
+> 
+IIUC, acpidump will only provide a raw hex dump of the entire PHAT table, if present,
+much like it does for other ACPI tables. The onus is on the user for deciphering the
+hex dump.
 
-diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-index 6b11609927d6..30bca2086b24 100644
---- a/drivers/pci/hotplug/acpiphp_glue.c
-+++ b/drivers/pci/hotplug/acpiphp_glue.c
-@@ -37,6 +37,7 @@
- #include <linux/mutex.h>
- #include <linux/slab.h>
- #include <linux/acpi.h>
-+#include <linux/delay.h>
- 
- #include "../pci.h"
- #include "acpiphp.h"
-@@ -700,6 +701,7 @@ static void trim_stale_devices(struct pci_dev *dev)
- static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
- {
- 	struct acpiphp_slot *slot;
-+        int nr_hp_slots = 0;
- 
- 	/* Bail out if the bridge is going away. */
- 	if (bridge->is_going_away)
-@@ -723,6 +725,10 @@ static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
- 
- 			/* configure all functions */
- 			if (slot->flags != SLOT_ENABLED) {
-+				if (nr_hp_slots)
-+					msleep(1000);
-+
-+                                ++nr_hp_slots;
- 				enable_slot(slot, true);
- 			}
- 		} else {
+I'd think that the parsing functionality can be incorporated in acpidump but not
+sure if it should be. Would love to head from its maintainers, if possible.
+> 
+> thanks.
+
 -- 
-2.39.3
-
+Thanks,
+Avadhut Naik
 
