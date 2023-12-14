@@ -1,71 +1,76 @@
-Return-Path: <linux-acpi+bounces-2444-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2445-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB689813CE2
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Dec 2023 22:47:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9FB813E33
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 00:23:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE1421C21D6A
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Dec 2023 21:47:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E11E1C20D1C
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Dec 2023 23:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E07766AC5;
-	Thu, 14 Dec 2023 21:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4506D6C6E4;
+	Thu, 14 Dec 2023 23:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="EY2UGqpB"
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="SLrLOTbe"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2125.outbound.protection.outlook.com [40.107.237.125])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6D32C69E;
-	Thu, 14 Dec 2023 21:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1286C6DC;
+	Thu, 14 Dec 2023 23:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mmUSGwrxTc4Lp3sHx4QuAjBduvC2y9r4HOIEpKebVJbQOKSS1/NPHHmgIm/aLSc+W1+nd0k0Iz5ff5kIU1K3NC3rYI/miz1JGAExx36OJ9499OSme9LMgglVVO18ewWQ8XK7Us4me+wg2Py0bSRI/7ieaYLA0KGAKOw9LV4wbaeX1qWCL637PaV16vzxES2kto7taDWJYLBraNkhqyv4GlAND5AVmccPn1BNI23pysK4PNQqePfkeiwxCBnEd3ccNhD7fq1Ue8DJDseg/Qu7pF3Jb+ViMkKq6FhPFCM/pd8d7IxFa+pp939grP3o71B4ax3sxMRN/EsXlFxNKcmavg==
+ b=HReOnvJnXr4AnsKbSEz+03/0dwAgkaSQqPL+KPrCeacsZlRXndV+JRm1QYsU7gdDmY3QGPD6tEZG+THl9R+eM4XWJmN00kRCaUcwNYlQHUVm9hZ23K6kigNj7kyI/gcNwlV2jKyOTPE2eIa4QIC21+ZZhoH9ShMk9Hjh6mVVCWURecdy0/89c5AuKKYzOhtiqeryxsrOdaUVZhO3qaezE5KMuBQNZT+zPbmirsmDt+N2xSx5qxVNelgxYrM8lPvX7B9U86lppXHxhroaPrStCQSAW7kWlcmi07NyAp1gcfh8obvstc8oHCOGDJlJkpsstn/sGprgpIgvb9vJHPDTIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Yl6J37M2GU1nHR7OKczWQxB/bhoMGYMEWnH9iBUQJ6M=;
- b=Qh0/o6OgPQy5LBNXtRbGgEMVLkk9EPDw2+O29DRxau0UvPimo6mpMkeUodmNQD9BwnnoVUOIl9sftP+0pSVb1CVmQfvdgTFEE4FccUgbgq25xRvTyb4mPBXNpaoZCtIVyN0qSbb4Hjga7hiM8PQ7Le+K6izVdaF9AjsffaY5Fx+e9y6M96pp1CDJoObPPNBzybCnejcbNVxVCObBzRiuaAX9mKnVFJAgAs5j5qrQignxsV5Th5ldf4j1Rijs6fsMBptAA9HwjyyfTkH3pT6RVJWpVl94FW9OkEhnaAZ0PVVfXw/b/Le6jtKnsWqMfOM4LvjchganxBxDAYc49jVw9Q==
+ bh=vuOcNbqKy8De4K1d8lgrz0FFUECj+pufxWS01Q1xl5I=;
+ b=O59t8uMhmYAiJ/WK/JlJcxmQexTnG2x8A4TpjsyBLZYxDq5WghTpGRD+dYVptJBd0zyAkODjAJNlLDRXlOMwyeY3SEQ0cczlNl+98m46DlS+KuNcF1tW9msdaiAsnzlSmkJjoYAPKo7fMdueyYGhG0C+vzLPkxfaME8l58OMko3kir1Y0e720IzpTuTX9sAF2Ps1p6vvHByJXjN9hFerwPXKdQdCT+bSxE7m1Hi0fV28qFZdcHjf7muovgkyt9sQqNtjBQ6pcV8it2YO0xKu6JHg9Hz+JXnlePFjz7l3zEqZCRg7j8OOvuCwvVV5W7fEOSi5KG3tu1W2pUFLMEgDag==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Yl6J37M2GU1nHR7OKczWQxB/bhoMGYMEWnH9iBUQJ6M=;
- b=EY2UGqpBPfTXKgwdJ5ZfaOZDISCVNphEKQShDfMDZGqAtXwMUQDo4nedifOAeoATk2utA6xVmtebRjpNru2Z4NcNMjJSjOB6/rINxmtY9RyXf2YzBA12d6dBH6QmDcj/9Qeqk6HaG0LbtCQ5gPOS8holcK/XwHOBufrcRUXG0Pc=
+ bh=vuOcNbqKy8De4K1d8lgrz0FFUECj+pufxWS01Q1xl5I=;
+ b=SLrLOTbew53DRraJmFDqQ4Xl91cF7UkioutwOiKoscZeO1WFYe1gyxOWBkTH348Ttnoupu5AabTAxvIvhRieXTg5r2ekaJ8R7S5+RZrHvpZdDkkGCZtFM2n0n9xWhVHU89mdjAhIgqH4ihVxQCiEJURRb0yEAngBH8eWLa/2DTY=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by IA0PR12MB8931.namprd12.prod.outlook.com (2603:10b6:208:48a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.38; Thu, 14 Dec
- 2023 21:45:46 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::83d7:9c4f:4d9b:1f2a]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::83d7:9c4f:4d9b:1f2a%5]) with mapi id 15.20.7091.028; Thu, 14 Dec 2023
- 21:45:46 +0000
-Message-ID: <8d91910d-2676-477a-be62-5365afd199bb@amd.com>
-Date: Thu, 14 Dec 2023 15:45:43 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/pci: Stop requiring MMCONFIG to be declared in E820,
- ACPI or EFI for newer systems
-Content-Language: en-US
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
- "Rafael J . Wysocki" <rjw@rjwysocki.net>, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>
-References: <20231214204341.GA835486@bhelgaas>
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20231214204341.GA835486@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from SN7PR01MB8113.prod.exchangelabs.com (2603:10b6:806:35a::6) by
+ DM4PR01MB7547.prod.exchangelabs.com (2603:10b6:8:5e::10) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7091.28; Thu, 14 Dec 2023 23:23:36 +0000
+Received: from SN7PR01MB8113.prod.exchangelabs.com
+ ([fe80::7ba0:ac52:84a0:caa0]) by SN7PR01MB8113.prod.exchangelabs.com
+ ([fe80::7ba0:ac52:84a0:caa0%6]) with mapi id 15.20.7091.028; Thu, 14 Dec 2023
+ 23:23:36 +0000
+From: Daniel Ferguson <danielf@os.amperecomputing.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	james.morse@arm.com,
+	tony.luck@intel.com,
+	bp@alien8.de,
+	pabeni@redhat.com,
+	linmiaohe@huawei.com,
+	rostedt@goodmis.org,
+	leoyang.li@nxp.com,
+	luoshengwei@huawei.com
+Cc: linux-acpi@vger.kernel.org,
+	linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RESEND v3 0/1] RAS: Report ARM processor information to userspace
+Date: Thu, 14 Dec 2023 15:23:29 -0800
+Message-ID: <20231214232330.306526-1-danielf@os.amperecomputing.com>
+X-Mailer: git-send-email 2.43.0
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1P222CA0190.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c4::27) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+Content-Type: text/plain
+X-ClientProxiedBy: CH5P223CA0002.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:610:1f3::10) To SN7PR01MB8113.prod.exchangelabs.com
+ (2603:10b6:806:35a::6)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -73,209 +78,73 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|IA0PR12MB8931:EE_
-X-MS-Office365-Filtering-Correlation-Id: b1785778-8938-4c6a-3873-08dbfcee0780
+X-MS-TrafficTypeDiagnostic: SN7PR01MB8113:EE_|DM4PR01MB7547:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e960366-4e66-498f-143b-08dbfcfbb23a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	pBXXby4XjR8fFNcqTGFpaTJ5NvBIvJpe2HDPYOwrYpkR8am45t7K8/dbRrQjxfuxX9B0N7DrR52mTb350qETB/P1MIIBu9l0H2KwhrcNFzRDrxUrpX5bYUfViP9CNdbFRhOC2IsGEe+Zz7cvpmTjqvKrpQn+RScZhrqAXYQ++Lmg+OQTWl9u/t1jDvCA+LWvgv80VBhQy6b+a96okzADDDVPkiSq/bT3w4aiCRSIx9KcWQfYyHL7fo12Pt8E4XissBG1UvTb2NjC5k1bNe8Zma0etW2hYXlB+cNHI423+GtJFrPtoeOfnVHEFpMU+89EFOhOQ6g3w1gPid0FfNBeYO30V4wAsoTfb1+Ih7eONmKxEuCkBTuRm9Oe9TWm6nvQR60lg2VDC1uIIL0itX61+QtKQU/bLLbMssvevh3ArphbGNCK/kDjE3RgjUyFwMuDvPX7PMWqR2Di9T78F4xvsslMS7Xk7B6ZNjP7A0NVgp44qUd4bp+0ZE/4XmjBfbrAxJtAjRYEX1LwtUgfEP3nIdEL0gpuffgsAi1OWDv5MP43ChTI8JsubYQBibYkKykxBAvMjbEYLkQ+ec/8dCrgV4WKFCHbd9P/eEv6or5ibeE2Kimrv+9dTwNnwkZdesA0+2jIkMQUNQqZnsKWDBK2VA==
+	eYO5FqHTTLiW4zgjuEinx6b0kwm4tbpzLQy/2/ZYtxMKoTZOwPTvw1z3fxOxWtNNlxMXwi+TrJEifd1P6bPzuCHzTy+Pm9RX6cD9dTXx8IVz81GOyQCn0m8smUh6Uxr3dIocK5KZVmgal8TTsKxcr72FBRNnnsngW4zeG92IoULelfY7MozprXFUG89MdnM0DIuA+lrAqED7/5FrRqR/at/CpHW4RpFqGTjgaRQYmer/Kcw0aJKRTaOxhMW7SCvvHliEQd8pJNW91/bH8raPCBPPUb1TffGa+xbi9jb7Xzp/VLZP2So4qnquBqdR4i75xWyjX1aYZLId3ZNne/EFRA6/vOsz6nqPAYDSF9qpUFokcaJcaHOyija8XLk9yaH8TzB4WE67qOharpYT2ErWLvZpeu1wAgxQ4luHIeLZ1t1aq++hDDNQKpPkXgoRar9tcHmwuQQy4mu3MfyKJvsVH6uFUofYD3Bhk4FIoQy6J3vby0zUr+Kw77zdLrddQTfNTYXnokV7Mt/7k/DdZE89HiZwa3JuwbZ3lpQZciGC5ZW5AAok/uHmW8N3gZWyW16fs2qn/jArNZL9Cfc4+m8MgGQIhaylIKSVy23FDrvKJxgOo5U52qHd0bggQZB6Dk8E
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(366004)(396003)(346002)(39860400002)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(966005)(6486002)(66574015)(6512007)(8936002)(6666004)(4326008)(8676002)(83380400001)(478600001)(31686004)(2616005)(44832011)(26005)(54906003)(6916009)(66556008)(66476007)(66946007)(316002)(53546011)(6506007)(5660300002)(2906002)(41300700001)(86362001)(31696002)(38100700002)(36756003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR01MB8113.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(346002)(39850400004)(376002)(396003)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(316002)(66556008)(66946007)(66476007)(6512007)(83380400001)(26005)(6506007)(52116002)(4326008)(8936002)(8676002)(2616005)(6486002)(1076003)(966005)(478600001)(6666004)(4744005)(7416002)(2906002)(38100700002)(5660300002)(38350700005)(921008)(86362001)(41300700001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OStBZVYxeVlwNFlpbXZ5NldndmRQdTJpb3BEUmFWVStDalZNQ1NkS2tVL3Nz?=
- =?utf-8?B?SGR4V1FMczlmZ0lLVVpsRGpiNnVBa1VBUTNML3ladFgxUGNXd3Y3OTU5cEhF?=
- =?utf-8?B?Q1V3dmJsRmZXV2N5bVJIdVEwSEMwT1NTN1BJQTJBQURuUEdIcWZSQ1RWY3ZB?=
- =?utf-8?B?dENwd0c0dmtWZlF4ZDdSQVdSdFZyM2tSVklGdzlRNGlDTk1EMTFpTk54ZFF1?=
- =?utf-8?B?TGozZ3RnbEQ0N04yMmJqSnA1aGxVNytXbEV4S1NIaUN0LzI0WUhzZDYvdUpj?=
- =?utf-8?B?aEEzaThsUFhiVU1CQUI2bFZ0d2dkNUJ1Vjh2a3gyd3hIRit0b3JQeWl6cXYy?=
- =?utf-8?B?V0Y4K2gvNXRHa1pmTk1ueVhwVEJ6RVA0MzNXRys0eGt5cE5FR3NEYWlQaS95?=
- =?utf-8?B?R1Yrb0t0dnlSWkN3UjRna3diQTRIM2VyOUJrTDRaYTZySHNpZVNTMXNvSVdo?=
- =?utf-8?B?dTdNSUpvTSszOXhjTGVaQ3ZoSDhONldiM3FKTVVKK2s0VFdVUzVUZTNPVnhi?=
- =?utf-8?B?YUlVa2N6VUdXNVAyTlVHK3BydWxRZjR5a1NjZXFrMS9YQnZacmJuc2IvTXFy?=
- =?utf-8?B?V3BhU2J6QnF4MWllVTVXRUNEczFPK1VacEZ2SEg3dVVNdjAvT0xzdTljOHF0?=
- =?utf-8?B?V1QrTFNMeTkzYlVITEVwaFBTQ1h4eFF4QkxFczl4UXNiKzNzNWxyWFgyaGU1?=
- =?utf-8?B?UFlJcDkxM2JpL0M2RE41b0cwSzB1a3BVemdqbGhlb0cxQmlJU0thVDRhaTRl?=
- =?utf-8?B?dU14OHdwbXZ0ZkxVVmt5bU02UTR0UTRGQlRGMm5tWHoxdTdpUkFrQUlGcFlZ?=
- =?utf-8?B?OUxRY2U2VTBvWDhtZ3RGUE1SQmFoNWp3R0p4a0hoQ1dVSVBqcVYwcVVuR3ly?=
- =?utf-8?B?bVA1M3d5Q3lkdGhSVUdzbjdPSEs1ODljeWs0LytGNDIxazFZVDF2UE1yNHJ2?=
- =?utf-8?B?d3VGMVdYNW0wdUlWa2VCdmxaTmJRcEd3SjJnTW9lRnE1a1VRT0tveEE4Mk1r?=
- =?utf-8?B?V0tEV2wzeWpFMEhBRjVmREhiaXYrcjR5QjZWNktYdWZKOUIwaXNLTFk2cXJx?=
- =?utf-8?B?emJLeXZyNElaRXBXalRLdnRuWk83TzNvc05XelVVRENrR3FmVW0rT0htYXpG?=
- =?utf-8?B?MStRNjRWZGtuT21Hd3lVREJaakV4ZTFoYXhiNlVGK1BYSFlpSDNETjJNY2py?=
- =?utf-8?B?aGcxdGRYWWt6bEdIcHU5VE5Jd2F4VmFTRGhheGFKcVcvT3dlTTRIQXRpK1d2?=
- =?utf-8?B?TWNqNnM2d2hpcjMvMllUU3dxaGw3QWpSbno0SmlHUHhRMk5ROTZjUlFPZU5F?=
- =?utf-8?B?WHE0bi9wUlUxamlzaFVqS25LY1JQOVk4N1VydW1QRFhpUTNPRmVrd2NxYjND?=
- =?utf-8?B?bzhoVUZIay8rQXJtWkVzT0FZVXhTWDVQdExRdWlqTnk0a3NTT3piLzlnQ3o5?=
- =?utf-8?B?YmdacVczbzNvUGl4RGRwNlZEYkxXdkdNRW5uWndSRVBSOFp6YmhvMHE5RW1N?=
- =?utf-8?B?ZTlHWWVqNjJVdVRJbDR5eDNiQjdoNC9mbzVzUzI4cVBWVktiZE5sb0pQTVpT?=
- =?utf-8?B?UnBZTzNLSWVjRU94T0doajNvTENPRmNlZTFONFpDMlBOYzAzREFOZVNHc0Rv?=
- =?utf-8?B?ZGZtVlpibWNnMUtSNUxFMXZSOWlSd0E1Y0VuSnRmTnhac0xvaFErZy9RejR6?=
- =?utf-8?B?RDRDZGxZdEl3QmlNc0pZdnNsZkVSamFTZUdySHVibXQ1VVIrYjZrdHYwVHZI?=
- =?utf-8?B?U2tZM3pVd29FemNtZ0Z3WnJ0akZzZXZpY1cwZUhvTGtZSUZ3d2RWUW05UXp6?=
- =?utf-8?B?UHcwRHFqNFNva3lpd04rWXlkZ3ZjdllXM2VZVG1LQXBVTTY3ZFJwSm9aMVg5?=
- =?utf-8?B?UEtCN2VqWWFRV3JDSlZtTnhUY0dXODhYMHVlbUppUUZLNXhhTXMrMTVJcTBF?=
- =?utf-8?B?V3BHMXZJd2orQnluSktlcjVXVXJDTFpCSHJybXpTeDAybDduZzhvNmRoZkF4?=
- =?utf-8?B?eWNNb3F5a0psYmVtRmdXampMaGc1YUk3Q1l5cEhlbW1CNDhMdUdXdEdKTjZo?=
- =?utf-8?B?SVpYK21pVFBYOU13dFgyRHBjOUJqdUl6S3RWMmUxZjdKUyt5YmhDVFFabTN0?=
- =?utf-8?Q?ht0XTyqA5KEaFbkTBELw+E57P?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1785778-8938-4c6a-3873-08dbfcee0780
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+	=?us-ascii?Q?l7f4yK0ujZgKIICM6SjQd21mEx+J3r3axQh1gKnM2b+NZjlgtGKghQZyLuz3?=
+ =?us-ascii?Q?RaIrzmeeYFPSnDVZSrMGpsZtOFji852VPRASZmjYlyVuySYq5JHmYMaJ9Og8?=
+ =?us-ascii?Q?pGgrIWXunC3qE9fFRa1EHntXEfvOa6pk+J0Jx98P1ZkMeOv3nLl/4vdOlCPX?=
+ =?us-ascii?Q?etFpXFPBBZg1EVAzfxn0zOn6Bl9I+rIsU4O97wkyCjPMGCqHpReHOzcdWqEh?=
+ =?us-ascii?Q?dTw3vZ1+igRhBrG4BRIQxj530n2d/w4BV1rgpmWatIg/d+QsCZUgAlh9R0r/?=
+ =?us-ascii?Q?8t5Is1vpwiTRzddcHdbZfFiWNMAI2vMHM6Ou8Wyhmi6j45WuxVVZHqHyBxUC?=
+ =?us-ascii?Q?gKJlXHBd56eo+E/aR8xCoos5ZWCPIOW8OXBUZ7RfWoASv/XNhqJcWtq+/Dkn?=
+ =?us-ascii?Q?TfHll9vuUBgmAmuQg9Jq3p18gfJSGT3CR7Qekp6bVeR7Eo+uq9yisANMWzkM?=
+ =?us-ascii?Q?Ift1yn+JgCrXc+1F7NFqx4D/dk79ntOwahcrXYYbe1OGHifTt/nk+STg2fuK?=
+ =?us-ascii?Q?3U3MjSHixoQpGt3jRcqmzeNSn35jAHnCvi64Y9nT/O30OovXiDrzJlGmXhNn?=
+ =?us-ascii?Q?GmBJAPXreNcLiaX9cJP+gBAnOKeLbePZtolc49ZrslLUexObep5Tme0UULlv?=
+ =?us-ascii?Q?+T+lfctPUr04pK0J2YsHiX0ikDX0Cjw3RNzB3m+lwtQqL9BJVXx4Mx+Vxlsl?=
+ =?us-ascii?Q?kzSLmCDMNenjXNkRcmE0gakCvU8DAtw4bKVHteNvjrl9uhu2ZCYY48ajtcKh?=
+ =?us-ascii?Q?y2AflsL71QG26eX0fRsF6/CbdyrycdOITnqtLXdgFIIdM+pSPxvxYw/9N+NF?=
+ =?us-ascii?Q?ePBcl2NL5we2a4aQgBI/VXGPFmN8u7fzrUuiE8r2hbr+twcuGmmpxZpkU0i1?=
+ =?us-ascii?Q?awjMDSY/yrvLDW2fWAvUhxwCRcNDktuRRZh64aJUy7S6D8HPg5vX/5xYWMeI?=
+ =?us-ascii?Q?pUons0Gr0o8e7RdyA8kCfddqdxcQmHJC+PBH8otlatinYg/7JDsr+YUAdgoJ?=
+ =?us-ascii?Q?BMVSJcUlHBFkgsDwEMTfxNrzQhmC2vv+1drLbGPqYxNcsrqJ1BOILyhlcmRl?=
+ =?us-ascii?Q?FDZilD9JScP9qQczS9MDYhNZF/1WcXMBNnCwrTiv4N9baVgEci9mHSxQEBKh?=
+ =?us-ascii?Q?5S2o5hujuUugRBHifcNBeXEx50l9ndlI6AI8L1tefHgnj14PmrufqOGsKu8X?=
+ =?us-ascii?Q?cp3op7bOtZYjEUEeS448R3PKFffi2ST3kXbwWxKl3p2F8SyneNqFFQncyQle?=
+ =?us-ascii?Q?BkitKCj+ccyYrdCaYD/6ZAp7ztsE77rSTDN/5+Y4bqHuGKSLWCkGiRHLFe/F?=
+ =?us-ascii?Q?2aJVpMZ9cO6+H/FTUWLbQknyjz22rRHo3Ns1weByznRydqBrKp5ca32Ab7Rg?=
+ =?us-ascii?Q?FdqQKNvdrfREX5ykTD4bdioW6LPV/SO44Ieh7EFIOpA6RAF7U7Y02tVQVYrT?=
+ =?us-ascii?Q?Q6Rj3usV6O4zuOcSmmlyq3QVTm9XKPNPkWVWJ/utCROZookcM72evUoXhUY+?=
+ =?us-ascii?Q?zgAKey5Zs9qCvuWJKFjWJ0SZhAVeBwIIvfosoTGqd2+AC7g3qH5dd5llyJG8?=
+ =?us-ascii?Q?8ErFK7FGD+6N1NHIHtSbSG9xeOtIkzW9jeIFnPJC8xVPMUyGNp9ThzKPKh3Q?=
+ =?us-ascii?Q?wD+xbw/cnQOi3bSBOEuOGF0=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e960366-4e66-498f-143b-08dbfcfbb23a
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR01MB8113.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Dec 2023 21:45:46.2422
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Dec 2023 23:23:36.1542
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SKEvE3CRUdAliEESpvM492CJop1eo/F0XRyUQQhsDKJXUoEVMdbH7Rc1WMB/VlrJQo5PwB/R4uuj2dXd5T7XEg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8931
+X-MS-Exchange-CrossTenant-UserPrincipalName: aorF1tuhuszNf5qznn2RZbNg8yk0S1ruzvoLM4SgmXgqtmoBC6QmKx+LdcnaSFtHZDKKyysjjpKJeKNrObVn4BV+zLAbbudDo2wR2po5c5BwJW+JYe+FAcqClUOebq02
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR01MB7547
 
-On 12/14/2023 14:43, Bjorn Helgaas wrote:
-> [+cc Len, Robert in case I'm missing something about static tables
-> reserving address space]
-> 
-> On Tue, Dec 05, 2023 at 12:28:44PM -0600, Mario Limonciello wrote:
->> On 12/5/2023 11:31, Bjorn Helgaas wrote:
->>> On Tue, Dec 05, 2023 at 11:00:31AM -0600, Mario Limonciello wrote:
->>>> On 12/5/2023 10:17, Bjorn Helgaas wrote:
->>>>> On Tue, Dec 05, 2023 at 09:48:45AM -0600, Mario Limonciello wrote:
->>>>>> commit 7752d5cfe3d1 ("x86: validate against acpi motherboard
->>>>>> resources") introduced checks for ensuring that MCFG table
->>>>>> also has memory region reservations to ensure no conflicts
->>>>>> were introduced from a buggy BIOS.
->>>>>>
->>>>>> This has proceeded over time to add other types of
->>>>>> reservation checks for ACPI PNP resources and EFI MMIO
->>>>>> memory type.  The PCI firmware spec however says that these
->>>>>> checks are only required when the operating system doesn't
->>>>>> comprehend the firmware region:
->>>>>>
->>>>>> ``` If the operating system does not natively comprehend
->>>>>> reserving the MMCFG region, the MMCFG region must be
->>>>>> reserved by firmware. The address range reported in the MCFG
->>>>>> table or by _CBA method (see Section 4.1.3) must be reserved
->>>>>> by declaring a motherboard resource. For most systems, the
->>>>>> motherboard resource would appear at the root of the ACPI
->>>>>> namespace (under \_SB) in a node with a _HID of EISAID
->>>>>> (PNP0C02), and the resources in this case should not be
->>>>>> claimed in the root PCI bus’s _CRS. The resources can
->>>>>> optionally be returned in Int15 E820h or EFIGetMemoryMap as
->>>>>> reserved memory but must always be reported through ACPI as
->>>>>> a motherboard resource.  ```
->>>>>
->>>>> My understanding is that native comprehension would mean Linux
->>>>> knows how to discover and/or configure the MMCFG base address
->>>>> and size in the hardware and that Linux would then reserve
->>>>> that region so it's not used for anything else.
->>>>>
->>>>> Linux doesn't have that, at least for x86.  It relies on the
->>>>> MCFG table to discover the MMCFG region, and it relies on
->>>>> PNP0C02 _CRS to reserve it.
->>>>
->>>> MCFG to discover it matches the PCI firmware spec, but as I
->>>> point out above the decision to reserve this region doesn't
->>>> require PNP0C01/PNP0C02 _CRS.
->>>
->>> Can you explain this reasoning a little more?  I claim Linux does
->>> not natively comprehend reserving the MMCFG region, but it sounds
->>> like you don't agree?  I think "native" comprehension would mean
->>> Linux would not need the MCFG table.
->>
->> After our thread and the spec again I think you're right Linux
->> doesn't natively comprehend (reserve this region;) particularly
->> because of the stance you have on "static table" vs _CRS.
-> 
-> ["My stance" refers to this:
-> 
->    Static tables like MCFG, HPET, ECDT, etc., are *not* mechanisms for
->    reserving address space.  The static tables are for things the OS
->    needs to know early in boot, before it can parse the ACPI namespace.
->    If a new table is defined, an old OS needs to operate correctly even
->    though it ignores the table.  _CRS allows that because it is generic
->    and understood by the old OS; a static table does not.
-> 
-> from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/PCI/acpi-info.rst?id=v6.6#n32]
-> 
-> I don't think this is just my stance.  The ACPI spec could be clearer
-> in terms of requiring PNP0C02 devices, not static tables, to reserve
-> address space, but I think that requirement is a logical consequence
-> of the ACPI design.
-> 
-> It's a goal of ACPI that an OS we release today should run on a
-> platform released tomorrow.  If the new platform uses a static table
-> to reserve address space used by some new hardware, today's OS doesn't
-> know about it and could place another device on top of it.
-> 
-> Using _CRS of an ACPI device to reserve the new hardware address space
-> is different because it works even with today's OS.  Today's OS can't
-> *operate* tomorrow's hardware, but at least it won't create address
-> conflicts with it.
-> 
->> I just don't want to throw the vendor under the bus as it could have
->> been caught "sooner" and fixed by BIOS adding _CRS.
-> 
-> The MCFG requirement for PNP0C02 _CRS has been in the PCI Firmware
-> spec since r3.0 in 2005.  I'm surprised that vendors still get this
-> wrong.
+The original patch remain unmodified. This is merely a resubmission
+of the patch to get it moving forward again.
 
-Probably worth mentioning with the clairvoyance of the root cause of the 
-issue that prompted this conversation I've now discovered another system 
-with the exact same problem.  It's a different OEM, different generation 
-of hardware and a different IBV that they use for their firmware.
+Links:
+https://lore.kernel.org/lkml/20220214030813.135766-1-lostway@zju.edu.cn/T/
 
-I've also looked through the BIOS for a variety of reference designs and 
-I don't see a _CRS entry in any of them.
+Shengwei Luo (1):
+  RAS: Report ARM processor information to userspace
 
-I'm fairly certain we're just getting lucky in Linux on a lot of devices 
-that the region is often overlapping with a region for EFI runtime services.
+ drivers/acpi/apei/ghes.c |  3 +--
+ drivers/ras/ras.c        | 46 ++++++++++++++++++++++++++++++++++++--
+ include/linux/ras.h      | 15 +++++++++++--
+ include/ras/ras_event.h  | 48 +++++++++++++++++++++++++++++++++++-----
+ 4 files changed, 101 insertions(+), 11 deletions(-)
 
-> Vendors definitely have an interest in making shipping OSes
-> boot unchanged on new hardware.
+-- 
+2.43.0
 
-At least the OEMs that I talk to use FWTS.  FWTS catches this issue, but 
-it's marked as LOW.  Everyone fixates on the HIGH or CRITICAL.
-
-Given the severity of what I've seen it can do to a system I'm proposing 
-FWTS to move it to HIGH:
-
-https://lists.ubuntu.com/archives/fwts-devel/2023-December/013772.html
-
-> 
->>>> Knowing Windows works without it I feel this is still something that we
->>>> should be looking at fixing from an upstream perspective though which is
->>>> what prompted my patch and discussion.
-> 
-> The fact that Windows works doesn't mean the firmware is correct.
-
-Of course.  But it also means it's worth looking at the semantics of why 
-Windows works.
-
-> Linux assigns PCI BARs from the bottom up, and ECAM is often at the
-> bottom of a host bridge aperture.
-> 
-> Windows assigns PCI BARs from the top down, so even without a _CRS
-> reservation for the ECAM space, Windows is much less likely to put
-> something on top of it.
-> 
-> Bjorn
-
-
-I guess I'm naïve in that I don't know how exactly to check what Windows
-*really* does (gets lucky from top down or actually reserves from MCFG).
-
-But I do feel the OS doing it from top down vs bottom up is tangential 
-to the decision of whether or not make a reservation in Linux for 
-something you know about without a _CRS entry.
-
-I can push AMD's reference designs to improve, I can push OEMs I talk to 
-improve and I can try to influence FWTS but I have to ask:
-
-What is the actual *harm* in just using this MCFG table to make a 
-reservation when there isn't a PNP0C02 _CRS region declared?
-
-At worst (a buggy BIOS) you would end up with hole in the memory map 
-that isn't usable for devices.  At best you end up with more working 
-devices without changing the firmware.
 
