@@ -1,176 +1,155 @@
-Return-Path: <linux-acpi+bounces-2440-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2441-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD718139DF
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Dec 2023 19:23:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B1C813A19
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Dec 2023 19:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73CFBB210CA
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Dec 2023 18:23:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99DA0B2163E
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Dec 2023 18:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799D168B77;
-	Thu, 14 Dec 2023 18:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F4A68B85;
+	Thu, 14 Dec 2023 18:37:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 64C69120;
-	Thu, 14 Dec 2023 10:22:57 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 77EACC15;
-	Thu, 14 Dec 2023 10:23:42 -0800 (PST)
-Received: from [10.57.86.13] (unknown [10.57.86.13])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C1D713F738;
-	Thu, 14 Dec 2023 10:22:51 -0800 (PST)
-Message-ID: <2d87c1dc-cc95-4d92-968c-9d6e6e6439ff@arm.com>
-Date: Thu, 14 Dec 2023 18:22:49 +0000
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E272410E;
+	Thu, 14 Dec 2023 10:37:22 -0800 (PST)
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-6d9db92bd71so1362896a34.1;
+        Thu, 14 Dec 2023 10:37:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702579042; x=1703183842;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VqDz+iAKQeDij2eq7OD06mj+eeeCJzCcbsR1GzAidN0=;
+        b=XPa67Fu8rCw9+gYXEnw46OvwrzQGu2ZUqMJvgc6Wb/9g8bImHk47f48+MC57wXWGZN
+         5za+OI1931IkcQZjRvhSe0YVXx8bCjIq24aI5uUyuh4hmWHDhPkV8WjdqGrerPI0TEbK
+         Kusub0AQ26qOLEHzeb/ERkZBnB7RjVrZMZqFCTP5LXjvn+yMpJoTiGr+np/Q2HOP3aWZ
+         G48w+kW+acRpW45nHmQC2Lrg5fayElUNHHNK0v/RBfPRoq/RNX9QKr//U6tITHmOaOZf
+         LN1OkqcBUjOOL7eXeNAt/LumEVWso5Vu1wByD43cZYhKP6bw43XD0qgNUN3up1dm/mZ1
+         Smjg==
+X-Gm-Message-State: AOJu0Yw/qDxVDglLonMlcfzGNwjZ1UgzLI464Ws5JAXdfcM8K/8QiG89
+	L+xwhDTHSZ/i5cwX6QylYpRKel4a+n4cQg5BXr0=
+X-Google-Smtp-Source: AGHT+IH8dSvedIux9d+NZsh4BTm5s5Qcmw1364ii+UUrmzx3iZ4v2EO7x7vwseaBvGWSY8WP8bGNCshWcK/LSOMs+p0=
+X-Received: by 2002:a05:6871:2284:b0:1fb:648:5207 with SMTP id
+ sd4-20020a056871228400b001fb06485207mr19135855oab.2.1702579042101; Thu, 14
+ Dec 2023 10:37:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/7] iommu/dma: Centralise iommu_setup_dma_ops()
-Content-Language: en-GB
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
- Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>,
- Niklas Schnelle <schnelle@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-acpi@vger.kernel.org, iommu@lists.linux.dev, devicetree@vger.kernel.org
-References: <cover.1702486837.git.robin.murphy@arm.com>
- <5d89190b35720bf5b66621f46b6d3c85323d8eab.1702486837.git.robin.murphy@arm.com>
- <20231214165126.GA3726750@myrica>
-From: Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <20231214165126.GA3726750@myrica>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk> <E1rDOfs-00DvjY-HQ@rmk-PC.armlinux.org.uk>
+ <20231214173241.0000260f@Huawei.com> <CAJZ5v0jymOtZ0y65K9wE8FJk+ZKwP+FoGm4AKHXcYVfQJL9MVw@mail.gmail.com>
+ <ZXtFBYJEX2RrFrwj@shell.armlinux.org.uk> <CAJZ5v0h2Keyb-gFWFuPsKtwqjXvM2snyGpo6MMfFzaXKbfEpgw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0h2Keyb-gFWFuPsKtwqjXvM2snyGpo6MMfFzaXKbfEpgw@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 14 Dec 2023 19:37:10 +0100
+Message-ID: <CAJZ5v0h3WWtvrbxRpaGfq6c756k+L1SzZ1Gv3A14JxXHNcUMKA@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 01/21] ACPI: Only enumerate enabled (or functional) devices
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	linux-pm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, 
+	acpica-devel@lists.linuxfoundation.org, linux-csky@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>, 
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, jianyong.wu@arm.com, justin.he@arm.com, 
+	James Morse <james.morse@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2023-12-14 4:51 pm, Jean-Philippe Brucker wrote:
-> On Wed, Dec 13, 2023 at 05:17:59PM +0000, Robin Murphy wrote:
->> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
->> index 27a167f4cd3e..d808c8dcf5cb 100644
->> --- a/drivers/iommu/dma-iommu.c
->> +++ b/drivers/iommu/dma-iommu.c
->> @@ -1724,25 +1724,20 @@ static const struct dma_map_ops iommu_dma_ops = {
->>   	.opt_mapping_size	= iommu_dma_opt_mapping_size,
->>   };
->>   
->> -/*
->> - * The IOMMU core code allocates the default DMA domain, which the underlying
->> - * IOMMU driver needs to support via the dma-iommu layer.
->> - */
->> -void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 dma_limit)
->> +void iommu_setup_dma_ops(struct device *dev)
->>   {
->>   	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
->>   
->> -	if (!domain)
->> -		goto out_err;
->> +	if (dev_is_pci(dev))
->> +		dev->iommu->pci_32bit_workaround = !iommu_dma_forcedac;
->>   
->> -	/*
->> -	 * The IOMMU core code allocates the default DMA domain, which the
->> -	 * underlying IOMMU driver needs to support via the dma-iommu layer.
->> -	 */
->>   	if (iommu_is_dma_domain(domain)) {
-> 
-> ...
-> 
->> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
->> index 824989874dee..43f630d0530e 100644
->> --- a/drivers/iommu/iommu.c
->> +++ b/drivers/iommu/iommu.c
->> @@ -560,10 +560,10 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
->>   		if (list_empty(&group->entry))
->>   			list_add_tail(&group->entry, group_list);
->>   	}
->> -	mutex_unlock(&group->mutex);
->>   
->> -	if (dev_is_pci(dev))
->> -		iommu_dma_set_pci_32bit_workaround(dev);
->> +	iommu_setup_dma_ops(dev);
-> 
-> With Intel VT-d (QEMU emulation) I get a crash in iommu_setup_dma_ops()
-> because at this point group->domain and group->default_domain are still
-> NULL, group_list is non-NULL.
+On Thu, Dec 14, 2023 at 7:16=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
+g> wrote:
+>
+> On Thu, Dec 14, 2023 at 7:10=E2=80=AFPM Russell King (Oracle)
+> <linux@armlinux.org.uk> wrote:
+> >
+> > On Thu, Dec 14, 2023 at 06:47:00PM +0100, Rafael J. Wysocki wrote:
+> > > On Thu, Dec 14, 2023 at 6:32=E2=80=AFPM Jonathan Cameron
+> > > <Jonathan.Cameron@huawei.com> wrote:
+> > > >
+> > > > On Wed, 13 Dec 2023 12:49:16 +0000
+> > > > Russell King (Oracle) <rmk+kernel@armlinux.org.uk> wrote:
+> > > >
+> > > > > From: James Morse <james.morse@arm.com>
+> > > > >
+> > > > > Today the ACPI enumeration code 'visits' all devices that are pre=
+sent.
+> > > > >
+> > > > > This is a problem for arm64, where CPUs are always present, but n=
+ot
+> > > > > always enabled. When a device-check occurs because the firmware-p=
+olicy
+> > > > > has changed and a CPU is now enabled, the following error occurs:
+> > > > > | acpi ACPI0007:48: Enumeration failure
+> > > > >
+> > > > > This is ultimately because acpi_dev_ready_for_enumeration() retur=
+ns
+> > > > > true for a device that is not enabled. The ACPI Processor driver
+> > > > > will not register such CPUs as they are not 'decoding their resou=
+rces'.
+> > > > >
+> > > > > Change acpi_dev_ready_for_enumeration() to also check the enabled=
+ bit.
+> > > > > ACPI allows a device to be functional instead of maintaining the
+> > > > > present and enabled bit. Make this behaviour an explicit check wi=
+th
+> > > > > a reference to the spec, and then check the present and enabled b=
+its.
+> > > > > This is needed to avoid enumerating present && functional devices=
+ that
+> > > > > are not enabled.
+> > > > >
+> > > > > Signed-off-by: James Morse <james.morse@arm.com>
+> > > > > Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> > > > > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> > > > > Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> > > > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > > > > ---
+> > > > > If this change causes problems on deployed hardware, I suggest an
+> > > > > arch opt-in: ACPI_IGNORE_STA_ENABLED, that causes
+> > > > > acpi_dev_ready_for_enumeration() to only check the present bit.
+> > > >
+> > > > My gut feeling (having made ACPI 'fixes' in the past that ran into
+> > > > horribly broken firmware and had to be reverted) is reduce the blas=
+t
+> > > > radius preemptively from the start. I'd love to live in a world wer=
+e
+> > > > that wasn't necessary but I don't trust all the generators of ACPI =
+tables.
+> > > > I'll leave it to Rafael and other ACPI experts suggest how narrow w=
+e should
+> > > > make it though - arch opt in might be narrow enough.
+> > >
+> > > A chicken bit wouldn't help much IMO, especially in the cases when
+> > > working setups get broken.
+> > >
+> > > I would very much prefer to limit the scope of it, say to processors
+> > > only, in the first place.
+> >
+> > Thanks for the feedback and the idea.
+> >
+> > I guess we need something like:
+> >
+> >         if (device->status.present)
+> >                 return device->device_type !=3D ACPI_BUS_TYPE_PROCESSOR=
+ ||
+> >                        device->status.enabled;
+> >         else
+> >                 return device->status.functional;
+> >
+> > so we only check device->status.enabled for processor-type devices?
+>
+> Yes, something like this.
 
-Ugh, clearly I'd manage to confuse myself, since what I wrote in the
-changelog isn't even right...
+However, that is not sufficient, because there are
+ACPI_BUS_TYPE_DEVICE devices representing processors.
 
-Taking yet another look, there's not actually one single place we can do
-this right now which will work in a manageable way for all cases. With 2
-or 3 more levels of mess unpicked it's going to clean up much further
-(it's also becoming clear that iommu-dma wants better separation of its
-own per-device and per-domain bits), but for the immediate task in this
-series of finally getting out of arch code, I guess that continuing to
-echo the current probe_finalize flows is going to be safest. Something
-like the diff below (but I'll have a further think about it with a fresh
-head tomorrow).
-
-Thanks,
-Robin.
-
------>8-----
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 8972b7f22a9a..ba4cd5251205 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -562,7 +562,8 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
-  			list_add_tail(&group->entry, group_list);
-  	}
-  
--	iommu_setup_dma_ops(dev);
-+	if (group->default_domain)
-+		iommu_setup_dma_ops(dev);
-  
-  	mutex_unlock(&group->mutex);
-  
-@@ -1992,6 +1993,8 @@ int bus_iommu_probe(const struct bus_type *bus)
-  			mutex_unlock(&group->mutex);
-  			return ret;
-  		}
-+		for_each_group_device(group, gdev)
-+			iommu_setup_dma_ops(gdev->dev);
-  		mutex_unlock(&group->mutex);
-  
-  		/*
-@@ -3217,18 +3220,9 @@ static ssize_t iommu_group_store_type(struct iommu_group *group,
-  	if (ret)
-  		goto out_unlock;
-  
--	/*
--	 * Release the mutex here because ops->probe_finalize() call-back of
--	 * some vendor IOMMU drivers calls arm_iommu_attach_device() which
--	 * in-turn might call back into IOMMU core code, where it tries to take
--	 * group->mutex, resulting in a deadlock.
--	 */
--	mutex_unlock(&group->mutex);
--
-  	/* Make sure dma_ops is appropriatley set */
-  	for_each_group_device(group, gdev)
--		iommu_group_do_probe_finalize(gdev->dev);
--	return count;
-+		iommu_setup_dma_ops(gdev->dev);
-  
-  out_unlock:
-  	mutex_unlock(&group->mutex);
+I'm not sure about a clean way to do it ATM.
 
