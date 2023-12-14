@@ -1,155 +1,157 @@
-Return-Path: <linux-acpi+bounces-2441-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2442-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B1C813A19
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Dec 2023 19:37:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A9EF813BEA
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Dec 2023 21:45:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99DA0B2163E
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Dec 2023 18:37:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E686A281162
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Dec 2023 20:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F4A68B85;
-	Thu, 14 Dec 2023 18:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36207282E7;
+	Thu, 14 Dec 2023 20:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pQMaD5t2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E272410E;
-	Thu, 14 Dec 2023 10:37:22 -0800 (PST)
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-6d9db92bd71so1362896a34.1;
-        Thu, 14 Dec 2023 10:37:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702579042; x=1703183842;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VqDz+iAKQeDij2eq7OD06mj+eeeCJzCcbsR1GzAidN0=;
-        b=XPa67Fu8rCw9+gYXEnw46OvwrzQGu2ZUqMJvgc6Wb/9g8bImHk47f48+MC57wXWGZN
-         5za+OI1931IkcQZjRvhSe0YVXx8bCjIq24aI5uUyuh4hmWHDhPkV8WjdqGrerPI0TEbK
-         Kusub0AQ26qOLEHzeb/ERkZBnB7RjVrZMZqFCTP5LXjvn+yMpJoTiGr+np/Q2HOP3aWZ
-         G48w+kW+acRpW45nHmQC2Lrg5fayElUNHHNK0v/RBfPRoq/RNX9QKr//U6tITHmOaOZf
-         LN1OkqcBUjOOL7eXeNAt/LumEVWso5Vu1wByD43cZYhKP6bw43XD0qgNUN3up1dm/mZ1
-         Smjg==
-X-Gm-Message-State: AOJu0Yw/qDxVDglLonMlcfzGNwjZ1UgzLI464Ws5JAXdfcM8K/8QiG89
-	L+xwhDTHSZ/i5cwX6QylYpRKel4a+n4cQg5BXr0=
-X-Google-Smtp-Source: AGHT+IH8dSvedIux9d+NZsh4BTm5s5Qcmw1364ii+UUrmzx3iZ4v2EO7x7vwseaBvGWSY8WP8bGNCshWcK/LSOMs+p0=
-X-Received: by 2002:a05:6871:2284:b0:1fb:648:5207 with SMTP id
- sd4-20020a056871228400b001fb06485207mr19135855oab.2.1702579042101; Thu, 14
- Dec 2023 10:37:22 -0800 (PST)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D59B2112;
+	Thu, 14 Dec 2023 20:43:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C08C433C7;
+	Thu, 14 Dec 2023 20:43:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702586625;
+	bh=N0jbTbJWofRtfABZuOELLa0zwrB/SPbXjOelFyq+jlI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=pQMaD5t2Lco04xJa7WMNhSEOnvghmKF9zfOXMukHIbOJ22CDXDYVJLF1QGVd2Cic2
+	 TAWx8i4xsBlEVL6X9Pn3jaCrx6BenJX7O7/6A5GZFuQMXe3XjQP+MK7kcCpw+zTB30
+	 pbXGDpasOEHxxWziULcUdOMXifFZD1wnvBEySSJIX84fVjP7AHCQHHwSjzkQiEjSZd
+	 Sx3bzUux11CKWXetTilrBXSyG0P1aZ10k2mVDRgm6Im7kho6cMN/HerwDl1bBjT6rH
+	 dJgOLq5EBGYgUSEOgdgq4HgWLmaqR4PobhZu3xYJ/7fu44P+M6mlmdCtGRIfuULx08
+	 A5ZGqk/ZlOpug==
+Date: Thu, 14 Dec 2023 14:43:41 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J . Wysocki" <rjw@rjwysocki.net>, linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>
+Subject: Re: [PATCH] x86/pci: Stop requiring MMCONFIG to be declared in E820,
+ ACPI or EFI for newer systems
+Message-ID: <20231214204341.GA835486@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk> <E1rDOfs-00DvjY-HQ@rmk-PC.armlinux.org.uk>
- <20231214173241.0000260f@Huawei.com> <CAJZ5v0jymOtZ0y65K9wE8FJk+ZKwP+FoGm4AKHXcYVfQJL9MVw@mail.gmail.com>
- <ZXtFBYJEX2RrFrwj@shell.armlinux.org.uk> <CAJZ5v0h2Keyb-gFWFuPsKtwqjXvM2snyGpo6MMfFzaXKbfEpgw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0h2Keyb-gFWFuPsKtwqjXvM2snyGpo6MMfFzaXKbfEpgw@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 14 Dec 2023 19:37:10 +0100
-Message-ID: <CAJZ5v0h3WWtvrbxRpaGfq6c756k+L1SzZ1Gv3A14JxXHNcUMKA@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 01/21] ACPI: Only enumerate enabled (or functional) devices
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	linux-pm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, 
-	acpica-devel@lists.linuxfoundation.org, linux-csky@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, jianyong.wu@arm.com, justin.he@arm.com, 
-	James Morse <james.morse@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7e730edc-2251-4f98-afc9-c8278157c894@amd.com>
 
-On Thu, Dec 14, 2023 at 7:16=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
->
-> On Thu, Dec 14, 2023 at 7:10=E2=80=AFPM Russell King (Oracle)
-> <linux@armlinux.org.uk> wrote:
-> >
-> > On Thu, Dec 14, 2023 at 06:47:00PM +0100, Rafael J. Wysocki wrote:
-> > > On Thu, Dec 14, 2023 at 6:32=E2=80=AFPM Jonathan Cameron
-> > > <Jonathan.Cameron@huawei.com> wrote:
-> > > >
-> > > > On Wed, 13 Dec 2023 12:49:16 +0000
-> > > > Russell King (Oracle) <rmk+kernel@armlinux.org.uk> wrote:
-> > > >
-> > > > > From: James Morse <james.morse@arm.com>
-> > > > >
-> > > > > Today the ACPI enumeration code 'visits' all devices that are pre=
-sent.
-> > > > >
-> > > > > This is a problem for arm64, where CPUs are always present, but n=
-ot
-> > > > > always enabled. When a device-check occurs because the firmware-p=
-olicy
-> > > > > has changed and a CPU is now enabled, the following error occurs:
-> > > > > | acpi ACPI0007:48: Enumeration failure
-> > > > >
-> > > > > This is ultimately because acpi_dev_ready_for_enumeration() retur=
-ns
-> > > > > true for a device that is not enabled. The ACPI Processor driver
-> > > > > will not register such CPUs as they are not 'decoding their resou=
-rces'.
-> > > > >
-> > > > > Change acpi_dev_ready_for_enumeration() to also check the enabled=
- bit.
-> > > > > ACPI allows a device to be functional instead of maintaining the
-> > > > > present and enabled bit. Make this behaviour an explicit check wi=
-th
-> > > > > a reference to the spec, and then check the present and enabled b=
-its.
-> > > > > This is needed to avoid enumerating present && functional devices=
- that
-> > > > > are not enabled.
-> > > > >
-> > > > > Signed-off-by: James Morse <james.morse@arm.com>
-> > > > > Tested-by: Miguel Luis <miguel.luis@oracle.com>
-> > > > > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> > > > > Tested-by: Jianyong Wu <jianyong.wu@arm.com>
-> > > > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > > > > ---
-> > > > > If this change causes problems on deployed hardware, I suggest an
-> > > > > arch opt-in: ACPI_IGNORE_STA_ENABLED, that causes
-> > > > > acpi_dev_ready_for_enumeration() to only check the present bit.
-> > > >
-> > > > My gut feeling (having made ACPI 'fixes' in the past that ran into
-> > > > horribly broken firmware and had to be reverted) is reduce the blas=
-t
-> > > > radius preemptively from the start. I'd love to live in a world wer=
-e
-> > > > that wasn't necessary but I don't trust all the generators of ACPI =
-tables.
-> > > > I'll leave it to Rafael and other ACPI experts suggest how narrow w=
-e should
-> > > > make it though - arch opt in might be narrow enough.
-> > >
-> > > A chicken bit wouldn't help much IMO, especially in the cases when
-> > > working setups get broken.
-> > >
-> > > I would very much prefer to limit the scope of it, say to processors
-> > > only, in the first place.
-> >
-> > Thanks for the feedback and the idea.
-> >
-> > I guess we need something like:
-> >
-> >         if (device->status.present)
-> >                 return device->device_type !=3D ACPI_BUS_TYPE_PROCESSOR=
- ||
-> >                        device->status.enabled;
-> >         else
-> >                 return device->status.functional;
-> >
-> > so we only check device->status.enabled for processor-type devices?
->
-> Yes, something like this.
+[+cc Len, Robert in case I'm missing something about static tables
+reserving address space]
 
-However, that is not sufficient, because there are
-ACPI_BUS_TYPE_DEVICE devices representing processors.
+On Tue, Dec 05, 2023 at 12:28:44PM -0600, Mario Limonciello wrote:
+> On 12/5/2023 11:31, Bjorn Helgaas wrote:
+> > On Tue, Dec 05, 2023 at 11:00:31AM -0600, Mario Limonciello wrote:
+> > > On 12/5/2023 10:17, Bjorn Helgaas wrote:
+> > > > On Tue, Dec 05, 2023 at 09:48:45AM -0600, Mario Limonciello wrote:
+> > > > > commit 7752d5cfe3d1 ("x86: validate against acpi motherboard
+> > > > > resources") introduced checks for ensuring that MCFG table
+> > > > > also has memory region reservations to ensure no conflicts
+> > > > > were introduced from a buggy BIOS.
+> > > > > 
+> > > > > This has proceeded over time to add other types of
+> > > > > reservation checks for ACPI PNP resources and EFI MMIO
+> > > > > memory type.  The PCI firmware spec however says that these
+> > > > > checks are only required when the operating system doesn't
+> > > > > comprehend the firmware region:
+> > > > > 
+> > > > > ``` If the operating system does not natively comprehend
+> > > > > reserving the MMCFG region, the MMCFG region must be
+> > > > > reserved by firmware. The address range reported in the MCFG
+> > > > > table or by _CBA method (see Section 4.1.3) must be reserved
+> > > > > by declaring a motherboard resource. For most systems, the
+> > > > > motherboard resource would appear at the root of the ACPI
+> > > > > namespace (under \_SB) in a node with a _HID of EISAID
+> > > > > (PNP0C02), and the resources in this case should not be
+> > > > > claimed in the root PCI bus’s _CRS. The resources can
+> > > > > optionally be returned in Int15 E820h or EFIGetMemoryMap as
+> > > > > reserved memory but must always be reported through ACPI as
+> > > > > a motherboard resource.  ```
+> > > > 
+> > > > My understanding is that native comprehension would mean Linux
+> > > > knows how to discover and/or configure the MMCFG base address
+> > > > and size in the hardware and that Linux would then reserve
+> > > > that region so it's not used for anything else.
+> > > > 
+> > > > Linux doesn't have that, at least for x86.  It relies on the
+> > > > MCFG table to discover the MMCFG region, and it relies on
+> > > > PNP0C02 _CRS to reserve it.
+> > > 
+> > > MCFG to discover it matches the PCI firmware spec, but as I
+> > > point out above the decision to reserve this region doesn't
+> > > require PNP0C01/PNP0C02 _CRS.
+> > 
+> > Can you explain this reasoning a little more?  I claim Linux does
+> > not natively comprehend reserving the MMCFG region, but it sounds
+> > like you don't agree?  I think "native" comprehension would mean
+> > Linux would not need the MCFG table.
+> 
+> After our thread and the spec again I think you're right Linux
+> doesn't natively comprehend (reserve this region;) particularly
+> because of the stance you have on "static table" vs _CRS.
 
-I'm not sure about a clean way to do it ATM.
+["My stance" refers to this:
+
+  Static tables like MCFG, HPET, ECDT, etc., are *not* mechanisms for
+  reserving address space.  The static tables are for things the OS
+  needs to know early in boot, before it can parse the ACPI namespace.
+  If a new table is defined, an old OS needs to operate correctly even
+  though it ignores the table.  _CRS allows that because it is generic
+  and understood by the old OS; a static table does not.
+
+from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/PCI/acpi-info.rst?id=v6.6#n32]
+
+I don't think this is just my stance.  The ACPI spec could be clearer
+in terms of requiring PNP0C02 devices, not static tables, to reserve
+address space, but I think that requirement is a logical consequence
+of the ACPI design.
+
+It's a goal of ACPI that an OS we release today should run on a
+platform released tomorrow.  If the new platform uses a static table
+to reserve address space used by some new hardware, today's OS doesn't
+know about it and could place another device on top of it.
+
+Using _CRS of an ACPI device to reserve the new hardware address space
+is different because it works even with today's OS.  Today's OS can't
+*operate* tomorrow's hardware, but at least it won't create address
+conflicts with it.
+
+> I just don't want to throw the vendor under the bus as it could have
+> been caught "sooner" and fixed by BIOS adding _CRS.
+
+The MCFG requirement for PNP0C02 _CRS has been in the PCI Firmware
+spec since r3.0 in 2005.  I'm surprised that vendors still get this
+wrong.  Vendors definitely have an interest in making shipping OSes
+boot unchanged on new hardware.
+
+> > > Knowing Windows works without it I feel this is still something that we
+> > > should be looking at fixing from an upstream perspective though which is
+> > > what prompted my patch and discussion.
+
+The fact that Windows works doesn't mean the firmware is correct.
+Linux assigns PCI BARs from the bottom up, and ECAM is often at the
+bottom of a host bridge aperture.
+
+Windows assigns PCI BARs from the top down, so even without a _CRS
+reservation for the ECAM space, Windows is much less likely to put
+something on top of it.
+
+Bjorn
 
