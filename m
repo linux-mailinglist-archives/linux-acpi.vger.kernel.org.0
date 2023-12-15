@@ -1,40 +1,42 @@
-Return-Path: <linux-acpi+bounces-2458-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2459-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE7A814705
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 12:34:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5C4814706
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 12:34:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 778B6284A4A
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 11:34:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC3321C230BA
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 11:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E677924B57;
-	Fri, 15 Dec 2023 11:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E36F25105;
+	Fri, 15 Dec 2023 11:34:34 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDD2250E8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD9A250E6;
 	Fri, 15 Dec 2023 11:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
- id 2951e9a5c537d893; Fri, 15 Dec 2023 12:27:50 +0100
+ id 452ee2495fde20ac; Fri, 15 Dec 2023 12:27:50 +0100
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 36107668B1E;
-	Fri, 15 Dec 2023 12:27:50 +0100 (CET)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 754B3668B1E;
+	Fri, 15 Dec 2023 12:27:49 +0100 (CET)
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, Zhang Rui <rui.zhang@intel.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michal Wilczynski <michal.wilczynski@intel.com>, Hans de Goede <hdegoede@redhat.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Mario Limonciello <mario.limonciello@amd.com>, Daniel Drake <drake@endlessm.com>
-Subject: [PATCH v1 0/3] ACPI: OSL/EC: Use spin locks without disabling interrupts
-Date: Fri, 15 Dec 2023 12:23:54 +0100
-Message-ID: <2330034.ElGaqSPkdT@kreacher>
+Subject: [PATCH v1 1/3] ACPI: OSL: Use spin locks without disabling interrupts
+Date: Fri, 15 Dec 2023 12:25:15 +0100
+Message-ID: <1895035.tdWV9SEqCh@kreacher>
+In-Reply-To: <2330034.ElGaqSPkdT@kreacher>
+References: <2330034.ElGaqSPkdT@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -46,33 +48,52 @@ Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 195.136.19.94
 X-CLIENT-HOSTNAME: 195.136.19.94
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtvddgvdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepgeffhfdujeelhfdtgeffkeetudfhtefhhfeiteethfekvefgvdfgfeeikeeigfehnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeduuddprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhv
- rggurgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehmihgthhgrlhdrfihilhgtiiihnhhskhhisehinhhtvghlrdgtohhmpdhrtghpthhtohephhguvghgohgvuggvsehrvgguhhgrthdrtghomh
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtvddgvdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepuddupdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgt
+ ohhmpdhrtghpthhtohepmhhitghhrghlrdifihhltgiihihnshhkihesihhnthgvlhdrtghomhdprhgtphhtthhopehhuggvghhovgguvgesrhgvughhrghtrdgtohhm
 X-DCC--Metrics: v370.home.net.pl 1024; Body=11 Fuz1=11 Fuz2=11
 
-Hi Everyone,
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-After
+After commit 7a36b901a6eb ("ACPI: OSL: Use a threaded interrupt handler
+for SCI") any ACPICA code never runs in a hardirq handler, so it need
+not dissable interrupts on the local CPU when acquiring a spin lock.
 
-https://patchwork.kernel.org/project/linux-acpi/patch/5745568.DvuYhMxLoT@kreacher/
+Make it use spin locks without disabling interrupts.
 
-the SCI interrupt handler is threaded, so ACPICA spin locks can be used without
-disabling interrupts, because they cannot be acquired from a hardirq handler
-running on the same CPU as any code already holding the spin lock.  This patch
-[1/3] removes disabling interrupts from acpi_os_acquire_lock() and updates
-acpi_os_release_lock() accordingly.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/osl.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-Patch [2/2] uses the observation that if acpi_handle_interrupt() can run
-in a threaded interrupt handler in the GPE case, it can also run in a threaded
-interrupt handler in the dedicated IRQ case, so it makes the EC driver use a
-threaded handler for the dedicated EC interrupt.
-
-Patch [3/3], in analogy with patch [1/3], uses the observation that after patch
-[2/2] all of the EC code runs in thread context, so it need not disable
-interrupts on the local CPU before acquiring a spin lock, so the EC driver is
-updated to operate its spin lock without disabling interrupts.
-
-Thanks!
+Index: linux-pm/drivers/acpi/osl.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/osl.c
++++ linux-pm/drivers/acpi/osl.c
+@@ -1515,20 +1515,18 @@ void acpi_os_delete_lock(acpi_spinlock h
+ acpi_cpu_flags acpi_os_acquire_lock(acpi_spinlock lockp)
+ 	__acquires(lockp)
+ {
+-	acpi_cpu_flags flags;
+-
+-	spin_lock_irqsave(lockp, flags);
+-	return flags;
++	spin_lock(lockp);
++	return 0;
+ }
+ 
+ /*
+  * Release a spinlock. See above.
+  */
+ 
+-void acpi_os_release_lock(acpi_spinlock lockp, acpi_cpu_flags flags)
++void acpi_os_release_lock(acpi_spinlock lockp, acpi_cpu_flags not_used)
+ 	__releases(lockp)
+ {
+-	spin_unlock_irqrestore(lockp, flags);
++	spin_unlock(lockp);
+ }
+ 
+ #ifndef ACPI_USE_LOCAL_CACHE
 
 
 
