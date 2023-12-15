@@ -1,182 +1,292 @@
-Return-Path: <linux-acpi+bounces-2449-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2450-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E76DA813E59
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 00:39:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94775814049
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 03:57:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E8AB281B96
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Dec 2023 23:39:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE706B21B7E
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 02:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F656C6EF;
-	Thu, 14 Dec 2023 23:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l4zMLgnB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8E7EC9;
+	Fri, 15 Dec 2023 02:57:29 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6376C6CC;
-	Thu, 14 Dec 2023 23:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702597141; x=1734133141;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=29IaCz9ZchpYFzcltR/VW98lVxxGxk7hyyJknbptWIU=;
-  b=l4zMLgnBbd9wLQgg3zakpc5anOc+Y+CbdOfrz/edJBP8Kc+8cx1IIyI6
-   oafbyyXwWCH9DpCwiE8V5UA00n53yMDu20fIsDVMzSoQe1mK9PdaplDj4
-   XYJH6gKGC+snIXt6MX86N58/5DnbjYTWDmD4ulb86+8Q0H8x5nFxr2y81
-   1Ow4Ai5ihG7UlSczb9e9two13gQLvbrcUH0nu3iWb9W1oEoozRT6hclYt
-   zVXS84WM/XKLvjzSVG5AIxbD9vOVodBwD20pgnLo/FI3kwVqAu6FU+5y0
-   dmfcCdDfgWXHmhlP4lqcSFjYSFFYIO8rQEHss5iwyCxKyy+jYyyvb/qrj
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="461667931"
-X-IronPort-AV: E=Sophos;i="6.04,277,1695711600"; 
-   d="scan'208";a="461667931"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2023 15:38:59 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="1105911740"
-X-IronPort-AV: E=Sophos;i="6.04,277,1695711600"; 
-   d="scan'208";a="1105911740"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by fmsmga005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 14 Dec 2023 15:38:58 -0800
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 14 Dec 2023 15:38:58 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 14 Dec 2023 15:38:57 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 14 Dec 2023 15:38:57 -0800
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 14 Dec 2023 15:38:57 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Rza693sXgFeOh/BRqi0xHd8vOhKeKJqNhyi0ypYglJYlhxgT8yYNw94gSH+gt0eN3+l+stjEBy4Z3wrCsSeaVgMOg+b/wwma57/cDFb0yDzoA/3asiXPWfJ6YrWYhEPCuqx+AQV+zJuBXFX2dlinmhpLemgZhMetBz9u25+DogsIMMR0M1e/iknySIPqsn9KwYH5FhcMxHoWvNW8GgQL8/60neAEg6kVx4gczoPtGb9H1lMqV8TzH3SADdsuRt1D5326wVq5fxWTXL+Ge2GMz34w3pXILhjjbsW9IZZeJLvl5gci7xhAehHLvuYMnfLCpLqVJi+kNZ8GkP2vfiMjEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=29IaCz9ZchpYFzcltR/VW98lVxxGxk7hyyJknbptWIU=;
- b=ElklXEv2uK9X3DM/iioqUMYvaL4UvU7s9DKI0/Lvv0Ow556xF6xG2BOK2g1OSo5Hw10PWlt8xRBoeVf0xs6gCOsO2WRsQ2RAfTJjC+5hMz8LG4mzIMQh4khxY8O6b5bADRyuDsznUbL6dvVJHuYkTuK5+KYIf1Lq0GfqUoy99NFR4DJlbRzmuYjdqkzNahfm02bY+ICU9uhqdeuokttedXrCQEtLs9xfdBN27j7NoLXCJDQAa10oToEy0Rd2nByh8c4410+sHiQ44AqhxQwcsHkDRx9COvAfn5EnLVYyYUViGZYZyiLUi9/RfCa9Bnaw3ml4lMvp25zLUIz/q1t9gQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ1PR11MB6083.namprd11.prod.outlook.com (2603:10b6:a03:48a::9)
- by SA2PR11MB5036.namprd11.prod.outlook.com (2603:10b6:806:114::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.28; Thu, 14 Dec
- 2023 23:38:54 +0000
-Received: from SJ1PR11MB6083.namprd11.prod.outlook.com
- ([fe80::2b58:930f:feba:8848]) by SJ1PR11MB6083.namprd11.prod.outlook.com
- ([fe80::2b58:930f:feba:8848%6]) with mapi id 15.20.7068.038; Thu, 14 Dec 2023
- 23:38:54 +0000
-From: "Luck, Tony" <tony.luck@intel.com>
-To: Daniel Ferguson <danielf@os.amperecomputing.com>, "rafael@kernel.org"
-	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"james.morse@arm.com" <james.morse@arm.com>, "bp@alien8.de" <bp@alien8.de>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "linmiaohe@huawei.com"
-	<linmiaohe@huawei.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>,
-	"leoyang.li@nxp.com" <leoyang.li@nxp.com>, "luoshengwei@huawei.com"
-	<luoshengwei@huawei.com>
-CC: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH RESEND v3 1/1] RAS: Report ARM processor information to
- userspace
-Thread-Topic: [PATCH RESEND v3 1/1] RAS: Report ARM processor information to
- userspace
-Thread-Index: AQHaLuSgz1v/s4k9/k+lw9lC4B057LCpbbIAgAABRyA=
-Date: Thu, 14 Dec 2023 23:38:54 +0000
-Message-ID: <SJ1PR11MB6083B5E20BC27786F26FA745FC8CA@SJ1PR11MB6083.namprd11.prod.outlook.com>
-References: <20231214232330.306526-1-danielf@os.amperecomputing.com>
- <20231214232330.306526-2-danielf@os.amperecomputing.com>
- <SJ1PR11MB60835CC6392CF269E296B82DFC8CA@SJ1PR11MB6083.namprd11.prod.outlook.com>
-In-Reply-To: <SJ1PR11MB60835CC6392CF269E296B82DFC8CA@SJ1PR11MB6083.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ1PR11MB6083:EE_|SA2PR11MB5036:EE_
-x-ms-office365-filtering-correlation-id: de218ac3-4504-4011-42cf-08dbfcfdd59c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: d8GWhwBqrlpLMcnaSawBCVb9HfeU4eWQu6IcbImQqrRTRmRImmgfy39Y8g3gFunZ3UR3xDEmGUxpPuebXk8m3J6PnEbxA5Rgt+7VvS8bZeHLqY/205gcHJBLOjW8Z+Jv08GEoedC+SBuKej0izxDCM38v4eVeNQKgEMa5sf6XNBY6CbL1U4gkyPAocQ8z0MbGVaZt2AiyAGhqHoCS6LRw5gUTiwM2XIUmg/Q1i50JiBUw3XSjMHJsU3JKHvhhBdtTBf/zOfuse/tCrQmw1QdRjzsP8cUAC0DYlWnvxL0KGcYFL/lC/pgIYEl4jvTRhGRfpUohbVo9B2SngIkQzS7K5ufbes4pAtty8Ww7OD5SBSk0nj1gt3WfYPYNoJ5iKf+1jxYS6m7Akq9xaZejQ6tXea3GpowJie70LDc1oFBgRSrlAbF2Be3S46Itdrdqy5L32tDS/Q+2ws2ob7aFqpv43zzUP0NqmSD+oYDT0aWeME+IORNIbrWguADG6CfSUcnzo3ng9w4hJWhJEcZx3UEmBer+pvxs9wzSJdDhvYyj9+xNt4dEhRUobHQS5/pXUq6gnfTw3CD47a0RWKiPpa1QyDLE02nLojCVqgYaTfYZMdmIDumVaNyPxGgO54HLM4KRKss/2Td8BSD79TQXGb8bw==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6083.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(366004)(376002)(396003)(136003)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(55016003)(52536014)(8936002)(2906002)(4744005)(7416002)(5660300002)(38100700002)(33656002)(122000001)(86362001)(82960400001)(26005)(316002)(2940100002)(71200400001)(4326008)(66556008)(66446008)(64756008)(54906003)(110136005)(66946007)(66476007)(76116006)(921008)(41300700001)(8676002)(38070700009)(9686003)(478600001)(7696005)(6506007);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?3f+e/RECJiL+P8HRAbasPq2PUJ9tt7U1cLcx8QRlCqe+pzcHWjzYCrIZOT7y?=
- =?us-ascii?Q?x49+pVPQr2w+1z0ON4tApzapQQYziRAHAh7ZcWBjRMcHzqfuN//dhx9zgbKp?=
- =?us-ascii?Q?V9NByCM34fGy7/Y8Szd3veeLFqwJtlDP8ZMzSoX/WI0ce0P86GISA01vrBjR?=
- =?us-ascii?Q?pWmdj+658OQEvj99wEKoaCkrl52l1IvaTMNMmTbPCGeT12t/irVMhi7almKV?=
- =?us-ascii?Q?QGhNIHMXFfubCtoS6GT8DcXFd4oYF/ot8Eo+QxZyIkcy04jqNTutpaqtiNCJ?=
- =?us-ascii?Q?9yJAGpcc9hN+POWI93p2IyeRDLXihzSe16wHuXCGqt1yAgzXEwFMKdcQWkHw?=
- =?us-ascii?Q?hThIjfURMP2YmyR8LxbEG0g6GSqNVttRCVBC2GsKX1JMcFdk9As5HlSCGW0M?=
- =?us-ascii?Q?M/RFWwj876yK2SIAWrhxKU09lqalmuReBb5Gl9tn4UmRvai43x8aMjvdOH1d?=
- =?us-ascii?Q?jbu0etjPtiQIPzoUTkHcqtw1BO2gQgiubBaeMdsn3faJknbOE+Go8ofReqcT?=
- =?us-ascii?Q?5UeeZZUfYvzzuL5+zderlX0PdP/rg8/nm+i8cwmW4HXRtmCezQQEsjl+qa73?=
- =?us-ascii?Q?TBw2xwTQEFIUMtBlMNedMA/J4UhBq0lX32fapWv+2S1XMK5ZLgmXKjobUQNY?=
- =?us-ascii?Q?hvc/s2dEVMpOOCwOflqZtSamTBvFZ9U2z23gRO7VVtbsp3j+61AwNd/G7X/K?=
- =?us-ascii?Q?5ZDcR+hfFWKbibRVUwwvLIaGvE+j+w13wUq/2C+b8ni+ITFZUxPjYMj4nVyC?=
- =?us-ascii?Q?vRJFfuRlxtL3koxdCjS3NpB2XS/mUSgpQ0ozP3B6w9N0pwAqqC81S3G+6DXX?=
- =?us-ascii?Q?SRarJq6sJUG8MiVy6A/wn2EW9spYC2SXFVtR9Qvz7ZsvPTCPTvExzBuyLM7d?=
- =?us-ascii?Q?UAemnp6zpRO4zhckt2TPA78ZvMoQul7S9sqM2ck+RQPsCMpmmRt9SWbKamQW?=
- =?us-ascii?Q?lKrT3wXH2LXslvQba2AOlPUBEcSOPdAzWIq01oSIHFGxvmX3/IcqpmJXUIzp?=
- =?us-ascii?Q?a49/Gu90LA36nXSiZikupTIDhjk6G0zhlHRi6q4hB+AcOP1jF3Amp+6Me9Zo?=
- =?us-ascii?Q?4Ueyo57vg0Nj74AsdAygt0qOnIlKBnLTbir2QC2oS3ciwWqDIjNvo0Q00OLD?=
- =?us-ascii?Q?678hK/86JMmhhFsv2AJpkKddRH0l7I8r+y4Og4sNNLYuBs3Qe5kzixOfrqTv?=
- =?us-ascii?Q?o5E0qsaWaw1P8uhcCEJ3pjldq7g3Nq0/WJ8Q0FDc+X5a99LutZwMJnXnO2P/?=
- =?us-ascii?Q?RfNAfoGr+z3NIx14OJWPYeR8WchS7r5pQKQmWoVzyAdBQoZSaC1hC64n1a4d?=
- =?us-ascii?Q?urIj7ruLhWlYiwA5SynuhpZu0qXcDoggZ7IvLb63kQtZRE9TAGDu1P+Okxqu?=
- =?us-ascii?Q?92YfmqykDSdDEaggkSjpPVwbt8YLlkjlNr7YLyf4y+LgMY0MNJUQHB567pjB?=
- =?us-ascii?Q?64TO73aKnBEq4evnYyglfTRl8UXT/ECvl7mktji/3rclPyG+ulv56dQsus6N?=
- =?us-ascii?Q?UvwZ7AT0ntHGbQWmHm0oiedPphBtXhYp94hJveZpFlrcN0UGN8/QDTYoW1XO?=
- =?us-ascii?Q?uHFDmd4YLTzpcCmkVIN/IyhyH5ypX52pNbT2av5N?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBFDEBB;
+	Fri, 15 Dec 2023 02:57:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4SrtlG4XSLzWjsW;
+	Fri, 15 Dec 2023 10:41:30 +0800 (CST)
+Received: from kwepemm000004.china.huawei.com (unknown [7.193.23.18])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3B97C18006C;
+	Fri, 15 Dec 2023 10:41:42 +0800 (CST)
+Received: from [10.67.121.59] (10.67.121.59) by kwepemm000004.china.huawei.com
+ (7.193.23.18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 15 Dec
+ 2023 10:41:41 +0800
+Message-ID: <486f8563-42b7-a049-97a2-bc0b553926aa@huawei.com>
+Date: Fri, 15 Dec 2023 10:41:40 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6083.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de218ac3-4504-4011-42cf-08dbfcfdd59c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Dec 2023 23:38:54.3146
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pjdqRHBHRARwZfzZB3GdB5TbNt41Y4C1yAA7+bfra4vaWCx73DR32o/OF8pe8SU1o/tcj8aGzP/YrZajrynpyA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5036
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH] cpufreq: CPPC: Resolve the large frequency discrepancy
+ from cpuinfo_cur_freq
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <beata.michalska@arm.com>,
+	<sumitg@nvidia.com>, <ionela.voinescu@arm.com>, <zengheng4@huawei.com>,
+	<yang@os.amperecomputing.com>, <will@kernel.org>, <sudeep.holla@arm.com>,
+	<liuyonglong@huawei.com>, <zhanjie9@hisilicon.com>
+References: <20231212072617.14756-1-lihuisong@huawei.com>
+ <CAJZ5v0jwW0=8cNvC-Vu_o+pEHFpN9nrPD4LXCpmSTgQBTHODgg@mail.gmail.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <CAJZ5v0jwW0=8cNvC-Vu_o+pEHFpN9nrPD4LXCpmSTgQBTHODgg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemm000004.china.huawei.com (7.193.23.18)
 
-> What GIT tree is this patch based on? I don't see this log_arm_hw_error()
-> function in drivers/ras/ras.c upstream, or in intel-next.
+Hi Rafael,
 
-Thirty seconds after hitting SEND, I see I was looking at the wrong GIT tre=
-e. This
-code is based on upstream. Ooops.
+Thanks for your review.😁
 
-> Should ARM specific code like this be in a file with "arm" in its name? O=
-r at least
-> be inside some #ifdef CONFIG_ARM.
+在 2023/12/15 3:31, Rafael J. Wysocki 写道:
+> On Tue, Dec 12, 2023 at 8:26 AM Huisong Li <lihuisong@huawei.com> wrote:
+>> Many developers found that the cpu current frequency is greater than
+>> the maximum frequency of the platform, please see [1], [2] and [3].
+>>
+>> In the scenarios with high memory access pressure, the patch [1] has
+>> proved the significant latency of cpc_read() which is used to obtain
+>> delivered and reference performance counter cause an absurd frequency.
+>> The sampling interval for this counters is very critical and is expected
+>> to be equal. However, the different latency of cpc_read() has a direct
+>> impact on their sampling interval.
+>>
+>> This patch adds a interface, cpc_read_arch_counters_on_cpu, to read
+>> delivered and reference performance counter together. According to my
+>> test[4], the discrepancy of cpu current frequency in the scenarios with
+>> high memory access pressure is lower than 0.2% by stress-ng application.
+>>
+>> [1] https://lore.kernel.org/all/20231025093847.3740104-4-zengheng4@huawei.com/
+>> [2] https://lore.kernel.org/all/20230328193846.8757-1-yang@os.amperecomputing.com/
+>> [3] https://lore.kernel.org/all/20230418113459.12860-7-sumitg@nvidia.com/
+>>
+>> [4] My local test:
+>> The testing platform enable SMT and include 128 logical CPU in total,
+>> and CPU base frequency is 2.7GHz. Reading "cpuinfo_cur_freq" for each
+>> physical core on platform during the high memory access pressure from
+>> stress-ng, and the output is as follows:
+>>    0: 2699133     2: 2699942     4: 2698189     6: 2704347
+>>    8: 2704009    10: 2696277    12: 2702016    14: 2701388
+>>   16: 2700358    18: 2696741    20: 2700091    22: 2700122
+>>   24: 2701713    26: 2702025    28: 2699816    30: 2700121
+>>   32: 2700000    34: 2699788    36: 2698884    38: 2699109
+>>   40: 2704494    42: 2698350    44: 2699997    46: 2701023
+>>   48: 2703448    50: 2699501    52: 2700000    54: 2699999
+>>   56: 2702645    58: 2696923    60: 2697718    62: 2700547
+>>   64: 2700313    66: 2700000    68: 2699904    70: 2699259
+>>   72: 2699511    74: 2700644    76: 2702201    78: 2700000
+>>   80: 2700776    82: 2700364    84: 2702674    86: 2700255
+>>   88: 2699886    90: 2700359    92: 2699662    94: 2696188
+>>   96: 2705454    98: 2699260   100: 2701097   102: 2699630
+>> 104: 2700463   106: 2698408   108: 2697766   110: 2701181
+>> 112: 2699166   114: 2701804   116: 2701907   118: 2701973
+>> 120: 2699584   122: 2700474   124: 2700768   126: 2701963
+>>
+>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+> First off, please Cc ACPI-related patches to linux-acpi.
 
-But I stand by this part.
+got it.
 
--Tony
++linux-acpi@vger.kernel.org
+
+>
+>> ---
+>>   arch/arm64/kernel/topology.c | 43 ++++++++++++++++++++++++++++++++++--
+>>   drivers/acpi/cppc_acpi.c     | 22 +++++++++++++++---
+>>   include/acpi/cppc_acpi.h     |  5 +++++
+>>   3 files changed, 65 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+>> index 7d37e458e2f5..c3122154d738 100644
+>> --- a/arch/arm64/kernel/topology.c
+>> +++ b/arch/arm64/kernel/topology.c
+>> @@ -299,6 +299,11 @@ core_initcall(init_amu_fie);
+>>   #ifdef CONFIG_ACPI_CPPC_LIB
+>>   #include <acpi/cppc_acpi.h>
+>>
+>> +struct amu_counters {
+>> +       u64 corecnt;
+>> +       u64 constcnt;
+>> +};
+>> +
+>>   static void cpu_read_corecnt(void *val)
+>>   {
+>>          /*
+>> @@ -322,8 +327,27 @@ static void cpu_read_constcnt(void *val)
+>>                        0UL : read_constcnt();
+>>   }
+>>
+>> +static void cpu_read_amu_counters(void *data)
+>> +{
+>> +       struct amu_counters *cnt = (struct amu_counters *)data;
+>> +
+>> +       /*
+>> +        * The running time of the this_cpu_has_cap() might have a couple of
+>> +        * microseconds and is significantly increased to tens of microseconds.
+>> +        * But AMU core and constant counter need to be read togeter without any
+>> +        * time interval to reduce the calculation discrepancy using this counters.
+>> +        */
+>> +       if (this_cpu_has_cap(ARM64_WORKAROUND_2457168)) {
+>> +               cnt->corecnt = read_corecnt();
+> This statement is present in both branches, so can it be moved before the if ()?
+Yes.
+Do you mean adding a blank line before if()?
+>
+>> +               cnt->constcnt = 0;
+>> +       } else {
+>> +               cnt->corecnt = read_corecnt();
+>> +               cnt->constcnt = read_constcnt();
+>> +       }
+>> +}
+>> +
+>>   static inline
+>> -int counters_read_on_cpu(int cpu, smp_call_func_t func, u64 *val)
+>> +int counters_read_on_cpu(int cpu, smp_call_func_t func, void *data)
+>>   {
+>>          /*
+>>           * Abort call on counterless CPU or when interrupts are
+>> @@ -335,7 +359,7 @@ int counters_read_on_cpu(int cpu, smp_call_func_t func, u64 *val)
+>>          if (WARN_ON_ONCE(irqs_disabled()))
+>>                  return -EPERM;
+>>
+>> -       smp_call_function_single(cpu, func, val, 1);
+>> +       smp_call_function_single(cpu, func, data, 1);
+>>
+>>          return 0;
+>>   }
+>> @@ -364,6 +388,21 @@ bool cpc_ffh_supported(void)
+>>          return true;
+>>   }
+>>
+>> +int cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered, u64 *reference)
+>> +{
+>> +       struct amu_counters cnts = {0};
+>> +       int ret;
+>> +
+>> +       ret = counters_read_on_cpu(cpu, cpu_read_amu_counters, &cnts);
+>> +       if (ret)
+>> +               return ret;
+>> +
+>> +       *delivered = cnts.corecnt;
+>> +       *reference = cnts.constcnt;
+>> +
+>> +       return 0;
+>> +}
+>> +
+>>   int cpc_read_ffh(int cpu, struct cpc_reg *reg, u64 *val)
+>>   {
+>>          int ret = -EOPNOTSUPP;
+>> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+>> index 7ff269a78c20..f303fabd7cfe 100644
+>> --- a/drivers/acpi/cppc_acpi.c
+>> +++ b/drivers/acpi/cppc_acpi.c
+>> @@ -1299,6 +1299,11 @@ bool cppc_perf_ctrs_in_pcc(void)
+>>   }
+>>   EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
+>>
+>> +int __weak cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered, u64 *reference)
+>> +{
+>> +       return 0;
+>> +}
+>> +
+>>   /**
+>>    * cppc_get_perf_ctrs - Read a CPU's performance feedback counters.
+>>    * @cpunum: CPU from which to read counters.
+>> @@ -1313,7 +1318,8 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+>>                  *ref_perf_reg, *ctr_wrap_reg;
+>>          int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
+>>          struct cppc_pcc_data *pcc_ss_data = NULL;
+>> -       u64 delivered, reference, ref_perf, ctr_wrap_time;
+>> +       u64 delivered = 0, reference = 0;
+>> +       u64 ref_perf, ctr_wrap_time;
+>>          int ret = 0, regs_in_pcc = 0;
+>>
+>>          if (!cpc_desc) {
+>> @@ -1350,8 +1356,18 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+>>                  }
+>>          }
+>>
+>> -       cpc_read(cpunum, delivered_reg, &delivered);
+>> -       cpc_read(cpunum, reference_reg, &reference);
+>> +       if (cpc_ffh_supported()) {
+>> +               ret = cpc_read_arch_counters_on_cpu(cpunum, &delivered, &reference);
+>> +               if (ret) {
+>> +                       pr_debug("read arch counters failed, ret=%d.\n", ret);
+>> +                       ret = 0;
+>> +               }
+>> +       }
+> The above is surely not applicable to every platform using CPPC.  Also
+
+cpc_ffh_supported is aimed to control only the platform supported FFH to enter.
+cpc_read_arch_counters_on_cpu is also needed to implemented by each platform according to their require.
+Here just implement this interface for arm64.
+
+> it looks like in the ARM64_WORKAROUND_2457168 enabled case it is just
+> pointless overhead, because "reference" is always going to be 0 here
+> then.
+Right, it is always going to be 0 here for the ARM64_WORKAROUND_2457168 
+enabled case .
+But ARM64_WORKAROUND_2457168 is a macro releated to ARM.
+It seems that it is not appropriate for this macro to appear this common 
+place for all platform, right?
+
+>
+> Please clean that up.
+>
+>> +       if (!delivered || !reference) {
+>> +               cpc_read(cpunum, delivered_reg, &delivered);
+>> +               cpc_read(cpunum, reference_reg, &reference);
+>> +       }
+>> +
+>>          cpc_read(cpunum, ref_perf_reg, &ref_perf);
+>>
+>>          /*
+>> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+>> index 6126c977ece0..07d4fd82d499 100644
+>> --- a/include/acpi/cppc_acpi.h
+>> +++ b/include/acpi/cppc_acpi.h
+>> @@ -152,6 +152,7 @@ extern bool cpc_ffh_supported(void);
+>>   extern bool cpc_supported_by_cpu(void);
+>>   extern int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val);
+>>   extern int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val);
+>> +extern int cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered, u64 *reference);
+>>   extern int cppc_get_epp_perf(int cpunum, u64 *epp_perf);
+>>   extern int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable);
+>>   extern int cppc_get_auto_sel_caps(int cpunum, struct cppc_perf_caps *perf_caps);
+>> @@ -209,6 +210,10 @@ static inline int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val)
+>>   {
+>>          return -ENOTSUPP;
+>>   }
+>> +static inline int cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered, u64 *reference)
+>> +{
+>> +       return -EOPNOTSUPP;
+>> +}
+>>   static inline int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
+>>   {
+>>          return -ENOTSUPP;
+>> --
+> .
 
