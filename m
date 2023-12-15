@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-2484-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2482-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFABE815092
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 21:02:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8DC81508F
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 21:02:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74C44285893
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 20:02:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E4B81C21327
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 20:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A754654B;
-	Fri, 15 Dec 2023 20:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F37945973;
+	Fri, 15 Dec 2023 20:02:18 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3EC4597B;
-	Fri, 15 Dec 2023 20:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210CC45974;
+	Fri, 15 Dec 2023 20:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
- id 5a013ed72259bd7c; Fri, 15 Dec 2023 21:02:14 +0100
+ id 74bf26d935cc733f; Fri, 15 Dec 2023 21:02:14 +0100
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 56A03668B59;
-	Fri, 15 Dec 2023 21:02:14 +0100 (CET)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 9014D668B59;
+	Fri, 15 Dec 2023 21:02:13 +0100 (CET)
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux PM <linux-pm@vger.kernel.org>
 Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>
-Subject: [PATCH v1 5/6] thermal: netlink: Pass thermal zone pointer to notify routines
-Date: Fri, 15 Dec 2023 21:00:36 +0100
-Message-ID: <1975810.PYKUYFuaPT@kreacher>
+Subject: [PATCH v1 6/6] thermal: netlink: Rework cdev-related notify API
+Date: Fri, 15 Dec 2023 21:02:04 +0100
+Message-ID: <7628882.EvYhyI6sBW@kreacher>
 In-Reply-To: <4556052.LvFx2qVVIh@kreacher>
 References: <4556052.LvFx2qVVIh@kreacher>
 Precedence: bulk
@@ -48,194 +48,158 @@ Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 195.136.19.94
 X-CLIENT-HOSTNAME: 195.136.19.94
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtvddgudeftdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeejpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgt
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtvddgudefudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeejpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgt
  phhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
 X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-There are several routines in the thermal netlink API that take a
-thermal zone ID or a thermal zone type as their arguments, but from
-their callers perspective it would be more convenient to pass a thermal
-zone pointer to them and let them extract the necessary data from the
-given thermal zone object by themselves.
+The only actually used thermal netlink notification routine related
+to cooling devices is thermal_notify_cdev_state_update().  The other
+two, thermal_notify_cdev_add() and thermal_notify_cdev_delete(), are
+never used.
 
-Modify the code accordingly.
+So as to get rid of dead code, drop thermal_notify_cdev_add/delete(),
+which can be added back if they turn out to be ever needed, along with
+the related code.
+
+In analogy with the previous thermal netlink API changes, redefine
+thermal_notify_cdev_state_update() to take a const cdev pointer as its
+first argument and let it extract the requisite information from there
+by itself.
 
 No intentional functional impact.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/thermal/thermal_core.c    |   10 +++++-----
- drivers/thermal/thermal_netlink.c |   21 +++++++++++----------
- drivers/thermal/thermal_netlink.h |   22 ++++++++++++----------
- 3 files changed, 28 insertions(+), 25 deletions(-)
+ drivers/thermal/thermal_helpers.c |    2 -
+ drivers/thermal/thermal_netlink.c |   43 ++------------------------------------
+ drivers/thermal/thermal_netlink.h |   19 +++-------------
+ 3 files changed, 8 insertions(+), 56 deletions(-)
 
-Index: linux-pm/drivers/thermal/thermal_core.c
-===================================================================
---- linux-pm.orig/drivers/thermal/thermal_core.c
-+++ linux-pm/drivers/thermal/thermal_core.c
-@@ -213,7 +213,7 @@ exit:
- 	mutex_unlock(&tz->lock);
- 	mutex_unlock(&thermal_governor_lock);
- 
--	thermal_notify_tz_gov_change(tz->id, policy);
-+	thermal_notify_tz_gov_change(tz, policy);
- 
- 	return ret;
- }
-@@ -475,9 +475,9 @@ static int thermal_zone_device_set_mode(
- 	mutex_unlock(&tz->lock);
- 
- 	if (mode == THERMAL_DEVICE_ENABLED)
--		thermal_notify_tz_enable(tz->id);
-+		thermal_notify_tz_enable(tz);
- 	else
--		thermal_notify_tz_disable(tz->id);
-+		thermal_notify_tz_disable(tz);
- 
- 	return ret;
- }
-@@ -1386,7 +1386,7 @@ thermal_zone_device_register_with_trips(
- 	if (atomic_cmpxchg(&tz->need_update, 1, 0))
- 		thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
- 
--	thermal_notify_tz_create(tz->id, tz->type);
-+	thermal_notify_tz_create(tz);
- 
- 	return tz;
- 
-@@ -1490,7 +1490,7 @@ void thermal_zone_device_unregister(stru
- 
- 	put_device(&tz->device);
- 
--	thermal_notify_tz_delete(tz_id);
-+	thermal_notify_tz_delete(tz);
- 
- 	wait_for_completion(&tz->removal);
- 	kfree(tz);
-Index: linux-pm/drivers/thermal/thermal_netlink.c
-===================================================================
---- linux-pm.orig/drivers/thermal/thermal_netlink.c
-+++ linux-pm/drivers/thermal/thermal_netlink.c
-@@ -288,30 +288,30 @@ out_free_msg:
- 	return ret;
- }
- 
--int thermal_notify_tz_create(int tz_id, const char *name)
-+int thermal_notify_tz_create(const struct thermal_zone_device *tz)
- {
--	struct param p = { .tz_id = tz_id, .name = name };
-+	struct param p = { .tz_id = tz->id, .name = tz->type };
- 
- 	return thermal_genl_send_event(THERMAL_GENL_EVENT_TZ_CREATE, &p);
- }
- 
--int thermal_notify_tz_delete(int tz_id)
-+int thermal_notify_tz_delete(const struct thermal_zone_device *tz)
- {
--	struct param p = { .tz_id = tz_id };
-+	struct param p = { .tz_id = tz->id };
- 
- 	return thermal_genl_send_event(THERMAL_GENL_EVENT_TZ_DELETE, &p);
- }
- 
--int thermal_notify_tz_enable(int tz_id)
-+int thermal_notify_tz_enable(const struct thermal_zone_device *tz)
- {
--	struct param p = { .tz_id = tz_id };
-+	struct param p = { .tz_id = tz->id };
- 
- 	return thermal_genl_send_event(THERMAL_GENL_EVENT_TZ_ENABLE, &p);
- }
- 
--int thermal_notify_tz_disable(int tz_id)
-+int thermal_notify_tz_disable(const struct thermal_zone_device *tz)
- {
--	struct param p = { .tz_id = tz_id };
-+	struct param p = { .tz_id = tz->id };
- 
- 	return thermal_genl_send_event(THERMAL_GENL_EVENT_TZ_DISABLE, &p);
- }
-@@ -370,9 +370,10 @@ int thermal_notify_cdev_delete(int cdev_
- 	return thermal_genl_send_event(THERMAL_GENL_EVENT_CDEV_DELETE, &p);
- }
- 
--int thermal_notify_tz_gov_change(int tz_id, const char *name)
-+int thermal_notify_tz_gov_change(const struct thermal_zone_device *tz,
-+				 const char *name)
- {
--	struct param p = { .tz_id = tz_id, .name = name };
-+	struct param p = { .tz_id = tz->id, .name = name };
- 
- 	return thermal_genl_send_event(THERMAL_GENL_EVENT_TZ_GOV_CHANGE, &p);
- }
 Index: linux-pm/drivers/thermal/thermal_netlink.h
 ===================================================================
 --- linux-pm.orig/drivers/thermal/thermal_netlink.h
 +++ linux-pm/drivers/thermal/thermal_netlink.h
-@@ -14,10 +14,10 @@ struct thermal_genl_cpu_caps {
- #ifdef CONFIG_THERMAL_NETLINK
- int __init thermal_netlink_init(void);
- void __init thermal_netlink_exit(void);
--int thermal_notify_tz_create(int tz_id, const char *name);
--int thermal_notify_tz_delete(int tz_id);
--int thermal_notify_tz_enable(int tz_id);
--int thermal_notify_tz_disable(int tz_id);
-+int thermal_notify_tz_create(const struct thermal_zone_device *tz);
-+int thermal_notify_tz_delete(const struct thermal_zone_device *tz);
-+int thermal_notify_tz_enable(const struct thermal_zone_device *tz);
-+int thermal_notify_tz_disable(const struct thermal_zone_device *tz);
- int thermal_notify_tz_trip_down(const struct thermal_zone_device *tz,
- 				const struct thermal_trip *trip);
- int thermal_notify_tz_trip_up(const struct thermal_zone_device *tz,
-@@ -27,7 +27,8 @@ int thermal_notify_tz_trip_change(const
- int thermal_notify_cdev_state_update(int cdev_id, int state);
- int thermal_notify_cdev_add(int cdev_id, const char *name, int max_state);
- int thermal_notify_cdev_delete(int cdev_id);
--int thermal_notify_tz_gov_change(int tz_id, const char *name);
-+int thermal_notify_tz_gov_change(const struct thermal_zone_device *tz,
-+				 const char *name);
+@@ -24,9 +24,8 @@ int thermal_notify_tz_trip_up(const stru
+ 			      const struct thermal_trip *trip);
+ int thermal_notify_tz_trip_change(const struct thermal_zone_device *tz,
+ 				  const struct thermal_trip *trip);
+-int thermal_notify_cdev_state_update(int cdev_id, int state);
+-int thermal_notify_cdev_add(int cdev_id, const char *name, int max_state);
+-int thermal_notify_cdev_delete(int cdev_id);
++int thermal_notify_cdev_state_update(const struct thermal_cooling_device *cdev,
++				     int state);
+ int thermal_notify_tz_gov_change(const struct thermal_zone_device *tz,
+ 				 const char *name);
  int thermal_genl_sampling_temp(int id, int temp);
- int thermal_genl_cpu_capability_event(int count,
- 				      struct thermal_genl_cpu_caps *caps);
-@@ -37,22 +38,22 @@ static inline int thermal_netlink_init(v
+@@ -76,18 +75,8 @@ static inline int thermal_notify_tz_trip
  	return 0;
  }
  
--static inline int thermal_notify_tz_create(int tz_id, const char *name)
-+static inline int thermal_notify_tz_create(const struct thermal_zone_device *tz)
+-static inline int thermal_notify_cdev_state_update(int cdev_id, int state)
+-{
+-	return 0;
+-}
+-
+-static inline int thermal_notify_cdev_add(int cdev_id, const char *name,
+-					  int max_state)
+-{
+-	return 0;
+-}
+-
+-static inline int thermal_notify_cdev_delete(int cdev_id)
++static inline int thermal_notify_cdev_state_update(const struct thermal_cooling_device *cdev,
++						   int state)
  {
+ 	return 0;
+ }
+Index: linux-pm/drivers/thermal/thermal_helpers.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/thermal_helpers.c
++++ linux-pm/drivers/thermal/thermal_helpers.c
+@@ -152,7 +152,7 @@ static void thermal_cdev_set_cur_state(s
+ 	if (cdev->ops->set_cur_state(cdev, target))
+ 		return;
+ 
+-	thermal_notify_cdev_state_update(cdev->id, target);
++	thermal_notify_cdev_state_update(cdev, target);
+ 	thermal_cooling_device_stats_update(cdev, target);
+ }
+ 
+Index: linux-pm/drivers/thermal/thermal_netlink.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/thermal_netlink.c
++++ linux-pm/drivers/thermal/thermal_netlink.c
+@@ -147,27 +147,6 @@ static int thermal_genl_event_tz_trip_ch
  	return 0;
  }
  
--static inline int thermal_notify_tz_delete(int tz_id)
-+static inline int thermal_notify_tz_delete(const struct thermal_zone_device *tz)
+-static int thermal_genl_event_cdev_add(struct param *p)
+-{
+-	if (nla_put_string(p->msg, THERMAL_GENL_ATTR_CDEV_NAME,
+-			   p->name) ||
+-	    nla_put_u32(p->msg, THERMAL_GENL_ATTR_CDEV_ID,
+-			p->cdev_id) ||
+-	    nla_put_u32(p->msg, THERMAL_GENL_ATTR_CDEV_MAX_STATE,
+-			p->cdev_max_state))
+-		return -EMSGSIZE;
+-
+-	return 0;
+-}
+-
+-static int thermal_genl_event_cdev_delete(struct param *p)
+-{
+-	if (nla_put_u32(p->msg, THERMAL_GENL_ATTR_CDEV_ID, p->cdev_id))
+-		return -EMSGSIZE;
+-
+-	return 0;
+-}
+-
+ static int thermal_genl_event_cdev_state_update(struct param *p)
  {
- 	return 0;
+ 	if (nla_put_u32(p->msg, THERMAL_GENL_ATTR_CDEV_ID,
+@@ -244,8 +223,6 @@ static cb_t event_cb[] = {
+ 	[THERMAL_GENL_EVENT_TZ_TRIP_UP]		= thermal_genl_event_tz_trip_up,
+ 	[THERMAL_GENL_EVENT_TZ_TRIP_DOWN]	= thermal_genl_event_tz_trip_down,
+ 	[THERMAL_GENL_EVENT_TZ_TRIP_CHANGE]	= thermal_genl_event_tz_trip_change,
+-	[THERMAL_GENL_EVENT_CDEV_ADD]		= thermal_genl_event_cdev_add,
+-	[THERMAL_GENL_EVENT_CDEV_DELETE]	= thermal_genl_event_cdev_delete,
+ 	[THERMAL_GENL_EVENT_CDEV_STATE_UPDATE]	= thermal_genl_event_cdev_state_update,
+ 	[THERMAL_GENL_EVENT_TZ_GOV_CHANGE]	= thermal_genl_event_gov_change,
+ 	[THERMAL_GENL_EVENT_CPU_CAPABILITY_CHANGE] = thermal_genl_event_cpu_capability_change,
+@@ -348,28 +325,14 @@ int thermal_notify_tz_trip_change(const
+ 	return thermal_genl_send_event(THERMAL_GENL_EVENT_TZ_TRIP_CHANGE, &p);
  }
  
--static inline int thermal_notify_tz_enable(int tz_id)
-+static inline int thermal_notify_tz_enable(const struct thermal_zone_device *tz)
+-int thermal_notify_cdev_state_update(int cdev_id, int cdev_state)
++int thermal_notify_cdev_state_update(const struct thermal_cooling_device *cdev,
++				     int state)
  {
- 	return 0;
+-	struct param p = { .cdev_id = cdev_id, .cdev_state = cdev_state };
++	struct param p = { .cdev_id = cdev->id, .cdev_state = state };
+ 
+ 	return thermal_genl_send_event(THERMAL_GENL_EVENT_CDEV_STATE_UPDATE, &p);
  }
  
--static inline int thermal_notify_tz_disable(int tz_id)
-+static inline int thermal_notify_tz_disable(const struct thermal_zone_device *tz)
+-int thermal_notify_cdev_add(int cdev_id, const char *name, int cdev_max_state)
+-{
+-	struct param p = { .cdev_id = cdev_id, .name = name,
+-			   .cdev_max_state = cdev_max_state };
+-
+-	return thermal_genl_send_event(THERMAL_GENL_EVENT_CDEV_ADD, &p);
+-}
+-
+-int thermal_notify_cdev_delete(int cdev_id)
+-{
+-	struct param p = { .cdev_id = cdev_id };
+-
+-	return thermal_genl_send_event(THERMAL_GENL_EVENT_CDEV_DELETE, &p);
+-}
+-
+ int thermal_notify_tz_gov_change(const struct thermal_zone_device *tz,
+ 				 const char *name)
  {
- 	return 0;
- }
-@@ -91,7 +92,8 @@ static inline int thermal_notify_cdev_de
- 	return 0;
- }
- 
--static inline int thermal_notify_tz_gov_change(int tz_id, const char *name)
-+static inline int thermal_notify_tz_gov_change(const struct thermal_zone_device *tz,
-+					       const char *name)
- {
- 	return 0;
- }
 
 
 
