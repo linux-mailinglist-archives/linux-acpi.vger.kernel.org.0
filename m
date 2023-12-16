@@ -1,74 +1,44 @@
-Return-Path: <linux-acpi+bounces-2492-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2493-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4AB6815362
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 23:18:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6708154DC
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Dec 2023 01:13:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A93928628B
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Dec 2023 22:18:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C4A21C232B7
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Dec 2023 00:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829AE13B130;
-	Fri, 15 Dec 2023 22:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5A3362;
+	Sat, 16 Dec 2023 00:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IgggiDUE"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Q7uIpsOv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2058.outbound.protection.outlook.com [40.107.243.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9E118EA1;
-	Fri, 15 Dec 2023 22:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lFb0o2RWX5sq/uQmq9tI0K9ZfUU/hz5rhwowED3BO1x3iv52Vxz37YwYXVGvB+Gcfz7ThwFXI9YHBAaQWFS6gxW6kY1ydvjK34flgMx+RIiPtLtDV2+aNmIt737EDMAtU/UyENsMB9K8wCcKpF+g2wFq+4zNwnsNRdyIYqC1D3j5gEZNdEIY8LW0ILmIGt4Ygu26FjNPfYqVlorQTSoAAAesd3v6h8ip3/0HLGN4JZ5KXgA4/Z0pN92CnAGdJw3NK09Suv9UuQuhs3zT9BHNvyya0zWfq59KX2bqtjuf3jjjItUn+wuumBdXNORR+2XpoQKRHtnuYHwYs0KUNcuztg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F8yQiURzbi+JuTiylQT8sVzM/UD+jOTKzIg7VMaTVto=;
- b=U6WXLtrqP1snoH9vcjC89kO9usB1JQqZcamoltf/m7fixDTL3Ix/QJzSEt1UCZNa34NfR1BaRZO/Zj8xU4eqvq7ua8egwuItXIokFB9CtIf7DhhGayYUl7+r2Vi/fkWtIcTVWEDWGmu4h9kSx/hZcMgYBQ5+h2VghUMuv+AHcMajmgD7VEHK/lAry5wJZLSsMCUSu3aqgRepXWZ68VV5rA3bzHinE6IiF+jSzBT5LsQB2TcCRtWymyfofo7UmP6B2Stt5uusnioCwc8z5xEn0qKJjoIYxi2KJmLRg9xYhFLBaT8EWAzQp/3WwaqIuH0mj9Ffj9urQmYkp75q/3SLpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F8yQiURzbi+JuTiylQT8sVzM/UD+jOTKzIg7VMaTVto=;
- b=IgggiDUEVdvRBzbJv6jY1ukH56/8FjrchIpNiLxD2goHEXnSEvB5mXswTtvrcCoCCdrd2LzZNyx9ullQcOvdz5yJGm9vUfIPBYs7cT5Wih6Ba9Llfcq6Ug5QP9Zy/s+XKjz3wANOY+z1evD+qU+8nJVv4XQX3p4ZNaPMlNtdpaQ=
-Received: from MW4PR03CA0279.namprd03.prod.outlook.com (2603:10b6:303:b5::14)
- by MW4PR12MB7215.namprd12.prod.outlook.com (2603:10b6:303:228::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.33; Fri, 15 Dec
- 2023 22:18:06 +0000
-Received: from CO1PEPF000042A9.namprd03.prod.outlook.com
- (2603:10b6:303:b5:cafe::43) by MW4PR03CA0279.outlook.office365.com
- (2603:10b6:303:b5::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.32 via Frontend
- Transport; Fri, 15 Dec 2023 22:18:06 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000042A9.mail.protection.outlook.com (10.167.243.38) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7113.14 via Frontend Transport; Fri, 15 Dec 2023 22:18:05 +0000
-Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 15 Dec
- 2023 16:17:52 -0600
-From: Mario Limonciello <mario.limonciello@amd.com>
-To: Bjorn Helgaas <bhelgaas@google.com>, "Rafael J . Wysocki"
-	<rjw@rjwysocki.net>
-CC: <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v2] x86/pci: Stop requiring ECAM to be declared in E820, ACPI or EFI
-Date: Fri, 15 Dec 2023 16:03:43 -0600
-Message-ID: <20231215220343.22523-1-mario.limonciello@amd.com>
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E8C7E;
+	Sat, 16 Dec 2023 00:13:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from localhost.localdomain (unknown [167.220.81.210])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 7E9BC20446D3;
+	Fri, 15 Dec 2023 16:13:37 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7E9BC20446D3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1702685617;
+	bh=DStV9lsm6On3KW8OLJcekUkfoW3cgGVDLm76/JkJul0=;
+	h=From:To:Subject:Date:From;
+	b=Q7uIpsOvEYyIAi/REnu+ZoqvznbJgsj9NA2dmKTgwCdv79u1ntzIFx97x74ybix+8
+	 L0uqEgwmLC186Z45Wtrn8nWbT4YMIrfXKzhr3tR8eckPteirjvVo5LOiHTYdG/YjXm
+	 BlyhOkRBx9rOiHlzHE6NPhwa58xlO3kCiGjO5p5Q=
+From: Jarred White <jarredwhite@linux.microsoft.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org (open list:ACPI),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [RESEND PATCH v2] acpi: Use access_width over register_width for system memory  accesses
+Date: Fri, 15 Dec 2023 16:13:12 -0800
+Message-Id: <20231216001312.1160-1-jarredwhite@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -76,144 +46,135 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042A9:EE_|MW4PR12MB7215:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ca13cbe-4fcf-4a24-48ad-08dbfdbbb631
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	2ZW2w8jTSle3yfckqkqBiSR/8N6dexdLn0niCSZBH8QcmH6oywZdlQKfc8isb+kUkrGm0BPu9MQWgOpF94CyU+UYMrptg+7MX3bV76bX+/vryFYX9w3c/GYpoKTnv002GFUoobfrWZUS9aPQwjpia1gcGMhObocJMjY5jfB8WnqCxmDoB3sgsq2i44EwoE+EMQzWzyl51kEbo3cBPTPGTg8qGPSD2f5IXUbRWPZ5g3VVYQYRY3rwcrkLQOcoit5Yzj8EirykexMmGxd31nTtk55gsTpEg2HnGk/89eXJrCZKcZrEJ9X7QTR0aSkRyoi+1302NLtjA09Gcggis21ixGEX0fUleZMXE5WSXZDLb17jh4NBN+twfscQxhgFPnNdYnFOHdamF0/8Yi+TMTAoOGQ6g9nUGKgCNbA+tLEsbnUDAz0Vlz+dD1dRNgl8i6n/q+J2nCtHRZatDJliXl8C+tTKnkaMtXLgPXfLdJfVOC7GskhsikDFO1kyQRFBrpLGt+I6KfThpF11ZFd4Zcp05abw6ujlnUCo3FqZAKoh6ru4QJtfDsofR/f44MRy3QH7aThJT7S/1Of2QIHOAnPOvgOVNYgK+xkyxwwHV/ceToOs85wWN9vJhNlUXm6m4BN9j3vgY4tw7Phvlupls250H/nXKuqYoZGYO34gAsYLbzpLC9z4kSzqnp1a/AjLyzcaIfUHgnsxaTMxhp1GS3WqlZGLZYVUkphoMiEjFyB6MO+Aq2HXGT+OBfQovMN5NFSceYOv/irgMfWDJU0dV7NvOA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(39860400002)(396003)(346002)(376002)(230922051799003)(186009)(451199024)(82310400011)(1800799012)(64100799003)(40470700004)(36840700001)(46966006)(83380400001)(966005)(478600001)(82740400003)(6666004)(7696005)(1076003)(40480700001)(2616005)(426003)(336012)(16526019)(26005)(110136005)(54906003)(316002)(70206006)(70586007)(356005)(81166007)(36860700001)(47076005)(86362001)(8676002)(4326008)(44832011)(40460700003)(8936002)(5660300002)(2906002)(36756003)(41300700001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2023 22:18:05.8889
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ca13cbe-4fcf-4a24-48ad-08dbfdbbb631
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000042A9.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7215
 
-commit 7752d5cfe3d1 ("x86: validate against acpi motherboard resources")
-introduced checks for ensuring that MCFG table also has memory region
-reservations to ensure no conflicts were introduced from a buggy BIOS.
+To align with ACPI 6.3+, since bit_width can be any 8-bit value, we cannot
+depend on it being always on a clean 8b boundary. Instead, use access_width
+to determine the size and use the offset and width to shift and mask the
+bits we want to read/write out. Make sure to add a check for system memory
+since pcc redefines the access_width to subspace id.
 
-This has proceeded over time to add other types of reservation checks
-for ACPI PNP resources and EFI MMIO memory type.  The PCI firmware spec
-does say that these checks are only required when the operating system
-doesn't comprehend the firmware region:
-
-```
-If the operating system does not natively comprehend reserving the MMCFG
-region, the MMCFG region must be reserved by firmware. The address range
-reported in the MCFG table or by _CBA method (see Section 4.1.3) must be
-reserved by declaring a motherboard resource. For most systems, the
-motherboard resource would appear at the root of the ACPI namespace
-(under \_SB) in a node with a _HID of EISAID (PNP0C02), and the resources
-in this case should not be claimed in the root PCI bus’s _CRS. The
-resources can optionally be returned in Int15 E820h or EFIGetMemoryMap
-as reserved memory but must always be reported through ACPI as a
-motherboard resource.
-```
-
-Running this check causes problems with accessing extended PCI
-configuration space on OEM laptops that don't specify the region in PNP
-resources or in the EFI memory map. That later manifests as problems with
-dGPU and accessing resizable BAR. Similar problems don't exist in Windows
-11 with exact same laptop/firmware stack.
-
-Due to the stability of the Windows ecosystem that x86 machines participate
-it is unlikely that using the region specified in the MCFG table as
-a reservation will cause a problem. The possible worst circumstance could
-be that a buggy BIOS causes a larger hole in the memory map that is
-unusable for devices than intended.
-
-Change the default behavior to keep the region specified in MCFG even if
-it's not specified in another source. This is expected to improve
-machines that otherwise couldn't access PCI extended configuration space.
-
-In case this change causes problems, add a kernel command line parameter
-that can restore the previous behavior.
-
-Link: https://members.pcisig.com/wg/PCI-SIG/document/15350
-      PCI Firmware Specification 3.3
-      Section 4.1.2 MCFG Table Description Note 2
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
 ---
-v1->v2:
- * Rebase on pci/next
- * Add an escape hatch
- * Reword commit message
+Original thread
+https://lore.kernel.org/all/20230925180552.76071-1-jarredwhite@linux.microsoft.com/
 ---
- .../admin-guide/kernel-parameters.txt         |  6 ++++++
- arch/x86/pci/mmconfig-shared.c                | 19 +++++++++++++++----
- 2 files changed, 21 insertions(+), 4 deletions(-)
+changelog:
+v1-->v2:
+	1. Fixed coding style errors
+        2. Backwards compatibility with ioremapping of address still an
+           open question. Suggestions are welcomed.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 65731b060e3f..eacd0c0521c2 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1473,6 +1473,12 @@
- 			(in particular on some ATI chipsets).
- 			The kernel tries to set a reasonable default.
+ drivers/acpi/cppc_acpi.c | 36 +++++++++++++++++++++++++++++++-----
+ 1 file changed, 31 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 7ff269a78c20..fb37e1727bf8 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -163,6 +163,13 @@ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, nominal_freq);
+ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, reference_perf);
+ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
  
-+	enforce_ecam_resv [X86]
-+			Enforce requiring an ECAM reservation specified in
-+			BIOS for PCI devices.
-+			This parameter is only valid if CONFIG_PCI_MMCONFIG
-+			is enabled.
++/* Use access_width to determine the total number of bits */
++#define ACCESS_WIDTH_TO_BITS(reg) 8 << ((reg)->access_width - 1)
 +
- 	enforcing=	[SELINUX] Set initial enforcing status.
- 			Format: {"0" | "1"}
- 			See security/selinux/Kconfig help text.
-diff --git a/arch/x86/pci/mmconfig-shared.c b/arch/x86/pci/mmconfig-shared.c
-index 0cc9520666ef..aee117c6bbf9 100644
---- a/arch/x86/pci/mmconfig-shared.c
-+++ b/arch/x86/pci/mmconfig-shared.c
-@@ -34,6 +34,15 @@ static DEFINE_MUTEX(pci_mmcfg_lock);
- 
- LIST_HEAD(pci_mmcfg_list);
- 
-+static bool enforce_ecam_resv __read_mostly;
-+static int __init parse_ecam_options(char *str)
-+{
-+	enforce_ecam_resv = true;
++/* Shift and apply the mask for CPC reads/writes */
++#define MASK_VAL(val) (((val) >> reg->bit_offset) & 			\
++					GENMASK((reg->bit_width), 0))
 +
-+	return 1;
-+}
-+__setup("enforce_ecam_resv", parse_ecam_options);
-+
- static void __init pci_mmconfig_remove(struct pci_mmcfg_region *cfg)
+ static ssize_t show_feedback_ctrs(struct kobject *kobj,
+ 		struct kobj_attribute *attr, char *buf)
  {
- 	if (cfg->res.parent)
-@@ -569,10 +578,12 @@ static void __init pci_mmcfg_reject_broken(int early)
+@@ -777,6 +784,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+ 			} else if (gas_t->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+ 				if (gas_t->address) {
+ 					void __iomem *addr;
++					size_t access_width;
  
- 	list_for_each_entry(cfg, &pci_mmcfg_list, list) {
- 		if (!pci_mmcfg_reserved(NULL, cfg, early)) {
--			pr_info("not using ECAM (%pR not reserved)\n",
--				&cfg->res);
--			free_all_mmcfg();
--			return;
-+			pr_info("ECAM %pR not reserved, %s\n", &cfg->res,
-+				enforce_ecam_resv ? "ignoring" : "using anyway");
-+			if (enforce_ecam_resv) {
-+				free_all_mmcfg();
-+				return;
-+			}
- 		}
+ 					if (!osc_cpc_flexible_adr_space_confirmed) {
+ 						pr_debug("Flexible address space capability not supported\n");
+@@ -784,7 +792,8 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+ 							goto out_free;
+ 					}
+ 
+-					addr = ioremap(gas_t->address, gas_t->bit_width/8);
++					access_width = ACCESS_WIDTH_TO_BITS(gas_t) / 8;
++					addr = ioremap(gas_t->address, access_width);
+ 					if (!addr)
+ 						goto out_free;
+ 					cpc_ptr->cpc_regs[i-2].sys_mem_vaddr = addr;
+@@ -980,6 +989,7 @@ int __weak cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val)
+ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ {
+ 	void __iomem *vaddr = NULL;
++	int size;
+ 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+ 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
+ 
+@@ -991,7 +1001,7 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ 	*val = 0;
+ 
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+-		u32 width = 8 << (reg->access_width - 1);
++		u32 width = ACCESS_WIDTH_TO_BITS(reg);
+ 		u32 val_u32;
+ 		acpi_status status;
+ 
+@@ -1015,7 +1025,12 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ 		return acpi_os_read_memory((acpi_physical_address)reg->address,
+ 				val, reg->bit_width);
+ 
+-	switch (reg->bit_width) {
++	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
++		size = ACCESS_WIDTH_TO_BITS(reg);
++	else
++		size = reg->bit_width;
++
++	switch (size) {
+ 	case 8:
+ 		*val = readb_relaxed(vaddr);
+ 		break;
+@@ -1034,18 +1049,22 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ 		return -EFAULT;
  	}
+ 
++	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
++		*val = MASK_VAL(*val);
++
+ 	return 0;
  }
-
-base-commit: 67e04d921cb6902e8c2abdbf748279d43f25213e
+ 
+ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ {
+ 	int ret_val = 0;
++	int size;
+ 	void __iomem *vaddr = NULL;
+ 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+ 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
+ 
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+-		u32 width = 8 << (reg->access_width - 1);
++		u32 width = ACCESS_WIDTH_TO_BITS(reg);
+ 		acpi_status status;
+ 
+ 		status = acpi_os_write_port((acpi_io_address)reg->address,
+@@ -1067,7 +1086,14 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ 		return acpi_os_write_memory((acpi_physical_address)reg->address,
+ 				val, reg->bit_width);
+ 
+-	switch (reg->bit_width) {
++	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
++		size = ACCESS_WIDTH_TO_BITS(reg);
++		val = MASK_VAL(val);
++	} else {
++		size = reg->bit_width;
++	}
++
++	switch (size) {
+ 	case 8:
+ 		writeb_relaxed(val, vaddr);
+ 		break;
 -- 
 2.34.1
 
