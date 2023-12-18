@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-2527-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2528-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59AA38170A7
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 14:40:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4963E817492
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 16:02:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBB2B1F22636
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 13:40:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA502282C3B
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 15:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0842129EEA;
-	Mon, 18 Dec 2023 13:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851723787D;
+	Mon, 18 Dec 2023 15:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i4i5PDqG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q84+5Cpu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB80129EE3;
-	Mon, 18 Dec 2023 13:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E9D1D15F;
+	Mon, 18 Dec 2023 15:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702906840; x=1734442840;
+  t=1702911755; x=1734447755;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=o+zE+sjrn3v1eFh6D59oFX7RAmbPwzBszxq/pKNAJRw=;
-  b=i4i5PDqGwVBUdWlKAwNwfEXmc+jDPzJ4Dsb5LjnaVtdvNKH+UQQFMSFB
-   IUsFAOfNu0kfxz1pTrV9v38wZGndCTAE8EItky/mvdl3grHh2NsvbPzev
-   ZxPaEk8V+4bA6mHWYgZm7FjGLqpdZy88vjSZxYyiqfPmsf4kY+kvJzzaK
-   kmIrgDPAl6SXAuxyLrjCVq3qogEg7YWR0/FMtfjfKJAEnEJ3EjiA7K2Y9
-   v5FKf2ZPJACmQHWFsIg+qUTTxOELWj1eXLtHbtFEqpHR3bNVBiDuTHmDN
-   Wqm9MtaIGBgwXDoRBspTWi2eA9U+c/L0fZcxRJWDl+V125nBxax3Ucgdp
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10927"; a="8957355"
+  bh=n+CcIVCq8nUf1G5r1wyIIWCphC7mHVA3V90KQXIpPuU=;
+  b=Q84+5Cpus3jFocHsFXUU+HtRao80Bt7psQ6kQdZEV7KKRgpkk+XuAaYo
+   9rdOrmKkhpe767NTP0y9yJuS/SJCWi9Q3fyJ+t0zKce4iHD3BtQIg+AbF
+   heHPI1v/bwyRYayYyeRF05gRl98QJn1tbm3V/0S4fUy3k5tfiaED+XZck
+   IsoxXCXVzO2GpNb9YJhbFaBmBqzA4dsMUbu03lRXup3eCXX/Pt/+GZ4Qg
+   +7Ea3v9KLSn1cE5fFmtdhRlns3D6+GTh+FNC/wwppC2uu7j/HNk3sr7Vu
+   5vLJH9k/Wrvf3FLQYcUVyCEuz3lDTb59DraqFifvze90NALqa7U+fwSTs
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="426651283"
 X-IronPort-AV: E=Sophos;i="6.04,285,1695711600"; 
-   d="scan'208";a="8957355"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2023 05:40:40 -0800
+   d="scan'208";a="426651283"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2023 07:02:32 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10927"; a="845954022"
+X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="948802262"
 X-IronPort-AV: E=Sophos;i="6.04,285,1695711600"; 
-   d="scan'208";a="845954022"
+   d="scan'208";a="948802262"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2023 05:40:36 -0800
+  by orsmga005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2023 07:02:29 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rFDrF-00000006x5g-335i;
-	Mon, 18 Dec 2023 15:40:33 +0200
-Date: Mon, 18 Dec 2023 15:40:33 +0200
+	id 1rFF8U-00000006y5z-00uS;
+	Mon, 18 Dec 2023 17:02:26 +0200
+Date: Mon, 18 Dec 2023 17:02:25 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -62,18 +62,13 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v1 1/3] device property: Implement device_is_big_endian()
-Message-ID: <ZYBL0Y9VaWeVFbg5@smile.fi.intel.com>
-References: <CAMRc=MdSpk_OszeDCyA5_Sp-w=sL9DHB2gGCOFP+FCiobm2cbA@mail.gmail.com>
- <2023111513-stinky-doorframe-8cd1@gregkh>
- <ZXHUat2Xo1VcAxN2@smile.fi.intel.com>
- <2023121512-breeches-snaking-74ad@gregkh>
- <ZXxr8LD1P63k-xRV@smile.fi.intel.com>
- <CAMRc=MeBh5Uq1YTvcnGugnvOFYh+rqc7fJpZrSvfmHbwh3SKXw@mail.gmail.com>
- <ZYAlOpjJBuvY-wTR@smile.fi.intel.com>
- <CAMRc=MeJgJj7ikp85vj9KMxgh6Rfx5BrCa3uq52Rj+iDFmQunQ@mail.gmail.com>
- <2023121834-exuberant-visibly-329f@gregkh>
- <CAMRc=MfUNaBcsxGstAk3Y1To2AMGvDY6EoQYcyBALDQuA=QGdg@mail.gmail.com>
+Subject: Re: [PATCH v1 0/3] gpio: mmio: Make driver agnostic
+Message-ID: <ZYBfAbvs-7lMzuy-@smile.fi.intel.com>
+References: <20231025184259.250588-1-andriy.shevchenko@linux.intel.com>
+ <CAMRc=MfZm7TDHRRLrDmnyj3vmbscmpveR0fveYfsGz0SdaskKw@mail.gmail.com>
+ <ZYBKn9UZIhY03DiV@smile.fi.intel.com>
+ <ZYBKxv_M23j0k_K-@smile.fi.intel.com>
+ <CAMRc=Mcu4H12pV0rT4OXLsaEShn4r9XM2rbQ1VK-SmgxwidWUg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,62 +78,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MfUNaBcsxGstAk3Y1To2AMGvDY6EoQYcyBALDQuA=QGdg@mail.gmail.com>
+In-Reply-To: <CAMRc=Mcu4H12pV0rT4OXLsaEShn4r9XM2rbQ1VK-SmgxwidWUg@mail.gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Dec 18, 2023 at 01:38:18PM +0100, Bartosz Golaszewski wrote:
-> On Mon, Dec 18, 2023 at 12:18 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> > On Mon, Dec 18, 2023 at 12:05:54PM +0100, Bartosz Golaszewski wrote:
-> > > On Mon, Dec 18, 2023 at 11:56 AM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > On Mon, Dec 18, 2023 at 11:35:04AM +0100, Bartosz Golaszewski wrote:
-> > > > > On Fri, Dec 15, 2023 at 4:11 PM Andy Shevchenko
-> > > > > <andriy.shevchenko@linux.intel.com> wrote:
+On Mon, Dec 18, 2023 at 02:37:48PM +0100, Bartosz Golaszewski wrote:
+> On Mon, Dec 18, 2023 at 2:36 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Mon, Dec 18, 2023 at 03:35:28PM +0200, Andy Shevchenko wrote:
+> > > On Mon, Dec 18, 2023 at 01:43:40PM +0100, Bartosz Golaszewski wrote:
 
 ...
 
-> > > > > Ugh, this is rebased on top of 6.7-rc3...
-> > > > >
-> > > > > My tree is based on rc1, if I pull it, then it'll be a mess.
-> > > >
-> > > > But v6.7-rc3 is something that is already in the upstream.
-> > > > I don't see how it can be more "mess" with this. Whatever...
-> > >
-> > > My for-next branch is based on v6.7-rc1 (as it should IIUC) and if I
-> > > now pull Greg's tag, I will be sending rc1-rc3 stuff to Linus Torvalds
-> > > in addition to the GPIO changes for v6.8. I bet he will not appreciate
-> > > it.
+> > > Thank you! I guess you forgot to add --sign-off to the `git merge ...`
 > >
-> > No, you will not be sending him -rc1-rc3 stuff at all, that's not how
-> > git works.
-> >
-> > Try it yourself and see.  Git does a "what's the changesets that are
-> > in this pull request and not already in mine" when determining this.
-> > You can see it when doing a 'git request-pull', it will only show you
-> > the diff of what will be sent.
-> >
-> > Also look at the 'git merge-base' output, it will show the point where
-> > things will start to be sent, and that will not have all of the -rc1
-> > through -rc3 changes in it.
-> >
-> > > Greg: Is it too late to have this rebased on top of v6.7-rc1 instead?
-> >
-> > Sorry, but yes.  But don't worry, again, git can handle all of this
-> > easily!  Try it locally and see.  Don't fear the 'fast-forward' :)
+> > Sorry, it's --signoff.
 > 
-> Sorry for the noise. I did try it locally and noticed that a bunch of
-> commits that were merged before rc3 moved "before it" in git log and
-> figured this is what the PR would look like. However the PR is correct
-> and I should have generated it before sending the email.
+> I never sign-off on merges though, is it mandatory? Probably not as
+> there are no warnings from next like for regular commits about missing
+> sign-offs.
 
-Right.
+No idea. I do it as it is harmless, and makes commit more robust.
 
-What Linus can rant on is when one rebases his stuff on newer rcX,
-the merges on contrary are pretty much okay as long as they are
-justified.
-
-> Thanks for a lesson in git.
+For me it's fine, but I leave for me to exclaim later "Yay, had told ya!" :-)
 
 -- 
 With Best Regards,
