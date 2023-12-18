@@ -1,74 +1,61 @@
-Return-Path: <linux-acpi+bounces-2528-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2529-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4963E817492
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 16:02:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 779A981777D
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 17:29:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA502282C3B
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 15:02:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF711B23704
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 16:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851723787D;
-	Mon, 18 Dec 2023 15:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7957D481BD;
+	Mon, 18 Dec 2023 16:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q84+5Cpu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pgPaNxRa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E9D1D15F;
-	Mon, 18 Dec 2023 15:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702911755; x=1734447755;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=n+CcIVCq8nUf1G5r1wyIIWCphC7mHVA3V90KQXIpPuU=;
-  b=Q84+5Cpus3jFocHsFXUU+HtRao80Bt7psQ6kQdZEV7KKRgpkk+XuAaYo
-   9rdOrmKkhpe767NTP0y9yJuS/SJCWi9Q3fyJ+t0zKce4iHD3BtQIg+AbF
-   heHPI1v/bwyRYayYyeRF05gRl98QJn1tbm3V/0S4fUy3k5tfiaED+XZck
-   IsoxXCXVzO2GpNb9YJhbFaBmBqzA4dsMUbu03lRXup3eCXX/Pt/+GZ4Qg
-   +7Ea3v9KLSn1cE5fFmtdhRlns3D6+GTh+FNC/wwppC2uu7j/HNk3sr7Vu
-   5vLJH9k/Wrvf3FLQYcUVyCEuz3lDTb59DraqFifvze90NALqa7U+fwSTs
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="426651283"
-X-IronPort-AV: E=Sophos;i="6.04,285,1695711600"; 
-   d="scan'208";a="426651283"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2023 07:02:32 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="948802262"
-X-IronPort-AV: E=Sophos;i="6.04,285,1695711600"; 
-   d="scan'208";a="948802262"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2023 07:02:29 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rFF8U-00000006y5z-00uS;
-	Mon, 18 Dec 2023 17:02:26 +0200
-Date: Mon, 18 Dec 2023 17:02:25 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v1 0/3] gpio: mmio: Make driver agnostic
-Message-ID: <ZYBfAbvs-7lMzuy-@smile.fi.intel.com>
-References: <20231025184259.250588-1-andriy.shevchenko@linux.intel.com>
- <CAMRc=MfZm7TDHRRLrDmnyj3vmbscmpveR0fveYfsGz0SdaskKw@mail.gmail.com>
- <ZYBKn9UZIhY03DiV@smile.fi.intel.com>
- <ZYBKxv_M23j0k_K-@smile.fi.intel.com>
- <CAMRc=Mcu4H12pV0rT4OXLsaEShn4r9XM2rbQ1VK-SmgxwidWUg@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9253D57F;
+	Mon, 18 Dec 2023 16:29:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E77EC433C7;
+	Mon, 18 Dec 2023 16:28:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702916941;
+	bh=cuIJ/8s2AYcAKCRZwOwQRNGRaRi9/bICEVQ2fASqZdk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pgPaNxRa19QteSUajSmhwIBygIXOwyglTsgblC6uEftO+XTQg6+O3kXAj9XX2OmcC
+	 rQOpqnvB5+xOO/ow7seOv1CdwV13FbembY2BokFhPnwSM4b0DvGeATzzmDK+AEOLHw
+	 6DaCbWimil/lLwi/MxyvK5Y12TLnf9HBPcW++ZT9x3tzMvn7KL4GnLx7Lcu5QvqSQp
+	 eltb1y4JDmA5690dgcONdt9hmYC6CU/Xhok/FJZ/y98obP8l0G4B7kd38/bxCcL5CD
+	 m0hJV4fUjPoN82jbVmU9YShGfagm/C07b9jmlsrqKjpLRJaGDiIiVu6scxMm9bEVQ6
+	 YQAI2eQ+xkSew==
+Date: Mon, 18 Dec 2023 17:28:53 +0100
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>
+Subject: Re: [PATCH RFC v3 13/21] ACPICA: Add new MADT GICC flags fields
+Message-ID: <ZYBzRWs7v1PsF6qV@lpieralisi>
+References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk>
+ <E1rDOgs-00Dvko-6t@rmk-PC.armlinux.org.uk>
+ <20231215162322.00007391@Huawei.com>
+ <ZXyEiHLFBsoUkfNI@shell.armlinux.org.uk>
+ <ZYAPhlwPUT/7dN4n@lpieralisi>
+ <CAJZ5v0hyUqJspPbGTgTMSVHVBe=wHR6swPx-O3UcsH5dXDFpTA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -78,32 +65,67 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=Mcu4H12pV0rT4OXLsaEShn4r9XM2rbQ1VK-SmgxwidWUg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <CAJZ5v0hyUqJspPbGTgTMSVHVBe=wHR6swPx-O3UcsH5dXDFpTA@mail.gmail.com>
 
-On Mon, Dec 18, 2023 at 02:37:48PM +0100, Bartosz Golaszewski wrote:
-> On Mon, Dec 18, 2023 at 2:36 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Mon, Dec 18, 2023 at 03:35:28PM +0200, Andy Shevchenko wrote:
-> > > On Mon, Dec 18, 2023 at 01:43:40PM +0100, Bartosz Golaszewski wrote:
-
-...
-
-> > > Thank you! I guess you forgot to add --sign-off to the `git merge ...`
+On Mon, Dec 18, 2023 at 02:14:30PM +0100, Rafael J. Wysocki wrote:
+> On Mon, Dec 18, 2023 at 10:23 AM Lorenzo Pieralisi
+> <lpieralisi@kernel.org> wrote:
 > >
-> > Sorry, it's --signoff.
+> > On Fri, Dec 15, 2023 at 04:53:28PM +0000, Russell King (Oracle) wrote:
+> > > On Fri, Dec 15, 2023 at 04:23:22PM +0000, Jonathan Cameron wrote:
+> > > > On Wed, 13 Dec 2023 12:50:18 +0000
+> > > > Russell King (Oracle) <rmk+kernel@armlinux.org.uk> wrote:
+> > > >
+> > > > > From: James Morse <james.morse@arm.com>
+> > > > >
+> > > > > Add the new flag field to the MADT's GICC structure.
+> > > > >
+> > > > > 'Online Capable' indicates a disabled CPU can be enabled later. See
+> > > > > ACPI specification 6.5 Tabel 5.37: GICC CPU Interface Flags.
+> > > > >
+> > > > > Signed-off-by: James Morse <james.morse@arm.com>
+> > > > > Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> > > > > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> > > > > Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> > > > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > > >
+> > > > I see there is an acpica pull request including this bit but with a different name
+> > > > For reference.
+> > > > https://github.com/acpica/acpica/pull/914/commits/453a5f67567786522021d5f6913f561f8b3cabf6
+> > > >
+> > > > +CC Lorenzo who submitted that.
+> > >
+> > > > > +#define ACPI_MADT_GICC_CPU_CAPABLE      (1<<3)   /* 03: CPU is online capable */
+> > > >
+> > > > ACPI_MADT_GICC_ONLINE_CAPABLE
+> > >
+> > > It's somewhat disappointing, but no big deal. It's easy enough to change
+> > > "irqchip/gic-v3: Add support for ACPI's disabled but 'online capable' CPUs"
+> > > to use Lorenzo's name when that patch hits - and it becomes one less
+> > > patch in this patch set when Lorenzo's change eventually hits mainline.
+> > >
+> > > Does anyone know how long it may take for Lorenzo's change to get into
+> > > mainline? Would it be by the 6.8 merge window or the following one?
+> >
+> > I wish I knew. I submitted ACPICA changes for the online capable bit
+> > since I had to add additional flags on top (ie DMA coherent) and it
+> > would not make sense to submit the latter without the former.
+> >
+> > I'd be great if the ACPICA headers can make it into Linux for the upcoming
+> > merge window, not sure what I can do to fasttrack the process though
+> > (I shall ping the maintainers).
 > 
-> I never sign-off on merges though, is it mandatory? Probably not as
-> there are no warnings from next like for regular commits about missing
-> sign-offs.
+> If your upstream pull request has been merged, I can pick up Linux
+> patches carrying Link: tags pointing to the upstream ACPICA commits in
+> that pull request.
 
-No idea. I do it as it is harmless, and makes commit more robust.
+Thank you, I don't think it has been merged yet (and it requires
+review because I am not that familiar with the ACPICA code base).
 
-For me it's fine, but I leave for me to exclaim later "Yay, had told ya!" :-)
+Hopefully it should be an extended kernel cycle so it might be
+possible to get these headers in v6.8, if you deem that reasonable
+of course once the PR is merged.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Thanks,
+Lorenzo
 
