@@ -1,105 +1,148 @@
-Return-Path: <linux-acpi+bounces-2526-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2527-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537C081709D
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 14:38:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59AA38170A7
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 14:40:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 077961F23260
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 13:38:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBB2B1F22636
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 13:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB43129EF7;
-	Mon, 18 Dec 2023 13:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0842129EEA;
+	Mon, 18 Dec 2023 13:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="G7YmeNJN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i4i5PDqG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F77129EE6
-	for <linux-acpi@vger.kernel.org>; Mon, 18 Dec 2023 13:38:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-4b6dc0080f7so87431e0c.0
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Dec 2023 05:38:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1702906681; x=1703511481; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k7/HSEoWUiPX3oPiGjdRAm9msxrJboMutH8zCgBm4kc=;
-        b=G7YmeNJNkp7dPXd3m7u9ka2oEJdR7Ts2LPcMSbjq0tUwuRU4wTsTEcUrndmljdlRgB
-         X1frRtI3HRTsuJ8WaKEuAaZ1QujcdQ9pwX+viOZFPU6S675CxayYogG4dLxYnrUxOIxk
-         ztDsWXzCIpj4xFBtS54/IPlKbc090UqbnnFlHUODGgpCfAXO/U2k0nbUzoDH33cLtdVu
-         3ejUwm30L6IYAd1S3NAKbE7/NJm90iJj3QU+SMEMVKV8qbw1JbrNK/xzm2pXv0EryvPU
-         OgyAWZQ5/7pzkEzMsKviBOEY937V36YmggXuImDiCOuNxA48qCPkE1iP8S/B35tQbe/7
-         Jqjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702906681; x=1703511481;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k7/HSEoWUiPX3oPiGjdRAm9msxrJboMutH8zCgBm4kc=;
-        b=f+q9ZiOEwoCA0riQgD7mqRl5LpKAbUAgg7oOchL7vVbhdHKamFS0pGdB6DFn1piFZC
-         kY0Tw0szWGze1EDNUD70A4P9oDK7vv3ktgqXriNfJ1X7XJEZg4krNeCY/+FIPizf/ZyR
-         Z7/8EW+p16IT8lqS3kLn1aO+XurXaylz2qY0VPxgfvBWAjQp+8CdrcRjwqWAisteB+Mc
-         imWk+747IImNbliXCcrHBjq+7N5QjA0yQZKQCoX4S+FQhtkHQ5OsozzOx2YSJETwnjd6
-         sKjnzCh+dui8fS78A5xeprBT0uLlHDSX+mbY+yWG5rVrWDWFD89a8c6Dvx9t9+QF2Auk
-         uJSQ==
-X-Gm-Message-State: AOJu0YwU+5+HjgSWEUX7dbJGO3wC9jdL04BnPc50Mfa+lXoO+VnuqHQ0
-	BGQ6ddFhcQE4RhZHvrqxhtIskFGj+yoGywI1HnF3HA==
-X-Google-Smtp-Source: AGHT+IHGOmkzLosVMFpAId8QDQkN/D3WS1NE2rrsuRg5qtMabd5LmSLFAYjKn3K+ctGA41jHAhESWi54xrSKmIEmEzU=
-X-Received: by 2002:a05:6122:4b0f:b0:4b2:c554:dfcf with SMTP id
- fc15-20020a0561224b0f00b004b2c554dfcfmr10820006vkb.30.1702906679298; Mon, 18
- Dec 2023 05:37:59 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB80129EE3;
+	Mon, 18 Dec 2023 13:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702906840; x=1734442840;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=o+zE+sjrn3v1eFh6D59oFX7RAmbPwzBszxq/pKNAJRw=;
+  b=i4i5PDqGwVBUdWlKAwNwfEXmc+jDPzJ4Dsb5LjnaVtdvNKH+UQQFMSFB
+   IUsFAOfNu0kfxz1pTrV9v38wZGndCTAE8EItky/mvdl3grHh2NsvbPzev
+   ZxPaEk8V+4bA6mHWYgZm7FjGLqpdZy88vjSZxYyiqfPmsf4kY+kvJzzaK
+   kmIrgDPAl6SXAuxyLrjCVq3qogEg7YWR0/FMtfjfKJAEnEJ3EjiA7K2Y9
+   v5FKf2ZPJACmQHWFsIg+qUTTxOELWj1eXLtHbtFEqpHR3bNVBiDuTHmDN
+   Wqm9MtaIGBgwXDoRBspTWi2eA9U+c/L0fZcxRJWDl+V125nBxax3Ucgdp
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10927"; a="8957355"
+X-IronPort-AV: E=Sophos;i="6.04,285,1695711600"; 
+   d="scan'208";a="8957355"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2023 05:40:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10927"; a="845954022"
+X-IronPort-AV: E=Sophos;i="6.04,285,1695711600"; 
+   d="scan'208";a="845954022"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2023 05:40:36 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rFDrF-00000006x5g-335i;
+	Mon, 18 Dec 2023 15:40:33 +0200
+Date: Mon, 18 Dec 2023 15:40:33 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v1 1/3] device property: Implement device_is_big_endian()
+Message-ID: <ZYBL0Y9VaWeVFbg5@smile.fi.intel.com>
+References: <CAMRc=MdSpk_OszeDCyA5_Sp-w=sL9DHB2gGCOFP+FCiobm2cbA@mail.gmail.com>
+ <2023111513-stinky-doorframe-8cd1@gregkh>
+ <ZXHUat2Xo1VcAxN2@smile.fi.intel.com>
+ <2023121512-breeches-snaking-74ad@gregkh>
+ <ZXxr8LD1P63k-xRV@smile.fi.intel.com>
+ <CAMRc=MeBh5Uq1YTvcnGugnvOFYh+rqc7fJpZrSvfmHbwh3SKXw@mail.gmail.com>
+ <ZYAlOpjJBuvY-wTR@smile.fi.intel.com>
+ <CAMRc=MeJgJj7ikp85vj9KMxgh6Rfx5BrCa3uq52Rj+iDFmQunQ@mail.gmail.com>
+ <2023121834-exuberant-visibly-329f@gregkh>
+ <CAMRc=MfUNaBcsxGstAk3Y1To2AMGvDY6EoQYcyBALDQuA=QGdg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231025184259.250588-1-andriy.shevchenko@linux.intel.com>
- <CAMRc=MfZm7TDHRRLrDmnyj3vmbscmpveR0fveYfsGz0SdaskKw@mail.gmail.com>
- <ZYBKn9UZIhY03DiV@smile.fi.intel.com> <ZYBKxv_M23j0k_K-@smile.fi.intel.com>
-In-Reply-To: <ZYBKxv_M23j0k_K-@smile.fi.intel.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 18 Dec 2023 14:37:48 +0100
-Message-ID: <CAMRc=Mcu4H12pV0rT4OXLsaEShn4r9XM2rbQ1VK-SmgxwidWUg@mail.gmail.com>
-Subject: Re: [PATCH v1 0/3] gpio: mmio: Make driver agnostic
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	Linus Walleij <linus.walleij@linaro.org>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MfUNaBcsxGstAk3Y1To2AMGvDY6EoQYcyBALDQuA=QGdg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Dec 18, 2023 at 2:36=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Mon, Dec 18, 2023 at 03:35:28PM +0200, Andy Shevchenko wrote:
-> > On Mon, Dec 18, 2023 at 01:43:40PM +0100, Bartosz Golaszewski wrote:
->
-> ...
->
-> > Thank you! I guess you forgot to add --sign-off to the `git merge ...`
->
-> Sorry, it's --signoff.
->
+On Mon, Dec 18, 2023 at 01:38:18PM +0100, Bartosz Golaszewski wrote:
+> On Mon, Dec 18, 2023 at 12:18 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> > On Mon, Dec 18, 2023 at 12:05:54PM +0100, Bartosz Golaszewski wrote:
+> > > On Mon, Dec 18, 2023 at 11:56 AM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > > On Mon, Dec 18, 2023 at 11:35:04AM +0100, Bartosz Golaszewski wrote:
+> > > > > On Fri, Dec 15, 2023 at 4:11 PM Andy Shevchenko
+> > > > > <andriy.shevchenko@linux.intel.com> wrote:
 
-I never sign-off on merges though, is it mandatory? Probably not as
-there are no warnings from next like for regular commits about missing
-sign-offs.
+...
 
-Bart
+> > > > > Ugh, this is rebased on top of 6.7-rc3...
+> > > > >
+> > > > > My tree is based on rc1, if I pull it, then it'll be a mess.
+> > > >
+> > > > But v6.7-rc3 is something that is already in the upstream.
+> > > > I don't see how it can be more "mess" with this. Whatever...
+> > >
+> > > My for-next branch is based on v6.7-rc1 (as it should IIUC) and if I
+> > > now pull Greg's tag, I will be sending rc1-rc3 stuff to Linus Torvalds
+> > > in addition to the GPIO changes for v6.8. I bet he will not appreciate
+> > > it.
+> >
+> > No, you will not be sending him -rc1-rc3 stuff at all, that's not how
+> > git works.
+> >
+> > Try it yourself and see.  Git does a "what's the changesets that are
+> > in this pull request and not already in mine" when determining this.
+> > You can see it when doing a 'git request-pull', it will only show you
+> > the diff of what will be sent.
+> >
+> > Also look at the 'git merge-base' output, it will show the point where
+> > things will start to be sent, and that will not have all of the -rc1
+> > through -rc3 changes in it.
+> >
+> > > Greg: Is it too late to have this rebased on top of v6.7-rc1 instead?
+> >
+> > Sorry, but yes.  But don't worry, again, git can handle all of this
+> > easily!  Try it locally and see.  Don't fear the 'fast-forward' :)
+> 
+> Sorry for the noise. I did try it locally and noticed that a bunch of
+> commits that were merged before rc3 moved "before it" in git log and
+> figured this is what the PR would look like. However the PR is correct
+> and I should have generated it before sending the email.
 
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+Right.
+
+What Linus can rant on is when one rebases his stuff on newer rcX,
+the merges on contrary are pretty much okay as long as they are
+justified.
+
+> Thanks for a lesson in git.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
