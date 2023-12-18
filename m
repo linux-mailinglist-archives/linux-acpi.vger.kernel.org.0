@@ -1,55 +1,58 @@
-Return-Path: <linux-acpi+bounces-2510-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2511-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA268166EC
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 07:54:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 492FC8169C8
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 10:23:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52731B21EA7
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 06:54:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFB9AB21759
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Dec 2023 09:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BBC748E;
-	Mon, 18 Dec 2023 06:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BD111714;
+	Mon, 18 Dec 2023 09:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyTclJ8/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJud1fJD"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB62101C9;
-	Mon, 18 Dec 2023 06:54:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D47C433C7;
-	Mon, 18 Dec 2023 06:54:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702882462;
-	bh=WqSdOGaMwSBPoEtUznslg5s7PXAyzsMtO2SlEkxyWGY=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786BC12B61;
+	Mon, 18 Dec 2023 09:23:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17966C433C8;
+	Mon, 18 Dec 2023 09:23:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702891407;
+	bh=GHAwRyvzYMoO5t9DJy2L/vZFGZ5Dq9mWQeMLRWVKZx0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iyTclJ8/wMW+zu7NPf5HxB+KPpilY4WTl38/pGkHfTLt355xwMgIZfyU7dIReIUB9
-	 dCraaErrmnktGo/N4KrHf0CS0DGxi1/eP5nKRH7eu1y0DlGqJ5zZxRNe0WyMz10aw4
-	 v4zHkvihss/8toJXCHaAJxfTfER2aI8wyDGUJs78=
-Date: Mon, 18 Dec 2023 07:54:20 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: bp@alien8.de, rafael@kernel.org, wangkefeng.wang@huawei.com,
-	tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
-	linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com,
-	will@kernel.org, jarkko@kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, linux-edac@vger.kernel.org,
-	acpica-devel@lists.linuxfoundation.org, stable@vger.kernel.org,
-	x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
-	ying.huang@intel.com, ashish.kalra@amd.com,
-	baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
-	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
-	zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH v10 4/4] ACPI: APEI: handle synchronous exceptions in
- task work
-Message-ID: <2023121813-monthly-matriarch-2df4@gregkh>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20231218064521.37324-5-xueshuai@linux.alibaba.com>
+	b=RJud1fJDL22h4rushErpJMmUrhO3xcrslPsqJRk6uc2IzcXDtSELA0otvbONR8FTW
+	 L6MBy2qAm1/d885aKTGZ52miElldnk4dux1oGBB7Qwie/Jstp0/xoF4pir4VX06dNl
+	 WBVzRRDgFKNRb1ghAyxl6IzWv7qEoMD3t69caobPE1s/iGljqRMHYLRBOTapLw3KLN
+	 qQ9il4M5nD24gxNHN3ub9/SXuLvIsqeY9z0yA+LkYmcU+y7TMSg6l78d29OVQGPo/H
+	 beQmrNVxT0E83mkzpMD1ZcGj9HNmeZcG2UZcZu57S7oyla7BogUN1qFgJvr6HKhaxE
+	 r6nP6bW7hsUFw==
+Date: Mon, 18 Dec 2023 10:23:18 +0100
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>
+Subject: Re: [PATCH RFC v3 13/21] ACPICA: Add new MADT GICC flags fields
+Message-ID: <ZYAPhlwPUT/7dN4n@lpieralisi>
+References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk>
+ <E1rDOgs-00Dvko-6t@rmk-PC.armlinux.org.uk>
+ <20231215162322.00007391@Huawei.com>
+ <ZXyEiHLFBsoUkfNI@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,45 +61,57 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231218064521.37324-5-xueshuai@linux.alibaba.com>
+In-Reply-To: <ZXyEiHLFBsoUkfNI@shell.armlinux.org.uk>
 
-On Mon, Dec 18, 2023 at 02:45:21PM +0800, Shuai Xue wrote:
-> Hardware errors could be signaled by asynchronous interrupt, e.g. when an
-> error is detected by a background scrubber, or signaled by synchronous
-> exception, e.g. when a CPU tries to access a poisoned cache line. Both
-> synchronous and asynchronous error are queued as a memory_failure() work
-> and handled by a dedicated kthread in workqueue.
+On Fri, Dec 15, 2023 at 04:53:28PM +0000, Russell King (Oracle) wrote:
+> On Fri, Dec 15, 2023 at 04:23:22PM +0000, Jonathan Cameron wrote:
+> > On Wed, 13 Dec 2023 12:50:18 +0000
+> > Russell King (Oracle) <rmk+kernel@armlinux.org.uk> wrote:
+> > 
+> > > From: James Morse <james.morse@arm.com>
+> > > 
+> > > Add the new flag field to the MADT's GICC structure.
+> > > 
+> > > 'Online Capable' indicates a disabled CPU can be enabled later. See
+> > > ACPI specification 6.5 Tabel 5.37: GICC CPU Interface Flags.
+> > > 
+> > > Signed-off-by: James Morse <james.morse@arm.com>
+> > > Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> > > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> > > Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > 
+> > I see there is an acpica pull request including this bit but with a different name
+> > For reference.
+> > https://github.com/acpica/acpica/pull/914/commits/453a5f67567786522021d5f6913f561f8b3cabf6
+> > 
+> > +CC Lorenzo who submitted that.
 > 
-> However, the memory failure recovery sends SIBUS with wrong BUS_MCEERR_AO
-> si_code for synchronous errors in early kill mode, even MF_ACTION_REQUIRED
-> is set. The main problem is that the memory failure work is handled in
-> kthread context but not the user-space process which is accessing the
-> corrupt memory location, so it will send SIGBUS with BUS_MCEERR_AO si_code
-> to the user-space process instead of BUS_MCEERR_AR in kill_proc().
+> > > +#define ACPI_MADT_GICC_CPU_CAPABLE      (1<<3)	/* 03: CPU is online capable */
+> > 
+> > ACPI_MADT_GICC_ONLINE_CAPABLE
 > 
-> To this end, queue memory_failure() as a task_work so that the current
-> context in memory_failure() is exactly belongs to the process consuming
-> poison data and it will send SIBBUS with proper si_code.
+> It's somewhat disappointing, but no big deal. It's easy enough to change
+> "irqchip/gic-v3: Add support for ACPI's disabled but 'online capable' CPUs"
+> to use Lorenzo's name when that patch hits - and it becomes one less
+> patch in this patch set when Lorenzo's change eventually hits mainline.
 > 
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
-> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->  drivers/acpi/apei/ghes.c | 77 +++++++++++++++++++++++-----------------
->  include/acpi/ghes.h      |  3 --
->  mm/memory-failure.c      | 13 -------
->  3 files changed, 44 insertions(+), 49 deletions(-)
+> Does anyone know how long it may take for Lorenzo's change to get into
+> mainline? Would it be by the 6.8 merge window or the following one?
+
+I wish I knew. I submitted ACPICA changes for the online capable bit
+since I had to add additional flags on top (ie DMA coherent) and it
+would not make sense to submit the latter without the former.
+
+I'd be great if the ACPICA headers can make it into Linux for the upcoming
+merge window, not sure what I can do to fasttrack the process though
+(I shall ping the maintainers).
+
+Lorenzo
+
+> Thanks.
 > 
-
-
-<formletter>
-
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
+> -- 
+> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
