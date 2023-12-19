@@ -1,144 +1,181 @@
-Return-Path: <linux-acpi+bounces-2559-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2560-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A53818EC0
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Dec 2023 18:52:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75F0818ECF
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Dec 2023 18:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D13302868C4
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Dec 2023 17:52:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4895CB25460
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Dec 2023 17:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C62405DA;
-	Tue, 19 Dec 2023 17:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="DPqUhByv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396D739ADE;
+	Tue, 19 Dec 2023 17:50:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC6441871
-	for <linux-acpi@vger.kernel.org>; Tue, 19 Dec 2023 17:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1d337dc9697so39049625ad.3
-        for <linux-acpi@vger.kernel.org>; Tue, 19 Dec 2023 09:47:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1703008031; x=1703612831; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eiwIpb7xuTq5TPRrwpmxnXk+wGzqHEHNo03fDZVsc7I=;
-        b=DPqUhByvHwkhPIztuIP+ZkaooDYqBqXQkKL9bf42J6TH0G1MXLHdqk5g0NW5syJiNM
-         MZZd+3qXcrhq1fMCi4D2HFR7ILvl5r7WPtOAVrJ1XeUMuVTaXCGsosOYAkPQ4VsFDt3/
-         ecQgO5vNjNjNYZCnSBbCE30J5gY7ZRXN0yU4U3y6BeDIN9EX/8vdw56vpHfxc/gGoDJB
-         drtKNkS+8hLJN1RsP2Csm0LxiRMt3RzIXHZll+pEdfG0Oh99/8XIQ1zNwVvNEbIcBViE
-         LaOJ5B0futn1P3DRy9v3FNmiTemwsppADdCfXj0nLpx01zYxoaM0EeBEvbMQkS/NUkN5
-         wnDQ==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF7139875;
+	Tue, 19 Dec 2023 17:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-58dd5193db4so994579eaf.1;
+        Tue, 19 Dec 2023 09:50:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703008031; x=1703612831;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1703008230; x=1703613030;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eiwIpb7xuTq5TPRrwpmxnXk+wGzqHEHNo03fDZVsc7I=;
-        b=TyvDevULWShYBFDQzFJ+Rk0+LPSgrhSA8+f+Ik5KssUCJpFdXSU4nqQ0V4E0nWZJwc
-         C8g2x6oKKrEnQ9oFVZLGJ3IFsDg31j78pQ1JdYjgF3iuvQIeGIfyaCOuOCwJpzIOwHJQ
-         DDbbUVCfX7Nayit2ozwDfVo6AbnU27neiPMl8CUvJ7yCFF7/ErC30fMr3hrOaM9wczrl
-         NTHeWIQ6mqJJi9aeaZDe2CF1nVF727I9+0Qr+Tz9LLlVG7EEZOq4HvYsFtbUTwogTs6g
-         ivIEnKh1eOZS6JsNZuHl6paEjH7SFYKhhqWpsneHkktCaTe+g0uzS8PdrLsGhGIhZTqH
-         V9BA==
-X-Gm-Message-State: AOJu0Ywm3xpO2PNHYrI1AX+4zwg9N0FXxhkdOlk3Moq4lamenmBL0UI5
-	vD/D9Qm5MFtfDwUYrPKhUQFrjA==
-X-Google-Smtp-Source: AGHT+IEpUAW94l/bQ8GlpoYTs7IixfBFrUs4h8FHwGSRGLIfpQTk5UlG5GMDzC6dri1oqSEP3DUUjQ==
-X-Received: by 2002:a17:902:ec85:b0:1d3:ab39:abe2 with SMTP id x5-20020a170902ec8500b001d3ab39abe2mr5002223plg.14.1703008030730;
-        Tue, 19 Dec 2023 09:47:10 -0800 (PST)
-Received: from sunil-pc.Dlink ([106.51.188.200])
-        by smtp.gmail.com with ESMTPSA id n16-20020a170903111000b001d3320f6143sm14453015plh.269.2023.12.19.09.47.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Dec 2023 09:47:10 -0800 (PST)
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Anup Patel <anup@brainfault.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Haibo Xu <haibo1.xu@intel.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Sunil V L <sunilvl@ventanamicro.com>
-Subject: [RFC PATCH v3 17/17] irqchip: riscv-intc: Set ACPI irqmodel
-Date: Tue, 19 Dec 2023 23:15:26 +0530
-Message-Id: <20231219174526.2235150-18-sunilvl@ventanamicro.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231219174526.2235150-1-sunilvl@ventanamicro.com>
-References: <20231219174526.2235150-1-sunilvl@ventanamicro.com>
+        bh=IIdikjM2NM0B5fwp5wKpgGui6ScB4p2R3IMX5NwS0ok=;
+        b=UHyXHRwETSPtzSGZANcLZyUJj9HSFjJ/8ZV97I9Lm51lV/BV6MG0A879RVQZWiVIIi
+         nESyjOYFVRLlwqtOJ/qBzFkP+QViArPCVEi59URgZKWjO+m2u2S+QjSiFvaG6nZAiN72
+         qBB9di/n0xyBTQ4qT8T0LBSJi1Mi2ugROSSNGhOUPcGTR5kpkAGEDzx1FfgGZ/V/LHA0
+         PR3VJz0Hg059QjsC90ckVP8tJ5q+KHYmvcg7EBpdNMQenHpyF1XHENDnIso2KQLbhiov
+         0/8WMc24FCIDPlNzm7BNCRFy/jqgXHIjW5ONFNOUvYZ0iB7Hju7RlMuHDyEdV56NWliY
+         ObgA==
+X-Gm-Message-State: AOJu0Yy/wNiQcAwWZuUio8dL/3YHLaa3W2wRg4jJlz2krCF58SY5g1VA
+	bHBDGtnr8DUU0MPcRe7SGCo+NSvA/t/Z3AyttQsfIXYX
+X-Google-Smtp-Source: AGHT+IFCQvZAgqrtipbyRJTOVOETMEvHgFW0NX7bvW4mXju3ST3yT0F/qBGe1Vu0qs7mI+XzxyVbVlBQ09EqkNHkiTo=
+X-Received: by 2002:a05:6820:2a18:b0:590:9027:7ab0 with SMTP id
+ dr24-20020a0568202a1800b0059090277ab0mr27147443oob.0.1703008230114; Tue, 19
+ Dec 2023 09:50:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20231219174526.2235150-1-sunilvl@ventanamicro.com>
+In-Reply-To: <20231219174526.2235150-1-sunilvl@ventanamicro.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 19 Dec 2023 18:50:19 +0100
+Message-ID: <CAJZ5v0j6Veze8xDFKTbVZ5=WAfmLdeJ8NXRnh9kwCZgyaDdgew@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 00/17] RISC-V: ACPI: Add external interrupt
+ controller support
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org, 
+	linux-pci@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Anup Patel <anup@brainfault.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, Haibo Xu <haibo1.xu@intel.com>, 
+	Conor Dooley <conor.dooley@microchip.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-INTC being the root interrupt controller, set the ACPI irqmodel with
-callback function to get the GSI domain id.
+On Tue, Dec 19, 2023 at 6:45=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.com=
+> wrote:
+>
+> This series adds support for the below ECR approved by ASWG.
+> 1) MADT - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7=
+zR/view?usp=3Dsharing
+>
+> The series primarily enables irqchip drivers for RISC-V ACPI based
+> platforms.
+>
+> The series can be broadly categorized like below.
+>
+> 1) PCI ACPI related functions are migrated from arm64 to common file so
+> that we don't need to duplicate them for RISC-V.
+>
+> 2) Introduced support for fw_devlink for ACPI nodes for IRQ dependency.
+> This helps to support deferred probe of interrupt controller drivers.
+>
+> 3) Modified pnp_irq() to try registering the IRQ  again if it sees it in
+> disabled state. This solution is similar to how
+> platform_get_irq_optional() works for regular platform devices.
+>
+> 4) Added support for re-ordering the probe of interrupt controllers when
+> IRQCHIP_ACPI_DECLARE is used.
+>
+> 5) ACPI support added in RISC-V interrupt controller drivers.
+>
+> This series is based on Anup's AIA v11 series. Since Anup's AIA v11 is
+> not merged yet and first time introducing fw_devlink, deferred probe and
+> reordering support for IRQCHIP probe, this series is still kept as RFC.
+> Looking forward for the feedback!
+>
+> Changes since RFC v2:
+>         1) Introduced fw_devlink for ACPI nodes for IRQ dependency.
+>         2) Dropped patches in drivers which are not required due to
+>            fw_devlink support.
+>         3) Dropped pci_set_msi() patch and added a patch in
+>            pci_create_root_bus().
+>         4) Updated pnp_irq() patch so that none of the actual PNP
+>            drivers need to change.
+>
+> Changes since RFC v1:
+>         1) Abandoned swnode approach as per Marc's feedback.
+>         2) To cope up with AIA series changes which changed irqchip drive=
+r
+>            probe from core_initcall() to platform_driver, added patches
+>            to support deferred probing.
+>         3) Rebased on top of Anup's AIA v11 and added tags.
+>
+> To test the series,
+>
+> 1) Qemu should be built using the riscv_acpi_b2_v8 branch at
+> https://github.com/vlsunil/qemu.git
+>
+> 2) EDK2 should be built using the instructions at:
+> https://github.com/tianocore/edk2/blob/master/OvmfPkg/RiscVVirt/README.md
+>
+> 3) Build Linux using this series on top of Anup's AIA v11 series.
+>
+> Run Qemu:
+> qemu-system-riscv64 \
+>  -M virt,pflash0=3Dpflash0,pflash1=3Dpflash1,aia=3Daplic-imsic \
+>  -m 2G -smp 8 \
+>  -serial mon:stdio \
+>  -device virtio-gpu-pci -full-screen \
+>  -device qemu-xhci \
+>  -device usb-kbd \
+>  -blockdev node-name=3Dpflash0,driver=3Dfile,read-only=3Don,filename=3DRI=
+SCV_VIRT_CODE.fd \
+>  -blockdev node-name=3Dpflash1,driver=3Dfile,filename=3DRISCV_VIRT_VARS.f=
+d \
+>  -netdev user,id=3Dnet0 -device virtio-net-pci,netdev=3Dnet0 \
+>  -kernel arch/riscv/boot/Image \
+>  -initrd rootfs.cpio \
+>  -append "root=3D/dev/ram ro console=3DttyS0 rootwait earlycon=3Duart8250=
+,mmio,0x10000000"
+>
+> To boot with APLIC only, use aia=3Daplic.
+> To boot with PLIC, remove aia=3D option.
+>
+> This series is also available in acpi_b2_v3_riscv_aia_v11 branch at
+> https://github.com/vlsunil/linux.git
+>
+> Based-on: 20231023172800.315343-1-apatel@ventanamicro.com
+> (https://lore.kernel.org/lkml/20231023172800.315343-1-apatel@ventanamicro=
+.com/)
+>
+> Sunil V L (17):
+>   arm64: PCI: Migrate ACPI related functions to pci-acpi.c
+>   RISC-V: ACPI: Implement PCI related functionality
+>   PCI: Make pci_create_root_bus() declare its reliance on MSI domains
+>   ACPI: Add fw_devlink support for ACPI fwnode for IRQ dependency
+>   ACPI: irq: Add support for deferred probe in acpi_register_gsi()
+>   pnp.h: Reconfigure IRQ in pnp_irq() to support deferred probe
+>   ACPI: scan.c: Add weak arch specific function to reorder the IRQCHIP
+>     probe
+>   ACPI: RISC-V: Implement arch function to reorder irqchip probe entries
+>   irqchip: riscv-intc: Add ACPI support for AIA
+>   irqchip: riscv-imsic: Add ACPI support
+>   irqchip: riscv-aplic: Add ACPI support
+>   irqchip: irq-sifive-plic: Add ACPI support
+>   ACPI: bus: Add RINTC IRQ model for RISC-V
+>   ACPI: bus: Add acpi_riscv_init function
+>   ACPI: RISC-V: Create APLIC platform device
+>   ACPI: RISC-V: Create PLIC platform device
+>   irqchip: riscv-intc: Set ACPI irqmodel
 
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
----
- arch/riscv/include/asm/irq.h     | 13 +------------
- drivers/irqchip/irq-riscv-intc.c |  1 +
- 2 files changed, 2 insertions(+), 12 deletions(-)
+JFYI, I have no capacity to provide any feedback on this till 6.8-rc1 is ou=
+t.
 
-diff --git a/arch/riscv/include/asm/irq.h b/arch/riscv/include/asm/irq.h
-index 7b14f3ebe242..9c2bdf4bd880 100644
---- a/arch/riscv/include/asm/irq.h
-+++ b/arch/riscv/include/asm/irq.h
-@@ -22,18 +22,7 @@
- #define APLIC_PLIC_ID(x) ((x) >> 24)
- #define IDC_CONTEXT_ID(x) ((x) & 0x0000ffff)
- 
--#ifdef CONFIG_RISCV_APLIC
--struct fwnode_handle *aplic_get_gsi_domain_id(u32 gsi);
--#else
--static inline struct fwnode_handle *aplic_get_gsi_domain_id(u32 gsi) { return NULL; }
--#endif
--
--#ifdef CONFIG_SIFIVE_PLIC
--struct fwnode_handle *plic_get_gsi_domain_id(u32 gsi);
--#else
--static inline struct fwnode_handle *plic_get_gsi_domain_id(u32 gsi) { return NULL; }
--#endif
--
-+struct fwnode_handle *ext_entc_get_gsi_domain_id(u32 gsi);
- int __init acpi_get_intc_index_hartid(u32 index, unsigned long *hartid);
- int acpi_get_ext_intc_parent_hartid(u8 id, u32 idx, unsigned long *hartid);
- void acpi_get_plic_nr_contexts(u8 id, int *nr_contexts);
-diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
-index 24bbc5bfc30f..bddfe47df27b 100644
---- a/drivers/irqchip/irq-riscv-intc.c
-+++ b/drivers/irqchip/irq-riscv-intc.c
-@@ -311,6 +311,7 @@ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
- 		return rc;
- 	}
- 
-+	acpi_set_irq_model(ACPI_IRQ_MODEL_RINTC, ext_entc_get_gsi_domain_id);
- 	return 0;
- }
- 
--- 
-2.39.2
-
+Thanks!
 
