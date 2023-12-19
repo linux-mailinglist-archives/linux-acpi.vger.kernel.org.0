@@ -1,62 +1,62 @@
-Return-Path: <linux-acpi+bounces-2547-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2548-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C23818E84
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Dec 2023 18:47:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69F9818E89
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Dec 2023 18:48:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85D981F20CFE
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Dec 2023 17:47:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0671B1C24C60
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Dec 2023 17:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7607F374FC;
-	Tue, 19 Dec 2023 17:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B265D39ACF;
+	Tue, 19 Dec 2023 17:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="KFyKhop7"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="IVkfP62W"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2977E3985A
-	for <linux-acpi@vger.kernel.org>; Tue, 19 Dec 2023 17:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E5A39AD8
+	for <linux-acpi@vger.kernel.org>; Tue, 19 Dec 2023 17:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1d3e6c86868so4411645ad.1
-        for <linux-acpi@vger.kernel.org>; Tue, 19 Dec 2023 09:46:03 -0800 (PST)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1d3e6c86868so4412665ad.1
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Dec 2023 09:46:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1703007963; x=1703612763; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1703007969; x=1703612769; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rIbnDt1gfwHKXHRoQ8BCVk+wpgvY6XHWajEKia0uA/M=;
-        b=KFyKhop7ECu5rw/sSYQbgCww+757PQ6kmfPwXm9c3sIQAiByCy9xjewSl3U0abbDs2
-         emwje+crxrvSWMjCcECMri3HMpotwQ3hXHv2AG5D6EOnj92L/q+XFryw2lyFxX9m2CL+
-         Cm8UoXhbLnimyWTgwSzJeNv5T7a94AcdBw0GW2cqEdJaMbzIQmiffk/C8yN2gF8kmvqn
-         Ksxt8llKwdbOTxu/TMgiAtEFPZmiNQZ/hLn67dSC3bRWg19ZighYK/4PDc5sBbKj8dJZ
-         cHa5ntKhTvEIqiez/TePaWu/v7nq5NG4RENhAq1SkVRCmn0J/ZKfKN8lE5g8f9LJ/VLi
-         wpqw==
+        bh=8LBkXmYKNUx+bSYPP6p7CLC2p/4CszGfBGCJeSRJvdc=;
+        b=IVkfP62WI+qGPDHiQNflIsShzQ0QzHA4Q6atD5bgBaFLqE9/Bep0FLhLg9kmkF3ej5
+         S2/ZXXXNuwvsjBE5wa9G87UzGrN6olr6AifbNiaIIJE7hxSOmLVMowG8iWUPn1l3tcPD
+         4PWfx+GjMtyGxMqAivoX4jVBdhzurZwB0o+yLDLyLTcUw4FWG03+V+FC6o6GHt+zi8ya
+         CLontBxmsHcpUAx18wa/Ev6lS0nvwLQ5w5vClVsXrY9s038d7mOtqH164fzy6BNSYmCn
+         UcjrWZsqMROHvQGIC84agyGZ1iBXyLJbjby9gO9kVSyWU0UtJuq1VmKIcMx/76ftRlk3
+         7+Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703007963; x=1703612763;
+        d=1e100.net; s=20230601; t=1703007969; x=1703612769;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rIbnDt1gfwHKXHRoQ8BCVk+wpgvY6XHWajEKia0uA/M=;
-        b=s6rOACd4UhFR5k5Ow+IKK8Ph8EnoI+TKFc8XnwTw1zmNjMRvY2FuFvdwA9lnw/nNPe
-         MzeBger2BowH/6cTcXucuksiUbFVDcFAsNM++w2QduOqHLoHZKXtnd/1s7B9SuoA5iBn
-         EOoWXLgD1CeowG6gYrD0qumTcUNxszgTzlpyJ4K3501wZPWZgOlB4ydoV5hIHlGfGvqi
-         HA8DMqk+UldlL1dJ9Gx3SqAfum+mqo3qkdo3ol72u5HK5ru6Af4TL9i9qBETDb+C2wU7
-         KIYS+XNDfSNnDz2/y++PeIb9dx9RSltaBo+oJWo0eY4EKI/No70Zb/qDdrxAXnZYNML5
-         NZOA==
-X-Gm-Message-State: AOJu0YyV3I2TFSulQSRJDFmZ/6hSqXrKVifYnT747kdXB0jvXLOpqMH6
-	PFlZWmv3VmXhzXakUk3EPN8B7A==
-X-Google-Smtp-Source: AGHT+IHoJyst8qKxevbQtQHjUD2Bmcj6vMHRjagPkED1xi9g/ptnAuHzMtmh5nHrJpPdrkAYQWohig==
-X-Received: by 2002:a17:903:28f:b0:1d3:d8e5:9e38 with SMTP id j15-20020a170903028f00b001d3d8e59e38mr2543797plr.2.1703007963429;
-        Tue, 19 Dec 2023 09:46:03 -0800 (PST)
+        bh=8LBkXmYKNUx+bSYPP6p7CLC2p/4CszGfBGCJeSRJvdc=;
+        b=qaZYVvT0SDiyhfgBR/3YeIduNYQ9/wYxOFUljolmw1bnPzYHMssCdcb3io4tYVJggY
+         3yHFpzdxLAFulFQ9xPLpoGFTpYv6suaUfQpbobakLsJxWzq7G4oDSr5RWJqMZ1m7kka/
+         eGa+8lvS3tPJycSoZzOXzrYe8xtcF9bU0Io7kDXmoDj8X+xcoQToL0nPzOJSAHJ+CBj8
+         Eyynzv2hmeUjoRYA53wUbBheVnidN8MJuaAnyVXifqFyW/0HU9SRvY1NasvLH/TG2LBc
+         XzMKWkJeNTWJJ6iUawR1WL4KkCC2lKZjlKvjuz5JmQlnBDELDq7jPA+Ou8Tqv2K/hxu/
+         PSig==
+X-Gm-Message-State: AOJu0YzMb95djaGMP+fO9u7cJ/ixAvgk2a6HEc+YbZMIad3SCw2E4/ZQ
+	KZXjXKdmkbEss7k+nnms4YR/vw==
+X-Google-Smtp-Source: AGHT+IEMvSYcrKMxqjyd3ACjSYFZyEXnOTwUkKyhJepg7AXslIP9xhn3TON8/gf45hSmF7UFc175LA==
+X-Received: by 2002:a17:903:1206:b0:1d0:7d9a:3bca with SMTP id l6-20020a170903120600b001d07d9a3bcamr23158609plh.52.1703007968947;
+        Tue, 19 Dec 2023 09:46:08 -0800 (PST)
 Received: from sunil-pc.Dlink ([106.51.188.200])
-        by smtp.gmail.com with ESMTPSA id n16-20020a170903111000b001d3320f6143sm14453015plh.269.2023.12.19.09.45.58
+        by smtp.gmail.com with ESMTPSA id n16-20020a170903111000b001d3320f6143sm14453015plh.269.2023.12.19.09.46.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Dec 2023 09:46:03 -0800 (PST)
+        Tue, 19 Dec 2023 09:46:08 -0800 (PST)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -79,9 +79,9 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
 	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
 	Marc Zyngier <maz@kernel.org>,
 	Sunil V L <sunilvl@ventanamicro.com>
-Subject: [RFC PATCH v3 05/17] ACPI: irq: Add support for deferred probe in acpi_register_gsi()
-Date: Tue, 19 Dec 2023 23:15:14 +0530
-Message-Id: <20231219174526.2235150-6-sunilvl@ventanamicro.com>
+Subject: [RFC PATCH v3 06/17] pnp.h: Reconfigure IRQ in pnp_irq() to support deferred probe
+Date: Tue, 19 Dec 2023 23:15:15 +0530
+Message-Id: <20231219174526.2235150-7-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231219174526.2235150-1-sunilvl@ventanamicro.com>
 References: <20231219174526.2235150-1-sunilvl@ventanamicro.com>
@@ -93,40 +93,80 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The chip which provides the GSI support may not be initialized at the
-time of acpi_register_gsi(). Return -EPROBE_DEFER to support deferred
-probing similar to acpi_irq_get().
+PNP devices add the IRQ resources to PNP data structure early during
+boot from ACPI resource structure. As part of this, the Interrupt
+resource (GSI) are registered and appropriate linux IRQ is saved
+directly in PNP data structure while creating PNP devices. But at this
+time, the interrupt controller for the GSI (either via GSI vector
+mapping or via ResourceSource in Interrupt()) may not be probed and
+initialized. Hence, the IRQ number in PNP data structure may not be the
+linux IRQ number. When the actual driver for the PNP device get probed,
+it will get incorrect linux IRQ number.
 
-This is required to support ResourceSource as supported by ACPI spec for
-Interrupt resource.
+Fix this issue similar to how platform devices handle this. Basically,
+while creating PNP devices, the hwirq number is saved in PNP device and
+marked as disabled since acpi_register_gsi() would have failed. When the
+actual driver calls pnp_irq(), get the linux IRQ number again if the IRQ
+is disabled.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
- drivers/acpi/irq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pnp/pnpacpi/core.c |  7 +++++++
+ include/linux/pnp.h        | 14 ++++++++++++--
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-index b3409e2e2041..c4605fdcda77 100644
---- a/drivers/acpi/irq.c
-+++ b/drivers/acpi/irq.c
-@@ -52,6 +52,7 @@ EXPORT_SYMBOL_GPL(acpi_gsi_to_irq);
-  *
-  * Returns: a valid linux IRQ number on success
-  *          -EINVAL on failure
-+ *          -EPROBE_DEFER if irqdomain not created yet
-  */
- int acpi_register_gsi(struct device *dev, u32 gsi, int trigger,
- 		      int polarity)
-@@ -65,6 +66,9 @@ int acpi_register_gsi(struct device *dev, u32 gsi, int trigger,
- 		return -EINVAL;
- 	}
+diff --git a/drivers/pnp/pnpacpi/core.c b/drivers/pnp/pnpacpi/core.c
+index 6ab272c84b7b..239355977d4c 100644
+--- a/drivers/pnp/pnpacpi/core.c
++++ b/drivers/pnp/pnpacpi/core.c
+@@ -326,3 +326,10 @@ static int __init pnpacpi_setup(char *str)
+ }
  
-+	if (!irq_find_matching_fwnode(fwspec.fwnode, DOMAIN_BUS_ANY))
-+		return -EPROBE_DEFER;
+ __setup("pnpacpi=", pnpacpi_setup);
 +
- 	fwspec.param[0] = gsi;
- 	fwspec.param[1] = acpi_dev_get_irq_type(trigger, polarity);
- 	fwspec.param_count = 2;
++void pnpacpi_reconfigure_irq(struct pnp_dev *dev, unsigned int index, struct resource *res)
++{
++	if (has_acpi_companion(&dev->dev))
++		acpi_irq_get(ACPI_HANDLE(&dev->dev), index, res);
++}
++EXPORT_SYMBOL(pnpacpi_reconfigure_irq);
+diff --git a/include/linux/pnp.h b/include/linux/pnp.h
+index c2a7cfbca713..8753eb4275b0 100644
+--- a/include/linux/pnp.h
++++ b/include/linux/pnp.h
+@@ -26,6 +26,7 @@ struct pnp_dev;
+ #ifdef CONFIG_PNP
+ struct resource *pnp_get_resource(struct pnp_dev *dev, unsigned long type,
+ 				unsigned int num);
++
+ #else
+ static inline struct resource *pnp_get_resource(struct pnp_dev *dev,
+ 			unsigned long type, unsigned int num)
+@@ -146,13 +147,22 @@ static inline resource_size_t pnp_mem_len(struct pnp_dev *dev,
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_PNPACPI
++void pnpacpi_reconfigure_irq(struct pnp_dev *dev, unsigned int index, struct resource *res);
++#endif
+ 
+-static inline resource_size_t pnp_irq(struct pnp_dev *dev, unsigned int bar)
++static inline int pnp_irq(struct pnp_dev *dev, unsigned int bar)
+ {
+ 	struct resource *res = pnp_get_resource(dev, IORESOURCE_IRQ, bar);
+ 
+-	if (pnp_resource_valid(res))
++	if (pnp_resource_valid(res)) {
++#ifdef CONFIG_PNPACPI
++		if (!pnp_resource_enabled(res))
++			pnpacpi_reconfigure_irq(dev, bar, res);
++#endif
+ 		return res->start;
++	}
++
+ 	return -1;
+ }
+ 
 -- 
 2.39.2
 
