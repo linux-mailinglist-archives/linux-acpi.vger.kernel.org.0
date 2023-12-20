@@ -1,283 +1,201 @@
-Return-Path: <linux-acpi+bounces-2562-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2563-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72498196BE
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Dec 2023 03:15:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC3281975D
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Dec 2023 04:50:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DF0F288744
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Dec 2023 02:15:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E04D61C24F0D
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Dec 2023 03:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291D179CD;
-	Wed, 20 Dec 2023 02:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0E88C0B;
+	Wed, 20 Dec 2023 03:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HWvjQfue"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="TRi5q9lD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B2A846B
-	for <linux-acpi@vger.kernel.org>; Wed, 20 Dec 2023 02:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703038533; x=1734574533;
-  h=subject:from:to:cc:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=7kuQy2XaY9QSIQOfa23s1J3GFQKI9Dp4z6qxJXAn4Fc=;
-  b=HWvjQfueNgLAKRwyEr94MvpkfbXIcAhsJHZLTkW2z4O9hbLITmVtGSvr
-   l5NPzxjt50K8ameIUkBIOuqn40iIjsYTfwKMVjv0HMafWRedv2FPssybD
-   ZM2Z88taCQd4WVHjgPnC7pPn3QqYuZLbMA7PC2mFe60FRv+6YoV7S5kNW
-   9aPpIxHBpo4WDyvLbKVIM+Txo1c0nqkTt6EA0zzJ11pMj7MYWXlLlXTm/
-   56+73eMUxSOFiuxKLiljeuo5sv+xCSUQSCohcqFh0NIYihh28+8wLgS8p
-   H3LqyXEmUYMrYb0dBKFhWCqJAMM0mUdxI91bgz70vstwX9Xay0BShLIqU
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10929"; a="9212133"
-X-IronPort-AV: E=Sophos;i="6.04,290,1695711600"; 
-   d="scan'208";a="9212133"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 18:15:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10929"; a="1023328612"
-X-IronPort-AV: E=Sophos;i="6.04,290,1695711600"; 
-   d="scan'208";a="1023328612"
-Received: from amerwada-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.212.175.123])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 18:15:14 -0800
-Subject: [PATCH] acpi/nfit: Use sysfs_emit() for all attributes
-From: Dan Williams <dan.j.williams@intel.com>
-To: nvdimm@lists.linux.dev
-Cc: Ben Dooks <ben.dooks@codethink.co.uk>,
- Alison Schofield <alison.schofield@intel.com>,
- Dave Jiang <dave.jiang@intel.com>, linux-acpi@vger.kernel.org
-Date: Tue, 19 Dec 2023 18:15:13 -0800
-Message-ID: <170303851337.2238503.5103082574938957743.stgit@dwillia2-xfh.jf.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E774F156F2
+	for <linux-acpi@vger.kernel.org>; Wed, 20 Dec 2023 03:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-7b7fc0e4a4dso36824539f.0
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Dec 2023 19:49:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1703044184; x=1703648984; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cV23V7TOvb67CyEBq2y7tG+sTh2KHoQeq84YdzqhXCE=;
+        b=TRi5q9lDJZdfAvtKFYNNTleePu2PoxvqaQK4mpAkJLU9znxosjXHvMmfMxx3Ejlmca
+         pvB+tPF+c8YyQ71i0Et++snbh3hCO1Kft8jbif26EcWgiKgamHvIi0o0G1UGeA2NJIef
+         u66nUB+G4Mc7Y+W57xBfd54rBOckBAY+dQ+xv3byLrMryRpPWLT8PIrPKEQhzB0/SkAV
+         3h5eSbwgJNSH+AC6z94xMsOyjoUrwL33GpsABs/x3Xk8mGN2OnD9BhWjwsLxPfSrpRGw
+         ybnYSNg9T5bRELx4pK9CWWNJalLxSNF+t1jMI2ZIuY6Yog08AaNk8iKruj5WMY0QfPg1
+         7EIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703044184; x=1703648984;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cV23V7TOvb67CyEBq2y7tG+sTh2KHoQeq84YdzqhXCE=;
+        b=WW0hS3DoCdXvUPKGSs9QNkMHZSPCye2Wr1F3j159PSVKA0Au3fNGjcrm0KmPCIt/NH
+         5txaNWkaEibq7lEYQfceLX6IbM5TyDOZy49HaLlvD9u5/J0r++D5R8Qh/l23QKxSvIgv
+         +05CZb/igBFCsPwArlJ/fPygyzj/lcu3lYbbWBMPJHgTarsUs+qE3ys/r58ah5UiLt8I
+         XSuUyGUSZtsUKUpg6kkmboQrxUTtfqQ9vvLBhofQFbrJM/zdTlAsHTtIDfWjqMJB0+Py
+         MBjn5/HnCBiErL6Sb0bMaSGmMDvw1wHlNeMUKniN++kH5DXJGs4J/i69yfInHG8MwOJD
+         MDOA==
+X-Gm-Message-State: AOJu0YzK86rPbLDOKBEfRzfijMKL9+7VfCslZ9Zzvjtk6hVpsOh3K9z4
+	iprWwYiqnNirxfwTM3WWbLo/0w==
+X-Google-Smtp-Source: AGHT+IEFtaaGYdqONj8ZBQy1SsSMrvVpJouh1AF9l/WyoqOfDMdwX1NJFUbBjCx+mCqU4PqT2OUdiA==
+X-Received: by 2002:a6b:7f0c:0:b0:7b7:faa5:954f with SMTP id l12-20020a6b7f0c000000b007b7faa5954fmr1627037ioq.23.1703044183845;
+        Tue, 19 Dec 2023 19:49:43 -0800 (PST)
+Received: from sunil-laptop ([106.51.83.242])
+        by smtp.gmail.com with ESMTPSA id r9-20020a6bd909000000b007b42bf452f4sm6509305ioc.33.2023.12.19.19.49.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Dec 2023 19:49:43 -0800 (PST)
+Date: Wed, 20 Dec 2023 09:19:32 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Len Brown <lenb@kernel.org>,
+	Anup Patel <anup@brainfault.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>, Haibo Xu <haibo1.xu@intel.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: Re: [RFC PATCH v3 00/17] RISC-V: ACPI: Add external interrupt
+ controller support
+Message-ID: <ZYJkTN+GNi1nMkJd@sunil-laptop>
+References: <20231219174526.2235150-1-sunilvl@ventanamicro.com>
+ <CAJZ5v0j6Veze8xDFKTbVZ5=WAfmLdeJ8NXRnh9kwCZgyaDdgew@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0j6Veze8xDFKTbVZ5=WAfmLdeJ8NXRnh9kwCZgyaDdgew@mail.gmail.com>
 
-sysfs_emit() properly handles the PAGE_SIZE limitation of populating
-sysfs attribute buffers. Clean up the deprecated usage of sprintf() in
-all of nfit's sysfs show() handlers.
+On Tue, Dec 19, 2023 at 06:50:19PM +0100, Rafael J. Wysocki wrote:
+> On Tue, Dec 19, 2023 at 6:45 PM Sunil V L <sunilvl@ventanamicro.com> wrote:
+> >
+> > This series adds support for the below ECR approved by ASWG.
+> > 1) MADT - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view?usp=sharing
+> >
+> > The series primarily enables irqchip drivers for RISC-V ACPI based
+> > platforms.
+> >
+> > The series can be broadly categorized like below.
+> >
+> > 1) PCI ACPI related functions are migrated from arm64 to common file so
+> > that we don't need to duplicate them for RISC-V.
+> >
+> > 2) Introduced support for fw_devlink for ACPI nodes for IRQ dependency.
+> > This helps to support deferred probe of interrupt controller drivers.
+> >
+> > 3) Modified pnp_irq() to try registering the IRQ  again if it sees it in
+> > disabled state. This solution is similar to how
+> > platform_get_irq_optional() works for regular platform devices.
+> >
+> > 4) Added support for re-ordering the probe of interrupt controllers when
+> > IRQCHIP_ACPI_DECLARE is used.
+> >
+> > 5) ACPI support added in RISC-V interrupt controller drivers.
+> >
+> > This series is based on Anup's AIA v11 series. Since Anup's AIA v11 is
+> > not merged yet and first time introducing fw_devlink, deferred probe and
+> > reordering support for IRQCHIP probe, this series is still kept as RFC.
+> > Looking forward for the feedback!
+> >
+> > Changes since RFC v2:
+> >         1) Introduced fw_devlink for ACPI nodes for IRQ dependency.
+> >         2) Dropped patches in drivers which are not required due to
+> >            fw_devlink support.
+> >         3) Dropped pci_set_msi() patch and added a patch in
+> >            pci_create_root_bus().
+> >         4) Updated pnp_irq() patch so that none of the actual PNP
+> >            drivers need to change.
+> >
+> > Changes since RFC v1:
+> >         1) Abandoned swnode approach as per Marc's feedback.
+> >         2) To cope up with AIA series changes which changed irqchip driver
+> >            probe from core_initcall() to platform_driver, added patches
+> >            to support deferred probing.
+> >         3) Rebased on top of Anup's AIA v11 and added tags.
+> >
+> > To test the series,
+> >
+> > 1) Qemu should be built using the riscv_acpi_b2_v8 branch at
+> > https://github.com/vlsunil/qemu.git
+> >
+> > 2) EDK2 should be built using the instructions at:
+> > https://github.com/tianocore/edk2/blob/master/OvmfPkg/RiscVVirt/README.md
+> >
+> > 3) Build Linux using this series on top of Anup's AIA v11 series.
+> >
+> > Run Qemu:
+> > qemu-system-riscv64 \
+> >  -M virt,pflash0=pflash0,pflash1=pflash1,aia=aplic-imsic \
+> >  -m 2G -smp 8 \
+> >  -serial mon:stdio \
+> >  -device virtio-gpu-pci -full-screen \
+> >  -device qemu-xhci \
+> >  -device usb-kbd \
+> >  -blockdev node-name=pflash0,driver=file,read-only=on,filename=RISCV_VIRT_CODE.fd \
+> >  -blockdev node-name=pflash1,driver=file,filename=RISCV_VIRT_VARS.fd \
+> >  -netdev user,id=net0 -device virtio-net-pci,netdev=net0 \
+> >  -kernel arch/riscv/boot/Image \
+> >  -initrd rootfs.cpio \
+> >  -append "root=/dev/ram ro console=ttyS0 rootwait earlycon=uart8250,mmio,0x10000000"
+> >
+> > To boot with APLIC only, use aia=aplic.
+> > To boot with PLIC, remove aia= option.
+> >
+> > This series is also available in acpi_b2_v3_riscv_aia_v11 branch at
+> > https://github.com/vlsunil/linux.git
+> >
+> > Based-on: 20231023172800.315343-1-apatel@ventanamicro.com
+> > (https://lore.kernel.org/lkml/20231023172800.315343-1-apatel@ventanamicro.com/)
+> >
+> > Sunil V L (17):
+> >   arm64: PCI: Migrate ACPI related functions to pci-acpi.c
+> >   RISC-V: ACPI: Implement PCI related functionality
+> >   PCI: Make pci_create_root_bus() declare its reliance on MSI domains
+> >   ACPI: Add fw_devlink support for ACPI fwnode for IRQ dependency
+> >   ACPI: irq: Add support for deferred probe in acpi_register_gsi()
+> >   pnp.h: Reconfigure IRQ in pnp_irq() to support deferred probe
+> >   ACPI: scan.c: Add weak arch specific function to reorder the IRQCHIP
+> >     probe
+> >   ACPI: RISC-V: Implement arch function to reorder irqchip probe entries
+> >   irqchip: riscv-intc: Add ACPI support for AIA
+> >   irqchip: riscv-imsic: Add ACPI support
+> >   irqchip: riscv-aplic: Add ACPI support
+> >   irqchip: irq-sifive-plic: Add ACPI support
+> >   ACPI: bus: Add RINTC IRQ model for RISC-V
+> >   ACPI: bus: Add acpi_riscv_init function
+> >   ACPI: RISC-V: Create APLIC platform device
+> >   ACPI: RISC-V: Create PLIC platform device
+> >   irqchip: riscv-intc: Set ACPI irqmodel
+> 
+> JFYI, I have no capacity to provide any feedback on this till 6.8-rc1 is out.
+> 
+No worries!. I will wait for your feedback.
 
-Reported-by: Ben Dooks <ben.dooks@codethink.co.uk>
-Closes: http://lore.kernel.org/0d1bf461-d9e8-88bc-b7e2-b03b56594213@codethink.co.uk
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/acpi/nfit/core.c |   44 ++++++++++++++++++++++----------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index 992385537757..9f44156c6181 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -1186,7 +1186,7 @@ static ssize_t bus_dsm_mask_show(struct device *dev,
- 	struct nvdimm_bus_descriptor *nd_desc = to_nd_desc(nvdimm_bus);
- 	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
- 
--	return sprintf(buf, "%#lx\n", acpi_desc->bus_dsm_mask);
-+	return sysfs_emit(buf, "%#lx\n", acpi_desc->bus_dsm_mask);
- }
- static struct device_attribute dev_attr_bus_dsm_mask =
- 		__ATTR(dsm_mask, 0444, bus_dsm_mask_show, NULL);
-@@ -1198,7 +1198,7 @@ static ssize_t revision_show(struct device *dev,
- 	struct nvdimm_bus_descriptor *nd_desc = to_nd_desc(nvdimm_bus);
- 	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
- 
--	return sprintf(buf, "%d\n", acpi_desc->acpi_header.revision);
-+	return sysfs_emit(buf, "%d\n", acpi_desc->acpi_header.revision);
- }
- static DEVICE_ATTR_RO(revision);
- 
-@@ -1209,7 +1209,7 @@ static ssize_t hw_error_scrub_show(struct device *dev,
- 	struct nvdimm_bus_descriptor *nd_desc = to_nd_desc(nvdimm_bus);
- 	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
- 
--	return sprintf(buf, "%d\n", acpi_desc->scrub_mode);
-+	return sysfs_emit(buf, "%d\n", acpi_desc->scrub_mode);
- }
- 
- /*
-@@ -1278,7 +1278,7 @@ static ssize_t scrub_show(struct device *dev,
- 	mutex_lock(&acpi_desc->init_mutex);
- 	busy = test_bit(ARS_BUSY, &acpi_desc->scrub_flags)
- 		&& !test_bit(ARS_CANCEL, &acpi_desc->scrub_flags);
--	rc = sprintf(buf, "%d%s", acpi_desc->scrub_count, busy ? "+\n" : "\n");
-+	rc = sysfs_emit(buf, "%d%s", acpi_desc->scrub_count, busy ? "+\n" : "\n");
- 	/* Allow an admin to poll the busy state at a higher rate */
- 	if (busy && capable(CAP_SYS_RAWIO) && !test_and_set_bit(ARS_POLL,
- 				&acpi_desc->scrub_flags)) {
-@@ -1382,7 +1382,7 @@ static ssize_t handle_show(struct device *dev,
- {
- 	struct acpi_nfit_memory_map *memdev = to_nfit_memdev(dev);
- 
--	return sprintf(buf, "%#x\n", memdev->device_handle);
-+	return sysfs_emit(buf, "%#x\n", memdev->device_handle);
- }
- static DEVICE_ATTR_RO(handle);
- 
-@@ -1391,7 +1391,7 @@ static ssize_t phys_id_show(struct device *dev,
- {
- 	struct acpi_nfit_memory_map *memdev = to_nfit_memdev(dev);
- 
--	return sprintf(buf, "%#x\n", memdev->physical_id);
-+	return sysfs_emit(buf, "%#x\n", memdev->physical_id);
- }
- static DEVICE_ATTR_RO(phys_id);
- 
-@@ -1400,7 +1400,7 @@ static ssize_t vendor_show(struct device *dev,
- {
- 	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
- 
--	return sprintf(buf, "0x%04x\n", be16_to_cpu(dcr->vendor_id));
-+	return sysfs_emit(buf, "0x%04x\n", be16_to_cpu(dcr->vendor_id));
- }
- static DEVICE_ATTR_RO(vendor);
- 
-@@ -1409,7 +1409,7 @@ static ssize_t rev_id_show(struct device *dev,
- {
- 	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
- 
--	return sprintf(buf, "0x%04x\n", be16_to_cpu(dcr->revision_id));
-+	return sysfs_emit(buf, "0x%04x\n", be16_to_cpu(dcr->revision_id));
- }
- static DEVICE_ATTR_RO(rev_id);
- 
-@@ -1418,7 +1418,7 @@ static ssize_t device_show(struct device *dev,
- {
- 	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
- 
--	return sprintf(buf, "0x%04x\n", be16_to_cpu(dcr->device_id));
-+	return sysfs_emit(buf, "0x%04x\n", be16_to_cpu(dcr->device_id));
- }
- static DEVICE_ATTR_RO(device);
- 
-@@ -1427,7 +1427,7 @@ static ssize_t subsystem_vendor_show(struct device *dev,
- {
- 	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
- 
--	return sprintf(buf, "0x%04x\n", be16_to_cpu(dcr->subsystem_vendor_id));
-+	return sysfs_emit(buf, "0x%04x\n", be16_to_cpu(dcr->subsystem_vendor_id));
- }
- static DEVICE_ATTR_RO(subsystem_vendor);
- 
-@@ -1436,7 +1436,7 @@ static ssize_t subsystem_rev_id_show(struct device *dev,
- {
- 	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
- 
--	return sprintf(buf, "0x%04x\n",
-+	return sysfs_emit(buf, "0x%04x\n",
- 			be16_to_cpu(dcr->subsystem_revision_id));
- }
- static DEVICE_ATTR_RO(subsystem_rev_id);
-@@ -1446,7 +1446,7 @@ static ssize_t subsystem_device_show(struct device *dev,
- {
- 	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
- 
--	return sprintf(buf, "0x%04x\n", be16_to_cpu(dcr->subsystem_device_id));
-+	return sysfs_emit(buf, "0x%04x\n", be16_to_cpu(dcr->subsystem_device_id));
- }
- static DEVICE_ATTR_RO(subsystem_device);
- 
-@@ -1465,7 +1465,7 @@ static ssize_t format_show(struct device *dev,
- {
- 	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
- 
--	return sprintf(buf, "0x%04x\n", le16_to_cpu(dcr->code));
-+	return sysfs_emit(buf, "0x%04x\n", le16_to_cpu(dcr->code));
- }
- static DEVICE_ATTR_RO(format);
- 
-@@ -1498,7 +1498,7 @@ static ssize_t format1_show(struct device *dev,
- 				continue;
- 			if (nfit_dcr->dcr->code == dcr->code)
- 				continue;
--			rc = sprintf(buf, "0x%04x\n",
-+			rc = sysfs_emit(buf, "0x%04x\n",
- 					le16_to_cpu(nfit_dcr->dcr->code));
- 			break;
- 		}
-@@ -1515,7 +1515,7 @@ static ssize_t formats_show(struct device *dev,
- {
- 	struct nvdimm *nvdimm = to_nvdimm(dev);
- 
--	return sprintf(buf, "%d\n", num_nvdimm_formats(nvdimm));
-+	return sysfs_emit(buf, "%d\n", num_nvdimm_formats(nvdimm));
- }
- static DEVICE_ATTR_RO(formats);
- 
-@@ -1524,7 +1524,7 @@ static ssize_t serial_show(struct device *dev,
- {
- 	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
- 
--	return sprintf(buf, "0x%08x\n", be32_to_cpu(dcr->serial_number));
-+	return sysfs_emit(buf, "0x%08x\n", be32_to_cpu(dcr->serial_number));
- }
- static DEVICE_ATTR_RO(serial);
- 
-@@ -1536,7 +1536,7 @@ static ssize_t family_show(struct device *dev,
- 
- 	if (nfit_mem->family < 0)
- 		return -ENXIO;
--	return sprintf(buf, "%d\n", nfit_mem->family);
-+	return sysfs_emit(buf, "%d\n", nfit_mem->family);
- }
- static DEVICE_ATTR_RO(family);
- 
-@@ -1548,7 +1548,7 @@ static ssize_t dsm_mask_show(struct device *dev,
- 
- 	if (nfit_mem->family < 0)
- 		return -ENXIO;
--	return sprintf(buf, "%#lx\n", nfit_mem->dsm_mask);
-+	return sysfs_emit(buf, "%#lx\n", nfit_mem->dsm_mask);
- }
- static DEVICE_ATTR_RO(dsm_mask);
- 
-@@ -1562,7 +1562,7 @@ static ssize_t flags_show(struct device *dev,
- 	if (test_bit(NFIT_MEM_DIRTY, &nfit_mem->flags))
- 		flags |= ACPI_NFIT_MEM_FLUSH_FAILED;
- 
--	return sprintf(buf, "%s%s%s%s%s%s%s\n",
-+	return sysfs_emit(buf, "%s%s%s%s%s%s%s\n",
- 		flags & ACPI_NFIT_MEM_SAVE_FAILED ? "save_fail " : "",
- 		flags & ACPI_NFIT_MEM_RESTORE_FAILED ? "restore_fail " : "",
- 		flags & ACPI_NFIT_MEM_FLUSH_FAILED ? "flush_fail " : "",
-@@ -1579,7 +1579,7 @@ static ssize_t id_show(struct device *dev,
- 	struct nvdimm *nvdimm = to_nvdimm(dev);
- 	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
- 
--	return sprintf(buf, "%s\n", nfit_mem->id);
-+	return sysfs_emit(buf, "%s\n", nfit_mem->id);
- }
- static DEVICE_ATTR_RO(id);
- 
-@@ -1589,7 +1589,7 @@ static ssize_t dirty_shutdown_show(struct device *dev,
- 	struct nvdimm *nvdimm = to_nvdimm(dev);
- 	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
- 
--	return sprintf(buf, "%d\n", nfit_mem->dirty_shutdown);
-+	return sysfs_emit(buf, "%d\n", nfit_mem->dirty_shutdown);
- }
- static DEVICE_ATTR_RO(dirty_shutdown);
- 
-@@ -2172,7 +2172,7 @@ static ssize_t range_index_show(struct device *dev,
- 	struct nd_region *nd_region = to_nd_region(dev);
- 	struct nfit_spa *nfit_spa = nd_region_provider_data(nd_region);
- 
--	return sprintf(buf, "%d\n", nfit_spa->spa->range_index);
-+	return sysfs_emit(buf, "%d\n", nfit_spa->spa->range_index);
- }
- static DEVICE_ATTR_RO(range_index);
- 
-
+Thanks!
+Sunil
 
