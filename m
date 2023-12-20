@@ -1,74 +1,103 @@
-Return-Path: <linux-acpi+bounces-2567-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2568-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A6A81A136
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Dec 2023 15:37:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A8681A2CD
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Dec 2023 16:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B811C1C22347
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Dec 2023 14:37:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA3EA1F22A3D
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Dec 2023 15:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806AD3D0B2;
-	Wed, 20 Dec 2023 14:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A974E3FE44;
+	Wed, 20 Dec 2023 15:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KwrzjQiC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W0Q6I5F9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2066.outbound.protection.outlook.com [40.107.223.66])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD873D0A6;
-	Wed, 20 Dec 2023 14:37:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C263FB04
+	for <linux-acpi@vger.kernel.org>; Wed, 20 Dec 2023 15:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1703086597; x=1734622597;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=4SvSwnl3LiKf+c84akAX6gHynZOQ597q3uLR4LWHWls=;
+  b=W0Q6I5F9Re4Nx6VH95K13AnuE9ssHcw1B0nzk2hTfWKUHWVvohhu055O
+   V7DJwjPvlgt5OAB/2sCfOPZFHSXFXhlGbXz1hJji8KBDonSXFqYFaP6Rj
+   tELQIL2YfeRiqvYhXhf++zb67dTBxTI/Vq3/+zjn8r2Kx54QWWinVH/jM
+   zXk9tV+7vVTZPSeDwZr6fXPmcrw7DqV9qc8jVzUZy9UfIhvU60sRDItSc
+   D6NyR78A1sm9IHqZIqUf2UnlB/OeeWR40u2/L4llp3vLiMhSwFXoV+Hvn
+   3YhnnJkDSl5qhCMzMOqu1axoVm6oHSevrRieMOzydy/nNbXR+4yfmNzLD
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="386248628"
+X-IronPort-AV: E=Sophos;i="6.04,291,1695711600"; 
+   d="scan'208";a="386248628"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2023 07:36:19 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,291,1695711600"; 
+   d="scan'208";a="17988810"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 20 Dec 2023 07:36:18 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 20 Dec 2023 07:36:17 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 20 Dec 2023 07:36:17 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Wed, 20 Dec 2023 07:36:17 -0800
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.41) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 20 Dec 2023 07:36:16 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eXWfD+UdGrCqaLT+6L8i9GPxCJgipXG/uiexOCXCHjCE1w82T/0E4vVrxmJUARBBt5StjSFvSaAfiaZdInaBc4OMvpVPvqkDzcXKnxh59DpZLhhRX2rZOavl02a3GPM49OUPoDJbvWFb95jLD3eXm9AEknL8P3/4Q30+ZkzXiEPqehMgC1uXzFYP2K0RLln/Yj2kllKxBQdutpZvkaiO2LRR84Ew2DSuPwHCBlmpOXwbKoQrFpeL3ZvzhZ+z3T2XAzPJGpJh5FgjkLIIKss6qnvMxT6TQ/LbEHse9a6lCyrPg6wIsUbSCuEpsL4OMSA4S0D1Z7QA9O23iMIQt4Ft6w==
+ b=WVqTGVeAo9nB8Ft6CQM273RGJ9ObAG6Pqbb0LftcfMNOoLNJPd8kAlir4GTXVPnDE36W8SV3m9hzMk+mqBwoRIih8wlfMV0vajcyvzJw67c/xz9ZYASQWSu6nTA/8tvKePNFHV3uuNZkXnykBGVfg/vI+tGIgZYBGbCLgKlxQ9cHnAh0IB8vijeKi+ssHUhA3PaoN4vl93afa3vttqRp5zmGjgq/57RLWCqUKV8watBndks7HSTPbddkUVrf4aH+8oCV5NAONpL2m7LSen6P+oz+KihGrpUpDDj67LbuC5J1EMkwQJP9asduR8j71cPXges6BYsoQHuc+M1dN5Hu0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xCOfr7f9rggL8OOER1KtF8l/D/JlBrrETBVufbzuW8c=;
- b=cKH0u6c1GtUq21JW5TNVJsnaPo1MVXIPDOuiNOAtqTsFqCyTQKdtx05xfPzuEhwDBZsshc7dUfDaJBv9Lqta+AOxjnw6Rt3jz2W7hV7/nHuMwQxkj/yhU8X1Mf63+LwTE5ukzmvdhbuSMr82yMWf9MjdPP9u0TPwptedSy/WE9F+80PDwLQIYy7iOE9FgOHiSCE4NyJf4DcKDkGKyq1hM9c/I1NvVYjh2N3QOKcvSUz+CcWJVqVO+I8lkWZ1zsS1hR0yNKRpn5aSRUj8JIW/KMu+xEK6bSEx6fi3jxQN/ym/QSoizyM51zcU6P6fbOFxbHEw8Dr1JdlhVuKZekYVGg==
+ bh=QaqUGOyBiJ/FWdndki3qhyuJYuTyZ2EmMC40B+4q00M=;
+ b=a9aqKLNk6MNqCnCnjfDszNONoFKl8m/SUmY4JWk/aZPE6vVMYwv7X/3AQAi9Hy4TpZAOUg7tfOUpTdTfTp1oAr8nW4Rau7kJ0eSB67du7Vp6BJHOzrt6ELBjtbrdNTp4xOIUZfmWjOBwUO8gFpH6XfOyizIKDCgZL8E1ndqFQD5yhPSNACnyZDR2YOYEWjW5CPfayif73mdJ+52Z4GDEmLj2RgGn0tm6pqGEJU32yYpPYwhXbomXPbqmb8xON9esRIWJSOxKekJj15aB4MLKNjjbWkGhDBLpXwxuAXs5NcpMBHpgiMlUxkx/QoejY4X+z/hwBWGUWhi1qmvA/oStnA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xCOfr7f9rggL8OOER1KtF8l/D/JlBrrETBVufbzuW8c=;
- b=KwrzjQiCcmCiX5/B8NBLolc1qi0jFsKAjDFDDMh5a+2x583Ee+Rj1Xq6tnsFGaKdvAtgKEs0o1XX9I6PlLyNxJvyN79gmvmZWO8rX6Y70+QVMKS0+sCD2wJK22t30X4HVaRsZ6sNxTJOMBnSdsoI5wTHZsZJlPSTPw+IRjXNRIA=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BYAPR12MB3270.namprd12.prod.outlook.com (2603:10b6:a03:137::31)
- by DM6PR12MB4452.namprd12.prod.outlook.com (2603:10b6:5:2a4::17) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB5984.namprd11.prod.outlook.com (2603:10b6:510:1e3::15)
+ by SJ0PR11MB8294.namprd11.prod.outlook.com (2603:10b6:a03:478::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18; Wed, 20 Dec
- 2023 14:37:35 +0000
-Received: from BYAPR12MB3270.namprd12.prod.outlook.com
- ([fe80::fd8d:fd5d:e44:c61a]) by BYAPR12MB3270.namprd12.prod.outlook.com
- ([fe80::fd8d:fd5d:e44:c61a%3]) with mapi id 15.20.7113.016; Wed, 20 Dec 2023
- 14:37:35 +0000
-Message-ID: <1e6be72c-8966-437e-8a68-a94d27557237@amd.com>
-Date: Wed, 20 Dec 2023 08:37:28 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/5] ACPI, APEI, EINJ: Add wrapper __init function
+ 2023 15:36:14 +0000
+Received: from PH7PR11MB5984.namprd11.prod.outlook.com
+ ([fe80::6f7b:337d:383c:7ad1]) by PH7PR11MB5984.namprd11.prod.outlook.com
+ ([fe80::6f7b:337d:383c:7ad1%4]) with mapi id 15.20.7091.034; Wed, 20 Dec 2023
+ 15:36:14 +0000
+Message-ID: <c74e3611-ac18-4e53-b03d-38f32aaf890a@intel.com>
+Date: Wed, 20 Dec 2023 08:36:11 -0700
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH] acpi/nfit: Use sysfs_emit() for all attributes
+To: Dan Williams <dan.j.williams@intel.com>, <nvdimm@lists.linux.dev>
+CC: Ben Dooks <ben.dooks@codethink.co.uk>, Alison Schofield
+	<alison.schofield@intel.com>, <linux-acpi@vger.kernel.org>
+References: <170303851337.2238503.5103082574938957743.stgit@dwillia2-xfh.jf.intel.com>
 Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: dave@stogolabs.net, dave.jiang@intel.com, alison.schofield@intel.com,
- vishal.l.verma@intel.com, ira.weiny@intel.com, rafael@kernel.org,
- linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <20231213223702.543419-1-Benjamin.Cheatham@amd.com>
- <20231213223702.543419-3-Benjamin.Cheatham@amd.com>
- <6580dcd03b49c_7154929487@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <20231219153955.0000473d@Huawei.com>
- <6582019fd0b2_269bd294cf@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-From: Ben Cheatham <benjamin.cheatham@amd.com>
-In-Reply-To: <6582019fd0b2_269bd294cf@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <170303851337.2238503.5103082574938957743.stgit@dwillia2-xfh.jf.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YT4PR01CA0322.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:10a::11) To BYAPR12MB3270.namprd12.prod.outlook.com
- (2603:10b6:a03:137::31)
+X-ClientProxiedBy: SJ0PR03CA0385.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a1::30) To PH7PR11MB5984.namprd11.prod.outlook.com
+ (2603:10b6:510:1e3::15)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -76,124 +105,282 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR12MB3270:EE_|DM6PR12MB4452:EE_
-X-MS-Office365-Filtering-Correlation-Id: c342898f-03fc-4061-7735-08dc0169350e
+X-MS-TrafficTypeDiagnostic: PH7PR11MB5984:EE_|SJ0PR11MB8294:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11e03ba3-34bd-4557-40c7-08dc01716669
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	RqzeUqhHzSOgWqyVDTChS4pXWsrsCb8+O5vbnPyFdwBpv+TnX9Ql3eGPdx1AxEb6DIWy82WBSorRyfo3+6PsPP1PF9Ul16bfk1PVMRS37aPcJLmN2O1lpDS1muA0s5ZDeJnQXZmzVdEjwoPOID57wi65rEU6mu6szJl/z0tVoK0qG3wvMDfkSYHmckT9VS1ZhxHySA+YF5jDtp2hVzO1TrpyKbWGWnez8fNNC82H9hFaV35d+N3ZujnYYiEo1WblvOujcki4gyjJ2Lc1meCpCPEzj29Ai8TWmq5hBJqC9BbnZi1rVs7t+Uu1ZyTMzBEsh3x1tb+d16O5XlKOsYJy+R4qmn/TTlXnTdH5+DeKAtb8XzRvYJu33Wn4SmR65kpesL+/SdbpgUl88Jc9L+1Iiev/YVrUPHUJ/Yc/PAFGGMGrYJNBi1VSFm58T6uvJ+5VKQuEaLDek/MppbPcIXbWb4Ycakxn3Tm3AxwkGu9EC3LsUqd6FtErRQZU+PLhiYeMmadvuYKdkFiJhw0UF2LjvI2Bbdf6fhBLF/XIshsqp8vHyMtcqI8GL/9pwJ0wS0KiE1fx23X6BXOgrE5TEdP321Mq6CIEQ+hgJxKtPohr2YBDwN1NVfyy0w5fH3Rx5oIXXnlOQNV1uGYk2fwtIO7IHg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3270.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(366004)(136003)(376002)(396003)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(6512007)(2616005)(53546011)(6506007)(26005)(86362001)(36756003)(31696002)(8676002)(8936002)(41300700001)(2906002)(4326008)(5660300002)(7416002)(316002)(110136005)(66476007)(66556008)(66946007)(6666004)(478600001)(6486002)(38100700002)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: HVPDvAlmNEIztcVBIBv5W4eKAC6FCjEQutQtmx376RDl0Leh8KNxs0qk6VetpCMHwOxIoK+EokXS4toIDj7+wSYvhfAEpHl9Sb3cWJxvvmWDKXH2LZVYBwJZJgyrysJliZEI04tFRvgYYQe703uM/LQwblX8BRjF0IPaMxgtwDZ2J/wPEe3ApJjYEjiXVKSCvjdxfC4kOOuU++5K0/h2FzSK0qNsqCTme6kzYXlDoyGZGS1CubsGaKaV8Ft4J5VCHlk31IqdLXOQJuwQQoHVts82rQ3BrHGCctB2mleXMx+zXE1Qsu9qmLYKANPV30dAnPioj2y6MalC35AFwMU6S0ovixGjM5xT3IanMMRMCbtwHbK1VW6St6fj3hPT7jTYyHuTS1y0jQ5O4LibnhgDiGB/Y+2OlzhriF4Vx4PumpZZeHT7Hz5WyuU/g5wCt/B8AdztpLo55fiB6ZA7SiNSOyMQVX8d0FB8CCXQ1WYwvhs+T1GcC1zdZIOwXEtIO5mirgAjUfKFeKOqeETlEJ2wUBEnx37qEIoF2NzdYHM85hU11tqbmbdUj3hCjnKo+CV7Jyv+nVe21B7b1W951Mgo7ueXjBRcL5i0WbwY30Bojpc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB5984.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(39860400002)(346002)(396003)(366004)(376002)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(6506007)(26005)(6666004)(2616005)(53546011)(6512007)(83380400001)(5660300002)(2906002)(478600001)(4326008)(8676002)(8936002)(41300700001)(44832011)(66476007)(6486002)(966005)(54906003)(66946007)(316002)(66556008)(82960400001)(38100700002)(86362001)(31696002)(36756003)(31686004)(45980500001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?KzF2WjNUN3J6Yk9SWVRrZ3ZjSzdnd3lkWUlPUkFzb2JGOHY3ZGdwUkgwWTJR?=
- =?utf-8?B?cE5hb00rL3JuZGc3SVlYVUZCQ1hnNkZJSklOYm43TGozL2NOZklvY3h2WVZU?=
- =?utf-8?B?czFBenJ3UmdodUlzb0lQNk9wM015emtaNmZWTE9TOVFoc20zak0wa0VxcHNm?=
- =?utf-8?B?WHhoZ3ZHcFQzTHorYjdoR3ZBb0R1Tk5vN0ZiK1lteW80UHFZWFJKUVh4cytU?=
- =?utf-8?B?WWM2WVBiK2NwTjEzcDRKVStodkFaT3lSZWJobERsMlhHbUR5TEw5Mm52ditn?=
- =?utf-8?B?Vjg5SGpDSVRSM0pVcjZZaklZWFFwaEVrdk1QUHBwSzg1RVpYZS9nb3IxZnZQ?=
- =?utf-8?B?V1B1UkNDQVdrMUhZZDZtYUdKcFMzY2ZlanQ5eVo2RUJHZlhYYUhDUm9aUWhv?=
- =?utf-8?B?ZHkxSjdpb05kM2t3SVVLVjFLTHMvR2pITkxZWmpmMTFsU2xGUm5ZUUJIdUhG?=
- =?utf-8?B?V2FZdzdUdVJ6dEVnTlJvNVVrdVZjNFdsS1RTeGpzKytrZFo5cmFnRTNOMFZQ?=
- =?utf-8?B?V2o3bXRhZm0zNlRVVFg1K1JIbUVCY1lONEZodEk3a2lzQTlVdCtIcVZ5VWoz?=
- =?utf-8?B?LzdLSHpka05ZbFlQZnAxYThuVGVtRWNpamFuU2o4SXlzWHJXdjYzSkhHTFlt?=
- =?utf-8?B?NXh2OXNLR0F6ak9ZNVV0NWprQytRM1l2bFlXMGhPcTZXZE5lcVRWVXUvZy9W?=
- =?utf-8?B?MTRCdWR2TURZcFF1S2dpUW9Bd3ZCaGhwTW1yVVorN2RQb3JQaWJhVC91SlEx?=
- =?utf-8?B?aWJvaytmT2xRRGxRelRLaTNLMnRNUE1WT1NRY3c5cTZhSFFPdVJaMUFteXJF?=
- =?utf-8?B?NUpnSHh6SE8rbG9KWllBdjlna0VUazVwMDBBaWNFanUvdCtKay9LcStheXlQ?=
- =?utf-8?B?Q2JKRWt4TngzdWpEd3BZdTJiN0xnRnRGbVdjZTQ3VHBrcnVLSWNoQ01oYklU?=
- =?utf-8?B?aTlSN1JvSDRRZkJ5S2cvTjRRQ0xVQzQ3d0FTUzVsTStzTVR2Q2pydzB2c1pV?=
- =?utf-8?B?cG0rdFZzZm1kdXNNazFnVWNMOWJoYkRRL0JXemVweWNwRlZGMEFRQnR0ejBF?=
- =?utf-8?B?WVdTR3FZMkp1Zzl3MzhaMVIza1kwSzFheE1qUUxvNjVDU01pUVR2R0w1M2hn?=
- =?utf-8?B?bDRGK3pjQnhsUktvbFhkMEE0ZU9DWlZCNlExbnZYN0syRXNvRUhDSU84SWpH?=
- =?utf-8?B?SUZBTUovdmRpRDRiOUNvcjd4aDhHN21WZkY3QkFYVmxuWjIyRlR3SFJHRmpU?=
- =?utf-8?B?L1pJVW53MWNXS1VqRVZWMmVUVnJjZU5hVm9xeTdKWmRlMWlmNS83MHUwdkh5?=
- =?utf-8?B?ZXZEenBPcHpRcFQzdWY3NW9FbGIyclNIK1dKNExLcHB2NGc3RTVmZTRxQkMr?=
- =?utf-8?B?V0FRSVkxOVJIVUNtbytRUmJSaGQxMDRqemU4SER1SXVNMm5Ndjd3T2ZKZFdJ?=
- =?utf-8?B?S1R2M2xoY3BmV05peVEzb2dGMkp3TjVlcVNuNWtlaGxwMHFFdk0zb29nSEZx?=
- =?utf-8?B?ZzZPQTZ0UG0xSGRidHJOK3hXQ2w0c3diUy94RUR4NndETW42aUo3a3pyTTBL?=
- =?utf-8?B?Vzl5ZzhscXVDU3N2WjJVb3RHNzR3U0NiMHpWdVk0TDROblN4OGlhb1l1RGpZ?=
- =?utf-8?B?YjVhUDNtcDQ4OG5JK0syMW9wVzRRU0ZiTG1LU1BMeGJBQlczWEVMbXhBcWRI?=
- =?utf-8?B?ZkNFdTVJM1k4VE9TWTA2SmZJRzJEam9GNW9xYmFwanFaZzJnanFaQzI0Vmtr?=
- =?utf-8?B?TWFDOVZkYnlvRmpndG1zNEdTVThkWGdyT2liRjNvampiWEpwR25nbkF1bGVG?=
- =?utf-8?B?MG9VOFVodUpVWnV3aUI2OHQwMGxGRlBVVFpuUm9zek5pYzJ0NUVQSkZxRHkr?=
- =?utf-8?B?TU02OTEwUFlpdlpxRnJDSVVleFkwUDRXU1VtSVJ1WlJHNHQ5aGtXa1VENGhk?=
- =?utf-8?B?WEI5UW5HaVBUd3A2RENtNDZGMjhUck5JdG5RUnhiMkxSUWd2Z2F2U3lTRFVB?=
- =?utf-8?B?T0hxUGU5bGpvWnBPRkFSTjFWSUFjeTgyZWswek1GQnpRZ0dBeVcycWU0UHo3?=
- =?utf-8?B?NHMzWjNPYXhGUzZicXRGc3Vlc2NDd2VwK1oxVlUyNlhTa0RzemQxd1kxSHBi?=
- =?utf-8?Q?wAQbq04NzeS8AFJOtiqu+xfGx?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c342898f-03fc-4061-7735-08dc0169350e
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3270.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dUEvS3FSeEs1TDI0aUJINURkZHlpeEpRZmkwWmgxN1dSNTh5UlkxZDBQRXor?=
+ =?utf-8?B?TDJnR2Y2OVBWdVgwaDAxKzVCTDh3SWtXdlNOTFh2MFhqZGJmd0I3bjdOc0dT?=
+ =?utf-8?B?NlFBdFc1MUhpMUpabTVQWTZvdUtOMDkxWTVaUGkvSG9YNHU0V2gxVzROaXFZ?=
+ =?utf-8?B?alRTdmgrdjhPUDN5QjNET1RHY29TSGcwQ2czVjN3dVRZYlJJNHdPWWJCTThh?=
+ =?utf-8?B?dU9xdDM1U09DN0h2MmdpVzNDYVRFK1VtWGV0YVcyTFZTbmZSQ085NkJVdDI5?=
+ =?utf-8?B?cHpObDV2dWRtN3pidlJ0d1JjSWdBK1dkYWNLNzZmLzh0dE1RdHh3Z3N2Mmkx?=
+ =?utf-8?B?QXFPTkdkYXVWM0ZUWStnbmIyeUNITTF6UXJadVNaaW05VzBMamRoQ3dSMUlL?=
+ =?utf-8?B?SzNmRmtoaDNuZnFqT1pHWit5bXAycmMyWmkxM1VHenQrM1lqSkt3V3p2QU10?=
+ =?utf-8?B?bU1Dc0RZNlV6V29zL1hncDhyVWNzb0pJUm13d0Z5QXBNYXNXb1VkK055Y1dx?=
+ =?utf-8?B?M01YU2VnbFBMd1Rac0dwWlBYZnVBTlNUK2l6SmVyKzZITi9adnlhSmNta3VR?=
+ =?utf-8?B?emlGb1daaE84MTJDTUFKeFI3TVJIWHFxQkVMQmxxaktNdGlObTZ2NzRyWHVp?=
+ =?utf-8?B?R2Z1cUlWV2VOYmV6RlRIZVBocnp6TlhjZ0g0QkJoaDJ6dWZ2SGpGSzlHMTAy?=
+ =?utf-8?B?bXgram42cThqeUVoT1hidEFnMFpzYUVxOXIyTU5HMW5HOStpdkFOayt3eWlv?=
+ =?utf-8?B?ajRHTW0yUndOTS9yT0c2eGkvZ0pUS0VTbDJiUkdpaXBCZEdvYnFiUDIzYUcw?=
+ =?utf-8?B?WFlxZmpLeEt0SkJyUk4xUnJqeHFGd2ZpSis0VXd1UnNBU1djVjFPYm11MUJ3?=
+ =?utf-8?B?aStXT2RvNXNaSWFOQ2c2OVJocHR3N3UzRFd3RmxlL3dITlQzeHlROVpWYmlP?=
+ =?utf-8?B?bzFnbENvc0hNclpZeFhQYm5Vejl5RWRvQ2diOWlqbkMzOGtCdTBVdHFXcUNU?=
+ =?utf-8?B?aXV0K3dUNGdCSlFLWGE0WnZ4NG13K3lBWEFGVDlGMlkvUTRHWUVmU3YxdXoy?=
+ =?utf-8?B?cjlwUkQ0QWwzQmRpcEJxR0JPLysycEhXRlNsWTU1dE5wTnhnMWZpWXc3aXVS?=
+ =?utf-8?B?ZjByZjZPUkx2ZTBQdFR5OG5iU0dyYllHSjFGQmRBcVlCUVRjM2dQeWNtVVBo?=
+ =?utf-8?B?VVlNbVhTWFl1a2tWOUp5UlA3aWtkL3pUZWlXbllCSytScStKSTFybFBDS0oz?=
+ =?utf-8?B?ZUJFM05qd3FDNmVqL0RzUzNGYzhFWUh4NzljNE56djIveWhLaXpHeVdXRGpo?=
+ =?utf-8?B?V0w5aDVocVRMTjZsSlFvbzdqc1hKZkp3bnAwZ0w0VUs0Q2FKRy9udDZQRFhX?=
+ =?utf-8?B?WFRDZEdXUCtMQXJuaUViWXY4N09DZzlpc21nODB3Rzl0YU9XZ2dZN2ZNYUh3?=
+ =?utf-8?B?VjB4clVrN3ZqTk1PZHgydWlQNmFHVWcvdU1CTzlteTZaS25OUC9sOVBPY3dN?=
+ =?utf-8?B?VjNPWERQMzdCTFZTWGNKcURKVmcySTByclhzNnJlbTdiVlV1Y1BsblBTbVQ3?=
+ =?utf-8?B?cnRWcFFLa29aanp4ZDltcnJDd0FMVlVWV3JOWHpZeFdtd3ptZXZTOVVGWjNI?=
+ =?utf-8?B?SFVQR0EvZXpYdEswVTNkSGE5WWZHNGFrbWdJZzRhUlRrWlBZNjNLMkJvVERk?=
+ =?utf-8?B?SEd5OGZWYmlOdkEySXhvM0NhWFhEaG9XdUdZR1ZxemNuclVVWnk3K2wwTVAw?=
+ =?utf-8?B?VUQyNDFRU1kxOVE0QWMzYkVZVXo2MW1QK0pvVUtLa0ZaTndXSDNucTlVWG9P?=
+ =?utf-8?B?VWV3TGFFYTA0SSthTFZqK3pxRUlYWDMvdnBscVl3WnNjSVd3NlVWYWt2UHpt?=
+ =?utf-8?B?Q2dDM2JjT2FGeThoQWYwS0g5UXR4cGtNbFM5cHdWUEtabUQ0U3B2Z0VhU1dv?=
+ =?utf-8?B?YmZZM3E1dlNTczczYVoxNE5PQTUxaWNaQTcxWEV6MTQwTFRDamoveWs2L1lB?=
+ =?utf-8?B?K1BQeWQzdC9HSDEyQ05JM0JxZWxsbmtCbU5VQ1AwS2JyZ05za0RuN2ZtRTZU?=
+ =?utf-8?B?QTFLajUwNGljSWplSjRQTjJlcWRad3ZRUEpQeCt0NXpSWHBCVVV5SFZ2Mmxw?=
+ =?utf-8?Q?tiy2/81a2ToDY2C8mSD2qU7EE?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11e03ba3-34bd-4557-40c7-08dc01716669
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB5984.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2023 14:37:35.5924
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2023 15:36:14.2101
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SZoEHSM4vuu2XLnNodK/DyZMIwW1vWR1a2IjW86EtLK/yXOZWY32ARoeh/g4dqVapvK3L3NSg1SKfA8h2Flcfg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4452
+X-MS-Exchange-CrossTenant-UserPrincipalName: BxI7ztm5pB11Hfz0NO/eeBv5vMS8+F3Hw0w7GHRUwVPQ9WRZ17a7xTjsLCjxyCq60s9uiZpzHTT7npS7x450Fw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB8294
+X-OriginatorOrg: intel.com
 
 
 
-On 12/19/23 2:48 PM, Dan Williams wrote:
-> Jonathan Cameron wrote:
->> On Mon, 18 Dec 2023 15:59:12 -0800
->> Dan Williams <dan.j.williams@intel.com> wrote:
->>
->>> Ben Cheatham wrote:
->>>> The CXL core module should be able to load regardless of whether the
->>>> EINJ module initializes correctly. Instead of porting the EINJ module to
->>>> a library module, add a wrapper __init function around einj_init() to  
->>>
->>> Small quibble with this wording... the larger EINJ module refactoring
->>> would be separating module_init() from EINJ probe(). As is this simple
->>> introduction of an einit_init() wrapper *is* refactoring this module to
->>> be used as a module dependency.
->>>
->>>> pin the EINJ module even if it does not initialize correctly. This
->>>> should be fine since the EINJ module is only ever unloaded manually.
->>>>
->>>> One note: since the CXL core will be calling into the EINJ module
->>>> directly, even though it may not have initialized, all CXL helper
->>>> functions *have* to check if the EINJ module is initialized before
->>>> doing any work.  
->>>
->>> Another small quibble here, perhaps s/may not have initialized/may not
->>> have successfully initialized/? Because initialization will have
->>> definitely completed one way or the other, but callers need to abort if
->>> it completed in error.
->>>
->>>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
->>>
->>> Did Jonathan really get in and review this new patch in the series
->>> before me? If yes, apologies I missed it, if no I think it is best
->>> practice to not carry forward series Reviewed-by's if new patches appear
->>> in the series between revisions.
->>
->> I'm not keen on the solution as it's esoteric and to me seems fragile.
->> I've looked at discussion on v7 and can see why you ended up with this
->> but I'd have preferred to see the 'violent' approach :)
+On 12/19/23 19:15, Dan Williams wrote:
+> sysfs_emit() properly handles the PAGE_SIZE limitation of populating
+> sysfs attribute buffers. Clean up the deprecated usage of sprintf() in
+> all of nfit's sysfs show() handlers.
 > 
-> The issue though is similar to the argument for the creation of the
-> ACPI0017 device for CXL, there is not a great place to hang the einj
-> device-driver.
-> 
-> However, since einj has no legacy "auto-load" behavior, I think it is
-> not a lot of code to have einj's module_init() do something like this:
-> 
-> 	einj_dev = platform_device_register_full(&einj_dev_info);
-> 	platform_driver_register(&einj_driver);
-> 
-> Ben, you want to give that a shot? Jonathan is right that my proposed
-> hack is *a* solution but probably not *the* solution where this should
-> end up.
+> Reported-by: Ben Dooks <ben.dooks@codethink.co.uk>
+> Closes: http://lore.kernel.org/0d1bf461-d9e8-88bc-b7e2-b03b56594213@codethink.co.uk
+> Cc: Alison Schofield <alison.schofield@intel.com>
+> Cc: Dave Jiang <dave.jiang@intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-I can take a look. I won't be able to get to it until around the new year
-since I'm vacation at the moment. I'll also respond take a look at the
-rest of your review around then.
-
-Thanks,
-Ben
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+>  drivers/acpi/nfit/core.c |   44 ++++++++++++++++++++++----------------------
+>  1 file changed, 22 insertions(+), 22 deletions(-)
+> 
+> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> index 992385537757..9f44156c6181 100644
+> --- a/drivers/acpi/nfit/core.c
+> +++ b/drivers/acpi/nfit/core.c
+> @@ -1186,7 +1186,7 @@ static ssize_t bus_dsm_mask_show(struct device *dev,
+>  	struct nvdimm_bus_descriptor *nd_desc = to_nd_desc(nvdimm_bus);
+>  	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
+>  
+> -	return sprintf(buf, "%#lx\n", acpi_desc->bus_dsm_mask);
+> +	return sysfs_emit(buf, "%#lx\n", acpi_desc->bus_dsm_mask);
+>  }
+>  static struct device_attribute dev_attr_bus_dsm_mask =
+>  		__ATTR(dsm_mask, 0444, bus_dsm_mask_show, NULL);
+> @@ -1198,7 +1198,7 @@ static ssize_t revision_show(struct device *dev,
+>  	struct nvdimm_bus_descriptor *nd_desc = to_nd_desc(nvdimm_bus);
+>  	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
+>  
+> -	return sprintf(buf, "%d\n", acpi_desc->acpi_header.revision);
+> +	return sysfs_emit(buf, "%d\n", acpi_desc->acpi_header.revision);
+>  }
+>  static DEVICE_ATTR_RO(revision);
+>  
+> @@ -1209,7 +1209,7 @@ static ssize_t hw_error_scrub_show(struct device *dev,
+>  	struct nvdimm_bus_descriptor *nd_desc = to_nd_desc(nvdimm_bus);
+>  	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
+>  
+> -	return sprintf(buf, "%d\n", acpi_desc->scrub_mode);
+> +	return sysfs_emit(buf, "%d\n", acpi_desc->scrub_mode);
+>  }
+>  
+>  /*
+> @@ -1278,7 +1278,7 @@ static ssize_t scrub_show(struct device *dev,
+>  	mutex_lock(&acpi_desc->init_mutex);
+>  	busy = test_bit(ARS_BUSY, &acpi_desc->scrub_flags)
+>  		&& !test_bit(ARS_CANCEL, &acpi_desc->scrub_flags);
+> -	rc = sprintf(buf, "%d%s", acpi_desc->scrub_count, busy ? "+\n" : "\n");
+> +	rc = sysfs_emit(buf, "%d%s", acpi_desc->scrub_count, busy ? "+\n" : "\n");
+>  	/* Allow an admin to poll the busy state at a higher rate */
+>  	if (busy && capable(CAP_SYS_RAWIO) && !test_and_set_bit(ARS_POLL,
+>  				&acpi_desc->scrub_flags)) {
+> @@ -1382,7 +1382,7 @@ static ssize_t handle_show(struct device *dev,
+>  {
+>  	struct acpi_nfit_memory_map *memdev = to_nfit_memdev(dev);
+>  
+> -	return sprintf(buf, "%#x\n", memdev->device_handle);
+> +	return sysfs_emit(buf, "%#x\n", memdev->device_handle);
+>  }
+>  static DEVICE_ATTR_RO(handle);
+>  
+> @@ -1391,7 +1391,7 @@ static ssize_t phys_id_show(struct device *dev,
+>  {
+>  	struct acpi_nfit_memory_map *memdev = to_nfit_memdev(dev);
+>  
+> -	return sprintf(buf, "%#x\n", memdev->physical_id);
+> +	return sysfs_emit(buf, "%#x\n", memdev->physical_id);
+>  }
+>  static DEVICE_ATTR_RO(phys_id);
+>  
+> @@ -1400,7 +1400,7 @@ static ssize_t vendor_show(struct device *dev,
+>  {
+>  	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
+>  
+> -	return sprintf(buf, "0x%04x\n", be16_to_cpu(dcr->vendor_id));
+> +	return sysfs_emit(buf, "0x%04x\n", be16_to_cpu(dcr->vendor_id));
+>  }
+>  static DEVICE_ATTR_RO(vendor);
+>  
+> @@ -1409,7 +1409,7 @@ static ssize_t rev_id_show(struct device *dev,
+>  {
+>  	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
+>  
+> -	return sprintf(buf, "0x%04x\n", be16_to_cpu(dcr->revision_id));
+> +	return sysfs_emit(buf, "0x%04x\n", be16_to_cpu(dcr->revision_id));
+>  }
+>  static DEVICE_ATTR_RO(rev_id);
+>  
+> @@ -1418,7 +1418,7 @@ static ssize_t device_show(struct device *dev,
+>  {
+>  	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
+>  
+> -	return sprintf(buf, "0x%04x\n", be16_to_cpu(dcr->device_id));
+> +	return sysfs_emit(buf, "0x%04x\n", be16_to_cpu(dcr->device_id));
+>  }
+>  static DEVICE_ATTR_RO(device);
+>  
+> @@ -1427,7 +1427,7 @@ static ssize_t subsystem_vendor_show(struct device *dev,
+>  {
+>  	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
+>  
+> -	return sprintf(buf, "0x%04x\n", be16_to_cpu(dcr->subsystem_vendor_id));
+> +	return sysfs_emit(buf, "0x%04x\n", be16_to_cpu(dcr->subsystem_vendor_id));
+>  }
+>  static DEVICE_ATTR_RO(subsystem_vendor);
+>  
+> @@ -1436,7 +1436,7 @@ static ssize_t subsystem_rev_id_show(struct device *dev,
+>  {
+>  	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
+>  
+> -	return sprintf(buf, "0x%04x\n",
+> +	return sysfs_emit(buf, "0x%04x\n",
+>  			be16_to_cpu(dcr->subsystem_revision_id));
+>  }
+>  static DEVICE_ATTR_RO(subsystem_rev_id);
+> @@ -1446,7 +1446,7 @@ static ssize_t subsystem_device_show(struct device *dev,
+>  {
+>  	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
+>  
+> -	return sprintf(buf, "0x%04x\n", be16_to_cpu(dcr->subsystem_device_id));
+> +	return sysfs_emit(buf, "0x%04x\n", be16_to_cpu(dcr->subsystem_device_id));
+>  }
+>  static DEVICE_ATTR_RO(subsystem_device);
+>  
+> @@ -1465,7 +1465,7 @@ static ssize_t format_show(struct device *dev,
+>  {
+>  	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
+>  
+> -	return sprintf(buf, "0x%04x\n", le16_to_cpu(dcr->code));
+> +	return sysfs_emit(buf, "0x%04x\n", le16_to_cpu(dcr->code));
+>  }
+>  static DEVICE_ATTR_RO(format);
+>  
+> @@ -1498,7 +1498,7 @@ static ssize_t format1_show(struct device *dev,
+>  				continue;
+>  			if (nfit_dcr->dcr->code == dcr->code)
+>  				continue;
+> -			rc = sprintf(buf, "0x%04x\n",
+> +			rc = sysfs_emit(buf, "0x%04x\n",
+>  					le16_to_cpu(nfit_dcr->dcr->code));
+>  			break;
+>  		}
+> @@ -1515,7 +1515,7 @@ static ssize_t formats_show(struct device *dev,
+>  {
+>  	struct nvdimm *nvdimm = to_nvdimm(dev);
+>  
+> -	return sprintf(buf, "%d\n", num_nvdimm_formats(nvdimm));
+> +	return sysfs_emit(buf, "%d\n", num_nvdimm_formats(nvdimm));
+>  }
+>  static DEVICE_ATTR_RO(formats);
+>  
+> @@ -1524,7 +1524,7 @@ static ssize_t serial_show(struct device *dev,
+>  {
+>  	struct acpi_nfit_control_region *dcr = to_nfit_dcr(dev);
+>  
+> -	return sprintf(buf, "0x%08x\n", be32_to_cpu(dcr->serial_number));
+> +	return sysfs_emit(buf, "0x%08x\n", be32_to_cpu(dcr->serial_number));
+>  }
+>  static DEVICE_ATTR_RO(serial);
+>  
+> @@ -1536,7 +1536,7 @@ static ssize_t family_show(struct device *dev,
+>  
+>  	if (nfit_mem->family < 0)
+>  		return -ENXIO;
+> -	return sprintf(buf, "%d\n", nfit_mem->family);
+> +	return sysfs_emit(buf, "%d\n", nfit_mem->family);
+>  }
+>  static DEVICE_ATTR_RO(family);
+>  
+> @@ -1548,7 +1548,7 @@ static ssize_t dsm_mask_show(struct device *dev,
+>  
+>  	if (nfit_mem->family < 0)
+>  		return -ENXIO;
+> -	return sprintf(buf, "%#lx\n", nfit_mem->dsm_mask);
+> +	return sysfs_emit(buf, "%#lx\n", nfit_mem->dsm_mask);
+>  }
+>  static DEVICE_ATTR_RO(dsm_mask);
+>  
+> @@ -1562,7 +1562,7 @@ static ssize_t flags_show(struct device *dev,
+>  	if (test_bit(NFIT_MEM_DIRTY, &nfit_mem->flags))
+>  		flags |= ACPI_NFIT_MEM_FLUSH_FAILED;
+>  
+> -	return sprintf(buf, "%s%s%s%s%s%s%s\n",
+> +	return sysfs_emit(buf, "%s%s%s%s%s%s%s\n",
+>  		flags & ACPI_NFIT_MEM_SAVE_FAILED ? "save_fail " : "",
+>  		flags & ACPI_NFIT_MEM_RESTORE_FAILED ? "restore_fail " : "",
+>  		flags & ACPI_NFIT_MEM_FLUSH_FAILED ? "flush_fail " : "",
+> @@ -1579,7 +1579,7 @@ static ssize_t id_show(struct device *dev,
+>  	struct nvdimm *nvdimm = to_nvdimm(dev);
+>  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+>  
+> -	return sprintf(buf, "%s\n", nfit_mem->id);
+> +	return sysfs_emit(buf, "%s\n", nfit_mem->id);
+>  }
+>  static DEVICE_ATTR_RO(id);
+>  
+> @@ -1589,7 +1589,7 @@ static ssize_t dirty_shutdown_show(struct device *dev,
+>  	struct nvdimm *nvdimm = to_nvdimm(dev);
+>  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+>  
+> -	return sprintf(buf, "%d\n", nfit_mem->dirty_shutdown);
+> +	return sysfs_emit(buf, "%d\n", nfit_mem->dirty_shutdown);
+>  }
+>  static DEVICE_ATTR_RO(dirty_shutdown);
+>  
+> @@ -2172,7 +2172,7 @@ static ssize_t range_index_show(struct device *dev,
+>  	struct nd_region *nd_region = to_nd_region(dev);
+>  	struct nfit_spa *nfit_spa = nd_region_provider_data(nd_region);
+>  
+> -	return sprintf(buf, "%d\n", nfit_spa->spa->range_index);
+> +	return sysfs_emit(buf, "%d\n", nfit_spa->spa->range_index);
+>  }
+>  static DEVICE_ATTR_RO(range_index);
+>  
+> 
 
