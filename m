@@ -1,241 +1,126 @@
-Return-Path: <linux-acpi+bounces-2577-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2583-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA24C81B921
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Dec 2023 15:03:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5234181BA0C
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Dec 2023 16:00:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30BE91F223AD
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Dec 2023 14:03:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E687E1F24EDA
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Dec 2023 15:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852F03608F;
-	Thu, 21 Dec 2023 13:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049D93608F;
+	Thu, 21 Dec 2023 14:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CVERI9Cz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9E236080;
-	Thu, 21 Dec 2023 13:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6dbb9d03b5eso95556a34.1;
-        Thu, 21 Dec 2023 05:55:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703166945; x=1703771745;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tn1YpB9RSUb3kYqtYjrWXVkua1HlT1atP73EUz1/0nY=;
-        b=AP3Z9VeeKl3jB2MCKXBmdlCJrJacLeC9oYo684TxHCay2sVYpIcqCFpp6k4jBX7IP2
-         D45fRN2ex+QCUTENHS1Et7uG4qgLslwmy81OBO0ErDnwhIcg0+Nfw4voI6GJ8KMYTwOd
-         uK5h6Mh7MTfJsrQauGSYg8we6ehumpl4iHbnugIg2PPnx3MmnQ6RmTB7ZFzFpYpLRfe6
-         fceoVE+MhtRhsRJPvrvUlbT4EQ3N21MFzQ2ffLishVbxPBLM7+z/CQC/ef7Kpxs1ivoy
-         cqkz9esf2qc/8m1RvWZnGeR4e6axmw8mxZ4zEZG2QyvDHd6nOeWqGA0vMQ03XkGL4QU4
-         DMrQ==
-X-Gm-Message-State: AOJu0Yz3wEaZnXX6qGh5rDlL/oecy9zECauQiYDbOl60jdyq8NHfTJoJ
-	QEc3V5tmFxSg2OxRmDWYPfQbXND6NLOunFnSWPI=
-X-Google-Smtp-Source: AGHT+IGyDCjQzUrqeW1hQnA1vPHGjsH39gBljxA4HGmC4zmiOGkpax/gOnaTZ3Hp+uBUwVKFr9RB00v6d1OjIBF6qys=
-X-Received: by 2002:a4a:a581:0:b0:591:cdc0:f28d with SMTP id
- d1-20020a4aa581000000b00591cdc0f28dmr13283358oom.0.1703166944879; Thu, 21 Dec
- 2023 05:55:44 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684B4539E4;
+	Thu, 21 Dec 2023 14:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1703170797; x=1734706797;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OoapTPukjShzEohQxJsr9nMKqKZQxWObxkyyNaa2x2o=;
+  b=CVERI9Cz7w/UOXBmVypCObeprp4Dik3z4YE2uu/CDu25zSo+ajYIN6CQ
+   nytYl/+NNNFY5R9GjXge6OnWy9k7EBa2kuDNGz6vVyrPcdG8ByMNa00je
+   gp2CI8lAJLAdwkervr/4/hUCt9yEftljlJYR8+Bc+pCQ6oANjCa3KyEn7
+   yjtsSni0xMtzF+uGGlTeQCTF7PpIQAJhhBgUhJKteswSNGFuXzylD4Cv2
+   2ik3aUbpYdcibEUzhbJ35OlCQpQtD1c1ctMUQYGDcKcl1Jw+gMZg3aJYa
+   XpYztKL3w2spkJOyYmyfdCizXgAvG65INdT8hnPFqMExcPS/1qUnUsHwD
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="2811584"
+X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; 
+   d="scan'208";a="2811584"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2023 06:59:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="900120139"
+X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; 
+   d="scan'208";a="900120139"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2023 06:59:49 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1rGJWv-00000007rjT-2rCh;
+	Thu, 21 Dec 2023 15:56:05 +0200
+Date: Thu, 21 Dec 2023 15:56:05 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Mark Hasemeyer <markhas@chromium.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Raul Rangel <rrangel@chromium.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 20/22] device property: Modify fwnode irq_get() to use
+ resource
+Message-ID: <ZYRD9Y3Y_jd1NBs8@smile.fi.intel.com>
+References: <20231220235459.2965548-1-markhas@chromium.org>
+ <20231220165423.v2.20.I38ac58ab04985a404ed6551eb5813fa7841ef410@changeid>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com> <20231218064521.37324-2-xueshuai@linux.alibaba.com>
-In-Reply-To: <20231218064521.37324-2-xueshuai@linux.alibaba.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 21 Dec 2023 14:55:33 +0100
-Message-ID: <CAJZ5v0hnKP9S+5PfuO1EzvpSdHM09s0HidGjfinf491xkdop3g@mail.gmail.com>
-Subject: Re: [PATCH v10 1/4] ACPI: APEI: set memory failure flags as
- MF_ACTION_REQUIRED on synchronous events
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: bp@alien8.de, rafael@kernel.org, wangkefeng.wang@huawei.com, 
-	tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com, 
-	linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com, 
-	gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org, 
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	akpm@linux-foundation.org, linux-edac@vger.kernel.org, 
-	acpica-devel@lists.linuxfoundation.org, stable@vger.kernel.org, 
-	x86@kernel.org, justin.he@arm.com, ardb@kernel.org, ying.huang@intel.com, 
-	ashish.kalra@amd.com, baolin.wang@linux.alibaba.com, tglx@linutronix.de, 
-	mingo@redhat.com, dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com, 
-	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com, 
-	zhuo.song@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231220165423.v2.20.I38ac58ab04985a404ed6551eb5813fa7841ef410@changeid>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Dec 18, 2023 at 7:45=E2=80=AFAM Shuai Xue <xueshuai@linux.alibaba.c=
-om> wrote:
->
-> There are two major types of uncorrected recoverable (UCR) errors :
->
-> - Synchronous error: The error is detected and raised at the point of the
->   consumption in the execution flow, e.g. when a CPU tries to access
->   a poisoned cache line. The CPU will take a synchronous error exception
->   such as Synchronous External Abort (SEA) on Arm64 and Machine Check
->   Exception (MCE) on X86. OS requires to take action (for example, offlin=
-e
->   failure page/kill failure thread) to recover this uncorrectable error.
->
-> - Asynchronous error: The error is detected out of processor execution
->   context, e.g. when an error is detected by a background scrubber. Some =
-data
->   in the memory are corrupted. But the data have not been consumed. OS is
->   optional to take action to recover this uncorrectable error.
->
-> When APEI firmware first is enabled, a platform may describe one error
-> source for the handling of synchronous errors (e.g. MCE or SEA notificati=
-on
-> ), or for handling asynchronous errors (e.g. SCI or External Interrupt
-> notification). In other words, we can distinguish synchronous errors by
-> APEI notification. For synchronous errors, kernel will kill the current
-> process which accessing the poisoned page by sending SIGBUS with
-> BUS_MCEERR_AR. In addition, for asynchronous errors, kernel will notify t=
-he
-> process who owns the poisoned page by sending SIGBUS with BUS_MCEERR_AO i=
-n
-> early kill mode. However, the GHES driver always sets mf_flags to 0 so th=
-at
-> all synchronous errors are handled as asynchronous errors in memory failu=
-re.
->
-> To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronou=
-s
-> events.
->
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
-> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: James Morse <james.morse@arm.com>
+On Wed, Dec 20, 2023 at 04:54:34PM -0700, Mark Hasemeyer wrote:
+> The underlying ACPI and OF subsystems provide their own APIs which
+> provide IRQ information as a struct resource. This allows callers to get
+> more information about the IRQ by looking at the resource flags.  For
 
-Applied as 6.8 material.
+Double space when other lines have a single space.
 
-The other patches in the series still need to receive tags from the
-APEI designated reviewers (as per MAINTAINERS).
+> example, whether or not an IRQ is wake capable.
 
-Thanks!
+Suggested-by?
 
+...
 
-> ---
->  drivers/acpi/apei/ghes.c | 29 +++++++++++++++++++++++------
->  1 file changed, 23 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 63ad0541db38..ab2a82cb1b0b 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -101,6 +101,20 @@ static inline bool is_hest_type_generic_v2(struct gh=
-es *ghes)
->         return ghes->generic->header.type =3D=3D ACPI_HEST_TYPE_GENERIC_E=
-RROR_V2;
->  }
->
-> +/*
-> + * A platform may describe one error source for the handling of synchron=
-ous
-> + * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. S=
-CI
-> + * or External Interrupt). On x86, the HEST notifications are always
-> + * asynchronous, so only SEA on ARM is delivered as a synchronous
-> + * notification.
-> + */
-> +static inline bool is_hest_sync_notify(struct ghes *ghes)
+> -int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
+> +int fwnode_irq_get_resource(const struct fwnode_handle *fwnode,
+> +			    unsigned int index, struct resource *r)
+
+It's perfectly fine to replace ) by , on the previous line, no need
+to make it shorter.
+
+...
+
+> +int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
 > +{
-> +       u8 notify_type =3D ghes->generic->notify.type;
-> +
-> +       return notify_type =3D=3D ACPI_HEST_NOTIFY_SEA;
+> +	struct resource r;
+
+	struct resource r = {};
+
+?
+
+> +	return fwnode_irq_get_resource(fwnode, index, &r);
 > +}
-> +
->  /*
->   * This driver isn't really modular, however for the time being,
->   * continuing to use module_param is the easiest way to remain
-> @@ -489,7 +503,7 @@ static bool ghes_do_memory_failure(u64 physical_addr,=
- int flags)
->  }
->
->  static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gd=
-ata,
-> -                                      int sev)
-> +                                      int sev, bool sync)
->  {
->         int flags =3D -1;
->         int sec_sev =3D ghes_severity(gdata->error_severity);
-> @@ -503,7 +517,7 @@ static bool ghes_handle_memory_failure(struct acpi_he=
-st_generic_data *gdata,
->             (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
->                 flags =3D MF_SOFT_OFFLINE;
->         if (sev =3D=3D GHES_SEV_RECOVERABLE && sec_sev =3D=3D GHES_SEV_RE=
-COVERABLE)
-> -               flags =3D 0;
-> +               flags =3D sync ? MF_ACTION_REQUIRED : 0;
->
->         if (flags !=3D -1)
->                 return ghes_do_memory_failure(mem_err->physical_addr, fla=
-gs);
-> @@ -511,9 +525,11 @@ static bool ghes_handle_memory_failure(struct acpi_h=
-est_generic_data *gdata,
->         return false;
->  }
->
-> -static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdat=
-a, int sev)
-> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdat=
-a,
-> +                                      int sev, bool sync)
->  {
->         struct cper_sec_proc_arm *err =3D acpi_hest_get_payload(gdata);
-> +       int flags =3D sync ? MF_ACTION_REQUIRED : 0;
->         bool queued =3D false;
->         int sec_sev, i;
->         char *p;
-> @@ -538,7 +554,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest=
-_generic_data *gdata, int s
->                  * and don't filter out 'corrected' error here.
->                  */
->                 if (is_cache && has_pa) {
-> -                       queued =3D ghes_do_memory_failure(err_info->physi=
-cal_fault_addr, 0);
-> +                       queued =3D ghes_do_memory_failure(err_info->physi=
-cal_fault_addr, flags);
->                         p +=3D err_info->length;
->                         continue;
->                 }
-> @@ -666,6 +682,7 @@ static bool ghes_do_proc(struct ghes *ghes,
->         const guid_t *fru_id =3D &guid_null;
->         char *fru_text =3D "";
->         bool queued =3D false;
-> +       bool sync =3D is_hest_sync_notify(ghes);
->
->         sev =3D ghes_severity(estatus->error_severity);
->         apei_estatus_for_each_section(estatus, gdata) {
-> @@ -683,13 +700,13 @@ static bool ghes_do_proc(struct ghes *ghes,
->                         atomic_notifier_call_chain(&ghes_report_chain, se=
-v, mem_err);
->
->                         arch_apei_report_mem_error(sev, mem_err);
-> -                       queued =3D ghes_handle_memory_failure(gdata, sev)=
-;
-> +                       queued =3D ghes_handle_memory_failure(gdata, sev,=
- sync);
->                 }
->                 else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
->                         ghes_handle_aer(gdata);
->                 }
->                 else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
-> -                       queued =3D ghes_handle_arm_hw_error(gdata, sev);
-> +                       queued =3D ghes_handle_arm_hw_error(gdata, sev, s=
-ync);
->                 } else {
->                         void *err =3D acpi_hest_get_payload(gdata);
->
-> --
-> 2.39.3
->
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
