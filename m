@@ -1,97 +1,113 @@
-Return-Path: <linux-acpi+bounces-2589-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2590-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B3381C22A
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Dec 2023 01:00:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1676E81C28E
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Dec 2023 02:08:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF799B23C12
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Dec 2023 23:59:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D357C1C2406A
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Dec 2023 01:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222D87949D;
-	Thu, 21 Dec 2023 23:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="VkNDNnEa"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE981A23;
+	Fri, 22 Dec 2023 01:08:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE76A78E92
-	for <linux-acpi@vger.kernel.org>; Thu, 21 Dec 2023 23:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-5e734d6cbe4so12959127b3.3
-        for <linux-acpi@vger.kernel.org>; Thu, 21 Dec 2023 15:59:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1703203193; x=1703807993; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GoyFDQmGnb660Pi6Gq/ALTiVqe1qLyDsC2KvlSw7HRs=;
-        b=VkNDNnEan0OQeqq+cfm6uMoJkMnja4i4kw+bo7ryirOo3pETW8YjYR/mvLjy1HBd+V
-         WBlvtGS/xgXd+UWkpdDjp4iMtiBM/YT2bkv/yUyjNQErHRhJe8tzHeHWXQrPYjLI3gRT
-         w7n2qlxlUM2dOqi8g99IRBOqgVdtSVBPTY/F8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703203193; x=1703807993;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GoyFDQmGnb660Pi6Gq/ALTiVqe1qLyDsC2KvlSw7HRs=;
-        b=rIIZekgLCZ2ivpo5eBLz30VStn0MVPCV3kf3SniPqir1lM4ZhTCf666jfIphv/Udtl
-         /V53zaK9i1P5JRqryJM762qmGxIQbKeehhNDFCUkdCZcKHjzQD9NeamVYdw8c+oByS6V
-         k/xPXuz7aynjj63GZvWfMHmraArFXBJ4Vst6DYAH0/FTk+b/Uh06QUtOz9okR1mAZcOY
-         22En4mS2g36WewMp1NLtR74+8MZnf5awcTkR7d+oP/60yMR+MguzDTxSYmSmh8E/5B2T
-         ZB7CThd8wBgzoqsIzospyi1jz5smwMsi/GEkReEg6m0cjWhItE+hqF1tjERg6/4HDkbQ
-         S40w==
-X-Gm-Message-State: AOJu0YzDRxnn9yFmY9dManKw2aZPDQ0UFHyazZoATbHFkyHrrGyXDJrm
-	bAOa4grX2+C/UNYveyLo2GKAxZ1/D/wqIAw6Ijf3+Q649yfn
-X-Google-Smtp-Source: AGHT+IGZlm6IlAcpDV1G32nrwa9YDyKRwIHutZS5zfJEIfXED6DzpnHlyipw3nrMS/3fI32Qtww67sHWh1Z/b7K0//I=
-X-Received: by 2002:a0d:ff47:0:b0:5e0:765f:1e2b with SMTP id
- p68-20020a0dff47000000b005e0765f1e2bmr645819ywf.78.1703203192838; Thu, 21 Dec
- 2023 15:59:52 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1BDA31;
+	Fri, 22 Dec 2023 01:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0Vyz1YYc_1703207271;
+Received: from 30.240.112.165(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vyz1YYc_1703207271)
+          by smtp.aliyun-inc.com;
+          Fri, 22 Dec 2023 09:07:54 +0800
+Message-ID: <f8bff25f-714a-40ab-b450-5dee8d964463@linux.alibaba.com>
+Date: Fri, 22 Dec 2023 09:07:50 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231220235459.2965548-1-markhas@chromium.org>
- <20231220165423.v2.20.I38ac58ab04985a404ed6551eb5813fa7841ef410@changeid>
- <ZYRD9Y3Y_jd1NBs8@smile.fi.intel.com> <CANg-bXDLC_+mxFU+dHyCx1K=HKTwwGw+r__6_++Co2-viTbsgQ@mail.gmail.com>
- <CAHQZ30BOA7zuRrN-kK5Qw+NYSVydfhJ0gDPr9q-U+7VKXHzG8g@mail.gmail.com>
-In-Reply-To: <CAHQZ30BOA7zuRrN-kK5Qw+NYSVydfhJ0gDPr9q-U+7VKXHzG8g@mail.gmail.com>
-From: Mark Hasemeyer <markhas@chromium.org>
-Date: Thu, 21 Dec 2023 16:59:42 -0700
-Message-ID: <CANg-bXAsaKJxQ8xON59BAH1_SdVqvCQfDTco-osehjLW2T0Vmg@mail.gmail.com>
-Subject: Re: [PATCH v2 20/22] device property: Modify fwnode irq_get() to use resource
-To: Raul Rangel <rrangel@chromium.org>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, LKML <linux-kernel@vger.kernel.org>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Daniel Scally <djrscally@gmail.com>, 
-	Frank Rowand <frowand.list@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, devicetree@vger.kernel.org, 
-	linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 1/4] ACPI: APEI: set memory failure flags as
+ MF_ACTION_REQUIRED on synchronous events
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: bp@alien8.de, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
+ mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
+ naoya.horiguchi@nec.com, james.morse@arm.com, gregkh@linuxfoundation.org,
+ will@kernel.org, jarkko@kernel.org, linux-acpi@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+ stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
+ ying.huang@intel.com, ashish.kalra@amd.com, baolin.wang@linux.alibaba.com,
+ tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+ lenb@kernel.org, hpa@zytor.com, robert.moore@intel.com, lvying6@huawei.com,
+ xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20231218064521.37324-2-xueshuai@linux.alibaba.com>
+ <CAJZ5v0hnKP9S+5PfuO1EzvpSdHM09s0HidGjfinf491xkdop3g@mail.gmail.com>
+Content-Language: en-US
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <CAJZ5v0hnKP9S+5PfuO1EzvpSdHM09s0HidGjfinf491xkdop3g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
->> > > -int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
->> > > +int fwnode_irq_get_resource(const struct fwnode_handle *fwnode,
->> > > +                         unsigned int index, struct resource *r)
->> >
->> > It's perfectly fine to replace ) by , on the previous line, no need
->> > to make it shorter.
+
+
+On 2023/12/21 21:55, Rafael J. Wysocki wrote:
+> On Mon, Dec 18, 2023 at 7:45 AM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
 >>
->> That puts the line at 115 chars? checkpatch.pl allows a maximum line
->> length of 100. I can bump the 'index' argument up a line and keep it
->> to a length of 95?
->
->
-> clang-format should do the right thing.
+>> There are two major types of uncorrected recoverable (UCR) errors :
+>>
+>> - Synchronous error: The error is detected and raised at the point of the
+>>   consumption in the execution flow, e.g. when a CPU tries to access
+>>   a poisoned cache line. The CPU will take a synchronous error exception
+>>   such as Synchronous External Abort (SEA) on Arm64 and Machine Check
+>>   Exception (MCE) on X86. OS requires to take action (for example, offline
+>>   failure page/kill failure thread) to recover this uncorrectable error.
+>>
+>> - Asynchronous error: The error is detected out of processor execution
+>>   context, e.g. when an error is detected by a background scrubber. Some data
+>>   in the memory are corrupted. But the data have not been consumed. OS is
+>>   optional to take action to recover this uncorrectable error.
+>>
+>> When APEI firmware first is enabled, a platform may describe one error
+>> source for the handling of synchronous errors (e.g. MCE or SEA notification
+>> ), or for handling asynchronous errors (e.g. SCI or External Interrupt
+>> notification). In other words, we can distinguish synchronous errors by
+>> APEI notification. For synchronous errors, kernel will kill the current
+>> process which accessing the poisoned page by sending SIGBUS with
+>> BUS_MCEERR_AR. In addition, for asynchronous errors, kernel will notify the
+>> process who owns the poisoned page by sending SIGBUS with BUS_MCEERR_AO in
+>> early kill mode. However, the GHES driver always sets mf_flags to 0 so that
+>> all synchronous errors are handled as asynchronous errors in memory failure.
+>>
+>> To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronous
+>> events.
+>>
+>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+>> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Reviewed-by: James Morse <james.morse@arm.com>
+> 
+> Applied as 6.8 material.
+> 
+> The other patches in the series still need to receive tags from the
+> APEI designated reviewers (as per MAINTAINERS).
+> 
+> Thanks!
+> 
 
-It formats the line as-is in the patch: with 'unsigned int index' on
-the next line.
+Thank you :)
+
+I will wait more feedback of other patches from MAINTAINERS.
+
+Cheers,
+Shuai
 
