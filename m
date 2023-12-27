@@ -1,231 +1,129 @@
-Return-Path: <linux-acpi+bounces-2623-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2624-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D921481EE66
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Dec 2023 12:01:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E403F81EE83
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Dec 2023 12:15:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F8F7283A31
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Dec 2023 11:01:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94B2B283919
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Dec 2023 11:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F247544C66;
-	Wed, 27 Dec 2023 11:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C764439E;
+	Wed, 27 Dec 2023 11:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S8F45LaI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pP9RBZ+D"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D107C44C6A;
-	Wed, 27 Dec 2023 11:00:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D503C433D9;
-	Wed, 27 Dec 2023 11:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF88E44396;
+	Wed, 27 Dec 2023 11:15:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354F6C433C8;
+	Wed, 27 Dec 2023 11:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703674855;
-	bh=falpcbXSJNuiEF3sSfc61cz1dUhSak77oGu3XO7JpyI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S8F45LaIzTKvZCbpbEQ4q4CfGGD0hkeWOOuqEP/rNa8Svhx5OzI04buJnTX1fyzOK
-	 Fzn2pbudXRCl3Uc8xQ8JxibkpMqPBIkz7k4KwLPGx2YfxoYzxJxGdYutKdTG+7MHf4
-	 uF2XpvJTJB3zqnH9eph8HjqrmE5I3+gJF1xlX/NltYXyzWqTjiwQg/mKiKpFKvig5M
-	 3X5krhCmO9h5WCXsCjrexCwgTD4Sc66jI1x8+aBu0PcTjZGpAUcNXNnPewhF80cEkl
-	 GAFTstILMEHQ14md3wUbVN4NeAPDMSHxg3aPU9rU1VDMAlpQ7KCPUBjPWkyJZiQOMe
-	 LMGX6re4wnPlw==
+	s=k20201202; t=1703675723;
+	bh=Gy+D+S27rQJBs12wlJEa+cumgsdCkF3P6tKjEyxVt5s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pP9RBZ+DfqI9ufbs6J2xz/FKM0nY4Pwf02G34GG/l91DTZu2tk+J7E60zTnEhjPL3
+	 qZpNUMit64mYzbAtmwb9KGD6zaz5A40god5gLykenVaCm2sXCYmzeuPBwh81SyO6PE
+	 Bmza1w3YIvrK9XpCQ1ll0SBpVNNIbPKuiFHL1di27kuvrOtBBRDVMYxJBl9aC9WXFF
+	 MVkAcY36NePVzE7QE5kh7q0qI8bFlVKwHv5Lb87s+QQdATKl+4EzU0nNeZCmAVTbhm
+	 BIC374HdlJLWXGEfqtrC7dzBPDecYaAPxTeXEnoldydMWpAyK6aa7O4FdWU6pXS3QV
+	 BU1AUG2sovIcQ==
+Date: Wed, 27 Dec 2023 12:15:14 +0100
 From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	Fang Xiang <fangxiang3@xiaomi.com>,
-	Robert Moore <robert.moore@intel.com>
-Subject: [PATCH v4 3/3] irqchip/gic-v3: Enable non-coherent redistributors/ITSes ACPI probing
-Date: Wed, 27 Dec 2023 12:00:38 +0100
-Message-Id: <20231227110038.55453-4-lpieralisi@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231227110038.55453-1-lpieralisi@kernel.org>
-References: <20230905104721.52199-1-lpieralisi@kernel.org>
- <20231227110038.55453-1-lpieralisi@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>
+Subject: Re: [PATCH RFC v3 13/21] ACPICA: Add new MADT GICC flags fields
+Message-ID: <ZYwHQgdGGGVkwmJ8@lpieralisi>
+References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk>
+ <E1rDOgs-00Dvko-6t@rmk-PC.armlinux.org.uk>
+ <20231215162322.00007391@Huawei.com>
+ <ZXyEiHLFBsoUkfNI@shell.armlinux.org.uk>
+ <ZYAPhlwPUT/7dN4n@lpieralisi>
+ <CAJZ5v0hyUqJspPbGTgTMSVHVBe=wHR6swPx-O3UcsH5dXDFpTA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0hyUqJspPbGTgTMSVHVBe=wHR6swPx-O3UcsH5dXDFpTA@mail.gmail.com>
 
-The GIC architecture specification defines a set of registers
-for redistributors and ITSes that control the sharebility and
-cacheability attributes of redistributors/ITSes initiator ports
-on the interconnect (GICR_[V]PROPBASER, GICR_[V]PENDBASER,
-GITS_BASER<n>).
+On Mon, Dec 18, 2023 at 02:14:30PM +0100, Rafael J. Wysocki wrote:
+> On Mon, Dec 18, 2023 at 10:23 AM Lorenzo Pieralisi
+> <lpieralisi@kernel.org> wrote:
+> >
+> > On Fri, Dec 15, 2023 at 04:53:28PM +0000, Russell King (Oracle) wrote:
+> > > On Fri, Dec 15, 2023 at 04:23:22PM +0000, Jonathan Cameron wrote:
+> > > > On Wed, 13 Dec 2023 12:50:18 +0000
+> > > > Russell King (Oracle) <rmk+kernel@armlinux.org.uk> wrote:
+> > > >
+> > > > > From: James Morse <james.morse@arm.com>
+> > > > >
+> > > > > Add the new flag field to the MADT's GICC structure.
+> > > > >
+> > > > > 'Online Capable' indicates a disabled CPU can be enabled later. See
+> > > > > ACPI specification 6.5 Tabel 5.37: GICC CPU Interface Flags.
+> > > > >
+> > > > > Signed-off-by: James Morse <james.morse@arm.com>
+> > > > > Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> > > > > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> > > > > Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> > > > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > > >
+> > > > I see there is an acpica pull request including this bit but with a different name
+> > > > For reference.
+> > > > https://github.com/acpica/acpica/pull/914/commits/453a5f67567786522021d5f6913f561f8b3cabf6
+> > > >
+> > > > +CC Lorenzo who submitted that.
+> > >
+> > > > > +#define ACPI_MADT_GICC_CPU_CAPABLE      (1<<3)   /* 03: CPU is online capable */
+> > > >
+> > > > ACPI_MADT_GICC_ONLINE_CAPABLE
+> > >
+> > > It's somewhat disappointing, but no big deal. It's easy enough to change
+> > > "irqchip/gic-v3: Add support for ACPI's disabled but 'online capable' CPUs"
+> > > to use Lorenzo's name when that patch hits - and it becomes one less
+> > > patch in this patch set when Lorenzo's change eventually hits mainline.
+> > >
+> > > Does anyone know how long it may take for Lorenzo's change to get into
+> > > mainline? Would it be by the 6.8 merge window or the following one?
+> >
+> > I wish I knew. I submitted ACPICA changes for the online capable bit
+> > since I had to add additional flags on top (ie DMA coherent) and it
+> > would not make sense to submit the latter without the former.
+> >
+> > I'd be great if the ACPICA headers can make it into Linux for the upcoming
+> > merge window, not sure what I can do to fasttrack the process though
+> > (I shall ping the maintainers).
+> 
+> If your upstream pull request has been merged, I can pick up Linux
+> patches carrying Link: tags pointing to the upstream ACPICA commits in
+> that pull request.
 
-Architecturally the GIC provides a means to drive shareability
-and cacheability attributes signals and related IWB/OWB/ISH barriers
-but it is not mandatory for designs to wire up the corresponding
-interconnect signals that control the cacheability/shareability
-of transactions.
+ACPICA PR was merged, sent the Linuxized version along with the GIC changes
+here:
 
-Redistributors and ITSes interconnect ports can be connected to
-non-coherent interconnects that are not able to manage the
-shareability/cacheability attributes; this implicitly makes
-the redistributors and ITSes non-coherent observers.
+https://lore.kernel.org/lkml/20231227110038.55453-1-lpieralisi@kernel.org
 
-So far, the GIC driver on probe executes a write to "probe" for
-the redistributors and ITSes registers shareability bitfields
-by writing a value (ie InnerShareable - the shareability domain the
-CPUs are in) and check it back to detect whether the value sticks or
-not; this hinges on a GIC programming model behaviour that predates the
-current specifications, that just define shareability bits as writeable
-but do not guarantee that writing certain shareability values
-enable the expected behaviour for the redistributors/ITSes
-memory interconnect ports.
-
-To enable non-coherent GIC designs on ACPI based systems, parse the MADT
-GICC/GICR/ITS subtables non-coherent flags to determine whether the
-respective components are non-coherent observers and force the shareability
-attributes to be programmed into the redistributors and ITSes registers.
-
-An ACPI global function (acpi_get_madt_revision()) is added to retrieve
-the MADT revision, in that it is essential to check the MADT revision
-before checking for flags that were added with MADT revision 7 so that
-if the kernel is booted with ACPI tables (MADT rev < 7) it skips parsing
-the newly added flags (that should be zeroed reserved values for MADT
-versions < 7 but they could turn out to be buggy and should be ignored).
-
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
----
- drivers/acpi/processor_core.c    | 21 +++++++++++++++++++++
- drivers/irqchip/irq-gic-common.h |  8 ++++++++
- drivers/irqchip/irq-gic-v3-its.c |  4 ++++
- drivers/irqchip/irq-gic-v3.c     |  9 +++++++++
- include/linux/acpi.h             |  3 +++
- 5 files changed, 45 insertions(+)
-
-diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
-index b203cfe28550..c253d151275e 100644
---- a/drivers/acpi/processor_core.c
-+++ b/drivers/acpi/processor_core.c
-@@ -215,6 +215,27 @@ phys_cpuid_t __init acpi_map_madt_entry(u32 acpi_id)
- 	return rv;
- }
- 
-+u8 __init acpi_get_madt_revision(void)
-+{
-+	static u8 madt_revision __initdata;
-+	static bool madt_read __initdata;
-+	struct acpi_table_header *madt = NULL;
-+
-+	if (!madt_read) {
-+		madt_read = true;
-+
-+		acpi_get_table(ACPI_SIG_MADT, 0, &madt);
-+		if (!madt)
-+			return madt_revision;
-+
-+		madt_revision = madt->revision;
-+
-+		acpi_put_table(madt);
-+	}
-+
-+	return madt_revision;
-+}
-+
- static phys_cpuid_t map_mat_entry(acpi_handle handle, int type, u32 acpi_id)
- {
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-diff --git a/drivers/irqchip/irq-gic-common.h b/drivers/irqchip/irq-gic-common.h
-index f407cce9ecaa..8dffee95f7e8 100644
---- a/drivers/irqchip/irq-gic-common.h
-+++ b/drivers/irqchip/irq-gic-common.h
-@@ -6,6 +6,7 @@
- #ifndef _IRQ_GIC_COMMON_H
- #define _IRQ_GIC_COMMON_H
- 
-+#include <linux/acpi.h>
- #include <linux/of.h>
- #include <linux/irqdomain.h>
- #include <linux/irqchip/arm-gic-common.h>
-@@ -29,6 +30,13 @@ void gic_enable_quirks(u32 iidr, const struct gic_quirk *quirks,
- void gic_enable_of_quirks(const struct device_node *np,
- 			  const struct gic_quirk *quirks, void *data);
- 
-+#ifdef CONFIG_ACPI
-+static inline bool gic_acpi_non_coherent_flag(u32 flags, u32 mask)
-+{
-+	return (acpi_get_madt_revision() >= 7) && (flags & mask);
-+}
-+#endif
-+
- #define RDIST_FLAGS_PROPBASE_NEEDS_FLUSHING    (1 << 0)
- #define RDIST_FLAGS_RD_TABLES_PREALLOCATED     (1 << 1)
- #define RDIST_FLAGS_FORCE_NON_SHAREABLE        (1 << 2)
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 9a7a74239eab..8d088fca65a1 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -5578,6 +5578,10 @@ static int __init gic_acpi_parse_madt_its(union acpi_subtable_headers *header,
- 		goto node_err;
- 	}
- 
-+	if (gic_acpi_non_coherent_flag(its_entry->flags,
-+				       ACPI_MADT_ITS_NON_COHERENT))
-+		its->flags |= ITS_FLAGS_FORCE_NON_SHAREABLE;
-+
- 	err = its_probe_one(its);
- 	if (!err)
- 		return 0;
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index 98b0329b7154..48e02838fdc8 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -2356,6 +2356,11 @@ gic_acpi_parse_madt_redist(union acpi_subtable_headers *header,
- 		pr_err("Couldn't map GICR region @%llx\n", redist->base_address);
- 		return -ENOMEM;
- 	}
-+
-+	if (gic_acpi_non_coherent_flag(redist->flags,
-+				       ACPI_MADT_GICR_NON_COHERENT))
-+		gic_data.rdists.flags |= RDIST_FLAGS_FORCE_NON_SHAREABLE;
-+
- 	gic_request_region(redist->base_address, redist->length, "GICR");
- 
- 	gic_acpi_register_redist(redist->base_address, redist_base);
-@@ -2380,6 +2385,10 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_headers *header,
- 		return -ENOMEM;
- 	gic_request_region(gicc->gicr_base_address, size, "GICR");
- 
-+	if (gic_acpi_non_coherent_flag(gicc->flags,
-+				       ACPI_MADT_GICC_NON_COHERENT))
-+		gic_data.rdists.flags |= RDIST_FLAGS_FORCE_NON_SHAREABLE;
-+
- 	gic_acpi_register_redist(gicc->gicr_base_address, redist_base);
- 	return 0;
- }
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 54189e0e5f41..a292f2bdb693 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -283,6 +283,9 @@ static inline bool invalid_phys_cpuid(phys_cpuid_t phys_id)
- 	return phys_id == PHYS_CPUID_INVALID;
- }
- 
-+
-+u8 __init acpi_get_madt_revision(void);
-+
- /* Validate the processor object's proc_id */
- bool acpi_duplicate_processor_id(int proc_id);
- /* Processor _CTS control */
--- 
-2.34.1
-
+Thanks,
+Lorenzo
 
