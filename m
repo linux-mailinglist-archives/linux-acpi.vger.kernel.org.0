@@ -1,69 +1,60 @@
-Return-Path: <linux-acpi+bounces-2631-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2632-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6741F81F0E9
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Dec 2023 18:29:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E1A81F109
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Dec 2023 18:41:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07BB71F22FED
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Dec 2023 17:29:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24B7A281DD9
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Dec 2023 17:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127494645A;
-	Wed, 27 Dec 2023 17:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7F446538;
+	Wed, 27 Dec 2023 17:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S3YtY6Y9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Qq18Obx+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AB246521;
-	Wed, 27 Dec 2023 17:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A7A4652D
+	for <linux-acpi@vger.kernel.org>; Wed, 27 Dec 2023 17:41:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703698190; x=1735234190;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Aldfr7OGlFepgVjQLG4ahYMsoND2AkgxRVR/eA9MgBw=;
-  b=S3YtY6Y9+wVXd341JyxqEJTB7vYu6C3VWvWJasTU5cpuK9UIgqAEBcRw
-   F3L+wglEfRMaACA1oLCh8hBRUohjq3TI8pziX/It/gCxgzGmQvUWPX9PK
-   v9Qc1hZQ35SYhSZW6qxDEGtAvYXOiXmhxtoOakdGYqbYu8pRn2OyZb0BO
-   hb2b11Ru7MoGxb2pfgR8InLLX5hKHtXbKvqEIrJLkWPKuZlsMMUE3tcXd
-   ZTaWWt7o/yumE0KGSJD/cteOKZLVVMnvbPS/I+aJYhjFAEP3yJP3v1Wfr
-   94PnesReWbRd3MSnClHxIKH0wHRolwlGdl5CNBXn+/v5Notq60M0LEGNH
+  t=1703698908; x=1735234908;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=JzdUw66LNI3/E8KPP6kG1AquAHKaUfM8tf5yH4kyXsc=;
+  b=Qq18Obx+1fe9uMDAEDHGw2gohU7rwoaLMLM8VJPRoXJxAlmguLNEds6X
+   QihCpG60IvoBFlq09RMU/6u6p3jpsoblhKPn1S3a7x4uYZo6Y346JXAJq
+   qslN3qRD5GywYFBuo/rWir9wqWbD/jhaN5EevRTgF+dllWEE3sOahwe+e
+   5gxnixDCmBuBtEfU6PJtF6k0IaStULVu0diNcx7cCbHerOqgBJBKA9DTe
+   +VHhig5rSnMdUXulNFILkKW6uaJUrxSq65me+XkErpUQ09Rz3MDPHwuS0
+   CoqQk8Hc3CPrbj7sKl9NXpBq3mKj9UTZk//pryalqvsUiuHA65uM+1Cp5
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10936"; a="3770555"
+X-IronPort-AV: E=McAfee;i="6600,9927,10936"; a="399256701"
 X-IronPort-AV: E=Sophos;i="6.04,309,1695711600"; 
-   d="scan'208";a="3770555"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2023 09:29:50 -0800
+   d="scan'208";a="399256701"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2023 09:41:47 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10936"; a="1025435720"
+X-IronPort-AV: E=McAfee;i="6600,9927,10936"; a="921885486"
 X-IronPort-AV: E=Sophos;i="6.04,309,1695711600"; 
-   d="scan'208";a="1025435720"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by fmsmga006.fm.intel.com with ESMTP; 27 Dec 2023 09:29:47 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rIXiz-000Fbl-11;
-	Wed, 27 Dec 2023 17:29:45 +0000
-Date: Thu, 28 Dec 2023 01:28:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>, jdelvare@suse.com,
-	linux@roeck-us.net
-Cc: oe-kbuild-all@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, acpica-devel@lists.linux.dev
-Subject: Re: [PATCH v2] hwmon: (acpi_power_meter) Ensure IPMI space handler
- is ready on Dell systems
-Message-ID: <202312280116.QtpZzDTy-lkp@intel.com>
-References: <20231227040401.548977-1-kai.heng.feng@canonical.com>
+   d="scan'208";a="921885486"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2023 09:41:46 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rIXuZ-00000009Th4-3ft9;
+	Wed, 27 Dec 2023 19:41:43 +0200
+Date: Wed, 27 Dec 2023 19:41:43 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Ken Xue <Ken.Xue@amd.com>
+Cc: rafael@kernel.org, linux-acpi@vger.kernel.org, cwhuang@linux.org.tw
+Subject: Re: [PATCH V6] acpi: button: trigger wakeup key event
+Message-ID: <ZYxh16_Je2-aH0ai@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -72,55 +63,27 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231227040401.548977-1-kai.heng.feng@canonical.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi Kai-Heng,
+On Mon, Dec 25, 2023 at 01:58:35PM +0800, Ken Xue wrote:
+> Andorid can wakeup from various wakeup sources, but only several wakeup
+> sources can wake up screen with right events(POWER, WAKEUP) from input
+> device.
+> 
+> Regarding pressing acpi power button, it can resume system and
+> ACPI_BITMASK_WAKE_STATUS and ACPI_BITMASK_POWER_BUTTON_STATUS are set in
+> pm1a_sts, but kernel does not report any key event to user space during
+> resuming by default.
+> 
+> So, send wakeup key event to user space during resume from power button.
+> 
+> Signed-off-by: Ken Xue <Ken.Xue@amd.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on groeck-staging/hwmon-next]
-[also build test ERROR on rafael-pm/linux-next rafael-pm/acpi-bus linus/master v6.7-rc7 next-20231222]
-[cannot apply to rafael-pm/devprop]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Kai-Heng-Feng/hwmon-acpi_power_meter-Ensure-IPMI-space-handler-is-ready-on-Dell-systems/20231227-120900
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git hwmon-next
-patch link:    https://lore.kernel.org/r/20231227040401.548977-1-kai.heng.feng%40canonical.com
-patch subject: [PATCH v2] hwmon: (acpi_power_meter) Ensure IPMI space handler is ready on Dell systems
-config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20231228/202312280116.QtpZzDTy-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231228/202312280116.QtpZzDTy-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202312280116.QtpZzDTy-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/acpi/acpi_ipmi.c:585:6: error: redefinition of 'wait_for_acpi_ipmi'
-     585 | void wait_for_acpi_ipmi(void)
-         |      ^~~~~~~~~~~~~~~~~~
-   In file included from include/linux/acpi.h:35,
-                    from drivers/acpi/acpi_ipmi.c:11:
-   include/acpi/acpi_bus.h:676:20: note: previous definition of 'wait_for_acpi_ipmi' with type 'void(void)'
-     676 | static inline void wait_for_acpi_ipmi(void)
-         |                    ^~~~~~~~~~~~~~~~~~
-
-
-vim +/wait_for_acpi_ipmi +585 drivers/acpi/acpi_ipmi.c
-
-   584	
- > 585	void wait_for_acpi_ipmi(void)
-   586	{
-   587		wait_for_completion_interruptible_timeout(&smi_selected, 2 * HZ);
-   588	}
-   589	EXPORT_SYMBOL_GPL(wait_for_acpi_ipmi);
-   590	
+The code has been factually changed, but I'm okay with this version as well.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+With Best Regards,
+Andy Shevchenko
+
 
