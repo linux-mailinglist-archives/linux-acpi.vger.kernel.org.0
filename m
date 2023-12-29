@@ -1,104 +1,118 @@
-Return-Path: <linux-acpi+bounces-2641-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2642-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626D081F8C5
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Dec 2023 14:19:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCE48200E9
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Dec 2023 18:43:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 019CB1F242FF
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Dec 2023 13:19:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBABC1C209B8
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Dec 2023 17:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC3A79F9;
-	Thu, 28 Dec 2023 13:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E3E125CE;
+	Fri, 29 Dec 2023 17:43:39 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BA18464;
-	Thu, 28 Dec 2023 13:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401F612B6B;
+	Fri, 29 Dec 2023 17:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6dbd87b706aso1104928a34.0;
-        Thu, 28 Dec 2023 05:19:04 -0800 (PST)
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-3bb631656e5so1011440b6e.0;
+        Fri, 29 Dec 2023 09:43:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703769544; x=1704374344;
+        d=1e100.net; s=20230601; t=1703871817; x=1704476617;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wQv2RIGJtc8YAdnoO1f20QZUdNA/cAou6jd52Lqn6S0=;
-        b=NxIKpD+FY8twuQdK/JkArGJ2BVcSo54HH3F+gYRlor6IOlHG1DxSkaAvaHwwTb00eS
-         vmxBfIv989bd6dmVbT4KQkrjwdKhg5TvRXVKd/XOw0xTqYmqFN1mB5jWtxbbdMaEGt/k
-         MbEHKLd5Yn5OqdWZEIZvow0z/iCPRuHOM2pj0QeG4Q3Xscy7noM9l68v4V0dv+52OfmV
-         BMYMl2A8vL6xkHVcVq/X+VDJ3cS1FSZJoVEwopxjhpXg94TKPAoLhzhpkvgsExGHUnG8
-         8CFef2OlxvJwM3JFFVVZo+XuFwzwKvLaNgA0lPwvdc+qj5HLG+aAVguRtcCXVpK8HXto
-         YfDA==
-X-Gm-Message-State: AOJu0Yzt7hJcLC0miAqZSXPFyttdktoVo09XgVF14PI4Dk/EBh/qVzCb
-	zXrDfFChFGtnUTiyEGopjaoFzx+NJQ5mdrkNQNo=
-X-Google-Smtp-Source: AGHT+IH6v1Lorb0OKgIClSO5t5j5iEDzKApi54kYgEDifp/BGJIs4gcjnjlQSe8cPOyv/D6GpWc1QD0fkow5Tr93JnE=
-X-Received: by 2002:a05:6820:2e01:b0:594:35b4:8a with SMTP id
- ec1-20020a0568202e0100b0059435b4008amr13751279oob.0.1703769544039; Thu, 28
- Dec 2023 05:19:04 -0800 (PST)
+        bh=4NCIsXvRaT4RUXj2m5CrwiiUoqF/vM7/zwxLNbADhY4=;
+        b=t/nLF1Lq7PEpuhZsisdQoswfbnssc56AlPP9A0KM6ylfydfungAmljU37HWK9B21Yq
+         PVel8KRhZxrBUR0UAuysRzJ9scsjjgERXQezGRtpLNwb5sS7r0Fm0HsisZDN6gWLAJoY
+         b1qDSK1Ta2pdw7nMP2k7SFB4UiAe1OuJnz/479a4/gBNbI/1vqGOHkByoN5cNFeNFW6o
+         tsfdYiKI1uWAkgQfwyCKnSRdDjl2tTHJCzuTQh/L7KX+V7rbz3PjOs/xYYp54PD/G0o/
+         TA1rXrWoW94aBbZ09y8hQQopiWlEOxkPx9O1pQ2I+MR+xSTQDbLIYyCMAovnBYZ+KVNq
+         j6jQ==
+X-Gm-Message-State: AOJu0YxYfqk3IIHaA+L76PL31cU1+te5aKXp27PywVJknMeOIaijg1qs
+	pWvJl4Nd5XY1DDU8mikSjy8Z1DLVmw8wqDBLB9Y=
+X-Google-Smtp-Source: AGHT+IHlVF4Xs1j4xT4Y+EVTCqK0APhhjEuh3RMTHKTTM8xckFBD6GS8pbV9tAGGzg1O3RlTR1QYjsP1Ew6IWoHW6F0=
+X-Received: by 2002:a05:6871:3a26:b0:1fb:e5f:c530 with SMTP id
+ pu38-20020a0568713a2600b001fb0e5fc530mr21569924oac.4.1703871817171; Fri, 29
+ Dec 2023 09:43:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2330034.ElGaqSPkdT@kreacher>
-In-Reply-To: <2330034.ElGaqSPkdT@kreacher>
+References: <20231223001044.1401226-1-alison.schofield@intel.com>
+In-Reply-To: <20231223001044.1401226-1-alison.schofield@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 28 Dec 2023 14:18:52 +0100
-Message-ID: <CAJZ5v0i=SOyxRF4vV-WZJ-dRD8PZiyFLC7h+trtuhQ_eKLF0jw@mail.gmail.com>
-Subject: Re: [PATCH v1 0/3] ACPI: OSL/EC: Use spin locks without disabling interrupts
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Zhang Rui <rui.zhang@intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
-	Michal Wilczynski <michal.wilczynski@intel.com>, Hans de Goede <hdegoede@redhat.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Mario Limonciello <mario.limonciello@amd.com>, Daniel Drake <drake@endlessm.com>
+Date: Fri, 29 Dec 2023 18:43:26 +0100
+Message-ID: <CAJZ5v0jLkeTMDsatHB_uabj3yuyQswPm1nve=sv=kE=96qcpcg@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: NUMA: Fix overlap when extending memblks to fill CFMWS
+To: alison.schofield@intel.com
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, 
+	linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	"Huang, Ying" <ying.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 15, 2023 at 12:34=E2=80=AFPM Rafael J. Wysocki <rjw@rjwysocki.n=
-et> wrote:
+On Sat, Dec 23, 2023 at 1:10=E2=80=AFAM <alison.schofield@intel.com> wrote:
 >
-> Hi Everyone,
+> From: Alison Schofield <alison.schofield@intel.com>
 >
-> After
+> When the BIOS only partially describes a CFMWS Window in the SRAT
+> the acpi driver uses numa_fill_memblks() to extend existing memblk(s)
+> to fill the entire CFMWS Window, thereby applying the proximity domain
+> to the entire CFMWS.
 >
-> https://patchwork.kernel.org/project/linux-acpi/patch/5745568.DvuYhMxLoT@=
-kreacher/
+> The calculation of the memblks to fill has an off-by-one error, that
+> causes numa_init to fail when it sees the overlap:
 >
-> the SCI interrupt handler is threaded, so ACPICA spin locks can be used w=
-ithout
-> disabling interrupts, because they cannot be acquired from a hardirq hand=
-ler
-> running on the same CPU as any code already holding the spin lock.  This =
-patch
-> [1/3] removes disabling interrupts from acpi_os_acquire_lock() and update=
-s
-> acpi_os_release_lock() accordingly.
+> [] ACPI: SRAT: Node 0 PXM 0 [mem 0x00000000-0x7fffffff]
+> [] ACPI: SRAT: Node 0 PXM 0 [mem 0x100000000-0xffffffffff]
+> [] ACPI: SRAT: Node 1 PXM 1 [mem 0x10000000000-0x1ffffffffff]
+> [] node 0 [mem 0x100000000-0xffffffffff] overlaps with node 1 [mem 0x1000=
+00000-0x1ffffffffff]
 >
-> Patch [2/2] uses the observation that if acpi_handle_interrupt() can run
-> in a threaded interrupt handler in the GPE case, it can also run in a thr=
-eaded
-> interrupt handler in the dedicated IRQ case, so it makes the EC driver us=
-e a
-> threaded handler for the dedicated EC interrupt.
+> Fix by making the 'end' parameter to numa_fill_memblks() exclusive.
 >
-> Patch [3/3], in analogy with patch [1/3], uses the observation that after=
- patch
-> [2/2] all of the EC code runs in thread context, so it need not disable
-> interrupts on the local CPU before acquiring a spin lock, so the EC drive=
-r is
-> updated to operate its spin lock without disabling interrupts.
+> Fixes: 8f1004679987 ("ACPI/NUMA: Apply SRAT proximity domain to entire CF=
+MWS window")
+> Reported-by: "Huang, Ying" <ying.huang@intel.com>
+> Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+> ---
+>
+> Changes in v2:
+> - Send to ACPI maintainer, reviewer, and mailing list.
+>
+>
+>  drivers/acpi/numa/srat.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> index 12f330b0eac0..b99062f7c412 100644
+> --- a/drivers/acpi/numa/srat.c
+> +++ b/drivers/acpi/numa/srat.c
+> @@ -308,7 +308,7 @@ static int __init acpi_parse_cfmws(union acpi_subtabl=
+e_headers *header,
+>
+>         cfmws =3D (struct acpi_cedt_cfmws *)header;
+>         start =3D cfmws->base_hpa;
+> -       end =3D cfmws->base_hpa + cfmws->window_size;
+> +       end =3D cfmws->base_hpa + cfmws->window_size - 1;
+>
+>         /*
+>          * The SRAT may have already described NUMA details for all,
+>
+> base-commit: b85ea95d086471afb4ad062012a4d73cd328fa86
+> --
 
-I don't see any objections to these patches, so queuing them up for 6.8.
-
-Thanks!
+Applied as 6.8 material, thanks!
 
