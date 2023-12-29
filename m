@@ -1,129 +1,142 @@
-Return-Path: <linux-acpi+bounces-2644-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2645-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B138200F3
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Dec 2023 18:49:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0727C82014E
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Dec 2023 21:04:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7289281406
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Dec 2023 17:49:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 339831C2151B
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Dec 2023 20:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96C412B84;
-	Fri, 29 Dec 2023 17:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C96E13AE4;
+	Fri, 29 Dec 2023 20:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XInHIqWO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F08E12B82
-	for <linux-acpi@vger.kernel.org>; Fri, 29 Dec 2023 17:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-594172c5785so192839eaf.0
-        for <linux-acpi@vger.kernel.org>; Fri, 29 Dec 2023 09:49:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703872182; x=1704476982;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QeozkvIdKrkamCgm5fSGljjMhGfXrRVeCiwdQ5jE6t8=;
-        b=wjLktnwAU7N2SQlDd33aUoMGjSbZmeXgQ0Ok7Q5rQ6bGq1qsmX0NYtTW7NsaC5b7dG
-         FmWi9TRM+zgHYrlLP/GJA+M4S3H+68D+5kKiRf+PI0Z0cdmr0BkfztqoNMab6wtfEo7R
-         +0+v1ep5b7SAdVYk1pWSpnkizy3FQ4fEEKuA/dloUjqchMnkokNuTckBUAC3cBLxGqSk
-         0FeArqnHAxu/G2NxDhF6IGrS9aExbHGDHxTumwxrQcGflcEZ9/UP2RfIDodo4tTGqth/
-         T9ip1hvMq61mdYNFY0FRk8F3HWXBvfc+PDtsklWnAI5Zoks4LwK/D2iI33y25Y8nzxat
-         A37Q==
-X-Gm-Message-State: AOJu0YwQKftYxVZAK2xiarsbklrzPKgyN6d7NjDo9x/JuoKJ7kBYvNO0
-	4/2BmWF0igdZzOXDfwvpg33m43+sovmLzBbAF0sJAHxD
-X-Google-Smtp-Source: AGHT+IHwqyIxJareOXo+MGMv5Ke4r+PfCil+jkzwE0/Apc4UOHkS1ZymWF1K9yZ8Pp+W5gikloqB9vgn/rwQTmn02DI=
-X-Received: by 2002:a05:6820:2801:b0:594:cb36:b255 with SMTP id
- dm1-20020a056820280100b00594cb36b255mr7746421oob.1.1703872182599; Fri, 29 Dec
- 2023 09:49:42 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E805013FEB;
+	Fri, 29 Dec 2023 20:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1703880255; x=1735416255;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=siQA8/0+M4/ceWeLQMir0svD/a4NJWgTzFwGS9kJ6gY=;
+  b=XInHIqWOUUio31AyjNzr22gwHch7hO48l9ewSwoTn9XeBxgNqkyvWsaa
+   Ohk3VDCwe+RGcFAsVp76UfWA3mWGb4hxhR4Ono50/O5xqr6NRHPtvz8cV
+   YcXhgtpaa62G/dea7hYjmwf4euwjadJnMpGP7vcrnHYmK9o4G23203/ZX
+   n7F9fndzVa3TrNApQuL0g5w8E2d/3MWQMCxoejkBuX09BfBYar6crDv9M
+   HzufTuGlWyO/2hAez347x+oLMHBd7g/BT/hdb6oHLgLHZx9Y0/NoCJQmu
+   GLKYEAbe6yOJEus6qf2B0kof0ZBhHg0qFXllWPSbeUwBUfzgOp592oUAq
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10938"; a="18221319"
+X-IronPort-AV: E=Sophos;i="6.04,316,1695711600"; 
+   d="scan'208";a="18221319"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2023 12:04:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10938"; a="1110243884"
+X-IronPort-AV: E=Sophos;i="6.04,316,1695711600"; 
+   d="scan'208";a="1110243884"
+Received: from mbsalah-mobl.amr.corp.intel.com (HELO aschofie-mobl2) ([10.255.228.28])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2023 12:04:12 -0800
+Date: Fri, 29 Dec 2023 12:04:10 -0800
+From: Alison Schofield <alison.schofield@intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, "Huang, Ying" <ying.huang@intel.com>
+Subject: Re: [PATCH v2] ACPI: NUMA: Fix overlap when extending memblks to
+ fill CFMWS
+Message-ID: <ZY8mOkPKResWyY4f@aschofie-mobl2>
+References: <20231223001044.1401226-1-alison.schofield@intel.com>
+ <CAJZ5v0jLkeTMDsatHB_uabj3yuyQswPm1nve=sv=kE=96qcpcg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231225055835.1052555-1-Ken.Xue@amd.com>
-In-Reply-To: <20231225055835.1052555-1-Ken.Xue@amd.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 29 Dec 2023 18:49:31 +0100
-Message-ID: <CAJZ5v0iaEq6Do_6axWOBFuWROkFHtM0wMpLs1ZrqXjdqvAGgKw@mail.gmail.com>
-Subject: Re: [PATCH V6] acpi: button: trigger wakeup key event
-To: Ken Xue <Ken.Xue@amd.com>
-Cc: rafael@kernel.org, andriy.shevchenko@linux.intel.com, 
-	linux-acpi@vger.kernel.org, cwhuang@linux.org.tw
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0jLkeTMDsatHB_uabj3yuyQswPm1nve=sv=kE=96qcpcg@mail.gmail.com>
 
-On Mon, Dec 25, 2023 at 7:00=E2=80=AFAM Ken Xue <Ken.Xue@amd.com> wrote:
->
-> Andorid can wakeup from various wakeup sources, but only several wakeup
-> sources can wake up screen with right events(POWER, WAKEUP) from input
-> device.
->
-> Regarding pressing acpi power button, it can resume system and
-> ACPI_BITMASK_WAKE_STATUS and ACPI_BITMASK_POWER_BUTTON_STATUS are set in
-> pm1a_sts, but kernel does not report any key event to user space during
-> resuming by default.
->
-> So, send wakeup key event to user space during resume from power button.
->
-> Signed-off-by: Ken Xue <Ken.Xue@amd.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->
-> ---
-> V1->V2: fix some compile warning/error caused by lack of
->         "struct acpi_device" declaration by including acpi.h.
-> V2->V3: use "forward declaration" to fix compile warning/error.
-> V3->V4: refine coding style and commit message
-> V4->V5: add "select ACPI_BUTTON" to fix build error if CONFIG_ACPI_BUTTON=
-=3Dm. https://lore.kernel.org/oe-kbuild-all/202309150947.YLjvs2Vv-lkp@intel=
-.com/
-> V5->V6: report WAKEUP event from button driver instead of acpi sleep.c
-> ---
->  drivers/acpi/button.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-> index 1e76a64cce0a..cc61020756be 100644
-> --- a/drivers/acpi/button.c
-> +++ b/drivers/acpi/button.c
-> @@ -480,6 +480,7 @@ static int acpi_button_suspend(struct device *dev)
->
->  static int acpi_button_resume(struct device *dev)
->  {
-> +       struct input_dev *input;
->         struct acpi_device *device =3D to_acpi_device(dev);
->         struct acpi_button *button =3D acpi_driver_data(device);
->
-> @@ -489,6 +490,14 @@ static int acpi_button_resume(struct device *dev)
->                 button->last_time =3D ktime_get();
->                 acpi_lid_initialize_state(device);
->         }
-> +
-> +       if (button->type =3D=3D ACPI_BUTTON_TYPE_POWER) {
-> +               input =3D button->input;
-> +               input_report_key(input, KEY_WAKEUP, 1);
-> +               input_sync(input);
-> +               input_report_key(input, KEY_WAKEUP, 0);
-> +               input_sync(input);
-> +       }
->         return 0;
->  }
->  #endif
-> @@ -579,6 +588,7 @@ static int acpi_button_add(struct acpi_device *device=
-)
->         switch (button->type) {
->         case ACPI_BUTTON_TYPE_POWER:
->                 input_set_capability(input, EV_KEY, KEY_POWER);
-> +               input_set_capability(input, EV_KEY, KEY_WAKEUP);
->                 break;
->
->         case ACPI_BUTTON_TYPE_SLEEP:
-> --
+On Fri, Dec 29, 2023 at 06:43:26PM +0100, Rafael J. Wysocki wrote:
+> On Sat, Dec 23, 2023 at 1:10 AM <alison.schofield@intel.com> wrote:
+> >
+> > From: Alison Schofield <alison.schofield@intel.com>
+> >
+> > When the BIOS only partially describes a CFMWS Window in the SRAT
+> > the acpi driver uses numa_fill_memblks() to extend existing memblk(s)
+> > to fill the entire CFMWS Window, thereby applying the proximity domain
+> > to the entire CFMWS.
+> >
+> > The calculation of the memblks to fill has an off-by-one error, that
+> > causes numa_init to fail when it sees the overlap:
+> >
+> > [] ACPI: SRAT: Node 0 PXM 0 [mem 0x00000000-0x7fffffff]
+> > [] ACPI: SRAT: Node 0 PXM 0 [mem 0x100000000-0xffffffffff]
+> > [] ACPI: SRAT: Node 1 PXM 1 [mem 0x10000000000-0x1ffffffffff]
+> > [] node 0 [mem 0x100000000-0xffffffffff] overlaps with node 1 [mem 0x100000000-0x1ffffffffff]
+> >
+> > Fix by making the 'end' parameter to numa_fill_memblks() exclusive.
+> >
+> > Fixes: 8f1004679987 ("ACPI/NUMA: Apply SRAT proximity domain to entire CFMWS window")
+> > Reported-by: "Huang, Ying" <ying.huang@intel.com>
+> > Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> > Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+> > ---
+> >
+> > Changes in v2:
+> > - Send to ACPI maintainer, reviewer, and mailing list.
+> >
+> >
+> >  drivers/acpi/numa/srat.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> > index 12f330b0eac0..b99062f7c412 100644
+> > --- a/drivers/acpi/numa/srat.c
+> > +++ b/drivers/acpi/numa/srat.c
+> > @@ -308,7 +308,7 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
+> >
+> >         cfmws = (struct acpi_cedt_cfmws *)header;
+> >         start = cfmws->base_hpa;
+> > -       end = cfmws->base_hpa + cfmws->window_size;
+> > +       end = cfmws->base_hpa + cfmws->window_size - 1;
+> >
+> >         /*
+> >          * The SRAT may have already described NUMA details for all,
+> >
+> > base-commit: b85ea95d086471afb4ad062012a4d73cd328fa86
+> > --
+> 
+> Applied as 6.8 material, thanks!
 
-Applied as 6.8 material with minor edits in the subject, thanks!
+Sorry Rafael - this patch is bad.  Can you back it out?
+
+I got some feedback here that showed this breaks a subsequent call
+to numa_add_memblks().
+https://lore.kernel.org/linux-cxl/ZYyozZcK9g4JE11B@aschofie-mobl2/T/#m16f13cafc186c7ebbf6037b3ae0e3ae572a83f77
+
+ATM I expect this will lead to a fix in x86/mm/numa, not ACPI.
+
+My apologies for messing up the mailing list and causing this confusion.
+
+Alison
+
+
+
+
 
