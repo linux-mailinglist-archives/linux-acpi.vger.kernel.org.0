@@ -1,59 +1,59 @@
-Return-Path: <linux-acpi+bounces-2673-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2674-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4DA8222F0
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 22:09:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB7D822320
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 22:14:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 767E01C21FF2
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 21:09:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8126E1F236AE
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 21:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C33E1643E;
-	Tue,  2 Jan 2024 21:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCCB19441;
+	Tue,  2 Jan 2024 21:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="YKh0zhED"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="VTa2leDx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4968168BC
-	for <linux-acpi@vger.kernel.org>; Tue,  2 Jan 2024 21:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A75119465
+	for <linux-acpi@vger.kernel.org>; Tue,  2 Jan 2024 21:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-7b7d65d4eecso508541539f.0
-        for <linux-acpi@vger.kernel.org>; Tue, 02 Jan 2024 13:08:46 -0800 (PST)
+Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-7b7fbe3db16so507821439f.3
+        for <linux-acpi@vger.kernel.org>; Tue, 02 Jan 2024 13:09:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1704229726; x=1704834526; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1704229742; x=1704834542; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hoCMzkIH2SpwplBXEvrmILCCJUolIXwuArK291Rg4jU=;
-        b=YKh0zhEDmK54BHzoeo1B7L58bAiJbmnxlRLuDKlcG9MRRE9FrY0D6FPo5K7HnTp5ng
-         lLAo7p5C7ZiDzRdyaMPC5jhfxvKXlrkcaeBZfKLFWXx6kcr+0/XelLpNJHEXjV3eiyjo
-         slLK0pw0Je9fwJqgWh/23sJhKeXyso91DprWI=
+        bh=/6j1jotrF6PIPGIyj1YNZnkSmwkK1WAFrbZbjbyI7go=;
+        b=VTa2leDxBK9KlSyJAN+wQVXeA1P9mITLlz8byiLbkbleOsU2gLTU7X0nQz3gcCCSE0
+         wj/aQkuDG9REKxEHVAzkvWZ/OldAVYC4tkeCsOvgyWxv2QPLLgy8aelwkID87NWiFtzW
+         +YHSpuj+3e2XnAHEZjOe4kTixkYZQnfUHEn40=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704229726; x=1704834526;
+        d=1e100.net; s=20230601; t=1704229742; x=1704834542;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hoCMzkIH2SpwplBXEvrmILCCJUolIXwuArK291Rg4jU=;
-        b=tvxhVO6XGhiGX8rxwil7299/QBFJiQ8+1aSpAblkQ9s7Plb1uJv9S22Z3d5Eq21EoQ
-         GVmefxofb2Ur6xYdeLdSiP3FR+nlOha5r1jeCmsnyZRIoM1Zew8O2YDYp+uV1o6y+YCf
-         HM4oZY/pYLQd9rbYu7DVz4s50w9T9PK/not6ShIFzDqfNhMLwR1OOYc304KFep+FKGe4
-         9N36zS7hSr9OKZDPgqIFPUYOdwo43Sl58qFyv7bKZuAVabavxLa69Ixf/m6XnzlnVDWk
-         hYb2UgvLnJAzrS4st818gRF7joQtH26JKRLjdqPy94QiIWvAbpyqeEqp3xg40EwS65Lj
-         Zd9A==
-X-Gm-Message-State: AOJu0Yxy5Qx7dogRsfGRL/EKA/qEdxyvUpGybDXC+FiFWcR8vAeLA1b6
-	uRXritBgts1dJ1mIpKbJDG1pbvQs1y1EeBHHHG08WqF5GhP6
-X-Google-Smtp-Source: AGHT+IHyW2JhwMXCAKVq1niGr8GJA1kMcgBCBAAnnHH0R6mCkxCxIMO5xnsrfrNzmrhhBaVXIKjATA==
-X-Received: by 2002:a05:6602:683:b0:7bb:aa7e:6d1d with SMTP id dp3-20020a056602068300b007bbaa7e6d1dmr3857804iob.10.1704229726099;
-        Tue, 02 Jan 2024 13:08:46 -0800 (PST)
+        bh=/6j1jotrF6PIPGIyj1YNZnkSmwkK1WAFrbZbjbyI7go=;
+        b=F4sMgHvTR9Y+/85ebLbDjALqLHPifYidb0ykY6Wp/hDTfWvCHNBfC89t9ouaDOL0gE
+         tWy87eJw8/mOEb19hZVQd7DldwchiWGoYysh3upqKGGiIoU/7TXYYXewIobl5GMiYVX4
+         P662MiwUgrZTa6kMnRjyKqYPz19ohD42/MiZpAP1tzOn5WTlNcUIMZjXVveYgXS2PQu8
+         83z8QByL4HQqrKujKvxKzIGKnSLiz2bMHDnbtsjjYZT64NbdqARa1OCnhbXs0YJs2sXx
+         KE03mO/9ZI9Mu8qTMEFHwcxbSrK8AfqexJEVZW7nC+0c0b/YErRZ9hJZq5Lk/bPQNZFr
+         Ho5A==
+X-Gm-Message-State: AOJu0Yx/eKsadonxX9vevymlapEu4dl9RvMddfE/XikKWbX8zlDCp50R
+	jT+buYEaymp/GcHz6WzIv2GtD2LL+06k
+X-Google-Smtp-Source: AGHT+IEnk7hkWBTpiE59//TC3J8Hc2YJfZJNZSBWZ/zM4jqFy4w9a/MURJc4iEaZLOWtCJ4vPXcb4Q==
+X-Received: by 2002:a05:6602:19cf:b0:7ba:8706:3413 with SMTP id ba15-20020a05660219cf00b007ba87063413mr23570270iob.41.1704229742417;
+        Tue, 02 Jan 2024 13:09:02 -0800 (PST)
 Received: from markhas1.lan (71-218-50-136.hlrn.qwest.net. [71.218.50.136])
-        by smtp.gmail.com with ESMTPSA id bo18-20020a056638439200b0046993034c91sm6956978jab.77.2024.01.02.13.08.45
+        by smtp.gmail.com with ESMTPSA id bo18-20020a056638439200b0046993034c91sm6956978jab.77.2024.01.02.13.09.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jan 2024 13:08:45 -0800 (PST)
+        Tue, 02 Jan 2024 13:09:02 -0800 (PST)
 From: Mark Hasemeyer <markhas@chromium.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Sudeep Holla <sudeep.holla@arm.com>,
@@ -66,13 +66,19 @@ Cc: Sudeep Holla <sudeep.holla@arm.com>,
 	Tzung-Bi Shih <tzungbi@kernel.org>,
 	Mark Hasemeyer <markhas@chromium.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-i2c@vger.kernel.org
-Subject: [PATCH v4 03/24] i2c: acpi: Modify i2c_acpi_get_irq() to use resource
-Date: Tue,  2 Jan 2024 14:07:27 -0700
-Message-ID: <20240102140734.v4.3.Ib65096357993ff602e7dd0000dd59a36571c48d8@changeid>
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH v4 21/24] device property: Modify fwnode irq_get() to use resource
+Date: Tue,  2 Jan 2024 14:07:45 -0700
+Message-ID: <20240102140734.v4.21.I38ac58ab04985a404ed6551eb5813fa7841ef410@changeid>
 X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
 In-Reply-To: <20240102210820.2604667-1-markhas@chromium.org>
 References: <20240102210820.2604667-1-markhas@chromium.org>
@@ -84,172 +90,194 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The i2c_acpi_irq_context structure provides redundant information that
-can be provided with struct resource.
-
-Refactor i2c_acpi_get_irq() to use struct resource instead of struct
-i2c_acpi_irq_context.
+The underlying ACPI and OF subsystems provide their own APIs which
+provide IRQ information as a struct resource. This allows callers to get
+more information about the IRQ by looking at the resource flags. For
+example, whether or not an IRQ is wake capable.
 
 Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Mark Hasemeyer <markhas@chromium.org>
 ---
 
 Changes in v4:
+-Add Sakari's Reviewed-by tag from v2
+-Remove ioport.h dependency in fwnode.h
 -Use Andy's @linux.intel.com email
--Remove blank line in commit message
--More error handling refactoring in i2c_acpi_get_irq()
--Remove struct i2c_acpi_irq_context as it's unused
 
 Changes in v3:
--Add Suggested-by
--Check resource flags for valid irq
--Drop error pointer check
--Invert error checking logic in i2c_acpi_get_irq()
--Drop redundant 0 in struct resource init
--Drop unnecessary check for irq > 0 when setting I2C_CLIENT_WAKE
+-Add Suggested-by tag
+-Initialize struct resource to 0 on stack
+-EXPORT_SYMBOL()->EXPORT_SYMBOL_GPL()
+-Remove extra space in commit message
+-Reformat fwnode_irq_get_resource() declaration
 
 Changes in v2:
 -New patch
 
- drivers/i2c/i2c-core-acpi.c | 49 +++++++++++++------------------------
- drivers/i2c/i2c-core-base.c |  6 ++---
- drivers/i2c/i2c-core.h      |  4 +--
- 3 files changed, 22 insertions(+), 37 deletions(-)
+ drivers/acpi/property.c  | 11 +++++------
+ drivers/base/property.c  | 32 +++++++++++++++++++++++++-------
+ drivers/of/property.c    |  8 ++++----
+ include/linux/fwnode.h   |  8 +++++---
+ include/linux/property.h |  2 ++
+ 5 files changed, 41 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index 8126a87baf3d4..4c3df540c2f4b 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -137,11 +137,6 @@ static const struct acpi_device_id i2c_acpi_ignored_device_ids[] = {
- 	{}
- };
- 
--struct i2c_acpi_irq_context {
--	int irq;
--	bool wake_capable;
--};
--
- static int i2c_acpi_do_lookup(struct acpi_device *adev,
- 			      struct i2c_acpi_lookup *lookup)
- {
-@@ -175,64 +170,54 @@ static int i2c_acpi_do_lookup(struct acpi_device *adev,
- 
- static int i2c_acpi_add_irq_resource(struct acpi_resource *ares, void *data)
- {
--	struct i2c_acpi_irq_context *irq_ctx = data;
--	struct resource r;
-+	struct resource *r = data;
- 
--	if (irq_ctx->irq > 0)
-+	if (r->flags)
- 		return 1;
- 
--	if (!acpi_dev_resource_interrupt(ares, 0, &r))
-+	if (!acpi_dev_resource_interrupt(ares, 0, r))
- 		return 1;
- 
--	irq_ctx->irq = i2c_dev_irq_from_resources(&r, 1);
--	irq_ctx->wake_capable = r.flags & IORESOURCE_IRQ_WAKECAPABLE;
-+	i2c_dev_irq_from_resources(r, 1);
- 
- 	return 1; /* No need to add resource to the list */
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index a6ead5204046b..891fff5a16797 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1627,17 +1627,16 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+ 	return 0;
  }
  
- /**
-- * i2c_acpi_get_irq - get device IRQ number from ACPI
-+ * i2c_acpi_get_irq - get device IRQ number from ACPI and populate resource
-  * @client: Pointer to the I2C client device
-- * @wake_capable: Set to true if the IRQ is wake capable
-+ * @r: resource with populated IRQ information
-  *
-  * Find the IRQ number used by a specific client device.
-  *
-  * Return: The IRQ number or an error code.
-  */
--int i2c_acpi_get_irq(struct i2c_client *client, bool *wake_capable)
-+int i2c_acpi_get_irq(struct i2c_client *client, struct resource *r)
+-static int acpi_fwnode_irq_get(const struct fwnode_handle *fwnode,
+-			       unsigned int index)
++static int acpi_fwnode_irq_get_resource(const struct fwnode_handle *fwnode, unsigned int index,
++					struct resource *r)
  {
- 	struct acpi_device *adev = ACPI_COMPANION(&client->dev);
- 	struct list_head resource_list;
--	struct resource irqres;
--	struct i2c_acpi_irq_context irq_ctx = {
--		.irq = -ENOENT,
--	};
+-	struct resource res;
  	int ret;
  
-+	if (!r)
-+		return -EINVAL;
-+
- 	INIT_LIST_HEAD(&resource_list);
- 
- 	ret = acpi_dev_get_resources(adev, &resource_list,
--				     i2c_acpi_add_irq_resource, &irq_ctx);
-+				     i2c_acpi_add_irq_resource, r);
- 	if (ret < 0)
+-	ret = acpi_irq_get(ACPI_HANDLE_FWNODE(fwnode), index, &res);
++	ret = acpi_irq_get(ACPI_HANDLE_FWNODE(fwnode), index, r);
+ 	if (ret)
  		return ret;
  
- 	acpi_dev_free_resource_list(&resource_list);
- 
--	if (irq_ctx.irq == -ENOENT) {
--		ret = acpi_dev_get_gpio_irq_resource(adev, NULL, 0, &irqres);
--		if (ret)
--			return ret;
--		irq_ctx.irq = irqres.start;
--		irq_ctx.wake_capable = irqres.flags & IORESOURCE_IRQ_WAKECAPABLE;
--	}
-+	if (r->flags)
-+		return r->start;
- 
--	if (irq_ctx.irq < 0)
--		return irq_ctx.irq;
-+	ret = acpi_dev_get_gpio_irq_resource(adev, NULL, 0, r);
-+	if (ret)
-+		return ret;
- 
--	if (wake_capable)
--		*wake_capable = irq_ctx.wake_capable;
--
--	return irq_ctx.irq;
+-	return res.start;
 +	return r->start;
  }
  
- static int i2c_acpi_get_info(struct acpi_device *adev,
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 3bd48d4b6318f..0339c298ba50b 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -513,10 +513,10 @@ static int i2c_device_probe(struct device *dev)
- 			if (irq == -EINVAL || irq == -ENODATA)
- 				irq = of_irq_get(dev->of_node, 0);
- 		} else if (ACPI_COMPANION(dev)) {
--			bool wake_capable;
-+			struct resource r = {};
+ #define DECLARE_ACPI_FWNODE_OPS(ops) \
+@@ -1664,7 +1663,7 @@ static int acpi_fwnode_irq_get(const struct fwnode_handle *fwnode,
+ 			acpi_graph_get_remote_endpoint,			\
+ 		.graph_get_port_parent = acpi_fwnode_get_parent,	\
+ 		.graph_parse_endpoint = acpi_fwnode_graph_parse_endpoint, \
+-		.irq_get = acpi_fwnode_irq_get,				\
++		.irq_get_resource = acpi_fwnode_irq_get_resource,	\
+ 	};								\
+ 	EXPORT_SYMBOL_GPL(ops)
  
--			irq = i2c_acpi_get_irq(client, &wake_capable);
--			if (irq > 0 && wake_capable)
-+			irq = i2c_acpi_get_irq(client, &r);
-+			if (r.flags & IORESOURCE_IRQ_WAKECAPABLE)
- 				client->flags |= I2C_CLIENT_WAKE;
- 		}
- 		if (irq == -EPROBE_DEFER) {
-diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
-index 05b8b8dfa9bdd..b5dc559c49d11 100644
---- a/drivers/i2c/i2c-core.h
-+++ b/drivers/i2c/i2c-core.h
-@@ -61,11 +61,11 @@ static inline int __i2c_check_suspended(struct i2c_adapter *adap)
- #ifdef CONFIG_ACPI
- void i2c_acpi_register_devices(struct i2c_adapter *adap);
- 
--int i2c_acpi_get_irq(struct i2c_client *client, bool *wake_capable);
-+int i2c_acpi_get_irq(struct i2c_client *client, struct resource *r);
- #else /* CONFIG_ACPI */
- static inline void i2c_acpi_register_devices(struct i2c_adapter *adap) { }
- 
--static inline int i2c_acpi_get_irq(struct i2c_client *client, bool *wake_capable)
-+static inline int i2c_acpi_get_irq(struct i2c_client *client, struct resource *r)
- {
- 	return 0;
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index a1b01ab420528..441899171d19d 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -1046,6 +1046,29 @@ void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
  }
+ EXPORT_SYMBOL(fwnode_iomap);
+ 
++/**
++ * fwnode_irq_get_resource - Get IRQ directly from a fwnode and populate
++ *			     the resource struct
++ * @fwnode:	Pointer to the firmware node
++ * @index:	Zero-based index of the IRQ
++ * @r:		Pointer to resource to populate with IRQ information.
++ *
++ * Return: Linux IRQ number on success. Negative errno on failure.
++ */
++int fwnode_irq_get_resource(const struct fwnode_handle *fwnode, unsigned int index,
++			    struct resource *r)
++{
++	int ret;
++
++	ret = fwnode_call_int_op(fwnode, irq_get_resource, index, r);
++	/* We treat mapping errors as invalid case */
++	if (ret == 0)
++		return -EINVAL;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(fwnode_irq_get_resource);
++
+ /**
+  * fwnode_irq_get - Get IRQ directly from a fwnode
+  * @fwnode:	Pointer to the firmware node
+@@ -1055,14 +1078,9 @@ EXPORT_SYMBOL(fwnode_iomap);
+  */
+ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
+ {
+-	int ret;
++	struct resource r = {};
+ 
+-	ret = fwnode_call_int_op(fwnode, irq_get, index);
+-	/* We treat mapping errors as invalid case */
+-	if (ret == 0)
+-		return -EINVAL;
+-
+-	return ret;
++	return fwnode_irq_get_resource(fwnode, index, &r);
+ }
+ EXPORT_SYMBOL(fwnode_irq_get);
+ 
+diff --git a/drivers/of/property.c b/drivers/of/property.c
+index afdaefbd03f61..864ea5fa5702b 100644
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1425,10 +1425,10 @@ static void __iomem *of_fwnode_iomap(struct fwnode_handle *fwnode, int index)
+ #endif
+ }
+ 
+-static int of_fwnode_irq_get(const struct fwnode_handle *fwnode,
+-			     unsigned int index)
++static int of_fwnode_irq_get_resource(const struct fwnode_handle *fwnode,
++				      unsigned int index, struct resource *r)
+ {
+-	return of_irq_get(to_of_node(fwnode), index);
++	return of_irq_to_resource(to_of_node(fwnode), index, r);
+ }
+ 
+ static int of_fwnode_add_links(struct fwnode_handle *fwnode)
+@@ -1469,7 +1469,7 @@ const struct fwnode_operations of_fwnode_ops = {
+ 	.graph_get_port_parent = of_fwnode_graph_get_port_parent,
+ 	.graph_parse_endpoint = of_fwnode_graph_parse_endpoint,
+ 	.iomap = of_fwnode_iomap,
+-	.irq_get = of_fwnode_irq_get,
++	.irq_get_resource = of_fwnode_irq_get_resource,
+ 	.add_links = of_fwnode_add_links,
+ };
+ EXPORT_SYMBOL_GPL(of_fwnode_ops);
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 2a72f55d26eb8..b82c9c072bcc9 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -9,12 +9,13 @@
+ #ifndef _LINUX_FWNODE_H_
+ #define _LINUX_FWNODE_H_
+ 
+-#include <linux/types.h>
+-#include <linux/list.h>
+ #include <linux/bits.h>
+ #include <linux/err.h>
++#include <linux/list.h>
++#include <linux/types.h>
+ 
+ struct fwnode_operations;
++struct resource;
+ struct device;
+ 
+ /*
+@@ -164,7 +165,8 @@ struct fwnode_operations {
+ 	int (*graph_parse_endpoint)(const struct fwnode_handle *fwnode,
+ 				    struct fwnode_endpoint *endpoint);
+ 	void __iomem *(*iomap)(struct fwnode_handle *fwnode, int index);
+-	int (*irq_get)(const struct fwnode_handle *fwnode, unsigned int index);
++	int (*irq_get_resource)(const struct fwnode_handle *fwnode,
++				unsigned int index, struct resource *r);
+ 	int (*add_links)(struct fwnode_handle *fwnode);
+ };
+ 
+diff --git a/include/linux/property.h b/include/linux/property.h
+index e6516d0b7d52a..685ba72a8ce9e 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -190,6 +190,8 @@ struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
+ void fwnode_handle_put(struct fwnode_handle *fwnode);
+ 
+ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
++int fwnode_irq_get_resource(const struct fwnode_handle *fwnode,
++			    unsigned int index, struct resource *r);
+ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
+ 
+ unsigned int device_get_child_node_count(const struct device *dev);
 -- 
 2.43.0.472.g3155946c3a-goog
 
