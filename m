@@ -1,154 +1,161 @@
-Return-Path: <linux-acpi+bounces-2675-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2676-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA72822322
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 22:14:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB3182234E
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 22:38:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 059271C22B6B
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 21:14:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D95F61F23072
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 21:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7846619465;
-	Tue,  2 Jan 2024 21:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9D4168AD;
+	Tue,  2 Jan 2024 21:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HH7tFOjr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dylfigDy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FED0199B8
-	for <linux-acpi@vger.kernel.org>; Tue,  2 Jan 2024 21:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7ba87489f97so485590739f.1
-        for <linux-acpi@vger.kernel.org>; Tue, 02 Jan 2024 13:09:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1704229743; x=1704834543; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sCG4rEgr/FQR7hxUStyYKIoU69lpCt3KIAVsm7R5chw=;
-        b=HH7tFOjrAQTrdWIDJwg39s5pkcy+elPqqdPyYMArPhsxRixM6h/JAHq2NBec+JYJFq
-         FTxNbr7+7HxnH6nIBXll3KHOSWFKmb+e2ZSYN6iUv/i8s3ZhVyaO0l1Oxxt6C/22osve
-         gvQJlJC5UXoxyrkSr6+QTVvy+fITN4RdMHCdw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704229743; x=1704834543;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sCG4rEgr/FQR7hxUStyYKIoU69lpCt3KIAVsm7R5chw=;
-        b=l+ukE5rYC9YJaqNRVufz43rnveSAyudzOI65DiMm/FCwqOJ1ouvZvMiJkYmlwUcR0i
-         ZewN9rfQaibc3x/OpQXFf7znkJnVPN0wofoAl9D3IiB8KRLYwVVw/wLf/OAE/eI0jLkS
-         0+U+fr8DzYnd8U+q3tPKK18ABWTG2gv81wyBvyNR1Pzp+BiFIG9ObooYHsG57JXN9lK6
-         Y7Pvoqu8qv5wOUAM0v3bZEaAOU4Y5X0vG0LxlZiMkFBPXSMA/kWTRqgjNFzomOBN3uAm
-         P+RIX5I/ptBNdRnXRJ3PZ7qRXOTXuDjAhfjMpuOyHt9XlarujNV+Xp/lk18hBmaH+gOA
-         wHRw==
-X-Gm-Message-State: AOJu0YxtT1IKw/V1PveO2rr06zDWjxokUIkaNp//JH+c/XPXzff5yweQ
-	iVdOkfAeQysTeXU3ZUqD6jiHGlQQYRRo
-X-Google-Smtp-Source: AGHT+IEYPIgR5pi2eeLco54E9c38X2wwM4Cn8EJ6pMdLsbQ/1JjnSZUs1p36vbx1tnUTzVouFENiDQ==
-X-Received: by 2002:a6b:c996:0:b0:7b7:fe2f:dddd with SMTP id z144-20020a6bc996000000b007b7fe2fddddmr18896089iof.22.1704229743320;
-        Tue, 02 Jan 2024 13:09:03 -0800 (PST)
-Received: from markhas1.lan (71-218-50-136.hlrn.qwest.net. [71.218.50.136])
-        by smtp.gmail.com with ESMTPSA id bo18-20020a056638439200b0046993034c91sm6956978jab.77.2024.01.02.13.09.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jan 2024 13:09:03 -0800 (PST)
-From: Mark Hasemeyer <markhas@chromium.org>
-To: LKML <linux-kernel@vger.kernel.org>
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Rob Herring <robh@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Raul Rangel <rrangel@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Mark Hasemeyer <markhas@chromium.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH v4 22/24] device property: Update functions to use EXPORT_SYMBOL_GPL()
-Date: Tue,  2 Jan 2024 14:07:46 -0700
-Message-ID: <20240102140734.v4.22.I186bc5737c5ac4c3a5a7a91e9ec75645e723ca7b@changeid>
-X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-In-Reply-To: <20240102210820.2604667-1-markhas@chromium.org>
-References: <20240102210820.2604667-1-markhas@chromium.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2453168A8;
+	Tue,  2 Jan 2024 21:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704231492; x=1735767492;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=SHWODI1YRWWrKC8GkPard7QJ7Ml2YhlQqRFPlo5WVf0=;
+  b=dylfigDy/tDPKG2mUudosn3dm0ELowYG3czm8AELRe2y7r0LiiXJT1fn
+   NMX5Fe+vro13AUuU0ftlXXHxfTTSRlLmD/6Gmw9M6vZ+nAyjO/r/O5Gsi
+   g7mFfXVG09kQKHAvgNLB+SRN660GQsGmT3ITp8Iq37HIbRHqQJ/8aRasw
+   PVpRvia8jlRakMbJEYRZay+qkPMABke2a0ccu6Hdzbg3n5jwa8udwQvZu
+   kOh1945acvj1Q+ZyuW+o9H62I2BEKrbDUqYgJ8XwxkaapXPSkM6S2Z2xg
+   2UyBOYslitqnf79lXQIAy79X1fHlKLSMlGHfH/KUvUUvdWNLf6RpgKqWb
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="3737810"
+X-IronPort-AV: E=Sophos;i="6.04,326,1695711600"; 
+   d="scan'208";a="3737810"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2024 13:38:11 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="783304446"
+X-IronPort-AV: E=Sophos;i="6.04,326,1695711600"; 
+   d="scan'208";a="783304446"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by fmsmga007.fm.intel.com with ESMTP; 02 Jan 2024 13:38:08 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rKmSc-000LTU-1P;
+	Tue, 02 Jan 2024 21:38:06 +0000
+Date: Wed, 3 Jan 2024 05:37:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-acpi@vger.kernel.org, devel@acpica.org,
+	linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge 157/159]
+ drivers/thermal/thermal_core.c:1469:6: warning: variable 'tz_id' set but not
+ used
+Message-ID: <202401030509.AAQGAhUF-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Some of the exported functions use EXPORT_SYMBOL() instead of
-EXPORT_SYMBOL_GPL() and are inconsistent with the other exported
-functions in the module. The underlying APCI/OF struct fwnode_operations
-implementations are also exported via EXPORT_SYMBOL_GPL().
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   b8a1fe5b94254945ed28a3f519e8ecd60e288871
+commit: f36483a0a8c34a752816bfec1c7d2e693efbce99 [157/159] thermal: netlink: Pass thermal zone pointer to notify routines
+config: arm-defconfig (https://download.01.org/0day-ci/archive/20240103/202401030509.AAQGAhUF-lkp@intel.com/config)
+compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project.git f28c006a5895fc0e329fe15fead81e37457cb1d1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240103/202401030509.AAQGAhUF-lkp@intel.com/reproduce)
 
-Update them to use the EXPORT_SYMBOL_GPL() macro.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401030509.AAQGAhUF-lkp@intel.com/
 
-Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Mark Hasemeyer <markhas@chromium.org>
----
+All warnings (new ones prefixed by >>):
 
-Changes in v4:
--EXPORT_SYMBOL->EXPORT_SYMBOL()
--Add Andy's Reviewed-by tag
+>> drivers/thermal/thermal_core.c:1469:6: warning: variable 'tz_id' set but not used [-Wunused-but-set-variable]
+           int tz_id;
+               ^
+   1 warning generated.
 
-Changes in v3:
--New patch
 
- drivers/base/property.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+vim +/tz_id +1469 drivers/thermal/thermal_core.c
 
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index 441899171d19d..4f686516cac82 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -1044,7 +1044,7 @@ void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
- {
- 	return fwnode_call_ptr_op(fwnode, iomap, index);
- }
--EXPORT_SYMBOL(fwnode_iomap);
-+EXPORT_SYMBOL_GPL(fwnode_iomap);
- 
- /**
-  * fwnode_irq_get_resource - Get IRQ directly from a fwnode and populate
-@@ -1082,7 +1082,7 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
- 
- 	return fwnode_irq_get_resource(fwnode, index, &r);
- }
--EXPORT_SYMBOL(fwnode_irq_get);
-+EXPORT_SYMBOL_GPL(fwnode_irq_get);
- 
- /**
-  * fwnode_irq_get_byname - Get IRQ from a fwnode using its name
-@@ -1110,7 +1110,7 @@ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name)
- 
- 	return fwnode_irq_get(fwnode, index);
- }
--EXPORT_SYMBOL(fwnode_irq_get_byname);
-+EXPORT_SYMBOL_GPL(fwnode_irq_get_byname);
- 
- /**
-  * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
-@@ -1355,7 +1355,7 @@ int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
- 
- 	return fwnode_call_int_op(fwnode, graph_parse_endpoint, endpoint);
- }
--EXPORT_SYMBOL(fwnode_graph_parse_endpoint);
-+EXPORT_SYMBOL_GPL(fwnode_graph_parse_endpoint);
- 
- const void *device_get_match_data(const struct device *dev)
- {
+7cefbaf081eb7c drivers/thermal/thermal_core.c Daniel Lezcano    2023-04-19  1462  
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1463  /**
+a052b5118f13fe drivers/thermal/thermal_core.c Yang Yingliang    2021-05-17  1464   * thermal_zone_device_unregister - removes the registered thermal zone device
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1465   * @tz: the thermal zone device to remove
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1466   */
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1467  void thermal_zone_device_unregister(struct thermal_zone_device *tz)
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1468  {
+ded2d383b1b441 drivers/thermal/thermal_core.c Zhang Rui         2023-03-30 @1469  	int tz_id;
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1470  	struct thermal_cooling_device *cdev;
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1471  	struct thermal_zone_device *pos = NULL;
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1472  
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1473  	if (!tz)
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1474  		return;
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1475  
+a5f785ce608caf drivers/thermal/thermal_core.c Dmitry Osipenko   2020-08-18  1476  	tz_id = tz->id;
+7e8ee1e9d7561f drivers/thermal/thermal_sys.c  Durgadoss R       2012-09-18  1477  
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1478  	mutex_lock(&thermal_list_lock);
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1479  	list_for_each_entry(pos, &thermal_tz_list, node)
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1480  		if (pos == tz)
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1481  			break;
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1482  	if (pos != tz) {
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1483  		/* thermal zone device not found */
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1484  		mutex_unlock(&thermal_list_lock);
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1485  		return;
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1486  	}
+b38aa87f67931e drivers/thermal/thermal_core.c Rafael J. Wysocki 2023-12-08  1487  
+b38aa87f67931e drivers/thermal/thermal_core.c Rafael J. Wysocki 2023-12-08  1488  	mutex_lock(&tz->lock);
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1489  	list_del(&tz->node);
+b38aa87f67931e drivers/thermal/thermal_core.c Rafael J. Wysocki 2023-12-08  1490  	mutex_unlock(&tz->lock);
+7e8ee1e9d7561f drivers/thermal/thermal_sys.c  Durgadoss R       2012-09-18  1491  
+7e8ee1e9d7561f drivers/thermal/thermal_sys.c  Durgadoss R       2012-09-18  1492  	/* Unbind all cdevs associated with 'this' thermal zone */
+ded2d383b1b441 drivers/thermal/thermal_core.c Zhang Rui         2023-03-30  1493  	list_for_each_entry(cdev, &thermal_cdev_list, node)
+ded2d383b1b441 drivers/thermal/thermal_core.c Zhang Rui         2023-03-30  1494  		if (tz->ops->unbind)
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1495  			tz->ops->unbind(tz, cdev);
+7e8ee1e9d7561f drivers/thermal/thermal_sys.c  Durgadoss R       2012-09-18  1496  
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1497  	mutex_unlock(&thermal_list_lock);
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1498  
+163b00cde7cf22 drivers/thermal/thermal_core.c Wei Wang          2019-11-12  1499  	cancel_delayed_work_sync(&tz->poll_queue);
+b1569e99c795bf drivers/thermal/thermal_sys.c  Matthew Garrett   2008-12-03  1500  
+e33df1d2f3a014 drivers/thermal/thermal_core.c Javi Merino       2015-02-26  1501  	thermal_set_governor(tz, NULL);
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1502  
+e68b16abd91dca drivers/thermal/thermal.c      Zhang Rui         2008-04-21  1503  	thermal_remove_hwmon_sysfs(tz);
+5a5b7d8d541684 drivers/thermal/thermal_core.c keliu             2022-05-27  1504  	ida_free(&thermal_tz_ida, tz->id);
+b31ef8285b19ec drivers/thermal/thermal_core.c Matthew Wilcox    2016-12-21  1505  	ida_destroy(&tz->ida);
+30b2ae07d3d60a drivers/thermal/thermal_core.c Guenter Roeck     2022-11-10  1506  
+30b2ae07d3d60a drivers/thermal/thermal_core.c Guenter Roeck     2022-11-10  1507  	device_del(&tz->device);
+30b2ae07d3d60a drivers/thermal/thermal_core.c Guenter Roeck     2022-11-10  1508  
+3d439b1a2ad36c drivers/thermal/thermal_core.c Daniel Lezcano    2023-04-04  1509  	kfree(tz->tzp);
+3d439b1a2ad36c drivers/thermal/thermal_core.c Daniel Lezcano    2023-04-04  1510  
+30b2ae07d3d60a drivers/thermal/thermal_core.c Guenter Roeck     2022-11-10  1511  	put_device(&tz->device);
+55cdf0a283b876 drivers/thermal/thermal_core.c Daniel Lezcano    2020-07-06  1512  
+f36483a0a8c34a drivers/thermal/thermal_core.c Rafael J. Wysocki 2023-12-15  1513  	thermal_notify_tz_delete(tz);
+4649620d9404d3 drivers/thermal/thermal_core.c Rafael J. Wysocki 2023-12-08  1514  
+4649620d9404d3 drivers/thermal/thermal_core.c Rafael J. Wysocki 2023-12-08  1515  	wait_for_completion(&tz->removal);
+4649620d9404d3 drivers/thermal/thermal_core.c Rafael J. Wysocki 2023-12-08  1516  	kfree(tz);
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1517  }
+910cb1e34d2fb8 drivers/thermal/thermal_core.c Eduardo Valentin  2013-04-23  1518  EXPORT_SYMBOL_GPL(thermal_zone_device_unregister);
+203d3d4aa48233 drivers/thermal/thermal.c      Zhang Rui         2008-01-17  1519  
+
+:::::: The code at line 1469 was first introduced by commit
+:::::: ded2d383b1b441f380552897791ffb85a1377f08 thermal/core: Remove thermal_bind_params structure
+
+:::::: TO: Zhang Rui <rui.zhang@intel.com>
+:::::: CC: Daniel Lezcano <daniel.lezcano@linaro.org>
+
 -- 
-2.43.0.472.g3155946c3a-goog
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
