@@ -1,101 +1,227 @@
-Return-Path: <linux-acpi+bounces-2670-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2671-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F2D822261
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 21:03:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B978222E8
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 22:08:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 165001F2340F
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 20:03:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AA1D1F2353A
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 21:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DA815EBC;
-	Tue,  2 Jan 2024 20:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80372168AD;
+	Tue,  2 Jan 2024 21:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="OcZ299Ej"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="FXsKUh/S"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F93216400
-	for <linux-acpi@vger.kernel.org>; Tue,  2 Jan 2024 20:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669F516434
+	for <linux-acpi@vger.kernel.org>; Tue,  2 Jan 2024 21:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-5ef7c6f4cfcso28006057b3.1
-        for <linux-acpi@vger.kernel.org>; Tue, 02 Jan 2024 12:03:54 -0800 (PST)
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7ba8c218fe1so522820139f.3
+        for <linux-acpi@vger.kernel.org>; Tue, 02 Jan 2024 13:08:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1704225833; x=1704830633; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pfHt0I2z8mA2aMyeN1/mHDUnhoQ0xxk+YhecaMv3gUA=;
-        b=OcZ299EjiRzOnCd3LOK8gfy5lUs1Ol9+Qmx9c6Jwl9KYEBYOr4E9CnPjK5F0I4TJl4
-         XTGjoKpCsS1DEBPs2DuAHjXBf5vg4SlBhuQfw6ZNy9wzbLdNY/wAr8hy8BJZQtGcPhR6
-         gXUG5g6vbiv5bV/J4R46ASb7M9ZsDJby1EJcQ=
+        d=chromium.org; s=google; t=1704229723; x=1704834523; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C7mFJdJJR38MVoewAU3PshqnCmTUbmo4+vjrut4nXkA=;
+        b=FXsKUh/St9ROpCfBxBctElZ0B8NOZqVdhhpKFefJYaizRpZLwRtSk/hSpzpGNwADQf
+         EurbVWdvdquu7SIHdT0PKV6Ygvoc1xI3N7gLMSmXNZ1OR27sna3yytDi+Eij/TtOjzVj
+         Z7pFyGExz2c+fIdTeavtr7qLTDYYLxrN/lUzY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704225833; x=1704830633;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1704229723; x=1704834523;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pfHt0I2z8mA2aMyeN1/mHDUnhoQ0xxk+YhecaMv3gUA=;
-        b=dWYaj3/K+wE6bBoHpzl7z+18lsBs/zKPpIJOVqEUced9disztp9bG17+OWXwVMAa++
-         6KOKzmlsZyt4L/AsMI+xSvvdg2Bb/EyF288glp6apO/dlaYQuG2OUvoGzme/85Q3weH1
-         ijBc4iGiTELYPAhwAfP8JUg8hi7BlEdW2g0bewOSfEl07vMPeabH+1xk+/8lEoS0pS6d
-         euRAxtMk5I7sbuIwi75tzmr//5HlXMXp+MMn2U9c4w2m9QwP++0tGFHmAHGJMijd9/f+
-         5BacdS49TpE6apUpn05t5FElaoAKYgwkXv9oovON/Uc14IMXTy3qJ3MPKb1utZwUJ3Mg
-         IGaA==
-X-Gm-Message-State: AOJu0YxzW8neIcKcI76ADnIXT3VV/JzFmElAHjsroD4PJquSZuCIiXAm
-	a69B6SWvK8iwKw4JwK1X2ddXuSTUPvk41g3FFb5OA+BxDNWa
-X-Google-Smtp-Source: AGHT+IGRKv3xWw0UMhylF354QBxUKSpNWpyj75qXkn8ercPRzde9MaV8IjQVOSzWAtd6/sf5oyjojkBjKJ7RnzM0ITg=
-X-Received: by 2002:a05:6902:10e:b0:dbc:efce:f34b with SMTP id
- o14-20020a056902010e00b00dbcefcef34bmr11240647ybh.29.1704225833418; Tue, 02
- Jan 2024 12:03:53 -0800 (PST)
+        bh=C7mFJdJJR38MVoewAU3PshqnCmTUbmo4+vjrut4nXkA=;
+        b=ErlV9cmwMclQEJVeMGPQILsXkTlQqLSUVCvmUjmKFn3VpFDrNP4cKu0Xmf6E0vUO0y
+         ph6DB0iWr+moacsgXjauhckrQy+pKdvEAfPdJvE5g2DIfeEz5YA07+QSx569Gmdok3iH
+         w2ZIOyKxr8AKg5KX1jz1kN+WlpxNJpwsxfnfeVqarq/qKqWlxBQc0PoWhjsCXSdXchU6
+         6xKZTZPT4RuuT6vlxmzMsRQF/0c0K5drH+o+yrGq5T8r1auJO+3BJ9ozUFkFNgjzva2q
+         iyrJYe0rNEPqvkV9Ka5Hc1hUAaYjWvOTr9uVPZ7ZILkhxMvfqqWcTqJKdQygiIl0YW+1
+         84fQ==
+X-Gm-Message-State: AOJu0YwDiekdD78hyw8vlC6qm/nCke1XSk5zYsHPNNydgR2cFXFQMmE1
+	bAmtg8z9ecqTQB6fnjwED0bXuu1sW+HJ
+X-Google-Smtp-Source: AGHT+IH30ze8lliPJsLy0+gFPaeKunMXu0LXjX1HO6/sLENHoZmveXOqCkZRgWXN24Z3/Wl9tJipHw==
+X-Received: by 2002:a05:6602:e03:b0:7ba:a232:30fe with SMTP id gp3-20020a0566020e0300b007baa23230femr13087461iob.20.1704229723563;
+        Tue, 02 Jan 2024 13:08:43 -0800 (PST)
+Received: from markhas1.lan (71-218-50-136.hlrn.qwest.net. [71.218.50.136])
+        by smtp.gmail.com with ESMTPSA id bo18-20020a056638439200b0046993034c91sm6956978jab.77.2024.01.02.13.08.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jan 2024 13:08:43 -0800 (PST)
+From: Mark Hasemeyer <markhas@chromium.org>
+To: LKML <linux-kernel@vger.kernel.org>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Rob Herring <robh@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Raul Rangel <rrangel@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Mark Hasemeyer <markhas@chromium.org>,
+	AKASHI Takahiro <takahiro.akashi@linaro.org>,
+	Alexandre TORGUE <alexandre.torgue@st.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Baoquan He <bhe@redhat.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Benson Leung <bleung@chromium.org>,
+	Bhanu Prakash Maiya <bhanumaiya@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	David Gow <davidgow@google.com>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Len Brown <lenb@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Nick Hawkins <nick.hawkins@hpe.com>,
+	Paul Barker <paul.barker@sancloud.com>,
+	Prashant Malani <pmalani@chromium.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Barnes <robbarnes@google.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Romain Perier <romain.perier@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Wei Xu <xuwei5@hisilicon.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	chrome-platform@lists.linux.dev,
+	cros-qcom-dts-watchers@chromium.org,
+	devicetree@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH v4 00/24] Improve IRQ wake capability reporting and update the cros_ec driver to use it
+Date: Tue,  2 Jan 2024 14:07:24 -0700
+Message-ID: <20240102210820.2604667-1-markhas@chromium.org>
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231226192149.1830592-1-markhas@chromium.org>
- <20231226122113.v3.2.Ifd0903f1c351e84376d71dbdadbd43931197f5ea@changeid> <ZYxbBkimS1VIuU0a@smile.fi.intel.com>
-In-Reply-To: <ZYxbBkimS1VIuU0a@smile.fi.intel.com>
-From: Mark Hasemeyer <markhas@chromium.org>
-Date: Tue, 2 Jan 2024 13:03:42 -0700
-Message-ID: <CANg-bXA12ZAd9vZFV9L2ffMmcG33ByJ-=+03aB+Rz3OMZQGCgw@mail.gmail.com>
-Subject: Re: [PATCH v3 02/24] gpiolib: acpi: Modify acpi_dev_irq_wake_get_by()
- to use resource
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Raul Rangel <rrangel@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Len Brown <lenb@kernel.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Wolfram Sang <wsa@kernel.org>, linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
->
-> > +                     *r = DEFINE_RES_NAMED(irq, 1, NULL, res_flags);
->
-> So? The whole exercise with the first patch is to have here:
->
->                         *r = DEFINE_RES_IRQ_NAMED_FLAGS(irq, NULL, res_flags);
+Currently the cros_ec driver assumes that its associated interrupt is
+wake capable. This is an incorrect assumption as some Chromebooks use a
+separate wake pin, while others overload the interrupt for wake and IO.
+This patch train updates the driver to query the underlying ACPI/DT data
+to determine whether or not the IRQ should be enabled for wake.
 
-Thanks. I was staring at the macro changes in ioport.h for too long...
+Both the device tree and ACPI systems have methods for reporting IRQ
+wake capability. In device tree based systems, a node can advertise
+itself as a 'wakeup-source'. In ACPI based systems, GpioInt and
+Interrupt resource descriptors can use the 'SharedAndWake' or
+'ExclusiveAndWake' share types.
 
->
-> > +     ret = acpi_dev_get_gpio_irq_resource(adev, name, index, &r);
-> > +     return ret ?: r.start;
->
-> Btw, this function requires header to include ioport.h. I'm not sure
-> if it's good for ACPI. I would prefer safest approach, i.e. exporting
-> this from a C code, i.e. gpiolib-acpi.c.
+Some logic is added to the platform, ACPI, and DT subsystems to more
+easily pipe wakeirq information up to the driver.
 
-It actually just needs 'struct resource' declared. I removed the
-dependency on ioport.h, but it may make sense to leave the definition
-of 'acpi_dev_gpio_irq_get_by()' here because non ACPI based systems
-need a default implementation anyway.
+Changes in v4:
+-Rebase on linux-next
+-See each patch for patch specific changes
+
+Changes in v3:
+-Rebase on linux-next
+-See each patch for patch specific changes
+
+Changes in v2:
+-Rebase on linux-next
+-Add cover letter
+-See each patch for patch specific changes
+
+Mark Hasemeyer (24):
+  resource: Add DEFINE_RES_*_NAMED_FLAGS macro
+  gpiolib: acpi: Modify acpi_dev_irq_wake_get_by() to use resource
+  i2c: acpi: Modify i2c_acpi_get_irq() to use resource
+  dt-bindings: power: Clarify wording for wakeup-source property
+  ARM: dts: tegra: Enable cros-ec-spi as wake source
+  ARM: dts: rockchip: rk3288: Enable cros-ec-spi as wake source
+  ARM: dts: samsung: exynos5420: Enable cros-ec-spi as wake source
+  ARM: dts: samsung: exynos5800: Enable cros-ec-spi as wake source
+  arm64: dts: mediatek: mt8173: Enable cros-ec-spi as wake source
+  arm64: dts: mediatek: mt8183: Enable cros-ec-spi as wake source
+  arm64: dts: mediatek: mt8192: Enable cros-ec-spi as wake source
+  arm64: dts: mediatek: mt8195: Enable cros-ec-spi as wake source
+  arm64: dts: tegra: Enable cros-ec-spi as wake source
+  arm64: dts: qcom: sc7180: Enable cros-ec-spi as wake source
+  arm64: dts: qcom: sc7280: Enable cros-ec-spi as wake source
+  arm64: dts: qcom: sdm845: Enable cros-ec-spi as wake source
+  arm64: dts: rockchip: rk3399: Enable cros-ec-spi as wake source
+  of: irq: add wake capable bit to of_irq_resource()
+  of: irq: Add default implementation for of_irq_to_resource()
+  of: irq: Remove extern from function declarations
+  device property: Modify fwnode irq_get() to use resource
+  device property: Update functions to use EXPORT_SYMBOL_GPL()
+  platform: Modify platform_get_irq_optional() to use resource
+  platform/chrome: cros_ec: Use PM subsystem to manage wakeirq
+
+ .../bindings/power/wakeup-source.txt          | 18 ++--
+ arch/arm/boot/dts/nvidia/tegra124-nyan.dtsi   |  1 +
+ arch/arm/boot/dts/nvidia/tegra124-venice2.dts |  1 +
+ .../rockchip/rk3288-veyron-chromebook.dtsi    |  1 +
+ .../boot/dts/samsung/exynos5420-peach-pit.dts |  1 +
+ .../boot/dts/samsung/exynos5800-peach-pi.dts  |  1 +
+ arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi  |  1 +
+ .../arm64/boot/dts/mediatek/mt8183-kukui.dtsi |  1 +
+ .../boot/dts/mediatek/mt8192-asurada.dtsi     |  1 +
+ .../boot/dts/mediatek/mt8195-cherry.dtsi      |  1 +
+ .../arm64/boot/dts/nvidia/tegra132-norrin.dts |  1 +
+ arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi  |  1 +
+ .../arm64/boot/dts/qcom/sc7280-herobrine.dtsi |  1 +
+ .../arm64/boot/dts/qcom/sc7280-idp-ec-h1.dtsi |  1 +
+ arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi    |  1 +
+ arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi  |  1 +
+ drivers/acpi/property.c                       | 11 ++-
+ drivers/base/platform.c                       | 90 ++++++++++++-------
+ drivers/base/property.c                       | 40 ++++++---
+ drivers/gpio/gpiolib-acpi.c                   | 28 ++++--
+ drivers/i2c/i2c-core-acpi.c                   | 43 ++++-----
+ drivers/i2c/i2c-core-base.c                   |  6 +-
+ drivers/i2c/i2c-core.h                        |  4 +-
+ drivers/of/irq.c                              | 39 +++++++-
+ drivers/of/property.c                         |  8 +-
+ drivers/platform/chrome/cros_ec.c             | 48 ++++++++--
+ drivers/platform/chrome/cros_ec_lpc.c         | 40 +++++++--
+ drivers/platform/chrome/cros_ec_spi.c         | 15 ++--
+ drivers/platform/chrome/cros_ec_uart.c        | 14 ++-
+ include/linux/acpi.h                          | 25 +++---
+ include/linux/fwnode.h                        |  8 +-
+ include/linux/ioport.h                        | 20 +++--
+ include/linux/of_irq.h                        | 41 +++++----
+ include/linux/platform_data/cros_ec_proto.h   |  4 +-
+ include/linux/platform_device.h               |  3 +
+ include/linux/property.h                      |  2 +
+ 36 files changed, 350 insertions(+), 172 deletions(-)
+
+-- 
+2.43.0.472.g3155946c3a-goog
+
 
