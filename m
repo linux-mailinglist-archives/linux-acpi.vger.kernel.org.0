@@ -1,129 +1,247 @@
-Return-Path: <linux-acpi+bounces-2677-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2678-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A83822571
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 00:20:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0367D822798
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 04:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34DA61C21A8E
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jan 2024 23:20:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6321E1F2154B
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 03:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E398F17740;
-	Tue,  2 Jan 2024 23:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE94B4A28;
+	Wed,  3 Jan 2024 03:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aHgUYL+H"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="NOe2dazo"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AD51773D;
-	Tue,  2 Jan 2024 23:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704237628; x=1735773628;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=Ux+MBx3ndzvuSHoRhV99v9zK1ijm22s5cA4UAbiYEZs=;
-  b=aHgUYL+H+qJsOVUfqheMfOTDQnHRkeQtFsXCPtUrNR5Fiu++HVLgeMb3
-   3PwxyGlbvqtc38mM/kpBle0uNtQHeCguyStc7iwoatfUO+speW9iodb66
-   g5l4m43cBDuiDyr2PjycUhzmOmx3V+Be6T6R5hKWIh7xR83blojrmQhu+
-   EDEg5ISzmij+QEwqj78KXeB4P1W6Q+bH1gZupZLqgjbp4T7qHYBtItRwr
-   A0AWo9fjE6W2SGqycob/6Mh5MVkFgemqCnxGPqT4dLuhxIs1NhH7mUbod
-   lgzoyaulC/ZR34uvGPixZQ0QMfplhfopOREciBK7MP8mzf6po1yayjrrQ
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="3768937"
-X-IronPort-AV: E=Sophos;i="6.04,326,1695711600"; 
-   d="scan'208";a="3768937"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2024 15:20:26 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="729622034"
-X-IronPort-AV: E=Sophos;i="6.04,326,1695711600"; 
-   d="scan'208";a="729622034"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga003.jf.intel.com with ESMTP; 02 Jan 2024 15:20:22 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rKo3R-000LXM-1Q;
-	Tue, 02 Jan 2024 23:20:19 +0000
-Date: Wed, 3 Jan 2024 07:19:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	devel@acpica.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge 154/159]
- drivers/thermal/intel/../thermal_netlink.h:27:20: warning: 'struct
- thermal_trip' declared inside parameter list will not be visible outside of
- this definition or declaration
-Message-ID: <202401030734.oCkQjI4z-lkp@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A81413AF4
+	for <linux-acpi@vger.kernel.org>; Wed,  3 Jan 2024 03:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 5CB463F5A5
+	for <linux-acpi@vger.kernel.org>; Wed,  3 Jan 2024 03:36:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1704253006;
+	bh=X10895KQ3QE6ohq+NRMU0He1xRYscfKUHEWEvSElvJg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type;
+	b=NOe2dazotDTAPlbjKGwiTcfDzfmqjgbkOpqk4ddXfbTuy3i5OWLIb8ai5OQ3GgF6d
+	 T7shxfwOIPotWg5m10Lm5XUpUv9Y1U2xcMX7vC15wnccO/kzVevdur6V3wj0K5ljT3
+	 0saTS+4I37zmrPJaXJW2Km9v4EJaysHudFirEBEwy3omPJ0ti2ve6+WQ+qZ7JO7nPg
+	 pYNry3ulTRZfAop/+dd17c/88j18FgbqkfGaSIHpByPRj2HXlO5xbY1qV2He+S1VWx
+	 jIadi/kPa64T55EZBbtZpmqcvPKh/Qg7UARPSXXk6MskuQeLN8SY4GNT6maKQPHGN/
+	 c9Os7Kk8vr8dg==
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-28ccb055d6eso69436a91.1
+        for <linux-acpi@vger.kernel.org>; Tue, 02 Jan 2024 19:36:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704253005; x=1704857805;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X10895KQ3QE6ohq+NRMU0He1xRYscfKUHEWEvSElvJg=;
+        b=ZDTii3GVqWmG5mZ3chgVeuXB5/UDoyzVjiWzxl0BFRGTH1a5USccQjz+fdDNcBKy1w
+         YyOKhpGL1blYOBGYuus02pfx6uc1V1E+XsynCfLzt7m4SOA0LweAlL2o6yrBoAXZB0RZ
+         3Crlat9Tu1sZpbiuaI/nWgt9w0/ODSuymZCtfNmrR0BVoisBQEIjBQ+onsqo6CAMrMIP
+         nXJmz/PqHFYn57FsSnR8YJZd8U6dbskd7rL7Olz3cos6EiaaHkVPjLxNTNKofv+kjOfA
+         dtz4hT64Vxdfp7ajRvocT98DrKEdqD9XOeoqgRHUtNENTyjDLg//5mVWOyN5UHmgtqsY
+         GcdQ==
+X-Gm-Message-State: AOJu0Yz0obevuKuUt1nJ2S4Fe1iyAQpzUgJFRh2HDi3zDxI1Ot725IgB
+	dVE71IKlW4DpvXLVnfOmCFyANgaKmrykMer/TfkuKV8BHaUhGPSJOyotoRwbuhCy2hOQ6gsE1Qd
+	uK3IfOk0DkfEKk1YYK3oOvBenmtMPT/10ioGGpxzsuNENw93EgvbEOZj0Ffc+Hg==
+X-Received: by 2002:a17:90b:4a42:b0:28c:815e:e0f0 with SMTP id lb2-20020a17090b4a4200b0028c815ee0f0mr534079pjb.37.1704253004892;
+        Tue, 02 Jan 2024 19:36:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFoYAqyj4LBWZ9v5lFAuvCXUaw6N52xAk67xXO+bjEa0tmcamKwqzJCjnZCgB6ohabHot5P6WfI9R8vQVJ6qzs=
+X-Received: by 2002:a17:90b:4a42:b0:28c:815e:e0f0 with SMTP id
+ lb2-20020a17090b4a4200b0028c815ee0f0mr534065pjb.37.1704253004518; Tue, 02 Jan
+ 2024 19:36:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20231227040401.548977-1-kai.heng.feng@canonical.com> <40694180-cc87-4ae2-9929-8451d43f428d@roeck-us.net>
+In-Reply-To: <40694180-cc87-4ae2-9929-8451d43f428d@roeck-us.net>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date: Wed, 3 Jan 2024 11:36:32 +0800
+Message-ID: <CAAd53p6scYNAohvwBJ1gSk6of2xSPLVDpjCkMZ0t2tff2Oww5w@mail.gmail.com>
+Subject: Re: [PATCH v2] hwmon: (acpi_power_meter) Ensure IPMI space handler is
+ ready on Dell systems
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: jdelvare@suse.com, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	acpica-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   b8a1fe5b94254945ed28a3f519e8ecd60e288871
-commit: 1fccea663914c7d8e334904525b6696eef0f6345 [154/159] thermal: netlink: Pass pointers to thermal_notify_tz_trip_change()
-config: i386-randconfig-005-20240102 (https://download.01.org/0day-ci/archive/20240103/202401030734.oCkQjI4z-lkp@intel.com/config)
-compiler: gcc-7 (Ubuntu 7.5.0-6ubuntu2) 7.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240103/202401030734.oCkQjI4z-lkp@intel.com/reproduce)
+On Thu, Dec 28, 2023 at 5:58=E2=80=AFAM Guenter Roeck <linux@roeck-us.net> =
+wrote:
+>
+> On Wed, Dec 27, 2023 at 12:04:00PM +0800, Kai-Heng Feng wrote:
+> > The following error can be observed at boot:
+> > [    3.717920] ACPI Error: No handler for Region [SYSI] (00000000ab9e62=
+c5) [IPMI] (20230628/evregion-130)
+> > [    3.717928] ACPI Error: Region IPMI (ID=3D7) has no handler (2023062=
+8/exfldio-261)
+> >
+> > [    3.717936] No Local Variables are initialized for Method [_GHL]
+> >
+> > [    3.717938] No Arguments are initialized for method [_GHL]
+> >
+> > [    3.717940] ACPI Error: Aborting method \_SB.PMI0._GHL due to previo=
+us error (AE_NOT_EXIST) (20230628/psparse-529)
+> > [    3.717949] ACPI Error: Aborting method \_SB.PMI0._PMC due to previo=
+us error (AE_NOT_EXIST) (20230628/psparse-529)
+> > [    3.717957] ACPI: \_SB_.PMI0: _PMC evaluation failed: AE_NOT_EXIST
+> >
+> > On Dell systems several methods of acpi_power_meter access variables in
+> > IPMI region [0], so wait until IPMI space handler is installed by
+> > acpi_ipmi and also wait until SMI is selected to make the space handler
+> > fully functional.
+> >
+> > [0] https://www.dell.com/support/manuals/en-us/redhat-enterprise-linux-=
+v8.0/rhel8_rn_pub/advanced-configuration-and-power-interface-acpi-error-mes=
+sages-displayed-in-dmesg?guid=3Dguid-0d5ae482-1977-42cf-b417-3ed5c3f5ee62
+> >
+> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> > ---
+> > v2:
+> >  - Use completion instead of request_module().
+> >
+> >  drivers/acpi/acpi_ipmi.c         | 13 ++++++++++++-
+> >  drivers/hwmon/acpi_power_meter.c |  4 ++++
+> >  include/acpi/acpi_bus.h          |  4 ++++
+>
+> This needs to be split into two patches.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202401030734.oCkQjI4z-lkp@intel.com/
+Will do.
 
-All warnings (new ones prefixed by >>):
+>
+> >  3 files changed, 20 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/acpi/acpi_ipmi.c b/drivers/acpi/acpi_ipmi.c
+> > index 0555f68c2dfd..2ea8b7e6cebf 100644
+> > --- a/drivers/acpi/acpi_ipmi.c
+> > +++ b/drivers/acpi/acpi_ipmi.c
+> > @@ -23,6 +23,8 @@ MODULE_LICENSE("GPL");
+> >  #define IPMI_TIMEOUT                 (5000)
+> >  #define ACPI_IPMI_MAX_MSG_LENGTH     64
+> >
+> > +static struct completion smi_selected;
+> > +
+> >  struct acpi_ipmi_device {
+> >       /* the device list attached to driver_data.ipmi_devices */
+> >       struct list_head head;
+> > @@ -463,8 +465,10 @@ static void ipmi_register_bmc(int iface, struct de=
+vice *dev)
+> >               if (temp->handle =3D=3D handle)
+> >                       goto err_lock;
+> >       }
+> > -     if (!driver_data.selected_smi)
+> > +     if (!driver_data.selected_smi) {
+> >               driver_data.selected_smi =3D ipmi_device;
+> > +             complete(&smi_selected);
+> > +     }
+> >       list_add_tail(&ipmi_device->head, &driver_data.ipmi_devices);
+> >       mutex_unlock(&driver_data.ipmi_lock);
+> >
+> > @@ -578,10 +582,17 @@ acpi_ipmi_space_handler(u32 function, acpi_physic=
+al_address address,
+> >       return status;
+> >  }
+> >
+> > +void wait_for_acpi_ipmi(void)
+> > +{
+> > +     wait_for_completion_interruptible_timeout(&smi_selected, 2 * HZ);
+>
+> wait_for_completion_interruptible_timeout) returns an error code which
+> should be returned to the caller.
 
-   In file included from drivers/thermal/intel/intel_hfi.c:46:0:
->> drivers/thermal/intel/../thermal_netlink.h:27:20: warning: 'struct thermal_trip' declared inside parameter list will not be visible outside of this definition or declaration
-          const struct thermal_trip *trip);
-                       ^~~~~~~~~~~~
->> drivers/thermal/intel/../thermal_netlink.h:26:48: warning: 'struct thermal_zone_device' declared inside parameter list will not be visible outside of this definition or declaration
-    int thermal_notify_tz_trip_change(const struct thermal_zone_device *tz,
-                                                   ^~~~~~~~~~~~~~~~~~~
+Will do in next revision.
 
+>
+> > +}
+> > +EXPORT_SYMBOL_GPL(wait_for_acpi_ipmi);
+> > +
+> >  static int __init acpi_ipmi_init(void)
+> >  {
+> >       int result;
+> >       acpi_status status;
+> > +     init_completion(&smi_selected);
+> >
+> >       if (acpi_disabled)
+> >               return 0;
+> > diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_powe=
+r_meter.c
+> > index 703666b95bf4..acaf1ae68dc8 100644
+> > --- a/drivers/hwmon/acpi_power_meter.c
+> > +++ b/drivers/hwmon/acpi_power_meter.c
+> > @@ -883,6 +883,10 @@ static int acpi_power_meter_add(struct acpi_device=
+ *device)
+> >       strcpy(acpi_device_class(device), ACPI_POWER_METER_CLASS);
+> >       device->driver_data =3D resource;
+> >
+> > +     if (dmi_match(DMI_SYS_VENDOR, "Dell Inc.") &&
+> > +         acpi_dev_get_first_match_dev("IPI0001", NULL, -1))
+> > +             wait_for_acpi_ipmi();
+>
+> wait_for_acpi_ipmi() should return an error code which
+> should be handled here.
 
-vim +27 drivers/thermal/intel/../thermal_netlink.h
+OK, I think print an message should be informative.
 
-    12	
-    13	/* Netlink notification function */
-    14	#ifdef CONFIG_THERMAL_NETLINK
-    15	int __init thermal_netlink_init(void);
-    16	void __init thermal_netlink_exit(void);
-    17	int thermal_notify_tz_create(int tz_id, const char *name);
-    18	int thermal_notify_tz_delete(int tz_id);
-    19	int thermal_notify_tz_enable(int tz_id);
-    20	int thermal_notify_tz_disable(int tz_id);
-    21	int thermal_notify_tz_trip_down(int tz_id, int id, int temp);
-    22	int thermal_notify_tz_trip_up(int tz_id, int id, int temp);
-    23	int thermal_notify_tz_trip_delete(int tz_id, int id);
-    24	int thermal_notify_tz_trip_add(int tz_id, int id, int type,
-    25				       int temp, int hyst);
-  > 26	int thermal_notify_tz_trip_change(const struct thermal_zone_device *tz,
-  > 27					  const struct thermal_trip *trip);
-    28	int thermal_notify_cdev_state_update(int cdev_id, int state);
-    29	int thermal_notify_cdev_add(int cdev_id, const char *name, int max_state);
-    30	int thermal_notify_cdev_delete(int cdev_id);
-    31	int thermal_notify_tz_gov_change(int tz_id, const char *name);
-    32	int thermal_genl_sampling_temp(int id, int temp);
-    33	int thermal_genl_cpu_capability_event(int count,
-    34					      struct thermal_genl_cpu_caps *caps);
-    35	#else
-    36	static inline int thermal_netlink_init(void)
-    37	{
-    38		return 0;
-    39	}
-    40	
+>
+> > +
+> >       res =3D read_capabilities(resource);
+> >       if (res)
+> >               goto exit_free;
+> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> > index 1216d72c650f..ed59fb89721e 100644
+> > --- a/include/acpi/acpi_bus.h
+> > +++ b/include/acpi/acpi_bus.h
+> > @@ -655,6 +655,7 @@ bool acpi_device_override_status(struct acpi_device=
+ *adev, unsigned long long *s
+> >  bool acpi_quirk_skip_acpi_ac_and_battery(void);
+> >  int acpi_install_cmos_rtc_space_handler(acpi_handle handle);
+> >  void acpi_remove_cmos_rtc_space_handler(acpi_handle handle);
+> > +void wait_for_acpi_ipmi(void);
+> >  #else
+> >  static inline bool acpi_device_override_status(struct acpi_device *ade=
+v,
+> >                                              unsigned long long *status=
+)
+> > @@ -672,6 +673,9 @@ static inline int acpi_install_cmos_rtc_space_handl=
+er(acpi_handle handle)
+> >  static inline void acpi_remove_cmos_rtc_space_handler(acpi_handle hand=
+le)
+> >  {
+> >  }
+> > +static inline void wait_for_acpi_ipmi(void)
+> > +{
+> > +}
+>
+> Something with the conditional is wrong. See 0-day report.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Will fix that in next revision.
+
+Kai-Heng
+
+>
+> Guenter
+> >  #endif
+> >
+> >  #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
+> > --
+> > 2.34.1
+> >
+> >
 
