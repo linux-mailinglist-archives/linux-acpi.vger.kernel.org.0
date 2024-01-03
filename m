@@ -1,397 +1,228 @@
-Return-Path: <linux-acpi+bounces-2707-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2708-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453178236D1
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 21:54:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6640B823714
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 22:24:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BBACB2399B
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 20:54:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6329B1C20DD2
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 21:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 872001D544;
-	Wed,  3 Jan 2024 20:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02451D69B;
+	Wed,  3 Jan 2024 21:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lO6zX9yF"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="bubHF3IK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96C41DA24
-	for <linux-acpi@vger.kernel.org>; Wed,  3 Jan 2024 20:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-67f8d9fe99fso81320546d6.2
-        for <linux-acpi@vger.kernel.org>; Wed, 03 Jan 2024 12:54:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1704315259; x=1704920059; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MB49pNbP4Kgw+fHr6WahZGlyQQT8haoiQ66ETHsRNlc=;
-        b=lO6zX9yFynal+1LesKEfZMbAmMt9uxBr0XYJAgb06U1UO5XDvDsWusCU975rdsHOPn
-         KZEhiiMGB68csB1UrJzF3+JblGWmX/yfvEYzk8uWn0xnwHqu0NljFqrOV9BTXcAd7/Qt
-         IRCKBobi1+La/soUha0U9UxWhgz8Gtj1GrgKI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704315259; x=1704920059;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MB49pNbP4Kgw+fHr6WahZGlyQQT8haoiQ66ETHsRNlc=;
-        b=mQ5J78KddHXFmuVxeXDAAxEhh4Yp6d6/7rAEqDqqoNA5lDAHiY6Ll34Xb7TVNHdmmv
-         Gnyy9oEymQoXwyXTKuoAZKrPG+TC21xgMbZ2eROPEajQq+m69Q9YK+34rhJDexZbRvQn
-         46aycZ15o7M/sWC0pKXxq4s/FfTwXadehqpvT3mor5CbgdhpjAFph1sHt0QzDoAcXrYX
-         KPv265W2Y26mpPL+H1pH9MpxjgDMP+KtssYNhpIlYoDcSDNeNO7M0uyKpjY2bLAjDCfu
-         5YM4TIt6In/WH8frGjnRDjba2twkynYW7R2pDNyuv+asqKN6d/NRG8fdPIaA+4YwcT/j
-         440Q==
-X-Gm-Message-State: AOJu0YwuEOWUpSK/+hdp7FCxS44rC8rLwb7umlBguyVbcQJ38IIS7niA
-	g9qWr5JNhu1d8X/LDyINA22LLTdzIxg3CV9UXak/hTR+Qq6J
-X-Google-Smtp-Source: AGHT+IEvjWOLR6oG3jUV29RwLNIW+gVNYrGyjx9B1GKZpUQXEsP4K3Ty8/ToVkLtzb7ThZZKjwd/HqBnFokY2myQZKM=
-X-Received: by 2002:a0c:cc94:0:b0:67f:9859:3ce2 with SMTP id
- f20-20020a0ccc94000000b0067f98593ce2mr20448833qvl.128.1704315259575; Wed, 03
- Jan 2024 12:54:19 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA551DA22;
+	Wed,  3 Jan 2024 21:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1704317027; x=1704921827; i=w_armin@gmx.de;
+	bh=yO7sUoFBz10D4BbdlI/Pa5souxOjv3EhM/T5i4KQEpc=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=bubHF3IKiJFzq5b+30WnnG2RvOv17jku/EFF7QrQoWrtoTGyGuaQdRVQrkWHf4vf
+	 +e6GR/PcHxkjYc27IiHiUwamshYnwMv/78MVrLs+j/tFfuvA0t4ADe3FfGmL8V5Aa
+	 LAJWsgUmnDiTbfJdtWHHEs9Nnu5yQwqtA2hq8S02AakuM8N2Lo944QUaHoNHl+ybd
+	 2dwJXXU4cgl1+Ax8HJiHBxaU65pydHrijgqj0hdWNoquSgVTfhm9xsPDi4gCFmoAU
+	 ewv8VLAF7ByKMV7w4W7nCUXmN64dvoU32Yd80kcaipWJArzH827+dy/2m3byCzLEe
+	 Rd3JbZtJK2K8dXgBzA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MwwZX-1r1P8y0gkF-00ySrw; Wed, 03
+ Jan 2024 22:23:47 +0100
+Message-ID: <430501f6-47fc-49c8-8db8-9cbdf2ba1ae5@gmx.de>
+Date: Wed, 3 Jan 2024 22:23:44 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
- <BN9PR11MB5483FF3039913334C7EA83E1E6AEA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXFG92NpL7T7YocOup0xLKyopt3MnSCp0RL8cLzozzJz7A@mail.gmail.com>
- <BN9PR11MB548303B09536EB1577472029E6B3A@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAPnjgZ36t8g7E=0MSJyaV8-QKv9RVYe47Jd5E=NU-mFM4LWBQA@mail.gmail.com>
- <CAMj1kXHAEeK7x2f13k_JV3Xcw61nNLasyvXQf+mKwKekQ48EpQ@mail.gmail.com>
- <BN9PR11MB548334E0DA6495C438FBFDE1E6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <BN9PR11MB548314DDE8D4C9503103D51CE6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXHbM+ArLgNZgnmiok4gOfv6QLYxzyB9OCwfhEkJ2xGK_g@mail.gmail.com>
- <BN9PR11MB5483C2FBCD07DE61DCCDB523E6BCA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXHmu=ykgBMRiFqG4_ra3FJtHa=GASoMUJswdMFa9v4Xgw@mail.gmail.com>
- <BN9PR11MB54837EEB391CC2A8FA6C0BF5E695A@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXEQL9n1Adedow5KEyZ5gdFQY3Fn+Fz8vSK3mHib_vDFig@mail.gmail.com> <CAL_JsqKkC1H0Hi2KdF1CH3959Use9ZaruE7uh4ncAyG4C6AqYQ@mail.gmail.com>
-In-Reply-To: <CAL_JsqKkC1H0Hi2KdF1CH3959Use9ZaruE7uh4ncAyG4C6AqYQ@mail.gmail.com>
-From: Simon Glass <sjg@chromium.org>
-Date: Wed, 3 Jan 2024 13:54:08 -0700
-Message-ID: <CAFLszTjcGErbzaafkYNmNWH8dAhkyDfRe4DnFcG3Qhxo+jZc8g@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
-To: Rob Herring <robh@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, "Chiu, Chasel" <chasel.chiu@intel.com>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	"Tan, Lean Sheng" <sheng.tan@9elements.com>, lkml <linux-kernel@vger.kernel.org>, 
-	Dhaval Sharma <dhaval@rivosinc.com>, "Brune, Maximilian" <maximilian.brune@9elements.com>, 
-	Yunhui Cui <cuiyunhui@bytedance.com>, "Dong, Guo" <guo.dong@intel.com>, 
-	Tom Rini <trini@konsulko.com>, ron minnich <rminnich@gmail.com>, "Guo, Gua" <gua.guo@intel.com>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, U-Boot Mailing List <u-boot@lists.denx.de>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] hwmon: (acpi_power_meter) Ensure IPMI space handler is
+ ready on Dell systems
+Content-Language: en-US
+To: Kai-Heng Feng <kai.heng.feng@canonical.com>, jdelvare@suse.com,
+ linux@roeck-us.net
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ acpica-devel@lists.linux.dev
+References: <20231227040401.548977-1-kai.heng.feng@canonical.com>
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <20231227040401.548977-1-kai.heng.feng@canonical.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:oB8ghZbp5DNMxKkEt+cWRBNblI0o7wFwtVdXY8jsgybXH3fPfdq
+ aFZb2DMHX4kOG5LYxuCLWywDJSr0g7r8HZGB/Ur7y1AtdEJeLCDiNGLo8Fw4dtbMMdE5fyR
+ jjghZ2Wrfyu21joNtdqG9HUMeqqUQ/2If6i0KHHtK2PsJbVVQHFXD16KedbAqruqdMMyJKx
+ qsi4gYHCEwyy8wLSmgaCw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:jWNTYdIKL4k=;Fa7BTiBq3zDax/4BRvmo2KH5vrz
+ /yCgBJSzTB8wgOlP+Em2Bx9ExqMlAWF0MpgJyai3aS6ETaNa3rXO2aeEuySGdXqzblmIxKi2Y
+ Ktlb0Pavd819YcwaRORdJfxRfJV4+6Ivac0zBCtkMBEg6DeEQm6joGQXN20vJrqMAM8hDKLJg
+ Y9k4UJh2FHEmdsaDuk/P9NHXdfFJ559V4G04Ahot6BNIZeBqPOSuKmMVjPyFs+zWM5IrziaiU
+ NfC/2SJomw3Nn1zCiBK285gWlqyjQb+YtLC8pqN9o/7W4tHeH97mykcmAtXVCCvgrG9LMYfTp
+ h1EsI28Sd+uKeic/rSyJuNkg3mbdHSlEaE2KJ86jBOKQ+WfK2jHfUvqI7ibt/i2snphf7tSa9
+ dtTknPIN/JmuWdXb1B5saA8F+aNCrFGxRDIeiR+hFRbfLFUWUBdnpwjd5bW02sL/1v9mdow/Q
+ 0yL9At3mKYTOQ+onNnU+tGd5QDH//MQccqtHz82Ai8kGSQW4INAX0+qqXYC6dwVecNQ+uRHTq
+ IunZW7PHRw4Jb1pY5l3nnVuMLC0O4nV3LHU4nF0TbZ0ROCR84sP7fRVbbkJncy/R4hv9WlbE5
+ W6lidre87uJtmTtGw6yaQzvxlYcIpAuPk23wNNEXQX0pJHSD1i66fsmUjDXDqqUvPkUAr6TCp
+ BOjp+2IsgdguhzfnB+mtfAx6DYds4LLFj8bbZjiE3B90WcXIfDGY1SLEp3/8axHIOVE8xmury
+ VPeEQDkPhwJbX9xmZ6gjR8hntFUYD0a5D7bJqnD79qVo+xufPFBElAgdBNv9hlqcT7cA3Yd0b
+ RmJzPBsjvswA2dfXhDH82wMh2Q/360NzfAoHLwiRKqy5QEacjD8wzP/1yfv8/QLjYMef4E/Mx
+ BDXGa4YEOnWEN2X7dw3YIsZOVGqRb5XTecjIfvUU5vZD21XQ+rjsKPNYsO27U+iZVnospSm7O
+ tKkR5/Okt/3wM3zu8vVdiXEyPco=
 
-Hi Rob, Ard,
+Am 27.12.23 um 05:04 schrieb Kai-Heng Feng:
 
-On Wed, Jan 3, 2024 at 9:01=E2=80=AFAM Rob Herring <robh@kernel.org> wrote:
+> The following error can be observed at boot:
+> [    3.717920] ACPI Error: No handler for Region [SYSI] (00000000ab9e62c=
+5) [IPMI] (20230628/evregion-130)
+> [    3.717928] ACPI Error: Region IPMI (ID=3D7) has no handler (20230628=
+/exfldio-261)
 >
-> On Fri, Dec 22, 2023 at 5:48=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> =
-wrote:
-> >
-> > On Thu, 21 Dec 2023 at 17:50, Chiu, Chasel <chasel.chiu@intel.com> wrot=
-e:
-> > >
-> > >
-> > > Hi Ard,
-> > >
-> > > Please see my reply below inline and let me know your thoughts.
-> > >
-> > > Thanks,
-> > > Chasel
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Ard Biesheuvel <ardb@kernel.org>
-> > > > Sent: Thursday, December 21, 2023 6:31 AM
-> > > > To: Chiu, Chasel <chasel.chiu@intel.com>
-> > > > Cc: Simon Glass <sjg@chromium.org>; devicetree@vger.kernel.org; Mar=
-k Rutland
-> > > > <mark.rutland@arm.com>; Rob Herring <robh@kernel.org>; Tan, Lean Sh=
-eng
-> > > > <sheng.tan@9elements.com>; lkml <linux-kernel@vger.kernel.org>; Dha=
-val
-> > > > Sharma <dhaval@rivosinc.com>; Brune, Maximilian
-> > > > <maximilian.brune@9elements.com>; Yunhui Cui <cuiyunhui@bytedance.c=
-om>;
-> > > > Dong, Guo <guo.dong@intel.com>; Tom Rini <trini@konsulko.com>; ron =
-minnich
-> > > > <rminnich@gmail.com>; Guo, Gua <gua.guo@intel.com>; linux-
-> > > > acpi@vger.kernel.org; U-Boot Mailing List <u-boot@lists.denx.de>
-> > > > Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memor=
-y
-> > > > usages
-> > > >
-> > > > On Tue, 28 Nov 2023 at 21:31, Chiu, Chasel <chasel.chiu@intel.com> =
-wrote:
-> > > > >
-> > > > >
-> > > > >
-> > > > >
-> > > > > > -----Original Message-----
-> > > > > > From: Ard Biesheuvel <ardb@kernel.org>
-> > > > > > Sent: Tuesday, November 28, 2023 10:08 AM
-> > > > > > To: Chiu, Chasel <chasel.chiu@intel.com>
-> > > > > > Cc: Simon Glass <sjg@chromium.org>; devicetree@vger.kernel.org;=
- Mark
-> > > > > > Rutland <mark.rutland@arm.com>; Rob Herring <robh@kernel.org>; =
-Tan,
-> > > > > > Lean Sheng <sheng.tan@9elements.com>; lkml
-> > > > > > <linux-kernel@vger.kernel.org>; Dhaval Sharma <dhaval@rivosinc.=
-com>;
-> > > > > > Brune, Maximilian <maximilian.brune@9elements.com>; Yunhui Cui
-> > > > > > <cuiyunhui@bytedance.com>; Dong, Guo <guo.dong@intel.com>; Tom =
-Rini
-> > > > > > <trini@konsulko.com>; ron minnich <rminnich@gmail.com>; Guo, Gu=
-a
-> > > > > > <gua.guo@intel.com>; linux- acpi@vger.kernel.org; U-Boot Mailin=
-g
-> > > > > > List <u-boot@lists.denx.de>
-> > > > > > Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-m=
-emory
-> > > > > > usages
-> > > > > >
-> > > > > > You are referring to a 2000 line patch so it is not 100% clear =
-where to look tbh.
-> > > > > >
-> > > > > >
-> > > > > > On Tue, 21 Nov 2023 at 19:37, Chiu, Chasel <chasel.chiu@intel.c=
-om> wrote:
-> > > > > > >
-> > > > > > >
-> > > > > > > In PR, UefiPayloadPkg/Library/FdtParserLib/FdtParserLib.c, li=
-ne
-> > > > > > > 268 is for
-> > > > > > related example code.
-> > > > > > >
-> > > > > >
-> > > > > > That refers to a 'memory-allocation' node, right? How does that
-> > > > > > relate to the 'reserved-memory' node?
-> > > > > >
-> > > > > > And crucially, how does this clarify in which way "runtime-code=
-" and
-> > > > > > "runtime- data" reservations are being used?
-> > > > > >
-> > > > > > Since the very beginning of this discussion, I have been asking
-> > > > > > repeatedly for examples that describe the wider context in whic=
-h these
-> > > > reservations are used.
-> > > > > > The "runtime" into runtime-code and runtime-data means that the=
-se
-> > > > > > regions have a special significance to the operating system, no=
-t
-> > > > > > just to the next bootloader stage. So I want to understand exac=
-tly
-> > > > > > why it is necessary to describe these regions in a way where th=
-e
-> > > > > > operating system might be expected to interpret this informatio=
-n and act
-> > > > upon it.
-> > > > > >
-> > > > >
-> > > > >
-> > > > > I think runtime code and data today are mainly for supporting UEF=
-I runtime
-> > > > services - some BIOS functions for OS to utilize, OS may follow bel=
-ow ACPI spec to
-> > > > treat them as reserved range:
-> > > > > https://uefi.org/specs/ACPI/6.5/15_System_Address_Map_Interfaces.=
-html#
-> > > > > uefi-memory-types-and-mapping-to-acpi-address-range-types
-> > > > >
-> > > > > Like I mentioned earlier, that PR is still in early phase and has=
- not reflected all
-> > > > the required changes yet, but the idea is to build
-> > > > gEfiMemoryTypeInformationGuid HOB from FDT reserved-memory nodes.
-> > > > > UEFI generic Payload has DxeMain integrated, however Memory Types=
- are
-> > > > platform-specific, for example, some platforms may need bigger runt=
-ime memory
-> > > > for their implementation, that's why we want such FDT reserved-memo=
-ry node to
-> > > > tell DxeMain.
-> > > > >
-> > > >
-> > > > > The Payload flow will be like this:
-> > > > >   Payload creates built-in default MemoryTypes table ->
-> > > > >     FDT reserved-memory node to override if required (this also e=
-nsures the
-> > > > same memory map cross boots so ACPI S4 works) ->
-> > > > >       Build gEfiMemoryTypeInformationGuid HOB by "platfom specifi=
-c"
-> > > > MemoryTypes Table ->
-> > > > >         DxeMain/GCD to consume this MemoryTypes table and setup m=
-emory
-> > > > service ->
-> > > > >           Install memory types table to UEFI system table.Configu=
-ration table...
-> > > > >
-> > > > > Note: if Payload built-in default MemoryTypes table works fine fo=
-r the
-> > > > > platform, then FDT reserved-memory node does not need to provide =
-such
-> > > > 'usage' compatible strings. (optional) This FDT node could allow
-> > > > flexibility/compatibility without rebuilding Payload binary.
-> > > > >
-> > > > > Not sure if I answered all your questions, please highlight which=
- area you need
-> > > > more information.
-> > > > >
-> > > >
-> > > > The gEfiMemoryTypeInformationGuid HOB typically carries platform de=
-faults, and
-> > > > the actual memory type information is kept in a non-volatile EFI va=
-riable, which
-> > > > gets updated when the memory usage changes. Is this different for
-> > > > UefiPayloadPkg?
-> > > >
-> > > > (For those among the cc'ees less versed in EFI/EDK2: when you get t=
-he 'config
-> > > > changed -rebooting' message from the boot firmware, it typically me=
-ans that this
-> > > > memory type table has changed, and a reboot is necessary.)
-> > > >
-> > > > So the platform init needs to read this variable, or get the inform=
-ation in a
-> > > > different way. I assume it is the payload, not the platform init th=
-at updates the
-> > > > variable when necessary. This means the information flows from payl=
-oad(n) to
-> > > > platform init(n+1), where n is a monotonic index tracking consecuti=
-ve boots of the
-> > > > system.
-> > > >
-> > > > Can you explain how the DT fits into this? How are the runtime-code=
- and
-> > > > runtime-data memory reservation nodes under /reserved-memory used t=
-o
-> > > > implement this information exchange between platform init and paylo=
-ad? And
-> > > > how do the HOB and the EFI variable fit into this picture?
-> > >
-> > >
-> > > 1. With some offline discussion, we would move gEfiMemoryTypeInformat=
-ionGuid usage to FDT->upl-custom node. This is because it is edk2 implement=
-ation choice and non-edk2 PlatformInit or Payload may not have such memory =
-optimization implementation. (not a generic usage/requirement for PlatformI=
-nit and Payload)
-> > >
-> > > The edk2 example flow will be like below:
-> > >
-> > > PlatformInit to GetVariable of gEfiMemoryTypeInformationGuid and crea=
-te Hob->
-> > >   PlatformInit to initialize FDT->upl-custom node to report gEfiMemor=
-yTypeInformationGuid HOB information ->
-> > >     UefiPayload entry to re-create gEfiMemoryTypeInformationGuid HOB =
-basing on FDT input (instead of the default MemoryType inside UefiPayload) =
-->
-> > >       UefiPayload DxeMain/Gcd will consume gEfiMemoryTypeInformationG=
-uid Hob for memory type information ->
-> > >         UefiPayload to initialize UEFI environment (mainly DXE dispat=
-cher) ->
-> > >           (additional FV binary appended to common UefiPayload binary=
-) PlatformPayload to provide VariableService which is platform specific ->
-> > >             UefiPayload UefiBootManager will SetVariable if memory ty=
-pe change needed and request a warm reset ->
-> > >               Back to PlatformInit ...
-> > >
-> >
-> > OK so the upl-custom node can do whatever it needs to. I imagine these
-> > will include the memory descriptor attribute field, and other parts
-> > that may be missing from the /reserved-memory DT node specification?
-
-From my side, ideally this will be empty, but it may be needed to make
-things work.
-
-> >
-> > >
-> > > 2. Now the proposed reserved-memory node usages will be for PlatformI=
-nit to provide data which may be used by Payload or OS. This is not edk2 sp=
-ecific and any PlatformInit/Payload could have same support.
-> > > Note: all of below are optional and PlatformInit may choose to implem=
-ent some of them or not.
-> > >
-> > >       - acpi
-> > > If PlatformInit created some ACPI tables, this will report a memory r=
-egion which contains all the tables to Payload and Payload may base on this=
- to add some more tables if required.
-> > >
-> > >       - acpi-nvs
-> > > If PlatformInit has created some ACPI tables which having ACPI NVS me=
-mory dependency, this will be that nvs region.
-> > >
-> >
-> > These make sense.
-> >
-> > >       - boot-code
-> > > When PlatformInit having some FW boot phase code that could be freed =
-for OS to use when payload transferring control to UEFI OS
-> > >
-> > >       - boot-data
-> > > When PlatformInit having some FW boot phase data that could be freed =
-for OS to use when payload transferring control to UEFI OS.
-> > >
-> > >       - runtime-code
-> > > PlatformInit may provide some services code that can be used for Payl=
-oad to initialize UEFI Runtime Services for supporting UEFI OS.
-> > >
-> > >       - runtime-data
-> > > PlatformInit may provide some services data that can be used for Payl=
-oad to Initialize UEFI Runtime Services for supporting UEFI OS.
-> > >
+> [    3.717936] No Local Variables are initialized for Method [_GHL]
 >
-> I'll say it again. "boot" and "runtime" on their own could mean about
-> anything, but the usage here is clearly tied to UEFI (or the EDK2
-> implementation) and its meaning of boot and runtime. So the naming
-> needs to reflect that.
+> [    3.717938] No Arguments are initialized for method [_GHL]
 >
+> [    3.717940] ACPI Error: Aborting method \_SB.PMI0._GHL due to previou=
+s error (AE_NOT_EXIST) (20230628/psparse-529)
+> [    3.717949] ACPI Error: Aborting method \_SB.PMI0._PMC due to previou=
+s error (AE_NOT_EXIST) (20230628/psparse-529)
+> [    3.717957] ACPI: \_SB_.PMI0: _PMC evaluation failed: AE_NOT_EXIST
+>
+> On Dell systems several methods of acpi_power_meter access variables in
+> IPMI region [0], so wait until IPMI space handler is installed by
+> acpi_ipmi and also wait until SMI is selected to make the space handler
+> fully functional.
 
-Chasel has made a suggestion.
+Hi,
+
+could it be that the ACPI firmware expects us to support the ACPI SPMI tab=
+le?
+The ACPI SPMI table contains a description of the IPMI interface used by t=
+he platform,
+and its purpose seems to be similar to the ACPI ECDT table in that it allo=
+ws the OS
+to access IPMI resources before all ACPI namespaces are enumerated.
+
+Adding support for this table would solve this problem without stalling th=
+e boot
+process by waiting for the ACPI IPMI device to probe. It would also avoid =
+any issues
+should the ACPI IPMI device be removed later.
+
+Armin Wolf
 
 >
-> > A UEFI OS must consume this information from the UEFI memory map, not
-> > from the /reserved-memory nodes. So these nodes must either not be
-> > visible to the OS at all, or carry an annotation that the OS must
-> > ignore them.
+> [0] https://www.dell.com/support/manuals/en-us/redhat-enterprise-linux-v=
+8.0/rhel8_rn_pub/advanced-configuration-and-power-interface-acpi-error-mes=
+sages-displayed-in-dmesg?guid=3Dguid-0d5ae482-1977-42cf-b417-3ed5c3f5ee62
 >
-> The kernel will process /reserved-memory for UEFI boot, so the
-> expectation is anything in the EFI memory map is not present there. An
-> annotation to ignore some nodes would require going back in time or
-> accepting 2 sources of truth on existing OS.
-
-The DT spec says:
-
->>>>>
-3.5.4 /reserved-memory and UEFI
-When booting via [UEFI], static /reserved-memory regions must also be
-listed in the system memory map obtained
-via the GetMemoryMap() UEFI boot time service as defined in [UEFI] =C2=A7
-7.2. The reserved memory regions need to be
-included in the UEFI memory map to protect against allocations by UEFI
-applications.
-<<<<<
-
-To my reading, that means that the requirement is that the
-/reserved-memory regions must be returned from the GetMemoryMap() call
-too. I don't see it saying that the reserved-memory regions must be
-empty, though.
-
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> ---
+> v2:
+>   - Use completion instead of request_module().
 >
-> > Would it be possible to include a restriction in the DT schema that
-> > these are only valid in the firmware boot phase?
+>   drivers/acpi/acpi_ipmi.c         | 13 ++++++++++++-
+>   drivers/hwmon/acpi_power_meter.c |  4 ++++
+>   include/acpi/acpi_bus.h          |  4 ++++
+>   3 files changed, 20 insertions(+), 1 deletion(-)
 >
-> The only way ATM is including a schema or not when running validation
-> on a DT for a particular boot phase. Include the schema in the project
-> that wants to use these nodes and don't include it in cases that don't
-> use it. I don't see a reason why this needs to be in dtschema.
-
-We would like to use a single schema, which is dtschema. UPL
-validation will eventually check this, so it needs to be correct.
-
-Regards,
-Simon
+> diff --git a/drivers/acpi/acpi_ipmi.c b/drivers/acpi/acpi_ipmi.c
+> index 0555f68c2dfd..2ea8b7e6cebf 100644
+> --- a/drivers/acpi/acpi_ipmi.c
+> +++ b/drivers/acpi/acpi_ipmi.c
+> @@ -23,6 +23,8 @@ MODULE_LICENSE("GPL");
+>   #define IPMI_TIMEOUT			(5000)
+>   #define ACPI_IPMI_MAX_MSG_LENGTH	64
+>
+> +static struct completion smi_selected;
+> +
+>   struct acpi_ipmi_device {
+>   	/* the device list attached to driver_data.ipmi_devices */
+>   	struct list_head head;
+> @@ -463,8 +465,10 @@ static void ipmi_register_bmc(int iface, struct dev=
+ice *dev)
+>   		if (temp->handle =3D=3D handle)
+>   			goto err_lock;
+>   	}
+> -	if (!driver_data.selected_smi)
+> +	if (!driver_data.selected_smi) {
+>   		driver_data.selected_smi =3D ipmi_device;
+> +		complete(&smi_selected);
+> +	}
+>   	list_add_tail(&ipmi_device->head, &driver_data.ipmi_devices);
+>   	mutex_unlock(&driver_data.ipmi_lock);
+>
+> @@ -578,10 +582,17 @@ acpi_ipmi_space_handler(u32 function, acpi_physica=
+l_address address,
+>   	return status;
+>   }
+>
+> +void wait_for_acpi_ipmi(void)
+> +{
+> +	wait_for_completion_interruptible_timeout(&smi_selected, 2 * HZ);
+> +}
+> +EXPORT_SYMBOL_GPL(wait_for_acpi_ipmi);
+> +
+>   static int __init acpi_ipmi_init(void)
+>   {
+>   	int result;
+>   	acpi_status status;
+> +	init_completion(&smi_selected);
+>
+>   	if (acpi_disabled)
+>   		return 0;
+> diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power=
+_meter.c
+> index 703666b95bf4..acaf1ae68dc8 100644
+> --- a/drivers/hwmon/acpi_power_meter.c
+> +++ b/drivers/hwmon/acpi_power_meter.c
+> @@ -883,6 +883,10 @@ static int acpi_power_meter_add(struct acpi_device =
+*device)
+>   	strcpy(acpi_device_class(device), ACPI_POWER_METER_CLASS);
+>   	device->driver_data =3D resource;
+>
+> +	if (dmi_match(DMI_SYS_VENDOR, "Dell Inc.") &&
+> +	    acpi_dev_get_first_match_dev("IPI0001", NULL, -1))
+> +		wait_for_acpi_ipmi();
+> +
+>   	res =3D read_capabilities(resource);
+>   	if (res)
+>   		goto exit_free;
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index 1216d72c650f..ed59fb89721e 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -655,6 +655,7 @@ bool acpi_device_override_status(struct acpi_device =
+*adev, unsigned long long *s
+>   bool acpi_quirk_skip_acpi_ac_and_battery(void);
+>   int acpi_install_cmos_rtc_space_handler(acpi_handle handle);
+>   void acpi_remove_cmos_rtc_space_handler(acpi_handle handle);
+> +void wait_for_acpi_ipmi(void);
+>   #else
+>   static inline bool acpi_device_override_status(struct acpi_device *ade=
+v,
+>   					       unsigned long long *status)
+> @@ -672,6 +673,9 @@ static inline int acpi_install_cmos_rtc_space_handle=
+r(acpi_handle handle)
+>   static inline void acpi_remove_cmos_rtc_space_handler(acpi_handle hand=
+le)
+>   {
+>   }
+> +static inline void wait_for_acpi_ipmi(void)
+> +{
+> +}
+>   #endif
+>
+>   #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
 
