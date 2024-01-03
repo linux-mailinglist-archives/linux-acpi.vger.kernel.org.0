@@ -1,120 +1,247 @@
-Return-Path: <linux-acpi+bounces-2689-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2690-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BF1C822F1E
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 15:04:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 073B5823075
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 16:22:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D31D1F23A4C
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 14:04:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5F8528464E
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 15:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693ED19BCA;
-	Wed,  3 Jan 2024 14:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70CB1A731;
+	Wed,  3 Jan 2024 15:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S+Z4RH/e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTCVvdqZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155301A584
-	for <linux-acpi@vger.kernel.org>; Wed,  3 Jan 2024 14:04:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4259e075f73so7544491cf.1
-        for <linux-acpi@vger.kernel.org>; Wed, 03 Jan 2024 06:04:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704290641; x=1704895441; darn=vger.kernel.org;
-        h=mime-version:user-agent:message-id:date:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=am2HhNaBSuyUY7cDdseofLICnLKWP0etynAL2oIyWMM=;
-        b=S+Z4RH/eS5N1QXj+56ycpYDsq2TQxuuBHwVqMgHSl5lmIt79+O6KpE+DNvtYV5GOKs
-         5IvdcOK13TONEelW43PpD1KCPbC4hqDW9pm3J2rV1GAgUiIc6Ccu0VPAxluUK7/3jqZy
-         yOw3wUx7uMdfp8em/I572poxSVaxek5ygOi6xzWl4/i0bCCVyrHdZCM9V1Yl6/ascfOj
-         CzgWJoSm5gkO6Yy/t5tZjLgCsHBmI0YQHFa0TSfDO02JXBtuXyFWFdpWSUCujhHZJLfS
-         3UpZ13j24QdaQi1FetbGX3SWKssrd8wv4YTW+IR6LVS22rh9S2tIM4try9wkFoiPXCki
-         kdeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704290641; x=1704895441;
-        h=mime-version:user-agent:message-id:date:references:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=am2HhNaBSuyUY7cDdseofLICnLKWP0etynAL2oIyWMM=;
-        b=ulvoF4NJesP/ZF8uL8SHa+rbXMTw+IXiQzchktD9jLbZ9OssSJBh765eZcgHhW5L9h
-         0IFqx01Z4X17iwBc+3Bdn4XQLUL2p20LHcO91BKUYCkwTEkFL7DG16pcAB/x/8iaL2Sv
-         /adahOk5QIR8TtcGiTN5su6KKXJmX5hGR3hj5xwLhlwnJSLjbfYKcBcC0eOh6crMe+/H
-         khIAMZSqs+ilU0NAl/dxLiJZ55OMcZWF54qTkyPxE2l51fpEkKy5N2TFVxRIV+66g2yG
-         YbQ03icoKujfgZwQYT6Q4+0oHlrvnM28KcUr3zrqNlp4cubXtVzwKXAcu/vouCjkBj5v
-         GF4Q==
-X-Gm-Message-State: AOJu0YwtUL0mFliDCP/j8JCHdUjiYGQ9ZxNCF9XuAI9y7s77N8WyURHK
-	rkQVjNvggLGaVOMV74e6Mew=
-X-Google-Smtp-Source: AGHT+IGCccxJDs97PskujUMZAQ9fTjSC0JDbVxBf+aUBESpbIosIjFaBdG9rtLTstscWgkUkJ3mc2w==
-X-Received: by 2002:a05:620a:1926:b0:77d:9ac0:61dd with SMTP id bj38-20020a05620a192600b0077d9ac061ddmr42448778qkb.2.1704290640876;
-        Wed, 03 Jan 2024 06:04:00 -0800 (PST)
-Received: from davidm-laptop (hlfxns018gw-134-41-185-34.dhcp-dynamic.fibreop.ns.bellaliant.net. [134.41.185.34])
-        by smtp.gmail.com with ESMTPSA id t15-20020a05620a450f00b0077d78c5b575sm10120613qkp.111.2024.01.03.06.04.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jan 2024 06:04:00 -0800 (PST)
-From: David McFarland <corngood@gmail.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: linux-acpi@vger.kernel.org,  Hans de Goede <hdegoede@redhat.com>,  Mario
- Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v2] ACPI: resource: Force irq1 edge low override on Infinity
- laptops
-In-Reply-To: <CAJZ5v0jab+jao4=7r1LOJhNn2Pq2fc_nQ1KS02_=9Z30Eyww9A@mail.gmail.com>
- (Rafael
-	J. Wysocki's message of "Wed, 3 Jan 2024 14:47:43 +0100")
-References: <20231230150916.1843117-1-corngood@gmail.com>
-	<CAJZ5v0jab+jao4=7r1LOJhNn2Pq2fc_nQ1KS02_=9Z30Eyww9A@mail.gmail.com>
-Date: Wed, 03 Jan 2024 10:03:59 -0400
-Message-ID: <87il4a4ipc.fsf_-_@gmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C521A726;
+	Wed,  3 Jan 2024 15:22:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBF8C433C7;
+	Wed,  3 Jan 2024 15:22:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704295347;
+	bh=PSULNPafTiN5YA/zznHKljEYILe0lgiiOYnPvIBLCtU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=HTCVvdqZyxiXxnTanJVRMJKPFRpS9n90G2HKitP4aY/wBhmMUdJ53AsIa/Gyl/4Jz
+	 pLkz9apw4Rim6otI0sGhlUTS2iqiCWEa3hp739v+hUiMUAxOtvb33hj666Vi5bZvuJ
+	 fvzcGHlQMBAt1WqUkYrIWo8lfzxiLZ+8u19gY1e1W5JsS1XnH0xTngSdeOTujLwcKz
+	 VpAZNDzQG9AYcV+R6bZfBgwTehETca+wsNrozRuYNycZOxUS8ftq55ZRjIPN+t6yL+
+	 uuvihs48iNhQJaz1R9ps25naygJYNwSJTmPHLEZ05ePe1M3Kwgn1TzVDNt8unNxKHl
+	 Rh7pRU/LdxtMQ==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-50e7dd8bce8so7814459e87.1;
+        Wed, 03 Jan 2024 07:22:27 -0800 (PST)
+X-Gm-Message-State: AOJu0YzUi1J9e6raYk8qBu25AWdTjQj8yNYExQILFg09ecR+HPc3e6hu
+	wjf2zNutkE5Mx1h6kjXQYENWDt4R1Tk05unG83Q=
+X-Google-Smtp-Source: AGHT+IGFcFYO2J618BYFfSaaCdih8PzDV/WsOJ6Eg0j1h8wQdMvLsG1eT5V9WrmOXvxhn44h3RXmYuOstjkzgkiucVI=
+X-Received: by 2002:a05:6512:12cd:b0:50e:a08d:172 with SMTP id
+ p13-20020a05651212cd00b0050ea08d0172mr1429415lfg.85.1704295345418; Wed, 03
+ Jan 2024 07:22:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
+ <BN9PR11MB5483FF3039913334C7EA83E1E6AEA@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAMj1kXFG92NpL7T7YocOup0xLKyopt3MnSCp0RL8cLzozzJz7A@mail.gmail.com>
+ <BN9PR11MB548303B09536EB1577472029E6B3A@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAPnjgZ36t8g7E=0MSJyaV8-QKv9RVYe47Jd5E=NU-mFM4LWBQA@mail.gmail.com>
+ <CAMj1kXHAEeK7x2f13k_JV3Xcw61nNLasyvXQf+mKwKekQ48EpQ@mail.gmail.com>
+ <BN9PR11MB548334E0DA6495C438FBFDE1E6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <BN9PR11MB548314DDE8D4C9503103D51CE6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAMj1kXHbM+ArLgNZgnmiok4gOfv6QLYxzyB9OCwfhEkJ2xGK_g@mail.gmail.com>
+ <BN9PR11MB5483C2FBCD07DE61DCCDB523E6BCA@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAMj1kXHmu=ykgBMRiFqG4_ra3FJtHa=GASoMUJswdMFa9v4Xgw@mail.gmail.com>
+ <BN9PR11MB54837EEB391CC2A8FA6C0BF5E695A@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAMj1kXEQL9n1Adedow5KEyZ5gdFQY3Fn+Fz8vSK3mHib_vDFig@mail.gmail.com> <BN9PR11MB5483E191F1906641565A1337E694A@BN9PR11MB5483.namprd11.prod.outlook.com>
+In-Reply-To: <BN9PR11MB5483E191F1906641565A1337E694A@BN9PR11MB5483.namprd11.prod.outlook.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 3 Jan 2024 16:22:14 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGcZP99hyURXFAZfwKmYqj-xBN9BcW7R3h9Mm2k937Buw@mail.gmail.com>
+Message-ID: <CAMj1kXGcZP99hyURXFAZfwKmYqj-xBN9BcW7R3h9Mm2k937Buw@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
+To: "Chiu, Chasel" <chasel.chiu@intel.com>
+Cc: Simon Glass <sjg@chromium.org>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rob Herring <robh@kernel.org>, "Tan, Lean Sheng" <sheng.tan@9elements.com>, 
+	lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, 
+	"Brune, Maximilian" <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
+	"Dong, Guo" <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, 
+	ron minnich <rminnich@gmail.com>, "Guo, Gua" <gua.guo@intel.com>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, U-Boot Mailing List <u-boot@lists.denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-A user reported a keyboard problem similar to ones reported with other
-Zen laptops, on an Infinity E15-5A165-BM.
+On Fri, 22 Dec 2023 at 20:52, Chiu, Chasel <chasel.chiu@intel.com> wrote:
+>
+>
+> Please see my reply below inline.
+>
+> Thanks,
+> Chasel
+>
+...
+> > > > The gEfiMemoryTypeInformationGuid HOB typically carries platform
+> > > > defaults, and the actual memory type information is kept in a
+> > > > non-volatile EFI variable, which gets updated when the memory usage
+> > > > changes. Is this different for UefiPayloadPkg?
+> > > >
+> > > > (For those among the cc'ees less versed in EFI/EDK2: when you get
+> > > > the 'config changed -rebooting' message from the boot firmware, it
+> > > > typically means that this memory type table has changed, and a
+> > > > reboot is necessary.)
+> > > >
+> > > > So the platform init needs to read this variable, or get the
+> > > > information in a different way. I assume it is the payload, not the
+> > > > platform init that updates the variable when necessary. This means
+> > > > the information flows from payload(n) to platform init(n+1), where =
+n
+> > > > is a monotonic index tracking consecutive boots of the system.
+> > > >
+> > > > Can you explain how the DT fits into this? How are the runtime-code
+> > > > and runtime-data memory reservation nodes under /reserved-memory
+> > > > used to implement this information exchange between platform init
+> > > > and payload? And how do the HOB and the EFI variable fit into this =
+picture?
+> > >
+> > >
+> > > 1. With some offline discussion, we would move
+> > > gEfiMemoryTypeInformationGuid usage to FDT->upl-custom node. This is
+> > > because it is edk2 implementation choice and non-edk2 PlatformInit or
+> > > Payload may not have such memory optimization implementation. (not a
+> > > generic usage/requirement for PlatformInit and Payload)
+> > >
+> > > The edk2 example flow will be like below:
+> > >
+> > > PlatformInit to GetVariable of gEfiMemoryTypeInformationGuid and crea=
+te Hob-
+> > >
+> > >   PlatformInit to initialize FDT->upl-custom node to report
+> > gEfiMemoryTypeInformationGuid HOB information ->
+> > >     UefiPayload entry to re-create gEfiMemoryTypeInformationGuid HOB =
+basing
+> > on FDT input (instead of the default MemoryType inside UefiPayload) ->
+> > >       UefiPayload DxeMain/Gcd will consume gEfiMemoryTypeInformationG=
+uid
+> > Hob for memory type information ->
+> > >         UefiPayload to initialize UEFI environment (mainly DXE dispat=
+cher) ->
+> > >           (additional FV binary appended to common UefiPayload binary=
+)
+> > PlatformPayload to provide VariableService which is platform specific -=
+>
+> > >             UefiPayload UefiBootManager will SetVariable if memory ty=
+pe change
+> > needed and request a warm reset ->
+> > >               Back to PlatformInit ...
+> > >
+> >
+> > OK so the upl-custom node can do whatever it needs to. I imagine these =
+will
+> > include the memory descriptor attribute field, and other parts that may=
+ be missing
+> > from the /reserved-memory DT node specification?
+>
+>
+> Yes, if needed by edk2 specific implementation, not generic enough, we ma=
+y consider to use upl-custom node to pass those data.
+>
+>
+> >
+> > >
+> > > 2. Now the proposed reserved-memory node usages will be for PlatformI=
+nit to
+> > provide data which may be used by Payload or OS. This is not edk2 speci=
+fic and
+> > any PlatformInit/Payload could have same support.
+> > > Note: all of below are optional and PlatformInit may choose to implem=
+ent some
+> > of them or not.
+> > >
+> > >       - acpi
+> > > If PlatformInit created some ACPI tables, this will report a memory r=
+egion which
+> > contains all the tables to Payload and Payload may base on this to add =
+some more
+> > tables if required.
+> > >
+> > >       - acpi-nvs
+> > > If PlatformInit has created some ACPI tables which having ACPI NVS me=
+mory
+> > dependency, this will be that nvs region.
+> > >
+> >
+> > These make sense.
+> >
+> > >       - boot-code
+> > > When PlatformInit having some FW boot phase code that could be freed
+> > > for OS to use when payload transferring control to UEFI OS
+> > >
+> > >       - boot-data
+> > > When PlatformInit having some FW boot phase data that could be freed =
+for OS
+> > to use when payload transferring control to UEFI OS.
+> > >
+> > >       - runtime-code
+> > > PlatformInit may provide some services code that can be used for Payl=
+oad to
+> > initialize UEFI Runtime Services for supporting UEFI OS.
+> > >
+> > >       - runtime-data
+> > > PlatformInit may provide some services data that can be used for Payl=
+oad to
+> > Initialize UEFI Runtime Services for supporting UEFI OS.
+> > >
+> >
+> > A UEFI OS must consume this information from the UEFI memory map, not f=
+rom
+> > the /reserved-memory nodes. So these nodes must either not be visible t=
+o the OS
+> > at all, or carry an annotation that the OS must ignore them.
+> >
+> > Would it be possible to include a restriction in the DT schema that the=
+se are only
+> > valid in the firmware boot phase?
+>
+>
+> https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#efi-boot-=
+services-exitbootservices
+> Per UEFI specification, UEFI OS will always call UEFI GetMemoryMap functi=
+on to retrieve memory map, so FDT node present or not does not matter to UE=
+FI OS. We probably could have annotation in UPL specification to emphasize =
+this.
+> I'm not familiar with Linux FDT boot, but if non-UEFI OS does not call UE=
+FI GetMemoryMap() and does not know what is runtime-code/data, boot-code/da=
+ta, it might just treat such reserved-memory nodes as 'regular' reserved me=
+mory nodes, and that's still ok because non-UEFI OS will not call to any ru=
+ntime service or re-purpose boot-code/data memory regions.
+>
 
-Add board name matches for this model and one (untested) close relative
-to tonfang_gm_rg, due to the board names' similarity to GMxRGxx.
+You are saying the same thing but in a different way. A UEFI OS must
+only rely on GetMemoryMap(), and not on the /reserved-memory node to
+obtain this information. But this requirement needs to be stated
+somewhere: the UEFI spec does not reason about other sources of EFI
+memory information at all, and this DT schema does not mention any of
+this either.
 
-Link: https://lemmy.ml/post/9864736
-Link: https://www.infinitygaming.com.au/bios/
-Link: https://lore.kernel.org/linux-acpi/20231006123304.32686-1-hdegoede@redhat.com
----
- drivers/acpi/resource.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+> Would you provide a real OS case which will be impacted by this reserved-=
+memory schema so we can discuss basing on real case?
+>
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 297a88587031..6b64ea4e9c80 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -484,6 +484,18 @@ static const struct dmi_system_id tongfang_gm_rg[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
- 		},
- 	},
-+	{
-+		/* Infinity E15-5A165-BM */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GM5RG1E0009COM"),
-+		},
-+	},
-+	{
-+		/* Infinity E15-5A305-1M */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GM5RGEE0016COM"),
-+		},
-+	},
- 	{ }
- };
- 
--- 
-2.40.1
+Funny, that is what I have been trying to get from you :-)
 
+The problem I am anticipating here is that the information in
+/reserved-memory may be out of sync with the EFI memory map. It needs
+to be made clear that the EFI memory map is the only source of truth
+when the OS is involved, and this /reserved-memory mechanism should
+only be used by other firmware stages. But the schema does not mention
+this at all. The schema also does not mention that the information in
+/reserved-memory is not actually sufficient to reconstruct the EFI
+memory map that the firmware payload expects (which is why the
+upl-custom-node exists too)
 
