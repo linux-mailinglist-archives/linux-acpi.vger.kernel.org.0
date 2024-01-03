@@ -1,146 +1,112 @@
-Return-Path: <linux-acpi+bounces-2687-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2688-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD406822ED0
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 14:44:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7123822EE2
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 14:48:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E10C01C234C7
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 13:44:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E16A91C21756
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 13:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE10199B4;
-	Wed,  3 Jan 2024 13:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E557119BAF;
+	Wed,  3 Jan 2024 13:47:56 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB9D1A5A9;
-	Wed,  3 Jan 2024 13:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3451A581
+	for <linux-acpi@vger.kernel.org>; Wed,  3 Jan 2024 13:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-594cabe74f8so371544eaf.0;
-        Wed, 03 Jan 2024 05:43:29 -0800 (PST)
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-594363b4783so294165eaf.1
+        for <linux-acpi@vger.kernel.org>; Wed, 03 Jan 2024 05:47:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704289408; x=1704894208;
+        d=1e100.net; s=20230601; t=1704289675; x=1704894475;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iyL0U7ReWWKWObMLjmNTrzqgyVE7GbO/GB0G3IW1n/Q=;
-        b=JVlYE9RdZwnNlU6muVlj/fg8fzRU3rlNGf/SdjhULQL+uuSXlqVgtBawRd8AY3LJze
-         49Ezc2uucoOJS3uzgMFjzqp0oilxl4JdnrEDP+Llp7EhEk6bODwBacn2lbTXpEVRLuUn
-         QIyRfEV8sN7/8QoEMY1n0IFVugKRZKhEJPBWgeO9MUonZAspkwaMbdmS+tc8JcDkbjO3
-         fT9YCoaeAP4sIEqCwonWT2q/NucLv2E3mWQF8XnZwJKcADpvNQGeQqb5AFTa80zHB4DN
-         6HqiMQs6hS/2MLn8KQConcoRKFbTWVB6+8Gnz/DcOrwKJL/2AzkPcx95QMwYQCQv+LpV
-         4WyQ==
-X-Gm-Message-State: AOJu0YwON7gqXLaKYgJq98Vh/oAdOtYjtx055MBUQO80wl2ehHQRIY1R
-	Zd99VSFTFFyxz8W77YuNKxgrrUDkj05uJkiRi2o=
-X-Google-Smtp-Source: AGHT+IEC6R6yy8QXkJ17hVm3ZlKs1VGTCfBHtP3fTfVqTVdvlug5pCsjHyh8OxZs1lUlkEBTccNYVshItdhlTm9euqM=
-X-Received: by 2002:a4a:dc96:0:b0:594:ad62:bab9 with SMTP id
- g22-20020a4adc96000000b00594ad62bab9mr20085697oou.1.1704289408312; Wed, 03
- Jan 2024 05:43:28 -0800 (PST)
+        bh=hsoOPSl62cwg1yP827bfdd1JcnLDwtSBoRDxrgJaISM=;
+        b=Aao8fjX4dY6MfmONoR3dUUwcAuJ7gp2XawZApXtTDEvC9Zo4D1/EBI7BhixfUyWF1O
+         I0zBCpx3i5BwMtkxpEnjoU+fxYwy8Y3ZIE/lQJw9DID+Ll/nxXdRkl9pj5gj5BT5TBhw
+         Ockx2XHnVs0qH7Z/uCTacGRnpCcuKX1LaoxDzN67nrWlm2ugzKxLlxUPkHtFS2F43/QZ
+         LbbnO0p4uS6TAC+Q8lGzG+SuMIaj8qvtXidn1QWLss3vvoxGwNubcSInNqCkRtBquyWE
+         KrOwgcadKm989N8d1omMdoPOs7Grm3RtZnH6yDr8Ag8WbqhTzqb4Z7/gUyHkulJFqECj
+         pG6A==
+X-Gm-Message-State: AOJu0YxR60ru7GVcxn3TeZPRMG8I+sAvJTV3vKnygBMv23fSKk8d/nUL
+	b9Lip389NTrmtIDYeM27NTc3bZUp+5tL8YntCHaDu2Ye
+X-Google-Smtp-Source: AGHT+IFmvrTBSOfe1CYUm6ish2j0WM58M8IQ8QGbNoZLZJES8slVqKcDQukwNURS7PZyaIUDusnmhNC0MyqyFBxXS+M=
+X-Received: by 2002:a05:6820:2e01:b0:594:35b4:8a with SMTP id
+ ec1-20020a0568202e0100b0059435b4008amr26284841oob.0.1704289674822; Wed, 03
+ Jan 2024 05:47:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230905104721.52199-1-lpieralisi@kernel.org> <20231227110038.55453-1-lpieralisi@kernel.org>
-In-Reply-To: <20231227110038.55453-1-lpieralisi@kernel.org>
+References: <20231230150916.1843117-1-corngood@gmail.com>
+In-Reply-To: <20231230150916.1843117-1-corngood@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 3 Jan 2024 14:43:16 +0100
-Message-ID: <CAJZ5v0gUBU=VL8E34sjROssoGNbLnhmUQVHGWT60hgBG_ufTHw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] irqchip/gic-v3: Enable non-coherent GIC designs probing
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	Mark Rutland <mark.rutland@arm.com>, Robin Murphy <robin.murphy@arm.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Fang Xiang <fangxiang3@xiaomi.com>, Marc Zyngier <maz@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>
+Date: Wed, 3 Jan 2024 14:47:43 +0100
+Message-ID: <CAJZ5v0jab+jao4=7r1LOJhNn2Pq2fc_nQ1KS02_=9Z30Eyww9A@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: Force irq1 edge low override on Infinity laptops
+To: David McFarland <corngood@gmail.com>
+Cc: linux-acpi@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>, 
+	Mario Limonciello <mario.limonciello@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 27, 2023 at 12:00=E2=80=AFPM Lorenzo Pieralisi
-<lpieralisi@kernel.org> wrote:
+Cc Hans and Mario.
+
+On Sat, Dec 30, 2023 at 4:09=E2=80=AFPM David McFarland <corngood@gmail.com=
+> wrote:
 >
-> This series is v4 of previous series:
+> A user reported a keyboard problem similar to ones reported with other
+> Zen laptops, on an Infinity E15-5A165-BM.
 >
-> v3: https://lore.kernel.org/all/20231006125929.48591-1-lpieralisi@kernel.=
-org
-> v2: https://lore.kernel.org/all/20230906094139.16032-1-lpieralisi@kernel.=
-org
-> v1: https://lore.kernel.org/all/20230905104721.52199-1-lpieralisi@kernel.=
-org
+> Add board name matches for this model and one (untested) close relative
+> to tonfang_gm_rg, due to the board names' similarity to GMxRGxx.
 >
-> v3 -> v4:
->         - Dropped patches [1-3], already merged
->         - Added Linuxized ACPICA changes accepted upstream
->         - Rebased against v6.7-rc3
->
-> v2 -> v3:
->         - Added ACPICA temporary changes and ACPI changes to implement
->           ECR https://bugzilla.tianocore.org/show_bug.cgi?id=3D4557
->         - ACPI changes are for testing purposes - subject to ECR code
->           first approval
->
-> v1 -> v2:
->         - Updated DT bindings as per feedback
->         - Updated patch[2] to use GIC quirks infrastructure
->
-> Original cover letter
+> Link: https://lemmy.ml/post/9864736
+> Link: https://www.infinitygaming.com.au/bios/
+> Link: https://lore.kernel.org/linux-acpi/20231006123304.32686-1-hdegoede@=
+redhat.com
 > ---
-> The GICv3 architecture specifications provide a means for the
-> system programmer to set the shareability and cacheability
-> attributes the GIC components (redistributors and ITSes) use
-> to drive memory transactions.
+>  drivers/acpi/resource.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 >
-> Albeit the architecture give control over shareability/cacheability
-> memory transactions attributes (and barriers), it is allowed to
-> connect the GIC interconnect ports to non-coherent memory ports
-> on the interconnect, basically tying off shareability/cacheability
-> "wires" and de-facto making the redistributors and ITSes non-coherent
-> memory observers.
->
-> This series aims at starting a discussion over a possible solution
-> to this problem, by adding to the GIC device tree bindings the
-> standard dma-noncoherent property. The GIC driver uses the property
-> to force the redistributors and ITSes shareability attributes to
-> non-shareable, which consequently forces the driver to use CMOs
-> on GIC memory tables.
->
-> On ARM DT DMA is default non-coherent, so the GIC driver can't rely
-> on the generic DT dma-coherent/non-coherent property management layer
-> (of_dma_is_coherent()) which would default all GIC designs in the field
-> as non-coherent; it has to rely on ad-hoc dma-noncoherent property handli=
-ng.
->
-> When a consistent approach is agreed upon for DT an equivalent binding wi=
-ll
-> be put forward for ACPI based systems.
->
-> Lorenzo Pieralisi (3):
->   ACPICA: MADT: Add GICC online capable bit handling
->   ACPICA: MADT: Add new MADT GICC/GICR/ITS non-coherent flags handling
->   irqchip/gic-v3: Enable non-coherent redistributors/ITSes ACPI probing
->
->  drivers/acpi/processor_core.c    | 21 +++++++++++++++++++++
->  drivers/irqchip/irq-gic-common.h |  8 ++++++++
->  drivers/irqchip/irq-gic-v3-its.c |  4 ++++
->  drivers/irqchip/irq-gic-v3.c     |  9 +++++++++
->  include/acpi/actbl2.h            | 12 ++++++++++--
->  include/linux/acpi.h             |  3 +++
->  6 files changed, 55 insertions(+), 2 deletions(-)
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 297a88587031..f692604b773c 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -484,6 +484,18 @@ static const struct dmi_system_id tongfang_gm_rg[] =
+=3D {
+>                         DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
+>                 },
+>         },
+> +       {
+> +               .ident =3D "Infinity E15-5A165-BM",
+
+.ident is not needed any more.
+
+Please add a comment identifying the machine(s) instead.
+
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_BOARD_NAME, "GM5RG1E0009COM"),
+> +               },
+> +       },
+> +       {
+> +               .ident =3D "Infinity E15-5A305-1M",
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_BOARD_NAME, "GM5RGEE0016COM"),
+> +               },
+> +       },
+>         { }
+>  };
 >
 > --
-
-I can apply the first 2 patches, but I would need an ACK for the 3rd one.
-
-Alternatively, feel free to add
-
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-to the first 2 patches and route them via ARM64.
 
 Thanks!
 
