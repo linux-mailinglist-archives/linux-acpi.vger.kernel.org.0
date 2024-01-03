@@ -1,247 +1,257 @@
-Return-Path: <linux-acpi+bounces-2678-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2679-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0367D822798
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 04:36:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830978227A8
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 05:00:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6321E1F2154B
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 03:36:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ACD7283F6C
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 04:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE94B4A28;
-	Wed,  3 Jan 2024 03:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="NOe2dazo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBFC10A32;
+	Wed,  3 Jan 2024 03:59:58 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A81413AF4
-	for <linux-acpi@vger.kernel.org>; Wed,  3 Jan 2024 03:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 5CB463F5A5
-	for <linux-acpi@vger.kernel.org>; Wed,  3 Jan 2024 03:36:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1704253006;
-	bh=X10895KQ3QE6ohq+NRMU0He1xRYscfKUHEWEvSElvJg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=NOe2dazotDTAPlbjKGwiTcfDzfmqjgbkOpqk4ddXfbTuy3i5OWLIb8ai5OQ3GgF6d
-	 T7shxfwOIPotWg5m10Lm5XUpUv9Y1U2xcMX7vC15wnccO/kzVevdur6V3wj0K5ljT3
-	 0saTS+4I37zmrPJaXJW2Km9v4EJaysHudFirEBEwy3omPJ0ti2ve6+WQ+qZ7JO7nPg
-	 pYNry3ulTRZfAop/+dd17c/88j18FgbqkfGaSIHpByPRj2HXlO5xbY1qV2He+S1VWx
-	 jIadi/kPa64T55EZBbtZpmqcvPKh/Qg7UARPSXXk6MskuQeLN8SY4GNT6maKQPHGN/
-	 c9Os7Kk8vr8dg==
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-28ccb055d6eso69436a91.1
-        for <linux-acpi@vger.kernel.org>; Tue, 02 Jan 2024 19:36:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704253005; x=1704857805;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X10895KQ3QE6ohq+NRMU0He1xRYscfKUHEWEvSElvJg=;
-        b=ZDTii3GVqWmG5mZ3chgVeuXB5/UDoyzVjiWzxl0BFRGTH1a5USccQjz+fdDNcBKy1w
-         YyOKhpGL1blYOBGYuus02pfx6uc1V1E+XsynCfLzt7m4SOA0LweAlL2o6yrBoAXZB0RZ
-         3Crlat9Tu1sZpbiuaI/nWgt9w0/ODSuymZCtfNmrR0BVoisBQEIjBQ+onsqo6CAMrMIP
-         nXJmz/PqHFYn57FsSnR8YJZd8U6dbskd7rL7Olz3cos6EiaaHkVPjLxNTNKofv+kjOfA
-         dtz4hT64Vxdfp7ajRvocT98DrKEdqD9XOeoqgRHUtNENTyjDLg//5mVWOyN5UHmgtqsY
-         GcdQ==
-X-Gm-Message-State: AOJu0Yz0obevuKuUt1nJ2S4Fe1iyAQpzUgJFRh2HDi3zDxI1Ot725IgB
-	dVE71IKlW4DpvXLVnfOmCFyANgaKmrykMer/TfkuKV8BHaUhGPSJOyotoRwbuhCy2hOQ6gsE1Qd
-	uK3IfOk0DkfEKk1YYK3oOvBenmtMPT/10ioGGpxzsuNENw93EgvbEOZj0Ffc+Hg==
-X-Received: by 2002:a17:90b:4a42:b0:28c:815e:e0f0 with SMTP id lb2-20020a17090b4a4200b0028c815ee0f0mr534079pjb.37.1704253004892;
-        Tue, 02 Jan 2024 19:36:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFoYAqyj4LBWZ9v5lFAuvCXUaw6N52xAk67xXO+bjEa0tmcamKwqzJCjnZCgB6ohabHot5P6WfI9R8vQVJ6qzs=
-X-Received: by 2002:a17:90b:4a42:b0:28c:815e:e0f0 with SMTP id
- lb2-20020a17090b4a4200b0028c815ee0f0mr534065pjb.37.1704253004518; Tue, 02 Jan
- 2024 19:36:44 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63749171C4;
+	Wed,  3 Jan 2024 03:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4T4bZF3Ky2z1Q63x;
+	Wed,  3 Jan 2024 11:59:17 +0800 (CST)
+Received: from kwepemm600004.china.huawei.com (unknown [7.193.23.242])
+	by mail.maildlp.com (Postfix) with ESMTPS id 43FFE180076;
+	Wed,  3 Jan 2024 11:59:52 +0800 (CST)
+Received: from [10.67.121.59] (10.67.121.59) by kwepemm600004.china.huawei.com
+ (7.193.23.242) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 3 Jan
+ 2024 11:59:51 +0800
+Message-ID: <a0fc2111-3d8e-a87b-f2cf-49ad810b11df@huawei.com>
+Date: Wed, 3 Jan 2024 11:59:47 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231227040401.548977-1-kai.heng.feng@canonical.com> <40694180-cc87-4ae2-9929-8451d43f428d@roeck-us.net>
-In-Reply-To: <40694180-cc87-4ae2-9929-8451d43f428d@roeck-us.net>
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date: Wed, 3 Jan 2024 11:36:32 +0800
-Message-ID: <CAAd53p6scYNAohvwBJ1gSk6of2xSPLVDpjCkMZ0t2tff2Oww5w@mail.gmail.com>
-Subject: Re: [PATCH v2] hwmon: (acpi_power_meter) Ensure IPMI space handler is
- ready on Dell systems
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: jdelvare@suse.com, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	acpica-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH] cpufreq: CPPC: Resolve the large frequency discrepancy
+ from cpuinfo_cur_freq
+To: <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <rafael@kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+CC: <beata.michalska@arm.com>, <sumitg@nvidia.com>, <ionela.voinescu@arm.com>,
+	<zengheng4@huawei.com>, <yang@os.amperecomputing.com>, <will@kernel.org>,
+	<sudeep.holla@arm.com>, <liuyonglong@huawei.com>, <zhanjie9@hisilicon.com>,
+	<lihuisong@huawei.com>
+References: <20231212072617.14756-1-lihuisong@huawei.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20231212072617.14756-1-lihuisong@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
 
-On Thu, Dec 28, 2023 at 5:58=E2=80=AFAM Guenter Roeck <linux@roeck-us.net> =
-wrote:
+kindly ping for review.
+
+在 2023/12/12 15:26, Huisong Li 写道:
+> Many developers found that the cpu current frequency is greater than
+> the maximum frequency of the platform, please see [1], [2] and [3].
 >
-> On Wed, Dec 27, 2023 at 12:04:00PM +0800, Kai-Heng Feng wrote:
-> > The following error can be observed at boot:
-> > [    3.717920] ACPI Error: No handler for Region [SYSI] (00000000ab9e62=
-c5) [IPMI] (20230628/evregion-130)
-> > [    3.717928] ACPI Error: Region IPMI (ID=3D7) has no handler (2023062=
-8/exfldio-261)
-> >
-> > [    3.717936] No Local Variables are initialized for Method [_GHL]
-> >
-> > [    3.717938] No Arguments are initialized for method [_GHL]
-> >
-> > [    3.717940] ACPI Error: Aborting method \_SB.PMI0._GHL due to previo=
-us error (AE_NOT_EXIST) (20230628/psparse-529)
-> > [    3.717949] ACPI Error: Aborting method \_SB.PMI0._PMC due to previo=
-us error (AE_NOT_EXIST) (20230628/psparse-529)
-> > [    3.717957] ACPI: \_SB_.PMI0: _PMC evaluation failed: AE_NOT_EXIST
-> >
-> > On Dell systems several methods of acpi_power_meter access variables in
-> > IPMI region [0], so wait until IPMI space handler is installed by
-> > acpi_ipmi and also wait until SMI is selected to make the space handler
-> > fully functional.
-> >
-> > [0] https://www.dell.com/support/manuals/en-us/redhat-enterprise-linux-=
-v8.0/rhel8_rn_pub/advanced-configuration-and-power-interface-acpi-error-mes=
-sages-displayed-in-dmesg?guid=3Dguid-0d5ae482-1977-42cf-b417-3ed5c3f5ee62
-> >
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > ---
-> > v2:
-> >  - Use completion instead of request_module().
-> >
-> >  drivers/acpi/acpi_ipmi.c         | 13 ++++++++++++-
-> >  drivers/hwmon/acpi_power_meter.c |  4 ++++
-> >  include/acpi/acpi_bus.h          |  4 ++++
+> In the scenarios with high memory access pressure, the patch [1] has
+> proved the significant latency of cpc_read() which is used to obtain
+> delivered and reference performance counter cause an absurd frequency.
+> The sampling interval for this counters is very critical and is expected
+> to be equal. However, the different latency of cpc_read() has a direct
+> impact on their sampling interval.
 >
-> This needs to be split into two patches.
-
-Will do.
-
+> This patch adds a interface, cpc_read_arch_counters_on_cpu, to read
+> delivered and reference performance counter together. According to my
+> test[4], the discrepancy of cpu current frequency in the scenarios with
+> high memory access pressure is lower than 0.2% by stress-ng application.
 >
-> >  3 files changed, 20 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/acpi/acpi_ipmi.c b/drivers/acpi/acpi_ipmi.c
-> > index 0555f68c2dfd..2ea8b7e6cebf 100644
-> > --- a/drivers/acpi/acpi_ipmi.c
-> > +++ b/drivers/acpi/acpi_ipmi.c
-> > @@ -23,6 +23,8 @@ MODULE_LICENSE("GPL");
-> >  #define IPMI_TIMEOUT                 (5000)
-> >  #define ACPI_IPMI_MAX_MSG_LENGTH     64
-> >
-> > +static struct completion smi_selected;
-> > +
-> >  struct acpi_ipmi_device {
-> >       /* the device list attached to driver_data.ipmi_devices */
-> >       struct list_head head;
-> > @@ -463,8 +465,10 @@ static void ipmi_register_bmc(int iface, struct de=
-vice *dev)
-> >               if (temp->handle =3D=3D handle)
-> >                       goto err_lock;
-> >       }
-> > -     if (!driver_data.selected_smi)
-> > +     if (!driver_data.selected_smi) {
-> >               driver_data.selected_smi =3D ipmi_device;
-> > +             complete(&smi_selected);
-> > +     }
-> >       list_add_tail(&ipmi_device->head, &driver_data.ipmi_devices);
-> >       mutex_unlock(&driver_data.ipmi_lock);
-> >
-> > @@ -578,10 +582,17 @@ acpi_ipmi_space_handler(u32 function, acpi_physic=
-al_address address,
-> >       return status;
-> >  }
-> >
-> > +void wait_for_acpi_ipmi(void)
-> > +{
-> > +     wait_for_completion_interruptible_timeout(&smi_selected, 2 * HZ);
+> [1] https://lore.kernel.org/all/20231025093847.3740104-4-zengheng4@huawei.com/
+> [2] https://lore.kernel.org/all/20230328193846.8757-1-yang@os.amperecomputing.com/
+> [3] https://lore.kernel.org/all/20230418113459.12860-7-sumitg@nvidia.com/
 >
-> wait_for_completion_interruptible_timeout) returns an error code which
-> should be returned to the caller.
-
-Will do in next revision.
-
+> [4] My local test:
+> The testing platform enable SMT and include 128 logical CPU in total,
+> and CPU base frequency is 2.7GHz. Reading "cpuinfo_cur_freq" for each
+> physical core on platform during the high memory access pressure from
+> stress-ng, and the output is as follows:
+>    0: 2699133     2: 2699942     4: 2698189     6: 2704347
+>    8: 2704009    10: 2696277    12: 2702016    14: 2701388
+>   16: 2700358    18: 2696741    20: 2700091    22: 2700122
+>   24: 2701713    26: 2702025    28: 2699816    30: 2700121
+>   32: 2700000    34: 2699788    36: 2698884    38: 2699109
+>   40: 2704494    42: 2698350    44: 2699997    46: 2701023
+>   48: 2703448    50: 2699501    52: 2700000    54: 2699999
+>   56: 2702645    58: 2696923    60: 2697718    62: 2700547
+>   64: 2700313    66: 2700000    68: 2699904    70: 2699259
+>   72: 2699511    74: 2700644    76: 2702201    78: 2700000
+>   80: 2700776    82: 2700364    84: 2702674    86: 2700255
+>   88: 2699886    90: 2700359    92: 2699662    94: 2696188
+>   96: 2705454    98: 2699260   100: 2701097   102: 2699630
+> 104: 2700463   106: 2698408   108: 2697766   110: 2701181
+> 112: 2699166   114: 2701804   116: 2701907   118: 2701973
+> 120: 2699584   122: 2700474   124: 2700768   126: 2701963
 >
-> > +}
-> > +EXPORT_SYMBOL_GPL(wait_for_acpi_ipmi);
-> > +
-> >  static int __init acpi_ipmi_init(void)
-> >  {
-> >       int result;
-> >       acpi_status status;
-> > +     init_completion(&smi_selected);
-> >
-> >       if (acpi_disabled)
-> >               return 0;
-> > diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_powe=
-r_meter.c
-> > index 703666b95bf4..acaf1ae68dc8 100644
-> > --- a/drivers/hwmon/acpi_power_meter.c
-> > +++ b/drivers/hwmon/acpi_power_meter.c
-> > @@ -883,6 +883,10 @@ static int acpi_power_meter_add(struct acpi_device=
- *device)
-> >       strcpy(acpi_device_class(device), ACPI_POWER_METER_CLASS);
-> >       device->driver_data =3D resource;
-> >
-> > +     if (dmi_match(DMI_SYS_VENDOR, "Dell Inc.") &&
-> > +         acpi_dev_get_first_match_dev("IPI0001", NULL, -1))
-> > +             wait_for_acpi_ipmi();
+> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+> ---
+>   arch/arm64/kernel/topology.c | 43 ++++++++++++++++++++++++++++++++++--
+>   drivers/acpi/cppc_acpi.c     | 22 +++++++++++++++---
+>   include/acpi/cppc_acpi.h     |  5 +++++
+>   3 files changed, 65 insertions(+), 5 deletions(-)
 >
-> wait_for_acpi_ipmi() should return an error code which
-> should be handled here.
-
-OK, I think print an message should be informative.
-
->
-> > +
-> >       res =3D read_capabilities(resource);
-> >       if (res)
-> >               goto exit_free;
-> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> > index 1216d72c650f..ed59fb89721e 100644
-> > --- a/include/acpi/acpi_bus.h
-> > +++ b/include/acpi/acpi_bus.h
-> > @@ -655,6 +655,7 @@ bool acpi_device_override_status(struct acpi_device=
- *adev, unsigned long long *s
-> >  bool acpi_quirk_skip_acpi_ac_and_battery(void);
-> >  int acpi_install_cmos_rtc_space_handler(acpi_handle handle);
-> >  void acpi_remove_cmos_rtc_space_handler(acpi_handle handle);
-> > +void wait_for_acpi_ipmi(void);
-> >  #else
-> >  static inline bool acpi_device_override_status(struct acpi_device *ade=
-v,
-> >                                              unsigned long long *status=
-)
-> > @@ -672,6 +673,9 @@ static inline int acpi_install_cmos_rtc_space_handl=
-er(acpi_handle handle)
-> >  static inline void acpi_remove_cmos_rtc_space_handler(acpi_handle hand=
-le)
-> >  {
-> >  }
-> > +static inline void wait_for_acpi_ipmi(void)
-> > +{
-> > +}
->
-> Something with the conditional is wrong. See 0-day report.
-
-Will fix that in next revision.
-
-Kai-Heng
-
->
-> Guenter
-> >  #endif
-> >
-> >  #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
-> > --
-> > 2.34.1
-> >
-> >
+> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+> index 7d37e458e2f5..c3122154d738 100644
+> --- a/arch/arm64/kernel/topology.c
+> +++ b/arch/arm64/kernel/topology.c
+> @@ -299,6 +299,11 @@ core_initcall(init_amu_fie);
+>   #ifdef CONFIG_ACPI_CPPC_LIB
+>   #include <acpi/cppc_acpi.h>
+>   
+> +struct amu_counters {
+> +	u64 corecnt;
+> +	u64 constcnt;
+> +};
+> +
+>   static void cpu_read_corecnt(void *val)
+>   {
+>   	/*
+> @@ -322,8 +327,27 @@ static void cpu_read_constcnt(void *val)
+>   		      0UL : read_constcnt();
+>   }
+>   
+> +static void cpu_read_amu_counters(void *data)
+> +{
+> +	struct amu_counters *cnt = (struct amu_counters *)data;
+> +
+> +	/*
+> +	 * The running time of the this_cpu_has_cap() might have a couple of
+> +	 * microseconds and is significantly increased to tens of microseconds.
+> +	 * But AMU core and constant counter need to be read togeter without any
+> +	 * time interval to reduce the calculation discrepancy using this counters.
+> +	 */
+> +	if (this_cpu_has_cap(ARM64_WORKAROUND_2457168)) {
+> +		cnt->corecnt = read_corecnt();
+> +		cnt->constcnt = 0;
+> +	} else {
+> +		cnt->corecnt = read_corecnt();
+> +		cnt->constcnt = read_constcnt();
+> +	}
+> +}
+> +
+>   static inline
+> -int counters_read_on_cpu(int cpu, smp_call_func_t func, u64 *val)
+> +int counters_read_on_cpu(int cpu, smp_call_func_t func, void *data)
+>   {
+>   	/*
+>   	 * Abort call on counterless CPU or when interrupts are
+> @@ -335,7 +359,7 @@ int counters_read_on_cpu(int cpu, smp_call_func_t func, u64 *val)
+>   	if (WARN_ON_ONCE(irqs_disabled()))
+>   		return -EPERM;
+>   
+> -	smp_call_function_single(cpu, func, val, 1);
+> +	smp_call_function_single(cpu, func, data, 1);
+>   
+>   	return 0;
+>   }
+> @@ -364,6 +388,21 @@ bool cpc_ffh_supported(void)
+>   	return true;
+>   }
+>   
+> +int cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered, u64 *reference)
+> +{
+> +	struct amu_counters cnts = {0};
+> +	int ret;
+> +
+> +	ret = counters_read_on_cpu(cpu, cpu_read_amu_counters, &cnts);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*delivered = cnts.corecnt;
+> +	*reference = cnts.constcnt;
+> +
+> +	return 0;
+> +}
+> +
+>   int cpc_read_ffh(int cpu, struct cpc_reg *reg, u64 *val)
+>   {
+>   	int ret = -EOPNOTSUPP;
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 7ff269a78c20..f303fabd7cfe 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1299,6 +1299,11 @@ bool cppc_perf_ctrs_in_pcc(void)
+>   }
+>   EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
+>   
+> +int __weak cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered, u64 *reference)
+> +{
+> +	return 0;
+> +}
+> +
+>   /**
+>    * cppc_get_perf_ctrs - Read a CPU's performance feedback counters.
+>    * @cpunum: CPU from which to read counters.
+> @@ -1313,7 +1318,8 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+>   		*ref_perf_reg, *ctr_wrap_reg;
+>   	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
+>   	struct cppc_pcc_data *pcc_ss_data = NULL;
+> -	u64 delivered, reference, ref_perf, ctr_wrap_time;
+> +	u64 delivered = 0, reference = 0;
+> +	u64 ref_perf, ctr_wrap_time;
+>   	int ret = 0, regs_in_pcc = 0;
+>   
+>   	if (!cpc_desc) {
+> @@ -1350,8 +1356,18 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+>   		}
+>   	}
+>   
+> -	cpc_read(cpunum, delivered_reg, &delivered);
+> -	cpc_read(cpunum, reference_reg, &reference);
+> +	if (cpc_ffh_supported()) {
+> +		ret = cpc_read_arch_counters_on_cpu(cpunum, &delivered, &reference);
+> +		if (ret) {
+> +			pr_debug("read arch counters failed, ret=%d.\n", ret);
+> +			ret = 0;
+> +		}
+> +	}
+> +	if (!delivered || !reference) {
+> +		cpc_read(cpunum, delivered_reg, &delivered);
+> +		cpc_read(cpunum, reference_reg, &reference);
+> +	}
+> +
+>   	cpc_read(cpunum, ref_perf_reg, &ref_perf);
+>   
+>   	/*
+> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+> index 6126c977ece0..07d4fd82d499 100644
+> --- a/include/acpi/cppc_acpi.h
+> +++ b/include/acpi/cppc_acpi.h
+> @@ -152,6 +152,7 @@ extern bool cpc_ffh_supported(void);
+>   extern bool cpc_supported_by_cpu(void);
+>   extern int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val);
+>   extern int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val);
+> +extern int cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered, u64 *reference);
+>   extern int cppc_get_epp_perf(int cpunum, u64 *epp_perf);
+>   extern int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable);
+>   extern int cppc_get_auto_sel_caps(int cpunum, struct cppc_perf_caps *perf_caps);
+> @@ -209,6 +210,10 @@ static inline int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val)
+>   {
+>   	return -ENOTSUPP;
+>   }
+> +static inline int cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered, u64 *reference)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+>   static inline int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
+>   {
+>   	return -ENOTSUPP;
 
