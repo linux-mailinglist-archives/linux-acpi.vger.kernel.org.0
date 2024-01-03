@@ -1,247 +1,189 @@
-Return-Path: <linux-acpi+bounces-2690-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2691-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 073B5823075
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 16:22:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A38538230A8
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 16:37:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5F8528464E
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 15:22:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FBE6B215AC
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jan 2024 15:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70CB1A731;
-	Wed,  3 Jan 2024 15:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTCVvdqZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FA51B26E;
+	Wed,  3 Jan 2024 15:37:49 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C521A726;
-	Wed,  3 Jan 2024 15:22:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBF8C433C7;
-	Wed,  3 Jan 2024 15:22:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704295347;
-	bh=PSULNPafTiN5YA/zznHKljEYILe0lgiiOYnPvIBLCtU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HTCVvdqZyxiXxnTanJVRMJKPFRpS9n90G2HKitP4aY/wBhmMUdJ53AsIa/Gyl/4Jz
-	 pLkz9apw4Rim6otI0sGhlUTS2iqiCWEa3hp739v+hUiMUAxOtvb33hj666Vi5bZvuJ
-	 fvzcGHlQMBAt1WqUkYrIWo8lfzxiLZ+8u19gY1e1W5JsS1XnH0xTngSdeOTujLwcKz
-	 VpAZNDzQG9AYcV+R6bZfBgwTehETca+wsNrozRuYNycZOxUS8ftq55ZRjIPN+t6yL+
-	 uuvihs48iNhQJaz1R9ps25naygJYNwSJTmPHLEZ05ePe1M3Kwgn1TzVDNt8unNxKHl
-	 Rh7pRU/LdxtMQ==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-50e7dd8bce8so7814459e87.1;
-        Wed, 03 Jan 2024 07:22:27 -0800 (PST)
-X-Gm-Message-State: AOJu0YzUi1J9e6raYk8qBu25AWdTjQj8yNYExQILFg09ecR+HPc3e6hu
-	wjf2zNutkE5Mx1h6kjXQYENWDt4R1Tk05unG83Q=
-X-Google-Smtp-Source: AGHT+IGFcFYO2J618BYFfSaaCdih8PzDV/WsOJ6Eg0j1h8wQdMvLsG1eT5V9WrmOXvxhn44h3RXmYuOstjkzgkiucVI=
-X-Received: by 2002:a05:6512:12cd:b0:50e:a08d:172 with SMTP id
- p13-20020a05651212cd00b0050ea08d0172mr1429415lfg.85.1704295345418; Wed, 03
- Jan 2024 07:22:25 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C371B267;
+	Wed,  3 Jan 2024 15:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-595ffa2e6a2so164913eaf.0;
+        Wed, 03 Jan 2024 07:37:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704296266; x=1704901066;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=40j+IqysrfYQAUt1SJO3JpRmqTkW8BeHGoeDA+iZloI=;
+        b=OoMLNn83L1QCMLgwVxFhxrcH9l0Y3nKZ7K8xTz8Kj9CYYO78NoVsqngB4f7rGeouZ6
+         OGAdDK1nLxmHxJYmzFGH8dBMOR7DTvpha8xPV9p7fnMuaPPW2sIi2jZHNAD/fbP0wwdr
+         uneEZLMnvJnfyocfMUgEx3tuZfN4TuVgp99P2nME/0qGO0Wj7RCNfxTdvcpye1ClXKda
+         d3IwKVtMAW43hX6xrPHiB11hAkabITWwyrqHJuXHiyLkd4VrJcY8nIANOKpfcWDVcCwU
+         bB0i7Tpw9pcRjXk1AVMy7iOTlJb1bTUGFOnGSXWVyHEiVcqrb3gbBd9B3tvqEivChZAh
+         VuKg==
+X-Gm-Message-State: AOJu0YzOs+YGVoUqxhki/LDr8FVQ2uikLtVdgVkqa6OoeRETQUPkvGHB
+	jMJUslxVIoM7cgbPIHx0xo08Yxp9zHSEEDWTJZk=
+X-Google-Smtp-Source: AGHT+IEQNWRFK5ZWxSqawWVegeMCE+VE1LW3uWj3cWaGWt2FsA5ZWT7ccUJrKWdr45QdTslurAf486vxU50F76ICkVM=
+X-Received: by 2002:a4a:b38c:0:b0:595:6024:c4f8 with SMTP id
+ p12-20020a4ab38c000000b005956024c4f8mr8288888ooo.1.1704296266137; Wed, 03 Jan
+ 2024 07:37:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
- <BN9PR11MB5483FF3039913334C7EA83E1E6AEA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXFG92NpL7T7YocOup0xLKyopt3MnSCp0RL8cLzozzJz7A@mail.gmail.com>
- <BN9PR11MB548303B09536EB1577472029E6B3A@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAPnjgZ36t8g7E=0MSJyaV8-QKv9RVYe47Jd5E=NU-mFM4LWBQA@mail.gmail.com>
- <CAMj1kXHAEeK7x2f13k_JV3Xcw61nNLasyvXQf+mKwKekQ48EpQ@mail.gmail.com>
- <BN9PR11MB548334E0DA6495C438FBFDE1E6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <BN9PR11MB548314DDE8D4C9503103D51CE6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXHbM+ArLgNZgnmiok4gOfv6QLYxzyB9OCwfhEkJ2xGK_g@mail.gmail.com>
- <BN9PR11MB5483C2FBCD07DE61DCCDB523E6BCA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXHmu=ykgBMRiFqG4_ra3FJtHa=GASoMUJswdMFa9v4Xgw@mail.gmail.com>
- <BN9PR11MB54837EEB391CC2A8FA6C0BF5E695A@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXEQL9n1Adedow5KEyZ5gdFQY3Fn+Fz8vSK3mHib_vDFig@mail.gmail.com> <BN9PR11MB5483E191F1906641565A1337E694A@BN9PR11MB5483.namprd11.prod.outlook.com>
-In-Reply-To: <BN9PR11MB5483E191F1906641565A1337E694A@BN9PR11MB5483.namprd11.prod.outlook.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 3 Jan 2024 16:22:14 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGcZP99hyURXFAZfwKmYqj-xBN9BcW7R3h9Mm2k937Buw@mail.gmail.com>
-Message-ID: <CAMj1kXGcZP99hyURXFAZfwKmYqj-xBN9BcW7R3h9Mm2k937Buw@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
-To: "Chiu, Chasel" <chasel.chiu@intel.com>
-Cc: Simon Glass <sjg@chromium.org>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Rob Herring <robh@kernel.org>, "Tan, Lean Sheng" <sheng.tan@9elements.com>, 
-	lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, 
-	"Brune, Maximilian" <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
-	"Dong, Guo" <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, 
-	ron minnich <rminnich@gmail.com>, "Guo, Gua" <gua.guo@intel.com>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, U-Boot Mailing List <u-boot@lists.denx.de>
+References: <20231228075705.26652-1-TonyWWang-oc@zhaoxin.com> <20231228075705.26652-4-TonyWWang-oc@zhaoxin.com>
+In-Reply-To: <20231228075705.26652-4-TonyWWang-oc@zhaoxin.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 3 Jan 2024 16:37:35 +0100
+Message-ID: <CAJZ5v0hEd-NV5WoRPOZgZwxNS6M=TKcw7DpDUM9MWFYAaa+1Mw@mail.gmail.com>
+Subject: Re: [PATCH 3/3] ACPI: cpufreq: Add ITMT support when CPPC enabled for
+ Zhaoxin CPUs
+To: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+Cc: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	acpica-devel@lists.linux.dev, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	mcgrof@kernel.org, peterz@infradead.org, j.granados@samsung.com, 
+	ricardo.neri-calderon@linux.intel.com, viresh.kumar@linaro.org, 
+	linux-pm@vger.kernel.org, CobeChen@zhaoxin.com, TimGuo@zhaoxin.com, 
+	LeoLiu-oc@zhaoxin.com, LindaChai@zhaoxin.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 22 Dec 2023 at 20:52, Chiu, Chasel <chasel.chiu@intel.com> wrote:
+On Thu, Dec 28, 2023 at 8:57=E2=80=AFAM Tony W Wang-oc <TonyWWang-oc@zhaoxi=
+n.com> wrote:
 >
+> For Zhaoxin CPUs, the cores' highest frequencies may be different, which
+> means that cores may run at different max frequencies,
 >
-> Please see my reply below inline.
+> According to ACPI-spec6 chapter 8.4.7, the per-core highest frequency
+> value can be obtained via cppc.
 >
-> Thanks,
-> Chasel
+> The core with the higher frequency have better performance, which can be
+> called as preferred core. And better performance can be achieved by
+> making the scheduler to run tasks on these preferred cores.
 >
-...
-> > > > The gEfiMemoryTypeInformationGuid HOB typically carries platform
-> > > > defaults, and the actual memory type information is kept in a
-> > > > non-volatile EFI variable, which gets updated when the memory usage
-> > > > changes. Is this different for UefiPayloadPkg?
-> > > >
-> > > > (For those among the cc'ees less versed in EFI/EDK2: when you get
-> > > > the 'config changed -rebooting' message from the boot firmware, it
-> > > > typically means that this memory type table has changed, and a
-> > > > reboot is necessary.)
-> > > >
-> > > > So the platform init needs to read this variable, or get the
-> > > > information in a different way. I assume it is the payload, not the
-> > > > platform init that updates the variable when necessary. This means
-> > > > the information flows from payload(n) to platform init(n+1), where =
-n
-> > > > is a monotonic index tracking consecutive boots of the system.
-> > > >
-> > > > Can you explain how the DT fits into this? How are the runtime-code
-> > > > and runtime-data memory reservation nodes under /reserved-memory
-> > > > used to implement this information exchange between platform init
-> > > > and payload? And how do the HOB and the EFI variable fit into this =
-picture?
-> > >
-> > >
-> > > 1. With some offline discussion, we would move
-> > > gEfiMemoryTypeInformationGuid usage to FDT->upl-custom node. This is
-> > > because it is edk2 implementation choice and non-edk2 PlatformInit or
-> > > Payload may not have such memory optimization implementation. (not a
-> > > generic usage/requirement for PlatformInit and Payload)
-> > >
-> > > The edk2 example flow will be like below:
-> > >
-> > > PlatformInit to GetVariable of gEfiMemoryTypeInformationGuid and crea=
-te Hob-
-> > >
-> > >   PlatformInit to initialize FDT->upl-custom node to report
-> > gEfiMemoryTypeInformationGuid HOB information ->
-> > >     UefiPayload entry to re-create gEfiMemoryTypeInformationGuid HOB =
-basing
-> > on FDT input (instead of the default MemoryType inside UefiPayload) ->
-> > >       UefiPayload DxeMain/Gcd will consume gEfiMemoryTypeInformationG=
-uid
-> > Hob for memory type information ->
-> > >         UefiPayload to initialize UEFI environment (mainly DXE dispat=
-cher) ->
-> > >           (additional FV binary appended to common UefiPayload binary=
+> The cpufreq driver can use the highest frequency value as the prioriy of
+> core to make the scheduler try to get better performace. More specificall=
+y,
+> in the acpi-cpufreq driver use cppc_get_highest_perf() to get highest
+> frequency value of each core, use sched_set_itmt_core_prio() to set
+> highest frequency value as core priority, and use sched_set_itmt_support(=
 )
-> > PlatformPayload to provide VariableService which is platform specific -=
+> provided by ITMT to tell the scheduler to favor on the preferred cores.
 >
-> > >             UefiPayload UefiBootManager will SetVariable if memory ty=
-pe change
-> > needed and request a warm reset ->
-> > >               Back to PlatformInit ...
-> > >
-> >
-> > OK so the upl-custom node can do whatever it needs to. I imagine these =
-will
-> > include the memory descriptor attribute field, and other parts that may=
- be missing
-> > from the /reserved-memory DT node specification?
+> Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+> ---
+>  drivers/cpufreq/acpi-cpufreq.c | 56 +++++++++++++++++++++++++++++++++-
+>  1 file changed, 55 insertions(+), 1 deletion(-)
 >
+> diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufre=
+q.c
+> index 37f1cdf46d29..f4c1ff9e4bb0 100644
+> --- a/drivers/cpufreq/acpi-cpufreq.c
+> +++ b/drivers/cpufreq/acpi-cpufreq.c
+> @@ -663,8 +663,56 @@ static u64 get_max_boost_ratio(unsigned int cpu)
 >
-> Yes, if needed by edk2 specific implementation, not generic enough, we ma=
-y consider to use upl-custom node to pass those data.
+>         return div_u64(highest_perf << SCHED_CAPACITY_SHIFT, nominal_perf=
+);
+>  }
+> +
+> +/* The work item is needed to avoid CPU hotplug locking issues */
+> +static void sched_itmt_work_fn(struct work_struct *work)
+> +{
+> +       sched_set_itmt_support();
+> +}
+> +
+> +static DECLARE_WORK(sched_itmt_work, sched_itmt_work_fn);
+> +
+> +static void set_itmt_prio(int cpu)
+> +{
+> +       static bool cppc_highest_perf_diff;
+> +       static struct cpumask core_prior_mask;
+> +       u64 highest_perf;
+> +       static u64 max_highest_perf =3D 0, min_highest_perf =3D U64_MAX;
+> +       int ret;
+> +
+> +       ret =3D cppc_get_highest_perf(cpu, &highest_perf);
+> +       if (ret)
+> +               return;
+> +
+> +       sched_set_itmt_core_prio(highest_perf, cpu);
+> +       cpumask_set_cpu(cpu, &core_prior_mask);
+> +
+> +       if (max_highest_perf <=3D min_highest_perf) {
+> +               if (highest_perf > max_highest_perf)
+> +                       max_highest_perf =3D highest_perf;
+> +
+> +               if (highest_perf < min_highest_perf)
+> +                       min_highest_perf =3D highest_perf;
+> +
+> +               if (max_highest_perf > min_highest_perf) {
+> +                       /*
+> +                        * This code can be run during CPU online under t=
+he
+> +                        * CPU hotplug locks, so sched_set_itmt_support()
+> +                        * cannot be called from here.  Queue up a work i=
+tem
+> +                        * to invoke it.
+> +                        */
+> +                       cppc_highest_perf_diff =3D true;
+> +               }
+> +       }
+> +
+> +       if (cppc_highest_perf_diff && cpumask_equal(&core_prior_mask, cpu=
+_online_mask)) {
+> +               pr_debug("queue a work to set itmt enabled\n");
+> +               schedule_work(&sched_itmt_work);
+> +       }
+> +}
+>  #else
+>  static inline u64 get_max_boost_ratio(unsigned int cpu) { return 0; }
+> +static void set_itmt_prio(int cpu) { }
+>  #endif
 >
+>  static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
+> @@ -677,7 +725,7 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_polic=
+y *policy)
+>         unsigned int valid_states =3D 0;
+>         unsigned int result =3D 0;
+>         u64 max_boost_ratio;
+> -       unsigned int i;
+> +       unsigned int i, j;
+>  #ifdef CONFIG_SMP
+>         static int blacklisted;
+>  #endif
+> @@ -742,6 +790,12 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_poli=
+cy *policy)
+>         }
+>  #endif
 >
-> >
-> > >
-> > > 2. Now the proposed reserved-memory node usages will be for PlatformI=
-nit to
-> > provide data which may be used by Payload or OS. This is not edk2 speci=
-fic and
-> > any PlatformInit/Payload could have same support.
-> > > Note: all of below are optional and PlatformInit may choose to implem=
-ent some
-> > of them or not.
-> > >
-> > >       - acpi
-> > > If PlatformInit created some ACPI tables, this will report a memory r=
-egion which
-> > contains all the tables to Payload and Payload may base on this to add =
-some more
-> > tables if required.
-> > >
-> > >       - acpi-nvs
-> > > If PlatformInit has created some ACPI tables which having ACPI NVS me=
-mory
-> > dependency, this will be that nvs region.
-> > >
-> >
-> > These make sense.
-> >
-> > >       - boot-code
-> > > When PlatformInit having some FW boot phase code that could be freed
-> > > for OS to use when payload transferring control to UEFI OS
-> > >
-> > >       - boot-data
-> > > When PlatformInit having some FW boot phase data that could be freed =
-for OS
-> > to use when payload transferring control to UEFI OS.
-> > >
-> > >       - runtime-code
-> > > PlatformInit may provide some services code that can be used for Payl=
-oad to
-> > initialize UEFI Runtime Services for supporting UEFI OS.
-> > >
-> > >       - runtime-data
-> > > PlatformInit may provide some services data that can be used for Payl=
-oad to
-> > Initialize UEFI Runtime Services for supporting UEFI OS.
-> > >
-> >
-> > A UEFI OS must consume this information from the UEFI memory map, not f=
-rom
-> > the /reserved-memory nodes. So these nodes must either not be visible t=
-o the OS
-> > at all, or carry an annotation that the OS must ignore them.
-> >
-> > Would it be possible to include a restriction in the DT schema that the=
-se are only
-> > valid in the firmware boot phase?
->
->
-> https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#efi-boot-=
-services-exitbootservices
-> Per UEFI specification, UEFI OS will always call UEFI GetMemoryMap functi=
-on to retrieve memory map, so FDT node present or not does not matter to UE=
-FI OS. We probably could have annotation in UPL specification to emphasize =
-this.
-> I'm not familiar with Linux FDT boot, but if non-UEFI OS does not call UE=
-FI GetMemoryMap() and does not know what is runtime-code/data, boot-code/da=
-ta, it might just treat such reserved-memory nodes as 'regular' reserved me=
-mory nodes, and that's still ok because non-UEFI OS will not call to any ru=
-ntime service or re-purpose boot-code/data memory regions.
->
+> +       if (c->x86_vendor =3D=3D X86_VENDOR_CENTAUR || c->x86_vendor =3D=
+=3D X86_VENDOR_ZHAOXIN) {
+> +               for_each_cpu(j, policy->cpus) {
+> +                       set_itmt_prio(j);
+> +               }
+> +       }
+> +
+>         /* capability check */
+>         if (perf->state_count <=3D 1) {
+>                 pr_debug("No P-States\n");
+> --
 
-You are saying the same thing but in a different way. A UEFI OS must
-only rely on GetMemoryMap(), and not on the /reserved-memory node to
-obtain this information. But this requirement needs to be stated
-somewhere: the UEFI spec does not reason about other sources of EFI
-memory information at all, and this DT schema does not mention any of
-this either.
-
-> Would you provide a real OS case which will be impacted by this reserved-=
-memory schema so we can discuss basing on real case?
->
-
-Funny, that is what I have been trying to get from you :-)
-
-The problem I am anticipating here is that the information in
-/reserved-memory may be out of sync with the EFI memory map. It needs
-to be made clear that the EFI memory map is the only source of truth
-when the OS is involved, and this /reserved-memory mechanism should
-only be used by other firmware stages. But the schema does not mention
-this at all. The schema also does not mention that the information in
-/reserved-memory is not actually sufficient to reconstruct the EFI
-memory map that the firmware payload expects (which is why the
-upl-custom-node exists too)
+Have you considered using the CPPC cpufreq driver on those platforms?
 
