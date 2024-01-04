@@ -1,289 +1,371 @@
-Return-Path: <linux-acpi+bounces-2714-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2715-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FAF823DBD
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jan 2024 09:44:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B621823E45
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jan 2024 10:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9664B21603
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jan 2024 08:44:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3E371F25032
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jan 2024 09:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6505D1DFFB;
-	Thu,  4 Jan 2024 08:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qJdBw/vI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CA320DE7;
+	Thu,  4 Jan 2024 09:07:36 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4162F1EA71;
-	Thu,  4 Jan 2024 08:43:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD86EC433CB;
-	Thu,  4 Jan 2024 08:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704357796;
-	bh=tgi3mkIBg3dOw+vpGLogCyrV9K4HSGEkt+fxfTZNQhU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qJdBw/vI90Q5CRe/TAi6MU8mdn/4mIknHLFsQzkmxPM7JC7sF1tynQ4LBs7tTbdmp
-	 6lbInQoCrunuWQoBjZ75FPvd+Vu023++Kmv4SkSvRgK1KghPnKaoEKg6Wahval0vbW
-	 l7XL6Ejyu+k8AJVkEbOYr47GWSXiaFFLM1q1LCqxyxfmiyvG6GNkzhzTD1jpe3nbhj
-	 Hsfu0kW95ri8IqiIrW7U9z4MjYoHdCxiVdsH6JdvPHYpV1Md8diNWxbEGE05wuMyaA
-	 2AAA97c0RrpmmgdXKAhfPNjys7/HuGhPc0YPoo6fxTBIlRHNvUVCKBfpbOiYHD/j36
-	 mW+l+lph4t3Ow==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-50e4e3323a6so1183908e87.0;
-        Thu, 04 Jan 2024 00:43:16 -0800 (PST)
-X-Gm-Message-State: AOJu0YztyqGE/9WQCM619H7SWlfnqXJuZSaSrY3Ei9q5ETKN95NwvHlP
-	Rhb326oFj+4haq4G//36xhfM5pAZL4EsvZIdXQo=
-X-Google-Smtp-Source: AGHT+IF3K1WbzpDH4QpESSatpPZeT/IrAbAWh3EtWXLKRBaCAxr4+3CtctEKxI/ye+1KEPMiHID3l1e86+RMUADVJhc=
-X-Received: by 2002:ac2:4885:0:b0:50e:73e8:8d05 with SMTP id
- x5-20020ac24885000000b0050e73e88d05mr134459lfc.30.1704357795023; Thu, 04 Jan
- 2024 00:43:15 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E8E20B1B;
+	Thu,  4 Jan 2024 09:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4T5LKj3M5Rz1g21f;
+	Thu,  4 Jan 2024 17:06:01 +0800 (CST)
+Received: from kwepemm600004.china.huawei.com (unknown [7.193.23.242])
+	by mail.maildlp.com (Postfix) with ESMTPS id E09BD1A0172;
+	Thu,  4 Jan 2024 17:07:27 +0800 (CST)
+Received: from [10.67.121.59] (10.67.121.59) by kwepemm600004.china.huawei.com
+ (7.193.23.242) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 4 Jan
+ 2024 17:07:27 +0800
+Message-ID: <482ffcce-1224-2bf8-cf07-cfc4633897a8@huawei.com>
+Date: Thu, 4 Jan 2024 17:07:26 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
- <BN9PR11MB5483FF3039913334C7EA83E1E6AEA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXFG92NpL7T7YocOup0xLKyopt3MnSCp0RL8cLzozzJz7A@mail.gmail.com>
- <BN9PR11MB548303B09536EB1577472029E6B3A@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAPnjgZ36t8g7E=0MSJyaV8-QKv9RVYe47Jd5E=NU-mFM4LWBQA@mail.gmail.com>
- <CAMj1kXHAEeK7x2f13k_JV3Xcw61nNLasyvXQf+mKwKekQ48EpQ@mail.gmail.com>
- <BN9PR11MB548334E0DA6495C438FBFDE1E6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <BN9PR11MB548314DDE8D4C9503103D51CE6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXHbM+ArLgNZgnmiok4gOfv6QLYxzyB9OCwfhEkJ2xGK_g@mail.gmail.com>
- <BN9PR11MB5483C2FBCD07DE61DCCDB523E6BCA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXHmu=ykgBMRiFqG4_ra3FJtHa=GASoMUJswdMFa9v4Xgw@mail.gmail.com>
- <BN9PR11MB54837EEB391CC2A8FA6C0BF5E695A@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXEQL9n1Adedow5KEyZ5gdFQY3Fn+Fz8vSK3mHib_vDFig@mail.gmail.com>
- <BN9PR11MB5483E191F1906641565A1337E694A@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXGcZP99hyURXFAZfwKmYqj-xBN9BcW7R3h9Mm2k937Buw@mail.gmail.com> <BN9PR11MB548370E8181B1BB3C6FB9A20E667A@BN9PR11MB5483.namprd11.prod.outlook.com>
-In-Reply-To: <BN9PR11MB548370E8181B1BB3C6FB9A20E667A@BN9PR11MB5483.namprd11.prod.outlook.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 4 Jan 2024 09:43:03 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXH9z0fvWc5UgzDQ=HfYKkh=YudjL-yoZwKX93baiMgZ8w@mail.gmail.com>
-Message-ID: <CAMj1kXH9z0fvWc5UgzDQ=HfYKkh=YudjL-yoZwKX93baiMgZ8w@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
-To: "Chiu, Chasel" <chasel.chiu@intel.com>
-Cc: Simon Glass <sjg@chromium.org>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Rob Herring <robh@kernel.org>, "Tan, Lean Sheng" <sheng.tan@9elements.com>, 
-	lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, 
-	"Brune, Maximilian" <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
-	"Dong, Guo" <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, 
-	ron minnich <rminnich@gmail.com>, "Guo, Gua" <gua.guo@intel.com>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, U-Boot Mailing List <u-boot@lists.denx.de>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH] cpufreq: CPPC: Resolve the large frequency discrepancy
+ from cpuinfo_cur_freq
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, <beata.michalska@arm.com>, <sumitg@nvidia.com>,
+	<ionela.voinescu@arm.com>, <zengheng4@huawei.com>,
+	<yang@os.amperecomputing.com>, <will@kernel.org>, <sudeep.holla@arm.com>,
+	<liuyonglong@huawei.com>, <zhanjie9@hisilicon.com>
+References: <20231212072617.14756-1-lihuisong@huawei.com>
+ <CAJZ5v0jwW0=8cNvC-Vu_o+pEHFpN9nrPD4LXCpmSTgQBTHODgg@mail.gmail.com>
+ <486f8563-42b7-a049-97a2-bc0b553926aa@huawei.com>
+ <26ba9fa9-7871-27c3-0de5-62f61071dacd@huawei.com>
+ <CAJZ5v0jSYajeYP1r+qKOmbwzn4PE5LL9E9LKsuYUygiXxmt2MA@mail.gmail.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <CAJZ5v0jSYajeYP1r+qKOmbwzn4PE5LL9E9LKsuYUygiXxmt2MA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemm600004.china.huawei.com (7.193.23.242)
 
-On Thu, 4 Jan 2024 at 01:25, Chiu, Chasel <chasel.chiu@intel.com> wrote:
->
->
->
-> > -----Original Message-----
-> > From: Ard Biesheuvel <ardb@kernel.org>
-> > Sent: Wednesday, January 3, 2024 7:22 AM
-> > To: Chiu, Chasel <chasel.chiu@intel.com>
-> > Cc: Simon Glass <sjg@chromium.org>; devicetree@vger.kernel.org; Mark Rutland
-> > <mark.rutland@arm.com>; Rob Herring <robh@kernel.org>; Tan, Lean Sheng
-> > <sheng.tan@9elements.com>; lkml <linux-kernel@vger.kernel.org>; Dhaval
-> > Sharma <dhaval@rivosinc.com>; Brune, Maximilian
-> > <maximilian.brune@9elements.com>; Yunhui Cui <cuiyunhui@bytedance.com>;
-> > Dong, Guo <guo.dong@intel.com>; Tom Rini <trini@konsulko.com>; ron minnich
-> > <rminnich@gmail.com>; Guo, Gua <gua.guo@intel.com>; linux-
-> > acpi@vger.kernel.org; U-Boot Mailing List <u-boot@lists.denx.de>
-> > Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory
-> > usages
-> >
-> > On Fri, 22 Dec 2023 at 20:52, Chiu, Chasel <chasel.chiu@intel.com> wrote:
-> > >
-> > >
-> > > Please see my reply below inline.
-> > >
-> > > Thanks,
-> > > Chasel
-> > >
-> > ...
-> > > > > > The gEfiMemoryTypeInformationGuid HOB typically carries platform
-> > > > > > defaults, and the actual memory type information is kept in a
-> > > > > > non-volatile EFI variable, which gets updated when the memory
-> > > > > > usage changes. Is this different for UefiPayloadPkg?
-> > > > > >
-> > > > > > (For those among the cc'ees less versed in EFI/EDK2: when you
-> > > > > > get the 'config changed -rebooting' message from the boot
-> > > > > > firmware, it typically means that this memory type table has
-> > > > > > changed, and a reboot is necessary.)
-> > > > > >
-> > > > > > So the platform init needs to read this variable, or get the
-> > > > > > information in a different way. I assume it is the payload, not
-> > > > > > the platform init that updates the variable when necessary. This
-> > > > > > means the information flows from payload(n) to platform
-> > > > > > init(n+1), where n is a monotonic index tracking consecutive boots of the
-> > system.
-> > > > > >
-> > > > > > Can you explain how the DT fits into this? How are the
-> > > > > > runtime-code and runtime-data memory reservation nodes under
-> > > > > > /reserved-memory used to implement this information exchange
-> > > > > > between platform init and payload? And how do the HOB and the EFI
-> > variable fit into this picture?
-> > > > >
-> > > > >
-> > > > > 1. With some offline discussion, we would move
-> > > > > gEfiMemoryTypeInformationGuid usage to FDT->upl-custom node. This
-> > > > > is because it is edk2 implementation choice and non-edk2
-> > > > > PlatformInit or Payload may not have such memory optimization
-> > > > > implementation. (not a generic usage/requirement for PlatformInit
-> > > > > and Payload)
-> > > > >
-> > > > > The edk2 example flow will be like below:
-> > > > >
-> > > > > PlatformInit to GetVariable of gEfiMemoryTypeInformationGuid and
-> > > > > create Hob-
-> > > > >
-> > > > >   PlatformInit to initialize FDT->upl-custom node to report
-> > > > gEfiMemoryTypeInformationGuid HOB information ->
-> > > > >     UefiPayload entry to re-create gEfiMemoryTypeInformationGuid
-> > > > > HOB basing
-> > > > on FDT input (instead of the default MemoryType inside UefiPayload)
-> > > > ->
-> > > > >       UefiPayload DxeMain/Gcd will consume
-> > > > > gEfiMemoryTypeInformationGuid
-> > > > Hob for memory type information ->
-> > > > >         UefiPayload to initialize UEFI environment (mainly DXE dispatcher) ->
-> > > > >           (additional FV binary appended to common UefiPayload
-> > > > > binary)
-> > > > PlatformPayload to provide VariableService which is platform
-> > > > specific ->
-> > > > >             UefiPayload UefiBootManager will SetVariable if memory
-> > > > > type change
-> > > > needed and request a warm reset ->
-> > > > >               Back to PlatformInit ...
-> > > > >
-> > > >
-> > > > OK so the upl-custom node can do whatever it needs to. I imagine
-> > > > these will include the memory descriptor attribute field, and other
-> > > > parts that may be missing from the /reserved-memory DT node specification?
-> > >
-> > >
-> > > Yes, if needed by edk2 specific implementation, not generic enough, we may
-> > consider to use upl-custom node to pass those data.
-> > >
-> > >
-> > > >
-> > > > >
-> > > > > 2. Now the proposed reserved-memory node usages will be for
-> > > > > PlatformInit to
-> > > > provide data which may be used by Payload or OS. This is not edk2
-> > > > specific and any PlatformInit/Payload could have same support.
-> > > > > Note: all of below are optional and PlatformInit may choose to
-> > > > > implement some
-> > > > of them or not.
-> > > > >
-> > > > >       - acpi
-> > > > > If PlatformInit created some ACPI tables, this will report a
-> > > > > memory region which
-> > > > contains all the tables to Payload and Payload may base on this to
-> > > > add some more tables if required.
-> > > > >
-> > > > >       - acpi-nvs
-> > > > > If PlatformInit has created some ACPI tables which having ACPI NVS
-> > > > > memory
-> > > > dependency, this will be that nvs region.
-> > > > >
-> > > >
-> > > > These make sense.
-> > > >
-> > > > >       - boot-code
-> > > > > When PlatformInit having some FW boot phase code that could be
-> > > > > freed for OS to use when payload transferring control to UEFI OS
-> > > > >
-> > > > >       - boot-data
-> > > > > When PlatformInit having some FW boot phase data that could be
-> > > > > freed for OS
-> > > > to use when payload transferring control to UEFI OS.
-> > > > >
-> > > > >       - runtime-code
-> > > > > PlatformInit may provide some services code that can be used for
-> > > > > Payload to
-> > > > initialize UEFI Runtime Services for supporting UEFI OS.
-> > > > >
-> > > > >       - runtime-data
-> > > > > PlatformInit may provide some services data that can be used for
-> > > > > Payload to
-> > > > Initialize UEFI Runtime Services for supporting UEFI OS.
-> > > > >
-> > > >
-> > > > A UEFI OS must consume this information from the UEFI memory map,
-> > > > not from the /reserved-memory nodes. So these nodes must either not
-> > > > be visible to the OS at all, or carry an annotation that the OS must ignore
-> > them.
-> > > >
-> > > > Would it be possible to include a restriction in the DT schema that
-> > > > these are only valid in the firmware boot phase?
-> > >
-> > >
-> > > https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#efi-bo
-> > > ot-services-exitbootservices Per UEFI specification, UEFI OS will
-> > > always call UEFI GetMemoryMap function to retrieve memory map, so FDT
-> > node present or not does not matter to UEFI OS. We probably could have
-> > annotation in UPL specification to emphasize this.
-> > > I'm not familiar with Linux FDT boot, but if non-UEFI OS does not call UEFI
-> > GetMemoryMap() and does not know what is runtime-code/data, boot-
-> > code/data, it might just treat such reserved-memory nodes as 'regular' reserved
-> > memory nodes, and that's still ok because non-UEFI OS will not call to any
-> > runtime service or re-purpose boot-code/data memory regions.
-> > >
-> >
-> > You are saying the same thing but in a different way. A UEFI OS must only rely on
-> > GetMemoryMap(), and not on the /reserved-memory node to obtain this
-> > information. But this requirement needs to be stated
-> > somewhere: the UEFI spec does not reason about other sources of EFI memory
-> > information at all, and this DT schema does not mention any of this either.
-> >
-> > > Would you provide a real OS case which will be impacted by this reserved-
-> > memory schema so we can discuss basing on real case?
-> > >
-> >
-> > Funny, that is what I have been trying to get from you :-)
-> >
-> > The problem I am anticipating here is that the information in /reserved-memory
-> > may be out of sync with the EFI memory map. It needs to be made clear that the
-> > EFI memory map is the only source of truth when the OS is involved, and this
-> > /reserved-memory mechanism should only be used by other firmware stages. But
-> > the schema does not mention this at all. The schema also does not mention that
-> > the information in /reserved-memory is not actually sufficient to reconstruct the
-> > EFI memory map that the firmware payload expects (which is why the upl-
-> > custom-node exists too)
->
->
->
-> Does below solve your concerns if we mention those in schema description? (please feel free to add more if you have)
-> . boot-code/boot-data and runtime-code/runtime-data usages are following UEFI specification
->   . before ExitBootServices: https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#memory-type-usage-before-exitbootservices
->   . after ExitBootServices: https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#memory-type-usage-after-exitbootservices
-> . These usages do not intend to construct full UEFI memory map, it is only for PlatformInit to pass pre-installed tables or services to Payload for supporting UEFI OS boot.
-> . These usages are optional
-> . Typically UEFI OS boot will always call GetMemoryMap() to retrieve memory map following UEFI spec, no matter DT nodes present or not (https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#efi-boot-services-exitbootservices)
-> . Typically Non-UEFI OS boot will treat those  boot* or runtime* reserved-memory as 'regular' reserved memory if present.
->
 
-This already helps quite a lot, thanks.
-
-But why should a non-UEFI OS be required to keep boot* or runtime*
-regions reserved? The firmware stage that boots the OS knows whether
-it is performing an UEFI boot or a non-UEFI boot, and it should only
-present the information that goes along with that. The OS should never
-have to worry about reconciling two sources of truth.
-
-And to Rob's point about boot / runtime being ill-defined: I would
-argue that 'runtime' quite clearly implies 'under the OS', and so UEFI
-runtime* reservations are assumed to always be relevant to UEFI OSes.
-
-I think there is a fundamental difference of opinion here, where the
-position of the firmware developers is that the DT should be the same
-across all boot stages, while my position reasoning from the OS side
-is that the OS should be able to observe only the abstractions that
-are part of the contract between firmware and OS.
+在 2024/1/3 18:59, Rafael J. Wysocki 写道:
+> On Mon, Dec 18, 2023 at 3:15 AM lihuisong (C) <lihuisong@huawei.com> wrote:
+>>
+>> 在 2023/12/15 10:41, lihuisong (C) 写道:
+>>> Hi Rafael,
+>>>
+>>> Thanks for your review.😁
+>>>
+>>> 在 2023/12/15 3:31, Rafael J. Wysocki 写道:
+>>>> On Tue, Dec 12, 2023 at 8:26 AM Huisong Li <lihuisong@huawei.com> wrote:
+>>>>> Many developers found that the cpu current frequency is greater than
+>>>>> the maximum frequency of the platform, please see [1], [2] and [3].
+>>>>>
+>>>>> In the scenarios with high memory access pressure, the patch [1] has
+>>>>> proved the significant latency of cpc_read() which is used to obtain
+>>>>> delivered and reference performance counter cause an absurd frequency.
+>>>>> The sampling interval for this counters is very critical and is
+>>>>> expected
+>>>>> to be equal. However, the different latency of cpc_read() has a direct
+>>>>> impact on their sampling interval.
+>>>>>
+>>>>> This patch adds a interface, cpc_read_arch_counters_on_cpu, to read
+>>>>> delivered and reference performance counter together. According to my
+>>>>> test[4], the discrepancy of cpu current frequency in the scenarios with
+>>>>> high memory access pressure is lower than 0.2% by stress-ng
+>>>>> application.
+>>>>>
+>>>>> [1]
+>>>>> https://lore.kernel.org/all/20231025093847.3740104-4-zengheng4@huawei.com/
+>>>>> [2]
+>>>>> https://lore.kernel.org/all/20230328193846.8757-1-yang@os.amperecomputing.com/
+>>>>> [3]
+>>>>> https://lore.kernel.org/all/20230418113459.12860-7-sumitg@nvidia.com/
+>>>>>
+>>>>> [4] My local test:
+>>>>> The testing platform enable SMT and include 128 logical CPU in total,
+>>>>> and CPU base frequency is 2.7GHz. Reading "cpuinfo_cur_freq" for each
+>>>>> physical core on platform during the high memory access pressure from
+>>>>> stress-ng, and the output is as follows:
+>>>>>     0: 2699133     2: 2699942     4: 2698189     6: 2704347
+>>>>>     8: 2704009    10: 2696277    12: 2702016    14: 2701388
+>>>>>    16: 2700358    18: 2696741    20: 2700091    22: 2700122
+>>>>>    24: 2701713    26: 2702025    28: 2699816    30: 2700121
+>>>>>    32: 2700000    34: 2699788    36: 2698884    38: 2699109
+>>>>>    40: 2704494    42: 2698350    44: 2699997    46: 2701023
+>>>>>    48: 2703448    50: 2699501    52: 2700000    54: 2699999
+>>>>>    56: 2702645    58: 2696923    60: 2697718    62: 2700547
+>>>>>    64: 2700313    66: 2700000    68: 2699904    70: 2699259
+>>>>>    72: 2699511    74: 2700644    76: 2702201    78: 2700000
+>>>>>    80: 2700776    82: 2700364    84: 2702674    86: 2700255
+>>>>>    88: 2699886    90: 2700359    92: 2699662    94: 2696188
+>>>>>    96: 2705454    98: 2699260   100: 2701097   102: 2699630
+>>>>> 104: 2700463   106: 2698408   108: 2697766   110: 2701181
+>>>>> 112: 2699166   114: 2701804   116: 2701907   118: 2701973
+>>>>> 120: 2699584   122: 2700474   124: 2700768   126: 2701963
+>>>>>
+>>>>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>>>> First off, please Cc ACPI-related patches to linux-acpi.
+>>> got it.
+>>>
+>>> +linux-acpi@vger.kernel.org
+>>>
+>>>>> ---
+>>>>>    arch/arm64/kernel/topology.c | 43
+>>>>> ++++++++++++++++++++++++++++++++++--
+>>>>>    drivers/acpi/cppc_acpi.c     | 22 +++++++++++++++---
+>>>>>    include/acpi/cppc_acpi.h     |  5 +++++
+>>>>>    3 files changed, 65 insertions(+), 5 deletions(-)
+>>>>>
+>>>>> diff --git a/arch/arm64/kernel/topology.c
+>>>>> b/arch/arm64/kernel/topology.c
+>>>>> index 7d37e458e2f5..c3122154d738 100644
+>>>>> --- a/arch/arm64/kernel/topology.c
+>>>>> +++ b/arch/arm64/kernel/topology.c
+>>>>> @@ -299,6 +299,11 @@ core_initcall(init_amu_fie);
+>>>>>    #ifdef CONFIG_ACPI_CPPC_LIB
+>>>>>    #include <acpi/cppc_acpi.h>
+>>>>>
+>>>>> +struct amu_counters {
+>>>>> +       u64 corecnt;
+>>>>> +       u64 constcnt;
+>>>>> +};
+>>>>> +
+>>>>>    static void cpu_read_corecnt(void *val)
+>>>>>    {
+>>>>>           /*
+>>>>> @@ -322,8 +327,27 @@ static void cpu_read_constcnt(void *val)
+>>>>>                         0UL : read_constcnt();
+>>>>>    }
+>>>>>
+>>>>> +static void cpu_read_amu_counters(void *data)
+>>>>> +{
+>>>>> +       struct amu_counters *cnt = (struct amu_counters *)data;
+>>>>> +
+>>>>> +       /*
+>>>>> +        * The running time of the this_cpu_has_cap() might have a
+>>>>> couple of
+>>>>> +        * microseconds and is significantly increased to tens of
+>>>>> microseconds.
+>>>>> +        * But AMU core and constant counter need to be read togeter
+>>>>> without any
+>>>>> +        * time interval to reduce the calculation discrepancy using
+>>>>> this counters.
+>>>>> +        */
+>>>>> +       if (this_cpu_has_cap(ARM64_WORKAROUND_2457168)) {
+>>>>> +               cnt->corecnt = read_corecnt();
+>>>> This statement is present in both branches, so can it be moved before
+>>>> the if ()?
+>>> Yes.
+>>> Do you mean adding a blank line before if()?
+>> Sorry, I misunderstood you.
+>> The statement "cnt->corecnt = read_corecnt();" cannot be moved before
+>> the if().
+>> The AMU core and constant counter need to be read togeter without any
+>> time interval as described in code comments.
+>> The this_cpu_has_cap() is time-consuming.
+>> That is why I don't use the cpu_read_constcnt() to read constant counter.
+> So define something like
+>
+> static inline void amu_read_counters(struct amu_counters *cnt, bool
+> read_constcnt)
+> {
+>                cnt->corecnt = read_corecnt();
+>                if (read_constcnt)
+>                              cnt->constcnt = read_constcnt();
+>                else
+>                              cnt->constcnt = 0;
+> }
+>
+>>>>> +               cnt->constcnt = 0;
+>>>>> +       } else {
+>>>>> +               cnt->corecnt = read_corecnt();
+>>>>> +               cnt->constcnt = read_constcnt();
+>>>>> +       }
+> and use it like this:
+>
+> amu_read_counters(cnt, !this_cpu_has_cap(ARM64_WORKAROUND_2457168);
+>
+> It should work as expected AFAICS.
+Yes it would work well.
+The new cpc_read_arch_counters_on_cpu() uses the counters_read_on_cpu() 
+to read core counters on specified cpu.
+smp_call_function_single() called by counters_read_on_cpu() just support 
+to pass one argument for "smp_call_func_t func".
+So we cannot define the function as you suggested. what do you think?
+>
+>>>>> +}
+>>>>> +
+>>>>>    static inline
+>>>>> -int counters_read_on_cpu(int cpu, smp_call_func_t func, u64 *val)
+>>>>> +int counters_read_on_cpu(int cpu, smp_call_func_t func, void *data)
+>>>>>    {
+>>>>>           /*
+>>>>>            * Abort call on counterless CPU or when interrupts are
+>>>>> @@ -335,7 +359,7 @@ int counters_read_on_cpu(int cpu,
+>>>>> smp_call_func_t func, u64 *val)
+>>>>>           if (WARN_ON_ONCE(irqs_disabled()))
+>>>>>                   return -EPERM;
+>>>>>
+>>>>> -       smp_call_function_single(cpu, func, val, 1);
+>>>>> +       smp_call_function_single(cpu, func, data, 1);
+>>>>>
+>>>>>           return 0;
+>>>>>    }
+>>>>> @@ -364,6 +388,21 @@ bool cpc_ffh_supported(void)
+>>>>>           return true;
+>>>>>    }
+>>>>>
+>>>>> +int cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered, u64
+>>>>> *reference)
+>>>>> +{
+>>>>> +       struct amu_counters cnts = {0};
+>>>>> +       int ret;
+>>>>> +
+>>>>> +       ret = counters_read_on_cpu(cpu, cpu_read_amu_counters, &cnts);
+>>>>> +       if (ret)
+>>>>> +               return ret;
+>>>>> +
+>>>>> +       *delivered = cnts.corecnt;
+>>>>> +       *reference = cnts.constcnt;
+>>>>> +
+>>>>> +       return 0;
+>>>>> +}
+>>>>> +
+>>>>>    int cpc_read_ffh(int cpu, struct cpc_reg *reg, u64 *val)
+>>>>>    {
+>>>>>           int ret = -EOPNOTSUPP;
+>>>>> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+>>>>> index 7ff269a78c20..f303fabd7cfe 100644
+>>>>> --- a/drivers/acpi/cppc_acpi.c
+>>>>> +++ b/drivers/acpi/cppc_acpi.c
+>>>>> @@ -1299,6 +1299,11 @@ bool cppc_perf_ctrs_in_pcc(void)
+>>>>>    }
+>>>>>    EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
+>>>>>
+>>>>> +int __weak cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered,
+>>>>> u64 *reference)
+>>>>> +{
+>>>>> +       return 0;
+>>>>> +}
+>>>>> +
+>>>>>    /**
+>>>>>     * cppc_get_perf_ctrs - Read a CPU's performance feedback counters.
+>>>>>     * @cpunum: CPU from which to read counters.
+>>>>> @@ -1313,7 +1318,8 @@ int cppc_get_perf_ctrs(int cpunum, struct
+>>>>> cppc_perf_fb_ctrs *perf_fb_ctrs)
+>>>>>                   *ref_perf_reg, *ctr_wrap_reg;
+>>>>>           int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
+>>>>>           struct cppc_pcc_data *pcc_ss_data = NULL;
+>>>>> -       u64 delivered, reference, ref_perf, ctr_wrap_time;
+>>>>> +       u64 delivered = 0, reference = 0;
+>>>>> +       u64 ref_perf, ctr_wrap_time;
+>>>>>           int ret = 0, regs_in_pcc = 0;
+>>>>>
+>>>>>           if (!cpc_desc) {
+>>>>> @@ -1350,8 +1356,18 @@ int cppc_get_perf_ctrs(int cpunum, struct
+>>>>> cppc_perf_fb_ctrs *perf_fb_ctrs)
+>>>>>                   }
+>>>>>           }
+>>>>>
+>>>>> -       cpc_read(cpunum, delivered_reg, &delivered);
+>>>>> -       cpc_read(cpunum, reference_reg, &reference);
+>>>>> +       if (cpc_ffh_supported()) {
+>>>>> +               ret = cpc_read_arch_counters_on_cpu(cpunum,
+>>>>> &delivered, &reference);
+>>>>> +               if (ret) {
+>>>>> +                       pr_debug("read arch counters failed,
+>>>>> ret=%d.\n", ret);
+>>>>> +                       ret = 0;
+>>>>> +               }
+>>>>> +       }
+>>>> The above is surely not applicable to every platform using CPPC.  Also
+>>> cpc_ffh_supported is aimed to control only the platform supported FFH
+>>> to enter.
+>>> cpc_read_arch_counters_on_cpu is also needed to implemented by each
+>>> platform according to their require.
+> Well, exactly.
+>
+>>> Here just implement this interface for arm64.
+> So on x86 cpc_ffh_supported() returns true and
+> cpc_read_arch_counters_on_cpu() will do nothing, so it will always
+> fall back to using cpc_read().  That is not particularly
+> straightforward IMV.
+Understand you.
+But we have to do like this to be compatible with all platforms.
+I am thinking twice about cpc_ffh_supported().
+And I found that calling cpc_ffh_supported() here is redundant for ARM.
+Because counters_read_on_cpu() has verified if this CPU support AMU counter.
+What do you say we remove cpc_ffh_supported() here and directly call 
+this new architecture interface?
+>
+>>>> it looks like in the ARM64_WORKAROUND_2457168 enabled case it is just
+>>>> pointless overhead, because "reference" is always going to be 0 here
+>>>> then.
+>>> Right, it is always going to be 0 here for the
+>>> ARM64_WORKAROUND_2457168 enabled case .
+>>> But ARM64_WORKAROUND_2457168 is a macro releated to ARM.
+>>> It seems that it is not appropriate for this macro to appear this
+>>> common place for all platform, right?
+>>>
+>>>> Please clean that up.
+>>>>
+>>>>> +       if (!delivered || !reference) {
+>>>>> +               cpc_read(cpunum, delivered_reg, &delivered);
+>>>>> +               cpc_read(cpunum, reference_reg, &reference);
+>>>>> +       }
+>>>>> +
+>>>>>           cpc_read(cpunum, ref_perf_reg, &ref_perf);
+>>>>>
+>>>>>           /*
+>>>>> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+>>>>> index 6126c977ece0..07d4fd82d499 100644
+>>>>> --- a/include/acpi/cppc_acpi.h
+>>>>> +++ b/include/acpi/cppc_acpi.h
+>>>>> @@ -152,6 +152,7 @@ extern bool cpc_ffh_supported(void);
+>>>>>    extern bool cpc_supported_by_cpu(void);
+>>>>>    extern int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val);
+>>>>>    extern int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val);
+>>>>> +extern int cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered,
+>>>>> u64 *reference);
+>>>>>    extern int cppc_get_epp_perf(int cpunum, u64 *epp_perf);
+>>>>>    extern int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls
+>>>>> *perf_ctrls, bool enable);
+>>>>>    extern int cppc_get_auto_sel_caps(int cpunum, struct
+>>>>> cppc_perf_caps *perf_caps);
+>>>>> @@ -209,6 +210,10 @@ static inline int cpc_write_ffh(int cpunum,
+>>>>> struct cpc_reg *reg, u64 val)
+>>>>>    {
+>>>>>           return -ENOTSUPP;
+>>>>>    }
+>>>>> +static inline int cpc_read_arch_counters_on_cpu(int cpu, u64
+>>>>> *delivered, u64 *reference)
+>>>>> +{
+>>>>> +       return -EOPNOTSUPP;
+>>>>> +}
+>>>>>    static inline int cppc_set_epp_perf(int cpu, struct
+>>>>> cppc_perf_ctrls *perf_ctrls, bool enable)
+>>>>>    {
+>>>>>           return -ENOTSUPP;
+>>>>> --
+>>>> .
+>>> _______________________________________________
+>>> linux-arm-kernel mailing list
+>>> linux-arm-kernel@lists.infradead.org
+>>> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> .
 
