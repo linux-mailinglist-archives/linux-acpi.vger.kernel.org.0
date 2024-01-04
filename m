@@ -1,236 +1,167 @@
-Return-Path: <linux-acpi+bounces-2717-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2718-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A011282405A
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jan 2024 12:13:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3238240BD
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jan 2024 12:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35255282F0E
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jan 2024 11:13:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90C2B1F21FD7
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jan 2024 11:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9110F20DF0;
-	Thu,  4 Jan 2024 11:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D598F21119;
+	Thu,  4 Jan 2024 11:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="knP3uavG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E97210E3;
-	Thu,  4 Jan 2024 11:13:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6dbd87b706aso106450a34.0;
-        Thu, 04 Jan 2024 03:13:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704366790; x=1704971590;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KADDJtubP9xxZYN3kC3xy/rkpnjcsqHbF4q/GCStMls=;
-        b=GikRP3/Sat1zGEvez8PIrZSyOyRg1A/K2AZ5YFSmSa8ACKaZv7Zco/vEUzUzIzg86H
-         lowyKzuc4wkCcJABK4LNtUdTkleqkuiRVo968OvsiqmJDXfzXkDu2q6dfPU07DYJjawU
-         WQXKxb8Qbm1LB2AnUnJJISotMSFj3I9duVaHUI48gEiahemhddoqVU9nf2eL58YZPfLk
-         FfAFR7bWzNP1IXTSkcTed2sVtap6p2Olj7Qmv+x4PmK+jGdKe4H0WHJUaDvp2ZESSQy8
-         AlXuit84HiBiMUHfaB8Mm/Lk/mf0Ik7t3/LEVYMvuTdYuGbzPjtLheKMFBlXRfXTGPbE
-         Fnhw==
-X-Gm-Message-State: AOJu0YzedUhiSuyKaysIi+pzL9X4zF9zxmLDfy0mCqLt/Q4VxwGUxXCw
-	VnBTvtI1COe5xlTbxRK5GRyI9PZKXbBZaQys9u0=
-X-Google-Smtp-Source: AGHT+IFSyW8wbnoZ4SCVQ2MOTqO2FYzWiFceSrHjqeUYNzwfns8DQw+OB/LtOUVoO1vKs8nyOXs+OLtiSepvVSfkhvA=
-X-Received: by 2002:a4a:b3c2:0:b0:594:35b4:8a with SMTP id q2-20020a4ab3c2000000b0059435b4008amr840062ooo.0.1704366789882;
- Thu, 04 Jan 2024 03:13:09 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B9B21117;
+	Thu,  4 Jan 2024 11:34:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28144C433C8;
+	Thu,  4 Jan 2024 11:34:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704368092;
+	bh=2P/Mc4Boujf9+C81JhTvvl3flMRtd8Fdmy/qH4BFF3Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=knP3uavGDcmbaVzvhcK37L7HMxE3IxEifdUAoAK1EXKwu1Mr8Kwwkc3B3KR/aA6vq
+	 qfTF+4sh6PNmG4YLL6Sf8vObYJUdf939jt0AcboW3HHWn9TZHS9CtFBtpCbLn+eReJ
+	 ObtpD9yb/ybzVkfDxkutIAMpaykgXL4bHbkV8nD64r8npOclTTNwK4yf3+ToWy3cbU
+	 0PUkc2xQFmTiWpi1Ncy/ciEVUJzVueqb3RibvcglTlpzmF24HmcDKAGomt9/Cr6Tmc
+	 j5gCbrGiN9Ggi67IQGox+AeZKlnJTV/1vMDGfnhM1pq71m1HtORqvU+dR0SQ068QzT
+	 zmP5jBXzap12A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1rLLzt-008mUH-Ky;
+	Thu, 04 Jan 2024 11:34:49 +0000
+Date: Thu, 04 Jan 2024 11:34:48 +0000
+Message-ID: <86h6jt9vs7.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	Mark Rutland <mark.rutland@arm.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Fang Xiang <fangxiang3@xiaomi.com>,
+	Robert Moore <robert.moore@intel.com>
+Subject: Re: [PATCH v4 0/3] irqchip/gic-v3: Enable non-coherent GIC designs probing
+In-Reply-To: <CAJZ5v0gUBU=VL8E34sjROssoGNbLnhmUQVHGWT60hgBG_ufTHw@mail.gmail.com>
+References: <20230905104721.52199-1-lpieralisi@kernel.org>
+	<20231227110038.55453-1-lpieralisi@kernel.org>
+	<CAJZ5v0gUBU=VL8E34sjROssoGNbLnhmUQVHGWT60hgBG_ufTHw@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <4556052.LvFx2qVVIh@kreacher> <10409811.nUPlyArG6x@kreacher> <4eb9b38f-5364-466b-99fa-b2c42c1a4997@arm.com>
-In-Reply-To: <4eb9b38f-5364-466b-99fa-b2c42c1a4997@arm.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 4 Jan 2024 12:12:58 +0100
-Message-ID: <CAJZ5v0h=y0=Cd3PEKK8dvwJzbSt_6rzS84hzgrSrxTrDkA_5Ug@mail.gmail.com>
-Subject: Re: [PATCH v1 4/6] thermal: netlink: Drop thermal_notify_tz_trip_add/delete()
-To: Lukasz Luba <lukasz.luba@arm.com>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Linux PM <linux-pm@vger.kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
-	Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: rafael@kernel.org, lpieralisi@kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, mark.rutland@arm.com, robin.murphy@arm.com, fangxiang3@xiaomi.com, robert.moore@intel.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Jan 3, 2024 at 9:06=E2=80=AFPM Lukasz Luba <lukasz.luba@arm.com> wr=
-ote:
->
->
->
-> On 12/15/23 19:59, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Wed, 03 Jan 2024 13:43:16 +0000,
+"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+>=20
+> On Wed, Dec 27, 2023 at 12:00=E2=80=AFPM Lorenzo Pieralisi
+> <lpieralisi@kernel.org> wrote:
 > >
-> > Because thermal_notify_tz_trip_add/delete() are never used, drop them
-> > entirely along with the related code.
+> > This series is v4 of previous series:
 > >
-> > The addition or removal of trip points is not supported by the thermal
-> > core and is unlikely to be supported in the future, so it is also
-> > unlikely that these functions will ever be needed.
+> > v3: https://lore.kernel.org/all/20231006125929.48591-1-lpieralisi@kerne=
+l.org
+> > v2: https://lore.kernel.org/all/20230906094139.16032-1-lpieralisi@kerne=
+l.org
+> > v1: https://lore.kernel.org/all/20230905104721.52199-1-lpieralisi@kerne=
+l.org
 > >
-> > No intentional functional impact.
+> > v3 -> v4:
+> >         - Dropped patches [1-3], already merged
+> >         - Added Linuxized ACPICA changes accepted upstream
+> >         - Rebased against v6.7-rc3
 > >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > v2 -> v3:
+> >         - Added ACPICA temporary changes and ACPI changes to implement
+> >           ECR https://bugzilla.tianocore.org/show_bug.cgi?id=3D4557
+> >         - ACPI changes are for testing purposes - subject to ECR code
+> >           first approval
+> >
+> > v1 -> v2:
+> >         - Updated DT bindings as per feedback
+> >         - Updated patch[2] to use GIC quirks infrastructure
+> >
+> > Original cover letter
 > > ---
-> >   drivers/thermal/thermal_netlink.c |   33 +---------------------------=
------
-> >   drivers/thermal/thermal_netlink.h |   14 --------------
-> >   2 files changed, 1 insertion(+), 46 deletions(-)
+> > The GICv3 architecture specifications provide a means for the
+> > system programmer to set the shareability and cacheability
+> > attributes the GIC components (redistributors and ITSes) use
+> > to drive memory transactions.
 > >
-> > Index: linux-pm/drivers/thermal/thermal_netlink.c
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > --- linux-pm.orig/drivers/thermal/thermal_netlink.c
-> > +++ linux-pm/drivers/thermal/thermal_netlink.c
-> > @@ -135,7 +135,7 @@ static int thermal_genl_event_tz_trip_up
-> >       return 0;
-> >   }
+> > Albeit the architecture give control over shareability/cacheability
+> > memory transactions attributes (and barriers), it is allowed to
+> > connect the GIC interconnect ports to non-coherent memory ports
+> > on the interconnect, basically tying off shareability/cacheability
+> > "wires" and de-facto making the redistributors and ITSes non-coherent
+> > memory observers.
 > >
-> > -static int thermal_genl_event_tz_trip_add(struct param *p)
-> > +static int thermal_genl_event_tz_trip_change(struct param *p)
-> >   {
-> >       if (nla_put_u32(p->msg, THERMAL_GENL_ATTR_TZ_ID, p->tz_id) ||
-> >           nla_put_u32(p->msg, THERMAL_GENL_ATTR_TZ_TRIP_ID, p->trip_id)=
- ||
-> > @@ -147,15 +147,6 @@ static int thermal_genl_event_tz_trip_ad
-> >       return 0;
-> >   }
+> > This series aims at starting a discussion over a possible solution
+> > to this problem, by adding to the GIC device tree bindings the
+> > standard dma-noncoherent property. The GIC driver uses the property
+> > to force the redistributors and ITSes shareability attributes to
+> > non-shareable, which consequently forces the driver to use CMOs
+> > on GIC memory tables.
 > >
-> > -static int thermal_genl_event_tz_trip_delete(struct param *p)
-> > -{
-> > -     if (nla_put_u32(p->msg, THERMAL_GENL_ATTR_TZ_ID, p->tz_id) ||
-> > -         nla_put_u32(p->msg, THERMAL_GENL_ATTR_TZ_TRIP_ID, p->trip_id)=
-)
-> > -             return -EMSGSIZE;
-> > -
-> > -     return 0;
-> > -}
-> > -
-> >   static int thermal_genl_event_cdev_add(struct param *p)
-> >   {
-> >       if (nla_put_string(p->msg, THERMAL_GENL_ATTR_CDEV_NAME,
-> > @@ -245,9 +236,6 @@ int thermal_genl_event_tz_disable(struct
-> >   int thermal_genl_event_tz_trip_down(struct param *p)
-> >       __attribute__((alias("thermal_genl_event_tz_trip_up")));
+> > On ARM DT DMA is default non-coherent, so the GIC driver can't rely
+> > on the generic DT dma-coherent/non-coherent property management layer
+> > (of_dma_is_coherent()) which would default all GIC designs in the field
+> > as non-coherent; it has to rely on ad-hoc dma-noncoherent property hand=
+ling.
 > >
-> > -int thermal_genl_event_tz_trip_change(struct param *p)
-> > -     __attribute__((alias("thermal_genl_event_tz_trip_add")));
-> > -
-> >   static cb_t event_cb[] =3D {
-> >       [THERMAL_GENL_EVENT_TZ_CREATE]          =3D thermal_genl_event_tz=
-_create,
-> >       [THERMAL_GENL_EVENT_TZ_DELETE]          =3D thermal_genl_event_tz=
-_delete,
-> > @@ -256,8 +244,6 @@ static cb_t event_cb[] =3D {
-> >       [THERMAL_GENL_EVENT_TZ_TRIP_UP]         =3D thermal_genl_event_tz=
-_trip_up,
-> >       [THERMAL_GENL_EVENT_TZ_TRIP_DOWN]       =3D thermal_genl_event_tz=
-_trip_down,
-> >       [THERMAL_GENL_EVENT_TZ_TRIP_CHANGE]     =3D thermal_genl_event_tz=
-_trip_change,
-> > -     [THERMAL_GENL_EVENT_TZ_TRIP_ADD]        =3D thermal_genl_event_tz=
-_trip_add,
-> > -     [THERMAL_GENL_EVENT_TZ_TRIP_DELETE]     =3D thermal_genl_event_tz=
-_trip_delete,
-> >       [THERMAL_GENL_EVENT_CDEV_ADD]           =3D thermal_genl_event_cd=
-ev_add,
-> >       [THERMAL_GENL_EVENT_CDEV_DELETE]        =3D thermal_genl_event_cd=
-ev_delete,
-> >       [THERMAL_GENL_EVENT_CDEV_STATE_UPDATE]  =3D thermal_genl_event_cd=
-ev_state_update,
-> > @@ -350,23 +336,6 @@ int thermal_notify_tz_trip_up(const stru
-> >       return thermal_genl_send_event(THERMAL_GENL_EVENT_TZ_TRIP_UP, &p)=
-;
-> >   }
+> > When a consistent approach is agreed upon for DT an equivalent binding =
+will
+> > be put forward for ACPI based systems.
 > >
-> > -int thermal_notify_tz_trip_add(int tz_id, int trip_id, int trip_type,
-> > -                            int trip_temp, int trip_hyst)
-> > -{
-> > -     struct param p =3D { .tz_id =3D tz_id, .trip_id =3D trip_id,
-> > -                        .trip_type =3D trip_type, .trip_temp =3D trip_=
-temp,
-> > -                        .trip_hyst =3D trip_hyst };
-> > -
-> > -     return thermal_genl_send_event(THERMAL_GENL_EVENT_TZ_TRIP_ADD, &p=
-);
-> > -}
-> > -
-> > -int thermal_notify_tz_trip_delete(int tz_id, int trip_id)
-> > -{
-> > -     struct param p =3D { .tz_id =3D tz_id, .trip_id =3D trip_id };
-> > -
-> > -     return thermal_genl_send_event(THERMAL_GENL_EVENT_TZ_TRIP_DELETE,=
- &p);
-> > -}
-> > -
-> >   int thermal_notify_tz_trip_change(const struct thermal_zone_device *t=
-z,
-> >                                 const struct thermal_trip *trip)
-> >   {
-> > Index: linux-pm/drivers/thermal/thermal_netlink.h
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > --- linux-pm.orig/drivers/thermal/thermal_netlink.h
-> > +++ linux-pm/drivers/thermal/thermal_netlink.h
-> > @@ -22,9 +22,6 @@ int thermal_notify_tz_trip_down(const st
-> >                               const struct thermal_trip *trip);
-> >   int thermal_notify_tz_trip_up(const struct thermal_zone_device *tz,
-> >                             const struct thermal_trip *trip);
-> > -int thermal_notify_tz_trip_delete(int tz_id, int id);
-> > -int thermal_notify_tz_trip_add(int tz_id, int id, int type,
-> > -                            int temp, int hyst);
-> >   int thermal_notify_tz_trip_change(const struct thermal_zone_device *t=
-z,
-> >                                 const struct thermal_trip *trip);
-> >   int thermal_notify_cdev_state_update(int cdev_id, int state);
-> > @@ -71,17 +68,6 @@ static inline int thermal_notify_tz_trip
-> >   {
-> >       return 0;
-> >   }
-> > -
-> > -static inline int thermal_notify_tz_trip_delete(int tz_id, int id)
-> > -{
-> > -     return 0;
-> > -}
-> > -
-> > -static inline int thermal_notify_tz_trip_add(int tz_id, int id, int ty=
-pe,
-> > -                                          int temp, int hyst)
-> > -{
-> > -     return 0;
-> > -}
+> > Lorenzo Pieralisi (3):
+> >   ACPICA: MADT: Add GICC online capable bit handling
+> >   ACPICA: MADT: Add new MADT GICC/GICR/ITS non-coherent flags handling
+> >   irqchip/gic-v3: Enable non-coherent redistributors/ITSes ACPI probing
 > >
-> >   static inline int thermal_notify_tz_trip_change(const struct thermal_=
-zone_device *tz,
-> >                                               const struct thermal_trip=
- *trip)
+> >  drivers/acpi/processor_core.c    | 21 +++++++++++++++++++++
+> >  drivers/irqchip/irq-gic-common.h |  8 ++++++++
+> >  drivers/irqchip/irq-gic-v3-its.c |  4 ++++
+> >  drivers/irqchip/irq-gic-v3.c     |  9 +++++++++
+> >  include/acpi/actbl2.h            | 12 ++++++++++--
+> >  include/linux/acpi.h             |  3 +++
+> >  6 files changed, 55 insertions(+), 2 deletions(-)
 > >
-> >
-> >
->
-> We could also add a comment that these two
-> (THERMAL_GENL_EVENT_TZ_TRIP_ADD/DELETE) in the uapi header are obsolete.
+> > --
+>=20
+> I can apply the first 2 patches, but I would need an ACK for the 3rd one.
+>=20
+> Alternatively, feel free to add
+>=20
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>=20
+> to the first 2 patches and route them via ARM64.
 
-I'd rather say they are placeholders for message types that have never
-been sent by the kernel - and nothing changes in that respect after
-the $subject patch.  They have been unused so far and they are still
-unused (it is easier to figure that out through code inspection,
-however).
+Thanks for that. I have some comments on the third patch, which I'd
+like to see addressed beforehand. This is probably all 6.9 material
+anyway (nobody is affected by this so far).
 
-And even though it is unlikely that they will be used in the future,
-it is not entirely unimaginable.
+	M.
 
-> Other than that this looks good.
->
-> Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-
-Thanks a lot for all of the reviews!
+--=20
+Without deviation from the norm, progress is not possible.
 
