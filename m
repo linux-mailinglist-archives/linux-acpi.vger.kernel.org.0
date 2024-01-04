@@ -1,149 +1,210 @@
-Return-Path: <linux-acpi+bounces-2711-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2712-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837A6823AD6
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jan 2024 03:48:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442F0823C3C
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jan 2024 07:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A31F81C20F0D
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jan 2024 02:48:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAF1A1F24FFF
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jan 2024 06:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B6E4C90;
-	Thu,  4 Jan 2024 02:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="PHZgtxPd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF4A1B28D;
+	Thu,  4 Jan 2024 06:26:52 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BCE1FBB;
-	Thu,  4 Jan 2024 02:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from HP-EliteBook-x360-830-G8-Notebook-PC.. (unknown [10.101.196.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id A8B123F722;
-	Thu,  4 Jan 2024 02:48:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1704336511;
-	bh=qJZEPxVyP2sE0E3LLTPNVpWVMnWfCSJTXOSyhRDwibE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-	b=PHZgtxPdoqTnO98HMsw4+UrL6nE121jBQPBCtOT99H61V8UGfRussxW8hXnZvP+T+
-	 x53XaYBR1hJAxqcSpTNlSwgqxFx1jxX1rOO5x/YvKm7vsKJIUU6Jh61E1zbMsggHOz
-	 rzNPVKwOWT+LLmZsxr2LYzBkbBlMEShFF8+uu9teXt87TvmBHS7uomjB0yyx02VVIq
-	 w2mT7ZtJGDAY9EZ9mexN9UZagH0wARM6coGHE5BkdQvaSGl59FdUsrj2XWW2JdTuy3
-	 8bsPfci6L7smeta59ma/s1YVFaN7Wg0mmwonrxHDVT78YOcQ099SqBvFi1zDsXyeKA
-	 nCpYg7bNzQ7AQ==
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-To: jdelvare@suse.com,
-	linux@roeck-us.net
-Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH v3 1/2] ACPI: IPMI: Add helper to wait for when SMI is selected
-Date: Thu,  4 Jan 2024 10:48:18 +0800
-Message-Id: <20240104024819.848979-1-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0BF1CA98
+	for <linux-acpi@vger.kernel.org>; Thu,  4 Jan 2024 06:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1704349605-1eb14e0c7d0f330001-I98ny2
+Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx2.zhaoxin.com with ESMTP id RGkaLamIqvszrLYd (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Thu, 04 Jan 2024 14:26:45 +0800 (CST)
+X-Barracuda-Envelope-From: TonyWWang-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX2.zhaoxin.com
+ (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 4 Jan
+ 2024 14:26:45 +0800
+Received: from [10.32.65.162] (10.32.65.162) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 4 Jan
+ 2024 14:26:43 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Message-ID: <8cae91d2-81d8-4d06-8e4b-c2c227f4eac9@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.32.65.162
+Date: Thu, 4 Jan 2024 14:26:36 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] ACPI: cpufreq: Add ITMT support when CPPC enabled for
+ Zhaoxin CPUs
+Content-Language: en-US
+X-ASG-Orig-Subj: Re: [PATCH 3/3] ACPI: cpufreq: Add ITMT support when CPPC enabled for
+ Zhaoxin CPUs
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <lenb@kernel.org>, <robert.moore@intel.com>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
+	<tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<mcgrof@kernel.org>, <peterz@infradead.org>, <j.granados@samsung.com>,
+	<ricardo.neri-calderon@linux.intel.com>, <viresh.kumar@linaro.org>,
+	<linux-pm@vger.kernel.org>, <CobeChen@zhaoxin.com>, <TimGuo@zhaoxin.com>,
+	<LeoLiu-oc@zhaoxin.com>, <LindaChai@zhaoxin.com>
+References: <20231228075705.26652-1-TonyWWang-oc@zhaoxin.com>
+ <20231228075705.26652-4-TonyWWang-oc@zhaoxin.com>
+ <CAJZ5v0hEd-NV5WoRPOZgZwxNS6M=TKcw7DpDUM9MWFYAaa+1Mw@mail.gmail.com>
+From: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+In-Reply-To: <CAJZ5v0hEd-NV5WoRPOZgZwxNS6M=TKcw7DpDUM9MWFYAaa+1Mw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ZXSHCAS2.zhaoxin.com (10.28.252.162) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
+X-Barracuda-Start-Time: 1704349605
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 5179
+X-Barracuda-BRTS-Status: 0
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.118962
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
 
-The function of acpi_power_meter module on Dell system requires IPMI
-handler is installed and SMI is selected.
 
-So add a helper to let acpi_power_meter know when IPMI handler and SMI
-are ready.
+On 2024/1/3 23:37, Rafael J. Wysocki wrote:
+> On Thu, Dec 28, 2023 at 8:57 AM Tony W Wang-oc <TonyWWang-oc@zhaoxin.com> wrote:
+>> For Zhaoxin CPUs, the cores' highest frequencies may be different, which
+>> means that cores may run at different max frequencies,
+>>
+>> According to ACPI-spec6 chapter 8.4.7, the per-core highest frequency
+>> value can be obtained via cppc.
+>>
+>> The core with the higher frequency have better performance, which can be
+>> called as preferred core. And better performance can be achieved by
+>> making the scheduler to run tasks on these preferred cores.
+>>
+>> The cpufreq driver can use the highest frequency value as the prioriy of
+>> core to make the scheduler try to get better performace. More specifically,
+>> in the acpi-cpufreq driver use cppc_get_highest_perf() to get highest
+>> frequency value of each core, use sched_set_itmt_core_prio() to set
+>> highest frequency value as core priority, and use sched_set_itmt_support()
+>> provided by ITMT to tell the scheduler to favor on the preferred cores.
+>>
+>> Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
+>> ---
+>>   drivers/cpufreq/acpi-cpufreq.c | 56 +++++++++++++++++++++++++++++++++-
+>>   1 file changed, 55 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
+>> index 37f1cdf46d29..f4c1ff9e4bb0 100644
+>> --- a/drivers/cpufreq/acpi-cpufreq.c
+>> +++ b/drivers/cpufreq/acpi-cpufreq.c
+>> @@ -663,8 +663,56 @@ static u64 get_max_boost_ratio(unsigned int cpu)
+>>
+>>          return div_u64(highest_perf << SCHED_CAPACITY_SHIFT, nominal_perf);
+>>   }
+>> +
+>> +/* The work item is needed to avoid CPU hotplug locking issues */
+>> +static void sched_itmt_work_fn(struct work_struct *work)
+>> +{
+>> +       sched_set_itmt_support();
+>> +}
+>> +
+>> +static DECLARE_WORK(sched_itmt_work, sched_itmt_work_fn);
+>> +
+>> +static void set_itmt_prio(int cpu)
+>> +{
+>> +       static bool cppc_highest_perf_diff;
+>> +       static struct cpumask core_prior_mask;
+>> +       u64 highest_perf;
+>> +       static u64 max_highest_perf = 0, min_highest_perf = U64_MAX;
+>> +       int ret;
+>> +
+>> +       ret = cppc_get_highest_perf(cpu, &highest_perf);
+>> +       if (ret)
+>> +               return;
+>> +
+>> +       sched_set_itmt_core_prio(highest_perf, cpu);
+>> +       cpumask_set_cpu(cpu, &core_prior_mask);
+>> +
+>> +       if (max_highest_perf <= min_highest_perf) {
+>> +               if (highest_perf > max_highest_perf)
+>> +                       max_highest_perf = highest_perf;
+>> +
+>> +               if (highest_perf < min_highest_perf)
+>> +                       min_highest_perf = highest_perf;
+>> +
+>> +               if (max_highest_perf > min_highest_perf) {
+>> +                       /*
+>> +                        * This code can be run during CPU online under the
+>> +                        * CPU hotplug locks, so sched_set_itmt_support()
+>> +                        * cannot be called from here.  Queue up a work item
+>> +                        * to invoke it.
+>> +                        */
+>> +                       cppc_highest_perf_diff = true;
+>> +               }
+>> +       }
+>> +
+>> +       if (cppc_highest_perf_diff && cpumask_equal(&core_prior_mask, cpu_online_mask)) {
+>> +               pr_debug("queue a work to set itmt enabled\n");
+>> +               schedule_work(&sched_itmt_work);
+>> +       }
+>> +}
+>>   #else
+>>   static inline u64 get_max_boost_ratio(unsigned int cpu) { return 0; }
+>> +static void set_itmt_prio(int cpu) { }
+>>   #endif
+>>
+>>   static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
+>> @@ -677,7 +725,7 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
+>>          unsigned int valid_states = 0;
+>>          unsigned int result = 0;
+>>          u64 max_boost_ratio;
+>> -       unsigned int i;
+>> +       unsigned int i, j;
+>>   #ifdef CONFIG_SMP
+>>          static int blacklisted;
+>>   #endif
+>> @@ -742,6 +790,12 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
+>>          }
+>>   #endif
+>>
+>> +       if (c->x86_vendor == X86_VENDOR_CENTAUR || c->x86_vendor == X86_VENDOR_ZHAOXIN) {
+>> +               for_each_cpu(j, policy->cpus) {
+>> +                       set_itmt_prio(j);
+>> +               }
+>> +       }
+>> +
+>>          /* capability check */
+>>          if (perf->state_count <= 1) {
+>>                  pr_debug("No P-States\n");
+>> --
+> Have you considered using the CPPC cpufreq driver on those platforms?
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
-v3:
- - New patch.
 
- drivers/acpi/acpi_ipmi.c | 17 ++++++++++++++++-
- include/acpi/acpi_bus.h  |  5 +++++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+Thanks for your reply.
+The ACPI cpufreq driver is used by default on Zhaoxin platforms. We added
+Zhaoxin preferred core support and did related tests based on the ACPI
+cpufreq driver.
+The CPPC cpufreq driver is currently used on the ARM platforms. We have
+not yet considered using the CPPC cpufreq driver to support the Zhaoxin
+preferred core feature, and we also unclear how well the CPPC cpufreq
+driver works for the X86 platform.
+At the moment, it seems that it is more appropriate to add Zhaoxin preferred
+core support to the ACPI cpufreq Driver.
 
-diff --git a/drivers/acpi/acpi_ipmi.c b/drivers/acpi/acpi_ipmi.c
-index 0555f68c2dfd..54862cab7171 100644
---- a/drivers/acpi/acpi_ipmi.c
-+++ b/drivers/acpi/acpi_ipmi.c
-@@ -23,6 +23,8 @@ MODULE_LICENSE("GPL");
- #define IPMI_TIMEOUT			(5000)
- #define ACPI_IPMI_MAX_MSG_LENGTH	64
- 
-+static struct completion smi_selected;
-+
- struct acpi_ipmi_device {
- 	/* the device list attached to driver_data.ipmi_devices */
- 	struct list_head head;
-@@ -463,8 +465,10 @@ static void ipmi_register_bmc(int iface, struct device *dev)
- 		if (temp->handle == handle)
- 			goto err_lock;
- 	}
--	if (!driver_data.selected_smi)
-+	if (!driver_data.selected_smi) {
- 		driver_data.selected_smi = ipmi_device;
-+		complete(&smi_selected);
-+	}
- 	list_add_tail(&ipmi_device->head, &driver_data.ipmi_devices);
- 	mutex_unlock(&driver_data.ipmi_lock);
- 
-@@ -578,10 +582,21 @@ acpi_ipmi_space_handler(u32 function, acpi_physical_address address,
- 	return status;
- }
- 
-+int acpi_wait_for_acpi_ipmi(void)
-+{
-+	long ret;
-+
-+	ret = wait_for_completion_interruptible_timeout(&smi_selected, 2 * HZ);
-+
-+	return ret > 0 ? 0 : -ETIMEDOUT;
-+}
-+EXPORT_SYMBOL_GPL(acpi_wait_for_acpi_ipmi);
-+
- static int __init acpi_ipmi_init(void)
- {
- 	int result;
- 	acpi_status status;
-+	init_completion(&smi_selected);
- 
- 	if (acpi_disabled)
- 		return 0;
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index 1216d72c650f..afa6e4d4bf46 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -821,11 +821,16 @@ static inline void acpi_put_acpi_dev(struct acpi_device *adev)
- {
- 	acpi_dev_put(adev);
- }
-+
-+int acpi_wait_for_acpi_ipmi(void);
-+
- #else	/* CONFIG_ACPI */
- 
- static inline int register_acpi_bus_type(void *bus) { return 0; }
- static inline int unregister_acpi_bus_type(void *bus) { return 0; }
- 
-+static inline int acpi_wait_for_acpi_ipmi(void) { return 0; }
-+
- #endif				/* CONFIG_ACPI */
- 
- #endif /*__ACPI_BUS_H__*/
--- 
-2.34.1
+Sincerely
+TonyWWangoc
 
 
