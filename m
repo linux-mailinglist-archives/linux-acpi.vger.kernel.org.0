@@ -1,333 +1,293 @@
-Return-Path: <linux-acpi+bounces-2734-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2735-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B384E824EE9
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jan 2024 08:05:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AE8825331
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jan 2024 13:02:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E081B23154
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jan 2024 07:05:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B61D328537E
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Jan 2024 12:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00EF66130;
-	Fri,  5 Jan 2024 07:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E902CCC4;
+	Fri,  5 Jan 2024 12:02:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SO9Bsefo"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F254F1DDD9;
-	Fri,  5 Jan 2024 07:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4T5vZg2dg0z1Q74Q;
-	Fri,  5 Jan 2024 15:04:11 +0800 (CST)
-Received: from kwepemm600004.china.huawei.com (unknown [7.193.23.242])
-	by mail.maildlp.com (Postfix) with ESMTPS id EC8C61800B8;
-	Fri,  5 Jan 2024 15:04:48 +0800 (CST)
-Received: from [10.67.121.59] (10.67.121.59) by kwepemm600004.china.huawei.com
- (7.193.23.242) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 5 Jan
- 2024 15:04:48 +0800
-Message-ID: <d0f47e9d-6a58-8b46-89be-b3182abb69f0@huawei.com>
-Date: Fri, 5 Jan 2024 15:04:47 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770962CCBB;
+	Fri,  5 Jan 2024 12:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704456122; x=1735992122;
+  h=date:from:to:cc:subject:message-id;
+  bh=tgEzi/vx3qRRs+7/mhSmcgopQO/Owc77kON5raOul7M=;
+  b=SO9Bsefo7fGWKtwD/vGixAwgGK7luFsxf69spZdpmLt4j/35+H2rsuUG
+   PN7RYh951a5CdyUjlZMpp5RSkYBRHwFT7aOkrVvm0jJTQGKxYP8V5tswe
+   1bidhaUG75j5L8SYQc6RTv+eITbK+1YLVrk7OoqnUWTCmkTjFmJqeavsv
+   c++i4QayzXLPOpUgpch64jSli8UzBi0o4BqonPStfU+puzD55Cfh3EePP
+   AbLv3I8RNi6h7WUFLYL8jfu/uQBZWdvRMVvwz5iB9onpZhTf09WzhxCmz
+   aKjsGr1qUE0iLVNt93WeU2nZGZE69aXxXUdHZWbr2BeSdjYv+VOYl/1FM
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="397214207"
+X-IronPort-AV: E=Sophos;i="6.04,333,1695711600"; 
+   d="scan'208";a="397214207"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2024 04:02:00 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="773832386"
+X-IronPort-AV: E=Sophos;i="6.04,333,1695711600"; 
+   d="scan'208";a="773832386"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by orsmga007.jf.intel.com with ESMTP; 05 Jan 2024 04:01:58 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rLitf-0001CA-0g;
+	Fri, 05 Jan 2024 12:01:55 +0000
+Date: Fri, 05 Jan 2024 20:00:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 92626c145ac3f7688020cc855716febabc1d9a86
+Message-ID: <202401052057.CPnMI5Jm-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH] cpufreq: CPPC: Resolve the large frequency discrepancy
- from cpuinfo_cur_freq
-To: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-CC: Ionela Voinescu <ionela.voinescu@arm.com>, <linux-kernel@vger.kernel.org>,
-	<linux-pm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<rafael@kernel.org>, <beata.michalska@arm.com>, <sumitg@nvidia.com>,
-	<zengheng4@huawei.com>, <yang@os.amperecomputing.com>, <will@kernel.org>,
-	<sudeep.holla@arm.com>, <liuyonglong@huawei.com>, <zhanjie9@hisilicon.com>,
-	<lihuisong@huawei.com>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>
-References: <20231212072617.14756-1-lihuisong@huawei.com>
- <ZZWfJOsDlEXWYHA5@arm.com> <9428a1ed-ba4d-1fe6-63e8-11e152bf1f09@huawei.com>
- <lnocwcitdbmgcyhd2dlczgdlhtfw4pfot2br2i3hqscnvr3xgq@nuxlauxum3nr>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <lnocwcitdbmgcyhd2dlczgdlhtfw4pfot2br2i3hqscnvr3xgq@nuxlauxum3nr>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm600004.china.huawei.com (7.193.23.242)
 
-Hi Vanshi,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 92626c145ac3f7688020cc855716febabc1d9a86  Merge branch 'thermal-core' into bleeding-edge
 
-在 2024/1/5 8:48, Vanshidhar Konda 写道:
-> On Thu, Jan 04, 2024 at 05:36:51PM +0800, lihuisong (C) wrote:
->>
->> 在 2024/1/4 1:53, Ionela Voinescu 写道:
->>> Hi,
->>>
->>> On Tuesday 12 Dec 2023 at 15:26:17 (+0800), Huisong Li wrote:
->>>> Many developers found that the cpu current frequency is greater than
->>>> the maximum frequency of the platform, please see [1], [2] and [3].
->>>>
->>>> In the scenarios with high memory access pressure, the patch [1] has
->>>> proved the significant latency of cpc_read() which is used to obtain
->>>> delivered and reference performance counter cause an absurd frequency.
->>>> The sampling interval for this counters is very critical and is 
->>>> expected
->>>> to be equal. However, the different latency of cpc_read() has a direct
->>>> impact on their sampling interval.
->>>>
->>> Would this [1] alternative solution work for you?
->> It would work for me AFAICS.
->> Because the "arch_freq_scale" is also from AMU core and constant 
->> counter, and read together.
->> But, from their discuss line, it seems that there are some tricky 
->> points to clarify or consider.
->
-> I think the changes in [1] would work better when CPUs may be idle. 
-> With this
-> patch we would have to wake any core that is in idle state to read the 
-> AMU
-> counters. Worst case, if core 0 is trying to read the CPU frequency of 
-> all
-> cores, it may need to wake up all the other cores to read the AMU 
-> counters.
- From the approach in [1], if all CPUs (one or more cores) under one 
-policy are idle, they still cannot be obtained the CPU frequency, right?
-In this case, the [1] API will return 0 and have to back to call 
-cpufreq_driver->get() for cpuinfo_cur_freq.
-Then we still need to face the issue this patch mentioned.
-> For systems with 128 cores or more, this could be very expensive and 
-> happen
-> very frequently.
->
-> AFAICS, the approach in [1] would avoid this cost.
-But the CPU frequency is just an average value for the last tick period 
-instead of the current one the CPU actually runs at.
-In addition, there are some conditions to use 'arch_freq_scale' in this 
-approach.
-So I'm not sure if this approach can entirely cover the frequency 
-discrepancy issue.
+Warning ids grouped by kconfigs:
 
-/Huisong
+gcc_recent_errors
+|-- s390-allmodconfig
+|   |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-callbacks-busymod.o
+|   |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-callbacks-demo.o
+|   |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-callbacks-mod.o
+|   |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-sample.o
+|   |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-shadow-fix1.o
+|   `-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-shadow-fix2.o
+`-- s390-allyesconfig
+    |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-callbacks-busymod.o
+    |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-callbacks-demo.o
+    |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-callbacks-mod.o
+    |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-sample.o
+    |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-shadow-fix1.o
+    `-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-shadow-fix2.o
+clang_recent_errors
+|-- x86_64-allmodconfig
+|   |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-callbacks-busymod.o
+|   |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-callbacks-demo.o
+|   |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-callbacks-mod.o
+|   |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-sample.o
+|   |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-shadow-fix1.o
+|   `-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-shadow-fix2.o
+`-- x86_64-allyesconfig
+    |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-callbacks-busymod.o
+    |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-callbacks-demo.o
+    |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-callbacks-mod.o
+    |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-sample.o
+    |-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-shadow-fix1.o
+    `-- WARNING:modpost:missing-MODULE_DESCRIPTION()-in-samples-livepatch-livepatch-shadow-fix2.o
 
->>>
->>> [1] 
->>> https://lore.kernel.org/lkml/20231127160838.1403404-1-beata.michalska@arm.com/
->>>
->>> Thanks,
->>> Ionela.
->>>
->>>> This patch adds a interface, cpc_read_arch_counters_on_cpu, to read
->>>> delivered and reference performance counter together. According to my
->>>> test[4], the discrepancy of cpu current frequency in the scenarios 
->>>> with
->>>> high memory access pressure is lower than 0.2% by stress-ng 
->>>> application.
->>>>
->>>> [1] 
->>>> https://lore.kernel.org/all/20231025093847.3740104-4-zengheng4@huawei.com/
->>>> [2] 
->>>> https://lore.kernel.org/all/20230328193846.8757-1-yang@os.amperecomputing.com/
->>>> [3] 
->>>> https://lore.kernel.org/all/20230418113459.12860-7-sumitg@nvidia.com/
->>>>
->>>> [4] My local test:
->>>> The testing platform enable SMT and include 128 logical CPU in total,
->>>> and CPU base frequency is 2.7GHz. Reading "cpuinfo_cur_freq" for each
->>>> physical core on platform during the high memory access pressure from
->>>> stress-ng, and the output is as follows:
->>>>   0: 2699133     2: 2699942     4: 2698189     6: 2704347
->>>>   8: 2704009    10: 2696277    12: 2702016    14: 2701388
->>>>  16: 2700358    18: 2696741    20: 2700091    22: 2700122
->>>>  24: 2701713    26: 2702025    28: 2699816    30: 2700121
->>>>  32: 2700000    34: 2699788    36: 2698884    38: 2699109
->>>>  40: 2704494    42: 2698350    44: 2699997    46: 2701023
->>>>  48: 2703448    50: 2699501    52: 2700000    54: 2699999
->>>>  56: 2702645    58: 2696923    60: 2697718    62: 2700547
->>>>  64: 2700313    66: 2700000    68: 2699904    70: 2699259
->>>>  72: 2699511    74: 2700644    76: 2702201    78: 2700000
->>>>  80: 2700776    82: 2700364    84: 2702674    86: 2700255
->>>>  88: 2699886    90: 2700359    92: 2699662    94: 2696188
->>>>  96: 2705454    98: 2699260   100: 2701097   102: 2699630
->>>> 104: 2700463   106: 2698408   108: 2697766   110: 2701181
->>>> 112: 2699166   114: 2701804   116: 2701907   118: 2701973
->>>> 120: 2699584   122: 2700474   124: 2700768   126: 2701963
->>>>
->>>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
->>>> ---
->>>>  arch/arm64/kernel/topology.c | 43 
->>>> ++++++++++++++++++++++++++++++++++--
->>>>  drivers/acpi/cppc_acpi.c     | 22 +++++++++++++++---
->>>>  include/acpi/cppc_acpi.h     |  5 +++++
->>>>  3 files changed, 65 insertions(+), 5 deletions(-)
->>>>
->>>> diff --git a/arch/arm64/kernel/topology.c 
->>>> b/arch/arm64/kernel/topology.c
->>>> index 7d37e458e2f5..c3122154d738 100644
->>>> --- a/arch/arm64/kernel/topology.c
->>>> +++ b/arch/arm64/kernel/topology.c
->>>> @@ -299,6 +299,11 @@ core_initcall(init_amu_fie);
->>>>  #ifdef CONFIG_ACPI_CPPC_LIB
->>>>  #include <acpi/cppc_acpi.h>
->>>> +struct amu_counters {
->>>> +    u64 corecnt;
->>>> +    u64 constcnt;
->>>> +};
->>>> +
->>>>  static void cpu_read_corecnt(void *val)
->>>>  {
->>>>      /*
->>>> @@ -322,8 +327,27 @@ static void cpu_read_constcnt(void *val)
->>>>                0UL : read_constcnt();
->>>>  }
->>>> +static void cpu_read_amu_counters(void *data)
->>>> +{
->>>> +    struct amu_counters *cnt = (struct amu_counters *)data;
->>>> +
->>>> +    /*
->>>> +     * The running time of the this_cpu_has_cap() might have a 
->>>> couple of
->>>> +     * microseconds and is significantly increased to tens of 
->>>> microseconds.
->>>> +     * But AMU core and constant counter need to be read togeter 
->>>> without any
->>>> +     * time interval to reduce the calculation discrepancy using 
->>>> this counters.
->>>> +     */
->>>> +    if (this_cpu_has_cap(ARM64_WORKAROUND_2457168)) {
->>>> +        cnt->corecnt = read_corecnt();
->>>> +        cnt->constcnt = 0;
->>>> +    } else {
->>>> +        cnt->corecnt = read_corecnt();
->>>> +        cnt->constcnt = read_constcnt();
->>>> +    }
->>>> +}
->>>> +
->>>>  static inline
->>>> -int counters_read_on_cpu(int cpu, smp_call_func_t func, u64 *val)
->>>> +int counters_read_on_cpu(int cpu, smp_call_func_t func, void *data)
->>>>  {
->>>>      /*
->>>>       * Abort call on counterless CPU or when interrupts are
->>>> @@ -335,7 +359,7 @@ int counters_read_on_cpu(int cpu, 
->>>> smp_call_func_t func, u64 *val)
->>>>      if (WARN_ON_ONCE(irqs_disabled()))
->>>>          return -EPERM;
->>>> -    smp_call_function_single(cpu, func, val, 1);
->>>> +    smp_call_function_single(cpu, func, data, 1);
->>>>      return 0;
->>>>  }
->>>> @@ -364,6 +388,21 @@ bool cpc_ffh_supported(void)
->>>>      return true;
->>>>  }
->>>> +int cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered, u64 
->>>> *reference)
->>>> +{
->>>> +    struct amu_counters cnts = {0};
->>>> +    int ret;
->>>> +
->>>> +    ret = counters_read_on_cpu(cpu, cpu_read_amu_counters, &cnts);
->>>> +    if (ret)
->>>> +        return ret;
->>>> +
->>>> +    *delivered = cnts.corecnt;
->>>> +    *reference = cnts.constcnt;
->>>> +
->>>> +    return 0;
->>>> +}
->>>> +
->>>>  int cpc_read_ffh(int cpu, struct cpc_reg *reg, u64 *val)
->>>>  {
->>>>      int ret = -EOPNOTSUPP;
->>>> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
->>>> index 7ff269a78c20..f303fabd7cfe 100644
->>>> --- a/drivers/acpi/cppc_acpi.c
->>>> +++ b/drivers/acpi/cppc_acpi.c
->>>> @@ -1299,6 +1299,11 @@ bool cppc_perf_ctrs_in_pcc(void)
->>>>  }
->>>>  EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
->>>> +int __weak cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered, 
->>>> u64 *reference)
->>>> +{
->>>> +    return 0;
->>>> +}
->>>> +
->>>>  /**
->>>>   * cppc_get_perf_ctrs - Read a CPU's performance feedback counters.
->>>>   * @cpunum: CPU from which to read counters.
->>>> @@ -1313,7 +1318,8 @@ int cppc_get_perf_ctrs(int cpunum, struct 
->>>> cppc_perf_fb_ctrs *perf_fb_ctrs)
->>>>          *ref_perf_reg, *ctr_wrap_reg;
->>>>      int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
->>>>      struct cppc_pcc_data *pcc_ss_data = NULL;
->>>> -    u64 delivered, reference, ref_perf, ctr_wrap_time;
->>>> +    u64 delivered = 0, reference = 0;
->>>> +    u64 ref_perf, ctr_wrap_time;
->>>>      int ret = 0, regs_in_pcc = 0;
->>>>      if (!cpc_desc) {
->>>> @@ -1350,8 +1356,18 @@ int cppc_get_perf_ctrs(int cpunum, struct 
->>>> cppc_perf_fb_ctrs *perf_fb_ctrs)
->>>>          }
->>>>      }
->>>> -    cpc_read(cpunum, delivered_reg, &delivered);
->>>> -    cpc_read(cpunum, reference_reg, &reference);
->>>> +    if (cpc_ffh_supported()) {
->>>> +        ret = cpc_read_arch_counters_on_cpu(cpunum, &delivered, 
->>>> &reference);
->>>> +        if (ret) {
->>>> +            pr_debug("read arch counters failed, ret=%d.\n", ret);
->>>> +            ret = 0;
->>>> +        }
->>>> +    }
->>>> +    if (!delivered || !reference) {
->>>> +        cpc_read(cpunum, delivered_reg, &delivered);
->>>> +        cpc_read(cpunum, reference_reg, &reference);
->>>> +    }
->>>> +
->>>>      cpc_read(cpunum, ref_perf_reg, &ref_perf);
->>>>      /*
->>>> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
->>>> index 6126c977ece0..07d4fd82d499 100644
->>>> --- a/include/acpi/cppc_acpi.h
->>>> +++ b/include/acpi/cppc_acpi.h
->>>> @@ -152,6 +152,7 @@ extern bool cpc_ffh_supported(void);
->>>>  extern bool cpc_supported_by_cpu(void);
->>>>  extern int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val);
->>>>  extern int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val);
->>>> +extern int cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered, 
->>>> u64 *reference);
->>>>  extern int cppc_get_epp_perf(int cpunum, u64 *epp_perf);
->>>>  extern int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls 
->>>> *perf_ctrls, bool enable);
->>>>  extern int cppc_get_auto_sel_caps(int cpunum, struct 
->>>> cppc_perf_caps *perf_caps);
->>>> @@ -209,6 +210,10 @@ static inline int cpc_write_ffh(int cpunum, 
->>>> struct cpc_reg *reg, u64 val)
->>>>  {
->>>>      return -ENOTSUPP;
->>>>  }
->>>> +static inline int cpc_read_arch_counters_on_cpu(int cpu, u64 
->>>> *delivered, u64 *reference)
->>>> +{
->>>> +    return -EOPNOTSUPP;
->>>> +}
->>>>  static inline int cppc_set_epp_perf(int cpu, struct 
->>>> cppc_perf_ctrls *perf_ctrls, bool enable)
->>>>  {
->>>>      return -ENOTSUPP;
->>>> -- 
->>>> 2.33.0
->>>>
->>> .
->>
->> _______________________________________________
->> linux-arm-kernel mailing list
->> linux-arm-kernel@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
->
-> .
+elapsed time: 1445m
+
+configs tested: 177
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                          axs101_defconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240104   gcc  
+arc                   randconfig-002-20240104   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                        mvebu_v7_defconfig   gcc  
+arm                   randconfig-001-20240104   gcc  
+arm                   randconfig-002-20240104   gcc  
+arm                   randconfig-003-20240104   gcc  
+arm                   randconfig-004-20240104   gcc  
+arm                           sama5_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240104   gcc  
+arm64                 randconfig-002-20240104   gcc  
+arm64                 randconfig-003-20240104   gcc  
+arm64                 randconfig-004-20240104   gcc  
+csky                             alldefconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240104   gcc  
+csky                  randconfig-002-20240104   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240104   clang
+hexagon               randconfig-002-20240104   clang
+i386                             allmodconfig   clang
+i386                              allnoconfig   clang
+i386                             allyesconfig   clang
+i386         buildonly-randconfig-001-20240104   gcc  
+i386         buildonly-randconfig-002-20240104   gcc  
+i386         buildonly-randconfig-003-20240104   gcc  
+i386         buildonly-randconfig-004-20240104   gcc  
+i386         buildonly-randconfig-005-20240104   gcc  
+i386         buildonly-randconfig-006-20240104   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20240104   gcc  
+i386                  randconfig-002-20240104   gcc  
+i386                  randconfig-003-20240104   gcc  
+i386                  randconfig-004-20240104   gcc  
+i386                  randconfig-005-20240104   gcc  
+i386                  randconfig-006-20240104   gcc  
+i386                  randconfig-011-20240104   clang
+i386                  randconfig-012-20240104   clang
+i386                  randconfig-013-20240104   clang
+i386                  randconfig-014-20240104   clang
+i386                  randconfig-015-20240104   clang
+i386                  randconfig-016-20240104   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240104   gcc  
+loongarch             randconfig-002-20240104   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                       bvme6000_defconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                       m5275evb_defconfig   gcc  
+m68k                           sun3_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   clang
+mips                             allyesconfig   gcc  
+mips                           mtx1_defconfig   clang
+mips                   sb1250_swarm_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240104   gcc  
+nios2                 randconfig-002-20240104   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240104   gcc  
+parisc                randconfig-002-20240104   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   clang
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                    gamecube_defconfig   clang
+powerpc                   microwatt_defconfig   clang
+powerpc                      ppc64e_defconfig   clang
+powerpc               randconfig-001-20240104   gcc  
+powerpc               randconfig-002-20240104   gcc  
+powerpc               randconfig-003-20240104   gcc  
+powerpc64             randconfig-001-20240104   gcc  
+powerpc64             randconfig-002-20240104   gcc  
+powerpc64             randconfig-003-20240104   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   clang
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20240104   gcc  
+riscv                 randconfig-002-20240104   gcc  
+riscv                          rv32_defconfig   clang
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20240104   clang
+s390                  randconfig-002-20240104   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                         apsh4a3a_defconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240104   gcc  
+sh                    randconfig-002-20240104   gcc  
+sh                          rsk7203_defconfig   gcc  
+sh                          sdk7780_defconfig   gcc  
+sh                           se7750_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240104   gcc  
+sparc64               randconfig-002-20240104   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240104   gcc  
+um                    randconfig-002-20240104   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240104   gcc  
+x86_64       buildonly-randconfig-002-20240104   gcc  
+x86_64       buildonly-randconfig-003-20240104   gcc  
+x86_64       buildonly-randconfig-004-20240104   gcc  
+x86_64       buildonly-randconfig-005-20240104   gcc  
+x86_64       buildonly-randconfig-006-20240104   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240104   clang
+x86_64                randconfig-002-20240104   clang
+x86_64                randconfig-003-20240104   clang
+x86_64                randconfig-004-20240104   clang
+x86_64                randconfig-005-20240104   clang
+x86_64                randconfig-006-20240104   clang
+x86_64                randconfig-011-20240104   gcc  
+x86_64                randconfig-012-20240104   gcc  
+x86_64                randconfig-013-20240104   gcc  
+x86_64                randconfig-014-20240104   gcc  
+x86_64                randconfig-015-20240104   gcc  
+x86_64                randconfig-016-20240104   gcc  
+x86_64                randconfig-071-20240104   gcc  
+x86_64                randconfig-072-20240104   gcc  
+x86_64                randconfig-073-20240104   gcc  
+x86_64                randconfig-074-20240104   gcc  
+x86_64                randconfig-075-20240104   gcc  
+x86_64                randconfig-076-20240104   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240104   gcc  
+xtensa                randconfig-002-20240104   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
