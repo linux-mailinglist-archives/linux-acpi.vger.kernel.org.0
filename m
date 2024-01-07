@@ -1,122 +1,119 @@
-Return-Path: <linux-acpi+bounces-2745-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2743-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DADF8264D8
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Jan 2024 16:55:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB52F8262A6
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Jan 2024 03:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDA02281C2A
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Jan 2024 15:54:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 634421F22067
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Jan 2024 02:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F30D13AC8;
-	Sun,  7 Jan 2024 15:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC79F101F3;
+	Sun,  7 Jan 2024 02:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="apvNioIi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx1.mythic-beasts.com (mx1.mythic-beasts.com [46.235.224.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654C113AC7;
-	Sun,  7 Jan 2024 15:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jic23.retrosnub.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jic23.retrosnub.co.uk
-Received: by mailhub-cam-d.mythic-beasts.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <jic23@jic23.retrosnub.co.uk>)
-	id 1rMVNb-00GNl5-Tx; Sun, 07 Jan 2024 15:48:04 +0000
-Date: Sat, 06 Jan 2024 17:53:30 +0000
-From: Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Jonathan Cameron <jic23@kernel.org>
-CC: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- =?ISO-8859-1?Q?Nuno_S=E1?= <nuno.sa@analog.com>,
- Cosmin Tanislav <cosmin.tanislav@analog.com>,
- Mihail Chindris <mihail.chindris@analog.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Tomislav Denis <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>,
- Olivier Moysan <olivier.moysan@foss.st.com>,
- Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- Marius Cristea <marius.cristea@microchip.com>,
- Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BRFC_PATCH_01/13=5D_device_property=3A_Add_cleanu?= =?US-ASCII?Q?p=2Eh_based_fwnode=5Fhandle=5Fp?= =?US-ASCII?Q?ut=28=29_scope_based_cleanup=2E?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <ZZlu5fTW27Tx3drB@smile.fi.intel.com>
-References: <20240101172611.694830-1-jic23@kernel.org> <20240101172611.694830-2-jic23@kernel.org> <ZZlu5fTW27Tx3drB@smile.fi.intel.com>
-Message-ID: <305F62D9-8410-4F2F-9411-5A7395192789@jic23.retrosnub.co.uk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EB0101DD;
+	Sun,  7 Jan 2024 02:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-68009cb4669so8006956d6.1;
+        Sat, 06 Jan 2024 18:13:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704593613; x=1705198413; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Z6x4FnsNbhe0lWnxf/CCjJTz+ocztnYQV+3F3SJpB8=;
+        b=apvNioIii0BOYMbjEtaBL+z82EiwLi5GnWyKe4ugnYC1l+Svayu+may+6JtxrsnyLM
+         rg3gV6CAc9AiKnMXYTLCppUHV+9zl7q9TPFAF+1cs8x4+6rmIz3xQioRhcegFRXaXH/e
+         t4hsWxHGwpq12dPwPfqfiDJS+dtyz/CnWNWE9KFSfH9ckQY33ZHrtLvDlfxZwJsqzm/+
+         QkuL9Pw3bJbKjdJ1AcMH9wQ8Aucu5EDaBvf2ERvlN6qxhbcZ2ZsL8CEYussCESGdWkoP
+         Tp84oFoXKwKKwMmm0bm1Ax70IZp55HbfmufWKVNXzjVtD70GEuGffSPr3IhjQgLhPZeE
+         3YTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704593613; x=1705198413;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0Z6x4FnsNbhe0lWnxf/CCjJTz+ocztnYQV+3F3SJpB8=;
+        b=N/WnraCFgWSVVSaHqQPF3PqAQtC++rv9uj5y+yua3hvmZws7dCdk72jwuUdSn//MFq
+         v8N1vsKsjf0ei71QrucSpbdF1Xqx0Tm1Jwh683K7DaAZdRaKdDHmr9IzFhwBQbDy38Wu
+         TCmrgs67DKqTn6Q6xZ9JgLorEVuiQXpPYUvaQE27VHytDAK0sk6f9YC7XA/LMm50wosN
+         1q4MAF2KKhoaSztqykQoevTshJFCKAckhnFfb0QlSRdZ3Fdda6xcgpUX10IUOksuopTJ
+         xwJ+DkU/gUAZhdshoKR50FWh3at9qnx+81tcor2JDLux+NOPaqmKz3ALwNwk1vwS6OdX
+         /Mzg==
+X-Gm-Message-State: AOJu0Yx4x46D11hwwyXRM/7uXtElq4LNXLVwgR2w5GqMvz4nmodH9MXc
+	nAqZkGGugln3HNNVIPqfF68=
+X-Google-Smtp-Source: AGHT+IG+3gpbyy5Rr6t26K0+FkAI1ImeNZYdD1pLE0WX+5Hw5LBTnlMADrivVQlorCF6HK50YmzNGw==
+X-Received: by 2002:a05:6214:528e:b0:680:c5ef:b170 with SMTP id kj14-20020a056214528e00b00680c5efb170mr2314365qvb.58.1704593613194;
+        Sat, 06 Jan 2024 18:13:33 -0800 (PST)
+Received: from fedora.. (c-73-4-251-179.hsd1.ct.comcast.net. [73.4.251.179])
+        by smtp.gmail.com with ESMTPSA id a17-20020a0cefd1000000b0067f70c0dcd9sm1744870qvt.64.2024.01.06.18.13.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Jan 2024 18:13:32 -0800 (PST)
+From: Ben Mayo <benny1091@gmail.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Ben Mayo <benny1091@gmail.com>
+Subject: [PATCH] acpi/drivers: add DMI exception for ASUS Vivobook E1504GA and E1504GAB to resource.c
+Date: Sat,  6 Jan 2024 21:13:23 -0500
+Message-ID: <20240107021322.7709-2-benny1091@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-BlackCat-Spam-Score: 10
+Content-Transfer-Encoding: 8bit
 
+Asus Vivobook E1504GA and E1504GAB notebooks are affected by bug #216158
+(DSDT specifies the kbd IRQ as level active-low and using the override
+changes this to rising edge, stopping the keyboard from working).
+Users of these notebooks do not have a working keyboard unless they add
+their DMI information to the struct irq1_level_low_skip_override array
+in resource.c and compile a custom kernel. This patch will add support
+for these computers to the linux kernel without requiring the end-user
+to recompile the kernel.
 
+Signed-off-by: Ben Mayo <benny1091@gmail.com>
+---
+ drivers/acpi/resource.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-On 6 January 2024 15:16:53 GMT, Andy Shevchenko <andriy=2Eshevchenko@linux=
-=2Eintel=2Ecom> wrote:
->On Mon, Jan 01, 2024 at 05:25:59PM +0000, Jonathan Cameron wrote:
->> From: Jonathan Cameron <Jonathan=2ECameron@huawei=2Ecom>
->>=20
->> This allows the following
->>=20
->> struct fwnode_handle *child __free(kfree) =3D NULL;
->>=20
->> device_for_each_child_node(dev, child) {
->> 	if (false)
->> 		return -EINVAL;
->> }
->>=20
->> without the fwnode_handle_put() call which tends to complicate early
->> exits from such loops and lead to resource leak bugs=2E
->>=20
->> Can also be used where the fwnode_handle was obtained from a call
->> such as fwnode_find_reference() as it will safely do nothing if
->> IS_ERR() is true=2E
->
->=2E=2E=2E
->
->>  struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
->>  void fwnode_handle_put(struct fwnode_handle *fwnode);
->> +DEFINE_FREE(fwnode_handle, struct fwnode_handle *, fwnode_handle_put(_=
-T))
->
->In GPIO we have something similar and PeterZ explained there why if (_T) =
-is
->important, hence this should be
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 9bd9f79cd409..eb34d201b65f 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -482,6 +482,20 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
+ 		},
+ 	},
++	{
++		/* Asus Vivobook E1504GA */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "E1504GA"),
++		},
++	},
++	{
++		/* Asus Vivobook E1504GAB */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "E1504GAB"),
++		},
++	},
+ 	{
+ 		/* LG Electronics 17U70P */
+ 		.matches = {
+-- 
+2.43.0
 
-I can't find the reference unfortunately=2E=20
-
->
->DEFINE_FREE(fwnode_handle, struct fwnode_handle *, if (_T) fwnode_handle_=
-put(_T))
->
->or even
->
->DEFINE_FREE(fwnode_handle, struct fwnode_handle *, if (!IS_ERR_OR_NULL(_T=
-)) fwnode_handle_put(_T))
->
->as we accept in many calls an error pointer as unset / undefined firmware=
- node
->handle=2E
-
-The function called has a protection for null
- and error inputs so I'm not sure why extra protection
-is needed?
-
-J
->
->
 
