@@ -1,163 +1,124 @@
-Return-Path: <linux-acpi+bounces-2747-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2748-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03747826B06
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 10:46:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1428D826B19
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 10:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82740B21766
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 09:45:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A31C1C21CD9
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 09:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F9911CB0;
-	Mon,  8 Jan 2024 09:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CE212B6B;
+	Mon,  8 Jan 2024 09:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nAbQPibr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHH+C9VQ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0160B13AC9;
-	Mon,  8 Jan 2024 09:45:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF012C433C8;
-	Mon,  8 Jan 2024 09:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010AC13FE4;
+	Mon,  8 Jan 2024 09:52:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A6CC433C7;
+	Mon,  8 Jan 2024 09:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704707146;
-	bh=f6WCM1z5/+ZFnyvuqtaD9vtixmN+3lnBNV++wPJ45j0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nAbQPibrQv3/Hig92JSWM9+EyJ2L7BwdnVsvdnKK9UBDsZva0Y0T1cGvdXfUXuetn
-	 CFL60LWh68TC+opYZUkdUQ5BxRNhWG1wthBvONFdLirRanS8lqw3CtIUdGNgtURYsW
-	 jwqM+5byNHS9eS7RLYU8PQmRjT6ZLfO//UZHEtgnKiT3jLP0tMXaKPyPnOLF8x2Rrc
-	 SwQ8av8OlFUAf1d6stadBWO/sqzFiOUZA2AnaVFMSGan5h27z+G0XW4VlfiExAqN0k
-	 cGIcVzf8OBj7+Ft/4Ia2Y3xYmPkIguRXHhezDyPoZtGV3RhoUjSAmO/CYOEbcTGtaa
-	 hKqFoEA5R/Cww==
-Date: Mon, 8 Jan 2024 10:45:40 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
+	s=k20201202; t=1704707543;
+	bh=akYUu7zgTnARxgKa2BkHmXO+XpLmFkPyFbtYGz0X9jY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EHH+C9VQ0fPHQWw3Q7a7xpBuBy9fsV7MaHI+N5O7PKjPAY124CJSd6tDxEksbqRQH
+	 +ZTM+TPF45DinLWT/2/SkMuQ/4ypVaW/TX5O1uEXwyATWGVw2/u4K+9XF3/vMqPxdT
+	 SiJI0uYtjxm8gdW5af+RCo3OixIymzEXU5kQQPweyfm1HoP3o2wgrcSnKYjtA3KPst
+	 ITYBl+Nu3o/zxg7CHm+fwnetxdsSA8a4y34SQ+vu5Uw0fEQtQxbcg/NVlpqYMxp3K+
+	 xyEiJKoAGA3gJS/Vce1ksBzAEBnmE892tJiViczdSTxS13detuQjDy2GE9fB1M+RQX
+	 s0PNZpi8yVxBA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1rMmIu-009lGE-PW;
+	Mon, 08 Jan 2024 09:52:20 +0000
+Date: Mon, 08 Jan 2024 09:52:20 +0000
+Message-ID: <86bk9w9mp7.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
 	Robin Murphy <robin.murphy@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
 	Fang Xiang <fangxiang3@xiaomi.com>,
 	Robert Moore <robert.moore@intel.com>
-Subject: Re: [PATCH v4 0/3] irqchip/gic-v3: Enable non-coherent GIC designs
- probing
-Message-ID: <ZZvERNzqEQf0FuT/@lpieralisi>
+Subject: Re: [PATCH v4 3/3] irqchip/gic-v3: Enable non-coherent redistributors/ITSes ACPI probing
+In-Reply-To: <ZZvDuz1w8St+uyRK@lpieralisi>
 References: <20230905104721.52199-1-lpieralisi@kernel.org>
- <20231227110038.55453-1-lpieralisi@kernel.org>
- <CAJZ5v0gUBU=VL8E34sjROssoGNbLnhmUQVHGWT60hgBG_ufTHw@mail.gmail.com>
- <86h6jt9vs7.wl-maz@kernel.org>
- <ZZaeyBXn85AnsIk6@shell.armlinux.org.uk>
- <CAJZ5v0jcZ4WEiNUs3sAQUyy1uVJRNWmVJx2j0e3hLwi7heK1+A@mail.gmail.com>
+	<20231227110038.55453-1-lpieralisi@kernel.org>
+	<20231227110038.55453-4-lpieralisi@kernel.org>
+	<86il499wtf.wl-maz@kernel.org>
+	<ZZvDuz1w8St+uyRK@lpieralisi>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0jcZ4WEiNUs3sAQUyy1uVJRNWmVJx2j0e3hLwi7heK1+A@mail.gmail.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: lpieralisi@kernel.org, linux-kernel@vger.kernel.org, robin.murphy@arm.com, mark.rutland@arm.com, rafael@kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, fangxiang3@xiaomi.com, robert.moore@intel.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, Jan 04, 2024 at 02:21:44PM +0100, Rafael J. Wysocki wrote:
-> On Thu, Jan 4, 2024 at 1:04 PM Russell King (Oracle)
-> <linux@armlinux.org.uk> wrote:
-> >
-> > On Thu, Jan 04, 2024 at 11:34:48AM +0000, Marc Zyngier wrote:
-> > > On Wed, 03 Jan 2024 13:43:16 +0000,
-> > > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
-> > > >
-> > > > On Wed, Dec 27, 2023 at 12:00 PM Lorenzo Pieralisi
-> > > > <lpieralisi@kernel.org> wrote:
-> > > > >
-> > > > > This series is v4 of previous series:
-> > > > >
-> > > > > v3: https://lore.kernel.org/all/20231006125929.48591-1-lpieralisi@kernel.org
-> > > > > v2: https://lore.kernel.org/all/20230906094139.16032-1-lpieralisi@kernel.org
-> > > > > v1: https://lore.kernel.org/all/20230905104721.52199-1-lpieralisi@kernel.org
-> > > > >
-> > > > > v3 -> v4:
-> > > > >         - Dropped patches [1-3], already merged
-> > > > >         - Added Linuxized ACPICA changes accepted upstream
-> > > > >         - Rebased against v6.7-rc3
-> > > > >
-> > > > > v2 -> v3:
-> > > > >         - Added ACPICA temporary changes and ACPI changes to implement
-> > > > >           ECR https://bugzilla.tianocore.org/show_bug.cgi?id=4557
-> > > > >         - ACPI changes are for testing purposes - subject to ECR code
-> > > > >           first approval
-> > > > >
-> > > > > v1 -> v2:
-> > > > >         - Updated DT bindings as per feedback
-> > > > >         - Updated patch[2] to use GIC quirks infrastructure
-> > > > >
-> > > > > Original cover letter
-> > > > > ---
-> > > > > The GICv3 architecture specifications provide a means for the
-> > > > > system programmer to set the shareability and cacheability
-> > > > > attributes the GIC components (redistributors and ITSes) use
-> > > > > to drive memory transactions.
-> > > > >
-> > > > > Albeit the architecture give control over shareability/cacheability
-> > > > > memory transactions attributes (and barriers), it is allowed to
-> > > > > connect the GIC interconnect ports to non-coherent memory ports
-> > > > > on the interconnect, basically tying off shareability/cacheability
-> > > > > "wires" and de-facto making the redistributors and ITSes non-coherent
-> > > > > memory observers.
-> > > > >
-> > > > > This series aims at starting a discussion over a possible solution
-> > > > > to this problem, by adding to the GIC device tree bindings the
-> > > > > standard dma-noncoherent property. The GIC driver uses the property
-> > > > > to force the redistributors and ITSes shareability attributes to
-> > > > > non-shareable, which consequently forces the driver to use CMOs
-> > > > > on GIC memory tables.
-> > > > >
-> > > > > On ARM DT DMA is default non-coherent, so the GIC driver can't rely
-> > > > > on the generic DT dma-coherent/non-coherent property management layer
-> > > > > (of_dma_is_coherent()) which would default all GIC designs in the field
-> > > > > as non-coherent; it has to rely on ad-hoc dma-noncoherent property handling.
-> > > > >
-> > > > > When a consistent approach is agreed upon for DT an equivalent binding will
-> > > > > be put forward for ACPI based systems.
-> > > > >
-> > > > > Lorenzo Pieralisi (3):
-> > > > >   ACPICA: MADT: Add GICC online capable bit handling
-> > > > >   ACPICA: MADT: Add new MADT GICC/GICR/ITS non-coherent flags handling
-> > > > >   irqchip/gic-v3: Enable non-coherent redistributors/ITSes ACPI probing
-> > > > >
-> > > > >  drivers/acpi/processor_core.c    | 21 +++++++++++++++++++++
-> > > > >  drivers/irqchip/irq-gic-common.h |  8 ++++++++
-> > > > >  drivers/irqchip/irq-gic-v3-its.c |  4 ++++
-> > > > >  drivers/irqchip/irq-gic-v3.c     |  9 +++++++++
-> > > > >  include/acpi/actbl2.h            | 12 ++++++++++--
-> > > > >  include/linux/acpi.h             |  3 +++
-> > > > >  6 files changed, 55 insertions(+), 2 deletions(-)
-> > > > >
-> > > > > --
-> > > >
-> > > > I can apply the first 2 patches, but I would need an ACK for the 3rd one.
-> > > >
-> > > > Alternatively, feel free to add
-> > > >
-> > > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > >
-> > > > to the first 2 patches and route them via ARM64.
-> > >
-> > > Thanks for that. I have some comments on the third patch, which I'd
-> > > like to see addressed beforehand. This is probably all 6.9 material
-> > > anyway (nobody is affected by this so far).
-> >
-> > From a purely selfish point of view, it would be useful to have the
-> > first patch merged merely to reduce the burden of patches for vcpu
-> > hotplug.
+On Mon, 08 Jan 2024 09:43:23 +0000,
+Lorenzo Pieralisi <lpieralisi@kernel.org> wrote:
 > 
-> OK, since there will be at least one more iteration of patch [3/3]
-> AFAICS, I'll queue up patches [1-2/3] for 6.8 (next week, though).
+> On Thu, Jan 04, 2024 at 11:12:28AM +0000, Marc Zyngier wrote:
+> > On Wed, 27 Dec 2023 11:00:38 +0000,
+> > Lorenzo Pieralisi <lpieralisi@kernel.org> wrote:
+> > > 
+> > > The GIC architecture specification defines a set of registers
+> > > for redistributors and ITSes that control the sharebility and
+> > > cacheability attributes of redistributors/ITSes initiator ports
+> > > on the interconnect (GICR_[V]PROPBASER, GICR_[V]PENDBASER,
+> > > GITS_BASER<n>).
+> > > 
+> > > Architecturally the GIC provides a means to drive shareability
+> > > and cacheability attributes signals and related IWB/OWB/ISH barriers
+> > 
+> > IWB/OWB *barriers*? Unless you're talking about something else,
+> > IWB/OWB refers to cacheability, and only that.
+> 
+> Yes, it should be expressed differently. Unfortunately this sentence made
+> it into the kernel with the DT counterpart - commit 3a0fff0fb6a3 log,
+> apologies.
 
-Thank you Rafael.
+Oh well. At least please clean this one up when you repost.
 
-Lorenzo
+[...]
+
+> > > +	if (!madt_read) {
+> > > +		madt_read = true;
+> > 
+> > Huh. Why do we need this hack? What's the issue with accessing the
+> > MADT? Can it disappear from under our feet? While we're walking it?
+> 
+> It is an awkward attempt at stashing the revision instead of
+> calling acpi_get_table() repeatedly (and from multiple files
+> for the same reason - ie get an MADT rev number).
+> 
+> Side note: get_madt_table() does the same thing and I followed
+> it - I am not sure it is very helpful either (or maybe
+> there is something I don't know behind that reasoning).
+
+This was introduced as part of 149fe9c293f76, as a cleanup. Not a
+great move IMHO.
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
