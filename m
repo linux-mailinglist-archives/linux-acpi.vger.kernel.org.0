@@ -1,356 +1,333 @@
-Return-Path: <linux-acpi+bounces-2750-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2751-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B431A827098
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 15:03:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58EB1827205
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 16:00:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C1E11F23312
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 14:03:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 023F3283EFB
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 15:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7A245BED;
-	Mon,  8 Jan 2024 14:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C61446437;
+	Mon,  8 Jan 2024 15:00:13 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4F047A52;
-	Mon,  8 Jan 2024 14:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 285F8C15;
-	Mon,  8 Jan 2024 06:03:54 -0800 (PST)
-Received: from localhost (ionvoi01-desktop.cambridge.arm.com [10.2.78.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CC12E3F64C;
-	Mon,  8 Jan 2024 06:03:07 -0800 (PST)
-Date: Mon, 8 Jan 2024 14:03:06 +0000
-From: Ionela Voinescu <ionela.voinescu@arm.com>
-To: "lihuisong (C)" <lihuisong@huawei.com>
-Cc: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
-	beata.michalska@arm.com, sumitg@nvidia.com, zengheng4@huawei.com,
-	yang@os.amperecomputing.com, will@kernel.org, sudeep.holla@arm.com,
-	liuyonglong@huawei.com, zhanjie9@hisilicon.com,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH] cpufreq: CPPC: Resolve the large frequency discrepancy
- from cpuinfo_cur_freq
-Message-ID: <ZZwAmqp6hcmMF8aN@arm.com>
-References: <20231212072617.14756-1-lihuisong@huawei.com>
- <ZZWfJOsDlEXWYHA5@arm.com>
- <9428a1ed-ba4d-1fe6-63e8-11e152bf1f09@huawei.com>
- <lnocwcitdbmgcyhd2dlczgdlhtfw4pfot2br2i3hqscnvr3xgq@nuxlauxum3nr>
- <d0f47e9d-6a58-8b46-89be-b3182abb69f0@huawei.com>
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A298347768;
+	Mon,  8 Jan 2024 15:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6dbd87b706aso352528a34.0;
+        Mon, 08 Jan 2024 07:00:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704726010; x=1705330810;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6NEMm4hHIzokK3H2KBcUZXa+FLXVo9snUgwi3Hp+Wgw=;
+        b=onHKHg5xYlCETdMmmRzxI6IMjx3M05F4TYEEPlCTzQPb0TVrr45G529gGxsu2p2TEa
+         XFass9ESl/nNKsvHu6fYy3nQjWGxmtrbbzsm5n9FHXmQh7mmwXioND0nvQVAkaSmQL1b
+         gwFH15W2xqQgbkhdxZRHggYqyt8HryZikCCfoi9dnfwJj4pRjSGgDnfJy0ec0vqcSbB3
+         Iksk/JpExGamJjqKDSESNuLcUUIEE7RM6clkS1IeZyo4MSxmaTL91DxEEWFS6fpOYREF
+         QZAAMMCsTdbIggG0pI1ge1cIgNkhfZRELsK9wXn1ejQJvQ0uyGf5URIrV92KQb8bICsm
+         90rg==
+X-Gm-Message-State: AOJu0YxyX7TXIy4qNrBwAu46ZqcHgv3ootOvkWMsOLzFlGIBgn/sHtrk
+	hnytv0gO7oAvQnFeW8toPuPX3GJKn8SwbPZF8ltJgWPK79Q=
+X-Google-Smtp-Source: AGHT+IEdRzsktLtGiAyBuTluFOSLXy7XwpbTN2bElBt5Hih/fzTeMZ7zAu0JuLX5Bg/4Cayo/LekCiXAAiLIZLNJlNM=
+X-Received: by 2002:a4a:bb91:0:b0:596:2820:ced with SMTP id
+ h17-20020a4abb91000000b0059628200cedmr5302574oop.1.1704726010175; Mon, 08 Jan
+ 2024 07:00:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d0f47e9d-6a58-8b46-89be-b3182abb69f0@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 8 Jan 2024 15:59:58 +0100
+Message-ID: <CAJZ5v0j+EaUmMDibUUrY0hQmT457TqAf+39mLNO62sKWHDMfpw@mail.gmail.com>
+Subject: [GIT PULL] ACPI updates for v6.8-rc1
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Hi Linus,
 
-On Friday 05 Jan 2024 at 15:04:47 (+0800), lihuisong (C) wrote:
-> Hi Vanshi,
-> 
-> 在 2024/1/5 8:48, Vanshidhar Konda 写道:
-> > On Thu, Jan 04, 2024 at 05:36:51PM +0800, lihuisong (C) wrote:
-> > > 
-> > > 在 2024/1/4 1:53, Ionela Voinescu 写道:
-> > > > Hi,
-> > > > 
-> > > > On Tuesday 12 Dec 2023 at 15:26:17 (+0800), Huisong Li wrote:
-> > > > > Many developers found that the cpu current frequency is greater than
-> > > > > the maximum frequency of the platform, please see [1], [2] and [3].
-> > > > > 
-> > > > > In the scenarios with high memory access pressure, the patch [1] has
-> > > > > proved the significant latency of cpc_read() which is used to obtain
-> > > > > delivered and reference performance counter cause an absurd frequency.
-> > > > > The sampling interval for this counters is very critical and
-> > > > > is expected
-> > > > > to be equal. However, the different latency of cpc_read() has a direct
-> > > > > impact on their sampling interval.
-> > > > > 
-> > > > Would this [1] alternative solution work for you?
-> > > It would work for me AFAICS.
-> > > Because the "arch_freq_scale" is also from AMU core and constant
-> > > counter, and read together.
-> > > But, from their discuss line, it seems that there are some tricky
-> > > points to clarify or consider.
-> > 
-> > I think the changes in [1] would work better when CPUs may be idle. With
-> > this
-> > patch we would have to wake any core that is in idle state to read the
-> > AMU
-> > counters. Worst case, if core 0 is trying to read the CPU frequency of
-> > all
-> > cores, it may need to wake up all the other cores to read the AMU
-> > counters.
-> From the approach in [1], if all CPUs (one or more cores) under one policy
-> are idle, they still cannot be obtained the CPU frequency, right?
-> In this case, the [1] API will return 0 and have to back to call
-> cpufreq_driver->get() for cpuinfo_cur_freq.
-> Then we still need to face the issue this patch mentioned.
+Please pull from the tag
 
-With the implementation at [1], arch_freq_get_on_cpu() will not return 0
-for idle CPUs and the get() callback will not be called to wake up the
-CPUs.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.8-rc1
 
-Worst case, arch_freq_get_on_cpu() will return a frequency based on the
-AMU counter values obtained on the last tick on that CPU. But if that CPU
-is not a housekeeping CPU, a housekeeping CPU in the same policy will be
-selected, as it would have had a more recent tick, and therefore a more
-recent frequency value for the domain.
+with top-most commit e46201308a1e568059328e200282c8a62faa2f19
 
-I understand that the frequency returned here will not be up to date,
-but there's no proper frequency feedback for an idle CPU. If one only
-wakes up a CPU to sample counters, before the CPU goes back to sleep,
-the obtained frequency feedback is meaningless.
+ Merge branch 'pnp'
 
-> > For systems with 128 cores or more, this could be very expensive and
-> > happen
-> > very frequently.
-> > 
-> > AFAICS, the approach in [1] would avoid this cost.
-> But the CPU frequency is just an average value for the last tick period
-> instead of the current one the CPU actually runs at.
-> In addition, there are some conditions to use 'arch_freq_scale' in this
-> approach.
+on top of commit 861deac3b092f37b2c5e6871732f3e11486f7082
 
-What are the conditions you are referring to?
+ Linux 6.7-rc7
 
-> So I'm not sure if this approach can entirely cover the frequency
-> discrepancy issue.
+to receive ACPI updates for 6.8-rc1.
 
-Unfortunately there is no perfect frequency feedback. By the time you
-observe/use the value of scaling_cur_freq/cpuinfo_cur_freq, the frequency
-of the CPU might have already changed. Therefore, an average value might
-be a better indication of the recent performance level of a CPU.
+From the new features standpoint, the most significant change here is
+the addition of CSI-2 and MIPI DisCo for Imaging support to the ACPI
+device enumeration code that will allow MIPI cameras to be enumerated
+through the platform firmware on systems using ACPI.
 
-Would you be able to test [1] on your platform and usecase?
+Also significant is the switch-over to threaded interrupt handlers for
+the ACPI SCI and the dedicated EC interrupt (on systems where the former
+is not used) which essentially allows all ACPI code to run with local
+interrupts enabled.  That should improve responsiveness significantly
+on systems where multiple GPEs are enabled and the handling of one SCI
+involves many I/O address space accesses which previously had to be
+carried out in one go with disabled interrupts on the local CPU.
 
-Many thanks,
-Ionela.
+Apart from the above, the ACPI thermal zone driver will use the Thermal
+fast Sampling Period (_TFP) object if available, which should allow
+temperature changes to be followed more accurately on some systems, the
+ACPI Notify () handlers can run on all CPUs (not just on CPU0), which
+should generally speed up the processing of events signaled through the
+ACPI SCI, and the ACPI power button driver will trigger wakeup key
+events via the input subsystem (on systems where it is a system wakeup
+device).
 
-> 
-> /Huisong
-> 
-> > > > 
-> > > > [1] https://lore.kernel.org/lkml/20231127160838.1403404-1-beata.michalska@arm.com/
-> > > > 
-> > > > Thanks,
-> > > > Ionela.
-> > > > 
-> > > > > This patch adds a interface, cpc_read_arch_counters_on_cpu, to read
-> > > > > delivered and reference performance counter together. According to my
-> > > > > test[4], the discrepancy of cpu current frequency in the
-> > > > > scenarios with
-> > > > > high memory access pressure is lower than 0.2% by stress-ng
-> > > > > application.
-> > > > > 
-> > > > > [1] https://lore.kernel.org/all/20231025093847.3740104-4-zengheng4@huawei.com/
-> > > > > [2] https://lore.kernel.org/all/20230328193846.8757-1-yang@os.amperecomputing.com/
-> > > > > [3]
-> > > > > https://lore.kernel.org/all/20230418113459.12860-7-sumitg@nvidia.com/
-> > > > > 
-> > > > > [4] My local test:
-> > > > > The testing platform enable SMT and include 128 logical CPU in total,
-> > > > > and CPU base frequency is 2.7GHz. Reading "cpuinfo_cur_freq" for each
-> > > > > physical core on platform during the high memory access pressure from
-> > > > > stress-ng, and the output is as follows:
-> > > > >   0: 2699133     2: 2699942     4: 2698189     6: 2704347
-> > > > >   8: 2704009    10: 2696277    12: 2702016    14: 2701388
-> > > > >  16: 2700358    18: 2696741    20: 2700091    22: 2700122
-> > > > >  24: 2701713    26: 2702025    28: 2699816    30: 2700121
-> > > > >  32: 2700000    34: 2699788    36: 2698884    38: 2699109
-> > > > >  40: 2704494    42: 2698350    44: 2699997    46: 2701023
-> > > > >  48: 2703448    50: 2699501    52: 2700000    54: 2699999
-> > > > >  56: 2702645    58: 2696923    60: 2697718    62: 2700547
-> > > > >  64: 2700313    66: 2700000    68: 2699904    70: 2699259
-> > > > >  72: 2699511    74: 2700644    76: 2702201    78: 2700000
-> > > > >  80: 2700776    82: 2700364    84: 2702674    86: 2700255
-> > > > >  88: 2699886    90: 2700359    92: 2699662    94: 2696188
-> > > > >  96: 2705454    98: 2699260   100: 2701097   102: 2699630
-> > > > > 104: 2700463   106: 2698408   108: 2697766   110: 2701181
-> > > > > 112: 2699166   114: 2701804   116: 2701907   118: 2701973
-> > > > > 120: 2699584   122: 2700474   124: 2700768   126: 2701963
-> > > > > 
-> > > > > Signed-off-by: Huisong Li <lihuisong@huawei.com>
-> > > > > ---
-> > > > >  arch/arm64/kernel/topology.c | 43
-> > > > > ++++++++++++++++++++++++++++++++++--
-> > > > >  drivers/acpi/cppc_acpi.c     | 22 +++++++++++++++---
-> > > > >  include/acpi/cppc_acpi.h     |  5 +++++
-> > > > >  3 files changed, 65 insertions(+), 5 deletions(-)
-> > > > > 
-> > > > > diff --git a/arch/arm64/kernel/topology.c
-> > > > > b/arch/arm64/kernel/topology.c
-> > > > > index 7d37e458e2f5..c3122154d738 100644
-> > > > > --- a/arch/arm64/kernel/topology.c
-> > > > > +++ b/arch/arm64/kernel/topology.c
-> > > > > @@ -299,6 +299,11 @@ core_initcall(init_amu_fie);
-> > > > >  #ifdef CONFIG_ACPI_CPPC_LIB
-> > > > >  #include <acpi/cppc_acpi.h>
-> > > > > +struct amu_counters {
-> > > > > +    u64 corecnt;
-> > > > > +    u64 constcnt;
-> > > > > +};
-> > > > > +
-> > > > >  static void cpu_read_corecnt(void *val)
-> > > > >  {
-> > > > >      /*
-> > > > > @@ -322,8 +327,27 @@ static void cpu_read_constcnt(void *val)
-> > > > >                0UL : read_constcnt();
-> > > > >  }
-> > > > > +static void cpu_read_amu_counters(void *data)
-> > > > > +{
-> > > > > +    struct amu_counters *cnt = (struct amu_counters *)data;
-> > > > > +
-> > > > > +    /*
-> > > > > +     * The running time of the this_cpu_has_cap() might
-> > > > > have a couple of
-> > > > > +     * microseconds and is significantly increased to tens
-> > > > > of microseconds.
-> > > > > +     * But AMU core and constant counter need to be read
-> > > > > togeter without any
-> > > > > +     * time interval to reduce the calculation discrepancy
-> > > > > using this counters.
-> > > > > +     */
-> > > > > +    if (this_cpu_has_cap(ARM64_WORKAROUND_2457168)) {
-> > > > > +        cnt->corecnt = read_corecnt();
-> > > > > +        cnt->constcnt = 0;
-> > > > > +    } else {
-> > > > > +        cnt->corecnt = read_corecnt();
-> > > > > +        cnt->constcnt = read_constcnt();
-> > > > > +    }
-> > > > > +}
-> > > > > +
-> > > > >  static inline
-> > > > > -int counters_read_on_cpu(int cpu, smp_call_func_t func, u64 *val)
-> > > > > +int counters_read_on_cpu(int cpu, smp_call_func_t func, void *data)
-> > > > >  {
-> > > > >      /*
-> > > > >       * Abort call on counterless CPU or when interrupts are
-> > > > > @@ -335,7 +359,7 @@ int counters_read_on_cpu(int cpu,
-> > > > > smp_call_func_t func, u64 *val)
-> > > > >      if (WARN_ON_ONCE(irqs_disabled()))
-> > > > >          return -EPERM;
-> > > > > -    smp_call_function_single(cpu, func, val, 1);
-> > > > > +    smp_call_function_single(cpu, func, data, 1);
-> > > > >      return 0;
-> > > > >  }
-> > > > > @@ -364,6 +388,21 @@ bool cpc_ffh_supported(void)
-> > > > >      return true;
-> > > > >  }
-> > > > > +int cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered,
-> > > > > u64 *reference)
-> > > > > +{
-> > > > > +    struct amu_counters cnts = {0};
-> > > > > +    int ret;
-> > > > > +
-> > > > > +    ret = counters_read_on_cpu(cpu, cpu_read_amu_counters, &cnts);
-> > > > > +    if (ret)
-> > > > > +        return ret;
-> > > > > +
-> > > > > +    *delivered = cnts.corecnt;
-> > > > > +    *reference = cnts.constcnt;
-> > > > > +
-> > > > > +    return 0;
-> > > > > +}
-> > > > > +
-> > > > >  int cpc_read_ffh(int cpu, struct cpc_reg *reg, u64 *val)
-> > > > >  {
-> > > > >      int ret = -EOPNOTSUPP;
-> > > > > diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> > > > > index 7ff269a78c20..f303fabd7cfe 100644
-> > > > > --- a/drivers/acpi/cppc_acpi.c
-> > > > > +++ b/drivers/acpi/cppc_acpi.c
-> > > > > @@ -1299,6 +1299,11 @@ bool cppc_perf_ctrs_in_pcc(void)
-> > > > >  }
-> > > > >  EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
-> > > > > +int __weak cpc_read_arch_counters_on_cpu(int cpu, u64
-> > > > > *delivered, u64 *reference)
-> > > > > +{
-> > > > > +    return 0;
-> > > > > +}
-> > > > > +
-> > > > >  /**
-> > > > >   * cppc_get_perf_ctrs - Read a CPU's performance feedback counters.
-> > > > >   * @cpunum: CPU from which to read counters.
-> > > > > @@ -1313,7 +1318,8 @@ int cppc_get_perf_ctrs(int cpunum,
-> > > > > struct cppc_perf_fb_ctrs *perf_fb_ctrs)
-> > > > >          *ref_perf_reg, *ctr_wrap_reg;
-> > > > >      int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
-> > > > >      struct cppc_pcc_data *pcc_ss_data = NULL;
-> > > > > -    u64 delivered, reference, ref_perf, ctr_wrap_time;
-> > > > > +    u64 delivered = 0, reference = 0;
-> > > > > +    u64 ref_perf, ctr_wrap_time;
-> > > > >      int ret = 0, regs_in_pcc = 0;
-> > > > >      if (!cpc_desc) {
-> > > > > @@ -1350,8 +1356,18 @@ int cppc_get_perf_ctrs(int cpunum,
-> > > > > struct cppc_perf_fb_ctrs *perf_fb_ctrs)
-> > > > >          }
-> > > > >      }
-> > > > > -    cpc_read(cpunum, delivered_reg, &delivered);
-> > > > > -    cpc_read(cpunum, reference_reg, &reference);
-> > > > > +    if (cpc_ffh_supported()) {
-> > > > > +        ret = cpc_read_arch_counters_on_cpu(cpunum,
-> > > > > &delivered, &reference);
-> > > > > +        if (ret) {
-> > > > > +            pr_debug("read arch counters failed, ret=%d.\n", ret);
-> > > > > +            ret = 0;
-> > > > > +        }
-> > > > > +    }
-> > > > > +    if (!delivered || !reference) {
-> > > > > +        cpc_read(cpunum, delivered_reg, &delivered);
-> > > > > +        cpc_read(cpunum, reference_reg, &reference);
-> > > > > +    }
-> > > > > +
-> > > > >      cpc_read(cpunum, ref_perf_reg, &ref_perf);
-> > > > >      /*
-> > > > > diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-> > > > > index 6126c977ece0..07d4fd82d499 100644
-> > > > > --- a/include/acpi/cppc_acpi.h
-> > > > > +++ b/include/acpi/cppc_acpi.h
-> > > > > @@ -152,6 +152,7 @@ extern bool cpc_ffh_supported(void);
-> > > > >  extern bool cpc_supported_by_cpu(void);
-> > > > >  extern int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val);
-> > > > >  extern int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val);
-> > > > > +extern int cpc_read_arch_counters_on_cpu(int cpu, u64
-> > > > > *delivered, u64 *reference);
-> > > > >  extern int cppc_get_epp_perf(int cpunum, u64 *epp_perf);
-> > > > >  extern int cppc_set_epp_perf(int cpu, struct
-> > > > > cppc_perf_ctrls *perf_ctrls, bool enable);
-> > > > >  extern int cppc_get_auto_sel_caps(int cpunum, struct
-> > > > > cppc_perf_caps *perf_caps);
-> > > > > @@ -209,6 +210,10 @@ static inline int cpc_write_ffh(int
-> > > > > cpunum, struct cpc_reg *reg, u64 val)
-> > > > >  {
-> > > > >      return -ENOTSUPP;
-> > > > >  }
-> > > > > +static inline int cpc_read_arch_counters_on_cpu(int cpu,
-> > > > > u64 *delivered, u64 *reference)
-> > > > > +{
-> > > > > +    return -EOPNOTSUPP;
-> > > > > +}
-> > > > >  static inline int cppc_set_epp_perf(int cpu, struct
-> > > > > cppc_perf_ctrls *perf_ctrls, bool enable)
-> > > > >  {
-> > > > >      return -ENOTSUPP;
-> > > > > -- 
-> > > > > 2.33.0
-> > > > > 
-> > > > .
-> > > 
-> > > _______________________________________________
-> > > linux-arm-kernel mailing list
-> > > linux-arm-kernel@lists.infradead.org
-> > > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> > 
-> > .
+In addition to that, there are the usual bunch of fixes and cleanups.
+
+Specifics:
+
+ - Add CSI-2 and DisCo for Imaging support to the ACPI device
+   enumeration code (Sakari Ailus, Rafael J. Wysocki).
+
+ - Adjust the cpufreq thermal reduction algorithm in the ACPI processor
+   driver for Tegra241 (Srikar Srimath Tirumala, Arnd Bergmann).
+
+ - Make acpi_proc_quirk_mwait_check() x86-specific (Rafael J. Wysocki).
+
+ - Switch over ACPI to using a threaded interrupt handler for the
+   SCI (Rafael J. Wysocki).
+
+ - Allow ACPI Notify () handlers to run on all CPUs and clean up the
+   ACPI interface for deferred events processing (Rafael J. Wysocki).
+
+ - Switch over the ACPI EC driver to using a threaded handler for the
+   dedicated IRQ on systems without the EC GPE (Rafael J. Wysocki).
+
+ - Adjust code using ACPICA spinlocks and the ACPI EC driver spinlock to
+   keep local interrupts on (Rafael J. Wysocki).
+
+ - Adjust the USB4 _OSC handshake to correctly handle cases in which
+   certain types of OS control are denied by the platform (Mika
+   Westerberg).
+
+ - Correct and clean up the generic function for parsing ACPI data-only
+   tables with array structure (Yuntao Wang).
+
+ - Modify acpi_dev_uid_match() to support different types of its second
+   argument and adjust its users accordingly (Raag Jadav).
+
+ - Clean up code related to acpi_evaluate_reference() and ACPI device
+   lists (Rafael J. Wysocki).
+
+ - Use generic ACPI helpers for evaluating trip point temperature
+   objects in the ACPI thermal zone driver (Rafael J. Wysockii, Arnd
+   Bergmann).
+
+ - Add Thermal fast Sampling Period (_TFP) support to the ACPI thermal
+   zone driver (Jeff Brasen).
+
+ - Modify the ACPI LPIT table handling code to avoid u32 multiplication
+   overflows in state residency computations (Nikita Kiryushin).
+
+ - Drop an unused helper function from the ACPI backlight (video) driver
+   and add a clarifying comment to it (Hans de Goede).
+
+ - Update the ACPI backlight driver to avoid using uninitialized memory
+   in some cases (Nikita Kiryushin).
+
+ - Add ACPI backlight quirk for the Colorful X15 AT 23 laptop (Yuluo
+   Qiu).
+
+ - Add support for vendor-defined error types to the ACPI APEI error
+   injection code (Avadhut Naik).
+
+ - Adjust APEI to properly set MF_ACTION_REQUIRED on synchronous memory
+   failure events, so they are handled differently from the asynchronous
+   ones (Shuai Xue).
+
+ - Fix NULL pointer dereference check in the ACPI extlog driver (Prarit
+   Bhargava).
+
+ - Adjust the ACPI extlog driver to clear the Extended Error Log status
+   when RAS_CEC handled the error (Tony Luck).
+
+ - Add IRQ override quirks for some Infinity laptops and for TongFang
+   GMxXGxx (David McFarland, Hans de Goede).
+
+ - Clean up the ACPI NUMA code and fix it to ensure that fake_pxm is not
+   the same as one of the real pxm values (Yuntao Wang).
+
+ - Fix the fractional clock divider flags in the ACPI LPSS (Intel SoC)
+   driver so as to prevent miscalculation of the values in the clock
+   divider (Andy Shevchenko).
+
+ - Adjust comments in the ACPI watchdog driver to prevent kernel-doc
+   from complaining during documentation builds (Randy Dunlap).
+
+ - Make the ACPI button driver send wakeup key events to user space in
+   addition to power button events on systems that can be woken up by
+   the power button (Ken Xue).
+
+ - Adjust pnpacpi_parse_allocated_vendor() to use memcpy() on a full
+   structure field (Dmitry Antipov).
+
+Thanks!
+
+
+---------------
+
+Andy Shevchenko (1):
+      ACPI: LPSS: Fix the fractional clock divider flags
+
+Arnd Bergmann (2):
+      ACPI: thermal_lib: include "internal.h" for function prototypes
+      ACPI: arm64: export acpi_arch_thermal_cpufreq_pctg()
+
+Avadhut Naik (4):
+      ACPI: APEI: EINJ: Refactor available_error_type_show()
+      fs: debugfs: Add write functionality to debugfs blobs
+      platform/chrome: cros_ec_debugfs: Fix permissions for panicinfo
+      ACPI: APEI: EINJ: Add support for vendor defined error types
+
+David McFarland (1):
+      ACPI: resource: Add Infinity laptops to irq1_edge_low_force_override
+
+Dmitry Antipov (1):
+      PNP: ACPI: fix fortify warning
+
+Hans de Goede (3):
+      ACPI: video: Add comment about acpi_video_backlight_use_native() usage
+      ACPI: video: Drop should_check_lcd_flag()
+      ACPI: resource: Add another DMI match for the TongFang GMxXGxx
+
+Jeff Brasen (1):
+      ACPI: thermal: Add Thermal fast Sampling Period (_TFP) support
+
+Ken Xue (1):
+      ACPI: button: trigger wakeup key events
+
+Mika Westerberg (1):
+      ACPI: Run USB4 _OSC() first with query bit set
+
+Nikita Kiryushin (2):
+      ACPI: video: check for error while searching for backlight device parent
+      ACPI: LPIT: Avoid u32 multiplication overflow
+
+Prarit Bhargava (1):
+      ACPI: extlog: fix NULL pointer dereference check
+
+Raag Jadav (5):
+      ACPI: bus: update acpi_dev_uid_match() to support multiple types
+      ACPI: bus: update acpi_dev_hid_uid_match() to support multiple types
+      ACPI: LPSS: use acpi_dev_uid_match() for matching _UID
+      efi: dev-path-parser: use acpi_dev_uid_match() for matching _UID
+      perf: arm_cspmu: drop redundant acpi_dev_uid_to_integer()
+
+Rafael J. Wysocki (20):
+      ACPI: property: Support using strings in reference properties
+      ACPI: scan: Extract CSI-2 connection graph from _CRS
+      ACPI: scan: Extract _CRS CSI-2 connection information into swnodes
+      ACPI: scan: Extract MIPI DisCo for Imaging data into swnodes
+      thermal: ACPI: Move the ACPI thermal library to drivers/acpi/
+      ACPI: thermal_lib: Add functions returning temperature in deci-Kelvin
+      ACPI: thermal: Use library functions to obtain trip point
+temperature values
+      ACPI: processor: Provide empty stub of acpi_proc_quirk_mwait_check()
+      ACPI: OSL: Use a threaded interrupt handler for SCI
+      ACPI: OSL: Rework error handling in acpi_os_execute()
+      ACPI: OSL: Rearrange workqueue selection in acpi_os_execute()
+      ACPI: OSL: Allow Notify () handlers to run on all CPUs
+      ACPI: utils: Rearrange in acpi_evaluate_reference()
+      ACPI: utils: Return bool from acpi_evaluate_reference()
+      ACPI: utils: Refine acpi_handle_list_equal() slightly
+      ACPI: utils: Fix white space in struct acpi_handle_list definition
+      ACPI: utils: Introduce helper for _DEP list lookup
+      ACPI: OSL: Use spin locks without disabling interrupts
+      ACPI: EC: Use a threaded handler for dedicated IRQ
+      ACPI: EC: Use a spin lock without disabing interrupts
+
+Randy Dunlap (1):
+      ACPI: watchdog: fix kernel-doc warnings
+
+Sakari Ailus (4):
+      device property: Add SOFTWARE_NODE() macro for defining software nodes
+      ACPI: property: Dig "rotation" property for devices with CSI2 _CRS
+      ACPI: property: Replicate DT-aligned u32 properties from DisCo for Imaging
+      ACPI: scan: Fix an error message in DisCo for Imaging support
+
+Shuai Xue (1):
+      ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on
+synchronous events
+
+Srikar Srimath Tirumala (1):
+      ACPI: processor: reduce CPUFREQ thermal reduction pctg for Tegra241
+
+Tony Luck (1):
+      ACPI: extlog: Clear Extended Error Log status when RAS_CEC
+handled the error
+
+Yuluo Qiu (1):
+      ACPI: video: Add quirk for the Colorful X15 AT 23 Laptop
+
+Yuntao Wang (4):
+      ACPI: tables: Correct and clean up the logic of acpi_parse_entries_array()
+      ACPI: NUMA: Remove unnecessary check in acpi_parse_gi_affinity()
+      ACPI: NUMA: Optimize the check for the availability of node values
+      ACPI: NUMA: Fix the logic of getting the fake_pxm value
+
+---------------
+
+ drivers/acpi/Kconfig                               |   5 +
+ drivers/acpi/Makefile                              |   3 +-
+ drivers/acpi/acpi_extlog.c                         |  12 +-
+ drivers/acpi/acpi_lpit.c                           |   2 +-
+ drivers/acpi/acpi_lpss.c                           |  51 +-
+ drivers/acpi/acpi_video.c                          |  77 +--
+ drivers/acpi/acpi_watchdog.c                       |   2 +-
+ drivers/acpi/apei/einj.c                           |  71 +-
+ drivers/acpi/apei/ghes.c                           |  29 +-
+ drivers/acpi/arm64/Makefile                        |   1 +
+ drivers/acpi/arm64/thermal_cpufreq.c               |  22 +
+ drivers/acpi/bus.c                                 |  32 +-
+ drivers/acpi/button.c                              |  10 +
+ drivers/acpi/ec.c                                  | 116 ++--
+ drivers/acpi/internal.h                            |  28 +-
+ drivers/acpi/mipi-disco-img.c                      | 725 +++++++++++++++++++++
+ drivers/acpi/numa/srat.c                           |  10 +-
+ drivers/acpi/osl.c                                 |  77 +--
+ drivers/acpi/processor_thermal.c                   |  49 +-
+ drivers/acpi/property.c                            | 102 ++-
+ drivers/acpi/resource.c                            |  19 +
+ drivers/acpi/scan.c                                |  61 +-
+ drivers/acpi/thermal.c                             |  73 +--
+ .../{thermal/thermal_acpi.c => acpi/thermal_lib.c} |  80 ++-
+ drivers/acpi/utils.c                               | 164 ++---
+ drivers/firmware/efi/dev-path-parser.c             |   7 +-
+ drivers/perf/arm_cspmu/arm_cspmu.c                 |   4 +-
+ drivers/platform/chrome/cros_ec_debugfs.c          |   2 +-
+ drivers/platform/surface/surface_acpi_notify.c     |  30 +-
+ drivers/pnp/pnpacpi/rsparser.c                     |  12 +-
+ drivers/thermal/Kconfig                            |   4 -
+ drivers/thermal/Makefile                           |   1 -
+ drivers/thermal/intel/Kconfig                      |   2 +-
+ drivers/thermal/intel/int340x_thermal/Kconfig      |   2 +-
+ fs/debugfs/file.c                                  |  28 +-
+ include/acpi/acpi_bus.h                            | 169 ++++-
+ include/acpi/video.h                               |   9 +
+ include/linux/acpi.h                               |  22 +-
+ include/linux/property.h                           |   7 +
+ include/linux/thermal.h                            |   7 -
+ lib/fw_table.c                                     |  30 +-
+ 41 files changed, 1603 insertions(+), 554 deletions(-)
 
