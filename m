@@ -1,265 +1,356 @@
-Return-Path: <linux-acpi+bounces-2749-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2750-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9532E826D2E
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 12:50:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B431A827098
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 15:03:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF5641F228DC
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 11:50:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C1E11F23312
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 14:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2774019BA5;
-	Mon,  8 Jan 2024 11:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ql2SB+TV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7A245BED;
+	Mon,  8 Jan 2024 14:03:11 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2062.outbound.protection.outlook.com [40.107.223.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1712575D;
-	Mon,  8 Jan 2024 11:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bjmPQ4OdHAkQn+C/6Z1dCdj/MfhAOX9pvylUeyMbCoLsY5uANU46yDLcGeLoKTjY5ZeEqBzwgNVbFHSvzLvicQt4eV4cRE0Yt+JC4LQC/WlVxU8zR+doHyv9EJZ/1zvsf1bwQOvySIxQKxa+CdibWA5lWgIk3YThxADm6pftWUZgANX/hTqs5ecSd1mKjrPhsyMoMkGveOKOnuAi7vx+9l7FeOe3Qb4kttoFH16gzYlF9Y8JMai7DoFfouhMGGTYxevkBP9M0q/FmV9lBsx+ehPsWPP8rj8j64aOJQSl8hxhCvuprH8Z72Cf8Lu4bgBx48NiugN5enSpHsiJDiMqKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=79adfbqzxe7Iw/HSPcanom0+XiQ5cw74aFMumeN2m1Y=;
- b=kSVnTXY/RLIBZeBW34sl7UGr4ABqhPJeMIgWAGwx7dim9SffnH05ThEJHXygPq4ATyZyQAq12dFEAt3CNzXggA33GSl4pLwPAU3Miw6f7zJiDEf2QSpse08cua8afzYCOzI+6qkgsvsudjzusn73GmjWFq3BxqtV7w6yNWF0P4c4k8A0CVuKCUKAHHurIMp5b5c7oDCIgCMoY0IZBCBPqSUT/GcAqqa0Xts85jEDVyj3QRkHRVGgpGAFitqZnPShqoDZXmWx0cZ3AopX2uuApH8FVeo3tUuv+TR3fp2w5nScNqaVDWpIjps09YKIwpTjN8HZG0ZH60RfUV6NUc/m0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=79adfbqzxe7Iw/HSPcanom0+XiQ5cw74aFMumeN2m1Y=;
- b=ql2SB+TVTFZYzZ9hOWh1HRhbW/LVGcmGPmOBFHOWgdVRQt21/+pRXbSXofdkwUCed4FFNKeVEkhWF/ZrIkry8adOUZXgT+j0DXwvQuDXDQFjLHcRP35RQuCOYVOh5FnZ96jhxX0OOsD8/5ryjFEeZu7+jw4qKvLAp1oGzdawPNQ=
-Received: from PH8PR02CA0007.namprd02.prod.outlook.com (2603:10b6:510:2d0::18)
- by IA0PR12MB7529.namprd12.prod.outlook.com (2603:10b6:208:441::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.21; Mon, 8 Jan
- 2024 11:50:10 +0000
-Received: from SA2PEPF000015C8.namprd03.prod.outlook.com
- (2603:10b6:510:2d0:cafe::fa) by PH8PR02CA0007.outlook.office365.com
- (2603:10b6:510:2d0::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23 via Frontend
- Transport; Mon, 8 Jan 2024 11:50:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF000015C8.mail.protection.outlook.com (10.167.241.198) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7181.13 via Frontend Transport; Mon, 8 Jan 2024 11:50:09 +0000
-Received: from rric.localdomain (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Mon, 8 Jan
- 2024 05:49:18 -0600
-From: Robert Richter <rrichter@amd.com>
-To: Alison Schofield <alison.schofield@intel.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
-	<dan.j.williams@intel.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>, Davidlohr Bueso <dave@stgolabs.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>
-CC: <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Len Brown
-	<lenb@kernel.org>, Robert Richter <rrichter@amd.com>,
-	<linux-acpi@vger.kernel.org>
-Subject: [PATCH v2 3/3] lib/firmware_table: Provide buffer length argument to cdat_table_parse()
-Date: Mon, 8 Jan 2024 12:48:33 +0100
-Message-ID: <20240108114833.241710-4-rrichter@amd.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240108114833.241710-1-rrichter@amd.com>
-References: <20240108114833.241710-1-rrichter@amd.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4F047A52;
+	Mon,  8 Jan 2024 14:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 285F8C15;
+	Mon,  8 Jan 2024 06:03:54 -0800 (PST)
+Received: from localhost (ionvoi01-desktop.cambridge.arm.com [10.2.78.69])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CC12E3F64C;
+	Mon,  8 Jan 2024 06:03:07 -0800 (PST)
+Date: Mon, 8 Jan 2024 14:03:06 +0000
+From: Ionela Voinescu <ionela.voinescu@arm.com>
+To: "lihuisong (C)" <lihuisong@huawei.com>
+Cc: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
+	beata.michalska@arm.com, sumitg@nvidia.com, zengheng4@huawei.com,
+	yang@os.amperecomputing.com, will@kernel.org, sudeep.holla@arm.com,
+	liuyonglong@huawei.com, zhanjie9@hisilicon.com,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH] cpufreq: CPPC: Resolve the large frequency discrepancy
+ from cpuinfo_cur_freq
+Message-ID: <ZZwAmqp6hcmMF8aN@arm.com>
+References: <20231212072617.14756-1-lihuisong@huawei.com>
+ <ZZWfJOsDlEXWYHA5@arm.com>
+ <9428a1ed-ba4d-1fe6-63e8-11e152bf1f09@huawei.com>
+ <lnocwcitdbmgcyhd2dlczgdlhtfw4pfot2br2i3hqscnvr3xgq@nuxlauxum3nr>
+ <d0f47e9d-6a58-8b46-89be-b3182abb69f0@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015C8:EE_|IA0PR12MB7529:EE_
-X-MS-Office365-Filtering-Correlation-Id: 26138389-7e54-476e-6f9b-08dc103ff74f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	ONRBZRRak85LIQFJAA4VovCD/FLT2K7so3VdYEUjHOBc1G8Bog94niROSFMN28gMG3Ja2mkugX0mDcTewDOeF/CodiiYsWfQFHY1Bazted5HNTiQFgRhg1643N0RZ0WZtwltLmGk839fUj71o75HW+wkU8vRYVd0AzY7YmbKj2syx/Vg8oTQoHFtOvlugm2hgQTHDNHYXhI7LBN+KtAtwe0BvIqvNSv3/ocjj/1ZGG1G9QnoFvjnO11SFTnYhv/NYLG7Y366Y1ymSvK7I9SdNokcj0phsAhhzEzDX59Hl/IIJoJS/R0hbB5WzpabEP1Ew/A+lDfYbt9JxXnOaCk1Qm3EjYrj6UsYVMoNRMY5QD5qH91ybOrnpffXfAhmmIHZGgpA8YvvGCF8JeQN+aucFPgS+PWwES9e+XNE1D1xIYAQNSDq1JVhc6VMsqcR7DwKjriTrPvab3uEYKUiJ8YXS2rJrJdgMImxI67ZzHW2Pd811O8rCPdufeU/qxyIBj1FMsHgB3raZVaBcwNwV7SbPUTcUnJf+vlTKz/Hp5Ma1Sh/4m8OaBBEQeTIxPX0zIN6ocZDAlRg9upSHucJt7f401bNZ1m+kdahzZ5qPSVbyWg6Kep2nCwOnjY98XE+KQh1iQcgZdHvobC2rd2CCrLauut9gzYUEGBX0/6FIIS9r8S0aDrw+MvXWZWO0uKBplQQG6E+odtoPVZhTtB+FltvtJEE+/WSzNIOJ0dvX9Y/Ul+fG4kWM7z/HTUvxYuSL8/j3A13qHrq2D3XUo3ZgFcZ4w==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(376002)(346002)(39860400002)(396003)(230922051799003)(451199024)(64100799003)(186009)(1800799012)(82310400011)(46966006)(40470700004)(36840700001)(36860700001)(6666004)(478600001)(40480700001)(82740400003)(47076005)(40460700003)(81166007)(356005)(83380400001)(26005)(426003)(336012)(16526019)(2616005)(8936002)(8676002)(110136005)(7416002)(316002)(54906003)(5660300002)(2906002)(4326008)(36756003)(70206006)(70586007)(1076003)(41300700001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2024 11:50:09.7305
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26138389-7e54-476e-6f9b-08dc103ff74f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF000015C8.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7529
+In-Reply-To: <d0f47e9d-6a58-8b46-89be-b3182abb69f0@huawei.com>
 
-The last entry in the CDAT table may not mark the end of the CDAT
-table buffer specified by the length field in the CDAT header. It can
-be shorter with trailing unused (zero'ed) data. The actual table
-length is determined when reading all CDAT entries of the table with
-DOE.
+Hi,
 
-If the table is greater than expected (containing zero'ed trailing
-data), the CDAT parser fails with:
+On Friday 05 Jan 2024 at 15:04:47 (+0800), lihuisong (C) wrote:
+> Hi Vanshi,
+> 
+> 在 2024/1/5 8:48, Vanshidhar Konda 写道:
+> > On Thu, Jan 04, 2024 at 05:36:51PM +0800, lihuisong (C) wrote:
+> > > 
+> > > 在 2024/1/4 1:53, Ionela Voinescu 写道:
+> > > > Hi,
+> > > > 
+> > > > On Tuesday 12 Dec 2023 at 15:26:17 (+0800), Huisong Li wrote:
+> > > > > Many developers found that the cpu current frequency is greater than
+> > > > > the maximum frequency of the platform, please see [1], [2] and [3].
+> > > > > 
+> > > > > In the scenarios with high memory access pressure, the patch [1] has
+> > > > > proved the significant latency of cpc_read() which is used to obtain
+> > > > > delivered and reference performance counter cause an absurd frequency.
+> > > > > The sampling interval for this counters is very critical and
+> > > > > is expected
+> > > > > to be equal. However, the different latency of cpc_read() has a direct
+> > > > > impact on their sampling interval.
+> > > > > 
+> > > > Would this [1] alternative solution work for you?
+> > > It would work for me AFAICS.
+> > > Because the "arch_freq_scale" is also from AMU core and constant
+> > > counter, and read together.
+> > > But, from their discuss line, it seems that there are some tricky
+> > > points to clarify or consider.
+> > 
+> > I think the changes in [1] would work better when CPUs may be idle. With
+> > this
+> > patch we would have to wake any core that is in idle state to read the
+> > AMU
+> > counters. Worst case, if core 0 is trying to read the CPU frequency of
+> > all
+> > cores, it may need to wake up all the other cores to read the AMU
+> > counters.
+> From the approach in [1], if all CPUs (one or more cores) under one policy
+> are idle, they still cannot be obtained the CPU frequency, right?
+> In this case, the [1] API will return 0 and have to back to call
+> cpufreq_driver->get() for cpuinfo_cur_freq.
+> Then we still need to face the issue this patch mentioned.
 
- [   48.691717] Malformed DSMAS table length: (24:0)
- [   48.702084] [CDAT:0x00] Invalid zero length
- [   48.711460] cxl_port endpoint1: Failed to parse CDAT: -22
+With the implementation at [1], arch_freq_get_on_cpu() will not return 0
+for idle CPUs and the get() callback will not be called to wake up the
+CPUs.
 
-In addition, the table buffer size can be different from the size
-specified in the length field. This may cause out-of-bound access then
-parsing the CDAT table.
+Worst case, arch_freq_get_on_cpu() will return a frequency based on the
+AMU counter values obtained on the last tick on that CPU. But if that CPU
+is not a housekeeping CPU, a housekeeping CPU in the same policy will be
+selected, as it would have had a more recent tick, and therefore a more
+recent frequency value for the domain.
 
-Fix that by providing an optonal buffer length argument to
-acpi_parse_entries_array() that can be used by cdat_table_parse() to
-propagate the buffer size down to its users.
+I understand that the frequency returned here will not be up to date,
+but there's no proper frequency feedback for an idle CPU. If one only
+wakes up a CPU to sample counters, before the CPU goes back to sleep,
+the obtained frequency feedback is meaningless.
 
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Signed-off-by: Robert Richter <rrichter@amd.com>
----
- drivers/acpi/tables.c    |  2 +-
- drivers/cxl/core/cdat.c  |  6 +++---
- include/linux/fw_table.h |  4 +++-
- lib/fw_table.c           | 15 ++++++++++-----
- 4 files changed, 17 insertions(+), 10 deletions(-)
+> > For systems with 128 cores or more, this could be very expensive and
+> > happen
+> > very frequently.
+> > 
+> > AFAICS, the approach in [1] would avoid this cost.
+> But the CPU frequency is just an average value for the last tick period
+> instead of the current one the CPU actually runs at.
+> In addition, there are some conditions to use 'arch_freq_scale' in this
+> approach.
 
-diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-index b07f7d091d13..b976e5fc3fbc 100644
---- a/drivers/acpi/tables.c
-+++ b/drivers/acpi/tables.c
-@@ -253,7 +253,7 @@ int __init_or_acpilib acpi_table_parse_entries_array(
- 
- 	count = acpi_parse_entries_array(id, table_size,
- 					 (union fw_table_header *)table_header,
--					 proc, proc_num, max_entries);
-+					 0, proc, proc_num, max_entries);
- 
- 	acpi_put_table(table_header);
- 	return count;
-diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
-index 6fe11546889f..012d8f2a7945 100644
---- a/drivers/cxl/core/cdat.c
-+++ b/drivers/cxl/core/cdat.c
-@@ -149,13 +149,13 @@ static int cxl_cdat_endpoint_process(struct cxl_port *port,
- 	int rc;
- 
- 	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSMAS, cdat_dsmas_handler,
--			      dsmas_xa, port->cdat.table);
-+			      dsmas_xa, port->cdat.table, port->cdat.length);
- 	rc = cdat_table_parse_output(rc);
- 	if (rc)
- 		return rc;
- 
- 	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSLBIS, cdat_dslbis_handler,
--			      dsmas_xa, port->cdat.table);
-+			      dsmas_xa, port->cdat.table, port->cdat.length);
- 	return cdat_table_parse_output(rc);
- }
- 
-@@ -511,7 +511,7 @@ void cxl_switch_parse_cdat(struct cxl_port *port)
- 		return;
- 
- 	rc = cdat_table_parse(ACPI_CDAT_TYPE_SSLBIS, cdat_sslbis_handler,
--			      port, port->cdat.table);
-+			      port, port->cdat.table, port->cdat.length);
- 	rc = cdat_table_parse_output(rc);
- 	if (rc)
- 		dev_dbg(&port->dev, "Failed to parse SSLBIS: %d\n", rc);
-diff --git a/include/linux/fw_table.h b/include/linux/fw_table.h
-index 95421860397a..3ff4c277296f 100644
---- a/include/linux/fw_table.h
-+++ b/include/linux/fw_table.h
-@@ -40,12 +40,14 @@ union acpi_subtable_headers {
- 
- int acpi_parse_entries_array(char *id, unsigned long table_size,
- 			     union fw_table_header *table_header,
-+			     unsigned long max_length,
- 			     struct acpi_subtable_proc *proc,
- 			     int proc_num, unsigned int max_entries);
- 
- int cdat_table_parse(enum acpi_cdat_type type,
- 		     acpi_tbl_entry_handler_arg handler_arg, void *arg,
--		     struct acpi_table_cdat *table_header);
-+		     struct acpi_table_cdat *table_header,
-+		     unsigned long length);
- 
- /* CXL is the only non-ACPI consumer of the FIRMWARE_TABLE library */
- #if IS_ENABLED(CONFIG_ACPI) && !IS_ENABLED(CONFIG_CXL_BUS)
-diff --git a/lib/fw_table.c b/lib/fw_table.c
-index 1e5e0b2f7012..ddb67853b7ac 100644
---- a/lib/fw_table.c
-+++ b/lib/fw_table.c
-@@ -132,6 +132,7 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
-  *
-  * @id: table id (for debugging purposes)
-  * @table_size: size of the root table
-+ * @max_length: maximum size of the table (ignore if 0)
-  * @table_header: where does the table start?
-  * @proc: array of acpi_subtable_proc struct containing entry id
-  *        and associated handler with it
-@@ -153,10 +154,11 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
- int __init_or_fwtbl_lib
- acpi_parse_entries_array(char *id, unsigned long table_size,
- 			 union fw_table_header *table_header,
-+			 unsigned long max_length,
- 			 struct acpi_subtable_proc *proc,
- 			 int proc_num, unsigned int max_entries)
- {
--	unsigned long table_end, subtable_len, entry_len;
-+	unsigned long table_len, table_end, subtable_len, entry_len;
- 	struct acpi_subtable_entry entry;
- 	enum acpi_subtable_type type;
- 	int count = 0;
-@@ -164,8 +166,10 @@ acpi_parse_entries_array(char *id, unsigned long table_size,
- 	int i;
- 
- 	type = acpi_get_subtable_type(id);
--	table_end = (unsigned long)table_header +
--		    acpi_table_get_length(type, table_header);
-+	table_len = acpi_table_get_length(type, table_header);
-+	if (max_length && max_length < table_len)
-+		table_len = max_length;
-+	table_end = (unsigned long)table_header + table_len;
- 
- 	/* Parse all entries looking for a match. */
- 
-@@ -220,7 +224,8 @@ int __init_or_fwtbl_lib
- cdat_table_parse(enum acpi_cdat_type type,
- 		 acpi_tbl_entry_handler_arg handler_arg,
- 		 void *arg,
--		 struct acpi_table_cdat *table_header)
-+		 struct acpi_table_cdat *table_header,
-+		 unsigned long length)
- {
- 	struct acpi_subtable_proc proc = {
- 		.id		= type,
-@@ -234,6 +239,6 @@ cdat_table_parse(enum acpi_cdat_type type,
- 	return acpi_parse_entries_array(ACPI_SIG_CDAT,
- 					sizeof(struct acpi_table_cdat),
- 					(union fw_table_header *)table_header,
--					&proc, 1, 0);
-+					length, &proc, 1, 0);
- }
- EXPORT_SYMBOL_FWTBL_LIB(cdat_table_parse);
--- 
-2.39.2
+What are the conditions you are referring to?
 
+> So I'm not sure if this approach can entirely cover the frequency
+> discrepancy issue.
+
+Unfortunately there is no perfect frequency feedback. By the time you
+observe/use the value of scaling_cur_freq/cpuinfo_cur_freq, the frequency
+of the CPU might have already changed. Therefore, an average value might
+be a better indication of the recent performance level of a CPU.
+
+Would you be able to test [1] on your platform and usecase?
+
+Many thanks,
+Ionela.
+
+> 
+> /Huisong
+> 
+> > > > 
+> > > > [1] https://lore.kernel.org/lkml/20231127160838.1403404-1-beata.michalska@arm.com/
+> > > > 
+> > > > Thanks,
+> > > > Ionela.
+> > > > 
+> > > > > This patch adds a interface, cpc_read_arch_counters_on_cpu, to read
+> > > > > delivered and reference performance counter together. According to my
+> > > > > test[4], the discrepancy of cpu current frequency in the
+> > > > > scenarios with
+> > > > > high memory access pressure is lower than 0.2% by stress-ng
+> > > > > application.
+> > > > > 
+> > > > > [1] https://lore.kernel.org/all/20231025093847.3740104-4-zengheng4@huawei.com/
+> > > > > [2] https://lore.kernel.org/all/20230328193846.8757-1-yang@os.amperecomputing.com/
+> > > > > [3]
+> > > > > https://lore.kernel.org/all/20230418113459.12860-7-sumitg@nvidia.com/
+> > > > > 
+> > > > > [4] My local test:
+> > > > > The testing platform enable SMT and include 128 logical CPU in total,
+> > > > > and CPU base frequency is 2.7GHz. Reading "cpuinfo_cur_freq" for each
+> > > > > physical core on platform during the high memory access pressure from
+> > > > > stress-ng, and the output is as follows:
+> > > > >   0: 2699133     2: 2699942     4: 2698189     6: 2704347
+> > > > >   8: 2704009    10: 2696277    12: 2702016    14: 2701388
+> > > > >  16: 2700358    18: 2696741    20: 2700091    22: 2700122
+> > > > >  24: 2701713    26: 2702025    28: 2699816    30: 2700121
+> > > > >  32: 2700000    34: 2699788    36: 2698884    38: 2699109
+> > > > >  40: 2704494    42: 2698350    44: 2699997    46: 2701023
+> > > > >  48: 2703448    50: 2699501    52: 2700000    54: 2699999
+> > > > >  56: 2702645    58: 2696923    60: 2697718    62: 2700547
+> > > > >  64: 2700313    66: 2700000    68: 2699904    70: 2699259
+> > > > >  72: 2699511    74: 2700644    76: 2702201    78: 2700000
+> > > > >  80: 2700776    82: 2700364    84: 2702674    86: 2700255
+> > > > >  88: 2699886    90: 2700359    92: 2699662    94: 2696188
+> > > > >  96: 2705454    98: 2699260   100: 2701097   102: 2699630
+> > > > > 104: 2700463   106: 2698408   108: 2697766   110: 2701181
+> > > > > 112: 2699166   114: 2701804   116: 2701907   118: 2701973
+> > > > > 120: 2699584   122: 2700474   124: 2700768   126: 2701963
+> > > > > 
+> > > > > Signed-off-by: Huisong Li <lihuisong@huawei.com>
+> > > > > ---
+> > > > >  arch/arm64/kernel/topology.c | 43
+> > > > > ++++++++++++++++++++++++++++++++++--
+> > > > >  drivers/acpi/cppc_acpi.c     | 22 +++++++++++++++---
+> > > > >  include/acpi/cppc_acpi.h     |  5 +++++
+> > > > >  3 files changed, 65 insertions(+), 5 deletions(-)
+> > > > > 
+> > > > > diff --git a/arch/arm64/kernel/topology.c
+> > > > > b/arch/arm64/kernel/topology.c
+> > > > > index 7d37e458e2f5..c3122154d738 100644
+> > > > > --- a/arch/arm64/kernel/topology.c
+> > > > > +++ b/arch/arm64/kernel/topology.c
+> > > > > @@ -299,6 +299,11 @@ core_initcall(init_amu_fie);
+> > > > >  #ifdef CONFIG_ACPI_CPPC_LIB
+> > > > >  #include <acpi/cppc_acpi.h>
+> > > > > +struct amu_counters {
+> > > > > +    u64 corecnt;
+> > > > > +    u64 constcnt;
+> > > > > +};
+> > > > > +
+> > > > >  static void cpu_read_corecnt(void *val)
+> > > > >  {
+> > > > >      /*
+> > > > > @@ -322,8 +327,27 @@ static void cpu_read_constcnt(void *val)
+> > > > >                0UL : read_constcnt();
+> > > > >  }
+> > > > > +static void cpu_read_amu_counters(void *data)
+> > > > > +{
+> > > > > +    struct amu_counters *cnt = (struct amu_counters *)data;
+> > > > > +
+> > > > > +    /*
+> > > > > +     * The running time of the this_cpu_has_cap() might
+> > > > > have a couple of
+> > > > > +     * microseconds and is significantly increased to tens
+> > > > > of microseconds.
+> > > > > +     * But AMU core and constant counter need to be read
+> > > > > togeter without any
+> > > > > +     * time interval to reduce the calculation discrepancy
+> > > > > using this counters.
+> > > > > +     */
+> > > > > +    if (this_cpu_has_cap(ARM64_WORKAROUND_2457168)) {
+> > > > > +        cnt->corecnt = read_corecnt();
+> > > > > +        cnt->constcnt = 0;
+> > > > > +    } else {
+> > > > > +        cnt->corecnt = read_corecnt();
+> > > > > +        cnt->constcnt = read_constcnt();
+> > > > > +    }
+> > > > > +}
+> > > > > +
+> > > > >  static inline
+> > > > > -int counters_read_on_cpu(int cpu, smp_call_func_t func, u64 *val)
+> > > > > +int counters_read_on_cpu(int cpu, smp_call_func_t func, void *data)
+> > > > >  {
+> > > > >      /*
+> > > > >       * Abort call on counterless CPU or when interrupts are
+> > > > > @@ -335,7 +359,7 @@ int counters_read_on_cpu(int cpu,
+> > > > > smp_call_func_t func, u64 *val)
+> > > > >      if (WARN_ON_ONCE(irqs_disabled()))
+> > > > >          return -EPERM;
+> > > > > -    smp_call_function_single(cpu, func, val, 1);
+> > > > > +    smp_call_function_single(cpu, func, data, 1);
+> > > > >      return 0;
+> > > > >  }
+> > > > > @@ -364,6 +388,21 @@ bool cpc_ffh_supported(void)
+> > > > >      return true;
+> > > > >  }
+> > > > > +int cpc_read_arch_counters_on_cpu(int cpu, u64 *delivered,
+> > > > > u64 *reference)
+> > > > > +{
+> > > > > +    struct amu_counters cnts = {0};
+> > > > > +    int ret;
+> > > > > +
+> > > > > +    ret = counters_read_on_cpu(cpu, cpu_read_amu_counters, &cnts);
+> > > > > +    if (ret)
+> > > > > +        return ret;
+> > > > > +
+> > > > > +    *delivered = cnts.corecnt;
+> > > > > +    *reference = cnts.constcnt;
+> > > > > +
+> > > > > +    return 0;
+> > > > > +}
+> > > > > +
+> > > > >  int cpc_read_ffh(int cpu, struct cpc_reg *reg, u64 *val)
+> > > > >  {
+> > > > >      int ret = -EOPNOTSUPP;
+> > > > > diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> > > > > index 7ff269a78c20..f303fabd7cfe 100644
+> > > > > --- a/drivers/acpi/cppc_acpi.c
+> > > > > +++ b/drivers/acpi/cppc_acpi.c
+> > > > > @@ -1299,6 +1299,11 @@ bool cppc_perf_ctrs_in_pcc(void)
+> > > > >  }
+> > > > >  EXPORT_SYMBOL_GPL(cppc_perf_ctrs_in_pcc);
+> > > > > +int __weak cpc_read_arch_counters_on_cpu(int cpu, u64
+> > > > > *delivered, u64 *reference)
+> > > > > +{
+> > > > > +    return 0;
+> > > > > +}
+> > > > > +
+> > > > >  /**
+> > > > >   * cppc_get_perf_ctrs - Read a CPU's performance feedback counters.
+> > > > >   * @cpunum: CPU from which to read counters.
+> > > > > @@ -1313,7 +1318,8 @@ int cppc_get_perf_ctrs(int cpunum,
+> > > > > struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+> > > > >          *ref_perf_reg, *ctr_wrap_reg;
+> > > > >      int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpunum);
+> > > > >      struct cppc_pcc_data *pcc_ss_data = NULL;
+> > > > > -    u64 delivered, reference, ref_perf, ctr_wrap_time;
+> > > > > +    u64 delivered = 0, reference = 0;
+> > > > > +    u64 ref_perf, ctr_wrap_time;
+> > > > >      int ret = 0, regs_in_pcc = 0;
+> > > > >      if (!cpc_desc) {
+> > > > > @@ -1350,8 +1356,18 @@ int cppc_get_perf_ctrs(int cpunum,
+> > > > > struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+> > > > >          }
+> > > > >      }
+> > > > > -    cpc_read(cpunum, delivered_reg, &delivered);
+> > > > > -    cpc_read(cpunum, reference_reg, &reference);
+> > > > > +    if (cpc_ffh_supported()) {
+> > > > > +        ret = cpc_read_arch_counters_on_cpu(cpunum,
+> > > > > &delivered, &reference);
+> > > > > +        if (ret) {
+> > > > > +            pr_debug("read arch counters failed, ret=%d.\n", ret);
+> > > > > +            ret = 0;
+> > > > > +        }
+> > > > > +    }
+> > > > > +    if (!delivered || !reference) {
+> > > > > +        cpc_read(cpunum, delivered_reg, &delivered);
+> > > > > +        cpc_read(cpunum, reference_reg, &reference);
+> > > > > +    }
+> > > > > +
+> > > > >      cpc_read(cpunum, ref_perf_reg, &ref_perf);
+> > > > >      /*
+> > > > > diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+> > > > > index 6126c977ece0..07d4fd82d499 100644
+> > > > > --- a/include/acpi/cppc_acpi.h
+> > > > > +++ b/include/acpi/cppc_acpi.h
+> > > > > @@ -152,6 +152,7 @@ extern bool cpc_ffh_supported(void);
+> > > > >  extern bool cpc_supported_by_cpu(void);
+> > > > >  extern int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val);
+> > > > >  extern int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val);
+> > > > > +extern int cpc_read_arch_counters_on_cpu(int cpu, u64
+> > > > > *delivered, u64 *reference);
+> > > > >  extern int cppc_get_epp_perf(int cpunum, u64 *epp_perf);
+> > > > >  extern int cppc_set_epp_perf(int cpu, struct
+> > > > > cppc_perf_ctrls *perf_ctrls, bool enable);
+> > > > >  extern int cppc_get_auto_sel_caps(int cpunum, struct
+> > > > > cppc_perf_caps *perf_caps);
+> > > > > @@ -209,6 +210,10 @@ static inline int cpc_write_ffh(int
+> > > > > cpunum, struct cpc_reg *reg, u64 val)
+> > > > >  {
+> > > > >      return -ENOTSUPP;
+> > > > >  }
+> > > > > +static inline int cpc_read_arch_counters_on_cpu(int cpu,
+> > > > > u64 *delivered, u64 *reference)
+> > > > > +{
+> > > > > +    return -EOPNOTSUPP;
+> > > > > +}
+> > > > >  static inline int cppc_set_epp_perf(int cpu, struct
+> > > > > cppc_perf_ctrls *perf_ctrls, bool enable)
+> > > > >  {
+> > > > >      return -ENOTSUPP;
+> > > > > -- 
+> > > > > 2.33.0
+> > > > > 
+> > > > .
+> > > 
+> > > _______________________________________________
+> > > linux-arm-kernel mailing list
+> > > linux-arm-kernel@lists.infradead.org
+> > > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> > 
+> > .
 
