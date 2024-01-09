@@ -1,93 +1,156 @@
-Return-Path: <linux-acpi+bounces-2773-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2774-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA587828E9D
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 21:48:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB46828FC9
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 23:20:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08301287EA6
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 20:48:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73C191C20BCA
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 22:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306063D986;
-	Tue,  9 Jan 2024 20:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7E33E484;
+	Tue,  9 Jan 2024 22:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bmin4gO1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FEGV0IlU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1C23D978;
-	Tue,  9 Jan 2024 20:47:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A443DC433C7;
-	Tue,  9 Jan 2024 20:47:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704833278;
-	bh=QteKBQGsANCi2lfyGrXPvlyFVGCr0qwIbw45fnPbvqw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bmin4gO1ml/3fuxC5x1qnS0URvLIYr2G6veI8G49N+D8xVrYnn0D8u7qUYIXqyvBc
-	 PFVL2fWoTiNkIaxWfCOckz9oTs+VuF5X/nVO7lAJsxTx0PZ/0rCX/8tYblCvfP+p09
-	 vMcIxwK6Yf/ntv7LlKo3t3/k+ebm11i5WrupmbF9Q6UviIL5YpU2hmq/LwkjVzQ3AL
-	 IejDYl49avcaMPrXcO/7N3ERTsObBiEqMriFHFlX/K/Q1M/Sb3ZwL19xbx+efNfR+y
-	 EbQXg2MiL3Mo+0oHRMFuYGiBPoilld5KodlfCYkBuciI0U8SbAFt7f3v9imliIhQn2
-	 pF+bFmymv61Vw==
-Received: (nullmailer pid 3193485 invoked by uid 1000);
-	Tue, 09 Jan 2024 20:47:48 -0000
-Date: Tue, 9 Jan 2024 14:47:48 -0600
-From: Rob Herring <robh@kernel.org>
-To: Mark Hasemeyer <markhas@chromium.org>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Daniel Scally <djrscally@gmail.com>, Raul Rangel <rrangel@chromium.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, linux-acpi@vger.kernel.org, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Andy Shevchenko <andriy.shevchenko@intel.com>, Len Brown <lenb@kernel.org>, devicetree@vger.kernel.org, Konrad Dybcio <konrad.dybcio@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Tzung-Bi Shih <tzungbi@kernel.org>, LKML <linux-kernel@vger.kernel.org>, Frank Rowand <frowand.list@gmail.com>, Sudeep Holla <sudeep.holla@arm.com>, Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v4 21/24] device property: Modify fwnode irq_get() to use
- resource
-Message-ID: <170483326744.3193407.6920780554098441341.robh@kernel.org>
-References: <20240102210820.2604667-1-markhas@chromium.org>
- <20240102140734.v4.21.I38ac58ab04985a404ed6551eb5813fa7841ef410@changeid>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C640D3E480;
+	Tue,  9 Jan 2024 22:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-5e82f502a4cso27283157b3.0;
+        Tue, 09 Jan 2024 14:18:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704838696; x=1705443496; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=v/5fHRZ3TTIgaikqWrDxvko86x0/5zJ9RLo/uHWIt/A=;
+        b=FEGV0IlULHHjigvmkKZTV9Lldy03f1hTjQuXyhPm2KPrEFIr7XbZ1LWkOBMwxOwMhO
+         2j1ck1HymPEk+O94xKDx2XwBFBHdFAUSG0L2PDDn+YFpeBMldshwtx+CYtTRQMpIP2zd
+         68FDGkuldnQXkEwuxjV0FqugCzUQ51x5Kws4xq5yYvhr3O6ypBinr4po7fsjN5sZrbtS
+         DRThm0nJiPTrqlR4r3VMAhtwJ7AOMn+Di1rVYdPsNIfh6u17T6BAdauhujgugE8+mB8A
+         50zAwZyxoeEhDYVqEt+DO4M5fiiivQi61UC9M1mtOezn68eNhcGw4BIgCp91kWf3EUsp
+         RSVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704838696; x=1705443496;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v/5fHRZ3TTIgaikqWrDxvko86x0/5zJ9RLo/uHWIt/A=;
+        b=vLMc2R4gGvII/leELkL1dD91Nl07rYIwEphXF00DmxA+/Um07Oa8N/AePG/tP5ZLJ4
+         itFoGxcAFMpDo1YI18EJb6j+a9KpIgGCoTiZhrqRKDmj2FR2AZ/IwM8/ixlIEx1vb1s6
+         jdV0GTH7ZkJQsvFv0OO8fad10cQg13pndWG5EnGWUL/aFCA6+Amu+RP5ylX6FoXK3xbS
+         oCJTvgQT043WdIIj22IDWl4LigSHl+UcuEtAp7EADupBF81EnVgXx4BEANzz0G+eWXzA
+         nWTnQCwxGRY+qHRj5f11fyhm5/2SeDUhj0RM/ja7RWUg7Lx/GIV0L11fEouTeK0OVZVu
+         2rYA==
+X-Gm-Message-State: AOJu0YxKNMVv7OqWIfmklZ5hTHaPsAdCuqUHxjdbXZD4QVBcFuxAB7uY
+	T40rqYyyN15J8W+tQWcm0hs=
+X-Google-Smtp-Source: AGHT+IE4ioHYsK8BrRCtioucpZLYJByHQF+hhkA6bdoAIejoNjkkeOSHea6O51p+qmcZCeTkErbKZQ==
+X-Received: by 2002:a81:4fd3:0:b0:5d7:1940:8dd7 with SMTP id d202-20020a814fd3000000b005d719408dd7mr142850ywb.62.1704838695631;
+        Tue, 09 Jan 2024 14:18:15 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id s84-20020a815e57000000b005e8991c1a69sm1072050ywb.140.2024.01.09.14.18.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Jan 2024 14:18:14 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <cea9dfbe-89a1-4832-a09f-10582cd034fb@roeck-us.net>
+Date: Tue, 9 Jan 2024 14:18:13 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240102140734.v4.21.I38ac58ab04985a404ed6551eb5813fa7841ef410@changeid>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] ACPI: IPMI: Add helper to wait for when SMI is
+ selected
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc: jdelvare@suse.com, Len Brown <lenb@kernel.org>,
+ Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev
+References: <20240109041218.980674-1-kai.heng.feng@canonical.com>
+ <CAJZ5v0g4_5k-+_-ZPkm5LNOLsveJJqt2t60q_4a3wm+kAFCv_g@mail.gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <CAJZ5v0g4_5k-+_-ZPkm5LNOLsveJJqt2t60q_4a3wm+kAFCv_g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-
-On Tue, 02 Jan 2024 14:07:45 -0700, Mark Hasemeyer wrote:
-> The underlying ACPI and OF subsystems provide their own APIs which
-> provide IRQ information as a struct resource. This allows callers to get
-> more information about the IRQ by looking at the resource flags. For
-> example, whether or not an IRQ is wake capable.
+On 1/9/24 11:50, Rafael J. Wysocki wrote:
+> On Tue, Jan 9, 2024 at 5:12 AM Kai-Heng Feng
+> <kai.heng.feng@canonical.com> wrote:
+>>
+>> On Dell servers, many APCI methods of acpi_power_meter module evaluate
+>> variables inside IPMI region, so the region handler needs to be
+>> installed. In addition to that, the handler needs to be fully
+>> functional, and that depends on SMI being selected.
+>>
+>> So add a helper to let acpi_power_meter know when the handler is
+>> installed and ready to be used.
+>>
+>> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 > 
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Signed-off-by: Mark Hasemeyer <markhas@chromium.org>
-> ---
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Changes in v4:
-> -Add Sakari's Reviewed-by tag from v2
-> -Remove ioport.h dependency in fwnode.h
-> -Use Andy's @linux.intel.com email
-> 
-> Changes in v3:
-> -Add Suggested-by tag
-> -Initialize struct resource to 0 on stack
-> -EXPORT_SYMBOL()->EXPORT_SYMBOL_GPL()
-> -Remove extra space in commit message
-> -Reformat fwnode_irq_get_resource() declaration
-> 
-> Changes in v2:
-> -New patch
-> 
->  drivers/acpi/property.c  | 11 +++++------
->  drivers/base/property.c  | 32 +++++++++++++++++++++++++-------
->  drivers/of/property.c    |  8 ++++----
->  include/linux/fwnode.h   |  8 +++++---
->  include/linux/property.h |  2 ++
->  5 files changed, 41 insertions(+), 20 deletions(-)
+> and I'm expecting this to be routed along with patch [2/2] that has
+> been posted elsewhere.
 > 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Note that linux-hwmon@ isn't copied on this patch and it therefore
+does not show up in hwmon patchwork. To me that indicates that the
+patch should _not_ be applied through hwmon. If hwmon is supposed
+to pick it up, please copy the hwmon mailing list.
+
+Guenter
 
 
