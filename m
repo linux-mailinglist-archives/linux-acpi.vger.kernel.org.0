@@ -1,133 +1,105 @@
-Return-Path: <linux-acpi+bounces-2755-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2756-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2B582842F
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 11:45:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D22828495
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 12:12:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D101287AA3
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 10:45:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77561B24A86
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 11:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2921364CB;
-	Tue,  9 Jan 2024 10:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BFD37142;
+	Tue,  9 Jan 2024 11:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="EallK46W"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kdagC62X"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC35A364B9;
-	Tue,  9 Jan 2024 10:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 94F6040E01B2;
-	Tue,  9 Jan 2024 10:45:37 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id bTZI_qzADFUM; Tue,  9 Jan 2024 10:45:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1704797134; bh=ypRr+iAfvDjfeKwlwq/k5cw5LfYK0leTEqBNJmrJKi8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EallK46WDGLi11Jtx7MUajDnzNbDJ8ilnoCJY+03U0LHDS7Mawrg6jY8JEcHNdc+N
-	 AOTyK5ddG8fyHDaf63A5Ca6nQ679uXKJDUyOV7tx4RMI8CoUxmdxroSTmtWMnMgBsl
-	 q8NcVecvD5ySwYGkttWvEMMrtobS4y7JNL4yZefXEgVOnUhZDQyabtq0QtS9qwY7sa
-	 KaOgHQ35HGTZIRmN2XNbGtuPBoTHL9a+yrzuKcKfWKnCPy4vv4AXQEUYKkTxEGqAL6
-	 EGVOYZEyX9Pc/6jmP8RYpLSBQ2eoKpBPHDKtuubyjWZ4iIEE7T1cfpJz54zZMMs3r0
-	 erLj35VetdhW1k7YWn9fPdOmwYmMge0xKWqflMoSWuSW3ALlxJo7MH8lr7WPjqpOhH
-	 uw2KyL0VYUSksJHhP0MHBXsLysc8YjaMG8Gv0l7YZxmzykiJbbNGKX39cIKU0fwLhh
-	 SKUvtUN2m3p2xKkC9/jLBUum7y5SzCe7M+RxyrHym6do5x5WZ1nf2KmdKTyNg+cx5j
-	 fKl0TTCaRKS+EUTqBg3hs+J3mSUHy7YDz+7TKY1BRkfGc61vGX0gjzC/B/lWWw9Qu1
-	 PfmoIbt/J1nbKrsoCyUu/nS2G22fAfmjK98hT7BfSpGwmDku1GB2B1h7TPe1wmInAl
-	 FeeNKVliD799m9dEJ4nysViY=
-Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D1BCC40E016C;
-	Tue,  9 Jan 2024 10:45:15 +0000 (UTC)
-Date: Tue, 9 Jan 2024 11:45:12 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Meng Li <li.meng@amd.com>
-Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Huang Rui <ray.huang@amd.com>, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-acpi@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>,
-	linux-kselftest@vger.kernel.org,
-	Nathan Fontenot <nathan.fontenot@amd.com>,
-	Deepak Sharma <deepak.sharma@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Shimmer Huang <shimmer.huang@amd.com>,
-	Perry Yuan <Perry.Yuan@amd.com>, Xiaojian Du <Xiaojian.Du@amd.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Oleksandr Natalenko <oleksandr@natalenko.name>
-Subject: Re: [PATCH V12 1/7] x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for
- the expansion.
-Message-ID: <20240109104504.GAZZ0jsFrrncZ8Vx8y@fat_crate.local>
-References: <20231205063537.872834-1-li.meng@amd.com>
- <20231205063537.872834-2-li.meng@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A068036AE7
+	for <linux-acpi@vger.kernel.org>; Tue,  9 Jan 2024 11:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-33674f60184so2885640f8f.1
+        for <linux-acpi@vger.kernel.org>; Tue, 09 Jan 2024 03:11:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704798679; x=1705403479; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VPuw2f0lok/do/yRJgAKbKvhvOM5AdGi80autS0Z2tA=;
+        b=kdagC62XBFTA0vPpBnauvPWuZJD4VKeDsfA4StCwIb6bezjmzDr5e6/ViF7ov76aXC
+         julcXhroZL0eNLw56lArnGPBmISJDJISByV3v39VgtgggAGysTewbPtR1FarBcsxLIax
+         q/euYamcM4anwjLkuiT1q06/bm766BpRiEEbCe6RLKq8RwRiKCX+ueXBXIUmWyVjXbCY
+         zhH8fL1pJX98aFmuRU4JUqZ1f5X+mn4QdTwi2PNsk+mUPL9yXxDjks1BwB68Ax7Vsm8h
+         PkAKoKYMJ++rDoT5w6A0/rhaMzA6ykSzvmn9mc3o5M3t8Xv1fP3j6W0R4RVUAJxGQjfL
+         XVxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704798679; x=1705403479;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VPuw2f0lok/do/yRJgAKbKvhvOM5AdGi80autS0Z2tA=;
+        b=cMrmvZT6ED7Ylov1jIIaWwWdP985UIny4v7Sl8LMZpNmGLEPIfsRpmWo509i2fD6yQ
+         qjxHxqH1g4Z5XG/KLbGAK6AbOiiIMOzfqblp628XgDDfIFed8dnnQlzqqx1j6YD812iK
+         ND+8coQ2tK7TYlwrG8SBbbRHH0MpV7zxexprQ/EsxqLmKQs2GEv26FDMd56tiYsppNJ7
+         UoGXHDTPT8uIZjTfFxyMoYuvXODIR//PMlOUpoBTerIEUjMwgTu/DB0+VdveOJpsgr1z
+         sXEEF7sTDVaUOZ8/RvLrcrrNY7opIuB3Cy8wgTE/gO7+iDvbMfmXzXUuUzOC52ctDRh/
+         g/cw==
+X-Gm-Message-State: AOJu0YwuMEiQM0A+95aomkOplzgfjxBcby5nhKQhJd86koBxkbMaFM+z
+	wlutdSy2Z+e8xVAaXRyjiNZgt3NYPvEk2Q==
+X-Google-Smtp-Source: AGHT+IGW7Nw3UNMKqnspKJNA/b+OgjNwSMdO+rvq58lLOjMwdj3me+m0eUrVYRh7/74aLRoWO0Z0hA==
+X-Received: by 2002:a5d:4a05:0:b0:336:787b:5a85 with SMTP id m5-20020a5d4a05000000b00336787b5a85mr474366wrq.1.1704798678818;
+        Tue, 09 Jan 2024 03:11:18 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id g4-20020adfa484000000b00336344c3c3fsm2119554wrb.90.2024.01.09.03.11.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Jan 2024 03:11:18 -0800 (PST)
+Message-ID: <1b6c832c-3516-4116-8c44-f85990fb8346@linaro.org>
+Date: Tue, 9 Jan 2024 12:11:17 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231205063537.872834-2-li.meng@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/6] thermal: netlink: Pass pointers to
+ thermal_notify_tz_trip_change()
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux PM <linux-pm@vger.kernel.org>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Zhang Rui <rui.zhang@intel.com>, Linux ACPI <linux-acpi@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>
+References: <4556052.LvFx2qVVIh@kreacher> <2938222.e9J7NaK4W3@kreacher>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <2938222.e9J7NaK4W3@kreacher>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 05, 2023 at 02:35:31PM +0800, Meng Li wrote:
-> amd-pstate driver also uses SCHED_MC_PRIO, so decouple the requirement
-> of CPU_SUP_INTEL from the dependencies to allow compilation in kernels
-> without Intel CPU support.
+On 15/12/2023 20:56, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Reviewed-by: Huang Rui <ray.huang@amd.com>
-> Reviewed-by: Perry Yuan <perry.yuan@amd.com>
-> Signed-off-by: Meng Li <li.meng@amd.com>
-> ---
->  arch/x86/Kconfig | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> Instead of requiring the caller of thermal_notify_tz_trip_change() to
+> provide specific values needed to populate struct param in it, make it
+> extract those values from objects passed to it by the caller via const
+> pointers.
 > 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 3762f41bb092..3e57773f946a 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -1054,8 +1054,9 @@ config SCHED_MC
->  
->  config SCHED_MC_PRIO
->  	bool "CPU core priorities scheduler support"
-> -	depends on SCHED_MC && CPU_SUP_INTEL
-> -	select X86_INTEL_PSTATE
-> +	depends on SCHED_MC
-> +	select X86_INTEL_PSTATE if CPU_SUP_INTEL
-> +	select X86_AMD_PSTATE if CPU_SUP_AMD && ACPI
->  	select CPU_FREQ
->  	default y
->  	help
-> -- 
+> No intentional functional impact.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-I was gonna ask why the selects but apparently mingo wants SCHED_MC_PRIO
-to be selectable easier:
 
-0a21fc1214a2 ("sched/x86: Make CONFIG_SCHED_MC_PRIO=y easier to enable")
-
-So,
-
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-
-Thx.
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
 -- 
-Regards/Gruss,
-    Boris.
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
 
