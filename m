@@ -1,118 +1,173 @@
-Return-Path: <linux-acpi+bounces-2753-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2754-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E66F827825
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 20:09:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B450E827DC4
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 05:12:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33EA71C22D4B
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Jan 2024 19:09:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C2782857F7
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 04:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E7E54F98;
-	Mon,  8 Jan 2024 19:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C508A6106;
+	Tue,  9 Jan 2024 04:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="GlG+GYPB"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="iRNzNeBd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1868F54F8D
-	for <linux-acpi@vger.kernel.org>; Mon,  8 Jan 2024 19:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-5e74b4d5445so16159217b3.1
-        for <linux-acpi@vger.kernel.org>; Mon, 08 Jan 2024 11:09:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1704740945; x=1705345745; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=DdFDb54bQ/iPZlWQVp8olWIpdQfHr4McuEO6nhlwfQY=;
-        b=GlG+GYPBaC93H4it9eM8pRSdwurFyP2Ql2YuSkEGmab95FTEjZ1k6R6yI37Vm8Ux0o
-         Wmi931NCs9UBulRCUo8yNib1/G4lfTfNbsP40owBq85u0UpZ/HPKoiRO50cNR52ziYga
-         wOVmUYSZ1ZJqDk4n0q7p6oQg+RqzFJimvrofs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704740945; x=1705345745;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DdFDb54bQ/iPZlWQVp8olWIpdQfHr4McuEO6nhlwfQY=;
-        b=sG01umlidBZ/ypiEKt0Rldglm+xI9ryXpELqiQNSYah1Ju9DN40delkzUFRWhWjsK5
-         n26p/m/Lu9CQa0GWaiVc4NKDuQIrxbYDEuhYJaFslVLjlpEuGRgmjudxaM7a721Rrn49
-         GIVFkEOqxubLdX2FLiscDLGiBIncLLyQZ1h9BACXEftW+AwDNis+La8B4XOdRHxO5MQA
-         uJAUluu/fbxCWCfdLD+Qo1f/IUS5wGVGNZFOfOFDHq4GINBZCJc3XZb5JgBPIWIlLkXP
-         8xERb1lph8dMffXaae/uxMIIbZHKvShax1FiR5vFkqwdPIQFBmLDAPnFUjgAOBYJO06I
-         3c6A==
-X-Gm-Message-State: AOJu0Yw0FsHRu6gkiUdc+rinxpKVBKcOqj/h1QXwiKfhipkTwRXdmZel
-	rqigS7CKf/IDyOUp1v44ZByy2gnB8gcEl+bKO4O48Rh+NKah
-X-Google-Smtp-Source: AGHT+IFqbTaQBwF5KFHSC80fhApdUGgPLP6zXYivf0vKMqkNEHamGGwAXksyQIg4izP7sJkzpmbX+Xe8BuslOn3+lWc=
-X-Received: by 2002:a81:f106:0:b0:5f6:dee2:2b25 with SMTP id
- h6-20020a81f106000000b005f6dee22b25mr2099819ywm.80.1704740945135; Mon, 08 Jan
- 2024 11:09:05 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2D5567E;
+	Tue,  9 Jan 2024 04:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from HP-EliteBook-x360-830-G8-Notebook-PC.. (unknown [10.101.196.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 0B9B43F1F8;
+	Tue,  9 Jan 2024 04:12:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1704773546;
+	bh=mkzCDhuur4nw3vJi1sNPki2ia8X8CMEeigRIEazS7gI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+	b=iRNzNeBdsesEXzRUQUs3tat0ggOIur6n2AMxka6CasTq80lMsGe7cxqsaCLTJO/pX
+	 J+hnhb7gqZ8V2OTrvkohkyAqU+FNG5zZo+4asq/huuiSC2h7tNEopaRaHBRoxQ8zVX
+	 stygorc/5r9XrWjIfCl819wwdcCzKMnxLFc5lwcVZVieJm3/a4ev8VKh1LfTsaskuH
+	 m20vFfL7AL0AQCCP/YQtC1KDas8NyCAygt0Mki3P21hocDgtmjlWAKEx5Sz/k8edRs
+	 fwWYFpFSORqHNKboCDkd4HJwc05uJizmdZcX2kHL/9V6Mj6B1bRmQyY3htov3Aln7A
+	 m4kmzBWNBTMbg==
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+To: jdelvare@suse.com,
+	linux@roeck-us.net
+Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Subject: [PATCH v4 1/2] ACPI: IPMI: Add helper to wait for when SMI is selected
+Date: Tue,  9 Jan 2024 12:12:16 +0800
+Message-Id: <20240109041218.980674-1-kai.heng.feng@canonical.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240102210820.2604667-1-markhas@chromium.org>
- <20240102140734.v4.2.Ifd0903f1c351e84376d71dbdadbd43931197f5ea@changeid> <ZZlnNR1-yKLSIWeF@smile.fi.intel.com>
-In-Reply-To: <ZZlnNR1-yKLSIWeF@smile.fi.intel.com>
-From: Mark Hasemeyer <markhas@chromium.org>
-Date: Mon, 8 Jan 2024 12:08:54 -0700
-Message-ID: <CANg-bXA+zuPAYHKaYihkPN1W3+78gBx_Edvhb-a6DqD_adJeaA@mail.gmail.com>
-Subject: Re: [PATCH v4 02/24] gpiolib: acpi: Modify acpi_dev_irq_wake_get_by()
- to use resource
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Raul Rangel <rrangel@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Len Brown <lenb@kernel.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Wolfram Sang <wsa@kernel.org>, linux-acpi@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-> Missing blank line.
-> We put a commit message as
->
-> $SUMARY
-> ...blank line...
-> $DESCRIPTION (can contain blank lines)
-> ...blank line...
-> $TAG block (may not contain blank lines)
->
-> > Signed-off-by: Mark Hasemeyer <markhas@chromium.org>
+On Dell servers, many APCI methods of acpi_power_meter module evaluate
+variables inside IPMI region, so the region handler needs to be
+installed. In addition to that, the handler needs to be fully
+functional, and that depends on SMI being selected.
 
-Looks like a nuance of patman I need to iron out.
+So add a helper to let acpi_power_meter know when the handler is
+installed and ready to be used.
 
->
-> ...
->
-> > +                     unsigned long res_flags;
->
-> Why not calling it irq_flags?
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+---
+v4:
+ - Wording.
+ - Define and comment on timeout value.
+ - Move the completion to driver_data.
+ - Remove the tenary operator.
 
-irq_flags is already used within the same scope, although it's
-declared at the top of the function. I'll move the declaration to the
-scope where it's used and rename irq_flags -> irq_type, and irq_res ->
-irq_flags.
+v3:
+ - New patch.
 
-> > +struct resource;
->
-> This...
->
-> > +     struct resource r = {};
->
-> > +     return ret ?: r.start;
->
-> ...does _not_ cover these cases.
->
-> Hence ioport.h must be included. Did I miss it?
+ drivers/acpi/acpi_ipmi.c | 23 ++++++++++++++++++++++-
+ include/acpi/acpi_bus.h  |  5 +++++
+ 2 files changed, 27 insertions(+), 1 deletion(-)
 
-You're right. It didn't break the build, which means ioport.h must be
-included indirectly. I'll add it back.
+diff --git a/drivers/acpi/acpi_ipmi.c b/drivers/acpi/acpi_ipmi.c
+index 0555f68c2dfd..5fba4dab5d08 100644
+--- a/drivers/acpi/acpi_ipmi.c
++++ b/drivers/acpi/acpi_ipmi.c
+@@ -22,6 +22,8 @@ MODULE_LICENSE("GPL");
+ /* the IPMI timeout is 5s */
+ #define IPMI_TIMEOUT			(5000)
+ #define ACPI_IPMI_MAX_MSG_LENGTH	64
++/* 2s should be suffient for SMI being selected */
++#define ACPI_IPMI_SMI_SELECTION_TIMEOUT	(2 * HZ)
+ 
+ struct acpi_ipmi_device {
+ 	/* the device list attached to driver_data.ipmi_devices */
+@@ -54,6 +56,7 @@ struct ipmi_driver_data {
+ 	 * to this selected global IPMI system interface.
+ 	 */
+ 	struct acpi_ipmi_device *selected_smi;
++	struct completion smi_selection_done;
+ };
+ 
+ struct acpi_ipmi_msg {
+@@ -463,8 +466,10 @@ static void ipmi_register_bmc(int iface, struct device *dev)
+ 		if (temp->handle == handle)
+ 			goto err_lock;
+ 	}
+-	if (!driver_data.selected_smi)
++	if (!driver_data.selected_smi) {
+ 		driver_data.selected_smi = ipmi_device;
++		complete(&driver_data.smi_selection_done);
++	}
+ 	list_add_tail(&ipmi_device->head, &driver_data.ipmi_devices);
+ 	mutex_unlock(&driver_data.ipmi_lock);
+ 
+@@ -578,6 +583,20 @@ acpi_ipmi_space_handler(u32 function, acpi_physical_address address,
+ 	return status;
+ }
+ 
++int acpi_wait_for_acpi_ipmi(void)
++{
++	long ret;
++
++	ret = wait_for_completion_interruptible_timeout(&driver_data.smi_selection_done,
++							ACPI_IPMI_SMI_SELECTION_TIMEOUT);
++
++	if (ret <= 0)
++		return -ETIMEDOUT;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(acpi_wait_for_acpi_ipmi);
++
+ static int __init acpi_ipmi_init(void)
+ {
+ 	int result;
+@@ -586,6 +605,8 @@ static int __init acpi_ipmi_init(void)
+ 	if (acpi_disabled)
+ 		return 0;
+ 
++	init_completion(&driver_data.smi_selection_done);
++
+ 	status = acpi_install_address_space_handler(ACPI_ROOT_OBJECT,
+ 						    ACPI_ADR_SPACE_IPMI,
+ 						    &acpi_ipmi_space_handler,
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index 1216d72c650f..afa6e4d4bf46 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -821,11 +821,16 @@ static inline void acpi_put_acpi_dev(struct acpi_device *adev)
+ {
+ 	acpi_dev_put(adev);
+ }
++
++int acpi_wait_for_acpi_ipmi(void);
++
+ #else	/* CONFIG_ACPI */
+ 
+ static inline int register_acpi_bus_type(void *bus) { return 0; }
+ static inline int unregister_acpi_bus_type(void *bus) { return 0; }
+ 
++static inline int acpi_wait_for_acpi_ipmi(void) { return 0; }
++
+ #endif				/* CONFIG_ACPI */
+ 
+ #endif /*__ACPI_BUS_H__*/
+-- 
+2.34.1
+
 
