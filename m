@@ -1,173 +1,133 @@
-Return-Path: <linux-acpi+bounces-2754-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2755-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B450E827DC4
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 05:12:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2B582842F
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 11:45:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C2782857F7
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 04:12:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D101287AA3
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 10:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C508A6106;
-	Tue,  9 Jan 2024 04:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2921364CB;
+	Tue,  9 Jan 2024 10:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="iRNzNeBd"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="EallK46W"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2D5567E;
-	Tue,  9 Jan 2024 04:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from HP-EliteBook-x360-830-G8-Notebook-PC.. (unknown [10.101.196.174])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC35A364B9;
+	Tue,  9 Jan 2024 10:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 94F6040E01B2;
+	Tue,  9 Jan 2024 10:45:37 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id bTZI_qzADFUM; Tue,  9 Jan 2024 10:45:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1704797134; bh=ypRr+iAfvDjfeKwlwq/k5cw5LfYK0leTEqBNJmrJKi8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EallK46WDGLi11Jtx7MUajDnzNbDJ8ilnoCJY+03U0LHDS7Mawrg6jY8JEcHNdc+N
+	 AOTyK5ddG8fyHDaf63A5Ca6nQ679uXKJDUyOV7tx4RMI8CoUxmdxroSTmtWMnMgBsl
+	 q8NcVecvD5ySwYGkttWvEMMrtobS4y7JNL4yZefXEgVOnUhZDQyabtq0QtS9qwY7sa
+	 KaOgHQ35HGTZIRmN2XNbGtuPBoTHL9a+yrzuKcKfWKnCPy4vv4AXQEUYKkTxEGqAL6
+	 EGVOYZEyX9Pc/6jmP8RYpLSBQ2eoKpBPHDKtuubyjWZ4iIEE7T1cfpJz54zZMMs3r0
+	 erLj35VetdhW1k7YWn9fPdOmwYmMge0xKWqflMoSWuSW3ALlxJo7MH8lr7WPjqpOhH
+	 uw2KyL0VYUSksJHhP0MHBXsLysc8YjaMG8Gv0l7YZxmzykiJbbNGKX39cIKU0fwLhh
+	 SKUvtUN2m3p2xKkC9/jLBUum7y5SzCe7M+RxyrHym6do5x5WZ1nf2KmdKTyNg+cx5j
+	 fKl0TTCaRKS+EUTqBg3hs+J3mSUHy7YDz+7TKY1BRkfGc61vGX0gjzC/B/lWWw9Qu1
+	 PfmoIbt/J1nbKrsoCyUu/nS2G22fAfmjK98hT7BfSpGwmDku1GB2B1h7TPe1wmInAl
+	 FeeNKVliD799m9dEJ4nysViY=
+Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 0B9B43F1F8;
-	Tue,  9 Jan 2024 04:12:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1704773546;
-	bh=mkzCDhuur4nw3vJi1sNPki2ia8X8CMEeigRIEazS7gI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-	b=iRNzNeBdsesEXzRUQUs3tat0ggOIur6n2AMxka6CasTq80lMsGe7cxqsaCLTJO/pX
-	 J+hnhb7gqZ8V2OTrvkohkyAqU+FNG5zZo+4asq/huuiSC2h7tNEopaRaHBRoxQ8zVX
-	 stygorc/5r9XrWjIfCl819wwdcCzKMnxLFc5lwcVZVieJm3/a4ev8VKh1LfTsaskuH
-	 m20vFfL7AL0AQCCP/YQtC1KDas8NyCAygt0Mki3P21hocDgtmjlWAKEx5Sz/k8edRs
-	 fwWYFpFSORqHNKboCDkd4HJwc05uJizmdZcX2kHL/9V6Mj6B1bRmQyY3htov3Aln7A
-	 m4kmzBWNBTMbg==
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-To: jdelvare@suse.com,
-	linux@roeck-us.net
-Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH v4 1/2] ACPI: IPMI: Add helper to wait for when SMI is selected
-Date: Tue,  9 Jan 2024 12:12:16 +0800
-Message-Id: <20240109041218.980674-1-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.34.1
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D1BCC40E016C;
+	Tue,  9 Jan 2024 10:45:15 +0000 (UTC)
+Date: Tue, 9 Jan 2024 11:45:12 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Meng Li <li.meng@amd.com>
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Huang Rui <ray.huang@amd.com>, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-acpi@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>,
+	linux-kselftest@vger.kernel.org,
+	Nathan Fontenot <nathan.fontenot@amd.com>,
+	Deepak Sharma <deepak.sharma@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Shimmer Huang <shimmer.huang@amd.com>,
+	Perry Yuan <Perry.Yuan@amd.com>, Xiaojian Du <Xiaojian.Du@amd.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Oleksandr Natalenko <oleksandr@natalenko.name>
+Subject: Re: [PATCH V12 1/7] x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for
+ the expansion.
+Message-ID: <20240109104504.GAZZ0jsFrrncZ8Vx8y@fat_crate.local>
+References: <20231205063537.872834-1-li.meng@amd.com>
+ <20231205063537.872834-2-li.meng@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231205063537.872834-2-li.meng@amd.com>
 
-On Dell servers, many APCI methods of acpi_power_meter module evaluate
-variables inside IPMI region, so the region handler needs to be
-installed. In addition to that, the handler needs to be fully
-functional, and that depends on SMI being selected.
+On Tue, Dec 05, 2023 at 02:35:31PM +0800, Meng Li wrote:
+> amd-pstate driver also uses SCHED_MC_PRIO, so decouple the requirement
+> of CPU_SUP_INTEL from the dependencies to allow compilation in kernels
+> without Intel CPU support.
+> 
+> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+> Reviewed-by: Huang Rui <ray.huang@amd.com>
+> Reviewed-by: Perry Yuan <perry.yuan@amd.com>
+> Signed-off-by: Meng Li <li.meng@amd.com>
+> ---
+>  arch/x86/Kconfig | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 3762f41bb092..3e57773f946a 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -1054,8 +1054,9 @@ config SCHED_MC
+>  
+>  config SCHED_MC_PRIO
+>  	bool "CPU core priorities scheduler support"
+> -	depends on SCHED_MC && CPU_SUP_INTEL
+> -	select X86_INTEL_PSTATE
+> +	depends on SCHED_MC
+> +	select X86_INTEL_PSTATE if CPU_SUP_INTEL
+> +	select X86_AMD_PSTATE if CPU_SUP_AMD && ACPI
+>  	select CPU_FREQ
+>  	default y
+>  	help
+> -- 
 
-So add a helper to let acpi_power_meter know when the handler is
-installed and ready to be used.
+I was gonna ask why the selects but apparently mingo wants SCHED_MC_PRIO
+to be selectable easier:
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
-v4:
- - Wording.
- - Define and comment on timeout value.
- - Move the completion to driver_data.
- - Remove the tenary operator.
+0a21fc1214a2 ("sched/x86: Make CONFIG_SCHED_MC_PRIO=y easier to enable")
 
-v3:
- - New patch.
+So,
 
- drivers/acpi/acpi_ipmi.c | 23 ++++++++++++++++++++++-
- include/acpi/acpi_bus.h  |  5 +++++
- 2 files changed, 27 insertions(+), 1 deletion(-)
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
 
-diff --git a/drivers/acpi/acpi_ipmi.c b/drivers/acpi/acpi_ipmi.c
-index 0555f68c2dfd..5fba4dab5d08 100644
---- a/drivers/acpi/acpi_ipmi.c
-+++ b/drivers/acpi/acpi_ipmi.c
-@@ -22,6 +22,8 @@ MODULE_LICENSE("GPL");
- /* the IPMI timeout is 5s */
- #define IPMI_TIMEOUT			(5000)
- #define ACPI_IPMI_MAX_MSG_LENGTH	64
-+/* 2s should be suffient for SMI being selected */
-+#define ACPI_IPMI_SMI_SELECTION_TIMEOUT	(2 * HZ)
- 
- struct acpi_ipmi_device {
- 	/* the device list attached to driver_data.ipmi_devices */
-@@ -54,6 +56,7 @@ struct ipmi_driver_data {
- 	 * to this selected global IPMI system interface.
- 	 */
- 	struct acpi_ipmi_device *selected_smi;
-+	struct completion smi_selection_done;
- };
- 
- struct acpi_ipmi_msg {
-@@ -463,8 +466,10 @@ static void ipmi_register_bmc(int iface, struct device *dev)
- 		if (temp->handle == handle)
- 			goto err_lock;
- 	}
--	if (!driver_data.selected_smi)
-+	if (!driver_data.selected_smi) {
- 		driver_data.selected_smi = ipmi_device;
-+		complete(&driver_data.smi_selection_done);
-+	}
- 	list_add_tail(&ipmi_device->head, &driver_data.ipmi_devices);
- 	mutex_unlock(&driver_data.ipmi_lock);
- 
-@@ -578,6 +583,20 @@ acpi_ipmi_space_handler(u32 function, acpi_physical_address address,
- 	return status;
- }
- 
-+int acpi_wait_for_acpi_ipmi(void)
-+{
-+	long ret;
-+
-+	ret = wait_for_completion_interruptible_timeout(&driver_data.smi_selection_done,
-+							ACPI_IPMI_SMI_SELECTION_TIMEOUT);
-+
-+	if (ret <= 0)
-+		return -ETIMEDOUT;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(acpi_wait_for_acpi_ipmi);
-+
- static int __init acpi_ipmi_init(void)
- {
- 	int result;
-@@ -586,6 +605,8 @@ static int __init acpi_ipmi_init(void)
- 	if (acpi_disabled)
- 		return 0;
- 
-+	init_completion(&driver_data.smi_selection_done);
-+
- 	status = acpi_install_address_space_handler(ACPI_ROOT_OBJECT,
- 						    ACPI_ADR_SPACE_IPMI,
- 						    &acpi_ipmi_space_handler,
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index 1216d72c650f..afa6e4d4bf46 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -821,11 +821,16 @@ static inline void acpi_put_acpi_dev(struct acpi_device *adev)
- {
- 	acpi_dev_put(adev);
- }
-+
-+int acpi_wait_for_acpi_ipmi(void);
-+
- #else	/* CONFIG_ACPI */
- 
- static inline int register_acpi_bus_type(void *bus) { return 0; }
- static inline int unregister_acpi_bus_type(void *bus) { return 0; }
- 
-+static inline int acpi_wait_for_acpi_ipmi(void) { return 0; }
-+
- #endif				/* CONFIG_ACPI */
- 
- #endif /*__ACPI_BUS_H__*/
+Thx.
+
 -- 
-2.34.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
