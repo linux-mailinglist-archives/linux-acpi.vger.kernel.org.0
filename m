@@ -1,64 +1,64 @@
-Return-Path: <linux-acpi+bounces-2758-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2759-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F24782850C
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 12:28:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A35828513
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 12:30:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A345D1C2408E
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 11:28:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8D571C234DA
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 11:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C714364D1;
-	Tue,  9 Jan 2024 11:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3A536B15;
+	Tue,  9 Jan 2024 11:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EX/hKgNg"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QFHx6csJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01AA36B15
-	for <linux-acpi@vger.kernel.org>; Tue,  9 Jan 2024 11:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0D629CE3
+	for <linux-acpi@vger.kernel.org>; Tue,  9 Jan 2024 11:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-33748c4f33dso2713004f8f.1
-        for <linux-acpi@vger.kernel.org>; Tue, 09 Jan 2024 03:28:19 -0800 (PST)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3368ae75082so2151512f8f.1
+        for <linux-acpi@vger.kernel.org>; Tue, 09 Jan 2024 03:29:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704799698; x=1705404498; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1704799793; x=1705404593; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=MnCEbYre5zGye06QU8T4lh4dMbpyA+aXMIBZMhzJpJY=;
-        b=EX/hKgNgJaP2qCnypvuZByHyERm9M8jLMH3wl0+pAp6czoD+ZjZP2plHToEQOZY9vo
-         QfNZdfVxEIh/KoDeyqnYzrQJ+zGRF8ucxVPOgCMzlwEaH3440eDdyUqIFrJ4WytWMaob
-         VbMVtExYlLrrUwG2xXSU8MG924gmxICYl/ig+tLbat8ZnpAixY4Xue/dwujgyr798Zk9
-         o+P2XedxBXYYjbbj8h938hWU9CuJBPY1iVGvph1OJpZNY2mehbEA8Ix1NSK9SUMdTLO3
-         xvvpRFcORM9BqaFrdbfOY5tTVhesy3oAuEihPY0iUzvZqI9cAp0AFe85lUuHDTUMvFPb
-         5r0A==
+        bh=bgbvqIYvBUxj10ixtEFDfU0FQhLB0SSctCceSDCXc3M=;
+        b=QFHx6csJJnEi187gcLv+gAAHA1WyAVxFwRyJzp2zpiDno25CllGleEnFvEd1u4yfZe
+         YLOia4iqeo/C8eUET4fFX+ZqZ29oAE2d3z8imPvIar4b37k1r5XTJwe3Ny51c9ipC3i2
+         HVQJYDP3flXkikDIPJlZ8EOQhvPgupa3V69O03lT+h7p5RCAtCvK74nH7Upt31U2G3FD
+         teCsLLtGgqtaaArbYPsv5aqOCXSmtbOFnC6mR2DLnmkjajonzABUZDhMtU7K+KBHOVUL
+         wWrbuERH5loUA1pJuamw5juXSytSotjFdKG6WPK+1jaHE34kLjPo1EFnlSY16n0bi+p0
+         yOYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704799698; x=1705404498;
+        d=1e100.net; s=20230601; t=1704799793; x=1705404593;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MnCEbYre5zGye06QU8T4lh4dMbpyA+aXMIBZMhzJpJY=;
-        b=OTyd693d2wr9ZoheBhu1x28wI1WaRWIzXtzQyEamN0YGcDkukFba150F1LgWv7j3ve
-         ALryeVuAyoLuprltDu27zvx0gGasHIshqcNoIQ4t7gkWRfwQFNvGs9BeqVemyPWOOJLI
-         wwpT3JizmokmbAlkk5d7BRqvWKC+ijo1gecKfVdwZ4QJJDXxlUJUp8CrP7ffSMyLm42k
-         G3vweLpRFbztvQNxjFf33nUQplar6kOiu4VBUBAgRZZW+t4pRbJDM5t06ltHOPnleCit
-         +ZzMtRvqelZGctlDARKlcn+Qw6G/aAFXztdMw8U1ocbKITc429FYMDBunvhiC6keUJgs
-         OhHQ==
-X-Gm-Message-State: AOJu0Yz2CVm4j6JP9PXd7cSv0lGTrtQdiT+xueMA4qWQ9bW3vvG/bDaz
-	fop3YWZxdzp0lE1tH9E2jOW2w6QfObevFw==
-X-Google-Smtp-Source: AGHT+IH/1wMAk1aHGTdT12ROSrsiZVhUweuFKxTnb57vuF8GLwso0x6Fm7CR8XF2i/J9O/Vk1hqJOw==
-X-Received: by 2002:adf:f608:0:b0:336:c5b3:6bd9 with SMTP id t8-20020adff608000000b00336c5b36bd9mr408215wrp.61.1704799698133;
-        Tue, 09 Jan 2024 03:28:18 -0800 (PST)
+        bh=bgbvqIYvBUxj10ixtEFDfU0FQhLB0SSctCceSDCXc3M=;
+        b=bI4EzMhagVxJNT9IZKtaUgEqn1ABH7OcFwEXBuJtg1tLG28VNZAmKG8kfqZgUWhpV4
+         jiU/TXZnPgqE7O/S9r35V75CBWq3DEoXjjAopWX5+kp7Q1dNQcoy7/L9eaOgLHo3sc2u
+         AU+gh30WBsW//xTcYOOm/JPmKfikx/RPy7Fz1tbI9NauCnTK3qyzcEed+5JvKkY8XJYj
+         Xue2pAjlSr9RtqFeTyFnP0uPzzprM8SvbjEVIgSxEYu5vF4z/q5qVRk7FiMqfKQyCY/e
+         Usg98VA7fy4cjjuiNxfhhxkfDIrM9oW/Izf83QV7J60iWaU65bTV0hkRFsRd2qioa02A
+         LlCw==
+X-Gm-Message-State: AOJu0YySimWg6gaNxD2dFZwk3N6dq71Ud2pd9QTzP7TutJcQaTLqELcA
+	atxH5uitvjoKZk/vy+m64Rcm9dbinjunpQ==
+X-Google-Smtp-Source: AGHT+IGldD1BEkbtVkbbPqS974LEVoLdQFi6cNbHOaEavh2Md9dn4p2S2vM42KQMeN6gSs4s/zX6nw==
+X-Received: by 2002:a05:600c:a296:b0:40d:7822:ce28 with SMTP id hu22-20020a05600ca29600b0040d7822ce28mr334079wmb.83.1704799793596;
+        Tue, 09 Jan 2024 03:29:53 -0800 (PST)
 Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id c15-20020a5d4ccf000000b00336765e9babsm2151544wrt.83.2024.01.09.03.28.17
+        by smtp.googlemail.com with ESMTPSA id c15-20020a5d4ccf000000b00336765e9babsm2151544wrt.83.2024.01.09.03.29.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jan 2024 03:28:17 -0800 (PST)
-Message-ID: <0c35bb66-cca1-4beb-9042-a72cc3984579@linaro.org>
-Date: Tue, 9 Jan 2024 12:28:17 +0100
+        Tue, 09 Jan 2024 03:29:53 -0800 (PST)
+Message-ID: <fea54453-7589-4f3f-8a70-83b727e4016f@linaro.org>
+Date: Tue, 9 Jan 2024 12:29:52 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -66,34 +66,42 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/6] thermal: netlink: Pass pointers to
- thermal_notify_tz_trip_up/down()
+Subject: Re: [PATCH v1 4/6] thermal: netlink: Drop
+ thermal_notify_tz_trip_add/delete()
 Content-Language: en-US
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux PM <linux-pm@vger.kernel.org>
-Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Zhang Rui <rui.zhang@intel.com>, Linux ACPI <linux-acpi@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>
-References: <4556052.LvFx2qVVIh@kreacher> <3295756.44csPzL39Z@kreacher>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Linux PM <linux-pm@vger.kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
+References: <4556052.LvFx2qVVIh@kreacher> <10409811.nUPlyArG6x@kreacher>
+ <4eb9b38f-5364-466b-99fa-b2c42c1a4997@arm.com>
+ <CAJZ5v0h=y0=Cd3PEKK8dvwJzbSt_6rzS84hzgrSrxTrDkA_5Ug@mail.gmail.com>
 From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <3295756.44csPzL39Z@kreacher>
+In-Reply-To: <CAJZ5v0h=y0=Cd3PEKK8dvwJzbSt_6rzS84hzgrSrxTrDkA_5Ug@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 15/12/2023 20:57, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Instead of requiring the callers of thermal_notify_tz_trip_up/down() to
-> provide specific values needed to populate struct param in them, make
-> them extract those values from objects passed by the callers via const
-> pointers.
-> 
-> No intentional functional impact.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
+On 04/01/2024 12:12, Rafael J. Wysocki wrote:
+> On Wed, Jan 3, 2024 at 9:06 PM Lukasz Luba <lukasz.luba@arm.com> wrote:
+>>
+>>
+>>
+>> On 12/15/23 19:59, Rafael J. Wysocki wrote:
+>>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>
+>>> Because thermal_notify_tz_trip_add/delete() are never used, drop them
+>>> entirely along with the related code.
+>>>
+>>> The addition or removal of trip points is not supported by the thermal
+>>> core and is unlikely to be supported in the future, so it is also
+>>> unlikely that these functions will ever be needed.
+>>>
+>>> No intentional functional impact.
+>>>
+>>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
 -- 
 <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
