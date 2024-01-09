@@ -1,102 +1,88 @@
-Return-Path: <linux-acpi+bounces-2766-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2767-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B909C82880E
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 15:28:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F6A82888B
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 15:54:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDE79B225EE
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 14:28:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 937C0286F4E
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 14:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4BE3987C;
-	Tue,  9 Jan 2024 14:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050C539ADF;
+	Tue,  9 Jan 2024 14:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=projectyo.network header.i=@projectyo.network header.b="f2qcE4LT"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from postmaster.projectyo.network (postmaster.projectyo.network [188.126.76.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F3339AEE;
-	Tue,  9 Jan 2024 14:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3bc21303a35so344595b6e.0;
-        Tue, 09 Jan 2024 06:27:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704810471; x=1705415271;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=speyU9W4fgWPfDREd0VxrelBC2TKMQY2s8f/k65X9Vw=;
-        b=bw9jgu+zGNUQlHaiKashSgUWtwWHannAqm0zuLNGcZ/xe0aF5TN8JL31gceXLqinIS
-         VS/2jQdQ1MM5sHEZsafXgYRSUCUeWY2Y/se9rCbNlhj1VOsyH8GLlSaiUUJa5t46IBDt
-         2WfPRqwgqC2p2aWO4HPj9G/db4ks+hYe3WWLGGc/OGJGfmfWbhNb7u1GpuWZW/VyW8Xv
-         5j406FOqbwtuXtD3zzujhc1j5nN7yOXSbs25yzmoMmh8mKv3oFFSES/sYxtxn1HJuD40
-         zAiajycqfdUoRrMbg6fgPLxeFOwVMfEm+p0+rlfSO44hrwSFlW2imAhjSwKM1DxWZcRA
-         qUNg==
-X-Gm-Message-State: AOJu0YzX1DRYsxTGQiUup+8WcNdVhXWoYK2x7+zcX5qH2/crH6UE6fwp
-	A4sNGYrVktzHI2WNmehn0Ase8EIESE+0YMrtYVw=
-X-Google-Smtp-Source: AGHT+IHY1jFISnsaNGMvSmCaJqgqyDbrcVYMQaLmXNN65Tot1RoyyJ/7Y1Qsx35HBWPmk/RBi3ZHclzvWQyOB3wOZ1s=
-X-Received: by 2002:a05:6808:30a2:b0:3bd:3bf4:8a0f with SMTP id
- bl34-20020a05680830a200b003bd3bf48a0fmr2316881oib.4.1704810471272; Tue, 09
- Jan 2024 06:27:51 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E4B39AD6;
+	Tue,  9 Jan 2024 14:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=projectyo.network
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=projectyo.network
+From: Michael Maltsev <mekosko@projectyo.network>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=projectyo.network;
+	s=mail; t=1704812049;
+	bh=dWGm3uj6yVulnQWDtyyLi5N7wiOErAMktK9wj2tl1xE=;
+	h=From:To:Cc:Subject;
+	b=f2qcE4LTx6lBVWnXVmts0KGf87a5CzFAXsXLnNxYJynqgzfiUKPCcjzcuN7i9eXZc
+	 L4dW1Ek1ouhphppBqmjaUxhxpODBVmsm9lHpI/b0+pCitDxFeqygL9l9bsygONYftE
+	 qCjKYmp474xbpJPAOpfESrKiKDdpVWlRckRH/dBg=
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Cc: Michael Maltsev <mekosko@projectyo.network>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1502CGA
+Date: Tue,  9 Jan 2024 19:53:05 +0500
+Message-Id: <20240109145305.5680-1-mekosko@projectyo.network>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230905104721.52199-1-lpieralisi@kernel.org> <20231227110038.55453-1-lpieralisi@kernel.org>
- <20231227110038.55453-2-lpieralisi@kernel.org>
-In-Reply-To: <20231227110038.55453-2-lpieralisi@kernel.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 9 Jan 2024 15:27:40 +0100
-Message-ID: <CAJZ5v0ik38AkaK6UVkSg9gOOztVzhFotCWBPhvowvRvozoAUVg@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] ACPICA: MADT: Add GICC online capable bit handling
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Robert Moore <robert.moore@intel.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	Mark Rutland <mark.rutland@arm.com>, Robin Murphy <robin.murphy@arm.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Fang Xiang <fangxiang3@xiaomi.com>, Marc Zyngier <maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 27, 2023 at 12:00=E2=80=AFPM Lorenzo Pieralisi
-<lpieralisi@kernel.org> wrote:
->
-> ACPICA commit 16f0befdeddf25756f317907798192bbaa417e5e
->
-> Implement code to handle the GICC online capable bit management
-> added into ACPI v6.5.
->
-> Link: https://github.com/acpica/acpica/commit/16f0befd
-> Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Cc: Robert Moore <robert.moore@intel.com>
-> Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> ---
->  include/acpi/actbl2.h | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-> index 3751ae69432f..2b4dd2c3348f 100644
-> --- a/include/acpi/actbl2.h
-> +++ b/include/acpi/actbl2.h
-> @@ -1046,6 +1046,7 @@ struct acpi_madt_generic_interrupt {
->  /* ACPI_MADT_ENABLED                    (1)      Processor is usable if =
-set */
->  #define ACPI_MADT_PERFORMANCE_IRQ_MODE  (1<<1) /* 01: Performance Interr=
-upt Mode */
->  #define ACPI_MADT_VGIC_IRQ_MODE         (1<<2) /* 02: VGIC Maintenance I=
-nterrupt mode */
-> +#define ACPI_MADT_GICC_ONLINE_CAPABLE   (1<<3) /* 03: Processor is onlin=
-e capable  */
->
->  /* 12: Generic Distributor (ACPI 5.0 + ACPI 6.0 changes) */
->
-> --
+Like the ASUS ExpertBook B1502CBA and various ASUS laptops, the
+ASUS ExpertBook B1502CGA has an ACPI DSDT table that describes IRQ 1 as
+ActiveLow while the kernel overrides it to Edge_High.
 
-Applied as 6.8-rc1 material along with the [2/3].
+	$ sudo dmesg | grep DMI
+	[    0.000000] DMI: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B1502CGA_B1502CGA/B1502CGA, BIOS B1502CGA.303 06/05/2023
+	$ grep -A 40 PS2K dsdt.dsl | grep IRQ -A 1
+	                IRQ (Level, ActiveLow, Exclusive, )
+	                    {1}
 
-Thanks!
+This prevents the keyboard from working. To fix this issue, add this laptop
+to the skip_override_table so that the kernel does not override IRQ 1.
+
+Signed-off-by: Michael Maltsev <mekosko@projectyo.network>
+---
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 9bd9f79cd409..a03de3470776 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -461,6 +461,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "B1502CBA"),
+ 		},
+ 	},
++	{
++		/* Asus ExpertBook B1502CGA */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "B1502CGA"),
++		},
++	},
+ 	{
+ 		/* Asus ExpertBook B2402CBA */
+ 		.matches = {
+-- 
+2.39.2
+
 
