@@ -1,106 +1,114 @@
-Return-Path: <linux-acpi+bounces-2763-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2764-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349ED828795
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 15:01:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C25E8287BE
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 15:07:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0CF6287BBE
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 14:01:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E940728553E
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 14:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5A339857;
-	Tue,  9 Jan 2024 14:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0744339855;
+	Tue,  9 Jan 2024 14:07:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9648439843;
-	Tue,  9 Jan 2024 14:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A122539AC0;
+	Tue,  9 Jan 2024 14:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-594363b4783so80722eaf.1;
-        Tue, 09 Jan 2024 06:01:30 -0800 (PST)
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-20475bf35a2so596710fac.1;
+        Tue, 09 Jan 2024 06:07:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704808890; x=1705413690;
+        d=1e100.net; s=20230601; t=1704809258; x=1705414058;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=O4g/qLgJTtLnx4Mwhlep4ev2Jw4DB5X4OpGt8/1y0G4=;
-        b=Q2KVGp2ZpH3ifHw23PFc1Y4+DALCkcG9sa7WdizcV8t+l0HWQSBXx4ESLpyb9v2tNT
-         zLt8sixGGTDO8rUpBJjb0mz4Y5MoCnxOW2bN9AOML+x3j3ktLqKpR1tzoXYyQTsGhhnN
-         xFDHB/Sf3iHD2WSpPOaVIa4bKWGQZarN1hUDgFZIzVEEZUPVulBhJs7zmMXpM6BI4824
-         ra2w6tsUiR5CSGEHM1BmtSyq1YLKNV70vwrYut+7Owcn056WXbBcHuK1qpwXO0c2Mwxm
-         MUvBps1BtN7xTHoaaz9MHhU7VPbS8bjD/rIo4AKupgGvfX17bU6T1y5dpiF+8xdr5wsM
-         /xBA==
-X-Gm-Message-State: AOJu0YxCJ+lV626DPNhsviksnrFhunQaBfzSAfejBT/oZDWKUG12a24d
-	4sizai12bXx7H4c29sHlZp74W6P4laBEsHcq2Ws=
-X-Google-Smtp-Source: AGHT+IE6YRqP3ux3j7EjNd3nCXpoVsgKfUWLobU291Rdho2HmM7G9qCpj4yPQRwGpLSkf+YsaN18PhrY01plEPVn1U8=
-X-Received: by 2002:a05:6820:d0a:b0:598:8d98:286d with SMTP id
- ej10-20020a0568200d0a00b005988d98286dmr325959oob.0.1704808889513; Tue, 09 Jan
- 2024 06:01:29 -0800 (PST)
+        bh=EqF5gaGqpHvHcosofJTzkJSMKdQyTzIwT6UHcAKQaCk=;
+        b=Tz/2lGGbXePRdVsG8Nf86mkTUB9HiOZkj7LH9Vb4Hk5sQOm9S3ITPqmRDOyJmaAcF+
+         UTv5HvGt+kTn1BVEg6wT0AmRqO8Bi3UPfA5Q3aMYhs6c4hilh9HDIQsuZUyyex6kaYb1
+         Up347+s1PzmazRq/HIfqY5WUEORsFO0Fq2jgi7IumPj7T3H0ziaF9yLitjnZps1Z37CD
+         8YXTTSxfqo16IsriDkblc4//MmFuLBeHD9inQMelSmnY++vglxVMQgpAVFRiazRDuKpR
+         AZS3dlRP+BdVfxJ6sGSH+Paq0437rvuUCg+Kc5SMBw64dYbST8OQmK+ZIVGVL47VSQOO
+         +zFg==
+X-Gm-Message-State: AOJu0YzUhwys2kjSaGZ3ALtXZA2kMmKQLc2usiCmEqYMr1EsZZRNNgEX
+	xqgWGJpI9u53k7qx6B2Tb86nBd/HgUfcJkAZzpg=
+X-Google-Smtp-Source: AGHT+IG+8O7C1b4NuN8WT59ADqB4eUOPRViKOqLAz3WiF88mTKrWaBzt3XwkIhu4DaYQgyImVt+LCz0CJVzqnMNvY+c=
+X-Received: by 2002:a05:6871:48f:b0:205:fd47:cd9b with SMTP id
+ f15-20020a056871048f00b00205fd47cd9bmr10283311oaj.2.1704809258629; Tue, 09
+ Jan 2024 06:07:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024010520-joyfully-cosigner-c2a9@gregkh>
-In-Reply-To: <2024010520-joyfully-cosigner-c2a9@gregkh>
+References: <20240107021322.7709-2-benny1091@gmail.com>
+In-Reply-To: <20240107021322.7709-2-benny1091@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 9 Jan 2024 15:01:17 +0100
-Message-ID: <CAJZ5v0h6+W5PL5mSC9LHg+P+S08C8XKPfjy4XX=RDkukWOQ3vA@mail.gmail.com>
-Subject: Re: [PATCH] PNP: make pnp_bus_type const
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: rafael.j.wysocki@intel.com, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org
+Date: Tue, 9 Jan 2024 15:07:27 +0100
+Message-ID: <CAJZ5v0jWjTbuaYXMQ7e0xMFki3mEBO2Su3-DPsGwbWjdStQtJQ@mail.gmail.com>
+Subject: Re: [PATCH] acpi/drivers: add DMI exception for ASUS Vivobook E1504GA
+ and E1504GAB to resource.c
+To: Ben Mayo <benny1091@gmail.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 5, 2024 at 1:51=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Sun, Jan 7, 2024 at 3:13=E2=80=AFAM Ben Mayo <benny1091@gmail.com> wrote=
+:
 >
-> Now that the driver core can properly handle constant struct bus_type,
-> move the pnp_bus_type variable to be a constant structure as well,
-> placing it into read-only memory which can not be modified at runtime.
+> Asus Vivobook E1504GA and E1504GAB notebooks are affected by bug #216158
+> (DSDT specifies the kbd IRQ as level active-low and using the override
+> changes this to rising edge, stopping the keyboard from working).
+> Users of these notebooks do not have a working keyboard unless they add
+> their DMI information to the struct irq1_level_low_skip_override array
+> in resource.c and compile a custom kernel. This patch will add support
+> for these computers to the linux kernel without requiring the end-user
+> to recompile the kernel.
 >
-> Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> Cc: linux-acpi@vger.kernel.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Ben Mayo <benny1091@gmail.com>
 > ---
->  drivers/pnp/driver.c | 2 +-
->  include/linux/pnp.h  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  drivers/acpi/resource.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 >
-> diff --git a/drivers/pnp/driver.c b/drivers/pnp/driver.c
-> index 46c534f6b1c9..0a5d0d8befa8 100644
-> --- a/drivers/pnp/driver.c
-> +++ b/drivers/pnp/driver.c
-> @@ -256,7 +256,7 @@ static const struct dev_pm_ops pnp_bus_dev_pm_ops =3D=
- {
->         .restore =3D pnp_bus_resume,
->  };
->
-> -struct bus_type pnp_bus_type =3D {
-> +const struct bus_type pnp_bus_type =3D {
->         .name    =3D "pnp",
->         .match   =3D pnp_bus_match,
->         .probe   =3D pnp_device_probe,
-> diff --git a/include/linux/pnp.h b/include/linux/pnp.h
-> index 267fb8a4fb6e..ddbe7c3ca4ce 100644
-> --- a/include/linux/pnp.h
-> +++ b/include/linux/pnp.h
-> @@ -435,7 +435,7 @@ struct pnp_protocol {
->  #define protocol_for_each_dev(protocol, dev)   \
->         list_for_each_entry(dev, &(protocol)->devices, protocol_list)
->
-> -extern struct bus_type pnp_bus_type;
-> +extern const struct bus_type pnp_bus_type;
->
->  #if defined(CONFIG_PNP)
->
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 9bd9f79cd409..eb34d201b65f 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -482,6 +482,20 @@ static const struct dmi_system_id irq1_level_low_ski=
+p_override[] =3D {
+>                         DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
+>                 },
+>         },
+> +       {
+> +               /* Asus Vivobook E1504GA */
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."=
+),
+> +                       DMI_MATCH(DMI_BOARD_NAME, "E1504GA"),
+> +               },
+> +       },
+> +       {
+> +               /* Asus Vivobook E1504GAB */
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."=
+),
+> +                       DMI_MATCH(DMI_BOARD_NAME, "E1504GAB"),
+> +               },
+> +       },
+>         {
+>                 /* LG Electronics 17U70P */
+>                 .matches =3D {
 > --
 
-Applied as 6.8-rc1 material, thanks!
+Applied as 6.8-rc1 material with some edits in the subject and
+changelog (a Link: tag pointing to the bug in question added in
+particular).
+
+Thanks!
 
