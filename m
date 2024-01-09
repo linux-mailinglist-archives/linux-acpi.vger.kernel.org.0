@@ -1,175 +1,186 @@
-Return-Path: <linux-acpi+bounces-2771-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2772-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3792C828D62
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 20:27:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F48828E28
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 20:51:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3BF52871A5
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 19:27:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63A271F24971
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 19:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A018B3D386;
-	Tue,  9 Jan 2024 19:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="MU44z6ma"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045153D3A2;
+	Tue,  9 Jan 2024 19:51:10 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937293D541;
-	Tue,  9 Jan 2024 19:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=L5q9G4EH+GvNtL+Wb8XKMCOl8tTep7D40VZuegMyoOA=; b=MU44z6maYlvs7GL6v/GT26fHEs
-	JywflQgaRGHzndkpt+lSurBg+ao2mQxU+/oGRSPRiPNkKcdcrWFvi+6rItnyaLc7f+FPAYo7I83W5
-	d2s5ZugUXxshlJZGVGdrzrlIPCvqO/paJ1S3aBQEm5m9WcY0LPaxU5tR2kGwmEZzaY4deEjqCqu4u
-	DArVZFITrAPbLhv9xLhr/UgPtS73DxSn0SkJEK4PDTSMy+YZBXGTEYK/DtGROgF9J5QMkTF/3HvTA
-	umaXB+rcdQQpV3GgnIh74H38yrte9HF9bmmSsTVhQfTau7kl/lzJA4JTLkbtSQEyuHbASkLLoClqJ
-	gOO/RXgQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56366)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1rNHkv-0004Ud-0B;
-	Tue, 09 Jan 2024 19:27:21 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1rNHku-0004Wn-DT; Tue, 09 Jan 2024 19:27:20 +0000
-Date: Tue, 9 Jan 2024 19:27:20 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
-	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
-	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-	Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	jianyong.wu@arm.com, justin.he@arm.com,
-	James Morse <james.morse@arm.com>
-Subject: Re: [PATCH RFC v3 14/21] irqchip/gic-v3: Don't return errors from
- gic_acpi_match_gicc()
-Message-ID: <ZZ2eGLwlkqZrh0In@shell.armlinux.org.uk>
-References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk>
- <E1rDOgx-00Dvkv-Bb@rmk-PC.armlinux.org.uk>
- <20231215163301.0000183a@Huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8461C3C492;
+	Tue,  9 Jan 2024 19:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-594363b4783so123012eaf.1;
+        Tue, 09 Jan 2024 11:51:08 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704829867; x=1705434667;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=f9CfEyJdpI18457+5ji9bfNvEco0haGPdav5Z06RXJE=;
+        b=WXcf4/j9R3no3LDLWu/ZfddcirramQcZbcOaUkSs8yisbOmlbw51iDZzT0iqDKhusa
+         lCEQ/7WEM+6W1ok4qsT9Q83G96YQXWdq4ToYMRKlXsyzu3S9DmVLFOVY/YxCzH1vrjl6
+         +kyNMOuqCtSQGkeDf9hIhsmsvdIgObMrBR+SyAolannA7ZuMpctKMGngtu0iNUCCWlmo
+         mw1GyRK7FxvU05l2JRttTRfKtV6gbE37azErBGnn9fqniTgrgcRxPpkRo9Uwp8p0c/ru
+         4BGdL0NW+Ig9s8R/LB5ZDfwSKQOAyCcmrtgSTMOuFBxaARaJSrJg3sXlhZXR+Xm3zvLV
+         cgOw==
+X-Gm-Message-State: AOJu0YxGa+NhN7i5nH+QQ2jQvaQNo+a9EAuUJmjS1ve0/CKoVQGlOmBt
+	15ukhF4Zy1OSmfsNuZjD3lxY726rtfQXfEwIwF8=
+X-Google-Smtp-Source: AGHT+IFQ5yvazC9v/FzYTn7OSLPSMqLku7H0Q6uYYWxIshHalCVuu3eysh1wH8tbatZynnzMVwZKOM7G9D3p2uiMfxI=
+X-Received: by 2002:a4a:c912:0:b0:598:81b7:4d25 with SMTP id
+ v18-20020a4ac912000000b0059881b74d25mr2591740ooq.1.1704829867536; Tue, 09 Jan
+ 2024 11:51:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231215163301.0000183a@Huawei.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+References: <20240109041218.980674-1-kai.heng.feng@canonical.com>
+In-Reply-To: <20240109041218.980674-1-kai.heng.feng@canonical.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 9 Jan 2024 20:50:56 +0100
+Message-ID: <CAJZ5v0g4_5k-+_-ZPkm5LNOLsveJJqt2t60q_4a3wm+kAFCv_g@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] ACPI: IPMI: Add helper to wait for when SMI is selected
+To: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc: jdelvare@suse.com, linux@roeck-us.net, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 15, 2023 at 04:33:01PM +0000, Jonathan Cameron wrote:
-> On Wed, 13 Dec 2023 12:50:23 +0000
-> Russell King (Oracle) <rmk+kernel@armlinux.org.uk> wrote:
-> 
-> > From: James Morse <james.morse@arm.com>
-> > 
-> > gic_acpi_match_gicc() is only called via gic_acpi_count_gicr_regions().
-> > It should only count the number of enabled redistributors, but it
-> > also tries to sanity check the GICC entry, currently returning an
-> > error if the Enabled bit is set, but the gicr_base_address is zero.
-> > 
-> > Adding support for the online-capable bit to the sanity check
-> > complicates it, for no benefit. The existing check implicitly
-> > depends on gic_acpi_count_gicr_regions() previous failing to find
-> > any GICR regions (as it is valid to have gicr_base_address of zero if
-> > the redistributors are described via a GICR entry).
-> > 
-> > Instead of complicating the check, remove it. Failures that happen
-> > at this point cause the irqchip not to register, meaning no irqs
-> > can be requested. The kernel grinds to a panic() pretty quickly.
-> > 
-> > Without the check, MADT tables that exhibit this problem are still
-> > caught by gic_populate_rdist(), which helpfully also prints what
-> > went wrong:
-> > | CPU4: mpidr 100 has no re-distributor!
-> > 
-> > Signed-off-by: James Morse <james.morse@arm.com>
-> > Reviewed-by: Gavin Shan <gshan@redhat.com>
-> > Tested-by: Miguel Luis <miguel.luis@oracle.com>
-> > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> > Tested-by: Jianyong Wu <jianyong.wu@arm.com>
-> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > ---
-> >  drivers/irqchip/irq-gic-v3.c | 18 ++++++------------
-> >  1 file changed, 6 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-> > index 98b0329b7154..ebecd4546830 100644
-> > --- a/drivers/irqchip/irq-gic-v3.c
-> > +++ b/drivers/irqchip/irq-gic-v3.c
-> > @@ -2420,21 +2420,15 @@ static int __init gic_acpi_match_gicc(union acpi_subtable_headers *header,
-> >  
-> >  	/*
-> >  	 * If GICC is enabled and has valid gicr base address, then it means
-> > -	 * GICR base is presented via GICC
-> > +	 * GICR base is presented via GICC. The redistributor is only known to
-> > +	 * be accessible if the GICC is marked as enabled. If this bit is not
-> > +	 * set, we'd need to add the redistributor at runtime, which isn't
-> > +	 * supported.
-> >  	 */
-> > -	if (acpi_gicc_is_usable(gicc) && gicc->gicr_base_address) {
-> > +	if (gicc->flags & ACPI_MADT_ENABLED && gicc->gicr_base_address)
-> 
-> I was very vague in previous review.  I think the reasons you are switching
-> from acpi_gicc_is_useable(gicc) to the gicc->flags & ACPI_MADT_ENABLED
-> needs calling out as I'm fairly sure that this point in the series at least
-> acpi_gicc_is_usable is same as current upstream:
-> 
-> static inline bool acpi_gicc_is_usable(struct acpi_madt_generic_interrupt *gicc)
-> {
-> 	return gicc->flags & ACPI_MADT_ENABLED;
-> }
+On Tue, Jan 9, 2024 at 5:12=E2=80=AFAM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
+>
+> On Dell servers, many APCI methods of acpi_power_meter module evaluate
+> variables inside IPMI region, so the region handler needs to be
+> installed. In addition to that, the handler needs to be fully
+> functional, and that depends on SMI being selected.
+>
+> So add a helper to let acpi_power_meter know when the handler is
+> installed and ready to be used.
+>
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-In a previous patch adding acpi_gicc_is_usable() c54e52f84d7a ("arm64,
-irqchip/gic-v3, ACPI: Move MADT GICC enabled check into a helper") this
-was:
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
--       if ((gicc->flags & ACPI_MADT_ENABLED) && gicc->gicr_base_address) {
-+       if (acpi_gicc_is_usable(gicc) && gicc->gicr_base_address) {
+and I'm expecting this to be routed along with patch [2/2] that has
+been posted elsewhere.
 
-so effectively this is undoing that particular change, which raises in
-my mind why the change was made in the first place if it's just going
-to be reverted in a later patch (because in a following patch,
-acpi_gicc_is_usable() has an additional condition added to it that
-isn't applicable here.) which effectively makes acpi_gicc_is_usable()
-return true if either ACPI_MADT_ENABLED _or_
-ACPI_MADT_GICC_ONLINE_CAPABLE (as it is now known) are set.
-
-However, if ACPI_MADT_GICC_ONLINE_CAPABLE is set, does that actually
-mean that the GICC is usable? I'm not sure it does. ACPI v6.5 says that
-this bit indicates that the system supports enabling this processor
-later. Is the GICC of a currently disabled processor "usable"...
-
-Clearly, the intention of this change is not to count this GICC entry
-if it is marked ACPI_MADT_GICC_ONLINE_CAPABLE, but I feel that isn't
-described in the commit message.
-
-Moreover, I am getting the feeling that there are _two_ changes going
-on here - there's the change that's talked about in the commit message
-(the complex validation that seems unnecessary) and then there's the
-preparation for the change to acpi_gicc_is_usable() - which maybe
-should be in the following patch where it would be less confusing.
-
-Would you agree?
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> ---
+> v4:
+>  - Wording.
+>  - Define and comment on timeout value.
+>  - Move the completion to driver_data.
+>  - Remove the tenary operator.
+>
+> v3:
+>  - New patch.
+>
+>  drivers/acpi/acpi_ipmi.c | 23 ++++++++++++++++++++++-
+>  include/acpi/acpi_bus.h  |  5 +++++
+>  2 files changed, 27 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/acpi_ipmi.c b/drivers/acpi/acpi_ipmi.c
+> index 0555f68c2dfd..5fba4dab5d08 100644
+> --- a/drivers/acpi/acpi_ipmi.c
+> +++ b/drivers/acpi/acpi_ipmi.c
+> @@ -22,6 +22,8 @@ MODULE_LICENSE("GPL");
+>  /* the IPMI timeout is 5s */
+>  #define IPMI_TIMEOUT                   (5000)
+>  #define ACPI_IPMI_MAX_MSG_LENGTH       64
+> +/* 2s should be suffient for SMI being selected */
+> +#define ACPI_IPMI_SMI_SELECTION_TIMEOUT        (2 * HZ)
+>
+>  struct acpi_ipmi_device {
+>         /* the device list attached to driver_data.ipmi_devices */
+> @@ -54,6 +56,7 @@ struct ipmi_driver_data {
+>          * to this selected global IPMI system interface.
+>          */
+>         struct acpi_ipmi_device *selected_smi;
+> +       struct completion smi_selection_done;
+>  };
+>
+>  struct acpi_ipmi_msg {
+> @@ -463,8 +466,10 @@ static void ipmi_register_bmc(int iface, struct devi=
+ce *dev)
+>                 if (temp->handle =3D=3D handle)
+>                         goto err_lock;
+>         }
+> -       if (!driver_data.selected_smi)
+> +       if (!driver_data.selected_smi) {
+>                 driver_data.selected_smi =3D ipmi_device;
+> +               complete(&driver_data.smi_selection_done);
+> +       }
+>         list_add_tail(&ipmi_device->head, &driver_data.ipmi_devices);
+>         mutex_unlock(&driver_data.ipmi_lock);
+>
+> @@ -578,6 +583,20 @@ acpi_ipmi_space_handler(u32 function, acpi_physical_=
+address address,
+>         return status;
+>  }
+>
+> +int acpi_wait_for_acpi_ipmi(void)
+> +{
+> +       long ret;
+> +
+> +       ret =3D wait_for_completion_interruptible_timeout(&driver_data.sm=
+i_selection_done,
+> +                                                       ACPI_IPMI_SMI_SEL=
+ECTION_TIMEOUT);
+> +
+> +       if (ret <=3D 0)
+> +               return -ETIMEDOUT;
+> +
+> +       return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_wait_for_acpi_ipmi);
+> +
+>  static int __init acpi_ipmi_init(void)
+>  {
+>         int result;
+> @@ -586,6 +605,8 @@ static int __init acpi_ipmi_init(void)
+>         if (acpi_disabled)
+>                 return 0;
+>
+> +       init_completion(&driver_data.smi_selection_done);
+> +
+>         status =3D acpi_install_address_space_handler(ACPI_ROOT_OBJECT,
+>                                                     ACPI_ADR_SPACE_IPMI,
+>                                                     &acpi_ipmi_space_hand=
+ler,
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index 1216d72c650f..afa6e4d4bf46 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -821,11 +821,16 @@ static inline void acpi_put_acpi_dev(struct acpi_de=
+vice *adev)
+>  {
+>         acpi_dev_put(adev);
+>  }
+> +
+> +int acpi_wait_for_acpi_ipmi(void);
+> +
+>  #else  /* CONFIG_ACPI */
+>
+>  static inline int register_acpi_bus_type(void *bus) { return 0; }
+>  static inline int unregister_acpi_bus_type(void *bus) { return 0; }
+>
+> +static inline int acpi_wait_for_acpi_ipmi(void) { return 0; }
+> +
+>  #endif                         /* CONFIG_ACPI */
+>
+>  #endif /*__ACPI_BUS_H__*/
+> --
 
