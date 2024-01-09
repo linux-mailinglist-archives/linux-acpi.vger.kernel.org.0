@@ -1,51 +1,51 @@
-Return-Path: <linux-acpi+bounces-2770-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2771-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599BC8289CB
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 17:13:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3792C828D62
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 20:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD05CB23870
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 16:13:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3BF52871A5
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 19:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CA33A1B6;
-	Tue,  9 Jan 2024 16:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A018B3D386;
+	Tue,  9 Jan 2024 19:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="a1Ok5Tny"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="MU44z6ma"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3033A1AE;
-	Tue,  9 Jan 2024 16:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937293D541;
+	Tue,  9 Jan 2024 19:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hjOpdiFLaU/rl9xnyUOLlrLmtfPs6+yF3otyUbGH/R4=; b=a1Ok5TnyDwwEPqkbOv/NhT9x7R
-	vsRGEpXQQuagE84o1GOKB+g5J/3SKZHiq7gO7CVhZ9MwbQLrdnXwckcxFgAGvnY9Nk4loJwUNfWTP
-	dmTT4AEb4pqk4eK2+PIhMHYIuLyFfMQgkCgMxXmxbzNgRuL29tI50v1rDgTaj2mHCxoPuAbNQPrUt
-	Km1OPWQBn9drrgdJHriccMuP6O1dmCKstC1QR2adWEFoMNzjxmXhZjSbPWilyBjDSoIpatoeKnAWZ
-	8VR9XluXAKu8zzZRWPmIvh+ZGCcd5RXc90I3qF8F9kbHPYQUINZIyz2P07nQPugKYvhC2BMDt30cD
-	fa7z7JPQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35300)
+	bh=L5q9G4EH+GvNtL+Wb8XKMCOl8tTep7D40VZuegMyoOA=; b=MU44z6maYlvs7GL6v/GT26fHEs
+	JywflQgaRGHzndkpt+lSurBg+ao2mQxU+/oGRSPRiPNkKcdcrWFvi+6rItnyaLc7f+FPAYo7I83W5
+	d2s5ZugUXxshlJZGVGdrzrlIPCvqO/paJ1S3aBQEm5m9WcY0LPaxU5tR2kGwmEZzaY4deEjqCqu4u
+	DArVZFITrAPbLhv9xLhr/UgPtS73DxSn0SkJEK4PDTSMy+YZBXGTEYK/DtGROgF9J5QMkTF/3HvTA
+	umaXB+rcdQQpV3GgnIh74H38yrte9HF9bmmSsTVhQfTau7kl/lzJA4JTLkbtSQEyuHbASkLLoClqJ
+	gOO/RXgQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56366)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <linux@armlinux.org.uk>)
-	id 1rNEj9-0004JK-0j;
-	Tue, 09 Jan 2024 16:13:19 +0000
+	id 1rNHkv-0004Ud-0B;
+	Tue, 09 Jan 2024 19:27:21 +0000
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
 	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1rNEjB-0004Pk-Ap; Tue, 09 Jan 2024 16:13:21 +0000
-Date: Tue, 9 Jan 2024 16:13:21 +0000
+	id 1rNHku-0004Wn-DT; Tue, 09 Jan 2024 19:27:20 +0000
+Date: Tue, 9 Jan 2024 19:27:20 +0000
 From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
 	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -57,103 +57,117 @@ Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
 	Jean-Philippe Brucker <jean-philippe@linaro.org>,
 	jianyong.wu@arm.com, justin.he@arm.com,
 	James Morse <james.morse@arm.com>
-Subject: Re: [PATCH RFC v3 02/21] ACPI: processor: Add support for processors
- described as container packages
-Message-ID: <ZZ1woQkpMMCWVnXc@shell.armlinux.org.uk>
+Subject: Re: [PATCH RFC v3 14/21] irqchip/gic-v3: Don't return errors from
+ gic_acpi_match_gicc()
+Message-ID: <ZZ2eGLwlkqZrh0In@shell.armlinux.org.uk>
 References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk>
- <E1rDOfx-00Dvje-MS@rmk-PC.armlinux.org.uk>
- <CAJZ5v0iB0bS6nmjQ++pV1zp5YSGuigbffK5VD3wsX+8bY9MA5w@mail.gmail.com>
- <ZZ1q+7GXqnMMwKNR@shell.armlinux.org.uk>
- <CAJZ5v0jvuTAMak-x=ekphwgNsUWABGRcDPb8D4QB=KhfyC76Sg@mail.gmail.com>
+ <E1rDOgx-00Dvkv-Bb@rmk-PC.armlinux.org.uk>
+ <20231215163301.0000183a@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0jvuTAMak-x=ekphwgNsUWABGRcDPb8D4QB=KhfyC76Sg@mail.gmail.com>
+In-Reply-To: <20231215163301.0000183a@Huawei.com>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Jan 09, 2024 at 05:05:15PM +0100, Rafael J. Wysocki wrote:
-> On Tue, Jan 9, 2024 at 4:49 PM Russell King (Oracle)
-> <linux@armlinux.org.uk> wrote:
-> >
-> > On Mon, Dec 18, 2023 at 09:17:34PM +0100, Rafael J. Wysocki wrote:
-> > > On Wed, Dec 13, 2023 at 1:49 PM Russell King <rmk+kernel@armlinux.org.uk> wrote:
-> > > >
-> > > > From: James Morse <james.morse@arm.com>
-> > > >
-> > > > ACPI has two ways of describing processors in the DSDT. From ACPI v6.5,
-> > > > 5.2.12:
-> > > >
-> > > > "Starting with ACPI Specification 6.3, the use of the Processor() object
-> > > > was deprecated. Only legacy systems should continue with this usage. On
-> > > > the Itanium architecture only, a _UID is provided for the Processor()
-> > > > that is a string object. This usage of _UID is also deprecated since it
-> > > > can preclude an OSPM from being able to match a processor to a
-> > > > non-enumerable device, such as those defined in the MADT. From ACPI
-> > > > Specification 6.3 onward, all processor objects for all architectures
-> > > > except Itanium must now use Device() objects with an _HID of ACPI0007,
-> > > > and use only integer _UID values."
-> > > >
-> > > > Also see https://uefi.org/specs/ACPI/6.5/08_Processor_Configuration_and_Control.html#declaring-processors
-> > > >
-> > > > Duplicate descriptions are not allowed, the ACPI processor driver already
-> > > > parses the UID from both devices and containers. acpi_processor_get_info()
-> > > > returns an error if the UID exists twice in the DSDT.
-> > >
-> > > I'm not really sure how the above is related to the actual patch.
-> > >
-> > > > The missing probe for CPUs described as packages
-> > >
-> > > It is unclear what exactly is meant by "CPUs described as packages".
-> > >
-> > > From the patch, it looks like those would be Processor() objects
-> > > defined under a processor container device.
-> > >
-> > > > creates a problem for
-> > > > moving the cpu_register() calls into the acpi_processor driver, as CPUs
-> > > > described like this don't get registered, leading to errors from other
-> > > > subsystems when they try to add new sysfs entries to the CPU node.
-> > > > (e.g. topology_sysfs_init()'s use of topology_add_dev() via cpuhp)
-> > > >
-> > > > To fix this, parse the processor container and call acpi_processor_add()
-> > > > for each processor that is discovered like this.
-> > >
-> > > Discovered like what?
-> > >
-> > > > The processor container
-> > > > handler is added with acpi_scan_add_handler(), so no detach call will
-> > > > arrive.
-> > >
-> > > The above requires clarification too.
-> >
-> > The above comments... yea. As I didn't write the commit description, but
-> > James did, and James has basically vanished, I don't think these can be
-> > answered, short of rewriting the entire commit message, with me spending
-> > a lot of time with the ACPI specification trying to get the terminology
-> > right - because at lot of the above on the face of it seems to be things
-> > to do with wrong terminology being used.
-> >
-> > I wasn't expecting this level of issues with this patch set, and I now
-> > feel completely out of my depth with this series. I'm wondering whether
-> > I should even continue with it, since I don't have the ACPI knowledge
-> > to address a lot of these comments.
+On Fri, Dec 15, 2023 at 04:33:01PM +0000, Jonathan Cameron wrote:
+> On Wed, 13 Dec 2023 12:50:23 +0000
+> Russell King (Oracle) <rmk+kernel@armlinux.org.uk> wrote:
 > 
-> Well, sorry about this.
+> > From: James Morse <james.morse@arm.com>
+> > 
+> > gic_acpi_match_gicc() is only called via gic_acpi_count_gicr_regions().
+> > It should only count the number of enabled redistributors, but it
+> > also tries to sanity check the GICC entry, currently returning an
+> > error if the Enabled bit is set, but the gicr_base_address is zero.
+> > 
+> > Adding support for the online-capable bit to the sanity check
+> > complicates it, for no benefit. The existing check implicitly
+> > depends on gic_acpi_count_gicr_regions() previous failing to find
+> > any GICR regions (as it is valid to have gicr_base_address of zero if
+> > the redistributors are described via a GICR entry).
+> > 
+> > Instead of complicating the check, remove it. Failures that happen
+> > at this point cause the irqchip not to register, meaning no irqs
+> > can be requested. The kernel grinds to a panic() pretty quickly.
+> > 
+> > Without the check, MADT tables that exhibit this problem are still
+> > caught by gic_populate_rdist(), which helpfully also prints what
+> > went wrong:
+> > | CPU4: mpidr 100 has no re-distributor!
+> > 
+> > Signed-off-by: James Morse <james.morse@arm.com>
+> > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> > Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > ---
+> >  drivers/irqchip/irq-gic-v3.c | 18 ++++++------------
+> >  1 file changed, 6 insertions(+), 12 deletions(-)
+> > 
+> > diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+> > index 98b0329b7154..ebecd4546830 100644
+> > --- a/drivers/irqchip/irq-gic-v3.c
+> > +++ b/drivers/irqchip/irq-gic-v3.c
+> > @@ -2420,21 +2420,15 @@ static int __init gic_acpi_match_gicc(union acpi_subtable_headers *header,
+> >  
+> >  	/*
+> >  	 * If GICC is enabled and has valid gicr base address, then it means
+> > -	 * GICR base is presented via GICC
+> > +	 * GICR base is presented via GICC. The redistributor is only known to
+> > +	 * be accessible if the GICC is marked as enabled. If this bit is not
+> > +	 * set, we'd need to add the redistributor at runtime, which isn't
+> > +	 * supported.
+> >  	 */
+> > -	if (acpi_gicc_is_usable(gicc) && gicc->gicr_base_address) {
+> > +	if (gicc->flags & ACPI_MADT_ENABLED && gicc->gicr_base_address)
 > 
-> I met James at the LPC last year, so he seems to be still around, in
-> some way at least..
+> I was very vague in previous review.  I think the reasons you are switching
+> from acpi_gicc_is_useable(gicc) to the gicc->flags & ACPI_MADT_ENABLED
+> needs calling out as I'm fairly sure that this point in the series at least
+> acpi_gicc_is_usable is same as current upstream:
+> 
+> static inline bool acpi_gicc_is_usable(struct acpi_madt_generic_interrupt *gicc)
+> {
+> 	return gicc->flags & ACPI_MADT_ENABLED;
+> }
 
-On the previous posting, I wanted James to comment on some of the
-feedback from Jonathan, and despite explicitly asking, there has been
-nothing but radio silence ever since James' last post of this series.
+In a previous patch adding acpi_gicc_is_usable() c54e52f84d7a ("arm64,
+irqchip/gic-v3, ACPI: Move MADT GICC enabled check into a helper") this
+was:
 
-So, I now deem this work to be completely dead in the water, and not
-going to happen - not unless others can input on your comments.
+-       if ((gicc->flags & ACPI_MADT_ENABLED) && gicc->gicr_base_address) {
++       if (acpi_gicc_is_usable(gicc) && gicc->gicr_base_address) {
+
+so effectively this is undoing that particular change, which raises in
+my mind why the change was made in the first place if it's just going
+to be reverted in a later patch (because in a following patch,
+acpi_gicc_is_usable() has an additional condition added to it that
+isn't applicable here.) which effectively makes acpi_gicc_is_usable()
+return true if either ACPI_MADT_ENABLED _or_
+ACPI_MADT_GICC_ONLINE_CAPABLE (as it is now known) are set.
+
+However, if ACPI_MADT_GICC_ONLINE_CAPABLE is set, does that actually
+mean that the GICC is usable? I'm not sure it does. ACPI v6.5 says that
+this bit indicates that the system supports enabling this processor
+later. Is the GICC of a currently disabled processor "usable"...
+
+Clearly, the intention of this change is not to count this GICC entry
+if it is marked ACPI_MADT_GICC_ONLINE_CAPABLE, but I feel that isn't
+described in the commit message.
+
+Moreover, I am getting the feeling that there are _two_ changes going
+on here - there's the change that's talked about in the commit message
+(the complex validation that seems unnecessary) and then there's the
+preparation for the change to acpi_gicc_is_usable() - which maybe
+should be in the following patch where it would be less confusing.
+
+Would you agree?
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
