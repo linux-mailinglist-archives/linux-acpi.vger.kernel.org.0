@@ -1,88 +1,106 @@
-Return-Path: <linux-acpi+bounces-2762-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2763-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980BA8285F9
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 13:24:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 349ED828795
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 15:01:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3ADFAB238E9
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 12:24:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0CF6287BBE
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jan 2024 14:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49ACE381B6;
-	Tue,  9 Jan 2024 12:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5A339857;
+	Tue,  9 Jan 2024 14:01:32 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D31381B4;
-	Tue,  9 Jan 2024 12:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9648439843;
+	Tue,  9 Jan 2024 14:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-20475bf35a2so577271fac.1;
-        Tue, 09 Jan 2024 04:24:05 -0800 (PST)
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-594363b4783so80722eaf.1;
+        Tue, 09 Jan 2024 06:01:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704803045; x=1705407845;
+        d=1e100.net; s=20230601; t=1704808890; x=1705413690;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rc967UiV3NAANd8cc+rYqIM+zZqI5KamtLFvxcveXnE=;
-        b=lhlFEiD0BEU3goZuwrB4IljaOhuvWQ0m/+8prq5DpvOx87ENJ1uKTOLpnn6nVUVcrR
-         Vvqkt3vJ7sUF2RXNN+edgBhrXD8TvyjR2vxFGekZ+++vY2EICz7PIOo5Cf7eMiNLP4hh
-         TbYUhRcm45OA3quTmuDVSQCOGnI8BX1AXoa/hvAlpKjD3o45wuUFAItEKhhTlNMGca2Q
-         95hD5YJN0FXYXKLb6UO1sVG3TJz2sIv9lAzk7XulEmZgPX+4Muw/dVkTEQuC1n0Bq5PL
-         ufvBLvpoEqR3wTXmnCZ1qQv1lZ4IbhZ0kM/eaDUzc3SfeEG28qGijhXl+QnxsQ0rKfQn
-         c91w==
-X-Gm-Message-State: AOJu0YxYR/F+5WomocbiADykpNZZwE0CxhKdFIvfwbdZWtqhDIsOOBoC
-	86LV/CbfMRQiwEe/4xVoIWdp/VBxcK1ECPfowMo=
-X-Google-Smtp-Source: AGHT+IHX44BcsmtTStBgy6MuZ3oAaQRStQesSSIwI/88TrcHx06U05nNsrSYs4sTTczDkv6YImoNk8k/XLi0CXkiWck=
-X-Received: by 2002:a05:6820:388:b0:598:6f59:3 with SMTP id
- r8-20020a056820038800b005986f590003mr3123570ooj.0.1704803044983; Tue, 09 Jan
- 2024 04:24:04 -0800 (PST)
+        bh=O4g/qLgJTtLnx4Mwhlep4ev2Jw4DB5X4OpGt8/1y0G4=;
+        b=Q2KVGp2ZpH3ifHw23PFc1Y4+DALCkcG9sa7WdizcV8t+l0HWQSBXx4ESLpyb9v2tNT
+         zLt8sixGGTDO8rUpBJjb0mz4Y5MoCnxOW2bN9AOML+x3j3ktLqKpR1tzoXYyQTsGhhnN
+         xFDHB/Sf3iHD2WSpPOaVIa4bKWGQZarN1hUDgFZIzVEEZUPVulBhJs7zmMXpM6BI4824
+         ra2w6tsUiR5CSGEHM1BmtSyq1YLKNV70vwrYut+7Owcn056WXbBcHuK1qpwXO0c2Mwxm
+         MUvBps1BtN7xTHoaaz9MHhU7VPbS8bjD/rIo4AKupgGvfX17bU6T1y5dpiF+8xdr5wsM
+         /xBA==
+X-Gm-Message-State: AOJu0YxCJ+lV626DPNhsviksnrFhunQaBfzSAfejBT/oZDWKUG12a24d
+	4sizai12bXx7H4c29sHlZp74W6P4laBEsHcq2Ws=
+X-Google-Smtp-Source: AGHT+IE6YRqP3ux3j7EjNd3nCXpoVsgKfUWLobU291Rdho2HmM7G9qCpj4yPQRwGpLSkf+YsaN18PhrY01plEPVn1U8=
+X-Received: by 2002:a05:6820:d0a:b0:598:8d98:286d with SMTP id
+ ej10-20020a0568200d0a00b005988d98286dmr325959oob.0.1704808889513; Tue, 09 Jan
+ 2024 06:01:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4556052.LvFx2qVVIh@kreacher> <7628882.EvYhyI6sBW@kreacher> <13835e24-1042-41e4-9a3c-dd0adf3462ca@linaro.org>
-In-Reply-To: <13835e24-1042-41e4-9a3c-dd0adf3462ca@linaro.org>
+References: <2024010520-joyfully-cosigner-c2a9@gregkh>
+In-Reply-To: <2024010520-joyfully-cosigner-c2a9@gregkh>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 9 Jan 2024 13:23:52 +0100
-Message-ID: <CAJZ5v0hvafw6_N4M6mwecwS0C9VuXq07RU0DtsB4CDOhjkS8Wg@mail.gmail.com>
-Subject: Re: [PATCH v1 6/6] thermal: netlink: Rework cdev-related notify API
-To: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM <linux-pm@vger.kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Lukasz Luba <lukasz.luba@arm.com>
+Date: Tue, 9 Jan 2024 15:01:17 +0100
+Message-ID: <CAJZ5v0h6+W5PL5mSC9LHg+P+S08C8XKPfjy4XX=RDkukWOQ3vA@mail.gmail.com>
+Subject: Re: [PATCH] PNP: make pnp_bus_type const
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: rafael.j.wysocki@intel.com, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 9, 2024 at 12:36=E2=80=AFPM Daniel Lezcano
-<daniel.lezcano@linaro.org> wrote:
+On Fri, Jan 5, 2024 at 1:51=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On 15/12/2023 21:02, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > The only actually used thermal netlink notification routine related
-> > to cooling devices is thermal_notify_cdev_state_update().  The other
-> > two, thermal_notify_cdev_add() and thermal_notify_cdev_delete(), are
-> > never used.
+> Now that the driver core can properly handle constant struct bus_type,
+> move the pnp_bus_type variable to be a constant structure as well,
+> placing it into read-only memory which can not be modified at runtime.
 >
-> I think it is an oversight. These should be called in
-> thermal_cooling_device_[un]register()
+> Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> Cc: linux-acpi@vger.kernel.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/pnp/driver.c | 2 +-
+>  include/linux/pnp.h  | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/pnp/driver.c b/drivers/pnp/driver.c
+> index 46c534f6b1c9..0a5d0d8befa8 100644
+> --- a/drivers/pnp/driver.c
+> +++ b/drivers/pnp/driver.c
+> @@ -256,7 +256,7 @@ static const struct dev_pm_ops pnp_bus_dev_pm_ops =3D=
+ {
+>         .restore =3D pnp_bus_resume,
+>  };
+>
+> -struct bus_type pnp_bus_type =3D {
+> +const struct bus_type pnp_bus_type =3D {
+>         .name    =3D "pnp",
+>         .match   =3D pnp_bus_match,
+>         .probe   =3D pnp_device_probe,
+> diff --git a/include/linux/pnp.h b/include/linux/pnp.h
+> index 267fb8a4fb6e..ddbe7c3ca4ce 100644
+> --- a/include/linux/pnp.h
+> +++ b/include/linux/pnp.h
+> @@ -435,7 +435,7 @@ struct pnp_protocol {
+>  #define protocol_for_each_dev(protocol, dev)   \
+>         list_for_each_entry(dev, &(protocol)->devices, protocol_list)
+>
+> -extern struct bus_type pnp_bus_type;
+> +extern const struct bus_type pnp_bus_type;
+>
+>  #if defined(CONFIG_PNP)
+>
+> --
 
-OK, so for now I'll just change them to take a (const) pointer to the
-cdev as the argument - the rest they can get from there.
-
-A patch adding them to thermal_cooling_device_[un]register() would be
-separate, for the next cycle.  Where should they be called in there?
-Under thermal_list_lock I suppose?
-
-I'll send a replacement for the $subject patch later and I'll queue up
-the rest of the series.
-
-Thanks for the reviews!
+Applied as 6.8-rc1 material, thanks!
 
