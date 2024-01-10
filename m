@@ -1,163 +1,125 @@
-Return-Path: <linux-acpi+bounces-2780-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2781-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B086B829539
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jan 2024 09:35:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D268296DE
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jan 2024 11:04:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42361B2515E
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jan 2024 08:35:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5EDF1F25493
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jan 2024 10:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF936D6FA;
-	Wed, 10 Jan 2024 08:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC183F8E0;
+	Wed, 10 Jan 2024 10:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SPReVNX5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664C979DD
-	for <linux-acpi@vger.kernel.org>; Wed, 10 Jan 2024 08:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rNU35-00024d-2z; Wed, 10 Jan 2024 09:34:55 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rNU34-001f6V-6J; Wed, 10 Jan 2024 09:34:54 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rNU34-006NMU-0L;
-	Wed, 10 Jan 2024 09:34:54 +0100
-Date: Wed, 10 Jan 2024 09:34:53 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: James Morse <james.morse@arm.com>
-Cc: Tony Luck <tony.luck@intel.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org, Borislav Petkov <bp@alien8.de>, 
-	kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org, 
-	Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH] ACPI: APEI: GHES: Convert to platform remove callback
- returning void
-Message-ID: <tfmuzubr5p57qyv2pye72yzs6fjdyxubcqkmhih7ndddqcifgu@y4psjmr4rbz6>
-References: <20231120173053.49597-1-u.kleine-koenig@pengutronix.de>
- <CAJZ5v0iW_B72o8EMbZaH_x2SOHOvqnieP8EsK2A6d93GRDYtBA@mail.gmail.com>
- <20231122174913.GFZV4/GUKci24sp1oj@fat_crate.local>
- <ix7bttqx32bv4hajg7szijtosi5vn43nxduun3fwevccjqrjhh@qrbjvcsuddoi>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5D3BE5E;
+	Wed, 10 Jan 2024 10:04:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CBA8240E01B2;
+	Wed, 10 Jan 2024 10:04:23 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 4K_7Q4QU78V6; Wed, 10 Jan 2024 10:04:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1704881062; bh=oJLkoiziOduPtb/cNDhpBdqQ7Qw3Bv/OYk1DSPyjEys=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SPReVNX5mO4rjH8gAJR8lkxFlU5acWreAoHXYqShJBeGOIsQGLDhrQ8Ds4pr9eKsr
+	 lOgwXBr/Fn54So/pLG/3T6BmVBxgFyfb5Xgj+nS3WDzIEYJ79TUjVbwenTZKwqL30e
+	 /VQjFIg+gqRZ2R9vFVDkGBQprUU8J4EJxfkn5bBGLEDNipmQ+mgOm0GtMZKdLnHTzR
+	 0Vt67twZqO3HfmHHxbSO1HYFLM09gMHIA0kjS9ZNE19aSYYzJVBckVN29ZKbOfvcAD
+	 HbreznrZi+bJB2bhiolrNiWnDWNu725zmkGx3FaoUGqgntV8qIVtTe3AHbyCgMzhMs
+	 BEiWhR2Va1XvWXaUmib82+/UB/mbh3kL2KIANarumEWrEw6904J6wx6T8X/NuKlyYG
+	 /EMoNGLPk5uifTCyYdvvd7HoxVS+S6ppnSKahH9THaKf0loHG2tBALnRYRQNMpzKzT
+	 yEMrh4FM/wjTmUOvf6iu+1gCbyCsu42eWzVwJnzaTCUV5qwTt2YZ3Qm5t7b0MUXTHZ
+	 mE58e/yKnvboqMgpItDvOAYZ7EJaqbX6PcFJ716Iydztde4PPDPWek2K8Irsdoqdko
+	 HLJNXUpOm4ppsGHiEIIgweaAhXv1TFlr5goK0GHbMD2hBC8f1dd81HSZ+RVZdNQDeh
+	 EhMxTgipx0zkfBJ7H7D+mPUE=
+Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BE5E940E01A9;
+	Wed, 10 Jan 2024 10:04:03 +0000 (UTC)
+Date: Wed, 10 Jan 2024 11:04:02 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Meng, Li (Jassmine)" <Li.Meng@amd.com>
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	"Huang, Ray" <Ray.Huang@amd.com>,
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
+	"Sharma, Deepak" <Deepak.Sharma@amd.com>,
+	"Deucher, Alexander" <Alexander.Deucher@amd.com>,
+	"Limonciello, Mario" <Mario.Limonciello@amd.com>,
+	"Huang, Shimmer" <Shimmer.Huang@amd.com>,
+	"Yuan, Perry" <Perry.Yuan@amd.com>,
+	"Du, Xiaojian" <Xiaojian.Du@amd.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Oleksandr Natalenko <oleksandr@natalenko.name>
+Subject: Re: [PATCH V12 1/7] x86: Drop CPU_SUP_INTEL from SCHED_MC_PRIO for
+ the expansion.
+Message-ID: <20240110100402.GAZZ5rklxQUZk_KFV4@fat_crate.local>
+References: <20231205063537.872834-1-li.meng@amd.com>
+ <20231205063537.872834-2-li.meng@amd.com>
+ <20240109104504.GAZZ0jsFrrncZ8Vx8y@fat_crate.local>
+ <DM4PR12MB63515E818A5B4D5E512F5234F7692@DM4PR12MB6351.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mitaikk2idkkpkxh"
-Content-Disposition: inline
-In-Reply-To: <ix7bttqx32bv4hajg7szijtosi5vn43nxduun3fwevccjqrjhh@qrbjvcsuddoi>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
-
-
---mitaikk2idkkpkxh
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <DM4PR12MB63515E818A5B4D5E512F5234F7692@DM4PR12MB6351.namprd12.prod.outlook.com>
 
-Hello,
+On Wed, Jan 10, 2024 at 06:59:25AM +0000, Meng, Li (Jassmine) wrote:
+> The reason why I added the selects is just to distinguish different
+> pstate drivers.  These two drivers cannot be supported simultaneously
+> in the same project.
 
-On Mon, Dec 18, 2023 at 09:47:10PM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> On Wed, Nov 22, 2023 at 06:49:13PM +0100, Borislav Petkov wrote:
-> > On Wed, Nov 22, 2023 at 04:25:30PM +0100, Rafael J. Wysocki wrote:
-> > > On Mon, Nov 20, 2023 at 6:31=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-> > > <u.kleine-koenig@pengutronix.de> wrote:
-> > > >
-> > > > The .remove() callback for a platform driver returns an int which m=
-akes
-> > > > many driver authors wrongly assume it's possible to do error handli=
-ng by
-> > > > returning an error code. However the value returned is ignored (apa=
-rt
-> > > > from emitting a warning) and this typically results in resource lea=
-ks.
-> > > >
-> > > > To improve here there is a quest to make the remove callback return
-> > > > void. In the first step of this quest all drivers are converted to
-> > > > .remove_new(), which already returns void. Eventually after all dri=
-vers
-> > > > are converted, .remove_new() will be renamed to .remove().
-> > > >
-> > > > Instead of returning an error code, emit a better error message tha=
-n the
-> > > > core. Apart from the improved error message this patch has no effec=
-ts
-> > > > for the driver.
-> > > >
-> > > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.d=
-e>
-> > > > ---
-> > > > Hello,
-> > > >
-> > > > I tried to improve this driver before, see
-> > > >
-> > > >         https://lore.kernel.org/linux-acpi/CAJZ5v0ifb-wvyp0JRq_4c1L=
-6vTi_qEeXJ6P=3DPmmq_56xRL74_A@mail.gmail.com
-> > > >         https://lore.kernel.org/linux-arm-kernel/20221219221439.168=
-1770-1-u.kleine-koenig@pengutronix.de
-> > > >         https://lore.kernel.org/linux-arm-kernel/20221220154447.123=
-41-1-u.kleine-koenig@pengutronix.de
-> > > >
-> > > > but this didn't result in any patch being applied.
-> > > >
-> > > > I think it's inarguable that there is a problem that wants to be fi=
-xed.
-> > > > My tries to fix this problem fixxled out, so here comes a minimal c=
-hange
-> > > > that just points out the problem and otherwise makes ghes_remove()
-> > > > return void without further side effects to allow me to continue my
-> > > > quest to make platform_driver remove callbacks return no error.
-> > >=20
-> > > Tony, Boris, any objections against this patch?
-> >=20
-> > SDEI is James. Moving him to To:
->=20
-> I wonder if you had a chance to look at this patch.
->=20
-> It doesn't change anything for the SDEI driver, the only effect is to
-> have one driver less using platform_driver's remove function.
->=20
-> Would be great if that patch made it in.
+No, that's not what I meant. Read here:
 
-I guess it's to late for 6.8-rc1, but I wonder if this patch is still on
-your radar?
+"- reverse dependencies: "select" <symbol> ["if" <expr>]
 
-Best regards
-Uwe
+  While normal dependencies reduce the upper limit of a symbol (see
+  below), reverse dependencies can be used to force a lower limit of
+  another symbol. The value of the current menu symbol is used as the
+  minimal value <symbol> can be set to. If <symbol> is selected multiple
+  times, the limit is set to the largest selection.
+  Reverse dependencies can only be used with boolean or tristate
+  symbols.
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig         =
-   |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+  Note:
+        select should be used with care. select will force
+        a symbol to a value without visiting the dependencies.
+        By abusing select you are able to select a symbol FOO even
+        if FOO depends on BAR that is not set.
+        In general use select only for non-visible symbols
+        (no prompts anywhere) and for symbols with no dependencies.
+        That will limit the usefulness but on the other hand avoid
+        the illegal configurations all over."
 
---mitaikk2idkkpkxh
-Content-Type: application/pgp-signature; name="signature.asc"
+From Documentation/kbuild/kconfig-language.rst
 
------BEGIN PGP SIGNATURE-----
+-- 
+Regards/Gruss,
+    Boris.
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmWeVq0ACgkQj4D7WH0S
-/k5XZgf+MF5f60w/cXU4CZFrg2ekaqqZ7PZnY5ucjPPx/7Hg7Wri0Y1JSzgfaNWC
-yQlUEzzyTrq53kh/ZbDZ22mZKBsHvTcbU8qDyiLFr/xl10oTboE50nlWHpm9rdIY
-iPoAuk29gzztE/JvyobGOJUK4qho+0UX8l2OCJhLbo6reGb9DCHhUNaD1FfmoZqS
-mP05ZVGN8A5GDKzZ0wtB1AcNe62TiWHG6CmBOBL0k5IotHGLETl2CfF7TuMDNbh0
-wa7OqTKp6Vwefj5tqHmp2noBqn/qEO9RC2f2j8tSPPlrD7sLpnhHei0YQFrPNKl7
-ZJ9UdNEEE0DfVGpzT9FqDiKpCxELlA==
-=PogG
------END PGP SIGNATURE-----
-
---mitaikk2idkkpkxh--
+https://people.kernel.org/tglx/notes-about-netiquette
 
