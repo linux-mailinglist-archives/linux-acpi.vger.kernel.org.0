@@ -1,116 +1,163 @@
-Return-Path: <linux-acpi+bounces-2779-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2780-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A413B82944B
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jan 2024 08:28:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B086B829539
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jan 2024 09:35:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 249F9B2452E
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jan 2024 07:28:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42361B2515E
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jan 2024 08:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0213A8CB;
-	Wed, 10 Jan 2024 07:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OysyzjQE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF936D6FA;
+	Wed, 10 Jan 2024 08:35:03 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACD539FC0;
-	Wed, 10 Jan 2024 07:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704871702; x=1736407702;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=RdL3JLaABYR7lAnPBZfj8AcnQb0dWP0L6Db1mzsmXaU=;
-  b=OysyzjQElN0IsyuZYx/QalPWAWDqLLb1Dff0/r7r/NTlJmbAnoadkcx1
-   Ron8T4rdRZnffNeMr6X+RG98mX/zQiYDg5fTtGSP1ul+Tcqgw0Qej27/B
-   xk8nKj224AV44Gcacb1WJnb0SeLQUpE0cnWcMhiGnTjfb7YvzZYzeo4Wm
-   EpRTs6zJEkXMe2Da2owLbA42gI3LZIB+4ndOlXQejGl1R15T6lvutiZyh
-   c0/AGpdO4XSWPIAZA48yzQazn94lQeFrLYA7KCPog/pkRPNnwHpLS7DhI
-   7R0a8cy7+Hxqpe2jd0KHJpNDVT0xsvP7+PSRLqoFk/l9cXp63xTysWMMJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="398123625"
-X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
-   d="scan'208";a="398123625"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2024 23:28:15 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="775139771"
-X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
-   d="scan'208";a="775139771"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 09 Jan 2024 23:28:13 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rNSxL-0006jk-1x;
-	Wed, 10 Jan 2024 07:25:11 +0000
-Date: Wed, 10 Jan 2024 15:17:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	devel@acpica.org, linux-pm@vger.kernel.org,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: [rafael-pm:bleeding-edge 1764/1779]
- drivers/thermal/thermal_debugfs.c:149: warning: Function parameter or member
- 'tz_episodes' not described in 'tz_debugfs'
-Message-ID: <202401101509.DstqlL7i-lkp@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664C979DD
+	for <linux-acpi@vger.kernel.org>; Wed, 10 Jan 2024 08:34:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rNU35-00024d-2z; Wed, 10 Jan 2024 09:34:55 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rNU34-001f6V-6J; Wed, 10 Jan 2024 09:34:54 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rNU34-006NMU-0L;
+	Wed, 10 Jan 2024 09:34:54 +0100
+Date: Wed, 10 Jan 2024 09:34:53 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: James Morse <james.morse@arm.com>
+Cc: Tony Luck <tony.luck@intel.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org, Borislav Petkov <bp@alien8.de>, 
+	kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org, 
+	Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH] ACPI: APEI: GHES: Convert to platform remove callback
+ returning void
+Message-ID: <tfmuzubr5p57qyv2pye72yzs6fjdyxubcqkmhih7ndddqcifgu@y4psjmr4rbz6>
+References: <20231120173053.49597-1-u.kleine-koenig@pengutronix.de>
+ <CAJZ5v0iW_B72o8EMbZaH_x2SOHOvqnieP8EsK2A6d93GRDYtBA@mail.gmail.com>
+ <20231122174913.GFZV4/GUKci24sp1oj@fat_crate.local>
+ <ix7bttqx32bv4hajg7szijtosi5vn43nxduun3fwevccjqrjhh@qrbjvcsuddoi>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mitaikk2idkkpkxh"
 Content-Disposition: inline
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   335ccbd84e3d5491e06eaf60e3f6be2ef657a495
-commit: 15c1b25dd5fa2735060be35c7022bfbea4978a55 [1764/1779] thermal/debugfs: Add thermal debugfs information for mitigation episodes
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20240110/202401101509.DstqlL7i-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240110/202401101509.DstqlL7i-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202401101509.DstqlL7i-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/thermal/thermal_debugfs.c:149: warning: Function parameter or member 'tz_episodes' not described in 'tz_debugfs'
+In-Reply-To: <ix7bttqx32bv4hajg7szijtosi5vn43nxduun3fwevccjqrjhh@qrbjvcsuddoi>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 
 
-vim +149 drivers/thermal/thermal_debugfs.c
+--mitaikk2idkkpkxh
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   129	
-   130	/**
-   131	 * struct tz_debugfs - Store all mitigation episodes for a thermal zone
-   132	 *
-   133	 * The tz_debugfs structure contains the list of the mitigation
-   134	 * episodes and has to track which trip point has been crossed in
-   135	 * order to handle correctly nested trip point mitigation episodes.
-   136	 *
-   137	 * We keep the history of the trip point crossed in an array and as we
-   138	 * can go back and forth inside this history, eg. trip 0,1,2,1,2,1,0,
-   139	 * we keep track of the current position in the history array.
-   140	 *
-   141	 * @tz_episode: a list of thermal mitigation episodes
-   142	 * @trips_crossed: an array of trip points crossed by id
-   143	 * @nr_trips: the number of trip points currently being crossed
-   144	 */
-   145	struct tz_debugfs {
-   146		struct list_head tz_episodes;
-   147		int *trips_crossed;
-   148		int nr_trips;
- > 149	};
-   150	
+Hello,
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On Mon, Dec 18, 2023 at 09:47:10PM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> On Wed, Nov 22, 2023 at 06:49:13PM +0100, Borislav Petkov wrote:
+> > On Wed, Nov 22, 2023 at 04:25:30PM +0100, Rafael J. Wysocki wrote:
+> > > On Mon, Nov 20, 2023 at 6:31=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+> > > <u.kleine-koenig@pengutronix.de> wrote:
+> > > >
+> > > > The .remove() callback for a platform driver returns an int which m=
+akes
+> > > > many driver authors wrongly assume it's possible to do error handli=
+ng by
+> > > > returning an error code. However the value returned is ignored (apa=
+rt
+> > > > from emitting a warning) and this typically results in resource lea=
+ks.
+> > > >
+> > > > To improve here there is a quest to make the remove callback return
+> > > > void. In the first step of this quest all drivers are converted to
+> > > > .remove_new(), which already returns void. Eventually after all dri=
+vers
+> > > > are converted, .remove_new() will be renamed to .remove().
+> > > >
+> > > > Instead of returning an error code, emit a better error message tha=
+n the
+> > > > core. Apart from the improved error message this patch has no effec=
+ts
+> > > > for the driver.
+> > > >
+> > > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.d=
+e>
+> > > > ---
+> > > > Hello,
+> > > >
+> > > > I tried to improve this driver before, see
+> > > >
+> > > >         https://lore.kernel.org/linux-acpi/CAJZ5v0ifb-wvyp0JRq_4c1L=
+6vTi_qEeXJ6P=3DPmmq_56xRL74_A@mail.gmail.com
+> > > >         https://lore.kernel.org/linux-arm-kernel/20221219221439.168=
+1770-1-u.kleine-koenig@pengutronix.de
+> > > >         https://lore.kernel.org/linux-arm-kernel/20221220154447.123=
+41-1-u.kleine-koenig@pengutronix.de
+> > > >
+> > > > but this didn't result in any patch being applied.
+> > > >
+> > > > I think it's inarguable that there is a problem that wants to be fi=
+xed.
+> > > > My tries to fix this problem fixxled out, so here comes a minimal c=
+hange
+> > > > that just points out the problem and otherwise makes ghes_remove()
+> > > > return void without further side effects to allow me to continue my
+> > > > quest to make platform_driver remove callbacks return no error.
+> > >=20
+> > > Tony, Boris, any objections against this patch?
+> >=20
+> > SDEI is James. Moving him to To:
+>=20
+> I wonder if you had a chance to look at this patch.
+>=20
+> It doesn't change anything for the SDEI driver, the only effect is to
+> have one driver less using platform_driver's remove function.
+>=20
+> Would be great if that patch made it in.
+
+I guess it's to late for 6.8-rc1, but I wonder if this patch is still on
+your radar?
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig         =
+   |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--mitaikk2idkkpkxh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmWeVq0ACgkQj4D7WH0S
+/k5XZgf+MF5f60w/cXU4CZFrg2ekaqqZ7PZnY5ucjPPx/7Hg7Wri0Y1JSzgfaNWC
+yQlUEzzyTrq53kh/ZbDZ22mZKBsHvTcbU8qDyiLFr/xl10oTboE50nlWHpm9rdIY
+iPoAuk29gzztE/JvyobGOJUK4qho+0UX8l2OCJhLbo6reGb9DCHhUNaD1FfmoZqS
+mP05ZVGN8A5GDKzZ0wtB1AcNe62TiWHG6CmBOBL0k5IotHGLETl2CfF7TuMDNbh0
+wa7OqTKp6Vwefj5tqHmp2noBqn/qEO9RC2f2j8tSPPlrD7sLpnhHei0YQFrPNKl7
+ZJ9UdNEEE0DfVGpzT9FqDiKpCxELlA==
+=PogG
+-----END PGP SIGNATURE-----
+
+--mitaikk2idkkpkxh--
 
