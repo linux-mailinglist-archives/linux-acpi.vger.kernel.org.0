@@ -1,62 +1,62 @@
-Return-Path: <linux-acpi+bounces-2796-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2797-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D773382AD67
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jan 2024 12:30:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F8482AD8C
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jan 2024 12:33:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FF691F2390D
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jan 2024 11:30:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09DC81C235C4
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jan 2024 11:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BCF1549A;
-	Thu, 11 Jan 2024 11:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F17015492;
+	Thu, 11 Jan 2024 11:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="axVFp5FU"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="m4l9wBed"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6569C14F9C
-	for <linux-acpi@vger.kernel.org>; Thu, 11 Jan 2024 11:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C761640D
+	for <linux-acpi@vger.kernel.org>; Thu, 11 Jan 2024 11:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-595aa5b1fe0so3137045eaf.2
-        for <linux-acpi@vger.kernel.org>; Thu, 11 Jan 2024 03:29:57 -0800 (PST)
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6d9b13fe9e9so4208621b3a.2
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Jan 2024 03:32:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1704972596; x=1705577396; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1704972727; x=1705577527; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L1/9OBgUnbI4qV6pkGpalRcx7MgtwXi8Ekel0WOHXQs=;
-        b=axVFp5FU03cyM3XxUlRW4A1+Af30SmYit08s6H2hKmmih4wOrjWxnvCQAZgbw3mWqE
-         YR9trjFZ40lEehQQ3oSe9esID+j8cTq6MGpb5ZmpYIrA5JByUBFhKdwAs0kigL1lyMuW
-         jy1h1DANW1eRGABdrMUg1Sj/51M2nkkrAG75ZtiSHcbFmS1/d5hypp9NDGnTkgM9rZKZ
-         yaxRHkUlAONKPckPvlCEL6Sc+m67S+cGa19UlNH4t1iaKjlq1w7emyWqZTWnVS5Lrplj
-         TNqEXj9Q5eO+KUM+2YC53wXpGDkwG05eLrt7Fx3SpAi4sFBvglhFVLJChJbrL+LIo0Kz
-         ocdw==
+        bh=JNl3tpkyK5Mul56pIgZxAMIH2IfRCEnxfyE9fY+1LDU=;
+        b=m4l9wBedswJIQVDZ9iGWGdJl9Zx/EVnZmK8UjrW3iuPogILnCXvAJ5f1DVnoOFFPr9
+         dNjJr40uwVe1jyOxPyyMIjVBHG9GKDQbxNUCgQDxMh+7ILiAaRt4exHzghki0ZceTZMF
+         3Dbv1wxPgpfe6UjtYap9e4S8wc+yTMP0/eZdYto48cZn9iVRxAi3usJchmpf1Y487iu9
+         QWZanqvBtoXd1mlGy8n/UNrxV0qZQnnJjHidpG3f4YZPfkINJtesjsPSueY3hMjzosBs
+         h/9j2Aeq0zw7BbfopuQadD6QMveY7L9dlciwRqhZlDo3pOhR7ulaooZ75t570elby4ih
+         aF5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704972596; x=1705577396;
+        d=1e100.net; s=20230601; t=1704972727; x=1705577527;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L1/9OBgUnbI4qV6pkGpalRcx7MgtwXi8Ekel0WOHXQs=;
-        b=siX3CiO9NxjQh7mCGv0TrkOLLTOXfZmLFTqb1dKSMonm9/1zihQ/HwvQQQw0J0/93/
-         Hj6uOB1mCBQp9a33vIgMVVv/9LL79bhFhZlYxzu/TisM3d+V54svTzTzaxDGEbIYBKtD
-         UjCAPVRUWmNvXKoDFG1qUTWGgiv9ZYyrhKRwm2vSkOpdBUJeIRvKI1z6mtDopmeoaM0W
-         SHJS2aPGgrzWLksd1RpC+sUG5R8v/qawrSbBNma9uiX6NZ0adpAjdvlwhM1wBdI5U6SY
-         374VslxzlOZEx1pIsn+GLlVWXd50xp2IxvgNPLrGziFKSWj+AsCeIvWOg8axfY/yiWe8
-         IJoA==
-X-Gm-Message-State: AOJu0YxuODdKl4qgdlNOrb9hSvlg1Za9sjiu7YCa8KZxitq7Si+iPFCh
-	3Gux1kclRHbvbsJo9pRNYwh+F++tdipiwu8CaB+vDiahoOBWWA==
-X-Google-Smtp-Source: AGHT+IFCKZdtwrnCuFg7TdR7AtliYvHu3SQxC/Xbm2j8wl2ATuGO1M0kBIaUI9ISibSbZ6dp+SrhvA==
-X-Received: by 2002:a05:6358:d39d:b0:175:9bfc:1b34 with SMTP id mp29-20020a056358d39d00b001759bfc1b34mr1332658rwb.22.1704972596331;
-        Thu, 11 Jan 2024 03:29:56 -0800 (PST)
+        bh=JNl3tpkyK5Mul56pIgZxAMIH2IfRCEnxfyE9fY+1LDU=;
+        b=hqvWzmPFwiXwu+FZL+QszI0SrnYwvyex864wQylsJLauOklB9gm6Y6iF9Nw2Al3+Kz
+         raMKOAL95KUnOXNCMWied/ZaGDAFEcTW71+6z4qb6HZFbeu+2Qef6fmDB2b4J9qc1+gb
+         c1hn7FRE+yDcYKlRdOrH5a4KfBcR4HdjqJZvWzq8ZXUGGLArDyTy1l+Pr8HAXD1utJ1s
+         QjnH8jSDOLAriZUKCx0qjZ6pLWAO5tcQTb4ifFFfOoAbpE7kC0liqe5n6zN01klYd7/2
+         hcusF3UUvTIj9dKFcfM+ow9v15DeN64InTH+ib/DaezUpVtczqs07xVIDwuETYYnzV2X
+         vJVg==
+X-Gm-Message-State: AOJu0YxPulan7qvUortt3/WPjqjDSU3DKXvPoWw9K7yRwV2X4DX9oy/O
+	MT18+B8ZkHtPwlBTMoRvq428i4Jt1Vn9Og==
+X-Google-Smtp-Source: AGHT+IFNT0pZlCC90UfGIUe+0iysvNpEOqgrUfAsJP18C9CfIaYaEO8KkvhcxXutmMYmMdMAFoeQNg==
+X-Received: by 2002:a05:6a20:89a9:b0:199:dd9a:df27 with SMTP id h41-20020a056a2089a900b00199dd9adf27mr782621pzg.124.1704972727324;
+        Thu, 11 Jan 2024 03:32:07 -0800 (PST)
 Received: from sunil-laptop ([106.51.188.200])
-        by smtp.gmail.com with ESMTPSA id nb1-20020a17090b35c100b0028d804ef772sm3504720pjb.25.2024.01.11.03.29.51
+        by smtp.gmail.com with ESMTPSA id mm4-20020a1709030a0400b001d4b46d8c10sm972947plb.66.2024.01.11.03.32.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jan 2024 03:29:55 -0800 (PST)
-Date: Thu, 11 Jan 2024 16:59:47 +0530
+        Thu, 11 Jan 2024 03:32:06 -0800 (PST)
+Date: Thu, 11 Jan 2024 17:01:59 +0530
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: Andrew Jones <ajones@ventanamicro.com>
 Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -68,11 +68,11 @@ Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Palmer Dabbelt <palmer@dabbelt.com>,
 	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
 	Atish Kumar Patra <atishp@rivosinc.com>
-Subject: Re: [PATCH -next 1/2] ACPI: Enable ACPI_PROCESSOR for RISC-V
-Message-ID: <ZZ/RK49zoFtSt4Ed@sunil-laptop>
+Subject: Re: [PATCH -next 2/2] cpuidle: RISC-V: Add ACPI LPI support
+Message-ID: <ZZ/Rr7AXVAN4Ecmu@sunil-laptop>
 References: <20240111093058.121838-1-sunilvl@ventanamicro.com>
- <20240111093058.121838-2-sunilvl@ventanamicro.com>
- <20240111-bb411d2dd39eb859dd049fa0@orel>
+ <20240111093058.121838-3-sunilvl@ventanamicro.com>
+ <20240111-d37d338a6b1aa71e944ebe05@orel>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -81,67 +81,143 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240111-bb411d2dd39eb859dd049fa0@orel>
+In-Reply-To: <20240111-d37d338a6b1aa71e944ebe05@orel>
 
-On Thu, Jan 11, 2024 at 11:00:12AM +0100, Andrew Jones wrote:
-> On Thu, Jan 11, 2024 at 03:00:57PM +0530, Sunil V L wrote:
-> > The ACPI processor driver is not currently enabled for RISC-V.
-> > This is required to enable CPU related functionalities like
-> > LPI and CPPC. Hence, enable ACPI_PROCESSOR for RISC-V.
+On Thu, Jan 11, 2024 at 11:19:49AM +0100, Andrew Jones wrote:
+> On Thu, Jan 11, 2024 at 03:00:58PM +0530, Sunil V L wrote:
+> > Add required callbacks to support Low Power Idle (LPI) on ACPI based
+> > RISC-V platforms.
 > > 
 > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > > ---
-> >  drivers/acpi/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >  drivers/cpuidle/cpuidle-riscv-sbi.c | 78 +++++++++++++++++++++++++++++
+> >  1 file changed, 78 insertions(+)
 > > 
-> > diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> > index f819e760ff19..9a920752171c 100644
-> > --- a/drivers/acpi/Kconfig
-> > +++ b/drivers/acpi/Kconfig
-> > @@ -282,7 +282,7 @@ config ACPI_CPPC_LIB
-> >  
-> >  config ACPI_PROCESSOR
-> >  	tristate "Processor"
-> > -	depends on X86 || ARM64 || LOONGARCH
-> > +	depends on X86 || ARM64 || LOONGARCH || RISCV
-> >  	select ACPI_PROCESSOR_IDLE
-> >  	select ACPI_CPU_FREQ_PSS if X86 || LOONGARCH
-> >  	select THERMAL
+> > diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidle-riscv-sbi.c
+> > index e8094fc92491..cea67a54ab39 100644
+> > --- a/drivers/cpuidle/cpuidle-riscv-sbi.c
+> > +++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
+> > @@ -632,3 +632,81 @@ static int __init sbi_cpuidle_init(void)
+> >  	return 0;
+> >  }
+> >  device_initcall(sbi_cpuidle_init);
+> > +
+> > +#ifdef CONFIG_ACPI_PROCESSOR_IDLE
+> > +
+> > +#include <linux/acpi.h>
+> > +#include <acpi/processor.h>
+> > +
+> > +#define RISCV_FFH_LPI_TYPE_MASK		0x1000000000000000ULL
+> > +#define RISCV_FFH_LPI_RSVD_MASK		0x0FFFFFFF00000000ULL
+> 
+> GENMASK might look nicer and the type mask is 0xF000000000000000ULL,
+> where 0x1000000000000000ULL means that the type is an SBI identifier.
+> We need both defined
+> 
+> #define RISCV_FFH_LPI_TYPE_MASK              0xF000000000000000ULL
+> #define RISCV_FFH_LPI_TYPE_SBI               0x1000000000000000ULL
+> 
+Sure. Let me use GENMASK and define both MASK and SBI type.
+
+> as I point out below.
+> 
+> > +
+> > +static int acpi_cpu_init_idle(unsigned int cpu)
+> > +{
+> > +	int i;
+> > +	struct acpi_lpi_state *lpi;
+> > +	struct acpi_processor *pr = per_cpu(processors, cpu);
+> > +
+> > +	if (unlikely(!pr || !pr->flags.has_lpi))
+> > +		return -EINVAL;
+> > +
+> > +	/*
+> > +	 * The SBI HSM suspend function is only available when:
+> > +	 * 1) SBI version is 0.3 or higher
+> > +	 * 2) SBI HSM extension is available
+> > +	 */
+> > +	if (sbi_spec_version < sbi_mk_version(0, 3) ||
+> > +	    !sbi_probe_extension(SBI_EXT_HSM)) {
+> > +		pr_warn("HSM suspend not available\n");
+> 
+> The comment and these lines match what's done in sbi_cpuidle_init().
+> How about a static helper function to avoid duplication?
+> 
+Sure.
+
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	if (pr->power.count <= 1)
+> > +		return -ENODEV;
+> > +
+> > +	for (i = 1; i < pr->power.count; i++) {
+> > +		u32 state;
+> > +
+> > +		lpi = &pr->power.lpi_states[i];
+> > +
+> > +		/* Validate Entry Method as per FFH spec.
+> > +		 * bits[63:60] should be 0x1
+> > +		 * bits[59:32] should be 0x0
+> > +		 * bits[31:0] represent a SBI power_state
+>                                         ^ an
+> 
+> > +		 */
+> 
+> Comment block needs opening wing (/*)
+> 
+Okay.
+
+> > +		if (!(lpi->address & RISCV_FFH_LPI_TYPE_MASK) ||
+> 
+> This should be (lpi->address & RISCV_FFH_LPI_TYPE_MASK) != RISCV_FFH_LPI_TYPE_SBI
+> 
+Sure.
+
+Let me send v2 in couple of days with these changes.
+
+Thanks!
+Sunil
+
+> > +		    (lpi->address & RISCV_FFH_LPI_RSVD_MASK)) {
+> > +			pr_warn("Invalid LPI entry method %#llx\n", lpi->address);
+> > +			return -EINVAL;
+> > +		}
+> > +
+> > +		state = lpi->address;
+> > +		if (!sbi_suspend_state_is_valid(state)) {
+> > +			pr_warn("Invalid SBI power state %#x\n", state);
+> > +			return -EINVAL;
+> > +		}
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +int acpi_processor_ffh_lpi_probe(unsigned int cpu)
+> > +{
+> > +	return acpi_cpu_init_idle(cpu);
+> > +}
+> > +
+> > +int acpi_processor_ffh_lpi_enter(struct acpi_lpi_state *lpi)
+> > +{
+> > +	u32 state = lpi->address;
+> > +
+> > +	if (state & SBI_HSM_SUSP_NON_RET_BIT)
+> > +		return CPU_PM_CPU_IDLE_ENTER_PARAM(sbi_suspend,
+> > +						   lpi->index,
+> > +						   state);
+> > +	else
+> > +		return CPU_PM_CPU_IDLE_ENTER_RETENTION_PARAM(sbi_suspend,
+> > +							     lpi->index,
+> > +							     state);
+> > +}
+> > +
+> > +#endif
 > > -- 
 > > 2.34.1
 > >
 > 
-> Hi Sunil,
-> 
-> Typically we'll want the Kconfig changes to come at the end of a series,
-> or squashed into the patch that adds support for it, otherwise there's
-> risk of build breakage during bisection. In this case, we're safe because
-> the two new functions (I looked ahead) have __weak versions when they're
-> not present.
-> 
-Sure. Let me swap the order of the patches.
-
-> Also, interestingly, it looks like this ancient line
-> 
->  obj-$(CONFIG_ACPI_PROCESSOR)    += processor.o
-> 
-> in drivers/acpi/Makefile should be removed, since there's no
-> drivers/acpi/processor.c file. I guess the make process silently
-> filters object files which don't have corresponding source files?
-> Maybe we should write a Makefile analyzer to see what other lines
-> can be removed...
->
-Interesting. 
-
-Hi Rafael, any thoughts?
- 
-> Anyway, for this patch, which I'd prefer to be swapped in order with
-> the other patch, or just squashed into the other patch,
->
-I prefer to keep as 2 separate patches. I will swap the order.
-
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-> 
-Thanks!
-Sunil 
+> Thanks,
+> drew
 
