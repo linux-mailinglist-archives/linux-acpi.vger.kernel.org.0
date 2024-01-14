@@ -1,96 +1,168 @@
-Return-Path: <linux-acpi+bounces-2834-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2835-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCBD782D09B
-	for <lists+linux-acpi@lfdr.de>; Sun, 14 Jan 2024 13:43:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B66F82D19A
+	for <lists+linux-acpi@lfdr.de>; Sun, 14 Jan 2024 18:20:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D91F31C20CBA
-	for <lists+linux-acpi@lfdr.de>; Sun, 14 Jan 2024 12:43:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11BAB1F2154B
+	for <lists+linux-acpi@lfdr.de>; Sun, 14 Jan 2024 17:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0501866;
-	Sun, 14 Jan 2024 12:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C3A5680;
+	Sun, 14 Jan 2024 17:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="L2a64r3J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pp5mLajj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C9123A6
-	for <linux-acpi@vger.kernel.org>; Sun, 14 Jan 2024 12:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1705236197; x=1705840997; i=w_armin@gmx.de;
-	bh=WR1rAfW79pSKd4m7GDUJ3ah+zhYHTNa2RFrCYEmFCdY=;
-	h=X-UI-Sender-Class:Date:To:Cc:From:Subject;
-	b=L2a64r3JKJVuHWd9SWV2RNcJhlHAfaZvthV30cT3uiC73d8tuZiwJwYHruBgMsD8
-	 Ytd6dPGuQ29fh40+vMCmyOaYZBlPmzdLksvFGk5MEd9HPImDF26kje2nP0cMLyiRZ
-	 FeRJveVIc2XrhIj64gr8UQX/GoAV40n5EaUiKRGY9v/1ztF8atQrwBESK4KUjbCa+
-	 mMr/1xxkaF2dWf0tViOkdYwCFxuFgf+h3MfXwgLX16bYnZyx90EkoY2DW+RzUkj3O
-	 BgxbfAHeNeIl6Rb2WP1zs6ZwGT/DdXa0v7AX6n3GI0HzsRH6OTVza9D5F9teDUV2M
-	 ntKLVhvKg62q9B6VAQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.2.35] ([91.137.126.34]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M2O6Y-1rRkSJ0qkQ-003svO; Sun, 14
- Jan 2024 13:43:17 +0100
-Message-ID: <14c6f480-66f4-4683-92d6-55a58eb98585@gmx.de>
-Date: Sun, 14 Jan 2024 13:42:36 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8538D2F4A;
+	Sun, 14 Jan 2024 17:20:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F7CC433C7;
+	Sun, 14 Jan 2024 17:20:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705252831;
+	bh=vagUNfRKomqh1O4yrAuG6OACpyweQ7hEa3vAZjeMp4g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pp5mLajjoAk3PnKGepNwy0NkELAx2yqYSspnXc9eYMXrS8YYJfAhxKiM7cTlec5Ll
+	 TXk/d02TaIXrk+36gbw9snJLR/GjGy0aQ326KciOOcXsHwvkQ/kBkBP/y9B3gZx1nr
+	 VNF/GVNlnH6vRC9QjpZZVIOltBJkJqiP5RZuFz/Sh/H3QssZVA1fzb7QqhvHY5HJzc
+	 LixP61Z4LSAeTuuRXsD/F6kq9Z6D8lSNCAgat/thL5XrOrE+vVQYV6ihFyhz+RmLQY
+	 7gorF1yp2LCvplZsu+kLAHHo352y8XxZi1IMM+EEUUMH/jrv5YdHJrfMUP1Us9b+DB
+	 GTrhar4bQaCQg==
+From: Jonathan Cameron <jic23@kernel.org>
+To: linux-iio@vger.kernel.org,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Mihail Chindris <mihail.chindris@analog.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Tomislav Denis <tomislav.denis@avl.com>,
+	Marek Vasut <marex@denx.de>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 00/13] device property / IIO: Use cleanup.h magic for fwnode_handle_put() handling.
+Date: Sun, 14 Jan 2024 17:19:56 +0000
+Message-ID: <20240114172009.179893-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: rui.zhang@intel.com, rafael@kernel.org
-Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-From: Armin Wolf <W_Armin@gmx.de>
-Subject: ACPI INT340E PTID device
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:KPoPY43LbXrZuQCoyKsi2cJNa6Iv2K3dhl85SA2Zt51z5/bqg5K
- TFePr3eArxyEH52F3RZFSWieXF0JcYAm/b6DN/w8BYfTtFRDs5+6lxWYSwQZRVgJKLJ8cY1
- +4g/96oqX9wEZ88TuOdisb2Qce0LW58oAU//mvgIViMKB6MKJtJpoi35Uk4Qf8sUYEOzFJq
- 2mMigkiOQw1LtT5LWUmfg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:wZHhhbfVSsM=;AdhyI5J+6sMxkgWr+x6IJ/iXxV5
- 1khH43/sVfLYIAtutr2pE9Ow/6x9YsGLDw6rIIYG9AzfOr29H6n/nVl24J6eAbe39752fiovD
- 8PbuQ0VZVgJJHvrdiGVUHsaynb1I15S2oaInKSx0OWb6SHp9o1YVYoSG4iY5PONIJk1GpYZ8/
- 6qBchUseVl59UJiy/YW6ZEBNXp1q6kJzzrYyT/IXdHIaRNX0Nb1c9rKEIm8c6AWg4eHwUbMNa
- XvMIOSSMqFiFxOJ7SKwA0lNdTzjzfp8X/42Sa1vZE1Md2pQb7tw9D5D2MuyRLymsE1YWsG/Eu
- pg36KSQClZADFvM6dy9nbEl4ngd9uDio/GVdo+RYf8xZTlufj0VhychI65nvzie3mAeRi4BR7
- HeAwUim2vzlm38kLTw+BegB/NfWwTzTb9ksHbf9+AP24djDRor2Y/eJl/Api30vYaAj2K5Cdg
- vmhRRrk+XCzSYOzIqhBxA9UEfwAZJxtvi4n7tt/SjrqK5G1qQb4oApd7Q9TW9Eqr8Lr4L1Ecy
- JhvjwfHRqHXZzC8SVZ2bW5YXUN8Mje37SXPWMMvy2PBorzN3JxEy6JUtTAhWnjh+12LcV0N2+
- 8Uyq4wQ7Hd9rcaGntuAWX8KHbwy4N6tq8xKahfx+Zl2XrxANPFiUIWEdMfWlPAi/o0RPT94EZ
- emKT4hhyr7lBPiPODqQ0a3UkeShRucTyxkGDMhQFnIPg4FzP5ZmFvinzcQvnGC0uIazwI2I5O
- lAzBfMQ8mDCgnXunNsbFAhnl1S0azKr0B++EHL2kyYu6OhloT9K2mLNLnDVl9ehnANcuGN7nx
- Q4bw8ptrRuiLcwsbO8M5vhGN2TQmtKlG7+kiVelUcWyEapc3cvkU7hHfyntTWCSfP3uIiw7r5
- exQqZg3cP4jbP2scxigMEzfUmLabgHLisNOrJ5Ii2Rp1HF6Pv3mefbKYnOsWQQ4VCfCtKr+xZ
- tNQEURM+cnf1xPrKYPokOjER4u0=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello,
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-a user has asked if the ACPI INT340E device could be supported. Its seems that this device exposes
-thermal and power sensors to the operating system, plus some general purpose "OSD" sensors.
+Chances since RFC.
+- Add if (!IS_ERR_OR_NULL(_T)) check as suggested by Andy Shevchenko.
+  This may allow the compiler to optimize cases where it can tell that
+  this check will fail rather than calling into fwnode_handle_put().
 
-The device is already supported by the Hackintosh community, see here:
-https://github.com/RehabMan/OS-X-FakeSMC-kozlek/blob/master/ACPISensors/PTIDSensors.cpp
+Note I don't have the hardware so this is compile tested only.
+Hence I'd appreciate some Tested-by tags if anyone can poke one of the
+effected drivers.
 
-Back in 2014, the INT340E device was mentioned in message "1408622934.3315.8.camel@rzhang1-toshiba" as:
+I have tested the device tree only version:
+https://lore.kernel.org/linux-iio/20231217184648.185236-1-jic23@kernel.org/
+which is very similar.
 
-	The PTID device has _CID PNP0C02, but it is also represents an
-    	INT340E device, there is a platform bus driver for this device
-    	which will be introduced by myself soon.
+Failing to release the references on early exit from loops over child nodes
+and similar are a fairly common source of bugs. The need to explicitly
+release the references via fwnode_handle_put() also complicate the code.
 
-Before developing a new driver for this device, i wanted to ask what happened to the driver mentioned
-in this email? I am willing to do the testing, upstreaming and maintenance if necessary.
+The first patch enables
 
-Thanks,
-Armin Wolf
+	struct fwnode_handle *child __free(fwnode_handle) = NULL;
+
+	device_for_each_child_node(dev, child) {
+		if (err)
+			/*
+			 * Previously needed a fwnode_handle_put() here,
+			 * will now be called automatically as well leave
+			 * the scope within which the cleanup is registered
+			 */
+			return err;
+	}
+
+/*
+ * The if (!IS_ERR_OR_NULL(_T)) check will fail here as the pointer will be
+ * NULL and thus fwnode_handle_put() will not be called. It would be
+ * functionally correct to call it with a NULL pointer but that reduces
+ * the opportunities for the compiler to optimize out the call.
+ */
+}
+
+As can be seen by the examples from IIO that follow this can save
+a reasonable amount of complexity and boiler plate code, often enabling
+additional cleanups in related code such as use of
+return dev_err_probe().
+
+Merge wise (assuming everyone is happy), I'd propose an immutable branch
+(in IIO or elsewhere) with the first patch on it, so that we can start making
+use of this in other areas of the kernel without having to wait too long.
+
+Jonathan Cameron (13):
+  device property: Add cleanup.h based fwnode_handle_put() scope based
+    cleanup.
+  iio: adc: max11410: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: adc: mcp3564: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: adc: qcom-spmi-adc5: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: adc: rzg2l_adc: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: adc: stm32: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: adc: ti-ads1015: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: adc: ti-ads131e08: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: addac: ad74413r: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: dac: ad3552: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: dac: ad5770r: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: dac: ltc2688: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+  iio: temp: ltc2983: Use __free(fwnode_handle) to replace
+    fwnode_handle_put() calls
+
+ drivers/iio/adc/max11410.c        | 26 ++++--------
+ drivers/iio/adc/mcp3564.c         | 15 ++++---
+ drivers/iio/adc/qcom-spmi-adc5.c  |  6 +--
+ drivers/iio/adc/rzg2l_adc.c       | 10 ++---
+ drivers/iio/adc/stm32-adc.c       | 62 +++++++++++----------------
+ drivers/iio/adc/ti-ads1015.c      |  4 +-
+ drivers/iio/adc/ti-ads131e08.c    | 12 ++----
+ drivers/iio/addac/ad74413r.c      |  9 +---
+ drivers/iio/dac/ad3552r.c         | 50 +++++++++-------------
+ drivers/iio/dac/ad5770r.c         | 18 +++-----
+ drivers/iio/dac/ltc2688.c         | 23 +++-------
+ drivers/iio/temperature/ltc2983.c | 70 ++++++++++---------------------
+ include/linux/property.h          |  3 ++
+ 13 files changed, 105 insertions(+), 203 deletions(-)
+
+-- 
+2.43.0
 
 
