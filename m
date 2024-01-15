@@ -1,62 +1,62 @@
-Return-Path: <linux-acpi+bounces-2851-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2852-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181D782D6E7
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jan 2024 11:11:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 355A182D6EA
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jan 2024 11:11:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5A24281556
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jan 2024 10:11:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C6B71C2177E
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jan 2024 10:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967011E864;
-	Mon, 15 Jan 2024 10:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAFC2BAF7;
+	Mon, 15 Jan 2024 10:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="I2GjGhO7"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="prIktfAD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A65101C6
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Jan 2024 10:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739A72BAF1
+	for <linux-acpi@vger.kernel.org>; Mon, 15 Jan 2024 10:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-6d9f94b9186so7153524b3a.0
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Jan 2024 02:11:12 -0800 (PST)
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3bd72353d9fso1366543b6e.3
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Jan 2024 02:11:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1705313471; x=1705918271; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1705313476; x=1705918276; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eFE4MaRUUDjQZfE2dmgya8wKXtM/DMaoZewAWiQUHuY=;
-        b=I2GjGhO797yGThuRfk9JtlKXqOcpieEOVfZTeYJYeZR+Y71OpmThwJv5Vqvm6T3Xge
-         enJwJUWRIwUE8rSIMuLpeBeNCPGf6iXyWXQrhhnj6+hpfQKsjRz0TbTmdCBjtmqm+jNB
-         td/RbLxRM2xUB8NMH4NmAxrbLmZX6kD6mXBcJzHlrM7Xd4rZiWeg2BdKZg2nNmDPAcqO
-         iRoVLwT0vrNnif+ygtbM7dynaRyecCN6QpIAjyMw8NjtxujDx0jRW88ceXQoNzmdar3f
-         j/RNIwT5DSywGk0GS5cwE+kl4QwY3P3poDZXG1tFCzIr/B+DLmJZrlblVMvd4GLnLK4f
-         XM1w==
+        bh=FKR76xvkppExc7Ae5ic+6mPrVpT9dqve2Cn1Oe/qHYw=;
+        b=prIktfADJjqu2qTrlGHTj0KZKU1jxS860clskcF1Pr1QeeiBEXNZRJYwQbqp4Cvkso
+         Qjv4u0grDYKbx9Xz/aUWKBbOSaLI4Bc0MIv4daelSETymYEMg+/s1hOMfpRO5OVmgAy/
+         Hb0VVH4QQVIu6+k/PIqPEhTi687kFdYycz/DjOMf1hUXxajCvhV1kNDjlgzh0PI3kqlZ
+         PDNNVWXnY9o/kNazmIWRTGEJJO1Nrts1NpYdPBjyutUQQwT5W0Lz3A4aNfGDWa0dkAkv
+         xJ6uxubXVI+NGAlPqG5qrQyfWiPAmVTVKE8cZlS4MTuqWuS5Sn4GGtkpyjBF21VIa1Hx
+         MgMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705313471; x=1705918271;
+        d=1e100.net; s=20230601; t=1705313476; x=1705918276;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eFE4MaRUUDjQZfE2dmgya8wKXtM/DMaoZewAWiQUHuY=;
-        b=XvHsgsiZ93mBRCmVatgeYzWzXc90Yi0Ku+kX1xxTwz0qdJL3Yq4KsD9VTnxe5WuHmL
-         noJ7wLQjJpAXEKcokTq92Cw2m+RldwENsJex/emJgbmRa+f4s/nMSjgdHKOu2385jXL8
-         e8TJBV+jlwviwHtVQOucJ3WwtSMFgm75xKgEkeQhhMeB4KWE+XASGsp/x8+8CIuziBR0
-         8pXKRQTWE5cx3alxSfax5Lkx3FUqCNb2v7Fw9+/xeRWj/Q653WP+ULnPrp6NnzOSBRfm
-         iQOansb8MpQ6zj8uEBecGonJTF9NT13IO+8DBmqBGgVZPRkn1xsnQDg3PvOzpOXWpwg3
-         Zfbg==
-X-Gm-Message-State: AOJu0Yw+7AA/FXU+bdOF6iPfCpfNYX1k6tPAVhWkZY8GV7Rr1l9i6Es4
-	1fuAPQzc8H7zJMN9FN3kt1j1Jtz6dc63v4aZ/IzW1lloyOQTQA==
-X-Google-Smtp-Source: AGHT+IGwU6QEd/xe6D6PNl/zIoj9NPbivgiVZqhkEXmbNsIyplJguIzU6puQpGtsO9MGyB06M5Jzrg==
-X-Received: by 2002:a05:6a00:ace:b0:6da:c623:f054 with SMTP id c14-20020a056a000ace00b006dac623f054mr7200673pfl.15.1705313471628;
-        Mon, 15 Jan 2024 02:11:11 -0800 (PST)
+        bh=FKR76xvkppExc7Ae5ic+6mPrVpT9dqve2Cn1Oe/qHYw=;
+        b=V5bLarZ3BxOScXeKyCJRfjm1ER5ppIcezWBbI06hT5rznEVwWu0dkH7gIAb/wWY/PO
+         aBQF7QVHaQzQcM1pKZHTdKDLe+nPOr+STQrx3U4LZNhMERcb2GIhwxS7YHJR58mg6Axe
+         vZIQ0YZ47MzeT7sRaVg4Sfa0xenHG3i+QP9c2oeft/a8w4h653sS/nymuz8eq7Nn8UpC
+         XbVu8Q65TUJBnO8s+dq9dNTTZtnqq68oO/f4bLmBuuGXrvtyL4R2WotmYJmZ4ZC6IGhW
+         W86B6KCKSTOi+ImhUUSJUg79TiWG3jQlRV0/yMK5QeNQDlupLWf2/P0rjPz8Gg1/D2yY
+         65Cw==
+X-Gm-Message-State: AOJu0YzcmHdN9xcJMnDYHrU5hwxUxl5peMCW+sOIwcr/1orKcZiZak1j
+	eyX6KMEtnnbJMrBtFgnNrQz7Q/x0Gf7XMwypBo9KpCDmUKQgPg==
+X-Google-Smtp-Source: AGHT+IGWojS8RsJT/iDe5Ctvj5HBEJFzGZS/l46ZI7pdhdk1JBFy+CjL4CsRK1CYjAHvPpRJ4by1hw==
+X-Received: by 2002:a05:6808:152b:b0:3bb:edf8:c497 with SMTP id u43-20020a056808152b00b003bbedf8c497mr7585343oiw.71.1705313476617;
+        Mon, 15 Jan 2024 02:11:16 -0800 (PST)
 Received: from localhost.localdomain ([106.51.188.200])
-        by smtp.gmail.com with ESMTPSA id u5-20020aa78385000000b006d9b8572e77sm7348256pfm.120.2024.01.15.02.11.06
+        by smtp.gmail.com with ESMTPSA id u5-20020aa78385000000b006d9b8572e77sm7348256pfm.120.2024.01.15.02.11.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jan 2024 02:11:11 -0800 (PST)
+        Mon, 15 Jan 2024 02:11:16 -0800 (PST)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -74,9 +74,9 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
 	Atish Kumar Patra <atishp@rivosinc.com>,
 	Pavel Machek <pavel@ucw.cz>,
 	Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH v2 -next 1/3] cpuidle: RISC-V: Move few functions to arch/riscv
-Date: Mon, 15 Jan 2024 15:40:54 +0530
-Message-Id: <20240115101056.429471-2-sunilvl@ventanamicro.com>
+Subject: [PATCH v2 -next 2/3] ACPI: RISC-V: Add LPI driver
+Date: Mon, 15 Jan 2024 15:40:55 +0530
+Message-Id: <20240115101056.429471-3-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240115101056.429471-1-sunilvl@ventanamicro.com>
 References: <20240115101056.429471-1-sunilvl@ventanamicro.com>
@@ -88,152 +88,112 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-To support ACPI Low Power Idle (LPI), few functions are required which
-are currently static functions in the DT based cpuidle driver. Hence,
-move them under arch/riscv so that ACPI driver also can use them.
+Enable Low Power Idle (LPI) based cpuidle driver for RISC-V platforms.
+It depends on SBI HSM calls for idle state transitions.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
- arch/riscv/include/asm/suspend.h    |  3 ++
- arch/riscv/kernel/suspend.c         | 47 +++++++++++++++++++++++++++++
- drivers/cpuidle/cpuidle-riscv-sbi.c | 41 +------------------------
- 3 files changed, 51 insertions(+), 40 deletions(-)
+ drivers/acpi/riscv/Makefile  |  3 +-
+ drivers/acpi/riscv/cpuidle.c | 81 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 83 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/acpi/riscv/cpuidle.c
 
-diff --git a/arch/riscv/include/asm/suspend.h b/arch/riscv/include/asm/suspend.h
-index 02f87867389a..5c7df5ab7a16 100644
---- a/arch/riscv/include/asm/suspend.h
-+++ b/arch/riscv/include/asm/suspend.h
-@@ -55,4 +55,7 @@ int hibernate_resume_nonboot_cpu_disable(void);
- asmlinkage void hibernate_restore_image(unsigned long resume_satp, unsigned long satp_temp,
- 					unsigned long cpu_resume);
- asmlinkage int hibernate_core_restore_code(void);
-+bool is_sbi_hsm_supported(void);
-+bool sbi_suspend_state_is_valid(u32 state);
-+int sbi_suspend(u32 state);
- #endif
-diff --git a/arch/riscv/kernel/suspend.c b/arch/riscv/kernel/suspend.c
-index 239509367e42..a3b2e7e16a98 100644
---- a/arch/riscv/kernel/suspend.c
-+++ b/arch/riscv/kernel/suspend.c
-@@ -128,4 +128,51 @@ static int __init sbi_system_suspend_init(void)
- }
- 
- arch_initcall(sbi_system_suspend_init);
+diff --git a/drivers/acpi/riscv/Makefile b/drivers/acpi/riscv/Makefile
+index 8b3b126e0b94..7309d92dd477 100644
+--- a/drivers/acpi/riscv/Makefile
++++ b/drivers/acpi/riscv/Makefile
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-y 	+= rhct.o
++obj-y					+= rhct.o
++obj-$(CONFIG_ACPI_PROCESSOR_IDLE)	+= cpuidle.o
+diff --git a/drivers/acpi/riscv/cpuidle.c b/drivers/acpi/riscv/cpuidle.c
+new file mode 100644
+index 000000000000..052ec3942902
+--- /dev/null
++++ b/drivers/acpi/riscv/cpuidle.c
+@@ -0,0 +1,81 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2024, Ventana Micro Systems Inc
++ *	Author: Sunil V L <sunilvl@ventanamicro.com>
++ *
++ */
 +
-+static int sbi_suspend_finisher(unsigned long suspend_type,
-+				unsigned long resume_addr,
-+				unsigned long opaque)
++#include <linux/acpi.h>
++#include <acpi/processor.h>
++#include <linux/cpu_pm.h>
++#include <linux/cpuidle.h>
++#include <linux/suspend.h>
++#include <asm/cpuidle.h>
++#include <asm/sbi.h>
++#include <asm/suspend.h>
++
++#define RISCV_FFH_LPI_TYPE_MASK	GENMASK_ULL(63, 60)
++#define RISCV_FFH_LPI_RSVD_MASK	GENMASK_ULL(59, 32)
++
++#define RISCV_FFH_LPI_TYPE_SBI	BIT_ULL(60)
++
++static int acpi_cpu_init_idle(unsigned int cpu)
 +{
-+	struct sbiret ret;
++	int i;
++	struct acpi_lpi_state *lpi;
++	struct acpi_processor *pr = per_cpu(processors, cpu);
 +
-+	ret = sbi_ecall(SBI_EXT_HSM, SBI_EXT_HSM_HART_SUSPEND,
-+			suspend_type, resume_addr, opaque, 0, 0, 0);
++	if (unlikely(!pr || !pr->flags.has_lpi))
++		return -EINVAL;
 +
-+	return (ret.error) ? sbi_err_map_linux_errno(ret.error) : 0;
-+}
++	if (!is_sbi_hsm_supported())
++		return -ENODEV;
 +
-+int sbi_suspend(u32 state)
-+{
-+	if (state & SBI_HSM_SUSP_NON_RET_BIT)
-+		return cpu_suspend(state, sbi_suspend_finisher);
-+	else
-+		return sbi_suspend_finisher(state, 0, 0);
-+}
++	if (pr->power.count <= 1)
++		return -ENODEV;
 +
-+bool sbi_suspend_state_is_valid(u32 state)
-+{
-+	if (state > SBI_HSM_SUSPEND_RET_DEFAULT &&
-+	    state < SBI_HSM_SUSPEND_RET_PLATFORM)
-+		return false;
-+	if (state > SBI_HSM_SUSPEND_NON_RET_DEFAULT &&
-+	    state < SBI_HSM_SUSPEND_NON_RET_PLATFORM)
-+		return false;
-+	return true;
-+}
++	for (i = 1; i < pr->power.count; i++) {
++		u32 state;
 +
-+bool is_sbi_hsm_supported(void)
-+{
-+	/*
-+	 * The SBI HSM suspend function is only available when:
-+	 * 1) SBI version is 0.3 or higher
-+	 * 2) SBI HSM extension is available
-+	 */
-+	if (sbi_spec_version < sbi_mk_version(0, 3) ||
-+	    !sbi_probe_extension(SBI_EXT_HSM)) {
-+		pr_info("HSM suspend not available\n");
-+		return false;
++		lpi = &pr->power.lpi_states[i];
++
++		/*
++		 * Validate Entry Method as per FFH spec.
++		 * bits[63:60] should be 0x1
++		 * bits[59:32] should be 0x0
++		 * bits[31:0] represent a SBI power_state
++		 */
++		if (((lpi->address & RISCV_FFH_LPI_TYPE_MASK) != RISCV_FFH_LPI_TYPE_SBI) ||
++		    (lpi->address & RISCV_FFH_LPI_RSVD_MASK)) {
++			pr_warn("Invalid LPI entry method %#llx\n", lpi->address);
++			return -EINVAL;
++		}
++
++		state = lpi->address;
++		if (!sbi_suspend_state_is_valid(state)) {
++			pr_warn("Invalid SBI power state %#x\n", state);
++			return -EINVAL;
++		}
 +	}
 +
-+	return true;
++	return 0;
 +}
- #endif /* CONFIG_RISCV_SBI */
-diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidle-riscv-sbi.c
-index e8094fc92491..a7f06242f67b 100644
---- a/drivers/cpuidle/cpuidle-riscv-sbi.c
-+++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
-@@ -73,26 +73,6 @@ static inline bool sbi_is_domain_state_available(void)
- 	return data->available;
- }
- 
--static int sbi_suspend_finisher(unsigned long suspend_type,
--				unsigned long resume_addr,
--				unsigned long opaque)
--{
--	struct sbiret ret;
--
--	ret = sbi_ecall(SBI_EXT_HSM, SBI_EXT_HSM_HART_SUSPEND,
--			suspend_type, resume_addr, opaque, 0, 0, 0);
--
--	return (ret.error) ? sbi_err_map_linux_errno(ret.error) : 0;
--}
--
--static int sbi_suspend(u32 state)
--{
--	if (state & SBI_HSM_SUSP_NON_RET_BIT)
--		return cpu_suspend(state, sbi_suspend_finisher);
--	else
--		return sbi_suspend_finisher(state, 0, 0);
--}
--
- static __cpuidle int sbi_cpuidle_enter_state(struct cpuidle_device *dev,
- 					     struct cpuidle_driver *drv, int idx)
- {
-@@ -206,17 +186,6 @@ static const struct of_device_id sbi_cpuidle_state_match[] = {
- 	{ },
- };
- 
--static bool sbi_suspend_state_is_valid(u32 state)
--{
--	if (state > SBI_HSM_SUSPEND_RET_DEFAULT &&
--	    state < SBI_HSM_SUSPEND_RET_PLATFORM)
--		return false;
--	if (state > SBI_HSM_SUSPEND_NON_RET_DEFAULT &&
--	    state < SBI_HSM_SUSPEND_NON_RET_PLATFORM)
--		return false;
--	return true;
--}
--
- static int sbi_dt_parse_state_node(struct device_node *np, u32 *state)
- {
- 	int err = of_property_read_u32(np, "riscv,sbi-suspend-param", state);
-@@ -607,16 +576,8 @@ static int __init sbi_cpuidle_init(void)
- 	int ret;
- 	struct platform_device *pdev;
- 
--	/*
--	 * The SBI HSM suspend function is only available when:
--	 * 1) SBI version is 0.3 or higher
--	 * 2) SBI HSM extension is available
--	 */
--	if ((sbi_spec_version < sbi_mk_version(0, 3)) ||
--	    !sbi_probe_extension(SBI_EXT_HSM)) {
--		pr_info("HSM suspend not available\n");
-+	if (!is_sbi_hsm_supported())
- 		return 0;
--	}
- 
- 	ret = platform_driver_register(&sbi_cpuidle_driver);
- 	if (ret)
++
++int acpi_processor_ffh_lpi_probe(unsigned int cpu)
++{
++	return acpi_cpu_init_idle(cpu);
++}
++
++int acpi_processor_ffh_lpi_enter(struct acpi_lpi_state *lpi)
++{
++	u32 state = lpi->address;
++
++	if (state & SBI_HSM_SUSP_NON_RET_BIT)
++		return CPU_PM_CPU_IDLE_ENTER_PARAM(sbi_suspend,
++						   lpi->index,
++						   state);
++	else
++		return CPU_PM_CPU_IDLE_ENTER_RETENTION_PARAM(sbi_suspend,
++							     lpi->index,
++							     state);
++}
 -- 
 2.34.1
 
