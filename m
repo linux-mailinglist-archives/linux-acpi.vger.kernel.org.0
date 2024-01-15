@@ -1,117 +1,147 @@
-Return-Path: <linux-acpi+bounces-2853-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2854-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA8782D6ED
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jan 2024 11:12:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C00F82D6F5
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jan 2024 11:14:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7F88B213B1
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jan 2024 10:12:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9E492810C6
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jan 2024 10:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4882BAFA;
-	Mon, 15 Jan 2024 10:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DF4F508;
+	Mon, 15 Jan 2024 10:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="bZKZ5RwK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="egaCaysk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C29D2C689
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Jan 2024 10:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5989407dd3cso1588629eaf.0
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Jan 2024 02:11:22 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678C91E864;
+	Mon, 15 Jan 2024 10:14:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3368abe1093so6644233f8f.2;
+        Mon, 15 Jan 2024 02:14:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1705313481; x=1705918281; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QtA1yi7bJhENd0OSwZZPO3/DRQ+e8frz78vUteV9MTU=;
-        b=bZKZ5RwK6GYmMq55zsZlx2tlAro4s+tYGUdDy1IyT7cxNlm3sg2RcFWucVShUI0mFz
-         7qubWVp+X0/fH7EzXoyzDOMjty36jijZimF7+2pucQzkGxA6suzmJxegpMOKAg7Gqy8G
-         D3FeqFX3vEoAs4NvNoOU9mtl700IW2fOJEYRxYJfEyS39KHC88o59chDKW/Xb2swzdBs
-         QWL9qCxDl25p/mb0GIKiDQb1AEmX7ZzqKB1QD1+gzQkwzDwEgH0ZTvcI/5DeMPTm4CQ4
-         vYO6f9pKWvpp1HXMuQY/+xC2TbLgxyHBVlnV+lBuApnR5d6zVsr+J/wi0BJxceOucuw5
-         k5Ng==
+        d=gmail.com; s=20230601; t=1705313640; x=1705918440; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PWXR+2mvbBN228Uli6F4HdGU1aZEIn1O1c8Uhy166t8=;
+        b=egaCayskyzVRGdZfZ7Cd0K5c5rg5+QDvpW7WvTrxcV5ZUT3RQMdGQxmkV625fbe6FX
+         t+RrOfhmoEe2CP0PmXFCbPS1JgQSnGU668dSRXrWsS9BxApwys/YxRt1IoHXoeLtWKzA
+         a3Swn2naI2Wn9TLsgNobsA8aX1GAQRZFVjqBgWnH3z7LuQmUE0+gRwt1WHQK6+X9BaTR
+         sWs7QpZyfQOGnwdENv2XpucKJFVX4cD8LYxByUOFYPnMG3BU/1GaCBzz5Z6PAMokGJnC
+         eL3cPl8DM9g/wetgMyDLMWsCGW7TvKqpOr52H1/yibk/qruSIHC5x6YckRR2j7DB+0/7
+         OYUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705313481; x=1705918281;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QtA1yi7bJhENd0OSwZZPO3/DRQ+e8frz78vUteV9MTU=;
-        b=RMaone+4s68YmaVP5nSdsU6/xx8h3G8zF5ZRX1l1IuAmHGdAPNt1t3oIzs6x8L6bGH
-         n0faJmUFEZ6bvd0IMyjNEASIsBpDksW6RjrRRAABr6VPBjhrd4OkEN99MJShK8XjHcle
-         MawctxVgADdCAqaMVvEBqWv4r8+hApp8REFBHzR/qe69dfpz5T3sE4b95n2wcRllhVnt
-         vtxL5+SGZ6HUFk9P/oiz1nVAIxsuJJ6rHJbBvG6/evKxfynj1ry3B+OaWS60Iz/2yWHp
-         JTpJjSuVrqzZu5hOocEK5DWkGHbjNbQH0HM7LTWKGuEE8uq2g14+LWNcuzBtDcnoqzOa
-         ze+A==
-X-Gm-Message-State: AOJu0YzATtO1ZGB67Ku93JzO7hFyTkyM6RY4aaedFgnP8vVvBTIPPADJ
-	2mdjp4xh6ESnkWEwoBfg+9YIXye3nuZP/plzng6ubSDjdlaQGw==
-X-Google-Smtp-Source: AGHT+IEKOzlQXK85GuUQTpMoHri2twLXfd45mzkf3PZf+G55H8FBWt+pX+2+cyIqrJVcLKFALAXomQ==
-X-Received: by 2002:a05:6358:7689:b0:175:4f3e:bd4d with SMTP id e9-20020a056358768900b001754f3ebd4dmr2404643rwg.49.1705313481257;
-        Mon, 15 Jan 2024 02:11:21 -0800 (PST)
-Received: from localhost.localdomain ([106.51.188.200])
-        by smtp.gmail.com with ESMTPSA id u5-20020aa78385000000b006d9b8572e77sm7348256pfm.120.2024.01.15.02.11.16
+        d=1e100.net; s=20230601; t=1705313640; x=1705918440;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PWXR+2mvbBN228Uli6F4HdGU1aZEIn1O1c8Uhy166t8=;
+        b=Yd2B3hLMniM/RW0u1LDKToau0/fY9LyzKAmbnd6VuUkcfnKn+G5Wna19FNF8YhJeZR
+         OofJ4rrJi44dxTYfG89ncUzNBupeZopcTjxyea1l60VlNVDx5jE2fvaOsJOynzx+Pllq
+         zd2CKYyzcqUKlrRWDCKJU3Aj6JYokIvNv4xZpc+aVIWfZSDm504w497NjX7JBNx/htnD
+         KNunv6uj/3834NTRhvwBV6fnciHlgOyeoYFkvLjxDyrZ8eA1RfE5FEoL1bHGKf/1xHgj
+         T+RKhU77pFIYs7H50Vj9Lv7BlCxrB7jk5Uh6/WQaMcP5iQXAq0jrWcFr1R65iCTVz5aP
+         7E3g==
+X-Gm-Message-State: AOJu0Yw9K7SK67+jdPz2DKONiPkxuvYSj8rY1z0Xk9t8wyM5kgrcOoDI
+	cRUzWPSmFEXYye/3pPvqHs8=
+X-Google-Smtp-Source: AGHT+IEqHqAHs9gQtzMpaDokP3tC8lGEjxAleC/62PNHo3sw51CPuMCHSFc+B/As4caJabE+riSxsA==
+X-Received: by 2002:a5d:630d:0:b0:337:6001:9ff5 with SMTP id i13-20020a5d630d000000b0033760019ff5mr2635482wru.60.1705313640419;
+        Mon, 15 Jan 2024 02:14:00 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
+        by smtp.gmail.com with ESMTPSA id f1-20020a5d6641000000b0033609584b9dsm11514132wrw.74.2024.01.15.02.13.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jan 2024 02:11:20 -0800 (PST)
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Anup Patel <anup@brainfault.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Conor Dooley <conor@kernel.org>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Atish Kumar Patra <atishp@rivosinc.com>,
-	Pavel Machek <pavel@ucw.cz>,
-	Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH v2 -next 3/3] ACPI: Enable ACPI_PROCESSOR for RISC-V
-Date: Mon, 15 Jan 2024 15:40:56 +0530
-Message-Id: <20240115101056.429471-4-sunilvl@ventanamicro.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240115101056.429471-1-sunilvl@ventanamicro.com>
-References: <20240115101056.429471-1-sunilvl@ventanamicro.com>
+        Mon, 15 Jan 2024 02:14:00 -0800 (PST)
+Message-ID: <137a0efdc57d7c150178d2aad35c2c51d3f82704.camel@gmail.com>
+Subject: Re: [PATCH 09/13] iio: addac: ad74413r: Use __free(fwnode_handle)
+ to replace fwnode_handle_put() calls
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org, "Rafael
+ J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, Heikki
+ Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>
+Cc: Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Cosmin Tanislav
+ <cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
+  Rasmus Villemoes <linux@rasmusvillemoes.dk>, Tomislav Denis
+ <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>,  Olivier Moysan
+ <olivier.moysan@foss.st.com>, Fabrice Gasnier
+ <fabrice.gasnier@foss.st.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
+ <dmitry.baryshkov@linaro.org>, Marijn Suijten
+ <marijn.suijten@somainline.org>,  Marius Cristea
+ <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Date: Mon, 15 Jan 2024 11:17:12 +0100
+In-Reply-To: <20240114172009.179893-10-jic23@kernel.org>
+References: <20240114172009.179893-1-jic23@kernel.org>
+	 <20240114172009.179893-10-jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The ACPI processor driver is not currently enabled for RISC-V.
-This is required to enable CPU related functionalities like
-LPI and CPPC. Hence, enable ACPI_PROCESSOR for RISC-V.
+On Sun, 2024-01-14 at 17:20 +0000, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> This use of the new cleanup.h scope based freeing infrastructure allows
+> us to exit directly from error conditions within the
+> fwnode_for_each_available_child_node(dev, child) loop. On normal exit
+> from that loop no fwnode_handle reference will be held and the child
+> pointer will be NULL thus making the automatically run
+> fwnode_handle_put() a noop.
+>=20
+> Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
 
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
----
- drivers/acpi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Acked-by: Nuno Sa <nuno.sa@analog.com>
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index f819e760ff19..9a920752171c 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -282,7 +282,7 @@ config ACPI_CPPC_LIB
- 
- config ACPI_PROCESSOR
- 	tristate "Processor"
--	depends on X86 || ARM64 || LOONGARCH
-+	depends on X86 || ARM64 || LOONGARCH || RISCV
- 	select ACPI_PROCESSOR_IDLE
- 	select ACPI_CPU_FREQ_PSS if X86 || LOONGARCH
- 	select THERMAL
--- 
-2.34.1
+> =C2=A0drivers/iio/addac/ad74413r.c | 9 ++-------
+> =C2=A01 file changed, 2 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+> index 7af3e4b8fe3b..ec9a466e118d 100644
+> --- a/drivers/iio/addac/ad74413r.c
+> +++ b/drivers/iio/addac/ad74413r.c
+> @@ -1255,21 +1255,16 @@ static int ad74413r_parse_channel_config(struct
+> iio_dev *indio_dev,
+> =C2=A0static int ad74413r_parse_channel_configs(struct iio_dev *indio_dev=
+)
+> =C2=A0{
+> =C2=A0	struct ad74413r_state *st =3D iio_priv(indio_dev);
+> -	struct fwnode_handle *channel_node =3D NULL;
+> +	struct fwnode_handle *channel_node __free(fwnode_handle) =3D NULL;
+> =C2=A0	int ret;
+> =C2=A0
+> =C2=A0	fwnode_for_each_available_child_node(dev_fwnode(st->dev),
+> channel_node) {
+> =C2=A0		ret =3D ad74413r_parse_channel_config(indio_dev, channel_node);
+> =C2=A0		if (ret)
+> -			goto put_channel_node;
+> +			return ret;
+> =C2=A0	}
+> =C2=A0
+> =C2=A0	return 0;
+> -
+> -put_channel_node:
+> -	fwnode_handle_put(channel_node);
+> -
+> -	return ret;
+> =C2=A0}
+> =C2=A0
+> =C2=A0static int ad74413r_setup_channels(struct iio_dev *indio_dev)
 
 
