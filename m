@@ -1,112 +1,113 @@
-Return-Path: <linux-acpi+bounces-2901-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2902-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7879B82E55D
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 01:39:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A7D82EEBA
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 13:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 087A7B223C9
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 00:39:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32F64B23995
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 12:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4372BB09;
-	Tue, 16 Jan 2024 00:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rqF5qx2D"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB36D1B967;
+	Tue, 16 Jan 2024 12:09:43 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDFB2BAFE;
-	Tue, 16 Jan 2024 00:15:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D28C43390;
-	Tue, 16 Jan 2024 00:15:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705364133;
-	bh=tWI2GLcwYJRMoLXZ+UC1Idh5hEZcoVtlUrmm3aWZ1vs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rqF5qx2DY7atRPBJjLO2hkpxP46yOTEdbB1sxaeEXG2hMG13LDIdMeG0+Df8eqqHm
-	 pgm1Y4x7Z/ml6tpj+KjQFaYu8M1hPe2///ujFDn62yaIREkzMYl5zOrcGFxkSHGL3L
-	 Nqn0wxV2AssTYLpRU3wEFu+VHuIBwZKW6zFR/z/iPybbCjjeBJub0eXNz/c3hpcVn+
-	 4fd0WPeiMfz1oi6j+miIO1I0suNctPRw0YjBjMRR9AF/QGgH7lFV3OGMBx9vDwESLT
-	 q8OZlAm/aOX9lW3TWv0u0HsL7M+KQ/Hgnu8ivsfpIMXe8/Ia0WQ7piSrKuvdI0Veoi
-	 VGdOMCDZUKe6A==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Prarit Bhargava <prarit@redhat.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 4/5] ACPI: extlog: fix NULL pointer dereference check
-Date: Mon, 15 Jan 2024 19:15:24 -0500
-Message-ID: <20240116001526.214354-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240116001526.214354-1-sashal@kernel.org>
-References: <20240116001526.214354-1-sashal@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCD31BC20;
+	Tue, 16 Jan 2024 12:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-204b216e4easo2140979fac.1;
+        Tue, 16 Jan 2024 04:09:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705406981; x=1706011781;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lURx4EVsPbFSOQIiob3lxt3SbzdMQVY25MX0SZLU7b4=;
+        b=BeYHSJaXjETyz0JGhpeaeGxh0thyhLYyX7kcSvoa5QuOR+fHLVIHGyG327K8lIBQlw
+         6HvPDoQWU0tfAFdWH4rRwfzrOdsDgp132YiTzpkKjQtaHrIWuGQ+Pod7gqsAkZp4FZmg
+         He1tRDs7adqG6m0OGZ1tLCoXUr8ICXlVsOHANznohT6wCNZaM+VfHbnLMriHgmf9R6d0
+         iOSBZZxNAAhe7I6Amme7pHjQPotM79PvKjmlE6m7VhOlXLQUc0hbD0EhLpv0IQGBH+yd
+         b7ZP0DLZgEr5DHUVlM/+3rO0RZ/2wtZkHzR/g0Ec/fmvlzGkxflo1J6jzgdJWkkIUOAa
+         aGbg==
+X-Gm-Message-State: AOJu0Yye0LMFCayADjYenD0vcf5R5LKoyd1mEg5SS/ps5O/BISrhN3pk
+	6GLd4tBPWo6P1IEgZmAy1E1EV10YVdABQ5ePR5EFxzcyQRI=
+X-Google-Smtp-Source: AGHT+IGQga0Tb68FRQF8wnULqbw67V+zoqJKfum3lp23NuJMvBjmrrmKN/1qAwULnpz53MU/inKa6e7ONIdn5YGkzLk=
+X-Received: by 2002:a4a:9d19:0:b0:598:94b1:1658 with SMTP id
+ w25-20020a4a9d19000000b0059894b11658mr9646366ooj.1.1705406981570; Tue, 16 Jan
+ 2024 04:09:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.305
-Content-Transfer-Encoding: 8bit
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 16 Jan 2024 13:09:30 +0100
+Message-ID: <CAJZ5v0iL9F8o5_QXv+Ki5cHmk74ofQ2PwKOtJjJQoOWEGpOGWA@mail.gmail.com>
+Subject: [GIT PULL] More ACPI updates for v6.8-rc1
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Prarit Bhargava <prarit@redhat.com>
+Hi Linus,
 
-[ Upstream commit 72d9b9747e78979510e9aafdd32eb99c7aa30dd1 ]
+Please pull from the tag
 
-The gcc plugin -fanalyzer [1] tries to detect various
-patterns of incorrect behaviour.  The tool reports:
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.8-rc1-2
 
-drivers/acpi/acpi_extlog.c: In function ‘extlog_exit’:
-drivers/acpi/acpi_extlog.c:307:12: warning: check of ‘extlog_l1_addr’ for NULL after already dereferencing it [-Wanalyzer-deref-before-check]
-    |
-    |  306 |         ((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
-    |      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
-    |      |                                                  |
-    |      |                                                  (1) pointer ‘extlog_l1_addr’ is dereferenced here
-    |  307 |         if (extlog_l1_addr)
-    |      |            ~
-    |      |            |
-    |      |            (2) pointer ‘extlog_l1_addr’ is checked for NULL here but it was already dereferenced at (1)
-    |
+with top-most commit 5b5268cd49d233f03a5cfb1108dcd38bcb83f6d1
 
-Fix the NULL pointer dereference check in extlog_exit().
+ Merge branches 'pnp', 'acpi-resource' and 'acpica'
 
-Link: https://gcc.gnu.org/onlinedocs/gcc-10.1.0/gcc/Static-Analyzer-Options.html # [1]
+on top of commit 7da71072e1d6967c0482abcbb5991ffb5953fdf2
 
-Signed-off-by: Prarit Bhargava <prarit@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/acpi_extlog.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ Merge tag 'pm-6.8-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
 
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index e05309bc41cc..e148b0a28ec9 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -317,9 +317,10 @@ static void __exit extlog_exit(void)
- {
- 	edac_set_report_status(old_edac_report_status);
- 	mce_unregister_decode_chain(&extlog_mce_dec);
--	((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
--	if (extlog_l1_addr)
-+	if (extlog_l1_addr) {
-+		((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
- 		acpi_os_unmap_iomem(extlog_l1_addr, l1_size);
-+	}
- 	if (elog_addr)
- 		acpi_os_unmap_iomem(elog_addr, elog_size);
- 	release_mem_region(elog_base, elog_size);
--- 
-2.43.0
+to receive more ACPI updates for 6.8-rc1.
 
+These add support for new MADT flags to ACPICA, constify the PNP bus
+type structure and add new ACPI IRQ management quirks.
+
+Specifics:
+
+ - Make pnp_bus_type const (Greg Kroah-Hartman).
+
+ - Add ACPI IRQ management quirks for ASUS ExpertBook B1502CGA and ASUS
+   Vivobook E1504GA and E1504GAB (Ben Mayo, Michael Maltsev).
+
+ - Add new MADT GICC/GICR/ITS non-coherent flags and GICC online capable
+   bit handling to ACPICA (Lorenzo Pieralisi).
+
+Thanks!
+
+
+---------------
+
+Ben Mayo (1):
+      ACPI: resource: Add DMI quirks for ASUS Vivobook E1504GA and E1504GAB
+
+Greg Kroah-Hartman (1):
+      PNP: make pnp_bus_type const
+
+Lorenzo Pieralisi (2):
+      ACPICA: MADT: Add GICC online capable bit handling
+      ACPICA: MADT: Add new MADT GICC/GICR/ITS non-coherent flags handling
+
+Michael Maltsev (1):
+      ACPI: resource: Skip IRQ override on ASUS ExpertBook B1502CGA
+
+---------------
+
+ drivers/acpi/resource.c | 21 +++++++++++++++++++++
+ drivers/pnp/driver.c    |  2 +-
+ include/acpi/actbl2.h   | 12 ++++++++++--
+ include/linux/pnp.h     |  2 +-
+ 4 files changed, 33 insertions(+), 4 deletions(-)
 
