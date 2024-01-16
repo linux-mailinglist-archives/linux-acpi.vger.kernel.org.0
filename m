@@ -1,337 +1,368 @@
-Return-Path: <linux-acpi+bounces-2903-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2904-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 731C582F04D
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 15:11:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B2882F093
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 15:35:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7686E1C23432
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 14:11:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B9A81F23ED1
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 14:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4E91BDEB;
-	Tue, 16 Jan 2024 14:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3191805E;
+	Tue, 16 Jan 2024 14:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TuR9v4gA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B061BDE1;
-	Tue, 16 Jan 2024 14:11:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE7952F4;
-	Tue, 16 Jan 2024 06:11:45 -0800 (PST)
-Received: from e129154.nice.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BD6A53F5A1;
-	Tue, 16 Jan 2024 06:10:53 -0800 (PST)
-Date: Tue, 16 Jan 2024 15:10:11 +0100
-From: Beata Michalska <beata.michalska@arm.com>
-To: "lihuisong (C)" <lihuisong@huawei.com>
-Cc: Ionela Voinescu <ionela.voinescu@arm.com>,
-	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
-	sumitg@nvidia.com, zengheng4@huawei.com,
-	yang@os.amperecomputing.com, will@kernel.org, sudeep.holla@arm.com,
-	liuyonglong@huawei.com, zhanjie9@hisilicon.com,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH] cpufreq: CPPC: Resolve the large frequency discrepancy
- from cpuinfo_cur_freq
-Message-ID: <ZaaOQzCpBjmW71xf@e129154.nice.arm.com>
-References: <20231212072617.14756-1-lihuisong@huawei.com>
- <ZZWfJOsDlEXWYHA5@arm.com>
- <9428a1ed-ba4d-1fe6-63e8-11e152bf1f09@huawei.com>
- <lnocwcitdbmgcyhd2dlczgdlhtfw4pfot2br2i3hqscnvr3xgq@nuxlauxum3nr>
- <d0f47e9d-6a58-8b46-89be-b3182abb69f0@huawei.com>
- <ZZwAmqp6hcmMF8aN@arm.com>
- <6505bdcb-5a5f-cba6-483b-75c51414a9c6@huawei.com>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347E5EADF;
+	Tue, 16 Jan 2024 14:35:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C982C433B2;
+	Tue, 16 Jan 2024 14:35:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705415710;
+	bh=zaijGVATmy6GzChHiiK8uSOo+YHOgSEKUtwLiX427Fg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=TuR9v4gAJ3BdvTrCIO1Gwm1YdvK2IK2MYf5qjlOdra7K3hhCZuY4L0nO9aOXaD0Ev
+	 jSB7ThFlG9PenmRKCX1uArnaAHc/30P6YOHq3A/DtLWj99Ki4GygKfJInlAa8FM9ie
+	 zgSkSnRlgakLrBegiyneYGlPETKDpc4+1hT9ITicxyticqd2HuMLOFkXqMspRor/Oc
+	 N+AUAu3AvMPb68BeU+6d9JZcS85gFF16aLsczmyvnR7Xx3EejwuuQgHeY8+wrnlRtu
+	 0sLrjTmk1/gqk/MCSrq9JXbOP0GuZk5Gs6ZoztFAFg5/r1S4Hct3Rk0rEW/Rqz8K9S
+	 cRpXwhX7/ZpWA==
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2cd46e7ae8fso109517401fa.1;
+        Tue, 16 Jan 2024 06:35:10 -0800 (PST)
+X-Gm-Message-State: AOJu0YysURows66dWDTnvQK0XbJzorC59OhyyNrNdFU6dsfIQlyTzM55
+	rP93JWAbNyPRgRWRorbedwKSMnPUnag5eYp78g8=
+X-Google-Smtp-Source: AGHT+IHFIyuoq5L7mzPqeE6kVupTlFwQ1uP+ufGn0cV0oNciVMUk2jSy25h1vh0L4Uq0cPUXFourXmrMR+lNwNj9VRI=
+X-Received: by 2002:a05:651c:150f:b0:2cd:e256:5db2 with SMTP id
+ e15-20020a05651c150f00b002cde2565db2mr340814ljf.110.1705415708662; Tue, 16
+ Jan 2024 06:35:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6505bdcb-5a5f-cba6-483b-75c51414a9c6@huawei.com>
+References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
+ <BN9PR11MB5483FF3039913334C7EA83E1E6AEA@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAMj1kXFG92NpL7T7YocOup0xLKyopt3MnSCp0RL8cLzozzJz7A@mail.gmail.com>
+ <BN9PR11MB548303B09536EB1577472029E6B3A@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAPnjgZ36t8g7E=0MSJyaV8-QKv9RVYe47Jd5E=NU-mFM4LWBQA@mail.gmail.com>
+ <CAMj1kXHAEeK7x2f13k_JV3Xcw61nNLasyvXQf+mKwKekQ48EpQ@mail.gmail.com>
+ <BN9PR11MB548334E0DA6495C438FBFDE1E6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <BN9PR11MB548314DDE8D4C9503103D51CE6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAMj1kXHbM+ArLgNZgnmiok4gOfv6QLYxzyB9OCwfhEkJ2xGK_g@mail.gmail.com>
+ <BN9PR11MB5483C2FBCD07DE61DCCDB523E6BCA@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAMj1kXHmu=ykgBMRiFqG4_ra3FJtHa=GASoMUJswdMFa9v4Xgw@mail.gmail.com>
+ <BN9PR11MB54837EEB391CC2A8FA6C0BF5E695A@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAMj1kXEQL9n1Adedow5KEyZ5gdFQY3Fn+Fz8vSK3mHib_vDFig@mail.gmail.com>
+ <BN9PR11MB5483E191F1906641565A1337E694A@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAMj1kXGcZP99hyURXFAZfwKmYqj-xBN9BcW7R3h9Mm2k937Buw@mail.gmail.com>
+ <BN9PR11MB548370E8181B1BB3C6FB9A20E667A@BN9PR11MB5483.namprd11.prod.outlook.com>
+ <CAMj1kXH9z0fvWc5UgzDQ=HfYKkh=YudjL-yoZwKX93baiMgZ8w@mail.gmail.com> <BN9PR11MB5483D8D09B86CF3F92A20D3AE6672@BN9PR11MB5483.namprd11.prod.outlook.com>
+In-Reply-To: <BN9PR11MB5483D8D09B86CF3F92A20D3AE6672@BN9PR11MB5483.namprd11.prod.outlook.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 16 Jan 2024 15:34:57 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGNdheZ97JNhBc53VNoajPA=4iPn=KkWf6DZ36td2d8aA@mail.gmail.com>
+Message-ID: <CAMj1kXGNdheZ97JNhBc53VNoajPA=4iPn=KkWf6DZ36td2d8aA@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
+To: "Chiu, Chasel" <chasel.chiu@intel.com>
+Cc: Simon Glass <sjg@chromium.org>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rob Herring <robh@kernel.org>, "Tan, Lean Sheng" <sheng.tan@9elements.com>, 
+	lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, 
+	"Brune, Maximilian" <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
+	"Dong, Guo" <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, 
+	ron minnich <rminnich@gmail.com>, "Guo, Gua" <gua.guo@intel.com>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, U-Boot Mailing List <u-boot@lists.denx.de>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+On Thu, 4 Jan 2024 at 18:53, Chiu, Chasel <chasel.chiu@intel.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Ard Biesheuvel <ardb@kernel.org>
+> > Sent: Thursday, January 4, 2024 12:43 AM
+> > To: Chiu, Chasel <chasel.chiu@intel.com>
+> > Cc: Simon Glass <sjg@chromium.org>; devicetree@vger.kernel.org; Mark Rutland
+> > <mark.rutland@arm.com>; Rob Herring <robh@kernel.org>; Tan, Lean Sheng
+> > <sheng.tan@9elements.com>; lkml <linux-kernel@vger.kernel.org>; Dhaval
+> > Sharma <dhaval@rivosinc.com>; Brune, Maximilian
+> > <maximilian.brune@9elements.com>; Yunhui Cui <cuiyunhui@bytedance.com>;
+> > Dong, Guo <guo.dong@intel.com>; Tom Rini <trini@konsulko.com>; ron minnich
+> > <rminnich@gmail.com>; Guo, Gua <gua.guo@intel.com>; linux-
+> > acpi@vger.kernel.org; U-Boot Mailing List <u-boot@lists.denx.de>
+> > Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory
+> > usages
+> >
+> > On Thu, 4 Jan 2024 at 01:25, Chiu, Chasel <chasel.chiu@intel.com> wrote:
+> > >
+> > >
+> > >
+> > > > -----Original Message-----
+> > > > From: Ard Biesheuvel <ardb@kernel.org>
+> > > > Sent: Wednesday, January 3, 2024 7:22 AM
+> > > > To: Chiu, Chasel <chasel.chiu@intel.com>
+> > > > Cc: Simon Glass <sjg@chromium.org>; devicetree@vger.kernel.org; Mark
+> > > > Rutland <mark.rutland@arm.com>; Rob Herring <robh@kernel.org>; Tan,
+> > > > Lean Sheng <sheng.tan@9elements.com>; lkml
+> > > > <linux-kernel@vger.kernel.org>; Dhaval Sharma <dhaval@rivosinc.com>;
+> > > > Brune, Maximilian <maximilian.brune@9elements.com>; Yunhui Cui
+> > > > <cuiyunhui@bytedance.com>; Dong, Guo <guo.dong@intel.com>; Tom Rini
+> > > > <trini@konsulko.com>; ron minnich <rminnich@gmail.com>; Guo, Gua
+> > > > <gua.guo@intel.com>; linux- acpi@vger.kernel.org; U-Boot Mailing
+> > > > List <u-boot@lists.denx.de>
+> > > > Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory
+> > > > usages
+> > > >
+> > > > On Fri, 22 Dec 2023 at 20:52, Chiu, Chasel <chasel.chiu@intel.com> wrote:
+> > > > >
+> > > > >
+> > > > > Please see my reply below inline.
+> > > > >
+> > > > > Thanks,
+> > > > > Chasel
+> > > > >
+> > > > ...
+> > > > > > > > The gEfiMemoryTypeInformationGuid HOB typically carries
+> > > > > > > > platform defaults, and the actual memory type information is
+> > > > > > > > kept in a non-volatile EFI variable, which gets updated when
+> > > > > > > > the memory usage changes. Is this different for UefiPayloadPkg?
+> > > > > > > >
+> > > > > > > > (For those among the cc'ees less versed in EFI/EDK2: when
+> > > > > > > > you get the 'config changed -rebooting' message from the
+> > > > > > > > boot firmware, it typically means that this memory type
+> > > > > > > > table has changed, and a reboot is necessary.)
+> > > > > > > >
+> > > > > > > > So the platform init needs to read this variable, or get the
+> > > > > > > > information in a different way. I assume it is the payload,
+> > > > > > > > not the platform init that updates the variable when
+> > > > > > > > necessary. This means the information flows from payload(n)
+> > > > > > > > to platform init(n+1), where n is a monotonic index tracking
+> > > > > > > > consecutive boots of the
+> > > > system.
+> > > > > > > >
+> > > > > > > > Can you explain how the DT fits into this? How are the
+> > > > > > > > runtime-code and runtime-data memory reservation nodes under
+> > > > > > > > /reserved-memory used to implement this information exchange
+> > > > > > > > between platform init and payload? And how do the HOB and
+> > > > > > > > the EFI
+> > > > variable fit into this picture?
+> > > > > > >
+> > > > > > >
+> > > > > > > 1. With some offline discussion, we would move
+> > > > > > > gEfiMemoryTypeInformationGuid usage to FDT->upl-custom node.
+> > > > > > > This is because it is edk2 implementation choice and non-edk2
+> > > > > > > PlatformInit or Payload may not have such memory optimization
+> > > > > > > implementation. (not a generic usage/requirement for
+> > > > > > > PlatformInit and Payload)
+> > > > > > >
+> > > > > > > The edk2 example flow will be like below:
+> > > > > > >
+> > > > > > > PlatformInit to GetVariable of gEfiMemoryTypeInformationGuid
+> > > > > > > and create Hob-
+> > > > > > >
+> > > > > > >   PlatformInit to initialize FDT->upl-custom node to report
+> > > > > > gEfiMemoryTypeInformationGuid HOB information ->
+> > > > > > >     UefiPayload entry to re-create
+> > > > > > > gEfiMemoryTypeInformationGuid HOB basing
+> > > > > > on FDT input (instead of the default MemoryType inside
+> > > > > > UefiPayload)
+> > > > > > ->
+> > > > > > >       UefiPayload DxeMain/Gcd will consume
+> > > > > > > gEfiMemoryTypeInformationGuid
+> > > > > > Hob for memory type information ->
+> > > > > > >         UefiPayload to initialize UEFI environment (mainly DXE dispatcher) -
+> > >
+> > > > > > >           (additional FV binary appended to common UefiPayload
+> > > > > > > binary)
+> > > > > > PlatformPayload to provide VariableService which is platform
+> > > > > > specific ->
+> > > > > > >             UefiPayload UefiBootManager will SetVariable if
+> > > > > > > memory type change
+> > > > > > needed and request a warm reset ->
+> > > > > > >               Back to PlatformInit ...
+> > > > > > >
+> > > > > >
+> > > > > > OK so the upl-custom node can do whatever it needs to. I imagine
+> > > > > > these will include the memory descriptor attribute field, and
+> > > > > > other parts that may be missing from the /reserved-memory DT node
+> > specification?
+> > > > >
+> > > > >
+> > > > > Yes, if needed by edk2 specific implementation, not generic
+> > > > > enough, we may
+> > > > consider to use upl-custom node to pass those data.
+> > > > >
+> > > > >
+> > > > > >
+> > > > > > >
+> > > > > > > 2. Now the proposed reserved-memory node usages will be for
+> > > > > > > PlatformInit to
+> > > > > > provide data which may be used by Payload or OS. This is not
+> > > > > > edk2 specific and any PlatformInit/Payload could have same support.
+> > > > > > > Note: all of below are optional and PlatformInit may choose to
+> > > > > > > implement some
+> > > > > > of them or not.
+> > > > > > >
+> > > > > > >       - acpi
+> > > > > > > If PlatformInit created some ACPI tables, this will report a
+> > > > > > > memory region which
+> > > > > > contains all the tables to Payload and Payload may base on this
+> > > > > > to add some more tables if required.
+> > > > > > >
+> > > > > > >       - acpi-nvs
+> > > > > > > If PlatformInit has created some ACPI tables which having ACPI
+> > > > > > > NVS memory
+> > > > > > dependency, this will be that nvs region.
+> > > > > > >
+> > > > > >
+> > > > > > These make sense.
+> > > > > >
+> > > > > > >       - boot-code
+> > > > > > > When PlatformInit having some FW boot phase code that could be
+> > > > > > > freed for OS to use when payload transferring control to UEFI
+> > > > > > > OS
+> > > > > > >
+> > > > > > >       - boot-data
+> > > > > > > When PlatformInit having some FW boot phase data that could be
+> > > > > > > freed for OS
+> > > > > > to use when payload transferring control to UEFI OS.
+> > > > > > >
+> > > > > > >       - runtime-code
+> > > > > > > PlatformInit may provide some services code that can be used
+> > > > > > > for Payload to
+> > > > > > initialize UEFI Runtime Services for supporting UEFI OS.
+> > > > > > >
+> > > > > > >       - runtime-data
+> > > > > > > PlatformInit may provide some services data that can be used
+> > > > > > > for Payload to
+> > > > > > Initialize UEFI Runtime Services for supporting UEFI OS.
+> > > > > > >
+> > > > > >
+> > > > > > A UEFI OS must consume this information from the UEFI memory
+> > > > > > map, not from the /reserved-memory nodes. So these nodes must
+> > > > > > either not be visible to the OS at all, or carry an annotation
+> > > > > > that the OS must ignore
+> > > > them.
+> > > > > >
+> > > > > > Would it be possible to include a restriction in the DT schema
+> > > > > > that these are only valid in the firmware boot phase?
+> > > > >
+> > > > >
+> > > > > https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#ef
+> > > > > i-bo ot-services-exitbootservices Per UEFI specification, UEFI OS
+> > > > > will always call UEFI GetMemoryMap function to retrieve memory
+> > > > > map, so FDT
+> > > > node present or not does not matter to UEFI OS. We probably could
+> > > > have annotation in UPL specification to emphasize this.
+> > > > > I'm not familiar with Linux FDT boot, but if non-UEFI OS does not
+> > > > > call UEFI
+> > > > GetMemoryMap() and does not know what is runtime-code/data, boot-
+> > > > code/data, it might just treat such reserved-memory nodes as
+> > > > 'regular' reserved memory nodes, and that's still ok because
+> > > > non-UEFI OS will not call to any runtime service or re-purpose boot-code/data
+> > memory regions.
+> > > > >
+> > > >
+> > > > You are saying the same thing but in a different way. A UEFI OS must
+> > > > only rely on GetMemoryMap(), and not on the /reserved-memory node to
+> > > > obtain this information. But this requirement needs to be stated
+> > > > somewhere: the UEFI spec does not reason about other sources of EFI
+> > > > memory information at all, and this DT schema does not mention any of this
+> > either.
+> > > >
+> > > > > Would you provide a real OS case which will be impacted by this
+> > > > > reserved-
+> > > > memory schema so we can discuss basing on real case?
+> > > > >
+> > > >
+> > > > Funny, that is what I have been trying to get from you :-)
+> > > >
+> > > > The problem I am anticipating here is that the information in
+> > > > /reserved-memory may be out of sync with the EFI memory map. It
+> > > > needs to be made clear that the EFI memory map is the only source of
+> > > > truth when the OS is involved, and this /reserved-memory mechanism
+> > > > should only be used by other firmware stages. But the schema does
+> > > > not mention this at all. The schema also does not mention that the
+> > > > information in /reserved-memory is not actually sufficient to
+> > > > reconstruct the EFI memory map that the firmware payload expects
+> > > > (which is why the upl- custom-node exists too)
+> > >
+> > >
+> > >
+> > > Does below solve your concerns if we mention those in schema
+> > > description? (please feel free to add more if you have) . boot-code/boot-data
+> > and runtime-code/runtime-data usages are following UEFI specification
+> > >   . before ExitBootServices:
+> > https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#memory-
+> > type-usage-before-exitbootservices
+> > >   . after ExitBootServices:
+> > > https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#memory
+> > > -type-usage-after-exitbootservices
+> > > . These usages do not intend to construct full UEFI memory map, it is only for
+> > PlatformInit to pass pre-installed tables or services to Payload for supporting UEFI
+> > OS boot.
+> > > . These usages are optional
+> > > . Typically UEFI OS boot will always call GetMemoryMap() to retrieve
+> > > memory map following UEFI spec, no matter DT nodes present or not
+> > > (https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#efi-b
+> > > oot-services-exitbootservices) . Typically Non-UEFI OS boot will treat
+> > > those  boot* or runtime* reserved-memory as 'regular' reserved memory if
+> > present.
+> > >
+> >
+> > This already helps quite a lot, thanks.
+> >
+> > But why should a non-UEFI OS be required to keep boot* or runtime* regions
+> > reserved? The firmware stage that boots the OS knows whether it is performing
+> > an UEFI boot or a non-UEFI boot, and it should only present the information that
+> > goes along with that. The OS should never have to worry about reconciling two
+> > sources of truth.
+> >
+> > And to Rob's point about boot / runtime being ill-defined: I would argue that
+> > 'runtime' quite clearly implies 'under the OS', and so UEFI
+> > runtime* reservations are assumed to always be relevant to UEFI OSes.
+> >
+> > I think there is a fundamental difference of opinion here, where the position of
+> > the firmware developers is that the DT should be the same across all boot stages,
+> > while my position reasoning from the OS side is that the OS should be able to
+> > observe only the abstractions that are part of the contract between firmware and
+> > OS.
+>
+> I agree that boot* and runtime* can be utilized by non-UEFI OS too, we are just reusing existing definitions from UEFI spec.
+>   . boot-code/boot-data: firmware stage code/data that can be freed after firmware stage ending so OS will have more usable memory.
+>   . runtime-code/runtime-data: firmware stage code/data that are intended to be utilized by OS stage.
+> Non-UEFI OS still can implement/support boot* or runtime* memory if they want, and the runtime service can be 'non-UEFI' runtime service too as long as OS/FW aligning each other.
 
-Apologies for jumping in so late....
+No, I disagree here, and this is the core of the issue IMO. Boot data
+and runtime data are tied to UEFI boot. A non-UEFI OS must either keep
+these regions reserved and not use them at all, or disregard the
+reservation and use them as ordinary memory.
 
-On Wed, Jan 10, 2024 at 03:09:48PM +0800, lihuisong (C) wrote:
-> Hi Ionela,
-> 
-> 在 2024/1/8 22:03, Ionela Voinescu 写道:
-> > Hi,
-> > 
-> > On Friday 05 Jan 2024 at 15:04:47 (+0800), lihuisong (C) wrote:
-> > > Hi Vanshi,
-> > > 
-> > > 在 2024/1/5 8:48, Vanshidhar Konda 写道:
-> > > > On Thu, Jan 04, 2024 at 05:36:51PM +0800, lihuisong (C) wrote:
-> > > > > 在 2024/1/4 1:53, Ionela Voinescu 写道:
-> > > > > > Hi,
-> > > > > > 
-> > > > > > On Tuesday 12 Dec 2023 at 15:26:17 (+0800), Huisong Li wrote:
-> > > > > > > Many developers found that the cpu current frequency is greater than
-> > > > > > > the maximum frequency of the platform, please see [1], [2] and [3].
-> > > > > > > 
-> > > > > > > In the scenarios with high memory access pressure, the patch [1] has
-> > > > > > > proved the significant latency of cpc_read() which is used to obtain
-> > > > > > > delivered and reference performance counter cause an absurd frequency.
-> > > > > > > The sampling interval for this counters is very critical and
-> > > > > > > is expected
-> > > > > > > to be equal. However, the different latency of cpc_read() has a direct
-> > > > > > > impact on their sampling interval.
-> > > > > > > 
-> > > > > > Would this [1] alternative solution work for you?
-> > > > > It would work for me AFAICS.
-> > > > > Because the "arch_freq_scale" is also from AMU core and constant
-> > > > > counter, and read together.
-> > > > > But, from their discuss line, it seems that there are some tricky
-> > > > > points to clarify or consider.
-> > > > I think the changes in [1] would work better when CPUs may be idle. With
-> > > > this
-> > > > patch we would have to wake any core that is in idle state to read the
-> > > > AMU
-> > > > counters. Worst case, if core 0 is trying to read the CPU frequency of
-> > > > all
-> > > > cores, it may need to wake up all the other cores to read the AMU
-> > > > counters.
-> > >  From the approach in [1], if all CPUs (one or more cores) under one policy
-> > > are idle, they still cannot be obtained the CPU frequency, right?
-> > > In this case, the [1] API will return 0 and have to back to call
-> > > cpufreq_driver->get() for cpuinfo_cur_freq.
-> > > Then we still need to face the issue this patch mentioned.
-> > With the implementation at [1], arch_freq_get_on_cpu() will not return 0
-> > for idle CPUs and the get() callback will not be called to wake up the
-> > CPUs.
-> Right, arch_freq_get_on_cpu() will not return 0 for idle CPUs.
-> However, for no-housekeeping CPUs, it will return 0 and have to call get()
-> callback, right?
-> > 
-> > Worst case, arch_freq_get_on_cpu() will return a frequency based on the
-> > AMU counter values obtained on the last tick on that CPU. But if that CPU
-> > is not a housekeeping CPU, a housekeeping CPU in the same policy will be
-> > selected, as it would have had a more recent tick, and therefore a more
-> > recent frequency value for the domain.
-> But this frequency is from the last tick,
-> this last tick is probably a long time ago and it doesn't update
-> 'arch_freq_scale' for some reasons like CPU dile.
-> In addition, I'm not sure if there is possible that amu_scale_freq_tick() is
-> executed delayed under high stress case.
-> It also have an impact on the accuracy of the cpu frequency we query.
-> > 
-> > I understand that the frequency returned here will not be up to date,
-> > but there's no proper frequency feedback for an idle CPU. If one only
-> > wakes up a CPU to sample counters, before the CPU goes back to sleep,
-> > the obtained frequency feedback is meaningless.
-> > 
-> > > > For systems with 128 cores or more, this could be very expensive and
-> > > > happen
-> > > > very frequently.
-> > > > 
-> > > > AFAICS, the approach in [1] would avoid this cost.
-> > > But the CPU frequency is just an average value for the last tick period
-> > > instead of the current one the CPU actually runs at.
-> > > In addition, there are some conditions to use 'arch_freq_scale' in this
-> > > approach.
-> > What are the conditions you are referring to?
-> It depends on the housekeeping CPUs.
-> > 
-> > > So I'm not sure if this approach can entirely cover the frequency
-> > > discrepancy issue.
-> > Unfortunately there is no perfect frequency feedback. By the time you
-> > observe/use the value of scaling_cur_freq/cpuinfo_cur_freq, the frequency
-> > of the CPU might have already changed. Therefore, an average value might
-> > be a better indication of the recent performance level of a CPU.
-> An average value for CPU frequency is ok. It may be better if it has not any
-> delaying.
-> 
-> The original implementation for cpuinfo_cur_freq can more reflect their
-> meaning in the user-guide [1]. The user-guide said:
-> "cpuinfo_cur_freq : Current frequency of the CPU as obtained from the
-> hardware, in KHz.
-> This is the frequency the CPU actually runs at."
-> 
-> 
-> [1]https://www.kernel.org/doc/Documentation/cpu-freq/user-guide.txt
-> 
-> > 
-> > Would you be able to test [1] on your platform and usecase?
-> I has tested it on my platform (CPU number: 64, SMT: off and CPU base
-> frequency: 2.7GHz).
-> Accoding to the testing result,
-> 1> I found that patch [1] and [2] cannot cover the no housekeeping CPUs.
-> They still have to face the large frequency discrepancy issue my patch
-> mentioned.
-> 2> Additionally, the frequency value of all CPUs are almost the same by
-> using the 'arch_freq_scale' factor way. I'm not sure if it is ok.
-> 
-> The patch [1] has been modified silightly as below:
-> -->
-> @@ -1756,7 +1756,10 @@ static unsigned int
-> cpufreq_verify_current_freq(struct cpufreq_policy *policy, b
->  {
->         unsigned int new_freq;
-> 
-> -       new_freq = cpufreq_driver->get(policy->cpu);
-> +       new_freq = arch_freq_get_on_cpu(policy->cpu);
-> +       if (!new_freq)
-> +               new_freq = cpufreq_driver->get(policy->cpu);
-> +
-As pointed out this change will not make it to the next version of the patch.
-So I'd say you can safely ignore it and assume that arch_freq_get_on_cpu will
-only be wired for sysfs nodes for scaling_cur_freq/cpuinfo_cur_freq
->         if (!new_freq)
->                 return 0;
-> 
-> And the result is as follows:
-> *case 1:**No setting the nohz_full and cpufreq use performance governor*
-> *--> Step1: *read 'cpuinfo_cur_freq' in no pressure
->   0: 2699264     2: 2699264     4: 2699264     6: 2699264
->   8: 2696628    10: 2696628    12: 2696628    14: 2699264
->  16: 2699264    18: 2696628    20: 2699264    22: 2696628
->  24: 2699264    26: 2696628    28: 2699264    30: 2696628
->  32: 2696628    34: 2696628    36: 2696628    38: 2696628
->  40: 2699264    42: 2699264    44: 2696628    46: 2696628
->  48: 2696628    50: 2699264    52: 2699264    54: 2696628
->  56: 2696628    58: 2696628    60: 2696628    62: 2696628
->  64: 2696628    66: 2699264    68: 2696628    70: 2696628
->  72: 2699264    74: 2696628    76: 2696628    78: 2699264
->  80: 2696628    82: 2696628    84: 2699264    86: 2696628
->  88: 2696628    90: 2696628    92: 2696628    94: 2699264
->  96: 2696628    98: 2699264   100: 2699264   102: 2696628
-> 104: 2699264   106: 2699264   108: 2699264   110: 2696628
-> 112: 2699264   114: 2699264   116: 2699264   118: 2699264
-> 120: 2696628   122: 2699264   124: 2696628   126: 2699264
-> Note: the frequency of all CPUs are almost the same.
-Were you expecting smth else ?
-> 
-> *--> Step 2: *read 'cpuinfo_cur_freq' in the high memory access pressure.
->   0: 2696628     2: 2696628     4: 2696628     6: 2696628
->   8: 2696628    10: 2696628    12: 2696628    14: 2696628
->  16: 2696628    18: 2696628    20: 2696628    22: 2696628
->  24: 2696628    26: 2696628    28: 2696628    30: 2696628
->  32: 2696628    34: 2696628    36: 2696628    38: 2696628
->  40: 2696628    42: 2696628    44: 2696628    46: 2696628
->  48: 2696628    50: 2696628    52: 2696628    54: 2696628
->  56: 2696628    58: 2696628    60: 2696628    62: 2696628
->  64: 2696628    66: 2696628    68: 2696628    70: 2696628
->  72: 2696628    74: 2696628    76: 2696628    78: 2696628
->  80: 2696628    82: 2696628    84: 2696628    86: 2696628
->  88: 2696628    90: 2696628    92: 2696628    94: 2696628
->  96: 2696628    98: 2696628   100: 2696628   102: 2696628
-> 104: 2696628   106: 2696628   108: 2696628   110: 2696628
-> 112: 2696628   114: 2696628   116: 2696628   118: 2696628
-> 120: 2696628   122: 2696628   124: 2696628   126: 2696628
-> 
-> *Case 2: setting nohz_full and cpufreq use ondemand governor*
-> There is "isolcpus=1-10,41-50 nohz_full=1-10,41-50 rcu_nocbs=1-10,41-50" in
-> /proc/cmdline.
-Right, so if I remember correctly nohz_full implies rcu_nocbs, so no need to
-set that one.
-Now, afair, isolcpus will make the selected CPUs to disappear from the
-schedulers view (no balancing, no migrating), so unless you affine smth
-explicitly to those CPUs, you will not see much of an activity there.
-Need to double check though as it has been a while ...
-> *--> Step 1: *setting ondemand governor to all policy and query
-> 'cpuinfo_cur_freq' in no pressure case.
-> And the frequency of CPUs all are about 400MHz.
-> *--> Step 2:* read 'cpuinfo_cur_freq' in the high memory access pressure.
-> The high memory access pressure is from the command: "stress-ng -c 64
-> --cpu-load 100% --taskset 0-63"
-I'm not entirely convinced that this will affine to isolated cpus, especially
-that the affinity mask spans all available cpus. If that is the case, no wonder
-your isolated cpus are getting wasted being idle. But I would have to double
-check how this is being handled.
-> The result:
->  0: 2696628     1:  400000     2:  400000     3:  400909
->  4:  400000     5:  400000     6:  400000     7:  400000
->  8:  400000     9:  400000    10:  400600    11: 2696628
-> 12: 2696628    13: 2696628    14: 2696628    15: 2696628
-> 16: 2696628    17: 2696628    18: 2696628    19: 2696628
-> 20: 2696628    21: 2696628    22: 2696628    23: 2696628
-> 24: 2696628    25: 2696628    26: 2696628    27: 2696628
-> 28: 2696628    29: 2696628    30: 2696628    31: 2696628
-> 32: 2696628    33: 2696628    34: 2696628    35: 2696628
-> 36: 2696628    37: 2696628    38: 2696628    39: 2696628
-> 40: 2696628    41:  400000    42:  400000    43:  400000
-> 44:  400000    45:  398847    46:  400000    47:  400000
-> 48:  400000    49:  400000    50:  400000    51: 2696628
-> 52: 2696628    53: 2696628    54: 2696628    55: 2696628
-> 56: 2696628    57: 2696628    58: 2696628    59: 2696628
-> 60: 2696628    61: 2696628    62: 2696628    63: 2699264
-> 
-> Note:
-> (1) The frequency of 1-10 and 41-50 CPUs work on the lowest frequency.
->      It turned out that nohz full was already work.
->      I guess that stress-ng cannot use the CPU in the range of nohz full.
->      Because the CPU frequency will be increased to 2.7G by binding CPU to
-> other application.
-> (2) The frequency of the nohz full core is calculated by get() callback
-> according to ftrace.
-It is as there is no sched tick on those, and apparently there is nothing
-running on them either.
+What I don't want is a frankenstein construction where UEFI boot is
+avoided for religious reasons, but the regions in question are still
+parsed/accessed/etc to reimplement things like SMBIOS etc in a way
+that violates the specification.
 
-Unless I am missing smth.
+> Or non-UEFI OS can simply treat them as "usable memory" if they do not call to any runtime services from those memory regions. (in this case runtime* memory can be repurposed just like boot* memory)
+> That will be OS choices and we may add some example OS handling to schema description too.
+>
 
----
-BR
-Beata
+The OS should not have to care about this at all. The reservations are
+intended for firmware stages, not the OS. The OS will either find
+these reservations in the UEFI memory map, or it should not care about
+them at all.
 
-> 
-> [1] https://lore.kernel.org/lkml/20230418113459.12860-7-sumitg@nvidia.com/
-> [2] https://lore.kernel.org/lkml/20231127160838.1403404-3-beata.michalska@arm.com/
-> > 
-> > Many thanks,
-> > Ionela.
-> > 
-> > > /Huisong
-> > > 
-> > > > > > [1] https://lore.kernel.org/lkml/20231127160838.1403404-1-beata.michalska@arm.com/
-> > > > > > 
-> > > > > > Thanks,
-> > > > > > Ionela.
-> > > > > > 
-> > > > > > > This patch adds a interface, cpc_read_arch_counters_on_cpu, to read
-> > > > > > > delivered and reference performance counter together. According to my
-> > > > > > > test[4], the discrepancy of cpu current frequency in the
-> > > > > > > scenarios with
-> > > > > > > high memory access pressure is lower than 0.2% by stress-ng
-> > > > > > > application.
-> > > > > > > 
-> > > > > > > [1] https://lore.kernel.org/all/20231025093847.3740104-4-zengheng4@huawei.com/
-> > > > > > > [2] https://lore.kernel.org/all/20230328193846.8757-1-yang@os.amperecomputing.com/
-> > > > > > > [3]
-> > > > > > > https://lore.kernel.org/all/20230418113459.12860-7-sumitg@nvidia.com/
-> > > > > > > 
-> > > > > > > [4] My local test:
-> > > > > > > The testing platform enable SMT and include 128 logical CPU in total,
-> > > > > > > and CPU base frequency is 2.7GHz. Reading "cpuinfo_cur_freq" for each
-> > > > > > > physical core on platform during the high memory access pressure from
-> > > > > > > stress-ng, and the output is as follows:
-> > > > > > >    0: 2699133     2: 2699942     4: 2698189     6: 2704347
-> > > > > > >    8: 2704009    10: 2696277    12: 2702016    14: 2701388
-> > > > > > >   16: 2700358    18: 2696741    20: 2700091    22: 2700122
-> > > > > > >   24: 2701713    26: 2702025    28: 2699816    30: 2700121
-> > > > > > >   32: 2700000    34: 2699788    36: 2698884    38: 2699109
-> > > > > > >   40: 2704494    42: 2698350    44: 2699997    46: 2701023
-> > > > > > >   48: 2703448    50: 2699501    52: 2700000    54: 2699999
-> > > > > > >   56: 2702645    58: 2696923    60: 2697718    62: 2700547
-> > > > > > >   64: 2700313    66: 2700000    68: 2699904    70: 2699259
-> > > > > > >   72: 2699511    74: 2700644    76: 2702201    78: 2700000
-> > > > > > >   80: 2700776    82: 2700364    84: 2702674    86: 2700255
-> > > > > > >   88: 2699886    90: 2700359    92: 2699662    94: 2696188
-> > > > > > >   96: 2705454    98: 2699260   100: 2701097   102: 2699630
-> > > > > > > 104: 2700463   106: 2698408   108: 2697766   110: 2701181
-> > > > > > > 112: 2699166   114: 2701804   116: 2701907   118: 2701973
-> > > > > > > 120: 2699584   122: 2700474   124: 2700768   126: 2701963
-> > > > > > > 
-> > > > > > > Signed-off-by: Huisong Li <lihuisong@huawei.com>
-> > > > > > > ---
-> [snip]
-> > .
+> While we are working on UPL specific DT, we got agreement that 2 separate DT are unnecessary, we better align/merge with existing OS DT and OS could utilize those additional UPL DT information too if they want.
+> This also simplifies/unifies PlatformInit as same DT could support different OS loader Payloads.
+>
+
+I was not part of any agreement that 2 separate DTs are unnecessary,
+and I think this discussion proves that exposing firmware
+implementation details to the OS via a unified DT can be problematic.
 
