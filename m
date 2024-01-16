@@ -1,368 +1,318 @@
-Return-Path: <linux-acpi+bounces-2904-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2905-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B2882F093
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 15:35:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FD882FDD3
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jan 2024 00:48:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B9A81F23ED1
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 14:35:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E53F7B232A4
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 23:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3191805E;
-	Tue, 16 Jan 2024 14:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A8367C64;
+	Tue, 16 Jan 2024 23:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TuR9v4gA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GZsTCj8/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347E5EADF;
-	Tue, 16 Jan 2024 14:35:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C982C433B2;
-	Tue, 16 Jan 2024 14:35:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705415710;
-	bh=zaijGVATmy6GzChHiiK8uSOo+YHOgSEKUtwLiX427Fg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=TuR9v4gAJ3BdvTrCIO1Gwm1YdvK2IK2MYf5qjlOdra7K3hhCZuY4L0nO9aOXaD0Ev
-	 jSB7ThFlG9PenmRKCX1uArnaAHc/30P6YOHq3A/DtLWj99Ki4GygKfJInlAa8FM9ie
-	 zgSkSnRlgakLrBegiyneYGlPETKDpc4+1hT9ITicxyticqd2HuMLOFkXqMspRor/Oc
-	 N+AUAu3AvMPb68BeU+6d9JZcS85gFF16aLsczmyvnR7Xx3EejwuuQgHeY8+wrnlRtu
-	 0sLrjTmk1/gqk/MCSrq9JXbOP0GuZk5Gs6ZoztFAFg5/r1S4Hct3Rk0rEW/Rqz8K9S
-	 cRpXwhX7/ZpWA==
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2cd46e7ae8fso109517401fa.1;
-        Tue, 16 Jan 2024 06:35:10 -0800 (PST)
-X-Gm-Message-State: AOJu0YysURows66dWDTnvQK0XbJzorC59OhyyNrNdFU6dsfIQlyTzM55
-	rP93JWAbNyPRgRWRorbedwKSMnPUnag5eYp78g8=
-X-Google-Smtp-Source: AGHT+IHFIyuoq5L7mzPqeE6kVupTlFwQ1uP+ufGn0cV0oNciVMUk2jSy25h1vh0L4Uq0cPUXFourXmrMR+lNwNj9VRI=
-X-Received: by 2002:a05:651c:150f:b0:2cd:e256:5db2 with SMTP id
- e15-20020a05651c150f00b002cde2565db2mr340814ljf.110.1705415708662; Tue, 16
- Jan 2024 06:35:08 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D9767C5E;
+	Tue, 16 Jan 2024 23:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705448871; cv=fail; b=IT9JtbcyMs47LoblRUZ+aVBraPXfAftl2DVNi50HcLXaiIOH+FXE2Z7tDqD/ajA5g1szRpNHyOFVJL0wp85gjMsd61+sGx8ztAun5EAOvJKKysdJ9JrYmu91weQ5pNT1A/7Zf+jSovx7Y6s4E/VZpxvr8IQ/KYXp26xutHSEdgs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705448871; c=relaxed/simple;
+	bh=aNgQpT2Uw2HwusbeBR3FCoJY3/PW9WUbkbrOWS9tb4w=;
+	h=DKIM-Signature:X-IronPort-AV:X-IronPort-AV:Received:X-ExtLoop1:
+	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:
+	 ARC-Message-Signature:ARC-Authentication-Results:Received:Received:
+	 Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	b=Aiun+sjlzwik9QGlK6G5I8gOciLWXhlRcjCIqEuiXPhO1d5YdAejT6x2JaKLdxR+DM3Knzp5bToz4vxNUDmD5CmhgZnR1R6PnJ5h5Z6fnsOKxZhGYZ2lpf/9XgSOP/+mDRnx8rYehIdN0J4hSeOxH1tB57XXOZ3pc5XQqxdrMrw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GZsTCj8/; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705448870; x=1736984870;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=aNgQpT2Uw2HwusbeBR3FCoJY3/PW9WUbkbrOWS9tb4w=;
+  b=GZsTCj8/tkH9BYqKB7MQkU664CT/eqEChSRKiw+uB2RDdJbQwrjO/mAc
+   Hb0KPF1qqlnfP7D6phXWAubUrTVU1NnUCXSeLk3K55IN2MdIX2OHz4pck
+   u0TQ5QpWrsN0t60BRwi4U7byJHSpmwjNt75qp8WYQEP/zDUrRW66FuZtO
+   9fuAm/6dvwe6sTFG026iM020eQKIBhNB3A6MKx3cbQQCqSfibRKwAsleg
+   gYf7fic4j82nEzWg7QubSyvGdgF27pVg8GxaiBHiLA/BKd14uHV5U89FA
+   7dwZzlBcG33Izy/ybvqty/9m9p+662PurwUR3N/s4Xy89lbis2Uck9zsm
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10955"; a="21501145"
+X-IronPort-AV: E=Sophos;i="6.05,200,1701158400"; 
+   d="scan'208";a="21501145"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 15:47:49 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10955"; a="907545185"
+X-IronPort-AV: E=Sophos;i="6.05,200,1701158400"; 
+   d="scan'208";a="907545185"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orsmga004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 16 Jan 2024 15:47:48 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 16 Jan 2024 15:47:48 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 16 Jan 2024 15:47:48 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.41) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 16 Jan 2024 15:47:48 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OAc6u+eV81kL2fgxhsalNKDlnYSp0kmvCsXjbl8ZLkID9GkWcJuwa0tnyKv/lxZOFivOs8TSnzXrIJuOZEh7KM0ZFptvuFfycOYKogEzwb4mKb02J+l1OBcYNSj/np3lWH7+IqHIT1qYpWC5n3i3mgRlnK8dDygtF8NeyadGEZuPy5GtqoG0frWRbBCdI4UYpfZBP62c/IW/zILAUsBXCR62X2tMuz+ppng2TqPwrL0lbz1hZTewzLGC/Wah6AvqFwMfsMeRQwEiVark4vInxlgRWvfH3lMQAtzEPFhQQ9mmNG/XhZE0cvXFhGGtKnAEZ6VBQPiBDtz9UtHheiQGKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=43kp4n9Yvm2hEY9AV4cCjw+mcSK+u6U66fVln3eX8/E=;
+ b=mi9cIdNMyX1Q/5sXj3IC3iyKwP0MlinKg13IMXKF0twMOrT0I6c3fTrQJEBVrom+HvIP4NAibMu9/KB4vSvEciBjWqfjHtxMkkzdDdO42H12rBSkSrbiGQKhsUc5xkMBmggTl/Pukge/9krhDaWESpQS9+zaby9B4mVFBXAvz07sQ9m/Xz3LQtnvqdzFfAmHFEATnn4UOMIeqD4yMtB1eUQTWRl8gL1JexhwgjVdzjNIQzDZy2LxZuJ5RN/uhVLhiVSIDo05B2z9LTjiS0sgd6dQOeL0CH0HS6IyqmcWtT9wkGaXrVzO5tICys9AuFLlhLP1BH2mrz1207C56SAFFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA1PR11MB6823.namprd11.prod.outlook.com (2603:10b6:806:2b0::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23; Tue, 16 Jan
+ 2024 23:47:42 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2%4]) with mapi id 15.20.7181.015; Tue, 16 Jan 2024
+ 23:47:42 +0000
+Date: Tue, 16 Jan 2024 15:47:39 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Ben Cheatham <Benjamin.Cheatham@amd.com>, <dan.j.williams@intel.com>,
+	<dave@stogolabs.net>, <jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <rafael@kernel.org>
+CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<benjamin.cheatham@amd.com>
+Subject: RE: [PATCH v9 3/5] EINJ: Migrate to a platform driver
+Message-ID: <65a7159bbad4d_3b8e294f5@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20240115172007.309547-1-Benjamin.Cheatham@amd.com>
+ <20240115172007.309547-4-Benjamin.Cheatham@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240115172007.309547-4-Benjamin.Cheatham@amd.com>
+X-ClientProxiedBy: MW4PR02CA0010.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::8) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230926194242.2732127-1-sjg@chromium.org> <20230926194242.2732127-2-sjg@chromium.org>
- <BN9PR11MB5483FF3039913334C7EA83E1E6AEA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXFG92NpL7T7YocOup0xLKyopt3MnSCp0RL8cLzozzJz7A@mail.gmail.com>
- <BN9PR11MB548303B09536EB1577472029E6B3A@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAPnjgZ36t8g7E=0MSJyaV8-QKv9RVYe47Jd5E=NU-mFM4LWBQA@mail.gmail.com>
- <CAMj1kXHAEeK7x2f13k_JV3Xcw61nNLasyvXQf+mKwKekQ48EpQ@mail.gmail.com>
- <BN9PR11MB548334E0DA6495C438FBFDE1E6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <BN9PR11MB548314DDE8D4C9503103D51CE6BBA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXHbM+ArLgNZgnmiok4gOfv6QLYxzyB9OCwfhEkJ2xGK_g@mail.gmail.com>
- <BN9PR11MB5483C2FBCD07DE61DCCDB523E6BCA@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXHmu=ykgBMRiFqG4_ra3FJtHa=GASoMUJswdMFa9v4Xgw@mail.gmail.com>
- <BN9PR11MB54837EEB391CC2A8FA6C0BF5E695A@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXEQL9n1Adedow5KEyZ5gdFQY3Fn+Fz8vSK3mHib_vDFig@mail.gmail.com>
- <BN9PR11MB5483E191F1906641565A1337E694A@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXGcZP99hyURXFAZfwKmYqj-xBN9BcW7R3h9Mm2k937Buw@mail.gmail.com>
- <BN9PR11MB548370E8181B1BB3C6FB9A20E667A@BN9PR11MB5483.namprd11.prod.outlook.com>
- <CAMj1kXH9z0fvWc5UgzDQ=HfYKkh=YudjL-yoZwKX93baiMgZ8w@mail.gmail.com> <BN9PR11MB5483D8D09B86CF3F92A20D3AE6672@BN9PR11MB5483.namprd11.prod.outlook.com>
-In-Reply-To: <BN9PR11MB5483D8D09B86CF3F92A20D3AE6672@BN9PR11MB5483.namprd11.prod.outlook.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 16 Jan 2024 15:34:57 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGNdheZ97JNhBc53VNoajPA=4iPn=KkWf6DZ36td2d8aA@mail.gmail.com>
-Message-ID: <CAMj1kXGNdheZ97JNhBc53VNoajPA=4iPn=KkWf6DZ36td2d8aA@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory usages
-To: "Chiu, Chasel" <chasel.chiu@intel.com>
-Cc: Simon Glass <sjg@chromium.org>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Rob Herring <robh@kernel.org>, "Tan, Lean Sheng" <sheng.tan@9elements.com>, 
-	lkml <linux-kernel@vger.kernel.org>, Dhaval Sharma <dhaval@rivosinc.com>, 
-	"Brune, Maximilian" <maximilian.brune@9elements.com>, Yunhui Cui <cuiyunhui@bytedance.com>, 
-	"Dong, Guo" <guo.dong@intel.com>, Tom Rini <trini@konsulko.com>, 
-	ron minnich <rminnich@gmail.com>, "Guo, Gua" <gua.guo@intel.com>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, U-Boot Mailing List <u-boot@lists.denx.de>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA1PR11MB6823:EE_
+X-MS-Office365-Filtering-Correlation-Id: 504afeea-cb17-45b4-98eb-08dc16ed87e1
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: SeERvUJiHkt/mSQ7t5FYjsP3mlnvF2HgiSY9sO+Oqws88N4dtRGdUaIHdI9tqXGkgSvzqOYaDlYrvkZscZ6OvTrlbDoRLP+V3HunZoUEw0I8tA8i+fiXoB+QUl6i9ituSMyRs1BtXsBEYkI5Uza7vS31B3QxEOuE3yiWga3Rj2mNMibo1XPrUnIyxfXIRU1F2PqKfvA7z7TUMwwXoa8ksmrjOMkoEL+cLsGoU/qoKhExra3KegukwYbQpPBYj7AF6XJncYbQh/XdsDpQeb9leXTDliC19UYEb1X7VR1HXhPxIJrQ/2MnxMsgkmdLJAMJRpYsFtzSgoJ53HlZghFobwzwaX0yZcUHfX2LJs66Uz/J/ACi3LFo062X+ADkI/Jyw+ZiLLlLAK9pUDk9nsLmJ6dzfBoeIuPprK4zAcEcosyunL5gi9++vyj9xb/237inofTdIAAj8cXE4yL1rAuyxNHXE3aC6Zrg+B0LWRk9pXYcR1Fxu5cpSpw1ByrZuRw1quj/BkMRTBdJDI/etauFg3x2Q1u5pDyzOxu10mK/SvyBAz7w3aywRwrktEE7W82V49K/hWiPmlIhh1K6YQ5IaQXhVhAZdd3QXNvV8ltFrFznawdWD+e1hw+pX+OiyKGE
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(39860400002)(396003)(366004)(376002)(346002)(230273577357003)(230173577357003)(230922051799003)(451199024)(1800799012)(186009)(64100799003)(9686003)(5660300002)(8936002)(86362001)(478600001)(26005)(82960400001)(6486002)(6666004)(83380400001)(6506007)(41300700001)(316002)(4326008)(8676002)(6512007)(38100700002)(66946007)(66556008)(2906002)(66476007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?I0mcbM/KgXnIjT185eVeOBbB/gsmJQAfnbEtvT4jA6ZzX34CE3iKsAK4elRF?=
+ =?us-ascii?Q?fuq66bYxgi42AZXt9xo6iEEcU9/FgnZPWGpv680879d51XF9ELXC4mJv4v9s?=
+ =?us-ascii?Q?7W5kg+fxiDb0ZuHa/PwZ6Ox23EdNmQqksW3nN8eSDC/E+NAHRsBTaIMXfzL8?=
+ =?us-ascii?Q?buv+FSxcSfCcROWRKEQjdhyZf9GElGZ4u+uTEcQUAYid8pbMA+Z3JnyVt7gW?=
+ =?us-ascii?Q?LmwQDiMmmMA6ZXC+K5ZpPyXtHjZur4zAzlUQjZ+m8kL7ZLTdZSVdVu/EZsCg?=
+ =?us-ascii?Q?m3OovLXVwVgAPOynUWC89jd3PVBpW90B7f+zmZ1MWYT+RnpkXx/17CdhTGig?=
+ =?us-ascii?Q?UH2dErCnXsGQHznzgzv3ThUuKPrLcB87DAUTjZaSojsELHhKy89zX31RnQQl?=
+ =?us-ascii?Q?e4hc6y4EyKu3Gb9+k/U39vkmi6gBQ9klafc3i5QVr7HRo+aUSBPKej3PwKXA?=
+ =?us-ascii?Q?aUKg8qMm6IKXdS2hVYVl5PZSVguWfKNBQGGHRViwX8AQrF53Ys9C9+PAR97a?=
+ =?us-ascii?Q?fh2c19MTpaqBqHOz+Ils1M0oSXSdPpjqmXT1u5Uotd8pon83ya1/orZOW4ir?=
+ =?us-ascii?Q?BL853tc3csywEbwuwV3/tvF8GvJ9M+qQsZ1jgSbrlAsvnA610Ajb51jwo8lc?=
+ =?us-ascii?Q?teiAAUf4GBD/FPEINn8SFOQ+mWozNNe5AbzbUIemqHRH+a5cEff8yI61t+Dr?=
+ =?us-ascii?Q?hMThvjt56tgNAglMqg3Y31Xpnp1xPcDiFonilu+Pmigq51Je1j4UCSF9o6+U?=
+ =?us-ascii?Q?T/CTOVrGEv3x6iQQVkotP3v/yy7c/GjRMFlYmCvtXRbM1cpG4E/4N6W/K3od?=
+ =?us-ascii?Q?DBxTbrsswYmMQMTN8HFJ8JC86FZdjioRdGm4u/ysQ4AnB68TJ3CR1z+paWSq?=
+ =?us-ascii?Q?1D5QR3OzKZISVfYe+C4TbkMMb50GfoRZikrHdNM362krMj7fP6UTEWXFYugV?=
+ =?us-ascii?Q?RO68B6wSgLhnkuctTCCqlwXDxrO+YeFt6T4xErfXEdWWCkp4/4xNOZLIGkLm?=
+ =?us-ascii?Q?+h++3IgS1gT7/iEldVJHwUtbVe83gQZ34Y5vkkMnP1c0HWVdO3m+Lw5XRYI2?=
+ =?us-ascii?Q?ijWcLfDZGMeMkvyIPO/khNNbemOj/5UCHwPMJdjGoWqeOSyjelx02kBFEMXS?=
+ =?us-ascii?Q?y/A0vz34F6ZyJKrOSC5ZaZ7DlxniMi3p8/VydfiOlD8LpndoQlOSNG42i7u5?=
+ =?us-ascii?Q?MjQvrqYvY2+np560dlRKrIpKwDPpT9Mhnw59FYAu5nIcUWCbBuuXK21pNlQS?=
+ =?us-ascii?Q?LxXsteBYQA1bBpllYaDqb8vubqzfRtfTmpmKdn8cMPB/SG01v+dCpSzzgg2P?=
+ =?us-ascii?Q?8Zln5h+ZmNneL4zE6c4ZX6OQfKpYTOlinD0Fkkl+3FftbckMExsiSGLzGNFg?=
+ =?us-ascii?Q?02NMLfyd81+YKKj0/VCFdfV81lGK6G29E8hVzCNkp66FirB26VHVC5rfPP0C?=
+ =?us-ascii?Q?We4y06YGse+M4Wl4qya8JA8AgDmY8sG14ToyQ5Q+cdI5XVVS1F1y4/pyiK6P?=
+ =?us-ascii?Q?6aXW0I9L/HMZUJMyiGRE8e57gvKDTu7oYefGgIBt8oAQKjRLwJ8+put7N8ed?=
+ =?us-ascii?Q?hU2qtEdQyriTBlFQTRdL2VCMq19CmNhV4vtUIMqXu258SBm3iYCgSU9Gdz6G?=
+ =?us-ascii?Q?zw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 504afeea-cb17-45b4-98eb-08dc16ed87e1
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2024 23:47:42.3940
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yNC0A4G+Jm1VpEoziGUaSw1lNqroJVMrRC0MDhynBUgmJw9nEWlhk0dWNXrI+FdiuH1n9yCMoHaVBE37ibhvFeMPoQAwSJgikPB3qUhxlhA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6823
+X-OriginatorOrg: intel.com
 
-On Thu, 4 Jan 2024 at 18:53, Chiu, Chasel <chasel.chiu@intel.com> wrote:
->
->
->
-> > -----Original Message-----
-> > From: Ard Biesheuvel <ardb@kernel.org>
-> > Sent: Thursday, January 4, 2024 12:43 AM
-> > To: Chiu, Chasel <chasel.chiu@intel.com>
-> > Cc: Simon Glass <sjg@chromium.org>; devicetree@vger.kernel.org; Mark Rutland
-> > <mark.rutland@arm.com>; Rob Herring <robh@kernel.org>; Tan, Lean Sheng
-> > <sheng.tan@9elements.com>; lkml <linux-kernel@vger.kernel.org>; Dhaval
-> > Sharma <dhaval@rivosinc.com>; Brune, Maximilian
-> > <maximilian.brune@9elements.com>; Yunhui Cui <cuiyunhui@bytedance.com>;
-> > Dong, Guo <guo.dong@intel.com>; Tom Rini <trini@konsulko.com>; ron minnich
-> > <rminnich@gmail.com>; Guo, Gua <gua.guo@intel.com>; linux-
-> > acpi@vger.kernel.org; U-Boot Mailing List <u-boot@lists.denx.de>
-> > Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory
-> > usages
-> >
-> > On Thu, 4 Jan 2024 at 01:25, Chiu, Chasel <chasel.chiu@intel.com> wrote:
-> > >
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Ard Biesheuvel <ardb@kernel.org>
-> > > > Sent: Wednesday, January 3, 2024 7:22 AM
-> > > > To: Chiu, Chasel <chasel.chiu@intel.com>
-> > > > Cc: Simon Glass <sjg@chromium.org>; devicetree@vger.kernel.org; Mark
-> > > > Rutland <mark.rutland@arm.com>; Rob Herring <robh@kernel.org>; Tan,
-> > > > Lean Sheng <sheng.tan@9elements.com>; lkml
-> > > > <linux-kernel@vger.kernel.org>; Dhaval Sharma <dhaval@rivosinc.com>;
-> > > > Brune, Maximilian <maximilian.brune@9elements.com>; Yunhui Cui
-> > > > <cuiyunhui@bytedance.com>; Dong, Guo <guo.dong@intel.com>; Tom Rini
-> > > > <trini@konsulko.com>; ron minnich <rminnich@gmail.com>; Guo, Gua
-> > > > <gua.guo@intel.com>; linux- acpi@vger.kernel.org; U-Boot Mailing
-> > > > List <u-boot@lists.denx.de>
-> > > > Subject: Re: [PATCH v7 2/2] schemas: Add some common reserved-memory
-> > > > usages
-> > > >
-> > > > On Fri, 22 Dec 2023 at 20:52, Chiu, Chasel <chasel.chiu@intel.com> wrote:
-> > > > >
-> > > > >
-> > > > > Please see my reply below inline.
-> > > > >
-> > > > > Thanks,
-> > > > > Chasel
-> > > > >
-> > > > ...
-> > > > > > > > The gEfiMemoryTypeInformationGuid HOB typically carries
-> > > > > > > > platform defaults, and the actual memory type information is
-> > > > > > > > kept in a non-volatile EFI variable, which gets updated when
-> > > > > > > > the memory usage changes. Is this different for UefiPayloadPkg?
-> > > > > > > >
-> > > > > > > > (For those among the cc'ees less versed in EFI/EDK2: when
-> > > > > > > > you get the 'config changed -rebooting' message from the
-> > > > > > > > boot firmware, it typically means that this memory type
-> > > > > > > > table has changed, and a reboot is necessary.)
-> > > > > > > >
-> > > > > > > > So the platform init needs to read this variable, or get the
-> > > > > > > > information in a different way. I assume it is the payload,
-> > > > > > > > not the platform init that updates the variable when
-> > > > > > > > necessary. This means the information flows from payload(n)
-> > > > > > > > to platform init(n+1), where n is a monotonic index tracking
-> > > > > > > > consecutive boots of the
-> > > > system.
-> > > > > > > >
-> > > > > > > > Can you explain how the DT fits into this? How are the
-> > > > > > > > runtime-code and runtime-data memory reservation nodes under
-> > > > > > > > /reserved-memory used to implement this information exchange
-> > > > > > > > between platform init and payload? And how do the HOB and
-> > > > > > > > the EFI
-> > > > variable fit into this picture?
-> > > > > > >
-> > > > > > >
-> > > > > > > 1. With some offline discussion, we would move
-> > > > > > > gEfiMemoryTypeInformationGuid usage to FDT->upl-custom node.
-> > > > > > > This is because it is edk2 implementation choice and non-edk2
-> > > > > > > PlatformInit or Payload may not have such memory optimization
-> > > > > > > implementation. (not a generic usage/requirement for
-> > > > > > > PlatformInit and Payload)
-> > > > > > >
-> > > > > > > The edk2 example flow will be like below:
-> > > > > > >
-> > > > > > > PlatformInit to GetVariable of gEfiMemoryTypeInformationGuid
-> > > > > > > and create Hob-
-> > > > > > >
-> > > > > > >   PlatformInit to initialize FDT->upl-custom node to report
-> > > > > > gEfiMemoryTypeInformationGuid HOB information ->
-> > > > > > >     UefiPayload entry to re-create
-> > > > > > > gEfiMemoryTypeInformationGuid HOB basing
-> > > > > > on FDT input (instead of the default MemoryType inside
-> > > > > > UefiPayload)
-> > > > > > ->
-> > > > > > >       UefiPayload DxeMain/Gcd will consume
-> > > > > > > gEfiMemoryTypeInformationGuid
-> > > > > > Hob for memory type information ->
-> > > > > > >         UefiPayload to initialize UEFI environment (mainly DXE dispatcher) -
-> > >
-> > > > > > >           (additional FV binary appended to common UefiPayload
-> > > > > > > binary)
-> > > > > > PlatformPayload to provide VariableService which is platform
-> > > > > > specific ->
-> > > > > > >             UefiPayload UefiBootManager will SetVariable if
-> > > > > > > memory type change
-> > > > > > needed and request a warm reset ->
-> > > > > > >               Back to PlatformInit ...
-> > > > > > >
-> > > > > >
-> > > > > > OK so the upl-custom node can do whatever it needs to. I imagine
-> > > > > > these will include the memory descriptor attribute field, and
-> > > > > > other parts that may be missing from the /reserved-memory DT node
-> > specification?
-> > > > >
-> > > > >
-> > > > > Yes, if needed by edk2 specific implementation, not generic
-> > > > > enough, we may
-> > > > consider to use upl-custom node to pass those data.
-> > > > >
-> > > > >
-> > > > > >
-> > > > > > >
-> > > > > > > 2. Now the proposed reserved-memory node usages will be for
-> > > > > > > PlatformInit to
-> > > > > > provide data which may be used by Payload or OS. This is not
-> > > > > > edk2 specific and any PlatformInit/Payload could have same support.
-> > > > > > > Note: all of below are optional and PlatformInit may choose to
-> > > > > > > implement some
-> > > > > > of them or not.
-> > > > > > >
-> > > > > > >       - acpi
-> > > > > > > If PlatformInit created some ACPI tables, this will report a
-> > > > > > > memory region which
-> > > > > > contains all the tables to Payload and Payload may base on this
-> > > > > > to add some more tables if required.
-> > > > > > >
-> > > > > > >       - acpi-nvs
-> > > > > > > If PlatformInit has created some ACPI tables which having ACPI
-> > > > > > > NVS memory
-> > > > > > dependency, this will be that nvs region.
-> > > > > > >
-> > > > > >
-> > > > > > These make sense.
-> > > > > >
-> > > > > > >       - boot-code
-> > > > > > > When PlatformInit having some FW boot phase code that could be
-> > > > > > > freed for OS to use when payload transferring control to UEFI
-> > > > > > > OS
-> > > > > > >
-> > > > > > >       - boot-data
-> > > > > > > When PlatformInit having some FW boot phase data that could be
-> > > > > > > freed for OS
-> > > > > > to use when payload transferring control to UEFI OS.
-> > > > > > >
-> > > > > > >       - runtime-code
-> > > > > > > PlatformInit may provide some services code that can be used
-> > > > > > > for Payload to
-> > > > > > initialize UEFI Runtime Services for supporting UEFI OS.
-> > > > > > >
-> > > > > > >       - runtime-data
-> > > > > > > PlatformInit may provide some services data that can be used
-> > > > > > > for Payload to
-> > > > > > Initialize UEFI Runtime Services for supporting UEFI OS.
-> > > > > > >
-> > > > > >
-> > > > > > A UEFI OS must consume this information from the UEFI memory
-> > > > > > map, not from the /reserved-memory nodes. So these nodes must
-> > > > > > either not be visible to the OS at all, or carry an annotation
-> > > > > > that the OS must ignore
-> > > > them.
-> > > > > >
-> > > > > > Would it be possible to include a restriction in the DT schema
-> > > > > > that these are only valid in the firmware boot phase?
-> > > > >
-> > > > >
-> > > > > https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#ef
-> > > > > i-bo ot-services-exitbootservices Per UEFI specification, UEFI OS
-> > > > > will always call UEFI GetMemoryMap function to retrieve memory
-> > > > > map, so FDT
-> > > > node present or not does not matter to UEFI OS. We probably could
-> > > > have annotation in UPL specification to emphasize this.
-> > > > > I'm not familiar with Linux FDT boot, but if non-UEFI OS does not
-> > > > > call UEFI
-> > > > GetMemoryMap() and does not know what is runtime-code/data, boot-
-> > > > code/data, it might just treat such reserved-memory nodes as
-> > > > 'regular' reserved memory nodes, and that's still ok because
-> > > > non-UEFI OS will not call to any runtime service or re-purpose boot-code/data
-> > memory regions.
-> > > > >
-> > > >
-> > > > You are saying the same thing but in a different way. A UEFI OS must
-> > > > only rely on GetMemoryMap(), and not on the /reserved-memory node to
-> > > > obtain this information. But this requirement needs to be stated
-> > > > somewhere: the UEFI spec does not reason about other sources of EFI
-> > > > memory information at all, and this DT schema does not mention any of this
-> > either.
-> > > >
-> > > > > Would you provide a real OS case which will be impacted by this
-> > > > > reserved-
-> > > > memory schema so we can discuss basing on real case?
-> > > > >
-> > > >
-> > > > Funny, that is what I have been trying to get from you :-)
-> > > >
-> > > > The problem I am anticipating here is that the information in
-> > > > /reserved-memory may be out of sync with the EFI memory map. It
-> > > > needs to be made clear that the EFI memory map is the only source of
-> > > > truth when the OS is involved, and this /reserved-memory mechanism
-> > > > should only be used by other firmware stages. But the schema does
-> > > > not mention this at all. The schema also does not mention that the
-> > > > information in /reserved-memory is not actually sufficient to
-> > > > reconstruct the EFI memory map that the firmware payload expects
-> > > > (which is why the upl- custom-node exists too)
-> > >
-> > >
-> > >
-> > > Does below solve your concerns if we mention those in schema
-> > > description? (please feel free to add more if you have) . boot-code/boot-data
-> > and runtime-code/runtime-data usages are following UEFI specification
-> > >   . before ExitBootServices:
-> > https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#memory-
-> > type-usage-before-exitbootservices
-> > >   . after ExitBootServices:
-> > > https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#memory
-> > > -type-usage-after-exitbootservices
-> > > . These usages do not intend to construct full UEFI memory map, it is only for
-> > PlatformInit to pass pre-installed tables or services to Payload for supporting UEFI
-> > OS boot.
-> > > . These usages are optional
-> > > . Typically UEFI OS boot will always call GetMemoryMap() to retrieve
-> > > memory map following UEFI spec, no matter DT nodes present or not
-> > > (https://uefi.org/specs/UEFI/2.10/07_Services_Boot_Services.html#efi-b
-> > > oot-services-exitbootservices) . Typically Non-UEFI OS boot will treat
-> > > those  boot* or runtime* reserved-memory as 'regular' reserved memory if
-> > present.
-> > >
-> >
-> > This already helps quite a lot, thanks.
-> >
-> > But why should a non-UEFI OS be required to keep boot* or runtime* regions
-> > reserved? The firmware stage that boots the OS knows whether it is performing
-> > an UEFI boot or a non-UEFI boot, and it should only present the information that
-> > goes along with that. The OS should never have to worry about reconciling two
-> > sources of truth.
-> >
-> > And to Rob's point about boot / runtime being ill-defined: I would argue that
-> > 'runtime' quite clearly implies 'under the OS', and so UEFI
-> > runtime* reservations are assumed to always be relevant to UEFI OSes.
-> >
-> > I think there is a fundamental difference of opinion here, where the position of
-> > the firmware developers is that the DT should be the same across all boot stages,
-> > while my position reasoning from the OS side is that the OS should be able to
-> > observe only the abstractions that are part of the contract between firmware and
-> > OS.
->
-> I agree that boot* and runtime* can be utilized by non-UEFI OS too, we are just reusing existing definitions from UEFI spec.
->   . boot-code/boot-data: firmware stage code/data that can be freed after firmware stage ending so OS will have more usable memory.
->   . runtime-code/runtime-data: firmware stage code/data that are intended to be utilized by OS stage.
-> Non-UEFI OS still can implement/support boot* or runtime* memory if they want, and the runtime service can be 'non-UEFI' runtime service too as long as OS/FW aligning each other.
+Ben Cheatham wrote:
+> Change the EINJ module to install a platform device/driver on module
+> init and move the module init() and exit() functions to driver probe and
+> remove. This change allows the EINJ module to load regardless of whether
+> setting up EINJ succeeds, which allows dependent modules to still load
+> (i.e. the CXL core).
+> 
+> Since EINJ may no longer be initialized when the module loads, any
+> functions that are called from dependent/external modules should check
+> the einj_initialized variable before calling any EINJ functions.
+> 
+> Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
+> ---
+>  drivers/acpi/apei/einj.c | 43 ++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 41 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
+> index 013eb621dc92..10d51cd73fa4 100644
+> --- a/drivers/acpi/apei/einj.c
+> +++ b/drivers/acpi/apei/einj.c
+> @@ -21,6 +21,7 @@
+>  #include <linux/nmi.h>
+>  #include <linux/delay.h>
+>  #include <linux/mm.h>
+> +#include <linux/platform_device.h>
+>  #include <asm/unaligned.h>
+>  
+>  #include "apei-internal.h"
+> @@ -136,6 +137,12 @@ static struct apei_exec_ins_type einj_ins_type[] = {
+>   */
+>  static DEFINE_MUTEX(einj_mutex);
+>  
+> +/*
+> + * Functions called from dependent modules should check this variable
+> + * before using any EINJ functionality.
+> + */
 
-No, I disagree here, and this is the core of the issue IMO. Boot data
-and runtime data are tied to UEFI boot. A non-UEFI OS must either keep
-these regions reserved and not use them at all, or disregard the
-reservation and use them as ordinary memory.
+This reads slightly odd to me, is this clearer?
 
-What I don't want is a frankenstein construction where UEFI boot is
-avoided for religious reasons, but the regions in question are still
-parsed/accessed/etc to reimplement things like SMBIOS etc in a way
-that violates the specification.
+"Exported APIs use this flag to exit early if einj_probe() failed."
 
-> Or non-UEFI OS can simply treat them as "usable memory" if they do not call to any runtime services from those memory regions. (in this case runtime* memory can be repurposed just like boot* memory)
-> That will be OS choices and we may add some example OS handling to schema description too.
->
+> +static bool einj_initialized;
 
-The OS should not have to care about this at all. The reservations are
-intended for firmware stages, not the OS. The OS will either find
-these reservations in the UEFI memory map, or it should not care about
-them at all.
+This can be marked __ro_after_init to make it clear that it is static
+for the lifetime of the module.
 
-> While we are working on UPL specific DT, we got agreement that 2 separate DT are unnecessary, we better align/merge with existing OS DT and OS could utilize those additional UPL DT information too if they want.
-> This also simplifies/unifies PlatformInit as same DT could support different OS loader Payloads.
->
+> +
+>  static void *einj_param;
+>  
+>  static void einj_exec_ctx_init(struct apei_exec_context *ctx)
+> @@ -684,7 +691,7 @@ static int einj_check_table(struct acpi_table_einj *einj_tab)
+>  	return 0;
+>  }
+>  
+> -static int __init einj_init(void)
+> +static int einj_probe(struct platform_device *pdev)
 
-I was not part of any agreement that 2 separate DTs are unnecessary,
-and I think this discussion proves that exposing firmware
-implementation details to the OS via a unified DT can be problematic.
+This can remain __init since nothing will call this function port
+init().
+
+>  {
+>  	int rc;
+>  	acpi_status status;
+> @@ -782,7 +789,7 @@ static int __init einj_init(void)
+>  	return rc;
+>  }
+>  
+> -static void __exit einj_exit(void)
+> +static void einj_remove(struct platform_device *pdev)
+
+Similarly this can remain __exit.
+ 
+>  {
+>  	struct apei_exec_context ctx;
+>  
+> @@ -801,6 +808,38 @@ static void __exit einj_exit(void)
+>  	acpi_put_table((struct acpi_table_header *)einj_tab);
+>  }
+>  
+> +static struct platform_device *einj_dev;
+> +struct platform_driver einj_driver = {
+> +	.remove_new = einj_remove,
+> +	.driver = {
+> +		.name = "einj",
+
+Perhaps call this acpi-einj just to preserve the namespace in case a
+cross-platform generic "einj" comes along.
+
+> +	},
+> +};
+> +
+> +static int __init einj_init(void)
+> +{
+> +	struct platform_device_info einj_dev_info = {
+> +		.name = "einj",
+
+Ditt "acpi-einj"
+
+> +		.id = -1,
+> +	};
+> +
+> +	einj_dev = platform_device_register_full(&einj_dev_info);
+
+Just return early here if this failed.
+
+> +	einj_initialized = !platform_driver_probe(&einj_driver, einj_probe);
+
+Nit, but since platform_driver_probe() does not return bool, I would
+prefer this to be more explicit:
+
+	err = platform_driver_probe();
+	einj_initialized = err == 0;
+
+I think it is ok for the platform-device to stick around if einj_probe()
+failures as userspace can see that the module is loaded but driver-init
+failed.
+
+Similarly it's probably also ok to fail the module load if
+platform_device_register_full() fails since something deeper is wrong
+with the system if it is starting to fail something so basic.
+
+> +	if (!(einj_initialized || IS_ERR_OR_NULL(einj_dev)))
+> +		platform_device_del(einj_dev);
+> +
+> +	return 0;
+> +}
+> +
+> +static void __exit einj_exit(void)
+> +{
+> +	if (einj_initialized) {
+> +		platform_driver_unregister(&einj_driver);
+> +		platform_device_del(einj_dev);
+
+Per above, this device_del can move outside the conditional.
 
