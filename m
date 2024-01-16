@@ -1,51 +1,56 @@
-Return-Path: <linux-acpi+bounces-2886-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2887-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF5382E509
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 01:29:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9428F82E50F
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 01:29:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C11EFB2312F
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 00:29:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C72283F1B
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jan 2024 00:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDD620B1D;
-	Tue, 16 Jan 2024 00:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F2F13FF3;
+	Tue, 16 Jan 2024 00:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HFAwK7A9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b79sOvAs"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFD7A921;
-	Tue, 16 Jan 2024 00:14:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE586C433F1;
-	Tue, 16 Jan 2024 00:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCBF22303;
+	Tue, 16 Jan 2024 00:14:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B009C43394;
+	Tue, 16 Jan 2024 00:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705364070;
-	bh=5xaBwxTKxIz5PyR/JD4JH843H06XHTnJjJPrj74bQP4=;
+	s=k20201202; t=1705364075;
+	bh=1UpxCloTLiTIx0mVmKoGcaU3vDXf8oiVPk7rFI3qt50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HFAwK7A9b9dMS9y1oLtz6WtUrVJREeBfsYffOJRETGlruHlOpUfFczs+/ZJ/uHrwo
-	 +AVWZjuz1BS+AjG4mSQaYJDOBOl+4M8H4lcVqPbM+bRxNPvkngkhrFYQEqJtVniY9Q
-	 wcMEVK+9ECTVavNeFAophlMPxpQHUiCeW/pfROnW3zHeebOqFlBYS6Yrpg5fCniidF
-	 G9/dy3O3ZN6yObxv0RaSsmYPgvffk/aMVmSIXRdQEyVzC4b2BUT5sA7EVCNSo8ARZV
-	 q2FXJEW8jEl4gRAm5sTgBnxn/BV9926znbI9z7SIYLLz2dU48ZpkSt7wwlHmgTKO7w
-	 V0lO6nMXZ4MHw==
+	b=b79sOvAs3YR147O3mhsqe4e7k4ES8mH/X+OvImc0GqzUm3ex5RR+g57jhEn2PDt6S
+	 8T6sdi3mU+DCa6u9OSZ2dCz8x1G4rFnN/wKETFWaKCFXgiciwkqfeY2V1RmicU6auJ
+	 2qnsD/GYHQDqLyP5bAyQ8j7TT0PiWQTXeo2JJMED+9bKOEbctjc1s1uNva/oD9aR6g
+	 LytivTuBpnJBqeMuf5PC7qtMPb8FKqKYwmWyYIT/KnXJFperQM6CveLVyNiDQ3a3vE
+	 ARpnZ3VdMSQrM/YWoI6jPfhO+SdiQrzGfJE3vT7S9O99HnDz/hsTCqSHGHLSw4n+jb
+	 fKJuVRegB/KNA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yuntao Wang <ytcoode@gmail.com>,
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>,
+	Ma Wupeng <mawupeng1@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Xiaofei Tan <tanxiaofei@huawei.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	James Morse <james.morse@arm.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	dave.hansen@linux.intel.com,
-	dan.j.williams@intel.com,
-	alison.schofield@intel.com,
+	linmiaohe@huawei.com,
+	leoyang.li@nxp.com,
+	shiju.jose@huawei.com,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 7/9] ACPI: NUMA: Fix the logic of getting the fake_pxm value
-Date: Mon, 15 Jan 2024 19:14:12 -0500
-Message-ID: <20240116001418.213635-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 9/9] ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on synchronous events
+Date: Mon, 15 Jan 2024 19:14:14 -0500
+Message-ID: <20240116001418.213635-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116001418.213635-1-sashal@kernel.org>
 References: <20240116001418.213635-1-sashal@kernel.org>
@@ -60,47 +65,141 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.73
 Content-Transfer-Encoding: 8bit
 
-From: Yuntao Wang <ytcoode@gmail.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit e3f577830ce216b0ca21d4750cbbd64cfc21efff ]
+[ Upstream commit a70297d2213253853e95f5b49651f924990c6d3b ]
 
-The for loop does not iterate over the last element of the node_to_pxm_map
-array. This could lead to a conflict between the final fake_pxm value and
-the existing pxm values. That is, the final fake_pxm value can not be
-guaranteed to be an unused pxm value.
+There are two major types of uncorrected recoverable (UCR) errors :
 
-While at it, fix up white space in slit_valid().
+ - Synchronous error: The error is detected and raised at the point of
+   the consumption in the execution flow, e.g. when a CPU tries to
+   access a poisoned cache line. The CPU will take a synchronous error
+   exception such as Synchronous External Abort (SEA) on Arm64 and
+   Machine Check Exception (MCE) on X86. OS requires to take action (for
+   example, offline failure page/kill failure thread) to recover this
+   uncorrectable error.
 
-Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
-[ rjw: Changelog edits ]
+ - Asynchronous error: The error is detected out of processor execution
+   context, e.g. when an error is detected by a background scrubber.
+   Some data in the memory are corrupted. But the data have not been
+   consumed. OS is optional to take action to recover this uncorrectable
+   error.
+
+When APEI firmware first is enabled, a platform may describe one error
+source for the handling of synchronous errors (e.g. MCE or SEA notification
+), or for handling asynchronous errors (e.g. SCI or External Interrupt
+notification). In other words, we can distinguish synchronous errors by
+APEI notification. For synchronous errors, kernel will kill the current
+process which accessing the poisoned page by sending SIGBUS with
+BUS_MCEERR_AR. In addition, for asynchronous errors, kernel will notify the
+process who owns the poisoned page by sending SIGBUS with BUS_MCEERR_AO in
+early kill mode. However, the GHES driver always sets mf_flags to 0 so that
+all synchronous errors are handled as asynchronous errors in memory failure.
+
+To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronous
+events.
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: James Morse <james.morse@arm.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/numa/srat.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/apei/ghes.c | 29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 12f330b0eac0..b57de78fbf14 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -183,7 +183,7 @@ static int __init slit_valid(struct acpi_table_slit *slit)
- 	int i, j;
- 	int d = slit->locality_count;
- 	for (i = 0; i < d; i++) {
--		for (j = 0; j < d; j++)  {
-+		for (j = 0; j < d; j++) {
- 			u8 val = slit->entry[d*i + j];
- 			if (i == j) {
- 				if (val != LOCAL_DISTANCE)
-@@ -532,7 +532,7 @@ int __init acpi_numa_init(void)
- 	 */
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 9952f3a792ba..dd808cf65c84 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -99,6 +99,20 @@ static inline bool is_hest_type_generic_v2(struct ghes *ghes)
+ 	return ghes->generic->header.type == ACPI_HEST_TYPE_GENERIC_ERROR_V2;
+ }
  
- 	/* fake_pxm is the next unused PXM value after SRAT parsing */
--	for (i = 0, fake_pxm = -1; i < MAX_NUMNODES - 1; i++) {
-+	for (i = 0, fake_pxm = -1; i < MAX_NUMNODES; i++) {
- 		if (node_to_pxm_map[i] > fake_pxm)
- 			fake_pxm = node_to_pxm_map[i];
- 	}
++/*
++ * A platform may describe one error source for the handling of synchronous
++ * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. SCI
++ * or External Interrupt). On x86, the HEST notifications are always
++ * asynchronous, so only SEA on ARM is delivered as a synchronous
++ * notification.
++ */
++static inline bool is_hest_sync_notify(struct ghes *ghes)
++{
++	u8 notify_type = ghes->generic->notify.type;
++
++	return notify_type == ACPI_HEST_NOTIFY_SEA;
++}
++
+ /*
+  * This driver isn't really modular, however for the time being,
+  * continuing to use module_param is the easiest way to remain
+@@ -461,7 +475,7 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
+ }
+ 
+ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+-				       int sev)
++				       int sev, bool sync)
+ {
+ 	int flags = -1;
+ 	int sec_sev = ghes_severity(gdata->error_severity);
+@@ -475,7 +489,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+ 	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+ 		flags = MF_SOFT_OFFLINE;
+ 	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
+-		flags = 0;
++		flags = sync ? MF_ACTION_REQUIRED : 0;
+ 
+ 	if (flags != -1)
+ 		return ghes_do_memory_failure(mem_err->physical_addr, flags);
+@@ -483,9 +497,11 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+ 	return false;
+ }
+ 
+-static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
++static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
++				       int sev, bool sync)
+ {
+ 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
++	int flags = sync ? MF_ACTION_REQUIRED : 0;
+ 	bool queued = false;
+ 	int sec_sev, i;
+ 	char *p;
+@@ -510,7 +526,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int s
+ 		 * and don't filter out 'corrected' error here.
+ 		 */
+ 		if (is_cache && has_pa) {
+-			queued = ghes_do_memory_failure(err_info->physical_fault_addr, 0);
++			queued = ghes_do_memory_failure(err_info->physical_fault_addr, flags);
+ 			p += err_info->length;
+ 			continue;
+ 		}
+@@ -631,6 +647,7 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 	const guid_t *fru_id = &guid_null;
+ 	char *fru_text = "";
+ 	bool queued = false;
++	bool sync = is_hest_sync_notify(ghes);
+ 
+ 	sev = ghes_severity(estatus->error_severity);
+ 	apei_estatus_for_each_section(estatus, gdata) {
+@@ -648,13 +665,13 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 			ghes_edac_report_mem_error(sev, mem_err);
+ 
+ 			arch_apei_report_mem_error(sev, mem_err);
+-			queued = ghes_handle_memory_failure(gdata, sev);
++			queued = ghes_handle_memory_failure(gdata, sev, sync);
+ 		}
+ 		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
+ 			ghes_handle_aer(gdata);
+ 		}
+ 		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
+-			queued = ghes_handle_arm_hw_error(gdata, sev);
++			queued = ghes_handle_arm_hw_error(gdata, sev, sync);
+ 		} else {
+ 			void *err = acpi_hest_get_payload(gdata);
+ 
 -- 
 2.43.0
 
