@@ -1,71 +1,69 @@
-Return-Path: <linux-acpi+bounces-2952-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2953-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16237832E17
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Jan 2024 18:24:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E5A832E18
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Jan 2024 18:24:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB0F0287F79
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Jan 2024 17:24:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5424287EB2
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Jan 2024 17:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57E255E4E;
-	Fri, 19 Jan 2024 17:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D5D4C3D4;
+	Fri, 19 Jan 2024 17:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DZtqPHma"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mgm3sz5P"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B704C3D4;
-	Fri, 19 Jan 2024 17:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5236B55E54;
+	Fri, 19 Jan 2024 17:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705685067; cv=none; b=jPw7Pafkd2mwY9pcW7TxsU7p39wooB6FgT6LmSJHRNhihzw57mXEkrzZXADdwPtWXrNLBc9rJTKAPTBSXWVv6c7EdmZhIl0WtoTk6iri7O+7Q1duHwXyJbdnco8v5+DEQWLoy7PEDQEWqxCW9QDou3qDGUcky0JsVRDclR31UTk=
+	t=1705685069; cv=none; b=Kuqypav+aNAD4s5b2f4Cl4UyI+w8dFoPJfmH/2qE2YBhtSXM0LFjurnOoM2ESv7noeBlAYXMiXY152Ip0P9TXAAWoR5oxe5ZsoG6ul6PtqFiMKiRYRTyem/mqDNx5WgYT1QJwc4p6Y3O/lp5D75YHXd4KGKt9KluKifjLoY04ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705685067; c=relaxed/simple;
-	bh=5z0cWx88F8feYRKWq/CowEUdRDN88aHLKkrVHbnqnJ0=;
+	s=arc-20240116; t=1705685069; c=relaxed/simple;
+	bh=ZC76tTG5mUc2PJmiN9HO5AuiKUJLWVjcYohMkqWylx4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hsH37jOJxscA6iNjz+PqrwlcLL68tf18j1T/+PBq3tjRBSgaLuBrKHI2KlSGXrOwSkKBl5IQFEoZvSY/1ejSee0BHjBfm3N3JlqbRAysQVnbvBZxj+gGznI+nd48/P1M0bcyncrrxFvDNsgKyHRo+mfzsuZS6q4FqgbS4dPMihM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DZtqPHma; arc=none smtp.client-ip=192.55.52.43
+	 MIME-Version:Content-Type; b=Aap5nB5wnJTb1ckbAqQzYmD7bkM6nBUeK+YNPj6nA7Se09zvu3nAXb3FIjHi43RU3rR7mhzGMFJZ7wZbZrfNDds98JybmOE8THA6VqTcxwRlswT8c/vPapJN7xwfNCTHZQSMxqE8zy//9yiCiFG4io+LxGLmYuiTeJfl0QFR4so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mgm3sz5P; arc=none smtp.client-ip=192.55.52.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705685066; x=1737221066;
+  t=1705685068; x=1737221068;
   h=subject:from:to:cc:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=5z0cWx88F8feYRKWq/CowEUdRDN88aHLKkrVHbnqnJ0=;
-  b=DZtqPHma/B1dbhHuGtOnuXZSAMU4g3/M/4lFpqJS1+Uo8ixvR6tb5N0T
-   95VppmnqWL6gHmRvi3SeF3u+0F1D91mtScNqXUwzs1USmOafOQmSkzod+
-   fRUYQlt5JQVYUVoV3dliTHjqFkswmtlAk/kZIiyir1Q3yyaejEY7uFzJE
-   vRqYrVnValIQoxuuJvUqVXeLtDmmgesB9ujW83wyASa62eUa26k968X3J
-   NOjG/TEQ/mK5QGVXe9KL5YqAmbMsMPf2lmvK2U+zxEX1vgwVz4v2wc1tO
-   VeRCvuYBuy5r+Z3S0/S8rCrb4hvSTakoEpdb/8lW9dlhwc+1yFaGn0jAU
+  bh=ZC76tTG5mUc2PJmiN9HO5AuiKUJLWVjcYohMkqWylx4=;
+  b=Mgm3sz5PS1OgrvsJZOmnPqzvLpyQ94amleNmb/TYMCwn2/WAvcgvpJ6e
+   bRAOGaqS53Q3q7jcvIlA7S+e1TqPH8Sz1NRT22iOHNlcrlMcPa+4hFI8h
+   q2Lk0WuyohLO8NWZCGQajCr5g7KfgVWe+UqI2/wz2xA1yoaohUdIufnaf
+   LvP8wvi4dWAMBNx74nKutmHpJEXVM78ZZnhOCoAMXJ0HVy6G+JCBIArRT
+   TnKCplN16dBwA3BjmvWbcdwDvlewUyLqEcfZo62Pj5QNHNkc9/JZOsH4Y
+   Ae6TfeYd12Fz2FW/QEAtzwxk2uYuTCnDjigWHTHN7QEp99euXDRf3GJk1
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="486944542"
+X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="486944581"
 X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; 
-   d="scan'208";a="486944542"
+   d="scan'208";a="486944581"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2024 09:24:06 -0800
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2024 09:24:13 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="819117785"
+X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="819117798"
 X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; 
-   d="scan'208";a="819117785"
+   d="scan'208";a="819117798"
 Received: from djiang5-mobl3.amr.corp.intel.com (HELO [192.168.1.177]) ([10.209.161.22])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2024 09:24:04 -0800
-Subject: [PATCH v4 10/11] cxl: Add memory hotplug notifier for cxl region
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2024 09:24:11 -0800
+Subject: [PATCH v4 11/11] cxl: Deal with numa nodes not enumarated by SRAT
 From: Dave Jiang <dave.jiang@intel.com>
 To: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Huang,
- Ying" <ying.huang@intel.com>, dan.j.williams@intel.com, ira.weiny@intel.com,
- vishal.l.verma@intel.com, alison.schofield@intel.com,
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, dan.j.williams@intel.com,
+ ira.weiny@intel.com, vishal.l.verma@intel.com, alison.schofield@intel.com,
  jonathan.cameron@huawei.com, dave@stgolabs.net, brice.goglin@gmail.com,
  nifan.cxl@gmail.com, rafael@kernel.org, gregkh@linuxfoundation.org
-Date: Fri, 19 Jan 2024 10:24:04 -0700
-Message-ID: <170568504418.1008395.721034168814753057.stgit@djiang5-mobl3>
+Date: Fri, 19 Jan 2024 10:24:11 -0700
+Message-ID: <170568505106.1008395.11049680010287891282.stgit@djiang5-mobl3>
 In-Reply-To: <170568485801.1008395.12244787918793980621.stgit@djiang5-mobl3>
 References: <170568485801.1008395.12244787918793980621.stgit@djiang5-mobl3>
 User-Agent: StGit/1.5
@@ -78,310 +76,137 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-When the CXL region is formed, the driver would computed the performance
-data for the region. However this data is not available at the node data
-collection that has been populated by the HMAT during kernel
-initialization. Add a memory hotplug notifier to update the access
-coordinates to the 'struct memory_target' context kept by the
-HMAT_REPORTING code.
+For the numa nodes that are not created by SRAT, no memory_target is
+allocated and is not managed by the HMAT_REPORTING code. Therefore
+hmat_callback() memory hotplug notifier will exit early on those NUMA
+nodes. The CXL memory hotplug notifier will need to call
+node_set_perf_attrs() directly in order to setup the access sysfs
+attributes.
 
-Add CXL_CALLBACK_PRI for a memory hotplug callback priority. Set the
-priority number to be called before HMAT_CALLBACK_PRI. The CXL update must
-happen before hmat_callback().
+In acpi_numa_init(), the last proximity domain (pxm) id created by SRAT is
+stored. Add a helper function acpi_node_backed_by_real_pxm() in order to
+check if a NUMA node id is defined by SRAT or created by CFMWS or some
+other methods.
 
-A new HMAT_REPORING helper hmat_update_target_coordinates() is added in
-order to allow CXL to update the memory_target access coordinates.
+node_set_perf_attrs() symbol is exported to allow update of perf attribs
+for a node. The sysfs path of
+/sys/devices/system/node/nodeX/access0/initiators/* is created by
+ndoe_set_perf_attrs() for the various attributes where nodeX is matched
+to the NUMA node of the CXL region.
 
-A new ext_updated member is added to the memory_target to indicate that
-the access coordinates within the memory_target has been updated by an
-external agent such as CXL. This prevents data being overwritten by the
-hmat_update_target_attrs() triggered by hmat_callback().
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Rafael J. Wysocki <rafael@kernel.org>
-Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
 Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 ---
-v4:
-- Update access_coordinates via HMAT_REPORING code and let hmat_callback()
-  notifier to expose the new numbers to sysfs.
-- Introduce CXL_CALLBACK_PRI and remove HMAT language (Dan)
----
- drivers/acpi/numa/hmat.c  |   36 ++++++++++++++++++++++
- drivers/cxl/core/cdat.c   |    6 ++++
- drivers/cxl/core/core.h   |    3 ++
- drivers/cxl/core/region.c |   75 +++++++++++++++++++++++++++++++++++++++++++++
- drivers/cxl/cxl.h         |    3 ++
- include/linux/acpi.h      |    9 +++++
- include/linux/memory.h    |    1 +
- 7 files changed, 133 insertions(+)
+ drivers/acpi/numa/srat.c  |   11 +++++++++++
+ drivers/base/node.c       |    1 +
+ drivers/cxl/core/cdat.c   |    5 +++++
+ drivers/cxl/core/core.h   |    1 +
+ drivers/cxl/core/region.c |    7 ++++++-
+ include/linux/acpi.h      |    1 +
+ 6 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index 5be79896bd08..dc75a3355164 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -74,6 +74,7 @@ struct memory_target {
- 	struct node_cache_attrs cache_attrs;
- 	u8 gen_port_device_handle[ACPI_SRAT_DEVICE_HANDLE_SIZE];
- 	bool registered;
-+	bool ext_updated;	/* externally updated */
- };
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index 12f330b0eac0..2f6f15b3891d 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -29,6 +29,8 @@ static int node_to_pxm_map[MAX_NUMNODES]
+ unsigned char acpi_srat_revision __initdata;
+ static int acpi_numa __initdata;
  
- struct memory_initiator {
-@@ -328,6 +329,35 @@ static void hmat_update_target_access(struct memory_target *target,
++static int last_real_pxm;
++
+ void __init disable_srat(void)
+ {
+ 	acpi_numa = -1;
+@@ -536,6 +538,7 @@ int __init acpi_numa_init(void)
+ 		if (node_to_pxm_map[i] > fake_pxm)
+ 			fake_pxm = node_to_pxm_map[i];
  	}
++	last_real_pxm = fake_pxm;
+ 	fake_pxm++;
+ 	acpi_table_parse_cedt(ACPI_CEDT_TYPE_CFMWS, acpi_parse_cfmws,
+ 			      &fake_pxm);
+@@ -547,6 +550,14 @@ int __init acpi_numa_init(void)
+ 	return 0;
  }
  
-+int hmat_update_target_coordinates(int nid, struct access_coordinate *coord,
-+				   enum access_coordinate_class access)
++bool acpi_node_backed_by_real_pxm(int nid)
 +{
-+	struct memory_target *target;
-+	int pxm;
++	int pxm = node_to_pxm(nid);
 +
-+	if (nid == NUMA_NO_NODE)
-+		return -EINVAL;
-+
-+	pxm = node_to_pxm(nid);
-+	guard(mutex)(&target_lock);
-+	target = find_mem_target(pxm);
-+	if (!target)
-+		return -ENODEV;
-+
-+	hmat_update_target_access(target, ACPI_HMAT_READ_LATENCY,
-+				  coord->read_latency, access);
-+	hmat_update_target_access(target, ACPI_HMAT_WRITE_LATENCY,
-+				  coord->write_latency, access);
-+	hmat_update_target_access(target, ACPI_HMAT_READ_BANDWIDTH,
-+				  coord->read_bandwidth, access);
-+	hmat_update_target_access(target, ACPI_HMAT_WRITE_BANDWIDTH,
-+				  coord->write_bandwidth, access);
-+	target->ext_updated = true;
-+
-+	return 0;
++	return pxm <= last_real_pxm;
 +}
-+EXPORT_SYMBOL_GPL(hmat_update_target_coordinates);
++EXPORT_SYMBOL_GPL(acpi_node_backed_by_real_pxm);
 +
- static __init void hmat_add_locality(struct acpi_hmat_locality *hmat_loc)
+ static int acpi_get_pxm(acpi_handle h)
  {
- 	struct memory_locality *loc;
-@@ -699,6 +729,12 @@ static void hmat_update_target_attrs(struct memory_target *target,
- 	u32 best = 0;
- 	int i;
+ 	unsigned long long pxm;
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index b4a449f07f2a..8d0b09769b77 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -215,6 +215,7 @@ void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
+ 		}
+ 	}
+ }
++EXPORT_SYMBOL_GPL(node_set_perf_attrs);
  
-+	/*
-+	 * Don't update if an external agent has changed the data.
-+	 */
-+	if (target->ext_updated)
-+		return;
-+
- 	/* Don't update for generic port if there's no device handle */
- 	if ((access == NODE_ACCESS_CLASS_GENPORT_SINK_LOCAL ||
- 	     access == NODE_ACCESS_CLASS_GENPORT_SINK_CPU) &&
+ /**
+  * struct node_cache_info - Internal tracking for memory node caches
 diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
-index 7acb5837afad..3556c897ece4 100644
+index 3556c897ece4..7d7163f999e8 100644
 --- a/drivers/cxl/core/cdat.c
 +++ b/drivers/cxl/core/cdat.c
-@@ -620,3 +620,9 @@ void cxl_region_perf_data_calculate(struct cxl_region *cxlr,
- 			DIV_ROUND_UP(cxlr->coord[i].write_latency, 1000);
- 	}
+@@ -626,3 +626,8 @@ int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
+ {
+ 	return hmat_update_target_coordinates(nid, &cxlr->coord[access], access);
  }
 +
-+int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
-+				       enum access_coordinate_class access)
++bool cxl_need_node_perf_attrs_update(int nid)
 +{
-+	return hmat_update_target_coordinates(nid, &cxlr->coord[access], access);
++	return !acpi_node_backed_by_real_pxm(nid);
 +}
 diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-index 3b64fb1b9ed0..e19800a7ce06 100644
+index e19800a7ce06..bc5a95665aa0 100644
 --- a/drivers/cxl/core/core.h
 +++ b/drivers/cxl/core/core.h
-@@ -90,4 +90,7 @@ enum cxl_poison_trace_type {
+@@ -92,5 +92,6 @@ long cxl_pci_get_latency(struct pci_dev *pdev);
  
- long cxl_pci_get_latency(struct pci_dev *pdev);
+ int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
+ 				       enum access_coordinate_class access);
++bool cxl_need_node_perf_attrs_update(int nid);
  
-+int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
-+				       enum access_coordinate_class access);
-+
  #endif /* __CXL_CORE_H__ */
 diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 978d1707964a..ae1f34e1cd05 100644
+index ae1f34e1cd05..66f126067bda 100644
 --- a/drivers/cxl/core/region.c
 +++ b/drivers/cxl/core/region.c
-@@ -4,6 +4,7 @@
- #include <linux/genalloc.h>
- #include <linux/device.h>
- #include <linux/module.h>
-+#include <linux/memory.h>
- #include <linux/slab.h>
- #include <linux/uuid.h>
- #include <linux/sort.h>
-@@ -156,12 +157,22 @@ static const struct attribute_group cxl_region_access0_coordinate_group = {
- 	.is_visible = cxl_region_access0_coordinate_visible,
- };
+@@ -3084,7 +3084,12 @@ static bool cxl_region_update_coordinates(struct cxl_region *cxlr, int nid)
  
-+static const struct attribute_group *get_cxl_region_access0_group(void)
-+{
-+	return &cxl_region_access0_coordinate_group;
-+}
+ 	for (int i = 0; i < ACCESS_COORDINATE_MAX; i++) {
+ 		if (cxlr->coord[i].read_bandwidth) {
+-			rc = cxl_update_hmat_access_coordinates(nid, cxlr, i);
++			rc = 0;
++			if (cxl_need_node_perf_attrs_update(nid))
++				node_set_perf_attrs(nid, &cxlr->coord[i], i);
++			else
++				rc = cxl_update_hmat_access_coordinates(nid, cxlr, i);
 +
- static const struct attribute_group cxl_region_access1_coordinate_group = {
- 	.name = "access1",
- 	.attrs = access1_coordinate_attrs,
- 	.is_visible = cxl_region_access1_coordinate_visible,
- };
- 
-+static const struct attribute_group *get_cxl_region_access1_group(void)
-+{
-+	return &cxl_region_access1_coordinate_group;
-+}
-+
- static ssize_t uuid_show(struct device *dev, struct device_attribute *attr,
- 			 char *buf)
- {
-@@ -3066,6 +3077,65 @@ static int is_system_ram(struct resource *res, void *arg)
- 	return 1;
- }
- 
-+static bool cxl_region_update_coordinates(struct cxl_region *cxlr, int nid)
-+{
-+	int cset = 0;
-+	int rc;
-+
-+	for (int i = 0; i < ACCESS_COORDINATE_MAX; i++) {
-+		if (cxlr->coord[i].read_bandwidth) {
-+			rc = cxl_update_hmat_access_coordinates(nid, cxlr, i);
-+			if (rc == 0)
-+				cset++;
-+		}
-+	}
-+
-+	if (!cset)
-+		return false;
-+
-+	rc = sysfs_update_group(&cxlr->dev.kobj, get_cxl_region_access0_group());
-+	if (rc)
-+		dev_dbg(&cxlr->dev, "Failed to update access0 group\n");
-+
-+	rc = sysfs_update_group(&cxlr->dev.kobj, get_cxl_region_access1_group());
-+	if (rc)
-+		dev_dbg(&cxlr->dev, "Failed to update access1 group\n");
-+
-+	return true;
-+}
-+
-+static int cxl_region_perf_attrs_callback(struct notifier_block *nb,
-+					  unsigned long action, void *arg)
-+{
-+	struct cxl_region *cxlr = container_of(nb, struct cxl_region,
-+					       memory_notifier);
-+	struct cxl_region_params *p = &cxlr->params;
-+	struct cxl_endpoint_decoder *cxled = p->targets[0];
-+	struct cxl_decoder *cxld = &cxled->cxld;
-+	struct memory_notify *mnb = arg;
-+	int nid = mnb->status_change_nid;
-+	int region_nid;
-+
-+	if (nid == NUMA_NO_NODE || action != MEM_ONLINE)
-+		return NOTIFY_DONE;
-+
-+	region_nid = phys_to_target_node(cxld->hpa_range.start);
-+	if (nid != region_nid)
-+		return NOTIFY_DONE;
-+
-+	if (!cxl_region_update_coordinates(cxlr, nid))
-+		return NOTIFY_DONE;
-+
-+	return NOTIFY_OK;
-+}
-+
-+static void remove_coord_notifier(void *data)
-+{
-+	struct cxl_region *cxlr = data;
-+
-+	unregister_memory_notifier(&cxlr->memory_notifier);
-+}
-+
- static int cxl_region_probe(struct device *dev)
- {
- 	struct cxl_region *cxlr = to_cxl_region(dev);
-@@ -3091,6 +3161,11 @@ static int cxl_region_probe(struct device *dev)
- 		goto out;
- 	}
- 
-+	cxlr->memory_notifier.notifier_call = cxl_region_perf_attrs_callback;
-+	cxlr->memory_notifier.priority = CXL_CALLBACK_PRI;
-+	register_memory_notifier(&cxlr->memory_notifier);
-+	rc = devm_add_action_or_reset(&cxlr->dev, remove_coord_notifier, cxlr);
-+
- 	/*
- 	 * From this point on any path that changes the region's state away from
- 	 * CXL_CONFIG_COMMIT is also responsible for releasing the driver.
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index f6637fa33113..556348c8835e 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -6,6 +6,7 @@
- 
- #include <linux/libnvdimm.h>
- #include <linux/bitfield.h>
-+#include <linux/notifier.h>
- #include <linux/bitops.h>
- #include <linux/log2.h>
- #include <linux/node.h>
-@@ -520,6 +521,7 @@ struct cxl_region_params {
-  * @flags: Region state flags
-  * @params: active + config params for the region
-  * @coord: QoS access coordinates for the region
-+ * @memory_notifier: notifier for setting the access coordinates to node
-  */
- struct cxl_region {
- 	struct device dev;
-@@ -531,6 +533,7 @@ struct cxl_region {
- 	unsigned long flags;
- 	struct cxl_region_params params;
- 	struct access_coordinate coord[ACCESS_COORDINATE_MAX];
-+	struct notifier_block memory_notifier;
- };
- 
- struct cxl_nvdimm_bridge {
+ 			if (rc == 0)
+ 				cset++;
+ 		}
 diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 8b0761c682f9..1c664948b2ae 100644
+index 1c664948b2ae..3067c6aad431 100644
 --- a/include/linux/acpi.h
 +++ b/include/linux/acpi.h
-@@ -427,12 +427,21 @@ extern bool acpi_osi_is_win8(void);
- 
- #ifdef CONFIG_ACPI_HMAT
- int acpi_get_genport_coordinates(u32 uid, struct access_coordinate *coord);
-+int hmat_update_target_coordinates(int nid, struct access_coordinate *coord,
-+				   enum access_coordinate_class access);
- #else
- static inline int acpi_get_genport_coordinates(u32 uid,
- 					       struct access_coordinate *coord)
- {
- 	return -EOPNOTSUPP;
- }
-+
-+static inline int hmat_update_target_coordinates(int nid,
-+						 struct access_coordinate *coord,
-+						 enum access_coordinate_class access)
-+{
-+	return -EOPNOTSUPP;
-+}
- #endif
- 
+@@ -447,6 +447,7 @@ static inline int hmat_update_target_coordinates(int nid,
  #ifdef CONFIG_ACPI_NUMA
-diff --git a/include/linux/memory.h b/include/linux/memory.h
-index f53cfdaaaa41..d8588256578a 100644
---- a/include/linux/memory.h
-+++ b/include/linux/memory.h
-@@ -114,6 +114,7 @@ struct mem_section;
- #define DEFAULT_CALLBACK_PRI	0
- #define SLAB_CALLBACK_PRI	1
- #define HMAT_CALLBACK_PRI	2
-+#define CXL_CALLBACK_PRI	5
- #define MM_COMPUTE_BATCH_PRI	10
- #define CPUSET_CALLBACK_PRI	10
- #define MEMTIER_HOTPLUG_PRI	100
+ int acpi_map_pxm_to_node(int pxm);
+ int acpi_get_node(acpi_handle handle);
++bool acpi_node_backed_by_real_pxm(int nid);
+ 
+ /**
+  * pxm_to_online_node - Map proximity ID to online node
 
 
 
