@@ -1,97 +1,159 @@
-Return-Path: <linux-acpi+bounces-2958-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2960-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575658355D7
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 Jan 2024 13:56:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCDE8356AF
+	for <lists+linux-acpi@lfdr.de>; Sun, 21 Jan 2024 17:39:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0F381F21819
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 Jan 2024 12:56:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B498A1F21457
+	for <lists+linux-acpi@lfdr.de>; Sun, 21 Jan 2024 16:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552D937152;
-	Sun, 21 Jan 2024 12:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A70437147;
+	Sun, 21 Jan 2024 16:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JBkIyFi4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CpBc+JVJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83107364A7;
-	Sun, 21 Jan 2024 12:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A2C34550;
+	Sun, 21 Jan 2024 16:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705841795; cv=none; b=Cb3MaaEoPtbfVpqlGJHUGkmlNQADBg7zKPXde/2srC3lPsKRudSsnZC09h2sTtLQzll8PeUcxATu0lj+TdzAS0zYQKBKx6dnH2uqvLHWZBkMCxNvrifHiMyVOGS4H9PtAnoInQzPcdSUwW5FZpRK5ruNsxlUJhIVV4YgYdIbguo=
+	t=1705855140; cv=none; b=Z203qOX4aY3YTCpvFpmJXiKg/7m+bXi6W7Hhz5dCb8pCZSJycaF9Jk86gZXzLVHUJ8oXiBF1QWeMT88wEHfOu/BQQS+HWfWy6bDm4YncbISOxLl+CZi1qc/+Ikug4VkxQGYx9hRUi5xvWhG+IZyD9lGgfuYCRX7WNCIWi6kvaC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705841795; c=relaxed/simple;
-	bh=CU8CVt0gIhATyZrqsZlQzuxnGQAXF7t8casXv8CS7Go=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RIWSyWUmlgg9eMv2Q1SlplWUuHZwb284NnQ2dYL7MmS1eUJdhqowxizuJVbwHjiJ3CvMGndeEfDJAYPkednsw5piLHl4owncGbg30pHxdNwx8mYmEk4iyyWxexdJ1N2H6fuYULVRlLQlzJCkufu/o1BwZi29Fqs2oVbX0aE2Skg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JBkIyFi4; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705841794; x=1737377794;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CU8CVt0gIhATyZrqsZlQzuxnGQAXF7t8casXv8CS7Go=;
-  b=JBkIyFi4xXgSeiLUFHzyf7qCHYVmNybE3t9VIGiFODsjoVDrvaEuknL6
-   IIym4B6Op/N64Vlv5kRIs8ntkLlKZ+xyEClMBoF55RKx8bwjm1U2bVvXh
-   88lDVcjwLhFnNZz81Da9HmshFsCjycf0hYLXIc8Y9L3+w2KVFs8V2oWgk
-   o3UgeAo5JOm6JfGkpFm+6RvUZ2LEJYXLCzoa07SAFY7rKDgl9R56F2+2X
-   RVCjHM1DE/9N0Y+0Nrkd4h5Uyp+Lu15ctsCUNs5LlQnwHScCt/TZ6V+YJ
-   VS8ejrIG/NZ25G2wrXeKr2IfxkFP7kxTq1kqQeFWc7DRf4op3BgDlxSyn
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10959"; a="7705119"
-X-IronPort-AV: E=Sophos;i="6.05,209,1701158400"; 
-   d="scan'208";a="7705119"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 04:56:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10959"; a="1032341043"
-X-IronPort-AV: E=Sophos;i="6.05,209,1701158400"; 
-   d="scan'208";a="1032341043"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 04:56:30 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rRXND-0000000Fcqz-0jn9;
-	Sun, 21 Jan 2024 14:56:27 +0200
-Date: Sun, 21 Jan 2024 14:56:26 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	"open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	linux-acpi@vger.kernel.org, stable@vger.kernel.org,
-	George Melikov <mail@gmelikov.ru>
-Subject: Re: [PATCH] gpiolib: acpi: Ignore touchpad wakeup on GPD G1619-04
-Message-ID: <Za0UenM4CweUNZhW@smile.fi.intel.com>
-References: <20240117142942.5924-1-mario.limonciello@amd.com>
+	s=arc-20240116; t=1705855140; c=relaxed/simple;
+	bh=IveSG9w2cySCDzTVB6sh7mkjc06OisQW+mSDCMXOLTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dkiYzMSJVVm1raekvPiJILgnsPPT504uY5bO8C83uM/Xs3LApvaLUP4N9ld7nz+gUvGuikrRLKr74buYPETMxYz0/FmTqK8PKDPFba7BmwPlrLMvDTRNT7goD/NQxG7R/j6IEiUFFDaGwIhPJPuCYZgLRc+mSIYEnQ8DB61mOKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CpBc+JVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70280C43390;
+	Sun, 21 Jan 2024 16:38:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705855140;
+	bh=IveSG9w2cySCDzTVB6sh7mkjc06OisQW+mSDCMXOLTQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=CpBc+JVJSlhBQ++UpKAxuK3aWFzgongPgBPheyLZpm0Gr/lmsMP8smI/rWHnFWln9
+	 gXP5B35l3xiIIG3sv7Ac+ANutHxTX92wBLzYBT0OoTwg7PgACeylFVF4ibGglWWSpT
+	 teOS5olEAfx/CAtYQ6+NAh2YLpzYz0EN63TorxqPHoNxPbil06SylFvChS1dSAIkWy
+	 lM9NGtBv17BQbIuf6sIOzXHspzC8iHQ0Quu+Idi5puUAonoboi+CGLBWd0z85MUSKH
+	 6Rt1+8M7aMzfqsfUmu7bWxbc5AQvtGkrtcre2zUY/gsLW0SBkiNEDx+7uOA5dCzdvO
+	 Rph/YbH0FRnqQ==
+Date: Sun, 21 Jan 2024 16:38:29 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>, Len
+ Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, Heikki
+ Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Cosmin Tanislav <cosmin.tanislav@analog.com>, Mihail Chindris
+ <mihail.chindris@analog.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Tomislav Denis <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>,
+ Olivier Moysan <olivier.moysan@foss.st.com>, Fabrice Gasnier
+ <fabrice.gasnier@foss.st.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
+ <dmitry.baryshkov@linaro.org>, Marijn Suijten
+ <marijn.suijten@somainline.org>, Marius Cristea
+ <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>
+Subject: Re: [PATCH 01/13] device property: Add cleanup.h based
+ fwnode_handle_put() scope based cleanup.
+Message-ID: <20240121163714.3670498f@jic23-huawei>
+In-Reply-To: <Za0N_5Hp2s-uwOoM@smile.fi.intel.com>
+References: <20240114172009.179893-1-jic23@kernel.org>
+	<20240114172009.179893-2-jic23@kernel.org>
+	<Za0N_5Hp2s-uwOoM@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240117142942.5924-1-mario.limonciello@amd.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 17, 2024 at 08:29:42AM -0600, Mario Limonciello wrote:
-> Spurious wakeups are reported on the GPD G1619-04 which
-> can be absolved by programming the GPIO to ignore wakeups.
+On Sun, 21 Jan 2024 14:28:47 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> On Sun, Jan 14, 2024 at 05:19:57PM +0000, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > This allows the following
+> > 
+> > struct fwnode_handle *child __free(kfree) = NULL;
 
+That's garbage.  Should be __free(fwnode_handle)!
 
--- 
-With Best Regards,
-Andy Shevchenko
+> > 
+> > device_for_each_child_node(dev, child) {
+> > 	if (false)
+> > 		return -EINVAL;
+> > }
+> > 
+> > without the fwnode_handle_put() call which tends to complicate early
+> > exits from such loops and lead to resource leak bugs.
+> > 
+> > Can also be used where the fwnode_handle was obtained from a call
+> > such as fwnode_find_reference() as it will safely do nothing if
+> > IS_ERR() is true.  
+> 
+> ...
+> 
+> >  struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
+> >  void fwnode_handle_put(struct fwnode_handle *fwnode);  
+> 
+> I would add a blank line here
+> 
+> > +DEFINE_FREE(fwnode_handle, struct fwnode_handle *,
+> > +	    if (!IS_ERR_OR_NULL(_T)) fwnode_handle_put(_T))
+> >  
+> >  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
+> >  int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);  
+> 
+> With the above,
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+Thanks Andy - however..
 
+The discussion with Rob about the DT equivalent took an interesting turn.
 
+He raised the concern that the __free was not always tightly coupled with the
+equivalent of  device_for_each_child_node() which as per similar
+discussions elsewhere results in:
+a) Potentially wrong ordering if there is other cleanup.h based stuff going on
+   in the same function.
+b) A lack of association between the setup of the free and what it is undoing.
+  (this was the one Rob pointed at).
+
+I proposed two options that here map to
+1) Always drag the declaration next to the device_for_each_child_node()
+   and intentionally don't set it to NULL.
+
+{
+	.... stuff....
+
+	struct fwnode_handle *child __free(fwnode);
+	device_for_each_child_node(dev, child) {
+	}
+
+2) Scoped version of the loops themselves.
+
+#define device_for_each_child_node_scoped(dev, child)				\
+	for (struct fw_node_handle *child __free(fwnode_handle)                 \
+		 = device_get_next_child_node(dev, NULL);                       \
+	    child; child = device_get_next_child_node(dev, child))
+
+So that the child only exists at all in the scope of the loop.
+
+What do you think of the options?
+
+DT thread is here:
+https://lore.kernel.org/linux-iio/20240114165358.119916-1-jic23@kernel.org/T/#t
+
+Jonathan
 
