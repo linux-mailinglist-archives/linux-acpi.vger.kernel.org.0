@@ -1,159 +1,144 @@
-Return-Path: <linux-acpi+bounces-2960-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2961-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCDE8356AF
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 Jan 2024 17:39:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF918835732
+	for <lists+linux-acpi@lfdr.de>; Sun, 21 Jan 2024 19:06:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B498A1F21457
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 Jan 2024 16:39:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5032FB21B05
+	for <lists+linux-acpi@lfdr.de>; Sun, 21 Jan 2024 18:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A70437147;
-	Sun, 21 Jan 2024 16:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CpBc+JVJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD20C381D3;
+	Sun, 21 Jan 2024 18:06:15 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A2C34550;
-	Sun, 21 Jan 2024 16:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAA83771A;
+	Sun, 21 Jan 2024 18:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705855140; cv=none; b=Z203qOX4aY3YTCpvFpmJXiKg/7m+bXi6W7Hhz5dCb8pCZSJycaF9Jk86gZXzLVHUJ8oXiBF1QWeMT88wEHfOu/BQQS+HWfWy6bDm4YncbISOxLl+CZi1qc/+Ikug4VkxQGYx9hRUi5xvWhG+IZyD9lGgfuYCRX7WNCIWi6kvaC0=
+	t=1705860375; cv=none; b=N24YxiVG3Oll93Esmg/ZU7b8IZoupE5nCM7+ut8WzduQXO3Z9kVYcG0x9m7IC1nzPpqCe2RE2ZoBnSgREEFeJ1dXlHUnyyZZbcLHuRR/U4y3aCiBQWA2ttMzEsAFk1yVy3hkto7/vr1YixZjt7W9CyT/m9eUyT0Su4AjdANfVc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705855140; c=relaxed/simple;
-	bh=IveSG9w2cySCDzTVB6sh7mkjc06OisQW+mSDCMXOLTQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dkiYzMSJVVm1raekvPiJILgnsPPT504uY5bO8C83uM/Xs3LApvaLUP4N9ld7nz+gUvGuikrRLKr74buYPETMxYz0/FmTqK8PKDPFba7BmwPlrLMvDTRNT7goD/NQxG7R/j6IEiUFFDaGwIhPJPuCYZgLRc+mSIYEnQ8DB61mOKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CpBc+JVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70280C43390;
-	Sun, 21 Jan 2024 16:38:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705855140;
-	bh=IveSG9w2cySCDzTVB6sh7mkjc06OisQW+mSDCMXOLTQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CpBc+JVJSlhBQ++UpKAxuK3aWFzgongPgBPheyLZpm0Gr/lmsMP8smI/rWHnFWln9
-	 gXP5B35l3xiIIG3sv7Ac+ANutHxTX92wBLzYBT0OoTwg7PgACeylFVF4ibGglWWSpT
-	 teOS5olEAfx/CAtYQ6+NAh2YLpzYz0EN63TorxqPHoNxPbil06SylFvChS1dSAIkWy
-	 lM9NGtBv17BQbIuf6sIOzXHspzC8iHQ0Quu+Idi5puUAonoboi+CGLBWd0z85MUSKH
-	 6Rt1+8M7aMzfqsfUmu7bWxbc5AQvtGkrtcre2zUY/gsLW0SBkiNEDx+7uOA5dCzdvO
-	 Rph/YbH0FRnqQ==
-Date: Sun, 21 Jan 2024 16:38:29 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>, Len
- Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, Heikki
- Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Cosmin Tanislav <cosmin.tanislav@analog.com>, Mihail Chindris
- <mihail.chindris@analog.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Tomislav Denis <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>,
- Olivier Moysan <olivier.moysan@foss.st.com>, Fabrice Gasnier
- <fabrice.gasnier@foss.st.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
- <dmitry.baryshkov@linaro.org>, Marijn Suijten
- <marijn.suijten@somainline.org>, Marius Cristea
- <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rob Herring
- <robh@kernel.org>
+	s=arc-20240116; t=1705860375; c=relaxed/simple;
+	bh=81aKm7pGIU9mO5TTr5l32nCFEOMw/mDBv9eGLSJb1Rc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V8o9v/yKOhGkaU7VlzAgoPWFiD6scZsQ2TeFFrbRV0uH/g+MPlskevdkOcfGoQN0Z2uYGOeE+zQHZ3w0FZRm1ZlvSrg/sUcU0mDXJB3jGJZ580pmA9MVqUbZUFbAyV/Jo92P+ntriUDw/2PPRoD5SzqYwkSBTDeUHj1HcZqX4k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 50F96300002CB;
+	Sun, 21 Jan 2024 19:06:03 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 433952C4F2B; Sun, 21 Jan 2024 19:06:03 +0100 (CET)
+Date: Sun, 21 Jan 2024 19:06:03 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Mihail Chindris <mihail.chindris@analog.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Tomislav Denis <tomislav.denis@avl.com>,
+	Marek Vasut <marex@denx.de>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Subject: Re: [PATCH 01/13] device property: Add cleanup.h based
  fwnode_handle_put() scope based cleanup.
-Message-ID: <20240121163714.3670498f@jic23-huawei>
-In-Reply-To: <Za0N_5Hp2s-uwOoM@smile.fi.intel.com>
+Message-ID: <20240121180603.GA13937@wunner.de>
 References: <20240114172009.179893-1-jic23@kernel.org>
-	<20240114172009.179893-2-jic23@kernel.org>
-	<Za0N_5Hp2s-uwOoM@smile.fi.intel.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.40; x86_64-pc-linux-gnu)
+ <20240114172009.179893-2-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240114172009.179893-2-jic23@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Sun, 21 Jan 2024 14:28:47 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-
-> On Sun, Jan 14, 2024 at 05:19:57PM +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > This allows the following
-> > 
-> > struct fwnode_handle *child __free(kfree) = NULL;
-
-That's garbage.  Should be __free(fwnode_handle)!
-
-> > 
-> > device_for_each_child_node(dev, child) {
-> > 	if (false)
-> > 		return -EINVAL;
-> > }
-> > 
-> > without the fwnode_handle_put() call which tends to complicate early
-> > exits from such loops and lead to resource leak bugs.
-> > 
-> > Can also be used where the fwnode_handle was obtained from a call
-> > such as fwnode_find_reference() as it will safely do nothing if
-> > IS_ERR() is true.  
+On Sun, Jan 14, 2024 at 05:19:57PM +0000, Jonathan Cameron wrote:
+> This allows the following
 > 
-> ...
+> struct fwnode_handle *child __free(fwnode_handle) = NULL;
 > 
-> >  struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
-> >  void fwnode_handle_put(struct fwnode_handle *fwnode);  
+> device_for_each_child_node(dev, child) {
+> 	if (false)
+> 		return -EINVAL;
+> }
 > 
-> I would add a blank line here
+> without the fwnode_handle_put() call which tends to complicate early
+> exits from such loops and lead to resource leak bugs.
 > 
-> > +DEFINE_FREE(fwnode_handle, struct fwnode_handle *,
-> > +	    if (!IS_ERR_OR_NULL(_T)) fwnode_handle_put(_T))
-> >  
-> >  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
-> >  int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);  
+> Can also be used where the fwnode_handle was obtained from a call
+> such as fwnode_find_reference() as it will safely do nothing if
+> IS_ERR() is true.
 > 
-> With the above,
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-Thanks Andy - however..
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+> v1: Thanks to Andy for reviewing the RFC.
+>     Add check for if (!IS_ERR_OR_NULL(_T)) to allow the compiler to optimize
+>     cases where it knows the passed in parameter is NULL or an error pointer.
 
-The discussion with Rob about the DT equivalent took an interesting turn.
+Heads-up:  Using IS_ERR_OR_NULL() in DEFINE_FREE() macros bloats
+the code with additional IS_ERR() checks and NULL pointer checks.
 
-He raised the concern that the __free was not always tightly coupled with the
-equivalent of  device_for_each_child_node() which as per similar
-discussions elsewhere results in:
-a) Potentially wrong ordering if there is other cleanup.h based stuff going on
-   in the same function.
-b) A lack of association between the setup of the free and what it is undoing.
-  (this was the one Rob pointed at).
+See the detailed explanation in this patch which adds a DEFINE_FREE()
+macro for x509_free_certificate():
 
-I proposed two options that here map to
-1) Always drag the declaration next to the device_for_each_child_node()
-   and intentionally don't set it to NULL.
+https://lore.kernel.org/all/70ecd3904a70d2b92f8f1e04365a2b9ce66fac25.1705857475.git.lukas@wunner.de/
 
-{
-	.... stuff....
+I'm wondering if a solution might be to stop returning IS_ERR()
+from "constructors" such as x509_cert_parse() and instead assign
+the created "object" (x509_certificate) to a call-by-reference
+pointer and return an integer.  If the returned integer is not 0,
+inhibit "destruction" of the "object" with no_free_ptr().
 
-	struct fwnode_handle *child __free(fwnode);
-	device_for_each_child_node(dev, child) {
-	}
+Thoughts?
 
-2) Scoped version of the loops themselves.
 
-#define device_for_each_child_node_scoped(dev, child)				\
-	for (struct fw_node_handle *child __free(fwnode_handle)                 \
-		 = device_get_next_child_node(dev, NULL);                       \
-	    child; child = device_get_next_child_node(dev, child))
+> +DEFINE_FREE(fwnode_handle, struct fwnode_handle *,
+> +	    if (!IS_ERR_OR_NULL(_T)) fwnode_handle_put(_T))
 
-So that the child only exists at all in the scope of the loop.
+If you do not align the "if" to the opening parenthesis,
+checkpatch --strict complains:
+"CHECK: Alignment should match open parenthesis"
 
-What do you think of the options?
+If you do align to the opening parenthesis, it complains:
+"WARNING: Statements should start on a tabstop"
 
-DT thread is here:
-https://lore.kernel.org/linux-iio/20240114165358.119916-1-jic23@kernel.org/T/#t
+I chose the latter for x509_free_certificate() for aesthetic reasons.
 
-Jonathan
+Either way, checkpatch still emits:
+
+ERROR: trailing statements should be on next line"
+#183: FILE: crypto/asymmetric_keys/x509_parser.h:49:
++	    if (!IS_ERR_OR_NULL(_T)) x509_free_certificate(_T))
+
+Can't make it happy with these new-fangled DEFINE_FREE macros it seems. :(
+
+Thanks,
+
+Lukas
 
