@@ -1,114 +1,160 @@
-Return-Path: <linux-acpi+bounces-2979-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2980-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE3C8375AA
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jan 2024 22:56:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D408377C5
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 00:37:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4A981F28991
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jan 2024 21:56:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 061121C24202
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jan 2024 23:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A9C482DA;
-	Mon, 22 Jan 2024 21:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C514D59A;
+	Mon, 22 Jan 2024 23:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="XtyKsMO6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OwICVcvb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8277482D1;
-	Mon, 22 Jan 2024 21:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BDA3984A;
+	Mon, 22 Jan 2024 23:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705960594; cv=none; b=i8hjAvBWh8M9rJmYc5rKtMPrDFRlkZwR0w3mSwok36IeojqP+uYxDGK+0UJPizqLBPLXR/FseBQ1Ru7e2xAP6GMzRKtoMWLymdBUTzGhQ3Jj+kOqU9dO0bArlL0Jge4HAFdkGKwf94bVycri2uve7MUgDPNOemvS8CKsc4uPqn0=
+	t=1705966654; cv=none; b=mz970picJTHYMjVf4WWpwppdK6EOky+HNxDw1uVi1pJXBwXK/8sq9Xi3eNHCXTAjguJbax16l4v+5vQW7aNB9nf4W0bZxZWxYTuVIU8C0+oJC5nw21p/QKNjGXe1FErv5yU6spUdQxdMao0gC6edH8WXvRPS/pB2drdHeJ/6r8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705960594; c=relaxed/simple;
-	bh=J8tuHVuaRf99BTjAxEXGtJuL5FiKMuM5URapCqBOWYg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lNMZvzMP28Cr9njWSm5dY5LwhGYOwmexYPGCarCthcqhhELbhXYnTof+hy9NZM+MBh2/BI8HqqLQ1Fu3hjDX5aKleAdRXsNlW/k+DsDnZgCL0cb4w6GvxIyYC/Ks7WaTBStMInOzsSWk6h2NUgVWxrx3JvUa1kNKImiIw+3r3HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=XtyKsMO6; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=DlkxdPo00vFXMtifZbwmiD3pZWcfGIoDSDnanNUdXxo=; b=XtyKsMO6Yn2dYk1lNRNde3BiDP
-	un+RAJyMR6k8+9e/yJl2r+Ov0qOcDIbhiz/y/7GX3fw87B0GNJ/3HmCLVJiLb2Ks1V96LgACams6f
-	cX+obUMvFpeX/Pmcl6RnUH2y50c9vxvFy0DDxefuB+2qrsso/uyXuGtyvj3A9FRQHRH/QBhxa5OTm
-	Zz/RSWt46rOm+BHPj4216FX8QXMjUNV0DnJe0jlcqUzpr7YBglGllncVFHK+j40azOzpeA1xvOtkS
-	tXvN5txsFycplH3UgwgXX380INC6PxDJ2P3HQ+KLP+EUK49pbp89QiATkRHw/56ttdlNvv/I2Oqdt
-	A0vRazAA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50158)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1rS2HI-0001cI-2Q;
-	Mon, 22 Jan 2024 21:56:24 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1rS2HC-0001MW-T5; Mon, 22 Jan 2024 21:56:18 +0000
-Date: Mon, 22 Jan 2024 21:56:18 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
-	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
-	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-	Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	jianyong.wu@arm.com, justin.he@arm.com,
-	James Morse <james.morse@arm.com>
-Subject: Re: [PATCH RFC v3 04/21] ACPI: processor: Register all CPUs from
- acpi_processor_get_info()
-Message-ID: <Za7kglu6qO1n5ZCg@shell.armlinux.org.uk>
-References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk>
- <E1rDOg7-00Dvjq-VZ@rmk-PC.armlinux.org.uk>
- <CAJZ5v0je=-oVnSumZs=dzcyVuVUeVeTgO7yOnjGg1igyrS7EHQ@mail.gmail.com>
+	s=arc-20240116; t=1705966654; c=relaxed/simple;
+	bh=bFI9taIrnXtbiXPEufAdPBtLCLiLu4UVHc3GG4nClhw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=S8cw2/zMnfohoMyFdn5tUUQCGzxNKWlMu1yTy37Ir83CWSz24ujcq42+9m+pIhmoURowwmUFuIlKHGcoxqo+IkigqtPMLo/Vgri1oPKMZZOHGietzRbgpJKzLEvdy93j/tPKyiUzBtn/GR3sP5db554S+8ZWzPq01JnNxuuzvnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OwICVcvb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57147C43394;
+	Mon, 22 Jan 2024 23:37:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705966653;
+	bh=bFI9taIrnXtbiXPEufAdPBtLCLiLu4UVHc3GG4nClhw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=OwICVcvbQxSLC8jasEM24VJKS3vTz+1LDb+FcmZZDLCW7bpfPqjxs0dEHl4ACIFjn
+	 YcnhQuWeJ/IJc/q28szM0TWGQ2E3A4jDGh0jegpsrwaXzNjlLY5EmlP3VhwQt5djZ8
+	 dvYklSc8kUb/da5OKZgd/+PCthhVLxNI17WlTaUY+1ed1duP4ZsD+t6TNvaHa+Q6Yd
+	 hWr+An7oFQQaV3KzfoIrZ2Xq9oh/FzyCS20dGjuQe0/x/KbqjnqYo+10pPWqvmrG2U
+	 81dQwoBE36+Ox3tW3E4UlIrVQ7fohxhRc+OO/N1D6fwteHL8r16J3lcy3OXjEp8PJx
+	 o2wSyCnzhnk/A==
+Date: Mon, 22 Jan 2024 17:37:31 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Jiqian Chen <Jiqian.Chen@amd.com>
+Cc: Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>,
+	xen-devel@lists.xenproject.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	Stewart Hildebrand <Stewart.Hildebrand@amd.com>,
+	Huang Rui <Ray.Huang@amd.com>
+Subject: Re: [RFC KERNEL PATCH v4 3/3] PCI/sysfs: Add gsi sysfs for pci_dev
+Message-ID: <20240122233731.GA291870@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0je=-oVnSumZs=dzcyVuVUeVeTgO7yOnjGg1igyrS7EHQ@mail.gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20240105062217.349645-4-Jiqian.Chen@amd.com>
 
-On Mon, Dec 18, 2023 at 09:30:50PM +0100, Rafael J. Wysocki wrote:
-> On Wed, Dec 13, 2023 at 1:49 PM Russell King <rmk+kernel@armlinux.org.uk> wrote:
-> > Systems can still be booted with 'acpi=off', or not include an
-> > ACPI description at all. For these, the CPUs continue to be
-> > registered by cpu_dev_register_generic().
-> >
-> > This moves the CPU register logic back to a subsys_initcall(),
-> > while the memory nodes will have been registered earlier.
+On Fri, Jan 05, 2024 at 02:22:17PM +0800, Jiqian Chen wrote:
+> There is a need for some scenarios to use gsi sysfs.
+> For example, when xen passthrough a device to dumU, it will
+> use gsi to map pirq, but currently userspace can't get gsi
+> number.
+> So, add gsi sysfs for that and for other potential scenarios.
+
+Isn't GSI really an ACPI-specific concept?
+
+I don't know enough about Xen to know why it needs the GSI in
+userspace.  Is this passthrough brand new functionality that can't be
+done today because we don't expose the GSI yet?
+
+How does userspace use the GSI?  I see "to map pirq", but I think we
+should have more concrete details about exactly what is needed and how
+it is used before adding something new in sysfs.
+
+Is there some more generic kernel interface we could use
+for this?
+
+s/dumU/DomU/ ?  (I dunno, but https://www.google.com/search?q=xen+dumu
+suggests it :))
+
+> Co-developed-by: Huang Rui <ray.huang@amd.com>
+> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+> ---
+>  drivers/acpi/pci_irq.c  |  1 +
+>  drivers/pci/pci-sysfs.c | 11 +++++++++++
+>  include/linux/pci.h     |  2 ++
+>  3 files changed, 14 insertions(+)
 > 
-> Isn't this somewhat risky?
-
-Not really. The earlier full series moved the registration of CPUs
-from subsys (by the various architecture specific code) into the
-driver core - thus moving it much earlier. This patch merely
-restores it back to the subsys initialisation stage.
-
-There is a low chance that something _could_ have become reliant
-on that change - and the longer it takes for this change to be
-merged, the more risk there is that something could become reliant
-on CPUs being registered very early.
-
-Maybe this ought to be spelt out more explicitly that it's merely
-restoring the point at which CPUs are registered.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
+> index 630fe0a34bc6..739a58755df2 100644
+> --- a/drivers/acpi/pci_irq.c
+> +++ b/drivers/acpi/pci_irq.c
+> @@ -449,6 +449,7 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
+>  		kfree(entry);
+>  		return 0;
+>  	}
+> +	dev->gsi = gsi;
+>  
+>  	rc = acpi_register_gsi(&dev->dev, gsi, triggering, polarity);
+>  	if (rc < 0) {
+> diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+> index 2321fdfefd7d..c51df88d079e 100644
+> --- a/drivers/pci/pci-sysfs.c
+> +++ b/drivers/pci/pci-sysfs.c
+> @@ -71,6 +71,16 @@ static ssize_t irq_show(struct device *dev,
+>  }
+>  static DEVICE_ATTR_RO(irq);
+>  
+> +static ssize_t gsi_show(struct device *dev,
+> +			struct device_attribute *attr,
+> +			char *buf)
+> +{
+> +	struct pci_dev *pdev = to_pci_dev(dev);
+> +
+> +	return sysfs_emit(buf, "%u\n", pdev->gsi);
+> +}
+> +static DEVICE_ATTR_RO(gsi);
+> +
+>  static ssize_t broken_parity_status_show(struct device *dev,
+>  					 struct device_attribute *attr,
+>  					 char *buf)
+> @@ -596,6 +606,7 @@ static struct attribute *pci_dev_attrs[] = {
+>  	&dev_attr_revision.attr,
+>  	&dev_attr_class.attr,
+>  	&dev_attr_irq.attr,
+> +	&dev_attr_gsi.attr,
+>  	&dev_attr_local_cpus.attr,
+>  	&dev_attr_local_cpulist.attr,
+>  	&dev_attr_modalias.attr,
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index dea043bc1e38..0618d4a87a50 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -529,6 +529,8 @@ struct pci_dev {
+>  
+>  	/* These methods index pci_reset_fn_methods[] */
+>  	u8 reset_methods[PCI_NUM_RESET_METHODS]; /* In priority order */
+> +
+> +	unsigned int	gsi;
+>  };
+>  
+>  static inline struct pci_dev *pci_physfn(struct pci_dev *dev)
+> -- 
+> 2.34.1
+> 
+> 
 
