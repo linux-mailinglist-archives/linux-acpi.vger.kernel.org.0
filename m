@@ -1,145 +1,203 @@
-Return-Path: <linux-acpi+bounces-2968-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2969-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC602836460
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jan 2024 14:22:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 291B7836CA7
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jan 2024 18:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63BB41F23740
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jan 2024 13:22:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD2B628838B
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jan 2024 17:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313333CF5A;
-	Mon, 22 Jan 2024 13:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A59662A03;
+	Mon, 22 Jan 2024 16:02:34 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cae.in-ulm.de (cae.in-ulm.de [217.10.14.231])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F320E3CF42;
-	Mon, 22 Jan 2024 13:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.14.231
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552013E479;
+	Mon, 22 Jan 2024 16:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705929761; cv=none; b=iX0VHcjK4H3zOfeMY0o/EK3QhCziuwcRtpOSMpk7ngRVixh0TI48oXarBiPDz3PoiB19op66wdeZEosgat3ELumzA4oeXB5+SLHSIuYQdD6coHa6uVSNlBBrb2vsvGa+hQfMBWSYGLdZhmN/AAOdi6wRbvtZzD41QuC5TCNRm28=
+	t=1705939354; cv=none; b=Rwzu8Dclo0PlUkoy6lIeD1MXAoFqViOPGQPt2vtlgYs2O7qJ1VeeKDKhtSQV2NiyF4oKTDPsZKZbVsPv7HpcDaGwtUONmREuN7SNZg3u9LCdhYVeY+KG/csBc3TnXmEeyaH3Fo6otiDTM88L8me+5eUQeT1xWJPozIVxBhkR5NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705929761; c=relaxed/simple;
-	bh=Cv2iDUllH5UEwZxinhciHpTAeZmf8C42oN8W+6kV4lk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mE8Cbkq5E9r6uJXxJhL1nVgTAKdNKZ21+QnjXwUWj2FlUK1XtF0tOL+56KSrptTzQDZ0tD/aEsmaDopZxbinNVb5deevfkU0bPJ/b+orQrnve2moZstoKreRlHyftprecq7rzp9BPOMvcsGRn1OQaHXwYkw4d3kQZik+hWq/BAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c--e.de; spf=pass smtp.mailfrom=c--e.de; arc=none smtp.client-ip=217.10.14.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c--e.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c--e.de
-Received: by cae.in-ulm.de (Postfix, from userid 1000)
-	id CE49214033C; Mon, 22 Jan 2024 14:22:35 +0100 (CET)
-Date: Mon, 22 Jan 2024 14:22:35 +0100
-From: "Christian A. Ehrhardt" <lk@c--e.de>
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Mike Jones <mike@mjones.io>,
-	linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: Re: Dell XPS 13 9360: DMAR errors `DRHD: handling fault status reg
- 2` and `[INTR-REMAP] Request device [f0:1f.0] fault index 0x0`
-Message-ID: <Za5sGzNPQeouiD2b@cae.in-ulm.de>
-References: <9a24c335-8ec5-48c9-9bdd-b0dac5ecbca8@molgen.mpg.de>
- <Zaq4Gv2SWhd12Lx0@cae.in-ulm.de>
- <f1658459-1b77-41b1-9e58-99c16a83e1d1@molgen.mpg.de>
+	s=arc-20240116; t=1705939354; c=relaxed/simple;
+	bh=DfvUc1kkTAgFV9KbBC0HUkcLxAbVIJv/dK2TEfAAtq8=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=huohQdLaAwTIeg4SefLPIdvnoGWvp3do1yJx7cTMDlZTyBgl7jbP9P6p+WOPRQpMIHLQ1XUAb/sO+pTBym6ra5RdOwUxezcDNjRbo5/JArobeXfSZ8PbQxc9HyaniDo1kBlpE0JCiqqwk9pkJ6+p3C4g4Wcz1kPAKLwZ6cCa7aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TJZg429vPz6K6FL;
+	Tue, 23 Jan 2024 00:00:00 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 89AC3140B2F;
+	Tue, 23 Jan 2024 00:02:28 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 22 Jan
+ 2024 16:02:27 +0000
+Date: Mon, 22 Jan 2024 16:02:27 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
+	<kvmarm@lists.linux.dev>, <x86@kernel.org>,
+	<acpica-devel@lists.linuxfoundation.org>, <linux-csky@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+	<linux-parisc@vger.kernel.org>, Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, <jianyong.wu@arm.com>,
+	<justin.he@arm.com>, James Morse <james.morse@arm.com>
+Subject: Re: [PATCH RFC v3 03/21] ACPI: processor: Register CPUs that are
+ online, but not described in the DSDT
+Message-ID: <20240122160227.00002d83@Huawei.com>
+In-Reply-To: <ZaURtUvWQyjYfiiO@shell.armlinux.org.uk>
+References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk>
+	<E1rDOg2-00Dvjk-RI@rmk-PC.armlinux.org.uk>
+	<CAJZ5v0ju1JHgpjuFLHZVs4NZiARG6iBZN_wza6c2e0kDhZjK0w@mail.gmail.com>
+	<ZaURtUvWQyjYfiiO@shell.armlinux.org.uk>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f1658459-1b77-41b1-9e58-99c16a83e1d1@molgen.mpg.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+
+On Mon, 15 Jan 2024 11:06:29 +0000
+"Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+
+> On Mon, Dec 18, 2023 at 09:22:03PM +0100, Rafael J. Wysocki wrote:
+> > On Wed, Dec 13, 2023 at 1:49=E2=80=AFPM Russell King <rmk+kernel@armlin=
+ux.org.uk> wrote: =20
+> > >
+> > > From: James Morse <james.morse@arm.com>
+> > >
+> > > ACPI has two descriptions of CPUs, one in the MADT/APIC table, the ot=
+her
+> > > in the DSDT. Both are required. (ACPI 6.5's 8.4 "Declaring Processors"
+> > > says "Each processor in the system must be declared in the ACPI
+> > > namespace"). Having two descriptions allows firmware authors to get
+> > > this wrong.
+> > >
+> > > If CPUs are described in the MADT/APIC, they will be brought online
+> > > early during boot. Once the register_cpu() calls are moved to ACPI,
+> > > they will be based on the DSDT description of the CPUs. When CPUs are
+> > > missing from the DSDT description, they will end up online, but not
+> > > registered.
+> > >
+> > > Add a helper that runs after acpi_init() has completed to register
+> > > CPUs that are online, but weren't found in the DSDT. Any CPU that
+> > > is registered by this code triggers a firmware-bug warning and kernel
+> > > taint.
+> > >
+> > > Qemu TCG only describes the first CPU in the DSDT, unless cpu-hotplug
+> > > is configured. =20
+> >=20
+> > So why is this a kernel problem? =20
+>=20
+> So what are you proposing should be the behaviour here? What this
+> statement seems to be saying is that QEMU as it exists today only
+> describes the first CPU in DSDT.
+
+This confuses me somewhat, because I'm far from sure which machines this
+is true for in QEMU.  I'm guessing it's a legacy thing with
+some old distro version of QEMU - so we'll have to paper over it anyway
+but for current QEMU I'm not sure it's true.
+
+Helpfully there are a bunch of ACPI table tests so I've been checking
+through all the multi CPU cases.
+
+CPU hotplug not enabled.
+pc/DSDT.dimmpxm  - 4x Processor entries.  -smp 4
+pc/DSDT.acpihmat - 2x Processor entries.  -smp 2
+q35/DSDT.acpihmat - 2x Processor entries. -smp 2
+virt/DSDT.acpihmatvirt - 4x ACPI0007 entries -smp 4
+q35/DSDT.acpihmat-noinitiator - 4 x Processor () entries -smp 4=20
+virt/DSDT.topology - 8x ACPI0007 entries
+
+I've also looked at the code and we have various types of
+CPU hotplug on x86 but they all build appropriate numbers of
+Processor() entries in DSDT.
+Arm likewise seems to build the right number of ACPI0007 entries
+(and doesn't yet have CPU HP support).
+
+If anyone can add a reference on why this is needed that would be very
+helpful.
+
+>=20
+> As this patch series changes when arch_register_cpu() gets called (as
+> described in the paragraph above) we obviously need to preserve the
+> _existing_ behaviour to avoid causing regressions. So, if changing the
+> kernel causes user visible regressions (e.g. sysfs entries to
+> disappear) then it obviously _is_ a kernel problem that needs to be
+> solved.
+>=20
+> We can't say "well fix QEMU then" without invoking the wrath of Linus.
+
+Overall I'm fine with the defensive nature of this patch as there
+'might' be firmware out there with this problem - I just can't establish
+that there is!  If anyone else recalls the history of this then give
+a shout.  I vaguely wondered if this was an ia64 thing but nope, QEMU
+never generated tables for ia64 before dropping support back in QEMU 2.11
 
 
-Hi Paul,
+>=20
+> > > Signed-off-by: James Morse <james.morse@arm.com>
+> > > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > > Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> > > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> > > Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > > ---
+> > >  drivers/acpi/acpi_processor.c | 19 +++++++++++++++++++
+> > >  1 file changed, 19 insertions(+)
+> > >
+> > > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_proces=
+sor.c
+> > > index 6a542e0ce396..0511f2bc10bc 100644
+> > > --- a/drivers/acpi/acpi_processor.c
+> > > +++ b/drivers/acpi/acpi_processor.c
+> > > @@ -791,6 +791,25 @@ void __init acpi_processor_init(void)
+> > >         acpi_pcc_cpufreq_init();
+> > >  }
+> > >
+> > > +static int __init acpi_processor_register_missing_cpus(void)
+> > > +{
+> > > +       int cpu;
+> > > +
+> > > +       if (acpi_disabled)
+> > > +               return 0;
+> > > +
+> > > +       for_each_online_cpu(cpu) {
+> > > +               if (!get_cpu_device(cpu)) {
+> > > +                       pr_err_once(FW_BUG "CPU %u has no ACPI namesp=
+ace description!\n", cpu);
+> > > +                       add_taint(TAINT_FIRMWARE_WORKAROUND, LOCKDEP_=
+STILL_OK);
+> > > +                       arch_register_cpu(cpu); =20
+> >=20
+> > Which part of this code is related to ACPI? =20
+>=20
+> That's a good question, and I suspect it would be more suited to being
+> placed in drivers/base/cpu.c except for the problem that the error
+> message refers to ACPI.
+>=20
+> As long as we keep the acpi_disabled test, I guess that's fine.
+> cpu_dev_register_generic() there already tests acpi_disabled.
+>=20
+Moving it seems fine to me.
 
-On Mon, Jan 22, 2024 at 01:16:25PM +0100, Paul Menzel wrote:
-> [Cc: +linux-i2c, +linux-acpi, +Hans, cf original message [1]]
-> 
-> Dear Christian,
-> 
-> 
-> Thank you for your reply.
-> 
-> Am 19.01.24 um 18:57 schrieb Christian A. Ehrhardt:
-> 
-> > On Fri, Jan 19, 2024 at 01:59:29PM +0100, Paul Menzel wrote:
-> > > On a Dell XPS 13 9360 Linux 6.6.8, 6.6.11 and 6.7 (and earlier versions) log
-> > > the lines below when resuming from ACPI S3 (deep):
-> > > 
-> > >      [    0.000000] Linux version 6.7-amd64 (debian-kernel@lists.debian.org) (x86_64-linux-gnu-gcc-13 (Debian 13.2.0-9) 13.2.0, GNU ld (GNU Binutils for Debian) 2.41.50.20231227) #1 SMP PREEMPT_DYNAMIC Debian 6.7-1~exp1 (2024-01-08)
-> > >      [    0.000000] Command line: BOOT_IMAGE=/vmlinuz-6.7-amd64 root=UUID=32e29882-d94d-4a92-9ee4-4d03002bfa29 ro quiet pci=noaer mem_sleep_default=deep log_buf_len=8M
-> > >      […]
-> > >      [    0.000000] DMI: Dell Inc. XPS 13 9360/0596KF, BIOS 2.21.0 06/02/2022
-> > >      […]
-> > >      [   99.711230] PM: suspend entry (deep)
-> > >      […]
-> > >      [   99.722101] printk: Suspending console(s) (use no_console_suspend to debug)
-> > >      [  100.285178] ACPI: EC: interrupt blocked
-> > >      [  100.319908] ACPI: PM: Preparing to enter system sleep state S3
-> > >      [  100.331793] ACPI: EC: event blocked
-> > >      [  100.331798] ACPI: EC: EC stopped
-> > >      [  100.331800] ACPI: PM: Saving platform NVS memory
-> > >      [  100.335224] Disabling non-boot CPUs ...
-> > >      [  100.337412] smpboot: CPU 1 is now offline
-> > >      [  100.341065] smpboot: CPU 2 is now offline
-> > >      [  100.346441] smpboot: CPU 3 is now offline
-> > >      [  100.353086] ACPI: PM: Low-level resume complete
-> > >      [  100.353129] ACPI: EC: EC started
-> > >      [  100.353129] ACPI: PM: Restoring platform NVS memory
-> > >      [  100.355219] Enabling non-boot CPUs ...
-> > >      [  100.355244] smpboot: Booting Node 0 Processor 1 APIC 0x2
-> > >      [  100.355954] CPU1 is up
-> > >      [  100.355972] smpboot: Booting Node 0 Processor 2 APIC 0x1
-> > >      [  100.356698] CPU2 is up
-> > >      [  100.356716] smpboot: Booting Node 0 Processor 3 APIC 0x3
-> > >      [  100.357371] CPU3 is up
-> > >      [  100.360217] ACPI: PM: Waking up from system sleep state S3
-> > >      [  100.668380] ACPI: EC: interrupt unblocked
-> > >      [  100.668598] pcieport 0000:00:1c.0: Intel SPT PCH root port ACS workaround enabled
-> > >      [  100.668606] pcieport 0000:00:1c.4: Intel SPT PCH root port ACS workaround enabled
-> > >      [  100.668643] pcieport 0000:00:1d.0: Intel SPT PCH root port ACS workaround enabled
-> > >      [  100.690996] DMAR: DRHD: handling fault status reg 2
-> > >      [  100.691001] DMAR: [INTR-REMAP] Request device [f0:1f.0] fault index 0x0 [fault reason 0x25] Blocked a compatibility format interrupt request
-> > > 
-> > > But I am unable to find the device f0:1f.0:
-> > 
-> > This is probably an ACPI enumerated device. These are platform
-> > devices that pose as a PCI device for the purpose of interrupt
-> > remapping but do not enumerate via PCI. The PCI ID assigned to
-> > these hidden devices is enumerated via ANDD entries in the
-> > DMAR table. You can decode this table with from
-> > /sys/firmware/acpi/tables/DMAR with iasl to verify.
-> 
-> I disassembled it with `iasl -d` (attached), and there are indeed two
-> devices:
-> 
->     [058h 0088 001h]           Device Scope Type : 03 [IOAPIC Device]
->     [059h 0089 001h]                Entry Length : 08
->     [05Ah 0090 002h]                    Reserved : 0000
->     [05Ch 0092 001h]              Enumeration ID : 02
->     [05Dh 0093 001h]              PCI Bus Number : F0
-                                                     ^^
-> 
->     [05Eh 0094 002h]                    PCI Path : 1F,00
-                                                     ^^^^^
-
-So your device that generates the errror message is the IO-APIC
-and not your I2C controllers (these pose as 00:15.0 and 00:15.1).
-Sorry for the wrong direction.
-
-AFAIR the IO-APIC must be programmed to send remappable interrupts
-if it is used with an IOMMU and interrupt remapping. So at this point
-I'd start to look at the resume code of the IO-APIC next.
-
-Just a wild guess, but if this is the same machine that has the
-i8042 problems after resume, the problematic interrupt might be
-that of the PS/2 controller.
-
-     regards   Christian
+Jonathan
 
 
