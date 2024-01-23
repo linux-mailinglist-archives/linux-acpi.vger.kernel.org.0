@@ -1,164 +1,204 @@
-Return-Path: <linux-acpi+bounces-3006-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3007-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F5383902E
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 14:33:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE96F839046
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 14:36:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB0871F24A31
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 13:33:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EF781C20E63
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 13:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D75604AF;
-	Tue, 23 Jan 2024 13:28:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="IdnEp3jB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB845EE93;
+	Tue, 23 Jan 2024 13:36:34 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E53660269;
-	Tue, 23 Jan 2024 13:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7AE33CC;
+	Tue, 23 Jan 2024 13:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706016519; cv=none; b=RrY/7ZmXD7f5Oa74rTuDpwtXjZeDdXImS6RlK+rA6oIcavy1+vUqHJ7TyZpkHmetR+QRtERrqTVWhPFaDoKaTLgZ47s4Jds6o9UAUr1hj0BvdHtCngZWR2lAuf8/Z1JmNDH1CpuTsYCBbAVMBGAxrL9r1c7311ErFzO/h7bhp1c=
+	t=1706016994; cv=none; b=N/1F6C8HAkDvUtkea5CG7hBHphfrtOs54mD22Pmsrodb0kV6lMzLgWSt5Ujvt0Dq8P8hZi9b0iD/HkWzAbs9axdQK54xKtL2T+45n7O6jwabQwoz1Hx6dt5fLdaot5qF1wFbQRpkYyeea4krJS73ZkC7k0KjkZuHqmCGBewiNcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706016519; c=relaxed/simple;
-	bh=NJc04YeV9kOqCLAh9fn3kVyDWlVh70iAMeCv/H6zMYQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dWagO0MgOSSzdvq20IOnL1kIO18VtdhuhIwghW+9s2Xh8rLRhc1Qg/xMYZYVv3Mi3CUppU+Fzl+I4Sq7bVB04dQ8FJpj8WyY5RvsKmlHlnqZ+qLci6VF+lUe0GXv2M8JtMdjRRDj3GbonoSiP4AhRHLi3TWxS0zqwNB1nEze7Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=IdnEp3jB; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=bDhJF4aVPbj4qdYQrzDaOMUJoNeiDqHjPb9iFMH77ME=; b=IdnEp3jBKIndIWP5XIcwMJoMZK
-	VXAFBeu/Bv043OgntYF4+y/xj9qap4lxUJj/TR17iVnq4OTkxCGofK+sQd0TfJJd2l7haKwWUVxfU
-	ZJf9cDAC9ySAxC+NkZQn2KbyP01YUyuVx2Wd9QLC1WmInPbkvTtHosurY6tHla6fMQSlKB+iOcLw0
-	3z1303J4SsJlIPCGZI1Q5n/8BCxks6XJq2hl5U000/f/yLcwbfqMyQRfn7uwgnT5Eo4Oy/uzxSGIX
-	3OtPDik/U9GB1G5G40b6fP6tQ/K61kRvCxs7BJHtd+K/BfdeBoFp6jBvSaRd+AiGP0aW5GW3rJGXs
-	1F0TkSkg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:42766)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1rSGpM-0002S5-2a;
-	Tue, 23 Jan 2024 13:28:32 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1rSGpL-0001z0-LP; Tue, 23 Jan 2024 13:28:31 +0000
-Date: Tue, 23 Jan 2024 13:28:31 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
-	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
-	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-	Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	jianyong.wu@arm.com, justin.he@arm.com,
-	James Morse <james.morse@arm.com>
-Subject: Re: [PATCH RFC v3 05/21] ACPI: Rename ACPI_HOTPLUG_CPU to include
- 'present'
-Message-ID: <Za++/11n5KA1VS3p@shell.armlinux.org.uk>
-References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk>
- <E1rDOgD-00Dvk2-3h@rmk-PC.armlinux.org.uk>
- <CAJZ5v0g9nfLrEf9u4Ksw6BOWJQ9iv8Z-O8RsLU6jR5zk0ahxRw@mail.gmail.com>
- <20240122180013.000016d5@Huawei.com>
+	s=arc-20240116; t=1706016994; c=relaxed/simple;
+	bh=6iQ0DISi3QxwIKFZR+AE3nFxCcqYjepQqrZX7GECL4A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Thhc3BQ+Hx+iQFtbvJDI1AEmQ6MhosdhJiH3u7Gwc1RccdTO+brcULuqa20f7Z930S3cmyS48SAlOe4K5GZDBZdXP8W8NwIKnaDPD/TE/Z7f6BwiAmLRdOqpFPlFL7eHlFro3IfQ4X8cKiIIMb3fpkEMJjqSUSjLCV1ZNzPjqFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 908CF1FB;
+	Tue, 23 Jan 2024 05:37:16 -0800 (PST)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0E5083F762;
+	Tue, 23 Jan 2024 05:36:29 -0800 (PST)
+Message-ID: <9722b637-68d7-4cba-928c-9782dd5413fa@arm.com>
+Date: Tue, 23 Jan 2024 13:36:28 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240122180013.000016d5@Huawei.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/1] irqchip/gic-v3: Enable non-coherent
+ redistributors/ITSes ACPI probing
+Content-Language: en-GB
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>, linux-kernel@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+ acpica-devel@lists.linux.dev, Fang Xiang <fangxiang3@xiaomi.com>,
+ Robert Moore <robert.moore@intel.com>
+References: <20240123110332.112797-1-lpieralisi@kernel.org>
+ <20240123110332.112797-2-lpieralisi@kernel.org>
+From: Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <20240123110332.112797-2-lpieralisi@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 22, 2024 at 06:00:13PM +0000, Jonathan Cameron wrote:
-> On Mon, 18 Dec 2023 21:35:16 +0100
-> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+On 23/01/2024 11:03 am, Lorenzo Pieralisi wrote:
+> The GIC architecture specification defines a set of registers for
+> redistributors and ITSes that control the sharebility and cacheability
+> attributes of redistributors/ITSes initiator ports on the interconnect
+> (GICR_[V]PROPBASER, GICR_[V]PENDBASER, GITS_BASER<n>).
 > 
-> > On Wed, Dec 13, 2023 at 1:49 PM Russell King <rmk+kernel@armlinux.org.uk> wrote:
-> > >
-> > > From: James Morse <james.morse@arm.com>
-> > >
-> > > The code behind ACPI_HOTPLUG_CPU allows a not-present CPU to become
-> > > present.  
-> > 
-> > Right.
-> > 
-> > > This isn't the only use of HOTPLUG_CPU. On arm64 and riscv
-> > > CPUs can be taken offline as a power saving measure.  
-> > 
-> > But still there is the case in which a non-present CPU can become
-> > present, isn't it there?
+> Architecturally the GIC provides a means to drive shareability and
+> cacheability attributes signals but it is not mandatory for designs to
+> wire up the corresponding interconnect signals that control the
+> cacheability/shareability of transactions.
 > 
-> Not yet defined by the architectures (and I'm assuming it probably never will be).
+> Redistributors and ITSes interconnect ports can be connected to
+> non-coherent interconnects that are not able to manage the
+> shareability/cacheability attributes; this implicitly makes the
+> redistributors and ITSes non-coherent observers.
 > 
-> The original proposal we took to ARM was to do exactly that - they pushed
-> back hard on the basis there was no architecturally safe way to implement it.
-> Too much of the ARM arch has to exist from the start of time.
+> To enable non-coherent GIC designs on ACPI based systems, parse the MADT
+> GICC/GICR/ITS subtables non-coherent flags to determine whether the
+> respective components are non-coherent observers and force the
+> shareability attributes to be programmed into the redistributors and
+> ITSes registers.
 > 
-> https://lore.kernel.org/linux-arm-kernel/cbaa6d68-6143-e010-5f3c-ec62f879ad95@arm.com/
-> is one of the relevant threads of the kernel side of that discussion.
-> 
-> Not to put specific words into the ARM architects mouths, but the
-> short description is that there is currently no demand for working
-> out how to make physical CPU hotplug possible, as such they will not
-> provide an architecturally compliant way to do it for virtual CPU hotplug and
-> another means is needed (which is why this series doesn't use the present bit
-> for that purpose and we have the Online capable bit in MADT/GICC)
-> 
-> It was a 'fun' dance of several years to get to that clarification.
-> As another fun fact, the same is defined for x86, but I don't think
-> anyone has used it yet (GICC for ARM has an online capable bit in the flags to
-> enable this, which was remarkably similar to the online capable bit in the
-> flags of the Local APIC entries as added fairly recently).
-> 
-> > 
-> > > On arm64 an offline CPU may be disabled by firmware, preventing it from
-> > > being brought back online, but it remains present throughout.
-> > >
-> > > Adding code to prevent user-space trying to online these disabled CPUs
-> > > needs some additional terminology.
-> > >
-> > > Rename the Kconfig symbol CONFIG_ACPI_HOTPLUG_PRESENT_CPU to reflect
-> > > that it makes possible CPUs present.  
-> > 
-> > Honestly, I don't think that this change is necessary or even useful.
-> 
-> Whilst it's an attempt to avoid future confusion, the rename is
-> not something I really care about so my advice to Russell is drop
-> it unless you are attached to it!
+> An ACPI global function (acpi_get_madt_revision()) is added to retrieve
+> the MADT revision, in that it is essential to check the MADT revision
+> before checking for flags that were added with MADT revision 7 so that
+> if the kernel is booted with an ACPI MADT table with revision < 7 it
+> skips parsing the newly added flags (that should be zeroed reserved
+> values for MADT versions < 7 but they could turn out to be buggy and
+> should be ignored).
 
-While I agree that it isn't a necessity, I don't fully agree that it
-isn't useful.
+FWIW,
 
-One of the issues will be that while Arm64 will support hotplug vCPU,
-it won't be setting ACPI_HOTPLUG_CPU because it doesn't support
-the present bit changing. So I can see why James decided to rename
-it - because with Arm64's hotplug vCPU, the idea that ACPI_HOTPLUG_CPU
-somehow enables hotplug CPU support is now no longer true.
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
 
-Keeping it as ACPI_HOTPLUG_CPU makes the code less obvious, because it
-leads one to assume that it ought to be enabled for Arm64's
-implementatinon, and that could well cause issues in the future if
-people make the assumption that "ACPI_HOTPLUG_CPU" means hotplug CPU
-is supported in ACPI. It doesn't anymore.
+I guess the most contentious parts disappeared in Marc's refactoring, so 
+what's left seems entirely straightforward and innocuous to me.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+I'd also agree that there seems no real value in going out of our way to 
+police the firmware for consistency - if at least one entry says to 
+apply the quirk, then applying the quirk is the right and safest thing 
+to do, so all we could really do on top of that is add extra complexity 
+to be able to say "hey, firmware did a silly thing!", but if we're 
+starting from the premise that hardware did an inadvisable thing to 
+begin with, maybe we should have similarly realistic expectations of the 
+corresponding firmware anyway :)
+
+Cheers,
+Robin.
+
+> Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> Cc: Robin Murphy <robin.murphy@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Marc Zyngier <maz@kernel.org>
+> ---
+>   drivers/acpi/processor_core.c    | 15 +++++++++++++++
+>   drivers/irqchip/irq-gic-v3-its.c |  4 ++++
+>   drivers/irqchip/irq-gic-v3.c     |  9 +++++++++
+>   include/linux/acpi.h             |  3 +++
+>   4 files changed, 31 insertions(+)
+> 
+> diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
+> index b203cfe28550..915713c0e9b7 100644
+> --- a/drivers/acpi/processor_core.c
+> +++ b/drivers/acpi/processor_core.c
+> @@ -215,6 +215,21 @@ phys_cpuid_t __init acpi_map_madt_entry(u32 acpi_id)
+>   	return rv;
+>   }
+>   
+> +int __init acpi_get_madt_revision(void)
+> +{
+> +	struct acpi_table_header *madt = NULL;
+> +	int revision;
+> +
+> +	if (ACPI_FAILURE(acpi_get_table(ACPI_SIG_MADT, 0, &madt)))
+> +		return -EINVAL;
+> +
+> +	revision = madt->revision;
+> +
+> +	acpi_put_table(madt);
+> +
+> +	return revision;
+> +}
+> +
+>   static phys_cpuid_t map_mat_entry(acpi_handle handle, int type, u32 acpi_id)
+>   {
+>   	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+> diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+> index fec1b58470df..a60c560ce891 100644
+> --- a/drivers/irqchip/irq-gic-v3-its.c
+> +++ b/drivers/irqchip/irq-gic-v3-its.c
+> @@ -5591,6 +5591,10 @@ static int __init gic_acpi_parse_madt_its(union acpi_subtable_headers *header,
+>   		goto node_err;
+>   	}
+>   
+> +	if (acpi_get_madt_revision() >= 7 &&
+> +	    (its_entry->flags & ACPI_MADT_ITS_NON_COHERENT))
+> +		its->flags |= ITS_FLAGS_FORCE_NON_SHAREABLE;
+> +
+>   	err = its_probe_one(its);
+>   	if (!err)
+>   		return 0;
+> diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+> index 98b0329b7154..8cb8dff86c12 100644
+> --- a/drivers/irqchip/irq-gic-v3.c
+> +++ b/drivers/irqchip/irq-gic-v3.c
+> @@ -2356,6 +2356,11 @@ gic_acpi_parse_madt_redist(union acpi_subtable_headers *header,
+>   		pr_err("Couldn't map GICR region @%llx\n", redist->base_address);
+>   		return -ENOMEM;
+>   	}
+> +
+> +	if (acpi_get_madt_revision() >= 7 &&
+> +	    (redist->flags & ACPI_MADT_GICR_NON_COHERENT))
+> +		gic_data.rdists.flags |= RDIST_FLAGS_FORCE_NON_SHAREABLE;
+> +
+>   	gic_request_region(redist->base_address, redist->length, "GICR");
+>   
+>   	gic_acpi_register_redist(redist->base_address, redist_base);
+> @@ -2380,6 +2385,10 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_headers *header,
+>   		return -ENOMEM;
+>   	gic_request_region(gicc->gicr_base_address, size, "GICR");
+>   
+> +	if (acpi_get_madt_revision() >= 7 &&
+> +	    (gicc->flags & ACPI_MADT_GICC_NON_COHERENT))
+> +		gic_data.rdists.flags |= RDIST_FLAGS_FORCE_NON_SHAREABLE;
+> +
+>   	gic_acpi_register_redist(gicc->gicr_base_address, redist_base);
+>   	return 0;
+>   }
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index b7165e52b3c6..4eedab0e51c3 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -284,6 +284,9 @@ static inline bool invalid_phys_cpuid(phys_cpuid_t phys_id)
+>   	return phys_id == PHYS_CPUID_INVALID;
+>   }
+>   
+> +
+> +int __init acpi_get_madt_revision(void);
+> +
+>   /* Validate the processor object's proc_id */
+>   bool acpi_duplicate_processor_id(int proc_id);
+>   /* Processor _CTS control */
 
