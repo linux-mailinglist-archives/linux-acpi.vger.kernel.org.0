@@ -1,314 +1,299 @@
-Return-Path: <linux-acpi+bounces-3024-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3025-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEF1839AE1
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 22:13:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A40839B43
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 22:40:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3793B288894
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 21:13:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8038D1F25B2F
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 21:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81F312E7B;
-	Tue, 23 Jan 2024 21:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9973D542;
+	Tue, 23 Jan 2024 21:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="khPcMMPP"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="NqhW7a+7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2056.outbound.protection.outlook.com [40.107.220.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849422C1A7;
-	Tue, 23 Jan 2024 21:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706044378; cv=none; b=WVre5vNC6dqw+kjwY2ZbUSeRl5ekrB1JxFeykWwG9Vgripi45jouaUJm3U9/alwSLDyJAa3NFpqmsltyzUWZ42pKcpRzQ1e1AtqzPBUHUtscsi8VvTTq1uIEJKDIybWDP/7OSISTb9H8LMrMhk/S3dvWzx77YTuT1BE7iJuyTAQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706044378; c=relaxed/simple;
-	bh=y2tVhOoHqbkrgoEwdopUBYrq/O3nTt8UTKN6fH85W78=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b47DgCbvjNGRBE3Ebg5V7gh7K+Sc2Bc/JxfMIDG4/pEXp972M30NWoNcTy/KS/EPzf+9SH3JXPLNGbiN35ibrSOLKJqZyJUONQIr0OY/9WwT4N2DN9k1sdSgSqf33PX1tc8H5JWGt4z8tqLaOLFFV3DsETJdC9AShM4i/jWzfYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=khPcMMPP; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=SHg3OZ8rSfuStuI/t9nj9uzIE/yE48Lbl7/EYKvNYzQ=; b=khPcMMPPOS3B4SHAZHQpR7RIZd
-	z0s3275zIx+WRubbX4rCLVwWchIc3qCgsHQ3SwLBSBDibxOjWpdZE7n17u5PeYPR8bEUixN8TdGnV
-	tUzdOJ3cH38ZGg96a3RPK0Le/3lPA3HHqYnWBDe2Rr1Qq0ALcz2XOY+hOSS7f6wFs59Dvxa1eMwF+
-	fUimAV6KLbZbkzTlDfLDOyXIbY1cevpyffkEOj8oZWaSIA7Shw/Bpk6kPVR6XctAKYol+IABzZfTt
-	UA0Q4XsCOoepZOTZ96m6rptCs2EJNYKdmVTmM6SbZdtMydRWeBJQChp3Fz2W54mOdTUEaQh5PNI9s
-	x197biww==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56660)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1rSO4f-00036p-05;
-	Tue, 23 Jan 2024 21:12:49 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1rSO4b-0002Gq-Oh; Tue, 23 Jan 2024 21:12:45 +0000
-Date: Tue, 23 Jan 2024 21:12:45 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
-	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
-	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-	Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	jianyong.wu@arm.com, justin.he@arm.com,
-	James Morse <james.morse@arm.com>
-Subject: Re: [PATCH RFC v3 05/21] ACPI: Rename ACPI_HOTPLUG_CPU to include
- 'present'
-Message-ID: <ZbArzbC19L1YxLHi@shell.armlinux.org.uk>
-References: <CAJZ5v0h7wsLt8d3ZoLXsK1=crAx66T42WDKNoHcg8CiHpAjS8g@mail.gmail.com>
- <Za/q9jivG4OdZM0f@shell.armlinux.org.uk>
- <CAJZ5v0gwe02uzAQoX0QDHo35OTEozpbnqC6vukjM3aE6HMq9WQ@mail.gmail.com>
- <ZbADTBLDEFtdglho@shell.armlinux.org.uk>
- <CAJZ5v0jh-EdrnjkJep++UDo+Uv4hmR7VV4KYVdF4CK2K+5XLtg@mail.gmail.com>
- <ZbAMjZoybVfiAGcT@shell.armlinux.org.uk>
- <CAJZ5v0gt=MR1JGsPZnZG_AqudA-KMmb4BOa_A6H9B6+Rhe_+JQ@mail.gmail.com>
- <ZbAdAdqqfXRuY3Xj@shell.armlinux.org.uk>
- <CAJZ5v0gsqbeJc4qX-AefOqu53=rDme2XzFXacWz_0zbVBoaXjw@mail.gmail.com>
- <ZbAoJO8f66Dg0lGF@shell.armlinux.org.uk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90113B2A6;
+	Tue, 23 Jan 2024 21:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706045999; cv=fail; b=rCRE42H3UVCfVDUdyywXjvVf4zRclu/zOXTp87LacA+ONBy3mfe19olC+tPhKtLqiG3uEc5KEltttQtpnXrnO8i/OjPYzW71C3zW7KIbp5M0xBzJJ50OLE0MRVuqSnM69oqXO4nTlll50Q7KL3FlRWvh8c1cDxSbh9yDXPPIOVw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706045999; c=relaxed/simple;
+	bh=3776sbsAvHyE7pUv+vk19lINNPnZJZ5xjNrKKn8YZ4Q=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=U3lAFwi6N10omHg7oGwyR+M+iy/cdTzH65ookhXlGYIZ6FoqlAJFpaNztkWDys7a/WbeG3/AkJ7lSKlHclFJAt9WlxpIArJWMa2rMctuHnaFXT/hi4B6dmRgQ4uij/fcHWtbqmcExx2Ij9tDQlj8RRpKRf7rZFdYFrTC8bfvTDE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=NqhW7a+7; arc=fail smtp.client-ip=40.107.220.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bPdKNaJ1e7b7VRvHD53O43hrwQtXQxHvz62zoxhBWzMzZwlZusLnFyIvd/0Cck8e2Kd+IJ4pydrm5SQhQ4mPDFe7JJZL2h80LwBgjY+4ndnaMnFirkoltOjXMyTLjauxsOSk0cj5qLjozKO6w4oZuItaTvqyaoPTFhOdQ6lDGD73I/1zfgQaJoftGC8MRXfQIb0hIZ/8j9okZVzDWV2XcRr2VqPIPn5G/XLm3cG+ke4sqSC+ELXlNejyiWF9XpOa61+I027KvNlOQCs4PLodllbB5kJm6LD3FhaN3EhxA+Kj/yO63YMaeHoEI1/QRuMILG7xSM0ADaiXfzdqVtmgCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EXroSFejYeUKONL18S3aM6Xa2As7SAAr4v4jAQsuXIA=;
+ b=JWSNaaNSjXKgjjUlgU1ZwfflPY6CyK+PpFNAbCJfuOdAh4Xz+FbyFDAg2QV1pc848XXGLynNujCYOTSXHB37qyHpdM/adwxAZhwAOEtOEUww+XcC2kQlJjZjZ2SNUQ0XOpXzbh/Alpn8H2hl5rASosoSH/91KjnlwUbamZ7YYimRyn8sdrL3+w60Wuj8X2yAXzP8DxWUk8YIXvBxquh/lwE+Z7vTa48/qqXtklUzdSthps7kYdEN1BjRFjqUjy3i69mPQAdjLEjn7iwt5IwJ7u5pRwdwL3M3yXTEgoQQi/ASipesJN6CUfjNIH0VWt/LitqmqypHDGi54a/XXP+x4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EXroSFejYeUKONL18S3aM6Xa2As7SAAr4v4jAQsuXIA=;
+ b=NqhW7a+7PrRCiODXYwfNUigmsY9MtxQdGQ7sDq/jhv0gUy/glSA/yt7cvWGHQhrKp8IqxDZH2VGE6BV6Vhvc8ElIO2xMYjnAyv2aalWJ7y/A2M67klRdA6/ylyU5+6NljKZ9VIehI+O6yFyi71n0nGNhrdBPH9r3+4rLaxqrlnQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB8403.namprd12.prod.outlook.com (2603:10b6:610:133::14)
+ by SA1PR12MB8142.namprd12.prod.outlook.com (2603:10b6:806:334::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.34; Tue, 23 Jan
+ 2024 21:39:52 +0000
+Received: from CH3PR12MB8403.namprd12.prod.outlook.com
+ ([fe80::ea0e:199a:3686:40d4]) by CH3PR12MB8403.namprd12.prod.outlook.com
+ ([fe80::ea0e:199a:3686:40d4%4]) with mapi id 15.20.7202.035; Tue, 23 Jan 2024
+ 21:39:52 +0000
+Message-ID: <c86815fe-21dc-4dd7-bf10-74e3cc754413@amd.com>
+Date: Tue, 23 Jan 2024 15:39:49 -0600
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH v3] ACPI: APEI: Skip initialization of GHES_ASSIST structures
+ for Machine Check Architecture
+Content-Language: en-US
+To: linux-acpi@vger.kernel.org
+Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+ tony.luck@intel.com, bp@alien8.de, linux-kernel@vger.kernel.org,
+ yazen.ghannam@amd.com, Avadhut Naik <avadhut.naik@amd.com>
+References: <20231204192549.1953029-1-avadhut.naik@amd.com>
+ <b519a7e0-77a7-44b4-809b-caf96536fe1c@amd.com>
+From: "Naik, Avadhut" <avadnaik@amd.com>
+In-Reply-To: <b519a7e0-77a7-44b4-809b-caf96536fe1c@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DM6PR10CA0003.namprd10.prod.outlook.com
+ (2603:10b6:5:60::16) To CH3PR12MB8403.namprd12.prod.outlook.com
+ (2603:10b6:610:133::14)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZbAoJO8f66Dg0lGF@shell.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8403:EE_|SA1PR12MB8142:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7856f821-186e-4161-e711-08dc1c5bd4fc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	kIpho/MM2BAgq80W08mAR3k7ZX/sJh5Uxu9Pr6DXl6COjKO7sFfgvx30lhf/m1qY0GXlZYmdMF87pe4vj2Az+caHmlcaq03aY2UwCILXBJLxsrXRgcxC6eLXwUZM3ZdhK58VHrur8Om0+aTxYB5lD4rMJzNAc3zEwUEqwcMJf/+luejrmXZqx9i5X0n4aXo2bfNtKXX91a8QE3k5IO/NpkeiVCCWogA+1awl2u+ezb8N4MM+4QtAEIgJELGrpcYQxS8zjRZucmtNYKWrEcjETLh2LNpJO8o8jBBqxAOQKIGaEZ1TzazHTY3GuwZpVn0alGhqpznEp3MWmMKlHMW863ifdyZG6if0tQBFt6EJYwAOtarL7R5LhixyaV0JKwgb2zPSbjYfx6UjehFKkfV8WSXuuVEy2Z9lsqGFcNISLgnKTdeXK50SfL7W1+HosI3PFijiG9LnrmOpuzYVhF3JSCFRPq+EXebYFKWaFFFBGHSqghyEP4Yf89+L/x6tt+BUKzWZUSzo55GwHgh+NMqQiE9+lasUBKDexVM4nTIWRoaPFyK6qjJGiE3NJUujjrVODut7tWC5jNxy733BJ168CpEv14WWhjv+Rk4zZVxBJ7AtP4KVwU43ZPja6/EPC+Ygy5kRqSqDe1oIRxFSyROy2Q==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8403.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(39860400002)(346002)(136003)(376002)(230922051799003)(1800799012)(451199024)(186009)(64100799003)(31686004)(4326008)(8936002)(6512007)(83380400001)(2616005)(5660300002)(6486002)(53546011)(66476007)(66946007)(316002)(66556008)(6916009)(8676002)(478600001)(6506007)(6666004)(26005)(38100700002)(41300700001)(2906002)(31696002)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZFpRdEF5UEhxNHNDbWlTTnF5ZTJ3Tk9YS3lMOGZjVWk2Ry9QMEg4cHp4VnY3?=
+ =?utf-8?B?N0hDam54TFJBNGxFWTFHN2tZQTVObndGdGROMVBjMjJpRm50MmNEc1ZjNnhY?=
+ =?utf-8?B?WHBTamwxWEZJODZUQkIvbFVTd3pmQWljRDV6MkRsVkZ1MFZLU1c3RDVCK2VV?=
+ =?utf-8?B?VUJXY2N2czNxK2NrbzcxKzgxdFYrZm4xbCtSTHBOQk41UFp1RVZCZm1JYUhh?=
+ =?utf-8?B?Z1JhVWdwSUN4Y3JwY0tMTUFtWmZQRlpwU3dKTkF5OFQyZm1LS0ZmNG0yMkw5?=
+ =?utf-8?B?M0RiVCtRc29OeEs3aGQ5K1lZTklCYzc0YTdlT0QyWCs0eHYrQ2s2eHVFUnc2?=
+ =?utf-8?B?VEZZTDFjaUNmVVRtdDVEYlk3SVJQandzOEJUUjlWdkMwSGNVV1I1WXYrbUt4?=
+ =?utf-8?B?T3l1eW81N3JpNlZZbFVZakxhSUVzTWx4NTRHMEFTSVNqMlF6eG5oRXdkM0pB?=
+ =?utf-8?B?dkJud3NrczNJa3JNMDZtWVhkcGc0dDdvNjk1V1JNdWdvaysvMG80SU1Cb2Jh?=
+ =?utf-8?B?NE1aV294Y2czWnVnZFc3dFhNWERZZlk2OEdtZ21CQS9IaC9XenVjMW9Hb3NV?=
+ =?utf-8?B?UGQ2UU1LU05hRW1LMm9OSW9MTU94d0N2ekVkNFRQSnc3WTk0a3l0bUpzallI?=
+ =?utf-8?B?VXFENjl3L2ZTbHdrREZQSmdhR2N1MjhQaUxWKytZVnhLTndCOTN0VFRKdmRx?=
+ =?utf-8?B?Qk40ckNOMUZqeXIxWmE0OElBcWluSXQwdkZrYU50MmsrcHdVVnQvS1RCM2wz?=
+ =?utf-8?B?OFp6b1ZIcXVXZHViNXk3dk9LbGRibkJjT3dkTDFhcjFwdE1xZGpqTVkyS1V6?=
+ =?utf-8?B?dGhHZk5xTHhKMk5oL2JDVEkyellWOVVFTkxSZk5xMXB5ZzRkWTRmUnJtNmZH?=
+ =?utf-8?B?anM4ZDcxMUJLMEZpRlFTMFpsOEdFZ3dZb0dKZWF4NDBrNGxCRFRrTWpuY21i?=
+ =?utf-8?B?V2JKNGlGeTFLK3dVTGQ1Z1IzTlNXd3JGTlkxUHdMOEdjeXA0L3JNc1ErRnBz?=
+ =?utf-8?B?YlNwcVZUM0F2OWplZ1pKdFhUeUFBa0UyYTljTXVuSHRaWk52YXZuTWVkYUtD?=
+ =?utf-8?B?VVVORExrZjlkVmZhVlp5dktucm04aU1sMW5DOWtOcHNiNFhGbzFETTFGMmNT?=
+ =?utf-8?B?SFUwU2JjZ0UyTFR4bU9sKzhMQWFVN3pJZFhacHk1djI5M3VNaFhJTnBrSUVV?=
+ =?utf-8?B?WEFiZDBIdjdFcWYzTXduY1hoc1dzalZ4V2ErOHR6ZXcwbjN5ZWJSMktZeWdP?=
+ =?utf-8?B?aWpWcThlTXQ3L0wyUHNwRGhwVmZTYjFhMEZtYU90MEUvaDI2b3htUlEyVXRz?=
+ =?utf-8?B?cVBVclkyUTFNa2xDNHlPSzZXWS9zbjd6LzdUUHpzdzNaVUtxZlBERXpNVUto?=
+ =?utf-8?B?UEVxdmdnb3JWNzB2RlRSZDZPNXdBNW5tYm44eWVSTlBsUFdWZ2t2SytyalNa?=
+ =?utf-8?B?cWVxMnhxajVLL011anVZMCtWUktCQjJrVjZaNWE3Z1ovRjBUTEc1VlNpSnF2?=
+ =?utf-8?B?NDRpTk4zc01vSFpEWTRmb2IvSnphQVFuN0g0bTRHY3VVeGZxTG1NUDBaZmx5?=
+ =?utf-8?B?bktNVWFtRmh6bjdaRUthWk5rZ1F5VDd4UXVpaklscjg1c2JBMkNyL3hjSCtp?=
+ =?utf-8?B?SVJNSHArSmlYbFhrZ2hHL001UDRiditYaWFOY1pRTVk2cHhUR0E4MzdSaVFR?=
+ =?utf-8?B?cnpLZnZtZWg1bUlCN0VJS1lqQ0ZkNmZ6TS83aFJBOEUxNHFFVXVwWmFzUG9L?=
+ =?utf-8?B?NEJ1R3JtVmM5T1dELy92OU5McXZDR0ZRWDdHWUpUdXUzRFlTOU8rUzNydzUv?=
+ =?utf-8?B?cXhwU2NaYUVEQ3NHL01MYkZ6c1pXK28vMEgzbHQ5dkdZQkFHeXhFRVgzcVU0?=
+ =?utf-8?B?aXIxNlN3amFrRGVlR24waEhWQ0NmZ1MxWU1qQzU1eVVIeDVZajI2dHVGUnV2?=
+ =?utf-8?B?Ny9mc0pEOWtDODlJZGlTdjJPdllqQUtUYUVhVGI3VUNTNkdaTUZhcitwQlpS?=
+ =?utf-8?B?bzd5eHQ2TGtpbWV1RXl3WHJSV3RRb3MvaDZMTnRzR1U2Z0ljd0FkVU44MkxB?=
+ =?utf-8?B?Q3hZY1RZL3BvNDhVVEhqOHNyUWRHczYxOFJ3cVN0cmxLN0hBbjIvQ21DNlFu?=
+ =?utf-8?Q?UMOXr751pRGLf/vBWaVnIsBAa?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7856f821-186e-4161-e711-08dc1c5bd4fc
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8403.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2024 21:39:52.4653
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: q2+tjr6A5cNSVTcfjx/gWe+ERZ2a9ng4yaEq8kX1+pwmXuIi0eH1f4dFvvBnPEcmF9vjOZDcF945576+I+8FZw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8142
 
-On Tue, Jan 23, 2024 at 08:57:08PM +0000, Russell King (Oracle) wrote:
-> On Tue, Jan 23, 2024 at 09:17:18PM +0100, Rafael J. Wysocki wrote:
-> > On Tue, Jan 23, 2024 at 9:09 PM Russell King (Oracle)
-> > <linux@armlinux.org.uk> wrote:
-> > >
-> > > On Tue, Jan 23, 2024 at 08:27:05PM +0100, Rafael J. Wysocki wrote:
-> > > > On Tue, Jan 23, 2024 at 7:59 PM Russell King (Oracle)
-> > > > <linux@armlinux.org.uk> wrote:
-> > > > >
-> > > > > On Tue, Jan 23, 2024 at 07:26:57PM +0100, Rafael J. Wysocki wrote:
-> > > > > > On Tue, Jan 23, 2024 at 7:20 PM Russell King (Oracle)
-> > > > > > <linux@armlinux.org.uk> wrote:
-> > > > > > >
-> > > > > > > On Tue, Jan 23, 2024 at 06:43:59PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > > On Tue, Jan 23, 2024 at 5:36 PM Russell King (Oracle)
-> > > > > > > > <linux@armlinux.org.uk> wrote:
-> > > > > > > > >
-> > > > > > > > > On Tue, Jan 23, 2024 at 05:15:54PM +0100, Rafael J. Wysocki wrote:
-> > > > > > > > > > On Tue, Jan 23, 2024 at 2:28 PM Russell King (Oracle)
-> > > > > > > > > > <linux@armlinux.org.uk> wrote:
-> > > > > > > > > > >
-> > > > > > > > > > > On Mon, Jan 22, 2024 at 06:00:13PM +0000, Jonathan Cameron wrote:
-> > > > > > > > > > > > On Mon, 18 Dec 2023 21:35:16 +0100
-> > > > > > > > > > > > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
-> > > > > > > > > > > >
-> > > > > > > > > > > > > On Wed, Dec 13, 2023 at 1:49 PM Russell King <rmk+kernel@armlinux.org.uk> wrote:
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > From: James Morse <james.morse@arm.com>
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > The code behind ACPI_HOTPLUG_CPU allows a not-present CPU to become
-> > > > > > > > > > > > > > present.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > Right.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > > This isn't the only use of HOTPLUG_CPU. On arm64 and riscv
-> > > > > > > > > > > > > > CPUs can be taken offline as a power saving measure.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > But still there is the case in which a non-present CPU can become
-> > > > > > > > > > > > > present, isn't it there?
-> > > > > > > > > > > >
-> > > > > > > > > > > > Not yet defined by the architectures (and I'm assuming it probably never will be).
-> > > > > > > > > > > >
-> > > > > > > > > > > > The original proposal we took to ARM was to do exactly that - they pushed
-> > > > > > > > > > > > back hard on the basis there was no architecturally safe way to implement it.
-> > > > > > > > > > > > Too much of the ARM arch has to exist from the start of time.
-> > > > > > > > > > > >
-> > > > > > > > > > > > https://lore.kernel.org/linux-arm-kernel/cbaa6d68-6143-e010-5f3c-ec62f879ad95@arm.com/
-> > > > > > > > > > > > is one of the relevant threads of the kernel side of that discussion.
-> > > > > > > > > > > >
-> > > > > > > > > > > > Not to put specific words into the ARM architects mouths, but the
-> > > > > > > > > > > > short description is that there is currently no demand for working
-> > > > > > > > > > > > out how to make physical CPU hotplug possible, as such they will not
-> > > > > > > > > > > > provide an architecturally compliant way to do it for virtual CPU hotplug and
-> > > > > > > > > > > > another means is needed (which is why this series doesn't use the present bit
-> > > > > > > > > > > > for that purpose and we have the Online capable bit in MADT/GICC)
-> > > > > > > > > > > >
-> > > > > > > > > > > > It was a 'fun' dance of several years to get to that clarification.
-> > > > > > > > > > > > As another fun fact, the same is defined for x86, but I don't think
-> > > > > > > > > > > > anyone has used it yet (GICC for ARM has an online capable bit in the flags to
-> > > > > > > > > > > > enable this, which was remarkably similar to the online capable bit in the
-> > > > > > > > > > > > flags of the Local APIC entries as added fairly recently).
-> > > > > > > > > > > >
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > > On arm64 an offline CPU may be disabled by firmware, preventing it from
-> > > > > > > > > > > > > > being brought back online, but it remains present throughout.
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > Adding code to prevent user-space trying to online these disabled CPUs
-> > > > > > > > > > > > > > needs some additional terminology.
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > Rename the Kconfig symbol CONFIG_ACPI_HOTPLUG_PRESENT_CPU to reflect
-> > > > > > > > > > > > > > that it makes possible CPUs present.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > Honestly, I don't think that this change is necessary or even useful.
-> > > > > > > > > > > >
-> > > > > > > > > > > > Whilst it's an attempt to avoid future confusion, the rename is
-> > > > > > > > > > > > not something I really care about so my advice to Russell is drop
-> > > > > > > > > > > > it unless you are attached to it!
-> > > > > > > > > > >
-> > > > > > > > > > > While I agree that it isn't a necessity, I don't fully agree that it
-> > > > > > > > > > > isn't useful.
-> > > > > > > > > > >
-> > > > > > > > > > > One of the issues will be that while Arm64 will support hotplug vCPU,
-> > > > > > > > > > > it won't be setting ACPI_HOTPLUG_CPU because it doesn't support
-> > > > > > > > > > > the present bit changing. So I can see why James decided to rename
-> > > > > > > > > > > it - because with Arm64's hotplug vCPU, the idea that ACPI_HOTPLUG_CPU
-> > > > > > > > > > > somehow enables hotplug CPU support is now no longer true.
-> > > > > > > > > > >
-> > > > > > > > > > > Keeping it as ACPI_HOTPLUG_CPU makes the code less obvious, because it
-> > > > > > > > > > > leads one to assume that it ought to be enabled for Arm64's
-> > > > > > > > > > > implementatinon, and that could well cause issues in the future if
-> > > > > > > > > > > people make the assumption that "ACPI_HOTPLUG_CPU" means hotplug CPU
-> > > > > > > > > > > is supported in ACPI. It doesn't anymore.
-> > > > > > > > > >
-> > > > > > > > > > On x86 there is no confusion AFAICS.  It's always meant "as long as
-> > > > > > > > > > the platform supports it".
-> > > > > > > > >
-> > > > > > > > > That's x86, which supports physical CPU hotplug. We're introducing
-> > > > > > > > > support for Arm64 here which doesn't support physical CPU hotplug.
-> > > > > > > > >
-> > > > > > > > >                                                 ACPI-based      Physical        Virtual
-> > > > > > > > > Arch    HOTPLUG_CPU     ACPI_HOTPLUG_CPU        Hotplug         Hotplug         Hotplug
-> > > > > > > > > Arm64   Y               N                       Y               N               Y
-> > > > > > > > > x86     Y               Y                       Y               Y               Y
-> > > > > > > > >
-> > > > > > > > > So ACPI_HOTPLUG_CPU becomes totally misnamed with the introduction
-> > > > > > > > > of hotplug on Arm64.
-> > > > > > > > >
-> > > > > > > > > If we want to just look at stuff from an x86 perspective, then yes,
-> > > > > > > > > it remains correct to call it ACPI_HOTPLUG_CPU. It isn't correct as
-> > > > > > > > > soon as we add Arm64, as I already said.
-> > > > > > > >
-> > > > > > > > And if you rename it, it becomes less confusing for ARM64, but more
-> > > > > > > > confusing for x86, which basically is my point.
-> > > > > > > >
-> > > > > > > > IMO "hotplug" covers both cases well enough and "hotplug present" is
-> > > > > > > > only accurate for one of them.
-> > > > > > > >
-> > > > > > > > > And honestly, a two line quip to my reasoned argument is not IMHO
-> > > > > > > > > an acceptable reply.
-> > > > > > > >
-> > > > > > > > Well, I'm not even sure how to respond to this ...
-> > > > > > >
-> > > > > > > The above explanation you give would have been useful...
-> > > > > > >
-> > > > > > > I don't see how "hotplug" covers both cases. As I've tried to point
-> > > > > > > out many times now, ACPI_HOTPLUG_CPU is N for Arm64, yet it supports
-> > > > > > > ACPI based hotplug. How does ACPI_HOTPLUG_CPU cover Arm64 if it's
-> > > > > > > N there?
-> > > > > >
-> > > > > > But IIUC this change is preliminary for changing it (or equivalent
-> > > > > > option with a different name) to Y, isn't it?
-> > > > >
-> > > > > No. As I keep saying, ACPI_HOTPLUG_CPU ends up N on Arm64 even when
-> > > > > it supports hotplug CPU via ACPI.
-> > > > >
-> > > > > Even with the full Arm64 patch set here, under arch/ we still only
-> > > > > have:
-> > > > >
-> > > > > arch/loongarch/Kconfig: select ACPI_HOTPLUG_PRESENT_CPU if ACPI_PROCESSOR && HOTPLUG_CPU
-> > > > > arch/x86/Kconfig:       select ACPI_HOTPLUG_PRESENT_CPU         if ACPI_PROCESSOR && HOTPLUG_CPU
-> > > > >
-> > > > > To say it yet again, ACPI_HOTPLUG_(PRESENT_)CPU is *never* set on
-> > > > > Arm64.
-> > > >
-> > > > Allright, so ARM64 is not going to use the code that is conditional on
-> > > > ACPI_HOTPLUG_CPU today.
-> > > >
-> > > > Fair enough.
-> > > >
-> > > > > > > IMHO it totally doesn't, and moreover, it goes against what
-> > > > > > > one would logically expect - and this is why I have a problem with
-> > > > > > > your effective NAK for this change. I believe you are basically
-> > > > > > > wrong on this for the reasons I've given - that ACPI_HOTPLUG_CPU
-> > > > > > > will be N for Arm64 despite it supporting ACPI-based CPU hotplug.
-> > > > > >
-> > > > > > So I still have to understand how renaming it for all architectures
-> > > > > > (including x86) is supposed to help.
-> > > > > >
-> > > > > > It will still be the same option under a different name.  How does
-> > > > > > that change things technically?
-> > > > >
-> > > > > Do you think that it makes any sense to have support for ACPI-based
-> > > > > hotplug CPU
-> > > >
-> > > > So this is all about what you and I mean by "ACPI-based hotplug CPU".
-> > > >
-> > > > > *and* having it functional with a configuration symbol
-> > > > > named "ACPI_HOTPLUG_CPU" to be set to N ? That's essentially what
-> > > > > you are advocating for...
-> > > >
-> > > > Setting ACPI_HOTPLUG_CPU to N means that you are not going to compile
-> > > > the code that is conditional on it.
-> > > >
-> > > > That code allows the processor driver to be removed from CPUs and
-> > > > arch_unregister_cpu() to be called from within acpi_bus_trim()  (among
-> > > > other things).  On the way up, it allows arch_register_cpu() to be
-> > > > called from within acpi_bus_scan().  If these things are not done,
-> > > > what I mean by "ACPI-based hotplug CPU" is not supported.
-> > >
-> > > Even on Arm64, arch_register_cpu() and arch_unregister_cpu() will be
-> > > called when the CPU in the VM is hot-removed or hot-added...
-> > 
-> > In a different way, however.
+Hi,
+
+Any further comments on this patch?
+
+On 12/18/2023 11:13 AM, Avadhut Naik wrote:
+> Hi,
 > 
-> This is getting tiresome. The goal posts keep moving. This isn't a
-> discussion, this is a "you're wrong and I'm going to keep changing my
-> argument if you agree with me to make you always wrong".
+> Any further feedback on this patch?
 > 
-> Sorry, no point continuing this.
-
-Let me be clear why I'm exhasperated by this.
-
-I've been giving you a technical argument (Arm64 supporting ACPI
-hotplug CPU, but ACPI_HOTPLUG_CPU=n) for many many emails. You
-seemed to misunderstand that, expecting ACPI_HOTPLUG_CPU to become
-Y later in the series.
-
-When that became clear that it wasn't, you've changed tack. It then
-became about whether two functions get called or not.
-
-When I pointed out that they are still going to be called, oh no,
-it's not about whether those two functions will be called but
-how they get called.
-
-Essentially, what this comes down to is that _you_ have no technical
-argument against the change, just _you_ don't personally want it
-and it doesn't matter what justification I come up with, you're
-always going to tell me something different.
-
-So why not state that you personally don't want it in the first
-place? Why this game of cat and mouse and the constantly changing
-arguments. I guess it's to waste developers time.
-
-Well, I'm calling you out for this, because I'm that pissed off
-at the amount of time you're causing to be wasted.
+> On 12/4/2023 13:25, Avadhut Naik wrote:
+>> To support GHES_ASSIST on Machine Check Architecture (MCA) error sources,
+>> a set of GHES structures is provided by the system firmware for each MCA
+>> error source. Each of these sets consists of a GHES structure for each MCA
+>> bank on each logical CPU, with all structures of a set sharing a common
+>> Related Source ID, equal to the Source ID of one of the MCA error source
+>> structures.[1] On SOCs with large core counts, this typically equates to
+>> tens of thousands of GHES_ASSIST structures for MCA under
+>> "/sys/bus/platform/drivers/GHES".
+>>
+>> Support for GHES_ASSIST however, hasn't been implemented in the kernel. As
+>> such, the information provided through these structures is not consumed by
+>> Linux. Moreover, these GHES_ASSIST structures for MCA, which are supposed
+>> to provide supplemental information in context of an error reported by
+>> hardware, are setup as independent error sources by the kernel during HEST
+>> initialization.
+>>
+>> Additionally, if the Type field of the Notification structure, associated
+>> with these GHES_ASSIST structures for MCA, is set to Polled, the kernel
+>> sets up a timer for each individual structure. The duration of the timer
+>> is derived from the Poll Interval field of the Notification structure. On
+>> SOCs with high core counts, this will result in tens of thousands of
+>> timers expiring periodically causing unnecessary preemptions and wastage
+>> of CPU cycles. The problem will particularly intensify if Poll Interval
+>> duration is not sufficiently high.
+>>
+>> Since GHES_ASSIST support is not present in kernel, skip initialization
+>> of GHES_ASSIST structures for MCA to eliminate their performance impact.
+>>
+>> [1] ACPI specification 6.5, section 18.7
+>>
+>> Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+>> Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+>> ---
+>> Changes in v2:
+>> 1.	Since is_ghes_assist_struct() returns if any of the conditions is hit
+>> if-else-if chain is redundant. Replace it with just if statements.
+>> 2.	Fix formatting errors.
+>> 3.	Add Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+>>
+>> Changes in v3:
+>> 1. Modify structure (mces) comment, per Tony's recommendation, to better
+>> reflect the structure's usage.
+>> ---
+>>  drivers/acpi/apei/hest.c | 51 ++++++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 51 insertions(+)
+>>
+>> diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
+>> index 6aef1ee5e1bd..20d757687e3d 100644
+>> --- a/drivers/acpi/apei/hest.c
+>> +++ b/drivers/acpi/apei/hest.c
+>> @@ -37,6 +37,20 @@ EXPORT_SYMBOL_GPL(hest_disable);
+>>  
+>>  static struct acpi_table_hest *__read_mostly hest_tab;
+>>  
+>> +/*
+>> + * Since GHES_ASSIST is not supported, skip initialization of GHES_ASSIST
+>> + * structures for MCA.
+>> + * During HEST parsing, detected MCA error sources are cached from early
+>> + * table entries so that the Flags and Source Id fields from these cached
+>> + * values are then referred to in later table entries to determine if the
+>> + * encountered GHES_ASSIST structure should be initialized.
+>> + */
+>> +static struct {
+>> +	struct acpi_hest_ia_corrected *cmc;
+>> +	struct acpi_hest_ia_machine_check *mc;
+>> +	struct acpi_hest_ia_deferred_check *dmc;
+>> +} mces;
+>> +
+>>  static const int hest_esrc_len_tab[ACPI_HEST_TYPE_RESERVED] = {
+>>  	[ACPI_HEST_TYPE_IA32_CHECK] = -1,	/* need further calculation */
+>>  	[ACPI_HEST_TYPE_IA32_CORRECTED_CHECK] = -1,
+>> @@ -70,22 +84,54 @@ static int hest_esrc_len(struct acpi_hest_header *hest_hdr)
+>>  		cmc = (struct acpi_hest_ia_corrected *)hest_hdr;
+>>  		len = sizeof(*cmc) + cmc->num_hardware_banks *
+>>  			sizeof(struct acpi_hest_ia_error_bank);
+>> +		mces.cmc = cmc;
+>>  	} else if (hest_type == ACPI_HEST_TYPE_IA32_CHECK) {
+>>  		struct acpi_hest_ia_machine_check *mc;
+>>  		mc = (struct acpi_hest_ia_machine_check *)hest_hdr;
+>>  		len = sizeof(*mc) + mc->num_hardware_banks *
+>>  			sizeof(struct acpi_hest_ia_error_bank);
+>> +		mces.mc = mc;
+>>  	} else if (hest_type == ACPI_HEST_TYPE_IA32_DEFERRED_CHECK) {
+>>  		struct acpi_hest_ia_deferred_check *mc;
+>>  		mc = (struct acpi_hest_ia_deferred_check *)hest_hdr;
+>>  		len = sizeof(*mc) + mc->num_hardware_banks *
+>>  			sizeof(struct acpi_hest_ia_error_bank);
+>> +		mces.dmc = mc;
+>>  	}
+>>  	BUG_ON(len == -1);
+>>  
+>>  	return len;
+>>  };
+>>  
+>> +/*
+>> + * GHES and GHESv2 structures share the same format, starting from
+>> + * Source Id and ending in Error Status Block Length (inclusive).
+>> + */
+>> +static bool is_ghes_assist_struct(struct acpi_hest_header *hest_hdr)
+>> +{
+>> +	struct acpi_hest_generic *ghes;
+>> +	u16 related_source_id;
+>> +
+>> +	if (hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR &&
+>> +	    hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR_V2)
+>> +		return false;
+>> +
+>> +	ghes = (struct acpi_hest_generic *)hest_hdr;
+>> +	related_source_id = ghes->related_source_id;
+>> +
+>> +	if (mces.cmc && mces.cmc->flags & ACPI_HEST_GHES_ASSIST &&
+>> +	    related_source_id == mces.cmc->header.source_id)
+>> +		return true;
+>> +	if (mces.mc && mces.mc->flags & ACPI_HEST_GHES_ASSIST &&
+>> +	    related_source_id == mces.mc->header.source_id)
+>> +		return true;
+>> +	if (mces.dmc && mces.dmc->flags & ACPI_HEST_GHES_ASSIST &&
+>> +	    related_source_id == mces.dmc->header.source_id)
+>> +		return true;
+>> +
+>> +	return false;
+>> +}
+>> +
+>>  typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
+>>  
+>>  static int apei_hest_parse(apei_hest_func_t func, void *data)
+>> @@ -114,6 +160,11 @@ static int apei_hest_parse(apei_hest_func_t func, void *data)
+>>  			return -EINVAL;
+>>  		}
+>>  
+>> +		if (is_ghes_assist_struct(hest_hdr)) {
+>> +			hest_hdr = (void *)hest_hdr + len;
+>> +			continue;
+>> +		}
+>> +
+>>  		rc = func(hest_hdr, data);
+>>  		if (rc)
+>>  			return rc;
+>>
+>> base-commit: 629a3b49f3f957e975253c54846090b8d5ed2e9b
+> 
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Thanks,
+Avadhut Naik
 
