@@ -1,134 +1,157 @@
-Return-Path: <linux-acpi+bounces-2983-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-2984-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A098385FF
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 04:28:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E595F8386DC
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 06:46:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD74228699C
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 03:28:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41A3B2815F1
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 05:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9DA910F1;
-	Tue, 23 Jan 2024 03:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k3Dhunne"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB3723DB;
+	Tue, 23 Jan 2024 05:46:31 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5001FC8;
-	Tue, 23 Jan 2024 03:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495D95225;
+	Tue, 23 Jan 2024 05:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705980506; cv=none; b=swJVZAoiQJUj4jaZdqZfg135HUmdmWryEQ3QZvbiWubwfe9IUukoMo7CcQSNyyS2SC9CeszjaEy8NpzV9Y4ueKvJ8uEh+l3xpe2abEC2L0n84RFP2w4hjd+OOKiD9p/mzQZeMBESXbpW0mCCWoMAXtGYpqjeIaD0ZCwvvunGGCs=
+	t=1705988791; cv=none; b=jozp6N31wgzdsBVVspz+tGwxQHKVchIFI7YumogMKUjxo3wNeX/fyy3yJ3Z+yPHFXP2U59FF4r0bX1C2PM9s/bB9wDoJaBOSXww8rWUTFVNt6SvdALjGEXjakZuU1EFOkgapfV7Ng/UPRl4PMkKZfjrBFPodmDUqm/xpe5dRW8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705980506; c=relaxed/simple;
-	bh=l7wfLVvCGP0+ecx1a4qU9SbMv8+iuyp7Pu55QwpeJsg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=SU0xpVR+vEstmewHnl6B8QYAUQO6APcY5PWsVwW55K3hTnP9+Gfq2zdD/f6HV1DTjpbXmKzaQTdOmGBMRa88JyxK5MeMYv9q1mf3hMWn7EclkV4GQVeCAhiYxNO304eKbNumGiE8oSC/vP53hDzmn9da41WD80Imb5091K6wlvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k3Dhunne; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705980503; x=1737516503;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=l7wfLVvCGP0+ecx1a4qU9SbMv8+iuyp7Pu55QwpeJsg=;
-  b=k3DhunnekM0i1OWlQwm3OLNi92Rk2OcRbiN2Xb6NeRDfOMxXBJEdwDbV
-   MLoMAE9EyUOnweDw7I1jB8zVGk5vgwPbfMlzWgrDtG5vlrdxHw6EKm3VK
-   hYlSEWsslOamyiipgmfZfqLL3BeAzziJu/KBD3BxOz7py+QZF+pSaDgoa
-   38Z1m7xcbTSErXV/S2s21nNpsoQVJxO4VcNJXXDG92ycmrlWhfD/6bEb+
-   BxxX+zu3rBa3cpvLAHRf5jgarLodJ7H9Tja05kcG9fMulZXa0yy07K4o3
-   5TjebWB6+I3luuerENZfBiaCPGKzto983YyAew9k67eRleGfWNlbSMMGH
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="1292116"
-X-IronPort-AV: E=Sophos;i="6.05,213,1701158400"; 
-   d="scan'208";a="1292116"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2024 19:28:22 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,213,1701158400"; 
-   d="scan'208";a="34257552"
-Received: from lkp-server01.sh.intel.com (HELO 961aaaa5b03c) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 22 Jan 2024 19:28:21 -0800
-Received: from kbuild by 961aaaa5b03c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rS7SU-00079E-1D;
-	Tue, 23 Jan 2024 03:28:18 +0000
-Date: Tue, 23 Jan 2024 11:28:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	devel@acpica.org, linux-pm@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [rafael-pm:bleeding-edge 5/6] drivers/base/power/runtime.c:1815:24:
- warning: increment of a boolean expression
-Message-ID: <202401231130.9tnv8Gds-lkp@intel.com>
+	s=arc-20240116; t=1705988791; c=relaxed/simple;
+	bh=I5/7kgG0RHIfM6JTMemznuMv1VkSOat4HzAutMg0TrU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uZWvDPeeQHQDI05bRnZ3chTSzArYfT9WR/D0+rf2oFTkmm5P+wdOjabHR03o7rEethhiJGSYfqU9o9cg+NN2irsizZVRSgbIaPVyXpII42rxM4xSAHeheZVgRDXh0P5KxtuAKfgfxDgdKUYzQwBju6AuYFu1O08Iov6+R09xl8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EB5D51FB;
+	Mon, 22 Jan 2024 21:47:12 -0800 (PST)
+Received: from a077893.arm.com (unknown [10.163.40.228])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8CBB63F762;
+	Mon, 22 Jan 2024 21:46:22 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-arm-kernel@lists.infradead.org,
+	suzuki.poulose@arm.com
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@arm.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	coresight@lists.linaro.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH V4 00/11] coresight: Move remaining AMBA ACPI devices into platform driver
+Date: Tue, 23 Jan 2024 11:15:57 +0530
+Message-Id: <20240123054608.1790189-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Hi Rafael,
+This moves remaining AMBA ACPI devices into respective platform drivers for
+enabling ACPI based power management support. This series applies on kernel
+v6.8-rc1 release. This series has been built, and boot tested on a DT based
+coresight platform. Although this still requires some more testing on ACPI
+based coresight platforms.
 
-FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
+https://git.gitlab.arm.com/linux-arm/linux-anshuman.git (amba_other_acpi_migration_v4)
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   f890729ea3ca4d549b4e2414c42e932163814f09
-commit: 5d872146e7f55e15c26d0a5600b155ee54bfdee6 [5/6] PM: sleep: Use bool for all 1-bit fields in struct dev_pm_info
-config: i386-buildonly-randconfig-004-20240123 (https://download.01.org/0day-ci/archive/20240123/202401231130.9tnv8Gds-lkp@intel.com/config)
-compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240123/202401231130.9tnv8Gds-lkp@intel.com/reproduce)
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: James Clark <james.clark@arm.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: coresight@lists.linaro.org
+Cc: linux-stm32@st-md-mailman.stormreply.com
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202401231130.9tnv8Gds-lkp@intel.com/
+Changes in V4:
 
-All warnings (new ones prefixed by >>):
+- Fixed PM imbalance in etm4_probe() error path with pm_runtime_disable()
+- Restored back the pm_runtime_disable() on platform probe error paths
+  in replicator, funnel, catu, tpiu, tmc and stm devices
+- Dropped dev_caps argument from __tmc_probe()
+- Changed xxxx_platform_remove() for platform_driver->remove_new() callback
 
-   drivers/base/power/runtime.c: In function 'pm_runtime_new_link':
->> drivers/base/power/runtime.c:1815:24: warning: increment of a boolean expression [-Wbool-operation]
-    1815 |  dev->power.links_count++;
-         |                        ^~
-   drivers/base/power/runtime.c: In function 'pm_runtime_drop_link_count':
->> drivers/base/power/runtime.c:1823:24: warning: decrement of a boolean expression [-Wbool-operation]
-    1823 |  dev->power.links_count--;
-         |                        ^~
+Changes in V3:
 
+https://lore.kernel.org/all/20231208053939.42901-1-anshuman.khandual@arm.com/
 
-vim +1815 drivers/base/power/runtime.c
+- Split coresight_init_driver/remove_driver() helpers into a separate patch
+- Added 'drvdata->pclk' comments in replicator, funnel, tpiu, tmc, and stm devices
+- Updated funnel, and replicator drivers to use these new helpers
+- Check for drvdata instead of drvdata->pclk in suspend and resume paths in catu,
+  tmc and debug devices
+- Added patch to extract device name from AMBA pid based table lookup for stm
+- Added patch to extract device properties from AMBA pid based table look for tmc
+- Dropped pm_runtime_put() from common __probe() functions
+- Handled pm_runtime_put() in AMBA driver in success path
+- Handled pm_runtime_put() in platform driver in both success and error paths
 
-21d5c57b3726166 Rafael J. Wysocki 2016-10-30  1811  
-baa8809f60971d1 Rafael J. Wysocki 2016-10-30  1812  void pm_runtime_new_link(struct device *dev)
-baa8809f60971d1 Rafael J. Wysocki 2016-10-30  1813  {
-baa8809f60971d1 Rafael J. Wysocki 2016-10-30  1814  	spin_lock_irq(&dev->power.lock);
-baa8809f60971d1 Rafael J. Wysocki 2016-10-30 @1815  	dev->power.links_count++;
-baa8809f60971d1 Rafael J. Wysocki 2016-10-30  1816  	spin_unlock_irq(&dev->power.lock);
-baa8809f60971d1 Rafael J. Wysocki 2016-10-30  1817  }
-baa8809f60971d1 Rafael J. Wysocki 2016-10-30  1818  
-e0e398e204634db Rafael J. Wysocki 2020-10-21  1819  static void pm_runtime_drop_link_count(struct device *dev)
-baa8809f60971d1 Rafael J. Wysocki 2016-10-30  1820  {
-baa8809f60971d1 Rafael J. Wysocki 2016-10-30  1821  	spin_lock_irq(&dev->power.lock);
-baa8809f60971d1 Rafael J. Wysocki 2016-10-30  1822  	WARN_ON(dev->power.links_count == 0);
-baa8809f60971d1 Rafael J. Wysocki 2016-10-30 @1823  	dev->power.links_count--;
-baa8809f60971d1 Rafael J. Wysocki 2016-10-30  1824  	spin_unlock_irq(&dev->power.lock);
-e0e398e204634db Rafael J. Wysocki 2020-10-21  1825  }
-e0e398e204634db Rafael J. Wysocki 2020-10-21  1826  
+Changes in V2:
 
-:::::: The code at line 1815 was first introduced by commit
-:::::: baa8809f60971d10220dfe79248f54b2b265f003 PM / runtime: Optimize the use of device links
+https://lore.kernel.org/all/20231201062053.1268492-1-anshuman.khandual@arm.com/
 
-:::::: TO: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-:::::: CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- Dropped redundant devm_ioremap_resource() hunk from tmc_platform_probe()
+- Defined coresight_[init|remove]_driver() for both AMBA/platform drivers
+- Changed catu, tmc, tpiu, stm and debug coresight drivers to use the new
+  helpers avoiding build issues arising from module_amba_driver(), and
+  module_platform_driver() being on the same file
+
+Changes in V1:
+
+https://lore.kernel.org/all/20231027072943.3418997-1-anshuman.khandual@arm.com/
+
+- Replaced all IS_ERR() instances with IS_ERR_OR_NULL() as per Suzuki
+
+Changes in RFC:
+
+https://lore.kernel.org/all/20230921042040.1334641-1-anshuman.khandual@arm.com/
+
+Anshuman Khandual (11):
+  coresight: etm4x: Fix unbalanced pm_runtime_enable()
+  coresight: stm: Extract device name from AMBA pid based table lookup
+  coresight: tmc: Extract device properties from AMBA pid based table lookup
+  coresight: Add helpers registering/removing both AMBA and platform drivers
+  coresight: replicator: Move ACPI support from AMBA driver to platform driver
+  coresight: funnel: Move ACPI support from AMBA driver to platform driver
+  coresight: catu: Move ACPI support from AMBA driver to platform driver
+  coresight: tpiu: Move ACPI support from AMBA driver to platform driver
+  coresight: tmc: Move ACPI support from AMBA driver to platform driver
+  coresight: stm: Move ACPI support from AMBA driver to platform driver
+  coresight: debug: Move ACPI support from AMBA driver to platform driver
+
+ drivers/acpi/arm64/amba.c                     |   8 -
+ drivers/hwtracing/coresight/coresight-catu.c  | 142 +++++++++++++---
+ drivers/hwtracing/coresight/coresight-catu.h  |   1 +
+ drivers/hwtracing/coresight/coresight-core.c  |  29 ++++
+ .../hwtracing/coresight/coresight-cpu-debug.c | 141 ++++++++++++++--
+ .../coresight/coresight-etm4x-core.c          |   3 +
+ .../hwtracing/coresight/coresight-funnel.c    |  86 +++++-----
+ drivers/hwtracing/coresight/coresight-priv.h  |  10 ++
+ .../coresight/coresight-replicator.c          |  81 ++++-----
+ drivers/hwtracing/coresight/coresight-stm.c   | 117 +++++++++++--
+ .../hwtracing/coresight/coresight-tmc-core.c  | 158 +++++++++++++++---
+ drivers/hwtracing/coresight/coresight-tmc.h   |   2 +
+ drivers/hwtracing/coresight/coresight-tpiu.c  | 102 +++++++++--
+ include/linux/coresight.h                     |   7 +
+ 14 files changed, 726 insertions(+), 161 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.25.1
+
 
