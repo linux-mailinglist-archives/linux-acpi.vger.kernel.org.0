@@ -1,196 +1,192 @@
-Return-Path: <linux-acpi+bounces-3004-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3005-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1ED1838CE2
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 12:06:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6EBD838F9D
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 14:17:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6C9D1C20CCE
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 11:06:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4819CB293D6
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jan 2024 13:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620445D912;
-	Tue, 23 Jan 2024 11:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D0C5F86F;
+	Tue, 23 Jan 2024 13:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LAQA9lLk"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="fpto1vRE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395E35D90B;
-	Tue, 23 Jan 2024 11:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A736169F;
+	Tue, 23 Jan 2024 13:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706007822; cv=none; b=oh3/t5k2y/x8CBu/Ym36LKlKuXQ9w/Xemg6bpd2O1s8XCHD5/MJEvYYDIFJv6AxEIg/JzuvbRSROe24zT5RP+2Btkc7AINU3eaqZBcrdy1P5JCEfeSFEJnYVrpFctv+vBmP2KEGAQ5DQrpjplgfJUdVftmkIwcuZSGLDLEJIqtc=
+	t=1706015460; cv=none; b=LBWd2nuAqkBDKFpEdXFGDmM0WiWMawIgaO3tuG1f6yMXFxF2HFWMIVIpxwhWpOwpcQ1fkWtOPnDX19TBh52fBEzDlFSSyjNfyHAN2YMq1VZGAMdhzhzL8CHNq5Xe/TBmw5w4qOCz/lfwlOfcqKbjmVutrEkA+iERQErCionIz+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706007822; c=relaxed/simple;
-	bh=yxslJnBmg5lxtsS0rsR6gRhm2LlSKzD9dPNmd8c8t9U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nrORnU/Bx5PbZgZxrURN6IoLC0xEO1rUd9YQY56/sZer/0qAjCIe8B8dNLgJaW95BbuBGp4ZnkPXcebf9FXA5i/rVHHvUjYAeqEN4zQKWPaPaY4yBvM2lyy1s0anNkQq3QQfcgMd9DdkwWHmMPGuqx+O8+kV+WKpp2J+F6lfHoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LAQA9lLk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293BEC433F1;
-	Tue, 23 Jan 2024 11:03:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706007821;
-	bh=yxslJnBmg5lxtsS0rsR6gRhm2LlSKzD9dPNmd8c8t9U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LAQA9lLk1o09pZ0OU8sEoF/LI25bbOJBw4xu8n0aWQpPnTEx4nmNze4zTXnxYEmmg
-	 vi2y9jUVu4NQOo95uUULh2cBfA0tQq6g/j6fLGB0gUTJLstUoWvHdXcdrPMCzcB55M
-	 VJ+ftYWffw3aPPns9d6PsiayBWddORbduSkroNcohTeAv3s7vkKT54j7zn0iGxg6z/
-	 CrOJHnVUl+S3tYSe9ipau5qYUAZ88qVU077iPrvLsGtbyB3QPhmECoVyhcFWxhoPD+
-	 2Nz9K11GGtgzIUG9fupGmRZTjAy5X2382nFvcUOJT/hZPWvwQwATwHPZDORIzM9wNs
-	 4kPXh7FplRA3w==
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	Fang Xiang <fangxiang3@xiaomi.com>,
-	Robert Moore <robert.moore@intel.com>
-Subject: [PATCH v5 1/1] irqchip/gic-v3: Enable non-coherent redistributors/ITSes ACPI probing
-Date: Tue, 23 Jan 2024 12:03:32 +0100
-Message-Id: <20240123110332.112797-2-lpieralisi@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240123110332.112797-1-lpieralisi@kernel.org>
-References: <20240123110332.112797-1-lpieralisi@kernel.org>
+	s=arc-20240116; t=1706015460; c=relaxed/simple;
+	bh=5h4c0yLpAWhh9wDVnrtG83khZHw2xEkAxReFMbgcYiM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p6QeSZc530vylYdrYrkOvI82BFKnjUJSKtnpkZqkELuK6MCJH254E6lnGH1dpsDgkEam1gOaQACN4jq/nHgl1vGHTjVQKfIjd90notiquunR92/B/7tK6oZiRWMz+q1LilBYBJEkLpa2QgEYuAyMtnuPVXpPtg9qdsoQFEm77qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=fpto1vRE; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=fSr5mFfM4iUU6EsOYToTuq8gdRk30qQl8QQSg63i70E=; b=fpto1vRE8xiQfC1uHZjgB53IU1
+	JLS4uiEkPBr6x1Klv4TNndrOnG/ui4aqzwG/Y2eqKlYIDHpeJacttqDhXV2KGhFFEn9acxBpxIouu
+	tOH2aiHL34vwZDnDTt45uqhH4MS/X5syanHIDBqUfCGS4JuKsSQ/+MMkvnURyhmYGdLkZ9t3oZuqF
+	XWRtZTgH2zKCxX4SfzUOlORMQvFyeJrKaOho9uAsnq3WH6zRTINuWSRJ4XEYkmi4DaXRKgTQN+Kz8
+	8qrlri2JBWoJpsiLMJuWZcj5/RLx3sn8Pm1uwiDKuFDLblQQ1Lq/w4uAOvqo/kJ0weC6iYY1dCIMz
+	idqciouw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46192)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1rSGYC-0002Qx-1y;
+	Tue, 23 Jan 2024 13:10:48 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1rSGY8-0001yi-Ln; Tue, 23 Jan 2024 13:10:44 +0000
+Date: Tue, 23 Jan 2024 13:10:44 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>
+Subject: Re: [PATCH RFC v3 17/21] ACPI: add support to register CPUs based on
+ the _STA enabled bit
+Message-ID: <Za+61Jikkxh2BinY@shell.armlinux.org.uk>
+References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk>
+ <E1rDOhC-00DvlI-Pp@rmk-PC.armlinux.org.uk>
+ <ZYBDJG1g7SH7AiM1@shell.armlinux.org.uk>
+ <20240102145320.000062f9@Huawei.com>
+ <20240123102603.00004244@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240123102603.00004244@Huawei.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-The GIC architecture specification defines a set of registers for
-redistributors and ITSes that control the sharebility and cacheability
-attributes of redistributors/ITSes initiator ports on the interconnect
-(GICR_[V]PROPBASER, GICR_[V]PENDBASER, GITS_BASER<n>).
+On Tue, Jan 23, 2024 at 10:26:03AM +0000, Jonathan Cameron wrote:
+> On Tue, 2 Jan 2024 14:53:20 +0000
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> 
+> > On Mon, 18 Dec 2023 13:03:32 +0000
+> > "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+> > 
+> > > On Wed, Dec 13, 2023 at 12:50:38PM +0000, Russell King wrote:  
+> > > > From: James Morse <james.morse@arm.com>
+> > > > 
+> > > > acpi_processor_get_info() registers all present CPUs. Registering a
+> > > > CPU is what creates the sysfs entries and triggers the udev
+> > > > notifications.
+> > > > 
+> > > > arm64 virtual machines that support 'virtual cpu hotplug' use the
+> > > > enabled bit to indicate whether the CPU can be brought online, as
+> > > > the existing ACPI tables require all hardware to be described and
+> > > > present.
+> > > > 
+> > > > If firmware describes a CPU as present, but disabled, skip the
+> > > > registration. Such CPUs are present, but can't be brought online for
+> > > > whatever reason. (e.g. firmware/hypervisor policy).
+> > > > 
+> > > > Once firmware sets the enabled bit, the CPU can be registered and
+> > > > brought online by user-space. Online CPUs, or CPUs that are missing
+> > > > an _STA method must always be registered.    
+> > > 
+> > > ...
+> > >   
+> > > > @@ -526,6 +552,9 @@ static void acpi_processor_post_eject(struct acpi_device *device)
+> > > >  		acpi_processor_make_not_present(device);
+> > > >  		return;
+> > > >  	}
+> > > > +
+> > > > +	if (cpu_present(pr->id) && !(sta & ACPI_STA_DEVICE_ENABLED))
+> > > > +		arch_unregister_cpu(pr->id);    
+> > > 
+> > > This change isn't described in the commit log, but seems to be the cause
+> > > of the build error identified by the kernel build bot that is fixed
+> > > later in this series. I'm wondering whether this should be in a
+> > > different patch, maybe "ACPI: Check _STA present bit before making CPUs
+> > > not present" ?  
+> > 
+> > Would seem a bit odd to call arch_unregister_cpu() way before the code
+> > is added to call the matching arch_registers_cpu()
+> > 
+> > Mind you this eject doesn't just apply to those CPUs that are registered
+> > later I think, but instead to all.  So we run into the spec hole that
+> > there is no way to identify initially 'enabled' CPUs that might be disabled
+> > later.
+> > 
+> > > 
+> > > Or maybe my brain isn't working properly (due to being Covid positive.)
+> > > Any thoughts, Jonathan?  
+> > 
+> > I'll go with a resounding 'not sure' on where this change belongs.
+> > I blame my non existent start of the year hangover.
+> > Hope you have recovered!
+> 
+> Looking again, I think you were right, move it to that earlier patch.
 
-Architecturally the GIC provides a means to drive shareability and
-cacheability attributes signals but it is not mandatory for designs to
-wire up the corresponding interconnect signals that control the
-cacheability/shareability of transactions.
+I'm having second thoughts - because this patch introduces the
+arch_register_cpu() into the acpi_processor_add() path (via
+acpi_processor_get_info() and acpi_processor_make_enabled(), so isn't
+it also correct to add arch_unregister_cpu() to the detach/post_eject
+path as well? If we add one without the other, doesn't stuff become
+a bit asymetric?
 
-Redistributors and ITSes interconnect ports can be connected to
-non-coherent interconnects that are not able to manage the
-shareability/cacheability attributes; this implicitly makes the
-redistributors and ITSes non-coherent observers.
+Looking more deeply at these changes, I'm finding it isn't easy to
+keep track of everything that's going on here.
 
-To enable non-coherent GIC designs on ACPI based systems, parse the MADT
-GICC/GICR/ITS subtables non-coherent flags to determine whether the
-respective components are non-coherent observers and force the
-shareability attributes to be programmed into the redistributors and
-ITSes registers.
+We had attach()/detach() callbacks that were nice and symetrical.
+How we have this post_eject() callback that makes things asymetrical.
 
-An ACPI global function (acpi_get_madt_revision()) is added to retrieve
-the MADT revision, in that it is essential to check the MADT revision
-before checking for flags that were added with MADT revision 7 so that
-if the kernel is booted with an ACPI MADT table with revision < 7 it
-skips parsing the newly added flags (that should be zeroed reserved
-values for MADT versions < 7 but they could turn out to be buggy and
-should be ignored).
+We have the attach() method that registers the CPU, but no detach
+method, instead having the post_eject() method. On the face of it,
+arch_unregister_cpu() doesn't look symetric unless one goes digging
+more in the code - by that, I mean arch_register_cpu() only gets
+called of present=1 _and_ enabled=1. However, arch_unregister_cpu()
+gets called buried in acpi_processor_make_not_present(), called when
+present=0, and then we have this new one to handle the case where
+enabled=0. It is not obvious that arch_unregister_cpu() is the reverse
+of what happens with arch_register_cpu() here.
 
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
----
- drivers/acpi/processor_core.c    | 15 +++++++++++++++
- drivers/irqchip/irq-gic-v3-its.c |  4 ++++
- drivers/irqchip/irq-gic-v3.c     |  9 +++++++++
- include/linux/acpi.h             |  3 +++
- 4 files changed, 31 insertions(+)
+Then we have the add() method allocating pr->throttling.shared_cpu_map,
+and acpi_processor_make_not_present() freeing it. From what I read in
+ACPI v6.5, enabled is not allowed to be set without present. So, if
+_STA reports that a CPU that had present=1 enabled=1, but then is
+later reported to be enabled=0 (which we handle by calling only
+arch_unregister_cpu()) then what happens when _STA changes to
+enabled=1 later? Does add() get called? If it does, this would cause
+a new acpi_processor structure to be allocated and the old one to be
+leaked... I hope I'm wrong about add() being called - but if it isn't,
+how does enabled going from 0->1 get handled... and if we are handling
+its 1->0 transition separately from present, then surely we should be
+handling that.
 
-diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
-index b203cfe28550..915713c0e9b7 100644
---- a/drivers/acpi/processor_core.c
-+++ b/drivers/acpi/processor_core.c
-@@ -215,6 +215,21 @@ phys_cpuid_t __init acpi_map_madt_entry(u32 acpi_id)
- 	return rv;
- }
- 
-+int __init acpi_get_madt_revision(void)
-+{
-+	struct acpi_table_header *madt = NULL;
-+	int revision;
-+
-+	if (ACPI_FAILURE(acpi_get_table(ACPI_SIG_MADT, 0, &madt)))
-+		return -EINVAL;
-+
-+	revision = madt->revision;
-+
-+	acpi_put_table(madt);
-+
-+	return revision;
-+}
-+
- static phys_cpuid_t map_mat_entry(acpi_handle handle, int type, u32 acpi_id)
- {
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index fec1b58470df..a60c560ce891 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -5591,6 +5591,10 @@ static int __init gic_acpi_parse_madt_its(union acpi_subtable_headers *header,
- 		goto node_err;
- 	}
- 
-+	if (acpi_get_madt_revision() >= 7 &&
-+	    (its_entry->flags & ACPI_MADT_ITS_NON_COHERENT))
-+		its->flags |= ITS_FLAGS_FORCE_NON_SHAREABLE;
-+
- 	err = its_probe_one(its);
- 	if (!err)
- 		return 0;
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index 98b0329b7154..8cb8dff86c12 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -2356,6 +2356,11 @@ gic_acpi_parse_madt_redist(union acpi_subtable_headers *header,
- 		pr_err("Couldn't map GICR region @%llx\n", redist->base_address);
- 		return -ENOMEM;
- 	}
-+
-+	if (acpi_get_madt_revision() >= 7 &&
-+	    (redist->flags & ACPI_MADT_GICR_NON_COHERENT))
-+		gic_data.rdists.flags |= RDIST_FLAGS_FORCE_NON_SHAREABLE;
-+
- 	gic_request_region(redist->base_address, redist->length, "GICR");
- 
- 	gic_acpi_register_redist(redist->base_address, redist_base);
-@@ -2380,6 +2385,10 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_headers *header,
- 		return -ENOMEM;
- 	gic_request_region(gicc->gicr_base_address, size, "GICR");
- 
-+	if (acpi_get_madt_revision() >= 7 &&
-+	    (gicc->flags & ACPI_MADT_GICC_NON_COHERENT))
-+		gic_data.rdists.flags |= RDIST_FLAGS_FORCE_NON_SHAREABLE;
-+
- 	gic_acpi_register_redist(gicc->gicr_base_address, redist_base);
- 	return 0;
- }
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index b7165e52b3c6..4eedab0e51c3 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -284,6 +284,9 @@ static inline bool invalid_phys_cpuid(phys_cpuid_t phys_id)
- 	return phys_id == PHYS_CPUID_INVALID;
- }
- 
-+
-+int __init acpi_get_madt_revision(void);
-+
- /* Validate the processor object's proc_id */
- bool acpi_duplicate_processor_id(int proc_id);
- /* Processor _CTS control */
+Maybe I'm just getting confused, but I've spent much of this morning
+trying to unravel all this... and I'm of the opinion that this isn't a
+sign of a good approach.
+
 -- 
-2.34.1
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
