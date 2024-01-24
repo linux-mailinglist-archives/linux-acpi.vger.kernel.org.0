@@ -1,129 +1,133 @@
-Return-Path: <linux-acpi+bounces-3035-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3036-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C7F983B291
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 20:53:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D3883B2EB
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 21:16:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E91B52824C2
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 19:53:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7A1B1F226B5
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 20:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7BE132C1B;
-	Wed, 24 Jan 2024 19:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933CD133438;
+	Wed, 24 Jan 2024 20:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ak4Ozkqu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51C67A721;
-	Wed, 24 Jan 2024 19:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F013133434
+	for <linux-acpi@vger.kernel.org>; Wed, 24 Jan 2024 20:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706125983; cv=none; b=ZzL5W25qHMk0g5RtbIxs5gWEEw9VtiwjY1CpW+AIC2jcLaqE/cJPxzs3PHOXV+eJv82rb+M0emqpLzw3HNXbHdXtQqfhKd0JP4UOm44dtam6eqa8z/L11Y4FmQv2DRruKXsWQLwxm1cESVeTZn0bUkeh9D3KTXSvH83NSCE5sXk=
+	t=1706127371; cv=none; b=mmJOYUhBYxqiDbnwQMYSf5MbrW6h+Vimw3FyYVZxSAWdhjiz+hShVuhAG++PqMDEq9cV7uymhyH8eFTXTIV/ln60eHznfWiV97M9rwxGDdZTWpLwez1ZHUZxeLLY8XhoOWTsd+fd47vNLs8OxTDKdLltdu9cH9Noo1ReyXiP3iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706125983; c=relaxed/simple;
-	bh=aadZZEOGkkUEm30g9/XpD6S08ZVXC+3z9qo9Z7Hqwto=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=enJ8HoVDqijQI5+9ll5LXcX/QZGzSgJ23W8U9Z+G+P5LGVSZG0CG12j3PO/uA6OTey5N0BBoDsNv+o7FCBZxPjbkXEXSktlMlR/51ZQNpYSt0ors1huGwHxBMNk1njIhlfHGOrNchfNaKukn6Xk5LH//3Pix57eTTE1xj4fMzSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-598afd970e4so722621eaf.0;
-        Wed, 24 Jan 2024 11:53:01 -0800 (PST)
+	s=arc-20240116; t=1706127371; c=relaxed/simple;
+	bh=AXDCwXx73owg7wj63GSw7ngnDK8Hm+d9fCiD3naBQM8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rtF3RWO+JYV6j1Sz89FyXYXJLikhW9NQkJxuxokfnVkjcNLPb7IeVQOw62gCpIjy5Qqv/Y2l9E8NSlg0BpoqBbKzR23XWsY5QXHtlXDqqIFaRbsyZ+VtnYzFY0u28Cez3zeYbYjJz4J/qXaGWoc0zo7+OB0xV2ElATvg2hEG3Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ak4Ozkqu; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-5ce942efda5so4505557a12.2
+        for <linux-acpi@vger.kernel.org>; Wed, 24 Jan 2024 12:16:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1706127369; x=1706732169; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=M9ZXapP4CBzb1A7zLIfbhm/sqmLOdGM3rVISnRAyWrU=;
+        b=ak4OzkqudJOZiRpN3nm/SZuMEENLUmjgNOFhpt5rgM2ASt6P0HxiqdOf7Q3puiLZj2
+         JD3Hmyr21NO1KbWXRub9TD0xkfOvPibPJts3HtAp0sVsDoQniqzRp5QT/5uMIwCV5gt4
+         jDNhY1emRTtWGv+h40IibHV5FOdcXh9t1R1u4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706125980; x=1706730780;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SRoNhJ3/05j9Tlj5YG8Cl0Gw7tHLoeZYDuNeT2OREZs=;
-        b=aLrr+1xEmEqBHfqxKwqo0yoWF3iw+7hRphaAzLB74OM1iGb26A6NAoAvz4NEYK8hHm
-         NczXyOUJ5WRdGyXbnf9YjEj8gryX1F1zz1wcbMIO4r/cXuyWAq4VortZD+b9FEuuPN7n
-         +rntXiZpd83WMmyLcy9nKGN7JFL801J7swOEgGj/J+iqfHoNARtVRLskCbIPJyec8oyL
-         OXt4hlj3iRWEtmnsgcX2sCfGJjH9UjmqM1EhNGHgw2p+4UPWbB/lkmg32yPmVOA+BTQr
-         2lsutLcL8jQwNdf3HeyURgc/SaSvy4CGBi96lzmqb+ls3mHFF2Kwn4gD1hkgSwbh8Hqj
-         emUA==
-X-Gm-Message-State: AOJu0Yxu1kD7SbgvOwbgdr+Ov5yjrGRVBbPoj38MIomNA5pQtVDrIymj
-	qfo/v/39TA6jiXaaOZXkhr+0EASKcgP80nXAeVL4WrgemOzXajGNo2ZW1H3NTqDx2c7H27p5TZF
-	D/CoK1Kw7H0Tai6VGH5WnC+tZQ6g=
-X-Google-Smtp-Source: AGHT+IHkHJAffORh/fW3JTP82vIu6+jz/+0vhRELYfwxdDzNLlmrBuVUB//vF1C2NY1AK6LLpbrHXW9egpFdPauocUA=
-X-Received: by 2002:a4a:bd89:0:b0:599:2b86:993 with SMTP id
- k9-20020a4abd89000000b005992b860993mr3258671oop.0.1706125980540; Wed, 24 Jan
- 2024 11:53:00 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706127369; x=1706732169;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M9ZXapP4CBzb1A7zLIfbhm/sqmLOdGM3rVISnRAyWrU=;
+        b=dVxIKnMcod9Gm683pOezl9EwwjQNYA4TFRSRQ4Q9OpGPw1cYbBJh3mpvExlGsT44uR
+         YIUDUEtiRhUp4K4NM6Jg+j2Y0HlVIMUfXzG9pXo0nHsJAcQqFvcMjRyHH5hb9apcW2pJ
+         4CMO+F+yeAGWslB763/qy6wsVZcql6bYnZhmY8ggvFeNCm47MUjYUrqPETxAjkmKn4ka
+         L9H+cBWAN3M/oWON0ZnPOUNGEI9/HRno/IxBDm4tiUggRGD0DS5TASZJg/4Pu9s4W17u
+         XrzRA5yn3b1PSeWLFzlR4MD3Q33iNH9e0MQ3rAQziEEQ0cY3F3sxFfG2haII8R7lpDsE
+         MDTw==
+X-Gm-Message-State: AOJu0YzdiBI+W5I8P3MoNDj2XxMe1zXNAuOKfAIP3AKxZM7knCEz0kQ4
+	RxWIIJzzbC0UBBHUKe6oRQ00fP3kukK4I0za4N4Np+PlYoVYsb0Xl4OTgRLHGg==
+X-Google-Smtp-Source: AGHT+IGHchkhtFJWS8YRr7A4F/OJ0bBqhApewB8XUKYtacaZB9fZnHw7eK4j5Pe/5pPgkaOZuifTkA==
+X-Received: by 2002:a17:90a:9417:b0:28d:6230:c1a2 with SMTP id r23-20020a17090a941700b0028d6230c1a2mr87254pjo.50.1706127369470;
+        Wed, 24 Jan 2024 12:16:09 -0800 (PST)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id f18-20020a17090aa79200b00290ffbe5ca3sm44874pjq.55.2024.01.24.12.16.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jan 2024 12:16:08 -0800 (PST)
+Date: Wed, 24 Jan 2024 12:16:08 -0800
+From: Kees Cook <keescook@chromium.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-hardening@vger.kernel.org, Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 35/82] ACPI: custom_method: Refactor intentional
+ wrap-around test
+Message-ID: <202401241215.32C7B45EF@keescook>
+References: <20240122235208.work.748-kees@kernel.org>
+ <20240123002814.1396804-35-keescook@chromium.org>
+ <CAJZ5v0gLr69vzLr_+yhP4z96nzFZjDfaPR-sTdkiv08vHbBe7w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240122235208.work.748-kees@kernel.org> <20240123002814.1396804-35-keescook@chromium.org>
-In-Reply-To: <20240123002814.1396804-35-keescook@chromium.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 24 Jan 2024 20:52:48 +0100
-Message-ID: <CAJZ5v0gLr69vzLr_+yhP4z96nzFZjDfaPR-sTdkiv08vHbBe7w@mail.gmail.com>
-Subject: Re: [PATCH 35/82] ACPI: custom_method: Refactor intentional
- wrap-around test
-To: Kees Cook <keescook@chromium.org>
-Cc: linux-hardening@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0gLr69vzLr_+yhP4z96nzFZjDfaPR-sTdkiv08vHbBe7w@mail.gmail.com>
 
-On Tue, Jan 23, 2024 at 2:03=E2=80=AFAM Kees Cook <keescook@chromium.org> w=
-rote:
->
-> In an effort to separate intentional arithmetic wrap-around from
-> unexpected wrap-around, we need to refactor places that depend on this
-> kind of math. One of the most common code patterns of this is:
->
->         VAR + value < VAR
->
-> Notably, this is considered "undefined behavior" for signed and pointer
-> types, which the kernel works around by using the -fno-strict-overflow
-> option in the build[1] (which used to just be -fwrapv). Regardless, we
-> want to get the kernel source to the position where we can meaningfully
-> instrument arithmetic wrap-around conditions and catch them when they
-> are unexpected, regardless of whether they are signed[2], unsigned[3],
-> or pointer[4] types.
->
-> Refactor open-coded wrap-around addition test to use add_would_overflow()=
-.
-> This paves the way to enabling the wrap-around sanitizers in the future.
->
-> Link: https://git.kernel.org/linus/68df3755e383e6fecf2354a67b08f92f185365=
-94 [1]
-> Link: https://github.com/KSPP/linux/issues/26 [2]
-> Link: https://github.com/KSPP/linux/issues/27 [3]
-> Link: https://github.com/KSPP/linux/issues/344 [4]
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
->  drivers/acpi/custom_method.c | 2 +-
+On Wed, Jan 24, 2024 at 08:52:48PM +0100, Rafael J. Wysocki wrote:
+> On Tue, Jan 23, 2024 at 2:03 AM Kees Cook <keescook@chromium.org> wrote:
+> >
+> > In an effort to separate intentional arithmetic wrap-around from
+> > unexpected wrap-around, we need to refactor places that depend on this
+> > kind of math. One of the most common code patterns of this is:
+> >
+> >         VAR + value < VAR
+> >
+> > Notably, this is considered "undefined behavior" for signed and pointer
+> > types, which the kernel works around by using the -fno-strict-overflow
+> > option in the build[1] (which used to just be -fwrapv). Regardless, we
+> > want to get the kernel source to the position where we can meaningfully
+> > instrument arithmetic wrap-around conditions and catch them when they
+> > are unexpected, regardless of whether they are signed[2], unsigned[3],
+> > or pointer[4] types.
+> >
+> > Refactor open-coded wrap-around addition test to use add_would_overflow().
+> > This paves the way to enabling the wrap-around sanitizers in the future.
+> >
+> > Link: https://git.kernel.org/linus/68df3755e383e6fecf2354a67b08f92f18536594 [1]
+> > Link: https://github.com/KSPP/linux/issues/26 [2]
+> > Link: https://github.com/KSPP/linux/issues/27 [3]
+> > Link: https://github.com/KSPP/linux/issues/344 [4]
+> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > Cc: Len Brown <lenb@kernel.org>
+> > Cc: linux-acpi@vger.kernel.org
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > ---
+> >  drivers/acpi/custom_method.c | 2 +-
+> 
+> I may attempt to drop custom_method.c in this cycle, is there a
+> problem if I take this into my tree for now?
 
-I may attempt to drop custom_method.c in this cycle, is there a
-problem if I take this into my tree for now?
+The helper doesn't exist in tree yet, but it may be a bit before these
+refactors land, so if custom_method vanishes before then, that's great!
+:)
 
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
-> index d39a9b474727..0789317f4a1a 100644
-> --- a/drivers/acpi/custom_method.c
-> +++ b/drivers/acpi/custom_method.c
-> @@ -54,7 +54,7 @@ static ssize_t cm_write(struct file *file, const char _=
-_user *user_buf,
->
->         if ((*ppos > max_size) ||
->             (*ppos + count > max_size) ||
-> -           (*ppos + count < count) ||
-> +           (add_would_overflow(count, *ppos)) ||
->             (count > uncopied_bytes)) {
->                 kfree(buf);
->                 buf =3D NULL;
-> --
-> 2.34.1
->
+-Kees
+
+-- 
+Kees Cook
 
