@@ -1,110 +1,121 @@
-Return-Path: <linux-acpi+bounces-3028-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3029-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113BA83A470
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 09:45:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7969983ABCF
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 15:30:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0B0C283581
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 08:45:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 174931F2CF2A
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 14:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3917C1799D;
-	Wed, 24 Jan 2024 08:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816137F7DD;
+	Wed, 24 Jan 2024 14:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Nzo1kG4/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p1JbQUOh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103C917BA5;
-	Wed, 24 Jan 2024 08:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E237CF16;
+	Wed, 24 Jan 2024 14:28:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706085923; cv=none; b=WJDxy4ZvnW5GtVDzzynv9+rxNjk1QpMQLypqIVztW1fuITt5eILyWtzPRd4Bc7ul5ToR8MUGnSs/NeYPQuW/IDbV2ICrS8fW0iCHR0fN08AMGAA3AY4y4T8viXQfbqFzJcNNTm0WJp62hoMTxQSXrFv/se3S6Af36mIrwdaYhMM=
+	t=1706106522; cv=none; b=V1a6wkys2uRFbavdUXLUZWBTbVHXmNVOogJCf6oM5URIODzjZBSxWDZE6d72TC98+Wb5mtp/2PLrd1OafuCDYuNxNU0mPw+VBGs5/rEKaj7ltK5DRBh1phCliO213sq/tFnNHk/KOlx3WSu3PPkPi2Sv1ijeoDvloer7hcoUj1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706085923; c=relaxed/simple;
-	bh=/nsD3d+E0lLEEpr6zHa2aA4SWpngDZwV5I8Z0fUog+c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kHuEkWpfAwS4xcK45M9uFOFRtZsJ5tN1gpxHFoRdHDnuWJyebVUYI8lbb5cHX/Rz2cmMN1tBFllXTzxzOUh5zIQVyw4Qw2hYVmEDOLB34opdhCESZyFcnyUOEPGAghJIn8gpUa/U94rXShaceDDkttze2jg0JFo37lz8QIAWs/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Nzo1kG4/; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=5lEen0G4yFCsLlAF+wT6cjA+TZeTYFwLA6f1OlJb35c=; b=Nzo1kG4/6uJi4JkVCN2GnsVPSP
-	MSCm4FbOrhPHehb1KUJVrH1BJ3z9cxxbnwCC0zxjG3bD8+skV/uIfdTD6Xjbum3MAfAlH46N/Wp+6
-	L7YV4CDoxK1vWQMcHAQgVJyJHoNDrjkuxOIry+Y5WoNfp7WvmbHn0uuneIMiaw3MbPLQllmBXaukX
-	TYMxIFTn6SoI9/QX7eY4T0qhBicf+VgU4zXx/IN3Fy2G80u7atBOa9GDJ5r57T/AsDstwl/th3j5P
-	hRfBkIRpb/e4q3+Na04s1TcgWKeqoYLVLCnejFkjHgtXQ41c1OGcmGHfEku7EHHcuxCj7+We0ZUXO
-	+zL7lf9w==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41124)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1rSYsi-0003f3-2f;
-	Wed, 24 Jan 2024 08:45:13 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1rSYse-0002ld-Qu; Wed, 24 Jan 2024 08:45:08 +0000
-Date: Wed, 24 Jan 2024 08:45:08 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
-	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
-	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-	Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	jianyong.wu@arm.com, justin.he@arm.com,
-	James Morse <james.morse@arm.com>
-Subject: Re: [PATCH RFC v3 05/21] ACPI: Rename ACPI_HOTPLUG_CPU to include
- 'present'
-Message-ID: <ZbDOFJeRjdaXtVJu@shell.armlinux.org.uk>
-References: <CAJZ5v0gwe02uzAQoX0QDHo35OTEozpbnqC6vukjM3aE6HMq9WQ@mail.gmail.com>
- <ZbADTBLDEFtdglho@shell.armlinux.org.uk>
- <CAJZ5v0jh-EdrnjkJep++UDo+Uv4hmR7VV4KYVdF4CK2K+5XLtg@mail.gmail.com>
- <ZbAMjZoybVfiAGcT@shell.armlinux.org.uk>
- <CAJZ5v0gt=MR1JGsPZnZG_AqudA-KMmb4BOa_A6H9B6+Rhe_+JQ@mail.gmail.com>
- <ZbAdAdqqfXRuY3Xj@shell.armlinux.org.uk>
- <CAJZ5v0gsqbeJc4qX-AefOqu53=rDme2XzFXacWz_0zbVBoaXjw@mail.gmail.com>
- <ZbAoJO8f66Dg0lGF@shell.armlinux.org.uk>
- <ZbArzbC19L1YxLHi@shell.armlinux.org.uk>
- <CAJZ5v0jvek=W-FNhiY_0DQha2wDCUv7YW_4jaHUeX0DbYJOX6Q@mail.gmail.com>
+	s=arc-20240116; t=1706106522; c=relaxed/simple;
+	bh=l6lT8MOMSiG0DvSXCsTdt7NAl3vqkpxsoqyKOWBEn6c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VsF1pJqxU7oB1QKOzH3OG6CJK4roiv9FUFH5OqImTTPYTgcjXzAmAzRI8EctEAU8GEgGPEHBEg2YxNDY6XluQyYSg/VzwSndxm7ZyumVcI9GeOX3BZKt1CeNwHFlzICM7/9OyzD6RnVpYNNh3RSZn/3PW38jBhz9loLRy9vBnwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p1JbQUOh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C6DC433A6;
+	Wed, 24 Jan 2024 14:28:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706106521;
+	bh=l6lT8MOMSiG0DvSXCsTdt7NAl3vqkpxsoqyKOWBEn6c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=p1JbQUOhPFWK2sA8h2O1SCFTV2xG7VTW6jIPuphcfIpWx+ARm46IBdyVqb27jesOc
+	 9R16oF4x1QoxETU9RZmYItisl5Qdi1ztYELVmJmjKMpzEbNHj0LWox2MN4mY76JQd4
+	 bGOtpByE9e8AyXMPknc1OoLzolwcBKD6vclOKCkL7YyRzXxjZ/AW5R6Rds/ruT6++Q
+	 I0CUnheuQWi/kTpqBdsjuChJ4id1BvUE8+BrYwotOXSafvHPxj1saaJyUvW2CYDrJ2
+	 YBeitkl6EfYFZ+gOwnigg4hyN1fxgetx1nHKk0OghEkPbRJHdMZWCVNmKr/zvJalxj
+	 oz7SAHAK/7ZVA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Ben Mayo <benny1091@gmail.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.7 08/13] ACPI: resource: Add DMI quirks for ASUS Vivobook E1504GA and E1504GAB
+Date: Wed, 24 Jan 2024 09:28:01 -0500
+Message-ID: <20240124142820.1283206-8-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240124142820.1283206-1-sashal@kernel.org>
+References: <20240124142820.1283206-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0jvek=W-FNhiY_0DQha2wDCUv7YW_4jaHUeX0DbYJOX6Q@mail.gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.7.1
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 23, 2024 at 11:05:43PM +0100, Rafael J. Wysocki wrote:
-> > So why not state that you personally don't want it in the first
-> > place? Why this game of cat and mouse and the constantly changing
-> > arguments. I guess it's to waste developers time.
-> >
-> > Well, I'm calling you out for this, because I'm that pissed off
-> > at the amount of time you're causing to be wasted.
-> 
-> And I don't have to suffer this kind of abuse.  Sorry.
+From: Ben Mayo <benny1091@gmail.com>
 
-And I've had enough of this crap, so I'm not walking away. Good
-riddance.
+[ Upstream commit d2aaf19965045f70bb2ece514399cdc6fcce2e73 ]
 
+Asus Vivobook E1504GA and E1504GAB notebooks are affected by bug #216158
+(DSDT specifies the kbd IRQ as level active-low and using the override
+changes this to rising edge, stopping the keyboard from working).
+
+Users of these notebooks do not have a working keyboard unless they add
+their DMI information to the struct irq1_level_low_skip_override array
+and compile a custom kernel.
+
+Add support for these computers to the Linux kernel without requiring
+the end-user to recompile the kernel.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216158
+Signed-off-by: Ben Mayo <benny1091@gmail.com>
+[ rjw: Link tag, subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/resource.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 9bd9f79cd409..eb34d201b65f 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -482,6 +482,20 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
+ 		},
+ 	},
++	{
++		/* Asus Vivobook E1504GA */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "E1504GA"),
++		},
++	},
++	{
++		/* Asus Vivobook E1504GAB */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "E1504GAB"),
++		},
++	},
+ 	{
+ 		/* LG Electronics 17U70P */
+ 		.matches = {
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.43.0
+
 
