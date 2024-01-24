@@ -1,47 +1,47 @@
-Return-Path: <linux-acpi+bounces-3033-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3034-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795A283ACD3
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 16:11:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A7C83AD25
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 16:22:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E4701C23C23
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 15:11:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEB92B23876
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 15:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6550D22085;
-	Wed, 24 Jan 2024 15:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12F477F3E;
+	Wed, 24 Jan 2024 15:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="XHbfH8oS"
+	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="ljaCEeJO"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from aposti.net (aposti.net [89.234.176.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CD218624;
-	Wed, 24 Jan 2024 15:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200AA43154;
+	Wed, 24 Jan 2024 15:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.234.176.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706109097; cv=none; b=Dy7wSot6/wAYy7iqGjgE9LkS+I/vYUpoYe+IuFTCq6aw8DNgN3JSHzdKzg2nzJ7SO4geiHXfUPLGUSknSM8jtOLREaVqeIj+O8gaSDys6Ck1uFbhL7Jeau9TcbVDKmvwUtkiDGfgUpv5S9UtbEdniJygByeyVwHpR2qIXSYrYG4=
+	t=1706109510; cv=none; b=W/nqwCzabHaVRCMEdXNigLHt8vQb8dS+Kk6Rqmnntf+UeH+/j4oDD/5VKoHDW5Dd9vcDyFgaWRCbmqKHlzmXEhWWiAdMfFMNaKkKGKh7ouDZbFg/lVQgNUX/vyFbYMALMrPqd5mFHrL+XnqPlRFVQAipJtq8s3CHA176pQyPwr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706109097; c=relaxed/simple;
-	bh=/7zykiUMwKCT+cqhXM9vhXh0wXFxTsw+vjXT9OyNpRU=;
+	s=arc-20240116; t=1706109510; c=relaxed/simple;
+	bh=w8A9JHdanRpfyHvSrn/mEIENOTNdAlcHthcwWFUPqfM=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WSu40jAhrwBG3JGg1jePvWEJP77RWeLn9szKzb5oZht64dP/cJYQXVXWiBqzoOGjKUI/t8B9C9Egr/ADVnTRVBkR1PiRo+n/Wvv4YLOc1z98z4dEdPuCLH/l1Ec5NeUqNFccpsn0Y9iHrYBTlyMlGeizNYodtWy8OZFyVm4xkcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net; spf=pass smtp.mailfrom=crapouillou.net; dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b=XHbfH8oS; arc=none smtp.client-ip=89.234.176.197
+	 Content-Type:MIME-Version; b=Nb/8hHd+F26L2DCtduUoKiuatWXBkzxR4HGE+p1hzao2HXktL1nSMuoOh1y96lnjTMHOWdXIutsKRZJknLRcHn6RVswURnC/l4cVim77G+dOXleXGxkv/jfxxdtKbSLyzy4/gl+KBElrL4ZQ5DuZWZbnfeOBfFZ2ZMLl1W1oQ0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net; spf=pass smtp.mailfrom=crapouillou.net; dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b=ljaCEeJO; arc=none smtp.client-ip=89.234.176.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crapouillou.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-	s=mail; t=1706109093;
+	s=mail; t=1706109507;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/7zykiUMwKCT+cqhXM9vhXh0wXFxTsw+vjXT9OyNpRU=;
-	b=XHbfH8oSQ1eYQEjvSqRaFgu1O7+6DEE3Bqq+bpSxUvFfcodlayBJdfA9jegOqweYOSKK2r
-	/KyalUhsiufhcd0d/5HoqFQ6Xtw5tnXGoUbZGeq6T/8wMMcvfAAjfcfaPjvjmWQQ0nxmTI
-	Kc2103WusQg+C2WRzK7BrGMiLweZvBw=
-Message-ID: <26455575da695f26570392a333e7466a01a338e5.camel@crapouillou.net>
+	bh=w8A9JHdanRpfyHvSrn/mEIENOTNdAlcHthcwWFUPqfM=;
+	b=ljaCEeJOT9n4ixyZCsmlbmZ/mLC1U0SpQajYOvnaqklofY3LVw/urX5058dAD4U9Mgs3M1
+	jf0yYxzuKAKQrZJAi4DPRYTQaiyGz3QjhBYWn53s7fP++GQ1B5VBmg+zPGHZ7mZYOOentd
+	wCNIHiCQsBErUiJMJPaXvxdxzK3E2e4=
+Message-ID: <fa113407241a6e9c0b7815d87a6294035ac98459.camel@crapouillou.net>
 Subject: Re: [PATCH 19/21] gpio: swnode: replace gpiochip_find() with
  gpio_device_find_by_label()
 From: Paul Cercueil <paul@crapouillou.net>
@@ -58,7 +58,7 @@ Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik
  linux-acpi@vger.kernel.org,  timestamp@lists.linux.dev,
  linux-tegra@vger.kernel.org,  platform-driver-x86@vger.kernel.org, Bartosz
  Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Wed, 24 Jan 2024 16:11:31 +0100
+Date: Wed, 24 Jan 2024 16:18:24 +0100
 In-Reply-To: <CAMRc=MdwAaQ1Prtweu9znEL+mbyxSmmKhL65PG+=YKniCD1c9w@mail.gmail.com>
 References: <20230905185309.131295-1-brgl@bgdev.pl>
 	 <20230905185309.131295-20-brgl@bgdev.pl>
@@ -199,19 +199,15 @@ f property name */
 > DEFINE_FREE(gpio_device_put, struct gpio_device *,
 > =C2=A0=C2=A0=C2=A0 if (!IS_ERR_OR_NULL(_T)) gpio_device_put(_T))
 
-Ok. I missed this.
-
-I would argue that it's still not right though - it should probably use
-IS_ERR() instead. gpio_device_put() only happens to accept NULL
-pointers because the "dev" field is at the very beginning of the
-"gpio_device" struct. I'm not sure this works with e.g.
-CONFIG_RANDSTRUCT_FULL.
-
-> Bart
+Disregard my previous email, I'm stupid. This actually checks that the
+pointer is non-null.
 
 Cheers,
 -Paul
 
+>=20
+> Bart
+>=20
 > > >=20
 > > > -=C2=A0=C2=A0=C2=A0=C2=A0 desc =3D gpiochip_get_desc(chip, args.args[=
 0]);
