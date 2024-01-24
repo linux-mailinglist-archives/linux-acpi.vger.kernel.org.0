@@ -1,57 +1,57 @@
-Return-Path: <linux-acpi+bounces-3029-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3030-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7969983ABCF
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 15:30:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEEE83ABD1
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 15:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 174931F2CF2A
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 14:30:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9810285889
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Jan 2024 14:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816137F7DD;
-	Wed, 24 Jan 2024 14:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21AF81AB9;
+	Wed, 24 Jan 2024 14:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p1JbQUOh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IlZwE7aK"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E237CF16;
-	Wed, 24 Jan 2024 14:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E798120A;
+	Wed, 24 Jan 2024 14:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706106522; cv=none; b=V1a6wkys2uRFbavdUXLUZWBTbVHXmNVOogJCf6oM5URIODzjZBSxWDZE6d72TC98+Wb5mtp/2PLrd1OafuCDYuNxNU0mPw+VBGs5/rEKaj7ltK5DRBh1phCliO213sq/tFnNHk/KOlx3WSu3PPkPi2Sv1ijeoDvloer7hcoUj1M=
+	t=1706106523; cv=none; b=nXI28Q13xGd1j9KE/KTD+hwEPGcS8YHC/3VG+CyADy7R5F7FLjFMZlB5nAHJKEltD6mK+m4xy5dsX1ieeC4ODGTwmFORxBWuN9Kccck2J/xTj4oHnH7dXJEOuQAFh+sskoZxtyeJ21IEhZaHCOWrtmFgT2pmI/BG0CQx+HHQq6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706106522; c=relaxed/simple;
-	bh=l6lT8MOMSiG0DvSXCsTdt7NAl3vqkpxsoqyKOWBEn6c=;
+	s=arc-20240116; t=1706106523; c=relaxed/simple;
+	bh=HiD2LprOCXBmHOcscZKZk27b2znPpMOoqV4yFj3Q7TU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VsF1pJqxU7oB1QKOzH3OG6CJK4roiv9FUFH5OqImTTPYTgcjXzAmAzRI8EctEAU8GEgGPEHBEg2YxNDY6XluQyYSg/VzwSndxm7ZyumVcI9GeOX3BZKt1CeNwHFlzICM7/9OyzD6RnVpYNNh3RSZn/3PW38jBhz9loLRy9vBnwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p1JbQUOh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C6DC433A6;
-	Wed, 24 Jan 2024 14:28:40 +0000 (UTC)
+	 MIME-Version; b=Uc34mWfRFwHNIcBxuGiupaD1Wk0K9Anp2esNz/SPNMGBMZpmLN+uFLyl119KG9I3kzqs7C583AflCx4TStpCLBp/hRdjpMgvpsfw+PYPdj/HDR0+9OBzy+mSIPedjlab9XFVxgwMI+lmBtLAUiz2S1m7QCgwQkd7/UJRM5ghWZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IlZwE7aK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60448C43394;
+	Wed, 24 Jan 2024 14:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706106521;
-	bh=l6lT8MOMSiG0DvSXCsTdt7NAl3vqkpxsoqyKOWBEn6c=;
+	s=k20201202; t=1706106523;
+	bh=HiD2LprOCXBmHOcscZKZk27b2znPpMOoqV4yFj3Q7TU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p1JbQUOhPFWK2sA8h2O1SCFTV2xG7VTW6jIPuphcfIpWx+ARm46IBdyVqb27jesOc
-	 9R16oF4x1QoxETU9RZmYItisl5Qdi1ztYELVmJmjKMpzEbNHj0LWox2MN4mY76JQd4
-	 bGOtpByE9e8AyXMPknc1OoLzolwcBKD6vclOKCkL7YyRzXxjZ/AW5R6Rds/ruT6++Q
-	 I0CUnheuQWi/kTpqBdsjuChJ4id1BvUE8+BrYwotOXSafvHPxj1saaJyUvW2CYDrJ2
-	 YBeitkl6EfYFZ+gOwnigg4hyN1fxgetx1nHKk0OghEkPbRJHdMZWCVNmKr/zvJalxj
-	 oz7SAHAK/7ZVA==
+	b=IlZwE7aK/N9N2tf7n3Io7lWYEuzR8D87YFxQ6h6EF9q1EmjIMWFALk/yjNxnmq5fX
+	 fPW8a2rWYF+/PD98JtI+PGk2qw6LBuht1k+GlYG0BaB1F0YYx/jj8KEdTSJjaGnqRO
+	 QNOrHCroHX77gIJOeTBnbTo9KZQsM6p8dBiL92iUWaijcxPNRP7tYg9GHj67QUQo4j
+	 qGfyobKkHpOzRMrj9fZHoswDoqXOq9GkprLXUfyeofSjeju9/OOt3ez9IpcsKQaX2b
+	 hG16aK/pb9oWOcJv4lCa+Hl5XAVGOI3B+LY8wv/yODyh9RJ830NeE5c97i1fBuliZO
+	 Zj894m9MAjfbg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ben Mayo <benny1091@gmail.com>,
+Cc: Michael Maltsev <mekosko@projectyo.network>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 08/13] ACPI: resource: Add DMI quirks for ASUS Vivobook E1504GA and E1504GAB
-Date: Wed, 24 Jan 2024 09:28:01 -0500
-Message-ID: <20240124142820.1283206-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.7 09/13] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1502CGA
+Date: Wed, 24 Jan 2024 09:28:02 -0500
+Message-ID: <20240124142820.1283206-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240124142820.1283206-1-sashal@kernel.org>
 References: <20240124142820.1283206-1-sashal@kernel.org>
@@ -66,54 +66,48 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.7.1
 Content-Transfer-Encoding: 8bit
 
-From: Ben Mayo <benny1091@gmail.com>
+From: Michael Maltsev <mekosko@projectyo.network>
 
-[ Upstream commit d2aaf19965045f70bb2ece514399cdc6fcce2e73 ]
+[ Upstream commit e315e8692f7922cd1b2a26bd7a1741cc8ce77085 ]
 
-Asus Vivobook E1504GA and E1504GAB notebooks are affected by bug #216158
-(DSDT specifies the kbd IRQ as level active-low and using the override
-changes this to rising edge, stopping the keyboard from working).
+Like the ASUS ExpertBook B1502CBA and various ASUS laptops, the
+ASUS ExpertBook B1502CGA has an ACPI DSDT table that describes IRQ 1 as
+ActiveLow while the kernel overrides it to Edge_High.
 
-Users of these notebooks do not have a working keyboard unless they add
-their DMI information to the struct irq1_level_low_skip_override array
-and compile a custom kernel.
+	$ sudo dmesg | grep DMI
+	[    0.000000] DMI: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B1502CGA_B1502CGA/B1502CGA, BIOS B1502CGA.303 06/05/2023
+	$ grep -A 40 PS2K dsdt.dsl | grep IRQ -A 1
+	                IRQ (Level, ActiveLow, Exclusive, )
+	                    {1}
 
-Add support for these computers to the Linux kernel without requiring
-the end-user to recompile the kernel.
+This prevents the keyboard from working. To fix this issue, add this laptop
+to the skip_override_table so that the kernel does not override IRQ 1.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216158
-Signed-off-by: Ben Mayo <benny1091@gmail.com>
-[ rjw: Link tag, subject and changelog edits ]
+Signed-off-by: Michael Maltsev <mekosko@projectyo.network>
+[ rjw: rebase, replace .ident field with a comment ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 9bd9f79cd409..eb34d201b65f 100644
+index eb34d201b65f..5935d4c79c3a 100644
 --- a/drivers/acpi/resource.c
 +++ b/drivers/acpi/resource.c
-@@ -482,6 +482,20 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
+@@ -461,6 +461,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "B1502CBA"),
  		},
  	},
 +	{
-+		/* Asus Vivobook E1504GA */
++		/* Asus ExpertBook B1502CGA */
 +		.matches = {
 +			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "E1504GA"),
-+		},
-+	},
-+	{
-+		/* Asus Vivobook E1504GAB */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "E1504GAB"),
++			DMI_MATCH(DMI_BOARD_NAME, "B1502CGA"),
 +		},
 +	},
  	{
- 		/* LG Electronics 17U70P */
+ 		/* Asus ExpertBook B2402CBA */
  		.matches = {
 -- 
 2.43.0
