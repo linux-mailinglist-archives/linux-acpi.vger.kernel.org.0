@@ -1,243 +1,270 @@
-Return-Path: <linux-acpi+bounces-3045-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3046-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E439A83C505
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jan 2024 15:42:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0C083CA28
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jan 2024 18:38:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B149294330
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jan 2024 14:42:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91C661C231AC
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Jan 2024 17:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5046E2C8;
-	Thu, 25 Jan 2024 14:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA1A12A16D;
+	Thu, 25 Jan 2024 17:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M65qSYP4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F606E2BE;
-	Thu, 25 Jan 2024 14:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA4B1E861;
+	Thu, 25 Jan 2024 17:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706193768; cv=none; b=j3r3DXqrfz30ufF3kd/DxqHHFm9HaviolvCyVunL78NRb0FpDDG4fAwOr4y7ggEtcVBrB5P3WDik8qyNDjaxa4lEdF0p/PNpE+OtWBp//gJJMYcPIqTMnOBBqT6U0lr3hz6S3QFoJmwm4L8UxOpnNUifvr4bYrW06gtbE16S45Y=
+	t=1706204298; cv=none; b=Xbe7PoaWzCLPUOsjPCeJnfhRNf9UFndLTXsWT9rSgRlxecyD6qZAI08/rfjVKHxt0GtWVd3V7h9kgdRXcPVl3U5kkb/wCPuAQFAj6IguOGnRLR+ygLd9LC3hpylpO/WKRo+q6qQNARVGHSnn6QxugNI/0+eLBC1uH4kwlMC60nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706193768; c=relaxed/simple;
-	bh=JaK07Zkj3cT2yhn6Ow34x5ujcw/CKNJtlZf/Ls0PoA8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pbZslrDJaKPlwZU1G/h2QbxCOX5IXjCYd0FuK7kpCBywYl9zdvdP2GwZmHkKlMDyVqxi2o6lB2TQL2FBbE9LtLoQ2orphGEFRwLn6bk8N4E1S9QAwaLQxLKzh3SkZIbo0RJon7wKVk4STGvKxys8SEIL5WLxkMudBbWKZj+XoF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3bc21303a35so1267870b6e.0;
-        Thu, 25 Jan 2024 06:42:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706193766; x=1706798566;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WansAIK1kV2qngBkKGzUZEv8a9oLEEFRWHM6D4Yzd+M=;
-        b=IoiMUcqNl7waglleg4DMIDbjGLYPOtueAM47JFRrHhPGkxwxuLLsVS9de59v5QoP9B
-         5Uc5KkUmSuyqw8j1K7AmEDhnU4r287eMQqUbdfVvONklySaCn3eqHmds9fCpNOZUIMEf
-         bMWfE0WQmvEOQ3JtfjtspI4FU9p6H8lllR+/9DfJwge3Lzkzs+mFM8/pl2eUbyx4nZ1o
-         t9m1BHY3hwL4HBI5nMdY2oj8YImSrEwLyosoO/DZ9MB0WhNop5w6Hf2/0nEg1sTiG0gC
-         s7em5sXAcOw5RfiDD//kODRQEDIXIvo7iPyUinOQTFFpFJVzB1j5GDcAFqurlHi4S/er
-         RgTA==
-X-Gm-Message-State: AOJu0YyFgNwgV1M4/ZtQ2OUQEOPW6B+T/bT7jf4AzXMzJusQqhM/5GsG
-	yedihfax1gzKbOeQSJpvXrPLZ+dbTEZWcrOSLDNkyylxlcX9nlcIPwPkztqeyFH7K8ejlVNKHyv
-	uT616HujBtSTzsDE/UQwXwV2W3eg=
-X-Google-Smtp-Source: AGHT+IHrMMS6irD8BFopNOqV65JYF32HklaFUv2M5fjsXBTp38AaiSFl3qoFRWI4K+lpO8xVl3bxSYdmwfq7Su82484=
-X-Received: by 2002:a05:6870:618a:b0:214:dbdd:a173 with SMTP id
- a10-20020a056870618a00b00214dbdda173mr987239oah.3.1706193766071; Thu, 25 Jan
- 2024 06:42:46 -0800 (PST)
+	s=arc-20240116; t=1706204298; c=relaxed/simple;
+	bh=lYuyHorDl1yyBzVDhXiDkhKfb7hvLI96oTDIozDUAto=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=PjEplKO0GVnxHTBhRYtksxXU4DVLuZdwjw83AQE39vaRLHRxffig8VZ0D99Jyy5DTQVQqEh7UfkKY2zmplcxvg5QQjyofu//36X/Qd3fNlnOIWa4Gij43u5k9xA97WzWpFaDEziWja7+fLaQnqFMFkUj+E1mdxsZ9Qdp9o08uA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M65qSYP4; arc=none smtp.client-ip=192.55.52.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706204296; x=1737740296;
+  h=date:from:to:cc:subject:message-id;
+  bh=lYuyHorDl1yyBzVDhXiDkhKfb7hvLI96oTDIozDUAto=;
+  b=M65qSYP4EAthbu1YeHa8ZxK0kXbohbyeRUviGyq0aQBnhH3bgiIpB3w5
+   K/YHzLfAMD9QTvYXI+I+FabKvcF5tsDiasM8VUtb2gB/7yr56MtHMZbzC
+   T9i5tPWyQ/y/9y/Zdh2mulbAJiXgEfMo8SUEW5C8q/0vnAKyrbdaczvk0
+   DrWd0KwFWOujslfLhgGBogDT66Pe3qYBGIXYkFXMvLTUoCjCTXiawfssC
+   K+hw3FRdLUfs2sP92S4nPPQzZLtp2oEK3FVPhO1sYP6fihdYiXLb7y/BR
+   4lUQSpSfzLZEZSinyNKFeixPyn5JzpxTWNIMpA1MUGztHJ2Ug7v7lAqf+
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="433388550"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="433388550"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2024 09:38:15 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="21127834"
+Received: from lkp-server01.sh.intel.com (HELO 370188f8dc87) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 25 Jan 2024 09:38:13 -0800
+Received: from kbuild by 370188f8dc87 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rT3g3-0000HD-1L;
+	Thu, 25 Jan 2024 17:38:11 +0000
+Date: Fri, 26 Jan 2024 01:37:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 125aa3731deca288f8e5ff0043a3f2402d74760b
+Message-ID: <202401260131.hmzSF9hG-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk> <E1rDOg2-00Dvjk-RI@rmk-PC.armlinux.org.uk>
- <CAJZ5v0ju1JHgpjuFLHZVs4NZiARG6iBZN_wza6c2e0kDhZjK0w@mail.gmail.com>
- <ZaURtUvWQyjYfiiO@shell.armlinux.org.uk> <20240122160227.00002d83@Huawei.com>
- <CAJZ5v0hamuXJ_w-TSmVb=5jGide=Lb7sCjbzzNb_rFuPrvkgxQ@mail.gmail.com>
- <Za6mHRJVjb6M1mun@shell.armlinux.org.uk> <20240123092725.00004382@Huawei.com> <3A26D95F-7366-4354-A010-318A98660076@oracle.com>
-In-Reply-To: <3A26D95F-7366-4354-A010-318A98660076@oracle.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 25 Jan 2024 15:42:34 +0100
-Message-ID: <CAJZ5v0h1na9BQiT6a4dK==8anmt15S4sArktzuLiSyScvw=bqg@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 03/21] ACPI: processor: Register CPUs that are
- online, but not described in the DSDT
-To: Miguel Luis <miguel.luis@oracle.com>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	"Russell King (Oracle)" <linux@armlinux.org.uk>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, 
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
-	"linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>, 
-	"acpica-devel@lists.linuxfoundation.org" <acpica-devel@lists.linuxfoundation.org>, 
-	"linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, 
-	"linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, Salil Mehta <salil.mehta@huawei.com>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, "jianyong.wu@arm.com" <jianyong.wu@arm.com>, 
-	"justin.he@arm.com" <justin.he@arm.com>, James Morse <james.morse@arm.com>, 
-	"vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 125aa3731deca288f8e5ff0043a3f2402d74760b  Merge branch 'pm-sleep' into bleeding-edge
 
-On Thu, Jan 25, 2024 at 2:56=E2=80=AFPM Miguel Luis <miguel.luis@oracle.com=
-> wrote:
->
-> Hi
->
-> > On 23 Jan 2024, at 08:27, Jonathan Cameron <jonathan.cameron@huawei.com=
-> wrote:
-> >
-> > On Mon, 22 Jan 2024 17:30:05 +0000
-> > "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
-> >
-> >> On Mon, Jan 22, 2024 at 05:22:46PM +0100, Rafael J. Wysocki wrote:
-> >>> On Mon, Jan 22, 2024 at 5:02=E2=80=AFPM Jonathan Cameron
-> >>> <Jonathan.Cameron@huawei.com> wrote:
-> >>>>
-> >>>> On Mon, 15 Jan 2024 11:06:29 +0000
-> >>>> "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
-> >>>>
-> >>>>> On Mon, Dec 18, 2023 at 09:22:03PM +0100, Rafael J. Wysocki wrote:
-> >>>>>> On Wed, Dec 13, 2023 at 1:49=E2=80=AFPM Russell King <rmk+kernel@a=
-rmlinux.org.uk> wrote:
-> >>>>>>>
-> >>>>>>> From: James Morse <james.morse@arm.com>
-> >>>>>>>
-> >>>>>>> ACPI has two descriptions of CPUs, one in the MADT/APIC table, th=
-e other
-> >>>>>>> in the DSDT. Both are required. (ACPI 6.5's 8.4 "Declaring Proces=
-sors"
-> >>>>>>> says "Each processor in the system must be declared in the ACPI
-> >>>>>>> namespace"). Having two descriptions allows firmware authors to g=
-et
-> >>>>>>> this wrong.
-> >>>>>>>
-> >>>>>>> If CPUs are described in the MADT/APIC, they will be brought onli=
-ne
-> >>>>>>> early during boot. Once the register_cpu() calls are moved to ACP=
-I,
-> >>>>>>> they will be based on the DSDT description of the CPUs. When CPUs=
- are
-> >>>>>>> missing from the DSDT description, they will end up online, but n=
-ot
-> >>>>>>> registered.
-> >>>>>>>
-> >>>>>>> Add a helper that runs after acpi_init() has completed to registe=
-r
-> >>>>>>> CPUs that are online, but weren't found in the DSDT. Any CPU that
-> >>>>>>> is registered by this code triggers a firmware-bug warning and ke=
-rnel
-> >>>>>>> taint.
-> >>>>>>>
-> >>>>>>> Qemu TCG only describes the first CPU in the DSDT, unless cpu-hot=
-plug
-> >>>>>>> is configured.
-> >>>>>>
-> >>>>>> So why is this a kernel problem?
-> >>>>>
-> >>>>> So what are you proposing should be the behaviour here? What this
-> >>>>> statement seems to be saying is that QEMU as it exists today only
-> >>>>> describes the first CPU in DSDT.
-> >>>>
-> >>>> This confuses me somewhat, because I'm far from sure which machines =
-this
-> >>>> is true for in QEMU.  I'm guessing it's a legacy thing with
-> >>>> some old distro version of QEMU - so we'll have to paper over it any=
-way
-> >>>> but for current QEMU I'm not sure it's true.
-> >>>>
-> >>>> Helpfully there are a bunch of ACPI table tests so I've been checkin=
-g
-> >>>> through all the multi CPU cases.
-> >>>>
-> >>>> CPU hotplug not enabled.
-> >>>> pc/DSDT.dimmpxm  - 4x Processor entries.  -smp 4
-> >>>> pc/DSDT.acpihmat - 2x Processor entries.  -smp 2
-> >>>> q35/DSDT.acpihmat - 2x Processor entries. -smp 2
-> >>>> virt/DSDT.acpihmatvirt - 4x ACPI0007 entries -smp 4
-> >>>> q35/DSDT.acpihmat-noinitiator - 4 x Processor () entries -smp 4
-> >>>> virt/DSDT.topology - 8x ACPI0007 entries
-> >>>>
-> >>>> I've also looked at the code and we have various types of
-> >>>> CPU hotplug on x86 but they all build appropriate numbers of
-> >>>> Processor() entries in DSDT.
-> >>>> Arm likewise seems to build the right number of ACPI0007 entries
-> >>>> (and doesn't yet have CPU HP support).
-> >>>>
-> >>>> If anyone can add a reference on why this is needed that would be ve=
-ry
-> >>>> helpful.
-> >>>
-> >>> Yes, it would.
-> >>>
-> >>> Personally, I would prefer to assume that it is not necessary until i=
-t
-> >>> turns out that (1) there is firmware with this issue actually in use
-> >>> and (2) updating the firmware in question to follow the specification
-> >>> is not practical.
-> >>>
-> >>> Otherwise, we'd make it easier to ship non-compliant firmware for no
-> >>> good reason.
-> >>
-> >> If Salil can't come up with a reason, then I'm in favour of dropping
-> >> the patch like already done for patch 2. If the code change serves no
-> >> useful purpose, there's no point in making the change.
-> >>
-> >
-> > Salil's out today, but I've messaged him to follow up later in the week=
-.
-> >
-> > It 'might' be the odd cold plug path where QEMU half comes up, then ext=
-ra
-> > CPUs are added, then it boots. (used by some orchestration frameworks)
-> > I don't have a set up for that and I won't get to creating one today an=
-yway
-> > (we all love start of the year planning workshops!)
-> >
-> > I've +CC'd a few people have run tests on the various iterations of thi=
-s
-> > work in the past.  Maybe one of them can shed some light on this?
-> >
->
-> IIUC, this patch covers a scenario for non compliant firmware and in whic=
-h my
-> tests for AArch64 using RFC v2 have been unable to trigger its error mess=
-age so
-> far. This does not mean, however, this patch should not be taken forward =
-though.
->
-> It seems benevolent enough detecting non compliant firmware and still pro=
-ceed
-> while having whoever uses that firmware to get to know that.
+elapsed time: 1461m
 
-There is one issue with this approach, though.
+configs tested: 180
+configs skipped: 3
 
-If this is done by Linux and Linux is used as a main testing vehicle
-for whoever produced that firmware, it may pass the tests and be
-shipped causing a problem for the rest of the industry (because other
-operating systems will not support that firmware and now they will be
-put in an awkward position).
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I've seen enough breakage resulting from a similar policy in some
-other OS and with Linux on the receiving end that I'd rather avoid
-doing this to someone else.
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240125   gcc  
+arc                   randconfig-002-20240125   gcc  
+arm                              alldefconfig   clang
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                      jornada720_defconfig   gcc  
+arm                          pxa168_defconfig   clang
+arm                   randconfig-001-20240125   gcc  
+arm                   randconfig-002-20240125   gcc  
+arm                   randconfig-003-20240125   gcc  
+arm                   randconfig-004-20240125   gcc  
+arm                         s5pv210_defconfig   clang
+arm                           sama7_defconfig   clang
+arm                           tegra_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240125   gcc  
+arm64                 randconfig-002-20240125   gcc  
+arm64                 randconfig-003-20240125   gcc  
+arm64                 randconfig-004-20240125   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240125   gcc  
+csky                  randconfig-002-20240125   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240125   clang
+hexagon               randconfig-002-20240125   clang
+i386                             allmodconfig   clang
+i386                              allnoconfig   clang
+i386                             allyesconfig   clang
+i386         buildonly-randconfig-001-20240125   gcc  
+i386         buildonly-randconfig-002-20240125   gcc  
+i386         buildonly-randconfig-003-20240125   gcc  
+i386         buildonly-randconfig-004-20240125   gcc  
+i386         buildonly-randconfig-005-20240125   gcc  
+i386         buildonly-randconfig-006-20240125   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20240125   gcc  
+i386                  randconfig-002-20240125   gcc  
+i386                  randconfig-003-20240125   gcc  
+i386                  randconfig-004-20240125   gcc  
+i386                  randconfig-005-20240125   gcc  
+i386                  randconfig-006-20240125   gcc  
+i386                  randconfig-011-20240125   clang
+i386                  randconfig-012-20240125   clang
+i386                  randconfig-013-20240125   clang
+i386                  randconfig-014-20240125   clang
+i386                  randconfig-015-20240125   clang
+i386                  randconfig-016-20240125   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240125   gcc  
+loongarch             randconfig-002-20240125   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                       m5208evb_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   clang
+mips                             allyesconfig   gcc  
+mips                         bigsur_defconfig   gcc  
+mips                     cu1000-neo_defconfig   clang
+mips                        maltaup_defconfig   clang
+mips                    maltaup_xpa_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240125   gcc  
+nios2                 randconfig-002-20240125   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240125   gcc  
+parisc                randconfig-002-20240125   gcc  
+parisc64                            defconfig   gcc  
+powerpc                    adder875_defconfig   gcc  
+powerpc                          allmodconfig   clang
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                      makalu_defconfig   gcc  
+powerpc                      pmac32_defconfig   clang
+powerpc               randconfig-001-20240125   gcc  
+powerpc               randconfig-002-20240125   gcc  
+powerpc               randconfig-003-20240125   gcc  
+powerpc                      walnut_defconfig   clang
+powerpc64             randconfig-001-20240125   gcc  
+powerpc64             randconfig-002-20240125   gcc  
+powerpc64             randconfig-003-20240125   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   clang
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20240125   gcc  
+riscv                 randconfig-002-20240125   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20240125   clang
+s390                  randconfig-002-20240125   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                          landisk_defconfig   gcc  
+sh                    randconfig-001-20240125   gcc  
+sh                    randconfig-002-20240125   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240125   gcc  
+sparc64               randconfig-002-20240125   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240125   gcc  
+um                    randconfig-002-20240125   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240125   gcc  
+x86_64       buildonly-randconfig-002-20240125   gcc  
+x86_64       buildonly-randconfig-003-20240125   gcc  
+x86_64       buildonly-randconfig-004-20240125   gcc  
+x86_64       buildonly-randconfig-005-20240125   gcc  
+x86_64       buildonly-randconfig-006-20240125   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240125   clang
+x86_64                randconfig-002-20240125   clang
+x86_64                randconfig-003-20240125   clang
+x86_64                randconfig-004-20240125   clang
+x86_64                randconfig-005-20240125   clang
+x86_64                randconfig-006-20240125   clang
+x86_64                randconfig-011-20240125   gcc  
+x86_64                randconfig-012-20240125   gcc  
+x86_64                randconfig-013-20240125   gcc  
+x86_64                randconfig-014-20240125   gcc  
+x86_64                randconfig-015-20240125   gcc  
+x86_64                randconfig-016-20240125   gcc  
+x86_64                randconfig-071-20240125   gcc  
+x86_64                randconfig-072-20240125   gcc  
+x86_64                randconfig-073-20240125   gcc  
+x86_64                randconfig-074-20240125   gcc  
+x86_64                randconfig-075-20240125   gcc  
+x86_64                randconfig-076-20240125   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                       common_defconfig   gcc  
+xtensa                randconfig-001-20240125   gcc  
+xtensa                randconfig-002-20240125   gcc  
 
-So if the firmware is not compliant, the best way to go is to ask
-whoever ships it to please fix their stuff, or if other OSes already
-work around the non-compliance, it's time to update the spec to
-reflect the reality (aka "industry practice").
-
-Thanks!
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
