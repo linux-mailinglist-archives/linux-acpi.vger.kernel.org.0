@@ -1,207 +1,238 @@
-Return-Path: <linux-acpi+bounces-3048-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3049-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84E0E83D186
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jan 2024 01:35:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A7A83DF19
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jan 2024 17:46:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F251E1F2616E
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jan 2024 00:35:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A3671F21794
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Jan 2024 16:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EB3385;
-	Fri, 26 Jan 2024 00:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rZGCtXP2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7B11DA53;
+	Fri, 26 Jan 2024 16:46:11 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EB8197;
-	Fri, 26 Jan 2024 00:35:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8910517565;
+	Fri, 26 Jan 2024 16:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706229319; cv=none; b=Jaj+X73ZiqMv5aOmvzqkxaJ+gM3K0E+ceQ7Y1kfUTHAxnpp42YCOzyIiHPlp4LeLKH7/aIP3T5Fg2/eVsJpP9yjMkk6gLfMOuugSjF/80ON3rL3iMhX9ftiCYiAdehxITUzc40/QJQk2e6uDpt6RBDiGYvSo6L0BJjPvwtsiAfg=
+	t=1706287571; cv=none; b=bv00RsEU4QyxxDiXYz2X4TtwKDTX0CCi0fVOj3T1/18bShBL4v1aAFNfD7KTLm+0m95k/z6iEsHCUWrelAelNRlLaB0xR+xQuuNqTHIcVjbWmCAnbDIpiln5Alg1n1pZOoR/dHMBo/uCEfi6lLKV1oODccpsBMlgH8FhjBS+/gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706229319; c=relaxed/simple;
-	bh=m986K6zFIlrT+3xx6AdVYmVw1p6r7qdl+tS4SPDV+JU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=MI1CxMNBrlYte7bHajUzalIu2FpxxdaG6TbUSMvAUOTlZXIiC/DuEDLe1KfiNRDZy1V4S+zAsbhLAiuSU8VcFzfIU3iRlCIJgffUKQgERo3QSVqt+qArGz4t2dBHCoacCkootjni1bJ7zuOQsvbFL3PTeG5aQ5ylfFy9g8XqRNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rZGCtXP2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37EFC433C7;
-	Fri, 26 Jan 2024 00:35:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706229318;
-	bh=m986K6zFIlrT+3xx6AdVYmVw1p6r7qdl+tS4SPDV+JU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=rZGCtXP25jujiWfIT6A0DUPA418VQFoekhEs7OAHyAQhR7ckr4N8L9mfTuBexZKzP
-	 HW6eF7ZDxd59YFWh9VUPFW1JIuHox+x9TE0hE4Uqp6IBQwL0cTTsArKqQc5mj9Bp1t
-	 OSF7faXSn9a7mJr79/J++7mhrn0/EGW9kSYdLiHux6oqnV0pD8A6vyD9JSJT5LQ3Sl
-	 MfGfcSSwfTKQHjsLI60FC1nYpSh+GmPK6hZ6Pd2UL2SBp7Il6POOR1tftxQnMoaUEf
-	 Ib8YQ0L67MCm4liiAkMx+UeYmffw0vn9h+KvUy/avCg6jgLghK9QYnSF7YNYZas/Oz
-	 KPhZV9Cg/P4xA==
-Date: Thu, 25 Jan 2024 18:35:14 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J . Wysocki" <rjw@rjwysocki.net>, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] x86/pci: Stop requiring ECAM to be declared in E820,
- ACPI or EFI
-Message-ID: <20240126003514.GA407167@bhelgaas>
+	s=arc-20240116; t=1706287571; c=relaxed/simple;
+	bh=dU2O7jrbFnFCbgUiCpiNtwgswX6F92IR62D/O8qwkjw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oeKYj1VJ/UyJWs8nIhB5jfPMmycl+hHnDpzWzbLx8x2WPxXp4qNiB3B2xb+JepqUIofR25vtXRHgFHqBdtunMGXJKhxfR1nI4OLQ2ENtR8n2rrEc3cRubG0hr5VvWz58JegyaWTaVcAeo0286CpFs9OLoag2RXgzXwgysiKo7W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TM3Qp5BTvz6J9f2;
+	Sat, 27 Jan 2024 00:42:58 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id C50DB140A36;
+	Sat, 27 Jan 2024 00:46:04 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 26 Jan
+ 2024 16:46:04 +0000
+Date: Fri, 26 Jan 2024 16:46:03 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Robert Richter <rrichter@amd.com>
+CC: Alison Schofield <alison.schofield@intel.com>, Vishal Verma
+	<vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, "Davidlohr
+ Bueso" <dave@stgolabs.net>, "Rafael J. Wysocki" <rafael@kernel.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, <linux-cxl@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v2 3/3] lib/firmware_table: Provide buffer length
+ argument to cdat_table_parse()
+Message-ID: <20240126164603.000040fd@Huawei.com>
+In-Reply-To: <20240108114833.241710-4-rrichter@amd.com>
+References: <20240108114833.241710-1-rrichter@amd.com>
+	<20240108114833.241710-4-rrichter@amd.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7caefe4b-bf05-49a3-bfb8-75e7fd73343b@amd.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, Jan 17, 2024 at 11:53:50AM -0600, Mario Limonciello wrote:
-> On 12/15/2023 16:03, Mario Limonciello wrote:
-> > commit 7752d5cfe3d1 ("x86: validate against acpi motherboard resources")
-> > introduced checks for ensuring that MCFG table also has memory region
-> > reservations to ensure no conflicts were introduced from a buggy BIOS.
-> > 
-> > This has proceeded over time to add other types of reservation checks
-> > for ACPI PNP resources and EFI MMIO memory type.  The PCI firmware spec
-> > does say that these checks are only required when the operating system
-> > doesn't comprehend the firmware region:
-> > 
-> > ```
-> > If the operating system does not natively comprehend reserving the MMCFG
-> > region, the MMCFG region must be reserved by firmware. The address range
-> > reported in the MCFG table or by _CBA method (see Section 4.1.3) must be
-> > reserved by declaring a motherboard resource. For most systems, the
-> > motherboard resource would appear at the root of the ACPI namespace
-> > (under \_SB) in a node with a _HID of EISAID (PNP0C02), and the resources
-> > in this case should not be claimed in the root PCI bus’s _CRS. The
-> > resources can optionally be returned in Int15 E820h or EFIGetMemoryMap
-> > as reserved memory but must always be reported through ACPI as a
-> > motherboard resource.
-> > ```
-> > 
-> > Running this check causes problems with accessing extended PCI
-> > configuration space on OEM laptops that don't specify the region in PNP
-> > resources or in the EFI memory map. That later manifests as problems with
-> > dGPU and accessing resizable BAR. Similar problems don't exist in Windows
-> > 11 with exact same laptop/firmware stack.
-> > 
-> > Due to the stability of the Windows ecosystem that x86 machines participate
-> > it is unlikely that using the region specified in the MCFG table as
-> > a reservation will cause a problem. The possible worst circumstance could
-> > be that a buggy BIOS causes a larger hole in the memory map that is
-> > unusable for devices than intended.
-> > 
-> > Change the default behavior to keep the region specified in MCFG even if
-> > it's not specified in another source. This is expected to improve
-> > machines that otherwise couldn't access PCI extended configuration space.
-> > 
-> > In case this change causes problems, add a kernel command line parameter
-> > that can restore the previous behavior.
-> > 
-> > Link: https://members.pcisig.com/wg/PCI-SIG/document/15350
-> >        PCI Firmware Specification 3.3
-> >        Section 4.1.2 MCFG Table Description Note 2
-> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > ---
+On Mon, 8 Jan 2024 12:48:33 +0100
+Robert Richter <rrichter@amd.com> wrote:
+
+> The last entry in the CDAT table may not mark the end of the CDAT
+> table buffer specified by the length field in the CDAT header. It can
+> be shorter with trailing unused (zero'ed) data. The actual table
+> length is determined when reading all CDAT entries of the table with
+> DOE.
+
+Can you give some reasons why this would occur?
+
+Need to be clear if this is:
+1) Hardening against device returning borked table.
+2) Hardening against in flight update of CDAT racing with the readout
+   (not sure table can change size, but maybe.. I haven't checked).
+3) DW read back vs packed structures?
+
+Patch seems reasonable to me, I'd just like a clear statement of why
+it happens!
+
+Jonathan
+
 > 
-> Bjorn,
+> If the table is greater than expected (containing zero'ed trailing
+> data), the CDAT parser fails with:
 > 
-> Any thoughts on this version since our last conversation on V1?
-
-Just to let you know that I'm not ignoring this, and I'm trying to
-formulate a useful response.  mmconfig-shared.c has grown into an
-extremely complicated mess and is a continual source of problems, so
-I'd really like to untangle it a tiny bit if we can.
-
-One thing is that per spec, ACPI motherboard resources are the ONLY
-way to reserve ECAM space.  I'd like to reclaim a little clarity about
-that and separate out the E820 and EFI stuff as secondary hacks.  But
-there's an insane amount of history that got us here.
-
-The problem we have to avoid is assigning a BAR that overlaps ECAM.
-We assign BARs for lots of reasons.  dGPU and resizable BARs are
-examples but there are others, like hotplug and SR-IOV.  The fact that
-Windows works is a red herring because it allocates BARs differently.
-
-It's also little bit of a burr under my saddle to add things for a
-problem on unspecified machines, where I don't even know whether the
-machines are already in the field or the firmware could still be
-fixed.
-
-And of course, if there's any way to solve this safely without adding
-yet another kernel parameter, that would be vastly preferable.
-
-Sorry, nothing actionable here but wanted to let you know that it's
-keeping me awake at night ;)
-
-Bjorn
-
-> > v1->v2:
-> >   * Rebase on pci/next
-> >   * Add an escape hatch
-> >   * Reword commit message
-> > ---
-> >   .../admin-guide/kernel-parameters.txt         |  6 ++++++
-> >   arch/x86/pci/mmconfig-shared.c                | 19 +++++++++++++++----
-> >   2 files changed, 21 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> > index 65731b060e3f..eacd0c0521c2 100644
-> > --- a/Documentation/admin-guide/kernel-parameters.txt
-> > +++ b/Documentation/admin-guide/kernel-parameters.txt
-> > @@ -1473,6 +1473,12 @@
-> >   			(in particular on some ATI chipsets).
-> >   			The kernel tries to set a reasonable default.
-> > +	enforce_ecam_resv [X86]
-> > +			Enforce requiring an ECAM reservation specified in
-> > +			BIOS for PCI devices.
-> > +			This parameter is only valid if CONFIG_PCI_MMCONFIG
-> > +			is enabled.
-> > +
-> >   	enforcing=	[SELINUX] Set initial enforcing status.
-> >   			Format: {"0" | "1"}
-> >   			See security/selinux/Kconfig help text.
-> > diff --git a/arch/x86/pci/mmconfig-shared.c b/arch/x86/pci/mmconfig-shared.c
-> > index 0cc9520666ef..aee117c6bbf9 100644
-> > --- a/arch/x86/pci/mmconfig-shared.c
-> > +++ b/arch/x86/pci/mmconfig-shared.c
-> > @@ -34,6 +34,15 @@ static DEFINE_MUTEX(pci_mmcfg_lock);
-> >   LIST_HEAD(pci_mmcfg_list);
-> > +static bool enforce_ecam_resv __read_mostly;
-> > +static int __init parse_ecam_options(char *str)
-> > +{
-> > +	enforce_ecam_resv = true;
-> > +
-> > +	return 1;
-> > +}
-> > +__setup("enforce_ecam_resv", parse_ecam_options);
-> > +
-> >   static void __init pci_mmconfig_remove(struct pci_mmcfg_region *cfg)
-> >   {
-> >   	if (cfg->res.parent)
-> > @@ -569,10 +578,12 @@ static void __init pci_mmcfg_reject_broken(int early)
-> >   	list_for_each_entry(cfg, &pci_mmcfg_list, list) {
-> >   		if (!pci_mmcfg_reserved(NULL, cfg, early)) {
-> > -			pr_info("not using ECAM (%pR not reserved)\n",
-> > -				&cfg->res);
-> > -			free_all_mmcfg();
-> > -			return;
-> > +			pr_info("ECAM %pR not reserved, %s\n", &cfg->res,
-> > +				enforce_ecam_resv ? "ignoring" : "using anyway");
-> > +			if (enforce_ecam_resv) {
-> > +				free_all_mmcfg();
-> > +				return;
-> > +			}
-> >   		}
-> >   	}
-> >   }
-> > 
-> > base-commit: 67e04d921cb6902e8c2abdbf748279d43f25213e
+>  [   48.691717] Malformed DSMAS table length: (24:0)
+>  [   48.702084] [CDAT:0x00] Invalid zero length
+>  [   48.711460] cxl_port endpoint1: Failed to parse CDAT: -22
 > 
+> In addition, the table buffer size can be different from the size
+> specified in the length field. This may cause out-of-bound access then
+> parsing the CDAT table.
+> 
+> Fix that by providing an optonal buffer length argument to
+> acpi_parse_entries_array() that can be used by cdat_table_parse() to
+> propagate the buffer size down to its users.
+> 
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Signed-off-by: Robert Richter <rrichter@amd.com>
+> ---
+>  drivers/acpi/tables.c    |  2 +-
+>  drivers/cxl/core/cdat.c  |  6 +++---
+>  include/linux/fw_table.h |  4 +++-
+>  lib/fw_table.c           | 15 ++++++++++-----
+>  4 files changed, 17 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+> index b07f7d091d13..b976e5fc3fbc 100644
+> --- a/drivers/acpi/tables.c
+> +++ b/drivers/acpi/tables.c
+> @@ -253,7 +253,7 @@ int __init_or_acpilib acpi_table_parse_entries_array(
+>  
+>  	count = acpi_parse_entries_array(id, table_size,
+>  					 (union fw_table_header *)table_header,
+> -					 proc, proc_num, max_entries);
+> +					 0, proc, proc_num, max_entries);
+>  
+>  	acpi_put_table(table_header);
+>  	return count;
+> diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
+> index 6fe11546889f..012d8f2a7945 100644
+> --- a/drivers/cxl/core/cdat.c
+> +++ b/drivers/cxl/core/cdat.c
+> @@ -149,13 +149,13 @@ static int cxl_cdat_endpoint_process(struct cxl_port *port,
+>  	int rc;
+>  
+>  	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSMAS, cdat_dsmas_handler,
+> -			      dsmas_xa, port->cdat.table);
+> +			      dsmas_xa, port->cdat.table, port->cdat.length);
+>  	rc = cdat_table_parse_output(rc);
+>  	if (rc)
+>  		return rc;
+>  
+>  	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSLBIS, cdat_dslbis_handler,
+> -			      dsmas_xa, port->cdat.table);
+> +			      dsmas_xa, port->cdat.table, port->cdat.length);
+>  	return cdat_table_parse_output(rc);
+>  }
+>  
+> @@ -511,7 +511,7 @@ void cxl_switch_parse_cdat(struct cxl_port *port)
+>  		return;
+>  
+>  	rc = cdat_table_parse(ACPI_CDAT_TYPE_SSLBIS, cdat_sslbis_handler,
+> -			      port, port->cdat.table);
+> +			      port, port->cdat.table, port->cdat.length);
+>  	rc = cdat_table_parse_output(rc);
+>  	if (rc)
+>  		dev_dbg(&port->dev, "Failed to parse SSLBIS: %d\n", rc);
+> diff --git a/include/linux/fw_table.h b/include/linux/fw_table.h
+> index 95421860397a..3ff4c277296f 100644
+> --- a/include/linux/fw_table.h
+> +++ b/include/linux/fw_table.h
+> @@ -40,12 +40,14 @@ union acpi_subtable_headers {
+>  
+>  int acpi_parse_entries_array(char *id, unsigned long table_size,
+>  			     union fw_table_header *table_header,
+> +			     unsigned long max_length,
+>  			     struct acpi_subtable_proc *proc,
+>  			     int proc_num, unsigned int max_entries);
+>  
+>  int cdat_table_parse(enum acpi_cdat_type type,
+>  		     acpi_tbl_entry_handler_arg handler_arg, void *arg,
+> -		     struct acpi_table_cdat *table_header);
+> +		     struct acpi_table_cdat *table_header,
+> +		     unsigned long length);
+>  
+>  /* CXL is the only non-ACPI consumer of the FIRMWARE_TABLE library */
+>  #if IS_ENABLED(CONFIG_ACPI) && !IS_ENABLED(CONFIG_CXL_BUS)
+> diff --git a/lib/fw_table.c b/lib/fw_table.c
+> index 1e5e0b2f7012..ddb67853b7ac 100644
+> --- a/lib/fw_table.c
+> +++ b/lib/fw_table.c
+> @@ -132,6 +132,7 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
+>   *
+>   * @id: table id (for debugging purposes)
+>   * @table_size: size of the root table
+> + * @max_length: maximum size of the table (ignore if 0)
+>   * @table_header: where does the table start?
+>   * @proc: array of acpi_subtable_proc struct containing entry id
+>   *        and associated handler with it
+> @@ -153,10 +154,11 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
+>  int __init_or_fwtbl_lib
+>  acpi_parse_entries_array(char *id, unsigned long table_size,
+>  			 union fw_table_header *table_header,
+> +			 unsigned long max_length,
+>  			 struct acpi_subtable_proc *proc,
+>  			 int proc_num, unsigned int max_entries)
+>  {
+> -	unsigned long table_end, subtable_len, entry_len;
+> +	unsigned long table_len, table_end, subtable_len, entry_len;
+>  	struct acpi_subtable_entry entry;
+>  	enum acpi_subtable_type type;
+>  	int count = 0;
+> @@ -164,8 +166,10 @@ acpi_parse_entries_array(char *id, unsigned long table_size,
+>  	int i;
+>  
+>  	type = acpi_get_subtable_type(id);
+> -	table_end = (unsigned long)table_header +
+> -		    acpi_table_get_length(type, table_header);
+> +	table_len = acpi_table_get_length(type, table_header);
+> +	if (max_length && max_length < table_len)
+> +		table_len = max_length;
+> +	table_end = (unsigned long)table_header + table_len;
+>  
+>  	/* Parse all entries looking for a match. */
+>  
+> @@ -220,7 +224,8 @@ int __init_or_fwtbl_lib
+>  cdat_table_parse(enum acpi_cdat_type type,
+>  		 acpi_tbl_entry_handler_arg handler_arg,
+>  		 void *arg,
+> -		 struct acpi_table_cdat *table_header)
+> +		 struct acpi_table_cdat *table_header,
+> +		 unsigned long length)
+>  {
+>  	struct acpi_subtable_proc proc = {
+>  		.id		= type,
+> @@ -234,6 +239,6 @@ cdat_table_parse(enum acpi_cdat_type type,
+>  	return acpi_parse_entries_array(ACPI_SIG_CDAT,
+>  					sizeof(struct acpi_table_cdat),
+>  					(union fw_table_header *)table_header,
+> -					&proc, 1, 0);
+> +					length, &proc, 1, 0);
+>  }
+>  EXPORT_SYMBOL_FWTBL_LIB(cdat_table_parse);
+
 
