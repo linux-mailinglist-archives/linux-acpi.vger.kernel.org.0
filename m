@@ -1,253 +1,195 @@
-Return-Path: <linux-acpi+bounces-3066-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3067-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66648401E9
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jan 2024 10:39:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A7678403FB
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jan 2024 12:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EC86B21AD6
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jan 2024 09:39:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2145328663A
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jan 2024 11:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D4E54FB2;
-	Mon, 29 Jan 2024 09:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DiK3P93Z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDA65BAE2;
+	Mon, 29 Jan 2024 11:42:25 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E9F55E63;
-	Mon, 29 Jan 2024 09:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9A15FB89;
+	Mon, 29 Jan 2024 11:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706521182; cv=none; b=qClwbzzcFPFlJI9+L0xg7Z5hJBUbbdFuBUMnVAwSposkrVfbhn2xlBrt7KczDEevbf8p+nqukuzPYQzmwYkvJFgdWC6ts+92sqBVd4tNrZ7m/dH+5e67/7btF8K2S8CByC6FYOPxSmsoFlU+Rvtjj8x2U/iX7SmSWck2X2oAE5A=
+	t=1706528545; cv=none; b=nSBoauFCHyIl+ZlD6qqx66T/KlZz3amt31uv3hAkpi0ycak3laZssmspYXiXvJVtviQQmuxjP00VHZt0Z4Z53u28fTtnxX+bdwqGfy+Xxyl9Hodz0lMFCAIbrv350IBlKlIviUns/X12jwX7swB2U5RxiF2P651WCBq1zv0/0qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706521182; c=relaxed/simple;
-	bh=vUokWzEw5+VC5jpC2OPRStu+GWoiZ2lrs+sppMiHM5k=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=HV6Udwh272czUxQz686S+rvBw8jUj3iyyWi6j6b5spvLHC8lOjTIAPKRHGAFAoDdA4fiSvRF4FgM5A1S1TaAGqG05g/IL1V+7nLIDvyy0pUcMeUFvf2RU5ibtJ7p+cwEbkovQj1UnpJTy+/XqfuoW4NSHNKzT5VVb8101JOApEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DiK3P93Z; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706521180; x=1738057180;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=vUokWzEw5+VC5jpC2OPRStu+GWoiZ2lrs+sppMiHM5k=;
-  b=DiK3P93Zk8DZxJKkBJbtJAt8nTd9VgOgq7WddB1boej3/y6zu/jB2mje
-   6JDWppiqXnjdTecPIZXMGZo9ZhuFFQlM94aJXZSKA1Beqv0VJauX4SISr
-   JR2qFdiFacmO7UEoCE3+kkoCS/X4ftQ9jehGMpnw4NlsLFdy+bzRWOU2X
-   LERX/xLMjhEHsWg6TJEvcOJkPD/wQz/0spT3pQg1Ukw/utktXB/hTYI5O
-   y7kt6rHEYJp51yL8q7RpnWAjT0tehKjfSPXwk8Sw0mke1JwHqWz1U9fmq
-   AxqX1vv6/GoyRh+8IoIRnfjpBeV2aKqkveLhYG8x6PClWmjVU1+u8nhj6
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="9650774"
-X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; 
-   d="scan'208";a="9650774"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 01:39:39 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; 
-   d="scan'208";a="3246388"
-Received: from hbrandbe-mobl.ger.corp.intel.com (HELO localhost) ([10.252.59.53])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 01:39:34 -0800
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Mario Limonciello <mario.limonciello@amd.com>,
- amd-gfx@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>,
- Harry Wentland <harry.wentland@amd.com>, "Rafael J . Wysocki"
- <rafael@kernel.org>, Hans de Goede <hdegoede@redhat.com>
-Cc: open list <linux-kernel@vger.kernel.org>, "open list:DRM DRIVERS"
- <dri-devel@lists.freedesktop.org>, Melissa Wen <mwen@igalia.com>, "open
- list:ACPI" <linux-acpi@vger.kernel.org>, Mario Limonciello
- <mario.limonciello@amd.com>, Mark
- Pearson <mpearson-lenovo@squebb.ca>
-Subject: Re: [PATCH 2/2] drm/amd: Fetch the EDID from _DDC if available for eDP
-In-Reply-To: <20240126184639.8187-3-mario.limonciello@amd.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20240126184639.8187-1-mario.limonciello@amd.com>
- <20240126184639.8187-3-mario.limonciello@amd.com>
-Date: Mon, 29 Jan 2024 11:39:32 +0200
-Message-ID: <87le88jx63.fsf@intel.com>
+	s=arc-20240116; t=1706528545; c=relaxed/simple;
+	bh=wi/L5u6UksBicgM0z20X3NazESWce9mpAytR7nH+eS0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oTJGUH76ir7JsgRgJvkHd3Kmxz0EO8/SR3/EFyUfNOO+uwnTIcdYiMEfDCxpXWKNXTJ9aFCgKhagUUYyGtLSGtWbjl+xr8m9bUEMSv3Dr+9Ev9IkBdCKgZ15TTVa9LVkM3cNi8fg0/xen/LscUkhx6l6QSW8nV8M6Yio1VFXto0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TNmXp0fSyz6JB7G;
+	Mon, 29 Jan 2024 19:39:06 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 063AE1400CD;
+	Mon, 29 Jan 2024 19:42:20 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 29 Jan
+ 2024 11:42:19 +0000
+Date: Mon, 29 Jan 2024 11:42:18 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Julia Lawall <julia.lawall@inria.fr>
+CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>, "Rob
+ Herring" <robh@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+	<linux-kernel@vger.kernel.org>, Nicolas Palix <nicolas.palix@imag.fr>,
+	"Sumera Priyadarsini" <sylphrenadin@gmail.com>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>, Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Subject: Re: [RFC PATCH 0/5] of: automate of_node_put() - new approach to
+ loops.
+Message-ID: <20240129114218.00003c34@Huawei.com>
+In-Reply-To: <alpine.DEB.2.22.394.2401281903550.3119@hadrien>
+References: <20240128160542.178315-1-jic23@kernel.org>
+	<alpine.DEB.2.22.394.2401281903550.3119@hadrien>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Fri, 26 Jan 2024, Mario Limonciello <mario.limonciello@amd.com> wrote:
-> Some manufacturers have intentionally put an EDID that differs from
-> the EDID on the internal panel on laptops.
->
-> Attempt to fetch this EDID if it exists and prefer it over the EDID
-> that is provided by the panel.
->
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu.h           |  2 ++
->  drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c      | 30 +++++++++++++++++++
->  .../gpu/drm/amd/amdgpu/amdgpu_connectors.c    |  5 ++++
->  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  8 ++++-
->  .../amd/display/amdgpu_dm/amdgpu_dm_helpers.c |  7 +++--
->  5 files changed, 49 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-> index c5f3859fd682..99abe12567a4 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-> @@ -1520,6 +1520,7 @@ int amdgpu_acpi_get_mem_info(struct amdgpu_device *adev, int xcc_id,
->  
->  void amdgpu_acpi_get_backlight_caps(struct amdgpu_dm_backlight_caps *caps);
->  bool amdgpu_acpi_should_gpu_reset(struct amdgpu_device *adev);
-> +void *amdgpu_acpi_edid(struct amdgpu_device *adev, struct drm_connector *connector);
->  void amdgpu_acpi_detect(void);
->  void amdgpu_acpi_release(void);
->  #else
-> @@ -1537,6 +1538,7 @@ static inline int amdgpu_acpi_get_mem_info(struct amdgpu_device *adev,
->  }
->  static inline void amdgpu_acpi_fini(struct amdgpu_device *adev) { }
->  static inline bool amdgpu_acpi_should_gpu_reset(struct amdgpu_device *adev) { return false; }
-> +static inline void *amdgpu_acpi_edid(struct amdgpu_device *adev, struct drm_connector *connector) { return NULL; }
->  static inline void amdgpu_acpi_detect(void) { }
->  static inline void amdgpu_acpi_release(void) { }
->  static inline bool amdgpu_acpi_is_power_shift_control_supported(void) { return false; }
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-> index e550067e5c5d..c106335f1f22 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-> @@ -1380,6 +1380,36 @@ bool amdgpu_acpi_should_gpu_reset(struct amdgpu_device *adev)
->  #endif
->  }
->  
-> +/**
-> + * amdgpu_acpi_edid
-> + * @adev: amdgpu_device pointer
-> + * @connector: drm_connector pointer
-> + *
-> + * Returns the EDID used for the internal panel if present, NULL otherwise.
-> + */
-> +void *
-> +amdgpu_acpi_edid(struct amdgpu_device *adev, struct drm_connector *connector)
-> +{
-> +	struct drm_device *ddev = adev_to_drm(adev);
-> +	struct acpi_device *acpidev = ACPI_COMPANION(ddev->dev);
-> +	void *edid;
-> +	int r;
-> +
-> +	if (!acpidev)
-> +		return NULL;
-> +
-> +	if (connector->connector_type != DRM_MODE_CONNECTOR_eDP)
-> +		return NULL;
-> +
-> +	r = acpi_video_get_edid(acpidev, ACPI_VIDEO_DISPLAY_LCD, -1, &edid);
-> +	if (r < 0) {
-> +		DRM_DEBUG_DRIVER("Failed to get EDID from ACPI: %d\n", r);
-> +		return NULL;
-> +	}
-> +
-> +	return kmemdup(edid, r, GFP_KERNEL);
-> +}
-> +
->  /*
->   * amdgpu_acpi_detect - detect ACPI ATIF/ATCS methods
->   *
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-> index 9caba10315a8..c7e1563a46d3 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-> @@ -278,6 +278,11 @@ static void amdgpu_connector_get_edid(struct drm_connector *connector)
->  	struct amdgpu_device *adev = drm_to_adev(dev);
->  	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);
->  
-> +	if (amdgpu_connector->edid)
-> +		return;
-> +
-> +	/* if the BIOS specifies the EDID via _DDC, prefer this */
-> +	amdgpu_connector->edid = amdgpu_acpi_edid(adev, connector);
+On Sun, 28 Jan 2024 19:06:53 +0100 (CET)
+Julia Lawall <julia.lawall@inria.fr> wrote:
 
-Imagine the EDID returned by acpi_video_get_edid() has edid->extensions
-bigger than 4. Of course it should not, but you have no guarantees, and
-it originates outside of the kernel.
+> On Sun, 28 Jan 2024, Jonathan Cameron wrote:
+> 
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > +CC includes peopleinterested in property.h equivalents to minimize
+> > duplication of discussion.  Outcome of this discussion will affect:
+> > https://lore.kernel.org/all/20240114172009.179893-1-jic23@kernel.org/
+> > [PATCH 00/13] device property / IIO: Use cleanup.h magic for fwnode_handle_put() handling.
+> >
+> > In discussion of previous approach with Rob Herring we talked about various
+> > ways to avoid a disconnect between the declaration of the __free(device_node)
+> > and the first non NULL assignment. Making this connection clear is useful for 2
+> > reasons:
+> > 1) Avoids out of order cleanup with respect to other cleanup.h usage.
+> > 2) Avoids disconnect between how cleanup is to be done and how the reference
+> >    was acquired in the first place.
+> >
+> > https://lore.kernel.org/all/20240117194743.GA2888190-robh@kernel.org/
+> >
+> > The options we discussed are:
+> >
+> > 1) Ignore this issue and merge original set.
+> >
+> > 2) Always put the declaration just before the for loop and don't set it NULL.
+> >
+> > {
+> > 	int ret;
+> >
+> > 	ret = ... and other fun code.
+> >
+> > 	struct device_node *child __free(device_node);
+> > 	for_each_child_of_node(np, child) {
+> > 	}
+> > }
+> >
+> > This works but careful review is needed to ensure that this unusual pattern is
+> > followed.  We don't set it to NULL as the loop will do that anyway if there are
+> > no child nodes, or the loop finishes without an early break or return.
+> >
+> > 3) Introduced the pointer to auto put device_node only within the
+> >    for loop scope.
+> >
+> > +#define for_each_child_of_node_scoped(parent, child) \
+> > +	for (struct device_node *child __free(device_node) =		\
+> > +	     of_get_next_child(parent, NULL);				\
+> > +	     child != NULL;						\
+> > +	     child = of_get_next_available_child(parent, child))
+> > +
+> >
+> > This series is presenting option 3.  I only implemented this loop out of
+> > all the similar ones and it is only compile tested.
+> >
+> > Disadvantage Rob raised is that it isn't obvious this macro will instantiate
+> > a struct device_node *child.  I can't see a way around that other than option 2
+> > above, but all suggestions welcome.  Note that if a conversion leaves an
+> > 'external' struct device_node *child variable, in many cases the compiler
+> > will catch that as an unused variable. We don't currently run shaddow
+> > variable detection in normal kernel builds, but that could also be used
+> > to catch such bugs.
+> >
+> > All comments welcome.  
+> 
+> It looks promising to get rid of a lot of clunky and error-prone
+> error-handling code.
 
-The real fix is to have the function return a struct drm_edid which
-tracks the allocation size separately. Unfortunately, it requires a
-bunch of changes along the way. We've mostly done it in i915, and I've
-sent a series to do this in drm/bridge [1].
+Absolutely. I think I spotted 2 bugs whilst just looking for places this pattern
+doesn't apply.  Will circle back to those once this discussion is resolved.
+I think I've taken dozen's of fixes for cases where these were missed over the years
+so hoping this means I'll never see another one!
 
-Bottom line, we should stop using struct edid in drivers. They'll all
-parse the info differently, and from what I've seen, often wrong.
+> 
+> I guess that
+> 
+> for_each_child_of_node_scoped(parent, struct device_node *, child)
+> 
+> would seem too verbose?
 
+Intent just to make the allocated internal type clear?  Sure we can do that if
+it helps with making it clear something is being allocated.
+I can't think of a way this could be used with anything other than
+a struct device_node * as the second parameter but I guess it still helps
+'hint' at what is going on..
 
-BR,
-Jani.
+> 
+> There are a lot of opportunities for device_node loops, but also for some
+> more obscure loops over other types.  
 
+> And there are a lot of of_node_puts
+> that could be eliminated independent of loops.
 
-[1] https://patchwork.freedesktop.org/series/128149/
+The non loop cases should be handled via the __free(device_node) as provided
+by patch 1.  We'll need to keep the declaration local and initial assignment
+together but that is easy enough to do and similar to the many other cleanup.h
+usecases that are surfacing.
 
+Jonathan
 
->  	if (amdgpu_connector->edid)
->  		return;
->  
-> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> index cd98b3565178..1faa21f542bd 100644
-> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> @@ -6562,17 +6562,23 @@ static void amdgpu_dm_connector_funcs_force(struct drm_connector *connector)
->  {
->  	struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
->  	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);
-> +	struct amdgpu_device *adev = drm_to_adev(connector->dev);
->  	struct dc_link *dc_link = aconnector->dc_link;
->  	struct dc_sink *dc_em_sink = aconnector->dc_em_sink;
->  	struct edid *edid;
->  
-> +	/* prefer ACPI over panel for eDP */
-> +	edid = amdgpu_acpi_edid(adev, connector);
-> +
->  	/*
->  	 * Note: drm_get_edid gets edid in the following order:
->  	 * 1) override EDID if set via edid_override debugfs,
->  	 * 2) firmware EDID if set via edid_firmware module parameter
->  	 * 3) regular DDC read.
->  	 */
-> -	edid = drm_get_edid(connector, &amdgpu_connector->ddc_bus->aux.ddc);
-> +	if (!edid)
-> +		edid = drm_get_edid(connector, &amdgpu_connector->ddc_bus->aux.ddc);
-> +
->  	if (!edid) {
->  		DRM_ERROR("No EDID found on connector: %s.\n", connector->name);
->  		return;
-> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-> index e3915c4f8566..6bf2a8867e76 100644
-> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-> @@ -895,6 +895,7 @@ enum dc_edid_status dm_helpers_read_local_edid(
->  {
->  	struct amdgpu_dm_connector *aconnector = link->priv;
->  	struct drm_connector *connector = &aconnector->base;
-> +	struct amdgpu_device *adev = drm_to_adev(connector->dev);
->  	struct i2c_adapter *ddc;
->  	int retry = 3;
->  	enum dc_edid_status edid_status;
-> @@ -909,8 +910,10 @@ enum dc_edid_status dm_helpers_read_local_edid(
->  	 * do check sum and retry to make sure read correct edid.
->  	 */
->  	do {
-> -
-> -		edid = drm_get_edid(&aconnector->base, ddc);
-> +		/* prefer ACPI over panel for eDP */
-> +		edid = amdgpu_acpi_edid(adev, connector);
-> +		if (!edid)
-> +			edid = drm_get_edid(&aconnector->base, ddc);
->  
->  		/* DP Compliance Test 4.2.2.6 */
->  		if (link->aux_mode && connector->edid_corrupt)
+> 
+> julia
+> 
+> >
+> > Jonathan Cameron (5):
+> >   of: Add cleanup.h based auto release via __free(device_node) markings.
+> >   of: Introduce for_each_child_of_node_scoped() to automate
+> >     of_node_put() handling
+> >   of: unittest: Use __free(device_node)
+> >   iio: adc: fsl-imx25-gcq: Use for_each_child_node_scoped()
+> >   iio: adc: rcar-gyroadc: use for_each_child_node_scoped()
+> >
+> >  drivers/iio/adc/fsl-imx25-gcq.c | 13 +++----------
+> >  drivers/iio/adc/rcar-gyroadc.c  | 21 ++++++---------------
+> >  drivers/of/unittest.c           | 11 +++--------
+> >  include/linux/of.h              |  8 ++++++++
+> >  4 files changed, 20 insertions(+), 33 deletions(-)
+> >
+> > --
+> > 2.43.0
+> >
+> >  
 
--- 
-Jani Nikula, Intel
 
