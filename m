@@ -1,125 +1,120 @@
-Return-Path: <linux-acpi+bounces-3076-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3077-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BD428409A8
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jan 2024 16:19:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3E4840A14
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jan 2024 16:33:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38634287D2A
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jan 2024 15:19:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0B89283D79
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jan 2024 15:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F399153BDA;
-	Mon, 29 Jan 2024 15:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9811F153BE2;
+	Mon, 29 Jan 2024 15:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="QPBMraaO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCAD153BC1;
-	Mon, 29 Jan 2024 15:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB8C153BD0;
+	Mon, 29 Jan 2024 15:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706541496; cv=none; b=Gg9kVicy71HEIjl5yT45gk64Z71a+YCns4I9NIpdIlCnbUqfWg/lalYFE1kHQN1S2QcrQEsUIOPxmD1Rd7Q9devjH32dHj+HdN5lsEn2yyZOZsTy6aHMy9bev+8hyUXJIz+3vI3ZBVzKtfcfMt0YdcD1ajrXj1slSqoBXSEhJ0A=
+	t=1706542378; cv=none; b=NK1Tcp3fhkgMaeXNCjfsGH3iY8DlgWE2MWt2oYCWfI/C+wG64cB2NomrcF3IA87QAY24ZBdckD5C0fP+COgf0Mja6ivQ+rmKluXKPRDo5s2Sg00JiJpkN3eR4pfzkmIwbc79C6wWfxZ6EHm/9//hYDMQNQwivtBM9eD3QBxwZP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706541496; c=relaxed/simple;
-	bh=mbj/GubrUM5ol2t9pipY347bjtlgBP1tVcH6RRQE3wc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=We5HOxRbh3NqqwOt2IVEO1qJDfa1veYVXGoI2olFQ4HCvhNltsDUYxl+460aa2ZGEqBPemQmVbFm8gndmqfIfnChOv+6/0yr8MekJNlbq/xCL0/fp35W8yoWA+hoF8fB+vySCll56//+cGjJ8w3aWUQDh6/Aqy+wgbqkq9iDmv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2148d3d7334so62345fac.1;
-        Mon, 29 Jan 2024 07:18:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706541494; x=1707146294;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mbj/GubrUM5ol2t9pipY347bjtlgBP1tVcH6RRQE3wc=;
-        b=N3r+DzYqf0KluXXRVYrFWxGv8GEArMqPYH6GK1YDw49OIvFbTagOuKI4h4i+L+okh7
-         BP2zrVCEZEe/LpWVn1LxxqGd5haYDvl+rjjKjOCDBWTax4+qvXhX5meJpNHGklTaJp/p
-         dyKvRnbHDUMwCrlmH/WjjJy3wIaD1uc4TB6hl0t8zko7zpbYusLJTva0+bog8I1JDGsW
-         TwZQ9MMbDZ2KJc4DQimHEbZzSct4qsMv7NJ1U+YO3L/StyVrXEq2wIvCHMINCqZRWkDT
-         +JL/MJVP0v4LM8yiCs2exAhNJN1M6Bv7rYorZ1ZQ/EG5DsawIJqO74ze4+mzvbfFQheB
-         1K9w==
-X-Gm-Message-State: AOJu0YzQIYjIJR9JMqJyW0vLP4CX4/+DVXy0KuRypVkyEXzsiQ2kNlB7
-	F0dhUuoEi/+ni2tlJCVEUfkTKCpcMMVHyJg2Dr5CyqItpLRkBq7frc8mNmJuDQX1i83IPcIozV4
-	NnVVqQveXbfA4Py1XqJk3n4g2wJk=
-X-Google-Smtp-Source: AGHT+IF4EQ5CmMMdAEPRwd5BhiwlO/wr9Z43o2bbICKJbvBtQl8/eSjsNtzW7mM8AUn1ZTuLaLkOrdQrq9+8mpchb8c=
-X-Received: by 2002:a05:6870:a927:b0:204:5ad3:e6ec with SMTP id
- eq39-20020a056870a92700b002045ad3e6ecmr7295673oab.4.1706541493935; Mon, 29
- Jan 2024 07:18:13 -0800 (PST)
+	s=arc-20240116; t=1706542378; c=relaxed/simple;
+	bh=M4Ydsjad/swrZwcvf7pSn8N8hCrpUpA9lm6//wf5n4Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r5ERMqVEikUpyZL6hgr6rCDXAbXNWS2OHp7Fn9HRa207YqS+G/x4EHAJRKdrTHA+bUKLexEkX6mAHewAwY9j3f0gClThOVN8uhpQxyHGS6qimaygecm0OD7tapyb5igBriLPNhhS3/PiM/Q/885Uy3DSdtfMZAVeJUDLsKzwZLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=QPBMraaO; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=CrHCTlFRqhVi35tK959UuBbKAaE+0blDjjqiPB7oOOk=; b=QPBMraaOzb39X/fTDTDp8vZn3U
+	RyQNYMvVEuosY1G2SF9dOmBcU/EIjaw/4q1ZtewTtTqBR2ZTFc0HwNzLEMLV2PL1R+6KEJM2hgN8y
+	y27brvTJVMBs3/Kx16Qyd0F6UgR6nO91iHksI1MULxx1Uv/MoCL4CJVPMswAs3vMX+z1pVQoWF9mP
+	ciarx1HSr1oQZTuCJWBn/mylPek1/6qnmqyWafXtUnzD171hxxU3T2/IBjNv4sD9GCQi2Sz5aNUJ2
+	NpFd5Kwem/2q2pdUrG702/gdn6SHY1d9fOFivlToOyVuVDMwEArwj3mFhJINI1ddPyf7tn0gTM/tU
+	xrrJkCOA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:40068)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1rUTcv-0000bZ-0j;
+	Mon, 29 Jan 2024 15:32:49 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1rUTcp-0004f6-8p; Mon, 29 Jan 2024 15:32:43 +0000
+Date: Mon, 29 Jan 2024 15:32:43 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>, vishnu@os.amperecomputing.com,
+	miguel.luis@oracle.com
+Subject: Re: [PATCH RFC v3 03/21] ACPI: processor: Register CPUs that are
+ online, but not described in the DSDT
+Message-ID: <ZbfFG5JLnAkGN1pk@shell.armlinux.org.uk>
+References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk>
+ <E1rDOg2-00Dvjk-RI@rmk-PC.armlinux.org.uk>
+ <CAJZ5v0ju1JHgpjuFLHZVs4NZiARG6iBZN_wza6c2e0kDhZjK0w@mail.gmail.com>
+ <ZaURtUvWQyjYfiiO@shell.armlinux.org.uk>
+ <20240122160227.00002d83@Huawei.com>
+ <CAJZ5v0hamuXJ_w-TSmVb=5jGide=Lb7sCjbzzNb_rFuPrvkgxQ@mail.gmail.com>
+ <Za6mHRJVjb6M1mun@shell.armlinux.org.uk>
+ <20240123092725.00004382@Huawei.com>
+ <20240129130354.0000042b@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240119090502.3869695-1-li.meng@amd.com>
-In-Reply-To: <20240119090502.3869695-1-li.meng@amd.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 29 Jan 2024 16:18:02 +0100
-Message-ID: <CAJZ5v0gzKdjZJBypEw1+czGN-SHbx0s0-h=Lq96+MDVAO11PYQ@mail.gmail.com>
-Subject: Re: [PATCH V14 0/7] amd-pstate preferred core
-To: Meng Li <li.meng@amd.com>, Borislav Petkov <bpetkov@amd.com>
-Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Huang Rui <ray.huang@amd.com>, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	linux-acpi@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>, 
-	linux-kselftest@vger.kernel.org, Nathan Fontenot <nathan.fontenot@amd.com>, 
-	Deepak Sharma <deepak.sharma@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	Mario Limonciello <mario.limonciello@amd.com>, Shimmer Huang <shimmer.huang@amd.com>, 
-	Perry Yuan <Perry.Yuan@amd.com>, Xiaojian Du <Xiaojian.Du@amd.com>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Borislav Petkov <bp@alien8.de>, 
-	Oleksandr Natalenko <oleksandr@natalenko.name>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240129130354.0000042b@Huawei.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Fri, Jan 19, 2024 at 10:05=E2=80=AFAM Meng Li <li.meng@amd.com> wrote:
->
-> Hi all:
->
-> The core frequency is subjected to the process variation in semiconductor=
-s.
-> Not all cores are able to reach the maximum frequency respecting the
-> infrastructure limits. Consequently, AMD has redefined the concept of
-> maximum frequency of a part. This means that a fraction of cores can reac=
-h
-> maximum frequency. To find the best process scheduling policy for a given
-> scenario, OS needs to know the core ordering informed by the platform thr=
-ough
-> highest performance capability register of the CPPC interface.
->
-> Earlier implementations of amd-pstate preferred core only support a stati=
-c
-> core ranking and targeted performance. Now it has the ability to dynamica=
-lly
-> change the preferred core based on the workload and platform conditions a=
-nd
-> accounting for thermals and aging.
->
-> Amd-pstate driver utilizes the functions and data structures provided by
-> the ITMT architecture to enable the scheduler to favor scheduling on core=
-s
-> which can be get a higher frequency with lower voltage.
-> We call it amd-pstate preferred core.
->
-> Here sched_set_itmt_core_prio() is called to set priorities and
-> sched_set_itmt_support() is called to enable ITMT feature.
-> Amd-pstate driver uses the highest performance value to indicate
-> the priority of CPU. The higher value has a higher priority.
->
-> Amd-pstate driver will provide an initial core ordering at boot time.
-> It relies on the CPPC interface to communicate the core ranking to the
-> operating system and scheduler to make sure that OS is choosing the cores
-> with highest performance firstly for scheduling the process. When amd-pst=
-ate
-> driver receives a message with the highest performance change, it will
-> update the core ranking.
+On Mon, Jan 29, 2024 at 01:03:54PM +0000, Jonathan Cameron wrote:
+> I poked this on x86 - it only applies with hotplug enabled anyway so
+> same result as doing the hotplug later - All possible Processor() entries
+> already exist in DSDT. Hence this isn't the source of the mysterious
+> broken configuration.
+> 
+> If anyone does poke this path, the old discussion between James
+> and Salil provides some instructions (mostly the thread is about
+> another issue).
+> https://op-lists.linaro.org/archives/list/linaro-open-discussions@op-lists.linaro.org/thread/DNAGB2FB5ALVLV2BYWYOCLKGNF77PNXS/
+> 
+> Also on x86 a test involving smp 2,max-cpus=4 and adding cpu-id 3
+> (so skipping 2) doesn't boot. (this is without Salil's QEMU patches).
+> I guess there are some well known rules in there that I don't know about
+> and QEMU isn't preventing people shooting themselves in the foot.
+> 
+> As I'm concerned, drop this patch.
+> If there are platforms out there doing this wrong they'll surface once
+> we get this into more test farms (so linux-next).  If we need this
+> 'fix' we can apply it when we have a problem firmware to point at.
 
-Hi Boris,
+Now dropped.
 
-You've had comments on the previous version of this.
-
-Have they all been addressed?
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
