@@ -1,156 +1,418 @@
-Return-Path: <linux-acpi+bounces-3089-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3090-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 531EB841F1F
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jan 2024 10:16:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341FD841FD0
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jan 2024 10:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09F03B2FDC2
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jan 2024 09:08:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B55991F22342
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jan 2024 09:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652935BAFC;
-	Tue, 30 Jan 2024 09:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="rc9Mc+Vb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E033A605BE;
+	Tue, 30 Jan 2024 09:39:02 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FE056B94
-	for <linux-acpi@vger.kernel.org>; Tue, 30 Jan 2024 09:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934BD605B4;
+	Tue, 30 Jan 2024 09:38:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706605661; cv=none; b=pDLujU0TqueBQ6+wwo3XE9Fefzxeb2WUS1Hg5sQIK1rmqM9C6nggpJsplNn3Dn9orxue3ySXwuKShSwW8SoMi6p/CYkNLK80PZVY6nCuFiKg2kjt7H4Mkvd1oIA8d5L8fM/2kUDcDJq2++vty8kF1GCLuyUnuRgsvAjrLWmHQ1Y=
+	t=1706607542; cv=none; b=ZzhFk77kHSJ+pW8QFjJQf96HofyfF1VlkBtAj9lGncdYudk8Tnsz2MoQ3KY3hzxe8GSvTCtJhVNT/KAC/DDjb2h7ZU47kzil8K6/OR/5wrtCUPGPcBy84y7yUJI6qYHIRPZoDdcn+rau2CEWY1xVApmNOn4iJSB+8PbhK0fjWqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706605661; c=relaxed/simple;
-	bh=44XkCsZCctr6fIPl85tILYlsF3Pmyb1/in21HOr3WR4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lEi7QrHH7M9STj+DWlUzneJcrckCcGbhbG1MQ3oG579Sty2CytcfhcdNJI+MRMcwEDwwW40Kuth9mqPPmKlkKC19j+jaeGlQ0Z7PXLgiQZhfw99X6iUOtrnQbBnwqhk/GTtyTacFudbm1TLZawQr69lPZMBgBGX1gtsSevA5R9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=rc9Mc+Vb; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-33ae51f8111so1806257f8f.2
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jan 2024 01:07:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citrix.com; s=google; t=1706605658; x=1707210458; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FtHLxH7cs3c5SJogzL1Yq2dCgbgujdB2fUN48I8yxUw=;
-        b=rc9Mc+Vb/Az0DcPkzb5uTooYwF5tQFJ49mGYm074w8x33a00dkrSTZKPG60WKZbpfu
-         3cp3ON48ja/mAkwLU9u+xSpZ14ElXpRv6+oU2EAAuPRdGaTrKgPfY0UXyi+2+zr6f17T
-         sN4Gkvi+f0JfMhAub6X1n6DzqA58YAkdN4Meg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706605658; x=1707210458;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FtHLxH7cs3c5SJogzL1Yq2dCgbgujdB2fUN48I8yxUw=;
-        b=sm3pQsCm8oiY0UWAJvo3mbJfkTnWIi2+4tUvAuwUE+12gWuhk4kWqC2L+bfFLO73D9
-         57far680J7w++A3N9pEfVmrGhvCKpYkmsxweHSkRQvtfnyyFbA89GejFS2TTLJXjw4uw
-         OtwzLmnPtaSQ8EaiGvUVvCSTI6Fp7GCS8rW8andu8jhZHYQ44Mol5nHtysRUUTuPEVTs
-         5ukaIawdLSnCq3kj7nnnN5jtlv7STjCKOLuXbpjxSNyPDP/JuGIw5jsiwBZF9pYE7yLA
-         PK2s14xyndmDqSiJHKXywz9t9y6w9gHJMKl8PrylxlIq3To93ve4kH1rq51jbTLekHPH
-         meEw==
-X-Gm-Message-State: AOJu0YzBZp6ZBsqDXsThAkt7R5uMglf3M0Z6y40lMBwezUr3YyItKd0N
-	nwxHlhkSEKDvksn3Ct2DzSGAq0gC0assNGu5znpXdnluCnZ7WXqWTScdEaluZj8=
-X-Google-Smtp-Source: AGHT+IFLxhDmdcX3IN6b2Fn+UG9CGRbGL/awFLcQCQToWkfjaxuNkbTHPqxTVGG3vpy19ocVt6A2Jw==
-X-Received: by 2002:a5d:6da3:0:b0:33a:eda8:336a with SMTP id u3-20020a5d6da3000000b0033aeda8336amr4089276wrs.26.1706605657835;
-        Tue, 30 Jan 2024 01:07:37 -0800 (PST)
-Received: from localhost ([213.195.118.74])
-        by smtp.gmail.com with ESMTPSA id ck14-20020a5d5e8e000000b0033afcf26e11sm586620wrb.29.2024.01.30.01.07.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jan 2024 01:07:37 -0800 (PST)
-Date: Tue, 30 Jan 2024 10:07:36 +0100
-From: Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: "Chen, Jiqian" <Jiqian.Chen@amd.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"Hildebrand, Stewart" <Stewart.Hildebrand@amd.com>,
-	"Huang, Ray" <Ray.Huang@amd.com>,
-	"Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>
-Subject: Re: [RFC KERNEL PATCH v4 3/3] PCI/sysfs: Add gsi sysfs for pci_dev
-Message-ID: <Zbi8WJPEUSMgjuVY@macbook>
-References: <BL1PR12MB5849B51FADC8226764078A98E77A2@BL1PR12MB5849.namprd12.prod.outlook.com>
- <20240129220113.GA475965@bhelgaas>
+	s=arc-20240116; t=1706607542; c=relaxed/simple;
+	bh=6ilFA+aKGdYkOdvN6GF3yMXCTBrOnuRc22DGAYutMJo=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M7c9lesCij3XOm6K1mbOgW6DaGdMBbDty4wjTbZiWY0KGqQ6NaM/4AaUXpgLy4BuvP/v3lBuK+PRAk1YyMsy1CRD9ahinOH9aslOf7UmEgYzhTQZV7A+oeRkRT4MRr9BmlxySUyxUysNtgUGBTDqEOm/ke1C6+kBUkDU5bA/lWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TPKlv6Cx1z6HJXr;
+	Tue, 30 Jan 2024 17:35:39 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 63C091400D7;
+	Tue, 30 Jan 2024 17:38:56 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 30 Jan
+ 2024 09:38:55 +0000
+Date: Tue, 30 Jan 2024 09:38:54 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Julia Lawall <julia.lawall@inria.fr>
+CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>, "Rob
+ Herring" <robh@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+	<linux-kernel@vger.kernel.org>, Nicolas Palix <nicolas.palix@imag.fr>,
+	"Sumera Priyadarsini" <sylphrenadin@gmail.com>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>, Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Subject: Re: [RFC PATCH 0/5] of: automate of_node_put() - new approach to
+ loops.
+Message-ID: <20240130093854.00000acc@Huawei.com>
+In-Reply-To: <alpine.DEB.2.22.394.2401292120260.32795@hadrien>
+References: <20240128160542.178315-1-jic23@kernel.org>
+	<alpine.DEB.2.22.394.2401281903550.3119@hadrien>
+	<20240129114218.00003c34@Huawei.com>
+	<alpine.DEB.2.22.394.2401291455430.8649@hadrien>
+	<20240129195227.3c3adae1@jic23-huawei>
+	<alpine.DEB.2.22.394.2401292120260.32795@hadrien>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240129220113.GA475965@bhelgaas>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Mon, Jan 29, 2024 at 04:01:13PM -0600, Bjorn Helgaas wrote:
-> On Thu, Jan 25, 2024 at 07:17:24AM +0000, Chen, Jiqian wrote:
-> > On 2024/1/24 00:02, Bjorn Helgaas wrote:
-> > > On Tue, Jan 23, 2024 at 10:13:52AM +0000, Chen, Jiqian wrote:
-> > >> On 2024/1/23 07:37, Bjorn Helgaas wrote:
-> > >>> On Fri, Jan 05, 2024 at 02:22:17PM +0800, Jiqian Chen wrote:
-> > >>>> There is a need for some scenarios to use gsi sysfs.
-> > >>>> For example, when xen passthrough a device to dumU, it will
-> > >>>> use gsi to map pirq, but currently userspace can't get gsi
-> > >>>> number.
-> > >>>> So, add gsi sysfs for that and for other potential scenarios.
-> > >> ...
-> > > 
-> > >>> I don't know enough about Xen to know why it needs the GSI in
-> > >>> userspace.  Is this passthrough brand new functionality that can't be
-> > >>> done today because we don't expose the GSI yet?
+On Mon, 29 Jan 2024 21:29:13 +0100 (CET)
+Julia Lawall <julia.lawall@inria.fr> wrote:
+
+> On Mon, 29 Jan 2024, Jonathan Cameron wrote:
 > 
-> I assume this must be new functionality, i.e., this kind of
-> passthrough does not work today, right?
-> 
-> > >> has ACPI support and is responsible for detecting and controlling
-> > >> the hardware, also it performs privileged operations such as the
-> > >> creation of normal (unprivileged) domains DomUs. When we give to a
-> > >> DomU direct access to a device, we need also to route the physical
-> > >> interrupts to the DomU. In order to do so Xen needs to setup and map
-> > >> the interrupts appropriately.
-> > > 
-> > > What kernel interfaces are used for this setup and mapping?
+> > On Mon, 29 Jan 2024 15:02:19 +0100 (CET)
+> > Julia Lawall <julia.lawall@inria.fr> wrote:
+> >  
+> > > On Mon, 29 Jan 2024, Jonathan Cameron wrote:
+> > >  
+> > > > On Sun, 28 Jan 2024 19:06:53 +0100 (CET)
+> > > > Julia Lawall <julia.lawall@inria.fr> wrote:
+> > > >  
+> > > > > On Sun, 28 Jan 2024, Jonathan Cameron wrote:
+> > > > >  
+> > > > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > > >
+> > > > > > +CC includes peopleinterested in property.h equivalents to minimize
+> > > > > > duplication of discussion.  Outcome of this discussion will affect:
+> > > > > > https://lore.kernel.org/all/20240114172009.179893-1-jic23@kernel.org/
+> > > > > > [PATCH 00/13] device property / IIO: Use cleanup.h magic for fwnode_handle_put() handling.
+> > > > > >
+> > > > > > In discussion of previous approach with Rob Herring we talked about various
+> > > > > > ways to avoid a disconnect between the declaration of the __free(device_node)
+> > > > > > and the first non NULL assignment. Making this connection clear is useful for 2
+> > > > > > reasons:
+> > > > > > 1) Avoids out of order cleanup with respect to other cleanup.h usage.
+> > > > > > 2) Avoids disconnect between how cleanup is to be done and how the reference
+> > > > > >    was acquired in the first place.
+> > > > > >
+> > > > > > https://lore.kernel.org/all/20240117194743.GA2888190-robh@kernel.org/
+> > > > > >
+> > > > > > The options we discussed are:
+> > > > > >
+> > > > > > 1) Ignore this issue and merge original set.
+> > > > > >
+> > > > > > 2) Always put the declaration just before the for loop and don't set it NULL.
+> > > > > >
+> > > > > > {
+> > > > > > 	int ret;
+> > > > > >
+> > > > > > 	ret = ... and other fun code.
+> > > > > >
+> > > > > > 	struct device_node *child __free(device_node);
+> > > > > > 	for_each_child_of_node(np, child) {
+> > > > > > 	}
+> > > > > > }
+> > > > > >
+> > > > > > This works but careful review is needed to ensure that this unusual pattern is
+> > > > > > followed.  We don't set it to NULL as the loop will do that anyway if there are
+> > > > > > no child nodes, or the loop finishes without an early break or return.
+> > > > > >
+> > > > > > 3) Introduced the pointer to auto put device_node only within the
+> > > > > >    for loop scope.
+> > > > > >
+> > > > > > +#define for_each_child_of_node_scoped(parent, child) \
+> > > > > > +	for (struct device_node *child __free(device_node) =		\
+> > > > > > +	     of_get_next_child(parent, NULL);				\
+> > > > > > +	     child != NULL;						\
+> > > > > > +	     child = of_get_next_available_child(parent, child))
+> > > > > > +
+> > > > > >
+> > > > > > This series is presenting option 3.  I only implemented this loop out of
+> > > > > > all the similar ones and it is only compile tested.
+> > > > > >
+> > > > > > Disadvantage Rob raised is that it isn't obvious this macro will instantiate
+> > > > > > a struct device_node *child.  I can't see a way around that other than option 2
+> > > > > > above, but all suggestions welcome.  Note that if a conversion leaves an
+> > > > > > 'external' struct device_node *child variable, in many cases the compiler
+> > > > > > will catch that as an unused variable. We don't currently run shaddow
+> > > > > > variable detection in normal kernel builds, but that could also be used
+> > > > > > to catch such bugs.
+> > > > > >
+> > > > > > All comments welcome.  
+> > > > >
+> > > > > It looks promising to get rid of a lot of clunky and error-prone
+> > > > > error-handling code.  
+> > > >
+> > > > Absolutely. I think I spotted 2 bugs whilst just looking for places this pattern
+> > > > doesn't apply.  Will circle back to those once this discussion is resolved.
+> > > > I think I've taken dozen's of fixes for cases where these were missed over the years
+> > > > so hoping this means I'll never see another one!
+> > > >  
+> > > > >
+> > > > > I guess that
+> > > > >
+> > > > > for_each_child_of_node_scoped(parent, struct device_node *, child)
+> > > > >
+> > > > > would seem too verbose?  
+> > > >
+> > > > Intent just to make the allocated internal type clear?  Sure we can do that if
+> > > > it helps with making it clear something is being allocated.
+> > > > I can't think of a way this could be used with anything other than
+> > > > a struct device_node * as the second parameter but I guess it still helps
+> > > > 'hint' at what is going on..  
 > >
-> > For passthrough devices, the setup and mapping of routing physical
-> > interrupts to DomU are done on Xen hypervisor side, hypervisor only
-> > need userspace to provide the GSI info, see Xen code:
-> > xc_physdev_map_pirq require GSI and then will call hypercall to pass
-> > GSI into hypervisor and then hypervisor will do the mapping and
-> > routing, kernel doesn't do the setup and mapping.
+> > To touch back on this, I'm still not sure what your intent was in suggesting
+> > having the explicit struct device_node *  
 > 
-> So we have to expose the GSI to userspace not because userspace itself
-> uses it, but so userspace can turn around and pass it back into the
-> kernel?
+> Well, I wanted struct device_node * child, but then there wouldn't be the
+> macro argument that would give the variable name.  So perhaps even with
+> the comma it would look a little more like a declaration.
+> 
+> It does seem problematic to have eg two freestanding occurrences of child
+> that are not in the same scope, if there is a child in the iterator
+> argument list and a use elsewhere in the function.
+Hi Julia,
 
-No, the point is to pass it back to Xen, which doesn't know the
-mapping between GSIs and PCI devices because it can't execute the ACPI
-AML resource methods that provide such information.
 
-The (Linux) kernel is just a proxy that forwards the hypercalls from
-user-space tools into Xen.
+Would be nice to have shadow variable detection enabled (QEMU did
+that recently and it caught various bugs).
 
-> It seems like it would be better for userspace to pass an identifier
-> of the PCI device itself back into the hypervisor.  Then the interface
-> could be generic and potentially work even on non-ACPI systems where
-> the GSI concept doesn't apply.
+I'm not sure if this helps or not with readability and get the feeling
+that people will perpetually send patches to remove the pointless
+macro argument. I guess a comment on why it is there might avoid that
+well enough though.
 
-We would still need a way to pass the GSI to PCI device relation to
-the hypervisor, and then cache such data in the hypervisor.
 
-I don't think we have any preference of where such information should
-be exposed, but given GSIs are an ACPI concept not specific to Xen
-they should be exposed by a non-Xen specific interface.
+> 
+> >  
+> > > >  
+> > > > >
+> > > > > There are a lot of opportunities for device_node loops, but also for some
+> > > > > more obscure loops over other types.  
+> > > >  
+> > > > > And there are a lot of of_node_puts
+> > > > > that could be eliminated independent of loops.  
+> > > >
+> > > > The non loop cases should be handled via the __free(device_node) as provided
+> > > > by patch 1.  We'll need to keep the declaration local and initial assignment
+> > > > together but that is easy enough to do and similar to the many other cleanup.h
+> > > > usecases that are surfacing.  
+> > >
+> > > I tried the following semantic patch:
+> > >
+> > > @@
+> > > identifier x,f;
+> > > attribute name __free;
+> > > expression list es;
+> > > expression e;
+> > > statement S;
+> > > @@
+> > >
+> > > {
+> > > ... when != S
+> > > struct device_node *x
+> > > + __free(device_node)
+> > > ;
+> > > ... when strict
+> > > x = f(es);
+> > > <... when any
+> > >      when != x = e
+> > > -of_node_put(x);  
+> > > ...>  
+> > > -of_node_put(x);
+> > > }
+> > >  
+> > Nice.  
+> > > It is written defensively in various ways:
+> > >
+> > > when != S means tha tthe device_node declaration has t be at the top of
+> > > the block, perhaps with other declarations before it.
+> > >
+> > > when strict means that all paths must lead from the declaration to the
+> > > initialization.  So there is no need to intiialize the variable to NULL,
+> > > as far as I understand.
+> > >
+> > > when != x = e means that the declared variable is not reinitialized, which
+> > > would require keeping the previous of_node_put.
+> > >
+> > > There is an of_node_put at the end of the block, so the use of __free
+> > > doesn't change the lifetime.
+> > >
+> > > An unfortunate aspect of the last constraint is that some functions may
+> > > declare multiple device_node variables, and only one of the of_not_puts
+> > > can come at the very end of the block.  This can be solved by just running
+> > > the semantic patch again.
+> > >
+> > > An alternative would be to move the initialization up to the declaration,
+> > > but the result was often a bit ugly, due to the various initialization
+> > > function calls having long names and argument lists.  
+> >
+> > You have to do that in order to ensure there is no window for someone to
+> > easily insert code that leaves them uninitialized.
+> >
+> > Linus had some rather specific comments on that being the only right way to
+> > do it.  
+> 
+> OK, the semantic patch can be changed to do that.  It would have to be a
+> bit more complex or a bit more defensive, to be sure that no variables are
+> used between the declaration and the current call site.
+> 
+> >  
+> > >
+> > > The output is below.  I have looked quickly through all of the changes and
+> > > they all look reasonable, but have not tried compiling anything (which I
+> > > guess wouldn't currently work anyway).
+> > >
+> > > julia
+> > >  
+> >
+> > I picked a couple from the end.  They show the sort of things that
+> > would want cleaning up.  The script is great for finding low hanging
+> > fruit but as you've identified there is often some stuff that isn't
+> > easy to automate.
+> >  
+> > > diff -u -p a/drivers/clk/clk-nomadik.c b/drivers/clk/clk-nomadik.c
+> > > --- a/drivers/clk/clk-nomadik.c
+> > > +++ b/drivers/clk/clk-nomadik.c
+> > > @@ -87,7 +87,7 @@ static const struct of_device_id nomadik
+> > >
+> > >  static void __init nomadik_src_init(void)
+> > >  {
+> > > -	struct device_node *np;
+> > > +	struct device_node *np __free(device_node);
+> > >  	u32 val;
+> > >
+> > >  	np = of_find_matching_node(NULL, nomadik_src_match);
+> > > @@ -134,7 +134,6 @@ static void __init nomadik_src_init(void
+> > >  	register_reboot_notifier(&nomadik_clk_reboot_notifier);
+> > >
+> > >  out_put:  
+> > Can avoid the label given nothing to do any more.  
+> 
+> Indeed.
+> 
+> > > -	of_node_put(np);
+> > >  }
+> > >
+> > >  /**
+> > > diff -u -p a/arch/powerpc/platforms/chrp/setup.c b/arch/powerpc/platforms/chrp/setup.c
+> > > --- a/arch/powerpc/platforms/chrp/setup.c
+> > > +++ b/arch/powerpc/platforms/chrp/setup.c
+> > > @@ -99,7 +99,7 @@ static void chrp_show_cpuinfo(struct seq
+> > >  {
+> > >  	int i, sdramen;
+> > >  	unsigned int t;
+> > > -	struct device_node *root;
+> > > +	struct device_node *root __free(device_node);  
+> >
+> > Same as next 2.
+> >  
+> > >  	const char *model = "";
+> > >
+> > >  	root = of_find_node_by_path("/");
+> > > @@ -152,7 +152,6 @@ static void chrp_show_cpuinfo(struct seq  
+> > >  			   gg2_cachetypes[(t>>2) & 3],  
+> > >  			   gg2_cachemodes[t & 3]);
+> > >  	}
+> > > -	of_node_put(root);
+> > >  }
+> > >
+> > >  /*
+> > > @@ -195,7 +194,7 @@ static void __init sio_fixup_irq(const c
+> > >
+> > >  static void __init sio_init(void)
+> > >  {
+> > > -	struct device_node *root;
+> > > +	struct device_node *root __free(device_node);  
+> >
+> > As below needs to be
+> > 	struct device_node *root __free(device_node) = of_find_node_by_path("/");
+> > so there is no space for code to be added inbetween that might return before
+> > this is set.  
+> 
+> OK
+> 
+> > >  	const char *model;
+> > >
+> > >  	root = of_find_node_by_path("/");
+> > > @@ -209,8 +208,6 @@ static void __init sio_init(void)
+> > >  		/* select logical device 1 (KBC/Mouse) */
+> > >  		sio_fixup_irq("mouse", 1, 12, 2);
+> > >  	}
+> > > -
+> > > -	of_node_put(root);
+> > >  }
+> > >
+> > >
+> > > @@ -364,7 +361,7 @@ static void chrp_8259_cascade(struct irq
+> > >   */
+> > >  static void __init chrp_find_openpic(void)
+> > >  {
+> > > -	struct device_node *np, *root;
+> > > +	struct device_node *np __free(device_node), *root;  
+> >
+> > This one looks dangerous because of the chance of other code
+> > getting added between here and the point where it is set.
+> >
+> > Better to move that down so we have
+> >
+> > struct device_node *np __free(device_node) = of_find_node_by_type(NULL, "open-pic");
+> >
+> > Also there is a nicer use in:
+> > https://elixir.bootlin.com/linux/v6.8-rc2/source/arch/powerpc/platforms/chrp/setup.c#L217  
+> 
+> So the point is that we now allow declarations at random places, and not
+> only at the top of a function?
 
-Thanks, Roger.
+yes.
+
+https://lore.kernel.org/all/CAHk-=wgRHiV5VSxtfXA4S6aLUmcQYEuB67u3BJPJPtuESs1JyA@mail.gmail.com/
+And onwards in that thread.
+
+Linus was pretty clear that constructor and destructor should come together
+and gave an example at the end of that email 
+
++	lines = gpio_sim_count_lines(bank);
++	char **line_names __free(kfree) = kcalloc(lines, sizeof(*line_names), GFP_KERNEL);
+
+Reality was that the cleanup.h macros were doing this anyway it just was
+somewhat hidden in guard() and friends.
+
+> 
+> >  
+> > >  	int len, i, j;
+> > >  	int isu_size;
+> > >  	const unsigned int *iranges, *opprop = NULL;
+> > > @@ -438,7 +435,6 @@ static void __init chrp_find_openpic(voi
+> > >  	ppc_md.get_irq = mpic_get_irq;
+> > >   bail:
+> > >  	of_node_put(root);  
+> > With root covered this can return early.  
+> 
+> Yes, this could be addressed by running the rule more than once.
+> 
+> Thanks for the feedback!
+
+Thanks for putting together a script so quickly.
+
+Jonathan
+
+> 
+> julia
+> 
+> >  
+> > > -	of_node_put(np);
+> > >  }
+> > >  
+> >
+> >  
+
 
