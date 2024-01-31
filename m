@@ -1,50 +1,50 @@
-Return-Path: <linux-acpi+bounces-3115-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3116-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0777843D47
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 11:53:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF341843D58
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 11:56:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DA8C29B6F1
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 10:53:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 938D31F2675B
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 10:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BA176902;
-	Wed, 31 Jan 2024 10:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A89569E09;
+	Wed, 31 Jan 2024 10:55:34 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7CC762DC
-	for <linux-acpi@vger.kernel.org>; Wed, 31 Jan 2024 10:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55FB69DE1
+	for <linux-acpi@vger.kernel.org>; Wed, 31 Jan 2024 10:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.110.167.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706698341; cv=none; b=aXUvWGEyp5IKc5CKpG2z8azwNPqJBqaIlI66UVGlDSdcItuZQwrEhMBbb4+kWyzrKXeFmgGidQZOVTN7cFzqckFaSPW/lsQuPUpkcTZv/ZRfWKX6Y3ik+3AyQnKTTitAJLTZU0UH14Kpeky8QcvEMEfOiLCGpGjhKFeSu5w4SgE=
+	t=1706698534; cv=none; b=hsidrDHIFeAk9dGdXRVduTwT5PgTZKnHOKZnt2n67ZVNeyJ5VjBzf+yHboCyJ0uSq9AZqb9ou6aNRXWoqD+aErn3hkx1zCy9+qWt5nMTQR6AZw4vcJIwTMc44NJVKvdFon1hC2xdjuAHIPf05pMCBsKMdzN3OfSE6q3SlYe9OuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706698341; c=relaxed/simple;
-	bh=SuEx50UjR4mvtKc/+qIPahjt8xlsD0d8Sb1tSW2xFKI=;
+	s=arc-20240116; t=1706698534; c=relaxed/simple;
+	bh=aG8P/MkBiA/Gv0nPUKkQbjHE1IRLe9SjeeOS0X57tks=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ZN6/nfQ2hHUztYWlrNI+k/lLBnf9ZRKBFs8CXPIAOuEkKFFb3VW4KWA/Ncr9GwhpONKRSX2ksPXEQwOlrdlNsBokN41B7lP7L4O60kxNyyWzDX3VVFhZgVxoQyA1s9y/abb6UPwIBiYa8mUIkaZ8JMakfzPtgdzCkbWkZxoJOGY=
+	 In-Reply-To:Content-Type; b=SOhk9EG6HUWW0tXK5n50Qg90w+rb8I4sJrgyWuIRxzbDGLl72ICEE6zdsxUvBSSL97x5WEtCA1NgfoOS+EjnDQiVuPN7h3j4XfiPol1khpbqjrusamKNSxYjbAL9+6ASwS9hN8QZyA/Iigo94A13qW697F47COBejuM9Q4atrq0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=203.110.167.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1706698334-1eb14e0c7d326b0001-I98ny2
-Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx2.zhaoxin.com with ESMTP id PwrBgcLIFe8NDdPk (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 31 Jan 2024 18:52:14 +0800 (CST)
+X-ASG-Debug-ID: 1706698529-1eb14e0c7e326a0001-I98ny2
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx2.zhaoxin.com with ESMTP id YFLiBZ57oHCTKoq5 (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 31 Jan 2024 18:55:29 +0800 (CST)
 X-Barracuda-Envelope-From: TonyWWang-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX2.zhaoxin.com
- (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 31 Jan
- 2024 18:52:13 +0800
+ 2024 18:55:29 +0800
 Received: from [10.32.57.248] (10.32.57.248) by zxbjmbx1.zhaoxin.com
  (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 31 Jan
- 2024 18:52:11 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Message-ID: <f635eae6-c411-4791-90b8-c26d0a37ef2d@zhaoxin.com>
+ 2024 18:55:26 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Message-ID: <7f869bc1-9129-48b2-b0fd-483c790a8d1b@zhaoxin.com>
 X-Barracuda-RBL-Trusted-Forwarder: 10.32.57.248
-Date: Wed, 31 Jan 2024 18:52:10 +0800
+Date: Wed, 31 Jan 2024 18:55:25 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -52,11 +52,11 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] ACPI: CPPC: Add get the highest perf register value
- support
+Subject: Re: [PATCH 3/3] ACPI: cpufreq: Add ITMT support when CPPC enabled for
+ Zhaoxin CPUs
 Content-Language: en-US
-X-ASG-Orig-Subj: Re: [PATCH 1/3] ACPI: CPPC: Add get the highest perf register value
- support
+X-ASG-Orig-Subj: Re: [PATCH 3/3] ACPI: cpufreq: Add ITMT support when CPPC enabled for
+ Zhaoxin CPUs
 To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 CC: <rafael@kernel.org>, <lenb@kernel.org>, <robert.moore@intel.com>,
 	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -67,20 +67,20 @@ CC: <rafael@kernel.org>, <lenb@kernel.org>, <robert.moore@intel.com>,
 	<linux-pm@vger.kernel.org>, <CobeChen@zhaoxin.com>, <TimGuo@zhaoxin.com>,
 	<LeoLiu-oc@zhaoxin.com>, <LindaChai@zhaoxin.com>
 References: <20231228075705.26652-1-TonyWWang-oc@zhaoxin.com>
- <20231228075705.26652-2-TonyWWang-oc@zhaoxin.com>
- <20240117220742.GC13777@ranerica-svr.sc.intel.com>
+ <20231228075705.26652-4-TonyWWang-oc@zhaoxin.com>
+ <20240117225158.GD13777@ranerica-svr.sc.intel.com>
 From: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-In-Reply-To: <20240117220742.GC13777@ranerica-svr.sc.intel.com>
+In-Reply-To: <20240117225158.GD13777@ranerica-svr.sc.intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
  zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
-X-Barracuda-Start-Time: 1706698334
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1706698529
 X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
 X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
 X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 1550
+X-Barracuda-Scan-Msg-Size: 3710
 X-Barracuda-BRTS-Status: 1
 X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
 X-Barracuda-Spam-Score: -2.02
@@ -91,46 +91,94 @@ X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.120187
 	---- ---------------------- --------------------------------------------------
 
 
-On 2024/1/18 06:07, Ricardo Neri wrote:
+On 2024/1/18 06:51, Ricardo Neri wrote:
 >
 > [这封邮件来自外部发件人]
 >
-> On Thu, Dec 28, 2023 at 03:57:03PM +0800, Tony W Wang-oc wrote:
->> Add function cppc_get_highest_perf in generic CPPC driver to get the
->> highest perf register value for specified core.
+> On Thu, Dec 28, 2023 at 03:57:05PM +0800, Tony W Wang-oc wrote:
+>> For Zhaoxin CPUs, the cores' highest frequencies may be different, which
+>> means that cores may run at different max frequencies,
+>>
+>> According to ACPI-spec6 chapter 8.4.7, the per-core highest frequency
+>> value can be obtained via cppc.
+>>
+>> The core with the higher frequency have better performance, which can be
+>> called as preferred core. And better performance can be achieved by
+>> making the scheduler to run tasks on these preferred cores.
+>>
+>> The cpufreq driver can use the highest frequency value as the prioriy of
+>> core to make the scheduler try to get better performace. More specifically,
+>> in the acpi-cpufreq driver use cppc_get_highest_perf() to get highest
+>> frequency value of each core, use sched_set_itmt_core_prio() to set
+>> highest frequency value as core priority, and use sched_set_itmt_support()
+>> provided by ITMT to tell the scheduler to favor on the preferred cores.
 >>
 >> Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
 >> ---
->>   drivers/acpi/cppc_acpi.c | 13 +++++++++++++
->>   include/acpi/cppc_acpi.h |  5 +++++
->>   2 files changed, 18 insertions(+)
+>>   drivers/cpufreq/acpi-cpufreq.c | 56 +++++++++++++++++++++++++++++++++-
+>>   1 file changed, 55 insertions(+), 1 deletion(-)
 >>
->> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
->> index 7ff269a78c20..1a77c514d007 100644
->> --- a/drivers/acpi/cppc_acpi.c
->> +++ b/drivers/acpi/cppc_acpi.c
->> @@ -1154,6 +1154,19 @@ int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf)
->>        return cppc_get_perf(cpunum, NOMINAL_PERF, nominal_perf);
+>> diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
+>> index 37f1cdf46d29..f4c1ff9e4bb0 100644
+>> --- a/drivers/cpufreq/acpi-cpufreq.c
+>> +++ b/drivers/cpufreq/acpi-cpufreq.c
+>> @@ -663,8 +663,56 @@ static u64 get_max_boost_ratio(unsigned int cpu)
+>>
+>>        return div_u64(highest_perf << SCHED_CAPACITY_SHIFT, nominal_perf);
 >>   }
->>
->> +/**
->> + * cppc_get_highest_perf - Get the highest performance register value.
->> + * @cpunum: CPU from which to get highest performance.
->> + * @highest_perf: Return address.
->> + *
->> + * Return: 0 for success, -EIO otherwise.
->> + */
->> +int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
+>> +
+>> +/* The work item is needed to avoid CPU hotplug locking issues */
+>> +static void sched_itmt_work_fn(struct work_struct *work)
 >> +{
->> +     return cppc_get_perf(cpunum, HIGHEST_PERF, highest_perf);
+>> +     sched_set_itmt_support();
 >> +}
->> +EXPORT_SYMBOL_GPL(cppc_get_highest_perf);
-> The Intel P-State driver uses cppc_get_perf_caps(). You would not need to
-> export this function.
->
-> Having said that, the Intel P-State driver could also use this new
-> function, IMO. AFAICS, it does not *have* to use cppc_get_perf_caps().
+>> +
+>> +static DECLARE_WORK(sched_itmt_work, sched_itmt_work_fn);
+>> +
+>> +static void set_itmt_prio(int cpu)
+>> +{
+>> +     static bool cppc_highest_perf_diff;
+>> +     static struct cpumask core_prior_mask;
+>> +     u64 highest_perf;
+>> +     static u64 max_highest_perf = 0, min_highest_perf = U64_MAX;
+>> +     int ret;
+>> +
+>> +     ret = cppc_get_highest_perf(cpu, &highest_perf);
+>> +     if (ret)
+>> +             return;
+>> +
+>> +     sched_set_itmt_core_prio(highest_perf, cpu);
+>> +     cpumask_set_cpu(cpu, &core_prior_mask);
+>> +
+>> +     if (max_highest_perf <= min_highest_perf) {
+>> +             if (highest_perf > max_highest_perf)
+>> +                     max_highest_perf = highest_perf;
+>> +
+>> +             if (highest_perf < min_highest_perf)
+>> +                     min_highest_perf = highest_perf;
+>> +
+>> +             if (max_highest_perf > min_highest_perf) {
+>> +                     /*
+>> +                      * This code can be run during CPU online under the
+>> +                      * CPU hotplug locks, so sched_set_itmt_support()
+>> +                      * cannot be called from here.  Queue up a work item
+>> +                      * to invoke it.
+>> +                      */
+>> +                     cppc_highest_perf_diff = true;
+>> +             }
+>> +     }
+>> +
+>> +     if (cppc_highest_perf_diff && cpumask_equal(&core_prior_mask, cpu_online_mask)) {
+>> +             pr_debug("queue a work to set itmt enabled\n");
+>> +             schedule_work(&sched_itmt_work);
+>> +     }
+>> +}
+> sched_itmt_work and this function is a duplicate of what the intel_pstate
+> driver already does. It might be good if consolidate in a single place
+> if you are going to pursue this approach.
 
-Yes, you are right.
+Thanks for your suggestion, will change the patch code in v2.
+
+Sorry for late.
 
 
