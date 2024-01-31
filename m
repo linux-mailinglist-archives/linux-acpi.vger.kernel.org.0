@@ -1,264 +1,519 @@
-Return-Path: <linux-acpi+bounces-3104-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3105-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E798433C8
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 03:26:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CECB8433D9
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 03:27:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE05628CFDA
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 02:26:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41ADB1C2222E
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 02:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430FB383A4;
-	Wed, 31 Jan 2024 02:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955945681;
+	Wed, 31 Jan 2024 02:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="uDukt1+R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YmaqH6Uj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E26938DE4
-	for <linux-acpi@vger.kernel.org>; Wed, 31 Jan 2024 02:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D48B1BC49;
+	Wed, 31 Jan 2024 02:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706667753; cv=none; b=C9NAcvto+YZxtKIbG46dB16bFW+LX51TAnVeTmGHn0p9UV7iQW+zRNCW8uNb06OvpkuGmODydNUfR7dixzjVTkGWyR8fDv7XQTMyO+bA7QBvcdISa3gskpTcu7JBmrQLVvIKxtYMZQXF9WCfnSikOSynsFYveLx2zKUD9UHAn+s=
+	t=1706668006; cv=none; b=Vq/KPzssfZ3ZQmfroSmF1fylHdIsJwornSmrNs7Uxje+6Uwfy2SZhCrOl+na5vT0vbavxcmZjLKJ0JBBcjJgBIIksvuWweCrofdhHvOEh7pOlu5YxBAacU7nkFEHEEBXZOOtmF91qV8o1ycvVAyveClWNAEkTaoubWq3zPe9e1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706667753; c=relaxed/simple;
-	bh=WMMunzjFteyTbTLnQZ8xC8RHSMa58Sh5U1wSK7fafIo=;
-	h=Mime-Version:Subject:From:To:CC:In-Reply-To:Message-ID:Date:
-	 Content-Type:References; b=nz8tumFCdV3afGLKdskypOwuD/1j/vJKK1BkcJVsXBF1Kd07kd1u4iKqTTUKnF0i6JbPmXPMpejGOmY5+XqKg9P6/5VkpmlrrXskAWMSioWZseYliDsB2M4YZdIuWGVqfC1yAJ+gexupfl5rbOh8R/KGfBqpo2KcIJaDxNIeec8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=uDukt1+R; arc=none smtp.client-ip=203.254.224.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas2p4.samsung.com (unknown [182.195.41.56])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20240131022228epoutp01d65bfa8d6eac99269191bfb526e79798~vTUZjS1kV0718007180epoutp019
-	for <linux-acpi@vger.kernel.org>; Wed, 31 Jan 2024 02:22:28 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20240131022228epoutp01d65bfa8d6eac99269191bfb526e79798~vTUZjS1kV0718007180epoutp019
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1706667748;
-	bh=WMMunzjFteyTbTLnQZ8xC8RHSMa58Sh5U1wSK7fafIo=;
-	h=Subject:Reply-To:From:To:CC:In-Reply-To:Date:References:From;
-	b=uDukt1+RFqXTei2cwWCJOFeQXCwUQ8WZ3KKajJQvJ1xiHc6yh6sc1nRliuQBlRFV0
-	 z12/gOquiLQeQwS5TLtvqCVacs/z5CyyVlYKRjuWI0SAnc8l6kKaW7WkuFR+49z9wi
-	 UySt9dWPze4pIX/ApJQBYcSpoUUz1lVHbfCapMck=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-	epcas2p4.samsung.com (KnoxPortal) with ESMTP id
-	20240131022227epcas2p4f0f830a7ac6fc0c814fe6a1395b7239f~vTUZDAbMg1629116291epcas2p4E;
-	Wed, 31 Jan 2024 02:22:27 +0000 (GMT)
-Received: from epsmges2p3.samsung.com (unknown [182.195.36.98]) by
-	epsnrtp4.localdomain (Postfix) with ESMTP id 4TPm5b0qTgz4x9Q8; Wed, 31 Jan
-	2024 02:22:27 +0000 (GMT)
-X-AuditID: b6c32a47-bfdfa70000002726-a0-65b9aee23119
-Received: from epcas2p3.samsung.com ( [182.195.41.55]) by
-	epsmges2p3.samsung.com (Symantec Messaging Gateway) with SMTP id
-	EA.CF.10022.2EEA9B56; Wed, 31 Jan 2024 11:22:26 +0900 (KST)
+	s=arc-20240116; t=1706668006; c=relaxed/simple;
+	bh=bj8cWvQXrmKq86waIXDVsaQ2lA8WS1l0Aluov5ssNAA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Frd6Im94GOyjz9GV3x1r4kMjaXQAUYBhD2km2EOS0PylXBMpZ67v0PnZ+nj+TIeY52ppd7mZk2wQY9ak4Yg3iq0YqM2QiCQBecA9TGPbgeQXQg6/Fafb3nwQBvbmB3pvxurxQSCqpMhThshmpzcO/K6VuKUyh4ykda9ae6Yce1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YmaqH6Uj; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706668005; x=1738204005;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=bj8cWvQXrmKq86waIXDVsaQ2lA8WS1l0Aluov5ssNAA=;
+  b=YmaqH6UjpCrqQ61qRpOzj68JylYj1TntH6afJ2vWn6D4R4cBTrGRu49b
+   OQRe8VjASJ8DufVMasOF99E+vnKe7vDJ2HbjiNU8mZX0eGAmfwHszBaQ6
+   Gk5KvAJa7N8UNDT4CaMSKCAaBW1odUbi6Nbqj/rWkSN++90Ri3A/TYEWE
+   3JTZOH5sdE1Wq2mpWfaQD+XY9a8nirZvMg4bi+aKKTz6+GDabkB7OBm1C
+   mEpmvj2TLRvMR3X44DTN+1KdT57bLj+c0J1M0XSMOBkpQKlMBnigcfJ+A
+   eoky30elEkoLpkOLJQP0N1ZLPpsrwKMn9GLIzjal6miIFCineeUjCEeKx
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="3337293"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="3337293"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 18:26:44 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="1119468425"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="1119468425"
+Received: from pangchin-mobl3.amr.corp.intel.com (HELO [10.209.54.246]) ([10.209.54.246])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 18:26:41 -0800
+Message-ID: <6ecb7bbf-0eba-4cea-b9b8-05fd092b7d01@linux.intel.com>
+Date: Tue, 30 Jan 2024 18:26:39 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Subject: RE: [PATCH v4 08/11] cxl/region: Calculate performance data for a
- region
-Reply-To: wj28.lee@samsung.com
-Sender: Wonjae Lee <wj28.lee@samsung.com>
-From: Wonjae Lee <wj28.lee@samsung.com>
-To: Dave Jiang <dave.jiang@intel.com>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>
-CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, "ira.weiny@intel.com"
-	<ira.weiny@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"brice.goglin@gmail.com" <brice.goglin@gmail.com>, "nifan.cxl@gmail.com"
-	<nifan.cxl@gmail.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, KyungSan Kim
-	<ks0204.kim@samsung.com>, Hojin Nam <hj96.nam@samsung.com>
-X-Priority: 3
-X-Content-Kind-Code: NORMAL
-In-Reply-To: <170568503239.1008395.2633682569497108646.stgit@djiang5-mobl3>
-X-CPGS-Detection: blocking_info_exchange
-X-Drm-Type: N,general
-X-Msg-Generator: Mail
-X-Msg-Type: PERSONAL
-X-Reply-Demand: N
-Message-ID: <20240131022226epcms2p47d09167da93641ea88461563c494335a@epcms2p4>
-Date: Wed, 31 Jan 2024 11:22:26 +0900
-X-CMS-MailID: 20240131022226epcms2p47d09167da93641ea88461563c494335a
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrHJsWRmVeSWpSXmKPExsWy7bCmue6jdTtTDX602FjcfXyBzaLzywVW
-	i+lTLzBanLjZyGax+uYaRovmxevZLD68+cdisf/pcxaLVQuvsVkc3cNhsXxfP6PF+VmnWCz+
-	btvLaDH3y1Rmi1sTjjE58HvsnHWX3aPlyFtWj8V7XjJ5bFrVyeaxf+4ado++LasYPabOrvf4
-	vEkugCMq2yYjNTEltUghNS85PyUzL91WyTs43jne1MzAUNfQ0sJcSSEvMTfVVsnFJ0DXLTMH
-	6HYlhbLEnFKgUEBicbGSvp1NUX5pSapCRn5xia1SakFKToF5gV5xYm5xaV66Xl5qiZWhgYGR
-	KVBhQnbGic4l7AVfAituff/N1MC43q+LkZNDQsBE4uL0ZUxdjFwcQgI7GCV+3rjD3MXIwcEr
-	ICjxd4cwSI2wQLDE49ZWFhBbSEBO4u7tU0wQcU2JN9NWgcXZBNQlfnSeBJsjIjCXUeLTm3Xs
-	IA6zwDkWiQOftjFBbOOVmNH+lAXClpbYvnwrI4jNKeAtMX3KFai4hsSPZb3MELaoxM3Vb9lh
-	7PfH5jNC2CISrffOQtUISjz4uRsqLiXx9cRfsMUSAs2MEquP9bNCOA2MEh0zD0Nt0JdovP6e
-	DcTmFfCVuL1/O9gGFgFViaaV3VCXukjcWvEOzGYW0JZYtvA1OFiYgX5ev0sfxJQQUJY4cosF
-	ooJPouPwX3aYH3fMewI1RUliStsRqNskJBoat7JB2B4Sr+fOYZ3AqDgLEdazkOyahbBrASPz
-	Kkax1ILi3PTUYqMCY3j0JufnbmIEJ2Qt9x2MM95+0DvEyMTBeIhRgoNZSYR3pdzOVCHelMTK
-	qtSi/Pii0pzU4kOMpkBfTmSWEk3OB+aEvJJ4QxNLAxMzM0NzI1MDcyVx3nutc1OEBNITS1Kz
-	U1MLUotg+pg4OKUamObK/zp8sd985YItx05rndYWc3oQbfnz8/xr39TvLPvwyuIsb85vnneF
-	J3f8ar5zbW7L4VedYnObqvhFl6jf37+R9YzySeGpM9MfSZr/fFrsYH1UxPnXouPyZQE/Zx72
-	q3iQusht65yC6udq17ez3rBfHOxYtGBlcTa3cerFsIXRwjsWbEoufKLaOWX95nTfx8V5Keyt
-	3wSq9p6beVLjoKAY25dP1tsCv2oV3mLU2LWe3f/J+xjRZMbr8wUV4lq8Tx77v+xjBfeXoP7d
-	K7Zf/FAsGOzvVWYyy6mvNcI1a3L9pdmMMR82pKRGb7d1DbgllHQ/vsRc1zvX1WatQupbFrk4
-	qcdqprcrvhwNjNJy0lFiKc5INNRiLipOBABTf978UQQAAA==
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240119172408epcas2p2e461bf193d43347c70c18ad7681774a8
-References: <170568503239.1008395.2633682569497108646.stgit@djiang5-mobl3>
-	<170568485801.1008395.12244787918793980621.stgit@djiang5-mobl3>
-	<CGME20240119172408epcas2p2e461bf193d43347c70c18ad7681774a8@epcms2p4>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] PCI/AER: Store more information in aer_err_info
+Content-Language: en-US
+To: "Wang, Qingshun" <qingshun.wang@linux.intel.com>,
+ linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-acpi@vger.kernel.org
+Cc: chao.p.peng@linux.intel.com, erwin.tsaur@intel.com,
+ feiting.wanyan@intel.com, qingshun.wang@intel.com,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>,
+ Borislav Petkov <bp@alien8.de>, Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Bjorn Helgaas <helgaas@kernel.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Shiju Jose <shiju.jose@huawei.com>, Adam Preble <adam.c.preble@intel.com>,
+ Li Yang <leoyang.li@nxp.com>, Lukas Wunner <lukas@wunner.de>,
+ Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ Robert Richter <rrichter@amd.com>, linux-kernel@vger.kernel.org,
+ linux-cxl@vger.kernel.org, linux-edac@vger.kernel.org
+References: <20240125062802.50819-1-qingshun.wang@linux.intel.com>
+ <20240125062802.50819-2-qingshun.wang@linux.intel.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20240125062802.50819-2-qingshun.wang@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jan 19, 2024 at 10:23:52AM -0700, Dave Jiang wrote:
-> Calculate and store the performance data for a CXL region. Find the worst
-> read and write latency for all the included ranges from each of the devic=
-es
-> that attributes to the region and designate that as the latency data. Sum
-> all the read and write bandwidth data for each of the device region and
-> that is the total bandwidth for the region.
+
+On 1/24/24 10:27 PM, Wang, Qingshun wrote:
+> When Advisory Non-Fatal errors are raised, both correctable and
+
+Maybe you can start with same info about what Advisory Non-FataL
+errors are and the specification reference. I know that you included
+it in cover letter. But it is good to include it in commit log.
+
+> uncorrectable error statuses will be set. The current kernel code cannot
+> store both statuses at the same time, thus failing to handle ANFE properly.
+> In addition, to avoid clearing UEs that are not ANFE by accident, UE
+
+Please add some details about the impact of not clearing them.
+> severity and Device Status also need to be recorded: any fatal UE cannot
+> be ANFE, and if Fatal/Non-Fatal Error Detected is set in Device Status, do
+> not take any assumption and let UE handler to clear UE status.
 >
-> The perf list is expected to be constructed before the endpoint decoders
-> are registered and thus there should be no early reading of the entries
-> from the region assemble action. The calling of the region qos calculate
-> function is under the protection of cxl_dpa_rwsem and will ensure that
-> all DPA associated work has completed.
+> Store status and mask of both correctable and uncorrectable errors in
+> aer_err_info. The severity of UEs and the values of the Device Status
+> register are also recorded, which will be used to determine UEs that should
+> be handled by the ANFE handler. Refactor the rest of the code to use
+> cor/uncor_status and cor/uncor_mask fields instead of status and mask
+> fields.
 >
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron=40huawei.com>
-> Signed-off-by: Dave Jiang <dave.jiang=40intel.com>
+> Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
 > ---
-> v4:
-> - Calculate access classes 0 and 1 by retrieving host bridge coords
-> - Add lockdep assert for cxl_dpa_rwsem (Dan)
-> - Clarify that HMAT code is HMEM_REPORTING code. (Dan)
-> ---
->=C2=A0=20drivers/cxl/core/cdat.c=C2=A0=20=C2=A0=2074=20+++++++++++++++++++=
-++++++++++++++++++++++++++=0D=0A>=C2=A0=20drivers/cxl/core/region.c=20=C2=
-=A0=20=C2=A0=202=20+=0D=0A>=C2=A0=20drivers/cxl/cxl.h=C2=A0=20=C2=A0=20=C2=
-=A0=20=C2=A0=20=C2=A0=20=C2=A0=204=20++=0D=0A>=C2=A0=203=20files=20changed,=
-=2080=20insertions(+)=0D=0A>=0D=0A>=20diff=20--git=20a/drivers/cxl/core/cda=
-t.c=20b/drivers/cxl/core/cdat.c=0D=0A>=20index=206e3998723aaa..7acb5837afad=
-=20100644=0D=0A>=20---=20a/drivers/cxl/core/cdat.c=0D=0A>=20+++=20b/drivers=
-/cxl/core/cdat.c=0D=0A>=20=40=40=20-8,6=20+8,7=20=40=40=0D=0A>=C2=A0=20=23i=
-nclude=20=22cxlpci.h=22=0D=0A>=C2=A0=20=23include=20=22cxlmem.h=22=0D=0A>=
-=C2=A0=20=23include=20=22cxl.h=22=0D=0A>=20+=23include=20=22core.h=22=0D=0A=
->=0D=0A>=C2=A0=20struct=20dsmas_entry=20=7B=0D=0A>=C2=A0=20struct=20range=
-=20dpa_range;=0D=0A>=20=40=40=20-546,3=20+547,76=20=40=40=20void=20cxl_coor=
-dinates_combine(struct=20access_coordinate=20*out,=0D=0A>=C2=A0=20EXPORT_SY=
-MBOL_NS_GPL(cxl_coordinates_combine,=20CXL);=0D=0A>=0D=0A>=C2=A0=20MODULE_I=
-MPORT_NS(CXL);=0D=0A>=20+=0D=0A>=20+void=20cxl_region_perf_data_calculate(s=
-truct=20cxl_region=20*cxlr,=0D=0A>=20+=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=
-=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20struct=20cxl_endpoint_decoder=20*cxled)=
-=0D=0A>=20+=7B=0D=0A>=20+=20struct=20cxl_memdev=20*cxlmd=20=3D=20cxled_to_m=
-emdev(cxled);=0D=0A>=20+=20struct=20cxl_port=20*port=20=3D=20cxlmd->endpoin=
-t;=0D=0A>=20+=20struct=20cxl_dev_state=20*cxlds=20=3D=20cxlmd->cxlds;=0D=0A=
->=20+=20struct=20cxl_memdev_state=20*mds=20=3D=20to_cxl_memdev_state(cxlds)=
-;=0D=0A>=20+=20struct=20access_coordinate=20hb_coord=5BACCESS_COORDINATE_MA=
-X=5D;=0D=0A>=20+=20struct=20access_coordinate=20coord;=0D=0A>=20+=20struct=
-=20range=20dpa=20=3D=20=7B=0D=0A>=20+=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20.s=
-tart=20=3D=20cxled->dpa_res->start,=0D=0A>=20+=C2=A0=20=C2=A0=20=C2=A0=20=
-=C2=A0=20.end=20=3D=20cxled->dpa_res->end,=0D=0A>=20+=20=7D;=0D=0A>=20+=20s=
-truct=20list_head=20*perf_list;=0D=0A>=20+=20struct=20cxl_dpa_perf=20*perf;=
-=0D=0A>=20+=20bool=20found=20=3D=20false;=0D=0A>=20+=20int=20rc;=0D=0A>=20+=
-=0D=0A>=20+=20switch=20(cxlr->mode)=20=7B=0D=0A>=20+=20case=20CXL_DECODER_R=
-AM:=0D=0A>=20+=C2=A0=20=C2=A0=20perf_list=20=3D=20&mds->ram_perf_list;=0D=
-=0A>=20+=C2=A0=20=C2=A0=20break;=0D=0A>=20+=20case=20CXL_DECODER_PMEM:=0D=
-=0A>=20+=C2=A0=20=C2=A0=20perf_list=20=3D=20&mds->pmem_perf_list;=0D=0A>=20=
-+=C2=A0=20=C2=A0=20break;=0D=0A>=20+=20default:=0D=0A>=20+=C2=A0=20=C2=A0=
-=20return;=0D=0A>=20+=20=7D=0D=0A>=20+=0D=0A>=20+=20lockdep_assert_held(&cx=
-l_dpa_rwsem);=0D=0A>=20+=0D=0A>=20+=20list_for_each_entry(perf,=20perf_list=
-,=20list)=20=7B=0D=0A>=20+=C2=A0=20=C2=A0=20if=20(range_contains(&perf->dpa=
-_range,=20&dpa))=20=7B=0D=0A>=20+=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20found=
-=20=3D=20true;=0D=0A>=20+=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20break;=0D=0A>=
-=20+=C2=A0=20=C2=A0=20=7D=0D=0A>=20+=20=7D=0D=0A>=20+=0D=0A>=20+=20if=20(=
-=21found)=0D=0A>=20+=C2=A0=20=C2=A0=20return;=0D=0A>=20+=0D=0A>=20+=20rc=20=
-=3D=20cxl_hb_get_perf_coordinates(port,=20hb_coord);=0D=0A>=20+=20if=20(rc)=
-=C2=A0=20=7B=0D=0A>=20+=C2=A0=20=C2=A0=20dev_dbg(&port->dev,=20=22Failed=20=
-to=20retrieve=20hb=20perf=20coordinates.=5Cn=22);=0D=0A>=20+=C2=A0=20=C2=A0=
-=20return;=0D=0A>=20+=20=7D=0D=0A>=20+=0D=0A>=20+=20for=20(int=20i=20=3D=20=
-0;=20i=20<=20ACCESS_COORDINATE_MAX;=20i++)=20=7B=0D=0A>=20+=C2=A0=20=C2=A0=
-=20/*=20Pickup=20the=20host=20bridge=20coords=20*/=0D=0A>=20+=C2=A0=20=C2=
-=A0=20cxl_coordinates_combine(&coord,=20&hb_coord=5Bi=5D,=20&perf->coord);=
-=0D=0A>=20+=0D=0A>=20+=C2=A0=20=C2=A0=20/*=20Get=20total=20bandwidth=20and=
-=20the=20worst=20latency=20for=20the=20cxl=20region=20*/=0D=0A>=20+=C2=A0=
-=20=C2=A0=20cxlr->coord=5Bi=5D.read_latency=20=3D=20max_t(unsigned=20int,=
-=0D=0A>=20+=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=
-=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20cxlr->coord=5Bi=5D.read_latenc=
-y,=0D=0A>=20+=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=
-=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20coord.read_latency);=0D=0A>=
-=20+=C2=A0=20=C2=A0=20cxlr->coord=5Bi=5D.write_latency=20=3D=20max_t(unsign=
-ed=20int,=0D=0A>=20+=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=
-=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20cxlr->coord=
-=5Bi=5D.write_latency,=0D=0A>=20+=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=
-=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=
-coord.write_latency);=0D=0A>=20+=C2=A0=20=C2=A0=20cxlr->coord=5Bi=5D.read_b=
-andwidth=20+=3D=20coord.read_bandwidth;=0D=0A>=20+=C2=A0=20=C2=A0=20cxlr->c=
-oord=5Bi=5D.write_bandwidth=20+=3D=20coord.write_bandwidth;=0D=0A>=20+=0D=
-=0A>=20+=C2=A0=20=C2=A0=20/*=0D=0A>=20+=C2=A0=20=C2=A0=20=C2=A0=20*=20Conve=
-rt=20latency=20to=20nanosec=20from=20picosec=20to=20be=20consistent=0D=0A>=
-=20+=C2=A0=20=C2=A0=20=C2=A0=20*=20with=20the=20resulting=20latency=20coord=
-inates=20computed=20by=20the=0D=0A>=20+=C2=A0=20=C2=A0=20=C2=A0=20*=20HMAT_=
-REPORTING=20code.=0D=0A>=20+=C2=A0=20=C2=A0=20=C2=A0=20*/=0D=0A>=20+=C2=A0=
-=20=C2=A0=20cxlr->coord=5Bi=5D.read_latency=20=3D=0D=0A>=20+=C2=A0=20=C2=A0=
-=20=C2=A0=20=C2=A0=20DIV_ROUND_UP(cxlr->coord=5Bi=5D.read_latency,=201000);=
-=0D=0A>=20+=C2=A0=20=C2=A0=20cxlr->coord=5Bi=5D.write_latency=20=3D=0D=0A>=
-=20+=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20DIV_ROUND_UP(cxlr->coord=5Bi=5D.wri=
-te_latency,=201000);=0D=0A=0D=0AHello,=0D=0A=0D=0AI=20ran=20into=20a=20bit=
-=20of=20confusion=20and=20have=20a=20question=20while=20validating=20CDAT=
-=0D=0Abehaviour=20with=20physical=20CXL=20devices.=20(I'm=20not=20sure=20if=
-=20this=20is=20the=20right=0D=0Athread=20to=20ask=20this=20question,=20sorr=
-y=20if=20it=20isn't.)=0D=0A=0D=0AIIUC,=20the=20raw=20data=20of=20latency=20=
-is=20in=20picosec,=20but=20the=20comments=20on=20the=0D=0Astruct=20access_c=
-oordinate=20say=20that=20the=20latency=20units=20are=20in=20nanosec:=0D=0A=
-=20*=20=40read_latency:=20=20=20Read=20latency=20in=20nanoseconds=0D=0A=20*=
-=20=40write_latency:=20=20Write=20latency=20in=20nanoseconds=0D=0A=0D=0AThi=
-s=20was=20a=20bit=20confusing=20at=20first,=20as=20the=20raw=20data=20of=20=
-latency=20are=20in=0D=0Aps,=20and=20the=20structure=20that=20stores=20the=
-=20latency=20expects=20units=20of=20ns.=0D=0A=0D=0AI=20saw=20that=20you=20h=
-ave=20already=20had=20a=20discussion=20with=20Brice=20about=20the=0D=0Apico=
-/nanosecond=20unit=20conversion.=20My=20question=20is,=20are=20there=20any=
-=20plans=20to=0D=0Astore=20latency=20number=20of=20cxl=20port=20in=20nanose=
-conds=20or=20change=20the=20comments=0D=0Aof=20coords=20structure?=0D=0A=0D=
-=0AThanks,=0D=0AWonjae=0D=0A=0D=0A>=20+=20=7D=0D=0A>=20+=7D=0D=0A>=20diff=
-=20--git=20a/drivers/cxl/core/region.c=20b/drivers/cxl/core/region.c=0D=0A>=
-=20index=2057a5901d5a60..7f19b533c5ae=20100644=0D=0A>=20---=20a/drivers/cxl=
-/core/region.c=0D=0A>=20+++=20b/drivers/cxl/core/region.c=0D=0A>=20=40=40=
-=20-1722,6=20+1722,8=20=40=40=20static=20int=20cxl_region_attach(struct=20c=
-xl_region=20*cxlr,=0D=0A>=C2=A0=20=C2=A0=20=C2=A0=20return=20-EINVAL;=0D=0A=
->=C2=A0=20=7D=0D=0A>=0D=0A>=20+=20cxl_region_perf_data_calculate(cxlr,=20cx=
-led);=0D=0A>=20+=0D=0A>=C2=A0=20if=20(test_bit(CXL_REGION_F_AUTO,=20&cxlr->=
-flags))=20=7B=0D=0A>=C2=A0=20=C2=A0=20=C2=A0=20int=20i;=0D=0A>=0D=0A>=20dif=
-f=20--git=20a/drivers/cxl/cxl.h=20b/drivers/cxl/cxl.h=0D=0A>=20index=2080e6=
-bd294e18..f6637fa33113=20100644=0D=0A>=20---=20a/drivers/cxl/cxl.h=0D=0A>=
-=20+++=20b/drivers/cxl/cxl.h=0D=0A>=20=40=40=20-519,6=20+519,7=20=40=40=20s=
-truct=20cxl_region_params=20=7B=0D=0A>=C2=A0=20*=20=40cxlr_pmem:=20(for=20p=
-mem=20regions)=20cached=20copy=20of=20the=20nvdimm=20bridge=0D=0A>=C2=A0=20=
-*=20=40flags:=20Region=20state=20flags=0D=0A>=C2=A0=20*=20=40params:=20acti=
-ve=20+=20config=20params=20for=20the=20region=0D=0A>=20+=20*=20=40coord:=20=
-QoS=20access=20coordinates=20for=20the=20region=0D=0A>=C2=A0=20*/=0D=0A>=C2=
-=A0=20struct=20cxl_region=20=7B=0D=0A>=C2=A0=20struct=20device=20dev;=0D=0A=
->=20=40=40=20-529,6=20+530,7=20=40=40=20struct=20cxl_region=20=7B=0D=0A>=C2=
-=A0=20struct=20cxl_pmem_region=20*cxlr_pmem;=0D=0A>=C2=A0=20unsigned=20long=
-=20flags;=0D=0A>=C2=A0=20struct=20cxl_region_params=20params;=0D=0A>=20+=20=
-struct=20access_coordinate=20coord=5BACCESS_COORDINATE_MAX=5D;=0D=0A>=C2=A0=
-=20=7D;=0D=0A>=0D=0A>=C2=A0=20struct=20cxl_nvdimm_bridge=20=7B=0D=0A>=20=40=
-=40=20-880,6=20+882,8=20=40=40=20int=20cxl_endpoint_get_perf_coordinates(st=
-ruct=20cxl_port=20*port,=0D=0A>=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=
-=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20struct=20access_coordinate=
-=20*coord);=0D=0A>=C2=A0=20int=20cxl_hb_get_perf_coordinates(struct=20cxl_p=
-ort=20*port,=0D=0A>=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=
-=C2=A0=20struct=20access_coordinate=20*coord);=0D=0A>=20+void=20cxl_region_=
-perf_data_calculate(struct=20cxl_region=20*cxlr,=0D=0A>=20+=C2=A0=20=C2=A0=
-=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20struct=20cxl_endpo=
-int_decoder=20*cxled);=0D=0A>=0D=0A>=C2=A0=20void=20cxl_coordinates_combine=
-(struct=20access_coordinate=20*out,=0D=0A>=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=
-=20=C2=A0=20=C2=A0=20=C2=A0=20=C2=A0=20struct=20access_coordinate=20*c1,=0D=
-=0A>=0D=0A>=0D=0A>
+>  drivers/acpi/apei/ghes.c | 10 ++++-
+>  drivers/cxl/core/pci.c   |  6 ++-
+>  drivers/pci/pci.h        |  8 +++-
+>  drivers/pci/pcie/aer.c   | 93 ++++++++++++++++++++++++++--------------
+>  include/linux/aer.h      |  4 +-
+>  include/linux/pci.h      | 27 ++++++++++++
+>  6 files changed, 111 insertions(+), 37 deletions(-)
+>
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 7b7c605166e0..6034039d5cff 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -593,6 +593,8 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
+>  
+>  	if (pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID &&
+>  	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
+> +		struct pcie_capability_regs *pcie_caps;
+> +		u16 device_status = 0;
+>  		unsigned int devfn;
+>  		int aer_severity;
+>  		u8 *aer_info;
+> @@ -615,11 +617,17 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
+>  			return;
+>  		memcpy(aer_info, pcie_err->aer_info, sizeof(struct aer_capability_regs));
+>  
+> +		if (pcie_err->validation_bits & CPER_PCIE_VALID_CAPABILITY) {
+> +			pcie_caps = (struct pcie_capability_regs *)pcie_err->capability;
+> +			device_status = pcie_caps->device_status;
+> +		}
+> +
+>  		aer_recover_queue(pcie_err->device_id.segment,
+>  				  pcie_err->device_id.bus,
+>  				  devfn, aer_severity,
+>  				  (struct aer_capability_regs *)
+> -				  aer_info);
+> +				  aer_info,
+> +				  device_status);
+>  	}
+>  #endif
+>  }
+> diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
+> index 6c9c8d92f8f7..9111a4415a63 100644
+> --- a/drivers/cxl/core/pci.c
+> +++ b/drivers/cxl/core/pci.c
+> @@ -903,6 +903,7 @@ static void cxl_handle_rdport_errors(struct cxl_dev_state *cxlds)
+>  	struct aer_capability_regs aer_regs;
+>  	struct cxl_dport *dport;
+>  	struct cxl_port *port;
+> +	u16 device_status;
+>  	int severity;
+>  
+>  	port = cxl_pci_find_port(pdev, &dport);
+> @@ -917,7 +918,10 @@ static void cxl_handle_rdport_errors(struct cxl_dev_state *cxlds)
+>  	if (!cxl_rch_get_aer_severity(&aer_regs, &severity))
+>  		return;
+>  
+> -	pci_print_aer(pdev, severity, &aer_regs);
+> +	if (pcie_capability_read_word(pdev, PCI_EXP_DEVSTA, &device_status))
+> +		return;
+> +
+> +	pci_print_aer(pdev, severity, &aer_regs, device_status);
+>  
+>  	if (severity == AER_CORRECTABLE)
+>  		cxl_handle_rdport_cor_ras(cxlds, dport);
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index 2336a8d1edab..f881a1b42f14 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -407,8 +407,12 @@ struct aer_err_info {
+>  	unsigned int __pad2:2;
+>  	unsigned int tlp_header_valid:1;
+>  
+> -	unsigned int status;		/* COR/UNCOR Error Status */
+> -	unsigned int mask;		/* COR/UNCOR Error Mask */
+> +	u32 cor_mask;		/* COR Error Mask */
+> +	u32 cor_status;		/* COR Error Status */
+> +	u32 uncor_mask;		/* UNCOR Error Mask */
+> +	u32 uncor_status;	/* UNCOR Error Status */
+> +	u32 uncor_severity;	/* UNCOR Error Severity */
+> +	u16 device_status;
+>  	struct aer_header_log_regs tlp;	/* TLP Header */
+>  };
+>  
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 05fc30bb5134..6583dcf50977 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -615,7 +615,7 @@ const struct attribute_group aer_stats_attr_group = {
+>  static void pci_dev_aer_stats_incr(struct pci_dev *pdev,
+>  				   struct aer_err_info *info)
+>  {
+> -	unsigned long status = info->status & ~info->mask;
+> +	unsigned long status;
+>  	int i, max = -1;
+>  	u64 *counter = NULL;
+>  	struct aer_stats *aer_stats = pdev->aer_stats;
+> @@ -625,16 +625,19 @@ static void pci_dev_aer_stats_incr(struct pci_dev *pdev,
+>  
+>  	switch (info->severity) {
+>  	case AER_CORRECTABLE:
+> +		status = info->cor_status & ~info->cor_mask;
+>  		aer_stats->dev_total_cor_errs++;
+>  		counter = &aer_stats->dev_cor_errs[0];
+>  		max = AER_MAX_TYPEOF_COR_ERRS;
+>  		break;
+>  	case AER_NONFATAL:
+> +		status = info->uncor_status & ~info->uncor_mask;
+>  		aer_stats->dev_total_nonfatal_errs++;
+>  		counter = &aer_stats->dev_nonfatal_errs[0];
+>  		max = AER_MAX_TYPEOF_UNCOR_ERRS;
+>  		break;
+>  	case AER_FATAL:
+> +		status = info->uncor_status & ~info->uncor_mask;
+>  		aer_stats->dev_total_fatal_errs++;
+>  		counter = &aer_stats->dev_fatal_errs[0];
+>  		max = AER_MAX_TYPEOF_UNCOR_ERRS;
+> @@ -674,15 +677,17 @@ static void __print_tlp_header(struct pci_dev *dev,
+>  static void __aer_print_error(struct pci_dev *dev,
+>  			      struct aer_err_info *info)
+>  {
+> +	unsigned long status;
+>  	const char **strings;
+> -	unsigned long status = info->status & ~info->mask;
+>  	const char *level, *errmsg;
+>  	int i;
+>  
+>  	if (info->severity == AER_CORRECTABLE) {
+> +		status = info->cor_status & ~info->cor_mask;
+>  		strings = aer_correctable_error_string;
+>  		level = KERN_WARNING;
+>  	} else {
+> +		status = info->uncor_status & ~info->uncor_mask;
+>  		strings = aer_uncorrectable_error_string;
+>  		level = KERN_ERR;
+>  	}
+> @@ -700,18 +705,27 @@ static void __aer_print_error(struct pci_dev *dev,
+>  
+>  void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+>  {
+> +	u32 status, mask;
+>  	int layer, agent;
+>  	int id = pci_dev_id(dev);
+>  	const char *level;
+>  
+> -	if (!info->status) {
+> +	if (info->severity == AER_CORRECTABLE) {
+> +		status = info->cor_status;
+> +		mask = info->cor_mask;
+> +	} else {
+> +		status = info->uncor_status;
+> +		mask = info->uncor_mask;
+> +	}
+> +
+> +	if (!status) {
+>  		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent ID)\n",
+>  			aer_error_severity_string[info->severity]);
+>  		goto out;
+>  	}
+>  
+> -	layer = AER_GET_LAYER_ERROR(info->severity, info->status);
+> -	agent = AER_GET_AGENT(info->severity, info->status);
+> +	layer = AER_GET_LAYER_ERROR(info->severity, status);
+> +	agent = AER_GET_AGENT(info->severity, status);
+>  
+>  	level = (info->severity == AER_CORRECTABLE) ? KERN_WARNING : KERN_ERR;
+>  
+> @@ -720,7 +734,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+>  		   aer_error_layer[layer], aer_agent_string[agent]);
+>  
+>  	pci_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+> -		   dev->vendor, dev->device, info->status, info->mask);
+> +		   dev->vendor, dev->device, status, mask);
+>  
+>  	__aer_print_error(dev, info);
+>  
+> @@ -731,7 +745,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+>  	if (info->id && info->error_dev_num > 1 && info->id == id)
+>  		pci_err(dev, "  Error of this Agent is reported first\n");
+>  
+> -	trace_aer_event(dev_name(&dev->dev), (info->status & ~info->mask),
+> +	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
+>  			info->severity, info->tlp_header_valid, &info->tlp);
+>  }
+>  
+> @@ -763,7 +777,7 @@ EXPORT_SYMBOL_GPL(cper_severity_to_aer);
+>  #endif
+>  
+>  void pci_print_aer(struct pci_dev *dev, int aer_severity,
+> -		   struct aer_capability_regs *aer)
+> +		   struct aer_capability_regs *aer, u16 device_status)
+>  {
+>  	int layer, agent, tlp_header_valid = 0;
+>  	u32 status, mask;
+> @@ -783,8 +797,12 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+>  
+>  	memset(&info, 0, sizeof(info));
+>  	info.severity = aer_severity;
+> -	info.status = status;
+> -	info.mask = mask;
+> +	info.cor_status = aer->cor_status;
+> +	info.cor_mask = aer->cor_mask;
+> +	info.uncor_status = aer->uncor_status;
+> +	info.uncor_severity = aer->uncor_severity;
+> +	info.uncor_mask = aer->uncor_mask;
+> +	info.device_status = device_status;
+>  	info.first_error = PCI_ERR_CAP_FEP(aer->cap_control);
+>  
+>  	pci_err(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n", status, mask);
+> @@ -996,9 +1014,9 @@ static bool cxl_error_is_native(struct pci_dev *dev)
+>  static bool is_internal_error(struct aer_err_info *info)
+>  {
+>  	if (info->severity == AER_CORRECTABLE)
+> -		return info->status & PCI_ERR_COR_INTERNAL;
+> +		return info->cor_status & PCI_ERR_COR_INTERNAL;
+>  
+> -	return info->status & PCI_ERR_UNC_INTN;
+> +	return info->uncor_status & PCI_ERR_UNC_INTN;
+>  }
+>  
+>  static int cxl_rch_handle_error_iter(struct pci_dev *dev, void *data)
+> @@ -1097,7 +1115,7 @@ static void pci_aer_handle_error(struct pci_dev *dev, struct aer_err_info *info)
+>  		 */
+>  		if (aer)
+>  			pci_write_config_dword(dev, aer + PCI_ERR_COR_STATUS,
+> -					info->status);
+> +					info->cor_status);
+>  		if (pcie_aer_is_native(dev)) {
+>  			struct pci_driver *pdrv = dev->driver;
+>  
+> @@ -1128,6 +1146,7 @@ struct aer_recover_entry {
+>  	u8	devfn;
+>  	u16	domain;
+>  	int	severity;
+> +	u16	device_status;
+>  	struct aer_capability_regs *regs;
+>  };
+>  
+> @@ -1148,7 +1167,7 @@ static void aer_recover_work_func(struct work_struct *work)
+>  			       PCI_SLOT(entry.devfn), PCI_FUNC(entry.devfn));
+>  			continue;
+>  		}
+> -		pci_print_aer(pdev, entry.severity, entry.regs);
+> +		pci_print_aer(pdev, entry.severity, entry.regs, entry.device_status);
+>  		/*
+>  		 * Memory for aer_capability_regs(entry.regs) is being allocated from the
+>  		 * ghes_estatus_pool to protect it from overwriting when multiple sections
+> @@ -1177,7 +1196,7 @@ static DEFINE_SPINLOCK(aer_recover_ring_lock);
+>  static DECLARE_WORK(aer_recover_work, aer_recover_work_func);
+>  
+>  void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
+> -		       int severity, struct aer_capability_regs *aer_regs)
+> +		       int severity, struct aer_capability_regs *aer_regs, u16 device_status)
+>  {
+>  	struct aer_recover_entry entry = {
+>  		.bus		= bus,
+> @@ -1185,6 +1204,7 @@ void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
+>  		.domain		= domain,
+>  		.severity	= severity,
+>  		.regs		= aer_regs,
+> +		.device_status	= device_status,
+>  	};
+>  
+>  	if (kfifo_in_spinlocked(&aer_recover_ring, &entry, 1,
+> @@ -1213,38 +1233,49 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
+>  	int temp;
+>  
+>  	/* Must reset in this function */
+> -	info->status = 0;
+> +	info->cor_status = 0;
+> +	info->uncor_status = 0;
+> +	info->uncor_severity = 0;
+>  	info->tlp_header_valid = 0;
+>  
+>  	/* The device might not support AER */
+>  	if (!aer)
+>  		return 0;
+>  
+> -	if (info->severity == AER_CORRECTABLE) {
+> +	if (info->severity == AER_CORRECTABLE ||
+> +	    info->severity == AER_NONFATAL ||
+> +	    type == PCI_EXP_TYPE_ROOT_PORT ||
+> +	    type == PCI_EXP_TYPE_RC_EC ||
+> +	    type == PCI_EXP_TYPE_DOWNSTREAM) {
+
+
+It looks like you are reading both uncorrectable and correctable status
+by default for both NONFATAL and CORRECTABLE errors. Why not do
+it conditionally only for ANFE errors?
+
+
+> +		/* Link is healthy for IO reads */
+>  		pci_read_config_dword(dev, aer + PCI_ERR_COR_STATUS,
+> -			&info->status);
+> +				      &info->cor_status);
+>  		pci_read_config_dword(dev, aer + PCI_ERR_COR_MASK,
+> -			&info->mask);
+> -		if (!(info->status & ~info->mask))
+> -			return 0;
+> -	} else if (type == PCI_EXP_TYPE_ROOT_PORT ||
+> -		   type == PCI_EXP_TYPE_RC_EC ||
+> -		   type == PCI_EXP_TYPE_DOWNSTREAM ||
+> -		   info->severity == AER_NONFATAL) {
+> -
+> -		/* Link is still healthy for IO reads */
+> +				      &info->cor_mask);
+>  		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
+> -			&info->status);
+> +				      &info->uncor_status);
+> +		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_SEVER,
+> +				      &info->uncor_severity);
+>  		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK,
+> -			&info->mask);
+> -		if (!(info->status & ~info->mask))
+> +				      &info->uncor_mask);
+> +		pcie_capability_read_word(dev, PCI_EXP_DEVSTA,
+> +					  &info->device_status);
+> +	} else {
+> +		return 1;
+> +	}
+> +
+> +	if (info->severity == AER_CORRECTABLE) {
+> +		if (!(info->cor_status & ~info->cor_mask))
+> +			return 0;
+> +	} else {
+> +		if (!(info->uncor_status & ~info->uncor_mask))
+>  			return 0;
+>  
+>  		/* Get First Error Pointer */
+>  		pci_read_config_dword(dev, aer + PCI_ERR_CAP, &temp);
+>  		info->first_error = PCI_ERR_CAP_FEP(temp);
+>  
+> -		if (info->status & AER_LOG_TLP_MASKS) {
+> +		if (info->uncor_status & AER_LOG_TLP_MASKS) {
+>  			info->tlp_header_valid = 1;
+>  			pci_read_config_dword(dev,
+>  				aer + PCI_ERR_HEADER_LOG, &info->tlp.dw0);
+> diff --git a/include/linux/aer.h b/include/linux/aer.h
+> index ae0fae70d4bd..38ac802250ac 100644
+> --- a/include/linux/aer.h
+> +++ b/include/linux/aer.h
+> @@ -52,9 +52,9 @@ static inline int pcie_aer_is_native(struct pci_dev *dev) { return 0; }
+>  #endif
+>  
+>  void pci_print_aer(struct pci_dev *dev, int aer_severity,
+> -		    struct aer_capability_regs *aer);
+> +		    struct aer_capability_regs *aer, u16 device_status);
+>  int cper_severity_to_aer(int cper_severity);
+>  void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
+> -		       int severity, struct aer_capability_regs *aer_regs);
+> +		       int severity, struct aer_capability_regs *aer_regs, u16 device_status);
+>  #endif //_AER_H_
+>  
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index add9368e6314..259812620d4d 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -318,6 +318,33 @@ struct pci_sriov;
+>  struct pci_p2pdma;
+>  struct rcec_ea;
+>  
+> +struct pcie_capability_regs {
+> +	u8 pcie_cap_id;
+> +	u8 next_cap_ptr;
+> +	u16 pcie_caps;
+> +	u32 device_caps;
+> +	u16 device_control;
+> +	u16 device_status;
+> +	u32 link_caps;
+> +	u16 link_control;
+> +	u16 link_status;
+> +	u32 slot_caps;
+> +	u16 slot_control;
+> +	u16 slot_status;
+> +	u16 root_control;
+> +	u16 root_caps;
+> +	u32 root_status;
+> +	u32 device_caps_2;
+> +	u16 device_control_2;
+> +	u16 device_status_2;
+> +	u32 link_caps_2;
+> +	u16 link_control_2;
+> +	u16 link_status_2;
+> +	u32 slot_caps_2;
+> +	u16 slot_control_2;
+> +	u16 slot_status_2;
+> +};
+> +
+IIUC, this struct is only used drivers/acpi/apei/ghes.c . Why not define it in that file?
+>  /* The pci_dev structure describes PCI devices */
+>  struct pci_dev {
+>  	struct list_head bus_list;	/* Node in per-bus list */
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
 
