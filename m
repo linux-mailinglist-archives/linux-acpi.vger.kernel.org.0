@@ -1,380 +1,461 @@
-Return-Path: <linux-acpi+bounces-3120-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3121-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECEE684437F
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 16:57:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15F48444D4
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 17:49:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0129284414
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 15:56:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A5961C21EA1
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 16:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE9A83CD9;
-	Wed, 31 Jan 2024 15:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE0212CD81;
+	Wed, 31 Jan 2024 16:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lMsWrtW8"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="g9erK1mX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D01433CB;
-	Wed, 31 Jan 2024 15:56:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706716616; cv=fail; b=V9n3OUIJbiGdmuZeYdVopYcf1g0D8I1qy2y811chD6hRLjmtoYD/rMf4tBdRlxEZO7Xo45RFUsJOM/CRoriRCOzxfoufbANp7bGskWM2IgQk4hzZtc8Yc1RpSDRE4ABjjY2k2tCLr314GlDQUz5X/k0U2SSdlbfGxc1EksHVSUU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706716616; c=relaxed/simple;
-	bh=71i5XWZVaAl1Zw863vi/wUx2chNMsJajlEyNl55YxYE=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kWbWiaHX8bBkVecBh1zM0NoiMDfFvqGQzweIRFN8B4o3qtUhGDyFXu4Sk5gHy9DkBpCp01QlmLHJlUuKLz78so99EkmVvLuWJxCFTxHd3JRSRXOJA0pv/MsI/7nxZ/u16V6oNzKLsLizXN+xOW5zQX1ukfQAKKV5Y95LAlxqTbo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lMsWrtW8; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706716614; x=1738252614;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=71i5XWZVaAl1Zw863vi/wUx2chNMsJajlEyNl55YxYE=;
-  b=lMsWrtW8LnAoGtVN/XQqCUKWB4tYvlND2aSac2Gz6cVUiNutQcU/6s6/
-   LTgkQVcI4dxugPfEnOjuaQyQ4Q6kQnzZFDi44knUK8tR0isgGRBc0iKgA
-   XVywJnYvu5CpuRqc5rHUsaNEkmocTq56VP2RJNXqMMbj2/4Or4qM21MZa
-   OOqDAAjHAR0t0kJJ2b6xbCCOIlZf38TnNSVUP9pwV9+ERG+V31XOAh3lr
-   kywaTt9gcMBgMK/X2aU/OnW7fabp+bX/Dk1OuNcJPuYv4P9FwHk1O5q5X
-   ye/H//aYEDpUq0Qm2DSKgB7Ns0JCW9kga3BmBFlOccNyGFjmkcmNYnZjq
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="17172335"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="17172335"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 07:56:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="30540955"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 31 Jan 2024 07:56:54 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 31 Jan 2024 07:56:52 -0800
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 31 Jan 2024 07:56:52 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 31 Jan 2024 07:56:52 -0800
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.168)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 31 Jan 2024 07:56:51 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=T8rlm8HCNdUBc5JaktrIfnngliRUq454PZpxj2ekZ2fYybKAk8DDwk6y/2srKMMQG/jZQFTKTXw7om9aw3DPKrG1K3eD2hjxYHbNkDrEmcToclarbIRkuj+d2mjbvR19iEWoxMUMETf29wf2zR3k/oS9ZGd0SXQRPcVxwOzEP+2i4nUbMXWswZMDbg798p6de50mIGQ6vu85ssPq8EmbX1uk8J2qvxvEOD8fRUaG1cUQmcrbpiGIpuQUjN/+F12KhGowF+3EzxZfRkzayUpsPaA/GE/aQpYYAT6tuFM4LfU0mf95CbZgoq7NVp1mTt5KGBbrB5vg1Wysoe5ydpBG9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/+TZsqGLWd+0w50/Qgrem9dN+5PySx79vdlvxl3EBag=;
- b=C2YKHQ+KAejZAxYpCm4/biun2e/lvenndAE2R/Htr+58JjP6qDT7GAFRoDFj4a+6oJf69Z8dMS6IlVmHn4obM6nWegVigUNYl+j4QjGGBGve9n2pDeSs4KXZE0N7k7fRd1TfXWjEIPPktOc2kI6koM203C+3UFaI02VTv4ipOILfX+OVvxYO9mcjZ8sTaeWQB7HuyjEc8nPwDq4pa6nYW1fA1t5cV3Mnt9vfXpgLOiKAZd0N+z5hrcgNmKlHHnRnc3ugI2DBtVQ3BM3VUuiEF1biBCm5vLsWV7NNMU/ULuDQBFibYMjNlOOq07TAvfYmuLMhjrhHKDKmtHg9FMoVKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB5984.namprd11.prod.outlook.com (2603:10b6:510:1e3::15)
- by BL3PR11MB6529.namprd11.prod.outlook.com (2603:10b6:208:38c::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.34; Wed, 31 Jan
- 2024 15:56:47 +0000
-Received: from PH7PR11MB5984.namprd11.prod.outlook.com
- ([fe80::c403:9b0a:1267:d225]) by PH7PR11MB5984.namprd11.prod.outlook.com
- ([fe80::c403:9b0a:1267:d225%6]) with mapi id 15.20.7228.029; Wed, 31 Jan 2024
- 15:56:47 +0000
-Message-ID: <b243e80f-1b24-4756-8bb3-8389d66ea13a@intel.com>
-Date: Wed, 31 Jan 2024 08:56:41 -0700
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH v4 08/11] cxl/region: Calculate performance data for a
- region
-To: <wj28.lee@samsung.com>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>
-CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>, "dan.j.williams@intel.com"
-	<dan.j.williams@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"dave@stgolabs.net" <dave@stgolabs.net>, "brice.goglin@gmail.com"
-	<brice.goglin@gmail.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	"rafael@kernel.org" <rafael@kernel.org>, "gregkh@linuxfoundation.org"
-	<gregkh@linuxfoundation.org>, KyungSan Kim <ks0204.kim@samsung.com>, "Hojin
- Nam" <hj96.nam@samsung.com>
-References: <170568503239.1008395.2633682569497108646.stgit@djiang5-mobl3>
- <170568485801.1008395.12244787918793980621.stgit@djiang5-mobl3>
- <CGME20240119172408epcas2p2e461bf193d43347c70c18ad7681774a8@epcms2p4>
- <20240131022226epcms2p47d09167da93641ea88461563c494335a@epcms2p4>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20240131022226epcms2p47d09167da93641ea88461563c494335a@epcms2p4>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR05CA0189.namprd05.prod.outlook.com
- (2603:10b6:a03:330::14) To PH7PR11MB5984.namprd11.prod.outlook.com
- (2603:10b6:510:1e3::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155EB12BE99;
+	Wed, 31 Jan 2024 16:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706719711; cv=none; b=Zi1cXh4hFHenAO2wbPmo+mPiz5QF1LLG/eELaDtLVHoocYXbpitZcbFwb4spptfgaNh+a45LPF0rfABFifDRasH7jiZkeNYKz0b5BCmysILwYoK+ui5XrJFzG141iY/ek2dKbjYTeNBi0J8ktbwGgXKKEwR/AN/ilRfuc8Ai9T4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706719711; c=relaxed/simple;
+	bh=uNN8q0C/RCH2Ib0D79HOp3bQt0zSZQn+swSUAZGookA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=F9XBchx4AVhqC4RCc8lWRyuCjShw3Ha9KvoZNRorB5G6ew87/X5gQHkH7oOPDsgtFKkyvCFtWb6UPHkmXBr8Lk+UJSJU+i7aaocxTDHYc5fU7erwhAaQD27/2TV+9STiPKJ7DCEAWU2iVmpqc6LLWAzaCxaKGC0zT8nPHG+/cnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=g9erK1mX; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=NgiStwBwjTR8KjyFNomNmQXHEjzb/+iZU5gWUi3MWIw=; b=g9erK1mX3CRzgEzwVpJaiR8b5n
+	tRbYHAHpbphSRqkayfYmOCUH1gCx7XOaPZpRtXPV1Mz8Fn5VDNB9vB9bm9OG+i7kGTZFO6axn+X4H
+	bcQejEIw2/RqiMzSPpRTqvNZDFqtA1XY7wLErEBQ+vVvetEZqs0PpWloxo7aZpoS1ntaKTUELYz0i
+	H4AIu/ogdyp5wP8Iv4oQJebwhu9t3JOVsQqDDcBY0+jdFjQLWD6yvdSuoMVW/id5NsNP4ZsvYzhQE
+	Yc0477BzXpcS3WBk9g/NhDDJeRZO3C9Tlksiw/x909/14cJtlSR5eMqfAyLezZvDYhKhh9vZiAy04
+	3o+3JLdg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:44550)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1rVDkz-0003TG-2r;
+	Wed, 31 Jan 2024 16:48:13 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1rVDkt-0006Zn-Mo; Wed, 31 Jan 2024 16:48:07 +0000
+Date: Wed, 31 Jan 2024 16:48:07 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org
+Cc: Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>
+Subject: [RFC PATCH v4 00/15] ACPI/arm64: add support for virtual cpu hotplug
+Message-ID: <Zbp5xzmFhKDAgHws@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB5984:EE_|BL3PR11MB6529:EE_
-X-MS-Office365-Filtering-Correlation-Id: b79ffa02-12f7-436c-e5f1-08dc22753ad4
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 466ZGrkA7D+dlT13xN348ywponMmTKNmF8i1gSpkR68Ns58jXSv7+EEQpoclKdLkU6fHyA4NyDPao5cSGkfLmbHHnG6OGEdWlgsbkktCS0suozSHajtiLZ8OCxjlHeby0BcqQqyblQzQdBIRD4I/Lu7SMYMi0eURNeYdblF3nEQJgYuFr3jVG/Bt/XehldC+KAGuFzn9koaB16JlxaSi9e3g/BACATqvvjTSRM3iTo+PHMglm/ua+4KulZoIDaiKfuElwKd26hiqiguRLUEy7W3fMZFpdsj0w4Ga7TaYCzmPJW7FHdVpEYIcVpAf3z7SHN5K79y1NpXVq8OHw6nDZW5igETCyusPDjmlMcw74MLBREAA66TzUHMCSAauO5cxStLNyy9jamgwEs0FsyADwqs27v5V0d9ZFZ2bvRLrFkhLqK0wghouwE1SGHAlu6lw6TtdZBpdzvvvhsKiyHporFc7hLy7joMjkyZ9XfZMqtjJLA4eon58uBm1Ul042jUoIxWFN2BQx/JpXXlB6y7ENXzqNs2guh2A7q7dIMNKb4oU2VByL0fMLqVZTUShGKRmhmLVzY7AhKLRXWDjR4w6EHIZPzfgC5BvDGgpXEyiHwtAGNPbijOwRegCcqNjc1a5
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB5984.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(376002)(39860400002)(396003)(136003)(346002)(230922051799003)(451199024)(186009)(1800799012)(64100799003)(26005)(2616005)(83380400001)(478600001)(53546011)(6486002)(41300700001)(6506007)(6666004)(6512007)(8936002)(36756003)(4326008)(8676002)(82960400001)(44832011)(316002)(66476007)(66556008)(66946007)(54906003)(2906002)(5660300002)(38100700002)(7416002)(31686004)(110136005)(31696002)(86362001)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cHNFMG1KVFBSdENjbDR5dEpPSzFyQll5MTZ6M1NYMmEzbXAzeDQwMC9scWZR?=
- =?utf-8?B?eWZzZVJpZlloOTgwSkc5K3o3UXlVRlJ0QUpSRXNETGhHTHRZWFlLV0xxdmVz?=
- =?utf-8?B?Y1lEWUVzazNRUmpCMlBRWGdxeW1xN1FrM0RPUmZiMVdnWTV5YXpRdzV1Nmx5?=
- =?utf-8?B?WFUvZXFKQW9xenJxQ3FvazNVM1o2T3dJMWxpVDkvME5lK3RnZUJWTzhoRVE3?=
- =?utf-8?B?RWNKbmpHTCtydGxPYUhvSzF0ak1WZlFnenkzVFpXaktHUTJQdXloZHJCaGcv?=
- =?utf-8?B?MCtjRDZiaTBGaFV5NXk4Zm1RdTB6QW1FQVdhQW5UVXF1WTU2UnBUdGhJekJt?=
- =?utf-8?B?cE5BQWdmRjJScW0wdHcyOURQNitMRzY3VWZqTHZNY1JJbFNZcEhxODU5ODY2?=
- =?utf-8?B?a1FndWlOTTFycFRNaExrTlhVQk9xU3Nyc05hdWgzeEI3SG9QVkpEVkFxU2Ro?=
- =?utf-8?B?ZVRFUm55dU9LdGtmVDk4azZxZW5iSmFkdGU5S3JlM1ZsRkMvSVZyRnE5bTVz?=
- =?utf-8?B?Y2N5SENIZlVrMnlRdVZKYjljdWpQR1AvdnlrQXlOQWF4dWIxT3pvNXhvMHI5?=
- =?utf-8?B?UGQ1dVJoWUVGUXc3bWhpU2V4Wjh1UGJBcTV2SHFVSkRWTnQwMFBDY09QL3FH?=
- =?utf-8?B?Nzl3Nk5QR1M4VHVCWnVORTJ3S2JuTS9TRFlPRjI5Z3JoM0R3UndnTzJBYXBM?=
- =?utf-8?B?ZXpNMzhTc3ZvYzEra3o4OGREUkFpdDU1bnhDTW0wR2NFd2NSZTlkd1RxcnEz?=
- =?utf-8?B?bDhsQTZnZWdCUTZlSTdDQW04MTdETGlZYjB3clRrV1V0ZkRWeHl0OStwRkZ3?=
- =?utf-8?B?anJPdWUrTm9wcVprNWlRZ242dm1wRnZwdlVXc292NmRpcXp5ZTh1elY3bU1y?=
- =?utf-8?B?TzhzaEU1QWRiUXEyenhrUFlrK2EyL1dqVUhveGp2d2RuV1dWcExjbVIrVGFI?=
- =?utf-8?B?V2c2dXp2bHB5MHJXSzYyVEZQL3VkWllBdENJWHBVNVVqYmd4bHdOUkdFT3NO?=
- =?utf-8?B?dW80Y2luY0o3TlkxcElrNjVaeVlBUFc4eUJXVTFDeWRmd1YxazM3NnBCKzhJ?=
- =?utf-8?B?RUNhVnF3dmFkUTdBbEgxZ0E3bFlMek5IWEdzbGlVVnhtVGtmK0tMdWJWekJV?=
- =?utf-8?B?VjdQS3haTVFoUzBTSlUrOFVQRHFkdzhzV2c0K2tlaUt2ZmdNbzJBSFVydEQz?=
- =?utf-8?B?RWxxV2tydjZpUUF5M2JMV0EyU0ptTGtuK1V2WWZHR2NQRHR2eEZzUGkvdEtW?=
- =?utf-8?B?OXUvN2NNR0hqeWJBOWhzYXNKcHIwOFB0c0s4RWZwRmZFVHh2aWVwcG5xMjhS?=
- =?utf-8?B?MDMrTVpKa21mREo4TlFXb215bWVUYU4zRWFMbjdNMmpwenVnT0VyL2psdFFU?=
- =?utf-8?B?L2pJS0VzK0hyL0tqZ3pVK09QSU1YSlJDaDNhK3R3TkhxUkdBODN2UVJsNXlm?=
- =?utf-8?B?QUwvSks4Q0l1eEZtMWpjRjhaSWNFcFlmWVBkWGZmMW1ESzZRdlRCQ2s2Wlph?=
- =?utf-8?B?K0dsR09yUWQwUHc4VmQ5Q3NZQUdZN0NzbGNHUW9Ma1YxWWtob1F0NXhuenVI?=
- =?utf-8?B?WlpNWkNzK21hVHVjVi9nNC92TEJQdkJ2U1J6MXJxaEpVbUJhRHlKZzF1YmFI?=
- =?utf-8?B?U0hQVmxsWGNmZ2ZiS282azhva251Vnc0UUlwdlFYNElpVWNJTGN2d0NOZ2xM?=
- =?utf-8?B?WDB6TEdDUVRGVEppNnlOWFJFRWkrd1dINmVwbXN5clJpN1ZmRG1KM2haTWJz?=
- =?utf-8?B?dWJlaVJwVVlmNlplQ2VzSzNxWXAzNjJIWFRpbVRzSVNhSTl3b1dyeHFoYkpa?=
- =?utf-8?B?UVkrSkhOZmhDWURURzdMSnE4QnlBZWozSjljb2RwVUlWRENLTjIxZWkvZzRF?=
- =?utf-8?B?U3FYcVd4b2FZc2ZzUGhrTjg5U0Exb2hlT2hJZFhsVHIyVWdoSkJEZ3VkM0tN?=
- =?utf-8?B?enU4ZEFZSElwOUdBUnRUdmM5VEhhQjBrdjZGOWNDNDVERDRVclNzOEZSY3FF?=
- =?utf-8?B?UlpXVVppdmRZQ1ZPY1lFenovcTJyRS9vNVN6RURPNVprbUxBWTRqZ3pvUTcv?=
- =?utf-8?B?SjVEMHFEYUxHRlRtYTYxYUM3R2pWMFRiZlZmZVRNVFdVdG9zanNtckl4cnpH?=
- =?utf-8?Q?IIDELq9pOtzHan6sJ9lNUvp+5?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b79ffa02-12f7-436c-e5f1-08dc22753ad4
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB5984.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2024 15:56:47.4630
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tuo2w8f/gh87TaarA1h10JglhjvRr4O20oI99T8aBkwMLR3FYB2g806osfa8Q0Lc8Lu01x9aheJaHHUEC6e+YQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6529
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
+Hi,
 
+This is another iteration of the Arm64 virtual CPU hotplug support,
+updated for the review comments on the v3 smaller series posted back
+in December.
 
-On 1/30/24 19:22, Wonjae Lee wrote:
-> On Fri, Jan 19, 2024 at 10:23:52AM -0700, Dave Jiang wrote:
->> Calculate and store the performance data for a CXL region. Find the worst
->> read and write latency for all the included ranges from each of the devices
->> that attributes to the region and designate that as the latency data. Sum
->> all the read and write bandwidth data for each of the device region and
->> that is the total bandwidth for the region.
->>
->> The perf list is expected to be constructed before the endpoint decoders
->> are registered and thus there should be no early reading of the entries
->> from the region assemble action. The calling of the region qos calculate
->> function is under the protection of cxl_dpa_rwsem and will ensure that
->> all DPA associated work has completed.
->>
->> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
->> ---
->> v4:
->> - Calculate access classes 0 and 1 by retrieving host bridge coords
->> - Add lockdep assert for cxl_dpa_rwsem (Dan)
->> - Clarify that HMAT code is HMEM_REPORTING code. (Dan)
->> ---
->>   drivers/cxl/core/cdat.c    74 +++++++++++++++++++++++++++++++++++++++++++++
->>   drivers/cxl/core/region.c     2 +
->>   drivers/cxl/cxl.h            4 ++
->>   3 files changed, 80 insertions(+)
->>
->> diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
->> index 6e3998723aaa..7acb5837afad 100644
->> --- a/drivers/cxl/core/cdat.c
->> +++ b/drivers/cxl/core/cdat.c
->> @@ -8,6 +8,7 @@
->>   #include "cxlpci.h"
->>   #include "cxlmem.h"
->>   #include "cxl.h"
->> +#include "core.h"
->>
->>   struct dsmas_entry {
->>   struct range dpa_range;
->> @@ -546,3 +547,76 @@ void cxl_coordinates_combine(struct access_coordinate *out,
->>   EXPORT_SYMBOL_NS_GPL(cxl_coordinates_combine, CXL);
->>
->>   MODULE_IMPORT_NS(CXL);
->> +
->> +void cxl_region_perf_data_calculate(struct cxl_region *cxlr,
->> +                struct cxl_endpoint_decoder *cxled)
->> +{
->> + struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
->> + struct cxl_port *port = cxlmd->endpoint;
->> + struct cxl_dev_state *cxlds = cxlmd->cxlds;
->> + struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
->> + struct access_coordinate hb_coord[ACCESS_COORDINATE_MAX];
->> + struct access_coordinate coord;
->> + struct range dpa = {
->> +        .start = cxled->dpa_res->start,
->> +        .end = cxled->dpa_res->end,
->> + };
->> + struct list_head *perf_list;
->> + struct cxl_dpa_perf *perf;
->> + bool found = false;
->> + int rc;
->> +
->> + switch (cxlr->mode) {
->> + case CXL_DECODER_RAM:
->> +    perf_list = &mds->ram_perf_list;
->> +    break;
->> + case CXL_DECODER_PMEM:
->> +    perf_list = &mds->pmem_perf_list;
->> +    break;
->> + default:
->> +    return;
->> + }
->> +
->> + lockdep_assert_held(&cxl_dpa_rwsem);
->> +
->> + list_for_each_entry(perf, perf_list, list) {
->> +    if (range_contains(&perf->dpa_range, &dpa)) {
->> +        found = true;
->> +        break;
->> +    }
->> + }
->> +
->> + if (!found)
->> +    return;
->> +
->> + rc = cxl_hb_get_perf_coordinates(port, hb_coord);
->> + if (rc)  {
->> +    dev_dbg(&port->dev, "Failed to retrieve hb perf coordinates.\n");
->> +    return;
->> + }
->> +
->> + for (int i = 0; i < ACCESS_COORDINATE_MAX; i++) {
->> +    /* Pickup the host bridge coords */
->> +    cxl_coordinates_combine(&coord, &hb_coord[i], &perf->coord);
->> +
->> +    /* Get total bandwidth and the worst latency for the cxl region */
->> +    cxlr->coord[i].read_latency = max_t(unsigned int,
->> +                        cxlr->coord[i].read_latency,
->> +                        coord.read_latency);
->> +    cxlr->coord[i].write_latency = max_t(unsigned int,
->> +                          cxlr->coord[i].write_latency,
->> +                          coord.write_latency);
->> +    cxlr->coord[i].read_bandwidth += coord.read_bandwidth;
->> +    cxlr->coord[i].write_bandwidth += coord.write_bandwidth;
->> +
->> +    /*
->> +      * Convert latency to nanosec from picosec to be consistent
->> +      * with the resulting latency coordinates computed by the
->> +      * HMAT_REPORTING code.
->> +      */
->> +    cxlr->coord[i].read_latency =
->> +        DIV_ROUND_UP(cxlr->coord[i].read_latency, 1000);
->> +    cxlr->coord[i].write_latency =
->> +        DIV_ROUND_UP(cxlr->coord[i].write_latency, 1000);
+I believe all feedback has been addressed - if I have missed something
+then please accept my apologies. Several patches have been dropped from
+the original series, including patches 2 and 3, the ACPICA patch adding
+the new GICC bits (now merged), the patch to rename ACPI_HOTPLUG_CPU
+and the _OSC bits. The arch_unregister_cpu() fix has been merged into
+its appropriate commit.
+
+One change that has not been addressed yet is that it is likely that
+"ACPI: add support to (un)register CPUs based on the _STA enabled bit"
+needs to do more cleanup than it is doing when unregistering the CPU -
+much of acpi_processor_make_not_present() probably needs to be done to
+properly clean up - hence why this is still RFC for now.
+
+It is hoped that we have reached agreement with the remainder of the
+patches, and we are getting close to having something that can be
+merged once the above is addressed.
+
+This is from my aarch64/hotplug-vcpu/head branch, minus the top two
+commits, and is based on v6.8-rc2.
+
+ Documentation/ABI/testing/sysfs-devices-system-cpu |   6 +
+ Documentation/arch/arm64/cpu-hotplug.rst           |  79 ++++++++++
+ Documentation/arch/arm64/index.rst                 |   1 +
+ arch/arm64/include/asm/acpi.h                      |  11 ++
+ arch/arm64/kernel/acpi_numa.c                      |  11 --
+ arch/arm64/kernel/psci.c                           |   2 +-
+ arch/arm64/kernel/smp.c                            |   3 +-
+ drivers/acpi/acpi_processor.c                      |  99 +++++++++++--
+ drivers/acpi/device_pm.c                           |   2 +-
+ drivers/acpi/device_sysfs.c                        |   2 +-
+ drivers/acpi/internal.h                            |   4 +-
+ drivers/acpi/property.c                            |   2 +-
+ drivers/acpi/scan.c                                | 162 ++++++++++++++-------
+ drivers/base/cpu.c                                 |  16 +-
+ drivers/irqchip/irq-gic-v3.c                       |  32 ++--
+ include/acpi/acpi_bus.h                            |   1 +
+ include/linux/acpi.h                               |   5 +-
+ include/linux/cpumask.h                            |  25 ++++
+ kernel/cpu.c                                       |   3 +
+ 19 files changed, 370 insertions(+), 96 deletions(-)
+ create mode 100644 Documentation/arch/arm64/cpu-hotplug.rst
+
+On Wed, Dec 13, 2023 at 12:47:31PM +0000, Russell King (Oracle) wrote:
+> Hi,
 > 
-> Hello,
+> This is this remaining patches for ARM64 virtual cpu hotplug, which
+> follows on from the previous set of 21 patches that GregKH has
+> recently queued up, and "x86: intel_epb: Don't rely on link order"
+> which can be found at:
 > 
-> I ran into a bit of confusion and have a question while validating CDAT
-> behaviour with physical CXL devices. (I'm not sure if this is the right
-> thread to ask this question, sorry if it isn't.)
+> https://lore.kernel.org/r/E1r6SeD-00DCuK-M6@rmk-PC.armlinux.org.uk
+> https://lore.kernel.org/r/ZVyz/Ve5pPu8AWoA@shell.armlinux.org.uk
 > 
-> IIUC, the raw data of latency is in picosec, but the comments on the
-> struct access_coordinate say that the latency units are in nanosec:
->  * @read_latency:   Read latency in nanoseconds
->  * @write_latency:  Write latency in nanoseconds
+> The entire series can be found at:
 > 
-> This was a bit confusing at first, as the raw data of latency are in
-> ps, and the structure that stores the latency expects units of ns.
+>  git://git.armlinux.org.uk/~rmk/linux-arm.git aarch64/hotplug-vcpu/head
+> 
+> The original cover message from the entire series is below the
+> diffstat.
+> 
+>  Documentation/arch/arm64/cpu-hotplug.rst   |  79 ++++++++++++++++
+>  Documentation/arch/arm64/index.rst         |   1 +
+>  arch/arm64/include/asm/acpi.h              |  11 +++
+>  arch/arm64/kernel/acpi_numa.c              |  11 ---
+>  arch/arm64/kernel/psci.c                   |   2 +-
+>  arch/arm64/kernel/smp.c                    |   3 +-
+>  arch/loongarch/Kconfig                     |   2 +-
+>  arch/loongarch/configs/loongson3_defconfig |   2 +-
+>  arch/loongarch/kernel/acpi.c               |   4 +-
+>  arch/x86/Kconfig                           |   3 +-
+>  arch/x86/kernel/acpi/boot.c                |   4 +-
+>  drivers/acpi/Kconfig                       |  13 ++-
+>  drivers/acpi/acpi_processor.c              | 141 ++++++++++++++++++++++++++---
+>  drivers/acpi/bus.c                         |  16 ++++
+>  drivers/acpi/device_pm.c                   |   2 +-
+>  drivers/acpi/device_sysfs.c                |   2 +-
+>  drivers/acpi/internal.h                    |   1 -
+>  drivers/acpi/property.c                    |   2 +-
+>  drivers/acpi/scan.c                        | 140 ++++++++++++++++++----------
+>  drivers/base/cpu.c                         |  16 +++-
+>  drivers/irqchip/irq-gic-v3.c               |  32 ++++---
+>  include/acpi/acpi_bus.h                    |   1 +
+>  include/acpi/actbl2.h                      |   1 +
+>  include/linux/acpi.h                       |  10 +-
+>  include/linux/cpumask.h                    |  25 +++++
+>  kernel/cpu.c                               |   3 +
+>  26 files changed, 421 insertions(+), 106 deletions(-)
+> 
+> On Tue, Oct 24, 2023 at 04:15:28PM +0100, Russell King (Oracle) wrote:
+> > Hi,
+> > 
+> > I'm posting James' patch set updated with most of the review comments
+> > from his RFC v2 series back in September. Individual patches have a
+> > changelog attached at the bottom of the commit message. Those which
+> > I have finished updating have my S-o-b on them, those which still have
+> > outstanding review comments from RFC v2 do not. In some of these cases
+> > I've asked questions and am waiting for responses.
+> > 
+> > I'm posting this as RFC v3 because there's still some unaddressed
+> > comments and it's clearly not ready for merging. Even if it was ready
+> > to be merged, it is too late in this development cycle to be taking
+> > this change in, so there would be little point posting it non-RFC.
+> > Also James stated that he's waiting for confirmation from the
+> > Kubernetes/Kata folk - I have no idea what the status is there.
+> > 
+> > I will be sending each patch individually to a wider audience
+> > appropriate for that patch - apologies to those missing out on this
+> > cover message. I have added more mailing lists to the series with the
+> > exception of the acpica list in a hope of this cover message also
+> > reaching those folk.
+> > 
+> > The changes that aren't included are:
+> > 
+> > 1. Updates for my patch that was merged via Thomas (thanks!):
+> >    c4dd854f740c cpu-hotplug: Provide prototypes for arch CPU registration
+> >    rather than having this change spread through James' patches.
+> > 
+> > 2. New patch - simplification of PA-RISC's smp_prepare_boot_cpu()
+> > 
+> > 3. Moved "ACPI: Use the acpi_device_is_present() helper in more places"
+> >    and "ACPI: Rename acpi_scan_device_not_present() to be about
+> >    enumeration" to the beginning of the series - these two patches are
+> >    already queued up for merging into 6.7.
+> > 
+> > 4. Moved "arm64, irqchip/gic-v3, ACPI: Move MADT GICC enabled check into
+> >    a helper" to the beginning of the series, which has been submitted,
+> >    but as yet the fate of that posting isn't known.
+> > 
+> > The first four patches in this series are provided for completness only.
+> > 
+> > There is an additional patch in James' git tree that isn't in the set
+> > of patches that James posted: "ACPI: processor: Only call
+> > arch_unregister_cpu() if HOTPLUG_CPU is selected" which looks to me to
+> > be a workaround for arch_unregister_cpu() being under the ifdef. I've
+> > commented on this on the RFC v2 posting making a suggestion, but as yet
+> > haven't had any response.
+> > 
+> > I've included almost all of James' original covering body below the
+> > diffstat.
+> > 
+> > The reason that I'm doing this is to help move this code forward so
+> > hopefully it can be merged - which is why I have been keen to dig out
+> > from James' patches anything that can be merged and submit it
+> > separately, since this is a feature for which some users have a
+> > definite need for.
+> > 
+> > Please note that I haven't tested this beyond building for aarch64 at
+> > the present time.
+> > 
+> > The series can be found at:
+> > 
+> >  git://git.armlinux.org.uk/~rmk/linux-arm.git aarch64/hotplug-vcpu/v6.6-rc7
+> > 
+> >  Documentation/arch/arm64/cpu-hotplug.rst   |  79 +++++++++++++++
+> >  Documentation/arch/arm64/index.rst         |   1 +
+> >  arch/arm64/Kconfig                         |   1 +
+> >  arch/arm64/include/asm/acpi.h              |  11 +++
+> >  arch/arm64/include/asm/cpu.h               |   1 -
+> >  arch/arm64/kernel/acpi_numa.c              |  11 ---
+> >  arch/arm64/kernel/psci.c                   |   2 +-
+> >  arch/arm64/kernel/setup.c                  |  13 +--
+> >  arch/arm64/kernel/smp.c                    |   5 +-
+> >  arch/ia64/Kconfig                          |   3 +
+> >  arch/ia64/include/asm/acpi.h               |   2 +-
+> >  arch/ia64/include/asm/cpu.h                |   6 --
+> >  arch/ia64/kernel/acpi.c                    |   6 +-
+> >  arch/ia64/kernel/setup.c                   |   2 +-
+> >  arch/ia64/kernel/topology.c                |  35 +------
+> >  arch/loongarch/Kconfig                     |   2 +
+> >  arch/loongarch/configs/loongson3_defconfig |   2 +-
+> >  arch/loongarch/kernel/acpi.c               |   4 +-
+> >  arch/loongarch/kernel/topology.c           |  38 +-------
+> >  arch/parisc/kernel/smp.c                   |   8 +-
+> >  arch/riscv/Kconfig                         |   1 +
+> >  arch/riscv/kernel/setup.c                  |  19 +---
+> >  arch/x86/Kconfig                           |   3 +
+> >  arch/x86/include/asm/cpu.h                 |   4 -
+> >  arch/x86/kernel/acpi/boot.c                |   4 +-
+> >  arch/x86/kernel/cpu/intel_epb.c            |   2 +-
+> >  arch/x86/kernel/topology.c                 |  27 +-----
+> >  drivers/acpi/Kconfig                       |  14 ++-
+> >  drivers/acpi/acpi_processor.c              | 151 +++++++++++++++++++++++------
+> >  drivers/acpi/bus.c                         |  16 +++
+> >  drivers/acpi/device_pm.c                   |   2 +-
+> >  drivers/acpi/device_sysfs.c                |   2 +-
+> >  drivers/acpi/internal.h                    |   1 -
+> >  drivers/acpi/processor_core.c              |   2 +-
+> >  drivers/acpi/property.c                    |   2 +-
+> >  drivers/acpi/scan.c                        | 148 ++++++++++++++++++----------
+> >  drivers/base/arch_topology.c               |  38 +++++---
+> >  drivers/base/cpu.c                         |  44 +++++++--
+> >  drivers/base/init.c                        |   2 +-
+> >  drivers/base/node.c                        |   7 --
+> >  drivers/firmware/psci/psci.c               |   2 +
+> >  drivers/irqchip/irq-gic-v3.c               |  38 +++++---
+> >  include/acpi/acpi_bus.h                    |   1 +
+> >  include/acpi/actbl2.h                      |   1 +
+> >  include/linux/acpi.h                       |  13 ++-
+> >  include/linux/cpu.h                        |   4 +
+> >  include/linux/cpumask.h                    |  25 +++++
+> >  kernel/cpu.c                               |   3 +
+> >  48 files changed, 516 insertions(+), 292 deletions(-)
+> > 
+> > 
+> > On Wed, Sep 13, 2023 at 04:37:48PM +0000, James Morse wrote:
+> > > Hello!
+> > > 
+> > > Changes since RFC-v1:
+> > >  * riscv is new, ia64 is gone
+> > >  * The KVM support is different, and upstream - no need to patch the host.
+> > > 
+> > > ---
+> > > 
+> > > This series adds what looks like cpuhotplug support to arm64 for use in
+> > > virtual machines. It does this by moving the cpu_register() calls for
+> > > architectures that support ACPI out of the arch code by using
+> > > GENERIC_CPU_DEVICES, then into the ACPI processor driver.
+> > > 
+> > > The kubernetes folk really want to be able to add CPUs to an existing VM,
+> > > in exactly the same way they do on x86. The use-case is pre-booting guests
+> > > with one CPU, then adding the number that were actually needed when the
+> > > workload is provisioned.
+> > > 
+> > > Wait? Doesn't arm64 support cpuhotplug already!?
+> > > In the arm world, cpuhotplug gets used to mean removing the power from a CPU.
+> > > The CPU is offline, and remains present. For x86, and ACPI, cpuhotplug
+> > > has the additional step of physically removing the CPU, so that it isn't
+> > > present anymore.
+> > > 
+> > > Arm64 doesn't support this, and can't support it: CPUs are really a slice
+> > > of the SoC, and there is not enough information in the existing ACPI tables
+> > > to describe which bits of the slice also got removed. Without a reference
+> > > machine: adding this support to the spec is a wild goose chase.
+> > > 
+> > > Critically: everything described in the firmware tables must remain present.
+> > > 
+> > > For a virtual machine this is easy as all the other bits of 'virtual SoC'
+> > > are emulated, so they can (and do) remain present when a vCPU is 'removed'.
+> > > 
+> > > On a system that supports cpuhotplug the MADT has to describe every possible
+> > > CPU at boot. Under KVM, the vGIC needs to know about every possible vCPU before
+> > > the guest is started.
+> > > With these constraints, virtual-cpuhotplug is really just a hypervisor/firmware
+> > > policy about which CPUs can be brought online.
+> > > 
+> > > This series adds support for virtual-cpuhotplug as exactly that: firmware
+> > > policy. This may even work on a physical machine too; for a guest the part of
+> > > firmware is played by the VMM. (typically Qemu).
+> > > 
+> > > PSCI support is modified to return 'DENIED' if the CPU can't be brought
+> > > online/enabled yet. The CPU object's _STA method's enabled bit is used to
+> > > indicate firmware's current disposition. If the CPU has its enabled bit clear,
+> > > it will not be registered with sysfs, and attempts to bring it online will
+> > > fail. The notifications that _STA has changed its value then work in the same
+> > > way as physical hotplug, and firmware can cause the CPU to be registered some
+> > > time later, allowing it to be brought online.
+> > > 
+> > > This creates something that looks like cpuhotplug to user-space, as the sysfs
+> > > files appear and disappear, and the udev notifications look the same.
+> > > 
+> > > One notable difference is the CPU present mask, which is exposed via sysfs.
+> > > Because the CPUs remain present throughout, they can still be seen in that mask.
+> > > This value does get used by webbrowsers to estimate the number of CPUs
+> > > as the CPU online mask is constantly changed on mobile phones.
+> > > 
+> > > Linux is tolerant of PSCI returning errors, as its always been allowed to do
+> > > that. To avoid confusing OS that can't tolerate this, we needed an additional
+> > > bit in the MADT GICC flags. This series copies ACPI_MADT_ONLINE_CAPABLE, which
+> > > appears to be for this purpose, but calls it ACPI_MADT_GICC_CPU_CAPABLE as it
+> > > has a different bit position in the GICC.
+> > > 
+> > > This code is unconditionally enabled for all ACPI architectures.
+> > > If there are problems with firmware tables on some devices, the CPUs will
+> > > already be online by the time the acpi_processor_make_enabled() is called.
+> > > A mismatch here causes a firmware-bug message and kernel taint. This should
+> > > only affect people with broken firmware who also boot with maxcpus=1, and
+> > > bring CPUs online later.
+> > > 
+> > > I had a go at switching the remaining architectures over to GENERIC_CPU_DEVICES,
+> > > so that the Kconfig symbol can be removed, but I got stuck with powerpc
+> > > and s390.
+> > > 
+> > > I've only build tested Loongarch and riscv. I've removed the ia64 specific
+> > > patches, but left the changes in other patches to make git-grep review of
+> > > renames easier.
+> > > 
+> > > If folk want to play along at home, you'll need a copy of Qemu that supports this.
+> > > https://github.com/salil-mehta/qemu.git salil/virt-cpuhp-armv8/rfc-v2-rc6
+> > > 
+> > > Replace your '-smp' argument with something like:
+> > > | -smp cpus=1,maxcpus=3,cores=3,threads=1,sockets=1
+> > > 
+> > > then feed the following to the Qemu montior;
+> > > | (qemu) device_add driver=host-arm-cpu,core-id=1,id=cpu1
+> > > | (qemu) device_del cpu1
+> > > 
+> > > 
+> > > Why is this still an RFC? I'm still looking for confirmation from the
+> > > kubernetes/kata folk that this works for them. Because of this I've culled
+> > > the CC list...
+> > > 
+> > > 
+> > > This series is based on v6.6-rc1, and can be retrieved from:
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git/ virtual_cpu_hotplug/rfc/v2
+> > > 
+> > > 
+> > > Thanks,
+> > > 
+> > > James Morse (34):
+> > >   ACPI: Move ACPI_HOTPLUG_CPU to be disabled on arm64 and riscv
+> > >   drivers: base: Use present CPUs in GENERIC_CPU_DEVICES
+> > >   drivers: base: Allow parts of GENERIC_CPU_DEVICES to be overridden
+> > >   drivers: base: Move cpu_dev_init() after node_dev_init()
+> > >   drivers: base: Print a warning instead of panic() when register_cpu()
+> > >     fails
+> > >   arm64: setup: Switch over to GENERIC_CPU_DEVICES using
+> > >     arch_register_cpu()
+> > >   x86: intel_epb: Don't rely on link order
+> > >   x86/topology: Switch over to GENERIC_CPU_DEVICES
+> > >   LoongArch: Switch over to GENERIC_CPU_DEVICES
+> > >   riscv: Switch over to GENERIC_CPU_DEVICES
+> > >   arch_topology: Make register_cpu_capacity_sysctl() tolerant to late
+> > >     CPUs
+> > >   ACPI: Use the acpi_device_is_present() helper in more places
+> > >   ACPI: Rename acpi_scan_device_not_present() to be about enumeration
+> > >   ACPI: Only enumerate enabled (or functional) devices
+> > >   ACPI: processor: Add support for processors described as container
+> > >     packages
+> > >   ACPI: processor: Register CPUs that are online, but not described in
+> > >     the DSDT
+> > >   ACPI: processor: Register all CPUs from acpi_processor_get_info()
+> > >   ACPI: Rename ACPI_HOTPLUG_CPU to include 'present'
+> > >   ACPI: Move acpi_bus_trim_one() before acpi_scan_hot_remove()
+> > >   ACPI: Rename acpi_processor_hotadd_init and remove pre-processor
+> > >     guards
+> > >   ACPI: Add post_eject to struct acpi_scan_handler for cpu hotplug
+> > >   ACPI: Check _STA present bit before making CPUs not present
+> > >   ACPI: Warn when the present bit changes but the feature is not enabled
+> > >   drivers: base: Implement weak arch_unregister_cpu()
+> > >   LoongArch: Use the __weak version of arch_unregister_cpu()
+> > >   arm64: acpi: Move get_cpu_for_acpi_id() to a header
+> > >   ACPICA: Add new MADT GICC flags fields [code first?]
+> > >   arm64, irqchip/gic-v3, ACPI: Move MADT GICC enabled check into a
+> > >     helper
+> > >   irqchip/gic-v3: Don't return errors from gic_acpi_match_gicc()
+> > >   irqchip/gic-v3: Add support for ACPI's disabled but 'online capable'
+> > >     CPUs
+> > >   ACPI: add support to register CPUs based on the _STA enabled bit
+> > >   arm64: document virtual CPU hotplug's expectations
+> > >   ACPI: Add _OSC bits to advertise OS support for toggling CPU
+> > >     present/enabled
+> > >   cpumask: Add enabled cpumask for present CPUs that can be brought
+> > >     online
+> > > 
+> > > Jean-Philippe Brucker (1):
+> > >   arm64: psci: Ignore DENIED CPUs
+> > 
+> > -- 
+> > RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> > FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> > 
+> 
+> -- 
+> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> 
 
-Right. The numbers stored with the HMAT_REPORTING code and eventually NUMA nodes are normalized to nanoseconds, even though the raw data is in picoseconds. For CXL, I left the CDAT and computed numbers as raw numbers (picoseconds) until the final step when I calculate the latency for the entire region. And then it gets converted to nanoseconds in order to write back to the memory_target for HMAT_REPORTING. The numbers we retrieve from HMAT_REPORTING for the generic target is already in nanoseconds.
-
-
-> 
-> I saw that you have already had a discussion with Brice about the
-> pico/nanosecond unit conversion. My question is, are there any plans to
-> store latency number of cxl port in nanoseconds or change the comments
-> of coords structure?
-
-The numbers for the coords structure will remain in nanoseconds as it always have been. 
-
-> 
-> Thanks,
-> Wonjae
-> 
->> + }
->> +}
->> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
->> index 57a5901d5a60..7f19b533c5ae 100644
->> --- a/drivers/cxl/core/region.c
->> +++ b/drivers/cxl/core/region.c
->> @@ -1722,6 +1722,8 @@ static int cxl_region_attach(struct cxl_region *cxlr,
->>       return -EINVAL;
->>   }
->>
->> + cxl_region_perf_data_calculate(cxlr, cxled);
->> +
->>   if (test_bit(CXL_REGION_F_AUTO, &cxlr->flags)) {
->>       int i;
->>
->> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
->> index 80e6bd294e18..f6637fa33113 100644
->> --- a/drivers/cxl/cxl.h
->> +++ b/drivers/cxl/cxl.h
->> @@ -519,6 +519,7 @@ struct cxl_region_params {
->>   * @cxlr_pmem: (for pmem regions) cached copy of the nvdimm bridge
->>   * @flags: Region state flags
->>   * @params: active + config params for the region
->> + * @coord: QoS access coordinates for the region
->>   */
->>   struct cxl_region {
->>   struct device dev;
->> @@ -529,6 +530,7 @@ struct cxl_region {
->>   struct cxl_pmem_region *cxlr_pmem;
->>   unsigned long flags;
->>   struct cxl_region_params params;
->> + struct access_coordinate coord[ACCESS_COORDINATE_MAX];
->>   };
->>
->>   struct cxl_nvdimm_bridge {
->> @@ -880,6 +882,8 @@ int cxl_endpoint_get_perf_coordinates(struct cxl_port *port,
->>                     struct access_coordinate *coord);
->>   int cxl_hb_get_perf_coordinates(struct cxl_port *port,
->>               struct access_coordinate *coord);
->> +void cxl_region_perf_data_calculate(struct cxl_region *cxlr,
->> +                struct cxl_endpoint_decoder *cxled);
->>
->>   void cxl_coordinates_combine(struct access_coordinate *out,
->>                 struct access_coordinate *c1,
->>
->>
->>
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
