@@ -1,147 +1,184 @@
-Return-Path: <linux-acpi+bounces-3112-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3113-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE589843B2F
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 10:33:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06519843B39
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 10:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4A88289072
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 09:33:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8781A1F2B48E
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 09:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E72966B4E;
-	Wed, 31 Jan 2024 09:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E56D6994B;
+	Wed, 31 Jan 2024 09:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="bSn4THvb";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oigmsgoI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UQG0XsPB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE306774E;
-	Wed, 31 Jan 2024 09:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.111.4.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B7567E7D;
+	Wed, 31 Jan 2024 09:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706693607; cv=none; b=a4W0WkU9cYM3HmwvB+flTV0/EP/0u6tIX1K6uTBqxHXCHY7EPm9Iy1R49UfOQuakN+27e8QdsQYbDPZvo7yHD1GvTpt77oStcVbSDQ79hVx2ooRvV2y1NQkVe+A76OvLFd6t73V3Ot27BgGAvfbcRVvTjkTZ5c1Dok2Vslaankw=
+	t=1706693849; cv=none; b=gUQnuDKTRqBbVCP7pkQUIbaYiv5KJ8XYehET/AlLPiZo39DtQPOCQrwuJG69hq4qyBR5E89Q6elbVS32B1FtClgD0+c2RSV4KH/DP/9uOnTt5JeOdrC0xzWSBRU6fsujogDBp6wcOBI9y6M3i+sEWsCaidH3O0yH+s/DpA/H744=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706693607; c=relaxed/simple;
-	bh=SAcxu58CKy8uuW+Xv3xqsXot/kKkgjf2e5FL6zSemnE=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=YJiIhfCM6coYvAiksxfTxqFzGsw1F0dXJt+oGzfYvftM4Z7gnNBIQSP2+yt0TEttG5/9KJF1Q/G6HUsDrWk8dGeCjhp0pRigYMZRtyqnfrwFVRV5sgmu9e2Pg0I8Dq9acdFeGnDy4WDKWLxvabn2k2I/a4TDEXMQq3hOEWYHc1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=bSn4THvb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oigmsgoI; arc=none smtp.client-ip=66.111.4.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id 04E625C00CE;
-	Wed, 31 Jan 2024 04:33:23 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 31 Jan 2024 04:33:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1706693602; x=1706780002; bh=zfFTIJuMke
-	XWXqP1X9CM0AfUVjTJrLkI22bHlsMbmtw=; b=bSn4THvb3TNzacAXhTziKRl5rh
-	em6ZTUsdUJUsNMIzHZAlPH/1xeZqsrJAi5uO+4udjh12g5xLfLgQYDe1mO2XxRtB
-	1TLw9nJgsgXCa6Ev2O9ki1haskqZrxDBf0aCheZRxM0Tfq/kC/l6rE4Uxp5V/mop
-	Uyc05OnShT3Ow1NJGsuVkNMx1l7NYmOx50NA+QID4bpVIGiPWD+dSe4zYGnijSYG
-	75hR5solZGQXgJKEUL4wKhqTMrinzElUNUPLcsj6Fjifv9uedR+hDdCuk8VTNfqq
-	h5C98oj021rWDFM5haCHo4IrDgXT/CRQv1fNSgbjJ4ho/6yffnKI1ArjyvrQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1706693602; x=1706780002; bh=zfFTIJuMkeXWXqP1X9CM0AfUVjTJ
-	rLkI22bHlsMbmtw=; b=oigmsgoIRcR/hClDiIcHKTJBEMKvbpFKKx6R3l8pRfdI
-	Vx74VCDzlM85cr2ridYUVdbvEsZ1NiVUeJGYBwjb/KQeIKieImcZgWJNTNoKdori
-	ZMW2efPJoF9tTfewUgPygwdom4VHTEmR3mMaGkFEr8i6TItuuYIrACXLT2xBzGKJ
-	rniO4Az8EBb5KRXnavAIh7qJSEQbqGFMx2TYgYmd8zoSOem22M6SlRrBVJCqpRia
-	TVK7v0RecAJOOLIXvuJOFk+AcsEjniiqZLBnHkSbD92jo2HYsjoDkwbVPwssYmzn
-	XwFUvCZzXE7X7zhYSWhCx74CzGgOXMIhh+ZDvah73g==
-X-ME-Sender: <xms:4hO6ZSDyts5aymwbcqXhOpRv0NxSxSa2UKeaCznOpdlSQVr4IJCxqQ>
-    <xme:4hO6Zcjz454H0hMy7oS-pS7TI1rnKjkNJ4UsVwOBJjIjr6EqnnZBz5WseBxtWDRXk
-    RmoDtpqmmRCmPSYfhA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfedtledgtdefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:4hO6ZVnU1Je3RbLMfWXzYNYVf-vOuAmn3LwXu_JuyFMU2WcH8KegxA>
-    <xmx:4hO6ZQzMVRFHjHlgoA45o1frQlsonOJJIG8Hrr_yDlxoNc-Xz9HDvA>
-    <xmx:4hO6ZXRtLjYqwGq6bwLd4PgDubiIaysXdJ2KLX5fkULA2lJA-syrdQ>
-    <xmx:4hO6Za9ZjHmo9sg797cPxDJg4WV7uKUAbwDU7WfE4Ho3o2nuVuC0BA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 08CC4B6008D; Wed, 31 Jan 2024 04:33:21 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
+	s=arc-20240116; t=1706693849; c=relaxed/simple;
+	bh=NoQuHti6IiS7+y8Ci1LusmcVVUnkd5kTdFqj+tyu7T0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QcHgJXwMe/vO30uxnH8oFvcSKr5RPwiDF0RJMJDKf8BowSFWB2oiOurX0eSQk8lTbPPz6qx3fcDAKKjbGiZZLMbl/EaQcTsFgsGgOoLVoBpFPrkh2lj5CG4K9TBK6KbvHBqiq5Z3ZtaR6z89PTyRnqATWPyyMeGPogBmfsmA5qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UQG0XsPB; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706693845; x=1738229845;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NoQuHti6IiS7+y8Ci1LusmcVVUnkd5kTdFqj+tyu7T0=;
+  b=UQG0XsPBffKIfahohbarDYkA2tZMEOeBbATXWnzsXBzHxE4cAfscRsVl
+   8UwbK+KrxnxYuTaX2bjRowjSXFp6esu/9vKKZ8UUJSJAHeObhYuZve3Az
+   4Wfz/FoL1O4OFn87vdSVXfuekR+X9hziczrovcI9paRGNg/yApu9+g8t7
+   Fc0Gfwdv3h5TEYr6svLC0ofgMGc7U6a2mHqICkhOAV7gmT2Pe4Sc1J5XZ
+   KKtszaFqlyYwHKnHGfF8Olgy6qSxMmdyOvRgrKf9KwfUqBfkOOMGlXc0+
+   GQ2OdeWQz28yrdKRQ2CfOti6C0f+Y7fzvlQPEf6Y9hr5teJNYARIKXYHK
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="2488841"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="2488841"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 01:37:25 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="36805531"
+Received: from lkp-server02.sh.intel.com (HELO 59f4f4cd5935) ([10.239.97.151])
+  by orviesa001.jf.intel.com with ESMTP; 31 Jan 2024 01:37:22 -0800
+Received: from kbuild by 59f4f4cd5935 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rV71w-0001Ov-2b;
+	Wed, 31 Jan 2024 09:37:17 +0000
+Date: Wed, 31 Jan 2024 17:34:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mario Limonciello <mario.limonciello@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
+	Melissa Wen <mwen@igalia.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v2 2/4] drm: Add drm_get_acpi_edid() helper
+Message-ID: <202401311759.htfj4nbl-lkp@intel.com>
+References: <20240130192608.11666-3-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <682f037e-0efe-4d73-b867-f1f86a244836@app.fastmail.com>
-In-Reply-To: 
- <0be49d4d7d7e43933534aad6f72b35d3380519fd.1706603678.git.haibo1.xu@intel.com>
-References: <cover.1706603678.git.haibo1.xu@intel.com>
- <0be49d4d7d7e43933534aad6f72b35d3380519fd.1706603678.git.haibo1.xu@intel.com>
-Date: Wed, 31 Jan 2024 10:33:01 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Haibo Xu" <haibo1.xu@intel.com>
-Cc: "Alison Schofield" <alison.schofield@intel.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- linux-kernel@vger.kernel.org,
- "Conor.Dooley" <conor.dooley@microchip.com>, guoren <guoren@kernel.org>,
- "Jisheng Zhang" <jszhang@kernel.org>,
- "James Morse" <james.morse@arm.com>, linux-riscv@lists.infradead.org,
- "Ard Biesheuvel" <ardb@kernel.org>, "Baoquan He" <bhe@redhat.com>,
- acpica-devel@lists.linux.dev, "Robert Moore" <robert.moore@intel.com>,
- linux-acpi@vger.kernel.org, "Sami Tolvanen" <samitolvanen@google.com>,
- "Greentime Hu" <greentime.hu@sifive.com>, "Len Brown" <lenb@kernel.org>,
- "Albert Ou" <aou@eecs.berkeley.edu>,
- "Alexandre Ghiti" <alexghiti@rivosinc.com>,
- "Dan Williams" <dan.j.williams@intel.com>,
- "Chen Jiahao" <chenjiahao16@huawei.com>,
- "Yuntao Wang" <ytcoode@gmail.com>,
- "Paul Walmsley" <paul.walmsley@sifive.com>,
- =?UTF-8?Q?Cl=C3=A9ment_L=C3=A9ger?= <cleger@rivosinc.com>,
- xiaobo55x@gmail.com, "Anup Patel" <apatel@ventanamicro.com>,
- "Tony Luck" <tony.luck@intel.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Russell King" <rmk+kernel@armlinux.org.uk>,
- "Samuel Holland" <samuel.holland@sifive.com>,
- "Evan Green" <evan@rivosinc.com>, "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Andrew Jones" <ajones@ventanamicro.com>
-Subject: Re: [PATCH 4/4] ACPI: RISCV: Enable ACPI based NUMA
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240130192608.11666-3-mario.limonciello@amd.com>
 
-On Wed, Jan 31, 2024, at 03:32, Haibo Xu wrote:
-> diff --git a/drivers/acpi/numa/Kconfig b/drivers/acpi/numa/Kconfig
-> index 849c2bd820b9..525297c44250 100644
-> --- a/drivers/acpi/numa/Kconfig
-> +++ b/drivers/acpi/numa/Kconfig
-> @@ -2,7 +2,7 @@
->  config ACPI_NUMA
->  	bool "NUMA support"
->  	depends on NUMA
-> -	depends on (X86 || ARM64 || LOONGARCH)
-> +	depends on (X86 || ARM64 || LOONGARCH || RISCV)
+Hi Mario,
 
-The dependency is no longer needed now since these are
-the four architectures that support ACPI now that IA64
-is gone.
+kernel test robot noticed the following build warnings:
 
-All of them also 'select ACPI_NUMA' by default, though on
-x86 this can still be disabled by manually turning off
-CONFIG_X86_64_ACPI_NUMA. I suspect we don't actually ever
-want to turn it off on x86 either, so I guess the Kconfig
-option can just be removed entirely.
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on rafael-pm/acpi-bus linus/master v6.8-rc2 next-20240131]
+[cannot apply to drm-misc/drm-misc-next rafael-pm/devprop]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-     Arnd
+url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/ACPI-video-Handle-fetching-EDID-that-is-longer-than-256-bytes/20240131-032909
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20240130192608.11666-3-mario.limonciello%40amd.com
+patch subject: [PATCH v2 2/4] drm: Add drm_get_acpi_edid() helper
+config: i386-buildonly-randconfig-001-20240131 (https://download.01.org/0day-ci/archive/20240131/202401311759.htfj4nbl-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240131/202401311759.htfj4nbl-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401311759.htfj4nbl-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/acpi/acpi_video.c:642:44: warning: format specifies type 'long' but the argument has type 'ssize_t' (aka 'int') [-Wformat]
+     642 |                                  "Invalid _DDC data for length %ld\n", length);
+         |                                                                ~~~     ^~~~~~
+         |                                                                %zd
+   include/linux/acpi.h:1219:30: note: expanded from macro 'acpi_handle_debug'
+    1219 |                            handle, pr_fmt(fmt), ##__VA_ARGS__)
+         |                                           ~~~     ^~~~~~~~~~~
+   include/linux/dynamic_debug.h:250:59: note: expanded from macro '_dynamic_func_call'
+     250 |         _dynamic_func_call_cls(_DPRINTK_CLASS_DFLT, fmt, func, ##__VA_ARGS__)
+         |                                                                  ^~~~~~~~~~~
+   include/linux/dynamic_debug.h:248:65: note: expanded from macro '_dynamic_func_call_cls'
+     248 |         __dynamic_func_call_cls(__UNIQUE_ID(ddebug), cls, fmt, func, ##__VA_ARGS__)
+         |                                                                        ^~~~~~~~~~~
+   include/linux/dynamic_debug.h:224:15: note: expanded from macro '__dynamic_func_call_cls'
+     224 |                 func(&id, ##__VA_ARGS__);                       \
+         |                             ^~~~~~~~~~~
+   1 warning generated.
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for ACPI_WMI
+   Depends on [n]: X86_PLATFORM_DEVICES [=n] && ACPI [=y]
+   Selected by [y]:
+   - DRM [=y] && HAS_IOMEM [=y] && (AGP [=n] || AGP [=n]=n) && !EMULATED_CMPXCHG && HAS_DMA [=y] && X86 [=y]
+
+
+vim +642 drivers/acpi/acpi_video.c
+
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  612  
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  613  static int
+4be44fcd3bf648 drivers/acpi/video.c      Len Brown         2005-08-05  614  acpi_video_device_EDID(struct acpi_video_device *device,
+4be44fcd3bf648 drivers/acpi/video.c      Len Brown         2005-08-05  615  		       union acpi_object **edid, ssize_t length)
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  616  {
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  617  	int status;
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  618  	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  619  	union acpi_object *obj;
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  620  	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  621  	struct acpi_object_list args = { 1, &arg0 };
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  622  
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  623  
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  624  	*edid = NULL;
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  625  
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  626  	if (!device)
+d550d98d331737 drivers/acpi/video.c      Patrick Mochel    2006-06-27  627  		return -ENODEV;
+25f97b27045655 drivers/acpi/acpi_video.c Mario Limonciello 2024-01-30  628  	if (!length || (length % 128))
+d550d98d331737 drivers/acpi/video.c      Patrick Mochel    2006-06-27  629  		return -EINVAL;
+25f97b27045655 drivers/acpi/acpi_video.c Mario Limonciello 2024-01-30  630  	arg0.integer.value = length / 128;
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  631  
+901302688cb85b drivers/acpi/video.c      Patrick Mochel    2006-05-19  632  	status = acpi_evaluate_object(device->dev->handle, "_DDC", &args, &buffer);
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  633  	if (ACPI_FAILURE(status))
+d550d98d331737 drivers/acpi/video.c      Patrick Mochel    2006-06-27  634  		return -ENODEV;
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  635  
+50dd096973f1d9 drivers/acpi/video.c      Jan Engelhardt    2006-10-01  636  	obj = buffer.pointer;
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  637  
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  638  	if (obj && obj->type == ACPI_TYPE_BUFFER)
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  639  		*edid = obj;
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  640  	else {
+25f97b27045655 drivers/acpi/acpi_video.c Mario Limonciello 2024-01-30  641  		acpi_handle_debug(device->dev->handle,
+25f97b27045655 drivers/acpi/acpi_video.c Mario Limonciello 2024-01-30 @642  				 "Invalid _DDC data for length %ld\n", length);
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  643  		status = -EFAULT;
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  644  		kfree(obj);
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  645  	}
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  646  
+d550d98d331737 drivers/acpi/video.c      Patrick Mochel    2006-06-27  647  	return status;
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  648  }
+^1da177e4c3f41 drivers/acpi/video.c      Linus Torvalds    2005-04-16  649  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
