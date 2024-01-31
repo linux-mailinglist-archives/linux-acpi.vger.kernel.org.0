@@ -1,185 +1,220 @@
-Return-Path: <linux-acpi+bounces-3110-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3111-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7984A843A24
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 10:05:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E967843A44
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 10:07:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 070C61F2F5FC
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 09:05:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6A8A2924A8
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 09:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169FB69DED;
-	Wed, 31 Jan 2024 08:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763547AE4A;
+	Wed, 31 Jan 2024 09:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="Z61wUn+3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UiGBrf8b"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E37364CE1
-	for <linux-acpi@vger.kernel.org>; Wed, 31 Jan 2024 08:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259CC79DB4;
+	Wed, 31 Jan 2024 09:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706691504; cv=none; b=IWe7KaqMt5NZcMKqNofVEU+VhaYQfYGYnrdlZaZvZKXrtdBme3zT4l9Yr/9Yddk9fS9pfNgBaZo8LyYihWIMQ31K6XxWlzuvH/dAf7xPc4i3keiBuPIe0XGHIyoP5yQ8ugIvtoCIlHF1/L3wgEucNT1ds4hxVso6ybdYvel45v0=
+	t=1706691753; cv=none; b=F7qf68oC+UKcNs5BeOBmkUCz8RuGfMBMaSiYhZWDSh+7dQTz6reCAEnyjyYLHXLS8MD8dQZDAyCNPIChLQKcHLfCKserrz/CZM92iz8Y/ybNZvTKS04Rd86X81VxOqUwzhyO3i9/ni1tQUbQimKyem9ISoSPDIkiK9g/m1mUCjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706691504; c=relaxed/simple;
-	bh=6Zrgzb21tE86MlKP9O+7L5tc50ZGgJImAGA+G2RxFKM=;
+	s=arc-20240116; t=1706691753; c=relaxed/simple;
+	bh=NJRd4XDA5lDVXNSXsbiVsUP4P+c7qrvLCJJwrQTLTL4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JlpC3CeGRXJv+cwnxdppZzv0ypsg1IggRgJPU2h1AaZfjoIARbWqziUTwfp7CFLyNnZly6UpPv4epczfbmSxFRm4T95MQDTg2imGYw2Dc5fd9Vhil8rp90n3lJIBsh+M6DClbL4VwOllnVg9VReIkN/TdSgv5xf+1RPbPLk2400=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=Z61wUn+3; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-40ef3f351d2so3224975e9.1
-        for <linux-acpi@vger.kernel.org>; Wed, 31 Jan 2024 00:58:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citrix.com; s=google; t=1706691500; x=1707296300; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=qh9fV0VJ5xXDNHxQ7wqQ2X7g1MNe9pqa0fEzuyTcdc4=;
-        b=Z61wUn+3lfV7YeTkLJlRB1miGJj72yqa+VpPGV+brdxkWHQfA9gM+ENay7CQinN9qd
-         d4ziOx1muycnFRFrV9JAecDHvVivHRAOSP2k9QN60rldvnjmmioREgV1DkToc7vnUFXD
-         /ZT92g90ePpSNvzCsFvnPM2PdkurjRODrkvQw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706691500; x=1707296300;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qh9fV0VJ5xXDNHxQ7wqQ2X7g1MNe9pqa0fEzuyTcdc4=;
-        b=nZj2rpqQYqQk1FXClgHjPOrW0aHPNMqS9uuYZvfHvkZ1q5JrPtu28+2s1Rt4r5/HFQ
-         iJcpsal5AucFw6LbdunAchmRxU3vp5wJtflzRbn422vpmn1DeTle+0/TDhFiLt8MzIw9
-         ngkoqLPxGhYL56+1ldP4Qwru1eBhmBRPtRqg+L6lzX1ZyYf53bMlu7CKMAzR7RQSlJ82
-         OQLcwlzi+5GorQ+drlb+Fj8e9VkA5qUeOQa/bN9asC+c1Ivt8DC3y7SWCgmf8/0+fZlR
-         am2GQqcVTYHj4MD2OLVUs/D7cAk4uRAkEPTlyjrs5ll4nVdZ7N4Qggzwrtb6wjQoLHFX
-         Oy2w==
-X-Gm-Message-State: AOJu0YzcJd+ipkdqZJs+P/7R3/p5cnugyCCcqkqCW5k4FXeoithIPPBr
-	cAcM0SlTyJAL8OTvecDmal/rC56jm5nXr/2xAjBlKTUZzctmdoZd2+jQ9C7762I=
-X-Google-Smtp-Source: AGHT+IEoDFw3DguH17mowGdEzig1sXO01pO7xO+LXaUUAIS/5x+ESHIRsiCl4RQiIC4BMyQA8aoC/Q==
-X-Received: by 2002:adf:ea92:0:b0:33a:ded1:b01 with SMTP id s18-20020adfea92000000b0033aded10b01mr3594397wrm.28.1706691500269;
-        Wed, 31 Jan 2024 00:58:20 -0800 (PST)
-Received: from localhost ([213.195.118.74])
-        by smtp.gmail.com with ESMTPSA id d15-20020adfa34f000000b0033ae9f1fb82sm8527367wrb.48.2024.01.31.00.58.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jan 2024 00:58:20 -0800 (PST)
-Date: Wed, 31 Jan 2024 09:58:19 +0100
-From: Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: "Chen, Jiqian" <Jiqian.Chen@amd.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=KuF/MKJAUOMpp5aXTfVNKBUvIJejfAADVmnDv80UGSBMzv2MNzzvZCQr9t3qRALaJsbtHtltRz3DjcbLbwlJLCV8+5n2jF3AoMEFI7VxlJoygRV1nTbNRNoHIZ+bWRV+OVJOTz4NvKroRNyn/Z6KgOP7hviLS+CLxW63W9xvydY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UiGBrf8b; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706691750; x=1738227750;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NJRd4XDA5lDVXNSXsbiVsUP4P+c7qrvLCJJwrQTLTL4=;
+  b=UiGBrf8bLl75hXdEih2UAvdWv5Zf+72afShdZvTNCpqstmeq0+8kqE5l
+   VEv65371tYjoyudBc8oaKT4gkLU1WwP2F4bLa4Yc/bRPzmYQWj+gtfYSn
+   TVVAI3E48QaOdPG4uoecNuLWqrnipJR5NDUuiPSiJ22A2S5/NO/4y/XmZ
+   lpsivF7c5GzQR6QItGv+gurDQEoq4e/MSV3fzN4QRTjgR5xGlemKHKlYN
+   wxMFbJiG0O/+bEAMW35W3cTZogKGMkCmjKjfgh7MJDGk+tGKYUT7N8CwC
+   U18wbfM9qrTR9WW67kdXjfM7aIdEaHJAojOfpYy4wag7sbei/2U4bIwE4
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="10177145"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="10177145"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 01:02:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="30169253"
+Received: from lkp-server02.sh.intel.com (HELO 59f4f4cd5935) ([10.239.97.151])
+  by orviesa002.jf.intel.com with ESMTP; 31 Jan 2024 01:02:25 -0800
+Received: from kbuild by 59f4f4cd5935 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rV6U5-0001MC-0U;
+	Wed, 31 Jan 2024 09:02:19 +0000
+Date: Wed, 31 Jan 2024 17:01:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mario Limonciello <mario.limonciello@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"Hildebrand, Stewart" <Stewart.Hildebrand@amd.com>,
-	"Huang, Ray" <Ray.Huang@amd.com>,
-	"Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>
-Subject: Re: [RFC KERNEL PATCH v4 3/3] PCI/sysfs: Add gsi sysfs for pci_dev
-Message-ID: <ZboLq6kZhwpUC_c3@macbook>
-References: <Zbi8WJPEUSMgjuVY@macbook>
- <20240130204403.GA562912@bhelgaas>
+	Hans de Goede <hdegoede@redhat.com>
+Cc: Paul Gazzillo <paul@pgazz.com>,
+	Necip Fazil Yildiran <fazilyildiran@gmail.com>,
+	oe-kbuild-all@lists.linux.dev,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
+	Melissa Wen <mwen@igalia.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v2 2/4] drm: Add drm_get_acpi_edid() helper
+Message-ID: <202401311634.FE5CBVwe-lkp@intel.com>
+References: <20240130192608.11666-3-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240130204403.GA562912@bhelgaas>
+In-Reply-To: <20240130192608.11666-3-mario.limonciello@amd.com>
 
-On Tue, Jan 30, 2024 at 02:44:03PM -0600, Bjorn Helgaas wrote:
-> On Tue, Jan 30, 2024 at 10:07:36AM +0100, Roger Pau Monné wrote:
-> > On Mon, Jan 29, 2024 at 04:01:13PM -0600, Bjorn Helgaas wrote:
-> > > On Thu, Jan 25, 2024 at 07:17:24AM +0000, Chen, Jiqian wrote:
-> > > > On 2024/1/24 00:02, Bjorn Helgaas wrote:
-> > > > > On Tue, Jan 23, 2024 at 10:13:52AM +0000, Chen, Jiqian wrote:
-> > > > >> On 2024/1/23 07:37, Bjorn Helgaas wrote:
-> > > > >>> On Fri, Jan 05, 2024 at 02:22:17PM +0800, Jiqian Chen wrote:
-> > > > >>>> There is a need for some scenarios to use gsi sysfs.
-> > > > >>>> For example, when xen passthrough a device to dumU, it will
-> > > > >>>> use gsi to map pirq, but currently userspace can't get gsi
-> > > > >>>> number.
-> > > > >>>> So, add gsi sysfs for that and for other potential scenarios.
-> > > > >> ...
-> > > > > 
-> > > > >>> I don't know enough about Xen to know why it needs the GSI in
-> > > > >>> userspace.  Is this passthrough brand new functionality that can't be
-> > > > >>> done today because we don't expose the GSI yet?
-> > > 
-> > > I assume this must be new functionality, i.e., this kind of
-> > > passthrough does not work today, right?
-> > > 
-> > > > >> has ACPI support and is responsible for detecting and controlling
-> > > > >> the hardware, also it performs privileged operations such as the
-> > > > >> creation of normal (unprivileged) domains DomUs. When we give to a
-> > > > >> DomU direct access to a device, we need also to route the physical
-> > > > >> interrupts to the DomU. In order to do so Xen needs to setup and map
-> > > > >> the interrupts appropriately.
-> > > > > 
-> > > > > What kernel interfaces are used for this setup and mapping?
-> > > >
-> > > > For passthrough devices, the setup and mapping of routing physical
-> > > > interrupts to DomU are done on Xen hypervisor side, hypervisor only
-> > > > need userspace to provide the GSI info, see Xen code:
-> > > > xc_physdev_map_pirq require GSI and then will call hypercall to pass
-> > > > GSI into hypervisor and then hypervisor will do the mapping and
-> > > > routing, kernel doesn't do the setup and mapping.
-> > > 
-> > > So we have to expose the GSI to userspace not because userspace itself
-> > > uses it, but so userspace can turn around and pass it back into the
-> > > kernel?
-> > 
-> > No, the point is to pass it back to Xen, which doesn't know the
-> > mapping between GSIs and PCI devices because it can't execute the ACPI
-> > AML resource methods that provide such information.
-> > 
-> > The (Linux) kernel is just a proxy that forwards the hypercalls from
-> > user-space tools into Xen.
-> 
-> But I guess Xen knows how to interpret a GSI even though it doesn't
-> have access to AML?
+Hi Mario,
 
-On x86 Xen does know how to map a GSI into an IO-APIC pin, in order
-configure the RTE as requested.
+kernel test robot noticed the following build warnings:
 
-> > > It seems like it would be better for userspace to pass an identifier
-> > > of the PCI device itself back into the hypervisor.  Then the interface
-> > > could be generic and potentially work even on non-ACPI systems where
-> > > the GSI concept doesn't apply.
-> > 
-> > We would still need a way to pass the GSI to PCI device relation to
-> > the hypervisor, and then cache such data in the hypervisor.
-> > 
-> > I don't think we have any preference of where such information should
-> > be exposed, but given GSIs are an ACPI concept not specific to Xen
-> > they should be exposed by a non-Xen specific interface.
-> 
-> AFAIK Linux doesn't expose GSIs directly to userspace yet.  The GSI
-> concept relies on ACPI MADT, _MAT, _PRT, etc.  A GSI is associated
-> with some device (PCI in this case) and some interrupt controller
-> entry.  I don't understand how a GSI value is useful without knowing
-> something about that framework in which GSIs exist.
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on rafael-pm/acpi-bus linus/master v6.8-rc2 next-20240131]
+[cannot apply to drm-misc/drm-misc-next rafael-pm/devprop]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I wouldn't say it's strictly associated with PCI.  A GSI is a way for
-ACPI to have a single space that unifies all possible IO-APICs pins in
-the system in a flat way.  A GSI is useful in itself because there's
-a single GSI space for the whole host.
+url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/ACPI-video-Handle-fetching-EDID-that-is-longer-than-256-bytes/20240131-032909
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20240130192608.11666-3-mario.limonciello%40amd.com
+patch subject: [PATCH v2 2/4] drm: Add drm_get_acpi_edid() helper
+config: x86_64-kismet-CONFIG_ACPI_PLATFORM_PROFILE-CONFIG_HP_WMI-0-0 (https://download.01.org/0day-ci/archive/20240131/202401311634.FE5CBVwe-lkp@intel.com/config)
+reproduce: (https://download.01.org/0day-ci/archive/20240131/202401311634.FE5CBVwe-lkp@intel.com/reproduce)
 
-> Obviously I know less than nothing about Xen, so I apologize for
-> asking all these stupid questions, but it just doesn't all make sense
-> to me yet.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401311634.FE5CBVwe-lkp@intel.com/
 
-That's all fine, maybe there's a better path or way to expose this ACPI
-information.  Maybe introduce a per-device acpi directory and expose
-it there?  Or rename the entry to acpi_gsi?
+kismet warnings: (new ones prefixed by >>)
+>> kismet: WARNING: unmet direct dependencies detected for ACPI_PLATFORM_PROFILE when selected by HP_WMI
+   .config:101:warning: symbol value 'n' invalid for RADIO_RTRACK2_PORT
+   .config:223:warning: symbol value 'n' invalid for AIC79XX_CMDS_PER_DEVICE
+   .config:240:warning: symbol value 'n' invalid for SATA_MOBILE_LPM_POLICY
+   .config:310:warning: symbol value 'n' invalid for DRM_I915_TIMESLICE_DURATION
+   .config:321:warning: symbol value 'n' invalid for PANEL_LCD_PIN_SDA
+   .config:345:warning: symbol value 'n' invalid for PSTORE_BLK_MAX_REASON
+   .config:457:warning: symbol value 'n' invalid for KFENCE_SAMPLE_INTERVAL
+   .config:633:warning: symbol value 'n' invalid for CRYPTO_DEV_QCE_SW_MAX_LEN
+   .config:651:warning: symbol value 'n' invalid for DRM_XE_JOB_TIMEOUT_MIN
+   .config:674:warning: symbol value 'n' invalid for FB_GBE_MEM
+   .config:739:warning: symbol value 'n' invalid for PANEL_LCD_CHARSET
+   .config:836:warning: symbol value 'n' invalid for SND_AC97_POWER_SAVE_DEFAULT
+   .config:851:warning: symbol value 'n' invalid for MAGIC_SYSRQ_DEFAULT_ENABLE
+   .config:871:warning: symbol value 'n' invalid for DRM_I915_MAX_REQUEST_BUSYWAIT
+   .config:900:warning: symbol value 'n' invalid for SND_AT73C213_TARGET_BITRATE
+   .config:951:warning: symbol value 'n' invalid for DRM_XE_PREEMPT_TIMEOUT_MIN
+   .config:961:warning: symbol value 'n' invalid for NET_EMATCH_STACK
+   .config:962:warning: symbol value 'n' invalid for VMCP_CMA_SIZE
+   .config:1002:warning: symbol value 'n' invalid for SQUASHFS_FRAGMENT_CACHE_SIZE
+   .config:1113:warning: symbol value 'n' invalid for FB_OMAP2_NUM_FBS
+   .config:1237:warning: symbol value 'n' invalid for MTDRAM_ERASE_SIZE
+   .config:1253:warning: symbol value 'n' invalid for CFAG12864B_RATE
+   .config:1290:warning: symbol value 'n' invalid for SERIAL_UARTLITE_NR_UARTS
+   .config:1468:warning: symbol value 'n' invalid for LEGACY_PTY_COUNT
+   .config:1528:warning: symbol value 'n' invalid for RAPIDIO_DISC_TIMEOUT
+   .config:1568:warning: symbol value 'n' invalid for FAT_DEFAULT_CODEPAGE
+   .config:1608:warning: symbol value 'n' invalid for WATCHDOG_OPEN_TIMEOUT
+   .config:1615:warning: symbol value 'n' invalid for AIC7XXX_RESET_DELAY_MS
+   .config:1638:warning: symbol value 'n' invalid for KCOV_IRQ_AREA_SIZE
+   .config:1850:warning: symbol value 'n' invalid for IBM_EMAC_POLL_WEIGHT
+   .config:1903:warning: symbol value 'n' invalid for DRM_I915_STOP_TIMEOUT
+   .config:2189:warning: symbol value 'n' invalid for SND_SOC_SOF_DEBUG_IPC_FLOOD_TEST_NUM
+   .config:2246:warning: symbol value 'n' invalid for SND_HDA_PREALLOC_SIZE
+   .config:2358:warning: symbol value 'n' invalid for DRM_XE_TIMESLICE_MAX
+   .config:2452:warning: symbol value 'n' invalid for PANEL_LCD_BWIDTH
+   .config:2554:warning: symbol value 'n' invalid for PSTORE_BLK_CONSOLE_SIZE
+   .config:2701:warning: symbol value 'n' invalid for PANEL_PARPORT
+   .config:2763:warning: symbol value 'n' invalid for BOOKE_WDT_DEFAULT_TIMEOUT
+   .config:2798:warning: symbol value 'n' invalid for NOUVEAU_DEBUG_DEFAULT
+   .config:2996:warning: symbol value 'n' invalid for KCSAN_REPORT_ONCE_IN_MS
+   .config:3107:warning: symbol value 'n' invalid for KCSAN_UDELAY_INTERRUPT
+   .config:3132:warning: symbol value 'n' invalid for PANEL_LCD_PIN_BL
+   .config:3152:warning: symbol value 'n' invalid for DEBUG_OBJECTS_ENABLE_DEFAULT
+   .config:3159:warning: symbol value 'n' invalid for INITRAMFS_ROOT_GID
+   .config:3236:warning: symbol value 'n' invalid for PANEL_LCD_PIN_E
+   .config:3278:warning: symbol value 'n' invalid for ATM_FORE200E_TX_RETRY
+   .config:3321:warning: symbol value 'n' invalid for FB_OMAP2_DSS_MIN_FCK_PER_PCK
+   .config:3414:warning: symbol value 'n' invalid for STACK_MAX_DEFAULT_SIZE_MB
+   .config:3437:warning: symbol value 'n' invalid for KCSAN_UDELAY_TASK
+   .config:3468:warning: symbol value 'n' invalid for BLK_DEV_LOOP_MIN_COUNT
+   .config:3692:warning: symbol value 'n' invalid for MMC_BLOCK_MINORS
+   .config:3695:warning: symbol value 'n' invalid for INET_TABLE_PERTURB_ORDER
+   .config:3696:warning: symbol value 'n' invalid for CMA_SIZE_MBYTES
+   .config:3739:warning: symbol value 'n' invalid for SCSI_NCR53C8XX_SYNC
+   .config:3773:warning: symbol value 'n' invalid for SERIAL_MCF_BAUDRATE
+   .config:3870:warning: symbol value 'n' invalid for DE2104X_DSL
+   .config:3887:warning: symbol value 'n' invalid for BLK_DEV_RAM_COUNT
+   .config:3963:warning: symbol value 'n' invalid for AIC7XXX_DEBUG_MASK
+   .config:4102:warning: symbol value 'n' invalid for IP_VS_SH_TAB_BITS
+   .config:4257:warning: symbol value 'n' invalid for USBIP_VHCI_HC_PORTS
+   .config:4296:warning: symbol value 'n' invalid for AIC79XX_RESET_DELAY_MS
+   .config:4599:warning: symbol value 'n' invalid for RIONET_RX_SIZE
+   .config:4610:warning: symbol value 'n' invalid for RADIO_TYPHOON_PORT
+   .config:4730:warning: symbol value 'n' invalid for SERIAL_TXX9_NR_UARTS
+   .config:4819:warning: symbol value 'n' invalid for MTRR_SANITIZER_SPARE_REG_NR_DEFAULT
+   .config:4918:warning: symbol value 'n' invalid for IBM_EMAC_TXB
+   .config:5343:warning: symbol value 'n' invalid for CRYPTO_DEV_FSL_CAAM_INTC_TIME_THLD
+   .config:5415:warning: symbol value 'n' invalid for DRM_I915_FENCE_TIMEOUT
+   .config:5437:warning: symbol value 'n' invalid for TTY_PRINTK_LEVEL
+   .config:5601:warning: symbol value 'n' invalid for MIPS_EJTAG_FDC_KGDB_CHAN
+   .config:5609:warning: symbol value 'n' invalid for PPC_EARLY_DEBUG_EHV_BC_HANDLE
+   .config:5700:warning: symbol value 'n' invalid for KDB_DEFAULT_ENABLE
+   .config:5718:warning: symbol value 'n' invalid for SERIAL_ALTERA_UART_MAXPORTS
+   .config:5871:warning: symbol value 'n' invalid for FTRACE_RECORD_RECURSION_SIZE
+   .config:5992:warning: symbol value 'n' invalid for PANEL_LCD_HWIDTH
+   .config:6028:warning: symbol value 'n' invalid for LOCKDEP_CHAINS_BITS
+   .config:6121:warning: symbol value 'n' invalid for DRM_I915_HEARTBEAT_INTERVAL
+   .config:6130:warning: symbol value 'n' invalid for KCSAN_SKIP_WATCH
+   .config:6140:warning: symbol value 'n' invalid for EFI_MAX_FAKE_MEM
+   .config:6156:warning: symbol value 'n' invalid for PSTORE_BLK_KMSG_SIZE
+   .config:6336:warning: symbol value 'n' invalid for KVM_MAX_NR_VCPUS
+   .config:6443:warning: symbol value 'n' invalid for SERIAL_SH_SCI_NR_UARTS
+   .config:6483:warning: symbol value 'n' invalid for IP_VS_MH_TAB_INDEX
+   .config:6485:warning: symbol value 'n' invalid for ARCH_MMAP_RND_COMPAT_BITS
+   .config:6661:warning: symbol value 'n' invalid for RADIO_TRUST_PORT
+   .config:6684:warning: symbol value 'n' invalid for X86_AMD_PSTATE_DEFAULT_MODE
+   .config:6771:warning: symbol value 'n' invalid for ZSMALLOC_CHAIN_SIZE
+   .config:6867:warning: symbol value 'n' invalid for PANEL_LCD_PIN_RW
+   .config:6978:warning: symbol value 'n' invalid for SCSI_NCR53C8XX_MAX_TAGS
+   .config:7002:warning: symbol value 'n' invalid for SCSI_SYM53C8XX_DMA_ADDRESSING_MODE
+   .config:7041:warning: symbol value 'n' invalid for SERIAL_ALTERA_UART_BAUDRATE
+   .config:7080:warning: symbol value 'n' invalid for CMA_SIZE_PERCENTAGE
+   .config:7091:warning: symbol value 'n' invalid for LOCKDEP_BITS
+   .config:7236:warning: symbol value 'n' invalid for DRM_XE_TIMESLICE_MIN
+   .config:7398:warning: symbol value 'n' invalid for SND_MAX_CARDS
+   .config:7400:warning: symbol value 'n' invalid for IBM_EMAC_RXB
+   .config:7745:warning: symbol value 'n' invalid for SERIAL_ARC_NR_PORTS
+   .config:7808:warning: symbol value 'n' invalid for PANEL_LCD
+   .config:7916:warning: symbol value 'n' invalid for DRM_XE_PREEMPT_TIMEOUT_MAX
+   .config:7917:warning: symbol value 'n' invalid for SCSI_MPT3SAS_MAX_SGE
 
-Thanks, Roger.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
