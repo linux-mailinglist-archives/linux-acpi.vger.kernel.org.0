@@ -1,184 +1,166 @@
-Return-Path: <linux-acpi+bounces-3116-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3117-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF341843D58
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 11:56:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F1D7843EE0
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 12:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 938D31F2675B
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 10:56:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05B7B285160
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 11:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A89569E09;
-	Wed, 31 Jan 2024 10:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AC3762E0;
+	Wed, 31 Jan 2024 11:54:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55FB69DE1
-	for <linux-acpi@vger.kernel.org>; Wed, 31 Jan 2024 10:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.110.167.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E7A762DC
+	for <linux-acpi@vger.kernel.org>; Wed, 31 Jan 2024 11:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706698534; cv=none; b=hsidrDHIFeAk9dGdXRVduTwT5PgTZKnHOKZnt2n67ZVNeyJ5VjBzf+yHboCyJ0uSq9AZqb9ou6aNRXWoqD+aErn3hkx1zCy9+qWt5nMTQR6AZw4vcJIwTMc44NJVKvdFon1hC2xdjuAHIPf05pMCBsKMdzN3OfSE6q3SlYe9OuA=
+	t=1706702073; cv=none; b=jT8Md30imJHMkk+lCKDnyeipNpgqoGg8AY9ae31aIzQBSTjSWhJB6xwcY19Wxq8z7BRzWqMGEnFd39UIqrNfrHMivhyuVtBC4egN6kHq9eY/sbsUtYecEgE7S60OVuFae92aukiziMzh67dF167MD8RcONeEAv9ixXJVp9JmgHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706698534; c=relaxed/simple;
-	bh=aG8P/MkBiA/Gv0nPUKkQbjHE1IRLe9SjeeOS0X57tks=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SOhk9EG6HUWW0tXK5n50Qg90w+rb8I4sJrgyWuIRxzbDGLl72ICEE6zdsxUvBSSL97x5WEtCA1NgfoOS+EjnDQiVuPN7h3j4XfiPol1khpbqjrusamKNSxYjbAL9+6ASwS9hN8QZyA/Iigo94A13qW697F47COBejuM9Q4atrq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=203.110.167.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1706698529-1eb14e0c7e326a0001-I98ny2
-Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx2.zhaoxin.com with ESMTP id YFLiBZ57oHCTKoq5 (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 31 Jan 2024 18:55:29 +0800 (CST)
-X-Barracuda-Envelope-From: TonyWWang-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX1.zhaoxin.com
- (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 31 Jan
- 2024 18:55:29 +0800
-Received: from [10.32.57.248] (10.32.57.248) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 31 Jan
- 2024 18:55:26 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Message-ID: <7f869bc1-9129-48b2-b0fd-483c790a8d1b@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.32.57.248
-Date: Wed, 31 Jan 2024 18:55:25 +0800
+	s=arc-20240116; t=1706702073; c=relaxed/simple;
+	bh=e/UscuKZTOiMuRJCyvxigjJsP+9x9mdyejgJTx+Cbho=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U75mKbVhyMdXC1pKud0xuOaWJTX5nsW7o+5xGRVGp8tBix/oBTeiFp8bOl8lrMSLoeMKt83byIc5uf9oiI4gz9KDoKTAby2lWVanTWu8YDQNHoeMBXAvsnLRzJK8WxpdyPWvbtSUlQNsWhK+4FHhgo1Nv1XtrIdxJI/16uhP+tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-59a1f85923aso365257eaf.1
+        for <linux-acpi@vger.kernel.org>; Wed, 31 Jan 2024 03:54:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706702071; x=1707306871;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dQYbszXiVtbeNentNuy5/IaxGfWuDrK8hPRCB418EpI=;
+        b=lvoer2JLVT6IPaKxRJZomyQ+9wUFSvMjF5ppQkBlGiK8oFQnA6z0IHkqXp7wYxARou
+         ApEO0V6byQr2lBzd3RJg3xBS59pY/rzWfe5I8wtVcDoty0r/pFRKgFdu4wMgUKn8Q5Ul
+         uoLDXrKcKa6NNNTDsbavuvZw8ZUUcFeHpX86BExHBuzjhfBn1Eg1qmGTlJz8PZDG0Vxw
+         Hig5tF1l0DhOysswesB2Rtii/DaxxBfN7Cs9xmmFFiDb9SQJTElnL3/D38JqvKNQyGct
+         oN2oj0XHjjYSkTKGd+YmVTFW/BU0qJdyO47+zSqFdgkknzxSjIaf05N8wxvJ4u3JEir4
+         CRbQ==
+X-Forwarded-Encrypted: i=0; AJvYcCWdy07keyRWq0ivCSGsAXJbQSfRzseDUx4A3rXqP95mm/PyWkKRxI6Khk1tIkB+02xrXyBPgGQzIcTGwXZGYACN6SBTEiuPMrDR2Q==
+X-Gm-Message-State: AOJu0YxNba4E4BPIPz8Rjw8uJGTpab9qEO2um2Hd4+vghVlidiTyqigB
+	cDqJCNNYikcY1zeCobmayBcYmZ9sWaWm3Y+urf95VvwdnMgcB12lbxa3ntOc8sTwa2sb+XdSZFP
+	4xar9/YYLYFgoXbvjxkmVyhmy76w+smfJ
+X-Google-Smtp-Source: AGHT+IEYQRx4ACAj4H/Ee7aaapS2spOCP45jZ2AOgL/3umRcDOd3blPhZC8uMnT/7j+4tIuvkANrOT1wmMcZG3doG6E=
+X-Received: by 2002:a05:6820:139:b0:599:9e03:68da with SMTP id
+ i25-20020a056820013900b005999e0368damr1293193ood.0.1706702071046; Wed, 31 Jan
+ 2024 03:54:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] ACPI: cpufreq: Add ITMT support when CPPC enabled for
- Zhaoxin CPUs
-Content-Language: en-US
-X-ASG-Orig-Subj: Re: [PATCH 3/3] ACPI: cpufreq: Add ITMT support when CPPC enabled for
- Zhaoxin CPUs
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-CC: <rafael@kernel.org>, <lenb@kernel.org>, <robert.moore@intel.com>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<acpica-devel@lists.linux.dev>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	<hpa@zytor.com>, <mcgrof@kernel.org>, <peterz@infradead.org>,
-	<j.granados@samsung.com>, <viresh.kumar@linaro.org>,
-	<linux-pm@vger.kernel.org>, <CobeChen@zhaoxin.com>, <TimGuo@zhaoxin.com>,
-	<LeoLiu-oc@zhaoxin.com>, <LindaChai@zhaoxin.com>
-References: <20231228075705.26652-1-TonyWWang-oc@zhaoxin.com>
- <20231228075705.26652-4-TonyWWang-oc@zhaoxin.com>
- <20240117225158.GD13777@ranerica-svr.sc.intel.com>
-From: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
-In-Reply-To: <20240117225158.GD13777@ranerica-svr.sc.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
-X-Barracuda-Start-Time: 1706698529
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 3710
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.120187
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
+References: <170668982094.318782.2963631284830500182.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <170668982094.318782.2963631284830500182.stgit@dwillia2-xfh.jf.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 31 Jan 2024 12:54:18 +0100
+Message-ID: <CAJZ5v0gTc_FzwkSxPEa7izbDYz6BWqx72TzEXxHGd3MRR8EUFQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI/HMAT: Move HMAT messages to pr_debug()
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: rafael@kernel.org, Priya Autee <priya.v.autee@intel.com>, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 2024/1/18 06:51, Ricardo Neri wrote:
+On Wed, Jan 31, 2024 at 9:30=E2=80=AFAM Dan Williams <dan.j.williams@intel.=
+com> wrote:
 >
-> [这封邮件来自外部发件人]
+> The HMAT messages printed at boot, beyond being noisy, can also print
+> details for nodes that are not yet enabled. The primary method to
+> consume HMAT details is via sysfs, and the sysfs interface gates what is
+> emitted by whether the node is online or not. Hide the messages by
+> default by moving them from "info" to "debug" log level.
 >
-> On Thu, Dec 28, 2023 at 03:57:05PM +0800, Tony W Wang-oc wrote:
->> For Zhaoxin CPUs, the cores' highest frequencies may be different, which
->> means that cores may run at different max frequencies,
->>
->> According to ACPI-spec6 chapter 8.4.7, the per-core highest frequency
->> value can be obtained via cppc.
->>
->> The core with the higher frequency have better performance, which can be
->> called as preferred core. And better performance can be achieved by
->> making the scheduler to run tasks on these preferred cores.
->>
->> The cpufreq driver can use the highest frequency value as the prioriy of
->> core to make the scheduler try to get better performace. More specifically,
->> in the acpi-cpufreq driver use cppc_get_highest_perf() to get highest
->> frequency value of each core, use sched_set_itmt_core_prio() to set
->> highest frequency value as core priority, and use sched_set_itmt_support()
->> provided by ITMT to tell the scheduler to favor on the preferred cores.
->>
->> Signed-off-by: Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>
->> ---
->>   drivers/cpufreq/acpi-cpufreq.c | 56 +++++++++++++++++++++++++++++++++-
->>   1 file changed, 55 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
->> index 37f1cdf46d29..f4c1ff9e4bb0 100644
->> --- a/drivers/cpufreq/acpi-cpufreq.c
->> +++ b/drivers/cpufreq/acpi-cpufreq.c
->> @@ -663,8 +663,56 @@ static u64 get_max_boost_ratio(unsigned int cpu)
->>
->>        return div_u64(highest_perf << SCHED_CAPACITY_SHIFT, nominal_perf);
->>   }
->> +
->> +/* The work item is needed to avoid CPU hotplug locking issues */
->> +static void sched_itmt_work_fn(struct work_struct *work)
->> +{
->> +     sched_set_itmt_support();
->> +}
->> +
->> +static DECLARE_WORK(sched_itmt_work, sched_itmt_work_fn);
->> +
->> +static void set_itmt_prio(int cpu)
->> +{
->> +     static bool cppc_highest_perf_diff;
->> +     static struct cpumask core_prior_mask;
->> +     u64 highest_perf;
->> +     static u64 max_highest_perf = 0, min_highest_perf = U64_MAX;
->> +     int ret;
->> +
->> +     ret = cppc_get_highest_perf(cpu, &highest_perf);
->> +     if (ret)
->> +             return;
->> +
->> +     sched_set_itmt_core_prio(highest_perf, cpu);
->> +     cpumask_set_cpu(cpu, &core_prior_mask);
->> +
->> +     if (max_highest_perf <= min_highest_perf) {
->> +             if (highest_perf > max_highest_perf)
->> +                     max_highest_perf = highest_perf;
->> +
->> +             if (highest_perf < min_highest_perf)
->> +                     min_highest_perf = highest_perf;
->> +
->> +             if (max_highest_perf > min_highest_perf) {
->> +                     /*
->> +                      * This code can be run during CPU online under the
->> +                      * CPU hotplug locks, so sched_set_itmt_support()
->> +                      * cannot be called from here.  Queue up a work item
->> +                      * to invoke it.
->> +                      */
->> +                     cppc_highest_perf_diff = true;
->> +             }
->> +     }
->> +
->> +     if (cppc_highest_perf_diff && cpumask_equal(&core_prior_mask, cpu_online_mask)) {
->> +             pr_debug("queue a work to set itmt enabled\n");
->> +             schedule_work(&sched_itmt_work);
->> +     }
->> +}
-> sched_itmt_work and this function is a duplicate of what the intel_pstate
-> driver already does. It might be good if consolidate in a single place
-> if you are going to pursue this approach.
+> Otherwise, these prints are just a pretty-print way to dump the ACPI
+> HMAT table. It has always been the case that post-analysis was required
+> for these messages to map proximity-domains to Linux NUMA nodes, and as
+> Priya points out that analysis also needs to consider whether the
+> proximity domain is marked "enabled" in the SRAT.
+>
+> Reported-by: Priya Autee <priya.v.autee@intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-Thanks for your suggestion, will change the patch code in v2.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Sorry for late.
-
+> ---
+>  drivers/acpi/numa/hmat.c |   24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> index d6b85f0f6082..5331abc7c956 100644
+> --- a/drivers/acpi/numa/hmat.c
+> +++ b/drivers/acpi/numa/hmat.c
+> @@ -409,9 +409,9 @@ static __init int hmat_parse_locality(union acpi_subt=
+able_headers *header,
+>                 return -EINVAL;
+>         }
+>
+> -       pr_info("Locality: Flags:%02x Type:%s Initiator Domains:%u Target=
+ Domains:%u Base:%lld\n",
+> -               hmat_loc->flags, hmat_data_type(type), ipds, tpds,
+> -               hmat_loc->entry_base_unit);
+> +       pr_debug("Locality: Flags:%02x Type:%s Initiator Domains:%u Targe=
+t Domains:%u Base:%lld\n",
+> +                hmat_loc->flags, hmat_data_type(type), ipds, tpds,
+> +                hmat_loc->entry_base_unit);
+>
+>         inits =3D (u32 *)(hmat_loc + 1);
+>         targs =3D inits + ipds;
+> @@ -422,9 +422,9 @@ static __init int hmat_parse_locality(union acpi_subt=
+able_headers *header,
+>                         value =3D hmat_normalize(entries[init * tpds + ta=
+rg],
+>                                                hmat_loc->entry_base_unit,
+>                                                type);
+> -                       pr_info("  Initiator-Target[%u-%u]:%u%s\n",
+> -                               inits[init], targs[targ], value,
+> -                               hmat_data_type_suffix(type));
+> +                       pr_debug("  Initiator-Target[%u-%u]:%u%s\n",
+> +                                inits[init], targs[targ], value,
+> +                                hmat_data_type_suffix(type));
+>
+>                         hmat_update_target(targs[targ], inits[init],
+>                                            mem_hier, type, value);
+> @@ -452,9 +452,9 @@ static __init int hmat_parse_cache(union acpi_subtabl=
+e_headers *header,
+>         }
+>
+>         attrs =3D cache->cache_attributes;
+> -       pr_info("Cache: Domain:%u Size:%llu Attrs:%08x SMBIOS Handles:%d\=
+n",
+> -               cache->memory_PD, cache->cache_size, attrs,
+> -               cache->number_of_SMBIOShandles);
+> +       pr_debug("Cache: Domain:%u Size:%llu Attrs:%08x SMBIOS Handles:%d=
+\n",
+> +                cache->memory_PD, cache->cache_size, attrs,
+> +                cache->number_of_SMBIOShandles);
+>
+>         target =3D find_mem_target(cache->memory_PD);
+>         if (!target)
+> @@ -513,9 +513,9 @@ static int __init hmat_parse_proximity_domain(union a=
+cpi_subtable_headers *heade
+>         }
+>
+>         if (hmat_revision =3D=3D 1)
+> -               pr_info("Memory (%#llx length %#llx) Flags:%04x Processor=
+ Domain:%u Memory Domain:%u\n",
+> -                       p->reserved3, p->reserved4, p->flags, p->processo=
+r_PD,
+> -                       p->memory_PD);
+> +               pr_debug("Memory (%#llx length %#llx) Flags:%04x Processo=
+r Domain:%u Memory Domain:%u\n",
+> +                        p->reserved3, p->reserved4, p->flags, p->process=
+or_PD,
+> +                        p->memory_PD);
+>         else
+>                 pr_info("Memory Flags:%04x Processor Domain:%u Memory Dom=
+ain:%u\n",
+>                         p->flags, p->processor_PD, p->memory_PD);
+>
 
