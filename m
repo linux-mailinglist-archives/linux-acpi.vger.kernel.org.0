@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-3130-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3133-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B3BF84451D
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 17:53:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74DDE84457E
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 18:03:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3057928DBDC
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 16:53:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B397B2DA97
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 16:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A831386A1;
-	Wed, 31 Jan 2024 16:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF99213BE9E;
+	Wed, 31 Jan 2024 16:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KNo1KYRQ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="uqc+DCKw"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A130512CD9E;
-	Wed, 31 Jan 2024 16:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D37212BEBF;
+	Wed, 31 Jan 2024 16:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706719841; cv=none; b=XotmDB+sEhb1oiW7rlsA762XjKSjSD1o1fsCpIA2NDOn3qN7gTHRzAKI379pnNUIlJ9x0xpFI+KsmbjcqKWTLXuZkGg6qtO6vLgPl1/zDgVAwbfEQexczhF8+2BTVZ84TLfXx/VWD+rPVZilOLmHuSd3k9KVrFbqNtFcV9O7pz0=
+	t=1706719853; cv=none; b=JXl6Wfv0fKZzK6bFEzBrzXwD5ZpbWdBEJdHsUeCcVwJglRD0Ok4WlijIX5R+X0yeUM72+APD+5CFuG81N+MADMziwq8wcEbT1ijGTuFa+gq4iQlvq/qGEqzHFh4m3du5oODmIoplb0lywZ94oVecG7IDB0Zh/rg5EQsZ3jh2zCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706719841; c=relaxed/simple;
-	bh=NdD2UYlXXnYM9DzIaE3JLoBJ4RjvQqQva9FxOjXP4gI=;
+	s=arc-20240116; t=1706719853; c=relaxed/simple;
+	bh=P8UMP2I/3nZNlJyCrd8eERvIK1OiBSscwtDfKF/3DxE=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=tqJDfUbzSxYCNICIyAoJJDoGZVwWZ/huuBRGN4EbvT013G2EGR8j9BUwArfPWjT49HfbN9COT9vrvojjTmAdt1t4eKKd2f31942JJ6MHBXdnpRt4fvHJItMVxNWobE8VoqmZwFr8KJoD8H6dkJUWwVsE9HQkmiNjHfd0g1vb6Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KNo1KYRQ; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=crJM5k3oe4GGYDEx+YyUkXpgJWSKxOwUORea0d5fs9DTk6Bz4OJlWbCG0lgLCjMCZ9XfeGQ7UoAa4HG1HQJ1Ma+GO0bKQ0sZc9TsNOlpvyF1v1zNplufMy/qKYz6kzIUBpySkBu7vV8hyFwwl5Y702n3Ff5XS4o+Yeqb/esi5hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=uqc+DCKw; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -37,21 +37,21 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=VN1zuZPFpZjLLP0E5DaIC2d1rUW/6DV9Td+xG3o2+qg=; b=KNo1KYRQcQWsZcCcYBaTIYTz1U
-	YLZZeMQ89ErXJBDPAnpSvorty1j38HNyw/Or+qe9F87KH/IwhCxFdKs+uaOrd4SDwbrbI/Y7w/b8N
-	nagi5jkc9yGP5a4Jg2LPE1drjQ3KEk+3q+3Hc0rwCM9fD7kPR17ljE32RU/U4JGKCg9+OXtOxh3fT
-	SkEoL3Ko6CXb16EnoQo+U2CasOIaBVZlCKK9/90JVx0lCH8ntQdv70qXPK1GCRJ9QQIsGMT3JTzFC
-	qWc6qVlkKgO5V6fMTg3W44z7Hwja6+7imr/7gDHhNnpsVqIn/8YuJEpLaFDrYURBztFPh8GTWLBiS
-	zGkRFWiQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:36020 helo=rmk-PC.armlinux.org.uk)
+	bh=DnAkVWZfHdsfbPL7YZp73DdgOlGRvTL1dby6CU3CDrY=; b=uqc+DCKwG0ug+HapGtea8aoa5Y
+	g5EpcUoEzakHsQIsGgONCg7oIGC58rfToOozcFpjkAtAypAyfVF6fnnKgmvWj1DD2sxBspC6E4cHX
+	SSOa+qh6GVlBlisWfGKmtDac31tVsXttXF8jhZdqTIICwhAhlJbeSeb2bsTj3GlEuH4lquy25qowh
+	qE5bnPbzW5WKHaXBCE7AxlRmjJ5l1MQNXQtzwAGI2Ys1ulpvisOs2/egpL8YFDP4mHKVzHjGfq1D0
+	Qg7QH6oXlz1qOITAOO7AoN4aWjtI84rCd5gwtLz7YiKyArVIPBSPvrq3HXqSm/sQKSb30L71/nt+H
+	+wF0Ir0g==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:36100 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1rVDnA-0003VI-21;
-	Wed, 31 Jan 2024 16:50:28 +0000
+	id 1rVDnM-0003W7-34;
+	Wed, 31 Jan 2024 16:50:41 +0000
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1rVDn4-0027Z5-Lq; Wed, 31 Jan 2024 16:50:22 +0000
+	id 1rVDnK-0027ZN-40; Wed, 31 Jan 2024 16:50:38 +0000
 In-Reply-To: <Zbp5xzmFhKDAgHws@shell.armlinux.org.uk>
 References: <Zbp5xzmFhKDAgHws@shell.armlinux.org.uk>
 From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
@@ -76,8 +76,7 @@ Cc: Salil Mehta <salil.mehta@huawei.com>,
 	 James Morse <james.morse@arm.com>,
 	 Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
 	 "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: [PATCH RFC v4 09/15] arm64: acpi: Move get_cpu_for_acpi_id() to a
- header
+Subject: [PATCH RFC v4 12/15] arm64: psci: Ignore DENIED CPUs
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -87,76 +86,69 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1rVDn4-0027Z5-Lq@rmk-PC.armlinux.org.uk>
+Message-Id: <E1rVDnK-0027ZN-40@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 31 Jan 2024 16:50:22 +0000
+Date: Wed, 31 Jan 2024 16:50:38 +0000
 
-From: James Morse <james.morse@arm.com>
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-ACPI identifies CPUs by UID. get_cpu_for_acpi_id() maps the ACPI UID
-to the linux CPU number.
+When a CPU is marked as disabled, but online capable in the MADT, PSCI
+applies some firmware policy to control when it can be brought online.
+PSCI returns DENIED to a CPU_ON request if this is not currently
+permitted. The OS can learn the current policy from the _STA enabled bit.
 
-The helper to retrieve this mapping is only available in arm64's numa
-code.
+Handle the PSCI DENIED return code gracefully instead of printing an
+error.
 
-Move it to live next to get_acpi_id_for_cpu().
+See https://developer.arm.com/documentation/den0022/f/?lang=en page 58.
 
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+[ morse: Rewrote commit message ]
 Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
 Tested-by: Miguel Luis <miguel.luis@oracle.com>
 Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
 Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- arch/arm64/include/asm/acpi.h | 11 +++++++++++
- arch/arm64/kernel/acpi_numa.c | 11 -----------
- 2 files changed, 11 insertions(+), 11 deletions(-)
+Changes since RFC v2
+ * Add specification reference
+ * Use EPERM rather than EPROBE_DEFER
+Changes since RFC v3:
+ * Use EPERM everywhere
+ * Drop unnecessary changes to drivers/firmware/psci/psci.c
+---
+ arch/arm64/kernel/psci.c | 2 +-
+ arch/arm64/kernel/smp.c  | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index 6792a1f83f2a..bc9a6656fc0c 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -119,6 +119,17 @@ static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
- 	return	acpi_cpu_get_madt_gicc(cpu)->uid;
- }
- 
-+static inline int get_cpu_for_acpi_id(u32 uid)
-+{
-+	int cpu;
-+
-+	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
-+		if (uid == get_acpi_id_for_cpu(cpu))
-+			return cpu;
-+
-+	return -EINVAL;
-+}
-+
- static inline void arch_fix_phys_package_id(int num, u32 slot) { }
- void __init acpi_init_cpus(void);
- int apei_claim_sea(struct pt_regs *regs);
-diff --git a/arch/arm64/kernel/acpi_numa.c b/arch/arm64/kernel/acpi_numa.c
-index e51535a5f939..0c036a9a3c33 100644
---- a/arch/arm64/kernel/acpi_numa.c
-+++ b/arch/arm64/kernel/acpi_numa.c
-@@ -34,17 +34,6 @@ int __init acpi_numa_get_nid(unsigned int cpu)
- 	return acpi_early_node_map[cpu];
- }
- 
--static inline int get_cpu_for_acpi_id(u32 uid)
--{
--	int cpu;
--
--	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
--		if (uid == get_acpi_id_for_cpu(cpu))
--			return cpu;
--
--	return -EINVAL;
--}
--
- static int __init acpi_parse_gicc_pxm(union acpi_subtable_headers *header,
- 				      const unsigned long end)
+diff --git a/arch/arm64/kernel/psci.c b/arch/arm64/kernel/psci.c
+index 29a8e444db83..fabd732d0a2d 100644
+--- a/arch/arm64/kernel/psci.c
++++ b/arch/arm64/kernel/psci.c
+@@ -40,7 +40,7 @@ static int cpu_psci_cpu_boot(unsigned int cpu)
  {
+ 	phys_addr_t pa_secondary_entry = __pa_symbol(secondary_entry);
+ 	int err = psci_ops.cpu_on(cpu_logical_map(cpu), pa_secondary_entry);
+-	if (err)
++	if (err && err != -EPERM)
+ 		pr_err("failed to boot CPU%d (%d)\n", cpu, err);
+ 
+ 	return err;
+diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+index 4ced34f62dab..dc0e0b3ec2d4 100644
+--- a/arch/arm64/kernel/smp.c
++++ b/arch/arm64/kernel/smp.c
+@@ -132,7 +132,8 @@ int __cpu_up(unsigned int cpu, struct task_struct *idle)
+ 	/* Now bring the CPU into our world */
+ 	ret = boot_secondary(cpu, idle);
+ 	if (ret) {
+-		pr_err("CPU%u: failed to boot: %d\n", cpu, ret);
++		if (ret != -EPERM)
++			pr_err("CPU%u: failed to boot: %d\n", cpu, ret);
+ 		return ret;
+ 	}
+ 
 -- 
 2.30.2
 
