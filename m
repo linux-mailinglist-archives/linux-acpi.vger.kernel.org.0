@@ -1,227 +1,148 @@
-Return-Path: <linux-acpi+bounces-3108-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3109-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA5D843873
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 09:04:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A37843918
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 09:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9102833C7
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 08:04:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BF3D1C28F0C
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 08:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA11155C2D;
-	Wed, 31 Jan 2024 08:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D435DF1F;
+	Wed, 31 Jan 2024 08:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RnTZpY74"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EInphIyi"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8875810E;
-	Wed, 31 Jan 2024 08:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F5B53E3D
+	for <linux-acpi@vger.kernel.org>; Wed, 31 Jan 2024 08:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706688284; cv=none; b=NTWx9wVAPKem5mjsjttr/f1sX4lcYtgY9Hz35lyVOKSNQ6PLs1tQc38wML/qEogTthiO0s86BDDACsGu/Rm/F0/WbS2we/iJLz5hHxnMRmhDofUR7GNejSkwZYN53lbIMQVV6oXGSE1zYy4Ximh6z13R3c7bwwqui9B+lL0nj38=
+	t=1706689824; cv=none; b=NVr81DEKNuG4keqgq6tUwt4KJQhFrVadFIvDj+e1rc8831ZzlhipZYCkyMqFvUWs1CPW3vXD6kgQq++SX+WxsD8XorodMgDmKE8pKSsD+7xxNBW7Uj0GMmRlrlP6XslWDk8areZKstE+d4oAsTgSLIKwCNvhLie0NajqulJNmGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706688284; c=relaxed/simple;
-	bh=2wy6IAqZWDlhSg8xSyQOwMuys/jiy/qt5c8fR9V26Dk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L284JjzBbHxyhZq69nKJiZdO6e48f6qiPPYQj3K/pWqQWxLR17Euqi3vaJkK22dZVpoVWZCoM09uIN00CERQ2md+y0IL9cgzkc7cuhKMWuJgbdbw4mdQOUlJ+p5RVFPEudBih56zRc9hLTTJBpf/nZV/NTcB1JDpMohpWstvBUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RnTZpY74; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1706689824; c=relaxed/simple;
+	bh=xU6+xL2HskrmNdykm9M4m4IL09/g6UB0gUsfHDxXyyc=;
+	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=IqWFoiKYBayirkSXxXQu7jBR1X+bdLE6dd6ktZOqL2B8My0vfi3sNmYzQ06lv2JVgItWp0zGGtm2Nkhy9BnayTqkiWqMiT0D45BP78+WD19AivzeGdLoFyCWRhVfRR1Iup+KRKLifQ71HCj4+sw2ynFkPe62+9jIogu3ZhsYx40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EInphIyi; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706688283; x=1738224283;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2wy6IAqZWDlhSg8xSyQOwMuys/jiy/qt5c8fR9V26Dk=;
-  b=RnTZpY7441tr9SUQhtUa7Lb/Y82sOq51hxnSFNIIUU1Qxw/tkujLmFlI
-   0/0fox3fx85baQM+EZkPLLVsAP0LbNy5juv4GXwI28VJnMcgO2wiuaaeq
-   9Pjqwn4f/WIgjzUURa+O04Ryo2y/NzBnAP0pyo9mPQ9hMe72bxd2peZXv
-   T3IMLANiC6GpXuq5W1o13T+en8ze1olub9kXzETdkYpIQXSoG2jj1vSPq
-   jGqfhFV7rFlXAzMQNla4KqACBIN0+iks3TblBFqRnrgvho9kSikcskWHS
-   TA8rpNw8phoXA9Eyd7YGO1yznAAljWV3S0ZUaDYU5Zxw+2f+lHhhxJhgT
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="17059012"
+  t=1706689822; x=1738225822;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=xU6+xL2HskrmNdykm9M4m4IL09/g6UB0gUsfHDxXyyc=;
+  b=EInphIyiEnxH01Gwr47al9BeK+dVYL+N7qw4WW+9Wj4mxsTyer5GKxQb
+   T2QaJkgvfSrekm1Q+KjW7qnSGOj7opNv+cP/GiSqKNonm3NuzZ3RWS9GA
+   HTcT0JmsW0/AHZ4WHBN0JIdYMgsfoA3zBlt9uiccm52Ajxn73cqKgaHrg
+   z5WyUyq7ooTPBiOOVfRR4+jjTpoPY3FtYJ7M/B29wMyFBvk8BvvmK5lhQ
+   gmlZ2RESZU5T3nyqK+GD32jl9g01C23khsOBXoe9OAOljTHCOcfTdV6ZG
+   A/vb8IUXyRxIbtVyvZJDzNI8aswcIakBXydqnJtAc6p1plUmcewHkZKBC
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="17065154"
 X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="17059012"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 00:04:42 -0800
+   d="scan'208";a="17065154"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 00:30:22 -0800
 X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="1119546468"
 X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="3992171"
-Received: from nixos.sh.intel.com (HELO localhost) ([10.238.2.93])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 00:04:33 -0800
-Date: Wed, 31 Jan 2024 16:04:21 +0800
-From: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-To: 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-acpi@vger.kernel.org, chao.p.peng@linux.intel.com, erwin.tsaur@intel.com, 
-	feiting.wanyan@intel.com, qingshun.wang@intel.com, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Bjorn Helgaas <helgaas@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver O'Halloran <oohall@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Shiju Jose <shiju.jose@huawei.com>, Adam Preble <adam.c.preble@intel.com>, 
-	Li Yang <leoyang.li@nxp.com>, Lukas Wunner <lukas@wunner.de>, 
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, Robert Richter <rrichter@amd.com>, linux-kernel@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, linux-edac@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] PCI/AER: Store more information in aer_err_info
-Message-ID: <ojv6nqi55o4q3aazf34w7yjriagup3h5dmim7k67xuv6t7xdjr@m3bjyroi4jfq>
-References: <20240125062802.50819-1-qingshun.wang@linux.intel.com>
- <20240125062802.50819-2-qingshun.wang@linux.intel.com>
- <6ecb7bbf-0eba-4cea-b9b8-05fd092b7d01@linux.intel.com>
+   d="scan'208";a="1119546468"
+Received: from rijanshr-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.209.100.213])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 00:30:21 -0800
+Subject: [PATCH] ACPI/HMAT: Move HMAT messages to pr_debug()
+From: Dan Williams <dan.j.williams@intel.com>
+To: rafael@kernel.org
+Cc: Priya Autee <priya.v.autee@intel.com>, linux-acpi@vger.kernel.org
+Date: Wed, 31 Jan 2024 00:30:21 -0800
+Message-ID: <170668982094.318782.2963631284830500182.stgit@dwillia2-xfh.jf.intel.com>
+User-Agent: StGit/0.18-3-g996c
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ecb7bbf-0eba-4cea-b9b8-05fd092b7d01@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 30, 2024 at 06:26:39PM -0800, Kuppuswamy Sathyanarayanan wrote:
-> 
-> On 1/24/24 10:27 PM, Wang, Qingshun wrote:
-> > When Advisory Non-Fatal errors are raised, both correctable and
-> 
-> Maybe you can start with same info about what Advisory Non-FataL
-> errors are and the specification reference. I know that you included
-> it in cover letter. But it is good to include it in commit log.
+The HMAT messages printed at boot, beyond being noisy, can also print
+details for nodes that are not yet enabled. The primary method to
+consume HMAT details is via sysfs, and the sysfs interface gates what is
+emitted by whether the node is online or not. Hide the messages by
+default by moving them from "info" to "debug" log level.
 
-Good idea, thanks!
+Otherwise, these prints are just a pretty-print way to dump the ACPI
+HMAT table. It has always been the case that post-analysis was required
+for these messages to map proximity-domains to Linux NUMA nodes, and as
+Priya points out that analysis also needs to consider whether the
+proximity domain is marked "enabled" in the SRAT.
 
-> 
-> > uncorrectable error statuses will be set. The current kernel code cannot
-> > store both statuses at the same time, thus failing to handle ANFE properly.
-> > In addition, to avoid clearing UEs that are not ANFE by accident, UE
-> 
-> Please add some details about the impact of not clearing them.
+Reported-by: Priya Autee <priya.v.autee@intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ drivers/acpi/numa/hmat.c |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-Makes sense, will do.
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index d6b85f0f6082..5331abc7c956 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -409,9 +409,9 @@ static __init int hmat_parse_locality(union acpi_subtable_headers *header,
+ 		return -EINVAL;
+ 	}
+ 
+-	pr_info("Locality: Flags:%02x Type:%s Initiator Domains:%u Target Domains:%u Base:%lld\n",
+-		hmat_loc->flags, hmat_data_type(type), ipds, tpds,
+-		hmat_loc->entry_base_unit);
++	pr_debug("Locality: Flags:%02x Type:%s Initiator Domains:%u Target Domains:%u Base:%lld\n",
++		 hmat_loc->flags, hmat_data_type(type), ipds, tpds,
++		 hmat_loc->entry_base_unit);
+ 
+ 	inits = (u32 *)(hmat_loc + 1);
+ 	targs = inits + ipds;
+@@ -422,9 +422,9 @@ static __init int hmat_parse_locality(union acpi_subtable_headers *header,
+ 			value = hmat_normalize(entries[init * tpds + targ],
+ 					       hmat_loc->entry_base_unit,
+ 					       type);
+-			pr_info("  Initiator-Target[%u-%u]:%u%s\n",
+-				inits[init], targs[targ], value,
+-				hmat_data_type_suffix(type));
++			pr_debug("  Initiator-Target[%u-%u]:%u%s\n",
++				 inits[init], targs[targ], value,
++				 hmat_data_type_suffix(type));
+ 
+ 			hmat_update_target(targs[targ], inits[init],
+ 					   mem_hier, type, value);
+@@ -452,9 +452,9 @@ static __init int hmat_parse_cache(union acpi_subtable_headers *header,
+ 	}
+ 
+ 	attrs = cache->cache_attributes;
+-	pr_info("Cache: Domain:%u Size:%llu Attrs:%08x SMBIOS Handles:%d\n",
+-		cache->memory_PD, cache->cache_size, attrs,
+-		cache->number_of_SMBIOShandles);
++	pr_debug("Cache: Domain:%u Size:%llu Attrs:%08x SMBIOS Handles:%d\n",
++		 cache->memory_PD, cache->cache_size, attrs,
++		 cache->number_of_SMBIOShandles);
+ 
+ 	target = find_mem_target(cache->memory_PD);
+ 	if (!target)
+@@ -513,9 +513,9 @@ static int __init hmat_parse_proximity_domain(union acpi_subtable_headers *heade
+ 	}
+ 
+ 	if (hmat_revision == 1)
+-		pr_info("Memory (%#llx length %#llx) Flags:%04x Processor Domain:%u Memory Domain:%u\n",
+-			p->reserved3, p->reserved4, p->flags, p->processor_PD,
+-			p->memory_PD);
++		pr_debug("Memory (%#llx length %#llx) Flags:%04x Processor Domain:%u Memory Domain:%u\n",
++			 p->reserved3, p->reserved4, p->flags, p->processor_PD,
++			 p->memory_PD);
+ 	else
+ 		pr_info("Memory Flags:%04x Processor Domain:%u Memory Domain:%u\n",
+ 			p->flags, p->processor_PD, p->memory_PD);
 
-> > severity and Device Status also need to be recorded: any fatal UE cannot
-> > be ANFE, and if Fatal/Non-Fatal Error Detected is set in Device Status, do
-> > not take any assumption and let UE handler to clear UE status.
-> >
-> > Store status and mask of both correctable and uncorrectable errors in
-> > aer_err_info. The severity of UEs and the values of the Device Status
-> > register are also recorded, which will be used to determine UEs that should
-> > be handled by the ANFE handler. Refactor the rest of the code to use
-> > cor/uncor_status and cor/uncor_mask fields instead of status and mask
-> > fields.
-> >
-> > Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> > ---
-> >  drivers/acpi/apei/ghes.c | 10 ++++-
-> >  drivers/cxl/core/pci.c   |  6 ++-
-> >  drivers/pci/pci.h        |  8 +++-
-> >  drivers/pci/pcie/aer.c   | 93 ++++++++++++++++++++++++++--------------
-> >  include/linux/aer.h      |  4 +-
-> >  include/linux/pci.h      | 27 ++++++++++++
-> >  6 files changed, 111 insertions(+), 37 deletions(-)
-> >
-> > ......
-> >
-> > @@ -1213,38 +1233,49 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
-> >  	int temp;
-> >  
-> >  	/* Must reset in this function */
-> > -	info->status = 0;
-> > +	info->cor_status = 0;
-> > +	info->uncor_status = 0;
-> > +	info->uncor_severity = 0;
-> >  	info->tlp_header_valid = 0;
-> >  
-> >  	/* The device might not support AER */
-> >  	if (!aer)
-> >  		return 0;
-> >  
-> > -	if (info->severity == AER_CORRECTABLE) {
-> > +	if (info->severity == AER_CORRECTABLE ||
-> > +	    info->severity == AER_NONFATAL ||
-> > +	    type == PCI_EXP_TYPE_ROOT_PORT ||
-> > +	    type == PCI_EXP_TYPE_RC_EC ||
-> > +	    type == PCI_EXP_TYPE_DOWNSTREAM) {
-> 
-> 
-> It looks like you are reading both uncorrectable and correctable status
-> by default for both NONFATAL and CORRECTABLE errors. Why not do
-> it conditionally only for ANFE errors?
-> 
-> 
-
-My initial purpose was the value will be used in aer_event trace in
-PATCH 4 under both conditions, but I can also add checks here to reduce
-unnecessary IO and remove the checks in PATCH 4.
-
-> > +		/* Link is healthy for IO reads */
-> >  		pci_read_config_dword(dev, aer + PCI_ERR_COR_STATUS,
-> > -			&info->status);
-> > +				      &info->cor_status);
-> >  		pci_read_config_dword(dev, aer + PCI_ERR_COR_MASK,
-> > -			&info->mask);
-> >  
-> > ......
-> >
-> > diff --git a/include/linux/pci.h b/include/linux/pci.h
-> > index add9368e6314..259812620d4d 100644
-> > --- a/include/linux/pci.h
-> > +++ b/include/linux/pci.h
-> > @@ -318,6 +318,33 @@ struct pci_sriov;
-> >  struct pci_p2pdma;
-> >  struct rcec_ea;
-> >  
-> > +struct pcie_capability_regs {
-> > +	u8 pcie_cap_id;
-> > +	u8 next_cap_ptr;
-> > +	u16 pcie_caps;
-> > +	u32 device_caps;
-> > +	u16 device_control;
-> > +	u16 device_status;
-> > +	u32 link_caps;
-> > +	u16 link_control;
-> > +	u16 link_status;
-> > +	u32 slot_caps;
-> > +	u16 slot_control;
-> > +	u16 slot_status;
-> > +	u16 root_control;
-> > +	u16 root_caps;
-> > +	u32 root_status;
-> > +	u32 device_caps_2;
-> > +	u16 device_control_2;
-> > +	u16 device_status_2;
-> > +	u32 link_caps_2;
-> > +	u16 link_control_2;
-> > +	u16 link_status_2;
-> > +	u32 slot_caps_2;
-> > +	u16 slot_control_2;
-> > +	u16 slot_status_2;
-> > +};
-> > +
-> IIUC, this struct is only used drivers/acpi/apei/ghes.c . Why not define it in that file?
-
-You are right. Whenever we need it elsewhere, we can move it to the
-header file anyway.
-
-> >  /* The pci_dev structure describes PCI devices */
-> >  struct pci_dev {
-> >  	struct list_head bus_list;	/* Node in per-bus list */
-> 
-> -- 
-> Sathyanarayanan Kuppuswamy
-> Linux Kernel Developer
-> 
-
---
-Best regards,
-Wang, Qingshun
 
