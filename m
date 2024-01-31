@@ -1,125 +1,115 @@
-Return-Path: <linux-acpi+bounces-3141-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3142-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E981844D5D
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Feb 2024 00:51:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A484B844D84
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Feb 2024 01:00:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45F5C1F2420A
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 23:51:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBB64B2284E
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jan 2024 23:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47EB3A8D6;
-	Wed, 31 Jan 2024 23:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0922C3A8EC;
+	Wed, 31 Jan 2024 23:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pq9J7l2R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QCbzGFNd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925603A8C6;
-	Wed, 31 Jan 2024 23:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0733A8DA;
+	Wed, 31 Jan 2024 23:55:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706745110; cv=none; b=kwiVYVhF2AqxUEnM8Ccyt4UglsYAmHm03/qpRs5TpeYG86FMA3pT7VI6JE/5SJFs+UyjJ/rEZqnGTFoKRFx+4rlwIb4m5uHMJnEFhgHkKSJMAXwG5+RVWUPZKSPX7RSylTkiPBiwaRR5WEHWs7oE0rrqVE6Bw5fSipfIScZR++E=
+	t=1706745342; cv=none; b=mB+XKaybHVtOQ4/BYZStCsGJRD3+j7m5iSrlqoeYOL0jkjPKj2EJ/hVKRUtR8VnT57HO17PLiCJ8DORFMuPrPiz49g6sqd7De0iBBycXXiG309ed4bPNKO59yXwQcT8Sw+zqxW9wnitij++vyDui6Xijnm4cjCYIB9dZ+XIcn8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706745110; c=relaxed/simple;
-	bh=bEXE9iCcPsAyP4fz4RssHiTnyheZ4ZI2rqh4iftmVgo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ovAWbCuueG8aAuR61x9ugybxoA27x+Fw2ykkMKGJJbG2hudnRKGuYH6ur77lpKgNS5JyOqf2rHVijseJDZ6jXlcusJbnFZ1ZzNNlFWz/2lceYa3lF2VeEuUG8uv4x6UAkD+x3L3ofXPVNVcQ075c7EUJFjZKk5FJTnL0MgPAbE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pq9J7l2R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2106EC433F1;
-	Wed, 31 Jan 2024 23:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706745110;
-	bh=bEXE9iCcPsAyP4fz4RssHiTnyheZ4ZI2rqh4iftmVgo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pq9J7l2Ra6F4wkK6mHCN6mfAMSgCZKw1SvtPrQcPGZ7SY/FSOB/hGJwO2nlrlYJUI
-	 zLZwlTLPSpxXPIOa+IBhSgxW+W1pTISGjrlRZLxqTUsO+6+C7zLLtbY90mMJisimS3
-	 kWckl4YNWUBlbLqOCrWRSg+7/8R6+lefyXNREAdEubVoFsDR1OYgAvnOcAJLio3d8D
-	 2wpPwC4CevJnMJVYwlTBahP9AN0TLV4ood4N6XgdrulDEBooz1uTBNivsWoKhNC1/h
-	 fBZlkoT5NkvQyvvrxx6ZnJ35rtdMXxpfdS3KUyVQ2CljN1JlkKuXdEiFAXCi8jYm2B
-	 CgK5OiSe0kzBw==
-Date: Wed, 31 Jan 2024 17:51:48 -0600
-From: Rob Herring <robh@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-	Frank Rowand <frowand.list@gmail.com>, linux-kernel@vger.kernel.org,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Nicolas Palix <nicolas.palix@imag.fr>,
-	Sumera Priyadarsini <sylphrenadin@gmail.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [RFC PATCH 2/5] of: Introduce for_each_child_of_node_scoped() to
- automate of_node_put() handling
-Message-ID: <20240131235148.GA2743404-robh@kernel.org>
-References: <20240128160542.178315-1-jic23@kernel.org>
- <20240128160542.178315-3-jic23@kernel.org>
- <CAMknhBEL3cv4L0A-W=_1EcDmD3Cj8apheDcpnqjyJjKBZuPYew@mail.gmail.com>
+	s=arc-20240116; t=1706745342; c=relaxed/simple;
+	bh=sug+HF2SZlcMgcQiYI0lGI7pFw+I4QHWJGILvxgqdmU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KEyJLaThJl9nw1KHLnx1p8hBg+IX/xZ3B5nzAsOujBFEImtMwd+YDLXaL7kiMPqp5oof2gMARJ6pQqSQC4qd58AqBc27jdbR6cSTAs6FqVI3GHxpC6FvoNYvMw5MtsIQ87C2/nGKJT+8KQyY7787O7oY92xxaHrPSE8Pow3dmYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QCbzGFNd; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706745341; x=1738281341;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=sug+HF2SZlcMgcQiYI0lGI7pFw+I4QHWJGILvxgqdmU=;
+  b=QCbzGFNdwriPK+byGFiGxOoNysKl2zvnPli5BfSEdNdodJ98424IOuXx
+   XprGacW2OPa0YRt1U6iPYbfuzgqZHUc43fq78Sepdstopv0gj+m/kYaMp
+   SovUABlJrv4vIA8yd2Rx6OIHCmOzM524hysE5YdpVIArguLa60EuF4yvy
+   A73x3cxcN9PzDRcTgchLj0A8dEo91LUcqUJh006Ap+Qyq3QOrwpUJ9j7I
+   B7Agli2y0AjtFWEq0E2ZXF9v3G9WYoKEMWN+SLM62E1CB7Zi9G4hzzG9H
+   r5BYZM0l3xHbXn7wOjSCbIoJYn7Lpyup7RIyQm56/L1eoU1FgNa55e5G8
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="3597891"
+X-IronPort-AV: E=Sophos;i="6.05,233,1701158400"; 
+   d="scan'208";a="3597891"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 15:55:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="822752084"
+X-IronPort-AV: E=Sophos;i="6.05,233,1701158400"; 
+   d="scan'208";a="822752084"
+Received: from iweiny-desk3.amr.corp.intel.com (HELO localhost) ([10.213.174.197])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 15:55:38 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH 0/2] cxl/cper: Fixes for CXL CPER event processing
+Date: Wed, 31 Jan 2024 15:55:37 -0800
+Message-Id: <20240131-cxl-cper-fixups-v1-0-335c85b1d77b@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMknhBEL3cv4L0A-W=_1EcDmD3Cj8apheDcpnqjyJjKBZuPYew@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPndumUC/x2MWwqAIBAArxL73YIr0usq0UfpVgthohRCdPekz
+ 2GYeSBxFE4wVA9EviXJ6QtQXYHdZ78xiisMWmmjiAhtPtAGjrhKvkJCt6wNtb1iYzsoVYhczH8
+ cp/f9ACQ1BYBhAAAA
+To: Dan Williams <dan.j.williams@intel.com>, 
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, 
+ Alison Schofield <alison.schofield@intel.com>, 
+ Vishal Verma <vishal.l.verma@intel.com>, linux-acpi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
+ linux-cxl@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+X-Mailer: b4 0.13-dev-2d940
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1706745337; l=823;
+ i=ira.weiny@intel.com; s=20221222; h=from:subject:message-id;
+ bh=sug+HF2SZlcMgcQiYI0lGI7pFw+I4QHWJGILvxgqdmU=;
+ b=IzAYM+GBUu17z3rvbh7NGNKya/6wYgjx3Mhhroy4oNiSr9VC8VNdHIeOAUfIylSxXsAjbngkh
+ JncpSEOZITrBGc9RZCR8nmeMAWSf28uuqxYSUzhZSn+9gahQNTEENoX
+X-Developer-Key: i=ira.weiny@intel.com; a=ed25519;
+ pk=brwqReAJklzu/xZ9FpSsMPSQ/qkSalbg6scP3w809Ec=
 
-On Sun, Jan 28, 2024 at 03:11:01PM -0600, David Lechner wrote:
-> On Sun, Jan 28, 2024 at 10:06 AM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > To avoid issues with out of order cleanup, or ambiguity about when the
-> > auto freed data is first instantiated, do it within the for loop definition.
-> >
-> > The disadvantage is that the struct device_node *child variable creation
-> > is not immediately obvious where this is used.
-> > However, in many cases, if there is another definition of
-> > struct device_node *child; the compiler / static analysers will notify us
-> > that it is unused, or uninitialized.
-> >
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >  include/linux/of.h | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> >
-> > diff --git a/include/linux/of.h b/include/linux/of.h
-> > index 50e882ee91da..f822226eac6d 100644
-> > --- a/include/linux/of.h
-> > +++ b/include/linux/of.h
-> > @@ -1434,6 +1434,12 @@ static inline int of_property_read_s32(const struct device_node *np,
-> >         for (child = of_get_next_available_child(parent, NULL); child != NULL; \
-> >              child = of_get_next_available_child(parent, child))
-> >
-> > +#define for_each_child_of_node_scoped(parent, child) \
-> > +       for (struct device_node *child __free(device_node) =            \
-> > +            of_get_next_child(parent, NULL);                           \
-> > +            child != NULL;                                             \
-> > +            child = of_get_next_available_child(parent, child))
-> 
-> Doesn't this need to match the initializer (of_get_next_child)?
-> Otherwise it seems like the first node could be a disabled node but no
-> other disabled nodes would be included in the iteration.
-> 
-> It seems like we would want two macros, one for each variation,
-> analogous to for_each_child_of_node() and
-> for_each_available_child_of_node().
+A couple of fixes for the new CXL CPER processing code.
 
-Yes, but really I'd like these the other way around. 'available' should 
-be the default as disabled should really be the same as a node not 
-present except for a few cases where it is not.
+The first is a real bug which should land in rc.  The second could wait
+until the next merge window but it small enough it should be ok to land
+in rc.
 
-I bring it up only because if we're changing things then it is a 
-convenient time to change this. That's really a side issue to sorting 
-out how this new way should work.
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+---
+Ira Weiny (2):
+      cxl/cper: Fix errant CPER prints for CXL events
+      cxl/trace: Remove unnecessary memcpy's
 
-Rob
+ drivers/acpi/apei/ghes.c    | 26 --------------------------
+ drivers/cxl/core/trace.h    |  6 +++---
+ drivers/firmware/efi/cper.c | 19 +++++++++++++++++++
+ include/linux/cper.h        | 23 +++++++++++++++++++++++
+ 4 files changed, 45 insertions(+), 29 deletions(-)
+---
+base-commit: 861c0981648f5b64c86fd028ee622096eb7af05a
+change-id: 20240111-cxl-cper-fixups-dbf61790e4c8
+
+Best regards,
+-- 
+Ira Weiny <ira.weiny@intel.com>
+
 
