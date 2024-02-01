@@ -1,167 +1,188 @@
-Return-Path: <linux-acpi+bounces-3150-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3151-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9957984510A
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Feb 2024 06:52:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199618452E6
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Feb 2024 09:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54F10289178
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Feb 2024 05:52:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 803061F25156
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Feb 2024 08:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2488C82887;
-	Thu,  1 Feb 2024 05:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2852A15A495;
+	Thu,  1 Feb 2024 08:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="eZ9y/iTI";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="acM4PUYP"
+	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="FTc9W/U0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F142823BE;
-	Thu,  1 Feb 2024 05:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.111.4.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B6315AACB
+	for <linux-acpi@vger.kernel.org>; Thu,  1 Feb 2024 08:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706766755; cv=none; b=h5Twd/6Q0o7g8tTKrOZMr+WJbn/QeHWWAMEtloELu6c3nhVHlmAC9uCGJFHgDsa2PZaIZNtgAA7KDC52JOVSlnHYtiqU1R6UHod5u0MuHMlvX066ySJ0iUo+jUgPXcezXqffLS6z6fRp4Q4+swj1y3fuxp4PDlU7XC+3u2x/0ZE=
+	t=1706776794; cv=none; b=s2gyq/r8TweXyr7ouVVg9edczirR53a0vWerDfw573FE0d8RwP5Ur8yk/8B6vU/Q5Nhr+WZkuA4CwBtqnxP/+Op0AjUulQXJcytZKR572KQyBqLIeZstj5BipX32mSCT5UWp3H6dLZ4dx1T0ynPbQ4YH8S1H9cwEIzdXAy023uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706766755; c=relaxed/simple;
-	bh=UbH1LhRiDI0ioxkNf9RPkubc5YaMrjdhQUmIQIMkHwU=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=D9fMm4sASJ3Q9I5IDk4nmu8ZFAPwWZyd94qaVnZ1NZWS0xXyylaQEcCtY1rPrgtU+xig0xI4IW7zqW3LaMTc+X8aJt2WHYxeP9GmJY3SxufNPiJlzJf/ZI6W4e92GJQY+I9oOt+5l8QF0rY/kBWpI4/Qy2GnHgiNedSy/bYqrkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=eZ9y/iTI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=acM4PUYP; arc=none smtp.client-ip=66.111.4.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id 6154D5C00CD;
-	Thu,  1 Feb 2024 00:52:32 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Thu, 01 Feb 2024 00:52:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1706766752;
-	 x=1706853152; bh=zEgYM9ib8uGx7d/JTunm4wFeCd5N9eP8RpFnlN/mwpA=; b=
-	eZ9y/iTIat4bvibXxHDOZNu8+z/foRAjW1+VrEi6mBJ0me+ew8hwvF7N0yvAZrB1
-	uBVZ7wxx/MnXWORGF2Bvd/tIBNuM+15CaQLOAP6gP4+Qu7XxJo/cf+YWtQa8mX29
-	nsaV8xWk6jZlqUz5R+vHNjzS6IbmCyxaPPu6fuY1tXzgchxnZJqX3D6JEwiZFATA
-	R2qV9mo33w1D7TB1DtYIt+LPCOkUGx7iZ+dAWXJNjYVdqLEsahLFDCCiUs0tUR1W
-	r84xxbG+OEVsP0FsrP68IqEIgfd0kfn4hLbe8a0waMaUF5XY/58bEGwhuOrfx/0y
-	qpnMrff43l2O3faJa8UhYw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1706766752; x=
-	1706853152; bh=zEgYM9ib8uGx7d/JTunm4wFeCd5N9eP8RpFnlN/mwpA=; b=a
-	cM4PUYPSdqNYiCoOnCbyCcMPcJCaqjfk70ukJFUoi+P8EAwb4tn6fhn7s8pShigj
-	yEug/zu/+8Ls4i4Fg5BOi60wbYh+y8Qgu76RjZCbBglrd+Jurt+TnCo6/8132io5
-	IKQtROMxazV1ndOp1v670HoJgX9fR3TB6Fw9t/x0fsSoEg4VIZxlYgZgr2bVBvs8
-	J8JLEDgSwPjNQIRQ6yUJELu5Do1iKEMd/BplhgRYwUFO4nsWVDgRAgM6hIHVsj/W
-	Z9/WNwvpfG+Ram++QTG2eAtIkVDKozIObQKPK4/83xUBs7f01S6n/SJcJmcTm+dO
-	oBWtSqVO0mzqw/OGY3K0Q==
-X-ME-Sender: <xms:njG7ZW3gFFkAEClduSd1WA3yuVUi2pRf-kG1dAZ42lccSVmkoNMnAg>
-    <xme:njG7ZZGY92FC9hk9ptv04xX9IhLOfxssTxcROt2rk2cchjCcDftz5MdnANR2Pe4aX
-    BrD9o_y9T9THpdIsS4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfedutddgkeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
-    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:njG7Ze6TioQfgIdzUhVynFTxGZNUYJ80nhGOc4H3Xry9oz_qyiXQBQ>
-    <xmx:njG7ZX08NPgCi5esQhZfiJOQXJ9EIMkGM5io1nY5rkqE9tolAtfjjA>
-    <xmx:njG7ZZHTFQLCCFJSF1P-Cqx31v8Ftxw63nzvu4LFfVD4zB6F80YHIg>
-    <xmx:oDG7ZRgX3MDz0o7mz_-Hi4SELgNbYMUDEzt3Ijx_0hPL4gmIV_4yVg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id BDCBAB60092; Thu,  1 Feb 2024 00:52:30 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
+	s=arc-20240116; t=1706776794; c=relaxed/simple;
+	bh=Y19IbEX3FXAZ7R2Z+dmkGvLzD3cE4MKEu+r+iHhHUaU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cxh67V/kRFoT/W/Xz+6S/K5+L/bVgBWNTg6iKaviKAlwKG4kdwyFTAfF+KdgBrUv0VUbqzi2D3omItlMmC/HUXphzFqZkTabwhzLAxW9qkOUz6JXFztYaS4hYNqOkhqNVlEuTF42IfoWhVI4UAkYEoWNfw/g8vJcf/KxOve9YrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=FTc9W/U0; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-40ef6da20feso3123555e9.0
+        for <linux-acpi@vger.kernel.org>; Thu, 01 Feb 2024 00:39:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=citrix.com; s=google; t=1706776790; x=1707381590; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Mmx7Ge44ylq+xRaE54Mmi5lsueMZNlgqIRQYM/UNpUU=;
+        b=FTc9W/U0K6Iz1YQa0AFdLfWmj+AzqhUx3NaSA666dcrUnhZCzPDhZyMpDp6DmkAsHH
+         CXdHxaC4SS3UocOmv6B5DOrLjbGKXDYFzibbitlteovquDPxWfD7JmavCadrXmdKn799
+         mD31YISgaWqEJNW2xjLkBk0EP8lg8cNJHmWTc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706776790; x=1707381590;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mmx7Ge44ylq+xRaE54Mmi5lsueMZNlgqIRQYM/UNpUU=;
+        b=EnoRAvTV9Jq6xyfRhF8xhi3R+u3JW8mEVKSvs/Jweb7T43/nEO/1HgIA9vcm9DdpdK
+         0eX4vt0Vky7ofSw1qp4XwFf7DvRDi0a27/szT8FalSIrO7yM3s5b8BmEf2ugE842lHE3
+         O2ouGII2L5klUmsJ2UInnJ2gtoGlgHNbbVytKSslpVl/O/+FBBBKdtOZfvuPOG4tHVCs
+         kLrJtqzFgtHqp6cIen7O9aay7O16T7E35I7plE5UMXesaMgrxTMH27InWGpBmwysUXsY
+         KoI2tXjHKIAV+Cq02Hbu+4P86/i8NDi2WxYwHXviBUg9YLcRqTMP4ifi99lH5bm+lkGR
+         Tddg==
+X-Gm-Message-State: AOJu0YzspZ+KjbPg6HGvRC/6Bo16px3qJyp/fbV1Yz+sA+Xk/gE//t5M
+	Pb06xW00UoL+CVcSm+B91gsymbEc3WJbTAr+JPDeGM07d9w++Y+vbDR38fYciZs=
+X-Google-Smtp-Source: AGHT+IGW7bgbJkTrR4Yza/IRXj8QJZwTE7Cr91T4ok2nKqWk8e0wQ2sciL8gpCHIKiRmLekUEHkNew==
+X-Received: by 2002:a05:600c:1c9a:b0:40e:f972:9901 with SMTP id k26-20020a05600c1c9a00b0040ef9729901mr3736599wms.4.1706776790540;
+        Thu, 01 Feb 2024 00:39:50 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCXDCVhgfb0o24SN4Wqn/FgnWkJYm9QCYpD/ESYbFl4VjZTFA1lzb2EecVom9k5fEwfP12Y/uppYGzcffTRrzp/icQGv3HjGZpMbEHP1O0bmMpkENMmh/i5WpK5zIezuae0Uf4YZJFj/GIIpi8YgFkSb+ve1+U2VK0dRTY3tLYI0EKqJsftwJxoWx8X1Knfb8tnC76BuOBql1srwLsN7vGSl2wcbMkEqp6rlaRVuZC9dj8g2KKow5t0/nsSr8nJZlls/92TMW3QXD5Uc/pJNuCeeBPj2+nM9/cIi4ZkYdMgG2c7Y3W/85xx3atQ7NFnga1NjCNQMDhJbuqruZaGAYHg7aAFbNfLKQC7xPnI5wPmFp1E3D2qFqwlvqSIyLUOZrN5YudkUPsFIPL0Qk1faQOXY4FjKqsnSsDMGI58pczPV4freLpRkOBnJ+zblZe0frUgjrALk1NdUEoPj3Y9vKQ+JxYOJfr1AnKZs/vkDbp6joC8yuId8ZmXn+YeGnhlWwAZhccdcXntd3R0=
+Received: from localhost ([213.195.118.74])
+        by smtp.gmail.com with ESMTPSA id g10-20020a05600c4eca00b0040fbba734f3sm1082225wmq.34.2024.02.01.00.39.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Feb 2024 00:39:50 -0800 (PST)
+Date: Thu, 1 Feb 2024 09:39:49 +0100
+From: Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: "Chen, Jiqian" <Jiqian.Chen@amd.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"Hildebrand, Stewart" <Stewart.Hildebrand@amd.com>,
+	"Huang, Ray" <Ray.Huang@amd.com>,
+	"Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>
+Subject: Re: [RFC KERNEL PATCH v4 3/3] PCI/sysfs: Add gsi sysfs for pci_dev
+Message-ID: <ZbtY1R15pYZz3F3B@macbook>
+References: <ZboLq6kZhwpUC_c3@macbook>
+ <20240131190014.GA593286@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <6abae3ef-fc91-4283-b6a3-20810ececfe8@app.fastmail.com>
-In-Reply-To: 
- <CAJve8okV_9qs6urESw2N-v8LT2-QP40jc1WhHYci7n-r9EoA9Q@mail.gmail.com>
-References: <cover.1706603678.git.haibo1.xu@intel.com>
- <0be49d4d7d7e43933534aad6f72b35d3380519fd.1706603678.git.haibo1.xu@intel.com>
- <682f037e-0efe-4d73-b867-f1f86a244836@app.fastmail.com>
- <CAJve8okV_9qs6urESw2N-v8LT2-QP40jc1WhHYci7n-r9EoA9Q@mail.gmail.com>
-Date: Thu, 01 Feb 2024 06:52:10 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Haibo Xu" <xiaobo55x@gmail.com>
-Cc: "Haibo Xu" <haibo1.xu@intel.com>,
- "Alison Schofield" <alison.schofield@intel.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- linux-kernel@vger.kernel.org,
- "Conor.Dooley" <conor.dooley@microchip.com>, guoren <guoren@kernel.org>,
- "Jisheng Zhang" <jszhang@kernel.org>,
- "James Morse" <james.morse@arm.com>, linux-riscv@lists.infradead.org,
- "Ard Biesheuvel" <ardb@kernel.org>, "Baoquan He" <bhe@redhat.com>,
- acpica-devel@lists.linux.dev, "Robert Moore" <robert.moore@intel.com>,
- linux-acpi@vger.kernel.org, "Sami Tolvanen" <samitolvanen@google.com>,
- "Greentime Hu" <greentime.hu@sifive.com>, "Len Brown" <lenb@kernel.org>,
- "Albert Ou" <aou@eecs.berkeley.edu>,
- "Alexandre Ghiti" <alexghiti@rivosinc.com>,
- "Dan Williams" <dan.j.williams@intel.com>,
- "Chen Jiahao" <chenjiahao16@huawei.com>,
- "Yuntao Wang" <ytcoode@gmail.com>,
- "Paul Walmsley" <paul.walmsley@sifive.com>,
- =?UTF-8?Q?Cl=C3=A9ment_L=C3=A9ger?= <cleger@rivosinc.com>,
- "Anup Patel" <apatel@ventanamicro.com>,
- "Tony Luck" <tony.luck@intel.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Russell King" <rmk+kernel@armlinux.org.uk>,
- "Samuel Holland" <samuel.holland@sifive.com>,
- "Evan Green" <evan@rivosinc.com>, "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Andrew Jones" <ajones@ventanamicro.com>
-Subject: Re: [PATCH 4/4] ACPI: RISCV: Enable ACPI based NUMA
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240131190014.GA593286@bhelgaas>
 
-On Thu, Feb 1, 2024, at 03:58, Haibo Xu wrote:
-> On Wed, Jan 31, 2024 at 5:33=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> =
-wrote:
->>
->> On Wed, Jan 31, 2024, at 03:32, Haibo Xu wrote:
->> > diff --git a/drivers/acpi/numa/Kconfig b/drivers/acpi/numa/Kconfig
->> > index 849c2bd820b9..525297c44250 100644
->> > --- a/drivers/acpi/numa/Kconfig
->> > +++ b/drivers/acpi/numa/Kconfig
->> > @@ -2,7 +2,7 @@
->> >  config ACPI_NUMA
->> >       bool "NUMA support"
->> >       depends on NUMA
->> > -     depends on (X86 || ARM64 || LOONGARCH)
->> > +     depends on (X86 || ARM64 || LOONGARCH || RISCV)
->>
->> The dependency is no longer needed now since these are
->> the four architectures that support ACPI now that IA64
->> is gone.
->>
->> All of them also 'select ACPI_NUMA' by default, though on
->> x86 this can still be disabled by manually turning off
->> CONFIG_X86_64_ACPI_NUMA. I suspect we don't actually ever
->> want to turn it off on x86 either, so I guess the Kconfig
->> option can just be removed entirely.
->>
->
-> Good catch! Will revert the change in the next version.
->
-> To remove the dependency entirely, I think we need a separate patch fo=
-r it.
-> What's your opinion?
+On Wed, Jan 31, 2024 at 01:00:14PM -0600, Bjorn Helgaas wrote:
+> On Wed, Jan 31, 2024 at 09:58:19AM +0100, Roger Pau Monné wrote:
+> > On Tue, Jan 30, 2024 at 02:44:03PM -0600, Bjorn Helgaas wrote:
+> > > On Tue, Jan 30, 2024 at 10:07:36AM +0100, Roger Pau Monné wrote:
+> > > > On Mon, Jan 29, 2024 at 04:01:13PM -0600, Bjorn Helgaas wrote:
+> > > > > On Thu, Jan 25, 2024 at 07:17:24AM +0000, Chen, Jiqian wrote:
+> > > > > > On 2024/1/24 00:02, Bjorn Helgaas wrote:
+> > > > > > > On Tue, Jan 23, 2024 at 10:13:52AM +0000, Chen, Jiqian wrote:
+> > > > > > >> On 2024/1/23 07:37, Bjorn Helgaas wrote:
+> > > > > > >>> On Fri, Jan 05, 2024 at 02:22:17PM +0800, Jiqian Chen wrote:
+> > > > > > >>>> There is a need for some scenarios to use gsi sysfs.
+> > > > > > >>>> For example, when xen passthrough a device to dumU, it will
+> > > > > > >>>> use gsi to map pirq, but currently userspace can't get gsi
+> > > > > > >>>> number.
+> > > > > > >>>> So, add gsi sysfs for that and for other potential scenarios.
+> > > > > > >> ...
+> > > > > > > 
+> > > > > > >>> I don't know enough about Xen to know why it needs the GSI in
+> > > > > > >>> userspace.  Is this passthrough brand new functionality that can't be
+> > > > > > >>> done today because we don't expose the GSI yet?
+> > > > > 
+> > > > > I assume this must be new functionality, i.e., this kind of
+> > > > > passthrough does not work today, right?
+> > > > > 
+> > > > > > >> has ACPI support and is responsible for detecting and controlling
+> > > > > > >> the hardware, also it performs privileged operations such as the
+> > > > > > >> creation of normal (unprivileged) domains DomUs. When we give to a
+> > > > > > >> DomU direct access to a device, we need also to route the physical
+> > > > > > >> interrupts to the DomU. In order to do so Xen needs to setup and map
+> > > > > > >> the interrupts appropriately.
+> > > > > > > 
+> > > > > > > What kernel interfaces are used for this setup and mapping?
+> > > > > >
+> > > > > > For passthrough devices, the setup and mapping of routing physical
+> > > > > > interrupts to DomU are done on Xen hypervisor side, hypervisor only
+> > > > > > need userspace to provide the GSI info, see Xen code:
+> > > > > > xc_physdev_map_pirq require GSI and then will call hypercall to pass
+> > > > > > GSI into hypervisor and then hypervisor will do the mapping and
+> > > > > > routing, kernel doesn't do the setup and mapping.
+> > > > > 
+> > > > > So we have to expose the GSI to userspace not because userspace itself
+> > > > > uses it, but so userspace can turn around and pass it back into the
+> > > > > kernel?
+> > > > 
+> > > > No, the point is to pass it back to Xen, which doesn't know the
+> > > > mapping between GSIs and PCI devices because it can't execute the ACPI
+> > > > AML resource methods that provide such information.
+> > > > 
+> > > > The (Linux) kernel is just a proxy that forwards the hypercalls from
+> > > > user-space tools into Xen.
+> > > 
+> > > But I guess Xen knows how to interpret a GSI even though it doesn't
+> > > have access to AML?
+> > 
+> > On x86 Xen does know how to map a GSI into an IO-APIC pin, in order
+> > configure the RTE as requested.
+> 
+> IIUC, mapping a GSI to an IO-APIC pin requires information from the
+> MADT.  So I guess Xen does use the static ACPI tables, but not the AML
+> _PRT methods that would connect a GSI with a PCI device?
 
-Agreed, that last bit would need to be acked by the x86
-maintainers then, as it only affects them in practice.
+Yes, Xen can parse the static tables, and knows the base GSI of
+IO-APICs from the MADT.
 
-     Arnd
+> I guess this means Xen would not be able to deal with _MAT methods,
+> which also contains MADT entries?  I don't know the implications of
+> this -- maybe it means Xen might not be able to use with hot-added
+> devices?
+
+It's my understanding _MAT will only be present on some very specific
+devices (IO-APIC or CPU objects).  Xen doesn't support hotplug of
+IO-APICs, but hotplug of CPUs should in principle be supported with
+cooperation from the control domain OS (albeit it's not something that
+we tests on our CI).  I don't expect however that a CPU object _MAT
+method will return IO APIC entries.
+
+> The tables (including DSDT and SSDTS that contain the AML) are exposed
+> to userspace via /sys/firmware/acpi/tables/, but of course that
+> doesn't mean Xen knows how to interpret the AML, and even if it did,
+> Xen probably wouldn't be able to *evaluate* it since that could
+> conflict with the host kernel's use of AML.
+
+Indeed, there can only be a single OSPM, and that's the dom0 OS (Linux
+in our context).
+
+Getting back to our context though, what would be a suitable place for
+exposing the GSI assigned to each device?
+
+Thanks, Roger.
 
