@@ -1,324 +1,169 @@
-Return-Path: <linux-acpi+bounces-3161-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3162-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65E8846215
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Feb 2024 21:45:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D71AD846339
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Feb 2024 23:12:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 142F11F257C1
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Feb 2024 20:45:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E70011C24D86
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Feb 2024 22:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BCA3CF43;
-	Thu,  1 Feb 2024 20:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1D540BE2;
+	Thu,  1 Feb 2024 22:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="n6IeRegj"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4/ipnymN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2057.outbound.protection.outlook.com [40.107.102.57])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2052.outbound.protection.outlook.com [40.107.94.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987F33D960;
-	Thu,  1 Feb 2024 20:45:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2557405F1;
+	Thu,  1 Feb 2024 22:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706820329; cv=fail; b=K04cPAdqawjlqjSgdieCZDl5v9zSstcfk+iwMYoITGdMMg4VyeoP7BGCmEO9lXw/q8PkRADdus5YNZZaSUtraQzjKB4ZevMm98YHYAyOmY1LWak9dL9/+NqkKZ/WDJkb94SCoUd42NMcBI7LBI9fwydaBU1qYuiJpuIknabjzl4=
+	t=1706825502; cv=fail; b=fW4bhU8Ympfre/clK6g0OPw1ag1jBda/0BiV+oI5JdZhY2p+QVCugqyCBZoHKA1pWL4lOx/DKHODf+XJbmVhwtwBx03ruCVMgMNU2jFXjag9UeRLRzVQo/sIpsiXVlb3pDZTg/0MhToB+jGEcOfxfFAgeW1GNc7pCgn6YZhsLxg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706820329; c=relaxed/simple;
-	bh=pcFnUIpFYj04wm9jVH6WkqW2OY2ZkTm4+amuOtl0TaY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=sNSVKTqJhZaxE4E6RS+wfsWu1vbmsKd0pR4M/MUxuv4g67knMmpL2FehxIiOaBhcR1ZVsULbKiuG+yD8Ha+RzM0LZZASNTRoyhgqV8M8OgmEZRmYhJRH/w1JDzD5XcOhQP5lz+VAeszuzN9elnkAszZqOtxw3+ZXAr8KFlsb6cA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=n6IeRegj; arc=fail smtp.client-ip=40.107.102.57
+	s=arc-20240116; t=1706825502; c=relaxed/simple;
+	bh=xLxs1vZvOkpE+6Jnr3A9tUH03CM00bYKDNqfSKQEXcs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HoaHUfxMxYmmdllErWL4HcNPONsdBqIjUg81jIUJym0z/aOjXhv8GV30r2DK7fA68lJfehHMU+1OZi92WPyIFFCkrkZYhyGylErkyQbJGfbjDHMJ5DZ6SfeDERSQwcmzrmiXoXJlZZu/0/bWAxvs+I/MX7qC6xBDrpGWRuhXq5w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4/ipnymN; arc=fail smtp.client-ip=40.107.94.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aiepqCf0XNpjYrdTeuGn0VG5uc1Vs58kmXoHh/dr1Y+LmXBjNHxDl7Eh4dW2fHr1A+ztjdhgsJlJFIK0lT0Tm3Yy9hhcjllhD2VHuQgr1Dck4pAUdJ6TZG53MqEd7BwTELYU2S4hWZaIfQhsWWX2LLxJrE+dVpXd1v3Ycm7LGOIpOwgHjtZTbDnitWTwhwEsQJYUTeqsGDU7djVDxSyzHDqvHc2pddjurSbr82V9vmagxyzFAFy+6EhPPyct8+MnA6AgWHTgv0tYMhX1D85cwg5in65vVwPF7Zzv0ydz7nVl3c+BYpC4VoKMYfIvuGaJOBPrHiBeD2ioao9XBNEzEg==
+ b=RLHYWmOkUyMDzKP8NuoeoDXByr8JYgdje/oTnsFs+Tns/NWIpomypmWOfdr3bswZFkLqc3qlqgNj4SleW94+Np+AcQtveujo8Cd/oTluA8sB/++bieBr51LGPiYD8Oq7SqneNaG03fRYKBmJdi0cBI4nHbpJJv/NMU0eroQ2kFlyxxwZhbeQ34MWslXxJD2uGG+aMNcmaUE/CsfMKSNpvKVaFg1uJ8f8amN9rsVOtPaQIth+KVlynJcaAEE8mKcvyjvumOngaj4ZZBdFkA0FAZdLzPL+i8BmVl68k5pNGJXyG5Ud5e+ejjEhj/4/00slVqZ006JZKh3YWXR6OC0K5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VANTp1oBF1i0be29b3+cnKRLuCUIp+zW0eMuI3Sj+qA=;
- b=GCVgsj+DCrX4cjCBX+GoSHYf/LDHNkuB/CryG46p4wxFArpqRlsJwJKu9WxP7PQjfNIOkUNsIOAErg/onnp89+Z6//R3JhVA3rwHHV2FlLRlmXymN7C17jzSYTgjqXYMrg/WxwPbZTkMOkB8Q4wW620ALtzhlGvp4bCxlBhuBiRV0J+XIx7QLDWRYSAc4kxWTvjpUirVkdIwPC0lcCAOGeEDlK/jQgekE3GCkxDJVPlOEhi6OrCed7aj6UervOSzmmnhvX5qoeTh31/YCOO9qW4SIQUzG85KppVWHNXo/CDOEqZSjVpgiTIuO3aLIoMgNLOqx+Vg7r2QeHpjTyXMOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=xCywjw5D8vgHFCTQux8e8mViMEgVBwqXflFfsD5FsvI=;
+ b=nTX+5VRt8Qs/7HUMjHJzSMWxCjnmSyNQAduMUU1vr3v9buPddEhSb5yD15eROvMonYCNM2FTbRUyDYybOL+sWkhyXMcrV2FJJZDlqsVoQare5yBVGIX83GO5QhpF0g7SwcL5eaF2MrjMH5LTfBPL4s/eqHG9SxFLlih0aVPKPLJJavd2sEVOsrmRJ2mTZypyP1HpHHo1m7waqTUQb8GsN3xAux89YQMbIvEmbKZ/nBue1yYDRgpvZB+aiV4wqfDxOyai1cP0a5D9WQKsQ3mHZh99ULVrql0t/77TqXDKCp/goaFBfN2421rvMEsG51u0xggybqvE2LVA1YFtvQXSUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VANTp1oBF1i0be29b3+cnKRLuCUIp+zW0eMuI3Sj+qA=;
- b=n6IeRegj1CDyf0P7MK3Uasm/6Mh2Bfwjr/r7IlezuibTqitG2PCcq4VdrADpNdmiPvRdI0g+JsJF11I8H2GCfcst5ITmGXiwuWuoxadRIx3IJGbdpYrcpVS0ca+qtYlTShcrqc0ff8TyKJfsvhhTZP41Q/mU+GKmm1FSl6t4f2s=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB8403.namprd12.prod.outlook.com (2603:10b6:610:133::14)
- by SN7PR12MB8027.namprd12.prod.outlook.com (2603:10b6:806:32a::7) with
+ bh=xCywjw5D8vgHFCTQux8e8mViMEgVBwqXflFfsD5FsvI=;
+ b=4/ipnymNbePiEYucEnJn2edsBbf8qRfXfmvqxkflVjjpjsicP1BtJoxZQL6DrWNIzEVmBD2Z/UVr644rIWu8tBeMlRoB9gtYc3DJuwhS71eFFf2HNZYALTF/spReEGEYepdgFHIBT9D5F8LYKEHDC26fqFqjT+gsjpsCNRIlDak=
+Received: from DM6PR05CA0044.namprd05.prod.outlook.com (2603:10b6:5:335::13)
+ by SA3PR12MB9092.namprd12.prod.outlook.com (2603:10b6:806:37f::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.27; Thu, 1 Feb
- 2024 20:45:24 +0000
-Received: from CH3PR12MB8403.namprd12.prod.outlook.com
- ([fe80::ea0e:199a:3686:40d4]) by CH3PR12MB8403.namprd12.prod.outlook.com
- ([fe80::ea0e:199a:3686:40d4%4]) with mapi id 15.20.7249.024; Thu, 1 Feb 2024
- 20:45:24 +0000
-Message-ID: <295d4eb0-6145-4a18-8439-fba933997321@amd.com>
-Date: Thu, 1 Feb 2024 14:45:22 -0600
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH v3] ACPI: APEI: Skip initialization of GHES_ASSIST structures
- for Machine Check Architecture
-Content-Language: en-US
-To: Tony Luck <tony.luck@intel.com>, rafael@kernel.org
-Cc: linux-acpi@vger.kernel.org, lenb@kernel.org, james.morse@arm.com,
- bp@alien8.de, linux-kernel@vger.kernel.org, yazen.ghannam@amd.com,
- Avadhut Naik <avadhut.naik@amd.com>
-References: <20231204192549.1953029-1-avadhut.naik@amd.com>
- <b519a7e0-77a7-44b4-809b-caf96536fe1c@amd.com>
- <c86815fe-21dc-4dd7-bf10-74e3cc754413@amd.com>
- <ZbA1P_34pUYe6aNX@agluck-desk3>
-From: "Naik, Avadhut" <avadnaik@amd.com>
-In-Reply-To: <ZbA1P_34pUYe6aNX@agluck-desk3>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1PR05CA0019.namprd05.prod.outlook.com
- (2603:10b6:806:2d2::26) To CH3PR12MB8403.namprd12.prod.outlook.com
- (2603:10b6:610:133::14)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.22; Thu, 1 Feb
+ 2024 22:11:38 +0000
+Received: from DS1PEPF00017090.namprd03.prod.outlook.com
+ (2603:10b6:5:335:cafe::8f) by DM6PR05CA0044.outlook.office365.com
+ (2603:10b6:5:335::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.22 via Frontend
+ Transport; Thu, 1 Feb 2024 22:11:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS1PEPF00017090.mail.protection.outlook.com (10.167.17.132) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7249.19 via Frontend Transport; Thu, 1 Feb 2024 22:11:38 +0000
+Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Thu, 1 Feb
+ 2024 16:11:36 -0600
+From: Mario Limonciello <mario.limonciello@amd.com>
+To: <amd-gfx@lists.freedesktop.org>, Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Hans de Goede <hdegoede@redhat.com>
+CC: "open list:ACPI" <linux-acpi@vger.kernel.org>, open list
+	<linux-kernel@vger.kernel.org>, "open list:DRM DRIVERS"
+	<dri-devel@lists.freedesktop.org>, Melissa Wen <mwen@igalia.com>, "Mark
+ Pearson" <mpearson-lenovo@squebb.ca>, Mario Limonciello
+	<mario.limonciello@amd.com>
+Subject: [PATCH v3 0/5] Add support for fetching EDID from ACPI _DDC
+Date: Thu, 1 Feb 2024 16:11:14 -0600
+Message-ID: <20240201221119.42564-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8403:EE_|SN7PR12MB8027:EE_
-X-MS-Office365-Filtering-Correlation-Id: 30d0a6a0-c9ee-48c7-161b-08dc2366b6de
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017090:EE_|SA3PR12MB9092:EE_
+X-MS-Office365-Filtering-Correlation-Id: 50a28923-d0db-41fc-f83d-08dc2372c2df
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	BtsK0rLLkZgo8yuXT0PTU+lGhxz32n3Qt3n3PpFu+YtVzlzN3PSi1VHNscx+jGd+l6QMwTAqe4DGayAgJFag6WeduCfqsEgG0N1IjrcboCzYn33DDMSTIHv0p41G0BgARHbeeAqrtu4cIXQ4YPM2NmP5i/jH34piaAUoiFHYbh1w83rpvg4LwrOMbmVQ73W57p+LJckZ80XEM0U78mB0OPFqFW5Ii967Ezz2vqsUPGxiPqRig9GLPMjxKrren00ZidUs8Hzz5/bfcUMdVWvCJJnEcn+xXBlUIgoXZ0KEOyoFDsi+7jzyRiZt664IzdPloWa1G5z4Ee76e0XT2CVlrJOgT9/uVGMbAtiHgkK1RrThgz/rXDYv3pWRNPV9A1r1km1YiNRcK2XKB3lsfCcRsNEN8vC5CuUymKd3nnoUVIyXxC+DUnCJchccRzXeu+3hU8ALNOC1qmpZSLAp8sv6Dy5LrqyxD7D+ysHwiiiDHruopFihLXJU8LekK25+b2/K9TXb/bWzkoN9v+Yk02fhOlEcFZzwotJpsG/wDggbDOM0RMK2BwmCeKaFzC2c1fx2lgC34uq9Rw7lyVvNUNCXP8NJpqFYniuKuDE3XUmWQYzluZc+7A0a5cXiXMwQ0PIQb2rrofcmkjSQ+0rDvHYv2A==
+	yKrFFOERkdfW2MwYhDxYdyRQTegaMSSuWMDGIBeZn2/g2iO+1VMHp6/K6Qazy3tobMja5lXgwTTrtYa0kkk9ZxIyg5Ly9cfUJgzTAiOd0ktIwgcKgAlnpSFz0ndlrriEE6uogSOpaqyQ/lGUJBkLeqODQaaNO6EMeFDUH+tgfrTLiNA+7nz+j1UFQ1pPXcAey5aYgrT8tS/40u5DsbquFZN+27p7nsrt1uLHS2xP7a/T+82LkZuU3GcfKHqKnEAMGWbP4k1Yji+L4Ms5LdLBbwHNemdhEy99TcGI1DTqqJ4GeTuAXwko99VOccHWx1E+0wGdWwMwx67SHov+LUEDaGtxd4fhQgoJpX4rijdFFJq21Txl/X9RA1GSXLmtVb+SxBHNllCdfElIbRazgk6QNfJUCYMNTGHL8uaAqAs0H9KTr0uS5kGrJTK3P1cfSgjBUurx1RpZ9YT3HNk9F+0K/2damTynnzxTu4stypItBKKj+Sj8g/G7Krv0tPIv0EZc4zZt858D5rvK34COqJ0h1IBveOwypP/cJ9CKlIVrG9JcLBAvs9fjiNhvhnex7DOqwba+E63D+bEC1nkYJGWMpi3RglneI/6fXAwfc1xDvWql01UKFTmXCsUmzUY3PNTBtuYuJO4bRfXr+pAY3JRJH50kAP6N9icePPX/9JHch2BqR64NlbKP6hfldjM2KrrjW/cgKB5xiBZmUsJwXkahLh8iX5uxQxdaBWD7x7V7rpMJOCsvbvuHs+M1NLLWxO1N
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8403.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(39860400002)(346002)(136003)(376002)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(31686004)(83380400001)(31696002)(36756003)(6512007)(26005)(38100700002)(2616005)(478600001)(53546011)(2906002)(6506007)(316002)(66556008)(5660300002)(8676002)(8936002)(4326008)(6486002)(66476007)(66946007)(41300700001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NEFvakcyaE8xcjZ5VVA4NXpGU0o0Z1I1b25FVGhCak1WbVhvd2ZZMWtNM2hz?=
- =?utf-8?B?b3ZvQXhJWTBId2cwcFcyTEVtK2t1a1AzK0VyQ3dFNFVtQVZkRW8yYTZ6cnJs?=
- =?utf-8?B?b0ZZOXkvU0R6a0ZvVUt1NnVYaEFacGRLVkE4N2NIczlTWHZmekVDMlJrZDVY?=
- =?utf-8?B?Y1I0eVpPbWtFSEhiaGo5WTJnYnFoeXRwRUZVdXd6SnBOaVVGbktBK3pxcG9U?=
- =?utf-8?B?UUhLd2I0UEZsU0FXcitQcmRLZkZwejA0ZVQ0aVlYNE1DdktmRkFSaktvYm5p?=
- =?utf-8?B?T2lqMHJZdkVjQk5vbmJqL0dPckZETE9LNGFwQzRUdStqTklQSWVmZG9kZ0F1?=
- =?utf-8?B?Z2J6akVmcXdyakxEUnA0d1R3dzZYL1JidW9sQzBjaHBDa3FmN1UvTG5NTmhu?=
- =?utf-8?B?TERxUUV1L3JmWkFyMm4wbUZkMzdZRjFtaTNER1hvRndRVi9IdkFUSFNTdHlZ?=
- =?utf-8?B?eWlkWHFOWjVrUG40M0ZXNGdzSHVRcGJubkNnZTB5dDJCSk9QaHNDeUpPYmFZ?=
- =?utf-8?B?a0UxM2VjN1VBMHg3dHp4ai96RUpjVGQ4RmtnSmlJcGdQK2FnK2JYdTQxUmpk?=
- =?utf-8?B?Nmw0YWt4OEdtQTY3dDdqWFhwbFd3VlJOaVVRQTFiRTRPVStLSGJWZWdISXV5?=
- =?utf-8?B?RlRQY3d2YWVUdFloVjM1SnJzV2c0Z25FWENOWVlRMlY3eDFWb1hXblZtLzBY?=
- =?utf-8?B?TGhPb0VYSWRkdnFjaE04YXBmOVNhN1NlT1E0cld6NDBHZ25jcTR2UUtOdlcw?=
- =?utf-8?B?RSt5SW14ZXA1Z0lpTWhSbWdSYkNmK3VnUElabFBHWDZjT0FDYUNtNG1lWjc0?=
- =?utf-8?B?ZnFkK0FlMmJNRW5FSGtDYmVhdVZiakVsZDRpc2VhU2YvaXl4TXpwQ21XVlA2?=
- =?utf-8?B?eWNpZXV4TTdMMzNNQTBaZTNqb2Jicy9oZGxpQlFhZGoyVDBWSmIxSGM1Tjha?=
- =?utf-8?B?M3QwbDRJS3J1VVZDZ3pQNXBRYnNnUzF1UjZUZk5xb3hNNTVvRHhKUnQ2Ukcw?=
- =?utf-8?B?NnFqWTV6K0hHTUVhR3AreXkwM0FNUWwwbG1zNVJsZDRxNDdOWG5ycnd1dEhE?=
- =?utf-8?B?KzFGV281Tlk1RU4wNlJUajFEaVhxeUxjSWs3UzZhTk5lbjU4WWtBeGh0T1la?=
- =?utf-8?B?Z1lGR3Y2emF3U3N6MURRNklRc1BhOWxySG1INHhuYjRrL29yNExxZzBJV1E0?=
- =?utf-8?B?NEhJcFVON1dQUGNEMDdFSEFNLzNpMkRCWU5NWFYrZU9RRnhTZ0RnN0J1eEsr?=
- =?utf-8?B?OHprcGNWYy9HWVV2L3NWdzVCWTB4MzBXUjVKbEN4V3Rrc3hIL0pvK1pHZHJ5?=
- =?utf-8?B?T0tMTXhJNG1TVkVaVnZSUkU0d1FNeCt4NGFkVVlrQ1pTTFdNS3VoUmdxc3Rr?=
- =?utf-8?B?SmFOSi9aUmxZb3lkQnJjT3kxQndMa1VCNjA0dGxRTm5JZ0RDV2VTcmkxcjJu?=
- =?utf-8?B?cm1NQ2F5dnhjdmtNQ243dGJXcFJ3VnQ4SUxYNzlwRExtRERCbHI3UWQyeWdD?=
- =?utf-8?B?dExYZ0VFY25HaWo2MEFlanNoSkNOVXg5YXQrbnpnTHlqT2JyS3FRVkZHM2Jp?=
- =?utf-8?B?eURVelZsV3luam5HMEJheHRBMjBWcDRxdGdHK1U1K005TVppWjNWRUduTUwx?=
- =?utf-8?B?eW91em9MK1RxY2lEMy9pbG5uMml0czZVMEFsS3M5RlVDN25sRW1YclBnUUow?=
- =?utf-8?B?cUFsWW5mZi9qYUlFTzA2bm1BeWkvd1UyWXhNbG1mMmJBYzh3bzdOU1JCYVFV?=
- =?utf-8?B?SG5mcmpSYndoeXU2dGVvM1ZmekIxQ1RlY1FQYm5kSzZXVmhxRjdQeGNXRWor?=
- =?utf-8?B?LzZJRWZlYWJOT05FR29RMGpmMk0zR25lRDh4Yk1vbjY4Z1kyZFM5dFlrVEg0?=
- =?utf-8?B?RUIwbHJYaGNQSFVGYjFyUXlxWDN1NVpsckJvNUkycUN5eE1rNXFlcFFxbUJ3?=
- =?utf-8?B?RmNvTGZtcnhhVUNsUys3ZVFjOHlnd1dDSm1RSEI3eUhLT3B4RzF1QmhXU1V2?=
- =?utf-8?B?cm9wOER3Y3FURU5DTnZxMkhuY2hQejBOZWVtdENLRENGWFZTcUVNRXFYaXpU?=
- =?utf-8?B?NTJFK2tVUzFhNXlXZlJhUHRpaEVaRTJZWmVJMzh6aW1NemVLY0JTOGdPWlpp?=
- =?utf-8?Q?d0bDI02TBeMAiQD8SpMBCKFel?=
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(39860400002)(376002)(396003)(346002)(230922051799003)(451199024)(82310400011)(1800799012)(64100799003)(186009)(40470700004)(36840700001)(46966006)(83380400001)(426003)(2906002)(336012)(2616005)(1076003)(16526019)(36860700001)(5660300002)(26005)(82740400003)(47076005)(70206006)(54906003)(966005)(8676002)(110136005)(70586007)(6666004)(4326008)(7696005)(8936002)(44832011)(316002)(478600001)(86362001)(41300700001)(81166007)(356005)(40460700003)(40480700001)(36756003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30d0a6a0-c9ee-48c7-161b-08dc2366b6de
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8403.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 20:45:24.3200
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 22:11:38.1688
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 50a28923-d0db-41fc-f83d-08dc2372c2df
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sov+Cb4f1O0ISSn3JxkTRqH8O2t8hWgS2B5TQooR/w3L/m8YI9B2YQZ30DvvBSLP8bCD0BFcZ7spNCS+N30Bzg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8027
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF00017090.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9092
 
-Thank you, Tony!
+Some laptops ship an EDID in the BIOS encoded in the _DDC method that
+differs than the EDID directly on the laptop panel for $REASONS.
 
-Hi Rafael,
+This is the EDID that is used by the AMD Windows driver, and so sometimes
+different results are found in different operating systems.
 
-Can this patch be merged in? Or would you prefer me resending it
-with Tony's "Reviewed-by:" tag?
+This series adds a new DRM helper that will use acpi_video to fetch the
+EDID.
 
-Thanks,
-Avadhut Naik
+On amdgpu when an eDP panel is found the BIOS
+is checked first for an EDID and that used as a preference if found.
 
-On 1/23/2024 15:53, Tony Luck wrote:
-> On Tue, Jan 23, 2024 at 03:39:49PM -0600, Naik, Avadhut wrote:
->> Hi,
->>
->> Any further comments on this patch?
-> 
-> No. I like the comments you added to address my earlier
-> confusion/concerns.
-> 
-> Reviewed-by: Tony Luck <tony.luck@intel.com>
-> 
-> -Tony
-> 
->>
->> On 12/18/2023 11:13 AM, Avadhut Naik wrote:
->>> Hi,
->>>
->>> Any further feedback on this patch?
->>>
->>> On 12/4/2023 13:25, Avadhut Naik wrote:
->>>> To support GHES_ASSIST on Machine Check Architecture (MCA) error sources,
->>>> a set of GHES structures is provided by the system firmware for each MCA
->>>> error source. Each of these sets consists of a GHES structure for each MCA
->>>> bank on each logical CPU, with all structures of a set sharing a common
->>>> Related Source ID, equal to the Source ID of one of the MCA error source
->>>> structures.[1] On SOCs with large core counts, this typically equates to
->>>> tens of thousands of GHES_ASSIST structures for MCA under
->>>> "/sys/bus/platform/drivers/GHES".
->>>>
->>>> Support for GHES_ASSIST however, hasn't been implemented in the kernel. As
->>>> such, the information provided through these structures is not consumed by
->>>> Linux. Moreover, these GHES_ASSIST structures for MCA, which are supposed
->>>> to provide supplemental information in context of an error reported by
->>>> hardware, are setup as independent error sources by the kernel during HEST
->>>> initialization.
->>>>
->>>> Additionally, if the Type field of the Notification structure, associated
->>>> with these GHES_ASSIST structures for MCA, is set to Polled, the kernel
->>>> sets up a timer for each individual structure. The duration of the timer
->>>> is derived from the Poll Interval field of the Notification structure. On
->>>> SOCs with high core counts, this will result in tens of thousands of
->>>> timers expiring periodically causing unnecessary preemptions and wastage
->>>> of CPU cycles. The problem will particularly intensify if Poll Interval
->>>> duration is not sufficiently high.
->>>>
->>>> Since GHES_ASSIST support is not present in kernel, skip initialization
->>>> of GHES_ASSIST structures for MCA to eliminate their performance impact.
->>>>
->>>> [1] ACPI specification 6.5, section 18.7
->>>>
->>>> Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
->>>> Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
->>>> ---
->>>> Changes in v2:
->>>> 1.	Since is_ghes_assist_struct() returns if any of the conditions is hit
->>>> if-else-if chain is redundant. Replace it with just if statements.
->>>> 2.	Fix formatting errors.
->>>> 3.	Add Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
->>>>
->>>> Changes in v3:
->>>> 1. Modify structure (mces) comment, per Tony's recommendation, to better
->>>> reflect the structure's usage.
->>>> ---
->>>>  drivers/acpi/apei/hest.c | 51 ++++++++++++++++++++++++++++++++++++++++
->>>>  1 file changed, 51 insertions(+)
->>>>
->>>> diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
->>>> index 6aef1ee5e1bd..20d757687e3d 100644
->>>> --- a/drivers/acpi/apei/hest.c
->>>> +++ b/drivers/acpi/apei/hest.c
->>>> @@ -37,6 +37,20 @@ EXPORT_SYMBOL_GPL(hest_disable);
->>>>  
->>>>  static struct acpi_table_hest *__read_mostly hest_tab;
->>>>  
->>>> +/*
->>>> + * Since GHES_ASSIST is not supported, skip initialization of GHES_ASSIST
->>>> + * structures for MCA.
->>>> + * During HEST parsing, detected MCA error sources are cached from early
->>>> + * table entries so that the Flags and Source Id fields from these cached
->>>> + * values are then referred to in later table entries to determine if the
->>>> + * encountered GHES_ASSIST structure should be initialized.
->>>> + */
->>>> +static struct {
->>>> +	struct acpi_hest_ia_corrected *cmc;
->>>> +	struct acpi_hest_ia_machine_check *mc;
->>>> +	struct acpi_hest_ia_deferred_check *dmc;
->>>> +} mces;
->>>> +
->>>>  static const int hest_esrc_len_tab[ACPI_HEST_TYPE_RESERVED] = {
->>>>  	[ACPI_HEST_TYPE_IA32_CHECK] = -1,	/* need further calculation */
->>>>  	[ACPI_HEST_TYPE_IA32_CORRECTED_CHECK] = -1,
->>>> @@ -70,22 +84,54 @@ static int hest_esrc_len(struct acpi_hest_header *hest_hdr)
->>>>  		cmc = (struct acpi_hest_ia_corrected *)hest_hdr;
->>>>  		len = sizeof(*cmc) + cmc->num_hardware_banks *
->>>>  			sizeof(struct acpi_hest_ia_error_bank);
->>>> +		mces.cmc = cmc;
->>>>  	} else if (hest_type == ACPI_HEST_TYPE_IA32_CHECK) {
->>>>  		struct acpi_hest_ia_machine_check *mc;
->>>>  		mc = (struct acpi_hest_ia_machine_check *)hest_hdr;
->>>>  		len = sizeof(*mc) + mc->num_hardware_banks *
->>>>  			sizeof(struct acpi_hest_ia_error_bank);
->>>> +		mces.mc = mc;
->>>>  	} else if (hest_type == ACPI_HEST_TYPE_IA32_DEFERRED_CHECK) {
->>>>  		struct acpi_hest_ia_deferred_check *mc;
->>>>  		mc = (struct acpi_hest_ia_deferred_check *)hest_hdr;
->>>>  		len = sizeof(*mc) + mc->num_hardware_banks *
->>>>  			sizeof(struct acpi_hest_ia_error_bank);
->>>> +		mces.dmc = mc;
->>>>  	}
->>>>  	BUG_ON(len == -1);
->>>>  
->>>>  	return len;
->>>>  };
->>>>  
->>>> +/*
->>>> + * GHES and GHESv2 structures share the same format, starting from
->>>> + * Source Id and ending in Error Status Block Length (inclusive).
->>>> + */
->>>> +static bool is_ghes_assist_struct(struct acpi_hest_header *hest_hdr)
->>>> +{
->>>> +	struct acpi_hest_generic *ghes;
->>>> +	u16 related_source_id;
->>>> +
->>>> +	if (hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR &&
->>>> +	    hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR_V2)
->>>> +		return false;
->>>> +
->>>> +	ghes = (struct acpi_hest_generic *)hest_hdr;
->>>> +	related_source_id = ghes->related_source_id;
->>>> +
->>>> +	if (mces.cmc && mces.cmc->flags & ACPI_HEST_GHES_ASSIST &&
->>>> +	    related_source_id == mces.cmc->header.source_id)
->>>> +		return true;
->>>> +	if (mces.mc && mces.mc->flags & ACPI_HEST_GHES_ASSIST &&
->>>> +	    related_source_id == mces.mc->header.source_id)
->>>> +		return true;
->>>> +	if (mces.dmc && mces.dmc->flags & ACPI_HEST_GHES_ASSIST &&
->>>> +	    related_source_id == mces.dmc->header.source_id)
->>>> +		return true;
->>>> +
->>>> +	return false;
->>>> +}
->>>> +
->>>>  typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
->>>>  
->>>>  static int apei_hest_parse(apei_hest_func_t func, void *data)
->>>> @@ -114,6 +160,11 @@ static int apei_hest_parse(apei_hest_func_t func, void *data)
->>>>  			return -EINVAL;
->>>>  		}
->>>>  
->>>> +		if (is_ghes_assist_struct(hest_hdr)) {
->>>> +			hest_hdr = (void *)hest_hdr + len;
->>>> +			continue;
->>>> +		}
->>>> +
->>>>  		rc = func(hest_hdr, data);
->>>>  		if (rc)
->>>>  			return rc;
->>>>
->>>> base-commit: 629a3b49f3f957e975253c54846090b8d5ed2e9b
->>>
->>
->> -- 
->> Thanks,
->> Avadhut Naik
+On nouveau it replaces the previous local function doing a similar role.
+
+This does *not* use struct drm_edid as this will require more involved
+amdgpu display driver work that will come separately as part of follow-ups
+to: https://lore.kernel.org/amd-gfx/20240126163429.56714-1-mwen@igalia.com/
+
+v2-v3:
+ * Clean up some of the 'select ACPI_VIDEO' kconfig spaghetti reported by LKP
+ * Drop the 'select ACPI_VIDEO' from the DRM drivers
+
+Mario Limonciello (5):
+  ACPI: video: Handle fetching EDID that is longer than 256 bytes
+  drm: Add drm_get_acpi_edid() helper
+  drm/amd: Fetch the EDID from _DDC if available for eDP
+  drm/nouveau: Use drm_get_acpi_edid() helper
+  drm: Drop unneeded selects in DRM drivers
+
+ drivers/acpi/acpi_video.c                     | 25 +++----
+ drivers/gpu/drm/Kconfig                       |  5 ++
+ drivers/gpu/drm/amd/amdgpu/Kconfig            |  7 --
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h           |  1 +
+ .../gpu/drm/amd/amdgpu/amdgpu_connectors.c    |  4 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c       |  8 ++
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 10 ++-
+ .../amd/display/amdgpu_dm/amdgpu_dm_helpers.c |  9 ++-
+ drivers/gpu/drm/drm_edid.c                    | 73 +++++++++++++++++++
+ drivers/gpu/drm/gma500/Kconfig                |  6 --
+ drivers/gpu/drm/i915/Kconfig                  |  7 --
+ drivers/gpu/drm/nouveau/nouveau_acpi.c        | 27 -------
+ drivers/gpu/drm/nouveau/nouveau_acpi.h        |  2 -
+ drivers/gpu/drm/nouveau/nouveau_connector.c   |  2 +-
+ drivers/gpu/drm/radeon/Kconfig                |  7 --
+ drivers/gpu/drm/xe/Kconfig                    |  6 --
+ include/drm/drm_edid.h                        |  1 +
+ 17 files changed, 116 insertions(+), 84 deletions(-)
 
 -- 
+2.34.1
 
 
