@@ -1,180 +1,116 @@
-Return-Path: <linux-acpi+bounces-3192-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3193-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5192C847441
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 17:11:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5DC84744A
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 17:12:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0A4B1F23CCD
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 16:11:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCE2728B11F
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 16:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE49B148FF2;
-	Fri,  2 Feb 2024 16:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2603014A0AF;
+	Fri,  2 Feb 2024 16:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P4aG5jaD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A09148FFA;
-	Fri,  2 Feb 2024 16:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB281474A0;
+	Fri,  2 Feb 2024 16:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706890077; cv=none; b=qHr5aU48wO9THBnRkPjmzmWZrzOnh+Dj3mG41pFnjHsBkzyo2m04QG67CZ/M7K3uBQI44yl+XIJVR3VP+4Mb43vEEoELqPSmpkzfnW69HPxCU5Jjwsb8V9Bp0jaiKvclYT88RNyVrbhYVjHhLyxl757bIZKf4EVKjAm8SguBtqY=
+	t=1706890142; cv=none; b=smyy5SyUPmls1IIplr5ikKksAZ0scmx7pc1CJ4sr2VjoODOc1UCOs4oRsdE997MPu921b6gcXBRoPfCtdD28v2fSLaKBg1lZSbPOG0jtsKAD4k/8T11MpxvQTbFvrJz5moTQr8YBdAojHQMMjOEtpniGxo5jftMXIGDzU/HXDEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706890077; c=relaxed/simple;
-	bh=toIr2Gupe62vewAZwbK/fjTgniJjMpgiTSEBbricQCs=;
+	s=arc-20240116; t=1706890142; c=relaxed/simple;
+	bh=ObobwIusGY63NE/2MOWR+NbMWvgKu/d9ZjBL9g2lKRM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jFv3mKFSSln39vZmRVqtzyoIgYFWVTecIJ9CpbFB0JB8/QPReyU9N1ryQGItz/naxrO2QGxrdBkPDk5jj+2hCWf+wIshJ70Pa6gft0I7lw+zhrwqdcPjdlteYMJRU5gNOVAuAUV3hrulJaZcHIZNQurR+FfAMYk/lB/JXjyomLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+	 To:Cc:Content-Type; b=EOpYeOqPh6GQVZ3zgCPgFQwWaqB5Rtj39VqE78tyv4nsq9z8fJ6KfGPuezpDdCB/Pmy8LKKhcBoeK6kYFiFn0NgobP9njxaa+xcfaQIMnYx0d+SXbJCYR/11ACLJ2NY/dwkeuJjzExu3FQXK9y7u/HSU0Jycx7HFl9nJHV80lRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P4aG5jaD; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-218e7bb0034so295090fac.0;
-        Fri, 02 Feb 2024 08:07:55 -0800 (PST)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6041779e75eso24009227b3.3;
+        Fri, 02 Feb 2024 08:09:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706890139; x=1707494939; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ObobwIusGY63NE/2MOWR+NbMWvgKu/d9ZjBL9g2lKRM=;
+        b=P4aG5jaDyDYRpT+eVdAhqKTboEYgxtCcSFqFddMsR/tA4OfDmGLY5vqhusq0s5DLC9
+         Cg+jgJKUN25AAgBN9xRQp7uvSQiPR4dj1RGfaxL5Qybhh9g9+VEHl8E/9ZijgqZ60wF5
+         I+kWnwOqW9S3X62MeKqXQgJkY25bnnDCTfPUAYT0W/JFkZ1RDLUuq2UZWGtLckdZIT9a
+         gwB+ps0VwjoclkuWq6lGjjH0ghpUsNG9EGQ8YPFVIfk89OzuX1QnFWcUJkHYCVE6+RGU
+         FmdUggw8Ygjmdij6T/amKgnTpH+uoBGKKw2Usx05xbOhEgXHgG1kJZuojuNKtI86i7mU
+         1W3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706890075; x=1707494875;
+        d=1e100.net; s=20230601; t=1706890139; x=1707494939;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pgmWK92TTcJysPwanSYXl5F0rKzCcp+c4VYB7wg/duc=;
-        b=CD7VTe1cW+8DWSGCHUzTUFZxdj947TSK5Ug9ntdvhPdxNRIUME49cY1oS8A8tH9+Tx
-         U7XSEi/cuoK05mf6UwrQYkDqcFqks6r+TtizIn3DZ43YpID9bNp9GCKGqy8taqYjaj9p
-         S84ry3so0aqxvIqFrX40pXCIHaIv78uN7ghB9UkYLHEtdhttRzA+Pqra/KehqYtorTzF
-         qzEjU1raaQviee0KHi+ruNaeA7yddvzPw4q7TvPG/4l6Q/x+ujub7Oahnwfo+313qGds
-         ZNbdeSenVZLMhtUZe+uE/F7QOQKADx2gOdw5L2R7z7ryEFwD/QxoByLWJ38gpMTe1Rb5
-         eyLg==
-X-Gm-Message-State: AOJu0Yz/POn+64czrc8trW8iO8bocejjZd1rfpbXK+tQKHV676HdoGA1
-	YIyDN6IzHSRITDtBJ7W7FwPUyKPm5RUG4s+eQIO7YmlFdu3GuDvyk30elVpyLY9DhHUiTr4TQcA
-	MHFfoYTK0MB7q39/iNuKgUVYgfYg=
-X-Google-Smtp-Source: AGHT+IGuc57FvMYh/0xMC6KLl2NrvuWobBAsMype57vT1hgZsxVguNxvcJbjoc6y0gvTg0Vdy/ZmxN3RF7B4mSH4f3s=
-X-Received: by 2002:a05:6870:d14d:b0:218:ee9c:11b6 with SMTP id
- f13-20020a056870d14d00b00218ee9c11b6mr5491841oac.3.1706890073813; Fri, 02 Feb
- 2024 08:07:53 -0800 (PST)
+        bh=ObobwIusGY63NE/2MOWR+NbMWvgKu/d9ZjBL9g2lKRM=;
+        b=qbD9G/Gt6DkkCUln5hyv8yKoKL++fXlOOf/djTNWE6YBWO+myS2Go1VoSLWhmC0Xm4
+         ZQbHxHm7mKk0E58FGrfPpkPJaaCj1z2FzxClNFc2G0uFhI6fy011GE1nXmCrQO0i0ONr
+         3TSCKjtQmX69r9GxQ/kvFkhUSvVPGXxhWlrK9Otyg/JMefzdy/yssnvYEAeb5R3QpOQz
+         L2oCBsmylfFtzA5hkv7iOMcEFqUpodvUCuHwMUzCWWTL9jVlRLXGF62R5aUlzK3BEoEY
+         JMucZ2SD73t43dhC0sgmC5j1dPZ2i9cfq6mevdCG6VIfs6ujIJWSyo/IXq61bLTbmY9W
+         T5OA==
+X-Gm-Message-State: AOJu0Yw7nq4Lbg++wqBtxDKPgsQDyU6QGLU+7LmL7WEiiyKK2ehtIMjj
+	Ibd4NOKJCXWOcNbkyVaKw4y5bAhEmlToN/2eeSkO3K/zAKKZvgSEsXWmvDFfBbOT6Lk6EFFmU1A
+	1ggu1a3P23H/fYtclu/VkU+8YtRc=
+X-Google-Smtp-Source: AGHT+IGMWWJJIsEQaIGhd3HotQ+QkJuC6kkshmtHK3UG+EVQsNgMHpDuOqo3DccHZuJCzl1gJq/ilLs/vZ/Z4MzkmfU=
+X-Received: by 2002:a81:441c:0:b0:5e8:92f9:46e8 with SMTP id
+ r28-20020a81441c000000b005e892f946e8mr2730296ywa.30.1706890139331; Fri, 02
+ Feb 2024 08:08:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240201221119.42564-1-mario.limonciello@amd.com> <20240201221119.42564-2-mario.limonciello@amd.com>
-In-Reply-To: <20240201221119.42564-2-mario.limonciello@amd.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 2 Feb 2024 17:07:41 +0100
-Message-ID: <CAJZ5v0iw3PLB4W0QNmRCgK2AWxe5A7wxnWSz-Jm--Mb=fnugEw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/5] ACPI: video: Handle fetching EDID that is longer
- than 256 bytes
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: amd-gfx@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>, 
-	Harry Wentland <harry.wentland@amd.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Hans de Goede <hdegoede@redhat.com>, "open list:ACPI" <linux-acpi@vger.kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>, Melissa Wen <mwen@igalia.com>, 
-	Mark Pearson <mpearson-lenovo@squebb.ca>
+References: <20240202101311.it.893-kees@kernel.org> <20240202101642.156588-2-keescook@chromium.org>
+ <CANpmjNPPbTNPJfM5MNE6tW-jCse+u_RB8bqGLT3cTxgCsL+x-A@mail.gmail.com> <202402020405.7E0B5B3784@keescook>
+In-Reply-To: <202402020405.7E0B5B3784@keescook>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 2 Feb 2024 17:08:48 +0100
+Message-ID: <CANiq72ku9wsHtnPAh5G71Y_pbsftrPPyV5wmDCcZRM+WB6KVjA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/6] ubsan: Reintroduce signed and unsigned overflow sanitizers
+To: Kees Cook <keescook@chromium.org>
+Cc: Marco Elver <elver@google.com>, linux-hardening@vger.kernel.org, 
+	Justin Stitt <justinstitt@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Hao Luo <haoluo@google.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Fangrui Song <maskray@google.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Bill Wendling <morbo@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	kasan-dev@googlegroups.com, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 1, 2024 at 11:11=E2=80=AFPM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Fri, Feb 2, 2024 at 1:17=E2=80=AFPM Kees Cook <keescook@chromium.org> wr=
+ote:
 >
-> The ACPI specification allows for an EDID to be up to 512 bytes but
-> the _DDC EDID fetching code will only try up to 256 bytes.
->
-> Modify the code to instead start at 512 bytes and work it's way
-> down instead.
->
-> As _DDC is now called up to 4 times on a machine debugging messages
-> are noisier than necessary.  Decrease from info to debug.
->
-> Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/Apx_B_Video_Extension=
-s/output-device-specific-methods.html#ddc-return-the-edid-for-this-device
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> Perhaps I should hold off on bringing the unsigned sanitizer back? I was
+> hoping to work in parallel with the signed sanitizer, but maybe this
+> isn't the right approach?
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+If you can do anything to keep it in-tree, I think it would be nice so
+that others can easily use it to test the tooling and to start to
+clean up cases. A per-subsystem opt-in like Marco says could be a way,
+and you could perhaps do one very small subsystem or similar to see
+how it would look like.
 
-or I can apply it if that's preferred.
+Something that could also help would be to split the cases even
+further (say, only overflows and not underflows), but is that a
+possibility with the current tooling?
 
-Thanks!
+Thanks for working on this, Kees!
 
-> ---
-> v1->v2:
->  * Use for loop for acpi_video_get_edid()
->  * Use one of Rafael's suggestions for acpi_video_device_EDID()
->  * Decrease message level too
-> ---
->  drivers/acpi/acpi_video.c | 25 +++++++++----------------
->  1 file changed, 9 insertions(+), 16 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> index 4afdda9db019..3bfd013e09d2 100644
-> --- a/drivers/acpi/acpi_video.c
-> +++ b/drivers/acpi/acpi_video.c
-> @@ -625,12 +625,9 @@ acpi_video_device_EDID(struct acpi_video_device *dev=
-ice,
->
->         if (!device)
->                 return -ENODEV;
-> -       if (length =3D=3D 128)
-> -               arg0.integer.value =3D 1;
-> -       else if (length =3D=3D 256)
-> -               arg0.integer.value =3D 2;
-> -       else
-> +       if (!length || (length % 128))
->                 return -EINVAL;
-> +       arg0.integer.value =3D length / 128;
->
->         status =3D acpi_evaluate_object(device->dev->handle, "_DDC", &arg=
-s, &buffer);
->         if (ACPI_FAILURE(status))
-> @@ -641,7 +638,8 @@ acpi_video_device_EDID(struct acpi_video_device *devi=
-ce,
->         if (obj && obj->type =3D=3D ACPI_TYPE_BUFFER)
->                 *edid =3D obj;
->         else {
-> -               acpi_handle_info(device->dev->handle, "Invalid _DDC data\=
-n");
-> +               acpi_handle_debug(device->dev->handle,
-> +                                "Invalid _DDC data for length %ld\n", le=
-ngth);
->                 status =3D -EFAULT;
->                 kfree(obj);
->         }
-> @@ -1447,7 +1445,6 @@ int acpi_video_get_edid(struct acpi_device *device,=
- int type, int device_id,
->
->         for (i =3D 0; i < video->attached_count; i++) {
->                 video_device =3D video->attached_array[i].bind_info;
-> -               length =3D 256;
->
->                 if (!video_device)
->                         continue;
-> @@ -1478,18 +1475,14 @@ int acpi_video_get_edid(struct acpi_device *devic=
-e, int type, int device_id,
->                         continue;
->                 }
->
-> -               status =3D acpi_video_device_EDID(video_device, &buffer, =
-length);
-> -
-> -               if (ACPI_FAILURE(status) || !buffer ||
-> -                   buffer->type !=3D ACPI_TYPE_BUFFER) {
-> -                       length =3D 128;
-> +               for (length =3D 512; length > 0; length -=3D 128) {
->                         status =3D acpi_video_device_EDID(video_device, &=
-buffer,
->                                                         length);
-> -                       if (ACPI_FAILURE(status) || !buffer ||
-> -                           buffer->type !=3D ACPI_TYPE_BUFFER) {
-> -                               continue;
-> -                       }
-> +                       if (ACPI_SUCCESS(status))
-> +                               break;
->                 }
-> +               if (!length)
-> +                       continue;
->
->                 *edid =3D buffer->buffer.pointer;
->                 return length;
-> --
-> 2.34.1
->
+Cheers,
+Miguel
 
