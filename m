@@ -1,110 +1,105 @@
-Return-Path: <linux-acpi+bounces-3195-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3196-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B838C8474D5
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 17:34:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6602F847530
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 17:44:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75124284203
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 16:34:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A0621F2CAC3
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 16:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4B2148314;
-	Fri,  2 Feb 2024 16:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4811E1487C8;
+	Fri,  2 Feb 2024 16:44:42 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA8714830A;
-	Fri,  2 Feb 2024 16:33:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD92146919;
+	Fri,  2 Feb 2024 16:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706891632; cv=none; b=WRz9ZShQf4VnkaPI3/aSboMzx8dJYeO6W3Ocq8Hef1YmUtXlerWmfR8q2psip0JmUv9aj3Ic1nq0dGXM57zP5RY+yyi1USDNTaYx7lVR0wP5pi7hINuKxvIggFKWlD4iXBEOuBvk0CRR2/+Fv3RIOalmg1yzKbLnL15U19pjRKs=
+	t=1706892282; cv=none; b=WVQf4pqvlTeEa7eOx6FNUcDp42PZwMMkGwmJdbBobd2XUu7vMftwrFzo9ytw+yvFkFvRiZvmOPAZGPlrVP8sZTGgzOLQVwy6kNtcxsWxwTVxgNZcPyi09B4tls+7ic4bxnA64v3bfRMf3oISzRbAjEUsRNyMQd0E9DtX/D6QN4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706891632; c=relaxed/simple;
-	bh=uhlj6Bq5Vf+ptYFkh6gLEAnY74QLGaRFcC6pbRV9cNM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VYRoljJ1KAB8J0GV/daoe2Vs1Ar5c9A2eP9/K7h8s+Ukzej8Qwws3mCmfT2b3aZkb2izIy3zoJW/aTZOY4dxCP6iGjcpY43juafW1MkusdB5WLpVo2wOYDSQe7kVamn5KBrgmIy3b3VnrbWMF3hpV1OGDcofsyDpbj8qXBoj9x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-59a1e21b0ebso585821eaf.1;
-        Fri, 02 Feb 2024 08:33:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706891630; x=1707496430;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uhlj6Bq5Vf+ptYFkh6gLEAnY74QLGaRFcC6pbRV9cNM=;
-        b=on4iUjsmVnu70yioOaNr4ga0sIKPqEarBshdgqayd3S0EuRvIus5Fxud42nyittzmt
-         lArXqv3ChUm/IxfYWV780DeGkKFiGQ4A9XXwkC3s2bfUWa++inTgDlg4S+Of3Kdn1gSS
-         t358lfZ/FcRXeCG9kdGfRYNeNU+SLuD5asGlppufJ2lv8yGhhTF9Cdk7mJgz7pcvWQHX
-         rFpNDwu4W2iDhOnAVioHVDI9EKbOMowFmbHRCF6/LFMRbpugPw4t9wOFqZxUuSAoCBrt
-         uS11qSEHDR+0PyICHgXkwg2b7vCsu/D50GgxQGSRahAS736375eIw7jiDPbqI0yuE4M+
-         7U9A==
-X-Gm-Message-State: AOJu0YyJs9icunXsCt3rMwbKJfqo0V1E6tj2bUguOMeCMQFD0JyZ/BR6
-	pATwsVPNQLbjK3gTlGvq0E2Bie5ao/uKIxXihIiG4I/4rrL8x+JrJUUMCm7RN0CkrvTGYCzM6VW
-	l7KnzGtS2JvVAn75VUzhnnIWsG5Y=
-X-Google-Smtp-Source: AGHT+IH5lbhNXYdvBNW6Z6n3Fh6gB83VX+7ceza1pjweZQFNpcqOeZkwUhLG4lR26gvzCsUTJwL+cw/Xb8a8+aCYyEs=
-X-Received: by 2002:a4a:c810:0:b0:599:6d16:353c with SMTP id
- s16-20020a4ac810000000b005996d16353cmr6463248ooq.1.1706891630031; Fri, 02 Feb
- 2024 08:33:50 -0800 (PST)
+	s=arc-20240116; t=1706892282; c=relaxed/simple;
+	bh=91dKtYL6nn7sT6XBkJUZhgPHoMOoFPhDfSgFduym7O0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a5hwDqkYT4xHCGbX3Gvrl6KLCEDoZkpPwUz4GZn0uTgA4Iim9n9LRiE8NWPHwAaqp5LQdm+7VsF65FRaDNFsVKsTsWKiyguQA2fDCDGFvVTvJlxE0ZEXvY5Hn8+/GAcYamzJaWVN6EqXalT55L6Vl6tOLjshg518uyEDMz0VrN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TRM3Q6Gpcz67pnj;
+	Sat,  3 Feb 2024 00:41:06 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id B846A1400D4;
+	Sat,  3 Feb 2024 00:44:32 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 2 Feb
+ 2024 16:44:31 +0000
+Date: Fri, 2 Feb 2024 16:44:31 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+CC: <linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
+	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-riscv@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<x86@kernel.org>, <acpica-devel@lists.linuxfoundation.org>,
+	<linux-csky@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-ia64@vger.kernel.org>, <linux-parisc@vger.kernel.org>, Salil Mehta
+	<salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	<jianyong.wu@arm.com>, <justin.he@arm.com>, James Morse
+	<james.morse@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH RFC v4 10/15] irqchip/gic-v3: Don't return errors from
+ gic_acpi_match_gicc()
+Message-ID: <20240202164431.00006f09@Huawei.com>
+In-Reply-To: <E1rVDn9-0027ZB-QN@rmk-PC.armlinux.org.uk>
+References: <Zbp5xzmFhKDAgHws@shell.armlinux.org.uk>
+	<E1rVDn9-0027ZB-QN@rmk-PC.armlinux.org.uk>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231002135458.2603293-1-andriy.shevchenko@linux.intel.com>
- <6531d1e01d0e1_7258329440@dwillia2-xfh.jf.intel.com.notmuch>
- <ZVt1J_14iJjnSln9@smile.fi.intel.com> <CAJZ5v0hk2ygfjU7WtgTBhwXhqDc8+xoBb+-gs6Ym9tOJtSoZ4A@mail.gmail.com>
- <ZVuVMNlfumQ4p6oM@smile.fi.intel.com> <Zb0O8o-REzAjLhzl@smile.fi.intel.com>
-In-Reply-To: <Zb0O8o-REzAjLhzl@smile.fi.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 2 Feb 2024 17:33:38 +0100
-Message-ID: <CAJZ5v0hwNKm7bNS8uEhK-GVCibLaHvE75Rpc4oE9cpM6ByGmxw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] ACPI: NFIT: Switch to use acpi_evaluate_dsm_typed()
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Dan Williams <dan.j.williams@intel.com>, 
-	Michal Wilczynski <michal.wilczynski@intel.com>, nvdimm@lists.linux.dev, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Len Brown <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Fri, Feb 2, 2024 at 4:49=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Mon, Nov 20, 2023 at 07:19:44PM +0200, Andy Shevchenko wrote:
-> > On Mon, Nov 20, 2023 at 04:11:54PM +0100, Rafael J. Wysocki wrote:
-> > > On Mon, Nov 20, 2023 at 4:03=E2=80=AFPM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > On Thu, Oct 19, 2023 at 06:03:28PM -0700, Dan Williams wrote:
-> > > > > Andy Shevchenko wrote:
-> > > > > > The acpi_evaluate_dsm_typed() provides a way to check the type =
-of the
-> > > > > > object evaluated by _DSM call. Use it instead of open coded var=
-iant.
-> > > > >
-> > > > > Looks good to me.
-> > > > >
-> > > > > Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> > > >
-> > > > Thank you!
-> > > >
-> > > > Who is taking care of this? Rafael?
-> > >
-> > > I can apply it.
-> >
-> > Would be nice, thank you!
->
-> Any news on this?
+On Wed, 31 Jan 2024 16:50:27 +0000
+Russell King (Oracle) <rmk+kernel@armlinux.org.uk> wrote:
 
-Fell through the cracks, sorry about that.
+> From: James Morse <james.morse@arm.com>
+> 
+> gic_acpi_match_gicc() is only called via gic_acpi_count_gicr_regions().
+> It should only count the number of enabled redistributors, but it
+> also tries to sanity check the GICC entry, currently returning an
+> error if the Enabled bit is set, but the gicr_base_address is zero.
+> 
+> Adding support for the online-capable bit to the sanity check will
+> complicate it, for no benefit. The existing check implicitly depends on
+> gic_acpi_count_gicr_regions() previous failing to find any GICR regions
+> (as it is valid to have gicr_base_address of zero if the redistributors
+> are described via a GICR entry).
+> 
+> Instead of complicating the check, remove it. Failures that happen at
+> this point cause the irqchip not to register, meaning no irqs can be
+> requested. The kernel grinds to a panic() pretty quickly.
+> 
+> Without the check, MADT tables that exhibit this problem are still
+> caught by gic_populate_rdist(), which helpfully also prints what went
+> wrong:
+> | CPU4: mpidr 100 has no re-distributor!
+> 
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Does what it says on the tin.
 
-Applied now (as 6.9 material).
-
-Thanks!
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
