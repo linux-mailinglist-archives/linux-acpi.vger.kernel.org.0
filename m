@@ -1,380 +1,256 @@
-Return-Path: <linux-acpi+bounces-3178-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3179-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFFF846DBE
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 11:18:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 803C5846DD9
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 11:25:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7EED1F2610B
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 10:18:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9EB01F2308F
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 10:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738177F7E5;
-	Fri,  2 Feb 2024 10:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575F377654;
+	Fri,  2 Feb 2024 10:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="djL/8cFR"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BTsbKr6G"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E837E567
-	for <linux-acpi@vger.kernel.org>; Fri,  2 Feb 2024 10:16:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E58C7C0A4;
+	Fri,  2 Feb 2024 10:25:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706869013; cv=none; b=Bd1/p8+lrdiVbIHGhx2DDF+4vpnaMXiXBveJvCn44db7ZFFciPaJC04vkV88DYf4eJjd1VLqOU7U15nnOVrU1vLKuYRlmB/pohpfJxD+ajFiN8IVyyyNN15GjbL3Asv/4t+7iKyAdgjQ9P5QkeGMgwF/MytNs3cGExdSphAH4Qs=
+	t=1706869525; cv=none; b=Gghw0iNHEF88KtCnsLzbI5FfbU5keFN6JTxIe3DfrBIFniTsldQpTv+cKRy7qP6E1aa7hjmZ2KKQHQD5ZbYEUyi6bBfDYwsLF2fR/DYvWBLgjUEBwyuZq0ttWECRXK/TCgd567InJgcnv2X/vbcCvYiH38DSM1nC6SbG6DSfQkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706869013; c=relaxed/simple;
-	bh=TzLGN/wZFrYl4sz0T0jyTqFgT2Lvj1xSfjBLlzj7afo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Glq7b0dN2KSfwEJKJ1XldLTuDHZTPoAQfZJ3d93jgHCyFl67qPgTA3Kv0KtkG/TRKBRIxKpLXtRvskXgcnA9PgObl8/0c76F+d5h2tNL2EP1xMK7o6i4nEzgiJl46Tk2ecQ3plNNeoMVcYNLsvFuf2YXcd2SX0BX2iFBl06Lz10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=djL/8cFR; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1d93ddd76adso14813185ad.2
-        for <linux-acpi@vger.kernel.org>; Fri, 02 Feb 2024 02:16:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1706869007; x=1707473807; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9lpkhLqd7OEtlpbaedS5vxnqsFfxpeZmJYnh9HQNf48=;
-        b=djL/8cFRC9zO6rWMD2YznvUp1nDRYdrcTU583ltjz/WTBfo0jbZDSDpUl351SckjO6
-         qVr56IyBW0bYbRyCv1fiUfSYAkDs9m6wEAn88jx6cGrkKCXe/9tIsnQuT1FYgZQM6/9S
-         f7uVssqshwnJGRyl3alz+AxL3qeLYgCF0H7D0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706869007; x=1707473807;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9lpkhLqd7OEtlpbaedS5vxnqsFfxpeZmJYnh9HQNf48=;
-        b=BA76N/RRJTIA/M/D/uDfJgm242MHeSOPmlTzSVJ0Z50IqGTKtXoHHwbZ8IdFKqTi4/
-         xkCTvn1Y2HfsAPs60q99MO0EHwGT2L7k8CcC1aJ/SuH9bc+6Rvwf5LsWrzjOqAHTLX71
-         W9OVn6ARxIrACefUfcbBjciU7uE6ewMFGgv2YtM33lTsA8XWtJhOqOa7OnYwTvPFmD+d
-         LPYjIuJLl+WN+Bo7GuAcsfFZtFvoB9fpTSbEb9wBjimsIsW5J954ZZDrt1QTbHxIn+JN
-         TSEuzecvNR0iCYJyR1369KJNwtjDB9P6LfpkpzsxuJCtG73dBcyBUOpYoYDJaNCbxEvY
-         WMAQ==
-X-Gm-Message-State: AOJu0YwPWL9aIKVbmG5mUQA6BiFQtEE/5I9ybMGSnymviTTNkH/u3/f4
-	+0c+buDMm4Frrf9U8AQJYCVey06KxNc3+9hlbayH/nreAkbfCsUeKxwUk82jCw==
-X-Google-Smtp-Source: AGHT+IFhi06VOysbc5l+dFsXz7CKYAApKFvSoqKKtDFGPoyCY30ZTFRktNB+0SQzSsHBbZB1Unn1Bw==
-X-Received: by 2002:a17:902:ec8f:b0:1d9:7ebe:431f with SMTP id x15-20020a170902ec8f00b001d97ebe431fmr75634plg.25.1706869007422;
-        Fri, 02 Feb 2024 02:16:47 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCXs4G8MUacPDVffkkW3YIupLvo7fOKngXgP+Sk6+29gQMVKJs08J0+3IxTwtNEEkiZ8eGAIttWEaHeXH6T6+fNfWQ+QDHgR8QFndX1YkdshPqcHnC8ZhMEw8Y205GGD/hXZeKG9lZA4KiQhE6/y0ZGb14IngWwfwvlekaGRRjUjWt0j5zMxr8icCHSkAzObwyJrh/jcvniTLARTNzCtWdffpO6cA+p9dquKTDehLQT1ImPrwzjg6dOQIOgvEOrnwmSgHcXAhPPG9s3ww8WwNDHHhWbYEbihBm1UxI5VGCz8gxJG/LPhjIEbOa50AtDgdzpicwFKl+d/veprf2CxavchMKcf1ZFpZMPnpeQdl7uabrqw/JibLaG0sc11Qk3+f1aw2VTEFjODk3/Auveeqk+wydW8nC0nhD/Yf0OmhO3pWVWzu8PP4+241P4he/xwQLRUGB3XgKIMTvlu1GPBSADeZq15+ug6D0fQt+Rd9xziIqyoAcned2NH8sAF9kIoBbad4ycXB8VLaDO4+Flm53lBdv1eUkmjzOR9OnaWoBqBFI5sNi2Q0JvocsOdwnb+1cJGO+I34RT7e4Uv35WZCcQjH4km59aPOS+QQP0=
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id 4-20020a170902e9c400b001d94e6a7685sm1242824plk.234.2024.02.02.02.16.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Feb 2024 02:16:46 -0800 (PST)
-From: Kees Cook <keescook@chromium.org>
-To: linux-hardening@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>,
-	x86@kernel.org,
-	netdev@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	Fangrui Song <maskray@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Bill Wendling <morbo@google.com>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
-	llvm@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH v2 6/6] ubsan: Get x86_64 booting with unsigned wrap-around sanitizer
-Date: Fri,  2 Feb 2024 02:16:39 -0800
-Message-Id: <20240202101642.156588-6-keescook@chromium.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240202101311.it.893-kees@kernel.org>
-References: <20240202101311.it.893-kees@kernel.org>
+	s=arc-20240116; t=1706869525; c=relaxed/simple;
+	bh=u4sJKtSk54wQgUyn68IoBS+Mh9GWAoft79AKkN9he1g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=LGT1ErpW57HmZm1qdSm5TlijtNX7FOeHs0famiULKIzx0ZuAh9mohFdzVo7g3Nfj0M1MVSvdJ28+5YUlkJH/KZxtUni2ljB9MvIG7hyVLOksj5J6fS05tazvK4ibr1PEXCXh7zmg4mxo6buz00tOhdGPX0dR+Qgah1yIvJT+euY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BTsbKr6G; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4126YlDA013355;
+	Fri, 2 Feb 2024 10:25:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=gLZJpiBD39Y8migvDMg1XNW1md0helkHFYv/jFdLzWU=; b=BT
+	sbKr6Ge7i80MDyYsadQBnqh9b/Np82eFaPFrini5g9rz8aDFvyP7dVjOvRLFGtRe
+	Hg2fsquo3MrIgSUafYZyp765bjqfdvaGaLEmYJkDyRYiQ9Ruhxg4nLOG3w2AdJPW
+	6J+ze98SN7SEQz5o9dmre45ref6RG9IFWmdFJnW399nySUwzv1KapSY/+WpcBtjG
+	+yAa9syxAXv858/2DXzboB6EXju3IPjlKNDnY/MaLK8avPbu7ivPhGAgYlW+myNm
+	8gJwTwaus42tmB4deUxSsjNfYm4cHUNC/nNBcrUz4my0RAINonRGIR3bWNPHFrvt
+	aZxxPBOvbvIZwko90tDg==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w0ptyh3vx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Feb 2024 10:25:05 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 412AP4c9008970
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 2 Feb 2024 10:25:04 GMT
+Received: from [10.50.50.178] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 2 Feb
+ 2024 02:25:00 -0800
+Message-ID: <50c3abcd-cd2e-4ef6-9462-efe3017e70dc@quicinc.com>
+Date: Fri, 2 Feb 2024 15:54:57 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9025; i=keescook@chromium.org;
- h=from:subject; bh=TzLGN/wZFrYl4sz0T0jyTqFgT2Lvj1xSfjBLlzj7afo=;
- b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlvMEHyPK5ViviPn9azIBFUIYrlBFvd0kw+bqbP
- wVlizzw8PGJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZbzBBwAKCRCJcvTf3G3A
- Jj10EACxZp8csm9ZCk+xJiU3zMmobNiVh75p7eiqjwSp/+F5YknBmFn1AlM7gImi5vPAMhF+uJK
- S7tEGvBu0z8HJAYyprAsz8MTPA3XkwZaBvDh9ooyUaCGG4dQYhzZEamHqjAeDnajhy5ZftZymg1
- B+ufjH0oJ0ni6WwN8v+6NA2qQLUNSrjnKtiribhsUUvNU+RIbBsci8ifkfB+R/+u+pEbCf6P88A
- 7+XDsZKTZQdFahZfTiTeUE/SXyL4N3tj6bSoRpsihC/55AJZVXSoatefKR16VpdBCKZKwTNweW6
- S0vj+nz1PDLZHYxiOQVF9JH1HUjMv4EXIi6sJ1rayPbtQpTapfFyPHsS/42+1og+ZkbBjhrPtgx
- V22ba3CXArD1r3+innlUCwo1gznduzvlxVifjuGsBnPTOKM9JeBPNWu75tm1vMoR65PHo4qxOG+
- O/tg1yEg6gja2mNPYPKJXZUW2S29A0iPG+8XuUSExGdu9BudGeVw18IasDUmfthZyPLWNROQGpN
- 9JyUUkTnApR92NAMUzHLj3ne7upYSQJ31Ab+MogRw6at1STgZvaWFIE5e5a/XQYbuNQmITc7hVq
- 6o5PuItNU7vlLrYD2InHp+9VTFqpLrw3s1toSBj+qbAQByyz+QyYIdE324S1o0WW6EeKf4cuLVm DqWvp1fbl88HqTQ==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/5] drm: Add drm_get_acpi_edid() helper
+Content-Language: en-US
+To: Mario Limonciello <mario.limonciello@amd.com>,
+        <amd-gfx@lists.freedesktop.org>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        "Rafael J . Wysocki"
+	<rafael@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>
+CC: "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        open list
+	<linux-kernel@vger.kernel.org>,
+        "open list:DRM DRIVERS"
+	<dri-devel@lists.freedesktop.org>,
+        Melissa Wen <mwen@igalia.com>,
+        Mark
+ Pearson <mpearson-lenovo@squebb.ca>
+References: <20240201221119.42564-1-mario.limonciello@amd.com>
+ <20240201221119.42564-3-mario.limonciello@amd.com>
+From: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
+In-Reply-To: <20240201221119.42564-3-mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: rexgPSLyqAohsLaQPymfnNmgr96GlYMP
+X-Proofpoint-GUID: rexgPSLyqAohsLaQPymfnNmgr96GlYMP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-02_04,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 phishscore=0
+ mlxlogscore=999 lowpriorityscore=0 mlxscore=0 suspectscore=0 clxscore=1015
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402020075
 
-In order to get x86_64 booting at all with the unsigned wrap-around
-sanitizer, instrumentation needs to be disabled entirely for several
-kernel areas that depend heavily on unsigned wrap-around. As we fine-tune
-the sanitizer, we can revisit these and perform finer grain annotations.
-The boot is still extremely noisy, but gets us to a common point where
-we can continue experimenting with the sanitizer.
 
-Cc: x86@kernel.org
-Cc: netdev@vger.kernel.org
-Cc: linux-crypto@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- arch/x86/kernel/Makefile      | 1 +
- arch/x86/kernel/apic/Makefile | 1 +
- arch/x86/mm/Makefile          | 1 +
- arch/x86/mm/pat/Makefile      | 1 +
- crypto/Makefile               | 1 +
- drivers/acpi/Makefile         | 1 +
- kernel/Makefile               | 1 +
- kernel/locking/Makefile       | 1 +
- kernel/rcu/Makefile           | 1 +
- kernel/sched/Makefile         | 1 +
- lib/Kconfig.ubsan             | 5 +++--
- lib/Makefile                  | 1 +
- lib/crypto/Makefile           | 1 +
- lib/crypto/mpi/Makefile       | 1 +
- lib/zlib_deflate/Makefile     | 1 +
- lib/zstd/Makefile             | 2 ++
- mm/Makefile                   | 1 +
- net/core/Makefile             | 1 +
- net/ipv4/Makefile             | 1 +
- 19 files changed, 22 insertions(+), 2 deletions(-)
+On 2/2/2024 3:41 AM, Mario Limonciello wrote:
+> Some manufacturers have intentionally put an EDID that differs from
+> the EDID on the internal panel on laptops.  Drivers can call this
+> helper to attempt to fetch the EDID from the BIOS's ACPI _DDC method.
+>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v1->v2:
+>   * Split code from previous amdgpu specific helper to generic drm helper.
+> v2->v3:
+>   * Add an extra select to fix a variety of randconfig errors found from
+>     LKP robot.
+> ---
+>   drivers/gpu/drm/Kconfig    |  5 +++
+>   drivers/gpu/drm/drm_edid.c | 73 ++++++++++++++++++++++++++++++++++++++
+>   include/drm/drm_edid.h     |  1 +
+>   3 files changed, 79 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+> index 2520db0b776e..14df907c96c8 100644
+> --- a/drivers/gpu/drm/Kconfig
+> +++ b/drivers/gpu/drm/Kconfig
+> @@ -21,6 +21,11 @@ menuconfig DRM
+>   	select KCMP
+>   	select VIDEO_CMDLINE
+>   	select VIDEO_NOMODESET
+> +	select ACPI_VIDEO if ACPI
+> +	select BACKLIGHT_CLASS_DEVICE if ACPI
+> +	select INPUT if ACPI
+> +	select X86_PLATFORM_DEVICES if ACPI && X86
+> +	select ACPI_WMI if ACPI && X86
+>   	help
+>   	  Kernel-level support for the Direct Rendering Infrastructure (DRI)
+>   	  introduced in XFree86 4.0. If you say Y here, you need to select
+> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+> index 69c68804023f..1fbbeaa664b2 100644
+> --- a/drivers/gpu/drm/drm_edid.c
+> +++ b/drivers/gpu/drm/drm_edid.c
+> @@ -28,6 +28,7 @@
+>    * DEALINGS IN THE SOFTWARE.
+>    */
+>   
+> +#include <acpi/video.h>
+>   #include <linux/bitfield.h>
+>   #include <linux/cec.h>
+>   #include <linux/hdmi.h>
+> @@ -2188,6 +2189,47 @@ drm_do_probe_ddc_edid(void *data, u8 *buf, unsigned int block, size_t len)
+>   	return ret == xfers ? 0 : -1;
+>   }
+>   
+> +/**
+> + * drm_do_probe_acpi_edid() - get EDID information via ACPI _DDC
+> + * @data: struct drm_device
+> + * @buf: EDID data buffer to be filled
+> + * @block: 128 byte EDID block to start fetching from
+> + * @len: EDID data buffer length to fetch
+> + *
+> + * Try to fetch EDID information by calling acpi_video_get_edid() function.
+> + *
+> + * Return: 0 on success or error code on failure.
+> + */
+> +static int
+> +drm_do_probe_acpi_edid(void *data, u8 *buf, unsigned int block, size_t len)
+> +{
+> +	struct drm_device *ddev = data;
+> +	struct acpi_device *acpidev = ACPI_COMPANION(ddev->dev);
+> +	unsigned char start = block * EDID_LENGTH;
+> +	void *edid;
+> +	int r;
+> +
+> +	if (!acpidev)
+> +		return -ENODEV;
+> +
+> +	/* fetch the entire edid from BIOS */
+> +	r = acpi_video_get_edid(acpidev, ACPI_VIDEO_DISPLAY_LCD, -1, &edid);
+> +	if (r < 0) {
+> +		DRM_DEBUG_KMS("Failed to get EDID from ACPI: %d\n", r);
+> +		return -EINVAL;
+> +	}
+> +	if (len > r || start > r || start + len > r) {
+> +		r = EINVAL;
+-EINVAL ?
+> +		goto cleanup;
+> +	}
+> +
+> +	memcpy(buf, edid + start, len);
+> +	r = 0;
+New line before goto label?
+> +cleanup:
+> +	kfree(edid);
+> +	return r;
+> +}
+> +
+>   static void connector_bad_edid(struct drm_connector *connector,
+>   			       const struct edid *edid, int num_blocks)
+>   {
+> @@ -2643,6 +2685,37 @@ struct edid *drm_get_edid(struct drm_connector *connector,
+>   }
+>   EXPORT_SYMBOL(drm_get_edid);
+>   
+> +/**
+> + * drm_get_acpi_edid - get EDID data, if available
+> + * @connector: connector we're probing
+> + *
+> + * Use the BIOS to attempt to grab EDID data if possible.  If found,
+> + * attach it to the connector.
+> + *
+> + * Return: Pointer to valid EDID or NULL if we couldn't find any.
+> + */
+> +struct edid *drm_get_acpi_edid(struct drm_connector *connector)
+> +{
+> +	struct edid *edid = NULL;
+> +
+> +	switch (connector->connector_type) {
+> +	case DRM_MODE_CONNECTOR_LVDS:
+> +	case DRM_MODE_CONNECTOR_eDP:
+> +		break;
+> +	default:
+> +		return NULL;
+> +	}
+> +
+> +	if (connector->force == DRM_FORCE_OFF)
+> +		return NULL;
+> +
+> +	edid = _drm_do_get_edid(connector, drm_do_probe_acpi_edid, connector->dev, NULL);
+> +
+> +	drm_connector_update_edid_property(connector, edid);
+> +	return edid;
+> +}
+> +EXPORT_SYMBOL(drm_get_acpi_edid);
+> +
+>   /**
+>    * drm_edid_read_custom - Read EDID data using given EDID block read function
+>    * @connector: Connector to use
+> diff --git a/include/drm/drm_edid.h b/include/drm/drm_edid.h
+> index 518d1b8106c7..60fbdc06badc 100644
+> --- a/include/drm/drm_edid.h
+> +++ b/include/drm/drm_edid.h
+> @@ -412,6 +412,7 @@ struct edid *drm_do_get_edid(struct drm_connector *connector,
+>   	void *data);
+>   struct edid *drm_get_edid(struct drm_connector *connector,
+>   			  struct i2c_adapter *adapter);
+> +struct edid *drm_get_acpi_edid(struct drm_connector *connector);
+>   u32 drm_edid_get_panel_id(struct i2c_adapter *adapter);
+>   struct edid *drm_get_edid_switcheroo(struct drm_connector *connector,
+>   				     struct i2c_adapter *adapter);
 
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 0000325ab98f..de93f8b8a149 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -30,6 +30,7 @@ KASAN_SANITIZE_sev.o					:= n
- 
- # With some compiler versions the generated code results in boot hangs, caused
- # by several compilation units. To be safe, disable all instrumentation.
-+UBSAN_WRAP_UNSIGNED := n
- KCSAN_SANITIZE := n
- KMSAN_SANITIZE_head$(BITS).o				:= n
- KMSAN_SANITIZE_nmi.o					:= n
-diff --git a/arch/x86/kernel/apic/Makefile b/arch/x86/kernel/apic/Makefile
-index 3bf0487cf3b7..aa97b5830b64 100644
---- a/arch/x86/kernel/apic/Makefile
-+++ b/arch/x86/kernel/apic/Makefile
-@@ -6,6 +6,7 @@
- # Leads to non-deterministic coverage that is not a function of syscall inputs.
- # In particular, smp_apic_timer_interrupt() is called in random places.
- KCOV_INSTRUMENT		:= n
-+UBSAN_WRAP_UNSIGNED	:= n
- 
- obj-$(CONFIG_X86_LOCAL_APIC)	+= apic.o apic_common.o apic_noop.o ipi.o vector.o init.o
- obj-y				+= hw_nmi.o
-diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-index c80febc44cd2..7a43466d4581 100644
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- # Kernel does not boot with instrumentation of tlb.c and mem_encrypt*.c
-+UBSAN_WRAP_UNSIGNED := n
- KCOV_INSTRUMENT_tlb.o			:= n
- KCOV_INSTRUMENT_mem_encrypt.o		:= n
- KCOV_INSTRUMENT_mem_encrypt_amd.o	:= n
-diff --git a/arch/x86/mm/pat/Makefile b/arch/x86/mm/pat/Makefile
-index ea464c995161..281a5786c5ea 100644
---- a/arch/x86/mm/pat/Makefile
-+++ b/arch/x86/mm/pat/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
-+UBSAN_WRAP_UNSIGNED := n
- 
- obj-y				:= set_memory.o memtype.o
- 
-diff --git a/crypto/Makefile b/crypto/Makefile
-index 408f0a1f9ab9..c7b23d99e715 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -2,6 +2,7 @@
- #
- # Cryptographic API
- #
-+UBSAN_WRAP_UNSIGNED := n
- 
- obj-$(CONFIG_CRYPTO) += crypto.o
- crypto-y := api.o cipher.o compress.o
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index 12ef8180d272..92a8e8563b1b 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -2,6 +2,7 @@
- #
- # Makefile for the Linux ACPI interpreter
- #
-+UBSAN_WRAP_UNSIGNED := n
- 
- ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
- 
-diff --git a/kernel/Makefile b/kernel/Makefile
-index ce105a5558fc..1b31aa19b4fb 100644
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -2,6 +2,7 @@
- #
- # Makefile for the linux kernel.
- #
-+UBSAN_WRAP_UNSIGNED := n
- 
- obj-y     = fork.o exec_domain.o panic.o \
- 	    cpu.o exit.o softirq.o resource.o \
-diff --git a/kernel/locking/Makefile b/kernel/locking/Makefile
-index 0db4093d17b8..dd6492509596 100644
---- a/kernel/locking/Makefile
-+++ b/kernel/locking/Makefile
-@@ -2,6 +2,7 @@
- # Any varying coverage in these files is non-deterministic
- # and is generally not a function of system call inputs.
- KCOV_INSTRUMENT		:= n
-+UBSAN_WRAP_UNSIGNED	:= n
- 
- obj-y += mutex.o semaphore.o rwsem.o percpu-rwsem.o
- 
-diff --git a/kernel/rcu/Makefile b/kernel/rcu/Makefile
-index 0cfb009a99b9..305c13042633 100644
---- a/kernel/rcu/Makefile
-+++ b/kernel/rcu/Makefile
-@@ -2,6 +2,7 @@
- # Any varying coverage in these files is non-deterministic
- # and is generally not a function of system call inputs.
- KCOV_INSTRUMENT := n
-+UBSAN_WRAP_UNSIGNED := n
- 
- ifeq ($(CONFIG_KCSAN),y)
- KBUILD_CFLAGS += -g -fno-omit-frame-pointer
-diff --git a/kernel/sched/Makefile b/kernel/sched/Makefile
-index 976092b7bd45..e487b0e86c2e 100644
---- a/kernel/sched/Makefile
-+++ b/kernel/sched/Makefile
-@@ -7,6 +7,7 @@ ccflags-y += $(call cc-disable-warning, unused-but-set-variable)
- # These files are disabled because they produce non-interesting flaky coverage
- # that is not a function of syscall inputs. E.g. involuntary context switches.
- KCOV_INSTRUMENT := n
-+UBSAN_WRAP_UNSIGNED := n
- 
- # Disable KCSAN to avoid excessive noise and performance degradation. To avoid
- # false positives ensure barriers implied by sched functions are instrumented.
-diff --git a/lib/Kconfig.ubsan b/lib/Kconfig.ubsan
-index 0611120036eb..54981e717355 100644
---- a/lib/Kconfig.ubsan
-+++ b/lib/Kconfig.ubsan
-@@ -132,8 +132,9 @@ config UBSAN_UNSIGNED_WRAP
- 	depends on !COMPILE_TEST
- 	help
- 	  This option enables -fsanitize=unsigned-integer-overflow which checks
--	  for wrap-around of any arithmetic operations with unsigned integers. This
--	  currently causes x86 to fail to boot.
-+	  for wrap-around of any arithmetic operations with unsigned integers.
-+	  Given the history of C and the many common code patterns involving
-+	  unsigned wrap-around, this is a very noisy option right now.
- 
- config UBSAN_POINTER_WRAP
- 	bool "Perform checking for pointer arithmetic wrap-around"
-diff --git a/lib/Makefile b/lib/Makefile
-index bc36a5c167db..f68385b69247 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -2,6 +2,7 @@
- #
- # Makefile for some libs needed in the kernel.
- #
-+UBSAN_WRAP_UNSIGNED := n
- 
- ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
- 
-diff --git a/lib/crypto/Makefile b/lib/crypto/Makefile
-index 8d1446c2be71..fce88a337a53 100644
---- a/lib/crypto/Makefile
-+++ b/lib/crypto/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
-+UBSAN_WRAP_UNSIGNED := n
- 
- obj-$(CONFIG_CRYPTO_LIB_UTILS)			+= libcryptoutils.o
- libcryptoutils-y				:= memneq.o utils.o
-diff --git a/lib/crypto/mpi/Makefile b/lib/crypto/mpi/Makefile
-index 6e6ef9a34fe1..ce95653915b1 100644
---- a/lib/crypto/mpi/Makefile
-+++ b/lib/crypto/mpi/Makefile
-@@ -2,6 +2,7 @@
- #
- # MPI multiprecision maths library (from gpg)
- #
-+UBSAN_WRAP_UNSIGNED := n
- 
- obj-$(CONFIG_MPILIB) = mpi.o
- 
-diff --git a/lib/zlib_deflate/Makefile b/lib/zlib_deflate/Makefile
-index 2622e03c0b94..5d71690554bb 100644
---- a/lib/zlib_deflate/Makefile
-+++ b/lib/zlib_deflate/Makefile
-@@ -6,6 +6,7 @@
- # This is the compression code, see zlib_inflate for the
- # decompression code.
- #
-+UBSAN_WRAP_UNSIGNED := n
- 
- obj-$(CONFIG_ZLIB_DEFLATE) += zlib_deflate.o
- 
-diff --git a/lib/zstd/Makefile b/lib/zstd/Makefile
-index 20f08c644b71..7a187cb08c1f 100644
---- a/lib/zstd/Makefile
-+++ b/lib/zstd/Makefile
-@@ -8,6 +8,8 @@
- # in the COPYING file in the root directory of this source tree).
- # You may select, at your option, one of the above-listed licenses.
- # ################################################################
-+UBSAN_WRAP_UNSIGNED := n
-+
- obj-$(CONFIG_ZSTD_COMPRESS) += zstd_compress.o
- obj-$(CONFIG_ZSTD_DECOMPRESS) += zstd_decompress.o
- obj-$(CONFIG_ZSTD_COMMON) += zstd_common.o
-diff --git a/mm/Makefile b/mm/Makefile
-index e4b5b75aaec9..cacbdd1a2d40 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -2,6 +2,7 @@
- #
- # Makefile for the linux memory manager.
- #
-+UBSAN_WRAP_UNSIGNED := n
- 
- KASAN_SANITIZE_slab_common.o := n
- KASAN_SANITIZE_slub.o := n
-diff --git a/net/core/Makefile b/net/core/Makefile
-index 821aec06abf1..501d7300da83 100644
---- a/net/core/Makefile
-+++ b/net/core/Makefile
-@@ -2,6 +2,7 @@
- #
- # Makefile for the Linux networking core.
- #
-+UBSAN_WRAP_UNSIGNED := n
- 
- obj-y := sock.o request_sock.o skbuff.o datagram.o stream.o scm.o \
- 	 gen_stats.o gen_estimator.o net_namespace.o secure_seq.o \
-diff --git a/net/ipv4/Makefile b/net/ipv4/Makefile
-index ec36d2ec059e..c738d463bb7e 100644
---- a/net/ipv4/Makefile
-+++ b/net/ipv4/Makefile
-@@ -2,6 +2,7 @@
- #
- # Makefile for the Linux TCP/IP (INET) layer.
- #
-+UBSAN_WRAP_UNSIGNED := n
- 
- obj-y     := route.o inetpeer.o protocol.o \
- 	     ip_input.o ip_fragment.o ip_forward.o ip_options.o \
--- 
-2.34.1
+New line before return ?
 
 
